@@ -56,6 +56,11 @@ class TesteEstado(unittest.TestCase):
         for nome in nomes:
             self.assertEqual(sec.count(f'nome:"{nome}"'), 1, nome)
         self.assertIn("estrelas de ERRO", sec); self.assertIn("clearTimeout(H._tFecha)", sec); self.assertIn("H._sessao===sessao", sec)
+        # toda caixa com dado responde ao clique; nomes das constelações só na janela (não no céu)
+        for marca in ('data-det="motor|', 'data-det="maestro|', 'data-det="hist|', 'data-det="missao|', 'data-det="familia|', 'data-det="item|',
+                      '"passo"', '"etapa"', '"estante"', '"origem"', '"reproc"', "function detalheItem(", "function ligarDetalhes(", "window.nvVisao", 'class="cabeca-const"', "function desenhoConst("):
+            self.assertIn(marca, sec, marca)
+        self.assertNotIn("g.fillText(no.nome", sec, "nomes das constelações ocultos no céu")
         g = (ROOT / "src/sala_controle.py").read_text(encoding="utf-8")
         self.assertIn('"ultimas"', g); self.assertIn('{"id": x["id"], "quando"', g)
 
