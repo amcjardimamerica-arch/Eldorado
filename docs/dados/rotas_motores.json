@@ -1,5 +1,5 @@
 {
- "em": "2026-10-11T14:24:33+00:00",
+ "em": "2026-10-11T15:30:13+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
@@ -7,7 +7,7 @@
   "alterar_rota": 63,
   "rota_nova": 45,
   "via_ponte": 1,
-  "exemplos_da_rede": 2354
+  "exemplos_da_rede": 2474
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
@@ -20,16 +20,24 @@
     1.5174
    ],
    [
+    "tok:feed",
+    1.3072
+   ],
+   [
     "tok:unidades",
     1.2439
    ],
    [
-    "tok:feed",
-    1.1087
-   ],
-   [
     "tok:mpf",
     1.0885
+   ],
+   [
+    "tok:sitemap",
+    1.0496
+   ],
+   [
+    "tok:xml",
+    1.0496
    ],
    [
     "tok:abertas",
@@ -50,20 +58,12 @@
    [
     "tok:programa",
     0.9058
-   ],
-   [
-    "tok:abre",
-    0.86
-   ],
-   [
-    "tok:senador",
-    0.8435
    ]
   ],
   "piores_sinais": [
    [
-    "tipo:internacional",
-    -1.0264
+    "tok:prefeitura",
+    -1.0151
    ],
    [
     "origem:câmara",
@@ -71,7 +71,7 @@
    ],
    [
     "via:ponte",
-    -1.1781
+    -1.2082
    ],
    [
     "tipo:ministerio_publico",
@@ -87,11 +87,11 @@
    ],
    [
     "gov:False",
-    -1.4616
+    -1.4618
    ],
    [
     "origem:padrão",
-    -1.8992
+    -2.1237
    ]
   ]
  },
@@ -156,8 +156,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-10T22:57:34+00:00",
-    "testes": 11,
+    "em": "2026-10-11T15:30:13+00:00",
+    "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -1264,17 +1264,17 @@
      "https://skoll.org/feed"
     ],
     "via": "direto",
-    "origem": "padrão",
+    "origem": "rota original",
     "pontos": 3,
-    "aprendido_em": "2026-10-10T22:33:01+00:00"
+    "aprendido_em": "2026-10-11T15:29:10+00:00"
    },
    "afinado": {
-    "em": "2026-10-10T22:33:01+00:00",
-    "testes": 12,
+    "em": "2026-10-11T15:29:10+00:00",
+    "testes": 17,
     "melhor": {
      "url": "https://skoll.org/feed",
      "via": "direto",
-     "origem": "padrão",
+     "origem": "rota original",
      "pontos": 3,
      "formato": "sitemap/feed"
     },
@@ -1298,17 +1298,17 @@
      "https://www.unicef.org/sitemap.xml"
     ],
     "via": "direto",
-    "origem": "padrão",
+    "origem": "rota original",
     "pontos": 15,
-    "aprendido_em": "2026-10-10T22:33:25+00:00"
+    "aprendido_em": "2026-10-11T15:29:31+00:00"
    },
    "afinado": {
-    "em": "2026-10-10T22:33:25+00:00",
+    "em": "2026-10-11T15:29:31+00:00",
     "testes": 22,
     "melhor": {
      "url": "https://www.unicef.org/sitemap.xml",
      "via": "direto",
-     "origem": "padrão",
+     "origem": "rota original",
      "pontos": 15,
      "formato": "sitemap/feed"
     },
@@ -1329,7 +1329,7 @@
    "historico": [],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-10T22:33:32+00:00",
+    "em": "2026-10-11T15:29:37+00:00",
     "testes": 24,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1349,7 +1349,7 @@
    "historico": [],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-10T22:34:00+00:00",
+    "em": "2026-10-11T15:29:57+00:00",
     "testes": 23,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1372,17 +1372,17 @@
      "https://international-partnerships.ec.europa.eu/sitemap.xml"
     ],
     "via": "direto",
-    "origem": "padrão",
+    "origem": "rota original",
     "pontos": 30,
-    "aprendido_em": "2026-10-10T22:56:36+00:00"
+    "aprendido_em": "2026-10-11T15:30:07+00:00"
    },
    "afinado": {
-    "em": "2026-10-10T22:56:36+00:00",
+    "em": "2026-10-11T15:30:07+00:00",
     "testes": 22,
     "melhor": {
      "url": "https://international-partnerships.ec.europa.eu/sitemap.xml",
      "via": "direto",
-     "origem": "padrão",
+     "origem": "rota original",
      "pontos": 30,
      "formato": "sitemap/feed"
     },

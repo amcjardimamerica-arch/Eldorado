@@ -41,8 +41,15 @@
 
 ```json
 {
- "motores_de_ruido_1a": 25,
+ "motores_de_ruido_1a": 26,
  "ruido_agora": [
+  {
+   "motor": "plat-gife",
+   "achados_total_1a": 77,
+   "achados_total_agora": 77,
+   "no_fluxo": 0,
+   "confirmadas": 0
+  },
   {
    "motor": "empresas-incentivadas",
    "achados_total_1a": 46,
@@ -124,7 +131,7 @@
    "motor": "plat-empresas-editais-incentivados",
    "achados_total_1a": 789,
    "achados_total_agora": 789,
-   "no_fluxo": 2,
+   "no_fluxo": 1,
    "confirmadas": 0
   },
   {
@@ -138,7 +145,7 @@
    "motor": "plat-prefeituras-50-go",
    "achados_total_1a": 57,
    "achados_total_agora": 57,
-   "no_fluxo": 1,
+   "no_fluxo": 0,
    "confirmadas": 0
   },
   {
@@ -194,7 +201,7 @@
    "motor": "outras-oportunidades-1",
    "achados_total_1a": 35,
    "achados_total_agora": 35,
-   "no_fluxo": 10,
+   "no_fluxo": 9,
    "confirmadas": 0
   },
   {
@@ -208,13 +215,7 @@
    "motor": "outras-oportunidades-3",
    "achados_total_1a": 22,
    "achados_total_agora": 22,
-   "no_fluxo": 2,
-   "confirmadas": 0
-  },
-  {
-   "motor": "outras-oportunidades-5",
-   "achados_total_1a": 25,
-   "achados_total_agora": 25,
+   "no_fluxo"
 ```
 
 ## Eng. Luana Freire (levemente pessimista)
@@ -227,7 +228,7 @@
  "pontos_com_redundancia": 11,
  "redundancia_vazia": [],
  "dominios_via_ponte": 1,
- "exemplos_da_rede_de_rotas": 2354
+ "exemplos_da_rede_de_rotas": 2474
 }
 ```
 
@@ -238,12 +239,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 68.0,
- "fora_dos_motores_pct_agora": 68.0,
+ "fora_dos_motores_pct_1a": 80.9,
+ "fora_dos_motores_pct_agora": 80.9,
  "origem": {
-  "agregador/outra": 280,
-  "motor": 173,
-  "Piloto": 87
+  "agregador/outra": 285,
+  "Piloto": 91,
+  "motor": 89
  },
  "dominios_so_de_agregador": [
   {
@@ -275,18 +276,6 @@
    "oportunidades": 2
   },
   {
-   "dominio": "monteazulpaulista.sp.gov.br",
-   "oportunidades": 1
-  },
-  {
-   "dominio": "fccr.sp.gov.br",
-   "oportunidades": 1
-  },
-  {
-   "dominio": "prefeitura.poa.br",
-   "oportunidades": 1
-  },
-  {
    "dominio": "performeurope.eu",
    "oportunidades": 1
   },
@@ -304,6 +293,18 @@
   },
   {
    "dominio": "gulbenkian.pt",
+   "oportunidades": 1
+  },
+  {
+   "dominio": "hto.ifsp.edu.br",
+   "oportunidades": 1
+  },
+  {
+   "dominio": "www2.fab.mil.br",
+   "oportunidades": 1
+  },
+  {
+   "dominio": "finep.gov.br",
    "oportunidades": 1
   }
  ],
@@ -366,20 +367,20 @@
 
 ```json
 {
- "fontes_recebidas": 227,
+ "fontes_recebidas": 232,
  "por_origem": {
   "conselho (fontes irmãs)": 129,
-  "Cartório (site oficial certificado)": 85,
-  "Espião (privado/internacional)": 13
+  "Cartório (site oficial certificado)": 87,
+  "Espião (privado/internacional)": 16
  },
  "lidas_nas_ultimas_24h": 168,
  "dimensionamento": {
-  "fontes": 227,
+  "fontes": 232,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 5,
-  "cobertura_diaria": 227,
+  "cobertura_diaria": 232,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -427,7 +428,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 57,
+   "orgaos": 59,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",
@@ -460,14 +461,14 @@
    ]
   },
   "Portal de transparência de fornecedor": {
-   "orgaos": 14,
+   "orgaos": 15,
    "exemplos": [
     "bndes.gov.br",
     "comunidade.transparenciainternacional.org.br",
+    "gov.br",
     "mpf.mp.br",
     "muribeca.se.gov.br",
-    "saude.mg.gov.br",
-    "transparencia.adustina.ba.gov.br"
+    "saude.mg.gov.br"
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
