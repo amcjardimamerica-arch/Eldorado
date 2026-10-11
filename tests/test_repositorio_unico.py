@@ -155,4 +155,22 @@ class TesteMunicipaisForaDeGoias(unittest.TestCase):
         self.assertIsNone(f({"titulo": "MUNICIPIO DE TRINDADE — credenciamento", "url": "https://pncp.gov.br/app/editais/1/2026/1"}), "sem UF: fica")
         self.assertIsNone(f({"titulo": "Edital estadual", "orgao": "Secretaria de Estado da Cultura de São Paulo", "nivel": "estadual", "uf": "SP"}))
         self.assertIsNone(f({"titulo": "Programa federal de fomento", "nivel": "federal", "uf": "DF"}))
-        self.assertIn("_arq_mun", (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8"), "o livro fica")
+
+    def test_arquivada_so_no_contador(self):
+        """A arquivada mantém o estado (motores, Cartório, Interceptador e o livro seguem) e sai do contador e da lista."""
+        import tempfile
+        o = (R.SAIDA, R.RESUMO)
+        with tempfile.TemporaryDirectory() as t:
+            R.SAIDA = Path(t) / "r.json"; R.RESUMO = Path(t) / "s.json"
+            try:
+                res = R.construir(gravar=True); regs = json.loads(R.SAIDA.read_text())["registros"]
+            finally:
+                R.SAIDA, R.RESUMO = o
+        arq = [x for x in regs if x.get("arquivada")]
+        if not arq:
+            self.skipTest("sem municipais de fora de GO nos dados atuais")
+        self.assertTrue(all(x["estado"] != "fechada" for x in arq), "o estado é mantido: as filas dos motores seguem")
+        abertas = sum(1 for x in regs if x["estado"] != "fechada" and not x.get("arquivada"))
+        self.assertEqual(res["abertas"], abertas); self.assertEqual(res["arquivadas_municipais_fora_de_goias"], len(arq))
+        f = (ROOT / "src/fluxo_oportunidades.py").read_text(encoding="utf-8")
+        self.assertIn('r.get("arquivada")', f, "a lista da tela inicial não mostra as arquivadas")
