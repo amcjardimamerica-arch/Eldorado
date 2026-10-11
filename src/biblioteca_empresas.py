@@ -184,6 +184,60 @@ def parece_nome_de_empresa(nome: str) -> bool:
     return bool(t) and bool(re.search(r"[A-ZÀ-Ý]", t)) and not _FRAGMENTO_DE_DATA.search(t)
 
 
+_PUBLICO = re.compile(r"(?i)\b(minist[ée]rio|secretaria|prefeitura|governo|ag[êe]ncia nacional|universidade|instituto federal|"
+                     r"c[âa]mara|assembleia|tribunal|conselho (nacional|estadual|municipal)|cnpq|capes|finep|fapeg|funda[çc][ãa]o de amparo|"
+                     r"bndes|banco do nordeste|banco da amaz[ôo]nia|caixa econ[ôo]mica|banco do brasil|embaixada|consulado|uni[ãa]o europeia|"
+                     r"\bana\b|ibama|icmbio|iphan|funarte|sebrae|senac|sesc|senai|sesi|anater|embrapa|embrapii|fiocruz|agência|"
+                     r"fap[a-z]{1,4}|dgartes|for[çc]a a[ée]rea|ex[ée]rcito|marinha|pol[íi]cia|defensoria|minist[ée]rio p[úu]blico|"
+                     r"unaids|unesco|unicef|onu|pnud|opas|oms|banco mundial)\b")
+_AGREGADOR = re.compile(r"(?i)grantstation|ngoscope|fundsforngos|devex|prosas|capitaai|captadores|bussola ?social|observat[óo]rio do terceiro")
+_PROPONENTE = re.compile(r"(?i)^(associa[çc][ãa]o|cooperativa|coletivo|movimento|federa[çc][ãa]o|sindicato|rede |frente )")
+_MIDIA = re.compile(r"(?i)(news|gazeta|jornal|di[áa]rio|not[íi]cia|portal|web$|tv\b|r[áa]dio|revista|blog|\bgo$|online)")
+_TITULO = re.compile(r"(?i)^(aberta|abertas|abre|inscri|sele[çc][ãa]o|edital|chamada|chamamento|programa de|projeto|pr[êe]mio|"
+                    r"fa[çc]a|how to|apply|social grant|grants?$|grant |call |open call|programa)\b|:|\bapplications?\b|\binscri[çc][õo]es\b")
+
+
+def doadora_privada(nome: str) -> bool:
+    """11/10 (titular): só EMPRESA, instituto ou fundação PRIVADA entra na lista de doação e patrocínio — órgão público,
+    site de notícia, título de chamada e proponente (associação, cooperativa, coletivo) não são doadores."""
+    n = str(nome or "").strip()
+    if len(n) < 4 or _PUBLICO.search(n) or _PROPONENTE.search(n) or _TITULO.search(n):
+        return False
+    if " " not in n and _MIDIA.search(n):                     # nome tirado do endereço de um site de notícia
+        return False
+    if " " not in n and len(n) >= 12 and n[1:].islower():     # palavras coladas: nome tirado do endereço de um site
+        return False
+    if _AGREGADOR.search(n):                                   # plataforma que lista editais de terceiros
+        return False
+    return True
+
+
+def novas_de_patrocinio() -> list[tuple]:
+    """(nome normalizado, nome, evento) das empresas de DOAÇÃO/PATROCÍNIO por três fontes: patrocínio observado na
+    imprensa (motor de patrocínio), Piloto Espião e chamamento privado aberto (repositório único)."""
+    out = []
+    for arq, orig, tipo in ((ROOT / "dados/empresas/go/patrocinios.json", "observada", "patrocínio observado na imprensa"),
+                            (ROOT / "dados/empresas/go/espiao_empresas.json", "espiao", None)):
+        if arq.exists():
+            for a in load_json(arq).get("achados") or []:
+                nome = str(a.get("empresa") or "").strip()
+                if nome and parece_nome_de_empresa(nome) and doadora_privada(nome):
+                    out.append((_norm(nome), nome, {"evento": a.get("evento") or a.get("trecho"), "fonte": a.get("fonte"), "url": a.get("url"), "em": a.get("em"),
+                                                    "tipo": tipo or f"descoberta do Piloto Espião ({a.get('modalidade') or 'empresa'})", "origem_lista": orig,
+                                                    "cnpj": a.get("cnpj")}))
+    try:
+        from .repositorio_unico import _privada, CHAMAMENTO
+        for r in (load_json(ROOT / "dados/oportunidades/repositorio_unico.json").get("registros") or []):
+            if r.get("estado") in ("em_verificacao", "validada") and _privada(r) and r.get("orgao") and CHAMAMENTO.search(str(r.get("titulo") or "")):
+                nome = str(r["orgao"]).split(" — ")[0].strip()
+                if parece_nome_de_empresa(nome) and doadora_privada(nome) and ".gov.br" not in str(r.get("link_oficial") or r.get("url") or ""):
+                    out.append((_norm(nome), nome, {"evento": r.get("titulo"), "url": r.get("link_oficial") or r.get("url"), "tipo": "chamamento privado aberto",
+                                                    "origem_lista": "chamamento", "oportunidade": r["id"], "livro": r.get("livro")}))
+    except Exception:  # noqa: BLE001
+        pass
+    return out
+
+
 def ranking(categoria: str, limite: int = 100) -> list[dict]:
     """categoria: 'destinacao_tributaria' ou 'patrocinio_privado'.
 
@@ -240,6 +294,27 @@ def ranking(categoria: str, limite: int = 100) -> list[dict]:
             item.update({"apoia": reg[1], "via_de_entrada": reg[2],
                          "condicao": "verba de marketing: proposta com contrapartida de marca, público e mídia estimada"})
         itens.append(item)
+    # 11/10 (titular): na lista de DOAÇÃO E PATROCÍNIO entram as empresas OBSERVADAS patrocinando (imprensa), as
+    # descobertas pelo PILOTO ESPIÃO e as que têm CHAMAMENTO privado aberto — uma vez cada (a mesma empresa por mais de
+    # uma fonte soma as informações, mostradas ao clicar)
+    if categoria == "patrocinio_privado":
+        por_nome = {_norm(i["nome"]): i for i in itens}
+        for nk, nome, ev in novas_de_patrocinio():
+            alvo = por_nome.get(nk) or next((v for k, v in por_nome.items() if nk and (nk in k or k in nk) and min(len(nk), len(k)) >= 6), None)
+            if alvo:
+                alvo.setdefault("observado_pelo_motor", alvo.get("observado_pelo_motor") or [])
+                if isinstance(alvo["observado_pelo_motor"], list) and ev not in alvo["observado_pelo_motor"]:
+                    alvo["observado_pelo_motor"].append(ev)
+                continue
+            goias = bool(re.search(r"goi[aâ]nia|goi[aá]s|an[aá]polis|aparecida de goi", json.dumps(ev, ensure_ascii=False).lower()))
+            p = 20 + (25 if goias else 0) + (10 if ev.get("tipo") == "chamamento privado aberto" else 0)
+            item = {"nome": nome, "pontos": min(100, p), "cnpj": ev.get("cnpj"), "icms_goias": None, "gife": False,
+                    "observado_pelo_motor": [ev], "origem_lista": ev.get("origem_lista") or "observada",
+                    "por": [f"20: {ev.get('tipo') or 'patrocínio/doação observado'} — {str(ev.get('evento') or '')[:90]}"]
+                           + (["25: atuação em Goiás"] if goias else []) + (["10: chamamento privado aberto"] if ev.get("tipo") == "chamamento privado aberto" else []),
+                    "apoia": ev.get("evento"), "via_de_entrada": ev.get("url") or "site institucional",
+                    "condicao": "verba própria (doação/patrocínio): proposta com contrapartida; confirmar no site da empresa"}
+            itens.append(item); por_nome[nk] = item
     # completa com as empresas da base de Goiás que não estão nas listas conhecidas
     conhecidos = {_norm(i["nome"]) for i in itens}
     for k, v in sorted(icms.items(), key=lambda kv: kv[1]["posicao"]):
@@ -281,10 +356,11 @@ def run() -> dict:
         # completar 100. A verificação tira registros falsos e funde duplicatas; o que
         # sair é reposto pela próxima do ICMS, na ordem da lista oficial — sem mudar
         # o critério de quem entra.
-        verificada = aplicar_em_ranking(ranking(cat, limite=130), cat, bases)
+        verificada = aplicar_em_ranking(ranking(cat, limite=100000 if cat == "patrocinio_privado" else 130), cat, bases)
         conhecidas = [x for x in verificada if x.get("origem_lista") != "icms"]
         do_icms = sorted((x for x in verificada if x.get("origem_lista") == "icms"),
                          key=lambda x: (x.get("icms_goias") or 9999, x["nome"]))
+        # 11/10 (titular): sem teto — conhecidas + observadas + Espião + chamamentos, e o ICMS completa até ao menos 100
         lista = conhecidas + do_icms[:max(0, 100 - len(conhecidas))]
         lista.sort(key=lambda x: (-x["pontos"], x["nome"]))
         for i, x in enumerate(lista, 1):

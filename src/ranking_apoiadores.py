@@ -102,13 +102,26 @@ def montar() -> dict:
         arq = ROOT / f"biblioteca_alexandria/empresas/ranking_{cat}.json"
         if not arq.exists():
             return []
-        saida, vistos = [], set()
+        saida, por_chave = [], {}
         for e in load_json(arq).get("empresas", []):
             chave = re.sub(r"[^a-z0-9]", "", str(e.get("nome") or "").lower())[:40]
-            if not chave or chave in vistos:          # duplicata DENTRO da mesma lista
+            raiz = re.sub(r"\D", "", str(e.get("cnpj") or ""))[:8]
+            ja = por_chave.get(chave) or (por_chave.get("r:" + raiz) if raiz else None)
+            if not chave:
                 continue
-            vistos.add(chave)
-            saida.append({**e, "_chave": chave})
+            if ja is not None:                            # a MESMA empresa (nome ou CNPJ): soma as informações, sem duplicar
+                for k, v in e.items():
+                    if k in ("por", "observado_pelo_motor") and isinstance(v, list):
+                        ja[k] = list(ja.get(k) or []) + [x for x in v if x not in (ja.get(k) or [])]
+                    elif not ja.get(k) and v:
+                        ja[k] = v
+                ja.setdefault("fontes_somadas", 1); ja["fontes_somadas"] += 1
+                continue
+            item = {**e, "_chave": chave}
+            por_chave[chave] = item
+            if raiz:
+                por_chave["r:" + raiz] = item
+            saida.append(item)
         return saida
 
     listas = {}
@@ -155,9 +168,25 @@ def montar() -> dict:
         por_chave = {e["_chave"]: e for e in itens}
         def _norm(n): return re.sub(r"[^a-z0-9]", "", str(n or "").lower())[:40]
         novos = []
+        por_raiz = {}                                  # 11/10 (titular): UMA linha por empresa (o SALIC lista estabelecimentos)
+        for e in itens:
+            r8 = re.sub(r"\D", "", str((e.get("cadastro") or {}).get("cnpj") or e.get("cnpj") or ""))[:8]
+            if r8:
+                por_raiz.setdefault(r8, e)
         for x in salic:
             cn, nome = str(x.get("c") or ""), x.get("n") or ""
-            e = por_cnpj.get(cn) or por_chave.get(_norm(nome))
+            e = por_cnpj.get(cn) or por_raiz.get(cn[:8]) or por_chave.get(_norm(nome))
+            if e is not None and e.get("leve"):        # outra filial da MESMA empresa: soma ao registro único
+                h = e.setdefault("salic", {"total": 0, "anos": [], "destino": {}, "leis": []})
+                h["total"] = (h.get("total") or 0) + (x.get("t") or 0)
+                h["anos"] = sorted(set(h.get("anos") or []) | set(x.get("a") or []))
+                h["leis"] = sorted(set(h.get("leis") or []) | set(x.get("l") or ["Rouanet"]))
+                for k, v in (x.get("d") or {}).items():
+                    h.setdefault("destino", {})[k] = (h["destino"].get(k) or 0) + (v or 0) if isinstance(v, (int, float)) else v
+                e["estabelecimentos"] = e.get("estabelecimentos", 1) + 1
+                if x.get("u") and x.get("u") not in (e.get("ufs") or [e["cadastro"].get("uf")]):
+                    e["ufs"] = sorted(set((e.get("ufs") or [e["cadastro"].get("uf")]) + [x.get("u")]) - {None})
+                continue
             hist = {"total": x.get("t") or 0, "anos": x.get("a") or [], "destino": x.get("d") or {}, "leis": x.get("l") or ["Rouanet"]}
             if e:
                 e["salic"] = hist
@@ -167,9 +196,12 @@ def montar() -> dict:
             anos = hist["anos"]
             pontos = 10 + (10 if hist["total"] else 0) + min(15, 5 * len(anos))     # lei com histórico + valor + recorrência
             # registro LEVE: só o essencial; a tela completa o resto (o arquivo vai a milhares de linhas)
-            novos.append({"nome": nome, "_chave": _norm(nome), "origem": "destinação tributária", "fonte": "SALIC",
-                          "cadastro": {"cnpj": cn, "uf": x.get("u")}, "salic": hist, "leve": True,
-                          "programas": [{"chave": "rouanet", "historico": True}], "pontos_lista": pontos})
+            novo = {"nome": nome, "_chave": _norm(nome), "origem": "destinação tributária", "fonte": "SALIC",
+                    "cadastro": {"cnpj": cn, "uf": x.get("u")}, "salic": hist, "leve": True,
+                    "programas": [{"chave": "rouanet", "historico": True}], "pontos_lista": pontos}
+            novos.append(novo); por_chave[_norm(nome)] = novo
+            if cn[:8]:
+                por_raiz[cn[:8]] = novo
         itens += novos
         itens.sort(key=lambda x: (-x["pontos_lista"], -((x.get("salic") or {}).get("total") or 0), -(x.get("pontos") or 0), x["nome"]))
         for n, e in enumerate(itens, 1):
@@ -195,7 +227,7 @@ def montar() -> dict:
     # MATRIZ tem adesão (MTE, até 31/03/2026), pelo catálogo único de incentivos; nenhuma empresa entra por causa dele.
     try:
         import gzip as _gz
-        _pat, _goy = {}, {}
+        _pat, _goy, _todos = {}, {}, {}
         with _gz.open(ROOT / "biblioteca_alexandria/empresas/catalogo_incentivos.jsonl.gz", "rt", encoding="utf-8") as fh:
             for l in fh:
                 c = json.loads(l)
@@ -203,6 +235,8 @@ def montar() -> dict:
                     _pat[str(c["raiz"])[:8]] = c["incentivos"]["PAT"]
                 if "Goyazes" in c["incentivos"] and not str(c["raiz"]).startswith("nome:"):
                     _goy[str(c["raiz"])[:8]] = c["incentivos"]["Goyazes"]
+                if not str(c["raiz"]).startswith("nome:"):
+                    _todos[str(c["raiz"])[:8]] = c["incentivos"]
         for itens in listas.values():
             for e in itens:
                 cn = re.sub(r"\D", "", str((e.get("cadastro") or {}).get("cnpj") or e.get("cnpj") or ""))[:8]
@@ -210,6 +244,14 @@ def montar() -> dict:
                 if g and not any(x.get("chave") == "goyazes" for x in (e.get("programas") or [])):
                     anos = ", ".join(f"{a}: {v.get('projetos')} projeto(s)" for a, v in sorted((g.get("por_ano") or {}).items()))
                     e.setdefault("programas", []).append({"chave": "goyazes", "verificado": True, "prova": f"Secult-GO — créditos concedidos do Programa Goyazes ({anos})"})
+                # 11/10 (titular): TODOS os programas do catálogo único (Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso)
+                for prog, chave_p in (("Rouanet", "rouanet"), ("Esporte", "esporte"), ("PRONON", "pronon"), ("PRONAS", "pronas"), ("FIA", "fia"), ("Idoso", "idoso")):
+                    inc = (_todos.get(cn) or {}).get(prog)
+                    if inc and not any(x.get("chave") == chave_p for x in (e.get("programas") or [])):
+                        pa = inc.get("por_ano") or {}
+                        anos = ", ".join(f"{a}: R$ {float(v.get('valor') or 0):,.0f}".replace(",", ".") if v.get("valor") is not None else a for a, v in sorted(pa.items())[-4:])
+                        e.setdefault("programas", []).append({"chave": chave_p, "verificado": True,
+                                                              "prova": f"{prog} — fonte oficial ({anos or 'anos registrados no catálogo'})"})
                 p = _pat.get(cn)
                 if not p:
                     mp = ((e.get("incentivos_verificados") or {}).get("mecanismos") or {}).get("PAT") or {}
