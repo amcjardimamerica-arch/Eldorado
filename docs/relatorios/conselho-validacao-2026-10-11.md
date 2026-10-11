@@ -41,7 +41,7 @@
 
 ```json
 {
- "motores_de_ruido_1a": 22,
+ "motores_de_ruido_1a": 25,
  "ruido_agora": [
   {
    "motor": "empresas-incentivadas",
@@ -115,15 +115,15 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 27,
-   "achados_total_agora": 27,
+   "achados_total_1a": 33,
+   "achados_total_agora": 33,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 745,
-   "achados_total_agora": 745,
+   "achados_total_1a": 789,
+   "achados_total_agora": 789,
    "no_fluxo": 2,
    "confirmadas": 0
   },
@@ -136,8 +136,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 55,
-   "achados_total_agora": 55,
+   "achados_total_1a": 57,
+   "achados_total_agora": 57,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -164,22 +164,22 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 25,
-   "achados_total_agora": 25,
+   "achados_total_1a": 27,
+   "achados_total_agora": 27,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 53,
-   "achados_total_agora": 53,
+   "achados_total_1a": 55,
+   "achados_total_agora": 55,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-estaduais-go-gov",
-   "achados_total_1a": 22,
-   "achados_total_agora": 22,
+   "achados_total_1a": 23,
+   "achados_total_agora": 23,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -196,10 +196,25 @@
    "achados_total_agora": 35,
    "no_fluxo": 10,
    "confirmadas": 0
-  }
- ],
- "ruido_que_passou_a_confirmar": []
-}
+  },
+  {
+   "motor": "outras-oportunidades-2",
+   "achados_total_1a": 27,
+   "achados_total_agora": 27,
+   "no_fluxo": 1,
+   "confirmadas": 0
+  },
+  {
+   "motor": "outras-oportunidades-3",
+   "achados_total_1a": 22,
+   "achados_total_agora": 22,
+   "no_fluxo": 2,
+   "confirmadas": 0
+  },
+  {
+   "motor": "outras-oportunidades-5",
+   "achados_total_1a": 25,
+   "achados_total_agora": 25,
 ```
 
 ## Eng. Luana Freire (levemente pessimista)
@@ -209,10 +224,10 @@
 
 ```json
 {
- "pontos_com_redundancia": 10,
+ "pontos_com_redundancia": 11,
  "redundancia_vazia": [],
  "dominios_via_ponte": 1,
- "exemplos_da_rede_de_rotas": 2227
+ "exemplos_da_rede_de_rotas": 2354
 }
 ```
 
@@ -223,12 +238,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 69.1,
- "fora_dos_motores_pct_agora": 69.1,
+ "fora_dos_motores_pct_1a": 68.0,
+ "fora_dos_motores_pct_agora": 68.0,
  "origem": {
-  "agregador/outra": 281,
-  "motor": 163,
-  "Piloto": 83
+  "agregador/outra": 280,
+  "motor": 173,
+  "Piloto": 87
  },
  "dominios_so_de_agregador": [
   {
@@ -238,10 +253,6 @@
   {
    "dominio": "fapesp.br",
    "oportunidades": 6
-  },
-  {
-   "dominio": "fapesc.sc.gov.br",
-   "oportunidades": 4
   },
   {
    "dominio": "conselho.saude.gov.br",
@@ -290,6 +301,10 @@
   {
    "dominio": "itacoatiara.am.gov.br",
    "oportunidades": 1
+  },
+  {
+   "dominio": "gulbenkian.pt",
+   "oportunidades": 1
   }
  ],
  "nota": "a fatia só cai depois que os motores novos (Outras Oportunidades, plataformas) completarem as primeiras leituras"
@@ -306,7 +321,7 @@
  "dia_de_referencia": "2026-10-11",
  "ativos": 159,
  "lidos_ontem": 48,
- "lidos_hoje": 100,
+ "lidos_hoje": 103,
  "nao_lidos_ontem_nem_hoje": [
   "plat-captamos",
   "plat-rede-filantropia",
@@ -315,8 +330,6 @@
  "ainda_sem_primeira_leitura": [
   "motor-gife",
   "motor-patrocinio",
-  "outras-oportunidades-4",
-  "outras-oportunidades-5",
   "outras-oportunidades-6",
   "outras-oportunidades-7",
   "outras-oportunidades-8",
@@ -353,20 +366,20 @@
 
 ```json
 {
- "fontes_recebidas": 218,
+ "fontes_recebidas": 227,
  "por_origem": {
   "conselho (fontes irmãs)": 129,
-  "Cartório (site oficial certificado)": 81,
-  "Espião (privado/internacional)": 8
+  "Cartório (site oficial certificado)": 85,
+  "Espião (privado/internacional)": 13
  },
- "lidas_nas_ultimas_24h": 132,
+ "lidas_nas_ultimas_24h": 168,
  "dimensionamento": {
-  "fontes": 218,
+  "fontes": 227,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 5,
-  "cobertura_diaria": 218,
+  "cobertura_diaria": 227,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -375,22 +388,32 @@
  },
  "clones_que_ja_leram": {
   "outras-oportunidades-1": {
-   "ultima": "2026-10-11T11:40:09+00:00",
-   "duracao_s": 126,
-   "achados": 4
+   "ultima": "2026-10-11T14:00:07+00:00",
+   "duracao_s": 101,
+   "achados": 0
   },
   "outras-oportunidades-2": {
-   "ultima": "2026-10-11T11:41:18+00:00",
-   "duracao_s": 69,
+   "ultima": "2026-10-11T14:01:25+00:00",
+   "duracao_s": 78,
    "achados": 5
   },
   "outras-oportunidades-3": {
-   "ultima": "2026-10-10T22:01:03+00:00",
-   "duracao_s": 51,
-   "achados": 0
+   "ultima": "2026-10-11T14:02:08+00:00",
+   "duracao_s": 43,
+   "achados": 4
+  },
+  "outras-oportunidades-4": {
+   "ultima": "2026-10-11T14:03:59+00:00",
+   "duracao_s": 63,
+   "achados": 4
+  },
+  "outras-oportunidades-5": {
+   "ultima": "2026-10-11T14:05:02+00:00",
+   "duracao_s": 63,
+   "achados": 25
   }
  },
- "com_achado": 14
+ "com_achado": 20
 }
 ```
 
