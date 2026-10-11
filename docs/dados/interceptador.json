@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-11T17:45:30+00:00",
+  "em": "2026-10-11T18:06:25+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-11T17:44:22+00:00",
+  "ultimo_voo": "2026-10-11T17:48:19+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,10 +37,10 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 296,
+    "missoes": 297,
     "validadas": 17,
     "parciais": 74,
-    "insuficientes": 202,
+    "insuficientes": 203,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
@@ -52,6 +52,33 @@
     "tempo_medio_min": 10.2
   },
   "missoes": [
+    {
+      "em": "2026-10-11T17:48:19+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Itapetinga (BA) 2026-09-29 — \"chamamento público\" \"organizações da sociedade civil\"",
+      "qualidade": "insuficiente",
+      "comprovados": 0,
+      "dispensados": null,
+      "total": 12,
+      "nao_resolvidos": null,
+      "pagina_oficial": null,
+      "parecer_fonte": {},
+      "erro": "o modelo não devolveu JSON",
+      "segundos": 1084,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "falhou: o modelo não devolveu JSON",
+      "id": "b53227ee5b73dab4988e",
+      "encontrou": {},
+      "financiador": null,
+      "indicios": [],
+      "rotas": []
+    },
     {
       "em": "2026-10-11T17:44:22+00:00",
       "modo": "dossie",
@@ -2684,84 +2711,6 @@
         }
       },
       "financiador": "Lei Paulo Gustavo",
-      "indicios": [],
-      "rotas": [
-        "site_municipal",
-        "financiador_programa_edital"
-      ]
-    },
-    {
-      "em": "2026-10-11T07:11:09+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Anápolis — CRAS Leste 1 recebe inscrições para o Programa Bombeiro Mirim em Anápolis — Goiás / Anápolis",
-      "qualidade": "parcial",
-      "comprovados": 8,
-      "dispensados": 1,
-      "total": 12,
-      "nao_resolvidos": [
-        "Resultado",
-        "Prazo de recurso",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://www.anapolis.go.gov.br/cras-leste-1-recebe-inscricoes-para-o-programa-bombeiro-mirim-em-anapolis/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprova a existência do Programa Bombeiro Mirim com vagas gratuitas, prazo até 2026-09-02, e requisitos específicos para inscrição.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se atende aos requisitos do edital, como residir em Anápolis e possuir CPF próprio, e se alinhar com o objeto do edital, que é oferecer 60 vagas gratuitas para crianças de 9 a 11 anos e 11 meses.",
-        "proximo_passo": "Verificar se a associação comunitária atende aos requisitos do edital e se inscrever no processo seletivo do Programa Bombeiro Mirim.",
-        "risco": "A associação pode não atender aos requisitos específicos do edital, como residir em Anápolis ou não ter acesso ao prazo de inscrição."
-      },
-      "erro": null,
-      "segundos": 612,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 7,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Destinação, Área de atuação",
-      "id": "op-op-b9655660e6f1",
-      "encontrou": {
-        "Objeto": {
-          "valor": "oferecer 60 vagas gratuitas para crianças de 9 a 11 anos e 11 meses",
-          "trecho": "São oferecidas 60 vagas gratuitas para crianças de 9 a 11 anos e 11 meses",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "? a 2026-09-02",
-          "trecho": "Estão abertas até às 17h da sexta-feira (02) as inscrições",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "dispensado — O texto menciona que as vagas são gratuitas.",
-          "trecho": "São oferecidas 60 vagas gratuitas para crianças de 9 a 11 anos e 11 meses",
-          "oficial": false,
-          "dispensado": true
-        },
-        "Órgão / financiador": {
-          "valor": "Corpo de Bombeiros Militar do Estado de Goiás",
-          "trecho": "Programa Educacional Bombeiro Mirim (PROEBOM) Itinerante, do Corpo de Bombeiros Militar do Estado de Goiás (CBMGO)",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "residir em Anápolis",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "residir em Anápolis, possuir CPF próprio, estar regularmente matriculada e frequentando a escola, ter nascido entre 3 de outubro de 2014 e 2 de outubro de 2017, apresentar atestado médico que comprove aptidão para a realização das atividades, não ter participado anteriormente do PROEBOM, exceto nos ",
-          "trecho": "Para participar, a criança deve residir em Anápolis, possuir CPF próprio, estar regularmente matriculada e frequentando a escola e ter nascido entre 3 de outubro de 2014 e 2 de out",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Secretaria de Segurança Pública",
       "indicios": [],
       "rotas": [
         "site_municipal",
