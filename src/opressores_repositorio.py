@@ -255,6 +255,20 @@ def sincronizar() -> dict:
             if it.get("tipo") == "menção em diário oficial" and not SELECAO.search(it.get("titulo") or ""):
                 idx[it["id"]] = {"dispensa": "menção em diário sem ato de seleção identificado"}; continue
             idx[it["id"]] = {"opressor": opressor_de(it, "aberta", True)}
+    # 1b) 11/10 (titular): TODA oportunidade aberta do REPOSITÓRIO ÚNICO tem livro — inclusive as que vêm só da caixa
+    #     dos motores (não passam pelo fluxo); as mesmas regras de dispensa valem
+    _rep = _j(ROOT / "dados/oportunidades/repositorio_unico.json", {})
+    for x in _rep.get("registros") or []:
+        if x.get("estado") not in ("em_verificacao", "validada", "validacao_manual"):
+            continue
+        if any(i in idx for i in [x["id"]] + list(x.get("ids_origem") or [])):
+            continue
+        it = {"id": x["id"], "titulo": x.get("titulo"), "orgao": x.get("orgao"), "link_oficial": x.get("link_oficial"), "url": x.get("url"),
+              "fim": x.get("fim"), "uf": x.get("uf"), "origem": x.get("origem")}
+        m = dispensa(it)
+        if m:
+            idx[x["id"]] = {"dispensa": m}; st["dispensadas"] += 1; continue
+        idx[x["id"]] = {"opressor": opressor_de(it, "aberta", True)}; st["do_repositorio_unico"] += 1
     # 2) oportunidades CATALOGADAS na Biblioteca (histórico): encerradas também viram repositório
     for f in FICHAS.glob("*/*/ficha.json"):
         fi = _j(f, {})

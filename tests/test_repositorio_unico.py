@@ -47,7 +47,7 @@ class TesteRepositorio(unittest.TestCase):
             self.assertEqual(sorted(v["ordem"]), list(range(1, 11)), k)
 
     def test_auditoria_e_integracoes(self):
-        self.assertIn("auditoria", self.res)
+        self.assertIn("auditoria", self.res); self.assertIn("motivo_sem_livro", self.res)
         self.assertIn("from .repositorio_unico import construir as _repo", (ROOT / "src/fluxo_oportunidades.py").read_text(encoding="utf-8"))
         c = (ROOT / "src/cartorio.py").read_text(encoding="utf-8"); self.assertIn("_repositorio()", c); self.assertIn("_ordem_da_skill(op)", c)
         self.assertIn("RECUSADO", (ROOT / "scripts/gerar_lote_chrome.py").read_text(encoding="utf-8"))
@@ -55,3 +55,19 @@ class TesteRepositorio(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TesteMelhoriasMotores(unittest.TestCase):
+    """11/10: duplicata fundida antes do registro; livro para toda oportunidade do repositório; ouro sem prova → vermelho."""
+    def test_deduplicar_antes_do_registro(self):
+        from src.fluxo_oportunidades import deduplicar
+        itens = [{"id": "a", "titulo": "Edital nº 3/2026 de Cultura", "url": "https://x.go.gov.br/edital-3-2026", "checklist": {"Valor": {"s": "falta"}}},
+                 {"id": "b", "titulo": "Edital nº 3/2026 de Cultura", "url": "https://x.go.gov.br/edital-3-2026", "link_oficial": "https://x.go.gov.br/e.pdf",
+                  "checklist": {"Valor": {"s": "ok", "v": "R$ 10.000,00"}}}]
+        fica, st = deduplicar(itens)
+        self.assertEqual(len(fica), 1); self.assertEqual(st["duplicatas_fundidas_antes_do_registro"], 1)
+        self.assertEqual(fica[0]["link_oficial"], "https://x.go.gov.br/e.pdf"); self.assertEqual(fica[0]["checklist"]["Valor"]["s"], "ok")
+
+    def test_criador_le_o_repositorio_e_ajuste_generico(self):
+        self.assertIn("dados/oportunidades/repositorio_unico.json", (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8"))
+        self.assertTrue((ROOT / "scripts/ajustar_ouro_sem_prova.py").exists())

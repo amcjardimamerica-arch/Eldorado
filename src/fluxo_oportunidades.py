@@ -542,8 +542,47 @@ def aplicar_parametro(itens: list[dict], vereditos: dict | None = None, hoje: st
     return abertas, par
 
 
+def deduplicar(itens: list[dict]) -> tuple[list[dict], dict]:
+    """11/10 (titular, melhoria dos motores): a duplicata é fundida ANTES do registro — na consolidação das entradas de
+    todos os motores (Piloto, agregadores, Espião…). Fica a canônica (revisão humana; senão a regra M1 do saneamento:
+    URL canônica, nº do edital + órgão), completada com o que só a cópia tinha (site oficial, prazo, itens lidos)."""
+    canon = {}
+    try:
+        from .opressores_repositorio import canonica_por_revisao
+        canon.update(canonica_por_revisao())
+    except Exception:  # noqa: BLE001
+        pass
+    try:
+        from .saneamento_motores import agrupar_duplicatas
+        for d, inf in (agrupar_duplicatas(itens) or {}).items():
+            c = (inf or {}).get("canonico") if isinstance(inf, dict) else inf
+            if c and str(c) != str(d):
+                canon.setdefault(str(d), str(c))
+    except Exception:  # noqa: BLE001
+        pass
+    por_id = {str(x.get("id")): x for x in itens}
+    fica, fundidas = [], 0
+    for x in itens:
+        c = canon.get(str(x.get("id")))
+        if c and c in por_id and c != str(x.get("id")):
+            alvo = por_id[c]; fundidas += 1
+            alvo.setdefault("ids_origem", [alvo.get("id")])
+            if x.get("id") not in alvo["ids_origem"]:
+                alvo["ids_origem"].append(x.get("id"))
+            for k in ("link_oficial", "fim", "inicio", "orgao", "uf"):
+                if not alvo.get(k) and x.get(k):
+                    alvo[k] = x[k]
+            for k, v in (x.get("checklist") or {}).items():
+                if (v or {}).get("s") in ("ok", "val", "dt", "disp") and (alvo.get("checklist") or {}).get(k, {}).get("s") not in ("ok", "val", "dt", "disp"):
+                    alvo.setdefault("checklist", {})[k] = v
+            continue
+        fica.append(x)
+    return fica, {"duplicatas_fundidas_antes_do_registro": fundidas}
+
+
 def montar() -> dict:
     itens = consolidar()
+    itens, _DEDUP = deduplicar(itens)
     itens, _PARAM = aplicar_parametro(itens)
     etapa = opressores_e_preditivo(itens)
     try:                                     # 02/10 (titular): marcador de iniciativa (poder público / privada / mista)
@@ -572,7 +611,7 @@ def montar() -> dict:
     _V = _vm2.carregar()
     res = {"validacao": {"aplicada": True, "decisoes": len(_V), "arquivos": sorted({v.get("_arquivo") for v in _V.values()}),
                          "sem_decisao": sum(1 for x in itens if not x.get("validacao") and not x.get("confirmada"))},   # confirmada (objeto+prazo+link) não precisa de decisão
-           "parametro": _PARAM,
+           "parametro": _PARAM, "deduplicacao": _DEDUP,
            "em": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(timespec="seconds"), "regra": __doc__.split("Publica")[0].strip(),
            "etapas": {"possiveis_abertas": tot["possiveis"], "confirmadas_com_minimo": tot["confirmadas"],
                       "por_origem": {o: sum(1 for x in itens if x["origem"].startswith(o)) for o in ("motor", "Piloto - Espião", "Piloto - Interceptador")},

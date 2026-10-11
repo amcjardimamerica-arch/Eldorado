@@ -98,6 +98,8 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
             if isinstance(h, dict) and h.get("id"):
                 livros.setdefault(str(h["id"]), m)
     skills = (_j(ROOT / "config/skills_extracao_origem.json", {}) or {}).get("skills") or {}
+    # 11/10: o criador de livros já concluiu, para algumas, que não são seleção para OSC — o repositório usa o motivo
+    disp_livro = {k: (v or {}).get("dispensa") for k, v in ((_j(ROOT / "estado/opressores_indice.json", {}) or {}).get("indice") or {}).items() if (v or {}).get("dispensa")}
 
     # 1 · todas as origens num só conjunto, com o id canônico (duplicatas fundidas)
     brutos = _fluxo() + _caixa()
@@ -178,10 +180,13 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
         lv = livros.get(cid) or next((livros[i] for i in r["ids_origem"] if i in livros), None)
         estante = "sem_livro" if not lv else (selo if selo in ("ouro", "prata", "bronze") else "bronze")
         sk = _skill(r.get("origem"))
+        sem_livro = next((disp_livro[i] for i in [cid] + r["ids_origem"] if i in disp_livro), None) if not lv else None
         faltam = [k for k, x in itens.items() if x["estado"] in ("falta", "nao_comprovado")]
         nt = _nota(r) if estado == "em_verificacao" else None
         if estado != "em_verificacao":
             passo = {"fechada": "nenhum (fechada)", "validada": "acompanhar o prazo", "validacao_manual": "validação manual pela titular"}[estado]
+        elif sem_livro and re.match(r"(?i)n[ãa]o [ée] sele[çc][ãa]o aberta|empresa sem edital", sem_livro):
+            passo = f"dispensar: {sem_livro[:120]} — confirmar na fonte"
         elif nt is not None and nt < LIMIAR_OSC and not fim and not any(x["estado"] == "comprovado" for x in itens.values()):
             passo = f"dispensar: a rede neural indica que não se aplica a OSC (nota {nt}) — confirmar na fonte"
         elif not link:
@@ -193,7 +198,7 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
         urg = 0 if (fim and str(fim)[:10] >= hoje) else 1
         out.append({"id": cid, "ids_origem": r["ids_origem"], "fontes": r["fontes"], "titulo": str(r.get("titulo") or "")[:220], "url": r.get("url"),
                     "link_oficial": link, "orgao": r.get("orgao"), "uf": r.get("uf"), "fim": fim, "origem": r.get("origem"), "skill": sk,
-                    "estado": estado, "motivo_estado": motivo, "estante": estante, "livro": (lv or {}).get("id"), "selo_dos_itens": selo or "sem_selo",
+                    "estado": estado, "motivo_estado": motivo, "estante": estante, "livro": (lv or {}).get("id"), "motivo_sem_livro": sem_livro, "selo_dos_itens": selo or "sem_selo",
                     "itens": itens, "faltam": faltam, "cartorio": {"tentativas": int(c.get("tentativa") or 0), "esgotada": bool(c.get("esgotada"))},
                     "nota_rede": nt, "proximo_passo": passo, "prioridade": (urg, str(fim or "9999"), -(nt or 0))})
     ant = {x["id"]: x for x in (_j(SAIDA, {}).get("registros") or [])}       # Prof. Caio: ninguém parado sem dono
@@ -229,7 +234,9 @@ def resumir(out: list[dict]) -> dict:
             "por_origem": dict(Counter(x["skill"] for x in ab if x["estado"] == "em_verificacao")),
             "itens_em_verificacao": dict(Counter(st for x in ab if x["estado"] == "em_verificacao" for st in (i["estado"] for i in x["itens"].values()))),
             "fila_chrome": sum(1 for x in ab if x["proximo_passo"].startswith("Chrome")),
-            "dispensa_sugerida_pela_rede": sum(1 for x in ab if x["proximo_passo"].startswith("dispensar"))}
+            "dispensa_sugerida": sum(1 for x in ab if x["proximo_passo"].startswith("dispensar")),
+            "motivo_sem_livro": dict(Counter(re.sub(r"[:(].*$", "", x.get("motivo_sem_livro") or "sem motivo registrado (o criador cria na próxima rodada)").strip()
+                                             for x in ab if x["estante"] == "sem_livro"))}
 
 
 def auditar(resumo: dict) -> dict:
