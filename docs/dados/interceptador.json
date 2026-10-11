@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-11T18:41:33+00:00",
+  "em": "2026-10-11T19:12:20+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-11T18:23:50+00:00",
+  "ultimo_voo": "2026-10-11T18:50:29+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 299,
+    "missoes": 300,
     "validadas": 17,
-    "parciais": 74,
+    "parciais": 75,
     "insuficientes": 205,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 199,
+      "sim": 200,
       "nao": 53
     },
     "estrelas_de_ouro": 5,
@@ -52,6 +52,85 @@
     "tempo_medio_min": 10.3
   },
   "missoes": [
+    {
+      "em": "2026-10-11T18:50:29+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Arapongas (PR) 2026-09-30 — \"chamamento público\" \"organizações da sociedade civil\"",
+      "qualidade": "parcial",
+      "comprovados": 6,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Território",
+        "Esfera",
+        "Requisitos"
+      ],
+      "pagina_oficial": "https://www.arapongas.pr.gov.br/editais/2024/dez/09.12_assinado.pdf",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado menciona o objeto, valor, financiador e área de atuação, o que é suficiente para identificar a fonte como relevante.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, que é fortalecer a rede de proteção social especial para pessoas idosas, e demonstrar como sua atuação se encaixa nessa área de assistência social.",
+        "proximo_passo": "Verificar os anexos mencionados e garantir que a associação atenda aos critérios de elegibilidade, mesmo que não estejam explicitados no texto.",
+        "risco": "A falta de informações sobre prazo de inscrição e requisitos pode impedir que a associação se candidate de forma adequada e pontual."
+      },
+      "erro": null,
+      "segundos": 1309,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 5,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Território",
+      "id": "aadddcf8ee72a06d5104",
+      "encontrou": {
+        "Objeto": {
+          "valor": "fortalecimento da rede de proteção social especial de alta complexibilidade prestados pela instituição filantrópica para pessoas idosas",
+          "trecho": "Objetivando o repasse de recursos financeiros visando o fortalecimento da rede de proteção social especial de alta complexibilidade prestados pela instituição filantrópica para pes",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Valor": {
+          "valor": "R$ 120.000,00 (Cento e vinte mil reais) pagos em 12 (doze parcelas) de R$ 10.000,00 (Dez mil reais) cada.",
+          "trecho": "DO VALOR: no valor de R$ 120.000,00 (Cento e vinte mil reais) pagos em 12 (doze parcelas) de R$ 10.000,00 (Dez mil reais) cada.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "MUNICÍPIO DE ARAPONGAS/PR e o LAR SÃO VICENTE DE PAULO DE ARAPONGAS",
+          "trecho": "Partes: MUNICÍPIO DE ARAPONGAS/PR e o LAR SÃO VICENTE DE PAULO DE ARAPONGAS.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "assistencia_social",
+          "trecho": "Objetivando o repasse de recursos financeiros visando o fortalecimento da rede de proteção social especial de alta complexibilidade prestados pela instituição filantrópica para pes",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · fomento",
+          "trecho": "DO OBJETO: Objetivando o repasse de recursos financeiros visando o fortalecimento da rede de proteção social especial de alta complexibilidade prestados pela instituição filantrópi",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "PREFEITURA MUNICIPAL DE ARAPONGAS",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/4101507/2026-09-30/f08b877ff7bd873ad21d4378d692acd2797f224f.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-11T18:23:50+00:00",
       "modo": "validar",
@@ -2640,80 +2719,6 @@
       "rotas": [
         "site_municipal",
         "financiador_programa_edital"
-      ]
-    },
-    {
-      "em": "2026-10-11T07:57:28+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Anápolis — Quarta Cultural terá edição especial com mentorias sobre projetos e edital da Política Nacional Ald… — Goiás / Anápolis",
-      "qualidade": "parcial",
-      "comprovados": 6,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Anexos"
-      ],
-      "pagina_oficial": "https://culteditais.cultura.gov.br/oportunidade/10643/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital menciona a seleção de projetos para firmar Termo de Execução Cultural com recursos da Política Nacional Aldir Blanc, o que é relevante para a AMC.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se inscrever no edital, apresentar um projeto alinhado ao objeto do edital e atender aos requisitos estabelecidos para receber fomento cultural.",
-        "proximo_passo": "Consultar os anexos do edital para entender os requisitos e o processo de inscrição.",
-        "risco": "A falta de informações sobre prazo de inscrição e requisitos pode impedir a participação da AMC no edital."
-      },
-      "erro": null,
-      "segundos": 550,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 6,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
-      "id": "op-op-8557f4f3a3c7",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Seleção de Projetos para Firmar Termo de Execução Cultural com Recursos da Política Nacional Aldir Blanc de Fomento à Cultura – PNAB - CultBR Editais",
-          "trecho": "Edital de Chamamento Público nº 01/2026 – Seleção de Projetos para Firmar Termo de Execução Cultural com Recursos da Política Nacional Aldir Blanc de Fomento à Cultura – PNAB - Cul",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "CultBR Editais",
-          "trecho": "Edital de Chamamento Público nº 01/2026 – Seleção de Projetos para Firmar Termo de Execução Cultural com Recursos da Política Nacional Aldir Blanc de Fomento à Cultura – PNAB - Cul",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "Território: {{ (entity.$PROPERTIES?.territorio?.options && Array.isArray(entity.territorio)) ? entity.territorio.map(function(v) { return entity.$PROPERTIES.territorio.options[v] |",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "Edital de Chamamento Público nº 01/2026 – Seleção de Projetos para Firmar Termo de Execução Cultural com Recursos da Política Nacional Aldir Blanc de Fomento à Cultura – PNAB - Cul",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · fomento",
-          "trecho": "Edital de Chamamento Público nº 01/2026 – Seleção de Projetos para Firmar Termo de Execução Cultural com Recursos da Política Nacional Aldir Blanc de Fomento à Cultura – PNAB - Cul",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Secretaria Municipal de Cultura de Anápolis",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
       ]
     }
   ],
