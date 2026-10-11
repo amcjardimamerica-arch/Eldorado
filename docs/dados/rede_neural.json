@@ -1,220 +1,16 @@
 {
- "em": "2026-10-11T14:06:03+00:00",
+ "em": "2026-10-11T15:25:11+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
  "rotulados": 1902,
  "positivos": 750,
- "pendentes": 550,
- "calibracao": {
-  "temperatura": 8.0,
-  "perda_log_antes": 1.4211,
-  "perda_log_depois": 0.4776
- },
+ "pendentes": 551,
  "validacao_cruzada": {
   "auc": 0.845,
   "precisao": 0.757,
   "revocacao": 0.644,
   "brier": 0.1559
  },
- "linha_de_base_regras": {
-  "auc": 0.491,
-  "precisao": 0.39,
-  "revocacao": 0.917,
-  "brier": 0.5994
- },
- "rotulos_suspeitos": [
-  {
-   "titulo": "Diário Oficial de Londrina (PR) 2026-09-11 — \"edital de chamamento público\" associação",
-   "url": "https://data.queridodiario.ok.org.br/4113700/2026-09-11/3394cc476309a156b88189575183d884455657ec.pdf",
-   "decisao": "real",
-   "rede": 0.01
-  },
-  {
-   "titulo": "Prêmio Guardiãs FNRB",
-   "url": "https://www.gov.br/mma/pt-br/assuntos/bioeconomia/patrimonio-genetico/reparticao-de-beneficios/premio-guardias-da-sociobiodiversidade",
-   "decisao": "real",
-   "rede": 0.017
-  },
-  {
-   "titulo": "Diário Oficial de Alagoinhas (BA) 2026-09-28 — \"chamamento público\" \"organizações da sociedade civil\"",
-   "url": "https://data.queridodiario.ok.org.br/2900702/2026-09-28/e4fb235782027e28c5a644900e63b3548d46cc7b.pdf",
-   "decisao": "real",
-   "rede": 0.018
-  },
-  {
-   "titulo": "Diário Oficial de Macaé (RJ) 2026-09-22 — \"chamamento público\" \"organizações da sociedade civil\"",
-   "url": "https://data.queridodiario.ok.org.br/3302403/2026-09-22/37ca40098b7c456e4e815f686cebe348d3a16f77.pdf",
-   "decisao": "real",
-   "rede": 0.02
-  },
-  {
-   "titulo": "MUNICIPIO DE TUBARAO — [Portal de Compras Públicas] - Credenciamento de empresas para prestação de serviços de acolhimento institucional de ",
-   "url": "https://pncp.gov.br/app/editais/82928656000133/2026/245",
-   "decisao": "descartada",
-   "rede": 0.979
-  },
-  {
-   "titulo": "Banrisul abre edital para premiar 50 organizações do Rio Grande do Sul",
-   "url": "https://captadores.org.br/editais/banrisul-abre-edital-para-premiar-50-organizacoes-do-rio-grande-do-sul",
-   "decisao": "real",
-   "rede": 0.022
-  },
-  {
-   "titulo": "Como Solicitar uma Doação",
-   "url": "https://climaesociedade.org/como-solicitar-uma-doacao",
-   "decisao": "real",
-   "rede": 0.025
-  },
-  {
-   "titulo": "CONSORCIO INTERMUNICIPAL MULTIFINALITARIO DA REGIAO DA AMFRI - CIM-AMFRI — CHAMAMENTO PÚBLICO, para CREDENCIAMENTO ELETRÔNICO de pessoas jur",
-   "url": "https://pncp.gov.br/app/editais/32980376000104/2026/29",
-   "decisao": "real",
-   "rede": 0.025
-  },
-  {
-   "titulo": "SUP. EST. DE LICITACAO — O presente Chamamento Público tem por objeto selecionar Organização da Sociedade Civil – OSC para celebração de Ter",
-   "url": "https://pncp.gov.br/app/editais/04696490000163/2026/147",
-   "decisao": "descartada",
-   "rede": 0.974
-  },
-  {
-   "titulo": "Comunicação para Ação Climática no Brasil",
-   "url": "https://climaesociedade.org/edital/comunicacao-para-acao-climatica-no-brasil",
-   "decisao": "real",
-   "rede": 0.037
-  },
-  {
-   "titulo": "Política Nacional Aldir Blanc - PNAB",
-   "url": "https://goias.gov.br/cultura/pnab",
-   "decisao": "descartada",
-   "rede": 0.958
-  },
-  {
-   "titulo": "Diário Oficial de Poço Verde (SE) 2026-08-21 — \"edital de chamamento público\" associação",
-   "url": "https://data.queridodiario.ok.org.br/2805505/2026-08-21/f4d18f962e93739b8fd2744ebe0a02de124a5946.pdf",
-   "decisao": "real",
-   "rede": 0.044
-  },
-  {
-   "titulo": "ODS 17 – Parcerias",
-   "url": "https://observatorio3setor.org.br/ods/ods-17",
-   "decisao": "descartada",
-   "rede": 0.95
-  },
-  {
-   "titulo": "i3s.org.br/edital/",
-   "url": "https://i3s.org.br/edital",
-   "decisao": "real",
-   "rede": 0.054
-  },
-  {
-   "titulo": "Entidades Assistenciais",
-   "url": "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
-   "decisao": "descartada",
-   "rede": 0.945
-  },
-  {
-   "titulo": "Diário Oficial de Iracemápolis (SP) 2026-08-04 — \"chamamento público\" \"organizações da sociedade civil\"",
-   "url": "https://data.queridodiario.ok.org.br/3521408/2026-08-04/ca6019b5c1dc3ec77957f262070ef3676759ffa2.pdf",
-   "decisao": "real",
-   "rede": 0.059
-  },
-  {
-   "titulo": "Movimento Bem Maior lança editais de fortalecimento institucional para organizações sociais e coletivos",
-   "url": "https://captadores.org.br/editais/movimento-bem-maior-lanca-editais-de-fortalecimento-institucional-para-organizacoes-sociais-e-coletivos",
-   "decisao": "descartada",
-   "rede": 0.94
-  },
-  {
-   "titulo": "Diário Oficial de Osasco (SP) 2026-08-24 — \"edital de chamamento público\" associação",
-   "url": "https://data.queridodiario.ok.org.br/3534401/2026-08-24/66bbe1ca794f3a6834efe578f1672ff6dc3c89ba.pdf",
-   "decisao": "real",
-   "rede": 0.063
-  },
-  {
-   "titulo": "MUNICIPIO DE CONFINS — CHAMADA PÚBLICA PARA CREDENCIAMENTO DE ARTISTAS, BANDAS, GRUPOS CULTURAIS, COLETIVOS ARTÍSTICOS, PROFISSIONAIS DO AUD",
-   "url": "https://pncp.gov.br/app/editais/01006232000110/2026/40",
-   "decisao": "real",
-   "rede": 0.066
-  },
-  {
-   "titulo": "Prefeitura de Cachoeira Alta — Edital nº 001/2026 (vinculado a processo seletivo de estagiários)",
-   "url": "https://diariooficial.abc.go.gov.br/portal/visualizacoes/pdf/7388/#e:7388",
-   "decisao": "descartada",
-   "rede": 0.931
-  },
-  {
-   "titulo": "12ª edição do Prêmio Fundação Banco do Brasil de Tecnologia Social recebe inscrições",
-   "url": "https://captadores.org.br/editais/12a-edicao-do-premio-fundacao-banco-do-brasil-de-tecnologia-social-recebe-inscricoes",
-   "decisao": "real",
-   "rede": 0.073
-  },
-  {
-   "titulo": "MUNICIPIO DE IGUAPE — Credenciamento de Instituições de Longa Permanência para Idosos(ILPIs), classificadas nos Graus I, II e III de complex",
-   "url": "https://pncp.gov.br/app/editais/45550167000164/2026/492",
-   "decisao": "real",
-   "rede": 0.074
-  },
-  {
-   "titulo": "Diário Oficial de Pinhais (PR) 2026-08-25 — \"edital de chamamento público\" associação",
-   "url": "https://data.queridodiario.ok.org.br/4119152/2026-08-25/42bfa5f3369e49f174857ff61c79ebe547d2c213.pdf",
-   "decisao": "real",
-   "rede": 0.079
-  },
-  {
-   "titulo": "Secretaria de Fomento e Incentivo à Cultura",
-   "url": "https://www.gov.br/cultura/pt-br/composicao/secretaria-de-economia-criativa-e-fomento-cultural",
-   "decisao": "descartada",
-   "rede": 0.916
-  },
-  {
-   "titulo": "Diário Oficial de Aguaí (SP) 2026-09-14 — \"edital de chamamento público\" associação",
-   "url": "https://data.queridodiario.ok.org.br/3500303/2026-09-14/b4763fff098632c5c805d5baaf68a381d2793fdd.pdf",
-   "decisao": "real",
-   "rede": 0.085
-  },
-  {
-   "titulo": "SERVICO DE LIMPEZA URBANA — Credenciamento de Cooperativas/Associações de Catadores, constituídas exclusivamente por pessoas físicas de baix",
-   "url": "https://pncp.gov.br/app/editais/01567525000176/2026/3",
-   "decisao": "real",
-   "rede": 0.088
-  },
-  {
-   "titulo": "Rede Memória Viva abre inscrições para organizações que preservam a memória africana e afro-brasileira",
-   "url": "https://vivapequenaafrica.com/rede-memoria-viva-inscricoes-organizacoes-culturais/",
-   "decisao": "real",
-   "rede": 0.089
-  },
-  {
-   "titulo": "Editais de Destinação de Recursos ou Bens",
-   "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
-   "decisao": "real",
-   "rede": 0.095
-  },
-  {
-   "titulo": "Aviso de Chamamento Público – Complexo Serra Dourada",
-   "url": "https://goias.gov.br/esporte/aviso-de-chamamento-publico-complexo-serra-dourada",
-   "decisao": "real",
-   "rede": 0.096
-  },
-  {
-   "titulo": "Eventos e Prêmios",
-   "url": "https://www.gov.br/governodigital/pt-br/capacitacao/eventos-e-premios",
-   "decisao": "descartada",
-   "rede": 0.904
-  },
-  {
-   "titulo": "MUNICIPIO DE MARATAIZES — CREDENCIAMENTO DE INSTITUIÇÃO DE LONGA PERMANÊNCIA ESPECIALIZADA NO ACOLHIMENTO INSTITUCIONAL PARA IDOSOS COM 60 A",
-   "url": "https://pncp.gov.br/app/editais/01609408000128/2026/74",
-   "decisao": "real",
-   "rede": 0.097
-  },
-  {
-   "titulo": "cronograma",
-   "url": "https://goias.gov.br/cultura/tags/cronograma",
-   "decisao": "descartada",
-   "rede": 0.9
-  }
- ],
+ "modelo_treinado_em": "2026-10-11T14:06:03+00:00",
  "fila_de_validacao": [
   {
    "titulo": "SELEÇÃO DE PROJETOS CULTURAIS APRESENTADO POR AGENTES CULTURAIS QUALIFICADOS COMO PESSOA JURÍDICA COM OU SEM… — MUNICIPIO DE COLINA | FAROL",
@@ -310,12 +106,6 @@
    "titulo": "CHAMADA FAPESPA Nº 005/2025 – PROGRAMA TECNOVA III Subvenção Econômica à Inovação",
    "url": "https://www.fapespa.pa.gov.br/2026/09/28/chamada-fapespa-no-005-2025-programa-tecnova-iii-subvencao-economica-a-inovacao",
    "nota": 0.493,
-   "incerteza": 0.985
-  },
-  {
-   "titulo": "14/09/2026 14h38",
-   "url": "https://www.juatuba.mg.gov.br/portal/download/chamamento-publico-anexos/hR-wPP",
-   "nota": 0.492,
    "incerteza": 0.985
   },
   {
@@ -445,6 +235,12 @@
    "incerteza": 0.973
   },
   {
+   "titulo": "MUNICIPIO DE SAO LOURENCO DO SUL — [Portal de Compras Públicas] - Seleção de Organização Social para a prestação de serviços técnicos especi",
+   "url": "https://pncp.gov.br/app/editais/87893111000152/2026/419",
+   "nota": 0.486,
+   "incerteza": 0.972
+  },
+  {
    "titulo": "Edital de Chamamento Público Nº 6/2026",
    "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026",
    "nota": 0.486,
@@ -457,15 +253,15 @@
    "incerteza": 0.97
   },
   {
-   "titulo": "Anápolis — CRAS Leste 1 recebe inscrições para o Programa Bombeiro Mirim em Anápolis",
-   "url": "https://www.anapolis.go.gov.br/cras-leste-1-recebe-inscricoes-para-o-programa-bombeiro-mirim-em-anapolis/",
+   "titulo": "Finep Mais Inovação Brasil – Rodada 2 – Transformação Mineral",
+   "url": "http://www.finep.gov.br/chamadas-publicas/chamadapublica/771",
    "nota": 0.516,
    "incerteza": 0.968
   },
   {
-   "titulo": "Finep Mais Inovação Brasil – Rodada 2 – Transformação Mineral",
-   "url": "http://www.finep.gov.br/chamadas-publicas/chamadapublica/771",
-   "nota": 0.516,
+   "titulo": "14/09/2026 14h43",
+   "url": "https://www.juatuba.mg.gov.br/portal/download/chamamento-publico-anexos/sh-wLA",
+   "nota": 0.484,
    "incerteza": 0.968
   },
   {
@@ -529,12 +325,6 @@
    "incerteza": 0.962
   },
   {
-   "titulo": "ESTADO DO ACRE — 4º PRÊMIO DE COMUNICAÇÃO DO GOVERNO DO ESTADO DO ACRE “MOISÉS ALENCASTRO\"",
-   "url": "https://pncp.gov.br/app/editais/63606479000124/2026/123",
-   "nota": 0.481,
-   "incerteza": 0.961
-  },
-  {
    "titulo": "Chamada FAPEMIG 004/2026 – Participação coletiva em eventos técnicos no país – 3ª Entrada",
    "url": "https://fapemig.br/oportunidades/chamadas-e-editais/chamada-fapemig-004-2026-participacao-coletiva-em-eventos-tecnicos-no-pais-3a-entrada",
    "nota": 0.52,
@@ -561,7 +351,7 @@
   {
    "titulo": "III EDITAL MADALENA DAS ARTES",
    "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8392/",
-   "nota": 0.521,
+   "nota": 0.52,
    "incerteza": 0.959
   },
   {
@@ -575,7 +365,13 @@
    "url": "https://www.gov.br/mcti",
    "nota": 0.521,
    "incerteza": 0.958
+  },
+  {
+   "titulo": "Chamada FAPEMIG SEDE 018/2026 - HUBMG GOV",
+   "url": "https://fapemig.br/oportunidades/chamadas-e-editais/chamada-fapemig-sede-018-2026-hubmg-gov-resolucao-de-desafios-publicos-por-meio-de-inovacao-aberta",
+   "nota": 0.522,
+   "incerteza": 0.955
   }
  ],
- "pendentes_provaveis_reais": 317
+ "pendentes_provaveis_reais": 321
 }
