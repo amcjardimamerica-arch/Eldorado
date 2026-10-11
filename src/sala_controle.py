@@ -78,13 +78,17 @@ def _fluxos(agora: datetime) -> list[dict]:
         runs = json.loads(urllib.request.urlopen(req, timeout=20).read()).get("workflow_runs") or []
     except Exception:  # noqa: BLE001
         return []
-    vistos, out = set(), []
+    por_nome: dict[str, list] = {}
     for r in runs:
-        if r.get("name") in vistos:
-            continue
-        vistos.add(r.get("name"))
-        out.append({"nome": r.get("name"), "quando": r.get("created_at"), "situacao": r.get("status"), "conclusao": r.get("conclusion"),
-                    "idade_h": _horas(r.get("created_at"), agora)})
+        por_nome.setdefault(r.get("name"), []).append(r)
+    out = []
+    for nome, L in por_nome.items():
+        r = L[0]
+        out.append({"nome": nome, "quando": r.get("created_at"), "situacao": r.get("status"), "conclusao": r.get("conclusion"),
+                    "idade_h": _horas(r.get("created_at"), agora), "url": r.get("html_url"), "evento": r.get("event"),
+                    "duracao_min": round((datetime.fromisoformat(r["updated_at"].replace("Z", "+00:00")) - datetime.fromisoformat(r["created_at"].replace("Z", "+00:00"))).total_seconds() / 60, 1)
+                                   if r.get("updated_at") and r.get("created_at") else None,
+                    "ultimas": [{"quando": x.get("created_at"), "situacao": x.get("status"), "conclusao": x.get("conclusion"), "url": x.get("html_url")} for x in L[:6]]})
     return sorted(out, key=lambda x: x["nome"] or "")
 
 
@@ -230,7 +234,8 @@ def montar(agora: datetime | None = None) -> dict:
               {"etapa": "Abertas", "valor": rp.get("abertas")}, {"etapa": "Com livro", "valor": cz.get("com_livro")},
               {"etapa": "Cartório", "valor": rs.get("certidoes_sem_item_faltando")}, {"etapa": "Interceptador", "valor": rp.get("fila_interceptador")},
               {"etapa": "Verificação externa", "valor": rp.get("fila_busca_externa")}, {"etapa": "Prontas para o Farol", "valor": rp.get("prontas_para_o_farol")}]
-    tempo = sorted(({"quando": x["quando"], "nome": x["nome"], "sub": x["sub"], "estado": x["estado"]} for x in I if x.get("quando")), key=lambda e: str(e["quando"]), reverse=True)
+    tempo = sorted(({"id": x["id"], "quando": x["quando"], "nome": x["nome"], "sub": x["sub"], "estado": x["estado"], "efeito": x.get("efeito"), "resultado": x.get("resultado")}
+                    for x in I if x.get("quando")), key=lambda e: str(e["quando"]), reverse=True)
     # 11/10 (v3, constelação): o detalhe de cada etapa — cada motor vira uma estrela no fundo da página
     detalhes = {
         "motores": [{"id": m.get("id"), "nome": m.get("nome"), "luz": m.get("luz"), "ultima_leitura": m.get("ultima_leitura"),

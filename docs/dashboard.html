@@ -1257,14 +1257,14 @@ box-sizing:border-box;}
 /* SALA DE CONTROLE v3 — "a constelação" (titular, 11/10/2026; docs/prompts/PROMPT-SALA-DE-CONTROLE-CONSTELACAO-2026-10-11.md)
    Desktop, largura total. O céu (canvas) é o fundo, sem paralaxe; as estrelas de dados são os motores. Paralaxe, 3D e
    morph só nas informações e na janela de detalhe. Estilo restrito a esta seção. */
-#v-neural{--ceu0:#070C24;--ceu1:#151B45;--estrela:#EAF2FF;--aurora:#5EE6C8;--violeta:#9B8CFF;--ambar:#FFB347;--coral:#FF6B6B;--nevoa:#8B93B8;--vidro:rgba(16,22,58,.48);
+#v-neural,#nv-portal{--ceu0:#070C24;--ceu1:#151B45;--estrela:#EAF2FF;--aurora:#5EE6C8;--violeta:#9B8CFF;--ambar:#FFB347;--coral:#FF6B6B;--nevoa:#8B93B8;--vidro:rgba(16,22,58,.48);
   font-family:"Saira Semi Condensed","Saira","Arial Narrow",sans-serif;color:var(--estrela)}
 #v-neural .obs{position:relative;width:100vw;margin-left:calc(50% - 50vw);background:radial-gradient(1400px 900px at 78% 8%,#2A2470 0,transparent 60%),
   radial-gradient(1200px 1000px at 8% 52%,#0F3A4A 0,transparent 58%),radial-gradient(1000px 800px at 70% 96%,#3A1E5E 0,transparent 60%),linear-gradient(180deg,var(--ceu0),var(--ceu1) 55%,var(--ceu0))}
 #v-neural canvas.ceu{position:sticky;top:0;display:block;width:100%;height:100vh;margin-bottom:-100vh;z-index:0;pointer-events:none}
 #v-neural .palco{position:relative;z-index:1;padding:42px 3.2vw 70px}
-#v-neural .mx{font-family:"Michroma","Saira",sans-serif;letter-spacing:.02em}
-#v-neural .faint{color:var(--nevoa)}
+#v-neural .mx,#nv-portal .mx{font-family:"Michroma","Saira",sans-serif;letter-spacing:.02em}
+#v-neural .faint,#nv-portal .faint{color:var(--nevoa)}
 /* observatório */
 #v-neural .topo{display:grid;grid-template-columns:minmax(320px,26%) 1fr minmax(360px,30%);gap:28px;align-items:stretch;margin-bottom:34px}
 #v-neural .titulo h2{margin:0;font:400 34px/1.05 "Michroma",sans-serif}
@@ -1280,12 +1280,26 @@ box-sizing:border-box;}
 #v-neural .janelas{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:6px}
 #v-neural .jan{border:0;text-align:left;cursor:pointer;border-radius:10px;padding:8px 10px;font:500 13.5px/1.2 "Saira Semi Condensed",sans-serif;background:rgba(255,255,255,.05);color:#AEB5D6;
   display:flex;gap:8px;align-items:center;min-height:40px;transition:transform .2s,background .2s}
-#v-neural .jan i{width:8px;height:8px;border-radius:50%;flex:none;background:#56608A}
-#v-neural .jan.amarelo{background:rgba(255,179,71,.16);color:#FFE2B5}#v-neural .jan.amarelo i{background:var(--ambar);box-shadow:0 0 10px var(--ambar)}
-#v-neural .jan.vermelho{background:rgba(255,107,107,.18);color:#FFD2D2}#v-neural .jan.vermelho i{background:var(--coral);box-shadow:0 0 12px var(--coral);animation:pulsa 1.6s ease-in-out infinite}
-#v-neural .jan.cinza i{background:#8B93B8}
+#v-neural .jan .luz{width:10px;height:10px}
+#v-neural .jan.amarelo{background:rgba(255,179,71,.16);color:#FFE2B5}
+#v-neural .jan.vermelho{background:rgba(255,61,79,.20);color:#FFD6DA;box-shadow:inset 0 0 0 1px rgba(255,61,79,.45),0 0 22px -6px rgba(255,61,79,.6)}
 #v-neural .jan:hover{transform:translateY(-2px);background:rgba(155,140,255,.18)}
 @keyframes pulsa{50%{transform:scale(1.7);opacity:.6}}
+/* LUZ DE ESTRELA (11/10): núcleo branco, cor no meio, halo largo — a vermelha cintila como Antares; as outras brilham fixas */
+#v-neural .luz,#nv-portal .luz{display:inline-block;flex:none;width:11px;height:11px;border-radius:50%;position:relative;vertical-align:middle;
+  background:radial-gradient(circle at 50% 50%,#fff 0 22%,var(--lc) 46%,var(--lc) 62%,transparent 74%);box-shadow:0 0 6px 1px var(--lc),0 0 16px 3px var(--lh)}
+#v-neural .luz.verde,#nv-portal .luz.verde{--lc:#5EE6C8;--lh:rgba(94,230,200,.38)}
+#v-neural .luz.amarelo,#nv-portal .luz.amarelo{--lc:#FFC266;--lh:rgba(255,194,102,.38)}
+#v-neural .luz.cinza,#nv-portal .luz.cinza{--lc:#DDE4FF;--lh:rgba(221,228,255,.30)}
+#v-neural .luz.vermelho,#nv-portal .luz.vermelho{--lc:#FF3D4F;--lh:rgba(255,61,79,.55);animation:cintila 2.3s infinite}
+#v-neural .luz.vermelho::after,#nv-portal .luz.vermelho::after{content:"";position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;pointer-events:none;
+  background:linear-gradient(90deg,transparent 46%,rgba(255,120,130,.75) 50%,transparent 54%),linear-gradient(0deg,transparent 46%,rgba(255,120,130,.75) 50%,transparent 54%);
+  border-radius:50%;opacity:.75;animation:raios 2.3s infinite}
+@keyframes cintila{0%,100%{filter:brightness(1);box-shadow:0 0 6px 1px #FF3D4F,0 0 18px 4px rgba(255,61,79,.55)}
+  12%{filter:brightness(1.55);box-shadow:0 0 9px 2px #FF6A76,0 0 28px 8px rgba(255,61,79,.75)}24%{filter:brightness(.8)}
+  37%{filter:brightness(1.35);box-shadow:0 0 8px 2px #FF5363,0 0 24px 6px rgba(255,61,79,.65)}55%{filter:brightness(.9)}
+  71%{filter:brightness(1.6);box-shadow:0 0 10px 3px #FF7A84,0 0 32px 10px rgba(255,61,79,.8)}86%{filter:brightness(.85)}}
+@keyframes raios{0%,100%{transform:scale(.7) rotate(0deg);opacity:.45}12%{transform:scale(1.15) rotate(8deg);opacity:.9}37%{transform:scale(.95) rotate(-4deg);opacity:.7}71%{transform:scale(1.25) rotate(6deg);opacity:1}}
 #v-neural .esteira{padding:16px 18px}
 #v-neural .tubo{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 8px}
 #v-neural .tubo div{background:rgba(94,230,200,.07);border-radius:12px;padding:8px 10px}
@@ -1293,10 +1307,10 @@ box-sizing:border-box;}
 #v-neural .tubo small{font-size:12.5px;color:#AEB5D6}
 /* faixas das etapas */
 #v-neural .faixa{position:relative;display:grid;grid-template-columns:minmax(260px,21%) 1fr minmax(300px,24%);gap:26px;align-items:center;margin:0 0 54px;padding:22px 26px;cursor:pointer;
-  transform-style:preserve-3d;transform:perspective(1400px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--sy,0px));transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s}
+  transition:border-color .3s,box-shadow .3s}
 #v-neural .faixa:hover{border-color:rgba(94,230,200,.45)}
 #v-neural .faixa:focus-visible{outline:3px solid var(--aurora);outline-offset:4px}
-#v-neural .faixa .cam{transform:translate3d(var(--px,0px),var(--py,0px),0);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+
 #v-neural .etq{display:flex;gap:16px;align-items:flex-start}
 #v-neural .etq .num{font:400 40px/1 "Michroma",sans-serif;color:transparent;-webkit-text-stroke:1px rgba(155,140,255,.85)}
 #v-neural .etq h3{margin:2px 0 6px;font:400 19px "Michroma",sans-serif}
@@ -1310,43 +1324,46 @@ box-sizing:border-box;}
 #v-neural .cnt small{font-size:12.5px;color:#AEB5D6;margin-top:4px}
 #v-neural .pulso{flex:1;min-width:190px;margin-left:8px;padding:10px 14px;border-radius:14px;background:rgba(94,230,200,.06);font-size:13px;color:#C9CFEA}
 #v-neural .pulso b{color:var(--aurora);font:400 13px "Michroma",sans-serif}
-#v-neural .lista{font-size:13.5px;line-height:1.35}
-#v-neural .lista h4{margin:0 0 8px;font:600 13px "Saira Semi Condensed",sans-serif;color:#C9CFEA}
-#v-neural .lista div{display:flex;justify-content:space-between;gap:10px;padding:4px 0;border-bottom:1px dashed rgba(155,140,255,.18)}
-#v-neural .lista div span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#v-neural .lista div b{font-weight:600;color:var(--estrela);white-space:nowrap}
-#v-neural .lista .barra{display:block;padding:0;border:0;height:5px;border-radius:3px;background:rgba(255,255,255,.08);margin-top:3px;overflow:hidden}
-#v-neural .barra i{display:block;height:100%;background:linear-gradient(90deg,var(--violeta),var(--aurora))}
+#v-neural .lista,#nv-portal .lista{font-size:13.5px;line-height:1.35}
+#v-neural .lista h4,#nv-portal .lista h4{margin:0 0 8px;font:600 13px "Saira Semi Condensed",sans-serif;color:#C9CFEA}
+#v-neural .lista div,#nv-portal .lista div{display:flex;justify-content:space-between;gap:10px;padding:4px 0;border-bottom:1px dashed rgba(155,140,255,.18)}
+#v-neural .lista div span:first-child,#nv-portal .lista div span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#v-neural .lista div b,#nv-portal .lista div b{font-weight:600;color:var(--estrela);white-space:nowrap}
+#v-neural .lista .barra,#nv-portal .lista .barra{display:block;padding:0;border:0;height:5px;border-radius:3px;background:rgba(255,255,255,.08);margin-top:3px;overflow:hidden}
+#v-neural .barra i,#nv-portal .barra i{display:block;height:100%;background:linear-gradient(90deg,var(--violeta),var(--aurora))}
 /* sistema nervoso */
-#v-neural .nervoso{display:grid;grid-template-columns:1.3fr 1fr;gap:26px;margin-top:10px}
+#v-neural .nervoso{display:grid;grid-template-columns:1.3fr 1fr;gap:26px;margin-top:10px;align-items:stretch}
+#v-neural .fl,#v-neural .tempo .ev{cursor:pointer;border:0;text-align:left;font:inherit;color:inherit;transition:background .2s}
+#v-neural .fl:hover,#v-neural .tempo .ev:hover{background:rgba(94,230,200,.10)}
 #v-neural .fluxos{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:6px;padding:16px}
 #v-neural .fl{display:flex;gap:9px;align-items:center;font-size:13.5px;color:#C9CFEA;padding:6px 8px;border-radius:9px;background:rgba(255,255,255,.04)}
 #v-neural .fl i{width:9px;height:9px;border-radius:50%;flex:none}
-#v-neural .tempo{padding:16px 18px;max-height:340px;overflow:auto}
-#v-neural .tempo div{display:flex;gap:12px;padding:5px 0;font-size:13.5px;color:#C9CFEA;border-bottom:1px solid rgba(255,255,255,.05)}
+#v-neural .tempo{position:relative;padding:16px 18px;min-height:240px}
+#v-neural .tempo .rol{position:absolute;left:18px;right:12px;top:48px;bottom:14px;overflow:auto;padding-right:6px}
+#v-neural .tempo .ev{display:flex;gap:12px;width:100%;padding:6px 6px;font-size:13.5px;color:#C9CFEA;border-bottom:1px solid rgba(255,255,255,.05);background:none;border-radius:8px}
 #v-neural .tempo b{font:400 12px "Michroma",sans-serif;color:var(--aurora);min-width:108px}
-#v-neural .dica{position:fixed;z-index:80;pointer-events:none;background:rgba(10,14,40,.92);border:1px solid rgba(94,230,200,.4);border-radius:10px;padding:7px 10px;font-size:13px;display:none;max-width:280px}
+#v-neural .dica,#nv-portal .dica{position:fixed;z-index:80;pointer-events:none;background:rgba(10,14,40,.92);border:1px solid rgba(94,230,200,.4);border-radius:10px;padding:7px 10px;font-size:13px;display:none;max-width:280px}
 /* janela-holograma */
-#v-neural .veu{position:fixed;inset:0;z-index:90;background:radial-gradient(circle at 50% 45%,rgba(21,27,69,.55),rgba(3,6,20,.86));backdrop-filter:blur(6px);opacity:0;transition:opacity .35s;pointer-events:none}
-#v-neural .veu.on{opacity:1;pointer-events:auto}
-#v-neural .holo{position:fixed;z-index:91;left:50%;top:50%;width:min(1180px,88vw);max-height:84vh;overflow:auto;transform-origin:top left;padding:30px 34px 34px;
+#v-neural .veu,#nv-portal .veu{position:fixed;inset:0;z-index:90;background:radial-gradient(circle at 50% 45%,rgba(21,27,69,.55),rgba(3,6,20,.86));backdrop-filter:blur(6px);opacity:0;transition:opacity .35s;pointer-events:none}
+#v-neural .veu.on,#nv-portal .veu.on{opacity:1;pointer-events:auto}
+#v-neural .holo,#nv-portal .holo{position:fixed;z-index:91;left:50%;top:50%;width:min(1180px,88vw);max-height:86vh;box-sizing:border-box;overflow:auto;transform-origin:top left;padding:30px 34px 34px;
   background:linear-gradient(160deg,rgba(32,38,92,.94),rgba(12,17,46,.96));border:1px solid rgba(94,230,200,.35);border-radius:26px;
   box-shadow:0 0 0 1px rgba(155,140,255,.12),0 40px 120px -30px rgba(94,230,200,.35),inset 0 1px 0 rgba(255,255,255,.08);display:none}
-#v-neural .holo::before{content:"";position:absolute;inset:0;border-radius:26px;pointer-events:none;background:repeating-linear-gradient(180deg,rgba(255,255,255,.025) 0 1px,transparent 1px 4px)}
-#v-neural .holo .conteudo{opacity:0;transition:opacity .25s .18s}#v-neural .holo.pronta .conteudo{opacity:1}
-#v-neural .holo h3{margin:4px 0 6px;font:400 26px "Michroma",sans-serif}
-#v-neural .holo .fechar{float:right;border:1px solid rgba(94,230,200,.5);background:transparent;color:var(--aurora);border-radius:999px;padding:7px 16px;font:600 14px "Saira Semi Condensed",sans-serif;cursor:pointer}
-#v-neural .holo .grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(480px,1fr));gap:16px;margin-top:18px}
-#v-neural .holo .inst{background:rgba(255,255,255,.04);border:1px solid rgba(155,140,255,.18);border-radius:18px;padding:16px;display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;overflow:hidden}
-#v-neural .holo .inst h4{margin:0 0 4px;font:600 16px "Saira Semi Condensed",sans-serif}
-#v-neural .holo dl{margin:6px 0 0;display:grid;grid-template-columns:82px minmax(0,1fr);gap:4px 10px;font-size:13.5px;line-height:1.4}
-#v-neural .holo dt{color:var(--nevoa)}#v-neural .holo dd{margin:0;color:#DDE2F6;overflow-wrap:anywhere}
-#v-neural .holo .inst>div{min-width:0}
-#v-neural .holo .bloco{margin-top:22px}
-#v-neural .holo .bloco h4{margin:0 0 10px;font:400 14px "Michroma",sans-serif;color:var(--aurora)}
-#v-neural .matriz{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:5px}
-#v-neural .matriz span{font-size:12px;padding:5px 7px;border-radius:7px;background:rgba(255,255,255,.04);display:flex;gap:6px;align-items:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-#v-neural .matriz i{width:7px;height:7px;border-radius:50%;flex:none}
+#v-neural .holo::before,#nv-portal .holo::before{content:"";position:absolute;inset:0;border-radius:26px;pointer-events:none;background:repeating-linear-gradient(180deg,rgba(255,255,255,.025) 0 1px,transparent 1px 4px)}
+#v-neural .holo .conteudo,#nv-portal .holo .conteudo{opacity:0;transition:opacity .25s .18s}#v-neural .holo.pronta .conteudo{opacity:1}
+#v-neural .holo h3,#nv-portal .holo h3{margin:4px 0 6px;font:400 26px "Michroma",sans-serif}
+#v-neural .holo .fechar,#nv-portal .holo .fechar{float:right;border:1px solid rgba(94,230,200,.5);background:transparent;color:var(--aurora);border-radius:999px;padding:7px 16px;font:600 14px "Saira Semi Condensed",sans-serif;cursor:pointer}
+#v-neural .holo .grade,#nv-portal .holo .grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(480px,1fr));gap:16px;margin-top:18px}
+#v-neural .holo .inst,#nv-portal .holo .inst{background:rgba(255,255,255,.04);border:1px solid rgba(155,140,255,.18);border-radius:18px;padding:16px;display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;overflow:hidden}
+#v-neural .holo .inst h4,#nv-portal .holo .inst h4{margin:0 0 4px;font:600 16px "Saira Semi Condensed",sans-serif}
+#v-neural .holo dl,#nv-portal .holo dl{margin:6px 0 0;display:grid;grid-template-columns:82px minmax(0,1fr);gap:4px 10px;font-size:13.5px;line-height:1.4}
+#v-neural .holo dt,#nv-portal .holo dt{color:var(--nevoa)}#v-neural .holo dd{margin:0;color:#DDE2F6;overflow-wrap:anywhere}
+#v-neural .holo .inst>div,#nv-portal .holo .inst>div{min-width:0}
+#v-neural .holo .bloco,#nv-portal .holo .bloco{margin-top:22px}
+#v-neural .holo .bloco h4,#nv-portal .holo .bloco h4{margin:0 0 10px;font:400 14px "Michroma",sans-serif;color:var(--aurora)}
+#v-neural .matriz,#nv-portal .matriz{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:5px}
+#v-neural .matriz span,#nv-portal .matriz span{font-size:12px;padding:5px 7px;border-radius:7px;background:rgba(255,255,255,.04);display:flex;gap:6px;align-items:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+#v-neural .matriz i,#nv-portal .matriz i{width:7px;height:7px;border-radius:50%;flex:none}
 @media (prefers-reduced-motion:reduce){#v-neural .faixa,#v-neural .faixa .cam,#v-neural .jan,#v-neural .veu{transition:none}#v-neural .jan.vermelho i{animation:none}}
 </style>
 <div class="obs" id="nv-obs">
@@ -1392,6 +1409,8 @@ box-sizing:border-box;}
   const idade=h=>h==null?"sem registro":h<1?`há ${Math.max(1,Math.round(h*60))} min`:h<48?`há ${Math.round(h)} h`:`há ${Math.round(h/24)} dias`;
   const dm=q=>{const t=new Date(q);return isNaN(t)?"—":t.toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}).replace(",","");};
   const I=id=>(SC.instrumentos||[]).find(x=>x.id===id);
+  const PT={success:"concluído",failure:"falhou",in_progress:"em execução",queued:"na fila",pending:"aguardando",cancelled:"cancelado",completed:"concluído",skipped:"pulado",waiting:"aguardando"};
+  const luzFluxo=f=>f.conclusao==="failure"?"vermelho":f.situacao!=="completed"?"amarelo":f.conclusao==="success"?"verde":"cinza";
   const pior=L=>["vermelho","amarelo","verde","cinza"].find(k=>L.some(x=>x&&x.estado===k))||"cinza";
   function fontes(){ if($("fonte-nv3"))return; const l=document.createElement("link"); l.id="fonte-nv3"; l.rel="stylesheet";
     l.href="https://fonts.googleapis.com/css2?family=Michroma&family=Saira+Semi+Condensed:wght@400;500;600&display=swap"; document.head.appendChild(l); }
@@ -1411,7 +1430,7 @@ box-sizing:border-box;}
       <filter id="${id}b"><feGaussianBlur stdDeviation="2.4"/></filter></defs>${z}${tk}
       <path d="${arc(A0,A1-.01,r)}" stroke="rgba(255,255,255,.07)" stroke-width="${t*.06}" fill="none" stroke-linecap="round"/>
       <path class="va" d="${arc(A0,A1-.01,r)}" stroke="url(#${id})" stroke-width="${t*.06}" fill="none" stroke-linecap="round" style="stroke-dasharray:${L.toFixed(1)};stroke-dashoffset:${(L*(1-frac)).toFixed(1)}" data-l="${L.toFixed(1)}" data-o="${(L*(1-frac)).toFixed(1)}"/>
-      <circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${t*.05}" fill="${cor}" filter="url(#${id}b)"/><circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${t*.026}" fill="#fff"/>
+      <g class="vivo" data-c="${c}" data-a="${(gv-A0).toFixed(1)}"><circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${t*.06}" fill="${cor}" filter="url(#${id}b)"/><circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${t*.028}" fill="#fff"/></g>
       <text x="${c}" y="${c+t*.05}" text-anchor="middle" font-family="Michroma,Saira,sans-serif" font-size="${t*(txt.length>5?.13:.16)}" fill="#EAF2FF">${txt}</text></svg>`;
   }
   function trilha(id,w=180){ const v=(SC.historico||[]).map(p=>(p.v||{})[id]).filter(q=>typeof q==="number"); if(v.length<2) return `<span class="faint">a tendência aparece depois de duas passagens</span>`;
@@ -1470,16 +1489,31 @@ box-sizing:border-box;}
     const L=et.ids.map(I).filter(Boolean);
     H.innerHTML=`<div class="conteudo"><button class="fechar" onclick="nvFecha()">Fechar</button><div class="faint" style="font-size:13px">etapa ${ETAPAS.indexOf(et)+1} de ${ETAPAS.length} · ${EST[pior(L)]}</div>
       <h3>${e(et.nome)}</h3><p style="color:#C9CFEA;margin:0;max-width:80ch">${e(et.faz)}</p>${L.length?`<div class="grade">${L.map(instrumentoHtml).join("")}</div>`:""}${completo(et)}</div>`;
-    H.style.display="block"; H.classList.remove("pronta"); const alvo=H.getBoundingClientRect(); const w=alvo.width,h=alvo.height;
+    abrirJanela(H,V,origem,instId);
+  };
+  function abrirJanela(H,V,origem,instId){
+    H.style.transition="none"; H.style.transform="none"; H.style.display="block"; H.classList.remove("pronta");
+    const w=H.offsetWidth, h=Math.min(H.offsetHeight, Math.round(innerHeight*.86));   // tamanho real, sem a transformação anterior
     const o=(origem&&origem.getBoundingClientRect)?origem.getBoundingClientRect():{left:innerWidth/2-40,top:innerHeight/2-20,width:80,height:40};
-    H.style.transition="none"; H.style.transform=`translate(${o.left-innerWidth/2}px,${o.top-innerHeight/2}px) scale(${o.width/w},${o.height/h})`;
+    H.style.transform=`translate(${o.left-innerWidth/2}px,${o.top-innerHeight/2}px) scale(${o.width/w},${o.height/h})`;
     V.classList.add("on"); void H.offsetWidth;
     H.style.transition=quieto?"none":"transform .55s cubic-bezier(.2,.85,.2,1)"; H.style.transform=`translate(${-w/2}px,${-h/2}px) scale(1,1)`;
-    setTimeout(()=>{H.classList.add("pronta"); if(instId){const el=$("nv-i-"+instId); if(el){el.scrollIntoView({block:"nearest"}); el.style.borderColor="rgba(94,230,200,.7)";}} H.querySelector(".fechar").focus();},quieto?0:380);
+    H.scrollTop=0;
+    setTimeout(()=>{H.classList.add("pronta"); if(instId){const el=$("nv-i-"+instId); if(el){H.scrollTop=Math.max(0,el.offsetTop-90); el.style.borderColor="rgba(94,230,200,.7)";}} H.querySelector(".fechar").focus({preventScroll:true});},quieto?0:380);
     H._origem=origem;
-  };
+  }
+  window.nvFluxo=function(i,origem){ const f=(SC.fluxos||[])[i]; if(!f) return; const H=$("nv-holo"),V=$("nv-veu"); foco=null;
+    H.innerHTML=`<div class="conteudo"><button class="fechar" onclick="nvFecha()">Fechar</button><div class="faint" style="font-size:13px">sistema nervoso · fluxo automático</div>
+      <h3>${e(f.nome)}</h3><div style="margin:8px 0 4px"><span class="luz ${luzFluxo(f)}"></span>&nbsp; última execução <b>${PT[f.conclusao||f.situacao]||e(f.situacao)}</b> · ${dm(f.quando)} · ${idade(f.idade_h)}</div>
+      <div class="grade" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr))">
+        <div class="inst" style="grid-template-columns:1fr"><div><h4>Execução</h4><dl><dt>Situação</dt><dd>${e(PT[f.situacao]||f.situacao)}</dd><dt>Resultado</dt><dd>${e(PT[f.conclusao]||f.conclusao||"em andamento")}</dd>
+          <dt>Duração</dt><dd>${f.duracao_min!=null?n(f.duracao_min)+" min":"—"}</dd><dt>Disparo</dt><dd>${e({schedule:"agenda automática",workflow_dispatch:"disparo manual ou por outro fluxo",push:"gravação no repositório"}[f.evento]||f.evento||"—")}</dd></dl>
+          ${f.url?`<p style="margin:12px 0 0"><a href="${e(f.url)}" target="_blank" rel="noopener" style="color:var(--aurora)">Abrir a execução no GitHub</a></p>`:""}</div></div>
+        <div class="inst" style="grid-template-columns:1fr"><div><h4>Últimas execuções</h4><div class="lista">${(f.ultimas||[]).map(u=>`<div><span><span class="luz ${luzFluxo(u)}" style="width:9px;height:9px;margin-right:8px"></span>${dm(u.quando)}</span><b>${e(PT[u.conclusao||u.situacao]||u.situacao)}</b></div>`).join("")||"<div><span>sem registro</span></div>"}</div></div></div>
+      </div></div>`;
+    abrirJanela(H,V,origem,null); };
   window.nvFecha=function(){ const H=$("nv-holo"),V=$("nv-veu"); if(H.style.display!=="block") return; const o=H._origem&&H._origem.getBoundingClientRect?H._origem.getBoundingClientRect():null;
-    const r=H.getBoundingClientRect(); H.classList.remove("pronta");
+    const r={width:H.offsetWidth,height:Math.min(H.offsetHeight,Math.round(innerHeight*.86))}; H.classList.remove("pronta");
     if(o&&!quieto){ H.style.transform=`translate(${o.left-innerWidth/2}px,${o.top-innerHeight/2}px) scale(${o.width/r.width},${o.height/r.height})`; setTimeout(()=>{H.style.display="none";},520); } else H.style.display="none";
     V.classList.remove("on"); foco=null; };
   /* céu: estrelas de fundo e estrelas de dados (os motores); constelações ligam as etapas; o sinal viaja entre elas */
@@ -1492,11 +1526,23 @@ box-sizing:border-box;}
     const motores=(SC.detalhes?.motores||[]), cobre=(NOS[0]&&NOS[1])?[NOS[0].y0-30,NOS[1].y1+30]:[0,H];
     motores.forEach(m=>{const g=semente(m.id); ESTRELAS.push({x:g()*W,y:cobre[0]+g()*(cobre[1]-cobre[0]),r:2.1,a:.95,tw:g()*6.28,dado:m});});
     NOS.forEach(no=>{const g=semente(no.id); no.cons=[]; const cx=W*(.36+g()*.28); for(let i=0;i<7;i++) no.cons.push({x:cx+(g()-.5)*W*.34,y:no.y0+18+g()*(no.y1-no.y0-36)}); no.cons.sort((a,b)=>a.x-b.x);}); }
-  function desenharCeu(t){ const cv=$("nv-ceu"), P=$("nv-palco"); if(!cv||!ativa) return; const dpr=Math.min(1.5,devicePixelRatio||1), W=cv.clientWidth, Hh=cv.clientHeight;
+  // ponteiros vivos: cada luz oscila em torno do valor (ruído suave de duas frequências), só nos mostradores visíveis
+  function vivos(t){ if(!ativa&&!$("nv-holo").classList.contains("pronta")) return; if(quieto) return;
+    document.querySelectorAll("#v-neural .vivo,#nv-portal .vivo").forEach((g,k)=>{ const r=g.ownerSVGElement.getBoundingClientRect(); if(r.bottom<0||r.top>innerHeight) return;
+      const c=+g.dataset.c, a=+g.dataset.a, amp=Math.min(5,4+(270-a)*0), fi=k*1.7;
+      const d=amp*(Math.sin(t/430+fi)*.6+Math.sin(t/167+fi*2.3)*.3+Math.sin(t/1210+fi*.7)*.4);
+      const lim=Math.max(-a,Math.min(270-a,d)); g.setAttribute("transform",`rotate(${lim.toFixed(2)} ${c} ${c})`); }); }
+  function desenharCeu(t){ vivos(t); const cv=$("nv-ceu"), P=$("nv-palco"); if(!cv||!ativa) return; const dpr=Math.min(1.5,devicePixelRatio||1), W=cv.clientWidth, Hh=cv.clientHeight;
     if(cv.width!==Math.round(W*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(Hh*dpr);} const g=cv.getContext("2d"); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,Hh);
     const off=-P.getBoundingClientRect().top; // o céu acompanha o conteúdo: sem paralaxe
     for(const s of ESTRELAS){ const y=s.y-off; if(y<-10||y>Hh+10) continue; const tw=quieto?1:(.75+.25*Math.sin(t/900+s.tw));
-      if(s.dado){ const c=s.dado.luz==="vermelho"?COR.vermelho:s.dado.luz==="verde"?COR.verde:COR.cinza; g.fillStyle=c; g.globalAlpha=.25*tw; g.beginPath(); g.arc(s.x,y,7,0,6.28); g.fill(); g.globalAlpha=tw; g.beginPath(); g.arc(s.x,y,s.r,0,6.28); g.fill(); }
+      if(s.dado&&s.dado.luz==="vermelho"){ // motor em falha: estrela vermelha cintilante, com raios (o mesmo padrão das luzes do painel)
+        const ci=quieto?1:(.62+.38*Math.abs(Math.sin(t/260+s.tw)*Math.sin(t/610+s.tw*2))+.18*Math.sin(t/90+s.tw)), R=10*ci;
+        const hg=g.createRadialGradient(s.x,y,0,s.x,y,R*1.8); hg.addColorStop(0,"rgba(255,255,255,.95)"); hg.addColorStop(.18,"rgba(255,61,79,.95)"); hg.addColorStop(1,"rgba(255,61,79,0)");
+        g.globalAlpha=1; g.fillStyle=hg; g.beginPath(); g.arc(s.x,y,R*1.8,0,6.28); g.fill();
+        g.strokeStyle=`rgba(255,120,130,${(.35+.5*ci).toFixed(2)})`; g.lineWidth=1; g.beginPath(); g.moveTo(s.x-R*1.6,y); g.lineTo(s.x+R*1.6,y); g.moveTo(s.x,y-R*1.6); g.lineTo(s.x,y+R*1.6); g.stroke(); }
+      else if(s.dado){ const c=s.dado.luz==="verde"?COR.verde:COR.cinza; const hg=g.createRadialGradient(s.x,y,0,s.x,y,8); hg.addColorStop(0,"rgba(255,255,255,.9)"); hg.addColorStop(.3,c); hg.addColorStop(1,"rgba(0,0,0,0)");
+        g.globalAlpha=.85; g.fillStyle=hg; g.beginPath(); g.arc(s.x,y,8,0,6.28); g.fill(); }
       else { g.fillStyle="#EAF2FF"; g.globalAlpha=s.a*tw; g.fillRect(s.x,y,s.r,s.r); } }
     g.globalAlpha=1;
     // espinha: a rede liga as etapas em sequência (inspirada no fluxograma), com o sinal correndo
@@ -1513,14 +1559,9 @@ box-sizing:border-box;}
     requestAnimationFrame(desenharCeu); }
   function interacoes(){ const P=$("nv-palco"), dica=$("nv-dica");
     document.querySelectorAll("#v-neural .faixa").forEach(f=>{ const no=()=>NOS.find(x=>x.id===f.dataset.et);
-      f.addEventListener("pointermove",ev=>{ if(quieto) return; const r=f.getBoundingClientRect(), x=(ev.clientX-r.left)/r.width-.5, y=(ev.clientY-r.top)/r.height-.5;
-        f.style.setProperty("--ry",(x*3).toFixed(2)+"deg"); f.style.setProperty("--rx",(-y*3).toFixed(2)+"deg");
-        f.querySelectorAll(".cam").forEach(c=>{const d=parseFloat(getComputedStyle(c).getPropertyValue("--d"))||1; c.style.setProperty("--px",(x*8*d).toFixed(1)+"px"); c.style.setProperty("--py",(y*6*d).toFixed(1)+"px");}); });
+      // página estática (titular, 11/10): só a constelação da etapa acende com o mouse
       f.addEventListener("pointerenter",()=>{const k=no(); if(k) k.hover=true;});
-      f.addEventListener("pointerleave",()=>{ f.style.setProperty("--ry","0deg"); f.style.setProperty("--rx","0deg"); f.querySelectorAll(".cam").forEach(c=>{c.style.setProperty("--px","0px");c.style.setProperty("--py","0px");}); const k=no(); if(k) k.hover=false; }); });
-    // paralaxe de rolagem só nas faixas (o fundo não se move em relação ao conteúdo)
-    let pend=false; const rolar=()=>{pend=false; const vh=innerHeight; document.querySelectorAll("#v-neural .faixa").forEach(f=>{const r=f.getBoundingClientRect(), d=(r.top+r.height/2-vh/2)/vh; f.style.setProperty("--sy",(quieto?0:(-d*14)).toFixed(1)+"px");});};
-    addEventListener("scroll",()=>{if(!pend){pend=true;requestAnimationFrame(rolar);}},{passive:true}); rolar();
+      f.addEventListener("pointerleave",()=>{const k=no(); if(k) k.hover=false;}); });
     // estrela de dado: passar o mouse diz qual motor é; clicar abre a coleta
     P.addEventListener("pointermove",ev=>{ if(ev.target.closest(".vidro")){dica.style.display="none";return;} const pr=P.getBoundingClientRect(), x=ev.clientX-pr.left, y=ev.clientY-pr.top;
       const s=ESTRELAS.find(q=>q.dado&&Math.hypot(q.x-x,q.y-y)<9); if(s){dica.style.display="block";dica.style.left=(ev.clientX+14)+"px";dica.style.top=(ev.clientY+12)+"px";
@@ -1536,12 +1577,12 @@ box-sizing:border-box;}
   }
   function desenha(){ const d=SC, c=d.contagem||{}, M=d.mimico||[];
     $("nv-indice").innerHTML=mostrador({nome:"Índice de saúde",valor:d.indice_saude,escala:[0,100],faixa:{normal:[80,null],alarme:[50,null]},estado:d.indice_saude>=80?"verde":d.indice_saude>=50?"amarelo":"vermelho"},150);
-    $("nv-contagens").innerHTML=`<div class="faint" style="font-size:13px">índice de saúde do sistema</div>`+["verde","amarelo","vermelho","cinza"].map(k=>`<span style="color:${COR[k]}"><i style="background:${COR[k]}"></i><b style="color:#EAF2FF">${c[k]||0}</b>&nbsp;${EST[k]}</span>`).join("");
+    $("nv-contagens").innerHTML=`<div class="faint" style="font-size:13px">índice de saúde do sistema</div>`+["verde","amarelo","vermelho","cinza"].map(k=>`<span style="color:${COR[k]}"><span class="luz ${k}"></span><b style="color:#EAF2FF">${c[k]||0}</b>&nbsp;${EST[k]}</span>`).join("");
     const etDe=id=>(ETAPAS.find(t=>t.ids.includes(id))||{}).id||"farol";
     const jan=(d.instrumentos||[]).map(x=>({id:x.id,nome:x.nome,nivel:x.estado,motivo:x.motivo,et:etDe(x.id)})).concat((d.anunciadores||[]).filter(a=>!(d.instrumentos||[]).some(x=>x.id===a.id)).map(a=>({id:a.id,nome:a.nome,nivel:a.nivel,motivo:a.motivo,et:a.sub==="Fluxos"?"farol":a.sub==="Esteira"?"biblioteca":"farol"})));
     const ord={vermelho:0,amarelo:1,cinza:2,verde:3}; jan.sort((a,b)=>ord[a.nivel]-ord[b.nivel]);
     $("nv-alarmes-tit").textContent=`Painel de alarmes · ${jan.filter(j=>j.nivel!=="verde").length} acesos de ${jan.length}`;
-    $("nv-janelas").innerHTML=jan.map(j=>`<button class="jan ${j.nivel}" title="${e(j.motivo)}" onclick="nvHolo('${j.et}',this,'${e(j.id)}')"><i></i>${e(j.nome)}</button>`).join("");
+    $("nv-janelas").innerHTML=jan.map(j=>`<button class="jan ${j.nivel}" title="${e(j.motivo)}" onclick="nvHolo('${j.et}',this,'${e(j.id)}')"><span class="luz ${j.nivel==="verde"?"verde":j.nivel}"></span>${e(j.nome)}</button>`).join("");
     $("nv-tubo").innerHTML=M.map(m=>`<div><b>${n(m.valor)}</b><small>${e(m.etapa)}</small></div>`).join("");
     $("nv-leitura").textContent=`leitura de ${dm(d.em)} · atualiza a cada passagem do maestro`;
     $("nv-faixas").innerHTML=ETAPAS.map((et,k)=>{ const L=et.ids.map(I).filter(Boolean); const p=et.id==="farol"&&(d.fluxos||[]).some(f=>f.conclusao==="failure")?pior([...L,{estado:"amarelo"}])
@@ -1551,10 +1592,9 @@ box-sizing:border-box;}
           <span class="est" style="background:${COR[p]}22;color:${COR[p]}">${EST[p]}</span></div></div>
         <div class="medidas">${medidas(et)}${contadores(et)}${pulso(et)}</div>
         <div class="lista cam" style="--d:1">${resumo(et)}</div></div>`; }).join("");
-    $("nv-fluxos").innerHTML=(d.fluxos||[]).map(f=>{const k=f.conclusao==="failure"?"vermelho":f.situacao!=="completed"?"amarelo":f.conclusao==="success"?"verde":"cinza";
-      const PT={success:"concluído",failure:"falhou",in_progress:"em execução",queued:"na fila",pending:"aguardando",cancelled:"cancelado",completed:"concluído"};
-      return `<div class="fl"><i style="background:${COR[k]};box-shadow:0 0 8px ${COR[k]}"></i><span>${e(f.nome)}<br><small class="faint">${idade(f.idade_h)} · ${e(PT[f.conclusao||f.situacao]||f.situacao)}</small></span></div>`;}).join("")||`<div class="fl">a leitura dos fluxos acontece na próxima passagem do maestro</div>`;
-    $("nv-tempo").innerHTML=`<div class="lista"><h4>Linha do tempo · acionamentos</h4></div>`+(d.linha_do_tempo||[]).map(t=>`<div><b>${dm(t.quando)}</b><span><i style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${COR[t.estado]};margin-right:7px"></i>${e(t.nome)} · <span class="faint">${e(t.sub)}</span></span></div>`).join("");
+    $("nv-fluxos").innerHTML=(d.fluxos||[]).map((f,i)=>{const k=luzFluxo(f);
+      return `<button class="fl" onclick="nvFluxo(${i},this)" title="abrir o detalhe do fluxo"><span class="luz ${k}"></span><span>${e(f.nome)}<br><small class="faint">${idade(f.idade_h)} · ${e(PT[f.conclusao||f.situacao]||f.situacao)}</small></span></button>`;}).join("")||`<div class="fl">a leitura dos fluxos acontece na próxima passagem do maestro</div>`;
+    $("nv-tempo").innerHTML=`<div class="lista"><h4>Linha do tempo · acionamentos</h4></div><div class="rol">`+(d.linha_do_tempo||[]).map(t=>`<button class="ev" onclick="nvHolo('${(ETAPAS.find(x=>x.ids.includes(t.id))||{id:"farol"}).id}',this,'${e(t.id)}')" title="abrir o detalhe"><b>${dm(t.quando)}</b><span><span class="luz ${t.estado}" style="width:9px;height:9px;margin-right:8px"></span>${e(t.nome)} · <span class="faint">${e(t.sub)}</span></span></button>`).join("")+`</div>`;
     requestAnimationFrame(()=>{ montarCeu(); interacoes(); });
   }
   window.desenhaNeural=async function(){ fontes();
@@ -1563,6 +1603,8 @@ box-sizing:border-box;}
       try{ const r=await fetch(u,{cache:"no-store"}); if(r.ok){ SC=await r.json(); break; } }catch(err){} }
     if(!SC){ $("nv-leitura").textContent="A sala de controle aparece depois da próxima passagem do maestro."; return; }
     desenha(); };
+  // portal: a janela, o véu e a dica ficam no corpo da página — nenhum container do painel a recorta
+  (function(){ const P=document.createElement("div"); P.id="nv-portal"; document.body.appendChild(P); ["nv-veu","nv-holo","nv-dica"].forEach(k=>{const el=$(k); if(el) P.appendChild(el);}); })();
   $("nv-veu").addEventListener("click",()=>nvFecha());
   document.addEventListener("keydown",ev=>{ if(ev.key==="Escape") nvFecha(); });
 })();

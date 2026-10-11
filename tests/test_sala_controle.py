@@ -41,6 +41,13 @@ class TesteEstado(unittest.TestCase):
         self.assertEqual(sec.count("<canvas"), 1, "um único canvas para o céu")
         self.assertTrue((ROOT / "docs/prompts/PROMPT-SALA-DE-CONTROLE-CONSTELACAO-2026-10-11.md").exists())
         self.assertIn('"detalhes"', (ROOT / "src/sala_controle.py").read_text(encoding="utf-8"))
+        # ajustes de 11/10: página estática (sem deslocamento na rolagem nem inclinação), luzes de estrela (vermelha cintila),
+        # ponteiros vivos, janela no corpo da página (sempre enquadrada), listas do sistema nervoso clicáveis e de mesma altura
+        self.assertNotIn("--sy", sec, "sem paralaxe na rolagem"); self.assertNotIn("rotateY(var(--ry", sec, "sem inclinação")
+        for marca in ("@keyframes cintila", ".luz.vermelho", 'class="vivo"', "function vivos(", 'P.id="nv-portal"', "window.nvFluxo", 'class="rol"', "offsetWidth"):
+            self.assertIn(marca, sec, marca)
+        g = (ROOT / "src/sala_controle.py").read_text(encoding="utf-8")
+        self.assertIn('"ultimas"', g); self.assertIn('{"id": x["id"], "quando"', g)
 
 
 if __name__ == "__main__":
