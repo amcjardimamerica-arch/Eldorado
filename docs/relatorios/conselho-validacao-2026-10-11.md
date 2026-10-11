@@ -115,15 +115,15 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 24,
-   "achados_total_agora": 24,
+   "achados_total_1a": 27,
+   "achados_total_agora": 27,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 723,
-   "achados_total_agora": 723,
+   "achados_total_1a": 745,
+   "achados_total_agora": 745,
    "no_fluxo": 2,
    "confirmadas": 0
   },
@@ -164,22 +164,22 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 24,
-   "achados_total_agora": 24,
+   "achados_total_1a": 25,
+   "achados_total_agora": 25,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 52,
-   "achados_total_agora": 52,
+   "achados_total_1a": 53,
+   "achados_total_agora": 53,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-estaduais-go-gov",
-   "achados_total_1a": 21,
-   "achados_total_agora": 21,
+   "achados_total_1a": 22,
+   "achados_total_agora": 22,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -192,9 +192,9 @@
   },
   {
    "motor": "outras-oportunidades-1",
-   "achados_total_1a": 31,
-   "achados_total_agora": 31,
-   "no_fluxo": 6,
+   "achados_total_1a": 35,
+   "achados_total_agora": 35,
+   "no_fluxo": 10,
    "confirmadas": 0
   }
  ],
@@ -212,7 +212,7 @@
  "pontos_com_redundancia": 10,
  "redundancia_vazia": [],
  "dominios_via_ponte": 1,
- "exemplos_da_rede_de_rotas": 2142
+ "exemplos_da_rede_de_rotas": 2228
 }
 ```
 
@@ -223,11 +223,11 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 72.7,
- "fora_dos_motores_pct_agora": 72.7,
+ "fora_dos_motores_pct_1a": 69.1,
+ "fora_dos_motores_pct_agora": 69.1,
  "origem": {
   "agregador/outra": 281,
-  "motor": 137,
+  "motor": 163,
   "Piloto": 83
  },
  "dominios_so_de_agregador": [
@@ -306,7 +306,7 @@
  "dia_de_referencia": "2026-10-11",
  "ativos": 159,
  "lidos_ontem": 48,
- "lidos_hoje": 98,
+ "lidos_hoje": 100,
  "nao_lidos_ontem_nem_hoje": [
   "plat-captamos",
   "plat-rede-filantropia",
@@ -353,20 +353,20 @@
 
 ```json
 {
- "fontes_recebidas": 217,
+ "fontes_recebidas": 219,
  "por_origem": {
   "conselho (fontes irmãs)": 129,
   "Cartório (site oficial certificado)": 81,
-  "Espião (privado/internacional)": 7
+  "Espião (privado/internacional)": 9
  },
- "lidas_nas_ultimas_24h": 120,
+ "lidas_nas_ultimas_24h": 132,
  "dimensionamento": {
-  "fontes": 217,
+  "fontes": 219,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 5,
-  "cobertura_diaria": 217,
+  "cobertura_diaria": 219,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -375,14 +375,14 @@
  },
  "clones_que_ja_leram": {
   "outras-oportunidades-1": {
-   "ultima": "2026-10-10T21:59:34+00:00",
-   "duracao_s": 30,
-   "achados": 22
+   "ultima": "2026-10-11T11:40:09+00:00",
+   "duracao_s": 126,
+   "achados": 4
   },
   "outras-oportunidades-2": {
-   "ultima": "2026-10-10T22:00:11+00:00",
-   "duracao_s": 37,
-   "achados": 2
+   "ultima": "2026-10-11T11:41:18+00:00",
+   "duracao_s": 69,
+   "achados": 5
   },
   "outras-oportunidades-3": {
    "ultima": "2026-10-10T22:01:03+00:00",
@@ -390,7 +390,7 @@
    "achados": 0
   }
  },
- "com_achado": 12
+ "com_achado": 14
 }
 ```
 
@@ -404,7 +404,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 55,
+   "orgaos": 57,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",
