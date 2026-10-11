@@ -51,6 +51,11 @@ class TesteEstado(unittest.TestCase):
         self.assertIn("IntersectionObserver(es=>es.forEach(en=>{ en.target.querySelectorAll(\".vivo\")", sec)
         self.assertNotIn("g.ownerSVGElement.getBoundingClientRect()", sec)
         self.assertIn("if(!_rolou && Math.abs(window.scrollY-_y)>2) window.scrollTo(0,_y);", h, "a atualização não puxa a página de volta")
+        # constelações reais (uma por etapa, sem repetir), estrelas de erro em todas as etapas, janela que não some ao reabrir
+        nomes = ["Lira", "Virgem", "Ursa Maior", "Sagitário", "Ursa Menor", "Libra", "Órion", "Cruzeiro do Sul", "Carina"]
+        for nome in nomes:
+            self.assertEqual(sec.count(f'nome:"{nome}"'), 1, nome)
+        self.assertIn("estrelas de ERRO", sec); self.assertIn("clearTimeout(H._tFecha)", sec); self.assertIn("H._sessao===sessao", sec)
         g = (ROOT / "src/sala_controle.py").read_text(encoding="utf-8")
         self.assertIn('"ultimas"', g); self.assertIn('{"id": x["id"], "quando"', g)
 
