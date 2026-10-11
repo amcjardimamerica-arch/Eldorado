@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-11T22:53:48+00:00",
+  "em": "2026-10-11T23:10:35+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-11T22:40:03+00:00",
+  "ultimo_voo": "2026-10-11T22:56:29+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 314,
+    "missoes": 315,
     "validadas": 17,
     "parciais": 79,
-    "insuficientes": 212,
+    "insuficientes": 213,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 210,
+      "sim": 211,
       "nao": 54
     },
     "estrelas_de_ouro": 5,
@@ -52,6 +52,88 @@
     "tempo_medio_min": 10.4
   },
   "missoes": [
+    {
+      "em": "2026-10-11T22:56:29+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Chamamento Público - Lei Aldir Blanc –Nº 009/2024 - Premiação para Agentes Culturais - Fomento à Cultura. \n                                 ",
+      "qualidade": "insuficiente",
+      "comprovados": 8,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado menciona o objeto, prazo de inscrição, órgão financiador, território, esfera, anexos, destinação e área de atuação, sendo suficiente para orientar a resposta.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se sua atividade está alinhada à área de cultura, preparar os documentos necessários conforme os anexos mencionados e garantir que sua proposta esteja dentro do prazo de inscrição de 07 de Outubro de 2024 até 01/11/2024 às 23h59.",
+        "proximo_passo": "Verificar os anexos mencionados e iniciar a preparação da documentação necessária para o chamamento público.",
+        "risco": "O prazo de inscrição pode expirar antes da conclusão da documentação, e a falta de alinhamento com a área de cultura pode impedir a elegibilidade."
+      },
+      "erro": null,
+      "segundos": 844,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "6fd9bc545fd5b1600b19",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Premiação para Agentes Culturais - Fomento à Cultura",
+          "trecho": "Chamamento Público - Lei Aldir Blanc –Nº 009/2024 - Premiação para Agentes Culturais - Fomento à Cultura.",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "dispensado — O texto menciona o período de inscrição como de 07 de Outubro de 2024 até 01/11/2024 às 23h59.",
+          "trecho": "Período de Inscrição do Chamamento: de 07 de Outubro de 2024 até 01/11/2024 às 23h59. [rejeitado: data implausível para edital aberto]",
+          "oficial": false,
+          "dispensado": true
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Ribeirão Pires",
+          "trecho": "O Município de Ribeirão Pires, através da Secretaria de Educação e Cultura, TORNA PÚBLICO os seguintes editais...",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "SP",
+          "trecho": "Prefeitura Municipal de Ribeirão Pires - SP",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "Chamamento Público - Lei Aldir Blanc –Nº 009/2024 - Premiação para Agentes Culturais - Fomento à Cultura.",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · premio",
+          "trecho": "O Município de Ribeirão Pires, através da Secretaria de Educação e Cultura, TORNA PÚBLICO os seguintes editais...",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Ribeirão Pires",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-11T22:40:03+00:00",
       "modo": "validar",
@@ -2545,88 +2627,6 @@
           "valor": "cultura",
           "trecho": "formação em arte e cultura",
           "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Ribeirão Pires",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
-      ]
-    },
-    {
-      "em": "2026-10-11T12:03:38+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Chamamento Público - Lei Aldir Blanc - Nº 007/2024 - Rede Municipal de Pontos e Pontões de Cultura - Cultura Viva. \n                        ",
-      "qualidade": "parcial",
-      "comprovados": 8,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos"
-      ],
-      "pagina_oficial": "https://transparencia.ipiau.ba.gov.br/wp-includes/ExternalApps/downloader.php?hurl=aHR0cDovL2RvZW0ub3JnLmJyL2JhL2lwaWF1L2FycXVpdm9zL2Rvd25sb2FkLzY0ODI3ODA5ZDIwZDRjY2U0YzhjNjJiMDM4N2Y0N2IzL2EyZTg5ODgzN2M0YzE1ZjA5YTJjYzBiNGQ2Y2MxZmQwLnBkZg==",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi comprovado com informações sobre objeto, prazo de inscrição, órgão financiador, território, esfera, anexos, destinação e área de atuação.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, que é fomentar projetos culturais em Ipiaú/BA, e verificar se sua atuação está alinhada com as categorias mencionadas, como Linguagens Artísticas, Artesanato, Culturas Populares e de Matriz Africana. Além disso, deve preparar os documentos necessários e seguir o prazo de inscrição.",
-        "proximo_passo": "Verificar se a associação comunitária de Goiânia atende aos critérios do edital e se alinha ao objeto do chamamento público.",
-        "risco": "O risco é que a associação comunitária de Goiânia não atenda aos critérios do edital ou não esteja alinhada com as categorias culturais mencionadas, o que pode impedir o acesso ao fomento."
-      },
-      "erro": null,
-      "segundos": 902,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 7,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Valor, Requisitos",
-      "id": "a8847dab32f9fd7df958",
-      "encontrou": {
-        "Objeto": {
-          "valor": "fomento à execução de projetos culturais a serem realizados por agentes culturais do Município de Ipiaú/BA, no âmbito da Política Nacional Aldir Blanc (PNAB), contemplando as categorias Linguagens Artísticas, Artesanato, Culturas Populares e de Matriz Africana",
-          "trecho": "O objeto deste edital é o fomento à execução de projetos culturais a serem realizados por agentes culturais do Município de Ipiaú/BA, no âmbito da Política Nacional Aldir Blanc (PN",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "2026-08-11 a 2026-08-31",
-          "trecho": "no período de 11/08/2026 a 31/08/2026, referente a este Chamamento Público",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal de Ipiaú",
-          "trecho": "PREFEITURA MUNICIPAL DE IPIAÚ",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "BA",
-          "trecho": "Município de Ipiaú/BA",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "fomento à execução de projetos culturais",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "destinado ao fomento à execução de projetos culturais a serem realizados por agentes culturais do Município de Ipiaú/BA",
-          "oficial": true,
           "dispensado": false
         }
       },
