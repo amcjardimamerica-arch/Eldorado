@@ -8,9 +8,9 @@
 
 ```json
 {
- "cegos_da_1a_rodada": 33,
- "testados": 27,
- "com_rota_nova": 11,
+ "cegos_da_1a_rodada": 34,
+ "testados": 28,
+ "com_rota_nova": 12,
  "via_ponte": 0,
  "continuam_cegos": [
   "camara-goiania-pl",
@@ -115,8 +115,8 @@
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 569,
-   "achados_total_agora": 569,
+   "achados_total_1a": 591,
+   "achados_total_agora": 591,
    "no_fluxo": 2,
    "confirmadas": 0
   },
@@ -129,8 +129,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 49,
-   "achados_total_agora": 49,
+   "achados_total_1a": 50,
+   "achados_total_agora": 50,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -157,8 +157,8 @@
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 45,
-   "achados_total_agora": 45,
+   "achados_total_1a": 46,
+   "achados_total_agora": 46,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -191,7 +191,7 @@
  "pontos_com_redundancia": 10,
  "redundancia_vazia": [],
  "dominios_via_ponte": 1,
- "exemplos_da_rede_de_rotas": 1452
+ "exemplos_da_rede_de_rotas": 1565
 }
 ```
 
@@ -331,19 +331,19 @@
 
 ```json
 {
- "fontes_recebidas": 195,
+ "fontes_recebidas": 201,
  "por_origem": {
-  "conselho (fontes irmãs)": 127,
-  "Cartório (site oficial certificado)": 68
+  "conselho (fontes irmãs)": 128,
+  "Cartório (site oficial certificado)": 73
  },
  "lidas_nas_ultimas_24h": 120,
  "dimensionamento": {
-  "fontes": 195,
+  "fontes": 201,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 4,
-  "cobertura_diaria": 195,
+  "cobertura_diaria": 201,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -414,7 +414,7 @@
    ]
   },
   "Portal de transparência de fornecedor": {
-   "orgaos": 14,
+   "orgaos": 15,
    "exemplos": [
     "bndes.gov.br",
     "comunidade.transparenciainternacional.org.br",
