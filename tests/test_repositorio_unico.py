@@ -91,3 +91,18 @@ class TesteRegraExterna(unittest.TestCase):
         o = (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8"); self.assertIn('x["arquivado"] =', o); self.assertIn("livros_reabertos", o)
         self.assertIn("regra_de_resolucao", (ROOT / "scripts/gerar_lote_chrome.py").read_text(encoding="utf-8"))
         self.assertTrue((ROOT / "docs/prompts/PROMPT-BUSCA-EXTERNA-PADRAO.md").exists())
+
+
+class TesteInterceptadorNaCadeia(unittest.TestCase):
+    """11/10: o repositório direciona o Interceptador (fila e contexto) e recebe de volta só o que tem fonte oficial."""
+    def test_regua_no_retorno_e_passos(self):
+        self.assertFalse(R._oficial("https://buscarlicitacao.com.br/licitacoes/x"), "agregador não é fonte")
+        self.assertTrue(R._oficial("https://www.goiania.go.gov.br/edital.pdf"))
+        s = (ROOT / "src/repositorio_unico.py").read_text(encoding="utf-8")
+        self.assertIn("Interceptador: achar o site oficial (sem pista no livro", s); self.assertIn("Interceptador leu em agregador", s)
+
+    def test_interceptador_le_o_repositorio(self):
+        from src import interceptador as IC
+        self.assertTrue(callable(IC.alvo_do_repositorio))
+        s = (ROOT / "src/interceptador.py").read_text(encoding="utf-8")
+        self.assertIn("r1 = alvo_do_repositorio(feitos)", s); self.assertIn('"contexto_do_repositorio"', s); self.assertIn('["site"] = x["link_oficial"]', s)

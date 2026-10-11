@@ -365,6 +365,32 @@ def retentativa(feitos: dict, hoje: str | None = None) -> dict | None:
     return None
 
 
+def alvo_do_repositorio(feitos: dict, dias: int = 7) -> dict | None:
+    """11/10 (titular): o Interceptador está NA CADEIA. Pega, na ordem de prioridade do repositório único, o que o
+    Cartório não resolveu (site oficial não achado em 2 abordagens; itens não completados em 5) e recebe o CONTEXTO do
+    banco: o site oficial certificado (ponto de partida já confirmado), os itens já comprovados (não refazer), o que
+    falta, onde buscar (páginas do livro) e os editais anteriores do livro."""
+    from datetime import date as _d, timedelta as _td
+    rep = load_json(ROOT / "dados/oportunidades/repositorio_unico.json") if (ROOT / "dados/oportunidades/repositorio_unico.json").exists() else {}
+    lim = (_d.today() - _td(days=dias)).isoformat()
+    for x in rep.get("registros") or []:
+        if x.get("estado") != "em_verificacao" or not str(x.get("proximo_passo") or "").startswith("Interceptador"):
+            continue
+        if str((feitos.get(x["id"]) or {}).get("em") or "") >= lim:
+            continue
+        arq = ROOT / "dados/editais/extraidos" / f"{x['id']}.json"
+        e = load_json(arq) if arq.exists() else {"edital_id": x["id"], "titulo": x.get("titulo"), "url": x.get("url"), "orgao": x.get("orgao"), "fim": x.get("fim")}
+        if x.get("link_oficial"):
+            e.setdefault("validacao", {})["site"] = x["link_oficial"]          # certificado pelo Cartório: ponto de partida
+        e["contexto_do_repositorio"] = {"itens_ja_comprovados": {k: v.get("valor") for k, v in (x.get("itens") or {}).items() if v.get("estado") in ("comprovado", "dispensado")},
+                                        "faltam": x.get("faltam"), "onde_buscar": x.get("onde_buscar"),
+                                        "editais_anteriores_do_livro": (x.get("livro_historico") or {}).get("ultimos"), "passo": x.get("proximo_passo")}
+        write_json(arq, e)
+        return {"id": x["id"], "titulo": x.get("titulo"), "url": x.get("link_oficial") or x.get("url"), "de": "repositório único: " + str(x.get("proximo_passo"))[:80],
+                "modo": "validar", "tipo": "edital", "uf": x.get("uf")}
+    return None
+
+
 def proximo_alvo() -> dict | None:
     """ORDEM DE BUSCAS GUIADA PELOS LIVROS (titular, 01/10):
       1. GOIÁS            oportunidades do mapa e livros de Goiás que precisam de estudo
@@ -381,6 +407,9 @@ def proximo_alvo() -> dict | None:
     r0 = retentativa(feitos)                 # 02/10: o que falhou por rede vem primeiro (no Brasil, sempre)
     if r0:
         return r0
+    r1 = alvo_do_repositorio(feitos)         # 11/10 (titular): o REPOSITÓRIO ÚNICO direciona — integrado à cadeia
+    if r1:
+        return r1
     _dias = int((_par().get("interceptador") or {}).get("dias_sem_reestudar_o_mesmo_alvo", 7))
     _lim = (_d.today() - _td(days=_dias)).isoformat()
     recente = lambda i: str((feitos.get(i) or {}).get("em") or "") >= _lim

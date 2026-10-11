@@ -67,6 +67,15 @@ def _fluxo() -> list[dict]:
     return [{**x, "id": str(x["id"]), "_fonte": "fluxo"} for L in (fl.get("itens_por_uf") or {}).values() for x in L]
 
 
+def _oficial(url: str) -> bool:
+    """A régua única do Cartório: agregador, notícia e republicador são só pista, nunca fonte."""
+    try:
+        from .cartorio_leitura import regua
+        return bool(regua(str(url or ""))[0])
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def _skill(origem: str) -> str:
     o = str(origem or "").lower()
     for chave, k in (("pncp", "pncp"), ("querido", "querido_diario"), ("agregador", "agregador"), ("interceptador", "interceptador"),
@@ -147,9 +156,20 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
                 c = {**ci, "itens": {**(c.get("itens") or {}), **(ci.get("itens") or {})}, "dispensas": {**(c.get("dispensas") or {}), **(ci.get("dispensas") or {})},
                      "link_oficial": c.get("link_oficial") or ci.get("link_oficial"), "tentativa": max(int(c.get("tentativa") or 0), int(ci.get("tentativa") or 0)),
                      "esgotada": c.get("esgotada") or ci.get("esgotada"), "encaminhado": c.get("encaminhado") or ci.get("encaminhado")}
+        inv = {}
+        for i in [cid] + r["ids_origem"]:                     # 11/10: o que o INTERCEPTADOR comprovou volta ao banco
+            _ex = _j(ROOT / "dados/editais/extraidos" / f"{i}.json", {})
+            if (_ex.get("investigacao_ia") or {}).get("campos"):
+                inv = _ex["investigacao_ia"]["campos"]; break
         itens = {}
         for k in DOZE:
             it = (c.get("itens") or {}).get(k); dp = (c.get("dispensas") or {}).get(k); ck = r["checklist"].get(k) or {}
+            iv = inv.get(k) or {}
+            if not it and str(iv.get("comprovado")) == "True" and iv.get("trecho") and iv.get("fonte"):
+                if _oficial(iv["fonte"]):
+                    it = {"valor": iv.get("valor"), "trecho": iv.get("trecho"), "documento": iv.get("fonte"), "pagina": iv.get("pagina"), "por": "Interceptador"}
+                elif not (ck.get("s") in ("ok", "val", "dt") and ck.get("v")):
+                    ck = {"s": "ok", "v": f"{str(iv.get('valor') or '')[:80]} (Interceptador leu em agregador: {str(iv['fonte'])[:60]})"}
             if it and (it.get("trecho") or it.get("valor")):
                 itens[k] = {"estado": "comprovado", "valor": it.get("valor"), "trecho": it.get("trecho"), "documento": it.get("documento"), "pagina": it.get("pagina")}
             elif dp and dispensa_valida(dp.get("motivo") or ""):
@@ -193,6 +213,12 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
             passo = f"dispensar: {sem_livro[:120]} — confirmar na fonte"
         elif nt is not None and nt < LIMIAR_OSC and not fim and not any(x["estado"] == "comprovado" for x in itens.values()):
             passo = f"dispensar: a rede neural indica que não se aplica a OSC (nota {nt}) — confirmar na fonte"
+        elif not link and not onde:
+            passo = "Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa na web é a rota)"
+        elif not link and int(c.get("tentativa") or 0) >= 2:
+            passo = f"Interceptador: achar o site oficial (o Cartório não achou em {int(c.get('tentativa') or 0)} abordagens; buscar em: {', '.join(onde[:2]) or 'livro sem página'})"
+        elif link and int(c.get("tentativa") or 0) >= 5 and len(faltam) > 2 and _parado_ha(cid, hoje) <= 7:
+            passo = f"Interceptador: completar {len(faltam)} item(ns) a partir do site oficial certificado"
         elif not link:
             passo = f"Cartório: achar o site oficial ({sk}: {(skills.get(sk) or {}).get('como', '')[:90]})"
         elif int(c.get("tentativa") or 0) >= 5 and _parado_ha(cid, hoje) > 7:
@@ -256,6 +282,7 @@ def resumir(out: list[dict]) -> dict:
             "por_origem": dict(Counter(x["skill"] for x in ab if x["estado"] == "em_verificacao")),
             "itens_em_verificacao": dict(Counter(st for x in ab if x["estado"] == "em_verificacao" for st in (i["estado"] for i in x["itens"].values()))),
             "fila_chrome": sum(1 for x in ab if x["proximo_passo"].startswith("Busca externa")),
+            "fila_interceptador": sum(1 for x in ab if x["proximo_passo"].startswith("Interceptador")),
             "fila_busca_externa": sum(1 for x in ab if x["proximo_passo"].startswith("Busca externa")),
             "cruzamento": {"com_certidao": sum(1 for x in ab if any(i["estado"] in ("comprovado", "dispensado") for i in x["itens"].values())),
                            "com_livro": sum(1 for x in ab if x["livro"]), "com_livro_de_editais_anteriores": sum(1 for x in ab if x["livro_historico"]["editais_anteriores"]),
