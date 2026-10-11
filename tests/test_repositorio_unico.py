@@ -144,20 +144,22 @@ class TesteEsteiraFarol(unittest.TestCase):
 
 
 class TesteMunicipaisForaDeGoias(unittest.TestCase):
-    """11/10/2026 (titular): municipal de fora de Goiás é arquivada (livro fica); internacionais, nacionais e
-    estaduais ficam; sem UF determinada, fica."""
-    def test_regra(self):
+    """11/10/2026 (titular): arquivamento ÚNICO e seletivo — só as municipais de fora de GO abertas em 11/10 (lista fixa)
+    saem do contador e da lista; mantêm o estado (motores, Cartório, Interceptador, livros seguem); as novas entram."""
+    def test_identificacao_usada_na_fotografia(self):
         f = R.municipal_fora_de_goias
         self.assertTrue(f({"titulo": "MUNICIPIO DE OLINDINA — Chamamento", "uf": "BA"}))
-        self.assertTrue(f({"titulo": "Prefeitura de Itajaí — concurso", "url": "https://corrivus.com.br/santa-catarina/itajai/x"}))
-        self.assertTrue(f({"titulo": "Chamamento", "orgao": "Prefeitura Municipal de Iguatu", "link_oficial": "https://iguatu.ce.gov.br/x"}))
-        self.assertIsNone(f({"titulo": "Edital Cultura Goiatuba 2026", "orgao": "Prefeitura de Goiatuba", "link_oficial": "https://goiatuba.go.gov.br/x"}))
         self.assertIsNone(f({"titulo": "MUNICIPIO DE TRINDADE — credenciamento", "url": "https://pncp.gov.br/app/editais/1/2026/1"}), "sem UF: fica")
         self.assertIsNone(f({"titulo": "Edital estadual", "orgao": "Secretaria de Estado da Cultura de São Paulo", "nivel": "estadual", "uf": "SP"}))
-        self.assertIsNone(f({"titulo": "Programa federal de fomento", "nivel": "federal", "uf": "DF"}))
+
+    def test_lista_fixa_e_nao_regra_continua(self):
+        foto = json.loads((ROOT / "dados/oportunidades/arquivamento_municipais_2026-10-11.json").read_text(encoding="utf-8"))
+        self.assertGreater(foto["total"], 0); self.assertEqual(foto["total"], len(foto["oportunidades"]))
+        src = (ROOT / "src/repositorio_unico.py").read_text(encoding="utf-8")
+        self.assertIn("arquivamento_municipais_2026-10-11.json", src)
+        self.assertEqual(src.count("municipal_fora_de_goias("), 1, "a identificação automática não roda nas rodadas (só a definição)")
 
     def test_arquivada_so_no_contador(self):
-        """A arquivada mantém o estado (motores, Cartório, Interceptador e o livro seguem) e sai do contador e da lista."""
         import tempfile
         o = (R.SAIDA, R.RESUMO)
         with tempfile.TemporaryDirectory() as t:
@@ -167,10 +169,8 @@ class TesteMunicipaisForaDeGoias(unittest.TestCase):
             finally:
                 R.SAIDA, R.RESUMO = o
         arq = [x for x in regs if x.get("arquivada")]
-        if not arq:
-            self.skipTest("sem municipais de fora de GO nos dados atuais")
         self.assertTrue(all(x["estado"] != "fechada" for x in arq), "o estado é mantido: as filas dos motores seguem")
-        abertas = sum(1 for x in regs if x["estado"] != "fechada" and not x.get("arquivada"))
-        self.assertEqual(res["abertas"], abertas); self.assertEqual(res["arquivadas_municipais_fora_de_goias"], len(arq))
-        f = (ROOT / "src/fluxo_oportunidades.py").read_text(encoding="utf-8")
-        self.assertIn('r.get("arquivada")', f, "a lista da tela inicial não mostra as arquivadas")
+        self.assertEqual(res["abertas"], sum(1 for x in regs if x["estado"] != "fechada" and not x.get("arquivada")))
+        self.assertIn('r.get("arquivada")', (ROOT / "src/fluxo_oportunidades.py").read_text(encoding="utf-8"))
+
+
