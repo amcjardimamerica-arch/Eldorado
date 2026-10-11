@@ -1,5 +1,5 @@
 {
- "em": "2026-10-10T23:35:28+00:00",
+ "em": "2026-10-11T00:10:26+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
  "rotulados": 1884,
  "positivos": 746,
@@ -145,6 +145,12 @@
    "incerteza": 0.974
   },
   {
+   "titulo": "Instituto Porto abre edital de R$ 400 mil para OSCs da Grande São Paulo e Grande Belo Horizonte",
+   "url": "https://captadores.org.br/editais/instituto-porto-abre-edital-de-r-400-mil-para-oscs-da-grande-sao-paulo-e-grande-belo-horizonte",
+   "nota": 0.513,
+   "incerteza": 0.973
+  },
+  {
    "titulo": "Credenciamento para futuras contratações de atrações artísticas e culturais locais, para atender ao… — MUNICIPIO DE CERRO-CORA",
    "url": "https://pncp.gov.br/app/editais/08173502000126/2026/22",
    "nota": 0.485,
@@ -161,12 +167,6 @@
    "url": "https://pncp.gov.br/app/editais/10111631000131/2026/12",
    "nota": 0.484,
    "incerteza": 0.968
-  },
-  {
-   "titulo": "MUNICIPIO DE IVAIPORA — PREMIAÇÃO POR TRAJETÓRIA, PREVISTO EM PLANO DE AÇÃO DA PNAB, EM ATENDIMENTO ÀS NECESSIDADES DA SECRETARIA MUNICIPAL ",
-   "url": "https://pncp.gov.br/app/editais/75741330000137/2026/334",
-   "nota": 0.517,
-   "incerteza": 0.966
   },
   {
    "titulo": "Chamamento Público nº 06/2026 - Secretaria Executiva (SE) | PRONON",
@@ -237,12 +237,6 @@
   {
    "titulo": "Art Omi 2027: Architecture, Artists, Dance, Music",
    "url": "https://farolcultural.art/e/transartists-dutchculture-art-omi-2027-architecture-artists-dance-music-2026",
-   "nota": 0.476,
-   "incerteza": 0.952
-  },
-  {
-   "titulo": "Diário Oficial de Cipó (BA) 2026-09-28 — \"chamamento público\" \"organizações da sociedade civil\"",
-   "url": "https://data.queridodiario.ok.org.br/2907905/2026-09-28/f66a6594d9fe7d60c5060d0b14ddf9dede04a3ab.pdf",
    "nota": 0.476,
    "incerteza": 0.952
   },
@@ -353,6 +347,12 @@
    "url": "http://pesquisa.in.gov.br/imprensa/jsp/visualiza/index.jsp?data=11/09/2026&jornal=530&pagina=190",
    "nota": 0.532,
    "incerteza": 0.936
+  },
+  {
+   "titulo": "MUNICIPIO DE IVAIPORA — PREMIAÇÃO POR TRAJETÓRIA, PREVISTO EM PLANO DE AÇÃO DA PNAB, EM ATENDIMENTO ÀS NECESSIDADES DA SECRETARIA MUNICIPAL ",
+   "url": "https://pncp.gov.br/app/editais/75741330000137/2026/334",
+   "nota": 0.467,
+   "incerteza": 0.934
   },
   {
    "titulo": "Credenciamento de pessoas físicas e jurídicas que atuem na área musical — individualmente, em dupla, trio… — MUNICIPIO DE GRACCHO CARDOSO",
