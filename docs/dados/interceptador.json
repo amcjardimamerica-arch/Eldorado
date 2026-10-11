@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-11T22:37:02+00:00",
+  "em": "2026-10-11T22:53:48+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-11T22:23:14+00:00",
+  "ultimo_voo": "2026-10-11T22:40:03+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,98 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 313,
+    "missoes": 314,
     "validadas": 17,
     "parciais": 79,
-    "insuficientes": 211,
+    "insuficientes": 212,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 209,
+      "sim": 210,
       "nao": 54
     },
     "estrelas_de_ouro": 5,
     "fontes_novas_para_os_motores": 12,
-    "tempo_medio_min": 10.3
+    "tempo_medio_min": 10.4
   },
   "missoes": [
+    {
+      "em": "2026-10-11T22:40:03+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Pinhais (PR) 2026-09-28 — \"chamamento público\" \"organizações da sociedade civil\"",
+      "qualidade": "insuficiente",
+      "comprovados": 6,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprova a existência de um chamamento público para organizações da sociedade civil, vinculado ao Município de Pinhais, PR, com valor de R$ 650.000,00.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital abrange sua área de atuação, reunir os documentos necessários e se inscrever no prazo estabelecido, embora o prazo não tenha sido encontrado no texto.",
+        "proximo_passo": "Consultar o edital completo para obter informações sobre prazo, requisitos e área de atuação.",
+        "risco": "O prazo de inscrição não encontrado pode impedir a participação da associação, caso o edital tenha sido publicado em uma data anterior."
+      },
+      "erro": null,
+      "segundos": 823,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "a44b4fc1f114d001d840",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Abre crédito adicional suplementar no orçamento do Município",
+          "trecho": "Abre crédito adicional suplementar no orçamento do Município, com base em anulação parcial da Reserva de contingência de dotação orçamentária no valor de R$ 650.000,00 (seiscentos ",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Valor": {
+          "valor": "R$ 650.000,00 (seiscentos e cinquenta mil reais)",
+          "trecho": "Abre crédito adicional suplementar no orçamento do Município, com base em anulação parcial da Reserva de contingência de dotação orçamentária no valor de R$ 650.000,00 (seiscentos ",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Município de Pinhais",
+          "trecho": "Decreto 959/2026, de 25/09/2026 Abre crédito adicional suplementar no orçamento do Município, com base em anulação parcial da Reserva de contingência de dotação orçamentária no val",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "PR",
+          "trecho": "Diário Oficial do Município Edição Nº 2294 - Suplementar Pinhais - Paraná, 28 de Setembro de 2026",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Município de Pinhais",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/4119152/2026-09-28/693a23cd6f5aee717b7e95e32dde9ad23adce5b9.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-11T22:23:14+00:00",
       "modo": "validar",
@@ -2550,89 +2627,6 @@
           "valor": "elegível · fomento",
           "trecho": "destinado ao fomento à execução de projetos culturais a serem realizados por agentes culturais do Município de Ipiaú/BA",
           "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Ribeirão Pires",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
-      ]
-    },
-    {
-      "em": "2026-10-11T11:46:31+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Credenciamento de Entidades Privadas sem fins lucrativos para participação não onerosa na 1ª Festa Italiana. \n                              ",
-      "qualidade": "insuficiente",
-      "comprovados": 7,
-      "dispensados": 2,
-      "total": 12,
-      "nao_resolvidos": [
-        "Resultado",
-        "Prazo de recurso",
-        "Requisitos",
-        "Anexos",
-        "Área de atuação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital comprova a existência de um processo de credenciamento para entidades sem fins lucrativos, o que pode ser utilizado como fonte para ações de participação em eventos comunitários.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se credenciar como entidade privada sem fins lucrativos para participar da 1ª Festa Italiana, mesmo que a participação seja não onerosa.",
-        "proximo_passo": "Contatar a Prefeitura Municipal de Ribeirão Pires - SP para obter mais informações sobre o processo de credenciamento e os requisitos específicos.",
-        "risco": "A falta de informações sobre os requisitos e anexos pode impedir a associação de se credenciar corretamente."
-      },
-      "erro": null,
-      "segundos": 848,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "1e2766ace7234543f041",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Credenciamento de Entidades Privadas sem fins lucrativos para participação não onerosa na 1ª Festa Italiana",
-          "trecho": "Objeto: Credenciamento de Entidades Privadas sem fins lucrativos para participação não onerosa na 1ª Festa Italiana.",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "dispensado — O prazo de inscrição foi explicitado no texto.",
-          "trecho": "Os interessados deverão efetuar suas inscrições do dia 28/08/2023 até o dia 11/09/203 às 12:00 horas [rejeitado: data implausível para edital aberto]",
-          "oficial": false,
-          "dispensado": true
-        },
-        "Valor": {
-          "valor": "dispensado — O edital menciona que a participação é não onerosa.",
-          "trecho": "participação não onerosa na 1ª Festa Italiana",
-          "oficial": false,
-          "dispensado": true
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal de Ribeirão Pires - SP",
-          "trecho": "Prefeitura Municipal de Ribeirão Pires - SP e os cookies: nosso site usa cookies para melhorar a sua experiência de navegação.",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "SP",
-          "trecho": "Prefeitura Municipal de Ribeirão Pires - SP",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · outro",
-          "trecho": "Credenciamento de Entidades Privadas sem fins lucrativos",
-          "oficial": false,
           "dispensado": false
         }
       },
