@@ -24,7 +24,7 @@ def run() -> int:
         clues=[x for x in items if x not in verified]
         years=Counter(str(x.get("ano_pesquisado") or x.get("ano_referencia") or (x.get("coletado_em") or "")[:4]) for x in items)
         lines=[f"# {items[0].get('fonte_nome',fid)}","",f"- Classe: `{base}`",f"- Fonte: `{fid}`",f"- Eventos verificados: {len(verified)}",f"- Pistas aguardando confirmação: {len(clues)}",f"- Distribuição por ano pesquisado/coletado: {dict(sorted(years.items()))}","","## Padrões","","Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências independentes verificadas e revisão humana.","","## Eventos e pistas","" ]
-        lines += [f"- [{x['titulo']}]({x['url']}) — coletado em {x['coletado_em']}" for x in items[-50:]]
+        lines += [f"- [{x.get('titulo') or x.get('url')}]({x.get('url')}) — coletado em {x.get('coletado_em') or 'data não registrada'}" for x in items[-50:]]
         (folder/"dossie.md").write_text("\n".join(lines)+"\n",encoding="utf-8")
     return len(groups)
 

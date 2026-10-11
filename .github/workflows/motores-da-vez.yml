@@ -47,6 +47,13 @@ jobs:
             { timeout 600 python -m src.patrocinios; echo "rc_patrocinios=$?"; } 2>&1 | tail -c 6000 > estado/log_empresas_diario.txt
             { MOTORES_FONTES=empresas-incentivadas SENSORES_PRAZO_S=600 timeout 660 python -m src.sensores; echo "rc_sites_icms=$?"; } 2>&1 | tail -c 6000 >> estado/log_empresas_diario.txt
             { timeout 300 python -m src.biblioteca_empresas; echo "rc_biblioteca=$?"; } 2>&1 | tail -c 4000 >> estado/log_empresas_diario.txt
+            # 11/10 (titular): a página de empresas é ATUAL todos os dias — catálogo de incentivos, ranking de apoiadores,
+            # dossiês, radar de captação e o painel de empresas (sem nova coleta na internet) passam a ser diários
+            { timeout 300 python -m src.catalogo_incentivos >/dev/null; echo "rc_catalogo_incentivos=$?"; } 2>&1 | tail -c 2000 >> estado/log_empresas_diario.txt
+            { timeout 300 python -m src.ranking_apoiadores >/dev/null; echo "rc_ranking_apoiadores=$?"; } 2>&1 | tail -c 2000 >> estado/log_empresas_diario.txt
+            { timeout 300 python -m src.dossies >/dev/null; echo "rc_dossies=$?"; } 2>&1 | tail -c 2000 >> estado/log_empresas_diario.txt
+            { timeout 300 python -m src.radar_piloto >/dev/null; echo "rc_radar=$?"; } 2>&1 | tail -c 2000 >> estado/log_empresas_diario.txt
+            { timeout 300 python -m src.empresas painel GO; echo "rc_painel_empresas=$?"; } 2>&1 | tail -c 2000 >> estado/log_empresas_diario.txt
             echo "$D" > estado/empresas_leitura_diaria.txt
           fi
       - name: Empresas (motores 20 e 21) — só quando a rotina semanal venceu
@@ -56,6 +63,7 @@ jobs:
           # quando a última rotina semanal tem mais de 7,5 dias; a passagem seguinte já a vê em dia.
           if [ "$(python scripts/empresas_devidas.py | tail -1)" = "sim" ]; then
             { timeout 1800 python -m src.empresas semanal GO; echo "rc_semanal=$?"; } 2>&1 | tail -c 20000 > estado/log_empresas.txt
+            { timeout 300 python -m src.empresas painel GO; echo "rc_painel_empresas=$?"; } 2>&1 | tail -c 2000 >> estado/log_empresas.txt
             { timeout 600 python -m src.patrocinios; echo "rc_patrocinios=$?"; } 2>&1 | tail -c 8000 >> estado/log_empresas.txt
             { timeout 300 python -m src.biblioteca_empresas; timeout 300 python -m src.incentivos_empresas; echo "rc_incentivos=$?"; } 2>&1 | tail -c 8000 >> estado/log_empresas.txt
             # motor ÚNICO de incentivos (02/10): também os sites das maiores contribuintes do ICMS

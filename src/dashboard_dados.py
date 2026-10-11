@@ -1820,10 +1820,12 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
         pac_e = {"gerado_em": now_iso(), "estados": {}}
         cfg_e = load_json(ROOT / "config/empresas.json") if (ROOT / "config/empresas.json").exists() else {"estados": {}}
         for uf, est in cfg_e.get("estados", {}).items():
-            arq = emp_dir / f"{uf.lower()}.json"
+            from .empresas import arquivo_do_painel                  # 11/10: o arquivo onde a coleta grava (o da raiz estava vazio)
+            arq = arquivo_do_painel(uf)
             bloco = load_json(arq) if arq.exists() else None
             pac_e["estados"][uf] = {"nome": est.get("nome"), "ativo": bool(est.get("ativo")), "nota": est.get("nota"),
-                                    "gerado_em": (bloco or {}).get("gerado_em"), "anos_lidos": (bloco or {}).get("anos_lidos", []),
+                                    "gerado_em": (bloco or {}).get("painel_atualizado_em") or (bloco or {}).get("gerado_em"),
+                                    "coleta_em": (bloco or {}).get("gerado_em"), "anos_lidos": (bloco or {}).get("anos_lidos", []),
                                     "ultima_leitura": (bloco or {}).get("ultima_leitura"), "fonte_icms": (bloco or {}).get("fonte_icms"),
                                     "total": (bloco or {}).get("total", 0), "com_cadastro": (bloco or {}).get("com_cadastro", 0),
                                     "elegiveis": (bloco or {}).get("elegiveis", 0),
