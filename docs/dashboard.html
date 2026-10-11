@@ -1777,7 +1777,6 @@ box-sizing:border-box;}
   <div id="bz-dimensoes"></div>
   <button style="width:100%;margin-top:12px;color:#0B4EA2;font-weight:700;border-color:#9FC1E8" onclick="modulo('farol')">⚓ Ver detalhes do Farol</button>
 </div>
-</div>
 <!-- (Calendário de resultados e recursos removido em 06/09 a pedido do titular) -->
 <p class="meta" style="margin:0 0 10px">Editais abertos sob a ótica do Farol — os mesmos registros do Eldorado, priorizados pelos já verificados.</p>
 <div class="grade-ed" id="fed-grade"></div>
@@ -1798,8 +1797,7 @@ box-sizing:border-box;}
 
 </div><!-- /palco -->
 
-<footer><div id="rodada" style="font-size:13px;color:var(--tinta)"></div>
-Alimentação: segundas e sextas (varredura) · mensal (leis e compilado histórico).</footer>
+<!-- rodapé geral ("Última alimentação…" e "Alimentação: segundas e sextas…") removido em 11/10/2026 a pedido da titular -->
 </main>
 
 <div id="tip"></div>
@@ -6058,7 +6056,7 @@ document.addEventListener("visibilitychange",()=>{ if(!document.hidden&&Date.now
 document.addEventListener("close",()=>{ if(window._atualizarDepois){ window._atualizarDepois=false; atualizarAgora(); } },true);
 function iniciar(){
   $("portao").classList.add("oculto");$("app").classList.remove("oculto");
-  $("rodada").textContent="Última alimentação: "+(D.gerado_em?new Date(D.gerado_em).toLocaleString("pt-BR"):"—")
+  if($("rodada")) $("rodada").textContent="Última alimentação: "+(D.gerado_em?new Date(D.gerado_em).toLocaleString("pt-BR"):"—")
     +" · cadência: "+((D.cadencia&&D.cadencia.varredura)||"segundas e sextas");
   calAno=HOJE.getFullYear();calMes=HOJE.getMonth();
   busAno=HOJE.getFullYear();busMes=HOJE.getMonth();

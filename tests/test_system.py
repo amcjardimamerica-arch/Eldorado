@@ -413,8 +413,9 @@ class SystemTests(unittest.TestCase):
         self.assertIn("transparencia.html",idx)
         for arte in ("cabecalho.png",):
             self.assertTrue(pathlib.Path(f"docs/arte/{arte}").exists(),arte)
-        # dados de alimentação no FIM da página, não no topo
-        self.assertLess(html.find("</header>"), html.find('id="rodada"'))
+        # dados de alimentação nunca no topo; o rodapé geral foi removido em 11/10/2026 a pedido da titular
+        _pos_rodada = html.find('id="rodada"')
+        self.assertTrue(_pos_rodada == -1 or html.find("</header>") < _pos_rodada)
         # arte estática em proporção travada (nunca distorce)
         self.assertIn("hero-arte", html)
         css=html.split("<style>")[1].split("</style>")[0]
