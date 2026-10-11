@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-11T17:00:17+00:00",
+  "em": "2026-10-11T17:19:07+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-11T16:47:42+00:00",
+  "ultimo_voo": "2026-10-11T17:02:51+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 293,
+    "missoes": 294,
     "validadas": 17,
     "parciais": 74,
-    "insuficientes": 200,
+    "insuficientes": 201,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 196,
+      "sim": 197,
       "nao": 53
     },
     "estrelas_de_ouro": 5,
@@ -52,6 +52,88 @@
     "tempo_medio_min": 10.2
   },
   "missoes": [
+    {
+      "em": "2026-10-11T17:02:51+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Igaci (AL) 2026-09-23 — \"chamamento público\" \"organizações da sociedade civil\"",
+      "qualidade": "insuficiente",
+      "comprovados": 7,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Destinação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital comprovado menciona o credenciamento de Organizações da Sociedade Civil com atuação na área da saúde, o que é relevante para a AMC.",
+        "para_a_amc": "Uma associação comunitária de Goiânia, atuando na área da saúde, precisaria se credenciar conforme o edital, apresentando os documentos exigidos e demonstrando sua atuação na área da saúde.",
+        "proximo_passo": "Verificar os requisitos e anexos do edital para se preparar o credenciamento.",
+        "risco": "A falta de informações sobre prazo de inscrição e outros detalhes pode impedir a participação no processo."
+      },
+      "erro": null,
+      "segundos": 975,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "5ac1c675f62481fef162",
+      "encontrou": {
+        "Objeto": {
+          "valor": "credenciamento de Organizações da Sociedade Civil com atuação na área da saúde",
+          "trecho": "Edital de Credenciamento nº 01/2026, destinado ao credenciamento de Organizações da Sociedade Civil com atuação na área da saúde",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Igaci",
+          "trecho": "PREFEITURA MUNICIPAL DE IGACI",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "AL",
+          "trecho": "PREFEITURA MUNICIPAL DE IGACI",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "dispensado — O edital menciona a área da saúde.",
+          "trecho": "credenciamento de Organizações da Sociedade Civil com atuação na área da saúde",
+          "oficial": false,
+          "dispensado": true
+        },
+        "Requisitos": {
+          "valor": "credenciamento de Organizações da Sociedade Civil com atuação na área da saúde",
+          "trecho": "Edital de Credenciamento nº 01/2026, destinado ao credenciamento de Organizações da Sociedade Civil com atuação na área da saúde",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Igaci",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/2703106/2026-09-23/99790c1bed0425080de7a4f47c0fa7da93d9b5d9.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-11T16:47:42+00:00",
       "modo": "validar",
@@ -2785,69 +2867,6 @@
         "financiador_ano",
         "governo",
         "parceiro"
-      ]
-    },
-    {
-      "em": "2026-10-11T06:27:02+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Secretaria de Estado da Cultura (Secult) — Governo de Goiás lança edital para Pontos e Pontões de Cultura com … — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 4,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Anexos",
-        "Destinação"
-      ],
-      "pagina_oficial": "https://mostratenpo.cultura.go.gov.br/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi comprovado como lançado pela Secretaria de Estado da Cultura (Secult) no estado de Goiás, sendo uma fonte válida para obtenção de informações sobre oportunidades de fomento.",
-        "para_a_amc": "Para acessar o edital, uma associação comunitária de Goiânia (assistência social, cultura, educação, esporte) precisaria verificar as condições e requisitos do edital, mesmo que não encontrados no texto, e se enquadrar no objeto do edital, que é cultura.",
-        "proximo_passo": "Consultar o edital completo para obter informações sobre requisitos, prazos e outros detalhes necessários para a candidatura.",
-        "risco": "A falta de informações específicas como prazo, valor e requisitos pode impedir a associação de se candidatar adequadamente ao edital."
-      },
-      "erro": null,
-      "segundos": 805,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 4,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-op-7c57da2412db",
-      "encontrou": {
-        "Órgão / financiador": {
-          "valor": "Secretaria de Estado da Cultura (Secult)",
-          "trecho": "A mostra é promovida pelo Governo de Goiás, por meio da Secretaria de Estado da Cultura (Secult), em correalização com a Universidade Federal de Goiás (UFG) e a Fundação Rádio e Te",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "A mostra é promovida pelo Governo de Goiás, por meio da Secretaria de Estado da Cultura (Secult), em correalização com a Universidade Federal de Goiás (UFG) e a Fundação Rádio e Te",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "A mostra é promovida pelo Governo de Goiás, por meio da Secretaria de Estado da Cultura (Secult), em correalização com a Universidade Federal de Goiás (UFG) e a Fundação Rádio e Te",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Secretaria de Estado da Cultura (Secult)",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador"
       ]
     }
   ],
