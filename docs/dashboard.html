@@ -1254,210 +1254,206 @@ box-sizing:border-box;}
 <!-- ============ ELDORADO · BÚSSOLA ============ -->
 <section id="v-neural" class="oculto" style="margin-top:14px">
 <style>
-/* SALA DE CONTROLE DA REDE NEURAL (titular, 11/10/2026): a mesa de uma usina — chapa verde-acinzentada, mostradores de
-   ponteiro, janelas de alarme e o diagrama mímico da esteira. Estilo restrito a esta seção. */
-#v-neural{--chapa:#6E857A;--chapa2:#5F7469;--moldura:#2B3530;--mostrador:#E9EBE2;--tinta:#1E2622;--apagado:#8FA096;
-  --ambar:#E8A33C;--desarme:#C2392F;--lampada:#4FAE5C;--cinza:#A7B0AA;
-  font-family:"Barlow",system-ui,sans-serif;color:var(--tinta)}
-#v-neural .mesa{background:var(--chapa);border:6px solid var(--moldura);border-radius:14px;padding:18px 18px 22px;
-  box-shadow:inset 0 2px 0 rgba(255,255,255,.18),inset 0 -3px 0 rgba(0,0,0,.18)}
-#v-neural .placa{font-family:"Barlow Condensed","Barlow",sans-serif;font-variant-numeric:tabular-nums;letter-spacing:.02em}
-#v-neural .topo{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;color:#F4F6F0}
-#v-neural .topo h2{margin:0;font:600 30px/1 "Barlow Condensed",sans-serif;letter-spacing:.01em}
-#v-neural .topo p{margin:6px 0 0;max-width:62ch;color:#DCE4DD;font-size:14px}
-#v-neural .relogio{background:var(--moldura);color:#CFE7C9;border-radius:6px;padding:6px 12px;font:500 15px "Barlow Condensed",sans-serif}
-#v-neural .relogio b{color:#F4F6F0}
-/* anunciador: cada instrumento é uma janela; acende quando sai do normal */
-#v-neural .anunciador{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:4px;margin:16px 0;background:var(--moldura);
-  padding:5px;border-radius:6px}
-#v-neural .janela{min-height:46px;border-radius:2px;padding:6px 7px;font:600 12.5px/1.15 "Barlow Condensed",sans-serif;background:#3B4741;color:var(--apagado);
-  display:flex;align-items:center;cursor:pointer;border:0;text-align:left}
-#v-neural .janela.amarelo{background:var(--ambar);color:#2B1C05;box-shadow:0 0 14px rgba(232,163,60,.45)}
-#v-neural .janela.vermelho{background:var(--desarme);color:#FFF4F2;box-shadow:0 0 16px rgba(194,57,47,.55);animation:pisca 1.4s steps(2) infinite}
-#v-neural .janela.cinza{background:#56615B;color:#C8D0CB}
-#v-neural .janela:focus-visible,#v-neural .instr:focus-visible{outline:3px solid #F4F6F0;outline-offset:2px}
-@keyframes pisca{50%{filter:brightness(.72)}}
+/* SALA DE CONTROLE v2 (titular, 11/10/2026) — "o datacenter vivo": computação cultivada, um axônio que desce a página e
+   sete células em sequência. Claro e nacarado; profundidade por paralaxe e inclinação 3D leve; estilo só desta seção. */
+#v-neural{--perola:#EEF1F6;--tinta:#1D2738;--suave:#5E6B7E;--micelio:#4F8C88;--bio:#7A6AF0;--musgo:#4FA374;--ambar:#E2A04A;--coral:#DE5A52;--cinza:#A9B1BE;
+  font-family:"Manrope",system-ui,sans-serif;color:var(--tinta)}
+#v-neural .cv{position:relative;overflow:hidden;border-radius:30px;padding:34px 30px 40px 44px;isolation:isolate;
+  background:radial-gradient(1200px 520px at 85% -10%,#E3E0FB 0,transparent 60%),radial-gradient(900px 600px at -10% 40%,#DCEDEB 0,transparent 55%),var(--perola)}
+#v-neural .veios{position:absolute;inset:-12% -5%;z-index:-1;pointer-events:none;will-change:transform}
+#v-neural .veios path{fill:none;stroke-linecap:round}
+#v-neural .disp{font-family:"Unbounded","Manrope",sans-serif;letter-spacing:-.01em}
 /* núcleo */
-#v-neural .nucleo{display:grid;grid-template-columns:minmax(260px,340px) 1fr;gap:18px;align-items:center}
-#v-neural .dial-grande{background:var(--moldura);border-radius:50%;padding:12px;aspect-ratio:1}
-#v-neural .resumo-nucleo{color:#F4F6F0}
-#v-neural .resumo-nucleo h3{font:600 20px "Barlow Condensed",sans-serif;margin:0 0 8px}
-#v-neural .lampadas{display:flex;gap:18px;flex-wrap:wrap;margin:8px 0 14px}
-#v-neural .lamp{display:flex;align-items:center;gap:7px;font:600 16px "Barlow Condensed",sans-serif}
-#v-neural .lamp i{width:14px;height:14px;border-radius:50%;display:inline-block;box-shadow:inset 0 -2px 3px rgba(0,0,0,.35)}
-#v-neural .mimico{background:var(--moldura);border-radius:8px;padding:10px 8px;overflow-x:auto}
-#v-neural .mimico svg{min-width:760px;display:block}
-#v-neural .tubo{stroke:#9DB3A7;stroke-width:8;fill:none}
-#v-neural .fluxo{stroke:#CFE7C9;stroke-width:3;fill:none;stroke-dasharray:6 10;animation:corre 2.4s linear infinite}
-@keyframes corre{to{stroke-dashoffset:-32}}
-/* mesa de instrumentos */
-#v-neural .grupo{margin-top:20px}
-#v-neural .grupo h4{margin:0 0 8px;color:#F4F6F0;font:600 18px "Barlow Condensed",sans-serif;display:flex;gap:10px;align-items:baseline}
-#v-neural .grupo h4 small{font:500 13px "Barlow",sans-serif;color:#DCE4DD}
-#v-neural .bancada{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:10px}
-#v-neural .instr{display:flex;flex-direction:column;justify-content:flex-start;background:var(--mostrador);border-radius:8px;padding:10px 10px 8px;border:0;text-align:left;cursor:pointer;color:var(--tinta);
-  box-shadow:inset 0 0 0 3px var(--moldura),0 2px 0 rgba(0,0,0,.25);position:relative}
-#v-neural .instr .nome{font:600 15px/1.1 "Barlow Condensed",sans-serif;min-height:34px;padding-right:18px}
-#v-neural .instr .lamp-i{position:absolute;top:10px;right:10px;width:12px;height:12px;border-radius:50%;box-shadow:inset 0 -2px 3px rgba(0,0,0,.35)}
-#v-neural .instr .contador{font:600 34px/1 "Barlow Condensed",sans-serif;font-variant-numeric:tabular-nums;margin:6px 0 2px;letter-spacing:.01em}
-#v-neural .instr .un{font:500 13px "Barlow",sans-serif;color:#56635C}
-#v-neural .instr .rodape{display:flex;justify-content:space-between;align-items:end;gap:6px;margin-top:auto;padding-top:6px;font-size:12px;color:#56635C}
-/* contador de tambor: cada algarismo numa janela, como os contadores mecânicos dos painéis */
-#v-neural .tambor{display:flex;gap:2px;margin:10px 0 4px;flex-wrap:wrap}
-#v-neural .tambor span{background:linear-gradient(#1C2420,#38443E 48%,#1C2420 52%,#2B3530);color:#F1F3EA;border-radius:3px;min-width:22px;padding:3px 0 2px;
-  text-align:center;font:600 26px/1 "Barlow Condensed","Arial Narrow",sans-serif;box-shadow:inset 0 1px 2px rgba(0,0,0,.6)}
-#v-neural .instr .ef{margin-top:8px;font-size:13px;line-height:1.35;color:#3D4943;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
-#v-neural .tambor span.sep{background:none;color:#2B3530;min-width:6px;box-shadow:none}
-#v-neural .faixa-fluxos{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px}
-#v-neural .fl{background:var(--moldura);color:#DCE4DD;border-radius:5px;padding:7px 9px;font:500 13px "Barlow",sans-serif;display:flex;gap:8px;align-items:center}
-#v-neural .fl i{flex:none;width:11px;height:11px;border-radius:50%}
-#v-neural .tempo{background:var(--moldura);border-radius:8px;padding:10px 14px;color:#DCE4DD;columns:2 320px;column-gap:28px}
-#v-neural .tempo div{break-inside:avoid;padding:4px 0;border-bottom:1px solid #3B4741;font-size:13.5px;display:flex;gap:10px}
-#v-neural .tempo b{color:#F4F6F0;font:600 14px "Barlow Condensed",sans-serif;min-width:78px}
-/* ficha do instrumento */
-#v-neural .ficha{position:fixed;inset:auto 0 0 auto;top:0;width:min(440px,100%);background:var(--mostrador);z-index:60;padding:22px;overflow:auto;
-  box-shadow:-8px 0 30px rgba(0,0,0,.35);border-left:6px solid var(--moldura);transform:translateX(105%);transition:transform .25s ease}
-#v-neural .ficha.aberta{transform:none}
-#v-neural .ficha h3{margin:0 0 4px;font:600 26px/1.05 "Barlow Condensed",sans-serif}
-#v-neural .ficha dt{font:600 14px "Barlow Condensed",sans-serif;color:#56635C;margin-top:14px}
-#v-neural .ficha dd{margin:3px 0 0;font-size:15px;line-height:1.45}
-#v-neural .ficha .fechar{float:right;border:0;background:var(--moldura);color:#F4F6F0;border-radius:6px;padding:6px 12px;font:600 14px "Barlow Condensed",sans-serif;cursor:pointer}
-@media (max-width:760px){#v-neural .nucleo{grid-template-columns:1fr}#v-neural .dial-grande{max-width:300px;margin:auto}}
-@media (max-width:520px){#v-neural .anunciador{grid-template-columns:repeat(2,1fr)}#v-neural .janela{font-size:11.5px;min-height:40px}
-  #v-neural .mesa{padding:12px 10px 16px}#v-neural .topo h2{font-size:26px}}
-@media (prefers-reduced-motion:reduce){#v-neural .fluxo,#v-neural .janela.vermelho{animation:none}#v-neural .ficha{transition:none}}
+#v-neural .nucleo{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;margin-bottom:26px}
+#v-neural .orbe{width:168px;height:168px;border-radius:50%;display:grid;place-items:center;position:relative;cursor:default;
+  background:radial-gradient(circle at 34% 30%,#fff 0,#F4F2FF 22%,#D9D3FB 52%,#A9C9C5 78%,#7FA9A4 100%);
+  box-shadow:0 30px 60px -28px rgba(122,106,240,.55),inset -10px -16px 30px rgba(79,140,136,.35),inset 8px 10px 24px rgba(255,255,255,.9);animation:respira 7s ease-in-out infinite}
+#v-neural .orbe::after{content:"";position:absolute;inset:-14px;border-radius:50%;border:1px solid rgba(122,106,240,.25);animation:respira 7s ease-in-out infinite reverse}
+#v-neural .orbe b{font:600 46px/1 "Unbounded",sans-serif;color:var(--tinta)}
+#v-neural .orbe small{position:absolute;bottom:38px;font-size:12px;color:var(--suave)}
+@keyframes respira{50%{transform:scale(1.035)}}
+#v-neural .nucleo h2{margin:0;font:500 30px/1.05 "Unbounded",sans-serif}
+#v-neural .nucleo p{margin:8px 0 12px;max-width:60ch;color:var(--suave);font-size:15px;line-height:1.5}
+#v-neural .esporos{display:flex;flex-wrap:wrap;gap:8px}
+#v-neural .esporo{display:inline-flex;align-items:center;gap:8px;border:0;cursor:pointer;border-radius:999px;padding:6px 12px 6px 9px;font:600 12.5px "Manrope",sans-serif;
+  max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  background:rgba(255,255,255,.75);color:var(--tinta);box-shadow:0 6px 18px -10px rgba(29,39,56,.35)}
+#v-neural .esporo i{width:10px;height:10px;border-radius:50%;flex:none}
+#v-neural .esporo.vermelho i{box-shadow:0 0 0 4px rgba(222,90,82,.18)}
+#v-neural .leitura{font-size:13px;color:var(--suave);margin-top:10px}
+/* axônio e células */
+#v-neural .fluxo{position:relative;display:grid;grid-template-columns:1fr 70px 1fr;grid-auto-rows:minmax(86px,auto);row-gap:14px}
+#v-neural .axonio{position:absolute;left:50%;top:0;height:100%;width:70px;transform:translateX(-50%);overflow:visible;pointer-events:none}
+#v-neural .axonio .corpo{stroke:url(#nv-grad);stroke-width:5;fill:none;opacity:.55}
+#v-neural .axonio .sinal{stroke:var(--bio);stroke-width:3;fill:none;stroke-dasharray:2 34;stroke-linecap:round;animation:desce 3.2s linear infinite}
+@keyframes desce{to{stroke-dashoffset:-36}}
+#v-neural .no{grid-column:2;display:grid;place-items:center;position:relative}
+#v-neural .no span{width:18px;height:18px;border-radius:50%;background:#fff;border:4px solid var(--micelio);box-shadow:0 0 0 6px rgba(79,140,136,.12)}
+#v-neural .ponte{grid-column:1/-1;text-align:center;font-size:12.5px;color:var(--suave);margin:-6px 0}
+#v-neural .ponte b{font:600 13px "Unbounded",sans-serif;color:var(--micelio)}
+#v-neural .celula{position:relative;border:0;text-align:left;cursor:pointer;color:var(--tinta);padding:18px 20px 16px;
+  background:rgba(255,255,255,.66);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-radius:30px 54px 34px 58px / 44px 32px 52px 36px;box-shadow:0 22px 44px -30px rgba(29,39,56,.45),inset 0 0 0 1px rgba(79,140,136,.22);
+  transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .25s ease,box-shadow .25s ease}
+#v-neural .celula:hover{box-shadow:0 30px 60px -30px rgba(122,106,240,.5),inset 0 0 0 1px rgba(122,106,240,.35)}
+#v-neural .celula:focus-visible{outline:3px solid var(--bio);outline-offset:4px}
+#v-neural .celula.esq{grid-column:1}#v-neural .celula.dir{grid-column:3}
+#v-neural .celula::after{content:"";position:absolute;top:50%;width:18px;height:18px;margin-top:-9px;border-radius:50%;background:#fff;border:4px solid var(--no,#4F8C88);
+  box-shadow:0 0 0 6px rgba(79,140,136,.12)}
+#v-neural .celula.esq::after{right:-48px}#v-neural .celula.dir::after{left:-48px}
+#v-neural .celula{align-self:start}
+#v-neural .celula .vazao{margin-top:10px;font-size:12.5px;color:var(--suave)}#v-neural .celula .vazao b{font:600 13px "Unbounded",sans-serif;color:var(--micelio)}
+#v-neural .celula .cab{display:flex;align-items:baseline;gap:10px;justify-content:space-between}
+#v-neural .celula h3{margin:0;font:500 19px "Unbounded",sans-serif}
+#v-neural .celula h3 em{font-style:normal;color:var(--micelio);margin-right:8px;font-size:15px}
+#v-neural .estado{font:700 12px "Manrope",sans-serif;padding:4px 10px;border-radius:999px;white-space:nowrap}
+#v-neural .celula p{margin:6px 0 12px;color:var(--suave);font-size:13.5px;line-height:1.45;max-width:52ch}
+#v-neural .aneis{display:flex;gap:14px;flex-wrap:wrap}
+#v-neural .anel{display:flex;flex-direction:column;align-items:center;gap:3px;width:78px}
+#v-neural .anel small{font-size:11.5px;line-height:1.2;text-align:center;color:var(--suave)}
+#v-neural .conta{display:flex;flex-direction:column;justify-content:center;min-width:78px}
+#v-neural .conta b{font:600 22px/1 "Unbounded",sans-serif}
+#v-neural .conta small{font-size:11.5px;color:var(--suave);margin-top:4px;line-height:1.2}
+/* detalhe */
+#v-neural .detalhe{position:fixed;top:0;right:0;height:100%;width:min(480px,100%);z-index:70;overflow:auto;padding:26px 24px 40px;
+  background:rgba(246,247,251,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:-24px 0 60px -30px rgba(29,39,56,.5);
+  transform:translateX(105%);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+#v-neural .detalhe.aberto{transform:none}
+#v-neural .detalhe h3{margin:4px 0 6px;font:500 24px/1.1 "Unbounded",sans-serif}
+#v-neural .detalhe .fechar{float:right;border:0;background:var(--tinta);color:#fff;border-radius:999px;padding:7px 14px;font:600 13px "Manrope",sans-serif;cursor:pointer}
+#v-neural .instr{border-top:1px solid rgba(79,140,136,.2);padding:14px 0}
+#v-neural .instr .linha{display:grid;grid-template-columns:62px 1fr;gap:12px;align-items:center}
+#v-neural .instr h4{margin:0;font:700 15px "Manrope",sans-serif}
+#v-neural .instr .val{font:600 18px "Unbounded",sans-serif}
+#v-neural .instr dl{margin:10px 0 0;display:grid;grid-template-columns:96px 1fr;gap:5px 12px;font-size:13.5px;line-height:1.45}
+#v-neural .instr dt{color:var(--suave)}#v-neural .instr dd{margin:0}
+@media (max-width:820px){#v-neural .fluxo{grid-template-columns:34px 1fr}#v-neural .axonio{left:17px}
+  #v-neural .celula{grid-row:auto!important}#v-neural .celula.esq::after,#v-neural .celula.dir::after{left:-34px;right:auto}
+  #v-neural .no{grid-column:1}#v-neural .celula.esq,#v-neural .celula.dir{grid-column:2}#v-neural .ponte{grid-column:2;text-align:left}
+  #v-neural .nucleo{grid-template-columns:1fr;justify-items:start}#v-neural .orbe{width:132px;height:132px}#v-neural .orbe b{font-size:36px}#v-neural .orbe small{bottom:28px}}
+#v-neural .esporo.mais{display:none;background:var(--tinta);color:#fff}
+@media (max-width:820px){#v-neural .esporos:not(.todos) .esporo.alem{display:none}#v-neural .esporos:not(.todos) .esporo.mais{display:inline-flex}}
+@media (prefers-reduced-motion:reduce){#v-neural .orbe,#v-neural .orbe::after,#v-neural .axonio .sinal{animation:none}#v-neural .celula,#v-neural .detalhe{transition:none}}
 </style>
-<div class="mesa">
-  <div class="topo">
+<div class="cv" id="nv-cv">
+  <svg class="veios" data-p=".06" aria-hidden="true"></svg><svg class="veios" data-p=".14" aria-hidden="true"></svg><svg class="veios" data-p=".24" aria-hidden="true"></svg>
+  <header class="nucleo">
+    <div class="orbe" id="nv-orbe" aria-label="Índice de saúde do sistema"><b>—</b><small>saúde</small></div>
     <div><h2>Sala de controle</h2>
-      <p>A rede neural e o maestro conduzem o Eldorado. Cada mostrador é uma função: o que faz, quando foi acionada, o que mudou e como está. Janela acesa no painel de alarmes pede atenção.</p></div>
-    <div class="relogio" id="sc-relogio">lendo a sala de controle…</div>
-  </div>
-  <div class="anunciador" id="sc-anunciador" role="list" aria-label="Painel de alarmes"></div>
-  <div class="nucleo">
-    <div class="dial-grande" id="sc-nucleo" aria-label="Índice de saúde do sistema"></div>
-    <div class="resumo-nucleo">
-      <h3>Índice de saúde do sistema</h3>
-      <div class="lampadas" id="sc-lampadas"></div>
-      <div class="mimico" id="sc-mimico" aria-label="Diagrama da esteira"></div>
-    </div>
-  </div>
-  <div id="sc-bancadas"></div>
-  <div class="grupo"><h4>Fluxos automáticos <small>última execução de cada fluxo do GitHub</small></h4><div class="faixa-fluxos" id="sc-fluxos"></div></div>
-  <div class="grupo"><h4>Linha do tempo <small>acionamentos mais recentes</small></h4><div class="tempo" id="sc-tempo"></div></div>
+      <p>O caminho que um dado percorre no Eldorado, do motor que o encontra até o Farol. Cada célula é uma etapa; toque nela para ver tudo o que acontece ali.</p>
+      <div class="esporos" id="nv-esporos"></div><div class="leitura" id="nv-leitura">lendo…</div></div>
+  </header>
+  <div class="fluxo" id="nv-fluxo"></div>
 </div>
-<aside class="ficha" id="sc-ficha" aria-hidden="true"></aside>
+<aside class="detalhe" id="nv-detalhe" aria-hidden="true"></aside>
 <script>
 (function(){
-  const COR={verde:"var(--lampada)",amarelo:"var(--ambar)",vermelho:"var(--desarme)",cinza:"var(--cinza)"};
-  const NOME_EST={verde:"normal",amarelo:"atenção",vermelho:"alarme",cinza:"sem leitura"};
+  const COR={verde:"#4FA374",amarelo:"#E2A04A",vermelho:"#DE5A52",cinza:"#A9B1BE"};
+  const EST={verde:"normal",amarelo:"atenção",vermelho:"alarme",cinza:"sem leitura"};
+  const ETAPAS=[
+    {id:"coleta",nome:"Coleta",faz:"O maestro planeja o dia e cobra a leitura; os motores varrem diários, portais e agregadores.",ids:["ma_cobertura","mo_saude","ma_esgotados","mo_cadencia","es_coleta"],ponte:0},
+    {id:"aprendizado",nome:"Aprendizado",faz:"A rede neural aprende com as decisões humanas e dá a cada registro a chance de ser oportunidade real.",ids:["rn_auc","rn_precisao","rn_revocacao","rn_brier","rn_treino"],ponte:1},
+    {id:"repositorio",nome:"Repositório",faz:"Um registro por oportunidade; cada uma ganha um livro que guia a busca.",ids:["es_abertas","es_livros","es_vigilancia"],ponte:2},
+    {id:"certificacao",nome:"Certificação",faz:"O Cartório encontra o documento oficial e certifica os 12 itens com trecho e página.",ids:["ca_12"],ponte:4},
+    {id:"investigacao",nome:"Investigação",faz:"Os Pilotos pesquisam o que o Cartório não alcança e descobrem novas fontes.",ids:["pi_interceptador","pi_espiao","pi_piloto"],ponte:5},
+    {id:"destino",nome:"Destino",faz:"O que está completo segue para o Farol; as empresas financiadoras alimentam a busca.",ids:["em_rankings"],ponte:7,extra:"farol"},
+    {id:"manutencao",nome:"Manutenção",faz:"O sistema cuida de si: arquivos sem uso, arquivo frio e a saúde dos fluxos automáticos.",ids:["hi_uso","hi_frio"],extra:"fluxos"}];
+  const CURTO={ma_cobertura:"cobertura do dia",mo_saude:"funcionando",ma_esgotados:"sem leitura completa",mo_cadencia:"fora da cadência",es_coleta:"coletados",
+    rn_auc:"discernimento",rn_precisao:"precisão",rn_revocacao:"revocação",rn_brier:"erro de calibração",rn_treino:"idade do modelo (dias)",es_abertas:"abertas",
+    es_livros:"com livro",es_vigilancia:"livros vigiados",ca_12:"itens certificados",pi_interceptador:"na fila do Interceptador",pi_espiao:"empresas do Espião",
+    pi_piloto:"voos do Piloto hoje",em_rankings:"empresas nos rankings",hi_uso:"arquivos sem uso",hi_frio:"pacotes no arquivo frio"};
+  const PONTE=["coletados","oportunidades distintas","abertas","com livro","certificadas","na fila do Interceptador","na verificação externa","prontas para o Farol"];
   let SC=null;
   const e=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-  const idade=h=>h==null?"—":h<1?`há ${Math.max(1,Math.round(h*60))} min`:h<48?`há ${Math.round(h)} h`:`há ${Math.round(h/24)} dias`;
-  const num=v=>v==null?"—":typeof v==="number"?(Math.abs(v)<1&&v!==0?v.toLocaleString("pt-BR",{maximumFractionDigits:3}):v.toLocaleString("pt-BR",{maximumFractionDigits:1})):e(v);
-  const quieto=matchMedia("(prefers-reduced-motion: reduce)").matches;
-  function fontes(){ if(document.getElementById("fonte-barlow"))return; const l=document.createElement("link"); l.id="fonte-barlow"; l.rel="stylesheet";
-    l.href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600&display=swap"; document.head.appendChild(l); }
-  // mostrador de ponteiro (arco de 240°), com faixas normal/alarme
-  function dial(valor,escala,faixa,tam,grande){
-    const [a,b]=escala, ang=v=>-210+240*Math.min(1,Math.max(0,(v-a)/(b-a)));
-    const cx=tam/2, cy=tam/2+tam*.04, r=tam*.40;
-    const pt=(g,rr)=>[cx+rr*Math.cos(g*Math.PI/180), cy+rr*Math.sin(g*Math.PI/180)];
-    const arco=(v0,v1,cor,w)=>{const g0=ang(v0),g1=ang(v1);const [x0,y0]=pt(g0,r),[x1,y1]=pt(g1,r);return `<path d="M${x0} ${y0} A${r} ${r} 0 ${g1-g0>180?1:0} 1 ${x1} ${y1}" stroke="${cor}" stroke-width="${w}" fill="none"/>`;};
-    let zonas="";
-    if(faixa){ const al=faixa.alarme||[null,null], no=faixa.normal||[null,null];
-      if(al[0]!=null) zonas+=arco(a,Math.max(a,al[0]),"#C2392F",tam*.05);
-      if(no[0]!=null) zonas+=arco(al[0]!=null?al[0]:a,Math.max(a,no[0]),"#E8A33C",tam*.05);
-      if(al[1]!=null) zonas+=arco(Math.min(b,al[1]),b,"#C2392F",tam*.05);
-      if(no[1]!=null) zonas+=arco(Math.min(b,no[1]),al[1]!=null?al[1]:b,"#E8A33C",tam*.05);
-      const v0=no[0]!=null?no[0]:a, v1=no[1]!=null?no[1]:b; zonas+=arco(v0,v1,"#4FAE5C",tam*.05); }
-    let marcas=""; for(let i=0;i<=10;i++){const g=-210+24*i,[x0,y0]=pt(g,r*.80),[x1,y1]=pt(g,r*(i%5?0.88:0.92));marcas+=`<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="#2B3530" stroke-width="${i%5?1.2:2.2}"/>`;}
-    const alvo=valor==null?-210:ang(valor), [px,py]=pt(alvo,r*.86);
-    const fundo=grande?"#E9EBE2":"none";
-    return `<svg viewBox="0 0 ${tam} ${tam}" width="100%" role="img" aria-label="mostrador ${valor==null?"sem leitura":valor}">
-      ${grande?`<circle cx="${cx}" cy="${cy-tam*.04}" r="${tam*.48}" fill="${fundo}"/>`:""}
-      ${zonas}${marcas}
-      <g class="ponteiro" style="transform-origin:${cx}px ${cy}px;transform:rotate(${quieto?0:-(alvo+210)}deg);transition:transform 1.4s cubic-bezier(.2,.8,.2,1)" data-giro="${alvo+210}">
-        <line x1="${cx}" y1="${cy}" x2="${pt(-210,r*.86)[0]}" y2="${pt(-210,r*.86)[1]}" stroke="#C2392F" stroke-width="${grande?4:2.4}" stroke-linecap="round" transform="rotate(${alvo+210} ${cx} ${cy})"/></g>
-      <circle cx="${cx}" cy="${cy}" r="${tam*.045}" fill="#2B3530"/>
-      ${grande?`<text x="${cx}" y="${cy+tam*.26}" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Roboto Condensed,sans-serif" font-weight="600" font-size="${tam*.2}" fill="#1E2622">${valor==null?"—":valor}</text>
-        <text x="${cx}" y="${cy+tam*.36}" text-anchor="middle" font-family="Barlow,Arial,sans-serif" font-size="${tam*.055}" fill="#56635C">de 100</text>`:""}
-    </svg>`;
-  }
-  function trilha(serie){ // tendência das últimas passagens
-    const v=serie.filter(x=>typeof x==="number"); if(v.length<2) return `<span>tendência após 2 passagens</span>`;
-    const mn=Math.min(...v), mx=Math.max(...v), w=84, h=22, dx=w/(v.length-1);
-    const pts=v.map((y,i)=>`${(i*dx).toFixed(1)},${(h-2-(mx===mn?h/2:(y-mn)/(mx-mn)*(h-4))).toFixed(1)}`).join(" ");
-    return `<svg width="${w}" height="${h}" aria-label="tendência"><polyline points="${pts}" fill="none" stroke="#2B3530" stroke-width="1.6"/></svg>`;
-  }
-  function tambor(v){ if(v==null) return `<div class="tambor"><span>–</span><span>–</span><span>–</span></div>`;
-    const t=typeof v==="number"?v.toLocaleString("pt-BR",{maximumFractionDigits:1}):String(v);
-    return `<div class="tambor" aria-label="${e(t)}">`+[...t].map(c=>/\d/.test(c)?`<span>${c}</span>`:`<span class="sep">${e(c)}</span>`).join("")+`</div>`; }
-  const PT={success:"concluído",failure:"falhou",cancelled:"cancelado",skipped:"pulado",in_progress:"em execução",queued:"na fila",pending:"aguardando",completed:"concluído",waiting:"aguardando"};
+  const n=v=>v==null?"—":typeof v==="number"?v.toLocaleString("pt-BR",{maximumFractionDigits:Math.abs(v)<1&&v!==0?3:1}):e(v);
+  const idade=h=>h==null?"sem registro":h<1?`há ${Math.max(1,Math.round(h*60))} min`:h<48?`há ${Math.round(h)} h`:`há ${Math.round(h/24)} dias`;
   const dm=q=>{const t=new Date(q);return isNaN(t)?"—":t.toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}).replace(",","");};
-  function faixaTxt(f,un){ const u=un?" "+un:"", n=f.normal||[null,null], a=f.alarme||[null,null], partes=[];
-    if(n[0]!=null||n[1]!=null) partes.push("normal "+(n[0]!=null&&n[1]!=null?`de ${num(n[0])} a ${num(n[1])}`:n[0]!=null?`a partir de ${num(n[0])}`:`até ${num(n[1])}`)+u);
-    if(a[0]!=null) partes.push(`alarme abaixo de ${num(a[0])}${u}`); if(a[1]!=null) partes.push(`alarme acima de ${num(a[1])}${u}`);
-    return e(partes.join("; ")); }
-  function serie(id){ return (SC.historico||[]).map(p=>(p.v||{})[id]); }
-  function abreFicha(id){
-    const x=(SC.instrumentos||[]).find(i=>i.id===id); const f=document.getElementById("sc-ficha"); if(!x||!f) return;
-    f.innerHTML=`<button class="fechar" onclick="document.getElementById('sc-ficha').classList.remove('aberta')">Fechar</button>
-      <h3>${e(x.nome)}</h3><div style="color:#56635C">${e(x.sub)} · <b style="color:${COR[x.estado]}">${NOME_EST[x.estado]}</b></div>
-      ${x.escala&&typeof x.valor==="number"?`<div style="max-width:220px;margin:12px auto 0">${dial(x.valor,x.escala,x.faixa,180,false)}</div>`:""}
-      <dl><dt>O que faz</dt><dd>${e(x.faz)}</dd>
-      <dt>Quando foi acionado</dt><dd>${x.quando?dm(x.quando)+" · "+idade(x.idade_h):"sem registro de acionamento"} (cadência esperada: a cada ${num(x.cadencia_h)} h)</dd>
-      <dt>Efeito</dt><dd>${e(x.efeito)}</dd><dt>Resultado</dt><dd><b style="font:600 24px 'Barlow Condensed','Arial Narrow',sans-serif">${num(x.valor)} ${e(x.unidade||"")}</b><br>${e(x.resultado)}</dd>
-      <dt>Diagnóstico</dt><dd>${e(x.motivo)}</dd>
-      ${x.faixa?`<dt>Faixa normal e de alarme</dt><dd>${faixaTxt(x.faixa,x.unidade)}</dd>`:""}
-      <dt>Tendência</dt><dd>${trilha(serie(x.id))}</dd></dl>`;
-    f.classList.add("aberta"); f.setAttribute("aria-hidden","false"); f.querySelector(".fechar").focus();
-    requestAnimationFrame(()=>requestAnimationFrame(()=>f.querySelectorAll(".ponteiro").forEach(q=>q.style.transform="rotate(0deg)")));
+  const quieto=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function fontes(){ if(document.getElementById("fonte-nv"))return; const l=document.createElement("link"); l.id="fonte-nv"; l.rel="stylesheet";
+    l.href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Unbounded:wght@500;600&display=swap"; document.head.appendChild(l); }
+  function anel(x,t=62){ // anel de medida: arco proporcional à escala, na cor do estado
+    const [a,b]=x.escala||[0,1], f=typeof x.valor==="number"?Math.min(1,Math.max(0,(x.valor-a)/(b-a))):0, r=t/2-6, C=2*Math.PI*r;
+    return `<svg width="${t}" height="${t}" viewBox="0 0 ${t} ${t}" role="img" aria-label="${e(x.nome)}: ${n(x.valor)}">
+      <circle cx="${t/2}" cy="${t/2}" r="${r}" fill="none" stroke="rgba(79,140,136,.16)" stroke-width="6"/>
+      <circle cx="${t/2}" cy="${t/2}" r="${r}" fill="none" stroke="${COR[x.estado]}" stroke-width="6" stroke-linecap="round"
+        stroke-dasharray="${(C*f).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 ${t/2} ${t/2})"/>
+      <text x="50%" y="54%" text-anchor="middle" dominant-baseline="middle" font-family="Unbounded,Manrope,sans-serif" font-weight="600" font-size="${t*.2}" fill="#1D2738">${typeof x.valor==="number"?(x.unidade==="%"?Math.round(x.valor):n(x.valor)):"—"}</text></svg>`;
   }
-  window.scAbre=abreFicha;
+  function trilha(id){ const v=(SC.historico||[]).map(p=>(p.v||{})[id]).filter(q=>typeof q==="number"); if(v.length<2) return "a tendência aparece depois de duas passagens";
+    const mn=Math.min(...v),mx=Math.max(...v),w=160,h=28,dx=w/(v.length-1);
+    return `<svg width="${w}" height="${h}"><polyline points="${v.map((y,i)=>`${(i*dx).toFixed(1)},${(h-3-(mx===mn?h/2:(y-mn)/(mx-mn)*(h-6))).toFixed(1)}`).join(" ")}" fill="none" stroke="#7A6AF0" stroke-width="2"/></svg>`; }
+  function faixa(f,u){ if(!f) return "—"; const N=f.normal||[null,null],A=f.alarme||[null,null],p=[],s=u?" "+u:"";
+    if(N[0]!=null||N[1]!=null) p.push("normal "+(N[0]!=null&&N[1]!=null?`de ${n(N[0])} a ${n(N[1])}`:N[0]!=null?`a partir de ${n(N[0])}`:`até ${n(N[1])}`)+s);
+    if(A[0]!=null) p.push(`alarme abaixo de ${n(A[0])}${s}`); if(A[1]!=null) p.push(`alarme acima de ${n(A[1])}${s}`); return p.join("; "); }
+  const pior=L=>["vermelho","amarelo","verde","cinza"].find(k=>L.some(x=>x.estado===k))||"cinza";
+  function instrumentos(et){ return et.ids.map(id=>(SC.instrumentos||[]).find(x=>x.id===id)).filter(Boolean); }
+  function abre(etId,foco){
+    const et=ETAPAS.find(x=>x.id===etId); const D=document.getElementById("nv-detalhe"); if(!et||!D) return;
+    const L=instrumentos(et), extra=et.extra==="fluxos"?`<div class="instr"><h4>Fluxos automáticos</h4><dl>${(SC.fluxos||[]).map(f=>`<dt><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${COR[f.conclusao==="failure"?"vermelho":f.situacao!=="completed"?"amarelo":f.conclusao==="success"?"verde":"cinza"]}"></i></dt><dd>${e(f.nome)} · ${idade(f.idade_h)}</dd>`).join("")||"<dd>sem leitura</dd>"}</dl></div>`
+      :et.extra==="farol"?`<div class="instr"><h4>Prontas para o Farol</h4><dl><dt>Resultado</dt><dd>${n((SC.mimico||[])[7]?.valor)} oportunidades completas (12 de 12, com livro e prazo vigente), que entram primeiro no Farol de Alexandria</dd></dl></div>`:"";
+    D.innerHTML=`<button class="fechar" onclick="document.getElementById('nv-detalhe').classList.remove('aberto')">Fechar</button>
+      <div style="color:var(--micelio);font-weight:700;font-size:13px">etapa ${ETAPAS.indexOf(et)+1} de ${ETAPAS.length}</div><h3>${e(et.nome)}</h3><p style="color:var(--suave);margin:0 0 6px">${e(et.faz)}</p>
+      ${L.map(x=>`<div class="instr" id="nv-i-${x.id}"><div class="linha">${x.escala&&typeof x.valor==="number"?anel(x,58):`<span class="val">${n(x.valor)}</span>`}
+        <div><h4>${e(x.nome)}</h4><span style="color:${COR[x.estado]};font-weight:700;font-size:13px">${EST[x.estado]}</span> <span style="color:var(--suave);font-size:13px">· ${e(x.motivo)}</span></div></div>
+        <dl><dt>O que faz</dt><dd>${e(x.faz)}</dd><dt>Acionado</dt><dd>${x.quando?dm(x.quando)+" · "+idade(x.idade_h):"sem registro"} (cadência: a cada ${n(x.cadencia_h)} h)</dd>
+        <dt>Efeito</dt><dd>${e(x.efeito)}</dd><dt>Resultado</dt><dd><b>${n(x.valor)} ${e(x.unidade||"")}</b> — ${e(x.resultado)}</dd>
+        <dt>Faixa</dt><dd>${e(faixa(x.faixa,x.unidade))}</dd><dt>Tendência</dt><dd>${trilha(x.id)}</dd></dl></div>`).join("")}${extra}`;
+    D.classList.add("aberto"); D.setAttribute("aria-hidden","false"); D.querySelector(".fechar").focus();
+    if(foco){ const el=document.getElementById("nv-i-"+foco); if(el) el.scrollIntoView({block:"start"}); }
+  }
+  window.nvAbre=abre;
+  function veios(){ // micélio de fundo: três camadas com curvas orgânicas, desenhadas uma vez
+    const cv=document.getElementById("nv-cv"); const W=cv.clientWidth, H=cv.scrollHeight;
+    cv.querySelectorAll(".veios").forEach((s,k)=>{ s.setAttribute("viewBox",`0 0 ${W} ${H*1.25}`); s.setAttribute("preserveAspectRatio","none");
+      let d=""; const cores=["rgba(79,140,136,.10)","rgba(122,106,240,.10)","rgba(79,140,136,.16)"]; let seed=7+k*13; const r=()=>{seed=(seed*9301+49297)%233280;return seed/233280;};
+      for(let i=0;i<(k===2?5:8);i++){ let x=r()*W, y=-40; d+=`M${x.toFixed(0)} ${y}`; for(let j=0;j<6;j++){ const nx=x+(r()-.5)*W*.35, ny=y+H*.22; d+=` Q${(x+(r()-.5)*W*.3).toFixed(0)} ${(y+H*.11).toFixed(0)} ${nx.toFixed(0)} ${ny.toFixed(0)}`; x=nx; y=ny; } }
+      s.innerHTML=`<path d="${d}" stroke="${cores[k]}" stroke-width="${k===2?2.2:1.4}"/>`; });
+  }
+  function profundidade(){ if(quieto) return; const cv=document.getElementById("nv-cv");
+    let pend=false; const mover=()=>{pend=false; const t=cv.getBoundingClientRect().top; cv.querySelectorAll(".veios").forEach(s=>s.style.transform=`translate3d(0,${(-t*parseFloat(s.dataset.p)).toFixed(1)}px,0)`);};
+    window.addEventListener("scroll",()=>{if(!pend){pend=true;requestAnimationFrame(mover);}},{passive:true}); mover();
+    cv.querySelectorAll(".celula").forEach(c=>{ c.addEventListener("pointermove",ev=>{const r=c.getBoundingClientRect(),x=(ev.clientX-r.left)/r.width-.5,y=(ev.clientY-r.top)/r.height-.5;
+        c.style.setProperty("--ry",(x*8).toFixed(2)+"deg"); c.style.setProperty("--rx",(-y*6).toFixed(2)+"deg");});
+      c.addEventListener("pointerleave",()=>{c.style.setProperty("--ry","0deg");c.style.setProperty("--rx","0deg");}); });
+  }
+  function axonio(){ const F=document.getElementById("nv-fluxo"), H=F.scrollHeight; const old=F.querySelector(".axonio"); if(old) old.remove();
+    const mob=matchMedia("(max-width:820px)").matches, c=35; let d=`M${c} 0`; const passos=Math.max(3,Math.round(H/140));
+    for(let i=1;i<=passos;i++){ const y=H*i/passos, amp=mob?6:14; d+=` C${c+(i%2?amp:-amp)} ${(y-H/passos*.66).toFixed(0)} ${c+(i%2?-amp:amp)} ${(y-H/passos*.33).toFixed(0)} ${c} ${y.toFixed(0)}`; }
+    F.insertAdjacentHTML("afterbegin",`<svg class="axonio" viewBox="0 0 70 ${H}" height="${H}" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="nv-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4F8C88"/><stop offset=".5" stop-color="#7A6AF0"/><stop offset="1" stop-color="#4FA374"/></linearGradient></defs>
+      <path class="corpo" d="${d}"/><path class="sinal" d="${d}"/></svg>`); }
   function desenha(){
-    const d=SC; if(!d) return;
-    const h=(Date.now()-new Date(d.em))/36e5;
-    document.getElementById("sc-relogio").innerHTML=`leitura de <b>${new Date(d.em).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})}</b> · ${idade(h)}`;
-    const ext=(d.anunciadores||[]).filter(a=>!(d.instrumentos||[]).some(i=>i.id===a.id));
-    document.getElementById("sc-anunciador").innerHTML=(d.instrumentos||[]).map(i=>`<button class="janela ${i.estado==="verde"?"":i.estado}" role="listitem" onclick="scAbre('${i.id}')" title="${e(i.motivo)}">${e(i.nome)}</button>`).join("")
-      +ext.map(a=>`<div class="janela ${a.nivel}" role="listitem" title="${e(a.motivo)}">${e(a.nome)}</div>`).join("");
-    document.getElementById("sc-nucleo").innerHTML=dial(d.indice_saude,[0,100],{normal:[80,null],alarme:[50,null]},300,true);
-    const c=d.contagem||{};
-    document.getElementById("sc-lampadas").innerHTML=["verde","amarelo","vermelho","cinza"].map(k=>`<span class="lamp"><i style="background:${COR[k]}"></i>${c[k]||0} ${NOME_EST[k]}</span>`).join("")
-      +`<span class="lamp">${(d.anunciadores||[]).length} janelas acesas</span>`;
-    const M=d.mimico||[], W=760, passo=W/M.length;
-    document.getElementById("sc-mimico").innerHTML=`<svg viewBox="0 0 ${W} 124" role="img" aria-label="esteira">
-      <path class="tubo" d="M${passo/2} 58 H${W-passo/2}"/><path class="fluxo" d="M${passo/2} 58 H${W-passo/2}"/>
-      ${M.map((m,i)=>{const x=passo/2+i*passo;return `<g><rect x="${x-34}" y="36" width="68" height="44" rx="6" fill="#E9EBE2" stroke="#9DB3A7" stroke-width="2"/>
-        <text x="${x}" y="64" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Roboto Condensed,sans-serif" font-weight="600" font-size="20" fill="#1E2622">${m.valor==null?"—":Number(m.valor).toLocaleString("pt-BR")}</text>
-        ${(()=>{const p=String(m.etapa).split(" "),meio=Math.ceil(p.length/2),l1=p.length>1?p.slice(0,meio).join(" "):m.etapa,l2=p.length>1?p.slice(meio).join(" "):"";
-          return `<text x="${x}" y="98" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Roboto Condensed,sans-serif" font-size="14" fill="#DCE4DD">${e(l1)}</text>`+(l2?`<text x="${x}" y="114" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Roboto Condensed,sans-serif" font-size="14" fill="#DCE4DD">${e(l2)}</text>`:"");})()}</g>`;}).join("")}</svg>`;
-    const grupos={}; (d.instrumentos||[]).forEach(i=>{(grupos[i.sub]=grupos[i.sub]||[]).push(i);});
-    const desc={"Núcleo · rede neural":"aprende com as decisões humanas e ordena o trabalho","Regência · maestro":"planeja o dia e cobra a leitura de cada motor",
-      "Motores":"leitura dentro da cadência","Esteira":"da coleta ao livro","Certificação":"o Cartório na fonte oficial","Pilotos":"IA local que pesquisa e descobre",
-      "Empresas":"quem financia","Higiene":"o que ocupa espaço sem uso"};
-    document.getElementById("sc-bancadas").innerHTML=Object.entries(grupos).map(([g,L])=>`<div class="grupo"><h4>${e(g)} <small>${e(desc[g]||"")}</small></h4><div class="bancada">`
-      +L.map(i=>`<button class="instr" onclick="scAbre('${i.id}')" aria-label="${e(i.nome)}: ${NOME_EST[i.estado]}">
-        <i class="lamp-i" style="background:${COR[i.estado]}"></i><div class="nome">${e(i.nome)}</div>
-        ${i.escala&&typeof i.valor==="number"?`<div style="max-width:150px;margin:-2px auto -10px">${dial(i.valor,i.escala,i.faixa,150,false)}</div><div class="contador" style="text-align:center;font-size:26px">${num(i.valor)} <span class="un">${e(i.unidade||"")}</span></div>`
-          :`${tambor(i.valor)}<div class="un">${e(i.unidade||"")}</div><div class="ef">${e(i.efeito)}</div>`}
-        <div class="rodape"><span>${idade(i.idade_h)}</span>${trilha(serie(i.id))}</div></button>`).join("")+`</div></div>`).join("");
-    document.getElementById("sc-fluxos").innerHTML=(d.fluxos||[]).length?(d.fluxos||[]).map(f=>{const k=f.conclusao==="failure"?"vermelho":f.situacao!=="completed"?"amarelo":f.conclusao==="success"?"verde":"cinza";
-        return `<div class="fl" title="${e(f.situacao)} · ${e(f.conclusao||"")}"><i style="background:${COR[k]}"></i><span>${e(f.nome)}<br><small>${idade(f.idade_h)} · ${e(PT[f.conclusao||f.situacao]||f.conclusao||f.situacao)}</small></span></div>`;}).join("")
-      :`<div class="fl">a leitura dos fluxos acontece na próxima passagem do maestro</div>`;
-    document.getElementById("sc-tempo").innerHTML=(d.linha_do_tempo||[]).map(t=>`<div><b>${dm(t.quando)}</b><span><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${COR[t.estado]};margin-right:6px"></i>${e(t.nome)} · ${e(t.sub)}</span></div>`).join("");
-    if(!quieto) requestAnimationFrame(()=>requestAnimationFrame(()=>document.querySelectorAll("#v-neural .ponteiro").forEach(p=>p.style.transform="rotate(0deg)")));
+    const d=SC, cnt=d.contagem||{}, M=d.mimico||[];
+    const o=document.getElementById("nv-orbe"); o.innerHTML=`<b>${d.indice_saude??"—"}</b><small>saúde de 100</small>`;
+    o.style.boxShadow=`0 30px 60px -28px ${d.indice_saude>=80?"rgba(79,163,116,.6)":d.indice_saude>=50?"rgba(226,160,74,.6)":"rgba(222,90,82,.6)"},inset -10px -16px 30px rgba(79,140,136,.35),inset 8px 10px 24px rgba(255,255,255,.9)`;
+    const etDe=id=>(ETAPAS.find(t=>t.ids.includes(id))||{}).id;
+    const acesos=(d.anunciadores||[]).filter(a=>a.nivel!=="verde").sort((x,y)=>({vermelho:0,amarelo:1,cinza:2}[x.nivel])-({vermelho:0,amarelo:1,cinza:2}[y.nivel]));
+    document.getElementById("nv-esporos").innerHTML=acesos.map((a,i)=>{const et=etDe(a.id)||(a.sub==="Fluxos"?"manutencao":a.sub==="Esteira"?"repositorio":"manutencao");
+      return `<button class="esporo ${a.nivel}${i>2?" alem":""}" onclick="nvAbre('${et}','${e(a.id)}')" title="${e(a.nome)} — ${e(a.motivo)}"><i style="background:${COR[a.nivel]}"></i>${e(a.nome)}</button>`;}).join("")
+      +(acesos.length>3?`<button class="esporo mais" onclick="this.parentNode.classList.add('todos')">mais ${acesos.length-3} alertas</button>`:"")
+      ||`<span class="esporo"><i style="background:${COR.verde}"></i>tudo dentro do normal</span>`;
+    document.getElementById("nv-leitura").textContent=`${cnt.verde||0} normais · ${cnt.amarelo||0} em atenção · ${cnt.vermelho||0} em alarme · leitura de ${dm(d.em)}`;
+    const F=document.getElementById("nv-fluxo");
+    const falhasFluxo=(d.fluxos||[]).filter(f=>f.conclusao==="failure").length;
+    F.innerHTML=ETAPAS.map((et,k)=>{ const L=instrumentos(et), lado=k%2?"dir":"esq";
+      const p=pior(et.extra==="fluxos"&&falhasFluxo?[...L,{estado:"vermelho"}]:L);
+      const med=L.slice(0,4).map(x=>x.escala&&typeof x.valor==="number"?`<div class="anel">${anel(x)}<small>${e(CURTO[x.id]||x.nome)}</small></div>`:`<div class="conta"><b>${n(x.valor)}</b><small>${e(CURTO[x.id]||x.nome)}</small></div>`).join("")
+        +(et.extra==="farol"?`<div class="conta"><b>${n(M[7]?.valor)}</b><small>prontas para o Farol</small></div>`:"")
+        +(et.extra==="fluxos"?`<div class="conta"><b>${(d.fluxos||[]).filter(f=>f.conclusao==="failure").length}/${(d.fluxos||[]).length}</b><small>fluxos com falha</small></div>`:"");
+      const cel=`<div class="celula ${lado}" style="grid-row:${k+1} / span 2;--no:${COR[p]}" role="button" tabindex="0" onclick="nvAbre('${et.id}')" onkeydown="if(event.key==='Enter')nvAbre('${et.id}')" aria-label="Etapa ${k+1}: ${e(et.nome)}, ${EST[p]}">
+        <div class="cab"><h3><em>${k+1}</em>${e(et.nome)}</h3><span class="estado" style="background:${COR[p]}22;color:${p==="cinza"?"#5E6B7E":COR[p]}">${EST[p]}</span></div>
+        <p>${e(et.faz)}</p><div class="aneis">${med}</div>${et.ponte!=null&&M[et.ponte]?`<div class="vazao">segue adiante: <b>${n(M[et.ponte].valor)}</b> ${PONTE[et.ponte]}</div>`:""}</div>`;
+      return cel; }).join("");
+    requestAnimationFrame(()=>{ axonio(); veios(); profundidade(); });
   }
   window.desenhaNeural=async function(){
     fontes();
     for(const u of ["https://raw.githubusercontent.com/amcjardimamerica-arch/Eldorado/main/docs/dados/sala_controle.json?t="+Date.now(),"dados/sala_controle.json?v="+Date.now()]){
-      try{ const r=await fetch(u,{cache:"no-store"}); if(r.ok){ SC=await r.json(); break; } }catch(err){}
-    }
-    if(!SC){ document.getElementById("sc-relogio").textContent="a sala de controle ainda não foi gerada: ela aparece depois da próxima passagem do maestro"; return; }
+      try{ const r=await fetch(u,{cache:"no-store"}); if(r.ok){ SC=await r.json(); break; } }catch(err){} }
+    if(!SC){ document.getElementById("nv-leitura").textContent="A sala de controle aparece depois da próxima passagem do maestro."; return; }
     desenha();
   };
-  document.addEventListener("keydown",ev=>{ if(ev.key==="Escape") document.getElementById("sc-ficha")?.classList.remove("aberta"); });
+  document.addEventListener("keydown",ev=>{ if(ev.key==="Escape") document.getElementById("nv-detalhe")?.classList.remove("aberto"); });
 })();
 </script>
 </section>
