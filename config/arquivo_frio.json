@@ -4,7 +4,37 @@
  "drive_pasta_url": "https://drive.google.com/drive/folders/1BWeW5S-gIQabB9Co317AxHwZ60Ryq7g6",
  "release_tag": "arquivo-frio-2026-09-28",
  "conjuntos": [
-  {"nome": "legado-painel-antigo-2026-09-03", "por_que": "três arquivos publicados no site (171 MB) que o painel não lê desde 03/09: sobras de geradores antigos", "arquivos": ["docs/dados.json", "docs/transparencia.html", "docs/fichas.json"]},
-  {"nome": "querido-diario-edicoes-2026-09-28", "por_que": "16.158 pastas de edições do Querido Diário (170 MB): matéria-prima que já vive em dados/editais/indice_diarios.json", "padrao": "biblioteca_alexandria/oportunidades/querido-diario-*"}
- ]
+  {
+   "nome": "legado-painel-antigo-2026-09-03",
+   "por_que": "três arquivos publicados no site (171 MB) que o painel não lê desde 03/09: sobras de geradores antigos",
+   "arquivos": [
+    "docs/dados.json",
+    "docs/transparencia.html",
+    "docs/fichas.json"
+   ]
+  },
+  {
+   "nome": "querido-diario-edicoes-2026-09-28",
+   "por_que": "16.158 pastas de edições do Querido Diário (170 MB): matéria-prima que já vive em dados/editais/indice_diarios.json",
+   "padrao": "biblioteca_alexandria/oportunidades/querido-diario-*"
+  },
+  {
+   "nome": "paginas-editais-orfas",
+   "seletor": "paginas_editais_orfas",
+   "por_que": "11/10/2026 (titular): ~19.600 páginas HTML (≈110 MB) de registros que não estão no repositório único nem na caixa (98% das fichas; ex.: edições de diário eliminadas pela M14); as fichas das oportunidades atuais ficam e o gerador passa a criar só para elas"
+  },
+  {
+   "nome": "pdfs-documentos-associacao",
+   "padrao": "dados/associacoes/*.pdf",
+   "exige_drive": true,
+   "por_que": "11/10/2026 (titular): documentos registrados da associação (estatuto, ata, CNPJ, endereço) — dados pessoais não ficam em repositório público; só saem com o Drive conferido"
+  },
+  {
+   "nome": "pdfs-anexos-biblioteca",
+   "padrao": "biblioteca_alexandria/oportunidades/*.pdf",
+   "exige_drive": true,
+   "por_que": "11/10/2026 (titular): anexos baixados das fontes oficiais (o Cartório baixa de novo quando precisa); só saem com o Drive conferido"
+  }
+ ],
+ "regra_pdfs": "11/10/2026 (titular): PDFs vão para o Google Drive (pasta do arquivo frio) e só saem do repositório depois de guardados e conferidos lá (exige_drive). Os modelos do Farol (dados/farol/editais) ficam enquanto o motor de completude os lê do repositório."
 }

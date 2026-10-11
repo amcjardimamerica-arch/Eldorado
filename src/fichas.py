@@ -193,8 +193,29 @@ pendentes significam apenas que <em>não foram localizados no texto capturado</e
 <footer>Gerado automaticamente em {_e(now_iso())} · Eldorado · Farol de Alexandria</footer>
 </main></body></html>"""
 
+def _atuais() -> set | None:
+    """11/10 (titular): ficha HTML só para oportunidade ATUAL (repositório único ou caixa de abertas); antes eram ~20 mil
+    páginas, 98% de registros eliminados. Sem repositório, None (gera como antes)."""
+    try:
+        from .arquivo_frio import paginas_editais_orfas  # noqa: F401 — mesma definição de 'atual'
+        rep = json.loads((ROOT / "dados/oportunidades/repositorio_unico.json").read_text(encoding="utf-8")).get("registros") or []
+        s = {i for x in rep for i in [x["id"], *(x.get("ids_origem") or [])]}
+        ab = json.loads((ROOT / "docs/dados/abertas.json").read_text(encoding="utf-8"))
+        k = ab["campos"].index("id"); ks = ab["campos"].index("situacao"); dic = ab.get("dic") or {}
+        for l in ab["linhas"]:
+            sit = l[ks]; sit = dic["situacao"][sit] if "situacao" in dic and isinstance(sit, int) else sit
+            if sit in ("aberta", "possivel"):
+                v = l[k]; s.add(dic["id"][v] if "id" in dic and isinstance(v, int) else v)
+        return s or None
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def run() -> dict:
     registros = carregar_oportunidades()
+    _vivos = _atuais()
+    if _vivos is not None:
+        registros = {k: v for k, v in registros.items() if k in _vivos}
     PASTA.mkdir(parents=True, exist_ok=True)
     indice, gerados = [], 0
     for item in sorted(registros.values(), key=lambda x: (x.get("prazo_dias_restantes") is None,
