@@ -115,8 +115,8 @@
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 591,
-   "achados_total_agora": 591,
+   "achados_total_1a": 613,
+   "achados_total_agora": 613,
    "no_fluxo": 2,
    "confirmadas": 0
   },
@@ -129,8 +129,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 50,
-   "achados_total_agora": 50,
+   "achados_total_1a": 51,
+   "achados_total_agora": 51,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -157,8 +157,8 @@
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 46,
-   "achados_total_agora": 46,
+   "achados_total_1a": 47,
+   "achados_total_agora": 47,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -191,7 +191,7 @@
  "pontos_com_redundancia": 10,
  "redundancia_vazia": [],
  "dominios_via_ponte": 1,
- "exemplos_da_rede_de_rotas": 1565
+ "exemplos_da_rede_de_rotas": 1691
 }
 ```
 
@@ -331,19 +331,19 @@
 
 ```json
 {
- "fontes_recebidas": 201,
+ "fontes_recebidas": 202,
  "por_origem": {
-  "conselho (fontes irmãs)": 128,
+  "conselho (fontes irmãs)": 129,
   "Cartório (site oficial certificado)": 73
  },
  "lidas_nas_ultimas_24h": 120,
  "dimensionamento": {
-  "fontes": 201,
+  "fontes": 202,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 4,
-  "cobertura_diaria": 201,
+  "cobertura_diaria": 202,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -381,14 +381,14 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 51,
+   "orgaos": 53,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",
+    "banrisulcultural.com.br",
     "baoba.org.br",
     "brasil.aperam.com",
-    "cachoeiraalta.go.gov.br",
-    "casafluminense.org.br"
+    "cachoeiraalta.go.gov.br"
    ]
   },
   "Mapas Culturais": {
@@ -425,7 +425,7 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 38,
+   "orgaos": 39,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",
