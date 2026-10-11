@@ -45,7 +45,7 @@
 
 ## Cobertura (Dr. Otávio)
 
-82.8% das oportunidades vieram de fora dos motores: {'agregador/outra': 205, 'motor': 64, 'Piloto': 103}.
+82.7% das oportunidades vieram de fora dos motores: {'agregador/outra': 203, 'motor': 64, 'Piloto': 103}.
 
 - RS: 2 oportunidades, nenhuma de motor ({'Piloto': 1, 'agregador/outra': 1})
 - GO: 2 oportunidades, nenhuma de motor ({'agregador/outra': 2})
@@ -58,9 +58,9 @@
 - fundoecos.org.br (peso 12)
 - mariaemilia.org.br (peso 11)
 - chamadas.funbio.org.br (peso 11)
-- institutolojasrenner.org.br (peso 11)
 - zurich.com.br (peso 11)
 - feirapreta.com.br (peso 9)
+- institutolojasrenner.org.br (peso 9)
 - editaisdobrasil.com (peso 8)
 - crars.org.br (peso 8)
 - fondationfrancoisschneider.org (peso 7)
@@ -68,13 +68,13 @@
 - impactarte.org.br (peso 7)
 - dopaonlineupload.procempa.com.br (peso 7)
 - itauvivermais.com.br (peso 7)
+- licitario.com.br (peso 6)
 - itausocial.org.br (peso 6)
 - transforma.fbb.org.br (peso 6)
 - institutoacp.org.br (peso 6)
 - luppa.comidadoamanha.org (peso 5)
 - impactarte.com.br (peso 5)
 - itamarandibahoje.com.br (peso 5)
-- resartis.org (peso 5)
 - contrafluxofestival.com.br (peso 5)
 - www2.ifal.edu.br (peso 5)
 - news.confap.org.br (peso 5)
@@ -86,7 +86,7 @@
 - Mapas Culturais: 10 órgãos
 - Diário municipal em lote (AGM/DOM): 13 órgãos
 - Portal de transparência de fornecedor: 16 órgãos
-- Sistemas de editais (Prosas/Editais): 38 órgãos
+- Sistemas de editais (Prosas/Editais): 39 órgãos
 - Querido Diário: 0 órgãos
 - PNCP: 1 órgãos
 - Leis e atos (Leis Municipais): 1 órgãos

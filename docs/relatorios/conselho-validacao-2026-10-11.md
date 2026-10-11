@@ -228,7 +228,7 @@
  "pontos_com_redundancia": 11,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 3090
+ "exemplos_da_rede_de_rotas": 3187
 }
 ```
 
@@ -239,10 +239,10 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 82.8,
- "fora_dos_motores_pct_agora": 82.8,
+ "fora_dos_motores_pct_1a": 82.7,
+ "fora_dos_motores_pct_agora": 82.7,
  "origem": {
-  "agregador/outra": 205,
+  "agregador/outra": 203,
   "motor": 64,
   "Piloto": 103
  },
@@ -276,10 +276,6 @@
    "oportunidades": 1
   },
   {
-   "dominio": "gulbenkian.pt",
-   "oportunidades": 1
-  },
-  {
    "dominio": "hto.ifsp.edu.br",
    "oportunidades": 1
   },
@@ -305,6 +301,10 @@
   },
   {
    "dominio": "premio.finep.gov.br",
+   "oportunidades": 1
+  },
+  {
+   "dominio": "florestamaisamazonia.mma.gov.br",
    "oportunidades": 1
   }
  ],
@@ -373,7 +373,7 @@
   "Cartório (site oficial certificado)": 93,
   "Espião (privado/internacional)": 16
  },
- "lidas_nas_ultimas_24h": 182,
+ "lidas_nas_ultimas_24h": 163,
  "dimensionamento": {
   "fontes": 239,
   "sites_por_execucao": 17,
@@ -472,7 +472,7 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 38,
+   "orgaos": 39,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",
