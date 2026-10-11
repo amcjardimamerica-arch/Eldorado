@@ -235,8 +235,6 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
         _mun = municipal_fora_de_goias(r, next((uf_ag[i] for i in [cid] + r["ids_origem"] if i in uf_ag), None))
         if v in FECHADAS:
             estado, motivo = "fechada", f"veredito: {v}"
-        elif _mun:
-            estado, motivo = "fechada", _mun
         elif fim and str(fim)[:10] < hoje:
             estado, motivo = "fechada", "prazo vencido"
         elif selo == "ouro" and link:                       # prova completa na fonte supera qualquer marcação anterior
@@ -288,6 +286,7 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
                     "link_oficial": link, "orgao": r.get("orgao"), "uf": r.get("uf"), "fim": fim, "origem": r.get("origem"), "skill": sk,
                     "estado": estado, "motivo_estado": motivo, "estante": estante, "livro": (lv or {}).get("id"), "motivo_sem_livro": sem_livro, "selo_dos_itens": selo or "sem_selo",
                     "itens": itens, "faltam": faltam, "cartorio": {"tentativas": int(c.get("tentativa") or 0), "esgotada": bool(c.get("esgotada"))},
+                    "arquivada": _mun,            # 11/10: SÓ contador e telas — motores, Cartório e Interceptador seguem
                     "nota_rede": nt, "proximo_passo": passo, "etapa": etapa, "ferramenta": ferramenta, "pronta_para_farol": pronta,
                     "livro_historico": {"editais_anteriores": len(anteriores), "ultimos": [{"id": h.get("id"), "titulo": str(h.get("titulo") or "")[:120], "fim": h.get("fim"),
                                         "pagina": h.get("pagina_oficial") or h.get("url")} for h in anteriores[-3:]]}, "onde_buscar": onde, "prioridade": (urg, str(fim or "9999"), -(nt or 0))})
@@ -352,13 +351,15 @@ def _parado_ha(cid: str, hoje: str) -> int:
 
 
 def resumir(out: list[dict]) -> dict:
-    ab = [x for x in out if x["estado"] != "fechada"]
+    # 11/10 (titular): as ARQUIVADAS (municipais de fora de GO) saem do contador e das telas, mas seguem nas filas dos
+    # motores, do Cartório e do Interceptador e o livro continua vigiado
+    ab = [x for x in out if x["estado"] != "fechada" and not x.get("arquivada")]
     passo = Counter(re.sub(r"\s*\(.*$|\s+\d+ de 10.*$|: a rede.*$|: as 10.*$", "", x["proximo_passo"]) for x in ab)
     return {"em": _agora(), "regra": "um registro por oportunidade, num único lugar; abertas = validadas + em verificação + validação manual",
             "registros": len(out), "abertas": len(ab),
             "validadas": sum(1 for x in ab if x["estado"] == "validada"), "em_verificacao": sum(1 for x in ab if x["estado"] == "em_verificacao"),
             "validacao_manual": sum(1 for x in ab if x["estado"] == "validacao_manual"), "fechadas": sum(1 for x in out if x["estado"] == "fechada"),
-            "arquivadas_municipais_fora_de_goias": sum(1 for x in out if str(x.get("motivo_estado") or "").startswith("arquivada: municipal fora de Goiás")),
+            "arquivadas_municipais_fora_de_goias": sum(1 for x in out if x.get("arquivada")),
             "estantes": dict(Counter(x["estante"] for x in ab)), "proximo_passo": dict(passo.most_common()),
             "por_origem": dict(Counter(x["skill"] for x in ab if x["estado"] == "em_verificacao")),
             "itens_em_verificacao": dict(Counter(st for x in ab if x["estado"] == "em_verificacao" for st in (i["estado"] for i in x["itens"].values()))),

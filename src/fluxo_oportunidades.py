@@ -601,14 +601,14 @@ def incluir_do_repositorio(res: dict) -> int:
                 r = dono.get(str(x.get("id")))
                 if r is None:
                     fica.append(x); continue
-                if r.get("estado") == "fechada" or r["id"] in vistos:
+                if r.get("estado") == "fechada" or r.get("arquivada") or r["id"] in vistos:
                     continue
                 vistos.add(r["id"]); x["estado"] = r.get("estado"); fica.append(x)
             por_uf[uf] = fica
     ja = {str(x.get("id")) for L in por_uf.values() for x in L} | {str(i) for L in por_uf.values() for x in L for i in (x.get("ids_origem") or [])}
     n = 0
     for r in rep:
-        if r.get("estado") == "fechada" or r["id"] in ja or any(i in ja for i in r.get("ids_origem") or []):
+        if r.get("estado") == "fechada" or r.get("arquivada") or r["id"] in ja or any(i in ja for i in r.get("ids_origem") or []):
             continue
         ck = {k: ({"s": "ok", "v": str(v.get("valor") or "")[:120]} if v.get("estado") == "comprovado" else
                   {"s": "disp", "v": str(v.get("motivo") or "")[:120]} if v.get("estado") == "dispensado" else
