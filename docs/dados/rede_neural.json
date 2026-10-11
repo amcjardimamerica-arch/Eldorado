@@ -1,9 +1,9 @@
 {
- "em": "2026-10-11T16:32:32+00:00",
+ "em": "2026-10-11T17:13:57+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
- "rotulados": 1925,
- "positivos": 771,
- "pendentes": 580,
+ "rotulados": 1928,
+ "positivos": 757,
+ "pendentes": 560,
  "validacao_cruzada": {
   "auc": 0.845,
   "precisao": 0.757,
@@ -41,12 +41,6 @@
    "url": "https://www.bndes.gov.br/wps/portal/site/home",
    "nota": 0.499,
    "incerteza": 0.998
-  },
-  {
-   "titulo": "Instituições podem receber até R$ 50 mil para projetos sobre moradia digna",
-   "url": "https://www.cnbb.org.br/cnbb-lanca-edital-do-fns-para-apoio-financeiro-a-projetos-relativos-a-campanha-da-fraternidade-2026/",
-   "nota": 0.499,
-   "incerteza": 0.997
   },
   {
    "titulo": "CIDADANIA PopRua - Aberta seleção para implementar unidades de apoio à ...",
@@ -109,12 +103,6 @@
    "incerteza": 0.985
   },
   {
-   "titulo": "14/09/2026 14h38",
-   "url": "https://www.juatuba.mg.gov.br/portal/download/chamamento-publico-anexos/sG-wPP",
-   "nota": 0.492,
-   "incerteza": 0.985
-  },
-  {
    "titulo": "Edital de Credenciamento de Pareceristas Técnicos - SEFIC/MinC nº 90001/2026",
    "url": "https://mapa.cultura.gov.br/oportunidade/10466/#info",
    "nota": 0.508,
@@ -159,12 +147,6 @@
   {
    "titulo": "Aviso de Chamamento Público Credenciamento Nº 006/2026",
    "url": "https://www.gov.br/saude",
-   "nota": 0.509,
-   "incerteza": 0.982
-  },
-  {
-   "titulo": "Termo de Revogação de Edital: 001/2026 29/05/2026 · TERMO DE REVOGAÇÃO EDITAL DE CHAMAMENTO PÚBLICO N° 001/2026 PREMIAÇÃO PARA AGENTES CULTU",
-   "url": "https://potengi.ce.gov.br/publicacoes.php?id=897",
    "nota": 0.509,
    "incerteza": 0.982
   },
@@ -371,7 +353,25 @@
    "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8392/",
    "nota": 0.52,
    "incerteza": 0.959
+  },
+  {
+   "titulo": "Edital FAPITEC/SE FUNTEC SEAD nº 04/2026 — Programa de Residência em Inovação no Setor Público do Estado de Sergipe",
+   "url": "https://fapitec.se.gov.br/editais-abertos/edital-fapitec-se-funtec-sead-no-04-2026-programa-de-residencia-em-inovacao-no-setor-publico-do-estado-de-sergipe-sead",
+   "nota": 0.521,
+   "incerteza": 0.958
+  },
+  {
+   "titulo": "First Solar Corporate Charitable Fund of the Toledo Community Foundation",
+   "url": "https://www.gov.br/mcti",
+   "nota": 0.521,
+   "incerteza": 0.958
+  },
+  {
+   "titulo": "Chamada FAPEMIG SEDE 018/2026 - HUBMG GOV",
+   "url": "https://fapemig.br/oportunidades/chamadas-e-editais/chamada-fapemig-sede-018-2026-hubmg-gov-resolucao-de-desafios-publicos-por-meio-de-inovacao-aberta",
+   "nota": 0.522,
+   "incerteza": 0.955
   }
  ],
- "pendentes_provaveis_reais": 340
+ "pendentes_provaveis_reais": 326
 }
