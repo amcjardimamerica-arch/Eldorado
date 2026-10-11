@@ -55,7 +55,7 @@
 
 205 domínios oficiais já renderam e não têm motor. Os primeiros:
 
-- baoba.org.br (peso 15)
+- baoba.org.br (peso 17)
 - fundoecos.org.br (peso 12)
 - mariaemilia.org.br (peso 11)
 - chamadas.funbio.org.br (peso 11)
