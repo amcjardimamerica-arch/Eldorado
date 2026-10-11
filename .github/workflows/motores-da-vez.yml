@@ -84,6 +84,15 @@ jobs:
           timeout 300 python -c "import src.motores as M; M.run()" >/dev/null || echo "gerador dos motores falhou"
           python -m src.status_motores >/dev/null || echo "status falhou"
           timeout 120 python -m src.maestro >/dev/null || echo "maestro falhou"
+          # 11/10/2026 (titular): a tarefa do botão "Atualizar a Biblioteca (completa)" entra aqui, uma vez por dia. O resto
+          # dela (selos, recálculo, painel, status) já roda em toda passagem; o que só o botão fazia era o LEITOR DOCUMENTAL,
+          # que aplica os resultados dos agentes (entrada_manual/leitor_documental) — roda antes do recálculo da mesma passagem
+          D=$(TZ=America/Sao_Paulo date +%F)
+          if [ "$(cat estado/biblioteca_diaria.txt 2>/dev/null)" != "$D" ]; then
+            timeout 300 python -c "from src.leitor_documental import aplicar; print(aplicar())" 2>&1 | tail -c 1500 || echo "leitor documental falhou"
+            timeout 300 python -m src.selo_livros >/dev/null 2>&1 || echo "selos dos livros falhou"
+            echo "$D" > estado/biblioteca_diaria.txt
+          fi
           timeout 300 python -m src.fluxo_oportunidades --completo >/dev/null 2>&1 || echo "mapa falhou"
       - name: Registrar somente alterações produzidas
         if: always()

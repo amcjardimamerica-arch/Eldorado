@@ -358,7 +358,7 @@ def opressores_e_preditivo(itens: list[dict]) -> dict:
         C["motores"] = [x for x in C["motores"] if x["id"] not in set(fora)]
         for i in fora:
             (L.get("ligados") or {}).pop(i, None)
-        CAT_OPR.write_text(json.dumps(C, ensure_ascii=False, indent=1), encoding="utf-8")
+        CAT_OPR.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 11/10: formato único (compacto)
         EST_OPR.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
     # OPRESSOR ACOMPANHA A VALIDAÇÃO (28/09): oportunidade descartada ou encerrada desliga o opressor dela; válida
     # marca o opressor com os dados confirmados. Antes, 9 "novas anunciadas" tinham opressor e NENHUM estava coerente.
@@ -378,7 +378,7 @@ def opressores_e_preditivo(itens: list[dict]) -> dict:
             if v.get("fonte_oficial"): x["pagina"] = v["fonte_oficial"]
             mudou = True
     if mudou:
-        CAT_OPR.write_text(json.dumps(C, ensure_ascii=False, indent=1), encoding="utf-8")
+        CAT_OPR.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 11/10: formato único (compacto)
         EST_OPR.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
     cobertos_u = {_nu(x.get("pagina") or "") for x in C.get("motores") or [] if x.get("pagina")}
     cobertos_t = {_nt(f"{x.get('programa')}") for x in C.get("motores") or []} | {_nt(f"{x.get('programa')}{x.get('orgao')}") for x in C.get("motores") or []}
@@ -421,7 +421,7 @@ def opressores_e_preditivo(itens: list[dict]) -> dict:
                                 "confirmada": it["confirmada"], "cadastrado_em": hoje.isoformat()})
             novos_pred += 1
     if novos_opr:
-        CAT_OPR.write_text(json.dumps(C, ensure_ascii=False, indent=1), encoding="utf-8")
+        CAT_OPR.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 11/10: formato único (compacto)
         EST_OPR.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
     if linhas_pred:
         with PRED.open("a", encoding="utf-8") as f:

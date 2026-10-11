@@ -629,7 +629,7 @@ def _devolver_ao_opressor(alvo: dict, inv: dict) -> None:
                                       + f"; {inv.get('comprovados', 0)}/12 itens comprovados"})
                 e["aprendizado"] = e["aprendizado"][-20:]
             break
-    write_json(cat, C)
+    cat.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 11/10: formato único (compacto)
 
 
 def _proximo_alvo_anterior() -> dict | None:
