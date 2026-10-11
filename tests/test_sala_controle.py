@@ -46,6 +46,11 @@ class TesteEstado(unittest.TestCase):
         self.assertNotIn("--sy", sec, "sem paralaxe na rolagem"); self.assertNotIn("rotateY(var(--ry", sec, "sem inclinação")
         for marca in ("@keyframes cintila", ".luz.vermelho", 'class="vivo"', "function vivos(", 'P.id="nv-portal"', "window.nvFluxo", 'class="rol"', "offsetWidth"):
             self.assertIn(marca, sec, marca)
+        # rolagem fluida (11/10): sem desfoque sobre o céu animado, brilhos pré-desenhados, céu a 30 quadros, ponteiros sem medir a tela
+        self.assertNotIn("backdrop-filter:blur(5px)", sec); self.assertIn("function sprite(", sec); self.assertIn("t-ultimoQuadro<32", sec)
+        self.assertIn("IntersectionObserver(es=>es.forEach(en=>{ en.target.querySelectorAll(\".vivo\")", sec)
+        self.assertNotIn("g.ownerSVGElement.getBoundingClientRect()", sec)
+        self.assertIn("if(!_rolou && Math.abs(window.scrollY-_y)>2) window.scrollTo(0,_y);", h, "a atualização não puxa a página de volta")
         g = (ROOT / "src/sala_controle.py").read_text(encoding="utf-8")
         self.assertIn('"ultimas"', g); self.assertIn('{"id": x["id"], "quando"', g)
 
