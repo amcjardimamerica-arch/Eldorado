@@ -428,10 +428,44 @@ _FORA = re.compile(r"bolsas? de (?:mestrado|doutorado|p[oó]s-?doutorado|inicia[
                    r"vestibular|processo seletivo para (?:alunos|estudantes)|concurso p[uú]blico", re.I)
 
 
+# 11/10/2026 (validação das 558 abertas): EXCLUSÕES FORTES — valem mesmo quando o texto cita "pessoa jurídica" ou
+# "entidade": contratação/credenciamento de artistas e prestadores (show da prefeitura não é fomento a OSC),
+# residência e prêmio para artista individual, bolsa de estudo
+_FORA_FORTE = re.compile(r"(?:contrata[cç][ãa]o|credenciamento|cadastro)\W+(?:\w+\W+){0,8}?(?:artistas?|atra[cç][õo]es|bandas?|grupos? musicais|"
+                         r"m[uú]sicos|servi[cç]os? art[ií]stic|instrutor(?:es)?|oficineir|prestador(?:es)? de servi[cç]|cl[ií]nicas|m[eé]dic)|"
+                         r"\bresid[eê]ncias? art[ií]stic|artists?[- ]in[- ]residence|residency(?: programme| program)?\b|designers? em resid[eê]ncia|"
+                         r"\b(?:art )?prize\b.{0,40}\bartists?\b|para artistas de qualquer|bolsas? de estudos?\b|aux[ií]lio financeiro ?-? ?\(?bolsa", re.I)
+# notícia que NÃO é edital nem fomento a OSC (o Espião e os agregadores traziam como oportunidade)
+NAO_FOMENTO = re.compile(r"(?i)matr[íi]cula|vagas? (?:em|para|nos?) (?:col[ée]gios?|escolas?|creches?|cursos?)|col[ée]gios? militar|agrocol[ée]gio|"
+                         r"maratona|corrida de rua|jogos (?:escolares|interculturais|abertos)|\bsemin[áa]rio\b|\bpalestra\b|"
+                         r"registra mais de \d+ inscri|^\s*inscri[çc][õo]es abertas\s*(?:[—-]\s*\w+(?:\s*[—-]\s*\w+)?)?\s*$")
+
+
+# fomento cultural com credenciamento (PNAB, Lei 14.399, Aldir Blanc, premiação, Termo de Execução Cultural) NÃO é
+# contratação de show: a exclusão forte não se aplica
+_FOMENTO_CULTURAL = re.compile(r"(?i)\bpnab\b|14\.?399|aldir blanc|\bfomento\b|premia[çc][ãa]o|pr[êe]mios?\b|termo de execu[çc][ãa]o cultural|"
+                               r"lei paulo gustavo|\blpg\b|cultura viva|pontos? de cultura")
+
+
+def _forte(t: str):
+    m = _FORA_FORTE.search(t)
+    return None if (m and _FOMENTO_CULTURAL.search(t)) else m
+
+
+def nao_e_fomento(texto: str) -> str | None:
+    """Motivo, se o título é notícia/serviço/benefício individual e não fomento a OSC; senão None."""
+    t = str(texto or "")
+    m = _forte(t) or (NAO_FOMENTO.search(t) if not _OSC.search(t) else None)   # notícia só barra quando não fala de OSC
+    return limpar(m.group(0), 60) if m else None
+
+
 def perfil(texto: str) -> tuple[str, str]:
     """'osc' (o texto fala de associação/OSC/entidade/coletivo), 'fora' (o texto restringe a pesquisador, estudante,
     empresa, prefeitura ou pessoa física, sem falar de OSC) ou 'indefinido'. Conservador: na dúvida, 'indefinido'."""
     t = str(texto or "")
+    mf = _forte(t)                                  # 11/10: antes do _OSC — citar "pessoa jurídica" não salva contratação
+    if mf:
+        return "fora", f"não é fomento a OSC: '{limpar(mf.group(0), 60)}'"
     if _OSC.search(t):
         return "osc", "o texto cita OSC, associação, entidade, coletivo ou pessoa jurídica sem fins lucrativos"
     m = _FORA.search(t)
