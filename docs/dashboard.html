@@ -2782,7 +2782,7 @@ function desenhaEmpresas(){
     &&(!dest||(x.potencial||{})[dest.split(":")[0]]===dest.split(":")[1])
     &&(!q||`${x.nome} ${x.nome_fantasia||""} ${x.cnpj||""} ${x.cnae||""}`.toLowerCase().includes(q)));
   const lida=E.ultima_leitura||{};
-  $("emp-fonte").innerHTML=`Fonte primária: <strong>${esc(E.fonte_icms||"lista oficial dos maiores contribuintes do ICMS")}</strong>${E.anos_lidos&&E.anos_lidos.length?` · anos lidos: ${E.anos_lidos.join(", ")}`:" · <em>lista ainda não lida pelo motor</em>"}${lida.em?` · última leitura ${br(lida.em.slice(0,10))}${lida.erro?" — <b style='color:var(--urgente)'>"+esc(lida.erro)+"</b> (portal não respondeu; o motor tenta de novo às 02h)":lida.http?" — portal respondeu":""}`:""} · cadastro: dados públicos de CNPJ (Receita Federal) · destinações: SALIC/MinC, Ministério do Esporte · <b>IRPJ pago é sigilo fiscal</b> — só aparece quando a empresa publica demonstrações.`;
+  $("emp-fonte").innerHTML=`Fonte primária: <strong>${esc(E.fonte_icms||"lista oficial dos maiores contribuintes do ICMS")}</strong>${E.anos_lidos&&E.anos_lidos.length?` · anos lidos: ${E.anos_lidos.join(", ")}`:" · <em>lista ainda não lida pelo motor</em>"}${lida.em?` · última leitura ${br(lida.em.slice(0,10))}${lida.erro?" — <b style='color:var(--urgente)'>"+esc(lida.erro)+"</b> (portal não respondeu; o motor tenta de novo às 02h)":lida.http?" — portal respondeu":""}`:""} · cadastro: dados públicos de CNPJ (Receita Federal) · destinações: SALIC/MinC, Ministério do Esporte · <b>IRPJ pago é sigilo fiscal</b> — só aparece quando a empresa publica demonstrações.${E.gerado_em?` · <b>painel atualizado em ${br(String(E.gerado_em).slice(0,10))}</b> (todos os dias, com o catálogo de incentivos do dia)${E.coleta_em?` · coleta de cadastros em ${br(String(E.coleta_em).slice(0,10))} (semanal)`:""}`:""}`;
   $("emp-resumo").textContent=`${rows.length} empresa(s) na seleção · ${E.total||0} listadas · ${E.com_cadastro||0} com cadastro RFB · ${E.elegiveis||0} elegíveis (matriz, ativa, capital > R$ 10 mi)`;
   desenhaPatrocinios(E);
   if(!emps.length){box.innerHTML=`<div class=cartao style="background:#F6F7F9">Nenhuma empresa ainda: o motor lê a lista oficial dos maiores contribuintes do ICMS de Goiás na saída das <strong>02h</strong> (bloco plataformas/API) e, a cada saída, consulta o cadastro de até 25 CNPJs e o histórico de destinações. Nada é inventado — quando a lista chegar, as linhas aparecem aqui.</div>`;return;}
@@ -3819,7 +3819,9 @@ function _curto(n){ return String(n||"")
 function _capital(v){ const n=Number(String(v||"").replace(/[^\d]/g,"")); return n?_din(n):""; }
 
 window.carregaEmpresas=async function(){ if(window.EMP)return window.EMP;
-  try{const r=await fetch("dados/ranking_apoiadores.json?v="+Date.now()); if(r.ok)window.EMP=await r.json();}
+  // 11/10 (titular): dados ATUAIS — lê direto do repositório (refeito todos os dias), com a cópia do site como reserva
+  try{ for(const u of ["https://raw.githubusercontent.com/amcjardimamerica-arch/Eldorado/main/docs/dados/ranking_apoiadores.json?t="+Date.now(),"dados/ranking_apoiadores.json?v="+Date.now()]){
+         try{ const r=await fetch(u,{cache:"no-store"}); if(r.ok){ window.EMP=await r.json(); break; } }catch(e){} } }
   catch(e){ window.EMP={empresas:[],erro:true}; }
   return window.EMP||{empresas:[]}; };
 
@@ -5697,7 +5699,8 @@ function iniciar(){
   desenhaCal();desenhaEditais();desenhaBussola();iniciarBz();desenhaCalendarioDecisao();desenhaBiblioteca();
   {const el=$("versao-painel"); if(el){const g=(D.gerado_em||"").slice(0,16).replace("T"," ");
      const dias=Math.round((Date.now()-new Date(D.gerado_em||Date.now()))/864e5);
-     el.innerHTML=`dados gerados em <b>${esc(g)}</b>${dias>1?` · <span style="color:var(--urgente)">${dias} dias atrás — recarregue com Ctrl+F5</span>`:" · atualizado"}`;}}
+     const _quando=R.gerado_em?new Date(R.gerado_em).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit",timeZone:"America/Sao_Paulo"}):"—";
+   el.innerHTML=`<div class="meta" style="margin:0 0 8px">Dados atualizados em <b>${_quando}</b> (Brasília) — o ranking é refeito todos os dias com o catálogo de incentivos (Rouanet, Goyazes, Lei de Incentivo ao Esporte, FIA…).</div>dados gerados em <b>${esc(g)}</b>${dias>1?` · <span style="color:var(--urgente)">${dias} dias atrás — recarregue com Ctrl+F5</span>`:" · atualizado"}`;}}
   if(window.desenhaApoiadores)window.desenhaApoiadores();setTimeout(()=>window.atualizarAviao&&atualizarAviao(),700);desenhaPostoPiloto("pil-posto");desenhaPostoPiloto("pil-posto-bussola");desenhaEnquadramento();desenhaAssociacoes();desenhaDocumentos();desenhaPerfis();
   document.body.classList.add("inicial");trocaVista("inicio");
   $("bt-eldorado").classList.remove("on");$("bt-farol").classList.remove("on");

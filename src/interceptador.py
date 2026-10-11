@@ -407,6 +407,16 @@ def proximo_alvo() -> dict | None:
     r0 = retentativa(feitos)                 # 02/10: o que falhou por rede vem primeiro (no Brasil, sempre)
     if r0:
         return r0
+    if len(feitos) % 5 == 4:                 # 11/10 (titular): 1 em cada 5 voos para o DOSSIÊ de empresa de Goiás — o banco de
+        try:                                 # empresas segue crescendo enquanto as oportunidades têm a prioridade
+            from .skills.dossie_empresa import empresas_goias_sem_dossie
+            _eg = empresas_goias_sem_dossie()
+        except Exception:  # noqa: BLE001
+            _eg = []
+        if _eg:
+            e = _eg[0]
+            return {"id": f"dossie-{e['cnpj']}", "empresa": e.get("nome"), "cnpj": e["cnpj"], "_emp": e, "de": "4 · empresas · dossiê (1 em cada 5 voos)",
+                    "modo": "dossie", "tipo": "dossie_empresa"}
     r1 = alvo_do_repositorio(feitos)         # 11/10 (titular): o REPOSITÓRIO ÚNICO direciona — integrado à cadeia
     if r1:
         return r1

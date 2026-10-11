@@ -992,8 +992,64 @@ def run(uf: str | None = None, limite_cadastros: int | None = None) -> dict:
     return resumo
 
 
+def arquivo_do_painel(uf: str) -> Path:
+    """11/10: o painel completo de empresas fica em biblioteca_alexandria/empresas/<uf>/<uf>.json (onde a coleta grava);
+    o arquivo antigo na raiz (<uf>.json) só vale se o novo não existir. O painel lia o antigo — vazio desde 04/09."""
+    novo, antigo = BIB / uf.lower() / f"{uf.lower()}.json", BIB / f"{uf.lower()}.json"
+    return novo if novo.exists() or not antigo.exists() else antigo
+
+
+def atualizar_painel(uf: str = "GO") -> dict:
+    """11/10/2026 (titular): o painel de empresas é ATUAL todos os dias — sem nova coleta na internet (a coleta de
+    cadastros novos segue semanal): reaplica os incentivos verificados e o CATÁLOGO DE INCENTIVOS do dia (Rouanet,
+    Goyazes, Lei de Incentivo ao Esporte, FIA…), recalcula o potencial e a análise preditiva e marca a data."""
+    import gzip
+    arq = arquivo_do_painel(uf)
+    painel = load_json(arq) if arq.exists() else {}
+    if not painel.get("empresas"):
+        return {"uf": uf, "atualizado": False, "motivo": "painel ainda não gerado pela coleta semanal"}
+    try:
+        from .incentivos_empresas import aplicar_em_painel
+        painel = aplicar_em_painel(painel)
+    except Exception:  # noqa: BLE001
+        pass
+    cat = {}
+    try:
+        with gzip.open(ROOT / "biblioteca_alexandria/empresas/catalogo_incentivos.jsonl.gz", "rt", encoding="utf-8") as fh:
+            for l in fh:
+                c = json.loads(l)
+                cat[str(c.get("raiz") or "")] = c
+    except Exception:  # noqa: BLE001
+        pass
+    rot = {"Esporte": "esporte", "FIA": "infancia", "Idoso": "idoso", "PRONON": "saude_oncologia", "PRONAS": "saude_pcd", "Goyazes": "cultura_icms_goias", "Rouanet": "cultura"}
+    com_cat = 0
+    for e in painel["empresas"]:
+        c = cat.get(so_digitos(e.get("cnpj") or "")[:8])
+        if not c:
+            continue
+        com_cat += 1
+        e["incentivos_catalogo"] = {p: (v.get("por_ano") if isinstance(v, dict) and v.get("por_ano") else {"total": (v or {}).get("total_doado")})
+                                    for p, v in (c.get("incentivos") or {}).items() if p != "PAT"}
+        pot = e.get("potencial_destinacao") or {}
+        for p in e["incentivos_catalogo"]:
+            if p in rot:
+                pot[rot[p]] = "ja_destina"
+        e["potencial_destinacao"] = pot
+    painel["painel_atualizado_em"] = now_iso()
+    painel["empresas_no_catalogo_de_incentivos"] = com_cat
+    write_json(arq, painel)
+    try:
+        _pr = _preditiva_base(uf, carregar_base())
+        write_json(BIB / uf.lower() / "analise_preditiva.json", _pr)            # o arquivo que a Biblioteca e o painel leem
+    except Exception:  # noqa: BLE001
+        pass
+    return {"uf": uf, "atualizado": True, "empresas": len(painel["empresas"]), "com_incentivo_no_catalogo": com_cat, "em": painel["painel_atualizado_em"]}
+
+
 if __name__ == "__main__":
     import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "painel":
+        print(json.dumps(atualizar_painel(sys.argv[2] if len(sys.argv) > 2 else "GO"), ensure_ascii=False, indent=2)); sys.exit(0)
     if len(sys.argv) > 1 and sys.argv[1] == "semanal":
         print(json.dumps(run_semanal(sys.argv[2] if len(sys.argv) > 2 else "GO"), ensure_ascii=False, indent=2))
     elif len(sys.argv) > 1 and sys.argv[1] == "por-ano":
