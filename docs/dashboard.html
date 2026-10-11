@@ -962,7 +962,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <button data-v="calendario" class="on">Calendário</button>
 <button data-v="editais">Oportunidades Abertas</button>
 <button data-v="bussola">Bússola</button>
-<button data-v="cartorio">Cartório</button><button data-v="neural">Sala de controle</button>
+<button data-v="cartorio">Cartório</button><button data-v="neural">Rede Neural</button>
 </div>
 <div class="subnav oculto" id="nav-farol">
 <button data-v="f-editais" class="on">Enquadramento</button>
@@ -984,7 +984,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
     <button onclick="modulo('eldorado');mostra('editais')">Oportunidades Abertas</button>
     <button onclick="modulo('eldorado');mostra('bussola')">Bússola</button>
     <button onclick="modulo('eldorado');mostra('cartorio')" title="Certidões de fonte oficial e eficiência por item">Cartório</button>
-    <button onclick="modulo('eldorado');mostra('neural')" title="Rede neural e maestro: cada função num mostrador, com acionamento, efeito e resultado">Sala de controle</button>
+    <button onclick="modulo('eldorado');mostra('neural')" title="Rede neural e maestro: cada função num mostrador, com acionamento, efeito e resultado">Rede Neural</button>
   </nav>
 </div>
 <div class="hotzona" id="hot-farol">
@@ -1254,7 +1254,7 @@ box-sizing:border-box;}
 <!-- ============ ELDORADO · BÚSSOLA ============ -->
 <section id="v-neural" class="oculto">
 <style>
-/* SALA DE CONTROLE v3 — "a constelação" (titular, 11/10/2026; docs/prompts/PROMPT-SALA-DE-CONTROLE-CONSTELACAO-2026-10-11.md)
+/* REDE NEURAL (antiga "sala de controle", renomeada em 11/10/2026) v3 — "a constelação" (titular, 11/10/2026; docs/prompts/PROMPT-SALA-DE-CONTROLE-CONSTELACAO-2026-10-11.md)
    Desktop, largura total. O céu (canvas) é o fundo, sem paralaxe; as estrelas de dados são os motores. Paralaxe, 3D e
    morph só nas informações e na janela de detalhe. Estilo restrito a esta seção. */
 #v-neural,#nv-portal{--ceu0:#070C24;--ceu1:#151B45;--estrela:#EAF2FF;--aurora:#5EE6C8;--violeta:#9B8CFF;--ambar:#FFB347;--coral:#FF6B6B;--nevoa:#8B93B8;--vidro:rgba(16,22,58,.70);
@@ -1379,7 +1379,7 @@ box-sizing:border-box;}
   <canvas class="ceu" id="nv-ceu" aria-hidden="true"></canvas>
   <div class="palco" id="nv-palco">
     <div class="topo">
-      <div class="titulo"><h2>Sala de controle</h2>
+      <div class="titulo"><h2>Rede Neural</h2>
         <p>Cada estrela deste céu é um motor do Eldorado; cada constelação, uma etapa da rede neural. Siga o sinal de cima para baixo e clique em qualquer etapa, mostrador ou estrela para abrir o detalhe.</p>
         <div class="vidro nucleo" onclick="nvVisao(this)" title="abrir a composição do índice"><div id="nv-indice" style="width:150px"></div><div class="contagens" id="nv-contagens"></div></div></div>
       <div class="vidro alarmes"><h3 id="nv-alarmes-tit">Painel de alarmes</h3><div class="janelas" id="nv-janelas"></div></div>
@@ -1668,7 +1668,7 @@ box-sizing:border-box;}
     if(SC){ ativa=true; requestAnimationFrame(desenharCeu); return; }
     for(const u of ["https://raw.githubusercontent.com/amcjardimamerica-arch/Eldorado/main/docs/dados/sala_controle.json?t="+Date.now(),"dados/sala_controle.json?v="+Date.now()]){
       try{ const r=await fetch(u,{cache:"no-store"}); if(r.ok){ SC=await r.json(); break; } }catch(err){} }
-    if(!SC){ $("nv-leitura").textContent="A sala de controle aparece depois da próxima passagem do maestro."; return; }
+    if(!SC){ $("nv-leitura").textContent="A página da Rede Neural aparece depois da próxima passagem do maestro."; return; }
     desenha(); };
   // portal: a janela, o véu e a dica ficam no corpo da página — nenhum container do painel a recorta
   (function(){ const P=document.createElement("div"); P.id="nv-portal"; document.body.appendChild(P); ["nv-veu","nv-holo","nv-dica"].forEach(k=>{const el=$(k); if(el) P.appendChild(el);}); })();

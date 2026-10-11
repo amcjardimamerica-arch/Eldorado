@@ -61,6 +61,9 @@ class TesteEstado(unittest.TestCase):
                       '"passo"', '"etapa"', '"estante"', '"origem"', '"reproc"', "function detalheItem(", "function ligarDetalhes(", "window.nvVisao", 'class="cabeca-const"', "function desenhoConst("):
             self.assertIn(marca, sec, marca)
         self.assertNotIn("g.fillText(no.nome", sec, "nomes das constelações ocultos no céu")
+        # nome da página (11/10): "Rede Neural"
+        self.assertIn('<button data-v="neural">Rede Neural</button>', h); self.assertIn("<h2>Rede Neural</h2>", h)
+        self.assertNotIn(">Sala de controle<", h)
         g = (ROOT / "src/sala_controle.py").read_text(encoding="utf-8")
         self.assertIn('"ultimas"', g); self.assertIn('{"id": x["id"], "quando"', g)
 
