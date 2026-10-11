@@ -826,7 +826,7 @@ box-shadow:0 1px 3px #0002}
 .bz-botoes button{display:flex;align-items:center;gap:9px;white-space:nowrap;font-weight:800;font-size:14.5px;letter-spacing:.06em;padding:12px 26px;border-radius:12px}
 .bz-botoes .ativo{color:#fff;border:0;background:linear-gradient(180deg,#E8A93B,#C77E12);box-shadow:0 4px 10px #C77E1244}
 .bz-botoes .quieto{background:#fff;color:#0B4EA2;border:1px solid var(--linha)}
-.bz-cards{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:16px}
+.bz-cards{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:16px}.bz-card .s{font-size:10.5px;color:var(--suave);margin-top:3px;line-height:1.3}
 .bz-card{background:#fff;border:1px solid var(--linha);border-radius:13px;padding:13px 14px;display:grid;grid-template-columns:auto 1fr;gap:4px 11px;align-items:center}
 .bz-card svg{grid-row:span 2}
 .bz-card .r{font-size:12px;color:var(--tinta);font-weight:600}
@@ -5233,12 +5233,12 @@ function desenhaBzCards(){
   const fr=(a,b)=>`${a}<span class="bz-tot">/${b}</span>`;
   const cards=[
     [IC("#C77E12").rosa,"Oportunidades abertas",`${PR.abertas}`,"","vermelho",`${PR.validadas} validadas · ${PR.em_verificacao} em verificação · ${PR.validacao_manual} em validação manual (vermelho) — fechadas por veredito e prazos vencidos ficam fora`],
-    [IC("#0B4EA2").banco,"Fontes monitoradas",`${OP.ligados??0}`,"","azul",(OP.monitorados_abertos!=null?`${OP.monitorados_abertos} com edital aberto · ${OP.monitorados_prestes} prestes a abrir (previsão) · ${OP.monitorados_continuos||0} de fluxo contínuo — `:"")+`livros lidos todos os dias pelo motor do próprio livro, com pesquisa focada (de ${OP.catalogo??0} livros na Biblioteca)`],
+    [IC("#0B4EA2").banco,"Fontes monitoradas",fr(OP.ligados??0,OP.catalogo??0),(OP.monitorados_abertos!=null?`${OP.monitorados_abertos} com edital aberto · ${OP.monitorados_prestes} prestes a abrir · ${OP.monitorados_continuos||0} contínuas`:""),"azul",(OP.monitorados_abertos!=null?`${OP.monitorados_abertos} com edital aberto · ${OP.monitorados_prestes} prestes a abrir (previsão) · ${OP.monitorados_continuos||0} de fluxo contínuo — `:"")+`livros monitorados (lidos todos os dias pelo motor do próprio livro, com pesquisa focada) / total de livros na Biblioteca`],
     [IC("#0B4EA2").escudo,"Validadas",fr(PR.validadas,PR.abertas),"","azul","validadas (objeto, prazo vigente e site oficial comprovados, ou ouro) / oportunidades abertas"],
     [IC("#C0392B").relogio,"Prazos urgentes",fr(urg.length,conf.length),"","vermelho","inscrições validadas terminando em até 7 dias / validadas"],
     [IC("#0B4EA2").farol,"Repositório",fr(OP.com_historico_de_edicoes??0,OP.catalogo??0),"","azul","opressores com duas ou mais edições guardadas / livros de oportunidades na Biblioteca"],
     [IC("#0B4EA2").livro,"Base legal",((D.biblioteca||{}).acervos||{}).leis??0,"","azul","normas na Biblioteca"]];
-  $("bz-cards").innerHTML=cards.map(c=>`<div class="bz-card" title="${esc(c[5])}">${c[0]}<div class=r>${c[1]}</div><div class=v>${c[2]}</div></div>`).join("");
+  $("bz-cards").innerHTML=cards.map(c=>`<div class="bz-card" title="${esc(c[5])}">${c[0]}<div class=r>${c[1]}</div><div class=v>${c[2]}</div>${c[3]?`<div class=s>${esc(c[3])}</div>`:""}</div>`).join("");
   const na=$("bz-cards").children[0];
   // honestidade: 305 "novas" hoje = carga inicial de 31/08
 }
