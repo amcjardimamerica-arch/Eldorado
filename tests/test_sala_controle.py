@@ -32,11 +32,15 @@ class TesteEstado(unittest.TestCase):
         self.assertIn("window.desenhaNeural", h); self.assertIn("sala_controle.json", h)
         self.assertIn("python -m src.sala_controle", (ROOT / ".github/workflows/motores-da-vez.yml").read_text(encoding="utf-8"))
         self.assertTrue((ROOT / "docs/prompts/PROMPT-SALA-DE-CONTROLE-REDE-NEURAL-2026-10-11.md").exists())
-        # v2 (11/10): o datacenter vivo — sete etapas em sequência no axônio, detalhe por etapa, paralaxe leve
-        for marca in ('id="nv-fluxo"', "const ETAPAS=[", "window.nvAbre", 'class="veios"', "prefers-reduced-motion"):
+        # v3 (11/10): a constelação — desktop, largura total, céu em canvas (as estrelas de dados são os motores), nove etapas
+        # ligadas por sinapses, janela-holograma no centro que nasce do elemento clicado (nunca painel lateral)
+        for marca in ('id="nv-ceu"', "const ETAPAS=[", "window.nvHolo", 'class="holo"', "width:100vw", "prefers-reduced-motion", "IntersectionObserver"):
             self.assertIn(marca, h)
-        self.assertNotIn('id="sc-anunciador"', h, "a versão 1 (usina) foi substituída")
-        self.assertTrue((ROOT / "docs/prompts/PROMPT-SALA-DE-CONTROLE-2200-2026-10-11.md").exists())
+        sec = h[h.index('<section id="v-neural"'):h.index("</section>", h.index('<section id="v-neural"'))]
+        self.assertNotIn('class="detalhe"', sec, "o detalhe não abre em painel lateral")
+        self.assertEqual(sec.count("<canvas"), 1, "um único canvas para o céu")
+        self.assertTrue((ROOT / "docs/prompts/PROMPT-SALA-DE-CONTROLE-CONSTELACAO-2026-10-11.md").exists())
+        self.assertIn('"detalhes"', (ROOT / "src/sala_controle.py").read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":
