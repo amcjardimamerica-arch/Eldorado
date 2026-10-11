@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-11T20:15:45+00:00",
+  "em": "2026-10-11T20:38:42+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-11T20:00:43+00:00",
+  "ultimo_voo": "2026-10-11T20:18:30+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,93 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 304,
+    "missoes": 305,
     "validadas": 17,
     "parciais": 76,
-    "insuficientes": 207,
+    "insuficientes": 208,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 203,
+      "sim": 204,
       "nao": 53
     },
     "estrelas_de_ouro": 5,
     "fontes_novas_para_os_motores": 10,
-    "tempo_medio_min": 10.3
+    "tempo_medio_min": 10.4
   },
   "missoes": [
+    {
+      "em": "2026-10-11T20:18:30+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Casimiro de Abreu (RJ) 2026-09-29 — \"chamamento público\" \"organizações da sociedade civil\"",
+      "qualidade": "insuficiente",
+      "comprovados": 5,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Território",
+        "Requisitos",
+        "Destinação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto menciona explicitamente o objeto da ação como 'Fomento a projetos de interesse social e ambiental' e identifica o financiador como 'Município de Casimiro de Abreu', indicando que é uma fonte válida para ações de fomento.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital abrange áreas de atuação como assistência social, cultura, educação e esporte, além de se alinhar ao objeto do chamamento público, que é o fomento a projetos de interesse social e ambiental.",
+        "proximo_passo": "Consultar os anexos do edital para obter informações detalhadas sobre as condições, requisitos e critérios de seleção.",
+        "risco": "O prazo de inscrição, valor e outros requisitos não foram encontrados no texto, o que pode impedir a associação de se preparar adequadamente para o processo seletivo."
+      },
+      "erro": null,
+      "segundos": 1210,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "9319b6fe15075bc73d69",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Fomento a projetos de interesse social e ambiental",
+          "trecho": "CHAMADA PÚBLICA N.º 003/2026 - FMS",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Município de Casimiro de Abreu",
+          "trecho": "Órgão: Município de Casimiro de Abreu, por intermédio da",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "meio_ambiente",
+          "trecho": "CONSIDERANDO os termos do Processo Administrativo nº 013/2026, de 24/09/2026, que atesta a renovação de Autorização para",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Casimiro de Abreu",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3301306/2026-09-29/ce67ed58442cfbe3ca7e43abeea73eeff0684446.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-11T20:00:43+00:00",
       "modo": "validar",
@@ -2664,60 +2736,6 @@
       "indicios": [],
       "rotas": [
         "site_do_financiador"
-      ]
-    },
-    {
-      "em": "2026-10-11T09:10:32+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Chamamento Público Nº 006/2026 para Seleção de Projetos — Goiás / Alvorada do Norte",
-      "qualidade": "insuficiente",
-      "comprovados": 2,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Território",
-        "Requisitos",
-        "Anexos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://alvoradadonorte.go.gov.br/cumprindo-agenda-em-goiania-a-prefeita-iolanda-participou-de-encontro-com-o-governador-de-goias-ronaldo-caiado/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O Chamamento Público Nº 006/2026 é emitido pela Prefeitura Municipal de Alvorada do Norte, que é um órgão municipal com competência para realizar chamamentos públicos de fomento a projetos.",
-        "para_a_amc": "Para acessar o chamamento, uma associação comunitária de Goiânia precisaria verificar se o edital abrange a região de Alvorada do Norte, pois o território não foi especificado. Além disso, seria necessário atender aos requisitos gerais de elegibilidade para projetos de assistência social, cultura, educação ou esporte, mesmo que não estejam explicitados no texto.",
-        "proximo_passo": "Consultar o site oficial da Prefeitura Municipal de Alvorada do Norte para obter informações adicionais sobre o edital, como prazos, requisitos e área de atuação.",
-        "risco": "O território não especificado pode impedir que a associação comunitária de Goiânia participe, caso o projeto não esteja alinhado com a área de atuação da Prefeitura de Alvorada do Norte."
-      },
-      "erro": null,
-      "segundos": 360,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
-      "id": "op-op-bd0fd2fd7df6",
-      "encontrou": {
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal de Alvorada do Norte",
-          "trecho": "Prefeitura Municipal de Alvorada do Norte",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Secretaria de Estado de Desenvolvimento Econômico, Ciência e Tecnologia de Goiás",
-      "indicios": [],
-      "rotas": [
-        "site_municipal",
-        "financiador_programa_edital"
       ]
     }
   ],
