@@ -292,7 +292,12 @@ jobs:
           timeout 60 python -m src.reset_pilotos >/dev/null 2>&1 || true   # 01/10: missões anteriores ao reset ficam só no histórico
           timeout 90 python -m src.espiao_relatorio >/dev/null 2>&1 || echo 'relatório do Espião: falhou'   # quadro no padrão do Interceptador
           timeout 60 python -m src.achados_pilotos >/dev/null 2>&1 || echo 'achados por dia: falhou'   # oportunidades do Espião por dia   # skill: a cada 100 erros, parâmetros novos
-          timeout 300 python -m src.dashboard_dados || { echo "::error::o gerador principal do painel (src.dashboard_dados) falhou — o painel ficaria congelado"; date -u +%FT%TZ > estado/piloto/gerador_painel_falhou.txt; }
+          # 11/10 (titular, espaço): o painel inteiro era regravado a cada pouso (369 versões em 3 dias, ~155 MB de
+          # histórico); os Pilotos regeneram no máximo a cada 30 min — o ciclo dos motores, o Cartório e o diário seguem
+          IDADE_PAINEL=$(python3 -c "import re,datetime as d;t=open('docs/dashboard-dados.js',encoding='utf-8').read(300);m=re.search(r'gerado_em\":\"([^\"]+)',t);print(int((d.datetime.now(d.timezone.utc)-d.datetime.fromisoformat(m.group(1))).total_seconds()//60) if m else 9999)" 2>/dev/null || echo 9999)
+          if [ "${IDADE_PAINEL}" -ge 30 ]; then
+            timeout 300 python -m src.dashboard_dados || { echo "::error::o gerador principal do painel (src.dashboard_dados) falhou — o painel ficaria congelado"; date -u +%FT%TZ > estado/piloto/gerador_painel_falhou.txt; }
+          else echo "painel regenerado há ${IDADE_PAINEL} min — os Pilotos só regeneram a cada 30 min"; fi
           # 1) guarda o que o Piloto produziu
           BASE_DO_VOO=$(git rev-parse HEAD)          # onde a cópia do voo começou
           rm -rf docs/dados/dados                    # 27/09: pasta aninhada de 22/09 (220 MB) — nunca mais volta
