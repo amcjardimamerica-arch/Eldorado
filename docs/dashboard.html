@@ -1492,6 +1492,7 @@ box-sizing:border-box;}
     abrirJanela(H,V,origem,instId); observarVivos(H);
   };
   function abrirJanela(H,V,origem,instId){
+    clearTimeout(H._tFecha); clearTimeout(H._tPronta); H._sessao=(H._sessao||0)+1; const sessao=H._sessao;   // cancela o fechamento pendente
     H.style.transition="none"; H.style.transform="none"; H.style.display="block"; H.classList.remove("pronta");
     const w=H.offsetWidth, h=Math.min(H.offsetHeight, Math.round(innerHeight*.86));   // tamanho real, sem a transformação anterior
     const o=(origem&&origem.getBoundingClientRect)?origem.getBoundingClientRect():{left:innerWidth/2-40,top:innerHeight/2-20,width:80,height:40};
@@ -1499,7 +1500,7 @@ box-sizing:border-box;}
     V.classList.add("on"); void H.offsetWidth;
     H.style.transition=quieto?"none":"transform .55s cubic-bezier(.2,.85,.2,1)"; H.style.transform=`translate(${-w/2}px,${-h/2}px) scale(1,1)`;
     H.scrollTop=0;
-    setTimeout(()=>{H.classList.add("pronta"); if(instId){const el=$("nv-i-"+instId); if(el){H.scrollTop=Math.max(0,el.offsetTop-90); el.style.borderColor="rgba(94,230,200,.7)";}} H.querySelector(".fechar").focus({preventScroll:true});},quieto?0:380);
+    H._tPronta=setTimeout(()=>{ if(H._sessao!==sessao) return; H.classList.add("pronta"); if(instId){const el=$("nv-i-"+instId); if(el){H.scrollTop=Math.max(0,el.offsetTop-90); el.style.borderColor="rgba(94,230,200,.7)";}} H.querySelector(".fechar").focus({preventScroll:true});},quieto?0:380);
     H._origem=origem;
   }
   window.nvFluxo=function(i,origem){ const f=(SC.fluxos||[])[i]; if(!f) return; const H=$("nv-holo"),V=$("nv-veu"); foco=null;
@@ -1514,18 +1515,37 @@ box-sizing:border-box;}
     abrirJanela(H,V,origem,null); };
   window.nvFecha=function(){ const H=$("nv-holo"),V=$("nv-veu"); if(H.style.display!=="block") return; const o=H._origem&&H._origem.getBoundingClientRect?H._origem.getBoundingClientRect():null;
     const r={width:H.offsetWidth,height:Math.min(H.offsetHeight,Math.round(innerHeight*.86))}; H.classList.remove("pronta");
-    if(o&&!quieto){ H.style.transform=`translate(${o.left-innerWidth/2}px,${o.top-innerHeight/2}px) scale(${o.width/r.width},${o.height/r.height})`; setTimeout(()=>{H.style.display="none";},520); } else H.style.display="none";
+    clearTimeout(H._tPronta); const sessao=H._sessao;
+    if(o&&!quieto){ H.style.transform=`translate(${o.left-innerWidth/2}px,${o.top-innerHeight/2}px) scale(${o.width/r.width},${o.height/r.height})`;
+      H._tFecha=setTimeout(()=>{ if(H._sessao===sessao) H.style.display="none"; },520); } else H.style.display="none";
     V.classList.remove("on"); foco=null; };
   /* céu: estrelas de fundo e estrelas de dados (os motores); constelações ligam as etapas; o sinal viaja entre elas */
+  const CONSTELACOES={
+    regencia:{nome:"Lira",rel:"o instrumento do maestro",p:[[.50,.05,1],[.66,.14,3],[.42,.36,3],[.38,.62,3],[.60,.95,2],[.73,.70,3]],a:[[0,1],[0,2],[2,3],[3,4],[4,5],[5,2]]},
+    coleta:{nome:"Virgem",rel:"a espiga: a colheita",p:[[.56,.95,1],[.62,.74,3],[.45,.55,2],[.40,.38,3],[.28,.22,2],[.70,.50,3],[.88,.44,3],[.25,.70,3],[.08,.88,3]],a:[[0,1],[1,2],[2,5],[5,6],[2,3],[3,4],[1,7],[7,8]]},
+    repositorio:{nome:"Ursa Maior",rel:"a grande concha que guarda",p:[[.72,.14,1],[.74,.46,2],[.52,.54,2],[.49,.26,3],[.33,.18,2],[.19,.22,2],[.04,.38,2]],a:[[0,1],[1,2],[2,3],[3,0],[3,4],[4,5],[5,6]]},
+    aprendizado:{nome:"Sagitário",rel:"o arqueiro: precisão",p:[[.40,.84,1],[.43,.56,2],[.20,.66,3],[.52,.34,3],[.66,.55,2],[.82,.44,2],[.84,.72,3],[.69,.78,2]],a:[[2,1],[1,3],[3,4],[4,1],[4,5],[5,6],[6,7],[7,4],[7,0],[0,1]]},
+    biblioteca:{nome:"Ursa Menor",rel:"a Polar diz onde buscar",p:[[.04,.20,1],[.22,.26,3],[.38,.36,3],[.55,.44,3],[.80,.30,2],[.83,.58,3],[.60,.64,3]],a:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,3]]},
+    certificacao:{nome:"Libra",rel:"a balança: certificar",p:[[.50,.08,2],[.20,.44,2],[.14,.88,3],[.76,.40,3],[.82,.82,3]],a:[[0,1],[0,3],[1,3],[1,2],[3,4]]},
+    investigacao:{nome:"Órion",rel:"o caçador",p:[[.20,.12,1],[.75,.16,2],[.48,.02,3],[.38,.52,2],[.48,.50,2],[.58,.48,2],[.28,.92,2],[.80,.88,1]],a:[[0,2],[2,1],[0,3],[1,5],[3,4],[4,5],[3,6],[5,7]]},
+    externa:{nome:"Cruzeiro do Sul",rel:"a orientação final",p:[[.50,.96,1],[.45,.04,2],[.86,.46,1],[.14,.40,3],[.62,.56,3]],a:[[1,0],[2,3]]},
+    farol:{nome:"Carina",rel:"Canopo guia os navegadores",p:[[.04,.30,1],[.30,.48,3],[.50,.60,2],[.86,.78,1],[.70,.40,2],[.96,.46,3],[.56,.18,3]],a:[[0,1],[1,2],[2,3],[2,4],[4,5],[4,6]]}};
   function semente(s){let h=2166136261;for(const c of String(s)){h^=c.charCodeAt(0);h=Math.imul(h,16777619);}return ()=>{h^=h<<13;h^=h>>>17;h^=h<<5;return ((h>>>0)%10000)/10000;};}
   function montarCeu(){ const P=$("nv-palco"), W=P.clientWidth, H=P.scrollHeight, rnd=semente("eldorado"); ESTRELAS=[];
     for(let i=0;i<420;i++) ESTRELAS.push({x:rnd()*W,y:rnd()*H,r:rnd()*1.1+.2,a:rnd()*.6+.15,tw:rnd()*6.28,dado:null});
     const faixas=[...document.querySelectorAll("#v-neural .faixa")], top=P.getBoundingClientRect().top;
     const pl=P.getBoundingClientRect().left;
     NOS=faixas.map((f,k)=>{const r=f.getBoundingClientRect(), xs=[.18,.82]; return {x:r.left-pl+r.width*xs[k%2],xin:r.left-pl+r.width*xs[(k+1)%2],y:r.top-top+r.height/2,y0:r.top-top,y1:r.bottom-top,id:f.dataset.et};});
-    const motores=(SC.detalhes?.motores||[]), cobre=(NOS[0]&&NOS[1])?[NOS[0].y0-30,NOS[1].y1+30]:[0,H];
-    motores.forEach(m=>{const g=semente(m.id); ESTRELAS.push({x:g()*W,y:cobre[0]+g()*(cobre[1]-cobre[0]),r:2.1,a:.95,tw:g()*6.28,dado:m});});
-    NOS.forEach(no=>{const g=semente(no.id); no.cons=[]; const cx=W*(.36+g()*.28); for(let i=0;i<7;i++) no.cons.push({x:cx+(g()-.5)*W*.34,y:no.y0+18+g()*(no.y1-no.y0-36)}); no.cons.sort((a,b)=>a.x-b.x);}); }
+    const motores=(SC.detalhes?.motores||[]), nc=NOS.find(x=>x.id==="coleta"), cobre=nc?[nc.y0+10,nc.y1-10]:[0,H];
+    motores.forEach(m=>{const g=semente(m.id); ESTRELAS.push({x:W*.04+g()*W*.92,y:cobre[0]+g()*(cobre[1]-cobre[0]),r:2.1,a:.95,tw:g()*6.28,dado:m});});
+    // estrelas de ERRO: cada instrumento em alarme (vermelha cintilante) ou em atenção (âmbar) atrás da faixa da sua etapa
+    ETAPAS.forEach(et=>{ const no=NOS.find(x=>x.id===et.id); if(!no) return; const erros=[];
+      et.ids.map(I).filter(x=>x&&(x.estado==="vermelho"||x.estado==="amarelo")).forEach(x=>erros.push({nome:x.nome,motivo:x.motivo,nivel:x.estado}));
+      if(et.id==="farol") (SC.fluxos||[]).filter(f=>f.conclusao==="failure").forEach(f=>erros.push({nome:"Fluxo com falha: "+f.nome,motivo:"última execução falhou",nivel:"vermelho"}));
+      (SC.anunciadores||[]).filter(a=>a.id==="es_vigilancia_resumo"&&et.id==="biblioteca").forEach(a=>erros.push({nome:a.nome,motivo:a.motivo,nivel:a.nivel}));
+      erros.forEach((er,k)=>{ const g=semente(et.id+":"+k+":"+er.nome); ESTRELAS.push({x:W*.05+g()*W*.9,y:no.y0+14+g()*(no.y1-no.y0-28),r:2.4,a:1,tw:g()*6.28,erro:er}); }); });
+    NOS.forEach((no,k)=>{ const C=CONSTELACOES[no.id]; if(!C){no.cons=[];no.arestas=[];return;} const ah=no.y1-no.y0-34, aw=Math.min(W*.30,ah*1.9), x0=W*(k%2?.40:.36)-aw/2+W*.08;
+      no.cons=C.p.map(([x,y,m])=>({x:x0+x*aw,y:no.y0+17+y*ah,m})); no.arestas=C.a; no.nome=C.nome; no.rel=C.rel; no.lx=x0; no.ly=no.y0+14; }); }
   // ponteiros vivos: cada luz oscila em torno do valor (ruído suave de duas frequências), só nos mostradores visíveis
   const VIS_G=new Set(); const obsG=new IntersectionObserver(es=>es.forEach(en=>{ en.target.querySelectorAll(".vivo").forEach(g=>en.isIntersecting?VIS_G.add(g):VIS_G.delete(g)); }));
   function observarVivos(raiz){ raiz.querySelectorAll("svg").forEach(s=>{ if(s.querySelector(".vivo")) obsG.observe(s); }); }
@@ -1542,7 +1562,8 @@ box-sizing:border-box;}
     if(cv.width!==Math.round(W*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(Hh*dpr);} const g=cv.getContext("2d"); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,Hh);
     const off=-P.getBoundingClientRect().top; // o céu acompanha o conteúdo: sem paralaxe
     for(const s of ESTRELAS){ const y=s.y-off; if(y<-10||y>Hh+10) continue; const tw=quieto?1:(.75+.25*Math.sin(t/900+s.tw));
-      if(s.dado&&s.dado.luz==="vermelho"){ // motor em falha: estrela vermelha cintilante, com raios (o mesmo padrão das luzes do painel)
+      if(s.erro&&s.erro.nivel==="amarelo"){ const sp=sprite("a","rgba(255,194,102,.95)",18); g.globalAlpha=.95; g.drawImage(sp,s.x-11,y-11,22,22); g.globalAlpha=1; }
+      else if((s.erro&&s.erro.nivel==="vermelho")||(s.dado&&s.dado.luz==="vermelho")){ // motor em falha: estrela vermelha cintilante, com raios (o mesmo padrão das luzes do painel)
         const ci=quieto?1:(.62+.38*Math.abs(Math.sin(t/260+s.tw)*Math.sin(t/610+s.tw*2))+.18*Math.sin(t/90+s.tw)), R=10*ci, sp=sprite("v","rgba(255,61,79,.95)",24);
         g.globalAlpha=1; g.drawImage(sp,s.x-R*1.8,y-R*1.8,R*3.6,R*3.6);
         g.strokeStyle=`rgba(255,120,130,${(.35+.5*ci).toFixed(2)})`; g.lineWidth=1; g.beginPath(); g.moveTo(s.x-R*1.6,y); g.lineTo(s.x+R*1.6,y); g.moveTo(s.x,y-R*1.6); g.lineTo(s.x,y+R*1.6); g.stroke(); }
@@ -1558,7 +1579,9 @@ box-sizing:border-box;}
         if(!quieto){ for(let k=0;k<3;k++){ const u=((t/2200+k/3+i*.11)%1), mt=1-u, c1y=ay+(by-ay)*.95, c2y=by-(by-ay)*.95, x=mt*mt*mt*a.x+3*mt*mt*u*a.x+3*mt*u*u*b.x+u*u*u*b.x, y=mt*mt*mt*ay+3*mt*mt*u*c1y+3*mt*u*u*c2y+u*u*u*by;
           g.drawImage(sprite("p","rgba(94,230,200,.85)",20),x-10,y-10,20,20); } } }
       for(const no of NOS){ const y=no.y-off; if(y<-300||y>Hh+300) continue; const acesa=foco===no.id||no.hover; g.strokeStyle=acesa?"rgba(94,230,200,.9)":"rgba(155,140,255,.30)"; g.lineWidth=acesa?1.6:.9;
-        g.beginPath(); no.cons.forEach((p,k)=>k?g.lineTo(p.x,p.y-off):g.moveTo(p.x,p.y-off)); g.stroke(); no.cons.forEach(p=>{g.fillStyle=acesa?"#EAF2FF":"rgba(234,242,255,.7)"; g.beginPath(); g.arc(p.x,p.y-off,acesa?2.6:1.6,0,6.28); g.fill();});
+        g.beginPath(); (no.arestas||[]).forEach(([a,b])=>{const A=no.cons[a],B=no.cons[b]; if(A&&B){g.moveTo(A.x,A.y-off); g.lineTo(B.x,B.y-off);}}); g.stroke();
+        no.cons.forEach(p=>{ const r=(p.m===1?3.4:p.m===2?2.5:1.8)*(acesa?1.25:1); g.globalAlpha=acesa?1:.8; g.drawImage(sprite("e","rgba(234,242,255,.9)",14),p.x-r*2.2,p.y-off-r*2.2,r*4.4,r*4.4); g.globalAlpha=1; });
+        if(no.nome){ g.font="500 12px 'Saira Semi Condensed',sans-serif"; g.fillStyle=acesa?"rgba(234,242,255,.85)":"rgba(234,242,255,.38)"; g.fillText(no.nome+(acesa?" · "+no.rel:""),no.lx,no.ly-off); }
       } }
     requestAnimationFrame(desenharCeu); }
   function interacoes(){ const P=$("nv-palco"), dica=$("nv-dica");
@@ -1568,8 +1591,9 @@ box-sizing:border-box;}
       f.addEventListener("pointerleave",()=>{const k=no(); if(k) k.hover=false;}); });
     // estrela de dado: passar o mouse diz qual motor é; clicar abre a coleta
     P.addEventListener("pointermove",ev=>{ if(ev.target.closest(".vidro")){dica.style.display="none";return;} const pr=P.getBoundingClientRect(), x=ev.clientX-pr.left, y=ev.clientY-pr.top;
-      const s=ESTRELAS.find(q=>q.dado&&Math.hypot(q.x-x,q.y-y)<9); if(s){dica.style.display="block";dica.style.left=(ev.clientX+14)+"px";dica.style.top=(ev.clientY+12)+"px";
-        dica.innerHTML=`<b>${e(s.dado.nome)}</b><br><span style="color:${s.dado.luz==="vermelho"?COR.vermelho:COR.verde}">${s.dado.luz==="vermelho"?"em falha":"funcionando"}</span> · ${e(s.dado.resultado||"")}`; P.style.cursor="pointer"; P._estrela=s;}
+      const s=ESTRELAS.find(q=>(q.dado||q.erro)&&Math.hypot(q.x-x,q.y-y)<10); if(s){dica.style.display="block";dica.style.left=(ev.clientX+14)+"px";dica.style.top=(ev.clientY+12)+"px";
+        dica.innerHTML=s.dado?`<b>${e(s.dado.nome)}</b><br><span style="color:${s.dado.luz==="vermelho"?COR.vermelho:COR.verde}">${s.dado.luz==="vermelho"?"em falha":"funcionando"}</span> · ${e(s.dado.resultado||"")}`
+          :`<b>${e(s.erro.nome)}</b><br><span style="color:${COR[s.erro.nivel]}">${EST[s.erro.nivel]}</span> · ${e(s.erro.motivo||"")}`; P.style.cursor="pointer"; P._estrela=s;}
       else {dica.style.display="none"; P.style.cursor=""; P._estrela=null;} });
     P.addEventListener("click",ev=>{ if(P._estrela&&!ev.target.closest(".vidro")) nvHolo("coleta",{getBoundingClientRect:()=>({left:ev.clientX-6,top:ev.clientY-6,width:12,height:12})}); });
     // números que sobem ao entrar na tela
@@ -4230,7 +4254,8 @@ window.desenhaApoiadores=function(){
   const ufs=[...new Set(daLista.map(e=>(e.cadastro||{}).uf).filter(Boolean))].sort();
   const comValor=fatia.filter(e=>(e.potencial||{}).apurou).length;
 
-  el.innerHTML=`
+   const _quando=R.gerado_em?new Date(R.gerado_em).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit",timeZone:"America/Sao_Paulo"}):"—";
+  el.innerHTML=`<div class="meta" style="margin:0 0 8px">Dados atualizados em <b>${_quando}</b> (Brasília) — o ranking é refeito todos os dias com o catálogo de incentivos (Rouanet, Goyazes, Lei de Incentivo ao Esporte, PRONON, PRONAS…).</div>
   <section class="ep" style="--c:${L.cor};--f:${L.fundo}">
     <div class="ep-abas" role="tablist">
       ${Object.entries(LISTAS).map(([k,v])=>{const n=(R.empresas||[]).filter(e=>e.origem===v.origem).length;
@@ -5341,7 +5366,7 @@ function desenhaMotores(){
   const R=MT._resumo||{};
   const IC=c=>`<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M15.5 8.5l-2.2 5.1-5.1 2.2 2.2-5.1z"/></svg>`;
   $("mt-mets").innerHTML=[[IC("#0E2A55"),(MT._plat||[]).length+(MT._of||[]).length,"Motores de busca"],[IC("#1E7E4B"),R.completos??0,"Com os 12 itens"],
-    [IC("#C05E00"),(R.media_camadas??0).toFixed?R.media_camadas.toFixed(1):R.media_camadas,"Média de camadas obtidas"],
+    [IC("#C05E00"),Number(R.media_camadas??0).toFixed(1),"Média de camadas obtidas"],
     [IC("#7B4BE0"),MT.filter(m=>m.validacao==="bloqueada").length,"Páginas bloqueadas"]]
     .map(x=>`<div class="met linha">${x[0]}<div><div class=v style="color:var(--tinta)">${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
   const cor=s=>/captando|satisfat/.test(s)?"var(--ok)":/bloque/.test(s)?"var(--urgente)":/sem leitura/.test(s)?"var(--suave)":"var(--alerta)";
@@ -6072,8 +6097,7 @@ function iniciar(){
   desenhaCal();desenhaEditais();desenhaBussola();iniciarBz();desenhaCalendarioDecisao();desenhaBiblioteca();
   {const el=$("versao-painel"); if(el){const g=(D.gerado_em||"").slice(0,16).replace("T"," ");
      const dias=Math.round((Date.now()-new Date(D.gerado_em||Date.now()))/864e5);
-     const _quando=R.gerado_em?new Date(R.gerado_em).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit",timeZone:"America/Sao_Paulo"}):"—";
-   el.innerHTML=`<div class="meta" style="margin:0 0 8px">Dados atualizados em <b>${_quando}</b> (Brasília) — o ranking é refeito todos os dias com o catálogo de incentivos (Rouanet, Goyazes, Lei de Incentivo ao Esporte, FIA…).</div>dados gerados em <b>${esc(g)}</b>${dias>1?` · <span style="color:var(--urgente)">${dias} dias atrás — recarregue com Ctrl+F5</span>`:" · atualizado"}`;}}
+     el.innerHTML=`dados gerados em <b>${esc(g)}</b>${dias>1?` · <span style="color:var(--urgente)">${dias} dias atrás — recarregue com Ctrl+F5</span>`:" · atualizado"}`;}}
   if(window.desenhaApoiadores)window.desenhaApoiadores();setTimeout(()=>window.atualizarAviao&&atualizarAviao(),700);desenhaPostoPiloto("pil-posto");desenhaPostoPiloto("pil-posto-bussola");desenhaEnquadramento();desenhaAssociacoes();desenhaDocumentos();desenhaPerfis();
   document.body.classList.add("inicial");trocaVista("inicio");
   $("bt-eldorado").classList.remove("on");$("bt-farol").classList.remove("on");
