@@ -66,6 +66,35 @@ def proximidade(fonte: dict, hoje: date) -> str:
     return "rosa" if 0 <= (d - hoje).days <= 45 else "cinza"
 
 
+def alvo_de_monitoramento(fontes: dict, hoje: date) -> dict:
+    """fid → {tipo, motivo, foco}: os livros que DEVEM ser monitorados e o foco da pesquisa de cada um."""
+    h = hoje.isoformat(); out = {}
+    try:
+        rep = (load_json(ROOT / "dados/oportunidades/repositorio_unico.json") or {}).get("registros") or []
+    except Exception:  # noqa: BLE001
+        rep = []
+    for r in rep:
+        if r.get("estado") in ("em_verificacao", "validada", "validacao_manual") and r.get("livro") in fontes:
+            out[r["livro"]] = {"tipo": "aberto", "motivo": "edital aberto no repositório único",
+                               "foco": {"tipo": "edital aberto", "oportunidade": r["id"], "edital": r.get("link_oficial"), "prazo": r.get("fim"),
+                                        "faltam": r.get("faltam"), "onde_buscar": r.get("onde_buscar")}}
+    for fid, x in fontes.items():
+        if fid in out:
+            continue
+        p = x.get("previsao") or {}
+        ab, at, en = str(p.get("abertura") or "")[:10], str(p.get("ativar_em") or "")[:10], str(p.get("encerramento") or "")[:10]
+        anteriores = [h_.get("pagina_oficial") or h_.get("url") for h_ in (x.get("historico") or []) if isinstance(h_, dict)][-3:]
+        onde = [u for u in dict.fromkeys([x.get("pagina_aprendida"), x.get("pagina")] + anteriores) if u]
+        if ab and at and at <= h <= (en or ab):
+            out[fid] = {"tipo": "prestes", "motivo": f"abertura prevista em {ab} (confiança {p.get('confianca') or '?'})",
+                        "foco": {"tipo": "edital esperado", "abertura_prevista": ab, "encerramento_previsto": en, "confianca": p.get("confianca"),
+                                 "base": p.get("base"), "onde_publicou_antes": onde}}
+        elif x.get("regime_inscricao") == "contínuo" or str(p.get("situacao") or "").startswith("permanente"):
+            out[fid] = {"tipo": "contínuo", "motivo": "fluxo contínuo (inscrição o ano inteiro)",
+                        "foco": {"tipo": "fluxo contínuo", "onde_publicou_antes": onde}}
+    return out
+
+
 def sincronizar(hoje: date | None = None) -> dict:
     """Liga (30 dias) o que a ativação automática ou o titular acionou; desliga
     o que expirou. Fonte de verdade das decisões manuais: config/motores_ativos.json."""
@@ -86,8 +115,27 @@ def sincronizar(hoje: date | None = None) -> dict:
         desligados |= _disp()
     except Exception:
         pass
+    # 11/10 (titular): MONITORADO = edital ABERTO (repositório único) ou PRESTES A ABRIR (janela da previsão: de
+    # 'ativar_em' até o encerramento previsto) ou FLUXO CONTÍNUO. Menção sozinha não liga; o que saiu do alvo desliga.
+    alvo = alvo_de_monitoramento(fontes, hoje)
+    for fid in list(est["ligados"]):
+        o = str(est["ligados"][fid].get("origem") or "")
+        if o.startswith("automática") and fid not in alvo:
+            est.setdefault("desligados_fora_do_alvo", {})[fid] = {"em": hoje.isoformat(), "origem": o[:120]}
+            del est["ligados"][fid]
+    for fid, info in alvo.items():
+        if fid in desligados:
+            continue
+        if fid in est["ligados"]:
+            est["ligados"][fid]["foco"] = info["foco"]; continue
+        est["ligados"][fid] = {"desde": hoje.isoformat(), "ate": (hoje + timedelta(days=DURACAO)).isoformat(),
+                              "origem": f"automática: {info['motivo']}", "dias": 0, "ia": [], "itens": {}, "foco": info["foco"]}
+    est["monitoramento"] = {"em": hoje.isoformat(), "alvo": len(alvo), "abertos": sum(1 for v in alvo.values() if v["tipo"] == "aberto"),
+                            "prestes_a_abrir": sum(1 for v in alvo.values() if v["tipo"] == "prestes"),
+                            "fluxo_continuo": sum(1 for v in alvo.values() if v["tipo"] == "contínuo"),
+                            "regra": "monitorado = edital aberto, prestes a abrir (previsão) ou fluxo contínuo; manual vale; menção sozinha não liga"}
     for fid, motivo in auto.items():
-        if fid in desligados or fid in est["ligados"]:
+        if fid in desligados or fid in est["ligados"] or fid not in alvo:
             continue
         est["ligados"][fid] = {"desde": hoje.isoformat(), "ate": (hoje + timedelta(days=DURACAO)).isoformat(),
                               "origem": f"automática: {motivo}", "dias": 0, "ia": [], "itens": {}}
@@ -125,6 +173,22 @@ def _busca_do_livro(fonte: dict) -> str:
             + (f"Enquadramento já anotado (não descarta): {'; '.join(enq)}.\n" if enq else ""))
 
 
+def _foco_do_livro(fonte: dict) -> str:
+    """11/10 (titular): pesquisa FOCADA — edital aberto a completar, ou o edital ESPERADO na época prevista, nos lugares
+    onde as edições anteriores foram publicadas. O histórico só indica onde buscar: o dado tem de ser o ATUAL."""
+    f = fonte.get("_foco") or {}
+    if not f:
+        return ""
+    if f.get("tipo") == "edital aberto":
+        return (f"FOCO: o edital está ABERTO agora ({f.get('edital') or 'site a confirmar'}; prazo {f.get('prazo') or 'a confirmar'}). "
+                f"Complete só o que falta, no documento oficial atual. Onde buscar: {', '.join((f.get('onde_buscar') or [])[:4])}.\n")
+    if f.get("tipo") == "edital esperado":
+        return (f"FOCO: o edital deve ABRIR por volta de {f.get('abertura_prevista')} (previsão {f.get('confianca') or '?'}: {f.get('base') or ''}). "
+                f"Procure a publicação NOVA nos lugares onde as edições anteriores saíram: {', '.join((f.get('onde_publicou_antes') or [])[:4])}. "
+                "Não reaproveite dados da edição anterior — só o edital atual vale.\n")
+    return f"FOCO: fluxo contínuo — confirme o regulamento vigente em {', '.join((f.get('onde_publicou_antes') or [])[:3])}.\n"
+
+
 def prompt_para_fonte(fonte: dict, reg: dict | None, faltam: list[str], tentativas: list[dict]) -> str:
     """Prompt sob medida para o recurso — muda a cada caso: nome, órgão, norma,
     léxico próprio, o que já se tem e o que ainda falta."""
@@ -133,6 +197,7 @@ def prompt_para_fonte(fonte: dict, reg: dict | None, faltam: list[str], tentativ
                f"Léxico próprio: {', '.join(reg.get('lexico_proprio', [])[:10])}.\n" if reg else
                f"Página conhecida: {fonte.get('pagina')}.\n")
             + _busca_do_livro(fonte)
+            + _foco_do_livro(fonte)
             + f"Itens que AINDA FALTAM (só estes): {', '.join(faltam)}.\n"
             + (f"Tentativas anteriores sem resultado: {'; '.join(t.get('resumo','') for t in tentativas)}.\n" if tentativas else "")
             + "Encontre o edital/ato VIGENTE ou o mais recente deste recurso em fonte oficial e devolva SOMENTE JSON: "
@@ -224,7 +289,7 @@ def run(hoje: date | None = None) -> dict:
     modelo_conselho = (cfg.get("modelos") or {}).get("conselho_recursos", "claude-fable-5-1")
     resumo = {"ligados": 0, "ia_hoje": 0, "conselho_hoje": 0, "completos": 0}
     for fid, reg in est["ligados"].items():
-        f = fontes.get(fid, {"id": fid, "programa": fid})
+        f = {**fontes.get(fid, {"id": fid, "programa": fid}), "_foco": reg.get("foco")}
         d0 = date.fromisoformat(reg["desde"])
         reg["dias"] = (hoje - d0).days + 1
         faltam = [i for i in ITENS if not reg["itens"].get(i)] or []

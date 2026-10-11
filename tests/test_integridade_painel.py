@@ -178,7 +178,9 @@ class TesteIntegridadePainel(unittest.TestCase):
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
         cards = h[h.index("function desenhaBzCards(){"):h.index('$("bz-cards").innerHTML=cards.map(')]
         self.assertIn("FX.opressores", cards); self.assertNotIn("eds.filter(e=>situacaoDe(e)", cards)
-        self.assertIn("fr(OP.ligados??0,OP.catalogo??0)", cards, "fontes monitoradas: ligados / disponíveis na Biblioteca")
+        # 11/10 (titular): fontes monitoradas = livros ligados (edital aberto, prestes a abrir ou fluxo contínuo) — o mesmo
+        # número dos opressores ligados; o total da Biblioteca vai no balão
+        self.assertIn('"Fontes monitoradas",`${OP.ligados??0}`', cards, "fontes monitoradas: o número dos livros ligados")
         self.assertNotIn('<div class="s ${c[4]}">', h, "cartão da Bússola sem texto além do título")
 
     def test_pagina_nao_recarrega_sozinha(self):

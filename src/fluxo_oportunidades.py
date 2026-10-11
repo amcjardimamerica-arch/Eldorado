@@ -500,7 +500,9 @@ def _resumo_opressores(itens: list[dict]) -> dict:
         p = por_mes.setdefault(m, {"criados": 0, "com_resultado": 0}); p["criados"] += 1
         if x.get("id") in de_abertas or any(h.get("origem") == "aberta" for h in (x.get("historico") or [])):
             p["com_resultado"] += 1
+    _mon = (_j(EST_OPR, {}) or {}).get("monitoramento") or {}
     return {"por_mes": por_mes, "catalogo": len(C), "ligados": len(lig), "ligados_de_oportunidades_abertas": sum(1 for k in lig if k in de_abertas),
+            "monitorados_abertos": _mon.get("abertos"), "monitorados_prestes": _mon.get("prestes_a_abrir"), "monitorados_continuos": _mon.get("fluxo_continuo"),
             "ligados_fontes_permanentes": sum(1 for k in lig if k not in de_abertas),
             "abertas_com_opressor": sum(1 for x in itens if x.get("opressor")), "abertas_dispensadas": sum(1 for x in itens if x.get("opressor_dispensa")),
             "abertas_sem_opressor_nem_dispensa": sum(1 for x in itens if not x.get("opressor") and not x.get("opressor_dispensa")),
