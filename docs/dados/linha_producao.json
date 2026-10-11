@@ -1,13 +1,13 @@
 {
- "em": "2026-10-11T06:40:25+00:00",
+ "em": "2026-10-11T07:17:16+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 17875,
-  "oportunidades_distintas": 2076,
+  "coletados": 17877,
+  "oportunidades_distintas": 2078,
   "entidades_em_2_ou_mais_canais": 18,
   "etapas": {
-   "CONSOLIDADO": 17297,
-   "EM_LIVRO": 479,
+   "CONSOLIDADO": 17296,
+   "EM_LIVRO": 482,
    "REPROCESSAR": 74,
    "QUALIFICADO": 25
   },
@@ -57,9 +57,9 @@
   {
    "canal": "piloto-aberto",
    "familia": "pilotos",
-   "registros": 135,
-   "entidades": 130,
-   "exclusivas": 126,
+   "registros": 134,
+   "entidades": 129,
+   "exclusivas": 125,
    "corroboradas": 4,
    "validadas_como_reais": 8
   },
@@ -352,6 +352,15 @@
    "validadas_como_reais": 0
   },
   {
+   "canal": "f260-captacao-236",
+   "familia": "orgao_publico",
+   "registros": 3,
+   "entidades": 3,
+   "exclusivas": 3,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
+  },
+  {
    "canal": "captacao-190",
    "familia": "outros",
    "registros": 2,
@@ -484,7 +493,7 @@
   "outros": 11,
   "pilotos": 1,
   "terceiro_setor": 4,
-  "orgao_publico": 24,
+  "orgao_publico": 25,
   "empresas": 2,
   "justica_mp": 1
  },
@@ -617,5 +626,5 @@
    ]
   }
  ],
- "eventos_no_livro_razao": 1
+ "eventos_no_livro_razao": 3
 }
