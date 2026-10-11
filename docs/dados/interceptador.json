@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-11T06:40:28+00:00",
+  "em": "2026-10-11T06:55:54+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-11T06:27:02+00:00",
+  "ultimo_voo": "2026-10-11T06:44:49+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,104 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 254,
+    "missoes": 255,
     "validadas": 15,
-    "parciais": 60,
+    "parciais": 61,
     "insuficientes": 179,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "sim": 167,
-      "nao": 47
+      "nao": 48
     },
     "estrelas_de_ouro": 5,
     "fontes_novas_para_os_motores": 9,
     "tempo_medio_min": 10.0
   },
   "missoes": [
+    {
+      "em": "2026-10-11T06:44:49+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Acari — Vara Única de Acari (RN) destina R$ 153 mil a projetos sociais — Goiás",
+      "qualidade": "parcial",
+      "comprovados": 7,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Requisitos",
+        "Anexos"
+      ],
+      "pagina_oficial": "http://www.cnj.jus.br",
+      "parecer_fonte": {
+        "serve_como_fonte": "nao",
+        "por_que": "O texto menciona que a Vara Única de Acari (RN) destina R$ 153 mil a projetos sociais, mas não há informações sobre como acessar esse fomento, nem dados específicos para organizações de Goiânia.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se há editais específicos para o estado do Rio Grande do Norte, já que o fomento mencionado é destinado a esse território e não há informações sobre requisitos ou como se inscrever.",
+        "proximo_passo": "Consultar editais específicos do CNJ ou órgãos estaduais do RN para verificar possíveis oportunidades de fomento.",
+        "risco": "A falta de informações sobre prazo, requisitos e anexos pode impedir o acesso ao fomento."
+      },
+      "erro": null,
+      "segundos": 664,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 7,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Requisitos",
+      "id": "op-op-1298d3fdd558",
+      "encontrou": {
+        "Objeto": {
+          "valor": "projetos sociais",
+          "trecho": "destina R$ 153 mil a projetos sociais",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Valor": {
+          "valor": "R$ 153 mil",
+          "trecho": "destina R$ 153 mil a projetos sociais",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "CNJ",
+          "trecho": "Página Inicial - Portal CNJ",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "RN",
+          "trecho": "Acari — Vara Única de Acari (RN)",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "assistencia_social",
+          "trecho": "projetos sociais",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · fomento",
+          "trecho": "destina R$ 153 mil a projetos sociais",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Vara Única de Acari (RN)",
+      "indicios": [],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "parceiro"
+      ]
+    },
     {
       "em": "2026-10-11T06:27:02+00:00",
       "modo": "validar",
@@ -2650,68 +2733,6 @@
       "rotas": [
         "site_do_financiador",
         "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-10T21:00:35+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Pnab 2026: Publicada errata e retificação de cronograma dos Editais nº 4 e nº 6 — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 4,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://goias.gov.br/cultura/pnab/edital-2026-pnab/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprovado menciona a Secretaria de Estado da Cultura de Goiás como órgão financiador e o território como GO, indicando que é uma fonte relevante para editais de fomento no estado.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar os anexos mencionados (3 anexo(s)) para obter informações detalhadas sobre os editais nº 4 e nº 6, incluindo requisitos, objeto e outros detalhes necessários para a candidatura.",
-        "proximo_passo": "Consultar os anexos disponibilizados pelos editais nº 4 e nº 6 para obter informações completas sobre os critérios de elegibilidade, prazos e outros requisitos.",
-        "risco": "A falta de informações específicas como prazo de inscrição, objeto e requisitos pode impedir a associação de se preparar adequadamente para o processo de candidatura."
-      },
-      "erro": null,
-      "segundos": 779,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 3,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-nova-1a27550fee75",
-      "encontrou": {
-        "Órgão / financiador": {
-          "valor": "Secretaria de Estado da Cultura de Goiás",
-          "trecho": "Secretaria de Estado da Cultura de Goiás",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "Secretaria de Estado da Cultura de Goiás",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "GOIÁS.GOV.BR",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
       ]
     }
   ],
