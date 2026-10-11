@@ -1112,7 +1112,7 @@
   "resultado": "rota nova em teste"
  },
  "_execucao": {
-  "em": "2026-10-11T04:20:04+00:00",
+  "em": "2026-10-11T06:03:23+00:00",
   "motores_testados": 6,
   "ponte_respondeu": false
  },
@@ -3731,16 +3731,27 @@
   "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
  },
  "f260-captacao-221": {
-  "em": "2026-10-10T13:04:55+00:00",
+  "em": "2026-10-11T06:02:43+00:00",
   "testes": 13,
   "melhor": {
    "url": "https://www.fbb.org.br/feed",
    "via": "direto",
-   "origem": "padrão",
+   "origem": "rota original",
    "pontos": 9,
    "formato": "sitemap/feed"
   },
   "detalhe": [
+   {
+    "url": "https://www.fbb.org.br/feed",
+    "origem": "rota original",
+    "via": "direto",
+    "pontos": 9,
+    "links": 3,
+    "sinais": 9,
+    "formato": "sitemap/feed",
+    "erro": null,
+    "funcionou": true
+   },
    {
     "url": "https://www.fbb.org.br/",
     "origem": "rota original",
@@ -3753,15 +3764,24 @@
     "funcionou": true
    },
    {
-    "url": "https://www.fbb.org.br/feed",
+    "url": "https://www.fbb.org.br/sitemap.xml",
     "origem": "padrão",
     "via": "direto",
-    "pontos": 9,
-    "links": 3,
-    "sinais": 9,
-    "formato": "sitemap/feed",
-    "erro": null,
-    "funcionou": true
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.fbb.org.br/sitemap.xml",
+    "origem": "padrão",
+    "via": "ponte",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "RuntimeError",
+    "funcionou": false
    },
    {
     "url": "https://www.fbb.org.br/editais",
@@ -3772,6 +3792,16 @@
     "sinais": 0,
     "formato": "html",
     "erro": null,
+    "funcionou": false
+   },
+   {
+    "url": "https://www.fbb.org.br/chamamento-publico",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
     "funcionou": false
    },
    {
@@ -3786,23 +3816,24 @@
     "funcionou": false
    },
    {
-    "url": "https://www.fbb.org.br/chamamento-publico",
+    "url": "https://www.fbb.org.br/noticias",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 1,
+    "links": 69,
+    "sinais": 0,
+    "formato": "html",
+    "erro": null,
+    "funcionou": false
+   },
+   {
+    "url": "https://www.fbb.org.br/licitacoes",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
     "links": 0,
     "sinais": 0,
     "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://www.fbb.org.br/chamamento-publico",
-    "origem": "padrão",
-    "via": "ponte",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "RuntimeError",
     "funcionou": false
    },
    {
@@ -3816,38 +3847,7 @@
     "funcionou": false
    },
    {
-    "url": "https://www.fbb.org.br/noticias",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 1,
-    "links": 69,
-    "sinais": 0,
-    "formato": "html",
-    "erro": null,
-    "funcionou": false
-   },
-   {
-    "url": "https://www.fbb.org.br/sitemap.xml",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
     "url": "https://www.fbb.org.br/chamadas-publicas",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://www.fbb.org.br/licitacoes",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -5739,7 +5739,7 @@
   "resultado": "rota nova em teste"
  },
  "f260-espalhado-sistema-mirassoldoeste-mt-gov-br": {
-  "em": "2026-10-10T15:16:17+00:00",
+  "em": "2026-10-11T06:02:47+00:00",
   "testes": 12,
   "melhor": null,
   "detalhe": [
@@ -5764,7 +5764,7 @@
     "funcionou": false
    },
    {
-    "url": "https://sistema.mirassoldoeste.mt.gov.br/editais",
+    "url": "https://sistema.mirassoldoeste.mt.gov.br/sitemap.xml",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -5774,7 +5774,7 @@
     "funcionou": false
    },
    {
-    "url": "https://sistema.mirassoldoeste.mt.gov.br/chamadas-publicas",
+    "url": "https://sistema.mirassoldoeste.mt.gov.br/editais",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -5794,27 +5794,7 @@
     "funcionou": false
    },
    {
-    "url": "https://sistema.mirassoldoeste.mt.gov.br/chamamentos",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "URLError",
-    "funcionou": false
-   },
-   {
     "url": "https://sistema.mirassoldoeste.mt.gov.br/transparencia/editais",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "URLError",
-    "funcionou": false
-   },
-   {
-    "url": "https://sistema.mirassoldoeste.mt.gov.br/licitacoes",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -5834,7 +5814,7 @@
     "funcionou": false
    },
    {
-    "url": "https://sistema.mirassoldoeste.mt.gov.br/edital",
+    "url": "https://sistema.mirassoldoeste.mt.gov.br/licitacoes",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -5844,7 +5824,27 @@
     "funcionou": false
    },
    {
-    "url": "https://sistema.mirassoldoeste.mt.gov.br/sitemap.xml",
+    "url": "https://sistema.mirassoldoeste.mt.gov.br/chamamentos",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "URLError",
+    "funcionou": false
+   },
+   {
+    "url": "https://sistema.mirassoldoeste.mt.gov.br/chamadas-publicas",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "URLError",
+    "funcionou": false
+   },
+   {
+    "url": "https://sistema.mirassoldoeste.mt.gov.br/edital",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -5867,7 +5867,7 @@
   "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
  },
  "f260-espalhado-www-rosariodosul-rs-gov-br": {
-  "em": "2026-10-10T15:16:18+00:00",
+  "em": "2026-10-11T06:02:48+00:00",
   "testes": 12,
   "melhor": null,
   "detalhe": [
@@ -5892,7 +5892,7 @@
     "funcionou": false
    },
    {
-    "url": "https://www.rosariodosul.rs.gov.br/editais",
+    "url": "https://www.rosariodosul.rs.gov.br/sitemap.xml",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -5902,7 +5902,7 @@
     "funcionou": false
    },
    {
-    "url": "https://www.rosariodosul.rs.gov.br/chamadas-publicas",
+    "url": "https://www.rosariodosul.rs.gov.br/editais",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -5922,27 +5922,7 @@
     "funcionou": false
    },
    {
-    "url": "https://www.rosariodosul.rs.gov.br/chamamentos",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
     "url": "https://www.rosariodosul.rs.gov.br/transparencia/editais",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://www.rosariodosul.rs.gov.br/licitacoes",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -5962,7 +5942,7 @@
     "funcionou": false
    },
    {
-    "url": "https://www.rosariodosul.rs.gov.br/edital",
+    "url": "https://www.rosariodosul.rs.gov.br/licitacoes",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -5972,7 +5952,27 @@
     "funcionou": false
    },
    {
-    "url": "https://www.rosariodosul.rs.gov.br/sitemap.xml",
+    "url": "https://www.rosariodosul.rs.gov.br/chamamentos",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.rosariodosul.rs.gov.br/chamadas-publicas",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.rosariodosul.rs.gov.br/edital",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -5995,7 +5995,7 @@
   "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
  },
  "f260-espalhado-www-bentogoncalves-rs-gov-br": {
-  "em": "2026-10-10T15:16:21+00:00",
+  "em": "2026-10-11T06:02:49+00:00",
   "testes": 12,
   "melhor": null,
   "detalhe": [
@@ -6020,7 +6020,7 @@
     "funcionou": false
    },
    {
-    "url": "https://www.bentogoncalves.rs.gov.br/editais",
+    "url": "https://www.bentogoncalves.rs.gov.br/sitemap.xml",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -6030,7 +6030,7 @@
     "funcionou": false
    },
    {
-    "url": "https://www.bentogoncalves.rs.gov.br/chamadas-publicas",
+    "url": "https://www.bentogoncalves.rs.gov.br/editais",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -6050,27 +6050,7 @@
     "funcionou": false
    },
    {
-    "url": "https://www.bentogoncalves.rs.gov.br/chamamentos",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
     "url": "https://www.bentogoncalves.rs.gov.br/transparencia/editais",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://www.bentogoncalves.rs.gov.br/licitacoes",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -6090,7 +6070,7 @@
     "funcionou": false
    },
    {
-    "url": "https://www.bentogoncalves.rs.gov.br/edital",
+    "url": "https://www.bentogoncalves.rs.gov.br/licitacoes",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -6100,7 +6080,27 @@
     "funcionou": false
    },
    {
-    "url": "https://www.bentogoncalves.rs.gov.br/sitemap.xml",
+    "url": "https://www.bentogoncalves.rs.gov.br/chamamentos",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.bentogoncalves.rs.gov.br/chamadas-publicas",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.bentogoncalves.rs.gov.br/edital",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -6123,10 +6123,10 @@
   "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
  },
  "f260-espalhado-senadorcanedo-go-gov-br": {
-  "em": "2026-10-10T15:54:54+00:00",
-  "testes": 17,
+  "em": "2026-10-11T06:03:10+00:00",
+  "testes": 16,
   "melhor": {
-   "url": "https://senadorcanedo.go.gov.br/senador-canedo-lanca-projeto-embaixador-do-turismo/",
+   "url": "https://senadorcanedo.go.gov.br/senador-canedo-abre-credenciamento-para-artistas-locais-do-canedo-fest-show-2026/",
    "via": "direto",
    "origem": "biblioteca",
    "pontos": 7,
@@ -6140,17 +6140,6 @@
     "pontos": 5,
     "links": 60,
     "sinais": 2,
-    "formato": "html",
-    "erro": null,
-    "funcionou": true
-   },
-   {
-    "url": "https://senadorcanedo.go.gov.br/senador-canedo-lanca-projeto-embaixador-do-turismo/",
-    "origem": "biblioteca",
-    "via": "direto",
-    "pontos": 7,
-    "links": 64,
-    "sinais": 3,
     "formato": "html",
     "erro": null,
     "funcionou": true
@@ -6178,11 +6167,33 @@
     "funcionou": true
    },
    {
-    "url": "https://senadorcanedo.go.gov.br/prefeitura-promove-ii-seminario-criterios-para-inscricao-no-cmas-e-captacao-de-recursos/",
+    "url": "https://senadorcanedo.go.gov.br/senador-canedo-abre-credenciamento-para-ampliar-oferta-de-oficinas-esportivas-culturais-e-artisticas/",
+    "origem": "biblioteca",
+    "via": "direto",
+    "pontos": 7,
+    "links": 62,
+    "sinais": 3,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
+   },
+   {
+    "url": "https://senadorcanedo.go.gov.br/senador-canedo-lanca-projeto-embaixador-do-turismo/",
+    "origem": "rota original",
+    "via": "direto",
+    "pontos": 7,
+    "links": 64,
+    "sinais": 3,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
+   },
+   {
+    "url": "https://senadorcanedo.go.gov.br/senador-canedo-lanca-edital-aldir-blanc-2026-com-r-380-mil-destinado-a-projetos-culturais/",
     "origem": "biblioteca",
     "via": "direto",
     "pontos": 5,
-    "links": 60,
+    "links": 61,
     "sinais": 2,
     "formato": "html",
     "erro": null,
@@ -6200,11 +6211,88 @@
     "funcionou": true
    },
    {
+    "url": "https://senadorcanedo.go.gov.br/",
+    "origem": "rota original",
+    "via": "direto",
+    "pontos": 5,
+    "links": 146,
+    "sinais": 2,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
+   },
+   {
     "url": "https://senadorcanedo.go.gov.br/senador-canedo-divulga-edital-de-apoio-a-projetos-para-a-pessoa-idosa/",
     "origem": "biblioteca",
     "via": "direto",
     "pontos": 5,
     "links": 61,
+    "sinais": 2,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
+   },
+   {
+    "url": "https://senadorcanedo.go.gov.br/feed",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 7,
+    "links": 10,
+    "sinais": 6,
+    "formato": "sitemap/feed",
+    "erro": null,
+    "funcionou": true
+   },
+   {
+    "url": "https://senadorcanedo.go.gov.br/sitemap.xml",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 7,
+    "sinais": 0,
+    "formato": "sitemap/feed",
+    "erro": null,
+    "funcionou": false
+   },
+   {
+    "url": "https://senadorcanedo.go.gov.br/editais",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 7,
+    "links": 57,
+    "sinais": 3,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
+   },
+   {
+    "url": "https://senadorcanedo.go.gov.br/chamamento-publico",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 7,
+    "links": 59,
+    "sinais": 3,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
+   },
+   {
+    "url": "https://senadorcanedo.go.gov.br/transparencia/editais",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 7,
+    "links": 57,
+    "sinais": 3,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
+   },
+   {
+    "url": "https://senadorcanedo.go.gov.br/noticias",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 5,
+    "links": 56,
     "sinais": 2,
     "formato": "html",
     "erro": null,
@@ -6220,102 +6308,17 @@
     "formato": "html",
     "erro": null,
     "funcionou": false
-   },
-   {
-    "url": "https://senadorcanedo.go.gov.br/",
-    "origem": "rota original",
-    "via": "direto",
-    "pontos": 5,
-    "links": 146,
-    "sinais": 2,
-    "formato": "html",
-    "erro": null,
-    "funcionou": true
-   },
-   {
-    "url": "https://senadorcanedo.go.gov.br/wp-content/uploads/2026/06/EDITAL-DE-CHAMAMENTO-PUBLICO-N-006-2026pt1.1.pdf",
-    "origem": "biblioteca",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "formato": "html",
-    "erro": null,
-    "funcionou": false
-   },
-   {
-    "url": "https://senadorcanedo.go.gov.br/feed",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 7,
-    "links": 10,
-    "sinais": 6,
-    "formato": "sitemap/feed",
-    "erro": null,
-    "funcionou": true
-   },
-   {
-    "url": "https://senadorcanedo.go.gov.br/editais",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 7,
-    "links": 57,
-    "sinais": 3,
-    "formato": "html",
-    "erro": null,
-    "funcionou": true
-   },
-   {
-    "url": "https://senadorcanedo.go.gov.br/chamadas-publicas",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://senadorcanedo.go.gov.br/chamadas-publicas",
-    "origem": "padrão",
-    "via": "ponte",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "RuntimeError",
-    "funcionou": false
-   },
-   {
-    "url": "https://senadorcanedo.go.gov.br/chamamento-publico",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 7,
-    "links": 59,
-    "sinais": 3,
-    "formato": "html",
-    "erro": null,
-    "funcionou": true
-   },
-   {
-    "url": "https://senadorcanedo.go.gov.br/chamamentos",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
    }
   ],
   "resultado": "rota nova em teste"
  },
  "f260-captacao-069": {
-  "em": "2026-10-10T15:55:08+00:00",
+  "em": "2026-10-11T06:03:23+00:00",
   "testes": 16,
   "melhor": {
    "url": "https://www.goiania.go.gov.br/secult/leipaulogustavo/",
    "via": "direto",
-   "origem": "biblioteca",
+   "origem": "rota original",
    "pontos": 9,
    "formato": "html"
   },
@@ -6331,14 +6334,26 @@
     "funcionou": false
    },
    {
-    "url": "https://www.goiania.go.gov.br/agora/prefeitura-de-goiania-publica-seis-editais-da-lei-aldir-blanc-de-fomento-a-cultura",
+    "url": "https://www.goiania.go.gov.br/secult/leipaulogustavo/",
+    "origem": "rota original",
+    "via": "direto",
+    "pontos": 9,
+    "links": 89,
+    "sinais": 4,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
+   },
+   {
+    "url": "https://www.goiania.go.gov.br/",
     "origem": "biblioteca",
     "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
+    "pontos": 3,
+    "links": 157,
+    "sinais": 1,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
    },
    {
     "url": "https://www.goiania.go.gov.br/prefeitura-capacita-profissionais-para-fortalecer-vigilancia-diagnostico-e-tratamento-da-sifilis-em-goiania",
@@ -6361,29 +6376,18 @@
     "funcionou": false
    },
    {
-    "url": "https://www.goiania.go.gov.br/",
-    "origem": "biblioteca",
+    "url": "https://www.goiania.go.gov.br/educacao/",
+    "origem": "rota original",
     "via": "direto",
-    "pontos": 3,
-    "links": 157,
-    "sinais": 1,
+    "pontos": 1,
+    "links": 67,
+    "sinais": 0,
     "formato": "html",
     "erro": null,
-    "funcionou": true
+    "funcionou": false
    },
    {
-    "url": "https://www.goiania.go.gov.br/secult/leipaulogustavo/",
-    "origem": "biblioteca",
-    "via": "direto",
-    "pontos": 9,
-    "links": 89,
-    "sinais": 4,
-    "formato": "html",
-    "erro": null,
-    "funcionou": true
-   },
-   {
-    "url": "https://www.goiania.go.gov.br/agora/prefeitura-de-goiania-oferece-987-vagas-de-emprego-e-abre-45-oportunidades-para-jovem-aprendiz",
+    "url": "https://www.goiania.go.gov.br/agora/prefeitura-de-goiania-publica-seis-editais-da-lei-aldir-blanc-de-fomento-a-cultura",
     "origem": "biblioteca",
     "via": "direto",
     "pontos": 0,
@@ -6393,18 +6397,7 @@
     "funcionou": false
    },
    {
-    "url": "https://www.goiania.go.gov.br/download/gabinete_civil/nomeacao_prefeitura.pdf",
-    "origem": "biblioteca",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "formato": "html",
-    "erro": null,
-    "funcionou": false
-   },
-   {
-    "url": "https://www.goiania.go.gov.br/Download/legislacao/diariooficial/2026/do_20260925_000008871.pdf",
+    "url": "https://www.goiania.go.gov.br/Download/legislacao/diariooficial/2026/do_20260818_000008844.pdf",
     "origem": "biblioteca",
     "via": "direto",
     "pontos": 0,
@@ -6426,7 +6419,7 @@
     "funcionou": false
    },
    {
-    "url": "https://www.goiania.go.gov.br/Download/legislacao/diariooficial/2026/do_20260818_000008844.pdf",
+    "url": "https://www.goiania.go.gov.br/Download/legislacao/diariooficial/2026/do_20260925_000008871.pdf",
     "origem": "biblioteca",
     "via": "direto",
     "pontos": 0,
@@ -6437,7 +6430,7 @@
     "funcionou": false
    },
    {
-    "url": "https://www.goiania.go.gov.br/Download/legislacao/diariooficial/2026/do_20260928_000008872.pdf",
+    "url": "https://www.goiania.go.gov.br/download/gabinete_civil/nomeacao_prefeitura.pdf",
     "origem": "biblioteca",
     "via": "direto",
     "pontos": 0,
@@ -6446,6 +6439,27 @@
     "formato": "html",
     "erro": null,
     "funcionou": false
+   },
+   {
+    "url": "https://www.goiania.go.gov.br/agora/prefeitura-de-goiania-oferece-987-vagas-de-emprego-e-abre-45-oportunidades-para-jovem-aprendiz",
+    "origem": "biblioteca",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.goiania.go.gov.br/feed",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 5,
+    "links": 10,
+    "sinais": 4,
+    "formato": "sitemap/feed",
+    "erro": null,
+    "funcionou": true
    },
    {
     "url": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-10-edital-de-fomento-cultural-iii-patrimonio-cultural.pdf",
@@ -6471,17 +6485,6 @@
    },
    {
     "url": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-09-edital-de-fomento-cultural-ii-acoes-formativas.pdf",
-    "origem": "biblioteca",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "formato": "html",
-    "erro": null,
-    "funcionou": false
-   },
-   {
-    "url": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2026/03/pnab-edital-2026-04.pdf",
     "origem": "biblioteca",
     "via": "direto",
     "pontos": 0,

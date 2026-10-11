@@ -198,7 +198,7 @@
  "pontos_com_redundancia": 10,
  "redundancia_vazia": [],
  "dominios_via_ponte": 1,
- "exemplos_da_rede_de_rotas": 1821
+ "exemplos_da_rede_de_rotas": 1902
 }
 ```
 
@@ -209,10 +209,10 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 82.0,
- "fora_dos_motores_pct_agora": 82.0,
+ "fora_dos_motores_pct_1a": 82.1,
+ "fora_dos_motores_pct_agora": 82.1,
  "origem": {
-  "agregador/outra": 283,
+  "agregador/outra": 285,
   "motor": 81,
   "Piloto": 86
  },
@@ -235,6 +235,14 @@
   },
   {
    "dominio": "mapa.cultura.gov.br",
+   "oportunidades": 2
+  },
+  {
+   "dominio": "fapemig.br",
+   "oportunidades": 2
+  },
+  {
+   "dominio": "fundoamazonia.gov.br",
    "oportunidades": 2
   },
   {
@@ -267,14 +275,6 @@
   },
   {
    "dominio": "itacoatiara.am.gov.br",
-   "oportunidades": 1
-  },
-  {
-   "dominio": "gulbenkian.pt",
-   "oportunidades": 1
-  },
-  {
-   "dominio": "hto.ifsp.edu.br",
    "oportunidades": 1
   }
  ],
@@ -376,19 +376,19 @@
 
 ```json
 {
- "fontes_recebidas": 204,
+ "fontes_recebidas": 205,
  "por_origem": {
   "conselho (fontes irmãs)": 128,
-  "Cartório (site oficial certificado)": 76
+  "Cartório (site oficial certificado)": 77
  },
  "lidas_nas_ultimas_24h": 120,
  "dimensionamento": {
-  "fontes": 204,
+  "fontes": 205,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
-  "clones": 4,
-  "cobertura_diaria": 204,
+  "clones": 5,
+  "cobertura_diaria": 205,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -426,7 +426,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 53,
+   "orgaos": 54,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",
