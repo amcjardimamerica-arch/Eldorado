@@ -4,7 +4,7 @@
  "resumo": {
   "bloqueio": 1,
   "falha_parcial": 9,
-  "sem_rendimento": 66,
+  "sem_rendimento": 67,
   "saudavel": 52
  },
  "motores": [
@@ -801,6 +801,22 @@
   {
    "motor": "f260-captacao-259",
    "canal": "f260-captacao-259",
+   "familia": "orgao_publico",
+   "diagnostico": "sem_rendimento",
+   "evidencia": "5 leituras e nenhum achado",
+   "plano": [
+    "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
+    "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
+    "testar rotas alternativas do motor (config/rotas_motores.json)",
+    "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
+   ],
+   "skill": "comum/plano_correcao",
+   "leituras": 5,
+   "achados_total": 0
+  },
+  {
+   "motor": "f260-captacao-260",
+   "canal": "f260-captacao-260",
    "familia": "orgao_publico",
    "diagnostico": "sem_rendimento",
    "evidencia": "5 leituras e nenhum achado",
