@@ -41,12 +41,12 @@
 
 ```json
 {
- "motores_de_ruido_1a": 19,
+ "motores_de_ruido_1a": 20,
  "ruido_agora": [
   {
    "motor": "empresas-incentivadas",
-   "achados_total_1a": 42,
-   "achados_total_agora": 42,
+   "achados_total_1a": 46,
+   "achados_total_agora": 46,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -115,8 +115,8 @@
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 613,
-   "achados_total_agora": 613,
+   "achados_total_1a": 635,
+   "achados_total_agora": 635,
    "no_fluxo": 2,
    "confirmadas": 0
   },
@@ -129,8 +129,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 51,
-   "achados_total_agora": 51,
+   "achados_total_1a": 52,
+   "achados_total_agora": 52,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -156,9 +156,16 @@
    "confirmadas": 0
   },
   {
+   "motor": "mpgo-destinacao",
+   "achados_total_1a": 20,
+   "achados_total_agora": 20,
+   "no_fluxo": 0,
+   "confirmadas": 0
+  },
+  {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 47,
-   "achados_total_agora": 47,
+   "achados_total_1a": 48,
+   "achados_total_agora": 48,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -191,7 +198,7 @@
  "pontos_com_redundancia": 10,
  "redundancia_vazia": [],
  "dominios_via_ponte": 1,
- "exemplos_da_rede_de_rotas": 1691
+ "exemplos_da_rede_de_rotas": 1821
 }
 ```
 
@@ -202,12 +209,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 81.2,
- "fora_dos_motores_pct_agora": 81.2,
+ "fora_dos_motores_pct_1a": 82.0,
+ "fora_dos_motores_pct_agora": 82.0,
  "origem": {
-  "agregador/outra": 295,
-  "motor": 90,
-  "Piloto": 94
+  "agregador/outra": 283,
+  "motor": 81,
+  "Piloto": 86
  },
  "dominios_so_de_agregador": [
   {
@@ -282,13 +289,51 @@
 
 ```json
 {
- "dia_de_referencia": "2026-10-10",
+ "dia_de_referencia": "2026-10-11",
  "ativos": 159,
- "lidos_ontem": 100,
- "lidos_hoje": 48,
+ "lidos_ontem": 48,
+ "lidos_hoje": 0,
  "nao_lidos_ontem_nem_hoje": [
-  "plat-captamos",
-  "plat-rede-filantropia"
+  "f260-captacao-025",
+  "f260-captacao-035",
+  "f260-captacao-038",
+  "f260-captacao-039",
+  "f260-captacao-044",
+  "f260-captacao-051",
+  "f260-captacao-060",
+  "f260-captacao-068",
+  "f260-captacao-069",
+  "f260-captacao-090",
+  "f260-captacao-098",
+  "f260-captacao-107",
+  "f260-captacao-118",
+  "f260-captacao-119",
+  "f260-captacao-151",
+  "f260-captacao-152",
+  "f260-captacao-190",
+  "f260-captacao-196",
+  "f260-captacao-200",
+  "f260-captacao-206",
+  "f260-captacao-207",
+  "f260-captacao-208",
+  "f260-captacao-216",
+  "f260-captacao-217",
+  "f260-captacao-218",
+  "f260-captacao-221",
+  "f260-captacao-222",
+  "f260-captacao-223",
+  "f260-captacao-224",
+  "f260-captacao-226",
+  "f260-captacao-227",
+  "f260-captacao-228",
+  "f260-captacao-229",
+  "f260-captacao-230",
+  "f260-captacao-231",
+  "f260-captacao-232",
+  "f260-captacao-233",
+  "f260-captacao-234",
+  "f260-captacao-235",
+  "f260-captacao-236"
  ],
  "ainda_sem_primeira_leitura": [
   "motor-gife",
@@ -331,19 +376,19 @@
 
 ```json
 {
- "fontes_recebidas": 202,
+ "fontes_recebidas": 204,
  "por_origem": {
-  "conselho (fontes irmãs)": 129,
-  "Cartório (site oficial certificado)": 73
+  "conselho (fontes irmãs)": 128,
+  "Cartório (site oficial certificado)": 76
  },
  "lidas_nas_ultimas_24h": 120,
  "dimensionamento": {
-  "fontes": 202,
+  "fontes": 204,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 4,
-  "cobertura_diaria": 202,
+  "cobertura_diaria": 204,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -414,7 +459,7 @@
    ]
   },
   "Portal de transparência de fornecedor": {
-   "orgaos": 15,
+   "orgaos": 14,
    "exemplos": [
     "bndes.gov.br",
     "comunidade.transparenciainternacional.org.br",
