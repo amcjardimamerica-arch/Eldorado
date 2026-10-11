@@ -93,9 +93,9 @@ UFS = {"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "
 
 
 def municipal_fora_de_goias(r: dict, uf_agregador: str | None = None) -> str | None:
-    """11/10/2026 (titular): oportunidade MUNICIPAL de fora de Goiás é arquivada (o livro fica; o contador de abertas cai).
-    Internacionais, nacionais e estaduais ficam. Só arquiva com a UF DETERMINADA (registro, agregador ou endereço
-    oficial .uf.gov.br/.uf.leg.br) e diferente de GO — sem UF certa, fica (há municípios homônimos)."""
+    """Identifica oportunidade MUNICIPAL de fora de Goiás (UF determinada e diferente de GO). Usada UMA vez, em 11/10/2026,
+    para montar a lista fixa do arquivamento seletivo (dados/oportunidades/arquivamento_municipais_2026-10-11.json);
+    NÃO roda a cada rodada — oportunidades municipais novas entram normalmente."""
     t = f"{r.get('titulo') or ''} {r.get('orgao') or ''}"
     municipal = str(r.get("nivel") or "").lower() == "municipal" or bool(_MUN.search(t))
     if not municipal or str(r.get("nivel") or "").lower() in ("estadual", "federal", "internacional"):
@@ -154,7 +154,10 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
             if isinstance(h, dict) and h.get("id"):
                 livros.setdefault(str(h["id"]), m)
     skills = (_j(ROOT / "config/skills_extracao_origem.json", {}) or {}).get("skills") or {}
-    uf_ag = {str(x.get("id")): x.get("uf") for x in ((_j(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens") or []) if x.get("uf")}
+    # 11/10 (titular): arquivamento ÚNICO — só as municipais de fora de GO abertas em 11/10 (lista fixa); as novas entram normalmente
+    _foto = _j(ROOT / "dados/oportunidades/arquivamento_municipais_2026-10-11.json", {}) or {}
+    _arq_ids = {i: f"arquivada em 11/10/2026: municipal fora de Goiás ({o.get('uf')}) — o livro fica guardado"
+                for o in (_foto.get("oportunidades") or []) for i in [o["id"], *(o.get("ids_origem") or [])]}
     # 11/10: o criador de livros já concluiu, para algumas, que não são seleção para OSC — o repositório usa o motivo
     disp_livro = {k: (v or {}).get("dispensa") for k, v in ((_j(ROOT / "estado/opressores_indice.json", {}) or {}).get("indice") or {}).items() if (v or {}).get("dispensa")}
 
@@ -232,7 +235,7 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
         link = c.get("link_oficial") or r.get("link_oficial")
         fim = r.get("fim") or (((c.get("itens") or {}).get("Prazo de inscrição") or {}).get("fim"))
         v = (ver or {}).get("veredito")
-        _mun = municipal_fora_de_goias(r, next((uf_ag[i] for i in [cid] + r["ids_origem"] if i in uf_ag), None))
+        _mun = next((_arq_ids[i] for i in [cid] + r["ids_origem"] if i in _arq_ids), None)   # só a lista fixa de 11/10
         if v in FECHADAS:
             estado, motivo = "fechada", f"veredito: {v}"
         elif fim and str(fim)[:10] < hoje:
