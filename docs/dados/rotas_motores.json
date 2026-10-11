@@ -1,5 +1,5 @@
 {
- "em": "2026-10-11T21:13:40+00:00",
+ "em": "2026-10-11T21:51:02+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
@@ -7,7 +7,7 @@
   "alterar_rota": 65,
   "rota_nova": 46,
   "via_ponte": 2,
-  "exemplos_da_rede": 3008
+  "exemplos_da_rede": 3090
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
@@ -17,19 +17,19 @@
    ],
    [
     "origem:biblioteca",
-    1.5721
+    1.7734
    ],
    [
     "origem:rota original",
-    1.5148
+    1.6981
    ],
    [
     "tipo:privada",
-    1.2807
+    1.4381
    ],
    [
     "tok:unidades",
-    1.2631
+    1.2636
    ],
    [
     "tok:assuntos",
@@ -37,7 +37,7 @@
    ],
    [
     "tok:feed",
-    1.2326
+    1.1709
    ],
    [
     "tok:abertas",
@@ -45,19 +45,19 @@
    ],
    [
     "tok:mpf",
-    1.0885
-   ],
-   [
-    "tok:sitemap",
-    0.9465
-   ],
-   [
-    "tok:xml",
-    0.9465
+    1.0891
    ],
    [
     "tok:goias",
     0.9421
+   ],
+   [
+    "tok:programa",
+    0.9379
+   ],
+   [
+    "tok:cultura",
+    0.9006
    ]
   ],
   "piores_sinais": [
@@ -67,15 +67,11 @@
    ],
    [
     "via:ponte",
-    -1.0214
+    -1.0224
    ],
    [
     "tok:prefeitura",
     -1.0338
-   ],
-   [
-    "tipo:ministerio_publico",
-    -1.2252
    ],
    [
     "origem:câmara",
@@ -90,8 +86,12 @@
     -1.3491
    ],
    [
+    "tipo:ministerio_publico",
+    -1.8697
+   ],
+   [
     "origem:padrão",
-    -2.651
+    -2.4635
    ]
   ]
  },
@@ -951,10 +951,10 @@
     "via": "direto",
     "origem": "rota original",
     "pontos": 91,
-    "aprendido_em": "2026-10-11T11:15:10+00:00"
+    "aprendido_em": "2026-10-11T21:50:50+00:00"
    },
    "afinado": {
-    "em": "2026-10-11T11:15:10+00:00",
+    "em": "2026-10-11T21:50:50+00:00",
     "testes": 16,
     "melhor": {
      "url": "https://www.cnj.jus.br/editais",
@@ -1005,11 +1005,11 @@
     "via": "direto",
     "origem": "rota original",
     "pontos": 13,
-    "aprendido_em": "2026-10-11T11:15:23+00:00"
+    "aprendido_em": "2026-10-11T21:51:02+00:00"
    },
    "afinado": {
-    "em": "2026-10-11T11:15:23+00:00",
-    "testes": 17,
+    "em": "2026-10-11T21:51:02+00:00",
+    "testes": 16,
     "melhor": {
      "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-pb/noticias/mpf-lanca-chamamento-publico-para-cadastro-de-entidades-aptas-a-receber-bens-e-valores-de-processos-judiciais-e-extrajudiciais-na-pb",
      "via": "direto",
@@ -1788,8 +1788,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-11T09:28:25+00:00",
-    "testes": 12,
+    "em": "2026-10-11T21:49:39+00:00",
+    "testes": 13,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -1815,10 +1815,10 @@
     "via": "direto",
     "origem": "rota original",
     "pontos": 27,
-    "aprendido_em": "2026-10-11T09:28:42+00:00"
+    "aprendido_em": "2026-10-11T21:50:00+00:00"
    },
    "afinado": {
-    "em": "2026-10-11T09:28:42+00:00",
+    "em": "2026-10-11T21:50:00+00:00",
     "testes": 13,
     "melhor": {
      "url": "https://www.santaluziadoparua.ma.gov.br/",
@@ -1846,7 +1846,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-11T09:28:59+00:00",
+    "em": "2026-10-11T21:50:14+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1873,10 +1873,10 @@
     "via": "direto",
     "origem": "rota original",
     "pontos": 5,
-    "aprendido_em": "2026-10-11T11:14:50+00:00"
+    "aprendido_em": "2026-10-11T21:50:32+00:00"
    },
    "afinado": {
-    "em": "2026-10-11T11:14:50+00:00",
+    "em": "2026-10-11T21:50:32+00:00",
     "testes": 12,
     "melhor": {
      "url": "https://www.vilarica.mt.gov.br/",
