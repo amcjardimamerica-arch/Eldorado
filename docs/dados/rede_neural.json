@@ -1,5 +1,5 @@
 {
- "em": "2026-10-11T09:56:56+00:00",
+ "em": "2026-10-11T10:32:50+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
  "rotulados": 1886,
  "positivos": 746,
@@ -70,12 +70,6 @@
    "titulo": "Edital de Chamada Pública FAPESC/EPAGRI N.º 049/2026 - Programa de Fomento à Agropecuária Catarinense",
    "url": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-epagri-n-o-49-2026-programa-de-fomento-a-agropecuaria-catarinense-estimulo-na-formacao-de-recursos-humanos-por-meio-de-bolsas-de-producao-cientifica-tecnologica",
    "nota": 0.494,
-   "incerteza": 0.987
-  },
-  {
-   "titulo": "MUNICIPIO DE SAO LOURENCO DO SUL — [Portal de Compras Públicas] - Seleção de Organização Social para a prestação de serviços técnicos especi",
-   "url": "https://pncp.gov.br/app/editais/87893111000152/2026/419",
-   "nota": 0.493,
    "incerteza": 0.987
   },
   {
@@ -371,7 +365,13 @@
    "url": "https://www.gov.br/cnpq/pt-br/acesso-a-informacao/bolsas-e-auxilios/mapa-de-fomento-em-ciencia-tecnologia-e-inovacao",
    "nota": 0.536,
    "incerteza": 0.927
+  },
+  {
+   "titulo": "The BNDES - BNDES",
+   "url": "https://www.bndes.gov.br/SiteBNDES/bndes/bndes_en/Institucional/The_BNDES",
+   "nota": 0.537,
+   "incerteza": 0.927
   }
  ],
- "pendentes_provaveis_reais": 209
+ "pendentes_provaveis_reais": 212
 }
