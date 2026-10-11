@@ -301,6 +301,29 @@ def sincronizar() -> dict:
     for k in orfaos:
         L["ligados"].pop(k, None)
     st["ligados_orfaos_removidos"] = len(orfaos)
+    # 11/10 (titular): FORA DO PRAZO → o livro é ATUALIZADO e GUARDADO (arquivado, nunca apagado): a edição fica com a
+    # situação 'encerrada' e o prazo; o livro sai das estantes ativas até chegar uma edição nova aberta
+    try:
+        _ver = (json.loads((ROOT / "dados/editais/vereditos_revisao.json").read_text(encoding="utf-8")).get("vereditos") or {})
+        _enc = {i: x for i, x in _ver.items() if x.get("veredito") == "encerrada"}
+        for x in C.get("motores") or []:
+            hist = [h for h in (x.get("historico") or []) if isinstance(h, dict)]
+            mudou = False
+            for h in hist:
+                v = _enc.get(str(h.get("id")))
+                if v and h.get("situacao") != "encerrada":
+                    h["situacao"] = "encerrada"; mudou = True
+                    if (v.get("prazo") or {}).get("fim") and not h.get("fim"):
+                        h["fim"] = v["prazo"]["fim"]
+            if mudou or (hist and x.get("arquivado") is None and all(h.get("situacao") == "encerrada" for h in hist)):
+                if hist and all(h.get("situacao") == "encerrada" for h in hist):
+                    x["arquivado"] = {"em": hoje.isoformat(), "motivo": "prazo de inscrição vencido em todas as edições (revisão/busca externa)",
+                                      "ultima_edicao": hist[-1].get("id")}
+                    st["livros_arquivados"] += 1
+            elif x.get("arquivado") and any(h.get("situacao") != "encerrada" for h in hist):
+                x.pop("arquivado", None); st["livros_reabertos"] += 1        # edição nova aberta: volta à estante
+    except Exception:  # noqa: BLE001
+        pass
     CAT.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     LIG.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
     IDX.write_text(json.dumps({"regra": __doc__.split("Fontes:")[0].strip(), "indice": idx}, ensure_ascii=False), encoding="utf-8")

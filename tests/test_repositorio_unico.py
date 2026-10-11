@@ -39,8 +39,8 @@ class TesteRepositorio(unittest.TestCase):
 
     def test_chrome_e_excecao_e_skills(self):
         for x in self.regs:
-            if x["proximo_passo"].startswith("Chrome"):
-                self.assertTrue(x["cartorio"]["tentativas"] >= 10 or x["cartorio"]["esgotada"])
+            if x["proximo_passo"].startswith("Busca externa"):
+                self.assertTrue(x["cartorio"]["tentativas"] >= 5 or x["cartorio"]["esgotada"], "busca externa só depois das abordagens automáticas")
         self.assertEqual(R._skill("motor agregadores · farolcultura"), "agregador"); self.assertEqual(R._skill("motor pncp-api"), "pncp")
         sk = json.loads((ROOT / "config/skills_extracao_origem.json").read_text(encoding="utf-8"))["skills"]
         for k, v in sk.items():
@@ -71,3 +71,23 @@ class TesteMelhoriasMotores(unittest.TestCase):
     def test_criador_le_o_repositorio_e_ajuste_generico(self):
         self.assertIn("dados/oportunidades/repositorio_unico.json", (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8"))
         self.assertTrue((ROOT / "scripts/ajustar_ouro_sem_prova.py").exists())
+
+
+class TesteRegraExterna(unittest.TestCase):
+    """11/10: toda busca externa termina em arquivar, eliminar ou completar; o livro direciona a busca e é arquivado."""
+    def test_cobrar_resolucao(self):
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import importar_revisao_abertas as I
+        regs = {"a": {"veredito": "prata"}, "b": {"veredito": "encerrada", "prazo": {"fim": "2026-09-01"}},
+                "c": {"veredito": "encerrada", "prazo": {"fim": "2026-09-01", "trecho": "inscrições até 01/09/2026"}},
+                "d": {"veredito": "ruido", "parecer": "é resultado de seleção"}, "e": {"veredito": "fora_perfil"}, "f": {"veredito": "ouro"}}
+        av = I.cobrar_resolucao(regs)
+        self.assertEqual({k: v["veredito"] for k, v in regs.items()}, {"a": "validacao_manual", "b": "validacao_manual", "c": "encerrada",
+                                                                       "d": "ruido", "e": "validacao_manual", "f": "ouro"})
+        self.assertEqual(len(av), 3)
+
+    def test_livro_direciona_e_arquiva(self):
+        self.assertIn("REGRA_EXTERNA", (ROOT / "src/repositorio_unico.py").read_text(encoding="utf-8"))
+        o = (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8"); self.assertIn('x["arquivado"] =', o); self.assertIn("livros_reabertos", o)
+        self.assertIn("regra_de_resolucao", (ROOT / "scripts/gerar_lote_chrome.py").read_text(encoding="utf-8"))
+        self.assertTrue((ROOT / "docs/prompts/PROMPT-BUSCA-EXTERNA-PADRAO.md").exists())

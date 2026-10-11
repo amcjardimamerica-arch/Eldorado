@@ -178,6 +178,10 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
         else:
             estado, motivo = "em_verificacao", ""
         lv = livros.get(cid) or next((livros[i] for i in r["ids_origem"] if i in livros), None)
+        # 11/10 (titular): a BIBLIOTECA direciona a busca — editais anteriores do livro e páginas onde o órgão publica
+        anteriores = [h for h in ((lv or {}).get("historico") or []) if isinstance(h, dict) and str(h.get("id")) not in [cid] + r["ids_origem"]]
+        onde = list(dict.fromkeys(u for u in [link, (lv or {}).get("pagina"), ((lv or {}).get("parametros") or {}).get("fonte_oficial")]
+                                  + [h.get("pagina_oficial") or h.get("url") for h in anteriores[-5:]] if u))[:8]
         estante = "sem_livro" if not lv else (selo if selo in ("ouro", "prata", "bronze") else "bronze")
         sk = _skill(r.get("origem"))
         sem_livro = next((disp_livro[i] for i in [cid] + r["ids_origem"] if i in disp_livro), None) if not lv else None
@@ -191,16 +195,20 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
             passo = f"dispensar: a rede neural indica que não se aplica a OSC (nota {nt}) — confirmar na fonte"
         elif not link:
             passo = f"Cartório: achar o site oficial ({sk}: {(skills.get(sk) or {}).get('como', '')[:90]})"
+        elif int(c.get("tentativa") or 0) >= 5 and _parado_ha(cid, hoje) > 7:
+            passo = "Busca externa (Claude/Chrome): 5+ abordagens do Cartório sem resolver e parada há mais de 7 dias"
         elif int(c.get("tentativa") or 0) < 10 and not c.get("esgotada"):
             passo = f"Cartório: abordagem {int(c.get('tentativa') or 0) + 1} de 10 para {len(faltam)} item(ns) ({sk})"
         else:
-            passo = "Chrome (exceção): as 10 abordagens do Cartório se esgotaram"
+            passo = "Busca externa (Claude/Chrome): as 10 abordagens do Cartório se esgotaram"
         urg = 0 if (fim and str(fim)[:10] >= hoje) else 1
         out.append({"id": cid, "ids_origem": r["ids_origem"], "fontes": r["fontes"], "titulo": str(r.get("titulo") or "")[:220], "url": r.get("url"),
                     "link_oficial": link, "orgao": r.get("orgao"), "uf": r.get("uf"), "fim": fim, "origem": r.get("origem"), "skill": sk,
                     "estado": estado, "motivo_estado": motivo, "estante": estante, "livro": (lv or {}).get("id"), "motivo_sem_livro": sem_livro, "selo_dos_itens": selo or "sem_selo",
                     "itens": itens, "faltam": faltam, "cartorio": {"tentativas": int(c.get("tentativa") or 0), "esgotada": bool(c.get("esgotada"))},
-                    "nota_rede": nt, "proximo_passo": passo, "prioridade": (urg, str(fim or "9999"), -(nt or 0))})
+                    "nota_rede": nt, "proximo_passo": passo,
+                    "livro_historico": {"editais_anteriores": len(anteriores), "ultimos": [{"id": h.get("id"), "titulo": str(h.get("titulo") or "")[:120], "fim": h.get("fim"),
+                                        "pagina": h.get("pagina_oficial") or h.get("url")} for h in anteriores[-3:]]}, "onde_buscar": onde, "prioridade": (urg, str(fim or "9999"), -(nt or 0))})
     ant = {x["id"]: x for x in (_j(SAIDA, {}).get("registros") or [])}       # Prof. Caio: ninguém parado sem dono
     for x in out:
         a = ant.get(x["id"]) or {}
@@ -223,6 +231,20 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
     return resumo
 
 
+_ANT: dict = {}
+
+
+def _parado_ha(cid: str, hoje: str) -> int:
+    """Dias no mesmo passo, pelo repositório anterior (Prof. Caio)."""
+    if "m" not in _ANT:
+        _ANT["m"] = {x["id"]: x.get("no_passo_desde") for x in (_j(SAIDA, {}).get("registros") or [])}
+    d = _ANT["m"].get(cid)
+    try:
+        return (date.fromisoformat(hoje) - date.fromisoformat(str(d)[:10])).days if d else 0
+    except ValueError:
+        return 0
+
+
 def resumir(out: list[dict]) -> dict:
     ab = [x for x in out if x["estado"] != "fechada"]
     passo = Counter(re.sub(r"\s*\(.*$|\s+\d+ de 10.*$|: a rede.*$|: as 10.*$", "", x["proximo_passo"]) for x in ab)
@@ -233,7 +255,11 @@ def resumir(out: list[dict]) -> dict:
             "estantes": dict(Counter(x["estante"] for x in ab)), "proximo_passo": dict(passo.most_common()),
             "por_origem": dict(Counter(x["skill"] for x in ab if x["estado"] == "em_verificacao")),
             "itens_em_verificacao": dict(Counter(st for x in ab if x["estado"] == "em_verificacao" for st in (i["estado"] for i in x["itens"].values()))),
-            "fila_chrome": sum(1 for x in ab if x["proximo_passo"].startswith("Chrome")),
+            "fila_chrome": sum(1 for x in ab if x["proximo_passo"].startswith("Busca externa")),
+            "fila_busca_externa": sum(1 for x in ab if x["proximo_passo"].startswith("Busca externa")),
+            "cruzamento": {"com_certidao": sum(1 for x in ab if any(i["estado"] in ("comprovado", "dispensado") for i in x["itens"].values())),
+                           "com_livro": sum(1 for x in ab if x["livro"]), "com_livro_de_editais_anteriores": sum(1 for x in ab if x["livro_historico"]["editais_anteriores"]),
+                           "em_verificacao_com_onde_buscar_do_livro": sum(1 for x in ab if x["estado"] == "em_verificacao" and x["livro_historico"]["editais_anteriores"])},
             "dispensa_sugerida": sum(1 for x in ab if x["proximo_passo"].startswith("dispensar")),
             "motivo_sem_livro": dict(Counter(re.sub(r"[:(].*$", "", x.get("motivo_sem_livro") or "sem motivo registrado (o criador cria na próxima rodada)").strip()
                                              for x in ab if x["estante"] == "sem_livro"))}
@@ -259,6 +285,14 @@ def auditar(resumo: dict) -> dict:
 def fila(passo_prefixo: str) -> list[dict]:
     """Uma fila derivada do repositório (Cartório, Chrome…) — o mesmo universo da tela inicial."""
     return [x for x in (_j(SAIDA, {}).get("registros") or []) if x["estado"] == "em_verificacao" and x["proximo_passo"].startswith(passo_prefixo)]
+
+
+REGRA_EXTERNA = ("Toda busca externa termina em UMA de três resoluções: (1) ARQUIVAR — o prazo de inscrição venceu (comprovado no "
+                 "documento oficial): veredito 'encerrada'; o livro é atualizado com a edição e guardado; (2) ELIMINAR — não se aplica a "
+                 "associações/OSC: veredito 'ruido' ou 'fora_perfil', com o motivo; (3) COMPLETAR — os 12 itens comprovados na fonte ou "
+                 "com dispensa justificada (expressa: o edital diz que não se aplica; não consta: o edital não fala, com os documentos "
+                 "lidos): veredito 'ouro'. 'validacao_manual' só se o documento oficial não pôde ser lido por nenhuma das 8 rotas. "
+                 "Resultado parcial (prata, bronze, pendente) não é aceito: volta à fila como resolução incompleta.")
 
 
 if __name__ == "__main__":
