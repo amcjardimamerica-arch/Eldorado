@@ -52,6 +52,27 @@ def _enviar_release(rel: dict, arq: Path) -> dict:
     return _api("POST", up, arq.read_bytes(), {"Content-Type": "application/octet-stream"})
 
 
+def paginas_editais_orfas() -> list[str]:
+    """Páginas docs/editais/<id>.html de registros que não estão no repositório único nem na caixa de abertas
+    (ex.: edições de diário eliminadas pela regra M14). As atuais ficam."""
+    vivos = set()
+    try:
+        for x in (json.loads((ROOT / "dados/oportunidades/repositorio_unico.json").read_text(encoding="utf-8")).get("registros") or []):
+            vivos |= {x["id"], *(x.get("ids_origem") or [])}
+        ab = json.loads((ROOT / "docs/dados/abertas.json").read_text(encoding="utf-8"))
+        i = ab["campos"].index("id"); dic = (ab.get("dic") or {}).get("id")
+        for l in ab["linhas"]:
+            v = l[i]; vivos.add(dic[v] if dic and isinstance(v, int) and v < len(dic) else v)
+    except Exception:  # noqa: BLE001 — sem repositório e caixa, nada é órfão (não arquiva às cegas)
+        return []
+    if not vivos:
+        return []
+    return [f"docs/editais/{p.name}" for p in (ROOT / "docs/editais").glob("*.html") if p.stem not in vivos]
+
+
+SELETORES = {"paginas_editais_orfas": paginas_editais_orfas}
+
+
 def _enviar_drive(arq: Path, pasta: str) -> str | None:
     if not os.environ.get("RCLONE_CONF"):
         return None
@@ -73,7 +94,10 @@ def run() -> list[dict]:
     for cj in cfg["conjuntos"]:
         arquivos = list(cj.get("arquivos") or [])
         if cj.get("padrao"):
-            arquivos += subprocess.run(["git", "ls-files", cj["padrao"]], cwd=ROOT, capture_output=True, text=True).stdout.split()
+            arquivos += subprocess.run(["git", "ls-files", "-z", cj["padrao"]], cwd=ROOT, capture_output=True, text=True).stdout.split("\0")
+        if cj.get("seletor") in SELETORES:                                   # 11/10: lista calculada na hora
+            arquivos += SELETORES[cj["seletor"]]()
+        arquivos = [a for a in arquivos if a]
         arquivos = [a for a in arquivos if (ROOT / a).is_file()]
         if not arquivos:
             continue
@@ -89,6 +113,8 @@ def run() -> list[dict]:
             onde["drive"] = cfg["drive_pasta_url"]
         if not onde:
             print(f"{cj['nome']}: pacote NÃO guardado fora do repositório — nada removido"); continue
+        if cj.get("exige_drive") and "drive" not in onde:                 # 11/10 (titular): PDFs só saem com o Drive conferido
+            print(f"{cj['nome']}: exige o Google Drive (segredo RCLONE_CONF) — guardado só na Release; nada removido"); continue
         LISTAS.mkdir(parents=True, exist_ok=True)
         (LISTAS / f"{cj['nome']}.jsonl.xz").write_bytes(lzma.compress("".join(json.dumps(x, ensure_ascii=False) + "\n" for x in reg["conteudo"]).encode("utf-8"), preset=9))
         registrar({**reg, "por_que": cj.get("por_que")}, onde)
