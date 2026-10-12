@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-12T23:23:37+00:00",
+  "em": "2026-10-12T23:43:03+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-12T23:11:31+00:00",
+  "ultimo_voo": "2026-10-12T23:26:52+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 75,
+    "missoes": 76,
     "validadas": 3,
     "parciais": 21,
-    "insuficientes": 47,
+    "insuficientes": 48,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 59,
+      "sim": 60,
       "nao": 8
     },
     "estrelas_de_ouro": 2,
@@ -52,6 +52,87 @@
     "tempo_medio_min": 13.3
   },
   "missoes": [
+    {
+      "em": "2026-10-12T23:26:52+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Iepê (SP) 2026-10-06 — \"termo de execução cultural\"",
+      "qualidade": "insuficiente",
+      "comprovados": 8,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Valor",
+        "Requisitos"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprova a existência de um edital de seleção de projetos para termo de execução cultural vinculado à PNAB, com destinação para fomento à cultura no território de SP.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital abrange sua região, se o projeto se enquadra na área de atuação cultural e se atende aos critérios de seleção, mesmo que não estejam explicitados no texto.",
+        "proximo_passo": "Consultar o edital completo para entender os critérios de seleção e verificar se o projeto se enquadra na área de atuação cultural.",
+        "risco": "O edital não especifica o prazo de inscrição, valor ou requisitos, o que pode impedir a associação de se candidatar de forma adequada."
+      },
+      "erro": null,
+      "segundos": 970,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "2884062a90dc348ca122",
+      "encontrou": {
+        "Objeto": {
+          "valor": "SELEÇÃO DE PROJETOS PARA FIRMAR TERMO DE EXECUÇÃO CULTURAL COM RECURSOS DA POLÍTICA NACIONAL ALDIR BLANC DE FOMENTO À CULTURA – PNAB (LEI Nº 14.399/2022)",
+          "trecho": "SELEÇÃO DE PROJETOS PARA FIRMAR TERMO DE EXECUÇÃO CULTURAL COM RECURSOS DA POLÍTICA NACIONAL ALDIR BLANC DE FOMENTO À CULTURA – PNAB (LEI Nº 14.399/2022)",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Secretaria de Cultura, Turismo, Esporte e Lazer",
+          "trecho": "Secretária de Cultura, Turismo, Esporte e Lazer",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "SP",
+          "trecho": "Diário Oficial do Município de Iepê/SP",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "SELEÇÃO DE PROJETOS PARA FIRMAR TERMO DE EXECUÇÃO CULTURAL COM RECURSOS DA POLÍTICA NACIONAL ALDIR BLANC DE FOMENTO À CULTURA – PNAB (LEI Nº 14.399/2022)",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · fomento",
+          "trecho": "SELEÇÃO DE PROJETOS PARA FIRMAR TERMO DE EXECUÇÃO CULTURAL COM RECURSOS DA POLÍTICA NACIONAL ALDIR BLANC DE FOMENTO À CULTURA – PNAB (LEI Nº 14.399/2022)",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Secretaria de Cultura, Turismo, Esporte e Lazer de Iepê/SP",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3519907/2026-10-06/ecd8c434bceaaa06ce7fb12792d7a21bae3fa4f9.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "parceiro"
+      ]
+    },
     {
       "em": "2026-10-12T23:11:31+00:00",
       "modo": "validar",
@@ -2892,73 +2973,6 @@
       "indicios": [
         {
           "url": "https://data.queridodiario.ok.org.br/3300456/2026-10-08/3441c546cd2de800ec810ec76f668b6feb65cc39.pdf",
-          "tipo": "agregador"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
-      ]
-    },
-    {
-      "em": "2026-10-12T11:36:55+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Diário Oficial de Juatuba (MG) 2026-09-16 — \"chamamento público\" \"organizações da sociedade civil\"",
-      "qualidade": "insuficiente",
-      "comprovados": 4,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Território",
-        "Requisitos",
-        "Área de atuação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto menciona que o edital é um chamamento público para organizações da sociedade civil, financiado pelo Poder Executivo municipal, o que confirma sua relevância.",
-        "para_a_amc": "Para acessar, a associação comunitária de Goiânia precisaria se inscrever no chamamento público, apresentar os documentos exigidos no edital e demonstrar que sua atuação se enquadra nas áreas de assistência social, cultura, educação e esporte.",
-        "proximo_passo": "Consultar o edital completo para verificar os requisitos e o processo de inscrição.",
-        "risco": "A falta de informações sobre os requisitos e o prazo de inscrição pode impedir a associação de se candidatar adequadamente."
-      },
-      "erro": null,
-      "segundos": 1182,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "d37994207a4a79560439",
-      "encontrou": {
-        "Órgão / financiador": {
-          "valor": "Poder Executivo",
-          "trecho": "PODER EXECUTIVO",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "aaa pppaaarrrccceeerrriiiaaa mmmooonnniiitttooorrraaadddaaa ttteeemmm pppooorrr eeessscccooopppooo aaa mmmúúútttuuuaaa cccoooooopppeeerrraaaçççãããooo cccooommm ooorrrgggaaannniiizz",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Juatuba",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/3136652/2026-09-16/191a2855f21eaecee82a3a96d7eb019a4a4c98a5.pdf",
           "tipo": "agregador"
         }
       ],
