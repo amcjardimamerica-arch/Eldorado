@@ -1,13 +1,13 @@
 {
- "em": "2026-10-12T02:29:58+00:00",
+ "em": "2026-10-12T07:13:21+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 17923,
-  "oportunidades_distintas": 2123,
+  "coletados": 18417,
+  "oportunidades_distintas": 2540,
   "entidades_em_2_ou_mais_canais": 19,
   "etapas": {
-   "CONSOLIDADO": 17296,
-   "EM_LIVRO": 526,
+   "CONSOLIDADO": 17718,
+   "EM_LIVRO": 598,
    "REPROCESSAR": 74,
    "QUALIFICADO": 27
   },
@@ -30,11 +30,11 @@
   {
    "canal": "querido-diario",
    "familia": "diario_oficial",
-   "registros": 17002,
-   "entidades": 1387,
-   "exclusivas": 1386,
+   "registros": 17493,
+   "entidades": 1801,
+   "exclusivas": 1800,
    "corroboradas": 1,
-   "validadas_como_reais": 119
+   "validadas_como_reais": 133
   },
   {
    "canal": "pncp-api",
@@ -57,9 +57,9 @@
   {
    "canal": "piloto-aberto",
    "familia": "pilotos",
-   "registros": 143,
-   "entidades": 138,
-   "exclusivas": 134,
+   "registros": 144,
+   "entidades": 139,
+   "exclusivas": 135,
    "corroboradas": 4,
    "validadas_como_reais": 8
   },
@@ -256,6 +256,15 @@
    "canal": "f260-captacao-176",
    "familia": "orgao_publico",
    "registros": 3,
+   "entidades": 2,
+   "exclusivas": 2,
+   "corroboradas": 0,
+   "validadas_como_reais": 1
+  },
+  {
+   "canal": "f260-captacao-177",
+   "familia": "orgao_publico",
+   "registros": 2,
    "entidades": 2,
    "exclusivas": 2,
    "corroboradas": 0,
@@ -469,6 +478,15 @@
    "validadas_como_reais": 0
   },
   {
+   "canal": "mptgo-destinacao",
+   "familia": "outros",
+   "registros": 1,
+   "entidades": 1,
+   "exclusivas": 1,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
+  },
+  {
    "canal": "captacao-107",
    "familia": "outros",
    "registros": 1,
@@ -494,15 +512,6 @@
    "exclusivas": 1,
    "corroboradas": 0,
    "validadas_como_reais": 0
-  },
-  {
-   "canal": "mptgo-destinacao",
-   "familia": "outros",
-   "registros": 1,
-   "entidades": 1,
-   "exclusivas": 1,
-   "corroboradas": 0,
-   "validadas_como_reais": 0
   }
  ],
  "familias": {
@@ -511,7 +520,7 @@
   "outros": 13,
   "pilotos": 1,
   "terceiro_setor": 4,
-  "orgao_publico": 25,
+  "orgao_publico": 26,
   "empresas": 2,
   "justica_mp": 1
  },
@@ -550,6 +559,20 @@
    "canais": [
     "observatorio-3setor",
     "piloto-aberto"
+   ]
+  },
+  {
+   "entidade": "1078158fdb0136be112b",
+   "canais": [
+    "gife",
+    "piloto-aberto"
+   ]
+  },
+  {
+   "entidade": "11942f03820e082026d5",
+   "canais": [
+    "empresas-editais-incentivados",
+    "outras-oportunidades-3"
    ]
   },
   {
@@ -602,13 +625,6 @@
    ]
   },
   {
-   "entidade": "11942f03820e082026d5",
-   "canais": [
-    "empresas-editais-incentivados",
-    "outras-oportunidades-3"
-   ]
-  },
-  {
    "entidade": "6a6c37dcb037c09baa6c",
    "canais": [
     "f260-captacao-038",
@@ -642,14 +658,7 @@
     "do-goias",
     "estaduais-go-gov"
    ]
-  },
-  {
-   "entidade": "1078158fdb0136be112b",
-   "canais": [
-    "gife",
-    "piloto-aberto"
-   ]
   }
  ],
- "eventos_no_livro_razao": 2
+ "eventos_no_livro_razao": 505
 }

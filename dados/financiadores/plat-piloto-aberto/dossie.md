@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `plat-piloto-aberto`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 206
-- Distribuição por ano pesquisado/coletado: {'2026': 206}
+- Pistas aguardando confirmação: 207
+- Distribuição por ano pesquisado/coletado: {'2026': 207}
 
 ## Padrões
 
@@ -12,7 +12,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 ## Eventos e pistas
 
-- [AVISO DE CHAMAMENTO PÚBLICO Nº 3/2026 - SEJUS-PI Secretaria de Estado da Justiça R$ 803 mil Aceita:   organizações da sociedade civil Prazo:  20/10/2026 (12d) Ver detalhes →](https://capitaai.com.br/captacao/aviso-chamamento-publico-32026-sejuspi-secretaria-estado-justica-a0b64g) — coletado em 2026-10-09T14:51:14+00:00
 - [Chamamento Público Nº 6/2026 — Prefeitura Municipal de Lagoa do Ouro/PE PREFEITURA MUNICIPAL DE LAGOA DO OURO R$ 12 mil Aceita:   organizações da sociedade civil Prazo:  16/10/2026 (16d) Ver detalhes →](https://capitaai.com.br/captacao/aviso-chamamento-publico-62026-prefeitura-municipal-lagoa-ouro-skyz2m) — coletado em 2026-09-30T12:41:30+00:00
 - [Aviso de Chamamento Público Nº 1/2026 - FMAS Prefeitura Municipal de Lagarto R$ 66 mil Aceita:   organizações da sociedade civil Prazo:  13/11/2026 (40d) Ver detalhes →](https://capitaai.com.br/captacao/aviso-chamamento-publico-12026-fmas-prefeitura-municipal-lagarto-5rblw7) — coletado em 2026-10-04T16:22:07+00:00
 - [Acesse aqui o formulário e os documentos do edital](https://brasil.unwomen.org/pt-br/stories/noticia/2026/04/onu-mulheres-brasil-e-ministerio-das-mulheres-lancam-edital-de-apoio-financeiro-para-organizacoes-da-sociedade-civil-na-area-de-justica-climatica) — coletado em 2026-09-28T13:45:44+00:00
@@ -63,3 +62,4 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [capitaai.com.br/editais-abertos/assistencia-social-para-ong](https://capitaai.com.br/editais-abertos/assistencia-social-para-ong) — coletado em 2026-10-01T14:33:36+00:00
 - [capitaai.com.br/editais-abertos/para-ong](https://capitaai.com.br/editais-abertos/para-ong) — coletado em 2026-09-25T11:57:10+00:00
 - [Editais Sociais 2026 — Banco do Nordeste Banco do Nordeste R$ 1,5 mi Aceita:   organizações da sociedade civil Prazo:  30/09/2026 (3d) Ver detalhes →](https://capitaai.com.br/captacao/editais-sociais-2026-banco-nordeste-banco-nordeste-nsnx3s) — coletado em 2026-09-28T13:45:49+00:00
+- [Edital de Chamamento Público Nº 7/2026 Secretaria Executiva Aceita:   organizações da sociedade civil, outros perfis Prazo:  26/10/2026 (15d) Ver detalhes →](https://capitaai.com.br/captacao/edital-chamamento-publico-72026-secretaria-executiva-nxvmsu) — coletado em 2026-10-12T07:04:51+00:00
