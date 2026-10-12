@@ -1,5 +1,5 @@
 {
- "em": "2026-10-12T12:00:23+00:00",
+ "em": "2026-10-12T13:33:31+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
@@ -7,13 +7,13 @@
   "alterar_rota": 55,
   "rota_nova": 46,
   "via_ponte": 2,
-  "exemplos_da_rede": 4539
+  "exemplos_da_rede": 4647
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
    [
     "origem:biblioteca",
-    1.9067
+    1.9025
    ],
    [
     "tok:inscricoes",
@@ -21,7 +21,7 @@
    ],
    [
     "origem:rota original",
-    1.564
+    1.6482
    ],
    [
     "tok:unidades",
@@ -29,7 +29,7 @@
    ],
    [
     "tok:feed",
-    1.278
+    1.2686
    ],
    [
     "tok:abertas",
@@ -48,26 +48,26 @@
     1.008
    ],
    [
+    "gov:True",
+    1.0024
+   ],
+   [
     "tok:secult",
     0.9908
    ],
    [
     "tok:programa",
     0.9736
-   ],
-   [
-    "gov:True",
-    0.9703
    ]
   ],
   "piores_sinais": [
    [
-    "via:ponte",
-    -1.1404
+    "tok:prefeitura",
+    -1.0925
    ],
    [
     "sapl:False",
-    -1.2343
+    -1.2091
    ],
    [
     "tok:content",
@@ -87,11 +87,11 @@
    ],
    [
     "gov:False",
-    -2.5211
+    -2.528
    ],
    [
     "origem:padrão",
-    -3.3259
+    -3.3807
    ]
   ]
  },
@@ -379,7 +379,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-12T02:08:07+00:00",
+    "em": "2026-10-12T13:32:56+00:00",
     "testes": 20,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -401,7 +401,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-12T02:44:38+00:00",
+    "em": "2026-10-12T13:33:23+00:00",
     "testes": 14,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -573,7 +573,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-12T02:44:19+00:00",
+    "em": "2026-10-12T13:33:06+00:00",
     "testes": 24,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -598,7 +598,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-12T02:44:33+00:00",
+    "em": "2026-10-12T13:33:18+00:00",
     "testes": 24,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -627,17 +627,17 @@
     ],
     "via": "ponte",
     "origem": "rota original",
-    "pontos": 11,
-    "aprendido_em": "2026-10-12T02:44:41+00:00"
+    "pontos": 9,
+    "aprendido_em": "2026-10-12T13:33:28+00:00"
    },
    "afinado": {
-    "em": "2026-10-12T02:44:41+00:00",
+    "em": "2026-10-12T13:33:28+00:00",
     "testes": 14,
     "melhor": {
      "url": "https://www.rosariodosul.rs.gov.br/",
      "via": "ponte",
      "origem": "rota original",
-     "pontos": 11,
+     "pontos": 9,
      "formato": "html"
     },
     "resultado": "rota nova em teste"
@@ -662,7 +662,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-12T02:44:45+00:00",
+    "em": "2026-10-12T13:33:31+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"

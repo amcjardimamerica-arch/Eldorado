@@ -60,10 +60,10 @@
 214 domínios oficiais já renderam e não têm motor. Os primeiros:
 
 - baoba.org.br (peso 17)
+- zurich.com.br (peso 13)
 - fundoecos.org.br (peso 12)
 - mariaemilia.org.br (peso 11)
 - chamadas.funbio.org.br (peso 11)
-- zurich.com.br (peso 11)
 - institutolojasrenner.org.br (peso 11)
 - feirapreta.com.br (peso 9)
 - editaisdobrasil.com (peso 8)
