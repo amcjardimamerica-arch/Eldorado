@@ -115,8 +115,8 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 45,
-   "achados_total_agora": 45,
+   "achados_total_1a": 48,
+   "achados_total_agora": 48,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -136,8 +136,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 61,
-   "achados_total_agora": 61,
+   "achados_total_1a": 62,
+   "achados_total_agora": 62,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -164,15 +164,15 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 31,
-   "achados_total_agora": 31,
+   "achados_total_1a": 32,
+   "achados_total_agora": 32,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 59,
-   "achados_total_agora": 59,
+   "achados_total_1a": 60,
+   "achados_total_agora": 60,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -228,7 +228,7 @@
  "pontos_com_redundancia": 11,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 3426
+ "exemplos_da_rede_de_rotas": 3305
 }
 ```
 
@@ -472,7 +472,7 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 38,
+   "orgaos": 39,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",
