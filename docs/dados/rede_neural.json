@@ -1,9 +1,9 @@
 {
- "em": "2026-10-12T10:09:29+00:00",
+ "em": "2026-10-12T15:44:51+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
- "rotulados": 1962,
- "positivos": 780,
- "pendentes": 663,
+ "rotulados": 1964,
+ "positivos": 782,
+ "pendentes": 670,
  "validacao_cruzada": {
   "auc": 0.845,
   "precisao": 0.757,
@@ -43,6 +43,12 @@
    "incerteza": 0.998
   },
   {
+   "titulo": "Diário Oficial de Belford Roxo (RJ) 2026-10-08 — \"chamamento público\" \"organizações da sociedade civil\"",
+   "url": "https://data.queridodiario.ok.org.br/3300456/2026-10-08/3441c546cd2de800ec810ec76f668b6feb65cc39.pdf",
+   "nota": 0.501,
+   "incerteza": 0.998
+  },
+  {
    "titulo": "CIDADANIA PopRua - Aberta seleção para implementar unidades de apoio à ...",
    "url": "https://diariodeminas.com.br/cidadania-poprua-aberta-selecao-para-implementar-unidades-de-apoio-a-populacao-em-situacao-de-rua/",
    "nota": 0.502,
@@ -79,12 +85,6 @@
    "incerteza": 0.992
   },
   {
-   "titulo": "Chamadas",
-   "url": "https://www.gov.br/cnpq/pt-br/chamadas",
-   "nota": 0.504,
-   "incerteza": 0.992
-  },
-  {
    "titulo": "Credenciamento de músicos, cantores, bandas e/ou grupos musicais, de renome local ou regional para… — MUNICIPIO DE CASINHAS",
    "url": "https://pncp.gov.br/app/editais/01618704000195/2026/135",
    "nota": 0.496,
@@ -109,6 +109,12 @@
    "incerteza": 0.989
   },
   {
+   "titulo": "Solicitar Certificado do Encceja",
+   "url": "https://www.go.gov.br/servicos/servico/solicitar-2-via-de-certificado-do-exame-nacional-do-ensino-medio-enem-e-exame-nacional-para-certificacao-de-competencias-de-jovens-e-adultos-encceja",
+   "nota": 0.506,
+   "incerteza": 0.987
+  },
+  {
    "titulo": "CREDENCIAMENTO DE ARTISTAS E/OU BANDAS MUSICAIS PARA REALIZAÇÃO DE APRESENTAÇÕES MUSICAIS AO VIVO, VISANDO… — MUNICIPIO DE PIUMHI",
    "url": "https://pncp.gov.br/app/editais/16781346000104/2026/81",
    "nota": 0.507,
@@ -118,12 +124,6 @@
    "titulo": "CHAMADA FAPESPA Nº 005/2025 – PROGRAMA TECNOVA III Subvenção Econômica à Inovação",
    "url": "https://www.fapespa.pa.gov.br/2026/09/28/chamada-fapespa-no-005-2025-programa-tecnova-iii-subvencao-economica-a-inovacao",
    "nota": 0.493,
-   "incerteza": 0.985
-  },
-  {
-   "titulo": "14/09/2026 14h38",
-   "url": "https://www.juatuba.mg.gov.br/portal/download/chamamento-publico-anexos/Kd-wPP",
-   "nota": 0.492,
    "incerteza": 0.985
   },
   {
@@ -229,12 +229,6 @@
    "incerteza": 0.975
   },
   {
-   "titulo": "Diário Oficial de Belford Roxo (RJ) 2026-10-08 — \"chamamento público\" \"organizações da sociedade civil\"",
-   "url": "https://data.queridodiario.ok.org.br/3300456/2026-10-08/3441c546cd2de800ec810ec76f668b6feb65cc39.pdf",
-   "nota": 0.512,
-   "incerteza": 0.975
-  },
-  {
    "titulo": "EDITAL DE CHAMAMENTO PÚBLICO 014/2026 - PARA SELEÇÃO DE OSC PARA REALIZAÇÃO DA III MOSTRA CULTURAL DAS ARTES DO MUNICÍPIO DE BEBERIBE",
    "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8419/",
    "nota": 0.513,
@@ -283,12 +277,6 @@
    "incerteza": 0.97
   },
   {
-   "titulo": "FCP divulga resultados preliminares e finais dos quatro editais da Política Nacional Aldir Blanc",
-   "url": "https://www.palmas.to.gov.br/core/noticias/fundacao-cultural-divulga-resultados-preliminares-e-finais-dos-quatro-editais-da-politica-nacional-aldir-blanc",
-   "nota": 0.515,
-   "incerteza": 0.97
-  },
-  {
    "titulo": "MUNICIPIO DE NOVA AURORA — Credenciamento de pessoas jurídicas e/ou entidades legalmente habilitadas, conforme a natureza de cada modalidade",
    "url": "https://pncp.gov.br/app/editais/76208859000152/2026/116",
    "nota": 0.515,
@@ -301,12 +289,6 @@
    "incerteza": 0.969
   },
   {
-   "titulo": "Anápolis — CRAS Leste 1 recebe inscrições para o Programa Bombeiro Mirim em Anápolis",
-   "url": "https://www.anapolis.go.gov.br/cras-leste-1-recebe-inscricoes-para-o-programa-bombeiro-mirim-em-anapolis/",
-   "nota": 0.516,
-   "incerteza": 0.968
-  },
-  {
    "titulo": "Finep Mais Inovação Brasil – Rodada 2 – Transformação Mineral",
    "url": "http://www.finep.gov.br/chamadas-publicas/chamadapublica/771",
    "nota": 0.516,
@@ -315,6 +297,12 @@
   {
    "titulo": "14/09/2026 14h43",
    "url": "https://www.juatuba.mg.gov.br/portal/download/chamamento-publico-anexos/sh-wLA",
+   "nota": 0.484,
+   "incerteza": 0.968
+  },
+  {
+   "titulo": "14/09/2026 14h43",
+   "url": "https://www.juatuba.mg.gov.br/portal/download/chamamento-publico-anexos/Gq-wLA",
    "nota": 0.484,
    "incerteza": 0.968
   },
@@ -371,6 +359,18 @@
    "url": "https://www.gov.br/icmbio",
    "nota": 0.481,
    "incerteza": 0.963
+  },
+  {
+   "titulo": "Edital COMIRMA-GO 2026 em Goiânia: como se inscrever",
+   "url": "https://lancasterweb.com.br/edital-comirma-go-2026-goiania/",
+   "nota": 0.481,
+   "incerteza": 0.963
+  },
+  {
+   "titulo": "Programa Tecnova III",
+   "url": "https://www.fappr.pr.gov.br/Pagina/Programa-Tecnova",
+   "nota": 0.519,
+   "incerteza": 0.962
   }
  ],
  "pendentes_provaveis_reais": 390
