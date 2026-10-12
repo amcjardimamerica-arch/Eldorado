@@ -1,5 +1,5 @@
 {
- "em": "2026-10-12T02:08:16+00:00",
+ "em": "2026-10-12T02:44:45+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
@@ -7,7 +7,7 @@
   "alterar_rota": 62,
   "rota_nova": 46,
   "via_ponte": 2,
-  "exemplos_da_rede": 3757
+  "exemplos_da_rede": 3867
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
@@ -17,23 +17,23 @@
    ],
    [
     "origem:biblioteca",
-    1.7162
+    1.7057
    ],
    [
     "origem:rota original",
-    1.5755
+    1.6965
    ],
    [
     "tok:feed",
-    1.483
+    1.4721
    ],
    [
     "tok:sitemap",
-    1.362
+    1.3164
    ],
    [
     "tok:xml",
-    1.362
+    1.3164
    ],
    [
     "tok:unidades",
@@ -63,11 +63,11 @@
   "piores_sinais": [
    [
     "sapl:False",
-    -1.0712
+    -1.0338
    ],
    [
-    "via:ponte",
-    -1.1515
+    "tok:prefeitura",
+    -1.0338
    ],
    [
     "tok:content",
@@ -83,7 +83,7 @@
    ],
    [
     "gov:False",
-    -1.6272
+    -1.6527
    ],
    [
     "tipo:ministerio_publico",
@@ -91,7 +91,7 @@
    ],
    [
     "origem:padrão",
-    -3.1665
+    -3.2396
    ]
   ]
  },
@@ -103,7 +103,7 @@
    "leituras": 60,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-12T01:38:18+00:00",
+    "em": "2026-10-12T02:07:45+00:00",
     "classe": "vazia",
     "motivo": "0 notícias lidas (TJGO A 0 no RSS · CNJ C 0) e 1 do TJGO/CNJ no PNCP (lidas pelo motor 04, já na base): nenhum edital de destinação aberto hoje · 0 a acompanhar"
    },
@@ -398,8 +398,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-11T20:34:42+00:00",
-    "testes": 25,
+    "em": "2026-10-12T02:44:38+00:00",
+    "testes": 14,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -545,7 +545,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-11T19:28:45+00:00",
+    "em": "2026-10-12T02:44:08+00:00",
     "testes": 22,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -570,7 +570,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-11T19:28:51+00:00",
+    "em": "2026-10-12T02:44:19+00:00",
     "testes": 24,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -595,7 +595,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-11T19:29:01+00:00",
+    "em": "2026-10-12T02:44:33+00:00",
     "testes": 24,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -624,17 +624,17 @@
     ],
     "via": "ponte",
     "origem": "rota original",
-    "pontos": 9,
-    "aprendido_em": "2026-10-11T20:34:45+00:00"
+    "pontos": 11,
+    "aprendido_em": "2026-10-12T02:44:41+00:00"
    },
    "afinado": {
-    "em": "2026-10-11T20:34:45+00:00",
+    "em": "2026-10-12T02:44:41+00:00",
     "testes": 14,
     "melhor": {
      "url": "https://www.rosariodosul.rs.gov.br/",
      "via": "ponte",
      "origem": "rota original",
-     "pontos": 9,
+     "pontos": 11,
      "formato": "html"
     },
     "resultado": "rota nova em teste"
@@ -659,7 +659,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-11T20:34:46+00:00",
+    "em": "2026-10-12T02:44:45+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -2089,7 +2089,7 @@
    "leituras": 116,
    "ok": 9,
    "ultima": {
-    "em": "2026-10-12T01:33:25+00:00",
+    "em": "2026-10-12T02:03:26+00:00",
     "classe": "vazia",
     "motivo": "7 edição(ões) lida(s), 75 ato(s) do terceiro setor: nenhum chamamento aberto para OSC hoje · 49 a acompanhar · 26 ruído (credenciamento, OS da saúde, decretos)"
    },
@@ -2222,7 +2222,7 @@
    "leituras": 35,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-12T01:38:27+00:00",
+    "em": "2026-10-12T02:07:53+00:00",
     "classe": "vazia",
     "motivo": "0 notícias lidas (TJGO A 0 no RSS · CNJ C 0) e 0 do TJGO/CNJ no PNCP (lidas pelo motor 04, já na base): nenhum edital de destinação aberto hoje · 0 a acompanhar"
    },
@@ -2283,7 +2283,7 @@
    "leituras": 31,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-12T01:38:27+00:00",
+    "em": "2026-10-12T02:07:53+00:00",
     "classe": "vazia",
     "motivo": "nenhum edital de destinação aberto hoje nas fontes lidas"
    },
@@ -2339,7 +2339,7 @@
    "leituras": 93,
    "ok": 22,
    "ultima": {
-    "em": "2026-10-12T01:37:39+00:00",
+    "em": "2026-10-12T02:07:05+00:00",
     "classe": "vazia",
     "motivo": "0 itens lidos (pautas D 0 projetos em 0 pauta(s) · processos A 0 · própria B 0 · notícias C 0): nenhum chamamento aberto para OSC · 0 a acompanhar · 0 utilidade"
    },
@@ -2727,7 +2727,7 @@
    "leituras": 48,
    "ok": 11,
    "ultima": {
-    "em": "2026-10-12T01:55:52+00:00",
+    "em": "2026-10-12T02:25:03+00:00",
     "classe": "vazia",
     "motivo": "50 órgão(s) já com histórico e monitorados; nenhuma seleção aberta nova hoje"
    },
@@ -2825,7 +2825,7 @@
    "leituras": 99,
    "ok": 26,
    "ultima": {
-    "em": "2026-10-12T01:35:11+00:00",
+    "em": "2026-10-12T02:05:20+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -2867,7 +2867,7 @@
    "leituras": 109,
    "ok": 25,
    "ultima": {
-    "em": "2026-10-12T01:35:45+00:00",
+    "em": "2026-10-12T02:05:56+00:00",
     "classe": "ok",
     "motivo": "2909 matérias no jornal, 0 de interesse (0 íntegras): nenhuma seleção aberta para OSC hoje · 0 a acompanhar · 0 ruído"
    },
@@ -2943,7 +2943,7 @@
    "leituras": 66,
    "ok": 22,
    "ultima": {
-    "em": "2026-10-12T01:56:24+00:00",
+    "em": "2026-10-12T02:25:39+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3356,7 +3356,7 @@
    "leituras": 61,
    "ok": 17,
    "ultima": {
-    "em": "2026-10-12T01:56:11+00:00",
+    "em": "2026-10-12T02:25:25+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3415,7 +3415,7 @@
    "leituras": 66,
    "ok": 23,
    "ultima": {
-    "em": "2026-10-12T01:58:41+00:00",
+    "em": "2026-10-12T02:28:11+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3514,7 +3514,7 @@
    "leituras": 71,
    "ok": 21,
    "ultima": {
-    "em": "2026-10-12T01:53:41+00:00",
+    "em": "2026-10-12T02:22:57+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3553,7 +3553,7 @@
    "leituras": 76,
    "ok": 24,
    "ultima": {
-    "em": "2026-10-12T01:56:00+00:00",
+    "em": "2026-10-12T02:25:13+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3623,7 +3623,7 @@
    "leituras": 63,
    "ok": 23,
    "ultima": {
-    "em": "2026-10-12T01:58:52+00:00",
+    "em": "2026-10-12T02:28:23+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3663,7 +3663,7 @@
    "leituras": 51,
    "ok": 26,
    "ultima": {
-    "em": "2026-10-12T01:38:16+00:00",
+    "em": "2026-10-12T02:07:43+00:00",
     "classe": "ok",
     "motivo": "53 itens lidos (CMO A 9 · Câmara B 2 · Senado C 3 · notícias D 35 · convocações E 4): nenhuma janela de emendas aberta nem chamamento para OSC · 14 a acompanhar"
    },
@@ -3880,7 +3880,7 @@
    "leituras": 33,
    "ok": 25,
    "ultima": {
-    "em": "2026-10-12T01:38:18+00:00",
+    "em": "2026-10-12T02:07:45+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3921,7 +3921,7 @@
    "leituras": 43,
    "ok": 25,
    "ultima": {
-    "em": "2026-10-12T01:38:27+00:00",
+    "em": "2026-10-12T02:07:53+00:00",
     "classe": "ok",
     "motivo": ""
    },

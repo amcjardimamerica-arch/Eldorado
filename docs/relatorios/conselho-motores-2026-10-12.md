@@ -108,7 +108,7 @@
 ### Diário Oficial do Município de Goiânia (`do-goiania`) — confirma, 9 achados em 30 dias
 - **CONGELADO** (falso_verde): o mesmo achado repetido em 9 dias. → detectar mudança por hash/lastmod e só contar o que é novo
 - **SILÊNCIO LONGO** (falso_verde): 18 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
-- **CUSTO SEM RETORNO** (redundancia): 377 s na última leitura sem achado. → reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem
+- **CUSTO SEM RETORNO** (redundancia): 130 s na última leitura sem achado. → reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem
 
 ### Diário da Justiça Federal — Seção Judiciária de Goiás (`dj-trf1-go`) — baixo volume, 0 achados em 30 dias
 - **CEGO** (falso_verde): respondeu 200 em 24 de 30 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
@@ -351,7 +351,7 @@
 
 ### Oportunidade Estaduais Governamentais de Goiás (`plat-estaduais-go-gov`) — ruído, 1 achados em 30 dias
 - **RUÍDO** (funil): 26 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
-- **CUSTO SEM RETORNO** (redundancia): 130 s na última leitura sem achado. → reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem
+- **CUSTO SEM RETORNO** (redundancia): 125 s na última leitura sem achado. → reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem
 
 ### SECULT Goiás — chamamentos públicos da Lei 13.019/2014 (`f260-curadoria-009`) — ruído, 47 achados em 30 dias
 - **RUÍDO** (funil): 47 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
@@ -405,7 +405,7 @@
 ### SALIC — Lei Rouanet (Ministério da Cultura) (`plat-salic`) — ouro, 82 achados em 30 dias
 - **VAZAMENTO** (funil): perde 99% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Motor do Piloto — busca aberta no terceiro setor (`plat-piloto-aberto`) — ouro, 577 achados em 30 dias
+### Motor do Piloto — busca aberta no terceiro setor (`plat-piloto-aberto`) — ouro, 573 achados em 30 dias
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### Emenda municipal para entidade assistencial (`f260-captacao-107`) — baixo volume, 0 achados em 30 dias
