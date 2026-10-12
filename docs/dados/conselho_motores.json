@@ -1,5 +1,5 @@
 {
- "em": "2026-10-12T17:49:51+00:00",
+ "em": "2026-10-12T18:45:49+00:00",
  "conselho": [
   {
    "id": "falso_verde",
@@ -46,26 +46,33 @@
  ],
  "resumo": {
   "motores": 148,
-  "motores_com_falha": 94,
+  "motores_com_falha": 95,
   "falhas_por_tipo": {
    "CONGELADO": 23,
    "SILÊNCIO LONGO": 44,
    "CUSTO SEM RETORNO": 1,
-   "VAZAMENTO": 43,
+   "VAZAMENTO": 45,
    "CEGO": 23,
    "PÁGINA VAZIA": 10,
    "INTERMITENTE": 2,
-   "RUÍDO": 26
+   "RUÍDO": 27
   }
  },
  "cobertura": {
   "origem_das_oportunidades": {
-   "agregador/outra": 307,
-   "motor": 92,
-   "Piloto": 107
+   "agregador/outra": 310,
+   "Piloto": 108,
+   "motor": 75
   },
-  "fora_dos_motores_pct": 81.8,
+  "fora_dos_motores_pct": 84.8,
   "ufs_sem_motor_com_oportunidade": [
+   {
+    "uf": "GO",
+    "oportunidades": 4,
+    "de_onde": {
+     "agregador/outra": 4
+    }
+   },
    {
     "uf": "BA",
     "oportunidades": 3,
@@ -86,13 +93,6 @@
     "de_onde": {
      "agregador/outra": 2,
      "Piloto": 1
-    }
-   },
-   {
-    "uf": "GO",
-    "oportunidades": 3,
-    "de_onde": {
-     "agregador/outra": 3
     }
    },
    {
@@ -126,13 +126,8 @@
   "top": [
    {
     "dominio": "baoba.org.br",
-    "peso": 17,
-    "url": "https://baoba.org.br/home/programa-marielle-franco-apoio-individual/"
-   },
-   {
-    "dominio": "licitario.com.br",
-    "peso": 15,
-    "url": "https://www.licitario.com.br"
+    "peso": 19,
+    "url": "https://baoba.org.br/wp-content/uploads/2026/01/Programa_Marielle_Franco_Edital_Atualizado_2026.pdf"
    },
    {
     "dominio": "institutolojasrenner.org.br",
@@ -168,6 +163,16 @@
     "dominio": "contrafluxofestival.com.br",
     "peso": 9,
     "url": "https://www.contrafluxofestival.com.br"
+   },
+   {
+    "dominio": "licitario.com.br",
+    "peso": 8,
+    "url": "https://www.licitario.com.br"
+   },
+   {
+    "dominio": "transforma.fbb.org.br",
+    "peso": 8,
+    "url": "https://transforma.fbb.org.br/premio/17"
    },
    {
     "dominio": "editaisdobrasil.com",
@@ -218,11 +223,6 @@
     "dominio": "itausocial.org.br",
     "peso": 6,
     "url": "https://www.itausocial.org.br/editais/edital-fundos-da-infancia-e-da-adolescencia-2025/"
-   },
-   {
-    "dominio": "transforma.fbb.org.br",
-    "peso": 6,
-    "url": "https://transforma.fbb.org.br/premio/17"
    },
    {
     "dominio": "institutoacp.org.br",
@@ -298,7 +298,7 @@
     ]
    },
    "Sistemas de editais (Prosas/Editais)": {
-    "orgaos": 42,
+    "orgaos": 43,
     "exemplos": [
      "adustina.ba.gov.br",
      "alteditais.com.br",
@@ -738,14 +738,27 @@
     }
    ],
    "achados_total": 99,
-   "valor": "confirma",
+   "valor": "ruído",
    "achados_30d": 27,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
     "dia_forte": "terça"
    },
-   "falhas": []
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "99 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    }
+   ]
   },
   "plat-observatorio-3setor": {
    "nome": "Observatório do Terceiro Setor — editais",
@@ -2062,8 +2075,8 @@
     {
      "conselheiro": "funil",
      "falha": "VAZAMENTO",
-     "prova": "perde 100% na etapa 'fluxo → confirmada'",
-     "melhoria": "faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório"
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
     }
    ]
   },
@@ -2322,6 +2335,12 @@
      "falha": "RUÍDO",
      "prova": "67 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
     }
    ]
   },
@@ -2387,7 +2406,7 @@
     {
      "conselheiro": "funil",
      "falha": "VAZAMENTO",
-     "prova": "perde 99% na etapa 'achado → fluxo'",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
     }
    ]

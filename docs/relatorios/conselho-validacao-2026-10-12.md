@@ -41,8 +41,15 @@
 
 ```json
 {
- "motores_de_ruido_1a": 26,
+ "motores_de_ruido_1a": 27,
  "ruido_agora": [
+  {
+   "motor": "plat-gife",
+   "achados_total_1a": 99,
+   "achados_total_agora": 99,
+   "no_fluxo": 0,
+   "confirmadas": 0
+  },
   {
    "motor": "empresas-incentivadas",
    "achados_total_1a": 59,
@@ -124,7 +131,7 @@
    "motor": "plat-empresas-editais-incentivados",
    "achados_total_1a": 1026,
    "achados_total_agora": 1026,
-   "no_fluxo": 2,
+   "no_fluxo": 1,
    "confirmadas": 0
   },
   {
@@ -138,7 +145,7 @@
    "motor": "plat-prefeituras-50-go",
    "achados_total_1a": 67,
    "achados_total_agora": 67,
-   "no_fluxo": 1,
+   "no_fluxo": 0,
    "confirmadas": 0
   },
   {
@@ -194,7 +201,7 @@
    "motor": "outras-oportunidades-1",
    "achados_total_1a": 66,
    "achados_total_agora": 66,
-   "no_fluxo": 9,
+   "no_fluxo": 8,
    "confirmadas": 0
   },
   {
@@ -208,13 +215,7 @@
    "motor": "outras-oportunidades-3",
    "achados_total_1a": 29,
    "achados_total_agora": 29,
-   "no_fluxo": 2,
-   "confirmadas": 0
-  },
-  {
-   "motor": "outras-oportunidades-4",
-   "achados_total_1a": 32,
-   "achados_total_agora": 3
+   "no_flu
 ```
 
 ## Eng. Luana Freire (levemente pessimista)
@@ -227,7 +228,7 @@
  "pontos_com_redundancia": 12,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 4993
+ "exemplos_da_rede_de_rotas": 5115
 }
 ```
 
@@ -238,12 +239,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 81.8,
- "fora_dos_motores_pct_agora": 81.8,
+ "fora_dos_motores_pct_1a": 84.8,
+ "fora_dos_motores_pct_agora": 84.8,
  "origem": {
-  "agregador/outra": 307,
-  "motor": 92,
-  "Piloto": 107
+  "agregador/outra": 310,
+  "Piloto": 108,
+  "motor": 75
  },
  "dominios_so_de_agregador": [
   {
@@ -371,7 +372,7 @@
   "Cartório (site oficial certificado)": 109,
   "Espião (privado/internacional)": 20
  },
- "lidas_nas_ultimas_24h": 162,
+ "lidas_nas_ultimas_24h": 151,
  "dimensionamento": {
   "fontes": 272,
   "sites_por_execucao": 17,
@@ -475,7 +476,7 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 42,
+   "orgaos": 43,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",

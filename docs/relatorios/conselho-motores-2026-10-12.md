@@ -1,6 +1,6 @@
 # Conselho dos motores — 2026-10-12
 
-148 motores avaliados; 94 com pelo menos uma falha.
+148 motores avaliados; 95 com pelo menos uma falha.
 
 ## Os sete prompts
 
@@ -34,9 +34,9 @@
 
 ## Falhas por tipo
 
+- VAZAMENTO: 45
 - SILÊNCIO LONGO: 44
-- VAZAMENTO: 43
-- RUÍDO: 26
+- RUÍDO: 27
 - CONGELADO: 23
 - CEGO: 23
 - PÁGINA VAZIA: 10
@@ -45,12 +45,12 @@
 
 ## Cobertura (Dr. Otávio)
 
-81.8% das oportunidades vieram de fora dos motores: {'agregador/outra': 307, 'motor': 92, 'Piloto': 107}.
+84.8% das oportunidades vieram de fora dos motores: {'agregador/outra': 310, 'Piloto': 108, 'motor': 75}.
 
+- GO: 4 oportunidades, nenhuma de motor ({'agregador/outra': 4})
 - BA: 3 oportunidades, nenhuma de motor ({'agregador/outra': 3})
 - SP: 3 oportunidades, nenhuma de motor ({'agregador/outra': 3})
 - RS: 3 oportunidades, nenhuma de motor ({'agregador/outra': 2, 'Piloto': 1})
-- GO: 3 oportunidades, nenhuma de motor ({'agregador/outra': 3})
 - MG: 3 oportunidades, nenhuma de motor ({'agregador/outra': 3})
 - PR: 2 oportunidades, nenhuma de motor ({'agregador/outra': 2})
 - AL: 2 oportunidades, nenhuma de motor ({'agregador/outra': 2})
@@ -59,8 +59,7 @@
 
 217 domínios oficiais já renderam e não têm motor. Os primeiros:
 
-- baoba.org.br (peso 17)
-- licitario.com.br (peso 15)
+- baoba.org.br (peso 19)
 - institutolojasrenner.org.br (peso 15)
 - zurich.com.br (peso 13)
 - fundoecos.org.br (peso 12)
@@ -68,6 +67,8 @@
 - chamadas.funbio.org.br (peso 11)
 - feirapreta.com.br (peso 9)
 - contrafluxofestival.com.br (peso 9)
+- licitario.com.br (peso 8)
+- transforma.fbb.org.br (peso 8)
 - editaisdobrasil.com (peso 8)
 - crars.org.br (peso 8)
 - fondationfrancoisschneider.org (peso 7)
@@ -78,7 +79,6 @@
 - itauvivermais.com.br (peso 7)
 - brazilfoundation.org (peso 7)
 - itausocial.org.br (peso 6)
-- transforma.fbb.org.br (peso 6)
 - institutoacp.org.br (peso 6)
 - jornadasocial.com.br (peso 6)
 - equatorial.gestaocpp.com.br (peso 6)
@@ -91,7 +91,7 @@
 - Mapas Culturais: 10 órgãos
 - Diário municipal em lote (AGM/DOM): 13 órgãos
 - Portal de transparência de fornecedor: 16 órgãos
-- Sistemas de editais (Prosas/Editais): 42 órgãos
+- Sistemas de editais (Prosas/Editais): 43 órgãos
 - Querido Diário: 0 órgãos
 - PNCP: 1 órgãos
 - Leis e atos (Leis Municipais): 1 órgãos
@@ -139,6 +139,11 @@
 - **RUÍDO** (funil): 94 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
+### Prefeituras das 50 maiores cidades de Goiás — portais de editais (`plat-prefeituras-50-go`) — ruído, 8 achados em 30 dias
+- **CONGELADO** (falso_verde): o mesmo achado repetido em 8 dias. → detectar mudança por hash/lastmod e só contar o que é novo
+- **RUÍDO** (funil): 67 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+- **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
+
 ### Banco do Nordeste — Editais Sociais (incentivo fiscal) (`f260-curadoria-001`) — ruído, 10 achados em 30 dias
 - **CONGELADO** (falso_verde): o mesmo achado repetido em 5 dias. → detectar mudança por hash/lastmod e só contar o que é novo
 - **RUÍDO** (funil): 22 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
@@ -163,6 +168,10 @@
 
 ### PNCP — API de contratações (chamamentos e credenciamentos) (`pncp-api`) — ouro, 2216 achados em 30 dias
 - **INTERMITENTE** (falso_verde): 6 dias vermelhos alternados com dias bons. → retentativa com espera e rota de reserva (ponte do titular)
+- **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
+
+### GIFE — Grupo de Institutos, Fundações e Empresas (`plat-gife`) — ruído, 27 achados em 30 dias
+- **RUÍDO** (funil): 99 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### Prosas — prêmios, concursos e cursos para OSCs (`plat-prosas-premios`) — baixo volume, 0 achados em 30 dias
@@ -251,7 +260,7 @@
 
 ### CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC (`plat-cnpq-extensao`) — ruído, 9 achados em 30 dias
 - **RUÍDO** (funil): 66 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
-- **VAZAMENTO** (funil): perde 100% na etapa 'fluxo → confirmada'. → faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório
+- **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### FAPEG — Fundação de Amparo à Pesquisa de Goiás (`plat-fapeg`) — baixo volume, 0 achados em 30 dias
 - **CEGO** (falso_verde): respondeu 200 em 10 de 10 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
@@ -272,10 +281,6 @@
 ### OVG — Organização das Voluntárias de Goiás: editais e chamamentos (`plat-ovg`) — baixo volume, 10 achados em 30 dias
 - **CONGELADO** (falso_verde): o mesmo achado repetido em 10 dias. → detectar mudança por hash/lastmod e só contar o que é novo
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
-
-### Prefeituras das 50 maiores cidades de Goiás — portais de editais (`plat-prefeituras-50-go`) — ruído, 8 achados em 30 dias
-- **CONGELADO** (falso_verde): o mesmo achado repetido em 8 dias. → detectar mudança por hash/lastmod e só contar o que é novo
-- **RUÍDO** (funil): 67 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 
 ### Prosas — editais para o terceiro setor (`plat-prosas`) — baixo volume, 0 achados em 30 dias
 - **CEGO** (falso_verde): respondeu 200 em 10 de 10 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
@@ -410,7 +415,7 @@
 - **RUÍDO** (funil): 1026 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 
 ### SALIC — Lei Rouanet (Ministério da Cultura) (`plat-salic`) — ouro, 85 achados em 30 dias
-- **VAZAMENTO** (funil): perde 99% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
+- **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### Motor do Piloto — busca aberta no terceiro setor (`plat-piloto-aberto`) — ouro, 615 achados em 30 dias
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
@@ -470,9 +475,6 @@ Sem falha encontrada pelas quatro lentes motor a motor.
 Sem falha encontrada pelas quatro lentes motor a motor.
 
 ### Captamos — oportunidades de captação (`plat-captamos`) — baixo volume, 0 achados em 30 dias
-Sem falha encontrada pelas quatro lentes motor a motor.
-
-### GIFE — Grupo de Institutos, Fundações e Empresas (`plat-gife`) — confirma, 27 achados em 30 dias
 Sem falha encontrada pelas quatro lentes motor a motor.
 
 ### Observatório do Terceiro Setor — editais (`plat-observatorio-3setor`) — confirma, 115 achados em 30 dias
