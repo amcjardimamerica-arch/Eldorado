@@ -1,15 +1,15 @@
 {
  "dia": "2026-10-12",
- "em": "2026-10-12T07:11:51+00:00",
+ "em": "2026-10-12T07:24:57+00:00",
  "regra": "MAESTRO — A REDE NEURAL CONDUZ O DIA (titular, 02/10/2026).\n\nOs motores são ferramentas de uma etapa. O maestro, a cada passagem do fluxo de status (4 vezes por dia):\n  1. PLANEJA  quais motores rodam hoje (agenda) e em que ordem: rendimento real do canal (oportunidades validadas como\n              reais por leitura — linha de produção), diagnóstico (planos de correção) e livros com abertura próxima\n              no índice do motor (léxico temporário da chave de acionamento);\n  2. MEDE     a cobertura do dia de cada motor: completa (leu sem falha de página) · parcial (falha em parte das páginas)\n              · pendente (ainda não leu) · pendente_local (exige IP brasileiro — coleta no computador do titular);\n  3. CONTROLA dispara de novo os pendentes e os parciais, até 3 vezes por dia, para a busca do dia NÃO ficar parcial;\n  4. FECHA    o dia quando todos os motores planejados estão completos (ou esgotaram as tentativas — fica registrado).",
- "planejados": 127,
+ "planejados": 126,
  "cobertura": {
-  "completa": 36,
+  "completa": 35,
   "pendente": 1,
   "aguardando_horario": 84,
   "parcial": 6
  },
- "cobertura_percentual": 83.7,
+ "cobertura_percentual": 83.3,
  "a_disparar": [
   "pncp-api",
   "plat-estaduais-go-gov",
@@ -18,27 +18,29 @@
   "plat-salic",
   "judiciario-tjgo",
   "camara-goiania-pl",
-  "motor-gife",
-  "judiciario-cnj",
-  "mpu-destinacao",
   "plat-gife",
-  "do-goias",
-  "congresso-nacional",
-  "dou",
+  "mpu-destinacao",
+  "plat-cnpq-extensao",
   "mptgo-destinacao",
-  "plat-piloto-aberto",
-  "motor-patrocinio",
+  "do-goias",
   "mpgo-destinacao",
-  "do-goiania",
-  "plat-cnpq-extensao"
+  "congresso-nacional",
+  "plat-piloto-aberto",
+  "motor-gife",
+  "dou",
+  "motor-patrocinio",
+  "judiciario-cnj",
+  "do-goiania"
  ],
  "esgotaram_tentativas": [],
  "dia_fechado": false,
  "dia_anterior_nao_observado": [
   "plataforma-wordpress",
   "plataforma-mapas-culturais",
+  "outras-oportunidades-6",
   "plat-salic",
   "recorrencia",
+  "f260-captacao-227",
   "f260-captacao-228",
   "f260-captacao-242",
   "f260-espalhado-rouanet-cultura-gov-br",
@@ -52,9 +54,9 @@
  "plano": [
   {
    "motor": "plat-piloto-aberto",
-   "prioridade": 5.8832,
+   "prioridade": 6.0232,
    "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 288,
+   "livros_com_abertura_proxima": 295,
    "horarios": "05:53,10:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
@@ -63,9 +65,9 @@
   },
   {
    "motor": "pncp-api",
-   "prioridade": 0.825,
+   "prioridade": 0.845,
    "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 9,
+   "livros_com_abertura_proxima": 10,
    "horarios": "08:53,13:53,19:53",
    "coleta": "nuvem",
    "dia_anterior": "observado",
@@ -114,6 +116,17 @@
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "parcial",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-captacao-177",
+   "prioridade": 0.1364,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "completa",
    "tentativas_hoje": 0
   },
   {
@@ -166,6 +179,17 @@
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "11:23",
+   "coleta": "nuvem",
+   "dia_anterior": "nao_observado",
+   "cobertura": "aguardando_horario",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "outras-oportunidades-6",
+   "prioridade": 0.1,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 0,
+   "horarios": "08:23,13:23,18:23",
    "coleta": "nuvem",
    "dia_anterior": "nao_observado",
    "cobertura": "aguardando_horario",
@@ -601,17 +625,6 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "f260-captacao-177",
-   "prioridade": 0.0227,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
    "motor": "f260-captacao-244",
    "prioridade": 0.0227,
    "diagnostico": "sem_rendimento",
@@ -664,17 +677,6 @@
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "aguardando_horario",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "f260-captacao-249",
-   "prioridade": 0.0227,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
    "tentativas_hoje": 0
   },
   {
@@ -865,6 +867,17 @@
    "tentativas_hoje": 0
   },
   {
+   "motor": "f260-captacao-221",
+   "prioridade": 0.0192,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "aguardando_horario",
+   "tentativas_hoje": 0
+  },
+  {
    "motor": "f260-espalhado-www-ipora-pr-gov-br",
    "prioridade": 0.0192,
    "diagnostico": "sem_rendimento",
@@ -910,28 +923,6 @@
   },
   {
    "motor": "f260-captacao-208",
-   "prioridade": 0.0161,
-   "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "aguardando_horario",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "f260-captacao-232",
-   "prioridade": 0.0161,
-   "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "aguardando_horario",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "f260-captacao-234",
    "prioridade": 0.0161,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
@@ -1074,13 +1065,13 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "f260-captacao-222",
+   "motor": "f260-captacao-227",
    "prioridade": 0.0114,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": null,
    "coleta": "nuvem",
-   "dia_anterior": "observado",
+   "dia_anterior": "nao_observado",
    "cobertura": "aguardando_horario",
    "tentativas_hoje": 0
   },
