@@ -1,5 +1,5 @@
 {
- "em": "2026-10-12T15:08:44+00:00",
+ "em": "2026-10-12T15:51:29+00:00",
  "rodada": 2,
  "perguntas": {
   "falso_verde": {
@@ -82,7 +82,7 @@
     {
      "motor": "camara-goiania-pl",
      "status": "ok",
-     "vazias_seguidas": 1,
+     "vazias_seguidas": 2,
      "testado": true,
      "rota_nova": null,
      "via": null,
@@ -102,7 +102,7 @@
     {
      "motor": "dj-trf1-go",
      "status": "rota nova em teste",
-     "vazias_seguidas": 1,
+     "vazias_seguidas": 2,
      "testado": true,
      "rota_nova": "https://www.trf1.jus.br/sjgo/imprensa/noticias",
      "via": "direto",
@@ -361,8 +361,8 @@
     },
     {
      "motor": "judiciario-cnj",
-     "status": "alterar rota",
-     "vazias_seguidas": 5,
+     "status": "rota nova em teste",
+     "vazias_seguidas": 1,
      "testado": true,
      "rota_nova": "https://www.cnj.jus.br/editais",
      "via": "direto",
@@ -402,8 +402,15 @@
    ]
   },
   "funil": {
-   "motores_de_ruido_1a": 25,
+   "motores_de_ruido_1a": 27,
    "ruido_agora": [
+    {
+     "motor": "plat-gife",
+     "achados_total_1a": 97,
+     "achados_total_agora": 97,
+     "no_fluxo": 0,
+     "confirmadas": 0
+    },
     {
      "motor": "empresas-incentivadas",
      "achados_total_1a": 59,
@@ -476,16 +483,16 @@
     },
     {
      "motor": "plat-cnpq-extensao",
-     "achados_total_1a": 60,
-     "achados_total_agora": 60,
+     "achados_total_1a": 63,
+     "achados_total_agora": 63,
      "no_fluxo": 0,
      "confirmadas": 0
     },
     {
      "motor": "plat-empresas-editais-incentivados",
-     "achados_total_1a": 984,
-     "achados_total_agora": 984,
-     "no_fluxo": 2,
+     "achados_total_1a": 1005,
+     "achados_total_agora": 1005,
+     "no_fluxo": 1,
      "confirmadas": 0
     },
     {
@@ -499,7 +506,7 @@
      "motor": "plat-prefeituras-50-go",
      "achados_total_1a": 66,
      "achados_total_agora": 66,
-     "no_fluxo": 1,
+     "no_fluxo": 0,
      "confirmadas": 0
     },
     {
@@ -553,48 +560,55 @@
     },
     {
      "motor": "outras-oportunidades-1",
-     "achados_total_1a": 40,
-     "achados_total_agora": 40,
+     "achados_total_1a": 45,
+     "achados_total_agora": 45,
      "no_fluxo": 8,
      "confirmadas": 0
     },
     {
      "motor": "outras-oportunidades-2",
-     "achados_total_1a": 27,
-     "achados_total_agora": 27,
-     "no_fluxo": 1,
+     "achados_total_1a": 62,
+     "achados_total_agora": 62,
+     "no_fluxo": 12,
      "confirmadas": 0
     },
     {
      "motor": "outras-oportunidades-3",
-     "achados_total_1a": 25,
-     "achados_total_agora": 25,
+     "achados_total_1a": 29,
+     "achados_total_agora": 29,
      "no_fluxo": 2,
      "confirmadas": 0
     },
     {
+     "motor": "outras-oportunidades-4",
+     "achados_total_1a": 32,
+     "achados_total_agora": 32,
+     "no_fluxo": 6,
+     "confirmadas": 0
+    },
+    {
      "motor": "outras-oportunidades-5",
-     "achados_total_1a": 85,
-     "achados_total_agora": 85,
-     "no_fluxo": 8,
+     "achados_total_1a": 92,
+     "achados_total_agora": 92,
+     "no_fluxo": 7,
      "confirmadas": 0
     }
    ],
    "ruido_que_passou_a_confirmar": []
   },
   "redundancia": {
-   "pontos_com_redundancia": 11,
+   "pontos_com_redundancia": 12,
    "redundancia_vazia": [],
    "dominios_via_ponte": 2,
-   "exemplos_da_rede_de_rotas": 4733
+   "exemplos_da_rede_de_rotas": 4808
   },
   "cobertura": {
-   "fora_dos_motores_pct_1a": 85.1,
-   "fora_dos_motores_pct_agora": 85.1,
+   "fora_dos_motores_pct_1a": 82.4,
+   "fora_dos_motores_pct_agora": 82.4,
    "origem": {
-    "agregador/outra": 280,
-    "motor": 68,
-    "Piloto": 107
+    "agregador/outra": 285,
+    "Piloto": 107,
+    "motor": 84
    },
    "dominios_so_de_agregador": [
     {
@@ -664,9 +678,8 @@
    "dia_de_referencia": "2026-10-12",
    "ativos": 159,
    "lidos_ontem": 103,
-   "lidos_hoje": 42,
+   "lidos_hoje": 50,
    "nao_lidos_ontem_nem_hoje": [
-    "dj-trf1-go",
     "plat-captamos",
     "plat-rede-filantropia",
     "recorrencia"
@@ -674,7 +687,6 @@
    "ainda_sem_primeira_leitura": [
     "motor-gife",
     "motor-patrocinio",
-    "outras-oportunidades-6",
     "outras-oportunidades-7",
     "outras-oportunidades-8",
     "piloto-aberto",
@@ -702,20 +714,20 @@
    ]
   },
   "fontes_irmas": {
-   "fontes_recebidas": 269,
+   "fontes_recebidas": 270,
    "por_origem": {
     "conselho (fontes irmãs)": 141,
-    "Cartório (site oficial certificado)": 108,
+    "Cartório (site oficial certificado)": 109,
     "Espião (privado/internacional)": 20
    },
-   "lidas_nas_ultimas_24h": 107,
+   "lidas_nas_ultimas_24h": 159,
    "dimensionamento": {
-    "fontes": 269,
+    "fontes": 270,
     "sites_por_execucao": 17,
     "execucoes_por_dia": 3,
     "sites_por_clone_por_dia": 51,
     "clones": 6,
-    "cobertura_diaria": 269,
+    "cobertura_diaria": 270,
     "segundos_por_execucao": {
      "tipico": 88,
      "pior_caso": 238
@@ -724,45 +736,50 @@
    },
    "clones_que_ja_leram": {
     "outras-oportunidades-1": {
-     "ultima": "2026-10-11T17:09:08+00:00",
-     "duracao_s": 76,
+     "ultima": "2026-10-12T14:56:55+00:00",
+     "duracao_s": 57,
      "achados": 5
     },
     "outras-oportunidades-2": {
-     "ultima": "2026-10-11T17:11:39+00:00",
-     "duracao_s": 84,
-     "achados": 0
+     "ultima": "2026-10-12T14:58:11+00:00",
+     "duracao_s": 76,
+     "achados": 35
     },
     "outras-oportunidades-3": {
-     "ultima": "2026-10-11T17:53:58+00:00",
-     "duracao_s": 47,
-     "achados": 2
+     "ultima": "2026-10-12T14:59:29+00:00",
+     "duracao_s": 77,
+     "achados": 4
     },
     "outras-oportunidades-4": {
-     "ultima": "2026-10-11T19:12:22+00:00",
-     "duracao_s": 45,
-     "achados": 7
+     "ultima": "2026-10-12T15:00:33+00:00",
+     "duracao_s": 65,
+     "achados": 14
     },
     "outras-oportunidades-5": {
-     "ultima": "2026-10-11T19:11:37+00:00",
-     "duracao_s": 45,
-     "achados": 32
+     "ultima": "2026-10-12T15:01:32+00:00",
+     "duracao_s": 58,
+     "achados": 7
+    },
+    "outras-oportunidades-6": {
+     "ultima": "2026-10-12T15:03:16+00:00",
+     "duracao_s": 104,
+     "achados": 2
     }
    },
-   "com_achado": 23
+   "com_achado": 26
   },
   "plataformas": {
    "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
    "proximos_candidatos": {
     "WordPress": {
-     "orgaos": 63,
+     "orgaos": 64,
      "exemplos": [
       "alvoradadonorte.go.gov.br",
       "anater.org",
       "banrisulcultural.com.br",
       "baoba.org.br",
       "brasil.aperam.com",
-      "cachoeiraalta.go.gov.br"
+      "brazilfoundation.org"
      ]
     },
     "Mapas Culturais": {
@@ -799,7 +816,7 @@
      ]
     },
     "Sistemas de editais (Prosas/Editais)": {
-     "orgaos": 41,
+     "orgaos": 42,
      "exemplos": [
       "adustina.ba.gov.br",
       "alteditais.com.br",
