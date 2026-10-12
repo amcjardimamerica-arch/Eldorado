@@ -1,31 +1,31 @@
 {
- "em": "2026-10-12T21:31:05+00:00",
+ "em": "2026-10-12T23:15:30+00:00",
  "versao": "cartório v5 · linha de produção (09/10/2026)",
  "regra": "CARTÓRIO DE FONTES OFICIAIS (titular, 09/10/2026).\n\nOs motores DESCOBREM; o Cartório CERTIFICA. Toda estrela (oportunidade aberta) e todo livro (histórico) que tenha\nQUALQUER um dos 12 itens indisponível entra na fila do Cartório. Para cada um, ele sobe uma escada de degraus — do mais\nbarato e confiável ao mais caro — até achar o documento OFICIAL, lê o documento por seções e emite uma CERTIDÃO:\nlink oficial (régua única: vetor nunca é fonte), degrau em que foi achado, impressão digital do documento, e cada item\ncom valor + trecho literal + página — ou a DISPENSA com a justificativa de que o requisito não existe naquele edital.\n\nBalcões (como chegar ao documento em cada tipo de fonte):\n  pncp      página do PNCP → API de arquivos do órgão (PDF ou ZIP), o edital primeiro\n  diario    DOU, Diário de Goiás/Goiânia, Querido Diário → o ato dentro da edição (só as páginas do ato)\n  orgao     domínio público → documentos da página + biblioteca de mídia do WordPress pelo número do edital\n  privado   site do financiador → documentos da página (regulamento, edital)\n  pista     agregador/notícia → links de SAÍDA para o financiador; o resto vai ao Interceptador\n  proprio   Ministério Público e Judiciário: já leem o PDF; o Cartório só converte em certidão\n\nEscada: 0 documento na mão · 1 link de saída da pista · 2 busca do número do edital dentro do domínio oficial ·\n        3 Interceptador (IA) · 4 Chrome. O Cartório resolve 0–2 sem IA; 3 e 4 recebem só o que sobrou.\nIntegração: a fila é ordenada pela urgência (prazo), pela nota da REDE NEURAL e pela distância até o ouro (menos\nitens faltando primeiro: cada certidão vira selo). Estrelas: o fluxo de oportunidades lê a certidão no checklist.\nLivros: linhas no formato do importador (scripts/importar_verificacao_livros.py), que confere e entrega à esteira.",
  "identidade_visual": "provisória (config/identidade_visual.json aguarda o design de referência)",
  "resumo": {
   "pontos_12_total": 4800,
   "pontos_certificados": 3209,
-  "pontos_dispensados": 254,
-  "pontos_ja_constavam": 1113,
-  "pontos_faltam": 224,
-  "pct_certificado_12": 0.7215,
+  "pontos_dispensados": 252,
+  "pontos_ja_constavam": 1116,
+  "pontos_faltam": 223,
+  "pct_certificado_12": 0.721,
   "certidoes_12_de_12": 128,
-  "certidoes_sem_item_faltando": 227,
+  "certidoes_sem_item_faltando": 228,
   "nota_denominador": "eficiencia_itens = resolvidos ÷ itens que faltavam na ENTRADA da fila (não é % dos 12); use pct_certificado_12",
-  "certidoes": 1466,
-  "nesta_execucao": 11,
-  "fila_estrelas": 453,
+  "certidoes": 1493,
+  "nesta_execucao": 32,
+  "fila_estrelas": 496,
   "fila_livros": 2195,
-  "itens_que_faltavam": 12769,
-  "itens_obtidos": 5232,
-  "itens_dispensados": 460,
-  "eficiencia_itens": 0.446,
-  "com_link_oficial": 973,
-  "taxa_link_oficial": 0.664,
-  "certidoes_completas": 159,
-  "para_o_interceptador": 1098,
-  "para_o_chrome": 208,
+  "itens_que_faltavam": 12981,
+  "itens_obtidos": 5276,
+  "itens_dispensados": 461,
+  "eficiencia_itens": 0.442,
+  "com_link_oficial": 985,
+  "taxa_link_oficial": 0.66,
+  "certidoes_completas": 160,
+  "para_o_interceptador": 1122,
+  "para_o_chrome": 210,
   "selos_que_mudaram": {
    "bronze → ouro": 18,
    "sem selo → ouro": 70,
@@ -36,7 +36,7 @@
    "sem selo → bronze": 23
   },
   "por_degrau": {
-   "degrau 0": 978,
+   "degrau 0": 990,
    "degrau 1": 25
   }
  },
@@ -47,86 +47,86 @@
  },
  "por_item": {
   "Objeto": {
-   "faltavam": 929,
-   "obtidos": 441,
+   "faltavam": 944,
+   "obtidos": 444,
    "dispensados": 0,
-   "eficiencia": 0.475
+   "eficiencia": 0.47
   },
   "Prazo de inscrição": {
-   "faltavam": 914,
-   "obtidos": 343,
+   "faltavam": 928,
+   "obtidos": 344,
    "dispensados": 117,
-   "eficiencia": 0.503
+   "eficiencia": 0.497
   },
   "Resultado": {
-   "faltavam": 1268,
-   "obtidos": 330,
-   "dispensados": 224,
-   "eficiencia": 0.437
+   "faltavam": 1289,
+   "obtidos": 333,
+   "dispensados": 225,
+   "eficiencia": 0.433
   },
   "Prazo de recurso": {
-   "faltavam": 1277,
-   "obtidos": 428,
+   "faltavam": 1297,
+   "obtidos": 431,
    "dispensados": 24,
-   "eficiencia": 0.354
+   "eficiencia": 0.351
   },
   "Valor": {
-   "faltavam": 1070,
-   "obtidos": 418,
+   "faltavam": 1088,
+   "obtidos": 420,
    "dispensados": 68,
-   "eficiencia": 0.454
+   "eficiencia": 0.449
   },
   "Órgão / financiador": {
-   "faltavam": 823,
-   "obtidos": 481,
+   "faltavam": 835,
+   "obtidos": 487,
    "dispensados": 0,
-   "eficiencia": 0.584
+   "eficiencia": 0.583
   },
   "Território": {
-   "faltavam": 919,
-   "obtidos": 387,
+   "faltavam": 934,
+   "obtidos": 388,
    "dispensados": 0,
-   "eficiencia": 0.421
+   "eficiencia": 0.415
   },
   "Esfera": {
-   "faltavam": 1082,
-   "obtidos": 667,
+   "faltavam": 1102,
+   "obtidos": 677,
    "dispensados": 0,
-   "eficiencia": 0.616
+   "eficiencia": 0.614
   },
   "Requisitos": {
-   "faltavam": 1224,
-   "obtidos": 441,
+   "faltavam": 1245,
+   "obtidos": 442,
    "dispensados": 0,
-   "eficiencia": 0.36
+   "eficiencia": 0.355
   },
   "Anexos": {
-   "faltavam": 895,
-   "obtidos": 351,
+   "faltavam": 908,
+   "obtidos": 352,
    "dispensados": 8,
-   "eficiencia": 0.401
+   "eficiencia": 0.396
   },
   "Destinação": {
-   "faltavam": 1225,
-   "obtidos": 227,
+   "faltavam": 1248,
+   "obtidos": 230,
    "dispensados": 19,
-   "eficiencia": 0.201
+   "eficiencia": 0.2
   },
   "Área de atuação": {
-   "faltavam": 1143,
-   "obtidos": 718,
+   "faltavam": 1163,
+   "obtidos": 728,
    "dispensados": 0,
-   "eficiencia": 0.628
+   "eficiencia": 0.626
   }
  },
  "por_balcao": {
   "pncp": {
-   "certidoes": 444,
+   "certidoes": 451,
    "com_link_oficial": 252,
-   "faltavam": 3774,
+   "faltavam": 3819,
    "resolvidos": 1526,
-   "eficiencia": 0.404,
-   "taxa_link_oficial": 0.568
+   "eficiencia": 0.4,
+   "taxa_link_oficial": 0.559
   },
   "diario": {
    "certidoes": 43,
@@ -137,20 +137,20 @@
    "taxa_link_oficial": 0.512
   },
   "orgao": {
-   "certidoes": 444,
-   "com_link_oficial": 356,
-   "faltavam": 3468,
-   "resolvidos": 1514,
-   "eficiencia": 0.437,
+   "certidoes": 454,
+   "com_link_oficial": 364,
+   "faltavam": 3563,
+   "resolvidos": 1544,
+   "eficiencia": 0.433,
    "taxa_link_oficial": 0.802
   },
   "pista": {
-   "certidoes": 123,
+   "certidoes": 124,
    "com_link_oficial": 21,
-   "faltavam": 1032,
-   "resolvidos": 220,
+   "faltavam": 1040,
+   "resolvidos": 222,
    "eficiencia": 0.213,
-   "taxa_link_oficial": 0.171
+   "taxa_link_oficial": 0.169
   },
   "revisão": {
    "certidoes": 267,
@@ -161,12 +161,12 @@
    "taxa_link_oficial": 0.888
   },
   "privado": {
-   "certidoes": 144,
-   "com_link_oficial": 85,
-   "faltavam": 956,
-   "resolvidos": 196,
+   "certidoes": 153,
+   "com_link_oficial": 89,
+   "faltavam": 1020,
+   "resolvidos": 209,
    "eficiencia": 0.205,
-   "taxa_link_oficial": 0.59
+   "taxa_link_oficial": 0.582
   },
   "proprio": {
    "certidoes": 1,
@@ -179,12 +179,12 @@
  },
  "por_safra": {
   "primeira tentativa": {
-   "certidoes": 1296,
-   "faltavam": 11139,
-   "resolvidos": 4398,
-   "eficiencia": 0.395,
-   "com_link_oficial": 819,
-   "taxa_link_oficial": 0.632
+   "certidoes": 1323,
+   "faltavam": 11351,
+   "resolvidos": 4443,
+   "eficiencia": 0.391,
+   "com_link_oficial": 831,
+   "taxa_link_oficial": 0.628
   },
   "refeitas": {
    "certidoes": 170,
@@ -221,12 +221,12 @@
    "taxa_link_oficial": 0.875
   },
   "cartório v5 · linha de produção": {
-   "certidoes": 1163,
-   "faltavam": 9319,
-   "resolvidos": 3390,
-   "eficiencia": 0.364,
-   "com_link_oficial": 704,
-   "taxa_link_oficial": 0.605
+   "certidoes": 1190,
+   "faltavam": 9531,
+   "resolvidos": 3435,
+   "eficiencia": 0.36,
+   "com_link_oficial": 716,
+   "taxa_link_oficial": 0.602
   },
   "revisão manual": {
    "certidoes": 267,
@@ -240,11 +240,11 @@
  "por_abordagem": {
   "1": {
    "nome": "documento na mão",
-   "vezes": 1271,
-   "renderam": 820,
-   "itens": 4995,
-   "links_oficiais": 699,
-   "taxa_de_acerto": 0.645
+   "vezes": 1293,
+   "renderam": 832,
+   "itens": 5040,
+   "links_oficiais": 711,
+   "taxa_de_acerto": 0.643
   },
   "2": {
    "nome": "anexos completos",
@@ -288,7 +288,7 @@
   },
   "7": {
    "nome": "releitura com gabarito",
-   "vezes": 32,
+   "vezes": 36,
    "renderam": 0,
    "itens": 0,
    "links_oficiais": 0,
@@ -304,11 +304,11 @@
   },
   "9": {
    "nome": "leitura profunda",
-   "vezes": 164,
+   "vezes": 170,
    "renderam": 7,
    "itens": 22,
    "links_oficiais": 0,
-   "taxa_de_acerto": 0.043
+   "taxa_de_acerto": 0.041
   },
   "10": {
    "nome": "busca no domínio",
@@ -322,11 +322,11 @@
  "por_balcao_selo": {
   "sem_estrela": {
    "nome": "Sem estrela → bronze",
-   "certidoes": 372,
-   "faltavam": 2366,
-   "resolvidos": 595,
-   "eficiencia": 0.251,
-   "entraram_aqui": 410,
+   "certidoes": 383,
+   "faltavam": 2439,
+   "resolvidos": 610,
+   "eficiencia": 0.25,
+   "entraram_aqui": 421,
    "esgotadas": 0
   },
   "bronze": {
@@ -340,11 +340,11 @@
   },
   "prata": {
    "nome": "Prata → ouro",
-   "certidoes": 791,
-   "faltavam": 7115,
-   "resolvidos": 2964,
-   "eficiencia": 0.417,
-   "entraram_aqui": 778,
+   "certidoes": 807,
+   "faltavam": 7254,
+   "resolvidos": 2994,
+   "eficiencia": 0.413,
+   "entraram_aqui": 794,
    "esgotadas": 0
   },
   "ouro": {
@@ -358,14 +358,14 @@
   }
  },
  "gabarito": {
-  "orgaos_com_gabarito": 693,
+  "orgaos_com_gabarito": 695,
   "itens_achados_pelo_gabarito": {
    "Objeto": 27,
-   "Requisitos": 8,
+   "Requisitos": 9,
    "Prazo de inscrição": 1,
    "Destinação": 3
   },
-  "certidoes_ajudadas": 34
+  "certidoes_ajudadas": 35
  },
  "certidoes": [
   {
@@ -23788,6 +23788,102 @@
    }
   },
   {
+   "id": "captacao-222",
+   "tipo": "livro",
+   "titulo": "Fundação Itaú",
+   "balcao": "privado",
+   "link_oficial": "https://www.itausocial.org.br/wp-content/uploads/2026/06/Regulamento-Edital-Educacao-e-Trabalho-2026.pdf",
+   "degrau": 0,
+   "como": "documento entregue pelo motor",
+   "faltavam": [
+    "Objeto"
+   ],
+   "resolvidos": [
+    "Objeto"
+   ],
+   "ainda_faltam": [],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "sem_estrela",
+   "estagio_inicio": "sem_estrela",
+   "esgotada": null,
+   "eficiencia": 1.0,
+   "encaminhado": null,
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-12T23:15:11+00:00",
+   "prazo": null,
+   "uf": null,
+   "orgao": "Fundação Itaú",
+   "fim": "2026-06-12",
+   "itens": {
+    "Objeto": {
+     "valor": "reconhecer e fomentar projetos voltados à formação integral dos estudantes considerando a Educação Profissional e Tecnológica (EPT) em diálogo com as demandas e potencialidades da escola pública e territórios.",
+     "trecho": "dos Em sua 2º edição, o edital tem como objetivo reconhecer e fomentar projetos voltados à formação integral dos estudantes considerando a Educação Profissional e Tecnológica (EPT) em diálogo com as demandas e potencialidades da escola pública e territórios. Confira abaixo mais informações sobre a edição . So",
+     "pagina": 1,
+     "documento": "https://www.itausocial.org.br/editais/edital-educacao-e-trabalho-2026-escola-e-territorio/",
+     "metodo": "texto"
+    }
+   },
+   "dispensas": {},
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-12T23:15:11+00:00",
+     "ganhou": [
+      "Objeto"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://www.itausocial.org.br/wp-content/uploads/2026/06/Regulamento-Edital-Educacao-e-Trabalho-2026.pdf",
+     "degrau": 0,
+     "como": "documento entregue pelo motor",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio próprio do financiador",
+     "paginas": 19,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.itausocial.org.br/editais/edital-educacao-e-trabalho-2026-escola-e-territorio/",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio próprio do financiador",
+     "paginas": 1,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "ja_constava",
+     "Resultado": "ja_constava",
+     "Prazo de recurso": "ja_constava",
+     "Valor": "ja_constava",
+     "Órgão / financiador": "ja_constava",
+     "Território": "ja_constava",
+     "Esfera": "ja_constava",
+     "Requisitos": "ja_constava",
+     "Anexos": "ja_constava",
+     "Destinação": "ja_constava",
+     "Área de atuação": "ja_constava"
+    },
+    "certificados": 1,
+    "dispensados": 0,
+    "ja_constavam": 11,
+    "faltam": 0,
+    "pct_certificado_12": 0.0833,
+    "pct_cobertura_12": 1.0
+   }
+  },
+  {
    "id": "op-118285c06323",
    "tipo": "livro",
    "titulo": "Fundação de Amparo à Pesquisa do Estado de Goiás (FAPEG) — CHAMADA PÚBLICA FAPEG Nº 16/2025 – Apoio a Projetos de Pesquisa e Inovação em Saúde Digital",
@@ -40084,7 +40180,7 @@
    "ainda_faltam": [
     "Destinação"
    ],
-   "tentativa": 4,
+   "tentativa": 5,
    "versao": "cartório v5 · linha de produção (09/10/2026)",
    "gabarito": {
     "orgao": "cnpj:13167804000121",
@@ -40099,7 +40195,7 @@
    "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": "prata",
-   "em": "2026-10-11T09:30:11+00:00",
+   "em": "2026-10-12T22:50:34+00:00",
    "prazo": "2026-10-13",
    "uf": null,
    "orgao": "ARACAJU CAMARA MUNICIPAL",
@@ -40225,19 +40321,16 @@
      "em": "2026-10-11T09:30:11+00:00",
      "ganhou": [],
      "legado": null
+    },
+    {
+     "n": 7,
+     "nome": "releitura com gabarito",
+     "em": "2026-10-12T22:50:34+00:00",
+     "ganhou": [],
+     "legado": null
     }
    ],
    "documentos": [
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13167804000121/compras/2026/22/arquivos/1",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 10,
-     "edicao_inteira": null
-    },
     {
      "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13167804000121/compras/2026/22/arquivos/2",
      "degrau": 0,
@@ -40436,6 +40529,46 @@
      "falha": null,
      "oficial": "arquivo do edital anexado pelo órgão no PNCP",
      "paginas": 2,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13167804000121/compras/2026/22/arquivos/1",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": "erro_rede: HTTPError",
+     "oficial": null,
+     "paginas": null,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13167804000121/compras/2026/22/arquivos/2",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": "erro_rede: HTTPError",
+     "oficial": null,
+     "paginas": null,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13167804000121/compras/2026/22/arquivos/3",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": "erro_rede: HTTPError",
+     "oficial": null,
+     "paginas": null,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13167804000121/compras/2026/22/arquivos/4",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": "erro_rede: HTTPError",
+     "oficial": null,
+     "paginas": null,
      "edicao_inteira": null
     }
    ],
@@ -69817,6 +69950,205 @@
    }
   },
   {
+   "id": "op-a062baaa8e7c",
+   "tipo": "livro",
+   "titulo": "Edital Rio Doce Participativo e Comunitário abre seleção de projetos",
+   "balcao": "privado",
+   "link_oficial": "https://fbb.org.br/edital-publico/editalriodoce/",
+   "degrau": 0,
+   "como": "página/documento oficial já conhecido",
+   "faltavam": [
+    "Resultado",
+    "Prazo de recurso",
+    "Esfera",
+    "Requisitos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Resultado",
+    "Prazo de recurso",
+    "Esfera",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Requisitos"
+   ],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "sem_estrela",
+   "estagio_inicio": "sem_estrela",
+   "esgotada": null,
+   "eficiencia": 0.833,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-12T23:13:05+00:00",
+   "prazo": null,
+   "uf": "BR",
+   "orgao": "",
+   "fim": "2026-10-13",
+   "itens": {
+    "Resultado": {
+     "valor": "13.10.2026",
+     "trecho": "to Inscrições Dúvidas Vídeos Resultado Final Resultado final em 13.10.2026. Confira o cronograma nessa página. Resulta",
+     "pagina": 1,
+     "documento": "https://fbb.org.br/edital-publico/editalriodoce/",
+     "metodo": "seção"
+    },
+    "Prazo de recurso": {
+     "valor": "25.09.2026",
+     "trecho": "ina. Resultado Parcial Prorrogado o prazo de recursos para até o dia 25.09.2026. Verifique a pontuação das propostas aqui .",
+     "pagina": 1,
+     "documento": "https://fbb.org.br/edital-publico/editalriodoce/",
+     "metodo": "seção"
+    },
+    "Esfera": {
+     "valor": "privada",
+     "trecho": "domínio/órgão: fbb.org.br · Fundação Banco Do Brasil",
+     "pagina": 1,
+     "documento": "https://fbb.org.br/edital-publico/editalriodoce/",
+     "metodo": "domínio e órgão"
+    },
+    "Área de atuação": {
+     "valor": "Meio ambiente",
+     "trecho": "termos do objeto e do título: Meio ambiente",
+     "pagina": 1,
+     "documento": "https://fbb.org.br/edital-publico/editalriodoce/",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Destinação": {
+     "valor": "recursos serão destinados às propostas classificadas pela ordem geral, respeitando distribuição do recurso prevista no item 3;",
+     "trecho": "o não haja propostas que atendam a esses critérios de prioridade, os recursos serão destinados às propostas classificadas pela ordem geral, respeitando distribuição do recurso prevista no item 3; e) Se houver empate na pontuação, será considerada a seguinte ordem",
+     "pagina": 9,
+     "documento": "https://fbb.org.br/wp-content/uploads/2026/07/EDITAL-RIO-DOCE-PARTICIPATIVO-E-COMUNITARIO_2a-RETIFICACAO.pdf",
+     "metodo": "seção"
+    }
+   },
+   "dispensas": {},
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-12T23:13:05+00:00",
+     "ganhou": [
+      "Destinação",
+      "Esfera",
+      "Prazo de recurso",
+      "Resultado",
+      "Área de atuação"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://fbb.org.br/edital-publico/editalriodoce/",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio próprio do financiador",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.googletagmanager.com/ns.html?id=GTM-TR4MF6T",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": "pagina_vazia",
+     "falha": null,
+     "oficial": null,
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.googletagmanager.com/ns.html?id=GTM-PZ5NMJG",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": "pagina_vazia",
+     "falha": null,
+     "oficial": null,
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "http://fbb.org.br/wp-content/uploads/2026/05/PERGUNTAS_E_RESPOSTAS_v1.6_29.07.2026.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio próprio do financiador",
+     "paginas": 32,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fbb.org.br/wp-content/uploads/2026/07/EDITAL-RIO-DOCE-PARTICIPATIVO-E-COMUNITARIO_2a-RETIFICACAO.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio próprio do financiador",
+     "paginas": 12,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fbb.org.br/wp-content/uploads/2026/09/Resultado_Parcial_Retificado.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio próprio do financiador",
+     "paginas": 60,
+     "edicao_inteira": null
+    },
+    {
+     "url": "http://fbb.org.br/wp-content/uploads/2026/07/ERRATA-EDITAL-RIO-DOCE-2a-Errata.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio próprio do financiador",
+     "paginas": 6,
+     "edicao_inteira": null
+    },
+    {
+     "url": "http://fbb.org.br/wp-content/uploads/2026/07/EDITAL-RIO-DOCE-PARTICIPATIVO-E-COMUNITARIO_2a-RETIFICACAO.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio próprio do financiador",
+     "paginas": 12,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "ja_constava",
+     "Prazo de inscrição": "ja_constava",
+     "Resultado": "certificado",
+     "Prazo de recurso": "certificado",
+     "Valor": "ja_constava",
+     "Órgão / financiador": "ja_constava",
+     "Território": "ja_constava",
+     "Esfera": "certificado",
+     "Requisitos": "falta",
+     "Anexos": "ja_constava",
+     "Destinação": "certificado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 5,
+    "dispensados": 0,
+    "ja_constavam": 6,
+    "faltam": 1,
+    "pct_certificado_12": 0.4167,
+    "pct_cobertura_12": 0.9167
+   }
+  },
+  {
    "id": "op-074081ad752e",
    "tipo": "livro",
    "titulo": "Edital de Chamada Pública FAPESC/CNPq/CAPES n.º 055/2026 – Programa de Apoio à Fixação de Doutores no Brasil – PROFIX-CB",
@@ -71907,7 +72239,7 @@
     "Anexos",
     "Destinação"
    ],
-   "tentativa": 3,
+   "tentativa": 4,
    "versao": "cartório v5 · linha de produção (09/10/2026)",
    "gabarito": null,
    "estagio": "prata",
@@ -71917,7 +72249,7 @@
    "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": "prata",
-   "em": "2026-10-11T09:34:42+00:00",
+   "em": "2026-10-12T22:57:46+00:00",
    "prazo": "2026-10-22",
    "uf": null,
    "orgao": "MUNICIPIO DE CEDRO",
@@ -72026,6 +72358,13 @@
      "em": "2026-10-11T09:34:42+00:00",
      "ganhou": [],
      "legado": null
+    },
+    {
+     "n": 7,
+     "nome": "releitura com gabarito",
+     "em": "2026-10-12T22:57:46+00:00",
+     "ganhou": [],
+     "legado": null
     }
    ],
    "documentos": [
@@ -72083,6 +72422,26 @@
      "url": "https://pncp.gov.br/pncp-api/v1/orgaos/07812241000184/compras/2026/57/arquivos/1",
      "degrau": 0,
      "como": "leitura profunda (até 150 páginas e tabelas)",
+     "motivo": null,
+     "falha": "erro_rede: HTTPError",
+     "oficial": null,
+     "paginas": null,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/07812241000184/compras/2026/57/arquivos/2",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": "erro_rede: HTTPError",
+     "oficial": null,
+     "paginas": null,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/07812241000184/compras/2026/57/arquivos/1",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
      "motivo": null,
      "falha": "erro_rede: HTTPError",
      "oficial": null,
@@ -72750,7 +73109,7 @@
     "Prazo de recurso",
     "Destinação"
    ],
-   "tentativa": 3,
+   "tentativa": 4,
    "versao": "cartório v5 · linha de produção (09/10/2026)",
    "gabarito": null,
    "estagio": "prata",
@@ -72760,7 +73119,7 @@
    "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": "prata",
-   "em": "2026-10-11T09:36:26+00:00",
+   "em": "2026-10-12T22:57:50+00:00",
    "prazo": "2026-10-23",
    "uf": null,
    "orgao": "MUNICIPIO DE PEABIRU",
@@ -72869,6 +73228,13 @@
      "em": "2026-10-11T09:36:26+00:00",
      "ganhou": [],
      "legado": null
+    },
+    {
+     "n": 7,
+     "nome": "releitura com gabarito",
+     "em": "2026-10-12T22:57:50+00:00",
+     "ganhou": [],
+     "legado": null
     }
    ],
    "documentos": [
@@ -72898,6 +73264,16 @@
      "como": "leitura profunda (até 150 páginas e tabelas)",
      "motivo": null,
      "falha": "erro_rede: TimeoutError",
+     "oficial": null,
+     "paginas": null,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/75370148000117/compras/2026/78/arquivos/1",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": "erro_rede: HTTPError",
      "oficial": null,
      "paginas": null,
      "edicao_inteira": null
@@ -73563,7 +73939,7 @@
     "Território",
     "Anexos"
    ],
-   "tentativa": 4,
+   "tentativa": 5,
    "versao": "cartório v5 · linha de produção (09/10/2026)",
    "gabarito": null,
    "estagio": "sem_estrela",
@@ -73573,7 +73949,7 @@
    "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-11T09:31:10+00:00",
+   "em": "2026-10-12T22:50:39+00:00",
    "prazo": "2026-10-16",
    "uf": null,
    "orgao": "MUNICIPIO DE SOBRAL",
@@ -73691,6 +74067,13 @@
      "em": "2026-10-11T09:31:10+00:00",
      "ganhou": [],
      "legado": null
+    },
+    {
+     "n": 9,
+     "nome": "leitura profunda",
+     "em": "2026-10-12T22:50:39+00:00",
+     "ganhou": [],
+     "legado": null
     }
    ],
    "documentos": [
@@ -73732,6 +74115,16 @@
      "falha": null,
      "oficial": "arquivo do edital anexado pelo órgão no PNCP",
      "paginas": 48,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/07598634000137/compras/2026/159/arquivos/1",
+     "degrau": 0,
+     "como": "leitura profunda (até 150 páginas e tabelas)",
+     "motivo": null,
+     "falha": "erro_rede: HTTPError",
+     "oficial": null,
+     "paginas": null,
      "edicao_inteira": null
     }
    ],
@@ -77240,287 +77633,19 @@
     "pct_certificado_12": 0.3333,
     "pct_cobertura_12": 0.9167
    }
-  },
-  {
-   "id": "op-f55f67246ae3",
-   "tipo": "livro",
-   "titulo": "FUNDO MUNICIPAL DE ASSISTENCIA SOCIAL DE MAFRA — Credenciamento de Instituição de Longa Permanência para Idosos, através da Secretaria Municipal de Assistência ",
-   "balcao": "pncp",
-   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/15470555000174/compras/2026/4/arquivos/1",
-   "degrau": 0,
-   "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-   "faltavam": [
-    "Resultado",
-    "Prazo de recurso",
-    "Requisitos",
-    "Anexos",
-    "Destinação"
-   ],
-   "resolvidos": [
-    "Resultado",
-    "Prazo de recurso",
-    "Requisitos",
-    "Anexos"
-   ],
-   "ainda_faltam": [
-    "Destinação"
-   ],
-   "tentativa": 1,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "prata",
-   "estagio_inicio": "prata",
-   "esgotada": null,
-   "eficiencia": 0.8,
-   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-10T22:48:04+00:00",
-   "prazo": null,
-   "uf": "BR",
-   "orgao": "FUNDO MUNICIPAL DE ASSISTENCIA SOCIAL DE MAFRA",
-   "fim": null,
-   "itens": {
-    "Requisitos": {
-     "valor": "poderão participar da execução de contrato, direta ou indiretamente, conforme disposto nos parágrafos e caput do art.",
-     "trecho": "presente edital e seus anexos. 5. DAS VEDAÇÕES À PARTICIPAÇÃO 5.1 Não poderão participar da execução de contrato, direta ou indiretamente, conforme disposto nos parágrafos e caput do art. 14 da Lei nº 14.133/21: a) autor do anteprojeto, do projeto básico ou",
-     "pagina": 4,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/15470555000174/compras/2026/4/arquivos/1",
-     "metodo": "texto"
-    },
-    "Anexos": {
-     "valor": "ANEXO I - Termo de Referência, será; ANEXO I - Termo de Referência.; ANEXO I TERMO DE REFERÊNCIA; ANEXO II SOLICITAÇÃO DE CREDENCIAMENTO – PESSOA JURÍDICA; ANEXO III DECLARAÇÃO – PESSOA JURÍDICA; ANEXO IV TERMO DE CREDENCIAMENTO; ANEXO I - Termo de Referência e em conformidade com as condições; ANEX",
-     "trecho": "e edital de chamamento público e seus anexos, e, conforme disposto no ANEXO I - Termo de Referência, será composto da seguinte forma: Item Descrição / Especificação Qntd Und Valor Médio Unt. “Por vaga” referênte a um mês R$ Valor Médio Total R$ 1 109479 - Acol",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/15470555000174/compras/2026/4/arquivos/1",
-     "metodo": "lista de anexos"
-    },
-    "Prazo de recurso": {
-     "valor": "05(cinco)diasúteis",
-     "trecho": "Coordenação do Credenciamento, mediante a protocolizaçãodas razões de recurso, no prazode 05(cinco)diasúteis,contados dapublicaçãodo res ultado. 6.3.2 Não serão admitidos recurso",
-     "pagina": 6,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/15470555000174/compras/2026/4/arquivos/3",
-     "metodo": "seção"
-    }
-   },
-   "dispensas": {
-    "Resultado": {
-     "motivo": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
-     "trecho": "o estiver vigente o presente edital, fica permitido o credenciamento, a qualquer tempo, de qualquer interessado, desde que preencha as condições exigidas ne",
-     "pagina": 3,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/15470555000174/compras/2026/4/arquivos/1"
-    }
-   },
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-10T22:48:04+00:00",
-     "ganhou": [
-      "Anexos",
-      "Prazo de recurso",
-      "Requisitos",
-      "Resultado"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/15470555000174/compras/2026/4/arquivos/1",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 30,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/15470555000174/compras/2026/4/arquivos/2",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-     "motivo": null,
-     "falha": "erro_rede: HTTPError",
-     "oficial": null,
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/15470555000174/compras/2026/4/arquivos/3",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 12,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "ja_constava",
-     "Prazo de inscrição": "ja_constava",
-     "Resultado": "dispensado",
-     "Prazo de recurso": "certificado",
-     "Valor": "ja_constava",
-     "Órgão / financiador": "ja_constava",
-     "Território": "ja_constava",
-     "Esfera": "ja_constava",
-     "Requisitos": "certificado",
-     "Anexos": "certificado",
-     "Destinação": "falta",
-     "Área de atuação": "ja_constava"
-    },
-    "certificados": 3,
-    "dispensados": 1,
-    "ja_constavam": 7,
-    "faltam": 1,
-    "pct_certificado_12": 0.3333,
-    "pct_cobertura_12": 0.9167
-   }
-  },
-  {
-   "id": "op-b1bcb659521d",
-   "tipo": "livro",
-   "titulo": "FUNDO MUNICIPAL DE ASSISTENCIA SOCIAL DE PORTO BELO — Credenciamento de Instituições de Longa Permanência para Idosos (ILPI) para prestação desserviços de acolh",
-   "balcao": "pncp",
-   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/10721741000115/compras/2026/15/arquivos/1",
-   "degrau": 0,
-   "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-   "faltavam": [
-    "Resultado",
-    "Prazo de recurso",
-    "Requisitos",
-    "Anexos",
-    "Destinação"
-   ],
-   "resolvidos": [
-    "Resultado",
-    "Prazo de recurso",
-    "Requisitos",
-    "Anexos"
-   ],
-   "ainda_faltam": [
-    "Destinação"
-   ],
-   "tentativa": 1,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "prata",
-   "estagio_inicio": "prata",
-   "esgotada": null,
-   "eficiencia": 0.8,
-   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido (formato_desconhecido)",
-   "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-10T15:25:12+00:00",
-   "prazo": null,
-   "uf": "BR",
-   "orgao": "FUNDO MUNICIPAL DE ASSISTENCIA SOCIAL DE PORTO BELO",
-   "fim": null,
-   "itens": {
-    "Prazo de recurso": {
-     "valor": "05 (cinco) dias úteis",
-     "trecho": "s PARTICIPANTES, nos termos da legislação vigente, a interposição de recurso administrativo perante o Agente de Contratação , no prazo de 05 (cinco) dias úteis, contados da intimação do ato ou da lavratura da ata. ESTADO DE SA",
-     "pagina": 5,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/10721741000115/compras/2026/15/arquivos/1",
-     "metodo": "seção"
-    },
-    "Requisitos": {
-     "valor": "Poderão participar deste CREDENCIAMENTO exclusivamente as empresas com objeto social correspondente ao objeto do presente credenciamento;",
-     "trecho": "chamada pública e impugnações ao edital na seguinte forma: 4.3.1 - Poderão participar deste CREDENCIAMENTO exclusivamente as empresas com objeto social correspondente ao objeto do presente credenciamento; 4.3.2 - Nos pedidos encaminhados, os interessados deverão se identif",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/10721741000115/compras/2026/15/arquivos/1",
-     "metodo": "texto"
-    },
-    "Anexos": {
-     "valor": "ANEXO VI) subscrita pelo representante legal da requerente de; ANEXO VIII.; ANEXO VIII), que é parte integrante deste Edital, as; ANEXO I - TERMO DE REFERENCIA;; ANEXO I-A - ESTUDO TÉCNICO PRELIMINAR; ANEXO II - ESTIMATIVAS DO VALOR DA CONTRATAÇÃO;; ANEXO III - MODELO DE PEDIDO DE CREDENCIAMENTO;; A",
-     "trecho": "o Município de Porto Belo/SC; 7.3.3.6 - Declaração (de acordo com o ANEXO VI) subscrita pelo representante legal da requerente de que atende ao art. 7º, inciso XXXIII da Constituição Federal de 1988, para fins de pré -qualificação ao credenciamento. 7.3",
-     "pagina": 4,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/10721741000115/compras/2026/15/arquivos/1",
-     "metodo": "lista de anexos"
-    }
-   },
-   "dispensas": {
-    "Resultado": {
-     "motivo": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
-     "trecho": "das por quaisquer das partes terão sempre a forma escrita, e estarão a qualquer tempo disponível no processo do CREDENCIAMENTO; 4.4.4 - O presente PROCESS",
-     "pagina": 2,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/10721741000115/compras/2026/15/arquivos/1"
-    }
-   },
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-10T15:25:12+00:00",
-     "ganhou": [
-      "Anexos",
-      "Prazo de recurso",
-      "Requisitos",
-      "Resultado"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/10721741000115/compras/2026/15/arquivos/1",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 26,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/api/consulta/v1/orgaos/10721741000115/compras/2026/15",
-     "degrau": 0,
-     "como": "página/documento oficial já conhecido",
-     "motivo": "formato_desconhecido",
-     "falha": null,
-     "oficial": null,
-     "paginas": 0,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "ja_constava",
-     "Prazo de inscrição": "ja_constava",
-     "Resultado": "dispensado",
-     "Prazo de recurso": "certificado",
-     "Valor": "ja_constava",
-     "Órgão / financiador": "ja_constava",
-     "Território": "ja_constava",
-     "Esfera": "ja_constava",
-     "Requisitos": "certificado",
-     "Anexos": "certificado",
-     "Destinação": "falta",
-     "Área de atuação": "ja_constava"
-    },
-    "certificados": 3,
-    "dispensados": 1,
-    "ja_constavam": 7,
-    "faltam": 1,
-    "pct_certificado_12": 0.3333,
-    "pct_cobertura_12": 0.9167
-   }
   }
  ],
  "linha_de_producao": {
   "na_linha": {
-   "sem_estrela": 1140,
-   "bronze": 22,
-   "prata": 1486
+   "sem_estrela": 1151,
+   "bronze": 45,
+   "prata": 1495
   },
   "na_linha_por_tipo": {
    "estrela": {
-    "sem_estrela": 386,
-    "bronze": 20,
-    "prata": 47
+    "sem_estrela": 397,
+    "bronze": 43,
+    "prata": 56
    },
    "livro": {
     "sem_estrela": 754,
@@ -77528,11 +77653,11 @@
     "prata": 1439
    }
   },
-  "fila_oportunidades": 453,
+  "fila_oportunidades": 496,
   "fila_livros": 2195,
-  "devidas_nesta_hora": 2547,
+  "devidas_nesta_hora": 2592,
   "promovidas_nesta_execucao": 0,
-  "sem_material_agora": 11,
+  "sem_material_agora": 8,
   "esgotadas_10_abordagens": 0,
   "biblioteca_de_sites": {
    "chaves": 1463,

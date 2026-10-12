@@ -40,12 +40,12 @@
 - CONGELADO: 23
 - CEGO: 23
 - PÁGINA VAZIA: 10
+- CUSTO SEM RETORNO: 2
 - INTERMITENTE: 2
-- CUSTO SEM RETORNO: 1
 
 ## Cobertura (Dr. Otávio)
 
-83.5% das oportunidades vieram de fora dos motores: {'agregador/outra': 311, 'motor': 83, 'Piloto': 108}.
+75.8% das oportunidades vieram de fora dos motores: {'agregador/outra': 308, 'motor': 132, 'Piloto': 105}.
 
 - GO: 5 oportunidades, nenhuma de motor ({'agregador/outra': 5})
 - BA: 3 oportunidades, nenhuma de motor ({'agregador/outra': 3})
@@ -57,18 +57,18 @@
 
 ## Fontes irmãs (Profa. Clara)
 
-219 domínios oficiais já renderam e não têm motor. Os primeiros:
+217 domínios oficiais já renderam e não têm motor. Os primeiros:
 
 - baoba.org.br (peso 17)
-- licitario.com.br (peso 15)
+- institutolojasrenner.org.br (peso 15)
 - zurich.com.br (peso 13)
-- institutolojasrenner.org.br (peso 13)
 - fundoecos.org.br (peso 12)
 - mariaemilia.org.br (peso 11)
 - chamadas.funbio.org.br (peso 11)
+- itausocial.org.br (peso 10)
 - feirapreta.com.br (peso 9)
 - contrafluxofestival.com.br (peso 9)
-- itausocial.org.br (peso 8)
+- licitario.com.br (peso 8)
 - transforma.fbb.org.br (peso 8)
 - editaisdobrasil.com (peso 8)
 - crars.org.br (peso 8)
@@ -112,7 +112,7 @@
 ### Diário Oficial do Município de Goiânia (`do-goiania`) — confirma, 9 achados em 30 dias
 - **CONGELADO** (falso_verde): o mesmo achado repetido em 9 dias. → detectar mudança por hash/lastmod e só contar o que é novo
 - **SILÊNCIO LONGO** (falso_verde): 25 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
-- **CUSTO SEM RETORNO** (redundancia): 233 s na última leitura sem achado. → reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem
+- **CUSTO SEM RETORNO** (redundancia): 215 s na última leitura sem achado. → reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem
 
 ### Diário da Justiça Federal — Seção Judiciária de Goiás (`dj-trf1-go`) — baixo volume, 0 achados em 30 dias
 - **CEGO** (falso_verde): respondeu 200 em 23 de 30 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
@@ -139,6 +139,11 @@
 - **RUÍDO** (funil): 94 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
+### Prefeituras das 50 maiores cidades de Goiás — portais de editais (`plat-prefeituras-50-go`) — ruído, 7 achados em 30 dias
+- **CONGELADO** (falso_verde): o mesmo achado repetido em 7 dias. → detectar mudança por hash/lastmod e só contar o que é novo
+- **RUÍDO** (funil): 68 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+- **CUSTO SEM RETORNO** (redundancia): 193 s na última leitura sem achado. → reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem
+
 ### Banco do Nordeste — Editais Sociais (incentivo fiscal) (`f260-curadoria-001`) — ruído, 10 achados em 30 dias
 - **CONGELADO** (falso_verde): o mesmo achado repetido em 5 dias. → detectar mudança por hash/lastmod e só contar o que é novo
 - **RUÍDO** (funil): 22 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
@@ -161,9 +166,9 @@
 - **CEGO** (falso_verde): respondeu 200 em 26 de 27 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
 - **SILÊNCIO LONGO** (falso_verde): 40 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
-### PNCP — API de contratações (chamamentos e credenciamentos) (`pncp-api`) — ouro, 2216 achados em 30 dias
+### PNCP — API de contratações (chamamentos e credenciamentos) (`pncp-api`) — ouro, 2430 achados em 30 dias
 - **INTERMITENTE** (falso_verde): 6 dias vermelhos alternados com dias bons. → retentativa com espera e rota de reserva (ponte do titular)
-- **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
+- **VAZAMENTO** (funil): perde 99% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### Prosas — prêmios, concursos e cursos para OSCs (`plat-prosas-premios`) — baixo volume, 0 achados em 30 dias
 - **CEGO** (falso_verde): respondeu 200 em 13 de 13 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
@@ -273,10 +278,6 @@
 - **CONGELADO** (falso_verde): o mesmo achado repetido em 10 dias. → detectar mudança por hash/lastmod e só contar o que é novo
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Prefeituras das 50 maiores cidades de Goiás — portais de editais (`plat-prefeituras-50-go`) — ruído, 8 achados em 30 dias
-- **CONGELADO** (falso_verde): o mesmo achado repetido em 8 dias. → detectar mudança por hash/lastmod e só contar o que é novo
-- **RUÍDO** (funil): 69 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
-
 ### Prosas — editais para o terceiro setor (`plat-prosas`) — baixo volume, 0 achados em 30 dias
 - **CEGO** (falso_verde): respondeu 200 em 10 de 10 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
 - **SILÊNCIO LONGO** (falso_verde): 19 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
@@ -381,8 +382,8 @@
 - **RUÍDO** (funil): 35 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'fluxo → confirmada'. → faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório
 
-### Outras Oportunidades 5/5 (`outras-oportunidades-5`) — ouro, 35 achados em 30 dias
-- **RUÍDO** (funil): 104 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+### Outras Oportunidades 5/5 (`outras-oportunidades-5`) — ouro, 34 achados em 30 dias
+- **RUÍDO** (funil): 103 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'fluxo → confirmada'. → faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório
 
 ### Diário Oficial da União (`dou`) — confirma, 28 achados em 30 dias
@@ -412,7 +413,7 @@
 ### SALIC — Lei Rouanet (Ministério da Cultura) (`plat-salic`) — ouro, 85 achados em 30 dias
 - **VAZAMENTO** (funil): perde 99% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Motor do Piloto — busca aberta no terceiro setor (`plat-piloto-aberto`) — ouro, 589 achados em 30 dias
+### Motor do Piloto — busca aberta no terceiro setor (`plat-piloto-aberto`) — ouro, 573 achados em 30 dias
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### Emenda municipal para entidade assistencial (`f260-captacao-107`) — baixo volume, 0 achados em 30 dias
@@ -461,7 +462,7 @@
 - **SILÊNCIO LONGO** (falso_verde): 20 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### Outras Oportunidades 3/3 (`outras-oportunidades-3`) — ruído, 3 achados em 30 dias
-- **RUÍDO** (funil): 30 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+- **RUÍDO** (funil): 31 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 
 ### Diário Oficial do Estado de Goiás (`do-goias`) — confirma, 123 achados em 30 dias
 Sem falha encontrada pelas quatro lentes motor a motor.

@@ -1,5 +1,5 @@
 {
- "em": "2026-10-12T21:04:07+00:00",
+ "em": "2026-10-12T22:48:48+00:00",
  "conselho": [
   {
    "id": "falso_verde",
@@ -50,7 +50,7 @@
   "falhas_por_tipo": {
    "CONGELADO": 23,
    "SILÊNCIO LONGO": 44,
-   "CUSTO SEM RETORNO": 1,
+   "CUSTO SEM RETORNO": 2,
    "VAZAMENTO": 43,
    "CEGO": 23,
    "PÁGINA VAZIA": 10,
@@ -60,11 +60,11 @@
  },
  "cobertura": {
   "origem_das_oportunidades": {
-   "agregador/outra": 311,
-   "motor": 83,
-   "Piloto": 108
+   "agregador/outra": 308,
+   "motor": 132,
+   "Piloto": 105
   },
-  "fora_dos_motores_pct": 83.5,
+  "fora_dos_motores_pct": 75.8,
   "ufs_sem_motor_com_oportunidade": [
    {
     "uf": "GO",
@@ -122,7 +122,7 @@
   }
  },
  "fontes_irmas": {
-  "total": 219,
+  "total": 217,
   "top": [
    {
     "dominio": "baoba.org.br",
@@ -130,19 +130,14 @@
     "url": "https://baoba.org.br/home/programa-marielle-franco-apoio-individual/"
    },
    {
-    "dominio": "licitario.com.br",
+    "dominio": "institutolojasrenner.org.br",
     "peso": 15,
-    "url": "https://www.licitario.com.br"
+    "url": "https://www.institutolojasrenner.org.br/edital/"
    },
    {
     "dominio": "zurich.com.br",
     "peso": 13,
     "url": "https://www.zurich.com.br/leis-de-incentivo-2026"
-   },
-   {
-    "dominio": "institutolojasrenner.org.br",
-    "peso": 13,
-    "url": "https://www.institutolojasrenner.org.br/jornada-fortalecidas/"
    },
    {
     "dominio": "fundoecos.org.br",
@@ -160,6 +155,11 @@
     "url": "https://chamadas.funbio.org.br/floresta-viva-sao-francisco"
    },
    {
+    "dominio": "itausocial.org.br",
+    "peso": 10,
+    "url": "https://www.itausocial.org.br/editais/edital-fundos-da-infancia-e-da-adolescencia-2025/"
+   },
+   {
     "dominio": "feirapreta.com.br",
     "peso": 9,
     "url": "https://feirapreta.com.br/pretas-potencias-2/"
@@ -170,9 +170,9 @@
     "url": "https://www.contrafluxofestival.com.br"
    },
    {
-    "dominio": "itausocial.org.br",
+    "dominio": "licitario.com.br",
     "peso": 8,
-    "url": "https://www.itausocial.org.br/editais/edital-fundos-da-infancia-e-da-adolescencia-2025/"
+    "url": "https://www.licitario.com.br"
    },
    {
     "dominio": "transforma.fbb.org.br",
@@ -388,7 +388,7 @@
     {
      "conselheiro": "redundancia",
      "falha": "CUSTO SEM RETORNO",
-     "prova": "233 s na última leitura sem achado",
+     "prova": "215 s na última leitura sem achado",
      "melhoria": "reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem"
     }
    ]
@@ -490,7 +490,7 @@
     {
      "url": "https://www.goiania.go.leg.br",
      "http": 200,
-     "bytes": 285344,
+     "bytes": 263285,
      "itens": 26
     },
     {
@@ -645,7 +645,7 @@
     {
      "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/proposta",
      "http": 200,
-     "bytes": 7098
+     "bytes": 6334
     },
     {
      "url": "https://pncp.gov.br/api/search/",
@@ -653,9 +653,9 @@
      "bytes": 1720
     }
    ],
-   "achados_total": 9177,
+   "achados_total": 9391,
    "valor": "ouro",
-   "achados_30d": 2216,
+   "achados_30d": 2430,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -671,7 +671,7 @@
     {
      "conselheiro": "funil",
      "falha": "VAZAMENTO",
-     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "prova": "perde 99% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
     }
    ]
@@ -2036,7 +2036,7 @@
     {
      "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1",
      "http": 200,
-     "bytes": 154204
+     "bytes": 154198
     },
     {
      "url": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
@@ -2295,16 +2295,16 @@
    "saude": [
     {
      "url": "https://www.goiania.go.gov.br",
-     "status": "lida"
+     "status": "parcial"
     },
     {
      "url": "https://aparecida.go.gov.br",
-     "status": "lida"
+     "status": "parcial"
     }
    ],
-   "achados_total": 69,
+   "achados_total": 68,
    "valor": "ruído",
-   "achados_30d": 8,
+   "achados_30d": 7,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -2314,14 +2314,20 @@
     {
      "conselheiro": "falso_verde",
      "falha": "CONGELADO",
-     "prova": "o mesmo achado repetido em 8 dias",
+     "prova": "o mesmo achado repetido em 7 dias",
      "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
     },
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "69 achados e nenhuma oportunidade confirmada",
+     "prova": "68 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "CUSTO SEM RETORNO",
+     "prova": "193 s na última leitura sem achado",
+     "melhoria": "reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem"
     }
    ]
   },
@@ -2524,18 +2530,18 @@
    "saude": [
     {
      "url": "https://html.duckduckgo.com/html/?q=edital+organiza%C3%A7%C3%B5es+da+sociedade+civil+2026",
-     "http": 200,
-     "bytes": 38484
+     "http": 202,
+     "bytes": 14269
     },
     {
      "url": "https://html.duckduckgo.com/html/?q=",
-     "http": 200,
+     "http": 202,
      "bytes": 3108
     }
    ],
-   "achados_total": 2025,
+   "achados_total": 2009,
    "valor": "ouro",
-   "achados_30d": 589,
+   "achados_30d": 573,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -2603,7 +2609,7 @@
     {
      "url": "https://www.congressonacional.leg.br",
      "http": 200,
-     "bytes": 151541,
+     "bytes": 151525,
      "itens": 9
     },
     {
@@ -3943,14 +3949,14 @@
      "erro": "judiciario",
      "code": null,
      "waf": null,
-     "causa": "A: RSS página 1: direto: HTTP 403 — acesso negado (padrão de bloqueio de IP estrangeiro) · pela ponte Brasil: HTTP 403 pela ponte"
+     "causa": "A: RSS página 1: direto: HTTP 403 — acesso negado (padrão de bloqueio de IP estrangeiro) · pela ponte Brasil: ponte_indisponivel: a ponte respondeu HTTP 409"
     },
     {
      "url": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs",
      "erro": "judiciario",
      "code": null,
      "waf": null,
-     "causa": "A: carga inicial, página 7: direto: HTTP 403 — acesso negado (padrão de bloqueio de IP estrangeiro) · pela ponte Brasil: HTTP 403 pela ponte"
+     "causa": "A: carga inicial, página 7: direto: HTTP 403 — acesso negado (padrão de bloqueio de IP estrangeiro) · pela ponte Brasil: ponte_indisponivel: a ponte respondeu HTTP 409"
     }
    ],
    "achados_total": 0,
@@ -4761,7 +4767,7 @@
     {
      "url": "https://oakfnd.org/",
      "http": 200,
-     "bytes": 139700
+     "bytes": 139677
     },
     {
      "url": "https://conexoes.bndes.gov.br/chamadas-e-editais",
@@ -4835,9 +4841,9 @@
    "tipo": "site_oficial",
    "saude": [
     {
-     "url": "https://acessoainformacao.alvoradadonorte.go.gov.br/cidadao/ouvidoria/inicio",
+     "url": "https://muribeca.se.gov.br/portaltransparencia/?servico=cidadao/diariooficial",
      "http": 200,
-     "bytes": 50235
+     "bytes": 45351
     },
     {
      "url": "https://www.bancoamazonia.com.br/o-banco/patrocinio",
@@ -4845,7 +4851,7 @@
      "bytes": 435427
     }
    ],
-   "achados_total": 30,
+   "achados_total": 31,
    "valor": "ruído",
    "achados_30d": 3,
    "cadencia": {
@@ -4857,7 +4863,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "30 achados e nenhuma oportunidade confirmada",
+     "prova": "31 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     }
    ]
@@ -4912,12 +4918,12 @@
     {
      "url": "https://corrivus.com.br/santa-catarina/itajai/concurso-itajai-em-tracos-inscricoes-gratuitas",
      "http": 200,
-     "bytes": 35335
+     "bytes": 35354
     }
    ],
-   "achados_total": 104,
+   "achados_total": 103,
    "valor": "ouro",
-   "achados_30d": 35,
+   "achados_30d": 34,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -4927,7 +4933,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "104 achados e nenhuma oportunidade confirmada",
+     "prova": "103 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4943,14 +4949,14 @@
    "tipo": "site_oficial",
    "saude": [
     {
-     "url": "https://www.crars.org.br/arquivos/chamamentos/Edital_de_Chamamento_Publico_004-2026.pdf",
+     "url": "https://equatorial.gestaocpp.com.br/uploads/landing/11111111-1111-1111-1111-111111111111/747d7203-1ac0-4d7f-91c8-ae479f9872c3.pdf",
      "http": 200,
-     "bytes": 900715
+     "bytes": 2392404
     },
     {
-     "url": "https://www.goias365.com.br/prefeito-vilela-sanciona-lei-que-reduz-aliquota-do-itbi-para-15-em-aparecida/",
+     "url": "https://news.confap.org.br/wp-content/uploads/2026/09/Diretrizes-da-FAPERGS-para-a-Chamada-WBI-2026.pdf",
      "http": 200,
-     "bytes": 134959
+     "bytes": 185663
     }
    ],
    "achados_total": 2,
