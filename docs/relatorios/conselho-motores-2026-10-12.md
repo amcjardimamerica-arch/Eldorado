@@ -45,7 +45,7 @@
 
 ## Cobertura (Dr. Otávio)
 
-84.8% das oportunidades vieram de fora dos motores: {'agregador/outra': 310, 'Piloto': 108, 'motor': 75}.
+84.8% das oportunidades vieram de fora dos motores: {'agregador/outra': 312, 'Piloto': 108, 'motor': 75}.
 
 - GO: 4 oportunidades, nenhuma de motor ({'agregador/outra': 4})
 - BA: 3 oportunidades, nenhuma de motor ({'agregador/outra': 3})
@@ -57,17 +57,17 @@
 
 ## Fontes irmãs (Profa. Clara)
 
-217 domínios oficiais já renderam e não têm motor. Os primeiros:
+218 domínios oficiais já renderam e não têm motor. Os primeiros:
 
 - baoba.org.br (peso 19)
-- institutolojasrenner.org.br (peso 15)
+- licitario.com.br (peso 15)
 - zurich.com.br (peso 13)
+- institutolojasrenner.org.br (peso 13)
 - fundoecos.org.br (peso 12)
 - mariaemilia.org.br (peso 11)
 - chamadas.funbio.org.br (peso 11)
 - feirapreta.com.br (peso 9)
 - contrafluxofestival.com.br (peso 9)
-- licitario.com.br (peso 8)
 - transforma.fbb.org.br (peso 8)
 - editaisdobrasil.com (peso 8)
 - crars.org.br (peso 8)
@@ -386,7 +386,7 @@
 - **RUÍDO** (funil): 32 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'fluxo → confirmada'. → faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório
 
-### Outras Oportunidades 5/5 (`outras-oportunidades-5`) — ruído, 38 achados em 30 dias
+### Outras Oportunidades 5/5 (`outras-oportunidades-5`) — ouro, 38 achados em 30 dias
 - **RUÍDO** (funil): 98 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'fluxo → confirmada'. → faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório
 

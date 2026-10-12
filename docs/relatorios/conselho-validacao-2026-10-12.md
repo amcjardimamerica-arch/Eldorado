@@ -41,7 +41,7 @@
 
 ```json
 {
- "motores_de_ruido_1a": 27,
+ "motores_de_ruido_1a": 26,
  "ruido_agora": [
   {
    "motor": "plat-gife",
@@ -228,7 +228,7 @@
  "pontos_com_redundancia": 12,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 5115
+ "exemplos_da_rede_de_rotas": 5196
 }
 ```
 
@@ -242,7 +242,7 @@
  "fora_dos_motores_pct_1a": 84.8,
  "fora_dos_motores_pct_agora": 84.8,
  "origem": {
-  "agregador/outra": 310,
+  "agregador/outra": 312,
   "Piloto": 108,
   "motor": 75
  },
@@ -372,7 +372,7 @@
   "Cartório (site oficial certificado)": 109,
   "Espião (privado/internacional)": 20
  },
- "lidas_nas_ultimas_24h": 151,
+ "lidas_nas_ultimas_24h": 136,
  "dimensionamento": {
   "fontes": 272,
   "sites_por_execucao": 17,
