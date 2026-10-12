@@ -1,9 +1,9 @@
 {
- "em": "2026-10-12T19:29:36+00:00",
+ "em": "2026-10-12T20:30:14+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
  "rotulados": 1975,
  "positivos": 792,
- "pendentes": 673,
+ "pendentes": 674,
  "validacao_cruzada": {
   "auc": 0.845,
   "precisao": 0.757,
@@ -355,12 +355,6 @@
    "incerteza": 0.964
   },
   {
-   "titulo": "Link do Edital",
-   "url": "https://sei.londrina.pr.gov.br/sei/modulos/pesquisa/md_pesq_documento_consulta_externa.php?d-qBlq_KF4_2fdKMgucKGw2SOOsdRDgKOTtYkpTOQj10fSYca2MZ0TxtD9cAKGn3S98vulMME9eMyYCnnB0Wk-xEjiGkgJGvGWJycKFV0izHCqjzl1Wx--IlvFZspiP9",
-   "nota": 0.481,
-   "incerteza": 0.963
-  },
-  {
    "titulo": "Edital de Credenciamento Nº 1/2026",
    "url": "https://www.gov.br/icmbio",
    "nota": 0.481,
@@ -371,6 +365,12 @@
    "url": "https://lancasterweb.com.br/edital-comirma-go-2026-goiania/",
    "nota": 0.481,
    "incerteza": 0.963
+  },
+  {
+   "titulo": "Programa Tecnova III",
+   "url": "https://www.fappr.pr.gov.br/Pagina/Programa-Tecnova",
+   "nota": 0.519,
+   "incerteza": 0.962
   }
  ],
  "pendentes_provaveis_reais": 397
