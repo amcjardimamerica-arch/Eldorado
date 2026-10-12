@@ -228,7 +228,7 @@
  "pontos_com_redundancia": 11,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 3867
+ "exemplos_da_rede_de_rotas": 3953
 }
 ```
 
@@ -367,20 +367,20 @@
 
 ```json
 {
- "fontes_recebidas": 242,
+ "fontes_recebidas": 247,
  "por_origem": {
-  "conselho (fontes irmãs)": 131,
-  "Cartório (site oficial certificado)": 93,
-  "Espião (privado/internacional)": 18
+  "conselho (fontes irmãs)": 132,
+  "Cartório (site oficial certificado)": 95,
+  "Espião (privado/internacional)": 20
  },
  "lidas_nas_ultimas_24h": 163,
  "dimensionamento": {
-  "fontes": 242,
+  "fontes": 247,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 5,
-  "cobertura_diaria": 242,
+  "cobertura_diaria": 247,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -428,7 +428,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 59,
+   "orgaos": 60,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",
@@ -472,7 +472,7 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 40,
+   "orgaos": 41,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",

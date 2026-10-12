@@ -1,5 +1,5 @@
 {
- "em": "2026-10-12T02:44:45+00:00",
+ "em": "2026-10-12T04:27:58+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
@@ -7,63 +7,67 @@
   "alterar_rota": 62,
   "rota_nova": 46,
   "via_ponte": 2,
-  "exemplos_da_rede": 3867
+  "exemplos_da_rede": 3953
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
    [
+    "origem:rota original",
+    2.2211
+   ],
+   [
     "tok:inscricoes",
-    2.0306
+    1.8432
    ],
    [
     "origem:biblioteca",
-    1.7057
+    1.6808
    ],
    [
-    "origem:rota original",
-    1.6965
+    "tipo:privada",
+    1.5562
    ],
    [
     "tok:feed",
-    1.4721
+    1.5492
    ],
    [
     "tok:sitemap",
-    1.3164
+    1.4548
    ],
    [
     "tok:xml",
-    1.3164
+    1.4548
    ],
    [
     "tok:unidades",
-    1.2636
-   ],
-   [
-    "tok:assuntos",
-    1.2368
+    1.2841
    ],
    [
     "tok:abertas",
-    1.1398
+    1.1742
    ],
    [
     "tok:mpf",
     1.0891
    ],
    [
-    "tok:goias",
-    1.0078
+    "tok:assuntos",
+    1.0494
    ],
    [
-    "tok:cultura",
-    0.9728
+    "tok:goias",
+    1.0078
    ]
   ],
   "piores_sinais": [
    [
-    "sapl:False",
-    -1.0338
+    "via:ponte",
+    -0.9609
+   ],
+   [
+    "tok:pdf",
+    -1.0033
    ],
    [
     "tok:prefeitura",
@@ -71,19 +75,15 @@
    ],
    [
     "tok:content",
-    -1.3513
+    -1.3823
    ],
    [
     "tok:uploads",
-    -1.3513
+    -1.3823
    ],
    [
     "origem:câmara",
     -1.4777
-   ],
-   [
-    "gov:False",
-    -1.6527
    ],
    [
     "tipo:ministerio_publico",
@@ -91,7 +91,7 @@
    ],
    [
     "origem:padrão",
-    -3.2396
+    -2.9339
    ]
   ]
  },
@@ -1373,18 +1373,18 @@
    ],
    "rota_aprendida": {
     "urls": [
-     "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1"
+     "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-cultura-viva-2023-fomento-a-pontoes-de-cultura"
     ],
     "via": "direto",
     "origem": "biblioteca",
     "pontos": 33,
-    "aprendido_em": "2026-10-11T20:36:47+00:00"
+    "aprendido_em": "2026-10-12T04:26:20+00:00"
    },
    "afinado": {
-    "em": "2026-10-11T20:36:47+00:00",
+    "em": "2026-10-12T04:26:20+00:00",
     "testes": 16,
     "melhor": {
-     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1",
+     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-cultura-viva-2023-fomento-a-pontoes-de-cultura",
      "via": "direto",
      "origem": "biblioteca",
      "pontos": 33,
@@ -1414,11 +1414,11 @@
     "via": "direto",
     "origem": "rota original",
     "pontos": 30,
-    "aprendido_em": "2026-10-11T20:36:59+00:00"
+    "aprendido_em": "2026-10-12T04:26:39+00:00"
    },
    "afinado": {
-    "em": "2026-10-11T20:36:59+00:00",
-    "testes": 14,
+    "em": "2026-10-12T04:26:39+00:00",
+    "testes": 20,
     "melhor": {
      "url": "https://mariaemilia.org.br/feed",
      "via": "direto",
@@ -1445,7 +1445,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-11T21:12:31+00:00",
+    "em": "2026-10-12T04:27:12+00:00",
     "testes": 13,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1472,10 +1472,10 @@
     "via": "direto",
     "origem": "rota original",
     "pontos": 25,
-    "aprendido_em": "2026-10-11T21:12:51+00:00"
+    "aprendido_em": "2026-10-12T04:27:36+00:00"
    },
    "afinado": {
-    "em": "2026-10-11T21:12:51+00:00",
+    "em": "2026-10-12T04:27:36+00:00",
     "testes": 13,
     "melhor": {
      "url": "https://www.senadorpompeu.ce.gov.br/",
@@ -1503,7 +1503,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-11T21:12:59+00:00",
+    "em": "2026-10-12T04:27:46+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1530,10 +1530,10 @@
     "via": "direto",
     "origem": "rota original",
     "pontos": 30,
-    "aprendido_em": "2026-10-11T21:13:12+00:00"
+    "aprendido_em": "2026-10-12T04:27:58+00:00"
    },
    "afinado": {
-    "em": "2026-10-11T21:13:12+00:00",
+    "em": "2026-10-12T04:27:58+00:00",
     "testes": 12,
     "melhor": {
      "url": "https://www.detran.rj.gov.br/sitemap.xml",

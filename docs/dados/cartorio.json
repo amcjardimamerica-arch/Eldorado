@@ -1,31 +1,31 @@
 {
- "em": "2026-10-12T03:07:34+00:00",
+ "em": "2026-10-12T04:46:32+00:00",
  "versao": "cartório v5 · linha de produção (09/10/2026)",
  "regra": "CARTÓRIO DE FONTES OFICIAIS (titular, 09/10/2026).\n\nOs motores DESCOBREM; o Cartório CERTIFICA. Toda estrela (oportunidade aberta) e todo livro (histórico) que tenha\nQUALQUER um dos 12 itens indisponível entra na fila do Cartório. Para cada um, ele sobe uma escada de degraus — do mais\nbarato e confiável ao mais caro — até achar o documento OFICIAL, lê o documento por seções e emite uma CERTIDÃO:\nlink oficial (régua única: vetor nunca é fonte), degrau em que foi achado, impressão digital do documento, e cada item\ncom valor + trecho literal + página — ou a DISPENSA com a justificativa de que o requisito não existe naquele edital.\n\nBalcões (como chegar ao documento em cada tipo de fonte):\n  pncp      página do PNCP → API de arquivos do órgão (PDF ou ZIP), o edital primeiro\n  diario    DOU, Diário de Goiás/Goiânia, Querido Diário → o ato dentro da edição (só as páginas do ato)\n  orgao     domínio público → documentos da página + biblioteca de mídia do WordPress pelo número do edital\n  privado   site do financiador → documentos da página (regulamento, edital)\n  pista     agregador/notícia → links de SAÍDA para o financiador; o resto vai ao Interceptador\n  proprio   Ministério Público e Judiciário: já leem o PDF; o Cartório só converte em certidão\n\nEscada: 0 documento na mão · 1 link de saída da pista · 2 busca do número do edital dentro do domínio oficial ·\n        3 Interceptador (IA) · 4 Chrome. O Cartório resolve 0–2 sem IA; 3 e 4 recebem só o que sobrou.\nIntegração: a fila é ordenada pela urgência (prazo), pela nota da REDE NEURAL e pela distância até o ouro (menos\nitens faltando primeiro: cada certidão vira selo). Estrelas: o fluxo de oportunidades lê a certidão no checklist.\nLivros: linhas no formato do importador (scripts/importar_verificacao_livros.py), que confere e entrega à esteira.",
  "identidade_visual": "provisória (config/identidade_visual.json aguarda o design de referência)",
  "resumo": {
   "pontos_12_total": 4800,
-  "pontos_certificados": 3235,
-  "pontos_dispensados": 268,
-  "pontos_ja_constavam": 1011,
-  "pontos_faltam": 286,
+  "pontos_certificados": 3237,
+  "pontos_dispensados": 266,
+  "pontos_ja_constavam": 1012,
+  "pontos_faltam": 285,
   "pct_certificado_12": 0.7298,
   "certidoes_12_de_12": 125,
   "certidoes_sem_item_faltando": 213,
   "nota_denominador": "eficiencia_itens = resolvidos ÷ itens que faltavam na ENTRADA da fila (não é % dos 12); use pct_certificado_12",
-  "certidoes": 1118,
+  "certidoes": 1146,
   "nesta_execucao": 33,
   "fila_estrelas": 329,
   "fila_livros": 2186,
-  "itens_que_faltavam": 9829,
-  "itens_obtidos": 4411,
-  "itens_dispensados": 375,
-  "eficiencia_itens": 0.487,
-  "com_link_oficial": 776,
-  "taxa_link_oficial": 0.694,
+  "itens_que_faltavam": 10049,
+  "itens_obtidos": 4460,
+  "itens_dispensados": 380,
+  "eficiencia_itens": 0.482,
+  "com_link_oficial": 788,
+  "taxa_link_oficial": 0.688,
   "certidoes_completas": 145,
-  "para_o_interceptador": 836,
-  "para_o_chrome": 136,
+  "para_o_interceptador": 857,
+  "para_o_chrome": 143,
   "selos_que_mudaram": {
    "bronze → ouro": 18,
    "sem selo → ouro": 68,
@@ -35,7 +35,7 @@
    "sem selo → bronze": 23
   },
   "por_degrau": {
-   "degrau 0": 791,
+   "degrau 0": 803,
    "degrau 1": 15
   }
  },
@@ -46,126 +46,126 @@
  },
  "por_item": {
   "Objeto": {
-   "faltavam": 744,
-   "obtidos": 396,
+   "faltavam": 759,
+   "obtidos": 400,
    "dispensados": 0,
-   "eficiencia": 0.532
+   "eficiencia": 0.527
   },
   "Prazo de inscrição": {
-   "faltavam": 722,
-   "obtidos": 290,
-   "dispensados": 100,
-   "eficiencia": 0.54
+   "faltavam": 735,
+   "obtidos": 292,
+   "dispensados": 101,
+   "eficiencia": 0.535
   },
   "Resultado": {
-   "faltavam": 960,
-   "obtidos": 275,
-   "dispensados": 186,
-   "eficiencia": 0.48
+   "faltavam": 984,
+   "obtidos": 279,
+   "dispensados": 189,
+   "eficiencia": 0.476
   },
   "Prazo de recurso": {
-   "faltavam": 970,
-   "obtidos": 353,
+   "faltavam": 994,
+   "obtidos": 355,
    "dispensados": 24,
-   "eficiencia": 0.389
+   "eficiencia": 0.381
   },
   "Valor": {
-   "faltavam": 814,
-   "obtidos": 357,
+   "faltavam": 833,
+   "obtidos": 363,
    "dispensados": 44,
-   "eficiencia": 0.493
+   "eficiencia": 0.489
   },
   "Órgão / financiador": {
-   "faltavam": 658,
-   "obtidos": 394,
+   "faltavam": 668,
+   "obtidos": 397,
    "dispensados": 0,
-   "eficiencia": 0.599
+   "eficiencia": 0.594
   },
   "Território": {
-   "faltavam": 718,
-   "obtidos": 337,
+   "faltavam": 732,
+   "obtidos": 340,
    "dispensados": 0,
-   "eficiencia": 0.469
+   "eficiencia": 0.464
   },
   "Esfera": {
-   "faltavam": 810,
-   "obtidos": 517,
+   "faltavam": 832,
+   "obtidos": 527,
    "dispensados": 0,
-   "eficiencia": 0.638
+   "eficiencia": 0.633
   },
   "Requisitos": {
-   "faltavam": 927,
-   "obtidos": 404,
+   "faltavam": 950,
+   "obtidos": 405,
    "dispensados": 0,
-   "eficiencia": 0.436
+   "eficiencia": 0.426
   },
   "Anexos": {
-   "faltavam": 719,
+   "faltavam": 730,
    "obtidos": 337,
    "dispensados": 8,
-   "eficiencia": 0.48
+   "eficiencia": 0.473
   },
   "Destinação": {
-   "faltavam": 933,
-   "obtidos": 202,
-   "dispensados": 13,
+   "faltavam": 956,
+   "obtidos": 206,
+   "dispensados": 14,
    "eficiencia": 0.23
   },
   "Área de atuação": {
-   "faltavam": 854,
-   "obtidos": 549,
+   "faltavam": 876,
+   "obtidos": 559,
    "dispensados": 0,
-   "eficiencia": 0.643
+   "eficiencia": 0.638
   }
  },
  "por_balcao": {
   "pncp": {
-   "certidoes": 386,
+   "certidoes": 394,
    "com_link_oficial": 251,
-   "faltavam": 3274,
+   "faltavam": 3341,
    "resolvidos": 1524,
-   "eficiencia": 0.465,
-   "taxa_link_oficial": 0.65
+   "eficiencia": 0.456,
+   "taxa_link_oficial": 0.637
   },
   "diario": {
    "certidoes": 17,
    "com_link_oficial": 11,
-   "faltavam": 153,
-   "resolvidos": 20,
-   "eficiencia": 0.131,
+   "faltavam": 150,
+   "resolvidos": 15,
+   "eficiencia": 0.1,
    "taxa_link_oficial": 0.647
   },
   "orgao": {
-   "certidoes": 261,
-   "com_link_oficial": 213,
-   "faltavam": 1828,
-   "resolvidos": 772,
-   "eficiencia": 0.422,
-   "taxa_link_oficial": 0.816
+   "certidoes": 274,
+   "com_link_oficial": 223,
+   "faltavam": 1938,
+   "resolvidos": 823,
+   "eficiencia": 0.425,
+   "taxa_link_oficial": 0.814
   },
   "pista": {
-   "certidoes": 98,
+   "certidoes": 100,
    "com_link_oficial": 13,
-   "faltavam": 842,
+   "faltavam": 850,
    "resolvidos": 164,
-   "eficiencia": 0.195,
-   "taxa_link_oficial": 0.133
+   "eficiencia": 0.193,
+   "taxa_link_oficial": 0.13
   },
   "revisão": {
-   "certidoes": 266,
-   "com_link_oficial": 236,
-   "faltavam": 3192,
-   "resolvidos": 2149,
-   "eficiencia": 0.673,
-   "taxa_link_oficial": 0.887
+   "certidoes": 267,
+   "com_link_oficial": 237,
+   "faltavam": 3204,
+   "resolvidos": 2154,
+   "eficiencia": 0.672,
+   "taxa_link_oficial": 0.888
   },
   "privado": {
-   "certidoes": 89,
-   "com_link_oficial": 52,
-   "faltavam": 537,
-   "resolvidos": 127,
-   "eficiencia": 0.236,
-   "taxa_link_oficial": 0.584
+   "certidoes": 93,
+   "com_link_oficial": 53,
+   "faltavam": 563,
+   "resolvidos": 129,
+   "eficiencia": 0.229,
+   "taxa_link_oficial": 0.57
   },
   "proprio": {
    "certidoes": 1,
@@ -178,17 +178,17 @@
  },
  "por_safra": {
   "primeira tentativa": {
-   "certidoes": 955,
-   "faltavam": 8242,
-   "resolvidos": 3532,
-   "eficiencia": 0.429,
-   "com_link_oficial": 628,
-   "taxa_link_oficial": 0.658
+   "certidoes": 983,
+   "faltavam": 8462,
+   "resolvidos": 3586,
+   "eficiencia": 0.424,
+   "com_link_oficial": 640,
+   "taxa_link_oficial": 0.651
   },
   "refeitas": {
    "certidoes": 163,
    "faltavam": 1587,
-   "resolvidos": 1224,
+   "resolvidos": 1223,
    "eficiencia": 0.771,
    "com_link_oficial": 148,
    "taxa_link_oficial": 0.908
@@ -220,54 +220,54 @@
    "taxa_link_oficial": 0.875
   },
   "cartório v5 · linha de produção": {
-   "certidoes": 816,
-   "faltavam": 6391,
-   "resolvidos": 2496,
-   "eficiencia": 0.391,
-   "com_link_oficial": 508,
-   "taxa_link_oficial": 0.623
+   "certidoes": 843,
+   "faltavam": 6599,
+   "resolvidos": 2544,
+   "eficiencia": 0.386,
+   "com_link_oficial": 519,
+   "taxa_link_oficial": 0.616
   },
   "revisão manual": {
-   "certidoes": 266,
-   "faltavam": 3192,
-   "resolvidos": 2149,
-   "eficiencia": 0.673,
-   "com_link_oficial": 236,
-   "taxa_link_oficial": 0.887
+   "certidoes": 267,
+   "faltavam": 3204,
+   "resolvidos": 2154,
+   "eficiencia": 0.672,
+   "com_link_oficial": 237,
+   "taxa_link_oficial": 0.888
   }
  },
  "por_abordagem": {
   "1": {
    "nome": "documento na mão",
-   "vezes": 978,
-   "renderam": 631,
-   "itens": 4106,
-   "links_oficiais": 504,
-   "taxa_de_acerto": 0.645
+   "vezes": 998,
+   "renderam": 643,
+   "itens": 4160,
+   "links_oficiais": 516,
+   "taxa_de_acerto": 0.644
   },
   "2": {
    "nome": "anexos completos",
-   "vezes": 78,
+   "vezes": 79,
    "renderam": 9,
    "itens": 26,
    "links_oficiais": 0,
-   "taxa_de_acerto": 0.115
+   "taxa_de_acerto": 0.114
   },
   "3": {
    "nome": "página oficial e citados",
-   "vezes": 37,
+   "vezes": 38,
    "renderam": 13,
    "itens": 56,
    "links_oficiais": 3,
-   "taxa_de_acerto": 0.351
+   "taxa_de_acerto": 0.342
   },
   "4": {
    "nome": "biblioteca de sites",
-   "vezes": 41,
+   "vezes": 42,
    "renderam": 20,
    "itens": 83,
    "links_oficiais": 2,
-   "taxa_de_acerto": 0.488
+   "taxa_de_acerto": 0.476
   },
   "5": {
    "nome": "mídia do WordPress",
@@ -287,7 +287,7 @@
   },
   "7": {
    "nome": "releitura com gabarito",
-   "vezes": 14,
+   "vezes": 16,
    "renderam": 0,
    "itens": 0,
    "links_oficiais": 0,
@@ -303,11 +303,11 @@
   },
   "9": {
    "nome": "leitura profunda",
-   "vezes": 100,
+   "vezes": 108,
    "renderam": 4,
    "itens": 16,
    "links_oficiais": 0,
-   "taxa_de_acerto": 0.04
+   "taxa_de_acerto": 0.037
   },
   "10": {
    "nome": "busca no domínio",
@@ -321,29 +321,29 @@
  "por_balcao_selo": {
   "sem_estrela": {
    "nome": "Sem estrela → bronze",
-   "certidoes": 260,
-   "faltavam": 1647,
-   "resolvidos": 450,
-   "eficiencia": 0.273,
-   "entraram_aqui": 295,
+   "certidoes": 268,
+   "faltavam": 1683,
+   "resolvidos": 452,
+   "eficiencia": 0.269,
+   "entraram_aqui": 303,
    "esgotadas": 0
   },
   "bronze": {
    "nome": "Bronze → prata",
    "certidoes": 17,
    "faltavam": 137,
-   "resolvidos": 75,
-   "eficiencia": 0.547,
+   "resolvidos": 74,
+   "eficiencia": 0.54,
    "entraram_aqui": 23,
    "esgotadas": 0
   },
   "prata": {
    "nome": "Prata → ouro",
-   "certidoes": 559,
-   "faltavam": 4924,
-   "resolvidos": 2238,
-   "eficiencia": 0.455,
-   "entraram_aqui": 545,
+   "certidoes": 579,
+   "faltavam": 5108,
+   "resolvidos": 2290,
+   "eficiencia": 0.448,
+   "entraram_aqui": 565,
    "esgotadas": 0
   },
   "ouro": {
@@ -357,14 +357,14 @@
   }
  },
  "gabarito": {
-  "orgaos_com_gabarito": 635,
+  "orgaos_com_gabarito": 639,
   "itens_achados_pelo_gabarito": {
-   "Objeto": 17,
+   "Objeto": 20,
    "Requisitos": 2,
    "Prazo de inscrição": 1,
    "Destinação": 1
   },
-  "certidoes_ajudadas": 19
+  "certidoes_ajudadas": 22
  },
  "certidoes": [
   {
@@ -54378,6 +54378,215 @@
    }
   },
   {
+   "id": "op-1cb1957ab4c8",
+   "tipo": "livro",
+   "titulo": "Bolsa Funarte Brasil Conexões Internacionais 2024",
+   "balcao": "orgao",
+   "link_oficial": "https://www.gov.br/funarte/pt-br/editais/2024/bolsa-funarte-brasil-conexoes-internacionais-2024",
+   "degrau": 0,
+   "como": "página/documento oficial já conhecido",
+   "faltavam": [
+    "Resultado",
+    "Prazo de recurso",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Resultado",
+    "Prazo de recurso",
+    "Esfera",
+    "Requisitos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Território"
+   ],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "prata",
+   "esgotada": null,
+   "eficiencia": 0.857,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-12T04:32:44+00:00",
+   "prazo": null,
+   "uf": "",
+   "orgao": "Funarte",
+   "fim": "2024-08-19",
+   "itens": {
+    "Resultado": {
+     "valor": "30 de setembro de 2024",
+     "trecho": "09/09/2026 20h05 MÓDULO 2 Resultado Final Convocação de Suplentes A Fundação Nacional de Artes - Funarte publica nesta segunda-feira, 30 de setembro de 2024, o resultado final do Módulo 2 do edital Bolsa Funarte Brasil Conexõe",
+     "pagina": 1,
+     "documento": "https://www.gov.br/funarte/pt-br/editais/2024/bolsa-funarte-brasil-conexoes-internacionais-2024",
+     "metodo": "seção"
+    },
+    "Prazo de recurso": {
+     "valor": "27 de setembro de 2024",
+     "trecho": "DULO 2 Etapa de Habilitação - Resultado Preliminar Recebimento de recursos até 27 de setembro de 2024 A Fundação Nacional de Artes - Funarte publica nesta terça-feira, 2",
+     "pagina": 1,
+     "documento": "https://www.gov.br/funarte/pt-br/editais/2024/bolsa-funarte-brasil-conexoes-internacionais-2024",
+     "metodo": "seção"
+    },
+    "Esfera": {
+     "valor": "federal",
+     "trecho": "domínio/órgão: www.gov.br · Fundação Nacional de Artes - Funarte publica nesta segunda-feira Funarte",
+     "pagina": 1,
+     "documento": "https://www.gov.br/funarte/pt-br/editais/2024/bolsa-funarte-brasil-conexoes-internacionais-2024",
+     "metodo": "domínio e órgão"
+    },
+    "Área de atuação": {
+     "valor": "Cultura",
+     "trecho": "termos do objeto e do título: Cultura",
+     "pagina": 1,
+     "documento": "https://www.gov.br/funarte/pt-br/editais/2024/bolsa-funarte-brasil-conexoes-internacionais-2024",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Requisitos": {
+     "valor": "de habilitação, de caráter exclusivamente eliminatório, compreende a \nverificação da documentação do(a) Proponente.",
+     "trecho": "e do(a) Proponente acompanhar a atualização dessas informações. 11. DA HABILITAÇÃO 11.1 A fase de habilitação, de caráter exclusivamente eliminatório, compreende a verificação da documentação do(a) Proponente. 11.1.1 Esta etapa será realizada por uma Comissão de Habilitação nomeada pela Presidenta da Funarte. 11.2. Após a divulgação do resultado do processo de seleção na página eletrônica da Funar",
+     "pagina": 14,
+     "documento": "https://www.gov.br/funarte/pt-br/editais/2024/bolsa-funarte-brasil-conexoes-internacionais-2024/EDITALBOLSAFUNARTECONEXOESINTERNACIONAIS20241.pdf",
+     "metodo": "seção"
+    },
+    "Destinação": {
+     "valor": "os recursos serão destinados para a ampla concorrência, observando-se a ordem de classificação estabelecida pela Comissão de Seleção e o mínimo de 02 (duas) bolsas por região.",
+     "trecho": "sos de natureza étnico -racial. Se o número permanecer insuficiente, os recursos serão destinados para a ampla concorrência, observando-se a ordem de classificação estabelecida pela Comissão de Seleção e o mínimo de 02 (duas) bolsas por região. 6.5. Na hipótese de não existirem propostas selecionadas em número",
+     "pagina": 8,
+     "documento": "https://www.gov.br/funarte/pt-br/editais/2024/bolsa-funarte-brasil-conexoes-internacionais-2024/EDITALBOLSAFUNARTECONEXOESINTERNACIONAIS20241.pdf",
+     "metodo": "seção"
+    }
+   },
+   "dispensas": {},
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-12T04:32:44+00:00",
+     "ganhou": [
+      "Destinação",
+      "Esfera",
+      "Prazo de recurso",
+      "Requisitos",
+      "Resultado",
+      "Área de atuação"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://www.gov.br/funarte/pt-br/editais/2024/bolsa-funarte-brasil-conexoes-internacionais-2024",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.googletagmanager.com/ns.html?id=GTM-NHZSKTD",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": "pagina_vazia",
+     "falha": null,
+     "oficial": null,
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/funarte/pt-br/editais/2024/bolsa-funarte-brasil-conexoes-internacionais-2024/MDULO2RESULTADOFINALDAETAPADEHABILITAO.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 4,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/funarte/pt-br/editais/2024/bolsa-funarte-brasil-conexoes-internacionais-2024/PublicacaoDOUResultadoFinalmodII.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": "pdf_escaneado",
+     "falha": null,
+     "oficial": null,
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/funarte/pt-br/editais/2024/bolsa-funarte-brasil-conexoes-internacionais-2024/EDITALBOLSAFUNARTECONEXOESINTERNACIONAIS20241.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 20,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/funarte/pt-br/editais/2024/bolsa-funarte-brasil-conexoes-internacionais-2024/PublicaoDouconvocaosuplenteConexes.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/funarte/pt-br/editais/2024/bolsa-funarte-brasil-conexoes-internacionais-2024/MDULO2RESULTADOPRELIMINARDAETAPADEHABILITAO24.091.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 5,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/funarte/pt-br/editais/2024/bolsa-funarte-brasil-conexoes-internacionais-2024/MODULO2RESULTADOFINALDAETAPADESELECAOPROPOSTASSELECIONADAS17.09.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 5,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "ja_constava",
+     "Prazo de inscrição": "ja_constava",
+     "Resultado": "certificado",
+     "Prazo de recurso": "certificado",
+     "Valor": "ja_constava",
+     "Órgão / financiador": "ja_constava",
+     "Território": "falta",
+     "Esfera": "certificado",
+     "Requisitos": "certificado",
+     "Anexos": "ja_constava",
+     "Destinação": "certificado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 6,
+    "dispensados": 0,
+    "ja_constavam": 5,
+    "faltam": 1,
+    "pct_certificado_12": 0.5,
+    "pct_cobertura_12": 0.9167
+   }
+  },
+  {
    "id": "op-13fa9a35a173",
    "tipo": "livro",
    "titulo": "Bolsa Funarte Brasil Conexões Internacionais 2025 - Temporada Cultural Brasil-França - Participação de jovens criadores(as) no Festival OFF Avignon e na Bienal de Dança de Lyon",
@@ -59158,7 +59367,7 @@
     "Território",
     "Destinação"
    ],
-   "tentativa": 2,
+   "tentativa": 3,
    "versao": "cartório v5 · linha de produção (09/10/2026)",
    "gabarito": null,
    "estagio": "sem_estrela",
@@ -59168,7 +59377,7 @@
    "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-11T15:31:23+00:00",
+   "em": "2026-10-12T04:29:20+00:00",
    "prazo": "2026-10-26",
    "uf": null,
    "orgao": "Ministério da Saúde (DECOOP/SE)",
@@ -59271,6 +59480,13 @@
      "em": "2026-10-11T15:31:23+00:00",
      "ganhou": [],
      "legado": null
+    },
+    {
+     "n": 9,
+     "nome": "leitura profunda",
+     "em": "2026-10-12T04:29:20+00:00",
+     "ganhou": [],
+     "legado": null
     }
    ],
    "documentos": [
@@ -59433,6 +59649,46 @@
      "oficial": "domínio público oficial",
      "paginas": 1,
      "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-06-2026-se-pronon",
+     "degrau": 0,
+     "como": "leitura profunda (até 150 páginas e tabelas)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos",
+     "degrau": 0,
+     "como": "leitura profunda (até 150 páginas e tabelas)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-06-2026-se-pronon/edital",
+     "degrau": 0,
+     "como": "leitura profunda (até 150 páginas e tabelas)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 61,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.in.gov.br/web/dou/-/edital-de-chamamento-publico-n-6/2026-736401965",
+     "degrau": 0,
+     "como": "leitura profunda (até 150 páginas e tabelas)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
     }
    ],
    "cobertura_12": {
@@ -59496,7 +59752,7 @@
     "Território",
     "Destinação"
    ],
-   "tentativa": 2,
+   "tentativa": 3,
    "versao": "cartório v5 · linha de produção (09/10/2026)",
    "gabarito": null,
    "estagio": "sem_estrela",
@@ -59506,7 +59762,7 @@
    "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-11T15:32:01+00:00",
+   "em": "2026-10-12T04:29:47+00:00",
    "prazo": "2026-10-26",
    "uf": null,
    "orgao": "Ministério da Saúde (DECOOP/SE)",
@@ -59607,6 +59863,13 @@
      "n": 2,
      "nome": "anexos completos",
      "em": "2026-10-11T15:32:01+00:00",
+     "ganhou": [],
+     "legado": null
+    },
+    {
+     "n": 9,
+     "nome": "leitura profunda",
+     "em": "2026-10-12T04:29:47+00:00",
      "ganhou": [],
      "legado": null
     }
@@ -59766,6 +60029,46 @@
      "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-82-2026-sgtes",
      "degrau": 1,
      "como": "documento citado na página oficial: Chamamento Público nº 82/2026 - Secretaria de Gestão do Trabalho e da Educação na Saúde (SGTES)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas",
+     "degrau": 0,
+     "como": "leitura profunda (até 150 páginas e tabelas)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos",
+     "degrau": 0,
+     "como": "leitura profunda (até 150 páginas e tabelas)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital",
+     "degrau": 0,
+     "como": "leitura profunda (até 150 páginas e tabelas)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 57,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.in.gov.br/web/dou/-/edital-de-chamamento-publico-n-7/2026-736462157",
+     "degrau": 0,
+     "como": "leitura profunda (até 150 páginas e tabelas)",
      "motivo": null,
      "falha": null,
      "oficial": "domínio público oficial",
@@ -75503,146 +75806,6 @@
     "pct_certificado_12": 0.75,
     "pct_cobertura_12": 0.75
    }
-  },
-  {
-   "id": "op-14b69d1fee00",
-   "tipo": "livro",
-   "titulo": "Goianésia — Edital de Chamamento Público Credenciamento nº 002/2025",
-   "balcao": "orgao",
-   "link_oficial": "https://goianesia.go.gov.br/wp-content/uploads/2023/11/Edital-002-2025.pdf",
-   "degrau": 0,
-   "como": "página/documento oficial já conhecido",
-   "faltavam": [
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Esfera",
-    "Requisitos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Esfera",
-    "Requisitos",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Valor",
-    "Destinação"
-   ],
-   "tentativa": 1,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "prata",
-   "estagio_inicio": "prata",
-   "esgotada": null,
-   "eficiencia": 0.75,
-   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-11T15:34:39+00:00",
-   "prazo": null,
-   "uf": "GO",
-   "orgao": "Prefeitura de Goianésia",
-   "fim": null,
-   "itens": {
-    "Prazo de recurso": {
-     "valor": "10 (dez) dias úteis",
-     "trecho": "ar o ato ou a decisão no prazo de 3 (três) dias úteis, encaminhará o recurso com a sua motivação à autoridade superior, a qual deverá proferir sua decisão no prazo máximo de 10 (dez) dias úteis, contado do recebimento dos autos. 9.DAS OBRIGAÇÕES DAS PARTES 9.1 Da",
-     "pagina": 10,
-     "documento": "https://goianesia.go.gov.br/wp-content/uploads/2023/11/Edital-002-2025.pdf",
-     "metodo": "seção"
-    },
-    "Esfera": {
-     "valor": "estadual",
-     "trecho": "domínio/órgão: goianesia.go.gov.br · Secretaria Municipal de Assistência e Promoção Social de Goianésia Prefeitura de",
-     "pagina": 1,
-     "documento": "https://goianesia.go.gov.br/wp-content/uploads/2023/11/Edital-002-2025.pdf",
-     "metodo": "domínio e órgão"
-    },
-    "Requisitos": {
-     "valor": "Os interessados deverão apresentar as seguintes declarações: a) Declaração de inexistência de fato impeditivo e de comunicação obrigatória de fato superveniente (Anexo III);",
-     "trecho": "ponsáveis pela execução dos serviços. 3.6 Outras Comprovações 3.6.1. Os interessados deverão apresentar as seguintes declarações: a) Declaração de inexistência de fato impeditivo e de comunicação obrigatória de fato superveniente (Anexo III); b) Declaração de que não emprega menores, em cumprimento ao disposto",
-     "pagina": 7,
-     "documento": "https://goianesia.go.gov.br/wp-content/uploads/2023/11/Edital-002-2025.pdf",
-     "metodo": "texto"
-    },
-    "Área de atuação": {
-     "valor": "Educação, Saúde, Criança e adolescente",
-     "trecho": "termos do objeto e do título: Educação, Saúde, Criança e adolescente",
-     "pagina": 1,
-     "documento": "https://goianesia.go.gov.br/wp-content/uploads/2023/11/Edital-002-2025.pdf",
-     "metodo": "palavras-chave do objeto"
-    }
-   },
-   "dispensas": {
-    "Prazo de inscrição": {
-     "motivo": "dispensado pelo Cartório — não se aplica: inscrição em fluxo contínuo (cadastro permanente, sem data-limite)",
-     "trecho": "atura do termo, sob pena de convocação do próximo habilitado; 1.6. A qualquer tempo durante o prazo de vigência deste edital, os interessados poderão pro",
-     "pagina": 1,
-     "documento": "https://goianesia.go.gov.br/wp-content/uploads/2023/11/Edital-002-2025.pdf"
-    },
-    "Resultado": {
-     "motivo": "dispensado pelo Cartório — não se aplica: credenciamento sem seleção competitiva — todos os habilitados são credenciados",
-     "trecho": "ue a partir do dia 14/04/2025 estarão sendo feitas inscrições para o credenciamento de pessoas jurídicas para atend erem no Centro de Referência Especi",
-     "pagina": 1,
-     "documento": "https://goianesia.go.gov.br/wp-content/uploads/2023/11/Edital-002-2025.pdf"
-    }
-   },
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-11T15:34:39+00:00",
-     "ganhou": [
-      "Esfera",
-      "Prazo de inscrição",
-      "Prazo de recurso",
-      "Requisitos",
-      "Resultado",
-      "Área de atuação"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://goianesia.go.gov.br/wp-content/uploads/2023/11/Edital-002-2025.pdf",
-     "degrau": 0,
-     "como": "página/documento oficial já conhecido",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 16,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "ja_constava",
-     "Prazo de inscrição": "dispensado",
-     "Resultado": "dispensado",
-     "Prazo de recurso": "certificado",
-     "Valor": "falta",
-     "Órgão / financiador": "ja_constava",
-     "Território": "ja_constava",
-     "Esfera": "certificado",
-     "Requisitos": "certificado",
-     "Anexos": "ja_constava",
-     "Destinação": "falta",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 4,
-    "dispensados": 2,
-    "ja_constavam": 4,
-    "faltam": 2,
-    "pct_certificado_12": 0.5,
-    "pct_cobertura_12": 0.8333
-   }
   }
  ],
  "linha_de_producao": {
@@ -75665,8 +75828,8 @@
   },
   "fila_oportunidades": 329,
   "fila_livros": 2186,
-  "devidas_nesta_hora": 2441,
-  "promovidas_nesta_execucao": 1,
+  "devidas_nesta_hora": 2429,
+  "promovidas_nesta_execucao": 0,
   "sem_material_agora": 7,
   "esgotadas_10_abordagens": 0,
   "biblioteca_de_sites": {
