@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-12T11:34:12+00:00",
+  "em": "2026-10-12T11:56:39+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-12T11:32:56+00:00",
+  "ultimo_voo": "2026-10-12T11:36:55+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,88 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 35,
+    "missoes": 36,
     "validadas": 0,
     "parciais": 7,
-    "insuficientes": 24,
+    "insuficientes": 25,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 27,
+      "sim": 28,
       "nao": 2
     },
     "estrelas_de_ouro": 0,
     "fontes_novas_para_os_motores": 0,
-    "tempo_medio_min": 11.8
+    "tempo_medio_min": 12.0
   },
   "missoes": [
+    {
+      "em": "2026-10-12T11:36:55+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Juatuba (MG) 2026-09-16 — \"chamamento público\" \"organizações da sociedade civil\"",
+      "qualidade": "insuficiente",
+      "comprovados": 4,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Território",
+        "Requisitos",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto menciona que o edital é um chamamento público para organizações da sociedade civil, financiado pelo Poder Executivo municipal, o que confirma sua relevância.",
+        "para_a_amc": "Para acessar, a associação comunitária de Goiânia precisaria se inscrever no chamamento público, apresentar os documentos exigidos no edital e demonstrar que sua atuação se enquadra nas áreas de assistência social, cultura, educação e esporte.",
+        "proximo_passo": "Consultar o edital completo para verificar os requisitos e o processo de inscrição.",
+        "risco": "A falta de informações sobre os requisitos e o prazo de inscrição pode impedir a associação de se candidatar adequadamente."
+      },
+      "erro": null,
+      "segundos": 1182,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "d37994207a4a79560439",
+      "encontrou": {
+        "Órgão / financiador": {
+          "valor": "Poder Executivo",
+          "trecho": "PODER EXECUTIVO",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "aaa pppaaarrrccceeerrriiiaaa mmmooonnniiitttooorrraaadddaaa ttteeemmm pppooorrr eeessscccooopppooo aaa mmmúúútttuuuaaa cccoooooopppeeerrraaaçççãããooo cccooommm ooorrrgggaaannniiizz",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Juatuba",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3136652/2026-09-16/191a2855f21eaecee82a3a96d7eb019a4a4c98a5.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-12T11:32:56+00:00",
       "modo": "dossie",
