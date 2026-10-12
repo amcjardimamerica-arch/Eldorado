@@ -1259,14 +1259,14 @@ box-sizing:border-box;}
    morph só nas informações e na janela de detalhe. Estilo restrito a esta seção. */
 #v-neural,#nv-portal{--ceu0:#070C24;--ceu1:#151B45;--estrela:#EAF2FF;--aurora:#5EE6C8;--violeta:#9B8CFF;--ambar:#FFB347;--coral:#FF6B6B;--nevoa:#8B93B8;--vidro:rgba(16,22,58,.70);
   font-family:"Saira Semi Condensed","Saira","Arial Narrow",sans-serif;color:var(--estrela)}
-#v-neural .obs{position:relative;width:100vw;margin-left:calc(50% - 50vw);background:radial-gradient(1400px 900px at 78% 8%,#2A2470 0,transparent 60%),
+#v-neural .obs{position:relative;width:calc(100vw - var(--sbw,0px));margin-left:calc(50% - 50vw + var(--sbw,0px) / 2);background:radial-gradient(1400px 900px at 78% 8%,#2A2470 0,transparent 60%),
   radial-gradient(1200px 1000px at 8% 52%,#0F3A4A 0,transparent 58%),radial-gradient(1000px 800px at 70% 96%,#3A1E5E 0,transparent 60%),linear-gradient(180deg,var(--ceu0),var(--ceu1) 55%,var(--ceu0))}
 #v-neural canvas.ceu{position:sticky;top:0;display:block;width:100%;height:100vh;margin-bottom:-100vh;z-index:0;pointer-events:none}
 #v-neural .palco{position:relative;z-index:1;padding:42px 3.2vw 70px}
 #v-neural .mx,#nv-portal .mx{font-family:"Michroma","Saira",sans-serif;letter-spacing:.02em}
 #v-neural .faint,#nv-portal .faint{color:var(--nevoa)}
 /* observatório */
-#v-neural .topo{display:grid;grid-template-columns:minmax(320px,26%) 1fr minmax(360px,30%);gap:28px;align-items:stretch;margin-bottom:34px}
+#v-neural .topo{display:grid;grid-template-columns:minmax(280px,25%) minmax(0,1fr) minmax(300px,29%);gap:28px;align-items:stretch;margin-bottom:34px}
 #v-neural .titulo h2{margin:0;font:400 34px/1.05 "Michroma",sans-serif}
 #v-neural .titulo p{margin:12px 0 18px;color:#C9CFEA;font-size:16px;line-height:1.5;max-width:46ch}
 #v-neural .vidro{background:var(--vidro);contain:paint;border:1px solid rgba(155,140,255,.22);
@@ -1301,10 +1301,10 @@ box-sizing:border-box;}
   71%{filter:brightness(1.6);box-shadow:0 0 10px 3px #FF7A84,0 0 32px 10px rgba(255,61,79,.8)}86%{filter:brightness(.85)}}
 @keyframes raios{0%,100%{transform:scale(.7) rotate(0deg);opacity:.45}12%{transform:scale(1.15) rotate(8deg);opacity:.9}37%{transform:scale(.95) rotate(-4deg);opacity:.7}71%{transform:scale(1.25) rotate(6deg);opacity:1}}
 #v-neural .esteira{padding:16px 18px}
-#v-neural .tubo{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 8px}
+#v-neural .tubo{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px 8px}
 #v-neural .tubo div{background:rgba(94,230,200,.07);border-radius:12px;padding:8px 10px}
-#v-neural .tubo b{display:block;font:400 18px "Michroma",sans-serif;color:var(--aurora)}
-#v-neural .tubo small{font-size:12.5px;color:#AEB5D6}
+#v-neural .tubo b{display:block;font:400 clamp(13px,1.05vw,18px) "Michroma",sans-serif;color:var(--aurora);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#v-neural .tubo small{font-size:12px;color:#AEB5D6;display:block;line-height:1.2}
 /* faixas das etapas */
 #v-neural .faixa{position:relative;display:grid;grid-template-columns:minmax(260px,21%) 1fr minmax(300px,24%);gap:26px;align-items:center;margin:0 0 54px;padding:22px 26px;cursor:pointer;
   transition:border-color .3s,box-shadow .3s}
@@ -1350,7 +1350,7 @@ box-sizing:border-box;}
   background:linear-gradient(160deg,rgba(32,38,92,.94),rgba(12,17,46,.96));border:1px solid rgba(94,230,200,.35);border-radius:26px;
   box-shadow:0 0 0 1px rgba(155,140,255,.12),0 40px 120px -30px rgba(94,230,200,.35),inset 0 1px 0 rgba(255,255,255,.08);display:none}
 #v-neural .holo::before,#nv-portal .holo::before{content:"";position:absolute;inset:0;border-radius:26px;pointer-events:none;background:repeating-linear-gradient(180deg,rgba(255,255,255,.025) 0 1px,transparent 1px 4px)}
-#v-neural .holo .conteudo,#nv-portal .holo .conteudo{opacity:0;transition:opacity .25s .18s}#v-neural .holo.pronta .conteudo{opacity:1}
+#v-neural .holo .conteudo,#nv-portal .holo .conteudo{opacity:0;transition:opacity .22s .2s}#v-neural .holo.pronta .conteudo{opacity:1}
 #v-neural .holo h3,#nv-portal .holo h3{margin:4px 0 6px;font:400 26px "Michroma",sans-serif}
 #v-neural .holo .fechar,#nv-portal .holo .fechar{float:right;border:1px solid rgba(94,230,200,.5);background:transparent;color:var(--aurora);border-radius:999px;padding:7px 16px;font:600 14px "Saira Semi Condensed",sans-serif;cursor:pointer}
 #v-neural .holo .grade,#nv-portal .holo .grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(480px,1fr));gap:16px;margin-top:18px}
@@ -1374,6 +1374,10 @@ box-sizing:border-box;}
 #v-neural .matriz span,#nv-portal .matriz span{font-size:12px;padding:5px 7px;border-radius:7px;background:rgba(255,255,255,.04);display:flex;gap:6px;align-items:center;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 #v-neural .matriz i,#nv-portal .matriz i{width:7px;height:7px;border-radius:50%;flex:none}
 @media (prefers-reduced-motion:reduce){#v-neural .faixa,#v-neural .faixa .cam,#v-neural .jan,#v-neural .veu{transition:none}#v-neural .jan.vermelho i{animation:none}}
+
+/* 11/10 (auditoria do Chrome): regras da janela copiadas para o portal, uma a uma — antes só a 1ª regra de cada linha */
+#nv-portal .holo.pronta .conteudo{opacity:1}
+#nv-portal .holo dd{margin:0;color:#DDE2F6;overflow-wrap:anywhere}
 </style>
 <div class="obs" id="nv-obs">
   <canvas class="ceu" id="nv-ceu" aria-hidden="true"></canvas>
@@ -1537,8 +1541,9 @@ box-sizing:border-box;}
     H.style.transform=`translate(${o.left-innerWidth/2}px,${o.top-innerHeight/2}px) scale(${o.width/w},${o.height/h})`;
     V.classList.add("on"); void H.offsetWidth;
     H.style.transition=quieto?"none":"transform .55s cubic-bezier(.2,.85,.2,1)"; H.style.transform=`translate(${-w/2}px,${-h/2}px) scale(1,1)`;
-    H.scrollTop=0;
-    H._tPronta=setTimeout(()=>{ if(H._sessao!==sessao) return; H.classList.add("pronta"); if(instId){const el=$("nv-i-"+instId); if(el){H.scrollTop=Math.max(0,el.offsetTop-90); el.style.borderColor="rgba(94,230,200,.7)";}} H.querySelector(".fechar").focus({preventScroll:true});},quieto?0:380);
+    H.scrollTop=0; H.classList.add("pronta");
+    requestAnimationFrame(()=>{ if(H._sessao===sessao&&!instId) H.scrollTop=0; });   // a janela de uma etapa abre sempre no começo
+    H._tPronta=setTimeout(()=>{ if(H._sessao!==sessao) return; if(!instId) H.scrollTop=0; if(instId){const el=$("nv-i-"+instId); if(el){H.scrollTop=Math.max(0,el.offsetTop-90); el.style.borderColor="rgba(94,230,200,.7)";}} H.querySelector(".fechar").focus({preventScroll:true});},quieto?0:380);
     H._origem=origem;
   }
   window.nvFluxo=function(i,origem){ const f=(SC.fluxos||[])[i]; if(!f) return; const H=$("nv-holo"),V=$("nv-veu"); foco=null;
@@ -1628,12 +1633,19 @@ box-sizing:border-box;}
       f.addEventListener("pointerenter",()=>{const k=no(); if(k) k.hover=true;});
       f.addEventListener("pointerleave",()=>{const k=no(); if(k) k.hover=false;}); });
     // estrela de dado: passar o mouse diz qual motor é; clicar abre a coleta
-    P.addEventListener("pointermove",ev=>{ if(ev.target.closest(".vidro")){dica.style.display="none";return;} const pr=P.getBoundingClientRect(), x=ev.clientX-pr.left, y=ev.clientY-pr.top;
-      const s=ESTRELAS.find(q=>(q.dado||q.erro)&&Math.hypot(q.x-x,q.y-y)<10); if(s){dica.style.display="block";dica.style.left=(ev.clientX+14)+"px";dica.style.top=(ev.clientY+12)+"px";
+    P.addEventListener("pointermove",ev=>{ const sobreVidro=!!ev.target.closest(".vidro"); const pr=P.getBoundingClientRect(), x=ev.clientX-pr.left, y=ev.clientY-pr.top;
+      // sinapse entre as faixas: o nó de saída ou de entrada diz de qual etapa para qual
+      if(!sobreVidro){ for(let k=0;k<NOS.length-1;k++){ const A=NOS[k],Bn=NOS[k+1]; const pa=[A.x,A.y1+2], pb=[Bn.x,Bn.y0-2];
+          if(Math.hypot(pa[0]-x,pa[1]-y)<14||Math.hypot(pb[0]-x,pb[1]-y)<14||(y>A.y1&&y<Bn.y0&&Math.abs(x-(A.x+(Bn.x-A.x)*((y-A.y1)/Math.max(1,Bn.y0-A.y1))))<40&&false)){
+            const nA=(ETAPAS.find(t=>t.id===A.id)||{}).nome, nB=(ETAPAS.find(t=>t.id===Bn.id)||{}).nome;
+            dica.style.display="block";dica.style.left=(ev.clientX+14)+"px";dica.style.top=(ev.clientY+12)+"px";
+            dica.innerHTML=`<b>Sinapse</b><br>${e(nA)} → ${e(nB)}<br><span style="color:#8B93B8">clique para abrir ${e(nB)}</span>`; P.style.cursor="pointer"; P._estrela={sinapse:Bn.id}; return; } } }
+      const s=ESTRELAS.find(q=>(q.dado||q.erro)&&Math.hypot(q.x-x,q.y-y)<12); if(s){dica.style.display="block";dica.style.left=(ev.clientX+14)+"px";dica.style.top=(ev.clientY+12)+"px";
         dica.innerHTML=s.dado?`<b>${e(s.dado.nome)}</b><br><span style="color:${s.dado.luz==="vermelho"?COR.vermelho:COR.verde}">${s.dado.luz==="vermelho"?"em falha":"funcionando"}</span> · ${e(s.dado.resultado||"")}`
           :`<b>${e(s.erro.nome)}</b><br><span style="color:${COR[s.erro.nivel]}">${EST[s.erro.nivel]}</span> · ${e(s.erro.motivo||"")}`; P.style.cursor="pointer"; P._estrela=s;}
       else {dica.style.display="none"; P.style.cursor=""; P._estrela=null;} });
-    P.addEventListener("click",ev=>{ if(P._estrela&&!ev.target.closest(".vidro")) nvHolo("coleta",{getBoundingClientRect:()=>({left:ev.clientX-6,top:ev.clientY-6,width:12,height:12})}); });
+    P.addEventListener("click",ev=>{ const s=P._estrela; if(!s||ev.target.closest(".vidro")) return; const o={getBoundingClientRect:()=>({left:ev.clientX-6,top:ev.clientY-6,width:12,height:12})};
+      if(s.sinapse) return nvHolo(s.sinapse,o); if(s.dado) return nvHolo("coleta",o); if(s.erro){ const et=ETAPAS.find(t=>s.y>=(NOS.find(q=>q.id===t.id)||{}).y0&&s.y<=(NOS.find(q=>q.id===t.id)||{}).y1); return nvHolo(et?et.id:"farol",o); } });
     // números que sobem ao entrar na tela
     const io=new IntersectionObserver(es=>es.forEach(en=>{ if(!en.isIntersecting||quieto) return; en.target.querySelectorAll(".va").forEach(p=>{p.style.transition="none";p.style.strokeDashoffset=p.dataset.l; void p.getBoundingClientRect(); p.style.transition="stroke-dashoffset 1.3s cubic-bezier(.2,.8,.2,1)"; p.style.strokeDashoffset=p.dataset.o;}); io.unobserve(en.target); }),{threshold:.35});
     document.querySelectorAll("#v-neural .faixa").forEach(f=>io.observe(f));
@@ -1641,7 +1653,9 @@ box-sizing:border-box;}
     vis.observe($("nv-obs")); document.addEventListener("visibilitychange",()=>{ if(document.hidden) ativa=false; else if(!$("v-neural").classList.contains("oculto")){ativa=true;requestAnimationFrame(desenharCeu);} });
     addEventListener("resize",()=>montarCeu());
   }
-  function desenha(){ const d=SC, c=d.contagem||{}, M=d.mimico||[];
+  function barraRolagem(){ document.documentElement.style.setProperty("--sbw",(innerWidth-document.documentElement.clientWidth)+"px"); }
+  addEventListener("resize",barraRolagem);
+  function desenha(){ barraRolagem(); const d=SC, c=d.contagem||{}, M=d.mimico||[];
     $("nv-indice").innerHTML=mostrador({nome:"Índice de saúde",valor:d.indice_saude,escala:[0,100],faixa:{normal:[80,null],alarme:[50,null]},estado:d.indice_saude>=80?"verde":d.indice_saude>=50?"amarelo":"vermelho"},150);
     $("nv-contagens").innerHTML=`<div class="faint" style="font-size:13px">índice de saúde do sistema</div>`+["verde","amarelo","vermelho","cinza"].map(k=>`<span style="color:${COR[k]}"><span class="luz ${k}"></span><b style="color:#EAF2FF">${c[k]||0}</b>&nbsp;${EST[k]}</span>`).join("");
     const etDe=id=>(ETAPAS.find(t=>t.ids.includes(id))||{}).id||"farol";

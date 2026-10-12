@@ -1,0 +1,1169 @@
+{
+ "versao_confirmada": true,
+ "titulo_da_pagina": "Rede Neural",
+ "erros_console": [],
+ "erros_console_obs": "Nenhuma mensagem de erro no console ao abrir a página nem durante os cliques.",
+ "sala_controle_json": {
+  "endereco": "https://raw.githubusercontent.com/amcjardimamerica-arch/Eldorado/main/docs/dados/sala_controle.json",
+  "status": 200,
+  "tamanho_kb": 63.6,
+  "obs": "65.137 bytes; a cópia do próprio site (dados/sala_controle.json) também responde 200"
+ },
+ "causa_provavel_das_janelas_vazias": "A janela (#nv-holo) é montada dentro de #nv-portal, fora de #v-neural. O CSS esconde o conteúdo nos dois lugares ('#v-neural .holo .conteudo, #nv-portal .holo .conteudo { opacity: 0 }'), mas a regra que revela ('.holo.pronta .conteudo { opacity: 1 }') só existe para #v-neural. A classe 'pronta' é aplicada e o texto completo está no DOM; falta acrescentar: #nv-portal .holo.pronta .conteudo { opacity: 1; }",
+ "outros_achados": [
+  "'O caminho do dado' corta à direita: 'Com livro' (27…) e 'Prontas para o Farol' (42…) aparecem pela metade e surge barra de rolagem horizontal.",
+  "Estrelas do céu fora das faixas não reagem a passar o mouse nem a clique."
+ ],
+ "cliques": [
+  {
+   "area": "Topo",
+   "rotulo": "mostrador índice de saúde",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar · observatório · Índice de saúde do sistema: 87 · Cada instrumento conta 100 quando normal, 60 em atenção e 15 em alarme (clique real com o mouse)"
+  },
+  {
+   "area": "Topo",
+   "rotulo": "contagem: índice de saúde do sistema",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "FecharobservatórioÍndice de saúde do sistema: 87 Cada instrumento conta 100 quando normal, 60 em atenção e 15 em alarme; o índice é a média. Clique num instrumento para abrir a eta"
+  },
+  {
+   "area": "Topo",
+   "rotulo": "contagem: 14 normal",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "FecharobservatórioÍndice de saúde do sistema: 87 Cada instrumento conta 100 quando normal, 60 em atenção e 15 em alarme; o índice é a média. Clique num instrumento para abrir a eta"
+  },
+  {
+   "area": "Topo",
+   "rotulo": "contagem: 4 atenção",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "FecharobservatórioÍndice de saúde do sistema: 87 Cada instrumento conta 100 quando normal, 60 em atenção e 15 em alarme; o índice é a média. Clique num instrumento para abrir a eta"
+  },
+  {
+   "area": "Topo",
+   "rotulo": "contagem: 1 alarme",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "FecharobservatórioÍndice de saúde do sistema: 87 Cada instrumento conta 100 quando normal, 60 em atenção e 15 em alarme; o índice é a média. Clique num instrumento para abrir a eta"
+  },
+  {
+   "area": "Topo",
+   "rotulo": "contagem: 1 sem leitura",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "FecharobservatórioÍndice de saúde do sistema: 87 Cada instrumento conta 100 quando normal, 60 em atenção e 15 em alarme; o índice é a média. Clique num instrumento para abrir a eta"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Motores sem leitura completa após 3 tentativas",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLirao instrumento do maestroetapa 1 de 9 · alarme RegênciaO maestro planeja quais motores rodam hoje, em que ordem, e cobra a leitura completa até trê"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Fluxo com falha: 00 · Verificar prontidão",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCarinaCanopo guia os navegadoresetapa 9 de 9 · normal Farol de AlexandriaO que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol pa"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Fluxo com falha: 03 · Eldorado — carga histórica de cinco anos (campan",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCarinaCanopo guia os navegadoresetapa 9 de 9 · normal Farol de AlexandriaO que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol pa"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Motores funcionando",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaVirgema espiga: a colheitaetapa 2 de 9 · atenção ColetaOs motores varrem diários oficiais, portais, agregadores e sites; cada um precisa ler dentro da"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Motores regulares fora da cadência",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaVirgema espiga: a colheitaetapa 2 de 9 · atenção ColetaOs motores varrem diários oficiais, portais, agregadores e sites; cada um precisa ler dentro da"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Abertas com livro na Biblioteca",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Menora Polar diz onde buscaretapa 5 de 9 · atenção BibliotecaCada oportunidade ganha um livro que guarda o histórico e diz onde buscar; o motor d"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Itens certificados na fonte oficial",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLibraa balança: certificaretapa 6 de 9 · atenção CertificaçãoO Cartório encontra o documento oficial e certifica os 12 itens, cada um com trecho e pág"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Resumo da vigilância dos livros ausente",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Menora Polar diz onde buscaretapa 5 de 9 · atenção BibliotecaCada oportunidade ganha um livro que guarda o histórico e diz onde buscar; o motor d"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Arquivos sem uso há 30 dias",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCarinaCanopo guia os navegadoresetapa 9 de 9 · normal Farol de AlexandriaO que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol pa"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Discernimento (AUC)",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Precisão",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Revocação",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Erro de calibração (Brier)",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Idade do modelo",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Cobertura do dia",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLirao instrumento do maestroetapa 1 de 9 · alarme RegênciaO maestro planeja quais motores rodam hoje, em que ordem, e cobra a leitura completa até trê"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Coletado pelos motores",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaVirgema espiga: a colheitaetapa 2 de 9 · atenção ColetaOs motores varrem diários oficiais, portais, agregadores e sites; cada um precisa ler dentro da"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Oportunidades abertas",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Maiora grande concha que guardaetapa 3 de 9 · normal RepositórioTudo vira um registro único por oportunidade, sem duplicata e com a mesma contage"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Livros vigiados pelo próprio motor",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Menora Polar diz onde buscaretapa 5 de 9 · atenção BibliotecaCada oportunidade ganha um livro que guarda o histórico e diz onde buscar; o motor d"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Interceptador",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaÓriono caçadoretapa 7 de 9 · normal InvestigaçãoOs Pilotos pesquisam na web o que o Cartório não alcança e descobrem empresas e chamadas novas.23na fi"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Espião",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaÓriono caçadoretapa 7 de 9 · normal InvestigaçãoOs Pilotos pesquisam na web o que o Cartório não alcança e descobrem empresas e chamadas novas.23na fi"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Piloto (voos do dia)",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaÓriono caçadoretapa 7 de 9 · normal InvestigaçãoOs Pilotos pesquisam na web o que o Cartório não alcança e descobrem empresas e chamadas novas.23na fi"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Rankings de empresas",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCarinaCanopo guia os navegadoresetapa 9 de 9 · normal Farol de AlexandriaO que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol pa"
+  },
+  {
+   "area": "Painel de alarmes",
+   "rotulo": "Pacotes no arquivo frio",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCarinaCanopo guia os navegadoresetapa 9 de 9 · normal Farol de AlexandriaO que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol pa"
+  },
+  {
+   "area": "O caminho do dado",
+   "rotulo": "17.916Coleta",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaVirgema espiga: a colheitaetapa 2 de 9 · atenção ColetaOs motores varrem diários oficiais, portais, agregadores e sites; cada um precisa ler dentro da"
+  },
+  {
+   "area": "O caminho do dado",
+   "rotulo": "2.116Distintas",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Maiora grande concha que guardaetapa 3 de 9 · normal RepositórioTudo vira um registro único por oportunidade, sem duplicata e com a mesma contage"
+  },
+  {
+   "area": "O caminho do dado",
+   "rotulo": "368Abertas",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Maiora grande concha que guardaetapa 3 de 9 · normal RepositórioTudo vira um registro único por oportunidade, sem duplicata e com a mesma contage"
+  },
+  {
+   "area": "O caminho do dado",
+   "rotulo": "277Com livro",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Menora Polar diz onde buscaretapa 5 de 9 · atenção BibliotecaCada oportunidade ganha um livro que guarda o histórico e diz onde buscar; o motor d"
+  },
+  {
+   "area": "O caminho do dado",
+   "rotulo": "210Cartório",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLibraa balança: certificaretapa 6 de 9 · atenção CertificaçãoO Cartório encontra o documento oficial e certifica os 12 itens, cada um com trecho e pág"
+  },
+  {
+   "area": "O caminho do dado",
+   "rotulo": "23Interceptador",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaÓriono caçadoretapa 7 de 9 · normal InvestigaçãoOs Pilotos pesquisam na web o que o Cartório não alcança e descobrem empresas e chamadas novas.23na fi"
+  },
+  {
+   "area": "O caminho do dado",
+   "rotulo": "0Verificação externa",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCruzeiro do Sula orientação finaletapa 8 de 9 · sem leitura Verificação externaA exceção: o que sobrou vai ao Claude, que arquiva, elimina ou completa"
+  },
+  {
+   "area": "O caminho do dado",
+   "rotulo": "42Prontas para o Farol",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCarinaCanopo guia os navegadoresetapa 9 de 9 · normal Farol de AlexandriaO que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol pa"
+  },
+  {
+   "area": "faixa 01 · Regência",
+   "rotulo": "título/descrição",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLirao instrumento do maestroetapa 1 de 9 · alarme RegênciaO maestro planeja quais motores rodam hoje, em que ordem, e cobra a leitura completa até trê"
+  },
+  {
+   "area": "faixa 01 · Regência",
+   "rotulo": "mostrador: 62%cobertura do dia",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLirao instrumento do maestroetapa 1 de 9 · alarme RegênciaO maestro planeja quais motores rodam hoje, em que ordem, e cobra a leitura completa até trê"
+  },
+  {
+   "area": "faixa 01 · Regência",
+   "rotulo": "mostrador: 34sem leitura completa",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLirao instrumento do maestroetapa 1 de 9 · alarme RegênciaO maestro planeja quais motores rodam hoje, em que ordem, e cobra a leitura completa até trê"
+  },
+  {
+   "area": "faixa 01 · Regência",
+   "rotulo": "número: 125motores planejados hoje",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLirao instrumento do maestroetapa 1 de 9 · alarme RegênciaO maestro planeja quais motores rodam hoje, em que ordem, e cobra a leitura completa até trê"
+  },
+  {
+   "area": "faixa 01 · Regência",
+   "rotulo": "último sinal: último sinal há 2 minCobertura do dia · a cada 2 h",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLirao instrumento do maestroetapa 1 de 9 · alarme RegênciaO maestro planeja quais motores rodam hoje, em que ordem, e cobra a leitura completa até trê"
+  },
+  {
+   "area": "faixa 01 · Regência",
+   "rotulo": "lista: completa60",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLirao instrumento do maestroetapa 1 de 9 · alarme RegênciaO maestro planeja quais motores rodam hoje, em que ordem, e cobra a leitura completa até trê"
+  },
+  {
+   "area": "faixa 01 · Regência",
+   "rotulo": "lista: parcial35",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLirao instrumento do maestroetapa 1 de 9 · alarme RegênciaO maestro planeja quais motores rodam hoje, em que ordem, e cobra a leitura completa até trê"
+  },
+  {
+   "area": "faixa 01 · Regência",
+   "rotulo": "lista: aguardando_horario28",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLirao instrumento do maestroetapa 1 de 9 · alarme RegênciaO maestro planeja quais motores rodam hoje, em que ordem, e cobra a leitura completa até trê"
+  },
+  {
+   "area": "faixa 01 · Regência",
+   "rotulo": "lista: pendente_local2",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLirao instrumento do maestroetapa 1 de 9 · alarme RegênciaO maestro planeja quais motores rodam hoje, em que ordem, e cobra a leitura completa até trê"
+  },
+  {
+   "area": "faixa 02 · Coleta",
+   "rotulo": "título/descrição",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaVirgema espiga: a colheitaetapa 2 de 9 · atenção ColetaOs motores varrem diários oficiais, portais, agregadores e sites; cada um precisa ler dentro da"
+  },
+  {
+   "area": "faixa 02 · Coleta",
+   "rotulo": "mostrador: 83%funcionando",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaVirgema espiga: a colheitaetapa 2 de 9 · atenção ColetaOs motores varrem diários oficiais, portais, agregadores e sites; cada um precisa ler dentro da"
+  },
+  {
+   "area": "faixa 02 · Coleta",
+   "rotulo": "mostrador: 3fora da cadência",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaVirgema espiga: a colheitaetapa 2 de 9 · atenção ColetaOs motores varrem diários oficiais, portais, agregadores e sites; cada um precisa ler dentro da"
+  },
+  {
+   "area": "faixa 02 · Coleta",
+   "rotulo": "número: 17.916coletados",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaVirgema espiga: a colheitaetapa 2 de 9 · atenção ColetaOs motores varrem diários oficiais, portais, agregadores e sites; cada um precisa ler dentro da"
+  },
+  {
+   "area": "faixa 02 · Coleta",
+   "rotulo": "último sinal: último sinal há 1 minColetado pelos motores · a ca",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaVirgema espiga: a colheitaetapa 2 de 9 · atenção ColetaOs motores varrem diários oficiais, portais, agregadores e sites; cada um precisa ler dentro da"
+  },
+  {
+   "area": "faixa 02 · Coleta",
+   "rotulo": "lista: Diário da Justiça Federal — Seção Judiciária de Goiásfalha",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaVirgema espiga: a colheitaetapa 2 de 9 · atenção ColetaOs motores varrem diários oficiais, portais, agregadores e sites; cada um precisa ler dentro da"
+  },
+  {
+   "area": "faixa 02 · Coleta",
+   "rotulo": "lista: Assembleia Legislativa de Goiás — proposiçõesfalha",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaVirgema espiga: a colheitaetapa 2 de 9 · atenção ColetaOs motores varrem diários oficiais, portais, agregadores e sites; cada um precisa ler dentro da"
+  },
+  {
+   "area": "faixa 02 · Coleta",
+   "rotulo": "lista: Motor Incentivos Fiscais — empresas da base ICMS/RFB/SALIC (",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaVirgema espiga: a colheitaetapa 2 de 9 · atenção ColetaOs motores varrem diários oficiais, portais, agregadores e sites; cada um precisa ler dentro da"
+  },
+  {
+   "area": "faixa 02 · Coleta",
+   "rotulo": "lista: Motor Patrocínio Privado — mídia e eventos de Goiás (empresa",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaVirgema espiga: a colheitaetapa 2 de 9 · atenção ColetaOs motores varrem diários oficiais, portais, agregadores e sites; cada um precisa ler dentro da"
+  },
+  {
+   "area": "faixa 02 · Coleta",
+   "rotulo": "lista: Lei Rouanet — janela de propostas no SALIC e projetos de Goi",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaVirgema espiga: a colheitaetapa 2 de 9 · atenção ColetaOs motores varrem diários oficiais, portais, agregadores e sites; cada um precisa ler dentro da"
+  },
+  {
+   "area": "faixa 03 · Repositório",
+   "rotulo": "título/descrição",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Maiora grande concha que guardaetapa 3 de 9 · normal RepositórioTudo vira um registro único por oportunidade, sem duplicata e com a mesma contage"
+  },
+  {
+   "area": "faixa 03 · Repositório",
+   "rotulo": "número: 368abertas",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Maiora grande concha que guardaetapa 3 de 9 · normal RepositórioTudo vira um registro único por oportunidade, sem duplicata e com a mesma contage"
+  },
+  {
+   "area": "faixa 03 · Repositório",
+   "rotulo": "número: 46validadas",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Maiora grande concha que guardaetapa 3 de 9 · normal RepositórioTudo vira um registro único por oportunidade, sem duplicata e com a mesma contage"
+  },
+  {
+   "area": "faixa 03 · Repositório",
+   "rotulo": "número: 315em verificação",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Maiora grande concha que guardaetapa 3 de 9 · normal RepositórioTudo vira um registro único por oportunidade, sem duplicata e com a mesma contage"
+  },
+  {
+   "area": "faixa 03 · Repositório",
+   "rotulo": "número: 7validação manual",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Maiora grande concha que guardaetapa 3 de 9 · normal RepositórioTudo vira um registro único por oportunidade, sem duplicata e com a mesma contage"
+  },
+  {
+   "area": "faixa 03 · Repositório",
+   "rotulo": "último sinal: último sinal há 1 minOportunidades abertas · a cad",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Maiora grande concha que guardaetapa 3 de 9 · normal RepositórioTudo vira um registro único por oportunidade, sem duplicata e com a mesma contage"
+  },
+  {
+   "area": "faixa 03 · Repositório",
+   "rotulo": "lista: agregador140",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Maiora grande concha que guardaetapa 3 de 9 · normal RepositórioTudo vira um registro único por oportunidade, sem duplicata e com a mesma contage"
+  },
+  {
+   "area": "faixa 03 · Repositório",
+   "rotulo": "lista: interceptador74",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Maiora grande concha que guardaetapa 3 de 9 · normal RepositórioTudo vira um registro único por oportunidade, sem duplicata e com a mesma contage"
+  },
+  {
+   "area": "faixa 03 · Repositório",
+   "rotulo": "lista: site_oficial57",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Maiora grande concha que guardaetapa 3 de 9 · normal RepositórioTudo vira um registro único por oportunidade, sem duplicata e com a mesma contage"
+  },
+  {
+   "area": "faixa 03 · Repositório",
+   "rotulo": "lista: espiao18",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Maiora grande concha que guardaetapa 3 de 9 · normal RepositórioTudo vira um registro único por oportunidade, sem duplicata e com a mesma contage"
+  },
+  {
+   "area": "faixa 03 · Repositório",
+   "rotulo": "lista: querido_diario13",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Maiora grande concha que guardaetapa 3 de 9 · normal RepositórioTudo vira um registro único por oportunidade, sem duplicata e com a mesma contage"
+  },
+  {
+   "area": "faixa 03 · Repositório",
+   "rotulo": "lista: revisao8",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Maiora grande concha que guardaetapa 3 de 9 · normal RepositórioTudo vira um registro único por oportunidade, sem duplicata e com a mesma contage"
+  },
+  {
+   "area": "faixa 04 · Pertinência e aprendizado",
+   "rotulo": "título/descrição",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "faixa 04 · Pertinência e aprendizado",
+   "rotulo": "mostrador: 0,845discernimento",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "faixa 04 · Pertinência e aprendizado",
+   "rotulo": "mostrador: 0,757precisão",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "faixa 04 · Pertinência e aprendizado",
+   "rotulo": "mostrador: 0,644revocação",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "faixa 04 · Pertinência e aprendizado",
+   "rotulo": "mostrador: 0,156erro de calibração",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "faixa 04 · Pertinência e aprendizado",
+   "rotulo": "mostrador: 0,4idade do modelo",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "faixa 04 · Pertinência e aprendizado",
+   "rotulo": "último sinal: último sinal há 1 minDiscernimento (AUC) · a cada ",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "faixa 04 · Pertinência e aprendizado",
+   "rotulo": "lista: pendentes prováveis reais341",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "faixa 04 · Pertinência e aprendizado",
+   "rotulo": "lista: decisões usadas para aprender1.951",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "faixa 04 · Pertinência e aprendizado",
+   "rotulo": "lista: Cartório: abordagem241",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "faixa 04 · Pertinência e aprendizado",
+   "rotulo": "lista: acompanhar o prazo46",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "faixa 04 · Pertinência e aprendizado",
+   "rotulo": "lista: Cartório: achar o site oficial31",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "faixa 05 · Biblioteca",
+   "rotulo": "título/descrição",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Menora Polar diz onde buscaretapa 5 de 9 · atenção BibliotecaCada oportunidade ganha um livro que guarda o histórico e diz onde buscar; o motor d"
+  },
+  {
+   "area": "faixa 05 · Biblioteca",
+   "rotulo": "mostrador: 75%com livro",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Menora Polar diz onde buscaretapa 5 de 9 · atenção BibliotecaCada oportunidade ganha um livro que guarda o histórico e diz onde buscar; o motor d"
+  },
+  {
+   "area": "faixa 05 · Biblioteca",
+   "rotulo": "número: 1.548livros vigiados",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Menora Polar diz onde buscaretapa 5 de 9 · atenção BibliotecaCada oportunidade ganha um livro que guarda o histórico e diz onde buscar; o motor d"
+  },
+  {
+   "area": "faixa 05 · Biblioteca",
+   "rotulo": "último sinal: último sinal há 1 minAbertas com livro na Bibliote",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Menora Polar diz onde buscaretapa 5 de 9 · atenção BibliotecaCada oportunidade ganha um livro que guarda o histórico e diz onde buscar; o motor d"
+  },
+  {
+   "area": "faixa 05 · Biblioteca",
+   "rotulo": "lista: bronze220",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Menora Polar diz onde buscaretapa 5 de 9 · atenção BibliotecaCada oportunidade ganha um livro que guarda o histórico e diz onde buscar; o motor d"
+  },
+  {
+   "area": "faixa 05 · Biblioteca",
+   "rotulo": "lista: sem_livro91",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Menora Polar diz onde buscaretapa 5 de 9 · atenção BibliotecaCada oportunidade ganha um livro que guarda o histórico e diz onde buscar; o motor d"
+  },
+  {
+   "area": "faixa 05 · Biblioteca",
+   "rotulo": "lista: ouro46",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Menora Polar diz onde buscaretapa 5 de 9 · atenção BibliotecaCada oportunidade ganha um livro que guarda o histórico e diz onde buscar; o motor d"
+  },
+  {
+   "area": "faixa 05 · Biblioteca",
+   "rotulo": "lista: prata11",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Menora Polar diz onde buscaretapa 5 de 9 · atenção BibliotecaCada oportunidade ganha um livro que guarda o histórico e diz onde buscar; o motor d"
+  },
+  {
+   "area": "faixa 06 · Certificação",
+   "rotulo": "título/descrição",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLibraa balança: certificaretapa 6 de 9 · atenção CertificaçãoO Cartório encontra o documento oficial e certifica os 12 itens, cada um com trecho e pág"
+  },
+  {
+   "area": "faixa 06 · Certificação",
+   "rotulo": "mostrador: 73%itens certificados",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLibraa balança: certificaretapa 6 de 9 · atenção CertificaçãoO Cartório encontra o documento oficial e certifica os 12 itens, cada um com trecho e pág"
+  },
+  {
+   "area": "faixa 06 · Certificação",
+   "rotulo": "último sinal: último sinal há 4 hItens certificados na fonte ofi",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLibraa balança: certificaretapa 6 de 9 · atenção CertificaçãoO Cartório encontra o documento oficial e certifica os 12 itens, cada um com trecho e pág"
+  },
+  {
+   "area": "faixa 06 · Certificação",
+   "rotulo": "lista: Destinação23%",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLibraa balança: certificaretapa 6 de 9 · atenção CertificaçãoO Cartório encontra o documento oficial e certifica os 12 itens, cada um com trecho e pág"
+  },
+  {
+   "area": "faixa 06 · Certificação",
+   "rotulo": "lista: Prazo de recurso39%",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLibraa balança: certificaretapa 6 de 9 · atenção CertificaçãoO Cartório encontra o documento oficial e certifica os 12 itens, cada um com trecho e pág"
+  },
+  {
+   "area": "faixa 06 · Certificação",
+   "rotulo": "lista: Requisitos44%",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLibraa balança: certificaretapa 6 de 9 · atenção CertificaçãoO Cartório encontra o documento oficial e certifica os 12 itens, cada um com trecho e pág"
+  },
+  {
+   "area": "faixa 06 · Certificação",
+   "rotulo": "lista: Território48%",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLibraa balança: certificaretapa 6 de 9 · atenção CertificaçãoO Cartório encontra o documento oficial e certifica os 12 itens, cada um com trecho e pág"
+  },
+  {
+   "area": "faixa 06 · Certificação",
+   "rotulo": "lista: Resultado49%",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLibraa balança: certificaretapa 6 de 9 · atenção CertificaçãoO Cartório encontra o documento oficial e certifica os 12 itens, cada um com trecho e pág"
+  },
+  {
+   "area": "faixa 07 · Investigação",
+   "rotulo": "título/descrição",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaÓriono caçadoretapa 7 de 9 · normal InvestigaçãoOs Pilotos pesquisam na web o que o Cartório não alcança e descobrem empresas e chamadas novas.23na fi"
+  },
+  {
+   "area": "faixa 07 · Investigação",
+   "rotulo": "número: 23na fila do Interceptador",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaÓriono caçadoretapa 7 de 9 · normal InvestigaçãoOs Pilotos pesquisam na web o que o Cartório não alcança e descobrem empresas e chamadas novas.23na fi"
+  },
+  {
+   "area": "faixa 07 · Investigação",
+   "rotulo": "número: 32empresas do Espião",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaÓriono caçadoretapa 7 de 9 · normal InvestigaçãoOs Pilotos pesquisam na web o que o Cartório não alcança e descobrem empresas e chamadas novas.23na fi"
+  },
+  {
+   "area": "faixa 07 · Investigação",
+   "rotulo": "número: 90voos do Piloto",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaÓriono caçadoretapa 7 de 9 · normal InvestigaçãoOs Pilotos pesquisam na web o que o Cartório não alcança e descobrem empresas e chamadas novas.23na fi"
+  },
+  {
+   "area": "faixa 07 · Investigação",
+   "rotulo": "último sinal: último sinal há 1 hEspião · a cada 3 h",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaÓriono caçadoretapa 7 de 9 · normal InvestigaçãoOs Pilotos pesquisam na web o que o Cartório não alcança e descobrem empresas e chamadas novas.23na fi"
+  },
+  {
+   "area": "faixa 07 · Investigação",
+   "rotulo": "lista: empresas sem ficha134",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaÓriono caçadoretapa 7 de 9 · normal InvestigaçãoOs Pilotos pesquisam na web o que o Cartório não alcança e descobrem empresas e chamadas novas.23na fi"
+  },
+  {
+   "area": "faixa 07 · Investigação",
+   "rotulo": "lista: editais novos dos motores30",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaÓriono caçadoretapa 7 de 9 · normal InvestigaçãoOs Pilotos pesquisam na web o que o Cartório não alcança e descobrem empresas e chamadas novas.23na fi"
+  },
+  {
+   "area": "faixa 07 · Investigação",
+   "rotulo": "lista: indícios do Espião17",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaÓriono caçadoretapa 7 de 9 · normal InvestigaçãoOs Pilotos pesquisam na web o que o Cartório não alcança e descobrem empresas e chamadas novas.23na fi"
+  },
+  {
+   "area": "faixa 07 · Investigação",
+   "rotulo": "lista: abertos com itens em falta0",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaÓriono caçadoretapa 7 de 9 · normal InvestigaçãoOs Pilotos pesquisam na web o que o Cartório não alcança e descobrem empresas e chamadas novas.23na fi"
+  },
+  {
+   "area": "faixa 08 · Verificação externa",
+   "rotulo": "título/descrição",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCruzeiro do Sula orientação finaletapa 8 de 9 · sem leitura Verificação externaA exceção: o que sobrou vai ao Claude, que arquiva, elimina ou completa"
+  },
+  {
+   "area": "faixa 08 · Verificação externa",
+   "rotulo": "número: 0na verificação externa",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCruzeiro do Sula orientação finaletapa 8 de 9 · sem leitura Verificação externaA exceção: o que sobrou vai ao Claude, que arquiva, elimina ou completa"
+  },
+  {
+   "area": "faixa 08 · Verificação externa",
+   "rotulo": "número: 74a reprocessar",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCruzeiro do Sula orientação finaletapa 8 de 9 · sem leitura Verificação externaA exceção: o que sobrou vai ao Claude, que arquiva, elimina ou completa"
+  },
+  {
+   "area": "faixa 08 · Verificação externa",
+   "rotulo": "último sinal: último sinal —aguardando a primeira leitura",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCruzeiro do Sula orientação finaletapa 8 de 9 · sem leitura Verificação externaA exceção: o que sobrou vai ao Claude, que arquiva, elimina ou completa"
+  },
+  {
+   "area": "faixa 08 · Verificação externa",
+   "rotulo": "lista: URL de buscador (falta o site oficial)63",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCruzeiro do Sula orientação finaletapa 8 de 9 · sem leitura Verificação externaA exceção: o que sobrou vai ao Claude, que arquiva, elimina ou completa"
+  },
+  {
+   "area": "faixa 08 · Verificação externa",
+   "rotulo": "lista: PRAZO_IMPOSSIVEL1",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCruzeiro do Sula orientação finaletapa 8 de 9 · sem leitura Verificação externaA exceção: o que sobrou vai ao Claude, que arquiva, elimina ou completa"
+  },
+  {
+   "area": "faixa 08· Verificação externa",
+   "rotulo": "lista: PAGINA_DE_ERRO1",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCruzeiro do Sula orientação finaletapa 8 de 9 · sem leitura Verificação externaA exceção: o que sobrou vai ao Claude, que arquiva, elimina ou completa"
+  },
+  {
+   "area": "faixa 09 · Farol de Alexandria",
+   "rotulo": "título/descrição",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCarinaCanopo guia os navegadoresetapa 9 de 9 · normal Farol de AlexandriaO que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol pa"
+  },
+  {
+   "area": "faixa 09 · Farol de Alexandria",
+   "rotulo": "número: 200empresas nos rankings",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCarinaCanopo guia os navegadoresetapa 9 de 9 · normal Farol de AlexandriaO que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol pa"
+  },
+  {
+   "area": "faixa 09 · Farol de Alexandria",
+   "rotulo": "número: —arquivos sem uso",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCarinaCanopo guia os navegadoresetapa 9 de 9 · normal Farol de AlexandriaO que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol pa"
+  },
+  {
+   "area": "faixa 09 · Farol de Alexandria",
+   "rotulo": "número: 6pacotes no arquivo frio",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCarinaCanopo guia os navegadoresetapa 9 de 9 · normal Farol de AlexandriaO que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol pa"
+  },
+  {
+   "area": "faixa 09 · Farol de Alexandria",
+   "rotulo": "número: 42prontas para o Farol",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCarinaCanopo guia os navegadoresetapa 9 de 9 · normal Farol de AlexandriaO que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol pa"
+  },
+  {
+   "area": "faixa 09 · Farol de Alexandria",
+   "rotulo": "último sinal: último sinal há 9 hRankings de empresas · a cada 2",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCarinaCanopo guia os navegadoresetapa 9 de 9 · normal Farol de AlexandriaO que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol pa"
+  },
+  {
+   "area": "faixa 09 · Farol de Alexandria",
+   "rotulo": "lista: prontas para o Farol42",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCarinaCanopo guia os navegadoresetapa 9 de 9 · normal Farol de AlexandriaO que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol pa"
+  },
+  {
+   "area": "faixa 09 · Farol de Alexandria",
+   "rotulo": "lista: empresas que financiam200",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCarinaCanopo guia os navegadoresetapa 9 de 9 · normal Farol de AlexandriaO que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol pa"
+  },
+  {
+   "area": "faixa 09 · Farol de Alexandria",
+   "rotulo": "lista: arquivo frio6 pacotes",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCarinaCanopo guia os navegadoresetapa 9 de 9 · normal Farol de AlexandriaO que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol pa"
+  },
+  {
+   "area": "Sistema nervoso · fluxos",
+   "rotulo": "00 · Verificar prontidãohá 1 h · falhou",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fecharsistema nervoso · fluxo automático 00 · Verificar prontidão última execução falhou · 11/10 20:04 · há 1 h ExecuçãoSituaçãoconcluídoResultadofalhou Duração6,8 minDisparogravaç"
+  },
+  {
+   "area": "Sistema nervoso · fluxos",
+   "rotulo": "03 · Eldorado — carga histórica de cinco anos (campanha única, mês a m",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fecharsistema nervoso · fluxo automático 03 · Eldorado — carga histórica de cinco anos (campanha única, mês a mês) última execução falhou · 11/10 18:18 · há 3 h ExecuçãoSituaçãocon"
+  },
+  {
+   "area": "Sistema nervoso · fluxos",
+   "rotulo": "04 · Publicar painel Eldoradohá 3 min · concluído",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fecharsistema nervoso · fluxo automático 04 · Publicar painel Eldorado última execução concluído · 11/10 21:01 · há 3 min ExecuçãoSituaçãoconcluídoResultadoconcluído Duração0,7 min"
+  },
+  {
+   "area": "Sistema nervoso · fluxos",
+   "rotulo": "07 · Piloto — IA local da Biblioteca (benchmark e ciclos)há 4 min · em",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fecharsistema nervoso · fluxo automático 07 · Piloto — IA local da Biblioteca (benchmark e ciclos) última execução em execução · 11/10 21:00 · há 4 min ExecuçãoSituaçãoem execuçãoR"
+  },
+  {
+   "area": "Sistema nervoso · fluxos",
+   "rotulo": "08 · Agenda dos motores — cada motor na hora em que sua fonte publicah",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fecharsistema nervoso · fluxo automático 08 · Agenda dos motores — cada motor na hora em que sua fonte publica última execução concluído · 11/10 21:01 · há 3 min ExecuçãoSituaçãoco"
+  },
+  {
+   "area": "Sistema nervoso · fluxos",
+   "rotulo": "12 · Piloto - Interceptador — um alvo por voo, a cada 3 segundoshá 3 m",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fecharsistema nervoso · fluxo automático 12 · Piloto - Interceptador — um alvo por voo, a cada 3 segundos última execução em execução · 11/10 21:01 · há 3 min ExecuçãoSituaçãoem ex"
+  },
+  {
+   "area": "Sistema nervoso · fluxos",
+   "rotulo": "16 · Motores indexadores (feeds, APIs, sitemaps, listagens, dados aber",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fecharsistema nervoso · fluxo automático 16 · Motores indexadores (feeds, APIs, sitemaps, listagens, dados abertos, ponte Brasil, coleta assistida) última execução concluído · 11/1"
+  },
+  {
+   "area": "Sistema nervoso · fluxos",
+   "rotulo": "21 · Status dos motores (a cada 6 horas)há 52 min · concluído",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fecharsistema nervoso · fluxo automático 21 · Status dos motores (a cada 6 horas) última execução concluído · 11/10 20:11 · há 52 min ExecuçãoSituaçãoconcluídoResultadoconcluído Du"
+  },
+  {
+   "area": "Sistema nervoso · fluxos",
+   "rotulo": "22 · Motores da vez — cada passagem calcula sozinha o que está pendent",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fecharsistema nervoso · fluxo automático 22 · Motores da vez — cada passagem calcula sozinha o que está pendente (agenda + maestro) última execução aguardando · 11/10 21:01 · há 2 "
+  },
+  {
+   "area": "Sistema nervoso · fluxos",
+   "rotulo": "30 · Cartório de fontes oficiais (certifica o que falta nas estrelas e",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fecharsistema nervoso · fluxo automático 30 · Cartório de fontes oficiais (certifica o que falta nas estrelas e nos livros) última execução aguardando · 11/10 20:58 · há 5 min Exec"
+  },
+  {
+   "area": "Linha do tempo",
+   "rotulo": "11/10 21:04Oportunidades abertas · Esteira",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Maiora grande concha que guardaetapa 3 de 9 · normal RepositórioTudo vira um registro único por oportunidade, sem duplicata e com a mesma contage"
+  },
+  {
+   "area": "Linha do tempo",
+   "rotulo": "11/10 21:04Abertas com livro na Biblioteca · Esteira",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaUrsa Menora Polar diz onde buscaretapa 5 de 9 · atenção BibliotecaCada oportunidade ganha um livro que guarda o histórico e diz onde buscar; o motor d"
+  },
+  {
+   "area": "Linha do tempo",
+   "rotulo": "11/10 21:04Discernimento (AUC) · Núcleo · rede neural",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "Linha do tempo",
+   "rotulo": "11/10 21:04Precisão · Núcleo · rede neural",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "Linha do tempo",
+   "rotulo": "11/10 21:04Revocação · Núcleo · rede neural",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "Linha do tempo",
+   "rotulo": "11/10 21:04Erro de calibração (Brier) · Núcleo · rede neural",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "Linha do tempo",
+   "rotulo": "11/10 21:03Coletado pelos motores · Esteira",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaVirgema espiga: a colheitaetapa 2 de 9 · atenção ColetaOs motores varrem diários oficiais, portais, agregadores e sites; cada um precisa ler dentro da"
+  },
+  {
+   "area": "Linha do tempo",
+   "rotulo": "11/10 21:02Cobertura do dia · Regência · maestro",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLirao instrumento do maestroetapa 1 de 9 · alarme RegênciaO maestro planeja quais motores rodam hoje, em que ordem, e cobra a leitura completa até trê"
+  },
+  {
+   "area": "Linha do tempo",
+   "rotulo": "11/10 21:02Motores sem leitura completa após 3 tentativas · Regência ·",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLirao instrumento do maestroetapa 1 de 9 · alarme RegênciaO maestro planeja quais motores rodam hoje, em que ordem, e cobra a leitura completa até trê"
+  },
+  {
+   "area": "Linha do tempo",
+   "rotulo": "11/10 19:59Espião · Pilotos",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaÓriono caçadoretapa 7 de 9 · normal InvestigaçãoOs Pilotos pesquisam na web o que o Cartório não alcança e descobrem empresas e chamadas novas.23na fi"
+  },
+  {
+   "area": "Linha do tempo",
+   "rotulo": "11/10 19:59Piloto (voos do dia) · Pilotos",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaÓriono caçadoretapa 7 de 9 · normal InvestigaçãoOs Pilotos pesquisam na web o que o Cartório não alcança e descobrem empresas e chamadas novas.23na fi"
+  },
+  {
+   "area": "Linha do tempo",
+   "rotulo": "11/10 19:40Interceptador · Pilotos",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaÓriono caçadoretapa 7 de 9 · normal InvestigaçãoOs Pilotos pesquisam na web o que o Cartório não alcança e descobrem empresas e chamadas novas.23na fi"
+  },
+  {
+   "area": "Linha do tempo",
+   "rotulo": "11/10 21:02Motores funcionando · Motores",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaVirgema espiga: a colheitaetapa 2 de 9 · atenção ColetaOs motores varrem diários oficiais, portais, agregadores e sites; cada um precisa ler dentro da"
+  },
+  {
+   "area": "Linha do tempo",
+   "rotulo": "11/10 16:43Itens certificados na fonte oficial · Certificação",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaLibraa balança: certificaretapa 6 de 9 · atenção CertificaçãoO Cartório encontra o documento oficial e certifica os 12 itens, cada um com trecho e pág"
+  },
+  {
+   "area": "Linha do tempo",
+   "rotulo": "11/10 12:26Motores regulares fora da cadência · Motores",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaVirgema espiga: a colheitaetapa 2 de 9 · atenção ColetaOs motores varrem diários oficiais, portais, agregadores e sites; cada um precisa ler dentro da"
+  },
+  {
+   "area": "Linha do tempo",
+   "rotulo": "11/10 11:53Rankings de empresas · Empresas",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCarinaCanopo guia os navegadoresetapa 9 de 9 · normal Farol de AlexandriaO que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol pa"
+  },
+  {
+   "area": "Linha do tempo",
+   "rotulo": "11/10 11:06Idade do modelo · Núcleo · rede neural",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaSagitárioo arqueiro: precisãoetapa 4 de 9 · normal Pertinência e aprendizadoA rede neural aprende com as decisões humanas e do Chrome e dá a cada regi"
+  },
+  {
+   "area": "Linha do tempo",
+   "rotulo": "10/10 21:00Pacotes no arquivo frio · Higiene",
+   "resultado": "abriu janela visualmente vazia (texto existe, invisível)",
+   "primeiras_linhas": "Fechar constelação desta etapaCarinaCanopo guia os navegadoresetapa 9 de 9 · normal Farol de AlexandriaO que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol pa"
+  },
+  {
+   "area": "Estrelas no céu",
+   "rotulo": "3 estrelas coloridas fora das faixas (linha entre as faixas 01 e 02): passar o mouse",
+   "resultado": "nada",
+   "primeiras_linhas": "",
+   "obs": "nenhuma dica apareceu; cursor normal"
+  },
+  {
+   "area": "Estrelas no céu",
+   "rotulo": "clique numa estrela fora das faixas",
+   "resultado": "nada",
+   "primeiras_linhas": "",
+   "obs": "nenhuma janela abriu"
+  }
+ ],
+ "dentro_das_janelas": [
+  {
+   "etapa": "Regência",
+   "comeca_pela_constelacao": true,
+   "constelacao_lida": "Lirao instrumento do maestroetapa 1",
+   "itens_testados": 5,
+   "itens_com_detalhe": 5,
+   "detalhe_visivel": false,
+   "janela_inteira_na_tela": true,
+   "fechar_funciona": true,
+   "esc_funciona": true,
+   "exemplos": [
+    "62% Cobertura do dianormal · dentro da c => Histórico das leituras · Cobertura do dia11/10 21:04 — 61,9 %11/10 21:02 — 61,9 ",
+    "34 Motores sem leitura completa após 3 t => Histórico das leituras · Motores sem leitura completa após 3 tentativas11/10 21:",
+    "plat-piloto-aberto => plat-piloto-aberto (plat-piloto-aberto) plano do maestro hoje: cobertura complet",
+    "pncp-api => PNCP — API de contratações (chamamentos e credenciamentos) (pncp-api)estado: fun",
+    "outras-oportunidades-1 => outras-oportunidades-1 (outras-oportunidades-1) plano do maestro hoje: cobertura"
+   ],
+   "obs": "constelação e caixas de detalhe existem no código e aparecem logo abaixo do item, mas ficam invisíveis (opacidade 0 herdada do conteúdo)"
+  },
+  {
+   "etapa": "Coleta",
+   "comeca_pela_constelacao": true,
+   "constelacao_lida": "Virgema espiga: a colheitaetapa 2 de",
+   "itens_testados": 5,
+   "itens_com_detalhe": 5,
+   "detalhe_visivel": false,
+   "janela_inteira_na_tela": true,
+   "fechar_funciona": true,
+   "esc_funciona": true,
+   "exemplos": [
+    "83% Motores funcionandoatenção · valor f => Histórico das leituras · Motores funcionando11/10 21:04 — 83 %11/10 21:02 — 83 %",
+    "3 Motores regulares fora da cadênciaaten => Histórico das leituras · Motores regulares fora da cadência11/10 21:04 — 3 motor",
+    "17.916registros Coletado pelos motoresno => Histórico das leituras · Coletado pelos motores11/10 21:04 — 17.916 registros11/",
+    "Diário Oficial do Município de Goiânia => Diário Oficial do Município de Goiânia (do-goiania)estado: funcionando · última ",
+    "Diário Oficial do Estado de Goiás => Diário Oficial do Estado de Goiás (do-goias)estado: funcionando · última leitura"
+   ],
+   "obs": "constelação e caixas de detalhe existem no código e aparecem logo abaixo do item, mas ficam invisíveis (opacidade 0 herdada do conteúdo)"
+  },
+  {
+   "etapa": "Repositório",
+   "comeca_pela_constelacao": true,
+   "constelacao_lida": "Ursa Maiora grande concha que guarda",
+   "itens_testados": 5,
+   "itens_com_detalhe": 5,
+   "detalhe_visivel": false,
+   "janela_inteira_na_tela": true,
+   "fechar_funciona": true,
+   "esc_funciona": true,
+   "exemplos": [
+    "368abertas Oportunidades abertasnormal · => Histórico das leituras · Oportunidades abertas11/10 21:04 — 368 abertas11/10 21:",
+    "Cartório: abordagem241 => Cartório: abordagem241 de 368 (65%)é o próximo passo que a esteira dará com esta",
+    "acompanhar o prazo46 => acompanhar o prazo46 de 368 (13%)é o próximo passo que a esteira dará com estas ",
+    "Cartório: achar o site oficial31 => Cartório: achar o site oficial31 de 368 (8%)é o próximo passo que a esteira dará",
+    "Interceptador: achar o site oficial22 => Interceptador: achar o site oficial22 de 368 (6%)é o próximo passo que a esteira"
+   ],
+   "obs": "constelação e caixas de detalhe existem no código e aparecem logo abaixo do item, mas ficam invisíveis (opacidade 0 herdada do conteúdo)"
+  },
+  {
+   "etapa": "Pertinência e aprendizado",
+   "comeca_pela_constelacao": true,
+   "constelacao_lida": "Sagitárioo arqueiro: precisãoetapa 4",
+   "itens_testados": 5,
+   "itens_com_detalhe": 5,
+   "detalhe_visivel": false,
+   "janela_inteira_na_tela": true,
+   "fechar_funciona": true,
+   "esc_funciona": true,
+   "exemplos": [
+    "0,845 Discernimento (AUC)normal · dentro => Histórico das leituras · Discernimento (AUC)11/10 21:04 — 0,845 11/10 21:02 — 0,",
+    "0,757 Precisãonormal · dentro da cadênci => Histórico das leituras · Precisão11/10 21:04 — 0,757 11/10 21:02 — 0,757 11/10 1",
+    "0,644 Revocaçãonormal · dentro da cadênc => Histórico das leituras · Revocação11/10 21:04 — 0,644 11/10 21:02 — 0,644 11/10 ",
+    "0,156 Erro de calibração (Brier)normal · => Histórico das leituras · Erro de calibração (Brier)11/10 21:04 — 0,156 11/10 21:",
+    "0,4 Idade do modelonormal · dentro da ca => Histórico das leituras · Idade do modelo11/10 21:04 — 0,4 dias11/10 21:02 — 0,4 "
+   ],
+   "obs": "constelação e caixas de detalhe existem no código e aparecem logo abaixo do item, mas ficam invisíveis (opacidade 0 herdada do conteúdo)"
+  },
+  {
+   "etapa": "Biblioteca",
+   "comeca_pela_constelacao": true,
+   "constelacao_lida": "Ursa Menora Polar diz onde buscareta",
+   "itens_testados": 5,
+   "itens_com_detalhe": 5,
+   "detalhe_visivel": false,
+   "janela_inteira_na_tela": true,
+   "fechar_funciona": true,
+   "esc_funciona": true,
+   "exemplos": [
+    "75% Abertas com livro na Bibliotecaatenç => Histórico das leituras · Abertas com livro na Biblioteca11/10 21:04 — 75 %11/10 ",
+    "1.548livros Livros vigiados pelo próprio => Histórico das leituras · Livros vigiados pelo próprio motor11/10 21:04 — 1.548 l",
+    "bronze220 => bronze220 de 368 (60%)só a edição atual: o livro ainda precisa de histórico",
+    "sem_livro91 => sem_livro91 de 368 (25%)oportunidade aberta ainda sem livro na Biblioteca",
+    "ouro46 => ouro46 de 368 (13%)livro com recorrência comprovada: dá para prever a próxima ed"
+   ],
+   "obs": "constelação e caixas de detalhe existem no código e aparecem logo abaixo do item, mas ficam invisíveis (opacidade 0 herdada do conteúdo)"
+  },
+  {
+   "etapa": "Certificação",
+   "comeca_pela_constelacao": true,
+   "constelacao_lida": "Libraa balança: certificaretapa 6 de",
+   "itens_testados": 5,
+   "itens_com_detalhe": 5,
+   "detalhe_visivel": false,
+   "janela_inteira_na_tela": true,
+   "fechar_funciona": true,
+   "esc_funciona": true,
+   "exemplos": [
+    "73% Itens certificados na fonte oficiala => Histórico das leituras · Itens certificados na fonte oficial11/10 21:04 — 73 %11",
+    "Objeto54% · 396 obtidos de 735 => Objetofaltavam 735 · obtidos na fonte oficial 396 · dispensados 0 · eficiência 5",
+    "Prazo de inscrição54% · 288 obtidos de 7 => Prazo de inscriçãofaltavam 711 · obtidos na fonte oficial 288 · dispensados 99 ·",
+    "Resultado49% · 268 obtidos de 931 => Resultadofaltavam 931 · obtidos na fonte oficial 268 · dispensados 184 · eficiên",
+    "Prazo de recurso39% · 347 obtidos de 942 => Prazo de recursofaltavam 942 · obtidos na fonte oficial 347 · dispensados 24 · e"
+   ],
+   "obs": "constelação e caixas de detalhe existem no código e aparecem logo abaixo do item, mas ficam invisíveis (opacidade 0 herdada do conteúdo)"
+  },
+  {
+   "etapa": "Investigação",
+   "comeca_pela_constelacao": true,
+   "constelacao_lida": "Óriono caçadoretapa 7 de 9 · normal",
+   "itens_testados": 5,
+   "itens_com_detalhe": 5,
+   "detalhe_visivel": false,
+   "janela_inteira_na_tela": true,
+   "fechar_funciona": true,
+   "esc_funciona": true,
+   "exemplos": [
+    "23na fila Interceptadornormal · dentro d => Histórico das leituras · Interceptador11/10 21:04 — 23 na fila11/10 21:02 — 23 n",
+    "32empresas novas Espiãonormal · dentro d => Histórico das leituras · Espião11/10 21:04 — 32 empresas novas11/10 21:02 — 32 e",
+    "90voos Piloto (voos do dia)normal · dent => Histórico das leituras · Piloto (voos do dia)11/10 21:04 — 90 voos11/10 21:02 — ",
+    "11/10 19:40 · Diário Oficial de Pinhais => Missão de 11/10 19:40alvo: Diário Oficial de Pinhais (PR) 2026-09-28 — \"chamamen",
+    "11/10 19:23 · Diário Oficial de Maracaju => Missão de 11/10 19:23alvo: Diário Oficial de Maracaju (MS) 2026-09-29 — \"chamame"
+   ],
+   "obs": "constelação e caixas de detalhe existem no código e aparecem logo abaixo do item, mas ficam invisíveis (opacidade 0 herdada do conteúdo)"
+  },
+  {
+   "etapa": "Verificação externa",
+   "comeca_pela_constelacao": true,
+   "constelacao_lida": "Cruzeiro do Sula orientação finaleta",
+   "itens_testados": 5,
+   "itens_com_detalhe": 5,
+   "detalhe_visivel": false,
+   "janela_inteira_na_tela": true,
+   "fechar_funciona": true,
+   "esc_funciona": true,
+   "exemplos": [
+    "URL de buscador (falta o site oficial)63 => URL de buscador (falta o site oficial)63 de 74 (85%)é o motivo pelo qual estes r",
+    "PRAZO_IMPOSSIVEL: prazo impossível: 2074 => PRAZO_IMPOSSIVEL: prazo impossível: 2074-04-18 → reler o prazo na fonte1 de 74 (",
+    "PRAZO_IMPOSSIVEL: prazo impossível: 2035 => PRAZO_IMPOSSIVEL: prazo impossível: 2035-01-17 → reler o prazo na fonte1 de 74 (",
+    "PRAZO_IMPOSSIVEL: prazo impossível: 2035 => PRAZO_IMPOSSIVEL: prazo impossível: 2035-03-12 → reler o prazo na fonte1 de 74 (",
+    "PRAZO_IMPOSSIVEL: prazo impossível: 2035 => PRAZO_IMPOSSIVEL: prazo impossível: 2035-01-15 → reler o prazo na fonte1 de 74 ("
+   ],
+   "obs": "constelação e caixas de detalhe existem no código e aparecem logo abaixo do item, mas ficam invisíveis (opacidade 0 herdada do conteúdo)"
+  },
+  {
+   "etapa": "Farol de Alexandria",
+   "comeca_pela_constelacao": true,
+   "constelacao_lida": "CarinaCanopo guia os navegadoresetap",
+   "itens_testados": 3,
+   "itens_com_detalhe": 3,
+   "detalhe_visivel": false,
+   "janela_inteira_na_tela": true,
+   "fechar_funciona": true,
+   "esc_funciona": true,
+   "exemplos": [
+    "200empresas Rankings de empresasnormal · => Histórico das leituras · Rankings de empresas11/10 21:04 — 200 empresas11/10 21:",
+    "—arquivos Arquivos sem uso há 30 diassem => Histórico das leituras · Arquivos sem uso há 30 diasas leituras se acumulam a ca",
+    "6pacotes Pacotes no arquivo frionormal · => Histórico das leituras · Pacotes no arquivo frio11/10 21:04 — 6 pacotes11/10 21:"
+   ],
+   "obs": "constelação e caixas de detalhe existem no código e aparecem logo abaixo do item, mas ficam invisíveis (opacidade 0 herdada do conteúdo)"
+  }
+ ],
+ "abrir_fechar_rapido": {
+  "tentativas": 5,
+  "vezes_so_fundo_escuro": 0,
+  "obs": "nas 5 trocas rápidas a moldura sempre apareceu; o conteúdo seguiu invisível, como em todos os casos",
+  "detalhe": [
+   {
+    "de": "Regência",
+    "para": "Pertinência e aprendizado",
+    "holo_visivel": true,
+    "classe": "holo pronta",
+    "portal": [
+     "nv-veu.veu on:block:810",
+     "nv-holo.holo pronta:block:710",
+     "nv-dica.dica:none:0"
+    ]
+   },
+   {
+    "de": "Coleta",
+    "para": "Biblioteca",
+    "holo_visivel": true,
+    "classe": "holo pronta",
+    "portal": [
+     "nv-veu.veu on:block:810",
+     "nv-holo.holo pronta:block:710",
+     "nv-dica.dica:none:0"
+    ]
+   },
+   {
+    "de": "Repositório",
+    "para": "Certificação",
+    "holo_visivel": true,
+    "classe": "holo pronta",
+    "portal": [
+     "nv-veu.veu on:block:810",
+     "nv-holo.holo pronta:block:710",
+     "nv-dica.dica:none:0"
+    ]
+   },
+   {
+    "de": "Pertinência e aprendizado",
+    "para": "Investigação",
+    "holo_visivel": true,
+    "classe": "holo pronta",
+    "portal": [
+     "nv-veu.veu on:block:810",
+     "nv-holo.holo pronta:block:710",
+     "nv-dica.dica:none:0"
+    ]
+   },
+   {
+    "de": "Biblioteca",
+    "para": "Verificação externa",
+    "holo_visivel": true,
+    "classe": "holo pronta",
+    "portal": [
+     "nv-veu.veu on:block:810",
+     "nv-holo.holo pronta:block:637",
+     "nv-dica.dica:none:0"
+    ]
+   }
+  ]
+ },
+ "casos_vazios": [
+  {
+   "area": "todas (falha sistêmica)",
+   "rotulo": "todas as 149 caixas que abrem janela",
+   "erro_console": "nenhum",
+   "captura": "capturas_auditoria/vazia_faixa01_regencia_titulo.jpg; capturas_auditoria/vazia_topo_mostrador.jpg"
+  }
+ ],
+ "resumo": "Testei 151 caixas: 149 abrem a janela, mas ela aparece vazia (o texto existe no código, porém fica invisível); 2 não respondem (estrelas fora das faixas); nenhuma abriu com informação visível. Dentro das 9 janelas, todas começam pela constelação e 43 de 43 itens criam a caixa de detalhe — também invisível. Fechar e Esc funcionam, as janelas cabem inteiras na tela e nunca apareceu só o fundo escuro. Causa: falta a regra CSS '#nv-portal .holo.pronta .conteudo { opacity: 1; }'. Sem erros no console; sala_controle.json carrega com 200 (63,6 KB)."
+}

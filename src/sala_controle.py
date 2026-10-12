@@ -136,7 +136,7 @@ def montar(agora: datetime | None = None) -> dict:
     _instr(I, agora, id="ma_cobertura", sub="Regência · maestro", nome="Cobertura do dia", valor=ma.get("cobertura_percentual"), unidade="%", escala=[0, 100],
            faixa={"normal": [60, None], "alarme": [30, None]}, quando=ma.get("em"), cadencia_h=2,
            faz="Planeja quais motores rodam hoje e mede se leram o dia inteiro.",
-           efeito=f"{ma.get('planejados', 0)} motores planejados · {ma.get('a_disparar', 0)} a disparar de novo",
+           efeito=f"{ma.get('planejados', 0)} motores planejados · {len(ma['a_disparar']) if isinstance(ma.get('a_disparar'), list) else ma.get('a_disparar', 0)} a disparar de novo",
            resultado=f"completos {cob.get('completa', 0)} · parciais {cob.get('parcial', 0)} · aguardando horário {cob.get('aguardando_horario', 0)} · coleta local {cob.get('pendente_local', 0)}")
     _instr(I, agora, id="ma_esgotados", sub="Regência · maestro", nome="Motores sem leitura completa após 3 tentativas", valor=n_esg,
            unidade="motores", escala=[0, max(10, (ma.get("planejados") or 0) // 2)], faixa={"normal": [None, 10], "alarme": [None, 30]}, quando=ma.get("em"), cadencia_h=2,
