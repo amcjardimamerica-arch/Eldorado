@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-12T01:31:51+00:00",
+  "em": "2026-10-12T01:45:25+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-12T01:15:06+00:00",
+  "ultimo_voo": "2026-10-12T01:36:01+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 324,
+    "missoes": 325,
     "validadas": 17,
     "parciais": 79,
-    "insuficientes": 220,
+    "insuficientes": 221,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 217,
+      "sim": 218,
       "nao": 55
     },
     "estrelas_de_ouro": 5,
@@ -52,6 +52,74 @@
     "tempo_medio_min": 10.4
   },
   "missoes": [
+    {
+      "em": "2026-10-12T01:36:01+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Campo Belo (MG) 2026-09-29 — \"chamamento público\" \"organizações da sociedade civil\"",
+      "qualidade": "insuficiente",
+      "comprovados": 3,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Território",
+        "Esfera",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado menciona requisitos e anexos relacionados a chamamentos públicos para organizações da sociedade civil, o que indica que é uma fonte válida para entender o processo.",
+        "para_a_amc": "Para acessar, a associação comunitária de Goiânia precisaria apresentar um plano de trabalho fundamentado, acompanhado de planilha detalhada de custos, comprovação de sua regularidade jurídica, fiscal, trabalhista e de sua capacidade técnica e operacional, além de anexar os documentos exigidos.",
+        "proximo_passo": "Verificar os requisitos específicos do edital e preparar os documentos necessários para submissão.",
+        "risco": "A falta de informações sobre o objeto, prazo e valor do edital pode impedir a associação de se inscrever adequadamente."
+      },
+      "erro": null,
+      "segundos": 563,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "8cb3d18426bd689effff",
+      "encontrou": {
+        "Destinação": {
+          "valor": "fora do escopo · fomento",
+          "trecho": "Fica o Poder Executivo autorizado a conceder subvenção social à Santa Casa de Misericórdia São Vicente de Paulo, pessoa jurídica de direito privado, entidade filantrópica sem fins ",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "plano de trabalho fundamentado e acompanhado de planilha detalhada de custos, comprovação de sua regularidade de habilitação jurídica, fiscal, trabalhista e de sua plena capacidade técnica e operaci",
+          "trecho": "A liberação dos recursos financeiros fica estritamente condicionada à prévia apresentação, por parte da entidade beneficiada, de plano de trabalho fundamentado e acompanhado de pla",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Campo Belo",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3111200/2026-09-29/1be46cce06d47a40526002a77e5b8cd2e59e8027.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-12T01:15:06+00:00",
       "modo": "validar",
@@ -2413,89 +2481,6 @@
       "financiador": null,
       "indicios": [],
       "rotas": []
-    },
-    {
-      "em": "2026-10-11T14:57:30+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "CHAMADA PÚBLICA FAPESPA – Nº. 008/2026",
-      "qualidade": "parcial",
-      "comprovados": 7,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Resultado",
-        "Prazo de recurso",
-        "Requisitos",
-        "Anexos",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://fapespa.pa.gov.br",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "Porque a chamada pública foi comprovada com dados sobre objeto, prazo de inscrição, valor e outros elementos relevantes.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se sua atividade está alinhada ao objeto da chamada pública, que é impulsionar pesquisa e inovação na Amazônia, e se está localizada no território do Pará, já que a chamada é estadual e destinada ao PA.",
-        "proximo_passo": "Verificar se a associação comunitária atende aos requisitos da chamada pública e se está localizada no território do Pará.",
-        "risco": "A associação comunitária de Goiânia pode estar fora do território do Pará, o que impediria seu acesso à chamada pública."
-      },
-      "erro": null,
-      "segundos": 475,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 7,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Requisitos, Anexos",
-      "id": "agr-20c95ee754fd",
-      "encontrou": {
-        "Objeto": {
-          "valor": "impulsionar pesquisa e inovação na Amazônia",
-          "trecho": "Programa Desafios da Amazônia vai financiar projetos voltados à sociobioeconomia e ao desenvolvimento sustentável na região amazônica",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "2026-04-10 a 2026-05-19",
-          "trecho": "Centro Nacional de Pesquisa em Energia e Materiais (CNPEM) está com o edital aberto até 19 de maio para a...",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "R$ 107,1 milhões",
-          "trecho": "Fapespa integra chamada de R$ 107,1 milhões para impulsionar pesquisa e inovação na Amazônia",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Fapespa – Fundação Amazônia de Amparo a Estudos e Pesquisas",
-          "trecho": "Fapespa – Fundação Amazônia de Amparo a Estudos e Pesquisas",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "PA",
-          "trecho": "Fapespa – Fundação Amazônia de Amparo a Estudos e Pesquisas",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "A Fundação Amazônia de Amparo a Estudos e Pesquisas",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Fundação Amazônia de Amparo a Estudos e Pesquisas – FAPESPA",
-      "indicios": [
-        {
-          "url": "https://www.fapespa.pa.gov.br/2026/07/06/chamada-publica-fapespa-no-008-2026",
-          "tipo": "noticia"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador"
-      ]
     }
   ],
   "contagem": {
