@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-10-04T12:13:08+00:00",
+  "gerado_em": "2026-10-12T00:37:15+00:00",
   "referencia": "2026-09-26",
   "regra": "valor, ano e CNPJ só com fonte oficial; mecanismo sem fonte pública sai nulo com o motivo e o caminho para obter o dado; inscrição no PAT não prova Lucro Real",
   "mecanismos": {
@@ -63,34 +63,60 @@
   },
   "resumo": {
     "referencia": "2026-09-26",
-    "registros_na_biblioteca": 161,
+    "registros_na_biblioteca": 190,
     "descartados": [],
-    "empresas_com_cnpj": 102,
+    "empresas_com_cnpj": 104,
     "sem_cnpj_unico": [
+      "Action for Democracy",
       "BTG Pactual",
       "Buriti Shopping",
       "CCR",
+      "COREGOV",
       "Coca-Cola",
       "Coca-Cola Brasil",
       "Coca-Cola Femsa",
+      "Conferência Nacional dos Bispos do Brasil (CNBB)",
       "Construtora Dinâmica",
       "Curta Mais",
+      "Editalong",
+      "FAOS",
+      "FUNBIO",
       "Faculdade Estácio Goiás",
       "Fecomércio Goiás",
       "Fieg / Sesi / Senai Goiás",
       "Flamboyant Shopping",
+      "Floresta Viva",
+      "Fundação Amazônia Sustentável (FAS)",
+      "Fundação Grupo Boticário de Proteção à Natureza",
+      "Fundação Maria Emília",
+      "Fundo Baobá",
+      "Fundo Brasil",
       "Goiânia Shopping",
+      "Gran Cursos Online",
       "Grupo Boticário",
       "Grupo Bretas / Cencosud",
       "Grupo Jaime Câmara",
       "Grupo Mateus",
+      "Grupo de Estudos de Voluntariado Empresarial",
       "Heineken",
       "Hospital do Coração Anis Rassi",
+      "Instituto Comida do Amanhã",
+      "Instituto Genésio A. Mendes",
+      "Instituto Lojas Renner",
+      "Instituto Rede Mulher Empreendedora",
+      "Institutosocialcrescervida",
+      "Inter-American Foundation",
+      "Itausocial",
       "Jornal O Popular",
       "Mais Goiás",
+      "Miqcb",
       "Nubank",
+      "ONG Banco de Alimentos",
+      "Orquestra Cia",
       "PUC Goiás",
       "Passeio das Águas Shopping",
+      "Propel",
+      "Recursos Disponíveis",
       "Rede D'Or",
       "Rádio Sagres",
       "Sebrae Goiás",
@@ -98,8 +124,10 @@
       "Sicoob",
       "Sicredi",
       "Terral Empreendimentos",
+      "Tuifund",
       "Unimed",
-      "Unip / Unigoiás"
+      "Unip / Unigoiás",
+      "Zurich Seguros"
     ],
     "cnpj_corrigidos": [
       {
@@ -127,23 +155,23 @@
         "prova": "o CNPJ da base é da Nestlé Nordeste Alimentos e Bebidas, subsidiária; a matriz é NESTLE BRASIL LTDA., 60409075000152 no SALIC"
       }
     ],
-    "cnpj_resolvidos_por_nome": 25,
+    "cnpj_resolvidos_por_nome": 24,
     "rouanet": {
-      "destinou": 79,
+      "destinou": 80,
       "nao_consta": 13,
-      "destinou_desde_corte": 60
+      "destinou_desde_corte": 61
     },
     "goyazes": {
       "destinou": 5,
       "empresas_novas_descobertas": 87
     },
     "pat": {
-      "inscrita": 80,
+      "inscrita": 81,
       "inscrita_por_estabelecimento": 4,
       "inscricao_inativa": 6,
       "nao_consta": 2
     },
-    "lucro_real_confirmado_pela_rouanet": 60,
+    "lucro_real_confirmado_pela_rouanet": 61,
     "mecanismos_sem_fonte": {
       "LIE": "bloqueado_defeso_eleitoral",
       "FIA": "sem_fonte_publica_por_cnpj",
@@ -153,6 +181,58 @@
     }
   },
   "sem_cnpj": [
+    {
+      "nome": "Action for Democracy",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
     {
       "nome": "BTG Pactual",
       "cnpj": null,
@@ -310,6 +390,58 @@
       "confirmados": [],
       "confirmados_5_anos": [],
       "observacao": "o SALIC não devolveu registro para o nome"
+    },
+    {
+      "nome": "COREGOV",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
     },
     {
       "nome": "Coca-Cola",
@@ -471,6 +603,58 @@
       "observacao": "no Brasil opera como SPAL Indústria Brasileira de Bebidas — a confirmar antes de atribuir o CNPJ"
     },
     {
+      "nome": "Conferência Nacional dos Bispos do Brasil (CNBB)",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
       "nome": "Construtora Dinâmica",
       "cnpj": null,
       "verificado_em": "2026-09-26",
@@ -524,6 +708,162 @@
     },
     {
       "nome": "Curta Mais",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Editalong",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "FAOS",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "FUNBIO",
       "cnpj": null,
       "verificado_em": "2026-09-26",
       "mecanismos": {
@@ -792,7 +1132,371 @@
       "confirmados_5_anos": []
     },
     {
+      "nome": "Floresta Viva",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Fundação Amazônia Sustentável (FAS)",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Fundação Grupo Boticário de Proteção à Natureza",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Fundação Maria Emília",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Fundo Baobá",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Fundo Brasil",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
       "nome": "Goiânia Shopping",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Gran Cursos Online",
       "cnpj": null,
       "verificado_em": "2026-09-26",
       "mecanismos": {
@@ -1056,6 +1760,58 @@
       "observacao": "o SALIC não devolveu registro para o nome"
     },
     {
+      "nome": "Grupo de Estudos de Voluntariado Empresarial",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
       "nome": "Heineken",
       "cnpj": null,
       "verificado_em": "2026-09-26",
@@ -1110,6 +1866,370 @@
     },
     {
       "nome": "Hospital do Coração Anis Rassi",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Instituto Comida do Amanhã",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Instituto Genésio A. Mendes",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Instituto Lojas Renner",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Instituto Rede Mulher Empreendedora",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Institutosocialcrescervida",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Inter-American Foundation",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Itausocial",
       "cnpj": null,
       "verificado_em": "2026-09-26",
       "mecanismos": {
@@ -1265,6 +2385,58 @@
       "confirmados_5_anos": []
     },
     {
+      "nome": "Miqcb",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
       "nome": "Nubank",
       "cnpj": null,
       "verificado_em": "2026-09-26",
@@ -1316,6 +2488,110 @@
       "confirmados": [],
       "confirmados_5_anos": [],
       "observacao": "o SALIC não devolveu registro para o nome"
+    },
+    {
+      "nome": "ONG Banco de Alimentos",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Orquestra Cia",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
     },
     {
       "nome": "PUC Goiás",
@@ -1375,6 +2651,110 @@
     },
     {
       "nome": "Passeio das Águas Shopping",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Propel",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Recursos Disponíveis",
       "cnpj": null,
       "verificado_em": "2026-09-26",
       "mecanismos": {
@@ -1801,6 +3181,58 @@
       "confirmados_5_anos": []
     },
     {
+      "nome": "Tuifund",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
       "nome": "Unimed",
       "cnpj": null,
       "verificado_em": "2026-09-26",
@@ -1855,6 +3287,58 @@
     },
     {
       "nome": "Unip / Unigoiás",
+      "cnpj": null,
+      "verificado_em": "2026-09-26",
+      "mecanismos": {
+        "Rouanet": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "PAT": {
+          "status": "sem_cnpj",
+          "motivo": "sem CNPJ identificado em fonte oficial"
+        },
+        "Goyazes": {
+          "status": "nao_consta_2024_2026",
+          "fonte": "Secult-GO",
+          "motivo": "o nome da empresa não aparece nas planilhas de créditos concedidos de 2024, 2025 e 2026"
+        },
+        "LIE": {
+          "status": "bloqueado_defeso_eleitoral",
+          "valor": null,
+          "motivo": "a página da Lei de Incentivo ao Esporte respondeu HTTP 401 'Conteúdo restrito' em 26/09/2026; o ministério declara defeso de 02/07/2026 até o pleito (04/10) e, havendo segundo turno, até 25/10/2026. Consultar de novo a partir de 26/10/2026",
+          "retomar_em": "2026-10-26"
+        },
+        "FIA": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "a doação ao Fundo da Infância e Adolescência não tem lista nacional aberta por doador",
+          "caminho": "pedido de acesso à informação (Lei 12.527/2011) ao CMDCA de Goiânia e ao CEDCA-GO pedindo a relação de doadores pessoa jurídica ao fundo por exercício; o conselho a tem porque emite o recibo"
+        },
+        "Fundo do Idoso": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "mesma situação do FIA: o recibo é emitido pelo conselho e não há lista pública por doador",
+          "caminho": "pedido de acesso à informação ao Conselho Municipal e ao Conselho Estadual da Pessoa Idosa"
+        },
+        "PRONON": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "a instituição credenciada que recebeu a doação é quem tem o doador; pedir na prestação de contas dela ou ao Ministério da Saúde por acesso à informação"
+        },
+        "PRONAS/PCD": {
+          "status": "sem_fonte_publica_por_cnpj",
+          "valor": null,
+          "motivo": "o Ministério da Saúde publica projetos aprovados, não doadores",
+          "caminho": "idem PRONON"
+        }
+      },
+      "confirmados": [],
+      "confirmados_5_anos": []
+    },
+    {
+      "nome": "Zurich Seguros",
       "cnpj": null,
       "verificado_em": "2026-09-26",
       "mecanismos": {
@@ -4271,6 +5755,24 @@
       "lucro_real": "confirmado"
     },
     {
+      "nome": "BRASKEM S/A ESTADO DA",
+      "cnpj": "42150391000170",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 25,
+        "valor": 11147555.84,
+        "anos": [
+          "2021"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
       "nome": "BRF S.A.",
       "cnpj": "01838723000127",
       "confirmados": [
@@ -4328,24 +5830,6 @@
           "2022",
           "2023",
           "2024"
-        ]
-      },
-      "goyazes": null,
-      "pat": "inscrita",
-      "lucro_real": "confirmado"
-    },
-    {
-      "nome": "Braskem",
-      "cnpj": "42150391000170",
-      "confirmados": [
-        "Rouanet"
-      ],
-      "rouanet_5_anos": {
-        "desde": 2021,
-        "doacoes": 25,
-        "valor": 11147555.84,
-        "anos": [
-          "2021"
         ]
       },
       "goyazes": null,
@@ -4753,22 +6237,6 @@
       "lucro_real": "confirmado"
     },
     {
-      "nome": "Frigorífico Minerva",
-      "cnpj": "67620377000114",
-      "confirmados": [
-        "Rouanet"
-      ],
-      "rouanet_5_anos": {
-        "desde": 2021,
-        "doacoes": 0,
-        "valor": 0,
-        "anos": []
-      },
-      "goyazes": null,
-      "pat": "inscrita",
-      "lucro_real": null
-    },
-    {
       "nome": "GENERAL MOTORS DO BRASIL LTDA",
       "cnpj": "59275792000150",
       "confirmados": [
@@ -4946,7 +6414,25 @@
       "lucro_real": null
     },
     {
-      "nome": "Ipiranga",
+      "nome": "INTERCEMENT BRASIL S/A - EM RECUPERACAO JUDICIAL",
+      "cnpj": "62258884000136",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 1,
+        "valor": 205326.0,
+        "anos": [
+          "2021"
+        ]
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": "confirmado"
+    },
+    {
+      "nome": "IPIRANGA PRODUTOS DE PETROLEO S.A.",
       "cnpj": "33337122000127",
       "confirmados": [
         "Rouanet"
@@ -5184,6 +6670,22 @@
     {
       "nome": "MERCK SHARP & DOHME FARMACEUTICA LTDA.",
       "cnpj": "03560974000118",
+      "confirmados": [
+        "Rouanet"
+      ],
+      "rouanet_5_anos": {
+        "desde": 2021,
+        "doacoes": 0,
+        "valor": 0,
+        "anos": []
+      },
+      "goyazes": null,
+      "pat": "inscrita",
+      "lucro_real": null
+    },
+    {
+      "nome": "MINERVA S.A.",
+      "cnpj": "67620377000114",
       "confirmados": [
         "Rouanet"
       ],
@@ -5446,6 +6948,15 @@
       "goyazes": null,
       "pat": "inscrita",
       "lucro_real": "confirmado"
+    },
+    {
+      "nome": "RAIZEN ENERGIA S.A",
+      "cnpj": "08619844000127",
+      "confirmados": [],
+      "rouanet_5_anos": {},
+      "goyazes": null,
+      "pat": "nao_lido",
+      "lucro_real": null
     },
     {
       "nome": "RAIZEN S.A.",
