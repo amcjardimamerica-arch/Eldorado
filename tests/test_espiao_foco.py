@@ -54,11 +54,13 @@ class TesteFiltroEFrentes(Base):
         self._missao(conhecidas={"Instituto Exemplo"})
         emp = json.loads(E.EMPRESAS_ESPIAO.read_text())["achados"]
         nomes = {e["empresa"] for e in emp}
-        self.assertIn("Rede Supermercados X", nomes); self.assertIn("ABC Foundation", nomes)
+        self.assertIn("Rede Supermercados X", nomes)
+        # 12/10 (titular): empresa internacional não se prospecta — a fundação estrangeira é oportunidade, não empresa
+        self.assertNotIn("ABC Foundation", nomes)
         self.assertNotIn("Instituto Exemplo", nomes, "empresa já conhecida (cadastro / incentivo) não é catalogada de novo")
         self.assertTrue(all(e["fora_da_lista_de_incentivo"] for e in emp))
         mod = {e["empresa"]: e["modalidade"] for e in emp}
-        self.assertEqual(mod["Rede Supermercados X"], "doação"); self.assertEqual(mod["ABC Foundation"], "internacional")
+        self.assertEqual(mod["Rede Supermercados X"], "doação")
         cand = json.loads(E.CANDIDATAS.read_text())["candidatas"]
         self.assertEqual({c["frente"] for c in cand}, {"editais_de_empresas", "internacional"}, "edital e internacional vão ao Interceptador")
         self._missao(conhecidas={"Instituto Exemplo"})

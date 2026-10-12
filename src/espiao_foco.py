@@ -47,7 +47,20 @@ APOIOS = ["edital de patrocínio", "chamada de projetos sociais", "programa de i
 PUBLICOS = ["crianças e adolescentes", "pessoa idosa", "mulheres", "juventude", "pessoas com deficiência", "comunidades periféricas",
             "catadores de recicláveis", "agricultura familiar", "cultura popular", "esporte de base", "educação", "meio ambiente",
             "segurança alimentar", "população em situação de rua"]
-REGIOES = ["Goiás", "Goiânia", "Centro-Oeste", "Brasil", "Anápolis", "Aparecida de Goiânia", "Rio Verde"]
+# 12/10/2026 (titular): TERRITÓRIO DE GOIÁS — a região de toda consulta é Goiás (estado, capital ou um dos 246 municípios)
+# ou a abrangência nacional; "Centro-Oeste" saiu (mistura outros estados). docs/prompts/PROMPT-ESPIAO-TERRITORIO-GOIAS-2026-10-12.md
+REGIOES = ["Goiás", "Goiânia", "Anápolis", "Aparecida de Goiânia", "Rio Verde", "Goiás", "todo o Brasil", "nacional"]
+TERRITORIO = ROOT / "config/territorio_goias.json"
+
+
+def _regiao(r: random.Random) -> str:
+    """Goiás na maior parte das consultas (às vezes um município de Goiás sorteado); às vezes a abrangência nacional."""
+    mun = (_j(TERRITORIO, {}).get("municipios") or [])
+    x = r.random()
+    if x < .45: return r.choice(["Goiás", "Goiânia", "Goiás"])
+    if x < .75 and mun:
+        m = r.choice(mun); return "cidade de Goiás" if m == "Goiás" else f"{m} Goiás"
+    return r.choice(["todo o Brasil", "abrangência nacional", "Brasil"])
 INTERNACIONAIS = ["Fundo Canadá para Iniciativas Locais", "Embaixada da Alemanha microprojetos", "Embaixada do Japão Assistência a Projetos Comunitários",
                   "Embaixada da França fundo de apoio", "Embaixada dos Países Baixos", "União Europeia sociedade civil Brasil",
                   "Fundação Interamericana IAF", "GEF Small Grants Programme Brasil", "Global Fund for Children", "Fundação Avina",
@@ -116,19 +129,19 @@ def _consultas_sites_fechados() -> list[str]:
 
 def familias() -> dict:
     return {
-        "setor_apoio_regiao": lambda r, a: f"{r.choice(SETORES)} {r.choice(APOIOS)} {r.choice(REGIOES)} {a}",
+        "setor_apoio_regiao": lambda r, a: f"{r.choice(SETORES)} {r.choice(APOIOS)} {_regiao(r)} {a}",
         "empresa_semente": lambda r, a: (lambda s: f'"{r.choice(s)}" {r.choice(["instituto", "fundação", "patrocínio", "edital"])} projetos sociais {a}' if s else None)(_empresas_semente()),
-        "publico_apoio_empresa": lambda r, a: f"empresa {r.choice(APOIOS)} {r.choice(PUBLICOS)} {r.choice(REGIOES)} {a}",
-        "operador_avancado": lambda r, a: f"{r.choice(OPERADORES)} {r.choice(['instituto', 'fundação empresarial', 'empresa'])} {r.choice(PUBLICOS)} {a}",
-        "rastro_de_patrocinio": lambda r, a: f'"patrocínio" "{r.choice(PUBLICOS)}" projeto {r.choice(REGIOES)} "apoio" {a}',
-        "nao_financeiro": lambda r, a: f"{r.choice(['doação de computadores', 'doação de alimentos', 'cessão de espaço', 'voluntariado de funcionários', 'doação de móveis'])} para ONGs empresa {r.choice(REGIOES)} {a}",
+        "publico_apoio_empresa": lambda r, a: f"empresa {r.choice(APOIOS)} {r.choice(PUBLICOS)} {_regiao(r)} {a}",
+        "operador_avancado": lambda r, a: f"{r.choice(OPERADORES)} {r.choice(['instituto', 'fundação empresarial', 'empresa'])} {r.choice(PUBLICOS)} {_regiao(r)} {a}",
+        "rastro_de_patrocinio": lambda r, a: f'"patrocínio" "{r.choice(PUBLICOS)}" projeto {_regiao(r)} "apoio" {a}',
+        "nao_financeiro": lambda r, a: f"{r.choice(['doação de computadores', 'doação de alimentos', 'cessão de espaço', 'voluntariado de funcionários', 'doação de móveis'])} para ONGs empresa {_regiao(r)} {a}",
         "internacional_financiador": lambda r, a: f'"{r.choice(INTERNACIONAIS)}" {r.choice(["edital", "chamada", "call for proposals", "inscrições"])} {a}',
         "internacional_ingles": lambda r, a: r.choice(EN).format(ano=a),
         "internacional_espanhol": lambda r, a: r.choice(ES).format(ano=a),
         # 10/10 (titular): SITES FECHADOS a robôs (Prosas, FINEP…) — o Espião acha o FINANCIADOR e o edital no site oficial
         # dele, fora do site fechado (religa o ângulo dos indexadores, que ia nas missões de aposta desligadas pelo foco)
         "sites_fechados": lambda r, a: (lambda q: q.format(ano=a) if q else None)(r.choice(_consultas_sites_fechados())),
-        "premio_empresarial": lambda r, a: f"prêmio {r.choice(['inovação social', 'empreendedorismo social', 'impacto social', 'boas práticas'])} {r.choice(SETORES)} inscrições {a}",
+        "premio_empresarial": lambda r, a: f"prêmio {r.choice(['inovação social', 'empreendedorismo social', 'impacto social', 'boas práticas'])} {r.choice(SETORES)} {_regiao(r)} inscrições {a}",
     }
 
 
@@ -243,6 +256,55 @@ def nota_rede(titulo: str, texto: str, url: str) -> float:
 
 
 # ── A MISSÃO ───────────────────────────────────────────────────────────────────────────────────────────────────
+_NACIONAL = re.compile(r"todo o (brasil|pais|territorio nacional)|em todo o (brasil|pais|territorio)|abrangencia nacional|ambito nacional|"
+                       r"de todas as regioes do brasil|de todos os estados|(osc|organizacoes|entidades|ongs)( sociais)? de todo o (brasil|pais)|"
+                       r"nacionalmente|em qualquer (estado|regiao) do (brasil|pais)|para todo o brasil|brazil-wide|nationwide")
+_SIGLAS_UF = "AC AL AP AM BA CE DF ES MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO".split()
+# nomes de estado/capital que também são palavras comuns: só contam com a sigla ao lado ("Natal/RN") ou "estado do …"
+_AMBIGUOS = {"para", "natal", "vitoria", "palmas", "boa vista", "salvador", "belem", "campo grande", "acre", "sao luis"}
+_TERR: dict = {}
+
+
+def _territorio_base() -> dict:
+    if not _TERR:
+        T = _j(TERRITORIO, {})
+        mun = {_sem_acento(m).lower() for m in (T.get("municipios") or [])}
+        outros = {}
+        for uf, v in (T.get("outros_estados") or {}).items():
+            for nome in (v.get("nome"), v.get("capital")):
+                k = _sem_acento(nome or "").lower()
+                if k and k not in _AMBIGUOS: outros[k] = uf
+        _TERR.update({"mun": mun, "outros": outros,
+                      "re_mun": re.compile(r"\b(" + "|".join(sorted((re.escape(m) for m in mun if len(m) > 4), key=len, reverse=True)) + r")\b") if mun else None,
+                      "re_outros": re.compile(r"\b(" + "|".join(sorted((re.escape(k) for k in outros), key=len, reverse=True)) + r")\b") if outros else None})
+    return _TERR
+
+
+def territorio(titulo: str, texto: str, url: str = "", frente_: str = "") -> tuple[str, str | None]:
+    """12/10 (titular): (território, UF de fora) — goias · nacional · internacional · outro_estado · indefinido."""
+    if frente_ == "internacional":
+        return "internacional", None
+    b = _territorio_base(); bruto = f"{titulo} {texto[:6000]}"; t = _sem_acento(bruto).lower()
+    if re.search(r"\bgoias\b|\bgoiania\b", t) or re.search(r"[-/(]\s?GO\b|\bGO\)", bruto) or (b.get("re_mun") and b["re_mun"].search(t)):
+        return "goias", None
+    if _NACIONAL.search(t):
+        return "nacional", None
+    ufs = []
+    if b.get("re_outros"):
+        ufs += [b["outros"][m] for m in b["re_outros"].findall(t)]
+    ufs += re.findall(r"[-/(]\s?(" + "|".join(_SIGLAS_UF) + r")\b", bruto)
+    ufs += [{"para": "PA", "acre": "AC"}[m] for m in re.findall(r"\bestado d[oe] (para|acre)\b", t)]
+    if ufs:
+        return "outro_estado", max(set(ufs), key=ufs.count)
+    return "indefinido", None
+
+
+def empresa_internacional(url: str, texto: str) -> bool:
+    """Organização com site fora do domínio .br e sem menção ao Brasil: empresa internacional (não se prospecta)."""
+    host = (urlsplit(url).hostname or "").lower()
+    return not host.endswith(".br") and not re.search(r"\bbrasil\b|\bbrazil\b", _sem_acento(texto[:6000]).lower())
+
+
 def missao(ordem: int, buscar=None, ler_pagina=None, conhecida=None, rnd: random.Random | None = None) -> tuple[str, list[dict], str]:
     """Uma busca criativa → lê os resultados → fica só o privado/internacional fora dos motores → candidata ao
     Interceptador (quando é edital/chamada) e empresa nova no campo de empresas."""
@@ -280,19 +342,27 @@ def missao(ordem: int, buscar=None, ler_pagina=None, conhecida=None, rnd: random
         if _nf:
             motivos["não é fomento a OSC"] = motivos.get("não é fomento a OSC", 0) + 1
             continue
+        terr, uf_fora = territorio(titulo, texto, url, fr)
+        if terr == "outro_estado":                     # 12/10 (titular): só Goiás, nacional ou internacional
+            motivos[f"fora de Goiás ({uf_fora})"] = motivos.get(f"fora de Goiás ({uf_fora})", 0) + 1
+            continue
         org = nome_da_organizacao(titulo, url)
         if fr in ("editais_de_empresas", "internacional") and url not in ja_cand:
             cand.append({"url": url, "titulo": titulo or url, "visto_em": f"Espião · {fr}", "enquadramento": "A VERIFICAR",
                          "descoberto_em": date.today().isoformat(), "origem": "Piloto - Espião (privado/internacional)",
-                         "frente": fr, "familia": fam, "consulta": q, "nota_rede": round(nt, 3), "organizacao": org})
+                         "frente": fr, "familia": fam, "consulta": q, "nota_rede": round(nt, 3), "organizacao": org, "territorio": terr})
             ja_cand.add(url)
-        nova_emp = bool(org) and not NAO_EMPRESA.search(org) and not conhecida(org) and org.upper() not in ja_emp
+        # 12/10 (titular): empresa só de Goiás ou de atuação nacional; empresa internacional não se prospecta
+        emp_no_territorio = terr in ("goias", "nacional", "indefinido") and fr != "internacional" and not empresa_internacional(url, texto)
+        if org and not emp_no_territorio and terr != "outro_estado":
+            motivos["empresa internacional (não se prospecta)"] = motivos.get("empresa internacional (não se prospecta)", 0) + 1
+        nova_emp = emp_no_territorio and bool(org) and not NAO_EMPRESA.search(org) and not conhecida(org) and org.upper() not in ja_emp
         if nova_emp:
             ja_emp.add(org.upper())
             emps.append({"empresa": org, "evento": titulo[:140] or f"{modalidade(texto, fr)} — {org}", "area": _area(base),
                          "fonte": "Piloto - Espião", "tipo_fonte": f"espião · {fr}", "url": url, "trecho": trecho[:300],
                          "em": _agora(), "modalidade": modalidade(texto, fr), "fora_da_lista_de_incentivo": True,
-                         "frente": fr, "nota_rede": round(nt, 3), "consulta": q})
+                         "frente": fr, "nota_rede": round(nt, 3), "consulta": q, "territorio": terr})
         ach.append({"titulo": titulo or org, "url": url, "novo": True, "empresa": org if nova_emp else None, "frente": fr, "nota_rede": round(nt, 3)})
     if cand:
         C = _j(CANDIDATAS, {"candidatas": []}); C["candidatas"] = (C.get("candidatas") or []) + cand; C["em"] = date.today().isoformat(); _w(CANDIDATAS, C)
