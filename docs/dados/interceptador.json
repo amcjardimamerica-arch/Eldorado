@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-11T23:38:45+00:00",
+  "em": "2026-10-11T23:59:48+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-11T23:23:03+00:00",
+  "ultimo_voo": "2026-10-11T23:43:02+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 317,
+    "missoes": 318,
     "validadas": 17,
     "parciais": 79,
-    "insuficientes": 214,
+    "insuficientes": 215,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 212,
+      "sim": 213,
       "nao": 54
     },
     "estrelas_de_ouro": 5,
@@ -52,6 +52,73 @@
     "tempo_medio_min": 10.4
   },
   "missoes": [
+    {
+      "em": "2026-10-11T23:43:02+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Salinas (MG) 2026-09-30 — \"chamamento público\" \"organizações da sociedade civil\"",
+      "qualidade": "insuficiente",
+      "comprovados": 4,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://www.salinas.mg.gov.br/portal/editais/0/3/3375/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto menciona um chamamento público para organizações da sociedade civil, emitido pela Prefeitura de Salinas - MG, indicando que é uma fonte válida para editais de fomento.",
+        "para_a_amc": "Para acessar, uma associação comunitária de Goiânia precisaria verificar se o edital se aplica ao seu território, pois o chamamento público é específico para Salinas (MG).",
+        "proximo_passo": "Consultar o edital completo para verificar se há requisitos ou áreas de atuação compatíveis com a associação.",
+        "risco": "O território do edital é Salinas (MG), o que pode impedir que uma associação de Goiânia participe."
+      },
+      "erro": null,
+      "segundos": 1005,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 3,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "80e9e36331d76ce6f0c7",
+      "encontrou": {
+        "Órgão / financiador": {
+          "valor": "Prefeitura de Salinas - MG",
+          "trecho": "Prefeitura de Salinas - MG - EDITAL DE CHAMAMENTO PÚBLICO Nº 01/2026 - PNAB",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "MG",
+          "trecho": "Salinas/MG",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Salinas",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3157005/2026-09-30/f93bc7e08c4e2867f4c936f94970b9e1b49086a4.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-11T23:23:03+00:00",
       "modo": "validar",
@@ -2478,88 +2545,6 @@
         "financiador_regulamento",
         "financiador_pdf",
         "financiador_ano"
-      ]
-    },
-    {
-      "em": "2026-10-11T12:52:25+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Chamada nº 009/2026 – FAPESPA/CNPq/CAPES",
-      "qualidade": "parcial",
-      "comprovados": 8,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://portal.fapespa.pa.gov.br/cadastrousuarioexterno/chamada_detalhe.aspx?cod_edital=981",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "A chamada nº 009/2026 – FAPESPA/CNPq/CAPES foi comprovada com informações sobre seu objeto, prazo de inscrição, órgão financiador, território, esfera, requisitos, anexos e destinação.",
-        "para_a_amc": "Para acessar, uma associação comunitária de Goiânia (assistência social, cultura, educação, esporte) precisaria verificar se o objeto da chamada se aplica a suas atividades, reunir os documentos exigidos, preparar os anexos necessários e inscrever-se dentro do prazo de inscrição (2026-07-01 a 2026-09-18).",
-        "proximo_passo": "Verificar se a associação comunitária de Goiânia atende aos requisitos e ao objeto da chamada e, caso sim, iniciar a preparação dos documentos e anexos necessários.",
-        "risco": "O risco é que a associação comunitária de Goiânia não atenda aos requisitos ou ao objeto da chamada, ou que não se inscreva dentro do prazo estabelecido."
-      },
-      "erro": null,
-      "segundos": 1211,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 8,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Valor, Área de atuação",
-      "id": "agr-deb00e644f3c",
-      "encontrou": {
-        "Objeto": {
-          "valor": "fortalecimento do ecossistema de CT&I e à criação de condições favoráveis para atração e fixação de doutores no Estado do Pará",
-          "trecho": "voltadas ao fortalecimento do ecossistema de CT&I e à criação de condições favoráveis para atração e fixação de doutores no Estado do Pará",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "2026-07-01 a 2026-09-18",
-          "trecho": "De 01/07/2026 às 08h a 18/09/2026 às 14h",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Fundação Amazônia de Amparo a Estudos e Pesquisas – FAPESPA",
-          "trecho": "por intermédio da Fundação Amazônia de Amparo a Estudos e Pesquisas – FAPESPA",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "PA",
-          "trecho": "Estado do Pará",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · fomento",
-          "trecho": "convida doutores(as) interessados(as) a apresentarem propostas de projetos de pesquisa científica, tecnológica e/ou inovadora",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "documento ou exigência",
-          "trecho": "Diploma de Doutorado e Ata de Defesa (EM ARQUIVO ÚNICO, FORMATO .PDF)",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Fundação Amazônia de Amparo a Estudos e Pesquisas – FAPESPA",
-      "indicios": [
-        {
-          "url": "https://www.fapespa.pa.gov.br/2026/07/01/chamada-n-o-009-2026-fapespa-cnpq-capes",
-          "tipo": "noticia"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador"
       ]
     }
   ],
