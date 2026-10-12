@@ -115,15 +115,15 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 57,
-   "achados_total_agora": 57,
+   "achados_total_1a": 60,
+   "achados_total_agora": 60,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 963,
-   "achados_total_agora": 963,
+   "achados_total_1a": 984,
+   "achados_total_agora": 984,
    "no_fluxo": 2,
    "confirmadas": 0
   },
@@ -136,8 +136,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 65,
-   "achados_total_agora": 65,
+   "achados_total_1a": 66,
+   "achados_total_agora": 66,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -164,22 +164,22 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 35,
-   "achados_total_agora": 35,
+   "achados_total_1a": 36,
+   "achados_total_agora": 36,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 63,
-   "achados_total_agora": 63,
+   "achados_total_1a": 64,
+   "achados_total_agora": 64,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-estaduais-go-gov",
-   "achados_total_1a": 27,
-   "achados_total_agora": 27,
+   "achados_total_1a": 28,
+   "achados_total_agora": 28,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -228,7 +228,7 @@
  "pontos_com_redundancia": 11,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 4221
+ "exemplos_da_rede_de_rotas": 4303
 }
 ```
 
@@ -239,12 +239,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 85.0,
- "fora_dos_motores_pct_agora": 85.0,
+ "fora_dos_motores_pct_1a": 85.1,
+ "fora_dos_motores_pct_agora": 85.1,
  "origem": {
-  "agregador/outra": 279,
+  "agregador/outra": 280,
   "motor": 68,
-  "Piloto": 105
+  "Piloto": 107
  },
  "dominios_so_de_agregador": [
   {
@@ -473,7 +473,7 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 40,
+   "orgaos": 41,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",
