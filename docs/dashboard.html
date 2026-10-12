@@ -1083,7 +1083,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <section id="v-editais" class="oculto" style="margin-top:14px">
 <div class="abas abas-ed" id="ed-abas" style="justify-content:center">
   <button data-aba="em_andamento" class="on"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.5v4.8l3 1.8"/></svg><span>Em andamento</span></button>
-  <button data-aba="encerrado"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5h17v11a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-11z"/><path d="M5 4.5h14l1.5 3h-17z"/><path d="M10 12h4"/></svg><span>Arquivados — Encerrados / Descartados</span></button>
+  <button data-aba="encerrado"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5h17v11a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-11z"/><path d="M5 4.5h14l1.5 3h-17z"/><path d="M10 12h4"/></svg><span>Arquivados — Inscritos / Encerrados / Descartados</span></button>
   <button data-aba="ranking_empresas"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Ranking de empresas</span></button>
 </div>
 <div class="cartao oculto" id="ed-fila-caixa" style="margin-bottom:12px"></div>
@@ -3105,7 +3105,7 @@ function desenhaEditais(){
     return;
   }
   if(aba==="inscrito"){
-    const lista=(D.editais||[]).filter(e=>estadoDe(e.id)==="inscrito").sort((a,b)=>((dias(a.fim)??9e9)-(dias(b.fim)??9e9)));
+    const lista=(D.editais||[]).filter(e=>estadoDe(e.id)==="inscrito").concat(_edsDecididosDoFluxo("inscrito")).sort((a,b)=>((dias(a.fim)??9e9)-(dias(b.fim)??9e9)));
     if(!lista.length){g.innerHTML=`<div class=cartao>Nenhuma inscrição realizada registrada ainda.</div>`;return;}
     lista.forEach(e=>g.appendChild(caixaEdital(e)));
     $("ed-legenda").innerHTML=[...new Set(lista.map(e=>e.area))].map(a=>`<span><span class=ponto style="background:${AREA(a).cor}"></span>${esc(AREA(a).rotulo)}</span>`).join("");
@@ -3115,21 +3115,23 @@ function desenhaEditais(){
   const uf=$("ed-uf").value, ar=$("ed-area").value;
   const hojeISO=HOJE.toISOString().slice(0,10);
   const cid=t=>{const m=/Di[áa]rio Oficial de ([^—(]+?)\s*\(([A-Z]{2})\)/.exec(t||"");return m?m[1].trim():null;};
-  const arq=(D.editais||[]).filter(e=>estadoDe(e.id)==="descartado"||e.estado_export==="encerrado"||(e.fim&&e.fim<hojeISO))
+  // 12/10 (titular): as INSCRITAS também ficam em Arquivados (a aba Inscritos não existe mais; antes elas sumiam de todas as listas)
+  const arq=(D.editais||[]).filter(e=>["descartado","inscrito"].includes(estadoDe(e.id))||e.estado_export==="encerrado"||(e.fim&&e.fim<hojeISO)).concat(_edsDecididosDoFluxo("descartado"),_edsDecididosDoFluxo("inscrito"))
     .filter(e=>(!uf||e.uf===uf)&&(!ar||e.area===ar))
     .sort((a,b)=>String(b.fim||"").localeCompare(String(a.fim||"")));
   const enche=(id,vals,rot)=>{const s=$(id);const v0=s.value;s.length=1;vals.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=rot(v);s.appendChild(o);});s.value=v0;};
-  const todosArq=(D.editais||[]).filter(e=>estadoDe(e.id)==="descartado"||e.estado_export==="encerrado"||(e.fim&&e.fim<hojeISO));
+  const todosArq=(D.editais||[]).filter(e=>["descartado","inscrito"].includes(estadoDe(e.id))||e.estado_export==="encerrado"||(e.fim&&e.fim<hojeISO)).concat(_edsDecididosDoFluxo("descartado"),_edsDecididosDoFluxo("inscrito"));
   enche("ed-area",[...new Set(todosArq.map(e=>e.area).filter(Boolean))].sort((a,b)=>AREA(a).rotulo.localeCompare(AREA(b).rotulo,"pt")),a=>AREA(a).rotulo);
   enche("ed-uf",[...new Set(todosArq.map(e=>e.uf).filter(Boolean))].sort(),u=>u);
-  $("ed-legenda").innerHTML=`<span class=meta>${arq.length} edital(is) arquivado(s) — encerrados ou descartados. Sem descarte aqui: só abrir detalhes ou recuperar para «Em andamento».</span>`;
+  $("ed-legenda").innerHTML=`<span class=meta>${arq.length} oportunidade(s) arquivada(s) — inscritas, encerradas ou descartadas. Aqui é só abrir o detalhe ou recuperar para «Em andamento».</span>`;
   if(!arq.length){g.innerHTML=`<div class=cartao>Nenhum edital arquivado neste filtro.</div>`;return;}
   arq.forEach(e=>{
     const li=document.createElement("div");li.className="ed-linha";li.style.borderLeft=`4px solid ${AREA(e.area).cor}`;
     const mun=e.municipio||cid(e.titulo);
     li.innerHTML=`<div class=tit title="${esc(e.titulo)}">${esc(e.titulo)}</div>
       <div class=dt>${e.inicio?br(e.inicio):"?"} → ${e.fim?br(e.fim):"sem prazo"}</div>
-      <div class=loc>${mun?esc(mun)+" · ":""}${esc(e.uf||(e.abrangencia==="nacional"?"Brasil":"—"))}</div>
+      <div class=loc>${mun?esc(mun)+" · ":""}${esc(e.uf||(e.abrangencia==="nacional"?"Brasil":"—"))}${(()=>{const st=estadoDe(e.id);
+        return st==="inscrito"?' · <b style="color:var(--ok,#1E7B4A)">✓ inscrição realizada</b>':st==="descartado"?' · <b style="color:var(--urgente,#B3261E)">✕ descartada</b>':' · <span class=meta>encerrada</span>';})()}</div>
       <div class=ico>
         <button title="Abrir detalhes" data-acao="detalhe"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></button>
         <button title="Recuperar — volta para Em andamento" data-acao="recuperar"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v5h5"/></svg></button>
@@ -5058,6 +5060,21 @@ const LIVRO_DIZ={ouro:"Livro ouro — edições em 2 ou mais anos nos últimos 3
 window.livroSelo=function(s){ if(!s||!LIVRO_DIZ[s]) return ""; estrelaSelo("bronze");   // garante os gradientes no documento
   return `<svg class="oa-livro ${s}" viewBox="0 0 24 22" role="img" aria-label="${LIVRO_DIZ[s]}"><title>${LIVRO_DIZ[s]}</title><path d="M2 3.2c3.4-.9 6.6-.5 9.3 1.4v15.2c-2.7-1.8-5.9-2.2-9.3-1.3zM22 3.2c-3.4-.9-6.6-.5-9.3 1.4v15.2c2.7-1.8 5.9-2.2 9.3-1.3z"/></svg>`; };
 window.desenhaAbertasFluxo=function(){ return _desenhaAbertasFluxo(); };   // 28/09: chamado pelos filtros da tela (escopo global)
+/* 12/10/2026 (titular): as AÇÕES voltam aos cartões de Oportunidades Abertas › Em andamento. Em 28/09 a aba passou a
+   mostrar os cartões do fluxo validado, criados sem os botões (✦ IA · ✓ inscrição · ✕ descartar) e sem o clique para o
+   detalhe. A ponte abaixo transforma a oportunidade do fluxo no edital que as ações e o detalhe esperam. */
+function _edDoFluxo(x){
+  const ids=[x.id,...(x.ids_origem||[])].filter(Boolean);
+  const ed=(D.editais||[]).find(e=>ids.includes(e.id));
+  const u=x.link_oficial||((x.inspecao||{}).pagina_oficial)||x.url;
+  const base={id:x.id||ids[0],titulo:x.titulo,fonte_nome:x.orgao||"",territorio:x._uf||x.uf||"nacional",uf:x._uf||x.uf||"",area:x.area||areaCal(x),
+    objeto:x.objeto,inicio:x.inicio,fim:x.fim,url:u,resumo:String(x.objeto||x.titulo||"").slice(0,200),detalhes:{},abrangencia:(x._uf||x.uf)?"":"nacional",_do_fluxo:true};
+  return ed?{...base,...ed,id:ed.id}:base;
+}
+function _fluxoTodos(){ const F=window._FLUXO; if(!F) return [];
+  return Object.entries(F.itens_por_uf||{}).flatMap(([uf,v])=>v.map(x=>({...x,_uf:uf==="__nac__"?"":uf}))); }
+function _edsDecididosDoFluxo(estado){ const ja=new Set((D.editais||[]).map(e=>e.id));
+  return _fluxoTodos().map(_edDoFluxo).filter(e=>!ja.has(e.id)&&(decisoes()[e.id]||{}).estado===estado); }
 function _desenhaAbertasFluxo(){
   const caixa=$("ed-abertos-caixa"); if(!caixa) return; caixa.classList.remove("oculto");
   // espaço próprio dos cartões; o conteúdo antigo da caixa fica oculto (outras funções ainda escrevem nele)
@@ -5065,7 +5082,8 @@ function _desenhaAbertasFluxo(){
   if(!cx){ cx=document.createElement("div"); cx.id="oa-lista"; caixa.prepend(cx); }
   [...caixa.children].forEach(el=>{ if(el!==cx) el.classList.add("oculto"); });
   const F=window._FLUXO; if(!F){ cx.innerHTML=`<div class=meta style="padding:14px">lendo o fluxo das oportunidades…</div>`; return; }
-  const todos=Object.entries(F.itens_por_uf||{}).flatMap(([uf,v])=>v.map(x=>({...x,_uf:uf==="__nac__"?"":uf})));
+  const todos=Object.entries(F.itens_por_uf||{}).flatMap(([uf,v])=>v.map(x=>({...x,_uf:uf==="__nac__"?"":uf})))
+    .filter(x=>{const d=(decisoes()[_edDoFluxo(x).id]||{}).estado; return !d||d==="em_andamento";});   // 12/10: inscrita/descartada sai daqui
   const f=window._oaF, nUF={}; todos.forEach(x=>{const k=x._uf||"__nac__"; nUF[k]=(nUF[k]||0)+1;});
   let L=todos.filter(x=>(!f.uf||(f.uf==="__nac__"?!x._uf:x._uf===f.uf))&&(!f.a||areaCal(x)===f.a)&&(!f.s||seloEsteira(x)===f.s));
   L.sort((a,b)=>((SELO_ORD[seloEsteira(b)]??-1)-(SELO_ORD[seloEsteira(a)]??-1))||(b.confirmada-a.confirmada)||(a.confirmada?String(a.fim||"9999").localeCompare(String(b.fim||"9999")):((a._uf==="GO"?0:1)-(b._uf==="GO"?0:1))||String(b.publicado_em||"").localeCompare(String(a.publicado_em||""))));
@@ -5073,7 +5091,7 @@ function _desenhaAbertasFluxo(){
   const sel=(id,opts,v)=>`<select class="ep-sel" onchange="_oaF['${id}']=this.value;desenhaAbertasFluxo()">${opts.map(([k,r])=>`<option value="${k}" ${v===k?"selected":""}>${r}</option>`).join("")}</select>`;
   const cartao=x=>{const I=x.inspecao, C=x.condicoes, a=areaCal(x), u=x.link_oficial||(I&&I.pagina_oficial)||x.url, of=!!(x.link_oficial||(I&&I.pagina_oficial));
     const cor=x.confirmada?"verde":!I?"cinza":I.ok?"verde":"verm";
-    return `<div class="oa-c" style="--c:${COR_AREA[a]}">
+    return `<div class="oa-c" data-oaid="${esc(_edDoFluxo(x).id)}" style="--c:${COR_AREA[a]};cursor:pointer" title="clique para abrir o detalhe">
       <div class="oa-t"><span class="uf-fx-m ${cor}" title="${x.confirmada?"confirmada: objeto, prazo e site oficial":!I?"ainda não estudada pelo Interceptador":I.ok?"estudada: prazo e site oficial encontrados":"estudada: prazo ou site oficial ainda não encontrados"}"></span>
         ${u?`<a href="${esc(u)}" target=_blank rel="noopener noreferrer" title="${esc(x.titulo)}">${esc(String(x.titulo).replace(/^Di\u00e1rio Oficial de [^\u2014]+\u2014\s*/,"Diário oficial · ").replace(/"/g,"").slice(0,110))}</a>`:`<b>${esc(String(x.titulo).slice(0,110))}</b>`}<span class="oa-selos">${seloEsteira(x)?estrelaSelo(seloEsteira(x)):""}${livroSelo(x.selo_livro)}</span></div>
       <div class="oa-m">${esc(x.orgao||"")}${x.orgao?" · ":""}${x._uf||"nacional"} · ${esc(x.tipo||"")}${x.iniciativa?` · <b title="marcador de iniciativa">${({poder_publico:"poder público",iniciativa_privada:"iniciativa privada",mista:"mista (público + privado)"})[x.iniciativa]||esc(x.iniciativa)}</b>`:""} · ${NOME_AREA[a]}${x.publicado_em?" · publicado em "+br(x.publicado_em):""}</div>
@@ -5157,7 +5175,19 @@ function _desenhaAbertasFluxo(){
               return `<span class="oa-ki ${g}" title="${esc(k)} — ${NOTA[it.s]||NOTA.pend}${it.v?": "+esc(it.v):""}${it.t?" · “"+esc(it.t)+"”":""}"><i>${SIM[g]}</i>${esc(rot)}</span>`;}).join("")}</div>`;})()}
         ${I?`<div class=meta style="margin-top:3px">estudada pelo Interceptador em ${esc(I.em.slice(8,10)+"/"+I.em.slice(5,7))}: ${esc(I.qualidade||"—")} ${I.comprovados??""}/12</div>`:`<div class=meta style="margin-top:3px">na fila do Interceptador${x._uf==="GO"?" (Goiás tem prioridade)":""} — ele busca os itens com ✕ (até 3 vezes por oportunidade)</div>`}</div>
       <div class="oa-r">${x.opressor?`livro <b>${esc(x.opressor)}</b>${x.opressor_edicoes?` · ${x.opressor_edicoes} edição(ões) guardada(s)`:""}${x.opressor_previsao?` · próxima janela prevista: ${esc(x.opressor_previsao.proxima_janela)}`:""}`:x.opressor_dispensa?`sem livro — ${esc(x.opressor_dispensa)}`:"livro será criado no próximo ciclo"}</div>
+      <div class="acoes-ed" style="margin-top:10px">
+       <button class="bt-ia" title="Parecer detalhado: o que é preciso para vencer, se há enquadramento de alguma associação e se o edital pode ser descartado">✦ Aprimorar análise com IA</button>
+       <button class="bt-insc" title="Inscrição realizada — arquiva a oportunidade">✓ Inscrição realizada</button>
+       <button class="bt-desc" title="Descartar — passa a compor os encerrados">✕ Descartar</button></div>
     </div>`;};
+  window._oaMapa=Object.fromEntries(todos.map(x=>[_edDoFluxo(x).id,x]));
+  if(!cx._acoes){ cx._acoes=true; cx.addEventListener("click",ev=>{
+      const c=ev.target.closest(".oa-c"); if(!c) return; const x=(window._oaMapa||{})[c.dataset.oaid]; if(!x) return; const e=_edDoFluxo(x);
+      if(ev.target.closest(".bt-ia")){ ev.stopPropagation(); return pedirParecer(e); }
+      if(ev.target.closest(".bt-insc")){ ev.stopPropagation(); return arquivarInscrito(e); }
+      if(ev.target.closest(".bt-desc")){ ev.stopPropagation(); return descartarEdital(e); }
+      if(ev.target.closest("a,select,button,.oa-ki")) return;          // link do site oficial e itens do checklist seguem como antes
+      detalheEdital(e); }); }
   cx.innerHTML=`<div class="oa-cab"><div><b style="font-size:15px;color:#0E2A55">Oportunidades abertas</b>
       <span class=meta> · ${L.length} no recorte · ${["ouro","prata","bronze"].map(s=>`${L.filter(x=>seloEsteira(x)===s).length} ${s}`).join(" · ")} · ${conf} com prazo e site oficial · ${insp} estudada(s) pelo Interceptador · ${opr} com livro · atualiza a cada pouso</span></div>
     <div class="oa-fil">${sel("uf",[["",`Brasil (${todos.length})`],["__nac__",`Nacional (${nUF.__nac__||0})`],...Object.keys(nUF).filter(k=>k!=="__nac__").sort((a,b)=>a==="GO"?-1:b==="GO"?1:a.localeCompare(b)).map(k=>[k,`${k} (${nUF[k]})`])],f.uf)}
