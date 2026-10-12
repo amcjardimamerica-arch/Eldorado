@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-12T13:40:30+00:00",
+  "em": "2026-10-12T13:54:51+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-12T13:24:26+00:00",
+  "ultimo_voo": "2026-10-12T13:43:23+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,94 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 41,
+    "missoes": 42,
     "validadas": 0,
-    "parciais": 8,
+    "parciais": 9,
     "insuficientes": 29,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "sim": 31,
-      "nao": 3
+      "nao": 4
     },
     "estrelas_de_ouro": 0,
     "fontes_novas_para_os_motores": 1,
-    "tempo_medio_min": 12.7
+    "tempo_medio_min": 12.6
   },
   "missoes": [
+    {
+      "em": "2026-10-12T13:43:23+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Londrina (PR) 2026-09-11 — \"termo de fomento\" \"chamamento público\"",
+      "qualidade": "parcial",
+      "comprovados": 6,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://portal.londrina.pr.gov.br/images/stories/jornalOficial/Jornal-5852-Assinado.pdf",
+      "parecer_fonte": {
+        "serve_como_fonte": "nao",
+        "por_que": "O conteúdo comprovado refere-se a uma revisão de cálculo de proventos de aposentadoria, não relacionado a editais de fomento para organizações da sociedade civil.",
+        "para_a_amc": "Para acessar editais de fomento, a associação comunitária de Goiânia precisaria verificar editais específicos divulgados por órgãos públicos, atender aos requisitos exigidos e submeter a proposta conforme o edital.",
+        "proximo_passo": "Consultar editais de fomento divulgados por órgãos públicos em Goiânia ou no Estado de Goiás.",
+        "risco": "A falta de informações sobre prazos, requisitos e áreas de atuação pode impedir o acesso ao edital de fomento."
+      },
+      "erro": null,
+      "segundos": 687,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 5,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Requisitos",
+      "id": "4f4865ae662372b7419f",
+      "encontrou": {
+        "Objeto": {
+          "valor": "revisão do cálculo dos proventos do benefício de aposentadoria de Clarice Junges",
+          "trecho": "Fica revisto o cálculo dos proventos do benefício de aposentadoria de Clarice Junges, matrícula 136859, no cargo de Gestor Social, na função de Serviço de Sociologia, posicionada n",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Valor": {
+          "valor": "R$ 20.757,24",
+          "trecho": "Os proventos de aposentadoria passam a vigorar com o valor de R$ 20.757,24, no mês referência de fevereiro de 2023",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura do Município de Londrina",
+          "trecho": "O PREFEITO DO MUNICÍPIO DE LONDRINA, ESTADO DO PARANÁ, no exercício de suas atribuições legais",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "PR",
+          "trecho": "O PREFEITO DO MUNICÍPIO DE LONDRINA, ESTADO DO PARANÁ, no exercício de suas atribuições legais",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Município de Londrina",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/4113700/2026-09-11/3394cc476309a156b88189575183d884455657ec.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-12T13:24:26+00:00",
       "modo": "validar",
@@ -2677,82 +2750,6 @@
         "Destinação": {
           "valor": "elegível · fomento",
           "trecho": "Associação Companhia Corpo na Contramão Taina Luiza Barreto Marques R$ 150.000,00 AC 82 Aprovado pela Ampla",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Secretaria Municipal de Cultura",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
-      ]
-    },
-    {
-      "em": "2026-10-12T03:21:23+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "PNAB Goiânia 2024 - Edital 08 - Fomento Cultural I – Criação, Montagem, Circulação — Goiás / Goiânia",
-      "qualidade": "insuficiente",
-      "comprovados": 8,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Prazo de recurso",
-        "Requisitos",
-        "Destinação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital comprovado descreve o objeto, resultado, valor, órgão financiador, território, esfera, anexos e área de atuação, o que é suficiente para identificar a fonte.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se inscrever no edital, apresentar um projeto de criação, montagem ou circulação cultural, e seguir as diretrizes dos anexos para acessar o fomento.",
-        "proximo_passo": "Consultar os anexos do edital para entender as diretrizes e requisitos detalhados.",
-        "risco": "A falta de informações sobre prazo de inscrição e requisitos específicos pode impedir a associação de se inscrever no prazo correto e com os documentos necessários."
-      },
-      "erro": null,
-      "segundos": 901,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-op-6f92b1128d4a",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Fomento a Projetos Continuados de Pontos de Cultura da Cidade de Goiânia",
-          "trecho": "Edital de Fomento a Projetos Continuados de Pontos de Cultura da Cidade de Goiânia",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "R$ 150.000,00",
-          "trecho": "Associação Companhia Corpo na Contramão Taina Luiza Barreto Marques R$ 150.000,00 AC 82 Aprovado pela Ampla",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura de Goiânia - Secretaria Municipal de Cultura",
-          "trecho": "Prefeitura de Goiânia Secretaria Municipal de Cultura",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "Edital de Fomento a Projetos Continuados de Pontos de Cultura da Cidade de Goiânia",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "Edital de Fomento a Projetos Continuados de Pontos de Cultura da Cidade de Goiânia",
           "oficial": false,
           "dispensado": false
         }
