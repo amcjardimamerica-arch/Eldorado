@@ -1,0 +1,60 @@
+name: 33 · Decisão da titular sobre uma oportunidade
+
+# 12/10/2026 (titular): «Inscrição realizada», «Descartar» e «Recuperar» na ficha da oportunidade chegam aqui direto do
+# painel (sem exportar arquivo). Grava estado/decisoes_editais.json e aplica na hora: o livro é sinalizado para a análise
+# do Claude (descarte não apaga o livro), a oportunidade sai das abertas e as fichas são refeitas. O fluxo da rede neural
+# (22) reaplica as decisões uma vez por dia.
+
+on:
+  workflow_dispatch:
+    inputs:
+      id:
+        description: "id da oportunidade"
+        required: true
+      estado:
+        description: "inscrito, descartado ou em_andamento (recuperar)"
+        required: true
+        type: choice
+        options: [descartado, inscrito, em_andamento]
+      titulo:
+        description: "título (opcional)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: decisao-oportunidade
+  cancel-in-progress: false
+
+jobs:
+  aplicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Gravar e aplicar a decisão (à prova de conflito)
+        env:
+          OID: ${{ inputs.id }}
+          ESTADO: ${{ inputs.estado }}
+          TITULO: ${{ inputs.titulo }}
+        run: |
+          case "$OID" in *[!a-zA-Z0-9_.:-]*|"") echo "id de oportunidade inválido"; exit 1;; esac
+          git config user.name "decisao-eldorado" && git config user.email "decisao@eldorado"
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            python -m src.decisoes_titular definir "$OID" "$ESTADO" "$TITULO"
+            timeout 300 python -c "from src import repositorio_unico as R; R.construir(gravar=True)" || echo "repositório: registrado"
+            timeout 200 python -m src.fichas_oportunidades >/dev/null || echo "fichas: registrado"
+            git add -A estado/decisoes_editais.json biblioteca_alexandria/fontes/motores.json docs/dados/fila_revisao_exclusao.json \
+                       dados/oportunidades/repositorio_unico.json docs/dados/repositorio_resumo.json docs/dados/fichas_oportunidades.json
+            git diff --cached --quiet && { echo "nada mudou"; break; }
+            git commit -q -m "decisão da titular: $OID $ESTADO" && git push -q origin HEAD:main && { echo "gravado ($i)"; break; }
+            sleep 7
+          done

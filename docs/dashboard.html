@@ -2171,13 +2171,7 @@ const estadoDe=id=>{const d=(decisoes()[id]||{}).estado;if(d)return d;if((D.arqu
 window.exportarArquivados=function(){const d=decisoes();const arq={};Object.entries(d).forEach(([id,v])=>{if(v.estado==="descartado"||v.estado==="encerrado")arq[id]={estado:v.estado,em:v.em||new Date().toISOString().slice(0,10),por:"titular (Oportunidades Abertas)"};});
   Object.entries(D.arquivados_eldorado||{}).forEach(([id,v])=>{if(!arq[id]&&!(d[id]||{}).estado)arq[id]=v;});
   const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(arq,null,2)],{type:"application/json"}));a.download="arquivados.json";a.click();};
-window.arquivarInscrito=function(e){
-  salvaDecisao(e.id,"inscrito",{titulo:e.titulo,acao:"inscrição realizada"});
-  abreModal("<h3 style=\"margin:0\">Inscrição registrada</h3>",
-   `<p>O edital <strong>${esc(e.titulo)}</strong> foi para <strong>Arquivados</strong> — inscrição realizada.</p>
-    <p class=meta>A decisão fica salva neste computador. Use «Exportar decisões» para levá-la ao repositório e registrar no histórico da Biblioteca.</p>
-    <button onclick="exportarDecisoes()">Exportar decisões</button>`);
-};
+window.arquivarInscrito=function(e){ return decidirOportunidade(e,"inscrito"); };   // 12/10: decisão automática (fluxo 33)
 window.descartarEdital=function(e){
   salvaDecisao(e.id,"descartado",{titulo:e.titulo,acao:"descartado"});
   abreModal("<h3 style=\"margin:0\">Edital encerrado</h3>",
@@ -5126,8 +5120,7 @@ window.fichaOportunidade=async function(x){
     :`<p class=meta>Esta oportunidade ainda não tem livro na Biblioteca${f.livro_motivo_sem?` — ${esc(f.livro_motivo_sem)}`:""}.</p>`;
   const acoes=`<div style="display:flex;gap:8px;flex-wrap:wrap;padding:2px 0 12px;border-bottom:1px solid #E3E8F0">
       ${st==="em_andamento"?`<button id="fo-insc" style="color:#1E7B4A;border-color:#9BCFB2">✓ Inscrição realizada (arquivar)</button><button id="fo-desc" style="color:#B3261E;border-color:#E8A9A4">✕ Descartar</button>`
-        :`<button id="fo-rec">↺ Recuperar para Em andamento</button>`}
-      <button id="fo-ia" style="color:#5B3FD6;border-color:#C9BEF5">✦ Aprimorar análise com IA</button><button id="fo-exp">Exportar decisões</button></div>`;
+        :`<button id="fo-rec">↺ Recuperar para Em andamento</button>`}</div>`;
   $("m-corpo").innerHTML=acoes+aviso
     +_fsec("Identificação",[_flin("Órgão",esc(f.orgao||x.orgao||"")),_flin("UF",esc(f.uf||x._uf||"nacional")),_flin("Inscrições até",x.fim?br(x.fim):""),
         _flin("Site oficial",(f.link_oficial||x.link_oficial)?`<a href="${esc(f.link_oficial||x.link_oficial)}" target=_blank rel="noopener noreferrer">${esc(f.link_oficial||x.link_oficial)}</a>`:"ainda em busca"),
@@ -5139,20 +5132,25 @@ window.fichaOportunidade=async function(x){
         _flin("Onde buscar",(T.onde_buscar||[]).map(u=>`<a href="${esc(u)}" target=_blank rel="noopener noreferrer">${esc(u)}</a>`).join("<br>"))].join("")+(itens?legenda+`<div style="margin-top:4px">${itens}</div>`:""))
     +_fsec("Sistemas que já averiguaram",sist)
     +_fsec("Livro da oportunidade",livro);
-  $("fo-ia").onclick=()=>pedirParecer(e);
-  $("fo-exp").onclick=()=>exportarDecisoes();
-  if($("fo-insc")) $("fo-insc").onclick=()=>arquivarInscrito(e);
-  if($("fo-desc")) $("fo-desc").onclick=()=>descartarOportunidade(e);
-  if($("fo-rec")) $("fo-rec").onclick=()=>{ salvaDecisao(e.id,null); fichaOportunidade(x); };
+  if($("fo-insc")) $("fo-insc").onclick=()=>decidirOportunidade(e,"inscrito");
+  if($("fo-desc")) $("fo-desc").onclick=()=>decidirOportunidade(e,"descartado");
+  if($("fo-rec")) $("fo-rec").onclick=()=>decidirOportunidade(e,"em_andamento",x);
 };
-window.descartarOportunidade=function(e){
-  salvaDecisao(e.id,"descartado",{titulo:e.titulo,acao:"descartado",motivo:"descartada no painel"});
-  abreModal("<h3 style=\"margin:0\">Oportunidade descartada</h3>",
-   `<p><strong>${esc(e.titulo)}</strong> saiu de <strong>Em andamento</strong> e foi para <strong>Arquivados</strong>.</p>
-    <p><strong>O livro não é apagado.</strong> Ele recebe um sinalizador para o Claude analisar se a exclusão procede ou não.</p>
-    <p class=meta>A decisão fica salva neste computador. Use «Exportar decisões» e coloque o arquivo em <code>estado/decisoes_editais.json</code> no repositório: na rodada seguinte o livro é sinalizado e a oportunidade sai das abertas em todas as telas.</p>
-    <button onclick="exportarDecisoes()">Exportar decisões</button>`);
+/* 12/10 (titular): a decisão chega ao repositório sozinha — o painel dispara o fluxo 33, que grava
+   estado/decisoes_editais.json, sinaliza o livro (descarte) e tira a oportunidade das abertas; o fluxo da rede
+   neural reaplica uma vez por dia. Nada de exportar arquivo. */
+window.decidirOportunidade=async function(e,estado,x){
+  salvaDecisao(e.id,estado==="em_andamento"?null:estado,{titulo:e.titulo,acao:estado,motivo:estado==="descartado"?"descartada no painel":undefined});
+  const TIT={inscrito:"Inscrição registrada",descartado:"Oportunidade descartada",em_andamento:"Oportunidade recuperada"}[estado];
+  const TXT={inscrito:`<p><strong>${esc(e.titulo)}</strong> saiu de <strong>Em andamento</strong> e foi para <strong>Arquivados</strong> — inscrição realizada.</p>`,
+    descartado:`<p><strong>${esc(e.titulo)}</strong> saiu de <strong>Em andamento</strong> e foi para <strong>Arquivados</strong>.</p><p><strong>O livro não é apagado.</strong> Ele recebe um sinalizador para o Claude analisar se a exclusão procede ou não.</p>`,
+    em_andamento:`<p><strong>${esc(e.titulo)}</strong> voltou para <strong>Em andamento</strong>; a sinalização do livro, se houver, é retirada.</p>`}[estado];
+  abreModal(`<h3 style="margin:0">${TIT}</h3>`,TXT+`<p class=meta id="dec-st">registrando no sistema…</p>`);
+  const r=await ghDispatch("decisao-oportunidade.yml",{id:String(e.id),estado,titulo:String(e.titulo||"").slice(0,200)});
+  const st=document.getElementById("dec-st"); if(st) st.innerHTML=r.ok?"✓ registrado no sistema — em alguns minutos vale em todas as telas e no livro."
+    :`não foi possível registrar agora (${esc(r.motivo||"")}). A decisão fica neste computador; tente de novo pela ficha.`;
 };
+window.descartarOportunidade=function(e){ return decidirOportunidade(e,"descartado"); };   // 12/10: decisão automática (fluxo 33)
 function _desenhaAbertasFluxo(){
   const caixa=$("ed-abertos-caixa"); if(!caixa) return; caixa.classList.remove("oculto");
   // espaço próprio dos cartões; o conteúdo antigo da caixa fica oculto (outras funções ainda escrevem nele)
