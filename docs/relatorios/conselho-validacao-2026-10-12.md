@@ -8,9 +8,9 @@
 
 ```json
 {
- "cegos_da_1a_rodada": 31,
- "testados": 24,
- "com_rota_nova": 8,
+ "cegos_da_1a_rodada": 32,
+ "testados": 25,
+ "com_rota_nova": 9,
  "via_ponte": 0,
  "continuam_cegos": [
   "camara-goiania-pl",
@@ -115,15 +115,15 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 48,
-   "achados_total_agora": 48,
+   "achados_total_1a": 51,
+   "achados_total_agora": 51,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 899,
-   "achados_total_agora": 899,
+   "achados_total_1a": 921,
+   "achados_total_agora": 921,
    "no_fluxo": 2,
    "confirmadas": 0
   },
@@ -136,8 +136,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 62,
-   "achados_total_agora": 62,
+   "achados_total_1a": 63,
+   "achados_total_agora": 63,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -164,15 +164,15 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 32,
-   "achados_total_agora": 32,
+   "achados_total_1a": 33,
+   "achados_total_agora": 33,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 60,
-   "achados_total_agora": 60,
+   "achados_total_1a": 61,
+   "achados_total_agora": 61,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -228,7 +228,7 @@
  "pontos_com_redundancia": 11,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 3626
+ "exemplos_da_rede_de_rotas": 3757
 }
 ```
 
@@ -239,12 +239,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 81.9,
- "fora_dos_motores_pct_agora": 81.9,
+ "fora_dos_motores_pct_1a": 82.1,
+ "fora_dos_motores_pct_agora": 82.1,
  "origem": {
-  "agregador/outra": 202,
+  "agregador/outra": 205,
   "motor": 67,
-  "Piloto": 102
+  "Piloto": 103
  },
  "dominios_so_de_agregador": [
   {
@@ -472,7 +472,7 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 39,
+   "orgaos": 40,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",
