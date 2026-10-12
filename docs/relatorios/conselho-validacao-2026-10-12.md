@@ -45,8 +45,8 @@
  "ruido_agora": [
   {
    "motor": "empresas-incentivadas",
-   "achados_total_1a": 53,
-   "achados_total_agora": 53,
+   "achados_total_1a": 59,
+   "achados_total_agora": 59,
    "no_fluxo": 3,
    "confirmadas": 0
   },
@@ -115,15 +115,15 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 51,
-   "achados_total_agora": 51,
+   "achados_total_1a": 57,
+   "achados_total_agora": 57,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 921,
-   "achados_total_agora": 921,
+   "achados_total_1a": 963,
+   "achados_total_agora": 963,
    "no_fluxo": 2,
    "confirmadas": 0
   },
@@ -136,8 +136,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 63,
-   "achados_total_agora": 63,
+   "achados_total_1a": 65,
+   "achados_total_agora": 65,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -164,22 +164,22 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 33,
-   "achados_total_agora": 33,
+   "achados_total_1a": 35,
+   "achados_total_agora": 35,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 61,
-   "achados_total_agora": 61,
+   "achados_total_1a": 63,
+   "achados_total_agora": 63,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-estaduais-go-gov",
-   "achados_total_1a": 26,
-   "achados_total_agora": 26,
+   "achados_total_1a": 27,
+   "achados_total_agora": 27,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -228,7 +228,7 @@
  "pontos_com_redundancia": 11,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 4129
+ "exemplos_da_rede_de_rotas": 4221
 }
 ```
 
@@ -239,12 +239,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 84.7,
- "fora_dos_motores_pct_agora": 84.7,
+ "fora_dos_motores_pct_1a": 85.0,
+ "fora_dos_motores_pct_agora": 85.0,
  "origem": {
-  "agregador/outra": 264,
-  "motor": 67,
-  "Piloto": 107
+  "agregador/outra": 279,
+  "motor": 68,
+  "Piloto": 105
  },
  "dominios_so_de_agregador": [
   {
@@ -304,7 +304,7 @@
    "oportunidades": 1
   },
   {
-   "dominio": "premio.finep.gov.br",
+   "dominio": "florestamaisamazonia.mma.gov.br",
    "oportunidades": 1
   }
  ],
@@ -319,11 +319,12 @@
 
 ```json
 {
- "dia_de_referencia": "2026-10-11",
+ "dia_de_referencia": "2026-10-12",
  "ativos": 159,
- "lidos_ontem": 48,
- "lidos_hoje": 103,
+ "lidos_ontem": 103,
+ "lidos_hoje": 42,
  "nao_lidos_ontem_nem_hoje": [
+  "dj-trf1-go",
   "plat-captamos",
   "plat-rede-filantropia",
   "recorrencia"
@@ -367,20 +368,20 @@
 
 ```json
 {
- "fontes_recebidas": 254,
+ "fontes_recebidas": 260,
  "por_origem": {
-  "conselho (fontes irmãs)": 138,
-  "Cartório (site oficial certificado)": 98,
-  "Espião (privado/internacional)": 18
+  "conselho (fontes irmãs)": 137,
+  "Cartório (site oficial certificado)": 103,
+  "Espião (privado/internacional)": 20
  },
  "lidas_nas_ultimas_24h": 163,
  "dimensionamento": {
-  "fontes": 254,
+  "fontes": 260,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
-  "clones": 5,
-  "cobertura_diaria": 254,
+  "clones": 6,
+  "cobertura_diaria": 260,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -428,7 +429,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 62,
+   "orgaos": 63,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",
@@ -472,7 +473,7 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 41,
+   "orgaos": 40,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",
