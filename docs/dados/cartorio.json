@@ -1,5 +1,5 @@
 {
- "em": "2026-10-12T16:27:28+00:00",
+ "em": "2026-10-12T18:19:55+00:00",
  "versao": "cartório v5 · linha de produção (09/10/2026)",
  "regra": "CARTÓRIO DE FONTES OFICIAIS (titular, 09/10/2026).\n\nOs motores DESCOBREM; o Cartório CERTIFICA. Toda estrela (oportunidade aberta) e todo livro (histórico) que tenha\nQUALQUER um dos 12 itens indisponível entra na fila do Cartório. Para cada um, ele sobe uma escada de degraus — do mais\nbarato e confiável ao mais caro — até achar o documento OFICIAL, lê o documento por seções e emite uma CERTIDÃO:\nlink oficial (régua única: vetor nunca é fonte), degrau em que foi achado, impressão digital do documento, e cada item\ncom valor + trecho literal + página — ou a DISPENSA com a justificativa de que o requisito não existe naquele edital.\n\nBalcões (como chegar ao documento em cada tipo de fonte):\n  pncp      página do PNCP → API de arquivos do órgão (PDF ou ZIP), o edital primeiro\n  diario    DOU, Diário de Goiás/Goiânia, Querido Diário → o ato dentro da edição (só as páginas do ato)\n  orgao     domínio público → documentos da página + biblioteca de mídia do WordPress pelo número do edital\n  privado   site do financiador → documentos da página (regulamento, edital)\n  pista     agregador/notícia → links de SAÍDA para o financiador; o resto vai ao Interceptador\n  proprio   Ministério Público e Judiciário: já leem o PDF; o Cartório só converte em certidão\n\nEscada: 0 documento na mão · 1 link de saída da pista · 2 busca do número do edital dentro do domínio oficial ·\n        3 Interceptador (IA) · 4 Chrome. O Cartório resolve 0–2 sem IA; 3 e 4 recebem só o que sobrou.\nIntegração: a fila é ordenada pela urgência (prazo), pela nota da REDE NEURAL e pela distância até o ouro (menos\nitens faltando primeiro: cada certidão vira selo). Estrelas: o fluxo de oportunidades lê a certidão no checklist.\nLivros: linhas no formato do importador (scripts/importar_verificacao_livros.py), que confere e entrega à esteira.",
  "identidade_visual": "provisória (config/identidade_visual.json aguarda o design de referência)",
@@ -13,19 +13,19 @@
   "certidoes_12_de_12": 127,
   "certidoes_sem_item_faltando": 223,
   "nota_denominador": "eficiencia_itens = resolvidos ÷ itens que faltavam na ENTRADA da fila (não é % dos 12); use pct_certificado_12",
-  "certidoes": 1397,
-  "nesta_execucao": 33,
-  "fila_estrelas": 428,
-  "fila_livros": 2369,
-  "itens_que_faltavam": 12113,
-  "itens_obtidos": 5048,
+  "certidoes": 1403,
+  "nesta_execucao": 10,
+  "fila_estrelas": 457,
+  "fila_livros": 2193,
+  "itens_que_faltavam": 12176,
+  "itens_obtidos": 5061,
   "itens_dispensados": 429,
-  "eficiencia_itens": 0.452,
-  "com_link_oficial": 932,
-  "taxa_link_oficial": 0.667,
+  "eficiencia_itens": 0.451,
+  "com_link_oficial": 935,
+  "taxa_link_oficial": 0.666,
   "certidoes_completas": 155,
-  "para_o_interceptador": 1039,
-  "para_o_chrome": 202,
+  "para_o_interceptador": 1044,
+  "para_o_chrome": 203,
   "selos_que_mudaram": {
    "bronze → ouro": 18,
    "sem selo → ouro": 69,
@@ -36,97 +36,97 @@
    "sem selo → bronze": 24
   },
   "por_degrau": {
-   "degrau 0": 938,
+   "degrau 0": 941,
    "degrau 1": 24
   }
  },
  "cinza_conferidos": {
-  "conferidos": 344,
-  "certificados": 167,
-  "certidoes": 46
+  "conferidos": 347,
+  "certificados": 169,
+  "certidoes": 47
  },
  "por_item": {
   "Objeto": {
-   "faltavam": 880,
-   "obtidos": 429,
+   "faltavam": 884,
+   "obtidos": 430,
    "dispensados": 0,
-   "eficiencia": 0.487
+   "eficiencia": 0.486
   },
   "Prazo de inscrição": {
-   "faltavam": 864,
-   "obtidos": 327,
+   "faltavam": 868,
+   "obtidos": 328,
    "dispensados": 114,
-   "eficiencia": 0.51
+   "eficiencia": 0.509
   },
   "Resultado": {
-   "faltavam": 1206,
-   "obtidos": 325,
+   "faltavam": 1212,
+   "obtidos": 326,
    "dispensados": 210,
-   "eficiencia": 0.444
+   "eficiencia": 0.442
   },
   "Prazo de recurso": {
-   "faltavam": 1217,
-   "obtidos": 406,
+   "faltavam": 1223,
+   "obtidos": 407,
    "dispensados": 24,
-   "eficiencia": 0.353
+   "eficiencia": 0.352
   },
   "Valor": {
-   "faltavam": 1012,
-   "obtidos": 405,
+   "faltavam": 1017,
+   "obtidos": 406,
    "dispensados": 56,
-   "eficiencia": 0.456
+   "eficiencia": 0.454
   },
   "Órgão / financiador": {
-   "faltavam": 777,
-   "obtidos": 458,
+   "faltavam": 782,
+   "obtidos": 460,
    "dispensados": 0,
-   "eficiencia": 0.589
+   "eficiencia": 0.588
   },
   "Território": {
-   "faltavam": 873,
+   "faltavam": 878,
    "obtidos": 371,
    "dispensados": 0,
-   "eficiencia": 0.425
+   "eficiencia": 0.423
   },
   "Esfera": {
-   "faltavam": 1025,
-   "obtidos": 636,
+   "faltavam": 1031,
+   "obtidos": 638,
    "dispensados": 0,
-   "eficiencia": 0.62
+   "eficiencia": 0.619
   },
   "Requisitos": {
-   "faltavam": 1162,
-   "obtidos": 432,
+   "faltavam": 1168,
+   "obtidos": 433,
    "dispensados": 0,
-   "eficiencia": 0.372
+   "eficiencia": 0.371
   },
   "Anexos": {
-   "faltavam": 848,
+   "faltavam": 852,
    "obtidos": 349,
    "dispensados": 8,
-   "eficiencia": 0.421
+   "eficiencia": 0.419
   },
   "Destinação": {
-   "faltavam": 1165,
+   "faltavam": 1171,
    "obtidos": 226,
    "dispensados": 17,
-   "eficiencia": 0.209
+   "eficiencia": 0.208
   },
   "Área de atuação": {
-   "faltavam": 1084,
-   "obtidos": 684,
+   "faltavam": 1090,
+   "obtidos": 687,
    "dispensados": 0,
-   "eficiencia": 0.631
+   "eficiencia": 0.63
   }
  },
  "por_balcao": {
   "pncp": {
-   "certidoes": 431,
+   "certidoes": 433,
    "com_link_oficial": 252,
-   "faltavam": 3628,
+   "faltavam": 3652,
    "resolvidos": 1526,
-   "eficiencia": 0.421,
-   "taxa_link_oficial": 0.585
+   "eficiencia": 0.418,
+   "taxa_link_oficial": 0.582
   },
   "diario": {
    "certidoes": 33,
@@ -137,12 +137,12 @@
    "taxa_link_oficial": 0.485
   },
   "orgao": {
-   "certidoes": 412,
-   "com_link_oficial": 328,
-   "faltavam": 3171,
-   "resolvidos": 1343,
+   "certidoes": 414,
+   "com_link_oficial": 330,
+   "faltavam": 3195,
+   "resolvidos": 1355,
    "eficiencia": 0.424,
-   "taxa_link_oficial": 0.796
+   "taxa_link_oficial": 0.797
   },
   "pista": {
    "certidoes": 118,
@@ -161,12 +161,12 @@
    "taxa_link_oficial": 0.888
   },
   "privado": {
-   "certidoes": 135,
-   "com_link_oficial": 79,
-   "faltavam": 875,
-   "resolvidos": 182,
-   "eficiencia": 0.208,
-   "taxa_link_oficial": 0.585
+   "certidoes": 137,
+   "com_link_oficial": 80,
+   "faltavam": 890,
+   "resolvidos": 183,
+   "eficiencia": 0.206,
+   "taxa_link_oficial": 0.584
   },
   "proprio": {
    "certidoes": 1,
@@ -179,12 +179,12 @@
  },
  "por_safra": {
   "primeira tentativa": {
-   "certidoes": 1227,
-   "faltavam": 10483,
-   "resolvidos": 4185,
-   "eficiencia": 0.399,
-   "com_link_oficial": 778,
-   "taxa_link_oficial": 0.634
+   "certidoes": 1233,
+   "faltavam": 10546,
+   "resolvidos": 4198,
+   "eficiencia": 0.398,
+   "com_link_oficial": 781,
+   "taxa_link_oficial": 0.633
   },
   "refeitas": {
    "certidoes": 170,
@@ -221,12 +221,12 @@
    "taxa_link_oficial": 0.875
   },
   "cartório v5 · linha de produção": {
-   "certidoes": 1094,
-   "faltavam": 8663,
-   "resolvidos": 3175,
-   "eficiencia": 0.367,
-   "com_link_oficial": 663,
-   "taxa_link_oficial": 0.606
+   "certidoes": 1100,
+   "faltavam": 8726,
+   "resolvidos": 3188,
+   "eficiencia": 0.365,
+   "com_link_oficial": 666,
+   "taxa_link_oficial": 0.605
   },
   "revisão manual": {
    "certidoes": 267,
@@ -240,10 +240,10 @@
  "por_abordagem": {
   "1": {
    "nome": "documento na mão",
-   "vezes": 1215,
-   "renderam": 780,
-   "itens": 4782,
-   "links_oficiais": 658,
+   "vezes": 1219,
+   "renderam": 783,
+   "itens": 4795,
+   "links_oficiais": 661,
    "taxa_de_acerto": 0.642
   },
   "2": {
@@ -288,7 +288,7 @@
   },
   "7": {
    "nome": "releitura com gabarito",
-   "vezes": 26,
+   "vezes": 28,
    "renderam": 0,
    "itens": 0,
    "links_oficiais": 0,
@@ -304,11 +304,11 @@
   },
   "9": {
    "nome": "leitura profunda",
-   "vezes": 146,
-   "renderam": 6,
-   "itens": 20,
+   "vezes": 150,
+   "renderam": 7,
+   "itens": 22,
    "links_oficiais": 0,
-   "taxa_de_acerto": 0.041
+   "taxa_de_acerto": 0.047
   },
   "10": {
    "nome": "busca no domínio",
@@ -322,11 +322,11 @@
  "por_balcao_selo": {
   "sem_estrela": {
    "nome": "Sem estrela → bronze",
-   "certidoes": 352,
-   "faltavam": 2212,
-   "resolvidos": 562,
-   "eficiencia": 0.254,
-   "entraram_aqui": 390,
+   "certidoes": 355,
+   "faltavam": 2239,
+   "resolvidos": 566,
+   "eficiencia": 0.253,
+   "entraram_aqui": 393,
    "esgotadas": 0
   },
   "bronze": {
@@ -340,11 +340,11 @@
   },
   "prata": {
    "nome": "Prata → ouro",
-   "certidoes": 742,
-   "faltavam": 6613,
-   "resolvidos": 2784,
-   "eficiencia": 0.421,
-   "entraram_aqui": 729,
+   "certidoes": 745,
+   "faltavam": 6649,
+   "resolvidos": 2793,
+   "eficiencia": 0.42,
+   "entraram_aqui": 732,
    "esgotadas": 0
   },
   "ouro": {
@@ -358,7 +358,7 @@
   }
  },
  "gabarito": {
-  "orgaos_com_gabarito": 685,
+  "orgaos_com_gabarito": 686,
   "itens_achados_pelo_gabarito": {
    "Objeto": 27,
    "Requisitos": 6,
@@ -65147,7 +65147,7 @@
     "Território",
     "Destinação"
    ],
-   "tentativa": 3,
+   "tentativa": 4,
    "versao": "cartório v5 · linha de produção (09/10/2026)",
    "gabarito": null,
    "estagio": "sem_estrela",
@@ -65157,7 +65157,7 @@
    "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-12T04:29:20+00:00",
+   "em": "2026-10-12T18:01:55+00:00",
    "prazo": "2026-10-26",
    "uf": null,
    "orgao": "Ministério da Saúde (DECOOP/SE)",
@@ -65265,6 +65265,13 @@
      "n": 9,
      "nome": "leitura profunda",
      "em": "2026-10-12T04:29:20+00:00",
+     "ganhou": [],
+     "legado": null
+    },
+    {
+     "n": 7,
+     "nome": "releitura com gabarito",
+     "em": "2026-10-12T18:01:55+00:00",
      "ganhou": [],
      "legado": null
     }
@@ -65469,6 +65476,46 @@
      "oficial": "domínio público oficial",
      "paginas": 1,
      "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-06-2026-se-pronon",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-06-2026-se-pronon/edital",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 60,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.in.gov.br/web/dou/-/edital-de-chamamento-publico-n-6/2026-736401965",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
     }
    ],
    "cobertura_12": {
@@ -65532,7 +65579,7 @@
     "Território",
     "Destinação"
    ],
-   "tentativa": 3,
+   "tentativa": 4,
    "versao": "cartório v5 · linha de produção (09/10/2026)",
    "gabarito": null,
    "estagio": "sem_estrela",
@@ -65542,7 +65589,7 @@
    "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-12T04:29:47+00:00",
+   "em": "2026-10-12T18:06:41+00:00",
    "prazo": "2026-10-26",
    "uf": null,
    "orgao": "Ministério da Saúde (DECOOP/SE)",
@@ -65650,6 +65697,13 @@
      "n": 9,
      "nome": "leitura profunda",
      "em": "2026-10-12T04:29:47+00:00",
+     "ganhou": [],
+     "legado": null
+    },
+    {
+     "n": 7,
+     "nome": "releitura com gabarito",
+     "em": "2026-10-12T18:06:41+00:00",
      "ganhou": [],
      "legado": null
     }
@@ -65849,6 +65903,46 @@
      "url": "https://www.in.gov.br/web/dou/-/edital-de-chamamento-publico-n-7/2026-736462157",
      "degrau": 0,
      "como": "leitura profunda (até 150 páginas e tabelas)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 57,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.in.gov.br/web/dou/-/edital-de-chamamento-publico-n-7/2026-736462157",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
      "motivo": null,
      "falha": null,
      "oficial": "domínio público oficial",
@@ -76927,31 +77021,31 @@
  ],
  "linha_de_producao": {
   "na_linha": {
-   "sem_estrela": 1214,
-   "bronze": 21,
-   "prata": 1562
+   "sem_estrela": 1150,
+   "bronze": 22,
+   "prata": 1478
   },
   "na_linha_por_tipo": {
    "estrela": {
-    "sem_estrela": 361,
-    "bronze": 19,
+    "sem_estrela": 389,
+    "bronze": 20,
     "prata": 48
    },
    "livro": {
-    "sem_estrela": 853,
+    "sem_estrela": 761,
     "bronze": 2,
-    "prata": 1514
+    "prata": 1430
    }
   },
-  "fila_oportunidades": 428,
-  "fila_livros": 2369,
-  "devidas_nesta_hora": 2629,
-  "promovidas_nesta_execucao": 5,
-  "sem_material_agora": 10,
+  "fila_oportunidades": 457,
+  "fila_livros": 2193,
+  "devidas_nesta_hora": 2521,
+  "promovidas_nesta_execucao": 0,
+  "sem_material_agora": 9,
   "esgotadas_10_abordagens": 0,
   "biblioteca_de_sites": {
-   "chaves": 1530,
-   "sites": 2621
+   "chaves": 1461,
+   "sites": 2506
   },
   "intervalo_horas": 12,
   "limite": 10,
