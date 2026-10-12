@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-12T20:29:40+00:00",
+  "em": "2026-10-12T20:47:18+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-12T20:22:20+00:00",
+  "ultimo_voo": "2026-10-12T20:33:22+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,99 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 65,
+    "missoes": 66,
     "validadas": 3,
-    "parciais": 14,
+    "parciais": 15,
     "insuficientes": 44,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 50,
+      "sim": 51,
       "nao": 7
     },
     "estrelas_de_ouro": 2,
     "fontes_novas_para_os_motores": 3,
-    "tempo_medio_min": 13.1
+    "tempo_medio_min": 13.2
   },
   "missoes": [
+    {
+      "em": "2026-10-12T20:33:22+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "EDITAL DE CHAMAMENTO PÚBLICO Nº 22/2024 – SELEÇÃO DE PROJETOS CULTURAIS\r\nEDITAL DE SELEÇÃO DE PROJETOS PARA FIRMAR TERMO DE EXECUÇÃO CULTURA",
+      "qualidade": "parcial",
+      "comprovados": 6,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Anexos"
+      ],
+      "pagina_oficial": "http://chamamentos.itapevi.sp.gov.br",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital comprova a existência de uma seleção de projetos culturais para firmar termo de execução cultural com recursos da Lei Complementar 195/2022, o que pode ser uma fonte de financiamento para organizações da sociedade civil.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se inscrever no edital, apresentando um projeto cultural relacionado ao audiovisual, elegível para fomento, e atender aos critérios de elegibilidade estabelecidos no edital, mesmo que não estejam explicitados.",
+        "proximo_passo": "Verificar os requisitos e anexos do edital para se inscrever no processo seletivo.",
+        "risco": "A falta de informações sobre prazo de inscrição, requisitos e anexos pode impedir a participação efetiva da associação no edital."
+      },
+      "erro": null,
+      "segundos": 834,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 6,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
+      "id": "d086f7590685594c1930",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Seleção de projetos para firmar termo de execução cultural com recursos da verba remanescente da Lei Complementar 195/2022 (Lei Paulo Gustavo) - Audiovisual",
+          "trecho": "EDITAL DE SELEÇÃO DE PROJETOS PARA FIRMAR TERMO DE EXECUÇÃO CULTURAL COM RECURSOS DA VERBA REMANESCENTE DA LEI COMPLEMENTAR 195/2022 (LEI PAULO GUSTAVO) - AUDIOVISUAL",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Itapevi",
+          "trecho": "Portal de Chamamentos da Prefeitura Municipal de Itapevi.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "SP",
+          "trecho": "Portal de Chamamentos da Prefeitura Municipal de Itapevi.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "EDITAL DE SELEÇÃO DE PROJETOS PARA FIRMAR TERMO DE EXECUÇÃO CULTURAL COM RECURSOS DA VERBA REMANESCENTE DA LEI COMPLEMENTAR 195/2022 (LEI PAULO GUSTAVO) - AUDIOVISUAL",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "SELEÇÃO DE ORGANIZAÇÃO DA SOCIEDADE CIVIL PARA EXECUÇÃO CONTINUADA DO SERVIÇO DE ACOLHIMENTO INSTITUCIONAL PARA CRIANÇAS E ADOLESCENTES MODALIDADE CASA-LAR",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Itapevi",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-12T20:22:20+00:00",
       "modo": "validar",
@@ -2851,84 +2929,6 @@
       "indicios": [
         {
           "url": "https://data.queridodiario.ok.org.br/4106308/2026-09-24/0058545cf80cc9a0377c4ebfd7f1857c1a6e8ac2.pdf",
-          "tipo": "agregador"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-12T09:00:34+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Diário Oficial de Salto (SP) 2026-10-10 — \"chamamento público\" \"organizações da sociedade civil\"",
-      "qualidade": "insuficiente",
-      "comprovados": 7,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Área de atuação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto menciona explicitamente o objeto, órgão financiador, território, esfera, requisitos e anexos, o que é suficiente para considerar como fonte.",
-        "para_a_amc": "Para acessar, a associação comunitária de Goiânia precisaria demonstrar que possui um bem tangível com relevância histórica, cultural, artística, arquitetônica, arqueológica, paisagística ou ambiental, conforme os requisitos do edital, e anexar os documentos necessários.",
-        "proximo_passo": "Verificar se há prazo de inscrição e outros detalhes no edital completo, já que o prazo, resultado e outros dados não foram encontrados no texto fornecido.",
-        "risco": "O prazo de inscrição e outros detalhes não foram encontrados no texto, o que pode impedir a participação da associação no processo se não forem identificados e cumpridos."
-      },
-      "erro": null,
-      "segundos": 850,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "e3e016f4703734b8188b",
-      "encontrou": {
-        "Objeto": {
-          "valor": "proteção do patrimônio histórico, cultural e artístico do Município",
-          "trecho": "Dispõe sobre a proteção do patrimônio histórico, cultural e artístico do Município, regulamenta o regime de tombamento municipal e dá outras providências.",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Município de Salto",
-          "trecho": "Prefeito da Estância Turística de Salto, Estado de São Paulo",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "SP",
-          "trecho": "Município de Salto - SP",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · outro",
-          "trecho": "Dispõe sobre a proteção do patrimônio histórico, cultural e artístico do Município, regulamenta o regime de tombamento municipal e dá outras providências.",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "bem tangível dotado de relevância histórica, cultural, artística, arquitetônica, arqueológica, paisagística, ambiental o",
-          "trecho": "I – bens materiais: os bens tangíveis dotados de relevância histórica, cultural, artística, arquitetônica, arqueológica, paisagística, ambiental ou documental, passíveis de proteçã",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Município de Salto",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/3545209/2026-10-10/45239bab2d41c6ef18beca664f3957faceef9ca5.pdf",
           "tipo": "agregador"
         }
       ],
