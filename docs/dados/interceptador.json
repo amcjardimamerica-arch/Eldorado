@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-12T02:42:23+00:00",
+  "em": "2026-10-12T02:52:16+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-12T02:28:37+00:00",
+  "ultimo_voo": "2026-10-12T02:45:17+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,83 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 329,
+    "missoes": 330,
     "validadas": 17,
     "parciais": 79,
-    "insuficientes": 224,
+    "insuficientes": 225,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "sim": 221,
-      "nao": 55
+      "nao": 56
     },
     "estrelas_de_ouro": 5,
     "fontes_novas_para_os_motores": 12,
     "tempo_medio_min": 10.4
   },
   "missoes": [
+    {
+      "em": "2026-10-12T02:45:17+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · oportunidade do mapa",
+      "alvo": "EDITAL Nº 002/2025 – ADM/PLAN, DA SEGUNDA AUDIÊNCIA PÚBLICA, PARA APRESENTAÇÃO E DISCUSSÃO DO PLANO DIRETOR DO MUNICÍPIO.",
+      "qualidade": "insuficiente",
+      "comprovados": 5,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "nao",
+        "por_que": "O edital não fornece informações sobre prazo de inscrição, valor, requisitos ou área de atuação, sendo impossível determinar se é uma fonte válida para a AMC.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital se aplica a sua área de atuação e se há requisitos não mencionados que possam ser relevantes para sua participação.",
+        "proximo_passo": "Consultar o edital completo e os anexos para obter mais detalhes sobre possíveis requisitos ou áreas de atuação.",
+        "risco": "A falta de informações sobre prazo, valor e requisitos pode impedir a participação da AMC no processo."
+      },
+      "erro": null,
+      "segundos": 418,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
+      "id": "bc55dacdad872b130c0d",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Apresentação e discussão do Plano Diretor do Município",
+          "trecho": "Apresentação e discussão do Plano Diretor do Município de Colinas do Sul - GO.",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Colinas do Sul",
+          "trecho": "O MUNICIPIO DE COLINAS DO SUL/GO, através seu Secretário Municipal de Administração e Planejamento",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "MUNICÍPIO DE COLINAS DO SUL (CNPJ sob o n° 25.105.255/0001-40)",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura de Colinas do Sul",
+      "indicios": [],
+      "rotas": [
+        "financiador_programa_edital"
+      ]
+    },
     {
       "em": "2026-10-12T02:28:37+00:00",
       "modo": "validar",
@@ -2492,40 +2554,6 @@
         "financiador_ano",
         "governo",
         "parceiro"
-      ]
-    },
-    {
-      "em": "2026-10-11T16:10:06+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Contratação da prestação de serviços musicais — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 0,
-      "dispensados": null,
-      "total": 12,
-      "nao_resolvidos": null,
-      "pagina_oficial": null,
-      "parecer_fonte": {},
-      "erro": "nenhuma fonte legível",
-      "segundos": 137,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "falhou: nenhuma fonte legível",
-      "id": "op-op-05313f003d22",
-      "encontrou": {},
-      "financiador": "null",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
       ]
     }
   ],
