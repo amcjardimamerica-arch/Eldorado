@@ -1,0 +1,33 @@
+# Outras Oportunidades 5/5
+
+- Classe: `financiadores`
+- Fonte: `outras-oportunidades-5`
+- Eventos verificados: 0
+- Pistas aguardando confirmação: 15
+- Distribuição por ano pesquisado/coletado: {'2026': 15}
+
+## Padrões
+
+Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências independentes verificadas e revisão humana.
+
+## Eventos e pistas
+
+- [Edital Jornada TransformAção 2025](https://jornadasocial.com.br/saiba-mais-sobre-a-jornada-tranformacao/edital-transformacao-2025) — coletado em 2026-10-11T14:04:39+00:00
+- [Fomento e inovação](https://editaisdobrasil.com/oportunidades/fomento) — coletado em 2026-10-11T14:04:35+00:00
+- [Link do Edital](https://sei.londrina.pr.gov.br/sei/modulos/pesquisa/md_pesq_documento_consulta_externa.php?d-qBlq_KF4_2fdKMgucKGw2SOOsdRDgKOTtYkpTOQj10fSYca2MZ0TxtD9cAKGn3S98vulMME9eMyYCnnB0Wk-xEjiGkgJGvGWJycKFV0izHCqjzl1Wx--IlvFZspiP9) — coletado em 2026-10-11T19:11:12+00:00
+- [Termo de Revogação de Edital: 001/2026  29/05/2026 · TERMO DE REVOGAÇÃO EDITAL DE CHAMAMENTO PÚBLICO N° 001/2026 PREMIAÇÃO PARA AGENTES CULTURAIS COM RECURSOS DA POLÍTICA NACIONAL ALDIR BLANC DE FOMENTO À CULTURA - PNAB (LEI N° 14.399/2022) Acessar](https://potengi.ce.gov.br/publicacoes.php?id=897) — coletado em 2026-10-11T19:11:29+00:00
+- [Edital - Chamada Pública: 01/2026  30/04/2026 · EDITAL DE CHAMAMENTO PÚBLICO Nº 01/2026 DE PREMIAÇÃO PARA AGENTES CULTURAIS DE POTENGI COM RECURSOS DA POLÍTICA NACIONAL ALDIR BLANC DE FOMENTO À CULTURA - PNAB (LEI Nº 14.399/2022) Acessar](https://potengi.ce.gov.br/publicacoes.php?id=880) — coletado em 2026-10-11T19:11:29+00:00
+- [Gestão de projeto esportivo na modalidade CICLISMO MTB, destinado ao atendimento de crianças e adolescentes de 12 a 17 anos de idade do município de Ribeirão Pires. 
+                                     
+                                         TERMO DE CLASSIFICAÇÃO, ADJUDICAÇÃO E HOMOLOGAÇÃOChamad](https://www.ribeiraopires.sp.gov.br/portal/editais/0/5/2683) — coletado em 2026-10-11T17:10:03+00:00
+- [Link do Edital](https://sei.londrina.pr.gov.br/sei/modulos/pesquisa/md_pesq_documento_consulta_externa.php?d-qBlq_KF4_2fdKMgucKGw2SOOsdRDgKOTtYkpTOQj3TKL6Jk8HSU2H4wNU6uWQP6zzVuay-U2ZAOrnOYeQGGF_bLcjdANaZZjyNnFNYxYhCTxOyxEfjrfnVoAoxC0Zd) — coletado em 2026-10-11T19:11:12+00:00
+- [Inscrições encerradas.](https://jornadasocial.com.br/edital-transformacao) — coletado em 2026-10-11T14:04:39+00:00
+- [Seleção de Organização Social no Segmento serviço de proteção social especial de alta complexidade para acolhimento provisório de pessoas em situação de rua. 
+                                     
+                                         COMUNICADOTornamos público, para conhecimento dos interessados](https://www.ribeiraopires.sp.gov.br/portal/editais/0/5/2672) — coletado em 2026-10-11T17:10:03+00:00
+- [Link do Edital](https://sei.londrina.pr.gov.br/sei/modulos/pesquisa/md_pesq_documento_consulta_externa.php?d-qBlq_KF4_2fdKMgucKGw2SOOsdRDgKOTtYkpTOQj2mJDAXThgIZd-gB1vu8OlIeqU5fqNRu0T2ts9N9n5Cx6AHAge2gMvW2CcQYHWJHVjjMfSSH54whm_dkOr54ute) — coletado em 2026-10-11T19:11:12+00:00
+- [edital .ong](https://www.editalong.com/) — coletado em 2026-10-11T19:11:09+00:00
+- [Fomento e bolsas](https://editaisdobrasil.com/oportunidades) — coletado em 2026-10-11T14:04:35+00:00
+- [Aditivo: 01/2026  15/05/2026 · ADITIVO I - EDITAL DE CHAMAMENTO PÚBLICO N° 001/2026 PREMIAÇÃO PARA AGENTES CULTURAIS COM RECURSOS DA POLÍTICA NACIONAL ALDIR BLANC DE FOMENTO À CULTURA - PNAB (LEI N° 14.399/202 Acessar](https://potengi.ce.gov.br/publicacoes.php?id=887) — coletado em 2026-10-11T19:11:29+00:00
+- [Ministério da Cultura — editais de fomento cultural](https://editaisdobrasil.com/oportunidade/ministerio-da-cultura-editais-de-fomento-cultural) — coletado em 2026-10-11T14:04:35+00:00
+- [Prêmio Nacional de Inovação](https://editaisdobrasil.com/oportunidade/premio-nacional-de-inovacao) — coletado em 2026-10-11T14:04:35+00:00

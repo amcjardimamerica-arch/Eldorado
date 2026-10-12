@@ -1,0 +1,16 @@
+# Banco do Nordeste — Editais Sociais (incentivo fiscal)
+
+- Classe: `financiadores`
+- Fonte: `f260-curadoria-001`
+- Eventos verificados: 0
+- Pistas aguardando confirmação: 2
+- Distribuição por ano pesquisado/coletado: {'2026': 2}
+
+## Padrões
+
+Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências independentes verificadas e revisão humana.
+
+## Eventos e pistas
+
+- [Ler Mais Sobre21/08/2025 - Chamada Pública para Apoio a Projetos Sociais com Amparo em Incentivos Fiscais 2025  »](https://www.bnb.gov.br/web/guest/sustentabilidade/investimentos-sociais-e-esportivos/-/asset_publisher/aj3dlMDNEtsq/content/21-08-2025-chamada-p%25C3%25BAblica-para-apoio-a-projetos-sociais-com-amparo-em-incentivos-fiscais-2025-1/45887?_com_liferay_asset_publisher_web_portlet_AssetPublisherPortlet_INSTANCE_aj3dlMDNEtsq_assetEntryId=8440031&_com_liferay_asset_publisher_web_portlet_AssetPublisherPortlet_INSTANCE_aj3dlMDNEtsq_redirect=https%3A%2F%2Fwww.bnb.gov.br%2Fweb%2Fguest%2Fsustentabilidade%2Finvestimentos-sociais-e-esportivos%3Fp_p_id%3Dcom_liferay_asset_publisher_web_portlet_AssetPublisherPortlet_INSTANCE_aj3dlMDNEtsq%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26_com_liferay_asset_publisher_web_portlet_AssetPublisherPortlet_INSTANCE_aj3dlMDNEtsq_cur%3D0%26p_r_p_resetCur%3Dfalse%26_com_liferay_asset_publisher_web_portlet_AssetPublisherPortlet_INSTANCE_aj3dlMDNEtsq_assetEntryId%3D8440031) — coletado em 2026-10-03T01:12:03+00:00
+- [Ler Mais Sobre24/09/2025 – Inscrições abertas para apresentação de projetos ao amparo dos programas sociais Pronon, Pronas-PCD e Lei de Incentivo à Reciclagem  »](https://www.bnb.gov.br/web/guest/sustentabilidade/investimentos-sociais-e-esportivos/-/asset_publisher/aj3dlMDNEtsq/content/24-09-2025-inscri%25C3%25A7%25C3%25B5es-abertas-para-apresenta%25C3%25A7%25C3%25A3o-de-projetos-ao-amparo-dos-programas-sociais-pronon-pronas-pcd-e-lei-de-incentivo-%25C3%25A0-reciclagem/45887?_com_liferay_asset_publisher_web_portlet_AssetPublisherPortlet_INSTANCE_aj3dlMDNEtsq_assetEntryId=8590370&_com_liferay_asset_publisher_web_portlet_AssetPublisherPortlet_INSTANCE_aj3dlMDNEtsq_redirect=https%3A%2F%2Fwww.bnb.gov.br%2Fweb%2Fguest%2Fsustentabilidade%2Finvestimentos-sociais-e-esportivos%3Fp_p_id%3Dcom_liferay_asset_publisher_web_portlet_AssetPublisherPortlet_INSTANCE_aj3dlMDNEtsq%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26_com_liferay_asset_publisher_web_portlet_AssetPublisherPortlet_INSTANCE_aj3dlMDNEtsq_cur%3D0%26p_r_p_resetCur%3Dfalse%26_com_liferay_asset_publisher_web_portlet_AssetPublisherPortlet_INSTANCE_aj3dlMDNEtsq_assetEntryId%3D8590370) — coletado em 2026-10-03T01:12:03+00:00

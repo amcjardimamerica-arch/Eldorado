@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `f260-captacao-216`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 1
-- Distribuição por ano pesquisado/coletado: {'2026': 1}
+- Pistas aguardando confirmação: 2
+- Distribuição por ano pesquisado/coletado: {'2026': 2}
 
 ## Padrões
 
@@ -12,6 +12,9 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 ## Eventos e pistas
 
-- [01 de novembro de 2025  
-                         O Perfil das Organizações  Da Sociedade Civil no Brasil  (2016-2025) 
-                         Este relatório de pesquisa é o resultado da quarta ação prevista no plano de trabalho definido na parceria entre o Instituto de Pesquisa Econômica Aplicada](https://mapaosc.ipea.gov.br/post/192/o-perfil-das-organizacoes-da-sociedade-civil-no-brasil-2016-2025) — coletado em 2026-09-05T07:40:29+00:00
+- [17 de junho de 2026  
+                         Manual MROSC: Do Planejamento à Prestação de Contas (versão 2) 
+                         O Manual MROSC foi criado a partir de uma década de experiência e boas práticas em parcerias, desde a publicação da Lei nº 13.019/2014. O documento serve como um gu](https://mapaosc.ipea.gov.br/post/193/manual-mrosc-do-planejamento-a-prestacao-de-contas-versao-2) — coletado em 2026-10-03T01:11:54+00:00
+- [13 de agosto de 2025  
+                         Manual MROSC: Do Planejamento à Prestação de Contas 
+                         O Manual MROSC foi criado a partir de uma década de experiência e boas práticas em parcerias, desde a publicação da Lei nº 13.019/2014. O documento serve como um guia para fa](https://mapaosc.ipea.gov.br/post/191/manual-mrosc-do-planejamento-a-prestacao-de-contas) — coletado em 2026-10-03T01:11:54+00:00
