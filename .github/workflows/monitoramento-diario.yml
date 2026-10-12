@@ -208,6 +208,7 @@ jobs:
           timeout 600 python -m src.biblioteca || echo 'biblioteca: registrado'
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             timeout 600 python -m src.arquivamento || echo 'arquivamento: registrado'
+            timeout 120 python -m src.decisoes_titular || echo "decisões da titular: falhou"   # 12/10: descarte sinaliza o livro para o Claude
           fi
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             timeout 900 python -m src.fluxo || echo "fluxo 4-5: sem editais completos"

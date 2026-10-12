@@ -155,6 +155,8 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
                 livros.setdefault(str(h["id"]), m)
     skills = (_j(ROOT / "config/skills_extracao_origem.json", {}) or {}).get("skills") or {}
     # 11/10 (titular): arquivamento ÚNICO — só as municipais de fora de GO abertas em 11/10 (lista fixa); as novas entram normalmente
+    from .decisoes_titular import decisoes as _decisoes
+    _DEC = _decisoes()
     _foto = _j(ROOT / "dados/oportunidades/arquivamento_municipais_2026-10-11.json", {}) or {}
     _arq_ids = {i: f"arquivada em 11/10/2026: municipal fora de Goiás ({o.get('uf')}) — o livro fica guardado"
                 for o in (_foto.get("oportunidades") or []) for i in [o["id"], *(o.get("ids_origem") or [])]}
@@ -236,6 +238,9 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
         fim = r.get("fim") or (((c.get("itens") or {}).get("Prazo de inscrição") or {}).get("fim"))
         v = (ver or {}).get("veredito")
         _mun = next((_arq_ids[i] for i in [cid] + r["ids_origem"] if i in _arq_ids), None)   # só a lista fixa de 11/10
+        if not _mun:                       # 12/10 (titular): decidida no painel (inscrita ou descartada) sai das abertas; o livro fica
+            from .decisoes_titular import marca_no_repositorio
+            _mun = marca_no_repositorio([cid] + r["ids_origem"], _DEC)
         if v in FECHADAS:
             estado, motivo = "fechada", f"veredito: {v}"
         elif fim and str(fim)[:10] < hoje:

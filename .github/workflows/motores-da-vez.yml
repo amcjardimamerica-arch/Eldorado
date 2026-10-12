@@ -94,9 +94,11 @@ jobs:
           if [ "$(cat estado/biblioteca_diaria.txt 2>/dev/null)" != "$D" ]; then
             timeout 300 python -c "from src.leitor_documental import aplicar; print(aplicar())" 2>&1 | tail -c 1500 || echo "leitor documental falhou"
             timeout 300 python -m src.selo_livros >/dev/null 2>&1 || echo "selos dos livros falhou"
+            timeout 120 python -m src.decisoes_titular 2>&1 | tail -c 400 || echo "decisões da titular: falhou"   # 12/10: descarte sinaliza o livro
             echo "$D" > estado/biblioteca_diaria.txt
           fi
           timeout 300 python -m src.fluxo_oportunidades --completo >/dev/null 2>&1 || echo "mapa falhou"
+          timeout 200 python -m src.fichas_oportunidades >/dev/null 2>&1 || echo "fichas das oportunidades: falhou"   # 12/10: a janela de cada oportunidade
           GH_TOKEN="${{ secrets.GITHUB_TOKEN }}" timeout 120 python -m src.sala_controle >/dev/null || true   # releitura com o repositório desta passagem
       - name: Registrar somente alterações produzidas
         if: always()
