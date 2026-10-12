@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-12T22:00:21+00:00",
+  "em": "2026-10-12T22:19:57+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-12T21:43:44+00:00",
+  "ultimo_voo": "2026-10-12T22:03:16+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 70,
+    "missoes": 71,
     "validadas": 3,
-    "parciais": 17,
+    "parciais": 18,
     "insuficientes": 46,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 55,
+      "sim": 56,
       "nao": 7
     },
     "estrelas_de_ouro": 2,
@@ -52,6 +52,83 @@
     "tempo_medio_min": 13.3
   },
   "missoes": [
+    {
+      "em": "2026-10-12T22:03:16+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "EDITAL DE CHAMAMENTO PÚBLICO Nº 03/2025 PARA CONVOCAÇÃO DE ORGANIZAÇÕES DA SOCIEDADE CIVIL A FIM DE PROMOVER EVENTO COMPETITIVO DE SKATE NO ",
+      "qualidade": "parcial",
+      "comprovados": 7,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos"
+      ],
+      "pagina_oficial": "http://chamamentos.itapevi.sp.gov.br",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital comprovado menciona o objeto, órgão financiador, território, esfera, anexos, destinação e área de atuação, o que é suficiente para identificar a fonte.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se há alinhamento entre o objeto do edital (evento competitivo de skate) e suas atividades, além de garantir que possua os documentos exigidos nos anexos para participar.",
+        "proximo_passo": "Consultar os anexos do edital para entender os requisitos e documentos necessários para inscrição.",
+        "risco": "A falta de alinhamento entre as atividades da associação e o objeto do edital pode impedir o acesso ao fomento."
+      },
+      "erro": null,
+      "segundos": 999,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 7,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
+      "id": "49d6fa43a4a246ad78a7",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Promover evento competitivo de skate no município de Itapevi estabelecendo parceria via Termo de Colaboração",
+          "trecho": "Promover evento competitivo de skate no município de Itapevi estabelecendo parceria via \"Termo de Colaboração\"",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Itapevi",
+          "trecho": "Portal de Chamamentos da Prefeitura Municipal de Itapevi.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "SP",
+          "trecho": "município de Itapevi",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "esporte",
+          "trecho": "evento competitivo de skate",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "CONVOCAÇÃO DE ORGANIZAÇÕES DA SOCIEDADE CIVIL",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Itapevi",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-12T21:43:44+00:00",
       "modo": "validar",
@@ -2859,88 +2936,6 @@
       "indicios": [
         {
           "url": "https://data.queridodiario.ok.org.br/2910602/2026-10-09/cf574e49fefd17a51aefc9ba05720078d3696ff8.pdf",
-          "tipo": "agregador"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
-      ]
-    },
-    {
-      "em": "2026-10-12T10:21:00+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Diário Oficial de Sumidouro (RJ) 2026-09-14 — \"edital de premiação\" cultura",
-      "qualidade": "insuficiente",
-      "comprovados": 7,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital mencionado está relacionado a uma premiação cultural e foi publicado no Diário Oficial de Sumidouro/RJ, sendo uma fonte oficial para ações de fomento à cultura.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se há alinhamento entre o edital e suas atividades culturais, mesmo que o edital seja municipal e não abranja Goiânia, pois pode haver oportunidades em outros editais.",
-        "proximo_passo": "Consultar outros editais públicos disponíveis para organizações da sociedade civil no âmbito municipal, estadual ou federal que sejam compatíveis com as atividades da associação.",
-        "risco": "O edital não contempla Goiânia, e não há informações sobre prazos, valores ou requisitos, o que pode dificultar o acesso a recursos."
-      },
-      "erro": null,
-      "segundos": 950,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "fcd64f7649bf05cdaec7",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Resultado Final da Etapa de Seleção do Edital de Premiação Cultural nº 001/2026 – PNAB Ciclo II",
-          "trecho": "Resultado Final da Etapa de Seleção do Edital de Premiação Cultural nº 001/2026 – PNAB Ciclo II.",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Secretaria Municipal de Educação, Cultura, Esporte, Lazer e Turismo de Sumidouro/RJ",
-          "trecho": "A Secretaria Municipal de Educação, Cultura, Esporte, Lazer e Turismo de Sumidouro/RJ torna público o Resultado Final da Etapa de Seleção do Edital de Premiação Cultural nº 001/202",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "RJ",
-          "trecho": "Município de Sumidouro-RJ",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "Edital de Premiação Cultural",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · premio",
-          "trecho": "Resultado Final da Etapa de Seleção do Edital de Premiação Cultural nº 001/2026 – PNAB Ciclo II.",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Secretaria Municipal de Educação, Cultura, Esporte, Lazer e Turismo de Sumidouro/RJ",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/3305703/2026-09-14/efaecfdca0bf5f566dd4daf0db595fb5d8a95cb0.pdf",
           "tipo": "agregador"
         }
       ],
