@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-12T17:37:01+00:00",
+  "em": "2026-10-12T17:54:54+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-12T17:20:41+00:00",
+  "ultimo_voo": "2026-10-12T17:40:06+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,84 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 55,
+    "missoes": 56,
     "validadas": 1,
     "parciais": 14,
-    "insuficientes": 36,
+    "insuficientes": 37,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "sim": 43,
-      "nao": 5
+      "nao": 6
     },
     "estrelas_de_ouro": 0,
     "fontes_novas_para_os_motores": 2,
-    "tempo_medio_min": 12.9
+    "tempo_medio_min": 13.0
   },
   "missoes": [
+    {
+      "em": "2026-10-12T17:40:06+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "EDITAL DE CHAMAMENTO PÚBLICO Nº 10/2025 – SELEÇÃO DE PROPOSTAS PARA O RECEBIMENTO DE DOAÇÃO NA FORMA DE PATROCÍNIO PARA O EVENTO “ FORÇA ",
+      "qualidade": "insuficiente",
+      "comprovados": 3,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Requisitos",
+        "Anexos",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "http://chamamentos.itapevi.sp.gov.br",
+      "parecer_fonte": {
+        "serve_como_fonte": "nao",
+        "por_que": "O edital não fornece informações suficientes sobre os requisitos, prazos, valor ou como acessar o patrocínio, tornando impossível determinar se a associação comunitária de Goiânia pode se beneficiar.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria conhecer os requisitos, prazos e processo de inscrição, que não estão disponíveis no edital.",
+        "proximo_passo": "Consultar o órgão responsável pelo edital para obter mais detalhes sobre os requisitos e processo de inscrição.",
+        "risco": "A falta de informações essenciais como requisitos, prazos e valor pode impedir que a associação comunitária participe do edital."
+      },
+      "erro": null,
+      "segundos": 887,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 3,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
+      "id": "f8c505c53d1c5ffb6f08",
+      "encontrou": {
+        "Território": {
+          "valor": "SP",
+          "trecho": "Portal de Chamamentos de Itapevi",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · patrocinio",
+          "trecho": "SELEÇÃO DE PROPOSTAS PARA O RECEBIMENTO DE DOAÇÃO NA FORMA DE PATROCÍNIO PARA O EVENTO “ FORÇA E AÇÃO”",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Itapevi",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-12T17:20:41+00:00",
       "modo": "validar",
@@ -2803,84 +2866,6 @@
       "financiador": null,
       "indicios": [],
       "rotas": []
-    },
-    {
-      "em": "2026-10-12T06:42:36+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Destinação de recursos permite instalação de mais 10 leitos de UTI em hospital referência no tratamento do cân… — Goiás / Goiânia",
-      "qualidade": "parcial",
-      "comprovados": 8,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://goias.gov.br/saude/wp-content/uploads/sites/34/files/licitacoes/chamamento-publico/2024/chamamento06-hej/edital-hej.pdf",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital comprova a destinação de recursos para a seleção de entidade que gerenciará serviços de saúde em um hospital estadual, o que é relevante para ações de saúde pública.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se qualificar como entidade gestora de serviços de saúde, comprovando experiência prévia na gestão de unidades hospitalares de Média e Alta Complexidade, e demonstrar capacidade técnica e financeira para operacionalizar os serviços.",
-        "proximo_passo": "Verificar os requisitos do edital e se qualificar como entidade elegível para participar do processo seletivo.",
-        "risco": "A falta de experiência prévia comprovada na gestão de unidades hospitalares pode impedir o acesso à seleção."
-      },
-      "erro": null,
-      "segundos": 609,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 8,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Área de atuação",
-      "id": "op-op-f70588a30b34",
-      "encontrou": {
-        "Objeto": {
-          "valor": "seleção de entidade para o gerenciamento, operacionalização e execução das ações e serviços de saúde em regime de 24 horas/dia, no Hospital Estadual de Jataí Dr. Serafim de Carvalho - HEJ",
-          "trecho": "O presente Edital tem por objeto a seleção de entidade para o gerenciamento, operacionalização e execução das ações e serviços de saúde em regime de 24 horas/dia, no Hospital Estad",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "R$ 357.126.321,60",
-          "trecho": "O Valor Global Estimado para o desenvolvimento do Plano de Trabalho totalizará a importância de R$ 357.126.321,60",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Secretaria de Estado da Saúde de Goiás",
-          "trecho": "O Estado de Goiás, por intermédio da Secretaria de Estado da Saúde, torna público o presente edital de chamamento público",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "ESTADO DE GOIÁS",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · convenio",
-          "trecho": "seleção de entidade de direito privado sem fins lucrativos caracterizada como organização da sociedade civil",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "experiência prévia comprovada na gestão de unidades hospitalares com perfil de Média e Alta Complexidade",
-          "trecho": "O presente Chamamento Público e a parceria dele decorrente se regem por toda a legislação aplicável à espécie, especialmente pelas normas da Lei Federal nº 13.019/2014 e a Lei comp",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Ministério Público do Trabalho em Goiás (MPT-GO) e Ministério Público do Estado de Goiás (MPGO)",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
-      ]
     }
   ],
   "contagem": {
