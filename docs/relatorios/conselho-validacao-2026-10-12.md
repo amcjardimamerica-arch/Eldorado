@@ -8,9 +8,9 @@
 
 ```json
 {
- "cegos_da_1a_rodada": 32,
- "testados": 25,
- "com_rota_nova": 9,
+ "cegos_da_1a_rodada": 31,
+ "testados": 24,
+ "com_rota_nova": 8,
  "via_ponte": 0,
  "continuam_cegos": [
   "camara-goiania-pl",
@@ -45,9 +45,9 @@
  "ruido_agora": [
   {
    "motor": "empresas-incentivadas",
-   "achados_total_1a": 46,
-   "achados_total_agora": 46,
-   "no_fluxo": 1,
+   "achados_total_1a": 53,
+   "achados_total_agora": 53,
+   "no_fluxo": 3,
    "confirmadas": 0
   },
   {
@@ -115,15 +115,15 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 45,
-   "achados_total_agora": 45,
+   "achados_total_1a": 48,
+   "achados_total_agora": 48,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 877,
-   "achados_total_agora": 877,
+   "achados_total_1a": 899,
+   "achados_total_agora": 899,
    "no_fluxo": 2,
    "confirmadas": 0
   },
@@ -136,8 +136,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 61,
-   "achados_total_agora": 61,
+   "achados_total_1a": 62,
+   "achados_total_agora": 62,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -164,22 +164,22 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 31,
-   "achados_total_agora": 31,
+   "achados_total_1a": 32,
+   "achados_total_agora": 32,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 59,
-   "achados_total_agora": 59,
+   "achados_total_1a": 60,
+   "achados_total_agora": 60,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-estaduais-go-gov",
-   "achados_total_1a": 25,
-   "achados_total_agora": 25,
+   "achados_total_1a": 26,
+   "achados_total_agora": 26,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -228,7 +228,7 @@
  "pontos_com_redundancia": 11,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 3427
+ "exemplos_da_rede_de_rotas": 3543
 }
 ```
 
@@ -239,12 +239,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 82.7,
- "fora_dos_motores_pct_agora": 82.7,
+ "fora_dos_motores_pct_1a": 81.9,
+ "fora_dos_motores_pct_agora": 81.9,
  "origem": {
-  "agregador/outra": 203,
-  "motor": 64,
-  "Piloto": 103
+  "agregador/outra": 202,
+  "motor": 67,
+  "Piloto": 102
  },
  "dominios_so_de_agregador": [
   {
@@ -265,6 +265,10 @@
   },
   {
    "dominio": "fundoamazonia.gov.br",
+   "oportunidades": 2
+  },
+  {
+   "dominio": "salinas.mg.gov.br",
    "oportunidades": 2
   },
   {
@@ -301,10 +305,6 @@
   },
   {
    "dominio": "premio.finep.gov.br",
-   "oportunidades": 1
-  },
-  {
-   "dominio": "florestamaisamazonia.mma.gov.br",
    "oportunidades": 1
   }
  ],
@@ -367,20 +367,20 @@
 
 ```json
 {
- "fontes_recebidas": 239,
+ "fontes_recebidas": 240,
  "por_origem": {
-  "conselho (fontes irmãs)": 130,
+  "conselho (fontes irmãs)": 131,
   "Cartório (site oficial certificado)": 93,
   "Espião (privado/internacional)": 16
  },
  "lidas_nas_ultimas_24h": 163,
  "dimensionamento": {
-  "fontes": 239,
+  "fontes": 240,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 5,
-  "cobertura_diaria": 239,
+  "cobertura_diaria": 240,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -472,7 +472,7 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 38,
+   "orgaos": 39,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",
