@@ -61,9 +61,9 @@ class TesteEstado(unittest.TestCase):
                       '"passo"', '"etapa"', '"estante"', '"origem"', '"reproc"', "function detalheItem(", "function ligarDetalhes(", "window.nvVisao", 'class="cabeca-const"', "function desenhoConst("):
             self.assertIn(marca, sec, marca)
         self.assertNotIn("g.fillText(no.nome", sec, "nomes das constelações ocultos no céu")
-        # nome da página (11/10): "Rede Neural"
-        self.assertIn('<button data-v="neural">Rede Neural</button>', h); self.assertIn("<h2>Rede Neural</h2>", h)
-        self.assertNotIn(">Sala de controle<", h)
+        # nome da página: "Sala de controle" (restaurado em 12/10 a pedido da titular)
+        self.assertIn('<button data-v="neural">Sala de controle</button>', h); self.assertIn("<h2>Sala de controle</h2>", h)
+        self.assertNotIn(">Rede Neural<", h)
         # auditoria do Chrome (11/10): toda regra de estilo da janela vale também no portal — a que revela o conteúdo faltava
         self.assertIn("#nv-portal .holo.pronta .conteudo{opacity:1}", h)
         import re as _re
