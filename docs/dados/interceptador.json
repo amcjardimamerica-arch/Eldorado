@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-12T13:54:51+00:00",
+  "em": "2026-10-12T14:12:09+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-12T13:43:23+00:00",
+  "ultimo_voo": "2026-10-12T13:57:37+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,93 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 42,
+    "missoes": 43,
     "validadas": 0,
     "parciais": 9,
-    "insuficientes": 29,
+    "insuficientes": 30,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 31,
+      "sim": 32,
       "nao": 4
     },
     "estrelas_de_ouro": 0,
     "fontes_novas_para_os_motores": 1,
-    "tempo_medio_min": 12.6
+    "tempo_medio_min": 12.7
   },
   "missoes": [
+    {
+      "em": "2026-10-12T13:57:37+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Maceió (AL) 2026-09-22 — \"termo de execução cultural\"",
+      "qualidade": "insuficiente",
+      "comprovados": 5,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Requisitos",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O termo de execução cultural mencionado no Diário Oficial de Maceió (AL) 2026-09-22 refere-se a um objeto de fomento à cultura, com território em AL e esfera municipal, indicando que pode ser uma fonte de recursos para organizações da sociedade civil.",
+        "para_a_amc": "Para acessar esse fomento, uma associação comunitária de Goiânia precisaria verificar se o edital abrange o território de Goiânia, apresentar um projeto alinhado ao objeto do edital (fomento à cultura) e seguir as diretrizes do edital, mesmo que os requisitos específicos não estejam explicitados.",
+        "proximo_passo": "Consultar o Diário Oficial de Maceió (AL) 2026-09-22 para obter os anexos e detalhes adicionais do termo de execução cultural.",
+        "risco": "O território do edital é AL, enquanto a associação está em Goiânia, o que pode impedir o acesso ao fomento."
+      },
+      "erro": null,
+      "segundos": 870,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "b84ffde39ad77018780d",
+      "encontrou": {
+        "Objeto": {
+          "valor": "fomento à cultura",
+          "trecho": "termo de execução cultural",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "AL",
+          "trecho": "MACEIÓ/AL",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · outro",
+          "trecho": "termo de execução cultural",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Maceió",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/2704302/2026-09-22/4b8f731e0cdc33af172610881879a91dc1c10653.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-12T13:43:23+00:00",
       "modo": "validar",
@@ -2682,87 +2754,6 @@
       "rotas": [
         "site_do_financiador",
         "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-12T03:40:28+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "PNAB Goiânia 2024 - Edital 09 - Fomento Cultural II – Ações Formativas — Goiás / Goiânia",
-      "qualidade": "insuficiente",
-      "comprovados": 9,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Prazo de recurso",
-        "Requisitos"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital comprova a existência de um programa de fomento cultural em Goiânia com recursos financeiros e um resultado previsto, o que indica sua validade e possibilidade de acesso.",
-        "para_a_amc": "A associação comunitária precisaria desenvolver um projeto de cultura continuado, alinhado aos objetivos do edital, e seguir o processo de inscrição e avaliação estabelecido, mesmo que o prazo não esteja disponível.",
-        "proximo_passo": "Consultar os anexos do edital para obter detalhes sobre o processo de inscrição e os critérios de avaliação.",
-        "risco": "A falta de informações sobre o prazo de inscrição e os requisitos pode impedir a associação de se candidatar oportunamente."
-      },
-      "erro": null,
-      "segundos": 450,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-op-697bd59d47f8",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Fomento a Projetos Continuados de Pontos de Cultura da Cidade de Goiânia",
-          "trecho": "Edital de Fomento a Projetos Continuados de Pontos de Cultura da Cidade de Goiânia",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "R$ 150.000,00",
-          "trecho": "Associação Companhia Corpo na Contramão Taina Luiza Barreto Marques R$ 150.000,00 AC 82 Aprovado pela Ampla",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura de Goiânia - Secretaria Municipal de Cultura",
-          "trecho": "Prefeitura de Goiânia Secretaria Municipal de Cultura",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "Edital de Fomento a Projetos Continuados de Pontos de Cultura da Cidade de Goiânia",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "Edital de Fomento a Projetos Continuados de Pontos de Cultura da Cidade de Goiânia",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "Associação Companhia Corpo na Contramão Taina Luiza Barreto Marques R$ 150.000,00 AC 82 Aprovado pela Ampla",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Secretaria Municipal de Cultura",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
       ]
     }
   ],
