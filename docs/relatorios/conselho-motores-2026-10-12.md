@@ -57,7 +57,7 @@
 
 ## Fontes irmãs (Profa. Clara)
 
-213 domínios oficiais já renderam e não têm motor. Os primeiros:
+214 domínios oficiais já renderam e não têm motor. Os primeiros:
 
 - baoba.org.br (peso 17)
 - fundoecos.org.br (peso 12)
@@ -112,7 +112,7 @@
 ### Diário Oficial do Município de Goiânia (`do-goiania`) — confirma, 9 achados em 30 dias
 - **CONGELADO** (falso_verde): o mesmo achado repetido em 9 dias. → detectar mudança por hash/lastmod e só contar o que é novo
 - **SILÊNCIO LONGO** (falso_verde): 21 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
-- **CUSTO SEM RETORNO** (redundancia): 330 s na última leitura sem achado. → reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem
+- **CUSTO SEM RETORNO** (redundancia): 364 s na última leitura sem achado. → reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem
 
 ### Diário da Justiça Federal — Seção Judiciária de Goiás (`dj-trf1-go`) — baixo volume, 0 achados em 30 dias
 - **CEGO** (falso_verde): respondeu 200 em 24 de 30 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
