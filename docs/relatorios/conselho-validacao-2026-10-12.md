@@ -228,7 +228,7 @@
  "pontos_com_redundancia": 11,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 4647
+ "exemplos_da_rede_de_rotas": 4733
 }
 ```
 
@@ -368,20 +368,20 @@
 
 ```json
 {
- "fontes_recebidas": 267,
+ "fontes_recebidas": 269,
  "por_origem": {
-  "conselho (fontes irmãs)": 140,
-  "Cartório (site oficial certificado)": 107,
+  "conselho (fontes irmãs)": 141,
+  "Cartório (site oficial certificado)": 108,
   "Espião (privado/internacional)": 20
  },
- "lidas_nas_ultimas_24h": 142,
+ "lidas_nas_ultimas_24h": 107,
  "dimensionamento": {
-  "fontes": 267,
+  "fontes": 269,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 6,
-  "cobertura_diaria": 267,
+  "cobertura_diaria": 269,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238

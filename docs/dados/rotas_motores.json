@@ -1,5 +1,5 @@
 {
- "em": "2026-10-12T13:33:31+00:00",
+ "em": "2026-10-12T15:08:44+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
@@ -7,75 +7,79 @@
   "alterar_rota": 55,
   "rota_nova": 46,
   "via_ponte": 2,
-  "exemplos_da_rede": 4647
+  "exemplos_da_rede": 4733
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
    [
+    "origem:rota original",
+    2.2034
+   ],
+   [
     "origem:biblioteca",
-    1.9025
+    2.1799
    ],
    [
     "tok:inscricoes",
-    1.8866
-   ],
-   [
-    "origem:rota original",
-    1.6482
-   ],
-   [
-    "tok:unidades",
-    1.2881
+    1.9785
    ],
    [
     "tok:feed",
-    1.2686
+    1.322
+   ],
+   [
+    "tipo:privada",
+    1.3068
+   ],
+   [
+    "tok:unidades",
+    1.3011
    ],
    [
     "tok:abertas",
-    1.2176
+    1.25
+   ],
+   [
+    "tok:assuntos",
+    1.1726
+   ],
+   [
+    "tok:sitemap",
+    1.1067
+   ],
+   [
+    "tok:xml",
+    1.1067
    ],
    [
     "tok:mpf",
     1.0945
    ],
    [
-    "tok:assuntos",
-    1.0494
-   ],
-   [
-    "tok:goias",
-    1.008
-   ],
-   [
-    "gov:True",
-    1.0024
-   ],
-   [
-    "tok:secult",
-    0.9908
-   ],
-   [
-    "tok:programa",
-    0.9736
+    "tok:editais",
+    1.0216
    ]
   ],
   "piores_sinais": [
+   [
+    "tok:pdf",
+    -1.017
+   ],
    [
     "tok:prefeitura",
     -1.0925
    ],
    [
-    "sapl:False",
-    -1.2091
-   ],
-   [
     "tok:content",
-    -1.3975
+    -1.4875
    ],
    [
     "tok:uploads",
-    -1.3975
+    -1.4875
+   ],
+   [
+    "gov:False",
+    -1.5829
    ],
    [
     "origem:câmara",
@@ -86,12 +90,8 @@
     -2.1905
    ],
    [
-    "gov:False",
-    -2.528
-   ],
-   [
     "origem:padrão",
-    -3.3807
+    -3.337
    ]
   ]
  },
@@ -342,7 +342,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-12T01:24:58+00:00",
+    "em": "2026-10-12T15:07:24+00:00",
     "testes": 13,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1213,21 +1213,21 @@
    ],
    "rota_aprendida": {
     "urls": [
-     "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-cultura-viva-2023-fomento-a-pontoes-de-cultura"
+     "https://www.gov.br/cultura/pt-br/assuntos/editais-e-portarias/editais/2023/inscricoes-abertas/edital-comites-de-cultura?_authenticator=c61c3a08fab23fa4cd1e7ede07d7403cfa1a6523"
     ],
     "via": "direto",
     "origem": "biblioteca",
-    "pontos": 33,
-    "aprendido_em": "2026-10-12T04:26:20+00:00"
+    "pontos": 39,
+    "aprendido_em": "2026-10-12T15:07:46+00:00"
    },
    "afinado": {
-    "em": "2026-10-12T04:26:20+00:00",
+    "em": "2026-10-12T15:07:46+00:00",
     "testes": 16,
     "melhor": {
-     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-cultura-viva-2023-fomento-a-pontoes-de-cultura",
+     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais-e-portarias/editais/2023/inscricoes-abertas/edital-comites-de-cultura?_authenticator=c61c3a08fab23fa4cd1e7ede07d7403cfa1a6523",
      "via": "direto",
      "origem": "biblioteca",
-     "pontos": 33,
+     "pontos": 39,
      "formato": "html"
     },
     "resultado": "rota nova em teste"
@@ -1254,10 +1254,10 @@
     "via": "direto",
     "origem": "rota original",
     "pontos": 30,
-    "aprendido_em": "2026-10-12T04:26:39+00:00"
+    "aprendido_em": "2026-10-12T15:08:04+00:00"
    },
    "afinado": {
-    "em": "2026-10-12T04:26:39+00:00",
+    "em": "2026-10-12T15:08:04+00:00",
     "testes": 20,
     "melhor": {
      "url": "https://mariaemilia.org.br/feed",
@@ -1312,10 +1312,10 @@
     "via": "direto",
     "origem": "rota original",
     "pontos": 25,
-    "aprendido_em": "2026-10-12T04:27:36+00:00"
+    "aprendido_em": "2026-10-12T15:08:19+00:00"
    },
    "afinado": {
-    "em": "2026-10-12T04:27:36+00:00",
+    "em": "2026-10-12T15:08:19+00:00",
     "testes": 13,
     "melhor": {
      "url": "https://www.senadorpompeu.ce.gov.br/",
@@ -1343,7 +1343,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-12T04:27:46+00:00",
+    "em": "2026-10-12T15:08:31+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1370,10 +1370,10 @@
     "via": "direto",
     "origem": "rota original",
     "pontos": 30,
-    "aprendido_em": "2026-10-12T04:27:58+00:00"
+    "aprendido_em": "2026-10-12T15:08:44+00:00"
    },
    "afinado": {
-    "em": "2026-10-12T04:27:58+00:00",
+    "em": "2026-10-12T15:08:44+00:00",
     "testes": 12,
     "melhor": {
      "url": "https://www.detran.rj.gov.br/sitemap.xml",
