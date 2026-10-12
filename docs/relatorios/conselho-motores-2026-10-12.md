@@ -57,16 +57,16 @@
 
 ## Fontes irmãs (Profa. Clara)
 
-214 domínios oficiais já renderam e não têm motor. Os primeiros:
+215 domínios oficiais já renderam e não têm motor. Os primeiros:
 
 - baoba.org.br (peso 19)
+- licitario.com.br (peso 15)
 - institutolojasrenner.org.br (peso 15)
 - zurich.com.br (peso 13)
 - fundoecos.org.br (peso 12)
 - mariaemilia.org.br (peso 11)
 - chamadas.funbio.org.br (peso 11)
 - feirapreta.com.br (peso 9)
-- licitario.com.br (peso 8)
 - editaisdobrasil.com (peso 8)
 - crars.org.br (peso 8)
 - fondationfrancoisschneider.org (peso 7)
@@ -74,6 +74,7 @@
 - impactarte.org.br (peso 7)
 - dopaonlineupload.procempa.com.br (peso 7)
 - institutogenesio.org.br (peso 7)
+- contrafluxofestival.com.br (peso 7)
 - itauvivermais.com.br (peso 7)
 - brazilfoundation.org (peso 7)
 - itausocial.org.br (peso 6)
@@ -81,9 +82,8 @@
 - institutoacp.org.br (peso 6)
 - jornadasocial.com.br (peso 6)
 - equatorial.gestaocpp.com.br (peso 6)
+- fundacaocargill.org.br (peso 6)
 - luppa.comidadoamanha.org (peso 5)
-- impactarte.com.br (peso 5)
-- rit.org.br (peso 5)
 
 ## Plataformas e inovações (Dr. Fábio)
 
