@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `querido-diario`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 17494
-- Distribuição por ano pesquisado/coletado: {'2021': 1140, '2022': 3260, '2023': 3414, '2024': 3475, '2025': 3380, '2026': 2825}
+- Pistas aguardando confirmação: 17534
+- Distribuição por ano pesquisado/coletado: {'2021': 1140, '2022': 3300, '2023': 3414, '2024': 3475, '2025': 3380, '2026': 2825}
 
 ## Padrões
 
@@ -51,7 +51,7 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Diário Oficial de Rio de Janeiro (RJ) 2026-08-21 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3304557/2026-08-21/70389a0c3c04aaefed2b38f9e5bcae28d1fdac84.pdf) — coletado em 2026-09-01T06:46:31+00:00
 - [Diário Oficial de Valinhos (SP) 2021-11-23 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/3556206/2021-11-23/2076a2b8bfbfe6f29c01755215031d79d3ac9e71.pdf) — coletado em 2026-09-28T02:57:31+00:00
 - [Diário Oficial de São Manuel (SP) 2026-09-11 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/3550100/2026-09-11/1f2a8d0a33f854809100166cf4b71e2535e16eae.pdf) — coletado em 2026-09-17T18:03:31+00:00
-- [Diário Oficial de Jequiá da Praia (AL) 2021-11-01 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/2700000/2021-11-01/07d93c17b274f823866fb2b0a244b05f78143d27.pdf) — coletado em 2026-10-12T03:44:23+00:00
+- [Diário Oficial de Jequiá da Praia (AL) 2021-11-01 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/2700000/2021-11-01/07d93c17b274f823866fb2b0a244b05f78143d27.pdf) — coletado em 2026-10-12T14:12:31+00:00
 - [Diário Oficial de Maceió (AL) 2023-06-02 — "edital de chamamento público" associação](https://data.queridodiario.ok.org.br/2704302/2023-06-02/59b3a074327b5b392b062443e8b1383546d68e1b.pdf) — coletado em 2026-10-12T04:37:39+00:00
 - [Diário Oficial de Teresina (PI) 2022-11-11 — "chamamento público" "organizações da sociedade civil"](https://data.queridodiario.ok.org.br/2211001/2022-11-11/c1481c8bf9afc1b97f7dd1974748904f2e62b533.pdf) — coletado em 2026-10-01T12:12:18+00:00
 - [Diário Oficial de Nova Iorque (MA) 2024-07-23 — "termo de execução cultural"](https://data.queridodiario.ok.org.br/2107308/2024-07-23/dba1ab0e4c64465433dfa3f6b07aeaf8a90e5e08.pdf) — coletado em 2026-10-12T05:23:15+00:00
