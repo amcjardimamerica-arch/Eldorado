@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-12T01:12:24+00:00",
+  "em": "2026-10-12T01:31:51+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-12T01:11:16+00:00",
+  "ultimo_voo": "2026-10-12T01:15:06+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 323,
+    "missoes": 324,
     "validadas": 17,
     "parciais": 79,
-    "insuficientes": 219,
+    "insuficientes": 220,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 216,
+      "sim": 217,
       "nao": 55
     },
     "estrelas_de_ouro": 5,
@@ -52,6 +52,78 @@
     "tempo_medio_min": 10.4
   },
   "missoes": [
+    {
+      "em": "2026-10-12T01:15:06+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Rio de Janeiro (RJ) 2026-09-29 — \"chamamento público\" \"organizações da sociedade civil\"",
+      "qualidade": "insuficiente",
+      "comprovados": 5,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto menciona um chamamento público para organizações da sociedade civil no Diário Oficial de Rio de Janeiro, o que indica uma fonte válida para editais de fomento.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital abrange sua área de atuação e se há requisitos específicos para participar, mesmo que não tenham sido encontrados no texto.",
+        "proximo_passo": "Consultar o edital completo para obter informações detalhadas sobre os requisitos, prazos e áreas de atuação.",
+        "risco": "A falta de informações específicas como prazo, valor e requisitos pode impedir a participação efetiva da associação."
+      },
+      "erro": null,
+      "segundos": 1003,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "5ab663f7ddca85b5ac42",
+      "encontrou": {
+        "Órgão / financiador": {
+          "valor": "Prefeitura da Cidade do Rio de Janeiro",
+          "trecho": "Prefeitura da Cidade do Rio de Janeiro",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "RJ",
+          "trecho": "Diário Oficial do Município do Rio de Janeiro",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · outro",
+          "trecho": "Rio ganha duas Clínicas da Família com modelo inovador",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura da Cidade do Rio de Janeiro",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3304557/2026-09-29/ee1ac7d76b78e83ef6837bf27dc71745a646cb10.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "parceiro"
+      ]
+    },
     {
       "em": "2026-10-12T01:11:16+00:00",
       "modo": "dossie",
@@ -2418,84 +2490,6 @@
       "indicios": [
         {
           "url": "https://www.fapespa.pa.gov.br/2026/07/06/chamada-publica-fapespa-no-008-2026",
-          "tipo": "noticia"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador"
-      ]
-    },
-    {
-      "em": "2026-10-11T14:32:43+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "CHAMADA FAPESPA Nº 005/2025 – PROGRAMA TECNOVA III Subvenção Econômica à Inovação",
-      "qualidade": "parcial",
-      "comprovados": 6,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Requisitos",
-        "Anexos",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "http://fapespa.pa.gov.br",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "A chamada FAPESPA nº 005/2025 está relacionada ao Programa TECNOVA III e oferece subvenção econômica à inovação, sendo uma fonte de financiamento para projetos inovadores.",
-        "para_a_amc": "A associação comunitária de Goiânia, atuando nas áreas de assistência social, cultura, educação e esporte, precisaria verificar se seu projeto se enquadra na área de inovação e se está alinhado com as diretrizes do Programa TECNOVA III, além de reunir os requisitos necessários para participar do edital.",
-        "proximo_passo": "Consultar os anexos e requisitos do edital para entender melhor os critérios de elegibilidade e como se inscrever.",
-        "risco": "A associação comunitária pode não ter acesso a recursos suficientes ou capacidade técnica para desenvolver um projeto inovador, o que pode impedir sua participação."
-      },
-      "erro": null,
-      "segundos": 971,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 4,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Requisitos",
-      "id": "agr-c615d9a1137d",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Subvenção Econômica à Inovação",
-          "trecho": "CHAMADA FAPESPA Nº 005/2025 – PROGRAMA TECNOVA III Subvenção Econômica à Inovação",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "R$ 107,1 milhões",
-          "trecho": "Fapespa integra chamada de R$ 107,1 milhões para impulsionar pesquisa e inovação na Amazônia",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Fapespa – Fundação Amazônia de Amparo a Estudos e Pesquisas",
-          "trecho": "Fapespa – Fundação Amazônia de Amparo a Estudos e Pesquisas",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "PA",
-          "trecho": "Fapespa integra chamada de R$ 107,1 milhões para impulsionar pesquisa e inovação na Amazônia",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · fomento",
-          "trecho": "CHAMADA FAPESPA Nº 005/2025 – PROGRAMA TECNOVA III Subvenção Econômica à Inovação",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Fundação Amazônia de Amparo a Estudos e Pesquisas – Fapespa",
-      "indicios": [
-        {
-          "url": "https://www.fapespa.pa.gov.br/2026/09/28/chamada-fapespa-no-005-2025-programa-tecnova-iii-subvencao-economica-a-inovacao",
           "tipo": "noticia"
         }
       ],
