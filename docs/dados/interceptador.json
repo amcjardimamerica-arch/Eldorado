@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-12T14:47:02+00:00",
+  "em": "2026-10-12T14:58:01+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-12T14:32:42+00:00",
+  "ultimo_voo": "2026-10-12T14:50:11+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,94 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 45,
+    "missoes": 46,
     "validadas": 0,
     "parciais": 9,
-    "insuficientes": 32,
+    "insuficientes": 33,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 34,
+      "sim": 35,
       "nao": 4
     },
     "estrelas_de_ouro": 0,
     "fontes_novas_para_os_motores": 1,
-    "tempo_medio_min": 12.7
+    "tempo_medio_min": 12.6
   },
   "missoes": [
+    {
+      "em": "2026-10-12T14:50:11+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Marau (RS) 2026-10-09 — \"termo de execução cultural\"",
+      "qualidade": "insuficiente",
+      "comprovados": 6,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O termo de execução cultural mencionado no Diário Oficial de Marau (RS) 2026-10-09 refere-se a um objeto de fomento à cultura, financiado pela Prefeitura Municipal de Marau, indicando que há uma fonte de recursos para projetos culturais.",
+        "para_a_amc": "Para acessar o fomento, a associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, que é fomento à cultura, e demonstrar como seu projeto se enquadra nessa área, mesmo que não esteja localizada no RS.",
+        "proximo_passo": "Verificar se há anexos disponíveis no Diário Oficial para obter mais detalhes sobre o edital e os critérios de elegibilidade.",
+        "risco": "A falta de informações sobre prazo de inscrição, requisitos e destinação dos recursos pode impedir a associação de Goiânia de se qualificar adequadamente para o edital."
+      },
+      "erro": null,
+      "segundos": 469,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "b6232287f961448bb9fc",
+      "encontrou": {
+        "Objeto": {
+          "valor": "fomento à cultura",
+          "trecho": "termo de execução cultural",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Marau",
+          "trecho": "Prefeitura Municipal de Marau",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "RS",
+          "trecho": "MUNICÍPIO DE MARAU",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "termo de execução cultural",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Marau",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/4311809/2026-10-09/2eed0f4d0e8c5bb610334bcd580daba8e6d9eed7.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-12T14:32:42+00:00",
       "modo": "validar",
@@ -2674,68 +2747,6 @@
         "Destinação": {
           "valor": "fora do escopo · fomento",
           "trecho": "O Canto da Primavera é um evento musical em formato de festival idealizado e realizado anualmente pelo Governo de Goiás, por meio da Secretaria de Estado da Cultura (Secult), na ci",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Secretaria de Estado da Cultura (Secult)",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador"
-      ]
-    },
-    {
-      "em": "2026-10-12T04:22:33+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Secretaria de Estado da Cultura (Secult) — Inscrições prorrogadas para editais de Pontos e Pontões de Cultura … — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 5,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://goias.gov.br/cultura/pnab/edital-2026-pnab/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprovado menciona prazo de inscrição, órgão financiador e território, o que é suficiente para identificar a fonte como válida.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar os anexos disponibilizados pela Secult, preencher e submeter a documentação necessária dentro do prazo de inscrição (2026-08-01 a 2026-08-31) e garantir que sua atividade esteja alinhada com o objeto do edital, que não foi encontrado no texto.",
-        "proximo_passo": "Consultar os anexos do edital para entender os requisitos e a documentação necessária para inscrição.",
-        "risco": "O prazo de inscrição é curto e o objeto do edital não foi especificado, o que pode dificultar a preparação da proposta dentro do tempo disponível."
-      },
-      "erro": null,
-      "segundos": 1305,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 4,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-op-8d305d3db974",
-      "encontrou": {
-        "Prazo de inscrição": {
-          "valor": "2026-08-01 a 2026-08-31",
-          "trecho": "Inscrições prorrogadas para editais de Pontos e Pontões de Cultura … — Goiás",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Secretaria de Estado da Cultura (Secult)",
-          "trecho": "Secretaria de Estado da Cultura (Secult) — Inscrições prorrogadas para editais de Pontos e Pontões de Cultura … — Goiás",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "Secretaria de Estado da Cultura (Secult) — Inscrições prorrogadas para editais de Pontos e Pontões de Cultura … — Goiás",
           "oficial": true,
           "dispensado": false
         }
