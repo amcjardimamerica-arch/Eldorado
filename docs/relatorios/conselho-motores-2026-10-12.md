@@ -46,14 +46,14 @@
 
 ## Cobertura (Dr. Otávio)
 
-82.1% das oportunidades vieram de fora dos motores: {'agregador/outra': 205, 'motor': 67, 'Piloto': 103}.
+84.7% das oportunidades vieram de fora dos motores: {'agregador/outra': 264, 'motor': 67, 'Piloto': 107}.
 
 - RS: 2 oportunidades, nenhuma de motor ({'Piloto': 1, 'agregador/outra': 1})
 - GO: 2 oportunidades, nenhuma de motor ({'agregador/outra': 2})
 
 ## Fontes irmãs (Profa. Clara)
 
-206 domínios oficiais já renderam e não têm motor. Os primeiros:
+211 domínios oficiais já renderam e não têm motor. Os primeiros:
 
 - baoba.org.br (peso 17)
 - fundoecos.org.br (peso 12)

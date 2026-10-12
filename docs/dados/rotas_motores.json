@@ -1,5 +1,5 @@
 {
- "em": "2026-10-12T04:27:58+00:00",
+ "em": "2026-10-12T06:08:54+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
@@ -7,13 +7,13 @@
   "alterar_rota": 62,
   "rota_nova": 46,
   "via_ponte": 2,
-  "exemplos_da_rede": 3953
+  "exemplos_da_rede": 4027
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
    [
     "origem:rota original",
-    2.2211
+    2.2415
    ],
    [
     "tok:inscricoes",
@@ -21,27 +21,31 @@
    ],
    [
     "origem:biblioteca",
-    1.6808
+    1.7537
    ],
    [
     "tipo:privada",
-    1.5562
-   ],
-   [
-    "tok:feed",
-    1.5492
+    1.7045
    ],
    [
     "tok:sitemap",
-    1.4548
+    1.6873
    ],
    [
     "tok:xml",
-    1.4548
+    1.6873
+   ],
+   [
+    "tok:feed",
+    1.6047
    ],
    [
     "tok:unidades",
     1.2841
+   ],
+   [
+    "via:direto",
+    1.2234
    ],
    [
     "tok:abertas",
@@ -52,18 +56,14 @@
     1.0891
    ],
    [
-    "tok:assuntos",
-    1.0494
-   ],
-   [
-    "tok:goias",
-    1.0078
+    "gov:True",
+    1.0875
    ]
   ],
   "piores_sinais": [
    [
     "via:ponte",
-    -0.9609
+    -0.9638
    ],
    [
     "tok:pdf",
@@ -91,7 +91,7 @@
    ],
    [
     "origem:padrão",
-    -2.9339
+    -2.2579
    ]
   ]
  },
@@ -1566,11 +1566,11 @@
     "via": "direto",
     "origem": "rota original",
     "pontos": 5,
-    "aprendido_em": "2026-10-11T21:13:33+00:00"
+    "aprendido_em": "2026-10-12T06:07:42+00:00"
    },
    "afinado": {
-    "em": "2026-10-11T21:13:33+00:00",
-    "testes": 12,
+    "em": "2026-10-12T06:07:42+00:00",
+    "testes": 13,
     "melhor": {
      "url": "https://www.riopreto.sp.gov.br/transparencia/editais",
      "via": "direto",
@@ -1597,7 +1597,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-11T21:13:39+00:00",
+    "em": "2026-10-12T06:07:48+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1619,8 +1619,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-11T21:49:39+00:00",
-    "testes": 13,
+    "em": "2026-10-12T06:08:15+00:00",
+    "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -1646,10 +1646,10 @@
     "via": "direto",
     "origem": "rota original",
     "pontos": 27,
-    "aprendido_em": "2026-10-11T21:50:00+00:00"
+    "aprendido_em": "2026-10-12T06:08:28+00:00"
    },
    "afinado": {
-    "em": "2026-10-11T21:50:00+00:00",
+    "em": "2026-10-12T06:08:28+00:00",
     "testes": 13,
     "melhor": {
      "url": "https://www.santaluziadoparua.ma.gov.br/",
@@ -1677,7 +1677,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-11T21:50:14+00:00",
+    "em": "2026-10-12T06:08:41+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1704,10 +1704,10 @@
     "via": "direto",
     "origem": "rota original",
     "pontos": 5,
-    "aprendido_em": "2026-10-11T21:50:32+00:00"
+    "aprendido_em": "2026-10-12T06:08:54+00:00"
    },
    "afinado": {
-    "em": "2026-10-11T21:50:32+00:00",
+    "em": "2026-10-12T06:08:54+00:00",
     "testes": 12,
     "melhor": {
      "url": "https://www.vilarica.mt.gov.br/",

@@ -208,7 +208,7 @@
    "motor": "outras-oportunidades-3",
    "achados_total_1a": 25,
    "achados_total_agora": 25,
-   "no_fluxo": 1,
+   "no_fluxo": 2,
    "confirmadas": 0
   },
   {
@@ -228,7 +228,7 @@
  "pontos_com_redundancia": 11,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 3953
+ "exemplos_da_rede_de_rotas": 4027
 }
 ```
 
@@ -239,12 +239,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 82.1,
- "fora_dos_motores_pct_agora": 82.1,
+ "fora_dos_motores_pct_1a": 84.7,
+ "fora_dos_motores_pct_agora": 84.7,
  "origem": {
-  "agregador/outra": 205,
+  "agregador/outra": 264,
   "motor": 67,
-  "Piloto": 103
+  "Piloto": 107
  },
  "dominios_so_de_agregador": [
   {
@@ -367,20 +367,20 @@
 
 ```json
 {
- "fontes_recebidas": 247,
+ "fontes_recebidas": 251,
  "por_origem": {
-  "conselho (fontes irmãs)": 132,
+  "conselho (fontes irmãs)": 137,
   "Cartório (site oficial certificado)": 95,
-  "Espião (privado/internacional)": 20
+  "Espião (privado/internacional)": 19
  },
  "lidas_nas_ultimas_24h": 163,
  "dimensionamento": {
-  "fontes": 247,
+  "fontes": 251,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 5,
-  "cobertura_diaria": 247,
+  "cobertura_diaria": 251,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
