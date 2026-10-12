@@ -84,5 +84,25 @@ def run() -> dict:
     return {"decisoes": len(dec), "livros_sinalizados": len(sinalizados), "inscricoes_registradas": inscritos, "sinalizacoes_retiradas": retirados}
 
 
+def definir(oid: str, estado: str, titulo: str = "") -> dict:
+    """12/10: a decisão chega do painel pelo fluxo 33 (sem exportar arquivo). estado: inscrito · descartado · em_andamento
+    (em_andamento = recuperar: a decisão sai do arquivo)."""
+    d = _j(DECISOES, {}) or {}
+    dec = decisoes()
+    if estado == "em_andamento":
+        dec.pop(oid, None)
+    else:
+        dec[oid] = {"estado": estado, "em": datetime.now(timezone.utc).replace(microsecond=0).isoformat(), "titulo": titulo[:200],
+                    "acao": {"inscrito": "inscrição realizada", "descartado": "descartado"}.get(estado, estado), "por": POR}
+    DECISOES.parent.mkdir(parents=True, exist_ok=True)
+    DECISOES.write_text(json.dumps({**({k: v for k, v in d.items() if k != "decisoes"} if "decisoes" in d else {}),
+                                    "atualizado_em": datetime.now(timezone.utc).replace(microsecond=0).isoformat(), "decisoes": dec},
+                                   ensure_ascii=False, indent=1), encoding="utf-8")
+    return {"oportunidade": oid, "estado": estado, "decisoes": len(dec)}
+
+
 if __name__ == "__main__":
+    import sys
+    if len(sys.argv) >= 4 and sys.argv[1] == "definir":
+        print(json.dumps(definir(sys.argv[2], sys.argv[3], " ".join(sys.argv[4:])), ensure_ascii=False))
     print(json.dumps(run(), ensure_ascii=False))

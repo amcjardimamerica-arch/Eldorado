@@ -17,8 +17,22 @@ class TesteFicha(unittest.TestCase):
 
     def test_ficha_tem_as_secoes_e_as_acoes_dentro(self):
         for marca in ('"Como foi encontrada"', '"Esteira · o que foi feito e o que falta"', '"Sistemas que já averiguaram"', '"Livro da oportunidade"',
-                      'id="fo-insc"', 'id="fo-desc"', 'id="fo-ia"', 'id="fo-exp"', 'id="fo-rec"', "descartarOportunidade(e)", "O livro não é apagado"):
+                      'id="fo-insc"', 'id="fo-desc"', 'id="fo-rec"', "window.decidirOportunidade", 'ghDispatch("decisao-oportunidade.yml"', "O livro não é apagado"):
             self.assertIn(marca, self.h, marca)
+        # 12/10 (titular): sem "Aprimorar análise com IA" e sem "Exportar decisões" — o fluxo cobre as duas condições
+        self.assertNotIn('id="fo-ia"', self.h); self.assertNotIn('id="fo-exp"', self.h); self.assertNotIn("Exportar decisões</button>", self.h)
+
+    def test_definir_grava_e_recuperar_retira(self):
+        from src import decisoes_titular as D
+        t = Path(tempfile.mkdtemp()); o = D.DECISOES
+        try:
+            D.DECISOES = t / "d.json"
+            D.definir("op-x", "descartado", "Título X"); self.assertEqual(D.decisoes()["op-x"]["estado"], "descartado")
+            D.definir("op-x", "em_andamento"); self.assertNotIn("op-x", D.decisoes())
+        finally:
+            D.DECISOES = o
+        w = (ROOT / ".github/workflows/decisao-oportunidade.yml").read_text(encoding="utf-8")
+        self.assertIn("python -m src.decisoes_titular definir", w); self.assertIn("src.fichas_oportunidades", w)
 
     def test_gerador_das_fichas(self):
         from src import fichas_oportunidades as F
