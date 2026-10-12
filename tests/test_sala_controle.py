@@ -64,6 +64,29 @@ class TesteEstado(unittest.TestCase):
         # nome da página (11/10): "Rede Neural"
         self.assertIn('<button data-v="neural">Rede Neural</button>', h); self.assertIn("<h2>Rede Neural</h2>", h)
         self.assertNotIn(">Sala de controle<", h)
+        # auditoria do Chrome (11/10): toda regra de estilo da janela vale também no portal — a que revela o conteúdo faltava
+        self.assertIn("#nv-portal .holo.pronta .conteudo{opacity:1}", h)
+        import re as _re
+        css = h[h.index("<style>", h.index('<section id="v-neural"')) + 7:h.index("</style>", h.index('<section id="v-neural"'))]
+        css = _re.sub(r"/\*.*?\*/", "", css, flags=_re.S)   # comentários não fazem parte dos seletores
+        alvo = _re.compile(r"^#v-neural (\.holo|\.veu|\.dica|\.lista|\.barra|\.matriz|\.faint|\.mx|\.luz|\.det-caixa|\.cabeca-const)\b")
+        portal = set(); faltam = []; regras = []; prof = 0; ini = 0
+        for k, c in enumerate(css):
+            if c == "{":
+                if prof == 0: sel = css[ini:k].strip()
+                prof += 1
+            elif c == "}":
+                prof -= 1
+                if prof == 0:
+                    if not sel.startswith("@"): regras.append([s.strip() for s in sel.split(",")])
+                    ini = k + 1
+        for partes in regras: portal.update(s for s in partes if s.startswith("#nv-portal "))
+        for partes in regras:
+            for s in partes:
+                if alvo.match(s) and s.replace("#v-neural ", "#nv-portal ", 1) not in portal: faltam.append(s)
+        self.assertEqual(faltam, [], "regras da janela sem o equivalente no portal")
+        self.assertIn("--sbw", sec, "largura total sem a barra de rolagem (sem rolagem horizontal)")
+        self.assertIn("sinapse:Bn.id", sec, "as sinapses respondem ao mouse e ao clique")
         g = (ROOT / "src/sala_controle.py").read_text(encoding="utf-8")
         self.assertIn('"ultimas"', g); self.assertIn('{"id": x["id"], "quando"', g)
 
