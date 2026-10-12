@@ -1,37 +1,103 @@
-bloco=completo
-  alego-pl: 0 achado(s), 0 falha(s), 23 s
-  camara-goiania-pl: 0 achado(s), 1 falha(s), 186 s
-  congresso-nacional: 0 achado(s), 0 falha(s), 39 s
-  dj-trf1-go: 0 achado(s), 0 falha(s), 0 s
-  do-goiania: 0 achado(s), 0 falha(s), 56 s
-  do-goias: 3 achado(s), 0 falha(s), 100 s
-  dou: 0 achado(s), 0 falha(s), 28 s
-  judiciario-cnj: 0 achado(s), 0 falha(s), 0 s
-  judiciario-cnj-tjgo: 0 achado(s), 2 falha(s), 41 s
+motores da vez: do-goiania,do-goias,dou,camara-goiania-pl,alego-pl,congresso-nacional,judiciario-tjgo,mpgo-destinacao,mptgo-destinacao,mpu-destinacao,judiciario-cnj,dj-trf1-go,plat-prefeituras-50-go,plat-estaduais-go-gov,pncp-api,plat-salic,plat-cnpq-extensao,plat-gife,plat-empresas-editais-incentivados,plat-piloto-aberto,outras-oportunidades-2,outras-oportunidades-1,outras-oportunidades-5,outras-oportunidades-3,outras-oportunidades-4,outras-oportunidades-6,outras-oportunidades-7,outras-oportunidades-8
+  do-goiania: 0 achado(s), 0 falha(s), 262 s
+  do-goias: 3 achado(s), 0 falha(s), 106 s
+  dou: 0 achado(s), 0 falha(s), 33 s
+  camara-goiania-pl: 0 achado(s), 0 falha(s), 111 s
+  alego-pl: 0 achado(s), 0 falha(s), 21 s
+  congresso-nacional: 0 achado(s), 0 falha(s), 40 s
   judiciario-tjgo: 0 achado(s), 2 falha(s), 2 s
-  outras-oportunidades-1: 5 achado(s), 3 falha(s), 57 s
-  outras-oportunidades-2: 35 achado(s), 5 falha(s), 76 s
-  outras-oportunidades-3: 4 achado(s), 3 falha(s), 77 s
-  outras-oportunidades-4: 14 achado(s), 0 falha(s), 65 s
-  outras-oportunidades-5: 7 achado(s), 3 falha(s), 58 s
-  outras-oportunidades-6: 2 achado(s), 0 falha(s), 104 s
-  plat-cnpq-extensao: 3 achado(s), 0 falha(s), 12 s
-  plat-empresas-editais-incentivados: 21 achado(s), 6 falha(s), 142 s
-  plat-estaduais-go-gov: 0 achado(s), 0 falha(s), 142 s
-  plat-gife: 2 achado(s), 0 falha(s), 14 s
+  mpgo-destinacao: 1 achado(s), 0 falha(s), 0 s
+  mptgo-destinacao: 1 achado(s), 0 falha(s), 7 s
+  mpu-destinacao: 0 achado(s), 0 falha(s), 0 s
+  judiciario-cnj: 0 achado(s), 0 falha(s), 0 s
+  dj-trf1-go: 0 achado(s), 0 falha(s), 0 s
+  plat-prefeituras-50-go: 1 achado(s), 0 falha(s), 911 s
+  plat-estaduais-go-gov: 1 achado(s), 0 falha(s), 194 s
+  plat-salic: 3 achado(s), 1 falha(s), 10 s
+  plat-cnpq-extensao: 3 achado(s), 0 falha(s), 11 s
+  plat-gife: 2 achado(s), 0 falha(s), 15 s
+  plat-empresas-editais-incentivados: 21 achado(s), 8 falha(s), 182 s
   plat-piloto-aberto: 42 achado(s), 0 falha(s), 11 s
-  plat-salic: 3 achado(s), 1 falha(s), 9 s
-Traceback (most recent call last):
-  File "<frozen runpy>", line 198, in _run_module_as_main
-  File "<frozen runpy>", line 88, in _run_code
-  File "/home/runner/work/Eldorado/Eldorado/src/sensores.py", line 932, in <module>
-    print(json.dumps(run(), ensure_ascii=False, indent=2))
-                     ^^^^^
-  File "/home/runner/work/Eldorado/Eldorado/src/sensores.py", line 898, in run
-    registrar_dia(s["id"], hoje, r)
-  File "/home/runner/work/Eldorado/Eldorado/src/sensores.py", line 62, in registrar_dia
-    melhor = max(r.get("achados") or [], key=lambda a: a.get("forca_lexica", 0), default=None)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: '>' not supported between instances of 'NoneType' and 'NoneType'
-src.sensores: falhou ou estourou 1500s (código 1)
-ultima_execucao: 2026-10-12T10:07:42+00:00 bloco manual sensores 17 achados 78
+  outras-oportunidades-2: 6 achado(s), 2 falha(s), 51 s
+  outras-oportunidades-1: 21 achado(s), 4 falha(s), 44 s
+  outras-oportunidades-5: 6 achado(s), 4 falha(s), 88 s
+{
+  "data": "2026-10-12",
+  "em": "2026-10-12T16:46:45+00:00",
+  "manual": [
+    "alego-pl",
+    "camara-goiania-pl",
+    "congresso-nacional",
+    "dj-trf1-go",
+    "do-goiania",
+    "do-goias",
+    "dou",
+    "judiciario-cnj",
+    "judiciario-tjgo",
+    "mpgo-destinacao",
+    "mptgo-destinacao",
+    "mpu-destinacao",
+    "outras-oportunidades-1",
+    "outras-oportunidades-2",
+    "outras-oportunidades-3",
+    "outras-oportunidades-4",
+    "outras-oportunidades-5",
+    "outras-oportunidades-6",
+    "outras-oportunidades-7",
+    "outras-oportunidades-8",
+    "plat-cnpq-extensao",
+    "plat-empresas-editais-incentivados",
+    "plat-estaduais-go-gov",
+    "plat-gife",
+    "plat-piloto-aberto",
+    "plat-prefeituras-50-go",
+    "plat-salic",
+    "pncp-api"
+  ],
+  "bloco": "manual",
+  "sensores_executados": 22,
+  "adiados_por_tempo": [
+    "pncp-api",
+    "outras-oportunidades-3",
+    "outras-oportunidades-4",
+    "outras-oportunidades-6"
+  ],
+  "duracao_s": 2102,
+  "em_espera": 100,
+  "total_esquadra": 126,
+  "previsoes_ativas": 1,
+  "achados": 111,
+  "novos_na_base": 20,
+  "por_tipo": {
+    "diario_oficial": {
+      "sensores": 3,
+      "achados": 3,
+      "falhas": 0
+    },
+    "legislativo": {
+      "sensores": 3,
+      "achados": 0,
+      "falhas": 0
+    },
+    "diario_justica": {
+      "sensores": 3,
+      "achados": 0,
+      "falhas": 2
+    },
+    "ministerio_publico": {
+      "sensores": 3,
+      "achados": 2,
+      "falhas": 0
+    },
+    "plataforma": {
+      "sensores": 7,
+      "achados": 73,
+      "falhas": 9
+    },
+    "site_oficial": {
+      "sensores": 3,
+      "achados": 33,
+      "falhas": 10
+    }
+  }
+}
