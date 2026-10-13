@@ -1,15 +1,15 @@
 {
- "em": "2026-10-13T14:52:16+00:00",
+ "em": "2026-10-13T16:57:08+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 18446,
-  "oportunidades_distintas": 2610,
-  "entidades_em_2_ou_mais_canais": 15,
+  "coletados": 18460,
+  "oportunidades_distintas": 2606,
+  "entidades_em_2_ou_mais_canais": 22,
   "etapas": {
-   "CONSOLIDADO": 17657,
-   "EM_LIVRO": 670,
+   "CONSOLIDADO": 17664,
+   "EM_LIVRO": 693,
    "REPROCESSAR": 74,
-   "QUALIFICADO": 45
+   "QUALIFICADO": 29
   },
   "fila_de_reprocessamento": {
    "URL de buscador (falta o site oficial)": 63,
@@ -40,26 +40,26 @@
    "canal": "pncp-api",
    "familia": "portal_chamamentos",
    "registros": 340,
-   "entidades": 315,
-   "exclusivas": 315,
+   "entidades": 310,
+   "exclusivas": 310,
    "corroboradas": 0,
    "validadas_como_reais": 64
   },
   {
    "canal": "outras-oportunidades-2",
    "familia": "outros",
-   "registros": 40,
-   "entidades": 39,
-   "exclusivas": 39,
+   "registros": 44,
+   "entidades": 43,
+   "exclusivas": 43,
    "corroboradas": 0,
-   "validadas_como_reais": 24
+   "validadas_como_reais": 26
   },
   {
    "canal": "outras-oportunidades-1",
    "familia": "outros",
    "registros": 26,
-   "entidades": 26,
-   "exclusivas": 26,
+   "entidades": 24,
+   "exclusivas": 24,
    "corroboradas": 0,
    "validadas_como_reais": 9
   },
@@ -67,9 +67,9 @@
    "canal": "piloto-aberto",
    "familia": "pilotos",
    "registros": 145,
-   "entidades": 142,
-   "exclusivas": 141,
-   "corroboradas": 1,
+   "entidades": 139,
+   "exclusivas": 135,
+   "corroboradas": 4,
    "validadas_como_reais": 8
   },
   {
@@ -77,8 +77,8 @@
    "familia": "terceiro_setor",
    "registros": 43,
    "entidades": 36,
-   "exclusivas": 34,
-   "corroboradas": 2,
+   "exclusivas": 29,
+   "corroboradas": 7,
    "validadas_como_reais": 8
   },
   {
@@ -86,8 +86,8 @@
    "familia": "terceiro_setor",
    "registros": 35,
    "entidades": 23,
-   "exclusivas": 22,
-   "corroboradas": 1,
+   "exclusivas": 20,
+   "corroboradas": 3,
    "validadas_como_reais": 7
   },
   {
@@ -102,9 +102,9 @@
   {
    "canal": "do-goias",
    "familia": "diario_oficial",
-   "registros": 18,
-   "entidades": 17,
-   "exclusivas": 15,
+   "registros": 19,
+   "entidades": 18,
+   "exclusivas": 16,
    "corroboradas": 2,
    "validadas_como_reais": 4
   },
@@ -116,6 +116,15 @@
    "exclusivas": 12,
    "corroboradas": 2,
    "validadas_como_reais": 4
+  },
+  {
+   "canal": "outras-oportunidades-4",
+   "familia": "outros",
+   "registros": 26,
+   "entidades": 25,
+   "exclusivas": 25,
+   "corroboradas": 0,
+   "validadas_como_reais": 2
   },
   {
    "canal": "dou",
@@ -133,6 +142,15 @@
    "entidades": 15,
    "exclusivas": 12,
    "corroboradas": 3,
+   "validadas_como_reais": 2
+  },
+  {
+   "canal": "outras-oportunidades-6",
+   "familia": "outros",
+   "registros": 8,
+   "entidades": 8,
+   "exclusivas": 8,
+   "corroboradas": 0,
    "validadas_como_reais": 2
   },
   {
@@ -154,12 +172,12 @@
    "validadas_como_reais": 2
   },
   {
-   "canal": "outras-oportunidades-4",
-   "familia": "outros",
-   "registros": 26,
+   "canal": "empresas-editais-incentivados",
+   "familia": "empresas",
+   "registros": 31,
    "entidades": 25,
-   "exclusivas": 25,
-   "corroboradas": 0,
+   "exclusivas": 19,
+   "corroboradas": 6,
    "validadas_como_reais": 1
   },
   {
@@ -172,11 +190,29 @@
    "validadas_como_reais": 1
   },
   {
+   "canal": "salic",
+   "familia": "portal_chamamentos",
+   "registros": 6,
+   "entidades": 5,
+   "exclusivas": 5,
+   "corroboradas": 0,
+   "validadas_como_reais": 1
+  },
+  {
    "canal": "prefeituras-50-go",
    "familia": "portal_chamamentos",
-   "registros": 11,
+   "registros": 12,
    "entidades": 5,
    "exclusivas": 4,
+   "corroboradas": 1,
+   "validadas_como_reais": 1
+  },
+  {
+   "canal": "gife",
+   "familia": "terceiro_setor",
+   "registros": 4,
+   "entidades": 4,
+   "exclusivas": 3,
    "corroboradas": 1,
    "validadas_como_reais": 1
   },
@@ -298,30 +334,12 @@
    "validadas_como_reais": 1
   },
   {
-   "canal": "empresas-editais-incentivados",
-   "familia": "empresas",
-   "registros": 28,
-   "entidades": 22,
-   "exclusivas": 19,
-   "corroboradas": 3,
-   "validadas_como_reais": 0
-  },
-  {
    "canal": "outras-oportunidades-3",
    "familia": "outros",
    "registros": 10,
    "entidades": 10,
    "exclusivas": 9,
    "corroboradas": 1,
-   "validadas_como_reais": 0
-  },
-  {
-   "canal": "outras-oportunidades-6",
-   "familia": "outros",
-   "registros": 8,
-   "entidades": 8,
-   "exclusivas": 8,
-   "corroboradas": 0,
    "validadas_como_reais": 0
   },
   {
@@ -370,30 +388,12 @@
    "validadas_como_reais": 0
   },
   {
-   "canal": "gife",
-   "familia": "terceiro_setor",
-   "registros": 3,
-   "entidades": 3,
-   "exclusivas": 3,
-   "corroboradas": 0,
-   "validadas_como_reais": 0
-  },
-  {
    "canal": "alego-pl",
    "familia": "orgao_publico",
    "registros": 3,
    "entidades": 3,
    "exclusivas": 2,
    "corroboradas": 1,
-   "validadas_como_reais": 0
-  },
-  {
-   "canal": "salic",
-   "familia": "portal_chamamentos",
-   "registros": 4,
-   "entidades": 3,
-   "exclusivas": 3,
-   "corroboradas": 0,
    "validadas_como_reais": 0
   },
   {
@@ -530,12 +530,30 @@
    "exclusivas": 0,
    "corroboradas": 1,
    "validadas_como_reais": 0
+  },
+  {
+   "canal": "mpgo-destinacao",
+   "familia": "outros",
+   "registros": 1,
+   "entidades": 1,
+   "exclusivas": 1,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
+  },
+  {
+   "canal": "mptgo-destinacao",
+   "familia": "outros",
+   "registros": 1,
+   "entidades": 1,
+   "exclusivas": 1,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
   }
  ],
  "familias": {
   "diario_oficial": 4,
   "portal_chamamentos": 3,
-  "outros": 14,
+  "outros": 16,
   "pilotos": 1,
   "terceiro_setor": 4,
   "orgao_publico": 27,
@@ -549,6 +567,34 @@
     "do-goiania",
     "prefeituras-50-go",
     "querido-diario"
+   ]
+  },
+  {
+   "entidade": "07d250556cee3a6b1f93",
+   "canais": [
+    "abcr",
+    "piloto-aberto"
+   ]
+  },
+  {
+   "entidade": "09590060f0bad9ff9a05",
+   "canais": [
+    "abcr",
+    "empresas-editais-incentivados"
+   ]
+  },
+  {
+   "entidade": "0c3d1eb59b2a598a0393",
+   "canais": [
+    "abcr",
+    "observatorio-3setor"
+   ]
+  },
+  {
+   "entidade": "0eac700d7cb170ff96b1",
+   "canais": [
+    "observatorio-3setor",
+    "piloto-aberto"
    ]
   },
   {
@@ -577,6 +623,13 @@
    "canais": [
     "captacao-051",
     "f260-captacao-051"
+   ]
+  },
+  {
+   "entidade": "3fcf54ff80b9976a9194",
+   "canais": [
+    "abcr",
+    "empresas-editais-incentivados"
    ]
   },
   {
@@ -629,6 +682,13 @@
    ]
   },
   {
+   "entidade": "97292f2d3c686703e79e",
+   "canais": [
+    "abcr",
+    "empresas-editais-incentivados"
+   ]
+  },
+  {
    "entidade": "9a3b706226b8076711a1",
    "canais": [
     "alego-pl",
@@ -648,7 +708,14 @@
     "captacao-051",
     "f260-captacao-051"
    ]
+  },
+  {
+   "entidade": "1078158fdb0136be112b",
+   "canais": [
+    "gife",
+    "piloto-aberto"
+   ]
   }
  ],
- "eventos_no_livro_razao": 52
+ "eventos_no_livro_razao": 34
 }

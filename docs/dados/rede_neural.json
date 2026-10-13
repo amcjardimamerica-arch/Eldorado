@@ -1,9 +1,9 @@
 {
- "em": "2026-10-13T14:52:28+00:00",
+ "em": "2026-10-13T16:57:14+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
- "rotulados": 1983,
- "positivos": 793,
- "pendentes": 709,
+ "rotulados": 1986,
+ "positivos": 796,
+ "pendentes": 710,
  "validacao_cruzada": {
   "auc": 0.845,
   "precisao": 0.757,
@@ -283,6 +283,12 @@
    "incerteza": 0.97
   },
   {
+   "titulo": "Anápolis — CRAS Leste 1 recebe inscrições para o Programa Bombeiro Mirim em Anápolis",
+   "url": "https://www.anapolis.go.gov.br/cras-leste-1-recebe-inscricoes-para-o-programa-bombeiro-mirim-em-anapolis/",
+   "nota": 0.516,
+   "incerteza": 0.968
+  },
+  {
    "titulo": "Finep Mais Inovação Brasil – Rodada 2 – Transformação Mineral",
    "url": "http://www.finep.gov.br/chamadas-publicas/chamadapublica/771",
    "nota": 0.516,
@@ -365,13 +371,7 @@
    "url": "https://www.fappr.pr.gov.br/Pagina/Programa-Tecnova",
    "nota": 0.519,
    "incerteza": 0.962
-  },
-  {
-   "titulo": "Aviso de Chamamento Público nº 1/2026",
-   "url": "https://www.novaamerica.go.gov.br/politica-nacional-aldir-blanc-ciclo-ii/",
-   "nota": 0.519,
-   "incerteza": 0.962
   }
  ],
- "pendentes_provaveis_reais": 417
+ "pendentes_provaveis_reais": 419
 }
