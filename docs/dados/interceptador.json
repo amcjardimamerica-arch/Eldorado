@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-13T18:10:13+00:00",
+  "em": "2026-10-13T18:25:31+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-13T17:59:12+00:00",
+  "ultimo_voo": "2026-10-13T18:13:12+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,80 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 141,
+    "missoes": 142,
     "validadas": 4,
     "parciais": 32,
-    "insuficientes": 101,
+    "insuficientes": 102,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 118,
+      "sim": 119,
       "nao": 12
     },
     "estrelas_de_ouro": 5,
     "fontes_novas_para_os_motores": 6,
-    "tempo_medio_min": 13.6
+    "tempo_medio_min": 13.5
   },
   "missoes": [
+    {
+      "em": "2026-10-13T18:13:12+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Certificado de Vacinação — Goiás — Goiás — Goiás",
+      "qualidade": "insuficiente",
+      "comprovados": 3,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://www.administracao.go.gov.br/files/ovg/21572/contrato72.pdf",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O órgão financiador é a Secretaria de Estado de Administração, localizado no estado de Goiás, o que confirma que o certificado de vacinação está relacionado a uma ação governamental no território.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o certificado de vacinação está vinculado a um edital específico e se há requisitos relacionados à área de atuação (assistência social, cultura, educação, esporte) para participar.",
+        "proximo_passo": "Consultar o site da Secretaria de Estado de Administração para obter mais informações sobre o certificado de vacinação e verificar se há editais disponíveis para organizações da sociedade civil.",
+        "risco": "A falta de informações detalhadas sobre o objeto, prazos e requisitos pode impedir a associação de se qualificar adequadamente para o certificado de vacinação."
+      },
+      "erro": null,
+      "segundos": 739,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 3,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "op-op-2dcb6d311e2e",
+      "encontrou": {
+        "Órgão / financiador": {
+          "valor": "Secretaria de Estado de Administração",
+          "trecho": "Secretaria de Estado de Administração",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "GOIÁS",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Secretaria de Estado de Administração (SEAD)",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-13T17:59:12+00:00",
       "modo": "validar",
@@ -2871,82 +2930,6 @@
         "financiador_ano",
         "governo",
         "parceiro"
-      ]
-    },
-    {
-      "em": "2026-10-13T06:20:28+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Diário Oficial de Craíbas (AL) 2026-10-07 — \"termo de fomento\" \"chamamento público\"",
-      "qualidade": "insuficiente",
-      "comprovados": 7,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Área de atuação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "nao",
-        "por_que": "O edital comprovado refere-se ao Registro de Preços para aquisição de medicamentos, não sendo relevante para organizações da sociedade civil que buscam fomento em áreas como assistência social, cultura, educação e esporte.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria identificar editais específicos voltados para suas áreas de atuação, como assistência social, cultura, educação e esporte, e se adequar aos requisitos e prazos definidos nesses editais.",
-        "proximo_passo": "Pesquisar e se inscrever em editais de fomento voltados para as áreas de atuação da associação comunitária.",
-        "risco": "A falta de conhecimento sobre editais disponíveis e os requisitos necessários pode impedir o acesso ao fomento."
-      },
-      "erro": null,
-      "segundos": 1036,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
-      "id": "731365fa2a9a971017ab",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Registro de Preços para futura e eventual Aquisição de Medicamentos",
-          "trecho": "Registro de Preços para futura e eventual Aquisição de Medicamentos a fim de atender às demandas da Secretaria Municipal de Saúde de Arapiraca",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "PREFEITURA MUNICIPAL DE ARAPIRACA",
-          "trecho": "PREFEITURA MUNICIPAL DE ARAPIRACA",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "AL",
-          "trecho": "Estado de Alagoas",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · outro",
-          "trecho": "Registro de Preços para futura e eventual Aquisição de Medicamentos",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "PREFEITURA MUNICIPAL DE ARAPIRACA",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/2700000/2026-10-07/11a96e24203d0bcc0efe04e1fd0626761803286e.pdf",
-          "tipo": "agregador"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
       ]
     }
   ],
