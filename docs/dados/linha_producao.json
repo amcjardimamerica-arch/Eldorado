@@ -1,13 +1,13 @@
 {
- "em": "2026-10-13T20:10:43+00:00",
+ "em": "2026-10-13T22:05:23+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 18459,
-  "oportunidades_distintas": 2611,
+  "coletados": 18460,
+  "oportunidades_distintas": 2612,
   "entidades_em_2_ou_mais_canais": 19,
   "etapas": {
    "CONSOLIDADO": 17670,
-   "EM_LIVRO": 687,
+   "EM_LIVRO": 688,
    "REPROCESSAR": 74,
    "QUALIFICADO": 28
   },
@@ -327,9 +327,9 @@
   {
    "canal": "outras-oportunidades-3",
    "familia": "outros",
-   "registros": 10,
-   "entidades": 10,
-   "exclusivas": 9,
+   "registros": 11,
+   "entidades": 11,
+   "exclusivas": 10,
    "corroboradas": 1,
    "validadas_como_reais": 0
   },
@@ -669,5 +669,5 @@
    ]
   }
  ],
- "eventos_no_livro_razao": 11
+ "eventos_no_livro_razao": 1
 }
