@@ -52,8 +52,8 @@
   },
   {
    "motor": "f260-captacao-051",
-   "achados_total_1a": 109,
-   "achados_total_agora": 109,
+   "achados_total_1a": 110,
+   "achados_total_agora": 110,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -80,8 +80,8 @@
   },
   {
    "motor": "f260-captacao-035",
-   "achados_total_1a": 94,
-   "achados_total_agora": 94,
+   "achados_total_1a": 99,
+   "achados_total_agora": 99,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -94,8 +94,8 @@
   },
   {
    "motor": "f260-captacao-237",
-   "achados_total_1a": 61,
-   "achados_total_agora": 61,
+   "achados_total_1a": 64,
+   "achados_total_agora": 64,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -115,15 +115,15 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 84,
-   "achados_total_agora": 84,
+   "achados_total_1a": 87,
+   "achados_total_agora": 87,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 1131,
-   "achados_total_agora": 1131,
+   "achados_total_1a": 1152,
+   "achados_total_agora": 1152,
    "no_fluxo": 2,
    "confirmadas": 0
   },
@@ -136,8 +136,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 72,
-   "achados_total_agora": 72,
+   "achados_total_1a": 73,
+   "achados_total_agora": 73,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -164,15 +164,15 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 43,
-   "achados_total_agora": 43,
+   "achados_total_1a": 44,
+   "achados_total_agora": 44,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 71,
-   "achados_total_agora": 71,
+   "achados_total_1a": 72,
+   "achados_total_agora": 72,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -227,7 +227,7 @@
  "pontos_com_redundancia": 12,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 6060
+ "exemplos_da_rede_de_rotas": 6154
 }
 ```
 
@@ -241,9 +241,9 @@
  "fora_dos_motores_pct_1a": 75.3,
  "fora_dos_motores_pct_agora": 75.3,
  "origem": {
-  "agregador/outra": 306,
-  "motor": 135,
-  "Piloto": 106
+  "Piloto": 108,
+  "motor": 136,
+  "agregador/outra": 306
  },
  "dominios_so_de_agregador": [
   {
@@ -267,12 +267,24 @@
    "oportunidades": 2
   },
   {
+   "dominio": "macajuba.ba.gov.br",
+   "oportunidades": 2
+  },
+  {
    "dominio": "salinas.mg.gov.br",
    "oportunidades": 2
   },
   {
    "dominio": "fapespa.pa.gov.br",
    "oportunidades": 2
+  },
+  {
+   "dominio": "wordpress.sea.sc.gov.br",
+   "oportunidades": 1
+  },
+  {
+   "dominio": "sape.sc.gov.br",
+   "oportunidades": 1
   },
   {
    "dominio": "performeurope.eu",
@@ -293,18 +305,6 @@
   {
    "dominio": "licitacoes.caixa.gov.br",
    "oportunidades": 1
-  },
-  {
-   "dominio": "itagiba.ba.gov.br",
-   "oportunidades": 1
-  },
-  {
-   "dominio": "sejaumvoluntario.sisicmbio.icmbio.gov.br",
-   "oportunidades": 1
-  },
-  {
-   "dominio": "florestamaisamazonia.mma.gov.br",
-   "oportunidades": 1
   }
  ],
  "nota": "a fatia só cai depois que os motores novos (Outras Oportunidades, plataformas) completarem as primeiras leituras"
@@ -321,48 +321,18 @@
  "dia_de_referencia": "2026-10-13",
  "ativos": 159,
  "lidos_ontem": 51,
- "lidos_hoje": 58,
+ "lidos_hoje": 91,
  "nao_lidos_ontem_nem_hoje": [
-  "f260-captacao-035",
-  "f260-captacao-039",
-  "f260-captacao-044",
-  "f260-captacao-051",
-  "f260-captacao-060",
-  "f260-captacao-068",
-  "f260-captacao-069",
-  "f260-captacao-107",
-  "f260-captacao-118",
-  "f260-captacao-151",
-  "f260-captacao-190",
-  "f260-captacao-196",
-  "f260-captacao-207",
-  "f260-captacao-218",
   "f260-captacao-222",
-  "f260-captacao-223",
-  "f260-captacao-224",
   "f260-captacao-226",
-  "f260-captacao-227",
-  "f260-captacao-228",
-  "f260-captacao-229",
   "f260-captacao-230",
   "f260-captacao-231",
   "f260-captacao-232",
   "f260-captacao-233",
-  "f260-captacao-235",
-  "f260-captacao-238",
-  "f260-captacao-240",
-  "f260-captacao-242",
-  "f260-captacao-252",
-  "f260-curadoria-005",
   "f260-curadoria-008",
-  "f260-espalhado-acessoainformacao-cavalcante-go-gov-br",
-  "f260-espalhado-rouanet-cultura-gov-br",
-  "f260-espalhado-senadorcanedo-go-gov-br",
-  "f260-espalhado-sistema-mirassoldoeste-mt-gov-br",
-  "f260-espalhado-www-arapongas-pr-gov-br",
-  "f260-espalhado-www-bentogoncalves-rs-gov-br",
-  "f260-espalhado-www-novohamburgo-rs-gov-br",
-  "f260-espalhado-www-rosariodosul-rs-gov-br"
+  "plat-captamos",
+  "plat-rede-filantropia",
+  "recorrencia"
  ],
  "ainda_sem_primeira_leitura": [
   "motor-gife",
@@ -402,20 +372,20 @@
 
 ```json
 {
- "fontes_recebidas": 282,
+ "fontes_recebidas": 286,
  "por_origem": {
   "conselho (fontes irmãs)": 145,
-  "Cartório (site oficial certificado)": 116,
-  "Espião (privado/internacional)": 21
+  "Cartório (site oficial certificado)": 118,
+  "Espião (privado/internacional)": 23
  },
  "lidas_nas_ultimas_24h": 211,
  "dimensionamento": {
-  "fontes": 282,
+  "fontes": 286,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 6,
-  "cobertura_diaria": 282,
+  "cobertura_diaria": 286,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
