@@ -225,8 +225,8 @@
 {
  "pontos_com_redundancia": 12,
  "redundancia_vazia": [],
- "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 6896
+ "dominios_via_ponte": 3,
+ "exemplos_da_rede_de_rotas": 6986
 }
 ```
 
@@ -274,10 +274,6 @@
    "oportunidades": 2
   },
   {
-   "dominio": "fapespa.pa.gov.br",
-   "oportunidades": 2
-  },
-  {
    "dominio": "performeurope.eu",
    "oportunidades": 1
   },
@@ -303,6 +299,10 @@
   },
   {
    "dominio": "sejaumvoluntario.sisicmbio.icmbio.gov.br",
+   "oportunidades": 1
+  },
+  {
+   "dominio": "florestamaisamazonia.mma.gov.br",
    "oportunidades": 1
   }
  ],
@@ -365,20 +365,20 @@
 
 ```json
 {
- "fontes_recebidas": 298,
+ "fontes_recebidas": 300,
  "por_origem": {
-  "conselho (fontes irmãs)": 147,
-  "Cartório (site oficial certificado)": 126,
+  "conselho (fontes irmãs)": 148,
+  "Cartório (site oficial certificado)": 127,
   "Espião (privado/internacional)": 25
  },
  "lidas_nas_ultimas_24h": 200,
  "dimensionamento": {
-  "fontes": 298,
+  "fontes": 300,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 6,
-  "cobertura_diaria": 298,
+  "cobertura_diaria": 300,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -431,7 +431,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 76,
+   "orgaos": 77,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",

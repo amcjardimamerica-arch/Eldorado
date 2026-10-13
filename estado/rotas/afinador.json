@@ -1112,9 +1112,9 @@
   "resultado": "rota nova em teste"
  },
  "_execucao": {
-  "em": "2026-10-13T23:00:30+00:00",
-  "motores_testados": 2,
-  "ponte_respondeu": true
+  "em": "2026-10-13T23:27:39+00:00",
+  "motores_testados": 6,
+  "ponte_respondeu": false
  },
  "f260-captacao-238": {
   "em": "2026-10-13T10:01:11+00:00",
@@ -5552,8 +5552,8 @@
   "resultado": "rota nova em teste"
  },
  "f260-espalhado-sistema-mirassoldoeste-mt-gov-br": {
-  "em": "2026-10-13T11:38:38+00:00",
-  "testes": 12,
+  "em": "2026-10-13T23:26:21+00:00",
+  "testes": 24,
   "melhor": null,
   "detalhe": [
    {
@@ -5567,13 +5567,13 @@
     "funcionou": false
    },
    {
-    "url": "https://sistema.mirassoldoeste.mt.gov.br/feed",
-    "origem": "padrão",
-    "via": "direto",
+    "url": "https://sistema.mirassoldoeste.mt.gov.br/",
+    "origem": "rota original",
+    "via": "ponte",
     "pontos": 0,
     "links": 0,
     "sinais": 0,
-    "erro": "URLError",
+    "erro": "ErroPonte",
     "funcionou": false
    },
    {
@@ -5587,13 +5587,33 @@
     "funcionou": false
    },
    {
-    "url": "https://sistema.mirassoldoeste.mt.gov.br/sitemap.xml",
+    "url": "https://sistema.mirassoldoeste.mt.gov.br/transparencia/editais",
+    "origem": "padrão",
+    "via": "ponte",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "ErroPonte",
+    "funcionou": false
+   },
+   {
+    "url": "https://sistema.mirassoldoeste.mt.gov.br/feed",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
     "links": 0,
     "sinais": 0,
     "erro": "URLError",
+    "funcionou": false
+   },
+   {
+    "url": "https://sistema.mirassoldoeste.mt.gov.br/feed",
+    "origem": "padrão",
+    "via": "ponte",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "ErroPonte",
     "funcionou": false
    },
    {
@@ -5607,7 +5627,17 @@
     "funcionou": false
    },
    {
-    "url": "https://sistema.mirassoldoeste.mt.gov.br/edital",
+    "url": "https://sistema.mirassoldoeste.mt.gov.br/editais",
+    "origem": "padrão",
+    "via": "ponte",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "ErroPonte",
+    "funcionou": false
+   },
+   {
+    "url": "https://sistema.mirassoldoeste.mt.gov.br/sitemap.xml",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -5617,23 +5647,13 @@
     "funcionou": false
    },
    {
-    "url": "https://sistema.mirassoldoeste.mt.gov.br/wp-json/wp/v2/posts?search=edital&per_page=20",
+    "url": "https://sistema.mirassoldoeste.mt.gov.br/sitemap.xml",
     "origem": "padrão",
-    "via": "direto",
+    "via": "ponte",
     "pontos": 0,
     "links": 0,
     "sinais": 0,
-    "erro": "URLError",
-    "funcionou": false
-   },
-   {
-    "url": "https://sistema.mirassoldoeste.mt.gov.br/noticias",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "URLError",
+    "erro": "ErroPonte",
     "funcionou": false
    },
    {
@@ -5647,7 +5667,17 @@
     "funcionou": false
    },
    {
-    "url": "https://sistema.mirassoldoeste.mt.gov.br/chamamentos",
+    "url": "https://sistema.mirassoldoeste.mt.gov.br/chamamento-publico",
+    "origem": "padrão",
+    "via": "ponte",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "ErroPonte",
+    "funcionou": false
+   },
+   {
+    "url": "https://sistema.mirassoldoeste.mt.gov.br/noticias",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -5657,7 +5687,17 @@
     "funcionou": false
    },
    {
-    "url": "https://sistema.mirassoldoeste.mt.gov.br/chamadas-publicas",
+    "url": "https://sistema.mirassoldoeste.mt.gov.br/noticias",
+    "origem": "padrão",
+    "via": "ponte",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "ErroPonte",
+    "funcionou": false
+   },
+   {
+    "url": "https://sistema.mirassoldoeste.mt.gov.br/edital",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -5667,13 +5707,13 @@
     "funcionou": false
    },
    {
-    "url": "https://sistema.mirassoldoeste.mt.gov.br/licitacoes",
+    "url": "https://sistema.mirassoldoeste.mt.gov.br/edital",
     "origem": "padrão",
-    "via": "direto",
+    "via": "ponte",
     "pontos": 0,
     "links": 0,
     "sinais": 0,
-    "erro": "URLError",
+    "erro": "ErroPonte",
     "funcionou": false
    }
   ],
@@ -5835,9 +5875,15 @@
   "resultado": "rota nova em teste"
  },
  "f260-espalhado-www-bentogoncalves-rs-gov-br": {
-  "em": "2026-10-13T11:38:40+00:00",
-  "testes": 12,
-  "melhor": null,
+  "em": "2026-10-13T23:26:40+00:00",
+  "testes": 18,
+  "melhor": {
+   "url": "https://www.bentogoncalves.rs.gov.br/feed",
+   "via": "ponte",
+   "origem": "padrão",
+   "pontos": 29,
+   "formato": "sitemap/feed"
+  },
   "detalhe": [
    {
     "url": "https://www.bentogoncalves.rs.gov.br/",
@@ -5850,14 +5896,15 @@
     "funcionou": false
    },
    {
-    "url": "https://www.bentogoncalves.rs.gov.br/feed",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
+    "url": "https://www.bentogoncalves.rs.gov.br/",
+    "origem": "rota original",
+    "via": "ponte",
+    "pontos": 3,
+    "links": 189,
+    "sinais": 1,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
    },
    {
     "url": "https://www.bentogoncalves.rs.gov.br/transparencia/editais",
@@ -5870,7 +5917,39 @@
     "funcionou": false
    },
    {
-    "url": "https://www.bentogoncalves.rs.gov.br/sitemap.xml",
+    "url": "https://www.bentogoncalves.rs.gov.br/transparencia/editais",
+    "origem": "padrão",
+    "via": "ponte",
+    "pontos": 5,
+    "links": 150,
+    "sinais": 2,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
+   },
+   {
+    "url": "https://www.bentogoncalves.rs.gov.br/feed",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.bentogoncalves.rs.gov.br/feed",
+    "origem": "padrão",
+    "via": "ponte",
+    "pontos": 29,
+    "links": 10,
+    "sinais": 28,
+    "formato": "sitemap/feed",
+    "erro": null,
+    "funcionou": true
+   },
+   {
+    "url": "https://www.bentogoncalves.rs.gov.br/editais",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -5881,6 +5960,58 @@
    },
    {
     "url": "https://www.bentogoncalves.rs.gov.br/editais",
+    "origem": "padrão",
+    "via": "ponte",
+    "pontos": 5,
+    "links": 150,
+    "sinais": 2,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
+   },
+   {
+    "url": "https://www.bentogoncalves.rs.gov.br/sitemap.xml",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.bentogoncalves.rs.gov.br/sitemap.xml",
+    "origem": "padrão",
+    "via": "ponte",
+    "pontos": 1,
+    "links": 16,
+    "sinais": 0,
+    "formato": "sitemap/feed",
+    "erro": null,
+    "funcionou": false
+   },
+   {
+    "url": "https://www.bentogoncalves.rs.gov.br/chamamento-publico",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.bentogoncalves.rs.gov.br/chamamento-publico",
+    "origem": "padrão",
+    "via": "ponte",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "RuntimeError",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.bentogoncalves.rs.gov.br/noticias",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -5900,27 +6031,7 @@
     "funcionou": false
    },
    {
-    "url": "https://www.bentogoncalves.rs.gov.br/wp-json/wp/v2/posts?search=edital&per_page=20",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://www.bentogoncalves.rs.gov.br/noticias",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://www.bentogoncalves.rs.gov.br/chamamento-publico",
+    "url": "https://www.bentogoncalves.rs.gov.br/chamadas-publicas",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -5938,29 +6049,9 @@
     "sinais": 0,
     "erro": "HTTPError",
     "funcionou": false
-   },
-   {
-    "url": "https://www.bentogoncalves.rs.gov.br/chamadas-publicas",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://www.bentogoncalves.rs.gov.br/licitacoes",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
    }
   ],
-  "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+  "resultado": "rota nova em teste"
  },
  "f260-espalhado-senadorcanedo-go-gov-br": {
   "em": "2026-10-11T06:03:10+00:00",
@@ -12236,8 +12327,8 @@
   "resultado": "rota nova em teste"
  },
  "f260-espalhado-carazinho-atende-net": {
-  "em": "2026-10-13T12:10:40+00:00",
-  "testes": 23,
+  "em": "2026-10-13T23:26:50+00:00",
+  "testes": 12,
   "melhor": null,
   "detalhe": [
    {
@@ -12252,26 +12343,6 @@
     "funcionou": false
    },
    {
-    "url": "https://carazinho.atende.net/feed",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://carazinho.atende.net/feed",
-    "origem": "padrão",
-    "via": "ponte",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "ErroPonte",
-    "funcionou": false
-   },
-   {
     "url": "https://carazinho.atende.net/transparencia/editais",
     "origem": "padrão",
     "via": "direto",
@@ -12282,33 +12353,13 @@
     "funcionou": false
    },
    {
-    "url": "https://carazinho.atende.net/transparencia/editais",
-    "origem": "padrão",
-    "via": "ponte",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "ErroPonte",
-    "funcionou": false
-   },
-   {
-    "url": "https://carazinho.atende.net/sitemap.xml",
+    "url": "https://carazinho.atende.net/feed",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
     "links": 0,
     "sinais": 0,
     "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://carazinho.atende.net/sitemap.xml",
-    "origem": "padrão",
-    "via": "ponte",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "ErroPonte",
     "funcionou": false
    },
    {
@@ -12322,77 +12373,77 @@
     "funcionou": false
    },
    {
-    "url": "https://carazinho.atende.net/editais",
-    "origem": "padrão",
-    "via": "ponte",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "ErroPonte",
-    "funcionou": false
-   },
-   {
-    "url": "https://carazinho.atende.net/edital",
+    "url": "https://carazinho.atende.net/sitemap.xml",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
     "links": 0,
     "sinais": 0,
     "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://carazinho.atende.net/edital",
-    "origem": "padrão",
-    "via": "ponte",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "ErroPonte",
-    "funcionou": false
-   },
-   {
-    "url": "https://carazinho.atende.net/wp-json/wp/v2/posts?search=edital&per_page=20",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://carazinho.atende.net/wp-json/wp/v2/posts?search=edital&per_page=20",
-    "origem": "padrão",
-    "via": "ponte",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "ErroPonte",
-    "funcionou": false
-   },
-   {
-    "url": "https://carazinho.atende.net/noticias",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://carazinho.atende.net/noticias",
-    "origem": "padrão",
-    "via": "ponte",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "ErroPonte",
     "funcionou": false
    },
    {
     "url": "https://carazinho.atende.net/chamamento-publico",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://carazinho.atende.net/noticias",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://carazinho.atende.net/edital",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://carazinho.atende.net/chamadas-publicas",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://carazinho.atende.net/chamamentos",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://carazinho.atende.net/licitacoes",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://carazinho.atende.net/wp-json/wp/v2/posts?search=edital&per_page=20",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -12687,8 +12738,8 @@
   "resultado": "rota nova em teste"
  },
  "f260-espalhado-transparencia-cacoal-ro-gov-br": {
-  "em": "2026-10-13T12:10:48+00:00",
-  "testes": 13,
+  "em": "2026-10-13T23:26:57+00:00",
+  "testes": 12,
   "melhor": null,
   "detalhe": [
    {
@@ -12703,26 +12754,6 @@
     "funcionou": false
    },
    {
-    "url": "https://transparencia.cacoal.ro.gov.br/feed",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://transparencia.cacoal.ro.gov.br/feed",
-    "origem": "padrão",
-    "via": "ponte",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "RuntimeError",
-    "funcionou": false
-   },
-   {
     "url": "https://transparencia.cacoal.ro.gov.br/transparencia/editais",
     "origem": "padrão",
     "via": "direto",
@@ -12733,7 +12764,7 @@
     "funcionou": false
    },
    {
-    "url": "https://transparencia.cacoal.ro.gov.br/sitemap.xml",
+    "url": "https://transparencia.cacoal.ro.gov.br/feed",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -12753,27 +12784,7 @@
     "funcionou": false
    },
    {
-    "url": "https://transparencia.cacoal.ro.gov.br/edital",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://transparencia.cacoal.ro.gov.br/wp-json/wp/v2/posts?search=edital&per_page=20",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://transparencia.cacoal.ro.gov.br/noticias",
+    "url": "https://transparencia.cacoal.ro.gov.br/sitemap.xml",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -12793,7 +12804,17 @@
     "funcionou": false
    },
    {
-    "url": "https://transparencia.cacoal.ro.gov.br/chamamentos",
+    "url": "https://transparencia.cacoal.ro.gov.br/noticias",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://transparencia.cacoal.ro.gov.br/edital",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -12813,7 +12834,27 @@
     "funcionou": false
    },
    {
+    "url": "https://transparencia.cacoal.ro.gov.br/chamamentos",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
     "url": "https://transparencia.cacoal.ro.gov.br/licitacoes",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://transparencia.cacoal.ro.gov.br/wp-json/wp/v2/posts?search=edital&per_page=20",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -12826,7 +12867,7 @@
   "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
  },
  "f260-espalhado-www-ribeiraodasneves-mg-gov-br": {
-  "em": "2026-10-13T12:11:11+00:00",
+  "em": "2026-10-13T23:27:22+00:00",
   "testes": 12,
   "melhor": null,
   "detalhe": [
@@ -12842,6 +12883,16 @@
     "funcionou": false
    },
    {
+    "url": "https://www.ribeiraodasneves.mg.gov.br/transparencia/editais",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
     "url": "https://www.ribeiraodasneves.mg.gov.br/feed",
     "origem": "padrão",
     "via": "direto",
@@ -12852,7 +12903,7 @@
     "funcionou": false
    },
    {
-    "url": "https://www.ribeiraodasneves.mg.gov.br/transparencia/editais",
+    "url": "https://www.ribeiraodasneves.mg.gov.br/editais",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -12873,27 +12924,7 @@
     "funcionou": false
    },
    {
-    "url": "https://www.ribeiraodasneves.mg.gov.br/editais",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://www.ribeiraodasneves.mg.gov.br/edital",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://www.ribeiraodasneves.mg.gov.br/wp-json/wp/v2/posts?search=edital&per_page=20",
+    "url": "https://www.ribeiraodasneves.mg.gov.br/chamamento-publico",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -12913,17 +12944,7 @@
     "funcionou": false
    },
    {
-    "url": "https://www.ribeiraodasneves.mg.gov.br/chamamento-publico",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://www.ribeiraodasneves.mg.gov.br/chamamentos",
+    "url": "https://www.ribeiraodasneves.mg.gov.br/edital",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -12943,7 +12964,27 @@
     "funcionou": false
    },
    {
+    "url": "https://www.ribeiraodasneves.mg.gov.br/chamamentos",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
     "url": "https://www.ribeiraodasneves.mg.gov.br/licitacoes",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.ribeiraodasneves.mg.gov.br/wp-json/wp/v2/posts?search=edital&per_page=20",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -13113,24 +13154,13 @@
   "resultado": "rota nova em teste"
  },
  "f260-espalhado-transparencia-nobres-mt-gov-br": {
-  "em": "2026-10-13T12:11:26+00:00",
+  "em": "2026-10-13T23:27:39+00:00",
   "testes": 12,
   "melhor": null,
   "detalhe": [
    {
     "url": "https://transparencia.nobres.mt.gov.br/",
     "origem": "rota original",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "formato": "html",
-    "erro": null,
-    "funcionou": false
-   },
-   {
-    "url": "https://transparencia.nobres.mt.gov.br/feed",
-    "origem": "padrão",
     "via": "direto",
     "pontos": 0,
     "links": 0,
@@ -13151,7 +13181,7 @@
     "funcionou": false
    },
    {
-    "url": "https://transparencia.nobres.mt.gov.br/sitemap.xml",
+    "url": "https://transparencia.nobres.mt.gov.br/feed",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -13173,29 +13203,7 @@
     "funcionou": false
    },
    {
-    "url": "https://transparencia.nobres.mt.gov.br/edital",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "formato": "html",
-    "erro": null,
-    "funcionou": false
-   },
-   {
-    "url": "https://transparencia.nobres.mt.gov.br/wp-json/wp/v2/posts?search=edital&per_page=20",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "formato": "html",
-    "erro": null,
-    "funcionou": false
-   },
-   {
-    "url": "https://transparencia.nobres.mt.gov.br/noticias",
+    "url": "https://transparencia.nobres.mt.gov.br/sitemap.xml",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -13217,7 +13225,18 @@
     "funcionou": false
    },
    {
-    "url": "https://transparencia.nobres.mt.gov.br/chamamentos",
+    "url": "https://transparencia.nobres.mt.gov.br/noticias",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "formato": "html",
+    "erro": null,
+    "funcionou": false
+   },
+   {
+    "url": "https://transparencia.nobres.mt.gov.br/edital",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -13239,7 +13258,29 @@
     "funcionou": false
    },
    {
+    "url": "https://transparencia.nobres.mt.gov.br/chamamentos",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "formato": "html",
+    "erro": null,
+    "funcionou": false
+   },
+   {
     "url": "https://transparencia.nobres.mt.gov.br/licitacoes",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "formato": "html",
+    "erro": null,
+    "funcionou": false
+   },
+   {
+    "url": "https://transparencia.nobres.mt.gov.br/wp-json/wp/v2/posts?search=edital&per_page=20",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,

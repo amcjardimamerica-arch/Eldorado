@@ -1,13 +1,13 @@
 {
- "em": "2026-10-13T23:00:30+00:00",
+ "em": "2026-10-13T23:27:39+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
   "motores": 150,
   "alterar_rota": 51,
-  "rota_nova": 49,
-  "via_ponte": 2,
-  "exemplos_da_rede": 6896
+  "rota_nova": 50,
+  "via_ponte": 3,
+  "exemplos_da_rede": 6986
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
@@ -25,11 +25,11 @@
    ],
    [
     "origem:rota original",
-    1.993
+    1.935
    ],
    [
     "tok:feed",
-    1.8237
+    1.9349
    ],
    [
     "tok:mpf",
@@ -41,7 +41,7 @@
    ],
    [
     "tok:editais",
-    1.5757
+    1.7488
    ],
    [
     "tld:org",
@@ -62,12 +62,12 @@
   ],
   "piores_sinais": [
    [
-    "tipo:ministerio_publico",
-    -1.2728
+    "tipo:site_oficial",
+    -1.2722
    ],
    [
-    "via:ponte",
-    -1.3718
+    "tipo:ministerio_publico",
+    -1.2728
    ],
    [
     "tok:prefeitura",
@@ -86,12 +86,12 @@
     -1.7256
    ],
    [
-    "origem:padrão",
-    -2.4169
-   ],
-   [
     "origem:câmara",
     -2.4248
+   ],
+   [
+    "origem:padrão",
+    -2.464
    ]
   ]
  },
@@ -531,8 +531,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-13T11:38:38+00:00",
-    "testes": 12,
+    "em": "2026-10-13T23:26:21+00:00",
+    "testes": 24,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -558,12 +558,26 @@
     "v",
     "v"
    ],
-   "rota_aprendida": null,
+   "rota_aprendida": {
+    "urls": [
+     "https://www.bentogoncalves.rs.gov.br/feed"
+    ],
+    "via": "ponte",
+    "origem": "padrão",
+    "pontos": 29,
+    "aprendido_em": "2026-10-13T23:26:40+00:00"
+   },
    "afinado": {
-    "em": "2026-10-13T11:38:40+00:00",
-    "testes": 12,
-    "melhor": null,
-    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+    "em": "2026-10-13T23:26:40+00:00",
+    "testes": 18,
+    "melhor": {
+     "url": "https://www.bentogoncalves.rs.gov.br/feed",
+     "via": "ponte",
+     "origem": "padrão",
+     "pontos": 29,
+     "formato": "sitemap/feed"
+    },
+    "resultado": "rota nova em teste"
    }
   },
   "f260-captacao-228": {
@@ -832,8 +846,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-13T12:10:40+00:00",
-    "testes": 23,
+    "em": "2026-10-13T23:26:50+00:00",
+    "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -1215,8 +1229,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-13T12:10:48+00:00",
-    "testes": 13,
+    "em": "2026-10-13T23:26:57+00:00",
+    "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -1238,7 +1252,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-13T12:11:11+00:00",
+    "em": "2026-10-13T23:27:22+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1261,7 +1275,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-13T12:11:26+00:00",
+    "em": "2026-10-13T23:27:39+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
