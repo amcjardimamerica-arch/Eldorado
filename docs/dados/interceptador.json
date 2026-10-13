@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-13T14:53:50+00:00",
+  "em": "2026-10-13T15:15:34+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-13T14:36:29+00:00",
+  "ultimo_voo": "2026-10-13T14:56:57+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,79 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 129,
+    "missoes": 130,
     "validadas": 4,
     "parciais": 28,
-    "insuficientes": 93,
+    "insuficientes": 94,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 106,
+      "sim": 107,
       "nao": 12
     },
     "estrelas_de_ouro": 4,
     "fontes_novas_para_os_motores": 6,
-    "tempo_medio_min": 13.6
+    "tempo_medio_min": 13.7
   },
   "missoes": [
+    {
+      "em": "2026-10-13T14:56:57+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Prefeitura de Piracanjuba — AVISO DE CHAMAMENTO PÚBLICO Nº 1/2026 — Goiás / Piracanjuba",
+      "qualidade": "insuficiente",
+      "comprovados": 2,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Território",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O aviso de chamamento público é emitido pela Prefeitura Municipal de Piracanjuba, que é um órgão municipal com competência para realizar editais de fomento.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital abrange sua área de atuação e se ela atende aos requisitos gerais estabelecidos pelo edital, mesmo que não sejam explicitados no texto disponibilizado.",
+        "proximo_passo": "Consultar o edital completo para verificar os requisitos, prazos e outros detalhes necessários para participar.",
+        "risco": "A falta de informações detalhadas sobre requisitos, prazos e área de atuação pode impedir a associação de se qualificar adequadamente para o edital."
+      },
+      "erro": null,
+      "segundos": 1116,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
+      "id": "op-op-373e6e03906f",
+      "encontrou": {
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Piracanjuba",
+          "trecho": "Prefeitura Municipal de Piracanjuba.",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Piracanjuba",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-13T14:36:29+00:00",
       "modo": "validar",
@@ -2844,73 +2902,6 @@
       "indicios": [
         {
           "url": "https://data.queridodiario.ok.org.br/3506508/2026-10-09/ca3faab61377552c643d4d1b1cc575c0982498ab.pdf",
-          "tipo": "agregador"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
-      ]
-    },
-    {
-      "em": "2026-10-13T03:15:03+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Diário Oficial de Birigui (SP) 2026-10-08 — \"termo de fomento\" \"chamamento público\"",
-      "qualidade": "insuficiente",
-      "comprovados": 4,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Território",
-        "Requisitos",
-        "Destinação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto menciona o termo de fomento e chamamento público da Prefeitura Municipal de Birigui, indicando que há uma oportunidade de financiamento para organizações da sociedade civil.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital abrange sua área de atuação (assistência social), verificar os anexos para entender os requisitos e se alinhar com o objeto do chamamento público.",
-        "proximo_passo": "Consultar os anexos do edital para obter detalhes sobre os requisitos e condições de participação.",
-        "risco": "O edital não menciona os requisitos, objeto ou prazo, o que pode impedir a associação de se preparar adequadamente para o processo de inscrição."
-      },
-      "erro": null,
-      "segundos": 854,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "660692a9a13253083a99",
-      "encontrou": {
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal de Birigui",
-          "trecho": "Prefeitura Municipal de Birigui",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "assistencia_social",
-          "trecho": "assistência social",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Birigui",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/3506508/2026-10-08/dc2730a1c8ab2f410b413a89515163f20dd7a370.pdf",
           "tipo": "agregador"
         }
       ],
