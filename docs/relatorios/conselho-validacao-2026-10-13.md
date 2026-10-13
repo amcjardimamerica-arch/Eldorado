@@ -40,8 +40,15 @@
 
 ```json
 {
- "motores_de_ruido_1a": 26,
+ "motores_de_ruido_1a": 27,
  "ruido_agora": [
+  {
+   "motor": "plat-gife",
+   "achados_total_1a": 119,
+   "achados_total_agora": 119,
+   "no_fluxo": 0,
+   "confirmadas": 0
+  },
   {
    "motor": "empresas-incentivadas",
    "achados_total_1a": 64,
@@ -121,16 +128,16 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 93,
-   "achados_total_agora": 93,
+   "achados_total_1a": 96,
+   "achados_total_agora": 96,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 1194,
-   "achados_total_agora": 1194,
-   "no_fluxo": 2,
+   "achados_total_1a": 1201,
+   "achados_total_agora": 1201,
+   "no_fluxo": 1,
    "confirmadas": 0
   },
   {
@@ -144,7 +151,7 @@
    "motor": "plat-prefeituras-50-go",
    "achados_total_1a": 75,
    "achados_total_agora": 75,
-   "no_fluxo": 1,
+   "no_fluxo": 0,
    "confirmadas": 0
   },
   {
@@ -184,8 +191,8 @@
   },
   {
    "motor": "plat-estaduais-go-gov",
-   "achados_total_1a": 33,
-   "achados_total_agora": 33,
+   "achados_total_1a": 34,
+   "achados_total_agora": 34,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -198,23 +205,16 @@
   },
   {
    "motor": "outras-oportunidades-1",
-   "achados_total_1a": 108,
-   "achados_total_agora": 108,
+   "achados_total_1a": 133,
+   "achados_total_agora": 133,
    "no_fluxo": 9,
    "confirmadas": 0
   },
   {
    "motor": "outras-oportunidades-2",
-   "achados_total_1a": 76,
-   "achados_total_agora": 76,
-   "no_fluxo": 12,
-   "confirmadas": 0
-  },
-  {
-   "motor": "outras-oportunidades-3",
-   "achados_total_1a": 31,
-   "achados_total_agora": 31,
-
+   "achados_total_1a": 77,
+   "achados_total_agora": 77,
+   "no_fluxo
 ```
 
 ## Eng. Luana Freire (levemente pessimista)
@@ -227,7 +227,7 @@
  "pontos_com_redundancia": 12,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 6400
+ "exemplos_da_rede_de_rotas": 6477
 }
 ```
 
@@ -238,12 +238,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 75.3,
- "fora_dos_motores_pct_agora": 75.3,
+ "fora_dos_motores_pct_1a": 79.7,
+ "fora_dos_motores_pct_agora": 79.7,
  "origem": {
-  "Piloto": 112,
-  "motor": 137,
-  "agregador/outra": 306
+  "agregador/outra": 312,
+  "Piloto": 111,
+  "motor": 108
  },
  "dominios_so_de_agregador": [
   {
@@ -279,14 +279,6 @@
    "oportunidades": 2
   },
   {
-   "dominio": "wordpress.sea.sc.gov.br",
-   "oportunidades": 1
-  },
-  {
-   "dominio": "sape.sc.gov.br",
-   "oportunidades": 1
-  },
-  {
    "dominio": "performeurope.eu",
    "oportunidades": 1
   },
@@ -305,6 +297,14 @@
   {
    "dominio": "licitacoes.caixa.gov.br",
    "oportunidades": 1
+  },
+  {
+   "dominio": "itagiba.ba.gov.br",
+   "oportunidades": 1
+  },
+  {
+   "dominio": "sejaumvoluntario.sisicmbio.icmbio.gov.br",
+   "oportunidades": 1
   }
  ],
  "nota": "a fatia só cai depois que os motores novos (Outras Oportunidades, plataformas) completarem as primeiras leituras"
@@ -321,7 +321,7 @@
  "dia_de_referencia": "2026-10-13",
  "ativos": 159,
  "lidos_ontem": 51,
- "lidos_hoje": 91,
+ "lidos_hoje": 97,
  "nao_lidos_ontem_nem_hoje": [
   "f260-captacao-222",
   "f260-captacao-226",
@@ -372,20 +372,20 @@
 
 ```json
 {
- "fontes_recebidas": 288,
+ "fontes_recebidas": 289,
  "por_origem": {
   "conselho (fontes irmãs)": 145,
-  "Cartório (site oficial certificado)": 119,
+  "Cartório (site oficial certificado)": 120,
   "Espião (privado/internacional)": 24
  },
- "lidas_nas_ultimas_24h": 211,
+ "lidas_nas_ultimas_24h": 217,
  "dimensionamento": {
-  "fontes": 288,
+  "fontes": 289,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 6,
-  "cobertura_diaria": 288,
+  "cobertura_diaria": 289,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -394,37 +394,37 @@
  },
  "clones_que_ja_leram": {
   "outras-oportunidades-1": {
-   "ultima": "2026-10-12T21:02:44+00:00",
-   "duracao_s": 39,
-   "achados": 21
+   "ultima": "2026-10-13T14:03:30+00:00",
+   "duracao_s": 45,
+   "achados": 25
   },
   "outras-oportunidades-2": {
-   "ultima": "2026-10-12T21:01:27+00:00",
-   "duracao_s": 67,
-   "achados": 3
-  },
-  "outras-oportunidades-3": {
-   "ultima": "2026-10-12T21:05:09+00:00",
-   "duracao_s": 70,
+   "ultima": "2026-10-13T14:04:13+00:00",
+   "duracao_s": 44,
    "achados": 1
   },
+  "outras-oportunidades-3": {
+   "ultima": "2026-10-13T14:05:18+00:00",
+   "duracao_s": 65,
+   "achados": 0
+  },
   "outras-oportunidades-4": {
-   "ultima": "2026-10-12T19:26:20+00:00",
-   "duracao_s": 52,
-   "achados": 3
+   "ultima": "2026-10-13T14:06:31+00:00",
+   "duracao_s": 73,
+   "achados": 28
   },
   "outras-oportunidades-5": {
-   "ultima": "2026-10-12T21:02:04+00:00",
-   "duracao_s": 37,
+   "ultima": "2026-10-13T14:07:15+00:00",
+   "duracao_s": 44,
    "achados": 2
   },
   "outras-oportunidades-6": {
-   "ultima": "2026-10-13T01:49:10+00:00",
-   "duracao_s": 77,
-   "achados": 4
+   "ultima": "2026-10-13T14:08:15+00:00",
+   "duracao_s": 60,
+   "achados": 5
   }
  },
- "com_achado": 32
+ "com_achado": 38
 }
 ```
 
@@ -438,7 +438,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 70,
+   "orgaos": 71,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",
