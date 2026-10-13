@@ -59,6 +59,7 @@
 218 domínios oficiais já renderam e não têm motor. Os primeiros:
 
 - baoba.org.br (peso 17)
+- licitario.com.br (peso 15)
 - zurich.com.br (peso 13)
 - institutolojasrenner.org.br (peso 13)
 - itausocial.org.br (peso 12)
@@ -67,7 +68,6 @@
 - chamadas.funbio.org.br (peso 11)
 - feirapreta.com.br (peso 9)
 - contrafluxofestival.com.br (peso 9)
-- licitario.com.br (peso 8)
 - transforma.fbb.org.br (peso 8)
 - editaisdobrasil.com (peso 8)
 - crars.org.br (peso 8)
