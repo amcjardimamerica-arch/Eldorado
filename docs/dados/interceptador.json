@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-13T22:49:02+00:00",
+  "em": "2026-10-13T23:18:34+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-13T22:24:45+00:00",
+  "ultimo_voo": "2026-10-13T22:53:23+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,10 +37,10 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 154,
+    "missoes": 155,
     "validadas": 5,
     "parciais": 34,
-    "insuficientes": 111,
+    "insuficientes": 112,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
@@ -49,9 +49,36 @@
     },
     "estrelas_de_ouro": 5,
     "fontes_novas_para_os_motores": 6,
-    "tempo_medio_min": 13.7
+    "tempo_medio_min": 13.8
   },
   "missoes": [
+    {
+      "em": "2026-10-13T22:53:23+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Edital 004/2023 Áreas - Inciso III - Goiânia-GO — Goiás / Goiânia — Goiás / Goiânia",
+      "qualidade": "insuficiente",
+      "comprovados": 0,
+      "dispensados": null,
+      "total": 12,
+      "nao_resolvidos": null,
+      "pagina_oficial": null,
+      "parecer_fonte": {},
+      "erro": "o modelo não devolveu JSON",
+      "segundos": 1511,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "falhou: o modelo não devolveu JSON",
+      "id": "op-op-e96398bfe177",
+      "encontrou": {},
+      "financiador": null,
+      "indicios": [],
+      "rotas": []
+    },
     {
       "em": "2026-10-13T22:24:45+00:00",
       "modo": "validar",
@@ -2819,97 +2846,6 @@
       "indicios": [
         {
           "url": "https://data.queridodiario.ok.org.br/5007208/2026-10-09/2d655cade042cd41af947ecc62a2e6959e008f10.pdf",
-          "tipo": "agregador"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
-      ]
-    },
-    {
-      "em": "2026-10-13T10:32:55+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Diário Oficial de Vitória (ES) 2026-09-29 — \"edital de chamamento público\" associação",
-      "qualidade": "insuficiente",
-      "comprovados": 10,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de recurso",
-        "Área de atuação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi publicado no Diário Oficial de Vitória (ES) em 2026-09-29 e contém informações detalhadas sobre o objeto, prazo de inscrição, valor e outros requisitos.",
-        "para_a_amc": "Para acessar o edital, a associação comunitária de Goiânia precisaria verificar se atende aos requisitos, como contribuintes que possuem débitos em aberto e podem aproveitar as condições do Programa de Recuperação Fiscal (Refis), e se alinhar ao objeto do edital, que é fortalecer a arrecadação, na ampliação da conformidade fiscal e no uso estratégico de informações.",
-        "proximo_passo": "Consultar o edital completo e os anexos para entender os requisitos específicos e o processo de inscrição.",
-        "risco": "A associação pode não atender aos requisitos do edital, como possuir débitos em aberto ou não se alinhar ao objeto do edital."
-      },
-      "erro": null,
-      "segundos": 946,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "064591bd60f7f71e623e",
-      "encontrou": {
-        "Objeto": {
-          "valor": "fortalecer a arrecadação, na ampliação da conformidade fiscal e no uso estratégico de informações",
-          "trecho": "com foco no fortalecimento da arrecadação, na ampliação da conformidade fiscal e no uso estratégico de informações",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "2026-09-29 a 2026-12-18",
-          "trecho": "o Programa de Recuperação Fiscal (Refis), que está aberto no município até o dia 18 de dezembro",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "R$ 59,1 milhões",
-          "trecho": "aproximadamente R$ 59,1 milhões",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura de Vitória, por meio da Secretaria Municipal da Fazenda",
-          "trecho": "A Prefeitura de Vitória, por meio da Secretaria Municipal da Fazenda",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "ES",
-          "trecho": "Diário Oficial do Município de Vitória - ES 29 de setembro de 2026 - Edição nº 2976",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · outro",
-          "trecho": "A Prefeitura de Vitória, por meio da Secretaria Municipal da Fazenda",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "contribuintes que possuem débitos em aberto podem aproveitar as condições do Programa de Recuperação Fiscal (Refis)",
-          "trecho": "os contribuintes que possuem débitos em aberto podem aproveitar as condições do Programa de Recuperação Fiscal (Refis)",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura de Vitória",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/3205309/2026-09-29/e4e6dddf43137203fa04d96f0d35d05e72269004.pdf",
           "tipo": "agregador"
         }
       ],
