@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-13T12:36:04+00:00",
+  "em": "2026-10-13T12:56:37+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-13T12:19:33+00:00",
+  "ultimo_voo": "2026-10-13T12:40:05+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 121,
+    "missoes": 122,
     "validadas": 4,
     "parciais": 26,
-    "insuficientes": 87,
+    "insuficientes": 88,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 98,
+      "sim": 99,
       "nao": 12
     },
     "estrelas_de_ouro": 3,
@@ -52,6 +52,77 @@
     "tempo_medio_min": 13.6
   },
   "missoes": [
+    {
+      "em": "2026-10-13T12:40:05+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Alto Alegre (SP) 2026-10-07 — \"termo de fomento\" \"chamamento público\"",
+      "qualidade": "insuficiente",
+      "comprovados": 8,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Valor",
+        "Órgão / financiador",
+        "Requisitos"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital menciona o período de recursos, indicando que há um prazo para recursos, o que é um indicador de que o edital está em andamento e pode ser uma fonte válida.",
+        "para_a_amc": "Para acessar, uma associação comunitária de Goiânia precisaria verificar se o edital se aplica à sua área de atuação (cultura) e se há requisitos não mencionados que possam ser relevantes para sua participação.",
+        "proximo_passo": "Consultar o edital completo e os anexos para entender melhor os requisitos e se o edital se aplica à sua área de atuação.",
+        "risco": "O prazo de inscrição e outros detalhes não foram encontrados, o que pode impedir a associação de se inscrever no edital a tempo."
+      },
+      "erro": null,
+      "segundos": 991,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "89a0b0ec652255c55564",
+      "encontrou": {
+        "Objeto": {
+          "valor": "pagamento de premiação a agentes culturais selecionados no Chamamento Público nº 04/2026",
+          "trecho": "Autoriza o pagamento de premiação a agentes culturais selecionados no Chamamento Público nº 04/2026",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "SP",
+          "trecho": "Município de Alto Alegre - Estado de São Paulo",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "para Agentes Culturais com Recursos da Política Nacional Aldir Blanc de Fomento à Cultura",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · premio",
+          "trecho": "Autoriza o pagamento de premiação a agentes culturais selecionados no Chamamento Público nº 04/2026",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura do Município de Alto Alegre",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3501103/2026-10-07/87737642a73514a391255feb7b438626c59d3b24.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-13T12:19:33+00:00",
       "modo": "validar",
@@ -2918,93 +2989,6 @@
       "rotas": [
         "site_do_financiador",
         "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-13T00:56:15+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "0 · retentativa (busca_sem_resultado, nuvem)",
-      "alvo": "Aviso de Chamamento Público nº 1/2026 — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 10,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Resultado",
-        "Prazo de recurso"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O aviso de chamamento público foi comprovado com detalhes sobre o objeto, prazo de inscrição, valor, requisitos e outros dados relevantes.",
-        "para_a_amc": "A associação comunitária de Goiânia precisa atuar ou residir no Município de Nova América – Go, há pelo menos 06 (seis) meses, e submeter um projeto cultural elegível para receber apoio financeiro.",
-        "proximo_passo": "Verificar os anexos e preparar o projeto cultural de acordo com as categorias descritas no Anexo I.",
-        "risco": "Não atender ao requisito de residir ou atuar no Município de Nova América – Go por pelo menos 06 (seis) meses."
-      },
-      "erro": null,
-      "segundos": 420,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-op-eb990e66f5a2",
-      "encontrou": {
-        "Objeto": {
-          "valor": "seleção de projetos culturais para receberem apoio financeiro nas categorias descritas no Anexo I",
-          "trecho": "O objeto deste Edital é a seleção de projetos culturais para receberem apoio financeiro nas categorias descritas no Anexo I, com o objetivo de incentivar as diversas formas de mani",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "2026-08-03 a 2026-08-14",
-          "trecho": "Das 07:00 horas do dia 03/08/2026 até às 17:00 horas do dia 14/08/2026.",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "R$40.266,87",
-          "trecho": "O valor total deste edital é de R$40.266,87 (quarenta mil duzentos e sessenta e seis reais e oitenta e sete centavos).",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal de NOVA AMÉRICA",
-          "trecho": "ESTADO DE GOIAS Prefeitura Municipal de NOVA AMÉRICA EDITAL DE CHAMAMENTO PÚBLICO Nº 01/2026",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "ESTADO DE GOIAS Prefeitura Municipal de NOVA AMÉRICA",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "O objeto deste Edital é a seleção de projetos culturais para receberem apoio financeiro nas categorias descritas no Anexo I, com o objetivo de incentivar as diversas formas de mani",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "a seleção de projetos culturais para receberem apoio financeiro nas categorias descritas no Anexo I",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "atuar ou residir no Município de Nova América – Go, há pelo menos 06 (seis) meses",
-          "trecho": "Pode se inscrever no Edital qualquer agente cultural que atua ou reside no Município de Nova América – Go, há pelo menos 06 (seis) meses.",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Nova América",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador"
       ]
     }
   ],
