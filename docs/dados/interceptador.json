@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-13T08:35:40+00:00",
+  "em": "2026-10-13T08:58:03+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-13T08:17:17+00:00",
+  "ultimo_voo": "2026-10-13T08:38:41+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,10 +37,10 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 108,
+    "missoes": 109,
     "validadas": 4,
     "parciais": 26,
-    "insuficientes": 74,
+    "insuficientes": 75,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
@@ -49,9 +49,36 @@
     },
     "estrelas_de_ouro": 3,
     "fontes_novas_para_os_motores": 5,
-    "tempo_medio_min": 13.4
+    "tempo_medio_min": 13.5
   },
   "missoes": [
+    {
+      "em": "2026-10-13T08:38:41+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Itobi (SP) 2026-10-09 — \"termo de fomento\" \"chamamento público\"",
+      "qualidade": "insuficiente",
+      "comprovados": 0,
+      "dispensados": null,
+      "total": 12,
+      "nao_resolvidos": null,
+      "pagina_oficial": null,
+      "parecer_fonte": {},
+      "erro": "o modelo não devolveu JSON",
+      "segundos": 1160,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "falhou: o modelo não devolveu JSON",
+      "id": "722c88ba4f7f7839d22b",
+      "encontrou": {},
+      "financiador": null,
+      "indicios": [],
+      "rotas": []
+    },
     {
       "em": "2026-10-13T08:17:17+00:00",
       "modo": "validar",
@@ -2958,79 +2985,6 @@
         "Requisitos": {
           "valor": "Ensino médio completo, CNH categoria “A” e “B”, Conhecimentos em informática, Ensino médio completo e curso técnico na área, Ensino médio completo e curso de formação de tradutor e intérprete de LIBRAS – Língua Portuguesa – LIBRAS, com no mínimo, Ensino médio completo e curso de formação na área esp",
           "trecho": "Requisitos mínimos exigidos: Ensino médio completo + CNH categoria “A” e “B”; Ensino médio completo + Conhecimentos em informática; Ensino médio completo e curso técnico na área; E",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura de Votuporanga",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-12T21:25:36+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Concurso Público nº 03/2024 \n                                     \n                                         O Prefeito do Município de Votup",
-      "qualidade": "parcial",
-      "comprovados": 7,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Requisitos",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://www.votuporanga.sp.gov.br/editais/edital_de_abertura_cp_032024_26095405.pdf",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital comprova a existência de vagas para cargos específicos e o valor da remuneração, o que pode ser utilizado como referência para ações de capacitação e planejamento de uma associação comunitária.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se há alinhamento entre as áreas de atuação da AMC e os cargos descritos no edital, além de buscar parcerias ou financiamento para capacitação de seus membros.",
-        "proximo_passo": "Pesquisar se há alinhamento entre as áreas de atuação da AMC e os cargos descritos no edital e buscar parcerias para capacitação.",
-        "risco": "A falta de informações sobre prazo de inscrição e requisitos pode impedir a participação efetiva da AMC no processo se houver uma abertura de vagas relacionadas às suas atividades."
-      },
-      "erro": null,
-      "segundos": 897,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 7,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Requisitos",
-      "id": "877b3bd802bd3ec434e6",
-      "encontrou": {
-        "Objeto": {
-          "valor": "provimento de vagas existentes para os cargos descritos na Tabela I",
-          "trecho": "O Concurso Público destina-se ao provimento de vagas, pelo Regime Estatutário...",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "R$ 65,00",
-          "trecho": "Taxa de inscrição... R$ 65,00",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeito do Município de Votuporanga/SP",
-          "trecho": "O Prefeito do Município de Votuporanga/SP faz saber que realizará...",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "SP",
-          "trecho": "O Concurso Público destina-se ao provimento de vagas...",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · convenio",
-          "trecho": "O Concurso Público reger-se-á pelas disposições contidas nas Instruções Especiais...",
           "oficial": true,
           "dispensado": false
         }
