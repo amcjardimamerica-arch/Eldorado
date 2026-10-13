@@ -1,31 +1,31 @@
 {
- "em": "2026-10-13T06:27:08+00:00",
+ "em": "2026-10-13T08:12:04+00:00",
  "versao": "cartório v5 · linha de produção (09/10/2026)",
  "regra": "CARTÓRIO DE FONTES OFICIAIS (titular, 09/10/2026).\n\nOs motores DESCOBREM; o Cartório CERTIFICA. Toda estrela (oportunidade aberta) e todo livro (histórico) que tenha\nQUALQUER um dos 12 itens indisponível entra na fila do Cartório. Para cada um, ele sobe uma escada de degraus — do mais\nbarato e confiável ao mais caro — até achar o documento OFICIAL, lê o documento por seções e emite uma CERTIDÃO:\nlink oficial (régua única: vetor nunca é fonte), degrau em que foi achado, impressão digital do documento, e cada item\ncom valor + trecho literal + página — ou a DISPENSA com a justificativa de que o requisito não existe naquele edital.\n\nBalcões (como chegar ao documento em cada tipo de fonte):\n  pncp      página do PNCP → API de arquivos do órgão (PDF ou ZIP), o edital primeiro\n  diario    DOU, Diário de Goiás/Goiânia, Querido Diário → o ato dentro da edição (só as páginas do ato)\n  orgao     domínio público → documentos da página + biblioteca de mídia do WordPress pelo número do edital\n  privado   site do financiador → documentos da página (regulamento, edital)\n  pista     agregador/notícia → links de SAÍDA para o financiador; o resto vai ao Interceptador\n  proprio   Ministério Público e Judiciário: já leem o PDF; o Cartório só converte em certidão\n\nEscada: 0 documento na mão · 1 link de saída da pista · 2 busca do número do edital dentro do domínio oficial ·\n        3 Interceptador (IA) · 4 Chrome. O Cartório resolve 0–2 sem IA; 3 e 4 recebem só o que sobrou.\nIntegração: a fila é ordenada pela urgência (prazo), pela nota da REDE NEURAL e pela distância até o ouro (menos\nitens faltando primeiro: cada certidão vira selo). Estrelas: o fluxo de oportunidades lê a certidão no checklist.\nLivros: linhas no formato do importador (scripts/importar_verificacao_livros.py), que confere e entrega à esteira.",
  "identidade_visual": "provisória (config/identidade_visual.json aguarda o design de referência)",
  "resumo": {
   "pontos_12_total": 4800,
-  "pontos_certificados": 3226,
-  "pontos_dispensados": 242,
-  "pontos_ja_constavam": 1115,
-  "pontos_faltam": 217,
-  "pct_certificado_12": 0.7225,
-  "certidoes_12_de_12": 129,
-  "certidoes_sem_item_faltando": 230,
+  "pontos_certificados": 3231,
+  "pontos_dispensados": 238,
+  "pontos_ja_constavam": 1117,
+  "pontos_faltam": 214,
+  "pct_certificado_12": 0.7227,
+  "certidoes_12_de_12": 130,
+  "certidoes_sem_item_faltando": 231,
   "nota_denominador": "eficiencia_itens = resolvidos ÷ itens que faltavam na ENTRADA da fila (não é % dos 12); use pct_certificado_12",
-  "certidoes": 1601,
+  "certidoes": 1628,
   "nesta_execucao": 29,
   "fila_estrelas": 498,
   "fila_livros": 2195,
-  "itens_que_faltavam": 13921,
-  "itens_obtidos": 5546,
-  "itens_dispensados": 478,
-  "eficiencia_itens": 0.433,
-  "com_link_oficial": 1036,
-  "taxa_link_oficial": 0.647,
-  "certidoes_completas": 162,
-  "para_o_interceptador": 1190,
-  "para_o_chrome": 248,
+  "itens_que_faltavam": 14168,
+  "itens_obtidos": 5626,
+  "itens_dispensados": 480,
+  "eficiencia_itens": 0.431,
+  "com_link_oficial": 1049,
+  "taxa_link_oficial": 0.644,
+  "certidoes_completas": 163,
+  "para_o_interceptador": 1211,
+  "para_o_chrome": 253,
   "selos_que_mudaram": {
    "bronze → ouro": 18,
    "sem selo → ouro": 70,
@@ -36,7 +36,7 @@
    "sem selo → bronze": 23
   },
   "por_degrau": {
-   "degrau 0": 1040,
+   "degrau 0": 1053,
    "degrau 1": 26
   }
  },
@@ -47,125 +47,125 @@
  },
  "por_item": {
   "Objeto": {
-   "faltavam": 1000,
-   "obtidos": 463,
+   "faltavam": 1010,
+   "obtidos": 465,
    "dispensados": 0,
-   "eficiencia": 0.463
+   "eficiencia": 0.46
   },
   "Prazo de inscrição": {
-   "faltavam": 984,
-   "obtidos": 361,
-   "dispensados": 122,
-   "eficiencia": 0.491
+   "faltavam": 997,
+   "obtidos": 366,
+   "dispensados": 123,
+   "eficiencia": 0.49
   },
   "Resultado": {
-   "faltavam": 1392,
-   "obtidos": 353,
-   "dispensados": 231,
-   "eficiencia": 0.42
+   "faltavam": 1419,
+   "obtidos": 360,
+   "dispensados": 232,
+   "eficiencia": 0.417
   },
   "Prazo de recurso": {
-   "faltavam": 1397,
-   "obtidos": 454,
+   "faltavam": 1424,
+   "obtidos": 459,
    "dispensados": 25,
-   "eficiencia": 0.343
-  },
-  "Valor": {
-   "faltavam": 1163,
-   "obtidos": 440,
-   "dispensados": 70,
-   "eficiencia": 0.439
-  },
-  "Órgão / financiador": {
-   "faltavam": 885,
-   "obtidos": 513,
-   "dispensados": 0,
-   "eficiencia": 0.58
-  },
-  "Território": {
-   "faltavam": 999,
-   "obtidos": 404,
-   "dispensados": 0,
-   "eficiencia": 0.404
-  },
-  "Esfera": {
-   "faltavam": 1194,
-   "obtidos": 725,
-   "dispensados": 0,
-   "eficiencia": 0.607
-  },
-  "Requisitos": {
-   "faltavam": 1343,
-   "obtidos": 457,
-   "dispensados": 0,
    "eficiencia": 0.34
   },
+  "Valor": {
+   "faltavam": 1187,
+   "obtidos": 447,
+   "dispensados": 70,
+   "eficiencia": 0.436
+  },
+  "Órgão / financiador": {
+   "faltavam": 897,
+   "obtidos": 523,
+   "dispensados": 0,
+   "eficiencia": 0.583
+  },
+  "Território": {
+   "faltavam": 1017,
+   "obtidos": 409,
+   "dispensados": 0,
+   "eficiencia": 0.402
+  },
+  "Esfera": {
+   "faltavam": 1220,
+   "obtidos": 737,
+   "dispensados": 0,
+   "eficiencia": 0.604
+  },
+  "Requisitos": {
+   "faltavam": 1370,
+   "obtidos": 461,
+   "dispensados": 0,
+   "eficiencia": 0.336
+  },
   "Anexos": {
-   "faltavam": 961,
-   "obtidos": 359,
+   "faltavam": 971,
+   "obtidos": 362,
    "dispensados": 8,
-   "eficiencia": 0.382
+   "eficiencia": 0.381
   },
   "Destinação": {
-   "faltavam": 1344,
-   "obtidos": 237,
+   "faltavam": 1371,
+   "obtidos": 242,
    "dispensados": 22,
    "eficiencia": 0.193
   },
   "Área de atuação": {
-   "faltavam": 1259,
-   "obtidos": 780,
+   "faltavam": 1285,
+   "obtidos": 795,
    "dispensados": 0,
-   "eficiencia": 0.62
+   "eficiencia": 0.619
   }
  },
  "por_balcao": {
   "pncp": {
-   "certidoes": 469,
+   "certidoes": 474,
    "com_link_oficial": 252,
-   "faltavam": 3972,
+   "faltavam": 4007,
    "resolvidos": 1526,
-   "eficiencia": 0.384,
-   "taxa_link_oficial": 0.537
+   "eficiencia": 0.381,
+   "taxa_link_oficial": 0.532
   },
   "diario": {
-   "certidoes": 52,
+   "certidoes": 53,
    "com_link_oficial": 23,
-   "faltavam": 398,
+   "faltavam": 406,
    "resolvidos": 48,
-   "eficiencia": 0.121,
-   "taxa_link_oficial": 0.442
+   "eficiencia": 0.118,
+   "taxa_link_oficial": 0.434
   },
   "orgao": {
-   "certidoes": 504,
-   "com_link_oficial": 401,
-   "faltavam": 4035,
-   "resolvidos": 1755,
-   "eficiencia": 0.435,
-   "taxa_link_oficial": 0.796
+   "certidoes": 514,
+   "com_link_oficial": 411,
+   "faltavam": 4138,
+   "resolvidos": 1811,
+   "eficiencia": 0.438,
+   "taxa_link_oficial": 0.8
   },
   "pista": {
-   "certidoes": 132,
+   "certidoes": 137,
    "com_link_oficial": 22,
-   "faltavam": 1105,
-   "resolvidos": 244,
+   "faltavam": 1149,
+   "resolvidos": 254,
    "eficiencia": 0.221,
-   "taxa_link_oficial": 0.167
+   "taxa_link_oficial": 0.161
   },
   "revisão": {
-   "certidoes": 267,
-   "com_link_oficial": 237,
-   "faltavam": 3204,
-   "resolvidos": 2154,
+   "certidoes": 266,
+   "com_link_oficial": 236,
+   "faltavam": 3192,
+   "resolvidos": 2144,
    "eficiencia": 0.672,
-   "taxa_link_oficial": 0.888
+   "taxa_link_oficial": 0.887
   },
   "privado": {
-   "certidoes": 176,
-   "com_link_oficial": 101,
-   "faltavam": 1204,
-   "resolvidos": 260,
-   "eficiencia": 0.216,
+   "certidoes": 183,
+   "com_link_oficial": 105,
+   "faltavam": 1273,
+   "resolvidos": 287,
+   "eficiencia": 0.225,
    "taxa_link_oficial": 0.574
   },
   "proprio": {
@@ -179,19 +179,19 @@
  },
  "por_safra": {
   "primeira tentativa": {
-   "certidoes": 1431,
-   "faltavam": 12291,
-   "resolvidos": 4730,
-   "eficiencia": 0.385,
-   "com_link_oficial": 882,
-   "taxa_link_oficial": 0.616
+   "certidoes": 1457,
+   "faltavam": 12526,
+   "resolvidos": 4802,
+   "eficiencia": 0.383,
+   "com_link_oficial": 894,
+   "taxa_link_oficial": 0.614
   },
   "refeitas": {
-   "certidoes": 170,
-   "faltavam": 1630,
-   "resolvidos": 1257,
-   "eficiencia": 0.771,
-   "com_link_oficial": 154,
+   "certidoes": 171,
+   "faltavam": 1642,
+   "resolvidos": 1268,
+   "eficiencia": 0.772,
+   "com_link_oficial": 155,
    "taxa_link_oficial": 0.906
   }
  },
@@ -221,30 +221,30 @@
    "taxa_link_oficial": 0.875
   },
   "cartório v5 · linha de produção": {
-   "certidoes": 1298,
-   "faltavam": 10471,
-   "resolvidos": 3722,
-   "eficiencia": 0.355,
-   "com_link_oficial": 767,
-   "taxa_link_oficial": 0.591
+   "certidoes": 1326,
+   "faltavam": 10730,
+   "resolvidos": 3815,
+   "eficiencia": 0.356,
+   "com_link_oficial": 781,
+   "taxa_link_oficial": 0.589
   },
   "revisão manual": {
-   "certidoes": 267,
-   "faltavam": 3204,
-   "resolvidos": 2154,
+   "certidoes": 266,
+   "faltavam": 3192,
+   "resolvidos": 2144,
    "eficiencia": 0.672,
-   "com_link_oficial": 237,
-   "taxa_link_oficial": 0.888
+   "com_link_oficial": 236,
+   "taxa_link_oficial": 0.887
   }
  },
  "por_abordagem": {
   "1": {
    "nome": "documento na mão",
-   "vezes": 1383,
-   "renderam": 886,
-   "itens": 5327,
-   "links_oficiais": 762,
-   "taxa_de_acerto": 0.641
+   "vezes": 1405,
+   "renderam": 902,
+   "itens": 5409,
+   "links_oficiais": 775,
+   "taxa_de_acerto": 0.642
   },
   "2": {
    "nome": "anexos completos",
@@ -256,11 +256,11 @@
   },
   "3": {
    "nome": "página oficial e citados",
-   "vezes": 50,
+   "vezes": 51,
    "renderam": 16,
    "itens": 71,
    "links_oficiais": 4,
-   "taxa_de_acerto": 0.32
+   "taxa_de_acerto": 0.314
   },
   "4": {
    "nome": "biblioteca de sites",
@@ -288,7 +288,7 @@
   },
   "7": {
    "nome": "releitura com gabarito",
-   "vezes": 41,
+   "vezes": 42,
    "renderam": 0,
    "itens": 0,
    "links_oficiais": 0,
@@ -304,11 +304,11 @@
   },
   "9": {
    "nome": "leitura profunda",
-   "vezes": 187,
+   "vezes": 192,
    "renderam": 7,
    "itens": 22,
    "links_oficiais": 0,
-   "taxa_de_acerto": 0.037
+   "taxa_de_acerto": 0.036
   },
   "10": {
    "nome": "busca no domínio",
@@ -322,11 +322,11 @@
  "por_balcao_selo": {
   "sem_estrela": {
    "nome": "Sem estrela → bronze",
-   "certidoes": 422,
-   "faltavam": 2720,
-   "resolvidos": 684,
+   "certidoes": 434,
+   "faltavam": 2829,
+   "resolvidos": 710,
    "eficiencia": 0.251,
-   "entraram_aqui": 460,
+   "entraram_aqui": 472,
    "esgotadas": 0
   },
   "bronze": {
@@ -340,11 +340,11 @@
   },
   "prata": {
    "nome": "Prata → ouro",
-   "certidoes": 876,
-   "faltavam": 7913,
-   "resolvidos": 3207,
+   "certidoes": 891,
+   "faltavam": 8051,
+   "resolvidos": 3264,
    "eficiencia": 0.405,
-   "entraram_aqui": 863,
+   "entraram_aqui": 878,
    "esgotadas": 0
   },
   "ouro": {
@@ -360,12 +360,12 @@
  "gabarito": {
   "orgaos_com_gabarito": 713,
   "itens_achados_pelo_gabarito": {
-   "Objeto": 29,
-   "Requisitos": 10,
+   "Objeto": 30,
+   "Requisitos": 12,
    "Prazo de inscrição": 1,
-   "Destinação": 4
+   "Destinação": 5
   },
-  "certidoes_ajudadas": 39
+  "certidoes_ajudadas": 42
  },
  "certidoes": [
   {
@@ -6568,6 +6568,267 @@
     }
    ],
    "documentos": [],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "certificado",
+     "Resultado": "certificado",
+     "Prazo de recurso": "certificado",
+     "Valor": "certificado",
+     "Órgão / financiador": "certificado",
+     "Território": "certificado",
+     "Esfera": "certificado",
+     "Requisitos": "certificado",
+     "Anexos": "certificado",
+     "Destinação": "certificado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 12,
+    "dispensados": 0,
+    "ja_constavam": 0,
+    "faltam": 0,
+    "pct_certificado_12": 1.0,
+    "pct_cobertura_12": 1.0
+   }
+  },
+  {
+   "id": "nova-2f8cf7dfa88a",
+   "tipo": "livro",
+   "titulo": "Chamamento Público 2026",
+   "balcao": "orgao",
+   "link_oficial": "https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14",
+   "degrau": 0,
+   "como": "página/documento oficial já conhecido",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": {
+    "orgao": "dominio:goias.gov.br",
+    "itens_pelo_gabarito": [
+     "Destinação"
+    ]
+   },
+   "estagio": "prata",
+   "estagio_inicio": "prata",
+   "esgotada": null,
+   "eficiencia": 1.0,
+   "encaminhado": null,
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-13T08:06:46+00:00",
+   "prazo": null,
+   "uf": "BR",
+   "orgao": "Secult Goiás — Goyazes e Aldir Blanc",
+   "fim": "2026-01-20",
+   "itens": {
+    "Prazo de inscrição": {
+     "valor": "16/12/2025 a 20/01/2026",
+     "trecho": "eio eletrônico, para o e-mail: planejamento.secult@goias.gov.br. Inscrições no período de 16/12/2025 a 20/01/2026 : https://forms.office.com/r/U8s2E2hmFu Documentos : Aviso de",
+     "pagina": 1,
+     "documento": "https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14",
+     "metodo": "cronograma"
+    },
+    "Objeto": {
+     "valor": "selecionar Organização da Sociedade Civil (OSC) para firmar parceria por meio de Termo de Colaboração, para executar em regime de colaboração o Circuito das Cavalhadas 2026, nos termos da Lei Federal 13.",
+     "trecho": "Objeto : Torna público o Chamamento Público nº 02/2026 – SECULT, que tem por objeto selecionar Organização da Sociedade Civil (OSC) para firmar parceria por meio de Termo de Colaboração, para executar em regime de colaboração o Circuito das Cavalhadas 2026, nos termos da Lei Federal 13.019/2014. Documentos : &#8211; Aviso de Chamamento Público 02/202",
+     "pagina": 1,
+     "documento": "https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14",
+     "metodo": "texto"
+    },
+    "Órgão / financiador": {
+     "valor": "Secretaria de Estado da Cultura",
+     "trecho": "Chamamentos Públicos 2026 (Lei 13.019/14) &#8211; Secretaria de Estado da Cultura",
+     "pagina": 1,
+     "documento": "https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14",
+     "metodo": "cabeçalho"
+    },
+    "Território": {
+     "valor": "do Estado de Goiás ao projeto",
+     "trecho": "tucional voluntária de até 120 (cento e vinte) municípios e distritos do Estado de Goiás ao projeto “CineLeitura do Bem &#8211; Cultura que Aproxima”, iniciativa de carát",
+     "pagina": 1,
+     "documento": "https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14",
+     "metodo": "texto"
+    },
+    "Esfera": {
+     "valor": "federal",
+     "trecho": "domínio/órgão: goias.gov.br · Secretaria de Estado da Cultura Secult Goiás — Goyazes e Aldir Blanc",
+     "pagina": 1,
+     "documento": "https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14",
+     "metodo": "domínio e órgão"
+    },
+    "Anexos": {
+     "valor": "ANEXO I &#8211; Termo de Referência; ANEXO II ao VII &#8211; DECLARAÇÕES; ANEXO VIII &#8211; DIRETRIZES e MODELO DE PLANO DE TRABALHO; ANEXO IX &#8211; MINUTA DO TERMO DE COLABORAÇÃO",
+     "trecho": "de Chamamento Público Nº 02/2006 &#8211; DOE &#8211; Edital &#8211; ANEXO I &#8211; Termo de Referência &#8211; ANEXO II ao VII &#8211; DECLARAÇÕES &#8211; ANEXO VIII &#8211; DIRETRIZES e MODELO DE PLANO DE TRABALHO &#8211; ANEXO IX &#8211; MINUTA DO TERM",
+     "pagina": 1,
+     "documento": "https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14",
+     "metodo": "lista de anexos"
+    },
+    "Área de atuação": {
+     "valor": "Cultura",
+     "trecho": "termos do objeto e do título: Cultura",
+     "pagina": 1,
+     "documento": "https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Resultado": {
+     "valor": "19/03/2026",
+     "trecho": "Avaliação das propostas pela Comissão de Seleção 16/03 a 18/03/2026 4 Divulgação do resultado preliminar 19/03/2026 5 Prazo para interposição de recurso 20/03 a 26/03/2026 6 Prazo para",
+     "pagina": 12,
+     "documento": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/02/SEI_86405347_Edital.pdf",
+     "metodo": "seção"
+    },
+    "Prazo de recurso": {
+     "valor": "26/03/2026",
+     "trecho": "gação do resultado preliminar 19/03/2026 5 Prazo para interposição de recurso 20/03 a 26/03/2026 6 Prazo para apresentação das contrarrazões 27/03 a 02/04/2026 7 Anál",
+     "pagina": 12,
+     "documento": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/02/SEI_86405347_Edital.pdf",
+     "metodo": "seção"
+    },
+    "Valor": {
+     "valor": "R$ 5.000.000,00 (cinco milhões de reais)",
+     "trecho": "ica, mediante comprovação da abertura de conta corrente especíﬁca, no valor total previsto de R$ 5.000.000,00 (cinco milhões de reais). O cronograma de desembolso deverá constar do Plano de Trabalho aprov",
+     "pagina": 5,
+     "documento": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/02/SEI_86405347_Edital.pdf",
+     "metodo": "seção"
+    },
+    "Requisitos": {
+     "valor": "PARA A CELEBRAÇÃO DO\nINSTRUMENTO DE PARCERIA\n8.",
+     "trecho": "onal da SECULT, conforme previsto no Plano de Trabalho aprovado. 8. DA PARTICIPAÇÃO, REQUISITOS E IMPEDIMENTOS PARA A CELEBRAÇÃO DO INSTRUMENTO DE PARCERIA 8.1. Poderão participar deste chamamento público as organizações da sociedade civil (OSCs), assim consideradas aquelas deﬁnidas pelo art. 2°, inciso I, alíneas \"a\", \"b\" ou \"c\", da Lei n° 13.019, de 2014, compreendendo, para os ﬁns da legislação",
+     "pagina": 5,
+     "documento": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/02/SEI_86405347_Edital.pdf",
+     "metodo": "seção"
+    },
+    "Destinação": {
+     "valor": "A Parte I - Possui caráter exclusivamente orientativo",
+     "trecho": "EXO Nº VIII/2026 Este Anexo Único contém orientações e modelo para elaboração do Plano de Trabalho. A Parte I - Possui caráter exclusivamente orientativo , destinando-se a auxiliar o proponente no correto preenchimento do P",
+     "pagina": 1,
+     "documento": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/02/SEI_86405993_ANEXO.pdf",
+     "metodo": "gabarito do órgão (rótulo “elaboracao do plano de trabalho”)"
+    }
+   },
+   "dispensas": {},
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-13T08:06:46+00:00",
+     "ganhou": [
+      "Anexos",
+      "Destinação",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Prazo de recurso",
+      "Requisitos",
+      "Resultado",
+      "Território",
+      "Valor",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/02/SEI_86425409_Aviso_de_Chamamento_Publico_02.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/02/chamamento022026secultgo.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/02/SEI_86405347_Edital.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 25,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/02/SEI_86427989_Termo.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 25,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/02/SEI_86405514_ANEXO.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 8,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/02/SEI_86405993_ANEXO.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 6,
+     "edicao_inteira": null
+    }
+   ],
    "cobertura_12": {
     "estados": {
      "Objeto": "certificado",
@@ -55856,6 +56117,314 @@
    }
   },
   {
+   "id": "e216d467a84522d2941d",
+   "tipo": "estrela",
+   "titulo": "Programa de Aceleração do Desenvolvimento de Lideranças Femininas Negras: Marielle Franco Fundo Baobá R$ 300 mil Aceita:   organizações da s",
+   "balcao": "privado",
+   "link_oficial": "https://editais.baoba.org.br/programa-marielle-franco-2",
+   "degrau": 0,
+   "como": "revisão manual: leitura do documento oficial no Chrome da titular",
+   "faltavam": [
+    "Resultado",
+    "Prazo de recurso",
+    "Objeto",
+    "Prazo de inscrição",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Resultado",
+    "Objeto",
+    "Prazo de inscrição",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Prazo de recurso"
+   ],
+   "tentativa": 5,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "prata",
+   "esgotada": null,
+   "eficiencia": 0.917,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
+   "selo_antes": "prata",
+   "selo_depois": "prata",
+   "em": "2026-10-13T08:03:55+00:00",
+   "prazo": "2026-10-19T17:00",
+   "uf": null,
+   "orgao": null,
+   "fim": "2026-10-19",
+   "itens": {
+    "Objeto": {
+     "valor": "Apoio técnico e financeiro para fortalecimento institucional de organizações de mulheres negras",
+     "trecho": "oportunidade de apoio técnico e financeiro para o desenvolvimento e fortalecimento institucional de organizações",
+     "pagina": null,
+     "documento": "https://editais.baoba.org.br/programa-marielle-franco-2",
+     "metodo": "webfetch-html"
+    },
+    "Valor": {
+     "valor": "R$ 300.000,00",
+     "trecho": "Recurso financeiro no valor de R$ 300.000,00",
+     "pagina": null,
+     "documento": "https://editais.baoba.org.br/programa-marielle-franco-2",
+     "metodo": "webfetch-html"
+    },
+    "Órgão / financiador": {
+     "valor": "Fundo Baobá para Equidade Racial",
+     "trecho": "editais.baoba.org.br — Programa Marielle Franco 2ª edição",
+     "pagina": null,
+     "documento": "https://editais.baoba.org.br/programa-marielle-franco-2",
+     "metodo": "webfetch-html"
+    },
+    "Esfera": {
+     "valor": "privada",
+     "trecho": "Fundo Baobá (fundo filantrópico privado)",
+     "pagina": null,
+     "documento": "https://editais.baoba.org.br/programa-marielle-franco-2",
+     "metodo": "webfetch-html"
+    },
+    "Território": {
+     "valor": "Brasil (atuação em território nacional)",
+     "trecho": "Instituições que não atuem em território nacional.",
+     "pagina": null,
+     "documento": "https://editais.baoba.org.br/programa-marielle-franco-2",
+     "metodo": "webfetch-html"
+    },
+    "Requisitos": {
+     "valor": "Organizações/grupos/coletivos de mulheres negras com 85% de mulheres negras na direção e membresia, atuando desde 2024",
+     "trecho": "cuja diretoria/coordenação e membresia seja composta por 85% (oitenta e cinco por cento) e mais de mulheres negras",
+     "pagina": null,
+     "documento": "https://editais.baoba.org.br/programa-marielle-franco-2",
+     "metodo": "webfetch-html"
+    },
+    "Anexos": {
+     "valor": "Carta de recomendação, plano de ação e orçamento (XLSX), espelho do formulário",
+     "trecho": "MODELO DE CARTA DE RECOMENDAÇÃO / MODELO DE PLANO DE AÇÃO E ORÇAMENTO / ESPELHO DO FORMULÁRIO DE INSCRIÇÃO",
+     "pagina": null,
+     "documento": "https://editais.baoba.org.br/programa-marielle-franco-2",
+     "metodo": "webfetch-html"
+    },
+    "Destinação": {
+     "valor": "Fortalecimento institucional; vedado compra/aluguel de imóveis e reformas",
+     "trecho": "Qualquer tipo de reforma em espaços físicos.",
+     "pagina": null,
+     "documento": "https://editais.baoba.org.br/programa-marielle-franco-2",
+     "metodo": "webfetch-html"
+    },
+    "Área de atuação": {
+     "valor": "Equidade racial e de gênero / lideranças de mulheres negras",
+     "trecho": "Organizações, grupos, coletivos e movimentos de mulheres negras cis, trans e travestis",
+     "pagina": null,
+     "documento": "https://editais.baoba.org.br/programa-marielle-franco-2",
+     "metodo": "webfetch-html"
+    },
+    "Prazo de inscrição": {
+     "valor": "14/09/2026 a 19/10/2026, 17h (Brasília)",
+     "trecho": "As inscrições para o edital poderão ser feitas a partir de 14 de setembro [...] e terão encerramento em 19 de outubro às 17h (horário de Brasília).",
+     "pagina": null,
+     "documento": "https://pt.surveymonkey.com/r/EDITALPMFAPOIOCOLETIVO2",
+     "metodo": "webfetch-html"
+    },
+    "Resultado": {
+     "valor": "11 de janeiro de 2027",
+     "trecho": "etembro a 19 de outubro de 2026, até as 17h (horário de Brasília). Resultado Final: 11 de janeiro de 2027, após as 19h (horário de Brasília). Encontro virtual de orientação p",
+     "pagina": 23,
+     "documento": "https://d335luupugsy2.cloudfront.net/cms%2Ffiles%2F205828%2F1790600749Edital_Marielle_Franco_Apoio_Coletivo_2_Edicao_28-09.pdf",
+     "metodo": "seção"
+    }
+   },
+   "dispensas": {},
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "revisão manual (P3-BR-PRIVADAS-2026-10-10)",
+     "em": "2026-10-10T20:09:23+00:00",
+     "ganhou": [
+      "Anexos",
+      "Destinação",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Requisitos",
+      "Território",
+      "Valor",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    },
+    {
+     "n": 3,
+     "nome": "página oficial e citados",
+     "em": "2026-10-11T18:00:33+00:00",
+     "ganhou": [
+      "Resultado"
+     ],
+     "legado": null
+    },
+    {
+     "n": 9,
+     "nome": "leitura profunda",
+     "em": "2026-10-12T06:11:10+00:00",
+     "ganhou": [],
+     "legado": null
+    },
+    {
+     "n": 2,
+     "nome": "anexos completos",
+     "em": "2026-10-12T18:55:08+00:00",
+     "ganhou": [],
+     "legado": null
+    },
+    {
+     "n": 7,
+     "nome": "releitura com gabarito",
+     "em": "2026-10-13T08:03:55+00:00",
+     "ganhou": [],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://editais.baoba.org.br/programa-marielle-franco-2",
+     "degrau": null,
+     "como": null,
+     "motivo": null,
+     "falha": null,
+     "oficial": "documento oficial lido na revisão",
+     "paginas": null,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://capta.org.br/oportunidades/programa-de-aceleracao-do-desenvolvimento-de-liderancas-femininas-negras-marielle-franco-2",
+     "degrau": null,
+     "como": null,
+     "motivo": null,
+     "falha": null,
+     "oficial": "documento oficial lido na revisão",
+     "paginas": null,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://d335luupugsy2.cloudfront.net/cms%2Ffiles%2F205828%2F1790600749Edital_Marielle_Franco_Apoio_Coletivo_2_Edicao_28-09.pdf",
+     "degrau": null,
+     "como": null,
+     "motivo": null,
+     "falha": null,
+     "oficial": "documento oficial lido na revisão",
+     "paginas": null,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pt.surveymonkey.com/r/EDITALPMFAPOIOCOLETIVO2",
+     "degrau": null,
+     "como": null,
+     "motivo": null,
+     "falha": null,
+     "oficial": "documento oficial lido na revisão",
+     "paginas": null,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://baoba.org.br/programa-marielle-franco/",
+     "degrau": null,
+     "como": null,
+     "motivo": null,
+     "falha": null,
+     "oficial": "documento oficial lido na revisão",
+     "paginas": null,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://baoba.org.br/editais-abertos/",
+     "degrau": null,
+     "como": null,
+     "motivo": null,
+     "falha": null,
+     "oficial": "documento oficial lido na revisão",
+     "paginas": null,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://editais.baoba.org.br/programa-marielle-franco-2",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio próprio do financiador",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://capta.org.br/oportunidades/programa-de-aceleracao-do-desenvolvimento-de-liderancas-femininas-negras-marielle-franco-2",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": null,
+     "oficial": "republicador catalogado",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://d335luupugsy2.cloudfront.net/cms%2Ffiles%2F205828%2F1790600749Edital_Marielle_Franco_Apoio_Coletivo_2_Edicao_28-09.pdf",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio não reconhecido",
+     "paginas": 25,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pt.surveymonkey.com/r/EDITALPMFAPOIOCOLETIVO2",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio próprio do financiador",
+     "paginas": 1,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "certificado",
+     "Resultado": "certificado",
+     "Prazo de recurso": "falta",
+     "Valor": "certificado",
+     "Órgão / financiador": "certificado",
+     "Território": "certificado",
+     "Esfera": "certificado",
+     "Requisitos": "certificado",
+     "Anexos": "certificado",
+     "Destinação": "certificado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 11,
+    "dispensados": 0,
+    "ja_constavam": 0,
+    "faltam": 1,
+    "pct_certificado_12": 0.9167,
+    "pct_cobertura_12": 0.9167
+   }
+  },
+  {
    "id": "b2da4e4765b6602f89dd",
    "tipo": "estrela",
    "titulo": "Programa de grants da Karibu Foundation (Noruega) para movimentos, associacoes, coletivos e redes ancorados no Sul Global (America Latina, Asia, Oriente Medio), com foco sistemico nas causas da injust",
@@ -57764,6 +58333,245 @@
     },
     "certificados": 8,
     "dispensados": 1,
+    "ja_constavam": 2,
+    "faltam": 1,
+    "pct_certificado_12": 0.75,
+    "pct_cobertura_12": 0.9167
+   }
+  },
+  {
+   "id": "op-928640a47b52",
+   "tipo": "livro",
+   "titulo": "Edital CONANDA/SNDCA nº 01/2026 seleciona projetos para fortalecer os ...",
+   "balcao": "privado",
+   "link_oficial": "https://apoioplus.com.br/editalconanda012026/",
+   "degrau": 0,
+   "como": "página/documento oficial já conhecido",
+   "faltavam": [
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Esfera",
+    "Requisitos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Território"
+   ],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "sem_estrela",
+   "estagio_inicio": "sem_estrela",
+   "esgotada": null,
+   "eficiencia": 0.9,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-13T08:10:11+00:00",
+   "prazo": null,
+   "uf": null,
+   "orgao": "",
+   "fim": "2026-10-11",
+   "itens": {
+    "Prazo de inscrição": {
+     "valor": "até 11 de outubro de 2026",
+     "trecho": "retrocessos normativos e institucionais Prazo e envio das propostas Envio das propostas até 11 de outubro de 2026 , por meio da plataforma Transferegov.br. O edital completo, seu",
+     "pagina": 1,
+     "documento": "https://apoioplus.com.br/editalconanda012026/",
+     "metodo": "cronograma"
+    },
+    "Órgão / financiador": {
+     "valor": "Ministério dos Direitos Humanos e da Cidadania (MDHC)",
+     "trecho": "Público CONANDA/SNDCA nº 01/2026 é uma seleção pública promovida pelo Ministério dos Direitos Humanos e da Cidadania (MDHC), em parceria com o Conselho Nacional dos Direitos da Criança e do Ado",
+     "pagina": 1,
+     "documento": "https://apoioplus.com.br/editalconanda012026/",
+     "metodo": "cabeçalho"
+    },
+    "Esfera": {
+     "valor": "federal",
+     "trecho": "domínio/órgão: apoioplus.com.br · Ministério dos Direitos Humanos e da Cidadania (MDHC)",
+     "pagina": 1,
+     "documento": "https://apoioplus.com.br/editalconanda012026/",
+     "metodo": "domínio e órgão"
+    },
+    "Área de atuação": {
+     "valor": "Criança e adolescente, Direitos humanos",
+     "trecho": "termos do objeto e do título: Criança e adolescente, Direitos humanos",
+     "pagina": 1,
+     "documento": "https://apoioplus.com.br/editalconanda012026/",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Resultado": {
+     "valor": "5 (cinco) dias",
+     "trecho": "o nº 8.726, de 2016, os participantes que desejarem recorrer contra o resultado preliminar deverão apresentar recurso administrativo, no prazo de 5 (cinco) dias corridos, contado da publicação da decisão, ao colegiado que a profer",
+     "pagina": 17,
+     "documento": "https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente/publicacoes/editais/SEI_MDHC5765902Edital.pdf",
+     "metodo": "seção"
+    },
+    "Prazo de recurso": {
+     "valor": "5 (cinco) dias corridos",
+     "trecho": "e desejarem recorrer contra o resultado preliminar deverão apresentar recurso administrativo, no prazo de 5 (cinco) dias corridos, contado da publicação da decisão, ao colegiado que a proferiu, sob p",
+     "pagina": 17,
+     "documento": "https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente/publicacoes/editais/SEI_MDHC5765902Edital.pdf",
+     "metodo": "seção"
+    },
+    "Valor": {
+     "valor": "R$ 6.000.000,00 (seis milhões de reais)",
+     "trecho": "o V (Diretrizes para a Elaboração da Proposta e Plano de Trabalho), o valor global para execução do objeto é de R$ 6.000.000,00 (seis milhões de reais). 1.5.4. Para cada um dos projetos apoiados, formalizados via Termo de",
+     "pagina": 3,
+     "documento": "https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente/publicacoes/editais/SEI_MDHC5765902Edital.pdf",
+     "metodo": "seção"
+    },
+    "Requisitos": {
+     "valor": "PARCERIA E DE QUE NÃO INCORRE NOS IMPEDIMENTOS (VEDAÇÕES) LEGAIS.",
+     "trecho": "A PARA APRESENTAÇÃO DO PLANO DE TRABALHO E COMPROVAÇÃO DO ATENDIMENTO DOS REQUISITOS PARA CELEBRAÇÃO DA PARCERIA E DE QUE NÃO INCORRE NOS IMPEDIMENTOS (VEDAÇÕES) LEGAIS. 8.2.1. Para a celebração da parceria, a administração pública federal convocará a OSC selecionada para, no prazo de 15 (quinze) dias corridos a partir da convocação, apresentar o seu plano de trabalho e a documentação exigida para",
+     "pagina": 19,
+     "documento": "https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente/publicacoes/editais/SEI_MDHC5765902Edital.pdf",
+     "metodo": "seção"
+    },
+    "Destinação": {
+     "valor": "Os recursos serão aplicados em caderneta de poupança, fundo de aplicação ﬁnanceira de curto prazo ou operação de mercado aberto lastreada em títulos da dívida pública, mediante avaliação do investimento mais vantajoso, enquanto não empregados na sua ﬁnalidade.",
+     "trecho": "de pública na execução e no monitoramento do Termo de Fomento. 9.6.2. Os recursos serão aplicados em caderneta de poupança, fundo de aplicação ﬁnanceira de curto prazo ou operação de mercado aberto lastreada em títulos da dívida pública, mediante avaliação do investimento mais vantajoso, enquanto não empregados na sua ﬁnalidade. 9.6.3. O atraso na liberação das parcelas pactuadas no plano de traba",
+     "pagina": 23,
+     "documento": "https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente/publicacoes/editais/SEI_MDHC5765902Edital.pdf",
+     "metodo": "seção"
+    }
+   },
+   "dispensas": {},
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-13T08:10:11+00:00",
+     "ganhou": [
+      "Destinação",
+      "Esfera",
+      "Prazo de inscrição",
+      "Prazo de recurso",
+      "Requisitos",
+      "Resultado",
+      "Valor",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://apoioplus.com.br/editalconanda012026/",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio próprio do financiador",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.googletagmanager.com/ns.html?id=GTM-PJ5LDCW6",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": "pagina_vazia",
+     "falha": null,
+     "oficial": null,
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente/publicacoes/editais/SEI_MDHC5765902Edital.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 27,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente/publicacoes/editais",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Página do MDH com todos os detalhes do edital",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.googletagmanager.com/ns.html?id=GTM-NHZSKTD",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": "pagina_vazia",
+     "falha": null,
+     "oficial": null,
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/mdh/pt-br/acesso-a-informacao/dados-abertos/SEI_4788233_Nota_Explicativa11.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 2,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/mdh/pt-br/acesso-a-informacao/protocolo/in-1-de-7-de-dezembro-de-2021.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 13,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente/publicacoes/editais/SEI_MDHC5842147Edital.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 3,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "ja_constava",
+     "Prazo de inscrição": "certificado",
+     "Resultado": "certificado",
+     "Prazo de recurso": "certificado",
+     "Valor": "certificado",
+     "Órgão / financiador": "certificado",
+     "Território": "falta",
+     "Esfera": "certificado",
+     "Requisitos": "certificado",
+     "Anexos": "ja_constava",
+     "Destinação": "certificado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 9,
+    "dispensados": 0,
     "ja_constavam": 2,
     "faltam": 1,
     "pct_certificado_12": 0.75,
@@ -68619,7 +69427,7 @@
     "Território",
     "Destinação"
    ],
-   "tentativa": 4,
+   "tentativa": 5,
    "versao": "cartório v5 · linha de produção (09/10/2026)",
    "gabarito": null,
    "estagio": "sem_estrela",
@@ -68629,7 +69437,7 @@
    "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-12T18:06:41+00:00",
+   "em": "2026-10-13T08:04:29+00:00",
    "prazo": "2026-10-26",
    "uf": null,
    "orgao": "Ministério da Saúde (DECOOP/SE)",
@@ -68746,120 +69554,17 @@
      "em": "2026-10-12T18:06:41+00:00",
      "ganhou": [],
      "legado": null
+    },
+    {
+     "n": 3,
+     "nome": "página oficial e citados",
+     "em": "2026-10-13T08:04:29+00:00",
+     "ganhou": [],
+     "legado": null
     }
    ],
    "documentos": [
     {
-     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas",
-     "degrau": 0,
-     "como": "página/documento oficial já conhecido",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.googletagmanager.com/ns.html?id=GTM-NHZSKTD",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": "pagina_vazia",
-     "falha": null,
-     "oficial": null,
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos",
-     "degrau": 1,
-     "como": "documento citado na página oficial: Chamamentos Públicos",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital",
-     "degrau": 1,
-     "como": "documento citado na página oficial: Edital nº 7/2026",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 57,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.in.gov.br/web/dou/-/edital-de-chamamento-publico-n-7/2026-736462157",
-     "degrau": 1,
-     "como": "documento citado na página oficial: Extrato do Edital - DOU",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/licitacoes-e-contratos/chamamentos-publicos/abertos",
-     "degrau": 1,
-     "como": "documento citado na página oficial: 📄 Chamamentos Públicos Abertos",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/licitacoes-e-contratos/chamamentos-publicos/encerrados",
-     "degrau": 1,
-     "como": "documento citado na página oficial: 📑 Chamamentos Públicos Encerrados",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-82-2026-sgtes",
-     "degrau": 1,
-     "como": "documento citado na página oficial: Chamamento Público nº 82/2026 - Secretaria de Gestão do Trabalho e da Educação na Saúde (SGTES)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas",
-     "degrau": 0,
-     "como": "página/documento oficial já conhecido",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.googletagmanager.com/ns.html?id=GTM-NHZSKTD",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": "pagina_vazia",
-     "falha": null,
-     "oficial": null,
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos",
-     "degrau": 1,
-     "como": "documento citado na página oficial: Chamamentos Públicos",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
      "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital",
      "degrau": 1,
      "como": "documento citado na página oficial: Edital nº 7/2026",
@@ -68983,6 +69688,116 @@
      "url": "https://www.in.gov.br/web/dou/-/edital-de-chamamento-publico-n-7/2026-736462157",
      "degrau": 0,
      "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas",
+     "degrau": 1,
+     "como": "página oficial e documentos citados nela",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.googletagmanager.com/ns.html?id=GTM-NHZSKTD",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": "pagina_vazia",
+     "falha": null,
+     "oficial": null,
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Chamamentos Públicos",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Edital nº 7/2026",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 57,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.in.gov.br/web/dou/-/edital-de-chamamento-publico-n-7/2026-736462157",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Extrato do Edital - DOU",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/licitacoes-e-contratos/chamamentos-publicos/abertos",
+     "degrau": 1,
+     "como": "documento citado na página oficial: 📄 Chamamentos Públicos Abertos",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/licitacoes-e-contratos/chamamentos-publicos/encerrados",
+     "degrau": 1,
+     "como": "documento citado na página oficial: 📑 Chamamentos Públicos Encerrados",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-82-2026-sgtes",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Chamamento Público nº 82/2026 - Secretaria de Gestão do Trabalho e da Educação na Saúde (SGTES)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-06-2026-se-pronon",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Chamamento Público nº 06/2026 - Secretaria Executiva (SE) | PRONON",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-55-2026-dsei-cuiaba-sesai",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Chamamento Público nº 55/2026 - DSEI - Cuiabá - Secretária de Saúde Indígena (SESAI)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-49-2026-dsei-cuiaba-sesai",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Chamamento Público nº 49/2026 - DSEI - Cuiabá - Secretária de Saúde Indígena (SESAI)",
      "motivo": null,
      "falha": null,
      "oficial": "domínio público oficial",
@@ -72779,6 +73594,257 @@
    }
   },
   {
+   "id": "captacao-167",
+   "tipo": "livro",
+   "titulo": "FDD - patrimônio cultural brasileiro",
+   "balcao": "orgao",
+   "link_oficial": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento/edital-2-2023-nas/copy_of_Edital02NAS23.10.2023.pdf",
+   "degrau": 0,
+   "como": "documento entregue pelo motor",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Esfera",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Território",
+    "Requisitos"
+   ],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "prata",
+   "esgotada": null,
+   "eficiencia": 0.833,
+   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-13T08:07:42+00:00",
+   "prazo": null,
+   "uf": "BR",
+   "orgao": "Conanda — Fundo Nacional para a Criança e o Adolescente",
+   "fim": null,
+   "itens": {
+    "Resultado": {
+     "valor": "22/11/2023",
+     "trecho": "posta (15 dias a contar da data de publicação do edital) 07/11/2023 3 Divulgação do Resultado Preliminar 22/11/2023 4 Prazo final para interposição de recurso contra o resultado prelimi",
+     "pagina": 5,
+     "documento": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento/edital-2-2023-nas/copy_of_Edital02NAS23.10.2023.pdf",
+     "metodo": "seção"
+    },
+    "Prazo de recurso": {
+     "valor": "5 dias",
+     "trecho": "do Resultado Preliminar 22/11/2023 4 Prazo final para interposição de recurso contra o resultado preliminar (5 dias após a publicação do resultado preliminar) 27/11/2023 5 Prazo para a",
+     "pagina": 5,
+     "documento": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento/edital-2-2023-nas/copy_of_Edital02NAS23.10.2023.pdf",
+     "metodo": "seção"
+    },
+    "Valor": {
+     "valor": "R$ 400.000,00",
+     "trecho": ") nas seguintes condições: Nível Valor por Projeto Número de Projetos Valor total por nível Nível I – implementação do NAS Até R$ 400.000,00 60 R$ 24.000.000,00 (vinte e quatro milhões de reais) Nível II – aper",
+     "pagina": 3,
+     "documento": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento/edital-2-2023-nas/copy_of_Edital02NAS23.10.2023.pdf",
+     "metodo": "seção"
+    },
+    "Objeto": {
+     "valor": "do tempo de vida útil do objeto e a previsão da periodicidade de manutenções necessárias\npara a sua longevidade.",
+     "trecho": "da qualidade de vida da população local. 2. DURABILIDADE E MANUTENÇÃO DO OBJETO Expectativa do tempo de vida útil do objeto e a previsão da periodicidade de manutenções necessárias para a sua longevidade. Se possível, especificar melhor como se dará a manutenção. 3. ARMAZ",
+     "pagina": 15,
+     "documento": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento/edital-2-2023-nas/copy_of_Edital02NAS23.10.2023.pdf",
+     "metodo": "seção"
+    },
+    "Órgão / financiador": {
+     "valor": "Ministério da Justiça e Segurança Pública",
+     "trecho": "25839527 08012.002646/2023-07 Ministério da Justiça e Segurança Pública Secretaria Nacional do Consumidor Departamento de Projetos e de Polít",
+     "pagina": 1,
+     "documento": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento/edital-2-2023-nas/copy_of_Edital02NAS23.10.2023.pdf",
+     "metodo": "cabeçalho"
+    },
+    "Esfera": {
+     "valor": "federal",
+     "trecho": "domínio/órgão: www.gov.br · Ministério da Justiça e Segurança Pública Conanda — Fundo Nacional para a Crianç",
+     "pagina": 1,
+     "documento": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento/edital-2-2023-nas/copy_of_Edital02NAS23.10.2023.pdf",
+     "metodo": "domínio e órgão"
+    },
+    "Anexos": {
+     "valor": "ANEXO I (timbre do órgão proponente); ANEXO II (timbre do órgão proponente); ANEXO IV (timbre do órgão proponente); ANEXO V DECLARAÇÃO DE CAPACIDADE DE IMPLEMENTAÇÃO E EXECUÇÃO, CONSIDERANDO ESP; ANEXO VII (timbre do órgão proponente); ANEXO VIII DESPESAS FINANCIÁVEIS",
+     "trecho": "(25839527) SEI 08012.002646/2023-07 / pg. 12 ANEXO I (timbre do órgão proponente) DECLARAÇÃO CAPACIDADE TÉCNICA E GERENCIAL Eu, NOME DO DIRIGENTE DA INSTITUIÇÃO PROPONENTE , CPF Nº XXXX, DECLARO, para ﬁns de formalização de Convêni",
+     "pagina": 13,
+     "documento": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento/edital-2-2023-nas/copy_of_Edital02NAS23.10.2023.pdf",
+     "metodo": "lista de anexos"
+    },
+    "Destinação": {
+     "valor": "DESPESAS FINANCIÁVEIS Computadores desktops Computadores laptops Telefones celulares Tablets Mesas Aparador Suportes para computador (laptops ou desktops) Cadeiras Edital de Chamamento Público Núcleo de Atendimento ao Superendividado (25839527) SEI 08012.",
+     "trecho": "................ NOME DO DIRIGENTE DA PROPONENTE CARGO ANEXO VIII DESPESAS FINANCIÁVEIS Computadores desktops Computadores laptops Telefones celulares Tablets Mesas Aparador Suportes para computador (laptops ou desktops) Cadeiras Edital de Chamamento Público Núcleo de Atendimento ao Superendividado (25839527) SEI 08012.002646/2023-07 / pg. 17 Poltronas Sofás Scanners Impressoras Veículos",
+     "pagina": 17,
+     "documento": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento/edital-2-2023-nas/copy_of_Edital02NAS23.10.2023.pdf",
+     "metodo": "seção"
+    },
+    "Área de atuação": {
+     "valor": "Cultura",
+     "trecho": "termos do objeto e do título: Cultura",
+     "pagina": 1,
+     "documento": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento/edital-2-2023-nas/copy_of_Edital02NAS23.10.2023.pdf",
+     "metodo": "palavras-chave do objeto"
+    }
+   },
+   "dispensas": {
+    "Prazo de inscrição": {
+     "motivo": "dispensado pelo Cartório — não se aplica: inscrição em fluxo contínuo (cadastro permanente, sem data-limite)",
+     "trecho": "rimento do objeto; 13 . 3 . Revogação ou Anulação da Chamada Pública. A qualquer tempo, a presente Chamada Pública poderá ser revogada por interesse público",
+     "pagina": 12,
+     "documento": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento/edital-2-2023-nas/copy_of_Edital02NAS23.10.2023.pdf"
+    }
+   },
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-13T08:07:42+00:00",
+     "ganhou": [
+      "Anexos",
+      "Destinação",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Prazo de recurso",
+      "Resultado",
+      "Valor",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento/edital-2-2023-nas/copy_of_Edital02NAS23.10.2023.pdf",
+     "degrau": 0,
+     "como": "documento entregue pelo motor",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 60,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-crianca-e-do-adolescente-conanda",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.googletagmanager.com/ns.html?id=GTM-NHZSKTD",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": "pagina_vazia",
+     "falha": null,
+     "oficial": null,
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/mj/pt-br/centrais-de-conteudo/laudos-de-acessibilidade/laudo_padrao_acessibilidade_anexo_i_mj.xlsx/view",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Laudo de Acessibilidade Anexo I",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/mj/pt-br/centrais-de-conteudo/laudos-de-acessibilidade/laudo_padrao_acessibilidade_anexo_ii_mj.xlsx/view",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Laudo de Acessibilidade Anexo II",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/mj/pt-br/centrais-de-conteudo/laudos-de-acessibilidade/laudo_padrao_acessibilidade_anexo_i_mj.xlsx/view#wrapper",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Ir para o  Conteúdo  1",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/mj/pt-br/centrais-de-conteudo/laudos-de-acessibilidade/laudo_padrao_acessibilidade_anexo_i_mj.xlsx/view#main-navigation",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Ir para o menu de  Navegação  3",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "dispensado",
+     "Resultado": "certificado",
+     "Prazo de recurso": "certificado",
+     "Valor": "certificado",
+     "Órgão / financiador": "certificado",
+     "Território": "falta",
+     "Esfera": "certificado",
+     "Requisitos": "falta",
+     "Anexos": "certificado",
+     "Destinação": "certificado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 9,
+    "dispensados": 1,
+    "ja_constavam": 0,
+    "faltam": 2,
+    "pct_certificado_12": 0.8333,
+    "pct_cobertura_12": 0.8333
+   }
+  },
+  {
    "id": "71fcb68f30c6590a44dd",
    "tipo": "estrela",
    "titulo": "FUNDO MUNICIPAL DE SAUDE - FMS — CREDENCIAMENTO DE ENTIDADES PRIVADAS SEM FINS LUCRATIVOS COM FINALIDADE ESTATUTÁRIA COMPATÍVEL COM SAÚDE E PROTEÇÃO ANIMAL para a prestação de serv",
@@ -76372,267 +77438,6 @@
    }
   },
   {
-   "id": "e216d467a84522d2941d",
-   "tipo": "estrela",
-   "titulo": "Programa Marielle Franco, 2ª edição (apoio coletivo), do Fundo Baobá para Equidade Racial: R$ 300 mil por iniciativa para organizações, grupos e coletivos de mulheres negras (85% da direção e membresi",
-   "balcao": "revisão",
-   "link_oficial": "https://editais.baoba.org.br/programa-marielle-franco-2",
-   "degrau": 0,
-   "como": "revisão manual: leitura do documento oficial no Chrome da titular",
-   "faltavam": [
-    "Resultado",
-    "Prazo de recurso",
-    "Objeto",
-    "Prazo de inscrição",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Resultado",
-    "Prazo de recurso"
-   ],
-   "tentativa": 1,
-   "versao": "revisão manual (P3-BR-PRIVADAS-2026-10-10)",
-   "gabarito": null,
-   "estagio": "prata",
-   "estagio_inicio": "prata",
-   "esgotada": null,
-   "eficiencia": 0.833,
-   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido na revisão",
-   "selo_antes": "prata",
-   "selo_depois": "prata",
-   "em": "2026-10-10T20:09:23+00:00",
-   "prazo": "2026-10-19T17:00",
-   "uf": null,
-   "orgao": null,
-   "fim": "2026-10-19T17:00",
-   "itens": {
-    "Objeto": {
-     "valor": "Apoio técnico e financeiro para fortalecimento institucional de organizações de mulheres negras",
-     "trecho": "oportunidade de apoio técnico e financeiro para o desenvolvimento e fortalecimento institucional de organizações",
-     "pagina": null,
-     "documento": "https://editais.baoba.org.br/programa-marielle-franco-2",
-     "metodo": "webfetch-html"
-    },
-    "Valor": {
-     "valor": "R$ 300.000,00",
-     "trecho": "Recurso financeiro no valor de R$ 300.000,00",
-     "pagina": null,
-     "documento": "https://editais.baoba.org.br/programa-marielle-franco-2",
-     "metodo": "webfetch-html"
-    },
-    "Órgão / financiador": {
-     "valor": "Fundo Baobá para Equidade Racial",
-     "trecho": "editais.baoba.org.br — Programa Marielle Franco 2ª edição",
-     "pagina": null,
-     "documento": "https://editais.baoba.org.br/programa-marielle-franco-2",
-     "metodo": "webfetch-html"
-    },
-    "Esfera": {
-     "valor": "privada",
-     "trecho": "Fundo Baobá (fundo filantrópico privado)",
-     "pagina": null,
-     "documento": "https://editais.baoba.org.br/programa-marielle-franco-2",
-     "metodo": "webfetch-html"
-    },
-    "Território": {
-     "valor": "Brasil (atuação em território nacional)",
-     "trecho": "Instituições que não atuem em território nacional.",
-     "pagina": null,
-     "documento": "https://editais.baoba.org.br/programa-marielle-franco-2",
-     "metodo": "webfetch-html"
-    },
-    "Requisitos": {
-     "valor": "Organizações/grupos/coletivos de mulheres negras com 85% de mulheres negras na direção e membresia, atuando desde 2024",
-     "trecho": "cuja diretoria/coordenação e membresia seja composta por 85% (oitenta e cinco por cento) e mais de mulheres negras",
-     "pagina": null,
-     "documento": "https://editais.baoba.org.br/programa-marielle-franco-2",
-     "metodo": "webfetch-html"
-    },
-    "Anexos": {
-     "valor": "Carta de recomendação, plano de ação e orçamento (XLSX), espelho do formulário",
-     "trecho": "MODELO DE CARTA DE RECOMENDAÇÃO / MODELO DE PLANO DE AÇÃO E ORÇAMENTO / ESPELHO DO FORMULÁRIO DE INSCRIÇÃO",
-     "pagina": null,
-     "documento": "https://editais.baoba.org.br/programa-marielle-franco-2",
-     "metodo": "webfetch-html"
-    },
-    "Destinação": {
-     "valor": "Fortalecimento institucional; vedado compra/aluguel de imóveis e reformas",
-     "trecho": "Qualquer tipo de reforma em espaços físicos.",
-     "pagina": null,
-     "documento": "https://editais.baoba.org.br/programa-marielle-franco-2",
-     "metodo": "webfetch-html"
-    },
-    "Área de atuação": {
-     "valor": "Equidade racial e de gênero / lideranças de mulheres negras",
-     "trecho": "Organizações, grupos, coletivos e movimentos de mulheres negras cis, trans e travestis",
-     "pagina": null,
-     "documento": "https://editais.baoba.org.br/programa-marielle-franco-2",
-     "metodo": "webfetch-html"
-    },
-    "Prazo de inscrição": {
-     "valor": "14/09/2026 a 19/10/2026, 17h (Brasília)",
-     "trecho": "As inscrições para o edital poderão ser feitas a partir de 14 de setembro [...] e terão encerramento em 19 de outubro às 17h (horário de Brasília).",
-     "pagina": null,
-     "documento": "https://pt.surveymonkey.com/r/EDITALPMFAPOIOCOLETIVO2",
-     "metodo": "webfetch-html"
-    },
-    "Resultado": {
-     "valor": "11 de janeiro de 2027",
-     "trecho": "etembro a 19 de outubro de 2026, até as 17h (horário de Brasília). Resultado Final: 11 de janeiro de 2027, após as 19h (horário de Brasília). Encontro virtual de orientação p",
-     "pagina": 23,
-     "documento": "https://d335luupugsy2.cloudfront.net/cms%2Ffiles%2F205828%2F1790600749Edital_Marielle_Franco_Apoio_Coletivo_2_Edicao_28-09.pdf",
-     "metodo": "seção"
-    }
-   },
-   "dispensas": {},
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "revisão manual (P3-BR-PRIVADAS-2026-10-10)",
-     "em": "2026-10-10T20:09:23+00:00",
-     "ganhou": [
-      "Anexos",
-      "Destinação",
-      "Esfera",
-      "Objeto",
-      "Prazo de inscrição",
-      "Requisitos",
-      "Território",
-      "Valor",
-      "Área de atuação",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    },
-    {
-     "n": 3,
-     "nome": "página oficial e citados",
-     "em": "2026-10-11T18:00:33+00:00",
-     "ganhou": [
-      "Resultado"
-     ],
-     "legado": null
-    },
-    {
-     "n": 9,
-     "nome": "leitura profunda",
-     "em": "2026-10-12T06:11:10+00:00",
-     "ganhou": [],
-     "legado": null
-    },
-    {
-     "n": 2,
-     "nome": "anexos completos",
-     "em": "2026-10-12T18:55:08+00:00",
-     "ganhou": [],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://editais.baoba.org.br/programa-marielle-franco-2",
-     "degrau": null,
-     "como": null,
-     "motivo": null,
-     "falha": null,
-     "oficial": "documento oficial lido na revisão",
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://capta.org.br/oportunidades/programa-de-aceleracao-do-desenvolvimento-de-liderancas-femininas-negras-marielle-franco-2",
-     "degrau": null,
-     "como": null,
-     "motivo": null,
-     "falha": null,
-     "oficial": "documento oficial lido na revisão",
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://d335luupugsy2.cloudfront.net/cms%2Ffiles%2F205828%2F1790600749Edital_Marielle_Franco_Apoio_Coletivo_2_Edicao_28-09.pdf",
-     "degrau": null,
-     "como": null,
-     "motivo": null,
-     "falha": null,
-     "oficial": "documento oficial lido na revisão",
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pt.surveymonkey.com/r/EDITALPMFAPOIOCOLETIVO2",
-     "degrau": null,
-     "como": null,
-     "motivo": null,
-     "falha": null,
-     "oficial": "documento oficial lido na revisão",
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://baoba.org.br/programa-marielle-franco/",
-     "degrau": null,
-     "como": null,
-     "motivo": null,
-     "falha": null,
-     "oficial": "documento oficial lido na revisão",
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://baoba.org.br/editais-abertos/",
-     "degrau": null,
-     "como": null,
-     "motivo": null,
-     "falha": null,
-     "oficial": "documento oficial lido na revisão",
-     "paginas": null,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "certificado",
-     "Prazo de inscrição": "certificado",
-     "Resultado": "certificado",
-     "Prazo de recurso": "falta",
-     "Valor": "certificado",
-     "Órgão / financiador": "certificado",
-     "Território": "certificado",
-     "Esfera": "certificado",
-     "Requisitos": "certificado",
-     "Anexos": "certificado",
-     "Destinação": "certificado",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 11,
-    "dispensados": 0,
-    "ja_constavam": 0,
-    "faltam": 1,
-    "pct_certificado_12": 0.9167,
-    "pct_cobertura_12": 0.9167
-   }
-  },
-  {
    "id": "op-481faf70032d",
    "tipo": "livro",
    "titulo": "Programa Retomada Cultural RS - Bolsa Funarte de Apoio a Ações Artísticas Continuadas 2024",
@@ -77194,621 +77999,6 @@
     "pct_certificado_12": 0.4167,
     "pct_cobertura_12": 0.9167
    }
-  },
-  {
-   "id": "92a0f7cc763648155875",
-   "tipo": "estrela",
-   "titulo": "Seleção pelo TRE-AM de associações/cooperativas de catadores para Acordo de Cooperação Técnica de coleta de recicláveis em Manaus, vigente até 31/01/2028; Prazo de recurso e Destinação só no PDF do PN",
-   "balcao": "revisão",
-   "link_oficial": "https://pncp.gov.br/app/editais/05959999000114/2026/52",
-   "degrau": 0,
-   "como": "revisão manual: leitura do documento oficial no Chrome da titular",
-   "faltavam": [
-    "Prazo de recurso",
-    "Destinação",
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Prazo de recurso",
-    "Destinação"
-   ],
-   "tentativa": 2,
-   "versao": "revisão manual (CHROME-2026-10-11)",
-   "gabarito": null,
-   "estagio": null,
-   "estagio_inicio": null,
-   "esgotada": null,
-   "eficiencia": 0.833,
-   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido na revisão",
-   "selo_antes": "prata",
-   "selo_depois": "prata",
-   "em": "2026-10-10T23:06:35+00:00",
-   "prazo": "2028-01-31T18:00",
-   "uf": null,
-   "orgao": null,
-   "fim": "2028-01-31T18:00",
-   "itens": {
-    "Objeto": {
-     "valor": " O presente procedimento tem por objeto selecionar as associações e/ou cooperativas de catadores de materiais recicláveis e reutilizáveis, que estejam cadastradas no SINIR, para firmar Acordo de Cooperação Técnica para fins de coleta dos resíduos recicláveis e/ou reutilizáveis descartados nos Edifícios do TRE-AM, no Município de Manaus, conforme endereços indicados na Tabela I.",
-     "trecho": "TRE-AM). II - DO OBJETO 2.1. O presente procedimento tem por objeto selecionar as associações e/ou cooperativas de catadores de materiais recicláveis e reutilizáveis, que estejam cadastradas no SINIR, para firmar Acordo de Cooperação Técnica para fins de",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/05959999000114/compras/2026/52/arquivos/4",
-     "metodo": "pdf.js"
-    },
-    "Prazo de inscrição": {
-     "valor": "de 2026-05-25 09:00 até 2028-01-31 18:00",
-     "trecho": "dataAberturaProposta/dataEncerramentoProposta: de 2026-05-25 09:00 até 2028-01-31 18:00",
-     "pagina": null,
-     "documento": "https://pncp.gov.br/app/editais/05959999000114/2026/52",
-     "metodo": "registro oficial no PNCP (API de consulta)"
-    },
-    "Resultado": {
-     "valor": "conforme trecho do edital",
-     "trecho": "da habilitação: 09 /12/2025 ; e) Data de divulgação do resultado dos recursos: 15 /12/2025 ; f) Data de abertura e realização da sessão pública: 18 /12/2025 , às 10h, no Auditório do Fórum Eleitoral de Manaus, situado à Av. André Araújo nº 200 (Edifício Anexo do TRE-AM). II - DO OBJETO",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/05959999000114/compras/2026/52/arquivos/4",
-     "metodo": "pdf.js"
-    },
-    "Valor": {
-     "valor": "R$ 1,00",
-     "trecho": "valorTotalEstimado: R$ 1,00",
-     "pagina": null,
-     "documento": "https://pncp.gov.br/app/editais/05959999000114/2026/52",
-     "metodo": "registro oficial no PNCP (API de consulta)"
-    },
-    "Órgão / financiador": {
-     "valor": "TRIBUNAL REGIONAL ELEITORAL DO AMAZONAS — TRIBUNAL REGIONAL ELEITORAL DO AMAZONAS",
-     "trecho": "orgaoEntidade.razaoSocial: TRIBUNAL REGIONAL ELEITORAL DO AMAZONAS — TRIBUNAL REGIONAL ELEITORAL DO AMAZONAS",
-     "pagina": null,
-     "documento": "https://pncp.gov.br/app/editais/05959999000114/2026/52",
-     "metodo": "registro oficial no PNCP (API de consulta)"
-    },
-    "Território": {
-     "valor": "Manaus/AM",
-     "trecho": "unidadeOrgao.municipioNome/ufSigla: Manaus/AM",
-     "pagina": null,
-     "documento": "https://pncp.gov.br/app/editais/05959999000114/2026/52",
-     "metodo": "registro oficial no PNCP (API de consulta)"
-    },
-    "Esfera": {
-     "valor": "F (Federal)",
-     "trecho": "orgaoEntidade.esferaId: F (Federal)",
-     "pagina": null,
-     "documento": "https://pncp.gov.br/app/editais/05959999000114/2026/52",
-     "metodo": "registro oficial no PNCP (API de consulta)"
-    },
-    "Requisitos": {
-     "valor": "conforme trecho do documento",
-     "trecho": "do órgão. III - DAS CONDIÇÕES DE PARTICIPAÇÃO 3.1. Poderão participar do procedimento de seleção as associações e cooperativas de catadores de materiais recicláveis e reutilizáveis: 3.1.1. Que estejam legalmente constituídas; 3.1.2. Que sejam formalmente constituídas",
-     "pagina": 2,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/05959999000114/compras/2026/52/arquivos/4",
-     "metodo": "pdf.js"
-    },
-    "Anexos": {
-     "valor": "Anexo I – Minuta de Acordo de Cooperação Técnica; Anexo II – Modelo de declaração de cumprimento d",
-     "trecho": "seguintes anexos: 10.8.1. ANEXO I – Minuta de Acordo de Cooperação Técnica. 10.8.2. ANEXO II – Modelo de declaração de cumprimento dos requisitos de habilitação. Manaus, ( Datado e Assinado Eletronicamente ). Edital de Abertura",
-     "pagina": 5,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/05959999000114/compras/2026/52/arquivos/4",
-     "metodo": "pdf.js"
-    },
-    "Área de atuação": {
-     "valor": "Meio ambiente",
-     "trecho": "TRE-AM). II - DO OBJETO 2.1. O presente procedimento tem por objeto selecionar as associações e/ou cooperativas de catadores de materiais recicláveis e reutilizáveis, que estejam cadastradas no SINIR, para firmar Acordo de Cooperação Técnica para fins de",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/05959999000114/compras/2026/52/arquivos/4",
-     "metodo": "pdf.js"
-    }
-   },
-   "dispensas": {},
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "revisão manual (P2-BR-PUBLICAS-2026-10-10)",
-     "em": "2026-10-10T20:09:23+00:00",
-     "ganhou": [
-      "Anexos",
-      "Esfera",
-      "Objeto",
-      "Prazo de inscrição",
-      "Requisitos",
-      "Resultado",
-      "Território",
-      "Valor",
-      "Área de atuação",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/05959999000114/compras/2026/52/arquivos/4",
-     "degrau": null,
-     "como": null,
-     "motivo": null,
-     "falha": null,
-     "oficial": "documento oficial lido na revisão",
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/05959999000114/compras/2026/52/arquivos/1",
-     "degrau": null,
-     "como": null,
-     "motivo": null,
-     "falha": null,
-     "oficial": "documento oficial lido na revisão",
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/05959999000114/compras/2026/52/arquivos/2",
-     "degrau": null,
-     "como": null,
-     "motivo": null,
-     "falha": null,
-     "oficial": "documento oficial lido na revisão",
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/05959999000114/compras/2026/52/arquivos/3",
-     "degrau": null,
-     "como": null,
-     "motivo": null,
-     "falha": null,
-     "oficial": "documento oficial lido na revisão",
-     "paginas": null,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "certificado",
-     "Prazo de inscrição": "certificado",
-     "Resultado": "certificado",
-     "Prazo de recurso": "falta",
-     "Valor": "certificado",
-     "Órgão / financiador": "certificado",
-     "Território": "certificado",
-     "Esfera": "certificado",
-     "Requisitos": "certificado",
-     "Anexos": "certificado",
-     "Destinação": "falta",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 10,
-    "dispensados": 0,
-    "ja_constavam": 0,
-    "faltam": 2,
-    "pct_certificado_12": 0.8333,
-    "pct_cobertura_12": 0.8333
-   }
-  },
-  {
-   "id": "op-07dfbfa866be",
-   "tipo": "livro",
-   "titulo": "TRIBUNAL SUPERIOR DO TRABALHO — Credenciamento de Cooperativas ou Associações de catadores de materiais recicláveis para a realização dos serviços de eliminação",
-   "balcao": "pncp",
-   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/585/arquivos/1",
-   "degrau": 0,
-   "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-   "faltavam": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Território",
-    "Destinação"
-   ],
-   "tentativa": 1,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "prata",
-   "estagio_inicio": "prata",
-   "esgotada": null,
-   "eficiencia": 0.833,
-   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido (zip_sem_pdf)",
-   "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-10T09:03:28+00:00",
-   "prazo": null,
-   "uf": "BR",
-   "orgao": "PNCP — TRIBUNAL SUPERIOR DO TRABALHO",
-   "fim": null,
-   "itens": {
-    "Prazo de recurso": {
-     "valor": "10 (dez) dias úteis",
-     "trecho": "ão no prazo de 3 (três) dias úteis, ou, nesse mesmo prazo, encaminhar recurso para a autoridade superior, a qual deverá proferir sua decisão no prazo de 10 (dez) dias úteis, contado do recebimento dos autos. 5 . 5 . Os recursos interpostos fo",
-     "pagina": 7,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/585/arquivos/1",
-     "metodo": "seção"
-    },
-    "Objeto": {
-     "valor": "a doação de autos ﬁndos (processos), para a eliminação, incluindo a coleta, a descaracterização, preferencialmente por meio de fragmentação manual ou mecânica, com garantia de Termo de Referência (Modelo Termo de Compromisso) (0222617) SEI 000001002/2025 / pg.",
-     "trecho": "CLÁUSULA PRIMEIRA - DO OBJETO 1 . 1 . O presente Termo de Compromisso tem por objeto a doação de autos ﬁndos (processos), para a eliminação, incluindo a coleta, a descaracterização, preferencialmente por meio de fragmentação manual ou mecânica, com garantia de Termo de Referência (Modelo Termo de Compromisso) (0222617) SEI 000001002/2025 / pg. 41 que não possa ser revertida, e a reciclagem desse m",
-     "pagina": 41,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/585/arquivos/1",
-     "metodo": "texto"
-    },
-    "Órgão / financiador": {
-     "valor": "TRIBUNAL REGIONAL DO TRABALHO DA 16ª REGIÃO",
-     "trecho": "PODER JUDICIÁRIO TRIBUNAL REGIONAL DO TRABALHO DA 16ª REGIÃO COORDENADORIA DE ADMINISTRAÇÃO E GESTÃO NEGOCIAL DIVISÃO DE AQUISIÇÕE",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/585/arquivos/1",
-     "metodo": "cabeçalho"
-    },
-    "Esfera": {
-     "valor": "federal",
-     "trecho": "domínio/órgão: pncp.gov.br · TRIBUNAL REGIONAL DO TRABALHO DA 16ª REGIÃO PNCP — TRIBUNAL SUPERIOR DO TRABALHO",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/585/arquivos/1",
-     "metodo": "domínio e órgão"
-    },
-    "Requisitos": {
-     "valor": "requisitos de habilitação previstos no Edital.",
-     "trecho": ") e documentos de habilitação. 3 . 1 . 2 . Atestar o cumprimento dos requisitos de habilitação previstos no Edital. 3 . 1 . 3 . Todas as especificações do objeto vinculam o interessado.",
-     "pagina": 5,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/585/arquivos/1",
-     "metodo": "texto"
-    },
-    "Anexos": {
-     "valor": "ANEXO I - Estudo Técnico Preliminar; ANEXO II - Termo de Referência; ANEXO III - Minuta do Termo de Compromisso; ANEXO III).; ANEXO I – MODELO DE REQUERIMENTO PARTICIPAÇÃO EM; ANEXO II MINUTA DO TERMO DE COMPROMISSO DE MANUTENÇÃO DE SIGILO –; ANEXO III – MODELO DE DECLARAÇÃO; ANEXO I MAPA DE RISCOS",
-     "trecho": "SCREDENCIAMENTO DO PRAZO DE VIGÊNCIA DO EDITAL DISPOSIÇÕES GERAIS DOS ANEXOS Edital 01/2025 Credenciamento (0224491) SEI 000001002/2025 / pg. 1 Edital 01/2025 Credenciamento (0224491) SEI 000001002/2025 / pg. 2 PODER JUDICIÁRIO TRIB",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/585/arquivos/1",
-     "metodo": "lista de anexos"
-    },
-    "Área de atuação": {
-     "valor": "Educação, Meio ambiente",
-     "trecho": "termos do objeto e do título: Educação, Meio ambiente",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/585/arquivos/1",
-     "metodo": "palavras-chave do objeto"
-    }
-   },
-   "dispensas": {
-    "Prazo de inscrição": {
-     "motivo": "dispensado pelo Cartório — não se aplica: inscrição em fluxo contínuo (cadastro permanente, sem data-limite)",
-     "trecho": "REDENCIAMENTO 12 . 1 . O edital de credenciamento poderá ser anulado, a qualquer tempo, em caso de vício de legalidade, ou revogado, por motivos de conveniê",
-     "pagina": 11,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/585/arquivos/1"
-    },
-    "Resultado": {
-     "motivo": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
-     "trecho": "REDENCIAMENTO 12 . 1 . O edital de credenciamento poderá ser anulado, a qualquer tempo, em caso de vício de legalidade, ou revogado, por motivos de conveniê",
-     "pagina": 11,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/585/arquivos/1"
-    },
-    "Valor": {
-     "motivo": "dispensado pelo Cartório — não se aplica: sem repasse financeiro (cooperação, cessão ou habilitação sem recurso)",
-     "trecho": "ões de catadores de materiais ocorrerá a título não oneroso, ou seja, sem ônus para o Tribunal Regional do Trabalho da 16ª Região, não decorrendo qualque",
-     "pagina": 11,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/585/arquivos/1"
-    }
-   },
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-10T09:03:28+00:00",
-     "ganhou": [
-      "Anexos",
-      "Esfera",
-      "Objeto",
-      "Prazo de inscrição",
-      "Prazo de recurso",
-      "Requisitos",
-      "Resultado",
-      "Valor",
-      "Área de atuação",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/585/arquivos/1",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 48,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/585/arquivos/2",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
-     "motivo": "zip_sem_pdf",
-     "falha": null,
-     "oficial": null,
-     "paginas": 0,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/585/arquivos/3",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
-     "motivo": "zip_sem_pdf",
-     "falha": null,
-     "oficial": null,
-     "paginas": 0,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "certificado",
-     "Prazo de inscrição": "dispensado",
-     "Resultado": "dispensado",
-     "Prazo de recurso": "certificado",
-     "Valor": "dispensado",
-     "Órgão / financiador": "certificado",
-     "Território": "falta",
-     "Esfera": "certificado",
-     "Requisitos": "certificado",
-     "Anexos": "certificado",
-     "Destinação": "falta",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 7,
-    "dispensados": 3,
-    "ja_constavam": 0,
-    "faltam": 2,
-    "pct_certificado_12": 0.8333,
-    "pct_cobertura_12": 0.8333
-   }
-  },
-  {
-   "id": "op-33aa6c17b941",
-   "tipo": "livro",
-   "titulo": "TRIBUNAL SUPERIOR DO TRABALHO — Credenciamento, visando a contratação onerosa de associações, cooperativas e/ou centrais de cooperativas de catadores de materia",
-   "balcao": "pncp",
-   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/1992/arquivos/3",
-   "degrau": 0,
-   "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-   "faltavam": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Território",
-    "Destinação"
-   ],
-   "tentativa": 1,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": {
-    "orgao": "cnpj:00509968000148",
-    "itens_pelo_gabarito": [
-     "Objeto"
-    ]
-   },
-   "estagio": "prata",
-   "estagio_inicio": "prata",
-   "esgotada": null,
-   "eficiencia": 0.833,
-   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-10T09:05:43+00:00",
-   "prazo": null,
-   "uf": "BR",
-   "orgao": "TRIBUNAL SUPERIOR DO TRABALHO",
-   "fim": null,
-   "itens": {
-    "Prazo de recurso": {
-     "valor": "10 (dez) dias úteis",
-     "trecho": "so deverá ser encaminhado à autoridade competente, para julgamento do recurso por decisão fundamentada, no prazo máximo de 10 (dez) dias úteis, contados do recebimento dos autos, com o posterior encaminhamento do",
-     "pagina": 4,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/1992/arquivos/3",
-     "metodo": "seção"
-    },
-    "Valor": {
-     "valor": "R$ 12.000,00",
-     "trecho": "é 1.000 kg/mês. Evento de Coleta* Até 24 eventos por ano. R$ 500,00 R$ 12.000,00 * Evento de coleta: Corresponde a um chamado feito pelo TRT 1",
-     "pagina": 21,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/1992/arquivos/3",
-     "metodo": "seção"
-    },
-    "Objeto": {
-     "valor": "Credenciamento, visando a contratação onerosa de associações, cooperativas e/ou\ncentrais  de  cooperativas  de  catadores  de  materiais  recicláveis  para  recolhimento  de\nresíduos sólidos recicláveis não perigosos, gerados nos edifícios do Tribunal Regional do\nTrabalho da 18ª Região em Goiânia.",
-     "trecho": "EDITAL DE CREDENCIAMENTO Nº 01/2025 ANEXO I - TERMO DE REFERÊNCIA 1. DO OBJETO 1.1. Credenciamento, visando a contratação onerosa de associações, cooperativas e/ou centrais de cooperativas de catadores de materiais recicláveis para recolhimento de resíduos sólidos recicláveis não perigosos, gerados nos edifícios do Tribunal Regional do Trabalho da 18ª Região em Goiânia. 1.2. CATSER aproximado: 142",
-     "pagina": 8,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/1992/arquivos/3",
-     "metodo": "seção"
-    },
-    "Órgão / financiador": {
-     "valor": "TRIBUNAL REGIONAL DO TRABALHO DA 18ª REGIÃO",
-     "trecho": "PODER JUDICIÁRIO DA UNIÃO TRIBUNAL REGIONAL DO TRABALHO DA 18ª REGIÃO SECRETARIA DE LICITAÇÕES E CONTRATOS EDITAL DE CREDENCIAMENTO Nº 01/2",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/1992/arquivos/3",
-     "metodo": "cabeçalho"
-    },
-    "Esfera": {
-     "valor": "federal",
-     "trecho": "domínio/órgão: pncp.gov.br · TRIBUNAL REGIONAL DO TRABALHO DA 18ª REGIÃO TRIBUNAL SUPERIOR DO TRABALHO",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/1992/arquivos/3",
-     "metodo": "domínio e órgão"
-    },
-    "Requisitos": {
-     "valor": "poderão participar deste credenciamento as associações, cooperativas e/ou centrais de cooperativas de catadores de materiais recicláveis TRT 18ª REGIÃO EDITAL DE CREDENCIAMENTO Nº 01/2025 que atendam às condições deste Edital e seus anexos, obedecida a legislação em vigor, bem como demonstrem: 2.",
-     "trecho": "tal. [TABELA] 2 PARTICIPAÇÃO NO CREDENCIAMENTO [TABELA] 2.1 Somente poderão participar deste credenciamento as associações, cooperativas e/ou centrais de cooperativas de catadores de materiais recicláveis TRT 18ª REGIÃO EDITAL DE CREDENCIAMENTO Nº 01/2025 que atendam às condições deste Edital e seus anexos, obedecida a legislação em vigor, bem como demonstrem: 2.1.1 Ser formal e exclusivamente con",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/1992/arquivos/3",
-     "metodo": "texto"
-    },
-    "Anexos": {
-     "valor": "ANEXO I - TERMO DE REFERÊNCIA; ANEXO II TERMO DE CREDENCIAMENTO nº 01/2025; ANEXO III - MODELO DE DECLARAÇÃO",
-     "trecho": "20601/2024 Pag. 7 TRT 18ª REGIÃO EDITAL DE CREDENCIAMENTO Nº 01/2025 ANEXO I - TERMO DE REFERÊNCIA 1. DO OBJETO 1.1. Credenciamento, visando a contratação onerosa de associações, cooperativas e/ou centrais de cooperativas de catadores de materiais rec",
-     "pagina": 8,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/1992/arquivos/3",
-     "metodo": "lista de anexos"
-    },
-    "Área de atuação": {
-     "valor": "Meio ambiente",
-     "trecho": "termos do objeto e do título: Meio ambiente",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/1992/arquivos/1",
-     "metodo": "palavras-chave do objeto"
-    }
-   },
-   "dispensas": {
-    "Prazo de inscrição": {
-     "motivo": "dispensado pelo Cartório — não se aplica: inscrição em fluxo contínuo (cadastro permanente, sem data-limite)",
-     "trecho": "elacionada com a execução dos serviços; 9.1.6. Exigir da Credenciada, a qualquer tempo, a comprovação das condições de contratação exigidas neste Termo; [T",
-     "pagina": 13,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/1992/arquivos/3"
-    },
-    "Resultado": {
-     "motivo": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
-     "trecho": "elacionada com a execução dos serviços; 9.1.6. Exigir da Credenciada, a qualquer tempo, a comprovação das condições de contratação exigidas neste Termo; [T",
-     "pagina": 13,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/1992/arquivos/3"
-    }
-   },
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-10T09:05:43+00:00",
-     "ganhou": [
-      "Anexos",
-      "Esfera",
-      "Objeto",
-      "Prazo de inscrição",
-      "Prazo de recurso",
-      "Requisitos",
-      "Resultado",
-      "Valor",
-      "Área de atuação",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/1992/arquivos/3",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 28,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/1992/arquivos/1",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/1992/arquivos/2",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 2,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "certificado",
-     "Prazo de inscrição": "dispensado",
-     "Resultado": "dispensado",
-     "Prazo de recurso": "certificado",
-     "Valor": "certificado",
-     "Órgão / financiador": "certificado",
-     "Território": "falta",
-     "Esfera": "certificado",
-     "Requisitos": "certificado",
-     "Anexos": "certificado",
-     "Destinação": "falta",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 8,
-    "dispensados": 2,
-    "ja_constavam": 0,
-    "faltam": 2,
-    "pct_certificado_12": 0.8333,
-    "pct_cobertura_12": 0.8333
-   }
   }
  ],
  "linha_de_producao": {
@@ -77831,7 +78021,7 @@
   },
   "fila_oportunidades": 498,
   "fila_livros": 2195,
-  "devidas_nesta_hora": 2591,
+  "devidas_nesta_hora": 2590,
   "promovidas_nesta_execucao": 0,
   "sem_material_agora": 11,
   "esgotadas_10_abordagens": 0,
