@@ -227,7 +227,7 @@
  "pontos_com_redundancia": 12,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 6477
+ "exemplos_da_rede_de_rotas": 6598
 }
 ```
 
@@ -372,20 +372,20 @@
 
 ```json
 {
- "fontes_recebidas": 289,
+ "fontes_recebidas": 291,
  "por_origem": {
   "conselho (fontes irmãs)": 145,
-  "Cartório (site oficial certificado)": 120,
-  "Espião (privado/internacional)": 24
+  "Cartório (site oficial certificado)": 121,
+  "Espião (privado/internacional)": 25
  },
- "lidas_nas_ultimas_24h": 217,
+ "lidas_nas_ultimas_24h": 198,
  "dimensionamento": {
-  "fontes": 289,
+  "fontes": 291,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 6,
-  "cobertura_diaria": 289,
+  "cobertura_diaria": 291,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -438,7 +438,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 71,
+   "orgaos": 72,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",
@@ -460,14 +460,14 @@
    ]
   },
   "Diário municipal em lote (AGM/DOM)": {
-   "orgaos": 13,
+   "orgaos": 14,
    "exemplos": [
     "campobelo.mg.gov.br",
     "diariooficial.abc.go.gov.br",
     "diariooficial.goiania.go.gov.br",
+    "diariooficial.palmas.to.gov.br",
     "diariooficial.vitoria.es.gov.br",
-    "divinopolisdotocantins.to.gov.br",
-    "dom.morrodochapeu.ba.gov.br"
+    "divinopolisdotocantins.to.gov.br"
    ]
   },
   "Portal de transparência de fornecedor": {

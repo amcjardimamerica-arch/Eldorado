@@ -60,13 +60,13 @@
 225 domínios oficiais já renderam e não têm motor. Os primeiros:
 
 - baoba.org.br (peso 23)
+- licitario.com.br (peso 18)
 - institutolojasrenner.org.br (peso 17)
 - itausocial.org.br (peso 14)
 - zurich.com.br (peso 13)
+- mariaemilia.org.br (peso 12)
 - fundoecos.org.br (peso 12)
-- mariaemilia.org.br (peso 11)
 - chamadas.funbio.org.br (peso 11)
-- licitario.com.br (peso 10)
 - feirapreta.com.br (peso 9)
 - brazilfoundation.org (peso 9)
 - transforma.fbb.org.br (peso 8)
@@ -87,16 +87,16 @@
 
 ## Plataformas e inovações (Dr. Fábio)
 
-- WordPress: 71 órgãos
+- WordPress: 72 órgãos
 - Mapas Culturais: 10 órgãos
-- Diário municipal em lote (AGM/DOM): 13 órgãos
+- Diário municipal em lote (AGM/DOM): 14 órgãos
 - Portal de transparência de fornecedor: 17 órgãos
 - Sistemas de editais (Prosas/Editais): 44 órgãos
 - Querido Diário: 0 órgãos
 - PNCP: 1 órgãos
 - Leis e atos (Leis Municipais): 1 órgãos
 
-- **Adaptador por plataforma** — um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão. Alcance: 71 órgãos WordPress e 10 instâncias de Mapas Culturais já conhecidos de uma vez.
+- **Adaptador por plataforma** — um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão. Alcance: 72 órgãos WordPress e 10 instâncias de Mapas Culturais já conhecidos de uma vez.
 - **Detecção de mudança barata** — ler o sitemap.xml (lastmod) e os feeds RSS/Atom dos sites oficiais; só baixar a página quando muda. Alcance: permite vigiar 10× mais fontes no mesmo tempo de execução.
 - **Consulta inversa** — frases distintivas de editais confirmados (ex.: 'Política Nacional Aldir Blanc' + 'chamamento') viram buscas por editais irmãos em outros municípios. Alcance: cada edital confirmado gera pistas em dezenas de municípios que publicam o mesmo modelo.
 - **Motor de fontes irmãs** — domínios oficiais que já renderam oportunidade e nenhum motor vigia passam a ser lidos todos os dias. Alcance: implantado como motor Outras Oportunidades (clones calculados para ler todas as fontes no dia).
