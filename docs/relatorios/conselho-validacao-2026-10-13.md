@@ -227,7 +227,7 @@
  "pontos_com_redundancia": 12,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 5936
+ "exemplos_da_rede_de_rotas": 6060
 }
 ```
 
@@ -402,20 +402,20 @@
 
 ```json
 {
- "fontes_recebidas": 281,
+ "fontes_recebidas": 282,
  "por_origem": {
-  "conselho (fontes irmãs)": 144,
+  "conselho (fontes irmãs)": 145,
   "Cartório (site oficial certificado)": 116,
   "Espião (privado/internacional)": 21
  },
  "lidas_nas_ultimas_24h": 211,
  "dimensionamento": {
-  "fontes": 281,
+  "fontes": 282,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 6,
-  "cobertura_diaria": 281,
+  "cobertura_diaria": 282,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -512,7 +512,7 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 43,
+   "orgaos": 44,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",

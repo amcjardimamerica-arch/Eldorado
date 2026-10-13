@@ -56,7 +56,7 @@
 
 ## Fontes irmãs (Profa. Clara)
 
-216 domínios oficiais já renderam e não têm motor. Os primeiros:
+217 domínios oficiais já renderam e não têm motor. Os primeiros:
 
 - baoba.org.br (peso 17)
 - institutolojasrenner.org.br (peso 15)
@@ -90,7 +90,7 @@
 - Mapas Culturais: 10 órgãos
 - Diário municipal em lote (AGM/DOM): 13 órgãos
 - Portal de transparência de fornecedor: 17 órgãos
-- Sistemas de editais (Prosas/Editais): 43 órgãos
+- Sistemas de editais (Prosas/Editais): 44 órgãos
 - Querido Diário: 0 órgãos
 - PNCP: 1 órgãos
 - Leis e atos (Leis Municipais): 1 órgãos
