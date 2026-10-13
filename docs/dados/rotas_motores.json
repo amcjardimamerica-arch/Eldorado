@@ -1,19 +1,19 @@
 {
- "em": "2026-10-13T17:29:56+00:00",
+ "em": "2026-10-13T19:09:29+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
   "motores": 150,
-  "alterar_rota": 46,
+  "alterar_rota": 45,
   "rota_nova": 49,
   "via_ponte": 2,
-  "exemplos_da_rede": 6675
+  "exemplos_da_rede": 6760
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
    [
     "origem:biblioteca",
-    2.6378
+    2.357
    ],
    [
     "tok:inscricoes",
@@ -29,11 +29,11 @@
    ],
    [
     "origem:rota original",
-    1.7161
+    1.6377
    ],
    [
     "tok:feed",
-    1.5423
+    1.5358
    ],
    [
     "tok:abertas",
@@ -45,7 +45,7 @@
    ],
    [
     "tipo:privada",
-    1.3918
+    1.3636
    ],
    [
     "tok:para",
@@ -56,30 +56,30 @@
     1.1565
    ],
    [
-    "tok:editais",
-    1.1056
+    "tok:portarias",
+    1.0967
    ]
   ],
   "piores_sinais": [
    [
-    "tipo:ministerio_publico",
-    -1.2728
-   ],
-   [
-    "raiz:True",
-    -1.5344
-   ],
-   [
     "tok:content",
-    -1.6321
+    -1.6325
    ],
    [
     "tok:uploads",
-    -1.6321
+    -1.6325
+   ],
+   [
+    "sapl:False",
+    -1.6439
    ],
    [
     "tipo:internacional",
-    -1.7253
+    -1.7255
+   ],
+   [
+    "raiz:True",
+    -1.7697
    ],
    [
     "origem:câmara",
@@ -87,11 +87,11 @@
    ],
    [
     "gov:False",
-    -2.6619
+    -2.6903
    ],
    [
     "origem:padrão",
-    -3.5191
+    -3.5423
    ]
   ]
  },
@@ -99,11 +99,11 @@
   "judiciario-tjgo": {
    "nome": "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
    "status": "alterar rota",
-   "vazias_seguidas": 76,
-   "leituras": 76,
+   "vazias_seguidas": 77,
+   "leituras": 77,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-13T16:30:41+00:00",
+    "em": "2026-10-13T18:25:14+00:00",
     "classe": "vazia",
     "motivo": "0 notícias lidas (TJGO A 0 no RSS · CNJ C 0) e 1 do TJGO/CNJ no PNCP (lidas pelo motor 04, já na base): nenhum edital de destinação aberto hoje · 0 a acompanhar"
    },
@@ -141,8 +141,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-13T07:54:24+00:00",
-    "testes": 16,
+    "em": "2026-10-13T19:06:55+00:00",
+    "testes": 17,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -198,7 +198,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-13T07:54:21+00:00",
+    "em": "2026-10-13T19:06:50+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -207,15 +207,16 @@
   "f260-captacao-227": {
    "nome": "Instituto Coca-Cola Brasil",
    "status": "alterar rota",
-   "vazias_seguidas": 42,
-   "leituras": 42,
+   "vazias_seguidas": 43,
+   "leituras": 43,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-13T16:55:57+00:00",
+    "em": "2026-10-13T18:53:50+00:00",
     "classe": "vazia",
     "motivo": "tempo esgotado / conexão recusada"
    },
    "historico": [
+    "v",
     "v",
     "v",
     "v",
@@ -421,6 +422,35 @@
    "rota_aprendida": null,
    "afinado": null
   },
+  "f260-captacao-240": {
+   "nome": "UNESCO – Fundo Internacional para Diversidade Cultural",
+   "status": "alterar rota",
+   "vazias_seguidas": 25,
+   "leituras": 25,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-13T18:53:49+00:00",
+    "classe": "vazia",
+    "motivo": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": null,
+   "afinado": {
+    "em": "2026-10-13T16:32:08+00:00",
+    "testes": 26,
+    "melhor": null,
+    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+   }
+  },
   "f260-captacao-235": {
    "nome": "Instituto Lojas Renner",
    "status": "alterar rota",
@@ -438,7 +468,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-13T07:55:15+00:00",
+    "em": "2026-10-13T19:08:38+00:00",
     "testes": 16,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -468,34 +498,6 @@
    "afinado": {
     "em": "2026-10-13T08:18:31+00:00",
     "testes": 18,
-    "melhor": null,
-    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
-   }
-  },
-  "f260-captacao-240": {
-   "nome": "UNESCO – Fundo Internacional para Diversidade Cultural",
-   "status": "alterar rota",
-   "vazias_seguidas": 24,
-   "leituras": 24,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-13T16:55:47+00:00",
-    "classe": "vazia",
-    "motivo": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": null,
-   "afinado": {
-    "em": "2026-10-13T16:32:08+00:00",
-    "testes": 26,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -684,8 +686,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-13T08:18:08+00:00",
-    "testes": 24,
+    "em": "2026-10-13T19:09:29+00:00",
+    "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -932,8 +934,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-13T08:17:38+00:00",
-    "testes": 22,
+    "em": "2026-10-13T19:09:24+00:00",
+    "testes": 13,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -1065,8 +1067,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-13T08:17:28+00:00",
-    "testes": 14,
+    "em": "2026-10-13T19:09:19+00:00",
+    "testes": 15,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -1164,16 +1166,16 @@
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
   },
-  "mpu-destinacao": {
-   "nome": "MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD)",
-   "status": "alterar rota",
-   "vazias_seguidas": 5,
-   "leituras": 45,
-   "ok": 0,
+  "do-goiania": {
+   "nome": "Diário Oficial do Município de Goiânia",
+   "status": "rota nova em teste",
+   "vazias_seguidas": 4,
+   "leituras": 133,
+   "ok": 9,
    "ultima": {
-    "em": "2026-10-13T16:30:49+00:00",
+    "em": "2026-10-13T18:20:18+00:00",
     "classe": "vazia",
-    "motivo": "nenhum edital de destinação aberto hoje nas fontes lidas"
+    "motivo": "7 edição(ões) lida(s), 75 ato(s) do terceiro setor: nenhum chamamento aberto para OSC hoje · 49 a acompanhar · 26 ruído (credenciamento, OS da saúde, decretos)"
    },
    "historico": [
     "v",
@@ -1209,21 +1211,71 @@
    ],
    "rota_aprendida": {
     "urls": [
-     "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao"
+     "https://www.goiania.go.gov.br/secult/leipaulogustavo/"
     ],
     "via": "direto",
     "origem": "rota original",
-    "pontos": 13,
-    "aprendido_em": "2026-10-13T17:29:01+00:00"
+    "pontos": 9,
+    "aprendido_em": "2026-10-13T11:38:31+00:00"
    },
    "afinado": {
-    "em": "2026-10-13T17:29:01+00:00",
-    "testes": 17,
+    "em": "2026-10-13T11:38:31+00:00",
+    "testes": 16,
     "melhor": {
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
+     "url": "https://www.goiania.go.gov.br/secult/leipaulogustavo/",
      "via": "direto",
      "origem": "rota original",
-     "pontos": 13,
+     "pontos": 9,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
+  },
+  "dj-trf1-go": {
+   "nome": "Diário da Justiça Federal — Seção Judiciária de Goiás",
+   "status": "rota nova em teste",
+   "vazias_seguidas": 4,
+   "leituras": 61,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-13T18:25:21+00:00",
+    "classe": "vazia",
+    "motivo": "o robots.txt do site proíbe leitura automática (3 página(s)) — conferência manual pelo titular; republicações chegam pelo motor do CNJ"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": {
+    "urls": [
+     "https://www.trf1.jus.br/sjgo/imprensa/noticias"
+    ],
+    "via": "direto",
+    "origem": "rota original",
+    "pontos": 29,
+    "aprendido_em": "2026-10-13T11:38:07+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-13T11:38:07+00:00",
+    "testes": 14,
+    "melhor": {
+     "url": "https://www.trf1.jus.br/sjgo/imprensa/noticias",
+     "via": "direto",
+     "origem": "rota original",
+     "pontos": 29,
      "formato": "html"
     },
     "resultado": "rota nova em teste"
@@ -1337,302 +1389,14 @@
     "resultado": "rota nova em teste"
    }
   },
-  "do-goiania": {
-   "nome": "Diário Oficial do Município de Goiânia",
-   "status": "rota nova em teste",
-   "vazias_seguidas": 3,
-   "leituras": 132,
-   "ok": 9,
-   "ultima": {
-    "em": "2026-10-13T16:23:18+00:00",
-    "classe": "vazia",
-    "motivo": "7 edição(ões) lida(s), 75 ato(s) do terceiro setor: nenhum chamamento aberto para OSC hoje · 49 a acompanhar · 26 ruído (credenciamento, OS da saúde, decretos)"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": {
-    "urls": [
-     "https://www.goiania.go.gov.br/secult/leipaulogustavo/"
-    ],
-    "via": "direto",
-    "origem": "rota original",
-    "pontos": 9,
-    "aprendido_em": "2026-10-13T11:38:31+00:00"
-   },
-   "afinado": {
-    "em": "2026-10-13T11:38:31+00:00",
-    "testes": 16,
-    "melhor": {
-     "url": "https://www.goiania.go.gov.br/secult/leipaulogustavo/",
-     "via": "direto",
-     "origem": "rota original",
-     "pontos": 9,
-     "formato": "html"
-    },
-    "resultado": "rota nova em teste"
-   }
-  },
-  "camara-goiania-pl": {
-   "nome": "Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos",
-   "status": "ok",
-   "vazias_seguidas": 3,
-   "leituras": 109,
-   "ok": 31,
-   "ultima": {
-    "em": "2026-10-13T16:29:39+00:00",
-    "classe": "vazia",
-    "motivo": "0 itens lidos (pautas D 0 projetos em 0 pauta(s) · processos A 0 · própria B 0 · notícias C 0): nenhum chamamento aberto para OSC · 0 a acompanhar · 0 utilidade"
-   },
-   "historico": [
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "v",
-    "v",
-    "o",
-    "v",
-    "v",
-    "o",
-    "v",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": null,
-   "afinado": {
-    "em": "2026-10-10T10:20:34+00:00",
-    "testes": 11,
-    "melhor": null,
-    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
-   }
-  },
-  "dj-trf1-go": {
-   "nome": "Diário da Justiça Federal — Seção Judiciária de Goiás",
-   "status": "rota nova em teste",
-   "vazias_seguidas": 3,
-   "leituras": 60,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-13T16:30:49+00:00",
-    "classe": "vazia",
-    "motivo": "o robots.txt do site proíbe leitura automática (3 página(s)) — conferência manual pelo titular; republicações chegam pelo motor do CNJ"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": {
-    "urls": [
-     "https://www.trf1.jus.br/sjgo/imprensa/noticias"
-    ],
-    "via": "direto",
-    "origem": "rota original",
-    "pontos": 29,
-    "aprendido_em": "2026-10-13T11:38:07+00:00"
-   },
-   "afinado": {
-    "em": "2026-10-13T11:38:07+00:00",
-    "testes": 14,
-    "melhor": {
-     "url": "https://www.trf1.jus.br/sjgo/imprensa/noticias",
-     "via": "direto",
-     "origem": "rota original",
-     "pontos": 29,
-     "formato": "html"
-    },
-    "resultado": "rota nova em teste"
-   }
-  },
-  "f260-captacao-190": {
-   "nome": "TJGO - penas pecuniárias 1ª Vara de Execução Penal de Goiânia",
-   "status": "rota nova em teste",
-   "vazias_seguidas": 3,
-   "leituras": 48,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-13T08:56:06+00:00",
-    "classe": "vazia",
-    "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": {
-    "urls": [
-     "https://www.trt18.jus.br/portal/"
-    ],
-    "via": "direto",
-    "origem": "rota original",
-    "pontos": 13,
-    "aprendido_em": "2026-10-10T22:57:28+00:00"
-   },
-   "afinado": {
-    "em": "2026-10-10T22:57:28+00:00",
-    "testes": 12,
-    "melhor": {
-     "url": "https://www.trt18.jus.br/portal/",
-     "via": "direto",
-     "origem": "rota original",
-     "pontos": 13,
-     "formato": "html"
-    },
-    "resultado": "rota nova em teste"
-   }
-  },
-  "f260-captacao-221": {
-   "nome": "Fundação Banco do Brasil",
-   "status": "rota nova em teste",
-   "vazias_seguidas": 3,
-   "leituras": 25,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-13T12:45:30+00:00",
-    "classe": "vazia",
-    "motivo": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": {
-    "urls": [
-     "https://www.fbb.org.br/feed"
-    ],
-    "via": "direto",
-    "origem": "rota original",
-    "pontos": 9,
-    "aprendido_em": "2026-10-13T05:28:10+00:00"
-   },
-   "afinado": {
-    "em": "2026-10-13T05:28:10+00:00",
-    "testes": 12,
-    "melhor": {
-     "url": "https://www.fbb.org.br/feed",
-     "via": "direto",
-     "origem": "rota original",
-     "pontos": 9,
-     "formato": "sitemap/feed"
-    },
-    "resultado": "rota nova em teste"
-   }
-  },
-  "f260-espalhado-www-rosariodosul-rs-gov-br": {
-   "nome": "PNCP — MUNICIPIO DE ROSARIO DO SUL — oportunidades (espalhado de edital validado)",
-   "status": "rota nova em teste",
-   "vazias_seguidas": 3,
-   "leituras": 23,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-13T12:44:54+00:00",
-    "classe": "vazia",
-    "motivo": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": {
-    "urls": [
-     "https://www.rosariodosul.rs.gov.br/"
-    ],
-    "via": "ponte",
-    "origem": "rota original",
-    "pontos": 11,
-    "aprendido_em": "2026-10-12T23:16:32+00:00"
-   },
-   "afinado": {
-    "em": "2026-10-12T23:16:32+00:00",
-    "testes": 14,
-    "melhor": {
-     "url": "https://www.rosariodosul.rs.gov.br/",
-     "via": "ponte",
-     "origem": "rota original",
-     "pontos": 11,
-     "formato": "html"
-    },
-    "resultado": "rota nova em teste"
-   }
-  },
   "alego-pl": {
    "nome": "Assembleia Legislativa de Goiás — proposições",
    "status": "rota nova em teste",
-   "vazias_seguidas": 2,
-   "leituras": 92,
+   "vazias_seguidas": 3,
+   "leituras": 93,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-13T16:29:58+00:00",
+    "em": "2026-10-13T18:24:33+00:00",
     "classe": "vazia",
     "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
    },
@@ -1690,6 +1454,212 @@
     "resultado": "rota nova em teste"
    }
   },
+  "f260-captacao-190": {
+   "nome": "TJGO - penas pecuniárias 1ª Vara de Execução Penal de Goiânia",
+   "status": "rota nova em teste",
+   "vazias_seguidas": 3,
+   "leituras": 48,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-13T08:56:06+00:00",
+    "classe": "vazia",
+    "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": {
+    "urls": [
+     "https://www.trt18.jus.br/portal/"
+    ],
+    "via": "direto",
+    "origem": "rota original",
+    "pontos": 13,
+    "aprendido_em": "2026-10-10T22:57:28+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-10T22:57:28+00:00",
+    "testes": 12,
+    "melhor": {
+     "url": "https://www.trt18.jus.br/portal/",
+     "via": "direto",
+     "origem": "rota original",
+     "pontos": 13,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
+  },
+  "f260-captacao-232": {
+   "nome": "Instituto Neoenergia",
+   "status": "ok",
+   "vazias_seguidas": 3,
+   "leituras": 27,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-13T18:54:04+00:00",
+    "classe": "vazia",
+    "motivo": "página institucional; seguiu 2 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
+   },
+   "historico": [
+    "v",
+    "v"
+   ],
+   "rota_aprendida": null,
+   "afinado": null
+  },
+  "f260-captacao-221": {
+   "nome": "Fundação Banco do Brasil",
+   "status": "rota nova em teste",
+   "vazias_seguidas": 3,
+   "leituras": 25,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-13T12:45:30+00:00",
+    "classe": "vazia",
+    "motivo": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": {
+    "urls": [
+     "https://www.fbb.org.br/feed"
+    ],
+    "via": "direto",
+    "origem": "rota original",
+    "pontos": 9,
+    "aprendido_em": "2026-10-13T05:28:10+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-13T05:28:10+00:00",
+    "testes": 12,
+    "melhor": {
+     "url": "https://www.fbb.org.br/feed",
+     "via": "direto",
+     "origem": "rota original",
+     "pontos": 9,
+     "formato": "sitemap/feed"
+    },
+    "resultado": "rota nova em teste"
+   }
+  },
+  "judiciario-cnj": {
+   "nome": "CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024)",
+   "status": "rota nova em teste",
+   "vazias_seguidas": 3,
+   "leituras": 52,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-13T18:25:21+00:00",
+    "classe": "vazia",
+    "motivo": "0 notícias lidas (TJGO A 0 no RSS · CNJ C 0) e 0 do TJGO/CNJ no PNCP (lidas pelo motor 04, já na base): nenhum edital de destinação aberto hoje · 0 a acompanhar"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": {
+    "urls": [
+     "https://www.cnj.jus.br/editais"
+    ],
+    "via": "direto",
+    "origem": "rota original",
+    "pontos": 91,
+    "aprendido_em": "2026-10-13T13:12:53+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-13T13:12:53+00:00",
+    "testes": 16,
+    "melhor": {
+     "url": "https://www.cnj.jus.br/editais",
+     "via": "direto",
+     "origem": "rota original",
+     "pontos": 91,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
+  },
+  "f260-espalhado-www-rosariodosul-rs-gov-br": {
+   "nome": "PNCP — MUNICIPIO DE ROSARIO DO SUL — oportunidades (espalhado de edital validado)",
+   "status": "rota nova em teste",
+   "vazias_seguidas": 3,
+   "leituras": 23,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-13T12:44:54+00:00",
+    "classe": "vazia",
+    "motivo": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": {
+    "urls": [
+     "https://www.rosariodosul.rs.gov.br/"
+    ],
+    "via": "ponte",
+    "origem": "rota original",
+    "pontos": 11,
+    "aprendido_em": "2026-10-12T23:16:32+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-12T23:16:32+00:00",
+    "testes": 14,
+    "melhor": {
+     "url": "https://www.rosariodosul.rs.gov.br/",
+     "via": "ponte",
+     "origem": "rota original",
+     "pontos": 11,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
+  },
   "f260-captacao-098": {
    "nome": "FEAS-GO - cofinanciamento da assistência social",
    "status": "ok",
@@ -1703,23 +1673,6 @@
    },
    "historico": [
     "v",
-    "v"
-   ],
-   "rota_aprendida": null,
-   "afinado": null
-  },
-  "f260-captacao-232": {
-   "nome": "Instituto Neoenergia",
-   "status": "ok",
-   "vazias_seguidas": 2,
-   "leituras": 26,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-11T09:54:18+00:00",
-    "classe": "vazia",
-    "motivo": "página institucional; seguiu 2 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
-   },
-   "historico": [
     "v"
    ],
    "rota_aprendida": null,
@@ -1979,71 +1932,6 @@
      "via": "direto",
      "origem": "rota original",
      "pontos": 5,
-     "formato": "html"
-    },
-    "resultado": "rota nova em teste"
-   }
-  },
-  "judiciario-cnj": {
-   "nome": "CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024)",
-   "status": "rota nova em teste",
-   "vazias_seguidas": 2,
-   "leituras": 51,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-13T16:30:49+00:00",
-    "classe": "vazia",
-    "motivo": "0 notícias lidas (TJGO A 0 no RSS · CNJ C 0) e 0 do TJGO/CNJ no PNCP (lidas pelo motor 04, já na base): nenhum edital de destinação aberto hoje · 0 a acompanhar"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": {
-    "urls": [
-     "https://www.cnj.jus.br/editais"
-    ],
-    "via": "direto",
-    "origem": "rota original",
-    "pontos": 91,
-    "aprendido_em": "2026-10-13T13:12:53+00:00"
-   },
-   "afinado": {
-    "em": "2026-10-13T13:12:53+00:00",
-    "testes": 16,
-    "melhor": {
-     "url": "https://www.cnj.jus.br/editais",
-     "via": "direto",
-     "origem": "rota original",
-     "pontos": 91,
      "formato": "html"
     },
     "resultado": "rota nova em teste"
@@ -2644,51 +2532,70 @@
     "resultado": "rota nova em teste"
    }
   },
-  "plat-estaduais-go-gov": {
-   "nome": "Oportunidade Estaduais Governamentais de Goiás",
-   "status": "ok",
+  "mpu-destinacao": {
+   "nome": "MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD)",
+   "status": "rota nova em teste",
    "vazias_seguidas": 1,
-   "leituras": 64,
-   "ok": 19,
+   "leituras": 46,
+   "ok": 0,
    "ultima": {
-    "em": "2026-10-13T16:50:20+00:00",
+    "em": "2026-10-13T18:25:21+00:00",
     "classe": "vazia",
-    "motivo": "50 órgão(s) já com histórico e monitorados; nenhuma seleção aberta nova hoje"
+    "motivo": "nenhum edital de destinação aberto hoje nas fontes lidas"
    },
    "historico": [
     "v",
-    "o",
     "v",
-    "o",
     "v",
-    "o",
     "v",
-    "o",
     "v",
-    "o",
     "v",
-    "o",
-    "o",
     "v",
-    "o",
     "v",
-    "o",
     "v",
-    "o",
     "v",
-    "o",
     "v",
-    "o",
     "v",
-    "o",
     "v",
-    "o",
     "v",
-    "o",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
     "v"
    ],
-   "rota_aprendida": null,
-   "afinado": null
+   "rota_aprendida": {
+    "urls": [
+     "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao"
+    ],
+    "via": "direto",
+    "origem": "rota original",
+    "pontos": 13,
+    "aprendido_em": "2026-10-13T17:29:01+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-13T17:29:01+00:00",
+    "testes": 17,
+    "melhor": {
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
+     "via": "direto",
+     "origem": "rota original",
+     "pontos": 13,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
   },
   "f260-curadoria-011": {
    "nome": "Fundacao Maria Emilia — Edital FME Transforma",
@@ -2945,10 +2852,10 @@
    "nome": "Diário Oficial do Estado de Goiás",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 115,
-   "ok": 42,
+   "leituras": 116,
+   "ok": 43,
    "ultima": {
-    "em": "2026-10-13T16:25:18+00:00",
+    "em": "2026-10-13T18:22:21+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -2991,10 +2898,10 @@
    "nome": "Diário Oficial da União",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 125,
-   "ok": 40,
+   "leituras": 126,
+   "ok": 41,
    "ultima": {
-    "em": "2026-10-13T16:25:57+00:00",
+    "em": "2026-10-13T18:22:55+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3004,7 +2911,6 @@
     "o",
     "o",
     "o",
-    "o",
     "v",
     "o",
     "o",
@@ -3024,6 +2930,7 @@
     "o",
     "o",
     "v",
+    "o",
     "o",
     "o",
     "o",
@@ -3032,6 +2939,57 @@
    ],
    "rota_aprendida": null,
    "afinado": null
+  },
+  "camara-goiania-pl": {
+   "nome": "Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos",
+   "status": "ok",
+   "vazias_seguidas": 0,
+   "leituras": 110,
+   "ok": 32,
+   "ultima": {
+    "em": "2026-10-13T18:24:12+00:00",
+    "classe": "ok",
+    "motivo": "26 itens lidos (pautas D 0 projetos em 0 pauta(s) · processos A 0 · própria B 0 · notícias C 26): nenhum chamamento aberto para OSC · 3 a acompanhar · 0 utilida"
+   },
+   "historico": [
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "v",
+    "v",
+    "o",
+    "v",
+    "v",
+    "o",
+    "v",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "v",
+    "v",
+    "v",
+    "o"
+   ],
+   "rota_aprendida": null,
+   "afinado": {
+    "em": "2026-10-10T10:20:34+00:00",
+    "testes": 11,
+    "melhor": null,
+    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+   }
   },
   "pncp-api": {
    "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
@@ -3072,10 +3030,10 @@
    "nome": "GIFE — Grupo de Institutos, Fundações e Empresas",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 82,
-   "ok": 38,
+   "leituras": 83,
+   "ok": 39,
    "ultima": {
-    "em": "2026-10-13T16:51:06+00:00",
+    "em": "2026-10-13T18:45:17+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3556,10 +3514,10 @@
    "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
    "status": "rota nova funcionando",
    "vazias_seguidas": 0,
-   "leituras": 77,
-   "ok": 33,
+   "leituras": 78,
+   "ok": 34,
    "ultima": {
-    "em": "2026-10-13T16:50:51+00:00",
+    "em": "2026-10-13T18:44:57+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3621,10 +3579,10 @@
    "nome": "Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 81,
-   "ok": 38,
+   "leituras": 82,
+   "ok": 39,
    "ultima": {
-    "em": "2026-10-13T16:53:45+00:00",
+    "em": "2026-10-13T18:47:31+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3727,10 +3685,10 @@
    "nome": "Prefeituras das 25 maiores cidades de Goiás — portais de editais",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 85,
-   "ok": 34,
+   "leituras": 86,
+   "ok": 35,
    "ultima": {
-    "em": "2026-10-13T16:46:04+00:00",
+    "em": "2026-10-13T18:40:32+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3738,7 +3696,6 @@
     "o",
     "o",
     "o",
-    "o",
     "v",
     "o",
     "v",
@@ -3757,6 +3714,7 @@
     "o",
     "o",
     "v",
+    "o",
     "o",
     "o",
     "o",
@@ -3773,10 +3731,10 @@
    "nome": "Lei Rouanet — janela de propostas no SALIC e projetos de Goiás (Ministério da Cultura)",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 92,
-   "ok": 40,
+   "leituras": 93,
+   "ok": 41,
    "ultima": {
-    "em": "2026-10-13T16:50:38+00:00",
+    "em": "2026-10-13T18:44:44+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3849,10 +3807,10 @@
    "nome": "Piloto - Espião — busca aberta no terceiro setor",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 79,
-   "ok": 36,
+   "leituras": 80,
+   "ok": 37,
    "ultima": {
-    "em": "2026-10-13T16:53:57+00:00",
+    "em": "2026-10-13T18:47:45+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3860,7 +3818,6 @@
     "o",
     "o",
     "o",
-    "o",
     "v",
     "o",
     "o",
@@ -3883,6 +3840,7 @@
     "o",
     "o",
     "v",
+    "o",
     "o",
     "o",
     "o",
@@ -3895,10 +3853,10 @@
    "nome": "Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos)",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 67,
-   "ok": 42,
+   "leituras": 68,
+   "ok": 43,
    "ultima": {
-    "em": "2026-10-13T16:30:39+00:00",
+    "em": "2026-10-13T18:25:11+00:00",
     "classe": "ok",
     "motivo": "53 itens lidos (CMO A 9 · Câmara B 2 · Senado C 3 · notícias D 35 · convocações E 4): nenhuma janela de emendas aberta nem chamamento para OSC · 13 a acompanhar"
    },
@@ -4195,10 +4153,10 @@
    "nome": "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 47,
-   "ok": 39,
+   "leituras": 48,
+   "ok": 40,
    "ultima": {
-    "em": "2026-10-13T16:30:41+00:00",
+    "em": "2026-10-13T18:25:14+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -4241,10 +4199,10 @@
    "nome": "MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região)",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 57,
-   "ok": 39,
+   "leituras": 58,
+   "ok": 40,
    "ultima": {
-    "em": "2026-10-13T16:30:49+00:00",
+    "em": "2026-10-13T18:25:21+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -4278,6 +4236,52 @@
     "o",
     "o",
     "o",
+    "o"
+   ],
+   "rota_aprendida": null,
+   "afinado": null
+  },
+  "plat-estaduais-go-gov": {
+   "nome": "Oportunidade Estaduais Governamentais de Goiás",
+   "status": "ok",
+   "vazias_seguidas": 0,
+   "leituras": 65,
+   "ok": 20,
+   "ultima": {
+    "em": "2026-10-13T18:44:21+00:00",
+    "classe": "ok",
+    "motivo": ""
+   },
+   "historico": [
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
     "o"
    ],
    "rota_aprendida": null,
@@ -4397,10 +4401,10 @@
    "nome": "Outras Oportunidades 1/6",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 14,
-   "ok": 10,
+   "leituras": 15,
+   "ok": 11,
    "ultima": {
-    "em": "2026-10-13T14:03:30+00:00",
+    "em": "2026-10-13T18:49:45+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -4413,6 +4417,7 @@
     "o",
     "v",
     "v",
+    "o",
     "o",
     "o",
     "o",
@@ -4427,10 +4432,10 @@
    "nome": "Outras Oportunidades 2/6",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 15,
-   "ok": 14,
+   "leituras": 16,
+   "ok": 15,
    "ultima": {
-    "em": "2026-10-13T16:55:27+00:00",
+    "em": "2026-10-13T18:48:57+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -4444,6 +4449,7 @@
     "o",
     "o",
     "v",
+    "o",
     "o",
     "o",
     "o",
@@ -4476,14 +4482,15 @@
    "nome": "Outras Oportunidades 4/6",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 6,
-   "ok": 6,
+   "leituras": 7,
+   "ok": 7,
    "ultima": {
-    "em": "2026-10-13T14:06:31+00:00",
+    "em": "2026-10-13T18:52:27+00:00",
     "classe": "ok",
     "motivo": ""
    },
    "historico": [
+    "o",
     "o",
     "o",
     "o",
@@ -4498,14 +4505,15 @@
    "nome": "Outras Oportunidades 5/6",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 9,
-   "ok": 9,
+   "leituras": 10,
+   "ok": 10,
    "ultima": {
-    "em": "2026-10-13T14:07:15+00:00",
+    "em": "2026-10-13T18:51:23+00:00",
     "classe": "ok",
     "motivo": ""
    },
    "historico": [
+    "o",
     "o",
     "o",
     "o",
@@ -4523,10 +4531,10 @@
    "nome": "Outras Oportunidades 6/6",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 6,
-   "ok": 3,
+   "leituras": 7,
+   "ok": 4,
    "ultima": {
-    "em": "2026-10-13T14:08:15+00:00",
+    "em": "2026-10-13T18:53:46+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -4535,6 +4543,7 @@
     "v",
     "v",
     "v",
+    "o",
     "o",
     "o"
    ],
