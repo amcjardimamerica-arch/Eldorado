@@ -8,15 +8,14 @@
 
 ```json
 {
- "cegos_da_1a_rodada": 32,
- "testados": 25,
- "com_rota_nova": 9,
- "via_ponte": 0,
+ "cegos_da_1a_rodada": 31,
+ "testados": 24,
+ "com_rota_nova": 10,
+ "via_ponte": 1,
  "continuam_cegos": [
   "camara-goiania-pl",
   "f260-captacao-218",
   "f260-captacao-223",
-  "f260-captacao-227",
   "f260-captacao-229",
   "f260-captacao-230",
   "f260-captacao-233",
@@ -27,7 +26,6 @@
   "f260-espalhado-acessoainformacao-cavalcante-go-gov-br",
   "f260-captacao-228",
   "f260-captacao-252",
-  "f260-captacao-242",
   "f260-espalhado-rouanet-cultura-gov-br"
  ],
  "aguardando_afinador": 7
@@ -94,8 +92,8 @@
   },
   {
    "motor": "f260-captacao-237",
-   "achados_total_1a": 64,
-   "achados_total_agora": 64,
+   "achados_total_1a": 67,
+   "achados_total_agora": 67,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -115,15 +113,15 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 87,
-   "achados_total_agora": 87,
+   "achados_total_1a": 90,
+   "achados_total_agora": 90,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 1152,
-   "achados_total_agora": 1152,
+   "achados_total_1a": 1173,
+   "achados_total_agora": 1173,
    "no_fluxo": 2,
    "confirmadas": 0
   },
@@ -136,8 +134,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 73,
-   "achados_total_agora": 73,
+   "achados_total_1a": 74,
+   "achados_total_agora": 74,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -164,22 +162,22 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 44,
-   "achados_total_agora": 44,
+   "achados_total_1a": 45,
+   "achados_total_agora": 45,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 72,
-   "achados_total_agora": 72,
+   "achados_total_1a": 73,
+   "achados_total_agora": 73,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-estaduais-go-gov",
-   "achados_total_1a": 32,
-   "achados_total_agora": 32,
+   "achados_total_1a": 33,
+   "achados_total_agora": 33,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -227,7 +225,7 @@
  "pontos_com_redundancia": 12,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 6154
+ "exemplos_da_rede_de_rotas": 6235
 }
 ```
 
@@ -238,10 +236,10 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 75.3,
- "fora_dos_motores_pct_agora": 75.3,
+ "fora_dos_motores_pct_1a": 75.5,
+ "fora_dos_motores_pct_agora": 75.5,
  "origem": {
-  "Piloto": 108,
+  "Piloto": 112,
   "motor": 136,
   "agregador/outra": 306
  },
@@ -372,20 +370,20 @@
 
 ```json
 {
- "fontes_recebidas": 286,
+ "fontes_recebidas": 287,
  "por_origem": {
   "conselho (fontes irmãs)": 145,
   "Cartório (site oficial certificado)": 118,
-  "Espião (privado/internacional)": 23
+  "Espião (privado/internacional)": 24
  },
  "lidas_nas_ultimas_24h": 211,
  "dimensionamento": {
-  "fontes": 286,
+  "fontes": 287,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 6,
-  "cobertura_diaria": 286,
+  "cobertura_diaria": 287,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -438,7 +436,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 68,
+   "orgaos": 69,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",
