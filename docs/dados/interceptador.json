@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-13T09:14:13+00:00",
+  "em": "2026-10-13T09:31:00+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-13T09:04:37+00:00",
+  "ultimo_voo": "2026-10-13T09:16:50+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 110,
+    "missoes": 111,
     "validadas": 4,
     "parciais": 26,
-    "insuficientes": 76,
+    "insuficientes": 77,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 88,
+      "sim": 89,
       "nao": 11
     },
     "estrelas_de_ouro": 3,
@@ -52,6 +52,68 @@
     "tempo_medio_min": 13.4
   },
   "missoes": [
+    {
+      "em": "2026-10-13T09:16:50+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de São Mateus do Sul (PR) 2026-10-06 — \"chamamento público\" \"organizações da sociedade civil\"",
+      "qualidade": "insuficiente",
+      "comprovados": 3,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O documento menciona 'chamamento público' e 'organizações da sociedade civil', o que indica que pode ser uma fonte para acesso a editais de fomento.",
+        "para_a_amc": "Para acessar, a associação comunitária de Goiânia precisaria verificar se o edital é válido para sua área de atuação e seguir o processo de inscrição descrito no edital, mesmo que os prazos e requisitos não estejam explicitados no texto comprovado.",
+        "proximo_passo": "Consultar o edital completo para obter informações detalhadas sobre prazos, requisitos e processo de inscrição.",
+        "risco": "A falta de informações específicas como prazos, requisitos e valor pode impedir a associação de se candidatar adequadamente."
+      },
+      "erro": null,
+      "segundos": 849,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "f07a55f6434af1723364",
+      "encontrou": {
+        "Território": {
+          "valor": "PR",
+          "trecho": "SÃO MATEUS DO SUL/PR",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de São Mateus do Sul",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/4125605/2026-10-06/9fa5bb44a6c2ac7bb293cdeb737163e33bc8c323.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-13T09:04:37+00:00",
       "modo": "validar",
@@ -2911,83 +2973,6 @@
       ],
       "rotas": [
         "site_do_financiador"
-      ]
-    },
-    {
-      "em": "2026-10-12T22:03:16+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "EDITAL DE CHAMAMENTO PÚBLICO Nº 03/2025 PARA CONVOCAÇÃO DE ORGANIZAÇÕES DA SOCIEDADE CIVIL A FIM DE PROMOVER EVENTO COMPETITIVO DE SKATE NO ",
-      "qualidade": "parcial",
-      "comprovados": 7,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos"
-      ],
-      "pagina_oficial": "http://chamamentos.itapevi.sp.gov.br",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital comprovado menciona o objeto, órgão financiador, território, esfera, anexos, destinação e área de atuação, o que é suficiente para identificar a fonte.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se há alinhamento entre o objeto do edital (evento competitivo de skate) e suas atividades, além de garantir que possua os documentos exigidos nos anexos para participar.",
-        "proximo_passo": "Consultar os anexos do edital para entender os requisitos e documentos necessários para inscrição.",
-        "risco": "A falta de alinhamento entre as atividades da associação e o objeto do edital pode impedir o acesso ao fomento."
-      },
-      "erro": null,
-      "segundos": 999,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 7,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
-      "id": "49d6fa43a4a246ad78a7",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Promover evento competitivo de skate no município de Itapevi estabelecendo parceria via Termo de Colaboração",
-          "trecho": "Promover evento competitivo de skate no município de Itapevi estabelecendo parceria via \"Termo de Colaboração\"",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal de Itapevi",
-          "trecho": "Portal de Chamamentos da Prefeitura Municipal de Itapevi.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "SP",
-          "trecho": "município de Itapevi",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "esporte",
-          "trecho": "evento competitivo de skate",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "CONVOCAÇÃO DE ORGANIZAÇÕES DA SOCIEDADE CIVIL",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Itapevi",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
       ]
     }
   ],
