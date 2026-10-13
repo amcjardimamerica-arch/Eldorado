@@ -40,8 +40,15 @@
 
 ```json
 {
- "motores_de_ruido_1a": 26,
+ "motores_de_ruido_1a": 27,
  "ruido_agora": [
+  {
+   "motor": "plat-gife",
+   "achados_total_1a": 121,
+   "achados_total_agora": 121,
+   "no_fluxo": 0,
+   "confirmadas": 0
+  },
   {
    "motor": "empresas-incentivadas",
    "achados_total_1a": 64,
@@ -130,7 +137,7 @@
    "motor": "plat-empresas-editais-incentivados",
    "achados_total_1a": 1222,
    "achados_total_agora": 1222,
-   "no_fluxo": 2,
+   "no_fluxo": 1,
    "confirmadas": 0
   },
   {
@@ -144,7 +151,7 @@
    "motor": "plat-prefeituras-50-go",
    "achados_total_1a": 76,
    "achados_total_agora": 76,
-   "no_fluxo": 1,
+   "no_fluxo": 0,
    "confirmadas": 0
   },
   {
@@ -207,13 +214,7 @@
    "motor": "outras-oportunidades-2",
    "achados_total_1a": 118,
    "achados_total_agora": 118,
-   "no_fluxo": 13,
-   "confirmadas": 0
-  },
-  {
-   "motor": "outras-oportunidades-3",
-   "achados_total_1a": 31,
-   "achados_total_agora": 31
+   "no_flu
 ```
 
 ## Eng. Luana Freire (levemente pessimista)
@@ -237,12 +238,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 78.9,
- "fora_dos_motores_pct_agora": 78.9,
+ "fora_dos_motores_pct_1a": 81.5,
+ "fora_dos_motores_pct_agora": 81.5,
  "origem": {
-  "agregador/outra": 315,
-  "motor": 115,
-  "Piloto": 115
+  "agregador/outra": 316,
+  "Piloto": 115,
+  "motor": 98
  },
  "dominios_so_de_agregador": [
   {
@@ -371,20 +372,20 @@
 
 ```json
 {
- "fontes_recebidas": 291,
+ "fontes_recebidas": 290,
  "por_origem": {
   "conselho (fontes irmãs)": 145,
   "Cartório (site oficial certificado)": 121,
-  "Espião (privado/internacional)": 25
+  "Espião (privado/internacional)": 24
  },
- "lidas_nas_ultimas_24h": 196,
+ "lidas_nas_ultimas_24h": 185,
  "dimensionamento": {
-  "fontes": 291,
+  "fontes": 290,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 6,
-  "cobertura_diaria": 291,
+  "cobertura_diaria": 290,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -423,7 +424,7 @@
    "achados": 5
   }
  },
- "com_achado": 39
+ "com_achado": 38
 }
 ```
 
