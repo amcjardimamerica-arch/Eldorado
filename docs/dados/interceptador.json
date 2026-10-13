@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-13T03:12:25+00:00",
+  "em": "2026-10-13T03:29:18+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-13T03:04:24+00:00",
+  "ultimo_voo": "2026-10-13T03:15:03+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 89,
+    "missoes": 90,
     "validadas": 3,
     "parciais": 23,
-    "insuficientes": 59,
+    "insuficientes": 60,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 71,
+      "sim": 72,
       "nao": 10
     },
     "estrelas_de_ouro": 2,
@@ -52,6 +52,73 @@
     "tempo_medio_min": 13.3
   },
   "missoes": [
+    {
+      "em": "2026-10-13T03:15:03+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Birigui (SP) 2026-10-08 — \"termo de fomento\" \"chamamento público\"",
+      "qualidade": "insuficiente",
+      "comprovados": 4,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Território",
+        "Requisitos",
+        "Destinação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto menciona o termo de fomento e chamamento público da Prefeitura Municipal de Birigui, indicando que há uma oportunidade de financiamento para organizações da sociedade civil.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital abrange sua área de atuação (assistência social), verificar os anexos para entender os requisitos e se alinhar com o objeto do chamamento público.",
+        "proximo_passo": "Consultar os anexos do edital para obter detalhes sobre os requisitos e condições de participação.",
+        "risco": "O edital não menciona os requisitos, objeto ou prazo, o que pode impedir a associação de se preparar adequadamente para o processo de inscrição."
+      },
+      "erro": null,
+      "segundos": 854,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "660692a9a13253083a99",
+      "encontrou": {
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Birigui",
+          "trecho": "Prefeitura Municipal de Birigui",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "assistencia_social",
+          "trecho": "assistência social",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Birigui",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3506508/2026-10-08/dc2730a1c8ab2f410b413a89515163f20dd7a370.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-13T03:04:24+00:00",
       "modo": "validar",
@@ -2947,82 +3014,6 @@
       "indicios": [],
       "rotas": [
         "site_do_financiador"
-      ]
-    },
-    {
-      "em": "2026-10-12T15:48:34+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Diário Oficial de Inhambupe (BA) 2026-10-09 — \"edital de premiação\" cultura",
-      "qualidade": "parcial",
-      "comprovados": 9,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Valor",
-        "Destinação"
-      ],
-      "pagina_oficial": "https://culteditais.cultura.gov.br/oportunidade/8780/#info",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi comprovado com informações sobre o Objeto, Resultado, Prazo de recurso, Órgão / financiador, Território, Esfera, Requisitos, Anexos e Área de atuação.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao Objeto do edital, que é apoio a projetos culturais, e garantir a Documentação regular, além de anexar os documentos exigidos.",
-        "proximo_passo": "Verificar se a associação comunitária atende aos requisitos do edital e preparar a documentação necessária.",
-        "risco": "O prazo de inscrição não foi encontrado, o que pode impedir a participação no edital."
-      },
-      "erro": null,
-      "segundos": 491,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Valor, Destinação",
-      "id": "1afbf2ddd3d6beb235a9",
-      "encontrou": {
-        "Objeto": {
-          "valor": "apoio a projetos culturais",
-          "trecho": "para apoio a projetos culturais;",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Secretário Municipal de Cultura",
-          "trecho": "O Secretário Municipal de Cultura no uso de suas atribuições, torna público o resultado provisório da fase de habilitação do edital 2/2026.",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "BA",
-          "trecho": "Inhambupe-BA, 09 de outubro de 2026",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "para apoio a projetos culturais;",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "Documentação regular.",
-          "trecho": "Considerando a determinação da portaria nº 1/2026 de 06/03/2026 em observância ao disposto no artigo 3º no inciso IV, VIII e no artigo 9º, foi avaliado todos os requisitos da fase ",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "SECRETARIA MUNICIPAL DE CULTURA – SECULT",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/2913705/2026-10-09/4f10dafb659ed80c879f0554eecd01d4f87fc7ba.pdf",
-          "tipo": "agregador"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
       ]
     }
   ],
