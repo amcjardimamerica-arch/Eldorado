@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-13T13:32:48+00:00",
+  "em": "2026-10-13T13:53:16+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-13T13:16:42+00:00",
+  "ultimo_voo": "2026-10-13T13:35:51+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,103 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 124,
+    "missoes": 125,
     "validadas": 4,
     "parciais": 27,
-    "insuficientes": 89,
+    "insuficientes": 90,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 101,
+      "sim": 102,
       "nao": 12
     },
     "estrelas_de_ouro": 4,
     "fontes_novas_para_os_motores": 5,
-    "tempo_medio_min": 13.6
+    "tempo_medio_min": 13.7
   },
   "missoes": [
+    {
+      "em": "2026-10-13T13:35:51+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Santa Rosa (RS) 2026-10-06 — \"termo de fomento\" \"chamamento público\"",
+      "qualidade": "insuficiente",
+      "comprovados": 7,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado menciona o objeto do edital como 'fomento à cultura' e o financiador como 'Município de Santa Rosa/RS', indicando que é uma fonte válida para ações culturais.",
+        "para_a_amc": "Para acessar, uma associação comunitária de Goiânia precisaria verificar se o edital permite inscrições de entidades fora do território do município de Santa Rosa/RS, já que o edital é específico para o RS.",
+        "proximo_passo": "Verificar se o edital permite inscrições de entidades de outros municípios e se há requisitos adicionais para participar.",
+        "risco": "O edital é específico para o território do RS, o que pode impedir que uma associação de Goiânia participe, já que não há informações sobre inscrições de fora do município."
+      },
+      "erro": null,
+      "segundos": 1043,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "2b1ca61f0777ffb017b8",
+      "encontrou": {
+        "Objeto": {
+          "valor": "fomento à cultura",
+          "trecho": "EDITAL DE CHAMAMENTO PÚBLICO Nº 03/2026 – AVANÇO CULTURAL – FOMENTO",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Município de Santa Rosa/RS",
+          "trecho": "O Município de Santa Rosa/RS, por intermédio da Secretaria Municipal de Educação e Cultura, torna público a abertura do Edital de Chamamento Público nº 03/2026 – Avanço Cultural – ",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "RS",
+          "trecho": "MUNICIPIO DE SANTA ROSA",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "EDITAL DE CHAMAMENTO PÚBLICO Nº 03/2026 – AVANÇO CULTURAL – FOMENTO",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "O MUNICÍPIO DE SANTA ROSA, RS, por meio da Secretaria Municipal de Educação e Cultura, com fundamento no caput do art. 34 da Lei Federal nº 14.113, de 25/12/2020, torna público, pa",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Município de Santa Rosa/RS",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/4317202/2026-10-06/0a1f884e72f0262400fcfdfaef12c21ea40122b5.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-13T13:16:42+00:00",
       "modo": "validar",
@@ -2890,93 +2972,6 @@
       "indicios": [
         {
           "url": "https://data.queridodiario.ok.org.br/4106308/2026-10-07/4975976ad99648152702b4abb848d12eb7c0a218.pdf",
-          "tipo": "agregador"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-13T01:45:13+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Diário Oficial de Taiobeiras (MG) 2026-10-07 — \"termo de fomento\" \"chamamento público\"",
-      "qualidade": "insuficiente",
-      "comprovados": 10,
-      "dispensados": 1,
-      "total": 12,
-      "nao_resolvidos": [
-        "Resultado",
-        "Valor"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital menciona o prazo para interposição de recurso da etapa de seleção.",
-        "para_a_amc": "Uma associação comunitária de Goiânia precisaria verificar se há compatibilidade com o objeto do edital, que é fomento à composição de letra, música e apresentação em homenagem ao município de Taiobeiras/MG, e se pode atender aos requisitos de residência habitual no Município de Taiobeiras/MG há, no mínimo, 12 (doze) meses anteriores à data de publicação.",
-        "proximo_passo": "Verificar se a associação comunitária de Goiânia pode atender aos requisitos do edital e se há compatibilidade com o objeto do fomento.",
-        "risco": "A associação comunitária de Goiânia pode não atender aos requisitos de residência habitual no Município de Taiobeiras/MG, o que impediria o acesso ao edital."
-      },
-      "erro": null,
-      "segundos": 999,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "5ae50f24d3deb0c46e76",
-      "encontrou": {
-        "Objeto": {
-          "valor": "fomento à composição de letra, música e apresentação em homenagem ao município de Taiobeiras",
-          "trecho": "EDITAL DE CHAMAMENTO PÚBLICO Nº 002/2026 EDITAL PARA FOMENTO À COMPOSIÇÃO DE LETRA, MÚSICA E APRESENTAÇÃO EM HOMENAGEM AO MUNICÍPIO DE TAIOBEIRAS",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "2026-10-08 a 2026-10-26",
-          "trecho": "Início da fase de inscrição 08/10/2026 / Fim da fase de inscrição 26/10/2026",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Secretaria Municipal de Cultura de Taiobeiras/MG",
-          "trecho": "Secretaria Municipal de Cultura de Taiobeiras/MG",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "MG",
-          "trecho": "Município de Taiobeiras/MG",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "fomento à composição de letra, música e apresentação em homenagem ao município de Taiobeiras",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · fomento",
-          "trecho": "fomento à composição de letra, música e apresentação em homenagem ao município de Taiobeiras",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "comprovando residência habitual no Município de Taiobeiras/MG há, no mínimo, 12 (doze) meses anteriores à data de public",
-          "trecho": "comprovando residência habitual no Município de Taiobeiras/MG há, no mínimo, 12 (doze) meses anteriores à data de publicação deste Edital",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Município de Taiobeiras/MG",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/3168002/2026-10-07/a2d3f90aa97d694191b5d7d4521ec3ab68fe69c7.pdf",
           "tipo": "agregador"
         }
       ],
