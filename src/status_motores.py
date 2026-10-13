@@ -73,6 +73,29 @@ def _ultima_real(p: dict, ult):
     return max(cands) if cands else None
 
 
+_DIAS_SEM = ["seg", "ter", "qua", "qui", "sex", "sab", "dom"]
+
+
+def janela_do_motor(p: dict, ag: dict) -> float:
+    """12/10 (conselho): horas sem leitura até acusar falha, pela cadência do motor — 26 h para quem lê todo dia; para o
+    semanal, o maior intervalo entre os dias da agenda + 26 h (domingo → 8 dias); para o indexador, a cadência dele + 26 h."""
+    mid = str(p.get("id") or "")
+    if mid.startswith("site-"):
+        site, _ = _indexador_do_motor(mid)
+        try:
+            return max(JANELA_HORAS, float(site.get("cadencia_horas") or 0) + JANELA_HORAS)
+        except (TypeError, ValueError):
+            return JANELA_HORAS
+    dias = str(ag.get("dias") or p.get("agenda_dias") or "todos").lower()
+    if dias in ("todos", "", "inativo") or "todos" in dias:
+        return JANELA_HORAS
+    idx = sorted({_DIAS_SEM.index(d) for d in _DIAS_SEM if d in dias})
+    if not idx:
+        return JANELA_HORAS
+    gaps = [((idx[(k + 1) % len(idx)] - i) % 7) or 7 for k, i in enumerate(idx)]
+    return max(gaps) * 24 + JANELA_HORAS
+
+
 def _indexador_do_motor(mid: str) -> tuple[dict, dict]:
     """(configuração do site no catálogo de indexadores, estado publicado de todos os sites) para um motor site-*."""
     cfg = _j(ROOT / "config/indexadores.json", {}).get("sites") or []
@@ -132,7 +155,7 @@ def monitor(p: dict, ult, cor_dia: str, falha: str, dia: dict, hoje: str | None 
     quando = ult.strftime("%d/%m %H:%M")
     if cor_dia == "vermelho" and ult.date().isoformat() == agora.date().isoformat():
         return "vermelho", f"falha na leitura de {quando}" + (f" — {falha}" if falha else ""), ult
-    if horas > JANELA_HORAS:
+    if horas > janela_do_motor(p, ag):
         dias_ = int(horas // 24)
         return "vermelho", f"falha — não lê há {dias_} dia(s) ({int(horas)} h); última leitura {quando}", ult
     n = int((dia or {}).get("n") or 0)
@@ -151,8 +174,8 @@ def status_de(p: dict, hoje: str) -> dict:
         nf = int(reg.get("falhas") or 0)
         if reg.get("cor") == "vermelho":
             cor_dia, falha = "vermelho", "nenhuma página leu" + (f" (HTTP {reg.get('http')})" if reg.get("http") else "")
-        elif nf:
-            cor_dia, falha = "vermelho", f"{nf} página(s) com falha; as demais foram lidas"
+        elif nf:                     # 12/10 (conselho): leitura parcial = verde com atenção; vermelho só se nada leu
+            cor_dia, falha = TRES_CORES.get(reg.get("cor"), "verde") if reg.get("cor") != "vermelho" else "vermelho", f"{nf} página(s) com falha; as demais foram lidas"
         elif cor_dia == "cinza":
             cor_dia = "verde"
         dia = {"n": reg.get("achados") or 0, "t": reg.get("trecho")}
@@ -257,7 +280,7 @@ def run() -> dict:
     agora = datetime.now(BRT); hoje = agora.date().isoformat()
     motores = [status_de(p, hoje) for p in (M.get("oficiais") or []) + (M.get("plataformas") or []) if p.get("id")]
     cont = {c: sum(1 for m in motores if m["luz"] == c) for c in ("verde", "vermelho", "cinza")}
-    cont["legenda"] = {"verde": "funcionando (leu nas últimas 26 h)", "vermelho": "falha (leitura com erro ou mais de 26 h sem ler)",
+    cont["legenda"] = {"verde": "funcionando (leu dentro da cadência do motor: 26 h para os diários, a semana para os semanais)", "vermelho": "falha (nada lido na última leitura, ou sem ler além da cadência do motor)",
                        "cinza": "inativo (desativado, agregado a outro motor ou nunca leu)"}
     out = {"gerado_em": agora.isoformat(timespec="minutes"), "proxima_atualizacao": (agora + timedelta(hours=CADA_HORAS)).isoformat(timespec="minutes"),
            "a_cada_horas": CADA_HORAS, "regra": __doc__.split("Não existe")[0].strip(), "contagem": cont, "motores": motores}

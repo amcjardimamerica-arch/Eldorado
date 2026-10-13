@@ -163,6 +163,21 @@ def registro_edital(e: dict, hoje: date) -> dict:
 
 
 def _get_json(url: str, timeout: int = 40) -> dict:
+    """12/10 (conselho): a API do SALIC devolve HTTP 500 por períodos; tenta de novo antes de desistir."""
+    ultimo = None
+    for espera in (0, 8, 20):
+        if espera:
+            time.sleep(espera)
+        try:
+            return _get_json_uma_vez(url, timeout)
+        except Exception as e:  # noqa: BLE001
+            ultimo = e
+            if getattr(e, "code", None) not in (500, 502, 503, 504, None):
+                break
+    raise ultimo
+
+
+def _get_json_uma_vez(url: str, timeout: int = 40) -> dict:
     validate_public_https(url)
     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/json"})
     with urllib.request.urlopen(req, timeout=timeout) as r:
@@ -243,6 +258,12 @@ def ler_motor(sensor: dict | None = None, hoje: date | None = None, limites: dic
         falhas.append({"url": EDITAIS, "erro": "minc_editais", "code": getattr(e, "code", None), "waf": None, "causa": f"{type(e).__name__}: {str(e)[:100]}"})
         diag.setdefault("paginas_nao_lidas", []).append("listagem de editais do MinC não lida")
     diag["editais_minc"] = [{k: x.get(k) for k in ("titulo", "fim", "fluxo_continuo", "veredito", "motivo", "url")} for x in editais]
+    # 12/10 (conselho): a listagem de editais do MinC e a janela de propostas são leituras do motor (antes só a API contava;
+    # com a API do SALIC fora do ar o motor aparecia "sem funcionamento" mesmo lendo os editais)
+    if editais or not any(f.get("erro") == "minc_editais" for f in falhas):
+        diag["paginas_lidas"] = int(diag.get("paginas_lidas") or 0) + 1 + len(editais)
+    if any(f.get("erro") == "salic_api" for f in falhas):
+        diag["observacao_api"] = "API de projetos do SALIC fora do ar (série histórica); editais e janela lidos"
     est["editais_minc"] = diag["editais_minc"]
     est.update({"ultima": {"em": now_iso(), "data": hoje.isoformat(), "achados": (1 if diag["janela"]["aberta"] else 0)
                            + sum(1 for x in editais if x["veredito"] == "OPORTUNIDADE"),
