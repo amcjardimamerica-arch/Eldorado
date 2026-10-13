@@ -1,13 +1,14 @@
 {
-  "em": "2026-10-13T17:41:19+00:00",
+  "em": "2026-10-13T17:50:01+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
       "missoes": 40,
-      "achados": 0,
+      "achados": 1,
       "uteis": 0,
       "motivos": {
-        "nada_no_crivo": 40
+        "nada_no_crivo": 39,
+        "sem_texto": 1
       },
       "efetividade": 0.0
     }
@@ -16,7 +17,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 10403,
+      "vezes": 10442,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -29,7 +30,7 @@
       ],
       "ultima": "2026-10-13",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 10403 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 10442 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -55,20 +56,6 @@
       "ultima": "2026-10-01",
       "explicacao": "o que veio não serve à finalidade da associação",
       "regra": "o motor 'piloto-aberto' falha por o que veio não serve à finalidade da associação há 152 vezes — precisa de correção, não de mais tentativas"
-    },
-    {
-      "motor": "piloto-aberto",
-      "motivo": "busca_vazia",
-      "vezes": 132,
-      "tipos": [
-        "cacar_oportunidade",
-        "descobrir",
-        "aposta",
-        "espionar"
-      ],
-      "ultima": "2026-10-13",
-      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
-      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 132 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "empresas-incentivadas",
@@ -107,6 +94,20 @@
       "regra": "o motor 'motor-patrocinio' falha por vieram resultados, mas nenhum era oportunidade de verdade há 88 vezes — precisa de correção, não de mais tentativas"
     },
     {
+      "motor": "piloto-aberto",
+      "motivo": "busca_vazia",
+      "vezes": 83,
+      "tipos": [
+        "cacar_oportunidade",
+        "descobrir",
+        "aposta",
+        "espionar"
+      ],
+      "ultima": "2026-10-11",
+      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
+      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 83 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
       "motor": "motor-gife",
       "motivo": "nada_no_crivo",
       "vezes": 82,
@@ -122,7 +123,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "sem_texto",
-      "vezes": 66,
+      "vezes": 80,
       "tipos": [
         "aposta",
         "descobrir",
@@ -130,7 +131,7 @@
       ],
       "ultima": "2026-10-13",
       "explicacao": "sem_texto",
-      "regra": "o motor 'piloto-aberto' falha por sem_texto há 66 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por sem_texto há 80 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
@@ -178,6 +179,13 @@
     }
   ],
   "melhorias_pendentes": [
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "O motor deve exigir que os trechos dos editais sejam preenchidos com informações relevantes para evitar ambiguidade e garantir que os usuários possam avaliar se o edital é compatível com sua missão.",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-10-13T17:49",
+      "aplicada": false
+    },
     {
       "motor": "piloto-aberto",
       "sugestao": "O motor deve exigir que os trechos dos editais sejam preenchidos com informações específicas, como prazo, valor, objeto e página, para permitir uma análise mais precisa e útil.",
@@ -310,19 +318,12 @@
       "efetividade_na_hora": 0.33,
       "em": "2026-10-12T04:18",
       "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "O motor deve exigir que os trechos dos achados sejam preenchidos com conteúdo relevante e específico para evitar ambiguidade.",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-10-12T02:04",
-      "aplicada": false
     }
   ],
-  "editais_tratados": 559,
-  "entregues_ao_claude": 483,
+  "editais_tratados": 560,
+  "entregues_ao_claude": 484,
   "ultima_faxina": {
-    "em": "2026-10-13T17:41:19+00:00",
+    "em": "2026-10-13T17:50:01+00:00",
     "dias": 2,
     "arquivos_de_quarentena_apagados": 15,
     "achados_descartados_removidos": 2964,
