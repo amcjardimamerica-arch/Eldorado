@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-13T15:15:34+00:00",
+  "em": "2026-10-13T15:26:02+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-13T14:56:57+00:00",
+  "ultimo_voo": "2026-10-13T15:18:59+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,94 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 130,
+    "missoes": 131,
     "validadas": 4,
     "parciais": 28,
-    "insuficientes": 94,
+    "insuficientes": 95,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 107,
+      "sim": 108,
       "nao": 12
     },
-    "estrelas_de_ouro": 4,
+    "estrelas_de_ouro": 5,
     "fontes_novas_para_os_motores": 6,
-    "tempo_medio_min": 13.7
+    "tempo_medio_min": 13.6
   },
   "missoes": [
+    {
+      "em": "2026-10-13T15:18:59+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · oportunidade do mapa",
+      "alvo": "Estudantes, não percam o prazo! Inscrições para Jogos Interculturais 2026 podem ser feitas até 23 de outubro",
+      "qualidade": "insuficiente",
+      "comprovados": 5,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "http://goias.gov.br",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprova a existência de inscrições para Jogos Interculturais 2026 com prazo até 23 de outubro, sendo financiado pelo Governo de Goiás.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se inscrever no edital de Jogos Interculturais 2026, demonstrando sua capacidade de atuar na área de educação e cultura, além de alinhar suas atividades ao objeto do edital.",
+        "proximo_passo": "Consultar o edital completo para verificar os requisitos e anexos necessários para a inscrição.",
+        "risco": "A falta de informações sobre requisitos e anexos pode impedir a associação de se inscrever corretamente no edital."
+      },
+      "erro": null,
+      "segundos": 422,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 5,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "d19072af2275632b28dc",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Inscrições para Jogos Interculturais 2026",
+          "trecho": "Inscrições para Jogos Interculturais 2026 podem ser feitas até 23 de outubro",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "? a 2026-10-23",
+          "trecho": "Inscrições para Jogos Interculturais 2026 podem ser feitas até 23 de outubro",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Governo de Goiás",
+          "trecho": "Portal Goiás",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "rede pública estadual de ensino de Goiás",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Governo do Estado de Goiás",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-13T14:56:57+00:00",
       "modo": "validar",
@@ -2845,73 +2918,6 @@
       "rotas": [
         "site_do_financiador",
         "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-13T03:33:36+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Diário Oficial de Birigui (SP) 2026-10-09 — \"termo de fomento\" \"chamamento público\"",
-      "qualidade": "insuficiente",
-      "comprovados": 4,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O Diário Oficial de Birigui (SP) de 2026-10-09 menciona um 'termo de fomento' e 'chamamento público', o que indica a existência de uma oportunidade de financiamento para organizações da sociedade civil.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital abrange sua área de atuação, preparar um projeto alinhado aos objetivos do edital, reunir os documentos exigidos e submeter a proposta no prazo estabelecido.",
-        "proximo_passo": "Consultar o edital completo para entender os requisitos, área de atuação e prazos de inscrição e recursos.",
-        "risco": "O prazo de inscrição e recursos não foram encontrados, o que pode impedir a associação de se inscrever a tempo."
-      },
-      "erro": null,
-      "segundos": 787,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "b39c47ae8bdeb3ffa2d5",
-      "encontrou": {
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal de Birigui",
-          "trecho": "SAMANTA PAULA ALBANI BORINI, Prefeita do Município de Birigui, do Estado de São Paulo, no uso de suas atribuições legais,",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "SP",
-          "trecho": "MUNICÍPIO DE BIRIGUI",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Birigui",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/3506508/2026-10-09/ca3faab61377552c643d4d1b1cc575c0982498ab.pdf",
-          "tipo": "agregador"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
       ]
     }
   ],
