@@ -121,15 +121,15 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 103,
-   "achados_total_agora": 103,
+   "achados_total_1a": 105,
+   "achados_total_agora": 105,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 1265,
-   "achados_total_agora": 1265,
+   "achados_total_1a": 1272,
+   "achados_total_agora": 1272,
    "no_fluxo": 3,
    "confirmadas": 0
   },
@@ -142,8 +142,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 78,
-   "achados_total_agora": 78,
+   "achados_total_1a": 79,
+   "achados_total_agora": 79,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -170,22 +170,22 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 49,
-   "achados_total_agora": 49,
+   "achados_total_1a": 50,
+   "achados_total_agora": 50,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 77,
-   "achados_total_agora": 77,
+   "achados_total_1a": 78,
+   "achados_total_agora": 78,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-estaduais-go-gov",
-   "achados_total_1a": 35,
-   "achados_total_agora": 35,
+   "achados_total_1a": 36,
+   "achados_total_agora": 36,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -198,21 +198,21 @@
   },
   {
    "motor": "outras-oportunidades-1",
-   "achados_total_1a": 145,
-   "achados_total_agora": 145,
+   "achados_total_1a": 151,
+   "achados_total_agora": 151,
    "no_fluxo": 11,
    "confirmadas": 0
   },
   {
    "motor": "outras-oportunidades-2",
-   "achados_total_1a": 201,
-   "achados_total_agora": 201,
+   "achados_total_1a": 243,
+   "achados_total_agora": 243,
    "no_fluxo": 13,
    "confirmadas": 0
   },
   {
    "motor": "outras-oportunidades-3",
-   "achados_total_1a": 31,
+   "achados_total_1a": 32,
    "achados_total_agora":
 ```
 
@@ -226,7 +226,7 @@
  "pontos_com_redundancia": 12,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 6868
+ "exemplos_da_rede_de_rotas": 6896
 }
 ```
 
@@ -240,9 +240,9 @@
  "fora_dos_motores_pct_1a": 79.1,
  "fora_dos_motores_pct_agora": 79.1,
  "origem": {
-  "agregador/outra": 321,
-  "motor": 115,
-  "Piloto": 115
+  "agregador/outra": 322,
+  "motor": 116,
+  "Piloto": 116
  },
  "dominios_so_de_agregador": [
   {
@@ -320,11 +320,8 @@
  "dia_de_referencia": "2026-10-13",
  "ativos": 159,
  "lidos_ontem": 51,
- "lidos_hoje": 100,
+ "lidos_hoje": 103,
  "nao_lidos_ontem_nem_hoje": [
-  "f260-captacao-230",
-  "f260-captacao-231",
-  "f260-captacao-233",
   "f260-curadoria-008",
   "plat-captamos",
   "plat-rede-filantropia",
@@ -368,20 +365,20 @@
 
 ```json
 {
- "fontes_recebidas": 294,
+ "fontes_recebidas": 298,
  "por_origem": {
-  "conselho (fontes irmãs)": 145,
-  "Cartório (site oficial certificado)": 124,
+  "conselho (fontes irmãs)": 147,
+  "Cartório (site oficial certificado)": 126,
   "Espião (privado/internacional)": 25
  },
- "lidas_nas_ultimas_24h": 190,
+ "lidas_nas_ultimas_24h": 200,
  "dimensionamento": {
-  "fontes": 294,
+  "fontes": 298,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 6,
-  "cobertura_diaria": 294,
+  "cobertura_diaria": 298,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -390,19 +387,19 @@
  },
  "clones_que_ja_leram": {
   "outras-oportunidades-1": {
-   "ultima": "2026-10-13T20:07:13+00:00",
-   "duracao_s": 55,
+   "ultima": "2026-10-13T22:00:28+00:00",
+   "duracao_s": 57,
    "achados": 6
   },
   "outras-oportunidades-2": {
-   "ultima": "2026-10-13T20:05:06+00:00",
-   "duracao_s": 73,
+   "ultima": "2026-10-13T22:01:45+00:00",
+   "duracao_s": 77,
    "achados": 42
   },
   "outras-oportunidades-3": {
-   "ultima": "2026-10-13T14:05:18+00:00",
-   "duracao_s": 65,
-   "achados": 0
+   "ultima": "2026-10-13T22:03:34+00:00",
+   "duracao_s": 108,
+   "achados": 1
   },
   "outras-oportunidades-4": {
    "ultima": "2026-10-13T20:09:25+00:00",
@@ -420,7 +417,7 @@
    "achados": 17
   }
  },
- "com_achado": 41
+ "com_achado": 42
 }
 ```
 
@@ -434,7 +431,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 75,
+   "orgaos": 76,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",

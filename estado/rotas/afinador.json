@@ -1112,9 +1112,9 @@
   "resultado": "rota nova em teste"
  },
  "_execucao": {
-  "em": "2026-10-13T21:23:03+00:00",
-  "motores_testados": 6,
-  "ponte_respondeu": false
+  "em": "2026-10-13T23:00:30+00:00",
+  "motores_testados": 2,
+  "ponte_respondeu": true
  },
  "f260-captacao-238": {
   "em": "2026-10-13T10:01:11+00:00",
@@ -4269,7 +4269,7 @@
   "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
  },
  "f260-captacao-231": {
-  "em": "2026-10-11T02:47:16+00:00",
+  "em": "2026-10-13T22:55:24+00:00",
   "testes": 14,
   "melhor": {
    "url": "https://www.fundacaovale.org/materiais/cursos",
@@ -4279,6 +4279,17 @@
    "formato": "html"
   },
   "detalhe": [
+   {
+    "url": "https://www.fundacaovale.org/materiais/cursos",
+    "origem": "rota original",
+    "via": "direto",
+    "pontos": 7,
+    "links": 51,
+    "sinais": 3,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
+   },
    {
     "url": "https://www.fundacaovale.org/",
     "origem": "rota original",
@@ -4291,12 +4302,23 @@
     "funcionou": true
    },
    {
-    "url": "https://www.fundacaovale.org/materiais/cursos",
-    "origem": "rota original",
+    "url": "https://www.fundacaovale.org/feed",
+    "origem": "padrão",
     "via": "direto",
     "pontos": 7,
-    "links": 51,
-    "sinais": 3,
+    "links": 10,
+    "sinais": 6,
+    "formato": "sitemap/feed",
+    "erro": null,
+    "funcionou": true
+   },
+   {
+    "url": "https://www.fundacaovale.org/transparencia/editais",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 5,
+    "links": 64,
+    "sinais": 2,
     "formato": "html",
     "erro": null,
     "funcionou": true
@@ -4313,28 +4335,6 @@
     "funcionou": false
    },
    {
-    "url": "https://www.fundacaovale.org/feed",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 7,
-    "links": 10,
-    "sinais": 6,
-    "formato": "sitemap/feed",
-    "erro": null,
-    "funcionou": true
-   },
-   {
-    "url": "https://www.fundacaovale.org/chamamento-publico",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 5,
-    "links": 64,
-    "sinais": 2,
-    "formato": "html",
-    "erro": null,
-    "funcionou": true
-   },
-   {
     "url": "https://www.fundacaovale.org/editais",
     "origem": "padrão",
     "via": "direto",
@@ -4346,18 +4346,7 @@
     "funcionou": true
    },
    {
-    "url": "https://www.fundacaovale.org/licitacoes",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 5,
-    "links": 64,
-    "sinais": 2,
-    "formato": "html",
-    "erro": null,
-    "funcionou": true
-   },
-   {
-    "url": "https://www.fundacaovale.org/transparencia/editais",
+    "url": "https://www.fundacaovale.org/edital",
     "origem": "padrão",
     "via": "direto",
     "pontos": 5,
@@ -4369,39 +4358,6 @@
    },
    {
     "url": "https://www.fundacaovale.org/noticias",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 5,
-    "links": 64,
-    "sinais": 2,
-    "formato": "html",
-    "erro": null,
-    "funcionou": true
-   },
-   {
-    "url": "https://www.fundacaovale.org/chamamentos",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 5,
-    "links": 64,
-    "sinais": 2,
-    "formato": "html",
-    "erro": null,
-    "funcionou": true
-   },
-   {
-    "url": "https://www.fundacaovale.org/chamadas-publicas",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 5,
-    "links": 64,
-    "sinais": 2,
-    "formato": "html",
-    "erro": null,
-    "funcionou": true
-   },
-   {
-    "url": "https://www.fundacaovale.org/edital",
     "origem": "padrão",
     "via": "direto",
     "pontos": 5,
@@ -4430,6 +4386,50 @@
     "sinais": 0,
     "erro": "ErroPonte",
     "funcionou": false
+   },
+   {
+    "url": "https://www.fundacaovale.org/chamamento-publico",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 5,
+    "links": 64,
+    "sinais": 2,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
+   },
+   {
+    "url": "https://www.fundacaovale.org/chamadas-publicas",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 5,
+    "links": 64,
+    "sinais": 2,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
+   },
+   {
+    "url": "https://www.fundacaovale.org/chamamentos",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 5,
+    "links": 64,
+    "sinais": 2,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
+   },
+   {
+    "url": "https://www.fundacaovale.org/licitacoes",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 5,
+    "links": 64,
+    "sinais": 2,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
    }
   ],
   "resultado": "rota nova em teste"
@@ -6153,8 +6153,8 @@
   "resultado": "rota nova em teste"
  },
  "f260-captacao-069": {
-  "em": "2026-10-11T06:03:23+00:00",
-  "testes": 16,
+  "em": "2026-10-13T23:00:30+00:00",
+  "testes": 14,
   "melhor": {
    "url": "https://www.goiania.go.gov.br/secult/leipaulogustavo/",
    "via": "direto",
@@ -6163,16 +6163,6 @@
    "formato": "html"
   },
   "detalhe": [
-   {
-    "url": "https://www.goiania.go.gov.br/cultura/",
-    "origem": "biblioteca",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
    {
     "url": "https://www.goiania.go.gov.br/secult/leipaulogustavo/",
     "origem": "rota original",
@@ -6183,6 +6173,66 @@
     "formato": "html",
     "erro": null,
     "funcionou": true
+   },
+   {
+    "url": "https://www.goiania.go.gov.br/cultura/",
+    "origem": "biblioteca",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "TimeoutError",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.goiania.go.gov.br/cultura/",
+    "origem": "biblioteca",
+    "via": "ponte",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "ErroPonte",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.goiania.go.gov.br/educacao/",
+    "origem": "rota original",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "TimeoutError",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.goiania.go.gov.br/educacao/",
+    "origem": "rota original",
+    "via": "ponte",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "ErroPonte",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.goiania.go.gov.br/agora/prefeitura-de-goiania-publica-seis-editais-da-lei-aldir-blanc-de-fomento-a-cultura",
+    "origem": "biblioteca",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "TimeoutError",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.goiania.go.gov.br/agora/prefeitura-de-goiania-publica-seis-editais-da-lei-aldir-blanc-de-fomento-a-cultura",
+    "origem": "biblioteca",
+    "via": "ponte",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "ErroPonte",
+    "funcionou": false
    },
    {
     "url": "https://www.goiania.go.gov.br/",
@@ -6202,7 +6252,17 @@
     "pontos": 0,
     "links": 0,
     "sinais": 0,
-    "erro": "HTTPError",
+    "erro": "TimeoutError",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.goiania.go.gov.br/prefeitura-capacita-profissionais-para-fortalecer-vigilancia-diagnostico-e-tratamento-da-sifilis-em-goiania",
+    "origem": "biblioteca",
+    "via": "ponte",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "ErroPonte",
     "funcionou": false
    },
    {
@@ -6212,72 +6272,17 @@
     "pontos": 0,
     "links": 0,
     "sinais": 0,
-    "erro": "HTTPError",
+    "erro": "TimeoutError",
     "funcionou": false
    },
    {
-    "url": "https://www.goiania.go.gov.br/educacao/",
-    "origem": "rota original",
-    "via": "direto",
-    "pontos": 1,
-    "links": 67,
-    "sinais": 0,
-    "formato": "html",
-    "erro": null,
-    "funcionou": false
-   },
-   {
-    "url": "https://www.goiania.go.gov.br/agora/prefeitura-de-goiania-publica-seis-editais-da-lei-aldir-blanc-de-fomento-a-cultura",
+    "url": "https://www.goiania.go.gov.br/agora/prefeitura-capacita-profissionais-para-fortalecer-vigilancia-diagnostico-e-tratamento-da-sifilis-em-goiania",
     "origem": "biblioteca",
-    "via": "direto",
+    "via": "ponte",
     "pontos": 0,
     "links": 0,
     "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://www.goiania.go.gov.br/Download/legislacao/diariooficial/2026/do_20260818_000008844.pdf",
-    "origem": "biblioteca",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "formato": "html",
-    "erro": null,
-    "funcionou": false
-   },
-   {
-    "url": "https://www.goiania.go.gov.br/Download/legislacao/diariooficial/2026/do_20260807_000008837.pdf",
-    "origem": "biblioteca",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "formato": "html",
-    "erro": null,
-    "funcionou": false
-   },
-   {
-    "url": "https://www.goiania.go.gov.br/Download/legislacao/diariooficial/2026/do_20260925_000008871.pdf",
-    "origem": "biblioteca",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "formato": "html",
-    "erro": null,
-    "funcionou": false
-   },
-   {
-    "url": "https://www.goiania.go.gov.br/download/gabinete_civil/nomeacao_prefeitura.pdf",
-    "origem": "biblioteca",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "formato": "html",
-    "erro": null,
+    "erro": "ErroPonte",
     "funcionou": false
    },
    {
@@ -6287,51 +6292,17 @@
     "pontos": 0,
     "links": 0,
     "sinais": 0,
-    "erro": "HTTPError",
+    "erro": "TimeoutError",
     "funcionou": false
    },
    {
-    "url": "https://www.goiania.go.gov.br/feed",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 5,
-    "links": 10,
-    "sinais": 4,
-    "formato": "sitemap/feed",
-    "erro": null,
-    "funcionou": true
-   },
-   {
-    "url": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-10-edital-de-fomento-cultural-iii-patrimonio-cultural.pdf",
+    "url": "https://www.goiania.go.gov.br/agora/prefeitura-de-goiania-oferece-987-vagas-de-emprego-e-abre-45-oportunidades-para-jovem-aprendiz",
     "origem": "biblioteca",
-    "via": "direto",
+    "via": "ponte",
     "pontos": 0,
     "links": 0,
     "sinais": 0,
-    "formato": "html",
-    "erro": null,
-    "funcionou": false
-   },
-   {
-    "url": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-08-edital-de-fomento-cultural-i-criacao-montagem-circulacao.pdf",
-    "origem": "biblioteca",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "formato": "html",
-    "erro": null,
-    "funcionou": false
-   },
-   {
-    "url": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-09-edital-de-fomento-cultural-ii-acoes-formativas.pdf",
-    "origem": "biblioteca",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "formato": "html",
-    "erro": null,
+    "erro": "ErroPonte",
     "funcionou": false
    }
   ],
