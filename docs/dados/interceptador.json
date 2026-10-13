@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-13T10:30:04+00:00",
+  "em": "2026-10-13T10:48:43+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-13T10:12:45+00:00",
+  "ultimo_voo": "2026-10-13T10:32:55+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 114,
+    "missoes": 115,
     "validadas": 4,
     "parciais": 26,
-    "insuficientes": 80,
+    "insuficientes": 81,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 91,
+      "sim": 92,
       "nao": 12
     },
     "estrelas_de_ouro": 3,
@@ -52,6 +52,97 @@
     "tempo_medio_min": 13.5
   },
   "missoes": [
+    {
+      "em": "2026-10-13T10:32:55+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Vitória (ES) 2026-09-29 — \"edital de chamamento público\" associação",
+      "qualidade": "insuficiente",
+      "comprovados": 10,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de recurso",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi publicado no Diário Oficial de Vitória (ES) em 2026-09-29 e contém informações detalhadas sobre o objeto, prazo de inscrição, valor e outros requisitos.",
+        "para_a_amc": "Para acessar o edital, a associação comunitária de Goiânia precisaria verificar se atende aos requisitos, como contribuintes que possuem débitos em aberto e podem aproveitar as condições do Programa de Recuperação Fiscal (Refis), e se alinhar ao objeto do edital, que é fortalecer a arrecadação, na ampliação da conformidade fiscal e no uso estratégico de informações.",
+        "proximo_passo": "Consultar o edital completo e os anexos para entender os requisitos específicos e o processo de inscrição.",
+        "risco": "A associação pode não atender aos requisitos do edital, como possuir débitos em aberto ou não se alinhar ao objeto do edital."
+      },
+      "erro": null,
+      "segundos": 946,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "064591bd60f7f71e623e",
+      "encontrou": {
+        "Objeto": {
+          "valor": "fortalecer a arrecadação, na ampliação da conformidade fiscal e no uso estratégico de informações",
+          "trecho": "com foco no fortalecimento da arrecadação, na ampliação da conformidade fiscal e no uso estratégico de informações",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "2026-09-29 a 2026-12-18",
+          "trecho": "o Programa de Recuperação Fiscal (Refis), que está aberto no município até o dia 18 de dezembro",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Valor": {
+          "valor": "R$ 59,1 milhões",
+          "trecho": "aproximadamente R$ 59,1 milhões",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura de Vitória, por meio da Secretaria Municipal da Fazenda",
+          "trecho": "A Prefeitura de Vitória, por meio da Secretaria Municipal da Fazenda",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "ES",
+          "trecho": "Diário Oficial do Município de Vitória - ES 29 de setembro de 2026 - Edição nº 2976",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · outro",
+          "trecho": "A Prefeitura de Vitória, por meio da Secretaria Municipal da Fazenda",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "contribuintes que possuem débitos em aberto podem aproveitar as condições do Programa de Recuperação Fiscal (Refis)",
+          "trecho": "os contribuintes que possuem débitos em aberto podem aproveitar as condições do Programa de Recuperação Fiscal (Refis)",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura de Vitória",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3205309/2026-09-29/e4e6dddf43137203fa04d96f0d35d05e72269004.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-13T10:12:45+00:00",
       "modo": "validar",
@@ -2889,79 +2980,6 @@
         "financiador_ano",
         "governo",
         "parceiro"
-      ]
-    },
-    {
-      "em": "2026-10-12T23:11:31+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Concurso Público nº 02/2024 \n                                     \n                                         Prefeito do Município de Votupor",
-      "qualidade": "parcial",
-      "comprovados": 7,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://www.votuporanga.sp.gov.br/editais/edital_de_abertura_cp_032024_26095405.pdf",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital comprova a existência de vagas para cargos específicos e descreve os requisitos necessários para a inscrição, o que pode ser utilizado como base para ações de capacitação e participação em processos seletivos.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se há alinhamento entre os requisitos do edital e suas competências, além de buscar parcerias ou capacitação para atender aos critérios exigidos.",
-        "proximo_passo": "Pesquisar se há vagas compatíveis com as atividades da associação e se há possibilidade de inscrição em processos seletivos vinculados a esse edital.",
-        "risco": "A falta de informações sobre prazo de inscrição e área de atuação pode impedir a participação efetiva da associação no processo seletivo."
-      },
-      "erro": null,
-      "segundos": 725,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 7,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
-      "id": "871c5ce00f2579280555",
-      "encontrou": {
-        "Objeto": {
-          "valor": "provimento de vagas existentes para os cargos descritos na Tabela I",
-          "trecho": "O Concurso Público destina-se ao provimento de vagas, pelo Regime Estatutário - Leis Complementares Municipais n° 187/2011 e 214/2012, nos cargos indicados no presente edital e dos",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeito do Município de Votuporanga/SP",
-          "trecho": "O Prefeito do Município de Votuporanga/SP faz saber que realizará, por meio do INDEPAC – Instituto de Cultura, Desenvolvimento Educacional, Promoção Humana e Ação Comunitária",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "SP",
-          "trecho": "As vagas oferecidas são para o município de Votuporanga/SP",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · outro",
-          "trecho": "O Concurso Público reger-se-á pelas disposições contidas nas Instruções Especiais, que ficam fazendo parte integrante deste Edital.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "Ensino médio completo, CNH categoria “A” e “B”, Conhecimentos em informática, Ensino médio completo e curso técnico na área, Ensino médio completo e curso de formação na área específica",
-          "trecho": "Requisitos mínimos exigidos e a Taxa da Inscrição são os estabelecidos na Tabelas I de Cargos, especificada abaixo.",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura de Votuporanga",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
       ]
     }
   ],
