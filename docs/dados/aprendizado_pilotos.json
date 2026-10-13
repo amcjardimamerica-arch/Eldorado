@@ -1,9 +1,9 @@
 {
- "em": "2026-10-13T16:22:25+00:00",
+ "em": "2026-10-13T16:31:04+00:00",
  "lote": 100,
  "estado": {
   "interceptador_erros_vistos": 0,
-  "espiao_erros_vistos": 2323,
+  "espiao_erros_vistos": 2330,
   "contagem_desde": "2026-10-12T03:00:00+00:00"
  },
  "ultimos_ciclos": [
@@ -154,16 +154,16 @@
   },
   {
    "piloto": "espiao",
-   "em": "2026-10-13T16:08:49+00:00",
+   "em": "2026-10-13T16:15:30+00:00",
    "erros_no_lote": 1000,
    "motivos": [
     [
      "nada_no_crivo",
-     986
+     987
     ],
     [
      "sem_texto",
-     13
+     12
     ],
     [
      "busca_vazia",
@@ -171,7 +171,7 @@
     ]
    ],
    "rendimento_por_missao": {
-    "espionar": "1/2324"
+    "espionar": "1/2331"
    },
    "parametros_novos": {
     "pesos_missao": {
@@ -305,46 +305,40 @@
    ],
    "consultas_ruins": [
     {
-     "consulta": "observatório do terceiro setor — editais abre termo de fomento goiânia",
-     "tentativas": 54,
+     "consulta": "voluntariado doação entidades sem fins lucrativos itumbiara",
+     "tentativas": 43,
      "motivo": "nada_no_crivo",
      "missao": "aposta"
     },
     {
      "consulta": "financiamento de projetos voluntariado osc 2026 inscrições abertas goi",
-     "tentativas": 150,
+     "tentativas": 149,
      "motivo": "nada_no_crivo",
      "missao": "aposta"
     },
     {
-     "consulta": "instituto empresarial edital projetos sociais 2026",
-     "tentativas": 326,
-     "motivo": "nada_no_crivo",
-     "missao": "descobrir"
-    },
-    {
      "consulta": "fundação empresarial chamada pública organizações da sociedade civil 2026",
-     "tentativas": 320,
+     "tentativas": 319,
      "motivo": "nada_no_crivo",
      "missao": "descobrir"
     },
     {
      "consulta": "empresa lança edital para ongs 2026",
-     "tentativas": 323,
+     "tentativas": 322,
      "motivo": "nada_no_crivo",
      "missao": "descobrir"
     },
     {
      "consulta": "programa de investimento social privado inscrições 2026",
-     "tentativas": 333,
+     "tentativas": 332,
      "motivo": "nada_no_crivo",
      "missao": "descobrir"
     },
     {
-     "consulta": "voluntariado doação entidades sem fins lucrativos itumbiara",
-     "tentativas": 43,
+     "consulta": "instituto empresarial edital projetos sociais 2026",
+     "tentativas": 324,
      "motivo": "nada_no_crivo",
-     "missao": "aposta"
+     "missao": "descobrir"
     },
     {
      "consulta": "financiamento de projetos voluntariado osc 2026 inscrições abertas",
@@ -367,6 +361,12 @@
     {
      "consulta": "bndes patrocínio cultura organizações da sociedade civil",
      "tentativas": 17,
+     "motivo": "nada_no_crivo",
+     "missao": "aposta"
+    },
+    {
+     "consulta": "observatório do terceiro setor — editais abre termo de fomento goiânia",
+     "tentativas": 53,
      "motivo": "nada_no_crivo",
      "missao": "aposta"
     },
@@ -565,22 +565,22 @@
    ],
    "rendimento_das_buscas": {
     "aposta": {
-     "tentativas": 921,
+     "tentativas": 919,
      "com_resultado": 2,
      "taxa": 0.002
     },
     "descobrir": {
-     "tentativas": 1821,
+     "tentativas": 1816,
      "com_resultado": 0,
      "taxa": 0.0
     },
     "espionar": {
-     "tentativas": 5013,
+     "tentativas": 5021,
      "com_resultado": 7,
      "taxa": 0.001
     }
    },
-   "consultas_aprendidas_em": "2026-10-13T16:08:49+00:00",
+   "consultas_aprendidas_em": "2026-10-13T16:15:31+00:00",
    "restricoes_fixas": {
     "regra": "FIXAS e só NEGATIVAS (titular, 01/10): o que falhou repetidamente não volta; todo o resto é busca criativa, renovada a cada 100 pesquisas",
     "desde": "2026-10-01T14:01:07+00:00",
@@ -711,7 +711,7 @@
    "intervalo_busca_local_s": 6.0,
    "max_buscas_ponte_por_voo": 3
   },
-  "atualizado_em": "2026-10-13T16:08:49+00:00",
+  "atualizado_em": "2026-10-13T16:15:30+00:00",
   "regra": "SKILL · APRENDIZADO E RESULTADO (titular, 29/09) — a cada 100 ERROS, parâmetros de busca melhores.\n\nErro = missão sem resultado: no Interceptador, estudo 'insuficiente'/'sem_evidencia' ou voo com erro; no Espião,\navaliação com motivo de insucesso (nada no crivo, fora do objeto, página não confirma, busca vazia). A cada 100 erros\nnovos de um Piloto, abre um CICLO: mede onde falhou (por origem/missão, motivo, condição que faltou, erro técnico) e\ngrava parâmetros novos em config/parametros_pilotos.json — que os Pilotos leem na próxima missão:\n  Interceptador  expressões extras para as condições que mais faltam (skill de PDF) · origens de baixo rendimento\n                 (vão para o fim da fila) · ordem das rotas do site oficial pelo que funciona\n  Espião         peso de cada tipo de missão pelo rendimento (o que rende 0,2% perde vagas no voo) · termos que\n                 marcam 'fora do objeto' (descartados na origem)"
  }
 }
