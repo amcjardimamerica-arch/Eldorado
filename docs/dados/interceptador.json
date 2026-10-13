@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-13T05:37:49+00:00",
+  "em": "2026-10-13T05:56:59+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-13T05:34:59+00:00",
+  "ultimo_voo": "2026-10-13T05:40:25+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,94 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 99,
+    "missoes": 100,
     "validadas": 4,
     "parciais": 24,
-    "insuficientes": 67,
+    "insuficientes": 68,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 79,
+      "sim": 80,
       "nao": 10
     },
     "estrelas_de_ouro": 3,
     "fontes_novas_para_os_motores": 4,
-    "tempo_medio_min": 13.1
+    "tempo_medio_min": 13.2
   },
   "missoes": [
+    {
+      "em": "2026-10-13T05:40:25+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Jundiá (AL) 2026-10-05 — \"termo de fomento\" \"chamamento público\"",
+      "qualidade": "insuficiente",
+      "comprovados": 6,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto menciona um termo de fomento e um chamamento público, o que indica uma oportunidade de financiamento para organizações.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital se aplica à sua área de atuação, preparar uma proposta conforme os anexos e enviar até 03 dias úteis após a publicação.",
+        "proximo_passo": "Consultar o edital completo e os anexos para entender os requisitos e preparar a proposta.",
+        "risco": "O prazo de inscrição é curto e o edital é específico para o território de AL, o que pode impedir o acesso para uma associação de Goiânia."
+      },
+      "erro": null,
+      "segundos": 993,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "cabb085adb3592bb951b",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Registro de Preços para futura e eventual contratação de empresa especializada no",
+          "trecho": "Objeto: Registro de Preços para futura e eventual contratação de empresa especializada no",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "dispensado — O prazo para envio das propostas é até 03(três) dias úteis, a partir desta publicação.",
+          "trecho": "Prazo para envio das propostas: até 03(três) dias úteis, a partir desta publicação.",
+          "oficial": false,
+          "dispensado": true
+        },
+        "Órgão / financiador": {
+          "valor": "CONISA - CONSÓRCIO INTERMUNICIPAL DO SERTÃO DE ALAGOAS",
+          "trecho": "CONISA - CONSÓRCIO INTERMUNICIPAL DO SERTÃO DE ALAGOAS",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "AL",
+          "trecho": "ESTADO DE ALAGOAS",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "CONSORCIO INTERMUNICIPAL DO SERTÃO DE ALAGOAS - CONISA",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/2700000/2026-10-05/8e3eb60f57b80a1eef6637d054171564cacb0e5a.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-13T05:34:59+00:00",
       "modo": "validar",
@@ -2944,79 +3017,6 @@
       "rotas": [
         "site_do_financiador"
       ]
-    },
-    {
-      "em": "2026-10-12T18:56:58+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: completar 8 item(ns) a partir do site oficial certificado",
-      "alvo": "Prêmio Açorianos de Teatro, Circo e Tibicuera de Teatro Infantojuvenil 2026 — Secretaria Municipal de Cultura de Porto Alegre",
-      "qualidade": "validada",
-      "comprovados": 10,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Valor",
-        "Destinação"
-      ],
-      "pagina_oficial": "https://dopaonlineupload.procempa.com.br/dopaonlineupload/5970_ce_601372_1.pdf",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi comprovado com informações detalhadas sobre o objeto, prazos, requisitos e área de atuação.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar aos requisitos do edital, como apresentar espetáculos profissionais de teatro com no mínimo 06 apresentações, e garantir a inscrição devidamente homologada, além de seguir as normas do edital para inscrição.",
-        "proximo_passo": "Verificar se a associação comunitária atende aos requisitos do edital e iniciar o processo de inscrição dentro do prazo estabelecido.",
-        "risco": "A falta de experiência ou capacidade de apresentar espetáculos profissionais de teatro pode impedir o acesso ao edital."
-      },
-      "erro": null,
-      "segundos": 758,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": true,
-      "fontes_oficiais": 9,
-      "justificativa": "prazo de inscrição comprovado na fonte oficial, página oficial mapeada e 9 ou mais das 12 condições comprovadas ou dispensadas",
-      "avaliacao": "pronta para a decisão do Claude",
-      "id": "agr-179508e0fd9f",
-      "encontrou": {
-        "Objeto": {
-          "valor": "distinguir a excelência das artes cênicas em Porto Alegre",
-          "trecho": "Os Prêmios Açorianos de Teatro, Circo e Tibicuera de Teatro Infantojuvenil 2026 visam distinguir a excelência das artes cênicas em Porto Alegre.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "2026-03-09 a 2026-10-30",
-          "trecho": "PERÍODO DE INSCRIÇÕES: de 09 de março a 30 de outubro de 2026",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Secretaria Municipal de Cultura de Porto Alegre",
-          "trecho": "A Secretaria Municipal de Cultura de Porto Alegre, via Coordenação de Artes Cênicas, abre inscrições...",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "RS",
-          "trecho": "Secretaria Municipal de Cultura de Porto Alegre",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "Os Prêmios Açorianos de Teatro, Circo e Tibicuera de Teatro Infantojuvenil 2026 visam distinguir a excelência das artes cênicas em Porto Alegre.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "Espetáculos profissionais de teatro com inscrição devidamente homologada que realizarem no mínimo 06 (seis) apresentaçõe",
-          "trecho": "Concorrem aos Prêmios Açorianos de Teatro e Tibicuera de Teatro para público infantojuvenil 2026: Espetáculos profissionais de teatro com inscrição devidamente homologada que reali",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
     }
   ],
   "contagem": {
