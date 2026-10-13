@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-13T01:21:38+00:00",
+  "em": "2026-10-13T01:41:16+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-13T01:05:55+00:00",
+  "ultimo_voo": "2026-10-13T01:24:14+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,112 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 83,
+    "missoes": 84,
     "validadas": 3,
     "parciais": 21,
-    "insuficientes": 55,
+    "insuficientes": 56,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 66,
+      "sim": 67,
       "nao": 9
     },
     "estrelas_de_ouro": 2,
     "fontes_novas_para_os_motores": 3,
-    "tempo_medio_min": 13.1
+    "tempo_medio_min": 13.2
   },
   "missoes": [
+    {
+      "em": "2026-10-13T01:24:14+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Taiobeiras (MG) 2026-10-06 — \"termo de fomento\" \"chamamento público\"",
+      "qualidade": "insuficiente",
+      "comprovados": 10,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Resultado",
+        "Valor"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto menciona explicitamente o termo de fomento e o chamamento público com os requisitos e prazos necessários.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se adequar aos requisitos do edital, como ser pessoa jurídica sediada em Taiobeiras/MG e ter atividades de produção cinematográfica e audiovisual em seus objetivos, além de seguir o prazo de inscrição e anexar os documentos exigidos.",
+        "proximo_passo": "Verificar se a associação comunitária atende aos requisitos do edital e se inscrever no prazo estabelecido.",
+        "risco": "A associação não atender aos requisitos de sediação no município de Taiobeiras/MG ou não ter atividades de produção cinematográfica e audiovisual em seus objetivos."
+      },
+      "erro": null,
+      "segundos": 1020,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "192bea6d3ad2949ea769",
+      "encontrou": {
+        "Objeto": {
+          "valor": "execução de ações culturais (apoio direto a projetos – audiovisual \"Taiobeiras Revela Sua História\")",
+          "trecho": "EDITAL PARA FOMENTO A EXECUÇÃO DE AÇÕES CULTURAIS (APOIO DIRETO A PROJETOS – AUDIOVISUAL \"TAIOBEIRAS REVELA SUA HISTÓRIA\")",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "2026-10-05 a 2026-10-23",
+          "trecho": "Início da Fase de Inscrição 05/10/2026 Encerramento da Fase de Inscrição 23/10/2026",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Taiobeiras/MG",
+          "trecho": "Prefeitura Municipal de Taiobeiras/MG, por intermédio de sua Secretaria Municipal de Cultura",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "MG",
+          "trecho": "sediada no Município de Taiobeiras/MG",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "FOMENTO A EXECUÇÃO DE AÇÕES CULTURAIS",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "a sociedade civil no setor da cultura",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "pessoa jurídica, de direito privado, com ou sem fins lucrativos, sediada no Município de Taiobeiras/MG há pelo menos 01 , objeto e atos constitutivos contemplem expressamente atividades de produção cinematográfica e audiovisual",
+          "trecho": "proponente: agente cultural qualificado exclusivamente como pessoa jurídica, de direito privado, com ou sem fins lucrativos, sediada no Município de Taiobeiras/MG há pelo menos 01 ",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Taiobeiras/MG",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3168002/2026-10-06/63d85ec3dcceec442d1bb2095878581ac6d02fb7.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-13T01:05:55+00:00",
       "modo": "validar",
@@ -2928,82 +3019,6 @@
         "financiador_regulamento",
         "financiador_pdf",
         "financiador_ano"
-      ]
-    },
-    {
-      "em": "2026-10-12T14:15:00+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Diário Oficial de Macajuba (BA) 2026-10-05 — \"termo de fomento\" \"chamamento público\"",
-      "qualidade": "insuficiente",
-      "comprovados": 9,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Valor",
-        "Requisitos"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi comprovado com informações sobre o objeto, resultado, prazo de recurso, órgão financiador, território, esfera, anexos e área de atuação.",
-        "para_a_amc": "Para acessar, uma associação comunitária de Goiânia precisaria verificar se há alinhamento com a área de atuação do edital (cultura), preparar os documentos necessários conforme os anexos e garantir que o projeto esteja dentro do escopo de fomento, mesmo que fora do território de Macajuba.",
-        "proximo_passo": "Verificar se o projeto se enquadra na área de atuação do edital e coletar os documentos exigidos nos anexos.",
-        "risco": "O projeto não estar alinhado com a área de atuação do edital ou a falta de documentos necessários nos anexos pode impedir o acesso."
-      },
-      "erro": null,
-      "segundos": 855,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "a0f029f0df7e86a8c7bb",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Fomento as ações culturais e seleção de projetos",
-          "trecho": "FOMENTO AS AÇÕES CULTURAIS E SELEÇÃO DE PROJETOS",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Município de Macajuba",
-          "trecho": "O MUNÍCIPIO DE MACAJUBA, por meio da Secretaria Municipal de Educação, Cultura, Esporte, Lazer e Turismo e do Departamento de Cultura, Lazer e Turismo",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "BA",
-          "trecho": "Município de Macajuba",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "FOMENTO AS AÇÕES CULTURAIS E SELEÇÃO DE PROJETOS",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · fomento",
-          "trecho": "FOMENTO AS AÇÕES CULTURAIS E SELEÇÃO DE PROJETOS",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "MUNÍCIO DE MACAJUBA",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/2919603/2026-10-05/2a989327629c8150315787eed4d27186d7cb7e04.pdf",
-          "tipo": "agregador"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
       ]
     }
   ],
