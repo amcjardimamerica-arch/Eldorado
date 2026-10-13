@@ -115,15 +115,15 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 75,
-   "achados_total_agora": 75,
+   "achados_total_1a": 81,
+   "achados_total_agora": 81,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 1089,
-   "achados_total_agora": 1089,
+   "achados_total_1a": 1110,
+   "achados_total_agora": 1110,
    "no_fluxo": 2,
    "confirmadas": 0
   },
@@ -136,8 +136,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 69,
-   "achados_total_agora": 69,
+   "achados_total_1a": 71,
+   "achados_total_agora": 71,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -164,22 +164,22 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 40,
-   "achados_total_agora": 40,
+   "achados_total_1a": 42,
+   "achados_total_agora": 42,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 68,
-   "achados_total_agora": 68,
+   "achados_total_1a": 70,
+   "achados_total_agora": 70,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-estaduais-go-gov",
-   "achados_total_1a": 30,
-   "achados_total_agora": 30,
+   "achados_total_1a": 31,
+   "achados_total_agora": 31,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -224,10 +224,10 @@
 
 ```json
 {
- "pontos_com_redundancia": 11,
+ "pontos_com_redundancia": 12,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 5479
+ "exemplos_da_rede_de_rotas": 5556
 }
 ```
 
@@ -238,11 +238,11 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 75.8,
- "fora_dos_motores_pct_agora": 75.8,
+ "fora_dos_motores_pct_1a": 75.3,
+ "fora_dos_motores_pct_agora": 75.3,
  "origem": {
-  "agregador/outra": 308,
-  "motor": 132,
+  "agregador/outra": 306,
+  "motor": 135,
   "Piloto": 105
  },
  "dominios_so_de_agregador": [
@@ -251,12 +251,12 @@
    "oportunidades": 6
   },
   {
-   "dominio": "conselho.saude.gov.br",
+   "dominio": "mapa.cultura.gov.br",
    "oportunidades": 3
   },
   {
-   "dominio": "mapa.cultura.gov.br",
-   "oportunidades": 2
+   "dominio": "conselho.saude.gov.br",
+   "oportunidades": 3
   },
   {
    "dominio": "fapemig.br",
@@ -365,20 +365,20 @@
 
 ```json
 {
- "fontes_recebidas": 273,
+ "fontes_recebidas": 274,
  "por_origem": {
   "conselho (fontes irmãs)": 143,
-  "Cartório (site oficial certificado)": 110,
+  "Cartório (site oficial certificado)": 111,
   "Espião (privado/internacional)": 20
  },
- "lidas_nas_ultimas_24h": 199,
+ "lidas_nas_ultimas_24h": 211,
  "dimensionamento": {
-  "fontes": 273,
+  "fontes": 274,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 6,
-  "cobertura_diaria": 273,
+  "cobertura_diaria": 274,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -412,12 +412,12 @@
    "achados": 2
   },
   "outras-oportunidades-6": {
-   "ultima": "2026-10-12T23:45:32+00:00",
-   "duracao_s": 62,
-   "achados": 0
+   "ultima": "2026-10-13T01:49:10+00:00",
+   "duracao_s": 77,
+   "achados": 4
   }
  },
- "com_achado": 31
+ "com_achado": 32
 }
 ```
 
@@ -431,7 +431,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 66,
+   "orgaos": 67,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",

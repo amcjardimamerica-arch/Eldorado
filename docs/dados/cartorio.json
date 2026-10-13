@@ -1,31 +1,31 @@
 {
- "em": "2026-10-13T01:22:38+00:00",
+ "em": "2026-10-13T02:55:34+00:00",
  "versao": "cartório v5 · linha de produção (09/10/2026)",
  "regra": "CARTÓRIO DE FONTES OFICIAIS (titular, 09/10/2026).\n\nOs motores DESCOBREM; o Cartório CERTIFICA. Toda estrela (oportunidade aberta) e todo livro (histórico) que tenha\nQUALQUER um dos 12 itens indisponível entra na fila do Cartório. Para cada um, ele sobe uma escada de degraus — do mais\nbarato e confiável ao mais caro — até achar o documento OFICIAL, lê o documento por seções e emite uma CERTIDÃO:\nlink oficial (régua única: vetor nunca é fonte), degrau em que foi achado, impressão digital do documento, e cada item\ncom valor + trecho literal + página — ou a DISPENSA com a justificativa de que o requisito não existe naquele edital.\n\nBalcões (como chegar ao documento em cada tipo de fonte):\n  pncp      página do PNCP → API de arquivos do órgão (PDF ou ZIP), o edital primeiro\n  diario    DOU, Diário de Goiás/Goiânia, Querido Diário → o ato dentro da edição (só as páginas do ato)\n  orgao     domínio público → documentos da página + biblioteca de mídia do WordPress pelo número do edital\n  privado   site do financiador → documentos da página (regulamento, edital)\n  pista     agregador/notícia → links de SAÍDA para o financiador; o resto vai ao Interceptador\n  proprio   Ministério Público e Judiciário: já leem o PDF; o Cartório só converte em certidão\n\nEscada: 0 documento na mão · 1 link de saída da pista · 2 busca do número do edital dentro do domínio oficial ·\n        3 Interceptador (IA) · 4 Chrome. O Cartório resolve 0–2 sem IA; 3 e 4 recebem só o que sobrou.\nIntegração: a fila é ordenada pela urgência (prazo), pela nota da REDE NEURAL e pela distância até o ouro (menos\nitens faltando primeiro: cada certidão vira selo). Estrelas: o fluxo de oportunidades lê a certidão no checklist.\nLivros: linhas no formato do importador (scripts/importar_verificacao_livros.py), que confere e entrega à esteira.",
  "identidade_visual": "provisória (config/identidade_visual.json aguarda o design de referência)",
  "resumo": {
   "pontos_12_total": 4800,
-  "pontos_certificados": 3209,
-  "pontos_dispensados": 252,
-  "pontos_ja_constavam": 1116,
-  "pontos_faltam": 223,
-  "pct_certificado_12": 0.721,
+  "pontos_certificados": 3224,
+  "pontos_dispensados": 244,
+  "pontos_ja_constavam": 1111,
+  "pontos_faltam": 221,
+  "pct_certificado_12": 0.7225,
   "certidoes_12_de_12": 128,
-  "certidoes_sem_item_faltando": 228,
+  "certidoes_sem_item_faltando": 229,
   "nota_denominador": "eficiencia_itens = resolvidos ÷ itens que faltavam na ENTRADA da fila (não é % dos 12); use pct_certificado_12",
-  "certidoes": 1518,
+  "certidoes": 1547,
   "nesta_execucao": 29,
-  "fila_estrelas": 494,
-  "fila_livros": 2193,
-  "itens_que_faltavam": 13216,
-  "itens_obtidos": 5354,
-  "itens_dispensados": 467,
-  "eficiencia_itens": 0.44,
-  "com_link_oficial": 998,
-  "taxa_link_oficial": 0.657,
-  "certidoes_completas": 160,
-  "para_o_interceptador": 1139,
-  "para_o_chrome": 218,
+  "fila_estrelas": 486,
+  "fila_livros": 2388,
+  "itens_que_faltavam": 13447,
+  "itens_obtidos": 5428,
+  "itens_dispensados": 470,
+  "eficiencia_itens": 0.439,
+  "com_link_oficial": 1011,
+  "taxa_link_oficial": 0.654,
+  "certidoes_completas": 161,
+  "para_o_interceptador": 1156,
+  "para_o_chrome": 229,
   "selos_que_mudaram": {
    "bronze → ouro": 18,
    "sem selo → ouro": 70,
@@ -36,7 +36,7 @@
    "sem selo → bronze": 23
   },
   "por_degrau": {
-   "degrau 0": 1003,
+   "degrau 0": 1016,
    "degrau 1": 25
   }
  },
@@ -47,110 +47,110 @@
  },
  "por_item": {
   "Objeto": {
-   "faltavam": 959,
-   "obtidos": 450,
+   "faltavam": 973,
+   "obtidos": 456,
    "dispensados": 0,
    "eficiencia": 0.469
   },
   "Prazo de inscrição": {
-   "faltavam": 943,
-   "obtidos": 350,
-   "dispensados": 118,
-   "eficiencia": 0.496
+   "faltavam": 958,
+   "obtidos": 353,
+   "dispensados": 119,
+   "eficiencia": 0.493
   },
   "Resultado": {
-   "faltavam": 1313,
-   "obtidos": 337,
-   "dispensados": 227,
-   "eficiencia": 0.43
+   "faltavam": 1340,
+   "obtidos": 343,
+   "dispensados": 228,
+   "eficiencia": 0.426
   },
   "Prazo de recurso": {
-   "faltavam": 1321,
-   "obtidos": 439,
+   "faltavam": 1347,
+   "obtidos": 447,
    "dispensados": 24,
    "eficiencia": 0.35
   },
   "Valor": {
-   "faltavam": 1107,
-   "obtidos": 426,
-   "dispensados": 69,
+   "faltavam": 1125,
+   "obtidos": 433,
+   "dispensados": 70,
    "eficiencia": 0.447
   },
   "Órgão / financiador": {
-   "faltavam": 849,
-   "obtidos": 495,
+   "faltavam": 861,
+   "obtidos": 500,
    "dispensados": 0,
-   "eficiencia": 0.583
+   "eficiencia": 0.581
   },
   "Território": {
-   "faltavam": 952,
-   "obtidos": 392,
+   "faltavam": 966,
+   "obtidos": 397,
    "dispensados": 0,
-   "eficiencia": 0.412
+   "eficiencia": 0.411
   },
   "Esfera": {
-   "faltavam": 1125,
-   "obtidos": 692,
+   "faltavam": 1145,
+   "obtidos": 704,
    "dispensados": 0,
    "eficiencia": 0.615
   },
   "Requisitos": {
-   "faltavam": 1268,
-   "obtidos": 446,
+   "faltavam": 1293,
+   "obtidos": 449,
    "dispensados": 0,
-   "eficiencia": 0.352
+   "eficiencia": 0.347
   },
   "Anexos": {
-   "faltavam": 922,
-   "obtidos": 353,
+   "faltavam": 936,
+   "obtidos": 357,
    "dispensados": 8,
-   "eficiencia": 0.392
+   "eficiencia": 0.39
   },
   "Destinação": {
-   "faltavam": 1271,
-   "obtidos": 230,
+   "faltavam": 1294,
+   "obtidos": 233,
    "dispensados": 21,
-   "eficiencia": 0.197
+   "eficiencia": 0.196
   },
   "Área de atuação": {
-   "faltavam": 1186,
-   "obtidos": 744,
+   "faltavam": 1209,
+   "obtidos": 756,
    "dispensados": 0,
-   "eficiencia": 0.627
+   "eficiencia": 0.625
   }
  },
  "por_balcao": {
   "pncp": {
-   "certidoes": 456,
+   "certidoes": 459,
    "com_link_oficial": 252,
-   "faltavam": 3862,
+   "faltavam": 3892,
    "resolvidos": 1526,
-   "eficiencia": 0.395,
-   "taxa_link_oficial": 0.553
+   "eficiencia": 0.392,
+   "taxa_link_oficial": 0.549
   },
   "diario": {
-   "certidoes": 44,
+   "certidoes": 50,
    "com_link_oficial": 23,
-   "faltavam": 344,
+   "faltavam": 385,
    "resolvidos": 48,
-   "eficiencia": 0.14,
-   "taxa_link_oficial": 0.523
+   "eficiencia": 0.125,
+   "taxa_link_oficial": 0.46
   },
   "orgao": {
-   "certidoes": 465,
-   "com_link_oficial": 373,
-   "faltavam": 3673,
-   "resolvidos": 1597,
-   "eficiencia": 0.435,
+   "certidoes": 480,
+   "com_link_oficial": 385,
+   "faltavam": 3796,
+   "resolvidos": 1663,
+   "eficiencia": 0.438,
    "taxa_link_oficial": 0.802
   },
   "pista": {
-   "certidoes": 128,
+   "certidoes": 130,
    "com_link_oficial": 21,
-   "faltavam": 1067,
-   "resolvidos": 231,
-   "eficiencia": 0.216,
-   "taxa_link_oficial": 0.164
+   "faltavam": 1085,
+   "resolvidos": 240,
+   "eficiencia": 0.221,
+   "taxa_link_oficial": 0.162
   },
   "revisão": {
    "certidoes": 267,
@@ -161,12 +161,12 @@
    "taxa_link_oficial": 0.888
   },
   "privado": {
-   "certidoes": 157,
-   "com_link_oficial": 92,
-   "faltavam": 1063,
-   "resolvidos": 228,
-   "eficiencia": 0.214,
-   "taxa_link_oficial": 0.586
+   "certidoes": 160,
+   "com_link_oficial": 93,
+   "faltavam": 1082,
+   "resolvidos": 230,
+   "eficiencia": 0.213,
+   "taxa_link_oficial": 0.581
   },
   "proprio": {
    "certidoes": 1,
@@ -179,12 +179,12 @@
  },
  "por_safra": {
   "primeira tentativa": {
-   "certidoes": 1348,
-   "faltavam": 11586,
-   "resolvidos": 4527,
-   "eficiencia": 0.391,
-   "com_link_oficial": 844,
-   "taxa_link_oficial": 0.626
+   "certidoes": 1377,
+   "faltavam": 11817,
+   "resolvidos": 4604,
+   "eficiencia": 0.39,
+   "com_link_oficial": 857,
+   "taxa_link_oficial": 0.622
   },
   "refeitas": {
    "certidoes": 170,
@@ -221,12 +221,12 @@
    "taxa_link_oficial": 0.875
   },
   "cartório v5 · linha de produção": {
-   "certidoes": 1215,
-   "faltavam": 9766,
-   "resolvidos": 3519,
+   "certidoes": 1244,
+   "faltavam": 9997,
+   "resolvidos": 3596,
    "eficiencia": 0.36,
-   "com_link_oficial": 729,
-   "taxa_link_oficial": 0.6
+   "com_link_oficial": 742,
+   "taxa_link_oficial": 0.596
   },
   "revisão manual": {
    "certidoes": 267,
@@ -240,11 +240,11 @@
  "por_abordagem": {
   "1": {
    "nome": "documento na mão",
-   "vezes": 1313,
-   "renderam": 848,
-   "itens": 5124,
-   "links_oficiais": 724,
-   "taxa_de_acerto": 0.646
+   "vezes": 1339,
+   "renderam": 862,
+   "itens": 5201,
+   "links_oficiais": 737,
+   "taxa_de_acerto": 0.644
   },
   "2": {
    "nome": "anexos completos",
@@ -304,11 +304,11 @@
   },
   "9": {
    "nome": "leitura profunda",
-   "vezes": 175,
+   "vezes": 178,
    "renderam": 7,
    "itens": 22,
    "links_oficiais": 0,
-   "taxa_de_acerto": 0.04
+   "taxa_de_acerto": 0.039
   },
   "10": {
    "nome": "busca no domínio",
@@ -322,11 +322,11 @@
  "por_balcao_selo": {
   "sem_estrela": {
    "nome": "Sem estrela → bronze",
-   "certidoes": 391,
-   "faltavam": 2509,
-   "resolvidos": 638,
-   "eficiencia": 0.254,
-   "entraram_aqui": 429,
+   "certidoes": 402,
+   "faltavam": 2576,
+   "resolvidos": 650,
+   "eficiencia": 0.252,
+   "entraram_aqui": 440,
    "esgotadas": 0
   },
   "bronze": {
@@ -340,11 +340,11 @@
   },
   "prata": {
    "nome": "Prata → ouro",
-   "certidoes": 824,
-   "faltavam": 7419,
-   "resolvidos": 3050,
+   "certidoes": 842,
+   "faltavam": 7583,
+   "resolvidos": 3115,
    "eficiencia": 0.411,
-   "entraram_aqui": 811,
+   "entraram_aqui": 829,
    "esgotadas": 0
   },
   "ouro": {
@@ -358,14 +358,14 @@
   }
  },
  "gabarito": {
-  "orgaos_com_gabarito": 700,
+  "orgaos_com_gabarito": 706,
   "itens_achados_pelo_gabarito": {
-   "Objeto": 28,
-   "Requisitos": 9,
+   "Objeto": 29,
+   "Requisitos": 10,
    "Prazo de inscrição": 1,
-   "Destinação": 3
+   "Destinação": 4
   },
-  "certidoes_ajudadas": 36
+  "certidoes_ajudadas": 39
  },
  "certidoes": [
   {
@@ -8176,6 +8176,112 @@
     "ja_constavam": 9,
     "faltam": 0,
     "pct_certificado_12": 0.25,
+    "pct_cobertura_12": 1.0
+   }
+  },
+  {
+   "id": "captacao-179",
+   "tipo": "livro",
+   "titulo": "Compensação ambiental e projetos de educação ambiental",
+   "balcao": "orgao",
+   "link_oficial": "https://goias.gov.br/meioambiente/",
+   "degrau": 0,
+   "como": "página/documento oficial já conhecido",
+   "faltavam": [
+    "Objeto"
+   ],
+   "resolvidos": [
+    "Objeto"
+   ],
+   "ainda_faltam": [],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "sem_estrela",
+   "estagio_inicio": "sem_estrela",
+   "esgotada": null,
+   "eficiencia": 1.0,
+   "encaminhado": null,
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-13T02:52:38+00:00",
+   "prazo": null,
+   "uf": null,
+   "orgao": "Compensação ambiental — Semad/IBAMA",
+   "fim": "2026-06-01",
+   "itens": {
+    "Objeto": {
+     "valor": "O presente edital tem por objeto a chamada pública \npara seleção de projetos de municípios do Estado de Goiás, para \napoio, com recursos oriundos do Programa Estadual de Conversão \nde Multas Ambientais da SEMAD, nos termos do art.",
+     "trecho": "o municipais de resíduos sólidos urbanos ou ecopontos municipais. 1. DO OBJETO 1.1. O presente edital tem por objeto a chamada pública para seleção de projetos de municípios do Estado de Goiás, para apoio, com recursos oriundos do Programa Estadual de Conversão de Multas Ambientais da SEMAD, nos termos do art. 78, § 2º, da Lei estadual nº 18.102, de 18 de julho de 2013, de acordo co",
+     "pagina": 1,
+     "documento": "https://goias.gov.br/meioambiente/wp-content/uploads/sites/33/2026/09/Edital_Diario_Oficial-25-2026-1.pdf",
+     "metodo": "seção"
+    }
+   },
+   "dispensas": {},
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-13T02:52:38+00:00",
+     "ganhou": [
+      "Objeto"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://goias.gov.br/meioambiente/",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://goias.gov.br/meioambiente/residuos-solidos-edital-para-selecao-de-projetos-que-receberao-apoio-na-implantacao/",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Resíduos sólidos: edital para seleção de projetos que receberão apoio na implantação",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://goias.gov.br/meioambiente/wp-content/uploads/sites/33/2026/09/Edital_Diario_Oficial-25-2026-1.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 7,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "ja_constava",
+     "Resultado": "ja_constava",
+     "Prazo de recurso": "ja_constava",
+     "Valor": "ja_constava",
+     "Órgão / financiador": "ja_constava",
+     "Território": "ja_constava",
+     "Esfera": "ja_constava",
+     "Requisitos": "ja_constava",
+     "Anexos": "ja_constava",
+     "Destinação": "ja_constava",
+     "Área de atuação": "ja_constava"
+    },
+    "certificados": 1,
+    "dispensados": 0,
+    "ja_constavam": 11,
+    "faltam": 0,
+    "pct_certificado_12": 0.0833,
     "pct_cobertura_12": 1.0
    }
   },
@@ -43980,6 +44086,270 @@
    }
   },
   {
+   "id": "nova-276f521b610f",
+   "tipo": "livro",
+   "titulo": "Chamadas Abertas",
+   "balcao": "orgao",
+   "link_oficial": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
+   "degrau": 0,
+   "como": "página/documento oficial já conhecido",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Território"
+   ],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": {
+    "orgao": "orgao:cnpq mcti setec mec chamadas com componente de extensao e pa",
+    "itens_pelo_gabarito": [
+     "Destinação"
+    ]
+   },
+   "estagio": "prata",
+   "estagio_inicio": "prata",
+   "esgotada": null,
+   "eficiencia": 0.917,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-13T02:51:45+00:00",
+   "prazo": null,
+   "uf": "BR",
+   "orgao": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
+   "fim": "2026-12-11",
+   "itens": {
+    "Prazo de inscrição": {
+     "valor": "19/08/2026 a 11/12/2026",
+     "trecho": "içoamento de Pessoal de Nível Superior (CAPES). Chamada FAQ Inscrições: 19/08/2026 a 11/12/2026",
+     "pagina": 1,
+     "documento": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
+     "metodo": "cronograma"
+    },
+    "Objeto": {
+     "valor": "conceder bolsas nas seguintes modalidades: Produtividade em Desenvolvimento Tecnológico e Extensão Inovadora (DT), Produtividade em Pesquisa (PQ) e Produtividade em Pesquisa Sênior (PQSr).",
+     "trecho": "O CNPq torna pública a Chamada CNPq nº 33/2026, que tem por objeto conceder bolsas nas seguintes modalidades: Produtividade em Desenvolvimento Tecnológico e Extensão Inovadora (DT), Produtividade em Pesquisa (PQ) e Produtividade em Pesquisa Sênior (PQSr). São objetivos desta chamada: a) valorizar pesquisadores que possuam",
+     "pagina": 1,
+     "documento": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
+     "metodo": "texto"
+    },
+    "Órgão / financiador": {
+     "valor": "Agência Nacional de Pesquisa",
+     "trecho": "selho Nacional de Desenvolvimento Científico e Tecnológico - CNPq e a Agência Nacional de Pesquisa - ANR, tendo por objetivo selecionar projetos de pesquisa conjuntos en",
+     "pagina": 1,
+     "documento": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
+     "metodo": "cabeçalho"
+    },
+    "Esfera": {
+     "valor": "federal",
+     "trecho": "domínio/órgão: www.gov.br · Agência Nacional de Pesquisa CNPq / MCTI / Setec-MEC — chamadas com componente d",
+     "pagina": 1,
+     "documento": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
+     "metodo": "domínio e órgão"
+    },
+    "Área de atuação": {
+     "valor": "Ciência e tecnologia",
+     "trecho": "termos do objeto e do título: Ciência e tecnologia",
+     "pagina": 1,
+     "documento": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Requisitos": {
+     "valor": "São requisitos necessários ao acesso:  Definição de responsáveis legais pelo acesso (preenchimento e assinatura do formulário);",
+     "trecho": "s Nacionais de Ciência e Tecnologia (INCT);  Órgãos de pesquisa. São requisitos necessários ao acesso:  Definição de responsáveis legais pelo acesso (preenchimento e assinatura do formulário);  Possuir endereço IP fixo;  Desenvolver, ou adquirir, solução tec",
+     "pagina": 16,
+     "documento": "https://www.gov.br/cnpq/pt-br/acesso-a-informacao/acoes-e-programas/carta-de-servicos-06-25.pdf",
+     "metodo": "texto"
+    },
+    "Prazo de recurso": {
+     "valor": "10 (dez) dias",
+     "trecho": "CAPES na internet Janeiro 2027 Prazo final para interposição de recurso administrativo 10 (dez) dias após a divulgação do resultado preliminar Divulgação da decisão no",
+     "pagina": 3,
+     "documento": "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-30-2026/chamadapublica30_2026_MAIDAI_2766773.pdf",
+     "metodo": "seção"
+    },
+    "Valor": {
+     "valor": "R$ 62.440.000,00 (sessenta e dois milhões e quatrocentos e quarenta mil reais)",
+     "trecho": "eiros 6.1 – As propostas aprovadas serão financiadas com recursos no valor global de R$ 62.440.000,00 (sessenta e dois milhões e quatrocentos e quarenta mil reais), sendo R$ 55.000.000,00 (cinquenta e cinco milhões) oriundos do orça",
+     "pagina": 5,
+     "documento": "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-30-2026/chamadapublica30_2026_MAIDAI_2766773.pdf",
+     "metodo": "seção"
+    },
+    "Anexos": {
+     "valor": "ANEXO I – Diretrizes para Funcionamento do Programa de Mestrado e; ANEXO I – Diretrizes para Funcionamento; ANEXO II – Plano de Trabalho Programa MAI/DAI; ANEXO III – Declaração Institucional do Representante MAI/DAI; ANEXO IV – Carta de Concordância da Instituição Parceira; ANEXO V – Termo de Compr",
+     "trecho": "selecionadas para executar o Programa MAI/DAI estão apresentadas no ANEXO I – Diretrizes para Funcionamento do Programa de Mestrado e Doutorado Acadêmico para Inovação – MAI/DAI. 3 – Objeto Apoiar propostas de ICTs, que demonstrem capacidade para a execu",
+     "pagina": 2,
+     "documento": "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-30-2026/chamadapublica30_2026_MAIDAI_2766773.pdf",
+     "metodo": "lista de anexos"
+    },
+    "Destinação": {
+     "valor": "Itens Financiáveis, bem como aos requisitos relativos à submissão da proposta previstos no item 6 e em seus respectivos subtópicos, em especial o item 6 e respectivos subitens.",
+     "trecho": "to e à Equipe; 3.3 - Quanto à Instituição de Execução do Projeto; e 5 Itens Financiáveis, bem como aos requisitos relativos à submissão da proposta previstos no item 6 e em seus respectivos subtópicos, em especial o item 6 e respectivos subitens. 7.2.2 - Etapa II - Análise pelos consultores ad hoc 7.2.2.1 - Esta",
+     "pagina": 3,
+     "documento": "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-32-2026/ChamadaPblicaANR322026_2766435.pdf",
+     "metodo": "seção"
+    },
+    "Resultado": {
+     "valor": "05/05/2027",
+     "trecho": "propostas 07/01/2027 Período de Julgamento 01/03/2027 a 02/04/2027 Divulgação do resultado preliminar do julgamento no Diário Oficial da União, por extrato, e na página do CNPq na internet 05/05/2027 Prazo final para interposição de recurso administrativo 17/05/2027",
+     "pagina": 2,
+     "documento": "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-33-2026/Chamada_Produtividade_33_2026.pdf",
+     "metodo": "seção"
+    }
+   },
+   "dispensas": {},
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-13T02:51:45+00:00",
+     "ganhou": [
+      "Anexos",
+      "Destinação",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Prazo de recurso",
+      "Requisitos",
+      "Resultado",
+      "Valor",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.googletagmanager.com/ns.html?id=GTM-NHZSKTD",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": "pagina_vazia",
+     "falha": null,
+     "oficial": null,
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/cnpq/pt-br/acesso-a-informacao/acoes-e-programas/carta-de-servicos-06-25.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 40,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-30-2026/chamadapublica30_2026_MAIDAI_2766773.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 29,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-30-2026/FAQ_MAIDAI_2783876.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 2,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-32-2026/ChamadaPblicaANR322026_2766435.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 5,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-33-2026/Chamada_Produtividade_33_2026.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 14,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-33-2026/Anexo_I_Criterios_dos_CAs.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 60,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "certificado",
+     "Resultado": "certificado",
+     "Prazo de recurso": "certificado",
+     "Valor": "certificado",
+     "Órgão / financiador": "certificado",
+     "Território": "falta",
+     "Esfera": "certificado",
+     "Requisitos": "certificado",
+     "Anexos": "certificado",
+     "Destinação": "certificado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 11,
+    "dispensados": 0,
+    "ja_constavam": 0,
+    "faltam": 1,
+    "pct_certificado_12": 0.9167,
+    "pct_cobertura_12": 0.9167
+   }
+  },
+  {
    "id": "571ef6c46c40aa0bd4f7",
    "tipo": "estrela",
    "titulo": "Chamamento MDA nº 01/2026 'Alimento no Prato – Territórios Urbanos': termo de fomento para OSCs (3+ anos, habilitadas no Transferegov) com projetos de agricultura urbana e periurbana, abrangência naci",
@@ -47191,6 +47561,484 @@
     },
     "certificados": 10,
     "dispensados": 1,
+    "ja_constavam": 0,
+    "faltam": 1,
+    "pct_certificado_12": 0.9167,
+    "pct_cobertura_12": 0.9167
+   }
+  },
+  {
+   "id": "op-9281538c94de",
+   "tipo": "livro",
+   "titulo": "Edital Suplementar FAPESC N.º 66/2025 — Programa Horizonte Europa (2026–2027)",
+   "balcao": "orgao",
+   "link_oficial": "https://fapesc.sc.gov.br/edital-suplementar-fapesc-n-o-66-2025-programa-horizonte-europa-2026-2027",
+   "degrau": 0,
+   "como": "página/documento oficial já conhecido",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Requisitos"
+   ],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "prata",
+   "esgotada": null,
+   "eficiencia": 0.917,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-13T02:49:39+00:00",
+   "prazo": null,
+   "uf": "BR",
+   "orgao": "FAPESC",
+   "fim": null,
+   "itens": {
+    "Órgão / financiador": {
+     "valor": "FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA CATARINA (FAPESC)",
+     "trecho": "26/11/2025 15:19 A FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA CATARINA (FAPESC), em colaboração com a UNIÃO EUROPEIA (EU) , por meio de adesão ao Arr",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/edital-suplementar-fapesc-n-o-66-2025-programa-horizonte-europa-2026-2027",
+     "metodo": "cabeçalho"
+    },
+    "Território": {
+     "valor": "no Estado de Santa Catarina",
+     "trecho": "uições Científicas, Tecnológicas e de Inovação (ICT), com sede e foro no Estado de Santa Catarina, com propostas aprovadas no âmbito do Programa Horizonte Europa (2026",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/edital-suplementar-fapesc-n-o-66-2025-programa-horizonte-europa-2026-2027",
+     "metodo": "texto"
+    },
+    "Esfera": {
+     "valor": "estadual",
+     "trecho": "domínio/órgão: fapesc.sc.gov.br · FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA CATARINA (FAPESC) FA",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/edital-suplementar-fapesc-n-o-66-2025-programa-horizonte-europa-2026-2027",
+     "metodo": "domínio e órgão"
+    },
+    "Área de atuação": {
+     "valor": "Cultura, Ciência e tecnologia",
+     "trecho": "termos do objeto e do título: Cultura, Ciência e tecnologia",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/edital-suplementar-fapesc-n-o-66-2025-programa-horizonte-europa-2026-2027",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Resultado": {
+     "valor": "30 dias",
+     "trecho": "25/11/2025 Consulta de Elegibilidade (via e-mail) Até 30/06/2027 Resultado da análise de elegibilidade (via e-mail) Até 30 dias após o recebimento da solicitação Chamada Pública Horizonte Europa (",
+     "pagina": 6,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2025/11/documento_do_processo_materializado-3.pdf",
+     "metodo": "seção"
+    },
+    "Prazo de recurso": {
+     "valor": "02 dias",
+     "trecho": "lidade 05 dias, após o evento anterior Período para apresentação de recursos de admissibilidade 02 dias, após o evento anterior Resultado do julgamento dos recursos de admi",
+     "pagina": 6,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2025/11/documento_do_processo_materializado-3.pdf",
+     "metodo": "seção"
+    },
+    "Valor": {
+     "valor": "R$ 7.000.000,00 (sete milhões de reais)",
+     "trecho": "RECURSOS FINANCEIROS 7.1. Para o presente Edital será destinado o valor global de R$ 7.000.000,00 (sete milhões de reais), oriundo do orçamento da FAPESC, a ser liberado conforme a disponibil",
+     "pagina": 7,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2025/11/documento_do_processo_materializado-3.pdf",
+     "metodo": "seção"
+    },
+    "Objeto": {
+     "valor": "sa no \nâmbito do Programa Horizonte Europa, em áreas temáticas que contribuam para o enfrentamento \nde desafios globais de forma sustentáve l e resiliente, envolvendo a sociedade civil, o meio \nacadêmico, as políticas públicas e a indústria, e fortalecendo o ecossistema de ciência, tecnologia \ne ino",
+     "trecho": "nforme os termos estabelecidos neste Edital de Chamada Pública. 2. DO OBJETIVO Apoiar projetos de pesquisa de pesquisadores (as) vinculados(as) a Instituições Científicas, Tecnológicas e de Inovação (ICT) de Santa Catarina, voltados à formação de redes de pesquisa no âmbito do Programa Horizonte Europa, em áreas temáticas que contribuam para o enfrentamento de desafios globais de forma sustentáve ",
+     "pagina": 2,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2025/11/documento_do_processo_materializado-3.pdf",
+     "metodo": "seção"
+    },
+    "Anexos": {
+     "valor": "ANEXO I PROGRAMA HORIZONTE EUROPA (2026–2027); ANEXO II TERMO DE OUTORGA DE AUXÍLIO FINANCEIRO A PROJETO DE PESQUISA; ANEXO III TERMO DE COMPROMISSO DE BOLSA FAPESC; ANEXO IV PLANO DE TRABALHO DO(A) BOLSISTA",
+     "trecho": "[TABELA] as normas municipais, estaduais e federais aplicáveis. ANEXO I PROGRAMA HORIZONTE EUROPA (2026–2027) FORMULÁRIO DA PESQUISA — CONSULTA DE ELEGIBILIDADE 1. INSTRUÇÕES INICIAIS Este formulário deve ser utilizado pelos pesquisadores do",
+     "pagina": 19,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2025/11/documento_do_processo_materializado-3.pdf",
+     "metodo": "lista de anexos"
+    },
+    "Destinação": {
+     "valor": "ITENS FINANCIÁVEIS E NÃO FINANCIÁVEIS 8.",
+     "trecho": "sso de acompanhamento e avaliação dos projetos fomentados. 8. DOS ITENS FINANCIÁVEIS E NÃO FINANCIÁVEIS 8.1. Dos itens financiáveis São financiáveis os itens permitidos no Dec",
+     "pagina": 7,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2025/11/documento_do_processo_materializado-3.pdf",
+     "metodo": "seção"
+    }
+   },
+   "dispensas": {
+    "Prazo de inscrição": {
+     "motivo": "dispensado pelo Cartório — não se aplica: inscrição em fluxo contínuo (cadastro permanente, sem data-limite)",
+     "trecho": "7), a submeterem os projetos de pesquisas. Prazo para submissão: Fluxo contínuo até 30/06/2028 Contato para dúvidas: internacional@fapesc.sc.go",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/edital-suplementar-fapesc-n-o-66-2025-programa-horizonte-europa-2026-2027"
+    }
+   },
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-13T02:49:39+00:00",
+     "ganhou": [
+      "Anexos",
+      "Destinação",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Prazo de recurso",
+      "Resultado",
+      "Território",
+      "Valor",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://fapesc.sc.gov.br/edital-suplementar-fapesc-n-o-66-2025-programa-horizonte-europa-2026-2027",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2025/11/documento_do_processo_materializado-3.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 46,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2025/05/MANUAL-Manual-de-Cadastramento-do-Pesquisadora-no-SIGFAPESC.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 5,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Processo-FAPESC-00004500_2025.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 2,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/10/Admissibilidade-Final-2.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 2,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2025/12/Formularios-para-Elegibilidade-Pesquisa-edital-66-2025.docx",
+     "degrau": 1,
+     "como": "documento citado na página oficial: FORMULÁRIO PARA ELEGIBILIDADE",
+     "motivo": "zip_sem_pdf",
+     "falha": null,
+     "oficial": null,
+     "paginas": 0,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "dispensado",
+     "Resultado": "certificado",
+     "Prazo de recurso": "certificado",
+     "Valor": "certificado",
+     "Órgão / financiador": "certificado",
+     "Território": "certificado",
+     "Esfera": "certificado",
+     "Requisitos": "falta",
+     "Anexos": "certificado",
+     "Destinação": "certificado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 10,
+    "dispensados": 1,
+    "ja_constavam": 0,
+    "faltam": 1,
+    "pct_certificado_12": 0.9167,
+    "pct_cobertura_12": 0.9167
+   }
+  },
+  {
+   "id": "op-1b1636452f60",
+   "tipo": "livro",
+   "titulo": "Edital Suplementar de Subvenção Econômica FAPESC N.º 65/2025 - Programa Horizonte Europa (2026–2027)",
+   "balcao": "orgao",
+   "link_oficial": "https://fapesc.sc.gov.br/edital-suplementar-de-subvencao-economica-fapesc-n-o-65-2025-programa-horizonte-europa-2026-2027",
+   "degrau": 0,
+   "como": "página/documento oficial já conhecido",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Requisitos"
+   ],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "prata",
+   "esgotada": null,
+   "eficiencia": 0.917,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-13T02:50:21+00:00",
+   "prazo": null,
+   "uf": "BR",
+   "orgao": "FAPESC",
+   "fim": "2028-06-30",
+   "itens": {
+    "Órgão / financiador": {
+     "valor": "FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA CATARINA (FAPESC)",
+     "trecho": "25/11/2025 13:44 A FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA CATARINA (FAPESC) , em colaboração com a UNIÃO EUROPEIA (UE), por meio da adesão ao Arra",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/edital-suplementar-de-subvencao-economica-fapesc-n-o-65-2025-programa-horizonte-europa-2026-2027",
+     "metodo": "cabeçalho"
+    },
+    "Esfera": {
+     "valor": "estadual",
+     "trecho": "domínio/órgão: fapesc.sc.gov.br · FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA CATARINA (FAPESC) FA",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/edital-suplementar-de-subvencao-economica-fapesc-n-o-65-2025-programa-horizonte-europa-2026-2027",
+     "metodo": "domínio e órgão"
+    },
+    "Área de atuação": {
+     "valor": "Cultura, Ciência e tecnologia",
+     "trecho": "termos do objeto e do título: Cultura, Ciência e tecnologia",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/edital-suplementar-de-subvencao-economica-fapesc-n-o-65-2025-programa-horizonte-europa-2026-2027",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Prazo de inscrição": {
+     "valor": "até 30/06/2028",
+     "trecho": "elegibilidade (e-mail) Até 30 dias após o recebimento da solicitação Submissão das propostas via SIGFAPESC Fluxo contínuo até 30/06/2028 Resultado preliminar de admissibilidade Até 05 dias após a submissã",
+     "pagina": 9,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2025/11/Edital-65_2025-Horizonte-Europa-assinado.pdf",
+     "metodo": "cronograma"
+    },
+    "Resultado": {
+     "valor": "30 dias",
+     "trecho": "1/2025 | | Consulta de Elegibilidade (e-mail) Até 30/06/2027 Resultado da análise de elegibilidade (e-mail) Até 30 dias após o recebimento da solicitação Submissão das propostas via SIGFAP",
+     "pagina": 9,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2025/11/Edital-65_2025-Horizonte-Europa-assinado.pdf",
+     "metodo": "seção"
+    },
+    "Prazo de recurso": {
+     "valor": "03 dias",
+     "trecho": "Até 05 dias após a submissão no SIGFAPESC Prazo para interposição de recursos administrativos Até 03 dias após o evento anterior Resultado final de admissibilidade e julgamen",
+     "pagina": 9,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2025/11/Edital-65_2025-Horizonte-Europa-assinado.pdf",
+     "metodo": "seção"
+    },
+    "Valor": {
+     "valor": "R$ 3.500.000,00 ( três milhões e quinhentos mil reais)",
+     "trecho": "8. DOS RECURSOS FINANCEIROS 8.1. Será destinado para este Edital o valor global de até R$ 3.500.000,00 ( três milhões e quinhentos mil reais) , não reembolsáve l, oriundo do orçamento da FAPESC, a ser liberado",
+     "pagina": 9,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2025/11/Edital-65_2025-Horizonte-Europa-assinado.pdf",
+     "metodo": "seção"
+    },
+    "Objeto": {
+     "valor": "ômica, com projetos colaborativos \ninternacionais aprovados no Programa Horizonte Europa com foco no desenvolvimento de \nprodutos, serviços e/ou processos inovadores, transferência de tecnologia e iniciativas de inovação \nque contribuam para o fortalecimento da ciência, tecnologia e inovação no Esta",
+     "trecho": "nforme os termos estabelecidos neste Edital de Chamada Pública. 2. DO OBJETIVO Apoiar empresas catarinenses, por meio de subvenção econômica, com projetos colaborativos internacionais aprovados no Programa Horizonte Europa com foco no desenvolvimento de produtos, serviços e/ou processos inovadores, transferência de tecnologia e iniciativas de inovação que contribuam para o fortalecimento da ciênci",
+     "pagina": 2,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2025/11/Edital-65_2025-Horizonte-Europa-assinado.pdf",
+     "metodo": "seção"
+    },
+    "Território": {
+     "valor": "do Estado de Santa Catarina",
+     "trecho": "da República Federativa do Brasil, de 1988; art. 176 da Constituição do Estado de Santa Catarina, de 1989; nos termos da Lei Federal n.º 10.973/2004; da Lei Estadual",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2025/11/Edital-65_2025-Horizonte-Europa-assinado.pdf",
+     "metodo": "texto"
+    },
+    "Anexos": {
+     "valor": "ANEXO I CHAMADA HORIZONTE EUROPA (2026–2027); ANEXO II DECLARAÇÃO DE COMPROMETIMENTO DE CONTRAPARTIDA; ANEXO III TERMO DE CONCESSÃO DE SUBVENÇÃO ECONÔMICA",
+     "trecho": "nforme o processo FAPESC 00004384/2025 e o código 7WC05HD9. 124 ANEXO I CHAMADA HORIZONTE EUROPA (2026–2027) FORMULÁRIO DA INOVAÇÃO — CONSULTA DE ELEGIBILIDADE 1. INSTRUÇÕES INICIAIS Este formulário deve ser utilizado pelas empresas do Estado de",
+     "pagina": 20,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2025/11/Edital-65_2025-Horizonte-Europa-assinado.pdf",
+     "metodo": "lista de anexos"
+    },
+    "Destinação": {
+     "valor": "ITENS FINANCIÁVEIS E NÃO FINANCIÁVEIS 9.",
+     "trecho": "Plano de Trabalho e cumprimento das metas estabelecidas. 9. DOS ITENS FINANCIÁVEIS E NÃO FINANCIÁVEIS 9.1. Dos itens financiáveis Pág. 09 de 34 - Documento assinado digitalm",
+     "pagina": 9,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2025/11/Edital-65_2025-Horizonte-Europa-assinado.pdf",
+     "metodo": "seção"
+    }
+   },
+   "dispensas": {},
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-13T02:50:21+00:00",
+     "ganhou": [
+      "Anexos",
+      "Destinação",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Prazo de recurso",
+      "Resultado",
+      "Território",
+      "Valor",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://fapesc.sc.gov.br/edital-suplementar-de-subvencao-economica-fapesc-n-o-65-2025-programa-horizonte-europa-2026-2027",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2025/11/Edital-65_2025-Horizonte-Europa-assinado.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 35,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2025/05/MANUAL_Cadastramento-de-Instituicoes-no-SIGFAPESC.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2025/05/MANUAL-Manual-de-Cadastramento-do-Pesquisadora-no-SIGFAPESC.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 5,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/03/Formularios-para-Elegibilidade-Inovacao_edital-65.-PDF.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 3,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2025/12/Formularios-para-Elegibilidade-Inovacao_edital-65.docx",
+     "degrau": 1,
+     "como": "documento citado na página oficial: FORMULÁRIO PARA ELIGIBILIDADE &#8211; WORD",
+     "motivo": "zip_sem_pdf",
+     "falha": null,
+     "oficial": null,
+     "paginas": 0,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "certificado",
+     "Resultado": "certificado",
+     "Prazo de recurso": "certificado",
+     "Valor": "certificado",
+     "Órgão / financiador": "certificado",
+     "Território": "certificado",
+     "Esfera": "certificado",
+     "Requisitos": "falta",
+     "Anexos": "certificado",
+     "Destinação": "certificado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 11,
+    "dispensados": 0,
     "ja_constavam": 0,
     "faltam": 1,
     "pct_certificado_12": 0.9167,
@@ -76850,919 +77698,35 @@
     "pct_certificado_12": 0.75,
     "pct_cobertura_12": 0.8333
    }
-  },
-  {
-   "id": "op-c73ce129d288",
-   "tipo": "livro",
-   "titulo": "1ª Edição do Prêmio Goiás mais Transparente - Transparência Goiás",
-   "balcao": "orgao",
-   "link_oficial": "https://transparencia.go.gov.br/goias-mais-transparente/",
-   "degrau": 0,
-   "como": "página/documento oficial já conhecido",
-   "faltavam": [
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Órgão / financiador",
-    "Destinação"
-   ],
-   "tentativa": 1,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "prata",
-   "estagio_inicio": "prata",
-   "esgotada": null,
-   "eficiencia": 0.8,
-   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-11T14:35:00+00:00",
-   "prazo": null,
-   "uf": null,
-   "orgao": "",
-   "fim": null,
-   "itens": {
-    "Território": {
-     "valor": "do Estado de Goiás",
-     "trecho": "ades e organizações sem fins lucrativos que recebem recursos públicos do Estado de Goiás. 1.3. Clique abaixo para acessar as metodologias, anexos da Instru",
-     "pagina": 1,
-     "documento": "https://transparencia.go.gov.br/goias-mais-transparente/",
-     "metodo": "texto"
-    },
-    "Esfera": {
-     "valor": "estadual",
-     "trecho": "domínio/órgão: transparencia.go.gov.br · ",
-     "pagina": 1,
-     "documento": "https://transparencia.go.gov.br/goias-mais-transparente/",
-     "metodo": "domínio e órgão"
-    },
-    "Área de atuação": {
-     "valor": "Educação, Ciência e tecnologia",
-     "trecho": "termos do objeto e do título: Educação, Ciência e tecnologia",
-     "pagina": 1,
-     "documento": "https://transparencia.go.gov.br/goias-mais-transparente/",
-     "metodo": "palavras-chave do objeto"
-    },
-    "Requisitos": {
-     "valor": "na premiação das categorias I, II e II I \ncompulsória a todos \npúblico-alvo especificado \nprêmios, de acordo \n5.",
-     "trecho": "presenta o desafio de transparência CATEGORIA I II III IV 5. DA PARTICIPAÇÃO 5.1. A participação na premiação das categorias I, II e II I compulsória a todos público-alvo especificado prêmios, de acordo 5.2. A participação na resultado de uma ação inovadora de transparência re alizada dentro do prazo especificado no item 10.2. 6. DAS AVALIAÇÕES 6.1. As avaliações das categorias I, II e informatiza",
-     "pagina": 2,
-     "documento": "https://www.transparencia.go.gov.br/wp-content/uploads/sites/2/2022/12/images_Goias_mais_Transparente_Versao_1-2019_-_Regulamento_Premio_Goias_Mais_Transparente.pdf",
-     "metodo": "seção"
-    }
-   },
-   "dispensas": {
-    "Prazo de inscrição": {
-     "motivo": "dispensado pelo Cartório — não se aplica: inscrição em fluxo contínuo (cadastro permanente, sem data-limite)",
-     "trecho": "Internacional de Combate à Corrupção . projetos podem ser entregues a qualquer tempo, até a data final especificada na tabela. 10.3. DAS DISPOSIÇÕES",
-     "pagina": 7,
-     "documento": "https://www.transparencia.go.gov.br/wp-content/uploads/sites/2/2022/12/images_Goias_mais_Transparente_Versao_1-2019_-_Regulamento_Premio_Goias_Mais_Transparente.pdf"
-    },
-    "Resultado": {
-     "motivo": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
-     "trecho": "Internacional de Combate à Corrupção . projetos podem ser entregues a qualquer tempo, até a data final especificada na tabela. 10.3. DAS DISPOSIÇÕES",
-     "pagina": 7,
-     "documento": "https://www.transparencia.go.gov.br/wp-content/uploads/sites/2/2022/12/images_Goias_mais_Transparente_Versao_1-2019_-_Regulamento_Premio_Goias_Mais_Transparente.pdf"
-    },
-    "Prazo de recurso": {
-     "motivo": "dispensado pelo Cartório — não se aplica: o edital declara que não cabe recurso",
-     "trecho": "que a correção da página de acesso à informação fo avaliação. 8.5. Não caberá recurso quanto ao resultado da Categoria IV. ESTADO DE GOIÁS CONTROLADO",
-     "pagina": 5,
-     "documento": "https://www.transparencia.go.gov.br/wp-content/uploads/sites/2/2022/12/images_Goias_mais_Transparente_Versao_1-2019_-_Regulamento_Premio_Goias_Mais_Transparente.pdf"
-    },
-    "Valor": {
-     "motivo": "dispensado pelo Cartório — não se aplica: sem repasse financeiro (cooperação, cessão ou habilitação sem recurso)",
-     "trecho": "edade civil; ide ntificação (termo de colaboração, termo de fomento, acordo de cooperação), data de assinatura, descrição do objeto, valor total e valores lib",
-     "pagina": 13,
-     "documento": "https://www.transparencia.go.gov.br/wp-content/uploads/sites/2/2022/12/images_Ranking_LAI_Metodologia_Orgaos_versao_2.1__-_22-08-2019.pdf"
-    }
-   },
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-11T14:35:00+00:00",
-     "ganhou": [
-      "Esfera",
-      "Prazo de inscrição",
-      "Prazo de recurso",
-      "Requisitos",
-      "Resultado",
-      "Território",
-      "Valor",
-      "Área de atuação"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://transparencia.go.gov.br/goias-mais-transparente/",
-     "degrau": 0,
-     "como": "página/documento oficial já conhecido",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.transparencia.go.gov.br/wp-content/uploads/sites/2/2022/12/images_Goias_mais_Transparente_Versao_1-2019_-_Regulamento_Premio_Goias_Mais_Transparente.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 7,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.transparencia.go.gov.br/wp-content/uploads/sites/2/2022/12/images_Goias_mais_Transparente_Instrucao_Normativa01-19_Metodologias.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": "pdf_escaneado",
-     "falha": null,
-     "oficial": null,
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.transparencia.go.gov.br/wp-content/uploads/sites/2/2022/12/images_Ranking_LAI_Metodologia_Orgaos_versao_2.1__-_22-08-2019.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 20,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.transparencia.go.gov.br/wp-content/uploads/sites/2/2022/12/images_Ranking_LAI_Metodologia_Empresas_versao_2.1_-_22-08-2019.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 21,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.transparencia.go.gov.br/wp-content/uploads/sites/2/2022/12/images_Ranking_LAI_Metodologia_OS_versao_2.1_-_22-08-2019.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 21,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.transparencia.go.gov.br/wp-content/uploads/sites/2/2022/12/images_Ranking_LAI_Anexos_2019_Versao_3_CHECKLIST-Orgaos_versao_3.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 3,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.transparencia.go.gov.br/wp-content/uploads/sites/2/2022/12/images_Ranking_LAI_Anexos_2019_Versao_3_CHECKLIST-Empresas_versao_3.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 12,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "ja_constava",
-     "Prazo de inscrição": "dispensado",
-     "Resultado": "dispensado",
-     "Prazo de recurso": "dispensado",
-     "Valor": "dispensado",
-     "Órgão / financiador": "falta",
-     "Território": "certificado",
-     "Esfera": "certificado",
-     "Requisitos": "certificado",
-     "Anexos": "ja_constava",
-     "Destinação": "falta",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 4,
-    "dispensados": 4,
-    "ja_constavam": 2,
-    "faltam": 2,
-    "pct_certificado_12": 0.6667,
-    "pct_cobertura_12": 0.8333
-   }
-  },
-  {
-   "id": "agr-28749845112c",
-   "tipo": "estrela",
-   "titulo": "Credenciamento de Pessoas Físicas e/ou Jurídicas para prestação dos serviços artístico-musicais locais e ou… — MUNICIPIO DE LAFAIETE COUTINHO",
-   "balcao": "pncp",
-   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/1",
-   "degrau": 0,
-   "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-   "faltavam": [
-    "Resultado",
-    "Prazo de recurso",
-    "Requisitos",
-    "Anexos",
-    "Destinação"
-   ],
-   "resolvidos": [
-    "Resultado",
-    "Prazo de recurso",
-    "Requisitos",
-    "Anexos"
-   ],
-   "ainda_faltam": [
-    "Destinação"
-   ],
-   "tentativa": 6,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "prata",
-   "estagio_inicio": "bronze",
-   "esgotada": null,
-   "eficiencia": 0.8,
-   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
-   "selo_antes": "bronze",
-   "selo_depois": "prata",
-   "em": "2026-10-12T08:11:03+00:00",
-   "prazo": "2026-11-30",
-   "uf": null,
-   "orgao": "MUNICIPIO DE LAFAIETE COUTINHO",
-   "fim": null,
-   "itens": {
-    "Prazo de recurso": {
-     "valor": "05 (cinco) dias úteis",
-     "trecho": ". O interessado não habilitado, nos termos do item 4, poderá interpor recurso, no prazo de 05 (cinco) dias úteis, a contar da data da comunicação da decisão da Comissão de Contrataçã",
-     "pagina": 5,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/1",
-     "metodo": "seção"
-    },
-    "Valor": {
-     "valor": "R$ 3.000,00",
-     "trecho": "imo, 1h (uma hora) a contar do seu horário de início. Valor do cachê: R$ 3.000,00 INTERESSADOS CREDENCIADOS LEANE LOPES GALVÃO, - CPF sob o nº 04",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/3",
-     "metodo": "seção"
-    },
-    "Objeto": {
-     "valor": "denciamento de Pessoas Físicas e/ou Jurídicas para \nprestação dos serviços  artístico-musicais locais e ou regionais, visando compor a grade de \napresentações e eventos da Prefeitura de Lafaiete Coutinho - BA, através da Secretaria Municipal de \nCultura, Esporte, Turismo e Lazer, conforme condições ",
-     "trecho": "NTO Nº 002/2026 Página 11 de 40 ANEXO I TERMO DE REFERÊNCIA 1. DO OBJETO Constitui objeto do pres ente instrumento o credenciamento de Pessoas Físicas e/ou Jurídicas para prestação dos serviços artístico-musicais locais e ou regionais, visando compor a grade de apresentações e eventos da Prefeitura de Lafaiete Coutinho - BA, através da Secretaria Municipal de Cultura, Esporte, Turismo e Lazer, con",
-     "pagina": 11,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/1",
-     "metodo": "seção"
-    },
-    "Órgão / financiador": {
-     "valor": "Secretaria Municipal de Cultura",
-     "trecho": "tações e eventos da Prefeitura de Lafaiete Coutinho - BA, através da Secretaria Municipal de Cultura, Esporte, Turismo e Lazer. A Prefeitura Municipal de Lafaiete Coutin",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/3",
-     "metodo": "cabeçalho"
-    },
-    "Território": {
-     "valor": "do Município de Lafaiete Coutinho",
-     "trecho": "eta, terceirizados, ocupantes de cargos comissionados ou estagiários do Município de Lafaiete Coutinho - BA; visto que Servidores públicos não poderão licitar ou contratar",
-     "pagina": 17,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/1",
-     "metodo": "texto"
-    },
-    "Esfera": {
-     "valor": "federal",
-     "trecho": "domínio/órgão: pncp.gov.br · Secretaria Municipal de Cultura MUNICIPIO DE LAFAIETE COUTINHO",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/3",
-     "metodo": "domínio e órgão"
-    },
-    "Requisitos": {
-     "valor": "Praça Papa João XXIII, nº 198, Centro, Lafaiete Coutinho – BA.",
-     "trecho": "enciados serão convocados durante o prazo de vigência do Edital. 3. DAS CONDIÇÕES DE PARTICIPAÇÃO ENDEREÇO: Praça Papa João XXIII, nº 198, Centro, Lafaiete Coutinho – BA. PERÍODO: O recebimento das solicitações de credenciamento e da documentação ocorrerá a partir de 05 de março de 2026. ESCLARECIMENTOS: Pedidos de esclarecimentos poderão ser enviados para o s e-mails licitacaolafaietecoutinhoba@g",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/1",
-     "metodo": "seção"
-    },
-    "Anexos": {
-     "valor": "ANEXO II deste edital;; ANEXO II);; ANEXO IV).; ANEXO III).; ANEXO I TERMO DE REFERÊNCIA; ANEXO II REQUERIMENTO DE CREDENCIAMENTO; ANEXO I PROMPONENTE; ANEXO I [TABELA] PROMPONENTE | CNPJ/CPF | | |; ANEXO III DECLARAÇÕES DIVERSAS; ANEXO IV AUTORIZAÇÃO PARA USO E DIVULGAÇÃO DE IMAGENS E INFORMAÇÕES; ",
-     "trecho": "ndo: a) Formulário de credenciamento devidamente preenchido conforme ANEXO II deste edital; 4.4. Os documentos de habilitação técnica não são cumulativos e não serão avaliados como critérios de competição, servindo apenas e tão somente para demonstração d",
-     "pagina": 3,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/1",
-     "metodo": "lista de anexos"
-    },
-    "Área de atuação": {
-     "valor": "Cultura, Esporte",
-     "trecho": "termos do objeto e do título: Cultura, Esporte",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/3",
-     "metodo": "palavras-chave do objeto"
-    }
-   },
-   "dispensas": {
-    "Prazo de inscrição": {
-     "motivo": "dispensado pelo Cartório — não se aplica: inscrição em fluxo contínuo (cadastro permanente, sem data-limite)",
-     "trecho": "onizadas. 2.3. Os interessados poderão solicitar o Credenciamento, a qualquer tempo, desde que cumpridos todos os requisitos e durante a vigência do pre",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/1"
-    },
-    "Resultado": {
-     "motivo": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
-     "trecho": "onizadas. 2.3. Os interessados poderão solicitar o Credenciamento, a qualquer tempo, desde que cumpridos todos os requisitos e durante a vigência do pre",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/1"
-    }
-   },
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-11T00:55:14+00:00",
-     "ganhou": [
-      "Anexos",
-      "Esfera",
-      "Objeto",
-      "Prazo de inscrição",
-      "Prazo de recurso",
-      "Requisitos",
-      "Resultado",
-      "Território",
-      "Valor",
-      "Área de atuação",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    },
-    {
-     "n": 2,
-     "nome": "anexos completos",
-     "em": "2026-10-11T00:55:33+00:00",
-     "ganhou": [],
-     "legado": null
-    },
-    {
-     "n": 3,
-     "nome": "página oficial e citados",
-     "em": "2026-10-11T02:17:57+00:00",
-     "ganhou": [],
-     "legado": null
-    },
-    {
-     "n": 4,
-     "nome": "biblioteca de sites",
-     "em": "2026-10-11T02:18:11+00:00",
-     "ganhou": [],
-     "legado": null
-    },
-    {
-     "n": 9,
-     "nome": "leitura profunda",
-     "em": "2026-10-11T15:33:05+00:00",
-     "ganhou": [],
-     "legado": null
-    },
-    {
-     "n": 7,
-     "nome": "releitura com gabarito",
-     "em": "2026-10-12T08:11:03+00:00",
-     "ganhou": [],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/1",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 40,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/4",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 3,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/2",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 2,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/3",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/1",
-     "degrau": 1,
-     "como": "página oficial e documentos citados nela",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 40,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/1",
-     "degrau": 1,
-     "como": "biblioteca de sites oficiais conhecidos do órgão",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 40,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/1",
-     "degrau": 0,
-     "como": "leitura profunda (até 150 páginas e tabelas)",
-     "motivo": null,
-     "falha": "erro_rede: HTTPError",
-     "oficial": null,
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/4",
-     "degrau": 0,
-     "como": "leitura profunda (até 150 páginas e tabelas)",
-     "motivo": null,
-     "falha": "erro_rede: HTTPError",
-     "oficial": null,
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/2",
-     "degrau": 0,
-     "como": "leitura profunda (até 150 páginas e tabelas)",
-     "motivo": null,
-     "falha": "erro_rede: HTTPError",
-     "oficial": null,
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/3",
-     "degrau": 0,
-     "como": "leitura profunda (até 150 páginas e tabelas)",
-     "motivo": null,
-     "falha": "erro_rede: HTTPError",
-     "oficial": null,
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/1",
-     "degrau": 0,
-     "como": "releitura com o gabarito do órgão atualizado",
-     "motivo": null,
-     "falha": "erro_rede: HTTPError",
-     "oficial": null,
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/4",
-     "degrau": 0,
-     "como": "releitura com o gabarito do órgão atualizado",
-     "motivo": null,
-     "falha": "erro_rede: HTTPError",
-     "oficial": null,
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/2",
-     "degrau": 0,
-     "como": "releitura com o gabarito do órgão atualizado",
-     "motivo": null,
-     "falha": "erro_rede: HTTPError",
-     "oficial": null,
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/14205959000178/compras/2026/26/arquivos/3",
-     "degrau": 0,
-     "como": "releitura com o gabarito do órgão atualizado",
-     "motivo": null,
-     "falha": "erro_rede: HTTPError",
-     "oficial": null,
-     "paginas": null,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "certificado",
-     "Prazo de inscrição": "dispensado",
-     "Resultado": "dispensado",
-     "Prazo de recurso": "certificado",
-     "Valor": "certificado",
-     "Órgão / financiador": "certificado",
-     "Território": "certificado",
-     "Esfera": "certificado",
-     "Requisitos": "certificado",
-     "Anexos": "certificado",
-     "Destinação": "falta",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 9,
-    "dispensados": 2,
-    "ja_constavam": 0,
-    "faltam": 1,
-    "pct_certificado_12": 0.9167,
-    "pct_cobertura_12": 0.9167
-   }
-  },
-  {
-   "id": "op-22c0f9a5fc02",
-   "tipo": "livro",
-   "titulo": "DEFENSORIA PUBLICA DO ESTADO DO PARANA — O objeto do presente credenciamento selecionar associações e/ou cooperativas de catadores de materiais recicláveis para",
-   "balcao": "pncp",
-   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/13950733000139/compras/2026/2/arquivos/1",
-   "degrau": 0,
-   "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-   "faltavam": [
-    "Resultado",
-    "Prazo de recurso",
-    "Requisitos",
-    "Anexos",
-    "Destinação"
-   ],
-   "resolvidos": [
-    "Resultado",
-    "Prazo de recurso",
-    "Requisitos",
-    "Anexos"
-   ],
-   "ainda_faltam": [
-    "Destinação"
-   ],
-   "tentativa": 1,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "prata",
-   "estagio_inicio": "prata",
-   "esgotada": null,
-   "eficiencia": 0.8,
-   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido (formato_desconhecido)",
-   "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-10T09:07:58+00:00",
-   "prazo": null,
-   "uf": "BR",
-   "orgao": "DEFENSORIA PUBLICA DO ESTADO DO PARANA",
-   "fim": null,
-   "itens": {
-    "Prazo de recurso": {
-     "valor": "5 (cinco) dias úteis",
-     "trecho": "ação deste instrumento. 11. DOS RECURSOS 11.1. Cabe recurso da decisão que habilitou ou inabilitou a interessada, no prazo de 5 (cinco) dias úteis, contado da data de intimação, nos termos do art.",
-     "pagina": 6,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13950733000139/compras/2026/2/arquivos/1",
-     "metodo": "seção"
-    },
-    "Requisitos": {
-     "valor": "e\n \nos\n \ndocumentos\n \nde\n \nhabilitação\n \nserão\n \navaliados\n \npor\n \nordem\n \nde\n \nsubmissão\n \n(cronológica)\n \nde\n \nseu\n \nrecebimento\n \nvia\n \ne-mail,\n \nconforme\n \nitem\n \n4.",
-     "trecho": "de Contratações 7. DA ANÁLISE DO REQUERIMENTO E DA HABILITAÇÃO 7.1. Os requerimentos e os documentos de habilitação serão avaliados por ordem de submissão (cronológica) de seu recebimento via e-mail, conforme item 4.1. deste Edital. 7.2. Os documentos de habilitação serão analisados pela Comissão Especial de Credenciamento , que",
-     "pagina": 4,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13950733000139/compras/2026/2/arquivos/1",
-     "metodo": "seção"
-    },
-    "Anexos": {
-     "valor": "ANEXO II MODELO; ANEXO III MODELO; ANEXO IV MODELO",
-     "trecho": "ue se prestem a suprir eventuais lacunas. 15. DOS ANEXOS 15.1. São partes integrantes deste edital os seguintes anexos: a) Anexo I – Termo de Referência; b) Anexo II – Modelo de Requerimento d",
-     "pagina": 7,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13950733000139/compras/2026/2/arquivos/1",
-     "metodo": "lista de anexos"
-    }
-   },
-   "dispensas": {
-    "Resultado": {
-     "motivo": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
-     "trecho": "é que seja coletado pela cooperativa ou associação. 11.3. Solicitar a qualquer tempo informações acerca da correta destinação dos resíduos recicláveis, i",
-     "pagina": 42,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13950733000139/compras/2026/2/arquivos/1"
-    }
-   },
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-10T09:07:58+00:00",
-     "ganhou": [
-      "Anexos",
-      "Prazo de recurso",
-      "Requisitos",
-      "Resultado"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13950733000139/compras/2026/2/arquivos/1",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 47,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/api/consulta/v1/orgaos/13950733000139/compras/2026/2",
-     "degrau": 0,
-     "como": "página/documento oficial já conhecido",
-     "motivo": "formato_desconhecido",
-     "falha": null,
-     "oficial": null,
-     "paginas": 0,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "ja_constava",
-     "Prazo de inscrição": "ja_constava",
-     "Resultado": "dispensado",
-     "Prazo de recurso": "certificado",
-     "Valor": "ja_constava",
-     "Órgão / financiador": "ja_constava",
-     "Território": "ja_constava",
-     "Esfera": "ja_constava",
-     "Requisitos": "certificado",
-     "Anexos": "certificado",
-     "Destinação": "falta",
-     "Área de atuação": "ja_constava"
-    },
-    "certificados": 3,
-    "dispensados": 1,
-    "ja_constavam": 7,
-    "faltam": 1,
-    "pct_certificado_12": 0.3333,
-    "pct_cobertura_12": 0.9167
-   }
-  },
-  {
-   "id": "op-5c2a51357cb4",
-   "tipo": "livro",
-   "titulo": "EDITAL DE CHAMAMENTO PÚBLICO Nº 26/2024 - SELEÇÃO ESPAÇO, AMBIENTES E INICIATIVAS ARTÍSTICO-CULTURAIS PARA RECEBER SUBSÍDIO PARA MANUTENÇÃO ",
-   "balcao": "orgao",
-   "link_oficial": "https://chamamentos.itapevi.sp.gov.br/chamamentos/262",
-   "degrau": 0,
-   "como": "página/documento oficial já conhecido",
-   "faltavam": [
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Requisitos"
-   ],
-   "resolvidos": [
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor"
-   ],
-   "ainda_faltam": [
-    "Requisitos"
-   ],
-   "tentativa": 1,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "prata",
-   "estagio_inicio": "prata",
-   "esgotada": null,
-   "eficiencia": 0.8,
-   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-12T18:56:53+00:00",
-   "prazo": null,
-   "uf": "BR",
-   "orgao": "",
-   "fim": "2018-10-11",
-   "itens": {
-    "Prazo de inscrição": {
-     "valor": "até 11 de outubro de 2018",
-     "trecho": "Promove, portanto, o chamamento dos candidatos para a realização das inscrições que será de 08 a 11 de outubro de 2018, no horário das 08h as 16h, no endereço Av. Presidente Vargas, nº 376",
-     "pagina": 1,
-     "documento": "https://chamamentos.itapevi.sp.gov.br/chamamentos",
-     "metodo": "cronograma"
-    },
-    "Prazo de recurso": {
-     "valor": "14/10/2026",
-     "trecho": "2026 - SELEÇÃO DE PROJETOS PARA FIRMAR TERMO DE EXECUÇÃO CULTURAL COM RECURSOS DA POLÍTICA NACIONAL ALDIR BLANC DE FOMENTO À CULTURA 14/10/2026 às 23:59:00 EDITAL DE CHAMAMENTO PÚBLICO Nº 28/2026 - SE",
-     "pagina": 1,
-     "documento": "https://chamamentos.itapevi.sp.gov.br/chamamentos",
-     "metodo": "seção"
-    }
-   },
-   "dispensas": {
-    "Resultado": {
-     "motivo": "dispensado pelo Cartório — não se aplica: credenciamento sem seleção competitiva — todos os habilitados são credenciados",
-     "trecho": "-t b-b dataTable\"> Título Data Ver Mais EDITAL DE CREDENCIAMENTO COMPLEMENTAR Nº 03/2026 - SELEÇÃO E CREDENCIAMENTO COMPLEMENTAR DE PA",
-     "pagina": 1,
-     "documento": "https://chamamentos.itapevi.sp.gov.br/chamamentos"
-    },
-    "Valor": {
-     "motivo": "dispensado pelo Cartório — não se aplica: sem repasse financeiro (cooperação, cessão ou habilitação sem recurso)",
-     "trecho": "para a realização de eventos de dança de salão (Samba Rock) mediante Acordo de Cooperação, sem transferência de recursos financeiros. 12/10/2026 às 17:00:00",
-     "pagina": 1,
-     "documento": "https://chamamentos.itapevi.sp.gov.br/chamamentos"
-    }
-   },
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-12T18:56:53+00:00",
-     "ganhou": [
-      "Prazo de inscrição",
-      "Prazo de recurso",
-      "Resultado",
-      "Valor"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://chamamentos.itapevi.sp.gov.br/chamamentos/262",
-     "degrau": 0,
-     "como": "página/documento oficial já conhecido",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://chamamentos.itapevi.sp.gov.br/filemanager/files/shares/Edital Aldir Blanc 26.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: Edital Aldir Blanc 26.pdf",
-     "motivo": null,
-     "falha": "erro_rede: InvalidURL",
-     "oficial": null,
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://chamamentos.itapevi.sp.gov.br/chamamentos",
-     "degrau": 1,
-     "como": "documento citado na página oficial: Chamamentos",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://chamamentos.itapevi.sp.gov.br/chamamentos/348",
-     "degrau": 1,
-     "como": "documento citado na página oficial: EDITAL DE CHAMAMENTO PÚBLICO Nº 31/2026 - SELEÇÃO DE ORGANIZAÇÃO DA SOCIEDADE CIVIL PARA EXECUÇÃO CONTINUADA DO SERVIÇO ",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://chamamentos.itapevi.sp.gov.br/chamamentos/345",
-     "degrau": 1,
-     "como": "documento citado na página oficial: EDITAL DE CHAMAMENTO PÚBLICO Nº 28/2026 - SELEÇÃO DE PROPOSTA PARA REALIZAÇÃO GRATUITA E VOLUNTÁRIA DE EVENTO ESPORTIVO ",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://chamamentos.itapevi.sp.gov.br/chamamentos/338",
-     "degrau": 1,
-     "como": "documento citado na página oficial: EDITAL DE CREDENCIAMENTO nº 02/2026 - SELEÇÃO E CREDENCIAMENTO DE PARECERISTAS PARA ANÁLISE DE PROJETOS CULTURAIS EM PRO",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://chamamentos.itapevi.sp.gov.br/chamamentos/311",
-     "degrau": 1,
-     "como": "documento citado na página oficial: EDITAL DE CHAMAMENTO PÚBLICO Nº 35/2025 - AQUISIÇÃO DE GÊNERO ALIMENTÍCIOS) DE AGRICULTORES FAMILIARES, POR MEIO DA MODA",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://chamamentos.itapevi.sp.gov.br/chamamentos/293",
-     "degrau": 1,
-     "como": "documento citado na página oficial: EDITAL DE CHAMAMENTO PÚBLICO 19/2025 ADOTE UMA PRAÇA",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "ja_constava",
-     "Prazo de inscrição": "certificado",
-     "Resultado": "dispensado",
-     "Prazo de recurso": "certificado",
-     "Valor": "dispensado",
-     "Órgão / financiador": "ja_constava",
-     "Território": "ja_constava",
-     "Esfera": "ja_constava",
-     "Requisitos": "falta",
-     "Anexos": "ja_constava",
-     "Destinação": "ja_constava",
-     "Área de atuação": "ja_constava"
-    },
-    "certificados": 2,
-    "dispensados": 2,
-    "ja_constavam": 7,
-    "faltam": 1,
-    "pct_certificado_12": 0.3333,
-    "pct_cobertura_12": 0.9167
-   }
   }
  ],
  "linha_de_producao": {
   "na_linha": {
-   "sem_estrela": 1145,
-   "bronze": 45,
-   "prata": 1497
+   "sem_estrela": 1224,
+   "bronze": 46,
+   "prata": 1604
   },
   "na_linha_por_tipo": {
    "estrela": {
-    "sem_estrela": 397,
-    "bronze": 43,
+    "sem_estrela": 388,
+    "bronze": 44,
     "prata": 54
    },
    "livro": {
-    "sem_estrela": 748,
+    "sem_estrela": 836,
     "bronze": 2,
-    "prata": 1443
+    "prata": 1550
    }
   },
-  "fila_oportunidades": 494,
-  "fila_livros": 2193,
-  "devidas_nesta_hora": 2586,
+  "fila_oportunidades": 486,
+  "fila_livros": 2388,
+  "devidas_nesta_hora": 2759,
   "promovidas_nesta_execucao": 0,
-  "sem_material_agora": 9,
+  "sem_material_agora": 11,
   "esgotadas_10_abordagens": 0,
   "biblioteca_de_sites": {
-   "chaves": 1463,
-   "sites": 2514
+   "chaves": 1540,
+   "sites": 2647
   },
   "intervalo_horas": 12,
   "limite": 10,
