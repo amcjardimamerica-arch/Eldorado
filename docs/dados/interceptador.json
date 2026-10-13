@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-13T02:24:22+00:00",
+  "em": "2026-10-13T02:42:41+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-13T02:04:55+00:00",
+  "ultimo_voo": "2026-10-13T02:27:10+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 86,
+    "missoes": 87,
     "validadas": 3,
-    "parciais": 21,
+    "parciais": 22,
     "insuficientes": 58,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 68,
+      "sim": 69,
       "nao": 10
     },
     "estrelas_de_ouro": 2,
@@ -52,6 +52,84 @@
     "tempo_medio_min": 13.3
   },
   "missoes": [
+    {
+      "em": "2026-10-13T02:27:10+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Igaraçu do Tietê (SP) 2026-10-08 — \"termo de fomento\" \"chamamento público\"",
+      "qualidade": "parcial",
+      "comprovados": 7,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos"
+      ],
+      "pagina_oficial": "https://culteditais.cultura.gov.br/oportunidade/10643/",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital menciona a seleção de projetos para fomento cultural, o que é relevante para uma associação comunitária de Goiânia que atua na área de cultura.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital permite inscrições de entidades fora do território mencionado e, caso sim, preparar um projeto cultural alinhado ao objeto do edital, apresentando os documentos exigidos no anexo.",
+        "proximo_passo": "Consultar os anexos do edital para identificar os documentos necessários e verificar se há possibilidade de inscrição de entidades de outros municípios.",
+        "risco": "O edital não especifica se aceita inscrições de entidades de outros municípios, o que pode impedir a participação da associação comunitária de Goiânia."
+      },
+      "erro": null,
+      "segundos": 929,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 4,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
+      "id": "4d96eae47ad4e295ec58",
+      "encontrou": {
+        "Objeto": {
+          "valor": "SELEÇÃO DE PROJETOS PARA FIRMAR TERMO DE EXECUÇÃO CULTURAL COM RECURSOS DA POLÍTICA NACIONAL ALDIR BLANC",
+          "trecho": "SELEÇÃO DE PROJETOS PARA FIRMAR TERMO DE EXECUÇÃO CULTURAL COM RECURSOS DA POLÍTICA NACIONAL ALDIR BLANC /no_think",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Secretária Municipal da Educação de Igaraçu do Tietê",
+          "trecho": "A Sra. Maria José Teixeira Capelazzo, Secretária Municipal da Educação de Igaraçu do Tietê, Estado de São Paulo, usando das atribuições que lhe são conferidas pela Portaria Municip",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "SP",
+          "trecho": "Território: {{ (entity.$PROPERTIES?.territorio?.options && Array.isArray(entity.territorio)) ? entity.territorio.map(function(v) { return entity.$PROPERTIES.territorio.options[v] |",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "SELEÇÃO DE PROJETOS PARA FIRMAR TERMO DE EXECUÇÃO CULTURAL COM RECURSOS DA POLÍTICA NACIONAL ALDIR BLANC /no_think",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · fomento",
+          "trecho": "SELEÇÃO DE PROJETOS PARA FIRMAR TERMO DE EXECUÇÃO CULTURAL COM RECURSOS DA POLÍTICA NACIONAL ALDIR BLANC /no_think",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Secretaria Municipal de Cultura de Igaraçu do Tietê",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3520004/2026-10-08/15ba88f88a65acb22be2abd44abe63973f7e9b02.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-13T02:04:55+00:00",
       "modo": "validar",
@@ -2956,83 +3034,6 @@
       "indicios": [
         {
           "url": "https://data.queridodiario.ok.org.br/4309605/2026-09-21/dc6e32ece255909c7c6a7281724d2d1577ca3d48.pdf",
-          "tipo": "agregador"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital",
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano"
-      ]
-    },
-    {
-      "em": "2026-10-12T15:00:48+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Diário Oficial de Itaúna (MG) 2026-10-08 — \"termo de execução cultural\"",
-      "qualidade": "insuficiente",
-      "comprovados": 6,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Requisitos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O termo de execução cultural menciona a contratação de artistas através do edital de Credenciamento 001/2026, visando ao atendimento das necessidades da Secretaria Municipal de Cultura e Turismo nas comemorações do mês das crianças.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao edital de Credenciamento 001/2026 da Prefeitura Municipal de Itaúna, demonstrando capacidade de atender às necessidades da Secretaria Municipal de Cultura e Turismo nas comemorações do mês das crianças.",
-        "proximo_passo": "Consultar os anexos do edital para obter informações detalhadas sobre os requisitos e processos de inscrição.",
-        "risco": "A falta de informações sobre prazo de inscrição e requisitos pode impedir a associação de se candidatar adequadamente ao edital."
-      },
-      "erro": null,
-      "segundos": 719,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "f8f09270a6ea12f65c07",
-      "encontrou": {
-        "Objeto": {
-          "valor": "contratação de artistas através do edital de Credenciamento 001/2026, visando ao atendimento das necessidades da Secretaria Municipal de Cultura e Turismo nas comemorações do mês das crianças",
-          "trecho": "para contratação de artistas através do edital de Credenciamento 001/2026, visando ao atendimento das necessidades da Secretaria Municipal de Cultura e Turismo nas comemorações do ",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "R$ 22.100,00 (vinte e dois mil e cem reais)",
-          "trecho": "Valor total: R$ 22.100,00 (vinte e dois mil e cem reais)",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal de Itaúna",
-          "trecho": "Prefeitura Municipal de Itaúna",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "MG",
-          "trecho": "Secretaria Municipal de Cultura e Turismo",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Itaúna",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/3133808/2026-10-08/3ff7b2018ab056f86d374fde7bc7caf5daad0c90.pdf",
           "tipo": "agregador"
         }
       ],
