@@ -42,6 +42,9 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Fomento e bolsas](https://editaisdobrasil.com/oportunidades) — coletado em 2026-10-11T14:04:35+00:00
 - [Plano de Trabalho (Anexo I) do Termo de Fomento](https://www.sicredi.com.br/media/produtos/filer_public/2023/11/21/plano_de_trabalho_caicara_2023.pdf) — coletado em 2026-10-12T15:01:27+00:00
 - [Aditivo: 01/2026  15/05/2026 · ADITIVO I - EDITAL DE CHAMAMENTO PÚBLICO N° 001/2026 PREMIAÇÃO PARA AGENTES CULTURAIS COM RECURSOS DA POLÍTICA NACIONAL ALDIR BLANC DE FOMENTO À CULTURA - PNAB (LEI N° 14.399/202 Acessar](https://potengi.ce.gov.br/publicacoes.php?id=887) — coletado em 2026-10-11T19:11:29+00:00
+- [Recife terá Outubro 60+ com serviços, cultura e lazer gratuitos 
+
+                             Cidadania](https://corrivus.com.br/pernambuco/recife/recife-outubro-60-atividades-gratuitas-pessoas-idosas) — coletado em 2026-10-12T19:22:52+00:00
 - [Plano de Trabalho (Anexo I) do Termo de Fomento](https://www.sicredi.com.br/media/produtos/filer_public/2023/11/21/plano_de_trabalho_ref_ao_termo_de_fomento_rodeio_bonito_-_pufv_-_2023.pdf) — coletado em 2026-10-12T15:01:27+00:00
 - [Ministério da Cultura — editais de fomento cultural](https://editaisdobrasil.com/oportunidade/ministerio-da-cultura-editais-de-fomento-cultural) — coletado em 2026-10-11T14:04:35+00:00
 - [Concurso Público nº 04/2024 
@@ -50,6 +53,3 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Plano de Trabalho do Termo de Fomento](https://www.sicredi.com.br/media/produtos/filer_public/2024/01/05/plano-de-trabalho-termo-de-fomento-municipio-de-planaltopufv2024.pdf) — coletado em 2026-10-12T15:01:27+00:00
 - [Plano de Trabalho (Anexo I) do Termo de Fomento](https://www.sicredi.com.br/media/produtos/filer_public/2023/11/21/plano_de_trabalho_-_municipio_de_pinheirinho_do_vale_-_2023.pdf) — coletado em 2026-10-12T15:01:27+00:00
 - [Prêmio Nacional de Inovação](https://editaisdobrasil.com/oportunidade/premio-nacional-de-inovacao) — coletado em 2026-10-11T14:04:35+00:00
-- [Recife terá Outubro 60+ com serviços, cultura e lazer gratuitos 
-
-                             Cidadania](https://corrivus.com.br/pernambuco/recife/recife-outubro-60-atividades-gratuitas-pessoas-idosas) — coletado em 2026-10-12T19:22:52+00:00

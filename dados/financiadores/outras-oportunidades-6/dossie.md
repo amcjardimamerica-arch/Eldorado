@@ -12,8 +12,8 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 ## Eventos e pistas
 
+- [# Seleção Pública](https://agencia.petrobras.com.br/busca?q=&category=11449850) — coletado em 2026-10-13T01:48:58+00:00
 - [Parcerias e convênios institucionais](https://smc.niteroi.rj.gov.br/parcerias-e-convenios-institucionais) — coletado em 2026-10-12T15:02:02+00:00
-- [Edital PNAB Niterói – 2026](https://smc.niteroi.rj.gov.br/2026/09/11/edital-pnab-niteroi-2026) — coletado em 2026-10-12T15:02:02+00:00
 - [14/09/2026                                                                                         
 
                                                                                          
@@ -22,4 +22,4 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
                                                                                          
                                                                                             14h38            ](https://www.juatuba.mg.gov.br/portal/download/chamamento-publico-anexos/sh-wPP) — coletado em 2026-10-13T01:48:38+00:00
-- [# Seleção Pública](https://agencia.petrobras.com.br/busca?q=&category=11449850) — coletado em 2026-10-13T01:48:58+00:00
+- [Edital PNAB Niterói – 2026](https://smc.niteroi.rj.gov.br/2026/09/11/edital-pnab-niteroi-2026) — coletado em 2026-10-12T15:02:02+00:00
