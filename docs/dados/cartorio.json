@@ -1,31 +1,31 @@
 {
- "em": "2026-10-13T16:41:08+00:00",
+ "em": "2026-10-13T17:28:06+00:00",
  "versao": "cartório v5 · linha de produção (09/10/2026)",
  "regra": "CARTÓRIO DE FONTES OFICIAIS (titular, 09/10/2026).\n\nOs motores DESCOBREM; o Cartório CERTIFICA. Toda estrela (oportunidade aberta) e todo livro (histórico) que tenha\nQUALQUER um dos 12 itens indisponível entra na fila do Cartório. Para cada um, ele sobe uma escada de degraus — do mais\nbarato e confiável ao mais caro — até achar o documento OFICIAL, lê o documento por seções e emite uma CERTIDÃO:\nlink oficial (régua única: vetor nunca é fonte), degrau em que foi achado, impressão digital do documento, e cada item\ncom valor + trecho literal + página — ou a DISPENSA com a justificativa de que o requisito não existe naquele edital.\n\nBalcões (como chegar ao documento em cada tipo de fonte):\n  pncp      página do PNCP → API de arquivos do órgão (PDF ou ZIP), o edital primeiro\n  diario    DOU, Diário de Goiás/Goiânia, Querido Diário → o ato dentro da edição (só as páginas do ato)\n  orgao     domínio público → documentos da página + biblioteca de mídia do WordPress pelo número do edital\n  privado   site do financiador → documentos da página (regulamento, edital)\n  pista     agregador/notícia → links de SAÍDA para o financiador; o resto vai ao Interceptador\n  proprio   Ministério Público e Judiciário: já leem o PDF; o Cartório só converte em certidão\n\nEscada: 0 documento na mão · 1 link de saída da pista · 2 busca do número do edital dentro do domínio oficial ·\n        3 Interceptador (IA) · 4 Chrome. O Cartório resolve 0–2 sem IA; 3 e 4 recebem só o que sobrou.\nIntegração: a fila é ordenada pela urgência (prazo), pela nota da REDE NEURAL e pela distância até o ouro (menos\nitens faltando primeiro: cada certidão vira selo). Estrelas: o fluxo de oportunidades lê a certidão no checklist.\nLivros: linhas no formato do importador (scripts/importar_verificacao_livros.py), que confere e entrega à esteira.",
  "identidade_visual": "provisória (config/identidade_visual.json aguarda o design de referência)",
  "resumo": {
   "pontos_12_total": 4800,
   "pontos_certificados": 3199,
-  "pontos_dispensados": 226,
+  "pontos_dispensados": 229,
   "pontos_ja_constavam": 1187,
-  "pontos_faltam": 188,
-  "pct_certificado_12": 0.7135,
+  "pontos_faltam": 185,
+  "pct_certificado_12": 0.7142,
   "certidoes_12_de_12": 134,
   "certidoes_sem_item_faltando": 241,
   "nota_denominador": "eficiencia_itens = resolvidos ÷ itens que faltavam na ENTRADA da fila (não é % dos 12); use pct_certificado_12",
-  "certidoes": 1796,
-  "nesta_execucao": 28,
-  "fila_estrelas": 481,
+  "certidoes": 1825,
+  "nesta_execucao": 29,
+  "fila_estrelas": 493,
   "fila_livros": 2403,
-  "itens_que_faltavam": 15606,
-  "itens_obtidos": 6128,
-  "itens_dispensados": 517,
-  "eficiencia_itens": 0.426,
-  "com_link_oficial": 1159,
-  "taxa_link_oficial": 0.645,
+  "itens_que_faltavam": 15891,
+  "itens_obtidos": 6257,
+  "itens_dispensados": 533,
+  "eficiencia_itens": 0.427,
+  "com_link_oficial": 1184,
+  "taxa_link_oficial": 0.649,
   "certidoes_completas": 173,
-  "para_o_interceptador": 1331,
-  "para_o_chrome": 291,
+  "para_o_interceptador": 1351,
+  "para_o_chrome": 300,
   "selos_que_mudaram": {
    "bronze → ouro": 18,
    "sem selo → ouro": 70,
@@ -36,97 +36,97 @@
    "sem selo → bronze": 23
   },
   "por_degrau": {
-   "degrau 0": 1161,
+   "degrau 0": 1186,
    "degrau 1": 28
   }
  },
  "cinza_conferidos": {
-  "conferidos": 355,
-  "certificados": 172,
-  "certidoes": 48
+  "conferidos": 360,
+  "certificados": 173,
+  "certidoes": 49
  },
  "por_item": {
   "Objeto": {
-   "faltavam": 1113,
-   "obtidos": 499,
+   "faltavam": 1136,
+   "obtidos": 512,
    "dispensados": 0,
-   "eficiencia": 0.448
+   "eficiencia": 0.451
   },
   "Prazo de inscrição": {
-   "faltavam": 1097,
-   "obtidos": 387,
-   "dispensados": 133,
-   "eficiencia": 0.474
+   "faltavam": 1117,
+   "obtidos": 390,
+   "dispensados": 137,
+   "eficiencia": 0.472
   },
   "Resultado": {
-   "faltavam": 1564,
-   "obtidos": 392,
-   "dispensados": 250,
-   "eficiencia": 0.41
+   "faltavam": 1591,
+   "obtidos": 399,
+   "dispensados": 259,
+   "eficiencia": 0.414
   },
   "Prazo de recurso": {
-   "faltavam": 1567,
-   "obtidos": 500,
+   "faltavam": 1593,
+   "obtidos": 511,
    "dispensados": 25,
-   "eficiencia": 0.335
+   "eficiencia": 0.336
   },
   "Valor": {
-   "faltavam": 1314,
-   "obtidos": 493,
-   "dispensados": 72,
+   "faltavam": 1338,
+   "obtidos": 503,
+   "dispensados": 73,
    "eficiencia": 0.43
   },
   "Órgão / financiador": {
-   "faltavam": 983,
-   "obtidos": 572,
+   "faltavam": 1004,
+   "obtidos": 588,
    "dispensados": 0,
-   "eficiencia": 0.582
+   "eficiencia": 0.586
   },
   "Território": {
-   "faltavam": 1119,
-   "obtidos": 440,
+   "faltavam": 1140,
+   "obtidos": 453,
    "dispensados": 0,
-   "eficiencia": 0.393
+   "eficiencia": 0.397
   },
   "Esfera": {
-   "faltavam": 1348,
-   "obtidos": 820,
+   "faltavam": 1372,
+   "obtidos": 839,
    "dispensados": 0,
-   "eficiencia": 0.608
+   "eficiencia": 0.612
   },
   "Requisitos": {
-   "faltavam": 1512,
-   "obtidos": 497,
+   "faltavam": 1538,
+   "obtidos": 503,
    "dispensados": 0,
-   "eficiencia": 0.329
+   "eficiencia": 0.327
   },
   "Anexos": {
-   "faltavam": 1060,
-   "obtidos": 387,
+   "faltavam": 1083,
+   "obtidos": 395,
    "dispensados": 8,
-   "eficiencia": 0.373
+   "eficiencia": 0.372
   },
   "Destinação": {
-   "faltavam": 1510,
-   "obtidos": 255,
-   "dispensados": 29,
+   "faltavam": 1535,
+   "obtidos": 257,
+   "dispensados": 31,
    "eficiencia": 0.188
   },
   "Área de atuação": {
-   "faltavam": 1419,
-   "obtidos": 886,
+   "faltavam": 1444,
+   "obtidos": 907,
    "dispensados": 0,
-   "eficiencia": 0.624
+   "eficiencia": 0.628
   }
  },
  "por_balcao": {
   "pncp": {
-   "certidoes": 508,
-   "com_link_oficial": 275,
-   "faltavam": 4271,
-   "resolvidos": 1665,
-   "eficiencia": 0.39,
-   "taxa_link_oficial": 0.541
+   "certidoes": 516,
+   "com_link_oficial": 283,
+   "faltavam": 4353,
+   "resolvidos": 1733,
+   "eficiencia": 0.398,
+   "taxa_link_oficial": 0.548
   },
   "diario": {
    "certidoes": 70,
@@ -137,12 +137,12 @@
    "taxa_link_oficial": 0.471
   },
   "orgao": {
-   "certidoes": 593,
-   "com_link_oficial": 473,
-   "faltavam": 4859,
-   "resolvidos": 2129,
+   "certidoes": 607,
+   "com_link_oficial": 486,
+   "faltavam": 4990,
+   "resolvidos": 2184,
    "eficiencia": 0.438,
-   "taxa_link_oficial": 0.798
+   "taxa_link_oficial": 0.801
   },
   "pista": {
    "certidoes": 151,
@@ -161,11 +161,11 @@
    "taxa_link_oficial": 0.888
   },
   "privado": {
-   "certidoes": 206,
-   "com_link_oficial": 116,
-   "faltavam": 1439,
-   "resolvidos": 307,
-   "eficiencia": 0.213,
+   "certidoes": 213,
+   "com_link_oficial": 120,
+   "faltavam": 1511,
+   "resolvidos": 329,
+   "eficiencia": 0.218,
    "taxa_link_oficial": 0.563
   },
   "proprio": {
@@ -179,12 +179,12 @@
  },
  "por_safra": {
   "primeira tentativa": {
-   "certidoes": 1624,
-   "faltavam": 13972,
-   "resolvidos": 5351,
-   "eficiencia": 0.383,
-   "com_link_oficial": 1005,
-   "taxa_link_oficial": 0.619
+   "certidoes": 1653,
+   "faltavam": 14257,
+   "resolvidos": 5496,
+   "eficiencia": 0.385,
+   "com_link_oficial": 1030,
+   "taxa_link_oficial": 0.623
   },
   "refeitas": {
    "certidoes": 172,
@@ -221,12 +221,12 @@
    "taxa_link_oficial": 0.875
   },
   "cartório v5 · linha de produção": {
-   "certidoes": 1493,
-   "faltavam": 12156,
-   "resolvidos": 4343,
-   "eficiencia": 0.357,
-   "com_link_oficial": 890,
-   "taxa_link_oficial": 0.596
+   "certidoes": 1522,
+   "faltavam": 12441,
+   "resolvidos": 4488,
+   "eficiencia": 0.361,
+   "com_link_oficial": 915,
+   "taxa_link_oficial": 0.601
   },
   "revisão manual": {
    "certidoes": 267,
@@ -240,11 +240,11 @@
  "por_abordagem": {
   "1": {
    "nome": "documento na mão",
-   "vezes": 1562,
-   "renderam": 1004,
-   "itens": 5948,
-   "links_oficiais": 884,
-   "taxa_de_acerto": 0.643
+   "vezes": 1591,
+   "renderam": 1028,
+   "itens": 6094,
+   "links_oficiais": 909,
+   "taxa_de_acerto": 0.646
   },
   "2": {
    "nome": "anexos completos",
@@ -322,11 +322,11 @@
  "por_balcao_selo": {
   "sem_estrela": {
    "nome": "Sem estrela → bronze",
-   "certidoes": 491,
-   "faltavam": 3185,
-   "resolvidos": 764,
-   "eficiencia": 0.24,
-   "entraram_aqui": 529,
+   "certidoes": 500,
+   "faltavam": 3265,
+   "resolvidos": 787,
+   "eficiencia": 0.241,
+   "entraram_aqui": 538,
    "esgotadas": 0
   },
   "bronze": {
@@ -340,11 +340,11 @@
   },
   "prata": {
    "nome": "Prata → ouro",
-   "certidoes": 1002,
-   "faltavam": 9133,
-   "resolvidos": 3748,
-   "eficiencia": 0.41,
-   "entraram_aqui": 989,
+   "certidoes": 1022,
+   "faltavam": 9338,
+   "resolvidos": 3870,
+   "eficiencia": 0.414,
+   "entraram_aqui": 1009,
    "esgotadas": 0
   },
   "ouro": {
@@ -358,15 +358,15 @@
   }
  },
  "gabarito": {
-  "orgaos_com_gabarito": 774,
+  "orgaos_com_gabarito": 786,
   "itens_achados_pelo_gabarito": {
-   "Objeto": 33,
-   "Requisitos": 16,
+   "Objeto": 34,
+   "Requisitos": 17,
    "Prazo de inscrição": 1,
    "Destinação": 7,
    "Resultado": 1
   },
-  "certidoes_ajudadas": 52
+  "certidoes_ajudadas": 54
  },
  "certidoes": [
   {
@@ -52855,6 +52855,215 @@
    }
   },
   {
+   "id": "op-ddd47f502fbb",
+   "tipo": "livro",
+   "titulo": "INSTITUTO DE ASSISTENCIA MEDICA AO SERVIDOR PUBLICO ESTADUAL — Credenciamento de Prest. de Serv. de Assist. à Saúde, em regime hospitalar para internação psiqui",
+   "balcao": "pncp",
+   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/60747318000162/compras/2026/925/arquivos/3",
+   "degrau": 0,
+   "como": "PNCP: arquivo anexado pelo órgão (Edital)",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Destinação"
+   ],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "prata",
+   "esgotada": null,
+   "eficiencia": 0.917,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-13T17:22:15+00:00",
+   "prazo": null,
+   "uf": "BR",
+   "orgao": "INSTITUTO DE ASSISTENCIA MEDICA AO SERVIDOR PUBLICO ESTADUAL",
+   "fim": "2026-07-21",
+   "itens": {
+    "Prazo de recurso": {
+     "valor": "10 (dez) dias úteis",
+     "trecho": "o no prazo de 3 (três) dias úteis, ou, nesse mesmo prazo, encaminhar recurso para a autoridade superior, a qual deverá proferir sua decisão no prazo de 10 (dez) dias úteis, contado do recebimento dos autos. 7.6 Os recursos interpostos for",
+     "pagina": 15,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/60747318000162/compras/2026/925/arquivos/3",
+     "metodo": "seção"
+    },
+    "Valor": {
+     "valor": "R$ 22.800.000,00",
+     "trecho": "tuto Assistência Méd ica do Servidor Público Estadual – IAMSPE. VALOR TOTAL DO CREDENCIAMENTO R$ 22.800.000,00 RECEBIMENTO DA INSCRIÇÃO Endereço: Avenida Ibirapuera",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/60747318000162/compras/2026/925/arquivos/3",
+     "metodo": "seção"
+    },
+    "Órgão / financiador": {
+     "valor": "Instituto de Assistência Médica ao Servidor Público Estadual - IAMSPE",
+     "trecho": "TAL DE CREDENCIAMENTO Nº 05/2026 CREDENCIANTE (UASG) (532101) - Instituto de Assistência Médica ao Servidor Público Estadual - IAMSPE OBJETO Edital de credenciamento de prestadores de serviços de as",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/60747318000162/compras/2026/925/arquivos/3",
+     "metodo": "cabeçalho"
+    },
+    "Território": {
+     "valor": "do Estado de São Paulo",
+     "trecho": "tar com a Administração Pública pelo Plenário do Tribunal de Contas do Estado de São Paulo, nos termos do artigo 108 da Lei Complementar Estadual nº 709/1993;",
+     "pagina": 5,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/60747318000162/compras/2026/925/arquivos/3",
+     "metodo": "texto"
+    },
+    "Esfera": {
+     "valor": "federal",
+     "trecho": "domínio/órgão: pncp.gov.br · Instituto de Assistência Médica ao Servidor Público Estadual - IAMSPE INSTITUTO ",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/60747318000162/compras/2026/925/arquivos/3",
+     "metodo": "domínio e órgão"
+    },
+    "Requisitos": {
+     "valor": "DA MANIFESTAÇÃO DE INTENÇÃO DE SE CREDENCIAR .",
+     "trecho": "............................................................... 3 2. DA PARTICIPAÇÃO NO PROCEDIMENTO ............................................................. 4 3. DA MANIFESTAÇÃO DE INTENÇÃO DE SE CREDENCIAR .................................. 6 4. DOCUMENTAÇÃO PARA HABILITAÇÃO ............................................................... 7 5. DA HABILITAÇÃO DOS INTERESSADOS ................",
+     "pagina": 2,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/60747318000162/compras/2026/925/arquivos/3",
+     "metodo": "seção"
+    },
+    "Anexos": {
+     "valor": "ANEXO I – TERMO DE REFERÊNCIA...................................................; ANEXO II – FICHA DE PROGRAMAÇÃO FÍSICO-ORÇAMENTÁRIA – FPO ............... 54; ANEXO III – MODELO DE FORMULÁRIO DE INSCRIÇÃO . ..................................; ANEXO IV-A – MODELO DE DECLARAÇÃO . ....................",
+     "trecho": "................................................................. 26 ANEXO I – TERMO DE REFERÊNCIA............................................................................ 28 ANEXO II – FICHA DE PROGRAMAÇÃO FÍSICO-ORÇAMENTÁRIA – FPO ............... 54 AN",
+     "pagina": 2,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/60747318000162/compras/2026/925/arquivos/3",
+     "metodo": "lista de anexos"
+    },
+    "Área de atuação": {
+     "valor": "Saúde",
+     "trecho": "termos do objeto e do título: Saúde",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/60747318000162/compras/2026/925/arquivos/3",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Prazo de inscrição": {
+     "valor": "21/07/2026 a 31/12/20",
+     "trecho": "tituto Assistência Méd ica do Servidor Público Estadual – IAMSPE, com inscrições a partir de 21/07/2026 a 31/12/202 6. Para o conhecimento da íntegra do edital, os interessados poderã",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/60747318000162/compras/2026/925/arquivos/5",
+     "metodo": "cronograma"
+    },
+    "Objeto": {
+     "valor": "Nacional de Modelos de Licitações e Contratos da Consultoria-Geral da União\nModelo de Serviços sem dedicação — Atualização: maio/2023\nAprovado pela Secretaria de Gestão e Inovação\n6 de 21\n5.",
+     "trecho": "tes da 5. Modelo de execução do objeto 5. MODELO DE EXECUÇÃO DO OBJETO Câmara Nacional de Modelos de Licitações e Contratos da Consultoria-Geral da União Modelo de Serviços sem dedicação — Atualização: maio/2023 Aprovado pela Secretaria de Gestão e Inovação 6 de 21 5.1 Início da execução do objeto: em até 30 dias a contar da assinatura d",
+     "pagina": 5,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/60747318000162/compras/2026/925/arquivos/4",
+     "metodo": "seção"
+    }
+   },
+   "dispensas": {
+    "Resultado": {
+     "motivo": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
+     "trecho": "rem pagos de acordo com os valores vigentes da Tabela IAMSPE. 9.7 A qualquer tempo, de acordo com a demanda e a disponibilidade orçamentária, a reserva",
+     "pagina": 17,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/60747318000162/compras/2026/925/arquivos/3"
+    }
+   },
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-13T17:22:15+00:00",
+     "ganhou": [
+      "Anexos",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Prazo de recurso",
+      "Requisitos",
+      "Resultado",
+      "Território",
+      "Valor",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/60747318000162/compras/2026/925/arquivos/3",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 60,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/60747318000162/compras/2026/925/arquivos/5",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/60747318000162/compras/2026/925/arquivos/4",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Termo de Referência)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 25,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "certificado",
+     "Resultado": "dispensado",
+     "Prazo de recurso": "certificado",
+     "Valor": "certificado",
+     "Órgão / financiador": "certificado",
+     "Território": "certificado",
+     "Esfera": "certificado",
+     "Requisitos": "certificado",
+     "Anexos": "certificado",
+     "Destinação": "falta",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 10,
+    "dispensados": 1,
+    "ja_constavam": 0,
+    "faltam": 1,
+    "pct_certificado_12": 0.9167,
+    "pct_cobertura_12": 0.9167
+   }
+  },
+  {
    "id": "curadoria-010",
    "tipo": "livro",
    "titulo": "MDHC / CONANDA — Chamamentos publicos de fomento a OSC",
@@ -57614,6 +57823,215 @@
    }
   },
   {
+   "id": "op-70612ee0d4eb",
+   "tipo": "livro",
+   "titulo": "MUNICIPIO DE SAO LOURENCO DO SUL — [Portal de Compras Públicas] - Seleção de Organização Social para a prestação de serviços técnicos especializados de gestão e",
+   "balcao": "pncp",
+   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/87893111000152/compras/2026/419/arquivos/1",
+   "degrau": 0,
+   "como": "PNCP: arquivo anexado pelo órgão (Edital)",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Destinação"
+   ],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "prata",
+   "esgotada": null,
+   "eficiencia": 0.917,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-13T17:22:39+00:00",
+   "prazo": null,
+   "uf": "BR",
+   "orgao": "MUNICIPIO DE SAO LOURENCO DO SUL",
+   "fim": null,
+   "itens": {
+    "Resultado": {
+     "valor": "05 cinco dias",
+     "trecho": "0001-52 24 36. DOS PRAZOS PARA RECURSO 36.1. Após a emissão do resultado preliminar, será concedido prazo de 05 cinco dias úteis a contar da intimação do ato ou lavratura da ata, para interpo",
+     "pagina": 24,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/87893111000152/compras/2026/419/arquivos/1",
+     "metodo": "seção"
+    },
+    "Prazo de recurso": {
+     "valor": "05 (cinco) dias úteis",
+     "trecho": "etido dos repasses financeiros. 25.7. Da decisão da Comissão caberá recurso administrativo, no prazo de 05 (cinco) dias úteis, dirigido à autoridade competente da Secretaria Municipal de Saúde.",
+     "pagina": 13,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/87893111000152/compras/2026/419/arquivos/1",
+     "metodo": "seção"
+    },
+    "Valor": {
+     "valor": "R$ 467.749,22",
+     "trecho": "ados a seguir: A proposta financeira total não poderá ultrapassar o valor total de R$ 467.749,22 (quatrocentos e sessenta e sete mil, setecentos e quarenta e nove re",
+     "pagina": 21,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/87893111000152/compras/2026/419/arquivos/1",
+     "metodo": "seção"
+    },
+    "Objeto": {
+     "valor": "Condições gerais de prestação do serviço: \n6.",
+     "trecho": "ecidos deverão ser compatíveis com o objeto; 6. MODELO DE EXECUÇÃO DO OBJETO / Condições gerais de prestação do serviço: 6.1 A ENTIDADE deve dispor de recursos humanos qualificados, com habilitação téc",
+     "pagina": 3,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/87893111000152/compras/2026/419/arquivos/1",
+     "metodo": "seção"
+    },
+    "Órgão / financiador": {
+     "valor": "MUNICIPIO DE SÃO LOURENÇO DO SUL",
+     "trecho": "ESTADO DO RIO GRANDE DO SUL MUNICIPIO DE SÃO LOURENÇO DO SUL CNPJ 87.893.111/0001-52 1 EDITAL DE CHAMAMENTO PÚBLICO Nº 07/20",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/87893111000152/compras/2026/419/arquivos/1",
+     "metodo": "cabeçalho"
+    },
+    "Território": {
+     "valor": "do Município de São Lourenço do Sul",
+     "trecho": "compartilhada, para atuar na REDE DE ATENÇÃO PSICOSSOCIAL, no âmbito do Município de São Lourenço do Sul/RS, conforme especificações, quantitativos, regulamentação do gerenc",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/87893111000152/compras/2026/419/arquivos/1",
+     "metodo": "texto"
+    },
+    "Esfera": {
+     "valor": "federal",
+     "trecho": "domínio/órgão: pncp.gov.br · MUNICIPIO DE SÃO LOURENÇO DO SUL MUNICIPIO DE SAO LOURENCO DO SUL",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/87893111000152/compras/2026/419/arquivos/1",
+     "metodo": "domínio e órgão"
+    },
+    "Requisitos": {
+     "valor": "Poderão participar da seleção as organizações sociais e demais entidades interessadas assim declaradas \npela Municipalidade, através de Decreto Municipal de Qualificação, e que satisfaçam plenamente todos os termos \ne condições deste Termo de Referência.",
+     "trecho": "PIO DE SÃO LOURENÇO DO SUL CNPJ 87.893.111/0001-52 2 4. DAS CONDIÇÕES DE PARTICIPAÇÃO 4.1 Poderão participar da seleção as organizações sociais e demais entidades interessadas assim declaradas pela Municipalidade, através de Decreto Municipal de Qualificação, e que satisfaçam plenamente todos os termos e condições deste Termo de Referência. 4.2 A presente seleção regulamenta-se pela Lei Municipal ",
+     "pagina": 2,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/87893111000152/compras/2026/419/arquivos/1",
+     "metodo": "seção"
+    },
+    "Anexos": {
+     "valor": "ANEXO I INFORMAÇÕES ORIENTATIVAS PARA CONFECÇÃO DO PLANO DE TRABALHO; ANEXO II ROTEIRO PARA ELABORAÇÃO DA PROPOSTA DE TRABALHO; ANEXO III INDICADORES E METAS DA REDE DE ATENÇÃO PSICOSSOCIAL (RAPS); ANEXO IV MODELO PADRÃO DE DECLARAÇÃO; ANEXO V AUTORIZAÇÃO DE VISTORIA TÉCNICA ÀS UNIDADES DA RAPS; ANE",
+     "trecho": "issão de Uso; VII – Plano de Transição, quando aplicável. 41. DOS ANEXOS Fazem parte deste Edital de chamamento, os seguintes anexos: Anexo I – Informações orientativas para confecção do plano de trabalho; Anexo II – Roteiro para elaboração da proposta",
+     "pagina": 26,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/87893111000152/compras/2026/419/arquivos/1",
+     "metodo": "lista de anexos"
+    },
+    "Área de atuação": {
+     "valor": "Educação, Saúde",
+     "trecho": "termos do objeto e do título: Educação, Saúde",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/87893111000152/compras/2026/419/arquivos/1",
+     "metodo": "palavras-chave do objeto"
+    }
+   },
+   "dispensas": {
+    "Prazo de inscrição": {
+     "motivo": "dispensado pelo Cartório — não se aplica: inscrição em fluxo contínuo (cadastro permanente, sem data-limite)",
+     "trecho": "s serviços; 16.8. A Secretaria Municipal de Saúde poderá solicitar, a qualquer tempo, informações sobre a contratação de terceiros para a execução dos se",
+     "pagina": 8,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/87893111000152/compras/2026/419/arquivos/1"
+    }
+   },
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-13T17:22:39+00:00",
+     "ganhou": [
+      "Anexos",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Prazo de recurso",
+      "Requisitos",
+      "Resultado",
+      "Território",
+      "Valor",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/87893111000152/compras/2026/419/arquivos/1",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 60,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/87893111000152/compras/2026/419/arquivos/2",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 60,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/87893111000152/compras/2026/419/arquivos/3",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 13,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "dispensado",
+     "Resultado": "certificado",
+     "Prazo de recurso": "certificado",
+     "Valor": "certificado",
+     "Órgão / financiador": "certificado",
+     "Território": "certificado",
+     "Esfera": "certificado",
+     "Requisitos": "certificado",
+     "Anexos": "certificado",
+     "Destinação": "falta",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 10,
+    "dispensados": 1,
+    "ja_constavam": 0,
+    "faltam": 1,
+    "pct_certificado_12": 0.9167,
+    "pct_cobertura_12": 0.9167
+   }
+  },
+  {
    "id": "ba78086f580da195a28e",
    "tipo": "estrela",
    "titulo": "MUNICIPIO DE SIMOES FILHO — Seleção de projetos culturais para receberem apoio financeiro nas categorias\r\ndescritas no Anexo I, com o objeti. Veredito: prata — Objeto, Prazo, Território, Valor e Requi",
@@ -61028,6 +61446,175 @@
      "falha": null,
      "oficial": "arquivo do edital anexado pelo órgão no PNCP",
      "paginas": 46,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "ja_constava",
+     "Resultado": "dispensado",
+     "Prazo de recurso": "certificado",
+     "Valor": "ja_constava",
+     "Órgão / financiador": "certificado",
+     "Território": "certificado",
+     "Esfera": "certificado",
+     "Requisitos": "certificado",
+     "Anexos": "certificado",
+     "Destinação": "falta",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 8,
+    "dispensados": 1,
+    "ja_constavam": 2,
+    "faltam": 1,
+    "pct_certificado_12": 0.75,
+    "pct_cobertura_12": 0.9167
+   }
+  },
+  {
+   "id": "op-b9e8a03624d4",
+   "tipo": "livro",
+   "titulo": "Credenciamento para contratação de shows artísticos para apresentações musicais, em diferentes estilos para… — MUNICIPIO DE MURIAE",
+   "balcao": "pncp",
+   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/17947581000176/compras/2026/231/arquivos/1",
+   "degrau": 0,
+   "como": "PNCP: arquivo anexado pelo órgão (Edital)",
+   "faltavam": [
+    "Objeto",
+    "Resultado",
+    "Prazo de recurso",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Resultado",
+    "Prazo de recurso",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Destinação"
+   ],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "prata",
+   "esgotada": null,
+   "eficiencia": 0.9,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-13T17:19:16+00:00",
+   "prazo": null,
+   "uf": "BR",
+   "orgao": "MUNICIPIO DE MURIAE",
+   "fim": null,
+   "itens": {
+    "Prazo de recurso": {
+     "valor": "10 (dez) dias úteis",
+     "trecho": "ão no prazo de 3 (três) dias úteis, ou, nesse mesmo prazo, encaminhar recurso para a autoridade superior, a qual deverá proferir sua decisão no prazo de 10 (dez) dias úteis, contado do recebimento dos autos. 8.5 Os recursos interpostos fora",
+     "pagina": 9,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/17947581000176/compras/2026/231/arquivos/1",
+     "metodo": "seção"
+    },
+    "Objeto": {
+     "valor": "Eficácia e Efeitos: O contrato passará a produzir seus efeitos a partir da data de sua assinatura pelas \npartes, condicionado à sua eficácia mediante a devida publicação , nos termos da legislação vigente.",
+     "trecho": "antes deste Termo de Referência e do Edital. 7. MODELO DE EXECUÇÃO DO OBJETO/APRESENTAÇÕES 7.1. Eficácia e Efeitos: O contrato passará a produzir seus efeitos a partir da data de sua assinatura pelas partes, condicionado à sua eficácia mediante a devida publicação , nos termos da legislação vigente. 7.2. Da Programação e Periodicidade das Apresentações:",
+     "pagina": 15,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/17947581000176/compras/2026/231/arquivos/1",
+     "metodo": "seção"
+    },
+    "Órgão / financiador": {
+     "valor": "MUNICÍPIO DE MURIAÉ/MG",
+     "trecho": "ROCEDIMENTO AUXILIAR Nº 217/2026 INEXIGIBILIDADE Nº 034/2026 O MUNICÍPIO DE MURIAÉ/MG, com sede administrativa na Avenida Maestro Sansão, nº 236, bairro Ce",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/17947581000176/compras/2026/231/arquivos/1",
+     "metodo": "cabeçalho"
+    },
+    "Território": {
+     "valor": "do Município de Muriaé",
+     "trecho": "do documento fiscal não acarretando qualquer ônus para a Prefeitura do Município de Muriaé – MG. 12.5. Os tributos e as contribuições fiscais, bem como quaisque",
+     "pagina": 19,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/17947581000176/compras/2026/231/arquivos/1",
+     "metodo": "texto"
+    },
+    "Esfera": {
+     "valor": "federal",
+     "trecho": "domínio/órgão: pncp.gov.br · MUNICÍPIO DE MURIAÉ/MG MUNICIPIO DE MURIAE",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/17947581000176/compras/2026/231/arquivos/1",
+     "metodo": "domínio e órgão"
+    },
+    "Requisitos": {
+     "valor": "Poderão participar deste procedimento as Pessoas Jurídicas  ou físicas, do ramo pertinente ao objeto  \nlicitado  que  atendam  todas  as  condições  estabelecidas  neste  instrumento convocatório.",
+     "trecho": "stabelecidas no Termo de Referência. EDITAL Nº 217/2026 2- DAS CONDIÇÕES DE PARTICIPAÇÃO 2.1. Poderão participar deste procedimento as Pessoas Jurídicas ou físicas, do ramo pertinente ao objeto licitado que atendam todas as condições estabelecidas neste instrumento convocatório. 2.2. Não poderão participar do procedimento: I - autor do anteprojeto, do projeto básico ou do projeto executivo, pessoa",
+     "pagina": 2,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/17947581000176/compras/2026/231/arquivos/1",
+     "metodo": "seção"
+    },
+    "Anexos": {
+     "valor": "ANEXO I - Termo de Referência;; ANEXO II – Minuta Contratual;; ANEXO III – Modelo de Declaração Unificada;; ANEXO IV – Modelo de Declaração de Condição de ME ou EPP e cumprimento ao dispost; ANEXO I TERMO DE REFERÊNCIA; ANEXO II CONTRATO ADMINISTRATIVO Nº; ANEXO III DECLARAÇÃO UNIFICADA; ANEXO IV MO",
+     "trecho": "adastramento inicial, deverá apresentar declaração indicando: (MODELO ANEXO) I- Atendimento às Leis Municipais nºs 5.446/2017 e 5.524/2017; II- Declaração de Inidoneidade; III- Declaração de Habilitação; IV- Declaração de Cumprimento do Disposto no Inciso",
+     "pagina": 2,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/17947581000176/compras/2026/231/arquivos/1",
+     "metodo": "lista de anexos"
+    },
+    "Área de atuação": {
+     "valor": "Cultura, Saúde, Criança e adolescente",
+     "trecho": "termos do objeto e do título: Cultura, Saúde, Criança e adolescente",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/17947581000176/compras/2026/231/arquivos/1",
+     "metodo": "palavras-chave do objeto"
+    }
+   },
+   "dispensas": {
+    "Resultado": {
+     "motivo": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
+     "trecho": "ade Competente. 6.7 O edital de credenciamento poderá ser anulado, a qualquer tempo, em caso de vício de legalidade, ou revogado, por motivos de conveni",
+     "pagina": 6,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/17947581000176/compras/2026/231/arquivos/1"
+    }
+   },
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-13T17:19:16+00:00",
+     "ganhou": [
+      "Anexos",
+      "Esfera",
+      "Objeto",
+      "Prazo de recurso",
+      "Requisitos",
+      "Resultado",
+      "Território",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/17947581000176/compras/2026/231/arquivos/1",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 33,
      "edicao_inteira": null
     }
    ],
@@ -65015,6 +65602,145 @@
    }
   },
   {
+   "id": "op-4e64cd3cc777",
+   "tipo": "livro",
+   "titulo": "Chamamento público para Premiações por Trajetória",
+   "balcao": "pncp",
+   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/87890992000158/compras/2026/911/arquivos/1",
+   "degrau": 0,
+   "como": "PNCP: arquivo anexado pelo órgão (Edital)",
+   "faltavam": [
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Esfera",
+    "Requisitos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Esfera",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Requisitos"
+   ],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "prata",
+   "esgotada": null,
+   "eficiencia": 0.857,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-13T17:24:48+00:00",
+   "prazo": null,
+   "uf": "RS",
+   "orgao": "MUNICIPIO DE GRAVATAI",
+   "fim": null,
+   "itens": {
+    "Resultado": {
+     "valor": "3 DIAS",
+     "trecho": "ACILITADOR DA PNCV) 31 de agosto, 19h Quiosque da Cultura 9 RESULTADO PRELIMINAR DE SELEÇÃO E ABERTURA PRAZO RECURSOS SELEÇÃO Previsão até 28 de setembro, após 17h 9 3 DIAS ÚTEIS PARA RECURSOS - ETAPA DE SELEÇÃO De 28 de setembro",
+     "pagina": 2,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/87890992000158/compras/2026/911/arquivos/1",
+     "metodo": "seção"
+    },
+    "Prazo de recurso": {
+     "valor": "3 DIAS ÚTEIS",
+     "trecho": "a Cultura 9 RESULTADO PRELIMINAR DE SELEÇÃO E ABERTURA PRAZO RECURSOS SELEÇÃO Previsão até 28 de setembro, após 17h 9 3 DIAS ÚTEIS PARA RECURSOS - ETAPA DE SELEÇÃO De 28 de setembro a 1º",
+     "pagina": 2,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/87890992000158/compras/2026/911/arquivos/1",
+     "metodo": "seção"
+    },
+    "Valor": {
+     "valor": "R$3.000",
+     "trecho": "res receberá em parcela única o valor individual de R$3.0000,00 (três mil reais) por todo processo de avaliação",
+     "pagina": 7,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/87890992000158/compras/2026/911/arquivos/1",
+     "metodo": "seção"
+    },
+    "Esfera": {
+     "valor": "federal",
+     "trecho": "domínio/órgão: pncp.gov.br · MUNICIPIO DE GRAVATAI",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/87890992000158/compras/2026/911/arquivos/1",
+     "metodo": "domínio e órgão"
+    },
+    "Área de atuação": {
+     "valor": "Cultura, Assistência social, Educação",
+     "trecho": "termos do objeto e do título: Cultura, Assistência social, Educação",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/87890992000158/compras/2026/911/arquivos/1",
+     "metodo": "palavras-chave do objeto"
+    }
+   },
+   "dispensas": {
+    "Destinação": {
+     "motivo": "dispensado pelo Cartório — não se aplica: prêmio de reconhecimento — uso livre pelo premiado, sem destinação vinculada",
+     "trecho": "(onze) entidades para o recebimento de Premiações por Trajetória de Pontos e Pontões de Cultura de Gravataí , como",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/87890992000158/compras/2026/911/arquivos/1"
+    }
+   },
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-13T17:24:48+00:00",
+     "ganhou": [
+      "Destinação",
+      "Esfera",
+      "Prazo de recurso",
+      "Resultado",
+      "Valor",
+      "Área de atuação"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/87890992000158/compras/2026/911/arquivos/1",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 14,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "ja_constava",
+     "Prazo de inscrição": "ja_constava",
+     "Resultado": "certificado",
+     "Prazo de recurso": "certificado",
+     "Valor": "certificado",
+     "Órgão / financiador": "ja_constava",
+     "Território": "ja_constava",
+     "Esfera": "certificado",
+     "Requisitos": "falta",
+     "Anexos": "ja_constava",
+     "Destinação": "dispensado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 5,
+    "dispensados": 1,
+    "ja_constavam": 5,
+    "faltam": 1,
+    "pct_certificado_12": 0.5,
+    "pct_cobertura_12": 0.9167
+   }
+  },
+  {
    "id": "op-b76de691643d",
    "tipo": "livro",
    "titulo": "Credenciamento visando à contratação de artistas",
@@ -65352,6 +66078,220 @@
      "Requisitos": "falta",
      "Anexos": "ja_constava",
      "Destinação": "certificado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 5,
+    "dispensados": 1,
+    "ja_constavam": 5,
+    "faltam": 1,
+    "pct_certificado_12": 0.5,
+    "pct_cobertura_12": 0.9167
+   }
+  },
+  {
+   "id": "op-f5d398f4f2d4",
+   "tipo": "livro",
+   "titulo": "EDITAL CICLO CEARÁ CARNAVALESCO - 2027",
+   "balcao": "orgao",
+   "link_oficial": "https://mapacultural.secult.ce.gov.br/oportunidade/8183/",
+   "degrau": 0,
+   "como": "página/documento oficial já conhecido",
+   "faltavam": [
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Esfera",
+    "Requisitos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Esfera",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Requisitos"
+   ],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": {
+    "orgao": "dominio:mapacultural.secult.ce.gov.br",
+    "itens_pelo_gabarito": [
+     "Objeto"
+    ]
+   },
+   "estagio": "prata",
+   "estagio_inicio": "prata",
+   "esgotada": null,
+   "eficiencia": 0.857,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-13T17:24:01+00:00",
+   "prazo": null,
+   "uf": "CE",
+   "orgao": "Mapa Cultural",
+   "fim": "2026-09-10",
+   "itens": {
+    "Esfera": {
+     "valor": "municipal",
+     "trecho": "domínio/órgão: mapacultural.secult.ce.gov.br · Mapa Cultural Mapa Cultural",
+     "pagina": 1,
+     "documento": "https://mapacultural.secult.ce.gov.br/oportunidade/8183/",
+     "metodo": "domínio e órgão"
+    },
+    "Área de atuação": {
+     "valor": "Cultura, Educação, Ciência e tecnologia",
+     "trecho": "termos do objeto e do título: Cultura, Educação, Ciência e tecnologia",
+     "pagina": 1,
+     "documento": "https://mapacultural.secult.ce.gov.br/oportunidade/8183/",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Prazo de recurso": {
+     "valor": "45 (quarenta e cinco) dias",
+     "trecho": "á Transparente e publicados no Diário Oficial do Estado. 11.5. Os recursos financeiros das propostas selecionadas poderão ser repassados em parcela única, no prazo de até 45 (quarenta e cinco) dias corridos, após a publicação do Termo de Execução Cultural no D",
+     "pagina": 25,
+     "documento": "https://mapacultural.secult.ce.gov.br/files/opportunity/8183/edital-ciclo-ceara-carnavalesco-2027.pdf",
+     "metodo": "seção"
+    },
+    "Valor": {
+     "valor": "R$ 13.000,00",
+     "trecho": ".000,00 VALORES POR CATEGORIA Categoria Nº de Projetos Apoiados Valor Total do Projeto Valor Previsto da Secult Por Categorias Cordões 6 R$ 13.000,00 R$ 78.000,00 Afoxés 10 R$ 13.500,00 R$ 135.000,00 Culturas Ca",
+     "pagina": 11,
+     "documento": "https://mapacultural.secult.ce.gov.br/files/opportunity/8183/edital-ciclo-ceara-carnavalesco-2027.pdf",
+     "metodo": "seção"
+    },
+    "Resultado": {
+     "valor": "30/09/2026",
+     "trecho": "20º EDITAL CICLO CEARÁ CARNAVALESCO – 2027 RESULTADO PRELIMINAR - ANÁLISE TÉCNICA | DIVULGADO EM 30/09/2026 AFOXÉS - AMPLA CONCORRÊNCIA | CAPITAL AFOXÉS - AMPLA CONCORRÊNCIA | I",
+     "pagina": 1,
+     "documento": "https://mapacultural.secult.ce.gov.br/files/opportunity/8183/7-resultado-preliminar-afoxes.pdf",
+     "metodo": "seção"
+    }
+   },
+   "dispensas": {
+    "Destinação": {
+     "motivo": "dispensado pelo Cartório — não se aplica: prêmio de reconhecimento — uso livre pelo premiado, sem destinação vinculada",
+     "trecho": "IAÇÃO ITEM PESO PONTUAÇÃO TOTAL a) Experiência: Atuação e trajetória do agente cultural proponente, coletivo envolvido e da equipe t",
+     "pagina": 19,
+     "documento": "https://mapacultural.secult.ce.gov.br/files/opportunity/8183/edital-ciclo-ceara-carnavalesco-2027.pdf"
+    }
+   },
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-13T17:24:01+00:00",
+     "ganhou": [
+      "Destinação",
+      "Esfera",
+      "Prazo de recurso",
+      "Resultado",
+      "Valor",
+      "Área de atuação"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8183/",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://mapacultural.secult.ce.gov.br/files/opportunity/8183/edital-ciclo-ceara-carnavalesco-2027.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 32,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://mapacultural.secult.ce.gov.br/files/opportunity/8183/anexo-08-dotacao-orcamentaria.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://mapacultural.secult.ce.gov.br/files/opportunity/8183/anexo-02-termo-de-execucao-cultural.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 12,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://mapacultural.secult.ce.gov.br/files/opportunity/8183/7-resultado-preliminar-afoxes.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 2,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://mapacultural.secult.ce.gov.br/files/opportunity/8183/8-resultado-preliminar-culturas-camponesas.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 2,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://mapacultural.secult.ce.gov.br/files/opportunity/8183/9-resultado-preliminar-grupos-titulados-tesouros-vivos.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://mapacultural.secult.ce.gov.br/files/opportunity/8183/1-resultado-preliminar-difusao-de-repertorio.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 2,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "ja_constava",
+     "Prazo de inscrição": "ja_constava",
+     "Resultado": "certificado",
+     "Prazo de recurso": "certificado",
+     "Valor": "certificado",
+     "Órgão / financiador": "ja_constava",
+     "Território": "ja_constava",
+     "Esfera": "certificado",
+     "Requisitos": "falta",
+     "Anexos": "ja_constava",
+     "Destinação": "dispensado",
      "Área de atuação": "certificado"
     },
     "certificados": 5,
@@ -73859,6 +74799,187 @@
    }
   },
   {
+   "id": "op-7ee449ff1705",
+   "tipo": "livro",
+   "titulo": "Chamamento Público para a seleção de empresas do ramo da Construção Civil com qualificação técnica e capacidade operacional para apresentação de proposta para d",
+   "balcao": "pncp",
+   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/83102574000106/compras/2024/404/arquivos/2",
+   "degrau": 0,
+   "como": "PNCP: arquivo anexado pelo órgão (Edital)",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Valor",
+    "Destinação"
+   ],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "prata",
+   "esgotada": null,
+   "eficiencia": 0.833,
+   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-13T17:21:03+00:00",
+   "prazo": null,
+   "uf": "SC",
+   "orgao": "PNCP — MUNICIPIO DE RIO DO SUL",
+   "fim": null,
+   "itens": {
+    "Resultado": {
+     "valor": "5 dias",
+     "trecho": "Habitacionais De Interesse Social Do Município De Rio do Sul 3 dias Divulgação do resultado preliminar 5 dias Interposição de recursos 3 dias Contrarrazões aos recursos 3 dias",
+     "pagina": 2,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/83102574000106/compras/2024/404/arquivos/2",
+     "metodo": "seção"
+    },
+    "Prazo de recurso": {
+     "valor": "3 dias",
+     "trecho": "l 3 dias Divulgação do resultado preliminar 5 dias Interposição de recursos 3 dias Contrarrazões aos recursos 3 dias Análise dos recursos pela Comissã",
+     "pagina": 2,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/83102574000106/compras/2024/404/arquivos/2",
+     "metodo": "seção"
+    },
+    "Objeto": {
+     "valor": "a desenvolvimento do projeto e \nconstrução de 40 (quarenta) unidades habitacionais, com área mínima de 41,50 m² (quarenta e um \nvírgula cinquenta metros quadrados) cada unidade, destinados às famílias cadastradas na Diretoria de \nHabitação, de acordo com as especificações do Programa Minha Casa Minh",
+     "trecho": "raça 25 de julho, nº 01, Centro, Rio do Sul/SC, CEP 89.160-900 1. DO OBJETO 1.1. Chamamento Público para a seleção de empresas do ramo da Construção Civil com qualificação técnica e capacidade operacional para apresentação de proposta para desenvolvimento do projeto e construção de 40 (quarenta) unidades habitacionais, com área mínima de 41,50 m² (quarenta e um vírgula cinquenta metros quadrados) ",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/83102574000106/compras/2024/404/arquivos/2",
+     "metodo": "seção"
+    },
+    "Órgão / financiador": {
+     "valor": "PREFEITURA MUNICIPAL DE RIO DO SUL - SC",
+     "trecho": "PREFEITURA MUNICIPAL DE RIO DO SUL - SC EDITAL Nº 229/2024 MODALIDADE CHAMAMENTO PÚBLICO RETIFICADO EM 1",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/83102574000106/compras/2024/404/arquivos/2",
+     "metodo": "cabeçalho"
+    },
+    "Território": {
+     "valor": "do Município de Rio do Sul",
+     "trecho": "gentes, sócios e outros responsáveis: a) sejam servidores públicos do Município de Rio do Sul/SC ou de outras entidades da Administração Indireta Municipal; b)",
+     "pagina": 5,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/83102574000106/compras/2024/404/arquivos/2",
+     "metodo": "texto"
+    },
+    "Esfera": {
+     "valor": "federal",
+     "trecho": "domínio/órgão: pncp.gov.br · PREFEITURA MUNICIPAL DE RIO DO SUL - SC PNCP — MUNICIPIO DE RIO DO SUL",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/83102574000106/compras/2024/404/arquivos/2",
+     "metodo": "domínio e órgão"
+    },
+    "Requisitos": {
+     "valor": "Poderão participar deste certame todas as empresas pertencentes ao ramo de atividade \npertinente ao objeto do mesmo, e que preencherem as condições constantes neste Edital e, ainda, \nestejam de acordo com a legislação vigente que regulamente.",
+     "trecho": "leonir Paterno – Bairro Rainha, com área total de 3.263,09m². 4. DA PARTICIPAÇÃO DAS EMPRESAS INTERESSADAS 4.1. Poderão participar deste certame todas as empresas pertencentes ao ramo de atividade pertinente ao objeto do mesmo, e que preencherem as condições constantes neste Edital e, ainda, estejam de acordo com a legislação vigente que regulamente. 4.2. A razão social da empresa participante nes",
+     "pagina": 3,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/83102574000106/compras/2024/404/arquivos/2",
+     "metodo": "seção"
+    },
+    "Anexos": {
+     "valor": "ANEXO I – DECLARAÇÃO DE VISTORIA; ANEXO II – DECLARAÇÃO UNIFICADA; ANEXO III – TERMO DE SELEÇÃO; ANEXO IV - MEMORIAL DESCRITIVO; ANEXO V – INTEIRO TEOR DO IMÓVEIL INFORMADO",
+     "trecho": "nte instrumento que por outras formas não forem solucionadas. 19. ANEXOS ANEXO I – DECLARAÇÃO DE VISTORIA ANEXO II – DECLARAÇÃO UNIFICADA ANEXO III – TERMO DE SELEÇÃO ANEXO IV - MEMORIAL DESCRITIVO ANEXO V – INTEIRO TEOR DO IMÓVEIL INFORMADO Rio",
+     "pagina": 17,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/83102574000106/compras/2024/404/arquivos/2",
+     "metodo": "lista de anexos"
+    },
+    "Área de atuação": {
+     "valor": "Meio ambiente",
+     "trecho": "termos do objeto e do título: Meio ambiente",
+     "pagina": 1,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/83102574000106/compras/2024/404/arquivos/2",
+     "metodo": "palavras-chave do objeto"
+    }
+   },
+   "dispensas": {
+    "Prazo de inscrição": {
+     "motivo": "dispensado pelo Cartório — não se aplica: inscrição em fluxo contínuo (cadastro permanente, sem data-limite)",
+     "trecho": "cordo formal entre as partes ou vínculo de qualquer natureza. 9.4. A qualquer tempo e co m aviso prévio da Agente de Contratação, a ser publicado no síti",
+     "pagina": 12,
+     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/83102574000106/compras/2024/404/arquivos/2"
+    }
+   },
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-13T17:21:03+00:00",
+     "ganhou": [
+      "Anexos",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Prazo de recurso",
+      "Requisitos",
+      "Resultado",
+      "Território",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/83102574000106/compras/2024/404/arquivos/2",
+     "degrau": 0,
+     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 36,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "dispensado",
+     "Resultado": "certificado",
+     "Prazo de recurso": "certificado",
+     "Valor": "falta",
+     "Órgão / financiador": "certificado",
+     "Território": "certificado",
+     "Esfera": "certificado",
+     "Requisitos": "certificado",
+     "Anexos": "certificado",
+     "Destinação": "falta",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 9,
+    "dispensados": 1,
+    "ja_constavam": 0,
+    "faltam": 2,
+    "pct_certificado_12": 0.8333,
+    "pct_cobertura_12": 0.8333
+   }
+  },
+  {
    "id": "op-4b7d51a46b74",
    "tipo": "livro",
    "titulo": "Chamamento Público por meio do procedimento auxiliar de Credenciamento, com a finalidade de credenciar… — MUNICIPIO DE WENCESLAU GUIMARAES",
@@ -76001,1252 +77122,35 @@
     "pct_certificado_12": 0.8333,
     "pct_cobertura_12": 0.8333
    }
-  },
-  {
-   "id": "op-87708fd2c096",
-   "tipo": "livro",
-   "titulo": "EDITAL 002/2026 - II FESTIVAL DAS ARTES",
-   "balcao": "orgao",
-   "link_oficial": "https://mapacultural.secult.ce.gov.br/oportunidade/8136/",
-   "degrau": 0,
-   "como": "página/documento oficial já conhecido",
-   "faltavam": [
-    "Resultado",
-    "Prazo de recurso",
-    "Esfera",
-    "Requisitos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Resultado",
-    "Prazo de recurso",
-    "Esfera",
-    "Requisitos",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Destinação"
-   ],
-   "tentativa": 1,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": {
-    "orgao": "dominio:mapacultural.secult.ce.gov.br",
-    "itens_pelo_gabarito": [
-     "Objeto"
-    ]
-   },
-   "estagio": "prata",
-   "estagio_inicio": "prata",
-   "esgotada": null,
-   "eficiencia": 0.833,
-   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-11T18:06:47+00:00",
-   "prazo": null,
-   "uf": "CE",
-   "orgao": "Mapa Cultural",
-   "fim": "2026-07-28",
-   "itens": {
-    "Esfera": {
-     "valor": "municipal",
-     "trecho": "domínio/órgão: mapacultural.secult.ce.gov.br · Mapa Cultural Mapa Cultural",
-     "pagina": 1,
-     "documento": "https://mapacultural.secult.ce.gov.br/oportunidade/8136/",
-     "metodo": "domínio e órgão"
-    },
-    "Área de atuação": {
-     "valor": "Cultura",
-     "trecho": "termos do objeto e do título: Cultura",
-     "pagina": 1,
-     "documento": "https://mapacultural.secult.ce.gov.br/oportunidade/8136/",
-     "metodo": "palavras-chave do objeto"
-    },
-    "Resultado": {
-     "valor": "30/07/2026",
-     "trecho": "A] | INICIAL | Inscrições dos projetos 29/07/2026 27/07/2026 Resultado preliminar, habilitação das inscrições, avaliação e seleção das propostas 30/07/2026 Período de recursos 31/07/2026 03/08/2026 Resultado Final 06/08/202",
-     "pagina": 15,
-     "documento": "https://mapacultural.secult.ce.gov.br/files/opportunity/8136/edital-festival-das-artes-pires-ferreira-2026.pdf",
-     "metodo": "seção"
-    },
-    "Prazo de recurso": {
-     "valor": "31/07/2026",
-     "trecho": "crições, avaliação e seleção das propostas 30/07/2026 Período de recursos 31/07/2026 03/08/2026 Resultado Final 06/08/2026 Convocação para assinatura do",
-     "pagina": 15,
-     "documento": "https://mapacultural.secult.ce.gov.br/files/opportunity/8136/edital-festival-das-artes-pires-ferreira-2026.pdf",
-     "metodo": "seção"
-    },
-    "Requisitos": {
-     "valor": "excedentes operacionais, brutos ou líquidos, \ndividendos, isenções de qualquer natureza, participações ou parcelas do seu patrimônio, \nauferidos mediante o exercício de suas atividades, e que os aplique integralmente na consecução \ndo respectivo objeto social, de forma imediata ou por meio da consti",
-     "trecho": "sinatura de Termo Aditivo e observância da legislação aplicável. 5. DAS CONDIÇÕES DE PARTICIPAÇÃO NO EDITAL 5.1. Poderão se inscrever no presente Edital as Organizações da Sociedade Civil cujos atos constitutivos contenham na previsão de finalidade ou atividade a proposta inscrita, com menção ao desenvolvimento de atividades culturais e desde que seja entidade privada sem fins lucrativos que não d",
-     "pagina": 3,
-     "documento": "https://mapacultural.secult.ce.gov.br/files/opportunity/8136/edital-festival-das-artes-pires-ferreira-2026.pdf",
-     "metodo": "seção"
-    }
-   },
-   "dispensas": {},
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-11T18:06:47+00:00",
-     "ganhou": [
-      "Esfera",
-      "Prazo de recurso",
-      "Requisitos",
-      "Resultado",
-      "Área de atuação"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8136/",
-     "degrau": 0,
-     "como": "página/documento oficial já conhecido",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://mapacultural.secult.ce.gov.br/files/opportunity/8136/edital-festival-das-artes-pires-ferreira-2026.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 17,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://mapacultural.secult.ce.gov.br/files/opportunity/8136/13-08-doe-cp-n-002-2026-edital.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://mapacultural.secult.ce.gov.br/files/opportunity/8136/publicacao-osc-2026.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://mapacultural.secult.ce.gov.br/files/opportunity/8136/extrato-de-publicacao-osc-2026.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://mapacultural.secult.ce.gov.br/files/opportunity/8136/19-08-doe-cp-n-002-2026-resultado-final.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://mapacultural.secult.ce.gov.br/files/opportunity/8136/anexo-iv-edital-0012024-formac-a-o-lpg-pires-ferreira.docx",
-     "degrau": 1,
-     "como": "documento citado na página oficial: ANEXO V- FORMULÁRIO DE ACESSIBILIDADE",
-     "motivo": "zip_sem_pdf",
-     "falha": null,
-     "oficial": null,
-     "paginas": 0,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://mapacultural.secult.ce.gov.br/projeto/7604/",
-     "degrau": 1,
-     "como": "documento citado na página oficial: EDITAL 002/2026- II FESTIVAL DAS ARTES PIRES FERREIRA",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "ja_constava",
-     "Prazo de inscrição": "ja_constava",
-     "Resultado": "certificado",
-     "Prazo de recurso": "certificado",
-     "Valor": "ja_constava",
-     "Órgão / financiador": "ja_constava",
-     "Território": "ja_constava",
-     "Esfera": "certificado",
-     "Requisitos": "certificado",
-     "Anexos": "ja_constava",
-     "Destinação": "falta",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 5,
-    "dispensados": 0,
-    "ja_constavam": 6,
-    "faltam": 1,
-    "pct_certificado_12": 0.4167,
-    "pct_cobertura_12": 0.9167
-   }
-  },
-  {
-   "id": "op-012ec9bd478b",
-   "tipo": "livro",
-   "titulo": "EDITAL Nº. 001/2025 CHAMAMENTO PÚBLICO – O Município de Canoas torna pública a abertura de inscrições que tem… — MUNICIPIO DE CANOAS",
-   "balcao": "pncp",
-   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
-   "degrau": 0,
-   "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-   "faltavam": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Valor",
-    "Destinação"
-   ],
-   "tentativa": 1,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "prata",
-   "estagio_inicio": "prata",
-   "esgotada": null,
-   "eficiencia": 0.833,
-   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-10T10:26:14+00:00",
-   "prazo": null,
-   "uf": "BR",
-   "orgao": "MUNICIPIO DE CANOAS",
-   "fim": "2025-02-10",
-   "itens": {
-    "Prazo de inscrição": {
-     "valor": "até 10/02/2025",
-     "trecho": "rea e com os requisitos que as Leis Estaduais e/ou Federais exigem. Inscrições: A partir d e 10/02/2025, através d o e -mail: projetosculturais@canoas.rs.gov.br . Edital: s",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
-     "metodo": "cronograma"
-    },
-    "Prazo de recurso": {
-     "valor": "10.1.15",
-     "trecho": "adastramento do projeto junto a editais de empresas para captação de recursos junto as Leis de Incentivo, nos prazos exigidos; 10.1.15. Se responsabilizar por todas as obrigações sociais de proteção aos s",
-     "pagina": 9,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
-     "metodo": "seção"
-    },
-    "Objeto": {
-     "valor": "O presente Edital tem por objeto o credenciamento de empresas na área de produção cultural, \npara elaborar, formatar, executar e acompanhar Projetos Culturais que serão inscritos, posteriormente, \njunto às Leis de Incentivo a Cultura Estadual e Federal.",
-     "trecho": "m o Decreto Municipal nº 549/2023 e Lei Federal nº 14.133/2021. 1. DO OBJETO 1.1. Da definição do objeto 1.1.1. O presente Edital tem por objeto o credenciamento de empresas na área de produção cultural, para elaborar, formatar, executar e acompanhar Projetos Culturais que serão inscritos, posteriormente, junto às Leis de Incentivo a Cultura Estadual e Federal. O proponente deverá ser pessoa juríd",
-     "pagina": 2,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
-     "metodo": "seção"
-    },
-    "Órgão / financiador": {
-     "valor": "MUNICÍPIO DE CANOAS",
-     "trecho": "ESTADO DO RIO GRANDE DO SUL MUNICÍPIO DE CANOAS Secretaria Municipal de Licitações e Contratos Processo nº. 24.0.000",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
-     "metodo": "cabeçalho"
-    },
-    "Território": {
-     "valor": "no Município de Canoas e projetos novos de acordo com o i",
-     "trecho": "2 que institui o Calendário Oficial de Eventos e Datas Comemorativas no Município de Canoas e projetos novos de acordo com o interesse da credenciante. 1.1.1.3. A empresa além da pré -produção,",
-     "pagina": 2,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
-     "metodo": "texto"
-    },
-    "Esfera": {
-     "valor": "federal",
-     "trecho": "domínio/órgão: pncp.gov.br · MUNICÍPIO DE CANOAS MUNICIPIO DE CANOAS",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
-     "metodo": "domínio e órgão"
-    },
-    "Requisitos": {
-     "valor": "Para participar do certame a empresa deve ter sido proponente de projetos Culturais nas Leis de \nIncentivo à Cultura, junto aos Governos Federal e Estadual do Rio Grande do Sul, não tendo restrição \nquanto ao limite proposto, com projetos já aprovados junto as Leis Federal e Estadual.",
-     "trecho": "do Estudo Técnico Preliminar, apêndice do Termo de Referência. 4. DOS REQUISITOS PARA O CREDENCIAMENTO 4.1. Para participar do certame a empresa deve ter sido proponente de projetos Culturais nas Leis de Incentivo à Cultura, junto aos Governos Federal e Estadual do Rio Grande do Sul, não tendo restrição quanto ao limite proposto, com projetos já aprovados junto as Leis Federal e Estadual. 4.2. As ",
-     "pagina": 4,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
-     "metodo": "seção"
-    },
-    "Anexos": {
-     "valor": "ANEXO I DESCRIÇÃO DOS ITEM(NS) E QUANTIDADE(S) MÁXIMA(S) DA CONTRATAÇÃO; ANEXO II – Formulários de Dados Pessoais; ANEXO III – MODELO DE DECLARAÇÃO PARA INDICAÇÃO DO(S); ANEXO IV – CARTA DE INTENÇÃO DE PROPONÊNCIA; ANEXO V - MINUTA DO TERMO DE CREDENCIAMENTO; ANEXO VI ESTADO DO RIO GRANDE DO SUL; AN",
-     "trecho": "24.0.000068326-0 15 EDITAL Nº. 001/2025 CHAMAMENTO PÚBLICO ANEXO I DESCRIÇÃO DOS ITEM(NS) E QUANTIDADE(S) MÁXIMA(S) DA CONTRATAÇÃO ITEM CAT MAT DESCRIÇÃO DO(S) ITEM(NS) UNIDADE QUANT V ALOR MÁXIMO UNITÁRIO V ALOR MÁXIMO TOTAL PARTICIPAÇ",
-     "pagina": 15,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
-     "metodo": "lista de anexos"
-    },
-    "Área de atuação": {
-     "valor": "Cultura",
-     "trecho": "termos do objeto e do título: Cultura",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
-     "metodo": "palavras-chave do objeto"
-    }
-   },
-   "dispensas": {
-    "Resultado": {
-     "motivo": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
-     "trecho": "ação pelos credenciados, a Administração Municipal poderá solicitar, a qualquer tempo, os devidos comprovantes, a cada 12 (doze) meses a partir da data de",
-     "pagina": 3,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1"
-    }
-   },
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-10T10:26:14+00:00",
-     "ganhou": [
-      "Anexos",
-      "Esfera",
-      "Objeto",
-      "Prazo de inscrição",
-      "Prazo de recurso",
-      "Requisitos",
-      "Resultado",
-      "Território",
-      "Área de atuação",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/1",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 35,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/2",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2025/228/arquivos/3",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 1,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "certificado",
-     "Prazo de inscrição": "certificado",
-     "Resultado": "dispensado",
-     "Prazo de recurso": "certificado",
-     "Valor": "falta",
-     "Órgão / financiador": "certificado",
-     "Território": "certificado",
-     "Esfera": "certificado",
-     "Requisitos": "certificado",
-     "Anexos": "certificado",
-     "Destinação": "falta",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 9,
-    "dispensados": 1,
-    "ja_constavam": 0,
-    "faltam": 2,
-    "pct_certificado_12": 0.8333,
-    "pct_cobertura_12": 0.8333
-   }
-  },
-  {
-   "id": "op-adbdd2bf662e",
-   "tipo": "livro",
-   "titulo": "Edital Nº 32/2025 – Programa Nacional de Apoio à Inovação Tecnológica – TECNOVA III",
-   "balcao": "pista",
-   "link_oficial": null,
-   "degrau": null,
-   "como": null,
-   "faltavam": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Objeto",
-    "Requisitos"
-   ],
-   "tentativa": 1,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "sem_estrela",
-   "estagio_inicio": "sem_estrela",
-   "esgotada": null,
-   "eficiencia": 0.833,
-   "encaminhado": "Interceptador: site oficial não localizado nos degraus 0–2",
-   "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-11T09:43:57+00:00",
-   "prazo": null,
-   "uf": "BR",
-   "orgao": "Fundação Carlos Chagas Filho de Amparo à Pesquisa do Estado do Rio de Janeiro (FAPERJ)",
-   "fim": null,
-   "itens": {
-    "Resultado": {
-     "valor": "12/02/26",
-     "trecho": "TAS ONLINE (até às 18:00 h) 06/11/25 a 19/12/25 EMPRESA DIVULGAÇÃO DO RESULTADO PRELIMINAR 12/02/26 FAPERJ PRAZO PARA A APRESENTAÇÃO DE RECURSOS 13/02/26 a 27/02/26 EMPR",
-     "pagina": 7,
-     "documento": "https://www.faperj.br/rp/downloads/Edital_FAPERJ_N%C2%BA_32_2025_%E2%80%93_Programa_Nacional_de_Apoio_%C3%A0_Inova%C3%A7%C3%A3o_Tecnol%C3%B3gica_%E2%80%93_TECNOVA_III.pdf",
-     "metodo": "seção"
-    },
-    "Prazo de recurso": {
-     "valor": "13/02/26",
-     "trecho": "DO RESULTADO PRELIMINAR 12/02/26 FAPERJ PRAZO PARA A APRESENTAÇÃO DE RECURSOS 13/02/26 a 27/02/26 EMPRESA APRESENTAÇÃO DOS DOCUMENTOS EXIGIDOS 13/02/26 a 30",
-     "pagina": 7,
-     "documento": "https://www.faperj.br/rp/downloads/Edital_FAPERJ_N%C2%BA_32_2025_%E2%80%93_Programa_Nacional_de_Apoio_%C3%A0_Inova%C3%A7%C3%A3o_Tecnol%C3%B3gica_%E2%80%93_TECNOVA_III.pdf",
-     "metodo": "seção"
-    },
-    "Valor": {
-     "valor": "R$ 23.985.000,00 (vinte e três milhões, novecentos e oitenta e cinco mil reais)",
-     "trecho": "S 3.1 Serão destinados ao apoio às propostas aprovadas, recursos no valor global de R$ 23.985.000,00 (vinte e três milhões, novecentos e oitenta e cinco mil reais), sendo R$ 15.990.000,00 (quinze milhões, novecentos e noventa mil rea",
-     "pagina": 1,
-     "documento": "https://www.faperj.br/rp/downloads/Edital_FAPERJ_N%C2%BA_32_2025_%E2%80%93_Programa_Nacional_de_Apoio_%C3%A0_Inova%C3%A7%C3%A3o_Tecnol%C3%B3gica_%E2%80%93_TECNOVA_III.pdf",
-     "metodo": "seção"
-    },
-    "Órgão / financiador": {
-     "valor": "Governo do Estado do Rio de Janeiro",
-     "trecho": "Governo do Estado do Rio de Janeiro Fundação Carlos Chagas Filho de Amparo à Pesquisa do Estado do Rio de",
-     "pagina": 1,
-     "documento": "https://www.faperj.br/rp/downloads/Edital_FAPERJ_N%C2%BA_32_2025_%E2%80%93_Programa_Nacional_de_Apoio_%C3%A0_Inova%C3%A7%C3%A3o_Tecnol%C3%B3gica_%E2%80%93_TECNOVA_III.pdf",
-     "metodo": "cabeçalho"
-    },
-    "Território": {
-     "valor": "do Estado do Rio de Janeiro",
-     "trecho": "Governo do Estado do Rio de Janeiro Fundação Carlos Chagas Filho de Amparo à Pesquisa do Estado do Rio de",
-     "pagina": 1,
-     "documento": "https://www.faperj.br/rp/downloads/Edital_FAPERJ_N%C2%BA_32_2025_%E2%80%93_Programa_Nacional_de_Apoio_%C3%A0_Inova%C3%A7%C3%A3o_Tecnol%C3%B3gica_%E2%80%93_TECNOVA_III.pdf",
-     "metodo": "texto"
-    },
-    "Esfera": {
-     "valor": "estadual",
-     "trecho": "domínio/órgão: www.faperj.br · Governo do Estado do Rio de Janeiro Fundação Carlos Chagas Filho de Amparo à Pes",
-     "pagina": 1,
-     "documento": "https://www.faperj.br/rp/downloads/Edital_FAPERJ_N%C2%BA_32_2025_%E2%80%93_Programa_Nacional_de_Apoio_%C3%A0_Inova%C3%A7%C3%A3o_Tecnol%C3%B3gica_%E2%80%93_TECNOVA_III.pdf",
-     "metodo": "domínio e órgão"
-    },
-    "Anexos": {
-     "valor": "ANEXO I: Procedimento de Inscrição; ANEXO II DECLARAÇÃO DE ANUÊNCIA DA EQUIPE; ANEXO III Modelo de Cronograma; ANEXO IV DECLARAÇÃO CONTENCIOSO DO PROPONENTE; ANEXO V PROCEDIMENTOS PARA ENVIO DE RECURSO VIA SisFAPERJ; ANEXO VI ESCALA DE MATURIDADE TECNOLÓGICA - TRL; ANEXO VII – DECLARAÇÃO AMBIENTAL; ",
-     "trecho": "16.5 Os casos omissos serão dirimidos pela Diretoria da FAPERJ . ANEXO I: Procedimento de Inscrição I.I O preenchimento do formulário on-line no sistema SisFAPERJ e a submissão do projeto deverão ser realizadas pelo proponente do projeto (com login e senh",
-     "pagina": 10,
-     "documento": "https://www.faperj.br/rp/downloads/Edital_FAPERJ_N%C2%BA_32_2025_%E2%80%93_Programa_Nacional_de_Apoio_%C3%A0_Inova%C3%A7%C3%A3o_Tecnol%C3%B3gica_%E2%80%93_TECNOVA_III.pdf",
-     "metodo": "lista de anexos"
-    },
-    "Destinação": {
-     "valor": "Itens financiáveis Edital de Chamamento Público 115543602 SEI SEI-260003/012078/2024 / pg.",
-     "trecho": "este intervalo será ELIMINADA para efeito do presente Edital. 5.3 Itens financiáveis Edital de Chamamento Público 115543602 SEI SEI-260003/012078/2024 / pg. 2 O valor solicitado a FAPERJ poderá contemplar despesas de custeio e",
-     "pagina": 2,
-     "documento": "https://www.faperj.br/rp/downloads/Edital_FAPERJ_N%C2%BA_32_2025_%E2%80%93_Programa_Nacional_de_Apoio_%C3%A0_Inova%C3%A7%C3%A3o_Tecnol%C3%B3gica_%E2%80%93_TECNOVA_III.pdf",
-     "metodo": "seção"
-    },
-    "Área de atuação": {
-     "valor": "Saúde, Esporte, Meio ambiente",
-     "trecho": "termos do objeto e do título: Saúde, Esporte, Meio ambiente",
-     "pagina": 1,
-     "documento": "https://www.faperj.br/rp/downloads/Edital_FAPERJ_N%C2%BA_32_2025_%E2%80%93_Programa_Nacional_de_Apoio_%C3%A0_Inova%C3%A7%C3%A3o_Tecnol%C3%B3gica_%E2%80%93_TECNOVA_III.pdf",
-     "metodo": "palavras-chave do objeto"
-    }
-   },
-   "dispensas": {
-    "Prazo de inscrição": {
-     "motivo": "dispensado pelo Cartório — não se aplica: inscrição em fluxo contínuo (cadastro permanente, sem data-limite)",
-     "trecho": "Este Termo de Outorga de Subvenção Econômica poderá ser rescindido a qualquer tempo, em caso de infringência de quaisquer de seus dispositivos, imputando",
-     "pagina": 20,
-     "documento": "https://www.faperj.br/rp/downloads/Edital_FAPERJ_N%C2%BA_32_2025_%E2%80%93_Programa_Nacional_de_Apoio_%C3%A0_Inova%C3%A7%C3%A3o_Tecnol%C3%B3gica_%E2%80%93_TECNOVA_III.pdf"
-    }
-   },
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-11T09:43:57+00:00",
-     "ganhou": [
-      "Anexos",
-      "Destinação",
-      "Esfera",
-      "Prazo de inscrição",
-      "Prazo de recurso",
-      "Resultado",
-      "Território",
-      "Valor",
-      "Área de atuação",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://www.faperj.br/rp/downloads/Edital_FAPERJ_N%C2%BA_32_2025_%E2%80%93_Programa_Nacional_de_Apoio_%C3%A0_Inova%C3%A7%C3%A3o_Tecnol%C3%B3gica_%E2%80%93_TECNOVA_III.pdf",
-     "degrau": 0,
-     "como": "pista (vetor): lida só para achar o link do financiador",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio não reconhecido",
-     "paginas": 23,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "falta",
-     "Prazo de inscrição": "dispensado",
-     "Resultado": "certificado",
-     "Prazo de recurso": "certificado",
-     "Valor": "certificado",
-     "Órgão / financiador": "certificado",
-     "Território": "certificado",
-     "Esfera": "certificado",
-     "Requisitos": "falta",
-     "Anexos": "certificado",
-     "Destinação": "certificado",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 9,
-    "dispensados": 1,
-    "ja_constavam": 0,
-    "faltam": 2,
-    "pct_certificado_12": 0.8333,
-    "pct_cobertura_12": 0.8333
-   }
-  },
-  {
-   "id": "op-68269da79b39",
-   "tipo": "livro",
-   "titulo": "Edital Paraná Festivais",
-   "balcao": "orgao",
-   "link_oficial": "https://www.cultura.pr.gov.br/Pagina/Parana-Festivais-Chamamento-Publico-no-0012025",
-   "degrau": 0,
-   "como": "página/documento oficial já conhecido",
-   "faltavam": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Resultado",
-    "Destinação"
-   ],
-   "tentativa": 1,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "prata",
-   "estagio_inicio": "prata",
-   "esgotada": null,
-   "eficiencia": 0.833,
-   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-13T15:02:12+00:00",
-   "prazo": null,
-   "uf": "BR",
-   "orgao": "",
-   "fim": "2025-02-07",
-   "itens": {
-    "Prazo de inscrição": {
-     "valor": "até 07 de fevereiro de 2025",
-     "trecho": "raná Festivais - Chamamento Público n.º 001/2025 Abertura de inscrições: 12h do dia 07 de fevereiro de 2025 Encerramento de inscrições: 23h59 do dia 27 de fevereiro de 2025",
-     "pagina": 1,
-     "documento": "https://www.cultura.pr.gov.br/Pagina/Parana-Festivais-Chamamento-Publico-no-0012025",
-     "metodo": "cronograma"
-    },
-    "Órgão / financiador": {
-     "valor": "Secretaria da Cultura",
-     "trecho": "Edital Paraná Festivais - Chamamento Público n.º 001/2025 | Secretaria da Cultura Redes Sociais d",
-     "pagina": 1,
-     "documento": "https://www.cultura.pr.gov.br/Pagina/Parana-Festivais-Chamamento-Publico-no-0012025",
-     "metodo": "cabeçalho"
-    },
-    "Esfera": {
-     "valor": "municipal",
-     "trecho": "domínio/órgão: www.cultura.pr.gov.br · Secretaria da Cultura",
-     "pagina": 1,
-     "documento": "https://www.cultura.pr.gov.br/Pagina/Parana-Festivais-Chamamento-Publico-no-0012025",
-     "metodo": "domínio e órgão"
-    },
-    "Anexos": {
-     "valor": "ANEXO I - DOCUMENTOS OBRIGATÓRIOS; ANEXO II - CRITÉRIOS DE AVALIAÇÃO; ANEXO III - FORMULÁRIO DE AUTODECLARAÇÃO; ANEXO IV - DECLARAÇÃO DE REPRESENTAÇÃO; ANEXO V - DOCUMENTOS HABILITAÇÃO; ANEXO VI - TERMO DE EXECUÇÃO; ANEXO VII - ORIENTAÇÕES PARA PRESTAÇÃO DE CONTAS; ANEXO VIII - MODELO DE PLANO DE TR",
-     "trecho": "TAL AQUI - Aviso de publicação no Diário Oficial ANEXO I - DOCUMENTOS OBRIGATÓRIOS ANEXO II - CRITÉRIOS DE AVALIAÇÃO ANEXO III - FORMULÁRIO DE AUTODECLARAÇÃO ANEXO IV - DECLARAÇÃO DE REPRESENTAÇÃO",
-     "pagina": 1,
-     "documento": "https://www.cultura.pr.gov.br/Pagina/Parana-Festivais-Chamamento-Publico-no-0012025",
-     "metodo": "lista de anexos"
-    },
-    "Área de atuação": {
-     "valor": "Cultura, Educação, Ciência e tecnologia",
-     "trecho": "termos do objeto e do título: Cultura, Educação, Ciência e tecnologia",
-     "pagina": 1,
-     "documento": "https://www.cultura.pr.gov.br/Pagina/Parana-Festivais-Chamamento-Publico-no-0012025",
-     "metodo": "palavras-chave do objeto"
-    },
-    "Prazo de recurso": {
-     "valor": "10 (dez) dias",
-     "trecho": "SANÇÕES 9.1. Na hipótese de determinação pela SEEC, da devolução de recursos, o(a) Agente Cultural será notificado(a) para que exerça, no prazo de 10 (dez) dias corridos, a opção por: a) Devolução parcial ou integral dos recurso",
-     "pagina": 42,
-     "documento": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2026-05/confira_o_edital.pdf",
-     "metodo": "seção"
-    },
-    "Valor": {
-     "valor": "R$ 8.750.000,00 (oito milhões setecentos e cinquenta mil reais)",
-     "trecho": "2. RECURSO FINANCEIRO 2.1. Distribuição dos Recursos 2.1.1. O valor total de recursos para este Edital será de até R$ 8.750.000,00 (oito milhões setecentos e cinquenta mil reais) . Os aportes se darão a partir da seguinte distribuição apresentada",
-     "pagina": 9,
-     "documento": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2026-05/confira_o_edital.pdf",
-     "metodo": "seção"
-    },
-    "Objeto": {
-     "valor": "fortalecer festivais e mostras artístico-culturais do Paraná, valorizando suas origens e ampliando seu impacto.",
-     "trecho": "1.2. Programa Paraná Festivais 1.2.1. O Programa Paraná Festivais tem como objetivo fortalecer festivais e mostras artístico-culturais do Paraná, valorizando suas origens e ampliando seu impacto. A iniciativa busca promover a criação do \"Ecossistema Paraná Festiva",
-     "pagina": 4,
-     "documento": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2026-05/confira_o_edital.pdf",
-     "metodo": "texto"
-    },
-    "Território": {
-     "valor": "no Estado do Paraná",
-     "trecho": "entes devem ser constituídos sob as leis brasileiras e estabelecidos no Estado do Paraná. d) Ficha Técnica: Documento que reúne informações e descrições das",
-     "pagina": 6,
-     "documento": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2026-05/confira_o_edital.pdf",
-     "metodo": "texto"
-    },
-    "Requisitos": {
-     "valor": "Requisito de inscrição: O agente cultural deverá apresentar um plano conceitual do festival ou mostra artístico -cultural, descrevendo seu conceito básico, objetivo e proposta de impacto social e cultural.",
-     "trecho": "s festivais e mostras artístico-culturais do estado do Paraná. c. Requisito de inscrição: O agente cultural deverá apresentar um plano conceitual do festival ou mostra artístico -cultural, descrevendo seu conceito básico, objetivo e proposta de impacto social e cultural. 1.2.2.2 CATEGORIA PINHA a. Descrição: Destinada a festivais",
-     "pagina": 5,
-     "documento": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2026-05/confira_o_edital.pdf",
-     "metodo": "texto"
-    }
-   },
-   "dispensas": {},
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-13T15:02:12+00:00",
-     "ganhou": [
-      "Anexos",
-      "Esfera",
-      "Objeto",
-      "Prazo de inscrição",
-      "Prazo de recurso",
-      "Requisitos",
-      "Território",
-      "Valor",
-      "Área de atuação",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://www.cultura.pr.gov.br/Pagina/Parana-Festivais-Chamamento-Publico-no-0012025",
-     "degrau": 0,
-     "como": "página/documento oficial já conhecido",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.googletagmanager.com/ns.html?id=GTM-WK32TR88",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": "pagina_vazia",
-     "falha": null,
-     "oficial": null,
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2026-05/confira_o_edital.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 48,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2026-05/aviso_de_publicacao_em_diario_oficial.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2026-05/anexo-i-documentos-obrigatorios.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 5,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2026-05/anexo-ii-criterios-de-avaliacao.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 4,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2026-05/anexo-iii-formulario-de-autodeclaracao.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 2,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2026-05/anexo-iv-declaracao-de-representacao.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 2,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "certificado",
-     "Prazo de inscrição": "certificado",
-     "Resultado": "falta",
-     "Prazo de recurso": "certificado",
-     "Valor": "certificado",
-     "Órgão / financiador": "certificado",
-     "Território": "certificado",
-     "Esfera": "certificado",
-     "Requisitos": "certificado",
-     "Anexos": "certificado",
-     "Destinação": "falta",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 10,
-    "dispensados": 0,
-    "ja_constavam": 0,
-    "faltam": 2,
-    "pct_certificado_12": 0.8333,
-    "pct_cobertura_12": 0.8333
-   }
-  },
-  {
-   "id": "op-a062baaa8e7c",
-   "tipo": "livro",
-   "titulo": "Edital Rio Doce Participativo e Comunitário abre seleção de projetos",
-   "balcao": "privado",
-   "link_oficial": "https://fbb.org.br/edital-publico/editalriodoce/",
-   "degrau": 0,
-   "como": "página/documento oficial já conhecido",
-   "faltavam": [
-    "Resultado",
-    "Prazo de recurso",
-    "Esfera",
-    "Requisitos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Resultado",
-    "Prazo de recurso",
-    "Esfera",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Requisitos"
-   ],
-   "tentativa": 1,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "sem_estrela",
-   "estagio_inicio": "sem_estrela",
-   "esgotada": null,
-   "eficiencia": 0.833,
-   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-12T23:32:22+00:00",
-   "prazo": null,
-   "uf": "BR",
-   "orgao": "",
-   "fim": "2026-10-13",
-   "itens": {
-    "Resultado": {
-     "valor": "13.10.2026",
-     "trecho": "to Inscrições Dúvidas Vídeos Resultado Final Resultado final em 13.10.2026. Confira o cronograma nessa página. Resulta",
-     "pagina": 1,
-     "documento": "https://fbb.org.br/edital-publico/editalriodoce/",
-     "metodo": "seção"
-    },
-    "Prazo de recurso": {
-     "valor": "25.09.2026",
-     "trecho": "ina. Resultado Parcial Prorrogado o prazo de recursos para até o dia 25.09.2026. Verifique a pontuação das propostas aqui .",
-     "pagina": 1,
-     "documento": "https://fbb.org.br/edital-publico/editalriodoce/",
-     "metodo": "seção"
-    },
-    "Esfera": {
-     "valor": "privada",
-     "trecho": "domínio/órgão: fbb.org.br · Fundação Banco Do Brasil",
-     "pagina": 1,
-     "documento": "https://fbb.org.br/edital-publico/editalriodoce/",
-     "metodo": "domínio e órgão"
-    },
-    "Área de atuação": {
-     "valor": "Meio ambiente",
-     "trecho": "termos do objeto e do título: Meio ambiente",
-     "pagina": 1,
-     "documento": "https://fbb.org.br/edital-publico/editalriodoce/",
-     "metodo": "palavras-chave do objeto"
-    },
-    "Destinação": {
-     "valor": "recursos serão destinados às propostas classificadas pela ordem geral, respeitando distribuição do recurso prevista no item 3;",
-     "trecho": "o não haja propostas que atendam a esses critérios de prioridade, os recursos serão destinados às propostas classificadas pela ordem geral, respeitando distribuição do recurso prevista no item 3; e) Se houver empate na pontuação, será considerada a seguinte ordem",
-     "pagina": 9,
-     "documento": "https://fbb.org.br/wp-content/uploads/2026/07/EDITAL-RIO-DOCE-PARTICIPATIVO-E-COMUNITARIO_2a-RETIFICACAO.pdf",
-     "metodo": "seção"
-    }
-   },
-   "dispensas": {},
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-12T23:32:22+00:00",
-     "ganhou": [
-      "Destinação",
-      "Esfera",
-      "Prazo de recurso",
-      "Resultado",
-      "Área de atuação"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://fbb.org.br/edital-publico/editalriodoce/",
-     "degrau": 0,
-     "como": "página/documento oficial já conhecido",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.googletagmanager.com/ns.html?id=GTM-TR4MF6T",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": "pagina_vazia",
-     "falha": null,
-     "oficial": null,
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.googletagmanager.com/ns.html?id=GTM-PZ5NMJG",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": "pagina_vazia",
-     "falha": null,
-     "oficial": null,
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "http://fbb.org.br/wp-content/uploads/2026/05/PERGUNTAS_E_RESPOSTAS_v1.6_29.07.2026.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 32,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fbb.org.br/wp-content/uploads/2026/07/EDITAL-RIO-DOCE-PARTICIPATIVO-E-COMUNITARIO_2a-RETIFICACAO.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 12,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fbb.org.br/wp-content/uploads/2026/09/Resultado_Parcial_Retificado.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 60,
-     "edicao_inteira": null
-    },
-    {
-     "url": "http://fbb.org.br/wp-content/uploads/2026/07/ERRATA-EDITAL-RIO-DOCE-2a-Errata.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 6,
-     "edicao_inteira": null
-    },
-    {
-     "url": "http://fbb.org.br/wp-content/uploads/2026/07/EDITAL-RIO-DOCE-PARTICIPATIVO-E-COMUNITARIO_2a-RETIFICACAO.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 12,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "ja_constava",
-     "Prazo de inscrição": "ja_constava",
-     "Resultado": "certificado",
-     "Prazo de recurso": "certificado",
-     "Valor": "ja_constava",
-     "Órgão / financiador": "ja_constava",
-     "Território": "ja_constava",
-     "Esfera": "certificado",
-     "Requisitos": "falta",
-     "Anexos": "ja_constava",
-     "Destinação": "certificado",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 5,
-    "dispensados": 0,
-    "ja_constavam": 6,
-    "faltam": 1,
-    "pct_certificado_12": 0.4167,
-    "pct_cobertura_12": 0.9167
-   }
-  },
-  {
-   "id": "op-074081ad752e",
-   "tipo": "livro",
-   "titulo": "Edital de Chamada Pública FAPESC/CNPq/CAPES n.º 055/2026 – Programa de Apoio à Fixação de Doutores no Brasil – PROFIX-CB",
-   "balcao": "orgao",
-   "link_oficial": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/CP-55_2026-PROFIX.pdf",
-   "degrau": 0,
-   "como": "página/documento oficial já conhecido",
-   "faltavam": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Anexos",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Requisitos",
-    "Destinação"
-   ],
-   "tentativa": 1,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "prata",
-   "estagio_inicio": "prata",
-   "esgotada": null,
-   "eficiencia": 0.833,
-   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-12T06:12:23+00:00",
-   "prazo": null,
-   "uf": "BR",
-   "orgao": "",
-   "fim": null,
-   "itens": {
-    "Resultado": {
-     "valor": "26/11/2026",
-     "trecho": "26 Análise de Admissibilidade das propostas 09/11/2026 a 23/11/2026 Resultado preliminar de admissibilidade 26/11/2026 Período para apresentação de recursos administrativos 27/11/2026 a 0",
-     "pagina": 7,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/CP-55_2026-PROFIX.pdf",
-     "metodo": "seção"
-    },
-    "Prazo de recurso": {
-     "valor": "27/11/2026",
-     "trecho": "reliminar de admissibilidade 26/11/2026 Período para apresentação de recursos administrativos 27/11/2026 a 01/12/2026 Resultado final de admissibilidade 04/12/2026 Análise",
-     "pagina": 7,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/CP-55_2026-PROFIX.pdf",
-     "metodo": "seção"
-    },
-    "Valor": {
-     "valor": "R$ 39.380.160,00 (trinta e nove milhões, trezentos e oitenta mil, cento e sessenta reais)",
-     "trecho": "s na presente Chamada 01/04/2027 5. RECURSOS FINANCEIROS 5.1. O valor global da presente Chamada Pública é de até R$ 39.380.160,00 (trinta e nove milhões, trezentos e oitenta mil, cento e sessenta reais), sendo R$ 23.712.000,00 (vinte e três milhões, setecentos e doze mil",
-     "pagina": 7,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/CP-55_2026-PROFIX.pdf",
-     "metodo": "seção"
-    },
-    "Objeto": {
-     "valor": "ma de Apoio à Fixação de Doutores no Brasil (PROFIX-CB), por meio \nda seleção de projetos de pesquisa que contribuam para o desenvolvimento científico e tecnológico \ndo Estado, mediante a concessão de bolsas a doutores em áreas estratégicas, visando à atração e \nfixação de pesquisadores em IES sedia",
-     "trecho": "ior, para o desenvolvimento científ ico e tecnológico do país. 1. DO OBJETIVO 1.1. Implementar o Programa de Apoio à Fixação de Doutores no Brasil (PROFIX-CB), por meio da seleção de projetos de pesquisa que contribuam para o desenvolvimento científico e tecnológico do Estado, mediante a concessão de bolsas a doutores em áreas estratégicas, visando à atração e fixação de pesquisadores em IES sedia",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/CP-55_2026-PROFIX.pdf",
-     "metodo": "seção"
-    },
-    "Órgão / financiador": {
-     "valor": "FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA",
-     "trecho": "6 PROGRAMA DE APOIO À FIXAÇÃO DE DOUTORES NO BRASIL – PROFIX-CB A FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA CATARINA (FAPESC) em colaboração com o CONSELHO NACIONAL DE DESENVOLV",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/CP-55_2026-PROFIX.pdf",
-     "metodo": "cabeçalho"
-    },
-    "Território": {
-     "valor": "do Estado de Santa Catarina",
-     "trecho": "sediadas e inscritas no Cadastro Nacional de Pessoa Jurídica (CNPJ) do Estado de Santa Catarina, a apresentarem propostas no âmbito do Programa de Apoio à Fixação",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/CP-55_2026-PROFIX.pdf",
-     "metodo": "texto"
-    },
-    "Esfera": {
-     "valor": "estadual",
-     "trecho": "domínio/órgão: fapesc.sc.gov.br · FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/CP-55_2026-PROFIX.pdf",
-     "metodo": "domínio e órgão"
-    },
-    "Anexos": {
-     "valor": "ANEXO I DISTRIBUIÇÃO DE COTAS DE BOLSAS CONHECIMENTO BRASIL (BCB-1); ANEXO II RELAÇÃO NOMINAL DOS(AS) CANDIDATOS(AS) APROVADOS (AS); ANEXO III TERMO DE COMPROMISSO DE BOLSA FAPESC; ANEXO IV PLANO DE TRABALHO DO(A) BOLSISTA; ANEXO V TERMO DE DISPONIBILIDADE DE CARGA HORÁRIA; ANEXO VI DECLARAÇÃO DE NÃ",
-     "trecho": "o processo FAPESC 00001108/2026 e o código 4Q639MCX. 144 ANEXO I DISTRIBUIÇÃO DE COTAS DE BOLSAS CONHECIMENTO BRASIL (BCB-1) EDITAL DE CHAMADA PÚBLICA FAPESC N.º 055/2026 Distribuição das 33 (trinta e três) cotas de Bolsas da modalidade C",
-     "pagina": 24,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/CP-55_2026-PROFIX.pdf",
-     "metodo": "lista de anexos"
-    },
-    "Área de atuação": {
-     "valor": "Cultura, Educação, Meio ambiente",
-     "trecho": "termos do objeto e do título: Cultura, Educação, Meio ambiente",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/CP-55_2026-PROFIX.pdf",
-     "metodo": "palavras-chave do objeto"
-    }
-   },
-   "dispensas": {
-    "Prazo de inscrição": {
-     "motivo": "dispensado pelo Cartório — não se aplica: inscrição em fluxo contínuo (cadastro permanente, sem data-limite)",
-     "trecho": "ograma PR 3.7.12. OFIX-CB, sendo que a identificação de duplicidade, a qualquer tempo, implicará a eliminação ou o cancelamento da bolsa. 3.7.13. A part",
-     "pagina": 6,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/CP-55_2026-PROFIX.pdf"
-    }
-   },
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-12T06:12:23+00:00",
-     "ganhou": [
-      "Anexos",
-      "Esfera",
-      "Objeto",
-      "Prazo de inscrição",
-      "Prazo de recurso",
-      "Resultado",
-      "Território",
-      "Valor",
-      "Área de atuação",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/CP-55_2026-PROFIX.pdf",
-     "degrau": 0,
-     "como": "página/documento oficial já conhecido",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 43,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "certificado",
-     "Prazo de inscrição": "dispensado",
-     "Resultado": "certificado",
-     "Prazo de recurso": "certificado",
-     "Valor": "certificado",
-     "Órgão / financiador": "certificado",
-     "Território": "certificado",
-     "Esfera": "certificado",
-     "Requisitos": "falta",
-     "Anexos": "certificado",
-     "Destinação": "falta",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 9,
-    "dispensados": 1,
-    "ja_constavam": 0,
-    "faltam": 2,
-    "pct_certificado_12": 0.8333,
-    "pct_cobertura_12": 0.8333
-   }
   }
  ],
  "linha_de_producao": {
   "na_linha": {
-   "sem_estrela": 1224,
+   "sem_estrela": 1230,
    "bronze": 30,
-   "prata": 1630
+   "prata": 1636
   },
   "na_linha_por_tipo": {
    "estrela": {
-    "sem_estrela": 413,
+    "sem_estrela": 424,
     "bronze": 24,
-    "prata": 44
+    "prata": 45
    },
    "livro": {
-    "sem_estrela": 811,
+    "sem_estrela": 806,
     "bronze": 6,
-    "prata": 1586
+    "prata": 1591
    }
   },
-  "fila_oportunidades": 481,
+  "fila_oportunidades": 493,
   "fila_livros": 2403,
-  "devidas_nesta_hora": 2783,
+  "devidas_nesta_hora": 2803,
   "promovidas_nesta_execucao": 0,
-  "sem_material_agora": 12,
+  "sem_material_agora": 11,
   "esgotadas_10_abordagens": 0,
   "biblioteca_de_sites": {
-   "chaves": 1593,
-   "sites": 2735
+   "chaves": 1607,
+   "sites": 2757
   },
   "intervalo_horas": 12,
   "limite": 10,
