@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-13T17:03:53+00:00",
+  "em": "2026-10-13T17:19:12+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-13T16:54:06+00:00",
+  "ultimo_voo": "2026-10-13T17:06:52+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 137,
+    "missoes": 138,
     "validadas": 4,
-    "parciais": 31,
+    "parciais": 32,
     "insuficientes": 98,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 114,
+      "sim": 115,
       "nao": 12
     },
     "estrelas_de_ouro": 5,
@@ -52,6 +52,89 @@
     "tempo_medio_min": 13.6
   },
   "missoes": [
+    {
+      "em": "2026-10-13T17:06:52+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Publica��o DOE - S�mula Edital - 22/04/2025",
+      "qualidade": "parcial",
+      "comprovados": 9,
+      "dispensados": 1,
+      "total": 12,
+      "nao_resolvidos": [
+        "Resultado",
+        "Prazo de recurso",
+        "Valor"
+      ],
+      "pagina_oficial": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2025/03/EDITAL-FAC-2025.pdf",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi publicado no DOE e contém informações claras sobre o objeto, prazo de inscrição e outros requisitos.",
+        "para_a_amc": "A associação comunitária de Goiânia precisa se inscrever no edital, apresentar uma proposta alinhada ao objeto do edital (apoio financeiro ao segmento artístico-cultural) e cumprir os requisitos estabelecidos no edital e em seus anexos.",
+        "proximo_passo": "Consultar os anexos do edital para entender os requisitos detalhados e preparar a proposta de acordo com o objeto e a área de atuação definidos.",
+        "risco": "A falta de informações sobre o valor e o prazo de recurso pode dificultar a elaboração de uma proposta completa e adequada."
+      },
+      "erro": null,
+      "segundos": 738,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 7,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Valor",
+      "id": "ce12a8f40a9e5b9c9baf",
+      "encontrou": {
+        "Objeto": {
+          "valor": "apoio financeiro às propostas no Estado de Goiás e do segmento artístico-cultural",
+          "trecho": "apoio financeiro às propostas no Estado de Goiás e do segmento artístico-cultural",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "dispensado — O prazo de inscrição foi explicitamente definido no texto.",
+          "trecho": "a inscrição para o Edital será realizada dentro da plataforma digital SISTEMA BARU DE EDITAIS, sistemabaru.cultura.go.gov.br ficando aberto do dia 24/03/2025 ao dia 25/04/2025 até ",
+          "oficial": false,
+          "dispensado": true
+        },
+        "Órgão / financiador": {
+          "valor": "SECRETARIA DE ESTADO DA CULTURA",
+          "trecho": "SECRETARIA DE ESTADO DA CULTURA",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "propostas no Estado de Goiás",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "segmento artístico-cultural",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · fomento",
+          "trecho": "apoio financeiro às propostas no Estado de Goiás e do segmento artístico-cultural",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "condições e exigências estabelecidas no Edital e em seus anexos",
+          "trecho": "condições e exigências estabelecidas no Edital e em seus anexos",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Secretaria de Estado da Cultura do Rio Grande do Sul - SEDAC",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-13T16:54:06+00:00",
       "modo": "validar",
@@ -2820,88 +2903,6 @@
         "financiador_regulamento",
         "financiador_pdf",
         "financiador_ano"
-      ]
-    },
-    {
-      "em": "2026-10-13T05:15:45+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Diário Oficial de Pinhais (PR) 2026-10-06 — \"termo de execução cultural\"",
-      "qualidade": "insuficiente",
-      "comprovados": 9,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de recurso",
-        "Valor",
-        "Área de atuação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O termo de execução cultural mencionado está relacionado à nomeação de candidatos aprovados em concursos públicos, o que pode ser relevante para organizações da sociedade civil que buscam parcerias ou financiamento público.",
-        "para_a_amc": "Para acessar esse edital, uma associação comunitária de Goiânia precisaria se alinhar aos requisitos de candidatos aprovados em concursos públicos, verificar se há alinhamento com a área de atuação da AMC e entrar em contato com a Prefeitura Municipal de Pinhais para obter mais informações.",
-        "proximo_passo": "Verificar se há alinhamento entre a área de atuação da AMC e o objeto do edital e entrar em contato com a Prefeitura Municipal de Pinhais para obter mais detalhes.",
-        "risco": "A falta de alinhamento entre a área de atuação da AMC e o objeto do edital pode impedir o acesso ao edital."
-      },
-      "erro": null,
-      "segundos": 987,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "edcdd8d01f1cc3e172ef",
-      "encontrou": {
-        "Objeto": {
-          "valor": "nomeação de candidatos aprovados em concursos públicos",
-          "trecho": "Nomeação dos candidatos aprovados no Concurso Público nº 003/2022,",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "2026-09-04 a 2026-09-29",
-          "trecho": "Decreto 970/2026, de 29/09/2026 Nomeação dos candidatos aprovados no Concurso Público nº 003/2022,",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal de Pinhais",
-          "trecho": "A PREFEITA MUNICIPAL DE PINHAIS, Estado do Paraná, no uso de suas atribuições legais e com fulcro no Inciso XXI do artigo 58 da Lei Orgânica Municipal,",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "PR",
-          "trecho": "Pinhais - Paraná, 06 de Outubro de 2026",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · outro",
-          "trecho": "Nomeação dos candidatos aprovados no Concurso Público nº 003/2022,",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "candidatos aprovados em concursos públicos",
-          "trecho": "Nomeação dos candidatos aprovados no Concurso Público nº 003/2022,",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "MUNICÍPIO DE PINHAIS",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/4119152/2026-10-06/a337ff6e0554027dfce221f6e852f9cd8cc10ae3.pdf",
-          "tipo": "agregador"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
       ]
     }
   ],
