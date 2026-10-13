@@ -19,10 +19,15 @@ class TesteStatusMotores(unittest.TestCase):
         self.assertEqual(self.S.status_de({"id": "d", "ultima_leitura": "2026-09-30T14:00:00+00:00", "dias": [{"d": h, "cor": "cinza"}]}, h)["luz"], "vermelho")
         # 10/10 (titular): cinza agora é só INATIVO; motor ativo há mais de 26 h sem ler é FALHA
 
-    def test_falha_parcial_e_vermelho(self):
+    def test_falha_parcial_e_atencao(self):
+        """12/10 (conselho): leitura parcial — algumas páginas com falha, as demais lidas — é verde com atenção;
+        vermelho fica para quando nada foi lido."""
         h = "2026-10-01"; self.S._DIARIO = {"plat-x": {h: {"cor": "amarelo", "falhas": 2, "achados": 5}}}
         r = self.S.status_de({"id": "x", "ultima_leitura": "2026-10-01T14:00:00+00:00"}, h)
-        self.assertEqual(r["luz"], "vermelho"); self.assertIn("2 página(s) com falha", r["resultado"])
+        self.assertEqual(r["luz"], "verde"); self.assertIn("atenção: 2 página(s) com falha", r["resultado"])
+        self.S._DIARIO = {"plat-x": {h: {"cor": "vermelho", "falhas": 3, "achados": 0}}}
+        r = self.S.status_de({"id": "x", "ultima_leitura": "2026-10-01T14:00:00+00:00"}, h)
+        self.assertEqual(r["luz"], "vermelho", "nada lido continua vermelho")
 
     def test_calendario_segue_o_indice_original(self):
         """02/10 (titular): o calendário mantém as cinco cores do índice; as três cores de status são só da lateral."""

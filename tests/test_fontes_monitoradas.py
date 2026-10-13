@@ -28,7 +28,7 @@ class TesteAlvo(unittest.TestCase):
     def test_regra_no_ciclo_e_cartao(self):
         s = (ROOT / "src/opressores.py").read_text(encoding="utf-8")
         self.assertIn('if o.startswith("automática") and fid not in alvo:', s); self.assertIn('"monitoramento"', s)
-        self.assertIn("prestes a abrir (previsão)", (ROOT / "docs/dashboard.html").read_text(encoding="utf-8"))
+        self.assertNotIn("prestes a abrir (previsão)", (ROOT / "docs/dashboard.html").read_text(encoding="utf-8"), "12/10 (titular): o mostrador mostra só os números")
 
 
 if __name__ == "__main__":

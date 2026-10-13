@@ -5,7 +5,7 @@ on:
     # agenda-motores (config/agenda_motores.json). Ficam os blocos que não são de motor.
     - cron: "0 6 * * 1-6" # 03h BRT · completude, edições, regramentos (seg–sáb)
     - cron: "0 9 * * *"   # 06h BRT · relatório e painel
-    - cron: "0 6 * * 0"   # 03h BRT de DOMINGO · motores de empresas (29 e 30) — o agendamento tinha sumido (28/09)
+    # 12/10/2026: o domingo dos motores de empresas saiu daqui — fluxo 34 (grupo próprio, com recuperação diária)
     - cron: "30 6 1 * *"  # 03h30 BRT do DIA 1 · documentos das associações (certidões mensais, expurgo > 90 dias)
   workflow_dispatch:
     inputs:
