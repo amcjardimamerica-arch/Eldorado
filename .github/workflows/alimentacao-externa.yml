@@ -1,0 +1,35 @@
+name: 35 · Alimentação diária externa (editais abertos)
+
+# 13/10/2026 (titular): uma vez por dia, gera a lista de editais abertos SÓ com nome, link oficial, objeto,
+# abrangência (federal/estadual), UF e prazo; certifica com SHA-256, assina com HMAC-SHA256 e envia ao endereço do
+# segredo OSC_URL. O destino e o segredo ficam só nos segredos do repositório (nada no código). Sem os segredos, não envia.
+
+on:
+  schedule:
+    - cron: "43 9 * * *"     # 06h43 em Brasília
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: alimentacao-externa
+  cancel-in-progress: false
+
+jobs:
+  enviar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Gerar, certificar e enviar
+        env:
+          OSC_URL: ${{ secrets.OSC_URL }}
+          OSC_SEGREDO: ${{ secrets.OSC_SEGREDO }}
+        run: |
+          python -m src.exportar_editais_osc --enviar | python -c "import json,sys; d=json.load(sys.stdin); print({k: d[k] for k in ('enviado','itens','sha256','motivo','confirmado_pelo_site') if k in d})"
