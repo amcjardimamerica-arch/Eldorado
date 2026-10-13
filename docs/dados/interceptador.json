@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-13T02:01:53+00:00",
+  "em": "2026-10-13T02:24:22+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-13T01:45:13+00:00",
+  "ultimo_voo": "2026-10-13T02:04:55+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,103 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 85,
+    "missoes": 86,
     "validadas": 3,
     "parciais": 21,
-    "insuficientes": 57,
+    "insuficientes": 58,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "sim": 68,
-      "nao": 9
+      "nao": 10
     },
     "estrelas_de_ouro": 2,
     "fontes_novas_para_os_motores": 3,
-    "tempo_medio_min": 13.2
+    "tempo_medio_min": 13.3
   },
   "missoes": [
+    {
+      "em": "2026-10-13T02:04:55+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Corbélia (PR) 2026-10-07 — \"termo de fomento\" \"chamamento público\"",
+      "qualidade": "insuficiente",
+      "comprovados": 9,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de recurso",
+        "Valor",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "nao",
+        "por_que": "O conteúdo comprovado não menciona editais de fomento para organizações da sociedade civil, mas refere-se a nomeação de candidato aprovado em Concurso Público Municipal.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se há editais de fomento específicos para suas áreas de atuação (assistência social, cultura, educação, esporte) e se qualifica para participar.",
+        "proximo_passo": "Consultar o Diário Oficial do Município de Corbélia para verificar a existência de editais de fomento para organizações da sociedade civil.",
+        "risco": "A falta de informações sobre editais de fomento e os requisitos específicos pode impedir o acesso ao benefício."
+      },
+      "erro": null,
+      "segundos": 1166,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
+      "id": "10e5338d03b997713447",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Nomear em Estágio Probatório, candidato aprovado em Concurso Público Municipal",
+          "trecho": "Nomear a Srª. ANA PAULA DOS SANTOS DUFFECK , inscrito no CPF sob nº 107.476.719-58, aprovado em Concurso Público, resultado divulgado pelo Edital nº 019/2024 de 25/10/2024, para ex",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "2026-10-05 a 2026-10-05",
+          "trecho": "Nomear a Srª. ANA PAULA DOS SANTOS DUFFECK , inscrito no CPF sob nº 107.476.719-58, aprovado em Concurso Público, resultado divulgado pelo Edital nº 019/2024 de 25/10/2024, para ex",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeito Municipal de Corbélia",
+          "trecho": "O Prefeito do Município de Corbélia, Estado do Paraná, no uso das atribuições legais,",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "PR",
+          "trecho": "MUNICÍPIO DE CORBÉLIA - PR",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "fora do escopo · outro",
+          "trecho": "Nomear a Srª. ANA PAULA DOS SANTOS DUFFECK , inscrito no CPF sob nº 107.476.719-58, aprovado em Concurso Público, resultado divulgado pelo Edital nº 019/2024 de 25/10/2024, para ex",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "aprovado em Concurso Público Municipal",
+          "trecho": "aprovado em Concurso Público Municipal",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Município de Corbélia/PR",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/4106308/2026-10-07/4975976ad99648152702b4abb848d12eb7c0a218.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-13T01:45:13+00:00",
       "modo": "validar",
@@ -2961,79 +3043,6 @@
         "financiador_regulamento",
         "financiador_pdf",
         "financiador_ano"
-      ]
-    },
-    {
-      "em": "2026-10-12T14:50:11+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Diário Oficial de Marau (RS) 2026-10-09 — \"termo de execução cultural\"",
-      "qualidade": "insuficiente",
-      "comprovados": 6,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Destinação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O termo de execução cultural mencionado no Diário Oficial de Marau (RS) 2026-10-09 refere-se a um objeto de fomento à cultura, financiado pela Prefeitura Municipal de Marau, indicando que há uma fonte de recursos para projetos culturais.",
-        "para_a_amc": "Para acessar o fomento, a associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, que é fomento à cultura, e demonstrar como seu projeto se enquadra nessa área, mesmo que não esteja localizada no RS.",
-        "proximo_passo": "Verificar se há anexos disponíveis no Diário Oficial para obter mais detalhes sobre o edital e os critérios de elegibilidade.",
-        "risco": "A falta de informações sobre prazo de inscrição, requisitos e destinação dos recursos pode impedir a associação de Goiânia de se qualificar adequadamente para o edital."
-      },
-      "erro": null,
-      "segundos": 469,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "b6232287f961448bb9fc",
-      "encontrou": {
-        "Objeto": {
-          "valor": "fomento à cultura",
-          "trecho": "termo de execução cultural",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal de Marau",
-          "trecho": "Prefeitura Municipal de Marau",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "RS",
-          "trecho": "MUNICÍPIO DE MARAU",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "termo de execução cultural",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Marau",
-      "indicios": [
-        {
-          "url": "https://data.queridodiario.ok.org.br/4311809/2026-10-09/2eed0f4d0e8c5bb610334bcd580daba8e6d9eed7.pdf",
-          "tipo": "agregador"
-        }
-      ],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
       ]
     }
   ],
