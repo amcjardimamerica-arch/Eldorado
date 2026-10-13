@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-13T10:08:19+00:00",
+  "em": "2026-10-13T10:30:04+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-13T09:55:57+00:00",
+  "ultimo_voo": "2026-10-13T10:12:45+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 113,
+    "missoes": 114,
     "validadas": 4,
     "parciais": 26,
-    "insuficientes": 79,
+    "insuficientes": 80,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 90,
+      "sim": 91,
       "nao": 12
     },
     "estrelas_de_ouro": 3,
@@ -52,6 +52,87 @@
     "tempo_medio_min": 13.5
   },
   "missoes": [
+    {
+      "em": "2026-10-13T10:12:45+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Pinhais (PR) 2026-10-08 — \"edital de chamamento público\" associação",
+      "qualidade": "insuficiente",
+      "comprovados": 8,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi comprovado com informações sobre objeto, prazo de inscrição, resultado, órgão financiador, território, esfera e anexos.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se atende ao objeto do edital, que é executar ações da PNA, e seguir o prazo de inscrição, mesmo que ele seja único e coincida com a data do edital.",
+        "proximo_passo": "Verificar os anexos do edital para entender os requisitos e procedimentos necessários para inscrição.",
+        "risco": "O prazo de inscrição é muito curto e coincide com a data do edital, o que pode dificultar a participação da associação."
+      },
+      "erro": null,
+      "segundos": 1037,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "c47362c2addc93b516b3",
+      "encontrou": {
+        "Objeto": {
+          "valor": "executar as ações, programas, projetos e serviços da Política Nacional de Assistência Social - PNA",
+          "trecho": "Executar as ações, programas, projetos e serviços da Política Nacional de Assistência Social - PNA",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "2026-10-08 a 2026-10-08",
+          "trecho": "08 de Outubro de 2026",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Município de Pinhais",
+          "trecho": "Município de Pinhais",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "PR",
+          "trecho": "Pinhais - Paraná",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "assistencia_social",
+          "trecho": "assistência social",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Município de Pinhais",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/4119152/2026-10-08/d65b3418ff2e348403fcc052df54bbbacd2ce50a.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-13T09:55:57+00:00",
       "modo": "validar",
@@ -2872,74 +2953,6 @@
         "Requisitos": {
           "valor": "Ensino médio completo, CNH categoria “A” e “B”, Conhecimentos em informática, Ensino médio completo e curso técnico na área, Ensino médio completo e curso de formação na área específica",
           "trecho": "Requisitos mínimos exigidos e a Taxa da Inscrição são os estabelecidos na Tabelas I de Cargos, especificada abaixo.",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura de Votuporanga",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-12T22:53:03+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Concurso Público nº 01/2024 \n                                     \n                                         Prefeito do Município de Votupor",
-      "qualidade": "parcial",
-      "comprovados": 6,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://www.votuporanga.sp.gov.br/editais/edital_de_abertura_cp_032024_26095405.pdf",
-      "parecer_fonte": {
-        "serve_como_fonte": "nao",
-        "por_que": "Não há informações suficientes sobre o concurso público para que ele possa ser considerado uma fonte válida para a associação comunitária de Goiânia.",
-        "para_a_amc": "A associação comunitária de Goiânia não pode acessar esse concurso público, pois ele é voltado para o município de Votuporanga/SP e não está relacionado às áreas de atuação da AME (assistência social, cultura, educação, esporte) de Goiânia.",
-        "proximo_passo": "Consultar editais de editais de fomento específicos para associações comunitárias em Goiânia.",
-        "risco": "A falta de informações sobre prazos, requisitos e áreas de atuação pode impedir a associação de se candidatar a oportunidades relevantes."
-      },
-      "erro": null,
-      "segundos": 918,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 6,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
-      "id": "0e1660b1a4747cafeff4",
-      "encontrou": {
-        "Objeto": {
-          "valor": "provimento de vagas existentes para os cargos descritos na Tabela I",
-          "trecho": "O Concurso Público destina-se ao provimento de vagas, pelo Regime Estatutário - Leis Complementares Municipais n° 187/2011 e 214/2012, nos cargos indicados no presente edital e dos",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeito do Município de Votuporanga/SP",
-          "trecho": "O Prefeito do Município de Votuporanga/SP faz saber que realizará, por meio do INDEPAC – Instituto de Cultura, Desenvolvimento Educacional, Promoção Humana e Ação Comunitária",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "SP",
-          "trecho": "As vagas oferecidas são para o município de Votuporanga/SP",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · outro",
-          "trecho": "O Concurso Público destina-se ao provimento de vagas, pelo Regime Estatutário - Leis Complementares Municipais n° 187/2011 e 214/2012, nos cargos indicados no presente edital e dos",
           "oficial": true,
           "dispensado": false
         }
