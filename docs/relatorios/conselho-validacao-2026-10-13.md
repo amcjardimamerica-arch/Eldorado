@@ -8,8 +8,8 @@
 
 ```json
 {
- "cegos_da_1a_rodada": 31,
- "testados": 24,
+ "cegos_da_1a_rodada": 32,
+ "testados": 25,
  "com_rota_nova": 10,
  "via_ponte": 1,
  "continuam_cegos": [
@@ -26,6 +26,7 @@
   "f260-espalhado-acessoainformacao-cavalcante-go-gov-br",
   "f260-captacao-228",
   "f260-captacao-252",
+  "f260-captacao-242",
   "f260-espalhado-rouanet-cultura-gov-br"
  ],
  "aguardando_afinador": 7
@@ -39,7 +40,7 @@
 
 ```json
 {
- "motores_de_ruido_1a": 25,
+ "motores_de_ruido_1a": 26,
  "ruido_agora": [
   {
    "motor": "empresas-incentivadas",
@@ -64,8 +65,8 @@
   },
   {
    "motor": "f260-captacao-118",
-   "achados_total_1a": 24,
-   "achados_total_agora": 24,
+   "achados_total_1a": 27,
+   "achados_total_agora": 27,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -84,6 +85,13 @@
    "confirmadas": 0
   },
   {
+   "motor": "f260-captacao-044",
+   "achados_total_1a": 21,
+   "achados_total_agora": 21,
+   "no_fluxo": 0,
+   "confirmadas": 0
+  },
+  {
    "motor": "f260-captacao-217",
    "achados_total_1a": 99,
    "achados_total_agora": 99,
@@ -92,8 +100,8 @@
   },
   {
    "motor": "f260-captacao-237",
-   "achados_total_1a": 67,
-   "achados_total_agora": 67,
+   "achados_total_1a": 70,
+   "achados_total_agora": 70,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -113,15 +121,15 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 90,
-   "achados_total_agora": 90,
+   "achados_total_1a": 93,
+   "achados_total_agora": 93,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 1173,
-   "achados_total_agora": 1173,
+   "achados_total_1a": 1194,
+   "achados_total_agora": 1194,
    "no_fluxo": 2,
    "confirmadas": 0
   },
@@ -134,8 +142,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 74,
-   "achados_total_agora": 74,
+   "achados_total_1a": 75,
+   "achados_total_agora": 75,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -162,15 +170,15 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 45,
-   "achados_total_agora": 45,
+   "achados_total_1a": 46,
+   "achados_total_agora": 46,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 73,
-   "achados_total_agora": 73,
+   "achados_total_1a": 74,
+   "achados_total_agora": 74,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -206,13 +214,7 @@
    "motor": "outras-oportunidades-3",
    "achados_total_1a": 31,
    "achados_total_agora": 31,
-   "no_fluxo": 2,
-   "confirmadas": 0
-  },
-  {
-   "motor": "outras-oportunidades-4",
-   "achados_total_1a": 35,
-   "achados_total_agora":
+
 ```
 
 ## Eng. Luana Freire (levemente pessimista)
@@ -225,7 +227,7 @@
  "pontos_com_redundancia": 12,
  "redundancia_vazia": [],
  "dominios_via_ponte": 2,
- "exemplos_da_rede_de_rotas": 6319
+ "exemplos_da_rede_de_rotas": 6400
 }
 ```
 
@@ -236,11 +238,11 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 75.5,
- "fora_dos_motores_pct_agora": 75.5,
+ "fora_dos_motores_pct_1a": 75.3,
+ "fora_dos_motores_pct_agora": 75.3,
  "origem": {
   "Piloto": 112,
-  "motor": 136,
+  "motor": 137,
   "agregador/outra": 306
  },
  "dominios_so_de_agregador": [
@@ -372,8 +374,8 @@
 {
  "fontes_recebidas": 288,
  "por_origem": {
-  "conselho (fontes irmãs)": 146,
-  "Cartório (site oficial certificado)": 118,
+  "conselho (fontes irmãs)": 145,
+  "Cartório (site oficial certificado)": 119,
   "Espião (privado/internacional)": 24
  },
  "lidas_nas_ultimas_24h": 211,

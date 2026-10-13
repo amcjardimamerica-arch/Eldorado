@@ -1,5 +1,5 @@
 {
- "em": "2026-10-13T12:10:21+00:00",
+ "em": "2026-10-13T13:12:29+00:00",
  "conselho": [
   {
    "id": "falso_verde",
@@ -48,24 +48,24 @@
   "motores": 148,
   "motores_com_falha": 99,
   "falhas_por_tipo": {
-   "CONGELADO": 22,
+   "CONGELADO": 20,
    "SILÊNCIO LONGO": 44,
-   "CUSTO SEM RETORNO": 1,
    "ESTRANGULADO": 1,
    "VAZAMENTO": 47,
    "CEGO": 23,
-   "PÁGINA VAZIA": 9,
+   "PÁGINA VAZIA": 10,
    "INTERMITENTE": 3,
-   "RUÍDO": 26
+   "RUÍDO": 27,
+   "CUSTO SEM RETORNO": 1
   }
  },
  "cobertura": {
   "origem_das_oportunidades": {
    "Piloto": 112,
-   "motor": 136,
+   "motor": 137,
    "agregador/outra": 306
   },
-  "fora_dos_motores_pct": 75.5,
+  "fora_dos_motores_pct": 75.3,
   "ufs_sem_motor_com_oportunidade": [
    {
     "uf": "GO",
@@ -82,6 +82,13 @@
     }
    },
    {
+    "uf": "PR",
+    "oportunidades": 4,
+    "de_onde": {
+     "agregador/outra": 4
+    }
+   },
+   {
     "uf": "RS",
     "oportunidades": 3,
     "de_onde": {
@@ -91,13 +98,6 @@
    },
    {
     "uf": "BA",
-    "oportunidades": 3,
-    "de_onde": {
-     "agregador/outra": 3
-    }
-   },
-   {
-    "uf": "PR",
     "oportunidades": 3,
     "de_onde": {
      "agregador/outra": 3
@@ -376,14 +376,8 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "31 leituras vazias seguidas",
+     "prova": "32 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "CUSTO SEM RETORNO",
-     "prova": "130 s na última leitura sem achado",
-     "melhoria": "reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem"
     }
    ]
   },
@@ -394,12 +388,12 @@
     {
      "url": "https://diariooficial.abc.go.gov.br",
      "http": 200,
-     "bytes": 104
+     "bytes": 148
     }
    ],
-   "achados_total": 356,
+   "achados_total": 360,
    "valor": "confirma",
-   "achados_30d": 126,
+   "achados_30d": 127,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -422,7 +416,7 @@
      "bytes": 0
     }
    ],
-   "achados_total": 67,
+   "achados_total": 69,
    "valor": "confirma",
    "achados_30d": 30,
    "cadencia": {
@@ -446,12 +440,12 @@
     {
      "url": "https://portal.al.go.leg.br/",
      "http": 200,
-     "bytes": 133158
+     "bytes": 133089
     },
     {
      "url": "https://portal.al.go.leg.br/noticias",
      "http": 200,
-     "bytes": 118886
+     "bytes": 118298
     }
    ],
    "achados_total": 17,
@@ -466,7 +460,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "59 leituras vazias seguidas",
+     "prova": "60 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     },
     {
@@ -484,8 +478,8 @@
     {
      "url": "https://www.goiania.go.leg.br",
      "http": 200,
-     "bytes": 285344,
-     "itens": 26
+     "bytes": 264046,
+     "itens": 0
     },
     {
      "url": "https://www.goiania.go.leg.br",
@@ -512,7 +506,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "106 leituras vazias seguidas",
+     "prova": "107 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -583,7 +577,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "57 leituras vazias seguidas",
+     "prova": "58 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -731,7 +725,7 @@
      "posts": 5
     }
    ],
-   "achados_total": 115,
+   "achados_total": 117,
    "valor": "confirma",
    "achados_30d": 29,
    "cadencia": {
@@ -939,17 +933,17 @@
     {
      "url": "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-crianca-e-do-adolescente-conanda",
      "http": 200,
-     "bytes": 52761
+     "bytes": 52767
     },
     {
-     "url": "https://www.gov.br/pt-br/temas/transparencia-fiscal-orcamento-nacional",
+     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-abertas/edital-de-eleicao-do-cnpc/edital-de-eleicao-do-cnpc",
      "http": 200,
-     "bytes": 64755
+     "bytes": 140317
     }
    ],
-   "achados_total": 24,
+   "achados_total": 27,
    "valor": "ruído",
-   "achados_30d": 13,
+   "achados_30d": 16,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -957,15 +951,9 @@
    },
    "falhas": [
     {
-     "conselheiro": "falso_verde",
-     "falha": "CONGELADO",
-     "prova": "o mesmo achado repetido em 13 dias",
-     "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
-    },
-    {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "24 achados e nenhuma oportunidade confirmada",
+     "prova": "27 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -983,12 +971,12 @@
     {
      "url": "https://portal.al.go.leg.br/",
      "http": 200,
-     "bytes": 133113
+     "bytes": 133089
     },
     {
-     "url": "https://goias.gov.br/saude/",
+     "url": "https://goias.gov.br/fapeg/editais/inscricoes-abertas/",
      "http": 200,
-     "bytes": 315123
+     "bytes": 173011
     }
    ],
    "achados_total": 56,
@@ -1057,9 +1045,9 @@
    "tipo": "site_oficial",
    "saude": [
     {
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
+     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-pb/noticias/mpf-lanca-chamamento-publico-para-cadastro-de-entidades-aptas-a-receber-bens-e-valores-de-processos-judiciais-e-extrajudiciais-na-pb",
      "http": 200,
-     "bytes": 230801
+     "bytes": 239014
     },
     {
      "url": "https://www.mpf.mp.br/",
@@ -1085,7 +1073,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "52 leituras vazias seguidas",
+     "prova": "53 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -1121,7 +1109,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "55 leituras vazias seguidas",
+     "prova": "56 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -1185,8 +1173,8 @@
      "bytes": 126214
     }
    ],
-   "achados_total": 18,
-   "valor": "baixo volume",
+   "achados_total": 21,
+   "valor": "ruído",
    "achados_30d": 6,
    "cadencia": {
     "cadencia_atual": 1,
@@ -1194,6 +1182,12 @@
     "dia_forte": "domingo"
    },
    "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "21 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
     {
      "conselheiro": "funil",
      "falha": "VAZAMENTO",
@@ -1401,7 +1395,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "43 leituras vazias seguidas",
+     "prova": "44 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -1439,7 +1433,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "42 leituras vazias seguidas",
+     "prova": "43 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -1773,7 +1767,7 @@
      "bytes": 52443
     }
    ],
-   "achados_total": 67,
+   "achados_total": 70,
    "valor": "ruído",
    "achados_30d": 18,
    "cadencia": {
@@ -1785,7 +1779,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "67 achados e nenhuma oportunidade confirmada",
+     "prova": "70 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -2053,7 +2047,7 @@
      "bytes": 144676
     }
    ],
-   "achados_total": 90,
+   "achados_total": 93,
    "valor": "ruído",
    "achados_30d": 12,
    "cadencia": {
@@ -2065,7 +2059,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "90 achados e nenhuma oportunidade confirmada",
+     "prova": "93 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -2088,10 +2082,10 @@
     {
      "url": "https://www.alcoa.com/brasil/pt/institute/local-project-support-program",
      "http": 200,
-     "bytes": 48554
+     "bytes": 48553
     }
    ],
-   "achados_total": 1173,
+   "achados_total": 1194,
    "valor": "ruído",
    "achados_30d": 223,
    "cadencia": {
@@ -2103,7 +2097,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "1173 achados e nenhuma oportunidade confirmada",
+     "prova": "1194 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     }
    ]
@@ -2311,7 +2305,7 @@
      "status": "lida"
     }
    ],
-   "achados_total": 74,
+   "achados_total": 75,
    "valor": "ruído",
    "achados_30d": 9,
    "cadencia": {
@@ -2329,7 +2323,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "74 achados e nenhuma oportunidade confirmada",
+     "prova": "75 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     }
    ]
@@ -2379,12 +2373,12 @@
     {
      "url": "https://api.salic.cultura.gov.br/api/v1/projetos/?UF=GO&ano_projeto=26&limit=100&offset=0&format=json",
      "erro": "salic_api",
-     "code": 500,
+     "code": 503,
      "waf": null,
-     "causa": "HTTPError: HTTP Error 500: Internal Server Error"
+     "causa": "HTTPError: HTTP Error 503: Service Unavailable"
     }
    ],
-   "achados_total": 311,
+   "achados_total": 314,
    "valor": "ouro",
    "achados_30d": 88,
    "cadencia": {
@@ -2540,7 +2534,7 @@
     {
      "url": "https://html.duckduckgo.com/html/?q=edital+organiza%C3%A7%C3%B5es+da+sociedade+civil+2026",
      "http": 200,
-     "bytes": 36848
+     "bytes": 37488
     },
     {
      "url": "https://html.duckduckgo.com/html/?q=",
@@ -2548,9 +2542,9 @@
      "bytes": 3108
     }
    ],
-   "achados_total": 2145,
+   "achados_total": 2186,
    "valor": "ouro",
-   "achados_30d": 656,
+   "achados_30d": 655,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -2618,7 +2612,7 @@
     {
      "url": "https://www.congressonacional.leg.br",
      "http": 200,
-     "bytes": 151540,
+     "bytes": 151528,
      "itens": 9
     },
     {
@@ -2646,7 +2640,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "64 leituras vazias seguidas",
+     "prova": "65 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -2658,7 +2652,7 @@
     {
      "url": "https://portal.al.go.leg.br/",
      "http": 200,
-     "bytes": 133113
+     "bytes": 133089
     },
     {
      "url": "https://transparencia.al.go.leg.br/legislacoes",
@@ -2678,7 +2672,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "17 leituras vazias seguidas",
+     "prova": "18 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -2707,7 +2701,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "15 leituras vazias seguidas",
+     "prova": "16 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -2719,29 +2713,23 @@
     {
      "url": "https://portal.al.go.leg.br/",
      "http": 200,
-     "bytes": 133113
+     "bytes": 133089
     },
     {
-     "url": "https://transparencia.al.go.leg.br/legislacoes",
+     "url": "https://saude.goiania.go.gov.br/editas-de-chamamento-publico",
      "http": 200,
-     "bytes": 12851
+     "bytes": 58052
     }
    ],
-   "achados_total": 15,
+   "achados_total": 16,
    "valor": "baixo volume",
-   "achados_30d": 10,
+   "achados_30d": 11,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
     "dia_forte": "sexta"
    },
    "falhas": [
-    {
-     "conselheiro": "falso_verde",
-     "falha": "CONGELADO",
-     "prova": "o mesmo achado repetido em 5 dias",
-     "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
-    },
     {
      "conselheiro": "funil",
      "falha": "VAZAMENTO",
@@ -3158,7 +3146,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "24 leituras vazias seguidas",
+     "prova": "25 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3190,7 +3178,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "23 leituras vazias seguidas",
+     "prova": "24 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3347,7 +3335,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "22 leituras vazias seguidas",
+     "prova": "23 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3531,8 +3519,14 @@
    "falhas": [
     {
      "conselheiro": "falso_verde",
+     "falha": "PÁGINA VAZIA",
+     "prova": "leitura em 0 s com 0 página(s)",
+     "melhoria": "a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte"
+    },
+    {
+     "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "22 leituras vazias seguidas",
+     "prova": "23 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3904,7 +3898,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "23 leituras vazias seguidas",
+     "prova": "24 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3978,7 +3972,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "73 leituras vazias seguidas",
+     "prova": "74 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -4005,7 +3999,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "46 leituras vazias seguidas",
+     "prova": "47 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -4014,7 +4008,7 @@
    "nome": "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)",
    "tipo": "ministerio_publico",
    "saude": [],
-   "achados_total": 45,
+   "achados_total": 46,
    "valor": "ruído",
    "achados_30d": 11,
    "cadencia": {
@@ -4038,7 +4032,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "45 achados e nenhuma oportunidade confirmada",
+     "prova": "46 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4059,7 +4053,7 @@
      "itens": 44
     }
    ],
-   "achados_total": 73,
+   "achados_total": 74,
    "valor": "ruído",
    "achados_30d": 18,
    "cadencia": {
@@ -4071,7 +4065,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "73 achados e nenhuma oportunidade confirmada",
+     "prova": "74 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4104,7 +4098,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "43 leituras vazias seguidas",
+     "prova": "44 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -4124,7 +4118,7 @@
    ],
    "achados_total": 33,
    "valor": "ruído",
-   "achados_30d": 2,
+   "achados_30d": 1,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -4136,6 +4130,12 @@
      "falha": "RUÍDO",
      "prova": "33 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "CUSTO SEM RETORNO",
+     "prova": "236 s na última leitura sem achado",
+     "melhoria": "reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem"
     }
    ]
   },
@@ -4315,7 +4315,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "22 leituras vazias seguidas",
+     "prova": "23 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -4369,7 +4369,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "22 leituras vazias seguidas",
+     "prova": "23 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -4398,7 +4398,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "22 leituras vazias seguidas",
+     "prova": "23 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -4528,7 +4528,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "22 leituras vazias seguidas",
+     "prova": "23 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -4557,7 +4557,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "22 leituras vazias seguidas",
+     "prova": "23 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
