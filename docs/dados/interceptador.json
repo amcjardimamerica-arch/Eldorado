@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-13T03:29:18+00:00",
+  "em": "2026-10-13T03:46:44+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-13T03:15:03+00:00",
+  "ultimo_voo": "2026-10-13T03:33:36+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 90,
+    "missoes": 91,
     "validadas": 3,
     "parciais": 23,
-    "insuficientes": 60,
+    "insuficientes": 61,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 72,
+      "sim": 73,
       "nao": 10
     },
     "estrelas_de_ouro": 2,
@@ -52,6 +52,73 @@
     "tempo_medio_min": 13.3
   },
   "missoes": [
+    {
+      "em": "2026-10-13T03:33:36+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Birigui (SP) 2026-10-09 — \"termo de fomento\" \"chamamento público\"",
+      "qualidade": "insuficiente",
+      "comprovados": 4,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O Diário Oficial de Birigui (SP) de 2026-10-09 menciona um 'termo de fomento' e 'chamamento público', o que indica a existência de uma oportunidade de financiamento para organizações da sociedade civil.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital abrange sua área de atuação, preparar um projeto alinhado aos objetivos do edital, reunir os documentos exigidos e submeter a proposta no prazo estabelecido.",
+        "proximo_passo": "Consultar o edital completo para entender os requisitos, área de atuação e prazos de inscrição e recursos.",
+        "risco": "O prazo de inscrição e recursos não foram encontrados, o que pode impedir a associação de se inscrever a tempo."
+      },
+      "erro": null,
+      "segundos": 787,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "b39c47ae8bdeb3ffa2d5",
+      "encontrou": {
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Birigui",
+          "trecho": "SAMANTA PAULA ALBANI BORINI, Prefeita do Município de Birigui, do Estado de São Paulo, no uso de suas atribuições legais,",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "SP",
+          "trecho": "MUNICÍPIO DE BIRIGUI",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Birigui",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3506508/2026-10-09/ca3faab61377552c643d4d1b1cc575c0982498ab.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-13T03:15:03+00:00",
       "modo": "validar",
@@ -2927,93 +2994,6 @@
       "rotas": [
         "financiador_programa_edital",
         "financiador_regulamento"
-      ]
-    },
-    {
-      "em": "2026-10-12T15:59:19+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · oportunidade do mapa",
-      "alvo": "Governo de Goiás abre inscrições para novo edital de Pontos de Cultura, com investimento de cerca de R$ 2 milhões",
-      "qualidade": "validada",
-      "comprovados": 10,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Resultado",
-        "Prazo de recurso"
-      ],
-      "pagina_oficial": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/04/Edital-18-2026-Pontoes-de-Cultura.pdf",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto fornece informações detalhadas sobre o edital, incluindo objeto, prazo, valor, requisitos e outros dados relevantes para a análise.",
-        "para_a_amc": "A associação comunitária de Goiânia precisa ser uma entidade com constituição jurídica, de natureza/finalidade cultural e/ou educativa, desenvolver atividades culturais em parceria com redes regionais, identitárias e temáticas de pontos de cultura e outras redes temáticas.",
-        "proximo_passo": "Verificar os requisitos do edital e preparar os documentos necessários para inscrição no período de 2026-04-01 a 2026-04-30.",
-        "risco": "A falta de constituição jurídica ou a impossibilidade de desenvolver atividades culturais em parceria com as redes regionais pode impedir o acesso."
-      },
-      "erro": null,
-      "segundos": 1249,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 9,
-      "justificativa": "prazo de inscrição comprovado na fonte oficial, página oficial mapeada e 9 ou mais das 12 condições comprovadas ou dispensadas",
-      "avaliacao": "pronta para a decisão do Claude",
-      "id": "b75d0bbaa62e06b8606a",
-      "encontrou": {
-        "Objeto": {
-          "valor": "seleção de 02 (dois) projetos de Pontões de Cultura que promovam o acesso da população aos bens e aos serviços culturais nos territórios e comunidades onde atuam",
-          "trecho": "1.1 Este Edital tem por objeto a seleção de 02 (dois) projetos de Pontões de Cultura que promovam o acesso da população aos bens e aos serviços culturais nos territórios e comunida",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "2026-04-01 a 2026-04-30",
-          "trecho": "Aqui você vai encontrar as regras deste edital e como fazer para inscrever seu projeto.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "cerca de R$ 2 milhões",
-          "trecho": "Governo de Goiás abre inscrições para novo edital de Pontos de Cultura, com investimento de cerca de R$ 2 milhões",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "SECRETARIA DE ESTADO DA CULTURA",
-          "trecho": "ESTADO DE GOIÁS\nSECRETARIA DE ESTADO DA CULTURA",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "REDE ESTADUAL DE PONTÕES DE CULTURA DE GOIÁS",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "1.1 Este Edital tem por objeto a seleção de 02 (dois) projetos de Pontões de Cultura que promovam o acesso da população aos bens e aos serviços culturais nos territórios e comunida",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "1.1 Este Edital tem por objeto a seleção de 02 (dois) projetos de Pontões de Cultura que promovam o acesso da população aos bens e aos serviços culturais nos territórios e comunida",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "entidades com constituição jurídica, de natureza/finalidade cultural e/ou educativa, desenvolvam, acompanhem e articulem atividades culturais, em parceria com as redes regionais, identitárias e temáticas de pontos de cultura e outras redes temáticas",
-          "trecho": "1.2 De acordo com a Lei Cultura Viva e os regramentos deste Edital, considera-se:\n a) Pontões de cultura: entidades com constituição jurídica, de natureza/finalidade cultural e/ou ",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Secretaria de Estado da Cultura",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador"
       ]
     }
   ],
