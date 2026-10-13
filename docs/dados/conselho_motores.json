@@ -1,5 +1,5 @@
 {
- "em": "2026-10-13T03:52:34+00:00",
+ "em": "2026-10-13T05:27:02+00:00",
  "conselho": [
   {
    "id": "falso_verde",
@@ -46,23 +46,23 @@
  ],
  "resumo": {
   "motores": 148,
-  "motores_com_falha": 95,
+  "motores_com_falha": 97,
   "falhas_por_tipo": {
-   "CONGELADO": 23,
+   "CONGELADO": 22,
    "SILÊNCIO LONGO": 44,
-   "VAZAMENTO": 44,
+   "CUSTO SEM RETORNO": 1,
+   "VAZAMENTO": 46,
    "CEGO": 23,
    "PÁGINA VAZIA": 10,
-   "INTERMITENTE": 2,
-   "RUÍDO": 26,
-   "CUSTO SEM RETORNO": 1
+   "INTERMITENTE": 3,
+   "RUÍDO": 26
   }
  },
  "cobertura": {
   "origem_das_oportunidades": {
    "agregador/outra": 306,
    "motor": 135,
-   "Piloto": 105
+   "Piloto": 106
   },
   "fora_dos_motores_pct": 75.3,
   "ufs_sem_motor_com_oportunidade": [
@@ -115,7 +115,7 @@
   }
  },
  "fontes_irmas": {
-  "total": 218,
+  "total": 216,
   "top": [
    {
     "dominio": "baoba.org.br",
@@ -128,14 +128,14 @@
     "url": "https://www.licitario.com.br"
    },
    {
+    "dominio": "institutolojasrenner.org.br",
+    "peso": 15,
+    "url": "https://www.institutolojasrenner.org.br/edital/"
+   },
+   {
     "dominio": "zurich.com.br",
     "peso": 13,
     "url": "https://www.zurich.com.br/leis-de-incentivo-2026"
-   },
-   {
-    "dominio": "institutolojasrenner.org.br",
-    "peso": 13,
-    "url": "https://www.institutolojasrenner.org.br/jornada-fortalecidas/"
    },
    {
     "dominio": "itausocial.org.br",
@@ -188,6 +188,11 @@
     "url": "https://www.fondationfrancoisschneider.org/concours-talents-contemporains/concours-talents-contemporains-leau-wattwiller/"
    },
    {
+    "dominio": "fbb.org.br",
+    "peso": 7,
+    "url": "https://fbb.org.br/edital-publico/editalriodoce/"
+   },
+   {
     "dominio": "fns.cnbb.org.br",
     "peso": 7,
     "url": "https://fns.cnbb.org.br/fundo/informativo/index"
@@ -225,7 +230,7 @@
    {
     "dominio": "institutoinad.org.br",
     "peso": 6,
-    "url": "https://institutoinad.org.br/editais/edital-fundos-da-infancia-e-da-adolescencia-2026/"
+    "url": "https://institutoinad.org.br/editais/edital-de-chamada-publica-no-003-2026-ater-para-mulheres-que-transformam-e-conquistam-autonomias/"
    },
    {
     "dominio": "jornadasocial.com.br",
@@ -236,18 +241,13 @@
     "dominio": "equatorial.gestaocpp.com.br",
     "peso": 6,
     "url": "https://equatorial.gestaocpp.com.br/uploads/landing/11111111-1111-1111-1111-111111111111/747d7203-1ac0-4d7f-91c8-ae479f9872c3.pdf"
-   },
-   {
-    "dominio": "banrisulcultural.com.br",
-    "peso": 6,
-    "url": "https://banrisulcultural.com.br/projeto/merece/"
    }
   ]
  },
  "plataformas": {
   "plataformas": {
    "WordPress": {
-    "orgaos": 67,
+    "orgaos": 68,
     "exemplos": [
      "alvoradadonorte.go.gov.br",
      "anater.org",
@@ -280,7 +280,7 @@
     ]
    },
    "Portal de transparência de fornecedor": {
-    "orgaos": 16,
+    "orgaos": 17,
     "exemplos": [
      "bndes.gov.br",
      "comunidade.transparenciainternacional.org.br",
@@ -322,7 +322,7 @@
    {
     "inovacao": "Adaptador por plataforma",
     "o_que": "um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão",
-    "alcance": "67 órgãos WordPress e 10 instâncias de Mapas Culturais já conhecidos de uma vez"
+    "alcance": "68 órgãos WordPress e 10 instâncias de Mapas Culturais já conhecidos de uma vez"
    },
    {
     "inovacao": "Detecção de mudança barata",
@@ -375,7 +375,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "28 leituras vazias seguidas",
+     "prova": "29 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -390,9 +390,9 @@
      "bytes": 104
     }
    ],
-   "achados_total": 347,
+   "achados_total": 350,
    "valor": "confirma",
-   "achados_30d": 123,
+   "achados_30d": 126,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -405,14 +405,18 @@
    "tipo": "diario_oficial",
    "saude": [
     {
-     "url": "https://www.in.gov.br/leiturajornal?data=12-10-2026&secao=do1",
-     "http": 200,
-     "bytes": 0
+     "url": "https://www.in.gov.br/leiturajornal",
+     "erro": "secao_nao_lida",
+     "code": null,
+     "waf": null,
+     "causa": "2026-10-13 do1: conexão derrubada pelo servidor: Remote end closed connection without response"
     },
     {
-     "url": "https://www.in.gov.br/leiturajornal?data=12-10-2026&secao=do3",
-     "http": 200,
-     "bytes": 0
+     "url": "https://www.in.gov.br/leiturajornal",
+     "erro": "secao_nao_lida",
+     "code": null,
+     "waf": null,
+     "causa": "2026-10-13 do3: conexão derrubada pelo servidor: Remote end closed connection without response"
     }
    ],
    "achados_total": 63,
@@ -427,8 +431,14 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "39 leituras vazias seguidas",
+     "prova": "40 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "CUSTO SEM RETORNO",
+     "prova": "124 s na última leitura sem achado",
+     "melhoria": "reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem"
     }
    ]
   },
@@ -459,7 +469,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "56 leituras vazias seguidas",
+     "prova": "57 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     },
     {
@@ -477,8 +487,8 @@
     {
      "url": "https://www.goiania.go.leg.br",
      "http": 200,
-     "bytes": 219767,
-     "itens": 18
+     "bytes": 285344,
+     "itens": 26
     },
     {
      "url": "https://www.goiania.go.leg.br",
@@ -505,7 +515,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "103 leituras vazias seguidas",
+     "prova": "104 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -564,7 +574,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "CEGO",
-     "prova": "respondeu 200 em 23 de 30 dias e não achou nada em 30 dias",
+     "prova": "respondeu 200 em 22 de 30 dias e não achou nada em 30 dias",
      "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
     },
     {
@@ -576,7 +586,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "54 leituras vazias seguidas",
+     "prova": "55 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -724,9 +734,9 @@
      "posts": 5
     }
    ],
-   "achados_total": 109,
+   "achados_total": 111,
    "valor": "confirma",
-   "achados_30d": 27,
+   "achados_30d": 29,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -818,17 +828,17 @@
     {
      "url": "https://www.saneago.com.br/",
      "http": 200,
-     "bytes": 51381
+     "bytes": 260
     },
     {
      "url": "https://ancat.org.br",
      "http": 200,
-     "bytes": 160984
+     "bytes": 160972
     }
    ],
-   "achados_total": 59,
+   "achados_total": 64,
    "valor": "ruído",
-   "achados_30d": 55,
+   "achados_30d": 60,
    "cadencia": {
     "cadencia_atual": 7,
     "cadencia_recomendada": 7,
@@ -838,7 +848,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "59 achados e nenhuma oportunidade confirmada",
+     "prova": "64 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     }
    ]
@@ -893,12 +903,12 @@
     {
      "url": "https://goias.gov.br/social/",
      "http": 200,
-     "bytes": 195514
+     "bytes": 193247
     }
    ],
    "achados_total": 58,
    "valor": "ruído",
-   "achados_30d": 41,
+   "achados_30d": 40,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -908,7 +918,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "CONGELADO",
-     "prova": "o mesmo achado repetido em 28 dias",
+     "prova": "o mesmo achado repetido em 27 dias",
      "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
     },
     {
@@ -1235,15 +1245,22 @@
      "bytes": 150370
     }
    ],
-   "achados_total": 3,
+   "achados_total": 6,
    "valor": "baixo volume",
-   "achados_30d": 3,
+   "achados_30d": 6,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
     "dia_forte": "domingo"
    },
-   "falhas": []
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    }
+   ]
   },
   "f260-captacao-208": {
    "nome": "Cessão de bens móveis apreendidos",
@@ -1257,18 +1274,25 @@
     {
      "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-cultura-viva-2023-fomento-a-pontoes-de-cultura",
      "http": 200,
-     "bytes": 150376
+     "bytes": 150370
     }
    ],
-   "achados_total": 3,
+   "achados_total": 6,
    "valor": "baixo volume",
-   "achados_30d": 3,
+   "achados_30d": 6,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
     "dia_forte": "domingo"
    },
-   "falhas": []
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    }
+   ]
   },
   "f260-captacao-216": {
    "nome": "Mapa das OSC - área de editais",
@@ -1282,12 +1306,12 @@
     {
      "url": "https://mapaosc.ipea.gov.br/editais",
      "http": 200,
-     "bytes": 34848
+     "bytes": 34868
     }
    ],
-   "achados_total": 17,
+   "achados_total": 19,
    "valor": "baixo volume",
-   "achados_30d": 15,
+   "achados_30d": 17,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -1317,9 +1341,9 @@
      "bytes": 121781
     }
    ],
-   "achados_total": 95,
+   "achados_total": 99,
    "valor": "ruído",
-   "achados_30d": 73,
+   "achados_30d": 77,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -1329,7 +1353,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "95 achados e nenhuma oportunidade confirmada",
+     "prova": "99 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -1662,13 +1686,13 @@
     {
      "conselheiro": "falso_verde",
      "falha": "CEGO",
-     "prova": "respondeu 200 em 19 de 19 dias e não achou nada em 30 dias",
+     "prova": "respondeu 200 em 20 de 20 dias e não achou nada em 30 dias",
      "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
     },
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "26 leituras vazias seguidas",
+     "prova": "27 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -1718,17 +1742,17 @@
     {
      "url": "https://www.fundacaogrupoboticario.org.br/",
      "http": 200,
-     "bytes": 131289
+     "bytes": 131431
     },
     {
      "url": "https://www.fundacaogrupoboticario.org.br/noticias",
      "http": 200,
-     "bytes": 600952
+     "bytes": 601094
     }
    ],
-   "achados_total": 3,
+   "achados_total": 6,
    "valor": "baixo volume",
-   "achados_30d": 3,
+   "achados_30d": 6,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -1781,7 +1805,7 @@
     {
      "url": "https://goias.gov.br/cultura/",
      "http": 200,
-     "bytes": 237599
+     "bytes": 237705
     },
     {
      "url": "https://fica.go.gov.br",
@@ -1789,9 +1813,9 @@
      "bytes": 76703
     }
    ],
-   "achados_total": 101,
+   "achados_total": 103,
    "valor": "ruído",
-   "achados_30d": 66,
+   "achados_30d": 68,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -1801,7 +1825,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "101 achados e nenhuma oportunidade confirmada",
+     "prova": "103 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -1952,17 +1976,17 @@
     {
      "url": "https://climaesociedade.org/editais/",
      "http": 200,
-     "bytes": 99235
+     "bytes": 99260
     },
     {
      "url": "https://climaesociedade.org/editais",
      "http": 200,
-     "bytes": 99235
+     "bytes": 99260
     }
    ],
-   "achados_total": 90,
+   "achados_total": 96,
    "valor": "ruído",
-   "achados_30d": 62,
+   "achados_30d": 68,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -1972,7 +1996,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "90 achados e nenhuma oportunidade confirmada",
+     "prova": "96 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -2031,9 +2055,9 @@
      "bytes": 144676
     }
    ],
-   "achados_total": 81,
+   "achados_total": 84,
    "valor": "ruído",
-   "achados_30d": 9,
+   "achados_30d": 12,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -2043,7 +2067,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "81 achados e nenhuma oportunidade confirmada",
+     "prova": "84 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -2069,9 +2093,9 @@
      "bytes": 48553
     }
    ],
-   "achados_total": 1110,
+   "achados_total": 1131,
    "valor": "ruído",
-   "achados_30d": 202,
+   "achados_30d": 223,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -2081,7 +2105,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "1110 achados e nenhuma oportunidade confirmada",
+     "prova": "1131 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     }
    ]
@@ -2289,9 +2313,9 @@
      "status": "lida"
     }
    ],
-   "achados_total": 71,
+   "achados_total": 72,
    "valor": "ruído",
-   "achados_30d": 8,
+   "achados_30d": 9,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -2301,13 +2325,13 @@
     {
      "conselheiro": "falso_verde",
      "falha": "CONGELADO",
-     "prova": "o mesmo achado repetido em 8 dias",
+     "prova": "o mesmo achado repetido em 9 dias",
      "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
     },
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "71 achados e nenhuma oportunidade confirmada",
+     "prova": "72 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     }
    ]
@@ -2357,20 +2381,26 @@
     {
      "url": "https://api.salic.cultura.gov.br/api/v1/projetos/?UF=GO&ano_projeto=26&limit=100&offset=0&format=json",
      "erro": "salic_api",
-     "code": 500,
+     "code": 403,
      "waf": null,
-     "causa": "HTTPError: HTTP Error 500: Internal Server Error"
+     "causa": "HTTPError: HTTP Error 403: Forbidden"
     }
    ],
-   "achados_total": 302,
+   "achados_total": 305,
    "valor": "ouro",
-   "achados_30d": 85,
+   "achados_30d": 88,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
     "dia_forte": "segunda"
    },
    "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "INTERMITENTE",
+     "prova": "4 dias vermelhos alternados com dias bons",
+     "melhoria": "retentativa com espera e rota de reserva (ponte do titular)"
+    },
     {
      "conselheiro": "funil",
      "falha": "VAZAMENTO",
@@ -2512,7 +2542,7 @@
     {
      "url": "https://html.duckduckgo.com/html/?q=edital+organiza%C3%A7%C3%B5es+da+sociedade+civil+2026",
      "http": 200,
-     "bytes": 37995
+     "bytes": 38416
     },
     {
      "url": "https://html.duckduckgo.com/html/?q=",
@@ -2520,9 +2550,9 @@
      "bytes": 3108
     }
    ],
-   "achados_total": 2061,
+   "achados_total": 2103,
    "valor": "ouro",
-   "achados_30d": 614,
+   "achados_30d": 656,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -2590,7 +2620,7 @@
     {
      "url": "https://www.congressonacional.leg.br",
      "http": 200,
-     "bytes": 151533,
+     "bytes": 151531,
      "itens": 9
     },
     {
@@ -2612,13 +2642,13 @@
     {
      "conselheiro": "falso_verde",
      "falha": "CEGO",
-     "prova": "respondeu 200 em 11 de 11 dias e não achou nada em 30 dias",
+     "prova": "respondeu 200 em 12 de 12 dias e não achou nada em 30 dias",
      "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
     },
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "61 leituras vazias seguidas",
+     "prova": "62 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -2687,12 +2717,12 @@
     {
      "url": "https://portal.al.go.leg.br/",
      "http": 200,
-     "bytes": 133434
+     "bytes": 133158
     },
     {
      "url": "https://saude.goiania.go.gov.br/",
      "http": 200,
-     "bytes": 107018
+     "bytes": 106958
     }
    ],
    "achados_total": 15,
@@ -2766,7 +2796,7 @@
     {
      "url": "https://goias.gov.br/cultura/",
      "http": 200,
-     "bytes": 237599
+     "bytes": 237705
     },
     {
      "url": "https://pnab.cultura.go.gov.br",
@@ -2774,9 +2804,9 @@
      "bytes": 123187
     }
    ],
-   "achados_total": 30,
+   "achados_total": 32,
    "valor": "ruído",
-   "achados_30d": 27,
+   "achados_30d": 29,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -2786,7 +2816,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "30 achados e nenhuma oportunidade confirmada",
+     "prova": "32 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -3028,7 +3058,7 @@
     {
      "url": "https://portal.al.go.leg.br/",
      "http": 200,
-     "bytes": 133434
+     "bytes": 133158
     },
     {
      "url": "https://www12.senado.leg.br/",
@@ -3126,7 +3156,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "21 leituras vazias seguidas",
+     "prova": "22 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3170,7 +3200,7 @@
     {
      "url": "https://sgp.undp.org/",
      "http": 200,
-     "bytes": 104763
+     "bytes": 104689
     }
    ],
    "achados_total": 0,
@@ -3359,7 +3389,7 @@
     {
      "url": "https://www.gov.br/mds/pt-br",
      "http": 200,
-     "bytes": 215520
+     "bytes": 215526
     },
     {
      "url": "https://www.gov.br/mds/pt-br/acesso-a-informacao/internacional/editais-em-selecao",
@@ -3367,9 +3397,9 @@
      "bytes": 152727
     }
    ],
-   "achados_total": 14,
+   "achados_total": 16,
    "valor": "baixo volume",
-   "achados_30d": 12,
+   "achados_30d": 14,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -3379,7 +3409,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "CONGELADO",
-     "prova": "o mesmo achado repetido em 6 dias",
+     "prova": "o mesmo achado repetido em 7 dias",
      "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
     },
     {
@@ -3728,9 +3758,9 @@
      "bytes": 18861
     }
    ],
-   "achados_total": 22,
+   "achados_total": 24,
    "valor": "ruído",
-   "achados_30d": 10,
+   "achados_30d": 12,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -3740,13 +3770,13 @@
     {
      "conselheiro": "falso_verde",
      "falha": "CONGELADO",
-     "prova": "o mesmo achado repetido em 5 dias",
+     "prova": "o mesmo achado repetido em 6 dias",
      "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
     },
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "22 achados e nenhuma oportunidade confirmada",
+     "prova": "24 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -3822,9 +3852,9 @@
      "bytes": 81539
     }
    ],
-   "achados_total": 24,
+   "achados_total": 28,
    "valor": "ruído",
-   "achados_30d": 20,
+   "achados_30d": 24,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -3834,13 +3864,13 @@
     {
      "conselheiro": "falso_verde",
      "falha": "CONGELADO",
-     "prova": "o mesmo achado repetido em 5 dias",
+     "prova": "o mesmo achado repetido em 6 dias",
      "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
     },
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "24 achados e nenhuma oportunidade confirmada",
+     "prova": "28 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -3888,19 +3918,19 @@
    "tipo": "privada",
    "saude": [
     {
+     "url": "https://banrisulcultural.com.br/editais/",
+     "http": 200,
+     "bytes": 80112
+    },
+    {
      "url": "https://banrisulcultural.com.br/projeto/merece/",
      "http": 200,
      "bytes": 76412
-    },
-    {
-     "url": "https://banrisulcultural.com.br/editais",
-     "http": 200,
-     "bytes": 80112
     }
    ],
-   "achados_total": 6,
+   "achados_total": 7,
    "valor": "baixo volume",
-   "achados_30d": 5,
+   "achados_30d": 6,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -3910,7 +3940,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "CONGELADO",
-     "prova": "o mesmo achado repetido em 5 dias",
+     "prova": "o mesmo achado repetido em 6 dias",
      "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
     },
     {
@@ -3952,7 +3982,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "70 leituras vazias seguidas",
+     "prova": "71 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3979,7 +4009,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "43 leituras vazias seguidas",
+     "prova": "44 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3988,9 +4018,9 @@
    "nome": "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)",
    "tipo": "ministerio_publico",
    "saude": [],
-   "achados_total": 42,
+   "achados_total": 43,
    "valor": "ruído",
-   "achados_30d": 10,
+   "achados_30d": 11,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -4000,7 +4030,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "CONGELADO",
-     "prova": "o mesmo achado repetido em 10 dias",
+     "prova": "o mesmo achado repetido em 11 dias",
      "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
     },
     {
@@ -4012,7 +4042,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "42 achados e nenhuma oportunidade confirmada",
+     "prova": "43 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4033,9 +4063,9 @@
      "itens": 44
     }
    ],
-   "achados_total": 70,
+   "achados_total": 71,
    "valor": "ruído",
-   "achados_30d": 17,
+   "achados_30d": 18,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -4045,7 +4075,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "70 achados e nenhuma oportunidade confirmada",
+     "prova": "71 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4078,7 +4108,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "40 leituras vazias seguidas",
+     "prova": "41 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -4096,9 +4126,9 @@
      "http": 200
     }
    ],
-   "achados_total": 31,
+   "achados_total": 32,
    "valor": "ruído",
-   "achados_30d": 1,
+   "achados_30d": 2,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -4108,14 +4138,8 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "31 achados e nenhuma oportunidade confirmada",
+     "prova": "32 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "CUSTO SEM RETORNO",
-     "prova": "130 s na última leitura sem achado",
-     "melhoria": "reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem"
     }
    ]
   },
@@ -4126,17 +4150,17 @@
     {
      "url": "https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14/",
      "http": 200,
-     "bytes": 165044
+     "bytes": 165045
     },
     {
      "url": "https://goias.gov.br/cultura/editais/",
      "http": 200,
-     "bytes": 215297
+     "bytes": 215296
     }
    ],
-   "achados_total": 47,
+   "achados_total": 54,
    "valor": "ruído",
-   "achados_30d": 47,
+   "achados_30d": 54,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -4146,7 +4170,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "47 achados e nenhuma oportunidade confirmada",
+     "prova": "54 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4162,23 +4186,23 @@
    "tipo": "site_oficial",
    "saude": [
     {
-     "url": "https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente/publicacoes/editais",
+     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais-e-portarias/editais/2023/inscricoes-abertas/edital-comites-de-cultura?_authenticator=c61c3a08fab23fa4cd1e7ede07d7403cfa1a6523",
      "http": 200,
-     "bytes": 237686
+     "bytes": 149747
     },
     {
-     "url": "https://www.gov.br/mdh/pt-br/acesso-a-informacao/governanca/transparencia-e-prestacao-de-contas/rol-de-responsaveis",
+     "url": "https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente/publicacoes/editais",
      "http": 200,
-     "bytes": 208586
+     "bytes": 237692
     }
    ],
-   "achados_total": 0,
+   "achados_total": 3,
    "valor": "baixo volume",
-   "achados_30d": 0,
+   "achados_30d": 3,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
-    "dia_forte": null
+    "dia_forte": "terça"
    },
    "falhas": []
   },
@@ -4187,14 +4211,14 @@
    "tipo": "privada",
    "saude": [
     {
-     "url": "https://mariaemilia.org.br/edital-fme-transforma/",
+     "url": "https://mariaemilia.org.br/feed",
      "http": 200,
-     "bytes": 112132
+     "bytes": 45191
     },
     {
-     "url": "https://mariaemilia.org.br",
+     "url": "https://mariaemilia.org.br/edital-fme-transforma/",
      "http": 200,
-     "bytes": 171065
+     "bytes": 112134
     }
    ],
    "achados_total": 0,
@@ -4237,14 +4261,14 @@
      "bytes": 441577
     },
     {
-     "url": "https://www3.cfc.org.br/spw/PortalTransparencia/Consulta.aspx?CS=7DjWa47nCjc=",
+     "url": "https://crcgo.org.br/editais",
      "http": 200,
-     "bytes": 87312
+     "bytes": 277539
     }
    ],
-   "achados_total": 5,
+   "achados_total": 6,
    "valor": "baixo volume",
-   "achados_30d": 5,
+   "achados_30d": 6,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -4254,7 +4278,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "CONGELADO",
-     "prova": "o mesmo achado repetido em 5 dias",
+     "prova": "o mesmo achado repetido em 6 dias",
      "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
     },
     {
@@ -4390,7 +4414,7 @@
     {
      "url": "https://www.senadorpompeu.ce.gov.br/",
      "http": 200,
-     "bytes": 163258
+     "bytes": 163102
     },
     {
      "url": "https://www.senadorpompeu.ce.gov.br/acessoainformacao.php",
@@ -4414,8 +4438,10 @@
    "saude": [
     {
      "url": "https://carazinho.atende.net/",
-     "http": 200,
-     "bytes": 203720
+     "erro": "gaierror",
+     "code": null,
+     "waf": null,
+     "causa": "endereço não resolve (DNS) — URL errada ou domínio desativado"
     }
    ],
    "achados_total": 0,
@@ -4433,14 +4459,14 @@
    "tipo": "site_oficial",
    "saude": [
     {
-     "url": "https://www.detran.rj.gov.br/",
+     "url": "https://www.detran.rj.gov.br/sitemap.xml",
      "http": 200,
-     "bytes": 81666
+     "bytes": 89546
     },
     {
-     "url": "https://www.detran.rj.gov.br/transparencia/transparencia-outros/abertura-de-processos-peticionamento",
+     "url": "https://www.detran.rj.gov.br/",
      "http": 200,
-     "bytes": 119100
+     "bytes": 81833
     }
    ],
    "achados_total": 0,
@@ -4458,14 +4484,14 @@
    "tipo": "site_oficial",
    "saude": [
     {
+     "url": "https://www.riopreto.sp.gov.br/transparencia/editais",
+     "http": 200,
+     "bytes": 172114
+    },
+    {
      "url": "https://www.riopreto.sp.gov.br/",
      "http": 200,
      "bytes": 1676754
-    },
-    {
-     "url": "https://radardatransparencia.atricon.org.br/",
-     "http": 200,
-     "bytes": 21836
     }
    ],
    "achados_total": 0,
@@ -4563,7 +4589,7 @@
     {
      "url": "https://www.itabaianinha.se.gov.br/",
      "http": 200,
-     "bytes": 142358
+     "bytes": 142404
     },
     {
      "url": "https://www.itabaianinha.se.gov.br/licitacoes",
@@ -4571,9 +4597,9 @@
      "bytes": 50563
     }
    ],
-   "achados_total": 10,
+   "achados_total": 12,
    "valor": "baixo volume",
-   "achados_30d": 10,
+   "achados_30d": 12,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -4583,7 +4609,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "CONGELADO",
-     "prova": "o mesmo achado repetido em 5 dias",
+     "prova": "o mesmo achado repetido em 6 dias",
      "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
     },
     {
@@ -4646,7 +4672,7 @@
     {
      "url": "https://www.santaluziadoparua.ma.gov.br/",
      "http": 200,
-     "bytes": 165742
+     "bytes": 165586
     },
     {
      "url": "https://www.santaluziadoparua.ma.gov.br/acessoainformacao.php",
@@ -4716,7 +4742,7 @@
     {
      "url": "https://carire.ce.gov.br/",
      "http": 200,
-     "bytes": 158741
+     "bytes": 158641
     },
     {
      "url": "https://carire.ce.gov.br/acessoainformacao.php",
@@ -4724,21 +4750,15 @@
      "bytes": 176837
     }
    ],
-   "achados_total": 18,
+   "achados_total": 19,
    "valor": "baixo volume",
-   "achados_30d": 18,
+   "achados_30d": 19,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
     "dia_forte": "sábado"
    },
    "falhas": [
-    {
-     "conselheiro": "falso_verde",
-     "falha": "CONGELADO",
-     "prova": "o mesmo achado repetido em 5 dias",
-     "melhoria": "detectar mudança por hash/lastmod e só contar o que é novo"
-    },
     {
      "conselheiro": "funil",
      "falha": "VAZAMENTO",
