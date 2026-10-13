@@ -1,4 +1,4 @@
-# Pacote para o Claude Desktop — 2026-10-12
+# Pacote para o Claude Desktop — 2026-10-13
 
 Você está no computador do titular, com IP brasileiro, navegador e o repositório Eldorado clonado. Use o modelo mais forte disponível (Opus 5) para validar. Trabalhe nesta ordem, sem pular etapa, e devolva os arquivos no formato indicado. Nunca estime datas; quando não houver base, escreva o motivo.
 
@@ -8,22 +8,18 @@ Nenhum motor aguardando coleta local hoje.
 
 ## Etapa 2 — motores em alerta (não leram, falharam ou passaram da cadência)
 
-- **TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO** — todas as páginas falharam em 2026-10-12. Ação: conferir bloqueio/mudança de formato; o Claude Desktop abre a rota no navegador.
+- **TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO** — todas as páginas falharam em 2026-10-13. Ação: conferir bloqueio/mudança de formato; o Claude Desktop abre a rota no navegador.
     - abrir https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss e procurar: prestação pecuniária, penas pecuniárias, penas alternativas, transação penal, projetos sociais, finalidade social
     - abrir https://www.tjgo.jus.br/files/ e procurar: prestação pecuniária, penas pecuniárias, penas alternativas, transação penal, projetos sociais, finalidade social
     - abrir https://corregedoria.tjgo.jus.br/basesocial e procurar: prestação pecuniária, penas pecuniárias, penas alternativas, transação penal, projetos sociais, finalidade social
-- **Lei Rouanet — janela de propostas no SALIC e projetos de Goiás (Ministério da Cultura)** — todas as páginas falharam em 2026-10-12. Ação: conferir bloqueio/mudança de formato; o Claude Desktop abre a rota no navegador.
-    - abrir https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet e procurar: Lei Rouanet, PRONAC, Salic, proposta cultural, incentivo fiscal, mecenato
-    - abrir https://salic.cultura.gov.br/ e procurar: Lei Rouanet, PRONAC, Salic, proposta cultural, incentivo fiscal, mecenato
-    - abrir https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet/legislacao e procurar: Lei Rouanet, PRONAC, Salic, proposta cultural, incentivo fiscal, mecenato
 - **Adaptador Mapas Culturais — oportunidades com inscrição aberta** — nunca rodou. Ação: conferir se o sensor está na escala; se for novo, esperar a próxima saída.
 - **Adaptador WordPress — sites oficiais pela API pública** — nunca rodou. Ação: conferir se o sensor está na escala; se for novo, esperar a próxima saída.
-- **Motor de Recorrência — revisita as oportunidades identificadas** — 2 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
+- **Motor de Recorrência — revisita as oportunidades identificadas** — 3 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
     - abrir https://observatorio3setor.org.br/editais/ e procurar: retificação, prorrogação, errata, resultado, homologação, classificados
 
 Para cada rota aberta, liste os editais publicados nos últimos 30 dias que casem com o léxico e que ainda não estejam em `dados/editais/`. Devolva em `dados/editais/coleta_navegador/<data>-motores.json` no formato `{"<id ou novo>": {"objeto":..., "inicio":..., "fim":..., "pagina_oficial":..., "observacao":...}}`.
 
-## Etapa 3 — oportunidades aguardando ação externa (71)
+## Etapa 3 — oportunidades aguardando ação externa (75)
 
 - `3f4e0f749a5a6e40f2c4` — Edital prevê seleção de 58 apresentações artísticas para o Natal do Bem 2026 · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/edital-preve-selecao-de-58-apresentacoes-artisticas-para-o-natal-do-bem-2026
 - `9e37b9ad76d2ce6ca86c` — Secult Goiás lança edital para levar produção artística goiana ao Rio de Janeiro · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/secult-goias-lanca-edital-para-levar-producao-artistica-goiana-ao-rio-de-janeiro
@@ -45,6 +41,9 @@ Para cada rota aberta, liste os editais publicados nos últimos 30 dias que case
 - `071b5c43003b747cdefb` — Fomento e inovação · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://editaisdobrasil.com/oportunidades/fomento
 - `0b5d0909bd06c71b48cc` — Link do Edital · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://sei.londrina.pr.gov.br/sei/modulos/pesquisa/md_pesq_documento_consulta_externa.php?d-qBlq_KF4_2fdKMgucKGw2SOOsdRDgKOTtYkpTOQj10fSYca2MZ0TxtD9cAKGn3S98vulMME9eMyYCnnB0Wk-xEjiGkgJGvGWJycKFV0izHCqjzl1Wx--IlvFZspiP9
 - `31d75be19bda83fc4cf8` — Termo de Revogação de Edital: 001/2026  29/05/2026 · TERMO DE REVOGAÇÃO EDITAL DE CHAMAMEN · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://potengi.ce.gov.br/publicacoes.php?id=897
+- `51ffa1e5cc63da5dc6fc` — Link do Edital · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://sei.londrina.pr.gov.br/sei/modulos/pesquisa/md_pesq_documento_consulta_externa.php?d-qBlq_KF4_2fdKMgucKGw2SOOsdRDgKOTtYkpTOQj3TKL6Jk8HSU2H4wNU6uWQP6zzVuay-U2ZAOrnOYeQGGF_bLcjdANaZZjyNnFNYxYhCTxOyxEfjrfnVoAoxC0Zd
+- `816456fc7f9c0ca4e920` — Contatos fiscais MMA - Edital catadores · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://portal-api.sinir.gov.br/wp-content/uploads/2026/01/Contatos-fiscais-MMA-Edital-catadores.xlsx
+- `afde5085f2bfd46c83d7` — Link do Edital · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://sei.londrina.pr.gov.br/sei/modulos/pesquisa/md_pesq_documento_consulta_externa.php?d-qBlq_KF4_2fdKMgucKGw2SOOsdRDgKOTtYkpTOQj2mJDAXThgIZd-gB1vu8OlIeqU5fqNRu0T2ts9N9n5Cx6AHAge2gMvW2CcQYHWJHVjjMfSSH54whm_dkOr54ute
 - `400d80f3c84332f2aa0c` — EDITAL DE Nº 126/IFAL, DE 18 DE SETEMBRO DE 2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/edital-de-n-126/ifal-de-18-de-setembro-de-2026-733048195
 - `69322c6a48f05a2475c3` — MUNICIPIO DE PALMEIRA DOS INDIOS — Constitui-se objeto do presente Edital estabelecer o cu · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/12356879000198/2025/82
 - `cb432735cfee7c76d00c` — AGENCIA MUNICIPAL DE REGULACAO DE SERVICOS DELEGADOS- ARSER — CHAMAMENTO PÚBLICO PARA A SE · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/26981455000129/2026/51
@@ -62,9 +61,6 @@ Para cada rota aberta, liste os editais publicados nos últimos 30 dias que case
 - `97773a721bd40ede563f` — Prefeitura de Corumbá de Goiás — AVISO DE CHAMAMENTO PÚBLICO Nº 3/2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-3/2026-736008019
 - `b5199edf43e7cbb8db7d` — MUNICIPIO DE PIRENOPOLIS — CHAMAMENTO PÚBLICO VISANDO CELEBRAR TERMO DE COLABORAÇÃO COM OR · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/01067941000105/2025/74
 - `e52948420e0f68ed58fe` — Prefeitura de Santa Rita do Araguaia — EDITAL · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/edital-737063275
-- `4a13aa8e19505a23ef93` — Prefeitura de Rubiataba — AVISO DE CHAMAMENTO PÚBLICO Nº 1/2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-1/2026-737681970
-- `cdce73418df703bb9a96` — Prefeitura de Piracanjuba — Edital nº 001/2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://diariooficial.abc.go.gov.br/portal/visualizacoes/pdf/7401/#e:7401
-- `448c8e19f08994a9661f` — SECTI-GO (ciência e tecnologia) — Edital nº 002/2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://diariooficial.abc.go.gov.br/portal/visualizacoes/pdf/7374/#e:7374
 
 ## Etapa 4 — oportunidades parciais do modo completo, para validar com Opus 5 (40)
 
