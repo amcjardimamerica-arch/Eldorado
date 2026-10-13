@@ -376,7 +376,7 @@
   "Cartório (site oficial certificado)": 122,
   "Espião (privado/internacional)": 25
  },
- "lidas_nas_ultimas_24h": 227,
+ "lidas_nas_ultimas_24h": 206,
  "dimensionamento": {
   "fontes": 292,
   "sites_por_execucao": 17,
