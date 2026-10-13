@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-13T09:53:07+00:00",
+  "em": "2026-10-13T10:08:19+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-13T09:33:55+00:00",
+  "ultimo_voo": "2026-10-13T09:55:57+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 112,
+    "missoes": 113,
     "validadas": 4,
     "parciais": 26,
-    "insuficientes": 78,
+    "insuficientes": 79,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 89,
+      "sim": 90,
       "nao": 12
     },
     "estrelas_de_ouro": 3,
@@ -52,6 +52,78 @@
     "tempo_medio_min": 13.5
   },
   "missoes": [
+    {
+      "em": "2026-10-13T09:55:57+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Uberaba (MG) 2026-10-09 — \"edital de chamamento público\" associação",
+      "qualidade": "insuficiente",
+      "comprovados": 5,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Território",
+        "Requisitos",
+        "Destinação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi comprovado com informações sobre o objeto, órgão financiador, esfera e área de atuação, o que é suficiente para validar sua existência.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, que é apoiar ações de promoção da cultura e do patrimônio imaterial, e verificar se sua atuação se enquadra na área de cultura, mesmo que não seja localizada em Uberaba.",
+        "proximo_passo": "Verificar se a associação comunitária de Goiânia tem atividades alinhadas ao objeto do edital e se pode se candidatar, mesmo que não esteja localizada em Uberaba.",
+        "risco": "O prazo de inscrição, valor e outros requisitos não foram encontrados, o que pode impedir a associação de se candidatar no prazo correto ou com os recursos necessários."
+      },
+      "erro": null,
+      "segundos": 739,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "b7b15191e93b7a56481b",
+      "encontrou": {
+        "Objeto": {
+          "valor": "apoiar ações de promoção da cultura e do patrimônio imaterial da cidade de Uberaba",
+          "trecho": "FUNDAÇÃO CULTURAL DE UBERABA \"PROFº ANTÔNIO CARLOS MARQUES\"",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "FUNDAÇÃO CULTURAL DE UBERABA \"PROFº ANTÔNIO CARLOS MARQUES\"",
+          "trecho": "FUNDAÇÃO CULTURAL DE UBERABA \"PROFº ANTÔNIO CARLOS MARQUES\"",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "FUNDAÇÃO CULTURAL DE UBERABA \"PROFº ANTÔNIO CARLOS MARQUES\"",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "FUNDAÇÃO CULTURAL DE UBERABA \"PROFº ANTÔNIO CARLOS MARQUES\"",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/3170107/2026-10-09/d0f4bcac288fd162505a04e5e47e43d070fba023.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "parceiro"
+      ]
+    },
     {
       "em": "2026-10-13T09:33:55+00:00",
       "modo": "validar",
@@ -2877,93 +2949,6 @@
       "rotas": [
         "site_do_financiador",
         "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-12T22:35:09+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "Edital PNAB Niterói – 2026",
-      "qualidade": "parcial",
-      "comprovados": 8,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Requisitos"
-      ],
-      "pagina_oficial": "https://niteroi.rj.gov.br/fomento-a-cultura-niteroi-lanca-r-3-milhoes-em-editais-com-inscricoes-simplificadas/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital foi comprovado com informações sobre objeto, valor, órgão financiador, território, esfera, anexos, destinação e área de atuação.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, que é fortalecer a produção cultural na cidade, e demonstrar como sua atuação se encaixa na área de cultura, mesmo que não esteja localizada em Niterói.",
-        "proximo_passo": "Verificar se há possibilidade de aliança ou parceria com entidades localizadas em Niterói para participar do edital.",
-        "risco": "A localização da associação comunitária em Goiânia, fora do território de Niterói, pode impedir o acesso ao edital."
-      },
-      "erro": null,
-      "segundos": 906,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 7,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Requisitos",
-      "id": "d20134632a1b254dc3ff",
-      "encontrou": {
-        "Objeto": {
-          "valor": "fortalecimento da produção cultural na cidade",
-          "trecho": "A Prefeitura de Niterói vai lançar, nesta quarta-feira (21), dois editais que somam mais de R$ 3 milhões em investimentos voltados ao fortalecimento da produção cultural na cidade.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Valor": {
-          "valor": "mais de R$ 3 milhões",
-          "trecho": "A Prefeitura de Niterói vai lançar, nesta quarta-feira (21), dois editais que somam mais de R$ 3 milhões em investimentos voltados ao fortalecimento da produção cultural na cidade.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal de Niterói",
-          "trecho": "A Prefeitura de Niterói vai lançar, nesta quarta-feira (21), dois editais que somam mais de R$ 3 milhões em investimentos voltados ao fortalecimento da produção cultural na cidade.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "RJ",
-          "trecho": "A Prefeitura de Niterói vai lançar, nesta quarta-feira (21), dois editais que somam mais de R$ 3 milhões em investimentos voltados ao fortalecimento da produção cultural na cidade.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "A Prefeitura de Niterói vai lançar, nesta quarta-feira (21), dois editais que somam mais de R$ 3 milhões em investimentos voltados ao fortalecimento da produção cultural na cidade.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "elegível · fomento",
-          "trecho": "A Prefeitura de Niterói vai lançar, nesta quarta-feira (21), dois editais que somam mais de R$ 3 milhões em investimentos voltados ao fortalecimento da produção cultural na cidade.",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "SMC",
-      "indicios": [
-        {
-          "url": "https://smc.niteroi.rj.gov.br/2026/09/11/edital-pnab-niteroi-2026",
-          "tipo": "noticia"
-        }
-      ],
-      "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano",
-        "governo",
-        "programa_puro"
       ]
     }
   ],
