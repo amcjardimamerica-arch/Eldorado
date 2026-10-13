@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-13T03:46:44+00:00",
+  "em": "2026-10-13T04:05:07+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-13T03:33:36+00:00",
+  "ultimo_voo": "2026-10-13T03:49:34+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,111 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 91,
-    "validadas": 3,
+    "missoes": 92,
+    "validadas": 4,
     "parciais": 23,
     "insuficientes": 61,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 73,
+      "sim": 74,
       "nao": 10
     },
-    "estrelas_de_ouro": 2,
+    "estrelas_de_ouro": 3,
     "fontes_novas_para_os_motores": 3,
     "tempo_medio_min": 13.3
   },
   "missoes": [
+    {
+      "em": "2026-10-13T03:49:34+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Diário Oficial de Macajuba (BA) 2026-10-05 — \"termo de fomento\" \"chamamento público\"",
+      "qualidade": "validada",
+      "comprovados": 12,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [],
+      "pagina_oficial": "http://macajuba.ba.gov.br",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado menciona diretamente o termo de fomento, chamamento público, prazo, valor, objeto e outros requisitos necessários para a concessão do benefício.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se inscrever no chamamento público, apresentar os documentos exigidos (como certidão de registro civil, CPF, carteira de trabalho, comprovante de residência e histórico escolar) e anexar os documentos necessários para comprovar sua elegibilidade.",
+        "proximo_passo": "Verificar se os requisitos do edital são atendidos e se inscrever no prazo estabelecido.",
+        "risco": "O prazo de inscrição termina em 2026-10-15, e a associação pode não conseguir se inscrever a tempo ou não atender aos requisitos exigidos."
+      },
+      "erro": null,
+      "segundos": 932,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 12,
+      "justificativa": "prazo de inscrição comprovado na fonte oficial, página oficial mapeada e 9 ou mais das 12 condições comprovadas ou dispensadas",
+      "avaliacao": "pronta para a decisão do Claude",
+      "id": "6432f39176a4e137474e",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Promoção de ações de alfabetização e educação infantil",
+          "trecho": "MACAJUBA AVANÇA NA ALFABETIZAÇÃO E CLEBRA RESULTADOS POSITIVOS NO ICA 2025",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "2026-10-05 a 2026-10-15",
+          "trecho": "PREFEITURA DE MACAJUBA ABRE INSCRIÇÕES PARA EDITAL DE CHAMAMENTO PÚBLICO 002/2026 – CICLO 2",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Valor": {
+          "valor": "R$ 500.000,00",
+          "trecho": "MACAJUBA AVANÇA NA ALFABETIZAÇÃO E CLEBRA RESULTADOS POSITIVOS NO ICA 2025",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Macajuba",
+          "trecho": "PREFEITURA DE MACAJUBA ABRE INSCRIÇÕES PARA EDITAL DE CHAMAMENTO PÚBLICO 002/2026 – CICLO 2",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "BA",
+          "trecho": "PREFEITURA DE MACAJUBA ABRE INSCRIÇÕES PARA EDITAL DE CHAMAMENTO PÚBLICO 002/2026 – CICLO 2",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "educacao",
+          "trecho": "MACAJUBA AVANÇA NA ALFABETIZAÇÃO E CLEBRA RESULTADOS POSITIVOS NO ICA 2025",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Destinação": {
+          "valor": "elegível · fomento",
+          "trecho": "MACAJUBA AVANÇA NA ALFABETIZAÇÃO E CLEBRA RESULTADOS POSITIVOS NO ICA 2025",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "Certidão de Registro Civil, CPF, Carteira de Trabalho, Comprovante de Residência, Histórico Escolar",
+          "trecho": "MACAJUBA AVANÇA NA ALFABETIZAÇÃO E CLEBRA RESULTADOS POSITIVOS NO ICA 2025",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Município de Macajuba",
+      "indicios": [
+        {
+          "url": "https://data.queridodiario.ok.org.br/2919603/2026-10-05/43d2f4b96e7df3c2791d13314a81bae6bbb73cb7.pdf",
+          "tipo": "agregador"
+        }
+      ],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-13T03:33:36+00:00",
       "modo": "validar",
@@ -2926,74 +3016,6 @@
       "rotas": [
         "site_do_financiador",
         "site_do_financiador_edital"
-      ]
-    },
-    {
-      "em": "2026-10-12T16:23:30+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · oportunidade do mapa",
-      "alvo": "novo Edital",
-      "qualidade": "parcial",
-      "comprovados": 6,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://goias.go.gov.br/publicacoes/editais/edital01_2025_concurso_publico.pdf",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital comprovado menciona o objeto, órgão financiador, território, esfera, requisitos e anexos, o que é suficiente para identificar a fonte e suas condições.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar aos requisitos do edital, aceitando plenamente seus termos e anexos, e se candidatar ao preenchimento de vagas ou formação do cadastro de reserva técnica conforme o objeto do certame.",
-        "proximo_passo": "Consultar os anexos do edital para obter detalhes sobre as vagas, requisitos específicos e processos de inscrição.",
-        "risco": "A falta de informações sobre prazo de inscrição e outros detalhes pode impedir a associação de se candidatar dentro do prazo válido."
-      },
-      "erro": null,
-      "segundos": 769,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 6,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de inscrição, Resultado, Prazo de recurso, Valor",
-      "id": "a9eb19ed434790d09d46",
-      "encontrou": {
-        "Objeto": {
-          "valor": "preenchimento das vagas abertas ou que forem criadas no prazo de validade do certame, bem como para formação do cadastro de reserva técnica",
-          "trecho": "preenchimento das vagas abertas ou que forem criadas no prazo de validade do certame, bem como para formação do cadastro de reserva técnica",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "MUNICÍPIO DE GOIÁS - GO",
-          "trecho": "MUNICÍPIO DE GOIÁS - GO",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "GOIÁS - GO",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "aceitação plena e irrestrita dos termos deste Edital, de seus anexos, de eventuais retificações e da legislação vigente",
-          "trecho": "aceitação plena e irrestrita dos termos deste Edital, de seus anexos, de eventuais retificações e da legislação vigente",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "GOIAS",
-      "indicios": [],
-      "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento"
       ]
     }
   ],
