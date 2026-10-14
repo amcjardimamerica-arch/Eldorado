@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `outras-oportunidades-4`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 27
-- Distribuição por ano pesquisado/coletado: {'2026': 27}
+- Pistas aguardando confirmação: 28
+- Distribuição por ano pesquisado/coletado: {'2026': 28}
 
 ## Padrões
 
@@ -30,6 +30,7 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
          
           
                    ](https://www.itausocial.org.br/editais/edital-fundos-da-infancia-e-da-adolescencia-2026) — coletado em 2026-10-12T19:26:16+00:00
+- [Quem pode participar do edital?](https://guiadaposgraduacao.com.br/edital-conanda-sndca-seleciona-6-projetos-com-ate-r-6-milhoes) — coletado em 2026-10-14T20:22:31+00:00
 - [Fomento à Cultura](https://www.palmas.to.gov.br/core/noticias?search=Fomento%20%C3%A0%20Cultura) — coletado em 2026-10-12T15:00:33+00:00
 - [Edital de Parcerias com Organizações Sociais – MON](https://www.cultura.pr.gov.br/Pagina/Edital-de-Parcerias-com-Organizacoes-Sociais-MON) — coletado em 2026-10-13T14:06:14+00:00
 - [Regulamento - Chamada Pública Doação de Computadores – Instituições do Terceiro Setor](https://petrobras.com.br/documents/2677942/36243642/Regulamento+-+Chamada+P%C3%BAblica+Doa%C3%A7%C3%A3o+de+Computadores+%E2%80%93+Terceiro+Setor+-+Prorroga%C3%A7%C3%A3o.pdf/ee2b9282-a7e7-d846-f0bb-3589ce85feda?version=1.0&t=1751036049000&download=true) — coletado em 2026-10-13T14:05:52+00:00
