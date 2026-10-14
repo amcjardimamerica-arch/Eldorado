@@ -116,6 +116,22 @@ def area_tematica(*textos: str) -> str | None:
         for k, rx in AREAS:
             if tx and re.search(rx, tx, re.I):
                 return k
+    # 14/10 (análise do sistema): só 59% com tema — vocabulário mais amplo do painel, convertido aos temas da tela, e
+    # as chamadas de projetos sociais genéricos (impacto social, inclusão, vulnerabilidade) como assistência
+    junto = " ".join(t for t in textos if t)
+    try:
+        from .dashboard_dados import inferir_area
+        conv = {"cultura": "cultura", "esporte": "esporte", "saude": "saude", "educacao": "educacao", "meio_ambiente": "ambiente",
+                "crianca_adolescente": "crianca", "idoso": "idoso", "assistencia_social": "assistencia", "direitos_humanos": "assistencia",
+                "seguranca_alimentar": "assistencia", "emendas_parlamentares": "emendas"}.get(inferir_area(junto))
+        if conv:
+            return conv
+    except Exception:  # noqa: BLE001
+        pass
+    if re.search(r"impacto social|projetos? sociais|inclus[aã]o social|vulnerabilidade|desenvolvimento (social|comunit)|"
+                 r"transforma[cç][aã]o social|comunidades?|popula[cç][aã]o (em situa|de baixa)|direitos? (humanos|sociais)|"
+                 r"combate [aà] fome|seguran[cç]a alimentar|g[eê]nero|equidade|diversidade|antirracis", junto, re.I):
+        return "assistencia"
     return None
 
 

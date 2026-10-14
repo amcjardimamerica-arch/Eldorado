@@ -15,6 +15,8 @@ Idempotente: o mesmo parecer (mesma data + mesma oportunidade) nunca é gravado 
 """
 from __future__ import annotations
 
+import re
+
 import json
 from pathlib import Path
 
@@ -34,7 +36,30 @@ def carregar() -> dict[str, dict]:
         for p in (load_json(arq).get("pareceres") or []):
             if p.get("id"):
                 out[p["id"]] = {**p, "_arquivo": arq.name}
+    for p in out.values():                            # 14/10: dois tipos na mesma pasta — verificação (decisão) e parecer completo (12 itens)
+        p.setdefault("tipo", "verificacao" if p.get("decisao") and not p.get("doze_itens") else "parecer_completo")
+    for p in out.values():                            # 14/10 (análise do sistema): 2125 pareceres sem iniciativa
+        if (p.get("iniciativa") or {}).get("valor") not in INICIATIVAS:
+            p["iniciativa"] = {"valor": deduzir_iniciativa(p), "deduzida": True, "regra": "14/10: órgão, regime e mecanismo do parecer"}
     return out
+
+
+_INC = re.compile(r"rouanet|lei de incentivo|incentivo fiscal|fia\b|fundo da inf[aâ]ncia|fundo do idoso|pronon|pronas|goyazes|lei do esporte|"
+                  r"pat\b|dedu[cç][aã]o do imposto|renúncia fiscal|renuncia fiscal", re.I)
+_PUB = re.compile(r"prefeitura|munic[ií]pio|secretaria|governo|minist[eé]rio|c[aâ]mara|assembleia|tribunal|justi[cç]a|defensoria|"
+                  r"procuradoria|fundo (municipal|estadual|nacional)|universidade (federal|estadual)|instituto federal|ag[eê]ncia nacional|"
+                  r"funarte|ibama|cnpq|capes|finep|bndes|caixa econ[oô]mica|banco do brasil|unesco|onu\b|nações unidas|pnud|unicef|"
+                  r"embaixada|uni[aã]o europeia|consulado|conselho (municipal|estadual)|\.gov\.br|secult|seduc|semas", re.I)
+
+
+def deduzir_iniciativa(p: dict) -> str:
+    """poder_publico · iniciativa_privada · mista, pelo texto do parecer (órgão, regime, mecanismo)."""
+    t = " ".join(str(p.get(k) or "") for k in ("orgao", "financiador", "titulo", "regime", "mecanismo", "fonte", "url", "link_oficial"))
+    if _INC.search(t) or str(p.get("regime") or "") == "incentivo_fiscal":
+        return "mista"
+    if _PUB.search(t) or str(p.get("regime") or "") in ("chamamento_publico", "emenda_parlamentar", "destinacao_judicial", "credenciamento"):
+        return "poder_publico"
+    return "iniciativa_privada"
 
 
 def iniciativa_por_id(P: dict[str, dict] | None = None) -> dict[str, str]:

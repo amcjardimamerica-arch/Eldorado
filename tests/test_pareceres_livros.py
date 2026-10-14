@@ -24,7 +24,8 @@ class TestPareceresLivros(unittest.TestCase):
         P = pareceres_livros.carregar()
         for p in P.values():
             self.assertIn((p.get("iniciativa") or {}).get("valor"), pareceres_livros.INICIATIVAS)
-            self.assertEqual(len(p.get("doze_itens") or {}), 12)
+            if p.get("tipo") == "parecer_completo":     # 14/10: verificação (decisão) não traz os 12 itens
+                self.assertEqual(len(p.get("doze_itens") or {}), 12)
 
 
 if __name__ == "__main__":
