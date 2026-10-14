@@ -120,15 +120,15 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 115,
-   "achados_total_agora": 115,
+   "achados_total_1a": 117,
+   "achados_total_agora": 117,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 1381,
-   "achados_total_agora": 1381,
+   "achados_total_1a": 1403,
+   "achados_total_agora": 1403,
    "no_fluxo": 5,
    "confirmadas": 0
   },
@@ -141,8 +141,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 88,
-   "achados_total_agora": 88,
+   "achados_total_1a": 90,
+   "achados_total_agora": 90,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -169,22 +169,22 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 55,
-   "achados_total_agora": 55,
+   "achados_total_1a": 56,
+   "achados_total_agora": 56,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 83,
-   "achados_total_agora": 83,
+   "achados_total_1a": 84,
+   "achados_total_agora": 84,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-estaduais-go-gov",
-   "achados_total_1a": 38,
-   "achados_total_agora": 38,
+   "achados_total_1a": 39,
+   "achados_total_agora": 39,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -225,7 +225,7 @@
  "pontos_com_redundancia": 12,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 7583
+ "exemplos_da_rede_de_rotas": 7679
 }
 ```
 
@@ -236,12 +236,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 78.9,
- "fora_dos_motores_pct_agora": 78.9,
+ "fora_dos_motores_pct_1a": 79.2,
+ "fora_dos_motores_pct_agora": 79.2,
  "origem": {
   "agregador/outra": 323,
   "motor": 118,
-  "Piloto": 118
+  "Piloto": 125
  },
  "dominios_so_de_agregador": [
   {
@@ -319,10 +319,8 @@
  "dia_de_referencia": "2026-10-14",
  "ativos": 159,
  "lidos_ontem": 104,
- "lidos_hoje": 42,
+ "lidos_hoje": 44,
  "nao_lidos_ontem_nem_hoje": [
-  "f260-captacao-244",
-  "f260-captacao-260",
   "plat-captamos",
   "plat-rede-filantropia",
   "pncp-api",
