@@ -198,13 +198,24 @@ def diario_original_querido(url: str, getter) -> str | None:
             js = json.loads(getter(f"{base}/gazettes?territory_ids={ibge}&published_since={dia}&published_until={dia}&size=20")); break
         except Exception:  # noqa: BLE001
             continue
-    if not js:
-        return None
+    js = js or {"gazettes": []}                       # 14/10: sem a API, o mapa dos raspadores ainda resolve
     gz = js.get("gazettes") or []
     alvo = next((g for g in gz if h in str(g.get("txt_url") or "") + str(g.get("url") or "") + str(g.get("file_checksum") or "")), None) or (gz[0] if len(gz) == 1 else None)
     lk = str((alvo or {}).get("url") or "").strip()
     if lk and eh_fonte(lk):
         return lk
+    # 14/10 (pesquisa no GitHub): os raspadores do próprio Querido Diário trazem o endereço OFICIAL do diário de cada
+    # município (config/querido_diario_fontes.json, 418 municípios) — vale antes de qualquer adivinhação
+    mapa = _mapa_querido().get(ibge) or {}
+    for u in mapa.get("urls") or []:
+        d = _dom(u)
+        if re.search(r"\.gov\.br$", d) and eh_fonte(u):          # domínio do próprio município: é o site da prefeitura
+            raiz = f"{urlsplit(u).scheme}://{urlsplit(u).netloc}/"
+            try:
+                if getter(raiz):
+                    return raiz
+            except Exception:  # noqa: BLE001
+                pass
     # 14/10 (3º treino): a API do projeto só devolve a CÓPIA dele (replicador); o diário é do município — pelo código
     # IBGE (API pública do IBGE) chega-se ao nome e ao estado, e daí ao site da prefeitura
     nome, uf = ((alvo or {}).get("territory_name"), (alvo or {}).get("state_code"))
@@ -214,8 +225,24 @@ def diario_original_querido(url: str, getter) -> str | None:
             nome = m.get("nome"); uf = (((m.get("microrregiao") or {}).get("mesorregiao") or {}).get("UF") or {}).get("sigla") or \
                 ((((m.get("regiao-imediata") or {}).get("regiao-intermediaria") or {}).get("UF")) or {}).get("sigla")
         except Exception:  # noqa: BLE001
-            return None
-    return site_da_prefeitura(nome, uf, getter)
+            nome, uf = None, None                         # 14/10: sem IBGE, ainda vale a plataforma oficial do mapa
+    achou = site_da_prefeitura(nome, uf, getter)
+    if achou:
+        return achou
+    # sem site da prefeitura: a plataforma oficial onde o município publica o diário (ex.: doem.org.br na Bahia)
+    return next((u for u in (mapa.get("urls") or []) if eh_fonte(u)), None)
+
+
+_MAPA_Q: dict = {}
+
+
+def _mapa_querido() -> dict:
+    if not _MAPA_Q:
+        try:
+            _MAPA_Q.update(json.loads((ROOT / "config/querido_diario_fontes.json").read_text(encoding="utf-8")).get("municipios") or {})
+        except Exception:  # noqa: BLE001
+            _MAPA_Q["_"] = {}
+    return _MAPA_Q
 
 
 def resolver(url: str, titulo: str = "", orgao: str = "", getter=None, A: dict | None = None) -> dict:

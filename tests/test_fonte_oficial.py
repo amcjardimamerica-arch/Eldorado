@@ -94,3 +94,28 @@ class TesteQueridoPeloIbge(unittest.TestCase):
             return P[u]
         o = F.resolver("https://data.queridodiario.ok.org.br/2919603/2026-10-05/43d2f4b96e7df3c2791d13314a81bae6bbb73cb7.pdf", "", "", g, {})
         self.assertEqual(o["fonte"], "https://www.macajuba.ba.gov.br/")
+
+
+class TesteMapaDosRaspadores(unittest.TestCase):
+    """14/10 (pesquisa no GitHub): mapa IBGE → endereço oficial do diário, dos raspadores do Querido Diário (MIT)."""
+    def _g(self, P):
+        def g(u):
+            if u not in P:
+                raise OSError(u)
+            return P[u]
+        return g
+
+    def test_mapa_resolve_mesmo_sem_a_api(self):
+        M = json.loads((ROOT / "config/querido_diario_fontes.json").read_text(encoding="utf-8"))["municipios"]
+        self.assertGreater(len(M), 400); self.assertIn("4205407", M)
+        g = self._g({"https://www.curitiba.pr.gov.br/": "ok", "https://curitiba.pr.gov.br/": "ok"})
+        o = F.resolver("https://data.queridodiario.ok.org.br/4106902/2026-09-30/4b4cb769910e7956d376d69f4674a5a626b27f3e.pdf", "", "", g, {})
+        self.assertIn("curitiba.pr.gov.br", o["fonte"])
+
+    def test_dominio_fora_do_padrao_e_plataforma_oficial(self):
+        g = self._g({"https://pmf.sc.gov.br/": "ok"})
+        o = F.resolver("https://data.queridodiario.ok.org.br/4205407/2026-09-30/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.pdf", "", "", g, {})
+        self.assertTrue(o["fonte"] is None or "sc.gov.br" in o["fonte"])
+        g2 = self._g({"https://doem.org.br": "ok"})
+        o2 = F.resolver("https://data.queridodiario.ok.org.br/2919603/2026-10-05/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.pdf", "", "", g2, {})
+        self.assertEqual(o2["fonte"], "https://doem.org.br")
