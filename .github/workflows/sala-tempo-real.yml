@@ -1,0 +1,70 @@
+name: 37 · Sala de controle em tempo real
+
+# 14/10/2026 (titular): os dados da sala de controle em tempo real. Antes a sala só era refeita no fim de cada passagem do
+# ciclo dos motores (até ~1h30 de atraso) e uma passagem iniciada antes de uma mudança publicava com o código antigo.
+# Agora: logo que QUALQUER fluxo de dados termina (e a cada 10 min), refaz com o código atual da main o repositório, as
+# fichas, o status dos motores, a sala de controle e o diagnóstico único; grava só esses arquivos. A página recarrega a
+# leitura a cada 1 minuto.
+
+on:
+  workflow_run:
+    workflows:
+      - "22 · Motores da vez — cada passagem calcula sozinha o que está pendente (agenda + maestro)"
+      - "16 · Motores indexadores (feeds, APIs, sitemaps, listagens, dados abertos, ponte Brasil, coleta assistida)"
+      - "30 · Cartório de fontes oficiais (certifica o que falta nas estrelas e nos livros)"
+      - "12 · Piloto - Interceptador — um alvo por voo, a cada 3 segundos"
+      - "11 · Piloto - Interceptador (botão) — comprova os dados de um edital na fonte oficial"
+      - "33 · Decisão da titular sobre uma oportunidade"
+      - "34 · Motores de empresas (semanal, com recuperação)"
+      - "31 · Motor ligado/desligado no fogo do painel"
+      - "28 · Atualizar a Biblioteca (completa, numa só execução)"
+      - "01 · Eldorado — motores por hora (00h–06h BRT)"
+      - "07 · Piloto — IA local da Biblioteca (benchmark e ciclos)"
+    types: [completed]
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: sala-tempo-real
+  cancel-in-progress: true          # a leitura mais nova vale; a anterior em andamento é descartada
+
+jobs:
+  sala:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Refazer a leitura com o código atual
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          timeout 120 python -c "from src import repositorio_unico as R; R.construir(gravar=True)" >/dev/null 2>&1 || echo "repositório: falhou"
+          timeout 90 python -m src.fichas_oportunidades >/dev/null 2>&1 || echo "fichas: falhou"
+          timeout 120 python -m src.status_motores >/dev/null 2>&1 || echo "status dos motores: falhou"
+          timeout 120 python -m src.sala_controle >/dev/null 2>&1 || echo "sala de controle: falhou"
+          timeout 240 python -m src.diagnostico_sistema >/dev/null 2>&1 || echo "diagnóstico: falhou"
+          timeout 60 python -m src.sala_controle >/dev/null 2>&1 || true      # releitura com o diagnóstico novo
+      - name: Gravar só a leitura (à prova de conflito)
+        run: |
+          git config user.name "sala-tempo-real" && git config user.email "sala@eldorado"
+          ARQS="docs/dados/sala_controle.json estado/sala_controle_historico.json docs/dados/status_motores.json docs/dados/repositorio_resumo.json dados/oportunidades/repositorio_unico.json docs/dados/fichas_oportunidades.json estado/diagnostico_sistema.json estado/diagnostico_sistema.md"
+          for i in 1 2 3 4 5; do
+            mkdir -p /tmp/leitura && for f in $ARQS; do [ -f "$f" ] && mkdir -p "/tmp/leitura/$(dirname $f)" && cp "$f" "/tmp/leitura/$f"; done
+            git fetch -q origin main && git reset -q --hard origin/main
+            for f in $ARQS; do [ -f "/tmp/leitura/$f" ] && cp "/tmp/leitura/$f" "$f"; done
+            git add $ARQS 2>/dev/null || true
+            git diff --cached --quiet && { echo "nada mudou"; exit 0; }
+            git commit -q -m "sala de controle: leitura em tempo real $(date -u +%H:%M)" && git push -q && { echo "gravado ($i)"; exit 0; }
+            sleep 5
+          done
+          echo "não gravou após 5 tentativas"

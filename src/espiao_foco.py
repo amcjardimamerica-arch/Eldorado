@@ -347,6 +347,10 @@ def missao(ordem: int, buscar=None, ler_pagina=None, conhecida=None, rnd: random
             motivos[f"fora de Goiás ({uf_fora})"] = motivos.get(f"fora de Goiás ({uf_fora})", 0) + 1
             continue
         org = nome_da_organizacao(titulo, url)
+        from .regra_abrangencia import filtro as _abr          # 14/10 (titular): descarta municipal de outro estado (fora das capitais)
+        if fr != "internacional" and _abr("piloto-espiao", {"titulo": titulo, "url": url, "orgao": org}):
+            motivos["municipal de outro estado (não capital)"] = motivos.get("municipal de outro estado (não capital)", 0) + 1
+            continue
         if fr in ("editais_de_empresas", "internacional") and url not in ja_cand:
             cand.append({"url": url, "titulo": titulo or url, "visto_em": f"Espião · {fr}", "enquadramento": "A VERIFICAR",
                          "descoberto_em": date.today().isoformat(), "origem": "Piloto - Espião (privado/internacional)",

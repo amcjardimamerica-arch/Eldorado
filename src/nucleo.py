@@ -111,6 +111,12 @@ def merge_registro(anterior: dict | None, novo: dict) -> dict:
     """Funde uma observação nova com o registro existente sem destruir trabalho
     humano: status protegido nunca regride e campos preservados permanecem."""
     if not anterior:
+        try:                                             # 14/10 (titular): o motor descarta municipal de outro estado (fora das capitais)
+            from .regra_abrangencia import filtro as _abr
+            if _abr(novo.get("fonte_id") or novo.get("fonte_nome"), novo):
+                novo["_descartado_na_coleta"] = True
+        except Exception:  # noqa: BLE001
+            pass
         novo.setdefault("descoberto_em", novo.get("coletado_em"))
         novo["fontes_observadas"] = sorted({f for f in [novo.get("fonte_id")] if f})
         return novo
@@ -171,7 +177,7 @@ def gravar_oportunidades(registros: dict) -> None:
     DB_OPORTUNIDADES.parent.mkdir(parents=True, exist_ok=True)
     corpo = "".join(
         json.dumps(x, ensure_ascii=False, separators=(",", ":")) + "\n"
-        for x in sorted(registros.values(), key=lambda v: v["id"])
+        for x in sorted(registros.values(), key=lambda v: v["id"]) if not x.get("_descartado_na_coleta")
     )
     DB_OPORTUNIDADES.write_text(corpo, encoding="utf-8")
 

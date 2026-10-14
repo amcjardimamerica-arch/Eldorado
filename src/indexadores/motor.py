@@ -215,6 +215,9 @@ def _fundir(acervo: dict, novos: list[dict], hoje: str) -> tuple[int, int]:
                 chaves[x] = alvo
             n_atual += 1
         else:
+            from ..regra_abrangencia import filtro as _abr      # 14/10 (titular): descarta municipal de outro estado (fora das capitais)
+            if _abr(it.get("fonte") or "indexador", it, it.get("uf")):
+                continue
             it = dict(it)
             it["primeiro_visto"] = hoje
             it["fontes"] = [it["fonte"]]
