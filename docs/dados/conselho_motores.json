@@ -1,5 +1,5 @@
 {
- "em": "2026-10-14T02:09:58+00:00",
+ "em": "2026-10-14T03:42:13+00:00",
  "conselho": [
   {
    "id": "falso_verde",
@@ -46,23 +46,23 @@
  ],
  "resumo": {
   "motores": 148,
-  "motores_com_falha": 99,
+  "motores_com_falha": 98,
   "falhas_por_tipo": {
    "CONGELADO": 20,
    "SILÊNCIO LONGO": 44,
-   "ESTRANGULADO": 1,
    "VAZAMENTO": 47,
    "CEGO": 23,
-   "PÁGINA VAZIA": 7,
+   "PÁGINA VAZIA": 8,
    "INTERMITENTE": 2,
-   "RUÍDO": 28
+   "RUÍDO": 28,
+   "CUSTO SEM RETORNO": 1
   }
  },
  "cobertura": {
   "origem_das_oportunidades": {
-   "agregador/outra": 318,
-   "motor": 115,
-   "Piloto": 118
+   "agregador/outra": 321,
+   "motor": 117,
+   "Piloto": 121
   },
   "fora_dos_motores_pct": 79.1,
   "ufs_sem_motor_com_oportunidade": [
@@ -114,7 +114,7 @@
   }
  },
  "fontes_irmas": {
-  "total": 228,
+  "total": 230,
   "top": [
    {
     "dominio": "baoba.org.br",
@@ -187,6 +187,11 @@
     "url": "https://www.contrafluxofestival.com.br"
    },
    {
+    "dominio": "fundacaocargill.org.br",
+    "peso": 8,
+    "url": "https://fundacaocargill.org.br/"
+   },
+   {
     "dominio": "fondationfrancoisschneider.org",
     "peso": 7,
     "url": "https://www.fondationfrancoisschneider.org/concours-talents-contemporains/concours-talents-contemporains-leau-wattwiller/"
@@ -227,26 +232,21 @@
     "url": "https://conteudo.agosocial.com.br/programa-nutrir-citrosuco"
    },
    {
+    "dominio": "agencia.petrobras.com.br",
+    "peso": 6,
+    "url": "https://agencia.petrobras.com.br/busca?q=&category=11449850"
+   },
+   {
     "dominio": "institutoinad.org.br",
     "peso": 6,
     "url": "https://institutoinad.org.br/editais/edital-fundos-da-infancia-e-da-adolescencia-2026/"
-   },
-   {
-    "dominio": "energiaesaneamento.org.br",
-    "peso": 6,
-    "url": "https://www.energiaesaneamento.org.br/sonhar-o-mundo-2026-abre-inscricoes-para-instituicoes-de-todo-o-estado-de-sao-paulo/"
-   },
-   {
-    "dominio": "equatorial.gestaocpp.com.br",
-    "peso": 6,
-    "url": "https://equatorial.gestaocpp.com.br/uploads/landing/11111111-1111-1111-1111-111111111111/747d7203-1ac0-4d7f-91c8-ae479f9872c3.pdf"
    }
   ]
  },
  "plataformas": {
   "plataformas": {
    "WordPress": {
-    "orgaos": 78,
+    "orgaos": 80,
     "exemplos": [
      "alvoradadonorte.go.gov.br",
      "anater.org",
@@ -279,7 +279,7 @@
     ]
    },
    "Portal de transparência de fornecedor": {
-    "orgaos": 17,
+    "orgaos": 18,
     "exemplos": [
      "bndes.gov.br",
      "comunidade.transparenciainternacional.org.br",
@@ -321,7 +321,7 @@
    {
     "inovacao": "Adaptador por plataforma",
     "o_que": "um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão",
-    "alcance": "78 órgãos WordPress e 10 instâncias de Mapas Culturais já conhecidos de uma vez"
+    "alcance": "80 órgãos WordPress e 10 instâncias de Mapas Culturais já conhecidos de uma vez"
    },
    {
     "inovacao": "Detecção de mudança barata",
@@ -374,7 +374,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "39 leituras vazias seguidas",
+     "prova": "40 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -389,7 +389,7 @@
      "bytes": 101
     }
    ],
-   "achados_total": 388,
+   "achados_total": 392,
    "valor": "confirma",
    "achados_30d": 127,
    "cadencia": {
@@ -414,7 +414,7 @@
      "bytes": 0
     }
    ],
-   "achados_total": 83,
+   "achados_total": 85,
    "valor": "confirma",
    "achados_30d": 30,
    "cadencia": {
@@ -422,14 +422,7 @@
     "cadencia_recomendada": 1,
     "dia_forte": "terça"
    },
-   "falhas": [
-    {
-     "conselheiro": "falso_verde",
-     "falha": "ESTRANGULADO",
-     "prova": "viu 2657 links e nenhum virou candidato",
-     "melhoria": "o filtro de candidatos está estreito demais: incluir termos de chamamento/edital da fonte e seguir PDFs"
-    }
-   ]
+   "falhas": []
   },
   "alego-pl": {
    "nome": "Assembleia Legislativa de Goiás — proposições",
@@ -438,7 +431,7 @@
     {
      "url": "https://portal.al.go.leg.br/",
      "http": 200,
-     "bytes": 133691
+     "bytes": 133670
     },
     {
      "url": "https://portal.al.go.leg.br/noticias",
@@ -458,7 +451,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "67 leituras vazias seguidas",
+     "prova": "68 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     },
     {
@@ -476,8 +469,8 @@
     {
      "url": "https://www.goiania.go.leg.br",
      "http": 200,
-     "bytes": 49700,
-     "itens": 0
+     "bytes": 196504,
+     "itens": 13
     },
     {
      "url": "https://www.goiania.go.leg.br",
@@ -504,7 +497,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "114 leituras vazias seguidas",
+     "prova": "115 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -575,7 +568,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "65 leituras vazias seguidas",
+     "prova": "66 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -723,7 +716,7 @@
      "posts": 6
     }
    ],
-   "achados_total": 131,
+   "achados_total": 133,
    "valor": "confirma",
    "achados_30d": 29,
    "cadencia": {
@@ -2045,7 +2038,7 @@
      "bytes": 140613
     }
    ],
-   "achados_total": 109,
+   "achados_total": 111,
    "valor": "ruído",
    "achados_30d": 11,
    "cadencia": {
@@ -2057,7 +2050,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "109 achados e nenhuma oportunidade confirmada",
+     "prova": "111 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -2080,10 +2073,10 @@
     {
      "url": "https://www.alcoa.com/brasil/pt/institute/local-project-support-program",
      "http": 200,
-     "bytes": 48554
+     "bytes": 48552
     }
    ],
-   "achados_total": 1316,
+   "achados_total": 1338,
    "valor": "ruído",
    "achados_30d": 224,
    "cadencia": {
@@ -2095,7 +2088,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "1316 achados e nenhuma oportunidade confirmada",
+     "prova": "1338 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     }
    ]
@@ -2296,16 +2289,16 @@
    "saude": [
     {
      "url": "https://www.goiania.go.gov.br",
-     "status": "lida"
+     "status": "parcial"
     },
     {
      "url": "https://aparecida.go.gov.br",
-     "status": "parcial"
+     "status": "lida"
     }
    ],
-   "achados_total": 81,
+   "achados_total": 84,
    "valor": "ruído",
-   "achados_30d": 9,
+   "achados_30d": 11,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -2321,7 +2314,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "81 achados e nenhuma oportunidade confirmada",
+     "prova": "84 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     }
    ]
@@ -2375,7 +2368,7 @@
      "itens": 129
     }
    ],
-   "achados_total": 334,
+   "achados_total": 336,
    "valor": "ouro",
    "achados_30d": 87,
    "cadencia": {
@@ -2533,9 +2526,9 @@
      "bytes": 3108
     }
    ],
-   "achados_total": 2323,
+   "achados_total": 2363,
    "valor": "ouro",
-   "achados_30d": 655,
+   "achados_30d": 654,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -2603,7 +2596,7 @@
     {
      "url": "https://www.congressonacional.leg.br",
      "http": 200,
-     "bytes": 151549,
+     "bytes": 151533,
      "itens": 9
     },
     {
@@ -2631,7 +2624,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "72 leituras vazias seguidas",
+     "prova": "73 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3361,7 +3354,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "24 leituras vazias seguidas",
+     "prova": "25 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3955,7 +3948,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "81 leituras vazias seguidas",
+     "prova": "82 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3963,14 +3956,7 @@
   "judiciario-cnj": {
    "nome": "CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024)",
    "tipo": "diario_justica",
-   "saude": [
-    {
-     "url": "https://www.cnj.jus.br/",
-     "http": 200,
-     "bytes": 1623180,
-     "itens": 48
-    }
-   ],
+   "saude": [],
    "achados_total": 2,
    "valor": "baixo volume",
    "achados_30d": 1,
@@ -3982,8 +3968,14 @@
    "falhas": [
     {
      "conselheiro": "falso_verde",
+     "falha": "PÁGINA VAZIA",
+     "prova": "leitura em 0 s com 0 página(s)",
+     "melhoria": "a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte"
+    },
+    {
+     "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "54 leituras vazias seguidas",
+     "prova": "55 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3992,7 +3984,7 @@
    "nome": "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)",
    "tipo": "ministerio_publico",
    "saude": [],
-   "achados_total": 52,
+   "achados_total": 53,
    "valor": "ruído",
    "achados_30d": 11,
    "cadencia": {
@@ -4016,7 +4008,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "52 achados e nenhuma oportunidade confirmada",
+     "prova": "53 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4037,7 +4029,7 @@
      "itens": 44
     }
    ],
-   "achados_total": 80,
+   "achados_total": 81,
    "valor": "ruído",
    "achados_30d": 18,
    "cadencia": {
@@ -4049,7 +4041,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "80 achados e nenhuma oportunidade confirmada",
+     "prova": "81 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4082,7 +4074,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "50 leituras vazias seguidas",
+     "prova": "51 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -4102,7 +4094,7 @@
    ],
    "achados_total": 37,
    "valor": "ruído",
-   "achados_30d": 2,
+   "achados_30d": 1,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -4114,6 +4106,12 @@
      "falha": "RUÍDO",
      "prova": "37 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "CUSTO SEM RETORNO",
+     "prova": "152 s na última leitura sem achado",
+     "melhoria": "reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem"
     }
    ]
   },

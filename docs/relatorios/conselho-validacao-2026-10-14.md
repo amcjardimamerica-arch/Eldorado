@@ -8,9 +8,9 @@
 
 ```json
 {
- "cegos_da_1a_rodada": 29,
- "testados": 22,
- "com_rota_nova": 8,
+ "cegos_da_1a_rodada": 30,
+ "testados": 23,
+ "com_rota_nova": 9,
  "via_ponte": 0,
  "continuam_cegos": [
   "camara-goiania-pl",
@@ -120,16 +120,16 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 109,
-   "achados_total_agora": 109,
+   "achados_total_1a": 111,
+   "achados_total_agora": 111,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 1316,
-   "achados_total_agora": 1316,
-   "no_fluxo": 3,
+   "achados_total_1a": 1338,
+   "achados_total_agora": 1338,
+   "no_fluxo": 4,
    "confirmadas": 0
   },
   {
@@ -141,9 +141,9 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 81,
-   "achados_total_agora": 81,
-   "no_fluxo": 1,
+   "achados_total_1a": 84,
+   "achados_total_agora": 84,
+   "no_fluxo": 2,
    "confirmadas": 0
   },
   {
@@ -169,15 +169,15 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 52,
-   "achados_total_agora": 52,
+   "achados_total_1a": 53,
+   "achados_total_agora": 53,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 80,
-   "achados_total_agora": 80,
+   "achados_total_1a": 81,
+   "achados_total_agora": 81,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -225,7 +225,7 @@
  "pontos_com_redundancia": 12,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 7174
+ "exemplos_da_rede_de_rotas": 7289
 }
 ```
 
@@ -239,9 +239,9 @@
  "fora_dos_motores_pct_1a": 79.1,
  "fora_dos_motores_pct_agora": 79.1,
  "origem": {
-  "agregador/outra": 318,
-  "motor": 115,
-  "Piloto": 118
+  "agregador/outra": 321,
+  "motor": 117,
+  "Piloto": 121
  },
  "dominios_so_de_agregador": [
   {
@@ -363,20 +363,20 @@
 
 ```json
 {
- "fontes_recebidas": 305,
+ "fontes_recebidas": 310,
  "por_origem": {
-  "conselho (fontes irmãs)": 148,
-  "Cartório (site oficial certificado)": 129,
-  "Espião (privado/internacional)": 28
+  "conselho (fontes irmãs)": 150,
+  "Cartório (site oficial certificado)": 131,
+  "Espião (privado/internacional)": 29
  },
  "lidas_nas_ultimas_24h": 221,
  "dimensionamento": {
-  "fontes": 305,
+  "fontes": 310,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
-  "clones": 6,
-  "cobertura_diaria": 305,
+  "clones": 7,
+  "cobertura_diaria": 310,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -429,7 +429,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 78,
+   "orgaos": 80,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",
@@ -462,7 +462,7 @@
    ]
   },
   "Portal de transparência de fornecedor": {
-   "orgaos": 17,
+   "orgaos": 18,
    "exemplos": [
     "bndes.gov.br",
     "comunidade.transparenciainternacional.org.br",
