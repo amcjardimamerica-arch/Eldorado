@@ -1,17 +1,16 @@
 {
  "dia": "2026-10-14",
- "em": "2026-10-14T08:16:30+00:00",
+ "em": "2026-10-14T08:47:15+00:00",
  "regra": "MAESTRO — A REDE NEURAL CONDUZ O DIA (titular, 02/10/2026).\n\nOs motores são ferramentas de uma etapa. O maestro, a cada passagem do fluxo de status (4 vezes por dia):\n  1. PLANEJA  quais motores rodam hoje (agenda) e em que ordem: rendimento real do canal (oportunidades validadas como\n              reais por leitura — linha de produção), diagnóstico (planos de correção) e livros com abertura próxima\n              no índice do motor (léxico temporário da chave de acionamento);\n  2. MEDE     a cobertura do dia de cada motor: completa (leu sem falha de página) · parcial (falha em parte das páginas)\n              · pendente (ainda não leu) · pendente_local (exige IP brasileiro — coleta no computador do titular);\n  3. CONTROLA dispara de novo os pendentes e os parciais, até 3 vezes por dia, para a busca do dia NÃO ficar parcial;\n  4. FECHA    o dia quando todos os motores planejados estão completos (ou esgotaram as tentativas — fica registrado).",
  "planejados": 123,
  "cobertura": {
-  "completa": 31,
+  "completa": 33,
   "pendente": 1,
   "aguardando_horario": 82,
   "parcial": 6,
-  "pendente_sem_agenda": 2,
   "pendente_local": 1
  },
- "cobertura_percentual": 75.6,
+ "cobertura_percentual": 80.5,
  "a_disparar": [
   "pncp-api",
   "plat-estaduais-go-gov",
@@ -20,23 +19,21 @@
   "do-goiania",
   "mptgo-destinacao",
   "judiciario-tjgo",
-  "f260-captacao-244",
-  "f260-captacao-260",
-  "camara-goiania-pl",
-  "dj-trf1-go",
-  "do-goias",
+  "plat-salic",
   "plat-piloto-aberto",
-  "dou",
-  "plat-gife",
-  "motor-patrocinio",
-  "plat-cnpq-extensao",
+  "camara-goiania-pl",
   "congresso-nacional",
+  "plat-cnpq-extensao",
   "judiciario-cnj",
-  "mpu-destinacao",
+  "dou",
+  "motor-patrocinio",
   "alego-pl",
-  "motor-gife",
+  "plat-gife",
+  "mpu-destinacao",
+  "do-goias",
   "mpgo-destinacao",
-  "plat-salic"
+  "dj-trf1-go",
+  "motor-gife"
  ],
  "esgotaram_tentativas": [],
  "dia_fechado": false,
@@ -45,8 +42,6 @@
   "plataforma-wordpress",
   "plataforma-mapas-culturais",
   "outras-oportunidades-7",
-  "f260-captacao-244",
-  "f260-captacao-260",
   "recorrencia",
   "f260-captacao-228",
   "f260-captacao-242",
@@ -269,28 +264,6 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "f260-captacao-244",
-   "prioridade": 0.0455,
-   "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "nao_observado",
-   "cobertura": "pendente_sem_agenda",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "f260-captacao-260",
-   "prioridade": 0.0455,
-   "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "nao_observado",
-   "cobertura": "pendente_sem_agenda",
-   "tentativas_hoje": 0
-  },
-  {
    "motor": "f260-curadoria-009",
    "prioridade": 0.0455,
    "diagnostico": "saudavel",
@@ -335,6 +308,17 @@
    "tentativas_hoje": 0
   },
   {
+   "motor": "f260-captacao-244",
+   "prioridade": 0.0417,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "completa",
+   "tentativas_hoje": 0
+  },
+  {
    "motor": "f260-captacao-220",
    "prioridade": 0.0417,
    "diagnostico": "saudavel",
@@ -358,6 +342,17 @@
   },
   {
    "motor": "f260-captacao-169",
+   "prioridade": 0.0417,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "completa",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-captacao-260",
    "prioridade": 0.0417,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
