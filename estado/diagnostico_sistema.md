@@ -1,6 +1,6 @@
-# Diagnóstico do sistema · 2026-10-14 22:41 UTC
+# Diagnóstico do sistema · 2026-10-14 22:50 UTC
 
-## Cumprimento da finalidade · índice geral 66%
+## Cumprimento da finalidade · índice geral 65%
 - Motores: 100% (ok) — todo motor ativo lê dentro da sua cadência
 - Maestro: 73% (atencao) — cobertura completa do dia planejado
 - Rede neural: 99% (ok) — discernimento (AUC) de pelo menos 0,85
@@ -11,11 +11,11 @@
 - Cartório: 70% (atencao) — 12 de 12 itens certificados na fonte oficial
 - Tela e fichas: 100% (ok) — tudo que está aberto aparece na tela e tem ficha
 - Integração: 70% (atencao) — mesmas contagens e dados em dia em todos os sistemas
-- Fluxos automáticos: 62% (falha) — todo fluxo agendado roda na cadência e sem falha
+- Fluxos automáticos: 57% (falha) — todo fluxo agendado roda na cadência e sem falha
 - Execução sem falha silenciosa: 0% (falha) — nenhuma etapa falha em silêncio
 
-## Execução · fluxos: {'falha': 5, 'ok': 28, 'atencao': 4, 'atrasado': 2, 'manual': 2}
-- 00 · Verificar prontidão: falha · última 2026-10-14T22:31 · sucesso 0% · cadência 24.0 h
+## Execução · fluxos: {'atencao': 6, 'ok': 27, 'falha': 4, 'atrasado': 2, 'manual': 2}
+- 00 · Verificar prontidão: atencao · última 2026-10-14T22:49 · sucesso 38% · cadência 24.0 h
 - 35 · Alimentação diária externa (editais abertos): falha · última 2026-10-14T14:40 · sucesso 0% · cadência 24.0 h
 - 36 · Análise do sistema (diagnóstico único e correção): atencao · última 2026-10-14T19:49 · sucesso 60% · cadência None h
 - 05 · Busca ativa (a cada 3 dias): falha · última 2026-10-03T02:26 · sucesso 0% · cadência None h
@@ -23,6 +23,7 @@
 - 10 · Histórico de doações da Rouanet (empresa por empresa) — retoma sozinho até completar: falha · última 2026-09-27T05:46 · sucesso 0% · cadência None h
 - 12 · Piloto - Interceptador — um alvo por voo, a cada 3 segundos: atencao · última 2026-10-14T22:40 · sucesso 78% · cadência 1.0 h
 - 01 · Eldorado — motores por hora (00h–06h BRT): falha · última 2026-10-14T14:13 · sucesso 0% · cadência 24.0 h
+- 22 · Motores da vez — cada passagem calcula sozinha o que está pendente (agenda + maestro): atencao · última 2026-10-14T22:42 · sucesso 75% · cadência 1.0 h
 - 34 · Motores de empresas (semanal, com recuperação): atencao · última 2026-10-14T12:06 · sucesso 33% · cadência 24.0 h
 - 03 · Eldorado — carga histórica de cinco anos (campanha única, mês a mês): atencao · última 2026-10-14T21:08 · sucesso 56% · cadência 6.0 h
 - 02 · Alexandria — revisão mensal de leis e procedimentos: atrasado · última 2026-10-01T10:36 · sucesso 50% · cadência 24.0 h
@@ -47,19 +48,18 @@
 - motores: 42 funcionando · 0 em falha · 3 inativos · 4 com leitura parcial
 - maestro: cobertura 73.1% · esgotados 10
 - rede neural: AUC 0.843 · rotulados 2009 · treinada em 2026-10-14T05:54:08+00:00
-- Cartório: 0.6987 certificado · fluxos do GitHub com falha: ['00 · Verificar prontidão']
-- saúde: 7 alerta(s) · índice da sala de controle: 83
+- Cartório: 0.6987 certificado · fluxos do GitHub com falha: ['.github/workflows/00-prontidao.yml']
+- saúde: 7 alerta(s) · índice da sala de controle: 87
 
 ## Integração
 - contagens: {'repositorio_abertas': 475, 'diagnostico_abertas': 475, 'tela_cartoes': 628, 'fichas': 485, 'sala_controle_abertas': 475}
-- idade (h): {'repositorio': 0.0, 'fluxo': 2.0, 'fichas': 0.0, 'sala_controle': 0.0, 'status_motores': 0.0, 'maestro': 2.1, 'rede_neural': 2.0, 'saude': 2.8}
+- idade (h): {'repositorio': 0.0, 'fluxo': 2.2, 'fichas': 0.0, 'sala_controle': 0.0, 'status_motores': 0.0, 'maestro': 0.2, 'rede_neural': 2.2, 'saude': 3.0}
 - decisões da titular: 0 · não aplicadas: 0
 
-## Problemas (26)
+## Problemas (25)
 - [alta] 7 etapa(s) falharam em silêncio na última execução de monitoramento-diario.yml: "erro": "FileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/Eldorado/Eldorado/biblioteca_alexandria/oportunidades/abcr-continue-lendo-ba | "erro": "FileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/Eldorado/Eldorado/biblioteca_alexandria/oportunidades/abcr-continue-lendo-ed | "erro": "FileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/Eldorado/Eldorado/biblioteca_alexandria/oportunidades/abcr-continue-lendo-fu → investigar a etapa (sem correção automática)
 - [alta] 2 etapa(s) falharam em silêncio na última execução de cartorio.yml: KeyError: 'https://mapaosc.ipea.gov.br/api/api/documentation' | Traceback (most recent call last): → investigar a etapa (sem correção automática)
 - [alta] 15 etapa(s) falharam em silêncio na última execução de analise-sistema.yml: - Cartório: 0.6933 certificado · fluxos do GitHub com falha: ['03 · Eldorado — carga histórica de cinco anos (campanha única, mês a mês)'] | - [alta] 15 etapa(s) falharam em silêncio na última execução de analise-sistema.yml: - Cartório: 0.6933 certificado · fluxos do GitHub com falha: ['03 · Eldorad | - [alta] 2 etapa(s) falharam em silêncio na última execução de cartorio.yml: KeyError: 'https://mapaosc.ipea.gov.br/api/api/documentation' | Traceback (most rec → investigar a etapa (sem correção automática)
-- [alta] fluxo '00 · Verificar prontidão' falhou nas últimas execuções (0% de sucesso) → investigar o fluxo (sem correção automática)
 - [alta] fluxo '35 · Alimentação diária externa (editais abertos)' falhou nas últimas execuções (0% de sucesso) → investigar o fluxo (sem correção automática)
 - [alta] fluxo '05 · Busca ativa (a cada 3 dias)' falhou nas últimas execuções (0% de sucesso) → investigar o fluxo (sem correção automática)
 - [alta] fluxo '10 · Histórico de doações da Rouanet (empresa por empresa) — retoma sozinho até completar' falhou nas últimas execuções (0% de sucesso) → investigar o fluxo (sem correção automática)
@@ -69,8 +69,8 @@
 - [alta] 2 de 475 oportunidades abertas sem livro e sem regra que justifique → criar/vincular livros
 - [alta] tela mostra 628 oportunidades e o repositório conta 475 → refazer a tela
 - [alta] 7 módulos de teste em quarentena por DEFEITO REAL → corrigir o código e tirar da quarentena (sem correção automática)
-- [media] fluxo '09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes' sem rodar há 274.7 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
-- [media] fluxo '02 · Alexandria — revisão mensal de leis e procedimentos' sem rodar há 324.1 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
+- [media] fluxo '09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes' sem rodar há 274.9 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
+- [media] fluxo '02 · Alexandria — revisão mensal de leis e procedimentos' sem rodar há 324.2 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
 - [media] 289 livros municipais de outros estados no catálogo (só Goiás tem livros municipais) → refazer a tela
 - [media] saúde · claude: 1299 item(ns) esperando a análise do Claude (próxima: 2026-10-14) → ver o fluxo/arquivo indicado
 - [media] saúde · coerência: mapa e lista divergem em __nac__, BA, SP, ES, RS → refazer tela e indicadores
