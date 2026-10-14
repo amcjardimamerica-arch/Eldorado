@@ -179,12 +179,192 @@ def integracao(P: list, op: dict) -> dict:
     return {"contagens": contagens, "idade_horas": idade, "decisoes_da_titular": len(dec), "decisoes_nao_aplicadas": len(nao_aplicadas)}
 
 
+# ── 14/10 (2ª versão): parâmetros de TUDO que roda, finalidade de cada sistema e conferência da sala de controle ─────
+REPO = "amcjardimamerica-arch/Eldorado"
+MARCAS_FALHA = ("falhou", "falha:", "Traceback", "Error:", "REGISTRO FALHOU")
+
+
+def _gh(caminho: str, bruto: bool = False):
+    import os, urllib.request
+    tok = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+    if not tok:
+        return None
+    class _SemSeguir(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, *a, **k):
+            return None
+    try:
+        req = urllib.request.Request(f"https://api.github.com/repos/{REPO}/{caminho}", headers={"Authorization": f"Bearer {tok}", "Accept": "application/vnd.github+json"})
+        try:
+            with urllib.request.build_opener(_SemSeguir).open(req, timeout=40) as r:
+                corpo = r.read()
+        except urllib.error.HTTPError as e:            # registros: o GitHub redireciona ao armazenamento, que recusa a credencial
+            if e.code in (301, 302, 303, 307, 308) and e.headers.get("Location"):
+                with urllib.request.urlopen(e.headers["Location"], timeout=60) as r:
+                    corpo = r.read()
+            else:
+                return None
+        return corpo.decode("utf-8", "replace") if bruto else json.loads(corpo)
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def _cadencia_h(texto_yml: str) -> float | None:
+    """Cadência esperada do fluxo, pelos crons do próprio arquivo (o menor intervalo entre disparos)."""
+    import re
+    crons = re.findall(r'cron:\s*"([^"]+)"', texto_yml)
+    if not crons:
+        return None
+    menor = 24 * 7.0
+    for c in crons:
+        mi, ho, dm, me, ds = (c.split() + ["*"] * 5)[:5]
+        if ho.startswith("*/"):
+            menor = min(menor, float(ho[2:]))
+        elif "," in ho:
+            hs = sorted(int(h) for h in ho.split(",") if h.isdigit()); gaps = [b - a for a, b in zip(hs, hs[1:])] + [24 - hs[-1] + hs[0]]
+            menor = min(menor, float(min(gaps)))
+        elif mi.startswith("*/"):
+            menor = min(menor, float(mi[2:]) / 60)
+        elif ho == "*":
+            menor = min(menor, 1.0)
+        elif ds not in ("*", "") or dm not in ("*", ""):
+            menor = min(menor, 24 * 7.0 if ds not in ("*", "") and "-" not in ds and "," not in ds else 24.0)
+        else:
+            menor = min(menor, 24.0)
+    return menor
+
+
+def execucao(P: list) -> dict:
+    """Cada fluxo do GitHub: cadência esperada, última execução, taxa de sucesso; e as falhas SILENCIOSAS (etapas que
+    rodam com '|| echo falhou' e não derrubam o fluxo) lidas nos registros das execuções mais recentes."""
+    import re
+    fluxos = []
+    por_arq = {}
+    for y in sorted((ROOT / ".github/workflows").glob("*.yml")):       # execuções POR fluxo (os frequentes não escondem os raros)
+        por_arq[y.name] = (_gh(f"actions/workflows/{y.name}/runs?per_page=10") or {}).get("workflow_runs") or []
+    runs = [r for v in por_arq.values() for r in v]
+    for y in sorted((ROOT / ".github/workflows").glob("*.yml")):
+        t = y.read_text(encoding="utf-8"); nome = (re.search(r"^name:\s*(.+)$", t, re.M) or [None, y.stem])[1]
+        cad = _cadencia_h(t); R = por_arq.get(y.name, [])
+        conc = [x.get("conclusion") for x in R if x.get("status") == "completed"]
+        taxa = round(100 * sum(1 for c in conc if c == "success") / len(conc)) if conc else None
+        ult = R[0] if R else {}
+        idade = _idade_h(ult.get("created_at")) if ult else None
+        estado = "sem_dados" if not runs else "falha" if conc[:3] and all(c == "failure" for c in conc[:3]) else \
+                 "atrasado" if cad and (idade is None or idade > cad * 3 + 6) else "atencao" if taxa is not None and taxa < 80 else "ok" if R else ("manual" if not cad else "nunca_rodou")
+        fluxos.append({"arquivo": y.name, "nome": nome, "cadencia_h": cad, "ultima": ult.get("created_at"), "idade_h": idade,
+                       "ultima_conclusao": ult.get("conclusion"), "sucesso_pct": taxa, "execucoes_vistas": len(R), "estado": estado})
+        if estado == "falha":
+            _problema(P, "fluxo_falhando", "alta", f"fluxo '{nome}' falhou nas últimas execuções ({taxa}% de sucesso)", "investigar o fluxo (sem correção automática)")
+        elif estado == "atrasado":
+            _problema(P, "fluxo_atrasado", "media", f"fluxo '{nome}' sem rodar há {idade} h (cadência {cad} h)", "investigar o agendamento (sem correção automática)")
+    silenciosas = {}; lidos = 0
+    for arq in ("motores-da-vez.yml", "motor-agregadores.yml", "monitoramento-diario.yml", "cartorio.yml", "analise-sistema.yml"):
+        ult = next((x for x in por_arq.get(arq, []) if x.get("status") == "completed"), None)
+        if not ult:
+            continue
+        jobs = (_gh(f"actions/runs/{ult['id']}/jobs") or {}).get("jobs") or []
+        for j in jobs[:2]:
+            log = _gh(f"actions/jobs/{j['id']}/logs", bruto=True) or ""
+            lidos += bool(log)
+            linhas = sorted({re.sub(r"^\S+Z\s+", "", l).strip()[:160] for l in log.splitlines()
+                             if any(m in l for m in MARCAS_FALHA) and "|| echo" not in l and "echo \"" not in l and "grep" not in l})
+            if linhas:
+                silenciosas[arq] = linhas[:15]
+    for arq, L in silenciosas.items():
+        _problema(P, "falha_silenciosa", "alta", f"{len(L)} etapa(s) falharam em silêncio na última execução de {arq}: " + " | ".join(L[:3]),
+                  "investigar a etapa (sem correção automática)", len(L), L)
+    if runs and not lidos:
+        _problema(P, "registros_nao_lidos", "baixa", "os registros das execuções não puderam ser lidos: falhas silenciosas não conferidas", "rodar a análise pelo fluxo 36 (sem correção automática)")
+    return {"fluxos": fluxos, "falhas_silenciosas": silenciosas, "registros_lidos": lidos, "sem_token": not runs,
+            "resumo": dict(Counter(f["estado"] for f in fluxos))}
+
+
+def _pct(v):
+    return None if v is None else max(0, min(100, round(v)))
+
+
+def finalidade(s: dict, o: dict, i: dict, e: dict) -> dict:
+    """Cada sistema contra a META da sua finalidade (0–100%). 100% = atinge o que foi projetado."""
+    m = s["motores"]; vc = s["rede_neural"]["validacao_cruzada"]; n = o["abertas"] or 1
+    aplic = n - o["sem_livro_por_regra"]
+    fl = e.get("fluxos") or []; fl_ag = [f for f in fl if f["cadencia_h"]]
+    cart = (s["cartorio"].get("resumo") or {}).get("pct_certificado_12")
+    itens = [
+        ("Motores", "todo motor ativo lê dentro da sua cadência", _pct(100 * m["funcionando"] / max(1, m["total"] - m["inativos"]))),
+        ("Maestro", "cobertura completa do dia planejado", _pct(s["maestro"].get("cobertura_percentual"))),
+        ("Rede neural", "discernimento (AUC) de pelo menos 0,85", _pct(100 * min(1, (vc.get("auc") or 0) / 0.85)) if vc.get("auc") else None),
+        ("Biblioteca", "toda oportunidade aberta aplicável com livro existente", _pct(100 * (aplic - o["sem_livro"] - o["livro_inexistente"]) / max(1, aplic))),
+        ("Validação", "toda oportunidade aberta validada", _pct(100 * o["validadas"] / n)),
+        ("Site oficial", "toda aberta com site oficial", _pct(100 * (n - o["sem_site_oficial"]) / n)),
+        ("Prazo", "toda aberta com prazo (ou fluxo contínuo)", _pct(100 * (n - o["sem_prazo"]) / n)),
+        ("Cartório", "12 de 12 itens certificados na fonte oficial", _pct(100 * cart) if isinstance(cart, (int, float)) else None),
+        ("Tela e fichas", "tudo que está aberto aparece na tela e tem ficha", _pct(100 * (n - max(o["fora_da_tela"], o["sem_ficha"])) / n)),
+        ("Integração", "mesmas contagens e dados em dia em todos os sistemas", _pct(100 - 20 * sum(1 for v in i["idade_horas"].values() if v is None or v > 26) - (0 if len({v for v in i["contagens"].values() if v is not None and v != i["contagens"].get("fichas")}) <= 1 else 30))),
+        ("Fluxos automáticos", "todo fluxo agendado roda na cadência e sem falha", _pct(100 * sum(1 for f in fl_ag if f["estado"] == "ok") / len(fl_ag)) if fl_ag and not e.get("sem_token") else None),
+        ("Execução sem falha silenciosa", "nenhuma etapa falha em silêncio", None if e.get("sem_token") or not e.get("registros_lidos") else (100 if not e.get("falhas_silenciosas") else _pct(100 - 10 * sum(len(v) for v in e["falhas_silenciosas"].values())))),
+    ]
+    L = [{"sistema": a, "finalidade": b, "atingido_pct": c, "estado": "sem_dados" if c is None else "ok" if c >= 95 else "atencao" if c >= 70 else "falha"} for a, b, c in itens]
+    val = [x["atingido_pct"] for x in L if x["atingido_pct"] is not None]
+    return {"sistemas": L, "indice_geral_pct": round(sum(val) / len(val)) if val else None}
+
+
+def conferir_sala(P: list, s: dict, o: dict) -> dict:
+    """A sala de controle mostra o que deveria? Recalcula cada indicador na fonte e compara; aponta lacunas e melhorias."""
+    sc = _j(D / "sala_controle.json"); I = {x.get("id"): x for x in sc.get("instrumentos") or []}
+    rr = _j(D / "repositorio_resumo.json"); st = s["motores"]; rn = s["rede_neural"]["validacao_cruzada"]; ma = s["maestro"]
+    esperado = {"es_abertas": rr.get("abertas"), "rn_auc": rn.get("auc"), "rn_precisao": rn.get("precisao"), "rn_revocacao": rn.get("revocacao"),
+                "rn_brier": rn.get("brier"), "ma_cobertura": ma.get("cobertura_percentual"),
+                "mo_saude": round(100 * st["funcionando"] / (st["funcionando"] + st["em_falha"])) if (st["funcionando"] + st["em_falha"]) else None,
+                "es_livros": round(100 * ((rr.get("cruzamento") or {}).get("com_livro") or 0) / rr["abertas"]) if rr.get("abertas") else None}
+    divergencias, sem_leitura, incoerentes = [], [], []
+    for k, v in esperado.items():
+        x = I.get(k)
+        if not x:
+            divergencias.append({"indicador": k, "problema": "não existe na sala"}); continue
+        if v is not None and x.get("valor") is not None and abs(float(x["valor"]) - float(v)) > max(0.011, abs(float(v)) * 0.02):
+            divergencias.append({"indicador": x.get("nome"), "sala": x.get("valor"), "fonte": v})
+    for x in I.values():
+        if x.get("valor") is None:
+            sem_leitura.append(x.get("nome"))
+        f = x.get("faixa") or {}; v = x.get("valor")
+        if isinstance(v, (int, float)) and f:
+            a = f.get("alarme") or [None, None]; nrm = f.get("normal") or [None, None]
+            em_alarme = (a[0] is not None and v < a[0]) or (a[1] is not None and v > a[1])
+            fora_normal = (nrm[0] is not None and v < nrm[0]) or (nrm[1] is not None and v > nrm[1])
+            if em_alarme and x.get("estado") not in ("vermelho",) and "parado" not in str(x.get("motivo")):
+                incoerentes.append(f"{x.get('nome')}: valor em alarme e estado {x.get('estado')}")
+            elif not fora_normal and not em_alarme and x.get("estado") == "amarelo" and "registro de" not in str(x.get("motivo")):
+                incoerentes.append(f"{x.get('nome')}: valor normal e estado amarelo")
+    idade = _idade_h(sc.get("em"))
+    faltam = []
+    if not any("decis" in str(x.get("nome", "")).lower() for x in I.values()):
+        faltam.append("decisões da titular (descartadas/inscritas aguardando aplicação e livros sinalizados para o Claude)")
+    if not any("ficha" in str(x.get("nome", "")).lower() for x in I.values()):
+        faltam.append("fichas das oportunidades (cobertura da janela de detalhe)")
+    if not any("aliment" in str(x.get("nome", "")).lower() for x in I.values()):
+        faltam.append("alimentação externa diária (enviada, itens, hash confirmado)")
+    if not any("diagn" in str(x.get("nome", "")).lower() for x in I.values()):
+        faltam.append("diagnóstico único (problemas por gravidade e índice de cumprimento da finalidade)")
+    if not any("valida" in str(x.get("nome", "")).lower() for x in I.values()):
+        faltam.append("percentual de oportunidades validadas (hoje só aparece o total de abertas)")
+    for d in divergencias:
+        _problema(P, "sala_diverge_da_fonte", "media", f"sala de controle: {d}", "refazer a sala de controle")
+    for t in incoerentes:
+        _problema(P, "sala_estado_incoerente", "baixa", f"sala de controle: {t}", "rever a regra do indicador (sem correção automática)")
+    if idade is None or idade > 3:
+        _problema(P, "sala_desatualizada", "media", f"sala de controle sem atualização há {idade} h", "refazer a sala de controle")
+    return {"idade_h": idade, "indicadores": len(I), "divergencias": divergencias, "sem_leitura": sem_leitura,
+            "estados_incoerentes": incoerentes, "sugestoes_de_apresentacao": faltam}
+
+
 def diagnosticar() -> dict:
     hoje = date.today().isoformat(); P: list = []
-    s = sistemas(P); o = oportunidades(P, hoje); i = integracao(P, o)
+    s = sistemas(P); o = oportunidades(P, hoje); i = integracao(P, o); e = execucao(P); sala = conferir_sala(P, s, o)
+    fin = finalidade(s, o, i, e)
     ordem = {"alta": 0, "media": 1, "baixa": 2}
     P.sort(key=lambda p: (ordem.get(p["gravidade"], 3), p["codigo"]))
-    return {"em": datetime.now(timezone.utc).replace(microsecond=0).isoformat(), "sistemas": s, "oportunidades": o, "integracao": i,
+    return {"em": datetime.now(timezone.utc).replace(microsecond=0).isoformat(), "finalidade": fin, "sistemas": s, "oportunidades": o, "integracao": i,
+            "execucao": e, "sala_de_controle": sala,
             "problemas": P, "contagem_problemas": dict(Counter(p["gravidade"] for p in P)),
             "corrigiveis": sorted({p["correcao"] for p in P if p["correcao"] and not any(t in p["correcao"] for t in ("sem correção", "investigar", "ver o", "retreinar"))})}
 
@@ -224,6 +404,18 @@ def resumo_md(antes: dict, depois: dict | None, log: list) -> str:
     if depois:
         L += [f"Correções aplicadas: {sum(1 for x in log if x['ok'])} de {len(log)} etapas · problemas antes {len(antes['problemas'])} → depois {len(depois['problemas'])}", ""]
         L += [f"- {'ok ' if x['ok'] else 'ERRO'} {x['etapa']} ({x['segundos']} s)" + ("" if x["ok"] else f" — {x['erro']}") for x in log] + [""]
+    fz = d.get("finalidade") or {}
+    L += [f"## Cumprimento da finalidade · índice geral {fz.get('indice_geral_pct')}%"] + \
+         [f"- {x['sistema']}: {x['atingido_pct'] if x['atingido_pct'] is not None else '—'}% ({x['estado']}) — {x['finalidade']}" for x in fz.get("sistemas") or []] + [""]
+    ex = d.get("execucao") or {}
+    L += [f"## Execução · fluxos: {ex.get('resumo')}" + (" · SEM TOKEN: fluxos e falhas silenciosas não lidos" if ex.get("sem_token") else "")] + \
+         [f"- {f['nome']}: {f['estado']} · última {str(f['ultima'] or '—')[:16]} · sucesso {f['sucesso_pct']}% · cadência {f['cadencia_h']} h"
+          for f in ex.get("fluxos") or [] if f["estado"] not in ("ok", "manual")] + \
+         [f"- falha silenciosa em {k}: " + " | ".join(v[:4]) for k, v in (ex.get("falhas_silenciosas") or {}).items()] + [""]
+    sl = d.get("sala_de_controle") or {}
+    L += [f"## Sala de controle · {sl.get('indicadores')} indicadores · atualizada há {sl.get('idade_h')} h",
+          f"- divergências com a fonte: {sl.get('divergencias') or 'nenhuma'}", f"- sem leitura: {sl.get('sem_leitura') or 'nenhum'}",
+          f"- estados incoerentes: {sl.get('estados_incoerentes') or 'nenhum'}", f"- sugestões de apresentação: {sl.get('sugestoes_de_apresentacao') or 'nenhuma'}", ""]
     L += ["## Oportunidades", f"- abertas: {o['abertas']} · validadas: {o['validadas']} ({o['percentual_validadas']}%) · por estado: {o['por_estado']}",
           f"- com livro: {o['com_livro']} · sem livro (problema): {o['sem_livro']} · sem livro por regra: {o['sem_livro_por_regra']} {o['sem_livro_por_regra_motivos']} · livro inexistente: {o['livro_inexistente']}",
           f"- sem site oficial: {o['sem_site_oficial']} · sem prazo: {o['sem_prazo']} · prazo vencido ainda aberta: {o['prazo_vencido']}",

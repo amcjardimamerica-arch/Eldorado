@@ -18,7 +18,7 @@ class TesteBiblioteca(unittest.TestCase):
         self.assertIsNone(dispensa({"titulo": "Emenda parlamentar estadual 2026"}))
         self.assertIsNotNone(dispensa({"titulo": "Programa de doação da empresa X", "tipo": "empresa/instituto"}))   # 01/10: empresa só como edital
         self.assertIsNone(dispensa({"titulo": "Instituto X abre edital de projetos sociais", "tipo": "empresa/instituto"}))
-        self.assertIsNotNone(dispensa({"titulo": "Chamamento público", "orgao": "Prefeitura de Campinas", "uf": "SP"}))   # municipal de outro estado
+        self.assertIsNone(dispensa({"titulo": "Chamamento público", "orgao": "Prefeitura de Campinas", "uf": "SP"}))   # 14/10 (titular): municipal de outro estado também ganha livro
         self.assertIsNone(dispensa({"titulo": "Chamamento público", "orgao": "Prefeitura de Goiânia", "uf": "GO"}))
         self.assertIsNotNone(dispensa({"titulo": "Dispensa de chamamento público nº 3"}))
 

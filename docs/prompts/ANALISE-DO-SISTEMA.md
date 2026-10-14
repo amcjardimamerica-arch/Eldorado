@@ -13,7 +13,18 @@ motores e pode aguardar a vez). Depois baixe a `main` e leia:
 - `estado/diagnostico_sistema.json` — completo (listas com exemplos de cada problema).
 Alternativa local (sem gravar na produção): `python -m src.diagnostico_sistema --corrigir` num clone da `main`.
 
-## 2 · O que o diagnóstico já confere
+## 2 · O que o diagnóstico confere (2ª versão, 14/10/2026)
+- **Cumprimento da finalidade (0–100%) de cada sistema** contra a meta do que foi projetado — motores (todo ativo lê
+  na cadência), maestro (cobertura do dia), rede neural (AUC ≥ 0,85), Biblioteca (toda aberta aplicável com livro
+  existente), validação, site oficial, prazo, Cartório (12/12), tela e fichas, integração, fluxos automáticos e
+  execução sem falha silenciosa — e um **índice geral**.
+- **Execução: parâmetros de tudo que roda** — cada fluxo do GitHub com a cadência esperada (lida dos crons), a última
+  execução, a taxa de sucesso e o estado (ok, atenção, atrasado, falha); e as **falhas silenciosas** (etapas que rodam
+  com "|| echo falhou") lidas nos registros das últimas execuções. Fora do GitHub os registros podem não ser legíveis:
+  então o diagnóstico diz "sem dados", nunca "100%".
+- **Conferência da sala de controle:** cada indicador recalculado na fonte e comparado ao que a sala mostra
+  (divergências), indicadores sem leitura, estados incoerentes com a faixa e **sugestões de apresentação** (sistemas
+  que existem e não aparecem na sala).
 - **Oportunidades, uma a uma:** tem livro? o livro existe no catálogo? (sem livro "por regra" — dispensa registrada —
   não é problema) · validada? · site oficial? · prazo? · prazo vencido ainda aberta? · aparece na tela e na ficha? ·
   decisão da titular aplicada?

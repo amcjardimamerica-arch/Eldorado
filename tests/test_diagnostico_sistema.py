@@ -29,10 +29,26 @@ class TesteDiagnostico(unittest.TestCase):
                   "fichas_oportunidades.run", "sala_controle.run", "saude.checar"):
             self.assertIn(r, src)
 
-    def test_curadoria_protege_livro_de_aberta_e_redireciona_indice(self):
-        src = (ROOT / "src/curadoria_biblioteca.py").read_text(encoding="utf-8")
-        self.assertIn('fora_da_abrangencia(x) and x["id"] not in protegidos', src)
-        self.assertIn('v["opressor"] = destino[v["opressor"]]', src)
+    def test_livros_de_outros_estados_contam(self):
+        """14/10 (titular): livro de outro estado conta; o arquivamento de 11/10 valeu uma vez, só para oportunidades."""
+        cur = (ROOT / "src/curadoria_biblioteca.py").read_text(encoding="utf-8")
+        self.assertIn("    fora = []", cur); self.assertIn('"recuperado_por"', cur); self.assertIn('x.get("ids_juntados")', cur)
+        self.assertIn('v["opressor"] = destino[v["opressor"]]', cur)
+        self.assertNotIn("só Goiás tem livros municipais)\"", (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8"))
+        self.assertNotIn('_m.get("id") in _arq or', (ROOT / "src/motores.py").read_text(encoding="utf-8"))
+
+    def test_execucao_finalidade_e_sala(self):
+        d = D.diagnosticar()
+        for k in ("finalidade", "execucao", "sala_de_controle"):
+            self.assertIn(k, d)
+        nomes = {x["sistema"] for x in d["finalidade"]["sistemas"]}
+        self.assertTrue({"Motores", "Maestro", "Rede neural", "Biblioteca", "Validação", "Cartório", "Fluxos automáticos"} <= nomes)
+        for x in d["finalidade"]["sistemas"]:
+            self.assertIn(x["estado"], ("ok", "atencao", "falha", "sem_dados"))
+        for k in ("divergencias", "sem_leitura", "estados_incoerentes", "sugestoes_de_apresentacao"):
+            self.assertIn(k, d["sala_de_controle"])
+        self.assertEqual(D._cadencia_h('cron: "13 0,9,12,15,18,21 * * *"'), 3.0)
+        self.assertEqual(D._cadencia_h('cron: "23 6 * * *"'), 24.0)
 
     def test_fluxos(self):
         self.assertIn("python -m src.diagnostico_sistema", (ROOT / ".github/workflows/motores-da-vez.yml").read_text(encoding="utf-8"))
