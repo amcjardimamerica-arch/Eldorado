@@ -42,7 +42,8 @@ class TesteDiagnostico(unittest.TestCase):
         rep = (ROOT / "src/repositorio_unico.py").read_text(encoding="utf-8")
         self.assertIn('"descartada: oportunidade municipal de outro estado', rep)
         cur = (ROOT / "src/curadoria_biblioteca.py").read_text(encoding="utf-8")
-        self.assertIn('fora_da_abrangencia(x) and x["id"] not in protegidos', cur); self.assertNotIn('"recuperado_por"', cur)
+        self.assertIn('fora = [x for x in ms if fora_da_abrangencia(x)]', cur); self.assertIn("ARQ.unlink()", cur)   # 14/10: apagados, sem arquivo
+        self.assertNotIn('"recuperado_por"', cur)
         self.assertIn("só Goiás tem livros municipais", (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8"))
         self.assertIn('_m.get("id") in _arq or', (ROOT / "src/motores.py").read_text(encoding="utf-8"))
         d = D.diagnosticar()["oportunidades"]

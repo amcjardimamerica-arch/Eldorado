@@ -223,7 +223,9 @@ class TesteLivrosDoParecer(unittest.TestCase):
             x = next(m for m in json.loads(tmp.read_text(encoding="utf-8"))["motores"] if m.get("pagina") == "https://quata.sp.gov.br/edital-teste")
             self.assertEqual(x["geo"], "SP")
             self.assertIn("EN-01", [r["id"] for r in x["busca"]["restricoes"]])
-            self.assertFalse(fora_da_abrangencia(x))
+            # 14/10/2026 (titular, decisão definitiva): a exceção de 02/10 caiu — livro de município de outro estado que não é
+            # capital é apagado pela curadoria (aqui: Campinas/SP fica fora da abrangência)
+            self.assertTrue(fora_da_abrangencia(x))
             sem = dict(x); sem.pop("excecao_abrangencia")
             self.assertTrue(fora_da_abrangencia(sem), "sem a exceção a regra antiga de abrangência continua valendo")
 

@@ -58,6 +58,17 @@ NAO_E_SELECAO = re.compile(r"dispensa de (chamamento|licita)|inexigibilidade|pes
 
 
 def dispensa(item: dict) -> str | None:
+    try:                                               # 14/10 (titular, definitiva): município de outro estado que não é capital — sem livro
+        from .regra_abrangencia import descartar_na_coleta
+        _m = descartar_na_coleta(item)
+        if _m:
+            return "fora da abrangência: " + _m
+    except Exception:  # noqa: BLE001
+        pass
+    return _dispensa_regras(item)
+
+
+def _dispensa_regras(item: dict) -> str | None:
     """Motivo da dispensa de opressor, ou None (precisa de opressor)."""
     t = f"{item.get('titulo') or ''} {item.get('orgao') or ''}"
     if NAO_E_SELECAO.search(t):     # 28/09: dispensa de chamamento, inexigibilidade, pessoa física, compra — não é seleção aberta a associações

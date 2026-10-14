@@ -75,10 +75,13 @@ def fora_da_abrangencia(x: dict) -> bool:
     """Público MUNICIPAL só de Goiás — inclusive quando o estado não foi identificado (geo nacional).
     Exceção (02/10): o que vem do PNCP ganha livro em qualquer estado; e o edital de OSC validado no parecer das 238
     (titular, 02/10: edital de OSC de outro município é oportunidade para OSC e compõe um livro próprio)."""
-    if do_pncp(x) or x.get("excecao_abrangencia"):
-        return False
+    # 14/10/2026 (titular, decisão definitiva): livro de município de outro estado que não seja capital NÃO EXISTE —
+    # caem as exceções de 02/10 (PNCP em qualquer estado; edital de OSC de outro município validado no parecer)
     from .regra_abrangencia import capital_citada       # 14/10 (titular): livro municipal de CAPITAL de outro estado fica
     if capital_citada(f"{_txt(x)} {x.get('pagina') or ''}"):
+        return False
+    from .repositorio_unico import _municipio_goiano    # 14/10: os 246 municípios de Goiás (IBGE) — nunca apaga livro goiano
+    if _municipio_goiano(f"{_txt(x)} {x.get('orgao') or ''}"):
         return False
     from .livros_opressores import uf_do_dominio
     _uf, _niv = uf_do_dominio(x.get("pagina"))
@@ -196,20 +199,29 @@ def conferir() -> dict:
     protegidos = {(_idx.get(i) or {}).get("opressor") for r in _rep if r.get("estado") != "fechada" and not r.get("arquivada")
                   for i in [r.get("id"), *(r.get("ids_origem") or [])] if (_idx.get(i) or {}).get("opressor")}
     # 1) abrangência
-    # 14/10/2026 (titular, confirmado): SÓ GOIÁS TEM LIVROS MUNICIPAIS — de outros estados, só estaduais e regionais.
-    # Livro ligado a oportunidade aberta fica (a oportunidade municipal de outro estado já é descartada no repositório).
-    fora = [x for x in ms if fora_da_abrangencia(x) and x["id"] not in protegidos]
+    # 14/10/2026 (titular, decisão definitiva): livro de município de OUTRO ESTADO que não seja capital é APAGADO —
+    # inclusive o pesquisado e o ligado a oportunidade aberta (a oportunidade também é descartada); não fica em arquivo
+    fora = [x for x in ms if fora_da_abrangencia(x)]
     if fora:
-        ant = lzma.decompress(ARQ.read_bytes()).decode().splitlines() if ARQ.exists() else []
-        ja = {json.loads(l).get("id") for l in ant if l.strip()}
-        ARQ.parent.mkdir(parents=True, exist_ok=True)
-        ARQ.write_bytes(lzma.compress(("\n".join(ant + [json.dumps({**x, "arquivado_em": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                                                                    "motivo": "público municipal de outro estado (só Goiás tem livros municipais)"}, ensure_ascii=False)
-                                                       for x in fora if x["id"] not in ja]) + "\n").encode()))
         ids_fora = {x["id"] for x in fora}
         ms = [x for x in ms if x["id"] not in ids_fora]
         for i in ids_fora:
             lig.pop(i, None)
+        if IDX.exists():
+            _I = json.loads(IDX.read_text(encoding="utf-8"))
+            for k, v in list((_I.get("indice") or {}).items()):
+                if isinstance(v, dict) and v.get("opressor") in ids_fora:
+                    _I["indice"][k] = {"dispensa": "fora da abrangência: município de outro estado que não é capital (livro apagado)"}
+            IDX.write_text(json.dumps(_I, ensure_ascii=False), encoding="utf-8")
+    if ARQ.exists():                                   # o arquivo antigo desses livros também é apagado
+        ARQ.unlink()
+    if IDX.exists():                                   # 14/10: nenhuma entrada do índice aponta para livro que não existe
+        _ok = {x["id"] for x in ms}; _I = json.loads(IDX.read_text(encoding="utf-8")); _n = 0
+        for k, v in list((_I.get("indice") or {}).items()):
+            if isinstance(v, dict) and v.get("opressor") and v["opressor"] not in _ok:
+                _I["indice"].pop(k); _n += 1
+        if _n:
+            IDX.write_text(json.dumps(_I, ensure_ascii=False), encoding="utf-8")
     # 1b) 14/10 (análise do sistema): livro que MISTURA ESTADOS fica só com as edições do estado dele; as outras saem
     #     (a oportunidade delas ganha o livro certo na passagem seguinte — o criador não reutiliza livro de outro estado)
     _soltas = []

@@ -6,6 +6,9 @@ MOTORES DE BUSCA (que descartam na coleta, antes de a oportunidade entrar no sis
   · Nacionais e internacionais: permitidas.
   · Municipal de outro estado que não seja capital: DESCARTADA pelo motor que a encontrou.
   · Sem estado determinado com segurança: fica (há municípios homônimos).
+  · LIVROS (titular, 14/10, decisão definitiva): município de outro estado que não é capital NÃO TEM LIVRO — os
+    existentes são apagados (inclusive pesquisados), nenhum é criado e nenhuma oportunidade é vinculada a livro existente;
+    caem as exceções de 02/10 (PNCP em qualquer estado; edital de OSC validado no parecer).
 """
 from __future__ import annotations
 

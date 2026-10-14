@@ -29,13 +29,15 @@ class TestePncpNacional(unittest.TestCase):
                                     "encerramento": "2026-12-01"}, date(2026, 10, 2), P.TODAS_UFS)
             self.assertEqual(c["veredito"], "RUIDO", t)
 
-    def test_livro_para_pncp_em_qualquer_estado(self):
+    def test_pncp_nao_cria_livro_de_municipio_de_outro_estado(self):
+        """14/10/2026 (titular, decisão definitiva): a exceção de 02/10 (PNCP em qualquer estado) caiu — município de outro
+        estado que não é capital não tem livro, venha de onde vier; capital e Goiás continuam."""
         from src.curadoria_biblioteca import fora_da_abrangencia
         from src.opressores_repositorio import dispensa
-        self.assertFalse(fora_da_abrangencia({"programa": "Chamamento", "orgao": "Prefeitura de Campinas", "geo": "SP", "pagina": "https://pncp.gov.br/app/editais/1/2026/3"}))
-        self.assertIsNone(dispensa({"titulo": "Chamamento público OSC", "orgao": "Prefeitura de Campinas", "uf": "SP", "origem": "motor pncp"}))
-        self.assertIsNotNone(dispensa({"titulo": "Chamamento público OSC", "orgao": "Prefeitura de Campinas", "uf": "SP", "origem": "motor x"}))   # outros motores: regra mantida
-
+        self.assertTrue(fora_da_abrangencia({"programa": "Chamamento", "orgao": "Prefeitura de Campinas", "geo": "SP", "pagina": "https://pncp.gov.br/app/editais/1/2026/3"}))
+        self.assertIsNotNone(dispensa({"titulo": "Chamamento público OSC", "orgao": "Prefeitura de Campinas", "uf": "SP", "origem": "motor pncp"}))
+        self.assertIsNone(dispensa({"titulo": "Chamamento público OSC", "orgao": "Prefeitura de Curitiba", "uf": "PR", "origem": "motor pncp"}))   # capital
+        self.assertIsNone(dispensa({"titulo": "Chamamento público OSC", "orgao": "Prefeitura de Anápolis", "uf": "GO", "origem": "motor pncp"}))
 
 if __name__ == "__main__":
     unittest.main()
