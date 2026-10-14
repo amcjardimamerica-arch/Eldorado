@@ -146,7 +146,9 @@ def oportunidades(P: list, hoje: str) -> dict:
     # 14/10 (titular): só Goiás tem oportunidades e livros municipais
     try:
         from .repositorio_unico import municipal_fora_de_goias
-        mun_ab = [f"{(r.get('titulo') or '')[:70]} [{r['id']}]" for r in abertas if municipal_fora_de_goias(r)]
+        uf_ag = {str(x.get("id")): x.get("uf") for x in ((_j(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens") or []) if x.get("uf")}
+        mun_ab = [f"{(r.get('titulo') or '')[:70]} [{r['id']}]" for r in abertas
+                  if municipal_fora_de_goias(r, next((uf_ag[i] for i in [r["id"], *(r.get("ids_origem") or [])] if i in uf_ag), None))]
     except Exception:  # noqa: BLE001
         mun_ab = []
     try:
