@@ -1,5 +1,5 @@
 {
- "em": "2026-10-14T15:14:13+00:00",
+ "em": "2026-10-14T16:57:17+00:00",
  "conselho": [
   {
    "id": "falso_verde",
@@ -46,25 +46,26 @@
  ],
  "resumo": {
   "motores": 149,
-  "motores_com_falha": 101,
+  "motores_com_falha": 100,
   "falhas_por_tipo": {
    "CONGELADO": 21,
    "SILÊNCIO LONGO": 44,
    "ESTRANGULADO": 1,
-   "VAZAMENTO": 50,
+   "VAZAMENTO": 49,
    "CEGO": 23,
    "PÁGINA VAZIA": 8,
    "INTERMITENTE": 2,
-   "RUÍDO": 29
+   "RUÍDO": 29,
+   "CUSTO SEM RETORNO": 1
   }
  },
  "cobertura": {
   "origem_das_oportunidades": {
-   "agregador/outra": 326,
-   "Piloto": 126,
-   "motor": 107
+   "agregador/outra": 328,
+   "motor": 116,
+   "Piloto": 127
   },
-  "fora_dos_motores_pct": 80.9,
+  "fora_dos_motores_pct": 79.7,
   "ufs_sem_motor_com_oportunidade": [
    {
     "uf": "GO",
@@ -114,12 +115,12 @@
   }
  },
  "fontes_irmas": {
-  "total": 232,
+  "total": 233,
   "top": [
    {
     "dominio": "baoba.org.br",
-    "peso": 23,
-    "url": "https://baoba.org.br/wp-content/uploads/2026/01/Programa_Marielle_Franco_Edital_Atualizado_2026.pdf"
+    "peso": 21,
+    "url": "https://baoba.org.br/doacao"
    },
    {
     "dominio": "licitario.com.br",
@@ -246,7 +247,7 @@
  "plataformas": {
   "plataformas": {
    "WordPress": {
-    "orgaos": 84,
+    "orgaos": 85,
     "exemplos": [
      "alvoradadonorte.go.gov.br",
      "anater.org",
@@ -321,7 +322,7 @@
    {
     "inovacao": "Adaptador por plataforma",
     "o_que": "um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão",
-    "alcance": "84 órgãos WordPress e 10 instâncias de Mapas Culturais já conhecidos de uma vez"
+    "alcance": "85 órgãos WordPress e 10 instâncias de Mapas Culturais já conhecidos de uma vez"
    },
    {
     "inovacao": "Detecção de mudança barata",
@@ -374,7 +375,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "46 leituras vazias seguidas",
+     "prova": "47 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -389,7 +390,7 @@
      "bytes": 121
     }
    ],
-   "achados_total": 416,
+   "achados_total": 420,
    "valor": "confirma",
    "achados_30d": 131,
    "cadencia": {
@@ -438,12 +439,12 @@
     {
      "url": "https://portal.al.go.leg.br/",
      "http": 200,
-     "bytes": 133305
+     "bytes": 133300
     },
     {
      "url": "https://portal.al.go.leg.br/noticias",
      "http": 200,
-     "bytes": 114924
+     "bytes": 116560
     }
    ],
    "achados_total": 17,
@@ -458,7 +459,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "74 leituras vazias seguidas",
+     "prova": "75 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     },
     {
@@ -476,7 +477,13 @@
     {
      "url": "https://www.goiania.go.leg.br",
      "http": 200,
-     "bytes": 13067,
+     "bytes": 243812,
+     "itens": 23
+    },
+    {
+     "url": "https://www.goiania.go.leg.br",
+     "http": 200,
+     "bytes": 13073,
      "itens": 0
     }
    ],
@@ -498,7 +505,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "121 leituras vazias seguidas",
+     "prova": "122 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -569,7 +576,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "72 leituras vazias seguidas",
+     "prova": "73 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -717,28 +724,15 @@
      "posts": 6
     }
    ],
-   "achados_total": 143,
-   "valor": "ruído",
+   "achados_total": 145,
+   "valor": "confirma",
    "achados_30d": 31,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
     "dia_forte": "terça"
    },
-   "falhas": [
-    {
-     "conselheiro": "funil",
-     "falha": "RUÍDO",
-     "prova": "143 achados e nenhuma oportunidade confirmada",
-     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
-    },
-    {
-     "conselheiro": "funil",
-     "falha": "VAZAMENTO",
-     "prova": "perde 100% na etapa 'achado → fluxo'",
-     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
-    }
-   ]
+   "falhas": []
   },
   "plat-observatorio-3setor": {
    "nome": "Observatório do Terceiro Setor — editais",
@@ -2044,7 +2038,7 @@
     {
      "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1",
      "http": 200,
-     "bytes": 155324
+     "bytes": 155318
     },
     {
      "url": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
@@ -2052,7 +2046,7 @@
      "bytes": 146048
     }
    ],
-   "achados_total": 123,
+   "achados_total": 125,
    "valor": "ruído",
    "achados_30d": 13,
    "cadencia": {
@@ -2070,7 +2064,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "123 achados e nenhuma oportunidade confirmada",
+     "prova": "125 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -2096,9 +2090,9 @@
      "bytes": 48553
     }
    ],
-   "achados_total": 1467,
+   "achados_total": 1490,
    "valor": "ruído",
-   "achados_30d": 246,
+   "achados_30d": 247,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -2108,8 +2102,14 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "1467 achados e nenhuma oportunidade confirmada",
+     "prova": "1490 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'fluxo → confirmada'",
+     "melhoria": "faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório"
     }
    ]
   },
@@ -2316,9 +2316,9 @@
      "status": "lida"
     }
    ],
-   "achados_total": 93,
+   "achados_total": 95,
    "valor": "ruído",
-   "achados_30d": 12,
+   "achados_30d": 13,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -2334,14 +2334,8 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "93 achados e nenhuma oportunidade confirmada",
+     "prova": "95 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
-    },
-    {
-     "conselheiro": "funil",
-     "falha": "VAZAMENTO",
-     "prova": "perde 100% na etapa 'achado → fluxo'",
-     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
     }
    ]
   },
@@ -2394,7 +2388,7 @@
      "itens": 129
     }
    ],
-   "achados_total": 346,
+   "achados_total": 348,
    "valor": "ouro",
    "achados_30d": 89,
    "cadencia": {
@@ -2406,7 +2400,7 @@
     {
      "conselheiro": "funil",
      "falha": "VAZAMENTO",
-     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "prova": "perde 99% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
     }
    ]
@@ -2544,7 +2538,7 @@
     {
      "url": "https://html.duckduckgo.com/html/?q=edital+organiza%C3%A7%C3%B5es+da+sociedade+civil+2026",
      "http": 200,
-     "bytes": 36765
+     "bytes": 37157
     },
     {
      "url": "https://html.duckduckgo.com/html/?q=",
@@ -2552,9 +2546,9 @@
      "bytes": 3108
     }
    ],
-   "achados_total": 2434,
+   "achados_total": 2444,
    "valor": "ouro",
-   "achados_30d": 694,
+   "achados_30d": 664,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -2622,7 +2616,7 @@
     {
      "url": "https://www.congressonacional.leg.br",
      "http": 200,
-     "bytes": 151528,
+     "bytes": 151532,
      "itens": 9
     },
     {
@@ -2650,7 +2644,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "79 leituras vazias seguidas",
+     "prova": "80 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3974,7 +3968,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "88 leituras vazias seguidas",
+     "prova": "89 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -4001,7 +3995,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "61 leituras vazias seguidas",
+     "prova": "62 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -4010,7 +4004,7 @@
    "nome": "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)",
    "tipo": "ministerio_publico",
    "saude": [],
-   "achados_total": 58,
+   "achados_total": 59,
    "valor": "ruído",
    "achados_30d": 12,
    "cadencia": {
@@ -4034,7 +4028,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "58 achados e nenhuma oportunidade confirmada",
+     "prova": "59 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4055,7 +4049,7 @@
      "itens": 44
     }
    ],
-   "achados_total": 86,
+   "achados_total": 87,
    "valor": "ruído",
    "achados_30d": 19,
    "cadencia": {
@@ -4067,7 +4061,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "86 achados e nenhuma oportunidade confirmada",
+     "prova": "87 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4100,7 +4094,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "56 leituras vazias seguidas",
+     "prova": "57 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -4120,7 +4114,7 @@
    ],
    "achados_total": 40,
    "valor": "ruído",
-   "achados_30d": 2,
+   "achados_30d": 1,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -4132,6 +4126,12 @@
      "falha": "RUÍDO",
      "prova": "40 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "CUSTO SEM RETORNO",
+     "prova": "155 s na última leitura sem achado",
+     "melhoria": "reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem"
     }
    ]
   },
@@ -4762,19 +4762,19 @@
    "tipo": "site_oficial",
    "saude": [
     {
-     "url": "https://conexoes.bndes.gov.br/chamadas-e-editais",
+     "url": "https://transforma.fbb.org.br/premio/17",
      "http": 200,
-     "bytes": 4604
+     "bytes": 61277
     },
     {
-     "url": "https://chamamentos.itapevi.sp.gov.br/chamamentos",
+     "url": "https://www.goias365.com.br/prefeito-vilela-sanciona-lei-que-reduz-aliquota-do-itbi-para-15-em-aparecida/",
      "http": 200,
-     "bytes": 247587
+     "bytes": 135027
     }
    ],
    "achados_total": 204,
    "valor": "ruído",
-   "achados_30d": 107,
+   "achados_30d": 54,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -4800,19 +4800,19 @@
    "tipo": "site_oficial",
    "saude": [
     {
-     "url": "https://childfundbrasil.org.br/edital-selo-organizacao-parceira-do-childfund/",
+     "url": "https://sinir.gov.br/perfis/editais/edital-catadores-fnma-sqa-no-1-2024/",
      "http": 200,
-     "bytes": 163322
+     "bytes": 360072
     },
     {
-     "url": "https://www.papsfsa.com.br/wp-content/uploads/2026/06/2027-edital-paps.pdf",
+     "url": "https://www.institutoneoenergia.org.br/",
      "http": 200,
-     "bytes": 494675
+     "bytes": 214930
     }
    ],
-   "achados_total": 258,
+   "achados_total": 274,
    "valor": "ruído",
-   "achados_30d": 47,
+   "achados_30d": 63,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -4822,7 +4822,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "258 achados e nenhuma oportunidade confirmada",
+     "prova": "274 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4880,9 +4880,9 @@
      "bytes": 201911
     }
    ],
-   "achados_total": 138,
+   "achados_total": 142,
    "valor": "ruído",
-   "achados_30d": 49,
+   "achados_30d": 47,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -4892,7 +4892,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "138 achados e nenhuma oportunidade confirmada",
+     "prova": "142 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4908,19 +4908,19 @@
    "tipo": "site_oficial",
    "saude": [
     {
-     "url": "https://www.gentilezagenerosidade.org.br",
+     "url": "https://www.cultura.sc.gov.br/editais-e-acoes/editais",
      "http": 200,
-     "bytes": 1097497
+     "bytes": 147024
     },
     {
-     "url": "https://casafluminense.org.br/atuacao/fundo-casa-fluminense/",
+     "url": "https://itaberai.go.gov.br/edital-de-chamamento-publico-n-001-cmdca-2026/",
      "http": 200,
-     "bytes": 142999
+     "bytes": 151924
     }
    ],
-   "achados_total": 122,
+   "achados_total": 126,
    "valor": "ouro",
-   "achados_30d": 47,
+   "achados_30d": 39,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -4930,7 +4930,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "122 achados e nenhuma oportunidade confirmada",
+     "prova": "126 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4946,19 +4946,19 @@
    "tipo": "site_oficial",
    "saude": [
     {
-     "url": "https://fondation-janmichalski.com/en/residences",
+     "url": "https://www.fundoamazonia.gov.br/pt/como-apresentar-projetos/chamadas-publicas/programa-desafios-da-amazonia",
      "http": 200,
-     "bytes": 55012
+     "bytes": 35064
     },
     {
-     "url": "https://voluntariadoempresarial.org.br/voluntariado-de-alto-impacto-para-as-osc-atraindo-e-mantendo-parcerias-de-valor",
+     "url": "https://brasil.arcelormittal.com.br/",
      "http": 200,
-     "bytes": 80029
+     "bytes": 118477
     }
    ],
-   "achados_total": 45,
+   "achados_total": 48,
    "valor": "ruído",
-   "achados_30d": 4,
+   "achados_30d": 7,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -4968,7 +4968,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "45 achados e nenhuma oportunidade confirmada",
+     "prova": "48 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4986,23 +4986,29 @@
     {
      "url": "https://fundopositivo.org.br/editais/",
      "http": 200,
-     "bytes": 195245
+     "bytes": 195218
     },
     {
-     "url": "https://potengi.ce.gov.br/publicacoes.php?pagina=1",
+     "url": "https://editaisdobrasil.com/calendario",
      "http": 200,
-     "bytes": 115063
+     "bytes": 322179
     }
    ],
-   "achados_total": 12,
-   "valor": "baixo volume",
-   "achados_30d": 12,
+   "achados_total": 28,
+   "valor": "ruído",
+   "achados_30d": 16,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
     "dia_forte": "quarta"
    },
    "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "28 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
     {
      "conselheiro": "funil",
      "falha": "VAZAMENTO",
