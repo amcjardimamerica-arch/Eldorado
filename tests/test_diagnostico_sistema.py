@@ -29,13 +29,19 @@ class TesteDiagnostico(unittest.TestCase):
                   "fichas_oportunidades.run", "sala_controle.run", "saude.checar"):
             self.assertIn(r, src)
 
-    def test_livros_de_outros_estados_contam(self):
-        """14/10 (titular): livro de outro estado conta; o arquivamento de 11/10 valeu uma vez, só para oportunidades."""
+    def test_so_goias_tem_municipais(self):
+        """14/10 (titular, confirmado): só Goiás tem livros e oportunidades municipais; de outros estados, só estaduais."""
+        from src.repositorio_unico import municipal_fora_de_goias
+        self.assertTrue(municipal_fora_de_goias({"titulo": "MUNICIPIO DE ITAGIBA — Chamamento", "uf": "BA"}))
+        self.assertIsNone(municipal_fora_de_goias({"titulo": "Edital estadual", "orgao": "Secretaria de Estado da Cultura de São Paulo", "nivel": "estadual", "uf": "SP"}))
+        rep = (ROOT / "src/repositorio_unico.py").read_text(encoding="utf-8")
+        self.assertIn('"descartada: oportunidade municipal de outro estado', rep)
         cur = (ROOT / "src/curadoria_biblioteca.py").read_text(encoding="utf-8")
-        self.assertIn("    fora = []", cur); self.assertIn('"recuperado_por"', cur); self.assertIn('x.get("ids_juntados")', cur)
-        self.assertIn('v["opressor"] = destino[v["opressor"]]', cur)
-        self.assertNotIn("só Goiás tem livros municipais)\"", (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8"))
-        self.assertNotIn('_m.get("id") in _arq or', (ROOT / "src/motores.py").read_text(encoding="utf-8"))
+        self.assertIn('fora_da_abrangencia(x) and x["id"] not in protegidos', cur); self.assertNotIn('"recuperado_por"', cur)
+        self.assertIn("só Goiás tem livros municipais", (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8"))
+        self.assertIn('_m.get("id") in _arq or', (ROOT / "src/motores.py").read_text(encoding="utf-8"))
+        d = D.diagnosticar()["oportunidades"]
+        self.assertIn("municipais_de_outro_estado_abertas", d); self.assertIn("livros_municipais_de_outro_estado", d)
 
     def test_execucao_finalidade_e_sala(self):
         d = D.diagnosticar()

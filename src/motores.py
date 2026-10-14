@@ -793,7 +793,7 @@ def run() -> dict:
                 _cl0(_m)
             except Exception:
                 pass
-            if _m.get("id") in _juntados:   # 14/10 (titular): livro de outro estado conta — nem a regra nem o arquivo o tiram daqui
+            if _m.get("id") in _arq or _m.get("id") in _juntados or fora_da_abrangencia(_m):   # 14/10 (titular, confirmado): só Goiás tem livros municipais
                 continue
             if empresa_sem_edital(_m):
                 _m["papel"] = "fonte_de_busca"

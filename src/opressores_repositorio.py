@@ -70,7 +70,8 @@ def dispensa(item: dict) -> str | None:
         if not x["geo"]:
             from .livros_opressores import uf_do_dominio
             x["geo"] = uf_do_dominio(x["pagina"])[0]
-        pass   # 14/10/2026 (titular): livro de outro estado conta — a regra "só Goiás tem livros municipais" saiu
+        if fora_da_abrangencia(x):     # 14/10/2026 (titular, confirmado): só Goiás tem livros municipais
+            return "fora da abrangência: oportunidade pública municipal de outro estado (só Goiás tem livros municipais)"
         if item.get("tipo") == "empresa/instituto" and empresa_sem_edital(x):
             return "empresa sem edital por concorrência: é fonte de busca, não livro"
     except Exception:
@@ -270,7 +271,7 @@ def sincronizar() -> dict:
         it = {"id": x["id"], "titulo": x.get("titulo"), "orgao": x.get("orgao"), "link_oficial": x.get("link_oficial"), "url": x.get("url"),
               "fim": x.get("fim"), "uf": x.get("uf"), "origem": x.get("origem")}
         m = dispensa(it)
-        if m and not re.match(r"(?i)fora da abrang|sem crit[ée]rio de sele", m):
+        if m and not re.match(r"(?i)sem crit[ée]rio de sele", m):     # 14/10: municipal de outro estado também não ganha livro
             idx[x["id"]] = {"dispensa": m}; st["dispensadas"] += 1; continue
         _lid = opressor_de(it, "aberta", True)                 # 11/10: aberta (por decisão da titular) → tem livro
         idx[x["id"]] = {"opressor": _lid}; st["do_repositorio_unico"] += 1

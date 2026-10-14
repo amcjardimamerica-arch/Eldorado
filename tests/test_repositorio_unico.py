@@ -120,7 +120,7 @@ class TesteEsteiraFarol(unittest.TestCase):
 
     def test_livro_farol_e_aprendizado(self):
         o = (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8")
-        self.assertIn('if m and not re.match(r"(?i)fora da abrang|sem crit[ée]rio de sele", m):', o)
+        self.assertIn('if m and not re.match(r"(?i)sem crit[ée]rio de sele", m):', o)   # 14/10: municipal de outro estado não ganha livro
         self.assertIn("não se aplica a OSC: o destino é a dispensa", o); self.assertIn('x["pagina_aprendida"]', o)
         self.assertIn('"modelo": "oportunidade completa", "pronta": True', (ROOT / "src/preparacao_livros.py").read_text(encoding="utf-8"))
         self.assertIn("repositorio_depois_dos_livros", (ROOT / "src/fluxo_oportunidades.py").read_text(encoding="utf-8"))
@@ -157,7 +157,8 @@ class TesteMunicipaisForaDeGoias(unittest.TestCase):
         self.assertGreater(foto["total"], 0); self.assertEqual(foto["total"], len(foto["oportunidades"]))
         src = (ROOT / "src/repositorio_unico.py").read_text(encoding="utf-8")
         self.assertIn("arquivamento_municipais_2026-10-11.json", src)
-        self.assertEqual(src.count("municipal_fora_de_goias("), 1, "a identificação automática não roda nas rodadas (só a definição)")
+        # 14/10/2026 (titular): a regra passou a ser CONTÍNUA — só Goiás tem oportunidades municipais
+        self.assertGreaterEqual(src.count("municipal_fora_de_goias("), 2, "a identificação roda a cada rodada")
 
     def test_arquivada_so_no_contador(self):
         import tempfile
@@ -168,8 +169,10 @@ class TesteMunicipaisForaDeGoias(unittest.TestCase):
                 res = R.construir(gravar=True); regs = json.loads(R.SAIDA.read_text())["registros"]
             finally:
                 R.SAIDA, R.RESUMO = o
-        arq = [x for x in regs if x.get("arquivada")]
-        self.assertTrue(all(x["estado"] != "fechada" for x in arq), "o estado é mantido: as filas dos motores seguem")
+        # 14/10/2026 (titular): municipal de outro estado é DESCARTADA (fechada): sai das abertas, da tela e das filas
+        desc = [x for x in regs if str(x.get("motivo_estado", "")).startswith("descartada: oportunidade municipal de outro estado")]
+        self.assertTrue(all(x["estado"] == "fechada" for x in desc))
+        self.assertTrue(all(R.municipal_fora_de_goias(x) or "(" in x["motivo_estado"] for x in desc))
         self.assertEqual(res["abertas"], sum(1 for x in regs if x["estado"] != "fechada" and not x.get("arquivada")))
         self.assertIn('r.get("arquivada")', (ROOT / "src/fluxo_oportunidades.py").read_text(encoding="utf-8"))
 
