@@ -143,7 +143,25 @@ def oportunidades(P: list, hoje: str) -> dict:
         _problema(P, "sem_site_oficial", "media", f"{len(sem_site)} abertas ainda sem site oficial", "Cartório/Interceptador (sem correção automática imediata)", len(sem_site), sem_site)
     if sem_prazo:
         _problema(P, "sem_prazo", "baixa", f"{len(sem_prazo)} abertas sem prazo de inscrição conhecido", "Cartório/Interceptador (sem correção automática imediata)", len(sem_prazo), sem_prazo)
-    return {"abertas": n, "por_estado": dict(estados), "validadas": estados.get("validada", 0),
+    # 14/10 (titular): só Goiás tem oportunidades e livros municipais
+    try:
+        from .repositorio_unico import municipal_fora_de_goias
+        mun_ab = [f"{(r.get('titulo') or '')[:70]} [{r['id']}]" for r in abertas if municipal_fora_de_goias(r)]
+    except Exception:  # noqa: BLE001
+        mun_ab = []
+    try:
+        from .curadoria_biblioteca import fora_da_abrangencia
+        prot = {r.get("livro") for r in abertas if r.get("livro")}
+        mun_lv = [f"{x.get('nome_classificado') or x.get('programa') or x['id']} [{x['id']}]" for x in cat.values() if fora_da_abrangencia(x) and x["id"] not in prot]
+    except Exception:  # noqa: BLE001
+        mun_lv = []
+    if mun_ab:
+        _problema(P, "municipal_de_outro_estado_aberta", "alta", f"{len(mun_ab)} oportunidades municipais de outros estados ainda abertas (só Goiás tem municipais)",
+                  "refazer o repositório", len(mun_ab), mun_ab)
+    if mun_lv:
+        _problema(P, "livro_municipal_de_outro_estado", "media", f"{len(mun_lv)} livros municipais de outros estados no catálogo (só Goiás tem livros municipais)",
+                  "refazer a tela", len(mun_lv), mun_lv)
+    return {"abertas": n, "por_estado": dict(estados), "municipais_de_outro_estado_abertas": len(mun_ab), "livros_municipais_de_outro_estado": len(mun_lv), "validadas": estados.get("validada", 0),
             "percentual_validadas": round(100 * estados.get("validada", 0) / n, 1) if n else None,
             "com_livro": n - len(sem_livro) - sum(sem_livro_regra.values()), "sem_livro": len(sem_livro),
             "sem_livro_por_regra": sum(sem_livro_regra.values()), "sem_livro_por_regra_motivos": dict(sem_livro_regra.most_common(6)),

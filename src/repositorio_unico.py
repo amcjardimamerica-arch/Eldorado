@@ -93,9 +93,10 @@ UFS = {"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "
 
 
 def municipal_fora_de_goias(r: dict, uf_agregador: str | None = None) -> str | None:
-    """Identifica oportunidade MUNICIPAL de fora de Goiás (UF determinada e diferente de GO). Usada UMA vez, em 11/10/2026,
-    para montar a lista fixa do arquivamento seletivo (dados/oportunidades/arquivamento_municipais_2026-10-11.json);
-    NÃO roda a cada rodada — oportunidades municipais novas entram normalmente."""
+    """Identifica oportunidade MUNICIPAL de fora de Goiás (UF determinada e diferente de GO). 14/10/2026 (titular): roda a
+    CADA rodada — só Goiás tem oportunidades municipais; de outros estados, só estaduais (e nacionais/internacionais).
+    A municipal de outro estado é DESCARTADA do sistema (estado fechada: sai das abertas, da tela, das filas e não ganha
+    livro). Sem UF determinada, fica (há municípios homônimos)."""
     t = f"{r.get('titulo') or ''} {r.get('orgao') or ''}"
     municipal = str(r.get("nivel") or "").lower() == "municipal" or bool(_MUN.search(t))
     if not municipal or str(r.get("nivel") or "").lower() in ("estadual", "federal", "internacional"):
@@ -157,6 +158,7 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
     # 11/10 (titular): arquivamento ÚNICO — só as municipais de fora de GO abertas em 11/10 (lista fixa); as novas entram normalmente
     from .decisoes_titular import decisoes as _decisoes
     _DEC = _decisoes()
+    uf_ag = {str(x.get("id")): x.get("uf") for x in ((_j(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens") or []) if x.get("uf")}
     _foto = _j(ROOT / "dados/oportunidades/arquivamento_municipais_2026-10-11.json", {}) or {}
     _arq_ids = {i: f"arquivada em 11/10/2026: municipal fora de Goiás ({o.get('uf')}) — o livro fica guardado"
                 for o in (_foto.get("oportunidades") or []) for i in [o["id"], *(o.get("ids_origem") or [])]}
@@ -241,8 +243,12 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
         if not _mun:                       # 12/10 (titular): decidida no painel (inscrita ou descartada) sai das abertas; o livro fica
             from .decisoes_titular import marca_no_repositorio
             _mun = marca_no_repositorio([cid] + r["ids_origem"], _DEC)
+        _fora = municipal_fora_de_goias(r, next((uf_ag[i] for i in [cid] + r["ids_origem"] if i in uf_ag), None))
         if v in FECHADAS:
             estado, motivo = "fechada", f"veredito: {v}"
+        elif _fora:                                        # 14/10 (titular): só Goiás tem oportunidades municipais
+            _uf = (re.search(r"\(([A-Z]{2})\)", _fora) or [None, "?"])[1]
+            estado, motivo = "fechada", f"descartada: oportunidade municipal de outro estado ({_uf}) — só Goiás tem oportunidades municipais"
         elif fim and str(fim)[:10] < hoje:
             estado, motivo = "fechada", "prazo vencido"
         elif selo == "ouro" and link:                       # prova completa na fonte supera qualquer marcação anterior

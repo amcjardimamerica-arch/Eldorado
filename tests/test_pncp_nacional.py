@@ -34,7 +34,7 @@ class TestePncpNacional(unittest.TestCase):
         from src.opressores_repositorio import dispensa
         self.assertFalse(fora_da_abrangencia({"programa": "Chamamento", "orgao": "Prefeitura de Campinas", "geo": "SP", "pagina": "https://pncp.gov.br/app/editais/1/2026/3"}))
         self.assertIsNone(dispensa({"titulo": "Chamamento público OSC", "orgao": "Prefeitura de Campinas", "uf": "SP", "origem": "motor pncp"}))
-        self.assertIsNone(dispensa({"titulo": "Chamamento público OSC", "orgao": "Prefeitura de Campinas", "uf": "SP", "origem": "motor x"}))   # 14/10 (titular): livros de outros estados contam, de qualquer motor
+        self.assertIsNotNone(dispensa({"titulo": "Chamamento público OSC", "orgao": "Prefeitura de Campinas", "uf": "SP", "origem": "motor x"}))   # outros motores: regra mantida
 
 
 if __name__ == "__main__":

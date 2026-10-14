@@ -25,6 +25,9 @@ Alternativa local (sem gravar na produção): `python -m src.diagnostico_sistema
 - **Conferência da sala de controle:** cada indicador recalculado na fonte e comparado ao que a sala mostra
   (divergências), indicadores sem leitura, estados incoerentes com a faixa e **sugestões de apresentação** (sistemas
   que existem e não aparecem na sala).
+- **Regra de abrangência (titular, 14/10):** só Goiás tem oportunidades e livros MUNICIPAIS; de outros estados,
+  só estaduais (e nacionais/internacionais). O diagnóstico aponta municipal de outro estado ainda aberta (corrige
+  refazendo o repositório, que a descarta) e livro municipal de outro estado no catálogo (corrige pela curadoria).
 - **Oportunidades, uma a uma:** tem livro? o livro existe no catálogo? (sem livro "por regra" — dispensa registrada —
   não é problema) · validada? · site oficial? · prazo? · prazo vencido ainda aberta? · aparece na tela e na ficha? ·
   decisão da titular aplicada?
