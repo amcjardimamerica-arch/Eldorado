@@ -1,5 +1,5 @@
 {
- "em": "2026-10-13T23:26:04+00:00",
+ "em": "2026-10-14T00:54:12+00:00",
  "conselho": [
   {
    "id": "falso_verde",
@@ -50,20 +50,20 @@
   "falhas_por_tipo": {
    "CONGELADO": 20,
    "SILÊNCIO LONGO": 44,
-   "CUSTO SEM RETORNO": 1,
    "ESTRANGULADO": 1,
    "VAZAMENTO": 47,
    "CEGO": 23,
-   "PÁGINA VAZIA": 10,
+   "PÁGINA VAZIA": 8,
    "INTERMITENTE": 2,
-   "RUÍDO": 28
+   "RUÍDO": 28,
+   "CUSTO SEM RETORNO": 1
   }
  },
  "cobertura": {
   "origem_das_oportunidades": {
-   "agregador/outra": 322,
-   "motor": 116,
-   "Piloto": 116
+   "agregador/outra": 317,
+   "motor": 115,
+   "Piloto": 117
   },
   "fora_dos_motores_pct": 79.1,
   "ufs_sem_motor_com_oportunidade": [
@@ -96,18 +96,17 @@
     }
    },
    {
-    "uf": "RS",
-    "oportunidades": 3,
-    "de_onde": {
-     "agregador/outra": 2,
-     "Piloto": 1
-    }
-   },
-   {
     "uf": "MG",
     "oportunidades": 3,
     "de_onde": {
      "agregador/outra": 3
+    }
+   },
+   {
+    "uf": "RS",
+    "oportunidades": 2,
+    "de_onde": {
+     "agregador/outra": 2
     }
    }
   ],
@@ -134,11 +133,6 @@
     "url": "https://www.institutolojasrenner.org.br/jornada-fortalecidas/"
    },
    {
-    "dominio": "itausocial.org.br",
-    "peso": 14,
-    "url": "https://www.itausocial.org.br/editais/edital-fundos-da-infancia-e-da-adolescencia-2025/"
-   },
-   {
     "dominio": "zurich.com.br",
     "peso": 13,
     "url": "https://www.zurich.com.br/leis-de-incentivo-2026"
@@ -159,14 +153,14 @@
     "url": "https://chamadas.funbio.org.br/floresta-viva-sao-francisco"
    },
    {
+    "dominio": "brazilfoundation.org",
+    "peso": 11,
+    "url": "https://brazilfoundation.org/brazilfoundation-anuncia-selecionadas-2026/"
+   },
+   {
     "dominio": "feirapreta.com.br",
     "peso": 9,
     "url": "https://feirapreta.com.br/pretas-potencias-2/"
-   },
-   {
-    "dominio": "brazilfoundation.org",
-    "peso": 9,
-    "url": "https://brazilfoundation.org/brazilfoundation-anuncia-selecionadas-2026/"
    },
    {
     "dominio": "transforma.fbb.org.br",
@@ -187,11 +181,6 @@
     "dominio": "jornadasocial.com.br",
     "peso": 8,
     "url": "https://jornadasocial.com.br/edital-transformacao"
-   },
-   {
-    "dominio": "crars.org.br",
-    "peso": 8,
-    "url": "https://www.crars.org.br/chamamentos-publicos"
    },
    {
     "dominio": "contrafluxofestival.com.br",
@@ -242,13 +231,23 @@
     "dominio": "institutoinad.org.br",
     "peso": 6,
     "url": "https://institutoinad.org.br/editais/edital-fundos-da-infancia-e-da-adolescencia-2026/"
+   },
+   {
+    "dominio": "energiaesaneamento.org.br",
+    "peso": 6,
+    "url": "https://www.energiaesaneamento.org.br/sonhar-o-mundo-2026-abre-inscricoes-para-instituicoes-de-todo-o-estado-de-sao-paulo/"
+   },
+   {
+    "dominio": "equatorial.gestaocpp.com.br",
+    "peso": 6,
+    "url": "https://equatorial.gestaocpp.com.br/uploads/landing/11111111-1111-1111-1111-111111111111/747d7203-1ac0-4d7f-91c8-ae479f9872c3.pdf"
    }
   ]
  },
  "plataformas": {
   "plataformas": {
    "WordPress": {
-    "orgaos": 77,
+    "orgaos": 78,
     "exemplos": [
      "alvoradadonorte.go.gov.br",
      "anater.org",
@@ -323,7 +322,7 @@
    {
     "inovacao": "Adaptador por plataforma",
     "o_que": "um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão",
-    "alcance": "77 órgãos WordPress e 10 instâncias de Mapas Culturais já conhecidos de uma vez"
+    "alcance": "78 órgãos WordPress e 10 instâncias de Mapas Culturais já conhecidos de uma vez"
    },
    {
     "inovacao": "Detecção de mudança barata",
@@ -376,14 +375,8 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "37 leituras vazias seguidas",
+     "prova": "38 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
-    },
-    {
-     "conselheiro": "redundancia",
-     "falha": "CUSTO SEM RETORNO",
-     "prova": "151 s na última leitura sem achado",
-     "melhoria": "reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem"
     }
    ]
   },
@@ -397,7 +390,7 @@
      "bytes": 135
     }
    ],
-   "achados_total": 380,
+   "achados_total": 384,
    "valor": "confirma",
    "achados_30d": 127,
    "cadencia": {
@@ -422,7 +415,7 @@
      "bytes": 0
     }
    ],
-   "achados_total": 79,
+   "achados_total": 81,
    "valor": "confirma",
    "achados_30d": 30,
    "cadencia": {
@@ -434,7 +427,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "ESTRANGULADO",
-     "prova": "viu 2655 links e nenhum virou candidato",
+     "prova": "viu 2656 links e nenhum virou candidato",
      "melhoria": "o filtro de candidatos está estreito demais: incluir termos de chamamento/edital da fonte e seguir PDFs"
     }
    ]
@@ -446,12 +439,12 @@
     {
      "url": "https://portal.al.go.leg.br/",
      "http": 200,
-     "bytes": 133740
+     "bytes": 133691
     },
     {
      "url": "https://portal.al.go.leg.br/noticias",
      "http": 200,
-     "bytes": 110987
+     "bytes": 113207
     }
    ],
    "achados_total": 17,
@@ -466,7 +459,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "65 leituras vazias seguidas",
+     "prova": "66 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     },
     {
@@ -481,6 +474,12 @@
    "nome": "Câmara Municipal de Goiânia — projetos de lei",
    "tipo": "legislativo",
    "saude": [
+    {
+     "url": "https://www.goiania.go.leg.br",
+     "http": 200,
+     "bytes": 284643,
+     "itens": 26
+    },
     {
      "url": "https://www.goiania.go.leg.br",
      "http": 200,
@@ -506,7 +505,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "112 leituras vazias seguidas",
+     "prova": "113 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -577,7 +576,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "63 leituras vazias seguidas",
+     "prova": "64 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -725,7 +724,7 @@
      "posts": 6
     }
    ],
-   "achados_total": 127,
+   "achados_total": 129,
    "valor": "confirma",
    "achados_30d": 29,
    "cadencia": {
@@ -1052,7 +1051,7 @@
     {
      "url": "https://www.mpf.mp.br/",
      "http": 200,
-     "bytes": 250791
+     "bytes": 251039
     }
    ],
    "achados_total": 0,
@@ -1073,7 +1072,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "53 leituras vazias seguidas",
+     "prova": "54 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -1109,7 +1108,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "56 leituras vazias seguidas",
+     "prova": "57 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -1165,17 +1164,17 @@
     {
      "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1",
      "http": 200,
-     "bytes": 154198
+     "bytes": 155318
     },
     {
      "url": "https://www.gov.br/cultura/pt-br/assuntos/editais",
      "http": 200,
-     "bytes": 126214
+     "bytes": 127340
     }
    ],
-   "achados_total": 21,
+   "achados_total": 23,
    "valor": "ruído",
-   "achados_30d": 6,
+   "achados_30d": 5,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -1185,7 +1184,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "21 achados e nenhuma oportunidade confirmada",
+     "prova": "23 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -1538,7 +1537,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "42 leituras vazias seguidas",
+     "prova": "43 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -1576,7 +1575,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "42 leituras vazias seguidas",
+     "prova": "43 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -1646,7 +1645,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "40 leituras vazias seguidas",
+     "prova": "41 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -1956,7 +1955,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "41 leituras vazias seguidas",
+     "prova": "42 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -2021,13 +2020,13 @@
     {
      "conselheiro": "falso_verde",
      "falha": "CEGO",
-     "prova": "respondeu 200 em 24 de 24 dias e não achou nada em 30 dias",
+     "prova": "respondeu 200 em 25 de 25 dias e não achou nada em 30 dias",
      "melhoria": "conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)"
     },
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "35 leituras vazias seguidas",
+     "prova": "36 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -2039,7 +2038,7 @@
     {
      "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1",
      "http": 200,
-     "bytes": 155324
+     "bytes": 155318
     },
     {
      "url": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
@@ -2047,7 +2046,7 @@
      "bytes": 140613
     }
    ],
-   "achados_total": 105,
+   "achados_total": 107,
    "valor": "ruído",
    "achados_30d": 11,
    "cadencia": {
@@ -2059,7 +2058,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "105 achados e nenhuma oportunidade confirmada",
+     "prova": "107 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -2075,19 +2074,19 @@
    "tipo": "plataforma",
    "saude": [
     {
+     "url": "https://captadores.org.br/editais/",
+     "http": 200,
+     "bytes": 139013
+    },
+    {
      "url": "https://www.alcoa.com/brasil/pt/institute/local-project-support-program",
      "http": 200,
      "bytes": 48553
-    },
-    {
-     "url": "https://selecao.simbi.social/arcelormittal",
-     "http": 200,
-     "bytes": 75118
     }
    ],
-   "achados_total": 1272,
+   "achados_total": 1294,
    "valor": "ruído",
-   "achados_30d": 209,
+   "achados_30d": 224,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -2097,7 +2096,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "1272 achados e nenhuma oportunidade confirmada",
+     "prova": "1294 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     }
    ]
@@ -2305,7 +2304,7 @@
      "status": "lida"
     }
    ],
-   "achados_total": 79,
+   "achados_total": 80,
    "valor": "ruído",
    "achados_30d": 9,
    "cadencia": {
@@ -2323,7 +2322,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "79 achados e nenhuma oportunidade confirmada",
+     "prova": "80 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     }
    ]
@@ -2377,7 +2376,7 @@
      "itens": 129
     }
    ],
-   "achados_total": 329,
+   "achados_total": 332,
    "valor": "ouro",
    "achados_30d": 88,
    "cadencia": {
@@ -2527,7 +2526,7 @@
     {
      "url": "https://html.duckduckgo.com/html/?q=edital+organiza%C3%A7%C3%B5es+da+sociedade+civil+2026",
      "http": 200,
-     "bytes": 37743
+     "bytes": 37757
     },
     {
      "url": "https://html.duckduckgo.com/html/?q=",
@@ -2535,9 +2534,9 @@
      "bytes": 3108
     }
    ],
-   "achados_total": 2270,
+   "achados_total": 2282,
    "valor": "ouro",
-   "achados_30d": 627,
+   "achados_30d": 626,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -2605,7 +2604,7 @@
     {
      "url": "https://www.congressonacional.leg.br",
      "http": 200,
-     "bytes": 151532,
+     "bytes": 151533,
      "itens": 9
     },
     {
@@ -2633,7 +2632,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "70 leituras vazias seguidas",
+     "prova": "71 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3331,7 +3330,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "23 leituras vazias seguidas",
+     "prova": "24 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3515,14 +3514,8 @@
    "falhas": [
     {
      "conselheiro": "falso_verde",
-     "falha": "PÁGINA VAZIA",
-     "prova": "leitura em 0 s com 0 página(s)",
-     "melhoria": "a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte"
-    },
-    {
-     "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "23 leituras vazias seguidas",
+     "prova": "24 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3963,7 +3956,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "79 leituras vazias seguidas",
+     "prova": "80 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3990,7 +3983,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "52 leituras vazias seguidas",
+     "prova": "53 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3999,7 +3992,7 @@
    "nome": "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)",
    "tipo": "ministerio_publico",
    "saude": [],
-   "achados_total": 50,
+   "achados_total": 51,
    "valor": "ruído",
    "achados_30d": 11,
    "cadencia": {
@@ -4023,7 +4016,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "50 achados e nenhuma oportunidade confirmada",
+     "prova": "51 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4044,7 +4037,7 @@
      "itens": 44
     }
    ],
-   "achados_total": 78,
+   "achados_total": 79,
    "valor": "ruído",
    "achados_30d": 18,
    "cadencia": {
@@ -4056,7 +4049,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "78 achados e nenhuma oportunidade confirmada",
+     "prova": "79 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4089,7 +4082,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "48 leituras vazias seguidas",
+     "prova": "49 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -4109,7 +4102,7 @@
    ],
    "achados_total": 36,
    "valor": "ruído",
-   "achados_30d": 2,
+   "achados_30d": 1,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -4121,6 +4114,12 @@
      "falha": "RUÍDO",
      "prova": "36 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "CUSTO SEM RETORNO",
+     "prova": "138 s na última leitura sem achado",
+     "melhoria": "reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem"
     }
    ]
   },
@@ -4300,7 +4299,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "23 leituras vazias seguidas",
+     "prova": "24 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -4506,14 +4505,8 @@
    "falhas": [
     {
      "conselheiro": "falso_verde",
-     "falha": "PÁGINA VAZIA",
-     "prova": "leitura em 0 s com 0 página(s)",
-     "melhoria": "a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte"
-    },
-    {
-     "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "23 leituras vazias seguidas",
+     "prova": "24 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -4865,19 +4858,19 @@
    "tipo": "site_oficial",
    "saude": [
     {
-     "url": "https://www.institutoneoenergia.org.br/",
+     "url": "https://cantodaprimavera.cultura.go.gov.br/",
      "http": 200,
-     "bytes": 215430
+     "bytes": 45377
     },
     {
-     "url": "https://aceleradora.glocal.org.br/",
+     "url": "https://www.fundoamazonia.gov.br/pt/como-apresentar-projetos/chamadas-publicas/programa-desafios-da-amazonia",
      "http": 200,
-     "bytes": 135888
+     "bytes": 35064
     }
    ],
-   "achados_total": 99,
+   "achados_total": 132,
    "valor": "ruído",
-   "achados_30d": 45,
+   "achados_30d": 43,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -4887,7 +4880,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "99 achados e nenhuma oportunidade confirmada",
+     "prova": "132 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4903,19 +4896,19 @@
    "tipo": "site_oficial",
    "saude": [
     {
-     "url": "https://fundobis.org.br/",
+     "url": "https://facepevirtual.org.br/facepe/selecao-publica",
      "http": 200,
-     "bytes": 95324
+     "bytes": 155644
     },
     {
-     "url": "https://www.editalong.com/editais",
+     "url": "https://dom.mossoro.rn.gov.br/",
      "http": 200,
-     "bytes": 67460
+     "bytes": 20756
     }
    ],
-   "achados_total": 109,
+   "achados_total": 110,
    "valor": "ouro",
-   "achados_30d": 36,
+   "achados_30d": 35,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -4925,7 +4918,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "109 achados e nenhuma oportunidade confirmada",
+     "prova": "110 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4941,19 +4934,19 @@
    "tipo": "site_oficial",
    "saude": [
     {
-     "url": "https://www.juatuba.mg.gov.br/portal/editais/0/5/1249/",
+     "url": "https://www.fcw.org.br/premio-fotografia-2026",
      "http": 200,
-     "bytes": 284263
+     "bytes": 902237
     },
     {
-     "url": "https://smc.niteroi.rj.gov.br/2026/09/16/edital-geek-2026/",
+     "url": "https://impactarte.com.br/",
      "http": 200,
-     "bytes": 428950
+     "bytes": 5474
     }
    ],
    "achados_total": 45,
    "valor": "ruído",
-   "achados_30d": 21,
+   "achados_30d": 4,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
