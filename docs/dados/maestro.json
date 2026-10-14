@@ -1,15 +1,15 @@
 {
  "dia": "2026-10-14",
- "em": "2026-10-14T14:28:04+00:00",
+ "em": "2026-10-14T15:32:40+00:00",
  "regra": "MAESTRO — A REDE NEURAL CONDUZ O DIA (titular, 02/10/2026).\n\nOs motores são ferramentas de uma etapa. O maestro, a cada passagem do fluxo de status (4 vezes por dia):\n  1. PLANEJA  quais motores rodam hoje (agenda) e em que ordem: rendimento real do canal (oportunidades validadas como\n              reais por leitura — linha de produção), diagnóstico (planos de correção) e livros com abertura próxima\n              no índice do motor (léxico temporário da chave de acionamento);\n  2. MEDE     a cobertura do dia de cada motor: completa (leu sem falha de página) · parcial (falha em parte das páginas)\n              · pendente (ainda não leu) · pendente_local (exige IP brasileiro — coleta no computador do titular);\n  3. CONTROLA dispara de novo os pendentes e os parciais, até 3 vezes por dia, para a busca do dia NÃO ficar parcial;\n  4. FECHA    o dia quando todos os motores planejados estão completos (ou esgotaram as tentativas — fica registrado).",
- "planejados": 125,
+ "planejados": 126,
  "cobertura": {
   "parcial": 15,
   "pendente": 1,
-  "completa": 34,
-  "aguardando_horario": 75
+  "completa": 32,
+  "aguardando_horario": 78
  },
- "cobertura_percentual": 68.0,
+ "cobertura_percentual": 66.7,
  "a_disparar": [
   "plat-piloto-aberto",
   "pncp-api",
@@ -23,19 +23,19 @@
   "outras-oportunidades-3",
   "alego-pl",
   "camara-goiania-pl",
-  "motor-gife",
-  "plat-salic",
-  "congresso-nacional",
-  "mpgo-destinacao",
-  "dou",
-  "motor-patrocinio",
   "mpu-destinacao",
-  "dj-trf1-go",
-  "mptgo-destinacao",
-  "plat-cnpq-extensao",
-  "plat-gife",
   "do-goias",
-  "judiciario-cnj"
+  "plat-salic",
+  "plat-gife",
+  "judiciario-cnj",
+  "plat-cnpq-extensao",
+  "motor-patrocinio",
+  "mpgo-destinacao",
+  "mptgo-destinacao",
+  "dou",
+  "congresso-nacional",
+  "dj-trf1-go",
+  "motor-gife"
  ],
  "esgotaram_tentativas": [
   "plat-empresas-editais-incentivados",
@@ -50,6 +50,8 @@
   "plataforma-mapas-culturais",
   "outras-oportunidades-7",
   "recorrencia",
+  "f260-captacao-240",
+  "f260-captacao-227",
   "f260-captacao-228",
   "f260-captacao-242",
   "f260-espalhado-rouanet-cultura-gov-br",
@@ -63,9 +65,9 @@
  "plano": [
   {
    "motor": "plat-piloto-aberto",
-   "prioridade": 6.3495,
+   "prioridade": 6.3895,
    "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 313,
+   "livros_com_abertura_proxima": 315,
    "horarios": "05:53,10:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
@@ -85,7 +87,7 @@
   },
   {
    "motor": "outras-oportunidades-2",
-   "prioridade": 0.55,
+   "prioridade": 0.57,
    "diagnostico": "falha_parcial",
    "livros_com_abertura_proxima": 0,
    "horarios": "08:23,13:23,18:23",
@@ -337,7 +339,7 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "f260-captacao-255",
+   "motor": "f260-captacao-169",
    "prioridade": 0.0417,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
@@ -348,7 +350,7 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "f260-captacao-169",
+   "motor": "f260-captacao-225",
    "prioridade": 0.0417,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
@@ -623,17 +625,6 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "f260-captacao-244",
-   "prioridade": 0.0208,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
    "motor": "f260-captacao-243",
    "prioridade": 0.0208,
    "diagnostico": "sem_rendimento",
@@ -690,17 +681,6 @@
   },
   {
    "motor": "f260-captacao-253",
-   "prioridade": 0.0208,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "f260-captacao-260",
    "prioridade": 0.0208,
    "diagnostico": "sem_rendimento",
    "livros_com_abertura_proxima": 0,
@@ -887,6 +867,17 @@
    "tentativas_hoje": 0
   },
   {
+   "motor": "f260-captacao-240",
+   "prioridade": 0.0167,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "nao_observado",
+   "cobertura": "aguardando_horario",
+   "tentativas_hoje": 0
+  },
+  {
    "motor": "f260-captacao-208",
    "prioridade": 0.0156,
    "diagnostico": "saudavel",
@@ -910,6 +901,17 @@
   },
   {
    "motor": "f260-captacao-217",
+   "prioridade": 0.0152,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "aguardando_horario",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-captacao-234",
    "prioridade": 0.0152,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
@@ -1030,13 +1032,24 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "f260-captacao-222",
-   "prioridade": 0.0106,
+   "motor": "f260-captacao-230",
+   "prioridade": 0.0104,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": null,
    "coleta": "nuvem",
    "dia_anterior": "observado",
+   "cobertura": "aguardando_horario",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-captacao-227",
+   "prioridade": 0.0104,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "nao_observado",
    "cobertura": "aguardando_horario",
    "tentativas_hoje": 0
   },
@@ -1173,29 +1186,7 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "f260-captacao-221",
-   "prioridade": 0.0083,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "aguardando_horario",
-   "tentativas_hoje": 0
-  },
-  {
    "motor": "f260-captacao-224",
-   "prioridade": 0.0083,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "aguardando_horario",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "f260-captacao-226",
    "prioridade": 0.0083,
    "diagnostico": "sem_rendimento",
    "livros_com_abertura_proxima": 0,
@@ -1225,6 +1216,17 @@
    "coleta": "nuvem (indireta: Diário do Estado) + manual",
    "dia_anterior": "observado",
    "cobertura": "completa",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-captacao-229",
+   "prioridade": 0.0078,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "aguardando_horario",
    "tentativas_hoje": 0
   },
   {
@@ -1281,6 +1283,17 @@
    "dia_anterior": "nao_observado",
    "cobertura": "parcial",
    "tentativas_hoje": 3
+  },
+  {
+   "motor": "f260-captacao-222",
+   "prioridade": 0.0053,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "aguardando_horario",
+   "tentativas_hoje": 0
   },
   {
    "motor": "f260-captacao-231",
