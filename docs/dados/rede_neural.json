@@ -1,9 +1,9 @@
 {
- "em": "2026-10-14T02:31:41+00:00",
+ "em": "2026-10-14T02:59:42+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
  "rotulados": 1997,
  "positivos": 800,
- "pendentes": 729,
+ "pendentes": 733,
  "validacao_cruzada": {
   "auc": 0.845,
   "precisao": 0.757,
@@ -211,6 +211,12 @@
    "incerteza": 0.977
   },
   {
+   "titulo": "Mapa de donantes y convocatorias para organizaciones | Terraetica",
+   "url": "https://terraetica.com/mapa-de-donantes",
+   "nota": 0.488,
+   "incerteza": 0.977
+  },
+  {
    "titulo": "PNAB JAGUARETAMA - EDITAL DE CHAMAMENTO PÚBLICO Nº 01/2026.",
    "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8402/",
    "nota": 0.488,
@@ -365,13 +371,7 @@
    "url": "https://www.gov.br/icmbio",
    "nota": 0.481,
    "incerteza": 0.963
-  },
-  {
-   "titulo": "14/09/2026 14h43",
-   "url": "https://www.juatuba.mg.gov.br/portal/download/chamamento-publico-anexos/sB-wLA",
-   "nota": 0.481,
-   "incerteza": 0.963
   }
  ],
- "pendentes_provaveis_reais": 434
+ "pendentes_provaveis_reais": 438
 }
