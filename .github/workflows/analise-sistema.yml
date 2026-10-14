@@ -1,0 +1,65 @@
+name: 36 · Análise do sistema (diagnóstico único e correção)
+
+# 14/10/2026 (titular): quando a titular pede "Analise o sistema", o Claude dispara este fluxo. Ele roda o diagnóstico
+# único (src/diagnostico_sistema.py) — sistemas, oportunidade por oportunidade (livro, validação, site, prazo, tela,
+# ficha) e integração — e, com corrigir=sim, corrige em sequência (decisões → livros → repositório → tela → fichas →
+# sala de controle → saúde) e diagnostica de novo. Resultado em estado/diagnostico_sistema.md e .json (backend).
+
+on:
+  workflow_dispatch:
+    inputs:
+      corrigir:
+        description: "corrigir o que tiver correção automática"
+        required: false
+        default: "sim"
+        type: choice
+        options: [sim, nao]
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: eldorado-varredura-diaria     # o mesmo do ciclo dos motores: os dois gravam o catálogo e o repositório
+  cancel-in-progress: false
+
+jobs:
+  analisar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Diagnóstico (e correção)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CORRIGIR: ${{ inputs.corrigir }}
+        run: |
+          pip install -r requirements.txt --quiet 2>/dev/null || true
+          if [ "$CORRIGIR" = "sim" ]; then timeout 1500 python -m src.diagnostico_sistema --corrigir; else timeout 300 python -m src.diagnostico_sistema; fi
+          cat estado/diagnostico_sistema.md
+      - name: Registrar (código sempre da main; conflito em dado resolve pela versão do job)
+        run: |
+          git config user.name "analise-sistema" && git config user.email "analise@eldorado"
+          git fetch -q origin main
+          git checkout origin/main -- src tests scripts config docs/dashboard.html .github 2>/dev/null || true
+          git reset -q -- src tests scripts config docs/dashboard.html .github 2>/dev/null || true
+          git add -A biblioteca_alexandria dados estado docs/dados 2>/dev/null || true
+          git diff --cached --quiet && { echo "nada mudou"; exit 0; }
+          git commit -q -m "análise do sistema: diagnóstico$( [ "${{ inputs.corrigir }}" = "sim" ] && echo ' e correção') $(date -u +%F)"
+          for i in 1 2 3 4; do
+            if git pull --rebase origin main 2>/dev/null || \
+               { for f in $(git diff --name-only --diff-filter=U); do
+                   case "$f" in dados/*|estado/*|docs/dados/*|biblioteca_alexandria/*) git checkout --theirs -- "$f";;
+                                *) git checkout --ours -- "$f";; esac; git add "$f"; done
+                 GIT_EDITOR=true git rebase --continue; }; then
+              git push -q && { echo "gravado ($i)"; exit 0; }
+            fi
+            git rebase --abort 2>/dev/null || true
+            sleep 15
+          done
+          echo "REGISTRO FALHOU após 4 tentativas"; exit 1

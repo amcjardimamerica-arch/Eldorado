@@ -184,8 +184,16 @@ def conferir() -> dict:
     P = json.loads(PAR.read_text(encoding="utf-8")); pd = P.get("duplicidade") or {}
     C = json.loads(CAT.read_text(encoding="utf-8")); L = json.loads(LIG.read_text(encoding="utf-8")) if LIG.exists() else {"ligados": {}}
     lig = L.get("ligados") or {}; ms = C.get("motores") or []
+    # 14/10 (diagnóstico do sistema): livro ligado a oportunidade ABERTA do repositório não sai (regra de 11/10: toda
+    # oportunidade aberta tem livro). Antes, o criador fazia o livro e esta conferência o apagava a cada rodada.
+    IDX = ROOT / "estado/opressores_indice.json"
+    _idx = (json.loads(IDX.read_text(encoding="utf-8")) if IDX.exists() else {}).get("indice") or {}
+    _rep = (json.loads((ROOT / "dados/oportunidades/repositorio_unico.json").read_text(encoding="utf-8")).get("registros") or []) \
+        if (ROOT / "dados/oportunidades/repositorio_unico.json").exists() else []
+    protegidos = {(_idx.get(i) or {}).get("opressor") for r in _rep if r.get("estado") != "fechada" and not r.get("arquivada")
+                  for i in [r.get("id"), *(r.get("ids_origem") or [])] if (_idx.get(i) or {}).get("opressor")}
     # 1) abrangência
-    fora = [x for x in ms if fora_da_abrangencia(x)]
+    fora = [x for x in ms if fora_da_abrangencia(x) and x["id"] not in protegidos]
     if fora:
         ant = lzma.decompress(ARQ.read_bytes()).decode().splitlines() if ARQ.exists() else []
         ja = {json.loads(l).get("id") for l in ant if l.strip()}
@@ -238,6 +246,15 @@ def conferir() -> dict:
             lig.pop(o["id"], None)
         juntados.append({"fica": s["id"], "nome": s.get("nome_classificado"), "juntou": [o["id"] for o in g[1:]]})
     ms = [x for x in ms if x["id"] not in sai]
+    # 14/10: o índice oportunidade → livro acompanha a junção (antes ficava apontando para o livro que saiu)
+    destino = {o: j["fica"] for j in juntados for o in j["juntou"]}
+    if destino and IDX.exists():
+        _I = json.loads(IDX.read_text(encoding="utf-8")); _n = 0
+        for v in (_I.get("indice") or {}).values():
+            if isinstance(v, dict) and v.get("opressor") in destino:
+                v["opressor"] = destino[v["opressor"]]; _n += 1
+        if _n:
+            IDX.write_text(json.dumps(_I, ensure_ascii=False), encoding="utf-8")
     C["motores"] = ms
     CAT.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     L["ligados"] = lig; LIG.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
