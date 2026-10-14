@@ -39,12 +39,19 @@
 
 ```json
 {
- "motores_de_ruido_1a": 27,
+ "motores_de_ruido_1a": 28,
  "ruido_agora": [
   {
+   "motor": "plat-gife",
+   "achados_total_1a": 141,
+   "achados_total_agora": 141,
+   "no_fluxo": 0,
+   "confirmadas": 0
+  },
+  {
    "motor": "empresas-incentivadas",
-   "achados_total_1a": 66,
-   "achados_total_agora": 66,
+   "achados_total_1a": 69,
+   "achados_total_agora": 69,
    "no_fluxo": 4,
    "confirmadas": 0
   },
@@ -120,16 +127,16 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 119,
-   "achados_total_agora": 119,
+   "achados_total_1a": 121,
+   "achados_total_agora": 121,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 1424,
-   "achados_total_agora": 1424,
-   "no_fluxo": 5,
+   "achados_total_1a": 1445,
+   "achados_total_agora": 1445,
+   "no_fluxo": 3,
    "confirmadas": 0
   },
   {
@@ -143,7 +150,7 @@
    "motor": "plat-prefeituras-50-go",
    "achados_total_1a": 92,
    "achados_total_agora": 92,
-   "no_fluxo": 1,
+   "no_fluxo": 0,
    "confirmadas": 0
   },
   {
@@ -204,15 +211,9 @@
   },
   {
    "motor": "outras-oportunidades-2",
-   "achados_total_1a": 243,
-   "achados_total_agora": 243,
-   "no_fluxo": 13,
-   "confirmadas": 0
-  },
-  {
-   "motor": "outras-oportunidades-3",
-   "achados_total_1a": 32,
-   "achados_total_agora":
+   "achados_total_1a": 258,
+   "achados_total_agora": 258,
+   "no_
 ```
 
 ## Eng. Luana Freire (levemente pessimista)
@@ -222,7 +223,7 @@
 
 ```json
 {
- "pontos_com_redundancia": 12,
+ "pontos_com_redundancia": 14,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
  "exemplos_da_rede_de_rotas": 7837
@@ -236,12 +237,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 78.9,
- "fora_dos_motores_pct_agora": 78.9,
+ "fora_dos_motores_pct_1a": 79.4,
+ "fora_dos_motores_pct_agora": 79.4,
  "origem": {
-  "agregador/outra": 323,
-  "motor": 118,
-  "Piloto": 118
+  "agregador/outra": 325,
+  "Piloto": 125,
+  "motor": 117
  },
  "dominios_so_de_agregador": [
   {
@@ -319,7 +320,7 @@
  "dia_de_referencia": "2026-10-14",
  "ativos": 159,
  "lidos_ontem": 104,
- "lidos_hoje": 44,
+ "lidos_hoje": 51,
  "nao_lidos_ontem_nem_hoje": [
   "plat-captamos",
   "plat-rede-filantropia",
@@ -329,7 +330,6 @@
  "ainda_sem_primeira_leitura": [
   "motor-gife",
   "motor-patrocinio",
-  "outras-oportunidades-7",
   "outras-oportunidades-8",
   "piloto-aberto",
   "plataforma-mapas-culturais",
@@ -364,20 +364,20 @@
 
 ```json
 {
- "fontes_recebidas": 315,
+ "fontes_recebidas": 314,
  "por_origem": {
   "conselho (fontes irmãs)": 150,
   "Cartório (site oficial certificado)": 134,
-  "Espião (privado/internacional)": 31
+  "Espião (privado/internacional)": 30
  },
- "lidas_nas_ultimas_24h": 221,
+ "lidas_nas_ultimas_24h": 257,
  "dimensionamento": {
-  "fontes": 315,
+  "fontes": 314,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 7,
-  "cobertura_diaria": 315,
+  "cobertura_diaria": 314,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -386,37 +386,42 @@
  },
  "clones_que_ja_leram": {
   "outras-oportunidades-1": {
-   "ultima": "2026-10-13T22:00:28+00:00",
-   "duracao_s": 57,
-   "achados": 6
+   "ultima": "2026-10-14T11:39:03+00:00",
+   "duracao_s": 121,
+   "achados": 0
   },
   "outras-oportunidades-2": {
-   "ultima": "2026-10-13T22:01:45+00:00",
-   "duracao_s": 77,
-   "achados": 42
+   "ultima": "2026-10-14T11:40:03+00:00",
+   "duracao_s": 60,
+   "achados": 15
   },
   "outras-oportunidades-3": {
-   "ultima": "2026-10-13T22:03:34+00:00",
-   "duracao_s": 108,
-   "achados": 1
+   "ultima": "2026-10-14T11:40:48+00:00",
+   "duracao_s": 45,
+   "achados": 0
   },
   "outras-oportunidades-4": {
-   "ultima": "2026-10-14T00:00:39+00:00",
-   "duracao_s": 70,
-   "achados": 33
+   "ultima": "2026-10-14T11:42:33+00:00",
+   "duracao_s": 105,
+   "achados": 6
   },
   "outras-oportunidades-5": {
-   "ultima": "2026-10-14T00:01:58+00:00",
-   "duracao_s": 79,
-   "achados": 1
+   "ultima": "2026-10-14T11:44:10+00:00",
+   "duracao_s": 98,
+   "achados": 12
   },
   "outras-oportunidades-6": {
-   "ultima": "2026-10-14T00:03:25+00:00",
-   "duracao_s": 87,
+   "ultima": "2026-10-14T11:45:13+00:00",
+   "duracao_s": 63,
    "achados": 0
+  },
+  "outras-oportunidades-7": {
+   "ultima": "2026-10-14T11:47:44+00:00",
+   "duracao_s": 152,
+   "achados": 12
   }
  },
- "com_achado": 42
+ "com_achado": 43
 }
 ```
 
