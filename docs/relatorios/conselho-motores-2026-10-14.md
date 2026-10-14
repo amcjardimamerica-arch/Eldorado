@@ -55,7 +55,7 @@
 
 ## Fontes irmãs (Profa. Clara)
 
-231 domínios oficiais já renderam e não têm motor. Os primeiros:
+232 domínios oficiais já renderam e não têm motor. Os primeiros:
 
 - baoba.org.br (peso 21)
 - institutolojasrenner.org.br (peso 15)
@@ -80,8 +80,8 @@
 - lithoralnews.com.br (peso 7)
 - itauvivermais.com.br (peso 7)
 - conteudo.agosocial.com.br (peso 7)
+- fbb.org.br (peso 7)
 - agencia.petrobras.com.br (peso 6)
-- institutoinad.org.br (peso 6)
 
 ## Plataformas e inovações (Dr. Fábio)
 
