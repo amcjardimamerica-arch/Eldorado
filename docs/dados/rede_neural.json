@@ -1,9 +1,9 @@
 {
- "em": "2026-10-14T14:29:36+00:00",
+ "em": "2026-10-14T14:48:05+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
- "rotulados": 2008,
+ "rotulados": 2007,
  "positivos": 804,
- "pendentes": 748,
+ "pendentes": 740,
  "validacao_cruzada": {
   "auc": 0.843,
   "precisao": 0.74,
@@ -23,12 +23,6 @@
    "url": "https://pncp.gov.br/app/editais/16781346000104/2026/81",
    "nota": 0.499,
    "incerteza": 0.999
-  },
-  {
-   "titulo": "Chamamentos",
-   "url": "https://chamamentos.itapevi.sp.gov.br/chamamentos",
-   "nota": 0.499,
-   "incerteza": 0.998
   },
   {
    "titulo": "EDITAL DE CHAMAMENTO PÚBLICO PARA CREDENCIAMENTO, visando ao credenciamento de ARTISTAS E MÚSICOS para futura… — MUNICIPIO DE NEROPOLIS",
@@ -52,6 +46,12 @@
    "titulo": "EDITAL DE CHAMAMENTO PÚBLICO Nº002/2026 CICLO 2 PNAB QUADRILHA JUNINA,CAPOEIRA,DANÇA E LITERATURA DE SÃOBENEDITO",
    "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8421/",
    "nota": 0.502,
+   "incerteza": 0.996
+  },
+  {
+   "titulo": "Chamadas Abertas",
+   "url": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
+   "nota": 0.498,
    "incerteza": 0.996
   },
   {
@@ -107,12 +107,6 @@
    "url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2014/lei/l13019.htm",
    "nota": 0.506,
    "incerteza": 0.987
-  },
-  {
-   "titulo": "Prefeitura de Goiânia: chamamento para seleção de instituições de ...",
-   "url": "https://goiasemcena.com.br/prefeitura-de-goiania-chamamento-publico-para-selecao-de-instituicoes-de-permanencia-e-casa-lar-para-idosos/",
-   "nota": 0.493,
-   "incerteza": 0.986
   },
   {
    "titulo": "Edital Fundos da Infância e da Adolescência 2026 Devido a revisões estratégicas internas, o edital Fundos da Infância e da Adolescência - FI",
@@ -301,12 +295,6 @@
    "incerteza": 0.965
   },
   {
-   "titulo": "Anápolis — CRAS Leste 1 recebe inscrições para o Programa Bombeiro Mirim em Anápolis",
-   "url": "https://www.anapolis.go.gov.br/cras-leste-1-recebe-inscricoes-para-o-programa-bombeiro-mirim-em-anapolis/",
-   "nota": 0.482,
-   "incerteza": 0.965
-  },
-  {
    "titulo": "Diário Oficial de Marau (RS) 2026-09-28 — \"chamamento público\" \"organizações da sociedade civil\"",
    "url": "https://data.queridodiario.ok.org.br/4311809/2026-09-28/34f213403b80cfbedbdcc977ce62aa64e8d15d86.pdf",
    "nota": 0.482,
@@ -371,7 +359,19 @@
    "url": "https://pncp.gov.br/app/editais/22681423000157/2026/75",
    "nota": 0.479,
    "incerteza": 0.957
+  },
+  {
+   "titulo": "Edital Nº 03/2026 - Chamamento Público - Programa Coleta Seletiva ...",
+   "url": "https://www.gravatai.ifsul.edu.br/editais-e-projetos/item/305-edital-n-03-2026-chamamento-publico-programa-coleta-seletiva-cidada-selecao-de-associacoes-e-cooperativas-de-catadores-de-materiais-reciclaveis-e-reutilizaveis",
+   "nota": 0.478,
+   "incerteza": 0.957
+  },
+  {
+   "titulo": "Edital Nº 06/2026 - Chamamento Público - Programa Coleta Seletiva ...",
+   "url": "https://www.gravatai.ifsul.edu.br/editais-e-projetos/item/310-edital-n-06-2026-chamamento-publico-programa-coleta-seletiva-cidada-selecao-de-associacoes-e-cooperativas-de-catadores-de-materiais-reciclaveis-e-reutilizaveis",
+   "nota": 0.478,
+   "incerteza": 0.957
   }
  ],
- "pendentes_provaveis_reais": 406
+ "pendentes_provaveis_reais": 403
 }
