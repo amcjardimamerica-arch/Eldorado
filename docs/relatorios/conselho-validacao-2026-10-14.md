@@ -226,7 +226,7 @@
  "pontos_com_redundancia": 14,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 7957
+ "exemplos_da_rede_de_rotas": 8057
 }
 ```
 
@@ -364,20 +364,20 @@
 
 ```json
 {
- "fontes_recebidas": 314,
+ "fontes_recebidas": 316,
  "por_origem": {
   "conselho (fontes irmãs)": 150,
-  "Cartório (site oficial certificado)": 134,
+  "Cartório (site oficial certificado)": 136,
   "Espião (privado/internacional)": 30
  },
- "lidas_nas_ultimas_24h": 257,
+ "lidas_nas_ultimas_24h": 240,
  "dimensionamento": {
-  "fontes": 314,
+  "fontes": 316,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 7,
-  "cobertura_diaria": 314,
+  "cobertura_diaria": 316,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -435,7 +435,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 81,
+   "orgaos": 82,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",
