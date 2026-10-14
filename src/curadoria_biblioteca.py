@@ -193,7 +193,22 @@ def conferir() -> dict:
     protegidos = {(_idx.get(i) or {}).get("opressor") for r in _rep if r.get("estado") != "fechada" and not r.get("arquivada")
                   for i in [r.get("id"), *(r.get("ids_origem") or [])] if (_idx.get(i) or {}).get("opressor")}
     # 1) abrangência
-    fora = [x for x in ms if fora_da_abrangencia(x) and x["id"] not in protegidos]
+    # 14/10/2026 (titular): livros de OUTROS ESTADOS CONTAM — cada livro é uma oportunidade e dado para a análise
+    # preditiva. O arquivamento de 11/10 valeu UMA vez, só para as oportunidades abertas; não se repete nem atinge livros.
+    fora = []
+    # ...e os livros que esta regra arquivou VOLTAM ao catálogo (idempotente: só o que ainda não está lá)
+    if ARQ.exists():
+        _ja = {x.get("id") for x in ms} | {j for x in ms for j in (x.get("ids_juntados") or [])}   # juntado = já está (no livro que ficou)
+        _agora = datetime.now(timezone.utc).isoformat(timespec="seconds")
+        for _l in lzma.decompress(ARQ.read_bytes()).decode().splitlines():
+            if not _l.strip():
+                continue
+            _x = json.loads(_l)
+            if _x.get("id") in _ja:
+                continue
+            _x.pop("arquivado_em", None); _x.pop("motivo", None)
+            _x["recuperado_em"] = _agora; _x["recuperado_por"] = "titular 14/10/2026: livros de outros estados contam"
+            ms.append(_x); _ja.add(_x["id"])
     if fora:
         ant = lzma.decompress(ARQ.read_bytes()).decode().splitlines() if ARQ.exists() else []
         ja = {json.loads(l).get("id") for l in ant if l.strip()}

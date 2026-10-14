@@ -537,9 +537,10 @@ def run() -> dict:
     esp = [e for e in load_json(ROOT / "config/sensores.json").get("sensores_especiais", []) if not e.get("painel_agregado_a")]
     oficiais = []
     for e in esp:
-        s = esq.get(e["id"]); b = _bloqueio_vigente(blq.get(urlsplit(e["urls"][0]).hostname), s)
+        _u0 = (e.get("urls") or [""])[0]       # 14/10: motor de API sem endereço (plataforma-wordpress, mapas-culturais) quebrava o painel inteiro
+        s = esq.get(e["id"]); b = _bloqueio_vigente(blq.get(urlsplit(_u0).hostname), s)
         _dg = (s or {}).get("diagnostico") or {}
-        oficiais.append({"id": e["id"], "nome": e["nome"], "tipo": e["tipo"], "url": e["urls"][0],
+        oficiais.append({"id": e["id"], "nome": e["nome"], "tipo": e["tipo"], "url": _u0,
                          "diagnostico": {k: _dg.get(k) for k in ("motivo_zero", "paginas_lidas", "links_total", "descobertas", "dou_json_materias", "exige_brasil", "origem") if k in _dg},
                          "dias": _so_primeira_leitura(_trinta_dias(diario.get(e["id"], {}), hoje)),
                          "ultima_leitura": (s or {}).get("ultima"), "achados": (s or {}).get("achados_total", 0),
@@ -792,7 +793,7 @@ def run() -> dict:
                 _cl0(_m)
             except Exception:
                 pass
-            if _m.get("id") in _arq or _m.get("id") in _juntados or fora_da_abrangencia(_m):
+            if _m.get("id") in _juntados:   # 14/10 (titular): livro de outro estado conta — nem a regra nem o arquivo o tiram daqui
                 continue
             if empresa_sem_edital(_m):
                 _m["papel"] = "fonte_de_busca"

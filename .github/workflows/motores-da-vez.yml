@@ -100,7 +100,7 @@ jobs:
           timeout 300 python -m src.fluxo_oportunidades --completo >/dev/null 2>&1 || echo "mapa falhou"
           timeout 200 python -m src.fichas_oportunidades >/dev/null 2>&1 || echo "fichas das oportunidades: falhou"   # 12/10: a janela de cada oportunidade
           GH_TOKEN="${{ secrets.GITHUB_TOKEN }}" timeout 120 python -m src.sala_controle >/dev/null || true   # releitura com o repositório desta passagem
-          timeout 200 python -m src.diagnostico_sistema >/dev/null 2>&1 || echo "diagnóstico do sistema: falhou"   # 14/10: diagnóstico único (backend), sem corrigir
+          GH_TOKEN="${{ secrets.GITHUB_TOKEN }}" timeout 300 python -m src.diagnostico_sistema >/dev/null 2>&1 || echo "diagnóstico do sistema: falhou"   # 14/10: diagnóstico único (backend), sem corrigir
       - name: Registrar somente alterações produzidas
         if: always()
         run: |

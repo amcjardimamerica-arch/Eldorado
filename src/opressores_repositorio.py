@@ -70,8 +70,7 @@ def dispensa(item: dict) -> str | None:
         if not x["geo"]:
             from .livros_opressores import uf_do_dominio
             x["geo"] = uf_do_dominio(x["pagina"])[0]
-        if fora_da_abrangencia(x):
-            return "fora da abrangência: oportunidade pública municipal de outro estado (só Goiás tem livros municipais)"
+        pass   # 14/10/2026 (titular): livro de outro estado conta — a regra "só Goiás tem livros municipais" saiu
         if item.get("tipo") == "empresa/instituto" and empresa_sem_edital(x):
             return "empresa sem edital por concorrência: é fonte de busca, não livro"
     except Exception:
