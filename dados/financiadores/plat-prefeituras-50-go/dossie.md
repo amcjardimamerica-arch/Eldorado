@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `plat-prefeituras-50-go`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 12
-- Distribuição por ano pesquisado/coletado: {'2026': 12}
+- Pistas aguardando confirmação: 13
+- Distribuição por ano pesquisado/coletado: {'2026': 13}
 
 ## Padrões
 
@@ -22,5 +22,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Aparecida de Goiânia — Diário Oficial de Aparecida de Goiânia — edição (2026-09-23) — chamamento público](https://data.queridodiario.ok.org.br/5201405/2026-09-23/dbfec72a0b926bf54ccbc0c16e52e4c5cc801a8f.pdf) — coletado em 2026-10-03T02:51:25+00:00
 - [Itaberaí — EDITAL DE CHAMAMENTO PÚBLICO N° 001-CMDCA-2026](https://itaberai.go.gov.br/edital-de-chamamento-publico-n-001-cmdca-2026/) — coletado em 2026-10-03T17:02:55+00:00
 - [Aparecida de Goiânia — Diário Oficial de Aparecida de Goiânia — edição (2026-09-24) — chamamento público](https://data.queridodiario.ok.org.br/5201405/2026-09-24/aa5eb74d97e23a8669f5c614b350d14a2a43b805.pdf) — coletado em 2026-10-03T02:51:25+00:00
-- [Anápolis — CRAS Leste 1 recebe inscrições para o Programa Bombeiro Mirim em Anápolis](https://www.anapolis.go.gov.br/cras-leste-1-recebe-inscricoes-para-o-programa-bombeiro-mirim-em-anapolis/) — coletado em 2026-10-12T19:16:23+00:00
 - [Goiânia — Diário Oficial de Goiânia — edição 8869 (2026-09-23) — chamamento público](https://data.queridodiario.ok.org.br/5208707/2026-09-23/4664b82229ba7bf5e548a9dd18610503e9678811.pdf) — coletado em 2026-10-03T02:51:25+00:00
+- [Anápolis — CRAS Leste 1 recebe inscrições para o Programa Bombeiro Mirim em Anápolis](https://www.anapolis.go.gov.br/cras-leste-1-recebe-inscricoes-para-o-programa-bombeiro-mirim-em-anapolis/) — coletado em 2026-10-13T18:40:32+00:00
+- [Itumbiara — INSCRIÇÕES ABERTAS PARA EDITAIS DE PREMIAÇÃO E FOMENTO DE PROJETOS CULTURAIS](https://itumbiara.go.gov.br/inscricoes-abertas-para-editais-de-premiacao-e-fomento-de-projetos-culturais/) — coletado em 2026-10-14T02:52:20+00:00

@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `empresas-incentivadas`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 21
-- Distribuição por ano pesquisado/coletado: {'2026': 21}
+- Pistas aguardando confirmação: 23
+- Distribuição por ano pesquisado/coletado: {'2026': 23}
 
 ## Padrões
 
@@ -43,3 +43,5 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Prêmio Boas Práticas na Mineração do Brasil 2026 realiza apresentação final de projetos e cerimônia de premiação em 20 de outubro -
                                                             07/10/2026](https://ibram.org.br/noticia/premio-boas-praticas-mineracao-do-brasil-2026-4) — coletado em 2026-10-12T00:37:45+00:00
 - [Desafio UNAIDS](https://unaids.org.br/desafiounaids) — coletado em 2026-10-12T00:37:46+00:00
+- [Read More » Ifac abre 125 vagas para curso técnico gratuito em Secretaria Escolar na modalidade EaD](https://conectaprofessores.com/2026/10/11/ifac-abre-125-vagas-para-curso-tecnico-gratuito-em-secretaria-escolar-na-modalidade-ead) — coletado em 2026-10-14T05:51:16+00:00
+- [IFAM oferece seleção para mestrado em Docência com 100 vagas; inscrições até 2 de novembro](https://conectaprofessores.com/2026/10/11/ifam-oferece-selecao-para-mestrado-em-docencia-com-100-vagas-inscricoes-ate-2-de-novembro) — coletado em 2026-10-14T05:51:16+00:00

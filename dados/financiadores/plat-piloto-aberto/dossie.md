@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `plat-piloto-aberto`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 208
-- Distribuição por ano pesquisado/coletado: {'2026': 208}
+- Pistas aguardando confirmação: 211
+- Distribuição por ano pesquisado/coletado: {'2026': 211}
 
 ## Padrões
 
@@ -12,9 +12,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 ## Eventos e pistas
 
-- [Chamamento Público Nº 6/2026 — Prefeitura Municipal de Lagoa do Ouro/PE PREFEITURA MUNICIPAL DE LAGOA DO OURO R$ 12 mil Aceita:   organizações da sociedade civil Prazo:  16/10/2026 (16d) Ver detalhes →](https://capitaai.com.br/captacao/aviso-chamamento-publico-62026-prefeitura-municipal-lagoa-ouro-skyz2m) — coletado em 2026-09-30T12:41:30+00:00
-- [Aviso de Chamamento Público Nº 1/2026 - FMAS Prefeitura Municipal de Lagarto R$ 66 mil Aceita:   organizações da sociedade civil Prazo:  13/11/2026 (40d) Ver detalhes →](https://capitaai.com.br/captacao/aviso-chamamento-publico-12026-fmas-prefeitura-municipal-lagarto-5rblw7) — coletado em 2026-10-04T16:22:07+00:00
-- [Acesse aqui o formulário e os documentos do edital](https://brasil.unwomen.org/pt-br/stories/noticia/2026/04/onu-mulheres-brasil-e-ministerio-das-mulheres-lancam-edital-de-apoio-financeiro-para-organizacoes-da-sociedade-civil-na-area-de-justica-climatica) — coletado em 2026-09-28T13:45:44+00:00
 - [Prêmio Nacional Liga STEAM 2026 prorroga inscrições para 26 de junho Observatório 3º Setor (fonte) R$ 25 mil Aceita:   organizações da sociedade civil Prazo:  Contínuo Ver detalhes →](https://capitaai.com.br/captacao/premio-nacional-liga-steam-2026-prorroga-inscricoes-junho-q419kv) — coletado em 2026-10-04T16:22:07+00:00
 - [i3s.org.br/edital/](https://duckduckgo.com/l?uddg=https%3A%2F%2Fi3s.org.br%2Fedital%2F&rut=e21f5cfa82e39bd057d31508850cf76783687acca7ca61feaa65bd90ac08e21f) — coletado em 2026-09-24T09:57:34+00:00
 - [ContraFluxo – Chamada para organizações sociais de Curitiba (PR) que queiram transformar uma causa em filme Festival ContraFluxo Aceita:   organizações da sociedade civil Prazo:  08/10/2026 (11d) Ver detalhes →](https://capitaai.com.br/captacao/contrafluxo-abre-chamada-organizacoes-sociais-curitiba-que-queiram-1kt0lj) — coletado em 2026-09-28T13:45:49+00:00
@@ -63,3 +60,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [capitaai.com.br/editais-abertos/assistencia-social-para-ong](https://capitaai.com.br/editais-abertos/assistencia-social-para-ong) — coletado em 2026-10-01T14:33:36+00:00
 - [capitaai.com.br/editais-abertos/para-ong](https://capitaai.com.br/editais-abertos/para-ong) — coletado em 2026-09-25T11:57:10+00:00
 - [Editais Sociais 2026 — Banco do Nordeste Banco do Nordeste R$ 1,5 mi Aceita:   organizações da sociedade civil Prazo:  30/09/2026 (3d) Ver detalhes →](https://capitaai.com.br/captacao/editais-sociais-2026-banco-nordeste-banco-nordeste-nsnx3s) — coletado em 2026-09-28T13:45:49+00:00
+- [Aviso de Chamada Pública Nº 7/2026 – IFSP Campus Miracatu até  15/10/2026 (2d)](https://capitaai.com.br/captacao/aviso-chamada-publica-72026-ifsp-campus-miracatu-instituto-wgscog) — coletado em 2026-10-14T02:58:06+00:00
+- [Edital de Chamamento Público Nº 6/2026 Secretaria Executiva Aceita:   organizações da sociedade civil, outros perfis Prazo:  26/10/2026 (13d) Ver detalhes →](https://capitaai.com.br/captacao/edital-chamamento-publico-62026-secretaria-executiva-ljh8wk) — coletado em 2026-10-14T02:58:06+00:00
+- [Chamamento Público Nº 3/2026 - Prefeitura Municipal de Taiúva PREFEITURA MUNICIPAL DE TAIUVA Aceita:   organizações da sociedade civil Prazo:  30/10/2026 (17d) Ver detalhes →](https://capitaai.com.br/captacao/chamamento-publico-32026-prefeitura-municipal-taiuva-prefeitura-munici-ai1kt1) — coletado em 2026-10-14T02:58:06+00:00

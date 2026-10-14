@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `outras-oportunidades-2`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 40
-- Distribuição por ano pesquisado/coletado: {'2026': 40}
+- Pistas aguardando confirmação: 44
+- Distribuição por ano pesquisado/coletado: {'2026': 44}
 
 ## Padrões
 
@@ -56,3 +56,8 @@ EM CONTRAPARTIDA O MUNICÍPIO PERMITIRÁ A PUBLICIDADE DIRETA OU INDIRETA DO COO
 - [Classificacao Final Edital FNMA 1-2024_Apoio a Catadores](https://portal-api.sinir.gov.br/wp-content/uploads/2025/08/Classificacao-Final-Edital-FNMA-1-2024_Apoio-a-Catadores.xlsx) — coletado em 2026-10-11T11:40:37+00:00
 - [EDITAL DE CHAMAMENTO PÚBLICO Nº 15/2026 – SELEÇÃO DE PROPOSTAS DE PESSOAS FÍSICAS OU JURÍDICAS DA SOCIEDADE EM GERAL INTERESSADAS EM CONTRIBUIR, VOLUNTÁRIA E GRATUITAMENTE, COM A DOAÇÃO DE BRINDES E APOIO INSTITUCIONAL PARA EXECUÇÃO DE ATIVIDADES EDUCATIVAS NO  EVENTO “MAIO AMARELO 2026”, QUE OCORRE](https://chamamentos.itapevi.sp.gov.br/chamamentos/328) — coletado em 2026-10-12T14:58:02+00:00
 - [EDITAL DE CREDENCIAMENTO Nº 05/2024 – CREDENCIAMENTO DE INTERESSADOS EM CONTRIBUIR, VOLUNTÁRIA E GRATUITAMENTE, COM O EVENTO NATAL SOLIDÁRIO ACOLHER - 2024.](https://chamamentos.itapevi.sp.gov.br/chamamentos/270) — coletado em 2026-10-12T14:58:02+00:00
+- [EDITAL DE CHAMAMENTO PÚBLICO Nº 24/2026 - EDITAL PARA EXECUÇÃO CULTURAL ESPECÍFICO PARA AS CATEGORIAS AUDIOVISUAL, TEATRO, CIRCO, MÚSICA, ARTES VISUAIS CULTURA POPULAR, ARTESANATO, MATRIZES AFRICANAS, GAMES E DANÇA. SELEÇÃO DE PROJETOS PARA FIRMAR TERMO DE EXECUÇÃO CULTURAL
+ESPECÍFICO PARA AS CATEG](https://chamamentos.itapevi.sp.gov.br/chamamentos/341) — coletado em 2026-10-13T18:48:31+00:00
+- [EDITAL DE CHAMAMENTO PÚBLICO Nº 18/2026 - A PREFEITURA DO MUNICÍPIO DE ITAPEVI, por intermédio da SECRETARIA MUNICIPAL DE CULTURA, torna público o presente CHAMAMENTO PÚBLICO para seleção de interessados  na oferta gratuita de Curso de Fotografia Digital para jovens do Município de Itapevi, mediante](https://chamamentos.itapevi.sp.gov.br/chamamentos/331) — coletado em 2026-10-13T18:48:31+00:00
+- [Regulamento do Prêmio Goiás Mais Transparente](https://www.transparencia.go.gov.br/wp-content/uploads/sites/2/2022/12/images_Goias_mais_Transparente_Versao_1-2019_-_Regulamento_Premio_Goias_Mais_Transparente.pdf) — coletado em 2026-10-13T18:48:41+00:00
+- [Apresentação em Power Point do Prêmio](https://www.transparencia.go.gov.br/wp-content/uploads/sites/2/2022/12/images_Goias_mais_Transparente_apresentacao-premio.pptx) — coletado em 2026-10-13T18:48:41+00:00

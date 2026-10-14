@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `outras-oportunidades-3`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 10
-- Distribuição por ano pesquisado/coletado: {'2026': 10}
+- Pistas aguardando confirmação: 11
+- Distribuição por ano pesquisado/coletado: {'2026': 11}
 
 ## Padrões
 
@@ -22,3 +22,4 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [I° Encontro Nacional com as Organizações da Sociedade Civil (OSC’s) apoiadas pelo 17º Edital de Seleção Pública de Projetos, intitulado: “É TUDO SOBRE PREVENÇÃO – PREP E DEMAIS ESTRATÉGIAS DE PREVENÇÃO COMBINADA DO HIV/AIDS X IMUNIZAÇÃO!”](https://fundopositivo.org.br/i-encontro-nacional-com-as-organizacoes-da-sociedade-civil-oscs-apoiadas-pelo-17o-edital-de-selecao-publica-de-projetos-intitulado-e-tudo-sobre-prevencao-prep-e-dem) — coletado em 2026-10-10T11:43:15+00:00
 - [Auxílio Financeiro- (Bolsa de Estudo)](https://www.andradina.sp.gov.br/portal/servicos/1027/auxilio-financeiro--bolsa-de-estudo) — coletado em 2026-10-11T12:54:10+00:00
 - [É com muita satisfação e muita alegria que nós comunicamos e visibilizamos os projetos apoiados pelo Fundo LGBTQIA+ no Nono Edital. Confira as OSCs e os 11 projetos contemplados:](https://fundopositivo.org.br/e-com-muita-satisfacao-e-muita-alegria-que-nos-comunicamos-e-visibilizamos-os-projetos-apoiados-pelo-fundo-lgbtqia-no-nono-edital-confira-as-oscs-e-os-11-projetos-contemplados) — coletado em 2026-10-10T11:43:15+00:00
+- [Direx - Edital 05/2026 - Auxílio ao desenvolvimento de programas e projetos de Extensão](https://vitoria.ifes.edu.br/processos-seletivos/editais-internos/19919-direx-edital-05-2026-auxilio-ao-desenvolvimento-de-programas-e-projetos-de-extensao) — coletado em 2026-10-13T22:03:27+00:00

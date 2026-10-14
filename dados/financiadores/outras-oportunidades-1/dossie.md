@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `outras-oportunidades-1`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 27
-- Distribuição por ano pesquisado/coletado: {'2026': 27}
+- Pistas aguardando confirmação: 28
+- Distribuição por ano pesquisado/coletado: {'2026': 28}
 
 ## Padrões
 
@@ -27,9 +27,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
                                          Chamamento Público aberto junto ao Setor de Licitações:A Prefeitura Municipal da Estân](https://www.ribeiraopires.sp.gov.br/portal/editais/0/5/2674) — coletado em 2026-10-10T21:59:23+00:00
 - [BeForms – EDITAL 2026 DE SELEÇÃO DE PROJETOS CULTURAIS DO PARQUE BONDINHO PÃO DE AÇÚCAR®](https://beforms.becompliance.com/6aa1791c456ff00002aa0502) — coletado em 2026-10-10T18:30:56+00:00
 - [ONG BANCO DE ALIMENTOS](https://www.institutoacp.org.br/ong-banco-de-alimentos) — coletado em 2026-10-10T18:31:15+00:00
-- [Gestão de projeto esportivo na modalidade CICLISMO MTB, destinado ao atendimento de crianças e adolescentes de 12 a 17 anos de idade do município de Ribeirão Pires. 
-                                     
-                                         TERMO DE CLASSIFICAÇÃO, ADJUDICAÇÃO E HOMOLOGAÇÃOChamad](https://www.ribeiraopires.sp.gov.br/portal/editais/0/5/2683) — coletado em 2026-10-12T19:24:00+00:00
 - [Chamamento Público - Lei Aldir Blanc –Nº 011/2024 – Seleção de espaço, ambientes e iniciativas artístico-culturais para receber SUBSÍDIO para manutenção. 
                                      
                                          O Município de Ribeirão Pires, através da Secretaria de Educação e](https://www.ribeiraopires.sp.gov.br/portal/editais/0/5/2663) — coletado em 2026-10-10T21:59:23+00:00
@@ -45,10 +42,8 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Chamamento Público - Lei Aldir Blanc –Nº 009/2024 - Premiação para Agentes Culturais - Fomento à Cultura. 
                                      
                                          O Município de Ribeirão Pires, através da Secretaria de Educação e Cultura, TORNA PÚBLICO os seguintes editais de ](https://www.ribeiraopires.sp.gov.br/portal/editais/0/5/2662) — coletado em 2026-10-10T21:59:23+00:00
-- [Seleção de Organização Social no Segmento serviço de proteção social especial de alta complexidade para acolhimento provisório de pessoas em situação de rua. 
-                                     
-                                         COMUNICADOTornamos público, para conhecimento dos interessados](https://www.ribeiraopires.sp.gov.br/portal/editais/0/5/2672) — coletado em 2026-10-12T19:24:00+00:00
 - [EDITAL Nº 003/2026 – ADMPLAN – TERCEIRA AUDIÊNCIA PÚBLICA DO PLANO DIRETOR DO MUNICÍPIO DE COLINAS DO SUL/GO.](https://colinasdosul.go.gov.br/aviso/2862) — coletado em 2026-10-10T21:59:19+00:00
+- [faça uma doação](https://baoba.org.br/doacao) — coletado em 2026-10-13T14:03:29+00:00
 - [O credenciamento de Organizações da Sociedade Civil, com atuação na área assistencial, para execução indireta do serviço de proteção social especial de média e alta complexidade - modalidade pessoas com deficiência e suas famílias 
                                      
                               ](https://www.ribeiraopires.sp.gov.br/portal/editais/0/5/2658) — coletado em 2026-10-10T21:59:23+00:00
@@ -67,3 +62,5 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Quero me inscrever](https://tally.so/r/2E5oBD) — coletado em 2026-10-10T15:55:05+00:00
 - [CHAMAMENTO FINAL  LEI ALDIR BLANC](https://www.maranguape.ce.gov.br/informa/369/chamamento-final-lei-aldir-blanc) — coletado em 2026-10-11T11:39:34+00:00
 - [EDITAL CHAMAMENTO PUBLICO 007/2026 FOMENTO A PROJETOS CONTIN [...]](https://www.maranguape.ce.gov.br/informa/365/edital-chamamento-p-blico-007-2026-fomento-a-proje) — coletado em 2026-10-11T11:39:34+00:00
+- [Comitê Gestor - Cultura Viva](https://cultura.rs.gov.br/comite-gestor-da-cultura-viva) — coletado em 2026-10-13T18:49:08+00:00
+- [Cultura Viva](https://cultura.rs.gov.br/cultura-viva) — coletado em 2026-10-13T18:49:08+00:00
