@@ -3,10 +3,10 @@
     "do-goiania": {
       "nome": "Diário Oficial do Município de Goiânia",
       "tipo": "diario_oficial",
-      "leituras": 140,
+      "leituras": 141,
       "achados_total": 55,
-      "vazias_seguidas": 42,
-      "ultima": "2026-10-14T06:12:16+00:00",
+      "vazias_seguidas": 43,
+      "ultima": "2026-10-14T07:50:39+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -78,15 +78,15 @@
         "pdfs_lidos": 0,
         "sem_texto": 0
       },
-      "duracao_s": 27
+      "duracao_s": 15
     },
     "do-goias": {
       "nome": "Diário Oficial do Estado de Goiás",
       "tipo": "diario_oficial",
-      "leituras": 123,
-      "achados_total": 400,
+      "leituras": 124,
+      "achados_total": 404,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-14T06:14:00+00:00",
+      "ultima": "2026-10-14T07:52:43+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 4,
       "falhas_ultima": 0,
@@ -159,15 +159,15 @@
         "pdfs_lidos": 0,
         "sem_texto": 0
       },
-      "duracao_s": 104
+      "duracao_s": 124
     },
     "dou": {
       "nome": "Diário Oficial da União",
       "tipo": "diario_oficial",
-      "leituras": 133,
+      "leituras": 134,
       "achados_total": 85,
-      "vazias_seguidas": 2,
-      "ultima": "2026-10-14T06:14:38+00:00",
+      "vazias_seguidas": 3,
+      "ultima": "2026-10-14T07:53:44+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -183,24 +183,29 @@
           "bytes": 0
         }
       ],
-      "alerta": null,
+      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
-        "paginas_lidas": 8,
-        "links_total": 2968,
-        "links_candidatos": 0,
+        "paginas_lidas": 28,
+        "links_total": 5233,
+        "links_candidatos": 102,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "2968 matérias no jornal, 0 de interesse (0 íntegras): nenhuma seleção aberta para OSC hoje · 0 a acompanhar · 0 ruído",
+        "motivo_zero": "5233 matérias no jornal, 102 de interesse (20 íntegras): nenhuma seleção aberta para OSC hoje · 34 a acompanhar · 68 ruído",
         "versao": "motor-03 v2 (01/10/2026)",
         "nuvem": true,
         "fontes": {
           "A": {
             "falhas": [],
-            "materias_lidas": 0,
+            "materias_lidas": 102,
             "secoes_lidas": 8,
-            "materias_no_jornal": 2968,
-            "textos_abertos": 0,
-            "cortes": {},
+            "materias_no_jornal": 5233,
+            "textos_abertos": 20,
+            "cortes": {
+              "tipo": 1297,
+              "fora_territorio": 294,
+              "sem_termo": 552,
+              "conselho_profissional": 20
+            },
             "edicoes_do_dia": {
               "2026-10-14": [],
               "2026-10-13": [
@@ -221,6 +226,7 @@
             ],
             "com_materias": [
               "2026-10-14|do1",
+              "2026-10-14|do3",
               "2026-10-13|do1",
               "2026-10-13|do3",
               "2026-10-13|do3e",
@@ -234,17 +240,17 @@
             "falhas": [
               "etapa: NameError: name 'tinha_estado' is not defined"
             ],
-            "materias_lidas": 28,
+            "materias_lidas": 3,
             "consultas": 6
           }
         },
         "vereditos": {
           "OPORTUNIDADE": 0,
-          "ACOMPANHAR": 0,
-          "RUIDO": 0,
+          "ACOMPANHAR": 34,
+          "RUIDO": 68,
           "quarentena": 0
         },
-        "dou_json_materias": 2968,
+        "dou_json_materias": 5233,
         "leitura_pdf": {
           "documentos": 0,
           "abertos": 0,
@@ -260,15 +266,15 @@
         "pdfs_lidos": 0,
         "sem_texto": 0
       },
-      "duracao_s": 37
+      "duracao_s": 61
     },
     "alego-pl": {
       "nome": "Assembleia Legislativa de Goiás — proposições",
       "tipo": "legislativo",
-      "leituras": 100,
+      "leituras": 101,
       "achados_total": 17,
-      "vazias_seguidas": 70,
-      "ultima": "2026-10-14T06:15:18+00:00",
+      "vazias_seguidas": 71,
+      "ultima": "2026-10-14T07:55:36+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -276,7 +282,7 @@
         {
           "url": "https://portal.al.go.leg.br/",
           "http": 200,
-          "bytes": 133681
+          "bytes": 133607
         },
         {
           "url": "https://portal.al.go.leg.br/noticias",
@@ -314,7 +320,7 @@
         "pdf_links": 40,
         "motivo_zero": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje",
         "camada1_vetados": 18,
-        "camada1_direcionados": 12,
+        "camada1_direcionados": 11,
         "rotas_pendentes_local": [
           "https://alegodigital.al.go.leg.br/spl/consulta-cronologico.aspx",
           "https://alegodigital.al.go.leg.br/spl/consulta-tipo.aspx",
@@ -322,15 +328,15 @@
         ],
         "paginas_alem_do_limite": 1
       },
-      "duracao_s": 19
+      "duracao_s": 18
     },
     "camara-goiania-pl": {
       "nome": "Câmara Municipal de Goiânia — projetos de lei",
       "tipo": "legislativo",
-      "leituras": 117,
+      "leituras": 118,
       "achados_total": 0,
-      "vazias_seguidas": 117,
-      "ultima": "2026-10-14T06:14:58+00:00",
+      "vazias_seguidas": 118,
+      "ultima": "2026-10-14T07:55:17+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -408,7 +414,7 @@
           "motivo": "o robots.txt do SUAP (suap.camaragyn.go.gov.br) proíbe robôs (Disallow: /) — os processos e a tramitação vêm das pautas do Plenário no portal; a ficha do processo da associação no SUAP é conferida pelo titular (consulta humana)"
         }
       },
-      "duracao_s": 21
+      "duracao_s": 93
     },
     "cnj-destinacoes": {
       "nome": "CNJ — destinações de penas e prestações pecuniárias",
@@ -468,10 +474,10 @@
     "dj-trf1-go": {
       "nome": "Diário da Justiça Federal — Seção Judiciária de Goiás",
       "tipo": "diario_justica",
-      "leituras": 68,
+      "leituras": 69,
       "achados_total": 0,
-      "vazias_seguidas": 68,
-      "ultima": "2026-10-14T06:16:02+00:00",
+      "vazias_seguidas": 69,
+      "ultima": "2026-10-14T07:56:20+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -777,10 +783,10 @@
     "plat-gife": {
       "nome": "GIFE — Grupo de Institutos, Fundações e Empresas",
       "tipo": "plataforma",
-      "leituras": 90,
-      "achados_total": 137,
+      "leituras": 91,
+      "achados_total": 139,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-14T06:34:32+00:00",
+      "ultima": "2026-10-14T08:12:44+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 2,
       "falhas_ultima": 0,
@@ -831,7 +837,7 @@
           "erros": 0
         }
       },
-      "duracao_s": 14
+      "duracao_s": 13
     },
     "plat-observatorio-3setor": {
       "nome": "Observatório do Terceiro Setor — editais",
@@ -2795,10 +2801,10 @@
     "plat-cnpq-extensao": {
       "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
       "tipo": "plataforma",
-      "leituras": 85,
-      "achados_total": 115,
+      "leituras": 86,
+      "achados_total": 117,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-14T06:34:18+00:00",
+      "ultima": "2026-10-14T08:12:31+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 2,
       "falhas_ultima": 0,
@@ -2811,7 +2817,7 @@
         {
           "url": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
           "http": 200,
-          "bytes": 140607
+          "bytes": 140613
         }
       ],
       "alerta": null,
@@ -2852,59 +2858,58 @@
     "plat-empresas-editais-incentivados": {
       "nome": "Editais de empresas incentivadoras (modelo Porto Itapoá) — FIA, Idoso, Esporte, Rouanet, PRONAS",
       "tipo": "plataforma",
-      "leituras": 89,
-      "achados_total": 1381,
+      "leituras": 90,
+      "achados_total": 1386,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-14T06:36:50+00:00",
+      "ultima": "2026-10-14T08:16:08+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 21,
-      "falhas_ultima": 5,
+      "achados_ultima": 5,
+      "falhas_ultima": 9,
       "saude": [
-        {
-          "url": "https://captadores.org.br/editais/",
-          "http": 200,
-          "bytes": 139013
-        },
         {
           "url": "https://www.alcoa.com/brasil/pt/institute/local-project-support-program",
           "http": 200,
-          "bytes": 48552
+          "bytes": 48553
+        },
+        {
+          "url": "https://selecao.simbi.social/arcelormittal",
+          "http": 200,
+          "bytes": 75118
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 32,
-        "links_total": 2800,
-        "links_candidatos": 1427,
+        "paginas_lidas": 28,
+        "links_total": 2699,
+        "links_candidatos": 1193,
         "descobertas": [
           {
-            "de": "https://captadores.org.br/editais/",
-            "para": "https://captadores.org.br/transparencia",
-            "rotulo": "Transparência"
+            "de": "https://www.alcoa.com/brasil/pt/institute/local-project-support-program",
+            "para": "https://www.alcoa.com/brasil/pt/resources/Instituto_Alcoa/Programa_de_Apoio/2026/edital-2026-site.pdf",
+            "rotulo": "Edital do Programa de Apoio a Projetos Locais"
           },
           {
-            "de": "https://captadores.org.br/editais/",
-            "para": "https://captadores.org.br/noticias",
-            "rotulo": "Editais"
+            "de": "https://www.fbb.org.br/editais-de-projetos/editais-publicos/",
+            "para": "https://fbb.org.br/sobre-a-fundacao-bb/transparencia-periodo-eleitoral",
+            "rotulo": "Transparência – Período Eleitoral"
           },
           {
-            "de": "https://captadores.org.br/editais/",
-            "para": "https://captadores.org.br/category/editais",
-            "rotulo": "Editais"
+            "de": "https://www.fbb.org.br/editais-de-projetos/editais-publicos/",
+            "para": "https://fbb.org.br/sobre-a-fundacao-bb/publicacoes",
+            "rotulo": "Publicações"
           },
           {
-            "de": "https://captadores.org.br/editais/",
-            "para": "https://captadores.org.br/editais/plan-brasil-lanca-fundo-de-r-600-mil-para-projetos-voltados-a-igualdade-de-genero",
-            "rotulo": ""
+            "de": "https://www.fbb.org.br/editais-de-projetos/editais-publicos/",
+            "para": "https://fbb.org.br/editais-de-projetos",
+            "rotulo": "Editais de Projetos"
           }
         ],
-        "pdf_links": 45,
+        "pdf_links": 802,
         "motivo_zero": null,
-        "camada1_vetados": 19,
-        "camada1_direcionados": 114,
-        "encerrados_no_titulo": 4
+        "camada1_vetados": 17,
+        "camada1_direcionados": 30
       },
-      "duracao_s": 137
+      "duracao_s": 203
     },
     "plat-fapeg": {
       "nome": "FAPEG — Fundação de Amparo à Pesquisa de Goiás",
@@ -3501,10 +3506,10 @@
     "plat-prefeituras-50-go": {
       "nome": "Prefeituras das 50 maiores cidades de Goiás — portais de editais",
       "tipo": "plataforma",
-      "leituras": 93,
-      "achados_total": 88,
+      "leituras": 94,
+      "achados_total": 90,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-14T06:31:03+00:00",
+      "ultima": "2026-10-14T08:11:23+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 2,
       "falhas_ultima": 0,
@@ -3628,10 +3633,10 @@
     "plat-salic": {
       "nome": "SALIC — Lei Rouanet (Ministério da Cultura)",
       "tipo": "plataforma",
-      "leituras": 100,
-      "achados_total": 340,
+      "leituras": 101,
+      "achados_total": 342,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-14T06:34:08+00:00",
+      "ultima": "2026-10-14T08:12:21+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 2,
       "falhas_ultima": 0,
@@ -3712,7 +3717,7 @@
           }
         ]
       },
-      "duracao_s": 22
+      "duracao_s": 16
     },
     "plat-secult-go": {
       "nome": "Secult Goiás — Goyazes e Aldir Blanc",
@@ -3943,12 +3948,12 @@
     "plat-piloto-aberto": {
       "nome": "Motor do Piloto — busca aberta no terceiro setor",
       "tipo": "plataforma",
-      "leituras": 87,
-      "achados_total": 2373,
+      "leituras": 88,
+      "achados_total": 2384,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-14T06:37:01+00:00",
+      "ultima": "2026-10-14T08:16:20+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 10,
+      "achados_ultima": 11,
       "falhas_ultima": 0,
       "saude": [
         {
@@ -4027,36 +4032,28 @@
             "motivo": "M3: página que não é edital (produtos\\.prosas\\.com\\.br)"
           },
           {
-            "url": "https://capitaai.com.br/editais-abertos/para-ong",
-            "motivo": "M3: página que não é edital (capitaai\\.com\\.br/(editais|editais-abertos)(/|$))"
-          },
-          {
-            "url": "https://capitaai.com.br/editais-abertos/para-ong",
-            "motivo": "M3: página que não é edital (capitaai\\.com\\.br/(editais|editais-abertos)(/|$))"
-          },
-          {
-            "url": "https://capitaai.com.br/editais-abertos/para-ong",
-            "motivo": "M3: página que não é edital (capitaai\\.com\\.br/(editais|editais-abertos)(/|$))"
-          },
-          {
-            "url": "https://observatorio3setor.org.br/category/noticias/editais",
-            "motivo": "M3: página que não é edital (/category/)"
-          },
-          {
-            "url": "https://alteditais.com.br/segmentos/ongs-e-oscs",
-            "motivo": "M3: página que não é edital (alteditais\\.com\\.br/(oportunidades|segmentos|$))"
-          },
-          {
-            "url": "https://alteditais.com.br/segmentos/ongs-e-oscs",
-            "motivo": "M3: página que não é edital (alteditais\\.com\\.br/(oportunidades|segmentos|$))"
+            "url": "https://capitaai.com.br/planos",
+            "motivo": "M3: não é abertura de seleção (Encontre editais)"
           },
           {
             "url": "https://captadores.org.br/category/editais",
             "motivo": "M3: página que não é edital (/category/)"
+          },
+          {
+            "url": "https://captadores.org.br/category/editais",
+            "motivo": "M3: página que não é edital (/category/)"
+          },
+          {
+            "url": "https://alteditais.com.br/segmentos/ongs-e-oscs",
+            "motivo": "M3: página que não é edital (alteditais\\.com\\.br/(oportunidades|segmentos|$))"
+          },
+          {
+            "url": "https://alteditais.com.br/segmentos/ongs-e-oscs",
+            "motivo": "M3: página que não é edital (alteditais\\.com\\.br/(oportunidades|segmentos|$))"
           }
         ]
       },
-      "duracao_s": 11
+      "duracao_s": 12
     },
     "plat-mapa-osc": {
       "nome": "Mapa das OSC — editais",
@@ -4182,11 +4179,11 @@
     "congresso-nacional": {
       "nome": "Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos)",
       "tipo": "legislativo",
-      "leituras": 75,
+      "leituras": 76,
       "achados_total": 0,
-      "vazias_seguidas": 75,
-      "duracao_s": 36,
-      "ultima": "2026-10-14T06:15:54+00:00",
+      "vazias_seguidas": 76,
+      "duracao_s": 37,
+      "ultima": "2026-10-14T07:56:13+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -4194,7 +4191,7 @@
         {
           "url": "https://www.congressonacional.leg.br",
           "http": 200,
-          "bytes": 151532,
+          "bytes": 151534,
           "itens": 9
         },
         {
@@ -4218,7 +4215,7 @@
             "falhas": [],
             "consultas": 2,
             "itens": 9,
-            "bytes": 151532,
+            "bytes": 151534,
             "comunicados_na_pagina": 10
           },
           "B": {
@@ -6174,11 +6171,11 @@
     "judiciario-tjgo": {
       "nome": "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
       "tipo": "diario_justica",
-      "leituras": 84,
+      "leituras": 85,
       "achados_total": 0,
-      "vazias_seguidas": 84,
-      "duracao_s": 1,
-      "ultima": "2026-10-14T06:15:55+00:00",
+      "vazias_seguidas": 85,
+      "duracao_s": 2,
+      "ultima": "2026-10-14T07:56:15+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 2,
@@ -6256,11 +6253,11 @@
     "judiciario-cnj": {
       "nome": "CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024)",
       "tipo": "diario_justica",
-      "leituras": 59,
+      "leituras": 60,
       "achados_total": 2,
-      "vazias_seguidas": 57,
+      "vazias_seguidas": 58,
       "duracao_s": 0,
-      "ultima": "2026-10-14T06:16:02+00:00",
+      "ultima": "2026-10-14T07:56:20+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -6318,11 +6315,11 @@
     "mpgo-destinacao": {
       "nome": "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)",
       "tipo": "ministerio_publico",
-      "leituras": 55,
-      "achados_total": 55,
+      "leituras": 56,
+      "achados_total": 56,
       "vazias_seguidas": 0,
       "duracao_s": 0,
-      "ultima": "2026-10-14T06:15:55+00:00",
+      "ultima": "2026-10-14T07:56:16+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 1,
       "falhas_ultima": 0,
@@ -6381,19 +6378,21 @@
     "mptgo-destinacao": {
       "nome": "MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região)",
       "tipo": "ministerio_publico",
-      "leituras": 65,
-      "achados_total": 83,
+      "leituras": 66,
+      "achados_total": 84,
       "vazias_seguidas": 0,
-      "duracao_s": 6,
-      "ultima": "2026-10-14T06:16:02+00:00",
+      "duracao_s": 4,
+      "ultima": "2026-10-14T07:56:20+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 1,
-      "falhas_ultima": 0,
+      "falhas_ultima": 1,
       "saude": [
         {
           "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
-          "http": 200,
-          "itens": 44
+          "erro": "HTTPError",
+          "code": 500,
+          "waf": null,
+          "causa": "HTTP Error 500: Internal Server Error"
         }
       ],
       "alerta": null,
@@ -6404,8 +6403,7 @@
             "orgao": "MPT-GO",
             "modo": "tabela_mpt",
             "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
-            "situacao": "lida",
-            "itens": 44
+            "situacao": "falhou"
           },
           "f03": {
             "orgao": "MPT-GO",
@@ -6458,7 +6456,7 @@
         "sem_texto": 0,
         "vereditos": {
           "OPORTUNIDADE": 1,
-          "ACOMPANHAR": 44,
+          "ACOMPANHAR": 0,
           "RUIDO": 0
         },
         "abertas": 1,
@@ -6471,9 +6469,9 @@
           "associacao_consta": false,
           "em": "2026-10-09"
         },
-        "paginas_lidas": 1,
-        "links_total": 45,
-        "links_candidatos": 45,
+        "paginas_lidas": 0,
+        "links_total": 1,
+        "links_candidatos": 1,
         "inventario": {
           "inventario_base_registrado": true,
           "em": "2026-10-03T00:10:58+00:00"
@@ -6485,11 +6483,11 @@
     "mpu-destinacao": {
       "nome": "MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD)",
       "tipo": "ministerio_publico",
-      "leituras": 53,
+      "leituras": 54,
       "achados_total": 0,
-      "vazias_seguidas": 53,
+      "vazias_seguidas": 54,
       "duracao_s": 0,
-      "ultima": "2026-10-14T06:16:02+00:00",
+      "ultima": "2026-10-14T07:56:20+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -6757,14 +6755,14 @@
     "plat-estaduais-go-gov": {
       "nome": "Oportunidade Estaduais Governamentais de Goiás",
       "tipo": "plataforma",
-      "leituras": 72,
+      "leituras": 73,
       "achados_total": 38,
-      "vazias_seguidas": 1,
-      "duracao_s": 162,
-      "ultima": "2026-10-14T06:33:46+00:00",
+      "vazias_seguidas": 2,
+      "duracao_s": 43,
+      "ultima": "2026-10-14T08:12:05+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 0,
+      "falhas_ultima": 42,
       "saude": [
         {
           "url": "https://goias.gov.br/cultura",
@@ -6781,19 +6779,87 @@
         "orgaos": 51,
         "descobertos_agora": 0,
         "camadas_feitas": {
-          "4": 50
+          "4": 8,
+          "1": 1,
+          "2": 1,
+          "3": 1
         },
-        "falhas": [],
-        "paginas_lidas": 50,
-        "motivo_zero": "50 órgão(s) já com histórico e monitorados; nenhuma seleção aberta nova hoje",
+        "falhas": [
+          "secult monitoramento: RuntimeError: monitoramento HTTP 403",
+          "fapeg monitoramento: RuntimeError: monitoramento HTTP 403",
+          "goias-social monitoramento: RuntimeError: monitoramento HTTP 403",
+          "retomada monitoramento: RuntimeError: monitoramento HTTP 403",
+          "segov monitoramento: RuntimeError: monitoramento HTTP 403",
+          "casacivil monitoramento: RuntimeError: monitoramento HTTP 403",
+          "esporte monitoramento: RuntimeError: monitoramento HTTP 403",
+          "saude monitoramento: RuntimeError: monitoramento HTTP 403",
+          "educacao monitoramento: RuntimeError: monitoramento HTTP 403",
+          "secti monitoramento: RuntimeError: monitoramento HTTP 403",
+          "agricultura monitoramento: RuntimeError: monitoramento HTTP 403",
+          "meioambiente monitoramento: RuntimeError: monitoramento HTTP 403",
+          "infraestrutura monitoramento: RuntimeError: monitoramento HTTP 403",
+          "industria monitoramento: RuntimeError: monitoramento HTTP 403",
+          "economia monitoramento: RuntimeError: monitoramento HTTP 403",
+          "administracao monitoramento: RuntimeError: monitoramento HTTP 403",
+          "seguranca monitoramento: RuntimeError: monitoramento HTTP 403",
+          "comunicacao monitoramento: RuntimeError: monitoramento HTTP 403",
+          "turismo monitoramento: RuntimeError: monitoramento HTTP 403",
+          "imb monitoramento: RuntimeError: monitoramento HTTP 403",
+          "goinfra monitoramento: RuntimeError: monitoramento HTTP 403",
+          "emater monitoramento: RuntimeError: monitoramento HTTP 403",
+          "agrodefesa monitoramento: RuntimeError: monitoramento HTTP 403",
+          "juceg monitoramento: RuntimeError: monitoramento HTTP 403",
+          "cge monitoramento: RuntimeError: monitoramento HTTP 403",
+          "pge monitoramento: RuntimeError: monitoramento HTTP 403",
+          "go-cee monitoramento: RuntimeError: monitoramento HTTP 403",
+          "go-escoladegoverno monitoramento: RuntimeError: monitoramento HTTP 403",
+          "go-abc monitoramento: RuntimeError: monitoramento HTTP 403",
+          "go-agehab monitoramento: RuntimeError: monitoramento HTTP 403",
+          "go-agr monitoramento: RuntimeError: monitoramento HTTP 403",
+          "go-casamilitar monitoramento: RuntimeError: monitoramento HTTP 403",
+          "go-ceasa monitoramento: RuntimeError: monitoramento HTTP 403",
+          "go-detran monitoramento: RuntimeError: monitoramento HTTP 403",
+          "go-entorno monitoramento: RuntimeError: monitoramento HTTP 403",
+          "go-goiasparcerias monitoramento: RuntimeError: monitoramento HTTP 403",
+          "go-goiasprev monitoramento: RuntimeError: monitoramento HTTP 403",
+          "go-institucional monitoramento: RuntimeError: monitoramento HTTP 403",
+          "go-iquego monitoramento: RuntimeError: monitoramento HTTP 403",
+          "go-metrobus monitoramento: RuntimeError: monitoramento HTTP 403",
+          "go-procon monitoramento: RuntimeError: monitoramento HTTP 403",
+          "go-vicegovernadoria monitoramento: RuntimeError: monitoramento HTTP 403"
+        ],
+        "paginas_lidas": 11,
+        "motivo_zero": "falhas: secult monitoramento: RuntimeError: monitoramento HTTP 403; fapeg monitoramento: RuntimeError: monitoramento HTTP 403",
         "pendentes_livros": 0,
         "cobertura_orgaos": {
-          "devidos": 50,
-          "monitorados_hoje": 50,
-          "pendentes": []
+          "devidos": 51,
+          "monitorados_hoje": 8,
+          "pendentes": [
+            "secult",
+            "fapeg",
+            "goias-social",
+            "retomada",
+            "segov",
+            "casacivil",
+            "esporte",
+            "saude",
+            "educacao",
+            "secti",
+            "agricultura",
+            "meioambiente",
+            "infraestrutura",
+            "industria",
+            "economia",
+            "administracao",
+            "seguranca",
+            "comunicacao",
+            "turismo",
+            "imb"
+          ]
         },
+        "paginas_nao_lidas": 43,
         "orgaos_por_camada": {
-          "camada 4": 50
+          "camada 4": 51
         }
       }
     },
@@ -8264,7 +8330,7 @@
   },
   "ultima_execucao": {
     "data": "2026-10-14",
-    "em": "2026-10-14T06:37:01+00:00",
+    "em": "2026-10-14T08:16:20+00:00",
     "manual": [
       "alego-pl",
       "camara-goiania-pl",
@@ -8292,11 +8358,11 @@
     "adiados_por_tempo": [
       "pncp-api"
     ],
-    "duracao_s": 1512,
+    "duracao_s": 1556,
     "em_espera": 110,
     "total_esquadra": 130,
     "previsoes_ativas": 1,
-    "achados": 45,
+    "achados": 30,
     "novos_na_base": 0,
     "por_tipo": {
       "diario_oficial": {
@@ -8317,12 +8383,12 @@
       "ministerio_publico": {
         "sensores": 3,
         "achados": 2,
-        "falhas": 0
+        "falhas": 1
       },
       "plataforma": {
         "sensores": 7,
-        "achados": 39,
-        "falhas": 5
+        "achados": 24,
+        "falhas": 51
       }
     }
   }
