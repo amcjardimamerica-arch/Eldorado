@@ -120,15 +120,15 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 125,
-   "achados_total_agora": 125,
+   "achados_total_1a": 127,
+   "achados_total_agora": 127,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 1490,
-   "achados_total_agora": 1490,
+   "achados_total_1a": 1512,
+   "achados_total_agora": 1512,
    "no_fluxo": 5,
    "confirmadas": 0
   },
@@ -141,8 +141,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 95,
-   "achados_total_agora": 95,
+   "achados_total_1a": 96,
+   "achados_total_agora": 96,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -169,22 +169,22 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 59,
-   "achados_total_agora": 59,
+   "achados_total_1a": 60,
+   "achados_total_agora": 60,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 87,
-   "achados_total_agora": 87,
+   "achados_total_1a": 88,
+   "achados_total_agora": 88,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-estaduais-go-gov",
-   "achados_total_1a": 40,
-   "achados_total_agora": 40,
+   "achados_total_1a": 41,
+   "achados_total_agora": 41,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -197,16 +197,16 @@
   },
   {
    "motor": "outras-oportunidades-1",
-   "achados_total_1a": 204,
-   "achados_total_agora": 204,
-   "no_fluxo": 11,
+   "achados_total_1a": 224,
+   "achados_total_agora": 224,
+   "no_fluxo": 18,
    "confirmadas": 0
   },
   {
    "motor": "outras-oportunidades-2",
-   "achados_total_1a": 274,
-   "achados_total_agora": 274,
-   "no_fluxo": 14,
+   "achados_total_1a": 275,
+   "achados_total_agora": 275,
+   "no_fluxo": 15,
    "confirmadas": 0
   },
   {
@@ -225,7 +225,7 @@
  "pontos_com_redundancia": 13,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 8452
+ "exemplos_da_rede_de_rotas": 8529
 }
 ```
 
@@ -236,12 +236,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 79.6,
- "fora_dos_motores_pct_agora": 79.6,
+ "fora_dos_motores_pct_1a": 78.6,
+ "fora_dos_motores_pct_agora": 78.6,
  "origem": {
   "agregador/outra": 329,
-  "motor": 116,
-  "Piloto": 124
+  "motor": 124,
+  "Piloto": 126
  },
  "dominios_so_de_agregador": [
   {
@@ -363,20 +363,20 @@
 
 ```json
 {
- "fontes_recebidas": 332,
+ "fontes_recebidas": 333,
  "por_origem": {
   "conselho (fontes irmãs)": 153,
   "Cartório (site oficial certificado)": 147,
-  "Espião (privado/internacional)": 32
+  "Espião (privado/internacional)": 33
  },
- "lidas_nas_ultimas_24h": 230,
+ "lidas_nas_ultimas_24h": 240,
  "dimensionamento": {
-  "fontes": 332,
+  "fontes": 333,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 7,
-  "cobertura_diaria": 332,
+  "cobertura_diaria": 333,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -385,14 +385,14 @@
  },
  "clones_que_ja_leram": {
   "outras-oportunidades-1": {
-   "ultima": "2026-10-14T16:30:22+00:00",
-   "duracao_s": 79,
-   "achados": 0
+   "ultima": "2026-10-14T19:59:48+00:00",
+   "duracao_s": 125,
+   "achados": 20
   },
   "outras-oportunidades-2": {
-   "ultima": "2026-10-14T16:29:02+00:00",
-   "duracao_s": 67,
-   "achados": 16
+   "ultima": "2026-10-14T19:57:43+00:00",
+   "duracao_s": 36,
+   "achados": 1
   },
   "outras-oportunidades-3": {
    "ultima": "2026-10-14T14:27:53+00:00",
@@ -405,9 +405,9 @@
    "achados": 4
   },
   "outras-oportunidades-5": {
-   "ultima": "2026-10-14T16:31:18+00:00",
-   "duracao_s": 56,
-   "achados": 4
+   "ultima": "2026-10-14T20:00:41+00:00",
+   "duracao_s": 53,
+   "achados": 2
   },
   "outras-oportunidades-6": {
    "ultima": "2026-10-14T16:32:14+00:00",
@@ -420,7 +420,7 @@
    "achados": 16
   }
  },
- "com_achado": 45
+ "com_achado": 48
 }
 ```
 
