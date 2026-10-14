@@ -1,15 +1,14 @@
 {
-  "em": "2026-10-14T11:23:35+00:00",
+  "em": "2026-10-14T11:29:30+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
       "missoes": 40,
-      "achados": 1,
+      "achados": 0,
       "uteis": 0,
       "motivos": {
-        "nada_no_crivo": 35,
-        "sem_texto": 1,
-        "busca_vazia": 4
+        "nada_no_crivo": 32,
+        "busca_vazia": 8
       },
       "efetividade": 0.0
     }
@@ -18,7 +17,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 10977,
+      "vezes": 10919,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -31,7 +30,7 @@
       ],
       "ultima": "2026-10-14",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 10977 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 10919 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -43,6 +42,20 @@
       "ultima": "2026-09-26",
       "explicacao": "a página aberta não confirmou o que o resultado prometia",
       "regra": "o motor 'missao-especial' falha por a página aberta não confirmou o que o resultado prometia há 173 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
+      "motor": "piloto-aberto",
+      "motivo": "busca_vazia",
+      "vezes": 163,
+      "tipos": [
+        "cacar_oportunidade",
+        "descobrir",
+        "aposta",
+        "espionar"
+      ],
+      "ultima": "2026-10-14",
+      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
+      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 163 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
@@ -82,20 +95,6 @@
       "regra": "o motor 'missao-especial' falha por vieram resultados, mas nenhum era oportunidade de verdade há 119 vezes — precisa de correção, não de mais tentativas"
     },
     {
-      "motor": "piloto-aberto",
-      "motivo": "busca_vazia",
-      "vezes": 91,
-      "tipos": [
-        "cacar_oportunidade",
-        "descobrir",
-        "aposta",
-        "espionar"
-      ],
-      "ultima": "2026-10-14",
-      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
-      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 91 vezes — precisa de correção, não de mais tentativas"
-    },
-    {
       "motor": "motor-patrocinio",
       "motivo": "nada_no_crivo",
       "vezes": 88,
@@ -109,19 +108,6 @@
       "regra": "o motor 'motor-patrocinio' falha por vieram resultados, mas nenhum era oportunidade de verdade há 88 vezes — precisa de correção, não de mais tentativas"
     },
     {
-      "motor": "piloto-aberto",
-      "motivo": "sem_texto",
-      "vezes": 83,
-      "tipos": [
-        "aposta",
-        "descobrir",
-        "espionar"
-      ],
-      "ultima": "2026-10-14",
-      "explicacao": "sem_texto",
-      "regra": "o motor 'piloto-aberto' falha por sem_texto há 83 vezes — precisa de correção, não de mais tentativas"
-    },
-    {
       "motor": "motor-gife",
       "motivo": "nada_no_crivo",
       "vezes": 82,
@@ -133,6 +119,19 @@
       "ultima": "2026-09-24",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
       "regra": "o motor 'motor-gife' falha por vieram resultados, mas nenhum era oportunidade de verdade há 82 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
+      "motor": "piloto-aberto",
+      "motivo": "sem_texto",
+      "vezes": 72,
+      "tipos": [
+        "aposta",
+        "descobrir",
+        "espionar"
+      ],
+      "ultima": "2026-10-14",
+      "explicacao": "sem_texto",
+      "regra": "o motor 'piloto-aberto' falha por sem_texto há 72 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
@@ -180,13 +179,6 @@
     }
   ],
   "melhorias_pendentes": [
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "O motor deve exigir que os trechos dos editais sejam preenchidos com informações específicas e relevantes para a avaliação de servir ou não servir, garantindo que a análise seja baseada em dados concretos.",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-10-14T11:23",
-      "aplicada": false
-    },
     {
       "motor": "piloto-aberto",
       "sugestao": "O motor deve coletar e exibir trechos relevantes dos editais para permitir uma avaliação mais precisa da compatibilidade com a missão da organização.",
@@ -319,12 +311,19 @@
       "efetividade_na_hora": 0.0,
       "em": "2026-10-13T03:27",
       "aplicada": false
+    },
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "O motor deve extrair e validar trechos relevantes dos textos para permitir uma análise mais precisa sobre a compatibilidade dos editais com a missão e os recursos buscados.",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-10-13T02:59",
+      "aplicada": false
     }
   ],
-  "editais_tratados": 570,
-  "entregues_ao_claude": 494,
+  "editais_tratados": 569,
+  "entregues_ao_claude": 493,
   "ultima_faxina": {
-    "em": "2026-10-14T11:23:35+00:00",
+    "em": "2026-10-14T11:29:30+00:00",
     "dias": 2,
     "arquivos_de_quarentena_apagados": 16,
     "achados_descartados_removidos": 2986,
