@@ -1,9 +1,9 @@
 {
- "em": "2026-10-14T11:01:46+00:00",
+ "em": "2026-10-14T12:31:43+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
- "rotulados": 2003,
- "positivos": 801,
- "pendentes": 738,
+ "rotulados": 2004,
+ "positivos": 802,
+ "pendentes": 739,
  "validacao_cruzada": {
   "auc": 0.843,
   "precisao": 0.74,
@@ -46,12 +46,6 @@
    "titulo": "EDITAL DE CHAMAMENTO PÚBLICO Nº002/2026 CICLO 2 PNAB QUADRILHA JUNINA,CAPOEIRA,DANÇA E LITERATURA DE SÃOBENEDITO",
    "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8421/",
    "nota": 0.502,
-   "incerteza": 0.996
-  },
-  {
-   "titulo": "Chamadas Abertas",
-   "url": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
-   "nota": 0.498,
    "incerteza": 0.996
   },
   {
@@ -247,6 +241,12 @@
    "incerteza": 0.973
   },
   {
+   "titulo": "14/09/2026 14h38",
+   "url": "https://www.juatuba.mg.gov.br/portal/download/chamamento-publico-anexos/CK-wPP",
+   "nota": 0.486,
+   "incerteza": 0.973
+  },
+  {
    "titulo": "Edital Audiovisual IV – Circulação, Licenciamento e Distribuição",
    "url": "https://www.cultura.pr.gov.br/Pagina/Edital-Audiovisual-IV-Licenciamento-e-Distribuicao",
    "nota": 0.486,
@@ -277,12 +277,6 @@
    "incerteza": 0.969
   },
   {
-   "titulo": "14/09/2026 14h38",
-   "url": "https://www.juatuba.mg.gov.br/portal/download/chamamento-publico-anexos/CK-wPP",
-   "nota": 0.516,
-   "incerteza": 0.968
-  },
-  {
    "titulo": "Chamamento Público nº 06/2026 - Secretaria Executiva (SE) | PRONON",
    "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-06-2026-se-pronon",
    "nota": 0.483,
@@ -292,12 +286,6 @@
    "titulo": "Credenciamento a eventual contratação de artistas ou grupos artísticos (sanfoneiro ou grupo) para… — MUNICIPIO DE ALTANEIRA",
    "url": "https://pncp.gov.br/app/editais/07385503000171/2026/41",
    "nota": 0.483,
-   "incerteza": 0.965
-  },
-  {
-   "titulo": "Anápolis — CRAS Leste 1 recebe inscrições para o Programa Bombeiro Mirim em Anápolis",
-   "url": "https://www.anapolis.go.gov.br/cras-leste-1-recebe-inscricoes-para-o-programa-bombeiro-mirim-em-anapolis/",
-   "nota": 0.482,
    "incerteza": 0.965
   },
   {
@@ -371,7 +359,19 @@
    "url": "https://www.gravatai.ifsul.edu.br/editais-e-projetos/item/305-edital-n-03-2026-chamamento-publico-programa-coleta-seletiva-cidada-selecao-de-associacoes-e-cooperativas-de-catadores-de-materiais-reciclaveis-e-reutilizaveis",
    "nota": 0.478,
    "incerteza": 0.957
+  },
+  {
+   "titulo": "Edital Nº 06/2026 - Chamamento Público - Programa Coleta Seletiva ...",
+   "url": "https://www.gravatai.ifsul.edu.br/editais-e-projetos/item/310-edital-n-06-2026-chamamento-publico-programa-coleta-seletiva-cidada-selecao-de-associacoes-e-cooperativas-de-catadores-de-materiais-reciclaveis-e-reutilizaveis",
+   "nota": 0.478,
+   "incerteza": 0.957
+  },
+  {
+   "titulo": "Aviso de Chamamento Público Credenciamento Nº 006/2026",
+   "url": "https://www.gov.br/saude",
+   "nota": 0.477,
+   "incerteza": 0.954
   }
  ],
- "pendentes_provaveis_reais": 402
+ "pendentes_provaveis_reais": 400
 }

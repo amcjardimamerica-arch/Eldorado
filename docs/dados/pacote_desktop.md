@@ -1,4 +1,4 @@
-# Pacote para o Claude Desktop — 2026-10-13
+# Pacote para o Claude Desktop — 2026-10-14
 
 Você está no computador do titular, com IP brasileiro, navegador e o repositório Eldorado clonado. Use o modelo mais forte disponível (Opus 5) para validar. Trabalhe nesta ordem, sem pular etapa, e devolva os arquivos no formato indicado. Nunca estime datas; quando não houver base, escreva o motivo.
 
@@ -8,18 +8,22 @@ Nenhum motor aguardando coleta local hoje.
 
 ## Etapa 2 — motores em alerta (não leram, falharam ou passaram da cadência)
 
-- **TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO** — todas as páginas falharam em 2026-10-13. Ação: conferir bloqueio/mudança de formato; o Claude Desktop abre a rota no navegador.
+- **TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO** — todas as páginas falharam em 2026-10-14. Ação: conferir bloqueio/mudança de formato; o Claude Desktop abre a rota no navegador.
     - abrir https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss e procurar: prestação pecuniária, penas pecuniárias, penas alternativas, transação penal, projetos sociais, finalidade social
     - abrir https://www.tjgo.jus.br/files/ e procurar: prestação pecuniária, penas pecuniárias, penas alternativas, transação penal, projetos sociais, finalidade social
     - abrir https://corregedoria.tjgo.jus.br/basesocial e procurar: prestação pecuniária, penas pecuniárias, penas alternativas, transação penal, projetos sociais, finalidade social
 - **Adaptador Mapas Culturais — oportunidades com inscrição aberta** — nunca rodou. Ação: conferir se o sensor está na escala; se for novo, esperar a próxima saída.
 - **Adaptador WordPress — sites oficiais pela API pública** — nunca rodou. Ação: conferir se o sensor está na escala; se for novo, esperar a próxima saída.
-- **Motor de Recorrência — revisita as oportunidades identificadas** — 3 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
+- **Motor de Recorrência — revisita as oportunidades identificadas** — 4 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
     - abrir https://observatorio3setor.org.br/editais/ e procurar: retificação, prorrogação, errata, resultado, homologação, classificados
+- **PNCP — API de contratações (chamamentos e credenciamentos)** — 2 dia(s) sem leitura (cadência 1). Ação: conferir escala e limite por execução.
+    - abrir https://pncp.gov.br/api/consulta/v1/contratacoes/proposta e procurar: chamamento público, termo de fomento, termo de colaboração, organização da sociedade civil, Lei 13.019, seleção de OSC
+    - abrir https://pncp.gov.br/api/search/ e procurar: chamamento público, termo de fomento, termo de colaboração, organização da sociedade civil, Lei 13.019, seleção de OSC
+    - abrir https://pncp.gov.br/pncp-api/v1/orgaos/ e procurar: chamamento público, termo de fomento, termo de colaboração, organização da sociedade civil, Lei 13.019, seleção de OSC
 
 Para cada rota aberta, liste os editais publicados nos últimos 30 dias que casem com o léxico e que ainda não estejam em `dados/editais/`. Devolva em `dados/editais/coleta_navegador/<data>-motores.json` no formato `{"<id ou novo>": {"objeto":..., "inicio":..., "fim":..., "pagina_oficial":..., "observacao":...}}`.
 
-## Etapa 3 — oportunidades aguardando ação externa (78)
+## Etapa 3 — oportunidades aguardando ação externa (79)
 
 - `3f4e0f749a5a6e40f2c4` — Edital prevê seleção de 58 apresentações artísticas para o Natal do Bem 2026 · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/edital-preve-selecao-de-58-apresentacoes-artisticas-para-o-natal-do-bem-2026
 - `9e37b9ad76d2ce6ca86c` — Secult Goiás lança edital para levar produção artística goiana ao Rio de Janeiro · **o portal recusa o robô do GitHub (IP fora do Brasil)** → abrir no navegador do titular, com IP brasileiro · link: https://goias.gov.br/cultura/secult-goias-lanca-edital-para-levar-producao-artistica-goiana-ao-rio-de-janeiro
@@ -47,6 +51,7 @@ Para cada rota aberta, liste os editais publicados nos últimos 30 dias que case
 - `c37bbca075f562f5aeef` — Fomento e bolsas · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://editaisdobrasil.com/oportunidades
 - `d15d24aaeb07b4e713db` — plataformaosc.org.br/blog/2026/03/26/edital-fundo-osc-01-2026/ · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://plataformaosc.org.br/blog/2026/03/26/edital-fundo-osc-01-2026
 - `dd29a05e2024299eb3fd` — Ministério da Cultura — editais de fomento cultural · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://editaisdobrasil.com/oportunidade/ministerio-da-cultura-editais-de-fomento-cultural
+- `081d41374d44c2199e73` — CHAMAMENTO PÚBLICO Nº 11/2026 - O MUNICÍPIO DE ITAPEVI, por meio da Secretaria Municipal d · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://chamamentos.itapevi.sp.gov.br/chamamentos/324
 - `400d80f3c84332f2aa0c` — EDITAL DE Nº 126/IFAL, DE 18 DE SETEMBRO DE 2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://www.in.gov.br/web/dou/-/edital-de-n-126/ifal-de-18-de-setembro-de-2026-733048195
 - `69322c6a48f05a2475c3` — MUNICIPIO DE PALMEIRA DOS INDIOS — Constitui-se objeto do presente Edital estabelecer o cu · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/12356879000198/2025/82
 - `cb432735cfee7c76d00c` — AGENCIA MUNICIPAL DE REGULACAO DE SERVICOS DELEGADOS- ARSER — CHAMAMENTO PÚBLICO PARA A SE · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/26981455000129/2026/51
@@ -60,7 +65,6 @@ Para cada rota aberta, liste os editais publicados nos últimos 30 dias que case
 - `57bc9ffcadd9fb58077d` — MINISTERIO PUBLICO DO ESTADO DO CEARA — Seleção e premiação de trabalhos jornalísticos que · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/06928790000156/2026/51
 - `a994b2b9ddc72150e94d` — CAIXA ECONOMICA FEDERAL — CHAMAMENTO PÚBLICO para seleção de Entidades sem Fins Lucrativos · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/00360305000104/2026/701
 - `4fd88f080ac37762bbd2` — Prefeitura de Cachoeira Alta — Edital nº 001/2026 · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://diariooficial.abc.go.gov.br/portal/visualizacoes/pdf/7388/#e:7388
-- `64b098a6f46de27ba9d0` — FUNDO MUNICIPAL DE ASSISTENCIA SOCIAL — EDITAL DE CHAMAMENTO PÚBLICO VISANDO À SELEÇÃO DE  · **só existe o anúncio no PNCP/diário; o site do órgão não foi localizado** → procurar o site oficial do órgão e localizar o edital · link: https://pncp.gov.br/app/editais/13501444000152/2026/10
 
 ## Etapa 4 — oportunidades parciais do modo completo, para validar com Opus 5 (40)
 
