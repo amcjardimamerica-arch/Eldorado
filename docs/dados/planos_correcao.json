@@ -3,9 +3,9 @@
  "regra": "PLANOS DE CORREÇÃO DOS CANAIS (titular, 02/10/2026).\n\nCada motor e Piloto é diagnosticado a cada ciclo pelo seu histórico (estado/esquadra*.json, status dos motores, bloqueios)\ne recebe o plano previsto no fluxograma (config/linha_producao.json › planos_de_correcao):\n  sem_rendimento · falha_parcial · bloqueio · exige_brasil · formato_mudou · (contrato_violado e injecao: por registro)\nO plano nunca desliga um canal sozinho: ele diz o que fazer e qual skill usar.",
  "resumo": {
   "bloqueio": 1,
-  "falha_parcial": 14,
+  "falha_parcial": 15,
   "sem_rendimento": 64,
-  "saudavel": 51
+  "saudavel": 50
  },
  "motores": [
   {
@@ -22,6 +22,21 @@
    "skill": "comum/plano_correcao",
    "leituras": 90,
    "achados_total": 0
+  },
+  {
+   "motor": "alego-pl",
+   "canal": "alego-pl",
+   "familia": "orgao_publico",
+   "diagnostico": "falha_parcial",
+   "evidencia": "falhas em 3 dos últimos 7 dias",
+   "plano": [
+    "repetir com espera crescente (backoff)",
+    "trocar a ordem das rotas",
+    "registrar páginas que falham sempre como rota morta"
+   ],
+   "skill": "comum/plano_correcao",
+   "leituras": 106,
+   "achados_total": 17
   },
   {
    "motor": "empresas-incentivadas",
@@ -140,8 +155,8 @@
     "registrar páginas que falham sempre como rota morta"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 20,
-   "achados_total": 204
+   "leituras": 21,
+   "achados_total": 224
   },
   {
    "motor": "outras-oportunidades-2",
@@ -185,8 +200,8 @@
     "registrar páginas que falham sempre como rota morta"
    ],
    "skill": "comum/plano_correcao",
-   "leituras": 14,
-   "achados_total": 126
+   "leituras": 15,
+   "achados_total": 128
   },
   {
    "motor": "outras-oportunidades-6",
@@ -394,22 +409,6 @@
    "achados_total": 0
   },
   {
-   "motor": "f260-captacao-221",
-   "canal": "f260-captacao-221",
-   "familia": "orgao_publico",
-   "diagnostico": "sem_rendimento",
-   "evidencia": "25 leituras e nenhum achado",
-   "plano": [
-    "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
-    "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
-    "testar rotas alternativas do motor (config/rotas_motores.json)",
-    "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
-   ],
-   "skill": "comum/plano_correcao",
-   "leituras": 25,
-   "achados_total": 0
-  },
-  {
    "motor": "f260-captacao-222",
    "canal": "f260-captacao-222",
    "familia": "orgao_publico",
@@ -503,6 +502,22 @@
    ],
    "skill": "comum/plano_correcao",
    "leituras": 24,
+   "achados_total": 0
+  },
+  {
+   "motor": "f260-captacao-229",
+   "canal": "f260-captacao-229",
+   "familia": "orgao_publico",
+   "diagnostico": "sem_rendimento",
+   "evidencia": "27 leituras e nenhum achado",
+   "plano": [
+    "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
+    "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
+    "testar rotas alternativas do motor (config/rotas_motores.json)",
+    "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
+   ],
+   "skill": "comum/plano_correcao",
+   "leituras": 27,
    "achados_total": 0
   },
   {
@@ -1256,17 +1271,6 @@
    "skill": "comum/plano_correcao",
    "leituras": 58,
    "achados_total": 0
-  },
-  {
-   "motor": "alego-pl",
-   "canal": "alego-pl",
-   "familia": "orgao_publico",
-   "diagnostico": "saudavel",
-   "evidencia": "saudável",
-   "plano": [],
-   "skill": null,
-   "leituras": 106,
-   "achados_total": 17
   },
   {
    "motor": "camara-goiania-pl",

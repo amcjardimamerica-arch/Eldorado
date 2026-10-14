@@ -1,15 +1,15 @@
 {
- "em": "2026-10-14T19:51:39+00:00",
+ "em": "2026-10-14T20:02:46+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 18467,
-  "oportunidades_distintas": 2618,
+  "coletados": 18477,
+  "oportunidades_distintas": 2628,
   "entidades_em_2_ou_mais_canais": 18,
   "etapas": {
-   "CONSOLIDADO": 17750,
-   "EM_LIVRO": 613,
+   "CONSOLIDADO": 17597,
+   "EM_LIVRO": 750,
    "REPROCESSAR": 74,
-   "QUALIFICADO": 30
+   "QUALIFICADO": 56
   },
   "fila_de_reprocessamento": {
    "URL de buscador (falta o site oficial)": 63,
@@ -57,18 +57,18 @@
   {
    "canal": "outras-oportunidades-1",
    "familia": "outros",
-   "registros": 28,
-   "entidades": 26,
-   "exclusivas": 26,
+   "registros": 37,
+   "entidades": 35,
+   "exclusivas": 35,
    "corroboradas": 0,
    "validadas_como_reais": 9
   },
   {
    "canal": "piloto-aberto",
    "familia": "pilotos",
-   "registros": 149,
-   "entidades": 142,
-   "exclusivas": 138,
+   "registros": 150,
+   "entidades": 143,
+   "exclusivas": 139,
    "corroboradas": 4,
    "validadas_como_reais": 8
   },
@@ -662,5 +662,5 @@
    ]
   }
  ],
- "eventos_no_livro_razao": 173
+ "eventos_no_livro_razao": 96
 }
