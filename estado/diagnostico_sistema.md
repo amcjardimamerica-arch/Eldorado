@@ -1,4 +1,4 @@
-# Diagnóstico do sistema · 2026-10-14 22:50 UTC
+# Diagnóstico do sistema · 2026-10-14 22:55 UTC
 
 ## Cumprimento da finalidade · índice geral 65%
 - Motores: 100% (ok) — todo motor ativo lê dentro da sua cadência
@@ -15,7 +15,7 @@
 - Execução sem falha silenciosa: 0% (falha) — nenhuma etapa falha em silêncio
 
 ## Execução · fluxos: {'atencao': 6, 'ok': 27, 'falha': 4, 'atrasado': 2, 'manual': 2}
-- 00 · Verificar prontidão: atencao · última 2026-10-14T22:49 · sucesso 38% · cadência 24.0 h
+- 00 · Verificar prontidão: atencao · última 2026-10-14T22:49 · sucesso 50% · cadência 24.0 h
 - 35 · Alimentação diária externa (editais abertos): falha · última 2026-10-14T14:40 · sucesso 0% · cadência 24.0 h
 - 36 · Análise do sistema (diagnóstico único e correção): atencao · última 2026-10-14T19:49 · sucesso 60% · cadência None h
 - 05 · Busca ativa (a cada 3 dias): falha · última 2026-10-03T02:26 · sucesso 0% · cadência None h
@@ -25,7 +25,7 @@
 - 01 · Eldorado — motores por hora (00h–06h BRT): falha · última 2026-10-14T14:13 · sucesso 0% · cadência 24.0 h
 - 22 · Motores da vez — cada passagem calcula sozinha o que está pendente (agenda + maestro): atencao · última 2026-10-14T22:42 · sucesso 75% · cadência 1.0 h
 - 34 · Motores de empresas (semanal, com recuperação): atencao · última 2026-10-14T12:06 · sucesso 33% · cadência 24.0 h
-- 03 · Eldorado — carga histórica de cinco anos (campanha única, mês a mês): atencao · última 2026-10-14T21:08 · sucesso 56% · cadência 6.0 h
+- 03 · Eldorado — carga histórica de cinco anos (campanha única, mês a mês): atencao · última 2026-10-14T21:08 · sucesso 60% · cadência 6.0 h
 - 02 · Alexandria — revisão mensal de leis e procedimentos: atrasado · última 2026-10-01T10:36 · sucesso 50% · cadência 24.0 h
 - falha silenciosa em monitoramento-diario.yml: "erro": "FileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/Eldorado/Eldorado/biblioteca_alexandria/oportunidades/abcr-continue-lendo-ba | "erro": "FileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/Eldorado/Eldorado/biblioteca_alexandria/oportunidades/abcr-continue-lendo-ed | "erro": "FileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/Eldorado/Eldorado/biblioteca_alexandria/oportunidades/abcr-continue-lendo-fu | "erro": "FileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/Eldorado/Eldorado/biblioteca_alexandria/oportunidades/abcr-continue-lendo-in
 - falha silenciosa em cartorio.yml: KeyError: 'https://mapaosc.ipea.gov.br/api/api/documentation' | Traceback (most recent call last):
@@ -53,7 +53,7 @@
 
 ## Integração
 - contagens: {'repositorio_abertas': 475, 'diagnostico_abertas': 475, 'tela_cartoes': 628, 'fichas': 485, 'sala_controle_abertas': 475}
-- idade (h): {'repositorio': 0.0, 'fluxo': 2.2, 'fichas': 0.0, 'sala_controle': 0.0, 'status_motores': 0.0, 'maestro': 0.2, 'rede_neural': 2.2, 'saude': 3.0}
+- idade (h): {'repositorio': 0.0, 'fluxo': 2.3, 'fichas': 0.0, 'sala_controle': 0.0, 'status_motores': 0.0, 'maestro': 0.2, 'rede_neural': 2.3, 'saude': 3.0}
 - decisões da titular: 0 · não aplicadas: 0
 
 ## Problemas (25)
@@ -69,8 +69,8 @@
 - [alta] 2 de 475 oportunidades abertas sem livro e sem regra que justifique → criar/vincular livros
 - [alta] tela mostra 628 oportunidades e o repositório conta 475 → refazer a tela
 - [alta] 7 módulos de teste em quarentena por DEFEITO REAL → corrigir o código e tirar da quarentena (sem correção automática)
-- [media] fluxo '09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes' sem rodar há 274.9 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
-- [media] fluxo '02 · Alexandria — revisão mensal de leis e procedimentos' sem rodar há 324.2 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
+- [media] fluxo '09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes' sem rodar há 275.0 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
+- [media] fluxo '02 · Alexandria — revisão mensal de leis e procedimentos' sem rodar há 324.3 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
 - [media] 289 livros municipais de outros estados no catálogo (só Goiás tem livros municipais) → refazer a tela
 - [media] saúde · claude: 1299 item(ns) esperando a análise do Claude (próxima: 2026-10-14) → ver o fluxo/arquivo indicado
 - [media] saúde · coerência: mapa e lista divergem em __nac__, BA, SP, ES, RS → refazer tela e indicadores
