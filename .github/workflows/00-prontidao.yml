@@ -19,7 +19,7 @@ jobs:
         with: {python-version: "3.12"}
       - name: Dependencia de verificacao de imagem (somente testes)
         run: pip install pillow --quiet
-      - run: python -m unittest discover -s tests -v
+      - run: python scripts/rodar_testes.py   # 14/10: sem os módulos em quarentena (config/testes_quarentena.json)
       - run: python scripts/verificar_privacidade.py
       - name: Resumo
         run: |

@@ -157,6 +157,13 @@ def oportunidades(P: list, hoje: str) -> dict:
         mun_lv = [f"{x.get('nome_classificado') or x.get('programa') or x['id']} [{x['id']}]" for x in cat.values() if fora_da_abrangencia(x) and x["id"] not in prot]
     except Exception:  # noqa: BLE001
         mun_lv = []
+    Qt = (_j(ROOT / "config/testes_quarentena.json", {}) or {}).get("modulos") or {}
+    reais = [f"{k}: {v.get('motivo')}" for k, v in Qt.items() if v.get("categoria") == "defeito real a corrigir"]
+    if reais:
+        _problema(P, "teste_em_quarentena_defeito", "alta", f"{len(reais)} módulos de teste em quarentena por DEFEITO REAL", "corrigir o código e tirar da quarentena (sem correção automática)", len(reais), reais)
+    outros = [f"{k} ({v.get('categoria')})" for k, v in Qt.items() if v.get("categoria") != "defeito real a corrigir"]
+    if outros:
+        _problema(P, "teste_em_quarentena", "baixa", f"{len(outros)} módulos de teste em quarentena (envelhecidos)", "atualizar o teste à regra atual (sem correção automática)", len(outros), outros)
     if mun_ab:
         _problema(P, "municipal_de_outro_estado_aberta", "alta", f"{len(mun_ab)} oportunidades municipais de outros estados ainda abertas (só Goiás tem municipais)",
                   "refazer o repositório", len(mun_ab), mun_ab)

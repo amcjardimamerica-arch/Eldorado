@@ -1,0 +1,101 @@
+{
+ "regra": "14/10/2026 (análise do sistema): módulos de teste quebrados ficam em QUARENTENA com motivo — os fluxos 00 e 01 rodam a bateria sem eles (antes falhavam todos os dias); a análise do sistema lista a quarentena como problema a resolver (defeito real = gravidade alta). Sair da quarentena: corrigir o código ou atualizar o teste à regra atual e retirar daqui.",
+ "modulos": {
+  "test_consolidacao_12_pontos_br_2026_10_03": {
+   "categoria": "fotografia de data",
+   "motivo": "confere contagens de 03/10; quebra quando os dados crescem"
+  },
+  "test_fechamento_2026_09_23": {
+   "categoria": "fotografia de data",
+   "motivo": "confere contagens de 23/09"
+  },
+  "test_piloto_ao_vivo": {
+   "categoria": "tela retirada ou redesenhada",
+   "motivo": "textos do 'Piloto ao vivo' não existem mais no painel"
+  },
+  "test_missao_especial": {
+   "categoria": "tela retirada ou redesenhada",
+   "motivo": "bloco 'Missões especiais' saiu do painel"
+  },
+  "test_duas_listas": {
+   "categoria": "tela retirada ou redesenhada",
+   "motivo": "as duas listas de empresas foram reorganizadas (rankings)"
+  },
+  "test_aviao_travessia": {
+   "categoria": "tela retirada ou redesenhada",
+   "motivo": "posição e texto do posto do avião mudaram"
+  },
+  "test_radar_piloto": {
+   "categoria": "tela retirada ou redesenhada",
+   "motivo": "posto do radar mudou de lugar"
+  },
+  "test_programas_sociais": {
+   "categoria": "tela retirada ou redesenhada",
+   "motivo": "a ficha não abre mais a tela antiga dos programas"
+  },
+  "test_ranking_apoiadores": {
+   "categoria": "configuração mudou",
+   "motivo": "ranking e encadeamento do Piloto redesenhados"
+  },
+  "test_ia_local": {
+   "categoria": "configuração mudou",
+   "motivo": "modelo da IA local passou a ser o Qwen3-8B"
+  },
+  "test_incentivos_empresas": {
+   "categoria": "configuração mudou",
+   "motivo": "etiqueta PAT entrou nos incentivos verificados"
+  },
+  "test_achados_dia_e_retroativo": {
+   "categoria": "configuração mudou",
+   "motivo": "consulta do PNCP mudou de endpoint"
+  },
+  "test_auditoria_motores": {
+   "categoria": "configuração mudou",
+   "motivo": "plataforma Prosas deixou de ser sensor próprio"
+  },
+  "test_pilotos_brasil_e_buscas": {
+   "categoria": "configuração mudou",
+   "motivo": "janela de voo dos Pilotos mudou"
+  },
+  "test_motor05_teste_03_10": {
+   "categoria": "configuração mudou",
+   "motivo": "rota principal do motor 05 mudou depois do teste de 03/10"
+  },
+  "test_motor02_diario_goias": {
+   "categoria": "configuração mudou",
+   "motivo": "rota de reserva do Diário de Goiás (ponte) mudou"
+  },
+  "test_alerta_e_rotas_motores": {
+   "categoria": "defeito real a corrigir",
+   "motivo": "motores de API sem endereço (plataforma-wordpress, mapas-culturais) — os mesmos que quebravam o painel dos motores"
+  },
+  "test_pareceres_livros": {
+   "categoria": "defeito real a corrigir",
+   "motivo": "pareceres de livros com iniciativa vazia"
+  },
+  "test_certificado_suap": {
+   "categoria": "defeito real a corrigir",
+   "motivo": "erro na rota direta/ponte do certificado do SUAP"
+  },
+  "test_corrigir_cartorio": {
+   "categoria": "defeito real a corrigir",
+   "motivo": "correção do Cartório falha (o Cartório também tem falha silenciosa: KeyError do Mapa das OSC)"
+  },
+  "test_integridade_painel": {
+   "categoria": "defeito real a corrigir",
+   "motivo": "números da Bússola, temas e contagens divergentes entre telas"
+  },
+  "test_opressores_pesquisados_protegidos": {
+   "categoria": "defeito real a corrigir",
+   "motivo": "livros pesquisados que deveriam continuar ligados"
+  },
+  "test_system": {
+   "categoria": "lento",
+   "motivo": "estoura o tempo do portão (roda à parte)"
+  },
+  "test_livros_opressores": {
+   "categoria": "defeito real a corrigir",
+   "motivo": "2 livros misturam oportunidades de estados diferentes (op-e2f989370174, op-5917c6159746)"
+  }
+ }
+}

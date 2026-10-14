@@ -78,7 +78,7 @@ jobs:
           # 02/10: os testes rodam numa CÓPIA isolada (git worktree). Antes rodavam sobre os dados de produção, que este
           # fluxo grava em seguida — um teste que escrevia fichas falsas (x.gov.br, prazo 2099) contaminou a Biblioteca.
           rm -rf /tmp/eldorado_testes; git worktree add --detach /tmp/eldorado_testes HEAD >/dev/null 2>&1
-          ( cd /tmp/eldorado_testes && timeout 1200 python -m unittest discover -s tests -v > /tmp/testes.log 2>&1 )
+          ( cd /tmp/eldorado_testes && timeout 1200 python scripts/rodar_testes.py > /tmp/testes.log 2>&1 )
           rc=$?
           git worktree remove --force /tmp/eldorado_testes >/dev/null 2>&1 || true
           { echo "commit: $GITHUB_SHA"; echo "em: $(date -u +%FT%TZ)"; echo "rc: $rc";
