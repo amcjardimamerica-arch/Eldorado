@@ -1,5 +1,5 @@
 {
- "em": "2026-10-14T16:58:57+00:00",
+ "em": "2026-10-14T18:33:49+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
@@ -7,13 +7,13 @@
   "alterar_rota": 49,
   "rota_nova": 50,
   "via_ponte": 3,
-  "exemplos_da_rede": 8286
+  "exemplos_da_rede": 8368
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
    [
     "origem:biblioteca",
-    2.5461
+    2.5892
    ],
    [
     "tok:mpf",
@@ -28,20 +28,24 @@
     2.2113
    ],
    [
-    "tipo:privada",
-    1.6928
+    "tok:secult",
+    1.6555
    ],
    [
-    "tok:feed",
-    1.5686
+    "tipo:privada",
+    1.6456
+   ],
+   [
+    "origem:rota original",
+    1.6032
    ],
    [
     "tok:portarias",
     1.543
    ],
    [
-    "origem:rota original",
-    1.4926
+    "tok:feed",
+    1.4681
    ],
    [
     "tok:abertas",
@@ -54,44 +58,40 @@
    [
     "tok:assuntos",
     1.3977
-   ],
-   [
-    "tok:secult",
-    1.297
    ]
   ],
   "piores_sinais": [
    [
-    "tok:prefeitura",
-    -1.5131
+    "tipo:site_oficial",
+    -1.5669
    ],
    [
-    "tipo:site_oficial",
-    -1.6858
+    "tok:prefeitura",
+    -1.5763
    ],
    [
     "tok:content",
-    -1.9131
+    -1.9374
    ],
    [
     "tok:uploads",
-    -1.9131
+    -1.9374
    ],
    [
     "tipo:internacional",
     -1.9906
    ],
    [
-    "gov:False",
-    -2.3984
-   ],
-   [
     "origem:câmara",
     -2.4213
    ],
    [
+    "gov:False",
+    -2.4456
+   ],
+   [
     "origem:padrão",
-    -3.1654
+    -3.1771
    ]
   ]
  },
@@ -310,8 +310,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-14T09:02:52+00:00",
-    "testes": 23,
+    "em": "2026-10-14T18:33:32+00:00",
+    "testes": 13,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -483,8 +483,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-14T09:02:39+00:00",
-    "testes": 20,
+    "em": "2026-10-14T18:33:23+00:00",
+    "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -651,7 +651,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-14T09:03:18+00:00",
+    "em": "2026-10-14T18:33:47+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -688,7 +688,7 @@
     "aprendido_em": "2026-10-13T23:26:40+00:00"
    },
    "afinado": {
-    "em": "2026-10-14T09:03:19+00:00",
+    "em": "2026-10-14T18:33:49+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1250,17 +1250,17 @@
      "https://www.goiania.go.gov.br/secult/leipaulogustavo/"
     ],
     "via": "direto",
-    "origem": "biblioteca",
+    "origem": "rota original",
     "pontos": 9,
-    "aprendido_em": "2026-10-14T07:33:42+00:00"
+    "aprendido_em": "2026-10-14T18:33:11+00:00"
    },
    "afinado": {
-    "em": "2026-10-14T07:33:42+00:00",
-    "testes": 16,
+    "em": "2026-10-14T18:33:11+00:00",
+    "testes": 17,
     "melhor": {
      "url": "https://www.goiania.go.gov.br/secult/leipaulogustavo/",
      "via": "direto",
-     "origem": "biblioteca",
+     "origem": "rota original",
      "pontos": 9,
      "formato": "html"
     },
@@ -1354,11 +1354,11 @@
     "via": "direto",
     "origem": "rota original",
     "pontos": 9,
-    "aprendido_em": "2026-10-14T09:03:14+00:00"
+    "aprendido_em": "2026-10-14T18:33:42+00:00"
    },
    "afinado": {
-    "em": "2026-10-14T09:03:14+00:00",
-    "testes": 17,
+    "em": "2026-10-14T18:33:42+00:00",
+    "testes": 16,
     "melhor": {
      "url": "https://www.goiania.go.gov.br/secult/leipaulogustavo/",
      "via": "direto",
