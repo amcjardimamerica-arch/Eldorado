@@ -177,6 +177,8 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
     # 11/10 (titular): arquivamento ÚNICO — só as municipais de fora de GO abertas em 11/10 (lista fixa); as novas entram normalmente
     from .decisoes_titular import decisoes as _decisoes
     _DEC = _decisoes()
+    from .fonte_oficial import eh_replicador as _eh_rep
+    _RESOLV = (_j(ROOT / "estado/fontes_resolvidas.json", {}) or {}).get("resolvidas") or {}
     uf_ag = {str(x.get("id")): x.get("uf") for x in ((_j(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens") or []) if x.get("uf")}
     _foto = _j(ROOT / "dados/oportunidades/arquivamento_municipais_2026-10-11.json", {}) or {}
     _arq_ids = {i: f"arquivada em 11/10/2026: municipal fora de Goiás ({o.get('uf')}) — o livro fica guardado"
@@ -256,6 +258,12 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
                  for k, v in itens.items()}
         selo = nivel(prova)
         link = c.get("link_oficial") or r.get("link_oficial")
+        # 14/10 (titular): REPLICADOR nunca é fonte oficial (PNCP, Querido Diário, CapitaAI, Captadores…) — vale a fonte
+        # que o resolvedor encontrou a partir dele; sem ela, a oportunidade fica sem site oficial e volta à busca
+        if link and _eh_rep(link):
+            link = (_RESOLV.get(cid) or {}).get("fonte") or next(((_RESOLV.get(i) or {}).get("fonte") for i in r["ids_origem"] if _RESOLV.get(i)), None)
+        elif not link:
+            link = (_RESOLV.get(cid) or {}).get("fonte")
         fim = r.get("fim") or (((c.get("itens") or {}).get("Prazo de inscrição") or {}).get("fim"))
         v = (ver or {}).get("veredito")
         _mun = next((_arq_ids[i] for i in [cid] + r["ids_origem"] if i in _arq_ids), None)   # só a lista fixa de 11/10

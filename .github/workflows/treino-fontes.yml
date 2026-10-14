@@ -1,0 +1,44 @@
+name: 38 · Treino dos motores — fonte oficial e PDF do edital
+
+# 14/10/2026 (titular): treino PRÁTICO com casos conhecidos (chegaram por replicador e o site oficial já foi
+# confirmado): mede a assertividade, aprende por site (texto do link que leva à fonte; onde ficam os PDFs), mede de
+# novo e resolve as oportunidades abertas cujo "site oficial" é vazio ou de replicador.
+
+on:
+  schedule:
+    - cron: "17 8 * * 1"     # segunda, 05h17 em Brasília
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: treino-fontes
+  cancel-in-progress: false
+
+jobs:
+  treinar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Treinar e aplicar
+        run: timeout 2400 python scripts/treino_fontes.py
+      - name: Gravar o aprendizado (só estes arquivos)
+        run: |
+          git config user.name "treino-fontes" && git config user.email "treino@eldorado"
+          ARQS="estado/aprendizado_fontes.json estado/treino_fontes.json estado/fontes_resolvidas.json"
+          mkdir -p /tmp/t && for f in $ARQS; do [ -f "$f" ] && mkdir -p "/tmp/t/$(dirname $f)" && cp "$f" "/tmp/t/$f"; done
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            for f in $ARQS; do [ -f "/tmp/t/$f" ] && cp "/tmp/t/$f" "$f"; done
+            git add $ARQS 2>/dev/null || true
+            git diff --cached --quiet && { echo "nada mudou"; exit 0; }
+            git commit -q -m "treino dos motores: fonte oficial e PDF $(date -u +%F)" && git push -q && { echo "gravado ($i)"; exit 0; }
+            sleep 5
+          done
