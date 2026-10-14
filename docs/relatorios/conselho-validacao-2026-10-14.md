@@ -120,8 +120,8 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 127,
-   "achados_total_agora": 127,
+   "achados_total_1a": 129,
+   "achados_total_agora": 129,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -169,15 +169,15 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 60,
-   "achados_total_agora": 60,
+   "achados_total_1a": 61,
+   "achados_total_agora": 61,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 88,
-   "achados_total_agora": 88,
+   "achados_total_1a": 89,
+   "achados_total_agora": 89,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -225,7 +225,7 @@
  "pontos_com_redundancia": 13,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 8529
+ "exemplos_da_rede_de_rotas": 8655
 }
 ```
 
@@ -236,12 +236,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 78.6,
- "fora_dos_motores_pct_agora": 78.6,
+ "fora_dos_motores_pct_1a": 71.3,
+ "fora_dos_motores_pct_agora": 71.3,
  "origem": {
-  "agregador/outra": 329,
-  "motor": 124,
-  "Piloto": 126
+  "agregador/outra": 325,
+  "motor": 180,
+  "Piloto": 123
  },
  "dominios_so_de_agregador": [
   {
@@ -319,11 +319,10 @@
  "dia_de_referencia": "2026-10-14",
  "ativos": 159,
  "lidos_ontem": 104,
- "lidos_hoje": 51,
+ "lidos_hoje": 52,
  "nao_lidos_ontem_nem_hoje": [
   "plat-captamos",
   "plat-rede-filantropia",
-  "pncp-api",
   "recorrencia"
  ],
  "ainda_sem_primeira_leitura": [
@@ -363,20 +362,20 @@
 
 ```json
 {
- "fontes_recebidas": 333,
+ "fontes_recebidas": 340,
  "por_origem": {
-  "conselho (fontes irmãs)": 153,
-  "Cartório (site oficial certificado)": 147,
+  "conselho (fontes irmãs)": 157,
+  "Cartório (site oficial certificado)": 150,
   "Espião (privado/internacional)": 33
  },
- "lidas_nas_ultimas_24h": 240,
+ "lidas_nas_ultimas_24h": 250,
  "dimensionamento": {
-  "fontes": 333,
+  "fontes": 340,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 7,
-  "cobertura_diaria": 333,
+  "cobertura_diaria": 340,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -385,42 +384,42 @@
  },
  "clones_que_ja_leram": {
   "outras-oportunidades-1": {
-   "ultima": "2026-10-14T19:59:48+00:00",
-   "duracao_s": 125,
+   "ultima": "2026-10-14T20:20:02+00:00",
+   "duracao_s": 110,
    "achados": 20
   },
   "outras-oportunidades-2": {
-   "ultima": "2026-10-14T19:57:43+00:00",
-   "duracao_s": 36,
+   "ultima": "2026-10-14T19:20:20+00:00",
+   "duracao_s": 54,
    "achados": 1
   },
   "outras-oportunidades-3": {
-   "ultima": "2026-10-14T14:27:53+00:00",
-   "duracao_s": 42,
+   "ultima": "2026-10-14T20:20:50+00:00",
+   "duracao_s": 47,
    "achados": 0
   },
   "outras-oportunidades-4": {
-   "ultima": "2026-10-14T16:33:37+00:00",
-   "duracao_s": 83,
-   "achados": 4
-  },
-  "outras-oportunidades-5": {
-   "ultima": "2026-10-14T20:00:41+00:00",
-   "duracao_s": 53,
+   "ultima": "2026-10-14T20:23:02+00:00",
+   "duracao_s": 132,
    "achados": 2
   },
+  "outras-oportunidades-5": {
+   "ultima": "2026-10-14T20:23:57+00:00",
+   "duracao_s": 55,
+   "achados": 4
+  },
   "outras-oportunidades-6": {
-   "ultima": "2026-10-14T16:32:14+00:00",
-   "duracao_s": 56,
-   "achados": 3
+   "ultima": "2026-10-14T20:24:49+00:00",
+   "duracao_s": 53,
+   "achados": 1
   },
   "outras-oportunidades-7": {
-   "ultima": "2026-10-14T16:36:00+00:00",
-   "duracao_s": 143,
+   "ultima": "2026-10-14T20:26:14+00:00",
+   "duracao_s": 85,
    "achados": 16
   }
  },
- "com_achado": 48
+ "com_achado": 50
 }
 ```
 
@@ -434,7 +433,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 88,
+   "orgaos": 90,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",
@@ -445,14 +444,14 @@
    ]
   },
   "Mapas Culturais": {
-   "orgaos": 10,
+   "orgaos": 11,
    "exemplos": [
     "culteditais.cultura.gov.br",
     "mapa.cultura.es.gov.br",
     "mapa.cultura.gov.br",
+    "mapacultural.cim-amfri.sc.gov.br",
     "mapacultural.pa.gov.br",
-    "mapacultural.pe.gov.br",
-    "mapacultural.saobernardo.sp.gov.br"
+    "mapacultural.pe.gov.br"
    ]
   },
   "Diário municipal em lote (AGM/DOM)": {
@@ -467,18 +466,18 @@
    ]
   },
   "Portal de transparência de fornecedor": {
-   "orgaos": 19,
+   "orgaos": 27,
    "exemplos": [
     "bndes.gov.br",
     "comunidade.transparenciainternacional.org.br",
     "gov.br",
+    "governodecacule.ba.gov.br",
     "itacoatiara.am.gov.br",
-    "itumbiara.go.gov.br",
-    "mpf.mp.br"
+    "itumbiara.go.gov.br"
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 48,
+   "orgaos": 55,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",
