@@ -99,12 +99,18 @@ def aprender(C: list[dict], A: dict) -> dict:
     return dict(novos)
 
 
-def aplicar(A: dict) -> dict:
+def aplicar(A: dict, limite: int = 120, so_novas: bool = False) -> dict:
     R = json.loads((RAIZ / "dados/oportunidades/repositorio_unico.json").read_text(encoding="utf-8"))["registros"]
     alvo = [r for r in R if r.get("estado") != "fechada" and not r.get("arquivada") and r.get("url") and F.eh_replicador(r["url"])
             and (not r.get("link_oficial") or F.eh_replicador(r["link_oficial"]))]
+    try:
+        ja = json.loads((RAIZ / "estado/fontes_resolvidas.json").read_text(encoding="utf-8")).get("resolvidas") or {}
+    except Exception:  # noqa: BLE001
+        ja = {}
+    if so_novas:                                      # na coleta: só o que ainda não foi resolvido, do mais novo ao mais velho
+        alvo = sorted((r for r in alvo if r["id"] not in ja), key=lambda r: str(r.get("descoberto_em") or r.get("publicado_em") or ""), reverse=True)
     out = {}
-    for r in alvo[:120]:
+    for r in alvo[:limite]:
         o = F.resolver(r["url"], r.get("titulo") or "", r.get("orgao") or "", getter, A)
         if o["fonte"]:
             out[r["id"]] = {"fonte": o["fonte"], "pdfs": [p["url"] for p in o["pdfs"]], "passos": o["passos"],
@@ -117,7 +123,7 @@ def aplicar(A: dict) -> dict:
     ant.update(out)
     (RAIZ / "estado/fontes_resolvidas.json").write_text(json.dumps({"regra": F.__doc__.strip().splitlines()[0], "resolvidas": ant},
                                                                   ensure_ascii=False, indent=1), encoding="utf-8")
-    return {"tentadas": len(alvo[:120]), "resolvidas_agora": len(out), "resolvidas_total": len(ant)}
+    return {"tentadas": len(alvo[:limite]), "resolvidas_agora": len(out), "resolvidas_total": len(ant)}
 
 
 def main() -> dict:
@@ -136,4 +142,7 @@ def main() -> dict:
 
 
 if __name__ == "__main__":
-    print(json.dumps(main(), ensure_ascii=False, indent=1))
+    if "--aplicar" in sys.argv:                       # 14/10: na coleta (fluxos 22 e 16) — só resolve, com o aprendizado
+        print(json.dumps(aplicar(F._aprendizado(), limite=40, so_novas=True), ensure_ascii=False))
+    else:
+        print(json.dumps(main(), ensure_ascii=False, indent=1))

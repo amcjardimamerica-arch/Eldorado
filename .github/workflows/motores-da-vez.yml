@@ -97,6 +97,7 @@ jobs:
             timeout 120 python -m src.decisoes_titular 2>&1 | tail -c 400 || echo "decisões da titular: falhou"   # 12/10: descarte sinaliza o livro
             echo "$D" > estado/biblioteca_diaria.txt
           fi
+          timeout 420 python scripts/treino_fontes.py --aplicar 2>&1 | tail -c 300 || echo "fontes dos achados de replicador: falhou"   # 14/10: replicador → fonte → PDF
           timeout 300 python -m src.fluxo_oportunidades --completo >/dev/null 2>&1 || echo "mapa falhou"
           timeout 200 python -m src.fichas_oportunidades >/dev/null 2>&1 || echo "fichas das oportunidades: falhou"   # 12/10: a janela de cada oportunidade
           GH_TOKEN="${{ secrets.GITHUB_TOKEN }}" timeout 120 python -m src.sala_controle >/dev/null || true   # releitura com o repositório desta passagem

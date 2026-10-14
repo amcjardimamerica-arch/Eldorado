@@ -145,6 +145,20 @@ def achar_pdfs(url_fonte: str, html: str, titulo: str = "", A: dict | None = Non
     return sorted(achados, key=lambda x: -x["pontos"])[:limite]
 
 
+def site_da_prefeitura(municipio: str, uf: str, getter) -> str | None:
+    """O site oficial da prefeitura (município.uf.gov.br, com e sem www), conferido."""
+    if not municipio or not uf:
+        return None
+    slug = re.sub(r"[^a-z0-9]", "", _sem(municipio))
+    for cand in (f"https://www.{slug}.{uf.lower()}.gov.br/", f"https://{slug}.{uf.lower()}.gov.br/", f"http://www.{slug}.{uf.lower()}.gov.br/"):
+        try:
+            if getter(cand):
+                return cand
+        except Exception:  # noqa: BLE001
+            continue
+    return None
+
+
 def link_de_origem_pncp(url: str, getter) -> str | None:
     """PNCP: o link de origem que o PRÓPRIO órgão informou (linkSistemaOrigem), pela API pública de consulta."""
     m = re.search(r"/(?:app/)?editais/(\d{14})/(\d{4})/(\d+)", url or "")
@@ -168,13 +182,7 @@ def link_de_origem_pncp(url: str, getter) -> str | None:
     un = js.get("unidadeOrgao") or {}; esfera = str((js.get("orgaoEntidade") or {}).get("esferaId") or "")
     mun, uf = un.get("municipioNome"), un.get("ufSigla")
     if mun and uf and esfera in ("M", ""):
-        slug = re.sub(r"[^a-z0-9]", "", _sem(mun))
-        for cand in (f"https://www.{slug}.{uf.lower()}.gov.br/", f"https://{slug}.{uf.lower()}.gov.br/"):
-            try:
-                if getter(cand):
-                    return cand
-            except Exception:  # noqa: BLE001
-                continue
+        return site_da_prefeitura(mun, uf, getter)
     return None
 
 
@@ -195,7 +203,19 @@ def diario_original_querido(url: str, getter) -> str | None:
     gz = js.get("gazettes") or []
     alvo = next((g for g in gz if h in str(g.get("txt_url") or "") + str(g.get("url") or "") + str(g.get("file_checksum") or "")), None) or (gz[0] if len(gz) == 1 else None)
     lk = str((alvo or {}).get("url") or "").strip()
-    return lk if lk and eh_fonte(lk) else None
+    if lk and eh_fonte(lk):
+        return lk
+    # 14/10 (3º treino): a API do projeto só devolve a CÓPIA dele (replicador); o diário é do município — pelo código
+    # IBGE (API pública do IBGE) chega-se ao nome e ao estado, e daí ao site da prefeitura
+    nome, uf = ((alvo or {}).get("territory_name"), (alvo or {}).get("state_code"))
+    if not (nome and uf):
+        try:
+            m = json.loads(getter(f"https://servicodados.ibge.gov.br/api/v1/localidades/municipios/{ibge}"))
+            nome = m.get("nome"); uf = (((m.get("microrregiao") or {}).get("mesorregiao") or {}).get("UF") or {}).get("sigla") or \
+                ((((m.get("regiao-imediata") or {}).get("regiao-intermediaria") or {}).get("UF")) or {}).get("sigla")
+        except Exception:  # noqa: BLE001
+            return None
+    return site_da_prefeitura(nome, uf, getter)
 
 
 def resolver(url: str, titulo: str = "", orgao: str = "", getter=None, A: dict | None = None) -> dict:

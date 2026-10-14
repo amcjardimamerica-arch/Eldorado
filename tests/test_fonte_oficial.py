@@ -73,3 +73,24 @@ class TestePrefeituraSemLink(unittest.TestCase):
                 raise OSError(u)
             return P[u]
         self.assertEqual(F.link_de_origem_pncp("https://pncp.gov.br/app/editais/76206606000140/2026/9", g), "https://www.medianeira.pr.gov.br/")
+
+
+class TesteNaColeta(unittest.TestCase):
+    def test_resolvedor_roda_na_coleta(self):
+        for arq in ("motores-da-vez.yml", "motor-agregadores.yml"):
+            self.assertIn("python scripts/treino_fontes.py --aplicar", (ROOT / ".github/workflows" / arq).read_text(encoding="utf-8"), arq)
+        self.assertIn("so_novas=True", (ROOT / "scripts/treino_fontes.py").read_text(encoding="utf-8"))
+
+
+class TesteQueridoPeloIbge(unittest.TestCase):
+    def test_querido_sem_original_vai_ao_site_da_prefeitura(self):
+        P = {"https://api.queridodiario.ok.org.br/gazettes?territory_ids=2919603&published_since=2026-10-05&published_until=2026-10-05&size=20":
+             json.dumps({"gazettes": [{"url": "https://data.queridodiario.ok.org.br/2919603/2026-10-05/43d2f4b96e7df3c2791d13314a81bae6bbb73cb7.pdf",
+                                       "territory_name": "Macajuba", "state_code": "BA"}]}),
+             "https://www.macajuba.ba.gov.br/": "<html>Prefeitura</html>"}
+        def g(u):
+            if u not in P:
+                raise OSError(u)
+            return P[u]
+        o = F.resolver("https://data.queridodiario.ok.org.br/2919603/2026-10-05/43d2f4b96e7df3c2791d13314a81bae6bbb73cb7.pdf", "", "", g, {})
+        self.assertEqual(o["fonte"], "https://www.macajuba.ba.gov.br/")
