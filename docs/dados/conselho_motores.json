@@ -1,5 +1,5 @@
 {
- "em": "2026-10-14T14:46:36+00:00",
+ "em": "2026-10-14T15:14:13+00:00",
  "conselho": [
   {
    "id": "falso_verde",
@@ -46,25 +46,25 @@
  ],
  "resumo": {
   "motores": 149,
-  "motores_com_falha": 100,
+  "motores_com_falha": 101,
   "falhas_por_tipo": {
    "CONGELADO": 21,
    "SILÊNCIO LONGO": 44,
    "ESTRANGULADO": 1,
-   "VAZAMENTO": 48,
+   "VAZAMENTO": 50,
    "CEGO": 23,
    "PÁGINA VAZIA": 8,
    "INTERMITENTE": 2,
-   "RUÍDO": 28
+   "RUÍDO": 29
   }
  },
  "cobertura": {
   "origem_das_oportunidades": {
-   "agregador/outra": 329,
-   "motor": 132,
-   "Piloto": 121
+   "agregador/outra": 326,
+   "Piloto": 126,
+   "motor": 107
   },
-  "fora_dos_motores_pct": 77.3,
+  "fora_dos_motores_pct": 80.9,
   "ufs_sem_motor_com_oportunidade": [
    {
     "uf": "GO",
@@ -114,12 +114,12 @@
   }
  },
  "fontes_irmas": {
-  "total": 230,
+  "total": 232,
   "top": [
    {
     "dominio": "baoba.org.br",
-    "peso": 21,
-    "url": "https://baoba.org.br/doacao"
+    "peso": 23,
+    "url": "https://baoba.org.br/wp-content/uploads/2026/01/Programa_Marielle_Franco_Edital_Atualizado_2026.pdf"
    },
    {
     "dominio": "licitario.com.br",
@@ -128,8 +128,8 @@
    },
    {
     "dominio": "institutolojasrenner.org.br",
-    "peso": 17,
-    "url": "https://www.institutolojasrenner.org.br/edital/"
+    "peso": 15,
+    "url": "https://www.institutolojasrenner.org.br/jornada-fortalecidas/"
    },
    {
     "dominio": "zurich.com.br",
@@ -167,14 +167,14 @@
     "url": "https://feirapreta.com.br/pretas-potencias-2/"
    },
    {
-    "dominio": "fbb.org.br",
-    "peso": 9,
-    "url": "https://fbb.org.br/edital-publico/editalriodoce/"
-   },
-   {
     "dominio": "transforma.fbb.org.br",
     "peso": 8,
     "url": "https://transforma.fbb.org.br/premio/17"
+   },
+   {
+    "dominio": "difusionconcausa.com",
+    "peso": 8,
+    "url": "https://difusionconcausa.com/actinver-apoya-2026/"
    },
    {
     "dominio": "editaisdobrasil.com",
@@ -232,14 +232,14 @@
     "url": "https://conteudo.agosocial.com.br/programa-nutrir-citrosuco"
    },
    {
+    "dominio": "fbb.org.br",
+    "peso": 7,
+    "url": "https://fbb.org.br/edital-publico/editalriodoce/"
+   },
+   {
     "dominio": "agencia.petrobras.com.br",
     "peso": 6,
     "url": "https://agencia.petrobras.com.br/busca?q=&category=11449850"
-   },
-   {
-    "dominio": "institutoinad.org.br",
-    "peso": 6,
-    "url": "https://institutoinad.org.br/editais/edital-de-chamada-publica-no-003-2026-ater-para-mulheres-que-transformam-e-conquistam-autonomias/"
    }
   ]
  },
@@ -290,7 +290,7 @@
     ]
    },
    "Sistemas de editais (Prosas/Editais)": {
-    "orgaos": 48,
+    "orgaos": 47,
     "exemplos": [
      "adustina.ba.gov.br",
      "alteditais.com.br",
@@ -718,14 +718,27 @@
     }
    ],
    "achados_total": 143,
-   "valor": "confirma",
+   "valor": "ruído",
    "achados_30d": 31,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
     "dia_forte": "terça"
    },
-   "falhas": []
+   "falhas": [
+    {
+     "conselheiro": "funil",
+     "falha": "RUÍDO",
+     "prova": "143 achados e nenhuma oportunidade confirmada",
+     "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
+    }
+   ]
   },
   "plat-observatorio-3setor": {
    "nome": "Observatório do Terceiro Setor — editais",
@@ -2063,8 +2076,8 @@
     {
      "conselheiro": "funil",
      "falha": "VAZAMENTO",
-     "prova": "perde 100% na etapa 'fluxo → confirmada'",
-     "melhoria": "faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório"
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
     }
    ]
   },
@@ -2323,6 +2336,12 @@
      "falha": "RUÍDO",
      "prova": "93 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "funil",
+     "falha": "VAZAMENTO",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
+     "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
     }
    ]
   },
@@ -2387,7 +2406,7 @@
     {
      "conselheiro": "funil",
      "falha": "VAZAMENTO",
-     "prova": "perde 99% na etapa 'achado → fluxo'",
+     "prova": "perde 100% na etapa 'achado → fluxo'",
      "melhoria": "achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver"
     }
    ]

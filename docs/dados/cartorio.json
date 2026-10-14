@@ -1,5 +1,5 @@
 {
- "em": "2026-10-14T15:13:33+00:00",
+ "em": "2026-10-14T15:36:20+00:00",
  "versao": "cartório v5 · linha de produção (09/10/2026)",
  "regra": "CARTÓRIO DE FONTES OFICIAIS (titular, 09/10/2026).\n\nOs motores DESCOBREM; o Cartório CERTIFICA. Toda estrela (oportunidade aberta) e todo livro (histórico) que tenha\nQUALQUER um dos 12 itens indisponível entra na fila do Cartório. Para cada um, ele sobe uma escada de degraus — do mais\nbarato e confiável ao mais caro — até achar o documento OFICIAL, lê o documento por seções e emite uma CERTIDÃO:\nlink oficial (régua única: vetor nunca é fonte), degrau em que foi achado, impressão digital do documento, e cada item\ncom valor + trecho literal + página — ou a DISPENSA com a justificativa de que o requisito não existe naquele edital.\n\nBalcões (como chegar ao documento em cada tipo de fonte):\n  pncp      página do PNCP → API de arquivos do órgão (PDF ou ZIP), o edital primeiro\n  diario    DOU, Diário de Goiás/Goiânia, Querido Diário → o ato dentro da edição (só as páginas do ato)\n  orgao     domínio público → documentos da página + biblioteca de mídia do WordPress pelo número do edital\n  privado   site do financiador → documentos da página (regulamento, edital)\n  pista     agregador/notícia → links de SAÍDA para o financiador; o resto vai ao Interceptador\n  proprio   Ministério Público e Judiciário: já leem o PDF; o Cartório só converte em certidão\n\nEscada: 0 documento na mão · 1 link de saída da pista · 2 busca do número do edital dentro do domínio oficial ·\n        3 Interceptador (IA) · 4 Chrome. O Cartório resolve 0–2 sem IA; 3 e 4 recebem só o que sobrou.\nIntegração: a fila é ordenada pela urgência (prazo), pela nota da REDE NEURAL e pela distância até o ouro (menos\nitens faltando primeiro: cada certidão vira selo). Estrelas: o fluxo de oportunidades lê a certidão no checklist.\nLivros: linhas no formato do importador (scripts/importar_verificacao_livros.py), que confere e entrega à esteira.",
  "identidade_visual": "provisória (config/identidade_visual.json aguarda o design de referência)",
@@ -14,18 +14,18 @@
   "certidoes_sem_item_faltando": 267,
   "nota_denominador": "eficiencia_itens = resolvidos ÷ itens que faltavam na ENTRADA da fila (não é % dos 12); use pct_certificado_12",
   "certidoes": 2219,
-  "nesta_execucao": 29,
-  "fila_estrelas": 530,
-  "fila_livros": 2424,
-  "itens_que_faltavam": 19233,
-  "itens_obtidos": 7350,
-  "itens_dispensados": 635,
+  "nesta_execucao": 28,
+  "fila_estrelas": 513,
+  "fila_livros": 2417,
+  "itens_que_faltavam": 19221,
+  "itens_obtidos": 7345,
+  "itens_dispensados": 633,
   "eficiencia_itens": 0.415,
-  "com_link_oficial": 1426,
-  "taxa_link_oficial": 0.643,
+  "com_link_oficial": 1428,
+  "taxa_link_oficial": 0.644,
   "certidoes_completas": 200,
-  "para_o_interceptador": 1609,
-  "para_o_chrome": 409,
+  "para_o_interceptador": 1607,
+  "para_o_chrome": 411,
   "selos_que_mudaram": {
    "bronze → ouro": 18,
    "sem selo → ouro": 70,
@@ -36,8 +36,8 @@
    "sem selo → bronze": 23
   },
   "por_degrau": {
-   "degrau 0": 1424,
-   "degrau 1": 32
+   "degrau 0": 1425,
+   "degrau 1": 33
   }
  },
  "cinza_conferidos": {
@@ -47,64 +47,64 @@
  },
  "por_item": {
   "Objeto": {
-   "faltavam": 1370,
-   "obtidos": 590,
+   "faltavam": 1366,
+   "obtidos": 589,
    "dispensados": 0,
    "eficiencia": 0.431
   },
   "Prazo de inscrição": {
-   "faltavam": 1355,
+   "faltavam": 1356,
    "obtidos": 427,
    "dispensados": 169,
    "eficiencia": 0.44
   },
   "Resultado": {
-   "faltavam": 1941,
-   "obtidos": 462,
+   "faltavam": 1942,
+   "obtidos": 461,
    "dispensados": 310,
-   "eficiencia": 0.398
+   "eficiencia": 0.397
   },
   "Prazo de recurso": {
-   "faltavam": 1926,
-   "obtidos": 610,
+   "faltavam": 1927,
+   "obtidos": 612,
    "dispensados": 29,
-   "eficiencia": 0.332
+   "eficiencia": 0.333
   },
   "Valor": {
    "faltavam": 1632,
-   "obtidos": 601,
-   "dispensados": 84,
+   "obtidos": 604,
+   "dispensados": 82,
    "eficiencia": 0.42
   },
   "Órgão / financiador": {
-   "faltavam": 1198,
-   "obtidos": 686,
+   "faltavam": 1194,
+   "obtidos": 681,
    "dispensados": 0,
-   "eficiencia": 0.573
+   "eficiencia": 0.57
   },
   "Território": {
-   "faltavam": 1364,
-   "obtidos": 518,
+   "faltavam": 1361,
+   "obtidos": 517,
    "dispensados": 0,
    "eficiencia": 0.38
   },
   "Esfera": {
-   "faltavam": 1670,
+   "faltavam": 1669,
    "obtidos": 1014,
    "dispensados": 0,
-   "eficiencia": 0.607
+   "eficiencia": 0.608
   },
   "Requisitos": {
    "faltavam": 1872,
-   "obtidos": 596,
+   "obtidos": 594,
    "dispensados": 0,
-   "eficiencia": 0.318
+   "eficiencia": 0.317
   },
   "Anexos": {
-   "faltavam": 1284,
+   "faltavam": 1281,
    "obtidos": 450,
    "dispensados": 8,
-   "eficiencia": 0.357
+   "eficiencia": 0.358
   },
   "Destinação": {
    "faltavam": 1855,
@@ -121,11 +121,11 @@
  },
  "por_balcao": {
   "pncp": {
-   "certidoes": 596,
-   "com_link_oficial": 356,
-   "faltavam": 5046,
-   "resolvidos": 2184,
-   "eficiencia": 0.433,
+   "certidoes": 598,
+   "com_link_oficial": 357,
+   "faltavam": 5070,
+   "resolvidos": 2188,
+   "eficiencia": 0.432,
    "taxa_link_oficial": 0.597
   },
   "diario": {
@@ -137,20 +137,20 @@
    "taxa_link_oficial": 0.433
   },
   "orgao": {
-   "certidoes": 771,
-   "com_link_oficial": 602,
-   "faltavam": 6438,
-   "resolvidos": 2727,
-   "eficiencia": 0.424,
-   "taxa_link_oficial": 0.781
+   "certidoes": 772,
+   "com_link_oficial": 604,
+   "faltavam": 6427,
+   "resolvidos": 2731,
+   "eficiencia": 0.425,
+   "taxa_link_oficial": 0.782
   },
   "pista": {
-   "certidoes": 190,
-   "com_link_oficial": 27,
-   "faltavam": 1570,
-   "resolvidos": 305,
-   "eficiencia": 0.194,
-   "taxa_link_oficial": 0.142
+   "certidoes": 189,
+   "com_link_oficial": 28,
+   "faltavam": 1569,
+   "resolvidos": 303,
+   "eficiencia": 0.193,
+   "taxa_link_oficial": 0.148
   },
   "revisão": {
    "certidoes": 267,
@@ -161,12 +161,12 @@
    "taxa_link_oficial": 0.888
   },
   "privado": {
-   "certidoes": 297,
-   "com_link_oficial": 162,
-   "faltavam": 2166,
-   "resolvidos": 451,
-   "eficiencia": 0.208,
-   "taxa_link_oficial": 0.545
+   "certidoes": 295,
+   "com_link_oficial": 160,
+   "faltavam": 2142,
+   "resolvidos": 438,
+   "eficiencia": 0.204,
+   "taxa_link_oficial": 0.542
   },
   "proprio": {
    "certidoes": 1,
@@ -179,19 +179,19 @@
  },
  "por_safra": {
   "primeira tentativa": {
-   "certidoes": 2044,
-   "faltavam": 17584,
-   "resolvidos": 6684,
+   "certidoes": 2045,
+   "faltavam": 17579,
+   "resolvidos": 6678,
    "eficiencia": 0.38,
-   "com_link_oficial": 1270,
-   "taxa_link_oficial": 0.621
+   "com_link_oficial": 1273,
+   "taxa_link_oficial": 0.622
   },
   "refeitas": {
-   "certidoes": 175,
-   "faltavam": 1649,
-   "resolvidos": 1262,
-   "eficiencia": 0.765,
-   "com_link_oficial": 156,
+   "certidoes": 174,
+   "faltavam": 1642,
+   "resolvidos": 1261,
+   "eficiencia": 0.768,
+   "com_link_oficial": 155,
    "taxa_link_oficial": 0.891
   }
  },
@@ -222,11 +222,11 @@
   },
   "cartório v5 · linha de produção": {
    "certidoes": 1916,
-   "faltavam": 15783,
-   "resolvidos": 5681,
+   "faltavam": 15771,
+   "resolvidos": 5674,
    "eficiencia": 0.36,
-   "com_link_oficial": 1157,
-   "taxa_link_oficial": 0.604
+   "com_link_oficial": 1159,
+   "taxa_link_oficial": 0.605
   },
   "revisão manual": {
    "certidoes": 267,
@@ -242,8 +242,8 @@
    "nome": "documento na mão",
    "vezes": 1985,
    "renderam": 1265,
-   "itens": 7283,
-   "links_oficiais": 1150,
+   "itens": 7276,
+   "links_oficiais": 1152,
    "taxa_de_acerto": 0.637
   },
   "2": {
@@ -256,11 +256,11 @@
   },
   "3": {
    "nome": "página oficial e citados",
-   "vezes": 58,
+   "vezes": 57,
    "renderam": 16,
    "itens": 71,
    "links_oficiais": 4,
-   "taxa_de_acerto": 0.276
+   "taxa_de_acerto": 0.281
   },
   "4": {
    "nome": "biblioteca de sites",
@@ -322,11 +322,11 @@
  "por_balcao_selo": {
   "sem_estrela": {
    "nome": "Sem estrela → bronze",
-   "certidoes": 660,
-   "faltavam": 4397,
-   "resolvidos": 967,
-   "eficiencia": 0.22,
-   "entraram_aqui": 698,
+   "certidoes": 657,
+   "faltavam": 4372,
+   "resolvidos": 952,
+   "eficiencia": 0.218,
+   "entraram_aqui": 695,
    "esgotadas": 0
   },
   "bronze": {
@@ -340,11 +340,11 @@
   },
   "prata": {
    "nome": "Prata → ouro",
-   "certidoes": 1256,
-   "faltavam": 11548,
-   "resolvidos": 4883,
+   "certidoes": 1259,
+   "faltavam": 11561,
+   "resolvidos": 4891,
    "eficiencia": 0.423,
-   "entraram_aqui": 1243,
+   "entraram_aqui": 1246,
    "esgotadas": 0
   },
   "ouro": {
@@ -358,7 +358,7 @@
   }
  },
  "gabarito": {
-  "orgaos_com_gabarito": 946,
+  "orgaos_com_gabarito": 950,
   "itens_achados_pelo_gabarito": {
    "Objeto": 41,
    "Requisitos": 26,
@@ -74619,31 +74619,31 @@
  ],
  "linha_de_producao": {
   "na_linha": {
-   "sem_estrela": 1242,
-   "bronze": 31,
-   "prata": 1681
+   "sem_estrela": 1226,
+   "bronze": 30,
+   "prata": 1674
   },
   "na_linha_por_tipo": {
    "estrela": {
-    "sem_estrela": 466,
-    "bronze": 23,
-    "prata": 41
+    "sem_estrela": 451,
+    "bronze": 22,
+    "prata": 40
    },
    "livro": {
-    "sem_estrela": 776,
+    "sem_estrela": 775,
     "bronze": 8,
-    "prata": 1640
+    "prata": 1634
    }
   },
-  "fila_oportunidades": 530,
-  "fila_livros": 2424,
-  "devidas_nesta_hora": 2877,
+  "fila_oportunidades": 513,
+  "fila_livros": 2417,
+  "devidas_nesta_hora": 2839,
   "promovidas_nesta_execucao": 0,
-  "sem_material_agora": 11,
+  "sem_material_agora": 12,
   "esgotadas_10_abordagens": 0,
   "biblioteca_de_sites": {
    "chaves": 1778,
-   "sites": 2998
+   "sites": 2994
   },
   "intervalo_horas": 12,
   "limite": 10,

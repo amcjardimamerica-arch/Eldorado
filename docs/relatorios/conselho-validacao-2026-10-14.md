@@ -39,8 +39,15 @@
 
 ```json
 {
- "motores_de_ruido_1a": 27,
+ "motores_de_ruido_1a": 28,
  "ruido_agora": [
+  {
+   "motor": "plat-gife",
+   "achados_total_1a": 143,
+   "achados_total_agora": 143,
+   "no_fluxo": 0,
+   "confirmadas": 0
+  },
   {
    "motor": "empresas-incentivadas",
    "achados_total_1a": 69,
@@ -129,7 +136,7 @@
    "motor": "plat-empresas-editais-incentivados",
    "achados_total_1a": 1467,
    "achados_total_agora": 1467,
-   "no_fluxo": 4,
+   "no_fluxo": 3,
    "confirmadas": 0
   },
   {
@@ -143,7 +150,7 @@
    "motor": "plat-prefeituras-50-go",
    "achados_total_1a": 93,
    "achados_total_agora": 93,
-   "no_fluxo": 1,
+   "no_fluxo": 0,
    "confirmadas": 0
   },
   {
@@ -199,20 +206,14 @@
    "motor": "outras-oportunidades-1",
    "achados_total_1a": 204,
    "achados_total_agora": 204,
-   "no_fluxo": 21,
+   "no_fluxo": 11,
    "confirmadas": 0
   },
   {
    "motor": "outras-oportunidades-2",
    "achados_total_1a": 258,
    "achados_total_agora": 258,
-   "no_fluxo": 13,
-   "confirmadas": 0
-  },
-  {
-   "motor": "outras-oportunidades-3",
-   "achados_total_1a": 32,
-   "achados_total_agora":
+   "no_
 ```
 
 ## Eng. Luana Freire (levemente pessimista)
@@ -225,7 +226,7 @@
  "pontos_com_redundancia": 15,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 8193
+ "exemplos_da_rede_de_rotas": 8195
 }
 ```
 
@@ -236,12 +237,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 77.3,
- "fora_dos_motores_pct_agora": 77.3,
+ "fora_dos_motores_pct_1a": 80.9,
+ "fora_dos_motores_pct_agora": 80.9,
  "origem": {
-  "agregador/outra": 329,
-  "motor": 132,
-  "Piloto": 121
+  "agregador/outra": 326,
+  "Piloto": 126,
+  "motor": 107
  },
  "dominios_so_de_agregador": [
   {
@@ -262,10 +263,6 @@
   },
   {
    "dominio": "fapemig.br",
-   "oportunidades": 2
-  },
-  {
-   "dominio": "dgartes.gov.pt",
    "oportunidades": 2
   },
   {
@@ -302,6 +299,10 @@
   },
   {
    "dominio": "sejaumvoluntario.sisicmbio.icmbio.gov.br",
+   "oportunidades": 1
+  },
+  {
+   "dominio": "florestamaisamazonia.mma.gov.br",
    "oportunidades": 1
   }
  ],
@@ -363,20 +364,20 @@
 
 ```json
 {
- "fontes_recebidas": 322,
+ "fontes_recebidas": 320,
  "por_origem": {
-  "conselho (fontes irmãs)": 152,
+  "conselho (fontes irmãs)": 151,
   "Cartório (site oficial certificado)": 139,
-  "Espião (privado/internacional)": 31
+  "Espião (privado/internacional)": 30
  },
- "lidas_nas_ultimas_24h": 244,
+ "lidas_nas_ultimas_24h": 223,
  "dimensionamento": {
-  "fontes": 322,
+  "fontes": 320,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 7,
-  "cobertura_diaria": 322,
+  "cobertura_diaria": 320,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -420,7 +421,7 @@
    "achados": 12
   }
  },
- "com_achado": 45
+ "com_achado": 43
 }
 ```
 
@@ -478,7 +479,7 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 48,
+   "orgaos": 47,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",
