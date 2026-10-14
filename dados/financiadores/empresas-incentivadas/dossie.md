@@ -12,6 +12,7 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 ## Eventos e pistas
 
+- [Read More » Ifac abre 125 vagas para curso técnico gratuito em Secretaria Escolar na modalidade EaD](https://conectaprofessores.com/2026/10/11/ifac-abre-125-vagas-para-curso-tecnico-gratuito-em-secretaria-escolar-na-modalidade-ead) — coletado em 2026-10-14T05:51:16+00:00
 - [Termo de Fomento – FUMCAD](https://www.agenciadobem.org.br/termo-fomento-fumcad) — coletado em 2026-10-10T11:46:21+00:00
 - [QUIZ UNAIDS](https://unaids.org.br/quiz-unaids) — coletado em 2026-10-12T00:37:46+00:00
 - [banco para ONG
@@ -22,6 +23,7 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [ArcelorMittal transforma uniformes usados em 360 cobertores para instituições de João Monlevade e Bela Vista de Minas](https://brasil.arcelormittal.com/sala-imprensa/noticias/brasil/arcelormittal-transforma-uniformes-usados-em-360-cobertores-para-instituicoes-de-joao-monlevade-e-bela-vista-de-minas) — coletado em 2026-10-11T03:14:44+00:00
 - [Fomento a Amazônia](https://www.bancoamazonia.com.br/linhas-de-fomento/pronaf) — coletado em 2026-10-10T11:46:33+00:00
 - [Voluntariado de alto impacto para as OSC: atraindo e mantendo parcerias de valor](https://voluntariadoempresarial.org.br/voluntariado-de-alto-impacto-para-as-osc-atraindo-e-mantendo-parcerias-de-valor) — coletado em 2026-10-12T00:37:36+00:00
+- [IFAM oferece seleção para mestrado em Docência com 100 vagas; inscrições até 2 de novembro](https://conectaprofessores.com/2026/10/11/ifam-oferece-selecao-para-mestrado-em-docencia-com-100-vagas-inscricoes-ate-2-de-novembro) — coletado em 2026-10-14T05:51:16+00:00
 - [Parque Bondinho Pão de Açúcar® abre inscrições para o Edital 2026 de Seleção de Projetos Culturais](https://blog.bondinho.com.br/parque-bondinho-pao-de-acucar-abre-inscricoes-para-o-edital-2026-de-selecao-de-projetos-culturais) — coletado em 2026-10-10T11:46:48+00:00
 - [Instituto Assaí](https://www.institutoassai.org.br/) — coletado em 2026-10-10T11:46:31+00:00
 - [Prêmios e Reconhecimentos](https://www.assai.com.br/premios-e-reconhecimentos) — coletado em 2026-10-10T11:46:31+00:00
@@ -43,5 +45,3 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Prêmio Boas Práticas na Mineração do Brasil 2026 realiza apresentação final de projetos e cerimônia de premiação em 20 de outubro -
                                                             07/10/2026](https://ibram.org.br/noticia/premio-boas-praticas-mineracao-do-brasil-2026-4) — coletado em 2026-10-12T00:37:45+00:00
 - [Desafio UNAIDS](https://unaids.org.br/desafiounaids) — coletado em 2026-10-12T00:37:46+00:00
-- [Read More » Ifac abre 125 vagas para curso técnico gratuito em Secretaria Escolar na modalidade EaD](https://conectaprofessores.com/2026/10/11/ifac-abre-125-vagas-para-curso-tecnico-gratuito-em-secretaria-escolar-na-modalidade-ead) — coletado em 2026-10-14T05:51:16+00:00
-- [IFAM oferece seleção para mestrado em Docência com 100 vagas; inscrições até 2 de novembro](https://conectaprofessores.com/2026/10/11/ifam-oferece-selecao-para-mestrado-em-docencia-com-100-vagas-inscricoes-ate-2-de-novembro) — coletado em 2026-10-14T05:51:16+00:00

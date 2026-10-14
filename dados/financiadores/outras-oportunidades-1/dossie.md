@@ -17,6 +17,7 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Chamamento Público - Lei Aldir Blanc – Nº 010/2024 - Seleção de Projetos Descentralizados voltados a formação em arte e cultura para firmar termo de execução cultural. 
                                      
                                          O Município de Ribeirão Pires, através da Secretaria](https://www.ribeiraopires.sp.gov.br/portal/editais/0/5/2661) — coletado em 2026-10-10T21:59:23+00:00
+- [Cultura Viva](https://cultura.rs.gov.br/cultura-viva) — coletado em 2026-10-13T18:49:08+00:00
 - [EDITAL DE PREMIAÇÃO CULTURAL Nº 01/2026 – PNAB](https://colinasdosul.go.gov.br/inscricoes-abertas) — coletado em 2026-10-10T21:59:19+00:00
 - [SELEÇÃO DE PROJETOS](https://www.institutoacp.org.br/) — coletado em 2026-10-10T18:31:15+00:00
 - [Credenciamento de Entidades Privadas sem fins lucrativos para participação não onerosa na 1ª Festa Italiana. 
@@ -44,6 +45,7 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
                                          O Município de Ribeirão Pires, através da Secretaria de Educação e Cultura, TORNA PÚBLICO os seguintes editais de ](https://www.ribeiraopires.sp.gov.br/portal/editais/0/5/2662) — coletado em 2026-10-10T21:59:23+00:00
 - [EDITAL Nº 003/2026 – ADMPLAN – TERCEIRA AUDIÊNCIA PÚBLICA DO PLANO DIRETOR DO MUNICÍPIO DE COLINAS DO SUL/GO.](https://colinasdosul.go.gov.br/aviso/2862) — coletado em 2026-10-10T21:59:19+00:00
 - [faça uma doação](https://baoba.org.br/doacao) — coletado em 2026-10-13T14:03:29+00:00
+- [Comitê Gestor - Cultura Viva](https://cultura.rs.gov.br/comite-gestor-da-cultura-viva) — coletado em 2026-10-13T18:49:08+00:00
 - [O credenciamento de Organizações da Sociedade Civil, com atuação na área assistencial, para execução indireta do serviço de proteção social especial de média e alta complexidade - modalidade pessoas com deficiência e suas famílias 
                                      
                               ](https://www.ribeiraopires.sp.gov.br/portal/editais/0/5/2658) — coletado em 2026-10-10T21:59:23+00:00
@@ -62,5 +64,3 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Quero me inscrever](https://tally.so/r/2E5oBD) — coletado em 2026-10-10T15:55:05+00:00
 - [CHAMAMENTO FINAL  LEI ALDIR BLANC](https://www.maranguape.ce.gov.br/informa/369/chamamento-final-lei-aldir-blanc) — coletado em 2026-10-11T11:39:34+00:00
 - [EDITAL CHAMAMENTO PUBLICO 007/2026 FOMENTO A PROJETOS CONTIN [...]](https://www.maranguape.ce.gov.br/informa/365/edital-chamamento-p-blico-007-2026-fomento-a-proje) — coletado em 2026-10-11T11:39:34+00:00
-- [Comitê Gestor - Cultura Viva](https://cultura.rs.gov.br/comite-gestor-da-cultura-viva) — coletado em 2026-10-13T18:49:08+00:00
-- [Cultura Viva](https://cultura.rs.gov.br/cultura-viva) — coletado em 2026-10-13T18:49:08+00:00

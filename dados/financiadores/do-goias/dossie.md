@@ -29,5 +29,5 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Chamamentos Públicos](https://goias.gov.br/cultura/chamamentos-publicos-secult) — coletado em 2026-09-21T08:20:22+00:00
 - [Aviso de Chamamento Público 02/2026](https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/02/SEI_86425409_Aviso_de_Chamamento_Publico_02.pdf) — coletado em 2026-09-21T08:19:47+00:00
 - [Prefeitura de Mossâmedes — DOE - MOSSAMEDES - CHAMAMENTO 01](https://diariooficial.abc.go.gov.br/portal/visualizacoes/html/7403/#e:7403/#m:750332) — coletado em 2026-10-13T12:17:23+00:00
-- [3ª Alteração do Cronograma, “Tabela 2”, item “11.1” referente ao EDITAL DE CHAMAMENTO PÚBLICO Nº 02/2026 – SECULT/GO](https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/04/diario_oficial_2026_04_07_completo.pdf) — coletado em 2026-09-21T08:19:47+00:00
 - [SES-GO (saúde) — Edital nº 01/2026](https://diariooficial.abc.go.gov.br/portal/visualizacoes/pdf/7397/#e:7397) — coletado em 2026-10-13T18:22:21+00:00
+- [3ª Alteração do Cronograma, “Tabela 2”, item “11.1” referente ao EDITAL DE CHAMAMENTO PÚBLICO Nº 02/2026 – SECULT/GO](https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/04/diario_oficial_2026_04_07_completo.pdf) — coletado em 2026-09-21T08:19:47+00:00

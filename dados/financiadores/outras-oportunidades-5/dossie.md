@@ -26,6 +26,7 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
                                      
                                          O Prefeito do Município de Votuporanga/SP faz saber que realizará, por meio do INDEPAC – Instituto de Cultura, Desenvolvimento Educacional, Promoção Humana e Ação Comunitária, em datas, locais e horário](https://www.votuporanga.sp.gov.br/portal/editais/0/3/794) — coletado em 2026-10-12T16:46:30+00:00
 - [Inscrições encerradas.](https://jornadasocial.com.br/edital-transformacao) — coletado em 2026-10-11T14:04:39+00:00
+- [Acessar Edital](https://www.itausocial.org.br/wp-content/uploads/2026/05/20260528_IS-EditalFIA-Regulamento-1.pdf) — coletado em 2026-10-14T00:01:32+00:00
 - [Plano de Trabalho (Anexo I) do Termo de Fomento.](https://www.sicredi.com.br/media/produtos/filer_public/2023/11/21/plano_de_trabalho_termo_de_fomento_-_municipio_de_ametista_do_sul_-_pufv_-_2023.pdf) — coletado em 2026-10-12T15:01:27+00:00
 - [Concurso Público nº 02/2024 
                                      
@@ -53,4 +54,3 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Plano de Trabalho do Termo de Fomento](https://www.sicredi.com.br/media/produtos/filer_public/2024/01/05/plano-de-trabalho-termo-de-fomento-municipio-de-planaltopufv2024.pdf) — coletado em 2026-10-12T15:01:27+00:00
 - [Plano de Trabalho (Anexo I) do Termo de Fomento](https://www.sicredi.com.br/media/produtos/filer_public/2023/11/21/plano_de_trabalho_-_municipio_de_pinheirinho_do_vale_-_2023.pdf) — coletado em 2026-10-12T15:01:27+00:00
 - [Prêmio Nacional de Inovação](https://editaisdobrasil.com/oportunidade/premio-nacional-de-inovacao) — coletado em 2026-10-11T14:04:35+00:00
-- [Acessar Edital](https://www.itausocial.org.br/wp-content/uploads/2026/05/20260528_IS-EditalFIA-Regulamento-1.pdf) — coletado em 2026-10-14T00:01:32+00:00

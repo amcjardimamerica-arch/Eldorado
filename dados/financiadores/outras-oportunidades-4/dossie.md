@@ -36,6 +36,8 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Doações Incentivadas OSCIP, PRONAC, outros](https://doare.org/doacoes-incentivadas) — coletado em 2026-10-13T14:05:57+00:00
 - [Edital de Fomento Pró-Restauro](https://www.cultura.pr.gov.br/PNAB/Pagina/Edital-de-Fomento-Pro-Restauro) — coletado em 2026-10-13T14:06:14+00:00
 - [Edital de Prêmio em Reconhecimento à Trajetória de Espaços Culturais (PNAB)](https://www.cultura.pr.gov.br/PNAB/Pagina/Edital-de-Premio-em-Reconhecimento-Trajetoria-de-Espacos-Culturais) — coletado em 2026-10-13T14:06:14+00:00
+- [Programa Aluguel Social – Para ter Onde Morar 
+                                 A Agehab, em parceria com o Governo de Goiás, garante auxílio de R$ 350,00 por até 18 meses para famílias em situação de vulnerabilidade social.](https://orizona.go.gov.br/aviso/programa-aluguel-social-para-ter-onde-morar) — coletado em 2026-10-13T20:09:04+00:00
 - [Aviso de Chamamento Público](https://www.cultura.pr.gov.br/Pagina/Aviso-de-Chamamento-Publico) — coletado em 2026-10-13T14:06:14+00:00
 - [Regulamento - Chamada Pública Doação de Computadores - Escolas Municipais](https://petrobras.com.br/documents/2677942/36243642/Regulamento+Chamada+P%C3%BAblica+Doa%C3%A7%C3%A3o+de+Computadores+-+Escolas+Municipais+-+Prorroga%C3%A7%C3%A3o.pdf/521c516d-d1ff-06fa-e67b-53e67ade3f74?version=1.0&t=1751036064000&download=true) — coletado em 2026-10-13T14:05:52+00:00
 - [Edital Premiação de Pontos de Cultura (PNAB)](https://www.cultura.pr.gov.br/PNAB/Pagina/Edital-Premiacao-de-Pontos-de-Cultura) — coletado em 2026-10-13T14:06:14+00:00
@@ -48,5 +50,3 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Edital Paraná Literário](https://www.cultura.pr.gov.br/Pagina/Edital-Parana-Literario) — coletado em 2026-10-13T14:06:14+00:00
 - [EDITAL DE CHAMAMENTO PÚBLICO N° 001-CMDCA-2026_compressed](https://itaberai.go.gov.br/wp-content/uploads/2026/09/EDITAL-DE-CHAMAMENTO-PUBLICO-N°-001-CMDCA-2026_compressed.pdf) — coletado em 2026-10-11T14:03:27+00:00
 - [Editais Fechados – PNAB I](https://www.cultura.pr.gov.br/Pagina/Programa-Mobilidade-Cultural) — coletado em 2026-10-13T14:06:14+00:00
-- [Programa Aluguel Social – Para ter Onde Morar 
-                                 A Agehab, em parceria com o Governo de Goiás, garante auxílio de R$ 350,00 por até 18 meses para famílias em situação de vulnerabilidade social.](https://orizona.go.gov.br/aviso/programa-aluguel-social-para-ter-onde-morar) — coletado em 2026-10-13T20:09:04+00:00
