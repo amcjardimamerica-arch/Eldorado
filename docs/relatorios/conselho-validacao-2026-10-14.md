@@ -8,9 +8,9 @@
 
 ```json
 {
- "cegos_da_1a_rodada": 30,
- "testados": 23,
- "com_rota_nova": 9,
+ "cegos_da_1a_rodada": 29,
+ "testados": 22,
+ "com_rota_nova": 8,
  "via_ponte": 0,
  "continuam_cegos": [
   "camara-goiania-pl",
@@ -120,15 +120,15 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 107,
-   "achados_total_agora": 107,
+   "achados_total_1a": 109,
+   "achados_total_agora": 109,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 1294,
-   "achados_total_agora": 1294,
+   "achados_total_1a": 1316,
+   "achados_total_agora": 1316,
    "no_fluxo": 3,
    "confirmadas": 0
   },
@@ -141,8 +141,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 80,
-   "achados_total_agora": 80,
+   "achados_total_1a": 81,
+   "achados_total_agora": 81,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -169,22 +169,22 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 51,
-   "achados_total_agora": 51,
+   "achados_total_1a": 52,
+   "achados_total_agora": 52,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 79,
-   "achados_total_agora": 79,
+   "achados_total_1a": 80,
+   "achados_total_agora": 80,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-estaduais-go-gov",
-   "achados_total_1a": 36,
-   "achados_total_agora": 36,
+   "achados_total_1a": 37,
+   "achados_total_agora": 37,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -225,7 +225,7 @@
  "pontos_com_redundancia": 12,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 7079
+ "exemplos_da_rede_de_rotas": 7174
 }
 ```
 
@@ -239,9 +239,9 @@
  "fora_dos_motores_pct_1a": 79.1,
  "fora_dos_motores_pct_agora": 79.1,
  "origem": {
-  "agregador/outra": 317,
+  "agregador/outra": 318,
   "motor": 115,
-  "Piloto": 117
+  "Piloto": 118
  },
  "dominios_so_de_agregador": [
   {
@@ -363,20 +363,20 @@
 
 ```json
 {
- "fontes_recebidas": 302,
+ "fontes_recebidas": 305,
  "por_origem": {
   "conselho (fontes irmãs)": 148,
-  "Cartório (site oficial certificado)": 128,
-  "Espião (privado/internacional)": 26
+  "Cartório (site oficial certificado)": 129,
+  "Espião (privado/internacional)": 28
  },
  "lidas_nas_ultimas_24h": 221,
  "dimensionamento": {
-  "fontes": 302,
+  "fontes": 305,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 6,
-  "cobertura_diaria": 302,
+  "cobertura_diaria": 305,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -473,7 +473,7 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 45,
+   "orgaos": 46,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",
