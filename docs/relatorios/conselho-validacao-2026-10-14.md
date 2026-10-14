@@ -225,7 +225,7 @@
  "pontos_com_redundancia": 13,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 8655
+ "exemplos_da_rede_de_rotas": 8746
 }
 ```
 
@@ -368,7 +368,7 @@
   "Cartório (site oficial certificado)": 150,
   "Espião (privado/internacional)": 33
  },
- "lidas_nas_ultimas_24h": 250,
+ "lidas_nas_ultimas_24h": 233,
  "dimensionamento": {
   "fontes": 340,
   "sites_por_execucao": 17,
@@ -477,14 +477,14 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 55,
+   "orgaos": 56,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",
     "arapongas.pr.gov.br",
     "banrisulcultural.com.br",
     "bonde.org",
-    "cajuru.sp.gov.br"
+    "cafelandia.sp.gov.br"
    ]
   }
  }

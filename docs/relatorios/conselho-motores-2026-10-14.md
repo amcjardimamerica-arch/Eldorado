@@ -66,6 +66,7 @@
 - mariaemilia.org.br (peso 13)
 - zurich.com.br (peso 13)
 - fundoecos.org.br (peso 12)
+- bnccompras.com (peso 12)
 - chamadas.funbio.org.br (peso 11)
 - brazilfoundation.org (peso 11)
 - bllcompras.com (peso 11)
@@ -77,7 +78,6 @@
 - jornadasocial.com.br (peso 8)
 - impactarte.org.br (peso 8)
 - contrafluxofestival.com.br (peso 8)
-- bnccompras.com (peso 8)
 - fondationfrancoisschneider.org (peso 7)
 - fns.cnbb.org.br (peso 7)
 - dopaonlineupload.procempa.com.br (peso 7)
@@ -91,7 +91,7 @@
 - Mapas Culturais: 11 órgãos
 - Diário municipal em lote (AGM/DOM): 16 órgãos
 - Portal de transparência de fornecedor: 27 órgãos
-- Sistemas de editais (Prosas/Editais): 55 órgãos
+- Sistemas de editais (Prosas/Editais): 56 órgãos
 - Querido Diário: 0 órgãos
 - PNCP: 1 órgãos
 - Leis e atos (Leis Municipais): 1 órgãos
