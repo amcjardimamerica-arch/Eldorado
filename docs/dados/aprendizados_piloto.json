@@ -1,14 +1,13 @@
 {
-  "em": "2026-10-14T17:14:23+00:00",
+  "em": "2026-10-14T17:19:01+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
       "missoes": 40,
-      "achados": 4,
+      "achados": 0,
       "uteis": 0,
       "motivos": {
-        "nada_no_crivo": 39,
-        "sem_texto": 1
+        "nada_no_crivo": 40
       },
       "efetividade": 0.0
     }
@@ -17,7 +16,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 11063,
+      "vezes": 11151,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -30,21 +29,7 @@
       ],
       "ultima": "2026-10-14",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 11063 vezes — precisa de correção, não de mais tentativas"
-    },
-    {
-      "motor": "piloto-aberto",
-      "motivo": "busca_vazia",
-      "vezes": 185,
-      "tipos": [
-        "cacar_oportunidade",
-        "descobrir",
-        "aposta",
-        "espionar"
-      ],
-      "ultima": "2026-10-14",
-      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
-      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 185 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 11151 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -95,6 +80,20 @@
       "regra": "o motor 'missao-especial' falha por vieram resultados, mas nenhum era oportunidade de verdade há 119 vezes — precisa de correção, não de mais tentativas"
     },
     {
+      "motor": "piloto-aberto",
+      "motivo": "busca_vazia",
+      "vezes": 92,
+      "tipos": [
+        "cacar_oportunidade",
+        "descobrir",
+        "aposta",
+        "espionar"
+      ],
+      "ultima": "2026-10-14",
+      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
+      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 92 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
       "motor": "motor-patrocinio",
       "motivo": "nada_no_crivo",
       "vezes": 88,
@@ -108,6 +107,19 @@
       "regra": "o motor 'motor-patrocinio' falha por vieram resultados, mas nenhum era oportunidade de verdade há 88 vezes — precisa de correção, não de mais tentativas"
     },
     {
+      "motor": "piloto-aberto",
+      "motivo": "sem_texto",
+      "vezes": 83,
+      "tipos": [
+        "aposta",
+        "descobrir",
+        "espionar"
+      ],
+      "ultima": "2026-10-14",
+      "explicacao": "sem_texto",
+      "regra": "o motor 'piloto-aberto' falha por sem_texto há 83 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
       "motor": "motor-gife",
       "motivo": "nada_no_crivo",
       "vezes": 82,
@@ -119,19 +131,6 @@
       "ultima": "2026-09-24",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
       "regra": "o motor 'motor-gife' falha por vieram resultados, mas nenhum era oportunidade de verdade há 82 vezes — precisa de correção, não de mais tentativas"
-    },
-    {
-      "motor": "piloto-aberto",
-      "motivo": "sem_texto",
-      "vezes": 74,
-      "tipos": [
-        "aposta",
-        "descobrir",
-        "espionar"
-      ],
-      "ultima": "2026-10-14",
-      "explicacao": "sem_texto",
-      "regra": "o motor 'piloto-aberto' falha por sem_texto há 74 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
@@ -179,13 +178,6 @@
     }
   ],
   "melhorias_pendentes": [
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "O motor deveria extrair e armazenar os trechos dos artigos para permitir uma análise mais precisa e identificação de oportunidades de recursos.",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-10-14T17:14",
-      "aplicada": false
-    },
     {
       "motor": "piloto-aberto",
       "sugestao": "O motor deve coletar e exibir trechos relevantes dos editais para permitir uma avaliação mais precisa da compatibilidade com as atividades da organização.",
@@ -318,12 +310,19 @@
       "efetividade_na_hora": 0.0,
       "em": "2026-10-13T03:50",
       "aplicada": false
+    },
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "O motor deve extrair e validar informações específicas dos títulos e trechos dos links, como prazo, valor, objeto e página, para determinar se o achado é um recurso válido para concorrência.",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-10-13T03:28",
+      "aplicada": false
     }
   ],
-  "editais_tratados": 575,
-  "entregues_ao_claude": 499,
+  "editais_tratados": 571,
+  "entregues_ao_claude": 495,
   "ultima_faxina": {
-    "em": "2026-10-14T17:14:23+00:00",
+    "em": "2026-10-14T17:19:01+00:00",
     "dias": 2,
     "arquivos_de_quarentena_apagados": 16,
     "achados_descartados_removidos": 2986,
