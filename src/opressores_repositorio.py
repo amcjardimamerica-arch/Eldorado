@@ -172,6 +172,13 @@ def sincronizar() -> dict:
         pelo_nome = bool(x)
         if not x:
             x = por_pag.get(_pg(item.get("link_oficial") or item.get("pagina_oficial") or ""))
+        # 14/10 (análise do sistema): livro de OUTRO ESTADO não é reutilizado — títulos genéricos da PNAB ("Seleção de
+        # projetos para firmar termo de execução cultural…") juntavam editais de MG e SP, de SC e GO num só livro
+        if x:
+            _uf_it = str(item.get("uf") or "").upper()
+            _ufs_l = {str(h.get("uf")).upper() for h in (x.get("historico") or []) if h.get("uf")} | ({str(x.get("geo")).upper()} if x.get("geo") not in (None, "BR", "INT") else set())
+            if _uf_it and _uf_it not in ("BR", "INT") and _ufs_l and _uf_it not in _ufs_l:
+                x = None; pelo_nome = False
         # 01/10 (titular): PNAB e outros programas abrem VÁRIOS editais — cada edital tem o seu livro. Edital com número,
         # faixa, objeto ou cidade diferente não entra como "edição" de outro; pela página, só junta com o mesmo nome.
         if x:

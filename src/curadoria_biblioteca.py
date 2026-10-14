@@ -210,6 +210,21 @@ def conferir() -> dict:
         ms = [x for x in ms if x["id"] not in ids_fora]
         for i in ids_fora:
             lig.pop(i, None)
+    # 1b) 14/10 (análise do sistema): livro que MISTURA ESTADOS fica só com as edições do estado dele; as outras saem
+    #     (a oportunidade delas ganha o livro certo na passagem seguinte — o criador não reutiliza livro de outro estado)
+    _soltas = []
+    for x in ms:
+        H = x.get("historico") or []
+        ufs = [str(h.get("uf")).upper() for h in H if h.get("uf")]
+        if len(set(ufs)) > 1:
+            dono = str(x.get("geo") or "").upper() if str(x.get("geo") or "").upper() in ufs else max(set(ufs), key=ufs.count)
+            x["historico"] = [h for h in H if not h.get("uf") or str(h.get("uf")).upper() == dono]
+            _soltas += [h.get("id") for h in H if h.get("uf") and str(h.get("uf")).upper() != dono and h.get("id")]
+    if _soltas and IDX.exists():
+        _I = json.loads(IDX.read_text(encoding="utf-8")); _ii = _I.get("indice") or {}
+        for i in _soltas:
+            _ii.pop(i, None)
+        IDX.write_text(json.dumps(_I, ensure_ascii=False), encoding="utf-8")
     # 2) empresas sem edital → fonte de busca
     fontes = 0
     for x in ms:
