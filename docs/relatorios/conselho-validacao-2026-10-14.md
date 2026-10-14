@@ -120,15 +120,15 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 113,
-   "achados_total_agora": 113,
+   "achados_total_1a": 115,
+   "achados_total_agora": 115,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 1360,
-   "achados_total_agora": 1360,
+   "achados_total_1a": 1381,
+   "achados_total_agora": 1381,
    "no_fluxo": 5,
    "confirmadas": 0
   },
@@ -141,8 +141,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 86,
-   "achados_total_agora": 86,
+   "achados_total_1a": 88,
+   "achados_total_agora": 88,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -169,15 +169,15 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 54,
-   "achados_total_agora": 54,
+   "achados_total_1a": 55,
+   "achados_total_agora": 55,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 82,
-   "achados_total_agora": 82,
+   "achados_total_1a": 83,
+   "achados_total_agora": 83,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -225,7 +225,7 @@
  "pontos_com_redundancia": 12,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 7475
+ "exemplos_da_rede_de_rotas": 7583
 }
 ```
 
@@ -239,7 +239,7 @@
  "fora_dos_motores_pct_1a": 78.9,
  "fora_dos_motores_pct_agora": 78.9,
  "origem": {
-  "agregador/outra": 322,
+  "agregador/outra": 323,
   "motor": 118,
   "Piloto": 118
  },
@@ -476,7 +476,7 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 46,
+   "orgaos": 47,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",
