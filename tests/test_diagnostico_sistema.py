@@ -33,6 +33,10 @@ class TesteDiagnostico(unittest.TestCase):
         """14/10 (titular, confirmado): só Goiás tem livros e oportunidades municipais; de outros estados, só estaduais."""
         from src.repositorio_unico import municipal_fora_de_goias
         self.assertTrue(municipal_fora_de_goias({"titulo": "MUNICIPIO DE ITAGIBA — Chamamento", "uf": "BA"}))
+        # municípios de Goiás nunca são descartados ("para" não é Pará)
+        self.assertIsNone(municipal_fora_de_goias({"titulo": "Chamamento público para fins de credenciamento", "orgao": "MUNICIPIO DE NOVA ROMA"}))
+        self.assertIsNone(municipal_fora_de_goias({"titulo": "Credenciamento para oficinas", "orgao": "MUNICIPIO DE SENADOR CANEDO"}))
+        self.assertTrue(municipal_fora_de_goias({"titulo": "Diário Oficial de Curitiba (PR) — chamamento", "orgao": "Prefeitura de Curitiba", "uf": "PR"}))
         self.assertIsNone(municipal_fora_de_goias({"titulo": "Edital estadual", "orgao": "Secretaria de Estado da Cultura de São Paulo", "nivel": "estadual", "uf": "SP"}))
         rep = (ROOT / "src/repositorio_unico.py").read_text(encoding="utf-8")
         self.assertIn('"descartada: oportunidade municipal de outro estado', rep)

@@ -92,6 +92,20 @@ _ESTADOS = [("acre", "AC"), ("alagoas", "AL"), ("amap[aá]", "AP"), ("amazonas",
 UFS = {"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"}
 
 
+_MUN_GO: list = []
+
+
+def _municipio_goiano(texto: str) -> bool:
+    """Cita, como 'município/prefeitura de X' ou 'X/GO', um dos 246 municípios de Goiás (config/territorio_goias.json)?"""
+    import unicodedata
+    if not _MUN_GO:
+        T = _j(ROOT / "config/territorio_goias.json", {}) or {}
+        sem = lambda s: "".join(c for c in unicodedata.normalize("NFKD", s.lower()) if not unicodedata.combining(c))
+        _MUN_GO.extend(sorted({sem(m) for m in (T.get("municipios") or []) if len(m) > 3}, key=len, reverse=True) or ["-"])
+    t = "".join(c for c in unicodedata.normalize("NFKD", texto.lower()) if not unicodedata.combining(c))
+    return any(re.search(rf"\b(?:municipio|prefeitura|camara)(?: municipal)? de {re.escape(m)}\b|\b{re.escape(m)}\s*[-/(]\s*go\b", t) for m in _MUN_GO if m != "-")
+
+
 def municipal_fora_de_goias(r: dict, uf_agregador: str | None = None) -> str | None:
     """Identifica oportunidade MUNICIPAL de fora de Goiás (UF determinada e diferente de GO). 14/10/2026 (titular): roda a
     CADA rodada — só Goiás tem oportunidades municipais; de outros estados, só estaduais (e nacionais/internacionais).
@@ -101,13 +115,15 @@ def municipal_fora_de_goias(r: dict, uf_agregador: str | None = None) -> str | N
     municipal = str(r.get("nivel") or "").lower() == "municipal" or bool(_MUN.search(t))
     if not municipal or str(r.get("nivel") or "").lower() in ("estadual", "federal", "internacional"):
         return None
+    if _municipio_goiano(f"{r.get('orgao') or ''} {r.get('titulo') or ''}"):
+        return None                                    # 14/10: cita um dos 246 municípios de Goiás → é de Goiás (fica)
     uf = str(r.get("uf") or uf_agregador or "").upper()
     if uf not in UFS:
         m = _DOM_UF.search(f"{r.get('link_oficial') or ''} {r.get('url') or ''}")
         uf = m.group(1).upper() if m and m.group(1).upper() in UFS else ""
     if uf not in UFS:                                  # nome do estado por extenso no endereço ou no título (um só)
         txt = re.sub(r"[-_/]", " ", f"{r.get('url') or ''} {r.get('link_oficial') or ''} {r.get('titulo') or ''}".lower())
-        achados = {sig for nome, sig in _ESTADOS if re.search(rf"\b{nome}\b", txt)}
+        achados = {sig for nome, sig in _ESTADOS if nome not in ("para", "pará", "acre") and re.search(rf"\b{nome}\b", txt)}   # 14/10: "para" é preposição
         if len(achados) == 1:
             uf = achados.pop()
     if uf and uf != "GO":
