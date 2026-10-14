@@ -1,13 +1,14 @@
 {
-  "em": "2026-10-14T01:58:46+00:00",
+  "em": "2026-10-14T02:07:00+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
       "missoes": 40,
-      "achados": 0,
+      "achados": 3,
       "uteis": 0,
       "motivos": {
-        "nada_no_crivo": 40
+        "nada_no_crivo": 39,
+        "sem_texto": 1
       },
       "efetividade": 0.0
     }
@@ -16,7 +17,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 10690,
+      "vezes": 10658,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -29,7 +30,7 @@
       ],
       "ultima": "2026-10-14",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 10690 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 10658 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -55,6 +56,20 @@
       "ultima": "2026-10-01",
       "explicacao": "o que veio não serve à finalidade da associação",
       "regra": "o motor 'piloto-aberto' falha por o que veio não serve à finalidade da associação há 152 vezes — precisa de correção, não de mais tentativas"
+    },
+    {
+      "motor": "piloto-aberto",
+      "motivo": "busca_vazia",
+      "vezes": 132,
+      "tipos": [
+        "cacar_oportunidade",
+        "descobrir",
+        "aposta",
+        "espionar"
+      ],
+      "ultima": "2026-10-13",
+      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
+      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 132 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "empresas-incentivadas",
@@ -93,20 +108,6 @@
       "regra": "o motor 'motor-patrocinio' falha por vieram resultados, mas nenhum era oportunidade de verdade há 88 vezes — precisa de correção, não de mais tentativas"
     },
     {
-      "motor": "piloto-aberto",
-      "motivo": "busca_vazia",
-      "vezes": 86,
-      "tipos": [
-        "cacar_oportunidade",
-        "descobrir",
-        "aposta",
-        "espionar"
-      ],
-      "ultima": "2026-10-14",
-      "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
-      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 86 vezes — precisa de correção, não de mais tentativas"
-    },
-    {
       "motor": "motor-gife",
       "motivo": "nada_no_crivo",
       "vezes": 82,
@@ -122,7 +123,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "sem_texto",
-      "vezes": 81,
+      "vezes": 70,
       "tipos": [
         "aposta",
         "descobrir",
@@ -130,7 +131,7 @@
       ],
       "ultima": "2026-10-14",
       "explicacao": "sem_texto",
-      "regra": "o motor 'piloto-aberto' falha por sem_texto há 81 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por sem_texto há 70 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
@@ -178,6 +179,13 @@
     }
   ],
   "melhorias_pendentes": [
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "Incluir a capacidade de extrair trechos relevantes dos textos para permitir a análise adequada dos editais e sua compatibilidade com as missões e atividades das organizações.",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-10-14T01:49",
+      "aplicada": false
+    },
     {
       "motor": "piloto-aberto",
       "sugestao": "O motor deveria coletar e exibir trechos específicos dos editais para facilitar a avaliação de sua relevância para a missão e objetivos da organização.",
@@ -310,19 +318,12 @@
       "efetividade_na_hora": 0.0,
       "em": "2026-10-13T01:05",
       "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "Adicionar informações detalhadas dos textos, como prazos, valores, objetos e páginas, para permitir uma análise mais precisa sobre a possibilidade de concorrer a recursos.",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-10-12T14:07",
-      "aplicada": false
     }
   ],
-  "editais_tratados": 564,
-  "entregues_ao_claude": 488,
+  "editais_tratados": 567,
+  "entregues_ao_claude": 491,
   "ultima_faxina": {
-    "em": "2026-10-14T01:58:45+00:00",
+    "em": "2026-10-14T02:07:00+00:00",
     "dias": 2,
     "arquivos_de_quarentena_apagados": 16,
     "achados_descartados_removidos": 2986,
