@@ -1403,18 +1403,18 @@ box-sizing:border-box;}
 (function(){
   const COR={verde:"#5EE6C8",amarelo:"#FFB347",vermelho:"#FF6B6B",cinza:"#8B93B8"}, EST={verde:"normal",amarelo:"atenção",vermelho:"alarme",cinza:"sem leitura"};
   const ETAPAS=[
-    {id:"regencia",nome:"Regência",faz:"O maestro planeja quais motores rodam hoje, em que ordem, e cobra a leitura completa até três vezes.",ids:["ma_cobertura","ma_esgotados"]},
+    {id:"regencia",nome:"Regência",faz:"O maestro planeja quais motores rodam hoje, em que ordem, e cobra a leitura completa até três vezes.",ids:["ma_cobertura","ma_esgotados","dg_finalidade"]},
     {id:"coleta",nome:"Coleta",faz:"Os motores varrem diários oficiais, portais, agregadores e sites; cada um precisa ler dentro da sua cadência.",ids:["mo_saude","mo_cadencia","es_coleta"]},
-    {id:"repositorio",nome:"Repositório",faz:"Tudo vira um registro único por oportunidade, sem duplicata e com a mesma contagem em todas as telas.",ids:["es_abertas"]},
+    {id:"repositorio",nome:"Repositório",faz:"Tudo vira um registro único por oportunidade, sem duplicata e com a mesma contagem em todas as telas.",ids:["es_abertas","es_validadas","es_fichas"]},
     {id:"aprendizado",nome:"Pertinência e aprendizado",faz:"A rede neural aprende com as decisões humanas e do Chrome e dá a cada registro a chance de ser oportunidade real.",ids:["rn_auc","rn_precisao","rn_revocacao","rn_brier","rn_treino"]},
-    {id:"biblioteca",nome:"Biblioteca",faz:"Cada oportunidade ganha um livro que guarda o histórico e diz onde buscar; o motor do livro vigia a próxima edição.",ids:["es_livros","es_vigilancia"]},
+    {id:"biblioteca",nome:"Biblioteca",faz:"Cada oportunidade ganha um livro que guarda o histórico e diz onde buscar; o motor do livro vigia a próxima edição.",ids:["es_livros","es_vigilancia","de_decisoes"]},
     {id:"certificacao",nome:"Certificação",faz:"O Cartório encontra o documento oficial e certifica os 12 itens, cada um com trecho e página.",ids:["ca_12"]},
     {id:"investigacao",nome:"Investigação",faz:"Os Pilotos pesquisam na web o que o Cartório não alcança e descobrem empresas e chamadas novas.",ids:["pi_interceptador","pi_espiao","pi_piloto"]},
     {id:"externa",nome:"Verificação externa",faz:"A exceção: o que sobrou vai ao Claude, que arquiva, elimina ou completa de forma definitiva.",ids:[]},
-    {id:"farol",nome:"Farol de Alexandria",faz:"O que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol para preparar a proposta.",ids:["em_rankings","hi_uso","hi_frio"]}];
+    {id:"farol",nome:"Farol de Alexandria",faz:"O que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol para preparar a proposta.",ids:["em_rankings","al_externa","hi_uso","hi_frio"]}];
   const CURTO={ma_cobertura:"cobertura do dia",ma_esgotados:"sem leitura completa",mo_saude:"funcionando",mo_cadencia:"fora da cadência",es_coleta:"coletados",rn_auc:"discernimento",
     rn_precisao:"precisão",rn_revocacao:"revocação",rn_brier:"erro de calibração",rn_treino:"idade do modelo",es_abertas:"abertas",es_livros:"com livro",es_vigilancia:"livros vigiados",
-    ca_12:"itens certificados",pi_interceptador:"na fila do Interceptador",pi_espiao:"empresas do Espião",pi_piloto:"voos do Piloto",em_rankings:"empresas nos rankings",hi_uso:"arquivos sem uso",hi_frio:"pacotes no arquivo frio"};
+    ca_12:"itens certificados",pi_interceptador:"na fila do Interceptador",pi_espiao:"empresas do Espião",pi_piloto:"voos do Piloto",em_rankings:"empresas nos rankings",es_validadas:"validadas",es_fichas:"fichas",de_decisoes:"livros aguardando o Claude",al_externa:"alimentação externa",dg_finalidade:"finalidade do sistema",hi_uso:"arquivos sem uso",hi_frio:"pacotes no arquivo frio"};
   let SC=null, foco=null, ESTRELAS=[], NOS=[], ativa=false, quieto=matchMedia("(prefers-reduced-motion: reduce)").matches;
   const $=id=>document.getElementById(id);
   const e=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));

@@ -45,9 +45,11 @@ def lista(disparar: bool = True) -> list[str]:
         por(sorted(set(A.devidos()) | set(A.recuperar())))
     except Exception as e:  # noqa: BLE001
         print(f"agenda indisponível: {type(e).__name__}", file=sys.stderr)
+    adiados: set = set()
     try:
         u = json.loads((RAIZ / "estado/esquadra.json").read_text(encoding="utf-8")).get("ultima_execucao") or {}
-        por(u.get("adiados_por_tempo") or [])
+        adiados = {str(x).strip() for x in (u.get("adiados_por_tempo") or [])}
+        por(sorted(adiados))
     except Exception:  # noqa: BLE001
         pass
     # os motores numerados do painel (1, 2, 3…) vêm primeiro, na ordem do painel; depois as fontes sem horário próprio
@@ -56,7 +58,9 @@ def lista(disparar: bool = True) -> list[str]:
     except Exception:  # noqa: BLE001
         pos = {}
     idx = {m: i for i, m in enumerate(ordem)}
-    return sorted(ordem, key=lambda m: (int(pos.get(m, pos.get(m.replace("plat-", ""), 10 ** 6))), idx[m]))
+    # 14/10 (análise do sistema): quem a passagem anterior ADIOU por falta de tempo vai para o começo — antes voltava à
+    # posição fixa do painel e era cortado de novo (o PNCP ficou 2 dias sem ler, sempre no fim de uma fila de 25)
+    return sorted(ordem, key=lambda m: (m not in adiados, int(pos.get(m, pos.get(m.replace("plat-", ""), 10 ** 6))), idx[m]))
 
 
 if __name__ == "__main__":
