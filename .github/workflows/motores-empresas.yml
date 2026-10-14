@@ -75,8 +75,8 @@ jobs:
           git reset -q -- src tests scripts config docs/dashboard.html .github 2>/dev/null || true
           git add -A biblioteca_alexandria dados estado docs/dados 2>/dev/null || true
           git diff --cached --quiet && { echo "nada mudou"; exit 0; }
-          git commit -q -m "empresas: leitura semanal $(date -u +%F) (fluxo 34)"
-          for i in 1 2 3 4; do
+          MSG="empresas: leitura semanal $(date -u +%F) (fluxo 34)"; git commit -q -m "$MSG"
+          for i in 1 2 3 4 5 6; do
             if git pull --rebase origin main 2>/dev/null || \
                { for f in $(git diff --name-only --diff-filter=U); do
                    case "$f" in dados/*|estado/*|docs/dados/*|biblioteca_alexandria/*|go/*) git checkout --theirs -- "$f";;
@@ -85,6 +85,11 @@ jobs:
               git push -q && { echo "gravado ($i)"; exit 0; }
             fi
             git rebase --abort 2>/dev/null || true
+            # reserva (como no monitoramento): parte da main mais nova e grava de novo só os dados do job
+            git fetch -q origin main && git reset -q --mixed origin/main
+            git checkout origin/main -- src tests scripts config docs/dashboard.html .github 2>/dev/null || true
+            git add -A biblioteca_alexandria dados estado docs/dados 2>/dev/null || true
+            git diff --cached --quiet || git commit -q -m "$MSG (reaplicada)"
             sleep 15
           done
-          echo "REGISTRO FALHOU após 4 tentativas"; exit 1
+          echo "REGISTRO FALHOU após 6 tentativas"; exit 1

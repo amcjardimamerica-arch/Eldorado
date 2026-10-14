@@ -20,7 +20,7 @@ permissions:
   actions: read
 
 concurrency:
-  group: eldorado-varredura-diaria     # o mesmo do ciclo dos motores: os dois gravam o catálogo e o repositório
+  group: analise-sistema     # 14/10: grupo próprio — no do ciclo dos motores ela era substituída na fila e cancelada antes de começar
   cancel-in-progress: false
 
 jobs:
@@ -50,8 +50,8 @@ jobs:
           git reset -q -- src tests scripts config docs/dashboard.html .github 2>/dev/null || true
           git add -A biblioteca_alexandria dados estado docs/dados 2>/dev/null || true
           git diff --cached --quiet && { echo "nada mudou"; exit 0; }
-          git commit -q -m "análise do sistema: diagnóstico$( [ "${{ inputs.corrigir }}" = "sim" ] && echo ' e correção') $(date -u +%F)"
-          for i in 1 2 3 4; do
+          MSG="análise do sistema: diagnóstico$( [ "${{ inputs.corrigir }}" = "sim" ] && echo ' e correção') $(date -u +%F)"; git commit -q -m "$MSG"
+          for i in 1 2 3 4 5 6; do
             if git pull --rebase origin main 2>/dev/null || \
                { for f in $(git diff --name-only --diff-filter=U); do
                    case "$f" in dados/*|estado/*|docs/dados/*|biblioteca_alexandria/*) git checkout --theirs -- "$f";;
@@ -60,6 +60,11 @@ jobs:
               git push -q && { echo "gravado ($i)"; exit 0; }
             fi
             git rebase --abort 2>/dev/null || true
+            # reserva (como no monitoramento): parte da main mais nova e grava de novo só os dados do job
+            git fetch -q origin main && git reset -q --mixed origin/main
+            git checkout origin/main -- src tests scripts config docs/dashboard.html .github 2>/dev/null || true
+            git add -A biblioteca_alexandria dados estado docs/dados 2>/dev/null || true
+            git diff --cached --quiet || git commit -q -m "$MSG (reaplicada)"
             sleep 15
           done
-          echo "REGISTRO FALHOU após 4 tentativas"; exit 1
+          echo "REGISTRO FALHOU após 6 tentativas"; exit 1

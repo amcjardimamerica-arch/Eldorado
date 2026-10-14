@@ -45,8 +45,8 @@ def _horas(ts: str | None, agora: datetime) -> float | None:
 
 def _estado(idade: float | None, cad: float, valor, faixa: dict | None) -> tuple[str, str]:
     """(estado, motivo)."""
-    if idade is None and valor is None:
-        return "cinza", "sem leitura"
+    if valor is None:          # 14/10 (análise do sistema): sem valor é sem leitura — antes aparecia verde quando havia data
+        return "cinza", "sem leitura" if idade is None else f"sem valor na leitura de {idade:.0f} h atrás"
     if idade is not None and idade > 3 * cad:
         return "vermelho", f"parado há {idade:.0f} h (cadência {cad:g} h)"
     if faixa and isinstance(valor, (int, float)):
@@ -217,6 +217,38 @@ def montar(agora: datetime | None = None) -> dict:
            faz="Guarda sem perda, fora do repositório, o que é grande e de uso esporádico.",
            efeito=f"{sum(int(x.get('arquivos') or 0) for x in fr)} arquivos guardados",
            resultado=f"{sum(int(x.get('bytes_originais') or 0) for x in fr) // 1048576} MB fora do repositório")
+
+    # ── 14/10 (análise do sistema): os sistemas que existiam e não apareciam na sala
+    n_ab = rp.get("abertas") or 0
+    _instr(I, agora, id="es_validadas", sub="Esteira", nome="Abertas já validadas", valor=round(100 * (rp.get("validadas") or 0) / n_ab) if n_ab else None,
+           unidade="%", escala=[0, 100], faixa={"normal": [30, None], "alarme": [10, None]}, quando=rp.get("em"), cadencia_h=2,
+           faz="Oportunidade validada: objeto, prazo vigente e site oficial comprovados.",
+           efeito=f"{rp.get('validadas', 0)} validadas de {n_ab} abertas · {rp.get('em_verificacao', 0)} em verificação",
+           resultado=f"{rp.get('validacao_manual', 0)} em validação manual")
+    fi = _j(D / "fichas_oportunidades.json")
+    _cob = round(100 * min(1, (fi.get("total") or 0) / n_ab)) if n_ab and fi else None
+    _instr(I, agora, id="es_fichas", sub="Esteira", nome="Fichas das oportunidades", valor=_cob, unidade="%", escala=[0, 100],
+           faixa={"normal": [99, None], "alarme": [90, None]}, quando=fi.get("em"), cadencia_h=2,
+           faz="Cada oportunidade aberta tem a sua ficha: achado, esteira, sistemas e livro.",
+           efeito=f"{fi.get('total', 0)} fichas geradas", resultado=f"cobertura de {_cob}% das abertas" if _cob is not None else "sem leitura")
+    dec = _j(ROOT / "estado/decisoes_editais.json"); dec = dec.get("decisoes") if isinstance(dec.get("decisoes"), dict) else {}
+    fila = _j(D / "fila_revisao_exclusao.json")
+    _instr(I, agora, id="de_decisoes", sub="Esteira", nome="Livros aguardando o Claude (descartes)", valor=len(fila.get("pendentes") or []), unidade="livros",
+           escala=None, quando=fila.get("em") or dec and max((v.get("em") or "") for v in dec.values()) or None, cadencia_h=26,
+           faz="Descarte da titular não apaga o livro: sinaliza para o Claude analisar a exclusão.",
+           efeito=f"{sum(1 for v in dec.values() if v.get('estado') == 'descartado')} descartadas · {sum(1 for v in dec.values() if v.get('estado') == 'inscrito')} inscritas",
+           resultado=f"{len(fila.get('pendentes') or [])} livros sinalizados aguardando análise")
+    ext = next((f for f in _fluxos(agora) if str(f.get("nome", "")).startswith("35 ")), None)
+    _instr(I, agora, id="al_externa", sub="Destino", nome="Alimentação externa diária", valor=(100 if ext and ext.get("conclusao") == "success" else 0) if ext else None,
+           unidade="%", escala=[0, 100], faixa={"normal": [100, None], "alarme": [1, None]}, quando=(ext or {}).get("quando"), cadencia_h=26,
+           faz="Uma vez por dia envia os editais abertos, certificados (SHA-256) e assinados, ao site de editais.",
+           efeito=f"última execução: {(ext or {}).get('conclusao') or 'sem execução'}", resultado="entregue e confirmada" if ext and ext.get("conclusao") == "success" else "não entregue")
+    dg = _j(ROOT / "estado/diagnostico_sistema.json")
+    _instr(I, agora, id="dg_finalidade", sub="Regência · maestro", nome="Finalidade do sistema (diagnóstico)", valor=(dg.get("finalidade") or {}).get("indice_geral_pct"),
+           unidade="%", escala=[0, 100], faixa={"normal": [85, None], "alarme": [60, None]}, quando=dg.get("em"), cadencia_h=3,
+           faz="Diagnóstico único: cada sistema contra a meta do que foi projetado; índice geral.",
+           efeito=f"{len(dg.get('problemas') or [])} problemas · {dg.get('contagem_problemas') or {}}",
+           resultado=", ".join(f"{x['sistema']} {x['atingido_pct']}%" for x in ((dg.get("finalidade") or {}).get("sistemas") or []) if x.get("estado") == "falha")[:300] or "todos na meta")
 
     # ── índice de saúde, anunciadores, mímico, linha do tempo
     peso = {"verde": 100, "amarelo": 60, "vermelho": 15}
