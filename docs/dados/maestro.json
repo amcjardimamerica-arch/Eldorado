@@ -1,39 +1,39 @@
 {
  "dia": "2026-10-14",
- "em": "2026-10-14T06:11:27+00:00",
+ "em": "2026-10-14T06:37:13+00:00",
  "regra": "MAESTRO — A REDE NEURAL CONDUZ O DIA (titular, 02/10/2026).\n\nOs motores são ferramentas de uma etapa. O maestro, a cada passagem do fluxo de status (4 vezes por dia):\n  1. PLANEJA  quais motores rodam hoje (agenda) e em que ordem: rendimento real do canal (oportunidades validadas como\n              reais por leitura — linha de produção), diagnóstico (planos de correção) e livros com abertura próxima\n              no índice do motor (léxico temporário da chave de acionamento);\n  2. MEDE     a cobertura do dia de cada motor: completa (leu sem falha de página) · parcial (falha em parte das páginas)\n              · pendente (ainda não leu) · pendente_local (exige IP brasileiro — coleta no computador do titular);\n  3. CONTROLA dispara de novo os pendentes e os parciais, até 3 vezes por dia, para a busca do dia NÃO ficar parcial;\n  4. FECHA    o dia quando todos os motores planejados estão completos (ou esgotaram as tentativas — fica registrado).",
  "planejados": 128,
  "cobertura": {
-  "completa": 36,
+  "completa": 37,
   "pendente": 1,
   "aguardando_horario": 85,
-  "parcial": 5,
+  "parcial": 4,
   "pendente_local": 1
  },
- "cobertura_percentual": 83.7,
+ "cobertura_percentual": 86.0,
  "a_disparar": [
   "pncp-api",
-  "plat-estaduais-go-gov",
   "plat-empresas-editais-incentivados",
   "plat-prefeituras-50-go",
   "do-goiania",
   "judiciario-tjgo",
-  "plat-salic",
+  "motor-gife",
+  "plat-gife",
+  "do-goias",
+  "camara-goiania-pl",
+  "plat-cnpq-extensao",
+  "alego-pl",
+  "mpgo-destinacao",
   "judiciario-cnj",
   "congresso-nacional",
-  "mpu-destinacao",
-  "motor-gife",
-  "do-goias",
-  "dj-trf1-go",
-  "mptgo-destinacao",
-  "plat-gife",
-  "plat-cnpq-extensao",
-  "camara-goiania-pl",
-  "dou",
   "plat-piloto-aberto",
+  "mptgo-destinacao",
   "motor-patrocinio",
-  "mpgo-destinacao",
-  "alego-pl"
+  "mpu-destinacao",
+  "plat-estaduais-go-gov",
+  "dj-trf1-go",
+  "plat-salic",
+  "dou"
  ],
  "esgotaram_tentativas": [],
  "dia_fechado": false,
@@ -58,7 +58,7 @@
  "plano": [
   {
    "motor": "plat-piloto-aberto",
-   "prioridade": 6.3534,
+   "prioridade": 6.3524,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 313,
    "horarios": "05:53,10:23",
@@ -135,14 +135,14 @@
   },
   {
    "motor": "plat-estaduais-go-gov",
-   "prioridade": 0.1392,
+   "prioridade": 0.1384,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 4,
    "horarios": "09:23,15:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
-   "cobertura": "parcial",
-   "tentativas_hoje": 0
+   "cobertura": "completa",
+   "tentativas_hoje": 1
   },
   {
    "motor": "f260-captacao-177",
@@ -190,14 +190,14 @@
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "prioridade": 0.1081,
+   "prioridade": 0.108,
    "diagnostico": "falha_parcial",
    "livros_com_abertura_proxima": 5,
    "horarios": "10:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 0
+   "tentativas_hoje": 1
   },
   {
    "motor": "plataforma-wordpress",
@@ -234,18 +234,18 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "prioridade": 0.0555,
+   "prioridade": 0.0553,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 2,
    "horarios": "09:23,15:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 0
+   "tentativas_hoje": 1
   },
   {
    "motor": "do-goias",
-   "prioridade": 0.0554,
+   "prioridade": 0.0552,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 1,
    "horarios": "06:23,12:53,20:23",
@@ -421,7 +421,7 @@
   },
   {
    "motor": "plat-salic",
-   "prioridade": 0.0344,
+   "prioridade": 0.0343,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 1,
    "horarios": "08:53,13:53,19:53",
@@ -839,7 +839,7 @@
   },
   {
    "motor": "dou",
-   "prioridade": 0.0182,
+   "prioridade": 0.0181,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "06:23,12:53,20:23",
@@ -905,7 +905,7 @@
   },
   {
    "motor": "plat-gife",
-   "prioridade": 0.016,
+   "prioridade": 0.0158,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "11:23,17:53",
@@ -1059,14 +1059,14 @@
   },
   {
    "motor": "do-goiania",
-   "prioridade": 0.0104,
+   "prioridade": 0.0103,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "06:23,12:53,20:23",
    "coleta": "nuvem + local",
    "dia_anterior": "observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 0
+   "tentativas_hoje": 1
   },
   {
    "motor": "f260-espalhado-acessoainformacao-cavalcante-go-gov-br",
@@ -1180,7 +1180,7 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "prioridade": 0.0085,
+   "prioridade": 0.0083,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "07:53",
@@ -1224,7 +1224,7 @@
   },
   {
    "motor": "judiciario-cnj",
-   "prioridade": 0.0079,
+   "prioridade": 0.0078,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "07:53",
@@ -1257,7 +1257,7 @@
   },
   {
    "motor": "mptgo-destinacao",
-   "prioridade": 0.0072,
+   "prioridade": 0.0071,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "07:53,16:23",
@@ -1290,14 +1290,14 @@
   },
   {
    "motor": "judiciario-tjgo",
-   "prioridade": 0.0057,
+   "prioridade": 0.0056,
    "diagnostico": "bloqueio",
    "livros_com_abertura_proxima": 0,
    "horarios": "07:53,16:23",
    "coleta": "nuvem + local",
    "dia_anterior": "nao_observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 0
+   "tentativas_hoje": 1
   },
   {
    "motor": "f260-captacao-222",
@@ -1389,7 +1389,7 @@
   },
   {
    "motor": "mpu-destinacao",
-   "prioridade": 0.0044,
+   "prioridade": 0.0043,
    "diagnostico": "sem_rendimento",
    "livros_com_abertura_proxima": 0,
    "horarios": "16:23",
@@ -1455,7 +1455,7 @@
   },
   {
    "motor": "dj-trf1-go",
-   "prioridade": 0.0035,
+   "prioridade": 0.0034,
    "diagnostico": "sem_rendimento",
    "livros_com_abertura_proxima": 0,
    "horarios": "07:53",

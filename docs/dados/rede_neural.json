@@ -1,220 +1,16 @@
 {
- "em": "2026-10-14T05:54:08+00:00",
+ "em": "2026-10-14T06:38:58+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
- "rotulados": 2001,
+ "rotulados": 2002,
  "positivos": 800,
  "pendentes": 737,
- "calibracao": {
-  "temperatura": 8.0,
-  "perda_log_antes": 1.4089,
-  "perda_log_depois": 0.4832
- },
  "validacao_cruzada": {
   "auc": 0.843,
   "precisao": 0.74,
   "revocacao": 0.664,
   "brier": 0.1581
  },
- "linha_de_base_regras": {
-  "auc": 0.489,
-  "precisao": 0.394,
-  "revocacao": 0.915,
-  "brier": 0.5967
- },
- "rotulos_suspeitos": [
-  {
-   "titulo": "Convênios e parcerias",
-   "url": "https://goias.gov.br/esporte/dispensa-de-licitacoes",
-   "decisao": "descartada",
-   "rede": 0.999
-  },
-  {
-   "titulo": "Diário Oficial de Alagoinhas (BA) 2026-09-28 — \"chamamento público\" \"organizações da sociedade civil\"",
-   "url": "https://data.queridodiario.ok.org.br/2900702/2026-09-28/e4fb235782027e28c5a644900e63b3548d46cc7b.pdf",
-   "decisao": "real",
-   "rede": 0.003
-  },
-  {
-   "titulo": "Diário Oficial de Macaé (RJ) 2026-09-22 — \"chamamento público\" \"organizações da sociedade civil\"",
-   "url": "https://data.queridodiario.ok.org.br/3302403/2026-09-22/37ca40098b7c456e4e815f686cebe348d3a16f77.pdf",
-   "decisao": "real",
-   "rede": 0.005
-  },
-  {
-   "titulo": "Diário Oficial de Osasco (SP) 2026-08-24 — \"edital de chamamento público\" associação",
-   "url": "https://data.queridodiario.ok.org.br/3534401/2026-08-24/66bbe1ca794f3a6834efe578f1672ff6dc3c89ba.pdf",
-   "decisao": "real",
-   "rede": 0.016
-  },
-  {
-   "titulo": "cronograma",
-   "url": "https://goias.gov.br/cultura/tags/cronograma",
-   "decisao": "descartada",
-   "rede": 0.973
-  },
-  {
-   "titulo": "Diário Oficial de Campo Mourão (PR) 2026-09-11 — \"edital de chamamento público\" associação",
-   "url": "https://data.queridodiario.ok.org.br/4104303/2026-09-11/af8dc0de0aa9c537cb17d94196e4032f6f20ed11.pdf",
-   "decisao": "real",
-   "rede": 0.032
-  },
-  {
-   "titulo": "Edital 2 | Seleção de OSCs para desenvolver ações nos territórios",
-   "url": "https://unaids.org.br/edital-2-acoes-comunitarias-nos-territorios",
-   "decisao": "real",
-   "rede": 0.033
-  },
-  {
-   "titulo": "ODS 17 – Parcerias",
-   "url": "https://observatorio3setor.org.br/ods/ods-17",
-   "decisao": "descartada",
-   "rede": 0.964
-  },
-  {
-   "titulo": "Diário Oficial de Itapevi (SP) 2026-09-15 — \"edital de chamamento público\" associação",
-   "url": "https://data.queridodiario.ok.org.br/3522505/2026-09-15/b945b9123f14a2153c7a7e104727d936a58240a3.pdf",
-   "decisao": "descartada",
-   "rede": 0.961
-  },
-  {
-   "titulo": "Política Nacional Aldir Blanc - PNAB",
-   "url": "https://goias.gov.br/cultura/pnab",
-   "decisao": "descartada",
-   "rede": 0.959
-  },
-  {
-   "titulo": "Pnab 2026: Publicada errata e retificação de cronograma dos Editais nº 4 e nº 6",
-   "url": "https://goias.gov.br/cultura/pnab-2026-publicada-errata-e-retificacao-de-cronograma-dos-editais-no-4-e-no-6",
-   "decisao": "real",
-   "rede": 0.047
-  },
-  {
-   "titulo": "Editais O Mapa das Organizações da Sociedade Civil , em parceria com a plataforma Prosas — plataforma para seleção e monitoramento de inicia",
-   "url": "https://mapaosc.ipea.gov.br/editais",
-   "decisao": "descartada",
-   "rede": 0.952
-  },
-  {
-   "titulo": "Diário Oficial de Itu (SP) 2026-09-14 — \"chamamento público\" \"organizações da sociedade civil\"",
-   "url": "https://data.queridodiario.ok.org.br/3523909/2026-09-14/8eeed08f539afa31ec60b6a44a0c4f9db3b457ab.pdf",
-   "decisao": "real",
-   "rede": 0.05
-  },
-  {
-   "titulo": "Itapetinga/BA (SAAE) — Edital de Chamamento Público nº 001/2025: credenciamento de instituições financeiras para arrecadação de faturas",
-   "url": "https://data.queridodiario.ok.org.br/2916401/2026-09-16/7e340c365497b159e6f2ec9dabcb551d3569624c.pdf",
-   "decisao": "real",
-   "rede": 0.053
-  },
-  {
-   "titulo": "Diário Oficial de Poço Verde (SE) 2026-08-21 — \"edital de chamamento público\" associação",
-   "url": "https://data.queridodiario.ok.org.br/2805505/2026-08-21/f4d18f962e93739b8fd2744ebe0a02de124a5946.pdf",
-   "decisao": "real",
-   "rede": 0.053
-  },
-  {
-   "titulo": "Diário Oficial de Maceió (AL) 2026-07-31 — \"chamamento público\" \"organizações da sociedade civil\"",
-   "url": "https://data.queridodiario.ok.org.br/2704302/2026-07-31/aec73ac432bb2ed1df54c4cc5e1467b42eab203f.pdf",
-   "decisao": "real",
-   "rede": 0.054
-  },
-  {
-   "titulo": "Credenciamento para contratação de artistas nas categorias cantor solo, banda, dupla e artista voz e violão… — MUNICIPIO DE FRANCISCO DUMONT",
-   "url": "https://pncp.gov.br/app/editais/16885485000188/2026/24",
-   "decisao": "descartada",
-   "rede": 0.94
-  },
-  {
-   "titulo": "Prêmio Guardiãs FNRB",
-   "url": "https://www.gov.br/mma/pt-br/assuntos/bioeconomia/patrimonio-genetico/reparticao-de-beneficios/premio-guardias-da-sociobiodiversidade",
-   "decisao": "real",
-   "rede": 0.061
-  },
-  {
-   "titulo": "MUNICIPIO DE BELMONTE — credenciamento de pessoas jurídicas de direito privado, com ou sem fins lucrativos, assegurada a preferência às enti",
-   "url": "https://pncp.gov.br/app/editais/13634977000102/2026/129",
-   "decisao": "descartada",
-   "rede": 0.938
-  },
-  {
-   "titulo": "MUNICIPIO DE ENTRE RIOS — CREDENCIAMENTO de pessoas jurídicas de direito privado, com ou sem fins lucrativos, assegurada a preferência às en",
-   "url": "https://pncp.gov.br/app/editais/14126981000122/2026/13",
-   "decisao": "descartada",
-   "rede": 0.934
-  },
-  {
-   "titulo": "Diário Oficial de Aguaí (SP) 2026-09-14 — \"edital de chamamento público\" associação",
-   "url": "https://data.queridodiario.ok.org.br/3500303/2026-09-14/b4763fff098632c5c805d5baaf68a381d2793fdd.pdf",
-   "decisao": "real",
-   "rede": 0.072
-  },
-  {
-   "titulo": "Editais O Mapa das Organizações da Sociedade Civil , em parceria com a plataforma Prosas — plataforma para seleção e monitoramento de inicia",
-   "url": "https://duckduckgo.com/l?uddg=https%3A%2F%2Fmapaosc.ipea.gov.br%2Feditais&rut=3fd1f5e5054ea00dc87917bb31aca961a43d9e97637a67e8985abaf07f8e9737",
-   "decisao": "real",
-   "rede": 0.077
-  },
-  {
-   "titulo": "Edital de Chamamento Público Nº 01/2026",
-   "url": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/01/1768591320_SEI_85022756_Edital.pdf",
-   "decisao": "real",
-   "rede": 0.081
-  },
-  {
-   "titulo": "Prorrogado prazo para submissão de propostas ao edital de Conservação da Biodiversidade Legado Verdes do Cerrado — FAPEG — Fundação de Ampar",
-   "url": "https://goias.gov.br/parquesdegoias/edital-de-biodiversidade/",
-   "decisao": "real",
-   "rede": 0.082
-  },
-  {
-   "titulo": "12ª edição do Prêmio Fundação Banco do Brasil de Tecnologia Social recebe inscrições",
-   "url": "https://captadores.org.br/editais/12a-edicao-do-premio-fundacao-banco-do-brasil-de-tecnologia-social-recebe-inscricoes",
-   "decisao": "real",
-   "rede": 0.084
-  },
-  {
-   "titulo": "Prefeitura de Cachoeira Alta — Edital nº 001/2026 (vinculado a processo seletivo de estagiários)",
-   "url": "https://diariooficial.abc.go.gov.br/portal/visualizacoes/pdf/7388/#e:7388",
-   "decisao": "descartada",
-   "rede": 0.915
-  },
-  {
-   "titulo": "SUP. EST. DE LICITACAO — O presente Chamamento Público tem por objeto selecionar Organização da Sociedade Civil – OSC para celebração de Ter",
-   "url": "https://pncp.gov.br/app/editais/04696490000163/2026/147",
-   "decisao": "descartada",
-   "rede": 0.915
-  },
-  {
-   "titulo": "MUNICIPIO DE TUBARAO — [Portal de Compras Públicas] - Credenciamento de empresas para prestação de serviços de acolhimento institucional de ",
-   "url": "https://pncp.gov.br/app/editais/82928656000133/2026/245",
-   "decisao": "descartada",
-   "rede": 0.909
-  },
-  {
-   "titulo": "Credenciamento de organizações da sociedade civil, para fins de habilitação prévia e composição de cadastro de parceiros aptos a propor, est",
-   "url": "https://pncp.gov.br/app/editais/18299670000116/2026/59",
-   "decisao": "real",
-   "rede": 0.091
-  },
-  {
-   "titulo": "Diário Oficial de Poço Verde (SE) 2026-09-18 — \"edital de chamamento público\" associação",
-   "url": "https://data.queridodiario.ok.org.br/2805505/2026-09-18/8d390463165aa1729a8bd32def7e26cd8dbb9011.pdf",
-   "decisao": "descartada",
-   "rede": 0.907
-  },
-  {
-   "titulo": "Editais de Destinação de Recursos ou Bens",
-   "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
-   "decisao": "real",
-   "rede": 0.094
-  },
-  {
-   "titulo": "Organizações da Sociedade Civil",
-   "url": "https://www.gov.br/transferegov/pt-br/osc/osc",
-   "decisao": "descartada",
-   "rede": 0.904
-  }
- ],
+ "modelo_treinado_em": "2026-10-14T05:54:08+00:00",
  "fila_de_validacao": [
   {
    "titulo": "Brasilcap abre edital para projetos sociais, culturais, esportivos e de saúde",
@@ -364,7 +160,7 @@
    "titulo": "Secult Goiás divulga plano de ação final do edital Arranjos Regionais 2026",
    "url": "https://goias.gov.br/cultura/secult-goias-divulga-plano-de-acao-final-do-edital-arranjos-regionais-2026",
    "nota": 0.49,
-   "incerteza": 0.979
+   "incerteza": 0.98
   },
   {
    "titulo": "CREDENCIAMENTO ELETRÔNICO DE PESSOAS FÍSICAS E JURÍDICAS PARA PRESTAÇÃO DE SERVIÇOS DE APRESENTAÇÕES MUSICAIS… — MUNICIPIO DE DIVINOLANDIA",
@@ -436,19 +232,19 @@
    "titulo": "14/09/2026 14h38",
    "url": "https://www.juatuba.mg.gov.br/portal/download/chamamento-publico-anexos/hR-wPP",
    "nota": 0.486,
-   "incerteza": 0.972
+   "incerteza": 0.973
   },
   {
    "titulo": "14/09/2026 14h38",
    "url": "https://www.juatuba.mg.gov.br/portal/download/chamamento-publico-anexos/Kd-wPP",
    "nota": 0.486,
-   "incerteza": 0.972
+   "incerteza": 0.973
   },
   {
    "titulo": "14/09/2026 14h38",
    "url": "https://www.juatuba.mg.gov.br/portal/download/chamamento-publico-anexos/sh-wPP",
    "nota": 0.486,
-   "incerteza": 0.972
+   "incerteza": 0.973
   },
   {
    "titulo": "Edital Audiovisual IV – Circulação, Licenciamento e Distribuição",
@@ -465,7 +261,7 @@
   {
    "titulo": "Edital Centralizadora 2026: Guia para Captar Recursos · Capitaai",
    "url": "https://www.planalto.gov.br/ccivil_03/leis/l8666cons.htm",
-   "nota": 0.485,
+   "nota": 0.486,
    "incerteza": 0.971
   },
   {
