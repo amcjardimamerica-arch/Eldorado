@@ -15,7 +15,7 @@ class TesteContinuacao(unittest.TestCase):
     def test_gravacao_com_reserva_e_grupo_proprio(self):
         for arq in ("motores-empresas.yml", "analise-sistema.yml"):
             w = (ROOT / ".github/workflows" / arq).read_text(encoding="utf-8")
-            self.assertIn("git reset -q --mixed origin/main", w, arq); self.assertIn("for i in 1 2 3 4 5 6; do", w, arq)
+            self.assertIn("git reset -q --mixed origin/main", w, arq); self.assertIn("for i in 1 2 3 4 5 6; do", w, arq); self.assertIn("gravado pela reserva", w, arq)
         self.assertIn("group: analise-sistema", (ROOT / ".github/workflows/analise-sistema.yml").read_text(encoding="utf-8"))
 
     def test_sala_mostra_o_que_faltava(self):
