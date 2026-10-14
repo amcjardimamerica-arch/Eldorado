@@ -155,7 +155,26 @@ def link_de_origem_pncp(url: str, getter) -> str | None:
         js = json.loads(getter(f"https://pncp.gov.br/api/consulta/v1/orgaos/{cnpj}/compras/{ano}/{seq}"))
     except Exception:  # noqa: BLE001
         return None
-    lk = (js.get("linkSistemaOrigem") or "").strip()
+    for campo in ("linkSistemaOrigem", "linkProcessoEletronico"):      # 14/10 (treino): o 2º campo cobre quem não preenche o 1º
+        lk = (js.get(campo) or "").strip()
+        if lk and eh_fonte(lk):
+            return lk
+    return None
+
+
+def diario_original_querido(url: str, getter) -> str | None:
+    """Querido Diário: o endereço ORIGINAL do diário, publicado pelo município (API pública do projeto)."""
+    m = re.search(r"queridodiario\.ok\.org\.br/(\d{7})/(\d{4}-\d{2}-\d{2})/([0-9a-f]{20,})", url or "")
+    if not m:
+        return None
+    ibge, dia, h = m.groups()
+    try:
+        js = json.loads(getter(f"https://queridodiario.ok.org.br/api/gazettes?territory_ids={ibge}&published_since={dia}&published_until={dia}&size=20"))
+    except Exception:  # noqa: BLE001
+        return None
+    gz = js.get("gazettes") or []
+    alvo = next((g for g in gz if h in str(g.get("txt_url") or "") + str(g.get("url") or "") + str(g.get("file_checksum") or "")), None) or (gz[0] if len(gz) == 1 else None)
+    lk = str((alvo or {}).get("url") or "").strip()
     return lk if lk and eh_fonte(lk) else None
 
 
@@ -169,6 +188,9 @@ def resolver(url: str, titulo: str = "", orgao: str = "", getter=None, A: dict |
     if out["replicador"] and "pncp.gov.br" in _dom(url):
         fonte = link_de_origem_pncp(url, getter)
         out["passos"].append(f"PNCP → link de origem do órgão: {fonte or 'não informado'}")
+    if out["replicador"] and "queridodiario" in _dom(url):
+        fonte = diario_original_querido(url, getter)
+        out["passos"].append(f"Querido Diário → diário original do município: {fonte or 'não encontrado'}")
     if out["replicador"] and not fonte:
         try:
             html = getter(url)
