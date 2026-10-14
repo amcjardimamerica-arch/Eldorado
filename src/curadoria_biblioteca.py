@@ -77,6 +77,9 @@ def fora_da_abrangencia(x: dict) -> bool:
     (titular, 02/10: edital de OSC de outro município é oportunidade para OSC e compõe um livro próprio)."""
     if do_pncp(x) or x.get("excecao_abrangencia"):
         return False
+    from .regra_abrangencia import capital_citada       # 14/10 (titular): livro municipal de CAPITAL de outro estado fica
+    if capital_citada(f"{_txt(x)} {x.get('pagina') or ''}"):
+        return False
     from .livros_opressores import uf_do_dominio
     _uf, _niv = uf_do_dominio(x.get("pagina"))
     if _niv == "municipal" and _uf != "GO":

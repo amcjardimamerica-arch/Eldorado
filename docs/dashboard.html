@@ -1684,6 +1684,14 @@ box-sizing:border-box;}
       try{ const r=await fetch(u,{cache:"no-store"}); if(r.ok){ SC=await r.json(); break; } }catch(err){} }
     if(!SC){ $("nv-leitura").textContent="A sala de controle aparece depois da próxima passagem do maestro."; return; }
     desenha(); };
+  // 14/10 (titular): dados em tempo real — a cada 1 minuto busca a leitura; se mudou, redesenha sem mexer na rolagem
+  // nem fechar a janela aberta (o fluxo 37 refaz a leitura logo que qualquer fluxo de dados termina)
+  setInterval(async()=>{
+    if(document.hidden||!SC||$("v-neural").classList.contains("oculto")||(document.getElementById("nv-holo")||{style:{}}).style.display==="block") return;   // janela aberta: espera fechar
+    try{ const r=await fetch("https://raw.githubusercontent.com/amcjardimamerica-arch/Eldorado/main/docs/dados/sala_controle.json?t="+Date.now(),{cache:"no-store"});
+      if(!r.ok) return; const novo=await r.json(); if(!novo||novo.em===SC.em) return;
+      const y=window.scrollY; SC=novo; desenha(); requestAnimationFrame(()=>window.scrollTo(0,y)); }catch(err){}
+  },60000);
   // portal: a janela, o véu e a dica ficam no corpo da página — nenhum container do painel a recorta
   (function(){ const P=document.createElement("div"); P.id="nv-portal"; document.body.appendChild(P); ["nv-veu","nv-holo","nv-dica"].forEach(k=>{const el=$(k); if(el) P.appendChild(el);}); })();
   $("nv-veu").addEventListener("click",()=>nvFecha());

@@ -35,7 +35,8 @@ def _horas(ts: str | None, agora: datetime) -> float | None:
     if not ts:
         return None
     try:
-        t = datetime.fromisoformat(str(ts).replace("Z", "+00:00"))
+        _s = str(ts).replace("Z", "+00:00")
+        t = datetime.fromisoformat(_s + "T12:00:00+00:00" if len(_s) == 10 else _s)   # 14/10: data só com o dia
         if t.tzinfo is None:
             t = t.replace(tzinfo=timezone.utc)
         return round((agora - t).total_seconds() / 3600, 2)
@@ -174,7 +175,7 @@ def montar(agora: datetime | None = None) -> dict:
            resultado=f"{cz.get('em_verificacao_com_onde_buscar_do_livro', 0)} em verificação já sabem onde buscar pelo livro")
     mon = op.get("monitoramento") or {}
     _instr(I, agora, id="es_vigilancia", sub="Esteira", nome="Livros vigiados pelo próprio motor", valor=len(op.get("ligados") or {}) or None, unidade="livros", escala=None,
-           quando=mon.get("em") or None, cadencia_h=26,
+           quando=mon.get("em") or op.get("atualizado_em") or None, cadencia_h=26,
            faz="Liga o livro com edital aberto, prestes a abrir ou de fluxo contínuo, com pesquisa focada.",
            efeito=(f"abertos {mon.get('abertos')} · prestes a abrir {mon.get('prestes_a_abrir')} · contínuos {mon.get('fluxo_continuo')}" if mon
                    else "o resumo da regra de 11/10 ainda não foi gravado"),

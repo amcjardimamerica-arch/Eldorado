@@ -907,6 +907,9 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
             except Exception:  # noqa: BLE001
                 pass
             if a["id"] not in existentes:
+                from .regra_abrangencia import filtro as _abr      # 14/10 (titular): o motor descarta municipal de outro estado (fora das capitais)
+                if _abr(s.get("id"), a):
+                    continue
                 try:                                     # 02/10: data original da publicação + data da consulta
                     from .integridade import completar_datas
                     completar_datas(a)

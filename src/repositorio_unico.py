@@ -117,6 +117,9 @@ def municipal_fora_de_goias(r: dict, uf_agregador: str | None = None) -> str | N
         return None
     if _municipio_goiano(f"{r.get('orgao') or ''} {r.get('titulo') or ''}"):
         return None                                    # 14/10: cita um dos 246 municípios de Goiás → é de Goiás (fica)
+    from .regra_abrangencia import capital_citada       # 14/10 (titular): municipais das CAPITAIS de outros estados ficam
+    if capital_citada(f"{r.get('orgao') or ''} {r.get('titulo') or ''} {r.get('url') or ''}"):
+        return None
     uf = str(r.get("uf") or uf_agregador or "").upper()
     if uf not in UFS:
         m = _DOM_UF.search(f"{r.get('link_oficial') or ''} {r.get('url') or ''}")
