@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-14T14:48:57+00:00",
+  "em": "2026-10-14T15:04:16+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-14T14:35:41+00:00",
+  "ultimo_voo": "2026-10-14T14:52:16+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,89 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 209,
+    "missoes": 210,
     "validadas": 6,
     "parciais": 54,
-    "insuficientes": 145,
+    "insuficientes": 146,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 163,
+      "sim": 164,
       "nao": 19
     },
     "estrelas_de_ouro": 7,
     "fontes_novas_para_os_motores": 7,
-    "tempo_medio_min": 13.8
+    "tempo_medio_min": 13.7
   },
   "missoes": [
+    {
+      "em": "2026-10-14T14:52:16+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
+      "alvo": "Chamamento Público para Seleção de Projetos Culturais e Artísticos - Edital nº 01/2020 \n                                     \n              ",
+      "qualidade": "insuficiente",
+      "comprovados": 4,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Território",
+        "Requisitos",
+        "Anexos",
+        "Destinação"
+      ],
+      "pagina_oficial": null,
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi comprovado com informações sobre seu objeto e financiador, o que permite identificar sua existência e área de atuação.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital abrange sua região, se alinha com suas atividades culturais e artísticas e se atende aos requisitos não explicitados, como critérios de elegibilidade.",
+        "proximo_passo": "Consultar o edital completo para verificar detalhes como prazos, requisitos e destinação dos recursos.",
+        "risco": "A falta de informações sobre prazos, requisitos e destinação pode impedir a associação de se qualificar adequadamente para o edital."
+      },
+      "erro": null,
+      "segundos": 718,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
+      "id": "ec17363306949ff916df",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Seleção de Projetos Culturais e Artísticos",
+          "trecho": "Chamamento Público para Seleção de Projetos Culturais e Artísticos - Edital nº 01/2020",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Nova Independência",
+          "trecho": "Prefeitura Municipal de Nova Independência - Chamamento Público para Seleção de Projetos Culturais e Artísticos - Edital nº 01/2020",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "Chamamento Público para Seleção de Projetos Culturais e Artísticos",
+          "oficial": false,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura Municipal de Nova Independência",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-14T14:35:41+00:00",
       "modo": "validar",
@@ -2344,94 +2412,6 @@
       "indicios": [],
       "rotas": [
         "site_do_financiador"
-      ]
-    },
-    {
-      "em": "2026-10-14T02:46:48+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Edital nº 10/2023 - economia criativa - lei paulo gustavo — Goiás",
-      "qualidade": "parcial",
-      "comprovados": 10,
-      "dispensados": 1,
-      "total": 12,
-      "nao_resolvidos": [
-        "Resultado",
-        "Prazo de recurso"
-      ],
-      "pagina_oficial": "https://goias.gov.br/cultura/edital-2025-lei-paulo-gustavo/",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital está comprovado com informações detalhadas sobre objeto, valor, prazo de inscrição, requisitos e outros dados relevantes.",
-        "para_a_amc": "A associação comunitária precisaria ter sede e foro no Estado de Goiás há pelo menos 2 anos, possuir atividade de cunho artístico-cultural no setor do Audiovisual e estar cadastrada ativamente na Plataforma Baru.",
-        "proximo_passo": "Verificar se a associação comunitária atende aos requisitos do edital e se cadastrar na Plataforma Baru.",
-        "risco": "A associação pode não atender aos requisitos de sede, foro e atividade no setor do Audiovisual, ou não estar cadastrada na Plataforma Baru."
-      },
-      "erro": null,
-      "segundos": 1027,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 8,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso",
-      "id": "op-op-9183b3b22da8",
-      "encontrou": {
-        "Objeto": {
-          "valor": "apoio financeiro às propostas apresentadas pelo segmento do audiovisual no Estado de Goiás",
-          "trecho": "O apoio visa a participação no evento Ventana Sur 2025 (https://ventana-sur.com/en/), que será realizado em dezembro de 2025, na cidade de Buenos Aires, Argentina, com o propósito ",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "dispensado — O prazo de inscrição está explicitamente definido no texto.",
-          "trecho": "Para se inscrever no Edital, o proponente deve encaminhar toda documentação obrigatória relatada no item 7.4, de 28/08/2025 até o dia 05/09/25 às 23h59m59s (horário de Brasília). [",
-          "oficial": false,
-          "dispensado": true
-        },
-        "Valor": {
-          "valor": "R$ 47.000,00 (quarenta e sete mil reais), divididos da seguinte forma: a) Categoria - APOIO A FEIRAS DE NEGÓCIOS NO SETOR DO AUDIOVISUAL; b) Serão aprovados quatro projetos no valor de R$ 11.750,00 (onze mil setecentos e cinquenta reais) cada.",
-          "trecho": "O valor total disponibilizado para este Edital é de R$ 47.000,00 (quarenta e sete mil reais), divididos da seguinte forma:",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "SECRETARIA DE ESTADO DA CULTURA",
-          "trecho": "O Estado de Goiás, representado pela Secretaria de Estado da Cultura, torna pública a realização do processo seletivo de projetos culturais que pleiteiem recursos da Lei Complement",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "Poderão se inscrever neste Edital: 4.2.1. Pessoas jurídicas de direito privado, com ou sem fins lucrativos, que apresentem, expressamente, em seus atos constitutivos, finalidade ou",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "O objetivo deste edital é selecionar projetos culturais de empresas do setor audiovisual de Goiás para concessão de apoio financeiro.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · fomento",
-          "trecho": "A destinação dos recursos previstos para este edital está prevista nos termos do § 8º do art. 24 do Decreto nº 11.525/2023.",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "cadastro ativo e atualizado na Plataforma Baru, possuir sede e foro no Estado de Goiás há pelo menos 2 (dois) anos, atividade de cunho artístico-cultural no setor do Audiovisual",
-          "trecho": "Os proponentes devem ter cadastro ativo e atualizado na Plataforma Baru. Poderão se inscrever neste Edital: 4.2.1. Pessoas jurídicas de direito privado, com ou sem fins lucrativos,",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "Secretaria de Estado da Cultura",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
       ]
     }
   ],
