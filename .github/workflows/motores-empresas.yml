@@ -90,6 +90,7 @@ jobs:
             git checkout origin/main -- src tests scripts config docs/dashboard.html .github 2>/dev/null || true
             git add -A biblioteca_alexandria dados estado docs/dados 2>/dev/null || true
             git diff --cached --quiet || git commit -q -m "$MSG (reaplicada)"
+            git push -q && { echo "gravado pela reserva ($i)"; exit 0; }     # 14/10: a reserva envia na hora (antes voltava ao conflito)
             sleep 15
           done
           echo "REGISTRO FALHOU após 6 tentativas"; exit 1
