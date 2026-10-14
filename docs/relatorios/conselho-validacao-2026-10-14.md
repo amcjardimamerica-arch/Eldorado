@@ -120,15 +120,15 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 117,
-   "achados_total_agora": 117,
+   "achados_total_1a": 119,
+   "achados_total_agora": 119,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 1403,
-   "achados_total_agora": 1403,
+   "achados_total_1a": 1424,
+   "achados_total_agora": 1424,
    "no_fluxo": 5,
    "confirmadas": 0
   },
@@ -141,8 +141,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 90,
-   "achados_total_agora": 90,
+   "achados_total_1a": 92,
+   "achados_total_agora": 92,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -169,15 +169,15 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 56,
-   "achados_total_agora": 56,
+   "achados_total_1a": 57,
+   "achados_total_agora": 57,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 84,
-   "achados_total_agora": 84,
+   "achados_total_1a": 85,
+   "achados_total_agora": 85,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -225,7 +225,7 @@
  "pontos_com_redundancia": 12,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 7752
+ "exemplos_da_rede_de_rotas": 7837
 }
 ```
 
@@ -236,12 +236,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 79.2,
- "fora_dos_motores_pct_agora": 79.2,
+ "fora_dos_motores_pct_1a": 78.9,
+ "fora_dos_motores_pct_agora": 78.9,
  "origem": {
   "agregador/outra": 323,
   "motor": 118,
-  "Piloto": 125
+  "Piloto": 118
  },
  "dominios_so_de_agregador": [
   {
@@ -364,20 +364,20 @@
 
 ```json
 {
- "fontes_recebidas": 313,
+ "fontes_recebidas": 315,
  "por_origem": {
   "conselho (fontes irmãs)": 150,
-  "Cartório (site oficial certificado)": 133,
-  "Espião (privado/internacional)": 30
+  "Cartório (site oficial certificado)": 134,
+  "Espião (privado/internacional)": 31
  },
  "lidas_nas_ultimas_24h": 221,
  "dimensionamento": {
-  "fontes": 313,
+  "fontes": 315,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 7,
-  "cobertura_diaria": 313,
+  "cobertura_diaria": 315,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238

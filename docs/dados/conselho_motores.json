@@ -1,5 +1,5 @@
 {
- "em": "2026-10-14T10:35:45+00:00",
+ "em": "2026-10-14T12:12:27+00:00",
  "conselho": [
   {
    "id": "falso_verde",
@@ -46,24 +46,26 @@
  ],
  "resumo": {
   "motores": 148,
-  "motores_com_falha": 98,
+  "motores_com_falha": 99,
   "falhas_por_tipo": {
    "CONGELADO": 21,
    "SILÊNCIO LONGO": 44,
+   "ESTRANGULADO": 1,
    "VAZAMENTO": 48,
    "CEGO": 23,
+   "CUSTO SEM RETORNO": 2,
+   "PÁGINA VAZIA": 8,
    "INTERMITENTE": 2,
-   "RUÍDO": 28,
-   "PÁGINA VAZIA": 7
+   "RUÍDO": 28
   }
  },
  "cobertura": {
   "origem_das_oportunidades": {
    "agregador/outra": 323,
    "motor": 118,
-   "Piloto": 125
+   "Piloto": 118
   },
-  "fora_dos_motores_pct": 79.2,
+  "fora_dos_motores_pct": 78.9,
   "ufs_sem_motor_com_oportunidade": [
    {
     "uf": "GO",
@@ -113,7 +115,7 @@
   }
  },
  "fontes_irmas": {
-  "total": 232,
+  "total": 229,
   "top": [
    {
     "dominio": "baoba.org.br",
@@ -122,8 +124,8 @@
    },
    {
     "dominio": "institutolojasrenner.org.br",
-    "peso": 15,
-    "url": "https://www.institutolojasrenner.org.br/jornada-fortalecidas/"
+    "peso": 17,
+    "url": "https://www.institutolojasrenner.org.br/edital/"
    },
    {
     "dominio": "zurich.com.br",
@@ -156,19 +158,24 @@
     "url": "https://www.licitario.com.br"
    },
    {
+    "dominio": "fundacaocargill.org.br",
+    "peso": 10,
+    "url": "https://fundacaocargill.org.br/"
+   },
+   {
     "dominio": "feirapreta.com.br",
     "peso": 9,
     "url": "https://feirapreta.com.br/pretas-potencias-2/"
    },
    {
+    "dominio": "fbb.org.br",
+    "peso": 9,
+    "url": "https://fbb.org.br/edital-publico/editalriodoce/"
+   },
+   {
     "dominio": "transforma.fbb.org.br",
     "peso": 8,
     "url": "https://transforma.fbb.org.br/premio/17"
-   },
-   {
-    "dominio": "difusionconcausa.com",
-    "peso": 8,
-    "url": "https://difusionconcausa.com/actinver-apoya-2026/"
    },
    {
     "dominio": "editaisdobrasil.com",
@@ -184,11 +191,6 @@
     "dominio": "contrafluxofestival.com.br",
     "peso": 8,
     "url": "https://www.contrafluxofestival.com.br"
-   },
-   {
-    "dominio": "fundacaocargill.org.br",
-    "peso": 8,
-    "url": "https://fundacaocargill.org.br/"
    },
    {
     "dominio": "fondationfrancoisschneider.org",
@@ -231,14 +233,14 @@
     "url": "https://conteudo.agosocial.com.br/programa-nutrir-citrosuco"
    },
    {
-    "dominio": "fbb.org.br",
-    "peso": 7,
-    "url": "https://fbb.org.br/edital-publico/editalriodoce/"
-   },
-   {
     "dominio": "agencia.petrobras.com.br",
     "peso": 6,
     "url": "https://agencia.petrobras.com.br/busca?q=&category=11449850"
+   },
+   {
+    "dominio": "institutoinad.org.br",
+    "peso": 6,
+    "url": "https://institutoinad.org.br/editais/edital-de-chamada-publica-no-003-2026-ater-para-mulheres-que-transformam-e-conquistam-autonomias/"
    }
   ]
  },
@@ -373,7 +375,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "43 leituras vazias seguidas",
+     "prova": "44 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -388,7 +390,7 @@
      "bytes": 101
     }
    ],
-   "achados_total": 404,
+   "achados_total": 408,
    "valor": "confirma",
    "achados_30d": 131,
    "cadencia": {
@@ -421,7 +423,14 @@
     "cadencia_recomendada": 1,
     "dia_forte": "terça"
    },
-   "falhas": []
+   "falhas": [
+    {
+     "conselheiro": "falso_verde",
+     "falha": "ESTRANGULADO",
+     "prova": "viu 5233 links e nenhum virou candidato",
+     "melhoria": "o filtro de candidatos está estreito demais: incluir termos de chamamento/edital da fonte e seguir PDFs"
+    }
+   ]
   },
   "alego-pl": {
    "nome": "Assembleia Legislativa de Goiás — proposições",
@@ -430,12 +439,12 @@
     {
      "url": "https://portal.al.go.leg.br/",
      "http": 200,
-     "bytes": 133627
+     "bytes": 133306
     },
     {
      "url": "https://portal.al.go.leg.br/noticias",
      "http": 200,
-     "bytes": 113207
+     "bytes": 113457
     }
    ],
    "achados_total": 17,
@@ -450,7 +459,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "71 leituras vazias seguidas",
+     "prova": "72 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     },
     {
@@ -496,8 +505,14 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "118 leituras vazias seguidas",
+     "prova": "119 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "CUSTO SEM RETORNO",
+     "prova": "133 s na última leitura sem achado",
+     "melhoria": "reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem"
     }
    ]
   },
@@ -560,8 +575,14 @@
     },
     {
      "conselheiro": "falso_verde",
+     "falha": "PÁGINA VAZIA",
+     "prova": "leitura em 0 s com 0 página(s)",
+     "melhoria": "a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte"
+    },
+    {
+     "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "69 leituras vazias seguidas",
+     "prova": "70 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -709,7 +730,7 @@
      "posts": 6
     }
    ],
-   "achados_total": 139,
+   "achados_total": 141,
    "valor": "confirma",
    "achados_30d": 31,
    "cadencia": {
@@ -2023,7 +2044,7 @@
     {
      "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1",
      "http": 200,
-     "bytes": 155318
+     "bytes": 155324
     },
     {
      "url": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
@@ -2031,7 +2052,7 @@
      "bytes": 140613
     }
    ],
-   "achados_total": 117,
+   "achados_total": 119,
    "valor": "ruído",
    "achados_30d": 13,
    "cadencia": {
@@ -2049,7 +2070,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "117 achados e nenhuma oportunidade confirmada",
+     "prova": "119 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -2075,9 +2096,9 @@
      "bytes": 48553
     }
    ],
-   "achados_total": 1403,
+   "achados_total": 1424,
    "valor": "ruído",
-   "achados_30d": 246,
+   "achados_30d": 245,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -2087,7 +2108,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "1403 achados e nenhuma oportunidade confirmada",
+     "prova": "1424 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -2301,7 +2322,7 @@
      "status": "lida"
     }
    ],
-   "achados_total": 90,
+   "achados_total": 92,
    "valor": "ruído",
    "achados_30d": 13,
    "cadencia": {
@@ -2319,7 +2340,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "90 achados e nenhuma oportunidade confirmada",
+     "prova": "92 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     }
    ]
@@ -2373,7 +2394,7 @@
      "itens": 129
     }
    ],
-   "achados_total": 342,
+   "achados_total": 344,
    "valor": "ouro",
    "achados_30d": 89,
    "cadencia": {
@@ -2531,9 +2552,9 @@
      "bytes": 3108
     }
    ],
-   "achados_total": 2383,
+   "achados_total": 2394,
    "valor": "ouro",
-   "achados_30d": 664,
+   "achados_30d": 665,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -2601,7 +2622,7 @@
     {
      "url": "https://www.congressonacional.leg.br",
      "http": 200,
-     "bytes": 151532,
+     "bytes": 151528,
      "itens": 9
     },
     {
@@ -2629,7 +2650,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "76 leituras vazias seguidas",
+     "prova": "77 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3953,7 +3974,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "85 leituras vazias seguidas",
+     "prova": "86 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3980,7 +4001,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "58 leituras vazias seguidas",
+     "prova": "59 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -3989,7 +4010,7 @@
    "nome": "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)",
    "tipo": "ministerio_publico",
    "saude": [],
-   "achados_total": 56,
+   "achados_total": 57,
    "valor": "ruído",
    "achados_30d": 12,
    "cadencia": {
@@ -4013,7 +4034,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "56 achados e nenhuma oportunidade confirmada",
+     "prova": "57 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4030,13 +4051,11 @@
    "saude": [
     {
      "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
-     "erro": "HTTPError",
-     "code": 500,
-     "waf": null,
-     "causa": "HTTP Error 500: Internal Server Error"
+     "http": 200,
+     "itens": 44
     }
    ],
-   "achados_total": 84,
+   "achados_total": 85,
    "valor": "ruído",
    "achados_30d": 19,
    "cadencia": {
@@ -4048,7 +4067,7 @@
     {
      "conselheiro": "funil",
      "falha": "RUÍDO",
-     "prova": "84 achados e nenhuma oportunidade confirmada",
+     "prova": "85 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
     },
     {
@@ -4081,7 +4100,7 @@
     {
      "conselheiro": "falso_verde",
      "falha": "SILÊNCIO LONGO",
-     "prova": "54 leituras vazias seguidas",
+     "prova": "55 leituras vazias seguidas",
      "melhoria": "reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço"
     }
    ]
@@ -4101,7 +4120,7 @@
    ],
    "achados_total": 39,
    "valor": "ruído",
-   "achados_30d": 2,
+   "achados_30d": 1,
    "cadencia": {
     "cadencia_atual": 1,
     "cadencia_recomendada": 1,
@@ -4113,6 +4132,12 @@
      "falha": "RUÍDO",
      "prova": "39 achados e nenhuma oportunidade confirmada",
      "melhoria": "exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício"
+    },
+    {
+     "conselheiro": "redundancia",
+     "falha": "CUSTO SEM RETORNO",
+     "prova": "167 s na última leitura sem achado",
+     "melhoria": "reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem"
     }
    ]
   },
