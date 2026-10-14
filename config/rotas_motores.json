@@ -1,2765 +1,3274 @@
 {
- "versao": 1,
- "atualizado_em": "2026-09-20",
- "regra": "Cada motor regular declara PELO MENOS DUAS rotas onde o recurso divulga suas oportunidades (o mesmo edital sai no diário oficial E no site da secretaria; a empresa publica no próprio site E nos portais do terceiro setor). O LÉXICO tem duas camadas: a camada 1 (direcionamento) corre na leitura de links e títulos e decide quais páginas abrir; a camada 2 (contexto) corre no texto do documento e decide se é oportunidade. Um motor sem rota alternativa é um motor que fica cego quando a rota principal muda.",
- "camada_1_geral": [
-  "chamamento",
-  "chamamento público",
-  "edital",
-  "termo de fomento",
-  "termo de colaboração",
-  "acordo de cooperação",
-  "seleção pública",
-  "seleção de projetos",
-  "fomento",
-  "parceria",
-  "inscrições",
-  "credenciamento de organizações",
-  "prêmio",
-  "concurso de projetos",
-  "subvenção",
-  "auxílio",
-  "cofinanciamento",
-  "emenda",
-  "destinação",
-  "doação"
- ],
- "camada_1_veto": [
-  "pregão",
-  "ata de registro",
-  "aquisição de",
-  "contratação de empresa",
-  "tomada de preços",
-  "concorrência pública",
-  "leilão",
-  "nomeação",
-  "exoneração",
-  "portaria de pessoal",
-  "licença",
-  "alvará"
- ],
- "motores": {
-  "do-goiania": {
-   "perfil": "diário oficial municipal — a fonte primária de Goiânia",
-   "rotas": [
-    {
-     "nome": "Lista oficial das edições do ano (Casa Civil)",
-     "url": "https://www.goiania.go.gov.br/shtml//portal/casacivil/lista_diarios.asp?ano=2026",
-     "tipo": "diario",
-     "exige_brasil": true
-    },
-    {
-     "nome": "Querido Diário — Goiânia (IBGE 5208707), texto integral das edições",
-     "url": "https://api.queridodiario.ok.org.br/gazettes?territory_ids=5208707",
-     "tipo": "api"
-    },
-    {
-     "nome": "Secretaria Municipal de Cultura — editais PNAB",
-     "url": "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-cultura/",
-     "tipo": "secretaria",
-     "exige_brasil": true
-    },
-    {
-     "nome": "Conselhos Municipais (CMDCA, CMAS, CMI) — resoluções e editais dos fundos",
-     "url": "https://www.goiania.go.gov.br/conselhos-municipais/",
-     "tipo": "conselho",
-     "exige_brasil": true
-    }
-   ],
-   "lexico_camada1": [
-    "Aldir Blanc",
-    "aviso de chamamento",
-    "chamada pública",
+  "versao": 1,
+  "atualizado_em": "2026-09-20",
+  "regra": "Cada motor regular declara PELO MENOS DUAS rotas onde o recurso divulga suas oportunidades (o mesmo edital sai no diário oficial E no site da secretaria; a empresa publica no próprio site E nos portais do terceiro setor). O LÉXICO tem duas camadas: a camada 1 (direcionamento) corre na leitura de links e títulos e decide quais páginas abrir; a camada 2 (contexto) corre no texto do documento e decide se é oportunidade. Um motor sem rota alternativa é um motor que fica cego quando a rota principal muda.",
+  "camada_1_geral": [
+    "chamamento",
     "chamamento público",
-    "CMAS",
-    "CMDCA",
-    "CMI",
-    "edital de seleção",
-    "emenda impositiva",
-    "FMAS",
-    "FMDCA",
-    "FMI",
-    "fundo municipal",
-    "inexigibilidade de chamamento",
-    "organizações da sociedade civil",
-    "OSC",
-    "PNAB",
-    "pontos de cultura",
-    "subvenção social",
-    "termo de colaboração",
-    "termo de fomento",
-    "utilidade pública"
-   ],
-   "lexico_camada2": [
-    "Lei 13.019",
-    "MROSC",
-    "Lei Municipal",
-    "plano de trabalho",
-    "das inscrições",
-    "do objeto",
-    "cronograma",
-    "recursos do fundo",
-    "entidade sem fins lucrativos",
-    "assistência social",
-    "Jardim América",
-    "Região Sul"
-   ],
-   "coleta": "nuvem + local",
-   "nota_coleta": "na nuvem lê o Querido Diário (texto das edições de Goiânia); no computador do titular lê também o PDF oficial do dia, que o portal só entrega a IP brasileiro",
-   "veto_camada1": [
-    "contrato de gestão",
-    "credenciamento",
-    "organização social na área da saúde",
-    "pessoa física"
-   ]
-  },
-  "do-goias": {
-   "perfil": "diário oficial estadual — SECULT, SEDS, SES, SEEL e decretos de emenda",
-   "rotas": [
-    {
-     "nome": "Diário do Estado — busca de texto completo",
-     "url": "https://diariooficial.abc.go.gov.br/busca/busca/buscar/query/0/",
-     "tipo": "diario",
-     "exige_brasil": true
-    },
-    {
-     "nome": "Diário do Estado — edições do dia, sumário por órgão e texto da matéria",
-     "url": "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/edicoes_from_data/",
-     "tipo": "diario",
-     "exige_brasil": true
-    },
-    {
-     "nome": "SECULT-GO — Chamamentos Públicos 2026 (Lei 13.019)",
-     "url": "https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14/",
-     "tipo": "secretaria"
-    },
-    {
-     "nome": "SECULT-GO — Chamamentos Públicos (geral)",
-     "url": "https://goias.gov.br/cultura/chamamentos-publicos-secult/",
-     "tipo": "secretaria"
-    },
-    {
-     "nome": "SEDS / Goiás Social — notícias e editais (API)",
-     "url": "https://goias.gov.br/social/wp-json/wp/v2/posts",
-     "tipo": "secretaria"
-    },
-    {
-     "nome": "SEEL — Chamamento público",
-     "url": "https://goias.gov.br/esporte/chamamento-publico/",
-     "tipo": "secretaria"
-    }
-   ],
-   "lexico_camada1": [
-    "chamamento público",
+    "edital",
     "termo de fomento",
     "termo de colaboração",
-    "PNAB",
-    "Goyazes",
-    "Fundo de Arte e Cultura",
-    "Lei Paulo Gustavo",
-    "FEAS",
-    "cofinanciamento",
-    "Goiás Social",
-    "OVG",
-    "emenda parlamentar",
-    "decreto de programação",
-    "CEDCA",
-    "FIA",
-    "CEAS",
-    "pessoa idosa",
-    "Aldir Blanc",
-    "subvenção social",
-    "sem fins lucrativos",
-    "seleção de projetos",
-    "emenda impositiva"
-   ],
-   "lexico_camada2": [
-    "Lei 13.019",
-    "Lei Estadual",
-    "SECULT",
-    "SEDS",
-    "SES-GO",
-    "SEEL",
-    "plano de trabalho",
-    "das inscrições",
-    "Plataforma Baru",
-    "Portal Goiás Social",
-    "entidades de assistência social"
-   ],
-   "coleta": "nuvem + local",
-   "nota_coleta": "tenta o Diário na nuvem (busca e edição do dia); se o portal recusar, a causa fica no diagnóstico e a coleta local lê as fontes A e B. As secretarias (fonte C) rodam na nuvem todo dia",
-   "veto_camada1": [
-    "processo seletivo simplificado",
-    "pregão",
-    "registro de preços",
-    "agricultura familiar",
-    "contrato de gestão"
-   ]
-  },
-  "dou": {
-   "perfil": "diário federal — ministérios, fundos e conselhos nacionais, prefeituras de Goiás no DOU, doação de bens e coleta solidária em Goiás/DF",
-   "rotas": [
-    {
-     "nome": "DOU Seção 1 — Leitura do Jornal (atos normativos, resoluções de conselho)",
-     "url": "https://www.in.gov.br/leiturajornal?secao=do1",
-     "tipo": "diario",
-     "verificada_em": "2026-10-01"
-    },
-    {
-     "nome": "DOU Seção 3 — Leitura do Jornal (avisos, editais, extratos)",
-     "url": "https://www.in.gov.br/leiturajornal?secao=do3",
-     "tipo": "diario",
-     "verificada_em": "2026-10-01"
-    },
-    {
-     "nome": "DOU edições extras (anunciadas no próprio dia)",
-     "url": "https://www.in.gov.br/leiturajornal?secao=do1e",
-     "tipo": "diario",
-     "verificada_em": "2026-10-01"
-    },
-    {
-     "nome": "DOU busca semanal (reserva)",
-     "url": "https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento&s=todos&exactDate=semana",
-     "tipo": "diario",
-     "verificada_em": "2026-10-01"
-    }
-   ],
-   "lexico_camada1": [
-    "chamamento público",
-    "edital de chamamento",
+    "acordo de cooperação",
     "seleção pública",
-    "FNCA",
-    "CONANDA",
-    "Fundo Nacional do Idoso",
-    "Lei Rouanet",
-    "PRONAS",
-    "PRONON",
-    "Lei de Incentivo ao Esporte",
-    "termo de fomento",
-    "MROSC",
-    "Ministério do Desenvolvimento"
-   ],
-   "lexico_camada2": [
-    "Lei 13.019",
-    "Decreto 8.726",
-    "organizações da sociedade civil",
-    "Transferegov",
-    "plano de trabalho",
-    "das inscrições",
-    "do objeto",
-    "recursos do fundo",
-    "emenda parlamentar"
-   ],
-   "nota_01_10": "leitor próprio (src/diario_uniao.py): as rotas acima são as que ele lê; as páginas de MinC/MDS/Participa+ saíram — os editais desses ministérios saem no DOU e são lidos lá. Os léxicos abaixo ficam só como referência do painel; a decisão é do classificador comum (src/atos_diario.py) com os vetos federais."
-  },
-  "pncp-api": {
-   "perfil": "vetor de DESCOBERTA com prazo oficial — propostas abertas e busca do portal; o documento oficial é o PDF do órgão (/arquivos)",
-   "rotas": [
-    {
-     "nome": "API do PNCP — propostas abertas (data oficial de encerramento)",
-     "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/proposta",
-     "tipo": "api",
-     "verificada_em": "2026-10-01"
-    },
-    {
-     "nome": "Busca do portal PNCP — editais recebendo proposta",
-     "url": "https://pncp.gov.br/api/search/",
-     "tipo": "api",
-     "verificada_em": "2026-10-01"
-    },
-    {
-     "nome": "Arquivos do edital do órgão hospedados no PNCP (/arquivos/) — documento oficial",
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/",
-     "tipo": "documento",
-     "verificada_em": "2026-10-01"
-    }
-   ],
-   "lexico_camada1": [
-    "chamamento público",
-    "termo de fomento",
-    "termo de colaboração",
-    "organização da sociedade civil",
-    "Lei 13.019",
-    "seleção de OSC",
-    "fomento"
-   ],
-   "lexico_camada2": [
-    "Lei 13.019/2014",
-    "termo de fomento",
-    "termo de colaboração",
-    "sem fins lucrativos",
-    "plano de trabalho"
-   ],
-   "veto_camada1": [
-    "Lei 14.133",
-    "pregão",
-    "aquisição",
-    "prestação de serviços",
-    "credenciamento de empresas",
-    "credenciamento de pessoas jurídicas",
-    "com ou sem fins lucrativos"
-   ],
-   "filtro_de_objeto": true,
-   "nota_filtro": "só entra no acervo o que serve ao objeto da associação (assistência social e cultura)",
-   "nota_01_10": "leitor próprio (src/pncp_osc.py). Os vetos de camada 1 abaixo ('com ou sem fins lucrativos', 'prestação de serviços', 'aquisição') barravam chamamentos de OSC e ficam só como referência do painel; a decisão é do classificador do motor 04."
-  },
-  "camara-goiania-pl": {
-   "perfil": "insumo de HABILITAÇÃO e de ACOMPANHAMENTO — utilidade pública municipal (a da própria associação em destaque), leis de fomento/parceria/isenção para entidades e emendas impositivas; chamamento da Câmara é raro",
-   "cadencia": "diária",
-   "rotas": [
-    {
-     "nome": "SUAP da Câmara — consulta pública de processos legislativos (por assunto)",
-     "url": "https://suap.camaragyn.go.gov.br/camara/consulta_publica/",
-     "tipo": "legislativo",
-     "verificada_em": "2026-10-01"
-    },
-    {
-     "nome": "Portal da Câmara (Plone) — busca de notícias em RSS",
-     "url": "https://www.goiania.go.leg.br/search_rss",
-     "tipo": "noticias",
-     "verificada_em": "2026-10-01"
-    }
-   ],
-   "lexico_camada1": [
-    "utilidade pública",
-    "declara de utilidade pública",
-    "associação de moradores",
-    "entidade",
-    "denominação"
-   ],
-   "lexico_camada2": [
-    "Jardim América",
-    "A.M.C.",
-    "associação",
-    "sem fins lucrativos"
-   ],
-   "coleta": "local",
-   "nota_coleta": "recusa endereço estrangeiro; roda pelo computador do titular, não pelo voo",
-   "nota_01_10": "leitor próprio (src/camara_goiania.py): lê os processos por assunto no SUAP, a tramitação dos processos da associação (documentos e datas) e as notícias; os léxicos abaixo ficam só como referência do painel"
-  },
-  "alego-pl": {
-   "perfil": "insumo de EMENDA — proposições e emendas impositivas estaduais (janela out-nov); achados são projetos de lei, não editais",
-   "rotas": [
-    {
-     "nome": "SPL da ALEGO — índice cronológico das proposições",
-     "url": "https://alegodigital.al.go.leg.br/spl/consulta-cronologico.aspx",
-     "tipo": "legislativo",
-     "exige_brasil": true
-    },
-    {
-     "nome": "SPL da ALEGO — consulta por tipo (projeto de lei, emenda, PLOA)",
-     "url": "https://alegodigital.al.go.leg.br/spl/consulta-tipo.aspx",
-     "tipo": "legislativo",
-     "exige_brasil": true
-    },
-    {
-     "nome": "SPL da ALEGO — sessões, pauta prévia e ordem do dia",
-     "url": "https://alegodigital.al.go.leg.br/spl/sessoes.aspx",
-     "tipo": "legislativo",
-     "exige_brasil": true
-    },
-    {
-     "nome": "Proposições da ALEGO",
-     "url": "https://portal.al.go.leg.br/",
-     "tipo": "legislativo"
-    },
-    {
-     "nome": "LOA e emendas impositivas — SEFAZ/SEGPLAN",
-     "url": "https://www.economia.go.gov.br/",
-     "tipo": "orcamento"
-    }
-   ],
-   "lexico_camada1": [
-    "emenda",
-    "emenda impositiva",
-    "emenda parlamentar",
-    "utilidade pública",
-    "LOA",
-    "orçamento",
-    "transferência especial",
-    "indicação",
-    "projeto de lei",
-    "PLOA",
-    "lei orçamentária",
-    "fundo estadual",
-    "subvenção",
-    "doação",
-    "organização da sociedade civil",
-    "OSC",
-    "Goyazes",
-    "Protege Goiás"
-   ],
-   "lexico_camada2": [
-    "entidade beneficiária",
-    "Goiânia",
-    "assistência social",
-    "cultura",
-    "valor da emenda",
-    "programação orçamentária"
-   ],
-   "veto_camada1": [
-    "título de cidadania",
-    "títulos de cidadania",
-    "requerimento",
-    "moção",
-    "sessão solene",
-    "homenagem",
-    "credenciamento para a imprensa",
-    "licitação",
-    "concurso público"
-   ],
-   "nota_03_10": "teste do motor 05: rota principal trocada para o SPL (proposições) e vetos para o noticiário de sessões (títulos, requerimentos, moções)"
-  },
-  "dj-trf1-go": {
-   "perfil": "destinações de pena federais — raras em Goiás",
-   "cadencia": "mensal",
-   "rotas": [
-    {
-     "nome": "SJGO — Notícias (onde sai o chamamento de entidades)",
-     "url": "https://www.trf1.jus.br/sjgo/imprensa/noticias",
-     "tipo": "secretaria",
-     "robots_proibe": true
-    },
-    {
-     "nome": "SJGO — Editais e Portarias",
-     "url": "https://www.trf1.jus.br/sjgo/processual/editais-e-portarias",
-     "tipo": "diario",
-     "robots_proibe": true
-    },
-    {
-     "nome": "Portal do CNJ — busca (republica editais dos tribunais; motor do CNJ)",
-     "url": "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+Goi%C3%A1s",
-     "tipo": "secretaria"
-    }
-   ],
-   "lexico_camada1": [
-    "prestação pecuniária",
-    "destinação de recursos",
-    "edital de cadastramento",
-    "entidades beneficiárias",
-    "transação penal",
-    "pena pecuniária",
-    "chamamento público",
-    "cadastramento de entidades",
-    "projetos sociais",
-    "acordo de não persecução penal",
-    "ANPP",
-    "suspensão condicional do processo"
-   ],
-   "lexico_camada2": [
-    "Resolução CNJ 154",
-    "entidade pública ou privada com destinação social",
-    "projetos sociais",
-    "Goiás",
-    "Goiânia"
-   ],
-   "coleta": "manual (robots.txt proíbe robôs)",
-   "nota_coleta": "03/10: o site responde da nuvem, mas o robots.txt proíbe qualquer robô (Disallow: /); o motor registra e não lê — o titular confere Notícias da SJGO uma vez por mês"
-  },
-  "dje-tjgo": {
-   "perfil": "varas de execução penal de Goiânia — prestações pecuniárias destinadas a entidades, sem edital e sem disputa",
-   "rotas": [
-    {
-     "nome": "TJGO — editais das varas de execução penal (recusa IP estrangeiro)",
-     "url": "https://www.tjgo.jus.br/",
-     "tipo": "tribunal",
-     "exige_brasil": true
-    },
-    {
-     "nome": "Diário da Justiça Eletrônico do TJGO",
-     "url": "https://www.tjgo.jus.br/index.php/dje",
-     "tipo": "diario",
-     "exige_brasil": true
-    },
-    {
-     "nome": "Portal Corregedoria — cadastramento de entidades (Res. CNJ 154)",
-     "url": "https://corregedoria.tjgo.jus.br/",
-     "tipo": "secretaria",
-     "exige_brasil": true
-    }
-   ],
-   "armadilha": "jusbrasil.com.br é agregador e vetor — nunca fonte; 15 bloqueios e zero achados",
-   "lexico_camada1": [
-    "prestação pecuniária",
-    "edital de cadastramento",
-    "entidades",
-    "vara de execução penal",
-    "VEP",
-    "destinação",
-    "Resolução 154"
-   ],
-   "lexico_camada2": [
-    "entidade com destinação social",
-    "projeto social",
-    "Goiânia",
-    "prestação de contas",
-    "habilitação de entidades"
-   ],
-   "coleta": "local",
-   "nota_coleta": "recusa endereço estrangeiro; roda pelo computador do titular, não pelo voo",
-   "agregado_a": "judiciario-cnj-tjgo"
-  },
-  "cnj-destinacoes": {
-   "perfil": "REFERÊNCIA, não motor — a fonte real de destinações são os tribunais estaduais (decisão da auditoria de 20/09)",
-   "cadencia": "mensal",
-   "rotas": [
-    {
-     "nome": "CNJ — Resolução 154 e orientações",
-     "url": "https://www.cnj.jus.br/",
-     "tipo": "referencia"
-    },
-    {
-     "nome": "Tribunais estaduais (TJGO coberto pelo motor dje-tjgo)",
-     "url": "https://www.tjgo.jus.br/",
-     "tipo": "tribunal"
-    }
-   ],
-   "lexico_camada1": [
-    "prestação pecuniária",
-    "destinação",
-    "Resolução 154",
-    "entidades",
-    "chamamento público",
-    "termo de fomento",
-    "termo de colaboração",
     "seleção de projetos",
-    "edital de apoio",
     "fomento",
-    "patrocínio",
-    "prêmio",
-    "organizações da sociedade civil"
-   ],
-   "lexico_camada2": [
-    "projeto social",
-    "cadastramento de entidades"
-   ],
-   "agregado_a": "judiciario-cnj-tjgo",
-   "coleta": "nuvem"
-  },
-  "empresas-incentivadas": {
-   "perfil": "site das maiores empresas contribuintes de Goiás — procura a página de responsabilidade social",
-   "rotas": [
-    {
-     "nome": "Site institucional da empresa (ranking dos 100 maiores contribuintes ICMS-GO)",
-     "url": "biblioteca_alexandria/empresas/ranking_destinacao_tributaria.json",
-     "tipo": "empresa"
-    },
-    {
-     "nome": "Portais do terceiro setor onde a empresa anuncia (Observatório, ABCR, GIFE)",
-     "url": "https://observatorio3setor.org.br/editais/",
-     "tipo": "vetor"
-    }
-   ],
-   "lexico_camada1": [
-    "edital",
-    "seleção de projetos",
-    "investimento social",
-    "responsabilidade social",
-    "patrocínio",
-    "incentivo fiscal",
-    "Lei Rouanet",
-    "FIA",
-    "Fundo do Idoso",
-    "Lei do Esporte",
-    "PRONAS",
-    "instituto",
-    "fundação"
-   ],
-   "lexico_camada2": [
-    "inscrições",
-    "organizações sem fins lucrativos",
-    "critérios de seleção",
-    "valor do apoio",
-    "cronograma",
-    "Goiás",
-    "Goiânia",
-    "região Centro-Oeste"
-   ]
-  },
-  "plat-observatorio-3setor": {
-   "perfil": "vetor de DESCOBERTA nacional — anuncia, não publica; a fonte oficial é localizada depois",
-   "rotas": [
-    {
-     "nome": "Observatório — editais",
-     "url": "https://observatorio3setor.org.br/editais/",
-     "tipo": "vetor"
-    },
-    {
-     "nome": "Site oficial do financiador anunciado (localizado a partir da matéria)",
-     "url": null,
-     "tipo": "fonte_derivada"
-    }
-   ],
-   "armadilha": "página de mídia kit / apresentação institucional foi guardada como edital — proibido pelo extrator",
-   "lexico_camada1": [
-    "abre edital",
-    "abre inscrições",
-    "seleção de projetos",
-    "chamada",
-    "até R$",
-    "para organizações",
-    "para OSCs",
-    "prazo"
-   ],
-   "lexico_camada2": [
-    "inscrições até",
-    "podem participar",
-    "organizações da sociedade civil",
-    "valor",
-    "regulamento",
-    "site oficial"
-   ],
-   "agregado_a": "site-observatorio-terceiro-setor"
-  },
-  "plat-abcr": {
-   "perfil": "vetor de DESCOBERTA nacional (Captadores/ABCR)",
-   "rotas": [
-    {
-     "nome": "ABCR — editais",
-     "url": "https://captadores.org.br/editais/",
-     "tipo": "vetor"
-    },
-    {
-     "nome": "Site oficial do financiador anunciado",
-     "url": null,
-     "tipo": "fonte_derivada"
-    }
-   ],
-   "lexico_camada1": [
-    "edital",
-    "chamada",
-    "seleção",
-    "inscrições",
-    "até R$",
-    "OSCs",
-    "organizações sociais",
-    "prazo"
-   ],
-   "lexico_camada2": [
-    "inscrições até",
-    "podem participar",
-    "valor",
-    "regulamento",
-    "site oficial"
-   ],
-   "agregado_a": "site-abcr"
-  },
-  "plat-gife": {
-   "perfil": "curadoria do investimento social privado — a seleção mensal de editais do GIFE e as oportunidades da Capta, lidas pela API do WordPress (não a home nem a ficha dos associados)",
-   "rotas": [
-    {
-     "nome": "GIFE — API de posts: categoria Editais (seleção mensal) + busca de notícias de edital",
-     "url": "https://gife.org.br/wp-json/wp/v2/posts",
-     "tipo": "api",
-     "verificada_em": "2026-10-01"
-    },
-    {
-     "nome": "Capta — API de posts: categoria Oportunidades (Região, Inscrições até, link do edital)",
-     "url": "https://capta.org.br/wp-json/wp/v2/posts",
-     "tipo": "api",
-     "verificada_em": "2026-10-01"
-    }
-   ],
-   "lexico_camada1": [
-    "edital",
-    "chamada",
-    "seleção de projetos",
-    "inscrições",
-    "instituto",
-    "fundação",
-    "investimento social",
-    "chamamento público",
-    "termo de fomento",
-    "termo de colaboração",
-    "edital de apoio",
-    "fomento",
-    "patrocínio",
-    "prêmio",
-    "organizações da sociedade civil"
-   ],
-   "lexico_camada2": [
-    "organizações da sociedade civil",
-    "valor",
-    "prazo",
-    "regulamento"
-   ],
-   "nota_01_10": "leitor próprio (src/gife_editais.py): as rotas acima são as que ele lê. A home, a /agenda/ (eventos), a /associados/ (fichas institucionais) e a /transparencia (erro diário) saíram. Os léxicos abaixo ficam só como referência do painel; a decisão é do classificador do motor (prazo, público OSC, abrangência nacional ou Goiás)."
-  },
-  "plat-prosas": {
-   "perfil": "maior plataforma de editais do terceiro setor no Brasil",
-   "rotas": [
-    {
-     "nome": "Prosas — editais abertos",
-     "url": "https://prosas.com.br/editais",
-     "tipo": "plataforma"
-    },
-    {
-     "nome": "Site oficial do financiador (link 'saiba mais' de cada edital)",
-     "url": null,
-     "tipo": "fonte_derivada"
-    }
-   ],
-   "lexico_camada1": [
-    "edital",
-    "inscrições abertas",
-    "seleção",
-    "até",
-    "R$",
-    "organizações",
-    "projetos sociais",
-    "nacional",
-    "Goiás",
-    "Centro-Oeste",
-    "chamamento público",
-    "termo de fomento",
-    "termo de colaboração",
-    "seleção de projetos",
-    "edital de apoio",
-    "fomento",
-    "patrocínio",
-    "prêmio",
-    "organizações da sociedade civil"
-   ],
-   "lexico_camada2": [
-    "quem pode participar",
-    "inscrições até",
-    "valor por projeto",
-    "regulamento",
-    "elegibilidade"
-   ]
-  },
-  "plat-prosas-premios": {
-   "perfil": "prêmios e concursos — muitos a pessoa física; o filtro de objeto barra",
-   "rotas": [
-    {
-     "nome": "Prosas — prêmios",
-     "url": "https://prosas.com.br/editais?natureza=premio",
-     "tipo": "plataforma"
-    },
-    {
-     "nome": "Site oficial do organizador do prêmio",
-     "url": null,
-     "tipo": "fonte_derivada"
-    }
-   ],
-   "lexico_camada1": [
-    "prêmio",
-    "concurso",
-    "reconhecimento",
-    "organizações",
-    "iniciativas sociais",
-    "inscrições",
-    "chamamento público",
-    "termo de fomento",
-    "termo de colaboração",
-    "seleção de projetos",
-    "edital de apoio",
-    "fomento",
-    "patrocínio",
-    "organizações da sociedade civil"
-   ],
-   "lexico_camada2": [
-    "podem concorrer",
-    "organizações da sociedade civil",
-    "premiação em dinheiro",
-    "regulamento"
-   ]
-  },
-  "plat-salic": {
-   "perfil": "Lei Rouanet — janela anual no Salic (1º/02 a 31/10, confirmar IN vigente)",
-   "rotas": [
-    {
-     "nome": "MinC — Lei Rouanet (página institucional)",
-     "url": "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet",
-     "tipo": "secretaria"
-    },
-    {
-     "nome": "Salic — sistema de propostas",
-     "url": "https://salic.cultura.gov.br/",
-     "tipo": "plataforma"
-    },
-    {
-     "nome": "Instrução Normativa vigente (prazos e limites)",
-     "url": "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet/legislacao",
-     "tipo": "regramento"
-    },
-    {
-     "nome": "VerSalic — consulta pública de projetos e editais",
-     "url": "https://versalic.cultura.gov.br/",
-     "tipo": "listagem"
-    }
-   ],
-   "lexico_camada1": [
-    "Lei Rouanet",
-    "PRONAC",
-    "Salic",
-    "proposta cultural",
-    "incentivo fiscal",
-    "mecenato",
-    "Instrução Normativa",
-    "prazo de apresentação",
-    "chamamento público",
-    "termo de fomento",
-    "termo de colaboração",
-    "seleção de projetos",
-    "edital de apoio",
-    "fomento",
-    "patrocínio",
-    "prêmio",
-    "organizações da sociedade civil"
-   ],
-   "lexico_camada2": [
-    "proponente",
-    "pessoa jurídica sem fins lucrativos",
-    "limite por proponente",
-    "captação",
-    "aprovação"
-   ]
-  },
-  "plat-secult-go": {
-   "perfil": "cinco portas da SECULT-GO — Chamamentos, Goyazes, Fundo de Arte e Cultura, PNAB, Lei Paulo Gustavo",
-   "rotas": [
-    {
-     "nome": "Chamamentos Públicos 2026",
-     "url": "https://goias.gov.br/cultura/chamamentos-publicos-2026/",
-     "tipo": "secretaria"
-    },
-    {
-     "nome": "Editais 2026 — PNAB",
-     "url": "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
-     "tipo": "secretaria"
-    },
-    {
-     "nome": "Portal PNAB do Estado",
-     "url": "https://pnab.cultura.go.gov.br",
-     "tipo": "plataforma"
-    },
-    {
-     "nome": "Diário Oficial do Estado (publicação obrigatória)",
-     "url": "https://diariooficial.abc.go.gov.br/",
-     "tipo": "diario",
-     "exige_brasil": true
-    }
-   ],
-   "armadilha": "goias.gov.br/cultura/termos-de-fomento é lista de termos JÁ CELEBRADOS — nunca terá prazo",
-   "lexico_camada1": [
-    "chamamento público",
-    "edital",
-    "PNAB",
-    "Goyazes",
-    "Fundo de Arte e Cultura",
-    "Lei Paulo Gustavo",
-    "inscrições",
-    "cronograma",
-    "retificação",
-    "termo de fomento",
-    "termo de colaboração",
-    "seleção de projetos",
-    "edital de apoio",
-    "fomento",
-    "patrocínio",
-    "prêmio",
-    "organizações da sociedade civil"
-   ],
-   "lexico_camada2": [
-    "Plataforma Baru",
-    "agentes culturais",
-    "organizações da sociedade civil",
-    "das inscrições",
-    "resultado",
-    "habilitação"
-   ]
-  },
-  "plat-ovg": {
-   "perfil": "OVG — maior operador de repasses a entidades de Goiás",
-   "rotas": [
-    {
-     "nome": "OVG — portal",
-     "url": "https://www.ovg.org.br/",
-     "tipo": "operador"
-    },
-    {
-     "nome": "OVG — editais e chamamentos",
-     "url": "https://www.ovg.org.br/editais",
-     "tipo": "operador"
-    },
-    {
-     "nome": "Goiás Social (programas operados pela OVG)",
-     "url": "https://goias.gov.br/social/",
-     "tipo": "secretaria"
-    },
-    {
-     "nome": "Diário Oficial do Estado",
-     "url": "https://diariooficial.abc.go.gov.br/",
-     "tipo": "diario",
-     "exige_brasil": true
-    }
-   ],
-   "lexico_camada1": [
-    "edital",
-    "chamamento",
-    "credenciamento de entidades",
-    "entidades parceiras",
-    "Mais Social",
-    "cofinanciamento",
-    "termo de fomento",
-    "termo de colaboração",
-    "inscrições",
-    "chamamento público",
-    "seleção de projetos",
-    "edital de apoio",
-    "fomento",
-    "patrocínio",
-    "prêmio",
-    "organizações da sociedade civil"
-   ],
-   "lexico_camada2": [
-    "organizações da sociedade civil",
-    "plano de trabalho",
-    "assistência social",
-    "das inscrições",
-    "documentos exigidos",
-    "CMAS"
-   ]
-  },
-  "plat-goias-social": {
-   "perfil": "programas sociais do Estado com repasse a entidades (Auxílio Nutricional já validado)",
-   "rotas": [
-    {
-     "nome": "Goiás Social",
-     "url": "https://goias.gov.br/social/",
-     "tipo": "secretaria"
-    },
-    {
-     "nome": "SEDS — editais",
-     "url": "https://goias.gov.br/desenvolvimento-social/",
-     "tipo": "secretaria"
-    }
-   ],
-   "lexico_camada1": [
-    "Auxílio Nutricional",
-    "cofinanciamento",
-    "edital",
-    "chamamento",
-    "entidades filantrópicas",
-    "assistência social",
-    "inscrições",
-    "CMAS",
-    "chamamento público",
-    "termo de fomento",
-    "termo de colaboração",
-    "seleção de projetos",
-    "edital de apoio",
-    "fomento",
-    "patrocínio",
-    "prêmio",
-    "organizações da sociedade civil"
-   ],
-   "lexico_camada2": [
-    "organizações da sociedade civil",
-    "plano de trabalho",
-    "das inscrições",
-    "certificado",
-    "CEBAS"
-   ]
-  },
-  "plat-fundos-estaduais-go": {
-   "perfil": "fundos estaduais com conselho — publicam por RESOLUÇÃO, não só por edital",
-   "rotas": [
-    {
-     "nome": "CEDCA-GO — FIA estadual (resoluções e editais)",
-     "url": "https://goias.gov.br/desenvolvimento-social/",
-     "tipo": "conselho"
-    },
-    {
-     "nome": "Conselho Estadual do Idoso — Fundo do Idoso",
-     "url": "https://goias.gov.br/desenvolvimento-social/",
-     "tipo": "conselho"
-    },
-    {
-     "nome": "SEMAD — FEMA",
-     "url": "https://goias.gov.br/meioambiente/",
-     "tipo": "secretaria"
-    },
-    {
-     "nome": "Diário Oficial do Estado (resoluções dos conselhos)",
-     "url": "https://diariooficial.abc.go.gov.br/",
-     "tipo": "diario",
-     "exige_brasil": true
-    }
-   ],
-   "lexico_camada1": [
-    "FIA",
-    "Fundo da Infância",
-    "Fundo do Idoso",
-    "FUNJUVE",
-    "FEMA",
-    "resolução",
-    "CEDCA",
-    "CEI",
-    "edital",
-    "chamamento",
-    "seleção de projetos",
-    "chamamento público",
-    "termo de fomento",
-    "termo de colaboração",
-    "edital de apoio",
-    "fomento",
-    "patrocínio",
-    "prêmio",
-    "organizações da sociedade civil"
-   ],
-   "lexico_camada2": [
-    "entidades registradas",
-    "plano de aplicação",
-    "das inscrições",
-    "organizações da sociedade civil",
-    "conselho estadual"
-   ]
-  },
-  "plat-fapeg": {
-   "perfil": "FAP de Goiás — OSC entra como parceira em chamadas de extensão e inovação social",
-   "cadencia": "semanal",
-   "rotas": [
-    {
-     "nome": "FAPEG — chamadas públicas",
-     "url": "https://goias.gov.br/fapeg/",
-     "tipo": "fundacao"
-    },
-    {
-     "nome": "Diário Oficial do Estado",
-     "url": "https://diariooficial.abc.go.gov.br/",
-     "tipo": "diario",
-     "exige_brasil": true
-    }
-   ],
-   "lexico_camada1": [
-    "chamada pública",
-    "extensão",
-    "inovação social",
-    "popularização da ciência",
-    "parceria com organizações",
-    "edital",
-    "chamamento público",
-    "termo de fomento",
-    "termo de colaboração",
-    "seleção de projetos",
-    "edital de apoio",
-    "fomento",
-    "patrocínio",
-    "prêmio",
-    "organizações da sociedade civil"
-   ],
-   "lexico_camada2": [
-    "organizações da sociedade civil",
-    "instituição parceira",
-    "das inscrições",
-    "cronograma"
-   ]
-  },
-  "plat-prefeituras-50-go": {
-   "perfil": "25 maiores prefeituras de Goiás — cada uma publica no portal próprio E no diário/PNCP",
-   "rotas": [
-    {
-     "nome": "Portal da prefeitura (config/municipios_maiores.json → GO)",
-     "url": "config/municipios_maiores.json",
-     "tipo": "prefeitura"
-    },
-    {
-     "nome": "Diário oficial do município (Querido Diário / próprio)",
-     "url": "https://queridodiario.ok.org.br/",
-     "tipo": "diario"
-    },
-    {
-     "nome": "PNCP como descoberta (número do processo)",
-     "url": "https://pncp.gov.br/",
-     "tipo": "vetor"
-    }
-   ],
-   "lexico_camada1": [
-    "chamamento público",
-    "termo de fomento",
-    "termo de colaboração",
-    "edital de seleção",
-    "organizações da sociedade civil",
-    "fundo municipal",
-    "CMDCA",
-    "CMAS",
-    "seleção de projetos",
-    "edital de apoio",
-    "fomento",
-    "patrocínio",
-    "prêmio"
-   ],
-   "lexico_camada2": [
-    "Lei 13.019",
-    "plano de trabalho",
-    "das inscrições",
-    "do objeto",
-    "entidade sem fins lucrativos"
-   ]
-  },
-  "plat-empresas-editais-incentivados": {
-   "perfil": "EDITAL publicado pela própria empresa para distribuir renúncia fiscal (modelo Porto Itapoá, Renner, Maria Emília)",
-   "rotas": [
-    {
-     "nome": "Página de editais e home dos institutos/fundações das empresas que já destinam (banco verificado)",
-     "url": "config/empresas_destinadoras.json",
-     "tipo": "empresa"
-    },
-    {
-     "nome": "Portais do terceiro setor onde a empresa anuncia",
-     "url": "https://captadores.org.br/editais/",
-     "tipo": "vetor"
-    },
-    {
-     "nome": "Redes sociais institucionais (LinkedIn/Instagram) — pista, nunca fonte",
-     "url": null,
-     "tipo": "pista"
-    }
-   ],
-   "lexico_camada1": [
-    "edital",
-    "projetos incentivados",
-    "seleção de projetos",
-    "FIA",
-    "Fundo do Idoso",
-    "Lei de Incentivo ao Esporte",
-    "Lei Rouanet",
-    "PRONAS",
-    "PRONON",
-    "inscrições",
-    "até R$",
-    "chamamento público",
-    "termo de fomento",
-    "termo de colaboração",
-    "edital de apoio",
-    "fomento",
-    "patrocínio",
-    "prêmio",
-    "organizações da sociedade civil",
-    "chamada pública",
-    "banco de projetos",
-    "cadastro de projetos",
-    "recebe projetos",
-    "abre edital",
-    "abre inscrições",
-    "abre chamada",
-    "inscrições abertas",
-    "leis de incentivo",
-    "portal de projetos",
-    "inscrever projeto"
-   ],
-   "lexico_camada2": [
-    "projetos aprovados",
-    "leis de incentivo",
-    "organizações sem fins lucrativos",
-    "critérios",
-    "cronograma",
-    "regulamento"
-   ],
-   "veto_camada1": [
-    "campus mobile",
-    "jornada liga steam",
-    "liga steam",
-    "trabalhe conosco",
-    "universitários"
-   ],
-   "nota_veto_03_10": "teste do motor 19: Prêmio e Jornada Liga STEAM (Fundação ArcelorMittal) são para escolas, professores e jovens — não para a associação; capturados como oportunidade em 03/10 sem edição aberta"
-  },
-  "plat-mp-destinacoes-reparacao": {
-   "perfil": "Ministérios Públicos — destinação de recursos de reparação e bens lesados (motor 12 v2, estudo ao vivo de 02/10/2026)",
-   "rotas": [
-    {
-     "nome": "MPT-GO — PRT 18ª Região (Goiânia e PTM Anápolis)",
-     "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
-     "tipo": "tabela_mpt"
-    },
-    {
-     "nome": "MPT-GO — PRT 18ª Região",
-     "url": "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
-     "tipo": "lista_habilitadas"
-    },
-    {
-     "nome": "MPT-GO — PRT 18ª Região (Goiânia/GO)",
-     "url": "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPT nacional — PGT - Noticias",
-     "url": "https://mpt.mp.br/search_rss?SearchableText=edital+cadastramento+entidades&sort_on=Date&sort_order=reverse",
-     "tipo": "rss"
-    },
-    {
-     "nome": "MPT nacional — PGT - Noticias",
-     "url": "https://mpt.mp.br/pgt/noticias/RSS",
-     "tipo": "rss"
-    },
-    {
-     "nome": "MPF — PR-GO",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — PR-GO",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — PR-GO",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — PR-GO",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-em-goias-cadastra-entidades-e-orgaos-publicos-para-recebimento-bens-e-valores-decorrentes-da-atuacao-da-instituicao",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — nacional (busca)",
-     "url": "https://www.mpf.mp.br/search?SearchableText=edital+chamamento+recebimento+bens+valores",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — PR-BA (modelo)",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — nacional",
-     "url": "https://www.mpf.mp.br/servicos/mpf-servicos",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPDFT — PGJ / Cema / Apma / Semas",
-     "url": "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPDFT — várias promotorias",
-     "url": "https://www.mpdft.mp.br/transparencia/index.php?item=tac",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPDFT — Sala de imprensa",
-     "url": "https://www.mpdft.mp.br/portal/index.php/comunicacao-menu/sala-de-imprensa/noticias/noticias-2026-completo",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPM — portal",
-     "url": "https://www.mpm.mp.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPU — portal",
-     "url": "https://www.mpu.mp.br/sitemap",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — Senacon / CFDD - Fundo de Defesa de Direitos D",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento",
-     "tipo": "estado_pagina"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecoes-anteriores",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/reunioes-do-cfdd/anexos-atas",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/convenios-e-transferencias",
-     "tipo": "listagem_html"
-    }
-   ],
-   "lexico_camada1": [
-    "bens lesados",
-    "chamamento",
-    "chamamento público",
-    "destinação de recursos",
-    "edital de apoio",
-    "edital de destinação",
-    "entidades",
-    "organizações da sociedade civil",
-    "projetos sociais",
-    "reparação",
-    "seleção de projetos",
-    "termo de ajustamento",
-    "termo de colaboração",
-    "termo de fomento",
-    "indicação de destinação",
-    "Sistema de Destinações",
-    "entidades assistenciais",
-    "bens e valores",
-    "Destina"
-   ],
-   "lexico_camada2": [
-    "organizações da sociedade civil",
-    "projeto social",
-    "das inscrições",
-    "habilitação",
-    "Goiás",
-    "Goiânia"
-   ],
-   "nunca_acessar": [
-    "mpgo.mp.br",
-    "destinacoes.mpt.mp.br"
-   ],
-   "observacao": "02/10: leitura pela estrutura em src/ministerios_publicos.py; o MP-GO (robots Disallow: /) não é rota"
-  },
-  "plat-cnpq-extensao": {
-   "perfil": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão que aceitam OSC como parceira",
-   "cadencia": "semanal",
-   "rotas": [
-    {
-     "nome": "CNPq — chamadas abertas para submissão",
-     "url": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
-     "tipo": "fundacao"
-    },
-    {
-     "nome": "MCTI — editais e comunicados",
-     "url": "https://www.gov.br/mcti/pt-br/centrais-de-conteudo/comunicados-mcti",
-     "tipo": "secretaria"
-    },
-    {
-     "nome": "MCTI — popularização da ciência",
-     "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/popciencia",
-     "tipo": "secretaria"
-    },
-    {
-     "nome": "Setec/MEC — educação profissional e tecnológica",
-     "url": "https://www.gov.br/mec/pt-br/composicao/setec",
-     "tipo": "secretaria"
-    }
-   ],
-   "lexico_camada1": [
-    "chamada pública",
-    "extensão",
-    "popularização da ciência",
-    "inovação social",
     "parceria",
-    "organizações da sociedade civil",
-    "edital",
-    "chamamento público",
-    "termo de fomento",
-    "termo de colaboração",
-    "seleção de projetos",
-    "edital de apoio",
-    "fomento",
-    "patrocínio",
-    "prêmio"
-   ],
-   "lexico_camada2": [
-    "instituição parceira",
-    "proponente",
-    "das inscrições",
-    "cronograma"
-   ],
-   "rotas_agregadas": [
-    {
-     "nome": "Finep",
-     "url": "http://www.finep.gov.br/chamadas-publicas/chamadaspublicas?situacao=aberta",
-     "tipo": "agregada (assistido) — lida pelo fluxo 16",
-     "motor_antigo": "site-finep"
-    }
-   ],
-   "rotas_anteriores_404": [
-    "https://www.gov.br/cnpq/pt-br/acesso-a-informacao/acoes-e-programas/programas/chamadas-publicas",
-    "https://www.gov.br/mec/pt-br/acesso-a-informacao/institucional/secretarias/secretaria-de-educacao-profissional-e-tecnologica"
-   ],
-   "veto_camada1": [
-    "bolsa",
-    "bolsas",
-    "doutorado",
-    "iniciação científica",
-    "mestrado",
-    "pesquisa oceânica",
-    "pesquisador",
-    "pesquisadores",
-    "produtividade em pesquisa",
-    "pós-doutorado",
-    "recursos humanos em áreas estratégicas",
-    "rhae",
-    "vacina"
-   ],
-   "ajuste_03_10": "rotas conferidas no navegador em 03/10/2026: as duas antigas (CNPq e Setec) davam 404 e a do MCTI era a home (2.806 links, 765 'candidatos'). Vetos de bolsa e pesquisa acadêmica: as 3 chamadas abertas do CNPq hoje são para pesquisadores (MAI/DAI, ANR, RHAE-IA)."
-  },
-  "recorrencia": {
-   "perfil": "RECORRÊNCIA — revisita a página oficial de cada oportunidade validada (retificação, prorrogação, resultado, reabertura); as rotas são dinâmicas e vêm de estado/rotas_recorrencia.json",
-   "rotas": [
-    {
-     "nome": "Página oficial de cada oportunidade validada (dinâmica)",
-     "url": "estado/rotas_recorrencia.json",
-     "tipo": "dinamica"
-    },
-    {
-     "nome": "Vetor que anunciou a oportunidade (para pegar prorrogação noticiada)",
-     "url": "https://observatorio3setor.org.br/editais/",
-     "tipo": "vetor"
-    }
-   ],
-   "lexico_camada1": [
-    "retificação",
-    "prorrogação",
-    "errata",
-    "resultado",
-    "homologação",
-    "classificados",
-    "recurso",
-    "suspensão",
-    "revogação",
-    "novo edital",
     "inscrições",
-    "cronograma",
-    "chamamento público",
-    "termo de fomento",
-    "termo de colaboração",
-    "seleção de projetos",
-    "edital de apoio",
-    "fomento",
-    "patrocínio",
-    "prêmio",
-    "organizações da sociedade civil"
-   ],
-   "lexico_camada2": [
-    "prazo prorrogado",
-    "nova data",
-    "fica retificado",
-    "resultado final",
-    "lista de habilitados",
-    "edital revogado",
-    "reabertura"
-   ]
-  },
-  "plat-piloto-aberto": {
-   "perfil": "Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.",
-   "rotas": [
-    {
-     "nome": "busca aberta por ângulo sorteado (sem rota fixa)",
-     "url": "https://html.duckduckgo.com/html/?q=",
-     "tipo": "busca"
-    },
-    {
-     "nome": "site oficial do financiador descoberto (derivado)",
-     "url": null,
-     "tipo": "fonte_derivada"
-    },
-    {
-     "nome": "plataformas ainda não catalogadas",
-     "url": "https://html.duckduckgo.com/html/?q=plataforma+editais+terceiro+setor+brasil",
-     "tipo": "busca"
-    }
-   ],
-   "lexico_camada1": [
-    "edital",
-    "chamada pública",
-    "chamamento",
-    "seleção de projetos",
-    "seleção pública",
-    "inscrições abertas",
-    "apoio a projetos",
-    "apoio institucional",
-    "fomento",
-    "financiamento de projetos",
-    "patrocínio",
-    "doação",
-    "investimento social privado",
-    "responsabilidade social",
-    "sustentabilidade",
-    "ESG",
-    "impacto social",
-    "instituto",
-    "fundação",
-    "programa social",
+    "credenciamento de organizações",
     "prêmio",
     "concurso de projetos",
-    "aceleração",
-    "incubação",
-    "grant",
-    "grants",
-    "call for proposals",
-    "request for proposals",
-    "chamamento público",
-    "termo de fomento",
-    "termo de colaboração",
-    "edital de apoio",
-    "organizações da sociedade civil"
-   ],
-   "veto_camada1": [
+    "subvenção",
+    "auxílio",
+    "cofinanciamento",
+    "emenda",
+    "destinação",
+    "doação"
+  ],
+  "camada_1_veto": [
     "pregão",
-    "licitação",
+    "ata de registro",
     "aquisição de",
     "contratação de empresa",
-    "ata de registro",
     "tomada de preços",
-    "vaga de emprego",
-    "processo seletivo simplificado",
-    "concurso público",
-    "estágio",
-    "bolsa de estudo individual",
-    "curso pago",
-    "inscrições para o evento",
-    "ingresso",
-    "venda",
+    "concorrência pública",
     "leilão",
-    "consórcio",
-    "financiamento imobiliário"
-   ],
-   "lexico_camada2": [
-    "quem pode participar",
-    "podem se inscrever",
-    "proponente",
-    "critérios de seleção",
-    "cronograma",
-    "valor do apoio",
-    "recursos disponíveis",
-    "regulamento",
-    "termo de fomento",
-    "termo de colaboração",
-    "sem fins lucrativos",
-    "CNPJ",
-    "prestação de contas",
-    "plano de trabalho"
-   ],
-   "armadilha": "portal de notícia não é site oficial — vale como pista; a descoberta só conta com o domínio próprio da organização"
+    "nomeação",
+    "exoneração",
+    "portaria de pessoal",
+    "licença",
+    "alvará"
+  ],
+  "motores": {
+    "do-goiania": {
+      "perfil": "diário oficial municipal — a fonte primária de Goiânia",
+      "rotas": [
+        {
+          "nome": "Lista oficial das edições do ano (Casa Civil)",
+          "url": "https://www.goiania.go.gov.br/shtml//portal/casacivil/lista_diarios.asp?ano=2026",
+          "tipo": "diario",
+          "exige_brasil": true
+        },
+        {
+          "nome": "Querido Diário — Goiânia (IBGE 5208707), texto integral das edições",
+          "url": "https://api.queridodiario.ok.org.br/gazettes?territory_ids=5208707",
+          "tipo": "api"
+        },
+        {
+          "nome": "Secretaria Municipal de Cultura — editais PNAB",
+          "url": "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-cultura/",
+          "tipo": "secretaria",
+          "exige_brasil": true
+        },
+        {
+          "nome": "Conselhos Municipais (CMDCA, CMAS, CMI) — resoluções e editais dos fundos",
+          "url": "https://www.goiania.go.gov.br/conselhos-municipais/",
+          "tipo": "conselho",
+          "exige_brasil": true
+        }
+      ],
+      "lexico_camada1": [
+        "Aldir Blanc",
+        "aviso de chamamento",
+        "chamada pública",
+        "chamamento público",
+        "CMAS",
+        "CMDCA",
+        "CMI",
+        "edital de seleção",
+        "emenda impositiva",
+        "FMAS",
+        "FMDCA",
+        "FMI",
+        "fundo municipal",
+        "inexigibilidade de chamamento",
+        "organizações da sociedade civil",
+        "OSC",
+        "PNAB",
+        "pontos de cultura",
+        "subvenção social",
+        "termo de colaboração",
+        "termo de fomento",
+        "utilidade pública"
+      ],
+      "lexico_camada2": [
+        "Lei 13.019",
+        "MROSC",
+        "Lei Municipal",
+        "plano de trabalho",
+        "das inscrições",
+        "do objeto",
+        "cronograma",
+        "recursos do fundo",
+        "entidade sem fins lucrativos",
+        "assistência social",
+        "Jardim América",
+        "Região Sul"
+      ],
+      "coleta": "nuvem + local",
+      "nota_coleta": "na nuvem lê o Querido Diário (texto das edições de Goiânia); no computador do titular lê também o PDF oficial do dia, que o portal só entrega a IP brasileiro",
+      "veto_camada1": [
+        "contrato de gestão",
+        "credenciamento",
+        "organização social na área da saúde",
+        "pessoa física"
+      ]
+    },
+    "do-goias": {
+      "perfil": "diário oficial estadual — SECULT, SEDS, SES, SEEL e decretos de emenda",
+      "rotas": [
+        {
+          "nome": "Diário do Estado — busca de texto completo",
+          "url": "https://diariooficial.abc.go.gov.br/busca/busca/buscar/query/0/",
+          "tipo": "diario",
+          "exige_brasil": true
+        },
+        {
+          "nome": "Diário do Estado — edições do dia, sumário por órgão e texto da matéria",
+          "url": "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/edicoes_from_data/",
+          "tipo": "diario",
+          "exige_brasil": true
+        },
+        {
+          "nome": "SECULT-GO — Chamamentos Públicos 2026 (Lei 13.019)",
+          "url": "https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14/",
+          "tipo": "secretaria"
+        },
+        {
+          "nome": "SECULT-GO — Chamamentos Públicos (geral)",
+          "url": "https://goias.gov.br/cultura/chamamentos-publicos-secult/",
+          "tipo": "secretaria"
+        },
+        {
+          "nome": "SEDS / Goiás Social — notícias e editais (API)",
+          "url": "https://goias.gov.br/social/wp-json/wp/v2/posts",
+          "tipo": "secretaria"
+        },
+        {
+          "nome": "SEEL — Chamamento público",
+          "url": "https://goias.gov.br/esporte/chamamento-publico/",
+          "tipo": "secretaria"
+        }
+      ],
+      "lexico_camada1": [
+        "chamamento público",
+        "termo de fomento",
+        "termo de colaboração",
+        "PNAB",
+        "Goyazes",
+        "Fundo de Arte e Cultura",
+        "Lei Paulo Gustavo",
+        "FEAS",
+        "cofinanciamento",
+        "Goiás Social",
+        "OVG",
+        "emenda parlamentar",
+        "decreto de programação",
+        "CEDCA",
+        "FIA",
+        "CEAS",
+        "pessoa idosa",
+        "Aldir Blanc",
+        "subvenção social",
+        "sem fins lucrativos",
+        "seleção de projetos",
+        "emenda impositiva"
+      ],
+      "lexico_camada2": [
+        "Lei 13.019",
+        "Lei Estadual",
+        "SECULT",
+        "SEDS",
+        "SES-GO",
+        "SEEL",
+        "plano de trabalho",
+        "das inscrições",
+        "Plataforma Baru",
+        "Portal Goiás Social",
+        "entidades de assistência social"
+      ],
+      "coleta": "nuvem + local",
+      "nota_coleta": "tenta o Diário na nuvem (busca e edição do dia); se o portal recusar, a causa fica no diagnóstico e a coleta local lê as fontes A e B. As secretarias (fonte C) rodam na nuvem todo dia",
+      "veto_camada1": [
+        "processo seletivo simplificado",
+        "pregão",
+        "registro de preços",
+        "agricultura familiar",
+        "contrato de gestão"
+      ]
+    },
+    "dou": {
+      "perfil": "diário federal — ministérios, fundos e conselhos nacionais, prefeituras de Goiás no DOU, doação de bens e coleta solidária em Goiás/DF",
+      "rotas": [
+        {
+          "nome": "DOU Seção 1 — Leitura do Jornal (atos normativos, resoluções de conselho)",
+          "url": "https://www.in.gov.br/leiturajornal?secao=do1",
+          "tipo": "diario",
+          "verificada_em": "2026-10-01"
+        },
+        {
+          "nome": "DOU Seção 3 — Leitura do Jornal (avisos, editais, extratos)",
+          "url": "https://www.in.gov.br/leiturajornal?secao=do3",
+          "tipo": "diario",
+          "verificada_em": "2026-10-01"
+        },
+        {
+          "nome": "DOU edições extras (anunciadas no próprio dia)",
+          "url": "https://www.in.gov.br/leiturajornal?secao=do1e",
+          "tipo": "diario",
+          "verificada_em": "2026-10-01"
+        },
+        {
+          "nome": "DOU busca semanal (reserva)",
+          "url": "https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento&s=todos&exactDate=semana",
+          "tipo": "diario",
+          "verificada_em": "2026-10-01"
+        }
+      ],
+      "lexico_camada1": [
+        "chamamento público",
+        "edital de chamamento",
+        "seleção pública",
+        "FNCA",
+        "CONANDA",
+        "Fundo Nacional do Idoso",
+        "Lei Rouanet",
+        "PRONAS",
+        "PRONON",
+        "Lei de Incentivo ao Esporte",
+        "termo de fomento",
+        "MROSC",
+        "Ministério do Desenvolvimento"
+      ],
+      "lexico_camada2": [
+        "Lei 13.019",
+        "Decreto 8.726",
+        "organizações da sociedade civil",
+        "Transferegov",
+        "plano de trabalho",
+        "das inscrições",
+        "do objeto",
+        "recursos do fundo",
+        "emenda parlamentar"
+      ],
+      "nota_01_10": "leitor próprio (src/diario_uniao.py): as rotas acima são as que ele lê; as páginas de MinC/MDS/Participa+ saíram — os editais desses ministérios saem no DOU e são lidos lá. Os léxicos abaixo ficam só como referência do painel; a decisão é do classificador comum (src/atos_diario.py) com os vetos federais."
+    },
+    "pncp-api": {
+      "perfil": "vetor de DESCOBERTA com prazo oficial — propostas abertas e busca do portal; o documento oficial é o PDF do órgão (/arquivos)",
+      "rotas": [
+        {
+          "nome": "API do PNCP — propostas abertas (data oficial de encerramento)",
+          "url": "https://pncp.gov.br/api/consulta/v1/contratacoes/proposta",
+          "tipo": "api",
+          "verificada_em": "2026-10-01"
+        },
+        {
+          "nome": "Busca do portal PNCP — editais recebendo proposta",
+          "url": "https://pncp.gov.br/api/search/",
+          "tipo": "api",
+          "verificada_em": "2026-10-01"
+        },
+        {
+          "nome": "Arquivos do edital do órgão hospedados no PNCP (/arquivos/) — documento oficial",
+          "url": "https://pncp.gov.br/pncp-api/v1/orgaos/",
+          "tipo": "documento",
+          "verificada_em": "2026-10-01"
+        }
+      ],
+      "lexico_camada1": [
+        "chamamento público",
+        "termo de fomento",
+        "termo de colaboração",
+        "organização da sociedade civil",
+        "Lei 13.019",
+        "seleção de OSC",
+        "fomento"
+      ],
+      "lexico_camada2": [
+        "Lei 13.019/2014",
+        "termo de fomento",
+        "termo de colaboração",
+        "sem fins lucrativos",
+        "plano de trabalho"
+      ],
+      "veto_camada1": [
+        "Lei 14.133",
+        "pregão",
+        "aquisição",
+        "prestação de serviços",
+        "credenciamento de empresas",
+        "credenciamento de pessoas jurídicas",
+        "com ou sem fins lucrativos"
+      ],
+      "filtro_de_objeto": true,
+      "nota_filtro": "só entra no acervo o que serve ao objeto da associação (assistência social e cultura)",
+      "nota_01_10": "leitor próprio (src/pncp_osc.py). Os vetos de camada 1 abaixo ('com ou sem fins lucrativos', 'prestação de serviços', 'aquisição') barravam chamamentos de OSC e ficam só como referência do painel; a decisão é do classificador do motor 04."
+    },
+    "camara-goiania-pl": {
+      "perfil": "insumo de HABILITAÇÃO e de ACOMPANHAMENTO — utilidade pública municipal (a da própria associação em destaque), leis de fomento/parceria/isenção para entidades e emendas impositivas; chamamento da Câmara é raro",
+      "cadencia": "diária",
+      "rotas": [
+        {
+          "nome": "SUAP da Câmara — consulta pública de processos legislativos (por assunto)",
+          "url": "https://suap.camaragyn.go.gov.br/camara/consulta_publica/",
+          "tipo": "legislativo",
+          "verificada_em": "2026-10-01"
+        },
+        {
+          "nome": "Portal da Câmara (Plone) — busca de notícias em RSS",
+          "url": "https://www.goiania.go.leg.br/search_rss",
+          "tipo": "noticias",
+          "verificada_em": "2026-10-01"
+        }
+      ],
+      "lexico_camada1": [
+        "utilidade pública",
+        "declara de utilidade pública",
+        "associação de moradores",
+        "entidade",
+        "denominação"
+      ],
+      "lexico_camada2": [
+        "Jardim América",
+        "A.M.C.",
+        "associação",
+        "sem fins lucrativos"
+      ],
+      "coleta": "local",
+      "nota_coleta": "recusa endereço estrangeiro; roda pelo computador do titular, não pelo voo",
+      "nota_01_10": "leitor próprio (src/camara_goiania.py): lê os processos por assunto no SUAP, a tramitação dos processos da associação (documentos e datas) e as notícias; os léxicos abaixo ficam só como referência do painel"
+    },
+    "alego-pl": {
+      "perfil": "insumo de EMENDA — proposições e emendas impositivas estaduais (janela out-nov); achados são projetos de lei, não editais",
+      "rotas": [
+        {
+          "nome": "SPL da ALEGO — índice cronológico das proposições",
+          "url": "https://alegodigital.al.go.leg.br/spl/consulta-cronologico.aspx",
+          "tipo": "legislativo",
+          "exige_brasil": true
+        },
+        {
+          "nome": "SPL da ALEGO — consulta por tipo (projeto de lei, emenda, PLOA)",
+          "url": "https://alegodigital.al.go.leg.br/spl/consulta-tipo.aspx",
+          "tipo": "legislativo",
+          "exige_brasil": true
+        },
+        {
+          "nome": "SPL da ALEGO — sessões, pauta prévia e ordem do dia",
+          "url": "https://alegodigital.al.go.leg.br/spl/sessoes.aspx",
+          "tipo": "legislativo",
+          "exige_brasil": true
+        },
+        {
+          "nome": "Proposições da ALEGO",
+          "url": "https://portal.al.go.leg.br/",
+          "tipo": "legislativo"
+        },
+        {
+          "nome": "LOA e emendas impositivas — SEFAZ/SEGPLAN",
+          "url": "https://www.economia.go.gov.br/",
+          "tipo": "orcamento"
+        }
+      ],
+      "lexico_camada1": [
+        "emenda",
+        "emenda impositiva",
+        "emenda parlamentar",
+        "utilidade pública",
+        "LOA",
+        "orçamento",
+        "transferência especial",
+        "indicação",
+        "projeto de lei",
+        "PLOA",
+        "lei orçamentária",
+        "fundo estadual",
+        "subvenção",
+        "doação",
+        "organização da sociedade civil",
+        "OSC",
+        "Goyazes",
+        "Protege Goiás"
+      ],
+      "lexico_camada2": [
+        "entidade beneficiária",
+        "Goiânia",
+        "assistência social",
+        "cultura",
+        "valor da emenda",
+        "programação orçamentária"
+      ],
+      "veto_camada1": [
+        "título de cidadania",
+        "títulos de cidadania",
+        "requerimento",
+        "moção",
+        "sessão solene",
+        "homenagem",
+        "credenciamento para a imprensa",
+        "licitação",
+        "concurso público"
+      ],
+      "nota_03_10": "teste do motor 05: rota principal trocada para o SPL (proposições) e vetos para o noticiário de sessões (títulos, requerimentos, moções)"
+    },
+    "dj-trf1-go": {
+      "perfil": "destinações de pena federais — raras em Goiás",
+      "cadencia": "mensal",
+      "rotas": [
+        {
+          "nome": "SJGO — Notícias (onde sai o chamamento de entidades)",
+          "url": "https://www.trf1.jus.br/sjgo/imprensa/noticias",
+          "tipo": "secretaria",
+          "robots_proibe": true
+        },
+        {
+          "nome": "SJGO — Editais e Portarias",
+          "url": "https://www.trf1.jus.br/sjgo/processual/editais-e-portarias",
+          "tipo": "diario",
+          "robots_proibe": true
+        },
+        {
+          "nome": "Portal do CNJ — busca (republica editais dos tribunais; motor do CNJ)",
+          "url": "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+Goi%C3%A1s",
+          "tipo": "secretaria"
+        }
+      ],
+      "lexico_camada1": [
+        "prestação pecuniária",
+        "destinação de recursos",
+        "edital de cadastramento",
+        "entidades beneficiárias",
+        "transação penal",
+        "pena pecuniária",
+        "chamamento público",
+        "cadastramento de entidades",
+        "projetos sociais",
+        "acordo de não persecução penal",
+        "ANPP",
+        "suspensão condicional do processo"
+      ],
+      "lexico_camada2": [
+        "Resolução CNJ 154",
+        "entidade pública ou privada com destinação social",
+        "projetos sociais",
+        "Goiás",
+        "Goiânia"
+      ],
+      "coleta": "manual (robots.txt proíbe robôs)",
+      "nota_coleta": "03/10: o site responde da nuvem, mas o robots.txt proíbe qualquer robô (Disallow: /); o motor registra e não lê — o titular confere Notícias da SJGO uma vez por mês"
+    },
+    "dje-tjgo": {
+      "perfil": "varas de execução penal de Goiânia — prestações pecuniárias destinadas a entidades, sem edital e sem disputa",
+      "rotas": [
+        {
+          "nome": "TJGO — editais das varas de execução penal (recusa IP estrangeiro)",
+          "url": "https://www.tjgo.jus.br/",
+          "tipo": "tribunal",
+          "exige_brasil": true
+        },
+        {
+          "nome": "Diário da Justiça Eletrônico do TJGO",
+          "url": "https://www.tjgo.jus.br/index.php/dje",
+          "tipo": "diario",
+          "exige_brasil": true
+        },
+        {
+          "nome": "Portal Corregedoria — cadastramento de entidades (Res. CNJ 154)",
+          "url": "https://corregedoria.tjgo.jus.br/",
+          "tipo": "secretaria",
+          "exige_brasil": true
+        }
+      ],
+      "armadilha": "jusbrasil.com.br é agregador e vetor — nunca fonte; 15 bloqueios e zero achados",
+      "lexico_camada1": [
+        "prestação pecuniária",
+        "edital de cadastramento",
+        "entidades",
+        "vara de execução penal",
+        "VEP",
+        "destinação",
+        "Resolução 154"
+      ],
+      "lexico_camada2": [
+        "entidade com destinação social",
+        "projeto social",
+        "Goiânia",
+        "prestação de contas",
+        "habilitação de entidades"
+      ],
+      "coleta": "local",
+      "nota_coleta": "recusa endereço estrangeiro; roda pelo computador do titular, não pelo voo",
+      "agregado_a": "judiciario-cnj-tjgo"
+    },
+    "cnj-destinacoes": {
+      "perfil": "REFERÊNCIA, não motor — a fonte real de destinações são os tribunais estaduais (decisão da auditoria de 20/09)",
+      "cadencia": "mensal",
+      "rotas": [
+        {
+          "nome": "CNJ — Resolução 154 e orientações",
+          "url": "https://www.cnj.jus.br/",
+          "tipo": "referencia"
+        },
+        {
+          "nome": "Tribunais estaduais (TJGO coberto pelo motor dje-tjgo)",
+          "url": "https://www.tjgo.jus.br/",
+          "tipo": "tribunal"
+        }
+      ],
+      "lexico_camada1": [
+        "prestação pecuniária",
+        "destinação",
+        "Resolução 154",
+        "entidades",
+        "chamamento público",
+        "termo de fomento",
+        "termo de colaboração",
+        "seleção de projetos",
+        "edital de apoio",
+        "fomento",
+        "patrocínio",
+        "prêmio",
+        "organizações da sociedade civil"
+      ],
+      "lexico_camada2": [
+        "projeto social",
+        "cadastramento de entidades"
+      ],
+      "agregado_a": "judiciario-cnj-tjgo",
+      "coleta": "nuvem"
+    },
+    "empresas-incentivadas": {
+      "perfil": "site das maiores empresas contribuintes de Goiás — procura a página de responsabilidade social",
+      "rotas": [
+        {
+          "nome": "Site institucional da empresa (ranking dos 100 maiores contribuintes ICMS-GO)",
+          "url": "biblioteca_alexandria/empresas/ranking_destinacao_tributaria.json",
+          "tipo": "empresa"
+        },
+        {
+          "nome": "Portais do terceiro setor onde a empresa anuncia (Observatório, ABCR, GIFE)",
+          "url": "https://observatorio3setor.org.br/editais/",
+          "tipo": "vetor"
+        }
+      ],
+      "lexico_camada1": [
+        "edital",
+        "seleção de projetos",
+        "investimento social",
+        "responsabilidade social",
+        "patrocínio",
+        "incentivo fiscal",
+        "Lei Rouanet",
+        "FIA",
+        "Fundo do Idoso",
+        "Lei do Esporte",
+        "PRONAS",
+        "instituto",
+        "fundação"
+      ],
+      "lexico_camada2": [
+        "inscrições",
+        "organizações sem fins lucrativos",
+        "critérios de seleção",
+        "valor do apoio",
+        "cronograma",
+        "Goiás",
+        "Goiânia",
+        "região Centro-Oeste"
+      ]
+    },
+    "plat-observatorio-3setor": {
+      "perfil": "vetor de DESCOBERTA nacional — anuncia, não publica; a fonte oficial é localizada depois",
+      "rotas": [
+        {
+          "nome": "Observatório — editais",
+          "url": "https://observatorio3setor.org.br/editais/",
+          "tipo": "vetor"
+        },
+        {
+          "nome": "Site oficial do financiador anunciado (localizado a partir da matéria)",
+          "url": null,
+          "tipo": "fonte_derivada"
+        }
+      ],
+      "armadilha": "página de mídia kit / apresentação institucional foi guardada como edital — proibido pelo extrator",
+      "lexico_camada1": [
+        "abre edital",
+        "abre inscrições",
+        "seleção de projetos",
+        "chamada",
+        "até R$",
+        "para organizações",
+        "para OSCs",
+        "prazo"
+      ],
+      "lexico_camada2": [
+        "inscrições até",
+        "podem participar",
+        "organizações da sociedade civil",
+        "valor",
+        "regulamento",
+        "site oficial"
+      ],
+      "agregado_a": "site-observatorio-terceiro-setor"
+    },
+    "plat-abcr": {
+      "perfil": "vetor de DESCOBERTA nacional (Captadores/ABCR)",
+      "rotas": [
+        {
+          "nome": "ABCR — editais",
+          "url": "https://captadores.org.br/editais/",
+          "tipo": "vetor"
+        },
+        {
+          "nome": "Site oficial do financiador anunciado",
+          "url": null,
+          "tipo": "fonte_derivada"
+        }
+      ],
+      "lexico_camada1": [
+        "edital",
+        "chamada",
+        "seleção",
+        "inscrições",
+        "até R$",
+        "OSCs",
+        "organizações sociais",
+        "prazo"
+      ],
+      "lexico_camada2": [
+        "inscrições até",
+        "podem participar",
+        "valor",
+        "regulamento",
+        "site oficial"
+      ],
+      "agregado_a": "site-abcr"
+    },
+    "plat-gife": {
+      "perfil": "curadoria do investimento social privado — a seleção mensal de editais do GIFE e as oportunidades da Capta, lidas pela API do WordPress (não a home nem a ficha dos associados)",
+      "rotas": [
+        {
+          "nome": "GIFE — API de posts: categoria Editais (seleção mensal) + busca de notícias de edital",
+          "url": "https://gife.org.br/wp-json/wp/v2/posts",
+          "tipo": "api",
+          "verificada_em": "2026-10-01"
+        },
+        {
+          "nome": "Capta — API de posts: categoria Oportunidades (Região, Inscrições até, link do edital)",
+          "url": "https://capta.org.br/wp-json/wp/v2/posts",
+          "tipo": "api",
+          "verificada_em": "2026-10-01"
+        }
+      ],
+      "lexico_camada1": [
+        "edital",
+        "chamada",
+        "seleção de projetos",
+        "inscrições",
+        "instituto",
+        "fundação",
+        "investimento social",
+        "chamamento público",
+        "termo de fomento",
+        "termo de colaboração",
+        "edital de apoio",
+        "fomento",
+        "patrocínio",
+        "prêmio",
+        "organizações da sociedade civil"
+      ],
+      "lexico_camada2": [
+        "organizações da sociedade civil",
+        "valor",
+        "prazo",
+        "regulamento"
+      ],
+      "nota_01_10": "leitor próprio (src/gife_editais.py): as rotas acima são as que ele lê. A home, a /agenda/ (eventos), a /associados/ (fichas institucionais) e a /transparencia (erro diário) saíram. Os léxicos abaixo ficam só como referência do painel; a decisão é do classificador do motor (prazo, público OSC, abrangência nacional ou Goiás)."
+    },
+    "plat-prosas": {
+      "perfil": "maior plataforma de editais do terceiro setor no Brasil",
+      "rotas": [
+        {
+          "nome": "Prosas — editais abertos",
+          "url": "https://prosas.com.br/editais",
+          "tipo": "plataforma"
+        },
+        {
+          "nome": "Site oficial do financiador (link 'saiba mais' de cada edital)",
+          "url": null,
+          "tipo": "fonte_derivada"
+        }
+      ],
+      "lexico_camada1": [
+        "edital",
+        "inscrições abertas",
+        "seleção",
+        "até",
+        "R$",
+        "organizações",
+        "projetos sociais",
+        "nacional",
+        "Goiás",
+        "Centro-Oeste",
+        "chamamento público",
+        "termo de fomento",
+        "termo de colaboração",
+        "seleção de projetos",
+        "edital de apoio",
+        "fomento",
+        "patrocínio",
+        "prêmio",
+        "organizações da sociedade civil"
+      ],
+      "lexico_camada2": [
+        "quem pode participar",
+        "inscrições até",
+        "valor por projeto",
+        "regulamento",
+        "elegibilidade"
+      ]
+    },
+    "plat-prosas-premios": {
+      "perfil": "prêmios e concursos — muitos a pessoa física; o filtro de objeto barra",
+      "rotas": [
+        {
+          "nome": "Prosas — prêmios",
+          "url": "https://prosas.com.br/editais?natureza=premio",
+          "tipo": "plataforma"
+        },
+        {
+          "nome": "Site oficial do organizador do prêmio",
+          "url": null,
+          "tipo": "fonte_derivada"
+        }
+      ],
+      "lexico_camada1": [
+        "prêmio",
+        "concurso",
+        "reconhecimento",
+        "organizações",
+        "iniciativas sociais",
+        "inscrições",
+        "chamamento público",
+        "termo de fomento",
+        "termo de colaboração",
+        "seleção de projetos",
+        "edital de apoio",
+        "fomento",
+        "patrocínio",
+        "organizações da sociedade civil"
+      ],
+      "lexico_camada2": [
+        "podem concorrer",
+        "organizações da sociedade civil",
+        "premiação em dinheiro",
+        "regulamento"
+      ]
+    },
+    "plat-salic": {
+      "perfil": "Lei Rouanet — janela anual no Salic (1º/02 a 31/10, confirmar IN vigente)",
+      "rotas": [
+        {
+          "nome": "MinC — Lei Rouanet (página institucional)",
+          "url": "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet",
+          "tipo": "secretaria"
+        },
+        {
+          "nome": "Salic — sistema de propostas",
+          "url": "https://salic.cultura.gov.br/",
+          "tipo": "plataforma"
+        },
+        {
+          "nome": "Instrução Normativa vigente (prazos e limites)",
+          "url": "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet/legislacao",
+          "tipo": "regramento"
+        },
+        {
+          "nome": "VerSalic — consulta pública de projetos e editais",
+          "url": "https://versalic.cultura.gov.br/",
+          "tipo": "listagem"
+        }
+      ],
+      "lexico_camada1": [
+        "Lei Rouanet",
+        "PRONAC",
+        "Salic",
+        "proposta cultural",
+        "incentivo fiscal",
+        "mecenato",
+        "Instrução Normativa",
+        "prazo de apresentação",
+        "chamamento público",
+        "termo de fomento",
+        "termo de colaboração",
+        "seleção de projetos",
+        "edital de apoio",
+        "fomento",
+        "patrocínio",
+        "prêmio",
+        "organizações da sociedade civil"
+      ],
+      "lexico_camada2": [
+        "proponente",
+        "pessoa jurídica sem fins lucrativos",
+        "limite por proponente",
+        "captação",
+        "aprovação"
+      ]
+    },
+    "plat-secult-go": {
+      "perfil": "cinco portas da SECULT-GO — Chamamentos, Goyazes, Fundo de Arte e Cultura, PNAB, Lei Paulo Gustavo",
+      "rotas": [
+        {
+          "nome": "Chamamentos Públicos 2026",
+          "url": "https://goias.gov.br/cultura/chamamentos-publicos-2026/",
+          "tipo": "secretaria"
+        },
+        {
+          "nome": "Editais 2026 — PNAB",
+          "url": "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+          "tipo": "secretaria"
+        },
+        {
+          "nome": "Portal PNAB do Estado",
+          "url": "https://pnab.cultura.go.gov.br",
+          "tipo": "plataforma"
+        },
+        {
+          "nome": "Diário Oficial do Estado (publicação obrigatória)",
+          "url": "https://diariooficial.abc.go.gov.br/",
+          "tipo": "diario",
+          "exige_brasil": true
+        }
+      ],
+      "armadilha": "goias.gov.br/cultura/termos-de-fomento é lista de termos JÁ CELEBRADOS — nunca terá prazo",
+      "lexico_camada1": [
+        "chamamento público",
+        "edital",
+        "PNAB",
+        "Goyazes",
+        "Fundo de Arte e Cultura",
+        "Lei Paulo Gustavo",
+        "inscrições",
+        "cronograma",
+        "retificação",
+        "termo de fomento",
+        "termo de colaboração",
+        "seleção de projetos",
+        "edital de apoio",
+        "fomento",
+        "patrocínio",
+        "prêmio",
+        "organizações da sociedade civil"
+      ],
+      "lexico_camada2": [
+        "Plataforma Baru",
+        "agentes culturais",
+        "organizações da sociedade civil",
+        "das inscrições",
+        "resultado",
+        "habilitação"
+      ]
+    },
+    "plat-ovg": {
+      "perfil": "OVG — maior operador de repasses a entidades de Goiás",
+      "rotas": [
+        {
+          "nome": "OVG — portal",
+          "url": "https://www.ovg.org.br/",
+          "tipo": "operador"
+        },
+        {
+          "nome": "OVG — editais e chamamentos",
+          "url": "https://www.ovg.org.br/editais",
+          "tipo": "operador"
+        },
+        {
+          "nome": "Goiás Social (programas operados pela OVG)",
+          "url": "https://goias.gov.br/social/",
+          "tipo": "secretaria"
+        },
+        {
+          "nome": "Diário Oficial do Estado",
+          "url": "https://diariooficial.abc.go.gov.br/",
+          "tipo": "diario",
+          "exige_brasil": true
+        }
+      ],
+      "lexico_camada1": [
+        "edital",
+        "chamamento",
+        "credenciamento de entidades",
+        "entidades parceiras",
+        "Mais Social",
+        "cofinanciamento",
+        "termo de fomento",
+        "termo de colaboração",
+        "inscrições",
+        "chamamento público",
+        "seleção de projetos",
+        "edital de apoio",
+        "fomento",
+        "patrocínio",
+        "prêmio",
+        "organizações da sociedade civil"
+      ],
+      "lexico_camada2": [
+        "organizações da sociedade civil",
+        "plano de trabalho",
+        "assistência social",
+        "das inscrições",
+        "documentos exigidos",
+        "CMAS"
+      ]
+    },
+    "plat-goias-social": {
+      "perfil": "programas sociais do Estado com repasse a entidades (Auxílio Nutricional já validado)",
+      "rotas": [
+        {
+          "nome": "Goiás Social",
+          "url": "https://goias.gov.br/social/",
+          "tipo": "secretaria"
+        },
+        {
+          "nome": "SEDS — editais",
+          "url": "https://goias.gov.br/desenvolvimento-social/",
+          "tipo": "secretaria"
+        }
+      ],
+      "lexico_camada1": [
+        "Auxílio Nutricional",
+        "cofinanciamento",
+        "edital",
+        "chamamento",
+        "entidades filantrópicas",
+        "assistência social",
+        "inscrições",
+        "CMAS",
+        "chamamento público",
+        "termo de fomento",
+        "termo de colaboração",
+        "seleção de projetos",
+        "edital de apoio",
+        "fomento",
+        "patrocínio",
+        "prêmio",
+        "organizações da sociedade civil"
+      ],
+      "lexico_camada2": [
+        "organizações da sociedade civil",
+        "plano de trabalho",
+        "das inscrições",
+        "certificado",
+        "CEBAS"
+      ]
+    },
+    "plat-fundos-estaduais-go": {
+      "perfil": "fundos estaduais com conselho — publicam por RESOLUÇÃO, não só por edital",
+      "rotas": [
+        {
+          "nome": "CEDCA-GO — FIA estadual (resoluções e editais)",
+          "url": "https://goias.gov.br/desenvolvimento-social/",
+          "tipo": "conselho"
+        },
+        {
+          "nome": "Conselho Estadual do Idoso — Fundo do Idoso",
+          "url": "https://goias.gov.br/desenvolvimento-social/",
+          "tipo": "conselho"
+        },
+        {
+          "nome": "SEMAD — FEMA",
+          "url": "https://goias.gov.br/meioambiente/",
+          "tipo": "secretaria"
+        },
+        {
+          "nome": "Diário Oficial do Estado (resoluções dos conselhos)",
+          "url": "https://diariooficial.abc.go.gov.br/",
+          "tipo": "diario",
+          "exige_brasil": true
+        }
+      ],
+      "lexico_camada1": [
+        "FIA",
+        "Fundo da Infância",
+        "Fundo do Idoso",
+        "FUNJUVE",
+        "FEMA",
+        "resolução",
+        "CEDCA",
+        "CEI",
+        "edital",
+        "chamamento",
+        "seleção de projetos",
+        "chamamento público",
+        "termo de fomento",
+        "termo de colaboração",
+        "edital de apoio",
+        "fomento",
+        "patrocínio",
+        "prêmio",
+        "organizações da sociedade civil"
+      ],
+      "lexico_camada2": [
+        "entidades registradas",
+        "plano de aplicação",
+        "das inscrições",
+        "organizações da sociedade civil",
+        "conselho estadual"
+      ]
+    },
+    "plat-fapeg": {
+      "perfil": "FAP de Goiás — OSC entra como parceira em chamadas de extensão e inovação social",
+      "cadencia": "semanal",
+      "rotas": [
+        {
+          "nome": "FAPEG — chamadas públicas",
+          "url": "https://goias.gov.br/fapeg/",
+          "tipo": "fundacao"
+        },
+        {
+          "nome": "Diário Oficial do Estado",
+          "url": "https://diariooficial.abc.go.gov.br/",
+          "tipo": "diario",
+          "exige_brasil": true
+        }
+      ],
+      "lexico_camada1": [
+        "chamada pública",
+        "extensão",
+        "inovação social",
+        "popularização da ciência",
+        "parceria com organizações",
+        "edital",
+        "chamamento público",
+        "termo de fomento",
+        "termo de colaboração",
+        "seleção de projetos",
+        "edital de apoio",
+        "fomento",
+        "patrocínio",
+        "prêmio",
+        "organizações da sociedade civil"
+      ],
+      "lexico_camada2": [
+        "organizações da sociedade civil",
+        "instituição parceira",
+        "das inscrições",
+        "cronograma"
+      ]
+    },
+    "plat-prefeituras-50-go": {
+      "perfil": "25 maiores prefeituras de Goiás — cada uma publica no portal próprio E no diário/PNCP",
+      "rotas": [
+        {
+          "nome": "Portal da prefeitura (config/municipios_maiores.json → GO)",
+          "url": "config/municipios_maiores.json",
+          "tipo": "prefeitura"
+        },
+        {
+          "nome": "Diário oficial do município (Querido Diário / próprio)",
+          "url": "https://queridodiario.ok.org.br/",
+          "tipo": "diario"
+        },
+        {
+          "nome": "PNCP como descoberta (número do processo)",
+          "url": "https://pncp.gov.br/",
+          "tipo": "vetor"
+        }
+      ],
+      "lexico_camada1": [
+        "chamamento público",
+        "termo de fomento",
+        "termo de colaboração",
+        "edital de seleção",
+        "organizações da sociedade civil",
+        "fundo municipal",
+        "CMDCA",
+        "CMAS",
+        "seleção de projetos",
+        "edital de apoio",
+        "fomento",
+        "patrocínio",
+        "prêmio"
+      ],
+      "lexico_camada2": [
+        "Lei 13.019",
+        "plano de trabalho",
+        "das inscrições",
+        "do objeto",
+        "entidade sem fins lucrativos"
+      ]
+    },
+    "plat-empresas-editais-incentivados": {
+      "perfil": "EDITAL publicado pela própria empresa para distribuir renúncia fiscal (modelo Porto Itapoá, Renner, Maria Emília)",
+      "rotas": [
+        {
+          "nome": "Página de editais e home dos institutos/fundações das empresas que já destinam (banco verificado)",
+          "url": "config/empresas_destinadoras.json",
+          "tipo": "empresa"
+        },
+        {
+          "nome": "Portais do terceiro setor onde a empresa anuncia",
+          "url": "https://captadores.org.br/editais/",
+          "tipo": "vetor"
+        },
+        {
+          "nome": "Redes sociais institucionais (LinkedIn/Instagram) — pista, nunca fonte",
+          "url": null,
+          "tipo": "pista"
+        }
+      ],
+      "lexico_camada1": [
+        "edital",
+        "projetos incentivados",
+        "seleção de projetos",
+        "FIA",
+        "Fundo do Idoso",
+        "Lei de Incentivo ao Esporte",
+        "Lei Rouanet",
+        "PRONAS",
+        "PRONON",
+        "inscrições",
+        "até R$",
+        "chamamento público",
+        "termo de fomento",
+        "termo de colaboração",
+        "edital de apoio",
+        "fomento",
+        "patrocínio",
+        "prêmio",
+        "organizações da sociedade civil",
+        "chamada pública",
+        "banco de projetos",
+        "cadastro de projetos",
+        "recebe projetos",
+        "abre edital",
+        "abre inscrições",
+        "abre chamada",
+        "inscrições abertas",
+        "leis de incentivo",
+        "portal de projetos",
+        "inscrever projeto"
+      ],
+      "lexico_camada2": [
+        "projetos aprovados",
+        "leis de incentivo",
+        "organizações sem fins lucrativos",
+        "critérios",
+        "cronograma",
+        "regulamento"
+      ],
+      "veto_camada1": [
+        "campus mobile",
+        "jornada liga steam",
+        "liga steam",
+        "trabalhe conosco",
+        "universitários"
+      ],
+      "nota_veto_03_10": "teste do motor 19: Prêmio e Jornada Liga STEAM (Fundação ArcelorMittal) são para escolas, professores e jovens — não para a associação; capturados como oportunidade em 03/10 sem edição aberta"
+    },
+    "plat-mp-destinacoes-reparacao": {
+      "perfil": "Ministérios Públicos — destinação de recursos de reparação e bens lesados (motor 12 v2, estudo ao vivo de 02/10/2026)",
+      "rotas": [
+        {
+          "nome": "MPT-GO — PRT 18ª Região (Goiânia e PTM Anápolis)",
+          "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
+          "tipo": "tabela_mpt"
+        },
+        {
+          "nome": "MPT-GO — PRT 18ª Região",
+          "url": "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
+          "tipo": "lista_habilitadas"
+        },
+        {
+          "nome": "MPT-GO — PRT 18ª Região (Goiânia/GO)",
+          "url": "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPT nacional — PGT - Noticias",
+          "url": "https://mpt.mp.br/search_rss?SearchableText=edital+cadastramento+entidades&sort_on=Date&sort_order=reverse",
+          "tipo": "rss"
+        },
+        {
+          "nome": "MPT nacional — PGT - Noticias",
+          "url": "https://mpt.mp.br/pgt/noticias/RSS",
+          "tipo": "rss"
+        },
+        {
+          "nome": "MPF — PR-GO",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — PR-GO",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — PR-GO",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — PR-GO",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-em-goias-cadastra-entidades-e-orgaos-publicos-para-recebimento-bens-e-valores-decorrentes-da-atuacao-da-instituicao",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — nacional (busca)",
+          "url": "https://www.mpf.mp.br/search?SearchableText=edital+chamamento+recebimento+bens+valores",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — PR-BA (modelo)",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — nacional",
+          "url": "https://www.mpf.mp.br/servicos/mpf-servicos",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPDFT — PGJ / Cema / Apma / Semas",
+          "url": "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPDFT — várias promotorias",
+          "url": "https://www.mpdft.mp.br/transparencia/index.php?item=tac",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPDFT — Sala de imprensa",
+          "url": "https://www.mpdft.mp.br/portal/index.php/comunicacao-menu/sala-de-imprensa/noticias/noticias-2026-completo",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPM — portal",
+          "url": "https://www.mpm.mp.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPU — portal",
+          "url": "https://www.mpu.mp.br/sitemap",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — Senacon / CFDD - Fundo de Defesa de Direitos D",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento",
+          "tipo": "estado_pagina"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecoes-anteriores",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/reunioes-do-cfdd/anexos-atas",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/convenios-e-transferencias",
+          "tipo": "listagem_html"
+        }
+      ],
+      "lexico_camada1": [
+        "bens lesados",
+        "chamamento",
+        "chamamento público",
+        "destinação de recursos",
+        "edital de apoio",
+        "edital de destinação",
+        "entidades",
+        "organizações da sociedade civil",
+        "projetos sociais",
+        "reparação",
+        "seleção de projetos",
+        "termo de ajustamento",
+        "termo de colaboração",
+        "termo de fomento",
+        "indicação de destinação",
+        "Sistema de Destinações",
+        "entidades assistenciais",
+        "bens e valores",
+        "Destina"
+      ],
+      "lexico_camada2": [
+        "organizações da sociedade civil",
+        "projeto social",
+        "das inscrições",
+        "habilitação",
+        "Goiás",
+        "Goiânia"
+      ],
+      "nunca_acessar": [
+        "mpgo.mp.br",
+        "destinacoes.mpt.mp.br"
+      ],
+      "observacao": "02/10: leitura pela estrutura em src/ministerios_publicos.py; o MP-GO (robots Disallow: /) não é rota"
+    },
+    "plat-cnpq-extensao": {
+      "perfil": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão que aceitam OSC como parceira",
+      "cadencia": "semanal",
+      "rotas": [
+        {
+          "nome": "CNPq — chamadas abertas para submissão",
+          "url": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
+          "tipo": "fundacao"
+        },
+        {
+          "nome": "MCTI — editais e comunicados",
+          "url": "https://www.gov.br/mcti/pt-br/centrais-de-conteudo/comunicados-mcti",
+          "tipo": "secretaria"
+        },
+        {
+          "nome": "MCTI — popularização da ciência",
+          "url": "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/popciencia",
+          "tipo": "secretaria"
+        },
+        {
+          "nome": "Setec/MEC — educação profissional e tecnológica",
+          "url": "https://www.gov.br/mec/pt-br/composicao/setec",
+          "tipo": "secretaria"
+        }
+      ],
+      "lexico_camada1": [
+        "chamada pública",
+        "extensão",
+        "popularização da ciência",
+        "inovação social",
+        "parceria",
+        "organizações da sociedade civil",
+        "edital",
+        "chamamento público",
+        "termo de fomento",
+        "termo de colaboração",
+        "seleção de projetos",
+        "edital de apoio",
+        "fomento",
+        "patrocínio",
+        "prêmio"
+      ],
+      "lexico_camada2": [
+        "instituição parceira",
+        "proponente",
+        "das inscrições",
+        "cronograma"
+      ],
+      "rotas_agregadas": [
+        {
+          "nome": "Finep",
+          "url": "http://www.finep.gov.br/chamadas-publicas/chamadaspublicas?situacao=aberta",
+          "tipo": "agregada (assistido) — lida pelo fluxo 16",
+          "motor_antigo": "site-finep"
+        }
+      ],
+      "rotas_anteriores_404": [
+        "https://www.gov.br/cnpq/pt-br/acesso-a-informacao/acoes-e-programas/programas/chamadas-publicas",
+        "https://www.gov.br/mec/pt-br/acesso-a-informacao/institucional/secretarias/secretaria-de-educacao-profissional-e-tecnologica"
+      ],
+      "veto_camada1": [
+        "bolsa",
+        "bolsas",
+        "doutorado",
+        "iniciação científica",
+        "mestrado",
+        "pesquisa oceânica",
+        "pesquisador",
+        "pesquisadores",
+        "produtividade em pesquisa",
+        "pós-doutorado",
+        "recursos humanos em áreas estratégicas",
+        "rhae",
+        "vacina"
+      ],
+      "ajuste_03_10": "rotas conferidas no navegador em 03/10/2026: as duas antigas (CNPq e Setec) davam 404 e a do MCTI era a home (2.806 links, 765 'candidatos'). Vetos de bolsa e pesquisa acadêmica: as 3 chamadas abertas do CNPq hoje são para pesquisadores (MAI/DAI, ANR, RHAE-IA)."
+    },
+    "recorrencia": {
+      "perfil": "RECORRÊNCIA — revisita a página oficial de cada oportunidade validada (retificação, prorrogação, resultado, reabertura); as rotas são dinâmicas e vêm de estado/rotas_recorrencia.json",
+      "rotas": [
+        {
+          "nome": "Página oficial de cada oportunidade validada (dinâmica)",
+          "url": "estado/rotas_recorrencia.json",
+          "tipo": "dinamica"
+        },
+        {
+          "nome": "Vetor que anunciou a oportunidade (para pegar prorrogação noticiada)",
+          "url": "https://observatorio3setor.org.br/editais/",
+          "tipo": "vetor"
+        }
+      ],
+      "lexico_camada1": [
+        "retificação",
+        "prorrogação",
+        "errata",
+        "resultado",
+        "homologação",
+        "classificados",
+        "recurso",
+        "suspensão",
+        "revogação",
+        "novo edital",
+        "inscrições",
+        "cronograma",
+        "chamamento público",
+        "termo de fomento",
+        "termo de colaboração",
+        "seleção de projetos",
+        "edital de apoio",
+        "fomento",
+        "patrocínio",
+        "prêmio",
+        "organizações da sociedade civil"
+      ],
+      "lexico_camada2": [
+        "prazo prorrogado",
+        "nova data",
+        "fica retificado",
+        "resultado final",
+        "lista de habilitados",
+        "edital revogado",
+        "reabertura"
+      ]
+    },
+    "plat-piloto-aberto": {
+      "perfil": "Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.",
+      "rotas": [
+        {
+          "nome": "busca aberta por ângulo sorteado (sem rota fixa)",
+          "url": "https://html.duckduckgo.com/html/?q=",
+          "tipo": "busca"
+        },
+        {
+          "nome": "site oficial do financiador descoberto (derivado)",
+          "url": null,
+          "tipo": "fonte_derivada"
+        },
+        {
+          "nome": "plataformas ainda não catalogadas",
+          "url": "https://html.duckduckgo.com/html/?q=plataforma+editais+terceiro+setor+brasil",
+          "tipo": "busca"
+        }
+      ],
+      "lexico_camada1": [
+        "edital",
+        "chamada pública",
+        "chamamento",
+        "seleção de projetos",
+        "seleção pública",
+        "inscrições abertas",
+        "apoio a projetos",
+        "apoio institucional",
+        "fomento",
+        "financiamento de projetos",
+        "patrocínio",
+        "doação",
+        "investimento social privado",
+        "responsabilidade social",
+        "sustentabilidade",
+        "ESG",
+        "impacto social",
+        "instituto",
+        "fundação",
+        "programa social",
+        "prêmio",
+        "concurso de projetos",
+        "aceleração",
+        "incubação",
+        "grant",
+        "grants",
+        "call for proposals",
+        "request for proposals",
+        "chamamento público",
+        "termo de fomento",
+        "termo de colaboração",
+        "edital de apoio",
+        "organizações da sociedade civil"
+      ],
+      "veto_camada1": [
+        "pregão",
+        "licitação",
+        "aquisição de",
+        "contratação de empresa",
+        "ata de registro",
+        "tomada de preços",
+        "vaga de emprego",
+        "processo seletivo simplificado",
+        "concurso público",
+        "estágio",
+        "bolsa de estudo individual",
+        "curso pago",
+        "inscrições para o evento",
+        "ingresso",
+        "venda",
+        "leilão",
+        "consórcio",
+        "financiamento imobiliário"
+      ],
+      "lexico_camada2": [
+        "quem pode participar",
+        "podem se inscrever",
+        "proponente",
+        "critérios de seleção",
+        "cronograma",
+        "valor do apoio",
+        "recursos disponíveis",
+        "regulamento",
+        "termo de fomento",
+        "termo de colaboração",
+        "sem fins lucrativos",
+        "CNPJ",
+        "prestação de contas",
+        "plano de trabalho"
+      ],
+      "armadilha": "portal de notícia não é site oficial — vale como pista; a descoberta só conta com o domínio próprio da organização"
+    },
+    "motor-gife": {
+      "perfil": "Empresas da base ICMS/RFB/SALIC de Goiás com potencial de destinação incentivada (Rouanet, LIE, FIA/Idoso, PRONON/PRONAS)",
+      "rotas": [
+        {
+          "nome": "maiores contribuintes do ICMS de Goiás",
+          "url": "https://goias.gov.br/economia/os-maiores-contribuintes-do-icms/",
+          "tipo": "lista"
+        },
+        {
+          "nome": "site institucional de cada empresa (páginas de RSE)",
+          "url": null,
+          "tipo": "fonte_derivada"
+        },
+        {
+          "nome": "Salic — projetos que a empresa já incentivou",
+          "url": "https://salic.cultura.gov.br/",
+          "tipo": "plataforma"
+        }
+      ],
+      "lexico_camada1": [
+        "edital",
+        "chamada pública",
+        "chamamento",
+        "seleção de projetos",
+        "seleção pública",
+        "inscrições abertas",
+        "apoio a projetos",
+        "apoio institucional",
+        "fomento",
+        "financiamento de projetos",
+        "patrocínio",
+        "doação",
+        "investimento social privado",
+        "responsabilidade social",
+        "sustentabilidade",
+        "ESG",
+        "impacto social",
+        "instituto",
+        "fundação",
+        "programa social",
+        "prêmio",
+        "concurso de projetos",
+        "aceleração",
+        "incubação",
+        "grant",
+        "grants"
+      ],
+      "veto_camada1": [
+        "pregão",
+        "licitação",
+        "aquisição de",
+        "contratação de empresa",
+        "ata de registro",
+        "tomada de preços",
+        "vaga de emprego",
+        "processo seletivo simplificado",
+        "concurso público",
+        "estágio",
+        "bolsa de estudo individual",
+        "curso pago",
+        "inscrições para o evento",
+        "ingresso",
+        "venda",
+        "leilão",
+        "consórcio",
+        "financiamento imobiliário"
+      ],
+      "lexico_camada2": [
+        "quem pode participar",
+        "podem se inscrever",
+        "proponente",
+        "critérios de seleção",
+        "cronograma",
+        "valor do apoio",
+        "recursos disponíveis",
+        "regulamento",
+        "termo de fomento",
+        "termo de colaboração",
+        "sem fins lucrativos",
+        "CNPJ",
+        "prestação de contas",
+        "plano de trabalho"
+      ],
+      "rotas_agregadas": [
+        {
+          "nome": "Embaixada do Japão",
+          "url": "https://www.br.emb-japan.go.jp/",
+          "tipo": "agregada (assistido) — lida pelo fluxo 16",
+          "motor_antigo": "site-embaixada-japao"
+        },
+        {
+          "nome": "Embaixada dos EUA",
+          "url": "https://br.usembassy.gov/pt/embassy-consulates-pt/brasilia-pt/oportunidades-de-financiamento/",
+          "tipo": "agregada (assistido) — lida pelo fluxo 16",
+          "motor_antigo": "site-embaixada-eua"
+        },
+        {
+          "nome": "Fundação Banco do Brasil",
+          "url": "https://www.fbb.org.br/",
+          "tipo": "agregada (assistido) — lida pelo fluxo 16",
+          "motor_antigo": "site-fundacao-banco-do-brasil"
+        },
+        {
+          "nome": "IAF — Fundação Interamericana",
+          "url": "https://iaf.gov/apply-for-grant/",
+          "tipo": "agregada (html_listagem) — lida pelo fluxo 16",
+          "motor_antigo": "site-iaf"
+        },
+        {
+          "nome": "Itaú Social",
+          "url": "https://editais.itausocial.org.br/",
+          "tipo": "agregada (assistido) — lida pelo fluxo 16",
+          "motor_antigo": "site-itau-social"
+        },
+        {
+          "nome": "Petrobras",
+          "url": "https://petrobras.com.br/",
+          "tipo": "agregada (assistido) — lida pelo fluxo 16",
+          "motor_antigo": "site-petrobras"
+        }
+      ]
+    },
+    "motor-patrocinio": {
+      "perfil": "Empresas que patrocinam eventos culturais, esportivos e educacionais em Goiás com recurso próprio (marketing, sem benefício fiscal)",
+      "rotas": [
+        {
+          "nome": "imprensa e portais de eventos de Goiás",
+          "url": "https://www.opopular.com.br/",
+          "tipo": "imprensa"
+        },
+        {
+          "nome": "site institucional do patrocinador identificado",
+          "url": null,
+          "tipo": "fonte_derivada"
+        },
+        {
+          "nome": "páginas de eventos e festivais goianos",
+          "url": "https://html.duckduckgo.com/html/?q=patroc%C3%ADnio+evento+cultural+Goi%C3%A2nia+2026",
+          "tipo": "busca"
+        }
+      ],
+      "lexico_camada1": [
+        "edital",
+        "chamada pública",
+        "chamamento",
+        "seleção de projetos",
+        "seleção pública",
+        "inscrições abertas",
+        "apoio a projetos",
+        "apoio institucional",
+        "fomento",
+        "financiamento de projetos",
+        "patrocínio",
+        "doação",
+        "investimento social privado",
+        "responsabilidade social",
+        "sustentabilidade",
+        "ESG",
+        "impacto social",
+        "instituto",
+        "fundação",
+        "programa social",
+        "prêmio",
+        "concurso de projetos",
+        "aceleração",
+        "incubação",
+        "grant",
+        "grants",
+        "chamamento público",
+        "termo de fomento",
+        "termo de colaboração",
+        "edital de apoio",
+        "organizações da sociedade civil"
+      ],
+      "veto_camada1": [
+        "pregão",
+        "licitação",
+        "aquisição de",
+        "contratação de empresa",
+        "ata de registro",
+        "tomada de preços",
+        "vaga de emprego",
+        "processo seletivo simplificado",
+        "concurso público",
+        "estágio",
+        "bolsa de estudo individual",
+        "curso pago",
+        "inscrições para o evento",
+        "ingresso",
+        "venda",
+        "leilão",
+        "consórcio",
+        "financiamento imobiliário"
+      ],
+      "lexico_camada2": [
+        "quem pode participar",
+        "podem se inscrever",
+        "proponente",
+        "critérios de seleção",
+        "cronograma",
+        "valor do apoio",
+        "recursos disponíveis",
+        "regulamento",
+        "termo de fomento",
+        "termo de colaboração",
+        "sem fins lucrativos",
+        "CNPJ",
+        "prestação de contas",
+        "plano de trabalho"
+      ]
+    },
+    "piloto-aberto": {
+      "perfil": "Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.",
+      "rotas": [
+        {
+          "nome": "busca aberta por ângulo sorteado (sem rota fixa)",
+          "url": "https://html.duckduckgo.com/html/?q=",
+          "tipo": "busca"
+        },
+        {
+          "nome": "site oficial do financiador descoberto (derivado)",
+          "url": null,
+          "tipo": "fonte_derivada"
+        },
+        {
+          "nome": "plataformas ainda não catalogadas",
+          "url": "https://html.duckduckgo.com/html/?q=plataforma+editais+terceiro+setor+brasil",
+          "tipo": "busca"
+        }
+      ],
+      "lexico_camada1": [
+        "edital",
+        "chamada pública",
+        "chamamento",
+        "seleção de projetos",
+        "seleção pública",
+        "inscrições abertas",
+        "apoio a projetos",
+        "apoio institucional",
+        "fomento",
+        "financiamento de projetos",
+        "patrocínio",
+        "doação",
+        "investimento social privado",
+        "responsabilidade social",
+        "sustentabilidade",
+        "ESG",
+        "impacto social",
+        "instituto",
+        "fundação",
+        "programa social",
+        "prêmio",
+        "concurso de projetos",
+        "aceleração",
+        "incubação",
+        "grant",
+        "grants",
+        "call for proposals",
+        "request for proposals",
+        "chamamento público",
+        "termo de fomento",
+        "termo de colaboração",
+        "edital de apoio",
+        "organizações da sociedade civil"
+      ],
+      "veto_camada1": [
+        "pregão",
+        "licitação",
+        "aquisição de",
+        "contratação de empresa",
+        "ata de registro",
+        "tomada de preços",
+        "vaga de emprego",
+        "processo seletivo simplificado",
+        "concurso público",
+        "estágio",
+        "bolsa de estudo individual",
+        "curso pago",
+        "inscrições para o evento",
+        "ingresso",
+        "venda",
+        "leilão",
+        "consórcio",
+        "financiamento imobiliário"
+      ],
+      "lexico_camada2": [
+        "quem pode participar",
+        "podem se inscrever",
+        "proponente",
+        "critérios de seleção",
+        "cronograma",
+        "valor do apoio",
+        "recursos disponíveis",
+        "regulamento",
+        "termo de fomento",
+        "termo de colaboração",
+        "sem fins lucrativos",
+        "CNPJ",
+        "prestação de contas",
+        "plano de trabalho"
+      ],
+      "armadilha": "portal de notícia não é site oficial — vale como pista; a descoberta só conta com o domínio próprio da organização"
+    },
+    "congresso-nacional": {
+      "perfil": "insumo de EMENDA FEDERAL e de REGRA — prazo oficial de emendas ao PLOA (CMO), proposições que mudam a vida das entidades; chamamento das Casas é raro",
+      "cadencia": "diária",
+      "rotas": [
+        {
+          "nome": "CMO — LOA do ano seguinte (etapa 'Apresentação de emendas')",
+          "url": "https://www.congressonacional.leg.br/web/orcamento/acompanhe/orcamento-anual/-/loa/2027",
+          "tipo": "orcamento",
+          "verificada_em": "2026-10-02"
+        },
+        {
+          "nome": "CMO — comunicados",
+          "url": "https://www.congressonacional.leg.br/web/cmo/comunicados",
+          "tipo": "orcamento",
+          "verificada_em": "2026-10-02"
+        },
+        {
+          "nome": "Câmara — API de proposições",
+          "url": "https://dadosabertos.camara.leg.br/api/v2/proposicoes",
+          "tipo": "api",
+          "verificada_em": "2026-10-02"
+        },
+        {
+          "nome": "Senado — API /processo",
+          "url": "https://legis.senado.leg.br/dadosabertos/processo",
+          "tipo": "api",
+          "verificada_em": "2026-10-02"
+        },
+        {
+          "nome": "Câmara — notícias (RSS)",
+          "url": "https://www.camara.leg.br/noticias/rss/ultimas-noticias",
+          "tipo": "noticias",
+          "verificada_em": "2026-10-02"
+        },
+        {
+          "nome": "Senado — notícias (RSS)",
+          "url": "https://www12.senado.leg.br/noticias/feed/todasnoticias/rss",
+          "tipo": "noticias",
+          "verificada_em": "2026-10-02"
+        },
+        {
+          "nome": "Senado — convocações públicas",
+          "url": "https://www6g.senado.leg.br/transparencia/licitacoes-e-contratos/sadcon/convocacoes-publicas",
+          "tipo": "chamamento",
+          "verificada_em": "2026-10-02"
+        }
+      ],
+      "lexico_camada1": [
+        "emendas",
+        "PLOA",
+        "LOA",
+        "orçamento",
+        "sem fins lucrativos",
+        "sociedade civil",
+        "terceiro setor",
+        "chamamento",
+        "prêmio"
+      ],
+      "lexico_camada2": [
+        "entidade",
+        "associação",
+        "termo de fomento",
+        "13.019",
+        "imunidade",
+        "emenda individual",
+        "bancada"
+      ],
+      "veto_camada1": [
+        "concurso público",
+        "licitação",
+        "pregão",
+        "denominação",
+        "dia nacional"
+      ],
+      "nota_02_10": "leitor próprio (src/congresso_nacional.py); os léxicos acima ficam como referência do painel e do livro"
+    },
+    "judiciario-cnj-tjgo": {
+      "perfil": "varas de execução penal, juizados e comarcas do TJGO (Goiânia primeiro) — editais de seleção de projetos com recursos de prestações pecuniárias, credenciamentos do Judiciário para entidades e a regra nacional do CNJ",
+      "rotas": [
+        {
+          "nome": "TJGO — Agência de Notícias (RSS paginado)",
+          "url": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss",
+          "tipo": "tribunal",
+          "exige_brasil": true
+        },
+        {
+          "nome": "TJGO — PDF do edital anexado à notícia",
+          "url": "https://www.tjgo.jus.br/files/",
+          "tipo": "tribunal",
+          "exige_brasil": true
+        },
+        {
+          "nome": "Corregedoria (CGJ/GO) — Banco de Projetos Sociais (cadastro prévio)",
+          "url": "https://corregedoria.tjgo.jus.br/basesocial",
+          "tipo": "secretaria"
+        },
+        {
+          "nome": "Portal do CNJ — busca (republica editais dos tribunais) e regra nacional",
+          "url": "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+edital",
+          "tipo": "referencia"
+        },
+        {
+          "nome": "PNCP — credenciamentos do TJGO e do CNJ (cruzado do motor 04)",
+          "url": "https://pncp.gov.br/app/editais",
+          "tipo": "vetor"
+        }
+      ],
+      "armadilha": "jusbrasil.com.br é agregador e vetor — nunca fonte; as páginas antigas do TJGO (/execucao-penal, /editais-de-chamamento, /dje…) dão 404; o DJEN só traz intimações com nomes de réus; a busca pública do Banco de Projetos lista nome e telefone dos responsáveis (não coletar)",
+      "lexico_camada1": [
+        "prestação pecuniária",
+        "penas pecuniárias",
+        "penas alternativas",
+        "transação penal",
+        "projetos sociais",
+        "finalidade social",
+        "destinação de recursos",
+        "Banco de Projetos Sociais",
+        "cadastramento de entidades",
+        "credenciamento de entidades",
+        "Vepema",
+        "edital"
+      ],
+      "lexico_camada2": [
+        "seleção de projetos",
+        "habilitação",
+        "entidades públicas ou privadas",
+        "Resolução CNJ 558",
+        "Código de Normas art. 257",
+        "comarca",
+        "inscrições até"
+      ],
+      "coleta": "nuvem + local",
+      "nota_coleta": "o TJGO recusa IP estrangeiro: RSS, notícias e PDFs pelo computador do titular; a busca do CNJ e o cruzamento do PNCP pela nuvem"
+    },
+    "site-farol-cultural": {
+      "perfil": "Farol Cultural — editais de cultura de todo o Brasil, pela API pública do portal",
+      "rotas": [
+        {
+          "nome": "Farol Cultural",
+          "url": "https://farolcultural.art/api/v1/editais",
+          "tipo": "farol_api"
+        }
+      ],
+      "lexico_camada1": [],
+      "lexico_camada2": []
+    },
+    "site-capitaai": {
+      "perfil": "CapitaAI — editais e oportunidades de captação, incluindo a lista pública dos editais do Prosas",
+      "rotas": [
+        {
+          "nome": "CapitaAI",
+          "url": "https://capitaai.com.br/sitemap-captacao.xml",
+          "tipo": "sitemap_jsonld"
+        }
+      ],
+      "lexico_camada1": [],
+      "lexico_camada2": []
+    },
+    "site-observatorio-terceiro-setor": {
+      "perfil": "Observatório do Terceiro Setor — editais publicados na seção temática do portal",
+      "rotas": [
+        {
+          "nome": "Observatório do Terceiro Setor",
+          "url": "https://www.observatorio3setor.org.br/secoes_tematicas/editais/feed/",
+          "tipo": "feed"
+        }
+      ],
+      "lexico_camada1": [],
+      "lexico_camada2": []
+    },
+    "site-mapas-culturais": {
+      "perfil": "Mapas Culturais — editais das redes estaduais e municipais de cultura que usam a plataforma",
+      "rotas": [
+        {
+          "nome": "Mapas Culturais",
+          "url": null,
+          "tipo": "mapas_culturais"
+        }
+      ],
+      "lexico_camada1": [],
+      "lexico_camada2": []
+    },
+    "site-abcr": {
+      "perfil": "ABCR — Associação Brasileira de Captadores de Recursos — editais divulgados pela associação dos captadores",
+      "rotas": [
+        {
+          "nome": "ABCR — Associação Brasileira de Captadores de Recursos",
+          "url": "https://captadores.org.br/category/editais/feed/",
+          "tipo": "feed"
+        }
+      ],
+      "lexico_camada1": [],
+      "lexico_camada2": []
+    },
+    "site-funarte": {
+      "perfil": "Funarte — editais da Fundação Nacional de Artes",
+      "rotas": [
+        {
+          "nome": "Funarte",
+          "url": null,
+          "tipo": "html_listagem"
+        }
+      ],
+      "lexico_camada1": [],
+      "lexico_camada2": []
+    },
+    "site-transferegov": {
+      "perfil": "Transferegov — programas e parcerias com OSC abertos na plataforma federal (dados abertos)",
+      "rotas": [
+        {
+          "nome": "Transferegov",
+          "url": "https://api-publica.transferegov.gestao.gov.br/downloads/dadosgov/siconv_programa.zip",
+          "tipo": "siconv_zip"
+        }
+      ],
+      "lexico_camada1": [],
+      "lexico_camada2": []
+    },
+    "site-rede-comua": {
+      "perfil": "Rede Comuá — editais dos fundos independentes de filantropia",
+      "rotas": [
+        {
+          "nome": "Rede Comuá",
+          "url": "https://redecomua.org.br/wp-json/wp/v2/_editais",
+          "tipo": "wordpress"
+        }
+      ],
+      "lexico_camada1": [],
+      "lexico_camada2": []
+    },
+    "site-fundo-baoba": {
+      "perfil": "Fundo Baobá — editais para equidade racial",
+      "rotas": [
+        {
+          "nome": "Fundo Baobá",
+          "url": null,
+          "tipo": "html_listagem"
+        }
+      ],
+      "lexico_camada1": [],
+      "lexico_camada2": []
+    },
+    "site-editais-culturais": {
+      "perfil": "Editais Culturais — editais de cultura reunidos no portal",
+      "rotas": [
+        {
+          "nome": "Editais Culturais",
+          "url": null,
+          "tipo": "html_listagem"
+        }
+      ],
+      "lexico_camada1": [],
+      "lexico_camada2": []
+    },
+    "site-fundo-brasil": {
+      "perfil": "Fundo Brasil de Direitos Humanos — editais de direitos humanos",
+      "rotas": [
+        {
+          "nome": "Fundo Brasil de Direitos Humanos",
+          "url": "https://www.fundobrasil.org.br/wp-json/wp/v2/edital",
+          "tipo": "wordpress"
+        }
+      ],
+      "lexico_camada1": [],
+      "lexico_camada2": []
+    },
+    "site-idis": {
+      "perfil": "IDIS — Instituto para o Desenvolvimento do Investimento Social — chamadas e editais de investimento social",
+      "rotas": [
+        {
+          "nome": "IDIS — Instituto para o Desenvolvimento do Investimento Social",
+          "url": "https://www.idis.org.br/feed/",
+          "tipo": "feed"
+        }
+      ],
+      "lexico_camada1": [],
+      "lexico_camada2": []
+    },
+    "site-undef": {
+      "perfil": "UNDEF — Fundo das Nações Unidas para a Democracia — chamadas anuais para a sociedade civil",
+      "rotas": [
+        {
+          "nome": "UNDEF — Fundo das Nações Unidas para a Democracia",
+          "url": null,
+          "tipo": "html_listagem"
+        }
+      ],
+      "lexico_camada1": [],
+      "lexico_camada2": []
+    },
+    "site-fundo-casa": {
+      "perfil": "Fundo Casa Socioambiental — chamadas socioambientais",
+      "rotas": [
+        {
+          "nome": "Fundo Casa Socioambiental",
+          "url": "https://casa.org.br/wp-json/wp/v2/chamadas",
+          "tipo": "wordpress"
+        }
+      ],
+      "lexico_camada1": [],
+      "lexico_camada2": []
+    },
+    "site-cese": {
+      "perfil": "CESE — Coordenadoria Ecumênica de Serviço — editais de apoio a projetos populares",
+      "rotas": [
+        {
+          "nome": "CESE — Coordenadoria Ecumênica de Serviço",
+          "url": "https://cese.org.br/wp-json/wp/v2/edital",
+          "tipo": "wordpress"
+        }
+      ],
+      "lexico_camada1": [],
+      "lexico_camada2": []
+    },
+    "site-brazilfoundation": {
+      "perfil": "BrazilFoundation — editais de apoio a organizações brasileiras",
+      "rotas": [
+        {
+          "nome": "BrazilFoundation",
+          "url": null,
+          "tipo": "html_listagem"
+        }
+      ],
+      "lexico_camada1": [],
+      "lexico_camada2": []
+    },
+    "site-rede-filantropia": {
+      "perfil": "Rede Filantropia — editais divulgados pela rede (lida pelo computador do titular: recusa IP estrangeiro)",
+      "rotas": [
+        {
+          "nome": "Rede Filantropia",
+          "url": null,
+          "tipo": "html_listagem"
+        }
+      ],
+      "lexico_camada1": [],
+      "lexico_camada2": []
+    },
+    "site-mapa-osc": {
+      "perfil": "Mapa das OSC (Ipea) — editais reunidos no portal (coleta assistida: o site proíbe robôs)",
+      "rotas": [
+        {
+          "nome": "Mapa das OSC (Ipea)",
+          "url": "https://mapaosc.ipea.gov.br/editais",
+          "tipo": "assistida"
+        }
+      ],
+      "lexico_camada1": [],
+      "lexico_camada2": []
+    },
+    "site-prosas": {
+      "perfil": "Prosas — editais e prêmios para OSCs (três caminhos indiretos: listagem da CapitaAI, ângulo do Piloto e coleta assistida)",
+      "rotas": [
+        {
+          "nome": "Prosas",
+          "url": "https://prosas.com.br/selecao/widgets/listagem-editais",
+          "tipo": "assistida"
+        }
+      ],
+      "lexico_camada1": [],
+      "lexico_camada2": []
+    },
+    "judiciario-tjgo": {
+      "perfil": "varas de execução penal, juizados e comarcas do TJGO (Goiânia primeiro) — editais de seleção de projetos com recursos de prestações pecuniárias, credenciamentos do Judiciário para entidades e a regra nacional do CNJ",
+      "rotas": [
+        {
+          "nome": "TJGO — Agência de Notícias (RSS paginado)",
+          "url": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss",
+          "tipo": "tribunal",
+          "exige_brasil": true
+        },
+        {
+          "nome": "TJGO — PDF do edital anexado à notícia",
+          "url": "https://www.tjgo.jus.br/files/",
+          "tipo": "tribunal",
+          "exige_brasil": true
+        },
+        {
+          "nome": "Corregedoria (CGJ/GO) — Banco de Projetos Sociais (cadastro prévio)",
+          "url": "https://corregedoria.tjgo.jus.br/basesocial",
+          "tipo": "secretaria"
+        },
+        {
+          "nome": "Portal do CNJ — busca (republica editais dos tribunais) e regra nacional",
+          "url": "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+edital",
+          "tipo": "referencia"
+        },
+        {
+          "nome": "PNCP — credenciamentos do TJGO e do CNJ (cruzado do motor 04)",
+          "url": "https://pncp.gov.br/app/editais",
+          "tipo": "vetor"
+        }
+      ],
+      "armadilha": "jusbrasil.com.br é agregador e vetor — nunca fonte; as páginas antigas do TJGO (/execucao-penal, /editais-de-chamamento, /dje…) dão 404; o DJEN só traz intimações com nomes de réus; a busca pública do Banco de Projetos lista nome e telefone dos responsáveis (não coletar)",
+      "lexico_camada1": [
+        "prestação pecuniária",
+        "penas pecuniárias",
+        "penas alternativas",
+        "transação penal",
+        "projetos sociais",
+        "finalidade social",
+        "destinação de recursos",
+        "Banco de Projetos Sociais",
+        "cadastramento de entidades",
+        "credenciamento de entidades",
+        "Vepema",
+        "edital"
+      ],
+      "lexico_camada2": [
+        "seleção de projetos",
+        "habilitação",
+        "entidades públicas ou privadas",
+        "Resolução CNJ 558",
+        "Código de Normas art. 257",
+        "comarca",
+        "inscrições até"
+      ],
+      "coleta": "nuvem + local",
+      "nota_coleta": "o TJGO recusa IP estrangeiro: RSS, notícias e PDFs pelo computador do titular; a busca do CNJ e o cruzamento do PNCP pela nuvem"
+    },
+    "judiciario-cnj": {
+      "perfil": "varas de execução penal, juizados e comarcas do TJGO (Goiânia primeiro) — editais de seleção de projetos com recursos de prestações pecuniárias, credenciamentos do Judiciário para entidades e a regra nacional do CNJ",
+      "rotas": [
+        {
+          "nome": "TJGO — Agência de Notícias (RSS paginado)",
+          "url": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss",
+          "tipo": "tribunal",
+          "exige_brasil": true
+        },
+        {
+          "nome": "TJGO — PDF do edital anexado à notícia",
+          "url": "https://www.tjgo.jus.br/files/",
+          "tipo": "tribunal",
+          "exige_brasil": true
+        },
+        {
+          "nome": "Corregedoria (CGJ/GO) — Banco de Projetos Sociais (cadastro prévio)",
+          "url": "https://corregedoria.tjgo.jus.br/basesocial",
+          "tipo": "secretaria"
+        },
+        {
+          "nome": "Portal do CNJ — busca (republica editais dos tribunais) e regra nacional",
+          "url": "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+edital",
+          "tipo": "referencia"
+        },
+        {
+          "nome": "PNCP — credenciamentos do TJGO e do CNJ (cruzado do motor 04)",
+          "url": "https://pncp.gov.br/app/editais",
+          "tipo": "vetor"
+        }
+      ],
+      "armadilha": "jusbrasil.com.br é agregador e vetor — nunca fonte; as páginas antigas do TJGO (/execucao-penal, /editais-de-chamamento, /dje…) dão 404; o DJEN só traz intimações com nomes de réus; a busca pública do Banco de Projetos lista nome e telefone dos responsáveis (não coletar)",
+      "lexico_camada1": [
+        "prestação pecuniária",
+        "penas pecuniárias",
+        "penas alternativas",
+        "transação penal",
+        "projetos sociais",
+        "finalidade social",
+        "destinação de recursos",
+        "Banco de Projetos Sociais",
+        "cadastramento de entidades",
+        "credenciamento de entidades",
+        "Vepema",
+        "edital"
+      ],
+      "lexico_camada2": [
+        "seleção de projetos",
+        "habilitação",
+        "entidades públicas ou privadas",
+        "Resolução CNJ 558",
+        "Código de Normas art. 257",
+        "comarca",
+        "inscrições até"
+      ],
+      "coleta": "nuvem + local",
+      "nota_coleta": "o TJGO recusa IP estrangeiro: RSS, notícias e PDFs pelo computador do titular; a busca do CNJ e o cruzamento do PNCP pela nuvem"
+    },
+    "mpgo-destinacao": {
+      "perfil": "Ministérios Públicos — destinação de recursos de reparação e bens lesados (motor 12 v2, estudo ao vivo de 02/10/2026)",
+      "rotas": [
+        {
+          "nome": "MPT-GO — PRT 18ª Região (Goiânia e PTM Anápolis)",
+          "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
+          "tipo": "tabela_mpt"
+        },
+        {
+          "nome": "MPT-GO — PRT 18ª Região",
+          "url": "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
+          "tipo": "lista_habilitadas"
+        },
+        {
+          "nome": "MPT-GO — PRT 18ª Região (Goiânia/GO)",
+          "url": "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPT nacional — PGT - Noticias",
+          "url": "https://mpt.mp.br/search_rss?SearchableText=edital+cadastramento+entidades&sort_on=Date&sort_order=reverse",
+          "tipo": "rss"
+        },
+        {
+          "nome": "MPT nacional — PGT - Noticias",
+          "url": "https://mpt.mp.br/pgt/noticias/RSS",
+          "tipo": "rss"
+        },
+        {
+          "nome": "MPF — PR-GO",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — PR-GO",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — PR-GO",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — PR-GO",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-em-goias-cadastra-entidades-e-orgaos-publicos-para-recebimento-bens-e-valores-decorrentes-da-atuacao-da-instituicao",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — nacional (busca)",
+          "url": "https://www.mpf.mp.br/search?SearchableText=edital+chamamento+recebimento+bens+valores",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — PR-BA (modelo)",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — nacional",
+          "url": "https://www.mpf.mp.br/servicos/mpf-servicos",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPDFT — PGJ / Cema / Apma / Semas",
+          "url": "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPDFT — várias promotorias",
+          "url": "https://www.mpdft.mp.br/transparencia/index.php?item=tac",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPDFT — Sala de imprensa",
+          "url": "https://www.mpdft.mp.br/portal/index.php/comunicacao-menu/sala-de-imprensa/noticias/noticias-2026-completo",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPM — portal",
+          "url": "https://www.mpm.mp.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPU — portal",
+          "url": "https://www.mpu.mp.br/sitemap",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — Senacon / CFDD - Fundo de Defesa de Direitos D",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento",
+          "tipo": "estado_pagina"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecoes-anteriores",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/reunioes-do-cfdd/anexos-atas",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/convenios-e-transferencias",
+          "tipo": "listagem_html"
+        }
+      ],
+      "lexico_camada1": [
+        "bens lesados",
+        "chamamento",
+        "chamamento público",
+        "destinação de recursos",
+        "edital de apoio",
+        "edital de destinação",
+        "entidades",
+        "organizações da sociedade civil",
+        "projetos sociais",
+        "reparação",
+        "seleção de projetos",
+        "termo de ajustamento",
+        "termo de colaboração",
+        "termo de fomento",
+        "indicação de destinação",
+        "Sistema de Destinações",
+        "entidades assistenciais",
+        "bens e valores",
+        "Destina"
+      ],
+      "lexico_camada2": [
+        "organizações da sociedade civil",
+        "projeto social",
+        "das inscrições",
+        "habilitação",
+        "Goiás",
+        "Goiânia"
+      ],
+      "nunca_acessar": [
+        "mpgo.mp.br",
+        "destinacoes.mpt.mp.br"
+      ],
+      "observacao": "02/10: leitura pela estrutura em src/ministerios_publicos.py; o MP-GO (robots Disallow: /) não é rota"
+    },
+    "mptgo-destinacao": {
+      "perfil": "Ministérios Públicos — destinação de recursos de reparação e bens lesados (motor 12 v2, estudo ao vivo de 02/10/2026)",
+      "rotas": [
+        {
+          "nome": "MPT-GO — PRT 18ª Região (Goiânia e PTM Anápolis)",
+          "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
+          "tipo": "tabela_mpt"
+        },
+        {
+          "nome": "MPT-GO — PRT 18ª Região",
+          "url": "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
+          "tipo": "lista_habilitadas"
+        },
+        {
+          "nome": "MPT-GO — PRT 18ª Região (Goiânia/GO)",
+          "url": "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPT nacional — PGT - Noticias",
+          "url": "https://mpt.mp.br/search_rss?SearchableText=edital+cadastramento+entidades&sort_on=Date&sort_order=reverse",
+          "tipo": "rss"
+        },
+        {
+          "nome": "MPT nacional — PGT - Noticias",
+          "url": "https://mpt.mp.br/pgt/noticias/RSS",
+          "tipo": "rss"
+        },
+        {
+          "nome": "MPF — PR-GO",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — PR-GO",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — PR-GO",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — PR-GO",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-em-goias-cadastra-entidades-e-orgaos-publicos-para-recebimento-bens-e-valores-decorrentes-da-atuacao-da-instituicao",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — nacional (busca)",
+          "url": "https://www.mpf.mp.br/search?SearchableText=edital+chamamento+recebimento+bens+valores",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — PR-BA (modelo)",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — nacional",
+          "url": "https://www.mpf.mp.br/servicos/mpf-servicos",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPDFT — PGJ / Cema / Apma / Semas",
+          "url": "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPDFT — várias promotorias",
+          "url": "https://www.mpdft.mp.br/transparencia/index.php?item=tac",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPDFT — Sala de imprensa",
+          "url": "https://www.mpdft.mp.br/portal/index.php/comunicacao-menu/sala-de-imprensa/noticias/noticias-2026-completo",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPM — portal",
+          "url": "https://www.mpm.mp.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPU — portal",
+          "url": "https://www.mpu.mp.br/sitemap",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — Senacon / CFDD - Fundo de Defesa de Direitos D",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento",
+          "tipo": "estado_pagina"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecoes-anteriores",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/reunioes-do-cfdd/anexos-atas",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/convenios-e-transferencias",
+          "tipo": "listagem_html"
+        }
+      ],
+      "lexico_camada1": [
+        "bens lesados",
+        "chamamento",
+        "chamamento público",
+        "destinação de recursos",
+        "edital de apoio",
+        "edital de destinação",
+        "entidades",
+        "organizações da sociedade civil",
+        "projetos sociais",
+        "reparação",
+        "seleção de projetos",
+        "termo de ajustamento",
+        "termo de colaboração",
+        "termo de fomento",
+        "indicação de destinação",
+        "Sistema de Destinações",
+        "entidades assistenciais",
+        "bens e valores",
+        "Destina"
+      ],
+      "lexico_camada2": [
+        "organizações da sociedade civil",
+        "projeto social",
+        "das inscrições",
+        "habilitação",
+        "Goiás",
+        "Goiânia"
+      ],
+      "nunca_acessar": [
+        "mpgo.mp.br",
+        "destinacoes.mpt.mp.br"
+      ],
+      "observacao": "02/10: leitura pela estrutura em src/ministerios_publicos.py; o MP-GO (robots Disallow: /) não é rota"
+    },
+    "mpu-destinacao": {
+      "perfil": "Ministérios Públicos — destinação de recursos de reparação e bens lesados (motor 12 v2, estudo ao vivo de 02/10/2026)",
+      "rotas": [
+        {
+          "nome": "MPT-GO — PRT 18ª Região (Goiânia e PTM Anápolis)",
+          "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
+          "tipo": "tabela_mpt"
+        },
+        {
+          "nome": "MPT-GO — PRT 18ª Região",
+          "url": "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
+          "tipo": "lista_habilitadas"
+        },
+        {
+          "nome": "MPT-GO — PRT 18ª Região (Goiânia/GO)",
+          "url": "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPT nacional — PGT - Noticias",
+          "url": "https://mpt.mp.br/search_rss?SearchableText=edital+cadastramento+entidades&sort_on=Date&sort_order=reverse",
+          "tipo": "rss"
+        },
+        {
+          "nome": "MPT nacional — PGT - Noticias",
+          "url": "https://mpt.mp.br/pgt/noticias/RSS",
+          "tipo": "rss"
+        },
+        {
+          "nome": "MPF — PR-GO",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — PR-GO",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — PR-GO",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — PR-GO",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-em-goias-cadastra-entidades-e-orgaos-publicos-para-recebimento-bens-e-valores-decorrentes-da-atuacao-da-instituicao",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — nacional (busca)",
+          "url": "https://www.mpf.mp.br/search?SearchableText=edital+chamamento+recebimento+bens+valores",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — PR-BA (modelo)",
+          "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPF — nacional",
+          "url": "https://www.mpf.mp.br/servicos/mpf-servicos",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPDFT — PGJ / Cema / Apma / Semas",
+          "url": "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPDFT — várias promotorias",
+          "url": "https://www.mpdft.mp.br/transparencia/index.php?item=tac",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPDFT — Sala de imprensa",
+          "url": "https://www.mpdft.mp.br/portal/index.php/comunicacao-menu/sala-de-imprensa/noticias/noticias-2026-completo",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPM — portal",
+          "url": "https://www.mpm.mp.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "MPU — portal",
+          "url": "https://www.mpu.mp.br/sitemap",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — Senacon / CFDD - Fundo de Defesa de Direitos D",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento",
+          "tipo": "estado_pagina"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecoes-anteriores",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/reunioes-do-cfdd/anexos-atas",
+          "tipo": "listagem_html"
+        },
+        {
+          "nome": "Ministério da Justiça e Segurança Pública — CFDD",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/convenios-e-transferencias",
+          "tipo": "listagem_html"
+        }
+      ],
+      "lexico_camada1": [
+        "bens lesados",
+        "chamamento",
+        "chamamento público",
+        "destinação de recursos",
+        "edital de apoio",
+        "edital de destinação",
+        "entidades",
+        "organizações da sociedade civil",
+        "projetos sociais",
+        "reparação",
+        "seleção de projetos",
+        "termo de ajustamento",
+        "termo de colaboração",
+        "termo de fomento",
+        "indicação de destinação",
+        "Sistema de Destinações",
+        "entidades assistenciais",
+        "bens e valores",
+        "Destina"
+      ],
+      "lexico_camada2": [
+        "organizações da sociedade civil",
+        "projeto social",
+        "das inscrições",
+        "habilitação",
+        "Goiás",
+        "Goiânia"
+      ],
+      "nunca_acessar": [
+        "mpgo.mp.br",
+        "destinacoes.mpt.mp.br"
+      ],
+      "observacao": "02/10: leitura pela estrutura em src/ministerios_publicos.py; o MP-GO (robots Disallow: /) não é rota"
+    },
+    "plataforma-wordpress": {
+      "perfil": "adaptador de plataforma: sites oficiais em WordPress (API pública), em rodízio",
+      "rotas": [
+        {
+          "nome": "API pública do WordPress dos sites oficiais conhecidos (rodízio)",
+          "url": "https://goias.gov.br/cultura/wp-json/wp/v2/posts?search=edital",
+          "tipo": "api"
+        },
+        {
+          "nome": "Página de editais do próprio site (quando a API está fechada)",
+          "url": "https://goias.gov.br/cultura/editais/",
+          "tipo": "listagem"
+        }
+      ],
+      "lexico_camada2": [
+        "inscrições",
+        "inscrição",
+        "prazo",
+        "proponente",
+        "organização da sociedade civil",
+        "osc",
+        "selecionad",
+        "resultado",
+        "recurso",
+        "anexo",
+        "edital",
+        "chamamento",
+        "termo de fomento",
+        "termo de colaboração",
+        "termo de execução cultural",
+        "premiação",
+        "bolsa",
+        "credenciamento"
+      ]
+    },
+    "plataforma-mapas-culturais": {
+      "perfil": "adaptador de plataforma: Mapas Culturais dos governos (API padrão), em rodízio",
+      "rotas": [
+        {
+          "nome": "API padrão do Mapas Culturais (/api/opportunity/find), rodízio",
+          "url": "https://mapa.cultura.gov.br/api/opportunity/find?@select=id,name,registrationTo",
+          "tipo": "mapas_culturais"
+        },
+        {
+          "nome": "Listagem pública de oportunidades do mapa",
+          "url": "https://mapa.cultura.gov.br/oportunidades/",
+          "tipo": "listagem"
+        }
+      ],
+      "lexico_camada2": [
+        "inscrições",
+        "inscrição",
+        "prazo",
+        "proponente",
+        "organização da sociedade civil",
+        "osc",
+        "selecionad",
+        "resultado",
+        "recurso",
+        "anexo",
+        "edital",
+        "chamamento",
+        "termo de fomento",
+        "termo de colaboração",
+        "termo de execução cultural",
+        "premiação",
+        "bolsa",
+        "credenciamento",
+        "agente cultural",
+        "coletivo",
+        "ponto de cultura",
+        "fomento cultural",
+        "pnab",
+        "lei paulo gustavo"
+      ]
+    },
+    "outras-oportunidades-1": {
+      "perfil": "Outras Oportunidades 1/7: sites oficiais lidos diretamente (a fonte)",
+      "rotas": [
+        {
+          "nome": "site oficial 1",
+          "url": "https://www.boavista.rr.gov.br/",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 2",
+          "url": "https://conexoes.bndes.gov.br/chamadas-e-editais",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 3",
+          "url": "https://www.institutococacolabrasil.com.br/",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 4",
+          "url": "https://chamamentos.itapevi.sp.gov.br/chamamentos",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 5",
+          "url": "https://www.maranguape.ce.gov.br/informa/328/edital-de-fomento-n-004-2026-espa-os-culturais",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 6",
+          "url": "https://www.institutoacp.org.br/chamadaaberta",
+          "tipo": "site_oficial"
+        }
+      ],
+      "lexico_camada2": [
+        "inscrições",
+        "inscrição",
+        "prazo",
+        "proponente",
+        "organização da sociedade civil",
+        "osc",
+        "selecionad",
+        "resultado",
+        "recurso",
+        "anexo",
+        "edital",
+        "chamamento",
+        "termo de fomento",
+        "termo de colaboração",
+        "termo de execução cultural",
+        "premiação",
+        "bolsa",
+        "credenciamento"
+      ],
+      "gerado_em": "2026-10-14 (análise do sistema: motores sem rotas)"
+    },
+    "outras-oportunidades-2": {
+      "perfil": "Outras Oportunidades 2/7: sites oficiais lidos diretamente (a fonte)",
+      "rotas": [
+        {
+          "nome": "site oficial 1",
+          "url": "https://www.cnbb.org.br/cnbb-lanca-edital-do-fns-para-apoio-financeiro-a-projetos-relativos-a-campanha-da-fraternidade-2026",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 2",
+          "url": "https://institutogenesio.org.br/wp-content/uploads/2026/10/Edital-Nao-Incentivado-Instituto-Genesio-A-Mendes-2026.pdf?utm_source=Link+da+Bio+do+RD+Station&utm_medium=social&utm_campaign=CTA+no+Link+da+Bio",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 3",
+          "url": "https://fns.cnbb.org.br/fundo/informativo/index",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 4",
+          "url": "https://fase.org.br/pt/acervo/documentos/edital-agitando-pensamentos-2026-roteiro/",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 5",
+          "url": "http://www.editalcorredor2025.com.br",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 6",
+          "url": "https://banrisulcultural.com.br/editais/",
+          "tipo": "site_oficial"
+        }
+      ],
+      "lexico_camada2": [
+        "inscrições",
+        "inscrição",
+        "prazo",
+        "proponente",
+        "organização da sociedade civil",
+        "osc",
+        "selecionad",
+        "resultado",
+        "recurso",
+        "anexo",
+        "edital",
+        "chamamento",
+        "termo de fomento",
+        "termo de colaboração",
+        "termo de execução cultural",
+        "premiação",
+        "bolsa",
+        "credenciamento"
+      ],
+      "gerado_em": "2026-10-14 (análise do sistema: motores sem rotas)"
+    },
+    "outras-oportunidades-3": {
+      "perfil": "Outras Oportunidades 3/7: sites oficiais lidos diretamente (a fonte)",
+      "rotas": [
+        {
+          "nome": "site oficial 1",
+          "url": "https://luppa.comidadoamanha.org/wp-content/uploads/2026/09/Edital-Chamada-Cidades-LUPPA-6a-Edicao.pdf",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 2",
+          "url": "https://itamarandibahoje.com.br/business2/edital-de-projetos-fundacao-aperam-acesita-social-2026.html",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 3",
+          "url": "https://iracemapolis.siscam.com.br/arquivo?Id=41354",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 4",
+          "url": "https://plataforma9.com/financiamento/brasil-mec-minc-edital-ciclos-de-saberes-mestras-mestres-culturas-tradicionais-populares.htm",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 5",
+          "url": "https://gazetadoestado.com.br/geral/goiania-abre-10-vagas-para-sociedade-civil-em-comite-sobre-refugiados-migrantes-e-apatridas-inscricoes-de-247-a-78",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 6",
+          "url": "https://news.confap.org.br/wp-content/uploads/2026/09/Diretrizes-da-FAPERGS-para-a-Chamada-WBI-2026.pdf",
+          "tipo": "site_oficial"
+        }
+      ],
+      "lexico_camada2": [
+        "inscrições",
+        "inscrição",
+        "prazo",
+        "proponente",
+        "organização da sociedade civil",
+        "osc",
+        "selecionad",
+        "resultado",
+        "recurso",
+        "anexo",
+        "edital",
+        "chamamento",
+        "termo de fomento",
+        "termo de colaboração",
+        "termo de execução cultural",
+        "premiação",
+        "bolsa",
+        "credenciamento"
+      ],
+      "gerado_em": "2026-10-14 (análise do sistema: motores sem rotas)"
+    },
+    "outras-oportunidades-4": {
+      "perfil": "Outras Oportunidades 4/7: sites oficiais lidos diretamente (a fonte)",
+      "rotas": [
+        {
+          "nome": "site oficial 1",
+          "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8356/",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 2",
+          "url": "https://transparencia.agilicloud.com.br/novaubirata/licitacoes/licitacao?id=12891",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 3",
+          "url": "https://cultura.rs.gov.br/edital-para-projetos-culturais-em-escolas-de-tempo-integral-esta-com-inscricoes-abertas",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 4",
+          "url": "https://www.editalong.com/editais",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 5",
+          "url": "https://itacoatiara.am.gov.br/2026/10/pnab-ciclo-ii-inscricoes-abertas-para-mais-de-90-projetos-culturais-em-itacoatiara/",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 6",
+          "url": "https://www.orizona.go.gov.br",
+          "tipo": "site_oficial"
+        }
+      ],
+      "lexico_camada2": [
+        "inscrições",
+        "inscrição",
+        "prazo",
+        "proponente",
+        "organização da sociedade civil",
+        "osc",
+        "selecionad",
+        "resultado",
+        "recurso",
+        "anexo",
+        "edital",
+        "chamamento",
+        "termo de fomento",
+        "termo de colaboração",
+        "termo de execução cultural",
+        "premiação",
+        "bolsa",
+        "credenciamento"
+      ],
+      "gerado_em": "2026-10-14 (análise do sistema: motores sem rotas)"
+    },
+    "outras-oportunidades-5": {
+      "perfil": "Outras Oportunidades 5/7: sites oficiais lidos diretamente (a fonte)",
+      "rotas": [
+        {
+          "nome": "site oficial 1",
+          "url": "https://notasocial.com.br/edital-de-selecao-de-projetos-incentivados-2025-abre-inscricoes/",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 2",
+          "url": "https://www.energiaesaneamento.org.br/sonhar-o-mundo-2026-abre-inscricoes-para-instituicoes-de-todo-o-estado-de-sao-paulo/",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 3",
+          "url": "https://www.agenciadobem.org.br/inscricoes-abertas-para-o-vi-edital-de-microprojetos-da-rede-do-bem/",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 4",
+          "url": "http://doem.org.br/ba/miguelcalmon/editais",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 5",
+          "url": "https://institutosabin.org.br/edital-da-jornada-transformacao-de-2026-e-lancado",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 6",
+          "url": "https://www.fapesb.ba.gov.br/diretrizes-especificas-da-fapesb-chamada-transnacional-conjunta-water4all-2026-2027-gestao-sustentavel-dos-recursos-hidricos",
+          "tipo": "site_oficial"
+        }
+      ],
+      "lexico_camada2": [
+        "inscrições",
+        "inscrição",
+        "prazo",
+        "proponente",
+        "organização da sociedade civil",
+        "osc",
+        "selecionad",
+        "resultado",
+        "recurso",
+        "anexo",
+        "edital",
+        "chamamento",
+        "termo de fomento",
+        "termo de colaboração",
+        "termo de execução cultural",
+        "premiação",
+        "bolsa",
+        "credenciamento"
+      ],
+      "gerado_em": "2026-10-14 (análise do sistema: motores sem rotas)"
+    },
+    "outras-oportunidades-6": {
+      "perfil": "Outras Oportunidades 6/7: sites oficiais lidos diretamente (a fonte)",
+      "rotas": [
+        {
+          "nome": "site oficial 1",
+          "url": "https://www.crars.org.br/arquivos/chamamentos/Edital_de_Chamamento_Publico_004-2026.pdf",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 2",
+          "url": "https://www.microsoft.com/pt-br/corporate-responsibility/philanthropies",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 3",
+          "url": "http://www.itauvivermais.com.br/pilares/editais/edital-ivm-2026",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 4",
+          "url": "https://plan.org.br/wp-content/uploads/2026/10/Regulamento-Edital-Fundo-Acelere-o-Relogio-2026.pdf",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 5",
+          "url": "https://floresta-viva.fbds.org.br/edital-001-2026",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 6",
+          "url": "https://govgestao.com.br/790d8a",
+          "tipo": "site_oficial"
+        }
+      ],
+      "lexico_camada2": [
+        "inscrições",
+        "inscrição",
+        "prazo",
+        "proponente",
+        "organização da sociedade civil",
+        "osc",
+        "selecionad",
+        "resultado",
+        "recurso",
+        "anexo",
+        "edital",
+        "chamamento",
+        "termo de fomento",
+        "termo de colaboração",
+        "termo de execução cultural",
+        "premiação",
+        "bolsa",
+        "credenciamento"
+      ],
+      "gerado_em": "2026-10-14 (análise do sistema: motores sem rotas)"
+    },
+    "outras-oportunidades-7": {
+      "perfil": "Outras Oportunidades 7/7: sites oficiais lidos diretamente (a fonte)",
+      "rotas": [
+        {
+          "nome": "site oficial 1",
+          "url": "https://fundopositivo.org.br/editais/",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 2",
+          "url": "https://editaisdobrasil.com/calendario",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 3",
+          "url": "https://potengi.ce.gov.br/publicacoes.php?pagina=1",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 4",
+          "url": "https://fundacaocargill.org.br/edital-regional-nutrindo-solucoes-locais-2/",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 5",
+          "url": "https://www.votuporanga.sp.gov.br",
+          "tipo": "site_oficial"
+        },
+        {
+          "nome": "site oficial 6",
+          "url": "https://muribeca.se.gov.br/portaltransparencia/?servico=cidadao/diariooficial",
+          "tipo": "site_oficial"
+        }
+      ],
+      "lexico_camada2": [
+        "inscrições",
+        "inscrição",
+        "prazo",
+        "proponente",
+        "organização da sociedade civil",
+        "osc",
+        "selecionad",
+        "resultado",
+        "recurso",
+        "anexo",
+        "edital",
+        "chamamento",
+        "termo de fomento",
+        "termo de colaboração",
+        "termo de execução cultural",
+        "premiação",
+        "bolsa",
+        "credenciamento"
+      ],
+      "gerado_em": "2026-10-14 (análise do sistema: motores sem rotas)"
+    },
+    "plat-estaduais-go-gov": {
+      "perfil": "Oportunidade Estaduais Governamentais de Goiás: sites oficiais lidos diretamente (a fonte)",
+      "rotas": [
+        {
+          "nome": "site oficial 1",
+          "url": "https://goias.gov.br/",
+          "tipo": "plataforma"
+        },
+        {
+          "nome": "site oficial 2",
+          "url": "https://goias.gov.br/cultura/editais/",
+          "tipo": "plataforma"
+        },
+        {
+          "nome": "site oficial 3",
+          "url": "https://goias.gov.br/social/editais/",
+          "tipo": "plataforma"
+        }
+      ],
+      "lexico_camada2": [
+        "inscrições",
+        "inscrição",
+        "prazo",
+        "proponente",
+        "organização da sociedade civil",
+        "osc",
+        "selecionad",
+        "resultado",
+        "recurso",
+        "anexo",
+        "edital",
+        "chamamento",
+        "termo de fomento",
+        "termo de colaboração",
+        "termo de execução cultural",
+        "premiação",
+        "bolsa",
+        "credenciamento"
+      ],
+      "gerado_em": "2026-10-14 (análise do sistema: motores sem rotas)"
+    }
   },
-  "motor-gife": {
-   "perfil": "Empresas da base ICMS/RFB/SALIC de Goiás com potencial de destinação incentivada (Rouanet, LIE, FIA/Idoso, PRONON/PRONAS)",
-   "rotas": [
-    {
-     "nome": "maiores contribuintes do ICMS de Goiás",
-     "url": "https://goias.gov.br/economia/os-maiores-contribuintes-do-icms/",
-     "tipo": "lista"
-    },
-    {
-     "nome": "site institucional de cada empresa (páginas de RSE)",
-     "url": null,
-     "tipo": "fonte_derivada"
-    },
-    {
-     "nome": "Salic — projetos que a empresa já incentivou",
-     "url": "https://salic.cultura.gov.br/",
-     "tipo": "plataforma"
-    }
-   ],
-   "lexico_camada1": [
-    "edital",
-    "chamada pública",
-    "chamamento",
-    "seleção de projetos",
-    "seleção pública",
-    "inscrições abertas",
-    "apoio a projetos",
-    "apoio institucional",
-    "fomento",
-    "financiamento de projetos",
-    "patrocínio",
-    "doação",
-    "investimento social privado",
-    "responsabilidade social",
-    "sustentabilidade",
-    "ESG",
-    "impacto social",
-    "instituto",
-    "fundação",
-    "programa social",
-    "prêmio",
-    "concurso de projetos",
-    "aceleração",
-    "incubação",
-    "grant",
-    "grants"
-   ],
-   "veto_camada1": [
-    "pregão",
-    "licitação",
-    "aquisição de",
-    "contratação de empresa",
-    "ata de registro",
-    "tomada de preços",
-    "vaga de emprego",
-    "processo seletivo simplificado",
-    "concurso público",
-    "estágio",
-    "bolsa de estudo individual",
-    "curso pago",
-    "inscrições para o evento",
-    "ingresso",
-    "venda",
-    "leilão",
-    "consórcio",
-    "financiamento imobiliário"
-   ],
-   "lexico_camada2": [
-    "quem pode participar",
-    "podem se inscrever",
-    "proponente",
-    "critérios de seleção",
-    "cronograma",
-    "valor do apoio",
-    "recursos disponíveis",
-    "regulamento",
-    "termo de fomento",
-    "termo de colaboração",
-    "sem fins lucrativos",
-    "CNPJ",
-    "prestação de contas",
-    "plano de trabalho"
-   ],
-   "rotas_agregadas": [
-    {
-     "nome": "Embaixada do Japão",
-     "url": "https://www.br.emb-japan.go.jp/",
-     "tipo": "agregada (assistido) — lida pelo fluxo 16",
-     "motor_antigo": "site-embaixada-japao"
-    },
-    {
-     "nome": "Embaixada dos EUA",
-     "url": "https://br.usembassy.gov/pt/embassy-consulates-pt/brasilia-pt/oportunidades-de-financiamento/",
-     "tipo": "agregada (assistido) — lida pelo fluxo 16",
-     "motor_antigo": "site-embaixada-eua"
-    },
-    {
-     "nome": "Fundação Banco do Brasil",
-     "url": "https://www.fbb.org.br/",
-     "tipo": "agregada (assistido) — lida pelo fluxo 16",
-     "motor_antigo": "site-fundacao-banco-do-brasil"
-    },
-    {
-     "nome": "IAF — Fundação Interamericana",
-     "url": "https://iaf.gov/apply-for-grant/",
-     "tipo": "agregada (html_listagem) — lida pelo fluxo 16",
-     "motor_antigo": "site-iaf"
-    },
-    {
-     "nome": "Itaú Social",
-     "url": "https://editais.itausocial.org.br/",
-     "tipo": "agregada (assistido) — lida pelo fluxo 16",
-     "motor_antigo": "site-itau-social"
-    },
-    {
-     "nome": "Petrobras",
-     "url": "https://petrobras.com.br/",
-     "tipo": "agregada (assistido) — lida pelo fluxo 16",
-     "motor_antigo": "site-petrobras"
-    }
-   ]
-  },
-  "motor-patrocinio": {
-   "perfil": "Empresas que patrocinam eventos culturais, esportivos e educacionais em Goiás com recurso próprio (marketing, sem benefício fiscal)",
-   "rotas": [
-    {
-     "nome": "imprensa e portais de eventos de Goiás",
-     "url": "https://www.opopular.com.br/",
-     "tipo": "imprensa"
-    },
-    {
-     "nome": "site institucional do patrocinador identificado",
-     "url": null,
-     "tipo": "fonte_derivada"
-    },
-    {
-     "nome": "páginas de eventos e festivais goianos",
-     "url": "https://html.duckduckgo.com/html/?q=patroc%C3%ADnio+evento+cultural+Goi%C3%A2nia+2026",
-     "tipo": "busca"
-    }
-   ],
-   "lexico_camada1": [
-    "edital",
-    "chamada pública",
-    "chamamento",
-    "seleção de projetos",
-    "seleção pública",
-    "inscrições abertas",
-    "apoio a projetos",
-    "apoio institucional",
-    "fomento",
-    "financiamento de projetos",
-    "patrocínio",
-    "doação",
-    "investimento social privado",
-    "responsabilidade social",
-    "sustentabilidade",
-    "ESG",
-    "impacto social",
-    "instituto",
-    "fundação",
-    "programa social",
-    "prêmio",
-    "concurso de projetos",
-    "aceleração",
-    "incubação",
-    "grant",
-    "grants",
-    "chamamento público",
-    "termo de fomento",
-    "termo de colaboração",
-    "edital de apoio",
-    "organizações da sociedade civil"
-   ],
-   "veto_camada1": [
-    "pregão",
-    "licitação",
-    "aquisição de",
-    "contratação de empresa",
-    "ata de registro",
-    "tomada de preços",
-    "vaga de emprego",
-    "processo seletivo simplificado",
-    "concurso público",
-    "estágio",
-    "bolsa de estudo individual",
-    "curso pago",
-    "inscrições para o evento",
-    "ingresso",
-    "venda",
-    "leilão",
-    "consórcio",
-    "financiamento imobiliário"
-   ],
-   "lexico_camada2": [
-    "quem pode participar",
-    "podem se inscrever",
-    "proponente",
-    "critérios de seleção",
-    "cronograma",
-    "valor do apoio",
-    "recursos disponíveis",
-    "regulamento",
-    "termo de fomento",
-    "termo de colaboração",
-    "sem fins lucrativos",
-    "CNPJ",
-    "prestação de contas",
-    "plano de trabalho"
-   ]
-  },
-  "piloto-aberto": {
-   "perfil": "Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.",
-   "rotas": [
-    {
-     "nome": "busca aberta por ângulo sorteado (sem rota fixa)",
-     "url": "https://html.duckduckgo.com/html/?q=",
-     "tipo": "busca"
-    },
-    {
-     "nome": "site oficial do financiador descoberto (derivado)",
-     "url": null,
-     "tipo": "fonte_derivada"
-    },
-    {
-     "nome": "plataformas ainda não catalogadas",
-     "url": "https://html.duckduckgo.com/html/?q=plataforma+editais+terceiro+setor+brasil",
-     "tipo": "busca"
-    }
-   ],
-   "lexico_camada1": [
-    "edital",
-    "chamada pública",
-    "chamamento",
-    "seleção de projetos",
-    "seleção pública",
-    "inscrições abertas",
-    "apoio a projetos",
-    "apoio institucional",
-    "fomento",
-    "financiamento de projetos",
-    "patrocínio",
-    "doação",
-    "investimento social privado",
-    "responsabilidade social",
-    "sustentabilidade",
-    "ESG",
-    "impacto social",
-    "instituto",
-    "fundação",
-    "programa social",
-    "prêmio",
-    "concurso de projetos",
-    "aceleração",
-    "incubação",
-    "grant",
-    "grants",
-    "call for proposals",
-    "request for proposals",
-    "chamamento público",
-    "termo de fomento",
-    "termo de colaboração",
-    "edital de apoio",
-    "organizações da sociedade civil"
-   ],
-   "veto_camada1": [
-    "pregão",
-    "licitação",
-    "aquisição de",
-    "contratação de empresa",
-    "ata de registro",
-    "tomada de preços",
-    "vaga de emprego",
-    "processo seletivo simplificado",
-    "concurso público",
-    "estágio",
-    "bolsa de estudo individual",
-    "curso pago",
-    "inscrições para o evento",
-    "ingresso",
-    "venda",
-    "leilão",
-    "consórcio",
-    "financiamento imobiliário"
-   ],
-   "lexico_camada2": [
-    "quem pode participar",
-    "podem se inscrever",
-    "proponente",
-    "critérios de seleção",
-    "cronograma",
-    "valor do apoio",
-    "recursos disponíveis",
-    "regulamento",
-    "termo de fomento",
-    "termo de colaboração",
-    "sem fins lucrativos",
-    "CNPJ",
-    "prestação de contas",
-    "plano de trabalho"
-   ],
-   "armadilha": "portal de notícia não é site oficial — vale como pista; a descoberta só conta com o domínio próprio da organização"
-  },
-  "congresso-nacional": {
-   "perfil": "insumo de EMENDA FEDERAL e de REGRA — prazo oficial de emendas ao PLOA (CMO), proposições que mudam a vida das entidades; chamamento das Casas é raro",
-   "cadencia": "diária",
-   "rotas": [
-    {
-     "nome": "CMO — LOA do ano seguinte (etapa 'Apresentação de emendas')",
-     "url": "https://www.congressonacional.leg.br/web/orcamento/acompanhe/orcamento-anual/-/loa/2027",
-     "tipo": "orcamento",
-     "verificada_em": "2026-10-02"
-    },
-    {
-     "nome": "CMO — comunicados",
-     "url": "https://www.congressonacional.leg.br/web/cmo/comunicados",
-     "tipo": "orcamento",
-     "verificada_em": "2026-10-02"
-    },
-    {
-     "nome": "Câmara — API de proposições",
-     "url": "https://dadosabertos.camara.leg.br/api/v2/proposicoes",
-     "tipo": "api",
-     "verificada_em": "2026-10-02"
-    },
-    {
-     "nome": "Senado — API /processo",
-     "url": "https://legis.senado.leg.br/dadosabertos/processo",
-     "tipo": "api",
-     "verificada_em": "2026-10-02"
-    },
-    {
-     "nome": "Câmara — notícias (RSS)",
-     "url": "https://www.camara.leg.br/noticias/rss/ultimas-noticias",
-     "tipo": "noticias",
-     "verificada_em": "2026-10-02"
-    },
-    {
-     "nome": "Senado — notícias (RSS)",
-     "url": "https://www12.senado.leg.br/noticias/feed/todasnoticias/rss",
-     "tipo": "noticias",
-     "verificada_em": "2026-10-02"
-    },
-    {
-     "nome": "Senado — convocações públicas",
-     "url": "https://www6g.senado.leg.br/transparencia/licitacoes-e-contratos/sadcon/convocacoes-publicas",
-     "tipo": "chamamento",
-     "verificada_em": "2026-10-02"
-    }
-   ],
-   "lexico_camada1": [
-    "emendas",
-    "PLOA",
-    "LOA",
-    "orçamento",
-    "sem fins lucrativos",
-    "sociedade civil",
-    "terceiro setor",
-    "chamamento",
-    "prêmio"
-   ],
-   "lexico_camada2": [
-    "entidade",
-    "associação",
-    "termo de fomento",
-    "13.019",
-    "imunidade",
-    "emenda individual",
-    "bancada"
-   ],
-   "veto_camada1": [
-    "concurso público",
-    "licitação",
-    "pregão",
-    "denominação",
-    "dia nacional"
-   ],
-   "nota_02_10": "leitor próprio (src/congresso_nacional.py); os léxicos acima ficam como referência do painel e do livro"
-  },
-  "judiciario-cnj-tjgo": {
-   "perfil": "varas de execução penal, juizados e comarcas do TJGO (Goiânia primeiro) — editais de seleção de projetos com recursos de prestações pecuniárias, credenciamentos do Judiciário para entidades e a regra nacional do CNJ",
-   "rotas": [
-    {
-     "nome": "TJGO — Agência de Notícias (RSS paginado)",
-     "url": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss",
-     "tipo": "tribunal",
-     "exige_brasil": true
-    },
-    {
-     "nome": "TJGO — PDF do edital anexado à notícia",
-     "url": "https://www.tjgo.jus.br/files/",
-     "tipo": "tribunal",
-     "exige_brasil": true
-    },
-    {
-     "nome": "Corregedoria (CGJ/GO) — Banco de Projetos Sociais (cadastro prévio)",
-     "url": "https://corregedoria.tjgo.jus.br/basesocial",
-     "tipo": "secretaria"
-    },
-    {
-     "nome": "Portal do CNJ — busca (republica editais dos tribunais) e regra nacional",
-     "url": "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+edital",
-     "tipo": "referencia"
-    },
-    {
-     "nome": "PNCP — credenciamentos do TJGO e do CNJ (cruzado do motor 04)",
-     "url": "https://pncp.gov.br/app/editais",
-     "tipo": "vetor"
-    }
-   ],
-   "armadilha": "jusbrasil.com.br é agregador e vetor — nunca fonte; as páginas antigas do TJGO (/execucao-penal, /editais-de-chamamento, /dje…) dão 404; o DJEN só traz intimações com nomes de réus; a busca pública do Banco de Projetos lista nome e telefone dos responsáveis (não coletar)",
-   "lexico_camada1": [
-    "prestação pecuniária",
-    "penas pecuniárias",
-    "penas alternativas",
-    "transação penal",
-    "projetos sociais",
-    "finalidade social",
-    "destinação de recursos",
-    "Banco de Projetos Sociais",
-    "cadastramento de entidades",
-    "credenciamento de entidades",
-    "Vepema",
-    "edital"
-   ],
-   "lexico_camada2": [
-    "seleção de projetos",
-    "habilitação",
-    "entidades públicas ou privadas",
-    "Resolução CNJ 558",
-    "Código de Normas art. 257",
-    "comarca",
-    "inscrições até"
-   ],
-   "coleta": "nuvem + local",
-   "nota_coleta": "o TJGO recusa IP estrangeiro: RSS, notícias e PDFs pelo computador do titular; a busca do CNJ e o cruzamento do PNCP pela nuvem"
-  },
-  "site-farol-cultural": {
-   "perfil": "Farol Cultural — editais de cultura de todo o Brasil, pela API pública do portal",
-   "rotas": [
-    {
-     "nome": "Farol Cultural",
-     "url": "https://farolcultural.art/api/v1/editais",
-     "tipo": "farol_api"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": []
-  },
-  "site-capitaai": {
-   "perfil": "CapitaAI — editais e oportunidades de captação, incluindo a lista pública dos editais do Prosas",
-   "rotas": [
-    {
-     "nome": "CapitaAI",
-     "url": "https://capitaai.com.br/sitemap-captacao.xml",
-     "tipo": "sitemap_jsonld"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": []
-  },
-  "site-observatorio-terceiro-setor": {
-   "perfil": "Observatório do Terceiro Setor — editais publicados na seção temática do portal",
-   "rotas": [
-    {
-     "nome": "Observatório do Terceiro Setor",
-     "url": "https://www.observatorio3setor.org.br/secoes_tematicas/editais/feed/",
-     "tipo": "feed"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": []
-  },
-  "site-mapas-culturais": {
-   "perfil": "Mapas Culturais — editais das redes estaduais e municipais de cultura que usam a plataforma",
-   "rotas": [
-    {
-     "nome": "Mapas Culturais",
-     "url": null,
-     "tipo": "mapas_culturais"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": []
-  },
-  "site-abcr": {
-   "perfil": "ABCR — Associação Brasileira de Captadores de Recursos — editais divulgados pela associação dos captadores",
-   "rotas": [
-    {
-     "nome": "ABCR — Associação Brasileira de Captadores de Recursos",
-     "url": "https://captadores.org.br/category/editais/feed/",
-     "tipo": "feed"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": []
-  },
-  "site-funarte": {
-   "perfil": "Funarte — editais da Fundação Nacional de Artes",
-   "rotas": [
-    {
-     "nome": "Funarte",
-     "url": null,
-     "tipo": "html_listagem"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": []
-  },
-  "site-transferegov": {
-   "perfil": "Transferegov — programas e parcerias com OSC abertos na plataforma federal (dados abertos)",
-   "rotas": [
-    {
-     "nome": "Transferegov",
-     "url": "https://api-publica.transferegov.gestao.gov.br/downloads/dadosgov/siconv_programa.zip",
-     "tipo": "siconv_zip"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": []
-  },
-  "site-rede-comua": {
-   "perfil": "Rede Comuá — editais dos fundos independentes de filantropia",
-   "rotas": [
-    {
-     "nome": "Rede Comuá",
-     "url": "https://redecomua.org.br/wp-json/wp/v2/_editais",
-     "tipo": "wordpress"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": []
-  },
-  "site-fundo-baoba": {
-   "perfil": "Fundo Baobá — editais para equidade racial",
-   "rotas": [
-    {
-     "nome": "Fundo Baobá",
-     "url": null,
-     "tipo": "html_listagem"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": []
-  },
-  "site-editais-culturais": {
-   "perfil": "Editais Culturais — editais de cultura reunidos no portal",
-   "rotas": [
-    {
-     "nome": "Editais Culturais",
-     "url": null,
-     "tipo": "html_listagem"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": []
-  },
-  "site-fundo-brasil": {
-   "perfil": "Fundo Brasil de Direitos Humanos — editais de direitos humanos",
-   "rotas": [
-    {
-     "nome": "Fundo Brasil de Direitos Humanos",
-     "url": "https://www.fundobrasil.org.br/wp-json/wp/v2/edital",
-     "tipo": "wordpress"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": []
-  },
-  "site-idis": {
-   "perfil": "IDIS — Instituto para o Desenvolvimento do Investimento Social — chamadas e editais de investimento social",
-   "rotas": [
-    {
-     "nome": "IDIS — Instituto para o Desenvolvimento do Investimento Social",
-     "url": "https://www.idis.org.br/feed/",
-     "tipo": "feed"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": []
-  },
-  "site-undef": {
-   "perfil": "UNDEF — Fundo das Nações Unidas para a Democracia — chamadas anuais para a sociedade civil",
-   "rotas": [
-    {
-     "nome": "UNDEF — Fundo das Nações Unidas para a Democracia",
-     "url": null,
-     "tipo": "html_listagem"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": []
-  },
-  "site-fundo-casa": {
-   "perfil": "Fundo Casa Socioambiental — chamadas socioambientais",
-   "rotas": [
-    {
-     "nome": "Fundo Casa Socioambiental",
-     "url": "https://casa.org.br/wp-json/wp/v2/chamadas",
-     "tipo": "wordpress"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": []
-  },
-  "site-cese": {
-   "perfil": "CESE — Coordenadoria Ecumênica de Serviço — editais de apoio a projetos populares",
-   "rotas": [
-    {
-     "nome": "CESE — Coordenadoria Ecumênica de Serviço",
-     "url": "https://cese.org.br/wp-json/wp/v2/edital",
-     "tipo": "wordpress"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": []
-  },
-  "site-brazilfoundation": {
-   "perfil": "BrazilFoundation — editais de apoio a organizações brasileiras",
-   "rotas": [
-    {
-     "nome": "BrazilFoundation",
-     "url": null,
-     "tipo": "html_listagem"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": []
-  },
-  "site-rede-filantropia": {
-   "perfil": "Rede Filantropia — editais divulgados pela rede (lida pelo computador do titular: recusa IP estrangeiro)",
-   "rotas": [
-    {
-     "nome": "Rede Filantropia",
-     "url": null,
-     "tipo": "html_listagem"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": []
-  },
-  "site-mapa-osc": {
-   "perfil": "Mapa das OSC (Ipea) — editais reunidos no portal (coleta assistida: o site proíbe robôs)",
-   "rotas": [
-    {
-     "nome": "Mapa das OSC (Ipea)",
-     "url": "https://mapaosc.ipea.gov.br/editais",
-     "tipo": "assistida"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": []
-  },
-  "site-prosas": {
-   "perfil": "Prosas — editais e prêmios para OSCs (três caminhos indiretos: listagem da CapitaAI, ângulo do Piloto e coleta assistida)",
-   "rotas": [
-    {
-     "nome": "Prosas",
-     "url": "https://prosas.com.br/selecao/widgets/listagem-editais",
-     "tipo": "assistida"
-    }
-   ],
-   "lexico_camada1": [],
-   "lexico_camada2": []
-  },
-  "judiciario-tjgo": {
-   "perfil": "varas de execução penal, juizados e comarcas do TJGO (Goiânia primeiro) — editais de seleção de projetos com recursos de prestações pecuniárias, credenciamentos do Judiciário para entidades e a regra nacional do CNJ",
-   "rotas": [
-    {
-     "nome": "TJGO — Agência de Notícias (RSS paginado)",
-     "url": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss",
-     "tipo": "tribunal",
-     "exige_brasil": true
-    },
-    {
-     "nome": "TJGO — PDF do edital anexado à notícia",
-     "url": "https://www.tjgo.jus.br/files/",
-     "tipo": "tribunal",
-     "exige_brasil": true
-    },
-    {
-     "nome": "Corregedoria (CGJ/GO) — Banco de Projetos Sociais (cadastro prévio)",
-     "url": "https://corregedoria.tjgo.jus.br/basesocial",
-     "tipo": "secretaria"
-    },
-    {
-     "nome": "Portal do CNJ — busca (republica editais dos tribunais) e regra nacional",
-     "url": "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+edital",
-     "tipo": "referencia"
-    },
-    {
-     "nome": "PNCP — credenciamentos do TJGO e do CNJ (cruzado do motor 04)",
-     "url": "https://pncp.gov.br/app/editais",
-     "tipo": "vetor"
-    }
-   ],
-   "armadilha": "jusbrasil.com.br é agregador e vetor — nunca fonte; as páginas antigas do TJGO (/execucao-penal, /editais-de-chamamento, /dje…) dão 404; o DJEN só traz intimações com nomes de réus; a busca pública do Banco de Projetos lista nome e telefone dos responsáveis (não coletar)",
-   "lexico_camada1": [
-    "prestação pecuniária",
-    "penas pecuniárias",
-    "penas alternativas",
-    "transação penal",
-    "projetos sociais",
-    "finalidade social",
-    "destinação de recursos",
-    "Banco de Projetos Sociais",
-    "cadastramento de entidades",
-    "credenciamento de entidades",
-    "Vepema",
-    "edital"
-   ],
-   "lexico_camada2": [
-    "seleção de projetos",
-    "habilitação",
-    "entidades públicas ou privadas",
-    "Resolução CNJ 558",
-    "Código de Normas art. 257",
-    "comarca",
-    "inscrições até"
-   ],
-   "coleta": "nuvem + local",
-   "nota_coleta": "o TJGO recusa IP estrangeiro: RSS, notícias e PDFs pelo computador do titular; a busca do CNJ e o cruzamento do PNCP pela nuvem"
-  },
-  "judiciario-cnj": {
-   "perfil": "varas de execução penal, juizados e comarcas do TJGO (Goiânia primeiro) — editais de seleção de projetos com recursos de prestações pecuniárias, credenciamentos do Judiciário para entidades e a regra nacional do CNJ",
-   "rotas": [
-    {
-     "nome": "TJGO — Agência de Notícias (RSS paginado)",
-     "url": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss",
-     "tipo": "tribunal",
-     "exige_brasil": true
-    },
-    {
-     "nome": "TJGO — PDF do edital anexado à notícia",
-     "url": "https://www.tjgo.jus.br/files/",
-     "tipo": "tribunal",
-     "exige_brasil": true
-    },
-    {
-     "nome": "Corregedoria (CGJ/GO) — Banco de Projetos Sociais (cadastro prévio)",
-     "url": "https://corregedoria.tjgo.jus.br/basesocial",
-     "tipo": "secretaria"
-    },
-    {
-     "nome": "Portal do CNJ — busca (republica editais dos tribunais) e regra nacional",
-     "url": "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+edital",
-     "tipo": "referencia"
-    },
-    {
-     "nome": "PNCP — credenciamentos do TJGO e do CNJ (cruzado do motor 04)",
-     "url": "https://pncp.gov.br/app/editais",
-     "tipo": "vetor"
-    }
-   ],
-   "armadilha": "jusbrasil.com.br é agregador e vetor — nunca fonte; as páginas antigas do TJGO (/execucao-penal, /editais-de-chamamento, /dje…) dão 404; o DJEN só traz intimações com nomes de réus; a busca pública do Banco de Projetos lista nome e telefone dos responsáveis (não coletar)",
-   "lexico_camada1": [
-    "prestação pecuniária",
-    "penas pecuniárias",
-    "penas alternativas",
-    "transação penal",
-    "projetos sociais",
-    "finalidade social",
-    "destinação de recursos",
-    "Banco de Projetos Sociais",
-    "cadastramento de entidades",
-    "credenciamento de entidades",
-    "Vepema",
-    "edital"
-   ],
-   "lexico_camada2": [
-    "seleção de projetos",
-    "habilitação",
-    "entidades públicas ou privadas",
-    "Resolução CNJ 558",
-    "Código de Normas art. 257",
-    "comarca",
-    "inscrições até"
-   ],
-   "coleta": "nuvem + local",
-   "nota_coleta": "o TJGO recusa IP estrangeiro: RSS, notícias e PDFs pelo computador do titular; a busca do CNJ e o cruzamento do PNCP pela nuvem"
-  },
-  "mpgo-destinacao": {
-   "perfil": "Ministérios Públicos — destinação de recursos de reparação e bens lesados (motor 12 v2, estudo ao vivo de 02/10/2026)",
-   "rotas": [
-    {
-     "nome": "MPT-GO — PRT 18ª Região (Goiânia e PTM Anápolis)",
-     "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
-     "tipo": "tabela_mpt"
-    },
-    {
-     "nome": "MPT-GO — PRT 18ª Região",
-     "url": "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
-     "tipo": "lista_habilitadas"
-    },
-    {
-     "nome": "MPT-GO — PRT 18ª Região (Goiânia/GO)",
-     "url": "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPT nacional — PGT - Noticias",
-     "url": "https://mpt.mp.br/search_rss?SearchableText=edital+cadastramento+entidades&sort_on=Date&sort_order=reverse",
-     "tipo": "rss"
-    },
-    {
-     "nome": "MPT nacional — PGT - Noticias",
-     "url": "https://mpt.mp.br/pgt/noticias/RSS",
-     "tipo": "rss"
-    },
-    {
-     "nome": "MPF — PR-GO",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — PR-GO",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — PR-GO",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — PR-GO",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-em-goias-cadastra-entidades-e-orgaos-publicos-para-recebimento-bens-e-valores-decorrentes-da-atuacao-da-instituicao",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — nacional (busca)",
-     "url": "https://www.mpf.mp.br/search?SearchableText=edital+chamamento+recebimento+bens+valores",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — PR-BA (modelo)",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — nacional",
-     "url": "https://www.mpf.mp.br/servicos/mpf-servicos",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPDFT — PGJ / Cema / Apma / Semas",
-     "url": "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPDFT — várias promotorias",
-     "url": "https://www.mpdft.mp.br/transparencia/index.php?item=tac",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPDFT — Sala de imprensa",
-     "url": "https://www.mpdft.mp.br/portal/index.php/comunicacao-menu/sala-de-imprensa/noticias/noticias-2026-completo",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPM — portal",
-     "url": "https://www.mpm.mp.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPU — portal",
-     "url": "https://www.mpu.mp.br/sitemap",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — Senacon / CFDD - Fundo de Defesa de Direitos D",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento",
-     "tipo": "estado_pagina"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecoes-anteriores",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/reunioes-do-cfdd/anexos-atas",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/convenios-e-transferencias",
-     "tipo": "listagem_html"
-    }
-   ],
-   "lexico_camada1": [
-    "bens lesados",
-    "chamamento",
-    "chamamento público",
-    "destinação de recursos",
-    "edital de apoio",
-    "edital de destinação",
-    "entidades",
-    "organizações da sociedade civil",
-    "projetos sociais",
-    "reparação",
-    "seleção de projetos",
-    "termo de ajustamento",
-    "termo de colaboração",
-    "termo de fomento",
-    "indicação de destinação",
-    "Sistema de Destinações",
-    "entidades assistenciais",
-    "bens e valores",
-    "Destina"
-   ],
-   "lexico_camada2": [
-    "organizações da sociedade civil",
-    "projeto social",
-    "das inscrições",
-    "habilitação",
-    "Goiás",
-    "Goiânia"
-   ],
-   "nunca_acessar": [
-    "mpgo.mp.br",
-    "destinacoes.mpt.mp.br"
-   ],
-   "observacao": "02/10: leitura pela estrutura em src/ministerios_publicos.py; o MP-GO (robots Disallow: /) não é rota"
-  },
-  "mptgo-destinacao": {
-   "perfil": "Ministérios Públicos — destinação de recursos de reparação e bens lesados (motor 12 v2, estudo ao vivo de 02/10/2026)",
-   "rotas": [
-    {
-     "nome": "MPT-GO — PRT 18ª Região (Goiânia e PTM Anápolis)",
-     "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
-     "tipo": "tabela_mpt"
-    },
-    {
-     "nome": "MPT-GO — PRT 18ª Região",
-     "url": "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
-     "tipo": "lista_habilitadas"
-    },
-    {
-     "nome": "MPT-GO — PRT 18ª Região (Goiânia/GO)",
-     "url": "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPT nacional — PGT - Noticias",
-     "url": "https://mpt.mp.br/search_rss?SearchableText=edital+cadastramento+entidades&sort_on=Date&sort_order=reverse",
-     "tipo": "rss"
-    },
-    {
-     "nome": "MPT nacional — PGT - Noticias",
-     "url": "https://mpt.mp.br/pgt/noticias/RSS",
-     "tipo": "rss"
-    },
-    {
-     "nome": "MPF — PR-GO",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — PR-GO",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — PR-GO",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — PR-GO",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-em-goias-cadastra-entidades-e-orgaos-publicos-para-recebimento-bens-e-valores-decorrentes-da-atuacao-da-instituicao",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — nacional (busca)",
-     "url": "https://www.mpf.mp.br/search?SearchableText=edital+chamamento+recebimento+bens+valores",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — PR-BA (modelo)",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — nacional",
-     "url": "https://www.mpf.mp.br/servicos/mpf-servicos",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPDFT — PGJ / Cema / Apma / Semas",
-     "url": "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPDFT — várias promotorias",
-     "url": "https://www.mpdft.mp.br/transparencia/index.php?item=tac",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPDFT — Sala de imprensa",
-     "url": "https://www.mpdft.mp.br/portal/index.php/comunicacao-menu/sala-de-imprensa/noticias/noticias-2026-completo",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPM — portal",
-     "url": "https://www.mpm.mp.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPU — portal",
-     "url": "https://www.mpu.mp.br/sitemap",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — Senacon / CFDD - Fundo de Defesa de Direitos D",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento",
-     "tipo": "estado_pagina"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecoes-anteriores",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/reunioes-do-cfdd/anexos-atas",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/convenios-e-transferencias",
-     "tipo": "listagem_html"
-    }
-   ],
-   "lexico_camada1": [
-    "bens lesados",
-    "chamamento",
-    "chamamento público",
-    "destinação de recursos",
-    "edital de apoio",
-    "edital de destinação",
-    "entidades",
-    "organizações da sociedade civil",
-    "projetos sociais",
-    "reparação",
-    "seleção de projetos",
-    "termo de ajustamento",
-    "termo de colaboração",
-    "termo de fomento",
-    "indicação de destinação",
-    "Sistema de Destinações",
-    "entidades assistenciais",
-    "bens e valores",
-    "Destina"
-   ],
-   "lexico_camada2": [
-    "organizações da sociedade civil",
-    "projeto social",
-    "das inscrições",
-    "habilitação",
-    "Goiás",
-    "Goiânia"
-   ],
-   "nunca_acessar": [
-    "mpgo.mp.br",
-    "destinacoes.mpt.mp.br"
-   ],
-   "observacao": "02/10: leitura pela estrutura em src/ministerios_publicos.py; o MP-GO (robots Disallow: /) não é rota"
-  },
-  "mpu-destinacao": {
-   "perfil": "Ministérios Públicos — destinação de recursos de reparação e bens lesados (motor 12 v2, estudo ao vivo de 02/10/2026)",
-   "rotas": [
-    {
-     "nome": "MPT-GO — PRT 18ª Região (Goiânia e PTM Anápolis)",
-     "url": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
-     "tipo": "tabela_mpt"
-    },
-    {
-     "nome": "MPT-GO — PRT 18ª Região",
-     "url": "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
-     "tipo": "lista_habilitadas"
-    },
-    {
-     "nome": "MPT-GO — PRT 18ª Região (Goiânia/GO)",
-     "url": "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPT nacional — PGT - Noticias",
-     "url": "https://mpt.mp.br/search_rss?SearchableText=edital+cadastramento+entidades&sort_on=Date&sort_order=reverse",
-     "tipo": "rss"
-    },
-    {
-     "nome": "MPT nacional — PGT - Noticias",
-     "url": "https://mpt.mp.br/pgt/noticias/RSS",
-     "tipo": "rss"
-    },
-    {
-     "nome": "MPF — PR-GO",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — PR-GO",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — PR-GO",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — PR-GO",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-em-goias-cadastra-entidades-e-orgaos-publicos-para-recebimento-bens-e-valores-decorrentes-da-atuacao-da-instituicao",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — nacional (busca)",
-     "url": "https://www.mpf.mp.br/search?SearchableText=edital+chamamento+recebimento+bens+valores",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — PR-BA (modelo)",
-     "url": "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPF — nacional",
-     "url": "https://www.mpf.mp.br/servicos/mpf-servicos",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPDFT — PGJ / Cema / Apma / Semas",
-     "url": "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPDFT — várias promotorias",
-     "url": "https://www.mpdft.mp.br/transparencia/index.php?item=tac",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPDFT — Sala de imprensa",
-     "url": "https://www.mpdft.mp.br/portal/index.php/comunicacao-menu/sala-de-imprensa/noticias/noticias-2026-completo",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPM — portal",
-     "url": "https://www.mpm.mp.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "MPU — portal",
-     "url": "https://www.mpu.mp.br/sitemap",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — Senacon / CFDD - Fundo de Defesa de Direitos D",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento",
-     "tipo": "estado_pagina"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecoes-anteriores",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/reunioes-do-cfdd/anexos-atas",
-     "tipo": "listagem_html"
-    },
-    {
-     "nome": "Ministério da Justiça e Segurança Pública — CFDD",
-     "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/convenios-e-transferencias",
-     "tipo": "listagem_html"
-    }
-   ],
-   "lexico_camada1": [
-    "bens lesados",
-    "chamamento",
-    "chamamento público",
-    "destinação de recursos",
-    "edital de apoio",
-    "edital de destinação",
-    "entidades",
-    "organizações da sociedade civil",
-    "projetos sociais",
-    "reparação",
-    "seleção de projetos",
-    "termo de ajustamento",
-    "termo de colaboração",
-    "termo de fomento",
-    "indicação de destinação",
-    "Sistema de Destinações",
-    "entidades assistenciais",
-    "bens e valores",
-    "Destina"
-   ],
-   "lexico_camada2": [
-    "organizações da sociedade civil",
-    "projeto social",
-    "das inscrições",
-    "habilitação",
-    "Goiás",
-    "Goiânia"
-   ],
-   "nunca_acessar": [
-    "mpgo.mp.br",
-    "destinacoes.mpt.mp.br"
-   ],
-   "observacao": "02/10: leitura pela estrutura em src/ministerios_publicos.py; o MP-GO (robots Disallow: /) não é rota"
-  }
- },
- "auditado_em": "2026-09-22T21:24:52+00:00"
+  "auditado_em": "2026-09-22T21:24:52+00:00"
 }
