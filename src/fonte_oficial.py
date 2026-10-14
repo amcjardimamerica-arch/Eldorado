@@ -151,14 +151,30 @@ def link_de_origem_pncp(url: str, getter) -> str | None:
     if not m:
         return None
     cnpj, ano, seq = m.groups()
-    try:
-        js = json.loads(getter(f"https://pncp.gov.br/api/consulta/v1/orgaos/{cnpj}/compras/{ano}/{seq}"))
-    except Exception:  # noqa: BLE001
+    js = None
+    for base in (f"https://pncp.gov.br/api/consulta/v1/orgaos/{cnpj}/compras/{ano}/{seq}",     # 14/10 (treino): os 3 endereços da API
+                 f"https://pncp.gov.br/api/pncp/v1/orgaos/{cnpj}/compras/{ano}/{seq}", f"https://pncp.gov.br/pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}"):
+        try:
+            js = json.loads(getter(base)); break
+        except Exception:  # noqa: BLE001
+            continue
+    if not js:
         return None
     for campo in ("linkSistemaOrigem", "linkProcessoEletronico"):      # 14/10 (treino): o 2º campo cobre quem não preenche o 1º
         lk = (js.get(campo) or "").strip()
         if lk and eh_fonte(lk):
             return lk
+    # 14/10 (treino real): órgão municipal sem link nenhum → o site da prefeitura (município.uf.gov.br), conferido
+    un = js.get("unidadeOrgao") or {}; esfera = str((js.get("orgaoEntidade") or {}).get("esferaId") or "")
+    mun, uf = un.get("municipioNome"), un.get("ufSigla")
+    if mun and uf and esfera in ("M", ""):
+        slug = re.sub(r"[^a-z0-9]", "", _sem(mun))
+        for cand in (f"https://www.{slug}.{uf.lower()}.gov.br/", f"https://{slug}.{uf.lower()}.gov.br/"):
+            try:
+                if getter(cand):
+                    return cand
+            except Exception:  # noqa: BLE001
+                continue
     return None
 
 
@@ -168,9 +184,13 @@ def diario_original_querido(url: str, getter) -> str | None:
     if not m:
         return None
     ibge, dia, h = m.groups()
-    try:
-        js = json.loads(getter(f"https://queridodiario.ok.org.br/api/gazettes?territory_ids={ibge}&published_since={dia}&published_until={dia}&size=20"))
-    except Exception:  # noqa: BLE001
+    js = None
+    for base in ("https://api.queridodiario.ok.org.br", "https://queridodiario.ok.org.br/api"):   # 14/10 (treino): o endereço que funciona primeiro
+        try:
+            js = json.loads(getter(f"{base}/gazettes?territory_ids={ibge}&published_since={dia}&published_until={dia}&size=20")); break
+        except Exception:  # noqa: BLE001
+            continue
+    if not js:
         return None
     gz = js.get("gazettes") or []
     alvo = next((g for g in gz if h in str(g.get("txt_url") or "") + str(g.get("url") or "") + str(g.get("file_checksum") or "")), None) or (gz[0] if len(gz) == 1 else None)

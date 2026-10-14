@@ -53,10 +53,23 @@ if __name__ == "__main__":
 class TesteFontesEstruturadas(unittest.TestCase):
     """14/10 (treino real): Querido Diário → diário original do município (API); PNCP → linkProcessoEletronico."""
     def test_querido_e_pncp(self):
-        P = {"https://queridodiario.ok.org.br/api/gazettes?territory_ids=2919603&published_since=2026-10-05&published_until=2026-10-05&size=20":
+        P = {"https://api.queridodiario.ok.org.br/gazettes?territory_ids=2919603&published_since=2026-10-05&published_until=2026-10-05&size=20":
              json.dumps({"gazettes": [{"url": "http://macajuba.ba.gov.br/diario/2026-10-05.pdf", "txt_url": "https://data.queridodiario.ok.org.br/2919603/2026-10-05/43d2f4b96e7df3c2791d13314a81bae6bbb73cb7.txt"}]}),
              "https://pncp.gov.br/api/consulta/v1/orgaos/07598634000137/compras/2026/159": json.dumps({"linkSistemaOrigem": None, "linkProcessoEletronico": "https://www.medianeira.pr.gov.br/arquivos/compras/2026/edital-159.pdf"})}
         o = F.resolver("https://data.queridodiario.ok.org.br/2919603/2026-10-05/43d2f4b96e7df3c2791d13314a81bae6bbb73cb7.pdf", "", "", P.__getitem__, {})
         self.assertEqual(o["fonte"], "http://macajuba.ba.gov.br/diario/2026-10-05.pdf")
         o = F.resolver("https://pncp.gov.br/app/editais/07598634000137/2026/159", "", "", P.__getitem__, {})
         self.assertTrue(o["fonte"].startswith("https://www.medianeira.pr.gov.br/")); self.assertTrue(o["pdfs"])
+
+
+class TestePrefeituraSemLink(unittest.TestCase):
+    def test_pncp_sem_link_usa_o_site_da_prefeitura(self):
+        P = {"https://pncp.gov.br/api/consulta/v1/orgaos/76206606000140/compras/2026/9": json.dumps(
+                {"linkSistemaOrigem": None, "linkProcessoEletronico": None, "orgaoEntidade": {"esferaId": "M"},
+                 "unidadeOrgao": {"municipioNome": "Medianeira", "ufSigla": "PR"}}),
+             "https://www.medianeira.pr.gov.br/": "<html>Prefeitura de Medianeira</html>"}
+        def g(u):
+            if u not in P:
+                raise OSError(u)
+            return P[u]
+        self.assertEqual(F.link_de_origem_pncp("https://pncp.gov.br/app/editais/76206606000140/2026/9", g), "https://www.medianeira.pr.gov.br/")
