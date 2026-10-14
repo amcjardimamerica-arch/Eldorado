@@ -43,9 +43,9 @@
  "ruido_agora": [
   {
    "motor": "empresas-incentivadas",
-   "achados_total_1a": 64,
-   "achados_total_agora": 64,
-   "no_fluxo": 3,
+   "achados_total_1a": 66,
+   "achados_total_agora": 66,
+   "no_fluxo": 4,
    "confirmadas": 0
   },
   {
@@ -120,16 +120,16 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 111,
-   "achados_total_agora": 111,
+   "achados_total_1a": 113,
+   "achados_total_agora": 113,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 1338,
-   "achados_total_agora": 1338,
-   "no_fluxo": 4,
+   "achados_total_1a": 1360,
+   "achados_total_agora": 1360,
+   "no_fluxo": 5,
    "confirmadas": 0
   },
   {
@@ -141,8 +141,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 84,
-   "achados_total_agora": 84,
+   "achados_total_1a": 86,
+   "achados_total_agora": 86,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -169,22 +169,22 @@
   },
   {
    "motor": "mpgo-destinacao",
-   "achados_total_1a": 53,
-   "achados_total_agora": 53,
+   "achados_total_1a": 54,
+   "achados_total_agora": 54,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "mptgo-destinacao",
-   "achados_total_1a": 81,
-   "achados_total_agora": 81,
+   "achados_total_1a": 82,
+   "achados_total_agora": 82,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-estaduais-go-gov",
-   "achados_total_1a": 37,
-   "achados_total_agora": 37,
+   "achados_total_1a": 38,
+   "achados_total_agora": 38,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -225,7 +225,7 @@
  "pontos_com_redundancia": 12,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 7391
+ "exemplos_da_rede_de_rotas": 7475
 }
 ```
 
@@ -236,11 +236,11 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 79.1,
- "fora_dos_motores_pct_agora": 79.1,
+ "fora_dos_motores_pct_1a": 78.9,
+ "fora_dos_motores_pct_agora": 78.9,
  "origem": {
   "agregador/outra": 322,
-  "motor": 116,
+  "motor": 118,
   "Piloto": 118
  },
  "dominios_so_de_agregador": [
@@ -316,13 +316,16 @@
 
 ```json
 {
- "dia_de_referencia": "2026-10-13",
+ "dia_de_referencia": "2026-10-14",
  "ativos": 159,
- "lidos_ontem": 51,
- "lidos_hoje": 104,
+ "lidos_ontem": 104,
+ "lidos_hoje": 42,
  "nao_lidos_ontem_nem_hoje": [
+  "f260-captacao-244",
+  "f260-captacao-260",
   "plat-captamos",
   "plat-rede-filantropia",
+  "pncp-api",
   "recorrencia"
  ],
  "ainda_sem_primeira_leitura": [
