@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
       - name: "Dependências do projeto (14/10 — sem o pypdf, todo PDF vinha sem texto e os testes do Cartório falhavam)"
-        run: pip install -r requirements.txt pillow --quiet
+        run: pip install -r requirements.txt pillow pyyaml --quiet   # pyyaml: os testes que conferem se todo fluxo é YAML válido
       - run: python scripts/rodar_testes.py   # 14/10: sem os módulos em quarentena (config/testes_quarentena.json)
       - run: python scripts/verificar_privacidade.py
       - name: Resumo
