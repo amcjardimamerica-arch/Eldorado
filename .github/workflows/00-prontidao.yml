@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: "3.12"}
-      - name: Dependências do projeto (14/10: sem o pypdf, todo PDF vinha "sem texto" e os testes do Cartório falhavam)
+      - name: "Dependências do projeto (14/10 — sem o pypdf, todo PDF vinha sem texto e os testes do Cartório falhavam)"
         run: pip install -r requirements.txt pillow --quiet
       - run: python scripts/rodar_testes.py   # 14/10: sem os módulos em quarentena (config/testes_quarentena.json)
       - run: python scripts/verificar_privacidade.py
