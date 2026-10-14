@@ -75,6 +75,7 @@ jobs:
           # o resultado fica no repositório (estado/ultimo_teste_ci.txt) para
           # diagnóstico mesmo quando o log do Actions não é acessível
           set +e
+          pip install -r requirements.txt pillow pyyaml --quiet   # 14/10: os testes rodavam antes de qualquer instalação (sem pypdf e pyyaml)
           # 02/10: os testes rodam numa CÓPIA isolada (git worktree). Antes rodavam sobre os dados de produção, que este
           # fluxo grava em seguida — um teste que escrevia fichas falsas (x.gov.br, prazo 2099) contaminou a Biblioteca.
           rm -rf /tmp/eldorado_testes; git worktree add --detach /tmp/eldorado_testes HEAD >/dev/null 2>&1
