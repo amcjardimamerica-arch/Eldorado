@@ -143,7 +143,7 @@
    "motor": "plat-prefeituras-50-go",
    "achados_total_1a": 84,
    "achados_total_agora": 84,
-   "no_fluxo": 2,
+   "no_fluxo": 1,
    "confirmadas": 0
   },
   {
@@ -225,7 +225,7 @@
  "pontos_com_redundancia": 12,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 7289
+ "exemplos_da_rede_de_rotas": 7391
 }
 ```
 
@@ -239,9 +239,9 @@
  "fora_dos_motores_pct_1a": 79.1,
  "fora_dos_motores_pct_agora": 79.1,
  "origem": {
-  "agregador/outra": 321,
-  "motor": 117,
-  "Piloto": 121
+  "agregador/outra": 322,
+  "motor": 116,
+  "Piloto": 118
  },
  "dominios_so_de_agregador": [
   {
@@ -363,20 +363,20 @@
 
 ```json
 {
- "fontes_recebidas": 310,
+ "fontes_recebidas": 313,
  "por_origem": {
   "conselho (fontes irmãs)": 150,
-  "Cartório (site oficial certificado)": 131,
-  "Espião (privado/internacional)": 29
+  "Cartório (site oficial certificado)": 133,
+  "Espião (privado/internacional)": 30
  },
  "lidas_nas_ultimas_24h": 221,
  "dimensionamento": {
-  "fontes": 310,
+  "fontes": 313,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 7,
-  "cobertura_diaria": 310,
+  "cobertura_diaria": 313,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -429,7 +429,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 80,
+   "orgaos": 81,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",
@@ -462,14 +462,14 @@
    ]
   },
   "Portal de transparência de fornecedor": {
-   "orgaos": 18,
+   "orgaos": 19,
    "exemplos": [
     "bndes.gov.br",
     "comunidade.transparenciainternacional.org.br",
     "gov.br",
     "itacoatiara.am.gov.br",
-    "mpf.mp.br",
-    "muribeca.se.gov.br"
+    "itumbiara.go.gov.br",
+    "mpf.mp.br"
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {

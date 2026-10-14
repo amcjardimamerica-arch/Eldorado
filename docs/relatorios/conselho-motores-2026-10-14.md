@@ -45,9 +45,9 @@
 
 ## Cobertura (Dr. Otávio)
 
-79.1% das oportunidades vieram de fora dos motores: {'agregador/outra': 321, 'motor': 117, 'Piloto': 121}.
+79.1% das oportunidades vieram de fora dos motores: {'agregador/outra': 322, 'motor': 116, 'Piloto': 118}.
 
-- GO: 7 oportunidades, nenhuma de motor ({'agregador/outra': 7})
+- GO: 8 oportunidades, nenhuma de motor ({'agregador/outra': 8})
 - SP: 4 oportunidades, nenhuma de motor ({'agregador/outra': 4})
 - PR: 4 oportunidades, nenhuma de motor ({'agregador/outra': 4})
 - BA: 3 oportunidades, nenhuma de motor ({'agregador/outra': 3})
@@ -56,10 +56,10 @@
 
 ## Fontes irmãs (Profa. Clara)
 
-230 domínios oficiais já renderam e não têm motor. Os primeiros:
+228 domínios oficiais já renderam e não têm motor. Os primeiros:
 
 - baoba.org.br (peso 21)
-- institutolojasrenner.org.br (peso 15)
+- institutolojasrenner.org.br (peso 17)
 - zurich.com.br (peso 13)
 - mariaemilia.org.br (peso 12)
 - fundoecos.org.br (peso 12)
@@ -68,12 +68,12 @@
 - licitario.com.br (peso 10)
 - feirapreta.com.br (peso 9)
 - transforma.fbb.org.br (peso 8)
-- difusionconcausa.com (peso 8)
 - editaisdobrasil.com (peso 8)
 - jornadasocial.com.br (peso 8)
 - contrafluxofestival.com.br (peso 8)
 - fundacaocargill.org.br (peso 8)
 - fondationfrancoisschneider.org (peso 7)
+- fbb.org.br (peso 7)
 - fns.cnbb.org.br (peso 7)
 - impactarte.org.br (peso 7)
 - dopaonlineupload.procempa.com.br (peso 7)
@@ -86,16 +86,16 @@
 
 ## Plataformas e inovações (Dr. Fábio)
 
-- WordPress: 80 órgãos
+- WordPress: 81 órgãos
 - Mapas Culturais: 10 órgãos
 - Diário municipal em lote (AGM/DOM): 15 órgãos
-- Portal de transparência de fornecedor: 18 órgãos
+- Portal de transparência de fornecedor: 19 órgãos
 - Sistemas de editais (Prosas/Editais): 46 órgãos
 - Querido Diário: 0 órgãos
 - PNCP: 1 órgãos
 - Leis e atos (Leis Municipais): 1 órgãos
 
-- **Adaptador por plataforma** — um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão. Alcance: 80 órgãos WordPress e 10 instâncias de Mapas Culturais já conhecidos de uma vez.
+- **Adaptador por plataforma** — um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão. Alcance: 81 órgãos WordPress e 10 instâncias de Mapas Culturais já conhecidos de uma vez.
 - **Detecção de mudança barata** — ler o sitemap.xml (lastmod) e os feeds RSS/Atom dos sites oficiais; só baixar a página quando muda. Alcance: permite vigiar 10× mais fontes no mesmo tempo de execução.
 - **Consulta inversa** — frases distintivas de editais confirmados (ex.: 'Política Nacional Aldir Blanc' + 'chamamento') viram buscas por editais irmãos em outros municípios. Alcance: cada edital confirmado gera pistas em dezenas de municípios que publicam o mesmo modelo.
 - **Motor de fontes irmãs** — domínios oficiais que já renderam oportunidade e nenhum motor vigia passam a ser lidos todos os dias. Alcance: implantado como motor Outras Oportunidades (clones calculados para ler todas as fontes no dia).
