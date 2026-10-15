@@ -7,10 +7,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class TesteBibliotecaDiaria(unittest.TestCase):
     def test_leitor_documental_diario_antes_do_recalculo(self):
-        w = (ROOT / ".github/workflows/motores-da-vez.yml").read_text(encoding="utf-8")
-        i = w.index("from src.leitor_documental import aplicar"); j = w.index("python -m src.fluxo_oportunidades --completo")
-        self.assertLess(i, j, "o leitor roda antes do recálculo da mesma passagem")
-        self.assertIn("estado/biblioteca_diaria.txt", w)
+        # 15/10/2026: a ordem das fases vive no comando único (src/comando.py)
+        from src import comando as C
+        fs = [f["etapa"] for f in C.fases({"novos_na_base": 0})]
+        self.assertLess(fs.index("biblioteca_diaria"), fs.index("fichas_farol"), "a biblioteca roda antes das fichas e do Farol")
+        self.assertIn("estado/biblioteca_diaria.txt", (ROOT / "src/comando.py").read_text(encoding="utf-8"))
 
     def test_catalogo_formato_unico(self):
         ruins = []

@@ -3,12 +3,11 @@ name: 30 · Cartório de fontes oficiais (certifica o que falta nas estrelas e n
 # de chegar com item indisponível) e de hora em hora (a fila de estrelas e livros). Grava só os seus caminhos.
 on:
   workflow_run:
-    workflows: ["22 · Motores da vez — cada passagem calcula sozinha o que está pendente (agenda + maestro)",
-                "01 · Eldorado — motores por hora (00h–06h BRT)",
+    # 15/10/2026 (titular): depois do fluxo 22 o Cartório já roda DENTRO do comando único (fase "certificar")
+    workflows: ["01 · Eldorado — motores por hora (00h–06h BRT)",
                 "27 · Executor documental dos motores (robôs; o Claude no Chrome é o último recurso)"]
     types: [completed]
-  schedule:
-    - cron: "41 * * * *"          # 09/10: linha de produção permanente, de hora em hora (até organizar tudo)
+  # 15/10/2026: sem horário próprio — a certificação é a fase "certificar" do comando único (fluxo 22)
   workflow_dispatch:
     inputs:
       limite:

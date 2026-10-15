@@ -77,8 +77,8 @@ class TestePrefeituraSemLink(unittest.TestCase):
 
 class TesteNaColeta(unittest.TestCase):
     def test_resolvedor_roda_na_coleta(self):
-        for arq in ("motores-da-vez.yml", "motor-agregadores.yml"):
-            self.assertIn("python scripts/treino_fontes.py --aplicar", (ROOT / ".github/workflows" / arq).read_text(encoding="utf-8"), arq)
+        self.assertIn("python scripts/treino_fontes.py --aplicar", (ROOT / ".github/workflows/motor-agregadores.yml").read_text(encoding="utf-8"))
+        self.assertIn('"scripts/treino_fontes.py", "--aplicar"', (ROOT / "src/comando.py").read_text(encoding="utf-8"))   # 15/10: fase do comando
         self.assertIn("so_novas=True", (ROOT / "scripts/treino_fontes.py").read_text(encoding="utf-8"))
 
 
