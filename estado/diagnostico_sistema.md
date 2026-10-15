@@ -1,4 +1,4 @@
-# Diagnóstico do sistema · 2026-10-15 12:13 UTC
+# Diagnóstico do sistema · 2026-10-15 12:22 UTC
 
 ## Cumprimento da finalidade · índice geral 60%
 - Motores: 100% (ok) — todo motor ativo lê dentro da sua cadência
@@ -50,7 +50,7 @@
 
 ## Integração
 - contagens: {'repositorio_abertas': 514, 'diagnostico_abertas': 514, 'tela_cartoes': 513, 'fichas': 524, 'sala_controle_abertas': 514}
-- idade (h): {'repositorio': 0.0, 'fluxo': 0.1, 'fichas': 0.0, 'sala_controle': 0.0, 'status_motores': 0.0, 'maestro': 4.3, 'rede_neural': 0.2, 'saude': 0.1}
+- idade (h): {'repositorio': 0.0, 'fluxo': 0.3, 'fichas': 0.0, 'sala_controle': 0.0, 'status_motores': 0.0, 'maestro': 4.4, 'rede_neural': 0.3, 'saude': 0.3}
 - decisões da titular: 0 · não aplicadas: 0
 
 ## Problemas (25)
@@ -65,10 +65,10 @@
 - [alta] 4 oportunidades municipais de outros estados ainda abertas (só Goiás tem municipais) → refazer o repositório
 - [alta] tela mostra 513 oportunidades e o repositório conta 514 → refazer a tela
 - [alta] 3 módulos de teste em quarentena por DEFEITO REAL → corrigir o código e tirar da quarentena (sem correção automática)
-- [media] maestro sem atualização há 4.3 h (limite 3 h) → ver o fluxo que gera este dado
+- [media] maestro sem atualização há 4.4 h (limite 3 h) → ver o fluxo que gera este dado
 - [media] [site_oficial] link oficial gravado no repositório: 4 de 409 contrariam a regra — agregador ou replicador nunca é link oficial → buscar a fonte oficial (resolvedor e Cartório)
-- [media] fluxo '09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes' sem rodar há 288.3 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
-- [media] fluxo '02 · Alexandria — revisão mensal de leis e procedimentos' sem rodar há 337.6 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
+- [media] fluxo '09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes' sem rodar há 288.4 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
+- [media] fluxo '02 · Alexandria — revisão mensal de leis e procedimentos' sem rodar há 337.8 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
 - [media] saúde · claude: 1354 item(ns) esperando a análise do Claude (próxima: 2026-10-15) → ver o fluxo/arquivo indicado
 - [media] saúde · coerência: mapa e lista divergem em SC, GO, __nac__, BA, SP → refazer tela e indicadores
 - [media] saúde · workflows: 00 · Verificar prontidão: últimas 4 execuções sem sucesso → ver o fluxo/arquivo indicado
@@ -95,7 +95,7 @@
 - legislativo · atos legislativos fora das oportunidades: **correto** (0 de 514) — regra: projeto de lei, utilidade pública e orçamento vão ao acompanhamento legislativo, nunca às abertas
 - prazo · oportunidades contadas como abertas: **correto** (0 de 514) — regra: prazo vencido sai das abertas
 - site_oficial · link oficial gravado no repositório: **incorreto** (4 de 409) — regra: agregador ou replicador nunca é link oficial · ex.: fa359a0aafb11debea10: https://editaisdobrasil.com/oportunidade/premio-nacional-de-inovacao; c37bbca075f562f5aeef: https://editaisdobrasil.com/oportunidades
-- certificar · itens certificados pelo Cartório: **correto** (0 de 2645) — regra: todo item certificado tem trecho literal e documento
+- certificar · itens certificados pelo Cartório: **correto** (0 de 2672) — regra: todo item certificado tem trecho literal e documento
 - validar · validação por exceção: **correto** (0 de 0) — regra: só valida sozinho com acerto do Cartório ≥ 85% no gabarito e link oficial aprovado na curadoria
 - farol · oportunidades prontas para o Farol: **correto** (0 de 40) — regra: pronta só com prazo vigente e link oficial aprovado na curadoria
 - biblioteca · livros da Biblioteca: **correto** (0 de 1905) — regra: ato legislativo não gera livro
