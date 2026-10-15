@@ -84,7 +84,7 @@ class TestClassificador(unittest.TestCase):
     def test_vetos_estaduais(self):
         self.assertEqual(atos.classificar(PSS, HOJE)["regime"], "processo_seletivo_pessoal")
         self.assertEqual(atos.classificar(PSS, HOJE)["veredito"], "RUIDO")
-        self.assertEqual((atos.classificar(OS, HOJE)["regime"], atos.classificar(OS, HOJE)["veredito"]), ("organizacao_social", "RUIDO"))
+        self.assertEqual((atos.classificar(OS, HOJE)["regime"], atos.classificar(OS, HOJE)["veredito"]), ("organizacao_social", "ACOMPANHAR"))  # 15/10: titular
         self.assertEqual(atos.classificar(PNAE, HOJE)["veredito"], "RUIDO")
 
     def test_extrato_de_termo_e_inteligencia(self):

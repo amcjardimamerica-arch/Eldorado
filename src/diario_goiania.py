@@ -397,6 +397,13 @@ def classificar_ato(trecho: str, hoje: date | None = None, publicado: str | None
     elif tipo == "referencia" and de_interesse and (num or _VALOR.search(bruto) or re.search(r"CELEBRA|REPASSE|TERMO DE FOMENTO", T)):
         veredito = "ACOMPANHAR"
         motivos.append("menção a parceria ou edital de interesse dentro de outro ato — conferir o ato completo na edição")
+    elif regime == "organizacao_social_saude":
+        # 15/10/2026 (titular): editais e atos de Organização Social da saúde ficam no painel como ACOMPANHAR —
+        # mostram para onde vai o dinheiro do terceiro setor; não viram oportunidade da associação.
+        veredito = "ACOMPANHAR"
+        motivos.append({"abertura": "edital de Organização Social (saúde/gestão) — acompanhar: não é oportunidade da associação",
+                         "retificacao": "retificação de edital de Organização Social — acompanhar"}.get(
+            tipo, "ato de Organização Social (qualificação, contrato de gestão, resultado) — acompanhar"))
     else:
         veredito = "RUIDO"
         motivos.append({"credenciamento": "credenciamento de prestadores (Lei 8.666 art. 25 / 14.133 art. 79) — não é fomento a OSC",
