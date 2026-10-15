@@ -1,8 +1,8 @@
-# Diagnóstico do sistema · 2026-10-15 01:05 UTC
+# Diagnóstico do sistema · 2026-10-15 01:31 UTC
 
-## Cumprimento da finalidade · índice geral 66%
+## Cumprimento da finalidade · índice geral 69%
 - Motores: 100% (ok) — todo motor ativo lê dentro da sua cadência
-- Maestro: 73% (atencao) — cobertura completa do dia planejado
+- Maestro: 75% (atencao) — cobertura completa do dia planejado
 - Rede neural: 99% (ok) — discernimento (AUC) de pelo menos 0,85
 - Biblioteca: 100% (ok) — toda oportunidade aberta aplicável com livro existente
 - Validação: 10% (falha) — toda oportunidade aberta validada
@@ -10,7 +10,7 @@
 - Prazo: 28% (falha) — toda aberta com prazo (ou fluxo contínuo)
 - Cartório: 70% (atencao) — 12 de 12 itens certificados na fonte oficial
 - Tela e fichas: 100% (ok) — tudo que está aberto aparece na tela e tem ficha
-- Integração: 70% (atencao) — mesmas contagens e dados em dia em todos os sistemas
+- Integração: 100% (ok) — mesmas contagens e dados em dia em todos os sistemas
 - Fluxos automáticos: 68% (falha) — todo fluxo agendado roda na cadência e sem falha
 - Execução sem falha silenciosa: 0% (falha) — nenhuma etapa falha em silêncio
 
@@ -21,7 +21,7 @@
 - 09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes: atrasado · última 2026-10-03T11:56 · sucesso 100% · cadência 24.0 h
 - 10 · Histórico de doações da Rouanet (empresa por empresa) — retoma sozinho até completar: falha · última 2026-09-27T05:46 · sucesso 0% · cadência None h
 - 01 · Eldorado — motores por hora (00h–06h BRT): falha · última 2026-10-14T14:13 · sucesso 0% · cadência 24.0 h
-- 22 · Motores da vez — cada passagem calcula sozinha o que está pendente (agenda + maestro): atencao · última 2026-10-15T00:58 · sucesso 78% · cadência 1.0 h
+- 22 · Motores da vez — cada passagem calcula sozinha o que está pendente (agenda + maestro): atencao · última 2026-10-15T01:24 · sucesso 75% · cadência 1.0 h
 - 34 · Motores de empresas (semanal, com recuperação): atencao · última 2026-10-14T12:06 · sucesso 33% · cadência 24.0 h
 - 03 · Eldorado — carga histórica de cinco anos (campanha única, mês a mês): atencao · última 2026-10-14T21:08 · sucesso 60% · cadência 6.0 h
 - 02 · Alexandria — revisão mensal de leis e procedimentos: atrasado · última 2026-10-01T10:36 · sucesso 50% · cadência 24.0 h
@@ -38,25 +38,25 @@
 - sugestões de apresentação: ['decisões da titular (descartadas/inscritas aguardando aplicação e livros sinalizados para o Claude)']
 
 ## Oportunidades
-- abertas: 480 · validadas: 46 (9.6%) · por estado: {'em_verificacao': 427, 'validada': 46, 'validacao_manual': 7}
-- com livro: 365 · sem livro (problema): 0 · sem livro por regra: 115 {'fora da abrangência: oportunidade pública municipal de outro estado (só Goiás tem livros m': 88, 'não é seleção aberta a associações (dispensa/inexigibilidade de chamamento, credenciamento': 22, 'fora da abrangência: municipal de outro estado (PE) que não é capital — só Goiás tem munic': 2, 'fora da abrangência: municipal de outro estado (BA) que não é capital — só Goiás tem munic': 1, 'fora da abrangência: municipal de outro estado (SP) que não é capital — só Goiás tem munic': 1, 'fora da abrangência: município de outro estado que não é capital (livro apagado)': 1} · livro inexistente: 0
-- sem site oficial: 98 · sem prazo: 347 · prazo vencido ainda aberta: 0
-- fora da tela: 1 · sem ficha: 0
-- itens que mais faltam: {'Prazo de recurso': 415, 'Resultado': 403, 'Prazo de inscrição': 390, 'Valor': 386, 'Anexos': 366, 'Requisitos': 361, 'Destinação': 338, 'Área de atuação': 336, 'Território': 300, 'Objeto': 289, 'Órgão / financiador': 283, 'Esfera': 280}
+- abertas: 476 · validadas: 46 (9.7%) · por estado: {'em_verificacao': 423, 'validada': 46, 'validacao_manual': 7}
+- com livro: 361 · sem livro (problema): 0 · sem livro por regra: 115 {'fora da abrangência: oportunidade pública municipal de outro estado (só Goiás tem livros m': 87, 'não é seleção aberta a associações (dispensa/inexigibilidade de chamamento, credenciamento': 22, 'fora da abrangência: municipal de outro estado (PE) que não é capital — só Goiás tem munic': 2, 'fora da abrangência: municipal de outro estado (BA) que não é capital — só Goiás tem munic': 1, 'fora da abrangência: municipal de outro estado (SP) que não é capital — só Goiás tem munic': 1, 'empresa sem edital por concorrência: é fonte de busca, não livro': 1} · livro inexistente: 0
+- sem site oficial: 94 · sem prazo: 343 · prazo vencido ainda aberta: 0
+- fora da tela: 0 · sem ficha: 0
+- itens que mais faltam: {'Prazo de recurso': 411, 'Resultado': 399, 'Prazo de inscrição': 386, 'Valor': 382, 'Anexos': 362, 'Requisitos': 357, 'Destinação': 334, 'Área de atuação': 332, 'Território': 296, 'Objeto': 285, 'Órgão / financiador': 279, 'Esfera': 276}
 
 ## Sistemas
 - motores: 42 funcionando · 0 em falha · 3 inativos · 4 com leitura parcial
-- maestro: cobertura 73.1% · esgotados 10
-- rede neural: AUC 0.843 · rotulados 2014 · treinada em 2026-10-14T05:54:08+00:00
-- Cartório: 0.7008 certificado · fluxos do GitHub com falha: ['.github/workflows/00-prontidao.yml']
-- saúde: 6 alerta(s) · índice da sala de controle: 90
+- maestro: cobertura 75.0% · esgotados 9
+- rede neural: AUC 0.843 · rotulados 2016 · treinada em 2026-10-14T05:54:08+00:00
+- Cartório: 0.6987 certificado · fluxos do GitHub com falha: ['.github/workflows/00-prontidao.yml']
+- saúde: 6 alerta(s) · índice da sala de controle: 93
 
 ## Integração
-- contagens: {'repositorio_abertas': 480, 'diagnostico_abertas': 480, 'tela_cartoes': 479, 'fichas': 490, 'sala_controle_abertas': 480}
-- idade (h): {'repositorio': 0.0, 'fluxo': 1.1, 'fichas': 0.0, 'sala_controle': 0.0, 'status_motores': 0.0, 'maestro': 2.1, 'rede_neural': 1.1, 'saude': 1.1}
+- contagens: {'repositorio_abertas': 476, 'diagnostico_abertas': 476, 'tela_cartoes': 476, 'fichas': 486, 'sala_controle_abertas': 476}
+- idade (h): {'repositorio': 0.0, 'fluxo': 0.0, 'fichas': 0.0, 'sala_controle': 0.0, 'status_motores': 0.0, 'maestro': 0.0, 'rede_neural': 0.0, 'saude': 1.5}
 - decisões da titular: 0 · não aplicadas: 0
 
-## Problemas (24)
+## Problemas (23)
 - [alta] 3 etapa(s) falharam em silêncio na última execução de motores-da-vez.yml: Traceback (most recent call last): | TypeError: '>' not supported between instances of 'NoneType' and 'NoneType' | src.sensores: falhou ou estourou (código 1) → investigar a etapa (sem correção automática)
 - [alta] 2 etapa(s) falharam em silêncio na última execução de motor-agregadores.yml: "rede: robots.txt inacessível: URLError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)" | "rede: robots.txt inacessível: URLError: timed out", → investigar a etapa (sem correção automática)
 - [alta] 7 etapa(s) falharam em silêncio na última execução de monitoramento-diario.yml: "erro": "FileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/Eldorado/Eldorado/biblioteca_alexandria/oportunidades/abcr-continue-lendo-ba | "erro": "FileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/Eldorado/Eldorado/biblioteca_alexandria/oportunidades/abcr-continue-lendo-ed | "erro": "FileNotFoundError: [Errno 2] No such file or directory: '/home/runner/work/Eldorado/Eldorado/biblioteca_alexandria/oportunidades/abcr-continue-lendo-fu → investigar a etapa (sem correção automática)
@@ -66,18 +66,17 @@
 - [alta] fluxo '05 · Busca ativa (a cada 3 dias)' falhou nas últimas execuções (0% de sucesso) → investigar o fluxo (sem correção automática)
 - [alta] fluxo '10 · Histórico de doações da Rouanet (empresa por empresa) — retoma sozinho até completar' falhou nas últimas execuções (0% de sucesso) → investigar o fluxo (sem correção automática)
 - [alta] fluxo '01 · Eldorado — motores por hora (00h–06h BRT)' falhou nas últimas execuções (0% de sucesso) → investigar o fluxo (sem correção automática)
-- [alta] 1 abertas no repositório que não aparecem na tela de oportunidades → refazer a tela
 - [alta] 4 oportunidades municipais de outros estados ainda abertas (só Goiás tem municipais) → refazer o repositório
-- [alta] tela mostra 479 oportunidades e o repositório conta 480 → refazer a tela
 - [alta] 3 módulos de teste em quarentena por DEFEITO REAL → corrigir o código e tirar da quarentena (sem correção automática)
-- [media] fluxo '09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes' sem rodar há 277.1 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
-- [media] fluxo '02 · Alexandria — revisão mensal de leis e procedimentos' sem rodar há 326.5 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
+- [media] fluxo '09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes' sem rodar há 277.6 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
+- [media] fluxo '02 · Alexandria — revisão mensal de leis e procedimentos' sem rodar há 326.9 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
+- [media] 180 livros municipais de outros estados no catálogo (só Goiás tem livros municipais) → refazer a tela
 - [media] saúde · claude: análise do Claude atrasada desde 2026-10-14: 1305 item(ns) esperando validação ou descarte → ver o fluxo/arquivo indicado
 - [media] saúde · coerência: mapa e lista divergem em __nac__, BA, SP, ES, RS → refazer tela e indicadores
 - [media] saúde · workflows: 35 · Alimentação diária externa (editais abertos): últimas 5 execuções sem sucesso → ver o fluxo/arquivo indicado
 - [media] saúde · workflows: 05 · Busca ativa (a cada 3 dias): últimas 5 execuções sem sucesso → ver o fluxo/arquivo indicado
 - [media] saúde · workflows: 10 · Histórico de doações da Rouanet (empresa por empresa) — retoma sozinho até completar: últimas 5 execuções sem sucesso → ver o fluxo/arquivo indicado
 - [media] saúde · workflows: 01 · Eldorado — motores por hora (00h–06h BRT): últimas 5 execuções sem sucesso → ver o fluxo/arquivo indicado
-- [media] 98 abertas ainda sem site oficial → Cartório/Interceptador (sem correção automática imediata)
-- [baixa] 347 abertas sem prazo de inscrição conhecido → Cartório/Interceptador (sem correção automática imediata)
+- [media] 94 abertas ainda sem site oficial → Cartório/Interceptador (sem correção automática imediata)
+- [baixa] 343 abertas sem prazo de inscrição conhecido → Cartório/Interceptador (sem correção automática imediata)
 - [baixa] 18 módulos de teste em quarentena (envelhecidos) → atualizar o teste à regra atual (sem correção automática)
