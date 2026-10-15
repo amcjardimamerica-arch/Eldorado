@@ -96,7 +96,7 @@ class CorrecoesDaAmostra15_10(unittest.TestCase):
         casos = {"Instituto Ronald McDonald abre vaga de estágio em Captação de Recursos": "vaga",
                  "FUNDO MUNICIPAL DE SAUDE — CREDENCIAMENTO DE PESSOAS JURÍDICAS DE DIREITO PRIVADO": "credenciamento",
                  "FAPESP anuncia 32 novos CCDs": "resultado", "5 editais ambientais com inscrições abertas em outubro de 2026": "lista",
-                 "Emenda Parlamentar Municipal — Goiânia — captação 2026": "legislativo"}
+                 "Projeto de Lei nº 216/2026 declara de utilidade pública o Instituto X": "legislativo"}   # 15/10 (ciclo 4): emenda é captação
         for t, chave in casos.items():
             self.assertIn(chave, R.nao_e_oportunidade({"titulo": t}), t)
         self.assertIn("minuta", R.nao_e_oportunidade({"titulo": "Edital SEDAC 20/2026", "url": "https://x.rs.gov.br/up/1_minuta_edital_fac.pdf"}))
@@ -124,3 +124,32 @@ class CredenciamentoSaude15_10(unittest.TestCase):
         from src import repositorio_unico as R
         t = "FUNDO MUNICIPAL DE SAUDE DE NAZARE DA MATA — CREDENCIAMENTO DE PESSOAS JURÍDICAS DE DIREITO PRIVADO, PREFERENCIALMENTE AS ENTIDADES FILANTRÓPICAS E AS SEM FINS LUCRATIVOS"
         self.assertIn("credenciamento", R.nao_e_oportunidade({"titulo": t}))
+
+
+class AmostraCiclo4_15_10(unittest.TestCase):
+    """15/10/2026: validação de 20 oportunidades (ciclo 4) — erros e falsos positivos viram regra e teste."""
+    def test_nao_e_oportunidade_e_o_que_continua(self):
+        from src import repositorio_unico as R
+        sai = {"Convocatorias - Confío, A.C.": "listagem", "Portal de Projetos": "listagem", "Chamadas Abertas – Fapesc": "listagem",
+               "Regulamento - Chamada Pública Doação de Computadores - Escolas Municipais": "escolas", "Anexos Edital 2024": "ano anterior",
+               "Edital de notificação de lançamento": "tributário", "EDITAL Nº 002/2025 – SEGUNDA AUDIÊNCIA PÚBLICA": "consulta"}
+        for t, k in sai.items():
+            self.assertIn(k, R.nao_e_oportunidade({"titulo": t}) or "", t)
+        self.assertIn("voluntariado", R.nao_e_oportunidade({"titulo": "Edital de Credenciamento Nº 1/2026", "url": "https://sejaumvoluntario.sisicmbio.icmbio.gov.br/x"}))
+        self.assertIn("credenciamento", R.nao_e_oportunidade({"titulo": "Aviso de Chamamento Público Credenciamento Nº 006/2026", "orgao": "Secretaria Municipal de Saúde"}))
+        fica = ["Emenda Parlamentar Municipal — Goiânia — captação 2026", "Convocatoria Actinver Apoya 2026",
+                "Regulamento - Chamada Pública Doação de Computadores – Instituições do Terceiro Setor",
+                "Reforço imediato: Apoio Emergencial às Brigadas Voluntárias e Comunitárias", "Edital Paraná Festivais 2025",
+                "Pdf edital de credenciamento de no001/2026 - organizações da sociedade civil", "EDITAL DO CICLO NATALINO DE FORTALEZA – 2026"]
+        for t in fica:
+            self.assertIsNone(R.nao_e_oportunidade({"titulo": t}), t)
+
+    def test_uf_pelo_nome_do_municipio(self):
+        from src import repositorio_unico as R
+        self.assertEqual(R.uf_por_municipio("Chamamento Público Nº 3/2026 - Prefeitura Municipal de Taiúva"), "SP")
+        self.assertEqual(R.uf_por_municipio("Diário Oficial de Iracemápolis (SP) 2026-08-14 — Prefeitura"), "SP")
+        self.assertEqual(R.uf_por_municipio("Edital Prefeitura Municipal de Planaltina 2026"), "GO")
+
+    def test_texto_de_lei_nao_e_link_oficial(self):
+        from src import curadoria_links as C
+        self.assertTrue(C.classe("https://www.planalto.gov.br/ccivil_03/leis/LCP/Lcp195.htm").startswith("texto de lei"))

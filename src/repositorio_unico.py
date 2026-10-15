@@ -112,19 +112,32 @@ NAO_OPORTUNIDADE = [
     (re.compile(r"(?i)credenciamento de (?:pessoas? jur[íi]dicas?|prestadores?|profissionais|cl[íi]nicas|laborat|m[ée]dic|empresas|farm[áa]cias)"), "credenciamento de prestadores — não é fomento a OSC"),
     (re.compile(r"(?i)\banuncia \d+ (?:novos?|selecionad|aprovad|vencedor)|\bresultado (?:final|definitivo) d[oa]s? (?:selecionad|aprovad)|\bconhe[çc]a os (?:selecionad|vencedor)"), "notícia de resultado — a seleção já aconteceu"),
     (re.compile(r"(?i)^\s*\d+ (?:editais|oportunidades|chamadas|programas)\b|\b\d+ editais (?:ambientais|culturais|abertos|com inscri)"), "lista de vários editais — cada edital precisa entrar separado"),
-    (re.compile(r"(?i)\bminuta (?:de |do )?edital|\bconsulta p[úu]blica\b"), "minuta ou consulta pública — o edital ainda não foi aberto"),
+    (re.compile(r"(?i)\bminuta (?:de |do )?edital|\bconsulta p[úu]blica\b|\baudi[êe]ncia p[úu]blica\b"), "minuta ou consulta pública — o edital ainda não foi aberto"),
+    # 15/10 (ciclo 4, validação de 20 pelo Claude)
+    (re.compile(r"(?i)^\s*(?:convocatorias|editais|oportunidades|chamadas|programas|portal de (?:projetos|editais|oportunidades))\b(?!\s*n[ºo°])"), "página de listagem — cada oportunidade precisa entrar separada"),
+    (re.compile(r"(?i)(?:\bpara|[-–])\s*escolas (?:municipais|p[úu]blicas|estaduais)"), "público que não é associação (escolas públicas)"),
+    (re.compile(r"(?i)\bvoluntariado\b(?!.*\b(?:apoio|fomento|recurso|financ))|seja ?um ?volunt|cadastro de volunt|credenciamento de volunt"), "voluntariado — não é recurso para a associação"),
+    (re.compile(r"(?i)notifica[çc][ãa]o de lan[çc]amento|\bIPTU\b|d[íi]vida ativa|lan[çc]amento tribut"), "ato tributário — não é oportunidade"),
 ]
+ANO_ANTERIOR = re.compile(r"\b(20(?:1\d|2[0-4]))\b")   # 15/10: 2025 pode seguir aberto (ciclos da PNAB) — só 2024 ou antes
 PERMITE_CREDENCIAMENTO = re.compile(r"(?i)organiza[çc](?:[ãa]o|[õo]es) da sociedade civil|\boscs?\b|sem fins lucrativos|entidades? (?:socioassist|filantr)|associa[çc]")
 SAUDE_SERVICO = re.compile(r"(?i)fundo municipal de sa[úu]de|secretaria (?:municipal |estadual )?de sa[úu]de|\bSUS\b|servi[çc]os (?:de sa[úu]de|m[ée]dic|hospitalar|ambulatori)|complementa[çc][ãa]o (?:da rede|dos servi)")
-LEGISLATIVO_ABERTAS = re.compile(r"(?i)emenda parlamentar|emendas? impositivas?|lei or[çc]ament[áa]ria|\bLOA\b|projeto de lei|utilidade p[úu]blica")
+# 15/10 (ciclo 4): EMENDA PARLAMENTAR como captação é oportunidade (modalidade de recebimento — a AMC Jardim América tem
+# dossiê e plano de trabalho da emenda municipal de Goiânia); só projeto de lei, utilidade pública e LOA vão ao legislativo
+LEGISLATIVO_ABERTAS = re.compile(r"(?i)lei or[çc]ament[áa]ria|\bLOA\b|projeto de lei|utilidade p[úu]blica")
 
 
 def nao_e_oportunidade(r: dict) -> str | None:
     t = f"{r.get('titulo') or ''} {r.get('objeto') or ''} {re.sub(r'[-_/.]', ' ', str(r.get('url') or ''))}"
     if LEGISLATIVO_ABERTAS.search(t):
         return "ato legislativo — vai ao acompanhamento legislativo (Oportunidades Abertas › Legislativo)"
+    tit = str(r.get("titulo") or "")
+    if "credenciamento" in t.lower() and SAUDE_SERVICO.search(f"{t} {r.get('orgao') or ''}") and not re.search(r"(?i)sociedade civil|\bosc", tit):
+        return "credenciamento de prestadores — não é fomento a OSC"
+    if not r.get("fim") and ANO_ANTERIOR.search(tit) and not re.search(r"\b202[6-9]\b", tit):
+        return "edital de ano anterior, sem prazo vigente"
     for rx, motivo in NAO_OPORTUNIDADE:
-        if rx.search(t):
+        if rx.search(tit if "listagem" in motivo else t):
             if "credenciamento" in motivo and PERMITE_CREDENCIAMENTO.search(t) and not SAUDE_SERVICO.search(t):
                 continue                                   # credenciamento de OSC para parceria vale; serviço de saúde, não
             return motivo
@@ -146,6 +159,30 @@ def municipio_pelo_endereco(url: str) -> bool:
 _CUR: dict = {}
 
 
+_MUN_BR: dict = {}
+
+
+def uf_por_municipio(texto: str) -> str | None:
+    """15/10 (ciclo 4): UF pelo NOME do município (lista do IBGE) quando o texto diz 'Prefeitura/Município/Câmara/Diário
+    Oficial de X' ou 'X (UF)'; homônimos em mais de um estado não decidem (fica sem UF)."""
+    import unicodedata
+    sem = lambda s: "".join(c for c in unicodedata.normalize("NFD", str(s or "").lower()) if unicodedata.category(c) != "Mn")
+    t = sem(texto)
+    m = re.search(r"\(([a-z]{2})\)", t)
+    if m and m.group(1).upper() in UFS and re.search(r"(?i)prefeitura|munic[íi]pio|di[áa]rio oficial de|c[âa]mara", texto):
+        return m.group(1).upper()
+    if not _MUN_BR:
+        _MUN_BR.update((_j(ROOT / "config/municipios_brasil.json", {}) or {}).get("municipios") or {"-": []})
+    for mm in re.finditer(r"(?:prefeitura(?: municipal)?|municipio|camara municipal|diario oficial|fundo municipal de [a-z ]{3,30}?) de ([a-z' -]{3,40})", t):
+        nome = mm.group(1).strip()
+        for k in range(len(nome.split()), 0, -1):          # o nome mais longo que existir na lista
+            cand = " ".join(nome.split()[:k])
+            ufs = _MUN_BR.get(cand)
+            if ufs:
+                return ufs[0] if len(ufs) == 1 else None
+    return None
+
+
 def municipal_fora_de_goias(r: dict, uf_agregador: str | None = None) -> str | None:
     """Identifica oportunidade MUNICIPAL de fora de Goiás (UF determinada e diferente de GO). 14/10/2026 (titular): roda a
     CADA rodada — só Goiás tem oportunidades municipais; de outros estados, só estaduais (e nacionais/internacionais).
@@ -162,6 +199,8 @@ def municipal_fora_de_goias(r: dict, uf_agregador: str | None = None) -> str | N
     if capital_citada(f"{r.get('orgao') or ''} {r.get('titulo') or ''} {r.get('url') or ''}"):
         return None
     uf = str(r.get("uf") or uf_agregador or "").upper()
+    if uf not in UFS:
+        uf = uf_por_municipio(f"{r.get('titulo') or ''} {r.get('orgao') or ''}") or uf
     if uf not in UFS:
         m = _DOM_UF.search(f"{r.get('link_oficial') or ''} {r.get('url') or ''}")
         uf = m.group(1).upper() if m and m.group(1).upper() in UFS else ""

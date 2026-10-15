@@ -64,6 +64,8 @@ def classe(url: str, orgao: str = "") -> str:
         return "agregador ou replicador"
     if "pncp.gov.br" in d:
         return "página do PNCP (não é o documento)"
+    if re.search(r"planalto\.gov\.br/ccivil|normas\.leg\.br|leisestaduais|/legislacao/(?!diariooficial)|legislacao\.\w+\.gov\.br", str(url), re.I):
+        return "texto de lei (não é a oportunidade)"               # 15/10 (ciclo 4): a LC 195 virou "link oficial"
     if any(e in d or e in str(url) for e in EMISSOR_PROPRIO):
         return "plataforma de publicação do emissor"
     caminho = (urlsplit(str(url)).path or "/").strip("/")
