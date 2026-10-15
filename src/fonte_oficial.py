@@ -190,6 +190,9 @@ def _pontuar_navegacao(href: str, txt: str, tk: set, num) -> float:
 
 
 def _pdf_forte(pdf: dict, tk: set, num) -> bool:
+    # 15/10: arquivo do tipo Edital publicado pelo próprio órgão NAQUELA compra do PNCP é o edital dela por construção
+    if str(pdf.get("achado_em") or "").startswith("PNCP — arquivo") and re.match(r"(?i)edital", str(pdf.get("texto") or "")):
+        return True
     alvo = f"{pdf.get('texto', '')} {pdf.get('url', '')}"
     return _tem_numero(alvo, num) or len(tk & _tokens(alvo)) >= 2
 
