@@ -62,6 +62,7 @@ def registrar_dia(sensor_id: str, hoje: date, r: dict) -> None:
     melhor = max(r.get("achados") or [], key=lambda a: a.get("forca_lexica") or 0, default=None)
     s[hoje.isoformat()] = {
         "cor": cor_do_dia(r), "achados": len(r.get("achados") or []),
+        "novas": r.get("novas", len(r.get("achados") or [])), "relidas": r.get("relidas", 0),   # 15/10: releitura padrão
         "falhas": len(r.get("falhas") or []),
         "http": ((r.get("saude") or [{}])[0]).get("http"),
         "trecho": ((melhor or {}).get("titulo") or "")[:160] if melhor else None,
@@ -958,13 +959,24 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
         except Exception:  # noqa: BLE001
             pass
         executados += 1
+        # 15/10/2026 (titular): RELEITURA PADRÃO — a mesma oportunidade relida não conta como nova (src/vistos.py)
+        try:
+            from . import vistos as _V
+            if not _V.ARQ.exists():                      # 1ª vez: semeia com o histórico e corrige os totais acumulados
+                _V.semear(); _V.corrigir_totais(sens)
+            _rv = _V.registrar(s["id"], r["achados"], hoje)
+        except Exception:  # noqa: BLE001
+            _rv = {"novas": len(r["achados"]), "relidas": 0}
+        r["novas"], r["relidas"] = _rv["novas"], _rv["relidas"]
         reg = sens.setdefault(s["id"], {"nome": s["nome"], "tipo": s["tipo"], "leituras": 0,
                                         "achados_total": 0, "vazias_seguidas": 0})
         reg["duracao_s"] = round(_t.monotonic() - _t0)
         reg.update({"ultima": r["lido_em"], "motivo": s.get("motivo") or f"bloco {escala.get('bloco') or 'manual'}",
                     "leituras": reg["leituras"] + 1,
                     "achados_ultima": len(r["achados"]),
-                    "achados_total": reg["achados_total"] + len(r["achados"]),
+                    "novas_ultima": r["novas"], "relidas_ultima": r["relidas"],
+                    "achados_total": reg["achados_total"] + r["novas"],          # 15/10: só oportunidades DISTINTAS
+                    "relidas_total": int(reg.get("relidas_total") or 0) + r["relidas"],
                     "falhas_ultima": len(r["falhas"]),
                     "saude": (r["saude"] or r["falhas"])[:2],
                     "vazias_seguidas": 0 if r["achados"] else reg["vazias_seguidas"] + 1})

@@ -89,10 +89,10 @@ class TestClassificacao(unittest.TestCase):
             self.assertEqual(classif(obj, orgao="FUNDO MUNICIPAL DE SAUDE")["veredito"], "RUIDO", obj[:40])
 
     def test_ilpi_credenciada_e_oportunidade_com_enquadramento(self):
-        """15/10/2026 (titular) substitui 02/10: credenciamento para PRESTAR SERVIÇO é contrato (Lei 14.133), não captação."""
+        """15/10/2026 (titular): ILPI, acolhimento e comunidade terapêutica ficam — só em Goiás e nas capitais (Trindade é GO)."""
         c = classif("CREDENCIAMENTO DE INSTITUIÇÕES DE ASSISTÊNCIA SOCIAL PARA ACOLHIMENTO INSTITUCIONAL DE IDOSOS (ILPI) E, "
                     "EXCEPCIONALMENTE, PESSOAS COM DEFICIÊNCIA", orgao="MUNICIPIO DE TRINDADE", municipio="Trindade")
-        self.assertEqual(c["veredito"], "RUIDO")
+        self.assertEqual(c["veredito"], "OPORTUNIDADE")
         from src.regras_restricao import avaliar
         self.assertIn("EN-03", {e["id"] for e in avaliar({"titulo": "Credenciamento de ILPI — instituição de longa permanência", "uf": "GO"})["enquadramento"]})
 

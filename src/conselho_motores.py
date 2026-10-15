@@ -91,7 +91,7 @@ def a_falso_verde(D: dict) -> dict:
     for mid, s in D["esq"].items():
         dg = s.get("diagnostico") or {}; di = D["diario"].get(mid) or {}
         dias = sorted(di)[-30:]; reg = [di[d] for d in dias]
-        ok200 = sum(1 for r in reg if r.get("http") == 200); ach = sum(int(r.get("achados") or 0) for r in reg)
+        ok200 = sum(1 for r in reg if r.get("http") == 200); ach = sum(int(r.get("novas", r.get("achados")) or 0) for r in reg)   # 15/10: NOVAS (releituras não contam)
         verm = sum(1 for r in reg if r.get("cor") == "vermelho")
         trechos = [r.get("trecho") for r in reg if r.get("trecho")]
         links, cand = int(dg.get("links_total") or 0), int(dg.get("links_candidatos") or 0)

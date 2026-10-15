@@ -396,6 +396,14 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
             _mun = marca_no_repositorio([cid] + r["ids_origem"], _DEC)
         _fora = municipal_fora_de_goias(r, next((uf_ag[i] for i in [cid] + r["ids_origem"] if i in uf_ag), None))
         _nao = nao_e_oportunidade(r)
+        if not _nao and "pncp.gov.br" in f"{r.get('url')} {r.get('link_oficial')}":      # 15/10: o portão do PNCP nos antigos
+            try:
+                from .pncp_osc import veredito_por_titulo
+                _pv = veredito_por_titulo(str(r.get("titulo") or ""), str(r.get("url") or ""), r.get("uf"), r.get("fim"))
+                if _pv:
+                    _nao = f"PNCP — {_pv}"
+            except Exception:  # noqa: BLE001
+                pass
         _dp = _PNCP.get(cid) or next((_PNCP[i] for i in r.get("ids_origem") or [] if i in _PNCP), None)
         if not _nao and _dp and _dp.get("status") in ("fechada", "descartada"):     # 15/10: veredito do dossiê do PNCP
             _nao = f"PNCP — {_dp.get('motivo')}"
