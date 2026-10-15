@@ -253,6 +253,7 @@ def medir(com_gabarito_orgao: bool = False, gravar: bool = True, rotulo: str = "
     por_item = {i: Counter() for i in L.DOZE}
     falhas = []
     por_caso = {}
+    ex_mod = {}
     for k, c in cs.items():
         r = tx.get(k)
         pgs = (r or {}).get("paginas") or []
@@ -266,6 +267,7 @@ def medir(com_gabarito_orgao: bool = False, gravar: bool = True, rotulo: str = "
             chaves = L.chaves_orgao((r or {}).get("url") or c["url"], c["orgao"])
             for kk, v in L.aplicar_gabarito(pgs, C.ancoras_do_orgao(gab_org, chaves), r["url"], set(ex["pontos"])).items():
                 ex["pontos"][kk] = v
+        ex_mod[k] = ex["pontos"].get("Destinação") or {}
         T = L.Texto(pgs) if ok else None
         doc = compacto(T.t) if T else ("", [])
         res = {}
@@ -273,6 +275,8 @@ def medir(com_gabarito_orgao: bool = False, gravar: bool = True, rotulo: str = "
             g, gd = c["itens"].get(item), c["dispensas"].get(item)
             e, ed = ex["pontos"].get(item), ex["dispensas"].get(item)
             if not g and not gd:
+                continue
+            if item == "Destinação":   # 15/10: virou MODALIDADE; o gabarito de 10–11/10 registrou a finalidade → sem régua ainda
                 continue
             if not ok:
                 cl = "sem_texto"
@@ -308,7 +312,10 @@ def medir(com_gabarito_orgao: bool = False, gravar: bool = True, rotulo: str = "
     for ct in por_item.values():
         tot.update(ct)
     base = tot["acerto"] + tot["erro"] + tot["falta"]
-    out = {"em": _agora(), "rotulo": rotulo, "versao_extracao": getattr(L, "VERSAO", None), "casos": len(cs),
+    mods = Counter(((ex_mod.get(k) or {}).get("modalidade") or "não identificada") for k in por_caso if por_caso[k]["lido"])
+    out = {"em": _agora(), "rotulo": rotulo, "modalidade": {"distribuicao": dict(mods.most_common()),
+           "cobertura_pct": round(100 * (1 - mods.get("não identificada", 0) / max(1, sum(mods.values()))), 1),
+           "nota": "item 'Destinação' = MODALIDADE de recebimento (15/10); gabarito humano no novo sentido ainda não existe"}, "versao_extracao": getattr(L, "VERSAO", None), "casos": len(cs),
            "documentos_lidos": sum(1 for v in por_caso.values() if v["lido"]),
            "geral": {**dict(tot), "medidos": base, "acerto_pct": round(100 * tot["acerto"] / base, 1) if base else None,
                      "precisao_pct": round(100 * tot["acerto"] / (tot["acerto"] + tot["erro"]), 1) if (tot["acerto"] + tot["erro"]) else None},
