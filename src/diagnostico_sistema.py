@@ -291,7 +291,8 @@ def execucao(P: list) -> dict:
     silenciosas = {}; lidos = 0
     # 15/10 (ciclo 6): sem o analise-sistema.yml — o log dele contém o próprio relatório ("falhou", "falha:") e a análise
     # acusava a si mesma; os erros reais da análise aparecem nos testes dela e no veredito
-    for arq in ("motores-da-vez.yml", "motor-agregadores.yml", "monitoramento-diario.yml", "cartorio.yml"):
+    # o fluxo 30 (Cartório) passou a ser só manual: o Cartório roda DENTRO do comando (os erros dele estão no log do 22)
+    for arq in ("motores-da-vez.yml", "motor-agregadores.yml", "monitoramento-diario.yml"):
         ult = next((x for x in por_arq.get(arq, []) if x.get("status") == "completed"), None)
         if not ult:
             continue
