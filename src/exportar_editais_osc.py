@@ -76,18 +76,39 @@ def enviar() -> dict:
     if not url or not segredo:
         return {"enviado": False, "motivo": "segredos OSC_URL/OSC_SEGREDO não configurados", "itens": len(lista), "sha256": h}
     assinatura = hmac.new(segredo.encode("utf-8"), corpo, hashlib.sha256).hexdigest()
-    req = urllib.request.Request(url, data=corpo, method="POST",
-                                 headers={"Content-Type": "application/json", "X-Assinatura": assinatura, "User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=60) as r:
-        resp = json.loads(r.read().decode("utf-8") or "{}")
-    if resp.get("sha256") != h:
-        raise RuntimeError(f"o site não confirmou o mesmo hash: {resp}")
-    return {"enviado": True, "itens": len(lista), "sha256": h, "confirmado_pelo_site": resp.get("itens")}
-
+    # 15/10/2026 (análise do sistema): o fluxo 35 falhava 100% sem dizer por quê — agora até 3 tentativas com espera
+    # crescente e o motivo (HTTP, resposta do site, rede) sempre registrado
+    import time
+    ultimo = None
+    for tentativa in range(1, 4):
+        req = urllib.request.Request(url, data=corpo, method="POST",
+                                     headers={"Content-Type": "application/json", "X-Assinatura": assinatura, "User-Agent": "Mozilla/5.0"})
+        try:
+            with urllib.request.urlopen(req, timeout=60) as r:
+                bruto = r.read().decode("utf-8", "replace")
+            try:
+                resp = json.loads(bruto or "{}")
+            except ValueError:
+                ultimo = {"motivo": "o site respondeu sem JSON", "resposta": bruto[:300]}; break
+            if resp.get("sha256") != h:
+                ultimo = {"motivo": "o site não confirmou o mesmo hash", "resposta": json.dumps(resp, ensure_ascii=False)[:300]}; break
+            return {"enviado": True, "itens": len(lista), "sha256": h, "confirmado_pelo_site": resp.get("itens"), "tentativas": tentativa}
+        except urllib.error.HTTPError as e:
+            ultimo = {"motivo": f"HTTP {e.code} do site", "http": e.code, "resposta": (e.read() or b"").decode("utf-8", "replace")[:300]}
+            if e.code < 500 and e.code != 429:
+                break                                   # 4xx (menos 429) não melhora repetindo
+        except Exception as e:  # noqa: BLE001
+            ultimo = {"motivo": f"rede: {type(e).__name__}: {str(e)[:160]}"}
+        time.sleep(10 * tentativa)
+    return {"enviado": False, "itens": len(lista), "sha256": h, **(ultimo or {})}
 
 if __name__ == "__main__":
     if "--enviar" in sys.argv:
-        print(json.dumps(enviar(), ensure_ascii=False))
+        r = enviar()
+        print(json.dumps(r, ensure_ascii=False))
+        if not r.get("enviado") and "não configurados" not in str(r.get("motivo")):
+            print(f"::error title=envio ao site EditaisOSC::{r.get('motivo')} · {str(r.get('resposta') or '')[:200]}", file=sys.stderr)
+            sys.exit(1)
     else:
         L = itens(); _, h = pacote(L)
         print(json.dumps({"itens": len(L), "federais": sum(1 for i in L if i["abrangencia"] == "federal"), "sha256": h,

@@ -32,4 +32,4 @@ jobs:
           OSC_URL: ${{ secrets.OSC_URL }}
           OSC_SEGREDO: ${{ secrets.OSC_SEGREDO }}
         run: |
-          python -m src.exportar_editais_osc --enviar | python -c "import json,sys; d=json.load(sys.stdin); print({k: d[k] for k in ('enviado','itens','sha256','motivo','confirmado_pelo_site') if k in d})"
+          python -m src.exportar_editais_osc --enviar   # 15/10: imprime o resultado e, se falhar, o motivo como anotação
