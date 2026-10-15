@@ -6,7 +6,7 @@
  "origem": "2 · Brasil · oportunidade do mapa",
  "fim": "2026-10-26",
  "id": "agr-33924b82b849",
- "pagina_oficial": null,
+ "pagina_oficial": "https://www.gov.br/saude",
  "busca_do_oficial": {
   "indicios": [],
   "tentativas": [
@@ -119,9 +119,15 @@
  },
  "area": "saude",
  "investigacao_ia": {
-  "em": "2026-10-07T05:11:53",
+  "em": "2026-10-15T01:06:59",
   "modelo": "qwen3-8b",
   "fontes": [
+   {
+    "url": "https://www.gov.br/saude",
+    "ok": true,
+    "tipo": "html",
+    "chars": 18998
+   },
    {
     "url": "https://api-publica.transferegov.gestao.gov.br/parcerias/programa?cd_programa=2026+-+00074",
     "ok": true,
@@ -132,17 +138,13 @@
   "campos": {
    "Objeto": {
     "valor": "Realização de pesquisas clínicas, epidemiológicas e experimentais",
-    "trecho": "Pronon - Realização de pesquisas clínicas, epidemiológicas e experimentais",
-    "comprovado": true,
-    "fonte": "https://api-publica.transferegov.gestao.gov.br/parcerias/programa?cd_programa=2026+-+00074",
-    "fonte_oficial": false
+    "trecho": "Realização de pesquisas clínicas, epidemiológicas e experimentais (programa 2026 - 00074)",
+    "comprovado": false
    },
    "Prazo de inscrição": {
-    "valor": "2026-10-05 a 2026-10-26",
-    "trecho": "dt_inicio_beneficiario_espontaneo\":\"2026-10-05\",\"dt_fim_beneficiario_espontaneo\":\"2026-10-26",
-    "comprovado": true,
-    "fonte": "https://api-publica.transferegov.gestao.gov.br/parcerias/programa?cd_programa=2026+-+00074",
-    "fonte_oficial": false
+    "valor": null,
+    "trecho": "",
+    "comprovado": false
    },
    "Resultado": {
     "valor": null,
@@ -155,30 +157,28 @@
     "comprovado": false
    },
    "Valor": {
-    "valor": null,
+    "valor": "",
     "trecho": "",
     "comprovado": false
    },
    "Órgão / financiador": {
     "valor": "Ministério da Saúde",
-    "trecho": "nm_ente_superior\":\"Ministério da Saúde",
+    "trecho": "Ministério da Saúde",
     "comprovado": true,
-    "fonte": "https://api-publica.transferegov.gestao.gov.br/parcerias/programa?cd_programa=2026+-+00074",
-    "fonte_oficial": false
+    "fonte": "https://www.gov.br/saude",
+    "fonte_oficial": true
    },
    "Território": {
     "valor": "nacional",
-    "trecho": "programa_atende_a\": [{\"tp_atende_a\":\"Terceiro Setor\"}]",
-    "comprovado": true,
-    "fonte": "https://api-publica.transferegov.gestao.gov.br/parcerias/programa?cd_programa=2026+-+00074",
-    "fonte_oficial": false
+    "trecho": "",
+    "comprovado": false
    },
    "Esfera": {
     "valor": "federal",
-    "trecho": "sg_ente_superior\":\"MS\",\"nm_ente_superior\":\"Ministério da Saúde",
+    "trecho": "Ministério da Saúde",
     "comprovado": true,
-    "fonte": "https://api-publica.transferegov.gestao.gov.br/parcerias/programa?cd_programa=2026+-+00074",
-    "fonte_oficial": false
+    "fonte": "https://www.gov.br/saude",
+    "fonte_oficial": true
    },
    "Requisitos": {
     "valor": null,
@@ -191,40 +191,70 @@
     "comprovado": false
    },
    "Destinação": {
-    "valor": "elegível · fomento",
-    "trecho": "ds_objetivo\":\"Fortalecer as políticas de saúde para pacientes oncológicos, ampliando a oferta de serviços médico-assistenciais, apoiando a formação e treinamento de recursos humanos, e promovendo pesquisas clínicas, epidemiológicas e socioantropológicas. As instituições participantes devem ser sem fins lucrativos e atuar na prevenção, diagnóstico e tratamento das pessoas com câncer.\"",
-    "comprovado": true,
-    "fonte": "https://api-publica.transferegov.gestao.gov.br/parcerias/programa?cd_programa=2026+-+00074",
-    "fonte_oficial": false
+    "valor": "fora do escopo · outro",
+    "trecho": "",
+    "comprovado": false
    },
    "Área de atuação": {
     "valor": "saude",
-    "trecho": "nm_programa\":\"Pronon - Realização de pesquisas clínicas, epidemiológicas e experimentais\"",
-    "comprovado": true,
-    "fonte": "https://api-publica.transferegov.gestao.gov.br/parcerias/programa?cd_programa=2026+-+00074",
-    "fonte_oficial": false
+    "trecho": "Realização de pesquisas clínicas, epidemiológicas e experimentais (programa 2026 - 00074)",
+    "comprovado": false
    }
   },
-  "comprovados": 7,
+  "comprovados": 2,
   "total": 12,
   "regra": "só entra na ficha o que tem trecho literal encontrado na fonte",
   "dispensados": 0,
   "passos": [
-   "dados indicados: título «Pronon - Realização de pesquisas clínicas, epidemiológicas e experimentais (prog», fonte —, órgão Secretaria-Executiva, prazo —",
-   "página oficial: não encontrada — nenhuma página oficial validada — a notícia fica como indício",
-   "doze perguntas respondidas: 7 comprovadas na fonte",
+   "dados indicados: título «Pronon - Realização de pesquisas clínicas, epidemiológicas e experimentais (prog», fonte —, órgão Ministério da Saúde, prazo dt_inicio_beneficiario_espontaneo\":\"2026-10-05\",\"dt_fim_beneficiario_espontaneo\":\"2026-10-26",
+   "página oficial: https://www.gov.br/saude — página oficial confirmada pela validação",
+   "doze perguntas respondidas: 2 comprovadas na fonte",
    "dispensas justificadas: 0 (nenhuma)",
-   "sem informação nem dispensa: Resultado, Prazo de recurso, Valor, Requisitos, Anexos"
+   "sem informação nem dispensa: Objeto, Prazo de inscrição, Resultado, Prazo de recurso, Valor, Território, Requisitos, Anexos, Destinação, Área de atuação"
   ],
-  "s": 324,
+  "s": 529,
   "qualidade": "insuficiente",
   "parecer_fonte": {
    "serve_como_fonte": "sim",
-   "por_que": "O edital foi comprovado com informações sobre objeto, prazo de inscrição, órgão financiador, território, esfera e destinação.",
-   "para_a_amc": "A associação comunitária de Goiânia precisaria se inscrever no edital, apresentando proposta de pesquisa clínica, epidemiológica ou experimental alinhada ao objeto do edital, e demonstrar capacidade técnica e recursos para execução do projeto.",
-   "proximo_passo": "Verificar os requisitos do edital e se inscrever no prazo estabelecido, de 2026-10-05 a 2026-10-26.",
-   "risco": "A falta de informações sobre requisitos e anexos pode impedir a elaboração de uma proposta adequada e a inscrição no edital."
+   "por_que": "O financiamento é oferecido pelo Ministério da Saúde, que é um órgão federal reconhecido para ações de fomento a projetos de pesquisa clínica, epidemiológica e experimental.",
+   "para_a_amc": "A associação comunitária de Goiânia precisaria se alinhar ao objeto do edital, que é pesquisa clínica, epidemiológica e experimental, e demonstrar como sua atuação na área de assistência social, cultura, educação ou esporte pode contribuir para esse tipo de pesquisa.",
+   "proximo_passo": "Verificar os requisitos específicos do edital e se alinhar ao objeto do financiamento, mesmo que não estejam disponíveis os detalhes completos.",
+   "risco": "A falta de informações sobre requisitos, área de atuação e outros detalhes pode dificultar a elaboração de um projeto adequado ao edital."
   }
  },
- "confirmacao": "investigado pela IA (qwen3-8b) em 07/10/2026: 7/12 itens (comprovados ou dispensados)"
+ "confirmacao": "investigado pela IA (qwen3-8b) em 15/10/2026: 2/12 itens (comprovados ou dispensados)",
+ "validacao": {
+  "site": "https://www.gov.br/saude"
+ },
+ "contexto_do_repositorio": {
+  "itens_ja_comprovados": {
+   "Objeto": "a seleção de propostas para a execução de projetos de prestação de serviços médico-assistenciais;",
+   "Prazo de inscrição": "até 5 de outubro de 2026",
+   "Resultado": "19 de dezembro de 2025",
+   "Valor": "R$ 250.000,00 (duzentos e cinquenta mil reais)",
+   "Órgão / financiador": "Ministério da Saúde",
+   "Território": "nacional",
+   "Esfera": "federal",
+   "Destinação": "elegível · fomento",
+   "Área de atuação": "Saúde, Ciência e tecnologia"
+  },
+  "faltam": [
+   "Prazo de recurso",
+   "Requisitos",
+   "Anexos"
+  ],
+  "onde_buscar": [
+   "https://www.gov.br/saude",
+   "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-06-2026-se-pronon"
+  ],
+  "editais_anteriores_do_livro": [
+   {
+    "id": "ver-f2a79841",
+    "titulo": "Pronon - Realização de pesquisas clínicas, epidemiológicas e experimentais (programa 2026 - 00074)",
+    "fim": "2026-10-26",
+    "pagina": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-06-2026-se-pronon"
+   }
+  ],
+  "passo": "Interceptador: completar 3 item(ns) a partir do site oficial certificado"
+ }
 }
