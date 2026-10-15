@@ -387,7 +387,8 @@ class TesteLinhaDeProducao(unittest.TestCase):
     def test_rede_neural_le_a_certidao(self):
         self.assertIn("cart:link_oficial=", (ROOT / "src/rede_neural.py").read_text(encoding="utf-8"))
         wf = (ROOT / ".github/workflows/cartorio.yml").read_text(encoding="utf-8")
-        self.assertIn('cron: "41 * * * *"', wf, "linha de produção permanente, de hora em hora")
+        # 15/10/2026: a certificação é a fase "certificar" do comando único, a cada passagem do fluxo 22
+        self.assertIn('"src.cartorio"', (ROOT / "src/comando.py").read_text(encoding="utf-8"))
 
 
 class TesteCobertura12(unittest.TestCase):

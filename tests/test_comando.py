@@ -53,3 +53,19 @@ class Comando(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SemAgenda(unittest.TestCase):
+    """15/10/2026 (titular): a agenda foi incorporada — todo motor ativo é lido todo dia."""
+    def test_plano_do_dia_tem_todos_os_motores_ativos(self):
+        from src import maestro as M
+        from src import sensores as S
+        ativos = {s["id"] for s in S.registro()}
+        plano = {p["motor"] for p in M.planejar()}
+        self.assertEqual(plano, ativos)
+
+    def test_sem_estado_de_horario(self):
+        import inspect
+        from src import maestro as M
+        self.assertNotIn("aguardando_horario", inspect.getsource(M.controlar))
+        self.assertNotIn("roda_hoje(ag", inspect.getsource(M.planejar))

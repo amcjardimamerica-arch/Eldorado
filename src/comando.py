@@ -3,14 +3,16 @@
 A rede neural determina o caminho de todo o fluxo; o maestro é a mão dela: aciona os motores de busca e devolve o que
 foi coletado. A rede avalia o que voltou e direciona para a fase seguinte. Um ciclo, do começo ao fim:
 
-  1. DECIDIR    quais motores ler e em que ordem — necessidade (pendente, parcial, horário vencido, adiado) somada ao
-                valor esperado de cada motor (nota média que a rede deu aos achados dele);
+  1. DECIDIR    sem agenda: TODO motor ativo é lido TODO dia (premissa de 100% das informações disponíveis no dia);
+                a cada passagem entram os que ainda não completaram — adiado → nunca lido hoje → parcial — e, dentro
+                de cada grupo, o de maior valor esperado (nota média que a rede deu aos achados dele);
   2. ACIONAR    o maestro roda os motores escolhidos e devolve um recibo (lidos, achados, falhas, adiados, erro);
   3. AVALIAR    a rede mede a completude de cada motor (completa · parcial · pendente · só do Brasil) e o que entrou;
   4. REACIONAR  parciais e pendentes voltam na mesma passagem enquanto houver tempo; o que só o Brasil/Chrome lê vai
                 para a fila de conferência humana (estado/comando/para_chrome.json);
-  5. DIRECIONAR as fases seguintes, em ordem, cada uma com RECIBO e PORTÃO: a rede decide rodar, pular (com motivo) ou
-                adiar — por exemplo, sem coleta nova e com mapa recente, o recálculo do mapa não roda;
+  5. DIRECIONAR as fases seguintes, em ordem, cada uma com RECIBO e PORTÃO (roda ou pula com motivo):
+                catalogar → treinar a rede → site oficial → certificar (trecho dos 12 itens) → validar por exceção →
+                recalcular → biblioteca → fichas e Farol → legislativo → sala de controle → diagnóstico;
   6. VEREDITO   etapa com erro torna o ciclo VERMELHO (o fluxo do GitHub falha à vista; acabou a falha silenciosa).
 
 Entradas por linha de comando (o fluxo 22 chama na ordem): `coleta` (1–4) · `sequencia` (5) · `veredito` (6).
@@ -99,14 +101,18 @@ def valor_por_motor() -> dict:
 
 
 def decidir_coleta() -> dict:
-    sys.path.insert(0, str(ROOT / "scripts")); sys.path.insert(0, str(ROOT))
-    import motores_da_vez as MV                                   # necessidade: maestro (pendente/parcial) + agenda + adiados
-    ids = MV.lista(disparar=True)
+    """15/10/2026 (titular): a agenda foi incorporada — não há horário. Todo motor ativo ainda não lido por completo hoje
+    entra; ordem: adiado da passagem anterior → nunca lido hoje → parcial; dentro de cada grupo, o de maior valor."""
+    from .maestro import controlar
+    c = controlar(disparar=True)
+    plano = {p["motor"]: p for p in c.get("plano") or []}
+    ids = list(dict.fromkeys(c.get("a_disparar") or []))
     adiados = set(((_j(ROOT / "estado/esquadra.json", {}) or {}).get("ultima_execucao") or {}).get("adiados_por_tempo") or [])
     val = valor_por_motor()
-    pos = {m: i for i, m in enumerate(ids)}
-    ordem = sorted(ids, key=lambda m: (m not in adiados, -(val.get(m, 0.3)), pos[m]))   # adiado primeiro; depois o mais valioso
-    return {"motores": ordem, "adiados": sorted(adiados & set(ids)), "valor": {m: val.get(m) for m in ordem}}
+    grupo = {"pendente": 1, "parcial": 2}
+    ordem = sorted(ids, key=lambda m: (m not in adiados, grupo.get((plano.get(m) or {}).get("cobertura"), 3), -(val.get(m, 0.3))))
+    return {"motores": ordem, "adiados": sorted(adiados & set(ids)), "valor": {m: val.get(m) for m in ordem},
+            "planejados_no_dia": c.get("planejados"), "cobertura_antes_pct": c.get("cobertura_percentual")}
 
 
 # ── 2. ACIONAR (o maestro) ─────────────────────────────────────────────────────────────────────────────────────────
@@ -147,7 +153,8 @@ def ciclo_coleta() -> dict:
     t0 = time.time()
     ciclo = {"inicio": _agora(), "recibos": [], "decisoes": []}
     d = decidir_coleta()
-    ciclo["decisoes"].append({"fase": "decidir", "motores": len(d["motores"]), "adiados_primeiro": d["adiados"]})
+    ciclo["decisoes"].append({"fase": "decidir", "motores": len(d["motores"]), "adiados_primeiro": d["adiados"],
+                              "planejados_no_dia": d.get("planejados_no_dia"), "cobertura_antes_pct": d.get("cobertura_antes_pct")})
     r = acionar(d["motores"], PRAZO_COLETA_S); ciclo["recibos"].append(_sem_saida(r))
     av = avaliar_coleta(d["motores"])
     ciclo["avaliacao"] = av
@@ -182,25 +189,39 @@ def fases(ctx: dict) -> list[dict]:
     """(etapa, finalidade, comando, tempo, decisão da rede). A decisão devolve None (roda) ou o motivo de pular."""
     py = sys.executable
     novos = int(ctx.get("novos_na_base") or 0)
-    mapa = ROOT / "dados/fluxo_oportunidades.json"
     diaria = (ROOT / "estado/biblioteca_diaria.txt")
     feita_hoje = diaria.exists() and diaria.read_text(encoding="utf-8").strip() == _hoje_brt()
     from .rede_neural import precisa_treinar
+    cert = ROOT / "estado/cartorio/certidoes.json"
     return [
-        {"etapa": "painel_motores", "finalidade": "achados, status e cobertura de cada motor",
-         "cmds": [[py, "-m", "src.achados_motores"], [py, "-c", "import src.motores as M; M.run()"], [py, "-m", "src.status_motores"]], "t": 300,
+        # 5a CATALOGAR — o que a coleta trouxe vira registro: achados por motor, status, repositório e mapa
+        {"etapa": "catalogar", "finalidade": "achados por motor, status de cada motor e repositório único das oportunidades",
+         "cmds": [[py, "-m", "src.achados_motores"], [py, "-c", "import src.motores as M; M.run()"], [py, "-m", "src.status_motores"],
+                  [py, "-m", "src.fluxo_oportunidades", "--completo"]], "t": 900,
          "pular": None},
-        {"etapa": "treinar_rede", "finalidade": "a rede reaprende com as validações novas",
+        # 5b APRENDER — a rede reaprende com as decisões novas antes de dar nota aos registros novos
+        {"etapa": "treinar_rede", "finalidade": "a rede neural reaprende com as validações novas",
          "cmds": [[py, "-m", "src.rede_neural"]], "t": 600, "pular": None if precisa_treinar() else "modelo recente e sem rótulos novos suficientes"},
+        # 5c SITE OFICIAL — do replicador à fonte oficial e ao PDF do edital
+        {"etapa": "site_oficial", "finalidade": "do replicador à fonte oficial e ao PDF do edital (navegação e PNCP)",
+         "cmds": [[py, "scripts/treino_fontes.py", "--aplicar"]], "t": 420, "pular": None},
+        # 5d EXTRAIR E CERTIFICAR — o Cartório lê o documento e extrai o trecho de cada um dos 12 itens
+        {"etapa": "certificar", "finalidade": "trecho literal e página de cada um dos 12 itens no documento oficial (Cartório)",
+         "cmds": [[py, "-m", "src.cartorio", "--limite", "20", "--segundos", "780"]], "t": 900, "pular": None},
+        # 5e VALIDAR — 12 de 12 no documento oficial segue ao Farol (com a régua do gabarito); o resto vai ao humano
+        {"etapa": "validar", "finalidade": "validação por exceção: 12 de 12 comprovados seguem ao Farol; o resto à conferência humana",
+         "cmds": [[py, "-m", "src.validacao_excecao"]], "t": 120, "pular": None},
+        # 5f RECALCULAR — o mapa recebe as certidões e as validações desta passagem
+        {"etapa": "recalcular", "finalidade": "estados das oportunidades com as certidões e validações desta passagem",
+         "cmds": [[py, "-m", "src.fluxo_oportunidades", "--completo"]], "t": 300,
+         "pular": "o Cartório não certificou nada nesta passagem" if _idade_h(cert) > 0.5 else None},
+        # 5g BIBLIOTECA — leitor documental, selos e decisões da titular nos livros (uma vez por dia)
         {"etapa": "biblioteca_diaria", "finalidade": "leitor documental, selos e decisões da titular nos livros (1 vez por dia)",
          "cmds": [[py, "-c", "from src.leitor_documental import aplicar; print(aplicar())"], [py, "-m", "src.selo_livros"], [py, "-m", "src.decisoes_titular"]],
          "t": 700, "pular": "já feita hoje" if feita_hoje else None, "depois": lambda: diaria.write_text(_hoje_brt(), encoding="utf-8")},
-        {"etapa": "documento_oficial", "finalidade": "do replicador à fonte oficial e ao PDF do edital",
-         "cmds": [[py, "scripts/treino_fontes.py", "--aplicar"]], "t": 420, "pular": None},
-        {"etapa": "mapa", "finalidade": "repositório único, mapa e estados das oportunidades",
-         "cmds": [[py, "-m", "src.fluxo_oportunidades", "--completo"]], "t": 300,
-         "pular": "nada novo na coleta e mapa com menos de 2 h" if (novos == 0 and _idade_h(mapa) < 2) else None},
-        {"etapa": "fichas", "finalidade": "ficha e janela de cada oportunidade aberta", "cmds": [[py, "-m", "src.fichas_oportunidades"]], "t": 200, "pular": None},
+        # 6 ENTREGAR — fichas (Farol), legislativo, sala de controle e diagnóstico
+        {"etapa": "fichas_farol", "finalidade": "ficha e janela de cada oportunidade aberta; o que está pronto vai ao Farol",
+         "cmds": [[py, "-m", "src.fichas_oportunidades"]], "t": 200, "pular": None},
         {"etapa": "legislativo", "finalidade": "projetos de lei, utilidades públicas e orçamento — acompanhamento sem livro",
          "cmds": [[py, "-m", "src.legislativo"]], "t": 120, "pular": None},
         {"etapa": "sala_de_controle", "finalidade": "instrumentos de cada etapa", "cmds": [[py, "-m", "src.sala_controle"]], "t": 150, "pular": None},

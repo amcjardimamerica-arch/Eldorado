@@ -60,8 +60,8 @@ class TesteFicha(unittest.TestCase):
             D.CATALOGO, D.DECISOES, D.FILA = o
 
     def test_nos_fluxos(self):
-        w = (ROOT / ".github/workflows/motores-da-vez.yml").read_text(encoding="utf-8")
-        self.assertIn("python -m src.fichas_oportunidades", w); self.assertIn("python -m src.decisoes_titular", w)
+        w = (ROOT / "src/comando.py").read_text(encoding="utf-8")          # 15/10: o comando único chama cada fase
+        self.assertIn('"src.fichas_oportunidades"', w); self.assertIn('"src.decisoes_titular"', w)
         self.assertIn("python -m src.decisoes_titular", (ROOT / ".github/workflows/monitoramento-diario.yml").read_text(encoding="utf-8"))
 
 

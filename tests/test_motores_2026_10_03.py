@@ -124,7 +124,7 @@ class Fluxo22EStatus(unittest.TestCase):
         txt = (RAIZ / ".github/workflows/motores-da-vez.yml").read_text(encoding="utf-8")
         # 15/10/2026 (titular): o fluxo 22 chama o comando único (src/comando.py), que chama cada etapa
         self.assertIn("python -m src.comando", (RAIZ / ".github/workflows/motores-da-vez.yml").read_text(encoding="utf-8"))
-        self.assertIn("motores_da_vez", (RAIZ / "src/comando.py").read_text(encoding="utf-8"))
+        self.assertIn("controlar(disparar=True)", (RAIZ / "src/comando.py").read_text(encoding="utf-8"))   # 15/10: sem agenda; o comando calcula
         self.assertIn("eldorado-varredura-diaria", txt)
         self.assertIn("ELDORADO_PONTE_URL", txt)
 
