@@ -1,13 +1,12 @@
-"""MAESTRO — A REDE NEURAL CONDUZ O DIA (titular, 02/10/2026).
+"""MAESTRO — A MÃO DA REDE NEURAL DE COMANDO (titular, 02/10/2026; unificado em 15/10/2026).
 
-Os motores são ferramentas de uma etapa. O maestro, a cada passagem do fluxo de status (4 vezes por dia):
-  1. PLANEJA  quais motores rodam hoje (agenda) e em que ordem: rendimento real do canal (oportunidades validadas como
-              reais por leitura — linha de produção), diagnóstico (planos de correção) e livros com abertura próxima
-              no índice do motor (léxico temporário da chave de acionamento);
-  2. MEDE     a cobertura do dia de cada motor: completa (leu sem falha de página) · parcial (falha em parte das páginas)
-              · pendente (ainda não leu) · pendente_local (exige IP brasileiro — coleta no computador do titular);
-  3. CONTROLA dispara de novo os pendentes e os parciais, até 3 vezes por dia, para a busca do dia NÃO ficar parcial;
-  4. FECHA    o dia quando todos os motores planejados estão completos (ou esgotaram as tentativas — fica registrado).
+15/10/2026 (titular): maestro e rede neural são UMA coisa só. Quem decide o caminho do fluxo inteiro é src/comando.py
+(a rede neural de comando); este módulo é a parte que MEDE e EXECUTA para ela:
+  · planejar()   quais motores rodam hoje (agenda) com a prioridade de rendimento — matéria-prima da decisão do comando;
+  · cobertura()  completa · parcial · pendente · pendente_local de cada motor no dia;
+  · controlar()  pendentes e parciais a disparar (até 3 tentativas), dia fechado ou não;
+  · relatorio_etapas() o relatório do dia que o painel mostra.
+O comando chama planejar/controlar antes de acionar os motores (decidir) e depois deles (avaliar e reacionar).
 Saída: docs/dados/maestro.json · estado: estado/maestro/AAAA-MM-DD.json
 """
 from __future__ import annotations
