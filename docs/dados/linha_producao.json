@@ -1,13 +1,13 @@
 {
- "em": "2026-10-15T17:29:12+00:00",
+ "em": "2026-10-15T18:06:43+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 18666,
-  "oportunidades_distintas": 2768,
+  "coletados": 18672,
+  "oportunidades_distintas": 2774,
   "entidades_em_2_ou_mais_canais": 20,
   "etapas": {
-   "CONSOLIDADO": 18102,
-   "EM_LIVRO": 460,
+   "CONSOLIDADO": 18104,
+   "EM_LIVRO": 464,
    "REPROCESSAR": 82,
    "QUALIFICADO": 22
   },
@@ -204,6 +204,15 @@
    "entidades": 28,
    "exclusivas": 28,
    "corroboradas": 0,
+   "validadas_como_reais": 1
+  },
+  {
+   "canal": "plataforma-wordpress",
+   "familia": "outros",
+   "registros": 8,
+   "entidades": 8,
+   "exclusivas": 7,
+   "corroboradas": 1,
    "validadas_como_reais": 1
   },
   {
@@ -495,15 +504,6 @@
    "validadas_como_reais": 0
   },
   {
-   "canal": "plataforma-wordpress",
-   "familia": "outros",
-   "registros": 2,
-   "entidades": 2,
-   "exclusivas": 1,
-   "corroboradas": 1,
-   "validadas_como_reais": 0
-  },
-  {
    "canal": "f260-captacao-090",
    "familia": "orgao_publico",
    "registros": 2,
@@ -720,5 +720,5 @@
    ]
   }
  ],
- "eventos_no_livro_razao": 0
+ "eventos_no_livro_razao": 67
 }
