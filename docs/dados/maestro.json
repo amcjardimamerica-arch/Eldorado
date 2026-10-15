@@ -1,14 +1,14 @@
 {
  "dia": "2026-10-15",
- "em": "2026-10-15T15:09:08+00:00",
+ "em": "2026-10-15T15:43:39+00:00",
  "regra": "MAESTRO — A MÃO DA REDE NEURAL DE COMANDO (titular, 02/10/2026; unificado em 15/10/2026).\n\n15/10/2026 (titular): maestro e rede neural são UMA coisa só. Quem decide o caminho do fluxo inteiro é src/comando.py\n(a rede neural de comando); este módulo é a parte que MEDE e EXECUTA para ela:\n  · planejar()   quais motores rodam hoje (agenda) com a prioridade de rendimento — matéria-prima da decisão do comando;\n  · cobertura()  completa · parcial · pendente · pendente_local de cada motor no dia;\n  · controlar()  pendentes e parciais a disparar (até 3 tentativas), dia fechado ou não;\n  · relatorio_etapas() o relatório do dia que o painel mostra.\nO comando chama planejar/controlar antes de acionar os motores (decidir) e depois deles (avaliar e reacionar).",
  "planejados": 122,
  "cobertura": {
-  "completa": 39,
-  "parcial": 18,
-  "pendente": 65
+  "completa": 28,
+  "parcial": 17,
+  "pendente": 77
  },
- "cobertura_percentual": 32.0,
+ "cobertura_percentual": 23.0,
  "a_disparar": [
   "pncp-api",
   "outras-oportunidades-2",
@@ -22,12 +22,23 @@
   "outras-oportunidades-8",
   "outras-oportunidades-7",
   "judiciario-cnj-tjgo",
-  "f260-captacao-152",
   "recorrencia",
+  "plat-cnpq-extensao",
   "f260-curadoria-001",
+  "f260-curadoria-011",
+  "f260-espalhado-www-arapongas-pr-gov-br",
+  "f260-espalhado-www-detran-rj-gov-br",
+  "f260-espalhado-www-riopreto-sp-gov-br",
+  "f260-espalhado-transparencia-cacoal-ro-gov-br",
+  "f260-espalhado-www-ribeiraodasneves-mg-gov-br",
+  "f260-espalhado-transparencia-nobres-mt-gov-br",
   "f260-espalhado-www-vilarica-mt-gov-br",
   "f260-captacao-237",
+  "f260-captacao-212",
+  "f260-captacao-243",
+  "f260-captacao-255",
   "f260-captacao-200",
+  "f260-captacao-250",
   "f260-captacao-254",
   "f260-captacao-253",
   "f260-captacao-260",
@@ -101,9 +112,15 @@
   "plataforma-wordpress",
   "plataforma-mapas-culturais",
   "outras-oportunidades-8",
-  "f260-captacao-152",
   "recorrencia",
   "f260-curadoria-001",
+  "f260-curadoria-011",
+  "f260-espalhado-www-arapongas-pr-gov-br",
+  "f260-espalhado-www-detran-rj-gov-br",
+  "f260-espalhado-www-riopreto-sp-gov-br",
+  "f260-espalhado-transparencia-cacoal-ro-gov-br",
+  "f260-espalhado-www-ribeiraodasneves-mg-gov-br",
+  "f260-espalhado-transparencia-nobres-mt-gov-br",
   "f260-espalhado-www-vilarica-mt-gov-br",
   "f260-captacao-237",
   "f260-captacao-200",
@@ -513,8 +530,8 @@
    "livros_com_abertura_proxima": 0,
    "horarios": null,
    "coleta": "nuvem",
-   "dia_anterior": "nao_observado",
-   "cobertura": "parcial",
+   "dia_anterior": "observado",
+   "cobertura": "completa",
    "tentativas_hoje": 0
   },
   {
@@ -585,13 +602,13 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "prioridade": 0.0251,
+   "prioridade": 0.0252,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 1,
    "horarios": "09:23,15:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
-   "cobertura": "completa",
+   "cobertura": "pendente",
    "tentativas_hoje": 0
   },
   {
@@ -617,6 +634,83 @@
    "tentativas_hoje": 0
   },
   {
+   "motor": "f260-curadoria-011",
+   "prioridade": 0.0227,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "nao_observado",
+   "cobertura": "pendente",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-espalhado-www-arapongas-pr-gov-br",
+   "prioridade": 0.0227,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "nao_observado",
+   "cobertura": "pendente",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-espalhado-www-detran-rj-gov-br",
+   "prioridade": 0.0227,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "nao_observado",
+   "cobertura": "pendente",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-espalhado-www-riopreto-sp-gov-br",
+   "prioridade": 0.0227,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "nao_observado",
+   "cobertura": "pendente",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-espalhado-transparencia-cacoal-ro-gov-br",
+   "prioridade": 0.0227,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "nao_observado",
+   "cobertura": "pendente",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-espalhado-www-ribeiraodasneves-mg-gov-br",
+   "prioridade": 0.0227,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "nao_observado",
+   "cobertura": "pendente",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-espalhado-transparencia-nobres-mt-gov-br",
+   "prioridade": 0.0227,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "nao_observado",
+   "cobertura": "pendente",
+   "tentativas_hoje": 0
+  },
+  {
    "motor": "f260-espalhado-www-vilarica-mt-gov-br",
    "prioridade": 0.0227,
    "diagnostico": "sem_rendimento",
@@ -639,6 +733,39 @@
    "tentativas_hoje": 0
   },
   {
+   "motor": "f260-captacao-212",
+   "prioridade": 0.0208,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "pendente",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-captacao-243",
+   "prioridade": 0.0208,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "pendente",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-captacao-255",
+   "prioridade": 0.0208,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "pendente",
+   "tentativas_hoje": 0
+  },
+  {
    "motor": "f260-captacao-200",
    "prioridade": 0.0208,
    "diagnostico": "sem_rendimento",
@@ -646,6 +773,17 @@
    "horarios": null,
    "coleta": "nuvem",
    "dia_anterior": "nao_observado",
+   "cobertura": "pendente",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-captacao-250",
+   "prioridade": 0.0208,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
    "cobertura": "pendente",
    "tentativas_hoje": 0
   },
@@ -760,28 +898,6 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "f260-curadoria-011",
-   "prioridade": 0.0208,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "f260-espalhado-www-arapongas-pr-gov-br",
-   "prioridade": 0.0208,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
    "motor": "f260-espalhado-carazinho-atende-net",
    "prioridade": 0.0208,
    "diagnostico": "sem_rendimento",
@@ -793,74 +909,8 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "f260-espalhado-www-detran-rj-gov-br",
-   "prioridade": 0.0208,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "f260-espalhado-www-riopreto-sp-gov-br",
-   "prioridade": 0.0208,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "f260-espalhado-transparencia-cacoal-ro-gov-br",
-   "prioridade": 0.0208,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "f260-espalhado-www-ribeiraodasneves-mg-gov-br",
-   "prioridade": 0.0208,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
    "motor": "f260-espalhado-www-santaluziadoparua-ma-gov-br",
    "prioridade": 0.0208,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "f260-espalhado-transparencia-nobres-mt-gov-br",
-   "prioridade": 0.0208,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "f260-captacao-212",
-   "prioridade": 0.0192,
    "diagnostico": "sem_rendimento",
    "livros_com_abertura_proxima": 0,
    "horarios": null,
@@ -878,39 +928,6 @@
    "coleta": "nuvem",
    "dia_anterior": "nao_observado",
    "cobertura": "pendente",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "f260-captacao-243",
-   "prioridade": 0.0192,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "f260-captacao-255",
-   "prioridade": 0.0192,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "f260-captacao-250",
-   "prioridade": 0.0192,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
    "tentativas_hoje": 0
   },
   {

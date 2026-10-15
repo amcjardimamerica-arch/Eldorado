@@ -1,8 +1,8 @@
-# Diagnóstico do sistema · 2026-10-15 15:17 UTC
+# Diagnóstico do sistema · 2026-10-15 15:53 UTC
 
-## Cumprimento da finalidade · índice geral 64%
+## Cumprimento da finalidade · índice geral 63%
 - Motores: 93% (atencao) — todo motor ativo lê dentro da sua cadência
-- Maestro: 32% (falha) — cobertura completa do dia planejado
+- Maestro: 23% (falha) — cobertura completa do dia planejado
 - Rede neural: 99% (ok) — discernimento (AUC) de pelo menos 0,85
 - Biblioteca: 100% (ok) — toda oportunidade aberta aplicável com livro existente
 - Validação: 9% (falha) — toda oportunidade aberta validada
@@ -14,10 +14,10 @@
 - Fluxos automáticos: 65% (falha) — todo fluxo agendado roda na cadência e sem falha
 - Execução sem falha silenciosa: 0% (falha) — nenhuma etapa falha em silêncio
 
-## Execução · fluxos: {'falha': 3, 'ok': 33, 'atencao': 4, 'atrasado': 2, 'manual': 2}
+## Execução · fluxos: {'falha': 2, 'ok': 33, 'atencao': 5, 'atrasado': 2, 'manual': 2}
 - 00 · Verificar prontidão: falha · última 2026-10-15T15:13 · sucesso 40% · cadência 24.0 h
 - 35 · Alimentação diária externa (editais abertos): atencao · última 2026-10-15T15:14 · sucesso 12% · cadência 24.0 h
-- 05 · Busca ativa (a cada 3 dias): falha · última 2026-10-15T14:53 · sucesso 0% · cadência None h
+- 05 · Busca ativa (a cada 3 dias): atencao · última 2026-10-15T14:53 · sucesso 0% · cadência None h
 - 09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes: atrasado · última 2026-10-03T11:56 · sucesso 100% · cadência 24.0 h
 - 10 · Histórico de doações da Rouanet (empresa por empresa) — retoma sozinho até completar: falha · última 2026-10-15T14:53 · sucesso 0% · cadência None h
 - 01 · Eldorado — motores por hora (00h–06h BRT): atencao · última 2026-10-15T10:59 · sucesso 0% · cadência 24.0 h
@@ -42,33 +42,32 @@
 
 ## Sistemas
 - motores: 41 funcionando · 3 em falha · 1 inativos · 2 com leitura parcial
-  - em falha: Adaptador WordPress — sites oficiais pela API pública — falha na leitura de 15/10 11:57 — nenhuma página leu
-  - em falha: Adaptador Mapas Culturais — oportunidades com inscrição aberta — falha na leitura de 15/10 11:59 — nenhuma página leu
+  - em falha: Adaptador WordPress — sites oficiais pela API pública — falha na leitura de 15/10 12:33 — nenhuma página leu
+  - em falha: Adaptador Mapas Culturais — oportunidades com inscrição aberta — falha na leitura de 15/10 12:35 — nenhuma página leu
   - em falha: Motor Incentivos Fiscais — empresas da base ICMS/RFB/SALIC (Goiás) — falha — não lê há 1 dia(s) (27 h); última leitura 14/10 09:09
-- maestro: cobertura 32.0% · esgotados 2
+- maestro: cobertura 23.0% · esgotados 2
 - rede neural: AUC 0.843 · rotulados 2027 · treinada em 2026-10-14T05:54:08+00:00
 - Cartório: 0.6963 certificado · fluxos do GitHub com falha: ['00 · Verificar prontidão']
-- saúde: 2 alerta(s) · índice da sala de controle: 84
+- saúde: 2 alerta(s) · índice da sala de controle: 83
 
 ## Integração
 - contagens: {'repositorio_abertas': 444, 'diagnostico_abertas': 444, 'tela_cartoes': 444, 'fichas': 454, 'sala_controle_abertas': 444}
-- idade (h): {'repositorio': 0.0, 'fluxo': 0.0, 'fichas': 0.0, 'sala_controle': 0.0, 'status_motores': 0.1, 'maestro': 0.1, 'rede_neural': 0.0, 'saude': 0.6}
+- idade (h): {'repositorio': 0.0, 'fluxo': 0.0, 'fichas': 0.0, 'sala_controle': 0.0, 'status_motores': 0.2, 'maestro': 0.2, 'rede_neural': 0.0, 'saude': 1.2}
 - decisões da titular: 0 · não aplicadas: 0
 
-## Problemas (19)
-- [alta] o comando único não fecha um ciclo há 2.5 h (passa a cada 30 min) → investigar o fluxo 22 (sem correção automática)
+## Problemas (18)
+- [alta] o comando único não fecha um ciclo há 3.1 h (passa a cada 30 min) → investigar o fluxo 22 (sem correção automática)
 - [alta] 2 etapa(s) falharam em silêncio na última execução de cartorio.yml: KeyError: 'https://mapaosc.ipea.gov.br/api/api/documentation' | Traceback (most recent call last): → investigar a etapa (sem correção automática)
 - [alta] 9 etapa(s) falharam em silêncio na última execução de analise-sistema.yml: - Cartório: 0.6963 certificado · fluxos do GitHub com falha: ['00 · Verificar prontidão'] | - [alta] 2 etapa(s) falharam em silêncio na última execução de cartorio.yml: KeyError: 'https://mapaosc.ipea.gov.br/api/api/documentation' | Traceback (most rec | - [alta] 9 etapa(s) falharam em silêncio na última execução de analise-sistema.yml: - Cartório: 0.6963 certificado · fluxos do GitHub com falha: ['00 · Verifica → investigar a etapa (sem correção automática)
 - [alta] fluxo '00 · Verificar prontidão' falhou nas últimas execuções (40% de sucesso) → investigar o fluxo (sem correção automática)
-- [alta] fluxo '05 · Busca ativa (a cada 3 dias)' falhou nas últimas execuções (0% de sucesso) → investigar o fluxo (sem correção automática)
 - [alta] fluxo '10 · Histórico de doações da Rouanet (empresa por empresa) — retoma sozinho até completar' falhou nas últimas execuções (0% de sucesso) → investigar o fluxo (sem correção automática)
-- [alta] motor em falha: Adaptador WordPress — sites oficiais pela API pública — falha na leitura de 15/10 11:57 — nenhuma página leu → investigar o motor (sem correção automática)
-- [alta] motor em falha: Adaptador Mapas Culturais — oportunidades com inscrição aberta — falha na leitura de 15/10 11:59 — nenhuma página leu → investigar o motor (sem correção automática)
+- [alta] motor em falha: Adaptador WordPress — sites oficiais pela API pública — falha na leitura de 15/10 12:33 — nenhuma página leu → investigar o motor (sem correção automática)
+- [alta] motor em falha: Adaptador Mapas Culturais — oportunidades com inscrição aberta — falha na leitura de 15/10 12:35 — nenhuma página leu → investigar o motor (sem correção automática)
 - [alta] motor em falha: Motor Incentivos Fiscais — empresas da base ICMS/RFB/SALIC (Goiás) — falha — não lê há 1 dia(s) (27 h); última leitura 14/10 09:09 → investigar o motor (sem correção automática)
 - [alta] 1 oportunidades municipais de outros estados ainda abertas (só Goiás tem municipais) → refazer o repositório
 - [alta] 3 módulos de teste em quarentena por DEFEITO REAL → corrigir o código e tirar da quarentena (sem correção automática)
-- [media] fluxo '09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes' sem rodar há 291.4 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
-- [media] fluxo '02 · Alexandria — revisão mensal de leis e procedimentos' sem rodar há 340.7 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
+- [media] fluxo '09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes' sem rodar há 291.9 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
+- [media] fluxo '02 · Alexandria — revisão mensal de leis e procedimentos' sem rodar há 341.3 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
 - [media] 20 oportunidade(s) usam o link de acesso como oficial sem serem fonte oficial → buscar a fonte oficial (resolvedor e Cartório)
 - [media] saúde · claude: 1357 item(ns) esperando a análise do Claude (próxima: 2026-10-15) → ver o fluxo/arquivo indicado
 - [media] saúde · coerência: mapa e lista divergem em SC, __nac__, BA, SP, ES → refazer tela e indicadores
@@ -78,12 +77,12 @@
 
 ## Workflow (estrutura de 15/10)
 - comando único: 1 ciclo(s) hoje · 0 vermelho(s) · 0 etapa(s) com erro · fases puladas {'treinar_rede': 1, 'biblioteca_diaria': 1}
-- cobertura do dia: 32.0% de 122 motores
-- retentativa: {'aguardando_retentativa': 65, 'fora_da_fila': 0, 'fora_da_fila_por_escopo': {}, 'regra': 'volta em 30 min; sai após 5 tentativas com o mesmo erro'} · leitura parcial na fila: 32
+- cobertura do dia: 23.0% de 122 motores
+- retentativa: {'aguardando_retentativa': 62, 'fora_da_fila': 0, 'fora_da_fila_por_escopo': {}, 'regra': 'volta em 30 min; sai após 5 tentativas com o mesmo erro'} · leitura parcial na fila: 32
 - curadoria do link oficial: {'em curadoria': 368, 'reprovado': 100, 'sem link oficial': 196, 'aprovado': 17}
 - validação por exceção: trava fechada: acerto do Cartório 66.1% < 85.0% — candidatas vão à frente da conferência humana
 - auditorias: {'gabarito_do_cartorio': {'em': '2026-10-15T02:12:35+00:00', 'acerto_pct': 66.1, 'documentos_lidos': 142}, 'varredura_referencia': '2026-10-01_2026-10-15', 'robots': {'em': '2026-10-15T10:07:53+00:00', 'motores_com_bloqueio': 6}, 'ponte': {'ponte_ok': 7, 'direto_ok': 5, 'so_pela_ponte': ['ALEGO · SPL (proposições)', 'MPGO'], 'nenhum': ['TJGO · portal'], 'total': 8}}
-- legislativo: {'atualizado_em': '2026-10-15T15:17:29+00:00', 'proposicoes': 12}
+- legislativo: {'atualizado_em': '2026-10-15T15:52:31+00:00', 'proposicoes': 12}
 
 ## Decisões do Eldorado: agiu como deveria?
 - decidir · motores escolhidos para ler na passagem: **correto** (0 de 122) — regra: todo motor pendente ou parcial com tentativa sobrando entra na passagem (sem agenda)
@@ -94,4 +93,4 @@
 - certificar · itens certificados pelo Cartório: **correto** (0 de 2677) — regra: todo item certificado tem trecho literal e documento
 - validar · validação por exceção: **correto** (0 de 0) — regra: só valida sozinho com acerto do Cartório ≥ 85% no gabarito e link oficial aprovado na curadoria
 - farol · oportunidades prontas para o Farol: **correto** (0 de 10) — regra: pronta só com prazo vigente e link oficial aprovado na curadoria
-- biblioteca · livros da Biblioteca: **correto** (0 de 1916) — regra: ato legislativo não gera livro
+- biblioteca · livros da Biblioteca: **correto** (0 de 1915) — regra: ato legislativo não gera livro
