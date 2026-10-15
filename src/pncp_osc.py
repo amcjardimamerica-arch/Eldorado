@@ -413,11 +413,11 @@ MODALIDADE_CONTRATACAO = re.compile(r"PREGAO|CONCORRENCIA|LEILAO|DISPENSA|INEXIG
 _ENTIDADE_PRESTADORA = re.compile(r"(?:ENTIDADES|INSTITUICOES) (?:DE ASSISTENCIA SOCIAL|PRIVADAS SEM FINS|FILANTROPICAS|SEM FINS|"
                                   r"DE LONGA PERMANENCIA)|\bILPI\b|"
                                   r"INSTITUICOES PRIVADAS,? (?:COM OU )?SEM FINS")
-_MROSC_FORTE = re.compile(r"13\.019|TERMO DE (?:FOMENTO|COLABORACAO)|MROSC|ACORDO DE COOPERACAO|TERMO DE EXECUCAO CULTURAL")
+_MROSC_FORTE = re.compile(r"13\.019|TERMO DE (?:FOMENTO|COLABORACAO)|MROSC|ACORDO DE COOPERACAO(?! TECNICA)|TERMO DE EXECUCAO CULTURAL")
 _OSC_FORTE = re.compile(r"13\.019|TERMO DE (?:FOMENTO|COLABORACAO)|ORGANIZAC(?:AO|OES) DA SOCIEDADE CIVIL|\bOSCS?\b|MROSC|"
                         r"ASSOCIAC(?:AO|OES) (?:DE )?ESTUDANT|GREMIOS? ESTUDANT|CENTROS? ACADEMIC|\bILPIS?\b|LONGA PERMANENCIA|"   # 02/10: também são OSC
                         r"COOPERATIVAS? (?:E|OU|/)? ?ASSOCIAC(?:AO|OES) DE CATADORES|ASSOCIAC(?:AO|OES) DE CATADORES|"
-                        r"ACORDO DE COOPERACAO|ENTIDADES? (?:SOCIOASSISTENCIA|DE ASSISTENCIA SOCIAL)|\bCMAS\b|\bCMDCA\b|PNAB|"
+                        r"ACORDO DE COOPERACAO(?! TECNICA)|ENTIDADES? (?:SOCIOASSISTENCIA|DE ASSISTENCIA SOCIAL)|\bCMAS\b|\bCMDCA\b|PNAB|"
                         r"ALDIR BLANC|PAULO GUSTAVO|AGENTES? CULTURA|PONTOS? DE CULTURA")
 
 
@@ -455,6 +455,42 @@ def territorio(m: dict, ufs: list[str]) -> tuple[str, str, str | None]:
     return "estadual", uf or "BR", None
 
 
+CAPITAIS_N = {"RIO BRANCO", "MACEIO", "MACAPA", "MANAUS", "SALVADOR", "FORTALEZA", "BRASILIA", "VITORIA", "GOIANIA", "SAO LUIS",
+              "CUIABA", "CAMPO GRANDE", "BELO HORIZONTE", "BELEM", "JOAO PESSOA", "CURITIBA", "RECIFE", "TERESINA", "RIO DE JANEIRO",
+              "NATAL", "PORTO ALEGRE", "PORTO VELHO", "BOA VISTA", "FLORIANOPOLIS", "SAO PAULO", "ARACAJU", "PALMAS"}
+COMPRA = re.compile(r"\bPREGAO\b|\bCONCORRENCIA\b|\bLEILAO\b|REGISTRO DE PRECOS?|\bAQUISICAO DE\b|\bFORNECIMENTO DE\b|"
+                    r"CONTRATACAO DE EMPRESA|EMPRESAS? ESPECIALIZADAS?|MENOR PRECO|\bME/EPP\b|MICROEMPRESAS?|"
+                    r"EVENTUAIS E FUTURAS CONTRATACOES|CONTRATAC(?:AO|OES) DE SERVICOS?")
+PNAE = re.compile(r"GENEROS ALIMENTICIOS|AGRICULTURA FAMILIAR|\bPNAE\b|ALIMENTACAO ESCOLAR")
+
+
+def portao_associacao(m: dict, T: str) -> str | None:
+    """15/10/2026 (titular): o motivo de RUÍDO quando a publicação não é captação de recursos para associação."""
+    mod = _N(m.get("modalidade"))
+    if re.search(r"PREGAO|CONCORRENCIA|LEILAO|DIALOGO COMPETITIVO|\bDISPENSA\b", mod):
+        return f"modalidade de compra ({m.get('modalidade')}) — licitação, não captação de recursos para associação"
+    if COMPRA.search(T) and not re.search(r"DOACAO|TERMO DE (?:FOMENTO|COLABORACAO)|PREMIO|PREMIACAO", T):
+        return "compra, fornecimento ou contratação de empresa — licitação, não captação de recursos para associação"
+    if re.search(r"JORNALIS|PREMIO DE COMUNICACAO|PREMIO DE REPORTAGEM|TRABALHOS ACADEMICOS|MONOGRAFIAS?|SERVIDORES PUBLICOS", T) \
+            and not re.search(r"ORGANIZAC(?:AO|OES) DA SOCIEDADE CIVIL|\bOSCS?\b|ASSOCIAC(?:AO|OES)|ENTIDADES?", T):
+        return "prêmio ou seleção para pessoas físicas (jornalistas, pesquisadores, servidores) — não é captação para associação"
+    if PNAE.search(T):
+        return "compra da agricultura familiar (PNAE) — não é captação de recursos para associação"
+    if "CREDENCIAMENTO" in T and re.search(r"ACOLHIMENTO|LONGA PERMANENCIA|\bILPI\b|PRESTACAO DE SERVICOS?|ATENDIMENTO (?:A|DE|AOS?)|VAGAS?|"
+                                         r"SERVICOS? DE SAUDE|SERVICOS? MEDIC|COMUNIDADES? TERAPEUTIC|RESIDENCIA", T) \
+            and not re.search(r"TERMO DE (?:FOMENTO|COLABORACAO)|13\.019|DOACAO|PREMIO|PREMIACAO|RECICLA|CATADOR", T):
+        return "credenciamento de entidade para prestar serviço remunerado (contrato, Lei 14.133) — não é captação de recursos"
+    uf, mun = str(m.get("uf") or "").upper(), _N(m.get("municipio"))
+    if not mun:                                          # "MUNICIPIO DE NAZARENO" no nome do órgão
+        mo = re.search(r"(?:MUNICIPIO|PREFEITURA MUNICIPAL|CAMARA MUNICIPAL|FUNDO MUNICIPAL DE [A-Z ]{3,40}?) DE ([A-Z ]{3,40})", _N(m.get("orgao")))
+        mun = mo.group(1).strip() if mo else ""
+    municipal = m.get("esfera") == "M" or bool(re.search(r"MUNICIPIO|PREFEITURA|FUNDO MUNICIPAL|CAMARA MUNICIPAL|SECRETARIA MUNICIPAL|"
+                                                          r"CONSORCIO (?:INTER)?MUNICIPAL|CONSORCIO MULTIFINALITARIO|CONSORCIO PUBLICO", _N(m.get("orgao"))))
+    if municipal and uf and uf != "GO" and mun not in CAPITAIS_N:
+        return f"município de outro estado ({mun.title() or '?'}/{uf}) — municipais só de Goiás e das capitais"
+    return None
+
+
 def classificar_item(m: dict, hoje: date, ufs: list[str] | None = None) -> dict:
     """Um edital do PNCP → OPORTUNIDADE · ACOMPANHAR · RUÍDO, com o motivo escrito.
 
@@ -468,6 +504,10 @@ def classificar_item(m: dict, hoje: date, ufs: list[str] | None = None) -> dict:
             "pertinencia": "nula", "motivos": [], "sinais": []}
     if terr == "fora":
         return {**base, "veredito": "RUIDO", "motivos": [f"{m.get('orgao') or 'órgão'} ({m.get('uf')}) — fora do território da associação"]}
+    # 15/10/2026 (titular): o PNCP só traz CAPTAÇÃO DE RECURSOS PARA ASSOCIAÇÃO — portões duros, antes de qualquer sinal
+    porta = portao_associacao(m, T)
+    if porta:
+        return {**base, "veredito": "RUIDO", "regime": "fora_da_captacao", "motivos": [porta]}
     forte, mrosc = bool(_OSC_FORTE.search(T)), bool(_MROSC_FORTE.search(T))
     O = _N(m.get("orgao"))
     for nome, rx, motivo, cede in _vetos():
@@ -478,10 +518,9 @@ def classificar_item(m: dict, hoje: date, ufs: list[str] | None = None) -> dict:
                     and not re.search(r"EMPRESAS? ESPECIALIZADA|PROFISSIONA(?:L|IS)|PESSOAS? FISICA", T):
                 # 02/10 (titular): ILPI, acolhimento e outras OSC prestadoras também são OSC — a oportunidade é mapeada
                 # (identificar primeiro); o enquadramento fica anotado e a decisão de concorrer é do Farol, por associação
-                return {**base, "veredito": "OPORTUNIDADE", "regime": "credenciamento_de_entidade",
-                        "enquadramento": "EN-03 — credenciamento de OSC para prestar serviço (contratação pela Lei 14.133, não fomento MROSC)",
-                        "motivos": ["credenciamento de entidade sem fins lucrativos para prestar serviço (acolhimento, ILPI, saúde) — "
-                                    "oportunidade para a OSC que presta o serviço; enquadramento técnico anotado"]}
+                return {**base, "veredito": "RUIDO", "regime": "credenciamento_de_entidade",   # 15/10 (titular): contrato ≠ captação
+                        "motivos": ["credenciamento de entidade para PRESTAR SERVIÇO remunerado (Lei 14.133) — contrato de prestação "
+                                    "de serviço, não captação de recursos para a associação"]}
             return {**base, "veredito": "RUIDO", "regime": nome, "motivos": [motivo]}
     fin = pts.classificar(m.get("objeto") or "", " ".join(x for x in (m.get("titulo"), m.get("info")) if x))
     extra = next((nome for nome, rx in du.REGIMES_BR if rx.search(T)), None)
@@ -493,10 +532,9 @@ def classificar_item(m: dict, hoje: date, ufs: list[str] | None = None) -> dict:
     if extra in du.REGIMES_LOCAIS and not re.search(r"ENTIDADES?|ASSOCIAC|COOPERATIVA|INSTITUIC(?:AO|OES)[^.]{0,30}SEM FINS|OSC", T):
         extra = None                                     # doação/coleta sem entidade como destinatária
     if not fin["terceiro_setor"] and not extra and not forte and "CREDENCIAMENTO" in T and _ENTIDADE_PRESTADORA.search(T):
-        return {**base, "veredito": "OPORTUNIDADE", "regime": "credenciamento_de_entidade",   # 02/10 (titular): mapeada, com enquadramento
-                "enquadramento": "EN-03 — credenciamento de OSC para prestar serviço (contratação pela Lei 14.133, não fomento MROSC)",
-                "motivos": ["credenciamento de entidade sem fins lucrativos para prestar serviço (acolhimento, ILPI, saúde) — "
-                            "oportunidade para a OSC que presta o serviço; enquadramento técnico anotado"]}
+        return {**base, "veredito": "RUIDO", "regime": "credenciamento_de_entidade",   # 15/10 (titular): contrato ≠ captação
+                "motivos": ["credenciamento de entidade para PRESTAR SERVIÇO remunerado (Lei 14.133) — contrato de prestação de "
+                            "serviço, não captação de recursos para a associação"]}
     if not fin["terceiro_setor"] and not extra and not forte:
         return {**base, "veredito": "RUIDO", "regime": "contratacao_publica",
                 "motivos": [f"{fin['finalidade']} — {fin['porque']}"]}

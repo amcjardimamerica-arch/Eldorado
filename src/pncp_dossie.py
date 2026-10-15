@@ -90,6 +90,13 @@ def portoes(meta: dict, titulo: str, hoje: str) -> tuple[str | None, str | None,
     if str(oe.get("esferaId") or "").upper() == "M" and str(uo.get("ufSigla") or "").upper() != "GO" and \
             _sem(uo.get("municipioNome")) not in {_sem(c) for c in CAPITAIS}:
         return "descartada", f"municipal de outro estado ({uo.get('municipioNome')}/{uo.get('ufSigla')}) — só Goiás e capitais", {}
+    # 15/10 (titular): o MESMO portão do motor — compra, contrato de serviço, PNAE, pessoa física, município de outro estado
+    from .pncp_osc import portao_associacao, _N
+    _m = {"modalidade": meta.get("modalidadeNome"), "orgao": oe.get("razaoSocial"), "uf": uo.get("ufSigla"), "esfera": oe.get("esferaId"),
+          "municipio": uo.get("municipioNome")}
+    _porta = portao_associacao(_m, _N(" ".join(str(x or "") for x in (titulo, meta.get("objetoCompra"), meta.get("informacaoComplementar")))))
+    if _porta:
+        return "descartada", f"não é captação de recursos para associação: {_porta}", {}
     amparo = " ".join(str((meta.get("amparoLegal") or {}).get(k) or "") for k in ("nome", "descricao"))
     texto = " ".join(str(x or "") for x in (meta.get("objetoCompra"), meta.get("informacaoComplementar")))
     cls = classificar(texto, titulo)

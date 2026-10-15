@@ -28,11 +28,16 @@ class TesteDecisoes238(unittest.TestCase):
 
     def test_pncp_tres_publicos_sao_oportunidade(self):
         from src import pncp_osc as P
-        for t in ("Credenciamento de Instituições de Longa Permanência para Idosos (ILPI) sem fins lucrativos",
-                  "Chamamento Público de Associações Estudantis para apoio a projetos"):
-            c = P.classificar_item({"titulo": t, "objeto": t, "orgao": "MUNICIPIO X", "uf": "SP", "esfera": "M", "encerramento": "2026-12-01"},
+        # 15/10/2026 (titular): municipais só de Goiás e capitais; credenciamento para PRESTAR SERVIÇO (ILPI) é contrato
+        t = "Chamamento Público de Associações Estudantis para apoio a projetos"
+        c = P.classificar_item({"titulo": t, "objeto": t, "orgao": "MUNICIPIO DE ANAPOLIS", "uf": "GO", "esfera": "M", "encerramento": "2026-12-01"},
+                               date(2026, 10, 2), P.TODAS_UFS)
+        self.assertEqual(c["veredito"], "OPORTUNIDADE", t)
+        for uf, t in (("SP", "Chamamento Público de Associações Estudantis para apoio a projetos"),
+                      ("GO", "Credenciamento de Instituições de Longa Permanência para Idosos (ILPI) sem fins lucrativos para acolhimento")):
+            c = P.classificar_item({"titulo": t, "objeto": t, "orgao": "MUNICIPIO X", "uf": uf, "esfera": "M", "encerramento": "2026-12-01"},
                                    date(2026, 10, 2), P.TODAS_UFS)
-            self.assertEqual(c["veredito"], "OPORTUNIDADE", t)
+            self.assertEqual(c["veredito"], "RUIDO", t)
 
 
 if __name__ == "__main__":
