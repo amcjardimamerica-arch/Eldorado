@@ -22,7 +22,7 @@ permissions:
   actions: write
   issues: write
 concurrency:
-  group: eldorado-varredura-diaria   # grupo próprio: não pode ser cancelada pela carga histórica
+  group: eldorado-fluxo-01   # 15/10/2026 (análise do sistema): fila própria — na fila do comando único (fluxo 22) ela o travava por horas e cada horário do 22 cancelava o anterior
   cancel-in-progress: false
 jobs:
   monitorar:
