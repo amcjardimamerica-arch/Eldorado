@@ -76,10 +76,15 @@ def _ultima_real(p: dict, ult):
 _DIAS_SEM = ["seg", "ter", "qua", "qui", "sex", "sab", "dom"]
 
 
+SEMANAIS_POR_ROTINA = {"motor-gife"}   # base pesada do ICMS/RFB/SALIC: rotina semanal de empresas (fluxos 22 e 34)
+
+
 def janela_do_motor(p: dict, ag: dict) -> float:
     """12/10 (conselho): horas sem leitura até acusar falha, pela cadência do motor — 26 h para quem lê todo dia; para o
     semanal, o maior intervalo entre os dias da agenda + 26 h (domingo → 8 dias); para o indexador, a cadência dele + 26 h."""
     mid = str(p.get("id") or "")
+    if mid in SEMANAIS_POR_ROTINA:                  # 15/10 (ciclo 6): alimentado pela rotina SEMANAL de empresas (ICMS)
+        return 7 * 24 + JANELA_HORAS
     if mid.startswith("site-"):
         site, _ = _indexador_do_motor(mid)
         try:
@@ -172,7 +177,10 @@ def status_de(p: dict, hoje: str) -> dict:
     reg = (_DIARIO.get(p.get("id")) or _DIARIO.get("plat-" + str(p.get("id"))) or {}).get(hoje) or {}
     if reg:
         nf = int(reg.get("falhas") or 0)
-        if reg.get("cor") == "vermelho":
+        if reg.get("cor") == "vermelho" and int(reg.get("achados") or 0) > 0:
+            # 15/10 (ciclo 6): adaptador de API não lê "páginas" — com achados, leu; as fontes com erro são atenção
+            cor_dia, falha = "verde", f"{nf} fonte(s) com falha; {int(reg.get('achados') or 0)} achado(s) nas demais"
+        elif reg.get("cor") == "vermelho":
             cor_dia, falha = "vermelho", "nenhuma página leu" + (f" (HTTP {reg.get('http')})" if reg.get("http") else "")
         elif nf:                     # 12/10 (conselho): leitura parcial = verde com atenção; vermelho só se nada leu
             cor_dia, falha = TRES_CORES.get(reg.get("cor"), "verde") if reg.get("cor") != "vermelho" else "vermelho", f"{nf} página(s) com falha; as demais foram lidas"

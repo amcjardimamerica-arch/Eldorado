@@ -2,11 +2,8 @@ name: 30 · Cartório de fontes oficiais (certifica o que falta nas estrelas e n
 # 09/10/2026 (titular): os motores descobrem; o Cartório certifica. Roda depois de cada passagem dos motores (o que acabou
 # de chegar com item indisponível) e de hora em hora (a fila de estrelas e livros). Grava só os seus caminhos.
 on:
-  workflow_run:
-    # 15/10/2026 (titular): depois do fluxo 22 o Cartório já roda DENTRO do comando único (fase "certificar")
-    workflows: ["01 · Eldorado — motores por hora (00h–06h BRT)",
-                "27 · Executor documental dos motores (robôs; o Claude no Chrome é o último recurso)"]
-    types: [completed]
+  # 15/10/2026 (ciclo 6): sem disparo automático — o Cartório roda só dentro do comando único (fluxo 22, fase
+  # "certificar"); um único gravador das certidões evita que uma execução apague o trabalho da outra
   # 15/10/2026: sem horário próprio — a certificação é a fase "certificar" do comando único (fluxo 22)
   workflow_dispatch:
     inputs:

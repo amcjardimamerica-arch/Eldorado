@@ -208,7 +208,7 @@ def fases(ctx: dict) -> list[dict]:
          "cmds": [[py, "scripts/treino_fontes.py", "--aplicar"]], "t": 420, "pular": None},
         # 5d EXTRAIR E CERTIFICAR — o Cartório lê o documento e extrai o trecho de cada um dos 12 itens
         {"etapa": "certificar", "finalidade": "trecho literal e página de cada um dos 12 itens no documento oficial (Cartório)",
-         "cmds": [[py, "-m", "src.cartorio", "--limite", "20", "--segundos", "780"]], "t": 900, "pular": None},
+         "cmds": [[py, "-m", "src.cartorio", "--limite", "40", "--segundos", "1200"]], "t": 1350, "pular": None},   # 15/10: 20 → 40 por passagem
         # 5d' CURADORIA — dois links (acesso e oficial), trecho exato e os 6 critérios objetivos do link oficial
         {"etapa": "curadoria", "finalidade": "link de acesso, link oficial com curadoria objetiva (6 critérios) e trecho exato da oportunidade",
          "cmds": [[py, "-m", "src.curadoria_links"]], "t": 180, "pular": None},
