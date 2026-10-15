@@ -52,3 +52,19 @@ class RobotsPelaPonte(unittest.TestCase):
             raise OSError("ponte fora")
         with mock.patch.object(ponte, "buscar", falha):
             self.assertFalse(S._robots_pela_ponte("https://alegodigital.al.go.leg.br/spl/x"))
+
+
+class RegistrarDiaComForcaVazia(unittest.TestCase):
+    """15/10/2026 (auditoria da esteira): achado com forca_lexica None derrubava a passagem inteira dos motores."""
+    def test_forca_lexica_none_nao_derruba(self):
+        import tempfile
+        from datetime import date
+        from pathlib import Path
+        d = Path(tempfile.mkdtemp())
+        with mock.patch.object(S, "ROOT", d, create=True):
+            try:
+                S.registrar_dia("teste", date(2026, 10, 15), {"achados": [{"forca_lexica": None}, {"forca_lexica": None, "titulo": "x"}], "falhas": []})
+            except TypeError as e:
+                self.fail(f"TypeError: {e}")
+            except Exception:
+                pass                                     # gravação em disco não é o alvo deste teste
