@@ -96,7 +96,7 @@ def baixar(limite: int | None = None, segundos: int = 2400) -> dict:
             break
         u = url_do_documento(c["url"])
         velho = antigos.get(k)
-        if velho and velho.get("url") == u and velho.get("ok"):
+        if velho and velho.get("url") == u and velho.get("ok") and (velho.get("pncp_meta") or not L.url_meta_pncp(u)):
             out[k] = velho; continue
         if time.time() - t0 > segundos:
             if velho:
@@ -115,6 +115,14 @@ def baixar(limite: int | None = None, segundos: int = 2400) -> dict:
             lido = L.paginas(raw, tipo, 60)
             reg.update({"ok": bool(lido.get("ok")), "motivo": lido.get("motivo"), "tipo": lido.get("tipo"),
                         "bytes": len(raw), "paginas": lido.get("paginas") or []})
+            _api = L.url_meta_pncp(u) or L.url_meta_pncp(c["url"])     # 15/10: metadados oficiais do PNCP
+            if _api:
+                _r2, _t2, _e2 = rede.get(_api)
+                if _r2 and not _e2:
+                    try:
+                        reg["pncp_meta"] = json.loads(_r2.decode("utf-8", "replace")); reg["pncp_api"] = _api
+                    except ValueError:
+                        pass
             if lido.get("tipo") == "html":     # guarda os links de documento da página (diagnóstico do degrau 1)
                 reg["links_doc"] = L.links_de_documento(lido.get("html") or "", u)[:15]
         out[k] = reg
@@ -262,6 +270,8 @@ def medir(com_gabarito_orgao: bool = False, gravar: bool = True, rotulo: str = "
             pgs = sel if sel else []
         ok = bool(r and r.get("ok") and pgs)
         ex = L.extrair(pgs, (r or {}).get("url") or c["url"], c["titulo"], c["orgao"]) if ok else {"pontos": {}, "dispensas": {}}
+        if ok and (r or {}).get("pncp_meta"):
+            L.completar_com_pncp(ex, r["pncp_meta"], r.get("pncp_api"))
         if ok and gab_org is not None:
             from src import cartorio as C
             chaves = L.chaves_orgao((r or {}).get("url") or c["url"], c["orgao"])

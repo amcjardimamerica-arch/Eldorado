@@ -478,3 +478,25 @@ class TesteFilaETempoReal(unittest.TestCase):
         self.assertIn('"na_linha_por_tipo"', (ROOT / "src/cartorio.py").read_text(encoding="utf-8"))
         w = (ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8")
         self.assertIn("Cartório em dia?", w); self.assertIn('gh workflow run cartorio.yml', w)
+
+
+class Cartorio85_15_10(unittest.TestCase):
+    """15/10/2026: Cartório a 85% — metadados oficiais do PNCP, Objeto e Órgão."""
+    def test_metadados_pncp_completam_sem_sobrescrever(self):
+        meta = {"orgaoEntidade": {"esferaId": "F", "razaoSocial": "UNIVERSIDADE FEDERAL X"}, "unidadeOrgao": {"municipioNome": "Recife", "ufSigla": "PE"},
+                "objetoCompra": "Seleção de OSC", "dataEncerramentoProposta": "2026-11-03T17:00:00", "valorTotalEstimado": 37000}
+        ex = {"pontos": {"Objeto": {"valor": "do PDF"}}, "dispensas": {"Valor": {"motivo": "x"}}}
+        novos = L.completar_com_pncp(ex, meta, "https://pncp.gov.br/api/consulta/v1/orgaos/1/compras/2026/1")
+        self.assertEqual(ex["pontos"]["Objeto"]["valor"], "do PDF")                      # o documento tem prioridade
+        self.assertEqual(ex["pontos"]["Esfera"]["valor"], "federal")
+        self.assertEqual(ex["pontos"]["Valor"]["valor"], "R$ 37.000,00"); self.assertNotIn("Valor", ex["dispensas"])
+        self.assertIn("Prazo de inscrição", novos)
+        self.assertEqual(L.url_meta_pncp("https://pncp.gov.br/app/editais/09773169000159/2026/121"),
+                         "https://pncp.gov.br/api/consulta/v1/orgaos/09773169000159/compras/2026/121")
+
+    def test_objeto_e_orgao(self):
+        r = L.extrair(["A Prefeitura do Município de Votuporanga, por intermédio da Secretaria Municipal de Assistência Social, "
+                       "torna público o EDITAL DE CHAMAMENTO PÚBLICO Nº 005/2026 SELEÇÃO DE PROPOSTAS PARA CELEBRAÇÃO DE PARCERIAS, estabelecendo critérios."],
+                      "https://x.sp.gov.br/a.pdf", "t")
+        self.assertIn("Votuporanga", r["pontos"]["Órgão / financiador"]["valor"])
+        self.assertIn("EDITAL DE CHAMAMENTO", r["pontos"]["Objeto"]["valor"])
