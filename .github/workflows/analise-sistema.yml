@@ -62,33 +62,12 @@ jobs:
           cat estado/diagnostico_sistema.md
       - name: Amostra de 20 oportunidades para a validação do Claude
         run: timeout 1500 python scripts/amostra_validacao.py 20 || echo "amostra incompleta"
-      - name: Registrar (código sempre da main; conflito em dado resolve pela versão do job)
+      - name: Registrar só os arquivos da análise (por cima do main mais recente)
+        # 15/10/2026 (ciclo 5): a reaplicação gravava a árvore inteira copiada no início e apagava a coleta do comando
         run: |
           git config user.name "analise-sistema" && git config user.email "analise@eldorado"
-          git fetch -q origin main
-          git checkout origin/main -- src tests scripts config docs/dashboard.html .github 2>/dev/null || true
-          git reset -q -- src tests scripts config docs/dashboard.html .github 2>/dev/null || true
-          git add -A biblioteca_alexandria dados estado docs/dados 2>/dev/null || true
-          git diff --cached --quiet && { echo "nada mudou"; exit 0; }
-          MSG="análise do sistema: diagnóstico$( [ "${{ inputs.corrigir }}" = "sim" ] && echo ' e correção') $(date -u +%F)"; git commit -q -m "$MSG"
-          for i in 1 2 3 4 5 6; do
-            if git pull --rebase origin main 2>/dev/null || \
-               { for f in $(git diff --name-only --diff-filter=U); do
-                   case "$f" in dados/*|estado/*|docs/dados/*|biblioteca_alexandria/*) git checkout --theirs -- "$f";;
-                                *) git checkout --ours -- "$f";; esac; git add "$f"; done
-                 GIT_EDITOR=true git rebase --continue; }; then
-              git push -q && { echo "gravado ($i)"; exit 0; }
-            fi
-            git rebase --abort 2>/dev/null || true
-            # reserva (como no monitoramento): parte da main mais nova e grava de novo só os dados do job
-            git fetch -q origin main && git reset -q --mixed origin/main
-            git checkout origin/main -- src tests scripts config docs/dashboard.html .github 2>/dev/null || true
-            git add -A biblioteca_alexandria dados estado docs/dados 2>/dev/null || true
-            git diff --cached --quiet || git commit -q -m "$MSG (reaplicada)"
-            git push -q && { echo "gravado pela reserva ($i)"; exit 0; }     # 14/10: a reserva envia na hora (antes voltava ao conflito)
-            sleep 15
-          done
-          echo "REGISTRO FALHOU após 6 tentativas"; exit 1
+          python scripts/gravar_somente_alterados.py salvar
+          python scripts/gravar_somente_alterados.py aplicar "análise do sistema: diagnóstico$( [ "${{ inputs.corrigir }}" = "sim" ] && echo ' e correção') $(date -u +%F\ %H:%M)"
       - name: Retomar os fluxos interrompidos
         if: always()
         env:
