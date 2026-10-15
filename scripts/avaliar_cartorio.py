@@ -106,6 +106,11 @@ def baixar(limite: int | None = None, segundos: int = 2400) -> dict:
         reg = {"url": u, "baixado_em": _agora()}
         if err or not raw:
             reg.update({"ok": False, "motivo": err or "vazio", "paginas": []})
+            if err == "robots_proibe":
+                from src import executor_skills as X
+                from urllib.parse import urlsplit
+                b = "{0.scheme}://{0.netloc}".format(urlsplit(u))
+                reg["robots"] = X.robots_motivos.get(b)
         else:
             lido = L.paginas(raw, tipo, 60)
             reg.update({"ok": bool(lido.get("ok")), "motivo": lido.get("motivo"), "tipo": lido.get("tipo"),
@@ -215,16 +220,27 @@ def confere(item: str, ext: dict, gab: dict, prazo: dict) -> bool:
     return s >= 0.35 or (s >= 0.2 and ext.get("pagina") and ext.get("pagina") == gab.get("pagina"))
 
 
-def no_documento(trecho: str, texto_plano: str) -> tuple[bool, int | None]:
-    """O trecho do gabarito está no texto lido? Procura uma janela de 6 palavras seguidas (normalizadas)."""
-    ws = [w for w in re.findall(r"[a-z0-9]{3,}", sem_acento(trecho))]
-    if len(ws) < 4:
+def compacto(s: str) -> tuple[str, list[int]]:
+    """Só letras e números, sem acento, com o mapa para a posição original (o PDF cola e separa palavras)."""
+    out, mapa = [], []
+    for i, ch in enumerate(sem_acento(s)):
+        if ch.isalnum():
+            out.append(ch); mapa.append(i)
+    return "".join(out), mapa
+
+
+def no_documento(trecho: str, doc: tuple[str, list[int]]) -> tuple[bool, int | None]:
+    """O trecho do gabarito está no texto lido? Procura pedaços de 28 caracteres (só letras e números)."""
+    t = re.sub(r"\(p\. ?\d+\)|\.\.\.|…", " ", str(trecho or ""))
+    alvo = compacto(t)[0]
+    comp, mapa = doc
+    if len(alvo) < 16 or not comp:
         return False, None
-    for i in range(0, max(1, len(ws) - 5), 2):
-        alvo = r"\W+".join(re.escape(w) for w in ws[i:i + 6])
-        m = re.search(alvo, texto_plano)
-        if m:
-            return True, m.start()
+    n = 28 if len(alvo) >= 28 else len(alvo)
+    for i in range(0, max(1, len(alvo) - n + 1), 9):
+        j = comp.find(alvo[i:i + n])
+        if j >= 0:
+            return True, mapa[j]
     return False, None
 
 
@@ -251,7 +267,7 @@ def medir(com_gabarito_orgao: bool = False, gravar: bool = True, rotulo: str = "
             for kk, v in L.aplicar_gabarito(pgs, C.ancoras_do_orgao(gab_org, chaves), r["url"], set(ex["pontos"])).items():
                 ex["pontos"][kk] = v
         T = L.Texto(pgs) if ok else None
-        plano = sem_acento(T.t) if T else ""
+        doc = compacto(T.t) if T else ("", [])
         res = {}
         for item in L.DOZE:
             g, gd = c["itens"].get(item), c["dispensas"].get(item)
@@ -267,12 +283,12 @@ def medir(com_gabarito_orgao: bool = False, gravar: bool = True, rotulo: str = "
             else:
                 cl = "falta"
             if cl in ("erro", "falta") and g:
-                achou, pos = no_documento(g.get("trecho") or g.get("valor") or "", plano)
+                achou, pos = no_documento(g.get("trecho") or g.get("valor") or "", doc)
                 if not achou and item not in ("Esfera", "Área de atuação", "Território"):
                     cl = "fora"
                 f = {"caso": k, "item": item, "classe": cl, "url": (r or {}).get("url"), "gabarito": (g.get("valor") or "")[:200],
                      "trecho_gabarito": (g.get("trecho") or "")[:240], "pagina_gabarito": g.get("pagina"),
-                     "pagina_no_texto": T.pagina(_pos_original(T.t, pos)) if (T and pos is not None) else None}
+                     "pagina_no_texto": T.pagina(pos) if (T and pos is not None) else None}
                 if e:
                     f.update({"extraido": str(e.get("valor") or "")[:200], "pagina_extraido": e.get("pagina"), "metodo": e.get("metodo")})
                 if ed:

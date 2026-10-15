@@ -69,7 +69,11 @@ def esfera_do_dominio(url: str) -> str | None:
         return None
     if not h:
         return None
-    if re.search(r"(^|\.)(gov\.br|in\.gov\.br)$", h) and not re.search(r"\.[a-z]{2}\.gov\.br$", h):
+    # 15/10 (avaliação com gabarito): portal nacional e diário oficial NÃO dizem a esfera do órgão — o PNCP publica
+    # compras de prefeituras e estados; o DOU publica atos municipais. Nesses, a esfera vem do órgão, nunca do domínio.
+    if re.search(r"(^|\.)(pncp\.gov\.br|in\.gov\.br|queridodiario\.ok\.org\.br)$", h):
+        return None
+    if re.search(r"(^|\.)gov\.br$", h) and not re.search(r"\.[a-z]{2}\.gov\.br$", h):
         return "federal"
     if re.search(r"prefeitura|camara|municipal|\.[a-z]+\.[a-z]{2}\.gov\.br$", h):
         return "municipal"
@@ -271,9 +275,16 @@ def _achar(T: Texto, rx: str, secao_rx: str | None = None, grupo: int = 1, flags
     return None
 
 
+def normalizar(p: str) -> str:
+    """Desfaz quebras do leitor de PDF nas datas: "23 /09 /2026" → "23/09/2026"; "/202 6" → "/2026"; "1º de" mantido."""
+    p = re.sub(r"(?<=\d) ?/ ?(?=\d)", "/", p or "")
+    return re.sub(r"(/20\d) (\d)\b", r"\1\2", p)
+
+
 def extrair(paginas_: list[str], documento: str, titulo: str = "", orgao_hint: str = "") -> dict:
     """{'pontos': {item: {valor, trecho, pagina, documento, metodo}}, 'dispensas': {item: {motivo, trecho, pagina}},
     'fim': ISO do prazo de inscrição (quando houver)}."""
+    paginas_ = [normalizar(p) for p in paginas_]
     T = Texto(paginas_)
     P, D, fim = {}, {}, None
 
@@ -283,9 +294,23 @@ def extrair(paginas_: list[str], documento: str, titulo: str = "", orgao_hint: s
                        "documento": documento, "metodo": metodo}
 
     # PRAZO DE INSCRIÇÃO — janela depois da palavra-chave, dentro de INSCRIÇÕES/CRONOGRAMA/PRAZO
-    kw = r"(?:per[ií]odo de inscri[çc][õo]es|inscri[çc][õo]es|recebimento d[ae]s? (?:propostas|projetos|inscri)|envio d[ae]s? propostas|submiss[ãa]o d[ae]s? propostas)"
+    # 15/10 (avaliação com gabarito): o ponto de abreviatura/numeração ("OSCs. 23/09", "2.3.Data") não encerra mais a
+    # janela; "à" liga as duas datas; rótulos de cronograma e de credenciamento; data antes do rótulo (tabela).
+    kw = (r"(?:per[ií]odo de inscri[çc][õo]es|inscri[çc][õo]es|recebimento d[ae]s? (?:propostas|projetos|inscri|documenta|envelopes)|"
+          r"(?:envio|entrega|protocolo|apresenta[çc][ãa]o|submiss[ãa]o) d[ae]s? (?:propostas|projetos|envelopes|documenta[çc][ãa]o|planos? de trabalho)|"
+          r"data (?:e hora )?(?:final|limite|de encerramento) (?:d[ae]s?|para) (?:propostas|inscri|envio|entrega|recebimento)|"
+          r"prazo (?:final |limite )?(?:para|de) (?:inscri|envio|entrega|apresenta|submiss)|"
+          r"(?:permanecer[áa]|ficar[áa]|estar[áa]) (?:em )?abert[oa]|poder[ãa]o ser recebid[ao]s|credenciamento a partir)")
+    jan = r"(?:[^.]|\.(?=\S)|\.\s(?=\d)){0,160}?"
+    lig = r"(?:[^.\d]{0,40}?(?:a|à|á|at[ée]|e|ao)\s*(" + DATA + r"))?"
+    padroes = [kw + jan + rf"({DATA})" + lig, rf"({DATA})\s*(?:a|à|á|at[ée])\s*({DATA})[^.\n]{{0,60}}?" + kw]
     for sec in (r"INSCRI|CRONOGRAMA|PRAZO", None):
-        r = _achar(T, kw + rf"[^.]{{0,160}}?({DATA})(?:[^.\d]{{0,40}}?(?:a|at[ée]|e|ao)\s*({DATA}))?", sec, None)
+        r = None
+        for rx in padroes:
+            r = _achar(T, rx, sec, None)
+            if r and [x for x in (_data_iso(d) for d in re.findall(DATA, r[0], re.I)) if x]:
+                break
+            r = None
         if r:
             ds = re.findall(DATA, r[0], re.I)
             isos = [x for x in (_data_iso(d) for d in ds) if x]
@@ -295,13 +320,40 @@ def extrair(paginas_: list[str], documento: str, titulo: str = "", orgao_hint: s
                 pôr("Prazo de inscrição", val, r[1], r[2], "cronograma" if sec else "texto")
                 break
     # RESULTADO
-    r = _achar(T, rf"(?:divulga[çc][ãa]o d[oa]s? )?resultado(?: final| definitivo| preliminar)?[^.]{{0,120}}?({DATA}|\d+\s*[(\[]?[a-z ]*[)\]]?\s*dias)", r"CRONOGRAMA|RESULTADO")
+    # 15/10 (avaliação com gabarito): a DATA do resultado no cronograma vem antes do "N dias" solto; "em até N dias …
+    # divulgar o resultado"; a janela atravessa pontos de numeração.
+    jr = r"(?:[^.]|\.(?=\S)|\.\s(?=\d)){0,120}?"
+    rot = r"(?:divulga[çc][ãa]o|publica[çc][ãa]o|homologa[çc][ãa]o)?\s*(?:d[oa]s? )?resultados?(?: (?:final|definitivo|preliminar|provis[óo]rio|parcial))?"
+    r = None
+    for rx, sec in ((rot + jr + rf"({DATA})", r"CRONOGRAMA|RESULTADO"),
+                    (r"em at[ée] (\d{1,3}\s*\(?[a-zç ]{0,12}\)?\s*dias(?:\s*[úu]teis| corridos)?)[^.]{0,80}?(?:divulgar|publicar|proclamar)[^.]{0,20}?resultado", r"RESULTADO|CRONOGRAMA"),
+                    (rf"(?:divulga[çc][ãa]o d[oa]s? )?resultado(?: final| definitivo| preliminar)?[^.]{{0,120}}?({DATA}|\d+\s*[(\[]?[a-z ]*[)\]]?\s*dias)", r"CRONOGRAMA|RESULTADO")):
+        r = _achar(T, rx, sec)
+        if r:
+            break
     if r:
         pôr("Resultado", r[0], r[1], r[2])
     # PRAZO DE RECURSO
-    r = _achar(T, rf"recurso[s]?[^.]{{0,140}}?(\d+\s*[(\[]?[a-zç ]*[)\]]?\s*dias(?:\s*[úu]teis| corridos)?|{DATA})", r"RECURSO|CRONOGRAMA|RESULTADO")
+    # 15/10 (avaliação com gabarito): "recurso" no sentido de CONTESTAÇÃO — nunca recursos financeiros/orçamentários;
+    # o número de dias ou o intervalo de datas da fase recursal, antes ou depois do rótulo.
+    dias_rx = r"(\d{1,2}\s*[(\[]?[a-zçã ]{0,12}[)\]]?\s*dias(?:\s*[úu]teis| corridos)?)"
+    ctx = (r"(?:prazo recursal|prazo (?:para|de) (?:a )?(?:interposi[çc][ãa]o de |apresenta[çc][ãa]o de )?recursos?|interpo(?:r|si[çc][ãa]o d[eo]s?)\s+recursos?|recursos? (?:administrativos?|contra|ao resultado|do resultado|"
+           r"quanto|em face)|apresenta[çc][ãa]o de recursos?|fase recursal|caber[áa]\s*,?[^.]{0,60}?recurso|poder[ãa]o? (?:recorrer|interpor))")
+    jan2 = r"(?:[^.]|\.(?=\S)|\.\s(?=\d)){0,140}?"
+    r = None
+    for rx in (ctx + jan2 + rf"({DATA})\s*(?:a|à|á|at[ée])\s*({DATA})", ctx + jan2 + dias_rx,
+               r"(?:no )?prazo (?:de|m[áa]ximo de) " + dias_rx + r"[^.]{0,120}?" + ctx,
+               # última tentativa: qualquer "recurso" que NÃO seja dinheiro
+               r"\brecursos?\b(?!\s+(?:financeiros?|or[çc]ament[áa]rios?|p[úu]blicos?|pr[óo]prios?|humanos?|materiais|dispon[íi]veis|"
+               r"federais|estaduais|municipais|repassad|transferid|destinad|necess[áa]rios?|da |do |de |para |oriundos?|captad))" + jan2 + dias_rx):
+        r = _achar(T, rx, r"RECURSO|CRONOGRAMA|RESULTADO", None)
+        if r:
+            break
     if r:
-        pôr("Prazo de recurso", r[0], r[1], r[2])
+        dd = re.findall(DATA, r[0], re.I)
+        m = re.search(dias_rx, r[0], re.I)
+        val = f"{dd[0]} a {dd[-1]}" if len(dd) > 1 else (re.sub(r"\s+", " ", m.group(1)) if m else r[0])
+        pôr("Prazo de recurso", val, r[1], r[2])
     # VALOR — prefere o R$ ao lado de "valor global/total/teto/montante"
     r = _achar(T, r"(?:valor (?:global|total|m[áa]ximo|estimado|de at[ée]|do pr[êe]mio|de cada)|montante|teto|dota[çc][ãa]o|recursos? (?:financeiros|dispon[ií]veis|totais)|limite de)[^.]{0,80}?(R\$\s?\d[\d.]*(?:,\d{2})?(?:\s*\([^)]{3,80}\))?)",
                r"RECURSO|VALOR|PR[ÊE]MI|PREMIA")
@@ -330,30 +382,43 @@ def extrair(paginas_: list[str], documento: str, titulo: str = "", orgao_hint: s
         if r:
             pôr("Órgão / financiador", orgao_hint, r[1], r[2], "texto")
     # TERRITÓRIO
-    r = _achar(T, r"(todo o territ[óo]rio nacional|abrang[êe]ncia (?:nacional|estadual|municipal)|(?:no|do) Munic[íi]pio de [A-ZÀ-Ú][\wÀ-ú' ]{2,40}|(?:no|do) Estado d[eoa] [A-ZÀ-Ú][\wÀ-ú ]{2,30})", None, 1, re.S)
+    # 15/10 (avaliação com gabarito): o município (sede exigida, "Município de X", cabeçalho da prefeitura) vem antes do
+    # estado, que aparece cedo no texto e era pego primeiro; nome próprio sem atravessar linha.
+    nome = r"[A-ZÀ-Ú][a-zà-úA-ZÀ-Ú'’-]+(?:\s(?:d[aeo]s?\s)?[A-ZÀ-Ú][a-zà-úA-ZÀ-Ú'’-]+){0,3}"
+    r = None
+    for rx, fl in ((r"(todo o territ[óo]rio nacional|abrang[êe]ncia nacional|em qualquer (?:unidade da federa[çc][ãa]o|estado|munic[íi]pio) do (?:pa[íi]s|Brasil))", re.I),
+                   (r"((?:sediad[ao]s?|sede|domiciliad[ao]s?|atua[çc][ãa]o comprovada)\s+(?:[^.]{0,30}?\s)?(?:no|em|na cidade de|no munic[íi]pio de)\s+" + nome + ")", 0),
+                   (r"((?:no|do|ao) [Mm]unic[íi]pio de " + nome + ")", 0),
+                   (r"(PREFEITURA (?:MUNICIPAL )?DE [A-ZÀ-Ú][A-ZÀ-Ú' -]{2,40})", 0),
+                   (r"(abrang[êe]ncia (?:estadual|municipal)|(?:no|do) Estado d[eoa] " + nome + ")", 0)):
+        r = _achar(T, rx, None, 1, fl)
+        if r:
+            break
     if r:
         pôr("Território", r[0], r[1], r[2], "texto")
     # ESFERA — pelo domínio oficial do documento ou pelo órgão
     esf = esfera_do_dominio(documento)
     org = (P.get("Órgão / financiador") or {}).get("valor", "") + " " + orgao_hint
+    if not esf and not org.strip():
+        org = cab[:600]
     if not esf:
-        esf = "municipal" if re.search(r"(?i)prefeitura|munic[íi]pio|municipal", org) else "estadual" if re.search(r"(?i)governo do estado|de estado|estadual", org) \
+        esf = "municipal" if re.search(r"(?i)prefeitura|munic[íi]pio|municipal|c[âa]mara de vereadores", org) else "estadual" if re.search(r"(?i)governo do estado|de estado|estadual|tribunal de justi[çc]a|assembleia legislativa|minist[ée]rio p[úu]blico do estado|\buniversidade estadual", org) \
             else "federal" if re.search(r"(?i)minist[ée]rio|uni[ãa]o|federal", org) else "privada" if re.search(r"(?i)instituto|funda[çc][ãa]o|empresa|s\.?a\.?\b|ltda", org) else None
     if esf:
         P["Esfera"] = {"valor": esf, "trecho": f"domínio/órgão: {(urlsplit(documento).hostname or '')} · {org.strip()[:80]}", "pagina": 1,
                        "documento": documento, "metodo": "domínio e órgão"}
     # REQUISITOS
-    s = T.secao(r"CONDI|PARTICIPA|REQUISITO|HABILITA")
-    if s:
-        m = re.search(r"([A-ZÀ-Úa-zà-ú0-9][^.;]{40,350}[.;])", re.sub(r"^\S+(?:\s+\S+){0,4}\s*", "", s[1][:900]))
-        if m:
-            pôr("Requisitos", m.group(1), s[0], s[0] + 300)
-    if "Requisitos" not in P:
+    if True:  # 15/10 (avaliação com gabarito): a frase explícita de quem pode participar vem antes da 1ª frase da seção
         r = _achar(T, r"((?:poder[ãa]o participar|poder[ãa]o se inscrever|est[ãa]o aptas? a participar|s[ãa]o requisitos|requisitos? (?:para|de) (?:participa|inscri|habilita)|"
                       r"(?:as|os) (?:proponentes|interessad[oa]s|organiza[çc][õo]es) dever[ãa]o (?:comprovar|apresentar|possuir)|habilita[çc][ãa]o jur[íi]dica|"
                       r"documentos? (?:necess[áa]rios|exigidos) (?:para|à|a) (?:inscri|habilita))[^.;]{20,320}[.;])")
         if r:
             pôr("Requisitos", r[0], r[1], r[2], "texto")
+    s = T.secao(r"CONDI|PARTICIPA|REQUISITO|HABILITA")
+    if s and "Requisitos" not in P:
+        m = re.search(r"([A-ZÀ-Úa-zà-ú0-9][^.;]{40,350}[.;])", re.sub(r"^\S+(?:\s+\S+){0,4}\s*", "", s[1][:900]))
+        if m:
+            pôr("Requisitos", m.group(1), s[0], s[0] + 300)
     # ANEXOS
     an = list(dict.fromkeys(re.sub(r"\s+", " ", a).strip() for a in re.findall(r"ANEXO\s+[IVXL]{1,5}\s*[-–—:]?\s*[^\n]{0,70}", T.t)))
     if an:
@@ -362,7 +427,10 @@ def extrair(paginas_: list[str], documento: str, titulo: str = "", orgao_hint: s
     # DESTINAÇÃO
     r = _achar(T, r"((?:os |o )?(?:recursos?|valores?|pr[êe]mios?|apoio) (?:ser[ãa]o|dever[ãa]o ser|poder[ãa]o ser) (?:destinados?|aplicados?|utilizados?|empregados?)[^.;]{15,250}[.;]|"
                   r"destina-se a[^.;]{15,250}[.;]|(?:s[ãa]o |ser[ãa]o )?(?:consideradas )?despesas (?:eleg[ií]veis|financi[áa]veis|permitidas)[^.;]{10,250}[.;]|"
-                  r"(?:poder[ãa]o|dever[ãa]o) ser (?:financiad[oa]s|custead[oa]s)[^.;]{10,250}[.;]|itens financi[áa]veis[^.;]{10,250}[.;])",
+                  r"(?:poder[ãa]o|dever[ãa]o) ser (?:financiad[oa]s|custead[oa]s)[^.;]{10,250}[.;]|itens financi[áa]veis[^.;]{10,250}[.;]|"
+                  # 15/10 (avaliação com gabarito): "projetos destinados à…", "para aplicação de recursos do…"
+                  r"(?:projetos|propostas|recursos|parcerias?|a[çc][õo]es) destinad[oa]s? (?:à|a|ao|às|aos)\s[^.;]{15,250}[.;]|"
+                  r"para (?:a )?(?:aplica[çc][ãa]o|execu[çc][ãa]o) (?:d[eo]s? )?recursos[^.;]{10,220}[.;])",
                r"DESTINA|FINALIDADE|RECURSO|OBJETO")
     if r:
         pôr("Destinação", r[0], r[1], r[2])

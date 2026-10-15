@@ -43,15 +43,48 @@ AREAS = {"Cultura": r"cultur|artes?\b|patrim[oô]nio", "Assistência social": r"
 
 
 def permitido(url: str) -> bool:
+    """robots.txt pela RFC 9309 (15/10/2026, avaliação do Cartório: 49 documentos oficiais recusados à toa).
+
+    Antes: urllib.robotparser.read() buscava o robots.txt como "Python-urllib" (barrado por firewall com 403) e trata
+    401/403 como PROIBIÇÃO TOTAL — o Querido Diário e dezenas de prefeituras ficavam ilegíveis sem nunca terem
+    proibido nada. Agora: busca com a identificação do Eldorado; 200 → obedece ao arquivo; 4xx (robots inexistente
+    ou indisponível) → permitido (RFC 9309 §2.3.1.3); 5xx → não acessa (RFC §2.3.1.4); falha de rede → permitido
+    (como antes). O motivo de cada domínio fica em robots_motivos para diagnóstico."""
     p = urllib.parse.urlsplit(url); base = f"{p.scheme}://{p.netloc}"
     if base not in _robots:
-        rp = urllib.robotparser.RobotFileParser(base + "/robots.txt")
-        try:
-            rp.read()
-        except Exception:  # noqa: BLE001
-            rp = None
-        _robots[base] = rp
-    return True if _robots[base] is None else _robots[base].can_fetch("EldoradoBot", url)
+        _robots[base], robots_motivos[base] = _ler_robots(base)
+    rp = _robots[base]
+    if rp is False:
+        return False
+    return True if rp is None else rp.can_fetch("EldoradoBot", url)
+
+
+robots_motivos: dict = {}
+
+
+def _ler_robots(base: str):
+    """(parser | None = tudo permitido | False = nada, motivo)."""
+    from urllib.error import HTTPError
+    try:
+        from .certificados import contexto
+        ctx = contexto()
+    except Exception:  # noqa: BLE001
+        ctx = None
+    try:
+        op = build_opener(HTTPSHandler(context=ctx)) if ctx else build_opener()
+        with op.open(Request(base + "/robots.txt", headers={"User-Agent": UA}), timeout=15) as r:
+            corpo = r.read(500_000).decode("utf-8", "ignore")
+    except HTTPError as e:
+        if 400 <= e.code < 500:
+            return None, f"robots.txt indisponível ({e.code}): permitido"
+        return False, f"robots.txt com erro do servidor ({e.code}): não acessar"
+    except Exception as e:  # noqa: BLE001
+        return None, f"robots.txt inacessível ({type(e).__name__}): permitido"
+    if "<html" in corpo[:500].lower():          # página de erro/firewall servida com 200 no lugar do robots.txt
+        return None, "robots.txt devolveu página HTML: permitido"
+    rp = urllib.robotparser.RobotFileParser(base + "/robots.txt")
+    rp.parse(corpo.splitlines())
+    return rp, "robots.txt lido (200): regras aplicadas"
 
 
 def baixar(url: str, max_bytes: int = 15_000_000, timeout: int = 40) -> tuple[bytes, str]:
