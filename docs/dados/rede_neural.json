@@ -1,9 +1,9 @@
 {
- "em": "2026-10-15T14:36:58+00:00",
+ "em": "2026-10-15T14:40:39+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
  "rotulados": 2027,
  "positivos": 808,
- "pendentes": 809,
+ "pendentes": 803,
  "validacao_cruzada": {
   "auc": 0.843,
   "precisao": 0.74,
@@ -41,6 +41,12 @@
    "url": "https://pncp.gov.br/app/editais/17947581000176/2026/231",
    "nota": 0.501,
    "incerteza": 0.998
+  },
+  {
+   "titulo": "EDITAL DE CHAMAMENTO PÚBLICO Nº002/2026 CICLO 2 PNAB QUADRILHA JUNINA,CAPOEIRA,DANÇA E LITERATURA DE SÃOBENEDITO",
+   "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8421/",
+   "nota": 0.502,
+   "incerteza": 0.996
   },
   {
    "titulo": "Chamadas Abertas",
@@ -133,12 +139,6 @@
    "incerteza": 0.982
   },
   {
-   "titulo": "EDITAL DE CHAMAMENTO PÚBLICO Nº002/2026 CICLO 2 PNAB QUADRILHA JUNINA,CAPOEIRA,DANÇA E LITERATURA DE SÃOBENEDITO",
-   "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8421/",
-   "nota": 0.491,
-   "incerteza": 0.982
-  },
-  {
    "titulo": "Undertake: the Practical Side of Death",
    "url": "https://resartis.org/open-call/undertake-the-practical-side-of-death/",
    "nota": 0.491,
@@ -185,6 +185,12 @@
    "url": "https://data.queridodiario.ok.org.br/2700000/2026-10-05/8e3eb60f57b80a1eef6637d054171564cacb0e5a.pdf",
    "nota": 0.489,
    "incerteza": 0.978
+  },
+  {
+   "titulo": "EDITAL DE CHAMAMENTO PÚBLICO Nº 02/2026",
+   "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8418/",
+   "nota": 0.512,
+   "incerteza": 0.976
   },
   {
    "titulo": "Edital Suplementar de Subvenção Econômica FAPESC N.º 65/2025 - Programa Horizonte Europa (2026–2027)",
@@ -363,12 +369,6 @@
   {
    "titulo": "Convocatoria UE Ecuador 2026 para sociedad civil y derechos humanos",
    "url": "https://re-cid.org/convocatoria-union-europea-ecuador-sociedad-civil-derechos-humanos-2026/",
-   "nota": 0.479,
-   "incerteza": 0.957
-  },
-  {
-   "titulo": "CREDENCIAMENTO DE ARTISTAS LOCAIS/REGIONAIS PARA APRESENTAÇÃO DE SHOWS MUSICAIS NAS FESTIVIDADES E EVENTOS… — MUNICIPIO DE FRANCISCO SA",
-   "url": "https://pncp.gov.br/app/editais/22681423000157/2026/75",
    "nota": 0.479,
    "incerteza": 0.957
   }

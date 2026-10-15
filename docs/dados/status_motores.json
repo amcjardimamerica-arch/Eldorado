@@ -1,12 +1,12 @@
 {
- "gerado_em": "2026-10-15T11:28-03:00",
- "proxima_atualizacao": "2026-10-15T17:28-03:00",
+ "gerado_em": "2026-10-15T09:38-03:00",
+ "proxima_atualizacao": "2026-10-15T15:38-03:00",
  "a_cada_horas": 6,
  "regra": "STATUS DOS MOTORES A CADA 6 HORAS (titular, 01/10/2026) — monitoramento e tomada de decisão.\n\nPara cada motor regular: a data e a hora da ÚLTIMA LEITURA, o resultado e UMA de três luzes:\n  VERDE     coletou hoje (horário de Brasília), com dados ou sem dados novos\n  VERMELHO  a coleta de hoje teve erro ou falha\n  CINZA     o motor não rodou hoje (fora da agenda, aguardando coleta local, parado)",
  "contagem": {
-  "verde": 41,
-  "vermelho": 3,
-  "cinza": 1,
+  "verde": 42,
+  "vermelho": 0,
+  "cinza": 3,
   "legenda": {
    "verde": "funcionando (leu dentro da cadência do motor: 26 h para os diários, a semana para os semanais)",
    "vermelho": "falha (nada lido na última leitura, ou sem ler além da cadência do motor)",
@@ -33,15 +33,15 @@
    "id": "do-goias",
    "nome": "Diário Oficial do Estado de Goiás",
    "luz": "verde",
-   "resultado": "funcionando — última leitura 15/10 11:11 · 3 achado(s)",
+   "resultado": "funcionando — última leitura 14/10 22:58 · sem oportunidade nova",
    "leitura_do_dia": {
-    "estado": "completa",
-    "texto": "dia lido por completo"
+    "estado": "pendente",
+    "texto": "o dia ainda não foi lido"
    },
-   "luz_do_dia": "verde",
-   "resultado_do_dia": "coletou hoje — 3 achado(s)",
+   "luz_do_dia": "cinza",
+   "resultado_do_dia": "não rodou hoje — ainda não rodou hoje",
    "observacoes": [],
-   "ultima_leitura": "2026-10-15T11:11-03:00",
+   "ultima_leitura": "2026-10-14T22:58-03:00",
    "agenda": "seg,ter,qua,qui,sex,sab 06:23,12:53,20:23"
   },
   {
@@ -227,31 +227,31 @@
   {
    "id": "plataforma-wordpress",
    "nome": "Adaptador WordPress — sites oficiais pela API pública",
-   "luz": "vermelho",
-   "resultado": "falha na leitura de 15/10 11:18 — nenhuma página leu",
+   "luz": "cinza",
+   "resultado": "inativo — nunca leu",
    "leitura_do_dia": {
-    "estado": "parcial",
-    "texto": "dia lido em parte — nenhuma página leu"
+    "estado": "pendente",
+    "texto": "o dia ainda não foi lido"
    },
-   "luz_do_dia": "vermelho",
-   "resultado_do_dia": "falha na coleta de hoje — nenhuma página leu · 2 achado(s) mesmo assim",
+   "luz_do_dia": "cinza",
+   "resultado_do_dia": "não rodou hoje — ainda não rodou hoje",
    "observacoes": [],
-   "ultima_leitura": "2026-10-15T11:18-03:00",
+   "ultima_leitura": null,
    "agenda": "todos 09:53,17:53"
   },
   {
    "id": "plataforma-mapas-culturais",
    "nome": "Adaptador Mapas Culturais — oportunidades com inscrição aberta",
-   "luz": "vermelho",
-   "resultado": "falha na leitura de 15/10 11:19 — nenhuma página leu",
+   "luz": "cinza",
+   "resultado": "inativo — nunca leu",
    "leitura_do_dia": {
-    "estado": "parcial",
-    "texto": "dia lido em parte — nenhuma página leu"
+    "estado": "pendente",
+    "texto": "o dia ainda não foi lido"
    },
-   "luz_do_dia": "vermelho",
-   "resultado_do_dia": "falha na coleta de hoje — nenhuma página leu · 16 achado(s) mesmo assim",
+   "luz_do_dia": "cinza",
+   "resultado_do_dia": "não rodou hoje — ainda não rodou hoje",
    "observacoes": [],
-   "ultima_leitura": "2026-10-15T11:19-03:00",
+   "ultima_leitura": null,
    "agenda": "todos 11:23"
   },
   {
@@ -272,8 +272,8 @@
   {
    "id": "motor-gife",
    "nome": "Motor Incentivos Fiscais — empresas da base ICMS/RFB/SALIC (Goiás)",
-   "luz": "vermelho",
-   "resultado": "falha — não lê há 1 dia(s) (26 h); última leitura 14/10 09:09",
+   "luz": "verde",
+   "resultado": "funcionando — última leitura 14/10 09:09 · sem oportunidade nova",
    "leitura_do_dia": {
     "estado": "pendente",
     "texto": "o dia ainda não foi lido"
@@ -380,30 +380,30 @@
    "id": "piloto-aberto",
    "nome": "Piloto - Espião — busca aberta no terceiro setor",
    "luz": "verde",
-   "resultado": "funcionando — última leitura 15/10 11:11 · 39 achado(s) (atenção: 1 página(s) com falha; as demais foram lidas)",
+   "resultado": "funcionando — última leitura 15/10 08:56 · sem oportunidade nova",
    "leitura_do_dia": {
-    "estado": "parcial",
-    "texto": "dia lido em parte — 1 página(s) com falha; as demais foram lidas"
+    "estado": "fora_da_agenda",
+    "texto": "hoje não é dia deste motor"
    },
-   "luz_do_dia": "verde",
-   "resultado_do_dia": "coletou hoje — 39 achado(s) (atenção: 1 página(s) com falha; as demais foram lidas)",
+   "luz_do_dia": "cinza",
+   "resultado_do_dia": "não rodou hoje — fora da agenda hoje",
    "observacoes": [],
-   "ultima_leitura": "2026-10-15T11:11-03:00",
+   "ultima_leitura": "2026-10-15T08:56-03:00",
    "agenda": "com o Piloto contínuo"
   },
   {
    "id": "estaduais-go-gov",
    "nome": "Oportunidade Estaduais Governamentais de Goiás",
    "luz": "verde",
-   "resultado": "funcionando — última leitura 15/10 11:16 · 1 achado(s)",
+   "resultado": "funcionando — última leitura 14/10 17:35 · sem oportunidade nova",
    "leitura_do_dia": {
-    "estado": "parcial",
-    "texto": "dia lido em parte — 1 órgão(s) ainda não lido(s) hoje: seds — o maestro dispara de novo"
+    "estado": "pendente",
+    "texto": "o dia ainda não foi lido"
    },
-   "luz_do_dia": "verde",
-   "resultado_do_dia": "coletou hoje — 1 achado(s)",
+   "luz_do_dia": "cinza",
+   "resultado_do_dia": "não rodou hoje — ainda não rodou hoje",
    "observacoes": [],
-   "ultima_leitura": "2026-10-15T11:16-03:00",
+   "ultima_leitura": "2026-10-14T17:35-03:00",
    "agenda": "todos 09:23,15:23"
   },
   {
@@ -695,7 +695,7 @@
    "id": "piloto-interceptador",
    "nome": "Piloto - Interceptador — comprova na fonte oficial",
    "luz": "verde",
-   "resultado": "funcionando — última leitura 15/10 09:48 · sem oportunidade nova",
+   "resultado": "funcionando — última leitura 15/10 08:43 · sem oportunidade nova",
    "leitura_do_dia": {
     "estado": "completa",
     "texto": "dia lido por completo"
@@ -703,7 +703,7 @@
    "luz_do_dia": "verde",
    "resultado_do_dia": "coletou hoje — sem dados novos",
    "observacoes": [],
-   "ultima_leitura": "2026-10-15T09:48-03:00",
+   "ultima_leitura": "2026-10-15T08:43-03:00",
    "agenda": null
   }
  ]
