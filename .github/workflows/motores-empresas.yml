@@ -66,31 +66,10 @@ jobs:
           { timeout 300 python -m src.biblioteca_empresas; timeout 300 python -m src.incentivos_empresas; echo "rc_incentivos=$?"; } 2>&1 | tail -c 20000 >> estado/log_empresas.txt
           { MOTORES_FONTES=empresas-incentivadas SENSORES_PRAZO_S=840 timeout 900 python -m src.sensores; echo "rc_sites_icms=$?"; } 2>&1 | tail -c 8000 >> estado/log_empresas.txt
           grep -o "rc_[a-z_]*=[0-9]*" estado/log_empresas.txt || true
-      - name: Registrar (código sempre da main; conflito em dado resolve pela versão do job)
-        if: steps.vence.outputs.rodar == 'sim'
+      - name: Registrar só os arquivos deste fluxo (por cima do main mais recente)
+        # 15/10/2026 (ciclo 5): a reaplicação gravava a árvore inteira do job e podia apagar dados de outros fluxos
         run: |
-          git config user.name "motores-empresas" && git config user.email "empresas@eldorado"
-          git fetch -q origin main
-          git checkout origin/main -- src tests scripts config docs/dashboard.html .github 2>/dev/null || true
-          git reset -q -- src tests scripts config docs/dashboard.html .github 2>/dev/null || true
-          git add -A biblioteca_alexandria dados estado docs/dados 2>/dev/null || true
-          git diff --cached --quiet && { echo "nada mudou"; exit 0; }
-          MSG="empresas: leitura semanal $(date -u +%F) (fluxo 34)"; git commit -q -m "$MSG"
-          for i in 1 2 3 4 5 6; do
-            if git pull --rebase origin main 2>/dev/null || \
-               { for f in $(git diff --name-only --diff-filter=U); do
-                   case "$f" in dados/*|estado/*|docs/dados/*|biblioteca_alexandria/*|go/*) git checkout --theirs -- "$f";;
-                                *) git checkout --ours -- "$f";; esac; git add "$f"; done
-                 GIT_EDITOR=true git rebase --continue; }; then
-              git push -q && { echo "gravado ($i)"; exit 0; }
-            fi
-            git rebase --abort 2>/dev/null || true
-            # reserva (como no monitoramento): parte da main mais nova e grava de novo só os dados do job
-            git fetch -q origin main && git reset -q --mixed origin/main
-            git checkout origin/main -- src tests scripts config docs/dashboard.html .github 2>/dev/null || true
-            git add -A biblioteca_alexandria dados estado docs/dados 2>/dev/null || true
-            git diff --cached --quiet || git commit -q -m "$MSG (reaplicada)"
-            git push -q && { echo "gravado pela reserva ($i)"; exit 0; }     # 14/10: a reserva envia na hora (antes voltava ao conflito)
-            sleep 15
-          done
-          echo "REGISTRO FALHOU após 6 tentativas"; exit 1
+          git config user.name "eldorado-bot"
+          git config user.email "eldorado-bot@users.noreply.github.com"
+          python scripts/gravar_somente_alterados.py salvar
+          python scripts/gravar_somente_alterados.py aplicar "dados: empresas (fluxo 34) $(date -u +%F\ %H:%M)"
