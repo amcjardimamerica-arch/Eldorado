@@ -16,6 +16,7 @@ import json
 import os
 import sys
 import urllib.request
+import urllib.parse
 from datetime import date, datetime, timezone
 from pathlib import Path
 
@@ -81,8 +82,12 @@ def enviar() -> dict:
     import time
     ultimo = None
     for tentativa in range(1, 4):
-        req = urllib.request.Request(url, data=corpo, method="POST",
-                                     headers={"Content-Type": "application/json", "X-Assinatura": assinatura, "User-Agent": "Mozilla/5.0"})
+        # 15/10 (ciclo 5): o Mod_Security da hospedagem devolvia HTTP 406 — pedido sem cabeçalhos de navegador
+        req = urllib.request.Request(url, data=corpo, method="POST", headers={
+            "Content-Type": "application/json; charset=utf-8", "X-Assinatura": assinatura,
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+            "Accept": "application/json, text/plain, */*", "Accept-Language": "pt-BR,pt;q=0.9", "Accept-Encoding": "identity",
+            "Origin": "{0.scheme}://{0.netloc}".format(urllib.parse.urlsplit(url)), "Referer": "{0.scheme}://{0.netloc}/".format(urllib.parse.urlsplit(url))})
         try:
             with urllib.request.urlopen(req, timeout=60) as r:
                 bruto = r.read().decode("utf-8", "replace")
