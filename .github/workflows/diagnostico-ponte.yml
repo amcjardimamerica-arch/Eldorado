@@ -11,7 +11,7 @@ permissions:
 jobs:
   diagnosticar:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     env:
       ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}
       ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
@@ -24,14 +24,17 @@ jobs:
           python-version: "3.12"
       - name: Diagnosticar
         run: timeout 600 python scripts/diagnostico_ponte.py
+      - name: Robots de todos os motores
+        run: timeout 900 python scripts/robots_motores.py || true
       - name: Gravar (só o diagnóstico)
         run: |
           git config user.name "diagnostico-ponte" && git config user.email "ponte@eldorado"
-          cp estado/ponte/diagnostico.json /tmp/d.json
+          cp estado/ponte/diagnostico.json /tmp/d.json; cp estado/robots_motores.json /tmp/r.json 2>/dev/null || true
           for i in 1 2 3 4 5; do
             git fetch -q origin main && git reset -q --hard origin/main
             mkdir -p estado/ponte && cp /tmp/d.json estado/ponte/diagnostico.json
-            git add estado/ponte/diagnostico.json
+            [ -f /tmp/r.json ] && cp /tmp/r.json estado/robots_motores.json
+            git add estado/ponte/diagnostico.json estado/robots_motores.json 2>/dev/null || git add estado/ponte/diagnostico.json
             git diff --cached --quiet && exit 0
             git commit -q -m "diagnóstico da ponte $(date -u +%F)" && git push -q && exit 0
             sleep 5
