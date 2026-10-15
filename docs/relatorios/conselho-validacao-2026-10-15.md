@@ -225,7 +225,7 @@
  "pontos_com_redundancia": 13,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 8867
+ "exemplos_da_rede_de_rotas": 8988
 }
 ```
 
@@ -362,20 +362,20 @@
 
 ```json
 {
- "fontes_recebidas": 349,
+ "fontes_recebidas": 350,
  "por_origem": {
   "conselho (fontes irmãs)": 160,
-  "Cartório (site oficial certificado)": 155,
+  "Cartório (site oficial certificado)": 156,
   "Espião (privado/internacional)": 34
  },
  "lidas_nas_ultimas_24h": 216,
  "dimensionamento": {
-  "fontes": 349,
+  "fontes": 350,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 7,
-  "cobertura_diaria": 349,
+  "cobertura_diaria": 350,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -433,7 +433,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 92,
+   "orgaos": 91,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",
@@ -444,14 +444,14 @@
    ]
   },
   "Mapas Culturais": {
-   "orgaos": 11,
+   "orgaos": 10,
    "exemplos": [
     "culteditais.cultura.gov.br",
     "mapa.cultura.es.gov.br",
     "mapa.cultura.gov.br",
-    "mapacultural.cim-amfri.sc.gov.br",
     "mapacultural.pa.gov.br",
-    "mapacultural.pe.gov.br"
+    "mapacultural.pe.gov.br",
+    "mapacultural.saobernardo.sp.gov.br"
    ]
   },
   "Diário municipal em lote (AGM/DOM)": {
@@ -466,25 +466,25 @@
    ]
   },
   "Portal de transparência de fornecedor": {
-   "orgaos": 28,
+   "orgaos": 18,
    "exemplos": [
     "bndes.gov.br",
     "comunidade.transparenciainternacional.org.br",
     "gov.br",
-    "governodecacule.ba.gov.br",
     "itacoatiara.am.gov.br",
-    "itumbiara.go.gov.br"
+    "itumbiara.go.gov.br",
+    "mpf.mp.br"
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 56,
+   "orgaos": 47,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",
     "arapongas.pr.gov.br",
     "banrisulcultural.com.br",
     "bonde.org",
-    "cafelandia.sp.gov.br"
+    "cajuru.sp.gov.br"
    ]
   }
  }

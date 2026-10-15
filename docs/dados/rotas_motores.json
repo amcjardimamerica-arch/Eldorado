@@ -1,5 +1,5 @@
 {
- "em": "2026-10-15T00:10:19+00:00",
+ "em": "2026-10-15T00:55:16+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
@@ -7,17 +7,17 @@
   "alterar_rota": 46,
   "rota_nova": 50,
   "via_ponte": 3,
-  "exemplos_da_rede": 8867
+  "exemplos_da_rede": 8988
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
    [
-    "tok:mpf",
-    2.3939
+    "origem:biblioteca",
+    2.574
    ],
    [
-    "origem:biblioteca",
-    2.3666
+    "tok:mpf",
+    2.3939
    ],
    [
     "tok:inscricoes",
@@ -29,23 +29,27 @@
    ],
    [
     "tok:secult",
-    1.6555
+    2.1593
    ],
    [
-    "tipo:privada",
-    1.5784
+    "origem:rota original",
+    1.701
+   ],
+   [
+    "tok:leipaulogustavo",
+    1.5765
    ],
    [
     "tok:portarias",
     1.543
    ],
    [
-    "origem:rota original",
-    1.5089
+    "tipo:privada",
+    1.5103
    ],
    [
     "tok:feed",
-    1.4599
+    1.4573
    ],
    [
     "tok:abertas",
@@ -54,32 +58,28 @@
    [
     "tok:imprensa",
     1.4016
-   ],
-   [
-    "tok:assuntos",
-    1.3977
    ]
   ],
   "piores_sinais": [
    [
-    "tok:prefeitura",
-    -1.5763
+    "tok:ccs",
+    -1.484
    ],
    [
-    "tipo:site_oficial",
-    -1.6141
+    "tok:prefeitura",
+    -1.5956
    ],
    [
     "tok:content",
-    -1.9374
+    -1.9593
    ],
    [
     "tok:uploads",
-    -1.9374
+    -1.9593
    ],
    [
     "tipo:internacional",
-    -1.9947
+    -1.9959
    ],
    [
     "origem:câmara",
@@ -87,11 +87,11 @@
    ],
    [
     "gov:False",
-    -2.5175
+    -2.5207
    ],
    [
     "origem:padrão",
-    -3.2026
+    -3.2119
    ]
   ]
  },
@@ -310,8 +310,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-14T18:33:32+00:00",
-    "testes": 13,
+    "em": "2026-10-15T00:54:41+00:00",
+    "testes": 23,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -622,8 +622,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-14T16:58:57+00:00",
-    "testes": 12,
+    "em": "2026-10-15T00:54:25+00:00",
+    "testes": 24,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -894,7 +894,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-14T16:57:42+00:00",
+    "em": "2026-10-15T00:53:19+00:00",
     "testes": 20,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -940,8 +940,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-14T16:58:54+00:00",
-    "testes": 13,
+    "em": "2026-10-15T00:54:16+00:00",
+    "testes": 22,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -1127,7 +1127,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-14T16:58:47+00:00",
+    "em": "2026-10-15T00:54:05+00:00",
     "testes": 15,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1222,21 +1222,21 @@
    ],
    "rota_aprendida": {
     "urls": [
-     "https://www.goiania.go.gov.br/secult/leipaulogustavo/"
+     "https://www.goiania.go.gov.br/secult/pnab-2024/"
     ],
     "via": "direto",
-    "origem": "rota original",
-    "pontos": 9,
-    "aprendido_em": "2026-10-14T18:33:42+00:00"
+    "origem": "biblioteca",
+    "pontos": 89,
+    "aprendido_em": "2026-10-15T00:55:16+00:00"
    },
    "afinado": {
-    "em": "2026-10-14T18:33:42+00:00",
-    "testes": 16,
+    "em": "2026-10-15T00:55:16+00:00",
+    "testes": 17,
     "melhor": {
-     "url": "https://www.goiania.go.gov.br/secult/leipaulogustavo/",
+     "url": "https://www.goiania.go.gov.br/secult/pnab-2024/",
      "via": "direto",
-     "origem": "rota original",
-     "pontos": 9,
+     "origem": "biblioteca",
+     "pontos": 89,
      "formato": "html"
     },
     "resultado": "rota nova em teste"
