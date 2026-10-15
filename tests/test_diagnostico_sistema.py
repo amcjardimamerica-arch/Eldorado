@@ -63,7 +63,9 @@ class TesteDiagnostico(unittest.TestCase):
         self.assertEqual(D._cadencia_h('cron: "23 6 * * *"'), 24.0)
 
     def test_fluxos(self):
-        self.assertIn("python -m src.diagnostico_sistema", (ROOT / ".github/workflows/motores-da-vez.yml").read_text(encoding="utf-8"))
+        # 15/10/2026 (titular): o fluxo 22 chama o comando único (src/comando.py), que chama cada etapa
+        self.assertIn("python -m src.comando", (ROOT / ".github/workflows/motores-da-vez.yml").read_text(encoding="utf-8"))
+        self.assertIn("src.diagnostico_sistema", (ROOT / "src/comando.py").read_text(encoding="utf-8"))
         w = (ROOT / ".github/workflows/analise-sistema.yml").read_text(encoding="utf-8")
         self.assertIn("python -m src.diagnostico_sistema --corrigir", w)
 

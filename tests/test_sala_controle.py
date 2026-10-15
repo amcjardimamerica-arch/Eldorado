@@ -30,7 +30,9 @@ class TesteEstado(unittest.TestCase):
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
         self.assertIn('id="v-neural"', h); self.assertIn('"neural"]', h); self.assertIn('data-v="neural"', h)
         self.assertIn("window.desenhaNeural", h); self.assertIn("sala_controle.json", h)
-        self.assertIn("python -m src.sala_controle", (ROOT / ".github/workflows/motores-da-vez.yml").read_text(encoding="utf-8"))
+        # 15/10/2026 (titular): o fluxo 22 chama o comando único (src/comando.py), que chama cada etapa
+        self.assertIn("python -m src.comando", (ROOT / ".github/workflows/motores-da-vez.yml").read_text(encoding="utf-8"))
+        self.assertIn("src.sala_controle", (ROOT / "src/comando.py").read_text(encoding="utf-8"))
         self.assertTrue((ROOT / "docs/prompts/PROMPT-SALA-DE-CONTROLE-REDE-NEURAL-2026-10-11.md").exists())
         # v3 (11/10): a constelação — desktop, largura total, céu em canvas (as estrelas de dados são os motores), nove etapas
         # ligadas por sinapses, janela-holograma no centro que nasce do elemento clicado (nunca painel lateral)
