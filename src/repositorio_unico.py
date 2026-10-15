@@ -122,8 +122,13 @@ NAO_OPORTUNIDADE = [
     (re.compile(r"(?i)vagas? (?:para|da|de) (?:a )?sociedade civil (?:em|no|na) (?:comit|conselho|f[óo]rum|c[âa]mara)|elei[çc][ãa]o (?:de|dos) conselheiros|composi[çc][ãa]o do conselho"), "vaga de representação em comitê ou conselho — não é recurso"),
     (re.compile(r"(?i)\b(?:firma|assina|celebra|renova)m? (?:parceria|conv[êe]nio|acordo|termo|contrato)"), "notícia de parceria já firmada — não é seleção aberta"),
     (re.compile(r"(?i)^\s*comit[êe] gestor\b"), "página institucional de comitê — não é edital"),
-    (re.compile(r"(?i)subven[çc][ãa]o econ[ôo]mica"), "subvenção econômica — público são empresas, não associações"),
+    (re.compile(r"(?i)subven[çc][ãa]o econ[ôo]mica|\btecnova\b"), "subvenção econômica — público são empresas, não associações"),
+    # 15/10 (ciclo 6, validação de 20 pelo Claude)
+    (re.compile(r"(?i)banco de talentos|cadastro de curr[íi]culos?|\bquiz\b|\benquete\b|pesquisa de satisfa[çc][ãa]o"), "cadastro de pessoas, quiz ou enquete — não é edital"),
+    (re.compile(r"(?i)profissionais aut[ôo]nomos|credenciamento de pessoas? f[íi]sicas?(?! e (?:pessoas? )?jur[íi]dicas?)|aluguel social|benef[íi]cio (?:às|as|para|a) fam[íi]lias|aux[íi]lio (?:às|as|para) fam[íi]lias"), "público são pessoas físicas ou famílias — não associações"),
+    (re.compile(r"(?i)divulga[çc][ãa]o (?:do resultado )?prorrogada|prorroga[çc][ãa]o d[ao] (?:divulga[çc][ãa]o|resultado)"), "fase de resultado — a inscrição já terminou"),
 ]
+PAGINA_DE_AGREGADOR = re.compile(r"(?i)https?://(?:www\.)?(?:capitaai|captadores|editaisdobrasil|farolcultural|observatorio3setor|prosas)\.[a-z.]+/(?:planos|precos|preços|sobre|assin|login|cadastro|contato|quem-somos)?/?(?:\?|$)")
 ORGANIZACAO_SOCIAL = re.compile(r"(?i)\borganiza[çc](?:[ãa]o|[õo]es) sociais?\b(?! civil)|contrato de gest[ãa]o|qualifica[çc][ãa]o como (?:os|organiza)")
 ANO_ANTERIOR = re.compile(r"\b(20(?:1\d|2[0-4]))\b")   # 15/10: 2025 pode seguir aberto (ciclos da PNAB) — só 2024 ou antes
 PERMITE_CREDENCIAMENTO = re.compile(r"(?i)organiza[çc](?:[ãa]o|[õo]es) da sociedade civil|\boscs?\b|sem fins lucrativos|entidades? (?:socioassist|filantr)|associa[çc]")
@@ -138,6 +143,8 @@ def nao_e_oportunidade(r: dict) -> str | None:
     if LEGISLATIVO_ABERTAS.search(t):
         return "ato legislativo — vai ao acompanhamento legislativo (Oportunidades Abertas › Legislativo)"
     tit = str(r.get("titulo") or "")
+    if PAGINA_DE_AGREGADOR.search(str(r.get("url") or "")):
+        return "página institucional ou comercial do agregador — não é oportunidade"
     if ORGANIZACAO_SOCIAL.search(t) and not re.search(r"(?i)sociedade civil|\bosc", tit):
         return "Organização Social (contrato de gestão) — acompanhar, não é oportunidade da associação"
     if "credenciamento" in t.lower() and SAUDE_SERVICO.search(f"{t} {r.get('orgao') or ''}") and not re.search(r"(?i)sociedade civil|\bosc", tit):
