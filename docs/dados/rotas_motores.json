@@ -1,5 +1,5 @@
 {
- "em": "2026-10-15T07:57:02+00:00",
+ "em": "2026-10-15T09:26:33+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
@@ -7,13 +7,13 @@
   "alterar_rota": 47,
   "rota_nova": 50,
   "via_ponte": 3,
-  "exemplos_da_rede": 9536
+  "exemplos_da_rede": 9652
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
    [
     "origem:biblioteca",
-    2.8088
+    2.706
    ],
    [
     "tok:secult",
@@ -33,7 +33,7 @@
    ],
    [
     "origem:rota original",
-    1.9238
+    1.7768
    ],
    [
     "tok:leipaulogustavo",
@@ -44,16 +44,16 @@
     1.543
    ],
    [
-    "gov:True",
-    1.481
-   ],
-   [
     "tok:abertas",
     1.4331
    ],
    [
     "tok:imprensa",
     1.4016
+   ],
+   [
+    "gov:True",
+    1.398
    ],
    [
     "tok:assuntos",
@@ -71,7 +71,7 @@
    ],
    [
     "tipo:internacional",
-    -2.0165
+    -2.0232
    ],
    [
     "tok:content",
@@ -87,11 +87,11 @@
    ],
    [
     "gov:False",
-    -2.6105
+    -2.7875
    ],
    [
     "origem:padrão",
-    -3.3108
+    -3.321
    ]
   ]
  },
@@ -255,7 +255,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-14T21:41:34+00:00",
+    "em": "2026-10-15T09:25:40+00:00",
     "testes": 24,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -387,7 +387,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-14T21:41:38+00:00",
+    "em": "2026-10-15T09:25:44+00:00",
     "testes": 14,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -410,7 +410,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T00:09:28+00:00",
+    "em": "2026-10-15T09:26:08+00:00",
     "testes": 20,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -651,8 +651,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T01:38:05+00:00",
-    "testes": 12,
+    "em": "2026-10-15T09:26:33+00:00",
+    "testes": 24,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -894,8 +894,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T00:53:19+00:00",
-    "testes": 20,
+    "em": "2026-10-15T09:26:11+00:00",
+    "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -940,7 +940,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T00:54:16+00:00",
+    "em": "2026-10-15T09:26:22+00:00",
     "testes": 22,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -3701,10 +3701,10 @@
    "nome": "Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 100,
-   "ok": 57,
+   "leituras": 101,
+   "ok": 58,
    "ultima": {
-    "em": "2026-10-15T07:10:47+00:00",
+    "em": "2026-10-15T07:54:07+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3807,18 +3807,18 @@
    "nome": "Prefeituras das 25 maiores cidades de Goiás — portais de editais",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 103,
-   "ok": 52,
+   "leituras": 104,
+   "ok": 53,
    "ultima": {
-    "em": "2026-10-15T07:08:30+00:00",
+    "em": "2026-10-15T07:51:36+00:00",
     "classe": "ok",
     "motivo": ""
    },
    "historico": [
     "o",
     "o",
-    "o",
     "v",
+    "o",
     "o",
     "o",
     "o",
@@ -4558,14 +4558,15 @@
    "nome": "Adaptador WordPress — sites oficiais pela API pública",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 7,
-   "ok": 7,
+   "leituras": 8,
+   "ok": 8,
    "ultima": {
-    "em": "2026-10-15T07:12:09+00:00",
+    "em": "2026-10-15T07:55:26+00:00",
     "classe": "ok",
     "motivo": ""
    },
    "historico": [
+    "o",
     "o",
     "o",
     "o",

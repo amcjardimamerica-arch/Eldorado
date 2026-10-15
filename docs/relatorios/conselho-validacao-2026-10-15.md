@@ -45,7 +45,7 @@
    "motor": "empresas-incentivadas",
    "achados_total_1a": 75,
    "achados_total_agora": 75,
-   "no_fluxo": 6,
+   "no_fluxo": 5,
    "confirmadas": 0
   },
   {
@@ -127,9 +127,9 @@
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 1622,
-   "achados_total_agora": 1622,
-   "no_fluxo": 7,
+   "achados_total_1a": 1644,
+   "achados_total_agora": 1644,
+   "no_fluxo": 8,
    "confirmadas": 0
   },
   {
@@ -141,8 +141,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 106,
-   "achados_total_agora": 106,
+   "achados_total_1a": 108,
+   "achados_total_agora": 108,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -225,7 +225,7 @@
  "pontos_com_redundancia": 13,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 9536
+ "exemplos_da_rede_de_rotas": 9652
 }
 ```
 
@@ -236,12 +236,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 68.9,
- "fora_dos_motores_pct_agora": 68.9,
+ "fora_dos_motores_pct_1a": 69.9,
+ "fora_dos_motores_pct_agora": 69.9,
  "origem": {
-  "agregador/outra": 210,
+  "agregador/outra": 215,
   "motor": 150,
-  "Piloto": 122
+  "Piloto": 133
  },
  "dominios_so_de_agregador": [
   {
@@ -399,20 +399,20 @@
 
 ```json
 {
- "fontes_recebidas": 371,
+ "fontes_recebidas": 374,
  "por_origem": {
   "conselho (fontes irmãs)": 162,
-  "Cartório (site oficial certificado)": 170,
+  "Cartório (site oficial certificado)": 173,
   "Espião (privado/internacional)": 39
  },
  "lidas_nas_ultimas_24h": 216,
  "dimensionamento": {
-  "fontes": 371,
+  "fontes": 374,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 8,
-  "cobertura_diaria": 371,
+  "cobertura_diaria": 374,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -470,7 +470,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 98,
+   "orgaos": 100,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",

@@ -46,29 +46,31 @@
 
 ## Cobertura (Dr. Otávio)
 
-68.9% das oportunidades vieram de fora dos motores: {'agregador/outra': 210, 'motor': 150, 'Piloto': 122}.
+69.9% das oportunidades vieram de fora dos motores: {'agregador/outra': 215, 'motor': 150, 'Piloto': 133}.
 
-- GO: 8 oportunidades, nenhuma de motor ({'agregador/outra': 8})
+- GO: 9 oportunidades, nenhuma de motor ({'agregador/outra': 9})
 
 ## Fontes irmãs (Profa. Clara)
 
-224 domínios oficiais já renderam e não têm motor. Os primeiros:
+228 domínios oficiais já renderam e não têm motor. Os primeiros:
 
 - baoba.org.br (peso 25)
-- institutolojasrenner.org.br (peso 17)
+- institutolojasrenner.org.br (peso 15)
 - mariaemilia.org.br (peso 13)
 - zurich.com.br (peso 13)
 - fundoecos.org.br (peso 12)
 - chamadas.funbio.org.br (peso 11)
-- fbb.org.br (peso 11)
 - contrafluxofestival.com.br (peso 11)
 - brazilfoundation.org (peso 11)
 - bnccompras.com (peso 11)
+- institutoinad.org.br (peso 10)
 - pesquisavoluntariado.org.br (peso 10)
 - feirapreta.com.br (peso 9)
 - brasil.aperam.com (peso 9)
+- fbb.org.br (peso 9)
 - transforma.fbb.org.br (peso 8)
-- institutoinad.org.br (peso 8)
+- difusionconcausa.com (peso 8)
+- ifrs.edu.br (peso 8)
 - jornadasocial.com.br (peso 8)
 - impactarte.org.br (peso 8)
 - fondationfrancoisschneider.org (peso 7)
@@ -77,12 +79,10 @@
 - conteudo.agosocial.com.br (peso 7)
 - impactarte.com.br (peso 6)
 - agencia.petrobras.com.br (peso 6)
-- ifrs.edu.br (peso 6)
-- apoioplus.com.br (peso 6)
 
 ## Plataformas e inovações (Dr. Fábio)
 
-- WordPress: 98 órgãos
+- WordPress: 100 órgãos
 - Mapas Culturais: 11 órgãos
 - Diário municipal em lote (AGM/DOM): 16 órgãos
 - Portal de transparência de fornecedor: 19 órgãos
@@ -91,7 +91,7 @@
 - PNCP: 1 órgãos
 - Leis e atos (Leis Municipais): 1 órgãos
 
-- **Adaptador por plataforma** — um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão. Alcance: 98 órgãos WordPress e 11 instâncias de Mapas Culturais já conhecidos de uma vez.
+- **Adaptador por plataforma** — um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão. Alcance: 100 órgãos WordPress e 11 instâncias de Mapas Culturais já conhecidos de uma vez.
 - **Detecção de mudança barata** — ler o sitemap.xml (lastmod) e os feeds RSS/Atom dos sites oficiais; só baixar a página quando muda. Alcance: permite vigiar 10× mais fontes no mesmo tempo de execução.
 - **Consulta inversa** — frases distintivas de editais confirmados (ex.: 'Política Nacional Aldir Blanc' + 'chamamento') viram buscas por editais irmãos em outros municípios. Alcance: cada edital confirmado gera pistas em dezenas de municípios que publicam o mesmo modelo.
 - **Motor de fontes irmãs** — domínios oficiais que já renderam oportunidade e nenhum motor vigia passam a ser lidos todos os dias. Alcance: implantado como motor Outras Oportunidades (clones calculados para ler todas as fontes no dia).
@@ -254,7 +254,7 @@
 - **SILÊNCIO LONGO** (falso_verde): 36 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### Editais de empresas incentivadoras (modelo Porto Itapoá) — FIA, Idoso, Esporte, Rouanet, PRONAS (`plat-empresas-editais-incentivados`) — ruído, 268 achados em 30 dias
-- **RUÍDO** (funil): 1622 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+- **RUÍDO** (funil): 1644 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'fluxo → confirmada'. → faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório
 
 ### FAPEG — Fundação de Amparo à Pesquisa de Goiás (`plat-fapeg`) — baixo volume, 0 achados em 30 dias
@@ -279,7 +279,7 @@
 
 ### Prefeituras das 50 maiores cidades de Goiás — portais de editais (`plat-prefeituras-50-go`) — ruído, 15 achados em 30 dias
 - **CONGELADO** (falso_verde): o mesmo achado repetido em 11 dias. → detectar mudança por hash/lastmod e só contar o que é novo
-- **RUÍDO** (funil): 106 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+- **RUÍDO** (funil): 108 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 
 ### Prosas — editais para o terceiro setor (`plat-prosas`) — baixo volume, 0 achados em 30 dias
 - **CEGO** (falso_verde): respondeu 200 em 10 de 10 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
