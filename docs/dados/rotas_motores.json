@@ -1,19 +1,19 @@
 {
- "em": "2026-10-15T17:44:43+00:00",
+ "em": "2026-10-15T23:04:10+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
   "motores": 152,
-  "alterar_rota": 46,
+  "alterar_rota": 50,
   "rota_nova": 50,
   "via_ponte": 3,
-  "exemplos_da_rede": 9911
+  "exemplos_da_rede": 9992
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
    [
     "origem:biblioteca",
-    2.5553
+    2.8972
    ],
    [
     "tok:secult",
@@ -32,16 +32,16 @@
     2.2113
    ],
    [
-    "tok:leipaulogustavo",
-    1.7516
+    "tipo:privada",
+    2.0436
    ],
    [
     "origem:rota original",
-    1.7274
+    1.9152
    ],
    [
-    "gov:True",
-    1.7174
+    "tok:leipaulogustavo",
+    1.7516
    ],
    [
     "tok:portarias",
@@ -52,12 +52,12 @@
     1.4337
    ],
    [
-    "tok:feed",
-    1.418
-   ],
-   [
     "tok:imprensa",
     1.4016
+   ],
+   [
+    "tok:assuntos",
+    1.3977
    ]
   ],
   "piores_sinais": [
@@ -70,6 +70,10 @@
     -1.7121
    ],
    [
+    "gov:False",
+    -1.9893
+   ],
+   [
     "tok:content",
     -2.0292
    ],
@@ -79,19 +83,15 @@
    ],
    [
     "tipo:internacional",
-    -2.036
+    -2.0503
    ],
    [
     "origem:câmara",
     -2.5513
    ],
    [
-    "gov:False",
-    -2.9455
-   ],
-   [
     "origem:padrão",
-    -2.9595
+    -2.9064
    ]
   ]
  },
@@ -99,11 +99,11 @@
   "judiciario-tjgo": {
    "nome": "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
    "status": "alterar rota",
-   "vazias_seguidas": 93,
-   "leituras": 93,
+   "vazias_seguidas": 95,
+   "leituras": 95,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-15T17:04:14+00:00",
+    "em": "2026-10-15T18:44:53+00:00",
     "classe": "vazia",
     "motivo": "0 notícias lidas (TJGO A 0 no RSS · CNJ C 0) e 1 do TJGO/CNJ no PNCP (lidas pelo motor 04, já na base): nenhum edital de destinação aberto hoje · 0 a acompanhar"
    },
@@ -150,15 +150,17 @@
   "f260-captacao-218": {
    "nome": "Capta - oportunidades e editais",
    "status": "alterar rota",
-   "vazias_seguidas": 47,
-   "leituras": 47,
+   "vazias_seguidas": 49,
+   "leituras": 49,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-15T17:04:28+00:00",
+    "em": "2026-10-15T18:46:04+00:00",
     "classe": "vazia",
-    "motivo": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
+    "motivo": "página institucional; seguiu 3 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
    },
    "historico": [
+    "v",
+    "v",
     "v",
     "v",
     "v",
@@ -178,48 +180,22 @@
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
   },
-  "f260-captacao-223": {
-   "nome": "Fundação Bradesco",
-   "status": "alterar rota",
-   "vazias_seguidas": 45,
-   "leituras": 45,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-15T16:22:16+00:00",
-    "classe": "vazia",
-    "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": null,
-   "afinado": {
-    "em": "2026-10-15T06:11:54+00:00",
-    "testes": 12,
-    "melhor": null,
-    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
-   }
-  },
   "f260-captacao-227": {
    "nome": "Instituto Coca-Cola Brasil",
    "status": "alterar rota",
-   "vazias_seguidas": 44,
-   "leituras": 44,
+   "vazias_seguidas": 48,
+   "leituras": 48,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-15T16:40:44+00:00",
+    "em": "2026-10-15T18:57:44+00:00",
     "classe": "vazia",
     "motivo": "tempo esgotado / conexão recusada"
    },
    "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
     "v",
     "v",
     "v",
@@ -241,15 +217,19 @@
   "f260-captacao-230": {
    "nome": "Fundação ArcelorMittal",
    "status": "alterar rota",
-   "vazias_seguidas": 44,
-   "leituras": 44,
+   "vazias_seguidas": 48,
+   "leituras": 48,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-15T16:40:44+00:00",
+    "em": "2026-10-15T18:57:43+00:00",
     "classe": "vazia",
     "motivo": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
    },
    "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
     "v",
     "v",
     "v",
@@ -266,18 +246,52 @@
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
   },
-  "f260-captacao-222": {
-   "nome": "Fundação Itaú",
+  "f260-captacao-223": {
+   "nome": "Fundação Bradesco",
    "status": "alterar rota",
-   "vazias_seguidas": 44,
-   "leituras": 44,
+   "vazias_seguidas": 47,
+   "leituras": 47,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-15T17:04:23+00:00",
+    "em": "2026-10-15T18:45:51+00:00",
     "classe": "vazia",
     "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
    },
    "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": null,
+   "afinado": {
+    "em": "2026-10-15T06:11:54+00:00",
+    "testes": 12,
+    "melhor": null,
+    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+   }
+  },
+  "f260-captacao-222": {
+   "nome": "Fundação Itaú",
+   "status": "alterar rota",
+   "vazias_seguidas": 46,
+   "leituras": 46,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-15T18:45:12+00:00",
+    "classe": "vazia",
+    "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
+   },
+   "historico": [
+    "v",
+    "v",
     "v",
     "v",
     "v",
@@ -357,15 +371,16 @@
   "f260-curadoria-008": {
    "nome": "Instituto Impactarte — cadastro de proponente em fluxo contínuo",
    "status": "alterar rota",
-   "vazias_seguidas": 36,
-   "leituras": 36,
+   "vazias_seguidas": 37,
+   "leituras": 37,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-13T23:59:29+00:00",
+    "em": "2026-10-15T18:43:51+00:00",
     "classe": "vazia",
     "motivo": "página respondeu mas não tem links (conteúdo carregado por script ou vazio) — precisa de API/RSS ou leitura do HTML renderizado"
    },
    "historico": [
+    "v",
     "v",
     "v"
    ],
@@ -373,6 +388,40 @@
    "afinado": {
     "em": "2026-10-15T06:29:06+00:00",
     "testes": 13,
+    "melhor": null,
+    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+   }
+  },
+  "f260-captacao-226": {
+   "nome": "Instituto Natura",
+   "status": "alterar rota",
+   "vazias_seguidas": 30,
+   "leituras": 30,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-15T18:57:35+00:00",
+    "classe": "vazia",
+    "motivo": "página respondeu mas não tem links (conteúdo carregado por script ou vazio) — precisa de API/RSS ou leitura do HTML renderizado"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": null,
+   "afinado": {
+    "em": "2026-10-15T10:57:50+00:00",
+    "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -402,6 +451,39 @@
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
   },
+  "f260-captacao-224": {
+   "nome": "Fundação Telefônica Vivo",
+   "status": "alterar rota",
+   "vazias_seguidas": 29,
+   "leituras": 29,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-15T18:44:51+00:00",
+    "classe": "vazia",
+    "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": null,
+   "afinado": {
+    "em": "2026-10-15T06:29:24+00:00",
+    "testes": 12,
+    "melhor": null,
+    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+   }
+  },
   "f260-captacao-229": {
    "nome": "Instituto Votorantim",
    "status": "alterar rota",
@@ -426,94 +508,20 @@
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
   },
-  "f260-captacao-224": {
-   "nome": "Fundação Telefônica Vivo",
-   "status": "alterar rota",
-   "vazias_seguidas": 27,
-   "leituras": 27,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-15T17:04:12+00:00",
-    "classe": "vazia",
-    "motivo": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": null,
-   "afinado": {
-    "em": "2026-10-15T06:29:24+00:00",
-    "testes": 12,
-    "melhor": null,
-    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
-   }
-  },
-  "plat-prosas-premios": {
-   "nome": "Prosas — prêmios, concursos e cursos para OSCs",
-   "status": "alterar rota",
-   "vazias_seguidas": 26,
-   "leituras": 26,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-01T15:01:24+00:00",
-    "classe": "vazia",
-    "motivo": "página respondeu com links, mas nenhum rótulo casou com o léxico do terceiro setor hoje — pode não haver edital publicado"
-   },
-   "historico": [],
-   "rota_aprendida": null,
-   "afinado": null
-  },
-  "f260-captacao-226": {
-   "nome": "Instituto Natura",
-   "status": "alterar rota",
-   "vazias_seguidas": 26,
-   "leituras": 26,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-15T16:40:26+00:00",
-    "classe": "vazia",
-    "motivo": "página respondeu mas não tem links (conteúdo carregado por script ou vazio) — precisa de API/RSS ou leitura do HTML renderizado"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": null,
-   "afinado": {
-    "em": "2026-10-15T10:57:50+00:00",
-    "testes": 12,
-    "melhor": null,
-    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
-   }
-  },
   "f260-espalhado-sistema-mirassoldoeste-mt-gov-br": {
    "nome": "PNCP — MUNICIPIO DE MIRASSOL D'OESTE — oportunidades (espalhado de edital validado)",
    "status": "alterar rota",
-   "vazias_seguidas": 26,
-   "leituras": 26,
+   "vazias_seguidas": 28,
+   "leituras": 28,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-15T17:04:02+00:00",
+    "em": "2026-10-15T18:44:41+00:00",
     "classe": "vazia",
-    "motivo": "tempo esgotado / conexão recusada"
+    "motivo": ""
    },
    "historico": [
+    "v",
+    "v",
     "v",
     "v",
     "v",
@@ -533,42 +541,20 @@
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
   },
-  "f260-captacao-235": {
-   "nome": "Instituto Lojas Renner",
-   "status": "alterar rota",
-   "vazias_seguidas": 25,
-   "leituras": 25,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-15T16:18:20+00:00",
-    "classe": "vazia",
-    "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": null,
-   "afinado": {
-    "em": "2026-10-15T06:28:57+00:00",
-    "testes": 16,
-    "melhor": null,
-    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
-   }
-  },
   "f260-captacao-228": {
    "nome": "Instituto Localiza",
    "status": "alterar rota",
-   "vazias_seguidas": 25,
-   "leituras": 25,
+   "vazias_seguidas": 27,
+   "leituras": 27,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-15T16:17:55+00:00",
+    "em": "2026-10-15T18:43:57+00:00",
     "classe": "vazia",
-    "motivo": "endereço não resolve (DNS) — URL errada"
+    "motivo": ""
    },
    "historico": [
+    "v",
+    "v",
     "v",
     "v",
     "v",
@@ -590,15 +576,17 @@
   "f260-captacao-242": {
    "nome": "PNUD – Small Grants Programme",
    "status": "alterar rota",
-   "vazias_seguidas": 25,
-   "leituras": 25,
+   "vazias_seguidas": 27,
+   "leituras": 27,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-15T16:18:20+00:00",
+    "em": "2026-10-15T18:43:57+00:00",
     "classe": "vazia",
-    "motivo": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas"
+    "motivo": ""
    },
    "historico": [
+    "v",
+    "v",
     "v",
     "v",
     "v",
@@ -613,6 +601,77 @@
    "afinado": {
     "em": "2026-10-15T07:53:15+00:00",
     "testes": 22,
+    "melhor": null,
+    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+   }
+  },
+  "f260-espalhado-rouanet-cultura-gov-br": {
+   "nome": "Ministério da Cultura — SALIC — oportunidades (espalhado de edital validado)",
+   "status": "alterar rota",
+   "vazias_seguidas": 27,
+   "leituras": 27,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-15T18:43:57+00:00",
+    "classe": "vazia",
+    "motivo": ""
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": null,
+   "afinado": {
+    "em": "2026-10-15T07:54:04+00:00",
+    "testes": 24,
+    "melhor": null,
+    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+   }
+  },
+  "plat-prosas-premios": {
+   "nome": "Prosas — prêmios, concursos e cursos para OSCs",
+   "status": "alterar rota",
+   "vazias_seguidas": 26,
+   "leituras": 26,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-01T15:01:24+00:00",
+    "classe": "vazia",
+    "motivo": "página respondeu com links, mas nenhum rótulo casou com o léxico do terceiro setor hoje — pode não haver edital publicado"
+   },
+   "historico": [],
+   "rota_aprendida": null,
+   "afinado": null
+  },
+  "f260-captacao-235": {
+   "nome": "Instituto Lojas Renner",
+   "status": "alterar rota",
+   "vazias_seguidas": 25,
+   "leituras": 25,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-15T16:18:20+00:00",
+    "classe": "vazia",
+    "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": null,
+   "afinado": {
+    "em": "2026-10-15T06:28:57+00:00",
+    "testes": 16,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -642,36 +701,6 @@
    "afinado": {
     "em": "2026-10-15T12:13:36+00:00",
     "testes": 26,
-    "melhor": null,
-    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
-   }
-  },
-  "f260-espalhado-rouanet-cultura-gov-br": {
-   "nome": "Ministério da Cultura — SALIC — oportunidades (espalhado de edital validado)",
-   "status": "alterar rota",
-   "vazias_seguidas": 25,
-   "leituras": 25,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-15T16:18:21+00:00",
-    "classe": "vazia",
-    "motivo": "endereço não resolve (DNS) — URL errada"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": null,
-   "afinado": {
-    "em": "2026-10-15T07:54:04+00:00",
-    "testes": 24,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -802,33 +831,19 @@
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
   },
-  "plat-mapa-osc": {
-   "nome": "Mapa das OSC — editais",
-   "status": "alterar rota",
-   "vazias_seguidas": 8,
-   "leituras": 8,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-01T14:59:49+00:00",
-    "classe": "vazia",
-    "motivo": "página institucional; seguiu 2 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
-   },
-   "historico": [],
-   "rota_aprendida": null,
-   "afinado": null
-  },
   "judiciario-cnj-tjgo": {
    "nome": "Judiciário — CNJ e TJGO: editais das varas de execução penal e das comarcas (prestações pecuniárias) e credenciamentos de entidades",
    "status": "alterar rota",
-   "vazias_seguidas": 8,
-   "leituras": 10,
+   "vazias_seguidas": 9,
+   "leituras": 11,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-15T17:03:22+00:00",
+    "em": "2026-10-15T18:31:02+00:00",
     "classe": "vazia",
     "motivo": "0 notícias lidas (TJGO A 0 no RSS · CNJ C 0) e 1 do TJGO/CNJ no PNCP (lidas pelo motor 04, já na base): nenhum edital de destinação aberto hoje · 0 a acompanhar"
    },
    "historico": [
+    "v",
     "v",
     "v",
     "v",
@@ -843,6 +858,21 @@
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
+  },
+  "plat-mapa-osc": {
+   "nome": "Mapa das OSC — editais",
+   "status": "alterar rota",
+   "vazias_seguidas": 8,
+   "leituras": 8,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-01T14:59:49+00:00",
+    "classe": "vazia",
+    "motivo": "página institucional; seguiu 2 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
+   },
+   "historico": [],
+   "rota_aprendida": null,
+   "afinado": null
   },
   "f260-captacao-212": {
    "nome": "TCM-GO - regularidade municipal e controle",
@@ -887,6 +917,30 @@
    "rota_aprendida": null,
    "afinado": {
     "em": "2026-10-15T12:14:19+00:00",
+    "testes": 12,
+    "melhor": null,
+    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+   }
+  },
+  "f260-captacao-255": {
+   "nome": "Climate Justice Resilience Fund",
+   "status": "alterar rota",
+   "vazias_seguidas": 8,
+   "leituras": 8,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-15T20:08:41+00:00",
+    "classe": "vazia",
+    "motivo": "página respondeu com links, mas nenhum rótulo casou com o léxico do terceiro setor hoje — pode não haver edital publicado"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": null,
+   "afinado": {
+    "em": "2026-10-15T09:26:11+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -940,6 +994,78 @@
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
   },
+  "f260-captacao-221": {
+   "nome": "Fundação Banco do Brasil",
+   "status": "alterar rota",
+   "vazias_seguidas": 8,
+   "leituras": 30,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-15T18:57:29+00:00",
+    "classe": "vazia",
+    "motivo": "página respondeu mas não tem links (conteúdo carregado por script ou vazio) — precisa de API/RSS ou leitura do HTML renderizado"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": {
+    "urls": [
+     "https://www.fbb.org.br/feed"
+    ],
+    "via": "direto",
+    "origem": "rota original",
+    "pontos": 17,
+    "aprendido_em": "2026-10-15T23:03:10+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-15T23:03:10+00:00",
+    "testes": 13,
+    "melhor": {
+     "url": "https://www.fbb.org.br/feed",
+     "via": "direto",
+     "origem": "rota original",
+     "pontos": 17,
+     "formato": "sitemap/feed"
+    },
+    "resultado": "rota nova em teste"
+   }
+  },
+  "f260-captacao-253": {
+   "nome": "Microsoft Philanthropies",
+   "status": "alterar rota",
+   "vazias_seguidas": 8,
+   "leituras": 8,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-15T18:43:49+00:00",
+    "classe": "vazia",
+    "motivo": "página respondeu com links, mas nenhum rótulo casou com o léxico do terceiro setor hoje — pode não haver edital publicado"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": null,
+   "afinado": {
+    "em": "2026-10-15T23:04:04+00:00",
+    "testes": 12,
+    "melhor": null,
+    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+   }
+  },
   "f260-captacao-248": {
    "nome": "Open Society Foundations",
    "status": "alterar rota",
@@ -958,7 +1084,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T04:40:07+00:00",
+    "em": "2026-10-15T23:04:10+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1061,52 +1187,6 @@
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
   },
-  "f260-captacao-255": {
-   "nome": "Climate Justice Resilience Fund",
-   "status": "alterar rota",
-   "vazias_seguidas": 7,
-   "leituras": 7,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-14T05:46:56+00:00",
-    "classe": "vazia",
-    "motivo": "página respondeu com links, mas nenhum rótulo casou com o léxico do terceiro setor hoje — pode não haver edital publicado"
-   },
-   "historico": [
-    "v",
-    "v"
-   ],
-   "rota_aprendida": null,
-   "afinado": {
-    "em": "2026-10-15T09:26:11+00:00",
-    "testes": 12,
-    "melhor": null,
-    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
-   }
-  },
-  "f260-captacao-253": {
-   "nome": "Microsoft Philanthropies",
-   "status": "alterar rota",
-   "vazias_seguidas": 7,
-   "leituras": 7,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-14T05:47:16+00:00",
-    "classe": "vazia",
-    "motivo": "página respondeu com links, mas nenhum rótulo casou com o léxico do terceiro setor hoje — pode não haver edital publicado"
-   },
-   "historico": [
-    "v",
-    "v"
-   ],
-   "rota_aprendida": null,
-   "afinado": {
-    "em": "2026-10-15T04:40:02+00:00",
-    "testes": 12,
-    "melhor": null,
-    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
-   }
-  },
   "f260-espalhado-www-arapongas-pr-gov-br": {
    "nome": "Querido Diário — diários oficiais municipais — oportunidades (espalhado de edital validado)",
    "status": "alterar rota",
@@ -1203,6 +1283,179 @@
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
   },
+  "f260-espalhado-www-novohamburgo-rs-gov-br": {
+   "nome": "PNCP — MUNICIPIO DE NOVO HAMBURGO — oportunidades (espalhado de edital validado)",
+   "status": "alterar rota",
+   "vazias_seguidas": 6,
+   "leituras": 28,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-15T18:44:41+00:00",
+    "classe": "vazia",
+    "motivo": ""
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": {
+    "urls": [
+     "https://www.novohamburgo.rs.gov.br/"
+    ],
+    "via": "ponte",
+    "origem": "rota original",
+    "pontos": 3,
+    "aprendido_em": "2026-10-13T11:38:04+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-15T23:03:42+00:00",
+    "testes": 12,
+    "melhor": null,
+    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+   }
+  },
+  "f260-captacao-238": {
+   "nome": "Sebrae Goiás - parcerias com OSC para empreendedorismo",
+   "status": "alterar rota",
+   "vazias_seguidas": 5,
+   "leituras": 60,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-15T18:46:04+00:00",
+    "classe": "vazia",
+    "motivo": ""
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": {
+    "urls": [
+     "https://sebraego.com.br/feed"
+    ],
+    "via": "direto",
+    "origem": "rota original",
+    "pontos": 9,
+    "aprendido_em": "2026-10-13T10:01:11+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-13T10:01:11+00:00",
+    "testes": 12,
+    "melhor": {
+     "url": "https://sebraego.com.br/feed",
+     "via": "direto",
+     "origem": "rota original",
+     "pontos": 9,
+     "formato": "sitemap/feed"
+    },
+    "resultado": "rota nova em teste"
+   }
+  },
+  "f260-captacao-207": {
+   "nome": "Acordo de cooperação sem transferência financeira",
+   "status": "alterar rota",
+   "vazias_seguidas": 5,
+   "leituras": 28,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-15T18:44:16+00:00",
+    "classe": "vazia",
+    "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": {
+    "urls": [
+     "https://www.in.gov.br/web/dou/-/aviso-de-selecao-publica-735913080"
+    ],
+    "via": "direto",
+    "origem": "biblioteca",
+    "pontos": 19,
+    "aprendido_em": "2026-10-15T23:02:28+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-15T23:02:28+00:00",
+    "testes": 16,
+    "melhor": {
+     "url": "https://www.in.gov.br/web/dou/-/aviso-de-selecao-publica-735913080",
+     "via": "direto",
+     "origem": "biblioteca",
+     "pontos": 19,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
+  },
+  "f260-curadoria-005": {
+   "nome": "Fundação Tide Setubal — Edital Territórios Clínicos",
+   "status": "alterar rota",
+   "vazias_seguidas": 5,
+   "leituras": 28,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-15T18:44:41+00:00",
+    "classe": "vazia",
+    "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": {
+    "urls": [
+     "https://fundacaotidesetubal.org.br/feed"
+    ],
+    "via": "direto",
+    "origem": "rota original",
+    "pontos": 30,
+    "aprendido_em": "2026-10-15T23:03:31+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-15T23:03:31+00:00",
+    "testes": 16,
+    "melhor": {
+     "url": "https://fundacaotidesetubal.org.br/feed",
+     "via": "direto",
+     "origem": "rota original",
+     "pontos": 30,
+     "formato": "sitemap/feed"
+    },
+    "resultado": "rota nova em teste"
+   }
+  },
   "judiciario-cnj": {
    "nome": "CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024)",
    "status": "alterar rota",
@@ -1263,50 +1516,6 @@
      "via": "direto",
      "origem": "rota original",
      "pontos": 91,
-     "formato": "html"
-    },
-    "resultado": "rota nova em teste"
-   }
-  },
-  "f260-espalhado-www-rosariodosul-rs-gov-br": {
-   "nome": "PNCP — MUNICIPIO DE ROSARIO DO SUL — oportunidades (espalhado de edital validado)",
-   "status": "alterar rota",
-   "vazias_seguidas": 5,
-   "leituras": 25,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-15T16:18:25+00:00",
-    "classe": "vazia",
-    "motivo": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": {
-    "urls": [
-     "https://www.rosariodosul.rs.gov.br/"
-    ],
-    "via": "ponte",
-    "origem": "rota original",
-    "pontos": 9,
-    "aprendido_em": "2026-10-15T17:43:51+00:00"
-   },
-   "afinado": {
-    "em": "2026-10-15T17:43:51+00:00",
-    "testes": 14,
-    "melhor": {
-     "url": "https://www.rosariodosul.rs.gov.br/",
-     "via": "ponte",
-     "origem": "rota original",
-     "pontos": 9,
      "formato": "html"
     },
     "resultado": "rota nova em teste"
@@ -1446,6 +1655,50 @@
     "resultado": "rota nova em teste"
    }
   },
+  "f260-captacao-231": {
+   "nome": "Fundação Vale",
+   "status": "rota nova em teste",
+   "vazias_seguidas": 4,
+   "leituras": 46,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-15T18:45:31+00:00",
+    "classe": "vazia",
+    "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": {
+    "urls": [
+     "https://www.fundacaovale.org/materiais/cursos"
+    ],
+    "via": "direto",
+    "origem": "rota original",
+    "pontos": 7,
+    "aprendido_em": "2026-10-13T22:55:24+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-13T22:55:24+00:00",
+    "testes": 14,
+    "melhor": {
+     "url": "https://www.fundacaovale.org/materiais/cursos",
+     "via": "direto",
+     "origem": "rota original",
+     "pontos": 7,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
+  },
   "f260-captacao-232": {
    "nome": "Instituto Neoenergia",
    "status": "ok",
@@ -1465,23 +1718,18 @@
    "rota_aprendida": null,
    "afinado": null
   },
-  "f260-captacao-221": {
-   "nome": "Fundação Banco do Brasil",
+  "f260-curadoria-002": {
+   "nome": "Funbio — Programa Biodiversidade Litoral do Paraná",
    "status": "rota nova em teste",
    "vazias_seguidas": 4,
-   "leituras": 26,
+   "leituras": 9,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-15T16:40:20+00:00",
+    "em": "2026-10-15T18:17:46+00:00",
     "classe": "vazia",
-    "motivo": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
+    "motivo": "página respondeu com links, mas nenhum rótulo casou com o léxico do terceiro setor hoje — pode não haver edital publicado"
    },
    "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
     "v",
     "v",
     "v",
@@ -1489,38 +1737,40 @@
    ],
    "rota_aprendida": {
     "urls": [
-     "https://www.fbb.org.br/feed"
+     "https://chamadas.funbio.org.br/sitemap.xml"
     ],
     "via": "direto",
-    "origem": "rota original",
+    "origem": "padrão",
     "pontos": 9,
-    "aprendido_em": "2026-10-13T05:28:10+00:00"
+    "aprendido_em": "2026-10-10T22:56:52+00:00"
    },
    "afinado": {
-    "em": "2026-10-13T05:28:10+00:00",
-    "testes": 12,
+    "em": "2026-10-10T22:56:52+00:00",
+    "testes": 24,
     "melhor": {
-     "url": "https://www.fbb.org.br/feed",
+     "url": "https://chamadas.funbio.org.br/sitemap.xml",
      "via": "direto",
-     "origem": "rota original",
+     "origem": "padrão",
      "pontos": 9,
      "formato": "sitemap/feed"
     },
     "resultado": "rota nova em teste"
    }
   },
-  "f260-espalhado-www-novohamburgo-rs-gov-br": {
-   "nome": "PNCP — MUNICIPIO DE NOVO HAMBURGO — oportunidades (espalhado de edital validado)",
+  "f260-espalhado-www-bentogoncalves-rs-gov-br": {
+   "nome": "PNCP — MUNICIPIO DE BENTO GONCALVES — oportunidades (espalhado de edital validado)",
    "status": "rota nova em teste",
    "vazias_seguidas": 4,
-   "leituras": 26,
+   "leituras": 28,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-15T17:04:01+00:00",
+    "em": "2026-10-15T18:44:41+00:00",
     "classe": "vazia",
-    "motivo": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas"
+    "motivo": ""
    },
    "historico": [
+    "v",
+    "v",
     "v",
     "v",
     "v",
@@ -1534,22 +1784,22 @@
    ],
    "rota_aprendida": {
     "urls": [
-     "https://www.novohamburgo.rs.gov.br/"
+     "https://www.bentogoncalves.rs.gov.br/feed"
     ],
     "via": "ponte",
     "origem": "rota original",
-    "pontos": 3,
-    "aprendido_em": "2026-10-13T11:38:04+00:00"
+    "pontos": 13,
+    "aprendido_em": "2026-10-15T10:57:19+00:00"
    },
    "afinado": {
-    "em": "2026-10-13T11:38:04+00:00",
-    "testes": 15,
+    "em": "2026-10-15T10:57:19+00:00",
+    "testes": 18,
     "melhor": {
-     "url": "https://www.novohamburgo.rs.gov.br/",
+     "url": "https://www.bentogoncalves.rs.gov.br/feed",
      "via": "ponte",
      "origem": "rota original",
-     "pontos": 3,
-     "formato": "html"
+     "pontos": 13,
+     "formato": "sitemap/feed"
     },
     "resultado": "rota nova em teste"
    }
@@ -1638,6 +1888,50 @@
    "rota_aprendida": null,
    "afinado": null
   },
+  "f260-captacao-151": {
+   "nome": "Emenda estadual para saúde comunitária",
+   "status": "rota nova em teste",
+   "vazias_seguidas": 3,
+   "leituras": 55,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-15T18:19:52+00:00",
+    "classe": "vazia",
+    "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": {
+    "urls": [
+     "https://goias.gov.br/fapeg/editais/inscricoes-abertas/"
+    ],
+    "via": "direto",
+    "origem": "biblioteca",
+    "pontos": 11,
+    "aprendido_em": "2026-10-13T09:59:09+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-13T09:59:09+00:00",
+    "testes": 16,
+    "melhor": {
+     "url": "https://goias.gov.br/fapeg/editais/inscricoes-abertas/",
+     "via": "direto",
+     "origem": "biblioteca",
+     "pontos": 11,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
+  },
   "f260-captacao-196": {
    "nome": "MPGO - TAC com destinação social",
    "status": "rota nova em teste",
@@ -1682,50 +1976,6 @@
     "resultado": "rota nova em teste"
    }
   },
-  "f260-captacao-238": {
-   "nome": "Sebrae Goiás - parcerias com OSC para empreendedorismo",
-   "status": "rota nova em teste",
-   "vazias_seguidas": 3,
-   "leituras": 58,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-15T16:23:52+00:00",
-    "classe": "vazia",
-    "motivo": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": {
-    "urls": [
-     "https://sebraego.com.br/feed"
-    ],
-    "via": "direto",
-    "origem": "rota original",
-    "pontos": 9,
-    "aprendido_em": "2026-10-13T10:01:11+00:00"
-   },
-   "afinado": {
-    "em": "2026-10-13T10:01:11+00:00",
-    "testes": 12,
-    "melhor": {
-     "url": "https://sebraego.com.br/feed",
-     "via": "direto",
-     "origem": "rota original",
-     "pontos": 9,
-     "formato": "sitemap/feed"
-    },
-    "resultado": "rota nova em teste"
-   }
-  },
   "f260-captacao-039": {
    "nome": "Editais de ocupação cultural municipal",
    "status": "rota nova em teste",
@@ -1759,44 +2009,6 @@
      "via": "direto",
      "origem": "biblioteca",
      "pontos": 9,
-     "formato": "html"
-    },
-    "resultado": "rota nova em teste"
-   }
-  },
-  "f260-captacao-207": {
-   "nome": "Acordo de cooperação sem transferência financeira",
-   "status": "rota nova em teste",
-   "vazias_seguidas": 3,
-   "leituras": 26,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-15T16:18:55+00:00",
-    "classe": "vazia",
-    "motivo": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": {
-    "urls": [
-     "https://www.in.gov.br/web/dou/-/aviso-de-chamada-publica-571071201"
-    ],
-    "via": "direto",
-    "origem": "biblioteca",
-    "pontos": 19,
-    "aprendido_em": "2026-10-11T02:13:56+00:00"
-   },
-   "afinado": {
-    "em": "2026-10-11T02:13:56+00:00",
-    "testes": 16,
-    "melhor": {
-     "url": "https://www.in.gov.br/web/dou/-/aviso-de-chamada-publica-571071201",
-     "via": "direto",
-     "origem": "biblioteca",
-     "pontos": 19,
      "formato": "html"
     },
     "resultado": "rota nova em teste"
@@ -2163,44 +2375,6 @@
     "resultado": "rota nova em teste"
    }
   },
-  "f260-curadoria-002": {
-   "nome": "Funbio — Programa Biodiversidade Litoral do Paraná",
-   "status": "rota nova em teste",
-   "vazias_seguidas": 3,
-   "leituras": 8,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-15T16:10:10+00:00",
-    "classe": "vazia",
-    "motivo": "tempo esgotado / conexão recusada"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": {
-    "urls": [
-     "https://chamadas.funbio.org.br/sitemap.xml"
-    ],
-    "via": "direto",
-    "origem": "padrão",
-    "pontos": 9,
-    "aprendido_em": "2026-10-10T22:56:52+00:00"
-   },
-   "afinado": {
-    "em": "2026-10-10T22:56:52+00:00",
-    "testes": 24,
-    "melhor": {
-     "url": "https://chamadas.funbio.org.br/sitemap.xml",
-     "via": "direto",
-     "origem": "padrão",
-     "pontos": 9,
-     "formato": "sitemap/feed"
-    },
-    "resultado": "rota nova em teste"
-   }
-  },
   "f260-curadoria-003": {
    "nome": "Movimento Bem Maior — Edital Futuro Bem Maior",
    "status": "rota nova em teste",
@@ -2235,50 +2409,6 @@
      "origem": "rota original",
      "pontos": 5,
      "formato": "html"
-    },
-    "resultado": "rota nova em teste"
-   }
-  },
-  "f260-curadoria-005": {
-   "nome": "Fundação Tide Setubal — Edital Territórios Clínicos",
-   "status": "rota nova em teste",
-   "vazias_seguidas": 3,
-   "leituras": 26,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-15T16:19:21+00:00",
-    "classe": "vazia",
-    "motivo": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": {
-    "urls": [
-     "https://fundacaotidesetubal.org.br/feed"
-    ],
-    "via": "direto",
-    "origem": "rota original",
-    "pontos": 30,
-    "aprendido_em": "2026-10-13T10:01:32+00:00"
-   },
-   "afinado": {
-    "em": "2026-10-13T10:01:32+00:00",
-    "testes": 16,
-    "melhor": {
-     "url": "https://fundacaotidesetubal.org.br/feed",
-     "via": "direto",
-     "origem": "rota original",
-     "pontos": 30,
-     "formato": "sitemap/feed"
     },
     "resultado": "rota nova em teste"
    }
@@ -2425,14 +2555,14 @@
     "resultado": "rota nova em teste"
    }
   },
-  "f260-captacao-151": {
-   "nome": "Emenda estadual para saúde comunitária",
+  "alego-pl": {
+   "nome": "Assembleia Legislativa de Goiás — proposições",
    "status": "rota nova em teste",
    "vazias_seguidas": 2,
-   "leituras": 54,
+   "leituras": 110,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-15T16:23:21+00:00",
+    "em": "2026-10-15T18:20:11+00:00",
     "classe": "vazia",
     "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
    },
@@ -2444,71 +2574,79 @@
     "v",
     "v",
     "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
     "v"
    ],
    "rota_aprendida": {
     "urls": [
-     "https://goias.gov.br/fapeg/editais/inscricoes-abertas/"
+     "https://portal.al.go.leg.br/"
     ],
     "via": "direto",
-    "origem": "biblioteca",
-    "pontos": 11,
-    "aprendido_em": "2026-10-13T09:59:09+00:00"
+    "origem": "rota original",
+    "pontos": 19,
+    "aprendido_em": "2026-10-15T07:57:02+00:00"
    },
    "afinado": {
-    "em": "2026-10-13T09:59:09+00:00",
+    "em": "2026-10-15T07:57:02+00:00",
     "testes": 16,
     "melhor": {
-     "url": "https://goias.gov.br/fapeg/editais/inscricoes-abertas/",
+     "url": "https://portal.al.go.leg.br/",
      "via": "direto",
-     "origem": "biblioteca",
-     "pontos": 11,
+     "origem": "rota original",
+     "pontos": 19,
      "formato": "html"
     },
     "resultado": "rota nova em teste"
    }
   },
-  "f260-captacao-231": {
-   "nome": "Fundação Vale",
-   "status": "rota nova em teste",
+  "f260-captacao-237": {
+   "nome": "Instituto Sabin",
+   "status": "ok",
    "vazias_seguidas": 2,
-   "leituras": 44,
-   "ok": 0,
+   "leituras": 34,
+   "ok": 9,
    "ultima": {
-    "em": "2026-10-15T16:22:01+00:00",
+    "em": "2026-10-15T18:43:57+00:00",
     "classe": "vazia",
-    "motivo": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje"
+    "motivo": "página respondeu mas não tem links (conteúdo carregado por script ou vazio) — precisa de API/RSS ou leitura do HTML renderizado"
    },
    "historico": [
+    "o",
+    "o",
+    "o",
+    "o",
     "v",
-    "v",
-    "v",
-    "v",
-    "v",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
     "v",
     "v"
    ],
-   "rota_aprendida": {
-    "urls": [
-     "https://www.fundacaovale.org/materiais/cursos"
-    ],
-    "via": "direto",
-    "origem": "rota original",
-    "pontos": 7,
-    "aprendido_em": "2026-10-13T22:55:24+00:00"
-   },
-   "afinado": {
-    "em": "2026-10-13T22:55:24+00:00",
-    "testes": 14,
-    "melhor": {
-     "url": "https://www.fundacaovale.org/materiais/cursos",
-     "via": "direto",
-     "origem": "rota original",
-     "pontos": 7,
-     "formato": "html"
-    },
-    "resultado": "rota nova em teste"
-   }
+   "rota_aprendida": null,
+   "afinado": null
   },
   "f260-captacao-107": {
    "nome": "Emenda municipal para entidade assistencial",
@@ -2704,115 +2842,39 @@
     "resultado": "rota nova em teste"
    }
   },
-  "f260-espalhado-www-bentogoncalves-rs-gov-br": {
-   "nome": "PNCP — MUNICIPIO DE BENTO GONCALVES — oportunidades (espalhado de edital validado)",
-   "status": "rota nova em teste",
+  "outras-oportunidades-5": {
+   "nome": "Outras Oportunidades 5/8",
+   "status": "ok",
    "vazias_seguidas": 2,
-   "leituras": 26,
-   "ok": 0,
+   "leituras": 18,
+   "ok": 16,
    "ultima": {
-    "em": "2026-10-15T17:04:02+00:00",
-    "classe": "vazia",
-    "motivo": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": {
-    "urls": [
-     "https://www.bentogoncalves.rs.gov.br/feed"
-    ],
-    "via": "ponte",
-    "origem": "rota original",
-    "pontos": 13,
-    "aprendido_em": "2026-10-15T10:57:19+00:00"
-   },
-   "afinado": {
-    "em": "2026-10-15T10:57:19+00:00",
-    "testes": 18,
-    "melhor": {
-     "url": "https://www.bentogoncalves.rs.gov.br/feed",
-     "via": "ponte",
-     "origem": "rota original",
-     "pontos": 13,
-     "formato": "sitemap/feed"
-    },
-    "resultado": "rota nova em teste"
-   }
-  },
-  "alego-pl": {
-   "nome": "Assembleia Legislativa de Goiás — proposições",
-   "status": "rota nova em teste",
-   "vazias_seguidas": 1,
-   "leituras": 109,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-15T16:23:07+00:00",
+    "em": "2026-10-15T18:26:40+00:00",
     "classe": "vazia",
     "motivo": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
    },
    "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
+    "o",
     "v",
     "v"
    ],
-   "rota_aprendida": {
-    "urls": [
-     "https://portal.al.go.leg.br/"
-    ],
-    "via": "direto",
-    "origem": "rota original",
-    "pontos": 19,
-    "aprendido_em": "2026-10-15T07:57:02+00:00"
-   },
-   "afinado": {
-    "em": "2026-10-15T07:57:02+00:00",
-    "testes": 16,
-    "melhor": {
-     "url": "https://portal.al.go.leg.br/",
-     "via": "direto",
-     "origem": "rota original",
-     "pontos": 19,
-     "formato": "html"
-    },
-    "resultado": "rota nova em teste"
-   }
+   "rota_aprendida": null,
+   "afinado": null
   },
   "f260-curadoria-006": {
    "nome": "Instituto Clima e Sociedade (iCS) — chamadas de comunicação e clima",
@@ -2833,25 +2895,97 @@
    "rota_aprendida": null,
    "afinado": null
   },
-  "f260-curadoria-001": {
-   "nome": "Banco do Nordeste — Editais Sociais (incentivo fiscal)",
+  "plat-estaduais-go-gov": {
+   "nome": "Oportunidade Estaduais Governamentais de Goiás",
    "status": "ok",
    "vazias_seguidas": 1,
-   "leituras": 16,
-   "ok": 3,
+   "leituras": 80,
+   "ok": 27,
    "ultima": {
-    "em": "2026-10-15T17:03:36+00:00",
+    "em": "2026-10-15T18:12:27+00:00",
     "classe": "vazia",
-    "motivo": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
+    "motivo": "50 órgão(s) já com histórico e monitorados; nenhuma seleção aberta nova hoje"
    },
    "historico": [
     "o",
+    "v",
     "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
+    "o",
+    "v",
     "o",
     "v"
    ],
    "rota_aprendida": null,
    "afinado": null
+  },
+  "f260-espalhado-www-rosariodosul-rs-gov-br": {
+   "nome": "PNCP — MUNICIPIO DE ROSARIO DO SUL — oportunidades (espalhado de edital validado)",
+   "status": "rota nova em teste",
+   "vazias_seguidas": 1,
+   "leituras": 27,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-15T18:43:57+00:00",
+    "classe": "vazia",
+    "motivo": ""
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": {
+    "urls": [
+     "https://www.rosariodosul.rs.gov.br/"
+    ],
+    "via": "ponte",
+    "origem": "rota original",
+    "pontos": 9,
+    "aprendido_em": "2026-10-15T17:43:51+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-15T17:43:51+00:00",
+    "testes": 14,
+    "melhor": {
+     "url": "https://www.rosariodosul.rs.gov.br/",
+     "via": "ponte",
+     "origem": "rota original",
+     "pontos": 9,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
   },
   "f260-espalhado-www-santaluziadoparua-ma-gov-br": {
    "nome": "ABCR — Associação Brasileira de Captadores — oportunidades (espalhado de edital validado)",
@@ -2929,32 +3063,18 @@
     "resultado": "rota nova em teste"
    }
   },
-  "outras-oportunidades-5": {
-   "nome": "Outras Oportunidades 5/8",
+  "outras-oportunidades-8": {
+   "nome": "Outras Oportunidades 8/8",
    "status": "ok",
    "vazias_seguidas": 1,
-   "leituras": 17,
-   "ok": 16,
+   "leituras": 3,
+   "ok": 2,
    "ultima": {
-    "em": "2026-10-15T16:59:45+00:00",
+    "em": "2026-10-15T18:29:16+00:00",
     "classe": "vazia",
     "motivo": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam"
    },
    "historico": [
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o",
     "o",
     "o",
     "v"
@@ -3315,14 +3435,16 @@
    "nome": "Projetos aptos à captação na LIE",
    "status": "rota nova funcionando",
    "vazias_seguidas": 0,
-   "leituras": 45,
-   "ok": 9,
+   "leituras": 47,
+   "ok": 11,
    "ultima": {
-    "em": "2026-10-15T16:22:24+00:00",
+    "em": "2026-10-15T18:46:00+00:00",
     "classe": "ok",
     "motivo": ""
    },
    "historico": [
+    "o",
+    "o",
     "o",
     "o",
     "o",
@@ -3544,32 +3666,6 @@
     },
     "resultado": "rota nova em teste"
    }
-  },
-  "f260-captacao-237": {
-   "nome": "Instituto Sabin",
-   "status": "ok",
-   "vazias_seguidas": 0,
-   "leituras": 32,
-   "ok": 9,
-   "ultima": {
-    "em": "2026-10-15T17:03:45+00:00",
-    "classe": "ok",
-    "motivo": ""
-   },
-   "historico": [
-    "o",
-    "o",
-    "o",
-    "o",
-    "v",
-    "o",
-    "o",
-    "o",
-    "o",
-    "o"
-   ],
-   "rota_aprendida": null,
-   "afinado": null
   },
   "f260-captacao-038": {
    "nome": "Editais FICA Goiás - artes visuais/exposição",
@@ -4311,6 +4407,27 @@
    "rota_aprendida": null,
    "afinado": null
   },
+  "f260-curadoria-001": {
+   "nome": "Banco do Nordeste — Editais Sociais (incentivo fiscal)",
+   "status": "ok",
+   "vazias_seguidas": 0,
+   "leituras": 17,
+   "ok": 4,
+   "ultima": {
+    "em": "2026-10-15T18:31:32+00:00",
+    "classe": "ok",
+    "motivo": ""
+   },
+   "historico": [
+    "o",
+    "o",
+    "o",
+    "v",
+    "o"
+   ],
+   "rota_aprendida": null,
+   "afinado": null
+  },
   "f260-curadoria-004": {
    "nome": "Agência do Bem / Rede do Bem — Edital de Microprojetos",
    "status": "ok",
@@ -4441,52 +4558,6 @@
    "rota_aprendida": null,
    "afinado": null
   },
-  "plat-estaduais-go-gov": {
-   "nome": "Oportunidade Estaduais Governamentais de Goiás",
-   "status": "ok",
-   "vazias_seguidas": 0,
-   "leituras": 79,
-   "ok": 27,
-   "ultima": {
-    "em": "2026-10-15T15:31:40+00:00",
-    "classe": "ok",
-    "motivo": ""
-   },
-   "historico": [
-    "v",
-    "o",
-    "v",
-    "o",
-    "v",
-    "o",
-    "v",
-    "o",
-    "v",
-    "o",
-    "v",
-    "o",
-    "v",
-    "o",
-    "v",
-    "o",
-    "v",
-    "o",
-    "v",
-    "o",
-    "v",
-    "o",
-    "v",
-    "o",
-    "v",
-    "o",
-    "v",
-    "o",
-    "v",
-    "o"
-   ],
-   "rota_aprendida": null,
-   "afinado": null
-  },
   "f260-curadoria-009": {
    "nome": "SECULT Goiás — chamamentos públicos da Lei 13.019/2014",
    "status": "ok",
@@ -4606,10 +4677,10 @@
    "nome": "Outras Oportunidades 1/8",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 23,
-   "ok": 17,
+   "leituras": 24,
+   "ok": 18,
    "ultima": {
-    "em": "2026-10-15T16:57:51+00:00",
+    "em": "2026-10-15T18:24:23+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -4634,6 +4705,7 @@
     "v",
     "o",
     "v",
+    "o",
     "o",
     "o",
     "o"
@@ -4720,14 +4792,15 @@
    "nome": "Adaptador WordPress — sites oficiais pela API pública",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 9,
-   "ok": 9,
+   "leituras": 10,
+   "ok": 10,
    "ultima": {
-    "em": "2026-10-15T15:33:54+00:00",
+    "em": "2026-10-15T18:15:29+00:00",
     "classe": "ok",
     "motivo": ""
    },
    "historico": [
+    "o",
     "o",
     "o",
     "o",
@@ -4774,10 +4847,10 @@
    "nome": "Outras Oportunidades 6/8",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 15,
-   "ok": 9,
+   "leituras": 16,
+   "ok": 10,
    "ultima": {
-    "em": "2026-10-15T17:03:20+00:00",
+    "em": "2026-10-15T18:30:59+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -4793,6 +4866,7 @@
     "v",
     "v",
     "v",
+    "o",
     "o",
     "o",
     "o",
@@ -4805,14 +4879,15 @@
    "nome": "Adaptador Mapas Culturais — oportunidades com inscrição aberta",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 4,
-   "ok": 4,
+   "leituras": 5,
+   "ok": 5,
    "ultima": {
-    "em": "2026-10-15T16:56:35+00:00",
+    "em": "2026-10-15T18:22:29+00:00",
     "classe": "ok",
     "motivo": ""
    },
    "historico": [
+    "o",
     "o",
     "o",
     "o",
@@ -4825,10 +4900,10 @@
    "nome": "Outras Oportunidades 7/8",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 4,
-   "ok": 4,
+   "leituras": 5,
+   "ok": 5,
    "ultima": {
-    "em": "2026-10-15T15:37:44+00:00",
+    "em": "2026-10-15T18:17:41+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -4836,23 +4911,6 @@
     "o",
     "o",
     "o",
-    "o"
-   ],
-   "rota_aprendida": null,
-   "afinado": null
-  },
-  "outras-oportunidades-8": {
-   "nome": "Outras Oportunidades 8/8",
-   "status": "ok",
-   "vazias_seguidas": 0,
-   "leituras": 2,
-   "ok": 2,
-   "ultima": {
-    "em": "2026-10-15T17:01:23+00:00",
-    "classe": "ok",
-    "motivo": ""
-   },
-   "historico": [
     "o",
     "o"
    ],

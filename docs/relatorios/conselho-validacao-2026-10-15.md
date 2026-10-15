@@ -8,10 +8,10 @@
 
 ```json
 {
- "cegos_da_1a_rodada": 31,
- "testados": 24,
- "com_rota_nova": 8,
- "via_ponte": 1,
+ "cegos_da_1a_rodada": 35,
+ "testados": 28,
+ "com_rota_nova": 11,
+ "via_ponte": 3,
  "continuam_cegos": [
   "camara-goiania-pl",
   "f260-captacao-218",
@@ -28,7 +28,8 @@
   "f260-captacao-228",
   "f260-captacao-252",
   "f260-captacao-242",
-  "f260-espalhado-rouanet-cultura-gov-br"
+  "f260-espalhado-rouanet-cultura-gov-br",
+  "f260-espalhado-sistema-mirassoldoeste-mt-gov-br"
  ],
  "aguardando_afinador": 7
 }
@@ -47,7 +48,7 @@
    "motor": "empresas-incentivadas",
    "achados_total_1a": 80,
    "achados_total_agora": 80,
-   "no_fluxo": 5,
+   "no_fluxo": 4,
    "confirmadas": 0
   },
   {
@@ -87,8 +88,8 @@
   },
   {
    "motor": "f260-captacao-044",
-   "achados_total_1a": 25,
-   "achados_total_agora": 25,
+   "achados_total_1a": 29,
+   "achados_total_agora": 29,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -171,8 +172,8 @@
   },
   {
    "motor": "f260-curadoria-001",
-   "achados_total_1a": 26,
-   "achados_total_agora": 26,
+   "achados_total_1a": 28,
+   "achados_total_agora": 28,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -227,7 +228,7 @@
  "pontos_com_redundancia": 15,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 9911
+ "exemplos_da_rede_de_rotas": 9992
 }
 ```
 
@@ -238,12 +239,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 69.6,
- "fora_dos_motores_pct_agora": 69.6,
+ "fora_dos_motores_pct_1a": 70.8,
+ "fora_dos_motores_pct_agora": 70.8,
  "origem": {
-  "Piloto": 134,
-  "motor": 123,
-  "agregador/outra": 148
+  "Piloto": 128,
+  "motor": 115,
+  "agregador/outra": 151
  },
  "dominios_so_de_agregador": [
   {
@@ -313,10 +314,9 @@
  "dia_de_referencia": "2026-10-15",
  "ativos": 159,
  "lidos_ontem": 52,
- "lidos_hoje": 130,
+ "lidos_hoje": 133,
  "nao_lidos_ontem_nem_hoje": [
   "f260-captacao-240",
-  "f260-curadoria-008",
   "plat-captamos",
   "plat-rede-filantropia"
  ],
@@ -354,20 +354,20 @@
 
 ```json
 {
- "fontes_recebidas": 388,
+ "fontes_recebidas": 401,
  "por_origem": {
   "conselho (fontes irmãs)": 167,
-  "Cartório (site oficial certificado)": 179,
+  "Cartório (site oficial certificado)": 192,
   "Espião (privado/internacional)": 42
  },
- "lidas_nas_ultimas_24h": 277,
+ "lidas_nas_ultimas_24h": 257,
  "dimensionamento": {
-  "fontes": 388,
+  "fontes": 401,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 8,
-  "cobertura_diaria": 388,
+  "cobertura_diaria": 401,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -376,8 +376,8 @@
  },
  "clones_que_ja_leram": {
   "outras-oportunidades-1": {
-   "ultima": "2026-10-15T16:57:51+00:00",
-   "duracao_s": 76,
+   "ultima": "2026-10-15T18:24:23+00:00",
+   "duracao_s": 114,
    "achados": 41
   },
   "outras-oportunidades-2": {
@@ -396,24 +396,24 @@
    "achados": 12
   },
   "outras-oportunidades-5": {
-   "ultima": "2026-10-15T16:59:45+00:00",
-   "duracao_s": 115,
+   "ultima": "2026-10-15T18:26:40+00:00",
+   "duracao_s": 136,
    "achados": 0
   },
   "outras-oportunidades-6": {
-   "ultima": "2026-10-15T17:03:20+00:00",
-   "duracao_s": 117,
+   "ultima": "2026-10-15T18:30:59+00:00",
+   "duracao_s": 103,
    "achados": 11
   },
   "outras-oportunidades-7": {
-   "ultima": "2026-10-15T15:37:44+00:00",
-   "duracao_s": 82,
-   "achados": 11
+   "ultima": "2026-10-15T18:17:41+00:00",
+   "duracao_s": 132,
+   "achados": 12
   },
   "outras-oportunidades-8": {
-   "ultima": "2026-10-15T17:01:23+00:00",
-   "duracao_s": 98,
-   "achados": 1
+   "ultima": "2026-10-15T18:29:16+00:00",
+   "duracao_s": 156,
+   "achados": 0
   }
  },
  "com_achado": 61
@@ -429,40 +429,40 @@
 {
  "adaptadores": {
   "plataforma-wordpress": {
-   "ultima": "2026-10-15T15:33:54+00:00",
-   "achados": 2,
+   "ultima": "2026-10-15T18:15:29+00:00",
+   "achados": 6,
    "diagnostico": {
     "sites": 20,
     "instancias": null,
-    "respostas_json": 45,
-    "posts": 39,
+    "respostas_json": 48,
+    "posts": 61,
     "oportunidades": null,
     "motivo_zero": null
    }
   },
   "plataforma-mapas-culturais": {
-   "ultima": "2026-10-15T16:56:35+00:00",
+   "ultima": "2026-10-15T18:22:29+00:00",
    "achados": 16,
    "diagnostico": {
     "sites": null,
     "instancias": 11,
-    "respostas_json": 6,
+    "respostas_json": 5,
     "posts": null,
-    "oportunidades": 51,
+    "oportunidades": 48,
     "motivo_zero": null
    }
   }
  },
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 104,
+   "orgaos": 111,
    "exemplos": [
+    "abong.org.br",
+    "acaoeducativa.org.br",
     "alvoradadonorte.go.gov.br",
     "anater.org",
     "banrisulcultural.com.br",
-    "baoba.org.br",
-    "brasil.aperam.com",
-    "brazilfoundation.org"
+    "baoba.org.br"
    ]
   },
   "Mapas Culturais": {

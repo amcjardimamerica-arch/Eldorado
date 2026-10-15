@@ -1,5 +1,5 @@
 {
- "em": "2026-10-15T23:01:33+00:00",
+ "em": "2026-10-15T23:12:02+00:00",
  "versao": "cartório v5 · linha de produção (09/10/2026)",
  "regra": "CARTÓRIO DE FONTES OFICIAIS (titular, 09/10/2026).\n\nOs motores DESCOBREM; o Cartório CERTIFICA. Toda estrela (oportunidade aberta) e todo livro (histórico) que tenha\nQUALQUER um dos 12 itens indisponível entra na fila do Cartório. Para cada um, ele sobe uma escada de degraus — do mais\nbarato e confiável ao mais caro — até achar o documento OFICIAL, lê o documento por seções e emite uma CERTIDÃO:\nlink oficial (régua única: vetor nunca é fonte), degrau em que foi achado, impressão digital do documento, e cada item\ncom valor + trecho literal + página — ou a DISPENSA com a justificativa de que o requisito não existe naquele edital.\n\nBalcões (como chegar ao documento em cada tipo de fonte):\n  pncp      página do PNCP → API de arquivos do órgão (PDF ou ZIP), o edital primeiro\n  diario    DOU, Diário de Goiás/Goiânia, Querido Diário → o ato dentro da edição (só as páginas do ato)\n  orgao     domínio público → documentos da página + biblioteca de mídia do WordPress pelo número do edital\n  privado   site do financiador → documentos da página (regulamento, edital)\n  pista     agregador/notícia → links de SAÍDA para o financiador; o resto vai ao Interceptador\n  proprio   Ministério Público e Judiciário: já leem o PDF; o Cartório só converte em certidão\n\nEscada: 0 documento na mão · 1 link de saída da pista · 2 busca do número do edital dentro do domínio oficial ·\n        3 Interceptador (IA) · 4 Chrome. O Cartório resolve 0–2 sem IA; 3 e 4 recebem só o que sobrou.\nIntegração: a fila é ordenada pela urgência (prazo), pela nota da REDE NEURAL e pela distância até o ouro (menos\nitens faltando primeiro: cada certidão vira selo). Estrelas: o fluxo de oportunidades lê a certidão no checklist.\nLivros: linhas no formato do importador (scripts/importar_verificacao_livros.py), que confere e entrega à esteira.",
  "identidade_visual": "provisória (config/identidade_visual.json aguarda o design de referência)",
@@ -16,12 +16,12 @@
   "certidoes": 2843,
   "nesta_execucao": 27,
   "fila_estrelas": 347,
-  "fila_livros": 1886,
+  "fila_livros": 1728,
   "itens_que_faltavam": 24557,
   "itens_obtidos": 9162,
   "itens_dispensados": 755,
   "eficiencia_itens": 0.404,
-  "com_link_oficial": 1830,
+  "com_link_oficial": 1831,
   "taxa_link_oficial": 0.644,
   "certidoes_completas": 242,
   "para_o_interceptador": 2070,
@@ -36,7 +36,7 @@
    "sem selo → bronze": 22
   },
   "por_degrau": {
-   "degrau 0": 1798,
+   "degrau 0": 1799,
    "degrau 2": 1,
    "degrau 1": 56
   }
@@ -163,11 +163,11 @@
   },
   "privado": {
    "certidoes": 441,
-   "com_link_oficial": 272,
+   "com_link_oficial": 273,
    "faltavam": 3422,
    "resolvidos": 823,
    "eficiencia": 0.241,
-   "taxa_link_oficial": 0.617
+   "taxa_link_oficial": 0.619
   },
   "proprio": {
    "certidoes": 1,
@@ -192,7 +192,7 @@
    "faltavam": 22912,
    "resolvidos": 8606,
    "eficiencia": 0.376,
-   "com_link_oficial": 1673,
+   "com_link_oficial": 1674,
    "taxa_link_oficial": 0.627
   },
   "refeitas": {
@@ -242,7 +242,7 @@
    "faltavam": 21119,
    "resolvidos": 7617,
    "eficiencia": 0.361,
-   "com_link_oficial": 1557,
+   "com_link_oficial": 1558,
    "taxa_link_oficial": 0.614
   },
   "revisão manual": {
@@ -260,7 +260,7 @@
    "vezes": 2595,
    "renderam": 1668,
    "itens": 9204,
-   "links_oficiais": 1542,
+   "links_oficiais": 1543,
    "taxa_de_acerto": 0.643
   },
   "2": {
@@ -73359,9 +73359,9 @@
  ],
  "linha_de_producao": {
   "na_linha": {
-   "sem_estrela": 911,
+   "sem_estrela": 899,
    "bronze": 23,
-   "prata": 1299
+   "prata": 1153
   },
   "na_linha_por_tipo": {
    "estrela": {
@@ -73370,20 +73370,20 @@
     "prata": 24
    },
    "livro": {
-    "sem_estrela": 603,
+    "sem_estrela": 591,
     "bronze": 8,
-    "prata": 1275
+    "prata": 1129
    }
   },
   "fila_oportunidades": 347,
-  "fila_livros": 1886,
-  "devidas_nesta_hora": 2079,
+  "fila_livros": 1728,
+  "devidas_nesta_hora": 1929,
   "promovidas_nesta_execucao": 0,
   "sem_material_agora": 13,
   "esgotadas_10_abordagens": 0,
   "biblioteca_de_sites": {
-   "chaves": 1794,
-   "sites": 3049
+   "chaves": 1781,
+   "sites": 3021
   },
   "intervalo_horas": 12,
   "limite": 10,
