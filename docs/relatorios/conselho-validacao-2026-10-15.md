@@ -225,7 +225,7 @@
  "pontos_com_redundancia": 13,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 9730
+ "exemplos_da_rede_de_rotas": 9829
 }
 ```
 
@@ -236,12 +236,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 69.9,
- "fora_dos_motores_pct_agora": 69.9,
+ "fora_dos_motores_pct_1a": 70.8,
+ "fora_dos_motores_pct_agora": 70.8,
  "origem": {
-  "agregador/outra": 215,
+  "Piloto": 148,
   "motor": 150,
-  "Piloto": 133
+  "agregador/outra": 215
  },
  "dominios_so_de_agregador": [
   {
@@ -259,6 +259,14 @@
   {
    "dominio": "dgartes.gov.pt",
    "oportunidades": 2
+  },
+  {
+   "dominio": "wordpress.sea.sc.gov.br",
+   "oportunidades": 1
+  },
+  {
+   "dominio": "sape.sc.gov.br",
+   "oportunidades": 1
   },
   {
    "dominio": "performeurope.eu",
@@ -294,14 +302,6 @@
   },
   {
    "dominio": "investidor.bussolasocial.com.br",
-   "oportunidades": 1
-  },
-  {
-   "dominio": "lp.simbi.social",
-   "oportunidades": 1
-  },
-  {
-   "dominio": "prefeitura.poa.br",
    "oportunidades": 1
   }
  ],
@@ -399,20 +399,20 @@
 
 ```json
 {
- "fontes_recebidas": 379,
+ "fontes_recebidas": 386,
  "por_origem": {
-  "conselho (fontes irmãs)": 166,
-  "Cartório (site oficial certificado)": 174,
-  "Espião (privado/internacional)": 39
+  "conselho (fontes irmãs)": 167,
+  "Cartório (site oficial certificado)": 177,
+  "Espião (privado/internacional)": 42
  },
- "lidas_nas_ultimas_24h": 216,
+ "lidas_nas_ultimas_24h": 180,
  "dimensionamento": {
-  "fontes": 379,
+  "fontes": 386,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 8,
-  "cobertura_diaria": 379,
+  "cobertura_diaria": 386,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -470,7 +470,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 102,
+   "orgaos": 104,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",
