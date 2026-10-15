@@ -206,6 +206,10 @@ def fases(ctx: dict) -> list[dict]:
         # 5c SITE OFICIAL — do replicador à fonte oficial e ao PDF do edital
         {"etapa": "site_oficial", "finalidade": "do replicador à fonte oficial e ao PDF do edital (navegação e PNCP)",
          "cmds": [[py, "scripts/treino_fontes.py", "--aplicar"]], "t": 420, "pular": None},
+        # 5b' EXPURGO — o que não é oportunidade (e o que foi descartado) sai por completo, uma vez por dia
+        {"etapa": "expurgo", "finalidade": "remove por completo o que não é oportunidade: registros, livros, pastas, banco e releitura",
+         "cmds": [[py, "-m", "src.expurgo", "--executar"]], "t": 900,
+         "pular": "já feito hoje" if (ROOT / "estado/expurgo" / f"{_hoje_brt()}.json").exists() else None},
         # 5c' PNCP — dossiê integrado (portões + metadados + arquivos + site de origem → 12/12 ou descarte justificado)
         {"etapa": "pncp", "finalidade": "dossiê do PNCP: 12 de 12 com informação confirmada ou descarte justificado; o que faltar vai ao Interceptador",
          "cmds": [[py, "-m", "src.pncp_dossie", "60"]], "t": 1300, "pular": None},
