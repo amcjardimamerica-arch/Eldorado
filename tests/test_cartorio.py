@@ -500,3 +500,18 @@ class Cartorio85_15_10(unittest.TestCase):
                       "https://x.sp.gov.br/a.pdf", "t")
         self.assertIn("Votuporanga", r["pontos"]["Órgão / financiador"]["valor"])
         self.assertIn("EDITAL DE CHAMAMENTO", r["pontos"]["Objeto"]["valor"])
+
+
+class Cartorio85b_15_10(unittest.TestCase):
+    def test_requisitos_quem_pode_e_nao_habilitacao(self):
+        r = L.extrair(["7. Decisão de habilitação ou inabilitação da OSC classificada em primeiro lugar, será aberto prazo de recurso. "
+                       "4.1. Poderão se inscrever pessoas jurídicas de direito privado sem fins lucrativos, entre elas associações e fundações."],
+                      "https://x.go.gov.br/a.pdf", "t")
+        self.assertIn("Poderão se inscrever", r["pontos"]["Requisitos"]["valor"])
+
+    def test_territorio_sede_exigida_e_modelo_vazio(self):
+        r = L.extrair(["O Tribunal, com sede em Brasília/DF, torna público. Poderão participar organizações da sociedade civil sediadas no município de Niterói."],
+                      "https://x.rj.gov.br/a.pdf", "t")
+        self.assertIn("Niterói", r["pontos"]["Território"]["valor"])
+        r2 = L.extrair(["Edital do Município de XXXXXX para seleção de projetos."], "https://x.go.gov.br/b.pdf", "t")
+        self.assertNotIn("XXXXXX", (r2["pontos"].get("Território") or {}).get("valor", ""))
