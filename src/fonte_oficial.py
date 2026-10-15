@@ -145,6 +145,126 @@ def achar_pdfs(url_fonte: str, html: str, titulo: str = "", A: dict | None = Non
     return sorted(achados, key=lambda x: -x["pontos"])[:limite]
 
 
+# ── NAVEGAÇÃO DENTRO DO SITE OFICIAL (titular, 15/10/2026) ─────────────────────────────────────────────────────────
+# Do site ao PDF: quando a página da fonte não traz o PDF, o resolvedor entra no próprio site pelos caminhos onde os
+# órgãos publicam editais (Editais, Chamamentos, Publicações, Transparência, Licitações, PNAB…), pontuando cada link
+# pelo número e pelas palavras do título. Limites: mesmo site, 2 níveis, NAV_PAGINAS páginas. WordPress: busca interna
+# e biblioteca de mídia pelo número do edital.
+NAV = re.compile(r"edita(?:l|is)|chamamentos?|chamadas?|sele[çc](?:[ãa]o|[õo]es)|publica[çc](?:[ãa]o|[õo]es)|transpar[êe]ncia|"
+                 r"licita[çc](?:[ãa]o|[õo]es)|concursos?|processos? seletivos?|documentos|downloads?|arquivos|di[áa]rio oficial|"
+                 r"fomento|aldir blanc|pnab|paulo gustavo|terceiro setor|\bosc\b|mrosc|parcerias?|conv[êe]nios?|"
+                 r"cultura|assist[êe]ncia social|leis? de incentivo|oportunidades|inscri[çc][õo]es", re.I)
+NAV_FORA = re.compile(r"mailto:|tel:|javascript:|whatsapp|facebook|instagram|twitter|youtube|linkedin|/login|/wp-admin|"
+                      r"\.(?:jpe?g|png|gif|svg|webp|css|js|ico|mp4|mp3|zip|rar)(?:$|\?)|/feed/?$|/tag/|/author/|#", re.I)
+NAV_PAGINAS = 10
+NUMERO = re.compile(r"\b0*(\d{1,4})\s*[/.-]\s*(20\d{2})\b")
+
+
+def _numero(titulo: str) -> tuple[str, str] | None:
+    m = NUMERO.search(str(titulo or ""))
+    return (m.group(1), m.group(2)) if m else None
+
+
+def _tem_numero(txt: str, num: tuple[str, str] | None) -> bool:
+    if not num:
+        return False
+    return bool(re.search(rf"(?<!\d)0*{num[0]}\s*[/.\-_]\s*{num[1]}(?!\d)|{num[1]}\s*[/.\-_]\s*0*{num[0]}(?!\d)", txt))
+
+
+def _mesmo_site(a: str, b: str) -> bool:
+    da, db = _dom(a), _dom(b)
+    return bool(da and db) and (da == db or da.endswith("." + db) or db.endswith("." + da))
+
+
+def _pontuar_navegacao(href: str, txt: str, tk: set, num) -> float:
+    alvo = f"{txt} {href}"
+    p = 0.0
+    if NAV.search(alvo):
+        p += 2
+    p += min(4, 1.5 * len(tk & _tokens(txt, href)))
+    if _tem_numero(alvo, num):
+        p += 5
+    if re.search(r"20(2[4-7])", href):
+        p += 0.5
+    return p
+
+
+def _pdf_forte(pdf: dict, tk: set, num) -> bool:
+    alvo = f"{pdf.get('texto', '')} {pdf.get('url', '')}"
+    return _tem_numero(alvo, num) or len(tk & _tokens(alvo)) >= 2
+
+
+def navegar(url_fonte: str, html: str, titulo: str, getter, A: dict | None = None, limite: int = 3,
+            max_paginas: int = NAV_PAGINAS) -> tuple[list[dict], list[str]]:
+    """Entra no site oficial atrás do PDF do edital. Devolve (pdfs, caminho percorrido)."""
+    tk, num = _tokens(titulo), _numero(titulo)
+    achados: dict = {}
+    caminho: list[str] = []
+
+    def colher(url: str, h: str, nivel: int):
+        for pdf in achar_pdfs(url, h, titulo, A, limite=8):
+            pdf = dict(pdf)
+            if _pdf_forte(pdf, tk, num):
+                pdf["pontos"] = round(pdf["pontos"] + 3, 1)
+            pdf["achado_em"] = url; pdf["nivel"] = nivel
+            if pdf["url"] not in achados or achados[pdf["url"]]["pontos"] < pdf["pontos"]:
+                achados[pdf["url"]] = pdf
+
+    def candidatos(url: str, h: str, vistos: set) -> list[tuple[float, str, str]]:
+        out = []
+        for href, txt in links(h, url):
+            href = href.split("#")[0]
+            if not href or href in vistos or NAV_FORA.search(href) or not _mesmo_site(href, url_fonte):
+                continue
+            if re.search(r"\.pdf($|\?)", href, re.I):
+                continue
+            p = _pontuar_navegacao(href, txt, tk, num)
+            if p >= 2:
+                out.append((p, href, txt))
+        return sorted(out, key=lambda x: -x[0])
+
+    colher(url_fonte, html, 0)
+    vistos = {url_fonte.split("#")[0]}
+    fila = [(p, h, t, 1) for p, h, t in candidatos(url_fonte, html, vistos)[:12]]
+    # WordPress: busca interna e biblioteca de mídia pelo número (sem gastar o orçamento de navegação)
+    base = "{0.scheme}://{0.netloc}".format(urlsplit(url_fonte))
+    if re.search(r"wp-content|wp-json|wordpress", html or "", re.I) and (num or tk):
+        termo = f"{num[0]}/{num[1]}" if num else " ".join(sorted(tk)[:3])
+        try:
+            midia = json.loads(getter(f"{base}/wp-json/wp/v2/media?search={termo.replace(' ', '+')}&per_page=10") or "[]")
+            for it in midia if isinstance(midia, list) else []:
+                u = str((it or {}).get("source_url") or "")
+                if u.lower().endswith(".pdf"):
+                    t = str(((it or {}).get("title") or {}).get("rendered") or "")
+                    achados.setdefault(u, {"url": u, "texto": t or "biblioteca de mídia", "pontos": 6.0, "achado_em": "wp-json/media", "nivel": 1})
+            caminho.append(f"WordPress: biblioteca de mídia por '{termo}'")
+        except Exception:  # noqa: BLE001
+            pass
+        fila.insert(0, (9.0, f"{base}/?s={termo.replace(' ', '+')}", "busca interna", 1))
+    lidas = 0
+    while fila and lidas < max_paginas:
+        if any(_pdf_forte(p, tk, num) for p in achados.values()):
+            break
+        fila.sort(key=lambda x: -x[0])
+        p, href, txt, nivel = fila.pop(0)
+        if href in vistos:
+            continue
+        vistos.add(href)
+        try:
+            h = getter(href)
+        except Exception:  # noqa: BLE001
+            continue
+        lidas += 1
+        caminho.append(f"nível {nivel}: {txt[:40] or href} ({p:.1f})")
+        colher(href, h or "", nivel)
+        if nivel < 2:
+            for p2, h2, t2 in candidatos(href, h or "", vistos)[:8]:
+                fila.append((p2 - 0.5, h2, t2, nivel + 1))
+    pdfs = sorted(achados.values(), key=lambda x: -x["pontos"])[:limite]
+    return pdfs, caminho
+
+
+
 def site_da_prefeitura(municipio: str, uf: str, getter) -> str | None:
     """O site oficial da prefeitura (município.uf.gov.br, com e sem www), conferido."""
     if not municipio or not uf:
@@ -245,7 +365,7 @@ def _mapa_querido() -> dict:
     return _MAPA_Q
 
 
-def resolver(url: str, titulo: str = "", orgao: str = "", getter=None, A: dict | None = None) -> dict:
+def resolver(url: str, titulo: str = "", orgao: str = "", getter=None, A: dict | None = None, navegacao: bool = True) -> dict:
     """Do replicador à fonte e ao PDF. getter(url) -> texto (injeção para testes e para a rota de coleta)."""
     A = A if A is not None else _aprendizado()
     out = {"origem": url, "replicador": eh_replicador(url), "fonte": None, "pdfs": [], "passos": []}
@@ -271,8 +391,16 @@ def resolver(url: str, titulo: str = "", orgao: str = "", getter=None, A: dict |
             out["pdfs"] = [{"url": fonte, "texto": "o próprio link é o PDF", "pontos": 9}]
         else:
             try:
-                out["pdfs"] = achar_pdfs(fonte, getter(fonte), titulo, A)
+                html_fonte = getter(fonte)
+                out["pdfs"] = achar_pdfs(fonte, html_fonte, titulo, A)
                 out["passos"].append(f"fonte → {len(out['pdfs'])} PDF(s) do edital")
+                tk, num = _tokens(titulo), _numero(titulo)
+                if navegacao and not any(_pdf_forte(p, tk, num) for p in out["pdfs"]):
+                    pdfs, caminho = navegar(fonte, html_fonte, titulo, getter, A)
+                    out["passos"] += caminho
+                    if pdfs and (not out["pdfs"] or pdfs[0]["pontos"] > out["pdfs"][0]["pontos"]):
+                        out["pdfs"] = pdfs
+                        out["passos"].append(f"navegação no site → {len(pdfs)} PDF(s): {pdfs[0]['url'][:100]}")
             except Exception as e:  # noqa: BLE001
                 out["passos"].append(f"fonte ilegível: {type(e).__name__}")
     return out
