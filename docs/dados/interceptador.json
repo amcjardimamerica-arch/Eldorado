@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-15T04:09:58+00:00",
+  "em": "2026-10-15T04:26:37+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-15T03:53:55+00:00",
+  "ultimo_voo": "2026-10-15T04:13:20+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,14 +37,14 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 242,
+    "missoes": 243,
     "validadas": 8,
-    "parciais": 65,
+    "parciais": 66,
     "insuficientes": 165,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 188,
+      "sim": 189,
       "nao": 23
     },
     "estrelas_de_ouro": 10,
@@ -52,6 +52,73 @@
     "tempo_medio_min": 13.6
   },
   "missoes": [
+    {
+      "em": "2026-10-15T04:13:20+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · oportunidade do mapa",
+      "alvo": "Edital de Chamamento Público",
+      "qualidade": "parcial",
+      "comprovados": 7,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Destinação"
+      ],
+      "pagina_oficial": "https://catalao.go.gov.br/avisos/edital-de-chamamento-publico",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital de chamamento público comprovado refere-se ao fomento à cultura, com resultado previsto para 2024-10-15, financiado pela Prefeitura Municipal de Catalão, no estado de Goiás, com área de atuação em cultura.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital abrange a área de cultura, se está aberto ao público em geral e se atende aos critérios de elegibilidade, mesmo que não estejam explicitados no texto comprovado.",
+        "proximo_passo": "Consultar os anexos do edital para obter informações detalhadas sobre requisitos, prazos e outros detalhes necessários para a candidatura.",
+        "risco": "O prazo de inscrição e outros detalhes essenciais não estão disponíveis no texto comprovado, o que pode impedir a participação efetiva da associação."
+      },
+      "erro": null,
+      "segundos": 796,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 7,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de inscrição, Prazo de recurso, Valor, Requisitos",
+      "id": "0c883afc5d19e6707714",
+      "encontrou": {
+        "Objeto": {
+          "valor": "fomento à cultura",
+          "trecho": "CHAMAMENTO PÚBLICO - POLÍTICA NACIONAL ALDIR BLANC DE FOMENTO À CULTURA (PNAB)",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura Municipal de Catalão",
+          "trecho": "Prefeitura Municipal de Catalão",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "GO",
+          "trecho": "municipal",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "cultura",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Catalão",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-15T03:53:55+00:00",
       "modo": "validar",
@@ -2601,33 +2668,6 @@
       "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
       "avaliacao": "falhou: o modelo não devolveu JSON",
       "id": "op-op-dffa3addf9ca",
-      "encontrou": {},
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
-    },
-    {
-      "em": "2026-10-14T12:46:48+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Goianésia — Edital de Chamamento Público Credenciamento nº 002/2025 — Goiás / Goianésia",
-      "qualidade": "insuficiente",
-      "comprovados": 0,
-      "dispensados": null,
-      "total": 12,
-      "nao_resolvidos": null,
-      "pagina_oficial": null,
-      "parecer_fonte": {},
-      "erro": "o modelo não devolveu JSON",
-      "segundos": 1144,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "falhou: o modelo não devolveu JSON",
-      "id": "op-op-14b69d1fee00",
       "encontrou": {},
       "financiador": null,
       "indicios": [],
