@@ -1,4 +1,4 @@
-# Outras Oportunidades 1/7
+# Outras Oportunidades 1/5
 
 - Classe: `financiadores`
 - Fonte: `outras-oportunidades-1`
@@ -12,24 +12,20 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 ## Eventos e pistas
 
-- [Edital de notificação de lançamento](https://catalao.go.gov.br/producao/public/index.php/avisos/edital-de-chamamento-publico/avisos/Edital-de-Notificacao-de-Lancamento) — coletado em 2026-10-14T20:18:56+00:00
 - [Prefeitura de Maranguape publica edital do programa Jovens p [...]](https://www.maranguape.ce.gov.br/informa/364/prefeitura-de-maranguape-publica-edital-do-program) — coletado em 2026-10-11T11:39:34+00:00
 - [Processo de doação de lotes no povoado Várzea da Onça](https://muribeca.se.gov.br/doacao-de-lotes) — coletado em 2026-10-11T11:39:00+00:00
 - [Chamamento Público - Lei Aldir Blanc – Nº 010/2024 - Seleção de Projetos Descentralizados voltados a formação em arte e cultura para firmar termo de execução cultural. 
                                      
                                          O Município de Ribeirão Pires, através da Secretaria](https://www.ribeiraopires.sp.gov.br/portal/editais/0/5/2661) — coletado em 2026-10-10T21:59:23+00:00
-- [Edital de Chamamento Público](https://catalao.go.gov.br/producao/public/index.php/avisos/edital-de-chamamento-publico/avisos/edital-de-chamamento-publico) — coletado em 2026-10-14T20:18:56+00:00
 - [Cultura Viva](https://cultura.rs.gov.br/cultura-viva) — coletado em 2026-10-13T18:49:08+00:00
 - [EDITAL DE PREMIAÇÃO CULTURAL Nº 01/2026 – PNAB](https://colinasdosul.go.gov.br/inscricoes-abertas) — coletado em 2026-10-10T21:59:19+00:00
 - [SELEÇÃO DE PROJETOS](https://www.institutoacp.org.br/) — coletado em 2026-10-10T18:31:15+00:00
-- [Anexos Edital 2024](https://www.estruturandocempre.com.br/wp-content/uploads/2024/07/edital-2024-v4.zip) — coletado em 2026-10-14T20:19:02+00:00
 - [Credenciamento de Entidades Privadas sem fins lucrativos para participação não onerosa na 1ª Festa Italiana. 
                                      
                                          ABERTURA DE CHAMAMENTO PÚBLICO N.º 007/2023 - Objeto: Credenciamento de Entidades Privadas sem fins lucrativos ](https://www.ribeiraopires.sp.gov.br/portal/editais/0/5/2679) — coletado em 2026-10-10T21:59:22+00:00
 - [Seleção de propostas de doações de bens, produtos, serviços, cessão de espaços ou revitalização e parcerias com a iniciativa privada. 
                                      
                                          Chamamento Público aberto junto ao Setor de Licitações:A Prefeitura Municipal da Estân](https://www.ribeiraopires.sp.gov.br/portal/editais/0/5/2674) — coletado em 2026-10-10T21:59:23+00:00
-- [Aprovadas Edital 2024](https://www.estruturandocempre.com.br/wp-content/uploads/2024/10/aprovadas-estruturando-cempre-2024.pdf) — coletado em 2026-10-14T20:19:02+00:00
 - [BeForms – EDITAL 2026 DE SELEÇÃO DE PROJETOS CULTURAIS DO PARQUE BONDINHO PÃO DE AÇÚCAR®](https://beforms.becompliance.com/6aa1791c456ff00002aa0502) — coletado em 2026-10-10T18:30:56+00:00
 - [ONG BANCO DE ALIMENTOS](https://www.institutoacp.org.br/ong-banco-de-alimentos) — coletado em 2026-10-10T18:31:15+00:00
 - [Chamamento Público - Lei Aldir Blanc –Nº 011/2024 – Seleção de espaço, ambientes e iniciativas artístico-culturais para receber SUBSÍDIO para manutenção. 
@@ -47,11 +43,8 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Chamamento Público - Lei Aldir Blanc –Nº 009/2024 - Premiação para Agentes Culturais - Fomento à Cultura. 
                                      
                                          O Município de Ribeirão Pires, através da Secretaria de Educação e Cultura, TORNA PÚBLICO os seguintes editais de ](https://www.ribeiraopires.sp.gov.br/portal/editais/0/5/2662) — coletado em 2026-10-10T21:59:23+00:00
-- [Banco de Talentos](https://forms.gle/wszUTLSEKetCabJLA) — coletado em 2026-10-14T20:18:39+00:00
-- [Parcerias Público-Privadas (PPP)](https://catalao.go.gov.br/parcerias-publico-privadas-ppp) — coletado em 2026-10-14T20:18:56+00:00
 - [EDITAL Nº 003/2026 – ADMPLAN – TERCEIRA AUDIÊNCIA PÚBLICA DO PLANO DIRETOR DO MUNICÍPIO DE COLINAS DO SUL/GO.](https://colinasdosul.go.gov.br/aviso/2862) — coletado em 2026-10-10T21:59:19+00:00
 - [faça uma doação](https://baoba.org.br/doacao) — coletado em 2026-10-13T14:03:29+00:00
-- [Banco de Projetos](https://forms.gle/VQN8q4buLpwc8qNE6) — coletado em 2026-10-14T20:18:39+00:00
 - [Comitê Gestor - Cultura Viva](https://cultura.rs.gov.br/comite-gestor-da-cultura-viva) — coletado em 2026-10-13T18:49:08+00:00
 - [O credenciamento de Organizações da Sociedade Civil, com atuação na área assistencial, para execução indireta do serviço de proteção social especial de média e alta complexidade - modalidade pessoas com deficiência e suas famílias 
                                      
@@ -68,8 +61,15 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Chamamento Público - Lei Aldir Blanc – 008/2024 - Seleção de Projetos para firmar Termo de Execução Cultural - Fomento à Cultura. 
                                      
                                          O Município de Ribeirão Pires, através da Secretaria de Educação e Cultura, TORNA PÚBLICO ](https://www.ribeiraopires.sp.gov.br/portal/editais/0/5/2660) — coletado em 2026-10-10T21:59:23+00:00
-- [EDITAL DE FOMENTO À EXECUÇÃO DE AÇÕES CULTURAIS](https://catalao.go.gov.br/storage/notice/e7e29043132b26387d73758efd59053f.pdf) — coletado em 2026-10-14T20:18:56+00:00
 - [Quero me inscrever](https://tally.so/r/2E5oBD) — coletado em 2026-10-10T15:55:05+00:00
 - [CHAMAMENTO FINAL  LEI ALDIR BLANC](https://www.maranguape.ce.gov.br/informa/369/chamamento-final-lei-aldir-blanc) — coletado em 2026-10-11T11:39:34+00:00
-- [Edital 012/2026 – Seleção de Associações e/ou Cooperativas de Catadores de Materiais Recicláveis e Reutilizáveis para atuação no Programa Coleta Seletiva Cidadã](https://ifrs.edu.br/restinga/wp-content/uploads/sites/5/2026/05/Edital_012_2026_Programa_Coleta_Seletiva_Cidada_assinado.pdf) — coletado em 2026-10-14T20:18:37+00:00
 - [EDITAL CHAMAMENTO PUBLICO 007/2026 FOMENTO A PROJETOS CONTIN [...]](https://www.maranguape.ce.gov.br/informa/365/edital-chamamento-p-blico-007-2026-fomento-a-proje) — coletado em 2026-10-11T11:39:34+00:00
+- [Edital 012/2026 – Seleção de Associações e/ou Cooperativas de Catadores de Materiais Recicláveis e Reutilizáveis para atuação no Programa Coleta Seletiva Cidadã](https://ifrs.edu.br/restinga/wp-content/uploads/sites/5/2026/05/Edital_012_2026_Programa_Coleta_Seletiva_Cidada_assinado.pdf) — coletado em 2026-10-14T20:18:37+00:00
+- [Banco de Projetos](https://forms.gle/VQN8q4buLpwc8qNE6) — coletado em 2026-10-14T20:18:39+00:00
+- [Banco de Talentos](https://forms.gle/wszUTLSEKetCabJLA) — coletado em 2026-10-14T20:18:39+00:00
+- [Edital de Chamamento Público](https://catalao.go.gov.br/producao/public/index.php/avisos/edital-de-chamamento-publico/avisos/edital-de-chamamento-publico) — coletado em 2026-10-14T20:18:56+00:00
+- [Edital de notificação de lançamento](https://catalao.go.gov.br/producao/public/index.php/avisos/edital-de-chamamento-publico/avisos/Edital-de-Notificacao-de-Lancamento) — coletado em 2026-10-14T20:18:56+00:00
+- [Parcerias Público-Privadas (PPP)](https://catalao.go.gov.br/parcerias-publico-privadas-ppp) — coletado em 2026-10-14T20:18:56+00:00
+- [EDITAL DE FOMENTO À EXECUÇÃO DE AÇÕES CULTURAIS](https://catalao.go.gov.br/storage/notice/e7e29043132b26387d73758efd59053f.pdf) — coletado em 2026-10-14T20:18:56+00:00
+- [Anexos Edital 2024](https://www.estruturandocempre.com.br/wp-content/uploads/2024/07/edital-2024-v4.zip) — coletado em 2026-10-14T20:19:02+00:00
+- [Aprovadas Edital 2024](https://www.estruturandocempre.com.br/wp-content/uploads/2024/10/aprovadas-estruturando-cempre-2024.pdf) — coletado em 2026-10-14T20:19:02+00:00

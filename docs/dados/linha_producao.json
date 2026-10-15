@@ -1,15 +1,15 @@
 {
- "em": "2026-10-15T02:43:30+00:00",
+ "em": "2026-10-15T06:22:54+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 18588,
-  "oportunidades_distintas": 2728,
+  "coletados": 18595,
+  "oportunidades_distintas": 2735,
   "entidades_em_2_ou_mais_canais": 18,
   "etapas": {
-   "CONSOLIDADO": 17945,
-   "EM_LIVRO": 544,
+   "CONSOLIDADO": 17943,
+   "EM_LIVRO": 552,
    "REPROCESSAR": 82,
-   "QUALIFICADO": 17
+   "QUALIFICADO": 18
   },
   "fila_de_reprocessamento": {
    "URL de buscador (falta o site oficial)": 63,
@@ -182,9 +182,9 @@
   {
    "canal": "empresas-incentivadas",
    "familia": "empresas",
-   "registros": 23,
-   "entidades": 21,
-   "exclusivas": 21,
+   "registros": 29,
+   "entidades": 27,
+   "exclusivas": 27,
    "corroboradas": 0,
    "validadas_como_reais": 1
   },
@@ -317,9 +317,9 @@
   {
    "canal": "empresas-editais-incentivados",
    "familia": "empresas",
-   "registros": 41,
-   "entidades": 34,
-   "exclusivas": 29,
+   "registros": 42,
+   "entidades": 35,
+   "exclusivas": 30,
    "corroboradas": 5,
    "validadas_como_reais": 0
   },
@@ -670,5 +670,5 @@
    ]
   }
  ],
- "eventos_no_livro_razao": 1
+ "eventos_no_livro_razao": 9
 }
