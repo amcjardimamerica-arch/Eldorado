@@ -185,6 +185,9 @@ def classificar(trecho: str, hoje: date | None = None, publicado: str | None = N
         tipo = "andamento"
     elif re.match(r"\s*EXTRATO DE PUBLICACAO", cab) and re.search(r"TORNA PUBLIC\w* A REALIZACAO|LANCAMENTO D[OE]|SELECAO PUBLICA", T):
         tipo = "abertura"                        # SECULT-GO publica o lançamento do edital como "Extrato de Publicação"
+    elif re.match(r"\s*(?:EXTRATO|AVISO) DE (?:RETIFICACAO|PRORROGACAO|REABERTURA|ERRATA|ALTERACAO)", cab):
+        tipo = "retificacao"                       # 15/10 (parecer dos motores): "Extrato de retificação e prorrogação de prazo"
+                                                   # de edital aberto não é extrato de termo celebrado (Santa Rita do Araguaia)
     elif c["celebracao"] or re.match(r"\s*(EXTRATO|JUSTIFICATIVA)\b", cab) or folha.startswith(("EXTRATO", "TERMOS DE CONVENIO", "TERMOS ADITIVOS", "ACORDOS")):
         tipo = "celebracao"
     elif c["retificacao"] or folha.startswith(("ERRATA", "RETIFICAC", "ADIAMENTO")):

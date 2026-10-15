@@ -316,3 +316,17 @@ class TestCoberturaMotor02(TestMotor):
     def test_sabado_na_agenda(self):
         ag = json.loads((dg.ROOT / "config/agenda_motores.json").read_text(encoding="utf-8"))["motores"]["do-goias"]
         self.assertIn("sab", ag["dias"])
+
+
+class ExtratoDeRetificacao15_10(unittest.TestCase):
+    """15/10/2026 (parecer dos motores): 'Extrato de retificação e prorrogação de prazo' de edital aberto é OPORTUNIDADE."""
+    def test_prorrogacao_nao_e_termo_celebrado(self):
+        from datetime import date
+        from src import atos_diario as A
+        t = ("EXTRATO DE RETIFICAÇÃO E PRORROGAÇÃO DE PRAZO EDITAL DE CHAMAMENTO PÚBLICO Nº 002/2026 FESTIVAL DE MÚSICA | PNAB "
+             "O MUNICÍPIO DE SANTA RITA DO ARAGUAIA/GO torna pública a RETIFICAÇÃO E PRORROGAÇÃO do prazo de inscrições do Edital de "
+             "Chamamento Público nº 002/2026, que passa a ser até 30/10/2026, para seleção de projetos de organizações da sociedade civil.")
+        r = A.classificar(t, date(2026, 10, 7), "2026-10-07")
+        self.assertEqual((r["veredito"], r["tipo"], r["fim"]), ("OPORTUNIDADE", "retificacao", "2026-10-30"))
+        r2 = A.classificar("EXTRATO DO TERMO DE FOMENTO Nº 12/2026. Partes: Município X e Associação Y. Valor R$ 50.000,00.", date(2026, 10, 7), "2026-10-07")
+        self.assertEqual(r2["tipo"], "celebracao")
