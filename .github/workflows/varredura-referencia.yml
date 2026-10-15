@@ -1,0 +1,53 @@
+name: 40 · Varredura de referência dos motores (Goiânia, Goiás, Câmara, ALEGO)
+
+# 15/10/2026 (titular): o que EXISTIU no período, com catálogo completo e léxico largo, para comparar com o que os
+# motores 01, 02, 04 e 05 acharam. Sob demanda; grava só estado/varredura_referencia/.
+
+on:
+  workflow_dispatch:
+    inputs:
+      de:
+        description: "Início (AAAA-MM-DD)"
+        required: false
+        default: ""
+      ate:
+        description: "Fim (AAAA-MM-DD)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: varredura-referencia
+  cancel-in-progress: false
+
+jobs:
+  varrer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Dependências
+        run: pip install -q -r requirements.txt
+      - name: Varrer
+        run: |
+          DE="${{ github.event.inputs.de }}"; ATE="${{ github.event.inputs.ate }}"
+          timeout 3300 python scripts/varredura_referencia.py ${DE:+--de $DE} ${ATE:+--ate $ATE}
+      - name: Gravar (só a varredura)
+        run: |
+          git config user.name "varredura-referencia" && git config user.email "varredura@eldorado"
+          mkdir -p /tmp/v && cp -r estado/varredura_referencia /tmp/v/
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            mkdir -p estado && cp -r /tmp/v/varredura_referencia estado/
+            git add estado/varredura_referencia
+            git diff --cached --quiet && { echo "nada mudou"; exit 0; }
+            git commit -q -m "varredura de referência dos motores $(date -u +%F)" && git push -q && { echo "gravado ($i)"; exit 0; }
+            sleep 5
+          done
