@@ -151,6 +151,34 @@ def montar(agora: datetime | None = None) -> dict:
            unidade="%", escala=[0, 100], faixa={"normal": [85, None], "alarme": [60, None]}, quando=st.get("gerado_em"), cadencia_h=6,
            faz="Confere se cada motor leu nas últimas 26 horas.", efeito=f"{cg.get('verde', 0)} funcionando · {cg.get('vermelho', 0)} em falha",
            resultado=", ".join(m.get("nome") or m.get("id") for m in (st.get("motores") or []) if m.get("luz") == "vermelho")[:300] or "nenhum em falha")
+    # 15/10/2026 (titular): FILA DE RETENTATIVA — página com erro volta em 30 min; 5 erros iguais = fora da fila (falha)
+    fret = _j(ROOT / "estado/fila_retentativa.json") or {}
+    frr = fret.get("resumo") or {}
+    fora = fret.get("fora_da_fila") or {}
+    _instr(I, agora, id="mo_retentativa", sub="Motores", nome="Páginas aguardando nova tentativa", valor=frr.get("aguardando_retentativa"),
+           unidade="páginas", escala=[0, 50], quando=fret.get("em"), cadencia_h=2, faixa={"normal": [0, 30], "alarme": [None, 100]},
+           faz="Página com tempo esgotado ou erro de acesso sai da passagem e volta 30 minutos depois; a pesquisa segue com as próximas.",
+           efeito=frr.get("regra") or "volta em 30 min; sai após 5 tentativas com o mesmo erro",
+           resultado=f"{frr.get('aguardando_retentativa', 0)} página(s) voltam na próxima passagem")
+    _instr(I, agora, id="mo_fora_da_fila", sub="Motores", nome="Páginas fora da fila (5 erros iguais)", valor=frr.get("fora_da_fila"),
+           unidade="páginas", escala=[0, 20], quando=fret.get("em"), cadencia_h=2, faixa={"alarme": [None, 0]},
+           faz="Falha: a página deu o mesmo erro 5 vezes seguidas e saiu da fila. Precisa de correção da rota ou leitura no Chrome.",
+           efeito=" · ".join(f"{(r.get('escopo') or '—')}: {u[:70]} ({r.get('erro')})" for u, r in list(fora.items())[:6]) or "nenhuma",
+           resultado=" · ".join(f"{k}: {v}" for k, v in (frr.get("fora_da_fila_por_escopo") or {}).items()) or "nenhuma página fora da fila")
+    cl = _j(ROOT / "estado/curadoria_links.json") or {}
+    clc = cl.get("curadoria") or {}
+    _instr(I, agora, id="es_curadoria", sub="Esteira", nome="Links oficiais aprovados na curadoria",
+           valor=round(100 * clc.get("aprovado", 0) / cl["abertas"]) if cl.get("abertas") else None, unidade="%", escala=[0, 100],
+           quando=cl.get("em"), cadencia_h=2, faixa={"normal": [50, None], "alarme": [10, None]},
+           faz="Link oficial com os 6 critérios objetivos: domínio oficial, não agregador, acessível, contém a oportunidade, informações completas, atualizado.",
+           efeito=" · ".join(f"{k} {v}" for k, v in clc.items()),
+           resultado=f"{cl.get('mesmo_link_e_oficial', 0)} captadas direto na fonte oficial · {cl.get('trecho_do_documento_oficial', 0)} com trecho do documento oficial")
+    parciais = [r for r in (fret.get("fila") or {}).values() if r.get("escopo") == "cartorio" and str(r.get("erro") or "").startswith(("parcial", "sem link"))]
+    _instr(I, agora, id="es_parcial", sub="Esteira", nome="Oportunidades em leitura parcial (voltam à fila)", valor=len(parciais),
+           unidade="oportunidades", escala=[0, 300], quando=fret.get("em"), cadencia_h=2,
+           faz="Leitura parcial volta ao Cartório em 30 min até ser lida por completo; 5 passagens sem progresso vão à conferência humana.",
+           efeito=f"fora da fila por leitura parcial: {sum(1 for r in (fret.get('fora_da_fila') or {}).values() if r.get('escopo') == 'cartorio')}",
+           resultado="voltam ao Cartório em 30 min até a leitura total")
     _instr(I, agora, id="mo_cadencia", sub="Motores", nome="Motores regulares fora da cadência", valor=al.get("em_alerta"), unidade="motores", escala=[0, 10],
            faixa={"normal": [None, 2], "alarme": [None, 5]}, quando=al.get("em"), cadencia_h=26,
            faz="Todo motor regular tem de ler dentro da sua cadência.", efeito=f"{al.get('funcionando', 0)} de {al.get('total', 0)} dentro da cadência",

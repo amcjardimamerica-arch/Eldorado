@@ -85,6 +85,7 @@ def montar() -> dict:
     col = _coleta(ids_origem)
     ag = {str(x.get("id")): x for x in ((_j(AGREG, {}) or {}).get("itens") or [])}
     cat = {m.get("id"): m for m in ((_j(CATALOGO, {}) or {}).get("motores") or [])}
+    cur = {x.get("id"): x for x in ((_j(ROOT / "estado/curadoria_links.json", {}) or {}).get("itens") or [])}   # 15/10: curadoria
     fichas, alias = {}, {}
     for r in abertas:
         f = fl.get(r["id"]) or next((fl[i] for i in (r.get("ids_origem") or []) if i in fl), {}) or {}
@@ -117,7 +118,14 @@ def montar() -> dict:
         ]
         L = _livro(cat.get(r.get("livro")))
         fichas[r["id"]] = {
-            "id": r["id"], "titulo": r.get("titulo"), "orgao": r.get("orgao"), "uf": r.get("uf"), "url": r.get("url"), "link_oficial": r.get("link_oficial"),
+            "id": r["id"], "titulo": r.get("titulo"), "orgao": r.get("orgao"), "uf": r.get("uf"), "url": r.get("url"),
+            # 15/10/2026 (titular): DOIS LINKS — onde foi achada (acesso) e onde foi publicada (oficial, só se aprovado na
+            # curadoria); o mesmo só quando captada direto no local oficial — e o TRECHO exato da oportunidade
+            "link_acesso": (cur.get(r["id"]) or {}).get("link_acesso") or r.get("url"),
+            "link_oficial": (cur.get(r["id"]) or {}).get("link_oficial") if r["id"] in cur else r.get("link_oficial"),
+            "curadoria_link_oficial": {k: (cur.get(r["id"]) or {}).get(k) for k in ("curadoria", "classe_do_link_oficial", "falham", "proximo_passo",
+                                                                                   "captada_direto_na_fonte_oficial", "link_oficial_proposto")} if r["id"] in cur else None,
+            "trecho_da_oportunidade": (cur.get(r["id"]) or {}).get("trecho"),
             "estado": r.get("estado"), "arquivada": r.get("arquivada"), "fim": r.get("fim"),
             "achado": achados,
             "esteira": {"etapa": r.get("etapa"), "proximo_passo": r.get("proximo_passo"), "no_passo_desde": r.get("no_passo_desde"), "estagnado": r.get("estagnado"),

@@ -671,6 +671,11 @@ def _ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, 
     n_pag = int(sensor.get("max_paginas") or lim["paginas_por_sensor"])
     _todas = _paginas(sensor)
     fila = list(_todas[:n_pag])
+    # 15/10/2026 (titular): FILA DE RETENTATIVA — página com erro volta 30 min depois; após 5 erros iguais sai da fila
+    from . import fila_retentativa as FR
+    for _u in reversed(FR.devidas(sensor["id"])):
+        if _u not in fila:
+            fila.insert(0, _u)                          # o que venceu os 30 minutos vem primeiro
     if len(_todas) > n_pag:     # 03/10 (teste do motor 19): rotas que ficaram fora do limite de páginas — registradas, não somem calado
         diag["paginas_alem_do_limite"] = len(_todas) - n_pag
     lidas: set = set()
@@ -679,6 +684,10 @@ def _ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, 
         if url in lidas:
             continue
         lidas.add(url)
+        if FR.fora_da_fila(url):                        # 5 erros iguais: fora da fila, aparece como falha no mostrador
+            diag.setdefault("fora_da_fila", []).append(url); continue
+        if FR.aguardando(url):                          # errou há menos de 30 min: a pesquisa segue com as próximas
+            diag.setdefault("aguardando_retentativa", []).append(url); continue
         # 03/10 (teste do motor 12): a regra do sistema é respeitar o robots.txt — o leitor genérico não consultava.
         # O TRF1 publica "User-agent: * / Disallow: /": o motor deixa de ler e diz por quê (o titular confere à mão)
         if url.startswith("http") and lim.get("respeitar_robots", True) and not _robots_ok(url):
@@ -688,6 +697,7 @@ def _ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, 
             tmo = lim.get("timeout_segundos", 12) if sensor.get("tipo") != "api" else max(30, lim.get("timeout_segundos", 12))
             html, final, status = _abrir(url, timeout=tmo, max_bytes=lim["bytes_por_pagina"])
             saude.append({"url": url, "http": status, "bytes": len(html)}); diag["paginas_lidas"] += 1
+            FR.sucesso(url)
         except Exception as exc:
             code = getattr(exc, "code", None); hdrs = getattr(exc, "headers", None)
             servidor = (hdrs.get("Server") or hdrs.get("server") or "") if hdrs else ""
@@ -699,7 +709,8 @@ def _ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, 
                      "conexão recusada/derrubada — filtro de rede ou IP estrangeiro" if type(exc).__name__ in ("URLError", "RemoteDisconnected", "ConnectionResetError") else
                      "tempo esgotado — servidor lento ou filtrando o IP" if "Timeout" in type(exc).__name__ else
                      f"HTTP {code}" if code else type(exc).__name__)
-            falhas.append({"url": url, "erro": type(exc).__name__, "code": code, "waf": waf, "causa": causa})
+            falhas.append({"url": url, "erro": type(exc).__name__, "code": code, "waf": waf, "causa": causa,
+                           "retentativa": FR.falhou(url, sensor["id"], FR.tipo_erro(exc, code), causa).get("estado")})
             try:
                 from .alternativas import registrar_bloqueio
                 registrar_bloqueio(url, type(exc).__name__, sensor.get("nome", ""))
@@ -864,6 +875,10 @@ def _ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, 
     if diag.get("robots_proibe") and not saude:
         diag["motivo_zero"] = (f"o robots.txt do site proíbe leitura automática ({len(diag['robots_proibe'])} página(s)) — "
                                "conferência manual pelo titular; republicações chegam pelo motor do CNJ")
+    try:
+        FR.gravar()                                    # 15/10: a fila de retentativa persiste a cada motor lido
+    except Exception:  # noqa: BLE001
+        pass
     return {"sensor": sensor["id"], "achados": list(unicos.values()),
             "falhas": falhas, "saude": saude, "diagnostico": diag, "lido_em": now_iso()}
 
