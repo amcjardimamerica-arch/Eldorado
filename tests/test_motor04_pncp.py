@@ -78,7 +78,8 @@ class TestClassificacao(unittest.TestCase):
         c = classif("Contratação de entidade sem fins lucrativos, inscrita e aprovada no Cadastro Nacional de Aprendizagem, com "
                     "capacidade técnica e administrativa e que tenha por objetivo a assistência ao jovem aprendiz", modalidade=6,
                     orgao="COMPANHIA NACIONAL DE ABASTECIMENTO", municipio="Brasília", uf="DF", esfera="F", encerra="2026-10-20T10:00:00")
-        self.assertEqual((c["veredito"], c["regime"], c["territorio"]), ("OPORTUNIDADE", "aprendizagem_esfl", "BR"))
+        # 15/10/2026 (titular): contratação por pregão é licitação/contrato — não é captação de recursos para associação
+        self.assertEqual(c["veredito"], "RUIDO")
 
     def test_prestadores_de_saude_nao_sao_fomento(self):
         for obj in ("ABERTURA DE CREDENCIAMENTO PARA PROFISSIONAL DE SAUDE EM REALZIAÇÃO DE ULTRASSONOGRAFIA PARA ATENDIMENTO NAS UBS",
@@ -88,10 +89,10 @@ class TestClassificacao(unittest.TestCase):
             self.assertEqual(classif(obj, orgao="FUNDO MUNICIPAL DE SAUDE")["veredito"], "RUIDO", obj[:40])
 
     def test_ilpi_credenciada_e_oportunidade_com_enquadramento(self):
-        """02/10 (titular): ILPI também é OSC — o credenciamento é oportunidade mapeada, com o enquadramento anotado."""
+        """15/10/2026 (titular) substitui 02/10: credenciamento para PRESTAR SERVIÇO é contrato (Lei 14.133), não captação."""
         c = classif("CREDENCIAMENTO DE INSTITUIÇÕES DE ASSISTÊNCIA SOCIAL PARA ACOLHIMENTO INSTITUCIONAL DE IDOSOS (ILPI) E, "
                     "EXCEPCIONALMENTE, PESSOAS COM DEFICIÊNCIA", orgao="MUNICIPIO DE TRINDADE", municipio="Trindade")
-        self.assertEqual(c["veredito"], "OPORTUNIDADE")              # (ILPI é sinal de OSC; o EN-03 é anotado no livro)
+        self.assertEqual(c["veredito"], "RUIDO")
         from src.regras_restricao import avaliar
         self.assertIn("EN-03", {e["id"] for e in avaliar({"titulo": "Credenciamento de ILPI — instituição de longa permanência", "uf": "GO"})["enquadramento"]})
 
@@ -130,7 +131,7 @@ class TestClassificacao(unittest.TestCase):
     def test_jovem_aprendiz_no_singular(self):
         c = classif("PROGRAMA JOVEM APRENDIZ: contratação de entidade sem fins lucrativos qualificadora", modalidade=6,
                     orgao="COMPANHIA NACIONAL DE ABASTECIMENTO", uf="DF", esfera="F", municipio="Brasília", encerra="2026-10-20T10:00:00")
-        self.assertEqual(c["regime"], "aprendizagem_esfl")
+        self.assertEqual(c["veredito"], "RUIDO")                     # 15/10 (titular): contratação ≠ captação
 
     def test_finalidade_nunca_none(self):
         c = classif("CHAMAMENTO PÚBLICO PARA CREDENCIAMENTO DE OSC INTERESSADAS EM OFICINAS", encerra="2026-10-30T00:00:00",
@@ -280,3 +281,26 @@ class TestMotor(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PortaoAssociacao15_10(unittest.TestCase):
+    """15/10/2026 (titular): o PNCP só traz captação de recursos para associação — casos do estudo de 15/10."""
+    def test_casos_do_estudo(self):
+        from src import pncp_osc as P
+        h = date(2026, 10, 15)
+        ruido = [dict(titulo="MUNICIPIO DE NAZARENO — Pregão eletrônico para aquisição de equipamentos", objeto="conforme Acordo de Cooperação Técnica nº 52/2025",
+                      orgao="MUNICIPIO DE NAZARENO", uf="MG", esfera="M", modalidade="Pregão - Eletrônico", encerramento="2026-10-27"),
+                 dict(titulo="MUNICIPIO DE FEIRA DE SANTANA — Chamamento público de OSC", objeto="seleção de organizações da sociedade civil",
+                      orgao="MUNICIPIO DE FEIRA DE SANTANA", uf="BA", esfera="M", modalidade="Credenciamento", encerramento="2027-04-14"),
+                 dict(titulo="MUNICIPIO X — aquisição de gêneros alimentícios da agricultura familiar e seleção de entidades", objeto="PNAE",
+                      orgao="MUNICIPIO DE ANAPOLIS", uf="GO", esfera="M", modalidade="Credenciamento", encerramento="2026-11-14")]
+        for m in ruido:
+            self.assertEqual(P.classificar_item(m, h, P.TODAS_UFS)["veredito"], "RUIDO", m["titulo"])
+        ok = [dict(titulo="MUNICIPIO DE GOIANIA — Chamamento público de OSC", objeto="seleção de organizações da sociedade civil termo de colaboração",
+                   orgao="MUNICIPIO DE GOIANIA", uf="GO", esfera="M", modalidade="Credenciamento", encerramento="2026-11-14"),
+              dict(titulo="MUNICIPIO DE SALVADOR — Chamamento OSC", objeto="seleção de organizações da sociedade civil termo de fomento",
+                   orgao="MUNICIPIO DE SALVADOR", uf="BA", esfera="M", modalidade="Credenciamento", encerramento="2026-11-14"),
+              dict(titulo="SECRETARIA DE CULTURA DA BAHIA — Prêmio PNAB", objeto="premiação de agentes culturais PNAB",
+                   orgao="SECRETARIA DE ESTADO DA CULTURA", uf="BA", esfera="E", modalidade="Concurso", encerramento="2026-11-14")]
+        for m in ok:
+            self.assertEqual(P.classificar_item(m, h, P.TODAS_UFS)["veredito"], "OPORTUNIDADE", m["titulo"])

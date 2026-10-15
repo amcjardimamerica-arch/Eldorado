@@ -55,3 +55,11 @@ class Dossie(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PortaoDoMotorNoDossie(unittest.TestCase):
+    def test_pregao_e_servico_saem_no_dossie(self):
+        m = dict(META, modalidadeNome="Pregão - Eletrônico", objetoCompra="aquisição de equipamentos", amparoLegal={"nome": "Lei 14.133/2021"})
+        self.assertIn("licitação", P.dossie({"id": "p", "titulo": "Pregão", "url": URL}, Rede({API: json.dumps(m)}), "2026-10-15")["motivo"])
+        m = dict(META, objetoCompra="Credenciamento de ILPI para acolhimento de idosos", amparoLegal={"nome": "Lei 14.133/2021, Art. 79"})
+        self.assertIn("prestar serviço", P.dossie({"id": "q", "titulo": "Credenciamento ILPI", "url": URL}, Rede({API: json.dumps(m)}), "2026-10-15")["motivo"])
