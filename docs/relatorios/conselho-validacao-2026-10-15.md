@@ -127,9 +127,9 @@
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 1600,
-   "achados_total_agora": 1600,
-   "no_fluxo": 6,
+   "achados_total_1a": 1622,
+   "achados_total_agora": 1622,
+   "no_fluxo": 7,
    "confirmadas": 0
   },
   {
@@ -141,8 +141,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 104,
-   "achados_total_agora": 104,
+   "achados_total_1a": 106,
+   "achados_total_agora": 106,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -225,7 +225,7 @@
  "pontos_com_redundancia": 13,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 9419
+ "exemplos_da_rede_de_rotas": 9536
 }
 ```
 
@@ -236,12 +236,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 69.6,
- "fora_dos_motores_pct_agora": 69.6,
+ "fora_dos_motores_pct_1a": 68.9,
+ "fora_dos_motores_pct_agora": 68.9,
  "origem": {
   "agregador/outra": 210,
-  "motor": 149,
-  "Piloto": 131
+  "motor": 150,
+  "Piloto": 122
  },
  "dominios_so_de_agregador": [
   {
@@ -399,20 +399,20 @@
 
 ```json
 {
- "fontes_recebidas": 369,
+ "fontes_recebidas": 371,
  "por_origem": {
-  "conselho (fontes irmãs)": 163,
-  "Cartório (site oficial certificado)": 167,
+  "conselho (fontes irmãs)": 162,
+  "Cartório (site oficial certificado)": 170,
   "Espião (privado/internacional)": 39
  },
  "lidas_nas_ultimas_24h": 216,
  "dimensionamento": {
-  "fontes": 369,
+  "fontes": 371,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 8,
-  "cobertura_diaria": 369,
+  "cobertura_diaria": 371,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -481,14 +481,14 @@
    ]
   },
   "Mapas Culturais": {
-   "orgaos": 10,
+   "orgaos": 11,
    "exemplos": [
     "culteditais.cultura.gov.br",
     "mapa.cultura.es.gov.br",
     "mapa.cultura.gov.br",
+    "mapacultural.cim-amfri.sc.gov.br",
     "mapacultural.pa.gov.br",
-    "mapacultural.pe.gov.br",
-    "mapacultural.saobernardo.sp.gov.br"
+    "mapacultural.pe.gov.br"
    ]
   },
   "Diário municipal em lote (AGM/DOM)": {
@@ -514,7 +514,7 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 49,
+   "orgaos": 50,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",

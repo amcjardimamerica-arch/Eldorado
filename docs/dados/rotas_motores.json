@@ -1,5 +1,5 @@
 {
- "em": "2026-10-15T06:29:26+00:00",
+ "em": "2026-10-15T07:57:02+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
@@ -7,13 +7,17 @@
   "alterar_rota": 47,
   "rota_nova": 50,
   "via_ponte": 3,
-  "exemplos_da_rede": 9419
+  "exemplos_da_rede": 9536
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
    [
     "origem:biblioteca",
-    2.5
+    2.8088
+   ],
+   [
+    "tok:secult",
+    2.5299
    ],
    [
     "tok:mpf",
@@ -28,24 +32,20 @@
     2.2113
    ],
    [
-    "tok:secult",
-    2.1593
+    "origem:rota original",
+    1.9238
    ],
    [
     "tok:leipaulogustavo",
-    1.5765
+    1.7516
    ],
    [
     "tok:portarias",
     1.543
    ],
    [
-    "origem:rota original",
-    1.5028
-   ],
-   [
-    "tipo:privada",
-    1.4437
+    "gov:True",
+    1.481
    ],
    [
     "tok:abertas",
@@ -62,36 +62,36 @@
   ],
   "piores_sinais": [
    [
-    "tipo:site_oficial",
-    -1.5292
+    "tok:ccs",
+    -1.5018
    ],
    [
     "tok:prefeitura",
-    -1.5956
-   ],
-   [
-    "tok:content",
-    -1.9593
-   ],
-   [
-    "tok:uploads",
-    -1.9593
+    -1.6055
    ],
    [
     "tipo:internacional",
-    -2.0163
+    -2.0165
+   ],
+   [
+    "tok:content",
+    -2.0292
+   ],
+   [
+    "tok:uploads",
+    -2.0292
    ],
    [
     "origem:câmara",
-    -2.4973
+    -2.5513
    ],
    [
     "gov:False",
-    -2.6084
+    -2.6105
    ],
    [
     "origem:padrão",
-    -3.2755
+    -3.3108
    ]
   ]
  },
@@ -310,7 +310,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T00:54:41+00:00",
+    "em": "2026-10-15T07:54:18+00:00",
     "testes": 23,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -593,7 +593,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T00:10:19+00:00",
+    "em": "2026-10-15T07:53:15+00:00",
     "testes": 22,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -622,7 +622,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T00:54:25+00:00",
+    "em": "2026-10-15T07:54:04+00:00",
     "testes": 24,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1127,7 +1127,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T00:54:05+00:00",
+    "em": "2026-10-15T07:53:56+00:00",
     "testes": 15,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1251,17 +1251,17 @@
     ],
     "via": "direto",
     "origem": "rota original",
-    "pontos": 15,
-    "aprendido_em": "2026-10-15T01:37:42+00:00"
+    "pontos": 19,
+    "aprendido_em": "2026-10-15T07:57:02+00:00"
    },
    "afinado": {
-    "em": "2026-10-15T01:37:42+00:00",
-    "testes": 17,
+    "em": "2026-10-15T07:57:02+00:00",
+    "testes": 16,
     "melhor": {
      "url": "https://portal.al.go.leg.br/",
      "via": "direto",
      "origem": "rota original",
-     "pontos": 15,
+     "pontos": 19,
      "formato": "html"
     },
     "resultado": "rota nova em teste"
@@ -1290,17 +1290,17 @@
      "https://www.goiania.go.gov.br/secult/pnab-2024/"
     ],
     "via": "direto",
-    "origem": "biblioteca",
+    "origem": "rota original",
     "pontos": 89,
-    "aprendido_em": "2026-10-15T00:55:16+00:00"
+    "aprendido_em": "2026-10-15T07:55:00+00:00"
    },
    "afinado": {
-    "em": "2026-10-15T00:55:16+00:00",
+    "em": "2026-10-15T07:55:00+00:00",
     "testes": 17,
     "melhor": {
      "url": "https://www.goiania.go.gov.br/secult/pnab-2024/",
      "via": "direto",
-     "origem": "biblioteca",
+     "origem": "rota original",
      "pontos": 89,
      "formato": "html"
     },
@@ -3701,10 +3701,10 @@
    "nome": "Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 99,
-   "ok": 56,
+   "leituras": 100,
+   "ok": 57,
    "ultima": {
-    "em": "2026-10-15T06:13:42+00:00",
+    "em": "2026-10-15T07:10:47+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3807,10 +3807,10 @@
    "nome": "Prefeituras das 25 maiores cidades de Goiás — portais de editais",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 102,
-   "ok": 51,
+   "leituras": 103,
+   "ok": 52,
    "ultima": {
-    "em": "2026-10-15T06:11:15+00:00",
+    "em": "2026-10-15T07:08:30+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3818,8 +3818,8 @@
     "o",
     "o",
     "o",
-    "o",
     "v",
+    "o",
     "o",
     "o",
     "o",
@@ -4558,14 +4558,15 @@
    "nome": "Adaptador WordPress — sites oficiais pela API pública",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 6,
-   "ok": 6,
+   "leituras": 7,
+   "ok": 7,
    "ultima": {
-    "em": "2026-10-15T06:15:59+00:00",
+    "em": "2026-10-15T07:12:09+00:00",
     "classe": "ok",
     "motivo": ""
    },
    "historico": [
+    "o",
     "o",
     "o",
     "o",
