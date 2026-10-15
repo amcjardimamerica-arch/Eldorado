@@ -1,5 +1,5 @@
 {
- "em": "2026-10-14T22:40:25+00:00",
+ "em": "2026-10-15T00:10:19+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
@@ -7,7 +7,7 @@
   "alterar_rota": 46,
   "rota_nova": 50,
   "via_ponte": 3,
-  "exemplos_da_rede": 8746
+  "exemplos_da_rede": 8867
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
@@ -17,7 +17,7 @@
    ],
    [
     "origem:biblioteca",
-    2.3701
+    2.3666
    ],
    [
     "tok:inscricoes",
@@ -33,7 +33,7 @@
    ],
    [
     "tipo:privada",
-    1.5931
+    1.5784
    ],
    [
     "tok:portarias",
@@ -41,11 +41,11 @@
    ],
    [
     "origem:rota original",
-    1.5189
+    1.5089
    ],
    [
     "tok:feed",
-    1.4606
+    1.4599
    ],
    [
     "tok:abertas",
@@ -79,7 +79,7 @@
    ],
    [
     "tipo:internacional",
-    -1.9945
+    -1.9947
    ],
    [
     "origem:câmara",
@@ -87,11 +87,11 @@
    ],
    [
     "gov:False",
-    -2.5026
+    -2.5175
    ],
    [
     "origem:padrão",
-    -3.2012
+    -3.2026
    ]
   ]
  },
@@ -228,7 +228,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-14T15:14:44+00:00",
+    "em": "2026-10-15T00:09:40+00:00",
     "testes": 24,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -363,7 +363,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-14T13:21:59+00:00",
+    "em": "2026-10-15T00:09:32+00:00",
     "testes": 13,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -410,7 +410,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-14T13:21:54+00:00",
+    "em": "2026-10-15T00:09:28+00:00",
     "testes": 20,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -454,7 +454,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-14T15:15:37+00:00",
+    "em": "2026-10-15T00:10:00+00:00",
     "testes": 18,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -564,7 +564,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-14T15:15:44+00:00",
+    "em": "2026-10-15T00:10:06+00:00",
     "testes": 24,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -593,7 +593,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-14T15:15:58+00:00",
+    "em": "2026-10-15T00:10:19+00:00",
     "testes": 22,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1577,6 +1577,71 @@
    "rota_aprendida": null,
    "afinado": null
   },
+  "do-goiania": {
+   "nome": "Diário Oficial do Município de Goiânia",
+   "status": "rota nova em teste",
+   "vazias_seguidas": 2,
+   "leituras": 148,
+   "ok": 9,
+   "ultima": {
+    "em": "2026-10-14T23:28:56+00:00",
+    "classe": "vazia",
+    "motivo": "6 edição(ões) lida(s), 67 ato(s) do terceiro setor: nenhum chamamento aberto para OSC hoje · 43 a acompanhar · 24 ruído (credenciamento, OS da saúde, decretos)"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": {
+    "urls": [
+     "https://www.goiania.go.gov.br/secult/leipaulogustavo/"
+    ],
+    "via": "direto",
+    "origem": "rota original",
+    "pontos": 9,
+    "aprendido_em": "2026-10-14T18:33:11+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-14T18:33:11+00:00",
+    "testes": 17,
+    "melhor": {
+     "url": "https://www.goiania.go.gov.br/secult/leipaulogustavo/",
+     "via": "direto",
+     "origem": "rota original",
+     "pontos": 9,
+     "formato": "html"
+    },
+    "resultado": "rota nova em teste"
+   }
+  },
   "dj-trf1-go": {
    "nome": "Diário da Justiça Federal — Seção Judiciária de Goiás",
    "status": "rota nova em teste",
@@ -2506,71 +2571,6 @@
     "resultado": "rota nova em teste"
    }
   },
-  "do-goiania": {
-   "nome": "Diário Oficial do Município de Goiânia",
-   "status": "rota nova em teste",
-   "vazias_seguidas": 1,
-   "leituras": 147,
-   "ok": 9,
-   "ultima": {
-    "em": "2026-10-14T20:26:47+00:00",
-    "classe": "vazia",
-    "motivo": "6 edição(ões) lida(s), 67 ato(s) do terceiro setor: nenhum chamamento aberto para OSC hoje · 43 a acompanhar · 24 ruído (credenciamento, OS da saúde, decretos)"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": {
-    "urls": [
-     "https://www.goiania.go.gov.br/secult/leipaulogustavo/"
-    ],
-    "via": "direto",
-    "origem": "rota original",
-    "pontos": 9,
-    "aprendido_em": "2026-10-14T18:33:11+00:00"
-   },
-   "afinado": {
-    "em": "2026-10-14T18:33:11+00:00",
-    "testes": 17,
-    "melhor": {
-     "url": "https://www.goiania.go.gov.br/secult/leipaulogustavo/",
-     "via": "direto",
-     "origem": "rota original",
-     "pontos": 9,
-     "formato": "html"
-    },
-    "resultado": "rota nova em teste"
-   }
-  },
   "f260-captacao-151": {
    "nome": "Emenda estadual para saúde comunitária",
    "status": "rota nova em teste",
@@ -2968,10 +2968,10 @@
    "nome": "Diário Oficial do Estado de Goiás",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 130,
-   "ok": 57,
+   "leituras": 131,
+   "ok": 58,
    "ultima": {
-    "em": "2026-10-14T20:29:04+00:00",
+    "em": "2026-10-14T23:30:40+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3014,12 +3014,12 @@
    "nome": "Diário Oficial da União",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 140,
-   "ok": 55,
+   "leituras": 141,
+   "ok": 56,
    "ultima": {
-    "em": "2026-10-14T20:29:34+00:00",
+    "em": "2026-10-14T23:33:10+00:00",
     "classe": "ok",
-    "motivo": "5234 matérias no jornal, 0 de interesse (0 íntegras): nenhuma seleção aberta para OSC hoje · 0 a acompanhar · 0 ruído"
+    "motivo": "5235 matérias no jornal, 0 de interesse (0 íntegras): nenhuma seleção aberta para OSC hoje · 0 a acompanhar · 0 ruído"
    },
    "historico": [
     "o",
@@ -3030,8 +3030,8 @@
     "o",
     "o",
     "o",
-    "o",
     "v",
+    "o",
     "o",
     "o",
     "o",
@@ -3060,15 +3060,14 @@
    "nome": "Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 124,
-   "ok": 43,
+   "leituras": 125,
+   "ok": 44,
    "ultima": {
-    "em": "2026-10-14T20:29:56+00:00",
+    "em": "2026-10-14T23:34:28+00:00",
     "classe": "ok",
     "motivo": "25 itens lidos (pautas D 0 projetos em 0 pauta(s) · processos A 0 · própria B 0 · notícias C 25): nenhum chamamento aberto para OSC · 3 a acompanhar · 0 utilida"
    },
    "historico": [
-    "o",
     "v",
     "v",
     "o",
@@ -3095,6 +3094,7 @@
     "o",
     "o",
     "v",
+    "o",
     "o",
     "o",
     "o"
@@ -3147,10 +3147,10 @@
    "nome": "GIFE — Grupo de Institutos, Fundações e Empresas",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 96,
-   "ok": 52,
+   "leituras": 97,
+   "ok": 53,
    "ultima": {
-    "em": "2026-10-14T20:36:15+00:00",
+    "em": "2026-10-14T23:35:04+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3699,10 +3699,10 @@
    "nome": "Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 95,
-   "ok": 52,
+   "leituras": 96,
+   "ok": 53,
    "ultima": {
-    "em": "2026-10-14T19:19:16+00:00",
+    "em": "2026-10-14T23:28:11+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3805,10 +3805,10 @@
    "nome": "Prefeituras das 25 maiores cidades de Goiás — portais de editais",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 98,
-   "ok": 47,
+   "leituras": 99,
+   "ok": 48,
    "ultima": {
-    "em": "2026-10-14T19:09:16+00:00",
+    "em": "2026-10-14T23:25:49+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3820,8 +3820,8 @@
     "o",
     "o",
     "o",
-    "o",
     "v",
+    "o",
     "o",
     "o",
     "o",
@@ -3851,10 +3851,10 @@
    "nome": "Lei Rouanet — janela de propostas no SALIC e projetos de Goiás (Ministério da Cultura)",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 106,
-   "ok": 54,
+   "leituras": 107,
+   "ok": 55,
    "ultima": {
-    "em": "2026-10-14T20:35:45+00:00",
+    "em": "2026-10-14T23:34:50+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -4556,14 +4556,15 @@
    "nome": "Adaptador WordPress — sites oficiais pela API pública",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 2,
-   "ok": 2,
+   "leituras": 3,
+   "ok": 3,
    "ultima": {
-    "em": "2026-10-11T21:08:56+00:00",
+    "em": "2026-10-14T23:36:13+00:00",
     "classe": "ok",
     "motivo": ""
    },
    "historico": [
+    "o",
     "o",
     "o"
    ],
