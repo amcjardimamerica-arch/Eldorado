@@ -1,0 +1,141 @@
+{
+ "em": "2026-10-15T09:52:56+00:00",
+ "segredos": {
+  "ELDORADO_PONTE_URL": true,
+  "ELDORADO_PONTE_CHAVE": true
+ },
+ "alvos": {
+  "ALEGO · SPL (proposições)": {
+   "url": "https://alegodigital.al.go.leg.br/spl/",
+   "direto": {
+    "ok": false,
+    "http": null,
+    "erro": "URLError: <urlopen error [Errno 104] Connection reset by peer>",
+    "s": 0.8
+   },
+   "ponte": {
+    "ok": true,
+    "http": 200,
+    "bytes": 133177,
+    "s": 1.7
+   }
+  },
+  "ALEGO · portal": {
+   "url": "https://portal.al.go.leg.br/noticias",
+   "direto": {
+    "ok": true,
+    "http": 200,
+    "bytes": 113951,
+    "s": 1.5
+   },
+   "ponte": {
+    "ok": true,
+    "http": 200,
+    "bytes": 113951,
+    "s": 1.3
+   }
+  },
+  "Prefeitura de Goiânia · lista do Diário": {
+   "url": "https://www.goiania.go.gov.br/shtml//portal/casacivil/lista_diarios.asp?ano=2026",
+   "direto": {
+    "ok": true,
+    "http": 200,
+    "bytes": 63033,
+    "s": 0.5
+   },
+   "ponte": {
+    "ok": true,
+    "http": 200,
+    "bytes": 63033,
+    "s": 1.0
+   }
+  },
+  "Câmara de Goiânia · pautas": {
+   "url": "https://www.goiania.go.leg.br/processo-legislativo/pautas-de-sessoes",
+   "direto": {
+    "ok": true,
+    "http": 200,
+    "bytes": 13793,
+    "s": 0.9
+   },
+   "ponte": {
+    "ok": true,
+    "http": 200,
+    "bytes": 108587,
+    "s": 1.1
+   }
+  },
+  "TJGO · portal": {
+   "url": "https://www.tjgo.jus.br/",
+   "direto": {
+    "ok": false,
+    "http": 403,
+    "erro": "HTTPError: HTTP Error 403: Forbidden",
+    "s": 0.2
+   },
+   "ponte": {
+    "ok": false,
+    "http": 403,
+    "bytes": 5193,
+    "s": 0.7
+   }
+  },
+  "Diário do Estado de Goiás": {
+   "url": "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/edicoes_from_data/2026-10-14.json",
+   "direto": {
+    "ok": true,
+    "http": 200,
+    "bytes": 246,
+    "s": 1.1
+   },
+   "ponte": {
+    "ok": true,
+    "http": 200,
+    "bytes": 246,
+    "s": 0.6
+   }
+  },
+  "Governo de Goiás": {
+   "url": "https://www.goias.gov.br/",
+   "direto": {
+    "ok": true,
+    "http": 200,
+    "bytes": 172857,
+    "s": 6.3
+   },
+   "ponte": {
+    "ok": true,
+    "http": 200,
+    "bytes": 172857,
+    "s": 5.4
+   }
+  },
+  "MPGO": {
+   "url": "https://www.mpgo.mp.br/",
+   "direto": {
+    "ok": false,
+    "http": null,
+    "erro": "URLError: <urlopen error timed out>",
+    "s": 30.3
+   },
+   "ponte": {
+    "ok": true,
+    "http": 200,
+    "bytes": 214077,
+    "s": 1.7
+   }
+  }
+ },
+ "resumo": {
+  "ponte_ok": 7,
+  "direto_ok": 5,
+  "so_pela_ponte": [
+   "ALEGO · SPL (proposições)",
+   "MPGO"
+  ],
+  "nenhum": [
+   "TJGO · portal"
+  ],
+  "total": 8
+ }
+}
