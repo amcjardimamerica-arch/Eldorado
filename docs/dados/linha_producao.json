@@ -1,13 +1,13 @@
 {
- "em": "2026-10-15T16:02:46+00:00",
+ "em": "2026-10-15T16:37:46+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 18634,
-  "oportunidades_distintas": 2755,
+  "coletados": 18663,
+  "oportunidades_distintas": 2765,
   "entidades_em_2_ou_mais_canais": 20,
   "etapas": {
-   "CONSOLIDADO": 18095,
-   "EM_LIVRO": 435,
+   "CONSOLIDADO": 18100,
+   "EM_LIVRO": 459,
    "REPROCESSAR": 82,
    "QUALIFICADO": 22
   },
@@ -90,6 +90,15 @@
    "validadas_como_reais": 8
   },
   {
+   "canal": "f260-captacao-069",
+   "familia": "orgao_publico",
+   "registros": 27,
+   "entidades": 9,
+   "exclusivas": 9,
+   "corroboradas": 0,
+   "validadas_como_reais": 8
+  },
+  {
    "canal": "observatorio-3setor",
    "familia": "terceiro_setor",
    "registros": 35,
@@ -102,10 +111,10 @@
    "canal": "outras-oportunidades-5",
    "familia": "outros",
    "registros": 32,
-   "entidades": 23,
-   "exclusivas": 23,
+   "entidades": 22,
+   "exclusivas": 22,
    "corroboradas": 0,
-   "validadas_como_reais": 6
+   "validadas_como_reais": 5
   },
   {
    "canal": "outras-oportunidades-6",
@@ -144,21 +153,21 @@
    "validadas_como_reais": 2
   },
   {
+   "canal": "recorrencia",
+   "familia": "terceiro_setor",
+   "registros": 18,
+   "entidades": 17,
+   "exclusivas": 14,
+   "corroboradas": 3,
+   "validadas_como_reais": 2
+  },
+  {
    "canal": "dou",
    "familia": "diario_oficial",
    "registros": 26,
    "entidades": 17,
    "exclusivas": 17,
    "corroboradas": 0,
-   "validadas_como_reais": 2
-  },
-  {
-   "canal": "recorrencia",
-   "familia": "terceiro_setor",
-   "registros": 17,
-   "entidades": 16,
-   "exclusivas": 13,
-   "corroboradas": 3,
    "validadas_como_reais": 2
   },
   {
@@ -191,9 +200,9 @@
   {
    "canal": "empresas-incentivadas",
    "familia": "empresas",
-   "registros": 29,
-   "entidades": 27,
-   "exclusivas": 27,
+   "registros": 30,
+   "entidades": 28,
+   "exclusivas": 28,
    "corroboradas": 0,
    "validadas_como_reais": 1
   },
@@ -564,7 +573,7 @@
   "outros": 17,
   "pilotos": 1,
   "terceiro_setor": 4,
-  "orgao_publico": 26,
+  "orgao_publico": 27,
   "empresas": 2,
   "justica_mp": 1
  },
@@ -711,5 +720,5 @@
    ]
   }
  ],
- "eventos_no_livro_razao": 11
+ "eventos_no_livro_razao": 67
 }
