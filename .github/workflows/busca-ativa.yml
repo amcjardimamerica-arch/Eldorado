@@ -14,7 +14,7 @@ concurrency:
 jobs:
   buscar:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 50   # 15/10: estourava 25 min e era cancelado; a busca tem teto interno de 20 min
     # 02/10 (titular): sem IA Claude nos fluxos do GitHub — a chave FAROL_AI_API_KEY não é mais passada
     # 03/10: o "env:" vazio deixava o arquivo INVÁLIDO para o GitHub (falha a cada push desde 02/10)
     steps:
@@ -25,7 +25,7 @@ jobs:
       - name: Busca ativa dos indícios (órgão publicador + IA econômica)
         run: |
           pip install pypdf --quiet
-          python -m src.busca_ativa | tee busca.json
+          BUSCA_ATIVA_SEGUNDOS=1200 python -m src.busca_ativa | tee busca.json
           python -m src.completude | tee completude.json
           python -m src.alternativas && python -c "from src.alternativas import run_localizacao; print(run_localizacao())" || echo "alternativas: registrado"
           python -m src.dashboard_dados | tee dash.json

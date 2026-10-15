@@ -349,7 +349,13 @@ def run(hoje: date | None = None, limite: int = 60, usar_ia: bool = True) -> dic
     est = load_json(ESTADO) if ESTADO.exists() else {"itens": {}}
     itens = est["itens"]
     processados, achados, pend_ia = 0, 0, 0
+    # 15/10/2026 (análise do sistema): o fluxo 05 estourava 25 min e era cancelado antes de gravar — teto interno de
+    # tempo; para entre indícios, grava o que fez e a próxima execução continua dos que faltam
+    import os as _os, time as _time
+    _t0, _teto = _time.time(), int(_os.environ.get("BUSCA_ATIVA_SEGUNDOS", "1200"))
     for ind in _indicios(hoje)[:limite * 3]:
+        if _time.time() - _t0 > _teto:
+            break
         reg = itens.setdefault(ind["id"], {"criado_em": hoje.isoformat(), "tentativas": []})
         if reg.get("url_edital") or reg.get("parado"):
             continue
