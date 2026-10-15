@@ -49,7 +49,9 @@ def main(n: int = 20) -> dict:
     from src.cartorio import Rede
     regs = (_j(ROOT / "dados/oportunidades/repositorio_unico.json", {}) or {}).get("registros") or []
     ab = [r for r in regs if not r.get("arquivada") and r.get("estado") not in ("arquivada", "encerrada", "descartada", "fechada") and r.get("url")]
-    rnd = random.Random(date.today().isoformat())
+    from datetime import datetime, timezone
+    semente = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M")      # 15/10: amostra nova a cada análise
+    rnd = random.Random(semente)
     amostra = rnd.sample(ab, min(n, len(ab)))
     cur = {x.get("id"): x for x in (_j(ROOT / "estado/curadoria_links.json", {}) or {}).get("itens") or []}
     certs = (_j(ROOT / "estado/cartorio/certidoes.json", {}) or {}).get("certidoes") or {}
@@ -69,10 +71,10 @@ def main(n: int = 20) -> dict:
         out.append(reg)
         print(f"{len(out):2d} {r['id']} acesso={'ok' if reg['doc_acesso'].get('ok') else reg['doc_acesso'].get('motivo')} "
               f"oficial={'ok' if reg['doc_oficial'].get('ok') else reg['doc_oficial'].get('motivo', '—')}", flush=True)
-    p = ROOT / f"estado/amostra_validacao/{date.today().isoformat()}.json.gz"
+    p = ROOT / f"estado/amostra_validacao/{semente.replace(':', '')}.json.gz"
     p.parent.mkdir(parents=True, exist_ok=True)
     with gzip.open(p, "wt", encoding="utf-8") as fh:
-        json.dump({"data": date.today().isoformat(), "semente": date.today().isoformat(), "quantidade": len(out), "itens": out}, fh, ensure_ascii=False)
+        json.dump({"data": date.today().isoformat(), "semente": semente, "quantidade": len(out), "itens": out}, fh, ensure_ascii=False)
     return {"amostra": len(out), "arquivo": str(p)}
 
 

@@ -10,7 +10,7 @@ on:
     - cron: "8,38 * * * *"
   workflow_dispatch:
 permissions:
-  actions: read          # 11/10: a sala de controle lê a última execução de cada fluxo
+  actions: write         # 15/10: o comando dispara a própria próxima passagem; 11/10: a sala lê as execuções
   contents: write
 concurrency:
   group: eldorado-varredura-diaria     # o mesmo do fluxo 01: os dois gravam a esquadra, nunca ao mesmo tempo
@@ -134,3 +134,18 @@ jobs:
       - name: Comando · veredito (etapa com erro deixa o fluxo vermelho)
         if: always()
         run: python -m src.comando veredito
+      - name: Comando · próxima passagem (premissa de 100% das informações do dia)
+        # 15/10/2026 (análise do sistema, ciclo 3): o agendamento do GitHub descartou passagens (12:47 → nenhuma até 14:00)
+        # e a cobertura parou em 4%. Enquanto a cobertura do dia não chega a 98%, o comando dispara a passagem seguinte.
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          COB=$(python -c "import json;d=json.load(open('docs/dados/maestro.json'));print(100 if d.get('dia_fechado') else (d.get('cobertura_percentual') or 0))" 2>/dev/null || echo 0)
+          echo "cobertura do dia: $COB%"
+          if python -c "import sys;sys.exit(0 if float('$COB') < 98 else 1)"; then
+            curl -s -o /dev/null -w "próxima passagem disparada: %{http_code}\n" -X POST -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" "https://api.github.com/repos/${{ github.repository }}/actions/workflows/motores-da-vez.yml/dispatches" -d '{"ref":"main"}'
+          else
+            echo "dia coberto — a próxima passagem fica com o horário"
+          fi

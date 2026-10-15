@@ -307,6 +307,17 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
             link = (_RESOLV.get(cid) or {}).get("fonte") or next(((_RESOLV.get(i) or {}).get("fonte") for i in r["ids_origem"] if _RESOLV.get(i)), None)
         elif not link:
             link = (_RESOLV.get(cid) or {}).get("fonte")
+        _cu = _CUR.get(cid) or {}                       # 15/10 (ciclo 3): o link oficial respeita a curadoria
+        if link and (_cu.get("curadoria") == "reprovado" or _cu.get("classe_do_link_oficial") in ("agregador ou replicador",
+                                                                                                   "página inicial genérica (não é a oportunidade)")):
+            link = None
+        if link:
+            try:
+                from .curadoria_links import classe as _cl
+                if _cl(link, r.get("orgao")) in ("agregador ou replicador", "página do PNCP (não é o documento)"):
+                    link = None
+            except Exception:  # noqa: BLE001
+                pass
         fim = r.get("fim") or (((c.get("itens") or {}).get("Prazo de inscrição") or {}).get("fim"))
         v = (ver or {}).get("veredito")
         _mun = next((_arq_ids[i] for i in [cid] + r["ids_origem"] if i in _arq_ids), None)   # só a lista fixa de 11/10
