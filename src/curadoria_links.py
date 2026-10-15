@@ -69,7 +69,7 @@ def classe(url: str, orgao: str = "") -> str:
     if any(e in d or e in str(url) for e in EMISSOR_PROPRIO):
         return "plataforma de publicação do emissor"
     caminho = (urlsplit(str(url)).path or "/").strip("/")
-    if ((PUBLICO.search(d) or INSTITUCIONAL.search(d)) and not caminho and not urlsplit(str(url)).query) or \
+    if (not caminho and not urlsplit(str(url)).query) or \
             (d == "gov.br" and len([x for x in caminho.split("/") if x]) <= 1):   # gov.br/<órgão> é a página inicial do órgão
         return "página inicial genérica (não é a oportunidade)"     # 15/10: home do órgão não prova a oportunidade
     if PUBLICO.search(d):

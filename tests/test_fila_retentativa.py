@@ -178,3 +178,23 @@ class AmostraCiclo5_15_10(unittest.TestCase):
         self.assertEqual(x["link_oficial_proposto"], "https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-1/2026-737946617")
         self.assertTrue(x["captada_direto_na_fonte_oficial"])
         FR._CACHE = None
+
+
+class AmostraCiclo6_15_10(unittest.TestCase):
+    """15/10/2026: validação de 20 oportunidades (ciclo 6)."""
+    def test_regras(self):
+        from src import repositorio_unico as R
+        sai = {("Banco de Talentos", ""): "cadastro", ("QUIZ UNAIDS", ""): "quiz",
+               ("Capitaai · Editais e captação de recursos", "https://capitaai.com.br/planos"): "agregador",
+               ("Contratação de profissionais autônomos para credenciamento", ""): "pessoas físicas", ("Programa Tecnova III", ""): "empresas",
+               ("Primeiro Ciclo Edital Reecatingar: divulgação prorrogada", ""): "resultado", ("Programa Aluguel Social", ""): "famílias"}
+        for (t, u), k in sai.items():
+            self.assertIn(k, R.nao_e_oportunidade({"titulo": t, "url": u}) or "", t)
+        for t in ("Chamamento para credenciamento de pessoas físicas e jurídicas com atuação cultural",
+                  "Credenciamento de associações e/ou cooperativas de catadores", "Seds abre edital de apoio financeiro a novas entidades filantrópicas"):
+            self.assertIsNone(R.nao_e_oportunidade({"titulo": t}), t)
+
+    def test_pagina_inicial_de_qualquer_site(self):
+        from src import curadoria_links as C
+        self.assertTrue(C.classe("https://impactarte.com.br/").startswith("página inicial"))
+        self.assertTrue(C.classe("https://institutogenesio.org.br/").startswith("página inicial"))
