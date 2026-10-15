@@ -52,7 +52,7 @@ class PortaoPncp15_10b(unittest.TestCase):
 
     def test_portao_nos_registros_antigos(self):
         from src import pncp_osc as P
-        self.assertIn("contratação de vagas", P.veredito_por_titulo("MUNICIPIO DE ANCHIETA — VISA CONTRATAÇÃO DE VAGAS EM ILPI"))
+        self.assertIn("fora de Goiás", P.veredito_por_titulo("MUNICIPIO DE ANCHIETA — VISA CONTRATAÇÃO DE VAGAS EM ILPI", uf="ES"))
         self.assertIn("agricultura familiar", P.veredito_por_titulo("MUNICIPIO DE CURITIBA — Credenciamento de agricultores familiares"))
         self.assertIn("pessoas físicas", P.veredito_por_titulo("UNIVERSIDADE FEDERAL — seleção de ensaios fotográficos inéditos"))
         self.assertIsNone(P.veredito_por_titulo("TRIBUNAL SUPERIOR DO TRABALHO — Seleção de associações e cooperativas de catadores"))

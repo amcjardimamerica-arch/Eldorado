@@ -473,26 +473,31 @@ PNAE = re.compile(r"GENEROS ALIMENTICIOS|AGRICULTURA FAMILIAR|AGRICULTORES? FAMI
 def portao_associacao(m: dict, T: str) -> str | None:
     """15/10/2026 (titular): o motivo de RUÍDO quando a publicação não é captação de recursos para associação."""
     T = T.replace("CREDECIAMENTO", "CREDENCIAMENTO")
-    if re.search(r"CONTRATACAO DE VAGAS|CONTRATAC(?:AO|OES) ONEROSA(?! DE ASSOCIAC)", T):
+    if re.search(r"CONTRATACAO DE VAGAS|CONTRATAC(?:AO|OES) ONEROSA(?! DE ASSOCIAC)", T) and \
+            not re.search(r"ACOLHIMENTO|LONGA PERMANENCIA|\bILPIS?\b|COMUNIDADES? TERAPEUTIC", T):   # ILPI: a regra própria decide
         return "contratação de vagas ou serviço (contrato) — não é captação de recursos para associação"
     if re.search(r"\bESTUDANTES?\b|\bALUNOS?\b|ENSAIOS? FOTOGRAFIC|FOTOGRAFOS?|PARLAMENTO JOVEM|PARLAMENTO EM ACAO", T) \
             and not re.search(r"ORGANIZAC(?:AO|OES) DA SOCIEDADE CIVIL|\bOSCS?\b|ASSOCIAC(?:AO|OES)|ENTIDADES?|GREMIOS?", T):
         return "seleção para pessoas físicas (estudantes, fotógrafos) — não é captação para associação"
     mod = _N(m.get("modalidade"))
-    if re.search(r"PREGAO|CONCORRENCIA|LEILAO|DIALOGO COMPETITIVO|\bDISPENSA\b", mod):
+    # 15/10 (expurgo): parceria com OSC também é publicada no PNCP como dispensa/inexigibilidade e cita "serviços" —
+    # com sinal FORTE de MROSC, os vetos de modalidade, compra e PNAE não se aplicam (território e pessoa física, sim)
+    osc_forte = bool(re.search(r"13\.?019|TERMO DE (?:FOMENTO|COLABORACAO)|ORGANIZAC(?:AO|OES) DA SOCIEDADE CIVIL|\bOSCS?\b|MROSC|"
+                               r"TERMO DE EXECUCAO CULTURAL", T))
+    if not osc_forte and re.search(r"PREGAO|CONCORRENCIA|LEILAO|DIALOGO COMPETITIVO|\bDISPENSA\b", mod):
         return f"modalidade de compra ({m.get('modalidade')}) — licitação, não captação de recursos para associação"
-    if COMPRA.search(T) and not re.search(r"DOACAO|TERMO DE (?:FOMENTO|COLABORACAO)|PREMIO|PREMIACAO", T):
+    if not osc_forte and COMPRA.search(T) and not re.search(r"DOACAO|TERMO DE (?:FOMENTO|COLABORACAO)|PREMIO|PREMIACAO", T):
         return "compra, fornecimento ou contratação de empresa — licitação, não captação de recursos para associação"
     if re.search(r"JORNALIS|PREMIO DE COMUNICACAO|PREMIO DE REPORTAGEM|TRABALHOS ACADEMICOS|MONOGRAFIAS?|SERVIDORES PUBLICOS", T) \
             and not re.search(r"ORGANIZAC(?:AO|OES) DA SOCIEDADE CIVIL|\bOSCS?\b|ASSOCIAC(?:AO|OES)|ENTIDADES?", T):
         return "prêmio ou seleção para pessoas físicas (jornalistas, pesquisadores, servidores) — não é captação para associação"
-    if PNAE.search(T):
+    if PNAE.search(T) and not osc_forte and not re.search(r"(?:AUTORIZACAO|CESSAO|PERMISSAO|CONCESSAO) DE USO", T):
         return "compra da agricultura familiar (PNAE) — não é captação de recursos para associação"
     uf_ = str(m.get("uf") or "").upper()
     mun_ = _N(m.get("municipio")) or (lambda mo: mo.group(1).strip() if mo else "")(
         re.search(r"(?:MUNICIPIO|PREFEITURA MUNICIPAL|CAMARA MUNICIPAL|FUNDO MUNICIPAL DE [A-Z ]{3,40}?) DE ([A-Z ]{3,40})", _N(m.get("orgao"))))
     goias_ou_capital = uf_ == "GO" or mun_ in CAPITAIS_N
-    if "CREDENCIAMENTO" in T and re.search(r"ACOLHIMENTO|LONGA PERMANENCIA|\bILPI\b|COMUNIDADES? TERAPEUTIC", T) \
+    if re.search(r"CREDENCIAMENTO|CONTRATACAO DE VAGAS", T) and re.search(r"ACOLHIMENTO|LONGA PERMANENCIA|\bILPIS?\b|COMUNIDADES? TERAPEUTIC", T) \
             and not re.search(r"EMPRESAS? ESPECIALIZADA|PESSOAS? FISICA|PROFISSIONA(?:L|IS) D", T):
         # 15/10/2026 (titular): ILPI, acolhimento e comunidade terapêutica FICAM — só em Goiás e nas capitais
         return None if goias_ou_capital else "credenciamento de ILPI/acolhimento/comunidade terapêutica fora de Goiás e das capitais"

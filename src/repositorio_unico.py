@@ -177,6 +177,7 @@ def municipio_pelo_endereco(url: str) -> bool:
 
 
 _CUR: dict = {}
+DESCARTADAS: list = []
 _PNCP: dict = {}
 ITENS_12 = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador",
             "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação")
@@ -495,6 +496,12 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
         x["estagnado"] = x["estado"] == "em_verificacao" and dias > 3
         if x["estagnado"]:
             x["prioridade"] = (0,) + tuple(x["prioridade"][1:])
+    # 15/10/2026 (titular): descartada é REMOVIDA por completo — não fica no repositório como "fechada"; a lista das
+    # descartadas fica disponível (DESCARTADAS) para o expurgo apagar a origem delas em todo o sistema
+    global DESCARTADAS
+    DESCARTADAS = [{"id": x.get("id"), "titulo": x.get("titulo"), "url": x.get("url"), "link_oficial": x.get("link_oficial"),
+                    "motivo": x.get("motivo_estado")} for x in out if str(x.get("motivo_estado") or "").startswith("descartada")]
+    out = [x for x in out if not str(x.get("motivo_estado") or "").startswith("descartada")]
     out.sort(key=lambda x: (x["estado"] != "em_verificacao", x["prioridade"]))
     for x in out:
         x["prioridade"] = list(x["prioridade"])
