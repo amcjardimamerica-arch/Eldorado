@@ -34,8 +34,11 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SAIDA = ROOT / "estado/diagnostico_sistema.json"
-RESUMO = ROOT / "estado/diagnostico_sistema.md"
+# 15/10/2026 (ciclo 7): a fase "diagnóstico" de cada passagem do comando grava em arquivos PRÓPRIOS (DIAG_PASSAGEM=1);
+# o relatório do "Analise o sistema" (fluxo 36) não é mais sobrescrito pela passagem do comando
+_PASSAGEM = __import__("os").environ.get("DIAG_PASSAGEM") == "1"
+SAIDA = ROOT / ("estado/diagnostico_passagem.json" if _PASSAGEM else "estado/diagnostico_sistema.json")
+RESUMO = ROOT / ("estado/diagnostico_passagem.md" if _PASSAGEM else "estado/diagnostico_sistema.md")
 D = ROOT / "docs/dados"
 FRESCOR_H = {"repositorio": 3, "fluxo": 3, "fichas": 3, "sala_controle": 3, "status_motores": 8, "maestro": 3, "rede_neural": 26, "saude": 26}
 
