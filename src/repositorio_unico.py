@@ -118,7 +118,13 @@ NAO_OPORTUNIDADE = [
     (re.compile(r"(?i)(?:\bpara|[-–])\s*escolas (?:municipais|p[úu]blicas|estaduais)"), "público que não é associação (escolas públicas)"),
     (re.compile(r"(?i)\bvoluntariado\b(?!.*\b(?:apoio|fomento|recurso|financ))|seja ?um ?volunt|cadastro de volunt|credenciamento de volunt"), "voluntariado — não é recurso para a associação"),
     (re.compile(r"(?i)notifica[çc][ãa]o de lan[çc]amento|\bIPTU\b|d[íi]vida ativa|lan[çc]amento tribut"), "ato tributário — não é oportunidade"),
+    # 15/10 (ciclo 5, validação de 20 pelo Claude)
+    (re.compile(r"(?i)vagas? (?:para|da|de) (?:a )?sociedade civil (?:em|no|na) (?:comit|conselho|f[óo]rum|c[âa]mara)|elei[çc][ãa]o (?:de|dos) conselheiros|composi[çc][ãa]o do conselho"), "vaga de representação em comitê ou conselho — não é recurso"),
+    (re.compile(r"(?i)\b(?:firma|assina|celebra|renova)m? (?:parceria|conv[êe]nio|acordo|termo|contrato)"), "notícia de parceria já firmada — não é seleção aberta"),
+    (re.compile(r"(?i)^\s*comit[êe] gestor\b"), "página institucional de comitê — não é edital"),
+    (re.compile(r"(?i)subven[çc][ãa]o econ[ôo]mica"), "subvenção econômica — público são empresas, não associações"),
 ]
+ORGANIZACAO_SOCIAL = re.compile(r"(?i)\borganiza[çc](?:[ãa]o|[õo]es) sociais?\b(?! civil)|contrato de gest[ãa]o|qualifica[çc][ãa]o como (?:os|organiza)")
 ANO_ANTERIOR = re.compile(r"\b(20(?:1\d|2[0-4]))\b")   # 15/10: 2025 pode seguir aberto (ciclos da PNAB) — só 2024 ou antes
 PERMITE_CREDENCIAMENTO = re.compile(r"(?i)organiza[çc](?:[ãa]o|[õo]es) da sociedade civil|\boscs?\b|sem fins lucrativos|entidades? (?:socioassist|filantr)|associa[çc]")
 SAUDE_SERVICO = re.compile(r"(?i)fundo municipal de sa[úu]de|secretaria (?:municipal |estadual )?de sa[úu]de|\bSUS\b|servi[çc]os (?:de sa[úu]de|m[ée]dic|hospitalar|ambulatori)|complementa[çc][ãa]o (?:da rede|dos servi)")
@@ -132,6 +138,8 @@ def nao_e_oportunidade(r: dict) -> str | None:
     if LEGISLATIVO_ABERTAS.search(t):
         return "ato legislativo — vai ao acompanhamento legislativo (Oportunidades Abertas › Legislativo)"
     tit = str(r.get("titulo") or "")
+    if ORGANIZACAO_SOCIAL.search(t) and not re.search(r"(?i)sociedade civil|\bosc", tit):
+        return "Organização Social (contrato de gestão) — acompanhar, não é oportunidade da associação"
     if "credenciamento" in t.lower() and SAUDE_SERVICO.search(f"{t} {r.get('orgao') or ''}") and not re.search(r"(?i)sociedade civil|\bosc", tit):
         return "credenciamento de prestadores — não é fomento a OSC"
     if not r.get("fim") and ANO_ANTERIOR.search(tit) and not re.search(r"\b202[6-9]\b", tit):

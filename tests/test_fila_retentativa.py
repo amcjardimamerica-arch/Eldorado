@@ -153,3 +153,28 @@ class AmostraCiclo4_15_10(unittest.TestCase):
     def test_texto_de_lei_nao_e_link_oficial(self):
         from src import curadoria_links as C
         self.assertTrue(C.classe("https://www.planalto.gov.br/ccivil_03/leis/LCP/Lcp195.htm").startswith("texto de lei"))
+
+
+class AmostraCiclo5_15_10(unittest.TestCase):
+    """15/10/2026: validação de 20 oportunidades (ciclo 5)."""
+    def test_regras(self):
+        from src import repositorio_unico as R
+        sai = {"Goiânia abre 10 vagas para sociedade civil em comitê sobre refugiados": "representação",
+               "Ministério da Saúde firma parceria com Associação Beneficente Síria": "firmada",
+               "Comitê Gestor - Cultura Viva": "comitê", "Edital 017/2026 Subvenção Econômica à Pesquisa": "empresas",
+               "Edital de Parcerias com Organizações Sociais – MON": "Organização Social"}
+        for t, k in sai.items():
+            self.assertIn(k, R.nao_e_oportunidade({"titulo": t}) or "", t)
+        for t in ("Edital de Chamamento Público para Organizações da Sociedade Civil", "Edital de subvenção social 2026",
+                  "Fundo Ecos — Edital 47 TICCAs", "Edital Projetos Sociais | Comunidade Sicoob"):
+            self.assertIsNone(R.nao_e_oportunidade({"titulo": t}), t)
+
+    def test_curadoria_usa_o_acesso_oficial_quando_o_proposto_falha(self):
+        from datetime import datetime, timezone
+        from src import curadoria_links as C
+        FR._CACHE = {"fila": {}, "fora_da_fila": {}}
+        x = C.curar({"id": "m", "url": "https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-1/2026-737946617",
+                     "link_oficial": "https://www.mossamedes.go.gov.br/"}, None, datetime(2026, 10, 15, tzinfo=timezone.utc))
+        self.assertEqual(x["link_oficial_proposto"], "https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-1/2026-737946617")
+        self.assertTrue(x["captada_direto_na_fonte_oficial"])
+        FR._CACHE = None
