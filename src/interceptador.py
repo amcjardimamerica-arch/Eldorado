@@ -407,6 +407,15 @@ def proximo_alvo() -> dict | None:
     r0 = retentativa(feitos)                 # 02/10: o que falhou por rede vem primeiro (no Brasil, sempre)
     if r0:
         return r0
+    # 15/10 (titular): NÍVEL 0 · PNCP — itens que o dossiê não confirmou em nenhuma fonte automática; sem trabalho parcial
+    try:
+        _lim0 = (_d.today() - _td(days=1)).isoformat()
+        for _p in (load_json(ROOT / "estado/pncp/para_interceptador.json") or {}).get("itens") or []:
+            if str((feitos.get(_p.get("id")) or {}).get("em") or "") < _lim0:
+                return {"id": _p["id"], "titulo": _p.get("titulo"), "url": _p.get("url"), "de": f"0 · PNCP · faltam {', '.join(_p.get('faltam') or [])}",
+                        "modo": "validar", "tipo": "edital", "faltam": _p.get("faltam")}
+    except Exception:  # noqa: BLE001 — a fila nunca impede o voo
+        pass
     if len(feitos) % 5 == 4:                 # 11/10 (titular): 1 em cada 5 voos para o DOSSIÊ de empresa de Goiás — o banco de
         try:                                 # empresas segue crescendo enquanto as oportunidades têm a prioridade
             from .skills.dossie_empresa import empresas_goias_sem_dossie
