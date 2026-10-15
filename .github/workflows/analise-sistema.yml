@@ -40,7 +40,7 @@ jobs:
           CORRIGIR: ${{ inputs.corrigir }}
         run: |
           pip install -r requirements.txt --quiet 2>/dev/null || true
-          if [ "$CORRIGIR" = "sim" ]; then timeout 1500 python -m src.diagnostico_sistema --corrigir; else timeout 300 python -m src.diagnostico_sistema; fi
+          if [ "$CORRIGIR" = "sim" ]; then timeout 1500 python -m src.diagnostico_sistema --corrigir --ciclo; else timeout 300 python -m src.diagnostico_sistema --ciclo; fi   # 15/10: cada "Analise o sistema" é um ciclo
           cat estado/diagnostico_sistema.md
       - name: Registrar (código sempre da main; conflito em dado resolve pela versão do job)
         run: |

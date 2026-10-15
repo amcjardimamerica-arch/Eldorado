@@ -13,6 +13,10 @@ O que reúne num só lugar:
   3. INTEGRAÇÃO repositório × tela × fichas × catálogo de livros × decisões × indicadores: mesmos ids, mesmas
                 contagens, todos em dia
   4. PROBLEMAS  cada um com gravidade e a CORREÇÃO que se aplica
+  5. WORKFLOW   (15/10) comando único, retentativa, leitura parcial, curadoria, validação por exceção, auditorias, legislativo
+  6. DECISÕES   (15/10) em cada etapa, o que o Eldorado decidiu × a regra que deveria valer (correto/incorreto)
+  7. CICLOS     (15/10) janela desde a análise anterior, correções implantadas, resolvidos/persistem/novos/sem correção;
+                a próxima janela começa na implantação das correções (estado/analise_ciclos.json)
 
 Correções (--corrigir), uma etapa depois da outra (nada em paralelo), com as rotinas que o sistema já tem:
   decisões da titular → livros (criar/vincular) → repositório único → tela das oportunidades → fichas →
@@ -388,10 +392,21 @@ def diagnosticar() -> dict:
     hoje = date.today().isoformat(); P: list = []
     s = sistemas(P); o = oportunidades(P, hoje); i = integracao(P, o); e = execucao(P); sala = conferir_sala(P, s, o)
     fin = finalidade(s, o, i, e)
+    # 15/10/2026 (titular): WORKFLOW da estrutura nova e DECISÕES do Eldorado em cada etapa (src/analise_ciclos.py)
+    from . import analise_ciclos as AC
+    try:
+        wf = AC.workflow(P, _problema)
+    except Exception as ex:  # noqa: BLE001
+        wf = {"erro": f"{type(ex).__name__}: {str(ex)[:200]}"}
+    try:
+        dec = AC.decisoes(P, _problema)
+    except Exception as ex:  # noqa: BLE001
+        dec = [{"etapa": "erro", "decisao": "conferência das decisões", "regra": "", "conferidos": 0, "incorretos": 0,
+                "veredito": f"não conferido: {type(ex).__name__}: {str(ex)[:160]}", "exemplos": []}]
     ordem = {"alta": 0, "media": 1, "baixa": 2}
     P.sort(key=lambda p: (ordem.get(p["gravidade"], 3), p["codigo"]))
     return {"em": datetime.now(timezone.utc).replace(microsecond=0).isoformat(), "finalidade": fin, "sistemas": s, "oportunidades": o, "integracao": i,
-            "execucao": e, "sala_de_controle": sala,
+            "execucao": e, "sala_de_controle": sala, "workflow": wf, "decisoes": dec,
             "problemas": P, "contagem_problemas": dict(Counter(p["gravidade"] for p in P)),
             "corrigiveis": sorted({p["correcao"] for p in P if p["correcao"] and not any(t in p["correcao"] for t in ("sem correção", "investigar", "ver o", "retreinar"))})}
 
@@ -460,7 +475,8 @@ def resumo_md(antes: dict, depois: dict | None, log: list) -> str:
     return "\n".join(L) + "\n"
 
 
-def run(corrigir_: bool = False) -> dict:
+def run(corrigir_: bool = False, ciclo_: bool = False) -> dict:
+    anterior = _j(SAIDA, {})                         # 15/10: base do 1º ciclo de análise
     antes = diagnosticar(); log = []; depois = None
     if corrigir_:
         log = corrigir(antes)
@@ -469,10 +485,20 @@ def run(corrigir_: bool = False) -> dict:
     res = {**final, "corrigido": bool(log), "correcoes": log, "antes": {"problemas": len(antes["problemas"]), "contagem": antes["contagem_problemas"]} if depois else None}
     SAIDA.parent.mkdir(parents=True, exist_ok=True)
     SAIDA.write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
-    RESUMO.write_text(resumo_md(antes, depois, log), encoding="utf-8")
+    # 15/10/2026 (titular): CICLO DE ANÁLISE — janela desde a análise anterior, correções implantadas nela e comparação
+    from . import analise_ciclos as AC
+    ciclo = None
+    if ciclo_:                                       # só o "Analise o sistema" (fluxo 36) abre um ciclo; o comando único não
+        try:
+            ciclo = AC.registrar_ciclo(final, log, _gh, anterior)
+        except Exception as ex:  # noqa: BLE001
+            print(f"ciclo de análise não registrado: {type(ex).__name__}: {ex}", file=sys.stderr)
+    res["ciclo_de_analise"] = ciclo
+    SAIDA.write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
+    RESUMO.write_text(resumo_md(antes, depois, log) + "\n" + AC.resumo_md(final, ciclo), encoding="utf-8")
     return {"problemas": len(final["problemas"]), "por_gravidade": final["contagem_problemas"], "corrigido": bool(log),
             "abertas": final["oportunidades"]["abertas"], "sem_livro": final["oportunidades"]["sem_livro"]}
 
 
 if __name__ == "__main__":
-    print(json.dumps(run("--corrigir" in sys.argv), ensure_ascii=False))
+    print(json.dumps(run("--corrigir" in sys.argv, "--ciclo" in sys.argv), ensure_ascii=False))
