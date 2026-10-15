@@ -515,3 +515,17 @@ class Cartorio85b_15_10(unittest.TestCase):
         self.assertIn("Niterói", r["pontos"]["Território"]["valor"])
         r2 = L.extrair(["Edital do Município de XXXXXX para seleção de projetos."], "https://x.go.gov.br/b.pdf", "t")
         self.assertNotIn("XXXXXX", (r2["pontos"].get("Território") or {}).get("valor", ""))
+
+
+class Cartorio85c_15_10(unittest.TestCase):
+    def test_recurso_com_acento_e_depois_do_prazo(self):
+        for txt, esperado in (("6.2. O prazo recursal é de 3 (três) dias úteis, contados da data de publicação da decisão.", "3 (três) dias úteis"),
+                              ("Da decisão caberá, no prazo de 5 (cinco) dias úteis a contar da intimação do ato, RECURSO.", "5 (cinco) dias úteis"),
+                              ("Da decisão de indeferimento caberá recurso, no prazo de 03 (três) dias consecutivos.", "03 (três) dias consecutivos")):
+            r = L.extrair([txt], "https://x.go.gov.br/a.pdf", "t")
+            self.assertEqual(r["pontos"]["Prazo de recurso"]["valor"], esperado, txt)
+
+    def test_resultado_como_e_onde(self):
+        r = L.extrair(["4.8. O resultado da habilitação será divulgado no Boletim Oficial do Município e no sítio eletrônico oficial da Prefeitura."],
+                      "https://x.go.gov.br/a.pdf", "t")
+        self.assertIn("Boletim Oficial", r["pontos"]["Resultado"]["valor"])

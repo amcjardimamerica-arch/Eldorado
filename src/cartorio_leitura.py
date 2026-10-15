@@ -442,18 +442,27 @@ def extrair(paginas_: list[str], documento: str, titulo: str = "", orgao_hint: s
         r = _achar(T, rx, sec)
         if r:
             break
+    if not r:   # 15/10 (Cartório a 85%): COMO e ONDE o resultado sai, quando o edital não traz data nem prazo
+        r = _achar(T, r"((?:o |os )?resultados?(?: final| preliminar| da habilita[çc][ãa]o| do credenciamento| da sele[çc][ãa]o)?(?:, com a lista[^,]{0,80},)?\s+"
+                      r"(?:ser[áa]|ser[ãa]o) (?:publicad|divulgad|comunicad|disponibilizad)[^.;]{10,250}[.;]|"
+                      r"(?:a comiss[ãa]o|o [óo]rg[ãa]o) (?:proclamar[áa]|divulgar[áa]|publicar[áa]) (?:os |o )?resultados?[^.;]{10,250}[.;]|"
+                      r"lista de (?:credenciad|selecionad|habilitad)[^.;]{0,40}ser[áa] publicad[^.;]{5,250}[.;])", r"RESULTADO|CRONOGRAMA|SELE|JULGA|HABILITA")
+        if not r:
+            r = _achar(T, r"((?:o |os )?resultados?(?: final| preliminar| da habilita[çc][ãa]o| do credenciamento| da sele[çc][ãa]o)?\s+(?:ser[áa]|ser[ãa]o) (?:publicad|divulgad|comunicad)[^.;]{10,250}[.;])")
     if r:
         pôr("Resultado", r[0], r[1], r[2])
     # PRAZO DE RECURSO
     # 15/10 (avaliação com gabarito): "recurso" no sentido de CONTESTAÇÃO — nunca recursos financeiros/orçamentários;
     # o número de dias ou o intervalo de datas da fase recursal, antes ou depois do rótulo.
-    dias_rx = r"(\d{1,2}\s*[(\[]?[a-zçã ]{0,12}[)\]]?\s*dias(?:\s*[úu]teis| corridos)?)"
-    ctx = (r"(?:prazo recursal|prazo (?:para|de) (?:a )?(?:interposi[çc][ãa]o de |apresenta[çc][ãa]o de )?recursos?|interpo(?:r|si[çc][ãa]o d[eo]s?)\s+recursos?|recursos? (?:administrativos?|contra|ao resultado|do resultado|"
+    dias_rx = r"(\d{1,2}\s*[(\[]?[a-zà-ú ]{0,14}[)\]]?\s*dias(?:\s*[úu]teis| corridos| consecutivos)?)"   # 15/10: "3 (três)" tem acento
+    ctx = (r"(?:prazo recursal|per[íi]odo recursal|prazo (?:para|de) (?:a )?(?:interposi[çc][ãa]o de |apresenta[çc][ãa]o de )?recursos?|interpo(?:r|si[çc][ãa]o d[eo]s?)\s+recursos?|recursos? (?:administrativos?|contra|ao resultado|do resultado|"
            r"quanto|em face)|apresenta[çc][ãa]o de recursos?|fase recursal|caber[áa]\s*,?[^.]{0,60}?recurso|poder[ãa]o? (?:recorrer|interpor))")
     jan2 = r"(?:[^.]|\.(?=\S)|\.\s(?=\d)){0,140}?"
     r = None
     for rx in (ctx + jan2 + rf"({DATA})\s*(?:a|à|á|at[ée])\s*({DATA})", ctx + jan2 + dias_rx,
                r"(?:no )?prazo (?:de|m[áa]ximo de) " + dias_rx + r"[^.]{0,120}?" + ctx,
+               r"caber[áa],?\s*(?:no )?prazo (?:de )?" + dias_rx + r"[^.]{0,160}?\brecursos?\b",   # 15/10: recurso depois do prazo
+               r"recurso[^.]{0,60}?(?:no )?prazo (?:de )?" + dias_rx,
                # última tentativa: qualquer "recurso" que NÃO seja dinheiro
                r"\brecursos?\b(?!\s+(?:financeiros?|or[çc]ament[áa]rios?|p[úu]blicos?|pr[óo]prios?|humanos?|materiais|dispon[íi]veis|"
                r"federais|estaduais|municipais|repassad|transferid|destinad|necess[áa]rios?|da |do |de |para |oriundos?|captad))" + jan2 + dias_rx):
