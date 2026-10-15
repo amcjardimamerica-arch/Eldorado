@@ -306,10 +306,39 @@ class _Links(HTMLParser):
 _UA_ROBOTS = "Eldorado-OSC/1.0"
 
 
+_ROBOTS_PONTE: dict = {}
+
+
+def _robots_pela_ponte(url: str) -> bool:
+    """15/10/2026: o portal lido pela ponte tem o robots.txt lido PELA PONTE. Direto da nuvem a conexão cai e o robots
+    'ilegível' virava permitido — o SPL da ALEGO proíbe as consultas (levantamento de robots dos motores). 4xx: permitido;
+    5xx ou falha da ponte: não acessa (sem confirmar a permissão, não se lê)."""
+    import urllib.robotparser
+    p = urlsplit(url); base = f"{p.scheme}://{p.netloc}"
+    if base not in _ROBOTS_PONTE:
+        try:
+            from .indexadores import ponte
+            st, _f, corpo, _h = ponte.buscar(base + "/robots.txt", {"Accept": "text/plain"}, 30, 500_000)
+            if 400 <= st < 500:
+                _ROBOTS_PONTE[base] = None
+            elif st >= 500:
+                _ROBOTS_PONTE[base] = False
+            else:
+                rp = urllib.robotparser.RobotFileParser(); rp.parse(corpo.decode("utf-8", "ignore").splitlines())
+                _ROBOTS_PONTE[base] = rp
+        except Exception as e:  # noqa: BLE001
+            st = getattr(e, "status", None)
+            _ROBOTS_PONTE[base] = None if (isinstance(st, int) and 400 <= st < 500) else False
+    rp = _ROBOTS_PONTE[base]
+    return True if rp is None else (False if rp is False else rp.can_fetch(_UA_ROBOTS, url))
+
+
 def _robots_ok(url: str) -> bool:
     import sys
     if "unittest" in sys.modules:          # a bateria de testes não consulta a rede (os testes do robots trocam esta função)
         return True
+    if _pela_ponte(url):
+        return _robots_pela_ponte(url)
     try:
         from .nucleo import robots_permite
         return robots_permite(url, _UA_ROBOTS)

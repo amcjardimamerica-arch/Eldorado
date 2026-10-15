@@ -32,3 +32,23 @@ class SensoresPelaPonte(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RobotsPelaPonte(unittest.TestCase):
+    """15/10/2026: o SPL da ALEGO proíbe as consultas no robots.txt (lido pela ponte) — o motor obedece."""
+    def test_robots_lido_pela_ponte_e_obedecido(self):
+        from src.indexadores import ponte
+        S._ROBOTS_PONTE.clear()
+        robots = b"User-agent: *\nDisallow: /spl/consulta\n"
+        with mock.patch.object(ponte, "buscar", lambda *a, **k: (200, "u", robots, {})):
+            self.assertFalse(S._robots_pela_ponte("https://alegodigital.al.go.leg.br/spl/consulta-tipo.aspx"))
+            self.assertTrue(S._robots_pela_ponte("https://alegodigital.al.go.leg.br/spl/sessoes.aspx"))
+
+    def test_falha_da_ponte_nao_le(self):
+        from src.indexadores import ponte
+        S._ROBOTS_PONTE.clear()
+
+        def falha(*a, **k):
+            raise OSError("ponte fora")
+        with mock.patch.object(ponte, "buscar", falha):
+            self.assertFalse(S._robots_pela_ponte("https://alegodigital.al.go.leg.br/spl/x"))
