@@ -177,6 +177,9 @@ def municipio_pelo_endereco(url: str) -> bool:
 
 
 _CUR: dict = {}
+_PNCP: dict = {}
+ITENS_12 = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador",
+            "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação")
 
 
 _MUN_BR: dict = {}
@@ -269,8 +272,9 @@ def _nota(reg: dict) -> float | None:
 
 
 def construir(gravar: bool = True, hoje: str | None = None) -> dict:
-    global _CUR
+    global _CUR, _PNCP
     _CUR = {x.get("id"): x for x in ((_j(ROOT / "estado/curadoria_links.json", {}) or {}).get("itens") or [])}   # 15/10
+    _PNCP = (_j(ROOT / "estado/pncp/dossies.json", {}) or {}).get("dossies") or {}                              # 15/10
     hoje = hoje or date.today().isoformat()
     V = (_j(ROOT / "dados/editais/vereditos_revisao.json", {}) or {}).get("vereditos") or {}
     certs = dict((_j(ROOT / "estado/cartorio/certidoes.json", {}) or {}).get("certidoes") or {})
@@ -392,6 +396,9 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
             _mun = marca_no_repositorio([cid] + r["ids_origem"], _DEC)
         _fora = municipal_fora_de_goias(r, next((uf_ag[i] for i in [cid] + r["ids_origem"] if i in uf_ag), None))
         _nao = nao_e_oportunidade(r)
+        _dp = _PNCP.get(cid) or next((_PNCP[i] for i in r.get("ids_origem") or [] if i in _PNCP), None)
+        if not _nao and _dp and _dp.get("status") in ("fechada", "descartada"):     # 15/10: veredito do dossiê do PNCP
+            _nao = f"PNCP — {_dp.get('motivo')}"
         if not fim:                                          # 15/10: o prazo COMPROVADO no documento vira o fim
             _pz = itens.get("Prazo de inscrição") or {}
             if _pz.get("estado") == "comprovado":
@@ -460,6 +467,8 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
         pronta = estado == "validada" and bool(lv) and bool(fim and str(fim)[:10] >= hoje)
         if pronta and _CUR and (_CUR.get(cid) or {}).get("curadoria") != "aprovado":
             pronta = False                                  # 15/10: Farol só com link oficial aprovado na curadoria
+        if pronta and any((itens.get(k) or {}).get("estado") not in ("comprovado", "dispensado") for k in ITENS_12):
+            pronta = False                                  # 15/10 (PNCP): sem trabalho parcial — Farol só com os 12 itens
         etapa, ferramenta = _etapa(estado, passo, bool(lv), pronta)
         out.append({"id": cid, "ids_origem": r["ids_origem"], "fontes": r["fontes"], "titulo": str(r.get("titulo") or "")[:220], "url": r.get("url"),
                     "link_oficial": link, "orgao": r.get("orgao"), "uf": r.get("uf"), "fim": fim, "origem": r.get("origem"), "skill": sk,

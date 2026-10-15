@@ -206,6 +206,9 @@ def fases(ctx: dict) -> list[dict]:
         # 5c SITE OFICIAL — do replicador à fonte oficial e ao PDF do edital
         {"etapa": "site_oficial", "finalidade": "do replicador à fonte oficial e ao PDF do edital (navegação e PNCP)",
          "cmds": [[py, "scripts/treino_fontes.py", "--aplicar"]], "t": 420, "pular": None},
+        # 5c' PNCP — dossiê integrado (portões + metadados + arquivos + site de origem → 12/12 ou descarte justificado)
+        {"etapa": "pncp", "finalidade": "dossiê do PNCP: 12 de 12 com informação confirmada ou descarte justificado; o que faltar vai ao Interceptador",
+         "cmds": [[py, "-m", "src.pncp_dossie", "60"]], "t": 1300, "pular": None},
         # 5d EXTRAIR E CERTIFICAR — o Cartório lê o documento e extrai o trecho de cada um dos 12 itens
         {"etapa": "certificar", "finalidade": "trecho literal e página de cada um dos 12 itens no documento oficial (Cartório)",
          "cmds": [[py, "-m", "src.cartorio", "--limite", "40", "--segundos", "1200"]], "t": 1350, "pular": None},   # 15/10: 20 → 40 por passagem
