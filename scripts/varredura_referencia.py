@@ -64,11 +64,27 @@ def dias(de: date, ate: date):
 
 
 # ── 01 · DIÁRIO OFICIAL DE GOIÂNIA ─────────────────────────────────────────────────────────────────────────────────
+def _bases_qd() -> list[str]:
+    try:
+        return json.loads((ROOT / "config/diario_goiania.json").read_text(encoding="utf-8"))["querido_diario"]["bases"]
+    except Exception:  # noqa: BLE001
+        return ["https://api.queridodiario.org.br", QD]
+
+
+def qd_json(caminho: str):
+    err = None
+    for b in _bases_qd():
+        j, err = get_json(f"{b.rstrip('/')}{caminho}", tentativas=2)
+        if j is not None:
+            return j, None
+    return None, err
+
+
 def goiania(de: date, ate: date) -> dict:
     out = {"catalogo": [], "achados": [], "falhas": [], "portal": {}}
     p = urlencode({"territory_ids": GOIANIA_IBGE, "published_since": de.isoformat(), "published_until": ate.isoformat(), "size": 100,
                    "sort_by": "ascending_date"})
-    j, err = get_json(f"{QD}/gazettes?{p}")
+    j, err = qd_json(f"/gazettes?{p}")
     if err:
         out["falhas"].append(f"catálogo QD: {err}")
     for g in (j or {}).get("gazettes") or []:
@@ -77,7 +93,7 @@ def goiania(de: date, ate: date) -> dict:
     for t in TERMOS:
         p = urlencode({"territory_ids": GOIANIA_IBGE, "querystring": f'"{t}"', "published_since": de.isoformat(),
                        "published_until": ate.isoformat(), "size": 50, "excerpt_size": 700, "number_of_excerpts": 4})
-        j, err = get_json(f"{QD}/gazettes?{p}")
+        j, err = qd_json(f"/gazettes?{p}")
         if err:
             out["falhas"].append(f"QD '{t}': {err}"); continue
         for g in (j or {}).get("gazettes") or []:
@@ -86,8 +102,22 @@ def goiania(de: date, ate: date) -> dict:
             for x in g.get("excerpts") or []:
                 out["achados"].append({"termo": t, "data": g.get("date"), "edicao": g.get("edition"), "url": g.get("url"), "trecho": limpo(x)[:700]})
         time.sleep(0.5)
-    st, b, err = get("https://www.goiania.go.gov.br/casa-civil/diario-oficial/", timeout=25)
-    out["portal"] = {"http": st, "erro": err, "bytes": len(b or b"")}
+    # portal oficial DIRETO da nuvem (o motor só tenta pela ponte): lista de 2026 e as edições do período
+    from src import diario_goiania as G
+    st, b, err = get(f"https://www.goiania.go.gov.br/shtml//portal/casacivil/lista_diarios.asp?ano={de.year}", timeout=40)
+    eds = [e for e in G.edicoes_da_lista((b or b"").decode("latin-1", "replace")) if de.isoformat() <= e["data"] <= ate.isoformat()] if b else []
+    out["portal"] = {"lista_http": st, "lista_erro": err, "edicoes_no_periodo": eds, "pdfs": []}
+    for e in sorted(eds, key=lambda x: x["numero"])[:20]:
+        st2, b2, err2 = get(e["url"], timeout=90, maxb=20_000_000)
+        txt = None
+        if b2:
+            try:
+                pg = G.texto_do_pdf(b2)
+                txt = len(pg or "")
+            except Exception:  # noqa: BLE001
+                txt = None
+        out["portal"]["pdfs"].append({"numero": e["numero"], "data": e["data"], "http": st2, "erro": err2, "bytes": len(b2 or b""), "letras": txt})
+        time.sleep(1)
     return out
 
 
@@ -162,18 +192,26 @@ def alego(de: date, ate: date) -> dict:
         if not b:
             out["falhas"].append(f"notícias p{pg}: {err or st}"); break
         h = b.decode("utf-8", "replace")
-        for m in re.finditer(r'href="(https://portal\.al\.go\.leg\.br/noticias/(\d+)/[^"]+)"[^>]*>(.*?)</a>', h, re.S):
-            if m.group(2) in vistos:
+        if pg == 1:
+            out["amostra_html"] = [limpo(x)[:200] for x in re.findall(r"<a[^>]+noticia[^>]*>.*?</a>", h, re.S | re.I)[:8]]
+        for m in re.finditer(r'href=["\']((?:https?://portal\.al\.go\.leg\.br)?/?noticias/(\d+)[^"\']*)["\'][^>]*>(.*?)</a>', h, re.S | re.I):
+            if m.group(2) in vistos or not limpo(m.group(3)):
                 continue
             vistos.add(m.group(2))
-            out["noticias"].append({"url": m.group(1), "titulo": limpo(m.group(3))[:200]})
+            u = m.group(1) if m.group(1).startswith("http") else "https://portal.al.go.leg.br/" + m.group(1).lstrip("/")
+            data = re.search(r"(\d{2}/\d{2}/\d{4})", h[m.end():m.end() + 600])
+            out["noticias"].append({"url": u, "titulo": limpo(m.group(3))[:200], "data": data.group(1) if data else None})
         time.sleep(0.5)
     return out
 
 
-def main(de: date, ate: date) -> dict:
-    res = {"periodo": [de.isoformat(), ate.isoformat()], "termos": TERMOS}
+def main(de: date, ate: date, partes: str = "") -> dict:
+    arq = SAIDA / f"{de.isoformat()}_{ate.isoformat()}.json"
+    res = json.loads(arq.read_text(encoding="utf-8")) if (partes and arq.exists()) else {}
+    res.update({"periodo": [de.isoformat(), ate.isoformat()], "termos": TERMOS})
     for nome, f in (("01_diario_goiania", goiania), ("02_diario_goias", goias), ("04_camara_goiania", camara), ("05_alego", alego)):
+        if partes and nome[:2] not in partes.split(","):
+            continue
         t0 = time.time()
         try:
             res[nome] = f(de, ate)
@@ -182,7 +220,7 @@ def main(de: date, ate: date) -> dict:
         res[nome]["segundos"] = round(time.time() - t0)
         print(nome, {k: (len(v) if isinstance(v, list) else v) for k, v in res[nome].items() if k != "portal"}, flush=True)
     SAIDA.mkdir(parents=True, exist_ok=True)
-    (SAIDA / f"{de.isoformat()}_{ate.isoformat()}.json").write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
+    arq.write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
     return res
 
 
@@ -190,5 +228,6 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--de", default=date.today().replace(day=1).isoformat())
     ap.add_argument("--ate", default=date.today().isoformat())
+    ap.add_argument("--partes", default="", help="ex.: 01,05 (as demais ficam como estavam)")
     a = ap.parse_args()
-    main(date.fromisoformat(a.de), date.fromisoformat(a.ate))
+    main(date.fromisoformat(a.de), date.fromisoformat(a.ate), a.partes)
