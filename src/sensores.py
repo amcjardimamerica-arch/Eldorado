@@ -59,7 +59,7 @@ def cor_do_dia(r: dict) -> str:
 def registrar_dia(sensor_id: str, hoje: date, r: dict) -> None:
     d = load_json(DIARIO) if DIARIO.exists() else {"sensores": {}}
     s = d["sensores"].setdefault(sensor_id, {})
-    melhor = max(r.get("achados") or [], key=lambda a: a.get("forca_lexica", 0), default=None)
+    melhor = max(r.get("achados") or [], key=lambda a: a.get("forca_lexica") or 0, default=None)
     s[hoje.isoformat()] = {
         "cor": cor_do_dia(r), "achados": len(r.get("achados") or []),
         "falhas": len(r.get("falhas") or []),
