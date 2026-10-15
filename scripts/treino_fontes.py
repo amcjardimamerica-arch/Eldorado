@@ -58,15 +58,21 @@ def casos() -> list[dict]:
     return [r for r in R if r.get("url") and F.eh_replicador(r["url"]) and r.get("link_oficial") and F.eh_fonte(r["link_oficial"])]
 
 
-def passada(C: list[dict], A: dict) -> dict:
+def passada(C: list[dict], A: dict, navegacao: bool = False) -> dict:
+    """navegacao=False reproduz o resolvedor de 14/10 (só a página da fonte); True entra no site até o PDF (15/10)."""
     res = []
     for r in C:
-        o = F.resolver(r["url"], r.get("titulo") or "", r.get("orgao") or "", getter, A)
+        tit = r.get("titulo") or ""
+        o = F.resolver(r["url"], tit, r.get("orgao") or "", getter, A, navegacao=navegacao)
+        tk, num = F._tokens(tit), F._numero(tit)
         res.append({"id": r["id"], "replicador": F._dom(r["url"]), "esperado": r["link_oficial"], "fonte": o["fonte"],
-                    "acertou_fonte": mesmo_site(o["fonte"], r["link_oficial"]), "pdfs": len(o["pdfs"]), "passos": o["passos"]})
+                    "acertou_fonte": mesmo_site(o["fonte"], r["link_oficial"]), "pdfs": len(o["pdfs"]),
+                    "pdf_forte": any(F._pdf_forte(p, tk, num) for p in o["pdfs"]), "pdf": (o["pdfs"][0]["url"] if o["pdfs"] else None),
+                    "passos": o["passos"]})
     n = len(res) or 1
     return {"casos": len(res), "fonte_pct": round(100 * sum(x["acertou_fonte"] for x in res) / n),
             "pdf_pct": round(100 * sum(1 for x in res if x["acertou_fonte"] and x["pdfs"]) / n),
+            "pdf_forte_pct": round(100 * sum(1 for x in res if x["acertou_fonte"] and x["pdf_forte"]) / n),
             "por_replicador": {d: f"{sum(1 for x in res if x['replicador'] == d and x['acertou_fonte'])}/{sum(1 for x in res if x['replicador'] == d)}"
                                for d in sorted({x["replicador"] for x in res})}, "resultados": res}
 
@@ -99,7 +105,7 @@ def aprender(C: list[dict], A: dict) -> dict:
     return dict(novos)
 
 
-def aplicar(A: dict, limite: int = 120, so_novas: bool = False) -> dict:
+def aplicar(A: dict, limite: int = 120, so_novas: bool = False, teto_segundos: int = 1500) -> dict:
     R = json.loads((RAIZ / "dados/oportunidades/repositorio_unico.json").read_text(encoding="utf-8"))["registros"]
     alvo = [r for r in R if r.get("estado") != "fechada" and not r.get("arquivada") and r.get("url") and F.eh_replicador(r["url"])
             and (not r.get("link_oficial") or F.eh_replicador(r["link_oficial"]))]
@@ -110,7 +116,10 @@ def aplicar(A: dict, limite: int = 120, so_novas: bool = False) -> dict:
     if so_novas:                                      # na coleta: só o que ainda não foi resolvido, do mais novo ao mais velho
         alvo = sorted((r for r in alvo if r["id"] not in ja), key=lambda r: str(r.get("descoberto_em") or r.get("publicado_em") or ""), reverse=True)
     out = {}
+    t0 = time.time()
     for r in alvo[:limite]:
+        if time.time() - t0 > teto_segundos:               # 15/10: a navegação lê mais páginas — não estourar o fluxo
+            break
         o = F.resolver(r["url"], r.get("titulo") or "", r.get("orgao") or "", getter, A)
         if o["fonte"]:
             out[r["id"]] = {"fonte": o["fonte"], "pdfs": [p["url"] for p in o["pdfs"]], "passos": o["passos"],
@@ -131,18 +140,26 @@ def main() -> dict:
     antes = passada(C, {"replicadores": {}, "oficiais": {}})
     A = F._aprendizado(); novos = aprender(C, A)
     F.APRENDIZADO.write_text(json.dumps(A, ensure_ascii=False, indent=1), encoding="utf-8")
-    depois = passada(C, A)
-    ap = aplicar(A)
+    sem_nav = passada(C, A, navegacao=False)
+    depois = passada(C, A, navegacao=True)
+    ganhos = [{"id": d["id"], "fonte": d["fonte"], "pdf": d["pdf"], "caminho": d["passos"][-4:]}
+              for s_, d in zip(sem_nav["resultados"], depois["resultados"]) if d["acertou_fonte"] and d["pdfs"] and not s_["pdfs"]]
     sai = {"em": datetime.now(timezone.utc).isoformat(timespec="seconds"), "casos_conhecidos": len(C),
            "antes": {k: v for k, v in antes.items() if k != "resultados"}, "aprendido": novos,
-           "depois": {k: v for k, v in depois.items() if k != "resultados"}, "aplicacao": ap,
+           "depois_sem_navegacao": {k: v for k, v in sem_nav.items() if k != "resultados"},
+           "depois": {k: v for k, v in depois.items() if k != "resultados"},
+           "ganhos_da_navegacao": ganhos[:40],
+           "fonte_certa_sem_pdf": [{"id": x["id"], "fonte": x["fonte"], "passos": x["passos"][-5:]} for x in depois["resultados"]
+                                   if x["acertou_fonte"] and not x["pdfs"]][:40],
            "erros_depois": [x for x in depois["resultados"] if not x["acertou_fonte"]][:30]}
     (RAIZ / "estado/treino_fontes.json").write_text(json.dumps(sai, ensure_ascii=False, indent=1), encoding="utf-8")
-    return {k: sai[k] for k in ("casos_conhecidos", "antes", "aprendido", "depois", "aplicacao")}
+    sai["aplicacao"] = aplicar(A)
+    (RAIZ / "estado/treino_fontes.json").write_text(json.dumps(sai, ensure_ascii=False, indent=1), encoding="utf-8")
+    return {k: sai[k] for k in ("casos_conhecidos", "antes", "aprendido", "depois_sem_navegacao", "depois", "aplicacao")}
 
 
 if __name__ == "__main__":
     if "--aplicar" in sys.argv:                       # 14/10: na coleta (fluxos 22 e 16) — só resolve, com o aprendizado
-        print(json.dumps(aplicar(F._aprendizado(), limite=40, so_novas=True), ensure_ascii=False))
+        print(json.dumps(aplicar(F._aprendizado(), limite=40, so_novas=True, teto_segundos=360), ensure_ascii=False))   # 15/10: termina antes do timeout 420 dos fluxos
     else:
         print(json.dumps(main(), ensure_ascii=False, indent=1))

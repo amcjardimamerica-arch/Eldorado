@@ -19,7 +19,7 @@ concurrency:
 jobs:
   treinar:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 100
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,7 +28,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Treinar e aplicar
-        run: timeout 2400 python scripts/treino_fontes.py
+        run: timeout 5400 python scripts/treino_fontes.py
       - name: Gravar o aprendizado (só estes arquivos)
         run: |
           git config user.name "treino-fontes" && git config user.email "treino@eldorado"
