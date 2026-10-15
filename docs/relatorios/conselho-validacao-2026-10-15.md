@@ -225,7 +225,7 @@
  "pontos_com_redundancia": 13,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 9148
+ "exemplos_da_rede_de_rotas": 9225
 }
 ```
 
@@ -236,12 +236,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 69.3,
- "fora_dos_motores_pct_agora": 69.3,
+ "fora_dos_motores_pct_1a": 69.5,
+ "fora_dos_motores_pct_agora": 69.5,
  "origem": {
-  "agregador/outra": 209,
+  "agregador/outra": 210,
   "motor": 146,
-  "Piloto": 121
+  "Piloto": 122
  },
  "dominios_so_de_agregador": [
   {
@@ -285,6 +285,10 @@
    "oportunidades": 1
   },
   {
+   "dominio": "legacy.finep.gov.br",
+   "oportunidades": 1
+  },
+  {
    "dominio": "florestamaisamazonia.mma.gov.br",
    "oportunidades": 1
   },
@@ -298,10 +302,6 @@
   },
   {
    "dominio": "lp.simbi.social",
-   "oportunidades": 1
-  },
-  {
-   "dominio": "prefeitura.poa.br",
    "oportunidades": 1
   }
  ],
@@ -362,20 +362,20 @@
 
 ```json
 {
- "fontes_recebidas": 358,
+ "fontes_recebidas": 359,
  "por_origem": {
-  "conselho (fontes irmãs)": 160,
-  "Cartório (site oficial certificado)": 160,
-  "Espião (privado/internacional)": 38
+  "conselho (fontes irmãs)": 161,
+  "Cartório (site oficial certificado)": 162,
+  "Espião (privado/internacional)": 36
  },
  "lidas_nas_ultimas_24h": 216,
  "dimensionamento": {
-  "fontes": 358,
+  "fontes": 359,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 8,
-  "cobertura_diaria": 358,
+  "cobertura_diaria": 359,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
