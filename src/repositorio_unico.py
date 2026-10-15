@@ -126,8 +126,12 @@ NAO_OPORTUNIDADE = [
     # 15/10 (ciclo 6, validação de 20 pelo Claude)
     (re.compile(r"(?i)banco de talentos|cadastro de curr[íi]culos?|\bquiz\b|\benquete\b|pesquisa de satisfa[çc][ãa]o"), "cadastro de pessoas, quiz ou enquete — não é edital"),
     (re.compile(r"(?i)profissionais aut[ôo]nomos|credenciamento de pessoas? f[íi]sicas?\b(?!\s+e\s+(?:pessoas?\s+)?jur[íi]dicas?)|aluguel social|benef[íi]cio (?:às|as|para|a) fam[íi]lias|aux[íi]lio (?:às|as|para) fam[íi]lias"), "público são pessoas físicas ou famílias — não associações"),
-    (re.compile(r"(?i)divulga[çc][ãa]o (?:do resultado )?prorrogada|prorroga[çc][ãa]o d[ao] (?:divulga[çc][ãa]o|resultado)"), "fase de resultado — a inscrição já terminou"),
+    (re.compile(r"(?i)divulga[çc][ãa]o (?:do resultado )?prorrogada|prorroga[çc][ãa]o d[ao] (?:divulga[çc][ãa]o|resultado)|apresenta[çc][ãa]o final|cerim[ôo]nia de (?:premia|entrega)|"
+                r"\bs[ãa]o indicad[oa]s\b|\bforam selecionad|premia[çc][ãa]o dos vencedores"), "fase de resultado — a inscrição já terminou"),
+    # 15/10 (ciclo 7)
+    (re.compile(r"(?i)\bgobierno (?:estatal|municipal)\b|\bayuntamiento\b|\bmunicipalidad de\b"), "governo local estrangeiro — não se aplica a associação brasileira"),
 ]
+AGREGADOR_HOST = re.compile(r"(?i)https?://(?:www\.)?(?:capitaai|captadores)\.[a-z.]+(/[^?#]*)?")   # estrutura de caminhos conhecida
 PAGINA_DE_AGREGADOR = re.compile(r"(?i)https?://(?:www\.)?(?:capitaai|captadores|editaisdobrasil|farolcultural|observatorio3setor|prosas)\.[a-z.]+/(?:planos|precos|preços|sobre|assin|login|cadastro|contato|quem-somos)?/?(?:\?|$)")
 ORGANIZACAO_SOCIAL = re.compile(r"(?i)\borganiza[çc](?:[ãa]o|[õo]es) sociais?\b(?! civil)|contrato de gest[ãa]o|qualifica[çc][ãa]o como (?:os|organiza)")
 ANO_ANTERIOR = re.compile(r"\b(20(?:1\d|2[0-4]))\b")   # 15/10: 2025 pode seguir aberto (ciclos da PNAB) — só 2024 ou antes
@@ -143,8 +147,9 @@ def nao_e_oportunidade(r: dict) -> str | None:
     if LEGISLATIVO_ABERTAS.search(t):
         return "ato legislativo — vai ao acompanhamento legislativo (Oportunidades Abertas › Legislativo)"
     tit = str(r.get("titulo") or "")
-    if PAGINA_DE_AGREGADOR.search(str(r.get("url") or "")):
-        return "página institucional ou comercial do agregador — não é oportunidade"
+    _ag = AGREGADOR_HOST.match(str(r.get("url") or ""))
+    if PAGINA_DE_AGREGADOR.search(str(r.get("url") or "")) or (_ag and not re.search(r"(?i)capta|edita|oportunidad|chamad|premi|fomento|noticia|/20\d\d/", _ag.group(1) or "")):
+        return "página institucional ou comercial do agregador — não é oportunidade"   # 15/10 (ciclo 7): só captação/edital vale
     if ORGANIZACAO_SOCIAL.search(t) and not re.search(r"(?i)sociedade civil|\bosc", tit):
         return "Organização Social (contrato de gestão) — acompanhar, não é oportunidade da associação"
     if "credenciamento" in t.lower() and SAUDE_SERVICO.search(f"{t} {r.get('orgao') or ''}") and not re.search(r"(?i)sociedade civil|\bosc", tit):
@@ -188,6 +193,13 @@ def uf_por_municipio(texto: str) -> str | None:
         return m.group(1).upper()
     if not _MUN_BR:
         _MUN_BR.update((_j(ROOT / "config/municipios_brasil.json", {}) or {}).get("municipios") or {"-": []})
+    _ed = re.match(r"\s*edital (?:de |do |da )?([a-z' -]{3,40}?) 20\d\d\b", t)          # 15/10 (ciclo 7): "Edital Itagibá 2026"
+    if _ed:
+        if not _MUN_BR:
+            _MUN_BR.update((_j(ROOT / "config/municipios_brasil.json", {}) or {}).get("municipios") or {"-": []})
+        _u = _MUN_BR.get(_ed.group(1).strip())
+        if _u and len(_u) == 1:
+            return _u[0]
     for mm in re.finditer(r"(?:prefeitura(?: municipal)?|municipio|camara municipal|diario oficial|fundo municipal de [a-z ]{3,30}?) de ([a-z' -]{3,40})", t):
         nome = mm.group(1).strip()
         for k in range(len(nome.split()), 0, -1):          # o nome mais longo que existir na lista
