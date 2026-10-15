@@ -31,9 +31,13 @@ def _j(p: Path, padrao):
 
 def candidatas() -> list[dict]:
     C = (_j(CERT, {}) or {}).get("certidoes") or {}
+    # 15/10/2026: além de 12 de 12, o link oficial tem de estar APROVADO na curadoria (src/curadoria_links.py)
+    cur = {x.get("id"): x.get("curadoria") for x in ((_j(ROOT / "estado/curadoria_links.json", {}) or {}).get("itens") or [])}
     out = []
     for k, c in C.items():
         if not isinstance(c, dict) or not c.get("link_oficial") or c.get("ainda_faltam"):
+            continue
+        if cur and cur.get(str(k).split(":", 1)[-1]) not in (None, "aprovado"):
             continue
         out.append({"id": str(k).split(":", 1)[-1], "chave": k, "titulo": str(c.get("titulo") or "")[:200], "url": c.get("link_oficial"),
                     "tipo": c.get("tipo"), "certificado_em": c.get("em")})

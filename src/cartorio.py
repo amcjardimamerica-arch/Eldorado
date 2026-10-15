@@ -34,6 +34,7 @@ from pathlib import Path
 from urllib.parse import quote, urlsplit
 
 from . import cartorio_leitura as L
+from . import fila_retentativa as FR
 
 ROOT = Path(__file__).resolve().parents[1]
 PASTA = ROOT / "estado/cartorio"
@@ -156,13 +157,19 @@ class Rede:
                 return None, "", "robots_proibe"
         except Exception:  # noqa: BLE001
             pass
+        if FR.fora_da_fila(url):                       # 15/10: 5 erros iguais — fora da fila (mostrador)
+            return None, "", "fora_da_fila"
+        if FR.aguardando(url):                         # 15/10: errou há menos de 30 min — segue a fila
+            return None, "", "aguardando_retentativa"
         try:
             self.n += 1
             b, t = self.baixar(url)
             if self.pausa:
                 time.sleep(self.pausa)
+            FR.sucesso(url)
             return b, t or "", None
         except Exception as e:  # noqa: BLE001
+            FR.falhou(url, "cartorio", FR.tipo_erro(e, getattr(e, "code", None)))
             return None, "", f"erro_rede: {type(e).__name__}"
 
 
@@ -477,6 +484,15 @@ def devidos(fila: list[dict], certidoes: dict, revisitar_dias: int) -> list[dict
         c = certidoes.get(f"{op['_tipo']}:{op['id']}")
         leitor_novo = c and c.get("versao") != VERSAO and (c.get("ainda_faltam") or not c.get("link_oficial"))
         info_nova = c and c.get("assinatura") != _assinatura(op)
+        # 15/10/2026 (titular): leitura PARCIAL volta à fila 30 min depois, até ser lida por completo; sai após 5
+        # passagens sem progresso (fila de retentativa); informação nova dos motores a reabre
+        _ch = f"oportunidade:{op['_tipo']}:{op['id']}"
+        if info_nova:
+            FR.reabrir(_ch); FR.sucesso(_ch)
+        if c and (c.get("ainda_faltam") or not c.get("link_oficial")) and not info_nova:
+            if FR.fora_da_fila(_ch) or FR.aguardando(_ch):
+                continue
+            out.append(op); continue
         # 09/10 (titular): até 3 buscas por oportunidade; depois disso só volta se chegar informação NOVA dos motores
         if c and int(c.get("tentativa") or 1) >= BUSCAS_MAX and not info_nova:
             continue
@@ -663,6 +679,18 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
             elif cert.get("ainda_faltam") and str(cert.get("encaminhado") or "").startswith("Interceptador"):
                 cert["encaminhado"] = (f"Interceptador: {len(cert['ainda_faltam'])} item(ns) não estão no documento oficial lido"
                                        if cert.get("link_oficial") else cert["encaminhado"])
+        # 15/10/2026 (titular): LEITURA TOTAL ou PARCIAL — parcial volta à fila em 30 min até ser lida por completo;
+        # 5 passagens seguidas com o mesmo resultado parcial (sem progresso) = fora da fila → conferência humana
+        _ch = f"oportunidade:{op['_tipo']}:{op.get('id')}"
+        if cert.get("link_oficial") and not cert.get("ainda_faltam"):
+            cert["leitura"] = "total"; FR.sucesso(_ch)
+        else:
+            _rot = ("parcial: faltam " + ",".join(sorted(cert.get("ainda_faltam") or []))) if cert.get("link_oficial") else "sem link oficial"
+            _r = FR.falhou(_ch, "cartorio", _rot[:200], cert.get("encaminhado"))
+            cert["leitura"] = "parcial"
+            cert["fila"] = {"estado": _r.get("estado"), "tentativas": _r.get("tentativas"), "proxima_em": _r.get("proxima_em")}
+            if _r.get("estado") == "fora_da_fila":
+                cert["encaminhado"] = f"Interceptador: leitura parcial sem progresso em {FR.LIMITE} passagens ({_rot[:120]})"
         cert.update({"assinatura": _assinatura(op), "primeira_em": (ant or {}).get("primeira_em") or (ant or {}).get("em") or cert.get("em"),
                      "prazo": op.get("fim"), "uf": op.get("uf"), "orgao": op.get("orgao"), "origem": op.get("origem"),
                      "estagio_inicio": (ant or {}).get("estagio_inicio") or est0, "versao": VERSAO})
@@ -702,6 +730,10 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
     if gravar:
         PASTA.mkdir(parents=True, exist_ok=True)
         CERTIDOES.write_text(json.dumps({"em": _agora(), "versao": VERSAO, "certidoes": certs}, ensure_ascii=False, indent=1), encoding="utf-8")
+        try:
+            FR.gravar()                                  # 15/10: fila de retentativa das leituras parciais
+        except Exception:  # noqa: BLE001
+            pass
         GABARITOS.write_text(json.dumps(gab, ensure_ascii=False, indent=1), encoding="utf-8")
         LN.BIBLIOTECA.parent.mkdir(parents=True, exist_ok=True)
         LN.BIBLIOTECA.write_text(json.dumps({"em": _agora(), "chaves": len(bib), "sites": bib}, ensure_ascii=False, indent=1), encoding="utf-8")

@@ -40,7 +40,7 @@ def roda_hoje(ag: dict, dia) -> bool:
     return d == "todos" or DIAS[dia.weekday()] in d or (d == "uteis" and dia.weekday() < 5)
 
 
-CORTE = ("cobertura_cortada", "cortados", "paginas_nao_lidas", "alerta_formato", "adiados_por_tempo", "truncado")
+CORTE = ("aguardando_retentativa", "cobertura_cortada", "cortados", "paginas_nao_lidas", "alerta_formato", "adiados_por_tempo", "truncado")
 
 
 def cobertura(sid: str, reg: dict | None, diag: dict | None, diag_motor: dict | None = None) -> str:

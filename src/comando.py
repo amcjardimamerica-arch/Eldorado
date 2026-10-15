@@ -11,7 +11,8 @@ foi coletado. A rede avalia o que voltou e direciona para a fase seguinte. Um ci
   4. REACIONAR  parciais e pendentes voltam na mesma passagem enquanto houver tempo; o que só o Brasil/Chrome lê vai
                 para a fila de conferência humana (estado/comando/para_chrome.json);
   5. DIRECIONAR as fases seguintes, em ordem, cada uma com RECIBO e PORTÃO (roda ou pula com motivo):
-                catalogar → treinar a rede → site oficial → certificar (trecho dos 12 itens) → validar por exceção →
+                catalogar → treinar a rede → site oficial → certificar (trecho dos 12 itens) → curadoria do link
+                oficial (dois links, trecho exato, 6 critérios) → validar por exceção →
                 recalcular → biblioteca → fichas e Farol → legislativo → sala de controle → diagnóstico;
   6. VEREDITO   etapa com erro torna o ciclo VERMELHO (o fluxo do GitHub falha à vista; acabou a falha silenciosa).
 
@@ -208,6 +209,9 @@ def fases(ctx: dict) -> list[dict]:
         # 5d EXTRAIR E CERTIFICAR — o Cartório lê o documento e extrai o trecho de cada um dos 12 itens
         {"etapa": "certificar", "finalidade": "trecho literal e página de cada um dos 12 itens no documento oficial (Cartório)",
          "cmds": [[py, "-m", "src.cartorio", "--limite", "20", "--segundos", "780"]], "t": 900, "pular": None},
+        # 5d' CURADORIA — dois links (acesso e oficial), trecho exato e os 6 critérios objetivos do link oficial
+        {"etapa": "curadoria", "finalidade": "link de acesso, link oficial com curadoria objetiva (6 critérios) e trecho exato da oportunidade",
+         "cmds": [[py, "-m", "src.curadoria_links"]], "t": 180, "pular": None},
         # 5e VALIDAR — 12 de 12 no documento oficial segue ao Farol (com a régua do gabarito); o resto vai ao humano
         {"etapa": "validar", "finalidade": "validação por exceção: 12 de 12 comprovados seguem ao Farol; o resto à conferência humana",
          "cmds": [[py, "-m", "src.validacao_excecao"]], "t": 120, "pular": None},
