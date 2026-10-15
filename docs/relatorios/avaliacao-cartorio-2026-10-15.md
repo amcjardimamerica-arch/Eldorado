@@ -1,62 +1,62 @@
-# Avaliação do Cartório com gabarito — 2026-10-15 01:13 UTC
+# Avaliação do Cartório com gabarito — 2026-10-15 01:20 UTC
 
-Casos comprovados: **186** · documentos lidos: **113** · acerto geral: **63.5%** (precisão 81.9%) sobre 946 itens medidos.
+Casos comprovados: **186** · documentos lidos: **142** · acerto geral: **62.1%** (precisão 82.1%) sobre 1103 itens medidos.
 
 Acerto = achou e confere ÷ (acerto + erro + falta). Precisão = acerto ÷ (acerto + erro). 'Fora' = o trecho do gabarito não está no documento lido (não conta contra a regra). 'Sem texto' = documento não lido.
 
 | Item | Acerto | Precisão | Acertos | Erros | Faltas | Fora | Sem texto |
 |---|---|---|---|---|---|---|---|
-| Objeto | 60.4% | 76.2% | 64 | 20 | 22 | 5 | 57 |
-| Prazo de inscrição | 51.1% | 82.8% | 24 | 5 | 18 | 62 | 63 |
-| Resultado | 49.2% | 82.1% | 32 | 7 | 26 | 6 | 32 |
-| Prazo de recurso | 55.4% | 72.0% | 36 | 14 | 15 | 6 | 30 |
-| Valor | 76.8% | 85.5% | 53 | 9 | 7 | 23 | 41 |
-| Órgão / financiador | 82.6% | 95.9% | 71 | 3 | 12 | 16 | 47 |
-| Território | 60.6% | 75.9% | 60 | 19 | 20 | 0 | 42 |
-| Esfera | 79.2% | 93.8% | 76 | 5 | 15 | 0 | 45 |
-| Requisitos | 51.9% | 61.8% | 42 | 26 | 13 | 9 | 34 |
-| Anexos | 81.3% | 91.0% | 61 | 6 | 8 | 15 | 35 |
-| Destinação | 10.8% | 58.3% | 7 | 5 | 53 | 4 | 35 |
-| Área de atuação | 81.5% | 84.3% | 75 | 14 | 3 | 0 | 42 |
+| Objeto | 59.5% | 77.4% | 72 | 21 | 28 | 6 | 41 |
+| Prazo de inscrição | 50.7% | 83.3% | 35 | 7 | 27 | 66 | 37 |
+| Resultado | 52.6% | 83.3% | 40 | 8 | 28 | 8 | 19 |
+| Prazo de recurso | 56.0% | 75.0% | 42 | 14 | 19 | 9 | 17 |
+| Valor | 76.2% | 83.6% | 61 | 12 | 7 | 25 | 28 |
+| Órgão / financiador | 74.7% | 94.9% | 74 | 4 | 21 | 17 | 33 |
+| Território | 63.4% | 78.0% | 71 | 20 | 21 | 0 | 29 |
+| Esfera | 71.8% | 92.9% | 79 | 6 | 25 | 0 | 31 |
+| Requisitos | 48.9% | 60.0% | 45 | 30 | 17 | 12 | 20 |
+| Anexos | 81.4% | 90.9% | 70 | 7 | 9 | 18 | 21 |
+| Destinação | 9.1% | 53.8% | 7 | 6 | 64 | 6 | 21 |
+| Área de atuação | 84.0% | 86.4% | 89 | 14 | 3 | 0 | 28 |
 
 ## Documentos não lidos
 
-- robots_proibe: 49
+- ?: 9
 - erro_rede: RemoteDisconnected: 8
-- formato_desconhecido: 4
-- erro_rede: HTTPError: 2
+- erro_rede: HTTPError: 6
+- formato_desconhecido: 5
+- robots_proibe: 4
+- pdf_corrompido: 3
 - erro_rede: URLError: 2
 - zip_sem_pdf: 2
-- ?: 2
-- pdf_corrompido: 1
-- pagina_vazia: 1
-- pdf_escaneado: 1
+- pagina_vazia: 2
+- pdf_escaneado: 2
 - erro_rede: InvalidURL: 1
 
 ## Causas das falhas por item
 
 **Objeto**
-- 22× falta: a seção do item não tem título reconhecido (numeração ou nome fora do padrão)
+- 28× falta: a seção do item não tem título reconhecido (numeração ou nome fora do padrão)
 - 4× erro: pegou outro trecho (página 2); o certo está na página 1
+- 3× erro: pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)
 - 3× erro: pegou outro trecho (página 3); o certo está na página 1
 - 2× erro: pegou outro trecho (página 6); o certo está na página 1
-- 2× erro: pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)
 - 1× erro: pegou outro trecho (página 1); o certo está na página 15
 
 **Prazo de inscrição**
-- 18× falta: datas do período não estão junto da palavra de inscrição/recebimento (cronograma em tabela ou rótulo diferente)
-- 5× erro: pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)
+- 27× falta: datas do período não estão junto da palavra de inscrição/recebimento (cronograma em tabela ou rótulo diferente)
+- 7× erro: pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)
 
 **Resultado**
-- 26× falta: o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número
+- 28× falta: o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número
 - 1× erro: pegou outro trecho (página 5); o certo está na página 6
 - 1× erro: pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)
+- 1× erro: pegou outro trecho (página 4); o certo está na página 7
 - 1× erro: pegou outro trecho (página 40); o certo está na página 46
 - 1× erro: pegou outro trecho (página 17); o certo está na página 14
-- 1× erro: pegou outro trecho (página 7); o certo está na página 5
 
 **Prazo de recurso**
-- 15× falta: o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número
+- 19× falta: o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número
 - 4× erro: pegou outro trecho (página 3); o certo está na página 5
 - 3× erro: pegou outro trecho (página 9); o certo está na página 7
 - 1× erro: pegou outro trecho (página 17); o certo está na página 7
@@ -72,38 +72,41 @@ Acerto = achou e confere ÷ (acerto + erro + falta). Precisão = acerto ÷ (acer
 - 1× erro: pegou outro trecho (página 3); o certo está na página 1
 
 **Órgão / financiador**
-- 12× falta: o órgão não está na 1ª página com prefixo conhecido (Prefeitura, Secretaria, Ministério…)
+- 21× falta: o órgão não está na 1ª página com prefixo conhecido (Prefeitura, Secretaria, Ministério…)
 - 3× erro: pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)
+- 1× erro: pegou outro trecho (página 1); o certo está na página 16
 
 **Território**
-- 20× falta: regra não reconheceu o trecho que está no documento
+- 21× falta: regra não reconheceu o trecho que está no documento
 - 12× erro: pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)
 - 1× erro: pegou outro trecho (página 39); o certo está na página 1
 - 1× erro: pegou outro trecho (página 11); o certo está na página 23
+- 1× erro: pegou outro trecho (página 12); o certo está na página 11
 - 1× erro: pegou outro trecho (página 25); o certo está na página 8
-- 1× erro: pegou outro trecho (página 3); o certo está na página 1
 
 **Esfera**
-- 15× falta: regra não reconheceu o trecho que está no documento
+- 25× falta: regra não reconheceu o trecho que está no documento
 - 5× erro: pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)
+- 1× erro: pegou outro trecho (página 1); o certo está na página 16
 
 **Requisitos**
-- 13× falta: a seção do item não tem título reconhecido (numeração ou nome fora do padrão)
-- 9× erro: pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)
+- 17× falta: a seção do item não tem título reconhecido (numeração ou nome fora do padrão)
+- 11× erro: pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)
 - 2× erro: pegou outro trecho (página 4); o certo está na página 2
 - 2× erro: pegou outro trecho (página 3); o certo está na página 2
 - 1× erro: pegou outro trecho (página 2); o certo está na página 5
 - 1× erro: pegou outro trecho (página 8); o certo está na página 3
 
 **Anexos**
-- 8× falta: regra não reconheceu o trecho que está no documento
+- 9× falta: regra não reconheceu o trecho que está no documento
 - 6× erro: pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)
+- 1× erro: pegou outro trecho (página 9); o certo está na página 14
 
 **Destinação**
-- 53× falta: a seção do item não tem título reconhecido (numeração ou nome fora do padrão)
+- 64× falta: a seção do item não tem título reconhecido (numeração ou nome fora do padrão)
+- 2× erro: pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)
 - 1× erro: pegou outro trecho (página 2); o certo está na página 10
 - 1× erro: pegou outro trecho (página 32); o certo está na página 26
-- 1× erro: pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)
 - 1× erro: pegou outro trecho (página 21); o certo está na página 23
 - 1× erro: pegou outro trecho (página 3); o certo está na página 2
 
@@ -203,14 +206,18 @@ Acerto = achou e confere ÷ (acerto + erro + falta). Precisão = acerto ÷ (acer
   gabarito: Educação (p. 15)  
   extraído: Cultura, Criança e adolescente (p. 1)  
   causa: pegou outro trecho (página 1); o certo está na página 15
-- **Objeto** (falta) · caso `2ecb97286b45a9b9fdbf` · https://smc.niteroi.rj.gov.br/wp-content/uploads/2026/09/0.-Edital-Cultura-Geek-2026.pdf  
-  gabarito: Edital de Chamamento Público SMC 02/2026 – Edital Cultura Geek: seleção de propostas de cultura geek (Lei 14.903/2024) (p. 1)  
+- **Objeto** (falta) · caso `a60936a7c595d33defc8` · https://data.queridodiario.ok.org.br/3557105/2026-09-29/f575c351b90cf7d2887d7e21cdabdc750a8ddcdf.pdf  
+  gabarito: Edital de Chamamento Público 005/2026 SEASO: Termo de Fomento para estruturação e qualificação da rede socioassistencial mediante construção (p. 11)  
   extraído: — (p. —)  
   causa: a seção do item não tem título reconhecido (numeração ou nome fora do padrão)
-- **Órgão / financiador** (falta) · caso `2ecb97286b45a9b9fdbf` · https://smc.niteroi.rj.gov.br/wp-content/uploads/2026/09/0.-Edital-Cultura-Geek-2026.pdf  
-  gabarito: Prefeitura de Niterói/RJ — Secretaria Municipal das Culturas (SMC) (p. 1)  
+- **Órgão / financiador** (falta) · caso `a60936a7c595d33defc8` · https://data.queridodiario.ok.org.br/3557105/2026-09-29/f575c351b90cf7d2887d7e21cdabdc750a8ddcdf.pdf  
+  gabarito: Prefeitura de Votuporanga/SP — Secretaria Municipal de Assistência Social e Desenvolvimento Social (SEASO) (p. 11)  
   extraído: — (p. —)  
   causa: o órgão não está na 1ª página com prefixo conhecido (Prefeitura, Secretaria, Ministério…)
+- **Esfera** (falta) · caso `a60936a7c595d33defc8` · https://data.queridodiario.ok.org.br/3557105/2026-09-29/f575c351b90cf7d2887d7e21cdabdc750a8ddcdf.pdf  
+  gabarito: municipal (p. 11)  
+  extraído: — (p. —)  
+  causa: regra não reconheceu o trecho que está no documento
 - **Anexos** (falta) · caso `2ecb97286b45a9b9fdbf` · https://smc.niteroi.rj.gov.br/wp-content/uploads/2026/09/0.-Edital-Cultura-Geek-2026.pdf  
   gabarito: Anexos 01 a 13 (documentos de inscrição, planilha orçamentária, cronograma, ficha técnica, cartas de anuência, habilitação, minuta do termo, (p. 20)  
   extraído: — (p. —)  
@@ -247,15 +254,11 @@ Acerto = achou e confere ÷ (acerto + erro + falta). Precisão = acerto ÷ (acer
   gabarito: F (Federal) (p. None)  
   extraído: municipal (p. 1)  
   causa: pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)
-- **Esfera** (erro) · caso `1f6f8ec7518f17718fc9` · https://pncp.gov.br/pncp-api/v1/orgaos/20260121000180/compras/2026/1/arquivos/1  
-  gabarito: M (Municipal) (p. None)  
-  extraído: privada (p. 1)  
-  causa: pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)
 - **Prazo de inscrição** (falta) · caso `2f85462b05516caee710` · https://portal.uberaba.mg.gov.br/pmudrive/file/arquivos/MTJhYWI3NmIxYWY3NWRjMjFhNzEwY2Q3MzY1OTc3YjQucGRm  
   gabarito: 23/09/2026 a 23/10/2026, das 12h às 17h30 (protocolo presencial) (p. 6)  
   extraído: — (p. —)  
   causa: datas do período não estão junto da palavra de inscrição/recebimento (cronograma em tabela ou rótulo diferente)
-- **Prazo de inscrição** (erro) · caso `64efa7e36bef2f9468d1` · https://santabarbara.pa.gov.br/wp-content/uploads/2026/10/Edital-no-102026-PNAB-Santa-Barbara-do-Para.pdf  
-  gabarito: 07/10/2026 8h a 25/10/2026 17h, por formulário eletrônico (reaberto/republicado; o DOU anterior indicava 16/10) (p. 2)  
-  extraído: até 07 de outubro de 2026 (p. 2)  
-  causa: pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)
+- **Prazo de inscrição** (falta) · caso `332e8f675e56e5916eed` · https://data.queridodiario.ok.org.br/3305158/2026-09-22/89d032417f88818ceb76b2715c0457c04116affb.pdf  
+  gabarito: 24/09/2026 (republicação) a 26/10/2026 (p. 5)  
+  extraído: — (p. —)  
+  causa: datas do período não estão junto da palavra de inscrição/recebimento (cronograma em tabela ou rótulo diferente)
