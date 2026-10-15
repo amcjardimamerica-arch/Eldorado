@@ -85,3 +85,18 @@ class Ciclo6_15_10(unittest.TestCase):
     def test_status_semanal_e_api_com_achados(self):
         from src import status_motores as SM
         self.assertGreater(SM.janela_do_motor({"id": "motor-gife"}, {"dias": "todos"}), 7 * 24)
+
+
+class DiagnosticoDaPassagem15_10(unittest.TestCase):
+    """15/10/2026 (ciclo 7): a passagem do comando não sobrescreve o relatório do 'Analise o sistema'."""
+    def test_arquivo_proprio(self):
+        import subprocess, sys
+        from pathlib import Path
+        raiz = Path(__file__).resolve().parents[1]
+        cod = "import src.diagnostico_sistema as D; print(D.SAIDA.name, D.RESUMO.name)"
+        com = subprocess.run([sys.executable, "-c", cod], cwd=raiz, capture_output=True, text=True, env={**__import__("os").environ, "DIAG_PASSAGEM": "1"}).stdout.split()
+        sem = subprocess.run([sys.executable, "-c", cod], cwd=raiz, capture_output=True, text=True, env={k: v for k, v in __import__("os").environ.items() if k != "DIAG_PASSAGEM"}).stdout.split()
+        self.assertEqual(com, ["diagnostico_passagem.json", "diagnostico_passagem.md"])
+        self.assertEqual(sem, ["diagnostico_sistema.json", "diagnostico_sistema.md"])
+        fase = next(f for f in C.fases({}) if f["etapa"] == "diagnostico")
+        self.assertEqual(fase["env"], {"DIAG_PASSAGEM": "1"})

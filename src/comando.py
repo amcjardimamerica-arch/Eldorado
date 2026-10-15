@@ -229,7 +229,8 @@ def fases(ctx: dict) -> list[dict]:
         {"etapa": "legislativo", "finalidade": "projetos de lei, utilidades públicas e orçamento — acompanhamento sem livro",
          "cmds": [[py, "-m", "src.legislativo"]], "t": 120, "pular": None},
         {"etapa": "sala_de_controle", "finalidade": "instrumentos de cada etapa", "cmds": [[py, "-m", "src.sala_controle"]], "t": 150, "pular": None},
-        {"etapa": "diagnostico", "finalidade": "diagnóstico único do sistema", "cmds": [[py, "-m", "src.diagnostico_sistema"]], "t": 300, "pular": None},
+        {"etapa": "diagnostico", "finalidade": "diagnóstico da passagem (arquivo próprio; o relatório da análise não é sobrescrito)",
+         "cmds": [[py, "-m", "src.diagnostico_sistema"]], "t": 300, "pular": None, "env": {"DIAG_PASSAGEM": "1"}},
     ]
 
 
@@ -238,7 +239,7 @@ def ciclo_sequencia() -> dict:
     for f in fases(ctx):
         if f["pular"]:
             ctx["decisoes"].append({"fase": f["etapa"], "pulou": f["pular"]}); continue
-        rs = [executar(f"{f['etapa']}:{i + 1}", c, f["t"]) for i, c in enumerate(f["cmds"])]
+        rs = [executar(f"{f['etapa']}:{i + 1}", c, f["t"], f.get("env")) for i, c in enumerate(f["cmds"])]
         rec = {"etapa": f["etapa"], "finalidade": f["finalidade"], "segundos": round(sum(r["segundos"] for r in rs), 1),
                "erro": next((f"{r['etapa']}: {r['erro']}" for r in rs if r["erro"]), None)}
         ctx["recibos"].append(rec)
