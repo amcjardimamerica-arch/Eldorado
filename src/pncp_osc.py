@@ -199,13 +199,18 @@ def fonte_a(hoje: date, cfg: dict, diag: dict) -> list[dict]:
         for mod in a.get("modalidades") or [12, 3, 10, 11]:
             # 03/10 (teste do motor 15): MG tem 53 páginas de credenciamento e SP 21; o teto de 20 cortava o resto sem
             # aviso. Agora cada UF/modalidade continua de onde parou (cursor) e o que faltar conta como leitura parcial
-            cur = cfg.setdefault("_cursor_a", {}); chave_c = f"{uf}|{mod}"
+            # 15/10/2026: fora de Goiás, só a CAPITAL (prefeitura da capital + órgãos estaduais e federais lá sediados)
+            ibge = (a.get("capitais_ibge") or {}).get(uf) if (uf != "GO" and a.get("fora_de_goias") == "capital") else None
+            cur = cfg.setdefault("_cursor_a", {}); chave_c = f"{uf}|{mod}" + (f"|{ibge}" if ibge else "")
             ini = int(cur.get(chave_c) or 1); ult, total = ini - 1, 0
             for pg in range(ini, ini + int(a.get("max_paginas", 20))):
                 if seguidas >= limite:
                     break
-                q = urlencode({"dataFinal": horizonte, "codigoModalidadeContratacao": mod, "uf": uf, "pagina": pg,
-                               "tamanhoPagina": int(a.get("tamanho_pagina", 50))})
+                _q = {"dataFinal": horizonte, "codigoModalidadeContratacao": mod, "uf": uf, "pagina": pg,
+                      "tamanhoPagina": int(a.get("tamanho_pagina", 50))}
+                if ibge:
+                    _q["codigoMunicipioIbge"] = ibge
+                q = urlencode(_q)
                 try:
                     j = _get(f"{BASE}/api/consulta/v1/contratacoes/proposta?{q}", cfg)
                 except RuntimeError as exc:
@@ -234,6 +239,7 @@ def fonte_a(hoje: date, cfg: dict, diag: dict) -> list[dict]:
             else:
                 cur.pop(chave_c, None)
     F["itens"] = len(out)
+    F["consulta_fora_de_goias"] = a.get("fora_de_goias") or "estado inteiro"
     return out
 
 
