@@ -1,71 +1,72 @@
 {
- "versao": "2026-10-02",
- "regra": "Esteira metódica de selos (titular, 02/10/2026). A rede neural acompanha cada etapa: (0) planeja e controla os motores até a busca do dia chegar a 100%; (1) resultado: a oportunidade complementa/atualiza um livro existente ou cria um novo; (2) BRONZE: confirmar o site oficial — o Interceptador, no computador do titular (IP brasileiro, sem bloqueio), com Sonnet 5.5 em esforço baixo, reprocessa até 2 vezes; sem site oficial → Estante de Investigação Bronze (selo bronze); (3) PRATA: site oficial confirmado — Opus 5.5 em esforço baixo avalia o edital, os prazos e os 12 dados (ou a dispensa deles); sem validação → Estante de Investigação Prata (selo prata); (4) OURO: edital, condições e prazos completos → pronto para o Farol de Alexandria. O aprendizado de cada etapa fica gravado no livro.",
- "selos": {
+  "versao": "2026-10-02",
+  "regra": "Esteira metódica de selos (titular, 02/10/2026). A rede neural acompanha cada etapa: (0) planeja e controla os motores até a busca do dia chegar a 100%; (1) resultado: a oportunidade complementa/atualiza um livro existente ou cria um novo; (2) BRONZE: confirmar o site oficial — o Interceptador, no computador do titular (IP brasileiro, sem bloqueio), com Sonnet 5.5 em esforço baixo, reprocessa até 2 vezes; sem site oficial → Estante de Investigação Bronze (selo bronze); (3) PRATA: site oficial confirmado — Opus 5.5 em esforço baixo avalia o edital, os prazos e os 12 dados (ou a dispensa deles); sem validação → Estante de Investigação Prata (selo prata); (4) OURO: edital, condições e prazos completos → pronto para o Farol de Alexandria. O aprendizado de cada etapa fica gravado no livro.",
+  "selos": {
+    "bronze": {
+      "nome": "Bronze",
+      "significado": "oportunidade identificada; site oficial ainda não confirmado",
+      "estante": "Estante de Investigação Bronze"
+    },
+    "prata": {
+      "nome": "Prata",
+      "significado": "site oficial confirmado; edital, prazos ou 12 dados ainda não validados",
+      "estante": "Estante de Investigação Prata"
+    },
+    "ouro": {
+      "nome": "Ouro",
+      "significado": "edital, condições e prazos completos — pronto para o Farol de Alexandria",
+      "estante": "Pronto para o Farol"
+    }
+  },
   "bronze": {
-   "nome": "Bronze",
-   "significado": "oportunidade identificada; site oficial ainda não confirmado",
-   "estante": "Estante de Investigação Bronze"
+    "executor": "Piloto - Interceptador (Qwen3-8B, nuvem)",
+    "tarefa_ia": null,
+    "tentativas": 2,
+    "por_dia": 40,
+    "ferramentas": [],
+    "confirmacao_local": "a página proposta precisa abrir no IP do titular e conter termos do programa",
+    "regra": "02/10 (titular): a estante bronze segue a ORDEM do Interceptador por dentro — em cada nível (Goiás, Brasil, internacional, outros estados) os livros da estante bronze daquele nível vêm primeiro; não passa na frente da ordem. Qwen 8B; o estudo volta à esteira."
   },
   "prata": {
-   "nome": "Prata",
-   "significado": "site oficial confirmado; edital, prazos ou 12 dados ainda não validados",
-   "estante": "Estante de Investigação Prata"
+    "executor": "acionamento externo (pausado)",
+    "tarefa_ia": "esteira_prata",
+    "tentativas": 2,
+    "por_dia": 15,
+    "exige": [
+      "prazo de inscrição (data de encerramento ou regime contínuo)",
+      "12 dados preenchidos ou dispensados"
+    ],
+    "regra": "02/10 (titular): a análise da prata com IA Claude só por acionamento externo"
   },
-  "ouro": {
-   "nome": "Ouro",
-   "significado": "edital, condições e prazos completos — pronto para o Farol de Alexandria",
-   "estante": "Pronto para o Farol"
-  }
- },
- "bronze": {
-  "executor": "Piloto - Interceptador (Qwen3-8B, nuvem)",
-  "tarefa_ia": null,
-  "tentativas": 2,
-  "por_dia": 40,
-  "ferramentas": [],
-  "confirmacao_local": "a página proposta precisa abrir no IP do titular e conter termos do programa",
-  "regra": "02/10 (titular): a estante bronze segue a ORDEM do Interceptador por dentro — em cada nível (Goiás, Brasil, internacional, outros estados) os livros da estante bronze daquele nível vêm primeiro; não passa na frente da ordem. Qwen 8B; o estudo volta à esteira."
- },
- "prata": {
-  "executor": "acionamento externo (pausado)",
-  "tarefa_ia": "esteira_prata",
-  "tentativas": 2,
-  "por_dia": 15,
-  "exige": [
-   "prazo de inscrição (data de encerramento ou regime contínuo)",
-   "12 dados preenchidos ou dispensados"
+  "doze_dados": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
   ],
-  "regra": "02/10 (titular): a análise da prata com IA Claude só por acionamento externo"
- },
- "doze_dados": [
-  "Objeto",
-  "Prazo de inscrição",
-  "Resultado",
-  "Prazo de recurso",
-  "Valor",
-  "Órgão / financiador",
-  "Território",
-  "Esfera",
-  "Requisitos",
-  "Anexos",
-  "Destinação",
-  "Área de atuação"
- ],
- "nova_informacao_reabre": "quando um motor traz informação nova a um livro que está numa estante de investigação, as tentativas voltam a zero e ele retorna à fila",
- "rede_neural": {
-  "ordem_das_filas": "Goiás → Brasil → internacional → outros estados; dentro de cada grupo, nota da rede (maior primeiro) e prazo mais próximo",
-  "registro": "a nota em cada etapa fica no histórico do selo"
- },
- "maestro": {
-  "tentativas_por_dia": 3,
-  "cobertura_completa": "leitura do dia sem falha de página; motor que exige IP brasileiro conta como pendente da coleta local",
-  "lote_sem_agenda": 40,
-  "fontes_sem_horario": "02/10: fontes sem horário próprio (as 260) que não leram o dia anterior são lidas pelo maestro em lotes de até 40 por passagem, por prioridade (4 passagens por dia)"
- },
- "investigacao": {
-  "pausada": true,
-  "acionamento": "externo",
-  "regra": "02/10 (titular): as Estantes de Investigação são acionadas externamente — o fluxo automático fica pausado. Nenhum fluxo do GitHub aciona IA Claude."
- }
+  "nova_informacao_reabre": "quando um motor traz informação nova a um livro que está numa estante de investigação, as tentativas voltam a zero e ele retorna à fila",
+  "rede_neural": {
+    "ordem_das_filas": "Goiás → Brasil → internacional → outros estados; dentro de cada grupo, nota da rede (maior primeiro) e prazo mais próximo",
+    "registro": "a nota em cada etapa fica no histórico do selo"
+  },
+  "maestro": {
+    "tentativas_por_dia": 6,
+    "cobertura_completa": "leitura do dia sem falha de página; motor que exige IP brasileiro conta como pendente da coleta local",
+    "lote_sem_agenda": 40,
+    "fontes_sem_horario": "02/10: fontes sem horário próprio (as 260) que não leram o dia anterior são lidas pelo maestro em lotes de até 40 por passagem, por prioridade (4 passagens por dia)",
+    "tentativas_por_dia_nota": "15/10/2026 (PNCP/cobertura): 6 = 1ª leitura + as 5 retentativas da fila (30 min entre elas). Com 3, o dia fechava a 71% com páginas ainda na fila de retentativa e o comando parava de se reacionar."
+  },
+  "investigacao": {
+    "pausada": true,
+    "acionamento": "externo",
+    "regra": "02/10 (titular): as Estantes de Investigação são acionadas externamente — o fluxo automático fica pausado. Nenhum fluxo do GitHub aciona IA Claude."
+  }
 }
