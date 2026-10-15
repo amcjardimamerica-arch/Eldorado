@@ -252,10 +252,15 @@ def registrar_achados(achados: list[dict], origem: str, catalogo: dict | None = 
         for d in (_j(Path(f), {}).get("itens") or []):
             if d.get("decisao") == "descartada":
                 descartados.add(chave(d.get("titulo") or "")); descartados.add(str(d.get("url") or "").rstrip("/"))
+    from . import legislativo as _leg
+    n_leg = 0
     for a in achados or []:
         tit = str(a.get("titulo") or a.get("nome") or "").strip()
         url = str(a.get("url") or a.get("onde") or "")
         if len(tit) < 8 or not url.startswith("http"):
+            continue
+        if _leg.e_legislativo(a, origem):              # 15/10 (titular): ato legislativo NÃO gera livro — vai para o
+            _leg.receber(a, origem); n_leg += 1        # acompanhamento (Oportunidades Abertas › Legislativo)
             continue
         k = chave(tit, a.get("orgao") or a.get("empresa") or "")
         if not a.get("livro") and (chave(tit) in descartados or url.rstrip("/") in descartados):
@@ -341,7 +346,7 @@ def registrar_achados(achados: list[dict], origem: str, catalogo: dict | None = 
     C["pendentes_das_restricoes"] = pendentes[-300:]
     if gravar and (criados or atualizados or n_vetos or n_pend):
         CAT.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    return {"livros_novos": criados, "livros_atualizados": atualizados, "vetados_pelas_restricoes": n_vetos, "pendentes_das_restricoes": n_pend}
+    return {"livros_novos": criados, "livros_atualizados": atualizados, "vetados_pelas_restricoes": n_vetos, "pendentes_das_restricoes": n_pend, "atos_legislativos_acompanhados": n_leg}
 
 
 
