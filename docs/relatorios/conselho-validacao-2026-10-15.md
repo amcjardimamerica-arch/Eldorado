@@ -127,8 +127,8 @@
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 1534,
-   "achados_total_agora": 1534,
+   "achados_total_1a": 1556,
+   "achados_total_agora": 1556,
    "no_fluxo": 5,
    "confirmadas": 0
   },
@@ -141,8 +141,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 99,
-   "achados_total_agora": 99,
+   "achados_total_1a": 101,
+   "achados_total_agora": 101,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -212,7 +212,7 @@
   {
    "motor": "outras-oportunidades-3",
    "achados_total_1a": 32,
-   "achados_total_agora":
+   "achados_total_agora
 ```
 
 ## Eng. Luana Freire (levemente pessimista)
@@ -225,7 +225,7 @@
  "pontos_com_redundancia": 13,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 8988
+ "exemplos_da_rede_de_rotas": 9067
 }
 ```
 
@@ -236,12 +236,12 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 69.5,
- "fora_dos_motores_pct_agora": 69.5,
+ "fora_dos_motores_pct_1a": 69.3,
+ "fora_dos_motores_pct_agora": 69.3,
  "origem": {
   "agregador/outra": 209,
   "motor": 146,
-  "Piloto": 124
+  "Piloto": 121
  },
  "dominios_so_de_agregador": [
   {
@@ -362,20 +362,20 @@
 
 ```json
 {
- "fontes_recebidas": 350,
+ "fontes_recebidas": 356,
  "por_origem": {
-  "conselho (fontes irmãs)": 160,
-  "Cartório (site oficial certificado)": 156,
-  "Espião (privado/internacional)": 34
+  "conselho (fontes irmãs)": 162,
+  "Cartório (site oficial certificado)": 158,
+  "Espião (privado/internacional)": 36
  },
  "lidas_nas_ultimas_24h": 216,
  "dimensionamento": {
-  "fontes": 350,
+  "fontes": 356,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 7,
-  "cobertura_diaria": 350,
+  "cobertura_diaria": 356,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -433,7 +433,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 91,
+   "orgaos": 93,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",
@@ -477,7 +477,7 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 47,
+   "orgaos": 48,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",
