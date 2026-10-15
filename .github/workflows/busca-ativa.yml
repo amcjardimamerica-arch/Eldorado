@@ -25,15 +25,15 @@ jobs:
       - name: Busca ativa dos indícios (órgão publicador + IA econômica)
         run: |
           pip install pypdf --quiet
-          BUSCA_ATIVA_SEGUNDOS=1200 python -m src.busca_ativa | tee busca.json
-          python -m src.completude | tee completude.json
-          python -m src.alternativas && python -c "from src.alternativas import run_localizacao; print(run_localizacao())" || echo "alternativas: registrado"
-          python -m src.dashboard_dados | tee dash.json
+          # 15/10/2026 (ciclo 6): o job estourava 50 min (passos sem limite) e era cancelado sem gravar; cada passo tem teto
+          BUSCA_ATIVA_SEGUNDOS=1080 timeout 1260 python -m src.busca_ativa | tee busca.json || echo "busca: parou no teto"
+          timeout 420 python -m src.completude | tee completude.json || echo "completude: parou no teto"
+          { timeout 360 python -m src.alternativas && timeout 180 python -c "from src.alternativas import run_localizacao; print(run_localizacao())"; } || echo "alternativas: registrado"
+          timeout 240 python -m src.dashboard_dados | tee dash.json || echo "painel: parou no teto"
       - name: Registrar
+        if: always()          # 15/10: o trabalho parcial nunca se perde; só os arquivos deste fluxo, por cima do main atual
         run: |
           git config user.name "eldorado-bot"
           git config user.email "eldorado-bot@users.noreply.github.com"
-          git add estado docs dados biblioteca_alexandria
-          git diff --cached --quiet && echo "sem alteracoes" || git commit -m "busca ativa: $(date -u +%F)"
-          git pull --rebase origin main || true
-          git push
+          python scripts/gravar_somente_alterados.py salvar
+          python scripts/gravar_somente_alterados.py aplicar "busca ativa: $(date -u +%F\ %H:%M)"
