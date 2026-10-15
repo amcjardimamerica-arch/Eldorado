@@ -294,3 +294,20 @@ class TestNormativos(unittest.TestCase):
 
     def test_portaria_de_pessoal_continua_ruido(self):
         self.assertEqual(dg.classificar_ato("PORTARIA Nº 61, 25 DE SETEMBRO DE 2026 Nomeia servidor", HOJE)["veredito"], "RUIDO")
+
+
+class PortalDiretoPrimeiro15_10(unittest.TestCase):
+    """15/10/2026: o portal de Goiânia responde da nuvem — direto primeiro, ponte só de reserva."""
+    def test_direto_primeiro_e_ponte_de_reserva(self):
+        from unittest import mock
+        from src import diario_goiania as G, ponte_brasil as PB
+        u = "https://www.goiania.go.gov.br/Download/legislacao/diariooficial/2026/do_20261001_000008875.pdf"
+        with mock.patch.object(G, "validate_public_https", lambda *a, **k: None), mock.patch.object(PB, "usar", lambda url: True), \
+             mock.patch.object(G, "_direto", lambda *a, **k: b"%PDF direto"), mock.patch.object(PB, "abrir", side_effect=AssertionError("não devia usar a ponte")):
+            self.assertEqual(G._get(u), b"%PDF direto")
+
+        def falha(*a, **k):
+            raise OSError("recusado")
+        with mock.patch.object(G, "validate_public_https", lambda *a, **k: None), mock.patch.object(PB, "usar", lambda url: True), \
+             mock.patch.object(G, "_direto", falha), mock.patch.object(PB, "abrir", lambda *a, **k: (200, u, b"%PDF ponte", {})):
+            self.assertEqual(G._get(u), b"%PDF ponte")

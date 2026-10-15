@@ -75,11 +75,22 @@ def _get(url: str, timeout: int = 60, max_bytes: int = 8_000_000, aceitar: str =
     if not url.startswith("file://"):
         validate_public_https(url)
         from . import ponte_brasil
-        if ponte_brasil.usar(url):                        # 03/10: PDFs do TJGO e portais de Goiás pela ponte da Hostgator
-            st, _f, dados, _h = ponte_brasil.abrir(url, aceitar=aceitar, timeout=timeout, max_bytes=max_bytes)
-            if st >= 400:
-                raise RuntimeError(f"HTTP {st} pela ponte Brasil")
-            return dados[:max_bytes]
+        if ponte_brasil.usar(url):
+            # 15/10 (varredura de referência): o portal de Goiânia responde DIRETO da nuvem (lista e PDFs de 8 a 18 MB);
+            # a ponte falhava todo dia ("ErroPonte") e as edições 8875 e 8876 nunca foram lidas. Direto primeiro; ponte
+            # só se o direto falhar.
+            try:
+                return _direto(url, min(timeout, 90), max_bytes, aceitar)
+            except Exception:  # noqa: BLE001
+                st, _f, dados, _h = ponte_brasil.abrir(url, aceitar=aceitar, timeout=timeout, max_bytes=max_bytes)
+                if st >= 400:
+                    raise RuntimeError(f"HTTP {st} pela ponte Brasil")
+                return dados[:max_bytes]
+    return _direto(url, timeout, max_bytes, aceitar)
+
+
+def _direto(url: str, timeout: int, max_bytes: int, aceitar: str) -> bytes:
+    from urllib.request import Request, urlopen
     req = Request(url, headers={"User-Agent": UA, "Accept": aceitar, "Accept-Language": "pt-BR,pt;q=0.9"})
     with urlopen(req, timeout=timeout) as r:
         dados = r.read(max_bytes + 1)
@@ -520,11 +531,8 @@ def ler_portal(hoje: date, cfg: dict, diag: dict, processadas: set) -> dict[str,
     """Coleta LOCAL (IP brasileiro): lista do ano → PDFs das últimas edições ainda não lidas."""
     port = cfg.get("portal", {})
     from . import ponte_brasil
-    if _em_nuvem() and not ponte_brasil.disponivel():
-        diag["portal"] = "nuvem: o portal recusa IP estrangeiro — fica para a coleta local (scripts/coleta_brasil.py)"
-        return {}
-    if _em_nuvem():
-        diag["portal"] = "nuvem pela ponte Brasil (Hostgator)"      # 03/10: a ponte empresta o IP brasileiro
+    if _em_nuvem():   # 15/10: o portal responde direto da nuvem (medido); a ponte, se houver, é só reserva
+        diag["portal"] = "nuvem: direto no portal" + (" (ponte Brasil de reserva)" if ponte_brasil.disponivel() else "")
     eds = []
     for ano in sorted({hoje.year, (hoje - timedelta(days=int(port.get("janela_dias", 7)))).year}, reverse=True):
         try:
