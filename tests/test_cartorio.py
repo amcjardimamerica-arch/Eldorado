@@ -35,7 +35,7 @@ def _pdf(paginas):
 EDITAL = ["PREFEITURA MUNICIPAL DE ANAPOLIS\nSECRETARIA MUNICIPAL DE CULTURA\nEDITAL DE CHAMAMENTO PUBLICO N 003/2026\n"
           "1. DO OBJETO\n1.1. O presente edital tem por objeto a selecao de organizacoes da sociedade civil para projetos culturais de formacao artistica no Municipio de Anapolis.\n"
           "2. DOS RECURSOS FINANCEIROS\n2.1. O valor global disponivel e de R$ 300.000,00 [trezentos mil reais].\n"
-          "2.2. Os recursos serao destinados exclusivamente ao pagamento de oficineiros, materiais e locacao de espacos.\n"
+          "2.2. Os recursos serao destinados exclusivamente ao pagamento de oficineiros, materiais e locacao de espacos. A parceria sera formalizada por meio de Termo de Fomento.\n"
           "3. DAS CONDICOES DE PARTICIPACAO\n3.1. Poderao participar organizacoes da sociedade civil sediadas em Anapolis ha pelo menos 2 anos, com CNPJ ativo.",
           "4. DO CRONOGRAMA\nPeriodo de inscricoes: de 13/10/2026 a 12/11/2026\nDivulgacao do resultado preliminar: 30/11/2026\n"
           "Prazo para recurso: 5 [cinco] dias uteis apos a publicacao\n5. DOS ANEXOS\nANEXO I - Plano de Trabalho\nANEXO II - Declaracoes"]
@@ -148,6 +148,16 @@ class TesteCorrecoesV2(unittest.TestCase):
         ls = L.links_de_documento(html, "https://diariooficial.abc.go.gov.br/portal/visualizacoes/pdf/7401/")
         self.assertEqual(ls[0][0], "https://diariooficial.abc.go.gov.br/portal/edicoes/7401/arquivo.pdf")
 
+    def test_modalidade_de_recebimento(self):
+        casos = {"Selecao de propostas para celebracao de Termo de Colaboracao com OSC.": "Termo de Colaboração",
+                 "Serao concedidos 20 premios de R$ 5.000,00 por trajetoria cultural.": "Prêmio",
+                 "Projetos aprovados poderao captar recursos via Lei Rouanet (Lei 8.313/1991), com deducao do imposto de renda.": "Incentivo fiscal",
+                 "Destinacao de valores de prestacao pecuniaria a entidades com finalidade social, Resolucao CNJ 558.": "Destinação de prestação pecuniária / TAC",
+                 "Firmar Termo de Execucao Cultural com os agentes culturais selecionados (PNAB).": "Termo de Execução Cultural"}
+        for txt, esperado in casos.items():
+            self.assertEqual(L.modalidade(L.Texto([txt]), "")["modalidade"], esperado, txt)
+        self.assertIsNone(L.modalidade(L.Texto(["Texto sem instrumento nenhum."]), ""))
+
     def test_ato_no_diario_por_no_e_por_termo_do_querido_diario(self):
         pgs = ["DECRETO 55 nomeia servidor"] * 20 + ["AVISO DE CHAMAMENTO PUBLICO Nº 4 - selecao de projetos culturais"] + ["outros atos"] * 15
         self.assertEqual(sum(1 for t in L.localizar_ato(pgs, "Aviso de Chamamento Público nº 4") if t), 2)
@@ -157,9 +167,12 @@ class TesteCorrecoesV2(unittest.TestCase):
         self.assertIsNone(L.localizar_ato(pgs2, "Diário Oficial sem identificação"))
 
     def test_destinacao_e_requisitos_em_outras_redacoes(self):
+        # 15/10/2026 (titular): "Destinação" = MODALIDADE de recebimento (por qual forma o dinheiro chega), não a finalidade
         r = L.extrair(["Sao despesas elegiveis: pagamento de pessoal, material de consumo e servicos de terceiros. "
+                       "A parceria sera formalizada por meio de Termo de Fomento, nos termos da Lei nº 13.019/2014. "
                        "As proponentes deverao comprovar no minimo dois anos de existencia e regularidade fiscal."], "https://x.go.gov.br/a.pdf", "t")
-        self.assertIn("despesas elegiveis", r["pontos"]["Destinação"]["valor"])
+        self.assertEqual(r["pontos"]["Destinação"]["modalidade"], "Termo de Fomento")
+        self.assertIn("13.019", r["pontos"]["Destinação"]["base_legal"])
         self.assertIn("deverao comprovar", r["pontos"]["Requisitos"]["valor"])
 
 

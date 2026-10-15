@@ -275,6 +275,63 @@ def _achar(T: Texto, rx: str, secao_rx: str | None = None, grupo: int = 1, flags
     return None
 
 
+# ── MODALIDADE DE RECEBIMENTO (item "Destinação", titular 15/10/2026) ───────────────────────────────────────────
+# (nome, padrão do instrumento, base legal típica, peso). A escolha pondera: instrumento citado com verbo de
+# formalização ("celebração de", "firmar", "por meio de") vale mais; título e objeto valem mais que o resto do texto.
+MODALIDADES = [
+    ("Termo de Fomento", r"termos? de fomento", "Lei 13.019/2014 (MROSC)", 3),
+    ("Termo de Colaboração", r"termos? de colabora[çc][ãa]o", "Lei 13.019/2014 (MROSC)", 3),
+    ("Acordo de Cooperação (sem repasse)", r"acordos? de coopera[çc][ãa]o", "Lei 13.019/2014 (MROSC)", 2),
+    ("Termo de Execução Cultural", r"termos? de execu[çc][ãa]o cultural", "Lei 14.903/2024 (Marco do Fomento à Cultura)", 3),
+    ("Termo de Parceria (OSCIP)", r"termos? de parceria", "Lei 9.790/1999", 3),
+    ("Contrato de Gestão (OS)", r"contratos? de gest[ãa]o", "Lei 9.637/1998", 3),
+    ("Convênio", r"\bconv[êe]nios?\b", "Decreto 11.531/2023 / legislação local", 1.5),
+    ("Prêmio", r"\bpr[êe]mio|premia[çc][ãa]o|\bpremiad", "Lei 14.903/2024 art. 32 / Lei 13.019 art. 2º", 1.5),
+    ("Bolsa", r"\bbolsas?\b(?! de valores)", "legislação do programa", 1),
+    ("Incentivo fiscal", r"lei rouanet|lei 8\.313|lei federal de incentivo|lei de incentivo (?:ao esporte|à cultura|a cultura)|lei 11\.438|"
+     r"incentivo fiscal|ren[úu]ncia fiscal|dedu[çc][ãa]o do imposto|fundo (?:municipal |estadual |nacional )?(?:dos direitos )?da crian[çc]a|"
+     r"fundo (?:municipal |estadual |nacional )?(?:dos direitos )?da pessoa idosa|fundo do idoso|\bfia\b|\bproesporte\b|goyazes|cr[ée]dito outorgado|icms", 
+     "leis de incentivo (8.313/1991, 11.438/2006, 8.069/1990 art. 260, 12.213/2010, estaduais)", 2),
+    ("Patrocínio", r"\bpatroc[íi]nio", "contrato de patrocínio", 1.5),
+    ("Doação", r"\bdoa[çc](?:[ãa]o|[õo]es)\b", "Código Civil art. 538 / legislação do doador", 1.2),
+    ("Destinação de prestação pecuniária / TAC", r"presta[çc][ãa]o pecuni[áa]ria|penas? pecuni[áa]rias?|termo de ajustamento de conduta|\btac\b|"
+     r"resolu[çc][ãa]o (?:cnj )?n?º? ?558|transa[çc][ãa]o penal", "Resolução CNJ 558/2024 / CNMP 179/2017", 3),
+    ("Emenda parlamentar", r"emendas? parlamentar(?:es)?|emenda individual", "LDO / emenda impositiva", 2),
+    ("Credenciamento (contratação)", r"\bcredenciamento\b", "Lei 14.133/2021 art. 79", 1.2),
+    ("Contrato (prestação de serviço)", r"contrata[çc][ãa]o de (?:empresa|entidade|organiza|servi[çc]os?)|contrato de presta[çc][ãa]o", "Lei 14.133/2021", 1),
+    ("Subvenção social", r"subven[çc](?:[ãa]o|[õo]es) socia(?:l|is)", "Lei 4.320/1964 art. 16", 2.5),
+]
+FORMALIZA = r"(?:celebra[çc][ãa]o d[eo]s?|celebrar|firmar|formaliza[çc][ãa]o d[eo]s?|formalizad[oa]s? (?:por|mediante)|por meio de|mediante|na forma de|sob a forma de|instrumento)\s*(?:\w+\s){0,3}"
+
+
+def modalidade(T: "Texto", titulo: str = "") -> dict | None:
+    """Por qual forma o recurso chega à entidade: a modalidade mais pontuada, com trecho literal e base legal."""
+    cab = titulo + " " + T.plano[:3000]
+    melhor = None
+    for nome, rx, base, peso in MODALIDADES:
+        pts, pos = 0.0, None
+        for m in re.finditer(rx, T.t, re.I):
+            pts += peso
+            if pos is None:
+                pos = m.start()
+            ctx = T.t[max(0, m.start() - 80):m.start()]
+            if re.search(FORMALIZA + r"$", ctx, re.I):
+                pts += 3 * peso; pos = m.start() if pts >= 3 * peso else pos
+        if re.search(rx, cab, re.I):
+            pts += 2 * peso
+        if pts and (melhor is None or pts > melhor[0]):
+            melhor = (pts, nome, base, pos)
+    if not melhor or melhor[0] < 2:
+        return None
+    pts, nome, base, pos = melhor
+    if pos is None:                                    # só o título cita a modalidade
+        return {"modalidade": nome, "valor": nome, "base_legal": base, "trecho": f"título: {titulo[:200]}", "pagina": 1, "pontos": round(pts, 1)}
+    leis = re.findall(r"Lei (?:Federal |Complementar |Estadual |Municipal )?n?[º°.]?\s?\d{1,2}\.?\d{3}(?:/\d{2,4})?", T.t[:40000])
+    lei = next((l for l in leis if re.search(r"13\.?019|14\.?903|8\.?313|11\.?438|9\.?790|9\.?637|14\.?133|8\.?069|12\.?213|14\.?399", l)), None)
+    return {"modalidade": nome, "valor": nome + (f" — {re.sub(chr(10), ' ', lei)}" if lei else ""), "base_legal": lei or base,
+            "trecho": T.trecho(pos, pos + 60), "pagina": T.pagina(pos), "pontos": round(pts, 1)}
+
+
 def normalizar(p: str) -> str:
     """Desfaz quebras do leitor de PDF nas datas: "23 /09 /2026" → "23/09/2026"; "/202 6" → "/2026"; "1º de" mantido."""
     p = re.sub(r"(?<=\d) ?/ ?(?=\d)", "/", p or "")
@@ -424,16 +481,13 @@ def extrair(paginas_: list[str], documento: str, titulo: str = "", orgao_hint: s
     if an:
         i = T.t.find("ANEXO")
         P["Anexos"] = {"valor": "; ".join(an)[:300], "trecho": T.trecho(i, i + 120), "pagina": T.pagina(i), "documento": documento, "metodo": "lista de anexos"}
-    # DESTINAÇÃO
-    r = _achar(T, r"((?:os |o )?(?:recursos?|valores?|pr[êe]mios?|apoio) (?:ser[ãa]o|dever[ãa]o ser|poder[ãa]o ser) (?:destinados?|aplicados?|utilizados?|empregados?)[^.;]{15,250}[.;]|"
-                  r"destina-se a[^.;]{15,250}[.;]|(?:s[ãa]o |ser[ãa]o )?(?:consideradas )?despesas (?:eleg[ií]veis|financi[áa]veis|permitidas)[^.;]{10,250}[.;]|"
-                  r"(?:poder[ãa]o|dever[ãa]o) ser (?:financiad[oa]s|custead[oa]s)[^.;]{10,250}[.;]|itens financi[áa]veis[^.;]{10,250}[.;]|"
-                  # 15/10 (avaliação com gabarito): "projetos destinados à…", "para aplicação de recursos do…"
-                  r"(?:projetos|propostas|recursos|parcerias?|a[çc][õo]es) destinad[oa]s? (?:à|a|ao|às|aos)\s[^.;]{15,250}[.;]|"
-                  r"para (?:a )?(?:aplica[çc][ãa]o|execu[çc][ãa]o) (?:d[eo]s? )?recursos[^.;]{10,220}[.;])",
-               r"DESTINA|FINALIDADE|RECURSO|OBJETO")
-    if r:
-        pôr("Destinação", r[0], r[1], r[2])
+    # DESTINAÇÃO = MODALIDADE (titular, 15/10/2026): POR QUAL FORMA o dinheiro chega à associação e QUEM destina —
+    # termo de fomento, termo de colaboração, prêmio, incentivo fiscal, doação, contrato… Define a prestação de contas
+    # e o enquadramento legal. Não é a finalidade do recurso. Chave interna mantida ("Destinação"); rótulo: Modalidade.
+    mod = modalidade(T, titulo)
+    if mod:
+        P["Destinação"] = {"valor": mod["valor"], "trecho": mod["trecho"], "pagina": mod["pagina"], "documento": documento,
+                           "metodo": "modalidade de recebimento", "modalidade": mod["modalidade"], "base_legal": mod.get("base_legal")}
     # ÁREA DE ATUAÇÃO
     base = (P.get("Objeto") or {}).get("valor", "") + " " + titulo + " " + T.plano[:6000]
     ach = [a for a, rx in AREAS.items() if re.search(rx, base, re.I)]
@@ -460,9 +514,6 @@ def extrair(paginas_: list[str], documento: str, titulo: str = "", orgao_hint: s
     dispensar("Prazo de recurso", r"n[ãa]o caber[áa] recurso|sem fase recursal|decis[ãa]o (?:final )?irrecorr[ií]vel|n[ãa]o h[áa] (?:previs[ãa]o de )?recurso", "o edital declara que não cabe recurso")
     dispensar("Valor", r"sem (?:repasse|transfer[êe]ncia) de recursos|n[ãa]o (?:haver[áa]|envolve|implica|prev[êe]) (?:o )?(?:repasse|transfer[êe]ncia) de recursos|"
                        r"sem [ôo]nus (?:para|ao|à)|a t[íi]tulo gratuito|acordo de coopera[çc][ãa]o|cess[ãa]o (?:gratuita|de uso)", "sem repasse financeiro (cooperação, cessão ou habilitação sem recurso)")
-    if re.search(r"(?i)\bpr[êe]mio|premia[çc][ãa]o", titulo + " " + T.plano[:4000]):
-        dispensar("Destinação", r"reconhecimento (?:de|a|à|da|das|dos)|trajet[óo]ria|n[ãa]o (?:ser[áa]|haver[áa]) (?:exigid[ao] )?presta[çc][ãa]o de contas",
-                  "prêmio de reconhecimento — uso livre pelo premiado, sem destinação vinculada")
     dispensar("Anexos", r"n[ãa]o (?:h[áa]|possui|acompanham?) anexos|sem anexos", "o edital declara que não possui anexos")
     return {"pontos": P, "dispensas": D, "fim": fim}
 

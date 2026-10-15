@@ -1,6 +1,6 @@
-# Avaliação do Cartório com gabarito — 2026-10-15 01:20 UTC
+# Avaliação do Cartório com gabarito — 2026-10-15 02:12 UTC
 
-Casos comprovados: **186** · documentos lidos: **142** · acerto geral: **62.1%** (precisão 82.1%) sobre 1103 itens medidos.
+Casos comprovados: **186** · documentos lidos: **142** · acerto geral: **66.1%** (precisão 82.6%) sobre 1026 itens medidos.
 
 Acerto = achou e confere ÷ (acerto + erro + falta). Precisão = acerto ÷ (acerto + erro). 'Fora' = o trecho do gabarito não está no documento lido (não conta contra a regra). 'Sem texto' = documento não lido.
 
@@ -16,7 +16,7 @@ Acerto = achou e confere ÷ (acerto + erro + falta). Precisão = acerto ÷ (acer
 | Esfera | 71.8% | 92.9% | 79 | 6 | 25 | 0 | 31 |
 | Requisitos | 48.9% | 60.0% | 45 | 30 | 17 | 12 | 20 |
 | Anexos | 81.4% | 90.9% | 70 | 7 | 9 | 18 | 21 |
-| Destinação | 9.1% | 53.8% | 7 | 6 | 64 | 6 | 21 |
+| Destinação | None% | None% | 0 | 0 | 0 | 0 | 0 |
 | Área de atuação | 84.0% | 86.4% | 89 | 14 | 3 | 0 | 28 |
 
 ## Documentos não lidos
@@ -102,14 +102,6 @@ Acerto = achou e confere ÷ (acerto + erro + falta). Precisão = acerto ÷ (acer
 - 6× erro: pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)
 - 1× erro: pegou outro trecho (página 9); o certo está na página 14
 
-**Destinação**
-- 64× falta: a seção do item não tem título reconhecido (numeração ou nome fora do padrão)
-- 2× erro: pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)
-- 1× erro: pegou outro trecho (página 2); o certo está na página 10
-- 1× erro: pegou outro trecho (página 32); o certo está na página 26
-- 1× erro: pegou outro trecho (página 21); o certo está na página 23
-- 1× erro: pegou outro trecho (página 3); o certo está na página 2
-
 **Área de atuação**
 - 12× erro: pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)
 - 3× falta: regra não reconheceu o trecho que está no documento
@@ -138,20 +130,12 @@ Acerto = achou e confere ÷ (acerto + erro + falta). Precisão = acerto ÷ (acer
   gabarito: Entidade sem fins lucrativos com experiência em coleta/reciclagem, licença ambiental e operacional, infraestrutura de triagem, regularidade  (p. 5)  
   extraído: Poderão participar deste credenciamento as entidades sem fins lucrativos aptas à coleta, transporte, pesagem, triagem e destinação ambientalmente adequada dos resíduos recicláveis gerados pelo TJGO, d (p. 2)  
   causa: pegou outro trecho (página 2); o certo está na página 5
-- **Destinação** (falta) · caso `6c8557f6af0d252d6429` · https://pncp.gov.br/pncp-api/v1/orgaos/02292266000180/compras/2026/83/arquivos/1  
-  gabarito: Termo de credenciamento para coleta e aproveitamento dos recicláveis, com revezamento trimestral entre entidades (p. 2)  
-  extraído: — (p. —)  
-  causa: a seção do item não tem título reconhecido (numeração ou nome fora do padrão)
 - **Órgão / financiador** (falta) · caso `c9cef45043042a48d03c` · https://www.contrafluxofestival.com.br/wp-content/uploads/2026/10/CONVOCATORIA-PARA-ORGANIZACOES-SOCIAIS.pdf  
   gabarito: Festival ContraFluxo — Trópico Audiovisual Ltda. (projeto cultural incentivado) (p. 1)  
   extraído: — (p. —)  
   causa: o órgão não está na 1ª página com prefixo conhecido (Prefeitura, Secretaria, Ministério…)
 - **Requisitos** (falta) · caso `c9cef45043042a48d03c` · https://www.contrafluxofestival.com.br/wp-content/uploads/2026/10/CONVOCATORIA-PARA-ORGANIZACOES-SOCIAIS.pdf  
   gabarito: PJ de direito privado sem fins lucrativos (associação, instituto, fundação, OSC) com atuação comprovável no tema; inscrição por formulário c (p. 2)  
-  extraído: — (p. —)  
-  causa: a seção do item não tem título reconhecido (numeração ou nome fora do padrão)
-- **Destinação** (falta) · caso `c9cef45043042a48d03c` · https://www.contrafluxofestival.com.br/wp-content/uploads/2026/10/CONVOCATORIA-PARA-ORGANIZACOES-SOCIAIS.pdf  
-  gabarito: apoio não financeiro: produção de obra audiovisual sobre a causa da OSC, com licença gratuita de uso (p. 12)  
   extraído: — (p. —)  
   causa: a seção do item não tem título reconhecido (numeração ou nome fora do padrão)
 - **Prazo de recurso** (falta) · caso `c745bb5c2cd1b215bedc` · https://pncp.gov.br/pncp-api/v1/orgaos/88372883000101/compras/2026/271/arquivos/1  
@@ -198,10 +182,6 @@ Acerto = achou e confere ÷ (acerto + erro + falta). Precisão = acerto ÷ (acer
   gabarito: Anexo 1 – Modelo de Atestado de visita ANEXO 2 -; Anexo 3 – Declaração de Idoneidade e de cumprime; Anexo 4 – Declaração de Enquadramento AN (p. 10)  
   extraído: — (p. —)  
   causa: regra não reconheceu o trecho que está no documento
-- **Destinação** (falta) · caso `509b167451aff1013f95` · https://pncp.gov.br/pncp-api/v1/orgaos/98661366000106/compras/2026/563/arquivos/1  
-  gabarito: Termo de Colaboração com OSC (Escola de Educação Infantil para até 50 crianças de 0 a 4 anos) (p. 15)  
-  extraído: — (p. —)  
-  causa: a seção do item não tem título reconhecido (numeração ou nome fora do padrão)
 - **Área de atuação** (erro) · caso `509b167451aff1013f95` · https://pncp.gov.br/pncp-api/v1/orgaos/98661366000106/compras/2026/563/arquivos/1  
   gabarito: Educação (p. 15)  
   extraído: Cultura, Criança e adolescente (p. 1)  
