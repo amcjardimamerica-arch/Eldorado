@@ -127,8 +127,8 @@
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 1556,
-   "achados_total_agora": 1556,
+   "achados_total_1a": 1578,
+   "achados_total_agora": 1578,
    "no_fluxo": 5,
    "confirmadas": 0
   },
@@ -141,8 +141,8 @@
   },
   {
    "motor": "plat-prefeituras-50-go",
-   "achados_total_1a": 101,
-   "achados_total_agora": 101,
+   "achados_total_1a": 103,
+   "achados_total_agora": 103,
    "no_fluxo": 1,
    "confirmadas": 0
   },
@@ -225,7 +225,7 @@
  "pontos_com_redundancia": 13,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 9067
+ "exemplos_da_rede_de_rotas": 9148
 }
 ```
 
@@ -362,20 +362,20 @@
 
 ```json
 {
- "fontes_recebidas": 356,
+ "fontes_recebidas": 358,
  "por_origem": {
-  "conselho (fontes irmãs)": 162,
-  "Cartório (site oficial certificado)": 158,
-  "Espião (privado/internacional)": 36
+  "conselho (fontes irmãs)": 160,
+  "Cartório (site oficial certificado)": 160,
+  "Espião (privado/internacional)": 38
  },
  "lidas_nas_ultimas_24h": 216,
  "dimensionamento": {
-  "fontes": 356,
+  "fontes": 358,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
-  "clones": 7,
-  "cobertura_diaria": 356,
+  "clones": 8,
+  "cobertura_diaria": 358,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
@@ -433,7 +433,7 @@
  "adaptadores": "aguardando a primeira leitura pela agenda (09h53 e 11h23 de Brasília)",
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 93,
+   "orgaos": 94,
    "exemplos": [
     "alvoradadonorte.go.gov.br",
     "anater.org",
@@ -444,14 +444,14 @@
    ]
   },
   "Mapas Culturais": {
-   "orgaos": 10,
+   "orgaos": 11,
    "exemplos": [
     "culteditais.cultura.gov.br",
     "mapa.cultura.es.gov.br",
     "mapa.cultura.gov.br",
+    "mapacultural.cim-amfri.sc.gov.br",
     "mapacultural.pa.gov.br",
-    "mapacultural.pe.gov.br",
-    "mapacultural.saobernardo.sp.gov.br"
+    "mapacultural.pe.gov.br"
    ]
   },
   "Diário municipal em lote (AGM/DOM)": {
@@ -466,7 +466,7 @@
    ]
   },
   "Portal de transparência de fornecedor": {
-   "orgaos": 18,
+   "orgaos": 19,
    "exemplos": [
     "bndes.gov.br",
     "comunidade.transparenciainternacional.org.br",
@@ -477,7 +477,7 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 48,
+   "orgaos": 50,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",
