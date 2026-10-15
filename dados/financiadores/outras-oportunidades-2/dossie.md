@@ -21,6 +21,7 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [QUEM PODE SE INSCREVER?](https://fundobis.org.br/) — coletado em 2026-10-10T11:41:39+00:00
 - [EDITAL DE CHAMAMENTO PÚBLICO Nº 08/2025 - SELEÇÃO DE PROPOSTA PARA ACORDO DE COOPERAÇÃO COM PESSOAS FÍSICAS OU JURÍDICAS DA SOCIEDADE EM GERAL, INTERESSADAS EM CONTRIBUIR, VOLUNTÁRIA E GRATUITAMENTE, COM A DOAÇÃO DE BRINDES EM HOMENAGEM AO DIA INTERNACIONAL DA MULHER. EM CONTRAPARTIDA O MUNICÍPIO AU](https://chamamentos.itapevi.sp.gov.br/chamamentos/278) — coletado em 2026-10-12T14:58:02+00:00
 - [EDITAL DE CHAMAMENTO PÚBLICO Nº 28/2025 – SELEÇÃO DE PROPOSTAS DE PESSOAS FÍSICAS OU JURÍDICAS DA SOCIEDADE EM GERAL INTERESSADAS EM CONTRIBUIR, VOLUNTÁRIA E GRATUITAMENTE, COM A DOAÇÃO DE PIRULITOS PARA O EVENTO DE NATAL QUE OCORRERÁ NO MUNICÍPIO DE ITAPEVI. EM CONTRAPARTIDA O MUNICÍPIO AUTORIZARÁ ](https://chamamentos.itapevi.sp.gov.br/chamamentos/302) — coletado em 2026-10-12T14:58:02+00:00
+- [Repasses de Recursos Financeiros/Prestação de contas ao Terceiro Setor](https://portal.sgpcloud.net:9133/transparencia) — coletado em 2026-10-14T19:20:20+00:00
 - [Anexo IX do Edital (Minuta do Termo de Colaboração)](https://portal-api.sinir.gov.br/wp-content/uploads/2025/01/AnexoIXEditalFNMA_SQA1de2024MINUTATermodeColaboracao-1.pdf) — coletado em 2026-10-11T11:40:37+00:00
 - [24 jul 2026 
                          EDITAIS DA PNAB PÚBLICADOS](https://cidadeocidental.go.gov.br/editais-da-pnab-publicados) — coletado em 2026-10-12T16:43:45+00:00
@@ -75,4 +76,3 @@ EM CONTRAPARTIDA O MUNICÍPIO PERMITIRÁ A PUBLICIDADE DIRETA OU INDIRETA DO COO
 - [Edital do Chamamento Público nº 01/2026, cujo objeto é: Seleção de propostas para a celebração de parceria com o Município de Nova Independência, por intermédio da Secretaria Municipal de Assistência Social, mediante a formalização de Termo de... 
                                      
               ](https://www.novaindependencia.sp.gov.br/portal/editais/0/5/500) — coletado em 2026-10-14T16:28:20+00:00
-- [Repasses de Recursos Financeiros/Prestação de contas ao Terceiro Setor](https://portal.sgpcloud.net:9133/transparencia) — coletado em 2026-10-14T19:20:20+00:00
