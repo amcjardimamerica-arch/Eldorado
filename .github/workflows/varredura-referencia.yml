@@ -14,6 +14,10 @@ on:
         description: "Fim (AAAA-MM-DD)"
         required: false
         default: ""
+      partes:
+        description: "Só estes motores (ex.: 01,05); vazio = todos"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -37,8 +41,8 @@ jobs:
         run: pip install -q -r requirements.txt
       - name: Varrer
         run: |
-          DE="${{ github.event.inputs.de }}"; ATE="${{ github.event.inputs.ate }}"
-          timeout 3300 python scripts/varredura_referencia.py ${DE:+--de $DE} ${ATE:+--ate $ATE}
+          DE="${{ github.event.inputs.de }}"; ATE="${{ github.event.inputs.ate }}"; PT="${{ github.event.inputs.partes }}"
+          timeout 3300 python scripts/varredura_referencia.py ${DE:+--de $DE} ${ATE:+--ate $ATE} ${PT:+--partes $PT}
       - name: Gravar (só a varredura)
         run: |
           git config user.name "varredura-referencia" && git config user.email "varredura@eldorado"
