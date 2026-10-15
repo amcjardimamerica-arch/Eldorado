@@ -1,19 +1,14 @@
 {
  "dia": "2026-10-15",
- "em": "2026-10-15T18:46:25+00:00",
+ "em": "2026-10-15T18:57:44+00:00",
  "regra": "MAESTRO — A MÃO DA REDE NEURAL DE COMANDO (titular, 02/10/2026; unificado em 15/10/2026).\n\n15/10/2026 (titular): maestro e rede neural são UMA coisa só. Quem decide o caminho do fluxo inteiro é src/comando.py\n(a rede neural de comando); este módulo é a parte que MEDE e EXECUTA para ela:\n  · planejar()   quais motores rodam hoje (agenda) com a prioridade de rendimento — matéria-prima da decisão do comando;\n  · cobertura()  completa · parcial · pendente · pendente_local de cada motor no dia;\n  · controlar()  pendentes e parciais a disparar (até 3 tentativas), dia fechado ou não;\n  · relatorio_etapas() o relatório do dia que o painel mostra.\nO comando chama planejar/controlar antes de acionar os motores (decidir) e depois deles (avaliar e reacionar).",
- "planejados": 129,
+ "planejados": 131,
  "cobertura": {
-  "completa": 91,
+  "completa": 93,
   "parcial": 38
  },
- "cobertura_percentual": 70.5,
- "a_disparar": [
-  "f260-captacao-221",
-  "f260-captacao-226",
-  "f260-captacao-230",
-  "f260-captacao-227"
- ],
+ "cobertura_percentual": 71.0,
+ "a_disparar": [],
  "esgotaram_tentativas": [
   "pncp-api",
   "outras-oportunidades-2",
@@ -42,15 +37,19 @@
   "f260-espalhado-sistema-mirassoldoeste-mt-gov-br",
   "f260-espalhado-www-bentogoncalves-rs-gov-br",
   "f260-captacao-224",
+  "f260-captacao-221",
+  "f260-captacao-226",
   "judiciario-tjgo",
   "f260-captacao-222",
   "f260-captacao-231",
   "f260-captacao-223",
   "f260-captacao-044",
+  "f260-captacao-230",
+  "f260-captacao-227",
   "f260-captacao-218",
   "f260-captacao-238"
  ],
- "dia_fechado": false,
+ "dia_fechado": true,
  "dia_anterior_nao_observado": [
   "plataforma-mapas-culturais",
   "plataforma-wordpress",
@@ -67,25 +66,25 @@
   "f260-espalhado-www-novohamburgo-rs-gov-br",
   "f260-espalhado-sistema-mirassoldoeste-mt-gov-br",
   "f260-espalhado-www-bentogoncalves-rs-gov-br",
-  "f260-captacao-221",
   "f260-captacao-224",
+  "f260-captacao-221",
   "f260-captacao-226",
   "judiciario-tjgo",
   "f260-captacao-222",
   "f260-captacao-231",
-  "f260-captacao-230",
   "f260-captacao-223",
-  "f260-captacao-227",
   "f260-captacao-044",
+  "f260-captacao-230",
+  "f260-captacao-227",
   "f260-captacao-218",
   "f260-captacao-238"
  ],
  "plano": [
   {
    "motor": "plat-piloto-aberto",
-   "prioridade": 5.9659,
+   "prioridade": 5.9859,
    "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 294,
+   "livros_com_abertura_proxima": 295,
    "horarios": "05:53,10:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
@@ -116,7 +115,7 @@
   },
   {
    "motor": "f260-captacao-069",
-   "prioridade": 0.3696,
+   "prioridade": 0.413,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": null,
@@ -764,6 +763,17 @@
    "tentativas_hoje": 0
   },
   {
+   "motor": "f260-captacao-248",
+   "prioridade": 0.0192,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "completa",
+   "tentativas_hoje": 0
+  },
+  {
    "motor": "f260-captacao-257",
    "prioridade": 0.0192,
    "diagnostico": "sem_rendimento",
@@ -890,6 +900,17 @@
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "06:23,12:53,20:23",
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "completa",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-espalhado-www-ipora-pr-gov-br",
+   "prioridade": 0.0167,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "completa",
@@ -1226,17 +1247,6 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "f260-captacao-221",
-   "prioridade": 0.0074,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "nao_observado",
-   "cobertura": "parcial",
-   "tentativas_hoje": 2
-  },
-  {
    "motor": "f260-captacao-224",
    "prioridade": 0.0074,
    "diagnostico": "sem_rendimento",
@@ -1248,17 +1258,6 @@
    "tentativas_hoje": 3
   },
   {
-   "motor": "f260-captacao-226",
-   "prioridade": 0.0074,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "nao_observado",
-   "cobertura": "parcial",
-   "tentativas_hoje": 2
-  },
-  {
    "motor": "f260-captacao-234",
    "prioridade": 0.0074,
    "diagnostico": "sem_rendimento",
@@ -1268,6 +1267,28 @@
    "dia_anterior": "observado",
    "cobertura": "completa",
    "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-captacao-221",
+   "prioridade": 0.0071,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "nao_observado",
+   "cobertura": "parcial",
+   "tentativas_hoje": 3
+  },
+  {
+   "motor": "f260-captacao-226",
+   "prioridade": 0.0071,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "nao_observado",
+   "cobertura": "parcial",
+   "tentativas_hoje": 3
   },
   {
    "motor": "judiciario-cnj",
@@ -1347,17 +1368,6 @@
    "tentativas_hoje": 3
   },
   {
-   "motor": "f260-captacao-230",
-   "prioridade": 0.0048,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "nao_observado",
-   "cobertura": "parcial",
-   "tentativas_hoje": 2
-  },
-  {
    "motor": "f260-captacao-223",
    "prioridade": 0.0048,
    "diagnostico": "sem_rendimento",
@@ -1369,20 +1379,31 @@
    "tentativas_hoje": 3
   },
   {
-   "motor": "f260-captacao-227",
+   "motor": "f260-captacao-044",
    "prioridade": 0.0048,
+   "diagnostico": "falha_parcial",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "nao_observado",
+   "cobertura": "parcial",
+   "tentativas_hoje": 3
+  },
+  {
+   "motor": "f260-captacao-230",
+   "prioridade": 0.0047,
    "diagnostico": "sem_rendimento",
    "livros_com_abertura_proxima": 0,
    "horarios": null,
    "coleta": "nuvem",
    "dia_anterior": "nao_observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 2
+   "tentativas_hoje": 3
   },
   {
-   "motor": "f260-captacao-044",
-   "prioridade": 0.0048,
-   "diagnostico": "falha_parcial",
+   "motor": "f260-captacao-227",
+   "prioridade": 0.0047,
+   "diagnostico": "sem_rendimento",
    "livros_com_abertura_proxima": 0,
    "horarios": null,
    "coleta": "nuvem",
