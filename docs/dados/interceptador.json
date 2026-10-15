@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-15T12:17:32+00:00",
+  "em": "2026-10-15T12:34:09+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-15T12:00:52+00:00",
+  "ultimo_voo": "2026-10-15T12:20:51+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,76 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 273,
+    "missoes": 274,
     "validadas": 8,
     "parciais": 71,
-    "insuficientes": 190,
+    "insuficientes": 191,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 217,
+      "sim": 218,
       "nao": 25
     },
     "estrelas_de_ouro": 10,
-    "fontes_novas_para_os_motores": 19,
+    "fontes_novas_para_os_motores": 20,
     "tempo_medio_min": 13.5
   },
   "missoes": [
+    {
+      "em": "2026-10-15T12:20:51+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · livro da Biblioteca",
+      "alvo": "Jataí — A Prefeitura de Jataí lança edital para a construção de 120 casas — Goiás / Jataí — Goiás / Jataí",
+      "qualidade": "insuficiente",
+      "comprovados": 1,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Objeto",
+        "Prazo de inscrição",
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Órgão / financiador",
+        "Esfera",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://www.jatai.go.leg.br/diariooficial/11147",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado indica que o edital está relacionado ao território de Goiás, o que é relevante para organizações da sociedade civil no estado.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se o edital abrange sua região, verificar os requisitos não encontrados, e se alinhar com a área de atuação de assistência social, cultura, educação ou esporte.",
+        "proximo_passo": "Consultar o edital completo para obter informações sobre os requisitos, prazos e outros detalhes necessários para participar.",
+        "risco": "A falta de informações detalhadas como prazo, requisitos e área de atuação pode impedir a participação efetiva da associação."
+      },
+      "erro": null,
+      "segundos": 797,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 1,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
+      "id": "op-op-f499eca95c26",
+      "encontrou": {
+        "Território": {
+          "valor": "GO",
+          "trecho": "Jataí — Goiás / Jataí — Goiás / Jataí",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura de Jataí",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital"
+      ]
+    },
     {
       "em": "2026-10-15T12:00:52+00:00",
       "modo": "validar",
@@ -2752,76 +2807,6 @@
         "Território": {
           "valor": "SP",
           "trecho": "\"ufSigla\":\"SP\",\"municipioNome\":\"Jaguariúna\"",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": null,
-      "indicios": [],
-      "rotas": []
-    },
-    {
-      "em": "2026-10-15T01:47:06+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "repositório único: Interceptador: achar o site oficial (sem pista no livro nem certidão — pesquisa ",
-      "alvo": "FUNDO MUNICIPAL DE SAUDE — Credenciamento de instituições privadas com ou sem fins lucrativos de assistência à saúde, interessadas em prestar serviços de procedimento clínico eleti",
-      "qualidade": "parcial",
-      "comprovados": 7,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Anexos",
-        "Destinação"
-      ],
-      "pagina_oficial": "https://pncp.gov.br/api/consulta/v1/orgaos/10491693000116/compras/2026/25",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital comprova a existência de um processo de credenciamento para instituições privadas de assistência à saúde, o que pode ser relevante para a AMC se houver conexão com serviços de saúde.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se há possibilidade de aliança ou parceria com instituições de saúde credenciadas ou se pode contribuir com atividades complementares ao credenciamento, como apoio logístico ou divulgação.",
-        "proximo_passo": "Pesquisar se há possibilidade de envolvimento da AMC em atividades relacionadas ao credenciamento ou em parcerias com instituições de saúde.",
-        "risco": "A AMC pode não ter capacidade ou interesse em prestar serviços de saúde, o que limitaria sua participação no processo."
-      },
-      "erro": null,
-      "segundos": 356,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 7,
-      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
-      "avaliacao": "aproveitável: falta Prazo de recurso, Valor, Requisitos, Anexos",
-      "id": "0073e8b16a508d1b28a4",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Credenciamento de instituições privadas com ou sem fins lucrativos de assistência à saúde, interessadas em prestar serviços de procedimento clínico eletivo de média complexidade em serviço de Exames Laboratoriais de Citopatologia e Anatomia Patológica ao preço TABELA SUS, aos pacientes do Município de Mafra atendidos no sistema público de saúde – SUS, através do Fundo Municipal de Saúde",
-          "trecho": "Credenciamento de instituições privadas com ou sem fins lucrativos de assistência à saúde, interessadas em prestar serviços de procedimento clínico eletivo de média complexidade em",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Prazo de inscrição": {
-          "valor": "2026-06-29 a 2031-06-28",
-          "trecho": "dataAberturaProposta\":\"2026-06-29T00:00:01\",\"dataEncerramentoProposta\":\"2031-06-28T00:00:01",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "FUNDO MUNICIPAL DE SAUDE",
-          "trecho": "\"razaoSocial\":\"FUNDO MUNICIPAL DE SAUDE\"",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "SC",
-          "trecho": "\"ufSigla\":\"SC\",\"municipioNome\":\"Mafra\"",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "saude",
-          "trecho": "objetoCompra\":\"Credenciamento de instituições privadas com ou sem fins lucrativos de assistência à saúde, interessadas em prestar serviços de procedimento clínico eletivo de média ",
           "oficial": true,
           "dispensado": false
         }
