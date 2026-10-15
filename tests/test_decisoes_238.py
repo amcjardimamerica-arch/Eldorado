@@ -33,11 +33,15 @@ class TesteDecisoes238(unittest.TestCase):
         c = P.classificar_item({"titulo": t, "objeto": t, "orgao": "MUNICIPIO DE ANAPOLIS", "uf": "GO", "esfera": "M", "encerramento": "2026-12-01"},
                                date(2026, 10, 2), P.TODAS_UFS)
         self.assertEqual(c["veredito"], "OPORTUNIDADE", t)
-        for uf, t in (("SP", "Chamamento Público de Associações Estudantis para apoio a projetos"),
-                      ("GO", "Credenciamento de Instituições de Longa Permanência para Idosos (ILPI) sem fins lucrativos para acolhimento")):
+        t = "Chamamento Público de Associações Estudantis para apoio a projetos"                    # município de SP: fora
+        c = P.classificar_item({"titulo": t, "objeto": t, "orgao": "MUNICIPIO X", "uf": "SP", "esfera": "M", "encerramento": "2026-12-01"},
+                               date(2026, 10, 2), P.TODAS_UFS)
+        self.assertEqual(c["veredito"], "RUIDO", t)
+        t = "Credenciamento de Instituições de Longa Permanência para Idosos (ILPI) sem fins lucrativos para acolhimento"
+        for uf, esperado in (("GO", "OPORTUNIDADE"), ("SP", "RUIDO")):                            # 15/10: só GO e capitais
             c = P.classificar_item({"titulo": t, "objeto": t, "orgao": "MUNICIPIO X", "uf": uf, "esfera": "M", "encerramento": "2026-12-01"},
                                    date(2026, 10, 2), P.TODAS_UFS)
-            self.assertEqual(c["veredito"], "RUIDO", t)
+            self.assertEqual(c["veredito"], esperado, (uf, t))
 
 
 if __name__ == "__main__":
