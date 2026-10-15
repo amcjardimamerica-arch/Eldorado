@@ -325,6 +325,16 @@ def certificar(op: dict, faltam: list[str], rede: Rede, maximo_docs: int = 4, ga
                 reg["motivo"] = "quarentena"; cert["documentos"].append(reg); continue
             lidos += 1
             ex = L.extrair(pgs, d["url"], titulo, str(op.get("orgao") or ""))
+            _api = L.url_meta_pncp(d["url"]) or L.url_meta_pncp(str(op.get("url") or ""))
+            if _api:                                    # 15/10: metadados oficiais da compra no PNCP completam o que faltou
+                _raw, _t, _e = rede.get(_api)
+                if _raw and not _e:
+                    try:
+                        _novos = L.completar_com_pncp(ex, json.loads(_raw.decode("utf-8", "replace")), _api)
+                        if _novos:
+                            reg["metadados_pncp"] = _novos
+                    except ValueError:
+                        pass
             oficial, porque = L.regua(d["url"])
             # GABARITO DO ÓRGÃO: o que a extração padrão não achou, pelos rótulos aprendidos deste órgão; e aprende com este
             if gab is not None and oficial:

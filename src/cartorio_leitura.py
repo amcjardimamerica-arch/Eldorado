@@ -332,6 +332,60 @@ def modalidade(T: "Texto", titulo: str = "") -> dict | None:
             "trecho": T.trecho(pos, pos + 60), "pagina": T.pagina(pos), "pontos": round(pts, 1)}
 
 
+# ── METADADOS OFICIAIS DO PNCP (15/10/2026 — Cartório a 85%) ───────────────────────────────────────────────────────
+# O gabarito humano dos casos do PNCP veio, em boa parte, dos campos oficiais da compra (orgaoEntidade.esferaId,
+# razaoSocial, objetoCompra, datas, valor). São dados estruturados publicados pelo próprio órgão no PNCP: viram itens
+# certificados, com o campo literal como trecho e o endereço da API como documento.
+PNCP_COMPRA = re.compile(r"pncp\.gov\.br/(?:app/editais|pncp-api/v1/orgaos|api/(?:pncp|consulta)/v1/orgaos)/(\d{14})/(?:compras/)?(\d{4})/(\d+)", re.I)
+_ESFERA = {"M": "municipal", "E": "estadual", "F": "federal", "D": "distrital", "N": "federal"}
+
+
+def url_meta_pncp(url: str) -> str | None:
+    m = PNCP_COMPRA.search(str(url or ""))
+    return f"https://pncp.gov.br/api/consulta/v1/orgaos/{m.group(1)}/compras/{m.group(2)}/{m.group(3)}" if m else None
+
+
+def pontos_pncp(meta: dict, url_api: str) -> dict:
+    if not isinstance(meta, dict) or not meta:
+        return {}
+    oe, uo = meta.get("orgaoEntidade") or {}, meta.get("unidadeOrgao") or {}
+    out = {}
+
+    def item(nome, valor, campo, bruto):
+        if valor:
+            out[nome] = {"valor": str(valor)[:400], "trecho": f"{campo}: {str(bruto)[:300]}", "pagina": None, "documento": url_api,
+                         "metodo": "metadados oficiais do PNCP"}
+    esf = _ESFERA.get(str(oe.get("esferaId") or "").upper()[:1])
+    item("Esfera", esf, "orgaoEntidade.esferaId", f"{oe.get('esferaId')} ({esf})" if esf else None)
+    org = " — ".join(x for x in (oe.get("razaoSocial"), uo.get("nomeUnidade")) if x)
+    item("Órgão / financiador", org, "orgaoEntidade.razaoSocial", org)
+    item("Objeto", meta.get("objetoCompra"), "objetoCompra", meta.get("objetoCompra"))
+    ini, fim = str(meta.get("dataAberturaProposta") or "")[:10], str(meta.get("dataEncerramentoProposta") or "")[:10]
+    if fim:
+        item("Prazo de inscrição", f"{ini} a {fim}" if ini else f"até {fim}", "dataAberturaProposta/dataEncerramentoProposta",
+             f"{meta.get('dataAberturaProposta')} — {meta.get('dataEncerramentoProposta')}")
+    try:
+        v = float(meta.get("valorTotalEstimado") or 0)
+    except (TypeError, ValueError):
+        v = 0
+    if v > 0:
+        br = f"R$ {v:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        item("Valor", br, "valorTotalEstimado", br)
+    if uo.get("municipioNome"):
+        terr = f"{uo.get('municipioNome')}/{uo.get('ufSigla')}" if uo.get("ufSigla") else uo.get("municipioNome")
+        item("Território", terr, "unidadeOrgao.municipioNome/ufSigla", terr)
+    return out
+
+
+def completar_com_pncp(ex: dict, meta: dict, url_api: str) -> list[str]:
+    """Preenche só o que a extração do documento NÃO achou (o PDF continua tendo prioridade)."""
+    novos = []
+    for k, v in pontos_pncp(meta, url_api).items():
+        if k not in ex["pontos"]:
+            ex["pontos"][k] = v; ex["dispensas"].pop(k, None); novos.append(k)
+    return novos
+
+
 def normalizar(p: str) -> str:
     """Desfaz quebras do leitor de PDF nas datas: "23 /09 /2026" → "23/09/2026"; "/202 6" → "/2026"; "1º de" mantido."""
     p = re.sub(r"(?<=\d) ?/ ?(?=\d)", "/", p or "")
@@ -417,24 +471,33 @@ def extrair(paginas_: list[str], documento: str, titulo: str = "", orgao_hint: s
     r = r or _achar(T, r"(R\$\s?\d{1,3}(?:\.\d{3})+(?:,\d{2})?(?:\s*\([^)]{3,80}\))?)")
     if r:
         pôr("Valor", r[0], r[1], r[2])
-    # OBJETO
-    s = T.secao(r"OBJETO|OBJETIVO|FINALIDADE")
-    if s:
-        corpo = re.sub(r"^\S+(?:\s+\S+){0,2}\s*", "", s[1][:700])
-        m = re.search(r"([A-ZÀ-Úa-zà-ú0-9][^.;]{40,320}[.;])", corpo)
-        if m:
-            pôr("Objeto", m.group(1), s[0], s[0] + len(m.group(0)) + 20)
-    if "Objeto" not in P:
-        r = _achar(T, r"(?:tem (?:por|como) (?:objeto|objetivo|finalidade)|objeto d[oe]st[ea] (?:edital|chamamento|chamada)\s*(?:é|:)|o presente (?:edital|chamamento p[úu]blico|regulamento)[^.]{0,50}?(?:visa|objetiva|destina-se))\s*[:,\-–]?\s*([^.;]{30,320}[.;])")
+    # OBJETO — 15/10 (Cartório a 85%): frases explícitas primeiro; a seção "objeto" só no começo do documento e nunca
+    # "relatório/execução do objeto" (a regra antiga pegava "Relatório de Objeto" na página 26)
+    for rx in (r"objeto d[oe]st[ea] (?:edital|chamamento|chamada|licita[çc][ãa]o|sele[çc][ãa]o)\s*(?:é|:)\s*([^;]{30,320}?[.;])",
+               r"\bOBJETO\s*:\s*([^;\n]{30,320}?(?:[.;]|$))",
+               r"(?:tem (?:por|como) (?:objeto|objetivo|finalidade)|o presente (?:edital|chamamento p[úu]blico|regulamento)[^.]{0,50}?(?:visa|objetiva|destina-se))\s*[:,\-–]?\s*([^.;]{30,320}[.;])",
+               r"torna p[úu]blic[oa] (?:o |a )?((?:EDITAL|CHAMAMENTO|CHAMADA|PR[ÊE]MIO|SELE[ÇC][ÃA]O)[^;]{20,300}?)(?:,\s*(?:estabelecendo|que|nos termos|conforme)|[.;])"):
+        r = _achar(T, rx, None, 1, re.I | re.M)
         if r:
-            pôr("Objeto", r[0], r[1], r[2], "texto")
+            pôr("Objeto", r[0], r[1], r[2], "texto"); break
+    if "Objeto" not in P:
+        s = T.secao(r"OBJETO|OBJETIVO|FINALIDADE")
+        if s and s[0] < max(8000, len(T.t) // 4) and not re.search(r"(?i)relat[óo]rio de objeto|execu[çc][ãa]o do objeto", T.t[max(0, s[0] - 40):s[0] + 60]):
+            corpo = re.sub(r"^\S+(?:\s+\S+){0,2}\s*", "", s[1][:700])
+            m = re.search(r"([A-ZÀ-Úa-zà-ú0-9][^.;]{40,320}[.;])", corpo)
+            if m:
+                pôr("Objeto", m.group(1), s[0], s[0] + len(m.group(0)) + 20)
     # ÓRGÃO / FINANCIADOR — cabeçalho da primeira página primeiro
-    cab = "\n".join(paginas_[:1])[:2500]
-    m = re.search(r"((?:PREFEITURA MUNICIPAL DE|MUNIC[ÍI]PIO DE|GOVERNO DO ESTADO D[EOA]|SECRETARIA (?:MUNICIPAL|ESTADUAL|DE ESTADO)?\s*D[EOA]S?|MINIST[ÉE]RIO D[EOA]S?|"
+    cab = T.t[:6000]                                    # 15/10: primeiras páginas, não só os 2.500 primeiros caracteres
+    m = re.search(r"((?:PREFEITURA (?:MUNICIPAL|DO MUNIC[ÍI]PIO) DE|MUNIC[ÍI]PIO DE|GOVERNO DO ESTADO D[EOA]|SECRETARIA (?:MUNICIPAL|ESTADUAL|DE ESTADO)?\s*D[EOA]S?|MINIST[ÉE]RIO D[EOA]S?|"
                   r"FUNDA[ÇC][ÃA]O|INSTITUTO|FUNDO (?:MUNICIPAL|ESTADUAL|NACIONAL)|AG[ÊE]NCIA|C[ÂA]MARA MUNICIPAL DE|TRIBUNAL|MINIST[ÉE]RIO P[ÚU]BLICO)[^\n,;.]{3,90})", cab, re.I)
     if m:
         pôr("Órgão / financiador", re.sub(r"\s+", " ", m.group(1)), m.start(1), m.end(1), "cabeçalho")
-    elif orgao_hint:
+    else:                                               # 15/10: realizador privado ("realizado pela TRÓPICO AUDIOVISUAL LTDA.")
+        mm = re.search(r"(?:realizad[oa]|promovid[oa]|organizad[oa]) pel[ao] ([A-ZÀ-Ú][A-ZÀ-Ú0-9 .&'-]{3,80}?(?:LTDA|S\.?A\.?|EIRELI|INSTITUTO[A-ZÀ-Ú ]*|FUNDA[ÇC][ÃA]O[A-ZÀ-Ú ]*|ASSOCIA[ÇC][ÃA]O[A-ZÀ-Ú ]*))\b", cab)
+        if mm:
+            pôr("Órgão / financiador", re.sub(r"\s+", " ", mm.group(1)), mm.start(1), mm.end(1), "texto")
+    if "Órgão / financiador" not in P and orgao_hint:
         r = _achar(T, re.escape(orgao_hint[:40]))
         if r:
             pôr("Órgão / financiador", orgao_hint, r[1], r[2], "texto")
