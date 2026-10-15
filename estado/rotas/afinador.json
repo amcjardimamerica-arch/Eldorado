@@ -1101,9 +1101,9 @@
   "resultado": "rota nova em teste"
  },
  "_execucao": {
-  "em": "2026-10-15T09:26:33+00:00",
+  "em": "2026-10-15T10:58:37+00:00",
   "motores_testados": 6,
-  "ponte_respondeu": true
+  "ponte_respondeu": false
  },
  "f260-captacao-238": {
   "em": "2026-10-13T10:01:11+00:00",
@@ -5873,9 +5873,15 @@
   "resultado": "rota nova em teste"
  },
  "f260-espalhado-www-bentogoncalves-rs-gov-br": {
-  "em": "2026-10-15T01:38:08+00:00",
-  "testes": 12,
-  "melhor": null,
+  "em": "2026-10-15T10:57:19+00:00",
+  "testes": 18,
+  "melhor": {
+   "url": "https://www.bentogoncalves.rs.gov.br/feed",
+   "via": "ponte",
+   "origem": "rota original",
+   "pontos": 13,
+   "formato": "sitemap/feed"
+  },
   "detalhe": [
    {
     "url": "https://www.bentogoncalves.rs.gov.br/feed",
@@ -5888,6 +5894,17 @@
     "funcionou": false
    },
    {
+    "url": "https://www.bentogoncalves.rs.gov.br/feed",
+    "origem": "rota original",
+    "via": "ponte",
+    "pontos": 13,
+    "links": 10,
+    "sinais": 12,
+    "formato": "sitemap/feed",
+    "erro": null,
+    "funcionou": true
+   },
+   {
     "url": "https://www.bentogoncalves.rs.gov.br/",
     "origem": "rota original",
     "via": "direto",
@@ -5898,6 +5915,17 @@
     "funcionou": false
    },
    {
+    "url": "https://www.bentogoncalves.rs.gov.br/",
+    "origem": "rota original",
+    "via": "ponte",
+    "pontos": 3,
+    "links": 191,
+    "sinais": 1,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
+   },
+   {
     "url": "https://www.bentogoncalves.rs.gov.br/transparencia/editais",
     "origem": "padrão",
     "via": "direto",
@@ -5905,6 +5933,38 @@
     "links": 0,
     "sinais": 0,
     "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.bentogoncalves.rs.gov.br/transparencia/editais",
+    "origem": "padrão",
+    "via": "ponte",
+    "pontos": 5,
+    "links": 150,
+    "sinais": 2,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
+   },
+   {
+    "url": "https://www.bentogoncalves.rs.gov.br/sitemap.xml",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.bentogoncalves.rs.gov.br/sitemap.xml",
+    "origem": "padrão",
+    "via": "ponte",
+    "pontos": 1,
+    "links": 16,
+    "sinais": 0,
+    "formato": "sitemap/feed",
+    "erro": null,
     "funcionou": false
    },
    {
@@ -5918,17 +5978,18 @@
     "funcionou": false
    },
    {
-    "url": "https://www.bentogoncalves.rs.gov.br/sitemap.xml",
+    "url": "https://www.bentogoncalves.rs.gov.br/editais",
     "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
+    "via": "ponte",
+    "pontos": 5,
+    "links": 150,
+    "sinais": 2,
+    "formato": "html",
+    "erro": null,
+    "funcionou": true
    },
    {
-    "url": "https://www.bentogoncalves.rs.gov.br/noticias",
+    "url": "https://www.bentogoncalves.rs.gov.br/chamamento-publico",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -5939,6 +6000,16 @@
    },
    {
     "url": "https://www.bentogoncalves.rs.gov.br/chamamento-publico",
+    "origem": "padrão",
+    "via": "ponte",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "RuntimeError",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.bentogoncalves.rs.gov.br/noticias",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -5976,29 +6047,9 @@
     "sinais": 0,
     "erro": "HTTPError",
     "funcionou": false
-   },
-   {
-    "url": "https://www.bentogoncalves.rs.gov.br/licitacoes",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://www.bentogoncalves.rs.gov.br/wp-json/wp/v2/posts?search=edital&per_page=20",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
    }
   ],
-  "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+  "resultado": "rota nova em teste"
  },
  "f260-espalhado-senadorcanedo-go-gov-br": {
   "em": "2026-10-11T06:03:10+00:00",
@@ -7066,8 +7117,8 @@
   "resultado": "rota nova em teste"
  },
  "f260-captacao-226": {
-  "em": "2026-10-15T03:09:45+00:00",
-  "testes": 20,
+  "em": "2026-10-15T10:57:50+00:00",
+  "testes": 12,
   "melhor": null,
   "detalhe": [
    {
@@ -7082,6 +7133,16 @@
     "funcionou": false
    },
    {
+    "url": "https://www.institutonatura.org/transparencia/editais",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
     "url": "https://www.institutonatura.org/feed",
     "origem": "padrão",
     "via": "direto",
@@ -7093,26 +7154,6 @@
     "funcionou": false
    },
    {
-    "url": "https://www.institutonatura.org/transparencia/editais",
-    "origem": "padrão",
-    "via": "direto",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://www.institutonatura.org/transparencia/editais",
-    "origem": "padrão",
-    "via": "ponte",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "ErroPonte",
-    "funcionou": false
-   },
-   {
     "url": "https://www.institutonatura.org/editais",
     "origem": "padrão",
     "via": "direto",
@@ -7120,16 +7161,6 @@
     "links": 0,
     "sinais": 0,
     "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://www.institutonatura.org/editais",
-    "origem": "padrão",
-    "via": "ponte",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "ErroPonte",
     "funcionou": false
    },
    {
@@ -7165,16 +7196,6 @@
     "funcionou": false
    },
    {
-    "url": "https://www.institutonatura.org/chamamento-publico",
-    "origem": "padrão",
-    "via": "ponte",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "ErroPonte",
-    "funcionou": false
-   },
-   {
     "url": "https://www.institutonatura.org/edital",
     "origem": "padrão",
     "via": "direto",
@@ -7182,16 +7203,6 @@
     "links": 0,
     "sinais": 0,
     "erro": "HTTPError",
-    "funcionou": false
-   },
-   {
-    "url": "https://www.institutonatura.org/edital",
-    "origem": "padrão",
-    "via": "ponte",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "ErroPonte",
     "funcionou": false
    },
    {
@@ -7205,16 +7216,6 @@
     "funcionou": false
    },
    {
-    "url": "https://www.institutonatura.org/chamadas-publicas",
-    "origem": "padrão",
-    "via": "ponte",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "ErroPonte",
-    "funcionou": false
-   },
-   {
     "url": "https://www.institutonatura.org/chamamentos",
     "origem": "padrão",
     "via": "direto",
@@ -7225,13 +7226,23 @@
     "funcionou": false
    },
    {
-    "url": "https://www.institutonatura.org/chamamentos",
+    "url": "https://www.institutonatura.org/licitacoes",
     "origem": "padrão",
-    "via": "ponte",
+    "via": "direto",
     "pontos": 0,
     "links": 0,
     "sinais": 0,
-    "erro": "ErroPonte",
+    "erro": "HTTPError",
+    "funcionou": false
+   },
+   {
+    "url": "https://www.institutonatura.org/wp-json/wp/v2/posts?search=edital&per_page=20",
+    "origem": "padrão",
+    "via": "direto",
+    "pontos": 0,
+    "links": 0,
+    "sinais": 0,
+    "erro": "HTTPError",
     "funcionou": false
    }
   ],
@@ -12512,7 +12523,7 @@
   "resultado": "rota nova em teste"
  },
  "f260-espalhado-carazinho-atende-net": {
-  "em": "2026-10-15T01:38:18+00:00",
+  "em": "2026-10-15T10:57:29+00:00",
   "testes": 12,
   "melhor": null,
   "detalhe": [
@@ -12528,7 +12539,7 @@
     "funcionou": false
    },
    {
-    "url": "https://carazinho.atende.net/feed",
+    "url": "https://carazinho.atende.net/transparencia/editais",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -12538,7 +12549,7 @@
     "funcionou": false
    },
    {
-    "url": "https://carazinho.atende.net/transparencia/editais",
+    "url": "https://carazinho.atende.net/feed",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -12923,7 +12934,7 @@
   "resultado": "rota nova em teste"
  },
  "f260-espalhado-transparencia-cacoal-ro-gov-br": {
-  "em": "2026-10-15T01:38:25+00:00",
+  "em": "2026-10-15T10:57:37+00:00",
   "testes": 12,
   "melhor": null,
   "detalhe": [
@@ -12939,7 +12950,7 @@
     "funcionou": false
    },
    {
-    "url": "https://transparencia.cacoal.ro.gov.br/feed",
+    "url": "https://transparencia.cacoal.ro.gov.br/transparencia/editais",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -12949,7 +12960,7 @@
     "funcionou": false
    },
    {
-    "url": "https://transparencia.cacoal.ro.gov.br/transparencia/editais",
+    "url": "https://transparencia.cacoal.ro.gov.br/feed",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -13052,8 +13063,8 @@
   "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
  },
  "f260-espalhado-www-ribeiraodasneves-mg-gov-br": {
-  "em": "2026-10-15T03:10:17+00:00",
-  "testes": 13,
+  "em": "2026-10-15T10:58:18+00:00",
+  "testes": 12,
   "melhor": null,
   "detalhe": [
    {
@@ -13068,7 +13079,7 @@
     "funcionou": false
    },
    {
-    "url": "https://www.ribeiraodasneves.mg.gov.br/feed",
+    "url": "https://www.ribeiraodasneves.mg.gov.br/transparencia/editais",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -13079,16 +13090,6 @@
    },
    {
     "url": "https://www.ribeiraodasneves.mg.gov.br/feed",
-    "origem": "padrão",
-    "via": "ponte",
-    "pontos": 0,
-    "links": 0,
-    "sinais": 0,
-    "erro": "RuntimeError",
-    "funcionou": false
-   },
-   {
-    "url": "https://www.ribeiraodasneves.mg.gov.br/transparencia/editais",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -13349,7 +13350,7 @@
   "resultado": "rota nova em teste"
  },
  "f260-espalhado-transparencia-nobres-mt-gov-br": {
-  "em": "2026-10-15T03:10:28+00:00",
+  "em": "2026-10-15T10:58:37+00:00",
   "testes": 12,
   "melhor": null,
   "detalhe": [
@@ -13365,7 +13366,7 @@
     "funcionou": false
    },
    {
-    "url": "https://transparencia.nobres.mt.gov.br/feed",
+    "url": "https://transparencia.nobres.mt.gov.br/transparencia/editais",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
@@ -13376,7 +13377,7 @@
     "funcionou": false
    },
    {
-    "url": "https://transparencia.nobres.mt.gov.br/transparencia/editais",
+    "url": "https://transparencia.nobres.mt.gov.br/feed",
     "origem": "padrão",
     "via": "direto",
     "pontos": 0,
