@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-15T06:38:31+00:00",
+  "em": "2026-10-15T06:55:49+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-15T06:24:42+00:00",
+  "ultimo_voo": "2026-10-15T06:41:39+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,104 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 251,
+    "missoes": 252,
     "validadas": 8,
-    "parciais": 66,
+    "parciais": 67,
     "insuficientes": 173,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 197,
+      "sim": 198,
       "nao": 23
     },
     "estrelas_de_ouro": 10,
-    "fontes_novas_para_os_motores": 13,
+    "fontes_novas_para_os_motores": 14,
     "tempo_medio_min": 13.6
   },
   "missoes": [
+    {
+      "em": "2026-10-15T06:41:39+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "1 · Goiás · oportunidade do mapa",
+      "alvo": "Prêmio da Mega-Sena acumula e chega a R$ 170 milhões após concurso sem ganhador",
+      "qualidade": "parcial",
+      "comprovados": 8,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de recurso",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "https://www.acheconcursos.com.br/concursos-sao-paulo/mega-sena-30-anos-caixa-lanca-concurso-especial-com-premio-150-milhoes-89721",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O texto comprovado descreve um concurso especial com prêmio de R$ 200 milhões, prazo de inscrição, resultado e outros detalhes relevantes para a análise.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria realizar apostas nos canais digitais ou nas lotéricas credenciadas para participar do concurso, caso tenha interesse em acessar o prêmio.",
+        "proximo_passo": "Verificar se a associação comunitária possui acesso a canais digitais ou lotéricas credenciadas para realizar a aposta.",
+        "risco": "A associação comunitária pode não ter acesso a canais digitais ou lotéricas credenciadas, o que impediria sua participação no concurso."
+      },
+      "erro": null,
+      "segundos": 849,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 8,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Prazo de recurso, Anexos, Destinação, Área de atuação",
+      "id": "54ee8b615bf4777b9470",
+      "encontrou": {
+        "Objeto": {
+          "valor": "concurso especial com prêmio de R$ 200 milhões",
+          "trecho": "O concurso especial com prêmio de R$ 200 milhões já aceita apostas.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "2026-04-26 a 2026-05-17",
+          "trecho": "As apostas para a Mega-Sena 30 Anos já estão abertas nos canais digitais desde esse domingo, dia 26 de abril. Nas casas lotéricas, as vendas começam nesta segunda-feira, dia 27. In",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Valor": {
+          "valor": "R$ 200 milhões",
+          "trecho": "O concurso especial com prêmio de R$ 200 milhões já aceita apostas.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Caixa Econômica Federal",
+          "trecho": "A Caixa Econômica Federal anunciou o lançamento do concurso especial Mega-Sena 30 Anos.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "SP",
+          "trecho": "O sorteio está previsto para o dia 24 de maio, em São Paulo, com transmissão ao vivo pelos canais oficiais das Loterias Caixa.",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Requisitos": {
+          "valor": "apostas nos canais digitais ou nas lotéricas credenciadas",
+          "trecho": "As apostas para a Mega-Sena 30 Anos já estão abertas nos canais digitais desde esse domingo, dia 26 de abril. Nas casas lotéricas, as vendas começam nesta segunda-feira, dia 27.",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Caixa",
+      "indicios": [
+        {
+          "url": "https://extranewsgo.com.br/2026/10/14/premio-da-mega-sena-acumula-e-chega-a-r-170-milhoes-apos-concurso-sem-ganhador",
+          "tipo": "noticia"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento"
+      ]
+    },
     {
       "em": "2026-10-15T06:24:42+00:00",
       "modo": "validar",
@@ -2650,61 +2733,6 @@
         "financiador_regulamento",
         "financiador_pdf",
         "financiador_ano"
-      ]
-    },
-    {
-      "em": "2026-10-14T15:29:44+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Goianésia — Editais e Publicações — Goiás / Goianésia — Goiás / Goianésia",
-      "qualidade": "insuficiente",
-      "comprovados": 1,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Órgão / financiador",
-        "Esfera",
-        "Requisitos",
-        "Anexos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O território está comprovado como GO, o que indica que os editais referentes a Goianésia estão disponíveis no sistema.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar os editais disponíveis no sistema, atender aos requisitos específicos de cada edital e submeter a proposta conforme o prazo estabelecido.",
-        "proximo_passo": "Consultar os editais disponíveis no sistema e verificar os requisitos e prazos de inscrição.",
-        "risco": "A falta de informações sobre prazos, requisitos e outros detalhes pode impedir o acesso aos editais."
-      },
-      "erro": null,
-      "segundos": 803,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
-      "id": "op-op-cede8399c65f",
-      "encontrou": {
-        "Território": {
-          "valor": "GO",
-          "trecho": "Goianésia - GO",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura de Goianésia - GO",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
       ]
     }
   ],
