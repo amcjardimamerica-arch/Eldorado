@@ -142,7 +142,10 @@ class TestMotor(unittest.TestCase):
         t = Path(self.tmp.name)
         self.p = [mock.patch.object(dg, "ESTADO", t / "estado.json"), mock.patch.object(dg, "CACHE", t / "cache"),
                   mock.patch.object(dg, "QUARENTENA", t / "q.jsonl"), mock.patch.object(dg.time, "sleep", lambda *_: None),
-                  mock.patch.dict("os.environ", {"GITHUB_ACTIONS": "true"}, clear=False)]
+                  mock.patch.dict("os.environ", {"GITHUB_ACTIONS": "true"}, clear=False),
+                  # 15/10/2026: o motor lê o portal direto da nuvem; no teste o portal fica FORA DO AR (sem rede real),
+                  # senão o resultado dependia de onde o teste roda (no GitHub há rede e o portal respondia de verdade)
+                  mock.patch.object(dg, "_direto", side_effect=OSError("portal fora do ar no teste"))]
         for x in self.p:
             x.start()
 
@@ -207,7 +210,10 @@ class TestCoberturaDoDia(unittest.TestCase):
         t = Path(self.tmp.name)
         self.p = [mock.patch.object(dg, "ESTADO", t / "estado.json"), mock.patch.object(dg, "CACHE", t / "cache"),
                   mock.patch.object(dg, "QUARENTENA", t / "q.jsonl"), mock.patch.object(dg.time, "sleep", lambda *_: None),
-                  mock.patch.dict("os.environ", {"GITHUB_ACTIONS": "true"}, clear=False)]
+                  mock.patch.dict("os.environ", {"GITHUB_ACTIONS": "true"}, clear=False),
+                  # 15/10/2026: o motor lê o portal direto da nuvem; no teste o portal fica FORA DO AR (sem rede real),
+                  # senão o resultado dependia de onde o teste roda (no GitHub há rede e o portal respondia de verdade)
+                  mock.patch.object(dg, "_direto", side_effect=OSError("portal fora do ar no teste"))]
         for x in self.p:
             x.start()
 

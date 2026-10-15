@@ -47,7 +47,9 @@ class Comando(unittest.TestCase):
             ctx = C.ciclo_sequencia()
             self.assertEqual(ctx["estado"], "vermelho")
             self.assertEqual([d["fase"] for d in ctx["decisoes"]], ["pula"])
-            self.assertEqual(C.veredito(), 1)
+            import contextlib, io
+            with contextlib.redirect_stdout(io.StringIO()):          # não vira anotação falsa no GitHub
+                self.assertEqual(C.veredito(), 1)
         self.assertEqual(json.loads((self.d / "painel.json").read_text())["vermelhos_hoje"], 1)
 
 
