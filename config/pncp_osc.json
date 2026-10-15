@@ -1,122 +1,153 @@
 {
- "versao": "3 (02/10/2026) — Brasil inteiro",
- "parecer": "docs/pareceres/motor-04-pncp.md",
- "leitor": "src/pncp_osc.py",
- "fonte_a": {
-  "nome": "Propostas abertas — /api/consulta/v1/contratacoes/proposta",
-  "ufs": [
-   "*"
+  "versao": "3 (02/10/2026) — Brasil inteiro",
+  "parecer": "docs/pareceres/motor-04-pncp.md",
+  "leitor": "src/pncp_osc.py",
+  "fonte_a": {
+    "nome": "Propostas abertas — /api/consulta/v1/contratacoes/proposta",
+    "ufs": [
+      "*"
+    ],
+    "modalidades": [
+      12,
+      3,
+      10,
+      11
+    ],
+    "nota_modalidades": "12 = credenciamento (onde os municípios de Goiás publicam os chamamentos MROSC: Senador Canedo, Pirenópolis…); 3 = concurso (prêmios); 10 = manifestação de interesse; 11 = pré-qualificação. Dispensa (8) e inexigibilidade (9) são contratação direta: entram só pela busca (Fonte B) quando o texto falar de OSC.",
+    "horizonte_dias": 3700,
+    "max_paginas": 20,
+    "tamanho_pagina": 50,
+    "nota_ufs": "'*' = todos os estados (Goiás e DF primeiro, depois rodízio)",
+    "fora_de_goias": "capital",
+    "capitais_ibge": {
+      "AC": 1200401,
+      "AL": 2704302,
+      "AM": 1302603,
+      "AP": 1600303,
+      "BA": 2927408,
+      "CE": 2304400,
+      "DF": 5300108,
+      "ES": 3205309,
+      "GO": 5208707,
+      "MA": 2111300,
+      "MG": 3106200,
+      "MS": 5002704,
+      "MT": 5103403,
+      "PA": 1501402,
+      "PB": 2507507,
+      "PE": 2611606,
+      "PI": 2211001,
+      "PR": 4106902,
+      "RJ": 3304557,
+      "RN": 2408102,
+      "RO": 1100205,
+      "RR": 1400100,
+      "RS": 4314902,
+      "SC": 4205407,
+      "SE": 2800308,
+      "SP": 3550308,
+      "TO": 1721000
+    },
+    "fora_de_goias_nota": "15/10/2026 (estudo do mês): 106 das 242 compras distintas eram municípios de outros estados (rodízio das 27 UFs lendo ~8.500 itens/dia). Fora de Goiás a consulta vai só à CAPITAL (codigoMunicipioIbge), onde ficam a prefeitura da capital e os órgãos estaduais e federais; os federais do interior seguem pela fonte B (busca nacional). Goiás: estado inteiro."
+  },
+  "fonte_b": {
+    "nome": "Busca do portal — /api/search/?status=recebendo_proposta&tipos_documento=edital",
+    "usar": true,
+    "escopos": [
+      {
+        "ufs": "GO"
+      },
+      {}
+    ],
+    "consultas": [
+      "organização da sociedade civil",
+      "termo de fomento",
+      "termo de colaboração",
+      "sem fins lucrativos",
+      "Aldir Blanc",
+      "PNAB",
+      "projetos culturais",
+      "agentes culturais",
+      "premiação",
+      "entidades socioassistenciais",
+      "catadores",
+      "doação",
+      "aprendizagem",
+      "projetos esportivos",
+      "CMDCA",
+      "fundo municipal",
+      "OSC",
+      "cultura viva"
+    ],
+    "max_paginas": 3,
+    "tam_pagina": 100,
+    "nota": "a busca é aproximada (casa radicais: 'fomento' traz 'brindes promocionais'); por isso só descobre — quem decide é o classificador. Aspas não funcionam como frase exata.",
+    "nota_escopos": "Goiás como escopo próprio (para não perder as daqui) + o Brasil inteiro (sem filtro de UF ou esfera)"
+  },
+  "ritmo": {
+    "pausa_segundos": 1.5,
+    "espera_429_segundos": 20,
+    "tentativas_429": 4,
+    "nota": "01/10: o PNCP devolve HTTP 429 (limite de requisições) depois de ~25 chamadas seguidas sem pausa; com 1,5 s entre chamadas, 0 a 1 ocorrência em 60 chamadas."
+  },
+  "max_documentos_por_execucao": 25,
+  "prazo_total_segundos": 900,
+  "falhas_seguidas_para_abortar_fonte": 3,
+  "abrangencia": {
+    "nacional": true,
+    "regra": "02/10 (titular): o PNCP recebe TODAS as oportunidades do Brasil — sem a restrição a Goiás. Cada oportunidade é mapeada e ganha um livro na Biblioteca (exceção à regra de abrangência da Biblioteca, só para o PNCP).",
+    "prioridade": [
+      "GO",
+      "DF"
+    ],
+    "rodizio": "a Fonte A lê os estados em rodízio; o que não couber numa execução continua na seguinte (3 execuções por dia)",
+    "parte_do_tempo_fonte_a": 0.65
+  },
+  "vetos_nacionais": [
+    [
+      "pareceristas",
+      "PARECERIST",
+      "credenciamento de pareceristas (pessoas que avaliam projetos), não é recurso para OSC",
+      false
+    ],
+    [
+      "shows_artisticos",
+      "CONTRATACAO DE SHOWS|SHOWS ARTISTICOS",
+      "contratação de shows (o órgão compra apresentações)",
+      false
+    ],
+    [
+      "cotas_de_patrocinio",
+      "COTAS? DE PATROCINIO",
+      "o órgão capta patrocinadores — não financia entidades",
+      false
+    ],
+    [
+      "cotacao",
+      "SOLICITACAO GERADA PARA COTACAO|COTACAO DE PRECOS",
+      "cotação de preços (compra)",
+      false
+    ],
+    [
+      "representantes_de_conselho",
+      "SELECAO DE REPRESENTANTES DA SOCIEDADE CIVIL|ELEICAO .{0,40}CONSELH",
+      "seleção de representantes para conselho (acompanhar, não é recurso)",
+      false
+    ],
+    [
+      "fins_lucrativos",
+      "COM FINS LUCRATIVOS",
+      "pessoas jurídicas com fins lucrativos (empresas)",
+      false
+    ]
   ],
-  "modalidades": [
-   12,
-   3,
-   10,
-   11
-  ],
-  "nota_modalidades": "12 = credenciamento (onde os municípios de Goiás publicam os chamamentos MROSC: Senador Canedo, Pirenópolis…); 3 = concurso (prêmios); 10 = manifestação de interesse; 11 = pré-qualificação. Dispensa (8) e inexigibilidade (9) são contratação direta: entram só pela busca (Fonte B) quando o texto falar de OSC.",
-  "horizonte_dias": 3700,
-  "max_paginas": 20,
-  "tamanho_pagina": 50,
-  "nota_ufs": "'*' = todos os estados (Goiás e DF primeiro, depois rodízio)"
- },
- "fonte_b": {
-  "nome": "Busca do portal — /api/search/?status=recebendo_proposta&tipos_documento=edital",
-  "usar": true,
-  "escopos": [
-   {
-    "ufs": "GO"
-   },
-   {}
-  ],
-  "consultas": [
-   "organização da sociedade civil",
-   "termo de fomento",
-   "termo de colaboração",
-   "sem fins lucrativos",
-   "Aldir Blanc",
-   "PNAB",
-   "projetos culturais",
-   "agentes culturais",
-   "premiação",
-   "entidades socioassistenciais",
-   "catadores",
-   "doação",
-   "aprendizagem",
-   "projetos esportivos",
-   "CMDCA",
-   "fundo municipal",
-   "OSC",
-   "cultura viva"
-  ],
-  "max_paginas": 3,
-  "tam_pagina": 100,
-  "nota": "a busca é aproximada (casa radicais: 'fomento' traz 'brindes promocionais'); por isso só descobre — quem decide é o classificador. Aspas não funcionam como frase exata.",
-  "nota_escopos": "Goiás como escopo próprio (para não perder as daqui) + o Brasil inteiro (sem filtro de UF ou esfera)"
- },
- "ritmo": {
-  "pausa_segundos": 1.5,
-  "espera_429_segundos": 20,
-  "tentativas_429": 4,
-  "nota": "01/10: o PNCP devolve HTTP 429 (limite de requisições) depois de ~25 chamadas seguidas sem pausa; com 1,5 s entre chamadas, 0 a 1 ocorrência em 60 chamadas."
- },
- "max_documentos_por_execucao": 25,
- "prazo_total_segundos": 900,
- "falhas_seguidas_para_abortar_fonte": 3,
- "abrangencia": {
-  "nacional": true,
-  "regra": "02/10 (titular): o PNCP recebe TODAS as oportunidades do Brasil — sem a restrição a Goiás. Cada oportunidade é mapeada e ganha um livro na Biblioteca (exceção à regra de abrangência da Biblioteca, só para o PNCP).",
-  "prioridade": [
-   "GO",
-   "DF"
-  ],
-  "rodizio": "a Fonte A lê os estados em rodízio; o que não couber numa execução continua na seguinte (3 execuções por dia)",
-  "parte_do_tempo_fonte_a": 0.65
- },
- "vetos_nacionais": [
-  [
-   "pareceristas",
-   "PARECERIST",
-   "credenciamento de pareceristas (pessoas que avaliam projetos), não é recurso para OSC",
-   false
-  ],
-  [
-   "shows_artisticos",
-   "CONTRATACAO DE SHOWS|SHOWS ARTISTICOS",
-   "contratação de shows (o órgão compra apresentações)",
-   false
-  ],
-  [
-   "cotas_de_patrocinio",
-   "COTAS? DE PATROCINIO",
-   "o órgão capta patrocinadores — não financia entidades",
-   false
-  ],
-  [
-   "cotacao",
-   "SOLICITACAO GERADA PARA COTACAO|COTACAO DE PRECOS",
-   "cotação de preços (compra)",
-   false
-  ],
-  [
-   "representantes_de_conselho",
-   "SELECAO DE REPRESENTANTES DA SOCIEDADE CIVIL|ELEICAO .{0,40}CONSELH",
-   "seleção de representantes para conselho (acompanhar, não é recurso)",
-   false
-  ],
-  [
-   "fins_lucrativos",
-   "COM FINS LUCRATIVOS",
-   "pessoas jurídicas com fins lucrativos (empresas)",
-   false
-  ]
- ],
- "nota_vetos_nacionais": "02/10: primeira leitura do Brasil inteiro — 173 oportunidades, cerca de 96% corretas; os 6 erros viraram estes vetos.",
- "fonte_c": {
-  "nome": "Livros sem chave PNCP — /api/search/ com o léxico de cada livro",
-  "usar": true,
-  "max_livros_por_execucao": 10,
-  "tam_pagina": 100,
-  "reler_sem_registro_dias": 7,
-  "regra": "02/10 (titular): o PNCP é o agregador dos editais de OSC do Brasil inteiro. Livro de edital de OSC de outro município achado em diário oficial ou agregador é procurado no PNCP com a consulta gravada no próprio livro (busca.lexico.pncp.consulta); achado no mesmo município (e com o mesmo número, quando houver), o livro recebe a chave PNCP. Não achado: o livro continua (fonte oficial = diário) e é procurado de novo em 7 dias — a Lei 13.019/2014 manda publicar o chamamento no sítio do órgão, não obriga o PNCP."
- }
+  "nota_vetos_nacionais": "02/10: primeira leitura do Brasil inteiro — 173 oportunidades, cerca de 96% corretas; os 6 erros viraram estes vetos.",
+  "fonte_c": {
+    "nome": "Livros sem chave PNCP — /api/search/ com o léxico de cada livro",
+    "usar": true,
+    "max_livros_por_execucao": 10,
+    "tam_pagina": 100,
+    "reler_sem_registro_dias": 7,
+    "regra": "02/10 (titular): o PNCP é o agregador dos editais de OSC do Brasil inteiro. Livro de edital de OSC de outro município achado em diário oficial ou agregador é procurado no PNCP com a consulta gravada no próprio livro (busca.lexico.pncp.consulta); achado no mesmo município (e com o mesmo número, quando houver), o livro recebe a chave PNCP. Não achado: o livro continua (fonte oficial = diário) e é procurado de novo em 7 dias — a Lei 13.019/2014 manda publicar o chamamento no sítio do órgão, não obriga o PNCP."
+  }
 }

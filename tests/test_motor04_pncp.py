@@ -304,3 +304,20 @@ class PortaoAssociacao15_10(unittest.TestCase):
                    orgao="SECRETARIA DE ESTADO DA CULTURA", uf="BA", esfera="E", modalidade="Concurso", encerramento="2026-11-14")]
         for m in ok:
             self.assertEqual(P.classificar_item(m, h, P.TODAS_UFS)["veredito"], "OPORTUNIDADE", m["titulo"])
+
+
+class ConsultaSoCapital15_10(unittest.TestCase):
+    """15/10/2026: fora de Goiás a fonte A consulta só a capital (codigoMunicipioIbge); Goiás, o estado inteiro."""
+    def test_parametros(self):
+        import json
+        from unittest import mock
+        from src import pncp_osc as P
+        urls = []
+        cfg = json.loads((Path(__file__).resolve().parents[1] / "config/pncp_osc.json").read_text(encoding="utf-8"))
+        cfg["_ufs_da_execucao"] = ["GO", "BA"]
+        with mock.patch.object(P, "_get", lambda u, c: urls.append(u) or {"data": [], "totalPaginas": 1}):
+            P.fonte_a(date(2026, 10, 15), cfg, {"fontes": {"A": {"falhas": [], "consultas": 0}}})
+        go = [u for u in urls if "uf=GO" in u]; ba = [u for u in urls if "uf=BA" in u]
+        self.assertTrue(go and all("codigoMunicipioIbge" not in u for u in go))
+        self.assertTrue(ba and all("codigoMunicipioIbge=2927408" in u for u in ba))
+        self.assertEqual(len(cfg["fonte_a"]["capitais_ibge"]), 27)
