@@ -1,4 +1,4 @@
-# Diagnóstico do sistema · 2026-10-15 06:33 UTC
+# Diagnóstico do sistema · 2026-10-15 06:37 UTC
 
 ## Cumprimento da finalidade · índice geral 60%
 - Motores: 100% (ok) — todo motor ativo lê dentro da sua cadência
@@ -41,7 +41,7 @@
 - com livro: 375 · sem livro (problema): 1 · sem livro por regra: 115 {'fora da abrangência: oportunidade pública municipal de outro estado (só Goiás tem livros m': 88, 'não é seleção aberta a associações (dispensa/inexigibilidade de chamamento, credenciamento': 22, 'fora da abrangência: municipal de outro estado (PE) que não é capital — só Goiás tem munic': 2, 'fora da abrangência: municipal de outro estado (BA) que não é capital — só Goiás tem munic': 1, 'fora da abrangência: municipal de outro estado (SP) que não é capital — só Goiás tem munic': 1, 'fora da abrangência: município de outro estado que não é capital (livro apagado)': 1} · livro inexistente: 0
 - sem site oficial: 100 · sem prazo: 358 · prazo vencido ainda aberta: 0
 - fora da tela: 1 · sem ficha: 0
-- itens que mais faltam: {'Prazo de recurso': 426, 'Resultado': 410, 'Prazo de inscrição': 399, 'Valor': 395, 'Anexos': 376, 'Requisitos': 371, 'Destinação': 345, 'Área de atuação': 341, 'Território': 305, 'Objeto': 293, 'Órgão / financiador': 286, 'Esfera': 283}
+- itens que mais faltam: {'Prazo de recurso': 426, 'Resultado': 410, 'Prazo de inscrição': 399, 'Valor': 395, 'Anexos': 376, 'Requisitos': 371, 'Destinação': 344, 'Área de atuação': 341, 'Território': 305, 'Objeto': 293, 'Órgão / financiador': 286, 'Esfera': 283}
 
 ## Sistemas
 - motores: 42 funcionando · 0 em falha · 3 inativos · 1 com leitura parcial
@@ -52,7 +52,7 @@
 
 ## Integração
 - contagens: {'repositorio_abertas': 491, 'diagnostico_abertas': 491, 'tela_cartoes': 490, 'fichas': 501, 'sala_controle_abertas': 491}
-- idade (h): {'repositorio': 0.0, 'fluxo': 0.2, 'fichas': 0.0, 'sala_controle': 0.0, 'status_motores': 0.0, 'maestro': 0.2, 'rede_neural': 0.2, 'saude': 6.5}
+- idade (h): {'repositorio': 0.0, 'fluxo': 0.2, 'fichas': 0.0, 'sala_controle': 0.0, 'status_motores': 0.0, 'maestro': 0.3, 'rede_neural': 0.2, 'saude': 6.6}
 - decisões da titular: 0 · não aplicadas: 0
 
 ## Problemas (25)
@@ -69,8 +69,8 @@
 - [alta] 1 de 491 oportunidades abertas sem livro e sem regra que justifique → criar/vincular livros
 - [alta] tela mostra 490 oportunidades e o repositório conta 491 → refazer a tela
 - [alta] 3 módulos de teste em quarentena por DEFEITO REAL → corrigir o código e tirar da quarentena (sem correção automática)
-- [media] fluxo '09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes' sem rodar há 282.6 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
-- [media] fluxo '02 · Alexandria — revisão mensal de leis e procedimentos' sem rodar há 331.9 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
+- [media] fluxo '09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes' sem rodar há 282.7 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
+- [media] fluxo '02 · Alexandria — revisão mensal de leis e procedimentos' sem rodar há 332.0 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
 - [media] 180 livros municipais de outros estados no catálogo (só Goiás tem livros municipais) → refazer a tela
 - [media] saúde · claude: análise do Claude atrasada desde 2026-10-14: 1305 item(ns) esperando validação ou descarte → ver o fluxo/arquivo indicado
 - [media] saúde · coerência: mapa e lista divergem em __nac__, BA, SP, ES, RS → refazer tela e indicadores
