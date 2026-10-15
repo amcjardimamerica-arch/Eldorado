@@ -34,7 +34,7 @@
 
 ## Falhas por tipo
 
-- VAZAMENTO: 49
+- VAZAMENTO: 50
 - SILÊNCIO LONGO: 44
 - RUÍDO: 29
 - CEGO: 23
@@ -46,27 +46,31 @@
 
 ## Cobertura (Dr. Otávio)
 
-69.5% das oportunidades vieram de fora dos motores: {'agregador/outra': 210, 'motor': 146, 'Piloto': 122}.
+69.6% das oportunidades vieram de fora dos motores: {'agregador/outra': 210, 'motor': 149, 'Piloto': 131}.
 
 - GO: 8 oportunidades, nenhuma de motor ({'agregador/outra': 8})
 
 ## Fontes irmãs (Profa. Clara)
 
-223 domínios oficiais já renderam e não têm motor. Os primeiros:
+225 domínios oficiais já renderam e não têm motor. Os primeiros:
 
-- baoba.org.br (peso 21)
-- institutolojasrenner.org.br (peso 17)
+- baoba.org.br (peso 25)
+- institutolojasrenner.org.br (peso 15)
 - mariaemilia.org.br (peso 13)
 - zurich.com.br (peso 13)
 - fundoecos.org.br (peso 12)
 - chamadas.funbio.org.br (peso 11)
+- contrafluxofestival.com.br (peso 11)
 - brazilfoundation.org (peso 11)
 - bnccompras.com (peso 11)
+- pesquisavoluntariado.org.br (peso 10)
 - feirapreta.com.br (peso 9)
-- fbb.org.br (peso 9)
-- contrafluxofestival.com.br (peso 9)
 - brasil.aperam.com (peso 9)
+- fbb.org.br (peso 9)
 - transforma.fbb.org.br (peso 8)
+- difusionconcausa.com (peso 8)
+- ifrs.edu.br (peso 8)
+- institutoinad.org.br (peso 8)
 - jornadasocial.com.br (peso 8)
 - impactarte.org.br (peso 8)
 - fondationfrancoisschneider.org (peso 7)
@@ -75,23 +79,19 @@
 - conteudo.agosocial.com.br (peso 7)
 - impactarte.com.br (peso 6)
 - agencia.petrobras.com.br (peso 6)
-- ifrs.edu.br (peso 6)
-- apoioplus.com.br (peso 6)
-- institutoinad.org.br (peso 6)
-- gravatai.ifsul.edu.br (peso 6)
 
 ## Plataformas e inovações (Dr. Fábio)
 
-- WordPress: 97 órgãos
+- WordPress: 98 órgãos
 - Mapas Culturais: 10 órgãos
 - Diário municipal em lote (AGM/DOM): 16 órgãos
 - Portal de transparência de fornecedor: 19 órgãos
-- Sistemas de editais (Prosas/Editais): 50 órgãos
+- Sistemas de editais (Prosas/Editais): 49 órgãos
 - Querido Diário: 0 órgãos
 - PNCP: 1 órgãos
 - Leis e atos (Leis Municipais): 1 órgãos
 
-- **Adaptador por plataforma** — um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão. Alcance: 97 órgãos WordPress e 10 instâncias de Mapas Culturais já conhecidos de uma vez.
+- **Adaptador por plataforma** — um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão. Alcance: 98 órgãos WordPress e 10 instâncias de Mapas Culturais já conhecidos de uma vez.
 - **Detecção de mudança barata** — ler o sitemap.xml (lastmod) e os feeds RSS/Atom dos sites oficiais; só baixar a página quando muda. Alcance: permite vigiar 10× mais fontes no mesmo tempo de execução.
 - **Consulta inversa** — frases distintivas de editais confirmados (ex.: 'Política Nacional Aldir Blanc' + 'chamamento') viram buscas por editais irmãos em outros municípios. Alcance: cada edital confirmado gera pistas em dezenas de municípios que publicam o mesmo modelo.
 - **Motor de fontes irmãs** — domínios oficiais que já renderam oportunidade e nenhum motor vigia passam a ser lidos todos os dias. Alcance: implantado como motor Outras Oportunidades (clones calculados para ler todas as fontes no dia).
@@ -164,6 +164,10 @@
 ### Prosas — prêmios, concursos e cursos para OSCs (`plat-prosas-premios`) — baixo volume, 0 achados em 30 dias
 - **CEGO** (falso_verde): respondeu 200 em 13 de 13 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
 - **SILÊNCIO LONGO** (falso_verde): 26 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+
+### Editais incentivados de empresas — destinação tributária (Rouanet, LIE, FIA, PRONON) (`empresas-incentivadas`) — ruído, 68 achados em 30 dias
+- **RUÍDO** (funil): 75 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+- **VAZAMENTO** (funil): perde 100% na etapa 'fluxo → confirmada'. → faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório
 
 ### Programa estadual de eventos esportivos (`f260-captacao-051`) — ruído, 80 achados em 30 dias
 - **RUÍDO** (funil): 110 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
@@ -249,8 +253,8 @@
 - **CEGO** (falso_verde): respondeu 200 em 25 de 25 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
 - **SILÊNCIO LONGO** (falso_verde): 36 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
-### Editais de empresas incentivadoras (modelo Porto Itapoá) — FIA, Idoso, Esporte, Rouanet, PRONAS (`plat-empresas-editais-incentivados`) — ruído, 246 achados em 30 dias
-- **RUÍDO** (funil): 1578 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+### Editais de empresas incentivadoras (modelo Porto Itapoá) — FIA, Idoso, Esporte, Rouanet, PRONAS (`plat-empresas-editais-incentivados`) — ruído, 268 achados em 30 dias
+- **RUÍDO** (funil): 1600 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'fluxo → confirmada'. → faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório
 
 ### FAPEG — Fundação de Amparo à Pesquisa de Goiás (`plat-fapeg`) — baixo volume, 0 achados em 30 dias
@@ -273,9 +277,9 @@
 - **CONGELADO** (falso_verde): o mesmo achado repetido em 10 dias. → detectar mudança por hash/lastmod e só contar o que é novo
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Prefeituras das 50 maiores cidades de Goiás — portais de editais (`plat-prefeituras-50-go`) — ruído, 13 achados em 30 dias
-- **CONGELADO** (falso_verde): o mesmo achado repetido em 10 dias. → detectar mudança por hash/lastmod e só contar o que é novo
-- **RUÍDO** (funil): 103 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+### Prefeituras das 50 maiores cidades de Goiás — portais de editais (`plat-prefeituras-50-go`) — ruído, 14 achados em 30 dias
+- **CONGELADO** (falso_verde): o mesmo achado repetido em 11 dias. → detectar mudança por hash/lastmod e só contar o que é novo
+- **RUÍDO** (funil): 104 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 
 ### Prosas — editais para o terceiro setor (`plat-prosas`) — baixo volume, 0 achados em 30 dias
 - **CEGO** (falso_verde): respondeu 200 em 10 de 10 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
@@ -387,9 +391,6 @@
 
 ### Diário Oficial da União (`dou`) — confirma, 30 achados em 30 dias
 - **ESTRANGULADO** (falso_verde): viu 5241 links e nenhum virou candidato. → o filtro de candidatos está estreito demais: incluir termos de chamamento/edital da fonte e seguir PDFs
-
-### Editais incentivados de empresas — destinação tributária (Rouanet, LIE, FIA, PRONON) (`empresas-incentivadas`) — ruído, 62 achados em 30 dias
-- **RUÍDO** (funil): 69 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 
 ### Sebrae Goiás - parcerias com OSC para empreendedorismo (`f260-captacao-238`) — baixo volume, 0 achados em 30 dias
 - **SILÊNCIO LONGO** (falso_verde): 57 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço

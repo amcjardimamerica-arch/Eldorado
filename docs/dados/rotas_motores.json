@@ -1,5 +1,5 @@
 {
- "em": "2026-10-15T06:11:54+00:00",
+ "em": "2026-10-15T06:29:26+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
@@ -7,13 +7,13 @@
   "alterar_rota": 47,
   "rota_nova": 50,
   "via_ponte": 3,
-  "exemplos_da_rede": 9337
+  "exemplos_da_rede": 9419
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
    [
     "origem:biblioteca",
-    2.6001
+    2.5
    ],
    [
     "tok:mpf",
@@ -41,11 +41,11 @@
    ],
    [
     "origem:rota original",
-    1.5146
+    1.5028
    ],
    [
     "tipo:privada",
-    1.4576
+    1.4437
    ],
    [
     "tok:abertas",
@@ -63,7 +63,7 @@
   "piores_sinais": [
    [
     "tipo:site_oficial",
-    -1.5271
+    -1.5292
    ],
    [
     "tok:prefeitura",
@@ -87,11 +87,11 @@
    ],
    [
     "gov:False",
-    -2.5945
+    -2.6084
    ],
    [
     "origem:padrão",
-    -3.2717
+    -3.2755
    ]
   ]
  },
@@ -141,8 +141,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-14T22:39:38+00:00",
-    "testes": 16,
+    "em": "2026-10-15T06:28:08+00:00",
+    "testes": 17,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -363,7 +363,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T00:09:32+00:00",
+    "em": "2026-10-15T06:29:06+00:00",
     "testes": 13,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -454,8 +454,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T00:10:00+00:00",
-    "testes": 18,
+    "em": "2026-10-15T06:29:24+00:00",
+    "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -535,7 +535,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-14T22:40:23+00:00",
+    "em": "2026-10-15T06:28:57+00:00",
     "testes": 16,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -564,8 +564,8 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T00:10:06+00:00",
-    "testes": 24,
+    "em": "2026-10-15T06:29:26+00:00",
+    "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -711,7 +711,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-14T22:40:25+00:00",
+    "em": "2026-10-15T06:29:00+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -3209,14 +3209,15 @@
    "nome": "Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 15,
-   "ok": 7,
+   "leituras": 16,
+   "ok": 8,
    "ultima": {
-    "em": "2026-10-14T12:12:45+00:00",
+    "em": "2026-10-15T06:19:24+00:00",
     "classe": "ok",
     "motivo": ""
    },
    "historico": [
+    "o",
     "o",
     "o",
     "o",
@@ -3700,10 +3701,10 @@
    "nome": "Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 98,
-   "ok": 55,
+   "leituras": 99,
+   "ok": 56,
    "ultima": {
-    "em": "2026-10-15T02:25:39+00:00",
+    "em": "2026-10-15T06:13:42+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3806,10 +3807,10 @@
    "nome": "Prefeituras das 25 maiores cidades de Goiás — portais de editais",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 101,
-   "ok": 50,
+   "leituras": 102,
+   "ok": 51,
    "ultima": {
-    "em": "2026-10-15T02:22:59+00:00",
+    "em": "2026-10-15T06:11:15+00:00",
     "classe": "ok",
     "motivo": ""
    },
@@ -3818,8 +3819,8 @@
     "o",
     "o",
     "o",
-    "o",
     "v",
+    "o",
     "o",
     "o",
     "o",
@@ -4557,14 +4558,15 @@
    "nome": "Adaptador WordPress — sites oficiais pela API pública",
    "status": "ok",
    "vazias_seguidas": 0,
-   "leituras": 5,
-   "ok": 5,
+   "leituras": 6,
+   "ok": 6,
    "ultima": {
-    "em": "2026-10-15T02:40:57+00:00",
+    "em": "2026-10-15T06:15:59+00:00",
     "classe": "ok",
     "motivo": ""
    },
    "historico": [
+    "o",
     "o",
     "o",
     "o",
