@@ -41,6 +41,13 @@ jobs:
         run: |
           python scripts/pausa_analise.py interromper
           timeout 3000 python scripts/pausa_analise.py aguardar 45
+      - name: Atualizar com o que os processos gravaram enquanto a análise aguardava
+        # 15/10/2026 (ciclo 4): a análise lia a cópia do início (antes da passagem do comando gravar) e via dados velhos
+        run: |
+          cp estado/analise_pausa.json /tmp/pausa.json
+          git fetch -q origin main && git reset -q --hard origin/main
+          cp /tmp/pausa.json estado/analise_pausa.json
+          git log -1 --format="dados atualizados até: %h %cI %s"
       - name: Testes da própria análise (procedimento assistido)
         run: |
           pip install -r requirements.txt --quiet 2>/dev/null || true
