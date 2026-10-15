@@ -74,9 +74,10 @@ class TestClassificacao(unittest.TestCase):
         a = dg.classificar_ato(SMS_CRED, HOJE, "2026-03-05")
         self.assertEqual((a["veredito"], a["regime"]), ("RUIDO", "credenciamento"))
 
-    def test_organizacao_social_da_saude_e_ruido(self):
+    def test_organizacao_social_da_saude_e_acompanhar(self):
+        # 15/10/2026 (titular): OS da saúde fica no painel como ACOMPANHAR (antes: ruído); nunca vira oportunidade
         self.assertEqual(dg.classificar_ato(OS_SAUDE, HOJE, "2026-09-11")["regime"], "organizacao_social_saude")
-        self.assertEqual(dg.classificar_ato(OS_SAUDE, HOJE, "2026-09-11")["veredito"], "RUIDO")
+        self.assertEqual(dg.classificar_ato(OS_SAUDE, HOJE, "2026-09-11")["veredito"], "ACOMPANHAR")
 
     def test_resultado_pnab_e_acompanhar(self):
         a = dg.classificar_ato(PNAB_RES, HOJE, "2026-08-28")
