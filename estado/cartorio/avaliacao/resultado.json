@@ -1,5 +1,5 @@
 {
- "em": "2026-10-15T19:46:56+00:00",
+ "em": "2026-10-15T19:53:25+00:00",
  "rotulo": "fluxo 39",
  "modalidade": {
   "distribuicao": {
@@ -24,14 +24,14 @@
  "casos": 186,
  "documentos_lidos": 142,
  "geral": {
-  "acerto": 812,
-  "erro": 150,
+  "acerto": 847,
+  "erro": 136,
   "sem_texto": 304,
-  "falta": 133,
+  "falta": 112,
   "fora": 92,
   "medidos": 1095,
-  "acerto_pct": 74.2,
-  "precisao_pct": 84.4
+  "acerto_pct": 77.4,
+  "precisao_pct": 86.2
  },
  "por_item": {
   "Objeto": {
@@ -55,24 +55,24 @@
    "precisao_pct": 90.5
   },
   "Resultado": {
-   "falta": 28,
-   "acerto": 40,
+   "falta": 23,
+   "acerto": 43,
    "sem_texto": 19,
    "fora": 8,
-   "erro": 8,
+   "erro": 10,
    "medidos": 76,
-   "acerto_pct": 52.6,
-   "precisao_pct": 83.3
+   "acerto_pct": 56.6,
+   "precisao_pct": 81.1
   },
   "Prazo de recurso": {
-   "erro": 14,
-   "acerto": 42,
-   "falta": 19,
+   "acerto": 66,
+   "falta": 5,
    "sem_texto": 17,
    "fora": 9,
+   "erro": 4,
    "medidos": 75,
-   "acerto_pct": 56.0,
-   "precisao_pct": 75.0
+   "acerto_pct": 88.0,
+   "precisao_pct": 94.3
   },
   "Valor": {
    "acerto": 81,
@@ -95,13 +95,13 @@
    "precisao_pct": 93.9
   },
   "Território": {
-   "erro": 20,
-   "acerto": 83,
+   "erro": 15,
+   "falta": 11,
+   "acerto": 86,
    "sem_texto": 29,
-   "falta": 9,
    "medidos": 112,
-   "acerto_pct": 74.1,
-   "precisao_pct": 80.6
+   "acerto_pct": 76.8,
+   "precisao_pct": 85.1
   },
   "Esfera": {
    "acerto": 96,
@@ -113,14 +113,14 @@
    "precisao_pct": 92.3
   },
   "Requisitos": {
-   "erro": 30,
-   "falta": 17,
+   "erro": 29,
+   "falta": 13,
    "sem_texto": 20,
    "fora": 12,
-   "acerto": 45,
+   "acerto": 50,
    "medidos": 92,
-   "acerto_pct": 48.9,
-   "precisao_pct": 60.0
+   "acerto_pct": 54.3,
+   "precisao_pct": 63.3
   },
   "Anexos": {
    "acerto": 70,
@@ -175,20 +175,6 @@
   },
   {
    "caso": "6c8557f6af0d252d6429",
-   "item": "Prazo de recurso",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/02292266000180/compras/2026/83/arquivos/1",
-   "gabarito": "3 dias úteis da ciência da decisão ou da publicação",
-   "trecho_gabarito": "9.5. Após a decisão sobre a habilitação, a entidade interessada poderá interpor recurso contra o indeferimento do pedido de credenciamento, no prazo de 3 (três) dias úteis",
-   "pagina_gabarito": 7,
-   "pagina_no_texto": 7,
-   "extraido": "15 (quinze) dias úteis",
-   "pagina_extraido": 17,
-   "metodo": "seção",
-   "causa": "pegou outro trecho (página 17); o certo está na página 7"
-  },
-  {
-   "caso": "6c8557f6af0d252d6429",
    "item": "Território",
    "classe": "erro",
    "url": "https://pncp.gov.br/pncp-api/v1/orgaos/02292266000180/compras/2026/83/arquivos/1",
@@ -196,10 +182,10 @@
    "trecho_gabarito": "resíduos recicláveis separados no edifício-sede e anexos do Tribunal de Justiça e Fórum Heitor Moraes Fleury",
    "pagina_gabarito": 1,
    "pagina_no_texto": 1,
-   "extraido": "sediada (endereço), inscrita no CNPJ",
-   "pagina_extraido": 39,
+   "extraido": "do Estado de Goiás",
+   "pagina_extraido": 1,
    "metodo": "texto",
-   "causa": "pegou outro trecho (página 39); o certo está na página 1"
+   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
   },
   {
    "caso": "6c8557f6af0d252d6429",
@@ -210,7 +196,7 @@
    "trecho_gabarito": "6.3.4. Licença ambiental; 6.3.5. Licença operacional; 6.3.6. Declaração da respectiva associação/cooperativa de que possui infraestrutura suficiente para promover a retirada dos materiais",
    "pagina_gabarito": 5,
    "pagina_no_texto": 5,
-   "extraido": "Poderão participar deste credenciamento as entidades sem fins lucrativos aptas à coleta, transporte, pesagem, triagem e destinação ambientalmente adequada dos resíduos recicláveis gerados pelo TJGO, d",
+   "extraido": "Poderão participar deste credenciamento as entidades sem fins lucrativos aptas à coleta,",
    "pagina_extraido": 2,
    "metodo": "texto",
    "causa": "pegou outro trecho (página 2); o certo está na página 5"
@@ -238,6 +224,17 @@
    "pagina_gabarito": 1,
    "pagina_no_texto": 1,
    "causa": "o órgão não está na 1ª página com prefixo conhecido (Prefeitura, Secretaria, Ministério…)"
+  },
+  {
+   "caso": "c9cef45043042a48d03c",
+   "item": "Território",
+   "classe": "falta",
+   "url": "https://www.contrafluxofestival.com.br/wp-content/uploads/2026/10/CONVOCATORIA-PARA-ORGANIZACOES-SOCIAIS.pdf",
+   "gabarito": "Curitiba/PR — sede ou atuação comprovada e continuada no município",
+   "trecho_gabarito": "4.2. A organização deverá possuir sede em Curitiba ou atuação comprovada e continuada no Município de Curitiba.",
+   "pagina_gabarito": 3,
+   "pagina_no_texto": 3,
+   "causa": "regra não reconheceu o trecho que está no documento"
   },
   {
    "caso": "c9cef45043042a48d03c",
@@ -355,27 +352,13 @@
   {
    "caso": "097bcd4b298c7e73615e",
    "item": "Território",
-   "classe": "erro",
+   "classe": "falta",
    "url": "https://www.gov.br/ibama/pt-br/assuntos/notas/2026/edital-de-chamamento-publico-seleciona-organizacao-para-executar-aplicacao-de-recursos-do-fundo-rio-doce/20260923_SEI_Ibama_28844023_Edital_3.pdf",
    "gabarito": "Execução na Bacia do Rio Doce (MG e ES); OSC de qualquer UF",
    "trecho_gabarito": "envolve as áreas afetadas pelo rompimento da Barragem de Fundão ao longo da Bacia Hidrográfica do Rio Doce, abrangendo os estados de Minas Gerais e Espírito Santo",
    "pagina_gabarito": 23,
    "pagina_no_texto": 23,
-   "extraido": "sede em Brasília/DF, no SCEN",
-   "pagina_extraido": 11,
-   "metodo": "texto",
-   "causa": "pegou outro trecho (página 11); o certo está na página 23"
-  },
-  {
-   "caso": "097bcd4b298c7e73615e",
-   "item": "Requisitos",
-   "classe": "falta",
-   "url": "https://www.gov.br/ibama/pt-br/assuntos/notas/2026/edital-de-chamamento-publico-seleciona-organizacao-para-executar-aplicacao-de-recursos-do-fundo-rio-doce/20260923_SEI_Ibama_28844023_Edital_3.pdf",
-   "gabarito": "OSC sem fins lucrativos com CNPJ ativo e estatuto compatível (área ambiental, desenvolvimento institucional); capacidade técnica, operacional e financeira",
-   "trecho_gabarito": "a ) possuir personalidade jurídica de direito privado sem fins lucraBvos, regularmente constituída, com cadastro ativo no Cadastro Nacional da Pessoa Jurídica – CNPJ; b ) possuir objeBvos estatutários compaTveis com o objeto deste Edital",
-   "pagina_gabarito": 2,
-   "pagina_no_texto": 2,
-   "causa": "a seção do item não tem título reconhecido (numeração ou nome fora do padrão)"
+   "causa": "regra não reconheceu o trecho que está no documento"
   },
   {
    "caso": "097bcd4b298c7e73615e",
@@ -400,6 +383,17 @@
    "extraido": "R$ 4.800.000,00",
    "pagina_extraido": 14,
    "metodo": "seção"
+  },
+  {
+   "caso": "509b167451aff1013f95",
+   "item": "Requisitos",
+   "classe": "falta",
+   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/98661366000106/compras/2026/563/arquivos/1",
+   "gabarito": "conforme trecho do documento",
+   "trecho_gabarito": "instrumento convocatório. 2 - DA HABILITAÇÃO PRÉVIA 2.1. Os proponentes deverão estar cadastrados como fornecedores ou prestadores de serviços no Setor de Licitações, até o dia às , na Av. Nestor Frederico Henn, 1580, subsolo, Vera Cruz. 3 ",
+   "pagina_gabarito": 1,
+   "pagina_no_texto": 1,
+   "causa": "a seção do item não tem título reconhecido (numeração ou nome fora do padrão)"
   },
   {
    "caso": "509b167451aff1013f95",
@@ -460,7 +454,7 @@
    "trecho_gabarito": "Deverão ser protocolados, juntamente com a proposta, os seguintes documentos técnicos, devidamente elaborados e assinados pelos profissionais responsáveis: I – Projeto de engenharia aprovado; II – Anotação de Responsabilidade Técnica – ART ",
    "pagina_gabarito": 15,
    "pagina_no_texto": null,
-   "extraido": "Poderão participar desse Chamamento Público: a) Organizações da Sociedade Civil – OSCs, registradas no Conselho Municipal de Assistência Social - CMAS do município de Votuporanga-SP.",
+   "extraido": "Poderão participar desse Chamamento Público:",
    "pagina_extraido": 12,
    "metodo": "texto"
   },
@@ -551,10 +545,10 @@
    "trecho_gabarito": "6.1. Poderão participar as organizações enquadradas como Organização da Sociedade Civil na Lei Federal nº 13.019/2014 e no Decreto Municipal nº 8.843/2026, cujo objeto social seja compatível com a finalidade da parceria.",
    "pagina_gabarito": "EDITAL CHAMAMENTO PUBLICO 002_2026.pdf (no .zip) p.3",
    "pagina_no_texto": 3,
-   "extraido": "decisão de habilitação ou inabilitação da OSC classificada em primeiro lugar, será aberto prazo\nde 05 (cinco) dias úteis para interposição de recurso administrativo, contado da respectiva publicação, ",
-   "pagina_extraido": 8,
-   "metodo": "seção",
-   "causa": "pegou outro trecho (página 8); o certo está na página 3"
+   "extraido": "condições de participação, será observado novo prazo compatível.",
+   "pagina_extraido": 3,
+   "metodo": "texto",
+   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
   },
   {
    "caso": "073f196011843d451f36",
@@ -569,20 +563,6 @@
    "pagina_extraido": 5,
    "metodo": "seção",
    "causa": "pegou outro trecho (página 5); o certo está na página 6"
-  },
-  {
-   "caso": "844ef740fd826aeea799",
-   "item": "Território",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/15088800000183/compras/2026/109/arquivos/1",
-   "gabarito": "Rio Real/BA",
-   "trecho_gabarito": "unidadeOrgao.municipioNome/ufSigla: Rio Real/BA",
-   "pagina_gabarito": null,
-   "pagina_no_texto": null,
-   "extraido": "do Município de XXXXXX",
-   "pagina_extraido": 8,
-   "metodo": "texto",
-   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
   },
   {
    "caso": "5b744c9be242e7f5a4fb",
@@ -611,13 +591,16 @@
   {
    "caso": "5b744c9be242e7f5a4fb",
    "item": "Requisitos",
-   "classe": "falta",
+   "classe": "erro",
    "url": "https://pncp.gov.br/pncp-api/v1/orgaos/82815085000120/compras/2026/165/arquivos/4",
    "gabarito": "conforme trecho do documento",
    "trecho_gabarito": "contemplados 19 / 10 /26 2.5 QUEM PODE PARTICIPAR Pode se inscrever no Edital qualquer agente cultural que atua ou reside no Município de Peritiba – SC, há pelo menos 6 meses. Agente Cultural é toda pessoa ou grupo de pessoas responsável po",
    "pagina_gabarito": 2,
    "pagina_no_texto": 2,
-   "causa": "a seção do item não tem título reconhecido (numeração ou nome fora do padrão)"
+   "extraido": "poderá concorrer neste edital com, no máximo 2 (dois)",
+   "pagina_extraido": 3,
+   "metodo": "texto",
+   "causa": "pegou outro trecho (página 3); o certo está na página 2"
   },
   {
    "caso": "f2329152462a87d05c3f",
@@ -635,29 +618,6 @@
   },
   {
    "caso": "f2329152462a87d05c3f",
-   "item": "Resultado",
-   "classe": "falta",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/07605850000162/compras/2026/5/arquivos/1",
-   "gabarito": "A Comissão proclama o resultado da habilitação após a análise e divulga no quadro de avisos e em jornais (sem data fixa — credenciamento contínuo)",
-   "trecho_gabarito": "8.1. A Comissão proclamará os resultados da habilitação e divulgará no quadro de avisos da Comissão e em jornais de grande circulação a relação das instituições declaradas habilitadas para Termo de Contrato.",
-   "pagina_gabarito": 6,
-   "pagina_no_texto": 6,
-   "dispensa_extraida": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
-   "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
-  },
-  {
-   "caso": "f2329152462a87d05c3f",
-   "item": "Prazo de recurso",
-   "classe": "falta",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/07605850000162/compras/2026/5/arquivos/1",
-   "gabarito": "3 dias úteis da publicação da decisão",
-   "trecho_gabarito": "6.2. O prazo recursal é de 3 (três) dias úteis, contados da data de publicação da decisão.",
-   "pagina_gabarito": 6,
-   "pagina_no_texto": 6,
-   "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
-  },
-  {
-   "caso": "f2329152462a87d05c3f",
    "item": "Órgão / financiador",
    "classe": "fora",
    "url": "https://pncp.gov.br/pncp-api/v1/orgaos/07605850000162/compras/2026/5/arquivos/1",
@@ -668,20 +628,6 @@
    "extraido": "Prefeitura Municipal de Maracanaú",
    "pagina_extraido": 1,
    "metodo": "cabeçalho"
-  },
-  {
-   "caso": "f2329152462a87d05c3f",
-   "item": "Requisitos",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/07605850000162/compras/2026/5/arquivos/1",
-   "gabarito": "conforme trecho do documento",
-   "trecho_gabarito": "Município de Maracanaú. Poderão participar do Chamamento as entidades mantenedoras de instituições educacionais privadas e sem fins lucrativos/econômicos, localizadas no município de Maracanaú, que tenham interesse em firmar com esta Admini",
-   "pagina_gabarito": 1,
-   "pagina_no_texto": 1,
-   "extraido": "habilitação jurídica, fiscal, de qualificação econômico- financeira e técnica de entidades comunitárias, sem fins lucrativos/econômicos, regularmente constituídas, mantenedoras de creches.",
-   "pagina_extraido": 2,
-   "metodo": "texto",
-   "causa": "pegou outro trecho (página 2); o certo está na página 1"
   },
   {
    "caso": "f2329152462a87d05c3f",
@@ -717,20 +663,6 @@
    "pagina_no_texto": 1,
    "dispensa_extraida": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
    "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
-  },
-  {
-   "caso": "edb376915e2eaa590a49",
-   "item": "Prazo de recurso",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/45735552000186/compras/2027/1/arquivos/1",
-   "gabarito": "3 dias úteis da publicação do resultado do julgamento",
-   "trecho_gabarito": "11.3. Concluída a análise, o resultado do julgamento será publicado, através de Ato Público, e a partir desta data, passa a vigorar o prazo de 03 (três) dias úteis para apresentação de recurso",
-   "pagina_gabarito": 5,
-   "pagina_no_texto": 5,
-   "extraido": "10 (dez) dias úteis",
-   "pagina_extraido": 3,
-   "metodo": "seção",
-   "causa": "pegou outro trecho (página 3); o certo está na página 5"
   },
   {
    "caso": "7e88f1b374732125b1f4",
@@ -789,20 +721,6 @@
   },
   {
    "caso": "9f4a8a40c4cfeaeaefde",
-   "item": "Prazo de recurso",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/18296640000156/compras/2026/13/arquivos/1",
-   "gabarito": "3 dias úteis da intimação ou da lavratura da ata",
-   "trecho_gabarito": "2 - O prazo recursal é de 3 (três) dias úteis, contados da data de intimação ou de lavratura da ata.",
-   "pagina_gabarito": 7,
-   "pagina_no_texto": 7,
-   "extraido": "15 (quinze) dias",
-   "pagina_extraido": 9,
-   "metodo": "seção",
-   "causa": "pegou outro trecho (página 9); o certo está na página 7"
-  },
-  {
-   "caso": "9f4a8a40c4cfeaeaefde",
    "item": "Órgão / financiador",
    "classe": "fora",
    "url": "https://pncp.gov.br/pncp-api/v1/orgaos/18296640000156/compras/2026/13/arquivos/1",
@@ -813,20 +731,6 @@
    "extraido": "Prefeitura Municipal de Biquinhas",
    "pagina_extraido": 1,
    "metodo": "cabeçalho"
-  },
-  {
-   "caso": "9f4a8a40c4cfeaeaefde",
-   "item": "Requisitos",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/18296640000156/compras/2026/13/arquivos/1",
-   "gabarito": "conforme trecho do documento",
-   "trecho_gabarito": "referem os itens 6.2 e 6.3 poderão participar no apoio das atividades de planejamento da contratação, de execução da licitação ou de gestão do contrato, desde que sob supervisão exclusiva de agentes públicos do órgão ou entidade. 9 - Equipa",
-   "pagina_gabarito": 4,
-   "pagina_no_texto": 4,
-   "extraido": "requisitos de habilitação definidos no instrumento convocatório;",
-   "pagina_extraido": 4,
-   "metodo": "texto",
-   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
   },
   {
    "caso": "bdb24ed7d6f1d24f0697",
@@ -852,18 +756,6 @@
    "pagina_gabarito": 5,
    "pagina_no_texto": 5,
    "dispensa_extraida": "dispensado pelo Cartório — não se aplica: credenciamento sem seleção competitiva — todos os habilitados são credenciados",
-   "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
-  },
-  {
-   "caso": "bdb24ed7d6f1d24f0697",
-   "item": "Prazo de recurso",
-   "classe": "falta",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/12356879000198/compras/2025/58/arquivos/1",
-   "gabarito": "3 dias consecutivos da ciência do indeferimento",
-   "trecho_gabarito": "8.6. Da decisão de indeferimento caberá recurso, no prazo de 03 (três) dias consecutivos, a contar da ciência do interessado, dirigido à Secretaria Municipal de Cultura.",
-   "pagina_gabarito": 5,
-   "pagina_no_texto": 5,
-   "dispensa_extraida": "dispensado pelo Cartório — não se aplica: o edital declara que não cabe recurso",
    "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
   },
   {
@@ -909,43 +801,17 @@
   },
   {
    "caso": "4c81862de69688f20a15",
-   "item": "Resultado",
-   "classe": "falta",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/41563628000182/compras/2026/47/arquivos/5",
-   "gabarito": "Lista de credenciados publicada e mantida permanentemente atualizada no PNCP (credenciamento contínuo, sem data única)",
-   "trecho_gabarito": "8.1. O resultado, com a lista de credenciados relacionados de acordo com o critério estabelecido no edital, será publicado e estará permanentemente disponível e atualizado no PORTAL NACIONAL DE CONTRATAÇÕES PÚBLICAS - PNCP.",
-   "pagina_gabarito": 8,
-   "pagina_no_texto": 8,
-   "dispensa_extraida": "dispensado pelo Cartório — não se aplica: credenciamento sem seleção competitiva — todos os habilitados são credenciados",
-   "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
-  },
-  {
-   "caso": "4c81862de69688f20a15",
-   "item": "Prazo de recurso",
+   "item": "Requisitos",
    "classe": "erro",
    "url": "https://pncp.gov.br/pncp-api/v1/orgaos/41563628000182/compras/2026/47/arquivos/5",
-   "gabarito": "3 dias úteis da intimação ou da lavratura da ata",
-   "trecho_gabarito": "5.2. O prazo recursal é de 3 (três) dias úteis, contados da data de intimação ou de lavratura da ata.",
-   "pagina_gabarito": 5,
-   "pagina_no_texto": 5,
-   "extraido": "15 (quinze) dias úteis",
-   "pagina_extraido": 7,
-   "metodo": "seção",
-   "causa": "pegou outro trecho (página 7); o certo está na página 5"
-  },
-  {
-   "caso": "1bec3d5e5a013248c7ed",
-   "item": "Território",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2024/306/arquivos/1",
-   "gabarito": "Canoas/RS",
-   "trecho_gabarito": "unidadeOrgao.municipioNome/ufSigla: Canoas/RS",
-   "pagina_gabarito": null,
-   "pagina_no_texto": null,
-   "extraido": "sede em xxx, na xxxxx, inscrita no CNPJ",
-   "pagina_extraido": 18,
+   "gabarito": "conforme trecho do documento",
+   "trecho_gabarito": "Atestat o cumprimento dos requisitos de habilitaçáo pan fornecimento dos bens ou p^f^ ^ prestação dos serviços. 3.2. Os documentos de credenciamento setão tecebidos no período de L0 de julho de 2026 a L0 de julho de 2027, das 08:00 às 12:00",
+   "pagina_gabarito": 3,
+   "pagina_no_texto": 3,
+   "extraido": "poderá participar, direta ou indiretamente, do ctedenciamento ou da execução do contrato",
+   "pagina_extraido": 2,
    "metodo": "texto",
-   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
+   "causa": "pegou outro trecho (página 2); o certo está na página 3"
   },
   {
    "caso": "1bec3d5e5a013248c7ed",
@@ -1087,29 +953,6 @@
    "metodo": "metadados oficiais do PNCP"
   },
   {
-   "caso": "7f36da8ad9945612c787",
-   "item": "Resultado",
-   "classe": "falta",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/76170240000104/compras/2027/3/arquivos/2",
-   "gabarito": "Resultado da habilitação publicado no Boletim Oficial, no site e no PNCP; novos interessados analisados em até 15 dias úteis",
-   "trecho_gabarito": "4.8. O resultado da habilitação será divulgado no Boletim Oficial do Município, no sítio eletrônico oficial da Prefeitura e no Portal Nacional de Contratações Públicas (PNCP), servindo a publicação oficial como marco inicial para contagem d",
-   "pagina_gabarito": 5,
-   "pagina_no_texto": 5,
-   "dispensa_extraida": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
-   "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
-  },
-  {
-   "caso": "7f36da8ad9945612c787",
-   "item": "Prazo de recurso",
-   "classe": "falta",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/76170240000104/compras/2027/3/arquivos/2",
-   "gabarito": "3 dias úteis da publicação do resultado",
-   "trecho_gabarito": "6.1. Da decisão de deferimento ou indeferimento da inscrição no Credenciamento caberá recurso no prazo de 3 (três) dias úteis, contados da data da publicação do resultado",
-   "pagina_gabarito": 7,
-   "pagina_no_texto": 7,
-   "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
-  },
-  {
    "caso": "7b300087659bb0b387c9",
    "item": "Resultado",
    "classe": "falta",
@@ -1120,20 +963,6 @@
    "pagina_no_texto": 1,
    "dispensa_extraida": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
    "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
-  },
-  {
-   "caso": "7b300087659bb0b387c9",
-   "item": "Prazo de recurso",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/45735552000186/compras/2025/207/arquivos/1",
-   "gabarito": "3 dias úteis da publicação do resultado do julgamento",
-   "trecho_gabarito": "11.3. Concluída a análise, o resultado do julgamento será publicado, através de Ato Público, e a partir desta data, passa a vigorar o prazo de 03 (três) dias úteis para apresentação de recurso",
-   "pagina_gabarito": 5,
-   "pagina_no_texto": 5,
-   "extraido": "10 (dez) dias úteis",
-   "pagina_extraido": 3,
-   "metodo": "seção",
-   "causa": "pegou outro trecho (página 3); o certo está na página 5"
   },
   {
    "caso": "7b300087659bb0b387c9",
@@ -1166,14 +995,16 @@
   {
    "caso": "52a1fdf5d0e54202eeb0",
    "item": "Resultado",
-   "classe": "falta",
+   "classe": "erro",
    "url": "https://pncp.gov.br/pncp-api/v1/orgaos/10648539000105/compras/2025/3/arquivos/1",
    "gabarito": "Comissão publica a lista de habilitadas/inabilitadas após a análise; homologação pelo Diretor-Geral (credenciamento contínuo, sem data única)",
    "trecho_gabarito": "11.1 O Diretor-Geral do Campus realizará a homologação da lista de credenciadas, após instrução da Comissão",
    "pagina_gabarito": 4,
    "pagina_no_texto": 4,
-   "dispensa_extraida": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
-   "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
+   "extraido": "lista de credenciadas que será publicada e mantida atualizada no portal do IFSULDEMINAS - Campus Inconfidentes, para cadastramento permanente de novos interessados, nos termos do art.",
+   "pagina_extraido": 3,
+   "metodo": "seção",
+   "causa": "pegou outro trecho (página 3); o certo está na página 4"
   },
   {
    "caso": "52a1fdf5d0e54202eeb0",
@@ -1265,6 +1096,20 @@
    "causa": "pegou outro trecho (página 3); o certo está na página 1"
   },
   {
+   "caso": "2f85462b05516caee710",
+   "item": "Requisitos",
+   "classe": "erro",
+   "url": "https://portal.uberaba.mg.gov.br/pmudrive/file/arquivos/MTJhYWI3NmIxYWY3NWRjMjFhNzEwY2Q3MzY1OTc3YjQucGRm",
+   "gabarito": "OSC (art. 2º, I, a, b, c, Lei 13.019) inscrita no CMAS com 1 ano de CNPJ, ofertando acolhimento em ILPI; documentos e declarações dos anexos IV a X",
+   "trecho_gabarito": "com 01 (um) ano de inscrição no Cadastro Nacional da Pessoa Jurídica - CNPJ, em conformidade com as alíneas “a” e “b”, inciso V, art. 33 da lei Federal nº 13.0 19/2014",
+   "pagina_gabarito": 1,
+   "pagina_no_texto": 1,
+   "extraido": "Poderão participar deste Edital instituições inscritas no CMAS, no âmbito da Proteção Social Especial na",
+   "pagina_extraido": 1,
+   "metodo": "texto",
+   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
+  },
+  {
    "caso": "332e8f675e56e5916eed",
    "item": "Prazo de inscrição",
    "classe": "falta",
@@ -1295,7 +1140,7 @@
    "trecho_gabarito": "Art. 6º As OSC deverão apresentar: I – Estatuto Social registrado; II – Ata de eleição da diretoria vigente; III – Comprovante de inscrição no CNPJ; IV – Certidões de regularidade fiscal, previdenciária e trabalhista; V – Declarações exigid",
    "pagina_gabarito": 4,
    "pagina_no_texto": 4,
-   "extraido": "Poderão participar do presente Chamamento Público as OSC que: I – Sejam pessoas jurídicas de direito privado, sem ﬁns lucrativos;",
+   "extraido": "Poderão participar do presente Chamamento",
    "pagina_extraido": 3,
    "metodo": "texto",
    "causa": "pegou outro trecho (página 3); o certo está na página 4"
@@ -1408,13 +1253,16 @@
   {
    "caso": "64efa7e36bef2f9468d1",
    "item": "Requisitos",
-   "classe": "falta",
+   "classe": "erro",
    "url": "https://santabarbara.pa.gov.br/wp-content/uploads/2026/10/Edital-no-102026-PNAB-Santa-Barbara-do-Para.pdf",
    "gabarito": "Aceita pessoa física/MEI, PJ com fins lucrativos, PJ sem fins lucrativos (associação, fundação, cooperativa) e coletivo sem CNPJ; um projeto por proponente",
    "trecho_gabarito": "III - Pessoa jurídica sem fins lucrativos (Ex.: Associação, Fundação, Cooperativa, etc)",
    "pagina_gabarito": 2,
    "pagina_no_texto": 2,
-   "causa": "a seção do item não tem título reconhecido (numeração ou nome fora do padrão)"
+   "extraido": "poderá concorrer neste edital com, no máximo 02 (dois) e poderá ser",
+   "pagina_extraido": 3,
+   "metodo": "texto",
+   "causa": "pegou outro trecho (página 3); o certo está na página 2"
   },
   {
    "caso": "743a5444299dcb88b228",
@@ -1542,17 +1390,6 @@
    "pagina_extraido": 1,
    "metodo": "domínio e órgão",
    "causa": "pegou outro trecho (página 1); o certo está na página 13"
-  },
-  {
-   "caso": "a98c4d91f7500fe564d2",
-   "item": "Requisitos",
-   "classe": "falta",
-   "url": "https://www.mapfre.com.br/media/edital-mapfre-2026-informacoes-vf.pdf",
-   "gabarito": "PJ com ou sem fins lucrativos com projeto aprovado em lei de incentivo; idoneidade e experiência com leis de incentivo",
-   "trecho_gabarito": "Pessoas Jurídicas com objetivos culturais, artísticos, esportivos ou sociais, com ou sem fins lucrativos, como instituições, sociedades, fundações ou associações.",
-   "pagina_gabarito": 12,
-   "pagina_no_texto": 12,
-   "causa": "a seção do item não tem título reconhecido (numeração ou nome fora do padrão)"
   },
   {
    "caso": "d94cd9a3d245f2393f2f",
@@ -1725,13 +1562,16 @@
   {
    "caso": "c76fa7dde15e92b4c940",
    "item": "Requisitos",
-   "classe": "falta",
+   "classe": "erro",
    "url": "https://data.queridodiario.ok.org.br/3502101/2026-09-18/4c2c02e35b143c4824e4b4d7a353fb2bc3d59fe3.pdf",
    "gabarito": "Pontos/Pontões certificados (com ou sem CNPJ), OSC sem fins lucrativos e coletivos não certificados que cumpram requisitos de certificação; mínimo 2 anos de atividade cultural comprovada; vedadas PF, ",
    "trecho_gabarito": "Organizações da Sociedade Civil sem fins lucrativos (com CNPJ - aqui tratados, também, como entidades culturais) que desenvolvam e articulem atividades culturais em suas comunidades",
    "pagina_gabarito": 16,
    "pagina_no_texto": 16,
-   "causa": "a seção do item não tem título reconhecido (numeração ou nome fora do padrão)"
+   "extraido": "podem participar deste edital entidades e coletivos ainda não certificados como Ponto ou",
+   "pagina_extraido": 15,
+   "metodo": "texto",
+   "causa": "pegou outro trecho (página 15); o certo está na página 16"
   },
   {
    "caso": "c76fa7dde15e92b4c940",
@@ -1836,10 +1676,10 @@
    "trecho_gabarito": "6.1.4. Que possuam existência legal no mínimo de 3 (três) ano, com cadastro ativo, comprovados por meio de documentação emitida pela Secretaria da Receita Federal do Brasil",
    "pagina_gabarito": 5,
    "pagina_no_texto": 5,
-   "extraido": "habilitação jurídica, regularidade fiscal, trabalhista, e qualificação técnica, nos termos do edital.",
-   "pagina_extraido": 33,
+   "extraido": "Poderão participar do presente Chamamento Público as Organizações da Sociedade",
+   "pagina_extraido": 5,
    "metodo": "texto",
-   "causa": "pegou outro trecho (página 33); o certo está na página 5"
+   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
   },
   {
    "caso": "adc5c5cae78dc2cd2af7",
@@ -1879,6 +1719,17 @@
    "pagina_extraido": 17,
    "metodo": "seção",
    "causa": "pegou outro trecho (página 17); o certo está na página 9"
+  },
+  {
+   "caso": "6d06351ee0a98f70bf95",
+   "item": "Requisitos",
+   "classe": "falta",
+   "url": "https://institutogenesio.org.br/wp-content/uploads/2026/10/Edital-Nao-Incentivado-Instituto-Genesio-A-Mendes-2026.pdf",
+   "gabarito": "documentos exigidos para habilitação, com objetivo de apoiar os serviços ofertados pelas OSCs selecionadas.",
+   "trecho_gabarito": "onselhos de Direito de sua atuação, através de análise dos projetos e documentos exigidos para habilitação, com objetivo de apoiar os serviços ofertados pelas OSCs selecionadas. Parágrafo Único: Poderão ser contemplados os projetos recebido",
+   "pagina_gabarito": 4,
+   "pagina_no_texto": 4,
+   "causa": "a seção do item não tem título reconhecido (numeração ou nome fora do padrão)"
   },
   {
    "caso": "6d06351ee0a98f70bf95",
@@ -1981,20 +1832,6 @@
   },
   {
    "caso": "0c0e5d9749876f121e93",
-   "item": "Prazo de recurso",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/45735552000186/compras/2026/3/arquivos/1",
-   "gabarito": "3 dias úteis contra a decisão de habilitação/inabilitação",
-   "trecho_gabarito": "11.3. Concluída a análise, o resultado do julgamento será publicado, através de Ato Público, e a partir desta data, passa a vigorar o prazo de 03 (três) dias úteis para apresentação de recurso contra decisão de habilitação ou inabilitação",
-   "pagina_gabarito": 5,
-   "pagina_no_texto": 5,
-   "extraido": "10 (dez) dias úteis",
-   "pagina_extraido": 3,
-   "metodo": "seção",
-   "causa": "pegou outro trecho (página 3); o certo está na página 5"
-  },
-  {
-   "caso": "0c0e5d9749876f121e93",
    "item": "Anexos",
    "classe": "erro",
    "url": "https://pncp.gov.br/pncp-api/v1/orgaos/45735552000186/compras/2026/3/arquivos/1",
@@ -2052,16 +1889,13 @@
   {
    "caso": "0dfc53b2787c26812fd2",
    "item": "Requisitos",
-   "classe": "erro",
+   "classe": "falta",
    "url": "https://pncp.gov.br/pncp-api/v1/orgaos/13950733000139/compras/2026/2/arquivos/1",
    "gabarito": "conforme trecho do documento",
    "trecho_gabarito": "Contratações 5. DAS CONDIÇÕES DE PARTICIPAÇÃO 5.1. Poderão participar deste credenciamento exclusivamente cooperativas ou outras formas de associação de catadores e catadoras de materiais recicláveis e de produtos eletroeletrônicos, constit",
    "pagina_gabarito": 2,
    "pagina_no_texto": 2,
-   "extraido": "e\n \nos\n \ndocumentos\n \nde\n \nhabilitação\n \nserão\n \navaliados\n \npor\n \nordem\n \nde\n \nsubmissão\n \n(cronológica)\n \nde\n \nseu\n \nrecebimento\n \nvia\n \ne-mail,\n \nconforme\n \nitem\n \n4.",
-   "pagina_extraido": 4,
-   "metodo": "seção",
-   "causa": "pegou outro trecho (página 4); o certo está na página 2"
+   "causa": "a seção do item não tem título reconhecido (numeração ou nome fora do padrão)"
   },
   {
    "caso": "49da9f5df54f25e60580",
@@ -2086,21 +1920,10 @@
    "trecho_gabarito": "2. PARTICIPAÇÃO: 2.1. Poderão se credenciar as Organizações da Sociedade Civil ( OSC), com ou sem fins lucrativos, que: a) Possuam objeto social compatível com o serviço de acolhimento institucional; b) Comprovem experiência prévia na área ",
    "pagina_gabarito": 2,
    "pagina_no_texto": 2,
-   "extraido": "poderão participar no apoio das atividades de planejamento da contratação, de execução da licitação ou de gestão do contrato, desde que sob supervi são exclusiva de agentes públicos do órgão ou entida",
-   "pagina_extraido": 4,
+   "extraido": "poderá participar : a) Aquele que não atenda às condições deste Edital e seu(s) anexo(s);",
+   "pagina_extraido": 3,
    "metodo": "texto",
-   "causa": "pegou outro trecho (página 4); o certo está na página 2"
-  },
-  {
-   "caso": "7fb96ad0c678671f55f6",
-   "item": "Prazo de recurso",
-   "classe": "falta",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/12115907000185/compras/2026/1/arquivos/1",
-   "gabarito": "3 dias úteis da publicação do ato",
-   "trecho_gabarito": "7 .2 . Do Recurso 7 .2 .1. Caberá recurso no prazo de 3 (três) dias úteis, a contar da publicação do ato",
-   "pagina_gabarito": 5,
-   "pagina_no_texto": 5,
-   "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
+   "causa": "pegou outro trecho (página 3); o certo está na página 2"
   },
   {
    "caso": "7fb96ad0c678671f55f6",
@@ -2114,20 +1937,6 @@
    "extraido": "MUNICÍPIO DE ITAPOÁ (UASG 989985)",
    "pagina_extraido": 1,
    "metodo": "cabeçalho"
-  },
-  {
-   "caso": "7fb96ad0c678671f55f6",
-   "item": "Requisitos",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/12115907000185/compras/2026/1/arquivos/1",
-   "gabarito": "conforme trecho do documento",
-   "trecho_gabarito": "PARTICIPAÇÃO NA LICITAÇÃO 2.1. Poderão participar do presente credenciamento pessoas jurídicas, legalmente constituídas, habilitadas, com idoneidade econômico - financeira, regularidade jurídico - fiscal, que não tenham sofrido penalidade d",
-   "pagina_gabarito": 2,
-   "pagina_no_texto": 2,
-   "extraido": "habilitação jurídica, fiscal, social e trabalhista, poderá ser substituída pelo registro cadastral no SICAF.",
-   "pagina_extraido": 3,
-   "metodo": "texto",
-   "causa": "pegou outro trecho (página 3); o certo está na página 2"
   },
   {
    "caso": "69183c19f4109edfe34d",
@@ -2145,29 +1954,17 @@
   },
   {
    "caso": "69183c19f4109edfe34d",
-   "item": "Prazo de recurso",
+   "item": "Território",
    "classe": "erro",
    "url": "https://pncp.gov.br/pncp-api/v1/orgaos/76966852000108/compras/2026/17/arquivos/1",
-   "gabarito": "3 dias úteis da publicação da decisão",
-   "trecho_gabarito": "5.2. O prazo recursal é de 3 (três) dias úteis, contados da data de publicação da decisão.",
-   "pagina_gabarito": 7,
-   "pagina_no_texto": 7,
-   "extraido": "15 (quinze) dias úteis",
-   "pagina_extraido": 9,
-   "metodo": "seção",
-   "causa": "pegou outro trecho (página 9); o certo está na página 7"
-  },
-  {
-   "caso": "69322c6a48f05a2475c3",
-   "item": "Prazo de recurso",
-   "classe": "falta",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/12356879000198/compras/2025/82/arquivos/1",
-   "gabarito": "3 dias consecutivos da ciência do indeferimento",
-   "trecho_gabarito": "8.6. Da decisão de indeferimento caberá recurso, no prazo de 03 (três) dias consecutivos, a contar da ciência do interessado",
-   "pagina_gabarito": 5,
-   "pagina_no_texto": 5,
-   "dispensa_extraida": "dispensado pelo Cartório — não se aplica: o edital declara que não cabe recurso",
-   "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
+   "gabarito": "Quatiguá/PR (ver restrição no trecho)",
+   "trecho_gabarito": "destinado exclusivamente ao transporte de estudantes universitários residentes no Município para instituições de ensino localizadas em outros municípios . LEGISLAÇÃO Lei Federal nº 14.133, de 1º de abril de 2026 e Lei Municipal nº 3.019, de",
+   "pagina_gabarito": 1,
+   "pagina_no_texto": 1,
+   "extraido": "organização, regularidade e previsibil idade no deslocamento dos estudantes residentes no Município para instituições de ensino",
+   "pagina_extraido": 25,
+   "metodo": "texto",
+   "causa": "pegou outro trecho (página 25); o certo está na página 1"
   },
   {
    "caso": "b373cd034c5e2fe02065",
@@ -2206,8 +2003,8 @@
    "trecho_gabarito": "unidadeOrgao.municipioNome/ufSigla: Jandaíra/RN",
    "pagina_gabarito": null,
    "pagina_no_texto": null,
-   "extraido": "sede no Município",
-   "pagina_extraido": 3,
+   "extraido": "proponente não for residente no Município",
+   "pagina_extraido": 4,
    "metodo": "texto",
    "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
   },
@@ -2225,30 +2022,30 @@
   },
   {
    "caso": "1c42fb1302349fa265d7",
-   "item": "Prazo de recurso",
+   "item": "Território",
    "classe": "erro",
    "url": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2026/44/arquivos/1",
-   "gabarito": "3 dias úteis da intimação",
-   "trecho_gabarito": "7.2. O prazo recursal é de 3 (três) dias úteis, contados da data de intimação ou de lavratura da at",
-   "pagina_gabarito": 9,
-   "pagina_no_texto": 9,
-   "extraido": "10 (dez) dias úteis",
-   "pagina_extraido": 10,
-   "metodo": "seção",
-   "causa": "pegou outro trecho (página 10); o certo está na página 9"
+   "gabarito": "Canoas/RS (ver restrição no trecho)",
+   "trecho_gabarito": "personalidade jurídica, sem fins lucrativos, com razão social carnaval, sediadas em canoas, para participação em eventos promovidos no Município. tempo indeterminado e será projetosculturais@canoas.rs.gov.br Canoas/RS. ESTADO DO RIO GRANDE ",
+   "pagina_gabarito": 1,
+   "pagina_no_texto": 1,
+   "extraido": "pessoa jurídica de Direito Privado, com sede na inscrita no CNPJ sob",
+   "pagina_extraido": 26,
+   "metodo": "texto",
+   "causa": "pegou outro trecho (página 26); o certo está na página 1"
   },
   {
-   "caso": "de5a129df213bb5aabaf",
+   "caso": "1c42fb1302349fa265d7",
    "item": "Requisitos",
    "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/83102285000107/compras/2026/1/arquivos/1",
+   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2026/44/arquivos/1",
    "gabarito": "conforme trecho do documento",
-   "trecho_gabarito": "necessidade do serviço. 2. DAS CONDIÇÕES DE PARTICIPAÇÃO 2.1. Poderão participar do presente credenciamento as entidades privadas ou públicas, com ou sem fins lucrativos, legalmente constituídas, que atendam integralmente às condições estab",
+   "trecho_gabarito": "interessado que atender aos requisitos de habilitação previstos no edital será credenciado pelo órgão ou pela entidade credenciante, com a possibilidade de, no interesse da administração, ser convocado para executar o objeto. 2.1.4. No cada",
    "pagina_gabarito": 2,
    "pagina_no_texto": 2,
-   "extraido": "poderão participar do credenciamento: Assinado por 1 pessoa: JOSÉ EDELTRUDES DA COSTA FERREIRA NETO Para verificar a validade das assinaturas, acesse https://bc.",
+   "extraido": "Os interessados deverão\ndo Termo de Referência, parte integral desde Edital\n2.",
    "pagina_extraido": 2,
-   "metodo": "texto",
+   "metodo": "seção",
    "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
   },
   {
@@ -2301,16 +2098,13 @@
   {
    "caso": "e1a46fb1b974d54599f6",
    "item": "Requisitos",
-   "classe": "erro",
+   "classe": "falta",
    "url": "https://pncp.gov.br/pncp-api/v1/orgaos/51174001000193/compras/2025/260/arquivos/2",
    "gabarito": "conforme trecho do documento",
    "trecho_gabarito": "relativa ao cumprimento dos requisitos de habilitaÁ„o e da proposta sujeitar· a empresa ou interessado ‡s sanÁıes previstas na legislaÁ„o. 7.7.2 As certidıes apresentadas ser„o consideradas v·lidas pelo perÌodo de 180 (cento e oitenta) dias",
    "pagina_gabarito": 11,
    "pagina_no_texto": 11,
-   "extraido": "documentos exigidos para habilitaçªo nªo contemplados no SICAF deverªo ser enviados por e-mail, quando solicitado pela Comissªo de Contrataçªo, atØ a conclusªo da fase de habilitaçªo;",
-   "pagina_extraido": 9,
-   "metodo": "texto",
-   "causa": "pegou outro trecho (página 9); o certo está na página 11"
+   "causa": "a seção do item não tem título reconhecido (numeração ou nome fora do padrão)"
   },
   {
    "caso": "e1a46fb1b974d54599f6",
@@ -2340,28 +2134,17 @@
   },
   {
    "caso": "d810b5f262c0ac09c067",
-   "item": "Prazo de recurso",
+   "item": "Requisitos",
    "classe": "erro",
    "url": "https://pncp.gov.br/pncp-api/v1/orgaos/45735552000186/compras/2030/4/arquivos/1",
-   "gabarito": "3 dias úteis contra a decisão de habilitação/inabilitação",
-   "trecho_gabarito": "11.3. Concluída a análise, o resultado do julgamento será publicado, através de Ato Público, e a partir desta data, passa a vigorar o prazo de 03 (três) dias úteis para apresentação de recurso contra decisão de habil",
-   "pagina_gabarito": 5,
-   "pagina_no_texto": 5,
-   "extraido": "10 (dez) dias úteis",
-   "pagina_extraido": 3,
-   "metodo": "seção",
-   "causa": "pegou outro trecho (página 3); o certo está na página 5"
-  },
-  {
-   "caso": "5cac39c12aff0c6a38f4",
-   "item": "Prazo de recurso",
-   "classe": "falta",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/18241745000108/compras/2026/37/arquivos/1",
-   "gabarito": "3 dias úteis após o ato de habilitação/inabilitação",
-   "trecho_gabarito": "3.2. O prazo para apresentação de razões é de 03 (três) dias úteis, após o ato de habilitação ou inabilitação do interess",
-   "pagina_gabarito": 8,
-   "pagina_no_texto": 8,
-   "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
+   "gabarito": "conforme trecho do documento",
+   "trecho_gabarito": "conforme Anexo II – Documentos de Habilitação deste Edital. 10. DO CREDENCIAMENTO DA PROPOSTA NA PLATAFORMA 10.1. O fornecedor interessado em particip ar do credenciamento, deverá se cadastrar na Plataforma de Licitações Eletrônicas Licita ",
+   "pagina_gabarito": 4,
+   "pagina_no_texto": 4,
+   "extraido": "Os interessados deverão estar cientes da legislação que rege os praz os de validade das certidões emitidas pelos respectivos órgãos federais, estaduais e municipais.",
+   "pagina_extraido": 4,
+   "metodo": "texto",
+   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
   },
   {
    "caso": "5cac39c12aff0c6a38f4",
@@ -2376,17 +2159,6 @@
    "pagina_extraido": 13,
    "metodo": "texto",
    "causa": "pegou outro trecho (página 13); o certo está na página 5"
-  },
-  {
-   "caso": "36ea5a7aff849b51f69f",
-   "item": "Prazo de recurso",
-   "classe": "falta",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/88185020000125/compras/2024/355/arquivos/1",
-   "gabarito": "3 dias úteis do recebimento da comunicação",
-   "trecho_gabarito": "ou que declarar o descredenciamento caberá recurso no prazo de 3 (três) dias úteis, a contar do recebimento da comunicação por e-mail",
-   "pagina_gabarito": 8,
-   "pagina_no_texto": 8,
-   "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
   },
   {
    "caso": "36ea5a7aff849b51f69f",
@@ -2410,10 +2182,10 @@
    "trecho_gabarito": "Afim de comprovar os requisitos para participação e a qualificação técnica exigida, os interessados deverão apresentar quando da habilitação: I. Comprovante de experiência prévia na realização, com efetividade, do objeto da parceria ou de o",
    "pagina_gabarito": 4,
    "pagina_no_texto": 4,
-   "extraido": "documentos necessários à habilitação deverão ser encaminhados ao para o email: licitacoes.",
-   "pagina_extraido": 2,
+   "extraido": "Poderão participar deste Chamamento Público todos os interessados do ramo",
+   "pagina_extraido": 37,
    "metodo": "texto",
-   "causa": "pegou outro trecho (página 2); o certo está na página 4"
+   "causa": "pegou outro trecho (página 37); o certo está na página 4"
   },
   {
    "caso": "36ea5a7aff849b51f69f",
@@ -2535,20 +2307,6 @@
   },
   {
    "caso": "275bb41a215db2d707b1",
-   "item": "Território",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/16298929000189/compras/2026/31/arquivos/1",
-   "gabarito": "Adustina/BA",
-   "trecho_gabarito": "unidadeOrgao.nomeUnidade: MUNICÍPIO DE ADUSTINA/BA; municipioNome: Adustina; ufSigla: BA",
-   "pagina_gabarito": null,
-   "pagina_no_texto": null,
-   "extraido": "sede na xxxxxx, inscrita no CNPJ",
-   "pagina_extraido": 52,
-   "metodo": "texto",
-   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
-  },
-  {
-   "caso": "275bb41a215db2d707b1",
    "item": "Requisitos",
    "classe": "erro",
    "url": "https://pncp.gov.br/pncp-api/v1/orgaos/16298929000189/compras/2026/31/arquivos/1",
@@ -2556,7 +2314,7 @@
    "trecho_gabarito": "5.1.4. P ossuir, no momento da apresentação do plano de trabalho, no mínimo 3 (três) anos de existência, com cadastro ativo, comprovados por meio de documentação emitida pela Secretariada Receita Federal do Brasil, com base no Cadastro Naci",
    "pagina_gabarito": 5,
    "pagina_no_texto": 5,
-   "extraido": "Poderão participar deste Chamamento Público as Organizações da Sociedade Civil (OSCs), assim consideradas aquelas definidas pelo art.",
+   "extraido": "Poderão participar deste Chamamento Público as Organizações da Sociedade Civil",
    "pagina_extraido": 4,
    "metodo": "texto",
    "causa": "pegou outro trecho (página 4); o certo está na página 5"
@@ -2593,17 +2351,6 @@
    "url": "https://data.queridodiario.ok.org.br/2408003/2026-09-16/ce852d74cc5a843792133c9b590f6041699ecca1.pdf",
    "gabarito": "Comissão se manifesta em até 10 dias úteis (prorrogáveis) após o pedido; resultado divulgado no Diário Oficial do Município",
    "trecho_gabarito": "7.3. A Comissão de Seleção, responsável pela análise da documentação, deverá manifestar-se conclusivamente sobre o requerido no prazo máximo de 10 (dez) dias úteis, prorrogável por igual período",
-   "pagina_gabarito": 18,
-   "pagina_no_texto": 18,
-   "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
-  },
-  {
-   "caso": "32ac4fab82d1d4672be8",
-   "item": "Prazo de recurso",
-   "classe": "falta",
-   "url": "https://data.queridodiario.ok.org.br/2408003/2026-09-16/ce852d74cc5a843792133c9b590f6041699ecca1.pdf",
-   "gabarito": "3 dias úteis da ciência do indeferimento, dirigido ao Presidente da Comissão de Seleção",
-   "trecho_gabarito": "7.6. Da decisão de indeferimento caberá recurso, no prazo de 03 (três) dias úteis, a contar da ciência do interessado, dirigido ao Presidente da Comissão de Seleção.",
    "pagina_gabarito": 18,
    "pagina_no_texto": 18,
    "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
@@ -2719,13 +2466,16 @@
   {
    "caso": "7953fb9e3735e1761123",
    "item": "Requisitos",
-   "classe": "falta",
+   "classe": "erro",
    "url": "https://data.queridodiario.ok.org.br/3556206/2026-09-25/56aea1ce2320e8f0a5b14032fed10736db597209.pdf",
    "gabarito": "OSC de assistência social sem fins lucrativos, inscrita no CMAS do município de atuação e no CNEAS; art. 33 da Lei 13.019 (mínimo 1 ano de CNPJ, experiência prévia, capacidade técnica); documentos do ",
    "trecho_gabarito": "Constituídas como organização de Assistência Social, sem fins lucrativos que, isolada ou cumulativamente, prestam atendimento, assessoramento e/ou defesa e garantia de direitos",
    "pagina_gabarito": 5,
    "pagina_no_texto": 5,
-   "causa": "a seção do item não tem título reconhecido (numeração ou nome fora do padrão)"
+   "extraido": "podem participar desta seleção as Organizações da Sociedade Civil (OSC) que:",
+   "pagina_extraido": 5,
+   "metodo": "texto",
+   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
   },
   {
    "caso": "9a0341722caf1d1b6d20",
@@ -2769,7 +2519,10 @@
    "gabarito": "Agente cultural PF/MEI, PJ com ou sem fins lucrativos ou coletivo sem CNPJ, com residência/sede no município; 1 projeto por agente; vedações do item 2.6; habilitação PJ: CNPJ, estatuto (OSC), document",
    "trecho_gabarito": "III - Pessoa jurídica sem fins lucrativos;",
    "pagina_gabarito": 6,
-   "pagina_no_texto": null
+   "pagina_no_texto": null,
+   "extraido": "Podem se inscrever no Edital qualquer agente cultural que comprove residência",
+   "pagina_extraido": 5,
+   "metodo": "texto"
   },
   {
    "caso": "a0aae2f7b6e37e779978",
@@ -2810,17 +2563,6 @@
    "pagina_extraido": 4,
    "metodo": "seção",
    "causa": "pegou outro trecho (página 4); o certo está na página 7"
-  },
-  {
-   "caso": "a0aae2f7b6e37e779978",
-   "item": "Prazo de recurso",
-   "classe": "falta",
-   "url": "https://data.queridodiario.ok.org.br/2408003/2026-07-28/2c9cd6eb38564a85a24fd3ef22bf113da6a30413.pdf",
-   "gabarito": "3 dias úteis da ciência do indeferimento",
-   "trecho_gabarito": "7.6. Da decisão de indeferimento caberá recurso, no prazo de 03 (três) dias úteis, a contar da ciência do interessado, dirigido ao Presidente da Comissão de Seleção.",
-   "pagina_gabarito": 7,
-   "pagina_no_texto": 7,
-   "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
   },
   {
    "caso": "a0aae2f7b6e37e779978",
@@ -3266,25 +3008,17 @@
   },
   {
    "caso": "2c58bba753a8ba5b88fe",
-   "item": "Prazo de recurso",
-   "classe": "falta",
-   "url": "https://chamamentos.itapevi.sp.gov.br/filemanager/files/shares/Edital%20de%20fomento%20%C3%A0%20Cultura%20Hip%20Hop%20-%20prorrogado%20%281%29.pdf",
-   "gabarito": "3 dias úteis da publicação do resultado",
-   "trecho_gabarito": "no prazo de 03 (três) dias úteis, a contar da publicação do resultado",
-   "pagina_gabarito": 10,
-   "pagina_no_texto": 10,
-   "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
-  },
-  {
-   "caso": "2c58bba753a8ba5b88fe",
    "item": "Requisitos",
-   "classe": "falta",
+   "classe": "erro",
    "url": "https://chamamentos.itapevi.sp.gov.br/filemanager/files/shares/Edital%20de%20fomento%20%C3%A0%20Cultura%20Hip%20Hop%20-%20prorrogado%20%281%29.pdf",
    "gabarito": "Agente cultural PF/MEI, PJ com ou sem fins lucrativos (associação, fundação, cooperativa) ou coletivo; um projeto por proponente",
    "trecho_gabarito": "III - Pessoa jurídica sem fins lucrativos (Ex.: Associação, Fundação, Cooperativa, etc)",
    "pagina_gabarito": 2,
    "pagina_no_texto": 2,
-   "causa": "a seção do item não tem título reconhecido (numeração ou nome fora do padrão)"
+   "extraido": "poderá concorrer neste edital com, no máximo dois (02)",
+   "pagina_extraido": 3,
+   "metodo": "texto",
+   "causa": "pegou outro trecho (página 3); o certo está na página 2"
   },
   {
    "caso": "c33c88172f0ce041cc81",
@@ -3358,17 +3092,6 @@
   },
   {
    "caso": "b42a4b4930d247caf973",
-   "item": "Prazo de recurso",
-   "classe": "falta",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/83102459000123/compras/2026/861/arquivos/1",
-   "gabarito": "3 dias úteis da publicação da decisão; reconsideração em 3 dias úteis; decisão superior em até 10 dias úteis",
-   "trecho_gabarito": "7.2.1. O interessado poderá interpor recurso, no prazo de 03 (três) dias úteis, contado da data de publicação da decisão.",
-   "pagina_gabarito": 12,
-   "pagina_no_texto": 12,
-   "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
-  },
-  {
-   "caso": "b42a4b4930d247caf973",
    "item": "Requisitos",
    "classe": "erro",
    "url": "https://pncp.gov.br/pncp-api/v1/orgaos/83102459000123/compras/2026/861/arquivos/1",
@@ -3376,7 +3099,7 @@
    "trecho_gabarito": "habilitação. 3. DAS CONDIÇÕES DE PARTICIPAÇÃO 3.1. O credenciamento permanecerá aberto durante os 48 (quarenta e oito) meses de vigência deste Edital, admitindo-se o cadastramento permanente de novos interessados e a realização de análises ",
    "pagina_gabarito": 8,
    "pagina_no_texto": 8,
-   "extraido": "poderão participar no credenciamento os interessados que estejam cumprindo a sanção prevista pela Lei n 14.",
+   "extraido": "poderão participar no credenciamento os interessados que estejam cumprindo a sanção",
    "pagina_extraido": 8,
    "metodo": "texto",
    "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
@@ -3393,20 +3116,6 @@
    "extraido": "2026-10-23 a 2026-10-23",
    "pagina_extraido": null,
    "metodo": "metadados oficiais do PNCP",
-   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
-  },
-  {
-   "caso": "13cf5ff5b8a613422109",
-   "item": "Requisitos",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/78121878000172/compras/2026/227/arquivos/1",
-   "gabarito": "Entidade sem fins lucrativos cadastrada em conselho municipal (CMAS, CMDCA, Idoso etc.) com documentação de PJ e certidões (federal, estaduais/municipais, FGTS, trabalhista)",
-   "trecho_gabarito": "Poderão participar deste Credenciamento as entidades sem fins lucrativos, devidamente cadastradas e com regularidade comprovada junto ao Conselho Municipal de Assistência Social",
-   "pagina_gabarito": 4,
-   "pagina_no_texto": 4,
-   "extraido": "São requisitos para o credenciamento, a apresentação dos seguintes documentos originais, para que sua cópia seja autenticada por servidores desta Administração: 2.",
-   "pagina_extraido": 4,
-   "metodo": "texto",
    "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
   },
   {
@@ -3467,17 +3176,6 @@
   },
   {
    "caso": "ecb846915cbf2b4133a5",
-   "item": "Requisitos",
-   "classe": "falta",
-   "url": "https://www.energiaesaneamento.org.br/wp-content/uploads/2026/10/Edital_Credenciamento_Sonhar_Mundo_2026.pdf",
-   "gabarito": "Museus públicos e privados, memoriais, centros de memória, casas de cultura e instituições de caráter museológico; não exige acervo, formação nem experiência no tema",
-   "trecho_gabarito": "1.2 Podem igualmente se credenciar memoriais, centros de memória, casas de cultura e demais instituições de caráter museológico, ainda que não utilizem a palavra “museu” em sua denominação.",
-   "pagina_gabarito": 1,
-   "pagina_no_texto": 1,
-   "causa": "a seção do item não tem título reconhecido (numeração ou nome fora do padrão)"
-  },
-  {
-   "caso": "ecb846915cbf2b4133a5",
    "item": "Anexos",
    "classe": "falta",
    "url": "https://www.energiaesaneamento.org.br/wp-content/uploads/2026/10/Edital_Credenciamento_Sonhar_Mundo_2026.pdf",
@@ -3512,6 +3210,20 @@
    "pagina_extraido": 50,
    "metodo": "seção",
    "causa": "pegou outro trecho (página 50); o certo está na página 3"
+  },
+  {
+   "caso": "fb1a2ebe8e4bf465a30e",
+   "item": "Território",
+   "classe": "erro",
+   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/42498733000148/compras/2026/1323/arquivos/1",
+   "gabarito": "Rio de Janeiro/RJ",
+   "trecho_gabarito": "unidadeOrgao.municipioNome/ufSigla: Rio de Janeiro/RJ",
+   "pagina_gabarito": null,
+   "pagina_no_texto": null,
+   "extraido": "entidade, no Projeto Terapêutico Individual (PTI), prever a orientação ao residente no tocante",
+   "pagina_extraido": 47,
+   "metodo": "texto",
+   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
   },
   {
    "caso": "fb1a2ebe8e4bf465a30e",
@@ -3566,20 +3278,6 @@
   },
   {
    "caso": "f5f21c7b1d22fd5f7741",
-   "item": "Território",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/77902914000172/compras/2026/1/arquivos/1",
-   "gabarito": "Guarapuava/PR",
-   "trecho_gabarito": "unidadeOrgao.municipioNome/ufSigla: Guarapuava/PR",
-   "pagina_gabarito": null,
-   "pagina_no_texto": null,
-   "extraido": "sede da empresa; e) Cadastro no Sistema de Gestão de Materiais",
-   "pagina_extraido": 21,
-   "metodo": "texto",
-   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
-  },
-  {
-   "caso": "f5f21c7b1d22fd5f7741",
    "item": "Requisitos",
    "classe": "erro",
    "url": "https://pncp.gov.br/pncp-api/v1/orgaos/77902914000172/compras/2026/1/arquivos/1",
@@ -3587,7 +3285,7 @@
    "trecho_gabarito": "2. DAS CONDIÇÕES PARA PARTICIPAÇÃO AO CHAMAMENTO PÚBLICO 2.1 A coleta será disponibilizada às seguintes en",
    "pagina_gabarito": 2,
    "pagina_no_texto": 2,
-   "extraido": "poderão participar deste credenciamento pessoas físicas ou jurídicas que: 2.",
+   "extraido": "poderão participar deste credenciamento pessoas físicas ou jurídicas que:",
    "pagina_extraido": 2,
    "metodo": "texto",
    "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
@@ -3632,20 +3330,6 @@
    "pagina_extraido": 3,
    "metodo": "seção",
    "causa": "pegou outro trecho (página 3); o certo está na página 1"
-  },
-  {
-   "caso": "259543bcbd79cc952f82",
-   "item": "Requisitos",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/82892373000189/compras/2027/1/arquivos/1",
-   "gabarito": "conforme trecho do documento",
-   "trecho_gabarito": "n° 10.741/2003. 2.3. Poderão participar deste Credenciamento pessoas jurídicas com ou sem fins lucrativos, que possuam em seu objeto social atividade compatível com o serviço de acolhimento institucional de idosos (ILPI) e que atendam plena",
-   "pagina_gabarito": 4,
-   "pagina_no_texto": 1,
-   "extraido": "habilitação jurídica, técnica, fiscal, social e trabalhista exigidas no Termo de Referência e que estejam localizadas no raio de até 100 (cem) km do município de Governador Celso Ramos/SC.",
-   "pagina_extraido": 1,
-   "metodo": "texto",
-   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
   },
   {
    "caso": "259543bcbd79cc952f82",
@@ -3786,20 +3470,6 @@
   },
   {
    "caso": "73961f49f7a9b54816cc",
-   "item": "Território",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/75771253000168/compras/2025/144/arquivos/1",
-   "gabarito": "Apucarana/PR (ver restrição no trecho)",
-   "trecho_gabarito": "Município de Apucarana, inscrita no CNPJ SOB Nº 75.771.253/0001-68, sediada no Centro Cívico José Oliveira Rosa, 25, Edifício Cidade Alta, neste Município, por intermédio da Comissão de Contratação, designada pelas Portarias nº 73 e 74/2024",
-   "pagina_gabarito": 2,
-   "pagina_no_texto": 2,
-   "extraido": "sediada no Centro Cívico José Oliveira",
-   "pagina_extraido": 2,
-   "metodo": "texto",
-   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
-  },
-  {
-   "caso": "73961f49f7a9b54816cc",
    "item": "Requisitos",
    "classe": "erro",
    "url": "https://pncp.gov.br/pncp-api/v1/orgaos/75771253000168/compras/2025/144/arquivos/1",
@@ -3807,7 +3477,7 @@
    "trecho_gabarito": "1.0 Do objeto; 2.0 Das condições de participação; 3.0 Dos documentos e procedimento de inscrição; 4.0 Do critério de seleção dos inscritos e formalização da doação; 5.0 Da impugnação ao edital, recurso e pedido de esclarecimento; 6.0 Da aus",
    "pagina_gabarito": 1,
    "pagina_no_texto": 1,
-   "extraido": "Poderão participar deste credenciamento, pessoas fí sicas, jurídicas ou entidades sem fins lucrativos que sejam detentoras de lote de terras localizado na zona rural, do município de Apucarana ou não,",
+   "extraido": "Poderão participar deste credenciamento, pessoas fí sicas, jurídicas ou entidades sem fins",
    "pagina_extraido": 3,
    "metodo": "texto",
    "causa": "pegou outro trecho (página 3); o certo está na página 1"
@@ -3821,6 +3491,20 @@
    "trecho_gabarito": "arquivos publicados no PNCP: edital_97_2025_2811_documento.pdf",
    "pagina_gabarito": null,
    "pagina_no_texto": null
+  },
+  {
+   "caso": "1074b72bdf1e1e67f415",
+   "item": "Território",
+   "classe": "erro",
+   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/11840546000177/compras/2026/12/arquivos/1",
+   "gabarito": "Lages/SC (ver restrição no trecho)",
+   "trecho_gabarito": "pr estação de serviços de acolhimento de pessoas naturais ou residentes no Município de Lages/SC com problemas decorrentes do uso, abuso ou dependência do álcool e outras drogas, visando ofertar seus serviços à Secretaria Municipal de Saúde",
+   "pagina_gabarito": 1,
+   "pagina_no_texto": 1,
+   "extraido": "entidades que ofereçam serviços de acolhimento em comunidade terapêutica e estejam sediadas no território do Estado de",
+   "pagina_extraido": 5,
+   "metodo": "texto",
+   "causa": "pegou outro trecho (página 5); o certo está na página 1"
   },
   {
    "caso": "1074b72bdf1e1e67f415",
@@ -3845,48 +3529,6 @@
    "pagina_extraido": 25,
    "metodo": "texto",
    "causa": "pegou outro trecho (página 25); o certo está na página 1"
-  },
-  {
-   "caso": "0fbc79bf69e4084959e8",
-   "item": "Requisitos",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/12262739000150/compras/2026/43/arquivos/1",
-   "gabarito": "conforme trecho do documento",
-   "trecho_gabarito": "decisão anterior. 7. DAS CONDIÇÕES DE PARTICIPAÇÃO 7.1. O Setor de Licitações e Contratos e a Secretaria Municipal de Saúde poderão credenciar as organizações da sociedade civil que atenderem aos seguintes requisitos: a) ser pessoa jurídica",
-   "pagina_gabarito": 5,
-   "pagina_no_texto": 5,
-   "extraido": "requisitos de habilitação, devendo a Comissão oportunizar a sua correção, em homenagem aos princípios do formalismo moderado e da instrumentalidade das formas.",
-   "pagina_extraido": 9,
-   "metodo": "texto",
-   "causa": "pegou outro trecho (página 9); o certo está na página 5"
-  },
-  {
-   "caso": "8e41abc05e4b987f5bde",
-   "item": "Território",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/05943030000155/compras/2026/245/arquivos/1",
-   "gabarito": "Boa Vista/RR (ver restrição no trecho)",
-   "trecho_gabarito": "Os serviços serão destinados ao atendimento de pessoas idosas residentes no Município de Boa Vista, cujos vínculos familiares estejam rompidos ou fragilizados, em caráter temporário ou permanente, e que necessitem de acolhimento institucion",
-   "pagina_gabarito": 17,
-   "pagina_no_texto": 17,
-   "extraido": "sede no Palácio",
-   "pagina_extraido": 52,
-   "metodo": "texto",
-   "causa": "pegou outro trecho (página 52); o certo está na página 17"
-  },
-  {
-   "caso": "83c2d963e00c05e5c3b8",
-   "item": "Território",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/88577416000118/compras/2024/301/arquivos/1",
-   "gabarito": "Canoas/RS (ver restrição no trecho)",
-   "trecho_gabarito": ". 1.1.2. Somente serão credenciados escritores canoenses ou residentes no município de Canoas que possuam livros, no mínimo um título ou tenham participação em coletâneas, publicados no período de 2016 até a data da assinatura do termo de c",
-   "pagina_gabarito": 2,
-   "pagina_no_texto": 2,
-   "extraido": "sede em XXXXXXXXXXXXXXXXXXXXXX",
-   "pagina_extraido": 17,
-   "metodo": "texto",
-   "causa": "pegou outro trecho (página 17); o certo está na página 2"
   },
   {
    "caso": "83c2d963e00c05e5c3b8",
@@ -4021,17 +3663,6 @@
   },
   {
    "caso": "bc7f2307e42ed5bd8536",
-   "item": "Prazo de recurso",
-   "classe": "falta",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/25053190000136/compras/2025/54/arquivos/2",
-   "gabarito": "3 dias úteis contra o resultado da habilitação; reconsideração em 3 dias úteis",
-   "trecho_gabarito": "8.4. O prazo para interposição de recurso contra o resultado da habilitação será de 3 (três) dias úteis",
-   "pagina_gabarito": 2,
-   "pagina_no_texto": 2,
-   "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
-  },
-  {
-   "caso": "bc7f2307e42ed5bd8536",
    "item": "Território",
    "classe": "erro",
    "url": "https://pncp.gov.br/pncp-api/v1/orgaos/25053190000136/compras/2025/54/arquivos/2",
@@ -4072,20 +3703,6 @@
   },
   {
    "caso": "a8b026eec92ee050dabe",
-   "item": "Requisitos",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/12473062000108/compras/2024/121/arquivos/1",
-   "gabarito": "conforme trecho do documento",
-   "trecho_gabarito": "NO CREDENCIAMENTO 3.1 Poderão participar do Processo de Credenciamento todas as associações e/ou cooperativas que atuem no ramo de atividade pertinente ao objeto da contratação e que preencham todos os requisitos de habilitação abaixo relac",
-   "pagina_gabarito": 2,
-   "pagina_no_texto": 2,
-   "extraido": "habilitação jurídica, capacidade técnica e proposta técnica exigida neste Edital, que deverá estar em conformidade com o art.",
-   "pagina_extraido": 2,
-   "metodo": "texto",
-   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
-  },
-  {
-   "caso": "a8b026eec92ee050dabe",
    "item": "Área de atuação",
    "classe": "erro",
    "url": "https://pncp.gov.br/pncp-api/v1/orgaos/12473062000108/compras/2024/121/arquivos/1",
@@ -4114,6 +3731,20 @@
   },
   {
    "caso": "9b629429aba64de24cec",
+   "item": "Requisitos",
+   "classe": "erro",
+   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2024/969/arquivos/1",
+   "gabarito": "conforme trecho do documento",
+   "trecho_gabarito": "DOS REQUISITOS PARA CREDENCIAMENTO 12. Serão credenciadas a coletar os resíduos recicláveis descartados pelo TRT4 as associações e cooperativas de catadores de materiais recicláveis que atenderem aos seguintes requisitos: I - Sejam formalme",
+   "pagina_gabarito": 4,
+   "pagina_no_texto": 4,
+   "extraido": "condições de participação, quanto à existência de sanção que impeça a participação no certame ou a futura contratação, mediante a consulta ao seguinte cadastro: a) Cadastro Nacional de Empresas Inidôn",
+   "pagina_extraido": 4,
+   "metodo": "texto",
+   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
+  },
+  {
+   "caso": "9b629429aba64de24cec",
    "item": "Anexos",
    "classe": "fora",
    "url": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2024/969/arquivos/1",
@@ -4132,60 +3763,6 @@
    "pagina_gabarito": 2,
    "pagina_no_texto": 2,
    "causa": "regra não reconheceu o trecho que está no documento"
-  },
-  {
-   "caso": "41375e79a6330c95344c",
-   "item": "Resultado",
-   "classe": "falta",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/585/arquivos/1",
-   "gabarito": "Lista de credenciados atualizada a cada 6 meses; credenciados homologados são convocados para Termo de Compromisso",
-   "trecho_gabarito": "a lista será atualizada a cada 06 (seis) meses",
-   "pagina_gabarito": 33,
-   "pagina_no_texto": 33,
-   "dispensa_extraida": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
-   "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
-  },
-  {
-   "caso": "41375e79a6330c95344c",
-   "item": "Prazo de recurso",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/585/arquivos/1",
-   "gabarito": "3 dias úteis da decisão, por e-mail; reconsideração em 3 dias úteis; decisão superior em 10 dias úteis",
-   "trecho_gabarito": "5 . 2 . O prazo recursal é de 3 (três) dias úteis, contados da data",
-   "pagina_gabarito": 7,
-   "pagina_no_texto": 7,
-   "extraido": "15 (quinze) dias úteis",
-   "pagina_extraido": 9,
-   "metodo": "seção",
-   "causa": "pegou outro trecho (página 9); o certo está na página 7"
-  },
-  {
-   "caso": "41375e79a6330c95344c",
-   "item": "Território",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/585/arquivos/1",
-   "gabarito": "São Luís/MA",
-   "trecho_gabarito": "unidadeOrgao.municipioNome/ufSigla: São Luís/MA",
-   "pagina_gabarito": null,
-   "pagina_no_texto": null,
-   "extraido": "sediada XXXXXXX, inscrita no CNPJ-MF",
-   "pagina_extraido": 41,
-   "metodo": "texto",
-   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
-  },
-  {
-   "caso": "41375e79a6330c95344c",
-   "item": "Requisitos",
-   "classe": "erro",
-   "url": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/585/arquivos/1",
-   "gabarito": "conforme trecho do documento",
-   "trecho_gabarito": "CREDENCIAMENTO 2 . 1 . Poderão participar do credenciamento exclusivamente as Associações ou Cooperativas de catadores de materiais recicláveis, regularmente constituídas, cujas atividades e finalidades específicas estejam voltadas à preser",
-   "pagina_gabarito": 4,
-   "pagina_no_texto": 4,
-   "extraido": "requisitos de habilitação previstos no Edital.",
-   "pagina_extraido": 5,
-   "metodo": "texto",
-   "causa": "pegou outro trecho (página 5); o certo está na página 4"
   },
   {
    "caso": "4183ee9e3fcea064e290",
@@ -4555,18 +4132,10 @@
    "gabarito": "OSC habilitada no Transferegov.br, 3 anos de existência e CNPJ ativo, 1 ano de experiência",
    "trecho_gabarito": "pelo menos três anos de existência e cadastro ativo no CNPJ.",
    "pagina_gabarito": null,
-   "pagina_no_texto": null
-  },
-  {
-   "caso": "257492042d91e5c020e5",
-   "item": "Prazo de recurso",
-   "classe": "falta",
-   "url": "https://data.queridodiario.ok.org.br/3509502/2026-09-11/81c90d9ade889cbc7fe45c09b98e366b7fc872b6.pdf",
-   "gabarito": "3 dias úteis após a publicação do resultado preliminar",
-   "trecho_gabarito": "em 3 (três) dias úteis contados do primeiro dia útil após a publicação do referido resultado",
-   "pagina_gabarito": 10,
-   "pagina_no_texto": 10,
-   "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
+   "pagina_no_texto": null,
+   "extraido": "Podem participar do chamamento organizações da sociedade civil, conforme as condições previstas no edital.",
+   "pagina_extraido": 1,
+   "metodo": "texto"
   },
   {
    "caso": "257492042d91e5c020e5",
@@ -4612,18 +4181,6 @@
   },
   {
    "caso": "1e7863906ab977ea8f1d",
-   "item": "Prazo de recurso",
-   "classe": "falta",
-   "url": "https://data.queridodiario.ok.org.br/3509502/2026-09-28/f3129045f674ff0124f828d323cc5c3f4247d1b0.pdf",
-   "gabarito": "3 dias úteis (até 18/11/2026)",
-   "trecho_gabarito": "05 PRAZO PARA INTERPOSIÇÃO DE RECURSO CONTRA A CLASSIFICAÇÃO PRELIMINAR 18/11/2026",
-   "pagina_gabarito": 10,
-   "pagina_no_texto": 10,
-   "dispensa_extraida": "dispensado pelo Cartório — não se aplica: o edital declara que não cabe recurso",
-   "causa": "o cronograma usa outro rótulo ou o prazo vem por extenso/sem a palavra-chave perto do número"
-  },
-  {
-   "caso": "1e7863906ab977ea8f1d",
    "item": "Valor",
    "classe": "fora",
    "url": "https://data.queridodiario.ok.org.br/3509502/2026-09-28/f3129045f674ff0124f828d323cc5c3f4247d1b0.pdf",
@@ -4644,10 +4201,10 @@
    "trecho_gabarito": "Art. 2º Poderão participar deste Chamamento Público as organizações da sociedade civil que cumprirem os dispositivos do inc. I, artigo 2º da Lei Federal nº 13.019/2014.",
    "pagina_gabarito": 7,
    "pagina_no_texto": 8,
-   "extraido": "DA PARCERIA \nE NÃO INCIDÊNCIA NAS VEDAÇÕES \nSEÇÃO I - DO PLANO DE TRABALHO\nArt.",
-   "pagina_extraido": 10,
-   "metodo": "seção",
-   "causa": "pegou outro trecho (página 10); o certo está na página 8"
+   "extraido": "poderão apresentar proposta(s) para qualquer ou todas as",
+   "pagina_extraido": 8,
+   "metodo": "texto",
+   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
   },
   {
    "caso": "1e7863906ab977ea8f1d",
@@ -4694,10 +4251,10 @@
    "trecho_gabarito": "comprovação de existência jurídica mínima de 1 (um) ano no cadastro nacional da Receita Federal do Brasil (CNPJ ativo)",
    "pagina_gabarito": 6,
    "pagina_no_texto": 6,
-   "extraido": "DE HORIZONTINA\nSecretaria Municipal de Administração\nRua Balduino Schneider, 375 - Centro\nFone/Fax: (55) 3537-7506 Email: adm@horizontina.",
-   "pagina_extraido": 5,
-   "metodo": "seção",
-   "causa": "pegou outro trecho (página 5); o certo está na página 6"
+   "extraido": "Poderão participar deste Chamamento Público as Organizações da Sociedade Civil (OSCs) constituídas na",
+   "pagina_extraido": 6,
+   "metodo": "texto",
+   "causa": "pegou o trecho certo da região, mas o valor não confere (formato, intervalo ou item vizinho)"
   },
   {
    "caso": "38279d30f6b16e4cbd98",
@@ -4720,7 +4277,7 @@
     "Objeto": "acerto",
     "Prazo de inscrição": "acerto",
     "Resultado": "falta",
-    "Prazo de recurso": "erro",
+    "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
     "Território": "erro",
@@ -4741,7 +4298,7 @@
     "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "falta",
-    "Território": "acerto",
+    "Território": "falta",
     "Esfera": "acerto",
     "Requisitos": "falta",
     "Anexos": "acerto",
@@ -4831,9 +4388,9 @@
     "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "erro",
-    "Território": "erro",
+    "Território": "falta",
     "Esfera": "acerto",
-    "Requisitos": "falta",
+    "Requisitos": "acerto",
     "Anexos": "falta",
     "Área de atuação": "acerto"
    }
@@ -4851,7 +4408,7 @@
     "Órgão / financiador": "acerto",
     "Território": "acerto",
     "Esfera": "acerto",
-    "Requisitos": "acerto",
+    "Requisitos": "falta",
     "Anexos": "falta",
     "Área de atuação": "erro"
    }
@@ -4951,7 +4508,7 @@
     "Prazo de inscrição": "acerto",
     "Prazo de recurso": "acerto",
     "Órgão / financiador": "acerto",
-    "Território": "erro",
+    "Território": "acerto",
     "Esfera": "acerto",
     "Requisitos": "acerto",
     "Anexos": "acerto",
@@ -4985,7 +4542,7 @@
     "Órgão / financiador": "acerto",
     "Território": "acerto",
     "Esfera": "acerto",
-    "Requisitos": "falta",
+    "Requisitos": "erro",
     "Anexos": "acerto",
     "Área de atuação": "acerto"
    }
@@ -4997,13 +4554,13 @@
    "itens": {
     "Objeto": "erro",
     "Prazo de inscrição": "acerto",
-    "Resultado": "falta",
-    "Prazo de recurso": "falta",
+    "Resultado": "acerto",
+    "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "fora",
     "Território": "acerto",
     "Esfera": "acerto",
-    "Requisitos": "erro",
+    "Requisitos": "acerto",
     "Anexos": "fora",
     "Área de atuação": "acerto"
    }
@@ -5016,7 +4573,7 @@
     "Objeto": "acerto",
     "Prazo de inscrição": "fora",
     "Resultado": "falta",
-    "Prazo de recurso": "erro",
+    "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
     "Território": "acerto",
@@ -5050,12 +4607,12 @@
     "Objeto": "acerto",
     "Prazo de inscrição": "fora",
     "Resultado": "acerto",
-    "Prazo de recurso": "erro",
+    "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "fora",
     "Território": "acerto",
     "Esfera": "acerto",
-    "Requisitos": "erro",
+    "Requisitos": "acerto",
     "Anexos": "acerto",
     "Área de atuação": "acerto"
    }
@@ -5068,7 +4625,7 @@
     "Objeto": "erro",
     "Prazo de inscrição": "acerto",
     "Resultado": "falta",
-    "Prazo de recurso": "falta",
+    "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
     "Território": "acerto",
@@ -5098,13 +4655,13 @@
    "itens": {
     "Objeto": "acerto",
     "Prazo de inscrição": "acerto",
-    "Resultado": "falta",
-    "Prazo de recurso": "erro",
+    "Resultado": "acerto",
+    "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
     "Território": "acerto",
     "Esfera": "acerto",
-    "Requisitos": "acerto",
+    "Requisitos": "erro",
     "Anexos": "acerto",
     "Área de atuação": "acerto"
    }
@@ -5150,7 +4707,7 @@
     "Prazo de inscrição": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
-    "Território": "erro",
+    "Território": "acerto",
     "Esfera": "acerto",
     "Requisitos": "erro",
     "Anexos": "acerto",
@@ -5229,8 +4786,8 @@
    "itens": {
     "Objeto": "acerto",
     "Prazo de inscrição": "acerto",
-    "Resultado": "falta",
-    "Prazo de recurso": "falta",
+    "Resultado": "acerto",
+    "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
     "Território": "acerto",
@@ -5248,7 +4805,7 @@
     "Objeto": "acerto",
     "Prazo de inscrição": "acerto",
     "Resultado": "falta",
-    "Prazo de recurso": "erro",
+    "Prazo de recurso": "acerto",
     "Valor": "erro",
     "Órgão / financiador": "acerto",
     "Território": "acerto",
@@ -5280,7 +4837,7 @@
    "itens": {
     "Objeto": "acerto",
     "Prazo de inscrição": "acerto",
-    "Resultado": "falta",
+    "Resultado": "erro",
     "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
@@ -5349,7 +4906,7 @@
     "Órgão / financiador": "acerto",
     "Território": "erro",
     "Esfera": "acerto",
-    "Requisitos": "acerto",
+    "Requisitos": "erro",
     "Anexos": "acerto",
     "Área de atuação": "acerto"
    }
@@ -5436,7 +4993,7 @@
     "Órgão / financiador": "acerto",
     "Território": "acerto",
     "Esfera": "erro",
-    "Requisitos": "falta",
+    "Requisitos": "erro",
     "Anexos": "acerto",
     "Área de atuação": "acerto"
    }
@@ -5526,7 +5083,7 @@
     "Órgão / financiador": "falta",
     "Território": "falta",
     "Esfera": "erro",
-    "Requisitos": "falta",
+    "Requisitos": "acerto",
     "Anexos": "acerto",
     "Área de atuação": "acerto"
    }
@@ -5675,7 +5232,7 @@
     "Órgão / financiador": "erro",
     "Território": "acerto",
     "Esfera": "erro",
-    "Requisitos": "falta",
+    "Requisitos": "erro",
     "Anexos": "fora",
     "Área de atuação": "acerto"
    }
@@ -5747,7 +5304,7 @@
     "Órgão / financiador": "acerto",
     "Território": "acerto",
     "Esfera": "acerto",
-    "Requisitos": "acerto",
+    "Requisitos": "falta",
     "Anexos": "falta",
     "Área de atuação": "acerto"
    }
@@ -5823,7 +5380,7 @@
     "Objeto": "acerto",
     "Prazo de inscrição": "acerto",
     "Resultado": "acerto",
-    "Prazo de recurso": "erro",
+    "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
     "Território": "acerto",
@@ -5846,7 +5403,7 @@
     "Órgão / financiador": "acerto",
     "Território": "erro",
     "Esfera": "erro",
-    "Requisitos": "erro",
+    "Requisitos": "falta",
     "Anexos": "acerto",
     "Área de atuação": "acerto"
    }
@@ -5886,12 +5443,12 @@
     "Objeto": "acerto",
     "Prazo de inscrição": "acerto",
     "Resultado": "acerto",
-    "Prazo de recurso": "falta",
+    "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "fora",
     "Território": "acerto",
     "Esfera": "acerto",
-    "Requisitos": "erro",
+    "Requisitos": "acerto",
     "Anexos": "acerto",
     "Área de atuação": "acerto"
    }
@@ -5903,11 +5460,11 @@
    "itens": {
     "Objeto": "erro",
     "Prazo de inscrição": "acerto",
-    "Resultado": "acerto",
-    "Prazo de recurso": "erro",
+    "Resultado": "erro",
+    "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
-    "Território": "acerto",
+    "Território": "erro",
     "Esfera": "acerto",
     "Requisitos": "acerto",
     "Anexos": "acerto",
@@ -5940,7 +5497,7 @@
     "Objeto": "acerto",
     "Prazo de inscrição": "acerto",
     "Resultado": "acerto",
-    "Prazo de recurso": "falta",
+    "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
     "Território": "acerto",
@@ -6000,12 +5557,12 @@
     "Objeto": "acerto",
     "Prazo de inscrição": "acerto",
     "Resultado": "falta",
-    "Prazo de recurso": "erro",
+    "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
-    "Território": "acerto",
+    "Território": "erro",
     "Esfera": "acerto",
-    "Requisitos": "acerto",
+    "Requisitos": "erro",
     "Anexos": "acerto",
     "Área de atuação": "acerto"
    }
@@ -6023,7 +5580,7 @@
     "Órgão / financiador": "acerto",
     "Território": "acerto",
     "Esfera": "acerto",
-    "Requisitos": "erro",
+    "Requisitos": "acerto",
     "Anexos": "acerto",
     "Área de atuação": "acerto"
    }
@@ -6087,7 +5644,7 @@
     "Órgão / financiador": "acerto",
     "Território": "acerto",
     "Esfera": "acerto",
-    "Requisitos": "erro",
+    "Requisitos": "falta",
     "Anexos": "erro",
     "Área de atuação": "acerto"
    }
@@ -6100,12 +5657,12 @@
     "Objeto": "acerto",
     "Prazo de inscrição": "acerto",
     "Resultado": "falta",
-    "Prazo de recurso": "erro",
+    "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
     "Território": "acerto",
     "Esfera": "acerto",
-    "Requisitos": "acerto",
+    "Requisitos": "erro",
     "Anexos": "acerto",
     "Área de atuação": "acerto"
    }
@@ -6118,7 +5675,7 @@
     "Objeto": "acerto",
     "Prazo de inscrição": "acerto",
     "Resultado": "acerto",
-    "Prazo de recurso": "falta",
+    "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
     "Território": "acerto",
@@ -6136,7 +5693,7 @@
     "Objeto": "acerto",
     "Prazo de inscrição": "acerto",
     "Resultado": "acerto",
-    "Prazo de recurso": "falta",
+    "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "fora",
     "Território": "acerto",
@@ -6253,7 +5810,7 @@
     "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
-    "Território": "erro",
+    "Território": "acerto",
     "Esfera": "acerto",
     "Requisitos": "erro",
     "Anexos": "acerto",
@@ -6276,7 +5833,7 @@
     "Objeto": "erro",
     "Prazo de inscrição": "falta",
     "Resultado": "falta",
-    "Prazo de recurso": "falta",
+    "Prazo de recurso": "acerto",
     "Valor": "erro",
     "Órgão / financiador": "erro",
     "Território": "acerto",
@@ -6357,7 +5914,7 @@
     "Órgão / financiador": "acerto",
     "Território": "acerto",
     "Esfera": "acerto",
-    "Requisitos": "falta",
+    "Requisitos": "erro",
     "Anexos": "acerto",
     "Área de atuação": "acerto"
    }
@@ -6406,7 +5963,7 @@
     "Objeto": "erro",
     "Prazo de inscrição": "falta",
     "Resultado": "erro",
-    "Prazo de recurso": "falta",
+    "Prazo de recurso": "acerto",
     "Valor": "erro",
     "Órgão / financiador": "acerto",
     "Território": "acerto",
@@ -6690,12 +6247,12 @@
     "Objeto": "erro",
     "Prazo de inscrição": "fora",
     "Resultado": "falta",
-    "Prazo de recurso": "falta",
+    "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
     "Território": "acerto",
     "Esfera": "acerto",
-    "Requisitos": "falta",
+    "Requisitos": "erro",
     "Anexos": "acerto",
     "Área de atuação": "acerto"
    }
@@ -6725,7 +6282,7 @@
     "Objeto": "acerto",
     "Prazo de inscrição": "acerto",
     "Resultado": "erro",
-    "Prazo de recurso": "falta",
+    "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
     "Território": "acerto",
@@ -6748,7 +6305,7 @@
     "Órgão / financiador": "acerto",
     "Território": "acerto",
     "Esfera": "acerto",
-    "Requisitos": "erro",
+    "Requisitos": "acerto",
     "Anexos": "falta",
     "Área de atuação": "acerto"
    }
@@ -6796,7 +6353,7 @@
     "Órgão / financiador": "falta",
     "Território": "acerto",
     "Esfera": "falta",
-    "Requisitos": "falta",
+    "Requisitos": "acerto",
     "Anexos": "falta",
     "Área de atuação": "acerto"
    }
@@ -6811,7 +6368,7 @@
     "Resultado": "falta",
     "Valor": "erro",
     "Órgão / financiador": "acerto",
-    "Território": "acerto",
+    "Território": "erro",
     "Esfera": "acerto",
     "Requisitos": "acerto",
     "Anexos": "erro",
@@ -6829,7 +6386,7 @@
     "Prazo de recurso": "falta",
     "Valor": "erro",
     "Órgão / financiador": "acerto",
-    "Território": "erro",
+    "Território": "acerto",
     "Esfera": "acerto",
     "Requisitos": "erro",
     "Anexos": "acerto",
@@ -6864,7 +6421,7 @@
     "Órgão / financiador": "acerto",
     "Território": "acerto",
     "Esfera": "acerto",
-    "Requisitos": "erro",
+    "Requisitos": "acerto",
     "Anexos": "fora",
     "Área de atuação": "erro"
    }
@@ -6961,7 +6518,7 @@
     "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
-    "Território": "erro",
+    "Território": "acerto",
     "Esfera": "acerto",
     "Requisitos": "erro",
     "Anexos": "fora",
@@ -6977,7 +6534,7 @@
     "Prazo de inscrição": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
-    "Território": "acerto",
+    "Território": "erro",
     "Esfera": "acerto",
     "Requisitos": "acerto",
     "Anexos": "fora",
@@ -6996,7 +6553,7 @@
     "Órgão / financiador": "acerto",
     "Território": "acerto",
     "Esfera": "acerto",
-    "Requisitos": "erro",
+    "Requisitos": "acerto",
     "Anexos": "acerto",
     "Área de atuação": "acerto"
    }
@@ -7010,7 +6567,7 @@
     "Prazo de inscrição": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
-    "Território": "erro",
+    "Território": "acerto",
     "Esfera": "acerto",
     "Requisitos": "acerto",
     "Anexos": "acerto",
@@ -7026,7 +6583,7 @@
     "Prazo de inscrição": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
-    "Território": "erro",
+    "Território": "acerto",
     "Esfera": "acerto",
     "Requisitos": "fora",
     "Anexos": "acerto",
@@ -7090,7 +6647,7 @@
     "Objeto": "acerto",
     "Prazo de inscrição": "acerto",
     "Resultado": "falta",
-    "Prazo de recurso": "falta",
+    "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
     "Território": "erro",
@@ -7131,7 +6688,7 @@
     "Órgão / financiador": "acerto",
     "Território": "erro",
     "Esfera": "acerto",
-    "Requisitos": "erro",
+    "Requisitos": "acerto",
     "Anexos": "acerto",
     "Área de atuação": "erro"
    }
@@ -7149,7 +6706,7 @@
     "Órgão / financiador": "acerto",
     "Território": "acerto",
     "Esfera": "acerto",
-    "Requisitos": "acerto",
+    "Requisitos": "erro",
     "Anexos": "fora",
     "Área de atuação": "falta"
    }
@@ -7161,13 +6718,13 @@
    "itens": {
     "Objeto": "acerto",
     "Prazo de inscrição": "acerto",
-    "Resultado": "falta",
-    "Prazo de recurso": "erro",
+    "Resultado": "acerto",
+    "Prazo de recurso": "acerto",
     "Valor": "acerto",
     "Órgão / financiador": "acerto",
-    "Território": "erro",
+    "Território": "acerto",
     "Esfera": "acerto",
-    "Requisitos": "erro",
+    "Requisitos": "acerto",
     "Anexos": "acerto",
     "Área de atuação": "acerto"
    }
@@ -7411,7 +6968,7 @@
     "Objeto": "acerto",
     "Prazo de inscrição": "acerto",
     "Resultado": "acerto",
-    "Prazo de recurso": "falta",
+    "Prazo de recurso": "acerto",
     "Valor": "erro",
     "Órgão / financiador": "acerto",
     "Território": "acerto",
@@ -7429,7 +6986,7 @@
     "Objeto": "erro",
     "Prazo de inscrição": "erro",
     "Resultado": "acerto",
-    "Prazo de recurso": "falta",
+    "Prazo de recurso": "acerto",
     "Valor": "fora",
     "Órgão / financiador": "acerto",
     "Território": "acerto",
