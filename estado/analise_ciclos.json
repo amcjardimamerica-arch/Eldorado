@@ -2,13 +2,15 @@
  "ciclos": [
   {
    "n": 1,
-   "de": "2026-10-15T11:44:10+00:00",
-   "ate": "2026-10-15T12:05:28+00:00",
+   "de": "2026-10-15T00:02:02+00:00",
+   "ate": "2026-10-15T12:08:43+00:00",
    "problemas": {
     "comando_sem_recibo": 1,
     "falha_silenciosa": 21,
     "fluxo_falhando": 5,
+    "fora_da_tela": 1,
     "municipal_de_outro_estado_aberta": 4,
+    "tela_diverge_do_repositorio": 1,
     "teste_em_quarentena_defeito": 3,
     "atrasado_maestro": 1,
     "decisao_site_oficial": 4,
@@ -16,15 +18,125 @@
     "saude_claude": 1,
     "saude_coerência": 1,
     "saude_workflows": 5,
-    "sem_site_oficial": 104,
-    "sem_prazo": 380,
+    "sem_site_oficial": 105,
+    "sem_prazo": 381,
     "teste_em_quarentena": 18
    },
    "correcoes_implantadas_na_janela": [
     {
+     "pr": 207,
+     "titulo": "Avaliação do Cartório com gabarito (fluxo 39)",
+     "implantada_em": "2026-10-15T00:35:45Z"
+    },
+    {
+     "pr": 208,
+     "titulo": "Cartório: regras corrigidas com ganho medido (55,1% → 63,5%) e robots.txt pela RFC 9309",
+     "implantada_em": "2026-10-15T01:13:46Z"
+    },
+    {
+     "pr": 209,
+     "titulo": "Do site ao PDF: navegação dentro do site oficial",
+     "implantada_em": "2026-10-15T01:23:11Z"
+    },
+    {
+     "pr": 210,
+     "titulo": "Do site ao PDF: edital publicado pelo próprio órgão no PNCP quando a origem é sistema de compras",
+     "implantada_em": "2026-10-15T01:49:53Z"
+    },
+    {
+     "pr": 211,
+     "titulo": "Destinação passa a ser Modalidade de recebimento",
+     "implantada_em": "2026-10-15T02:14:04Z"
+    },
+    {
+     "pr": 212,
+     "titulo": "Varredura de referência dos motores (fluxo 40)",
+     "implantada_em": "2026-10-15T02:17:10Z"
+    },
+    {
+     "pr": 213,
+     "titulo": "PDF forte reconhece o edital publicado pelo órgão no PNCP",
+     "implantada_em": "2026-10-15T02:17:59Z"
+    },
+    {
+     "pr": 214,
+     "titulo": "Varredura de referência v2",
+     "implantada_em": "2026-10-15T02:27:32Z"
+    },
+    {
+     "pr": 215,
+     "titulo": "Diários: extrato de retificação e prorrogação de edital aberto é oportunidade",
+     "implantada_em": "2026-10-15T02:29:33Z"
+    },
+    {
+     "pr": 216,
+     "titulo": "Motor 01: portal de Goiânia direto da nuvem",
+     "implantada_em": "2026-10-15T02:33:32Z"
+    },
+    {
+     "pr": 217,
+     "titulo": "Diagnóstico da ponte Brasil (fluxo 41)",
+     "implantada_em": "2026-10-15T09:52:32Z"
+    },
+    {
+     "pr": 218,
+     "titulo": "Organização Social da saúde: ACOMPANHAR",
+     "implantada_em": "2026-10-15T09:53:40Z"
+    },
+    {
+     "pr": 219,
+     "titulo": "ALEGO e motores genéricos: portais exige-Brasil pela ponte",
+     "implantada_em": "2026-10-15T09:56:36Z"
+    },
+    {
+     "pr": 220,
+     "titulo": "Diagnóstico: leitura real do motor 05",
+     "implantada_em": "2026-10-15T09:56:59Z"
+    },
+    {
+     "pr": 221,
+     "titulo": "Robots de todos os motores (fluxo 41)",
+     "implantada_em": "2026-10-15T09:59:23Z"
+    },
+    {
+     "pr": 222,
+     "titulo": "Oportunidades Abertas › Legislativo (acompanhamento, sem livro)",
+     "implantada_em": "2026-10-15T10:17:26Z"
+    },
+    {
+     "pr": 223,
+     "titulo": "Robots dos portais lidos pela ponte também pela ponte",
+     "implantada_em": "2026-10-15T10:18:06Z"
+    },
+    {
+     "pr": 224,
+     "titulo": "Motores: força léxica vazia derrubava a passagem",
+     "implantada_em": "2026-10-15T10:20:40Z"
+    },
+    {
+     "pr": 225,
+     "titulo": "Rede neural de comando: maestro e rede neural unificados",
+     "implantada_em": "2026-10-15T11:04:23Z"
+    },
+    {
+     "pr": 226,
+     "titulo": "Comando único sem agenda: todos os motores todo dia, da coleta ao Farol",
+     "implantada_em": "2026-10-15T11:09:56Z"
+    },
+    {
+     "pr": 227,
+     "titulo": "Retentativa, leitura parcial, dois links e curadoria do link oficial",
+     "implantada_em": "2026-10-15T11:31:19Z"
+    },
+    {
      "pr": 228,
      "titulo": "Analise o sistema: workflow, decisões por etapa e ciclos de análise",
      "implantada_em": "2026-10-15T11:59:23Z"
+    },
+    {
+     "pr": 229,
+     "titulo": "Fluxo 01 em fila própria (travava o comando único)",
+     "implantada_em": "2026-10-15T12:07:47Z"
     }
    ],
    "correcoes_automaticas": [
@@ -50,14 +162,8 @@
     }
    ],
    "comparacao_com_o_ciclo_anterior": {
-    "resolvidos": [
-     "atrasado_fluxo",
-     "fora_da_tela",
-     "livro_municipal_de_outro_estado",
-     "tela_diverge_do_repositorio"
-    ],
+    "resolvidos": [],
     "persistem": [
-     "atrasado_maestro",
      "falha_silenciosa",
      "fluxo_atrasado",
      "fluxo_falhando",
@@ -71,8 +177,11 @@
      "teste_em_quarentena_defeito"
     ],
     "novos": [
+     "atrasado_maestro",
      "comando_sem_recibo",
-     "decisao_site_oficial"
+     "decisao_site_oficial",
+     "fora_da_tela",
+     "tela_diverge_do_repositorio"
     ],
     "sem_diagnostico_de_correcao": [
      "comando_sem_recibo",
@@ -85,8 +194,13 @@
      "teste_em_quarentena_defeito"
     ]
    },
-   "proxima_janela_comeca_em": "2026-10-15T12:05:28+00:00",
-   "leitura": "4 resolvido(s) · 12 persistem apesar de 1 correção(ões) implantada(s) · 2 novo(s) · 8 sem correção definida"
+   "proxima_janela_comeca_em": "2026-10-15T12:08:43+00:00",
+   "leitura": "0 resolvido(s) · 11 persistem apesar de 23 correção(ões) implantada(s) · 5 novo(s) · 8 sem correção definida",
+   "finalidade_pct": {
+    "base": 68,
+    "fim": 60
+   }
   }
- ]
+ ],
+ "nota": "Ciclo 1 refeito em 15/10: base = análise de 15/10 00:02 (finalidade 68%); janela cobre os PRs #207–#229."
 }
