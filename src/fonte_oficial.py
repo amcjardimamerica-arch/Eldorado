@@ -306,6 +306,37 @@ def link_de_origem_pncp(url: str, getter) -> str | None:
     return None
 
 
+def arquivos_pncp(url: str, getter, titulo: str = "", limite: int = 3) -> list[dict]:
+    """15/10/2026 (treino): quando o link de origem do PNCP é sistema de compras (Comprasnet, Licitanet, BNC, SEI —
+    aplicativo com login, sem página navegável), o edital é o ARQUIVO QUE O PRÓPRIO ÓRGÃO publicou na compra
+    (/arquivos/N — o Cartório já o aceita como documento oficial). O tipo "Edital" vem primeiro."""
+    m = re.search(r"/(?:app/)?editais/(\d{14})/(\d{4})/(\d+)", url or "")
+    if not m:
+        return []
+    cnpj, ano, seq = m.groups()
+    lista = None
+    for base in (f"https://pncp.gov.br/pncp-api/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos",
+                 f"https://pncp.gov.br/api/pncp/v1/orgaos/{cnpj}/compras/{ano}/{seq}/arquivos"):
+        try:
+            lista = json.loads(getter(base)); break
+        except Exception:  # noqa: BLE001
+            continue
+    if not isinstance(lista, list):
+        return []
+    out = []
+    for a in lista:
+        if not isinstance(a, dict) or a.get("statusAtivo") is False:
+            continue
+        u = str(a.get("url") or a.get("uri") or "")
+        if not u:
+            continue
+        tipo = str(a.get("tipoDocumentoNome") or ""); tit = str(a.get("titulo") or "")
+        p = 4.0 + (4 if re.search(r"(?i)edital", tipo) else 2 if re.search(r"(?i)termo de refer|aviso", tipo) else 0)
+        p += min(2, len(_tokens(titulo) & _tokens(tit)))
+        out.append({"url": u, "texto": f"{tipo}: {tit}".strip(": "), "pontos": round(p, 1), "achado_em": "PNCP — arquivo publicado pelo órgão"})
+    return sorted(out, key=lambda x: -x["pontos"])[:limite]
+
+
 def diario_original_querido(url: str, getter) -> str | None:
     """Querido Diário: o endereço ORIGINAL do diário, publicado pelo município (API pública do projeto)."""
     m = re.search(r"queridodiario\.ok\.org\.br/(\d{7})/(\d{4}-\d{2}-\d{2})/([0-9a-f]{20,})", url or "")
@@ -403,4 +434,12 @@ def resolver(url: str, titulo: str = "", orgao: str = "", getter=None, A: dict |
                         out["passos"].append(f"navegação no site → {len(pdfs)} PDF(s): {pdfs[0]['url'][:100]}")
             except Exception as e:  # noqa: BLE001
                 out["passos"].append(f"fonte ilegível: {type(e).__name__}")
+    # PNCP: sem PDF forte pela fonte (sistema de compras, login, página ilegível) → o edital publicado pelo órgão
+    if out["replicador"] and "pncp.gov.br" in _dom(url) and navegacao:
+        tk, num = _tokens(titulo), _numero(titulo)
+        if not any(_pdf_forte(p, tk, num) for p in out["pdfs"]):
+            arq = arquivos_pncp(url, getter, titulo)
+            if arq:
+                out["pdfs"] = arq
+                out["passos"].append(f"PNCP → arquivo publicado pelo próprio órgão: {arq[0]['texto'][:60]}")
     return out

@@ -69,3 +69,20 @@ class Navegacao(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ArquivoDoOrgaoNoPNCP(unittest.TestCase):
+    def test_sistema_de_compras_sem_pdf_usa_o_arquivo_do_orgao(self):
+        api = "https://pncp.gov.br/api/consulta/v1/orgaos/12345678000199/compras/2026/7"
+        arq = "https://pncp.gov.br/pncp-api/v1/orgaos/12345678000199/compras/2026/7/arquivos"
+        mapa = {api: json.dumps({"linkSistemaOrigem": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/compras/x"}),
+                "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/compras/x": "<div id=app></div>",
+                arq: json.dumps([{"url": arq + "/2", "tipoDocumentoNome": "Anexo", "titulo": "Planilha", "statusAtivo": True},
+                                 {"url": arq + "/1", "tipoDocumentoNome": "Edital", "titulo": "Edital 7/2026", "statusAtivo": True},
+                                 {"url": arq + "/3", "tipoDocumentoNome": "Edital", "titulo": "antigo", "statusAtivo": False}])}
+        o = F.resolver("https://pncp.gov.br/app/editais/12345678000199/2026/7", "Chamamento 7/2026", "", Rede(mapa), {})
+        self.assertTrue(o["fonte"].startswith("https://cnetmobile"))          # a fonte continua sendo o órgão
+        self.assertEqual(o["pdfs"][0]["url"], arq + "/1")
+        self.assertNotIn(arq + "/3", [p["url"] for p in o["pdfs"]])
+        sem = F.resolver("https://pncp.gov.br/app/editais/12345678000199/2026/7", "Chamamento 7/2026", "", Rede(mapa), {}, navegacao=False)
+        self.assertEqual(sem["pdfs"], [])
