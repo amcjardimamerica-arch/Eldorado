@@ -106,13 +106,54 @@ def _municipio_goiano(texto: str) -> bool:
     return any(re.search(rf"\b(?:municipio|prefeitura|camara)(?: municipal)? de {re.escape(m)}\b|\b{re.escape(m)}\s*[-/(]\s*go\b", t) for m in _MUN_GO if m != "-")
 
 
+# 15/10/2026 (validação de 20 oportunidades pelo Claude): o que NÃO é seleção aberta para associação sai das abertas
+NAO_OPORTUNIDADE = [
+    (re.compile(r"(?i)\bvagas? de (?:est[áa]gio|emprego|trabalho)|abre vaga|processo seletivo (?:simplificado )?para (?:contrata|vaga)"), "vaga de emprego ou estágio — não é recurso para a associação"),
+    (re.compile(r"(?i)credenciamento de (?:pessoas? jur[íi]dicas?|prestadores?|profissionais|cl[íi]nicas|laborat|m[ée]dic|empresas|farm[áa]cias)"), "credenciamento de prestadores — não é fomento a OSC"),
+    (re.compile(r"(?i)\banuncia \d+ (?:novos?|selecionad|aprovad|vencedor)|\bresultado (?:final|definitivo) d[oa]s? (?:selecionad|aprovad)|\bconhe[çc]a os (?:selecionad|vencedor)"), "notícia de resultado — a seleção já aconteceu"),
+    (re.compile(r"(?i)^\s*\d+ (?:editais|oportunidades|chamadas|programas)\b|\b\d+ editais (?:ambientais|culturais|abertos|com inscri)"), "lista de vários editais — cada edital precisa entrar separado"),
+    (re.compile(r"(?i)\bminuta (?:de |do )?edital|\bconsulta p[úu]blica\b"), "minuta ou consulta pública — o edital ainda não foi aberto"),
+]
+PERMITE_CREDENCIAMENTO = re.compile(r"(?i)organiza[çc](?:[ãa]o|[õo]es) da sociedade civil|\boscs?\b|sem fins lucrativos|entidades? (?:socioassist|filantr)|associa[çc]")
+SAUDE_SERVICO = re.compile(r"(?i)fundo municipal de sa[úu]de|secretaria (?:municipal |estadual )?de sa[úu]de|\bSUS\b|servi[çc]os (?:de sa[úu]de|m[ée]dic|hospitalar|ambulatori)|complementa[çc][ãa]o (?:da rede|dos servi)")
+LEGISLATIVO_ABERTAS = re.compile(r"(?i)emenda parlamentar|emendas? impositivas?|lei or[çc]ament[áa]ria|\bLOA\b|projeto de lei|utilidade p[úu]blica")
+
+
+def nao_e_oportunidade(r: dict) -> str | None:
+    t = f"{r.get('titulo') or ''} {r.get('objeto') or ''} {re.sub(r'[-_/.]', ' ', str(r.get('url') or ''))}"
+    if LEGISLATIVO_ABERTAS.search(t):
+        return "ato legislativo — vai ao acompanhamento legislativo (Oportunidades Abertas › Legislativo)"
+    for rx, motivo in NAO_OPORTUNIDADE:
+        if rx.search(t):
+            if "credenciamento" in motivo and PERMITE_CREDENCIAMENTO.search(t) and not SAUDE_SERVICO.search(t):
+                continue                                   # credenciamento de OSC para parceria vale; serviço de saúde, não
+            return motivo
+    return None
+
+
+# 15/10/2026: município pelo ENDEREÇO (cidade.uf.gov.br) — Itapevi/SP e Juatuba/MG passavam por não ter "prefeitura" no título
+_ROTULO_ESTADUAL = re.compile(r"^(?:www|portal|cultura|saude|educacao|esporte|fazenda|governo|casacivil|planejamento|transparencia|diariooficial|doe|"
+                              r"imprensaoficial|procultura|sistemas|editais|servicos|agencia\w*|detran|al|tce|tj|mp|defensoria|fap\w*|se\w{1,6}|"
+                              r"social|turismo|meioambiente|ambiente|agricultura|ciencia|ct|inovacao|desenvolvimento|economia|seguranca|justica|"
+                              r"mulher|direitoshumanos|assistencia|trabalho|juventude|idoso|esportes|lazer|infraestrutura|obras|comunicacao|ses|sema|semad|dpe)$")
+
+
+def municipio_pelo_endereco(url: str) -> bool:
+    m = re.search(r"https?://(?:[\w-]+\.)*?([\w-]+)\.([a-z]{2})\.(?:gov|leg)\.br", str(url or ""))
+    return bool(m) and m.group(2).upper() in UFS and not _ROTULO_ESTADUAL.match(m.group(1))
+
+
+_CUR: dict = {}
+
+
 def municipal_fora_de_goias(r: dict, uf_agregador: str | None = None) -> str | None:
     """Identifica oportunidade MUNICIPAL de fora de Goiás (UF determinada e diferente de GO). 14/10/2026 (titular): roda a
     CADA rodada — só Goiás tem oportunidades municipais; de outros estados, só estaduais (e nacionais/internacionais).
     A municipal de outro estado é DESCARTADA do sistema (estado fechada: sai das abertas, da tela, das filas e não ganha
     livro). Sem UF determinada, fica (há municípios homônimos)."""
     t = f"{r.get('titulo') or ''} {r.get('orgao') or ''}"
-    municipal = str(r.get("nivel") or "").lower() == "municipal" or bool(_MUN.search(t))
+    municipal = str(r.get("nivel") or "").lower() == "municipal" or bool(_MUN.search(t)) or \
+        any(municipio_pelo_endereco(u) for u in (r.get("url"), r.get("link_oficial")))   # 15/10: pelo endereço
     if not municipal or str(r.get("nivel") or "").lower() in ("estadual", "federal", "internacional"):
         return None
     if _municipio_goiano(f"{r.get('orgao') or ''} {r.get('titulo') or ''}"):
@@ -162,6 +203,8 @@ def _nota(reg: dict) -> float | None:
 
 
 def construir(gravar: bool = True, hoje: str | None = None) -> dict:
+    global _CUR
+    _CUR = {x.get("id"): x for x in ((_j(ROOT / "estado/curadoria_links.json", {}) or {}).get("itens") or [])}   # 15/10
     hoje = hoje or date.today().isoformat()
     V = (_j(ROOT / "dados/editais/vereditos_revisao.json", {}) or {}).get("vereditos") or {}
     certs = dict((_j(ROOT / "estado/cartorio/certidoes.json", {}) or {}).get("certidoes") or {})
@@ -271,8 +314,24 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
             from .decisoes_titular import marca_no_repositorio
             _mun = marca_no_repositorio([cid] + r["ids_origem"], _DEC)
         _fora = municipal_fora_de_goias(r, next((uf_ag[i] for i in [cid] + r["ids_origem"] if i in uf_ag), None))
+        _nao = nao_e_oportunidade(r)
+        if not fim:                                          # 15/10: o prazo COMPROVADO no documento vira o fim
+            _pz = itens.get("Prazo de inscrição") or {}
+            if _pz.get("estado") == "comprovado":
+                _ds = sorted(set(re.findall(r"20\d{2}-\d{2}-\d{2}", str(_pz.get("valor") or ""))) |
+                             {f"{a}-{m_:0>2}-{d:0>2}" for d, m_, a in re.findall(r"\b(\d{1,2})/(\d{1,2})/(20\d{2})\b", str(_pz.get("valor") or ""))})
+                if _ds:
+                    fim = _ds[-1]
         if v in FECHADAS:
             estado, motivo = "fechada", f"veredito: {v}"
+        elif _nao:                                         # 15/10: não é seleção aberta para associação
+            estado, motivo = "fechada", f"descartada: {_nao}"
+            if _nao.startswith("ato legislativo"):
+                try:
+                    from . import legislativo as _leg
+                    _leg.receber({"titulo": r.get("titulo"), "url": r.get("url"), "fonte_id": None}, "repositório único")
+                except Exception:  # noqa: BLE001
+                    pass
         elif _fora:                                        # 14/10 (titular): só Goiás tem oportunidades municipais
             _uf = (re.search(r"\(([A-Z]{2})\)", _fora) or [None, "?"])[1]
             estado, motivo = "fechada", f"descartada: oportunidade municipal de outro estado ({_uf}) — só Goiás tem oportunidades municipais"
@@ -322,6 +381,8 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
             passo = "Busca externa (Claude/Chrome): as 10 abordagens do Cartório se esgotaram"
         urg = 0 if (fim and str(fim)[:10] >= hoje) else 1
         pronta = estado == "validada" and bool(lv) and bool(fim and str(fim)[:10] >= hoje)
+        if pronta and _CUR and (_CUR.get(cid) or {}).get("curadoria") != "aprovado":
+            pronta = False                                  # 15/10: Farol só com link oficial aprovado na curadoria
         etapa, ferramenta = _etapa(estado, passo, bool(lv), pronta)
         out.append({"id": cid, "ids_origem": r["ids_origem"], "fontes": r["fontes"], "titulo": str(r.get("titulo") or "")[:220], "url": r.get("url"),
                     "link_oficial": link, "orgao": r.get("orgao"), "uf": r.get("uf"), "fim": fim, "origem": r.get("origem"), "skill": sk,

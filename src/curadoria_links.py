@@ -33,6 +33,7 @@ REPO = ROOT / "dados/oportunidades/repositorio_unico.json"
 CERT = ROOT / "estado/cartorio/certidoes.json"
 ESTADO = ROOT / "estado/curadoria_links.json"
 PAINEL = ROOT / "docs/dados/curadoria_links.json"
+INSTITUCIONAL = re.compile(r"\.edu\.br$|\.ufg?\.br$|\.if\w+\.edu\.br$")   # 15/10: universidades e institutos federais
 PUBLICO = re.compile(r"\.(gov|leg|jus|mp|def|tc)\.br$|^(gov|leg|jus|mp)\.br$|\.gov(\.[a-z]{2})?$|\.gob\.[a-z]{2}$|\.gouv\.[a-z]{2}$|\.europa\.eu$|\.int$")
 AGREGADORES = ("editaisdobrasil", "editais.net", "captadores", "capitaai", "farolcultural", "observatorio3setor", "filantropia.ong",
                "portaldoterceirosetor", "licitario", "conlicitacao", "effecti", "queridodiario", "editaldeculturaeesporte")
@@ -65,10 +66,19 @@ def classe(url: str, orgao: str = "") -> str:
         return "página do PNCP (não é o documento)"
     if any(e in d or e in str(url) for e in EMISSOR_PROPRIO):
         return "plataforma de publicação do emissor"
+    caminho = (urlsplit(str(url)).path or "/").strip("/")
+    if ((PUBLICO.search(d) or INSTITUCIONAL.search(d)) and not caminho and not urlsplit(str(url)).query) or \
+            (d == "gov.br" and len([x for x in caminho.split("/") if x]) <= 1):   # gov.br/<órgão> é a página inicial do órgão
+        return "página inicial genérica (não é a oportunidade)"     # 15/10: home do órgão não prova a oportunidade
     if PUBLICO.search(d):
         return "órgão público"
+    if INSTITUCIONAL.search(d):
+        return "instituição pública ou de ensino"
+    plano = d.replace("-", "").replace(".", "")
     toks = {t for t in re.findall(r"[a-z0-9]{4,}", _sem(orgao)) if t not in STOP}
-    if toks and any(t in d.replace("-", "").replace(".", "") for t in toks):
+    junto = re.sub(r"[^a-z0-9]", "", _sem(orgao))                     # 15/10: "Instituto ACP" → institutoacp
+    sigla = [t for t in re.findall(r"\b[a-z0-9]{2,4}\b", _sem(orgao)) if t not in STOP]
+    if (toks and any(t in plano for t in toks)) or (len(junto) >= 6 and junto in plano) or any(len(x) >= 3 and x in plano for x in sigla):
         return "site do financiador"
     return "não identificado como oficial"
 
@@ -78,7 +88,8 @@ def _sem(s: str) -> str:
     return "".join(c for c in unicodedata.normalize("NFD", str(s or "").lower()) if unicodedata.category(c) != "Mn")
 
 
-OFICIAIS = ("órgão público", "arquivo do órgão no PNCP", "plataforma de publicação do emissor", "site do financiador")
+OFICIAIS = ("órgão público", "arquivo do órgão no PNCP", "plataforma de publicação do emissor", "site do financiador",
+            "instituição pública ou de ensino")
 
 
 def curar(r: dict, cert: dict | None, agora: datetime) -> dict:
