@@ -1085,6 +1085,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
   <button data-aba="em_andamento" class="on"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.5v4.8l3 1.8"/></svg><span>Em andamento</span></button>
   <button data-aba="encerrado"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5h17v11a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-11z"/><path d="M5 4.5h14l1.5 3h-17z"/><path d="M10 12h4"/></svg><span>Arquivados — Inscritos / Encerrados / Descartados</span></button>
   <button data-aba="ranking_empresas"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Ranking de empresas</span></button>
+  <button data-aba="legislativo" title="Projetos de lei, utilidades públicas e orçamento em tramitação — acompanhamento, sem livro"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V10M9.5 21V10M14.5 21V10M19 21V10M2.5 10 12 4l9.5 6z"/></svg><span>Legislativo</span></button>
 </div>
 <div class="cartao oculto" id="ed-fila-caixa" style="margin-bottom:12px"></div>
 <div class="legenda" style="margin-bottom:12px" id="ed-legenda"></div>
@@ -1137,6 +1138,23 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 </div>
 <div class="cartao faixa-total oculto" id="emp-ranking-caixa" style="margin-bottom:16px">
   <div id="rank-apoiadores"></div>
+</div>
+<!-- LEGISLATIVO (titular, 15/10/2026): projetos de lei, utilidades públicas e orçamento em tramitação. Acompanhamento das
+     movimentações; ato legislativo não é oportunidade e não gera livro. Dados: docs/dados/legislativo.json (src/legislativo.py) -->
+<div class="cartao faixa-total oculto" id="leg-caixa" style="margin-bottom:16px">
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <h3 style="margin:0;font-size:16px">Legislativo — em tramitação</h3>
+    <span class=meta title="Câmara Municipal de Goiânia, Assembleia Legislativa de Goiás e Congresso Nacional. Cada mudança de situação (apresentado, em comissão, em pauta, aprovado, sancionado) entra na linha do tempo. Não gera livro.">ⓘ</span>
+    <span class=meta style="margin-left:auto" id="leg-resumo"></span>
+  </div>
+  <p class="meta" style="margin:6px 0 10px">Projetos de lei, declarações de <strong>utilidade pública</strong> e o <strong>orçamento</strong> (LOA e emendas) apresentados nas casas legislativas. Aqui não há livro nem certidão: acompanha-se o ato até a sanção.</p>
+  <div class="bz-filtros" style="margin:0 0 12px">
+    <select id="leg-casa"><option value="">Todas as casas</option></select>
+    <select id="leg-tipo"><option value="">Todos os tipos</option></select>
+    <input id="leg-busca" placeholder="buscar entidade, autor ou número…" style="padding:9px 12px;border:1px solid var(--linha);border-radius:10px;font:inherit;min-width:220px">
+    <span class="bz-limpar" onclick="legLimpar()">⨯ Limpar</span>
+  </div>
+  <div id="leg-lista"></div>
 </div>
 <div class="bz-filtros oculto" id="ed-filtros" style="margin:0 0 12px;justify-content:center">
   <select id="ed-area"><option value="">Todas as áreas de atuação</option></select>
@@ -3089,6 +3107,38 @@ window.varreduraImediata=async function(){
      <p>Para validar agora: abra a conversa do projeto e escreva <b>“analise a varredura imediata”</b>, anexando o arquivo — ou aguarde a rotina de domingo, que executa a mesma fila.</p>
      <p class=meta>Cada edital validado volta ao sistema pelo <code>ingerir</code> e deixa de aparecer como não comprovado.</p>`);
 };
+/* LEGISLATIVO (titular, 15/10/2026) — acompanhamento de projetos de lei, utilidades públicas e orçamento; sem livro */
+window._LEG=null;
+async function desenhaLegislativo(){
+  const cx=$("leg-lista"); if(!cx) return;
+  if(!window._LEG){ cx.innerHTML='<p class=meta>Carregando o acompanhamento legislativo…</p>';
+    try{ const r=await fetch("dados/legislativo.json?v="+Date.now(),{cache:"no-cache"}); window._LEG=r.ok?await r.json():{itens:[]}; }catch(e){ window._LEG={itens:[]}; } }
+  const L=window._LEG, it=L.itens||[];
+  const sc=$("leg-casa"), st=$("leg-tipo");
+  if(sc&&sc.options.length<2){ Object.keys(L.por_casa||{}).forEach(c=>sc.add(new Option(c,c))); Object.keys(L.por_tipo||{}).forEach(t=>st.add(new Option(t,t)));
+    [sc,st].forEach(e=>e.onchange=desenhaLegislativo); $("leg-busca").oninput=desenhaLegislativo; }
+  const fc=sc?sc.value:"", ft=st?st.value:"", q=(($("leg-busca")||{}).value||"").toLowerCase().trim();
+  const vis=it.filter(x=>(!fc||x.casa_nome===fc)&&(!ft||x.tipo===ft)&&(!q||[x.titulo,x.entidade,x.autor,x.numero].join(" ").toLowerCase().includes(q)));
+  $("leg-resumo").textContent=`${vis.length} de ${it.length} ato(s) · atualizado ${L.atualizado_em?String(L.atualizado_em).slice(0,16).replace("T"," "):"—"}`;
+  if(!vis.length){ cx.innerHTML='<p class=meta>Nenhum ato legislativo neste filtro.</p>'; return; }
+  const cor={"Utilidade pública":"#0B7A5A","Projeto de lei":"#0E2A55","Orçamento (LOA / emendas)":"#9A5B00","Outro ato legislativo":"#5B6472"};
+  const dt=d=>{const m=String(d||"").match(/(\d{4})-(\d{2})-(\d{2})/);return m?`${m[3]}/${m[2]}/${m[1]}`:esc(d||"—");};
+  cx.innerHTML=vis.map(x=>{
+    const movs=(x.movimentacoes||[]).slice().reverse();
+    return `<div class="cartao" style="margin:0 0 10px;padding:12px 14px;border-left:4px solid ${cor[x.tipo]||"#5B6472"}">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <span class="chip" style="color:${cor[x.tipo]||"#5B6472"}"><small>tipo</small>${esc(x.tipo)}</span>
+        <span class="chip"><small>casa</small>${esc(x.casa_nome)}</span>
+        ${x.numero?`<span class="chip"><small>número</small>${esc(x.numero)}</span>`:""}
+        <span class="chip"><small>situação</small>${esc(x.situacao)}</span>
+        <span class=meta style="margin-left:auto">últ. movimentação ${dt(x.ultima_movimentacao)}</span>
+      </div>
+      <div style="font-weight:700;margin:8px 0 2px">${esc(x.titulo)}</div>
+      <div class=meta>${x.autor?"Autor: "+esc(x.autor)+" · ":""}${x.apresentado_em?"Apresentado em "+dt(x.apresentado_em)+" · ":""}${x.url?`<a href="${esc(x.url)}" target="_blank" rel="noopener">documento oficial ↗</a>`:""}</div>
+      ${movs.length?`<details style="margin-top:6px"><summary class=meta style="cursor:pointer">Movimentações (${movs.length})</summary><ul style="margin:6px 0 0 18px;padding:0">${movs.map(m=>`<li class=meta>${dt(m.data)} — ${esc(m.situacao)}${m.setor?" · "+esc(m.setor):""}${m.url?` · <a href="${esc(m.url)}" target="_blank" rel="noopener">fonte ↗</a>`:""}</li>`).join("")}</ul></details>`:""}
+    </div>`;}).join("");
+}
+window.legLimpar=function(){ ["leg-casa","leg-tipo"].forEach(i=>{const e=$(i);if(e)e.value="";}); const b=$("leg-busca"); if(b)b.value=""; desenhaLegislativo(); };
 function desenhaEditais(){
   const aba=window._abaEd||"em_andamento";
   const g=$("ed-grade");g.innerHTML="";g.className=aba==="encerrado"?"ed-linhas faixa-total":"grade-ed";
@@ -3098,6 +3148,8 @@ function desenhaEditais(){
   desenhaFilaVerificacao();
   const rk=$("emp-ranking-caixa"); if(rk){rk.classList.toggle("oculto",aba!=="ranking_empresas"); if(aba==="ranking_empresas"&&window.desenhaApoiadores)window.desenhaApoiadores();}
   ["ed-abertos-caixa","ed-filtros","ed-lista","ed-grade"].forEach(id=>{const el=$(id);if(el&&aba==="ranking_empresas")el.classList.add("oculto");});
+  const lg=$("leg-caixa"); if(lg){lg.classList.toggle("oculto",aba!=="legislativo");}
+  if(aba==="legislativo"){ ["ed-abertos-caixa","ed-filtros","ed-lista","ed-grade","emp-caixa"].forEach(id=>{const el=$(id);if(el)el.classList.add("oculto");}); $("ed-legenda").innerHTML=""; desenhaLegislativo(); return; }
 
   if(aba==="em_andamento"){
     /* UNIFICADA: a antiga «Fontes com edital aberto» da Bússola vive aqui, com
