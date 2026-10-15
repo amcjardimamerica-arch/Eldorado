@@ -1,5 +1,5 @@
 {
- "em": "2026-10-15T18:40:51+00:00",
+ "em": "2026-10-15T18:54:27+00:00",
  "versao": "cartório v5 · linha de produção (09/10/2026)",
  "regra": "CARTÓRIO DE FONTES OFICIAIS (titular, 09/10/2026).\n\nOs motores DESCOBREM; o Cartório CERTIFICA. Toda estrela (oportunidade aberta) e todo livro (histórico) que tenha\nQUALQUER um dos 12 itens indisponível entra na fila do Cartório. Para cada um, ele sobe uma escada de degraus — do mais\nbarato e confiável ao mais caro — até achar o documento OFICIAL, lê o documento por seções e emite uma CERTIDÃO:\nlink oficial (régua única: vetor nunca é fonte), degrau em que foi achado, impressão digital do documento, e cada item\ncom valor + trecho literal + página — ou a DISPENSA com a justificativa de que o requisito não existe naquele edital.\n\nBalcões (como chegar ao documento em cada tipo de fonte):\n  pncp      página do PNCP → API de arquivos do órgão (PDF ou ZIP), o edital primeiro\n  diario    DOU, Diário de Goiás/Goiânia, Querido Diário → o ato dentro da edição (só as páginas do ato)\n  orgao     domínio público → documentos da página + biblioteca de mídia do WordPress pelo número do edital\n  privado   site do financiador → documentos da página (regulamento, edital)\n  pista     agregador/notícia → links de SAÍDA para o financiador; o resto vai ao Interceptador\n  proprio   Ministério Público e Judiciário: já leem o PDF; o Cartório só converte em certidão\n\nEscada: 0 documento na mão · 1 link de saída da pista · 2 busca do número do edital dentro do domínio oficial ·\n        3 Interceptador (IA) · 4 Chrome. O Cartório resolve 0–2 sem IA; 3 e 4 recebem só o que sobrou.\nIntegração: a fila é ordenada pela urgência (prazo), pela nota da REDE NEURAL e pela distância até o ouro (menos\nitens faltando primeiro: cada certidão vira selo). Estrelas: o fluxo de oportunidades lê a certidão no checklist.\nLivros: linhas no formato do importador (scripts/importar_verificacao_livros.py), que confere e entrega à esteira.",
  "identidade_visual": "provisória (config/identidade_visual.json aguarda o design de referência)",
@@ -7,25 +7,25 @@
   "pontos_12_total": 4800,
   "pontos_certificados": 3085,
   "pontos_dispensados": 226,
-  "pontos_ja_constavam": 1394,
-  "pontos_faltam": 95,
+  "pontos_ja_constavam": 1395,
+  "pontos_faltam": 94,
   "pct_certificado_12": 0.6898,
   "certidoes_12_de_12": 144,
-  "certidoes_sem_item_faltando": 303,
+  "certidoes_sem_item_faltando": 304,
   "nota_denominador": "eficiencia_itens = resolvidos ÷ itens que faltavam na ENTRADA da fila (não é % dos 12); use pct_certificado_12",
-  "certidoes": 2734,
-  "nesta_execucao": 27,
-  "fila_estrelas": 365,
-  "fila_livros": 1880,
-  "itens_que_faltavam": 23625,
-  "itens_obtidos": 8839,
-  "itens_dispensados": 746,
-  "eficiencia_itens": 0.406,
-  "com_link_oficial": 1757,
+  "certidoes": 2760,
+  "nesta_execucao": 26,
+  "fila_estrelas": 374,
+  "fila_livros": 1886,
+  "itens_que_faltavam": 23867,
+  "itens_obtidos": 8924,
+  "itens_dispensados": 747,
+  "eficiencia_itens": 0.405,
+  "com_link_oficial": 1775,
   "taxa_link_oficial": 0.643,
-  "certidoes_completas": 236,
-  "para_o_interceptador": 1977,
-  "para_o_chrome": 520,
+  "certidoes_completas": 237,
+  "para_o_interceptador": 2000,
+  "para_o_chrome": 522,
   "selos_que_mudaram": {
    "bronze → ouro": 18,
    "sem selo → ouro": 72,
@@ -36,9 +36,9 @@
    "sem selo → bronze": 22
   },
   "por_degrau": {
-   "degrau 0": 1735,
+   "degrau 0": 1751,
    "degrau 2": 1,
-   "degrau 1": 51
+   "degrau 1": 53
   }
  },
  "cinza_conferidos": {
@@ -48,126 +48,126 @@
  },
  "por_item": {
   "Objeto": {
-   "faltavam": 1647,
-   "obtidos": 655,
+   "faltavam": 1665,
+   "obtidos": 657,
    "dispensados": 0,
-   "eficiencia": 0.398
+   "eficiencia": 0.395
   },
   "Prazo de inscrição": {
-   "faltavam": 1667,
-   "obtidos": 490,
+   "faltavam": 1685,
+   "obtidos": 494,
    "dispensados": 193,
-   "eficiencia": 0.41
+   "eficiencia": 0.408
   },
   "Resultado": {
-   "faltavam": 2409,
-   "obtidos": 570,
+   "faltavam": 2432,
+   "obtidos": 576,
    "dispensados": 383,
-   "eficiencia": 0.396
+   "eficiencia": 0.394
   },
   "Prazo de recurso": {
-   "faltavam": 2375,
-   "obtidos": 712,
+   "faltavam": 2396,
+   "obtidos": 713,
    "dispensados": 33,
-   "eficiencia": 0.314
+   "eficiencia": 0.311
   },
   "Valor": {
-   "faltavam": 2046,
-   "obtidos": 751,
-   "dispensados": 90,
-   "eficiencia": 0.411
+   "faltavam": 2065,
+   "obtidos": 762,
+   "dispensados": 91,
+   "eficiencia": 0.413
   },
   "Órgão / financiador": {
-   "faltavam": 1431,
-   "obtidos": 808,
+   "faltavam": 1446,
+   "obtidos": 819,
    "dispensados": 0,
-   "eficiencia": 0.565
+   "eficiencia": 0.566
   },
   "Território": {
-   "faltavam": 1638,
-   "obtidos": 590,
+   "faltavam": 1658,
+   "obtidos": 594,
    "dispensados": 0,
-   "eficiencia": 0.36
+   "eficiencia": 0.358
   },
   "Esfera": {
-   "faltavam": 2073,
-   "obtidos": 1253,
+   "faltavam": 2095,
+   "obtidos": 1268,
    "dispensados": 0,
-   "eficiencia": 0.604
+   "eficiencia": 0.605
   },
   "Requisitos": {
-   "faltavam": 2320,
-   "obtidos": 705,
+   "faltavam": 2343,
+   "obtidos": 706,
    "dispensados": 0,
-   "eficiencia": 0.304
+   "eficiencia": 0.301
   },
   "Anexos": {
-   "faltavam": 1535,
-   "obtidos": 486,
+   "faltavam": 1551,
+   "obtidos": 487,
    "dispensados": 8,
-   "eficiencia": 0.322
+   "eficiencia": 0.319
   },
   "Destinação": {
-   "faltavam": 2290,
-   "obtidos": 426,
+   "faltavam": 2314,
+   "obtidos": 436,
    "dispensados": 39,
-   "eficiencia": 0.203
+   "eficiencia": 0.205
   },
   "Área de atuação": {
-   "faltavam": 2194,
-   "obtidos": 1393,
+   "faltavam": 2217,
+   "obtidos": 1412,
    "dispensados": 0,
-   "eficiencia": 0.635
+   "eficiencia": 0.637
   }
  },
  "por_balcao": {
   "pncp": {
-   "certidoes": 697,
-   "com_link_oficial": 448,
-   "faltavam": 5823,
-   "resolvidos": 2748,
+   "certidoes": 698,
+   "com_link_oficial": 449,
+   "faltavam": 5830,
+   "resolvidos": 2751,
    "eficiencia": 0.472,
    "taxa_link_oficial": 0.643
   },
   "diario": {
-   "certidoes": 128,
+   "certidoes": 129,
    "com_link_oficial": 51,
-   "faltavam": 1075,
-   "resolvidos": 176,
-   "eficiencia": 0.164,
-   "taxa_link_oficial": 0.398
+   "faltavam": 1083,
+   "resolvidos": 182,
+   "eficiencia": 0.168,
+   "taxa_link_oficial": 0.395
   },
   "orgao": {
-   "certidoes": 975,
-   "com_link_oficial": 734,
-   "faltavam": 8179,
-   "resolvidos": 3307,
+   "certidoes": 987,
+   "com_link_oficial": 745,
+   "faltavam": 8310,
+   "resolvidos": 3360,
    "eficiencia": 0.404,
-   "taxa_link_oficial": 0.753
+   "taxa_link_oficial": 0.755
   },
   "pista": {
-   "certidoes": 258,
-   "com_link_oficial": 44,
-   "faltavam": 2171,
-   "resolvidos": 446,
-   "eficiencia": 0.205,
+   "certidoes": 263,
+   "com_link_oficial": 45,
+   "faltavam": 2214,
+   "resolvidos": 455,
+   "eficiencia": 0.206,
    "taxa_link_oficial": 0.171
   },
   "revisão": {
-   "certidoes": 266,
-   "com_link_oficial": 236,
-   "faltavam": 3192,
-   "resolvidos": 2147,
-   "eficiencia": 0.673,
-   "taxa_link_oficial": 0.887
+   "certidoes": 267,
+   "com_link_oficial": 237,
+   "faltavam": 3204,
+   "resolvidos": 2154,
+   "eficiencia": 0.672,
+   "taxa_link_oficial": 0.888
   },
   "privado": {
-   "certidoes": 409,
-   "com_link_oficial": 244,
-   "faltavam": 3182,
-   "resolvidos": 720,
+   "certidoes": 415,
+   "com_link_oficial": 248,
+   "faltavam": 3223,
+   "resolvidos": 728,
    "eficiencia": 0.226,
-   "taxa_link_oficial": 0.597
+   "taxa_link_oficial": 0.598
   },
   "proprio": {
    "certidoes": 1,
@@ -180,12 +180,12 @@
  },
  "por_safra": {
   "primeira tentativa": {
-   "certidoes": 2559,
-   "faltavam": 21980,
-   "resolvidos": 8275,
+   "certidoes": 2585,
+   "faltavam": 22222,
+   "resolvidos": 8361,
    "eficiencia": 0.376,
-   "com_link_oficial": 1600,
-   "taxa_link_oficial": 0.625
+   "com_link_oficial": 1618,
+   "taxa_link_oficial": 0.626
   },
   "refeitas": {
    "certidoes": 175,
@@ -222,30 +222,30 @@
    "taxa_link_oficial": 0.875
   },
   "cartório v5 · linha de produção": {
-   "certidoes": 2432,
-   "faltavam": 20187,
-   "resolvidos": 7286,
+   "certidoes": 2457,
+   "faltavam": 20417,
+   "resolvidos": 7365,
    "eficiencia": 0.361,
-   "com_link_oficial": 1489,
-   "taxa_link_oficial": 0.612
+   "com_link_oficial": 1506,
+   "taxa_link_oficial": 0.613
   },
   "revisão manual": {
-   "certidoes": 266,
-   "faltavam": 3192,
-   "resolvidos": 2147,
-   "eficiencia": 0.673,
-   "com_link_oficial": 236,
-   "taxa_link_oficial": 0.887
+   "certidoes": 267,
+   "faltavam": 3204,
+   "resolvidos": 2154,
+   "eficiencia": 0.672,
+   "com_link_oficial": 237,
+   "taxa_link_oficial": 0.888
   }
  },
  "por_abordagem": {
   "1": {
    "nome": "documento na mão",
-   "vezes": 2492,
-   "renderam": 1590,
-   "itens": 8873,
-   "links_oficiais": 1475,
-   "taxa_de_acerto": 0.638
+   "vezes": 2518,
+   "renderam": 1611,
+   "itens": 8959,
+   "links_oficiais": 1493,
+   "taxa_de_acerto": 0.64
   },
   "2": {
    "nome": "anexos completos",
@@ -323,11 +323,11 @@
  "por_balcao_selo": {
   "sem_estrela": {
    "nome": "Sem estrela → bronze",
-   "certidoes": 881,
-   "faltavam": 6209,
-   "resolvidos": 1423,
-   "eficiencia": 0.229,
-   "entraram_aqui": 922,
+   "certidoes": 894,
+   "faltavam": 6313,
+   "resolvidos": 1453,
+   "eficiencia": 0.23,
+   "entraram_aqui": 935,
    "esgotadas": 0
   },
   "bronze": {
@@ -341,11 +341,11 @@
   },
   "prata": {
    "nome": "Prata → ouro",
-   "certidoes": 1550,
-   "faltavam": 14137,
-   "resolvidos": 6025,
+   "certidoes": 1563,
+   "faltavam": 14275,
+   "resolvidos": 6081,
    "eficiencia": 0.426,
-   "entraram_aqui": 1535,
+   "entraram_aqui": 1548,
    "esgotadas": 1
   },
   "ouro": {
@@ -359,17 +359,17 @@
   }
  },
  "gabarito": {
-  "orgaos_com_gabarito": 1076,
+  "orgaos_com_gabarito": 1078,
   "itens_achados_pelo_gabarito": {
-   "Objeto": 45,
+   "Objeto": 46,
    "Requisitos": 32,
    "Prazo de inscrição": 1,
    "Destinação": 10,
    "Resultado": 3,
    "Valor": 1,
-   "Prazo de recurso": 7
+   "Prazo de recurso": 8
   },
-  "certidoes_ajudadas": 93
+  "certidoes_ajudadas": 95
  },
  "certidoes": [
   {
@@ -9175,6 +9175,242 @@
     "ja_constavam": 0,
     "faltam": 0,
     "pct_certificado_12": 1.0,
+    "pct_cobertura_12": 1.0
+   }
+  },
+  {
+   "id": "op-8f27764d49fb",
+   "tipo": "livro",
+   "titulo": "Chamamento Público nº 07/2026 - Secretaria Executiva (SE) | PRONAS/PCD",
+   "balcao": "orgao",
+   "link_oficial": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas",
+   "degrau": 0,
+   "como": "página/documento oficial já conhecido",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "prata",
+   "esgotada": null,
+   "eficiencia": 1.0,
+   "encaminhado": null,
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-15T18:54:08+00:00",
+   "prazo": null,
+   "uf": "BR",
+   "orgao": "",
+   "fim": "2026-10-26",
+   "itens": {
+    "Prazo de inscrição": {
+     "valor": "05/10/2026 a 26/10/2026",
+     "trecho": "ionais, contatar: cpron@saude.gov.br . Período para disponível para envio das propostas: 05/10/2026 a 26/10/2026 Anexos: Edital Extrato do Edital - DOU",
+     "pagina": 1,
+     "documento": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas",
+     "metodo": "cronograma"
+    },
+    "Valor": {
+     "valor": "R$ 4.000.000,00 (quatro milhões de reais)",
+     "trecho": "e projeto será de R$ 250.000,00 (duzentos e cinquenta mil reais) e o valor máximo de R$ 4.000.000,00 (quatro milhões de reais) . Os objetivos específicos da parceria, por campo de atuação, estão d",
+     "pagina": 1,
+     "documento": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas",
+     "metodo": "seção"
+    },
+    "Objeto": {
+     "valor": "a seleção de propostas e a habilitação de pessoas jurídicas de direito privado, associativas ou fundacionais, sem fins lucrativos, para a execução de projetos, no âmbito do PRONAS/PCD.",
+     "trecho": "| PRONAS/PCD Status: Aberto | Chamamento Público que tem por finalidade a seleção de propostas e a habilitação de pessoas jurídicas de direito privado, associativas ou fundacionais, sem fins lucrativos, para a execução de projetos, no âmbito do PRONAS/PCD. Compartilhe: Compartilhe por Facebook",
+     "pagina": 1,
+     "documento": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas",
+     "metodo": "texto"
+    },
+    "Órgão / financiador": {
+     "valor": "Ministério da Saúde",
+     "trecho": "mamento Público nº 07/2026 - Secretaria Executiva (SE) | PRONAS/PCD — Ministério da Saúde",
+     "pagina": 1,
+     "documento": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas",
+     "metodo": "cabeçalho"
+    },
+    "Esfera": {
+     "valor": "federal",
+     "trecho": "domínio/órgão: www.gov.br · Ministério da Saúde",
+     "pagina": 1,
+     "documento": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas",
+     "metodo": "domínio e órgão"
+    },
+    "Destinação": {
+     "valor": "Incentivo fiscal",
+     "trecho": "a (PRONAS/PCD) , voltado à captação e aplicação de recursos, mediante incentivo fiscal, em ações de prevenção, rastreamento e controle do câncer, bem como em promoção da saúde e reabilitação da pessoa",
+     "pagina": 1,
+     "documento": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas",
+     "metodo": "modalidade de recebimento"
+    },
+    "Área de atuação": {
+     "valor": "Saúde, Ciência e tecnologia",
+     "trecho": "termos do objeto e do título: Saúde, Ciência e tecnologia",
+     "pagina": 1,
+     "documento": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Resultado": {
+     "valor": "03/12/2026",
+     "trecho": "solicitação de habilitação pela Instituição 27/10/2026 a 25/11/2026 6 Divulgação do resultado preliminar 03/12/2026 7 Interposição de recursos contra o resultado preliminar 04/12/20",
+     "pagina": 11,
+     "documento": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital",
+     "metodo": "seção"
+    },
+    "Requisitos": {
+     "valor": "Poderão participar deste Edital as pessoas jurídicas de direito privado, associativas ou fundacionais, sem fins lucrativos: I - Certiﬁcadas como Entidades Beneﬁcentes de Assistência Social, na forma da Lei Complementar nº 187, de 16 de dezembro de 2021;",
+     "trecho": "essoa com deficiência. 3 . PARTICIPAÇÃO NO CHAMAMENTO PÚBLICO 3 . 1 . Poderão participar deste Edital as pessoas jurídicas de direito privado, associativas ou fundacionais, sem fins lucrativos: I - Certiﬁcadas como Entidades Beneﬁcentes de Assistência Social, na forma da Lei Complementar nº 187, de 16 de dezembro de 2021; ou II - Qualiﬁcadas como Organizações Sociais (OS), na forma da Lei",
+     "pagina": 4,
+     "documento": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital",
+     "metodo": "texto"
+    },
+    "Anexos": {
+     "valor": "ANEXO I DECLARAÇÃO DE CIÊNCIA E CONCORDÂNCIA; ANEXO II DECLARAÇÃO DE CIÊNCIA, CONCORDÂNCIA E ANUÊNCIA DO GESTOR; ANEXO III FORMULÁRIO DE APRESENTAÇÃO DE PROJETOS; ANEXO IV DECLARAÇÃO DE CAPACIDADE TÉCNICO-OPERATIVA; ANEXO V Minuta 0058521548 SEI 25000.153724/2025-42 / pg. 33; ANEXO VI FORMULÁRIO DE ",
+     "trecho": "ateriais l ) Anexo XII – Minuta de Termo de Compromisso. (MODELO) ANEXO I DECLARAÇÃO DE CIÊNCIA E CONCORDÂNCIA Declaro que a [identificação da Instituição] está ciente e concorda com as disposições previstas no Edital de Chamamento Público nº .........",
+     "pagina": 27,
+     "documento": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital",
+     "metodo": "lista de anexos"
+    },
+    "Território": {
+     "valor": "no município de Porto Velho",
+     "trecho": "s: Aberto | Chamamento público para prospecção do mercado imobiliário no município de Porto Velho/RO, visando futura locação de imóvel para instalação e funcionamento",
+     "pagina": 1,
+     "documento": "https://www.gov.br/saude/pt-br/acesso-a-informacao/licitacoes-e-contratos/chamamentos-publicos/abertos",
+     "metodo": "texto"
+    }
+   },
+   "dispensas": {},
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-15T18:54:08+00:00",
+     "ganhou": [
+      "Anexos",
+      "Destinação",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Requisitos",
+      "Resultado",
+      "Território",
+      "Valor",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.googletagmanager.com/ns.html?id=GTM-NHZSKTD",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": "pagina_vazia",
+     "falha": null,
+     "oficial": null,
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Chamamentos Públicos",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Edital nº 7/2026",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 57,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.in.gov.br/web/dou/-/edital-de-chamamento-publico-n-7/2026-736462157",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Extrato do Edital - DOU",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/licitacoes-e-contratos/chamamentos-publicos/abertos",
+     "degrau": 1,
+     "como": "documento citado na página oficial: 📄 Chamamentos Públicos Abertos",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "certificado",
+     "Resultado": "certificado",
+     "Prazo de recurso": "ja_constava",
+     "Valor": "certificado",
+     "Órgão / financiador": "certificado",
+     "Território": "certificado",
+     "Esfera": "certificado",
+     "Requisitos": "certificado",
+     "Anexos": "certificado",
+     "Destinação": "certificado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 11,
+    "dispensados": 0,
+    "ja_constavam": 1,
+    "faltam": 0,
+    "pct_certificado_12": 0.9167,
     "pct_cobertura_12": 1.0
    }
   },
@@ -73541,299 +73777,35 @@
     "pct_certificado_12": 0.9167,
     "pct_cobertura_12": 0.9167
    }
-  },
-  {
-   "id": "op-1961523eea58",
-   "tipo": "livro",
-   "titulo": "PNAB JAGUARETAMA - EDITAL DE CHAMAMENTO PÚBLICO Nº 01/2026.",
-   "balcao": "orgao",
-   "link_oficial": "https://mapacultural.secult.ce.gov.br/oportunidade/8402/",
-   "degrau": 0,
-   "como": "página/documento oficial já conhecido",
-   "faltavam": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Requisitos"
-   ],
-   "tentativa": 1,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": {
-    "orgao": "dominio:mapacultural.secult.ce.gov.br",
-    "itens_pelo_gabarito": [
-     "Objeto"
-    ]
-   },
-   "estagio": "prata",
-   "estagio_inicio": "prata",
-   "esgotada": null,
-   "eficiencia": 0.917,
-   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-13T21:28:27+00:00",
-   "prazo": null,
-   "uf": "BR",
-   "orgao": "",
-   "fim": "2026-10-26",
-   "itens": {
-    "Prazo de inscrição": {
-     "valor": "07/10/2026 a 26/10/2026",
-     "trecho": "Principal Inscrições abertas de 07/10/2026 a 26/10/2026 às 23:59 AVALIAÇÃO DE MÉRITO CULTURAL - de 26/",
-     "pagina": 1,
-     "documento": "https://mapacultural.secult.ce.gov.br/oportunidade/8402/",
-     "metodo": "cronograma"
-    },
-    "Esfera": {
-     "valor": "municipal",
-     "trecho": "domínio/órgão: mapacultural.secult.ce.gov.br · ",
-     "pagina": 1,
-     "documento": "https://mapacultural.secult.ce.gov.br/oportunidade/8402/",
-     "metodo": "domínio e órgão"
-    },
-    "Área de atuação": {
-     "valor": "Cultura",
-     "trecho": "termos do objeto e do título: Cultura",
-     "pagina": 1,
-     "documento": "https://mapacultural.secult.ce.gov.br/oportunidade/8402/",
-     "metodo": "palavras-chave do objeto"
-    },
-    "Anexos": {
-     "valor": "ANEXO I - CATEGORIAS DE APOIO; ANEXO II - FORMULÁRIO DE INSCRIÇÃO; ANEXO III - CRITÉRIOS DE AVALIAÇÃO; ANEXO IV - MINUTA DO TERMO DE EXECUÇÃO CULTURAL; ANEXO V - RELATÓRIO DE EXECUÇÃO DO OBJETO; ANEXO VI - DECLARAÇÃO DE REPRESENTAÇÃO DE GRUPO OU COLETIVO; ANEXO VIII - DECLARAÇÃO ÉTNICO RACIAL; ANEXO",
-     "trecho": "Downloads Edital ANEXO I - CATEGORIAS DE APOIO ANEXO II - FORMULÁRIO DE INSCRIÇÃO ANEXO III - CRITÉRIOS DE AVALIAÇÃO ANEXO IV - MINUTA DO TERMO DE EXECUÇÃO CULTURAL ANEXO V - RELA",
-     "pagina": 1,
-     "documento": "https://mapacultural.secult.ce.gov.br/projeto/7747/",
-     "metodo": "lista de anexos"
-    },
-    "Objeto": {
-     "valor": "ANEXO VI - DECLARAÇÃO DE REPRESENTAÇÃO DE GRUPO OU COLETIVO",
-     "trecho": "ANEXO IV - MINUTA DO TERMO DE EXECUÇÃO CULTURAL ANEXO V - RELATÓRIO DE EXECUÇÃO DO OBJETO ANEXO VI - DECLARAÇÃO DE REPRESENTAÇÃO DE GRUPO OU COLETIVO ANEXO VIII - DECLARAÇÃO ÉTNICO RACIAL ANEXO VIII - DECLA",
-     "pagina": 1,
-     "documento": "https://mapacultural.secult.ce.gov.br/projeto/7747/",
-     "metodo": "gabarito do órgão (rótulo “relatorio de execucao do objeto”)"
-    },
-    "Resultado": {
-     "valor": "12/11/2026",
-     "trecho": "O DOS RECURSOS 10/11/2026 RESULTADO FINAL 11/11/2026 HOMOLOGAÇÃO DO RESULTADO 12/11/2026 APRESENTAÇÃO DOS DOCUMENTOS DE HABILITAÇÃO 13/11/2026 CONVOCAÇÃO P",
-     "pagina": 4,
-     "documento": "https://mapacultural.secult.ce.gov.br/files/project/7747/edital.pdf",
-     "metodo": "seção"
-    },
-    "Prazo de recurso": {
-     "valor": "10/11/2026",
-     "trecho": "RELIMINAR. 31/10 /2026 FASE RECURSAL 03 a 05/11 /2026 RESULTADO DOS RECURSOS 10/11/2026 RESULTADO FINAL 11/11/2026 HOMOLOGAÇÃO DO RESULTADO 12/11/2026 APR",
-     "pagina": 4,
-     "documento": "https://mapacultural.secult.ce.gov.br/files/project/7747/edital.pdf",
-     "metodo": "seção"
-    },
-    "Valor": {
-     "valor": "R$ 151.746,03 (cento e cinquenta e um mil, setecentos e quarenta e seis reais de três centavos)",
-     "trecho": "otal do edital Cada projeto receberá o valor descrito no Anexo I. O valor total deste edital é de R$ 151.746,03 (cento e cinquenta e um mil, setecentos e quarenta e seis reais de três centavos). A despesa correrá à conta da seguinte Dotação Orçamentária: 13 392",
-     "pagina": 2,
-     "documento": "https://mapacultural.secult.ce.gov.br/files/project/7747/edital.pdf",
-     "metodo": "seção"
-    },
-    "Órgão / financiador": {
-     "valor": "Município de Jaguaretama!",
-     "trecho": "À CULTURA – PNAB (LEI Nº 14.399/2022) Olá, agentes culturais do Município de Jaguaretama! Estamos muito felizes com o seu interesse em participar deste chama",
-     "pagina": 1,
-     "documento": "https://mapacultural.secult.ce.gov.br/files/project/7747/edital.pdf",
-     "metodo": "cabeçalho"
-    },
-    "Território": {
-     "valor": "do Município de Jaguaretama",
-     "trecho": "NTO À CULTURA – PNAB (LEI Nº 14.399/2022) Olá, agentes culturais do Município de Jaguaretama! Estamos muito felizes com o seu interesse em participar deste cha",
-     "pagina": 1,
-     "documento": "https://mapacultural.secult.ce.gov.br/files/project/7747/edital.pdf",
-     "metodo": "texto"
-    },
-    "Destinação": {
-     "valor": "destina-se a apoiar projetos apresentados pelos agentes culturais do município de Jaguaretama-CE.",
-     "trecho": "ram criadas por meio do engajamento da sociedade e o presente edital destina-se a apoiar projetos apresentados pelos agentes culturais do município de Jaguaretama-CE. Deste modo, a Secretaria Municipal de Cultura e Turismo torna públ",
-     "pagina": 1,
-     "documento": "https://mapacultural.secult.ce.gov.br/files/project/7747/edital.pdf",
-     "metodo": "seção"
-    }
-   },
-   "dispensas": {},
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-13T21:28:27+00:00",
-     "ganhou": [
-      "Anexos",
-      "Destinação",
-      "Esfera",
-      "Objeto",
-      "Prazo de inscrição",
-      "Prazo de recurso",
-      "Resultado",
-      "Território",
-      "Valor",
-      "Área de atuação",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8402/",
-     "degrau": 0,
-     "como": "página/documento oficial já conhecido",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://mapacultural.secult.ce.gov.br/projeto/7747/",
-     "degrau": 1,
-     "como": "documento citado na página oficial: PNAB JAGUARETAMA - EDITAL DE CHAMAMENTO PÚBLICO 01/2026 PARA SELEÇÃO DE PROJETOS NAS DIVERSAS ÁREAS CULTURAIS",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8402/{{data.entity.registrationRulesFile.url}}",
-     "degrau": 1,
-     "como": "documento citado na página oficial: Baixar o regulamento",
-     "motivo": null,
-     "falha": "erro_rede: RemoteDisconnected",
-     "oficial": null,
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://mapacultural.secult.ce.gov.br/files/project/7747/edital.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 15,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://mapacultural.secult.ce.gov.br/files/project/7747/anexo-i-categorias.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 3,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://mapacultural.secult.ce.gov.br/files/project/7747/anexo-ii-formulario-de-inscricao.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 11,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://mapacultural.secult.ce.gov.br/files/project/7747/anexo-iii-criterios-de-avaliacao.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 5,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://mapacultural.secult.ce.gov.br/files/project/7747/anexo-iv-minuta-do-termo-de-execucao-cultural.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 6,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "certificado",
-     "Prazo de inscrição": "certificado",
-     "Resultado": "certificado",
-     "Prazo de recurso": "certificado",
-     "Valor": "certificado",
-     "Órgão / financiador": "certificado",
-     "Território": "certificado",
-     "Esfera": "certificado",
-     "Requisitos": "falta",
-     "Anexos": "certificado",
-     "Destinação": "certificado",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 11,
-    "dispensados": 0,
-    "ja_constavam": 0,
-    "faltam": 1,
-    "pct_certificado_12": 0.9167,
-    "pct_cobertura_12": 0.9167
-   }
   }
  ],
  "linha_de_producao": {
   "na_linha": {
-   "sem_estrela": 923,
+   "sem_estrela": 931,
    "bronze": 26,
-   "prata": 1296
+   "prata": 1303
   },
   "na_linha_por_tipo": {
    "estrela": {
-    "sem_estrela": 319,
+    "sem_estrela": 328,
     "bronze": 18,
     "prata": 28
    },
    "livro": {
-    "sem_estrela": 604,
+    "sem_estrela": 603,
     "bronze": 8,
-    "prata": 1268
+    "prata": 1275
    }
   },
-  "fila_oportunidades": 365,
-  "fila_livros": 1880,
-  "devidas_nesta_hora": 2175,
+  "fila_oportunidades": 374,
+  "fila_livros": 1886,
+  "devidas_nesta_hora": 2172,
   "promovidas_nesta_execucao": 0,
-  "sem_material_agora": 13,
+  "sem_material_agora": 14,
   "esgotadas_10_abordagens": 0,
   "biblioteca_de_sites": {
-   "chaves": 1774,
-   "sites": 3025
+   "chaves": 1777,
+   "sites": 3028
   },
   "intervalo_horas": 12,
   "limite": 10,

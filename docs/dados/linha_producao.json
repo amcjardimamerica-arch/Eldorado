@@ -1,13 +1,13 @@
 {
- "em": "2026-10-15T18:41:57+00:00",
+ "em": "2026-10-15T18:55:50+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
   "coletados": 18672,
   "oportunidades_distintas": 2774,
   "entidades_em_2_ou_mais_canais": 20,
   "etapas": {
-   "CONSOLIDADO": 18104,
-   "EM_LIVRO": 464,
+   "CONSOLIDADO": 18095,
+   "EM_LIVRO": 473,
    "REPROCESSAR": 82,
    "QUALIFICADO": 22
   },
@@ -72,6 +72,15 @@
    "validadas_como_reais": 11
   },
   {
+   "canal": "f260-captacao-069",
+   "familia": "orgao_publico",
+   "registros": 27,
+   "entidades": 9,
+   "exclusivas": 9,
+   "corroboradas": 0,
+   "validadas_como_reais": 9
+  },
+  {
    "canal": "piloto-aberto",
    "familia": "pilotos",
    "registros": 150,
@@ -87,15 +96,6 @@
    "entidades": 36,
    "exclusivas": 30,
    "corroboradas": 6,
-   "validadas_como_reais": 8
-  },
-  {
-   "canal": "f260-captacao-069",
-   "familia": "orgao_publico",
-   "registros": 27,
-   "entidades": 9,
-   "exclusivas": 9,
-   "corroboradas": 0,
    "validadas_como_reais": 8
   },
   {
@@ -571,9 +571,9 @@
   "diario_oficial": 4,
   "portal_chamamentos": 3,
   "outros": 17,
+  "orgao_publico": 27,
   "pilotos": 1,
   "terceiro_setor": 4,
-  "orgao_publico": 27,
   "empresas": 2,
   "justica_mp": 1
  },

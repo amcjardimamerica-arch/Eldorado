@@ -1411,31 +1411,14 @@
     "f260-captacao-238": {
       "nome": "Sebrae Goiás - parcerias com OSC para empreendedorismo",
       "tipo": "site_oficial",
-      "leituras": 59,
+      "leituras": 60,
       "achados_total": 0,
-      "vazias_seguidas": 59,
-      "ultima": "2026-10-15T18:19:55+00:00",
+      "vazias_seguidas": 60,
+      "ultima": "2026-10-15T18:46:04+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 2,
-      "saude": [
-        {
-          "url": "https://sebraego.com.br/",
-          "erro": "HTTPError",
-          "code": 403,
-          "waf": null,
-          "causa": "acesso negado (403) sem WAF identificado — padrão de bloqueio geográfico/IP de datacenter",
-          "retentativa": "aguardando"
-        },
-        {
-          "url": "https://sebraego.com.br/feed",
-          "erro": "HTTPError",
-          "code": 403,
-          "waf": null,
-          "causa": "acesso negado (403) sem WAF identificado — padrão de bloqueio geográfico/IP de datacenter",
-          "retentativa": "aguardando"
-        }
-      ],
+      "falhas_ultima": 0,
+      "saude": [],
       "alerta": null,
       "diagnostico": {
         "paginas_lidas": 0,
@@ -1443,11 +1426,15 @@
         "links_candidatos": 0,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas",
+        "motivo_zero": null,
         "camada1_vetados": 0,
-        "camada1_direcionados": 0
+        "camada1_direcionados": 0,
+        "aguardando_retentativa": [
+          "https://sebraego.com.br/",
+          "https://sebraego.com.br/feed"
+        ]
       },
-      "duracao_s": 4
+      "duracao_s": 0
     },
     "f260-captacao-035": {
       "nome": "Lei Rouanet - doação de pessoa física",
@@ -1508,18 +1495,18 @@
     "f260-captacao-044": {
       "nome": "Projetos aptos à captação na LIE",
       "tipo": "site_oficial",
-      "leituras": 46,
-      "achados_total": 27,
+      "leituras": 47,
+      "achados_total": 29,
       "vazias_seguidas": 0,
-      "ultima": "2026-10-15T18:19:26+00:00",
+      "ultima": "2026-10-15T18:46:00+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 2,
-      "falhas_ultima": 1,
+      "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-premio-cultura-viva-construcao-nacional-do-hip-hop-2023-1",
           "http": 200,
-          "bytes": 155322
+          "bytes": 155316
         },
         {
           "url": "https://www.gov.br/cultura/pt-br/assuntos/editais",
@@ -1557,9 +1544,12 @@
         "pdf_links": 11,
         "motivo_zero": null,
         "camada1_vetados": 5,
-        "camada1_direcionados": 30
+        "camada1_direcionados": 30,
+        "aguardando_retentativa": [
+          "https://www.gov.br/esporte/pt-br/acoes-e-programas/lei-de-incentivo-ao-esporte"
+        ]
       },
-      "duracao_s": 12
+      "duracao_s": 9
     },
     "f260-captacao-060": {
       "nome": "Escolinha de natação/paradesporto adaptado",
@@ -1829,13 +1819,13 @@
     "f260-captacao-218": {
       "nome": "Capta - oportunidades e editais",
       "tipo": "privada",
-      "leituras": 48,
+      "leituras": 49,
       "achados_total": 0,
-      "vazias_seguidas": 48,
-      "ultima": "2026-10-15T18:32:37+00:00",
+      "vazias_seguidas": 49,
+      "ultima": "2026-10-15T18:46:04+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 1,
+      "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://prosas.com.br/editais",
@@ -1848,7 +1838,7 @@
           "bytes": 35023
         }
       ],
-      "alerta": null,
+      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
         "paginas_lidas": 3,
         "links_total": 26,
@@ -1863,22 +1853,30 @@
             "de": "https://prosas.com.br/editais",
             "para": "https://www.prudential.com.br/jovensvisionarios?utm_source=prosas&utm_medium=banner&utm_campaign=jovens_visionarios_2026&utm_content=central_editais_192x600",
             "rotulo": ""
+          },
+          {
+            "de": "https://prosas.com.br/editais",
+            "para": "https://wa.me/5531999198781?text=Olá,+gostaria+de+saber+mais+sobre+a+Central+de+editais,+ para+divulgação+do+meu+edital.",
+            "rotulo": "Fale com a nossa equipe"
           }
         ],
         "pdf_links": 1,
-        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam",
+        "motivo_zero": "página institucional; seguiu 3 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje",
         "camada1_vetados": 0,
-        "camada1_direcionados": 2
+        "camada1_direcionados": 2,
+        "aguardando_retentativa": [
+          "https://wa.me/5531999198781?text=Olá,+gostaria+de+saber+mais+sobre+a+Central+de+editais,+ para+divulgação+do+meu+edital."
+        ]
       },
-      "duracao_s": 5
+      "duracao_s": 3
     },
     "f260-captacao-223": {
       "nome": "Fundação Bradesco",
       "tipo": "privada",
-      "leituras": 46,
+      "leituras": 47,
       "achados_total": 0,
-      "vazias_seguidas": 46,
-      "ultima": "2026-10-15T18:19:14+00:00",
+      "vazias_seguidas": 47,
+      "ultima": "2026-10-15T18:45:51+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -1929,15 +1927,15 @@
           "https://hojanauba.cidadesmg.com.br/portaltransparencia"
         ]
       },
-      "duracao_s": 15
+      "duracao_s": 20
     },
     "f260-captacao-227": {
       "nome": "Instituto Coca-Cola Brasil",
       "tipo": "privada",
-      "leituras": 45,
+      "leituras": 47,
       "achados_total": 0,
-      "vazias_seguidas": 45,
-      "ultima": "2026-10-15T18:32:32+00:00",
+      "vazias_seguidas": 47,
+      "ultima": "2026-10-15T18:46:25+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -1996,13 +1994,13 @@
     "f260-captacao-230": {
       "nome": "Fundação ArcelorMittal",
       "tipo": "privada",
-      "leituras": 45,
+      "leituras": 47,
       "achados_total": 0,
-      "vazias_seguidas": 45,
-      "ultima": "2026-10-15T18:32:20+00:00",
+      "vazias_seguidas": 47,
+      "ultima": "2026-10-15T18:46:25+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 1,
+      "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://www.hrjanauba.com.br/",
@@ -2015,7 +2013,7 @@
           "bytes": 137117
         }
       ],
-      "alerta": null,
+      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
         "paginas_lidas": 5,
         "links_total": 115,
@@ -2043,10 +2041,11 @@
           }
         ],
         "pdf_links": 31,
-        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam",
+        "motivo_zero": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje",
         "camada1_vetados": 0,
         "camada1_direcionados": 0,
         "aguardando_retentativa": [
+          "https://fundacaoarcelormittal.org.br/",
           "https://hojanauba.cidadesmg.com.br/portaltransparencia"
         ]
       },
@@ -2055,13 +2054,13 @@
     "f260-captacao-231": {
       "nome": "Fundação Vale",
       "tipo": "privada",
-      "leituras": 45,
+      "leituras": 46,
       "achados_total": 0,
-      "vazias_seguidas": 45,
-      "ultima": "2026-10-15T18:18:59+00:00",
+      "vazias_seguidas": 46,
+      "ultima": "2026-10-15T18:45:31+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 1,
+      "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://www.hrjanauba.com.br/",
@@ -2074,7 +2073,7 @@
           "bytes": 137117
         }
       ],
-      "alerta": null,
+      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
         "paginas_lidas": 6,
         "links_total": 166,
@@ -2102,12 +2101,15 @@
           }
         ],
         "pdf_links": 33,
-        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam",
+        "motivo_zero": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje",
         "camada1_vetados": 0,
         "camada1_direcionados": 5,
-        "paginas_alem_do_limite": 1
+        "paginas_alem_do_limite": 1,
+        "aguardando_retentativa": [
+          "https://hojanauba.cidadesmg.com.br/portaltransparencia"
+        ]
       },
-      "duracao_s": 15
+      "duracao_s": 19
     },
     "f260-captacao-232": {
       "nome": "Instituto Neoenergia",
@@ -2341,13 +2343,13 @@
     "f260-captacao-237": {
       "nome": "Instituto Sabin",
       "tipo": "privada",
-      "leituras": 33,
+      "leituras": 34,
       "achados_total": 76,
-      "vazias_seguidas": 1,
-      "ultima": "2026-10-15T18:31:38+00:00",
+      "vazias_seguidas": 2,
+      "ultima": "2026-10-15T18:43:57+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 3,
+      "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/",
@@ -2367,9 +2369,12 @@
         "links_candidatos": 0,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam",
+        "motivo_zero": "página respondeu mas não tem links (conteúdo carregado por script ou vazio) — precisa de API/RSS ou leitura do HTML renderizado",
         "camada1_vetados": 0,
-        "camada1_direcionados": 0
+        "camada1_direcionados": 0,
+        "aguardando_retentativa": [
+          "https://www.institutosabin.org.br/"
+        ]
       },
       "duracao_s": 6
     },
@@ -2586,13 +2591,13 @@
     "f260-captacao-207": {
       "nome": "Acordo de cooperação sem transferência financeira",
       "tipo": "site_oficial",
-      "leituras": 27,
+      "leituras": 28,
       "achados_total": 0,
-      "vazias_seguidas": 27,
-      "ultima": "2026-10-15T18:18:26+00:00",
+      "vazias_seguidas": 28,
+      "ultima": "2026-10-15T18:44:16+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 1,
+      "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://www.in.gov.br/web/dou/-/aviso-de-chamada-publica-571071201",
@@ -2602,14 +2607,14 @@
         {
           "url": "https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento+p%C3%BAblico+organiza%C3%A7%C3%B5es+da+sociedade+civil&s=do3",
           "http": 200,
-          "bytes": 233553
+          "bytes": 233552
         }
       ],
-      "alerta": null,
+      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
-        "paginas_lidas": 7,
-        "links_total": 523,
-        "links_candidatos": 396,
+        "paginas_lidas": 6,
+        "links_total": 450,
+        "links_candidatos": 332,
         "descobertas": [
           {
             "de": "https://www.in.gov.br/web/dou/-/aviso-de-chamada-publica-571071201",
@@ -2623,31 +2628,34 @@
           },
           {
             "de": "https://www.in.gov.br/web/dou/-/aviso-de-chamada-publica-571071201",
-            "para": "https://www.in.gov.br/web/guest/servicos/diario-oficial-da-uniao/destaques-do-diario-oficial-da-uniao",
-            "rotulo": "Destaques do Diário Oficial da União"
+            "para": "https://www.in.gov.br/web/guest/leiturajornal",
+            "rotulo": "Leitura do Jornal"
           },
           {
             "de": "https://www.in.gov.br/web/dou/-/aviso-de-chamada-publica-571071201",
-            "para": "https://www.in.gov.br/web/guest/acesso-a-informacao/dados-abertos/base-de-dados",
-            "rotulo": "Base de Dados de Publicações do DOU"
+            "para": "https://www.in.gov.br/web/guest/servicos/diario-oficial-da-uniao/destaques-do-diario-oficial-da-uniao",
+            "rotulo": "Destaques do Diário Oficial da União"
           }
         ],
         "pdf_links": 0,
-        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam",
-        "camada1_vetados": 6,
+        "motivo_zero": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje",
+        "camada1_vetados": 4,
         "camada1_direcionados": 0,
         "dou_json_encontrado": true,
+        "aguardando_retentativa": [
+          "https://www.in.gov.br/web/guest/leiturajornal"
+        ],
         "dou_json_materias": 0
       },
-      "duracao_s": 37
+      "duracao_s": 19
     },
     "f260-captacao-222": {
       "nome": "Fundação Itaú",
       "tipo": "privada",
-      "leituras": 45,
+      "leituras": 46,
       "achados_total": 0,
-      "vazias_seguidas": 45,
-      "ultima": "2026-10-15T18:32:32+00:00",
+      "vazias_seguidas": 46,
+      "ultima": "2026-10-15T18:45:12+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -2698,7 +2706,7 @@
           "https://hojanauba.cidadesmg.com.br/portaltransparencia"
         ]
       },
-      "duracao_s": 12
+      "duracao_s": 11
     },
     "f260-curadoria-006": {
       "nome": "Instituto Clima e Sociedade (iCS) — chamadas de comunicação e clima",
@@ -2733,10 +2741,10 @@
     "f260-curadoria-008": {
       "nome": "Instituto Impactarte — cadastro de proponente em fluxo contínuo",
       "tipo": "privada",
-      "leituras": 36,
+      "leituras": 37,
       "achados_total": 0,
-      "vazias_seguidas": 36,
-      "ultima": "2026-10-13T23:59:29+00:00",
+      "vazias_seguidas": 37,
+      "ultima": "2026-10-15T18:43:51+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -2758,7 +2766,7 @@
         "camada1_vetados": 0,
         "camada1_direcionados": 0
       },
-      "duracao_s": 3
+      "duracao_s": 2
     },
     "plat-cnpq-extensao": {
       "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
@@ -5172,14 +5180,14 @@
     "f260-captacao-221": {
       "nome": "Fundação Banco do Brasil",
       "tipo": "privada",
-      "leituras": 27,
+      "leituras": 29,
       "achados_total": 0,
-      "vazias_seguidas": 27,
-      "duracao_s": 9,
-      "ultima": "2026-10-15T18:31:48+00:00",
+      "vazias_seguidas": 29,
+      "duracao_s": 5,
+      "ultima": "2026-10-15T18:46:11+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 2,
+      "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://www.fbb.org.br/feed",
@@ -5187,30 +5195,34 @@
           "bytes": 11395
         }
       ],
-      "alerta": null,
+      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
         "paginas_lidas": 1,
         "links_total": 0,
         "links_candidatos": 0,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam",
+        "motivo_zero": "página respondeu mas não tem links (conteúdo carregado por script ou vazio) — precisa de API/RSS ou leitura do HTML renderizado",
         "camada1_vetados": 0,
         "camada1_direcionados": 0,
-        "paginas_alem_do_limite": 1
+        "paginas_alem_do_limite": 1,
+        "aguardando_retentativa": [
+          "https://www.licitaserranodomaranhao.com.br/",
+          "https://www.licitaserranodomaranhao.com.br/home.jsf?windowId=5c8"
+        ]
       }
     },
     "f260-captacao-224": {
       "nome": "Fundação Telefônica Vivo",
       "tipo": "privada",
-      "leituras": 28,
+      "leituras": 29,
       "achados_total": 0,
-      "vazias_seguidas": 28,
-      "duracao_s": 10,
-      "ultima": "2026-10-15T18:32:09+00:00",
+      "vazias_seguidas": 29,
+      "duracao_s": 9,
+      "ultima": "2026-10-15T18:44:51+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 1,
+      "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://www.hrjanauba.com.br/",
@@ -5223,7 +5235,7 @@
           "bytes": 137117
         }
       ],
-      "alerta": null,
+      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
         "paginas_lidas": 5,
         "links_total": 115,
@@ -5251,10 +5263,11 @@
           }
         ],
         "pdf_links": 31,
-        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam",
+        "motivo_zero": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje",
         "camada1_vetados": 0,
         "camada1_direcionados": 0,
         "aguardando_retentativa": [
+          "https://fundacaotelefonicavivo.org.br/",
           "https://hojanauba.cidadesmg.com.br/portaltransparencia"
         ]
       }
@@ -5427,24 +5440,15 @@
     "f260-captacao-228": {
       "nome": "Instituto Localiza",
       "tipo": "privada",
-      "leituras": 26,
+      "leituras": 27,
       "achados_total": 0,
-      "vazias_seguidas": 26,
+      "vazias_seguidas": 27,
       "duracao_s": 0,
-      "ultima": "2026-10-15T18:17:47+00:00",
+      "ultima": "2026-10-15T18:43:57+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 1,
-      "saude": [
-        {
-          "url": "https://institutolocaliza.com.br/",
-          "erro": "gaierror",
-          "code": null,
-          "waf": null,
-          "causa": "endereço não resolve (DNS) — URL errada ou domínio desativado",
-          "retentativa": "aguardando"
-        }
-      ],
+      "falhas_ultima": 0,
+      "saude": [],
       "alerta": null,
       "diagnostico": {
         "paginas_lidas": 0,
@@ -5452,22 +5456,25 @@
         "links_candidatos": 0,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "endereço não resolve (DNS) — URL errada",
+        "motivo_zero": null,
         "camada1_vetados": 0,
-        "camada1_direcionados": 0
+        "camada1_direcionados": 0,
+        "aguardando_retentativa": [
+          "https://institutolocaliza.com.br/"
+        ]
       }
     },
     "f260-captacao-226": {
       "nome": "Instituto Natura",
       "tipo": "privada",
-      "leituras": 27,
+      "leituras": 29,
       "achados_total": 0,
-      "vazias_seguidas": 27,
+      "vazias_seguidas": 29,
       "duracao_s": 5,
-      "ultima": "2026-10-15T18:31:53+00:00",
+      "ultima": "2026-10-15T18:46:16+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 1,
+      "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/",
@@ -5480,16 +5487,19 @@
           "bytes": 52443
         }
       ],
-      "alerta": null,
+      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
         "paginas_lidas": 2,
         "links_total": 0,
         "links_candidatos": 0,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam",
+        "motivo_zero": "página respondeu mas não tem links (conteúdo carregado por script ou vazio) — precisa de API/RSS ou leitura do HTML renderizado",
         "camada1_vetados": 0,
-        "camada1_direcionados": 0
+        "camada1_direcionados": 0,
+        "aguardando_retentativa": [
+          "https://www.institutonatura.org/"
+        ]
       }
     },
     "f260-captacao-090": {
@@ -5578,11 +5588,11 @@
     "f260-captacao-253": {
       "nome": "Microsoft Philanthropies",
       "tipo": "internacional",
-      "leituras": 7,
+      "leituras": 8,
       "achados_total": 0,
-      "vazias_seguidas": 7,
-      "duracao_s": 7,
-      "ultima": "2026-10-14T05:47:16+00:00",
+      "vazias_seguidas": 8,
+      "duracao_s": 9,
+      "ultima": "2026-10-15T18:43:49+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 0,
@@ -5590,7 +5600,7 @@
         {
           "url": "https://www.microsoft.com/pt-br/corporate-responsibility/philanthropies",
           "http": 200,
-          "bytes": 205669
+          "bytes": 205657
         }
       ],
       "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
@@ -5673,24 +5683,15 @@
     "f260-captacao-242": {
       "nome": "PNUD – Small Grants Programme",
       "tipo": "internacional",
-      "leituras": 26,
+      "leituras": 27,
       "achados_total": 0,
-      "vazias_seguidas": 26,
-      "duracao_s": 1,
-      "ultima": "2026-10-15T18:17:47+00:00",
+      "vazias_seguidas": 27,
+      "duracao_s": 0,
+      "ultima": "2026-10-15T18:43:57+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 1,
-      "saude": [
-        {
-          "url": "https://www.undp.org/pt/brazil",
-          "erro": "HTTPError",
-          "code": 403,
-          "waf": null,
-          "causa": "acesso negado (403) sem WAF identificado — padrão de bloqueio geográfico/IP de datacenter",
-          "retentativa": "aguardando"
-        }
-      ],
+      "falhas_ultima": 0,
+      "saude": [],
       "alerta": null,
       "diagnostico": {
         "paginas_lidas": 0,
@@ -5698,9 +5699,12 @@
         "links_candidatos": 0,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas",
+        "motivo_zero": null,
         "camada1_vetados": 0,
-        "camada1_direcionados": 0
+        "camada1_direcionados": 0,
+        "aguardando_retentativa": [
+          "https://www.undp.org/pt/brazil"
+        ]
       }
     },
     "f260-captacao-180": {
@@ -6167,14 +6171,14 @@
     "f260-curadoria-005": {
       "nome": "Fundação Tide Setubal — Edital Territórios Clínicos",
       "tipo": "privada",
-      "leituras": 27,
+      "leituras": 28,
       "achados_total": 0,
-      "vazias_seguidas": 27,
-      "duracao_s": 17,
-      "ultima": "2026-10-15T18:18:44+00:00",
+      "vazias_seguidas": 28,
+      "duracao_s": 15,
+      "ultima": "2026-10-15T18:44:41+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 1,
+      "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://fundacaotidesetubal.org.br/feed",
@@ -6184,10 +6188,10 @@
         {
           "url": "https://fundacaotidesetubal.org.br/editais/",
           "http": 200,
-          "bytes": 90276
+          "bytes": 90274
         }
       ],
-      "alerta": null,
+      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
         "paginas_lidas": 6,
         "links_total": 763,
@@ -6215,9 +6219,12 @@
           }
         ],
         "pdf_links": 0,
-        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam",
+        "motivo_zero": "página institucional; seguiu 4 listagem(ns) e nenhum rótulo casou com o léxico do terceiro setor hoje",
         "camada1_vetados": 2,
-        "camada1_direcionados": 49
+        "camada1_direcionados": 49,
+        "aguardando_retentativa": [
+          "https://conteudo.fundacaotidesetubal.org.br/"
+        ]
       }
     },
     "f260-curadoria-007": {
@@ -6279,11 +6286,11 @@
     "judiciario-tjgo": {
       "nome": "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
       "tipo": "diario_justica",
-      "leituras": 94,
+      "leituras": 95,
       "achados_total": 0,
-      "vazias_seguidas": 94,
-      "duracao_s": 2,
-      "ultima": "2026-10-15T18:32:11+00:00",
+      "vazias_seguidas": 95,
+      "duracao_s": 3,
+      "ultima": "2026-10-15T18:44:53+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 2,
@@ -7196,24 +7203,15 @@
     "f260-espalhado-rouanet-cultura-gov-br": {
       "nome": "Ministério da Cultura — SALIC — oportunidades (espalhado de edital validado)",
       "tipo": "privada",
-      "leituras": 26,
+      "leituras": 27,
       "achados_total": 0,
-      "vazias_seguidas": 26,
-      "duracao_s": 1,
-      "ultima": "2026-10-15T18:17:48+00:00",
+      "vazias_seguidas": 27,
+      "duracao_s": 0,
+      "ultima": "2026-10-15T18:43:57+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 1,
-      "saude": [
-        {
-          "url": "https://rouanet.cultura.gov.br/",
-          "erro": "gaierror",
-          "code": null,
-          "waf": null,
-          "causa": "endereço não resolve (DNS) — URL errada ou domínio desativado",
-          "retentativa": "aguardando"
-        }
-      ],
+      "falhas_ultima": 0,
+      "saude": [],
       "alerta": null,
       "diagnostico": {
         "paginas_lidas": 0,
@@ -7221,9 +7219,12 @@
         "links_candidatos": 0,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "endereço não resolve (DNS) — URL errada",
+        "motivo_zero": null,
         "camada1_vetados": 0,
-        "camada1_direcionados": 0
+        "camada1_direcionados": 0,
+        "aguardando_retentativa": [
+          "https://rouanet.cultura.gov.br/"
+        ]
       }
     },
     "f260-espalhado-www-ipora-pr-gov-br": {
@@ -7285,24 +7286,15 @@
     "f260-espalhado-www-novohamburgo-rs-gov-br": {
       "nome": "PNCP — MUNICIPIO DE NOVO HAMBURGO — oportunidades (espalhado de edital validado)",
       "tipo": "site_oficial",
-      "leituras": 27,
+      "leituras": 28,
       "achados_total": 0,
-      "vazias_seguidas": 27,
-      "duracao_s": 4,
-      "ultima": "2026-10-15T18:31:56+00:00",
+      "vazias_seguidas": 28,
+      "duracao_s": 0,
+      "ultima": "2026-10-15T18:44:41+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 1,
-      "saude": [
-        {
-          "url": "https://www.novohamburgo.rs.gov.br/",
-          "erro": "HTTPError",
-          "code": 403,
-          "waf": null,
-          "causa": "acesso negado (403) sem WAF identificado — padrão de bloqueio geográfico/IP de datacenter",
-          "retentativa": "aguardando"
-        }
-      ],
+      "falhas_ultima": 0,
+      "saude": [],
       "alerta": null,
       "diagnostico": {
         "paginas_lidas": 0,
@@ -7310,32 +7302,26 @@
         "links_candidatos": 0,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas",
+        "motivo_zero": null,
         "camada1_vetados": 0,
-        "camada1_direcionados": 0
+        "camada1_direcionados": 0,
+        "aguardando_retentativa": [
+          "https://www.novohamburgo.rs.gov.br/"
+        ]
       }
     },
     "f260-espalhado-sistema-mirassoldoeste-mt-gov-br": {
       "nome": "PNCP — MUNICIPIO DE MIRASSOL D'OESTE — oportunidades (espalhado de edital validado)",
       "tipo": "site_oficial",
-      "leituras": 27,
+      "leituras": 28,
       "achados_total": 0,
-      "vazias_seguidas": 27,
-      "duracao_s": 2,
-      "ultima": "2026-10-15T18:31:58+00:00",
+      "vazias_seguidas": 28,
+      "duracao_s": 0,
+      "ultima": "2026-10-15T18:44:41+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 1,
-      "saude": [
-        {
-          "url": "https://sistema.mirassoldoeste.mt.gov.br/",
-          "erro": "URLError",
-          "code": null,
-          "waf": null,
-          "causa": "conexão recusada/derrubada — filtro de rede ou IP estrangeiro",
-          "retentativa": "aguardando"
-        }
-      ],
+      "falhas_ultima": 0,
+      "saude": [],
       "alerta": null,
       "diagnostico": {
         "paginas_lidas": 0,
@@ -7343,9 +7329,12 @@
         "links_candidatos": 0,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "tempo esgotado / conexão recusada",
+        "motivo_zero": null,
         "camada1_vetados": 0,
-        "camada1_direcionados": 0
+        "camada1_direcionados": 0,
+        "aguardando_retentativa": [
+          "https://sistema.mirassoldoeste.mt.gov.br/"
+        ]
       }
     },
     "f260-espalhado-www-senadorpompeu-ce-gov-br": {
@@ -7549,24 +7538,15 @@
     "f260-espalhado-www-rosariodosul-rs-gov-br": {
       "nome": "PNCP — MUNICIPIO DE ROSARIO DO SUL — oportunidades (espalhado de edital validado)",
       "tipo": "site_oficial",
-      "leituras": 26,
+      "leituras": 27,
       "achados_total": 0,
-      "vazias_seguidas": 26,
-      "duracao_s": 1,
-      "ultima": "2026-10-15T18:17:49+00:00",
+      "vazias_seguidas": 27,
+      "duracao_s": 0,
+      "ultima": "2026-10-15T18:43:57+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 1,
-      "saude": [
-        {
-          "url": "https://www.rosariodosul.rs.gov.br/",
-          "erro": "HTTPError",
-          "code": 403,
-          "waf": "Cloudflare",
-          "causa": "bloqueio de robô pelo WAF Cloudflare",
-          "retentativa": "aguardando"
-        }
-      ],
+      "falhas_ultima": 0,
+      "saude": [],
       "alerta": null,
       "diagnostico": {
         "paginas_lidas": 0,
@@ -7574,40 +7554,26 @@
         "links_candidatos": 0,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas",
+        "motivo_zero": null,
         "camada1_vetados": 0,
-        "camada1_direcionados": 0
+        "camada1_direcionados": 0,
+        "aguardando_retentativa": [
+          "https://www.rosariodosul.rs.gov.br/"
+        ]
       }
     },
     "f260-espalhado-www-bentogoncalves-rs-gov-br": {
       "nome": "PNCP — MUNICIPIO DE BENTO GONCALVES — oportunidades (espalhado de edital validado)",
       "tipo": "site_oficial",
-      "leituras": 27,
+      "leituras": 28,
       "achados_total": 0,
-      "vazias_seguidas": 27,
-      "duracao_s": 1,
-      "ultima": "2026-10-15T18:31:59+00:00",
+      "vazias_seguidas": 28,
+      "duracao_s": 0,
+      "ultima": "2026-10-15T18:44:41+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 2,
-      "saude": [
-        {
-          "url": "https://www.bentogoncalves.rs.gov.br/feed",
-          "erro": "HTTPError",
-          "code": 403,
-          "waf": null,
-          "causa": "acesso negado (403) sem WAF identificado — padrão de bloqueio geográfico/IP de datacenter",
-          "retentativa": "aguardando"
-        },
-        {
-          "url": "https://www.bentogoncalves.rs.gov.br/",
-          "erro": "HTTPError",
-          "code": 403,
-          "waf": null,
-          "causa": "acesso negado (403) sem WAF identificado — padrão de bloqueio geográfico/IP de datacenter",
-          "retentativa": "aguardando"
-        }
-      ],
+      "falhas_ultima": 0,
+      "saude": [],
       "alerta": null,
       "diagnostico": {
         "paginas_lidas": 0,
@@ -7615,9 +7581,13 @@
         "links_candidatos": 0,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas",
+        "motivo_zero": null,
         "camada1_vetados": 0,
-        "camada1_direcionados": 0
+        "camada1_direcionados": 0,
+        "aguardando_retentativa": [
+          "https://www.bentogoncalves.rs.gov.br/feed",
+          "https://www.bentogoncalves.rs.gov.br/"
+        ]
       }
     },
     "f260-espalhado-transparencia-cacoal-ro-gov-br": {
@@ -8558,88 +8528,27 @@
   },
   "ultima_execucao": {
     "data": "2026-10-15",
-    "em": "2026-10-15T18:32:37+00:00",
+    "em": "2026-10-15T18:46:25+00:00",
     "manual": [
-      "alego-pl",
-      "f260-captacao-044",
-      "f260-captacao-151",
-      "f260-captacao-207",
-      "f260-captacao-218",
       "f260-captacao-221",
-      "f260-captacao-222",
-      "f260-captacao-223",
-      "f260-captacao-224",
       "f260-captacao-226",
       "f260-captacao-227",
-      "f260-captacao-228",
-      "f260-captacao-230",
-      "f260-captacao-231",
-      "f260-captacao-237",
-      "f260-captacao-238",
-      "f260-captacao-242",
-      "f260-curadoria-001",
-      "f260-curadoria-002",
-      "f260-curadoria-005",
-      "f260-espalhado-rouanet-cultura-gov-br",
-      "f260-espalhado-sistema-mirassoldoeste-mt-gov-br",
-      "f260-espalhado-www-bentogoncalves-rs-gov-br",
-      "f260-espalhado-www-novohamburgo-rs-gov-br",
-      "f260-espalhado-www-rosariodosul-rs-gov-br",
-      "judiciario-cnj-tjgo",
-      "judiciario-tjgo",
-      "outras-oportunidades-1",
-      "outras-oportunidades-5",
-      "outras-oportunidades-6",
-      "outras-oportunidades-7",
-      "outras-oportunidades-8",
-      "plat-estaduais-go-gov",
-      "plataforma-mapas-culturais",
-      "plataforma-wordpress"
+      "f260-captacao-230"
     ],
     "bloco": "manual",
-    "sensores_executados": 35,
+    "sensores_executados": 4,
     "adiados_por_tempo": [],
-    "duracao_s": 1374,
-    "em_espera": 92,
-    "total_esquadra": 127,
+    "duracao_s": 18,
+    "em_espera": 125,
+    "total_esquadra": 129,
     "previsoes_ativas": 1,
-    "achados": 90,
-    "novos_na_base": 6,
+    "achados": 0,
+    "novos_na_base": 0,
     "por_tipo": {
-      "plataforma": {
-        "sensores": 1,
-        "achados": 0,
-        "falhas": 0
-      },
-      "api": {
-        "sensores": 2,
-        "achados": 22,
-        "falhas": 10
-      },
-      "site_oficial": {
-        "sensores": 14,
-        "achados": 68,
-        "falhas": 42
-      },
       "privada": {
-        "sensores": 14,
-        "achados": 0,
-        "falhas": 13
-      },
-      "internacional": {
-        "sensores": 1,
-        "achados": 0,
-        "falhas": 1
-      },
-      "legislativo": {
-        "sensores": 1,
+        "sensores": 4,
         "achados": 0,
         "falhas": 0
-      },
-      "diario_justica": {
-        "sensores": 2,
-        "achados": 0,
-        "falhas": 4
       }
     }
   }
