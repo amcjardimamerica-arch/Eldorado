@@ -198,3 +198,23 @@ class AmostraCiclo6_15_10(unittest.TestCase):
         from src import curadoria_links as C
         self.assertTrue(C.classe("https://impactarte.com.br/").startswith("página inicial"))
         self.assertTrue(C.classe("https://institutogenesio.org.br/").startswith("página inicial"))
+
+
+class AmostraCiclo7_15_10(unittest.TestCase):
+    """15/10/2026: validação de 20 oportunidades (ciclo 7) e falsos positivos conferidos."""
+    def test_regras(self):
+        from src import repositorio_unico as R
+        sai = {("Prêmio Boas Práticas na Mineração 2026 realiza apresentação final e cerimônia", ""): "resultado",
+               ("Seis soluções inovadoras são indicadas para apoio financeiro", ""): "resultado",
+               ("Fundação Privada", "https://capitaai.com.br/constituir/fundacao-privada"): "agregador",
+               ("Escola da Nuvem contrata Gerente de Parcerias", "https://captadores.org.br/vagas/escola-da-nuvem"): "agregador",
+               ("Invita Gobierno Estatal a Participar En Convocatoria", ""): "estrangeiro"}
+        for (t, u), k in sai.items():
+            self.assertIn(k, R.nao_e_oportunidade({"titulo": t, "url": u}) or "", t)
+        fica = [("BNDES Periferias em Rede — 6º ciclo", "https://capitaai.com.br/captacao/ciclo-bndes-periferias"),
+                ("Karibu Foundation abre inscrições para iniciativas do Sul Global", "https://observatorio3setor.org.br/karibu-foundation-abre"),
+                ("Convocatoria Actinver Apoya 2026", "")]
+        for t, u in fica:
+            self.assertIsNone(R.nao_e_oportunidade({"titulo": t, "url": u}), t)
+        self.assertEqual(R.uf_por_municipio("Edital Itagibá 2026: Guia de Captação"), "BA")
+        self.assertEqual(R.uf_por_municipio("Edital Planaltina 2026"), "GO")

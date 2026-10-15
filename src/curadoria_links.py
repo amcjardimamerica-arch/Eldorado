@@ -100,7 +100,8 @@ def curar(r: dict, cert: dict | None, agora: datetime) -> dict:
     oficial = (cert or {}).get("link_oficial") or r.get("link_oficial")
     if (not oficial or classe(oficial, r.get("orgao")) not in OFICIAIS) and classe(acesso, r.get("orgao")) in OFICIAIS:
         oficial = acesso            # captada direto no local oficial (15/10: também quando o link proposto não vale)
-    cl = classe(oficial, r.get("orgao")) if oficial else "sem link"
+    _quem = r.get("orgao") or r.get("titulo")                   # 15/10 (ciclo 7): sem órgão, o título identifica o financiador
+    cl = classe(oficial, _quem) if oficial else "sem link"
     docs_cert = {str(v.get("documento") or "") for v in ((cert or {}).get("itens") or {}).values() if isinstance(v, dict)}
     em = str((cert or {}).get("em") or "")
     C = {"C1 domínio oficial": cl in OFICIAIS,
