@@ -71,3 +71,17 @@ class SemAgenda(unittest.TestCase):
         from src import maestro as M
         self.assertNotIn("aguardando_horario", inspect.getsource(M.controlar))
         self.assertNotIn("roda_hoje(ag", inspect.getsource(M.planejar))
+
+
+class Ciclo6_15_10(unittest.TestCase):
+    def test_cartorio_40_por_passagem_e_unico_gravador(self):
+        import yaml
+        from pathlib import Path
+        src = (Path(__file__).resolve().parents[1] / "src/comando.py").read_text(encoding="utf-8")
+        self.assertIn('"src.cartorio", "--limite", "40"', src)
+        y = yaml.safe_load((Path(__file__).resolve().parents[1] / ".github/workflows/cartorio.yml").read_text(encoding="utf-8"))
+        self.assertEqual(list(y[True].keys()), ["workflow_dispatch"])          # só manual: o comando é o único gravador
+
+    def test_status_semanal_e_api_com_achados(self):
+        from src import status_motores as SM
+        self.assertGreater(SM.janela_do_motor({"id": "motor-gife"}, {"dias": "todos"}), 7 * 24)
