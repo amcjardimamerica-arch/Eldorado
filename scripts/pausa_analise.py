@@ -38,7 +38,8 @@ def _agora() -> str:
 
 def gh(metodo: str, caminho: str):
     tok = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
-    req = urllib.request.Request(f"https://api.github.com/repos/{REPO}/{caminho}", method=metodo,
+    dados = json.dumps({"ref": "main"}).encode() if (metodo == "POST" and caminho.endswith("/dispatches")) else None
+    req = urllib.request.Request(f"https://api.github.com/repos/{REPO}/{caminho}", method=metodo, data=dados,
                                  headers={"Authorization": f"Bearer {tok}", "Accept": "application/vnd.github+json"})
     try:
         with urllib.request.urlopen(req, timeout=40) as r:
@@ -66,7 +67,9 @@ def retomar() -> dict:
     for w in d.get("interrompidos") or []:
         st, _ = gh("PUT", f"actions/workflows/{w['id']}/enable")
         (ok if st in (200, 204) else falha).append(w["arquivo"])
-    d.update({"retomado_em": _agora(), "retomados": ok, "falha_ao_retomar": falha, "em_pausa": bool(falha)})
+    st, _ = gh("POST", "actions/workflows/motores-da-vez.yml/dispatches") if ok else (None, None)   # 15/10: recupera a passagem perdida
+    d.update({"retomado_em": _agora(), "retomados": ok, "falha_ao_retomar": falha, "em_pausa": bool(falha),
+              "comando_disparado_na_retomada": st in (200, 204)})
     _gravar(d)
     print(f"retomados {len(ok)}; falha {falha}")
     return d
