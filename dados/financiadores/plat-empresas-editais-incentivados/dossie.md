@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `plat-empresas-editais-incentivados`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 35
-- Distribuição por ano pesquisado/coletado: {'2026': 35}
+- Pistas aguardando confirmação: 34
+- Distribuição por ano pesquisado/coletado: {'2026': 34}
 
 ## Padrões
 
@@ -50,4 +50,3 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Instituto Ethos contrata profissional para captação de recursos](https://captadores.org.br/vagas/instituto-ethos-contrata-profissional-para-captacao-de-recursos) — coletado em 2026-10-14T22:43:28+00:00
 - [Guia ensina OSCs a usarem verba de 10 mil dólares do Google Ad Grants](https://captadores.org.br/noticias/gerais/guia-ensina-oscs-a-usarem-verba-de-10-mil-dolares-do-google-ad-grants) — coletado em 2026-10-15T01:16:21+00:00
 - [Instituto Ronald McDonald abre vaga de estágio em Captação de Recursos no Rio de Janeiro](https://captadores.org.br/vagas/instituto-ronald-mcdonald-abre-vaga-de-estagio-em-captacao-de-recursos-no-rio-de-janeiro) — coletado em 2026-10-15T02:25:39+00:00
-- [Fundo Socioambiental da CAIXA lança edital de R$ 50 milhões para projetos de agricultura regenerativa](https://captadores.org.br/editais/fundo-socioambiental-da-caixa-lanca-edital-de-r-50-milhoes-para-projetos-de-agricultura-regenerativa-na-amazonia-legal) — coletado em 2026-10-15T06:13:41+00:00

@@ -1,13 +1,13 @@
 {
  "dia": "2026-10-15",
- "em": "2026-10-15T06:19:51+00:00",
+ "em": "2026-10-15T06:48:25+00:00",
  "regra": "MAESTRO — A REDE NEURAL CONDUZ O DIA (titular, 02/10/2026).\n\nOs motores são ferramentas de uma etapa. O maestro, a cada passagem do fluxo de status (4 vezes por dia):\n  1. PLANEJA  quais motores rodam hoje (agenda) e em que ordem: rendimento real do canal (oportunidades validadas como\n              reais por leitura — linha de produção), diagnóstico (planos de correção) e livros com abertura próxima\n              no índice do motor (léxico temporário da chave de acionamento);\n  2. MEDE     a cobertura do dia de cada motor: completa (leu sem falha de página) · parcial (falha em parte das páginas)\n              · pendente (ainda não leu) · pendente_local (exige IP brasileiro — coleta no computador do titular);\n  3. CONTROLA dispara de novo os pendentes e os parciais, até 3 vezes por dia, para a busca do dia NÃO ficar parcial;\n  4. FECHA    o dia quando todos os motores planejados estão completos (ou esgotaram as tentativas — fica registrado).",
- "planejados": 124,
+ "planejados": 122,
  "cobertura": {
   "aguardando_horario": 50,
   "parcial": 2,
   "pendente": 2,
-  "pendente_sem_agenda": 70
+  "pendente_sem_agenda": 68
  },
  "cobertura_percentual": 0.0,
  "a_disparar": [
@@ -54,7 +54,8 @@
   "f260-captacao-217",
   "f260-captacao-216",
   "f260-captacao-119",
-  "f260-captacao-060"
+  "f260-captacao-060",
+  "motor-gife"
  ],
  "esgotaram_tentativas": [],
  "dia_fechado": false,
@@ -109,7 +110,6 @@
   "f260-captacao-039",
   "f260-captacao-107",
   "f260-captacao-051",
-  "f260-captacao-222",
   "f260-espalhado-acessoainformacao-cavalcante-go-gov-br",
   "f260-captacao-068",
   "f260-captacao-228",
@@ -132,15 +132,14 @@
   "f260-captacao-190",
   "f260-captacao-151",
   "f260-captacao-118",
-  "f260-captacao-196",
-  "f260-captacao-238"
+  "f260-captacao-196"
  ],
  "plano": [
   {
    "motor": "plat-piloto-aberto",
-   "prioridade": 5.4067,
+   "prioridade": 5.3667,
    "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 266,
+   "livros_com_abertura_proxima": 264,
    "horarios": "05:53,10:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
@@ -1127,17 +1126,6 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "f260-captacao-222",
-   "prioridade": 0.0106,
-   "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "nao_observado",
-   "cobertura": "pendente_sem_agenda",
-   "tentativas_hoje": 0
-  },
-  {
    "motor": "f260-espalhado-acessoainformacao-cavalcante-go-gov-br",
    "prioridade": 0.01,
    "diagnostico": "sem_rendimento",
@@ -1448,17 +1436,6 @@
   {
    "motor": "f260-captacao-196",
    "prioridade": 0.0042,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "nao_observado",
-   "cobertura": "pendente_sem_agenda",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "f260-captacao-238",
-   "prioridade": 0.004,
    "diagnostico": "sem_rendimento",
    "livros_com_abertura_proxima": 0,
    "horarios": null,
