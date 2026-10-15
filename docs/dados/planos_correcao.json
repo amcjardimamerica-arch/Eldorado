@@ -3,7 +3,7 @@
  "regra": "PLANOS DE CORREÇÃO DOS CANAIS (titular, 02/10/2026).\n\nCada motor e Piloto é diagnosticado a cada ciclo pelo seu histórico (estado/esquadra*.json, status dos motores, bloqueios)\ne recebe o plano previsto no fluxograma (config/linha_producao.json › planos_de_correcao):\n  sem_rendimento · falha_parcial · bloqueio · exige_brasil · formato_mudou · (contrato_violado e injecao: por registro)\nO plano nunca desliga um canal sozinho: ele diz o que fazer e qual skill usar.",
  "resumo": {
   "falha_parcial": 13,
-  "sem_rendimento": 59,
+  "sem_rendimento": 57,
   "saudavel": 53
  },
  "motores": [
@@ -491,6 +491,22 @@
    "achados_total": 0
   },
   {
+   "motor": "f260-captacao-240",
+   "canal": "f260-captacao-240",
+   "familia": "orgao_publico",
+   "diagnostico": "sem_rendimento",
+   "evidencia": "25 leituras e nenhum achado",
+   "plano": [
+    "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
+    "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
+    "testar rotas alternativas do motor (config/rotas_motores.json)",
+    "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
+   ],
+   "skill": "comum/plano_correcao",
+   "leituras": 25,
+   "achados_total": 0
+  },
+  {
    "motor": "f260-captacao-241",
    "canal": "f260-captacao-241",
    "familia": "orgao_publico",
@@ -683,40 +699,8 @@
    "achados_total": 0
   },
   {
-   "motor": "f260-captacao-257",
-   "canal": "f260-captacao-257",
-   "familia": "orgao_publico",
-   "diagnostico": "sem_rendimento",
-   "evidencia": "7 leituras e nenhum achado",
-   "plano": [
-    "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
-    "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
-    "testar rotas alternativas do motor (config/rotas_motores.json)",
-    "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
-   ],
-   "skill": "comum/plano_correcao",
-   "leituras": 7,
-   "achados_total": 0
-  },
-  {
    "motor": "f260-captacao-258",
    "canal": "f260-captacao-258",
-   "familia": "orgao_publico",
-   "diagnostico": "sem_rendimento",
-   "evidencia": "7 leituras e nenhum achado",
-   "plano": [
-    "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
-    "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
-    "testar rotas alternativas do motor (config/rotas_motores.json)",
-    "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
-   ],
-   "skill": "comum/plano_correcao",
-   "leituras": 7,
-   "achados_total": 0
-  },
-  {
-   "motor": "f260-captacao-259",
-   "canal": "f260-captacao-259",
    "familia": "orgao_publico",
    "diagnostico": "sem_rendimento",
    "evidencia": "7 leituras e nenhum achado",
@@ -1080,22 +1064,6 @@
    ],
    "skill": "comum/plano_correcao",
    "leituras": 7,
-   "achados_total": 0
-  },
-  {
-   "motor": "f260-espalhado-www-senadorpompeu-ce-gov-br",
-   "canal": "f260-espalhado-www-senadorpompeu-ce-gov-br",
-   "familia": "orgao_publico",
-   "diagnostico": "sem_rendimento",
-   "evidencia": "6 leituras e nenhum achado",
-   "plano": [
-    "conferir robots.txt e termos do site (se proibir robôs: pausar e registrar)",
-    "verificar se a página é montada por JavaScript (lista vazia no HTML): procurar API/JSON ou feed",
-    "testar rotas alternativas do motor (config/rotas_motores.json)",
-    "se nada render em 30 dias: reduzir a frequência e mandar o domínio ao Espião"
-   ],
-   "skill": "comum/plano_correcao",
-   "leituras": 6,
    "achados_total": 0
   },
   {
