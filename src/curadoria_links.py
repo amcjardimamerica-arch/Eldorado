@@ -98,8 +98,8 @@ def curar(r: dict, cert: dict | None, agora: datetime) -> dict:
     from . import fila_retentativa as FR
     acesso = r.get("url")
     oficial = (cert or {}).get("link_oficial") or r.get("link_oficial")
-    if not oficial and classe(acesso, r.get("orgao")) in OFICIAIS:
-        oficial = acesso                                              # captada direto no local oficial
+    if (not oficial or classe(oficial, r.get("orgao")) not in OFICIAIS) and classe(acesso, r.get("orgao")) in OFICIAIS:
+        oficial = acesso            # captada direto no local oficial (15/10: também quando o link proposto não vale)
     cl = classe(oficial, r.get("orgao")) if oficial else "sem link"
     docs_cert = {str(v.get("documento") or "") for v in ((cert or {}).get("itens") or {}).values() if isinstance(v, dict)}
     em = str((cert or {}).get("em") or "")
