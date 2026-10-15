@@ -59,6 +59,19 @@ def main() -> dict:
     out["resumo"] = {"ponte_ok": sum(1 for x in a if x["ponte"]["ok"]), "direto_ok": sum(1 for x in a if x["direto"]["ok"]),
                      "so_pela_ponte": [n for n, x in out["alvos"].items() if x["ponte"]["ok"] and not x["direto"]["ok"]],
                      "nenhum": [n for n, x in out["alvos"].items() if not x["ponte"]["ok"] and not x["direto"]["ok"]], "total": len(out["alvos"])}
+    # 15/10: leitura real do motor 05 (ALEGO) com o leitor genérico corrigido (SPL pela ponte)
+    try:
+        from src import sensores as S
+        sen = next(x for x in S.registro() if x.get("id") == "alego-pl")
+        r = S.ler(sen)
+        d = r.get("diagnostico") or {}
+        out["motor_05_alego"] = {"paginas_lidas": d.get("paginas_lidas"), "links_total": d.get("links_total"),
+                                 "links_candidatos": d.get("links_candidatos"), "pulado": r.get("pulado_exige_brasil", False),
+                                 "pendentes_local": d.get("rotas_pendentes_local"), "motivo_zero": d.get("motivo_zero"),
+                                 "achados": [{"titulo": str(a.get("titulo") or "")[:160], "url": a.get("url")} for a in (r.get("achados") or [])][:40],
+                                 "falhas": [str(f)[:160] for f in (r.get("falhas") or [])][:15]}
+    except Exception as e:  # noqa: BLE001
+        out["motor_05_alego"] = {"erro": f"{type(e).__name__}: {str(e)[:200]}"}
     (ROOT / "estado/ponte").mkdir(parents=True, exist_ok=True)
     (ROOT / "estado/ponte/diagnostico.json").write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     return out
