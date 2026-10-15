@@ -1,6 +1,6 @@
 # Conselho dos motores — 2026-10-15
 
-149 motores avaliados; 100 com pelo menos uma falha.
+152 motores avaliados; 102 com pelo menos uma falha.
 
 ## Os sete prompts
 
@@ -34,47 +34,46 @@
 
 ## Falhas por tipo
 
-- VAZAMENTO: 50
-- SILÊNCIO LONGO: 44
-- RUÍDO: 29
+- VAZAMENTO: 51
+- SILÊNCIO LONGO: 43
+- RUÍDO: 34
 - CEGO: 23
 - CONGELADO: 21
-- PÁGINA VAZIA: 8
-- CUSTO SEM RETORNO: 3
+- PÁGINA VAZIA: 9
+- CUSTO SEM RETORNO: 2
 - INTERMITENTE: 2
-- ESTRANGULADO: 1
 
 ## Cobertura (Dr. Otávio)
 
-70.8% das oportunidades vieram de fora dos motores: {'Piloto': 148, 'motor': 150, 'agregador/outra': 215}.
+69.6% das oportunidades vieram de fora dos motores: {'Piloto': 134, 'motor': 123, 'agregador/outra': 148}.
 
-- GO: 8 oportunidades, nenhuma de motor ({'agregador/outra': 8})
+- GO: 6 oportunidades, nenhuma de motor ({'agregador/outra': 6})
 
 ## Fontes irmãs (Profa. Clara)
 
-231 domínios oficiais já renderam e não têm motor. Os primeiros:
+230 domínios oficiais já renderam e não têm motor. Os primeiros:
 
 - baoba.org.br (peso 25)
 - institutolojasrenner.org.br (peso 15)
-- pesquisavoluntariado.org.br (peso 14)
 - mariaemilia.org.br (peso 13)
-- zurich.com.br (peso 13)
+- brazilfoundation.org (peso 13)
 - fundoecos.org.br (peso 12)
+- pesquisavoluntariado.org.br (peso 12)
 - chamadas.funbio.org.br (peso 11)
-- contrafluxofestival.com.br (peso 11)
-- brazilfoundation.org (peso 11)
+- zurich.com.br (peso 11)
 - bnccompras.com (peso 11)
 - institutoinad.org.br (peso 10)
+- jatai.go.leg.br (peso 9)
 - feirapreta.com.br (peso 9)
 - brasil.aperam.com (peso 9)
+- contrafluxofestival.com.br (peso 9)
 - fbb.org.br (peso 9)
 - transforma.fbb.org.br (peso 8)
-- difusionconcausa.com (peso 8)
 - ifrs.edu.br (peso 8)
 - jornadasocial.com.br (peso 8)
-- impactarte.org.br (peso 8)
 - lithoralnews.com.br (peso 7)
 - fondationfrancoisschneider.org (peso 7)
+- institutodonanenembrz.com (peso 7)
 - dopaonlineupload.procempa.com.br (peso 7)
 - conteudo.agosocial.com.br (peso 7)
 - equatorial.gestaocpp.com.br (peso 6)
@@ -83,167 +82,174 @@
 ## Plataformas e inovações (Dr. Fábio)
 
 - WordPress: 104 órgãos
-- Mapas Culturais: 11 órgãos
-- Diário municipal em lote (AGM/DOM): 16 órgãos
-- Portal de transparência de fornecedor: 19 órgãos
-- Sistemas de editais (Prosas/Editais): 50 órgãos
+- Mapas Culturais: 12 órgãos
+- Diário municipal em lote (AGM/DOM): 17 órgãos
+- Portal de transparência de fornecedor: 18 órgãos
+- Sistemas de editais (Prosas/Editais): 49 órgãos
 - Querido Diário: 0 órgãos
 - PNCP: 1 órgãos
 - Leis e atos (Leis Municipais): 1 órgãos
 
-- **Adaptador por plataforma** — um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão. Alcance: 104 órgãos WordPress e 11 instâncias de Mapas Culturais já conhecidos de uma vez.
+- **Adaptador por plataforma** — um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão. Alcance: 104 órgãos WordPress e 12 instâncias de Mapas Culturais já conhecidos de uma vez.
 - **Detecção de mudança barata** — ler o sitemap.xml (lastmod) e os feeds RSS/Atom dos sites oficiais; só baixar a página quando muda. Alcance: permite vigiar 10× mais fontes no mesmo tempo de execução.
 - **Consulta inversa** — frases distintivas de editais confirmados (ex.: 'Política Nacional Aldir Blanc' + 'chamamento') viram buscas por editais irmãos em outros municípios. Alcance: cada edital confirmado gera pistas em dezenas de municípios que publicam o mesmo modelo.
 - **Motor de fontes irmãs** — domínios oficiais que já renderam oportunidade e nenhum motor vigia passam a ser lidos todos os dias. Alcance: implantado como motor Outras Oportunidades (clones calculados para ler todas as fontes no dia).
 
 ## Motor a motor
 
-### MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos) (`mpgo-destinacao`) — ruído, 12 achados em 30 dias
-- **CONGELADO** (falso_verde): o mesmo achado repetido em 12 dias. → detectar mudança por hash/lastmod e só contar o que é novo
+### MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos) (`mpgo-destinacao`) — ruído, 13 achados em 30 dias
+- **CONGELADO** (falso_verde): o mesmo achado repetido em 13 dias. → detectar mudança por hash/lastmod e só contar o que é novo
 - **PÁGINA VAZIA** (falso_verde): leitura em 0 s com 0 página(s). → a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte
-- **RUÍDO** (funil): 61 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+- **RUÍDO** (funil): 62 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### Diário Oficial do Município de Goiânia (`do-goiania`) — confirma, 9 achados em 30 dias
 - **CONGELADO** (falso_verde): o mesmo achado repetido em 9 dias. → detectar mudança por hash/lastmod e só contar o que é novo
-- **SILÊNCIO LONGO** (falso_verde): 51 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
-- **CUSTO SEM RETORNO** (redundancia): 151 s na última leitura sem achado. → reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem
-
-### Câmara Municipal de Goiânia — projetos de lei (`camara-goiania-pl`) — baixo volume, 0 achados em 30 dias
-- **CEGO** (falso_verde): respondeu 200 em 30 de 30 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
-- **SILÊNCIO LONGO** (falso_verde): 126 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
-- **CUSTO SEM RETORNO** (redundancia): 172 s na última leitura sem achado. → reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem
+- **SILÊNCIO LONGO** (falso_verde): 52 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **CUSTO SEM RETORNO** (redundancia): 242 s na última leitura sem achado. → reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem
 
 ### Diário da Justiça Federal — Seção Judiciária de Goiás (`dj-trf1-go`) — baixo volume, 0 achados em 30 dias
-- **CEGO** (falso_verde): respondeu 200 em 21 de 30 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
+- **CEGO** (falso_verde): respondeu 200 em 20 de 30 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
 - **PÁGINA VAZIA** (falso_verde): leitura em 0 s com 0 página(s). → a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte
-- **SILÊNCIO LONGO** (falso_verde): 75 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 76 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### Diário da Justiça Eletrônico — TJGO (`dje-tjgo`) — baixo volume, 0 achados em 30 dias
 - **CEGO** (falso_verde): respondeu 200 em 21 de 26 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
 - **INTERMITENTE** (falso_verde): 5 dias vermelhos alternados com dias bons. → retentativa com espera e rota de reserva (ponte do titular)
 - **SILÊNCIO LONGO** (falso_verde): 40 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
-### FEAS-GO - cofinanciamento da assistência social (`f260-captacao-098`) — ruído, 40 achados em 30 dias
-- **CONGELADO** (falso_verde): o mesmo achado repetido em 27 dias. → detectar mudança por hash/lastmod e só contar o que é novo
+### FEAS-GO - cofinanciamento da assistência social (`f260-captacao-098`) — ruído, 39 achados em 30 dias
+- **CONGELADO** (falso_verde): o mesmo achado repetido em 26 dias. → detectar mudança por hash/lastmod e só contar o que é novo
 - **RUÍDO** (funil): 58 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Lei Rouanet - doação de pessoa física (`f260-captacao-035`) — ruído, 65 achados em 30 dias
-- **CONGELADO** (falso_verde): o mesmo achado repetido em 22 dias. → detectar mudança por hash/lastmod e só contar o que é novo
-- **RUÍDO** (funil): 99 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+### Lei Rouanet - doação de pessoa física (`f260-captacao-035`) — ruído, 69 achados em 30 dias
+- **CONGELADO** (falso_verde): o mesmo achado repetido em 23 dias. → detectar mudança por hash/lastmod e só contar o que é novo
+- **RUÍDO** (funil): 103 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC (`plat-cnpq-extensao`) — ruído, 13 achados em 30 dias
-- **CONGELADO** (falso_verde): o mesmo achado repetido em 5 dias. → detectar mudança por hash/lastmod e só contar o que é novo
-- **RUÍDO** (funil): 129 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+### CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC (`plat-cnpq-extensao`) — ruído, 15 achados em 30 dias
+- **CONGELADO** (falso_verde): o mesmo achado repetido em 6 dias. → detectar mudança por hash/lastmod e só contar o que é novo
+- **RUÍDO** (funil): 131 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### Banco do Nordeste — Editais Sociais (incentivo fiscal) (`f260-curadoria-001`) — ruído, 12 achados em 30 dias
 - **CONGELADO** (falso_verde): o mesmo achado repetido em 6 dias. → detectar mudança por hash/lastmod e só contar o que é novo
-- **RUÍDO** (funil): 24 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+- **RUÍDO** (funil): 26 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Agência do Bem / Rede do Bem — Edital de Microprojetos (`f260-curadoria-004`) — ruído, 24 achados em 30 dias
-- **CONGELADO** (falso_verde): o mesmo achado repetido em 6 dias. → detectar mudança por hash/lastmod e só contar o que é novo
-- **RUÍDO** (funil): 28 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+### Agência do Bem / Rede do Bem — Edital de Microprojetos (`f260-curadoria-004`) — ruído, 28 achados em 30 dias
+- **CONGELADO** (falso_verde): o mesmo achado repetido em 7 dias. → detectar mudança por hash/lastmod e só contar o que é novo
+- **RUÍDO** (funil): 32 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### Assembleia Legislativa de Goiás — proposições (`alego-pl`) — baixo volume, 9 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 78 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 79 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
+
+### Câmara Municipal de Goiânia — projetos de lei (`camara-goiania-pl`) — baixo volume, 0 achados em 30 dias
+- **CEGO** (falso_verde): respondeu 200 em 30 de 30 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
+- **SILÊNCIO LONGO** (falso_verde): 127 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### CNJ — destinações de penas e prestações pecuniárias (`cnj-destinacoes`) — baixo volume, 0 achados em 30 dias
 - **CEGO** (falso_verde): respondeu 200 em 26 de 27 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
 - **SILÊNCIO LONGO** (falso_verde): 40 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
-### PNCP — API de contratações (chamamentos e credenciamentos) (`pncp-api`) — ouro, 2664 achados em 30 dias
-- **INTERMITENTE** (falso_verde): 6 dias vermelhos alternados com dias bons. → retentativa com espera e rota de reserva (ponte do titular)
+### PNCP — API de contratações (chamamentos e credenciamentos) (`pncp-api`) — ouro, 2873 achados em 30 dias
+- **INTERMITENTE** (falso_verde): 5 dias vermelhos alternados com dias bons. → retentativa com espera e rota de reserva (ponte do titular)
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### Prosas — prêmios, concursos e cursos para OSCs (`plat-prosas-premios`) — baixo volume, 0 achados em 30 dias
 - **CEGO** (falso_verde): respondeu 200 em 13 de 13 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
 - **SILÊNCIO LONGO** (falso_verde): 26 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
-### Editais incentivados de empresas — destinação tributária (Rouanet, LIE, FIA, PRONON) (`empresas-incentivadas`) — ruído, 68 achados em 30 dias
-- **RUÍDO** (funil): 75 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+### Editais incentivados de empresas — destinação tributária (Rouanet, LIE, FIA, PRONON) (`empresas-incentivadas`) — ruído, 67 achados em 30 dias
+- **RUÍDO** (funil): 80 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'fluxo → confirmada'. → faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório
 
-### Programa estadual de eventos esportivos (`f260-captacao-051`) — ruído, 80 achados em 30 dias
-- **RUÍDO** (funil): 110 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+### Programa estadual de eventos esportivos (`f260-captacao-051`) — ruído, 81 achados em 30 dias
+- **RUÍDO** (funil): 111 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Destinação de IR pessoa física para FMDCA (`f260-captacao-118`) — ruído, 16 achados em 30 dias
-- **RUÍDO** (funil): 27 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+### Destinação de IR pessoa física para FMDCA (`f260-captacao-118`) — ruído, 18 achados em 30 dias
+- **RUÍDO** (funil): 29 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Emenda estadual para saúde comunitária (`f260-captacao-151`) — ruído, 32 achados em 30 dias
+### Emenda estadual para saúde comunitária (`f260-captacao-151`) — ruído, 31 achados em 30 dias
 - **RUÍDO** (funil): 56 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### TJGO - penas pecuniárias 1ª Vara de Execução Penal de Goiânia (`f260-captacao-190`) — baixo volume, 0 achados em 30 dias
 - **CEGO** (falso_verde): respondeu 200 em 30 de 30 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
-- **SILÊNCIO LONGO** (falso_verde): 48 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 49 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### MPGO - TAC com destinação social (`f260-captacao-196`) — baixo volume, 0 achados em 30 dias
 - **CEGO** (falso_verde): respondeu 200 em 30 de 30 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
-- **SILÊNCIO LONGO** (falso_verde): 54 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 55 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
-### Projetos aptos à captação na LIE (`f260-captacao-044`) — ruído, 5 achados em 30 dias
-- **RUÍDO** (funil): 23 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+### Projetos aptos à captação na LIE (`f260-captacao-044`) — ruído, 7 achados em 30 dias
+- **RUÍDO** (funil): 25 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Bússola Social - Bússola Editais (`f260-captacao-217`) — ruído, 77 achados em 30 dias
-- **RUÍDO** (funil): 99 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+### Mapa das OSC - área de editais (`f260-captacao-216`) — ruído, 19 achados em 30 dias
+- **RUÍDO** (funil): 21 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Capta - oportunidades e editais (`f260-captacao-218`) — baixo volume, 0 achados em 30 dias
-- **CEGO** (falso_verde): respondeu 200 em 21 de 21 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
-- **SILÊNCIO LONGO** (falso_verde): 45 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
-
-### Fundação Bradesco (`f260-captacao-223`) — baixo volume, 0 achados em 30 dias
-- **CEGO** (falso_verde): respondeu 200 em 21 de 21 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
-- **SILÊNCIO LONGO** (falso_verde): 44 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
-
-### Instituto Votorantim (`f260-captacao-229`) — baixo volume, 0 achados em 30 dias
-- **CEGO** (falso_verde): respondeu 200 em 21 de 21 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
-- **SILÊNCIO LONGO** (falso_verde): 27 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
-
-### Fundação ArcelorMittal (`f260-captacao-230`) — baixo volume, 0 achados em 30 dias
-- **CEGO** (falso_verde): respondeu 200 em 19 de 21 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
-- **SILÊNCIO LONGO** (falso_verde): 43 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
-
-### Fundação Vale (`f260-captacao-231`) — baixo volume, 0 achados em 30 dias
-- **CEGO** (falso_verde): respondeu 200 em 21 de 21 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
-- **SILÊNCIO LONGO** (falso_verde): 43 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
-
-### Instituto Sicoob (`f260-captacao-233`) — baixo volume, 0 achados em 30 dias
-- **CEGO** (falso_verde): respondeu 200 em 18 de 20 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
-- **SILÊNCIO LONGO** (falso_verde): 41 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
-
-### Instituto Unibanco (`f260-captacao-234`) — baixo volume, 0 achados em 30 dias
-- **CEGO** (falso_verde): respondeu 200 em 20 de 20 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
-- **SILÊNCIO LONGO** (falso_verde): 28 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
-
-### Instituto Lojas Renner (`f260-captacao-235`) — baixo volume, 0 achados em 30 dias
-- **CEGO** (falso_verde): respondeu 200 em 18 de 18 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
-- **SILÊNCIO LONGO** (falso_verde): 24 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
-
-### Instituto Sabin (`f260-captacao-237`) — ruído, 18 achados em 30 dias
-- **RUÍDO** (funil): 70 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
-- **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
-
-### Editais FICA Goiás - artes visuais/exposição (`f260-captacao-038`) — ruído, 68 achados em 30 dias
+### Bússola Social - Bússola Editais (`f260-captacao-217`) — ruído, 81 achados em 30 dias
 - **RUÍDO** (funil): 103 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Acordo de cooperação sem transferência financeira (`f260-captacao-207`) — baixo volume, 0 achados em 30 dias
-- **CEGO** (falso_verde): respondeu 200 em 18 de 19 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
+### Capta - oportunidades e editais (`f260-captacao-218`) — baixo volume, 0 achados em 30 dias
+- **CEGO** (falso_verde): respondeu 200 em 22 de 22 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
+- **SILÊNCIO LONGO** (falso_verde): 47 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+
+### Fundação Bradesco (`f260-captacao-223`) — baixo volume, 0 achados em 30 dias
+- **CEGO** (falso_verde): respondeu 200 em 22 de 22 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
+- **SILÊNCIO LONGO** (falso_verde): 45 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+
+### Instituto Coca-Cola Brasil (`f260-captacao-227`) — baixo volume, 0 achados em 30 dias
+- **PÁGINA VAZIA** (falso_verde): leitura em 0 s com 0 página(s). → a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte
+- **SILÊNCIO LONGO** (falso_verde): 44 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+
+### Instituto Votorantim (`f260-captacao-229`) — baixo volume, 0 achados em 30 dias
+- **CEGO** (falso_verde): respondeu 200 em 22 de 22 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
+- **SILÊNCIO LONGO** (falso_verde): 28 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+
+### Fundação ArcelorMittal (`f260-captacao-230`) — baixo volume, 0 achados em 30 dias
+- **CEGO** (falso_verde): respondeu 200 em 20 de 22 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
+- **SILÊNCIO LONGO** (falso_verde): 44 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+
+### Fundação Vale (`f260-captacao-231`) — baixo volume, 0 achados em 30 dias
+- **CEGO** (falso_verde): respondeu 200 em 22 de 22 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
+- **SILÊNCIO LONGO** (falso_verde): 44 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+
+### Instituto Sicoob (`f260-captacao-233`) — baixo volume, 0 achados em 30 dias
+- **CEGO** (falso_verde): respondeu 200 em 19 de 21 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
+- **SILÊNCIO LONGO** (falso_verde): 42 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+
+### Instituto Unibanco (`f260-captacao-234`) — baixo volume, 0 achados em 30 dias
+- **CEGO** (falso_verde): respondeu 200 em 21 de 21 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
+- **SILÊNCIO LONGO** (falso_verde): 29 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+
+### Instituto Lojas Renner (`f260-captacao-235`) — baixo volume, 0 achados em 30 dias
+- **CEGO** (falso_verde): respondeu 200 em 19 de 19 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
 - **SILÊNCIO LONGO** (falso_verde): 25 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
+### Instituto Sabin (`f260-captacao-237`) — ruído, 21 achados em 30 dias
+- **RUÍDO** (funil): 76 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+- **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
+
+### Editais FICA Goiás - artes visuais/exposição (`f260-captacao-038`) — ruído, 71 achados em 30 dias
+- **RUÍDO** (funil): 106 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+- **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
+
+### Acordo de cooperação sem transferência financeira (`f260-captacao-207`) — baixo volume, 0 achados em 30 dias
+- **CEGO** (falso_verde): respondeu 200 em 19 de 20 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
+- **SILÊNCIO LONGO** (falso_verde): 26 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+
 ### Fundação Itaú (`f260-captacao-222`) — baixo volume, 0 achados em 30 dias
-- **CEGO** (falso_verde): respondeu 200 em 19 de 19 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
-- **SILÊNCIO LONGO** (falso_verde): 42 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **CEGO** (falso_verde): respondeu 200 em 20 de 20 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
+- **SILÊNCIO LONGO** (falso_verde): 44 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### Instituto Clima e Sociedade (iCS) — chamadas de comunicação e clima (`f260-curadoria-006`) — ruído, 68 achados em 30 dias
 - **RUÍDO** (funil): 96 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
@@ -286,31 +292,35 @@
 - **SILÊNCIO LONGO** (falso_verde): 19 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### PNCP — FUNDO MUNICIPAL DE CULTURA - CAVALCANTE — oportunidades (espalhado de edital validado) (`f260-espalhado-acessoainformacao-cavalcante-go-gov-br`) — baixo volume, 0 achados em 30 dias
-- **CEGO** (falso_verde): respondeu 200 em 15 de 15 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
-- **SILÊNCIO LONGO** (falso_verde): 20 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **CEGO** (falso_verde): respondeu 200 em 16 de 16 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
+- **SILÊNCIO LONGO** (falso_verde): 21 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### PNCP — FUNDO MUNICIPAL DE EDUCACAO E CULTURA - FMEC — oportunidades (espalhado de edital validado) (`f260-espalhado-senadorcanedo-go-gov-br`) — baixo volume, 0 achados em 30 dias
-- **CEGO** (falso_verde): respondeu 200 em 12 de 12 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
-- **SILÊNCIO LONGO** (falso_verde): 16 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **CEGO** (falso_verde): respondeu 200 em 13 de 13 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
+- **SILÊNCIO LONGO** (falso_verde): 17 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos) (`congresso-nacional`) — baixo volume, 0 achados em 30 dias
-- **CEGO** (falso_verde): respondeu 200 em 13 de 13 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
-- **SILÊNCIO LONGO** (falso_verde): 83 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **CEGO** (falso_verde): respondeu 200 em 14 de 14 dias e não achou nada em 30 dias. → conferir se o léxico do motor casa com o vocabulário da fonte e se a página lida é a de editais (não a inicial)
+- **SILÊNCIO LONGO** (falso_verde): 84 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
-### PNAB Goiás - Artes Visuais (`f260-captacao-025`) — ruído, 29 achados em 30 dias
-- **RUÍDO** (funil): 32 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+### Emenda municipal para projeto educativo em Goiânia (`f260-captacao-069`) — ruído, 27 achados em 30 dias
+- **RUÍDO** (funil): 27 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### BNDES Corais - meio ambiente (`f260-captacao-176`) — baixo volume, 11 achados em 30 dias
-- **CONGELADO** (falso_verde): o mesmo achado repetido em 7 dias. → detectar mudança por hash/lastmod e só contar o que é novo
+### PNAB Goiás - Artes Visuais (`f260-captacao-025`) — ruído, 32 achados em 30 dias
+- **RUÍDO** (funil): 35 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### BNDES Fundo Socioambiental (`f260-captacao-220`) — baixo volume, 11 achados em 30 dias
-- **CONGELADO** (falso_verde): o mesmo achado repetido em 7 dias. → detectar mudança por hash/lastmod e só contar o que é novo
+### BNDES Corais - meio ambiente (`f260-captacao-176`) — baixo volume, 12 achados em 30 dias
+- **CONGELADO** (falso_verde): o mesmo achado repetido em 8 dias. → detectar mudança por hash/lastmod e só contar o que é novo
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### BNDES Periferias - geração de emprego e renda (`f260-captacao-175`) — baixo volume, 11 achados em 30 dias
-- **CONGELADO** (falso_verde): o mesmo achado repetido em 7 dias. → detectar mudança por hash/lastmod e só contar o que é novo
+### BNDES Fundo Socioambiental (`f260-captacao-220`) — baixo volume, 12 achados em 30 dias
+- **CONGELADO** (falso_verde): o mesmo achado repetido em 8 dias. → detectar mudança por hash/lastmod e só contar o que é novo
+- **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
+
+### BNDES Periferias - geração de emprego e renda (`f260-captacao-175`) — baixo volume, 12 achados em 30 dias
+- **CONGELADO** (falso_verde): o mesmo achado repetido em 8 dias. → detectar mudança por hash/lastmod e só contar o que é novo
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### FDD/Pronasci - cultura e cidadania em territórios vulneráveis (`f260-captacao-169`) — baixo volume, 5 achados em 30 dias
@@ -319,167 +329,164 @@
 
 ### Instituto Localiza (`f260-captacao-228`) — baixo volume, 0 achados em 30 dias
 - **PÁGINA VAZIA** (falso_verde): leitura em 0 s com 0 página(s). → a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte
-- **SILÊNCIO LONGO** (falso_verde): 24 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 25 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
-### MDS - Cozinhas Solidárias 2026 (`f260-captacao-090`) — baixo volume, 14 achados em 30 dias
-- **CONGELADO** (falso_verde): o mesmo achado repetido em 7 dias. → detectar mudança por hash/lastmod e só contar o que é novo
+### MDS - Cozinhas Solidárias 2026 (`f260-captacao-090`) — baixo volume, 16 achados em 30 dias
+- **CONGELADO** (falso_verde): o mesmo achado repetido em 8 dias. → detectar mudança por hash/lastmod e só contar o que é novo
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Projeto de coleta seletiva inclusiva (`f260-captacao-180`) — baixo volume, 7 achados em 30 dias
-- **CONGELADO** (falso_verde): o mesmo achado repetido em 7 dias. → detectar mudança por hash/lastmod e só contar o que é novo
-- **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
-
-### Banrisul Instituto Cultural e Social — Edital Merece! (`f260-curadoria-007`) — baixo volume, 6 achados em 30 dias
-- **CONGELADO** (falso_verde): o mesmo achado repetido em 6 dias. → detectar mudança por hash/lastmod e só contar o que é novo
-- **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
-
-### CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024) (`judiciario-cnj`) — baixo volume, 1 achados em 30 dias
+### PNUD – Small Grants Programme (`f260-captacao-242`) — baixo volume, 0 achados em 30 dias
 - **PÁGINA VAZIA** (falso_verde): leitura em 0 s com 0 página(s). → a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte
-- **SILÊNCIO LONGO** (falso_verde): 64 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 25 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
-### MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região) (`mptgo-destinacao`) — ruído, 19 achados em 30 dias
-- **RUÍDO** (funil): 89 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+### Projeto de coleta seletiva inclusiva (`f260-captacao-180`) — baixo volume, 8 achados em 30 dias
+- **CONGELADO** (falso_verde): o mesmo achado repetido em 8 dias. → detectar mudança por hash/lastmod e só contar o que é novo
+- **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
+
+### Banrisul Instituto Cultural e Social — Edital Merece! (`f260-curadoria-007`) — baixo volume, 7 achados em 30 dias
+- **CONGELADO** (falso_verde): o mesmo achado repetido em 7 dias. → detectar mudança por hash/lastmod e só contar o que é novo
+- **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
+
+### MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região) (`mptgo-destinacao`) — ruído, 20 achados em 30 dias
+- **RUÍDO** (funil): 90 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD) (`mpu-destinacao`) — baixo volume, 0 achados em 30 dias
 - **PÁGINA VAZIA** (falso_verde): leitura em 0 s com 0 página(s). → a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte
-- **SILÊNCIO LONGO** (falso_verde): 59 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 60 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
-### Oportunidade Estaduais Governamentais de Goiás (`plat-estaduais-go-gov`) — ruído, 1 achados em 30 dias
-- **RUÍDO** (funil): 41 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
-- **CUSTO SEM RETORNO** (redundancia): 237 s na última leitura sem achado. → reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem
-
-### SECULT Goiás — chamamentos públicos da Lei 13.019/2014 (`f260-curadoria-009`) — ruído, 54 achados em 30 dias
-- **RUÍDO** (funil): 54 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+### SECULT Goiás — chamamentos públicos da Lei 13.019/2014 (`f260-curadoria-009`) — ruído, 61 achados em 30 dias
+- **RUÍDO** (funil): 61 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### PNCP — CONSELHO REGIONAL DE CONTABILIDADE DO ESTADO DE GOIAS — oportunidades (espalhado de edital validado) (`f260-espalhado-crcgo-org-br`) — baixo volume, 6 achados em 30 dias
-- **CONGELADO** (falso_verde): o mesmo achado repetido em 6 dias. → detectar mudança por hash/lastmod e só contar o que é novo
+### PNCP — CONSELHO REGIONAL DE CONTABILIDADE DO ESTADO DE GOIAS — oportunidades (espalhado de edital validado) (`f260-espalhado-crcgo-org-br`) — baixo volume, 7 achados em 30 dias
+- **CONGELADO** (falso_verde): o mesmo achado repetido em 7 dias. → detectar mudança por hash/lastmod e só contar o que é novo
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### Ministério da Cultura — SALIC — oportunidades (espalhado de edital validado) (`f260-espalhado-rouanet-cultura-gov-br`) — baixo volume, 0 achados em 30 dias
 - **PÁGINA VAZIA** (falso_verde): leitura em 0 s com 0 página(s). → a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte
-- **SILÊNCIO LONGO** (falso_verde): 24 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 25 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
-### PNCP — MUNICIPIO DE ITABAIANINHA — oportunidades (espalhado de edital validado) (`f260-espalhado-www-itabaianinha-se-gov-br`) — baixo volume, 12 achados em 30 dias
-- **CONGELADO** (falso_verde): o mesmo achado repetido em 6 dias. → detectar mudança por hash/lastmod e só contar o que é novo
+### PNCP — MUNICIPIO DE ROSARIO DO SUL — oportunidades (espalhado de edital validado) (`f260-espalhado-www-rosariodosul-rs-gov-br`) — baixo volume, 0 achados em 30 dias
+- **PÁGINA VAZIA** (falso_verde): leitura em 0 s com 0 página(s). → a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte
+- **SILÊNCIO LONGO** (falso_verde): 25 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+
+### PNCP — MUNICIPIO DE ITABAIANINHA — oportunidades (espalhado de edital validado) (`f260-espalhado-www-itabaianinha-se-gov-br`) — baixo volume, 14 achados em 30 dias
+- **CONGELADO** (falso_verde): o mesmo achado repetido em 7 dias. → detectar mudança por hash/lastmod e só contar o que é novo
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Outras Oportunidades 1/3 (`outras-oportunidades-1`) — ruído, 74 achados em 30 dias
-- **RUÍDO** (funil): 224 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+### PNCP — MUNICIPIO DE CARIRE — oportunidades (espalhado de edital validado) (`f260-espalhado-carire-ce-gov-br`) — ruído, 20 achados em 30 dias
+- **RUÍDO** (funil): 20 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+- **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
+
+### Outras Oportunidades 1/3 (`outras-oportunidades-1`) — ruído, 115 achados em 30 dias
+- **RUÍDO** (funil): 307 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'fluxo → confirmada'. → faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório
 
-### Outras Oportunidades 2/3 (`outras-oportunidades-2`) — ruído, 48 achados em 30 dias
-- **RUÍDO** (funil): 275 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
-- **VAZAMENTO** (funil): perde 100% na etapa 'fluxo → confirmada'. → faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório
-
-### Outras Oportunidades 4/5 (`outras-oportunidades-4`) — ruído, 45 achados em 30 dias
-- **RUÍDO** (funil): 144 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+### Outras Oportunidades 4/5 (`outras-oportunidades-4`) — ruído, 57 achados em 30 dias
+- **RUÍDO** (funil): 156 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'fluxo → confirmada'. → faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório
 
 ### Outras Oportunidades 5/5 (`outras-oportunidades-5`) — ouro, 39 achados em 30 dias
-- **RUÍDO** (funil): 130 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+- **RUÍDO** (funil): 133 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'fluxo → confirmada'. → faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório
 
-### Outras Oportunidades 6/6 (`outras-oportunidades-6`) — ruído, 5 achados em 30 dias
-- **RUÍDO** (funil): 49 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
-- **VAZAMENTO** (funil): perde 100% na etapa 'fluxo → confirmada'. → faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório
-
-### Outras Oportunidades 7/7 (`outras-oportunidades-7`) — ruído, 16 achados em 30 dias
-- **RUÍDO** (funil): 44 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+### Outras Oportunidades 7/7 (`outras-oportunidades-7`) — ruído, 27 achados em 30 dias
+- **RUÍDO** (funil): 55 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
+
+### Adaptador Mapas Culturais — oportunidades com inscrição aberta (`plataforma-mapas-culturais`) — ruído, 16 achados em 30 dias
+- **RUÍDO** (funil): 32 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+- **VAZAMENTO** (funil): perde 100% na etapa 'fluxo → confirmada'. → faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório
 
 ### Diário Oficial da União (`dou`) — confirma, 30 achados em 30 dias
-- **ESTRANGULADO** (falso_verde): viu 5241 links e nenhum virou candidato. → o filtro de candidatos está estreito demais: incluir termos de chamamento/edital da fonte e seguir PDFs
+- **CUSTO SEM RETORNO** (redundancia): 137 s na última leitura sem achado. → reduzir páginas por leitura ou a cadência; transferir o tempo para motores que rendem
 
 ### Sebrae Goiás - parcerias com OSC para empreendedorismo (`f260-captacao-238`) — baixo volume, 0 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 57 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 58 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
-### Escolinha de natação/paradesporto adaptado (`f260-captacao-060`) — baixo volume, 6 achados em 30 dias
+### Escolinha de natação/paradesporto adaptado (`f260-captacao-060`) — baixo volume, 8 achados em 30 dias
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Destinação de IR pessoa jurídica para Fundo da Criança (`f260-captacao-119`) — baixo volume, 6 achados em 30 dias
+### Destinação de IR pessoa jurídica para Fundo da Criança (`f260-captacao-119`) — baixo volume, 8 achados em 30 dias
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Cessão de bens móveis apreendidos (`f260-captacao-208`) — baixo volume, 6 achados em 30 dias
+### Cessão de bens móveis apreendidos (`f260-captacao-208`) — baixo volume, 8 achados em 30 dias
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
-
-### Mapa das OSC - área de editais (`f260-captacao-216`) — baixo volume, 17 achados em 30 dias
-- **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
-
-### Instituto Coca-Cola Brasil (`f260-captacao-227`) — baixo volume, 0 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 43 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### Instituto Neoenergia (`f260-captacao-232`) — baixo volume, 9 achados em 30 dias
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Emenda estadual para projeto educativo em Goiás (`f260-captacao-068`) — baixo volume, 7 achados em 30 dias
+### Emenda estadual para projeto educativo em Goiás (`f260-captacao-068`) — baixo volume, 8 achados em 30 dias
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### SALIC — Lei Rouanet (Ministério da Cultura) (`plat-salic`) — ouro, 89 achados em 30 dias
+### SALIC — Lei Rouanet (Ministério da Cultura) (`plat-salic`) — ouro, 91 achados em 30 dias
 - **VAZAMENTO** (funil): perde 99% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Motor do Piloto — busca aberta no terceiro setor (`plat-piloto-aberto`) — ouro, 664 achados em 30 dias
-- **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
+### Motor do Piloto — busca aberta no terceiro setor (`plat-piloto-aberto`) — ouro, 702 achados em 30 dias
+- **RUÍDO** (funil): 2533 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 
 ### Emenda municipal para entidade assistencial (`f260-captacao-107`) — baixo volume, 0 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 18 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 19 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
-### Emenda municipal para projeto educativo em Goiânia (`f260-captacao-069`) — baixo volume, 0 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 17 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
-
-### Emenda municipal para saúde preventiva (`f260-captacao-152`) — baixo volume, 11 achados em 30 dias
+### Emenda municipal para saúde preventiva (`f260-captacao-152`) — baixo volume, 12 achados em 30 dias
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Convênio com órgão público estadual (`f260-captacao-206`) — baixo volume, 0 achados em 30 dias
-- **PÁGINA VAZIA** (falso_verde): leitura em 0 s com 0 página(s). → a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte
+### SEMAD Goiás - banco de projetos de autocomposição ambiental (`f260-captacao-177`) — baixo volume, 6 achados em 30 dias
+- **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### Fundação Banco do Brasil (`f260-captacao-221`) — baixo volume, 0 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 25 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 26 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### Fundação Telefônica Vivo (`f260-captacao-224`) — baixo volume, 0 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 25 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 27 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
-### Google.org (`f260-captacao-251`) — confirma, 7 achados em 30 dias
-- **CONGELADO** (falso_verde): o mesmo achado repetido em 7 dias. → detectar mudança por hash/lastmod e só contar o que é novo
+### Google.org (`f260-captacao-251`) — confirma, 8 achados em 30 dias
+- **CONGELADO** (falso_verde): o mesmo achado repetido em 8 dias. → detectar mudança por hash/lastmod e só contar o que é novo
 
 ### Instituto Natura (`f260-captacao-226`) — baixo volume, 0 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 25 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 26 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### Meta Community Grants (`f260-captacao-252`) — baixo volume, 0 achados em 30 dias
 - **PÁGINA VAZIA** (falso_verde): leitura em 0 s com 0 página(s). → a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte
-
-### PNUD – Small Grants Programme (`f260-captacao-242`) — baixo volume, 0 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 24 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### UNESCO – Fundo Internacional para Diversidade Cultural (`f260-captacao-240`) — baixo volume, 0 achados em 30 dias
 - **SILÊNCIO LONGO** (falso_verde): 25 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### Fundação Tide Setubal — Edital Territórios Clínicos (`f260-curadoria-005`) — baixo volume, 0 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 25 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 26 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO (`judiciario-tjgo`) — baixo volume, 0 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 91 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 93 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
-### PNCP — MUNICIPIO DE NOVO HAMBURGO — oportunidades (espalhado de edital validado) (`f260-espalhado-www-novohamburgo-rs-gov-br`) — baixo volume, 0 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 24 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+### CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024) (`judiciario-cnj`) — baixo volume, 1 achados em 30 dias
+- **SILÊNCIO LONGO** (falso_verde): 65 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
-### PNCP — MUNICIPIO DE MIRASSOL D'OESTE — oportunidades (espalhado de edital validado) (`f260-espalhado-sistema-mirassoldoeste-mt-gov-br`) — baixo volume, 0 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 24 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+### Oportunidade Estaduais Governamentais de Goiás (`plat-estaduais-go-gov`) — ruído, 2 achados em 30 dias
+- **RUÍDO** (funil): 42 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 
-### PNCP — MUNICIPIO DE ROSARIO DO SUL — oportunidades (espalhado de edital validado) (`f260-espalhado-www-rosariodosul-rs-gov-br`) — baixo volume, 0 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 24 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
-
-### PNCP — MUNICIPIO DE BENTO GONCALVES — oportunidades (espalhado de edital validado) (`f260-espalhado-www-bentogoncalves-rs-gov-br`) — baixo volume, 0 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 24 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
-
-### PNCP — MUNICIPIO DE CARIRE — oportunidades (espalhado de edital validado) (`f260-espalhado-carire-ce-gov-br`) — baixo volume, 19 achados em 30 dias
+### MDHC / CONANDA — Chamamentos publicos de fomento a OSC (`f260-curadoria-010`) — baixo volume, 5 achados em 30 dias
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
-### Outras Oportunidades 3/3 (`outras-oportunidades-3`) — ruído, 4 achados em 30 dias
-- **RUÍDO** (funil): 32 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+### PNCP — MUNICIPIO DE NOVO HAMBURGO — oportunidades (espalhado de edital validado) (`f260-espalhado-www-novohamburgo-rs-gov-br`) — baixo volume, 0 achados em 30 dias
+- **SILÊNCIO LONGO** (falso_verde): 26 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
-### Diário Oficial do Estado de Goiás (`do-goias`) — confirma, 130 achados em 30 dias
+### PNCP — MUNICIPIO DE MIRASSOL D'OESTE — oportunidades (espalhado de edital validado) (`f260-espalhado-sistema-mirassoldoeste-mt-gov-br`) — baixo volume, 0 achados em 30 dias
+- **SILÊNCIO LONGO** (falso_verde): 26 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+
+### PNCP — MUNICIPIO DE BENTO GONCALVES — oportunidades (espalhado de edital validado) (`f260-espalhado-www-bentogoncalves-rs-gov-br`) — baixo volume, 0 achados em 30 dias
+- **SILÊNCIO LONGO** (falso_verde): 26 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+
+### Outras Oportunidades 2/3 (`outras-oportunidades-2`) — ruído, 49 achados em 30 dias
+- **RUÍDO** (funil): 280 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+
+### Outras Oportunidades 3/3 (`outras-oportunidades-3`) — ruído, 8 achados em 30 dias
+- **RUÍDO** (funil): 37 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+
+### Outras Oportunidades 6/6 (`outras-oportunidades-6`) — ruído, 16 achados em 30 dias
+- **RUÍDO** (funil): 75 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
+
+### Diário Oficial do Estado de Goiás (`do-goias`) — confirma, 134 achados em 30 dias
 Sem falha encontrada pelas quatro lentes motor a motor.
 
 ### ABCR — Associação Brasileira de Captadores (`plat-abcr`) — confirma, 90 achados em 30 dias
@@ -488,7 +495,7 @@ Sem falha encontrada pelas quatro lentes motor a motor.
 ### Captamos — oportunidades de captação (`plat-captamos`) — baixo volume, 0 achados em 30 dias
 Sem falha encontrada pelas quatro lentes motor a motor.
 
-### GIFE — Grupo de Institutos, Fundações e Empresas (`plat-gife`) — confirma, 31 achados em 30 dias
+### GIFE — Grupo de Institutos, Fundações e Empresas (`plat-gife`) — confirma, 33 achados em 30 dias
 Sem falha encontrada pelas quatro lentes motor a motor.
 
 ### Observatório do Terceiro Setor — editais (`plat-observatorio-3setor`) — confirma, 115 achados em 30 dias
@@ -497,7 +504,7 @@ Sem falha encontrada pelas quatro lentes motor a motor.
 ### Rede Filantropia — editais (`plat-rede-filantropia`) — baixo volume, 0 achados em 30 dias
 Sem falha encontrada pelas quatro lentes motor a motor.
 
-### Instituto Grupo Boticário (`f260-captacao-236`) — baixo volume, 6 achados em 30 dias
+### Instituto Grupo Boticário (`f260-captacao-236`) — baixo volume, 9 achados em 30 dias
 Sem falha encontrada pelas quatro lentes motor a motor.
 
 ### Editais de ocupação cultural municipal (`f260-captacao-039`) — baixo volume, 2 achados em 30 dias
@@ -506,7 +513,7 @@ Sem falha encontrada pelas quatro lentes motor a motor.
 ### Secult Goiás — Goyazes e Aldir Blanc (`plat-secult-go`) — confirma, 145 achados em 30 dias
 Sem falha encontrada pelas quatro lentes motor a motor.
 
-### Motor de Recorrência — revisita as oportunidades identificadas (`recorrencia`) — confirma, 257 achados em 30 dias
+### Motor de Recorrência — revisita as oportunidades identificadas (`recorrencia`) — confirma, 267 achados em 30 dias
 Sem falha encontrada pelas quatro lentes motor a motor.
 
 ### Mapa das OSC — editais (`plat-mapa-osc`) — baixo volume, 0 achados em 30 dias
@@ -518,7 +525,7 @@ Sem falha encontrada pelas quatro lentes motor a motor.
 ### TCM-GO - regularidade municipal e controle (`f260-captacao-212`) — baixo volume, 0 achados em 30 dias
 Sem falha encontrada pelas quatro lentes motor a motor.
 
-### SEMAD Goiás - banco de projetos de autocomposição ambiental (`f260-captacao-177`) — baixo volume, 4 achados em 30 dias
+### Convênio com órgão público estadual (`f260-captacao-206`) — baixo volume, 0 achados em 30 dias
 Sem falha encontrada pelas quatro lentes motor a motor.
 
 ### BID – Laboratório de Inovação (`f260-captacao-244`) — baixo volume, 0 achados em 30 dias
@@ -548,7 +555,7 @@ Sem falha encontrada pelas quatro lentes motor a motor.
 ### Global Fund for Women (`f260-captacao-254`) — baixo volume, 0 achados em 30 dias
 Sem falha encontrada pelas quatro lentes motor a motor.
 
-### Instituto Claro (`f260-captacao-225`) — baixo volume, 0 achados em 30 dias
+### Instituto Claro (`f260-captacao-225`) — baixo volume, 1 achados em 30 dias
 Sem falha encontrada pelas quatro lentes motor a motor.
 
 ### Microsoft Philanthropies (`f260-captacao-253`) — baixo volume, 0 achados em 30 dias
@@ -582,9 +589,6 @@ Sem falha encontrada pelas quatro lentes motor a motor.
 Sem falha encontrada pelas quatro lentes motor a motor.
 
 ### Movimento Bem Maior — Edital Futuro Bem Maior (`f260-curadoria-003`) — baixo volume, 0 achados em 30 dias
-Sem falha encontrada pelas quatro lentes motor a motor.
-
-### MDHC / CONANDA — Chamamentos publicos de fomento a OSC (`f260-curadoria-010`) — baixo volume, 3 achados em 30 dias
 Sem falha encontrada pelas quatro lentes motor a motor.
 
 ### Fundacao Maria Emilia — Edital FME Transforma (`f260-curadoria-011`) — baixo volume, 0 achados em 30 dias
@@ -624,4 +628,10 @@ Sem falha encontrada pelas quatro lentes motor a motor.
 Sem falha encontrada pelas quatro lentes motor a motor.
 
 ### PNCP — MUNICIPIO DE VILA RICA — oportunidades (espalhado de edital validado) (`f260-espalhado-www-vilarica-mt-gov-br`) — baixo volume, 0 achados em 30 dias
+Sem falha encontrada pelas quatro lentes motor a motor.
+
+### Adaptador WordPress — sites oficiais pela API pública (`plataforma-wordpress`) — baixo volume, 2 achados em 30 dias
+Sem falha encontrada pelas quatro lentes motor a motor.
+
+### Outras Oportunidades 8/8 (`outras-oportunidades-8`) — baixo volume, 1 achados em 30 dias
 Sem falha encontrada pelas quatro lentes motor a motor.
