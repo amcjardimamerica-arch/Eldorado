@@ -1,15 +1,15 @@
 {
  "dia": "2026-10-15",
- "em": "2026-10-15T20:08:41+00:00",
+ "em": "2026-10-15T22:41:43+00:00",
  "regra": "MAESTRO — A MÃO DA REDE NEURAL DE COMANDO (titular, 02/10/2026; unificado em 15/10/2026).\n\n15/10/2026 (titular): maestro e rede neural são UMA coisa só. Quem decide o caminho do fluxo inteiro é src/comando.py\n(a rede neural de comando); este módulo é a parte que MEDE e EXECUTA para ela:\n  · planejar()   quais motores rodam hoje (agenda) com a prioridade de rendimento — matéria-prima da decisão do comando;\n  · cobertura()  completa · parcial · pendente · pendente_local de cada motor no dia;\n  · controlar()  pendentes e parciais a disparar (até 3 tentativas), dia fechado ou não;\n  · relatorio_etapas() o relatório do dia que o painel mostra.\nO comando chama planejar/controlar antes de acionar os motores (decidir) e depois deles (avaliar e reacionar).",
- "planejados": 129,
+ "planejados": 130,
  "cobertura": {
-  "completa": 92,
-  "parcial": 37
+  "completa": 93,
+  "parcial": 35,
+  "pendente": 2
  },
- "cobertura_percentual": 71.3,
- "a_disparar": [],
- "esgotaram_tentativas": [
+ "cobertura_percentual": 71.5,
+ "a_disparar": [
   "pncp-api",
   "outras-oportunidades-2",
   "plataforma-mapas-culturais",
@@ -25,8 +25,10 @@
   "judiciario-cnj-tjgo",
   "recorrencia",
   "f260-curadoria-001",
+  "f260-captacao-260",
   "f260-captacao-237",
   "outras-oportunidades-3",
+  "f260-captacao-240",
   "f260-captacao-228",
   "f260-captacao-242",
   "f260-espalhado-rouanet-cultura-gov-br",
@@ -39,16 +41,15 @@
   "f260-captacao-224",
   "f260-captacao-221",
   "f260-captacao-226",
+  "f260-captacao-233",
   "judiciario-tjgo",
-  "f260-captacao-222",
-  "f260-captacao-231",
   "f260-captacao-223",
   "f260-captacao-044",
   "f260-captacao-230",
-  "f260-captacao-218",
-  "f260-captacao-238"
+  "f260-captacao-218"
  ],
- "dia_fechado": true,
+ "esgotaram_tentativas": [],
+ "dia_fechado": false,
  "dia_anterior_nao_observado": [
   "plataforma-mapas-culturais",
   "plataforma-wordpress",
@@ -56,6 +57,7 @@
   "recorrencia",
   "f260-curadoria-001",
   "f260-captacao-237",
+  "f260-captacao-240",
   "f260-captacao-228",
   "f260-captacao-242",
   "f260-espalhado-rouanet-cultura-gov-br",
@@ -68,14 +70,12 @@
   "f260-captacao-224",
   "f260-captacao-221",
   "f260-captacao-226",
+  "f260-captacao-233",
   "judiciario-tjgo",
-  "f260-captacao-222",
-  "f260-captacao-231",
   "f260-captacao-223",
   "f260-captacao-044",
   "f260-captacao-230",
-  "f260-captacao-218",
-  "f260-captacao-238"
+  "f260-captacao-218"
  ],
  "plano": [
   {
@@ -563,6 +563,17 @@
    "tentativas_hoje": 3
   },
   {
+   "motor": "f260-captacao-260",
+   "prioridade": 0.0208,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "pendente",
+   "tentativas_hoje": 0
+  },
+  {
    "motor": "f260-espalhado-www-senadorpompeu-ce-gov-br",
    "prioridade": 0.0208,
    "diagnostico": "sem_rendimento",
@@ -948,6 +959,17 @@
    "tentativas_hoje": 0
   },
   {
+   "motor": "f260-captacao-232",
+   "prioridade": 0.0152,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "completa",
+   "tentativas_hoje": 0
+  },
+  {
    "motor": "f260-captacao-217",
    "prioridade": 0.0147,
    "diagnostico": "saudavel",
@@ -1110,6 +1132,17 @@
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "completa",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-captacao-240",
+   "prioridade": 0.0083,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "nao_observado",
+   "cobertura": "pendente",
    "tentativas_hoje": 0
   },
   {
@@ -1322,34 +1355,23 @@
    "tentativas_hoje": 0
   },
   {
+   "motor": "f260-captacao-233",
+   "prioridade": 0.0053,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "nao_observado",
+   "cobertura": "parcial",
+   "tentativas_hoje": 1
+  },
+  {
    "motor": "judiciario-tjgo",
    "prioridade": 0.005,
    "diagnostico": "bloqueio",
    "livros_com_abertura_proxima": 0,
    "horarios": "07:53,16:23",
    "coleta": "nuvem + local",
-   "dia_anterior": "nao_observado",
-   "cobertura": "parcial",
-   "tentativas_hoje": 3
-  },
-  {
-   "motor": "f260-captacao-222",
-   "prioridade": 0.0049,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "nao_observado",
-   "cobertura": "parcial",
-   "tentativas_hoje": 3
-  },
-  {
-   "motor": "f260-captacao-231",
-   "prioridade": 0.0049,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
    "dia_anterior": "nao_observado",
    "cobertura": "parcial",
    "tentativas_hoje": 3
@@ -1474,17 +1496,6 @@
    "dia_anterior": "observado",
    "cobertura": "completa",
    "tentativas_hoje": 0
-  },
-  {
-   "motor": "f260-captacao-238",
-   "prioridade": 0.0038,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "nao_observado",
-   "cobertura": "parcial",
-   "tentativas_hoje": 3
   },
   {
    "motor": "dj-trf1-go",
