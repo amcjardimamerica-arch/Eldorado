@@ -125,7 +125,7 @@ NAO_OPORTUNIDADE = [
     (re.compile(r"(?i)subven[çc][ãa]o econ[ôo]mica|\btecnova\b"), "subvenção econômica — público são empresas, não associações"),
     # 15/10 (ciclo 6, validação de 20 pelo Claude)
     (re.compile(r"(?i)banco de talentos|cadastro de curr[íi]culos?|\bquiz\b|\benquete\b|pesquisa de satisfa[çc][ãa]o"), "cadastro de pessoas, quiz ou enquete — não é edital"),
-    (re.compile(r"(?i)profissionais aut[ôo]nomos|credenciamento de pessoas? f[íi]sicas?(?! e (?:pessoas? )?jur[íi]dicas?)|aluguel social|benef[íi]cio (?:às|as|para|a) fam[íi]lias|aux[íi]lio (?:às|as|para) fam[íi]lias"), "público são pessoas físicas ou famílias — não associações"),
+    (re.compile(r"(?i)profissionais aut[ôo]nomos|credenciamento de pessoas? f[íi]sicas?\b(?!\s+e\s+(?:pessoas?\s+)?jur[íi]dicas?)|aluguel social|benef[íi]cio (?:às|as|para|a) fam[íi]lias|aux[íi]lio (?:às|as|para) fam[íi]lias"), "público são pessoas físicas ou famílias — não associações"),
     (re.compile(r"(?i)divulga[çc][ãa]o (?:do resultado )?prorrogada|prorroga[çc][ãa]o d[ao] (?:divulga[çc][ãa]o|resultado)"), "fase de resultado — a inscrição já terminou"),
 ]
 PAGINA_DE_AGREGADOR = re.compile(r"(?i)https?://(?:www\.)?(?:capitaai|captadores|editaisdobrasil|farolcultural|observatorio3setor|prosas)\.[a-z.]+/(?:planos|precos|preços|sobre|assin|login|cadastro|contato|quem-somos)?/?(?:\?|$)")
