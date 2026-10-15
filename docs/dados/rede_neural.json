@@ -1,9 +1,9 @@
 {
- "em": "2026-10-15T12:04:22+00:00",
+ "em": "2026-10-15T12:45:46+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
  "rotulados": 2027,
  "positivos": 808,
- "pendentes": 796,
+ "pendentes": 797,
  "validacao_cruzada": {
   "auc": 0.843,
   "precisao": 0.74,
@@ -149,12 +149,6 @@
    "url": "https://plataforma9.com/financiamento/brasil-mec-minc-edital-ciclos-de-saberes-mestras-mestres-culturas-tradicionais-populares.htm",
    "nota": 0.491,
    "incerteza": 0.982
-  },
-  {
-   "titulo": "Jataí — SMC PUBLICA COMUNICADO SOBRE OS EDITAIS DA PNAB EM JATAÍ Ajustes garantem mais clareza e precisão nas … — Goiás / Jataí",
-   "url": "https://www.jatai.go.gov.br/smc-publica-comunicado-sobre-os-editais-da-pnab-em-jatai-ajustes-garantem-mais-clareza-e-precisao-nas-regras-do-processo-de-selecao-cultural/",
-   "nota": 0.51,
-   "incerteza": 0.98
   },
   {
    "titulo": "Chamada nº 009/2026 – FAPESPA/CNPq/CAPES",
@@ -370,6 +364,12 @@
    "titulo": "CREDENCIAMENTO DE ARTISTAS LOCAIS/REGIONAIS PARA APRESENTAÇÃO DE SHOWS MUSICAIS NAS FESTIVIDADES E EVENTOS… — MUNICIPIO DE FRANCISCO SA",
    "url": "https://pncp.gov.br/app/editais/22681423000157/2026/75",
    "nota": 0.479,
+   "incerteza": 0.957
+  },
+  {
+   "titulo": "Edital Nº 03/2026 - Chamamento Público - Programa Coleta Seletiva ...",
+   "url": "https://www.gravatai.ifsul.edu.br/editais-e-projetos/item/305-edital-n-03-2026-chamamento-publico-programa-coleta-seletiva-cidada-selecao-de-associacoes-e-cooperativas-de-catadores-de-materiais-reciclaveis-e-reutilizaveis",
+   "nota": 0.478,
    "incerteza": 0.957
   }
  ],

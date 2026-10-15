@@ -1,31 +1,31 @@
 {
- "em": "2026-10-15T12:21:18+00:00",
+ "em": "2026-10-15T12:44:12+00:00",
  "versao": "cartório v5 · linha de produção (09/10/2026)",
  "regra": "CARTÓRIO DE FONTES OFICIAIS (titular, 09/10/2026).\n\nOs motores DESCOBREM; o Cartório CERTIFICA. Toda estrela (oportunidade aberta) e todo livro (histórico) que tenha\nQUALQUER um dos 12 itens indisponível entra na fila do Cartório. Para cada um, ele sobe uma escada de degraus — do mais\nbarato e confiável ao mais caro — até achar o documento OFICIAL, lê o documento por seções e emite uma CERTIDÃO:\nlink oficial (régua única: vetor nunca é fonte), degrau em que foi achado, impressão digital do documento, e cada item\ncom valor + trecho literal + página — ou a DISPENSA com a justificativa de que o requisito não existe naquele edital.\n\nBalcões (como chegar ao documento em cada tipo de fonte):\n  pncp      página do PNCP → API de arquivos do órgão (PDF ou ZIP), o edital primeiro\n  diario    DOU, Diário de Goiás/Goiânia, Querido Diário → o ato dentro da edição (só as páginas do ato)\n  orgao     domínio público → documentos da página + biblioteca de mídia do WordPress pelo número do edital\n  privado   site do financiador → documentos da página (regulamento, edital)\n  pista     agregador/notícia → links de SAÍDA para o financiador; o resto vai ao Interceptador\n  proprio   Ministério Público e Judiciário: já leem o PDF; o Cartório só converte em certidão\n\nEscada: 0 documento na mão · 1 link de saída da pista · 2 busca do número do edital dentro do domínio oficial ·\n        3 Interceptador (IA) · 4 Chrome. O Cartório resolve 0–2 sem IA; 3 e 4 recebem só o que sobrou.\nIntegração: a fila é ordenada pela urgência (prazo), pela nota da REDE NEURAL e pela distância até o ouro (menos\nitens faltando primeiro: cada certidão vira selo). Estrelas: o fluxo de oportunidades lê a certidão no checklist.\nLivros: linhas no formato do importador (scripts/importar_verificacao_livros.py), que confere e entrega à esteira.",
  "identidade_visual": "provisória (config/identidade_visual.json aguarda o design de referência)",
  "resumo": {
   "pontos_12_total": 4800,
-  "pontos_certificados": 3110,
-  "pontos_dispensados": 232,
+  "pontos_certificados": 3112,
+  "pontos_dispensados": 230,
   "pontos_ja_constavam": 1357,
   "pontos_faltam": 101,
   "pct_certificado_12": 0.6963,
   "certidoes_12_de_12": 142,
   "certidoes_sem_item_faltando": 298,
   "nota_denominador": "eficiencia_itens = resolvidos ÷ itens que faltavam na ENTRADA da fila (não é % dos 12); use pct_certificado_12",
-  "certidoes": 2672,
-  "nesta_execucao": 27,
-  "fila_estrelas": 464,
-  "fila_livros": 1684,
-  "itens_que_faltavam": 23068,
-  "itens_obtidos": 8670,
-  "itens_dispensados": 733,
-  "eficiencia_itens": 0.408,
-  "com_link_oficial": 1713,
-  "taxa_link_oficial": 0.641,
+  "certidoes": 2661,
+  "nesta_execucao": 16,
+  "fila_estrelas": 465,
+  "fila_livros": 1844,
+  "itens_que_faltavam": 22961,
+  "itens_obtidos": 8650,
+  "itens_dispensados": 734,
+  "eficiencia_itens": 0.409,
+  "com_link_oficial": 1708,
+  "taxa_link_oficial": 0.642,
   "certidoes_completas": 231,
-  "para_o_interceptador": 1926,
-  "para_o_chrome": 514,
+  "para_o_interceptador": 1916,
+  "para_o_chrome": 513,
   "selos_que_mudaram": {
    "bronze → ouro": 18,
    "sem selo → ouro": 72,
@@ -36,7 +36,7 @@
    "sem selo → bronze": 22
   },
   "por_degrau": {
-   "degrau 0": 1693,
+   "degrau 0": 1688,
    "degrau 2": 1,
    "degrau 1": 49
   }
@@ -48,85 +48,85 @@
  },
  "por_item": {
   "Objeto": {
-   "faltavam": 1603,
+   "faltavam": 1597,
    "obtidos": 642,
    "dispensados": 0,
-   "eficiencia": 0.4
+   "eficiencia": 0.402
   },
   "Prazo de inscrição": {
-   "faltavam": 1624,
+   "faltavam": 1616,
    "obtidos": 479,
    "dispensados": 190,
-   "eficiencia": 0.412
+   "eficiencia": 0.414
   },
   "Resultado": {
-   "faltavam": 2355,
-   "obtidos": 563,
-   "dispensados": 372,
-   "eficiencia": 0.397
+   "faltavam": 2344,
+   "obtidos": 562,
+   "dispensados": 374,
+   "eficiencia": 0.399
   },
   "Prazo de recurso": {
-   "faltavam": 2320,
+   "faltavam": 2311,
    "obtidos": 701,
-   "dispensados": 34,
-   "eficiencia": 0.317
+   "dispensados": 33,
+   "eficiencia": 0.318
   },
   "Valor": {
-   "faltavam": 1998,
+   "faltavam": 1988,
    "obtidos": 736,
    "dispensados": 90,
-   "eficiencia": 0.413
+   "eficiencia": 0.415
   },
   "Órgão / financiador": {
-   "faltavam": 1394,
-   "obtidos": 787,
+   "faltavam": 1388,
+   "obtidos": 786,
    "dispensados": 0,
-   "eficiencia": 0.565
+   "eficiencia": 0.566
   },
   "Território": {
-   "faltavam": 1597,
-   "obtidos": 579,
+   "faltavam": 1587,
+   "obtidos": 576,
    "dispensados": 0,
    "eficiencia": 0.363
   },
   "Esfera": {
-   "faltavam": 2027,
-   "obtidos": 1229,
+   "faltavam": 2017,
+   "obtidos": 1227,
    "dispensados": 0,
-   "eficiencia": 0.606
+   "eficiencia": 0.608
   },
   "Requisitos": {
-   "faltavam": 2266,
-   "obtidos": 699,
+   "faltavam": 2256,
+   "obtidos": 698,
    "dispensados": 0,
-   "eficiencia": 0.308
+   "eficiencia": 0.309
   },
   "Anexos": {
-   "faltavam": 1495,
-   "obtidos": 486,
+   "faltavam": 1489,
+   "obtidos": 484,
    "dispensados": 8,
    "eficiencia": 0.33
   },
   "Destinação": {
-   "faltavam": 2241,
-   "obtidos": 404,
+   "faltavam": 2231,
+   "obtidos": 401,
    "dispensados": 39,
-   "eficiencia": 0.198
+   "eficiencia": 0.197
   },
   "Área de atuação": {
-   "faltavam": 2148,
-   "obtidos": 1365,
+   "faltavam": 2137,
+   "obtidos": 1358,
    "dispensados": 0,
    "eficiencia": 0.635
   }
  },
  "por_balcao": {
   "pncp": {
-   "certidoes": 693,
-   "com_link_oficial": 445,
-   "faltavam": 5807,
-   "resolvidos": 2742,
-   "eficiencia": 0.472,
+   "certidoes": 692,
+   "com_link_oficial": 444,
+   "faltavam": 5795,
+   "resolvidos": 2731,
+   "eficiencia": 0.471,
    "taxa_link_oficial": 0.642
   },
   "diario": {
@@ -138,20 +138,20 @@
    "taxa_link_oficial": 0.39
   },
   "orgao": {
-   "certidoes": 938,
-   "com_link_oficial": 710,
-   "faltavam": 7820,
-   "resolvidos": 3181,
-   "eficiencia": 0.407,
-   "taxa_link_oficial": 0.757
+   "certidoes": 931,
+   "com_link_oficial": 706,
+   "faltavam": 7747,
+   "resolvidos": 3167,
+   "eficiencia": 0.409,
+   "taxa_link_oficial": 0.758
   },
   "pista": {
-   "certidoes": 253,
+   "certidoes": 250,
    "com_link_oficial": 41,
-   "faltavam": 2135,
-   "resolvidos": 432,
-   "eficiencia": 0.202,
-   "taxa_link_oficial": 0.162
+   "faltavam": 2111,
+   "resolvidos": 431,
+   "eficiencia": 0.204,
+   "taxa_link_oficial": 0.164
   },
   "revisão": {
    "certidoes": 267,
@@ -164,9 +164,9 @@
   "privado": {
    "certidoes": 397,
    "com_link_oficial": 232,
-   "faltavam": 3074,
-   "resolvidos": 690,
-   "eficiencia": 0.224,
+   "faltavam": 3076,
+   "resolvidos": 697,
+   "eficiencia": 0.227,
    "taxa_link_oficial": 0.584
   },
   "proprio": {
@@ -180,12 +180,12 @@
  },
  "por_safra": {
   "primeira tentativa": {
-   "certidoes": 2497,
-   "faltavam": 21423,
-   "resolvidos": 8093,
-   "eficiencia": 0.378,
-   "com_link_oficial": 1556,
-   "taxa_link_oficial": 0.623
+   "certidoes": 2486,
+   "faltavam": 21316,
+   "resolvidos": 8074,
+   "eficiencia": 0.379,
+   "com_link_oficial": 1551,
+   "taxa_link_oficial": 0.624
   },
   "refeitas": {
    "certidoes": 175,
@@ -222,11 +222,11 @@
    "taxa_link_oficial": 0.875
   },
   "cartório v5 · linha de produção": {
-   "certidoes": 2369,
-   "faltavam": 19618,
-   "resolvidos": 7097,
-   "eficiencia": 0.362,
-   "com_link_oficial": 1444,
+   "certidoes": 2358,
+   "faltavam": 19511,
+   "resolvidos": 7078,
+   "eficiencia": 0.363,
+   "com_link_oficial": 1439,
    "taxa_link_oficial": 0.61
   },
   "revisão manual": {
@@ -241,11 +241,11 @@
  "por_abordagem": {
   "1": {
    "nome": "documento na mão",
-   "vezes": 2431,
-   "renderam": 1554,
-   "itens": 8691,
-   "links_oficiais": 1432,
-   "taxa_de_acerto": 0.639
+   "vezes": 2420,
+   "renderam": 1548,
+   "itens": 8672,
+   "links_oficiais": 1427,
+   "taxa_de_acerto": 0.64
   },
   "2": {
    "nome": "anexos completos",
@@ -323,11 +323,11 @@
  "por_balcao_selo": {
   "sem_estrela": {
    "nome": "Sem estrela → bronze",
-   "certidoes": 861,
-   "faltavam": 6065,
-   "resolvidos": 1367,
-   "eficiencia": 0.225,
-   "entraram_aqui": 902,
+   "certidoes": 857,
+   "faltavam": 6034,
+   "resolvidos": 1369,
+   "eficiencia": 0.227,
+   "entraram_aqui": 898,
    "esgotadas": 0
   },
   "bronze": {
@@ -341,11 +341,11 @@
   },
   "prata": {
    "nome": "Prata → ouro",
-   "certidoes": 1507,
-   "faltavam": 13712,
-   "resolvidos": 5892,
-   "eficiencia": 0.43,
-   "entraram_aqui": 1492,
+   "certidoes": 1500,
+   "faltavam": 13636,
+   "resolvidos": 5871,
+   "eficiencia": 0.431,
+   "entraram_aqui": 1485,
    "esgotadas": 1
   },
   "ouro": {
@@ -359,7 +359,7 @@
   }
  },
  "gabarito": {
-  "orgaos_com_gabarito": 1071,
+  "orgaos_com_gabarito": 1069,
   "itens_achados_pelo_gabarito": {
    "Objeto": 45,
    "Requisitos": 32,
@@ -67064,194 +67064,6 @@
    }
   },
   {
-   "id": "op-52f57c81e9f9",
-   "tipo": "livro",
-   "titulo": "MUNICIPIO DE CURITIBA — Chamamento público nº 001/2023 para Credenciamento de agricultores familiares, cooperativas e associações interessados em fornecer produ",
-   "balcao": "pncp",
-   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/76417005001743/compras/2023/7/arquivos/1",
-   "degrau": 0,
-   "como": "PNCP: arquivo anexado pelo órgão (Aviso de Contratação Direta)",
-   "faltavam": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Valor"
-   ],
-   "tentativa": 1,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "prata",
-   "estagio_inicio": "prata",
-   "esgotada": null,
-   "eficiencia": 0.917,
-   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-15T12:19:42+00:00",
-   "prazo": null,
-   "uf": "BR",
-   "orgao": "MUNICIPIO DE CURITIBA",
-   "fim": null,
-   "itens": {
-    "Resultado": {
-     "valor": "10 (dez) dias",
-     "trecho": "de Contratação de Credenciamento, se aprovados, os disponibilizará o resultado em até 10 (dez) dias úteis , prorrogáveis, após o julgamento, no portal da Prefeitura Mun",
-     "pagina": 2,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/76417005001743/compras/2023/7/arquivos/1",
-     "metodo": "seção"
-    },
-    "Objeto": {
-     "valor": "Público na modalidade Credenciamento formação de um \nbanco de fornecedores na seara da Agricultura Familiar, de modo permanente, paralelo e não \nexcludente, visando futuras aquisições dos produtos agroalimentares perecíveis e não \nperecíveis para atendimento ao Programa Armazém da Família.",
-     "trecho": "o, com o Termo de Referência e Anexos I ao IX, assim se resume: 1 – DO OBJETO: Chamamento Público na modalidade Credenciamento formação de um banco de fornecedores na seara da Agricultura Familiar, de modo permanente, paralelo e não excludente, visando futuras aquisições dos produtos agroalimentares perecíveis e não perecíveis para atendimento ao Programa Armazém da Família. 2 – DO CREDENCIAMENTO:",
-     "pagina": 2,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/76417005001743/compras/2023/7/arquivos/1",
-     "metodo": "seção"
-    },
-    "Órgão / financiador": {
-     "valor": "Prefeitura Municipal de Curitiba",
-     "trecho": "REF.: CHAMAMENTO PÚBLICO Nº 001/2023 (PROTOCOLO 01-084089/2023) A Prefeitura Municipal de Curitiba, por meio da Secretaria Municipal de Segurança Alimentar e Nutricion",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/76417005001743/compras/2023/7/arquivos/1",
-     "metodo": "cabeçalho"
-    },
-    "Território": {
-     "valor": "do Município de Curitiba",
-     "trecho": "nção; III - que se enquadre nos termos do artigo 98 da Lei Orgânica do Município de Curitiba. 4.6. Encontra-se i mpedido de participar pessoa física ou jurídic",
-     "pagina": 5,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/76417005001743/compras/2023/7/arquivos/1",
-     "metodo": "texto"
-    },
-    "Esfera": {
-     "valor": "municipal",
-     "trecho": "domínio/órgão: pncp.gov.br · Prefeitura Municipal de Curitiba MUNICIPIO DE CURITIBA",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/76417005001743/compras/2023/7/arquivos/1",
-     "metodo": "domínio e órgão"
-    },
-    "Requisitos": {
-     "valor": "Poderão participar deste chamamento público para Credenciamento, pessoas físicas ou jurídicas enquadradas na Lei Federal nº 11.",
-     "trecho": "cipal, na ocasião da contratação. 3 – DAS CONDIÇÕES DE PARTICIPAÇÃO: Poderão participar deste chamamento público para Credenciamento, pessoas físicas ou jurídicas enquadradas na Lei Federal nº 11.326/2006, Decreto Federal nº 9.064/2017 e Portaria SAF/MAPA nº 242/202",
-     "pagina": 2,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/76417005001743/compras/2023/7/arquivos/1",
-     "metodo": "texto"
-    },
-    "Anexos": {
-     "valor": "ANEXO I - TERMO DE REFERÊNCIA; ANEXO II - ESPECIFICAÇÕES TÉCNICAS DOS PRODUTOS PARA AQUISIÇÃO; ANEXO III - UNIDADES DO PROGRAMA ARMAZÉM DA FAMÍLIA; ANEXO IV - MODELO DE DECLARAÇÃO DE RESERVA DE CARGOS; ANEXO V - METODOLOGIA DE AVALIAÇÃO DAS AMOSTRAS; ANEXO VI - MODELO DE PEDIDO DE CREDENCIAMENTO; AN",
-     "trecho": "al, além das condições específicas, os seguintes documentos: 2.2.1. ANEXO I - TERMO DE REFERÊNCIA 2.2.2. ANEXO II - ESPECIFICAÇÕES TÉCNICAS DOS PRODUTOS PARA AQUISIÇÃO 2.2.3. ANEXO III - UNIDADES DO PROGRAMA ARMAZÉM DA FAMÍLIA 2.2.4. ANEXO IV - MODELO",
-     "pagina": 3,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/76417005001743/compras/2023/7/arquivos/1",
-     "metodo": "lista de anexos"
-    },
-    "Destinação": {
-     "valor": "Credenciamento (contratação) — Lei Federal nº 14.133/2021",
-     "trecho": "blico o edital de Chamamento Público nº 001/2023-SMSAN, que trata do credenciamento de agricultores familiares, cooperativas ou associações interessados em fornecer produtos agroalimentares perecíve",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/76417005001743/compras/2023/7/arquivos/1",
-     "metodo": "modalidade de recebimento"
-    },
-    "Área de atuação": {
-     "valor": "Cultura",
-     "trecho": "termos do objeto e do título: Cultura",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/76417005001743/compras/2023/7/arquivos/1",
-     "metodo": "palavras-chave do objeto"
-    }
-   },
-   "dispensas": {
-    "Prazo de inscrição": {
-     "motivo": "dispensado pelo Cartório — não se aplica: inscrição em fluxo contínuo (cadastro permanente, sem data-limite)",
-     "trecho": "s, amostras do produto e julgamento dos documentos habilitatórios , em caráter permanente, e a segunda referente a distribuição das demandas, na qual ocorrerá",
-     "pagina": 2,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/76417005001743/compras/2023/7/arquivos/1"
-    },
-    "Prazo de recurso": {
-     "motivo": "dispensado pelo Cartório — não se aplica: o edital declara que não cabe recurso",
-     "trecho": "ONTRATANTE. 11.14. A rescisão ocorrerá apenas a partir da data da decisão irrecorrível que aplica a sanção à CONTRATADA, sendo devido o pagame nto apenas p",
-     "pagina": 17,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/76417005001743/compras/2023/7/arquivos/1"
-    }
-   },
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-15T12:19:42+00:00",
-     "ganhou": [
-      "Anexos",
-      "Destinação",
-      "Esfera",
-      "Objeto",
-      "Prazo de inscrição",
-      "Prazo de recurso",
-      "Requisitos",
-      "Resultado",
-      "Território",
-      "Área de atuação",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/76417005001743/compras/2023/7/arquivos/1",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Aviso de Contratação Direta)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 60,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "certificado",
-     "Prazo de inscrição": "dispensado",
-     "Resultado": "certificado",
-     "Prazo de recurso": "dispensado",
-     "Valor": "falta",
-     "Órgão / financiador": "certificado",
-     "Território": "certificado",
-     "Esfera": "certificado",
-     "Requisitos": "certificado",
-     "Anexos": "certificado",
-     "Destinação": "certificado",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 9,
-    "dispensados": 2,
-    "ja_constavam": 0,
-    "faltam": 1,
-    "pct_certificado_12": 0.9167,
-    "pct_cobertura_12": 0.9167
-   }
-  },
-  {
    "id": "op-155c07c7e4d6",
    "tipo": "livro",
    "titulo": "MUNICIPIO DE FEIRA DE SANTANA — CHAMAMENTO PÚBLICO ACERCA DA \"SELEÇÃO DE PROPOSTAS DE ORGANIZAÇÕES DA SOCIEDADE CIVIL PARA CELEBRAÇÃO DE PARCERIAS EM REGIME DE ",
@@ -74070,35 +73882,380 @@
     "pct_certificado_12": 0.9167,
     "pct_cobertura_12": 0.9167
    }
+  },
+  {
+   "id": "der-4fc3d80a28b76cc9",
+   "tipo": "estrela",
+   "titulo": "Seleção de 2 projetos de Pontos de Cultura (Política Nacional de Cultura Viva)",
+   "balcao": "orgao",
+   "link_oficial": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5092",
+   "degrau": 0,
+   "como": "página/documento oficial já conhecido",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Anexos"
+   ],
+   "tentativa": 6,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "sem_estrela",
+   "esgotada": null,
+   "eficiencia": 0.917,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": "prata",
+   "em": "2026-10-11T14:25:48+00:00",
+   "prazo": "2026-10-16",
+   "uf": null,
+   "orgao": "Prefeitura de Sobral — Secretaria da Juventude e Cultura (SEJUC), recursos federais da PNAB",
+   "fim": "2026-10-16",
+   "itens": {
+    "Prazo de inscrição": {
+     "valor": "até 16 de outubro de 2026",
+     "trecho": "iza a sua participação neste edital. 5. ETAPA DE INSCRIÇÃO 5.1 As inscrições serão gratuitas e deverão ser realizadas no período de 09 a 16 de outubro de 2026, por meio do Mapa Cultural do Ceará. Não serão aceitas inscrições en",
+     "pagina": 4,
+     "documento": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5092",
+     "metodo": "cronograma"
+    },
+    "Resultado": {
+     "valor": "03 dias",
+     "trecho": "tunidade/8385/. 11. ETAPA DE HABILITAÇÃO 11.1 Após a publicação do resultado final da etapa de seleção, as entidades selecionadas deverão encaminhar os documentos abaixo, no prazo de 03 dias úteis, por meio do mapa cultural do Ceará https://mapacultural.secu",
+     "pagina": 11,
+     "documento": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5092",
+     "metodo": "seção"
+    },
+    "Prazo de recurso": {
+     "valor": "3 dias úteis",
+     "trecho": "meio de formulário específico (ANEXO 08 – FORMULÁRIO PARA PEDIDO DE RECURSO), no prazo de 3 dias úteis conforme inciso III do art. 16 do decreto 11.453/2023 , a contar do",
+     "pagina": 12,
+     "documento": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5092",
+     "metodo": "seção"
+    },
+    "Valor": {
+     "valor": "R$ 271.097,20 (duzentos e setenta e um mil e noventa e sete reais e vinte centavos)",
+     "trecho": "icípio de Sobral, por meio da Política Nacional Aldir Blanc, e tem o valor total de R$ 271.097,20 (duzentos e setenta e um mil e noventa e sete reais e vinte centavos), para a seleção de 02 (dois) projetos, no valor de R$ 135.548,60 (ce",
+     "pagina": 2,
+     "documento": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5092",
+     "metodo": "seção"
+    },
+    "Objeto": {
+     "valor": "a seleção de 02 (dois) projetos de Pontos de Cultura que promovam o [TABELA] acesso da população aos bens e aos serviços culturais nos territórios e comunidades onde atuam, nos [TABELA] termos da Política Nacional de Cultura Viva.",
+     "trecho": ". [TABELA] [TABELA] 1. OBJETO [TABELA] [TABELA] 1.1 Este Edital tem por objeto a seleção de 02 (dois) projetos de Pontos de Cultura que promovam o [TABELA] acesso da população aos bens e aos serviços culturais nos territórios e comunidades onde atuam, nos [TABELA] termos da Política Nacional de Cultura Viva. [TABELA] 1.2 De acordo com a Lei Cultura Viva e os regramentos deste",
+     "pagina": 1,
+     "documento": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5092",
+     "metodo": "texto"
+    },
+    "Órgão / financiador": {
+     "valor": "Prefeitura Municipal de Sobral – CNPJ 07",
+     "trecho": "Prefeitura Municipal de Sobral – CNPJ 07.598.634/0001-37 Rua Viriato de Medeiros, 1250 - Centro, Sobral - CE,",
+     "pagina": 1,
+     "documento": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5092",
+     "metodo": "cabeçalho"
+    },
+    "Esfera": {
+     "valor": "municipal",
+     "trecho": "domínio/órgão: licitacoes.sobral.ce.gov.br · Prefeitura Municipal de Sobral – CNPJ 07 Prefeitura de Sobral — Secretaria da Ju",
+     "pagina": 1,
+     "documento": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5092",
+     "metodo": "domínio e órgão"
+    },
+    "Requisitos": {
+     "valor": "Poderão participar deste edital: | | | | | | | | | | [TABELA] I.",
+     "trecho": "PODE PARTICIPAR DO EDITAL | | | | | | | | | | [TABELA] 3.1 Poderão participar deste edital: | | | | | | | | | | [TABELA] I. Pontos de Cultura certificados pelo Ministério da Cultura, com finali",
+     "pagina": 2,
+     "documento": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5092",
+     "metodo": "texto"
+    },
+    "Destinação": {
+     "valor": "Os recursos deverão ser aplicados em cadernetas de poupança, fundo de aplicação financeira de curto prazo ou operação de mercado aberto lastreada em títulos da dívida pública, enquanto não empregados na sua finalidade.",
+     "trecho": "ta única e exclusivamente em instituição financeira pública. 13.13 Os recursos deverão ser aplicados em cadernetas de poupança, fundo de aplicação financeira de curto prazo ou operação de mercado aberto lastreada em títulos da dívida pública, enquanto não empregados na sua finalidade. 14. MONITORAMENTO E PRESTAÇÃO DE INFORMAÇÕES 14.1 A Secretaria da",
+     "pagina": 14,
+     "documento": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5092",
+     "metodo": "seção"
+    },
+    "Área de atuação": {
+     "valor": "Cultura, Educação, Criança e adolescente",
+     "trecho": "termos do objeto e do título: Cultura, Educação, Criança e adolescente",
+     "pagina": 1,
+     "documento": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5092",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Território": {
+     "valor": "do Município de Sobral há",
+     "trecho": "/espaço cultural, com atuação comprovada na área artístico -cultural do Município de Sobral há, pelo menos, 2 (dois) anos, que realizará a inscrição e ficará respo",
+     "pagina": 2,
+     "documento": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5101",
+     "metodo": "texto"
+    }
+   },
+   "dispensas": {},
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-10T22:36:30+00:00",
+     "ganhou": [
+      "Destinação",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Prazo de recurso",
+      "Requisitos",
+      "Resultado",
+      "Valor",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    },
+    {
+     "n": 4,
+     "nome": "biblioteca de sites",
+     "em": "2026-10-11T00:52:14+00:00",
+     "ganhou": [
+      "Território"
+     ],
+     "legado": null
+    },
+    {
+     "n": 2,
+     "nome": "anexos completos",
+     "em": "2026-10-11T00:52:53+00:00",
+     "ganhou": [],
+     "legado": null
+    },
+    {
+     "n": 9,
+     "nome": "leitura profunda",
+     "em": "2026-10-11T02:16:36+00:00",
+     "ganhou": [],
+     "legado": null
+    },
+    {
+     "n": 7,
+     "nome": "releitura com gabarito",
+     "em": "2026-10-11T02:17:05+00:00",
+     "ganhou": [],
+     "legado": null
+    },
+    {
+     "n": 3,
+     "nome": "página oficial e citados",
+     "em": "2026-10-11T14:25:48+00:00",
+     "ganhou": [],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5092",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 48,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5101",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 45,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://licitacoes.sobral.ce.gov.br",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5092",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 48,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://licitacoes.sobral.ce.gov.br/{{toUrl(",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Regulamentos e Políticas - Financiamento Externo",
+     "motivo": null,
+     "falha": null,
+     "oficial": null,
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5092",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 48,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5092",
+     "degrau": 0,
+     "como": "leitura profunda (até 150 páginas e tabelas)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 48,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5101",
+     "degrau": 0,
+     "como": "leitura profunda (até 150 páginas e tabelas)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 45,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://licitacoes.sobral.ce.gov.br",
+     "degrau": 0,
+     "como": "leitura profunda (até 150 páginas e tabelas)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5092",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 48,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5101",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 45,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://licitacoes.sobral.ce.gov.br",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://licitacoes.sobral.ce.gov.br/arquivo/edital/licitacao:5092",
+     "degrau": 1,
+     "como": "página oficial e documentos citados nela",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 48,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "certificado",
+     "Resultado": "certificado",
+     "Prazo de recurso": "certificado",
+     "Valor": "certificado",
+     "Órgão / financiador": "certificado",
+     "Território": "certificado",
+     "Esfera": "certificado",
+     "Requisitos": "certificado",
+     "Anexos": "falta",
+     "Destinação": "certificado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 11,
+    "dispensados": 0,
+    "ja_constavam": 0,
+    "faltam": 1,
+    "pct_certificado_12": 0.9167,
+    "pct_cobertura_12": 0.9167
+   }
   }
  ],
  "linha_de_producao": {
   "na_linha": {
-   "sem_estrela": 999,
+   "sem_estrela": 1014,
    "bronze": 34,
-   "prata": 1115
+   "prata": 1261
   },
   "na_linha_por_tipo": {
    "estrela": {
-    "sem_estrela": 409,
+    "sem_estrela": 410,
     "bronze": 26,
     "prata": 29
    },
    "livro": {
-    "sem_estrela": 590,
+    "sem_estrela": 604,
     "bronze": 8,
-    "prata": 1086
+    "prata": 1232
    }
   },
-  "fila_oportunidades": 464,
-  "fila_livros": 1684,
-  "devidas_nesta_hora": 2096,
+  "fila_oportunidades": 465,
+  "fila_livros": 1844,
+  "devidas_nesta_hora": 2250,
   "promovidas_nesta_execucao": 0,
-  "sem_material_agora": 13,
+  "sem_material_agora": 4,
   "esgotadas_10_abordagens": 1,
   "biblioteca_de_sites": {
-   "chaves": 1754,
-   "sites": 2976
+   "chaves": 1768,
+   "sites": 3007
   },
   "intervalo_horas": 12,
   "limite": 10,
