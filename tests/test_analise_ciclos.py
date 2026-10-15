@@ -56,3 +56,27 @@ class Ciclos(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class PausaDaAnalise(unittest.TestCase):
+    """15/10/2026: a análise interrompe os demais fluxos, aguarda, testa e retoma exatamente o que interrompeu."""
+    def test_interromper_e_retomar(self):
+        import importlib.util
+        sp = importlib.util.spec_from_file_location("pa", Path(__file__).resolve().parents[1] / "scripts/pausa_analise.py")
+        PA = importlib.util.module_from_spec(sp); sp.loader.exec_module(PA)
+        chamadas = []
+        ws = {"workflows": [{"id": 1, "name": "22", "path": ".github/workflows/motores-da-vez.yml", "state": "active"},
+                            {"id": 2, "name": "36", "path": ".github/workflows/analise-sistema.yml", "state": "active"},
+                            {"id": 3, "name": "08", "path": ".github/workflows/agenda-motores.yml", "state": "disabled_manually"}]}
+
+        def gh(metodo, caminho):
+            chamadas.append((metodo, caminho))
+            return (200, ws) if caminho.startswith("actions/workflows?") else (204, None)
+        with mock.patch.object(PA, "PAUSA", Path(tempfile.mkdtemp()) / "p.json"), mock.patch.object(PA, "gh", gh):
+            d = PA.interromper()
+            self.assertEqual([w["id"] for w in d["interrompidos"]], [1])          # nem o 36 nem o já desativado
+            r = PA.retomar()
+            self.assertEqual(r["retomados"], ["motores-da-vez.yml"]); self.assertFalse(r["em_pausa"])
+        self.assertIn(("PUT", "actions/workflows/1/disable"), chamadas)
+        self.assertIn(("PUT", "actions/workflows/1/enable"), chamadas)
+        self.assertNotIn(("PUT", "actions/workflows/2/disable"), chamadas)
