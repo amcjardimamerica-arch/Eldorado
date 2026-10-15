@@ -1,13 +1,13 @@
 {
  "dia": "2026-10-15",
- "em": "2026-10-15T18:57:44+00:00",
+ "em": "2026-10-15T20:08:41+00:00",
  "regra": "MAESTRO — A MÃO DA REDE NEURAL DE COMANDO (titular, 02/10/2026; unificado em 15/10/2026).\n\n15/10/2026 (titular): maestro e rede neural são UMA coisa só. Quem decide o caminho do fluxo inteiro é src/comando.py\n(a rede neural de comando); este módulo é a parte que MEDE e EXECUTA para ela:\n  · planejar()   quais motores rodam hoje (agenda) com a prioridade de rendimento — matéria-prima da decisão do comando;\n  · cobertura()  completa · parcial · pendente · pendente_local de cada motor no dia;\n  · controlar()  pendentes e parciais a disparar (até 3 tentativas), dia fechado ou não;\n  · relatorio_etapas() o relatório do dia que o painel mostra.\nO comando chama planejar/controlar antes de acionar os motores (decidir) e depois deles (avaliar e reacionar).",
- "planejados": 131,
+ "planejados": 129,
  "cobertura": {
-  "completa": 93,
-  "parcial": 38
+  "completa": 92,
+  "parcial": 37
  },
- "cobertura_percentual": 71.0,
+ "cobertura_percentual": 71.3,
  "a_disparar": [],
  "esgotaram_tentativas": [
   "pncp-api",
@@ -45,7 +45,6 @@
   "f260-captacao-223",
   "f260-captacao-044",
   "f260-captacao-230",
-  "f260-captacao-227",
   "f260-captacao-218",
   "f260-captacao-238"
  ],
@@ -75,7 +74,6 @@
   "f260-captacao-223",
   "f260-captacao-044",
   "f260-captacao-230",
-  "f260-captacao-227",
   "f260-captacao-218",
   "f260-captacao-238"
  ],
@@ -565,17 +563,6 @@
    "tentativas_hoje": 3
   },
   {
-   "motor": "f260-espalhado-www-arapongas-pr-gov-br",
-   "prioridade": 0.0208,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
    "motor": "f260-espalhado-www-senadorpompeu-ce-gov-br",
    "prioridade": 0.0208,
    "diagnostico": "sem_rendimento",
@@ -676,6 +663,17 @@
   },
   {
    "motor": "f260-captacao-243",
+   "prioridade": 0.0192,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "completa",
+   "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-captacao-255",
    "prioridade": 0.0192,
    "diagnostico": "sem_rendimento",
    "livros_com_abertura_proxima": 0,
@@ -900,17 +898,6 @@
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "06:23,12:53,20:23",
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "f260-espalhado-www-ipora-pr-gov-br",
-   "prioridade": 0.0167,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "completa",
@@ -1391,17 +1378,6 @@
   },
   {
    "motor": "f260-captacao-230",
-   "prioridade": 0.0047,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "nao_observado",
-   "cobertura": "parcial",
-   "tentativas_hoje": 3
-  },
-  {
-   "motor": "f260-captacao-227",
    "prioridade": 0.0047,
    "diagnostico": "sem_rendimento",
    "livros_com_abertura_proxima": 0,
