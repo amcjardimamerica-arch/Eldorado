@@ -1,4 +1,12 @@
-# Diagnóstico do sistema · 2026-10-15 17:11 UTC
+# Diagnóstico do sistema · 2026-10-15 17:30 UTC
+
+Correções aplicadas: 5 de 5 etapas · problemas antes 14 → depois 14
+
+- ok  repositório único (2.3 s)
+- ok  tela das oportunidades (fluxo completo) (102.7 s)
+- ok  fichas das oportunidades (0.9 s)
+- ok  sala de controle (5.4 s)
+- ok  saúde do sistema (3.2 s)
 
 ## Cumprimento da finalidade · índice geral 67%
 - Motores: 93% (atencao) — todo motor ativo lê dentro da sua cadência
@@ -11,17 +19,16 @@
 - Cartório: 69% (falha) — 12 de 12 itens certificados na fonte oficial
 - Tela e fichas: 100% (ok) — tudo que está aberto aparece na tela e tem ficha
 - Integração: 100% (ok) — mesmas contagens e dados em dia em todos os sistemas
-- Fluxos automáticos: 60% (falha) — todo fluxo agendado roda na cadência e sem falha
+- Fluxos automáticos: 65% (falha) — todo fluxo agendado roda na cadência e sem falha
 - Execução sem falha silenciosa: 0% (falha) — nenhuma etapa falha em silêncio
 
-## Execução · fluxos: {'falha': 1, 'ok': 32, 'atencao': 7, 'atrasado': 2, 'manual': 2}
+## Execução · fluxos: {'falha': 1, 'ok': 33, 'atencao': 6, 'atrasado': 2, 'manual': 2}
 - 00 · Verificar prontidão: falha · última 2026-10-15T16:45 · sucesso 0% · cadência 24.0 h
 - 35 · Alimentação diária externa (editais abertos): atencao · última 2026-10-15T15:14 · sucesso 12% · cadência 24.0 h
 - 05 · Busca ativa (a cada 3 dias): atencao · última 2026-10-15T16:31 · sucesso 0% · cadência None h
 - 09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes: atrasado · última 2026-10-03T11:56 · sucesso 100% · cadência 24.0 h
-- 10 · Histórico de doações da Rouanet (empresa por empresa) — retoma sozinho até completar: atencao · última 2026-10-15T16:09 · sucesso 14% · cadência None h
+- 10 · Histórico de doações da Rouanet (empresa por empresa) — retoma sozinho até completar: atencao · última 2026-10-15T16:09 · sucesso 25% · cadência None h
 - 01 · Eldorado — motores por hora (00h–06h BRT): atencao · última 2026-10-15T10:59 · sucesso 0% · cadência 24.0 h
-- 22 · Motores da vez — cada passagem calcula sozinha o que está pendente (agenda + maestro): atencao · última 2026-10-15T16:38 · sucesso 78% · cadência 1.0 h
 - 34 · Motores de empresas (semanal, com recuperação): atencao · última 2026-10-15T11:42 · sucesso 50% · cadência 24.0 h
 - 03 · Eldorado — carga histórica de cinco anos (campanha única, mês a mês): atencao · última 2026-10-15T10:38 · sucesso 60% · cadência 6.0 h
 - 02 · Alexandria — revisão mensal de leis e procedimentos: atrasado · última 2026-10-01T10:36 · sucesso 50% · cadência 24.0 h
@@ -53,7 +60,7 @@
 
 ## Integração
 - contagens: {'repositorio_abertas': 405, 'diagnostico_abertas': 405, 'tela_cartoes': 405, 'fichas': 412, 'sala_controle_abertas': 405}
-- idade (h): {'repositorio': 0.0, 'fluxo': 0.0, 'fichas': 0.0, 'sala_controle': 0.0, 'status_motores': 0.1, 'maestro': 0.1, 'rede_neural': 0.0, 'saude': 1.1}
+- idade (h): {'repositorio': 0.0, 'fluxo': 0.0, 'fichas': 0.0, 'sala_controle': 0.0, 'status_motores': 0.4, 'maestro': 0.4, 'rede_neural': 0.0, 'saude': 0.0}
 - decisões da titular: 0 · não aplicadas: 0
 
 ## Problemas (14)
@@ -64,8 +71,8 @@
 - [alta] motor em falha: Adaptador Mapas Culturais — oportunidades com inscrição aberta — falha na leitura de 15/10 13:56 — nenhuma página leu → investigar o motor (sem correção automática)
 - [alta] motor em falha: Motor Incentivos Fiscais — empresas da base ICMS/RFB/SALIC (Goiás) — falha — não lê há 1 dia(s) (28 h); última leitura 14/10 09:09 → investigar o motor (sem correção automática)
 - [alta] 3 módulos de teste em quarentena por DEFEITO REAL → corrigir o código e tirar da quarentena (sem correção automática)
-- [media] fluxo '09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes' sem rodar há 293.3 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
-- [media] fluxo '02 · Alexandria — revisão mensal de leis e procedimentos' sem rodar há 342.6 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
+- [media] fluxo '09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes' sem rodar há 293.6 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
+- [media] fluxo '02 · Alexandria — revisão mensal de leis e procedimentos' sem rodar há 342.9 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
 - [media] saúde · claude: 1357 item(ns) esperando a análise do Claude (próxima: 2026-10-15) → ver o fluxo/arquivo indicado
 - [media] saúde · coerência: mapa e lista divergem em SC, GO, __nac__, BA, SP → refazer tela e indicadores
 - [media] 101 abertas ainda sem site oficial → Cartório/Interceptador (sem correção automática imediata)
@@ -73,7 +80,7 @@
 - [baixa] 18 módulos de teste em quarentena (envelhecidos) → atualizar o teste à regra atual (sem correção automática)
 
 ## Workflow (estrutura de 15/10)
-- comando único: 3 ciclo(s) hoje · 0 vermelho(s) · 0 etapa(s) com erro · fases puladas {'treinar_rede': 3, 'biblioteca_diaria': 3}
+- comando único: 4 ciclo(s) hoje · 0 vermelho(s) · 0 etapa(s) com erro · fases puladas {'treinar_rede': 4, 'biblioteca_diaria': 4}
 - cobertura do dia: 67.2% de 131 motores
 - retentativa: {'aguardando_retentativa': 143, 'fora_da_fila': 0, 'fora_da_fila_por_escopo': {}, 'regra': 'volta em 30 min; sai após 5 tentativas com o mesmo erro'} · leitura parcial na fila: 60
 - curadoria do link oficial: {'em curadoria': 387, 'sem link oficial': 199, 'reprovado': 78, 'aprovado': 18}
@@ -91,3 +98,12 @@
 - validar · validação por exceção: **correto** (0 de 0) — regra: só valida sozinho com acerto do Cartório ≥ 85% no gabarito e link oficial aprovado na curadoria
 - farol · oportunidades prontas para o Farol: **correto** (0 de 11) — regra: pronta só com prazo vigente e link oficial aprovado na curadoria
 - biblioteca · livros da Biblioteca: **correto** (0 de 1939) — regra: ato legislativo não gera livro
+
+## Ciclo de análise nº 6 · janela 2026-10-15T16:03 → 2026-10-15T17:30
+- 0 resolvido(s) · 10 persistem apesar de 3 correção(ões) implantada(s) · 0 novo(s) · 8 sem correção definida
+- correções implantadas na janela: #240 Fluxo 05: teto de tempo na busca ativa; #241 Ciclo 5: correções da validação de 20 oportunidades; #242 Ciclo 6: falha silenciosa do Cartório, ritmo e luz real dos motores
+- resolvidos: nenhum
+- persistem: ['falha_silenciosa', 'fluxo_atrasado', 'fluxo_falhando', 'motor_em_falha', 'saude_claude', 'saude_coerência', 'sem_prazo', 'sem_site_oficial', 'teste_em_quarentena', 'teste_em_quarentena_defeito']
+- novos: nenhum
+- sem correção definida: ['falha_silenciosa', 'fluxo_atrasado', 'fluxo_falhando', 'motor_em_falha', 'sem_prazo', 'sem_site_oficial', 'teste_em_quarentena', 'teste_em_quarentena_defeito']
+- a próxima janela começa em 2026-10-15T17:30 (implantação das correções)
