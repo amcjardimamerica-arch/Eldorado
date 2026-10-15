@@ -74,9 +74,12 @@ def workflow(P: list, problema) -> dict:
         problema(P, "pagina_fora_da_fila", "media", f"{len(fora)} página(s)/documento(s) fora da fila após 5 erros iguais",
                  "corrigir a rota ou ler no Chrome (sem correção automática)", len(fora), list(fora)[:8])
     cu = _j(ROOT / "estado/curadoria_links.json"); cc = cu.get("curadoria") or {}
-    if cu.get("mesmo_link_reprovado"):
-        problema(P, "link_acesso_como_oficial", "media", f"{cu['mesmo_link_reprovado']} oportunidade(s) usam o link de acesso como oficial sem serem fonte oficial",
-                 "buscar a fonte oficial (resolvedor e Cartório)", cu["mesmo_link_reprovado"])
+    # 15/10 (ciclo 4): mede o REPOSITÓRIO (o que o sistema usa), não a entrada da curadoria
+    reprov = {x.get("id") for x in cu.get("itens") or [] if x.get("curadoria") == "reprovado"}
+    usam = [r.get("id") for r in _abertas() if r.get("link_oficial") and r.get("link_oficial") == r.get("url") and r.get("id") in reprov]
+    if usam:
+        problema(P, "link_acesso_como_oficial", "media", f"{len(usam)} oportunidade(s) usam o link de acesso como oficial sem serem fonte oficial",
+                 "buscar a fonte oficial (resolvedor e Cartório)", len(usam), usam)
     ve = _j(ROOT / "estado/comando/validacao_excecao.json")
     av = _j(ROOT / "estado/cartorio/avaliacao/resultado.json"); acerto = (av.get("geral") or {}).get("acerto_pct")
     if (_idade_h(av.get("em")) or 0) > 24 * 8:
