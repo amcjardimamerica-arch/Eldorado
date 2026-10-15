@@ -317,10 +317,42 @@ def _robots_ok(url: str) -> bool:
         return True
 
 
+def _na_nuvem_sem_brasil() -> bool:
+    """No GitHub, sem IP brasileiro E sem a ponte Brasil. 15/10/2026: o diagnóstico da ponte (fluxo 41) mostrou que ela
+    abre o SPL da ALEGO e o MPGO, que recusam a nuvem; antes os domínios 'exige_brasil' eram pulados mesmo com a ponte."""
+    if not (os.environ.get("GITHUB_ACTIONS") and not os.environ.get("ELDORADO_LOCAL_BR")):
+        return False
+    try:
+        from . import ponte_brasil
+        return not ponte_brasil.configurada()
+    except Exception:  # noqa: BLE001
+        return True
+
+
+def _pela_ponte(url: str) -> bool:
+    if url.startswith("file://") or not (os.environ.get("GITHUB_ACTIONS") and not os.environ.get("ELDORADO_LOCAL_BR")):
+        return False
+    exige = set((load_json(CFG).get("exige_brasil") or {}).get("dominios") or [])
+    if (urlsplit(url).hostname or "") not in exige:
+        return False
+    try:
+        from . import ponte_brasil
+        return ponte_brasil.configurada()
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def _abrir(url: str, timeout: int = 12, max_bytes: int = 2_500_000) -> tuple[str, str, int]:
     from urllib.request import Request, urlopen
     if not url.startswith("file://"):
         validate_public_https(url, urlsplit(url).hostname)
+    if _pela_ponte(url):                       # 15/10: portal que recusa a nuvem → ponte Brasil (medida: funciona)
+        from . import ponte_brasil
+        st, final, corpo, _h = ponte_brasil.abrir(url, timeout=max(timeout, 30), max_bytes=max_bytes)
+        if st >= 400:
+            from urllib.error import HTTPError
+            raise HTTPError(url, st, f"HTTP {st} pela ponte Brasil", {}, None)
+        return corpo[:max_bytes].decode("utf-8", "replace"), final, st
     req = Request(url, headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36 Eldorado-OSC/1.0", "From": "contato-via-repositorio", "Accept-Language": "pt-BR,pt;q=0.9",
                                 "Accept": "text/html,application/rss+xml,application/json;q=0.9,*/*;q=0.5"})
     with urlopen(req, timeout=timeout) as r:
@@ -370,7 +402,7 @@ def _paginas(sensor: dict, hoje: date | None = None) -> list[str]:
     # 20/09: as ROTAS ALTERNATIVAS declaradas (diário + secretaria + conselho…) entram DEPOIS das
     # páginas próprias do motor, para nunca deslocá-las do limite de leitura
     for r in rotas_alternativas(sensor):
-        if r.get("exige_brasil") and os.environ.get("GITHUB_ACTIONS") and not os.environ.get("ELDORADO_LOCAL_BR"):
+        if r.get("exige_brasil") and _na_nuvem_sem_brasil():
             continue
         if r["url"] not in saida:
             saida.append(r["url"])
@@ -588,7 +620,7 @@ def _ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, 
     achados, falhas, saude = [], [], []
     # portais que exigem IP do Brasil: no GitHub não se tenta; na coleta local (ELDORADO_LOCAL_BR=1) lê-se normalmente
     exige = set((load_json(CFG).get("exige_brasil") or {}).get("dominios") or [])
-    if os.environ.get("GITHUB_ACTIONS") and not os.environ.get("ELDORADO_LOCAL_BR"):
+    if _na_nuvem_sem_brasil():                     # 15/10: com a ponte configurada, nada é pulado
         todas = _paginas(sensor)
         hosts = {urlsplit(u).hostname for u in todas}
         # 20/09: se há rotas alternativas fora do Brasil-only, lê ESSAS e deixa as outras para a coleta local
