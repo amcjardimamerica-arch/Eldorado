@@ -507,13 +507,17 @@ def extrair(paginas_: list[str], documento: str, titulo: str = "", orgao_hint: s
     nome = r"[A-ZÀ-Ú][a-zà-úA-ZÀ-Ú'’-]+(?:\s(?:d[aeo]s?\s)?[A-ZÀ-Ú][a-zà-úA-ZÀ-Ú'’-]+){0,3}"
     r = None
     for rx, fl in ((r"(todo o territ[óo]rio nacional|abrang[êe]ncia nacional|em qualquer (?:unidade da federa[çc][ãa]o|estado|munic[íi]pio) do (?:pa[íi]s|Brasil))", re.I),
-                   (r"((?:sediad[ao]s?|sede|domiciliad[ao]s?|atua[çc][ãa]o comprovada)\s+(?:[^.]{0,30}?\s)?(?:no|em|na cidade de|no munic[íi]pio de)\s+" + nome + ")", 0),
+                   # 15/10 (Cartório a 85%): a sede EXIGIDA de quem participa (não a sede do próprio órgão)
+                   (r"((?:proponentes?|entidades?|organiza[çc](?:[ãa]o|[õo]es)|OSCs?|pessoas? jur[íi]dicas?|agentes? culturais?|associa[çc](?:[ãa]o|[õo]es))[^.]{0,80}?"
+                    r"(?:sediad[ao]s?|com sede|domiciliad[ao]s?|residentes?|atua[çc][ãa]o comprovada)\s+(?:[^.]{0,30}?\s)?(?:no|em|na cidade de|no munic[íi]pio de)\s+" + nome + ")", re.I),
+                   (r"((?:no )?[âa]mbito do [Mm]unic[íi]pio de " + nome + r"(?:/[A-Z]{2})?)", 0),
                    (r"((?:no|do|ao) [Mm]unic[íi]pio de " + nome + ")", 0),
                    (r"(PREFEITURA (?:MUNICIPAL )?DE [A-ZÀ-Ú][A-ZÀ-Ú' -]{2,40})", 0),
                    (r"(abrang[êe]ncia (?:estadual|municipal)|(?:no|do) Estado d[eoa] " + nome + ")", 0)):
         r = _achar(T, rx, None, 1, fl)
-        if r:
+        if r and not re.search(r"X{4,}|x{5,}", r[0]):      # 15/10: modelo não preenchido ("Município de XXXXXX")
             break
+        r = None
     if r:
         pôr("Território", r[0], r[1], r[2], "texto")
     # ESFERA — pelo domínio oficial do documento ou pelo órgão
@@ -527,18 +531,23 @@ def extrair(paginas_: list[str], documento: str, titulo: str = "", orgao_hint: s
     if esf:
         P["Esfera"] = {"valor": esf, "trecho": f"domínio/órgão: {(urlsplit(documento).hostname or '')} · {org.strip()[:80]}", "pagina": 1,
                        "documento": documento, "metodo": "domínio e órgão"}
-    # REQUISITOS
-    if True:  # 15/10 (avaliação com gabarito): a frase explícita de quem pode participar vem antes da 1ª frase da seção
-        r = _achar(T, r"((?:poder[ãa]o participar|poder[ãa]o se inscrever|est[ãa]o aptas? a participar|s[ãa]o requisitos|requisitos? (?:para|de) (?:participa|inscri|habilita)|"
-                      r"(?:as|os) (?:proponentes|interessad[oa]s|organiza[çc][õo]es) dever[ãa]o (?:comprovar|apresentar|possuir)|habilita[çc][ãa]o jur[íi]dica|"
-                      r"documentos? (?:necess[áa]rios|exigidos) (?:para|à|a) (?:inscri|habilita))[^.;]{20,320}[.;])")
-        if r:
-            pôr("Requisitos", r[0], r[1], r[2], "texto")
-    s = T.secao(r"CONDI|PARTICIPA|REQUISITO|HABILITA")
-    if s and "Requisitos" not in P:
-        m = re.search(r"([A-ZÀ-Úa-zà-ú0-9][^.;]{40,350}[.;])", re.sub(r"^\S+(?:\s+\S+){0,4}\s*", "", s[1][:900]))
-        if m:
-            pôr("Requisitos", m.group(1), s[0], s[0] + 300)
+    # REQUISITOS — 15/10 (Cartório a 85%): QUEM PODE PARTICIPAR; nunca a "decisão de habilitação/inabilitação" (fase de
+    # resultado), que a regra antiga pegava pela seção HABILITA
+    for rx in (r"((?:poder[ãa]o|podem|poder[áa]) (?:participar|se inscrever|concorrer|apresentar propostas?|inscrever-se)[^;]{20,320}?(?:[.;:]|$))",
+               r"quem pode (?:participar|se inscrever)\s*[:\-–?]?\s*([^;]{20,320}?[.;])",
+               r"((?:est[ãa]o aptas?|s[ãa]o eleg[íi]veis|s[ãa]o requisitos)[^;]{20,320}?[.;:])",
+               r"((?:as|os) (?:proponentes|interessad[oa]s|organiza[çc][õo]es|entidades) dever[ãa]o (?:comprovar|apresentar|possuir|estar)[^.;]{20,320}[.;])",
+               r"((?:a|b)\s?\)\s*possuir (?:personalidade jur[íi]dica|no m[íi]nimo|inscri)[^;]{20,320}?[.;])",
+               r"((?:requisitos?|condi[çc][õo]es) (?:para|de) (?:participa|inscri)[^.;]{20,320}[.;])"):
+        r = _achar(T, rx, None, 1, re.I | re.M)
+        if r and not re.search(r"(?i)inabilita|decis[ãa]o de habilita|recurso", r[0][:120]):
+            pôr("Requisitos", r[0], r[1], r[2], "texto"); break
+    if "Requisitos" not in P:
+        s = T.secao(r"CONDI[ÇC][ÕO]ES DE PARTICIPA|DA PARTICIPA|PARTICIPA[ÇC][ÃA]O|REQUISITO|QUEM PODE")
+        if s:
+            m = re.search(r"([A-ZÀ-Úa-zà-ú0-9][^.;]{40,350}[.;])", re.sub(r"^\S+(?:\s+\S+){0,4}\s*", "", s[1][:900]))
+            if m and not re.search(r"(?i)inabilita|decis[ãa]o de habilita", m.group(1)):
+                pôr("Requisitos", m.group(1), s[0], s[0] + 300)
     # ANEXOS
     an = list(dict.fromkeys(re.sub(r"\s+", " ", a).strip() for a in re.findall(r"ANEXO\s+[IVXL]{1,5}\s*[-–—:]?\s*[^\n]{0,70}", T.t)))
     if an:
