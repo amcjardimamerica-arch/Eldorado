@@ -68,11 +68,15 @@ def passada(C: list[dict], A: dict, navegacao: bool = False) -> dict:
         res.append({"id": r["id"], "replicador": F._dom(r["url"]), "esperado": r["link_oficial"], "fonte": o["fonte"],
                     "acertou_fonte": mesmo_site(o["fonte"], r["link_oficial"]), "pdfs": len(o["pdfs"]),
                     "pdf_forte": any(F._pdf_forte(p, tk, num) for p in o["pdfs"]), "pdf": (o["pdfs"][0]["url"] if o["pdfs"] else None),
+                    "via": ("arquivo do órgão no PNCP" if any(x.startswith("PNCP → arquivo") for x in o["passos"]) else
+                            "navegação no site" if any(x.startswith("navegação no site") for x in o["passos"]) else
+                            "página da fonte" if o["pdfs"] else None),
                     "passos": o["passos"]})
     n = len(res) or 1
     return {"casos": len(res), "fonte_pct": round(100 * sum(x["acertou_fonte"] for x in res) / n),
             "pdf_pct": round(100 * sum(1 for x in res if x["acertou_fonte"] and x["pdfs"]) / n),
             "pdf_forte_pct": round(100 * sum(1 for x in res if x["acertou_fonte"] and x["pdf_forte"]) / n),
+            "pdf_forte_por_origem": dict(Counter(x["via"] for x in res if x["acertou_fonte"] and x["pdf_forte"])),
             "por_replicador": {d: f"{sum(1 for x in res if x['replicador'] == d and x['acertou_fonte'])}/{sum(1 for x in res if x['replicador'] == d)}"
                                for d in sorted({x["replicador"] for x in res})}, "resultados": res}
 
