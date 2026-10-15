@@ -289,7 +289,9 @@ def execucao(P: list) -> dict:
         elif estado == "atrasado":
             _problema(P, "fluxo_atrasado", "media", f"fluxo '{nome}' sem rodar há {idade} h (cadência {cad} h)", "investigar o agendamento (sem correção automática)")
     silenciosas = {}; lidos = 0
-    for arq in ("motores-da-vez.yml", "motor-agregadores.yml", "monitoramento-diario.yml", "cartorio.yml", "analise-sistema.yml"):
+    # 15/10 (ciclo 6): sem o analise-sistema.yml — o log dele contém o próprio relatório ("falhou", "falha:") e a análise
+    # acusava a si mesma; os erros reais da análise aparecem nos testes dela e no veredito
+    for arq in ("motores-da-vez.yml", "motor-agregadores.yml", "monitoramento-diario.yml", "cartorio.yml"):
         ult = next((x for x in por_arq.get(arq, []) if x.get("status") == "completed"), None)
         if not ult:
             continue
