@@ -114,3 +114,17 @@ class Etapa2Fichas(unittest.TestCase):
             B.consolidar()
             self.assertEqual(B.secoes_dos_livros("coleta")["c2"]["sensor"], "motor-x")
             self.assertEqual(B.secoes_dos_livros("agregador")["c1"]["agregador"], "Prosas")
+
+
+class Etapa2Interceptador(unittest.TestCase):
+    """16/10/2026: o Interceptador lê o fluxo (agrupado por UF) reconstruído dos livros."""
+    def test_fluxo_por_uf(self):
+        r = Path(tempfile.mkdtemp()); (r / "biblioteca_alexandria/fontes").mkdir(parents=True)
+        cat = r / "biblioteca_alexandria/fontes/motores.json"; cat.write_text(json.dumps({"motores": []}))
+        with mock.patch.object(B, "CAT", cat):
+            B.ingerir([{"id": "1", "_fonte": "fluxo", "_uf": "GO", "url": "https://a.go.gov.br/x"},
+                       {"id": "2", "_fonte": "fluxo", "_uf": "BR", "url": "https://b.gov.br/y"},
+                       {"id": "3", "_fonte": "caixa dos motores", "url": "https://c.gov.br/z"}])
+            d = B.fluxo_por_uf()["itens_por_uf"]
+        self.assertEqual({uf: [x["id"] for x in L] for uf, L in d.items()}, {"GO": ["1"], "BR": ["2"]})
+        self.assertNotIn("_uf", d["GO"][0]); self.assertNotIn("_fonte", d["GO"][0])

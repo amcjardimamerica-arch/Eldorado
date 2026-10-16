@@ -109,10 +109,22 @@ def _com_buscas(est: dict, eid: str, dados: dict) -> dict:
     return dados
 
 
+def _fluxo() -> dict:
+    """16/10/2026 (titular, etapa 2): o fluxo vem dos LIVROS; o arquivo antigo só como reserva."""
+    try:
+        from . import banco_livros as BL
+        d = BL.fluxo_por_uf()
+        if d:
+            return d
+    except Exception:  # noqa: BLE001
+        pass
+    return load_json(ROOT / "docs/dados/fluxo_oportunidades.json") if (ROOT / "docs/dados/fluxo_oportunidades.json").exists() else {}
+
+
 def _itens_em_x() -> dict:
     """Oportunidades ABERTAS do painel e quantos dos 12 itens ainda estão em ✕ (não conhecidos nem dispensados)."""
     try:
-        d = load_json(ROOT / "docs/dados/fluxo_oportunidades.json")
+        d = _fluxo()
     except Exception:  # noqa: BLE001
         return {}
     hoje = date.today().isoformat(); out = {}
@@ -432,7 +444,7 @@ def proximo_alvo() -> dict | None:
     _dias = int((_par().get("interceptador") or {}).get("dias_sem_reestudar_o_mesmo_alvo", 7))
     _lim = (_d.today() - _td(days=_dias)).isoformat()
     recente = lambda i: str((feitos.get(i) or {}).get("em") or "") >= _lim
-    fx = ((load_json(ROOT / "docs/dados/fluxo_oportunidades.json") or {}).get("itens_por_uf") or {}) if (ROOT / "docs/dados/fluxo_oportunidades.json").exists() else {}
+    fx = (_fluxo() or {}).get("itens_por_uf") or {}   # 16/10: dos livros
     hoje = _d.today().isoformat()
     INTL = re.compile(r"(?i)internacional|foundation|fondation|unesco|unicef|pnud|onu\b|grant|embaixada|embassy|uni[aã]o europeia")
     APLICA_BR = re.compile(r"(?i)brasil|brazil|am[eé]rica latina|latin america|latam|global|worldwide|internacional|international|todos os pa[ií]ses|any country")
@@ -654,7 +666,7 @@ def _proximo_alvo_anterior() -> dict | None:
     # PRIORIDADE GOIÁS (titular, 27/09): as possíveis oportunidades de Goiás do mapa primeiro; depois as dos outros
     # estados, em sorteio. O fluxo já reúne o que os motores, o Espião e ele mesmo trouxeram.
     import random
-    fx = ((load_json(ROOT / "docs/dados/fluxo_oportunidades.json") or {}).get("itens_por_uf") or {}) if (ROOT / "docs/dados/fluxo_oportunidades.json").exists() else {}
+    fx = (_fluxo() or {}).get("itens_por_uf") or {}   # 16/10: dos livros
     try:
         from .validacao_mapa import dispensa as _disp
     except Exception:

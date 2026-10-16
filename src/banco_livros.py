@@ -253,3 +253,13 @@ def secoes_dos_livros(secao: str) -> dict:
         else:
             out.update(lv.get(secao) or {})
     return out
+
+
+def fluxo_por_uf() -> dict:
+    """Etapa 2: {"itens_por_uf": {uf: [registros]}} — o fluxo como os módulos antigos o liam, reconstruído dos LIVROS."""
+    grupos: dict = {}
+    regs = [b for b in brutos_dos_livros() if b.get("_fonte") == "fluxo"]
+    for b in regs:
+        x = {k: v for k, v in b.items() if k not in ("_fonte", "_uf")}
+        grupos.setdefault(b.get("_uf") or "BR", []).append(x)
+    return {"itens_por_uf": grupos} if regs else {}

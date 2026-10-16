@@ -64,7 +64,7 @@ def _caixa() -> list[dict]:
 
 def _fluxo() -> list[dict]:
     fl = _j(ROOT / "docs/dados/fluxo_oportunidades.json", {})
-    return [{**x, "id": str(x["id"]), "_fonte": "fluxo"} for L in (fl.get("itens_por_uf") or {}).values() for x in L]
+    return [{**x, "id": str(x["id"]), "_fonte": "fluxo", "_uf": uf} for uf, L in (fl.get("itens_por_uf") or {}).items() for x in L]   # 16/10: UF do grupo
 
 
 CHAMAMENTO = re.compile(r"(?i)edita(l|is)|chamamento|chamada|sele[çc][ãa]o|inscri[çc][õo]es|regulamento|pr[êe]mio|concurso|"
