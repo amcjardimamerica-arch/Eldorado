@@ -1464,10 +1464,10 @@
     "f260-captacao-238": {
       "nome": "Sebrae Goiás - parcerias com OSC para empreendedorismo",
       "tipo": "site_oficial",
-      "leituras": 64,
+      "leituras": 65,
       "achados_total": 0,
-      "vazias_seguidas": 64,
-      "ultima": "2026-10-16T13:05:50+00:00",
+      "vazias_seguidas": 65,
+      "ultima": "2026-10-16T13:52:22+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 2,
@@ -2038,10 +2038,10 @@
     "f260-captacao-227": {
       "nome": "Instituto Coca-Cola Brasil",
       "tipo": "privada",
-      "leituras": 54,
+      "leituras": 55,
       "achados_total": 0,
-      "vazias_seguidas": 54,
-      "ultima": "2026-10-16T13:22:11+00:00",
+      "vazias_seguidas": 55,
+      "ultima": "2026-10-16T13:52:18+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 1,
@@ -2052,7 +2052,7 @@
           "code": null,
           "waf": null,
           "causa": "ErroPonte",
-          "retentativa": "fora_da_fila"
+          "retentativa": "aguardando"
         }
       ],
       "alerta": null,
@@ -2066,7 +2066,7 @@
         "camada1_vetados": 0,
         "camada1_direcionados": 0
       },
-      "duracao_s": 1,
+      "duracao_s": 2,
       "totais_por_distintas": true,
       "novas_ultima": 0,
       "relidas_ultima": 0,
@@ -5468,14 +5468,14 @@
     "f260-captacao-221": {
       "nome": "Fundação Banco do Brasil",
       "tipo": "privada",
-      "leituras": 32,
+      "leituras": 33,
       "achados_total": 0,
-      "vazias_seguidas": 32,
-      "duracao_s": 7,
-      "ultima": "2026-10-16T13:05:23+00:00",
+      "vazias_seguidas": 33,
+      "duracao_s": 6,
+      "ultima": "2026-10-16T13:52:13+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
-      "falhas_ultima": 2,
+      "falhas_ultima": 0,
       "saude": [
         {
           "url": "https://www.fbb.org.br/feed",
@@ -5483,17 +5483,21 @@
           "bytes": 16678
         }
       ],
-      "alerta": null,
+      "alerta": "trocar URL: 3 leituras sem achados com página respondendo",
       "diagnostico": {
         "paginas_lidas": 1,
         "links_total": 0,
         "links_candidatos": 0,
         "descobertas": [],
         "pdf_links": 0,
-        "motivo_zero": "parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam",
+        "motivo_zero": "página respondeu mas não tem links (conteúdo carregado por script ou vazio) — precisa de API/RSS ou leitura do HTML renderizado",
         "camada1_vetados": 0,
         "camada1_direcionados": 0,
-        "paginas_alem_do_limite": 1
+        "paginas_alem_do_limite": 1,
+        "fora_da_fila": [
+          "https://www.licitaserranodomaranhao.com.br/",
+          "https://www.licitaserranodomaranhao.com.br/home.jsf?windowId=5c8"
+        ]
       },
       "totais_por_distintas": true,
       "novas_ultima": 0,
@@ -6680,11 +6684,11 @@
     "judiciario-tjgo": {
       "nome": "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
       "tipo": "diario_justica",
-      "leituras": 101,
+      "leituras": 102,
       "achados_total": 0,
-      "vazias_seguidas": 101,
-      "duracao_s": 1,
-      "ultima": "2026-10-16T13:22:10+00:00",
+      "vazias_seguidas": 102,
+      "duracao_s": 3,
+      "ultima": "2026-10-16T13:52:16+00:00",
       "motivo": "ativação manual pelo titular",
       "achados_ultima": 0,
       "falhas_ultima": 2,
@@ -8615,42 +8619,32 @@
     "outras-oportunidades-4": {
       "nome": "Outras Oportunidades 4/5",
       "tipo": "site_oficial",
-      "leituras": 18,
+      "leituras": 19,
       "achados_total": 72,
       "vazias_seguidas": 0,
-      "duracao_s": 81,
-      "ultima": "2026-10-16T13:23:33+00:00",
+      "duracao_s": 74,
+      "ultima": "2026-10-16T13:52:07+00:00",
       "motivo": "ativação manual pelo titular",
-      "achados_ultima": 4,
+      "achados_ultima": 3,
       "falhas_ultima": 0,
       "saude": [
+        {
+          "url": "https://www.fcw.org.br/publicacoes",
+          "http": 200,
+          "bytes": 944199
+        },
         {
           "url": "https://impactarte.com.br/",
           "http": 200,
           "bytes": 5474
-        },
-        {
-          "url": "https://www.portoitapoa.com/premiacoes/certificacoes",
-          "http": 200,
-          "bytes": 263926
         }
       ],
       "alerta": null,
       "diagnostico": {
-        "paginas_lidas": 23,
-        "links_total": 1293,
-        "links_candidatos": 696,
+        "paginas_lidas": 26,
+        "links_total": 1535,
+        "links_candidatos": 874,
         "descobertas": [
-          {
-            "de": "https://impactospositivos.com/",
-            "para": "https://impactospositivos.com/blog/index.php",
-            "rotulo": "Ver todas as publicações"
-          },
-          {
-            "de": "https://goiasemalta.com.br/goias-aprova-mais-de-r-37-milhoes-em-projetos-do-paa-leite-para-2026/",
-            "para": "https://www.instagram.com/jornalgoiasemalta",
-            "rotulo": ""
-          },
           {
             "de": "https://www.hrjanauba.com.br/28.html",
             "para": "https://www.hrjanauba.com.br/wa_files/CREDENCIAMENTO_06_2026.pdf",
@@ -8660,26 +8654,32 @@
             "de": "https://www.hrjanauba.com.br/28.html",
             "para": "https://www.hrjanauba.com.br/wa_files/CREDENCIAMENTO_05_2026.pdf",
             "rotulo": ""
+          },
+          {
+            "de": "https://www.hrjanauba.com.br/28.html",
+            "para": "https://www.hrjanauba.com.br/wa_files/CREDENCIAMENTO_03_2026.pdf",
+            "rotulo": ""
+          },
+          {
+            "de": "https://www.hrjanauba.com.br/28.html",
+            "para": "https://www.hrjanauba.com.br/wa_files/CREDENCIAMENTO_02_2026.pdf",
+            "rotulo": ""
           }
         ],
-        "pdf_links": 62,
+        "pdf_links": 71,
         "motivo_zero": null,
-        "camada1_vetados": 19,
-        "camada1_direcionados": 35,
+        "camada1_vetados": 16,
+        "camada1_direcionados": 29,
         "robots_proibe": [
           "https://sisamo.com.br/mrosc/mg/nova-serrana/prefeitura/Login",
-          "https://mapacultural.secult.ce.gov.br/oportunidade/8356/",
-          "https://www.instagram.com/jornalgoiasemalta"
-        ],
-        "aguardando_retentativa": [
-          "https://www.fcw.org.br/premio-fotografia-2026"
+          "https://mapacultural.secult.ce.gov.br/oportunidade/8356/"
         ]
       },
-      "relidas_total": 175,
+      "relidas_total": 178,
       "totais_por_distintas": true,
       "novas_ultima": 0,
-      "relidas_ultima": 4,
-      "fora_do_portao": 7
+      "relidas_ultima": 3,
+      "fora_do_portao": 8
     },
     "outras-oportunidades-5": {
       "nome": "Outras Oportunidades 5/5",
@@ -9126,24 +9126,38 @@
   },
   "ultima_execucao": {
     "data": "2026-10-16",
-    "em": "2026-10-16T13:23:33+00:00",
+    "em": "2026-10-16T13:52:22+00:00",
     "manual": [
+      "f260-captacao-221",
+      "f260-captacao-227",
+      "f260-captacao-238",
+      "judiciario-tjgo",
       "outras-oportunidades-4"
     ],
     "bloco": "manual",
-    "sensores_executados": 1,
+    "sensores_executados": 5,
     "adiados_por_tempo": [],
-    "duracao_s": 81,
-    "em_espera": 127,
-    "total_esquadra": 128,
+    "duracao_s": 89,
+    "em_espera": 122,
+    "total_esquadra": 127,
     "previsoes_ativas": 1,
-    "achados": 4,
+    "achados": 3,
     "novos_na_base": 0,
     "por_tipo": {
       "site_oficial": {
+        "sensores": 2,
+        "achados": 3,
+        "falhas": 2
+      },
+      "privada": {
+        "sensores": 2,
+        "achados": 0,
+        "falhas": 1
+      },
+      "diario_justica": {
         "sensores": 1,
-        "achados": 4,
-        "falhas": 0
+        "achados": 0,
+        "falhas": 2
       }
     }
   }
