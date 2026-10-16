@@ -277,7 +277,7 @@ class TesteLimpezaDosDiarios(unittest.TestCase):
 
     def test_a_biblioteca_nao_guarda_mais_edicao_de_diario(self):
         import json as _j
-        op = ROOT / "biblioteca_alexandria/oportunidades"
+        op = ROOT / "biblioteca_alexandria/livros/anexos"
         diarios = 0
         for f in op.glob("*/*/ficha.json"):
             try:
@@ -300,7 +300,7 @@ class TesteLimpezaDosDiarios(unittest.TestCase):
     def test_o_que_serve_continua_na_biblioteca(self):
         import json as _j
         fontes = set()
-        for f in (ROOT / "biblioteca_alexandria/oportunidades").glob("*/*/ficha.json"):
+        for f in (ROOT / "biblioteca_alexandria/livros/anexos").glob("*/*/ficha.json"):
             try:
                 fontes.add(_j.loads(f.read_text(encoding="utf-8")).get("fonte_id"))
             except Exception:

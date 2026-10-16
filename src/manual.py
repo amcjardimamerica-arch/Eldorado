@@ -30,7 +30,7 @@ from pathlib import Path
 from .nucleo import ROOT, load_json, now_iso, sha256, slug, write_json
 
 ENTRADA = ROOT / "entrada_manual"
-OPORT = ROOT / "biblioteca_alexandria/oportunidades"
+OPORT = ROOT / "biblioteca_alexandria/livros/anexos"
 PROCESSADOS = ROOT / "estado/alimentacao_manual.json"
 
 

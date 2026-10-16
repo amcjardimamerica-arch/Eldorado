@@ -90,7 +90,7 @@ def _indice_manual() -> dict:
     cache = getattr(_indice_manual, "_cache", None)
     if cache is not None:
         return cache
-    base = ROOT / "biblioteca_alexandria/oportunidades"
+    base = ROOT / "biblioteca_alexandria/livros/anexos"
     idx: dict = {}
     for fp in base.glob("*/*/ficha.json"):
         try:

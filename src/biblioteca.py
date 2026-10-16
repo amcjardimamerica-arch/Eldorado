@@ -35,7 +35,7 @@ from .nucleo import ROOT, load_json, now_iso, sha256, slug, write_json
 
 RAIZ = ROOT / "biblioteca_alexandria"
 LEIS = RAIZ / "leis"
-OPORTUNIDADES = RAIZ / "oportunidades"
+OPORTUNIDADES = RAIZ / "livros" / "anexos"            # 16/10: as pastas antigas são os anexos dos livros
 ASSOCIACOES = RAIZ / "associacoes"
 
 # Temas do acervo jurídico (o tipo da norma vira a subpasta)
