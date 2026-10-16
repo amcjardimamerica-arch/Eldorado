@@ -3686,6 +3686,158 @@
     }
    ],
    "estado": "vermelho"
+  },
+  {
+   "inicio": "2026-10-16T00:58:06+00:00",
+   "recibos": [
+    {
+     "etapa": "acionar",
+     "rc": 0,
+     "segundos": 34.2,
+     "erro": null,
+     "motores": [
+      "f260-captacao-222",
+      "f260-captacao-231",
+      "f260-captacao-227",
+      "f260-captacao-238",
+      "f260-captacao-240"
+     ],
+     "executados": 5,
+     "achados": 0,
+     "novos_na_base": 0,
+     "adiados_por_tempo": []
+    },
+    {
+     "etapa": "catalogar",
+     "finalidade": "achados por motor, status de cada motor e repositório único das oportunidades",
+     "segundos": 115.4,
+     "erro": null
+    },
+    {
+     "etapa": "site_oficial",
+     "finalidade": "do replicador à fonte oficial e ao PDF do edital (navegação e PNCP)",
+     "segundos": 30.6,
+     "erro": null
+    },
+    {
+     "etapa": "expurgo",
+     "finalidade": "remove por completo o que não é oportunidade: registros, livros, pastas, banco e releitura",
+     "segundos": 29.6,
+     "erro": null
+    },
+    {
+     "etapa": "pncp",
+     "finalidade": "dossiê do PNCP: 12 de 12 com informação confirmada ou descarte justificado; o que faltar vai ao Interceptador",
+     "segundos": 1300.0,
+     "erro": "pncp:1: código 124"
+    },
+    {
+     "etapa": "certificar",
+     "finalidade": "trecho literal e página de cada um dos 12 itens no documento oficial (Cartório)",
+     "segundos": 613.1,
+     "erro": null
+    },
+    {
+     "etapa": "curadoria",
+     "finalidade": "link de acesso, link oficial com curadoria objetiva (6 critérios) e trecho exato da oportunidade",
+     "segundos": 0.2,
+     "erro": null
+    },
+    {
+     "etapa": "validar",
+     "finalidade": "validação por exceção: 12 de 12 comprovados seguem ao Farol; o resto à conferência humana",
+     "segundos": 0.2,
+     "erro": null
+    },
+    {
+     "etapa": "recalcular",
+     "finalidade": "estados das oportunidades com as certidões e validações desta passagem",
+     "segundos": 97.4,
+     "erro": null
+    },
+    {
+     "etapa": "livros",
+     "finalidade": "os livros são o banco: cada oportunidade cria ou vincula o seu livro com links, checklist12, achados e análises",
+     "segundos": 1.3,
+     "erro": null
+    },
+    {
+     "etapa": "vigilancia_diaria",
+     "finalidade": "vigilância dos livros pelo próprio motor, alerta de cadência dos motores e medição de uso dos arquivos",
+     "segundos": 126.6,
+     "erro": null
+    },
+    {
+     "etapa": "fichas_farol",
+     "finalidade": "ficha e janela de cada oportunidade aberta; o que está pronto vai ao Farol",
+     "segundos": 0.9,
+     "erro": null
+    },
+    {
+     "etapa": "legislativo",
+     "finalidade": "projetos de lei, utilidades públicas e orçamento — acompanhamento sem livro",
+     "segundos": 0.0,
+     "erro": null
+    },
+    {
+     "etapa": "sala_de_controle",
+     "finalidade": "instrumentos de cada etapa",
+     "segundos": 5.6,
+     "erro": null
+    },
+    {
+     "etapa": "diagnostico",
+     "finalidade": "diagnóstico da passagem (arquivo próprio; o relatório da análise não é sobrescrito)",
+     "segundos": 33.0,
+     "erro": null
+    }
+   ],
+   "decisoes": [
+    {
+     "fase": "decidir",
+     "motores": 5,
+     "adiados_primeiro": [
+      "f260-captacao-222",
+      "f260-captacao-227",
+      "f260-captacao-231",
+      "f260-captacao-238"
+     ],
+     "planejados_no_dia": 128,
+     "cobertura_antes_pct": 72.7
+    },
+    {
+     "fase": "treinar_rede",
+     "pulou": "modelo recente e sem rótulos novos suficientes"
+    },
+    {
+     "fase": "biblioteca_diaria",
+     "pulou": "já feita hoje"
+    }
+   ],
+   "avaliacao": {
+    "cobertura_do_dia_pct": 74.2,
+    "estado": {
+     "f260-captacao-222": "completa",
+     "f260-captacao-231": "completa",
+     "f260-captacao-227": "parcial",
+     "f260-captacao-238": "parcial",
+     "f260-captacao-240": "parcial"
+    },
+    "reacionar": [],
+    "para_humano": [],
+    "completos": 2
+   },
+   "novos_na_base": 0,
+   "fim": "2026-10-16T01:37:57+00:00",
+   "erros": [
+    {
+     "etapa": "pncp",
+     "finalidade": "dossiê do PNCP: 12 de 12 com informação confirmada ou descarte justificado; o que faltar vai ao Interceptador",
+     "segundos": 1300.0,
+     "erro": "pncp:1: código 124"
+    }
+   ],
+   "estado": "vermelho"
   }
  ]
 }
