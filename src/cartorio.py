@@ -427,11 +427,25 @@ def _ordem_da_skill(op: dict) -> list[int] | None:
         return None
 
 
+def _registros_das_estrelas(fluxo: dict | None) -> list[dict]:
+    """16/10/2026 (titular, etapa 2): a fila do Cartório vem dos LIVROS — os registros do fluxo guardados em cada livro
+    (os mesmos campos e o mesmo checklist: as assinaturas não mudam). Sem livros ainda, cai no arquivo do fluxo."""
+    if fluxo is not None:
+        return [x for lista in (fluxo.get("itens_por_uf") or {}).values() for x in lista]
+    try:
+        from . import banco_livros as BL
+        regs = [b for b in BL.brutos_dos_livros() if b.get("_fonte") == "fluxo"]
+        if regs:
+            return regs
+    except Exception:  # noqa: BLE001
+        pass
+    return [x for lista in (_j(FLUXO, {}).get("itens_por_uf") or {}).values() for x in lista]
+
+
 def fila_estrelas(fluxo: dict | None = None) -> list[dict]:
-    d = fluxo if fluxo is not None else _j(FLUXO, {})
     out = []
-    for lista in (d.get("itens_por_uf") or {}).values():
-        for x in lista:
+    for x in _registros_das_estrelas(fluxo):
+        if True:
             ck = x.get("checklist") or {}
             faltam = [k for k in L.DOZE if (ck.get(k) or {}).get("s") in FALTA]
             # 10/10 (titular): CONFERIR OS CINZA — itens conhecidos (lidos pelo motor na notícia/página) ainda sem
