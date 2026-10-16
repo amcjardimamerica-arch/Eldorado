@@ -227,8 +227,6 @@ def livro_da_oportunidade(a: dict) -> dict | None:
     return next((lv for lv in (_j(CAT, {}) or {}).get("motores") or [] if lv.get("id") == lid), None) if lid else None
 
 
-if __name__ == "__main__":
-    print(json.dumps(consolidar(), ensure_ascii=False))
 
 
 # ── ETAPA 2 · o repositório lê dos livros ───────────────────────────────────────────────────────────────────────────
@@ -610,3 +608,6 @@ def revisar_modalidade_uma_vez() -> dict:
     marco.parent.mkdir(parents=True, exist_ok=True)
     marco.write_text(json.dumps({"em": _agora(), **r}, ensure_ascii=False, indent=1), encoding="utf-8")
     return {"revisao": "feita agora", **r}
+
+if __name__ == "__main__":
+    print(json.dumps(consolidar(), ensure_ascii=False))
