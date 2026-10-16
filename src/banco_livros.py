@@ -263,3 +263,75 @@ def fluxo_por_uf() -> dict:
         x = {k: v for k, v in b.items() if k not in ("_fonte", "_uf")}
         grupos.setdefault(b.get("_uf") or "BR", []).append(x)
     return {"itens_por_uf": grupos} if regs else {}
+
+
+# ── ETAPA 3 · os motores gravam no LIVRO ─────────────────────────────────────────────────────────────────────────────
+def registrar_achados(achados: list[dict], motor: str | None = None, gravar: bool = True) -> dict:
+    """Cada achado (já aprovado pelo portão de oportunidade) cria o seu livro ou se vincula ao que já tem o histórico,
+    e fica guardado nele (livro["coleta"][id]). Uma única gravação do catálogo por chamada."""
+    if not achados:
+        return {"achados": 0, "livros_criados": 0, "vinculados": 0}
+    cat_doc = _j(CAT, {"motores": []}); L = cat_doc.setdefault("motores", [])
+    por_id = {lv.get("id"): lv for lv in L}
+    idx = {}
+    for lv in L:
+        for k in _chaves_do_livro(lv):
+            idx.setdefault(k, lv.get("id"))
+        for sec in ("brutos", "coleta"):
+            for b in (lv.get(sec) or {}).values():
+                if isinstance(b, dict):
+                    idx.setdefault(chave(b), lv.get("id"))
+    criados = vinculados = 0
+    for a in achados:
+        if a.get("id") is None:
+            continue
+        k = chave(a); lid = idx.get(k)
+        if lid not in por_id:
+            lv = _novo_livro(a, k); L.append(lv); por_id[lv["id"]] = lv; idx[k] = lv["id"]; criados += 1
+        else:
+            lv = por_id[lid]; vinculados += 1
+        lv.setdefault("coleta", {})[str(a["id"])] = {**a, **({"motor": motor} if motor and not a.get("motor") else {})}
+    if gravar:
+        cat_doc["total"] = len(L); cat_doc["gerado_em"] = _agora()
+        CAT.write_text(json.dumps(cat_doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    return {"achados": len(achados), "livros_criados": criados, "vinculados": vinculados}
+
+
+def achados() -> list[dict]:
+    """Leitura padrão dos achados dos motores — a partir dos LIVROS (substitui a base bruta oportunidades.jsonl)."""
+    out = []
+    for lv in (_j(CAT, {}) or {}).get("motores") or []:
+        out.extend(x for x in (lv.get("coleta") or {}).values() if isinstance(x, dict))
+    return out
+
+
+def limpar_base_bruta(base: Path | None = None, gravar: bool = True) -> dict:
+    """Etapa 3 (16/10/2026): a base bruta dos motores fica só com o que é OPORTUNIDADE (portão no motor) e com trecho
+    antigo que é histórico de um livro existente; o resto sai. Não cria um livro por achado: quem reconhece que dois
+    achados são a mesma oportunidade é a unificação do repositório, que vincula cada oportunidade ao seu livro."""
+    from .porta_oportunidade import motivo_para_nao_guardar
+    from collections import Counter
+    base = base or ROOT / "dados/oportunidades/oportunidades.jsonl"
+    if not base.exists():
+        return {"mantidas": 0, "removidas": 0}
+    import re as _re
+    urls_livros = set(_re.findall(r'https?://[^"\\\s]+', CAT.read_text(encoding="utf-8"))) if CAT.exists() else set()
+    manter, fora = [], Counter()
+    with base.open(encoding="utf-8") as fh:
+        for linha in fh:
+            try:
+                a = json.loads(linha)
+            except ValueError:
+                fora["linha inválida"] += 1; continue
+            if not isinstance(a, dict) or a.get("id") is None:
+                fora["sem id"] += 1; continue
+            m = motivo_para_nao_guardar(a)
+            if m and m.startswith("edital de ano anterior") and a.get("url") in urls_livros:
+                m = None                                   # trecho antigo ligado a um livro: é histórico dele
+            if m:
+                fora[m.split(" —")[0].split(" (")[0].split(" em 20")[0][:50]] += 1
+            else:
+                manter.append(linha if linha.endswith("\n") else linha + "\n")
+    if gravar:
+        base.write_text("".join(manter), encoding="utf-8")
+    return {"mantidas": len(manter), "removidas": sum(fora.values()), "motivos": dict(fora.most_common())}

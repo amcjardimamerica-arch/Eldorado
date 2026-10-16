@@ -1023,6 +1023,16 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
                     completar_datas(a)
                 except Exception:  # noqa: BLE001
                     pass
+                # 16/10/2026 (titular, etapa 3): PORTÃO DE OPORTUNIDADE — o motor só guarda o que é oportunidade de fato;
+                # o resto é contado (reg['fora_do_portao']), nunca gravado
+                try:
+                    from .porta_oportunidade import motivo_para_nao_guardar
+                    _m = motivo_para_nao_guardar(a, hoje.isoformat())
+                except Exception:  # noqa: BLE001
+                    _m = None
+                if _m:
+                    reg["fora_do_portao"] = int(reg.get("fora_do_portao") or 0) + 1
+                    continue
                 append_jsonl(DB, a); existentes[a["id"]] = a; novos += 1
         t = por_tipo.setdefault(s["tipo"], {"sensores": 0, "achados": 0, "falhas": 0})
         t["sensores"] += 1; t["achados"] += len(r["achados"]); t["falhas"] += len(r["falhas"])
