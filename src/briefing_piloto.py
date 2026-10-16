@@ -76,8 +76,10 @@ def anteriores(n: int = LIMITE_HISTORICO) -> list[dict]:
     from . import livro_arquivo as LA
     if PASTA is not _PASTA_ORIGINAL:            # pasta apontada para outro lugar (teste)
         return [load_json(a) for a in sorted(PASTA.glob("*.json"), reverse=True)[:n]] if PASTA.exists() else []
-    arqs = sorted(LA.arquivos_de(PASTA), reverse=True)[:n]
-    return [LA.carregar(a, {}) or {} for a in arqs]
+    # transição: o que já está nos livros + os arquivos ainda não absorvidos (a fase 'absorver' os leva aos livros)
+    fisicos = {str(p.relative_to(ROOT)): p for p in PASTA.glob("*.json")} if PASTA.exists() else {}
+    arqs = sorted(set(LA.arquivos_de(PASTA)) | set(fisicos), reverse=True)[:n]
+    return [(load_json(fisicos[a]) if a in fisicos else LA.carregar(a, {})) or {} for a in arqs]
 
 
 def _resumo_dos_anteriores(hist: list[dict]) -> list[str]:
@@ -180,7 +182,7 @@ def escrever(ia, motor_cfg: dict | None = None) -> dict:
         '"pergunta_de_pesquisa": "a pergunta que orienta o voo", '
         '"o_que_procurar": ["site oficial", "..."], "nivel": "regional|estadual|nacional|internacional"}')
 
-    b = {"em": now_iso(), "voo": (len(__import__("src.livro_arquivo", fromlist=["x"]).arquivos_de(PASTA)) if PASTA is _PASTA_ORIGINAL
+    b = {"em": now_iso(), "voo": (len(set(__import__("src.livro_arquivo", fromlist=["x"]).arquivos_de(PASTA)) | {str(p.relative_to(ROOT)) for p in PASTA.glob("*.json")} if PASTA.exists() else set()) if PASTA is _PASTA_ORIGINAL
                                      else len(list(PASTA.glob("*.json"))) if PASTA.exists() else 0) + 1,
          "banco": banco,
          "diagnostico": (r or {}).get("diagnostico"),
