@@ -53,7 +53,7 @@ def main(n: int = 20) -> dict:
     semente = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M")      # 15/10: amostra nova a cada análise
     rnd = random.Random(semente)
     amostra = rnd.sample(ab, min(n, len(ab)))
-    cur = {x.get("id"): x for x in (_j(ROOT / "estado/curadoria_links.json", {}) or {}).get("itens") or []}
+    cur = {x.get("id"): x for x in (_j(ROOT / "biblioteca_alexandria/livros/_vistas/curadoria_links.json", {}) or {}).get("itens") or []}
     certs = (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/cartorio/certidoes.json", {}) or {}).get("certidoes") or {}
     por_id = {str(k).split(":", 1)[-1]: c for k, c in certs.items()}
     rede = Rede(pausa=0.5)

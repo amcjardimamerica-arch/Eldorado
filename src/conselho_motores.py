@@ -77,7 +77,7 @@ def dados() -> dict:
             "certs": (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/cartorio/certidoes.json", {}).get("certidoes") or {}),
             "cob": _j(ROOT / "docs/dados/cobertura.json", {}),
             "agenda": (_j(ROOT / "config/agenda_motores.json", {}).get("motores") or {}),
-            "bib": (_j(ROOT / "estado/cartorio/biblioteca_sites.json", {}).get("sites") or {})}
+            "bib": (_j(ROOT / "biblioteca_alexandria/livros/anexos/cartorio/biblioteca_sites.json", {}).get("sites") or {})}
 
 
 def _origem_motor(x: dict) -> str:

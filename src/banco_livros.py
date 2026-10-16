@@ -90,7 +90,7 @@ def consolidar(gravar: bool = True) -> dict:
             idx.setdefault(k, lv.get("id"))
     regs = (_j(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json", {}) or {}).get("registros") or []
     certs = {str(k).split(":", 1)[-1]: c for k, c in ((__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/cartorio/certidoes.json", {}) or {}).get("certidoes") or {}).items()}
-    cur = {x.get("id"): x for x in (_j(ROOT / "estado/curadoria_links.json", {}) or {}).get("itens") or []}
+    cur = {x.get("id"): x for x in (_j(ROOT / "biblioteca_alexandria/livros/_vistas/curadoria_links.json", {}) or {}).get("itens") or []}
     dos = (_j(ROOT / "estado/pncp/dossies.json", {}) or {}).get("dossies") or {}
     inter = (_j(ROOT / "estado/interceptador/estado.json", {}) or {}).get("feitos") or {}
     piloto = (_j(ROOT / "estado/piloto/aprendizados/tratados.json", {}) or {}).get("itens") or {}

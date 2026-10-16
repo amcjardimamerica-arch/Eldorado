@@ -500,7 +500,7 @@ def historico_5_anos(nome: str) -> dict:
     return {"ocorrencias": len(hits), "por_ano": dict(sorted(por_ano.items())), "ultimas": [{"data": r[0], "titulo": (r[1] or "")[:100], "url": r[3]} for r in hits[:5]], "termos": toks}
 
 
-FILA_VERIF = ROOT / "estado/fila_verificacao.json"
+FILA_VERIF = ROOT / "biblioteca_alexandria/livros/_vistas/fila_verificacao.json"
 
 
 def _mapa_maiores() -> dict:

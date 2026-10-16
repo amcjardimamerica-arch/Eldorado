@@ -33,7 +33,7 @@ from urllib.parse import urlsplit
 from . import cartorio_leitura as L
 
 ROOT = Path(__file__).resolve().parents[1]
-BIBLIOTECA = ROOT / "estado/cartorio/biblioteca_sites.json"
+BIBLIOTECA = ROOT / "biblioteca_alexandria/livros/anexos/cartorio/biblioteca_sites.json"
 MAX_TENTATIVAS = 10
 
 ABORDAGENS = {1: "documento na mão", 2: "anexos completos", 3: "página oficial e citados", 4: "biblioteca de sites",

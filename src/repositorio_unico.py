@@ -307,7 +307,7 @@ def _nota(reg: dict) -> float | None:
 
 def construir(gravar: bool = True, hoje: str | None = None) -> dict:
     global _CUR, _PNCP
-    _CUR = {x.get("id"): x for x in ((_j(ROOT / "estado/curadoria_links.json", {}) or {}).get("itens") or [])}   # 15/10
+    _CUR = {x.get("id"): x for x in ((_j(ROOT / "biblioteca_alexandria/livros/_vistas/curadoria_links.json", {}) or {}).get("itens") or [])}   # 15/10
     _PNCP = (_j(ROOT / "estado/pncp/dossies.json", {}) or {}).get("dossies") or {}                              # 15/10
     hoje = hoje or date.today().isoformat()
     V = (_j(ROOT / "biblioteca_alexandria/livros/_acervo/editais/vereditos_revisao.json", {}) or {}).get("vereditos") or {}

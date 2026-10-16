@@ -35,8 +35,9 @@ def grupo(rel: str) -> str:
 
 # 16/10/2026 (titular): estado/ guarda os REGISTROS OPERACIONAIS das ferramentas (execução, cursores, logs, estado dos
 # motores) = controle. Exceção: os arquivos que guardam DADO DE OPORTUNIDADE continuam contados até irem aos livros.
-OPORTUNIDADE_EM_ESTADO = re.compile(r"^estado/(fila_verificacao\.json|curadoria_links\.json|outras_oportunidades/|abertos_sem_informacao\.json|"
-                                    r"resultados_editais\.jsonl|catalogo_achados_ia\.json|previsoes\.json|prazos_ia\.json|cartorio/)")
+OPORTUNIDADE_EM_ESTADO = re.compile(r"^estado/(fila_verificacao\.json|curadoria_links\.json|abertos_sem_informacao\.json|"
+                                    r"resultados_editais\.jsonl|catalogo_achados_ia\.json|previsoes\.json|prazos_ia\.json|"
+                                    r"cartorio/(resultados_livros|biblioteca_sites|gabaritos))")   # 16/10: a fila p/ o Interceptador e o log são controle
 
 
 def classe(rel: str) -> str:

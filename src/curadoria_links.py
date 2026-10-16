@@ -18,7 +18,7 @@ critérios objetivos, todos verificáveis:
   C6 atualizado            conferido pelo Cartório nos últimos 7 dias (retificações e prorrogações).
 Resultado: APROVADO (C1–C5; C6 vencido só alerta) · EM CURADORIA (C1–C3 ok, falta C4 ou C5) · REPROVADO (falha C1, C2 ou
 C3: o link deixa de valer como oficial e a oportunidade volta à busca da fonte oficial) · SEM LINK OFICIAL (a buscar).
-Saídas: estado/curadoria_links.json e docs/dados/curadoria_links.json
+Saídas: biblioteca_alexandria/livros/_vistas/curadoria_links.json e docs/dados/curadoria_links.json
 """
 from __future__ import annotations
 
@@ -31,7 +31,7 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json"
 CERT = ROOT / "estado/cartorio/certidoes.json"
-ESTADO = ROOT / "estado/curadoria_links.json"
+ESTADO = ROOT / "biblioteca_alexandria/livros/_vistas/curadoria_links.json"
 PAINEL = ROOT / "docs/dados/curadoria_links.json"
 INSTITUCIONAL = re.compile(r"\.edu\.br$|\.ufg?\.br$|\.if\w+\.edu\.br$")   # 15/10: universidades e institutos federais
 PUBLICO = re.compile(r"\.(gov|leg|jus|mp|def|tc)\.br$|^(gov|leg|jus|mp)\.br$|\.gov(\.[a-z]{2})?$|\.gob\.[a-z]{2}$|\.gouv\.[a-z]{2}$|\.europa\.eu$|\.int$")

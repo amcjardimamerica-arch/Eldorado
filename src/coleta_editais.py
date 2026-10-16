@@ -18,7 +18,7 @@ VEICULO = re.compile(r"observatorio3setor|captadores\.org|bussolasocial|prosas\.
 
 
 def run(limite: int = 25, modo: str = "completo") -> dict:
-    fila = ROOT / "estado/fila_verificacao.json"
+    fila = ROOT / "biblioteca_alexandria/livros/_vistas/fila_verificacao.json"
     if not fila.exists():
         return {"erro": "fila não gerada"}
     itens = [x for x in load_json(fila)["itens"] if x.get("modo") == modo]

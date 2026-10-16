@@ -227,7 +227,7 @@ def afinar(maximo_motores: int = 8, baixar=None, ponte="auto", segundos: int = 3
     from .sensores import registro
     est = _j(ESTADO, {}) or {}; afi = _j(AFINADOR, {}) or {}
     reg = {s["id"]: s for s in registro()}
-    bib = (_j(ROOT / "estado/cartorio/biblioteca_sites.json", {}).get("sites") or {})
+    bib = (_j(ROOT / "biblioteca_alexandria/livros/anexos/cartorio/biblioteca_sites.json", {}).get("sites") or {})
     pb = _ponte_baixar() if ponte == "auto" else ponte
     apr = _j(APRENDIDAS, {}) or {}; pon = _j(PONTE, {"dominios": []})
     feitos = []

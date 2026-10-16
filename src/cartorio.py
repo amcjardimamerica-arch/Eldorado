@@ -54,11 +54,11 @@ def _gravar_certidoes(doc: dict) -> None:
     else:
         CERTIDOES.parent.mkdir(parents=True, exist_ok=True)
         CERTIDOES.write_text(json.dumps(doc, ensure_ascii=False, indent=1), encoding="utf-8")
-LIVROS_OUT = PASTA / "resultados_livros.jsonl"
+LIVROS_OUT = ROOT / "biblioteca_alexandria/livros/anexos/cartorio/resultados_livros.jsonl"   # 16/10: anexo dos livros
 INTERCEPTADOR = PASTA / "para_o_interceptador.json"
 RELATORIO = ROOT / "docs/dados/cartorio.json"
 CFG = ROOT / "config/cartorio.json"
-GABARITOS = PASTA / "gabaritos.json"
+GABARITOS = ROOT / "biblioteca_alexandria/livros/anexos/cartorio/gabaritos.json"   # 16/10: anexo dos livros
 APRENDE = ("seção", "texto", "cronograma")                  # métodos cujo rótulo vale aprender (não: cabeçalho, domínio, palavras-chave)
 
 

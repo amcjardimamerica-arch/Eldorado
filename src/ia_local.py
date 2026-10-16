@@ -281,7 +281,7 @@ def aplicar(dia: str | None = None) -> dict:
     n = {"classificacao": 0, "extracao": 0, "lexico": 0, "rotas": 0, "catalogo": 0}
     lex_p = ROOT / "config/lexico_aprendido.json"; lex = load_json(lex_p) if lex_p.exists() else {"positivos": {}, "vetos": {}, "candidatos": {}}
     rot_p = ROOT / "estado/rotas_sugeridas_ia.json"; rot = load_json(rot_p) if rot_p.exists() else {"sugestoes": []}
-    cat_p = ROOT / "estado/catalogo_achados_ia.json"; cat = load_json(cat_p) if cat_p.exists() else {"dias": {}}
+    cat_p = ROOT / "biblioteca_alexandria/livros/_vistas/catalogo_achados_ia.json"; cat = load_json(cat_p) if cat_p.exists() else {"dias": {}}
     for p in props:
         if p["tarefa"] in ("classificar_objeto", "extrair_objeto_prazo"):
             fp = EXTRAIDOS / f"{p['id']}.json"; ex = load_json(fp) if __import__("src.livro_arquivo", fromlist=["x"]).existe(fp) else {"edital_id": p["id"], "itens": {}}

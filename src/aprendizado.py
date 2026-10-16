@@ -7,7 +7,7 @@
    sempre rotulada hipótese, nunca fato.
 
 Resultados: dados/financiadores|doadores/<fonte>/aprendizado.json e
-estado/previsoes.json (consumido pelo painel e pela sentinela humana)."""
+biblioteca_alexandria/livros/_vistas/previsoes.json (consumido pelo painel e pela sentinela humana)."""
 from __future__ import annotations
 
 import json
@@ -85,7 +85,7 @@ def run() -> dict:
             })
             resumo["padroes"] += len(padroes)
     resumo["previsoes"] = len(previsoes)
-    write_json(ROOT / "estado/previsoes.json", {"gerado_em": now_iso(), "previsoes": previsoes})
+    write_json(ROOT / "biblioteca_alexandria/livros/_vistas/previsoes.json", {"gerado_em": now_iso(), "previsoes": previsoes})
     return resumo
 
 if __name__ == "__main__":

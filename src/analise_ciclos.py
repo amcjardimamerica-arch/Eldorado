@@ -73,7 +73,7 @@ def workflow(P: list, problema) -> dict:
     if fora:
         problema(P, "pagina_fora_da_fila", "media", f"{len(fora)} página(s)/documento(s) fora da fila após 5 erros iguais",
                  "corrigir a rota ou ler no Chrome (sem correção automática)", len(fora), list(fora)[:8])
-    cu = _j(ROOT / "estado/curadoria_links.json"); cc = cu.get("curadoria") or {}
+    cu = _j(ROOT / "biblioteca_alexandria/livros/_vistas/curadoria_links.json"); cc = cu.get("curadoria") or {}
     # 15/10 (ciclo 4): mede o REPOSITÓRIO (o que o sistema usa), não a entrada da curadoria
     reprov = {x.get("id") for x in cu.get("itens") or [] if x.get("curadoria") == "reprovado"}
     usam = [r.get("id") for r in _abertas() if r.get("link_oficial") and r.get("link_oficial") == r.get("url") and r.get("id") in reprov]
@@ -143,7 +143,7 @@ def decisoes(P: list, problema) -> list[dict]:
     venc = [f"{r.get('id')}: fim {r.get('fim')}" for r in ab if re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(r.get("fim") or "")) and str(r["fim"]) < hoje]
     conf("prazo", "oportunidades contadas como abertas", "prazo vencido sai das abertas", venc, len(ab), "refazer o repositório")
 
-    cu = {x.get("id"): x for x in (_j(ROOT / "estado/curadoria_links.json").get("itens") or [])}
+    cu = {x.get("id"): x for x in (_j(ROOT / "biblioteca_alexandria/livros/_vistas/curadoria_links.json").get("itens") or [])}
     from .curadoria_links import classe
     agreg = [f"{r.get('id')}: {r.get('link_oficial')}" for r in ab if r.get("link_oficial") and classe(r["link_oficial"], r.get("orgao")) == "agregador ou replicador"]
     conf("site_oficial", "link oficial gravado no repositório", "agregador ou replicador nunca é link oficial", agreg, sum(1 for r in ab if r.get("link_oficial")),
