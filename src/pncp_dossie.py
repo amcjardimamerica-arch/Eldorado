@@ -224,7 +224,7 @@ def run(limite: int = 60, segundos: int = 1200) -> dict:
     D = _j(DOSSIES, {"dossies": {}}); ant = D.setdefault("dossies", {})
     alvos.sort(key=lambda r: ((ant.get(r["id"]) or {}).get("status") == "completo", str((ant.get(r["id"]) or {}).get("em") or "")))
     rede, t0, feitos = Rede(pausa=0.4), time.time(), 0
-    certs_doc = _j(CERT, {"certidoes": {}}); certs = certs_doc.setdefault("certidoes", {})
+    certs_doc = (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(CERT, None) or {"certidoes": {}}); certs = certs_doc.setdefault("certidoes", {})
     for r in alvos[:limite]:
         if time.time() - t0 > segundos:
             break
@@ -242,7 +242,7 @@ def run(limite: int = 60, segundos: int = 1200) -> dict:
     fila = [{"id": i, "titulo": d.get("titulo"), "url": d.get("api"), "faltam": d.get("faltam"), "desde": d.get("em")}
             for i, d in ant.items() if d.get("status") == "em trabalho" and d.get("faltam")]
     PARA_INTERCEPTADOR.write_text(json.dumps({"em": _agora(), "itens": fila}, ensure_ascii=False, indent=1), encoding="utf-8")
-    CERT.write_text(json.dumps(certs_doc, ensure_ascii=False, indent=1), encoding="utf-8")
+    __import__("src.livro_arquivo", fromlist=["x"]).guardar_lote([(CERT, certs_doc)])          # 16/10: no livro
     return {"feitos_agora": feitos, "alvos": len(alvos), "resumo": dict(st), "completos_pct": D["completos_pct"], "para_interceptador": len(fila)}
 
 

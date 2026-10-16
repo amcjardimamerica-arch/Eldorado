@@ -67,7 +67,7 @@ def main() -> dict:
         for u in (r.get("url"), r.get("link_oficial")):
             if u:
                 repo.setdefault(V.chave({"url": u}), r)
-    cert = (_j(ROOT / "estado/cartorio/certidoes.json", {}) or {}).get("certidoes") or {}
+    cert = (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/cartorio/certidoes.json", {}) or {}).get("certidoes") or {}
     cat = (_j(ROOT / "biblioteca_alexandria/fontes/motores.json", {}) or {}).get("motores") or []
     fichas = _j(ROOT / "docs/dados/fichas_oportunidades.json", {}) or {}
     fichas = fichas.get("fichas") if isinstance(fichas, dict) else {}

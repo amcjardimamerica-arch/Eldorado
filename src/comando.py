@@ -252,7 +252,7 @@ def fases(ctx: dict) -> list[dict]:
         # 5f RECALCULAR — o mapa recebe as certidões e as validações desta passagem
         {"etapa": "recalcular", "finalidade": "estados das oportunidades com as certidões e validações desta passagem",
          "cmds": [[py, "-m", "src.fluxo_oportunidades", "--completo"]], "t": 300,
-         "pular": "o Cartório não certificou nada nesta passagem" if _idade_h(cert) > 0.5 else None},
+         "pular": "o Cartório não certificou nada nesta passagem" if __import__("src.livro_arquivo", fromlist=["x"]).idade_h(cert) > 0.5 else None},
         # 5f' LIVROS = BANCO — cada oportunidade cria/vincula o seu livro e o livro reúne tudo (links, checklist, análises)
         {"etapa": "livros", "finalidade": "os livros são o banco: cada oportunidade cria ou vincula o seu livro com links, checklist12, achados e análises",
          "cmds": [[py, "-m", "src.banco_livros"]], "t": 300, "pular": None},
