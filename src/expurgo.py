@@ -28,6 +28,9 @@ from .nucleo import ROOT
 VERSAO = 4          # 16/10/2026: v4 = histórico só ligado a livro de oportunidade; achado só trecho e links; v3 = o acervo de histórico também passa pelos portões; v2: regra territorial em todo o sistema — mudou a regra, o expurgo roda de novo no mesmo dia
 PNCP = re.compile(r"pncp\.gov\.br/(?:app/editais|pncp-api/v1/orgaos|api/(?:pncp|consulta)/v1/orgaos)/(\d{14})/(?:compras/)?(\d{4})/(\d+)", re.I)
 AREAS = ["dados", "estado", "docs/dados", "biblioteca_alexandria"]
+# 16/10/2026 (titular): o Eldorado e o Farol são as duas metades do sistema; a regra dos livros e os expurgos valem SÓ
+# para o Eldorado — os dados da associação e do Farol nunca são tocados
+FAROL = re.compile(r"(^|/)(dados/farol|dados/associacoes|biblioteca_alexandria/associacoes)(/|$)|preparacao_farol\.json$")
 NUNCA = re.compile(r"(^|/)(config|tests|src|scripts)/|estado/expurgo/|estado/pncp/estudo_mes\.json|/arquivo_frio/")
 TITULO = ("titulo", "nome", "programa", "nome_classificado", "objeto")
 
@@ -56,7 +59,8 @@ def _arquivos():
     for a in AREAS:
         for p in (ROOT / a).rglob("*"):
             rel = str(p.relative_to(ROOT))
-            if p.is_file() and p.suffix in (".json", ".jsonl", ".txt") and not NUNCA.search(rel) and p.stat().st_size < 120_000_000:
+            if p.is_file() and p.suffix in (".json", ".jsonl", ".txt") and not NUNCA.search(rel) and not FAROL.search(rel) \
+                    and p.stat().st_size < 120_000_000:
                 yield p
 
 

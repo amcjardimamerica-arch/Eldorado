@@ -1,5 +1,7 @@
 # Auditoria dos bancos de dados paralelos — 16/10/2026
 
+**Escopo (titular, 16/10):** esta regra vale SÓ para o Eldorado (captação de oportunidades). Os dados da associação e do Farol (preparação de inscrições, documentos, prestação de contas) são a outra metade do sistema e ficam fora dela.
+
 **Regra da titular:** o único banco de dados do Eldorado são os LIVROS. Todo dado de oportunidade (abertas, prazos, dados do edital, links, checklist, marcações de IA, análises de cada etapa, coleta histórica de 3 anos, complementos dos pilotos) vive no livro da oportunidade. Oportunidade aberta com livro acrescenta as informações do edital atual às anteriores — o edital atual sempre vale. Oportunidade sem livro ganha um livro com todas as informações levantadas. É proibido criar dados fora dos livros.
 
 ## Resultado
@@ -8,7 +10,7 @@
 - A · dado de oportunidade: 15.794 arquivos, 243 MB → levar para os livros e apagar.
 - ? · a revisar (sobretudo 18.475 aprendizados dos pilotos): 19.047 arquivos, 29,5 MB.
 - C · vitrine do site (docs/dados): 89 arquivos, 61 MB → gerada SÓ a partir dos livros, nunca lida de volta.
-- D · dados da própria associação (documentos da AMC): 298 arquivos, 9 MB → decisão da titular.
+- D · dados do FAROL e da associação (dados/farol, dados/associacoes, biblioteca_alexandria/associacoes, docs/dados/preparacao_farol.json): FORA da regra dos livros. Decisão da titular (16/10): o Eldorado e o Farol são as duas metades do sistema; a regra dos livros vale só para o Eldorado. Os expurgos e a absorção nunca tocam nessas pastas.
 - B · controle operacional (cursores, filas que apontam para livros): 50 arquivos, 5 MB → fica, mínimo.
 
 ## Desenho
