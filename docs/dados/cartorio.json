@@ -1,44 +1,44 @@
 {
- "em": "2026-10-16T02:13:55+00:00",
+ "em": "2026-10-16T02:31:22+00:00",
  "versao": "cartório v5 · linha de produção (09/10/2026)",
  "regra": "CARTÓRIO DE FONTES OFICIAIS (titular, 09/10/2026).\n\nOs motores DESCOBREM; o Cartório CERTIFICA. Toda estrela (oportunidade aberta) e todo livro (histórico) que tenha\nQUALQUER um dos 12 itens indisponível entra na fila do Cartório. Para cada um, ele sobe uma escada de degraus — do mais\nbarato e confiável ao mais caro — até achar o documento OFICIAL, lê o documento por seções e emite uma CERTIDÃO:\nlink oficial (régua única: vetor nunca é fonte), degrau em que foi achado, impressão digital do documento, e cada item\ncom valor + trecho literal + página — ou a DISPENSA com a justificativa de que o requisito não existe naquele edital.\n\nBalcões (como chegar ao documento em cada tipo de fonte):\n  pncp      página do PNCP → API de arquivos do órgão (PDF ou ZIP), o edital primeiro\n  diario    DOU, Diário de Goiás/Goiânia, Querido Diário → o ato dentro da edição (só as páginas do ato)\n  orgao     domínio público → documentos da página + biblioteca de mídia do WordPress pelo número do edital\n  privado   site do financiador → documentos da página (regulamento, edital)\n  pista     agregador/notícia → links de SAÍDA para o financiador; o resto vai ao Interceptador\n  proprio   Ministério Público e Judiciário: já leem o PDF; o Cartório só converte em certidão\n\nEscada: 0 documento na mão · 1 link de saída da pista · 2 busca do número do edital dentro do domínio oficial ·\n        3 Interceptador (IA) · 4 Chrome. O Cartório resolve 0–2 sem IA; 3 e 4 recebem só o que sobrou.\nIntegração: a fila é ordenada pela urgência (prazo), pela nota da REDE NEURAL e pela distância até o ouro (menos\nitens faltando primeiro: cada certidão vira selo). Estrelas: o fluxo de oportunidades lê a certidão no checklist.\nLivros: linhas no formato do importador (scripts/importar_verificacao_livros.py), que confere e entrega à esteira.",
  "identidade_visual": "provisória (config/identidade_visual.json aguarda o design de referência)",
  "resumo": {
   "pontos_12_total": 4800,
   "pontos_certificados": 2996,
-  "pontos_dispensados": 216,
+  "pontos_dispensados": 218,
   "pontos_ja_constavam": 1345,
-  "pontos_faltam": 243,
-  "pct_certificado_12": 0.6692,
-  "certidoes_12_de_12": 106,
-  "certidoes_sem_item_faltando": 223,
+  "pontos_faltam": 241,
+  "pct_certificado_12": 0.6696,
+  "certidoes_12_de_12": 108,
+  "certidoes_sem_item_faltando": 225,
   "nota_denominador": "eficiencia_itens = resolvidos ÷ itens que faltavam na ENTRADA da fila (não é % dos 12); use pct_certificado_12",
-  "certidoes": 2228,
-  "nesta_execucao": 38,
-  "fila_estrelas": 349,
-  "fila_livros": 1998,
-  "itens_que_faltavam": 19178,
-  "itens_obtidos": 6389,
+  "certidoes": 2226,
+  "nesta_execucao": 39,
+  "fila_estrelas": 351,
+  "fila_livros": 2002,
+  "itens_que_faltavam": 19154,
+  "itens_obtidos": 6373,
   "itens_dispensados": 467,
   "eficiencia_itens": 0.357,
-  "com_link_oficial": 1417,
+  "com_link_oficial": 1415,
   "taxa_link_oficial": 0.636,
-  "certidoes_completas": 195,
-  "para_o_interceptador": 1503,
+  "certidoes_completas": 190,
+  "para_o_interceptador": 1499,
   "para_o_chrome": 536,
   "selos_que_mudaram": {
-   "sem selo → ouro": 80,
+   "sem selo → ouro": 82,
    "prata → ouro": 7,
-   "sem selo → prata": 21,
+   "sem selo → prata": 20,
    "bronze → sem selo": 1,
-   "sem selo → bronze": 20,
+   "sem selo → bronze": 18,
    "bronze → ouro": 11,
    "bronze → prata": 3
   },
   "por_degrau": {
    "degrau 0": 1376,
    "degrau 2": 2,
-   "degrau 1": 66
+   "degrau 1": 64
   }
  },
  "cinza_conferidos": {
@@ -48,76 +48,76 @@
  },
  "por_item": {
   "Objeto": {
-   "faltavam": 1302,
-   "obtidos": 397,
+   "faltavam": 1300,
+   "obtidos": 396,
    "dispensados": 0,
    "eficiencia": 0.305
   },
   "Prazo de inscrição": {
-   "faltavam": 1431,
-   "obtidos": 399,
+   "faltavam": 1429,
+   "obtidos": 397,
    "dispensados": 112,
-   "eficiencia": 0.357
+   "eficiencia": 0.356
   },
   "Resultado": {
-   "faltavam": 1977,
-   "obtidos": 470,
+   "faltavam": 1975,
+   "obtidos": 468,
    "dispensados": 207,
    "eficiencia": 0.342
   },
   "Prazo de recurso": {
-   "faltavam": 1928,
-   "obtidos": 499,
+   "faltavam": 1926,
+   "obtidos": 498,
    "dispensados": 29,
    "eficiencia": 0.274
   },
   "Valor": {
-   "faltavam": 1673,
-   "obtidos": 500,
+   "faltavam": 1671,
+   "obtidos": 498,
    "dispensados": 80,
-   "eficiencia": 0.347
+   "eficiencia": 0.346
   },
   "Órgão / financiador": {
-   "faltavam": 1129,
-   "obtidos": 604,
+   "faltavam": 1127,
+   "obtidos": 602,
    "dispensados": 0,
-   "eficiencia": 0.535
+   "eficiencia": 0.534
   },
   "Território": {
-   "faltavam": 1359,
-   "obtidos": 384,
+   "faltavam": 1357,
+   "obtidos": 382,
    "dispensados": 0,
-   "eficiencia": 0.283
+   "eficiencia": 0.282
   },
   "Esfera": {
-   "faltavam": 1674,
-   "obtidos": 957,
+   "faltavam": 1672,
+   "obtidos": 955,
    "dispensados": 0,
-   "eficiencia": 0.572
+   "eficiencia": 0.571
   },
   "Requisitos": {
-   "faltavam": 1879,
-   "obtidos": 403,
+   "faltavam": 1877,
+   "obtidos": 404,
    "dispensados": 0,
-   "eficiencia": 0.214
+   "eficiencia": 0.215
   },
   "Anexos": {
-   "faltavam": 1196,
+   "faltavam": 1194,
    "obtidos": 242,
    "dispensados": 8,
    "eficiencia": 0.209
   },
   "Destinação": {
-   "faltavam": 1825,
-   "obtidos": 390,
+   "faltavam": 1823,
+   "obtidos": 389,
    "dispensados": 31,
-   "eficiencia": 0.231
+   "eficiencia": 0.23
   },
   "Área de atuação": {
-   "faltavam": 1805,
-   "obtidos": 1144,
+   "faltavam": 1803,
+   "obtidos": 1142,
    "dispensados": 0,
-   "eficiencia": 0.634
+   "eficiencia": 0.633
   }
  },
  "por_balcao": {
@@ -130,10 +130,10 @@
    "taxa_link_oficial": 0.4
   },
   "orgao": {
-   "certidoes": 1067,
-   "com_link_oficial": 808,
-   "faltavam": 8976,
-   "resolvidos": 3659,
+   "certidoes": 1066,
+   "com_link_oficial": 807,
+   "faltavam": 8964,
+   "resolvidos": 3653,
    "eficiencia": 0.408,
    "taxa_link_oficial": 0.757
   },
@@ -154,12 +154,12 @@
    "taxa_link_oficial": 0.677
   },
   "privado": {
-   "certidoes": 465,
-   "com_link_oficial": 297,
-   "faltavam": 3643,
-   "resolvidos": 910,
-   "eficiencia": 0.25,
-   "taxa_link_oficial": 0.639
+   "certidoes": 464,
+   "com_link_oficial": 296,
+   "faltavam": 3631,
+   "resolvidos": 900,
+   "eficiencia": 0.248,
+   "taxa_link_oficial": 0.638
   },
   "revisão": {
    "certidoes": 171,
@@ -180,20 +180,20 @@
  },
  "por_safra": {
   "primeira tentativa": {
-   "certidoes": 2115,
-   "faltavam": 18221,
-   "resolvidos": 6154,
-   "eficiencia": 0.338,
-   "com_link_oficial": 1317,
+   "certidoes": 2114,
+   "faltavam": 18209,
+   "resolvidos": 6145,
+   "eficiencia": 0.337,
+   "com_link_oficial": 1316,
    "taxa_link_oficial": 0.623
   },
   "refeitas": {
-   "certidoes": 113,
-   "faltavam": 957,
-   "resolvidos": 688,
-   "eficiencia": 0.719,
-   "com_link_oficial": 100,
-   "taxa_link_oficial": 0.885
+   "certidoes": 112,
+   "faltavam": 945,
+   "resolvidos": 681,
+   "eficiencia": 0.721,
+   "com_link_oficial": 99,
+   "taxa_link_oficial": 0.884
   }
  },
  "por_versao": {
@@ -214,11 +214,11 @@
    "taxa_link_oficial": 0.733
   },
   "cartório v5 · linha de produção": {
-   "certidoes": 2040,
-   "faltavam": 16985,
-   "resolvidos": 5627,
+   "certidoes": 2038,
+   "faltavam": 16961,
+   "resolvidos": 5611,
    "eficiencia": 0.331,
-   "com_link_oficial": 1263,
+   "com_link_oficial": 1261,
    "taxa_link_oficial": 0.619
   },
   "revisão manual": {
@@ -235,7 +235,7 @@
    "nome": "documento na mão",
    "vezes": 2142,
    "renderam": 1300,
-   "itens": 6461,
+   "itens": 6462,
    "links_oficiais": 1230,
    "taxa_de_acerto": 0.607
   },
@@ -250,18 +250,18 @@
   "3": {
    "nome": "página oficial e citados",
    "vezes": 59,
-   "renderam": 25,
-   "itens": 156,
-   "links_oficiais": 13,
-   "taxa_de_acerto": 0.424
+   "renderam": 23,
+   "itens": 137,
+   "links_oficiais": 11,
+   "taxa_de_acerto": 0.39
   },
   "4": {
    "nome": "biblioteca de sites",
    "vezes": 54,
-   "renderam": 25,
-   "itens": 82,
+   "renderam": 27,
+   "itens": 84,
    "links_oficiais": 11,
-   "taxa_de_acerto": 0.463
+   "taxa_de_acerto": 0.5
   },
   "5": {
    "nome": "mídia do WordPress",
@@ -281,11 +281,11 @@
   },
   "7": {
    "nome": "releitura com gabarito",
-   "vezes": 26,
+   "vezes": 28,
    "renderam": 2,
    "itens": 2,
    "links_oficiais": 0,
-   "taxa_de_acerto": 0.077
+   "taxa_de_acerto": 0.071
   },
   "8": {
    "nome": "ponte do titular",
@@ -305,47 +305,47 @@
   },
   "10": {
    "nome": "busca no domínio",
-   "vezes": 7,
+   "vezes": 6,
    "renderam": 3,
    "itens": 5,
    "links_oficiais": 0,
-   "taxa_de_acerto": 0.429
+   "taxa_de_acerto": 0.5
   }
  },
  "por_balcao_selo": {
   "sem_estrela": {
    "nome": "Sem estrela → bronze",
-   "certidoes": 924,
-   "faltavam": 6990,
-   "resolvidos": 1678,
-   "eficiencia": 0.24,
-   "entraram_aqui": 969,
+   "certidoes": 923,
+   "faltavam": 6978,
+   "resolvidos": 1669,
+   "eficiencia": 0.239,
+   "entraram_aqui": 967,
    "esgotadas": 0
   },
   "bronze": {
    "nome": "Bronze → prata",
-   "certidoes": 15,
-   "faltavam": 133,
-   "resolvidos": 83,
-   "eficiencia": 0.624,
+   "certidoes": 13,
+   "faltavam": 109,
+   "resolvidos": 61,
+   "eficiencia": 0.56,
    "entraram_aqui": 12,
    "esgotadas": 0
   },
   "prata": {
    "nome": "Prata → ouro",
-   "certidoes": 1088,
-   "faltavam": 9908,
-   "resolvidos": 3880,
-   "eficiencia": 0.392,
+   "certidoes": 1087,
+   "faltavam": 9896,
+   "resolvidos": 3871,
+   "eficiencia": 0.391,
    "entraram_aqui": 1080,
    "esgotadas": 1
   },
   "ouro": {
    "nome": "Ouro (saiu da linha)",
-   "certidoes": 34,
-   "faltavam": 206,
-   "resolvidos": 187,
-   "eficiencia": 0.908,
+   "certidoes": 36,
+   "faltavam": 230,
+   "resolvidos": 211,
+   "eficiencia": 0.917,
    "entraram_aqui": 0,
    "esgotadas": 0
   }
@@ -359,9 +359,9 @@
    "Destinação": 10,
    "Resultado": 3,
    "Valor": 1,
-   "Prazo de recurso": 11
+   "Prazo de recurso": 9
   },
-  "certidoes_ajudadas": 102
+  "certidoes_ajudadas": 100
  },
  "certidoes": [
   {
@@ -594,7 +594,7 @@
    "encaminhado": null,
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-16T02:05:13+00:00",
+   "em": "2026-10-16T02:22:56+00:00",
    "prazo": null,
    "uf": "GO",
    "orgao": null,
@@ -633,7 +633,7 @@
     {
      "n": 1,
      "nome": "documento na mão",
-     "em": "2026-10-16T02:05:13+00:00",
+     "em": "2026-10-16T02:22:56+00:00",
      "ganhou": [
       "Anexos",
       "Prazo de inscrição",
@@ -2246,7 +2246,7 @@
    "encaminhado": null,
    "selo_antes": null,
    "selo_depois": "ouro",
-   "em": "2026-10-16T02:09:12+00:00",
+   "em": "2026-10-16T02:27:25+00:00",
    "prazo": null,
    "uf": null,
    "orgao": "Fundação de Amparo à Pesquisa do Estado de Goiás (FAPEG)",
@@ -2335,7 +2335,7 @@
     {
      "n": 1,
      "nome": "documento na mão",
-     "em": "2026-10-16T02:09:12+00:00",
+     "em": "2026-10-16T02:27:25+00:00",
      "ganhou": [
       "Anexos",
       "Destinação",
@@ -7248,7 +7248,7 @@
    "encaminhado": null,
    "selo_antes": null,
    "selo_depois": "ouro",
-   "em": "2026-10-16T02:11:25+00:00",
+   "em": "2026-10-16T02:29:59+00:00",
    "prazo": null,
    "uf": null,
    "orgao": "Prefeitura de Alvorada do Norte",
@@ -7330,7 +7330,7 @@
     {
      "n": 1,
      "nome": "documento na mão",
-     "em": "2026-10-16T02:11:25+00:00",
+     "em": "2026-10-16T02:29:59+00:00",
      "ganhou": [
       "Anexos",
       "Esfera",
@@ -8135,7 +8135,7 @@
     "Destinação",
     "Área de atuação"
    ],
-   "ainda_faltam": [],
+   "ainda_faltam": null,
    "tentativa": 1,
    "versao": "revisão manual (P1-GO-2026-10-10)",
    "gabarito": null,
@@ -11622,6 +11622,300 @@
    }
   },
   {
+   "id": "agr-fbc5f875d97b",
+   "tipo": "estrela",
+   "titulo": "EDITAL DE CHAMADA PÚBLICA FAPESC N.º 051/2026",
+   "balcao": "orgao",
+   "link_oficial": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
+   "degrau": 1,
+   "como": "página oficial e documentos citados nela",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [],
+   "tentativa": 2,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "ouro",
+   "estagio_inicio": "sem_estrela",
+   "esgotada": null,
+   "eficiencia": 1.0,
+   "encaminhado": null,
+   "selo_antes": null,
+   "selo_depois": "ouro",
+   "em": "2026-10-16T02:20:58+00:00",
+   "prazo": null,
+   "uf": null,
+   "orgao": null,
+   "fim": "2026-09-18",
+   "itens": {
+    "Prazo de inscrição": {
+     "valor": "18/08/2026 a 18/09/2026",
+     "trecho": "ca (CNPJ) do Estado de Santa Catarina, a apresentarem propostas. Prazo para submissão: 18/08/2026 a 18/09/2026 Contato para dúvidas: pesquisa@fapesc.sc.gov.br ACESSE O",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
+     "metodo": "cronograma"
+    },
+    "Órgão / financiador": {
+     "valor": "FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA CATARINA (FAPESC) torna público o lanç",
+     "trecho": "18/08/2026 14:30 A FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA CATARINA (FAPESC) torna público o lançamento do presente Edital de Chamada Pública para fomento à execução d",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
+     "metodo": "cabeçalho"
+    },
+    "Território": {
+     "valor": "do Estado de Santa Catarina",
+     "trecho": ", sediadas e inscritas no Cadastro Nacional da Pessoa Jurídica (CNPJ) do Estado de Santa Catarina, a apresentarem propostas. Prazo para submissão: 18/08/2026 a 18",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
+     "metodo": "texto"
+    },
+    "Esfera": {
+     "valor": "estadual",
+     "trecho": "domínio/órgão: fapesc.sc.gov.br · FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA CATARINA (FAPESC) to",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
+     "metodo": "domínio e órgão"
+    },
+    "Área de atuação": {
+     "valor": "Cultura, Meio ambiente, Ciência e tecnologia",
+     "trecho": "termos do objeto e do título: Cultura, Meio ambiente, Ciência e tecnologia",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Resultado": {
+     "valor": "23/09/2026",
+     "trecho": "das propostas via SIGFAPESC De 18/08/2026 a 18/09/2026 Até as 18 horas Resultado de admissibilidade 23/09/2026 Período para apresentação de recurso admissibilidade De 24/09/2026 a",
+     "pagina": 5,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/08/edital-carvao.pdf",
+     "metodo": "seção"
+    },
+    "Prazo de recurso": {
+     "valor": "24/09/2026 a 28/09/2026",
+     "trecho": "té as 18 horas Resultado de admissibilidade 23/09/2026 Período para apresentação de recurso admissibilidade De 24/09/2026 a 28/09/2026 (até as 18 h) Resultado do julgamento dos recursos de admissibilidad",
+     "pagina": 5,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/08/edital-carvao.pdf",
+     "metodo": "seção"
+    },
+    "Valor": {
+     "valor": "R$ 875.000,00 (oitocentos e setenta e cinco mil reais)",
+     "trecho": "écnica e orçamentária para cada uma das linhas contempladas. 5.4. O valor global destinado à presente Chamada é de até R$ 875.000,00 (oitocentos e setenta e cinco mil reais). Os recursos, provenientes da Compensação Financeira pela Exploração",
+     "pagina": 5,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/08/edital-carvao.pdf",
+     "metodo": "seção"
+    },
+    "Objeto": {
+     "valor": "a promoção do ecossistema catarinense de Ciência, Tecnologia e Inovação (CTI) para o avanço de todas as áreas do conhecimento, o equilíbrio regional, o desenvolvimento econômico sustentável e a melhoria da qualidade de vida da população do Estado;",
+     "trecho": "to executora da política estadual de ciência, tecnologia e inovação, tem como finalidade a promoção do ecossistema catarinense de Ciência, Tecnologia e Inovação (CTI) para o avanço de todas as áreas do conhecimento, o equilíbrio regional, o desenvolvimento econômico sustentável e a melhoria da qualidade de vida da população do Estado; ● que compete à FAPESC apoiar e promover a realização de estudo",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/08/edital-carvao.pdf",
+     "metodo": "texto"
+    },
+    "Anexos": {
+     "valor": "ANEXO I TERMO DE OUTORGA DE AUXÍLIO FINANCEIRO A PROJETO DE PESQUISA; ANEXO II TERMO DE COMPROMISSO DE BOLSA FAPESC; ANEXO III PLANO DE TRABALHO DO(A) BOLSISTA",
+     "trecho": "[TABELA] as normas municipais, estaduais e federais aplicáveis. ANEXO I TERMO DE OUTORGA DE AUXÍLIO FINANCEIRO A PROJETO DE PESQUISA EDITAL DE CHAMADA PÚBLICA FAPESC N.º 051/2026 — PROGRAMA DE CIÊNCIA, TECNOLOGIA E INOVAÇÃO EM PESQUISAS NA ÁREA DE",
+     "pagina": 19,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/08/edital-carvao.pdf",
+     "metodo": "lista de anexos"
+    },
+    "Destinação": {
+     "valor": "Bolsa",
+     "trecho": "noventa e dois mil reais) incluindo, obrigatoriamente, uma quota de bolsa de Iniciação Científica (IC); b) Linha 2: até R$ 292.000,00 (duzentos e noventa e dois mil reais) incluindo, obrigatoriam",
+     "pagina": 5,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/08/edital-carvao.pdf",
+     "metodo": "modalidade de recebimento"
+    },
+    "Requisitos": {
+     "valor": "poderão participar de Chamada Pública para seleção de bolsistas, os coordenadores",
+     "trecho": "nforme o processo FAPESC 00002479/2026 e o código E15IK25N. 105 h)não poderão participar de Chamada Pública para seleção de bolsistas, os coordenadores de projeto da FAPESC e ocupantes de cargos comissionados desta instit",
+     "pagina": 7,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-FAPESC-52-2026-assinado.pdf",
+     "metodo": "texto"
+    }
+   },
+   "dispensas": {},
+   "abordagens": [
+    {
+     "n": 3,
+     "nome": "página oficial e citados",
+     "em": "2026-10-16T02:20:29+00:00",
+     "ganhou": [
+      "Anexos",
+      "Destinação",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Prazo de recurso",
+      "Resultado",
+      "Território",
+      "Valor",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    },
+    {
+     "n": 4,
+     "nome": "biblioteca de sites",
+     "em": "2026-10-16T02:20:58+00:00",
+     "ganhou": [
+      "Requisitos"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
+     "degrau": 1,
+     "como": "página oficial e documentos citados nela",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/08/edital-carvao.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 44,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Resultado-Parcial-de-admissibilidade-CP-051_2026.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 2,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Resultado-Final-de-admissibilidade-CP-051_2026.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 2,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/edital-suplementar-fapesc-n-o-66-2025-programa-horizonte-europa-2026-2027",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/edital-suplementar-de-subvencao-economica-fapesc-n-o-65-2025-programa-horizonte-europa-2026-2027",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/CP-55_2026-PROFIX.pdf",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 43,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 41,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-FAPESC-52-2026-assinado.pdf",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 44,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "certificado",
+     "Resultado": "certificado",
+     "Prazo de recurso": "certificado",
+     "Valor": "certificado",
+     "Órgão / financiador": "certificado",
+     "Território": "certificado",
+     "Esfera": "certificado",
+     "Requisitos": "certificado",
+     "Anexos": "certificado",
+     "Destinação": "certificado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 12,
+    "dispensados": 0,
+    "ja_constavam": 0,
+    "faltam": 0,
+    "pct_certificado_12": 1.0,
+    "pct_cobertura_12": 1.0
+   }
+  },
+  {
    "id": "op-b79b12a1ca65",
    "tipo": "livro",
    "titulo": "EDITAL DE CHAMAMENTO PÚBLICO MESTRA DONA BAIA",
@@ -14223,7 +14517,12 @@
     "Destinação",
     "Área de atuação"
    ],
-   "ainda_faltam": [],
+   "ainda_faltam": [
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Destinação"
+   ],
    "tentativa": 2,
    "versao": "revisão manual (CHROME-2026-10-11)",
    "gabarito": null,
@@ -17166,7 +17465,7 @@
    "encaminhado": null,
    "selo_antes": null,
    "selo_depois": "ouro",
-   "em": "2026-10-16T02:08:31+00:00",
+   "em": "2026-10-16T02:26:26+00:00",
    "prazo": null,
    "uf": null,
    "orgao": "Prefeitura Municipal de Planaltina",
@@ -17174,7 +17473,7 @@
    "itens": {
     "Prazo de inscrição": {
      "valor": "até 09/10/2026",
-     "trecho": "E PARA IMPUGNAÇÃO: 23:59 h DO DIA 06/10/2026 (HORÁRIO DE BRASÍLIA). DATA E HORA FINAL DAS PROPOSTAS: 08:00 h DO DIA 09/10/2026 (HORÁRIO DE BRASÍLIA). DATA PREVISTA PARA ANÁLISE DAS PROPOSTAS PE",
+     "trecho": "UGNAÇÃO: | 23:59 h DO DIA 06/10/2026 (HORÁRIO DE BRASÍLIA). [TABELA] DATA E HORA FINAL DAS PROPOSTAS: | 08:00 h DO DIA 09/10/2026 (HORÁRIO DE BRASÍLIA). [TABELA] DATA PREVISTA PARA ANÁLISE DAS PROPO",
      "pagina": 2,
      "documento": "https://planaltina.go.gov.br/wp-content/uploads/2026/09/Edital_de_chamamento_publico_no_06-2026-.pdf",
      "metodo": "cronograma"
@@ -17262,7 +17561,7 @@
     {
      "n": 1,
      "nome": "documento na mão",
-     "em": "2026-10-16T02:08:31+00:00",
+     "em": "2026-10-16T02:26:26+00:00",
      "ganhou": [
       "Anexos",
       "Destinação",
@@ -17346,7 +17645,7 @@
    "encaminhado": null,
    "selo_antes": null,
    "selo_depois": "ouro",
-   "em": "2026-10-16T02:08:35+00:00",
+   "em": "2026-10-16T02:26:33+00:00",
    "prazo": null,
    "uf": null,
    "orgao": "Município de Planaltina",
@@ -17354,7 +17653,7 @@
    "itens": {
     "Prazo de inscrição": {
      "valor": "até 09/10/2026",
-     "trecho": "E PARA IMPUGNAÇÃO: 23:59 h DO DIA 06/10/2026 (HORÁRIO DE BRASÍLIA). DATA E HORA FINAL DAS PROPOSTAS: 08:00 h DO DIA 09/10/2026 (HORÁRIO DE BRASÍLIA). DATA PREVISTA PARA ANÁLISE DAS PROPOSTAS PE",
+     "trecho": "UGNAÇÃO: | 23:59 h DO DIA 06/10/2026 (HORÁRIO DE BRASÍLIA). [TABELA] DATA E HORA FINAL DAS PROPOSTAS: | 08:00 h DO DIA 09/10/2026 (HORÁRIO DE BRASÍLIA). [TABELA] DATA PREVISTA PARA ANÁLISE DAS PROPO",
      "pagina": 2,
      "documento": "https://planaltina.go.gov.br/wp-content/uploads/2026/09/Edital_de_chamamento_publico_no_06-2026-.pdf",
      "metodo": "cronograma"
@@ -17442,7 +17741,7 @@
     {
      "n": 1,
      "nome": "documento na mão",
-     "em": "2026-10-16T02:08:35+00:00",
+     "em": "2026-10-16T02:26:33+00:00",
      "ganhou": [
       "Anexos",
       "Destinação",
@@ -18426,6 +18725,270 @@
     "ja_constavam": 8,
     "faltam": 0,
     "pct_certificado_12": 0.3333,
+    "pct_cobertura_12": 1.0
+   }
+  },
+  {
+   "id": "agr-252fc7f8bb39",
+   "tipo": "estrela",
+   "titulo": "Edital de Chamada Pública FAPESC/SED n.º 054/2026 – Programa de Fomento à Pesquisa e Inovação para o Desenvolvimento da Educação Catarinense",
+   "balcao": "orgao",
+   "link_oficial": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
+   "degrau": 1,
+   "como": "página oficial e documentos citados nela",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [],
+   "tentativa": 2,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "ouro",
+   "estagio_inicio": "sem_estrela",
+   "esgotada": null,
+   "eficiencia": 1.0,
+   "encaminhado": null,
+   "selo_antes": null,
+   "selo_depois": "ouro",
+   "em": "2026-10-16T02:29:01+00:00",
+   "prazo": null,
+   "uf": null,
+   "orgao": "FAPESC",
+   "fim": "2026-09-18",
+   "itens": {
+    "Prazo de inscrição": {
+     "valor": "10/09/2026 a 20/10/2026",
+     "trecho": "ma ATIVIDADES DATA Lançamento da Chamada Pública FAPESC 08/09/2026 Submissão das propostas por meio do Sistema SIGFAPESC (https://sig.fapesc.sc.gov.br) 10/09/2026 a 20/10/2026 Análise de Admissibilidade das propostas 21/10/2026 a 11/11/2026 Pá",
+     "pagina": 4,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
+     "metodo": "cronograma"
+    },
+    "Resultado": {
+     "valor": "16/11/2026",
+     "trecho": "de Admissibilidade das propostas | | | 21/10/2026 a 11/11/2026 | | Resultado preliminar de admissibilidade 16/11/2026 Período para apresentação de recursos administrativos 17/11/2026 a 2",
+     "pagina": 4,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
+     "metodo": "seção"
+    },
+    "Prazo de recurso": {
+     "valor": "17/11/2026 a 23/11/2026",
+     "trecho": "Resultado preliminar de admissibilidade 16/11/2026 Período para apresentação de recursos administrativos 17/11/2026 a 23/11/2026 Resultado final de admissibilidade 26/11/2026 Análise de mérito das",
+     "pagina": 5,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
+     "metodo": "seção"
+    },
+    "Valor": {
+     "valor": "R$ 6.703.500,00 (seis milhões, setecentos e três mil e quinhentos reais)",
+     "trecho": "de vigência da bolsa 01/03/2027 5. RECURSOS FINANCEIROS 5.1. O valor global da presente Chamada Pública é de até R$ 6.703.500,00 (seis milhões, setecentos e três mil e quinhentos reais), oriundos do orçamento da SED. 5.2. Os recursos disponibilizados no",
+     "pagina": 5,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
+     "metodo": "seção"
+    },
+    "Objeto": {
+     "valor": "a promoção do ecossistema catarinense de Ciência, Tecnologia e Inovação (CTI) para o avanço de todas as áreas do conhecimento, o equilíbrio regional, o desenvolvimento econômico sustentável e a melhoria da qualidade de vida da população do Estado;",
+     "trecho": "to executora da política estadual de ciência, tecnologia e inovação, tem como finalidade a promoção do ecossistema catarinense de Ciência, Tecnologia e Inovação (CTI) para o avanço de todas as áreas do conhecimento, o equilíbrio regional, o desenvolvimento econômico sustentável e a melhoria da qualidade de vida da população do Estado; ● que compete à FAPESC apoiar e promover a realização de estudo",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
+     "metodo": "texto"
+    },
+    "Órgão / financiador": {
+     "valor": "FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA",
+     "trecho": "QUISA E INOVAÇÃO PARA O DESENVOLVIMENTO DA EDUCAÇÃO CATARINENSE A FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA CATARINA (FAPESC) em colaboração com a SECRETARIA DE ESTADO DA EDUCAÇ",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
+     "metodo": "cabeçalho"
+    },
+    "Território": {
+     "valor": "no Estado de Santa Catarina",
+     "trecho": "sediadas e inscritas no Cadastro Nacional de Pessoa Jurídica (CNPJ) no Estado de Santa Catarina, a apresentarem propostas de projeto de pesquisa relacionados às lin",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
+     "metodo": "texto"
+    },
+    "Esfera": {
+     "valor": "estadual",
+     "trecho": "domínio/órgão: fapesc.sc.gov.br · FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA FAPESC",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
+     "metodo": "domínio e órgão"
+    },
+    "Anexos": {
+     "valor": "ANEXO I RELAÇÃO DE CURSOS DE LICENCIATURA E PROGRAMAS DE PÓS-GRADUAÇÃO NA; ANEXO II TERMO DE COMPROMISSO DE BOLSA FAPESC; ANEXO III PLANO DE TRABALHO DO(A) BOLSISTA; ANEXO IV TERMO DE DISPONIBILIDADE DE CARGA HORÁRIA; ANEXO V DECLARAÇÃO DE RESIDÊNCIA",
+     "trecho": "me o processo FAPESC 00002256/2026 e o código 5TC037ZF. 138 ANEXO I RELAÇÃO DE CURSOS DE LICENCIATURA E PROGRAMAS DE PÓS-GRADUAÇÃO NA ÁREA DE EDUCAÇÃO ELEGÍVEIS Quadro 01: Cursos de Licenciatura INSTITUIÇÃO CURSO CAMPUS CATÓLICA/SC PEDAGOGIA",
+     "pagina": 17,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
+     "metodo": "lista de anexos"
+    },
+    "Destinação": {
+     "valor": "Bolsa",
+     "trecho": "o e tecnológico do Estado de Santa Catarina, mediante a concessão de bolsas de iniciação científica, voltadas à produção de c onhecimento aplicado e ao desenvolvimento de soluções educacionais inova",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
+     "metodo": "modalidade de recebimento"
+    },
+    "Área de atuação": {
+     "valor": "Educação, Meio ambiente, Ciência e tecnologia",
+     "trecho": "termos do objeto e do título: Educação, Meio ambiente, Ciência e tecnologia",
+     "pagina": 1,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Requisitos": {
+     "valor": "poderão participar de Chamada Pública para seleção de bolsistas, os coordenadores",
+     "trecho": "nforme o processo FAPESC 00002479/2026 e o código E15IK25N. 105 h)não poderão participar de Chamada Pública para seleção de bolsistas, os coordenadores de projeto da FAPESC e ocupantes de cargos comissionados desta instit",
+     "pagina": 7,
+     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-FAPESC-52-2026-assinado.pdf",
+     "metodo": "texto"
+    }
+   },
+   "dispensas": {},
+   "abordagens": [
+    {
+     "n": 3,
+     "nome": "página oficial e citados",
+     "em": "2026-10-16T02:28:51+00:00",
+     "ganhou": [
+      "Anexos",
+      "Destinação",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Prazo de recurso",
+      "Resultado",
+      "Território",
+      "Valor",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    },
+    {
+     "n": 4,
+     "nome": "biblioteca de sites",
+     "em": "2026-10-16T02:29:01+00:00",
+     "ganhou": [
+      "Requisitos"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
+     "degrau": 1,
+     "como": "página oficial e documentos citados nela",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 41,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/edital-suplementar-fapesc-n-o-66-2025-programa-horizonte-europa-2026-2027",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/edital-suplementar-de-subvencao-economica-fapesc-n-o-65-2025-programa-horizonte-europa-2026-2027",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/CP-55_2026-PROFIX.pdf",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 43,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 41,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-FAPESC-52-2026-assinado.pdf",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 44,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "certificado",
+     "Resultado": "certificado",
+     "Prazo de recurso": "certificado",
+     "Valor": "certificado",
+     "Órgão / financiador": "certificado",
+     "Território": "certificado",
+     "Esfera": "certificado",
+     "Requisitos": "certificado",
+     "Anexos": "certificado",
+     "Destinação": "certificado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 12,
+    "dispensados": 0,
+    "ja_constavam": 0,
+    "faltam": 0,
+    "pct_certificado_12": 1.0,
     "pct_cobertura_12": 1.0
    }
   },
@@ -22040,7 +22603,7 @@
     "Destinação",
     "Área de atuação"
    ],
-   "ainda_faltam": [],
+   "ainda_faltam": null,
    "tentativa": 1,
    "versao": "revisão manual (P1-GO-2026-10-10)",
    "gabarito": null,
@@ -30832,7 +31395,10 @@
     "Destinação",
     "Área de atuação"
    ],
-   "ainda_faltam": [],
+   "ainda_faltam": [
+    "Valor",
+    "Destinação"
+   ],
    "tentativa": 3,
    "versao": "revisão manual (CHROME-REFAZER-2026-10-11)",
    "gabarito": null,
@@ -31036,7 +31602,9 @@
     "Destinação",
     "Área de atuação"
    ],
-   "ainda_faltam": [],
+   "ainda_faltam": [
+    "Prazo de recurso"
+   ],
    "tentativa": 3,
    "versao": "revisão manual (CHROME-REFAZER-2026-10-11)",
    "gabarito": null,
@@ -31229,7 +31797,10 @@
     "Destinação",
     "Área de atuação"
    ],
-   "ainda_faltam": [],
+   "ainda_faltam": [
+    "Valor",
+    "Destinação"
+   ],
    "tentativa": 3,
    "versao": "revisão manual (CHROME-REFAZER-2026-10-11)",
    "gabarito": null,
@@ -31442,7 +32013,11 @@
     "Destinação",
     "Área de atuação"
    ],
-   "ainda_faltam": [],
+   "ainda_faltam": [
+    "Resultado",
+    "Prazo de recurso",
+    "Valor"
+   ],
    "tentativa": 3,
    "versao": "revisão manual (CHROME-REFAZER-2026-10-11)",
    "gabarito": null,
@@ -31655,7 +32230,9 @@
     "Destinação",
     "Área de atuação"
    ],
-   "ainda_faltam": [],
+   "ainda_faltam": [
+    "Prazo de recurso"
+   ],
    "tentativa": 3,
    "versao": "revisão manual (CHROME-REFAZER-2026-10-11)",
    "gabarito": null,
@@ -35562,7 +36139,12 @@
     "Destinação",
     "Área de atuação"
    ],
-   "ainda_faltam": [],
+   "ainda_faltam": [
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Destinação"
+   ],
    "tentativa": 2,
    "versao": "revisão manual (CHROME-2026-10-11)",
    "gabarito": null,
@@ -39330,7 +39912,7 @@
    "encaminhado": null,
    "selo_antes": null,
    "selo_depois": "ouro",
-   "em": "2026-10-16T02:07:54+00:00",
+   "em": "2026-10-16T02:25:41+00:00",
    "prazo": null,
    "uf": null,
    "orgao": "Transparência Goiás",
@@ -39416,7 +39998,7 @@
     {
      "n": 1,
      "nome": "documento na mão",
-     "em": "2026-10-16T02:07:54+00:00",
+     "em": "2026-10-16T02:25:41+00:00",
      "ganhou": [
       "Destinação",
       "Esfera",
@@ -43630,312 +44212,6 @@
    }
   },
   {
-   "id": "agr-fbc5f875d97b",
-   "tipo": "estrela",
-   "titulo": "EDITAL DE CHAMADA PÚBLICA FAPESC N.º 051/2026",
-   "balcao": "orgao",
-   "link_oficial": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
-   "degrau": 1,
-   "como": "página oficial e documentos citados nela",
-   "faltavam": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Requisitos"
-   ],
-   "tentativa": 2,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "bronze",
-   "estagio_inicio": "sem_estrela",
-   "esgotada": null,
-   "eficiencia": 0.917,
-   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": "bronze",
-   "em": "2026-10-16T02:03:34+00:00",
-   "prazo": null,
-   "uf": null,
-   "orgao": null,
-   "fim": "2026-09-18",
-   "itens": {
-    "Prazo de inscrição": {
-     "valor": "18/08/2026 a 18/09/2026",
-     "trecho": "ca (CNPJ) do Estado de Santa Catarina, a apresentarem propostas. Prazo para submissão: 18/08/2026 a 18/09/2026 Contato para dúvidas: pesquisa@fapesc.sc.gov.br ACESSE O",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
-     "metodo": "cronograma"
-    },
-    "Órgão / financiador": {
-     "valor": "FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA CATARINA (FAPESC) torna público o lanç",
-     "trecho": "18/08/2026 14:30 A FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA CATARINA (FAPESC) torna público o lançamento do presente Edital de Chamada Pública para fomento à execução d",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
-     "metodo": "cabeçalho"
-    },
-    "Território": {
-     "valor": "do Estado de Santa Catarina",
-     "trecho": ", sediadas e inscritas no Cadastro Nacional da Pessoa Jurídica (CNPJ) do Estado de Santa Catarina, a apresentarem propostas. Prazo para submissão: 18/08/2026 a 18",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
-     "metodo": "texto"
-    },
-    "Esfera": {
-     "valor": "estadual",
-     "trecho": "domínio/órgão: fapesc.sc.gov.br · FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA CATARINA (FAPESC) to",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
-     "metodo": "domínio e órgão"
-    },
-    "Área de atuação": {
-     "valor": "Cultura, Meio ambiente, Ciência e tecnologia",
-     "trecho": "termos do objeto e do título: Cultura, Meio ambiente, Ciência e tecnologia",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
-     "metodo": "palavras-chave do objeto"
-    },
-    "Resultado": {
-     "valor": "23/09/2026",
-     "trecho": "das propostas via SIGFAPESC De 18/08/2026 a 18/09/2026 Até as 18 horas Resultado de admissibilidade 23/09/2026 Período para apresentação de recurso admissibilidade De 24/09/2026 a",
-     "pagina": 5,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/08/edital-carvao.pdf",
-     "metodo": "seção"
-    },
-    "Prazo de recurso": {
-     "valor": "24/09/2026 a 28/09/2026",
-     "trecho": "té as 18 horas Resultado de admissibilidade 23/09/2026 Período para apresentação de recurso admissibilidade De 24/09/2026 a 28/09/2026 (até as 18 h) Resultado do julgamento dos recursos de admissibilidad",
-     "pagina": 5,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/08/edital-carvao.pdf",
-     "metodo": "seção"
-    },
-    "Valor": {
-     "valor": "R$ 875.000,00 (oitocentos e setenta e cinco mil reais)",
-     "trecho": "écnica e orçamentária para cada uma das linhas contempladas. 5.4. O valor global destinado à presente Chamada é de até R$ 875.000,00 (oitocentos e setenta e cinco mil reais). Os recursos, provenientes da Compensação Financeira pela Exploração",
-     "pagina": 5,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/08/edital-carvao.pdf",
-     "metodo": "seção"
-    },
-    "Objeto": {
-     "valor": "a promoção do ecossistema catarinense de Ciência, Tecnologia e Inovação (CTI) para o avanço de todas as áreas do conhecimento, o equilíbrio regional, o desenvolvimento econômico sustentável e a melhoria da qualidade de vida da população do Estado;",
-     "trecho": "to executora da política estadual de ciência, tecnologia e inovação, tem como finalidade a promoção do ecossistema catarinense de Ciência, Tecnologia e Inovação (CTI) para o avanço de todas as áreas do conhecimento, o equilíbrio regional, o desenvolvimento econômico sustentável e a melhoria da qualidade de vida da população do Estado; ● que compete à FAPESC apoiar e promover a realização de estudo",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/08/edital-carvao.pdf",
-     "metodo": "texto"
-    },
-    "Anexos": {
-     "valor": "ANEXO I TERMO DE OUTORGA DE AUXÍLIO FINANCEIRO A PROJETO DE PESQUISA; ANEXO II TERMO DE COMPROMISSO DE BOLSA FAPESC; ANEXO III PLANO DE TRABALHO DO(A) BOLSISTA",
-     "trecho": "informe o processo FAPESC 00001761/2026 e o código Y4JX18E1. 237 ANEXO I TERMO DE OUTORGA DE AUXÍLIO FINANCEIRO A PROJETO DE PESQUISA EDITAL DE CHAMADA PÚBLICA FAPESC N.º 051/2026 — PROGRAMA DE CIÊNCIA, TECNOLOGIA E INOVAÇÃO EM PESQUISAS NA ÁREA DE",
-     "pagina": 19,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/08/edital-carvao.pdf",
-     "metodo": "lista de anexos"
-    },
-    "Destinação": {
-     "valor": "Bolsa",
-     "trecho": "noventa e dois mil reais) incluindo, obrigatoriamente, uma quota de bolsa de Iniciação Científica (IC); b) Linha 2: até R$ 292.000,00 (duzentos e noventa e dois mil reais) incluindo, obrigatoriam",
-     "pagina": 5,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/08/edital-carvao.pdf",
-     "metodo": "modalidade de recebimento"
-    }
-   },
-   "dispensas": {},
-   "abordagens": [
-    {
-     "n": 3,
-     "nome": "página oficial e citados",
-     "em": "2026-10-16T02:03:12+00:00",
-     "ganhou": [
-      "Anexos",
-      "Destinação",
-      "Esfera",
-      "Objeto",
-      "Prazo de inscrição",
-      "Prazo de recurso",
-      "Resultado",
-      "Território",
-      "Valor",
-      "Área de atuação",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    },
-    {
-     "n": 4,
-     "nome": "biblioteca de sites",
-     "em": "2026-10-16T02:03:34+00:00",
-     "ganhou": [],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
-     "degrau": 1,
-     "como": "página oficial e documentos citados nela",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/08/edital-carvao.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 44,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Resultado-Parcial-de-admissibilidade-CP-051_2026.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 2,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Resultado-Final-de-admissibilidade-CP-051_2026.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 2,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
-     "degrau": 1,
-     "como": "biblioteca de sites oficiais conhecidos do órgão",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fapesc.sc.gov.br/edital-suplementar-fapesc-n-o-66-2025-programa-horizonte-europa-2026-2027",
-     "degrau": 1,
-     "como": "biblioteca de sites oficiais conhecidos do órgão",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fapesc.sc.gov.br/edital-suplementar-de-subvencao-economica-fapesc-n-o-65-2025-programa-horizonte-europa-2026-2027",
-     "degrau": 1,
-     "como": "biblioteca de sites oficiais conhecidos do órgão",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/CP-55_2026-PROFIX.pdf",
-     "degrau": 1,
-     "como": "biblioteca de sites oficiais conhecidos do órgão",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 43,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "degrau": 1,
-     "como": "biblioteca de sites oficiais conhecidos do órgão",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 41,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/08/edital-carvao.pdf",
-     "degrau": 1,
-     "como": "biblioteca de sites oficiais conhecidos do órgão",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 44,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Resultado-Parcial-de-admissibilidade-CP-051_2026.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 2,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Resultado-Final-de-admissibilidade-CP-051_2026.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 2,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "certificado",
-     "Prazo de inscrição": "certificado",
-     "Resultado": "certificado",
-     "Prazo de recurso": "certificado",
-     "Valor": "certificado",
-     "Órgão / financiador": "certificado",
-     "Território": "certificado",
-     "Esfera": "certificado",
-     "Requisitos": "falta",
-     "Anexos": "certificado",
-     "Destinação": "certificado",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 11,
-    "dispensados": 0,
-    "ja_constavam": 0,
-    "faltam": 1,
-    "pct_certificado_12": 0.9167,
-    "pct_cobertura_12": 0.9167
-   }
-  },
-  {
    "id": "op-34c155a86aab",
    "tipo": "livro",
    "titulo": "EDITAL DE CHAMAMENTO PARA MANIFESTAÇÃO DE INTERESSE DAS ORGANIZAÇÕES SOCIAIS PARA CELEBRAÇÃO DE CONTRATO DE GESTÃO",
@@ -44920,6 +45196,211 @@
     },
     "certificados": 10,
     "dispensados": 1,
+    "ja_constavam": 0,
+    "faltam": 1,
+    "pct_certificado_12": 0.9167,
+    "pct_cobertura_12": 0.9167
+   }
+  },
+  {
+   "id": "837499ca129ea5f43f36",
+   "tipo": "estrela",
+   "titulo": "Edital 13 – Cultura Viva para fomento a Pontos de Cultura (PDF)",
+   "balcao": "orgao",
+   "link_oficial": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
+   "degrau": 0,
+   "como": "página/documento oficial já conhecido",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Anexos"
+   ],
+   "tentativa": 2,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "sem_estrela",
+   "esgotada": null,
+   "eficiencia": 0.917,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": "prata",
+   "em": "2026-10-16T02:30:48+00:00",
+   "prazo": null,
+   "uf": "GO",
+   "orgao": null,
+   "fim": null,
+   "itens": {
+    "Prazo de recurso": {
+     "valor": "3 dias úteis",
+     "trecho": "minar da etapa de seleção e/ou para solicitação do espelho de notas, caberá recurso destinado a Comissão de Seleção, que deve ser apresentado pela mesma plataforma da inscrição, no prazo de 3 dias úteis, conforme [TABELA] definida pelo Secretário Municipal de Cultura, co",
+     "pagina": 7,
+     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
+     "metodo": "seção"
+    },
+    "Valor": {
+     "valor": "R$ 2.401.960,50",
+     "trecho": "ederal, repassados ao Município de Goiânia por meio da PNAB, e tem o valor total de R$ 2.401.960,50 (dois milhões, quatrocentos e um mil, novecentos e sessenta reais e",
+     "pagina": 1,
+     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
+     "metodo": "seção"
+    },
+    "Objeto": {
+     "valor": "a seleção de projetos que promovam o acesso da população aos bens e aos serviços culturais nos territórios e comunidades onde atuam, nos termos da Política Nacional de Cultura Viva.",
+     "trecho": "r Blanc de Fomento à Cultura (PNAB). 1. OBJETO 1.1. Este Edital tem por objeto a seleção de projetos que promovam o acesso da população aos bens e aos serviços culturais nos territórios e comunidades onde atuam, nos termos da Política Nacional de Cultura Viva. 1.2. Poderão participar deste edital Pontos de Cultura com constitui",
+     "pagina": 1,
+     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
+     "metodo": "texto"
+    },
+    "Órgão / financiador": {
+     "valor": "Secretaria Municipal de Cultura",
+     "trecho": "Secretaria Municipal de Cultura Avenida Parque Ateneu nº 1.477, Parque Atheneu Goiânia, CEP 74893-0",
+     "pagina": 1,
+     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
+     "metodo": "cabeçalho"
+    },
+    "Território": {
+     "valor": "no município de Goiânia",
+     "trecho": "ais desenvolvidas pela entidade cultural há pelo menos 3 (três) anos no município de Goiânia, por meio de informações sobre as ações da entidade cultural; cópias",
+     "pagina": 3,
+     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
+     "metodo": "texto"
+    },
+    "Esfera": {
+     "valor": "municipal",
+     "trecho": "domínio/órgão: www.goiania.go.gov.br · Secretaria Municipal de Cultura",
+     "pagina": 1,
+     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
+     "metodo": "domínio e órgão"
+    },
+    "Requisitos": {
+     "valor": "Poderão participar deste edital Pontos de Cultura com constituição jurídica, ou seja,",
+     "trecho": "s onde atuam, nos termos da Política Nacional de Cultura Viva. 1.2. Poderão participar deste edital Pontos de Cultura com constituição jurídica, ou seja, com CNPJ, bem como Organizações da Sociedade Civil sem fins lucrativo",
+     "pagina": 1,
+     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
+     "metodo": "texto"
+    },
+    "Destinação": {
+     "valor": "Patrocínio — Lei nº 14.399",
+     "trecho": "nico. 8.8. Quando o projeto utilizar também outras fontes, tais como patrocínio privado, a entidade deve apresentar a planilha referente a estes valores, vedada a duplicidade ou a sobreposição de f",
+     "pagina": 6,
+     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
+     "metodo": "modalidade de recebimento"
+    },
+    "Área de atuação": {
+     "valor": "Cultura",
+     "trecho": "termos do objeto e do título: Cultura",
+     "pagina": 1,
+     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
+     "metodo": "palavras-chave do objeto"
+    }
+   },
+   "dispensas": {
+    "Prazo de inscrição": {
+     "motivo": "dispensado pelo Cartório — não se aplica: inscrição em fluxo contínuo (cadastro permanente, sem data-limite)",
+     "trecho": "facultado ao Ente Público e à entidade cultural rescindirem este TCC, a qualquer tempo, com as respectivas condições, sanções e delimitações claras de resp",
+     "pagina": 48,
+     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf"
+    },
+    "Resultado": {
+     "motivo": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
+     "trecho": "facultado ao Ente Público e à entidade cultural rescindirem este TCC, a qualquer tempo, com as respectivas condições, sanções e delimitações claras de resp",
+     "pagina": 48,
+     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf"
+    }
+   },
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-16T02:30:36+00:00",
+     "ganhou": [
+      "Destinação",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Prazo de recurso",
+      "Requisitos",
+      "Resultado",
+      "Território",
+      "Valor",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    },
+    {
+     "n": 3,
+     "nome": "página oficial e citados",
+     "em": "2026-10-16T02:30:48+00:00",
+     "ganhou": [],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 48,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
+     "degrau": 1,
+     "como": "página oficial e documentos citados nela",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 48,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "dispensado",
+     "Resultado": "dispensado",
+     "Prazo de recurso": "certificado",
+     "Valor": "certificado",
+     "Órgão / financiador": "certificado",
+     "Território": "certificado",
+     "Esfera": "certificado",
+     "Requisitos": "certificado",
+     "Anexos": "falta",
+     "Destinação": "certificado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 9,
+    "dispensados": 2,
     "ja_constavam": 0,
     "faltam": 1,
     "pct_certificado_12": 0.9167,
@@ -46122,7 +46603,7 @@
    "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-16T02:04:42+00:00",
+   "em": "2026-10-16T02:22:17+00:00",
    "prazo": null,
    "uf": null,
    "orgao": null,
@@ -46211,7 +46692,7 @@
     {
      "n": 1,
      "nome": "documento na mão",
-     "em": "2026-10-16T02:04:42+00:00",
+     "em": "2026-10-16T02:22:17+00:00",
      "ganhou": [
       "Anexos",
       "Destinação",
@@ -47508,282 +47989,6 @@
     },
     "certificados": 10,
     "dispensados": 1,
-    "ja_constavam": 0,
-    "faltam": 1,
-    "pct_certificado_12": 0.9167,
-    "pct_cobertura_12": 0.9167
-   }
-  },
-  {
-   "id": "agr-252fc7f8bb39",
-   "tipo": "estrela",
-   "titulo": "Edital de Chamada Pública FAPESC/SED n.º 054/2026 – Programa de Fomento à Pesquisa e Inovação para o Desenvolvimento da Educação Catarinense",
-   "balcao": "orgao",
-   "link_oficial": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-   "degrau": 1,
-   "como": "página oficial e documentos citados nela",
-   "faltavam": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Requisitos"
-   ],
-   "tentativa": 2,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "bronze",
-   "estagio_inicio": "sem_estrela",
-   "esgotada": null,
-   "eficiencia": 0.917,
-   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": "bronze",
-   "em": "2026-10-16T02:10:37+00:00",
-   "prazo": null,
-   "uf": null,
-   "orgao": "FAPESC",
-   "fim": "2026-09-18",
-   "itens": {
-    "Prazo de inscrição": {
-     "valor": "10/09/2026 a 20/10/2026",
-     "trecho": "ma ATIVIDADES DATA Lançamento da Chamada Pública FAPESC 08/09/2026 Submissão das propostas por meio do Sistema SIGFAPESC (https://sig.fapesc.sc.gov.br) 10/09/2026 a 20/10/2026 Análise de Admissibilidade das propostas 21/10/2026 a 11/11/2026 Pá",
-     "pagina": 4,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "cronograma"
-    },
-    "Resultado": {
-     "valor": "16/11/2026",
-     "trecho": "rno e informe o processo FAPESC 00002256/2026 e o código 5TC037ZF. 126 Resultado preliminar de admissibilidade 16/11/2026 Período para apresentação de recursos administrativos 17/11/2026 a 2",
-     "pagina": 4,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "seção"
-    },
-    "Prazo de recurso": {
-     "valor": "17/11/2026 a 23/11/2026",
-     "trecho": "Resultado preliminar de admissibilidade 16/11/2026 Período para apresentação de recursos administrativos 17/11/2026 a 23/11/2026 Resultado final de admissibilidade 26/11/2026 Análise de mérito das",
-     "pagina": 5,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "seção"
-    },
-    "Valor": {
-     "valor": "R$ 6.703.500,00 (seis milhões, setecentos e três mil e quinhentos reais)",
-     "trecho": "de vigência da bolsa 01/03/2027 5. RECURSOS FINANCEIROS 5.1. O valor global da presente Chamada Pública é de até R$ 6.703.500,00 (seis milhões, setecentos e três mil e quinhentos reais), oriundos do orçamento da SED. 5.2. Os recursos disponibilizados no",
-     "pagina": 5,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "seção"
-    },
-    "Objeto": {
-     "valor": "a promoção do ecossistema catarinense de Ciência, Tecnologia e Inovação (CTI) para o avanço de todas as áreas do conhecimento, o equilíbrio regional, o desenvolvimento econômico sustentável e a melhoria da qualidade de vida da população do Estado;",
-     "trecho": "to executora da política estadual de ciência, tecnologia e inovação, tem como finalidade a promoção do ecossistema catarinense de Ciência, Tecnologia e Inovação (CTI) para o avanço de todas as áreas do conhecimento, o equilíbrio regional, o desenvolvimento econômico sustentável e a melhoria da qualidade de vida da população do Estado; ● que compete à FAPESC apoiar e promover a realização de estudo",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "texto"
-    },
-    "Órgão / financiador": {
-     "valor": "FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA",
-     "trecho": "QUISA E INOVAÇÃO PARA O DESENVOLVIMENTO DA EDUCAÇÃO CATARINENSE A FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA CATARINA (FAPESC) em colaboração com a SECRETARIA DE ESTADO DA EDUCAÇ",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "cabeçalho"
-    },
-    "Território": {
-     "valor": "no Estado de Santa Catarina",
-     "trecho": "sediadas e inscritas no Cadastro Nacional de Pessoa Jurídica (CNPJ) no Estado de Santa Catarina, a apresentarem propostas de projeto de pesquisa relacionados às lin",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "texto"
-    },
-    "Esfera": {
-     "valor": "estadual",
-     "trecho": "domínio/órgão: fapesc.sc.gov.br · FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA FAPESC",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "domínio e órgão"
-    },
-    "Anexos": {
-     "valor": "ANEXO I RELAÇÃO DE CURSOS DE LICENCIATURA E PROGRAMAS DE PÓS-GRADUAÇÃO NA; ANEXO II TERMO DE COMPROMISSO DE BOLSA FAPESC; ANEXO III PLANO DE TRABALHO DO(A) BOLSISTA; ANEXO IV TERMO DE DISPONIBILIDADE DE CARGA HORÁRIA; ANEXO V DECLARAÇÃO DE RESIDÊNCIA",
-     "trecho": "me o processo FAPESC 00002256/2026 e o código 5TC037ZF. 138 ANEXO I RELAÇÃO DE CURSOS DE LICENCIATURA E PROGRAMAS DE PÓS-GRADUAÇÃO NA ÁREA DE EDUCAÇÃO ELEGÍVEIS Quadro 01: Cursos de Licenciatura INSTITUIÇÃO CURSO CAMPUS CATÓLICA/SC PEDAGOGIA",
-     "pagina": 17,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "lista de anexos"
-    },
-    "Destinação": {
-     "valor": "Bolsa",
-     "trecho": "o e tecnológico do Estado de Santa Catarina, mediante a concessão de bolsas de iniciação científica, voltadas à produção de c onhecimento aplicado e ao desenvolvimento de soluções educacionais inova",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "modalidade de recebimento"
-    },
-    "Área de atuação": {
-     "valor": "Educação, Meio ambiente, Ciência e tecnologia",
-     "trecho": "termos do objeto e do título: Educação, Meio ambiente, Ciência e tecnologia",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "palavras-chave do objeto"
-    }
-   },
-   "dispensas": {},
-   "abordagens": [
-    {
-     "n": 3,
-     "nome": "página oficial e citados",
-     "em": "2026-10-16T02:10:32+00:00",
-     "ganhou": [
-      "Anexos",
-      "Destinação",
-      "Esfera",
-      "Objeto",
-      "Prazo de inscrição",
-      "Prazo de recurso",
-      "Resultado",
-      "Território",
-      "Valor",
-      "Área de atuação",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    },
-    {
-     "n": 4,
-     "nome": "biblioteca de sites",
-     "em": "2026-10-16T02:10:37+00:00",
-     "ganhou": [],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "degrau": 1,
-     "como": "página oficial e documentos citados nela",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 41,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
-     "degrau": 1,
-     "como": "biblioteca de sites oficiais conhecidos do órgão",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fapesc.sc.gov.br/edital-suplementar-fapesc-n-o-66-2025-programa-horizonte-europa-2026-2027",
-     "degrau": 1,
-     "como": "biblioteca de sites oficiais conhecidos do órgão",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fapesc.sc.gov.br/edital-suplementar-de-subvencao-economica-fapesc-n-o-65-2025-programa-horizonte-europa-2026-2027",
-     "degrau": 1,
-     "como": "biblioteca de sites oficiais conhecidos do órgão",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/CP-55_2026-PROFIX.pdf",
-     "degrau": 1,
-     "como": "biblioteca de sites oficiais conhecidos do órgão",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 43,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "degrau": 1,
-     "como": "biblioteca de sites oficiais conhecidos do órgão",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 41,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/08/edital-carvao.pdf",
-     "degrau": 1,
-     "como": "biblioteca de sites oficiais conhecidos do órgão",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 44,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Resultado-Parcial-de-admissibilidade-CP-051_2026.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 2,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Resultado-Final-de-admissibilidade-CP-051_2026.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 2,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "certificado",
-     "Prazo de inscrição": "certificado",
-     "Resultado": "certificado",
-     "Prazo de recurso": "certificado",
-     "Valor": "certificado",
-     "Órgão / financiador": "certificado",
-     "Território": "certificado",
-     "Esfera": "certificado",
-     "Requisitos": "falta",
-     "Anexos": "certificado",
-     "Destinação": "certificado",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 11,
-    "dispensados": 0,
     "ja_constavam": 0,
     "faltam": 1,
     "pct_certificado_12": 0.9167,
@@ -53316,7 +53521,7 @@
    "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": "prata",
-   "em": "2026-10-16T02:05:42+00:00",
+   "em": "2026-10-16T02:23:38+00:00",
    "prazo": null,
    "uf": null,
    "orgao": "Fundação Aperam Acesita",
@@ -53398,7 +53603,7 @@
     {
      "n": 1,
      "nome": "documento na mão",
-     "em": "2026-10-16T02:05:17+00:00",
+     "em": "2026-10-16T02:23:05+00:00",
      "ganhou": [
       "Destinação",
       "Esfera",
@@ -53416,7 +53621,7 @@
     {
      "n": 2,
      "nome": "anexos completos",
-     "em": "2026-10-16T02:05:42+00:00",
+     "em": "2026-10-16T02:23:38+00:00",
      "ganhou": [],
      "legado": null
     }
@@ -66759,12 +66964,7 @@
    ],
    "tentativa": 2,
    "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": {
-    "orgao": "dominio:fapesb.ba.gov.br",
-    "itens_pelo_gabarito": [
-     "Prazo de recurso"
-    ]
-   },
+   "gabarito": null,
    "estagio": "bronze",
    "estagio_inicio": "sem_estrela",
    "esgotada": null,
@@ -66772,7 +66972,7 @@
    "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": "bronze",
-   "em": "2026-10-16T02:07:08+00:00",
+   "em": "2026-10-16T02:24:57+00:00",
    "prazo": null,
    "uf": null,
    "orgao": null,
@@ -66854,7 +67054,7 @@
     {
      "n": 1,
      "nome": "documento na mão",
-     "em": "2026-10-16T02:06:06+00:00",
+     "em": "2026-10-16T02:24:07+00:00",
      "ganhou": [
       "Destinação",
       "Esfera",
@@ -66872,7 +67072,7 @@
     {
      "n": 3,
      "nome": "página oficial e citados",
-     "em": "2026-10-16T02:07:08+00:00",
+     "em": "2026-10-16T02:24:57+00:00",
      "ganhou": [],
      "legado": null
     }
@@ -67584,203 +67784,6 @@
      "url": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
      "degrau": 0,
      "como": "página/documento oficial já conhecido",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 48,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "certificado",
-     "Prazo de inscrição": "dispensado",
-     "Resultado": "dispensado",
-     "Prazo de recurso": "certificado",
-     "Valor": "certificado",
-     "Órgão / financiador": "certificado",
-     "Território": "certificado",
-     "Esfera": "certificado",
-     "Requisitos": "certificado",
-     "Anexos": "falta",
-     "Destinação": "falta",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 8,
-    "dispensados": 2,
-    "ja_constavam": 0,
-    "faltam": 2,
-    "pct_certificado_12": 0.8333,
-    "pct_cobertura_12": 0.8333
-   }
-  },
-  {
-   "id": "837499ca129ea5f43f36",
-   "tipo": "estrela",
-   "titulo": "Edital 13 – Cultura Viva para fomento a Pontos de Cultura (PDF)",
-   "balcao": "orgao",
-   "link_oficial": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
-   "degrau": 0,
-   "como": "página/documento oficial já conhecido",
-   "faltavam": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Anexos",
-    "Destinação"
-   ],
-   "tentativa": 2,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "prata",
-   "estagio_inicio": "sem_estrela",
-   "esgotada": null,
-   "eficiencia": 0.833,
-   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": "prata",
-   "em": "2026-10-16T02:12:03+00:00",
-   "prazo": null,
-   "uf": "GO",
-   "orgao": null,
-   "fim": null,
-   "itens": {
-    "Prazo de recurso": {
-     "valor": "3 dias úteis",
-     "trecho": "minar da etapa de seleção e/ou para solicitação do espelho de notas, caberá recurso destinado a Comissão de Seleção, que deve ser apresentado pela mesma plataforma da inscrição, no prazo de 3 dias úteis, conforme Secretaria Municipal de Cultura Avenida Parque Ateneu",
-     "pagina": 7,
-     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
-     "metodo": "seção"
-    },
-    "Valor": {
-     "valor": "R$ 2.401.960,50",
-     "trecho": "ederal, repassados ao Município de Goiânia por meio da PNAB, e tem o valor total de R$ 2.401.960,50 (dois milhões, quatrocentos e um mil, novecentos e sessenta reais e",
-     "pagina": 1,
-     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
-     "metodo": "seção"
-    },
-    "Objeto": {
-     "valor": "a seleção de projetos que promovam o acesso da população aos bens e aos serviços culturais nos territórios e comunidades onde atuam, nos termos da Política Nacional de Cultura Viva.",
-     "trecho": "r Blanc de Fomento à Cultura (PNAB). 1. OBJETO 1.1. Este Edital tem por objeto a seleção de projetos que promovam o acesso da população aos bens e aos serviços culturais nos territórios e comunidades onde atuam, nos termos da Política Nacional de Cultura Viva. 1.2. Poderão participar deste edital Pontos de Cultura com constitui",
-     "pagina": 1,
-     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
-     "metodo": "texto"
-    },
-    "Órgão / financiador": {
-     "valor": "Secretaria Municipal de Cultura",
-     "trecho": "Secretaria Municipal de Cultura Avenida Parque Ateneu nº 1.477, Parque Atheneu Goiânia, CEP 74893-0",
-     "pagina": 1,
-     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
-     "metodo": "cabeçalho"
-    },
-    "Território": {
-     "valor": "no município de Goiânia",
-     "trecho": "ais desenvolvidas pela entidade cultural há pelo menos 3 (três) anos no município de Goiânia, por meio de informações sobre as ações da entidade cultural; cópias",
-     "pagina": 3,
-     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
-     "metodo": "texto"
-    },
-    "Esfera": {
-     "valor": "municipal",
-     "trecho": "domínio/órgão: www.goiania.go.gov.br · Secretaria Municipal de Cultura",
-     "pagina": 1,
-     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
-     "metodo": "domínio e órgão"
-    },
-    "Requisitos": {
-     "valor": "Poderão participar deste edital Pontos de Cultura com constituição jurídica, ou seja,",
-     "trecho": "s onde atuam, nos termos da Política Nacional de Cultura Viva. 1.2. Poderão participar deste edital Pontos de Cultura com constituição jurídica, ou seja, com CNPJ, bem como Organizações da Sociedade Civil sem fins lucrativo",
-     "pagina": 1,
-     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
-     "metodo": "texto"
-    },
-    "Área de atuação": {
-     "valor": "Cultura",
-     "trecho": "termos do objeto e do título: Cultura",
-     "pagina": 1,
-     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
-     "metodo": "palavras-chave do objeto"
-    }
-   },
-   "dispensas": {
-    "Prazo de inscrição": {
-     "motivo": "dispensado pelo Cartório — não se aplica: inscrição em fluxo contínuo (cadastro permanente, sem data-limite)",
-     "trecho": "facultado ao Ente Público e à entidade cultural rescindirem este TCC, a qualquer tempo, com as respectivas condições, sanções e delimitações claras de resp",
-     "pagina": 48,
-     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf"
-    },
-    "Resultado": {
-     "motivo": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
-     "trecho": "facultado ao Ente Público e à entidade cultural rescindirem este TCC, a qualquer tempo, com as respectivas condições, sanções e delimitações claras de resp",
-     "pagina": 48,
-     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf"
-    }
-   },
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-16T02:11:59+00:00",
-     "ganhou": [
-      "Esfera",
-      "Objeto",
-      "Prazo de inscrição",
-      "Prazo de recurso",
-      "Requisitos",
-      "Resultado",
-      "Território",
-      "Valor",
-      "Área de atuação",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    },
-    {
-     "n": 3,
-     "nome": "página oficial e citados",
-     "em": "2026-10-16T02:12:03+00:00",
-     "ganhou": [],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
-     "degrau": 0,
-     "como": "página/documento oficial já conhecido",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 48,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
-     "degrau": 1,
-     "como": "página oficial e documentos citados nela",
      "motivo": null,
      "falha": null,
      "oficial": "domínio público oficial",
@@ -72592,334 +72595,6 @@
    }
   },
   {
-   "id": "agr-7b6fbd56e08a",
-   "tipo": "estrela",
-   "titulo": "Plan International Brasil oferece até R$ 30 mil para projetos de igualdade de gênero",
-   "balcao": "privado",
-   "link_oficial": "https://plan.org.br/fundo-acelere-o-relogio/",
-   "degrau": 1,
-   "como": "página oficial e documentos citados nela",
-   "faltavam": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Prazo de recurso",
-    "Anexos"
-   ],
-   "tentativa": 2,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "prata",
-   "estagio_inicio": "sem_estrela",
-   "esgotada": null,
-   "eficiencia": 0.833,
-   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": "prata",
-   "em": "2026-10-16T02:12:50+00:00",
-   "prazo": null,
-   "uf": null,
-   "orgao": null,
-   "fim": "2026-11-11",
-   "itens": {
-    "Prazo de inscrição": {
-     "valor": "11/10/2026 a 11/11/2026",
-     "trecho": "os sem CNPJ e grupos liderados por meninas e jovens mulheres. As inscrições para o edital Acelere o Relógio da Igualdade estão abertas de 11/10/2026 a 11/11/2026 , até às 17h59 (horário de Brasília). São gratuitas e abertas para qu",
-     "pagina": 1,
-     "documento": "https://plan.org.br/fundo-acelere-o-relogio/",
-     "metodo": "cronograma"
-    },
-    "Órgão / financiador": {
-     "valor": "Instituto Sabin e outros apoiadores juntaram-se à Plan Brasil para viabilizar os recursos necessári",
-     "trecho": "este. Nesta nova edição, além dos recursos da Mackenzie Scott, o Instituto Sabin e outros apoiadores juntaram-se à Plan Brasil para viabilizar os recursos necessários. Quer participar do Fundo Acelere o Relógio da Igualdad",
-     "pagina": 1,
-     "documento": "https://plan.org.br/fundo-acelere-o-relogio/",
-     "metodo": "cabeçalho"
-    },
-    "Esfera": {
-     "valor": "privada",
-     "trecho": "domínio/órgão: plan.org.br · Instituto Sabin e outros apoiadores juntaram-se à Plan Brasil para viabilizar os",
-     "pagina": 1,
-     "documento": "https://plan.org.br/fundo-acelere-o-relogio/",
-     "metodo": "domínio e órgão"
-    },
-    "Requisitos": {
-     "valor": "Podem participar desde organizações formalizadas até coletivos sem CNPJ e grupos liderados por meninas e jovens mulheres.",
-     "trecho": "Brasil vai destinar R$ 600 mil a propostas pela igualdade de gênero. Podem participar desde organizações formalizadas até coletivos sem CNPJ e grupos liderados por meninas e jovens mulheres. As inscrições para o edital Acelere o Relógio da Igualdade estão",
-     "pagina": 1,
-     "documento": "https://plan.org.br/fundo-acelere-o-relogio/",
-     "metodo": "texto"
-    },
-    "Destinação": {
-     "valor": "Doação",
-     "trecho": "ntável. Em 2024, a iniciativa foi viabilizada integralmente pela doação da filantropa MacKenzie Scott à Plan International Brasil, permitindo que recursos chegassem diretamente a quem já atua pel",
-     "pagina": 1,
-     "documento": "https://plan.org.br/fundo-acelere-o-relogio/",
-     "metodo": "modalidade de recebimento"
-    },
-    "Área de atuação": {
-     "valor": "Meio ambiente, Direitos humanos",
-     "trecho": "termos do objeto e do título: Meio ambiente, Direitos humanos",
-     "pagina": 1,
-     "documento": "https://plan.org.br/fundo-acelere-o-relogio/",
-     "metodo": "palavras-chave do objeto"
-    },
-    "Valor": {
-     "valor": "R$5.000,00",
-     "trecho": "mento com valores atØ: • Categoria 1 (Meninas e Jovens Líderes): atØ R$5.000,00. • Categoria 2 (Coletivos, GrŒmios e Movimentos Sociais): atØ R$ 15.",
-     "pagina": 5,
-     "documento": "https://plan.org.br/wp-content/uploads/2026/10/FAQ-Edicao-2026-Fundo-Acelere-o-Relogio-da-Igualdade.pdf",
-     "metodo": "seção"
-    },
-    "Território": {
-     "valor": "todo o território nacional",
-     "trecho": "de com o terceiro setor e movimento s sociais, a organizaçªo alcança todo o território nacional, inspirando e mobilizando a sociedade para transformar realidades, p",
-     "pagina": 2,
-     "documento": "https://plan.org.br/wp-content/uploads/2026/10/FAQ-Edicao-2026-Fundo-Acelere-o-Relogio-da-Igualdade.pdf",
-     "metodo": "texto"
-    },
-    "Objeto": {
-     "valor": "geral promover e dar visibilidade a projetos que acelerem a igualdade de gênero e fortaleçam meninas e jovens mulheres em toda a sua diversidade.",
-     "trecho": "do Edital \"Fundo Acelere o Relógio da Igualdade\", uma iniciativa que tem como objetivo geral promover e dar visibilidade a projetos que acelerem a igualdade de gênero e fortaleçam meninas e jovens mulheres em toda a sua diversidade. O ed ital busca contribuir para a construção de um Brasil mais justo,",
-     "pagina": 1,
-     "documento": "https://plan.org.br/wp-content/uploads/2026/10/Glossario-Edicao-2026-Fundo-Acelere-o-Relogio-da-Igualdade.pdf",
-     "metodo": "texto"
-    },
-    "Resultado": {
-     "valor": "8 de março de 2027",
-     "trecho": "/2027 Due Dilligence | Checagem de Documentos 15/02/2027 a 26/02/2027 Resultado Final 8 de março de 2027 Contratualização e Repasses Financeiros Abril de 2027 11. GOVER",
-     "pagina": 13,
-     "documento": "https://plan.org.br/wp-content/uploads/2026/10/Regulamento-Edital-Fundo-Acelere-o-Relogio-2026.pdf",
-     "metodo": "seção"
-    }
-   },
-   "dispensas": {},
-   "abordagens": [
-    {
-     "n": 3,
-     "nome": "página oficial e citados",
-     "em": "2026-10-16T02:12:31+00:00",
-     "ganhou": [
-      "Destinação",
-      "Esfera",
-      "Objeto",
-      "Prazo de inscrição",
-      "Requisitos",
-      "Resultado",
-      "Território",
-      "Valor",
-      "Área de atuação",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    },
-    {
-     "n": 10,
-     "nome": "busca no domínio",
-     "em": "2026-10-16T02:12:50+00:00",
-     "ganhou": [],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://plan.org.br/fundo-acelere-o-relogio/",
-     "degrau": 1,
-     "como": "página oficial e documentos citados nela",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.googletagmanager.com/ns.html?id=GTM-KM8QBV6",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": "pagina_vazia",
-     "falha": null,
-     "oficial": null,
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://plan.org.br/wp-content/uploads/2026/10/FAQ-Edicao-2026-Fundo-Acelere-o-Relogio-da-Igualdade.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 9,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://plan.org.br/wp-content/uploads/2026/10/Glossario-Edicao-2026-Fundo-Acelere-o-Relogio-da-Igualdade.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 13,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://plan.org.br/wp-content/uploads/2026/10/Regulamento-Edital-Fundo-Acelere-o-Relogio-2026.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 18,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://plan.org.br/wp-content/uploads/2026/10/Orcamento-e-Cronograma-em-Word-Fundo-Acelere-o-Relogio.docx",
-     "degrau": 1,
-     "como": "documento citado na página oficial: Modelo de Cronograma",
-     "motivo": "zip_sem_pdf",
-     "falha": null,
-     "oficial": null,
-     "paginas": 0,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://plan.org.br/wp-content/uploads/2026/10/Orcamento-e-Cronograma-Fundo-Acelere-o-Relogio.xlsx",
-     "degrau": 1,
-     "como": "documento citado na página oficial: Modelo de Orçamento",
-     "motivo": "zip_sem_pdf",
-     "falha": null,
-     "oficial": null,
-     "paginas": 0,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://plan.org.br/sem-categoria/marcas-do-tempo-gravidez-na-adolescencia-e-seus-impactos-na-vida-de-mulheres-no-brasil/",
-     "degrau": 2,
-     "como": "busca restrita ao domínio oficial",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://plan.org.br/estudos/percepcoes-violencia-vulnerabilidade-meninas-brasil/",
-     "degrau": 2,
-     "como": "busca restrita ao domínio oficial",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://plan.org.br/estudos/tirando-o-veu-estudo-casamento-infantil-no-brasil/",
-     "degrau": 2,
-     "como": "busca restrita ao domínio oficial",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.googletagmanager.com/ns.html?id=GTM-KM8QBV6",
-     "degrau": 2,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": "pagina_vazia",
-     "falha": null,
-     "oficial": null,
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://plan.org.br/wp-content/uploads/2026/07/PlanBrasil_PesquisaMarcasdoTempo_2026_resumoexecutivo.pdf",
-     "degrau": 2,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": "pdf_corrompido",
-     "falha": null,
-     "oficial": null,
-     "paginas": 0,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://plan.org.br/wp-content/uploads/2026/07/PlanBrasil_Marcas-do-Tempo_2026.pdf",
-     "degrau": 2,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 60,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://plan.org.br/wp-content/uploads/2025/11/RELATORIO-MENINAS-FINAL.pdf",
-     "degrau": 2,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 19,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://plan.org.br/wp-content/uploads/2019/06/Tirando-o-veu-estudo-casamento-infantil-no-brasil-Plan-International.pdf",
-     "degrau": 2,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 60,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "certificado",
-     "Prazo de inscrição": "certificado",
-     "Resultado": "certificado",
-     "Prazo de recurso": "falta",
-     "Valor": "certificado",
-     "Órgão / financiador": "certificado",
-     "Território": "certificado",
-     "Esfera": "certificado",
-     "Requisitos": "certificado",
-     "Anexos": "falta",
-     "Destinação": "certificado",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 10,
-    "dispensados": 0,
-    "ja_constavam": 0,
-    "faltam": 2,
-    "pct_certificado_12": 0.8333,
-    "pct_cobertura_12": 0.8333
-   }
-  },
-  {
    "id": "e216d467a84522d2941d",
    "tipo": "estrela",
    "titulo": "Programa Marielle Franco, 2ª edição (apoio coletivo), do Fundo Baobá para Equidade Racial: R$ 300 mil por iniciativa para organizações, grupos e coletivos de mulheres negras (85% da direção e membresi",
@@ -75701,7 +75376,7 @@
    "ainda_faltam": [
     "Área de atuação"
    ],
-   "tentativa": 3,
+   "tentativa": 5,
    "versao": "cartório v5 · linha de produção (09/10/2026)",
    "gabarito": null,
    "estagio": "prata",
@@ -75711,7 +75386,7 @@
    "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
    "selo_antes": "bronze",
    "selo_depois": "prata",
-   "em": "2026-10-16T01:27:17+00:00",
+   "em": "2026-10-16T02:19:57+00:00",
    "prazo": "2026-12-08",
    "uf": null,
    "orgao": "COMANDO DA AERONAUTICA",
@@ -75830,6 +75505,20 @@
      "em": "2026-10-16T01:27:17+00:00",
      "ganhou": [],
      "legado": null
+    },
+    {
+     "n": 7,
+     "nome": "releitura com gabarito",
+     "em": "2026-10-16T02:19:48+00:00",
+     "ganhou": [],
+     "legado": null
+    },
+    {
+     "n": 3,
+     "nome": "página oficial e citados",
+     "em": "2026-10-16T02:19:57+00:00",
+     "ganhou": [],
+     "legado": null
     }
    ],
    "documentos": [
@@ -75867,6 +75556,26 @@
      "url": "https://pncp.gov.br/api/consulta/v1/orgaos/00394429000100/compras/2026/1995",
      "degrau": 0,
      "como": "leitura profunda (até 150 páginas e tabelas)",
+     "motivo": "formato_desconhecido",
+     "falha": null,
+     "oficial": null,
+     "paginas": 0,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/00394429000100/compras/2026/1995/arquivos/8",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 16,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/api/consulta/v1/orgaos/00394429000100/compras/2026/1995",
+     "degrau": 1,
+     "como": "página oficial e documentos citados nela",
      "motivo": "formato_desconhecido",
      "falha": null,
      "oficial": null,
@@ -77127,7 +76836,7 @@
    "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-16T02:09:48+00:00",
+   "em": "2026-10-16T02:28:08+00:00",
    "prazo": null,
    "uf": null,
    "orgao": "Ministério da Saúde",
@@ -77209,7 +76918,7 @@
     {
      "n": 3,
      "nome": "página oficial e citados",
-     "em": "2026-10-16T02:09:48+00:00",
+     "em": "2026-10-16T02:28:08+00:00",
      "ganhou": [
       "Anexos",
       "Destinação",
@@ -79756,35 +79465,277 @@
     "pct_certificado_12": 0.75,
     "pct_cobertura_12": 0.75
    }
+  },
+  {
+   "id": "op-0fd3d430c3df",
+   "tipo": "livro",
+   "titulo": "CHAMAMENTO PÚBLICO Nº 11/2026 - O MUNICÍPIO DE ITAPEVI, por meio da Secretaria Municipal de Cultura, torna público o EDITAL DE CHAMAMENTO PÚBLICO Nº 11/2026, qu",
+   "balcao": "orgao",
+   "link_oficial": "https://chamamentos.itapevi.sp.gov.br/chamamentos/324",
+   "degrau": 0,
+   "como": "página/documento oficial já conhecido",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Requisitos",
+    "Anexos",
+    "Destinação"
+   ],
+   "tentativa": 1,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "prata",
+   "esgotada": null,
+   "eficiencia": 0.75,
+   "encaminhado": "Interceptador: 3 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-12T15:57:07+00:00",
+   "prazo": null,
+   "uf": "BR",
+   "orgao": "",
+   "fim": "2018-10-11",
+   "itens": {
+    "Objeto": {
+     "valor": "a premiação de 11 (onze) iniciativas, atividades ou ações já realizadas por Pontos e Pontões de Cultura, no âmbito da Política Nacional Aldir Blanc de Fomento à Cultura (PNAB), instituída pela Lei nº 14.",
+     "trecho": "Cultura, torna público o EDITAL DE CHAMAMENTO PÚBLICO Nº 11/2026, que tem por objeto a premiação de 11 (onze) iniciativas, atividades ou ações já realizadas por Pontos e Pontões de Cultura, no âmbito da Política Nacional Aldir Blanc de Fomento à Cultura (PNAB), instituída pela Lei nº 14.399/2022, em conformidade com a Lei nº 13.018/2014 (Política Nacional",
+     "pagina": 1,
+     "documento": "https://chamamentos.itapevi.sp.gov.br/chamamentos/324",
+     "metodo": "texto"
+    },
+    "Órgão / financiador": {
+     "valor": "MUNICÍPIO DE ITAPEVI",
+     "trecho": "Login CHAMAMENTO PÚBLICO Nº 11/2026 - O MUNICÍPIO DE ITAPEVI, por meio da Secretaria Municipal de Cultura, torna público o EDITAL",
+     "pagina": 1,
+     "documento": "https://chamamentos.itapevi.sp.gov.br/chamamentos/324",
+     "metodo": "cabeçalho"
+    },
+    "Esfera": {
+     "valor": "municipal",
+     "trecho": "domínio/órgão: chamamentos.itapevi.sp.gov.br · MUNICÍPIO DE ITAPEVI",
+     "pagina": 1,
+     "documento": "https://chamamentos.itapevi.sp.gov.br/chamamentos/324",
+     "metodo": "domínio e órgão"
+    },
+    "Área de atuação": {
+     "valor": "Cultura",
+     "trecho": "termos do objeto e do título: Cultura",
+     "pagina": 1,
+     "documento": "https://chamamentos.itapevi.sp.gov.br/chamamentos/324",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Prazo de inscrição": {
+     "valor": "até 11 de outubro de 2018",
+     "trecho": "Promove, portanto, o chamamento dos candidatos para a realização das inscrições que será de 08 a 11 de outubro de 2018, no horário das 08h as 16h, no endereço Av. Presidente Vargas, nº 376",
+     "pagina": 1,
+     "documento": "https://chamamentos.itapevi.sp.gov.br/chamamentos",
+     "metodo": "cronograma"
+    },
+    "Prazo de recurso": {
+     "valor": "14/10/2026",
+     "trecho": "2026 - SELEÇÃO DE PROJETOS PARA FIRMAR TERMO DE EXECUÇÃO CULTURAL COM RECURSOS DA POLÍTICA NACIONAL ALDIR BLANC DE FOMENTO À CULTURA 14/10/2026 às 23:59:00 EDITAL DE CHAMAMENTO PÚBLICO Nº 28/2026 - SE",
+     "pagina": 1,
+     "documento": "https://chamamentos.itapevi.sp.gov.br/chamamentos",
+     "metodo": "seção"
+    },
+    "Território": {
+     "valor": "do Município de Itapevi",
+     "trecho": "essados na oferta gratuita de Curso de Fotografia Digital para jovens do Município de Itapevi, mediante celebração de ACORDO DE COOPERAÇÃO, sem transferência de re",
+     "pagina": 1,
+     "documento": "https://chamamentos.itapevi.sp.gov.br/chamamentos",
+     "metodo": "texto"
+    }
+   },
+   "dispensas": {
+    "Resultado": {
+     "motivo": "dispensado pelo Cartório — não se aplica: credenciamento sem seleção competitiva — todos os habilitados são credenciados",
+     "trecho": "-t b-b dataTable\"> Título Data Ver Mais EDITAL DE CREDENCIAMENTO COMPLEMENTAR Nº 03/2026 - SELEÇÃO E CREDENCIAMENTO COMPLEMENTAR DE PA",
+     "pagina": 1,
+     "documento": "https://chamamentos.itapevi.sp.gov.br/chamamentos"
+    },
+    "Valor": {
+     "motivo": "dispensado pelo Cartório — não se aplica: sem repasse financeiro (cooperação, cessão ou habilitação sem recurso)",
+     "trecho": "para a realização de eventos de dança de salão (Samba Rock) mediante Acordo de Cooperação, sem transferência de recursos financeiros. 12/10/2026 às 17:00:00",
+     "pagina": 1,
+     "documento": "https://chamamentos.itapevi.sp.gov.br/chamamentos"
+    }
+   },
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-12T15:57:07+00:00",
+     "ganhou": [
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Prazo de recurso",
+      "Resultado",
+      "Território",
+      "Valor",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://chamamentos.itapevi.sp.gov.br/chamamentos/324",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://chamamentos.itapevi.sp.gov.br/filemanager/files/shares/Edital de Premiação CVV 11-2026.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Edital de Premiação CVV 11-2026.pdf",
+     "motivo": null,
+     "falha": "erro_rede: InvalidURL",
+     "oficial": null,
+     "paginas": null,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://chamamentos.itapevi.sp.gov.br/filemanager/files/shares/edital 11-2026 cultura prorrogado.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: edital 11-2026 cultura prorrogado.pdf",
+     "motivo": null,
+     "falha": "erro_rede: InvalidURL",
+     "oficial": null,
+     "paginas": null,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://chamamentos.itapevi.sp.gov.br/chamamentos",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Chamamentos",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://chamamentos.itapevi.sp.gov.br/chamamentos/348",
+     "degrau": 1,
+     "como": "documento citado na página oficial: EDITAL DE CHAMAMENTO PÚBLICO Nº 31/2026 - SELEÇÃO DE ORGANIZAÇÃO DA SOCIEDADE CIVIL PARA EXECUÇÃO CONTINUADA DO SERVIÇO ",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://chamamentos.itapevi.sp.gov.br/chamamentos/345",
+     "degrau": 1,
+     "como": "documento citado na página oficial: EDITAL DE CHAMAMENTO PÚBLICO Nº 28/2026 - SELEÇÃO DE PROPOSTA PARA REALIZAÇÃO GRATUITA E VOLUNTÁRIA DE EVENTO ESPORTIVO ",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://chamamentos.itapevi.sp.gov.br/chamamentos/338",
+     "degrau": 1,
+     "como": "documento citado na página oficial: EDITAL DE CREDENCIAMENTO nº 02/2026 - SELEÇÃO E CREDENCIAMENTO DE PARECERISTAS PARA ANÁLISE DE PROJETOS CULTURAIS EM PRO",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://chamamentos.itapevi.sp.gov.br/chamamentos/311",
+     "degrau": 1,
+     "como": "documento citado na página oficial: EDITAL DE CHAMAMENTO PÚBLICO Nº 35/2025 - AQUISIÇÃO DE GÊNERO ALIMENTÍCIOS) DE AGRICULTORES FAMILIARES, POR MEIO DA MODA",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "certificado",
+     "Resultado": "dispensado",
+     "Prazo de recurso": "certificado",
+     "Valor": "dispensado",
+     "Órgão / financiador": "certificado",
+     "Território": "certificado",
+     "Esfera": "certificado",
+     "Requisitos": "falta",
+     "Anexos": "falta",
+     "Destinação": "falta",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 7,
+    "dispensados": 2,
+    "ja_constavam": 0,
+    "faltam": 3,
+    "pct_certificado_12": 0.75,
+    "pct_cobertura_12": 0.75
+   }
   }
  ],
  "linha_de_producao": {
   "na_linha": {
-   "sem_estrela": 1036,
-   "bronze": 19,
-   "prata": 1292
+   "sem_estrela": 1072,
+   "bronze": 22,
+   "prata": 1259
   },
   "na_linha_por_tipo": {
    "estrela": {
-    "sem_estrela": 313,
-    "bronze": 11,
-    "prata": 25
+    "sem_estrela": 314,
+    "bronze": 14,
+    "prata": 23
    },
    "livro": {
-    "sem_estrela": 723,
+    "sem_estrela": 758,
     "bronze": 8,
-    "prata": 1267
+    "prata": 1236
    }
   },
-  "fila_oportunidades": 349,
-  "fila_livros": 1998,
+  "fila_oportunidades": 351,
+  "fila_livros": 2002,
   "devidas_nesta_hora": 2152,
-  "promovidas_nesta_execucao": 13,
+  "promovidas_nesta_execucao": 16,
   "sem_material_agora": 10,
   "esgotadas_10_abordagens": 0,
   "biblioteca_de_sites": {
-   "chaves": 1019,
-   "sites": 2159
+   "chaves": 1022,
+   "sites": 2145
   },
   "intervalo_horas": 12,
   "limite": 10,
