@@ -165,6 +165,8 @@ def escrever(ia, motor_cfg: dict | None = None) -> dict:
            if banco.get("editais_incompletos_na_fila") else "")
         + (_cobertura() + "\n\n")
         + _apostas_que_renderam()
+        + __import__("src.manual_piloto", fromlist=["x"]).texto_para_briefing(            # 16/10: o MANUAL DO PILOTO
+            str((motor_cfg or {}).get("id") or "piloto-aberto"))
         + "META DE ENTIDADES (titular, 27/09): priorize entidades que agremiam empresas ou lutam por objetivo comum delas — "
           "associações comerciais e industriais, federações, confederações, sindicatos patronais, câmaras, CDLs, GIFE, ACIEG, "
           "Fecomércio, FIEG — de nível NACIONAL ou de GOIÁS. Entidade de outro estado sem vínculo nacional nem com Goiás: descarte. "

@@ -36,6 +36,21 @@ LICOES = PASTA / "licoes.json"
 TRATADOS = PASTA / "tratados.json"
 MELHORIAS = PASTA / "melhorias.json"
 PUB = ROOT / "docs/dados/aprendizados_piloto.json"
+# 16/10/2026 (titular): o aprendizado mora no MANUAL DO PILOTO (livro especial de cada piloto). A pasta antiga só vale
+# quando os testes a redirecionam (ELDORADO_APRENDIZADOS).
+_MANUAL = not _os.environ.get("ELDORADO_APRENDIZADOS")
+_TRAT_MEMO: dict = {}
+
+
+def _manuais() -> list:
+    from . import manual_piloto as MP
+    out = []
+    for p in sorted(MP.ESPECIAIS.glob("manual-do-piloto-*.json")) if MP.ESPECIAIS.exists() else []:
+        try:
+            out.append(json.loads(p.read_text(encoding="utf-8")))
+        except (OSError, ValueError):
+            continue
+    return out
 
 # MOTORES DE ENSAIO: nomes usados pelos testes. Nada que venha deles entra na base real —
 # em 23/09 as estatísticas apareceram com 26 missões de 'm-teste', 'm-seco' e 'm-repete',
@@ -66,6 +81,15 @@ def _garantir() -> None:
 
 
 def tratados() -> dict:
+    if _MANUAL:
+        from . import manual_piloto as MP
+        marca = tuple(sorted((p.name, p.stat().st_mtime_ns) for p in MP.ESPECIAIS.glob("manual-do-piloto-*.json"))) if MP.ESPECIAIS.exists() else ()
+        if _TRAT_MEMO.get("marca") != marca:
+            it: dict = {}
+            for m in _manuais():
+                it.update(m.get("tratados") or {})
+            _TRAT_MEMO.update({"marca": marca, "v": {"itens": it}})
+        return _TRAT_MEMO["v"]
     return load_json(TRATADOS) if TRATADOS.exists() else {"itens": {}}
 
 
@@ -74,7 +98,13 @@ def ja_tratado(chave: str) -> bool:
     return str(chave) in (tratados().get("itens") or {})
 
 
-def marcar_tratado(chave: str, titulo: str, desfecho: str, motivo: str = "") -> None:
+def marcar_tratado(chave: str, titulo: str, desfecho: str, motivo: str = "", motor: str | None = None) -> None:
+    if _MANUAL:
+        from . import manual_piloto as MP
+        m = MP.ler(motor or "piloto-aberto")
+        m.setdefault("tratados", {})[str(chave)] = {"titulo": (titulo or "")[:120], "desfecho": desfecho, "motivo": motivo,
+                                                     "em": date.today().isoformat(), "entregue_ao_claude": desfecho != "aproveitado"}
+        MP.gravar(m); return
     _garantir()
     d = tratados()
     d.setdefault("itens", {})[str(chave)] = {
@@ -88,6 +118,11 @@ def marcar_tratado(chave: str, titulo: str, desfecho: str, motivo: str = "") -> 
 
 def quarentenar(achado: dict, motivo: str, missao: str = "") -> None:
     """Achado sem efetividade sai do caminho do sistema e fica guardado como matéria de estudo."""
+    if _MANUAL:                                       # 16/10: no manual só a contagem por motivo (não é oportunidade)
+        from . import manual_piloto as MP
+        m = MP.ler((missao or "piloto-aberto").split("/")[0])
+        d = m.setdefault("descartes_por_motivo", {}); d[motivo] = int(d.get(motivo) or 0) + 1
+        MP.gravar(m); return
     _garantir()
     arq = QUAR / f"{date.today().isoformat()}.jsonl"
     with open(arq, "a", encoding="utf-8") as fh:
@@ -181,12 +216,16 @@ def avaliar(ia, missao: dict, achados: list[dict]) -> dict:
           "motivo_do_insucesso": motivo if not uteis else None,
           "explicacao": MOTIVOS.get(motivo, motivo) if not uteis else None,
           "melhoria_sugerida": sugestao, "licao_do_voo": licao[:200]}
-    write_json(AVAL / f"{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}-{re.sub(r'[^a-z0-9]+', '-', motor.lower())[:24]}.json", av)
+    if _MANUAL:                                       # 16/10: a missão entra no MANUAL DO PILOTO (aprende a cada 100)
+        from . import manual_piloto as MP
+        MP.registrar(motor, av)
+    else:
+        write_json(AVAL / f"{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}-{re.sub(r'[^a-z0-9]+', '-', motor.lower())[:24]}.json", av)
 
     for a in uteis + descartados:                    # abordado é abordado: não se volta nele
         marcar_tratado(a.get("url") or a.get("titulo"), a.get("titulo") or "",
                        "aproveitado" if a in uteis else "descartado",
-                       a.get("porque_serve") or a.get("porque_nao") or "")
+                       a.get("porque_serve") or a.get("porque_nao") or "", motor=motor)
     if sugestao:
         _guardar_melhoria(motor, sugestao, av["efetividade"])
     if not uteis:
@@ -216,6 +255,13 @@ def _motivo_do_insucesso(licao: str, achados: list, uteis: list) -> str:
 def _guardar_licao(motor: str, motivo: str, tipo: str) -> None:
     if _e_ensaio(motor):
         return
+    if _MANUAL:
+        from . import manual_piloto as MP
+        m = MP.ler(motor); it = m.setdefault("licoes", {}).setdefault(f"{motor}|{motivo}", {"motor": motor, "motivo": motivo, "vezes": 0, "tipos": []})
+        it["vezes"] += 1; it["ultima"] = date.today().isoformat(); it["explicacao"] = MOTIVOS.get(motivo, motivo)
+        if tipo and tipo not in it["tipos"]:
+            it["tipos"].append(tipo)
+        MP.gravar(m); return
     d = load_json(LICOES) if LICOES.exists() else {"itens": {}}
     k = f"{motor}|{motivo}"
     it = d.setdefault("itens", {}).setdefault(k, {"motor": motor, "motivo": motivo, "vezes": 0, "tipos": []})
@@ -233,6 +279,11 @@ def _guardar_licao(motor: str, motivo: str, tipo: str) -> None:
 def _guardar_melhoria(motor: str, sugestao: str, efetividade: float) -> None:
     if _e_ensaio(motor):
         return
+    if _MANUAL:
+        from . import manual_piloto as MP
+        m = MP.ler(motor); m.setdefault("melhorias", []).insert(0, {"motor": motor, "sugestao": sugestao,
+            "efetividade_na_hora": efetividade, "em": now_iso()[:16], "aplicada": False})
+        m["melhorias"] = m["melhorias"][:120]; MP.gravar(m); return
     d = load_json(MELHORIAS) if MELHORIAS.exists() else {"itens": []}
     d.setdefault("itens", []).insert(0, {"motor": motor, "sugestao": sugestao,
                                          "efetividade_na_hora": efetividade, "em": now_iso()[:16],
@@ -244,6 +295,8 @@ def _guardar_melhoria(motor: str, sugestao: str, efetividade: float) -> None:
 
 def faxina(dias: int = 3) -> dict:
     """A cada 3 dias: quarentena velha sai, lições viram regra, o sistema fica só com o que presta."""
+    if _MANUAL:                                       # 16/10: o ciclo de 100 missões do MANUAL substitui a faxina
+        return {"faxina": "não se aplica — o aprendizado é feito a cada 100 missões no Manual do Piloto"}
     _garantir()
     corte = (date.today() - timedelta(days=dias)).isoformat()
     apagados, guardados = 0, 0
@@ -292,6 +345,15 @@ def faxina(dias: int = 3) -> dict:
 
 
 def publicar() -> dict:
+    if _MANUAL:                                       # 16/10: o painel lê os MANUAIS DOS PILOTOS
+        ms = _manuais()
+        saida = {"em": now_iso(), "fonte": "livros especiais — Manual do Piloto", "pilotos": [
+            {"piloto": m.get("piloto"), "missoes": m.get("missoes_total"), "ciclos": len(m.get("ciclos") or []),
+             "pendentes_para_o_proximo_ciclo": len(m.get("missoes_pendentes") or []),
+             "ultimo_ciclo": (m.get("ciclos") or [None])[-1], "regras_em_vigor": m.get("regras_em_vigor") or [],
+             "licoes": len(m.get("licoes") or {}), "melhorias": (m.get("melhorias") or [])[:10]} for m in ms]}
+        write_json(PUB, saida)
+        return {"pilotos": len(ms)}
     _garantir()
     lic = load_json(LICOES) if LICOES.exists() else {"itens": {}}
     mel = load_json(MELHORIAS) if MELHORIAS.exists() else {"itens": []}
@@ -346,6 +408,9 @@ def linhas_unicas(arq: Path):
 
 def avaliacoes_arquivadas(pasta: Path | None = None, desde: str | None = None) -> list[dict]:
     """Avaliações dos arquivos mensais, sem repetição; `desde` (ISO) pula os meses inteiros anteriores sem abri-los."""
+    if _MANUAL and pasta is None:                     # 16/10: as missões estão no Manual (pendentes do ciclo atual)
+        return [{**x, "motor": m.get("piloto")} for m in _manuais() for x in (m.get("missoes_pendentes") or [])
+                if not desde or str(x.get("em") or "") >= desde]
     out = []
     for f in sorted((pasta or AVAL).glob("arquivo-*.jsonl.xz")):
         mes = re.search(r"arquivo-(\d{4}-\d{2})", f.name)
