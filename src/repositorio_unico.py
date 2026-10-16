@@ -304,8 +304,8 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
     _PNCP = (_j(ROOT / "estado/pncp/dossies.json", {}) or {}).get("dossies") or {}                              # 15/10
     hoje = hoje or date.today().isoformat()
     V = (_j(ROOT / "dados/editais/vereditos_revisao.json", {}) or {}).get("vereditos") or {}
-    certs = dict((_j(ROOT / "estado/cartorio/certidoes.json", {}) or {}).get("certidoes") or {})
-    for k, m in ((_j(ROOT / "estado/cartorio/certidoes_manuais.json", {}) or {}).get("certidoes") or {}).items():
+    certs = dict((__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/cartorio/certidoes.json", {}) or {}).get("certidoes") or {})
+    for k, m in ((__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/cartorio/certidoes_manuais.json", {}) or {}).get("certidoes") or {}).items():
         a = certs.get(k) or {}
         certs[k] = {**a, **m, "itens": {**(a.get("itens") or {}), **(m.get("itens") or {})}, "dispensas": {**(a.get("dispensas") or {}), **(m.get("dispensas") or {})}}
     livros = {}

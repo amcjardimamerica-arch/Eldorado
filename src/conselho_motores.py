@@ -74,7 +74,7 @@ def dados() -> dict:
     return {"esq": (_j(ROOT / "estado/esquadra.json", {}).get("sensores") or {}),
             "diario": (_j(ROOT / "estado/esquadra_diario.json", {}).get("sensores") or {}),
             "itens": [x for L in (fl.get("itens_por_uf") or {}).values() for x in L],
-            "certs": (_j(ROOT / "estado/cartorio/certidoes.json", {}).get("certidoes") or {}),
+            "certs": (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/cartorio/certidoes.json", {}).get("certidoes") or {}),
             "cob": _j(ROOT / "docs/dados/cobertura.json", {}),
             "agenda": (_j(ROOT / "config/agenda_motores.json", {}).get("motores") or {}),
             "bib": (_j(ROOT / "estado/cartorio/biblioteca_sites.json", {}).get("sites") or {})}

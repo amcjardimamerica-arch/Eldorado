@@ -30,7 +30,7 @@ def _j(p: Path, padrao):
 
 
 def candidatas() -> list[dict]:
-    C = (_j(CERT, {}) or {}).get("certidoes") or {}
+    C = (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(CERT, {}) or {}).get("certidoes") or {}
     # 15/10/2026: além de 12 de 12, o link oficial tem de estar APROVADO na curadoria (src/curadoria_links.py)
     cur = {x.get("id"): x.get("curadoria") for x in ((_j(ROOT / "estado/curadoria_links.json", {}) or {}).get("itens") or [])}
     out = []

@@ -25,7 +25,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import expandir_coleta_br as X  # noqa: E402
 
 ITENS = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador",
-         "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação")
+         "Território", "Esfera", "Requisitos", "Anexos", "Modalidade", "Área de atuação")
 STATUS_OK = ("confirmado", "dispensado", "dispensado pelo edital", "não informado no edital")
 PASTA = ROOT / "dados/coleta_3_anos"
 HOJE = date(2026, 10, 3)

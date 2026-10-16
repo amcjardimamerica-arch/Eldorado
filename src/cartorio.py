@@ -39,6 +39,21 @@ from . import fila_retentativa as FR
 ROOT = Path(__file__).resolve().parents[1]
 PASTA = ROOT / "estado/cartorio"
 CERTIDOES = PASTA / "certidoes.json"
+_CERT_ORIGINAL = CERTIDOES                                 # 16/10: só o arquivo ORIGINAL vai aos livros (teste aponta outro)
+
+
+def _ler_certidoes() -> dict:
+    if CERTIDOES is _CERT_ORIGINAL:
+        return __import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(CERTIDOES, {}) or {}
+    return _j(CERTIDOES, {}) or {}
+
+
+def _gravar_certidoes(doc: dict) -> None:
+    if CERTIDOES is _CERT_ORIGINAL:
+        __import__("src.livro_arquivo", fromlist=["x"]).guardar_lote([(CERTIDOES, doc)])   # NO LIVRO
+    else:
+        CERTIDOES.parent.mkdir(parents=True, exist_ok=True)
+        CERTIDOES.write_text(json.dumps(doc, ensure_ascii=False, indent=1), encoding="utf-8")
 LIVROS_OUT = PASTA / "resultados_livros.jsonl"
 INTERCEPTADOR = PASTA / "para_o_interceptador.json"
 RELATORIO = ROOT / "docs/dados/cartorio.json"
@@ -554,7 +569,7 @@ _CACHE: dict = {}
 
 def certidao(eid: str) -> dict | None:
     if "c" not in _CACHE:
-        _CACHE["c"] = (_j(CERTIDOES, {}) or {}).get("certidoes") or {}
+        _CACHE["c"] = (_ler_certidoes() or {}).get("certidoes") or {}
     return _CACHE["c"].get(f"estrela:{eid}")
 
 
@@ -619,7 +634,7 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
     limite = limite or int(c["oportunidades_por_execucao"]); segundos = segundos or int(c["segundos_por_execucao"])
     rede = rede or Rede(pausa=float(c["pausa_segundos"]))
     rede_ponte = rede_ponte or Rede(baixar=_baixar_ponte, pausa=float(c["pausa_segundos"]))
-    base = _j(CERTIDOES, {}) or {}
+    base = _ler_certidoes() or {}
     certs = base.get("certidoes") or {}
     # 10/10: CERTIDÕES DA REVISÃO HUMANA (Partes 1, 2 e 3) — incorporadas a cada execução; a revisão prevalece nos itens
     for _k, _m in ((_j(PASTA / "certidoes_manuais.json", {}) or {}).get("certidoes") or {}).items():
@@ -759,7 +774,7 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
                                                 "ordem": [f"{n} · {LN.ABORDAGENS[n]}" for n in LN.ORDEM[k]]} for k in LN.ORDEM}}
     if gravar:
         PASTA.mkdir(parents=True, exist_ok=True)
-        CERTIDOES.write_text(json.dumps({"em": _agora(), "versao": VERSAO, "certidoes": certs}, ensure_ascii=False, indent=1), encoding="utf-8")
+        _gravar_certidoes({"em": _agora(), "versao": VERSAO, "certidoes": certs})   # 16/10: NO LIVRO
         try:
             FR.gravar()                                  # 15/10: fila de retentativa das leituras parciais
         except Exception:  # noqa: BLE001
