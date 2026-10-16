@@ -226,6 +226,9 @@ def fases(ctx: dict) -> list[dict]:
         {"etapa": "recalcular", "finalidade": "estados das oportunidades com as certidões e validações desta passagem",
          "cmds": [[py, "-m", "src.fluxo_oportunidades", "--completo"]], "t": 300,
          "pular": "o Cartório não certificou nada nesta passagem" if _idade_h(cert) > 0.5 else None},
+        # 5f' LIVROS = BANCO — cada oportunidade cria/vincula o seu livro e o livro reúne tudo (links, checklist, análises)
+        {"etapa": "livros", "finalidade": "os livros são o banco: cada oportunidade cria ou vincula o seu livro com links, checklist12, achados e análises",
+         "cmds": [[py, "-m", "src.banco_livros"]], "t": 300, "pular": None},
         # 5g BIBLIOTECA — leitor documental, selos e decisões da titular nos livros (uma vez por dia)
         {"etapa": "biblioteca_diaria", "finalidade": "leitor documental, selos e decisões da titular nos livros (1 vez por dia)",
          "cmds": [[py, "-c", "from src.leitor_documental import aplicar; print(aplicar())"], [py, "-m", "src.selo_livros"], [py, "-m", "src.decisoes_titular"]],
