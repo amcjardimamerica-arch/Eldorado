@@ -71,7 +71,7 @@ def _guardar_fixos(P: dict) -> None:
 
 
 def _erros_interceptador() -> list[dict]:
-    vs = [v for f in sorted(glob.glob(str(ROOT / "estado/interceptador/relatorios/*.json"))) for v in (_j(Path(f), {}).get("voos") or [])]
+    vs = [v for f in sorted(glob.glob(str(ROOT / "biblioteca_alexandria/livros/especiais/interceptador/relatorios/*.json"))) for v in (_j(Path(f), {}).get("voos") or [])]
     return [v for v in vs if v.get("erro") or v.get("qualidade") in ("insuficiente", "sem_evidencia")], vs
 
 
@@ -314,7 +314,7 @@ def ciclo_criativo() -> dict:
         else:
             est["pool"] = _limpo; pe["estrategia_criativa"] = est
     # ── INTERCEPTADOR: pesquisas = estudos desde o reset
-    vs = [v for f in sorted(glob.glob(str(ROOT / "estado/interceptador/relatorios/*.json"))) for v in (_j(Path(f), {}).get("voos") or [])]
+    vs = [v for f in sorted(glob.glob(str(ROOT / "biblioteca_alexandria/livros/especiais/interceptador/relatorios/*.json"))) for v in (_j(Path(f), {}).get("voos") or [])]
     vs = _na_semana(vs, desde)
     pi = P.setdefault("interceptador", {}); ei = pi.get("estrategia_criativa"); hi = pi.setdefault("estrategias_anteriores", [])
     m = len(vs)

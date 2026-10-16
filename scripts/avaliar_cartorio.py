@@ -7,9 +7,9 @@ Mede a extração atual dos 12 itens contra os casos JÁ COMPROVADOS por leitura
 Duas etapas:
   --baixar   (precisa de rede; roda no GitHub Actions) baixa o documento de cada caso com a MESMA rede e a MESMA
              leitura do Cartório (src.cartorio.Rede + cartorio_leitura.paginas) e guarda o texto por página em
-             estado/cartorio/avaliacao/textos.json.gz — sem guardar o PDF.
+             biblioteca_alexandria/livros/anexos/cartorio_avaliacao/textos.json.gz — sem guardar o PDF.
   --medir    (sem rede) roda cartorio_leitura.extrair no texto guardado, compara item a item com o gabarito e grava
-             estado/cartorio/avaliacao/resultado.json + docs/relatorios/avaliacao-cartorio-AAAA-MM-DD.md.
+             biblioteca_alexandria/livros/anexos/cartorio_avaliacao/resultado.json + docs/relatorios/avaliacao-cartorio-AAAA-MM-DD.md.
 
 Classificação de cada item de cada caso:
   acerto       a extração achou o item e o valor confere com o gabarito
@@ -40,7 +40,7 @@ sys.path.insert(0, str(ROOT))
 from src import cartorio_leitura as L  # noqa: E402
 
 FILA = ROOT / "dados/revisoes/fila_chrome_2026_10_11"
-PASTA = ROOT / "estado/cartorio/avaliacao"
+PASTA = ROOT / "biblioteca_alexandria/livros/anexos/cartorio_avaliacao"
 TEXTOS = PASTA / "textos.json.gz"
 RESULTADO = PASTA / "resultado.json"
 HISTORICO = PASTA / "historico.json"

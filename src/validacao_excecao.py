@@ -3,7 +3,7 @@ documento oficial segue para o Farol sem fila humana; a conferência humana fica
 
 Candidata: certidão do Cartório com link oficial e nenhum item faltando (12 de 12 certificados ou dispensados no
 documento). TRAVA: a passagem automática só é ligada quando a avaliação do Cartório contra o gabarito humano
-(estado/cartorio/avaliacao/resultado.json) mostra acerto geral ≥ REGUA_PCT — antes disso a lista é produzida e as
+(biblioteca_alexandria/livros/anexos/cartorio_avaliacao/resultado.json) mostra acerto geral ≥ REGUA_PCT — antes disso a lista é produzida e as
 candidatas vão à frente da fila humana, mas nada é validado sozinho.
 Saídas: estado/comando/validacao_excecao.json (sempre) e, com a trava aberta,
 dados/oportunidades/validacao_mapa/validacao_0001-excecao.json (mesmo formato da validação, decisão "valida").
@@ -16,7 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CERT = ROOT / "estado/cartorio/certidoes.json"
-AVAL = ROOT / "estado/cartorio/avaliacao/resultado.json"
+AVAL = ROOT / "biblioteca_alexandria/livros/anexos/cartorio_avaliacao/resultado.json"
 SAIDA = ROOT / "estado/comando/validacao_excecao.json"
 VALIDACAO = ROOT / "dados/oportunidades/validacao_mapa/validacao_0001-excecao.json"
 REGUA_PCT = 85.0

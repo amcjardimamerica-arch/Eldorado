@@ -53,7 +53,7 @@ def livros_dos_alvos(ids: set[str], cat: dict) -> set[str]:
 def run(base_main: str, pasta: str | None = None, janela_min: int = 90) -> dict:
     main = json.loads(Path(base_main).read_text(encoding="utf-8"))
     novo = json.loads(CAT.read_text(encoding="utf-8"))
-    ids = alvos_do_voo(Path(pasta or ROOT / "estado/interceptador/relatorios"), janela_min)
+    ids = alvos_do_voo(Path(pasta or ROOT / "biblioteca_alexandria/livros/especiais/interceptador/relatorios"), janela_min)
     trocar = livros_dos_alvos(ids, novo)
     por_id = {x["id"]: x for x in novo.get("motores") or []}
     saida = []

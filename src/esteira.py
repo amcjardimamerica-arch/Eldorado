@@ -10,7 +10,7 @@ Confirmação do site oficial: (a) o Interceptador confirmou (esta esteira ou es
 de domínio público (.gov.br, .leg.br, .jus.br, .mp.br, pncp.gov.br) e o classificador não o trata como republicador.
 A rede neural ordena as filas (nota maior e prazo mais próximo primeiro) e a nota de cada etapa fica no histórico do selo.
 Informação nova de um motor reabre o livro de uma estante (tentativas voltam a zero). O aprendizado fica no livro.
-Fila de trabalho do computador do titular: docs/dados/esteira.json › filas · resultados: estado/esteira/resultados_local.jsonl
+Fila de trabalho do computador do titular: docs/dados/esteira.json › filas · resultados: biblioteca_alexandria/livros/anexos/esteira/resultados_local.jsonl
 """
 from __future__ import annotations
 
@@ -24,8 +24,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CFG = ROOT / "config/esteira.json"
 CAT = ROOT / "biblioteca_alexandria/fontes/motores.json"
-RESULTADOS = ROOT / "estado/esteira/resultados_local.jsonl"
-APLICADOS = ROOT / "estado/esteira/aplicados.json"
+RESULTADOS = ROOT / "biblioteca_alexandria/livros/anexos/esteira/resultados_local.jsonl"
+APLICADOS = ROOT / "biblioteca_alexandria/livros/anexos/esteira/aplicados.json"
 SAIDA = ROOT / "docs/dados/esteira.json"
 DOMINIO_PUBLICO = re.compile(r"\.(gov|leg|jus|mp)\.br(/|$)|(^|//)(www\.)?pncp\.gov\.br")
 DATA = re.compile(r"\b(\d{2}/\d{2}/20\d\d|20\d\d-\d{2}-\d{2})\b")

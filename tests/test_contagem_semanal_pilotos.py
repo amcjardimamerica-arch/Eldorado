@@ -121,7 +121,7 @@ class TesteAprendizadoNaSemana(_Base):
     def test_cem_buscas_contadas_dentro_da_semana(self):
         from src.skills import aprendizado as A
         rel = [{"em": "2026-10-01T10:00:00+00:00", "qualidade": "insuficiente"}] * 150 + [{"em": "2026-10-06T10:00:00+00:00", "qualidade": "parcial"}] * 30
-        self.w("estado/interceptador/relatorios/2026-10-06.json", {"voos": rel})
+        self.w("biblioteca_alexandria/livros/especiais/interceptador/relatorios/2026-10-06.json", {"voos": rel})
         par = {"interceptador": {"estrategia_criativa": {"id": "I007", "pesquisas_no_inicio": 150, "rotas": ["a"]}, "estrategias_anteriores": []},
                "espiao": {"estrategia_criativa": {"id": "E001", "pool": ["q"] * 9, "pesquisas_no_inicio": 0}, "estrategias_anteriores": []}}
         self.w("config/parametros_pilotos.json", par)
@@ -133,7 +133,7 @@ class TesteAprendizadoNaSemana(_Base):
             self.assertEqual(pi["estrategia_criativa"]["id"], "I007", "30 estudos na semana: ainda não troca")
             self.assertEqual(pi["estrategia_criativa"]["pesquisas_no_inicio"], 0)
             self.assertEqual(pi["estrategia_criativa"]["contagem_desde"], "2026-10-05T03:00:00+00:00")
-            self.w("estado/interceptador/relatorios/2026-10-07.json", {"voos": [{"em": "2026-10-07T10:00:00+00:00", "qualidade": "validada"}] * 70})
+            self.w("biblioteca_alexandria/livros/especiais/interceptador/relatorios/2026-10-07.json", {"voos": [{"em": "2026-10-07T10:00:00+00:00", "qualidade": "validada"}] * 70})
             A.ciclo_criativo()
             pi = A.parametros()["interceptador"]
             self.assertEqual(pi["estrategia_criativa"]["id"], "I002", "100 estudos dentro da semana: estratégia nova")

@@ -31,7 +31,7 @@ jobs:
             git fetch -q origin main && git reset -q --hard origin/main
             cp /tmp/x/* entrada_manual/skills_documentais/
             python3 scripts/importar_verificacao_livros.py entrada_manual/skills_documentais/resultados_robo_*.jsonl || true
-            git add entrada_manual/skills_documentais estado/esteira/resultados_local.jsonl dados/oportunidades/pareceres_livros
+            git add entrada_manual/skills_documentais biblioteca_alexandria/livros/anexos/esteira/resultados_local.jsonl dados/oportunidades/pareceres_livros
             git commit -q -m "executor documental: $(date -u +%F\ %H:%M)" || break
             git push -q origin main && break; sleep 7
           done

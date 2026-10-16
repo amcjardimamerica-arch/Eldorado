@@ -2,7 +2,7 @@
 
 O verificador (com navegador, no IP do titular) trabalha um bloco por vez (docs/verificacao-livros/blocos/) e devolve
 um arquivo resultados_<bloco>.jsonl — uma linha por livro. Este script CONFERE cada linha e a entrega à esteira
-(estado/esteira/resultados_local.jsonl), que promove o selo (bronze → prata → ouro) e inclui as edições anteriores no
+(biblioteca_alexandria/livros/anexos/esteira/resultados_local.jsonl), que promove o selo (bronze → prata → ouro) e inclui as edições anteriores no
 histórico (análise preditiva). Também guarda cada verificação como parecer do livro (dados/oportunidades/pareceres_livros/).
 Uso: python3 scripts/importar_verificacao_livros.py <arquivo.jsonl> [mais arquivos...]
 """
@@ -16,7 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-RESULTADOS = ROOT / "estado/esteira/resultados_local.jsonl"
+RESULTADOS = ROOT / "biblioteca_alexandria/livros/anexos/esteira/resultados_local.jsonl"
 PARECERES = ROOT / "dados/oportunidades/pareceres_livros"
 AGREGADORES = re.compile(r"capitaai|prosas\.com|observatorio3setor|captadores\.org|editaisculturais|bit\.ly|google\.|facebook\.|instagram\.", re.I)
 CAMPOS = {"livro", "etapa", "site_oficial", "url_edital", "confirmado_localmente", "edital_validado", "prazo_inscricao_inicio",
