@@ -373,7 +373,8 @@ PROIBIDOS = ["estado/piloto/briefings",          # cresce a cada lote absorvido 
              "biblioteca_alexandria/oportunidades",
              "dados/editais/textos", "estado/interceptador/relatorios", "estado/cartorio/avaliacao", "estado/esteira",  # passo 2(c)
              "dados/oportunidades/oportunidades.jsonl", "dados/oportunidades/repositorio_unico.json", "dados/oportunidades/validacao_mapa",
-             "estado/piloto/catalogo_terceiro_setor.json", "estado/piloto/bordo.json", "estado/piloto/cache_buscas.json"]                           # passo 2(b): viraram anexos dos livros          # passo 2(a): análises de oportunidade
+             "estado/piloto/catalogo_terceiro_setor.json", "estado/piloto/bordo.json", "estado/piloto/cache_buscas.json",
+             "biblioteca_alexandria/oportunidades_sem_prazo", "biblioteca_alexandria/oportunidades_mapeadas"]                           # passo 2(b): viraram anexos dos livros          # passo 2(a): análises de oportunidade
 
 
 def absorver_proibidos() -> dict:
