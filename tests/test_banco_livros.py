@@ -295,3 +295,27 @@ class ConteudoModalidade16_10(unittest.TestCase):
         self.assertIsNone(lv["oportunidade"]["checklist12"]["Modalidade"]["valor"])            # finalidade → em aberto
         self.assertEqual(lv["livro"]["checklist"]["Modalidade"]["valor"], "Termo de Fomento")
         self.assertEqual(lv["livro"]["historico_parametros"][0]["mudou"]["Modalidade"]["valor"], "elegível · fomento")   # log intacto
+
+
+class UnirDuplicados16_10(unittest.TestCase):
+    """O mesmo programa em dois livros vira um só; editais de número diferente ficam separados."""
+    def test_unir(self):
+        from src import livro_arquivo as LA
+        r = Path(tempfile.mkdtemp()); (r / "biblioteca_alexandria/fontes").mkdir(parents=True)
+        cat = r / "biblioteca_alexandria/fontes/motores.json"
+        cat.write_text(json.dumps({"motores": [
+            {"id": "a", "programa": "EDITAL Nº 12/2023 - CULTURA LGBTQIAPN+ - LEI PAULO GUSTAVO", "orgao": "Secretaria de Cultura de Goiânia",
+             "uf": "GO", "historico": [{"id": "h1"}], "oportunidade": {"id_repositorio": "x"}},
+            {"id": "b", "programa": "Edital nº 12/2023 - cultura lgbtqiapn+ - lei paulo gustavo", "orgao": "Secretaria de Cultura de Goiânia",
+             "uf": "GO", "historico": [{"id": "h2"}], "coleta": {"c1": {"id": "c1"}}, "pagina": "https://goiania.go.gov.br/lpg12"},
+            {"id": "c", "programa": "Edital 002/2023 Áreas Culturais Goiânia Fomento", "orgao": "Secretaria de Cultura de Goiânia", "uf": "GO"},
+            {"id": "d", "programa": "Edital 004/2023 Áreas Culturais Goiânia Fomento", "orgao": "Secretaria de Cultura de Goiânia", "uf": "GO"}]}))
+        with mock.patch.object(B, "CAT", cat), mock.patch.object(LA, "PASTA", r / "biblioteca_alexandria/livros"), \
+                mock.patch.object(LA, "ORIGENS", r / "biblioteca_alexandria/livros/_origens.json"):
+            res = B.unir_duplicados()
+        L = {x["id"]: x for x in json.loads(cat.read_text())["motores"]}
+        self.assertEqual(sorted(L), ["a", "c", "d"])                                   # b juntou-se a 'a' (que tem oportunidade)
+        self.assertEqual({e["id"] for e in L["a"]["historico"]}, {"h1", "h2"})
+        self.assertIn("c1", L["a"]["coleta"]); self.assertIn("https://goiania.go.gov.br/lpg12", L["a"]["paginas"])
+        self.assertEqual(L["a"]["juntados"][0]["id"], "b")
+        self.assertGreaterEqual(res["mantidos_separados"], 1)                          # 002/2023 e 004/2023 ficam separados

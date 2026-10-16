@@ -256,6 +256,12 @@ def fases(ctx: dict) -> list[dict]:
         # 5f' LIVROS = BANCO — cada oportunidade cria/vincula o seu livro e o livro reúne tudo (links, checklist, análises)
         {"etapa": "livros", "finalidade": "os livros são o banco: cada oportunidade cria ou vincula o seu livro com links, checklist12, achados e análises",
          "cmds": [[py, "-m", "src.banco_livros"]], "t": 300, "pular": None},
+        # 16/10/2026 (titular): livros DUPLICADOS do mesmo programa viram um só (uma vez por dia)
+        {"etapa": "unir_livros", "finalidade": "o mesmo programa em dois livros: o conteúdo é juntado num só",
+         "cmds": [[py, "-c", "import json; from src import banco_livros as B; r=B.unir_duplicados(); print(json.dumps({k: v for k, v in r.items() if k != 'lista'}, ensure_ascii=False))"]],
+         "t": 600, "pular": "já feita hoje" if (ROOT / "estado/unir_livros.txt").exists() and
+                  (ROOT / "estado/unir_livros.txt").read_text(encoding="utf-8").strip() == _hoje_brt() else None,
+         "depois": lambda: (ROOT / "estado/unir_livros.txt").write_text(_hoje_brt(), encoding="utf-8")},
         # 5g BIBLIOTECA — leitor documental, selos e decisões da titular nos livros (uma vez por dia)
         {"etapa": "biblioteca_diaria", "finalidade": "leitor documental, selos e decisões da titular nos livros (1 vez por dia)",
          "cmds": [[py, "-c", "from src.leitor_documental import aplicar; print(aplicar())"], [py, "-m", "src.selo_livros"], [py, "-m", "src.decisoes_titular"]],

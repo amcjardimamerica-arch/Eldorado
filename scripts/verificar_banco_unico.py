@@ -24,7 +24,7 @@ AREAS = ("dados", "estado", "biblioteca_alexandria")
 LIVROS = re.compile(r"^biblioteca_alexandria/(fontes/motores\.json|livros/)")
 FAROL = re.compile(r"^(dados/farol|dados/associacoes|biblioteca_alexandria/associacoes)(/|$)")
 CONTROLE = re.compile(r"^estado/(esquadra[^/]*\.json|achados_vistos\.json|fila_retentativa\.json|comando/|maestro[^/]*|analise_[^/]*|"
-                      r"expurgo/|[a-z_]*migracao\.json|modalidade_[a-z]+\.json|rotas/|ponte/|robots[^/]*|pausa[^/]*|vigilancia_diaria\.txt|"
+                      r"expurgo/|[a-z_]*migracao\.json|modalidade_[a-z]+\.json|rotas/|ponte/|robots[^/]*|pausa[^/]*|vigilancia_diaria\.txt|unir_livros\.txt|"
                       r"diagnostico_[^/]*|sala[^/]*|alerta[^/]*|saude[^/]*|cursores?[^/]*)")
 
 

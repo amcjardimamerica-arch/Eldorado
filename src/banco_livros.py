@@ -610,5 +610,82 @@ def revisar_modalidade_uma_vez() -> dict:
     marco.write_text(json.dumps({"em": _agora(), **r}, ensure_ascii=False, indent=1), encoding="utf-8")
     return {"revisao": "feita agora", **r}
 
+
+def unir_duplicados(gravar: bool = True) -> dict:
+    """16/10/2026 (titular): o índice revela o MESMO programa em dois livros; o conteúdo é juntado num só.
+    Fica o livro com oportunidade aberta; senão, o de histórico maior; senão, o mais antigo. Junta achados, registros
+    brutos, agregador, histórico (sem repetir edição), páginas e o arquivo do livro; o controle dos arquivos absorvidos
+    passa a apontar para o livro que fica; 'juntados' guarda o rastro. Dois livros com oportunidades abertas DIFERENTES
+    não são unidos."""
+    from .indice_livros import Indice, entrada
+    from . import livro_arquivo as LA
+    cat_doc = _j(CAT, {"motores": []}); L = cat_doc.get("motores") or []
+    por = {lv["id"]: lv for lv in L if lv.get("id")}
+    I = Indice([entrada(lv) for lv in L if lv.get("id")])
+    pares = []
+    for lv in L:
+        o, _s, _m = I.encontrar({"titulo": lv.get("programa"), "orgao": lv.get("orgao"), "uf": lv.get("uf"),
+                                 "municipio": lv.get("municipio"), "url": lv.get("pagina")}, excluir=lv.get("id"))
+        if o and o in por:
+            par = tuple(sorted([lv["id"], o]))
+            if par not in pares:
+                pares.append(par)
+
+    def peso(lv):
+        return (1 if isinstance(lv.get("oportunidade"), dict) else 0, len(lv.get("historico") or []), -int(str(lv.get("criado_em") or "9999")[:4] or 9999))
+    juntados, mantidos_separados, mapa = [], 0, {}
+    for a, b in pares:
+        a, b = mapa.get(a, a), mapa.get(b, b)
+        if a == b or a not in por or b not in por:
+            continue
+        A, B = por[a], por[b]
+        import re as _re
+        _num = lambda t: set(_re.findall(r"(?i)(?:n[ºo°.]*\s*|edital\s+|chamamento\s+p[uú]blico\s+n?[ºo°]?\s*)0*(\d{1,4})\s*/\s*(\d{4})", str(t or "")))
+        _inc = lambda t: set(_re.findall(r"(?i)\binciso\s+([ivxl]+)\b", str(t or "")))
+        na, nb, ia, ib = _num(A.get("programa")), _num(B.get("programa")), _inc(A.get("programa")), _inc(B.get("programa"))
+        if (na and nb and not (na & nb)) or (ia and ib and ia != ib):
+            mantidos_separados += 1; continue           # editais DIFERENTES do mesmo órgão (número ou inciso): não une
+        oa, ob = A.get("oportunidade"), B.get("oportunidade")
+        if isinstance(oa, dict) and isinstance(ob, dict) and oa.get("id_repositorio") != ob.get("id_repositorio"):
+            mantidos_separados += 1; continue
+        fica, sai = (A, B) if peso(A) >= peso(B) else (B, A)
+        for sec in ("coleta", "brutos", "agregador"):
+            if sai.get(sec):
+                fica.setdefault(sec, {}); fica[sec] = {**sai[sec], **fica[sec]}
+        ids_h = {e.get("id") for e in fica.get("historico") or [] if isinstance(e, dict)}
+        for e in sai.get("historico") or []:
+            if isinstance(e, dict) and e.get("id") not in ids_h:
+                fica.setdefault("historico", []).append(e); ids_h.add(e.get("id"))
+        pags = [x for x in [*(fica.get("paginas") or []), sai.get("pagina"), *(sai.get("paginas") or [])] if isinstance(x, str)]
+        fica["paginas"] = list(dict.fromkeys(pags))
+        if not isinstance(fica.get("oportunidade"), dict) and isinstance(sai.get("oportunidade"), dict):
+            fica["oportunidade"] = sai["oportunidade"]
+        fica.setdefault("juntados", []).append({"id": sai["id"], "programa": sai.get("programa"), "em": _agora()[:10]})
+        juntados.append((fica["id"], sai["id"], fica.get("programa"), sai.get("programa")))
+        mapa[sai["id"]] = fica["id"]
+        if gravar:
+            d_f, d_s = LA.ler(fica["id"]), LA.ler(sai["id"])
+            for rel, ent in (d_s.get("acervo") or {}).items():
+                d_f.setdefault("acervo", {}).setdefault(rel, {}).update(ent)
+            if d_s.get("acervo"):
+                LA.gravar(fica["id"], d_f)
+            (LA.PASTA / f"{sai['id']}.json").unlink(missing_ok=True)
+        L.remove(sai); por.pop(sai["id"], None)
+    if gravar and juntados:
+        orig = _j(LA.ORIGENS, {}) or {}
+        for reg in orig.values():
+            for c in (reg.get("conteineres") or {}).values():
+                for e in c.get("entradas") or []:
+                    if e and e[0] in mapa:
+                        e[0] = mapa[e[0]]
+            if reg.get("inteiro") and reg["inteiro"][0] in mapa:
+                reg["inteiro"][0] = mapa[reg["inteiro"][0]]
+        LA.ORIGENS.parent.mkdir(parents=True, exist_ok=True)
+        LA.ORIGENS.write_text(json.dumps(orig, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        cat_doc["total"] = len(L)
+        CAT.write_text(json.dumps(cat_doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    return {"pares": len(pares), "juntados": len(juntados), "mantidos_separados": mantidos_separados,
+            "lista": [{"fica": f, "sai": s_, "programa_fica": pf, "programa_sai": ps} for f, s_, pf, ps in juntados]}
+
 if __name__ == "__main__":
     print(json.dumps(consolidar(), ensure_ascii=False))
