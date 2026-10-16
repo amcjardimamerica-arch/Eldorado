@@ -214,3 +214,33 @@ class LeituraUnicaNucleo(unittest.TestCase):
             depois = N.carregar_oportunidades()
             self.assertEqual(sorted(depois), ["a", "c"]); self.assertEqual(depois["a"]["status"], "verificada")
             self.assertEqual(base.read_text().count("\n"), 1)                                  # a base não foi regravada
+
+
+class SoTrechoELinks16_10(unittest.TestCase):
+    """16/10/2026 (titular): do motor fica só o trecho exato, o link da publicação, o link oficial e a identificação."""
+    def test_achado_minimo(self):
+        a = {"id": "1", "titulo": "Chamamento OSC", "url": "https://x.go.gov.br/a", "link_oficial": "https://x.go.gov.br/e.pdf",
+             "evidencia": "x" * 5000, "qualidade": {"nota": 9}, "destinacao": {"m": "y"}, "lexico": ["a"], "caracterizacao": "z", "uf": "GO"}
+        m = B.so_o_necessario(a)
+        self.assertEqual(set(m), {"id", "titulo", "url", "link_oficial", "evidencia", "uf"})
+        self.assertEqual(len(m["evidencia"]), B.TRECHO_MAX)
+
+    def test_historico_so_ligado_a_livro_de_oportunidade(self):
+        import gzip
+        from src import banco as BC
+        r = Path(tempfile.mkdtemp()); (r / "biblioteca_alexandria/fontes").mkdir(parents=True)
+        (r / "biblioteca_alexandria/fontes/motores.json").write_text(json.dumps({"motores": [
+            {"id": "lv1", "programa": "FIA Goiânia", "orgao": "Prefeitura de Goiânia", "pagina": "https://goiania.go.gov.br/fia", "coleta": {"a": {}}},
+            {"id": "lv2", "programa": "Livro sem oportunidade", "pagina": "https://y.go.gov.br/z"}]}))
+        arq = r / "h.jsonl.gz"
+        with gzip.open(arq, "wt", encoding="utf-8") as g:
+            for d in [{"_t": "historico", "chave": "k1", "ano": "2024", "id": "e1", "titulo": "FIA 2024", "url": "https://goiania.go.gov.br/fia"},
+                      {"_t": "historico", "chave": "k2", "ano": "2024", "id": "e2", "titulo": "Outro", "url": "https://y.go.gov.br/z"},
+                      {"_t": "historico", "chave": "k3", "ano": "2023", "id": "e3", "titulo": "Diário qualquer", "url": "https://qd.org/x"}]:
+                g.write(json.dumps(d) + "\n")
+        with mock.patch.object(BC, "RAIZ", r), mock.patch.object(BC, "CAMINHO_BANCO", r / "x.db"):
+            res = BC.historico_para_livros(arq)
+        self.assertEqual((res["ligadas_a_livros"], res["edicoes_removidas"]), (1, 2))       # lv2 não é livro de oportunidade
+        L = {lv["id"]: lv for lv in json.loads((r / "biblioteca_alexandria/fontes/motores.json").read_text())["motores"]}
+        h = L["lv1"]["historico_edicoes"][0]
+        self.assertEqual((h["link_publicacao"], h["link_oficial"], h["buscar_link_oficial"]), ("https://goiania.go.gov.br/fia", None, True))
