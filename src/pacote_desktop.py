@@ -22,7 +22,7 @@ def montar() -> dict:
     hoje = date.today().isoformat()
     alerta = load_json(ROOT / "estado/alerta_motores.json") if (ROOT / "estado/alerta_motores.json").exists() else {}
     fluxo = load_json(ROOT / "estado/fluxo_verificacao.json") if (ROOT / "estado/fluxo_verificacao.json").exists() else {}
-    fila = load_json(ROOT / "estado/fila_verificacao.json") if (ROOT / "estado/fila_verificacao.json").exists() else {}
+    fila = load_json(ROOT / "biblioteca_alexandria/livros/_vistas/fila_verificacao.json") if (ROOT / "biblioteca_alexandria/livros/_vistas/fila_verificacao.json").exists() else {}
     rotas = load_json(ROOT / "config/rotas_motores.json") if (ROOT / "config/rotas_motores.json").exists() else {}
     motores = [a for a in (alerta.get("alertas") or [])]
     locais = [a for a in motores if "coleta local" in a["problema"]]

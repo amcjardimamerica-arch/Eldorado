@@ -10,7 +10,7 @@ um chamamento — e o prazo tem de ser perseguido de imediato, em níveis:
      o modelo AVANÇADO com a regra do conselho: por que a tentativa simples não
      achou o edital ou a fonte, e qual a forma de obter.
 
-Estado: `estado/prazos_ia.json` — { edital_id: {tentativas:[...], prazo?, url?, status} }.
+Estado: `biblioteca_alexandria/livros/_vistas/prazos_ia.json` — { edital_id: {tentativas:[...], prazo?, url?, status} }.
 Só oportunidades do núcleo com evento registrado e situação 'possível'; cap por
 saída para economizar tokens. Prazo obtido só vale depois que o sensor abrir o
 link e confirmar — aqui ele fica como 'prazo indicado pela IA (a confirmar)'.
@@ -25,7 +25,7 @@ from datetime import date
 from .nucleo import ROOT, load_json, now_iso, write_json
 from .opressores import _chamar
 
-ESTADO = ROOT / "estado/prazos_ia.json"
+ESTADO = ROOT / "biblioteca_alexandria/livros/_vistas/prazos_ia.json"
 
 
 def _prompt_simples(e: dict) -> str:

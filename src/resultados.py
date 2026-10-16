@@ -3,7 +3,7 @@
 Revisita a página primária dos editais conhecidos procurando, no texto, os
 marcos da fase final: resultado preliminar, resultado final, homologação,
 prorrogação, retificação e fase de recurso. Cada achado vira um EVENTO datado
-em `estado/resultados_editais.jsonl`, consumido pelo calendário do dashboard —
+em `biblioteca_alexandria/livros/_vistas/resultados_editais.jsonl`, consumido pelo calendário do dashboard —
 que marca a data e sinaliza quando um prazo foi prorrogado.
 
 Determinístico, sem IA e sem tokens. O que a página não disser não é inventado.
@@ -55,7 +55,7 @@ def run(max_por_execucao: int = 25) -> dict:
     fontes = _fontes()
     politica = load_json(ROOT / "config/fontes.json")["politica"]
     registros = carregar_oportunidades()
-    saida = ROOT / "estado/resultados_editais.jsonl"
+    saida = ROOT / "biblioteca_alexandria/livros/_vistas/resultados_editais.jsonl"
     vistos = set()
     if saida.exists():
         for linha in saida.read_text(encoding="utf-8").splitlines():

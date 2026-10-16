@@ -1553,7 +1553,7 @@ def coletar(hoje: date | None = None) -> dict:
         "marcacoes_ia": (lambda m: {k: {kk: v[kk] for kk in ("titulo", "uf", "modo", "motivo", "desde", "vezes_vistas", "link_oficial") if kk in v} for k, v in m.items() if not v.get("resolvido_em")}
                           if m else {})(load_json(ROOT / "dados/editais/marcacoes_ia.json") if (ROOT / "dados/editais/marcacoes_ia.json").exists() else None),
         "fora_das_50": (lambda f: (f or {}).get("fora_das_50_maiores"))(
-            load_json(ROOT / "estado/fila_verificacao.json") if (ROOT / "estado/fila_verificacao.json").exists() else None),
+            load_json(ROOT / "biblioteca_alexandria/livros/_vistas/fila_verificacao.json") if (ROOT / "biblioteca_alexandria/livros/_vistas/fila_verificacao.json").exists() else None),
         "fluxo_verificacao": (lambda f: {k: (v if k != "aguardando_acao_externa" else {kk: vv for kk, vv in v.items() if kk != "itens"}) for k, v in f.items()} if f else None)(
             load_json(ROOT / "estado/fluxo_verificacao.json") if (ROOT / "estado/fluxo_verificacao.json").exists() else None),
         "achados_dia_fragmento": "dados/achados_dia.json",
@@ -1586,7 +1586,7 @@ def coletar(hoje: date | None = None) -> dict:
             load_json(ROOT / "estado/auditoria_motores.json") if (ROOT / "estado/auditoria_motores.json").exists() else None),
         "parametros_motores": (load_json(ROOT / "estado/parametros_motores.json") if (ROOT / "estado/parametros_motores.json").exists() else None),
         "fila_verificacao": (lambda f: {k: (v if k != "reprovados_por_objeto" else {kk: vv for kk, vv in v.items() if kk != "itens"}) for k, v in f.items() if k != "itens"} if f else None)(
-            load_json(ROOT / "estado/fila_verificacao.json") if (ROOT / "estado/fila_verificacao.json").exists() else None),
+            load_json(ROOT / "biblioteca_alexandria/livros/_vistas/fila_verificacao.json") if (ROOT / "biblioteca_alexandria/livros/_vistas/fila_verificacao.json").exists() else None),
         "drive": (load_json(ROOT / "config/drive.json") if (ROOT / "config/drive.json").exists() else {}),
         "arquivados_eldorado": (load_json(ROOT / "biblioteca_alexandria/livros/_acervo/editais/arquivados.json") if (ROOT / "biblioteca_alexandria/livros/_acervo/editais/arquivados.json").exists() else {}),
         "analise_editais": (load_json(ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json") if (ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json").exists() else {}),
@@ -1602,7 +1602,7 @@ def coletar(hoje: date | None = None) -> dict:
                                                     "status": (f.get("tentativas") or [{}])[-1].get("status"), "itens_ia": len(f.get("itens_ia") or {})}
                                                    for k, f in list(q.get("fila", {}).items())[:60]]})(load_json(ROOT / "estado/enquadramento.json") if (ROOT / "estado/enquadramento.json").exists() else {}),
         "prazos_ia": {k: {"status": v.get("status"), "fim": v.get("fim"), "inicio": v.get("inicio"), "url": v.get("url"), "conselho": bool(v.get("conselho"))}
-                      for k, v in (load_json(ROOT / "estado/prazos_ia.json") if (ROOT / "estado/prazos_ia.json").exists() else {}).items()
+                      for k, v in (load_json(ROOT / "biblioteca_alexandria/livros/_vistas/prazos_ia.json") if (ROOT / "biblioteca_alexandria/livros/_vistas/prazos_ia.json").exists() else {}).items()
                       if not k.startswith("_") and isinstance(v, dict)},
         "fontes_ativas": fontes_ativas,
         "areas_canonicas": list(AREAS_CANONICAS),

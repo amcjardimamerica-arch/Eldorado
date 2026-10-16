@@ -182,7 +182,7 @@ def montar(agora: datetime | None = None) -> dict:
            faz="Falha: a página deu o mesmo erro 5 vezes seguidas e saiu da fila. Precisa de correção da rota ou leitura no Chrome.",
            efeito=" · ".join(f"{(r.get('escopo') or '—')}: {u[:70]} ({r.get('erro')})" for u, r in list(fora.items())[:6]) or "nenhuma",
            resultado=" · ".join(f"{k}: {v}" for k, v in (frr.get("fora_da_fila_por_escopo") or {}).items()) or "nenhuma página fora da fila")
-    cl = _j(ROOT / "estado/curadoria_links.json") or {}
+    cl = _j(ROOT / "biblioteca_alexandria/livros/_vistas/curadoria_links.json") or {}
     clc = cl.get("curadoria") or {}
     _instr(I, agora, id="es_curadoria", sub="Esteira", nome="Links oficiais aprovados na curadoria",
            valor=round(100 * clc.get("aprovado", 0) / cl["abertas"]) if cl.get("abertas") else None, unidade="%", escala=[0, 100],

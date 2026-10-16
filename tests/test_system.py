@@ -3974,7 +3974,7 @@ class SystemTests(unittest.TestCase):
         self.assertLessEqual(r["marcados_para_ia"],r["total"])   # marcados: os que ainda faltam confirmar (os já resolvidos saem)
         m=load_json(pathlib.Path("dados/editais/marcacoes_ia.json")); self.assertGreater(len(m),100)
         um=next(iter(m.values())); self.assertIn("desde",um); self.assertIn("modo",um); self.assertIn("faltam",um)
-        f=load_json(pathlib.Path("estado/fila_verificacao.json"))
+        f=load_json(pathlib.Path("biblioteca_alexandria/livros/_vistas/fila_verificacao.json"))
         leve=[x for x in f["itens"] if x["modo"]=="leve"][0]
         self.assertLessEqual(len(leve["faltam"]),4); self.assertIn("verificação leve",leve["instrucao"])   # outros estados: objeto, prazo e link
         comp=[x for x in f["itens"] if x["modo"]=="completo"][0]; self.assertIn("automação completa",comp["instrucao"])
@@ -4020,7 +4020,7 @@ class SystemTests(unittest.TestCase):
         fora=classificar_geografia({"uf":"GO","titulo":"PREFEITURA MUNICIPAL DE CAVALCANTE"},M)
         self.assertEqual(fora["escopo"],"municipal_fora"); self.assertIn("rosa",fora["motivo"])
         self.assertEqual(classificar_geografia({"uf":"GO","titulo":"Edital estadual de cultura"},M)["escopo"],"estadual")
-        f=load_json(pathlib.Path("estado/fila_verificacao.json"))
+        f=load_json(pathlib.Path("biblioteca_alexandria/livros/_vistas/fila_verificacao.json"))
         self.assertGreater(f["fora_das_50_maiores"]["total"],50); self.assertIn("escopo",f)
         self.assertTrue(all(x["escopo"]!="municipal_fora" for x in f["itens"]))
         self.assertTrue(all(x["modo"]=="completo" for x in f["itens"] if x["escopo"]=="nacional"))
@@ -4056,7 +4056,7 @@ class SystemTests(unittest.TestCase):
 
 
     def test_informacoes_minimas_e_verificacao_dos_abertos(self):
-        f=load_json(pathlib.Path("estado/fila_verificacao.json"))
+        f=load_json(pathlib.Path("biblioteca_alexandria/livros/_vistas/fila_verificacao.json"))
         m=f["informacoes_minimas"]
         self.assertEqual(m["exigidas"] if "exigidas" in m else ["Objeto","Prazo de inscrição","Página oficial do edital"],["Objeto","Prazo de inscrição","Página oficial do edital"]) if "exigidas" in m else None
         self.assertIn("objeto, prazo de inscrição e página oficial",m["regra"].lower())
@@ -4152,7 +4152,7 @@ class SystemTests(unittest.TestCase):
         n=[e for e in d["editais"] if e.get("tipo_registro")=="edital"]
         self.assertTrue(all("selo_validacao" in e for e in n))
         self.assertGreaterEqual(sum(1 for e in n if e["selo_validacao"]=="validada"),5)
-        f=load_json(pathlib.Path("estado/fila_verificacao.json"))
+        f=load_json(pathlib.Path("biblioteca_alexandria/livros/_vistas/fila_verificacao.json"))
         self.assertIn("selos",f); self.assertEqual(f["selos"]["validadas"]+f["selos"]["nao_verificadas"],f["total"])
         self.assertTrue(all(x.get("selo_validacao")=="nao_verificada" for x in f["itens"] if x["minimas"]["faltam"]))
         html=open("docs/dashboard.html",encoding="utf-8").read()
@@ -4274,7 +4274,7 @@ class SystemTests(unittest.TestCase):
                    "CREDENCIAMENTO PARA A CAPTAÇÃO E SELEÇÃO DE COTAS DE PATROCÍNIO"):
             self.assertFalse(avaliar(t0)["ok"],t0)
         self.assertTrue(avaliar("Chamamento público para seleção de OSC para termo de fomento em cultura")["ok"])
-        f=load_json(pathlib.Path("estado/fila_verificacao.json"))
+        f=load_json(pathlib.Path("biblioteca_alexandria/livros/_vistas/fila_verificacao.json"))
         self.assertIn("reprovados_por_objeto",f); self.assertGreaterEqual(f["reprovados_por_objeto"]["total"],8)
         self.assertTrue(all(x.get("familia") and x.get("motivo") for x in f["reprovados_por_objeto"]["itens"][:10]))
         d=load_json(pathlib.Path("docs/dashboard-dados.json"))
@@ -4318,7 +4318,7 @@ class SystemTests(unittest.TestCase):
         b=load_json(pathlib.Path("biblioteca_alexandria/livros/_acervo/acervo/BANCO-EDITAIS-HISTORICOS-v2.json"))
         self.assertGreaterEqual(len(b.get("itens") or b.get("editais") or b),100)
         r=load_json(pathlib.Path("config/rotas_de_coleta.json")); self.assertIn("rotas",r)
-        f=load_json(pathlib.Path("estado/fila_verificacao.json"))
+        f=load_json(pathlib.Path("biblioteca_alexandria/livros/_vistas/fila_verificacao.json"))
         self.assertGreaterEqual(f["reprovados_por_objeto"]["total"],25)      # o filtro limpa a fila
         self.assertLessEqual(f["total"],400)   # a fila cresce quando os motores novos capturam (16 de Goiás em 21/09) — e encolhe quando o Piloto completa
         for arq in ("RELATORIO-VALIDACAO-INDIVIDUAL-2026-09-09.md","RELATORIO-VERIFICACAO-2026-09-09.md"):

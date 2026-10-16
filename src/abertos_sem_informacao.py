@@ -64,7 +64,7 @@ from .rotas_coleta import exige_navegador, ritmo_de, rota_de, serve_como_fonte
 
 SAIDA_JSON = ROOT / "docs/dados/abertos_sem_informacao.json"
 SAIDA_CSV = ROOT / "docs/dados/abertos_sem_informacao.csv"
-CARIMBO = ROOT / "estado/abertos_sem_informacao.json"
+CARIMBO = ROOT / "biblioteca_alexandria/livros/_vistas/abertos_sem_informacao.json"
 
 # Bases de verificação lidas além da base de oportunidades. A primeira que
 # tiver o registro vence — estão em ordem de confiança.

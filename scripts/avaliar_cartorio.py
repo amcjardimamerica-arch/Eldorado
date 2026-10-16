@@ -2,7 +2,7 @@
 
 Mede a extração atual dos 12 itens contra os casos JÁ COMPROVADOS por leitura humana do documento oficial
 (conferências no Chrome de 10–11/10: biblioteca_alexandria/livros/_acervo/revisoes/fila_chrome_2026_10_11). O gabarito aprendido por órgão
-(estado/cartorio/gabaritos.json) NUNCA é usado como verdade: foi produzido pela própria extração.
+(biblioteca_alexandria/livros/anexos/cartorio/gabaritos.json) NUNCA é usado como verdade: foi produzido pela própria extração.
 
 Duas etapas:
   --baixar   (precisa de rede; roda no GitHub Actions) baixa o documento de cada caso com a MESMA rede e a MESMA
