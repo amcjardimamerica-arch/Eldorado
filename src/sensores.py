@@ -195,7 +195,7 @@ def registro() -> list[dict]:
                          **({"portais_terceiro_setor": list(p["portais_terceiro_setor"])} if p.get("portais_terceiro_setor") else {})})
     # MOTOR DE RECORRÊNCIA (20/09): revisita a página oficial de cada oportunidade validada
     rec = ROOT / "estado/rotas_recorrencia.json"
-    if rec.exists():
+    if __import__("src.livro_arquivo", fromlist=["x"]).existe(rec):                              # 16/10: nos livros
         from datetime import date as _date
         hoje_iso = _date.today().isoformat()
         rotas = [r for r in (load_json(rec).get("rotas") or []) if (r.get("proxima_leitura") or hoje_iso) <= hoje_iso]
@@ -547,7 +547,7 @@ def reprogramar_recorrencia(sensor: dict, resultado: dict) -> None:
     if sensor.get("id") != "recorrencia":
         return
     arq = ROOT / "estado/rotas_recorrencia.json"
-    if not arq.exists():
+    if not __import__("src.livro_arquivo", fromlist=["x"]).existe(arq):
         return
     d = load_json(arq); lidas = {r["url"] for r in (sensor.get("rotas_recorrencia") or [])}
     hoje = date.today()
