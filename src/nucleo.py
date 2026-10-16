@@ -164,16 +164,31 @@ def html_para_texto(html_bruto: str, limite: int = 120_000) -> str:
 
 DB_OPORTUNIDADES = ROOT / "dados/oportunidades/oportunidades.jsonl"
 
+def _migrado() -> bool:
+    return (ROOT / "estado/livros_migracao.json").exists()
+
+
+def achados_linhas() -> list[str]:
+    """16/10/2026 (titular, etapa 3): leitura ÚNICA dos achados dos motores — dos LIVROS depois da migração
+    (estado/livros_migracao.json), da base antiga antes dela. Mesmo formato: uma linha JSON por achado."""
+    if _migrado():
+        from .banco_livros import achados
+        return [json.dumps(x, ensure_ascii=False, separators=(",", ":")) for x in achados()]
+    return [l for l in DB_OPORTUNIDADES.read_text(encoding="utf-8").splitlines() if l.strip()] if DB_OPORTUNIDADES.exists() else []
+
+
 def carregar_oportunidades() -> dict:
     registros = {}
-    if DB_OPORTUNIDADES.exists():
-        for linha in DB_OPORTUNIDADES.read_text(encoding="utf-8").splitlines():
-            if linha.strip():
-                item = json.loads(linha)
-                registros[item["id"]] = item
+    for linha in achados_linhas():
+        item = json.loads(linha)
+        registros[item["id"]] = item
     return registros
 
 def gravar_oportunidades(registros: dict) -> None:
+    if _migrado():                                    # 16/10 (etapa 3): depois da migração, os LIVROS são a base
+        from .banco_livros import sincronizar_achados
+        sincronizar_achados(registros)
+        return
     DB_OPORTUNIDADES.parent.mkdir(parents=True, exist_ok=True)
     corpo = "".join(
         json.dumps(x, ensure_ascii=False, separators=(",", ":")) + "\n"

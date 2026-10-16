@@ -339,8 +339,9 @@ def _mestre() -> dict:
     global _MESTRE_IDX
     if _MESTRE_IDX is None:
         _MESTRE_IDX = {}
-        if MESTRE.exists():
-            for l in MESTRE.open(encoding="utf-8"):
+        if True:                                   # 16/10: dos livros
+            from .nucleo import achados_linhas
+            for l in achados_linhas():
                 try:
                     d = json.loads(l)
                 except ValueError:

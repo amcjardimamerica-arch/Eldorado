@@ -1035,7 +1035,9 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
                     reg["fora_do_portao"] = int(reg.get("fora_do_portao") or 0) + 1
                     continue
                 _para_livros.append(a)                    # 16/10 (etapa 3): o achado vai ao LIVRO
-                append_jsonl(DB, a); existentes[a["id"]] = a; novos += 1   # cópia temporária até migrar os outros leitores
+                if not (ROOT / "estado/livros_migracao.json").exists():   # 16/10: depois da migração, SÓ o livro
+                    append_jsonl(DB, a)
+                existentes[a["id"]] = a; novos += 1
         t = por_tipo.setdefault(s["tipo"], {"sensores": 0, "achados": 0, "falhas": 0})
         t["sensores"] += 1; t["achados"] += len(r["achados"]); t["falhas"] += len(r["falhas"])
         write_json(ESTADO, est)                                  # registro gravado a cada motor (sobrevive ao limite de tempo)

@@ -8,9 +8,9 @@ FIELDS=("id","status","titulo","url","coletado_em","ano_referencia","ano_pesquis
 
 def run() -> int:
     db=ROOT/"dados/oportunidades/oportunidades.jsonl"; groups={}
-    if not db.exists(): return 0
+    from .nucleo import achados_linhas   # 16/10: dos livros
     sources={x["id"]:x for x in load_json(ROOT/"config/fontes.json")["fontes"]}
-    for line in db.read_text(encoding="utf-8").splitlines():
+    for line in achados_linhas():
         if line.strip():
             item=json.loads(line); groups.setdefault(item["fonte_id"],[]).append(item)
     for fid,items in groups.items():

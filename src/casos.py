@@ -121,7 +121,7 @@ def prepare(profile: dict, opportunity: dict, decision: dict) -> Path:
     return root
 
 def run(triggers: list[dict]) -> int:
-    db=ROOT/"dados/oportunidades/oportunidades.jsonl"; opportunities={x["id"]:x for x in (json.loads(line) for line in db.read_text(encoding="utf-8").splitlines() if line.strip())}
+    from .nucleo import achados_linhas; opportunities={x["id"]:x for x in (json.loads(line) for line in achados_linhas())}   # 16/10: dos livros
     criteria=load_json(ROOT/"config/criterios.json"); count=0
     for trigger in triggers:
         profile=load_json(ROOT/"dados/associacoes"/trigger["associacao_id"]/"perfil_publico.json"); opportunity=opportunities[trigger["oportunidade_id"]]

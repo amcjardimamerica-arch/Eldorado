@@ -202,8 +202,9 @@ def dados_rotulados() -> tuple[list[dict], list[int], list[dict]]:
     import glob as _g
     base = {}
     bp = ROOT / "dados/oportunidades/oportunidades.jsonl"
-    if bp.exists():
-        for l in bp.open(encoding="utf-8"):
+    if True:                                           # 16/10: dos livros
+        from .nucleo import achados_linhas
+        for l in achados_linhas():
             if l.strip():
                 r = json.loads(l); base.setdefault(str(r.get("url") or "").split("#")[0].rstrip("/").lower(), r)
     # 03/10 (titular): a decisão MAIS RECENTE vence e "pendente" nunca bloqueia uma decisão real. Antes os arquivos eram

@@ -191,3 +191,26 @@ class MigracaoUnica(unittest.TestCase):
             self.assertEqual(B.migrar_se_preciso()["migracao"], "feita agora")
             self.assertEqual([x["id"] for x in B.achados()], ["a"])
             self.assertEqual(B.migrar_se_preciso()["migracao"], "já feita")
+
+
+class LeituraUnicaNucleo(unittest.TestCase):
+    """16/10/2026: carregar/gravar_oportunidades usam os livros depois da migração."""
+    def test_nucleo(self):
+        from src import nucleo as N
+        r = Path(tempfile.mkdtemp())
+        for d in ("biblioteca_alexandria/fontes", "dados/oportunidades", "estado"):
+            (r / d).mkdir(parents=True)
+        cat = r / "biblioteca_alexandria/fontes/motores.json"; cat.write_text(json.dumps({"motores": []}))
+        base = r / "dados/oportunidades/oportunidades.jsonl"; base.write_text(json.dumps({"id": "velho", "titulo": "Base antiga"}) + "\n")
+        with mock.patch.object(N, "ROOT", r), mock.patch.object(N, "DB_OPORTUNIDADES", base), mock.patch.object(B, "CAT", cat):
+            self.assertEqual(list(N.carregar_oportunidades()), ["velho"])                   # antes da migração: a base
+            (r / "estado/livros_migracao.json").write_text("{}")
+            B.registrar_achados([{"id": "a", "titulo": "Chamamento OSC", "url": "https://x.go.gov.br/a"},
+                                 {"id": "b", "titulo": "Fomento cultural", "url": "https://y.go.gov.br/b"}])
+            regs = N.carregar_oportunidades()
+            self.assertEqual(sorted(regs), ["a", "b"])                                         # depois: os livros
+            regs["a"]["status"] = "verificada"; del regs["b"]; regs["c"] = {"id": "c", "titulo": "Novo", "url": "https://z.go.gov.br/c"}
+            N.gravar_oportunidades(regs)
+            depois = N.carregar_oportunidades()
+            self.assertEqual(sorted(depois), ["a", "c"]); self.assertEqual(depois["a"]["status"], "verificada")
+            self.assertEqual(base.read_text().count("\n"), 1)                                  # a base não foi regravada
