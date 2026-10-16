@@ -51,6 +51,10 @@ def _rel(p) -> str:
         return str(p)
 
 
+# 16/10/2026 (titular): a regra dos livros vale SÓ para o Eldorado; os dados da associação e do Farol ficam fora
+FAROL = re.compile(r"(^|/)(dados/farol|dados/associacoes|biblioteca_alexandria/associacoes)(/|$)|preparacao_farol\.json$")
+
+
 # ── livro em arquivo ──────────────────────────────────────────────────────────────────────────────────────────────
 def ler(lid: str) -> dict:
     return _j(PASTA / f"{lid}.json", {"id": lid, "acervo": {}})
@@ -150,8 +154,8 @@ def absorver(caminhos: list, gravar_: bool = True, apagar: bool = True) -> dict:
     st = Counter(); criados = 0; arquivos = []
     for p in caminhos:
         p = Path(p)
-        if not p.is_file() or p.suffix not in (".json", ".jsonl"):
-            continue
+        if not p.is_file() or p.suffix not in (".json", ".jsonl") or FAROL.search(_rel(p)):
+            continue                                       # o Farol (e a associação) nunca é absorvido
         try:
             forma, unidades = _unidades(p)
         except Exception:  # noqa: BLE001

@@ -77,3 +77,14 @@ class Acervo16_10(unittest.TestCase):
         with gzip.open(arq, "rt", encoding="utf-8") as g:
             ficou = {json.loads(l).get("chave") for l in g if '"historico"' in l or '"confirmacao"' in l}
         self.assertEqual(ficou - {None}, {"c1", "c2"})
+
+
+class FarolForaDoExpurgo16_10(unittest.TestCase):
+    """16/10/2026 (titular): o Eldorado e o Farol são duas metades; a regra dos livros e os expurgos valem só no Eldorado."""
+    def test_pastas_do_farol_nunca_entram(self):
+        for rel in ("dados/associacoes/amc-jardim-america/triagem_oportunidades_2026-10-02.json", "dados/farol/editais/x.json",
+                    "biblioteca_alexandria/associacoes/amc/dossie.json", "docs/dados/preparacao_farol.json"):
+            self.assertTrue(X.FAROL.search(rel), rel)
+        self.assertFalse(X.FAROL.search("dados/oportunidades/repositorio_unico.json"))
+        from src import livro_arquivo as LA
+        self.assertTrue(LA.FAROL.search("dados/associacoes/amc/x.json"))
