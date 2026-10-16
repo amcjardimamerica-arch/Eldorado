@@ -1,27 +1,28 @@
 {
- "em": "2026-10-16T01:33:32+00:00",
+ "em": "2026-10-16T02:13:56+00:00",
  "regra": "CURADORIA DO LINK OFICIAL (titular, 15/10/2026) — dois links por oportunidade e o trecho exato dela.\n\nCada oportunidade aberta passa a ter:\n  · LINK DE ACESSO — onde o motor a encontrou (notícia, agregador, diário, portal);\n  · LINK OFICIAL   — onde o órgão ou financiador a publicou, usado pelo sistema para análise e validação interna.\n    Os dois só são o mesmo quando a oportunidade foi captada direto no local oficial de publicação;\n  · TRECHO         — exatamente o texto da oportunidade, com a fonte do trecho: do documento oficial (com página) ou,\n    enquanto não comprovado, do link de acesso.\n\nO link oficial precisa oferecer todas as informações e atualizações da oportunidade; por isso passa por curadoria com\ncritérios objetivos, todos verificáveis:\n  C1 domínio oficial       órgão público (.gov.br, .leg.br, .jus.br, .mp.br, .def.br, .tc.br), arquivo do órgão no PNCP,\n                           plataforma de publicação do próprio emissor (Prosas, Mapas Culturais…) ou site do financiador;\n  C2 não é agregador       nem replicador de notícias ou editais;\n  C3 acessível             não está fora da fila de retentativa (5 erros iguais);\n  C4 contém a oportunidade o Cartório extraiu ao menos um item desse documento;\n  C5 informações completas leitura total no Cartório (12 de 12 comprovados ou dispensados);\n  C6 atualizado            conferido pelo Cartório nos últimos 7 dias (retificações e prorrogações).\nResultado: APROVADO (C1–C5; C6 vencido só alerta) · EM CURADORIA (C1–C3 ok, falta C4 ou C5) · REPROVADO (falha C1, C2 ou\nC3: o link deixa de valer como oficial e a oportunidade volta à busca da fonte oficial) · SEM LINK OFICIAL (a buscar).",
- "abertas": 399,
+ "abertas": 396,
  "curadoria": {
-  "em curadoria": 266,
-  "sem link oficial": 72,
-  "aprovado": 20,
-  "reprovado": 41
+  "em curadoria": 259,
+  "reprovado": 68,
+  "aprovado": 22,
+  "sem link oficial": 47
  },
  "classe_do_link_oficial": {
   "site do financiador": 61,
-  "sem link": 72,
-  "órgão público": 193,
+  "não identificado como oficial": 36,
+  "órgão público": 189,
   "plataforma de publicação do emissor": 17,
-  "não identificado como oficial": 7,
-  "página inicial genérica (não é a oportunidade)": 22,
+  "página inicial genérica (não é a oportunidade)": 17,
   "arquivo do órgão no PNCP": 3,
   "página do PNCP (não é o documento)": 12,
-  "instituição pública ou de ensino": 12
+  "sem link": 47,
+  "texto de lei (não é a oportunidade)": 3,
+  "instituição pública ou de ensino": 11
  },
- "mesmo_link_e_oficial": 198,
- "mesmo_link_reprovado": 15,
- "trecho_do_documento_oficial": 73,
+ "mesmo_link_e_oficial": 197,
+ "mesmo_link_reprovado": 42,
+ "trecho_do_documento_oficial": 88,
  "itens": [
   {
    "id": "agr-f43c233385e2",
@@ -94,28 +95,26 @@
    "orgao": null,
    "link_acesso": "https://www.idis.org.br/zurich-abre-edital-nacional-para-apoiar-projetos-sociais-via-leis-de-incentivo-fiscal/",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://edge.sitecorecloud.io/zurichinsurf8c0-zwpshared-prod-d824/media/project/zurich-headless/brazil/docs/lei-incentivo/regulamento-edital-de-incentivados-zurich-seguros-2026.pdf",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": "selecionar e apoiar projetos sociais alinhados à estratégia de Responsabilidade Social Cor",
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -864,7 +863,7 @@
     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/04696490000163/compras/2026/147/arquivos/5",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T01:24:27+00:00"
+   "conferido_em": "2026-10-10T20:09:23+00:00"
   },
   {
    "id": "agr-eca6ec50b54e",
@@ -1090,35 +1089,6 @@
    "conferido_em": "2026-10-16T01:26:48+00:00"
   },
   {
-   "id": "f8684c2f36149d7434e3",
-   "titulo": "FUNDACAO JOAQUIM NABUCO FUNDAJ — Realização de concurso de premiação destinado à seleção de Práticas Pedagógicas em Educação Contextualizada para a Convivência com o Semiárido Bras",
-   "orgao": "FUNDACAO JOAQUIM NABUCO FUNDAJ",
-   "link_acesso": "https://pncp.gov.br/app/editais/09773169000159/2026/121",
-   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/09773169000159/compras/2026/121/arquivos/1",
-   "link_oficial_proposto": "https://pncp.gov.br/pncp-api/v1/orgaos/09773169000159/compras/2026/121/arquivos/1",
-   "classe_do_link_oficial": "arquivo do órgão no PNCP",
-   "mesmo_link": false,
-   "captada_direto_na_fonte_oficial": false,
-   "curadoria": "aprovado",
-   "criterios": {
-    "C1 domínio oficial": true,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
-    "C4 contém a oportunidade": true,
-    "C5 informações completas": true,
-    "C6 atualizado (7 dias)": true
-   },
-   "falham": [],
-   "proximo_passo": "validar e seguir ao Farol",
-   "trecho": {
-    "texto": "Constitui objeto da 2ª Edição do Concurso de Boas Práticas Pedagógicas em Educação Contextualizad a para a Convivência com o Semiárido Brasileiro a habilitação e seleção de Práticas Pedagógicas em Educação Contextualizada para a Convivência com o Semiárido",
-    "fonte": "documento oficial",
-    "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/09773169000159/compras/2026/121/arquivos/1",
-    "pagina": 1
-   },
-   "conferido_em": "2026-10-16T01:26:51+00:00"
-  },
-  {
    "id": "09590060f0bad9ff9a05",
    "titulo": "BNDES abre chamada para apoiar projetos de organizações periféricas em todo o país",
    "orgao": "BNDES",
@@ -1284,25 +1254,27 @@
    "orgao": "Prefeitura de Vitória",
    "link_acesso": "https://data.queridodiario.ok.org.br/3205309/2026-09-29/e4e6dddf43137203fa04d96f0d35d05e72269004.pdf",
    "link_oficial": null,
-   "link_oficial_proposto": "https://www.vitoria.es.gov.br/",
-   "classe_do_link_oficial": "página inicial genérica (não é a oportunidade)",
+   "link_oficial_proposto": null,
+   "classe_do_link_oficial": "sem link",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "reprovado",
+   "curadoria": "sem link oficial",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
+    "C2 não é agregador": false,
+    "C3 acessível": false,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": true
    },
    "falham": [
     "C1 domínio oficial",
+    "C2 não é agregador",
+    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas"
    ],
-   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
+   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
    "trecho": {
     "texto": "fortalecer a arrecadação, na ampliação da conformidade fiscal e no uso estratégico de info",
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -1528,37 +1500,6 @@
    "conferido_em": "2026-10-11T16:21:31+00:00"
   },
   {
-   "id": "op-op-1ad012b587a8",
-   "titulo": "Secretaria de Estado da Cultura (Secult) — Secult Goiás publica novo cronograma de seleção da OSC que operacio… — Goiás",
-   "orgao": "Secretaria de Estado da Cultura (Secult) — Secult Goiás",
-   "link_acesso": "https://goias.gov.br/cultura/secult-goias-publica-novo-cronograma-de-selecao-da-osc-que-operacionalizara-2-ciclo-da-pnab/",
-   "link_oficial": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/02/Resultado-Final-Media-por-Criterio.pdf",
-   "link_oficial_proposto": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/02/Resultado-Final-Media-por-Criterio.pdf",
-   "classe_do_link_oficial": "órgão público",
-   "mesmo_link": false,
-   "captada_direto_na_fonte_oficial": false,
-   "curadoria": "em curadoria",
-   "criterios": {
-    "C1 domínio oficial": true,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
-    "C4 contém a oportunidade": true,
-    "C5 informações completas": false,
-    "C6 atualizado (7 dias)": true
-   },
-   "falham": [
-    "C5 informações completas"
-   ],
-   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
-   "trecho": {
-    "texto": "Operacionalização da PNAB 2025 2º Ciclo",
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://goias.gov.br/cultura/secult-goias-publica-novo-cronograma-de-selecao-da-osc-que-operacionalizara-2-ciclo-da-pnab/",
-    "pagina": null
-   },
-   "conferido_em": "2026-10-16T01:28:54+00:00"
-  },
-  {
    "id": "agr-111ec027fe14",
    "titulo": "Edital de Chamada Pública FAPESC/CNPq/CAPES n.º 055/2026 – Programa de Apoio à Fixação de Doutores no Brasil – PROFIX-CB",
    "orgao": "FAPESC",
@@ -1588,37 +1529,6 @@
     "pagina": 1
    },
    "conferido_em": "2026-10-12T16:12:30+00:00"
-  },
-  {
-   "id": "op-op-555316c50431",
-   "titulo": "Secretaria de Estado da Cultura (Secult) — Governo de Goiás lança edital de R$ 1 milhão para apoiar bandas, co… — Goiás",
-   "orgao": "Secretaria de Estado da Cultura (Secult) - Governo de Goiás",
-   "link_acesso": "https://goias.gov.br/cultura/governo-de-goias-lanca-edital-de-r-1-milhao-para-apoiar-bandas-corais-e-fanfarras/",
-   "link_oficial": "https://goias.gov.br/cultura/governo-de-goias-lanca-edital-de-r-1-milhao-para-apoiar-bandas-corais-e-fanfarras/",
-   "link_oficial_proposto": "https://goias.gov.br/cultura/governo-de-goias-lanca-edital-de-r-1-milhao-para-apoiar-bandas-corais-e-fanfarras/",
-   "classe_do_link_oficial": "órgão público",
-   "mesmo_link": true,
-   "captada_direto_na_fonte_oficial": true,
-   "curadoria": "em curadoria",
-   "criterios": {
-    "C1 domínio oficial": true,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
-    "C4 contém a oportunidade": true,
-    "C5 informações completas": false,
-    "C6 atualizado (7 dias)": true
-   },
-   "falham": [
-    "C5 informações completas"
-   ],
-   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
-   "trecho": {
-    "texto": null,
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://goias.gov.br/cultura/governo-de-goias-lanca-edital-de-r-1-milhao-para-apoiar-bandas-corais-e-fanfarras/",
-    "pagina": null
-   },
-   "conferido_em": "2026-10-16T01:29:08+00:00"
   },
   {
    "id": "op-op-174c8139a367",
@@ -1654,35 +1564,6 @@
    "conferido_em": null
   },
   {
-   "id": "op-op-eab25023cac9",
-   "titulo": "Fundação de Amparo à Pesquisa do Estado de Goiás (FAPEG) — Fapeg lança chamada pública para seleção de projeto… — Goiás",
-   "orgao": "Fundação de Amparo à Pesquisa do Estado de Goiás (FAPEG)",
-   "link_acesso": "https://goias.gov.br/fapeg/fapeg-lanca-chamada-publica-para-selecao-de-projetos-de-pesquisa-em-areas-de-graduacao-em-licenciaturas/",
-   "link_oficial": "https://goias.gov.br/fapeg/wp-content/uploads/sites/5/2025/12/Edital_n_35_2025_Auxilio.pdf",
-   "link_oficial_proposto": "https://goias.gov.br/fapeg/wp-content/uploads/sites/5/2025/12/Edital_n_35_2025_Auxilio.pdf",
-   "classe_do_link_oficial": "órgão público",
-   "mesmo_link": false,
-   "captada_direto_na_fonte_oficial": false,
-   "curadoria": "aprovado",
-   "criterios": {
-    "C1 domínio oficial": true,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
-    "C4 contém a oportunidade": true,
-    "C5 informações completas": true,
-    "C6 atualizado (7 dias)": true
-   },
-   "falham": [],
-   "proximo_passo": "validar e seguir ao Farol",
-   "trecho": {
-    "texto": "ica”. 1.2. O Programa de Auxílio à Pesquisa Científica e Tecnológica tem por objeto apoiar 2 projetos de pesquisa em todas as áreas do conhecimento a serem desenvolvidos sob responsabilidade de um(a) pesquisador(a) -proponente que possua vínculo empregatício com Instituição de Ensino Superior (IES) sediada no Estado de Goiás, pública ou privada, sem fins lucrativos. 1.3. Os recursos previstos nest",
-    "fonte": "documento oficial",
-    "documento": "https://goias.gov.br/fapeg/wp-content/uploads/sites/5/2025/12/Edital_n_35_2025_Auxilio.pdf",
-    "pagina": 1
-   },
-   "conferido_em": "2026-10-16T01:29:18+00:00"
-  },
-  {
    "id": "op-op-862fb3717c5a",
    "titulo": "Pdf edital de credenciamento de no001/2026 - organizações da sociedade civil — Goiás — Goiás / Goianésia — Goiás / Goianésia",
    "orgao": "SECRETARIA DE ESTADO DE MEIO AMBIENTE E DESENVOLVIMENTO SUSTENTÁVEL - SEMAD",
@@ -1714,159 +1595,6 @@
    "conferido_em": "2026-10-11T16:21:48+00:00"
   },
   {
-   "id": "op-op-3aff0bd13a8d",
-   "titulo": "Edital Chamada Cidades LUPPA – 6ª Edição — Brasil",
-   "orgao": "Instituto Comida do Amanhã",
-   "link_acesso": "https://luppa.comidadoamanha.org/wp-content/uploads/2026/09/Edital-Chamada-Cidades-LUPPA-6a-Edicao.pdf",
-   "link_oficial": "https://luppa.comidadoamanha.org/wp-content/uploads/2026/09/Edital-Chamada-Cidades-LUPPA-6a-Edicao.pdf",
-   "link_oficial_proposto": "https://luppa.comidadoamanha.org/wp-content/uploads/2026/09/Edital-Chamada-Cidades-LUPPA-6a-Edicao.pdf",
-   "classe_do_link_oficial": "site do financiador",
-   "mesmo_link": true,
-   "captada_direto_na_fonte_oficial": true,
-   "curadoria": "em curadoria",
-   "criterios": {
-    "C1 domínio oficial": true,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
-    "C4 contém a oportunidade": true,
-    "C5 informações completas": false,
-    "C6 atualizado (7 dias)": true
-   },
-   "falham": [
-    "C5 informações completas"
-   ],
-   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
-   "trecho": {
-    "texto": "Seu objetivo principal é apoiar as cidades participantes para que desenvolvam e aperfeiçoem sua rota para a construção da Política de Segurança Alimentar e Nutricional.",
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://luppa.comidadoamanha.org/wp-content/uploads/2026/09/Edital-Chamada-Cidades-LUPPA-6a-Edicao.pdf",
-    "pagina": null
-   },
-   "conferido_em": "2026-10-16T01:29:30+00:00"
-  },
-  {
-   "id": "op-op-68a96ee2ea0e",
-   "titulo": "Secretaria de Estado da Cultura (Secult) — Governo de Goiás publica cronograma do edital de apoio a blocos de … — Goiás",
-   "orgao": "Secretaria de Estado da Cultura (Secult) — Governo de Goiás",
-   "link_acesso": "https://goias.gov.br/cultura/governo-de-goias-publica-cronograma-do-edital-de-apoio-a-blocos-de-pre-e-carnaval-de-rua/",
-   "link_oficial": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2025/01/Edital-de-Chamamento-Publico-no-01.2025.pdf",
-   "link_oficial_proposto": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2025/01/Edital-de-Chamamento-Publico-no-01.2025.pdf",
-   "classe_do_link_oficial": "órgão público",
-   "mesmo_link": false,
-   "captada_direto_na_fonte_oficial": false,
-   "curadoria": "aprovado",
-   "criterios": {
-    "C1 domínio oficial": true,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
-    "C4 contém a oportunidade": true,
-    "C5 informações completas": true,
-    "C6 atualizado (7 dias)": true
-   },
-   "falham": [],
-   "proximo_passo": "validar e seguir ao Farol",
-   "trecho": {
-    "texto": "eto nº 11.453/2023 (Decreto de Fomento). 1.0 Objeto do Edital 1.1 O objeto deste Edital é a seleção de projetos para o fomento aos Blocos de Pré e Carnaval, com o objetivo de conceder apoio financeiro nas categorias descritas no item 1.2, visando incentivar a promoção e valorização do Carnaval de Rua de G",
-    "fonte": "documento oficial",
-    "documento": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2025/01/Edital-de-Chamamento-Publico-no-01.2025.pdf",
-    "pagina": 1
-   },
-   "conferido_em": "2026-10-16T01:31:08+00:00"
-  },
-  {
-   "id": "op-op-0d2ab7638fd7",
-   "titulo": "Prêmio nacional da Enap oferece até R$ 20 mil para iniciativas que protegem crianças e adolescentes em situação de rua —",
-   "orgao": "Ministério do Desenvolvimento, Indústria e Comércio Exterior (MDHC)",
-   "link_acesso": "https://enap.gov.br/educacao-e-capacitacao/programa-de-aperfeicoamento-para-carreiras/premios/concurso-premio-mdhc/",
-   "link_oficial": "https://enap.gov.br/educacao-e-capacitacao/programa-de-aperfeicoamento-para-carreiras/premios/concurso-premio-mdhc/",
-   "link_oficial_proposto": "https://enap.gov.br/educacao-e-capacitacao/programa-de-aperfeicoamento-para-carreiras/premios/concurso-premio-mdhc/",
-   "classe_do_link_oficial": "órgão público",
-   "mesmo_link": true,
-   "captada_direto_na_fonte_oficial": true,
-   "curadoria": "em curadoria",
-   "criterios": {
-    "C1 domínio oficial": true,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
-    "C4 contém a oportunidade": true,
-    "C5 informações completas": false,
-    "C6 atualizado (7 dias)": true
-   },
-   "falham": [
-    "C5 informações completas"
-   ],
-   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
-   "trecho": {
-    "texto": "a de Serviços Enap Página Educação e Capacitação Cursos e eventos que tem como objetivo capacitar o servidor público federal as carreiras estratégicas e transversais nos marcos de referência teóricos e aplicados que possibilitam o aprimoramento de competências cognitivas, instrumentais e interativas, com impactos no nível de desempenho profissional na carreira. Inscrever-se em Ação de Aperfeiçoame",
-    "fonte": "documento oficial",
-    "documento": "https://enap.gov.br/docs/795/Enap__Carta_de_Servi%C3%A7os_V.01.12.2025.pdf",
-    "pagina": 21
-   },
-   "conferido_em": "2026-10-16T01:31:37+00:00"
-  },
-  {
-   "id": "op-op-aa7721df7387",
-   "titulo": "Edital 009591.2026 para indicação de destinação de recursos ou bens — PTM Anápolis — Brasil",
-   "orgao": "MINISTÉRIO PÚBLICO DO TRABALHO",
-   "link_acesso": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens?task=baixa&format=raw&arq=zpEKILyO3R97KvSesbLpuWw4KHWh2SJL0ruqCot_iOuEaNtz5ekAaTWPiwzxMXZ_n1VlJVOFGsfAemOOGTdrT4I5WKdz8TTLAPymQAH4yrNBlvfMj5kJqfQK-XKShmle",
-   "link_oficial": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens?task=baixa&format=raw&arq=zpEKILyO3R97KvSesbLpuWw4KHWh2SJL0ruqCot_iOuEaNtz5ekAaTWPiwzxMXZ_n1VlJVOFGsfAemOOGTdrT4I5WKdz8TTLAPymQAH4yrNBlvfMj5kJqfQK-XKShmle",
-   "link_oficial_proposto": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens?task=baixa&format=raw&arq=zpEKILyO3R97KvSesbLpuWw4KHWh2SJL0ruqCot_iOuEaNtz5ekAaTWPiwzxMXZ_n1VlJVOFGsfAemOOGTdrT4I5WKdz8TTLAPymQAH4yrNBlvfMj5kJqfQK-XKShmle",
-   "classe_do_link_oficial": "órgão público",
-   "mesmo_link": true,
-   "captada_direto_na_fonte_oficial": true,
-   "curadoria": "em curadoria",
-   "criterios": {
-    "C1 domínio oficial": true,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
-    "C4 contém a oportunidade": true,
-    "C5 informações completas": false,
-    "C6 atualizado (7 dias)": true
-   },
-   "falham": [
-    "C5 informações completas"
-   ],
-   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
-   "trecho": {
-    "texto": "O presente Edital facultando a terceiros juridicamente interessados, pelo prazo de 5 (cinco) dias, a indicação de destinatários(as) de bens ou valores decorrentes no importe, correspondente a R$ 252.000,00.",
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens?task=baixa&format=raw&arq=zpEKILyO3R97KvSesbLpuWw4KHWh2SJL0ruqCot_iOuEaNtz5ekAaTWPiwzxMXZ_n1VlJVOFGsfAemOOGTdrT4I5WKdz8TTLAPymQAH4yrNBlvfMj5kJqfQK-XKShmle",
-    "pagina": null
-   },
-   "conferido_em": "2026-10-16T01:33:11+00:00"
-  },
-  {
-   "id": "agr-45f01404a044",
-   "titulo": "Edital 001/2026 - Recaatingar: Apoio à Recuperação Socioprodutiva de Terras Degradadas do Bioma Caatinga",
-   "orgao": "Floresta Viva",
-   "link_acesso": "https://floresta-viva.fbds.org.br/apoio-a-recuperacao-socioprodutiva-de-terras-degradadas-do-bioma-caatinga",
-   "link_oficial": "https://floresta-viva.fbds.org.br/edital-001-2026",
-   "link_oficial_proposto": "https://floresta-viva.fbds.org.br/edital-001-2026",
-   "classe_do_link_oficial": "site do financiador",
-   "mesmo_link": false,
-   "captada_direto_na_fonte_oficial": false,
-   "curadoria": "em curadoria",
-   "criterios": {
-    "C1 domínio oficial": true,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
-    "C4 contém a oportunidade": true,
-    "C5 informações completas": false,
-    "C6 atualizado (7 dias)": true
-   },
-   "falham": [
-    "C5 informações completas"
-   ],
-   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
-   "trecho": {
-    "texto": "Bioma Caatinga 10 de junho, por Ricardo Porto O presente Edital tem como objetivo selecionar projetos para a implementação de ações de recuperação socioprodutiva de terras degradadas na Caatinga, com uso de espécies nativas do bioma combinadas com espécies não invasoras da agrobiodiversidade local, em alinhamento com os objetivos do Programa Recaatingar e com as vocações socioeconômicas regionais.",
-    "fonte": "documento oficial",
-    "documento": "https://floresta-viva.fbds.org.br/edital-001-2026",
-    "pagina": 1
-   },
-   "conferido_em": "2026-10-16T01:33:14+00:00"
-  },
-  {
    "id": "op-op-8557f4f3a3c7",
    "titulo": "Anápolis — Quarta Cultural terá edição especial com mentorias sobre projetos e edital da Política Nacional Ald… — Goiás / Anápolis",
    "orgao": "Secretaria Municipal de Cultura de Anápolis",
@@ -1881,23 +1609,21 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
+    "C4 contém a oportunidade": true,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": "Edital de Chamamento Público nº 01/2026 – Seleção de Projetos para Firmar Termo de Execução Cultural com Recursos da Política Nacional Aldir Blanc de Fomento à Cultura – PNAB - CultBR Editais",
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://www.anapolis.go.gov.br/quarta-cultural-tera-edicao-especial-com-mentorias-sobre-projetos-e-edital-da-politica-nacional-aldir-blanc-pnab/",
-    "pagina": null
+    "texto": "Edital de Chamamento Público nº 01/2026 – Seleção de Projetos para Firmar Termo de Execução Cultural com Recursos da Política Nacional Aldir Blanc de Fomento à Cultura – PNAB - CultBR Editais ID {{entity.id}} Tipo",
+    "fonte": "documento oficial",
+    "documento": "https://culteditais.cultura.gov.br/oportunidade/10643/",
+    "pagina": 1
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:02:54+00:00"
   },
   {
    "id": "agr-fbc5f875d97b",
@@ -1914,23 +1640,21 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
+    "C4 contém a oportunidade": true,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": null,
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://fapesc.sc.gov.br/edital-de-chamada-publica-fapesc-n-o-51-2026-programa-de-ciencia-tecnologia-e-inovacao-em-pesquisas-na-area-de-gestao-tratamento-e-valorizacao-de-carvao-mineral",
-    "pagina": null
+    "texto": "to executora da política estadual de ciência, tecnologia e inovação, tem como finalidade a promoção do ecossistema catarinense de Ciência, Tecnologia e Inovação (CTI) para o avanço de todas as áreas do conhecimento, o equilíbrio regional, o desenvolvimento econômico sustentável e a melhoria da qualidade de vida da população do Estado; ● que compete à FAPESC apoiar e promover a realização de estudo",
+    "fonte": "documento oficial",
+    "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/08/edital-carvao.pdf",
+    "pagina": 1
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:03:34+00:00"
   },
   {
    "id": "agr-7c66d0288d5b",
@@ -1947,14 +1671,12 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
+    "C4 contém a oportunidade": true,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
@@ -1963,7 +1685,7 @@
     "documento": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2026-09/cp_19-2026_profix.pdf",
     "pagina": null
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:04:22+00:00"
   },
   {
    "id": "op-op-d93746bdfc82",
@@ -1980,23 +1702,21 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
+    "C4 contém a oportunidade": true,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": "Chamamento público para execução de ações culturais com recursos da Política Nacional Aldir Blanc de Fomento à Cultura – PNAB",
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
+    "texto": "Chamamento público para execução de ações culturais com recursos da Política Nacional Aldir Blanc de Fomento à Cultura – PNAB &#8211; Prefeitura Municipal de Rio Verde",
+    "fonte": "documento oficial",
     "documento": "https://www.rioverde.go.gov.br/chamamento-publico-para-execucao-de-acoes-culturais-com-recursos-da-politica-nacional-aldir-blanc-de-fomento-a-cultura-pnab/",
-    "pagina": null
+    "pagina": 1
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:04:27+00:00"
   },
   {
    "id": "agr-399f4b74d85d",
@@ -2015,12 +1735,11 @@
     "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
     "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
@@ -2029,7 +1748,7 @@
     "documento": "https://sites.tcu.gov.br/verifique-adesao-pnpc",
     "pagina": null
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:04:39+00:00"
   },
   {
    "id": "agr-c352f610ab2c",
@@ -2048,12 +1767,11 @@
     "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
     "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
@@ -2062,7 +1780,7 @@
     "documento": "https://embrapii.org.br/fapesq-lanca-chamada-para-propostas-de-inovacao-para-unidades-embrapii-na-paraiba/",
     "pagina": null
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:05:08+00:00"
   },
   {
    "id": "db361f563b77164a40a4",
@@ -2074,28 +1792,24 @@
    "classe_do_link_oficial": "órgão público",
    "mesmo_link": true,
    "captada_direto_na_fonte_oficial": true,
-   "curadoria": "em curadoria",
+   "curadoria": "aprovado",
    "criterios": {
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
-    "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C4 contém a oportunidade": true,
+    "C5 informações completas": true,
+    "C6 atualizado (7 dias)": true
    },
-   "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
-   ],
-   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
+   "falham": [],
+   "proximo_passo": "validar e seguir ao Farol",
    "trecho": {
     "texto": "1.1 - O objeto deste Edital é utilização dos recursos remanescente para seleção de agentes culturais de audiovisual e demais áreas culturais que tenham prestado relevante contribuição ao desenvolvimento artístico ou cultural do município de Cidade Ocidental GO",
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
     "documento": "https://cidadeocidental.go.gov.br/wp-content/uploads/2025/12/13d2640c1d9faad87790f42ad422ad7b.pdf",
     "pagina": null
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:05:13+00:00"
   },
   {
    "id": "op-op-c73ce129d288",
@@ -2107,28 +1821,24 @@
    "classe_do_link_oficial": "órgão público",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "em curadoria",
+   "curadoria": "aprovado",
    "criterios": {
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
-    "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C4 contém a oportunidade": true,
+    "C5 informações completas": true,
+    "C6 atualizado (7 dias)": true
    },
-   "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
-   ],
-   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
+   "falham": [],
+   "proximo_passo": "validar e seguir ao Farol",
    "trecho": {
-    "texto": null,
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://transparencia.go.gov.br/goias-mais-transparente/",
-    "pagina": null
+    "texto": "nto pretende promover um desafio de inovação em transparência. 2. DO OBJETIVO 2.1. Reconhecer os esforços economia mista controladas pelo Estado) de seus órgãos supervis 2.2. Estimular o desenvolvimento Ativa e Passiva, de entrega de informa",
+    "fonte": "documento oficial",
+    "documento": "https://goias.gov.br/controladoria/wp-content/uploads/sites/31/2019/05/Versao-1-2019-Regulamento-Premio-Goias-Mais-Transparente-e4c.pdf",
+    "pagina": 1
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:07:54+00:00"
   },
   {
    "id": "op-op-5b7729a78e26",
@@ -2140,28 +1850,24 @@
    "classe_do_link_oficial": "órgão público",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "em curadoria",
+   "curadoria": "aprovado",
    "criterios": {
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
-    "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C4 contém a oportunidade": true,
+    "C5 informações completas": true,
+    "C6 atualizado (7 dias)": true
    },
-   "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
-   ],
-   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
+   "falham": [],
+   "proximo_passo": "validar e seguir ao Farol",
    "trecho": {
-    "texto": "Constitui objeto do presente Chamamento Público a seleção de Organização da Sociedade Civil para celebração de Termo de Colaboração visando à execução integrada dos seguintes projetos esportivos:",
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://planaltina.go.gov.br/chamamento-publico-no-06-2026-processo-no-23713-2026/",
-    "pagina": null
+    "texto": "ACTERIZAÇÃO DO CHAMAMENTO PÚBLICO 4.1. O presente Chamamento Público tem por finalidade selecionar Organização da Sociedade Civil para a celebração de Termo de Colaboração, nos termos da Lei Federal nº 13.019/2014. 4.2. A seleção observará os critérios objetivos estabeleci",
+    "fonte": "documento oficial",
+    "documento": "https://planaltina.go.gov.br/wp-content/uploads/2026/09/Edital_de_chamamento_publico_no_06-2026-.pdf",
+    "pagina": 2
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:08:31+00:00"
   },
   {
    "id": "op-op-c8057f2d2501",
@@ -2173,28 +1879,24 @@
    "classe_do_link_oficial": "órgão público",
    "mesmo_link": true,
    "captada_direto_na_fonte_oficial": true,
-   "curadoria": "em curadoria",
+   "curadoria": "aprovado",
    "criterios": {
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
-    "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C4 contém a oportunidade": true,
+    "C5 informações completas": true,
+    "C6 atualizado (7 dias)": true
    },
-   "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
-   ],
-   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
+   "falham": [],
+   "proximo_passo": "validar e seguir ao Farol",
    "trecho": {
-    "texto": "Constitui objeto do presente Chamamento Público a seleção de Organização da Sociedade Civil para celebração de Termo de Colaboração visando à execução integrada dos seguintes projetos esportivos:",
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
+    "texto": "ACTERIZAÇÃO DO CHAMAMENTO PÚBLICO 4.1. O presente Chamamento Público tem por finalidade selecionar Organização da Sociedade Civil para a celebração de Termo de Colaboração, nos termos da Lei Federal nº 13.019/2014. 4.2. A seleção observará os critérios objetivos estabeleci",
+    "fonte": "documento oficial",
     "documento": "https://planaltina.go.gov.br/wp-content/uploads/2026/09/Edital_de_chamamento_publico_no_06-2026-.pdf",
-    "pagina": null
+    "pagina": 2
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:08:35+00:00"
   },
   {
    "id": "op-op-05e1af635450",
@@ -2206,28 +1908,24 @@
    "classe_do_link_oficial": "órgão público",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "em curadoria",
+   "curadoria": "aprovado",
    "criterios": {
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
-    "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C4 contém a oportunidade": true,
+    "C5 informações completas": true,
+    "C6 atualizado (7 dias)": true
    },
-   "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
-   ],
-   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
+   "falham": [],
+   "proximo_passo": "validar e seguir ao Farol",
    "trecho": {
-    "texto": "O Programa de Mobilidade Internacional – Participação em Eventos no Exterior (2026- 2027) tem por objeto apoiar a participação de pesquisadores e pesquisadoras em eventos acadêmicos no exterior, em todas as áreas do conhecimento,",
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://goias.gov.br/fapeg/chamada-publica-no-08-2026-2o-ciclo-programa-goias-pelo-mundo/",
-    "pagina": null
+    "texto": "OBJETIVOS DA CONCESSÃO DE BOLSAS Art. 5º A concessão de bolsas tem por objetivos gerais: I - Contribuir para a formação qualificada de profissionais para a pesquisa, desenvolvimento científico e tecnológico, e a inovação no Estado de Goiás; II - Contribuir para o aumento e a qualificação da produção científi",
+    "fonte": "documento oficial",
+    "documento": "https://goias.gov.br/fapeg/wp-content/uploads/sites/5/2025/03/Resolucao-Normativa-1-2024.pdf",
+    "pagina": 1
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:09:12+00:00"
   },
   {
    "id": "op-op-a7de4588f64f",
@@ -2244,23 +1942,21 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
+    "C4 contém a oportunidade": true,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": "O presente edital tem como objetivo fomentar, valorizar e fortalecer as manifestações carnavalescas no Estado de Goiás",
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://goias.gov.br/cultura/governo-de-goias-lanca-edital-para-contemplar-manifestacoes-da-cultura-negra-quilombola-e-de-periferia-2/",
-    "pagina": null
+    "texto": "2/2013 e Lei Federal nº 13.146/2015. 1. OBJETO 1.1 O presente edital tem como objetivo fomentar, valorizar e fortalecer as manifestações carnavalescas no Estado de Goiás, com a realização da pré e da produção do Carnaval Goiano, reconhecendo o carnaval como uma expressão popular de grande relevância cultural, social e econômica. Por meio deste instrumento, busca- se apoiar iniciativas que promovam",
+    "fonte": "documento oficial",
+    "documento": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2025/10/SEI_81439519_Edital-1.pdf",
+    "pagina": 1
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:10:16+00:00"
   },
   {
    "id": "agr-252fc7f8bb39",
@@ -2277,23 +1973,21 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
+    "C4 contém a oportunidade": true,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": null,
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
+    "texto": "to executora da política estadual de ciência, tecnologia e inovação, tem como finalidade a promoção do ecossistema catarinense de Ciência, Tecnologia e Inovação (CTI) para o avanço de todas as áreas do conhecimento, o equilíbrio regional, o desenvolvimento econômico sustentável e a melhoria da qualidade de vida da população do Estado; ● que compete à FAPESC apoiar e promover a realização de estudo",
+    "fonte": "documento oficial",
     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-    "pagina": null
+    "pagina": 1
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:10:37+00:00"
   },
   {
    "id": "op-op-49f6e85e1fbf",
@@ -2310,23 +2004,21 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
+    "C4 contém a oportunidade": true,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": "projetos que assegurem direito à educação de crianças e adolescentes",
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://gife.org.br/edital-fia-repassara-ate-r-500-mil-para-projetos-que-assegurem-direito-a-educacao-de-criancas-e-adolescentes/",
-    "pagina": null
+    "texto": "ncia é uma iniciativa da Fundação Itaú, por meio do Itaú Social, que tem por objetivo apoiar serviços, programas ou projetos que contribuam para a garantia dos direitos das crianças e dos adolescentes, em conformi - dade com a Lei nº 8.069, de 13 de julho de 1990 (Estatuto da Criança e do Adolescente),",
+    "fonte": "documento oficial",
+    "documento": "https://www.itausocial.org.br/wp-content/uploads/2025/05/IS-EditalFIA-Regulmento.pdf",
+    "pagina": 4
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:11:44+00:00"
   },
   {
    "id": "agr-a7b5ac91321b",
@@ -2343,14 +2035,12 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
+    "C4 contém a oportunidade": true,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
@@ -2359,7 +2049,7 @@
     "documento": "https://www.fapesb.ba.gov.br/chamada-gcub-mob-no-20262027-programa-de-mobilidade-internacional-do-gcub-gcub-mob",
     "pagina": null
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:13:09+00:00"
   },
   {
    "id": "op-op-d165eb2a5ffe",
@@ -4308,26 +3998,28 @@
    "orgao": "Instituto Impactarte",
    "link_acesso": "https://observatorio3setor.org.br/instituto-impactarte-abre-edital-para-projetos-de-impacto-social-com-apoio-de-ate-r-150-mil",
    "link_oficial": null,
-   "link_oficial_proposto": "https://impactarte.com.br/",
-   "classe_do_link_oficial": "página inicial genérica (não é a oportunidade)",
+   "link_oficial_proposto": null,
+   "classe_do_link_oficial": "sem link",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "reprovado",
+   "curadoria": "sem link oficial",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
+    "C2 não é agregador": false,
+    "C3 acessível": false,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
+    "C2 não é agregador",
+    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
+   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
    "trecho": {
     "texto": "projetos de impacto social com apoio de até R$ 150 mil",
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -4441,27 +4133,25 @@
    "orgao": "Fundação de Amparo à Pesquisa do Estado de São Paulo",
    "link_acesso": "https://fapesp.br/18378",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://www.fapesp.br",
+   "classe_do_link_oficial": "página inicial genérica (não é a oportunidade)",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": true
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -4471,72 +4161,12 @@
    "conferido_em": "2026-10-16T01:29:05+00:00"
   },
   {
-   "id": "fe250f230f8acf1fc38b",
-   "titulo": "Edital 012/2026 – Seleção de Associações e/ou Cooperativas de Catadores de Materiais Recicláveis e Reutilizáveis para atuação no Programa Coleta Seletiva Cidadã",
-   "orgao": null,
-   "link_acesso": "https://ifrs.edu.br/restinga/wp-content/uploads/sites/5/2026/05/Edital_012_2026_Programa_Coleta_Seletiva_Cidada_assinado.pdf",
-   "link_oficial": "https://ifrs.edu.br/restinga/wp-content/uploads/sites/5/2026/05/Edital_012_2026_Programa_Coleta_Seletiva_Cidada_assinado.pdf",
-   "link_oficial_proposto": "https://ifrs.edu.br/restinga/wp-content/uploads/sites/5/2026/05/Edital_012_2026_Programa_Coleta_Seletiva_Cidada_assinado.pdf",
-   "classe_do_link_oficial": "instituição pública ou de ensino",
-   "mesmo_link": true,
-   "captada_direto_na_fonte_oficial": true,
-   "curadoria": "em curadoria",
-   "criterios": {
-    "C1 domínio oficial": true,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
-    "C4 contém a oportunidade": true,
-    "C5 informações completas": false,
-    "C6 atualizado (7 dias)": true
-   },
-   "falham": [
-    "C5 informações completas"
-   ],
-   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
-   "trecho": {
-    "texto": ", junto ao IFRS- Campus Restinga, nos seguintes termos: 1. DO OBJETO 1.1. O presente Edital por objetivo selecionar, nos termos do art. 41 do Decreto nº 10.936/2022 , associações e/ou cooperativas",
-    "fonte": "documento oficial",
-    "documento": "https://ifrs.edu.br/restinga/wp-content/uploads/sites/5/2026/05/Edital_012_2026_Programa_Coleta_Seletiva_Cidada_assinado.pdf",
-    "pagina": 1
-   },
-   "conferido_em": "2026-10-16T01:29:35+00:00"
-  },
-  {
-   "id": "op-op-eb5659a9f752",
-   "titulo": "Secretaria de Estado de Meio Ambiente e Desenvolvimento Sustentável (Semad) — Edital para credenciamento — Goiás",
-   "orgao": "Secretaria de Estado de Meio Ambiente e Desenvolvimento Sustentável (Semad)",
-   "link_acesso": "https://goias.gov.br/meioambiente/edital-de-credenciamento/",
-   "link_oficial": "https://goias.gov.br/meioambiente/edital-de-credenciamento/",
-   "link_oficial_proposto": "https://goias.gov.br/meioambiente/edital-de-credenciamento/",
-   "classe_do_link_oficial": "órgão público",
-   "mesmo_link": true,
-   "captada_direto_na_fonte_oficial": true,
-   "curadoria": "aprovado",
-   "criterios": {
-    "C1 domínio oficial": true,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
-    "C4 contém a oportunidade": true,
-    "C5 informações completas": true,
-    "C6 atualizado (7 dias)": true
-   },
-   "falham": [],
-   "proximo_passo": "validar e seguir ao Farol",
-   "trecho": {
-    "texto": "2025 EDITAL PARA CREDENCIAMENTO Nº 01/2025 Objeto: CREDENCIAMENTO DE ORGANIZAÇÕES DA SOCIEDADE CIVIL (ASSOCIAÇÕES/COOPERATIVAS RELACIONADAS À SOCIOBIODIVERSIDADE DO CERRADO GOIANO) COM SEDE NO ESTADO DE GOIÁS, INTERESSADAS EM SUBMETER PROPOSTAS PARA O BANCO DE PROJETOS DA AUTOCOMPOSIÇÃO AMBIENTAL DA SEMAD Edital publicado no dia 05 de fevereiro de 2025 Edital retific",
-    "fonte": "documento oficial",
-    "documento": "https://goias.gov.br/meioambiente/edital-de-credenciamento/",
-    "pagina": 1
-   },
-   "conferido_em": "2026-10-16T01:29:40+00:00"
-  },
-  {
-   "id": "op-op-96e7ff1f222a",
-   "titulo": "Secretaria de Estado da Cultura (Secult) — Governo de Goiás abre seleção de pareceristas para projetos cultura… — Goiás",
-   "orgao": "Secretaria de Estado da Cultura (Secult)",
-   "link_acesso": "https://goias.gov.br/cultura/governo-de-goias-abre-selecao-de-pareceristas-para-projetos-culturais-da-pnab/",
-   "link_oficial": "https://goias.gov.br/cultura/governo-de-goias-abre-selecao-de-pareceristas-para-projetos-culturais-da-pnab/",
-   "link_oficial_proposto": "https://goias.gov.br/cultura/governo-de-goias-abre-selecao-de-pareceristas-para-projetos-culturais-da-pnab/",
+   "id": "op-op-555316c50431",
+   "titulo": "Secretaria de Estado da Cultura (Secult) — Governo de Goiás lança edital de R$ 1 milhão para apoiar bandas, co… — Goiás",
+   "orgao": "Secretaria de Estado da Cultura (Secult) - Governo de Goiás",
+   "link_acesso": "https://goias.gov.br/cultura/governo-de-goias-lanca-edital-de-r-1-milhao-para-apoiar-bandas-corais-e-fanfarras/",
+   "link_oficial": "https://goias.gov.br/cultura/governo-de-goias-lanca-edital-de-r-1-milhao-para-apoiar-bandas-corais-e-fanfarras/",
+   "link_oficial_proposto": "https://goias.gov.br/cultura/governo-de-goias-lanca-edital-de-r-1-milhao-para-apoiar-bandas-corais-e-fanfarras/",
    "classe_do_link_oficial": "órgão público",
    "mesmo_link": true,
    "captada_direto_na_fonte_oficial": true,
@@ -4556,68 +4186,72 @@
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://goias.gov.br/cultura/governo-de-goias-abre-selecao-de-pareceristas-para-projetos-culturais-da-pnab/",
+    "documento": "https://goias.gov.br/cultura/governo-de-goias-lanca-edital-de-r-1-milhao-para-apoiar-bandas-corais-e-fanfarras/",
     "pagina": null
    },
-   "conferido_em": "2026-10-16T01:30:10+00:00"
+   "conferido_em": "2026-10-16T01:29:08+00:00"
   },
   {
-   "id": "775cb96382a4c3a3bcd4",
-   "titulo": "Ministério da Cultura — Edital Biblioteca Comunitária é Cultura Viva",
-   "orgao": "Ministério da Cultura",
-   "link_acesso": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-abertas/edital-biblioteca-comunitaria-e-cultura-viva1/edital-biblioteca-comunitaria-e-cultura-viva",
-   "link_oficial": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-abertas/edital-biblioteca-comunitaria-e-cultura-viva1/edital-biblioteca-comunitaria-e-cultura-viva",
-   "link_oficial_proposto": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-abertas/edital-biblioteca-comunitaria-e-cultura-viva1/edital-biblioteca-comunitaria-e-cultura-viva",
-   "classe_do_link_oficial": "órgão público",
+   "id": "op-op-3aff0bd13a8d",
+   "titulo": "Edital Chamada Cidades LUPPA – 6ª Edição — Brasil",
+   "orgao": "Instituto Comida do Amanhã",
+   "link_acesso": "https://luppa.comidadoamanha.org/wp-content/uploads/2026/09/Edital-Chamada-Cidades-LUPPA-6a-Edicao.pdf",
+   "link_oficial": "https://luppa.comidadoamanha.org/wp-content/uploads/2026/09/Edital-Chamada-Cidades-LUPPA-6a-Edicao.pdf",
+   "link_oficial_proposto": "https://luppa.comidadoamanha.org/wp-content/uploads/2026/09/Edital-Chamada-Cidades-LUPPA-6a-Edicao.pdf",
+   "classe_do_link_oficial": "site do financiador",
    "mesmo_link": true,
    "captada_direto_na_fonte_oficial": true,
-   "curadoria": "aprovado",
+   "curadoria": "em curadoria",
    "criterios": {
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
     "C4 contém a oportunidade": true,
-    "C5 informações completas": true,
+    "C5 informações completas": false,
     "C6 atualizado (7 dias)": true
    },
-   "falham": [],
-   "proximo_passo": "validar e seguir ao Farol",
+   "falham": [
+    "C5 informações completas"
+   ],
+   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": "ntes da Política Nacional de Cultura Viva. 1.1. O presente Edital tem por objeto o reconhecimento e a certificação de Bibliotecas Comunitárias como Pontos de Cultura , integrando -as à Rede Nacional da Política Nacional de Cultura Viva (PNCV) e ao Sistema Nacional de Bibliotecas Públicas (SNBP). 2.1. A Política Nacional de Cultura Viva (PNCV), instituída pela L",
-    "fonte": "documento oficial",
-    "documento": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-abertas/edital-biblioteca-comunitaria-e-cultura-viva1/Edital_BC_Cultura_Viva_v106082026.pdf",
-    "pagina": 1
+    "texto": "Seu objetivo principal é apoiar as cidades participantes para que desenvolvam e aperfeiçoem sua rota para a construção da Política de Segurança Alimentar e Nutricional.",
+    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
+    "documento": "https://luppa.comidadoamanha.org/wp-content/uploads/2026/09/Edital-Chamada-Cidades-LUPPA-6a-Edicao.pdf",
+    "pagina": null
    },
-   "conferido_em": "2026-10-16T01:30:38+00:00"
+   "conferido_em": "2026-10-16T01:29:30+00:00"
   },
   {
-   "id": "agr-98931d7b9ad1",
-   "titulo": "Edital Suplementar FAPESC N.º 052/2026 – Chamada Conjunta CONFAP Serrapilheira 09/2025",
-   "orgao": "FAPESC",
-   "link_acesso": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-FAPESC-52-2026-assinado.pdf",
-   "link_oficial": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-FAPESC-52-2026-assinado.pdf",
-   "link_oficial_proposto": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-FAPESC-52-2026-assinado.pdf",
+   "id": "op-op-0d2ab7638fd7",
+   "titulo": "Prêmio nacional da Enap oferece até R$ 20 mil para iniciativas que protegem crianças e adolescentes em situação de rua —",
+   "orgao": "Ministério do Desenvolvimento, Indústria e Comércio Exterior (MDHC)",
+   "link_acesso": "https://enap.gov.br/educacao-e-capacitacao/programa-de-aperfeicoamento-para-carreiras/premios/concurso-premio-mdhc/",
+   "link_oficial": "https://enap.gov.br/educacao-e-capacitacao/programa-de-aperfeicoamento-para-carreiras/premios/concurso-premio-mdhc/",
+   "link_oficial_proposto": "https://enap.gov.br/educacao-e-capacitacao/programa-de-aperfeicoamento-para-carreiras/premios/concurso-premio-mdhc/",
    "classe_do_link_oficial": "órgão público",
    "mesmo_link": true,
    "captada_direto_na_fonte_oficial": true,
-   "curadoria": "aprovado",
+   "curadoria": "em curadoria",
    "criterios": {
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
     "C4 contém a oportunidade": true,
-    "C5 informações completas": true,
+    "C5 informações completas": false,
     "C6 atualizado (7 dias)": true
    },
-   "falham": [],
-   "proximo_passo": "validar e seguir ao Farol",
+   "falham": [
+    "C5 informações completas"
+   ],
+   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": "nto executora da política estadual de ciência, tecnologia e inovação, tem como finalidade a promoção do ecossistema catarinense de Ciência, Tecnologia e Inovação (CT&I) para o avanço de todas as áreas do conhecimento, o equilíbrio regional, o desenvolvimento econômico sustentável e a melhoria da qualidade de vida da população do Estado; •que compete à FAPESC apoiar a formação e a capacitação de pe",
+    "texto": "a de Serviços Enap Página Educação e Capacitação Cursos e eventos que tem como objetivo capacitar o servidor público federal as carreiras estratégicas e transversais nos marcos de referência teóricos e aplicados que possibilitam o aprimoramento de competências cognitivas, instrumentais e interativas, com impactos no nível de desempenho profissional na carreira. Inscrever-se em Ação de Aperfeiçoame",
     "fonte": "documento oficial",
-    "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-FAPESC-52-2026-assinado.pdf",
-    "pagina": 1
+    "documento": "https://enap.gov.br/docs/795/Enap__Carta_de_Servi%C3%A7os_V.01.12.2025.pdf",
+    "pagina": 21
    },
-   "conferido_em": "2026-10-16T01:30:58+00:00"
+   "conferido_em": "2026-10-16T01:31:37+00:00"
   },
   {
    "id": "op-op-cf55833374d2",
@@ -4713,33 +4347,66 @@
    "conferido_em": "2026-10-16T01:32:33+00:00"
   },
   {
-   "id": "op-op-6cce62c69c59",
-   "titulo": "Secretaria de Estado da Cultura (Secult) — Secult abre chamamento público de OSC para apoio com a Política Nac… — Goiás",
-   "orgao": "Secretaria de Estado da Cultura (Secult)",
-   "link_acesso": "https://goias.gov.br/cultura/secult-abre-chamamento-publico-de-osc-para-apoio-com-a-politica-nacional-aldir-blanc-em-goias/",
-   "link_oficial": "https://goias.gov.br/cultura/secult-abre-chamamento-publico-de-osc-para-apoio-com-a-politica-nacional-aldir-blanc-em-goias/",
-   "link_oficial_proposto": "https://goias.gov.br/cultura/secult-abre-chamamento-publico-de-osc-para-apoio-com-a-politica-nacional-aldir-blanc-em-goias/",
+   "id": "op-op-aa7721df7387",
+   "titulo": "Edital 009591.2026 para indicação de destinação de recursos ou bens — PTM Anápolis — Brasil",
+   "orgao": "MINISTÉRIO PÚBLICO DO TRABALHO",
+   "link_acesso": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens?task=baixa&format=raw&arq=zpEKILyO3R97KvSesbLpuWw4KHWh2SJL0ruqCot_iOuEaNtz5ekAaTWPiwzxMXZ_n1VlJVOFGsfAemOOGTdrT4I5WKdz8TTLAPymQAH4yrNBlvfMj5kJqfQK-XKShmle",
+   "link_oficial": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens?task=baixa&format=raw&arq=zpEKILyO3R97KvSesbLpuWw4KHWh2SJL0ruqCot_iOuEaNtz5ekAaTWPiwzxMXZ_n1VlJVOFGsfAemOOGTdrT4I5WKdz8TTLAPymQAH4yrNBlvfMj5kJqfQK-XKShmle",
+   "link_oficial_proposto": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens?task=baixa&format=raw&arq=zpEKILyO3R97KvSesbLpuWw4KHWh2SJL0ruqCot_iOuEaNtz5ekAaTWPiwzxMXZ_n1VlJVOFGsfAemOOGTdrT4I5WKdz8TTLAPymQAH4yrNBlvfMj5kJqfQK-XKShmle",
    "classe_do_link_oficial": "órgão público",
    "mesmo_link": true,
    "captada_direto_na_fonte_oficial": true,
-   "curadoria": "aprovado",
+   "curadoria": "em curadoria",
    "criterios": {
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
     "C4 contém a oportunidade": true,
-    "C5 informações completas": true,
+    "C5 informações completas": false,
     "C6 atualizado (7 dias)": true
    },
-   "falham": [],
-   "proximo_passo": "validar e seguir ao Farol",
+   "falham": [
+    "C5 informações completas"
+   ],
+   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": "steio na Lei nº 13.019/2014 e no Decreto nº 8.726/2016, torna público o presente Edital de Chamamento Público, visando a seleção de organização da sociedade civil interessada em celebrar Termo de Colaboração que tem por objeto a operacionalização do Programa Nacional Aldir Blanc de Fomento à Cultura no Estado de Goiás. 1. DAS DISPOSIÇÕES PRELIMINARES 1.1 O período de divulgação do Ed",
+    "texto": "O presente Edital facultando a terceiros juridicamente interessados, pelo prazo de 5 (cinco) dias, a indicação de destinatários(as) de bens ou valores decorrentes no importe, correspondente a R$ 252.000,00.",
+    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
+    "documento": "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens?task=baixa&format=raw&arq=zpEKILyO3R97KvSesbLpuWw4KHWh2SJL0ruqCot_iOuEaNtz5ekAaTWPiwzxMXZ_n1VlJVOFGsfAemOOGTdrT4I5WKdz8TTLAPymQAH4yrNBlvfMj5kJqfQK-XKShmle",
+    "pagina": null
+   },
+   "conferido_em": "2026-10-16T01:33:11+00:00"
+  },
+  {
+   "id": "agr-45f01404a044",
+   "titulo": "Edital 001/2026 - Recaatingar: Apoio à Recuperação Socioprodutiva de Terras Degradadas do Bioma Caatinga",
+   "orgao": "Floresta Viva",
+   "link_acesso": "https://floresta-viva.fbds.org.br/apoio-a-recuperacao-socioprodutiva-de-terras-degradadas-do-bioma-caatinga",
+   "link_oficial": "https://floresta-viva.fbds.org.br/edital-001-2026",
+   "link_oficial_proposto": "https://floresta-viva.fbds.org.br/edital-001-2026",
+   "classe_do_link_oficial": "site do financiador",
+   "mesmo_link": false,
+   "captada_direto_na_fonte_oficial": false,
+   "curadoria": "em curadoria",
+   "criterios": {
+    "C1 domínio oficial": true,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
+    "C4 contém a oportunidade": true,
+    "C5 informações completas": false,
+    "C6 atualizado (7 dias)": true
+   },
+   "falham": [
+    "C5 informações completas"
+   ],
+   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
+   "trecho": {
+    "texto": "Bioma Caatinga 10 de junho, por Ricardo Porto O presente Edital tem como objetivo selecionar projetos para a implementação de ações de recuperação socioprodutiva de terras degradadas na Caatinga, com uso de espécies nativas do bioma combinadas com espécies não invasoras da agrobiodiversidade local, em alinhamento com os objetivos do Programa Recaatingar e com as vocações socioeconômicas regionais.",
     "fonte": "documento oficial",
-    "documento": "http://goias.gov.br/cultura/wp-content/uploads/sites/25/2023/12/SEI_54833517_Edital1-536.pdf",
+    "documento": "https://floresta-viva.fbds.org.br/edital-001-2026",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T01:32:45+00:00"
+   "conferido_em": "2026-10-16T01:33:14+00:00"
   },
   {
    "id": "aadff5d4009abaa439d1",
@@ -4758,12 +4425,11 @@
     "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
     "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
@@ -4772,7 +4438,7 @@
     "documento": "https://mapa.cultura.es.gov.br/oportunidade/2578/",
     "pagina": null
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:04:31+00:00"
   },
   {
    "id": "baa0db13b67ef24db90e",
@@ -4789,23 +4455,21 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
+    "C4 contém a oportunidade": true,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": null,
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://www.cultura.pr.gov.br/PNAB/Pagina/Edital-Premiacao-de-Pontos-de-Cultura",
-    "pagina": null
+    "texto": "dente em vigor (Regulamentam a PNCV). 5 1. OBJETO 1.1 Este edital tem por objeto a premiação de projetos, iniciativas, atividades ou ações de Pontos e Pontões de Cultura, nos termos da Política Nacional de Cultura Viva. Trata-se, portanto, de reconhecimento pela contribuição já realizada",
+    "fonte": "documento oficial",
+    "documento": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2024-08/pnab-premiacaopontosepontoes-r01.pdf",
+    "pagina": 5
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:04:42+00:00"
   },
   {
    "id": "op-op-b92c2d699c14",
@@ -4824,21 +4488,20 @@
     "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
     "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": "Edital de Projetos Fundação Aperam Acesita - Social 2026",
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://brasil.aperam.com/sustentabilidade/social/fundacao-aperam-acesita/editaldeprojetos",
-    "pagina": null
+    "texto": "izações focadas em uma legislação atualizada, o presente instrumento tem por finalidade oferecer, de maneira prática e objetiva, às organizações e ao empreendedor social, caminhos para seu protagonismo. Vale ressaltar que grande parte das informações contidas neste materi",
+    "fonte": "documento oficial",
+    "documento": "https://brasil.aperam.com/wp-content/uploads/2015/11/caminhos-empreendedorismo-social.pdf",
+    "pagina": 3
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:05:42+00:00"
   },
   {
    "id": "e105a1062c7e89a11d2f",
@@ -4855,23 +4518,21 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
+    "C4 contém a oportunidade": true,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": null,
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://www.fapesb.ba.gov.br/edital-fapesbsectiiel-no-0042026-chamada-estrategica-fapesbsectiiel",
-    "pagina": null
+    "texto": "se outorgam: CLÁUSULA PRIMEIRA — DO OBJETO Este Termo de Outorga tem por objeto o apoio Financeiro à execução do Projeto intitulado XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX XXXX, aprovado pela OUTORGANTE através do Edital Nº XXXX/XXXX. I - O OUTORGADO executará o objeto do presente Termo, com a anuênc",
+    "fonte": "documento oficial",
+    "documento": "https://www.fapesb.ba.gov.br/wp-content/uploads/2019/08/Edital_IEL_2026.pdf",
+    "pagina": 23
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:07:08+00:00"
   },
   {
    "id": "e849fe9bb1b0e568dd98",
@@ -4888,23 +4549,21 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
+    "C4 contém a oportunidade": true,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": null,
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
+    "texto": "– CICLO 2, instituída pela Lei Federal nº 14.399/2022. O edital tem por objetivo fomentar ações culturais no Município de Goiatuba, contemplando diferentes segmentos e manifestações artísticas e culturais, conforme as categorias, critérios e condições estabelecidos no instrumento convocatório. Inscrições As inscrições estarão abertas no pe",
+    "fonte": "documento oficial",
     "documento": "https://goiatuba.go.gov.br/prefeitura-de-goiatuba-publica-edital-para-selecao-de-projetos-culturais-com-recursos-da-pnab-ciclo-2/",
-    "pagina": null
+    "pagina": 1
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:08:30+00:00"
   },
   {
    "id": "op-op-f499eca95c26",
@@ -4923,12 +4582,11 @@
     "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
     "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
@@ -4937,40 +4595,38 @@
     "documento": "https://www.jatai.go.leg.br/norma/pesquisar",
     "pagina": null
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:08:34+00:00"
   },
   {
    "id": "op-op-a28f95b72873",
    "titulo": "Jataí — A Prefeitura de Jataí lança edital para a construção de 120 casas — Goiás / Jataí",
    "orgao": "Prefeitura de Jataí",
    "link_acesso": "https://www.jatai.go.gov.br/a-prefeitura-de-jatai-lanca-edital-para-a-construcao-de-120-casas/",
-   "link_oficial": "https://www.jatai.go.leg.br/norma/pesquisar",
-   "link_oficial_proposto": "https://www.jatai.go.leg.br/norma/pesquisar",
+   "link_oficial": "https://www.jatai.go.gov.br/a-prefeitura-de-jatai-lanca-edital-para-a-construcao-de-120-casas/",
+   "link_oficial_proposto": "https://www.jatai.go.gov.br/a-prefeitura-de-jatai-lanca-edital-para-a-construcao-de-120-casas/",
    "classe_do_link_oficial": "órgão público",
-   "mesmo_link": false,
-   "captada_direto_na_fonte_oficial": false,
+   "mesmo_link": true,
+   "captada_direto_na_fonte_oficial": true,
    "curadoria": "em curadoria",
    "criterios": {
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
+    "C4 contém a oportunidade": true,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": "construção de 120 casas",
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
+    "texto": "A Prefeitura de Jataí lança edital para a construção de 120 casas | Prefeitura de Jataí",
+    "fonte": "documento oficial",
     "documento": "https://www.jatai.go.gov.br/a-prefeitura-de-jatai-lanca-edital-para-a-construcao-de-120-casas/",
-    "pagina": null
+    "pagina": 1
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:09:12+00:00"
   },
   {
    "id": "agr-88c1d4a2ec7b",
@@ -4987,23 +4643,21 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
+    "C4 contém a oportunidade": true,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": null,
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
+    "texto": "Secretaria de Gestão do Trabalho e da Educação na Saúde (SGTES/MS) , torna público o Edital Conjunto SEIDIGI/SGTES-MS nº 1/2026 , para seleção de projetos do Programa de Educação pelo Trabalho para a Saúde – PET Saúde Informação e Saúde Digital (PET Saúde I&amp;SD) . O edital convida as Instituições da Rede Federal de Educação",
+    "fonte": "documento oficial",
     "documento": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-conjunto-no-1-2026-seidigi-sgtes",
-    "pagina": null
+    "pagina": 1
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:09:48+00:00"
   },
   {
    "id": "ce12a8f40a9e5b9c9baf",
@@ -5022,12 +4676,11 @@
     "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
     "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
@@ -5036,7 +4689,7 @@
     "documento": "https://www.procultura.rs.gov.br/upload/1745323364sumula_edital_fac.pdf",
     "pagina": null
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:10:30+00:00"
   },
   {
    "id": "op-op-c61949cde08f",
@@ -5048,28 +4701,24 @@
    "classe_do_link_oficial": "órgão público",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "em curadoria",
+   "curadoria": "aprovado",
    "criterios": {
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
-    "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C4 contém a oportunidade": true,
+    "C5 informações completas": true,
+    "C6 atualizado (7 dias)": true
    },
-   "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
-   ],
-   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
+   "falham": [],
+   "proximo_passo": "validar e seguir ao Farol",
    "trecho": {
-    "texto": "1.4. O Processo Seletivo Público tem por finalidade o preenchimento das vagas abertas, ou que vierem a vagar, ou que forem criadas no prazo de validade do certame e a formação do quadro de reserva técnica.",
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://acessoainformacao.alvoradadonorte.go.gov.br/cidadao/ouvidoria/inicio",
-    "pagina": null
+    "texto": "atos convocados às regras vigentes. 1.4. O Processo Seletivo Público tem por finalidade o preenchimento das vagas abertas, ou que vierem a vagar, ou que forem criadas no prazo de validade do certame e a formação do quadro de reserva técnica. 1.5. Os horários mencionados neste edital terão como referência o h",
+    "fonte": "documento oficial",
+    "documento": "https://alvoradadonorte.go.gov.br/wp-content/uploads/2023/07/EDITAL-DE-PROCESSO-SELETIVO-PUBLICO-No-001-RETIFICADO-4.pdf",
+    "pagina": 2
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:11:25+00:00"
   },
   {
    "id": "agr-10eb6623375e",
@@ -5088,12 +4737,11 @@
     "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
     "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
@@ -5102,7 +4750,7 @@
     "documento": "https://iberescena.org/Noticias/2675",
     "pagina": null
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:11:42+00:00"
   },
   {
    "id": "cat-180652fa5e64",
@@ -5110,35 +4758,31 @@
    "orgao": null,
    "link_acesso": "https://elportavoznoticias.com.mx/invita-gobierno-del-estado-a-participar-en-la-convocatoria-para-organizaciones-civiles-2026/",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://elportavoznoticias.com.mx/invita-gobierno-del-estado-a-participar-en-la-convocatoria-para-organizaciones-civiles-2026/",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
-    "C4 contém a oportunidade": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
+    "C4 contém a oportunidade": true,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
     "documento": "https://elportavoznoticias.com.mx/invita-gobierno-del-estado-a-participar-en-la-convocatoria-para-organizaciones-civiles-2026/",
     "pagina": null
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:12:09+00:00"
   },
   {
    "id": "837499ca129ea5f43f36",
@@ -5155,23 +4799,21 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
+    "C4 contém a oportunidade": true,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": null,
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
+    "texto": "r Blanc de Fomento à Cultura (PNAB). 1. OBJETO 1.1. Este Edital tem por objeto a seleção de projetos que promovam o acesso da população aos bens e aos serviços culturais nos territórios e comunidades onde atuam, nos termos da Política Nacional de Cultura Viva. 1.2. Poderão participar deste edital Pontos de Cultura com constitui",
+    "fonte": "documento oficial",
     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
-    "pagina": null
+    "pagina": 1
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:12:03+00:00"
   },
   {
    "id": "2d949c7cfc9703097277",
@@ -5188,14 +4830,12 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
+    "C4 contém a oportunidade": true,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
@@ -5204,7 +4844,7 @@
     "documento": "https://goias.gov.br/cultura/secult-goias-divulga-resultado-final-do-edital-cultura-no-social-da-pnab",
     "pagina": null
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:12:12+00:00"
   },
   {
    "id": "agr-7b6fbd56e08a",
@@ -5221,23 +4861,21 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": false,
+    "C4 contém a oportunidade": true,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
+    "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
+    "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": null,
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://plan.org.br/fundo-acelere-o-relogio/",
-    "pagina": null
+    "texto": "do Edital \"Fundo Acelere o Relógio da Igualdade\", uma iniciativa que tem como objetivo geral promover e dar visibilidade a projetos que acelerem a igualdade de gênero e fortaleçam meninas e jovens mulheres em toda a sua diversidade. O ed ital busca contribuir para a construção de um Brasil mais justo,",
+    "fonte": "documento oficial",
+    "documento": "https://plan.org.br/wp-content/uploads/2026/10/Glossario-Edicao-2026-Fundo-Acelere-o-Relogio-da-Igualdade.pdf",
+    "pagina": 1
    },
-   "conferido_em": null
+   "conferido_em": "2026-10-16T02:12:50+00:00"
   },
   {
    "id": "9c4c6f5bb017520d60a2",
@@ -5278,28 +4916,26 @@
    "orgao": null,
    "link_acesso": "https://captadores.org.br/editais/instituto-cooperforte-lanca-chamada-publica-para-organizacoes-e-cooperativas-de-15-estados",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "http://www.pesquisavoluntariado.org.br",
+   "classe_do_link_oficial": "página inicial genérica (não é a oportunidade)",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -5548,28 +5184,26 @@
    "orgao": null,
    "link_acesso": "https://gazetadoestado.com.br/geral/goiania-abre-edital-para-ampliar-acolhimento-de-idosos-ate-cinco-ilpis-e-uma-casa-lar-inscricoes-ate-28-de-maio",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://gazetadoestado.com.br/geral/goiania-abre-edital-para-ampliar-acolhimento-de-idosos-ate-cinco-ilpis-e-uma-casa-lar-inscricoes-ate-28-de-maio",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -5650,28 +5284,26 @@
    "orgao": "Fundação Banco do Brasil",
    "link_acesso": "https://transforma.fbb.org.br/premio/17",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://transforma.fbb.org.br/premio/17",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -5879,13 +5511,13 @@
    "conferido_em": null
   },
   {
-   "id": "cat-1aef80529dcb",
-   "titulo": "Projetos para crianças e adolescentes: edital recebe propostas até 17 ...",
-   "orgao": null,
-   "link_acesso": "https://portaldoss.com.br/edital-criancas-adolescentes-conanda-2026/",
+   "id": "op-op-fc3e32dc23e5",
+   "titulo": "Edital Itagibá 2026: Guia de Captação e Inscrições · Capitaai — Brasil",
+   "orgao": "Capitaai — Brasil",
+   "link_acesso": "https://www.planalto.gov.br/ccivil_03/leis/L12305.htm",
    "link_oficial": null,
-   "link_oficial_proposto": "https://portaldoss.com.br/edital-criancas-adolescentes-conanda-2026/",
-   "classe_do_link_oficial": "não identificado como oficial",
+   "link_oficial_proposto": "https://www.planalto.gov.br/ccivil_03/leis/L12305.htm",
+   "classe_do_link_oficial": "texto de lei (não é a oportunidade)",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
    "curadoria": "reprovado",
@@ -5904,42 +5536,6 @@
     "C6 atualizado (7 dias)"
    ],
    "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
-   "trecho": {
-    "texto": null,
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://portaldoss.com.br/edital-criancas-adolescentes-conanda-2026/",
-    "pagina": null
-   },
-   "conferido_em": null
-  },
-  {
-   "id": "op-op-fc3e32dc23e5",
-   "titulo": "Edital Itagibá 2026: Guia de Captação e Inscrições · Capitaai — Brasil",
-   "orgao": "Capitaai — Brasil",
-   "link_acesso": "https://www.planalto.gov.br/ccivil_03/leis/L12305.htm",
-   "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
-   "mesmo_link": false,
-   "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
-   "criterios": {
-    "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
-    "C4 contém a oportunidade": false,
-    "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
-   },
-   "falham": [
-    "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
-   ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -5977,6 +5573,40 @@
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
     "documento": "https://ifsertaope.edu.br/ifsertaope-oferece-1-632-vagas-em-cursos-tecnicos-para-ingresso-em-2027-inscricoes-comecam-na-quarta-feira-30/",
+    "pagina": null
+   },
+   "conferido_em": null
+  },
+  {
+   "id": "cat-a260f831a043",
+   "titulo": "Lundin Mining Brasil abre edital para apoiar projetos que transformam ...",
+   "orgao": null,
+   "link_acesso": "https://correiodopovogo.com.br/lundin-mining-brasil-abre-edital-para-apoiar-projetos-que-transformam-comunidades-em-goias",
+   "link_oficial": null,
+   "link_oficial_proposto": "https://correiodopovogo.com.br/lundin-mining-brasil-abre-edital-para-apoiar-projetos-que-transformam-comunidades-em-goias",
+   "classe_do_link_oficial": "não identificado como oficial",
+   "mesmo_link": false,
+   "captada_direto_na_fonte_oficial": false,
+   "curadoria": "reprovado",
+   "criterios": {
+    "C1 domínio oficial": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
+    "C4 contém a oportunidade": false,
+    "C5 informações completas": false,
+    "C6 atualizado (7 dias)": false
+   },
+   "falham": [
+    "C1 domínio oficial",
+    "C4 contém a oportunidade",
+    "C5 informações completas",
+    "C6 atualizado (7 dias)"
+   ],
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
+   "trecho": {
+    "texto": null,
+    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
+    "documento": "https://correiodopovogo.com.br/lundin-mining-brasil-abre-edital-para-apoiar-projetos-que-transformam-comunidades-em-goias",
     "pagina": null
    },
    "conferido_em": null
@@ -6213,6 +5843,42 @@
    "conferido_em": null
   },
   {
+   "id": "cat-b04f8f3df698",
+   "titulo": "Lundin Mining abre edital para apoiar projetos em Goiás",
+   "orgao": null,
+   "link_acesso": "https://ibram.org.br/noticia/lundin-mining-edital-apoiar-comunidades-goias/",
+   "link_oficial": null,
+   "link_oficial_proposto": null,
+   "classe_do_link_oficial": "sem link",
+   "mesmo_link": false,
+   "captada_direto_na_fonte_oficial": false,
+   "curadoria": "sem link oficial",
+   "criterios": {
+    "C1 domínio oficial": false,
+    "C2 não é agregador": false,
+    "C3 acessível": false,
+    "C4 contém a oportunidade": false,
+    "C5 informações completas": false,
+    "C6 atualizado (7 dias)": false
+   },
+   "falham": [
+    "C1 domínio oficial",
+    "C2 não é agregador",
+    "C3 acessível",
+    "C4 contém a oportunidade",
+    "C5 informações completas",
+    "C6 atualizado (7 dias)"
+   ],
+   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "trecho": {
+    "texto": null,
+    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
+    "documento": "https://ibram.org.br/noticia/lundin-mining-edital-apoiar-comunidades-goias/",
+    "pagina": null
+   },
+   "conferido_em": null
+  },
+  {
    "id": "op-op-f969d14e1396",
    "titulo": "Jataí — Atualização necessária em formulário do Edital Lei Paulo Gustavo em Jataí — Goiás / Jataí",
    "orgao": "Prefeitura de Jataí",
@@ -6251,28 +5917,26 @@
    "orgao": "Presidncia da Repblica",
    "link_acesso": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2023/lei/l14535.htm",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2023/lei/l14535.htm",
+   "classe_do_link_oficial": "texto de lei (não é a oportunidade)",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -6452,28 +6116,26 @@
    "orgao": null,
    "link_acesso": "https://fundacaogrupoboticario.org.br/prorrogadas-as-inscricoes-de-trabalhos-tecnicos-para-o-ix-cbuc",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://fundacaogrupoboticario.org.br/prorrogadas-as-inscricoes-de-trabalhos-tecnicos-para-o-ix-cbuc",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -6926,28 +6588,26 @@
    "orgao": null,
    "link_acesso": "https://fundacaogrupoboticario.org.br/edital-conexao-oceano-oferece-bolsas-para-a-producao-de-reportagens-e-premio-para-fotografias",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://fundacaogrupoboticario.org.br/edital-conexao-oceano-oferece-bolsas-para-a-producao-de-reportagens-e-premio-para-fotografias",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -7097,7 +6757,43 @@
    "orgao": "Caixa Econômica Federal",
    "link_acesso": "https://www.licitacoes.caixa.gov.br",
    "link_oficial": null,
-   "link_oficial_proposto": "https://www.licitacoes.caixa.gov.br",
+   "link_oficial_proposto": null,
+   "classe_do_link_oficial": "sem link",
+   "mesmo_link": false,
+   "captada_direto_na_fonte_oficial": false,
+   "curadoria": "sem link oficial",
+   "criterios": {
+    "C1 domínio oficial": false,
+    "C2 não é agregador": false,
+    "C3 acessível": false,
+    "C4 contém a oportunidade": false,
+    "C5 informações completas": false,
+    "C6 atualizado (7 dias)": false
+   },
+   "falham": [
+    "C1 domínio oficial",
+    "C2 não é agregador",
+    "C3 acessível",
+    "C4 contém a oportunidade",
+    "C5 informações completas",
+    "C6 atualizado (7 dias)"
+   ],
+   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "trecho": {
+    "texto": null,
+    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
+    "documento": "https://www.licitacoes.caixa.gov.br",
+    "pagina": null
+   },
+   "conferido_em": null
+  },
+  {
+   "id": "742cdbc4a73e615cb545",
+   "titulo": "Fundo Socioambiental da CAIXA lança edital de R$ 50 milhões para projetos de agricultura regenerativa",
+   "orgao": null,
+   "link_acesso": "https://captadores.org.br/editais/fundo-socioambiental-da-caixa-lanca-edital-de-r-50-milhoes-para-projetos-de-agricultura-regenerativa-na-amazonia-legal",
+   "link_oficial": null,
+   "link_oficial_proposto": "http://www.pesquisavoluntariado.org.br",
    "classe_do_link_oficial": "página inicial genérica (não é a oportunidade)",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
@@ -7120,42 +6816,6 @@
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://www.licitacoes.caixa.gov.br",
-    "pagina": null
-   },
-   "conferido_em": null
-  },
-  {
-   "id": "742cdbc4a73e615cb545",
-   "titulo": "Fundo Socioambiental da CAIXA lança edital de R$ 50 milhões para projetos de agricultura regenerativa",
-   "orgao": null,
-   "link_acesso": "https://captadores.org.br/editais/fundo-socioambiental-da-caixa-lanca-edital-de-r-50-milhoes-para-projetos-de-agricultura-regenerativa-na-amazonia-legal",
-   "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
-   "mesmo_link": false,
-   "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
-   "criterios": {
-    "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
-    "C4 contém a oportunidade": false,
-    "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
-   },
-   "falham": [
-    "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
-   ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
-   "trecho": {
-    "texto": null,
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
     "documento": "https://captadores.org.br/editais/fundo-socioambiental-da-caixa-lanca-edital-de-r-50-milhoes-para-projetos-de-agricultura-regenerativa-na-amazonia-legal",
     "pagina": null
    },
@@ -7167,28 +6827,26 @@
    "orgao": null,
    "link_acesso": "https://jornadasocial.com.br/edital-transformacao",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://jornadasocial.com.br/edital-transformacao",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -7335,26 +6993,28 @@
    "orgao": "Prefeitura Municipal de Maceió",
    "link_acesso": "https://data.queridodiario.ok.org.br/2704302/2026-09-22/4b8f731e0cdc33af172610881879a91dc1c10653.pdf",
    "link_oficial": null,
-   "link_oficial_proposto": "https://www.maceio.al.gov.br/",
-   "classe_do_link_oficial": "página inicial genérica (não é a oportunidade)",
+   "link_oficial_proposto": null,
+   "classe_do_link_oficial": "sem link",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "reprovado",
+   "curadoria": "sem link oficial",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
+    "C2 não é agregador": false,
+    "C3 acessível": false,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
+    "C2 não é agregador",
+    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
+   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
    "trecho": {
     "texto": "fomento à cultura",
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -7603,28 +7263,26 @@
    "orgao": null,
    "link_acesso": "https://agencia.petrobras.com.br/busca?q=&category=11449850",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://agencia.petrobras.com.br/busca?q=&category=11449850",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -7840,28 +7498,26 @@
    "orgao": null,
    "link_acesso": "https://institutombrf.com.br/pt/acoes-voluntarias/doacao-que-transforma-lideres-unidade-mineiros",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://institutombrf.com.br/pt/acoes-voluntarias/doacao-que-transforma-lideres-unidade-mineiros",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -8036,33 +7692,64 @@
    "conferido_em": null
   },
   {
+   "id": "op-nova-af7ecadb7d7e",
+   "titulo": "Prefeitura de Corumbá de Goiás — AVISO DE CHAMAMENTO PÚBLICO Nº 3/2026 — Goiás / Corumbá de Goiás",
+   "orgao": "Prefeitura de Corumbá de Goiás",
+   "link_acesso": "https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-3/2026-736008019",
+   "link_oficial": "https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-3/2026-736008019",
+   "link_oficial_proposto": "https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-3/2026-736008019",
+   "classe_do_link_oficial": "órgão público",
+   "mesmo_link": true,
+   "captada_direto_na_fonte_oficial": true,
+   "curadoria": "em curadoria",
+   "criterios": {
+    "C1 domínio oficial": true,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
+    "C4 contém a oportunidade": false,
+    "C5 informações completas": false,
+    "C6 atualizado (7 dias)": false
+   },
+   "falham": [
+    "C4 contém a oportunidade",
+    "C5 informações completas",
+    "C6 atualizado (7 dias)"
+   ],
+   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
+   "trecho": {
+    "texto": null,
+    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
+    "documento": "https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-3/2026-736008019",
+    "pagina": null
+   },
+   "conferido_em": null
+  },
+  {
    "id": "4fe8e61708a29b3a2179",
    "titulo": "Quem pode participar do edital?",
    "orgao": null,
    "link_acesso": "https://guiadaposgraduacao.com.br/edital-conanda-sndca-seleciona-6-projetos-com-ate-r-6-milhoes",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://guiadaposgraduacao.com.br/edital-conanda-sndca-seleciona-6-projetos-com-ate-r-6-milhoes",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -8077,28 +7764,26 @@
    "orgao": null,
    "link_acesso": "https://fundacaogrupoboticario.org.br/edital-apoia-projetos-ambientais-e-de-inovacao-no-parana",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://fundacaogrupoboticario.org.br/edital-apoia-projetos-ambientais-e-de-inovacao-no-parana",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -8179,28 +7864,26 @@
    "orgao": null,
    "link_acesso": "https://fundacaogrupoboticario.org.br/inscricoes-abertas-para-programa-de-capacitacao-para-entidades-socioambientais",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://fundacaogrupoboticario.org.br/inscricoes-abertas-para-programa-de-capacitacao-para-entidades-socioambientais",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -8380,28 +8063,26 @@
    "orgao": null,
    "link_acesso": "https://umsocial.com.br/destaque/instituto-abre-edital-nacional-para-apoiar-projetos-educacionais/",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://umsocial.com.br/destaque/instituto-abre-edital-nacional-para-apoiar-projetos-educacionais/",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -8452,26 +8133,28 @@
    "orgao": "Prefeitura Municipal de Salvador",
    "link_acesso": "https://data.queridodiario.ok.org.br/2927408/2026-10-09/6d53858bd58d11f850f00443b22ef3ec8ecfeca0.pdf",
    "link_oficial": null,
-   "link_oficial_proposto": "https://salvador.ba.gov.br/",
-   "classe_do_link_oficial": "página inicial genérica (não é a oportunidade)",
+   "link_oficial_proposto": null,
+   "classe_do_link_oficial": "sem link",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "reprovado",
+   "curadoria": "sem link oficial",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
+    "C2 não é agregador": false,
+    "C3 acessível": false,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
+    "C2 não é agregador",
+    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
+   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
    "trecho": {
     "texto": "Abre ao Orçamento Fiscal o Crédito Adicional Suplementar",
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -8687,26 +8370,28 @@
    "orgao": "associação",
    "link_acesso": "https://data.queridodiario.ok.org.br/4205407/2026-10-08/62605aafc3b8cbb82d3a515bfd2196ca256f65e4.pdf",
    "link_oficial": null,
-   "link_oficial_proposto": "https://edicao.dom.sc.gov.br/",
-   "classe_do_link_oficial": "página inicial genérica (não é a oportunidade)",
+   "link_oficial_proposto": null,
+   "classe_do_link_oficial": "sem link",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "reprovado",
+   "curadoria": "sem link oficial",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
+    "C2 não é agregador": false,
+    "C3 acessível": false,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
+    "C2 não é agregador",
+    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
+   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -8856,28 +8541,26 @@
    "orgao": null,
    "link_acesso": "https://www.institutodonanenembrz.com/edital-2026",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://www.institutodonanenembrz.com/edital-2026",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -9030,28 +8713,26 @@
    "orgao": null,
    "link_acesso": "https://re-cid.org/convocatoria-union-europea-ecuador-sociedad-civil-derechos-humanos-2026/",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://re-cid.org/convocatoria-union-europea-ecuador-sociedad-civil-derechos-humanos-2026/",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -9204,26 +8885,28 @@
    "orgao": null,
    "link_acesso": "https://data.queridodiario.ok.org.br/2704302/2026-10-06/cda45c93ee062238f3519e13b63442b8e4912f5b.pdf",
    "link_oficial": null,
-   "link_oficial_proposto": "https://diariomunicipal.com.br",
-   "classe_do_link_oficial": "página inicial genérica (não é a oportunidade)",
+   "link_oficial_proposto": null,
+   "classe_do_link_oficial": "sem link",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "reprovado",
+   "curadoria": "sem link oficial",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
+    "C2 não é agregador": false,
+    "C3 acessível": false,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
+    "C2 não é agregador",
+    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
+   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -9307,28 +8990,26 @@
    "orgao": "Caixa",
    "link_acesso": "https://extranewsgo.com.br/2026/10/14/premio-da-mega-sena-acumula-e-chega-a-r-170-milhoes-apos-concurso-sem-ganhador",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://www.acheconcursos.com.br/loterias/mega-sena-2918-premio-48-milhoes-terca-feira-83924",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": "o prêmio da Mega-Sena está acumulado e pode pagar até R$ 48 milhões a quem acertar as seis",
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -9412,28 +9093,26 @@
    "orgao": "Força Aérea Brasileira",
    "link_acesso": "https://www2.fab.mil.br/licitacoesecontratos/index.php/gap-sj",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://www2.fab.mil.br/licitacoesecontratos/index.php/gap-sj",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -9448,28 +9127,26 @@
    "orgao": null,
    "link_acesso": "https://institutoinad.org.br/editais/edital-de-chamamento-publico-no-3-2026-ministerio-das-mulheres/",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://institutoinad.org.br/editais/edital-de-chamamento-publico-no-3-2026-ministerio-das-mulheres/",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -9586,6 +9263,40 @@
    "orgao": null,
    "link_acesso": "https://captadores.org.br/noticias/gerais/guia-ensina-oscs-a-usarem-verba-de-10-mil-dolares-do-google-ad-grants",
    "link_oficial": null,
+   "link_oficial_proposto": "http://www.pesquisavoluntariado.org.br",
+   "classe_do_link_oficial": "página inicial genérica (não é a oportunidade)",
+   "mesmo_link": false,
+   "captada_direto_na_fonte_oficial": false,
+   "curadoria": "reprovado",
+   "criterios": {
+    "C1 domínio oficial": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
+    "C4 contém a oportunidade": false,
+    "C5 informações completas": false,
+    "C6 atualizado (7 dias)": false
+   },
+   "falham": [
+    "C1 domínio oficial",
+    "C4 contém a oportunidade",
+    "C5 informações completas",
+    "C6 atualizado (7 dias)"
+   ],
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
+   "trecho": {
+    "texto": null,
+    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
+    "documento": "https://captadores.org.br/noticias/gerais/guia-ensina-oscs-a-usarem-verba-de-10-mil-dolares-do-google-ad-grants",
+    "pagina": null
+   },
+   "conferido_em": null
+  },
+  {
+   "id": "agr-cea1627983ce",
+   "titulo": "First Solar Corporate Charitable Fund of the Toledo Community Foundation",
+   "orgao": "Toledo Community Foundation",
+   "link_acesso": "https://www.gov.br/mcti",
+   "link_oficial": null,
    "link_oficial_proposto": null,
    "classe_do_link_oficial": "sem link",
    "mesmo_link": false,
@@ -9608,40 +9319,6 @@
     "C6 atualizado (7 dias)"
    ],
    "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
-   "trecho": {
-    "texto": null,
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://captadores.org.br/noticias/gerais/guia-ensina-oscs-a-usarem-verba-de-10-mil-dolares-do-google-ad-grants",
-    "pagina": null
-   },
-   "conferido_em": null
-  },
-  {
-   "id": "agr-cea1627983ce",
-   "titulo": "First Solar Corporate Charitable Fund of the Toledo Community Foundation",
-   "orgao": "Toledo Community Foundation",
-   "link_acesso": "https://www.gov.br/mcti",
-   "link_oficial": null,
-   "link_oficial_proposto": "https://www.gov.br/mcti",
-   "classe_do_link_oficial": "página inicial genérica (não é a oportunidade)",
-   "mesmo_link": false,
-   "captada_direto_na_fonte_oficial": false,
-   "curadoria": "reprovado",
-   "criterios": {
-    "C1 domínio oficial": false,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
-    "C4 contém a oportunidade": false,
-    "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
-   },
-   "falham": [
-    "C1 domínio oficial",
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
-   ],
-   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -9821,26 +9498,28 @@
    "orgao": "Prefeitura da Cidade do Rio de Janeiro",
    "link_acesso": "https://data.queridodiario.ok.org.br/3304557/2026-09-29/ee1ac7d76b78e83ef6837bf27dc71745a646cb10.pdf",
    "link_oficial": null,
-   "link_oficial_proposto": "https://doweb.rio.rj.gov.br/",
-   "classe_do_link_oficial": "página inicial genérica (não é a oportunidade)",
+   "link_oficial_proposto": null,
+   "classe_do_link_oficial": "sem link",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "reprovado",
+   "curadoria": "sem link oficial",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
+    "C2 não é agregador": false,
+    "C3 acessível": false,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
+    "C2 não é agregador",
+    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
+   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -9888,28 +9567,26 @@
    "orgao": null,
    "link_acesso": "https://ibram-eventos.com.br/event-landing-page/207/pt",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://ibram-eventos.com.br/event-landing-page/207/pt",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -9957,28 +9634,26 @@
    "orgao": null,
    "link_acesso": "https://www.ngosource.org/about-equivalency-determination-on-file-badge",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://www.ngosource.org/about-equivalency-determination-on-file-badge",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -9993,28 +9668,26 @@
    "orgao": null,
    "link_acesso": "https://lancasterweb.com.br/edital-comirma-go-2026-goiania/",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://lancasterweb.com.br/edital-comirma-go-2026-goiania/",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -10062,28 +9735,26 @@
    "orgao": null,
    "link_acesso": "https://portal.sgpcloud.net:9133/transparencia",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://portal.sgpcloud.net:9133/transparencia",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -10098,28 +9769,26 @@
    "orgao": null,
    "link_acesso": "https://cotidianosp.com/juventude-solidaria-lanca-chamada-para-projetos-sociais-em-todo-o-brasil/15177/2026/",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://cotidianosp.com/juventude-solidaria-lanca-chamada-para-projetos-sociais-em-todo-o-brasil/15177/2026/",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -10134,28 +9803,26 @@
    "orgao": null,
    "link_acesso": "https://institutoinad.org.br/editais/edital-fundos-da-infancia-e-da-adolescencia-2026/",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://institutoinad.org.br/editais/edital-fundos-da-infancia-e-da-adolescencia-2026/",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -10602,26 +10269,28 @@
    "orgao": null,
    "link_acesso": "https://www.sicoob.com.br/web/sicoobcredip/projetos-sociais",
    "link_oficial": null,
-   "link_oficial_proposto": "https://www.sicoob.com.br/web/sicoobcredip/projetos-sociais",
-   "classe_do_link_oficial": "não identificado como oficial",
+   "link_oficial_proposto": null,
+   "classe_do_link_oficial": "sem link",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "reprovado",
+   "curadoria": "sem link oficial",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
+    "C2 não é agregador": false,
+    "C3 acessível": false,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
+    "C2 não é agregador",
+    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
+   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -10708,28 +10377,26 @@
    "orgao": null,
    "link_acesso": "https://www.itausocial.org.br/editais/edital-fundos-da-infancia-e-da-adolescencia-2026",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://www.itausocial.org.br/editais/edital-fundos-da-infancia-e-da-adolescencia-2026",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -10767,6 +10434,42 @@
     "texto": "destinação de recursos remanescentes da Lei Paulo Gustavo.",
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
     "documento": "https://itumbiara.go.gov.br/termina-nesta-sexta-prazo-para-inscricao-em-chamada-publica-de-agentes-culturais-em-itumbiara/",
+    "pagina": null
+   },
+   "conferido_em": null
+  },
+  {
+   "id": "761e7079b52ecde231ab",
+   "titulo": "Clique aqui e acesse o edital.",
+   "orgao": null,
+   "link_acesso": "https://drive.google.com/file/d/1oA3V6aowXdXuU1ThNR7pcqC5QDAv_juo/view?usp=sharing",
+   "link_oficial": null,
+   "link_oficial_proposto": null,
+   "classe_do_link_oficial": "sem link",
+   "mesmo_link": false,
+   "captada_direto_na_fonte_oficial": false,
+   "curadoria": "sem link oficial",
+   "criterios": {
+    "C1 domínio oficial": false,
+    "C2 não é agregador": false,
+    "C3 acessível": false,
+    "C4 contém a oportunidade": false,
+    "C5 informações completas": false,
+    "C6 atualizado (7 dias)": false
+   },
+   "falham": [
+    "C1 domínio oficial",
+    "C2 não é agregador",
+    "C3 acessível",
+    "C4 contém a oportunidade",
+    "C5 informações completas",
+    "C6 atualizado (7 dias)"
+   ],
+   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "trecho": {
+    "texto": null,
+    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
+    "documento": "https://drive.google.com/file/d/1oA3V6aowXdXuU1ThNR7pcqC5QDAv_juo/view?usp=sharing",
     "pagina": null
    },
    "conferido_em": null
@@ -10843,28 +10546,26 @@
    "orgao": null,
    "link_acesso": "https://baoba.org.br/doacao",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://baoba.org.br/doacao",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -10879,28 +10580,26 @@
    "orgao": null,
    "link_acesso": "https://doare.org/doacoes-incentivadas",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://doare.org/doacoes-incentivadas",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -10951,26 +10650,28 @@
    "orgao": null,
    "link_acesso": "https://captadores.org.br/editais/iii-premio-impulso-de-boas-praticas-no-terceiro-setor-recebe-inscricoes",
    "link_oficial": null,
-   "link_oficial_proposto": "http://www.pesquisavoluntariado.org.br",
-   "classe_do_link_oficial": "página inicial genérica (não é a oportunidade)",
+   "link_oficial_proposto": null,
+   "classe_do_link_oficial": "sem link",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "reprovado",
+   "curadoria": "sem link oficial",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
+    "C2 não é agregador": false,
+    "C3 acessível": false,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
+    "C2 não é agregador",
+    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
+   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -11089,28 +10790,26 @@
    "orgao": null,
    "link_acesso": "https://jornalatual.com.br/juventude-solidaria-abre-inscricoes-para-projetos-sociais/",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://jornalatual.com.br/juventude-solidaria-abre-inscricoes-para-projetos-sociais/",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -11257,28 +10956,26 @@
    "orgao": null,
    "link_acesso": "https://captadores.org.br/vagas/instituto-ethos-contrata-profissional-para-captacao-de-recursos",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "http://www.pesquisavoluntariado.org.br",
+   "classe_do_link_oficial": "página inicial genérica (não é a oportunidade)",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -11461,28 +11158,26 @@
    "orgao": null,
    "link_acesso": "https://petrobras.com.br/documents/2677942/36243642/Regulamento+-+Chamada+P%C3%BAblica+Doa%C3%A7%C3%A3o+de+Computadores+%E2%80%93+Terceiro+Setor+-+Prorroga%C3%A7%C3%A3o.pdf/ee2b9282-a7e7-d846-f0bb-3589ce85feda?version=1.0&t=1751036049000&download=true",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://petrobras.com.br/documents/2677942/36243642/Regulamento+-+Chamada+P%C3%BAblica+Doa%C3%A7%C3%A3o+de+Computadores+%E2%80%93+Terceiro+Setor+-+Prorroga%C3%A7%C3%A3o.pdf/ee2b9282-a7e7-d846-f0bb-3589ce85feda?version=1.0&t=1751036049000&download=true",
+   "classe_do_link_oficial": "não identificado como oficial",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -11530,28 +11225,26 @@
    "orgao": null,
    "link_acesso": "https://capitaai.com.br/captacao/aviso-chamada-publica-72026-ifsp-campus-miracatu-instituto-wgscog",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://mrc.ifsp.edu.br",
+   "classe_do_link_oficial": "página inicial genérica (não é a oportunidade)",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -11632,40 +11325,6 @@
    "orgao": "SECRETARIA MUNICIPAL DE SEGURANÇA ALIMENTAR E NUTRICIONAL",
    "link_acesso": "https://data.queridodiario.ok.org.br/4106902/2026-09-24/7a81c876c7ff5b9bfba3b1852edd99c31490a756.pdf",
    "link_oficial": null,
-   "link_oficial_proposto": "https://curitiba.pr.gov.br",
-   "classe_do_link_oficial": "página inicial genérica (não é a oportunidade)",
-   "mesmo_link": false,
-   "captada_direto_na_fonte_oficial": false,
-   "curadoria": "reprovado",
-   "criterios": {
-    "C1 domínio oficial": false,
-    "C2 não é agregador": true,
-    "C3 acessível": true,
-    "C4 contém a oportunidade": false,
-    "C5 informações completas": false,
-    "C6 atualizado (7 dias)": false
-   },
-   "falham": [
-    "C1 domínio oficial",
-    "C4 contém a oportunidade",
-    "C5 informações completas",
-    "C6 atualizado (7 dias)"
-   ],
-   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
-   "trecho": {
-    "texto": "AQUISIÇÃO DE DESODORANTE AEROSOL, CARNE BOVINA SALGADA E CAFÉ SOLÚVEL, PARA O PROGRAMA ARM",
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://data.queridodiario.ok.org.br/4106902/2026-09-24/7a81c876c7ff5b9bfba3b1852edd99c31490a756.pdf",
-    "pagina": null
-   },
-   "conferido_em": null
-  },
-  {
-   "id": "4160dae5f702127593fb",
-   "titulo": "Curitiba terá encontro gratuito sobre gestão e desafios tributários do terceiro setor",
-   "orgao": null,
-   "link_acesso": "https://captadores.org.br/noticias/curitiba-tera-encontro-gratuito-sobre-gestao-e-desafios-tributarios-do-terceiro-setor",
-   "link_oficial": null,
    "link_oficial_proposto": null,
    "classe_do_link_oficial": "sem link",
    "mesmo_link": false,
@@ -11688,6 +11347,40 @@
     "C6 atualizado (7 dias)"
    ],
    "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "trecho": {
+    "texto": "AQUISIÇÃO DE DESODORANTE AEROSOL, CARNE BOVINA SALGADA E CAFÉ SOLÚVEL, PARA O PROGRAMA ARM",
+    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
+    "documento": "https://data.queridodiario.ok.org.br/4106902/2026-09-24/7a81c876c7ff5b9bfba3b1852edd99c31490a756.pdf",
+    "pagina": null
+   },
+   "conferido_em": null
+  },
+  {
+   "id": "4160dae5f702127593fb",
+   "titulo": "Curitiba terá encontro gratuito sobre gestão e desafios tributários do terceiro setor",
+   "orgao": null,
+   "link_acesso": "https://captadores.org.br/noticias/curitiba-tera-encontro-gratuito-sobre-gestao-e-desafios-tributarios-do-terceiro-setor",
+   "link_oficial": null,
+   "link_oficial_proposto": "https://www2.crcpr.org.br/desenprofi/portal/eventos/detalhe/1872",
+   "classe_do_link_oficial": "não identificado como oficial",
+   "mesmo_link": false,
+   "captada_direto_na_fonte_oficial": false,
+   "curadoria": "reprovado",
+   "criterios": {
+    "C1 domínio oficial": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
+    "C4 contém a oportunidade": false,
+    "C5 informações completas": false,
+    "C6 atualizado (7 dias)": false
+   },
+   "falham": [
+    "C1 domínio oficial",
+    "C4 contém a oportunidade",
+    "C5 informações completas",
+    "C6 atualizado (7 dias)"
+   ],
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -11735,28 +11428,26 @@
    "orgao": "Unio",
    "link_acesso": "https://www.planalto.gov.br/ccivil_03/leis/LCP/Lcp195.htm",
    "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial_proposto": "https://www.planalto.gov.br/ccivil_03/leis/LCP/Lcp195.htm",
+   "classe_do_link_oficial": "texto de lei (não é a oportunidade)",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "reprovado",
    "criterios": {
     "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
     "C4 contém a oportunidade",
     "C5 informações completas",
     "C6 atualizado (7 dias)"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
     "texto": "Art. 1 Esta Lei Complementar dispe sobre aes emergenciais destinadas ao setor cultural a serem adotadas em decorrncia dos efeitos econmicos e sociais da pandemia da covid-19.",
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
@@ -12624,6 +12315,37 @@
    "conferido_em": "2026-10-10T20:09:23+00:00"
   },
   {
+   "id": "f8684c2f36149d7434e3",
+   "titulo": "FUNDACAO JOAQUIM NABUCO FUNDAJ — Realização de concurso de premiação destinado à seleção de Práticas Pedagógicas em Educação Contextualizada para a Convivência com o Semiárido Bras",
+   "orgao": "FUNDACAO JOAQUIM NABUCO FUNDAJ",
+   "link_acesso": "https://pncp.gov.br/app/editais/09773169000159/2026/121",
+   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/09773169000159/compras/2026/121/arquivos/1",
+   "link_oficial_proposto": "https://pncp.gov.br/pncp-api/v1/orgaos/09773169000159/compras/2026/121/arquivos/1",
+   "classe_do_link_oficial": "arquivo do órgão no PNCP",
+   "mesmo_link": false,
+   "captada_direto_na_fonte_oficial": false,
+   "curadoria": "em curadoria",
+   "criterios": {
+    "C1 domínio oficial": true,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
+    "C4 contém a oportunidade": true,
+    "C5 informações completas": false,
+    "C6 atualizado (7 dias)": true
+   },
+   "falham": [
+    "C5 informações completas"
+   ],
+   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
+   "trecho": {
+    "texto": "Constitui objeto da 2ª Edição do Concurso de Boas Práticas Pedagógicas em Educação Contextualizad a para a Convivência com o Semiárido Brasileiro a habilitação e seleção de Práticas Pedagógicas em Educação Contextualizada para a Convivência com o Semiárido",
+    "fonte": "documento oficial",
+    "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/09773169000159/compras/2026/121/arquivos/1",
+    "pagina": 1
+   },
+   "conferido_em": "2026-10-10T20:09:23+00:00"
+  },
+  {
    "id": "2f556273766464bcdc19",
    "titulo": "BNDES Periferias em Rede — 6º ciclo BNDES R$ 2,0 mi Aceita:   organizações da sociedade civil Prazo:  04/12/2026 (62d) Ver detalhes →",
    "orgao": null,
@@ -12714,7 +12436,7 @@
     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13950733000139/compras/2026/2/arquivos/1",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T01:27:28+00:00"
+   "conferido_em": "2026-10-10T23:06:35+00:00"
   },
   {
    "id": "4b7b01fdcbb766bdb605",
@@ -12732,12 +12454,11 @@
     "C2 não é agregador": true,
     "C3 acessível": true,
     "C4 contém a oportunidade": true,
-    "C5 informações completas": false,
+    "C5 informações completas": true,
     "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C1 domínio oficial",
-    "C5 informações completas"
+    "C1 domínio oficial"
    ],
    "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
@@ -12793,12 +12514,11 @@
     "C2 não é agregador": true,
     "C3 acessível": true,
     "C4 contém a oportunidade": true,
-    "C5 informações completas": false,
+    "C5 informações completas": true,
     "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C1 domínio oficial",
-    "C5 informações completas"
+    "C1 domínio oficial"
    ],
    "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
@@ -12825,12 +12545,11 @@
     "C2 não é agregador": true,
     "C3 acessível": true,
     "C4 contém a oportunidade": true,
-    "C5 informações completas": false,
+    "C5 informações completas": true,
     "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C1 domínio oficial",
-    "C5 informações completas"
+    "C1 domínio oficial"
    ],
    "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
@@ -12857,12 +12576,11 @@
     "C2 não é agregador": true,
     "C3 acessível": true,
     "C4 contém a oportunidade": true,
-    "C5 informações completas": false,
+    "C5 informações completas": true,
     "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C1 domínio oficial",
-    "C5 informações completas"
+    "C1 domínio oficial"
    ],
    "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
@@ -12889,12 +12607,11 @@
     "C2 não é agregador": true,
     "C3 acessível": true,
     "C4 contém a oportunidade": true,
-    "C5 informações completas": false,
+    "C5 informações completas": true,
     "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C1 domínio oficial",
-    "C5 informações completas"
+    "C1 domínio oficial"
    ],
    "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
@@ -12921,12 +12638,11 @@
     "C2 não é agregador": true,
     "C3 acessível": true,
     "C4 contém a oportunidade": true,
-    "C5 informações completas": false,
+    "C5 informações completas": true,
     "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C1 domínio oficial",
-    "C5 informações completas"
+    "C1 domínio oficial"
    ],
    "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
@@ -12953,12 +12669,11 @@
     "C2 não é agregador": true,
     "C3 acessível": true,
     "C4 contém a oportunidade": true,
-    "C5 informações completas": false,
+    "C5 informações completas": true,
     "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C1 domínio oficial",
-    "C5 informações completas"
+    "C1 domínio oficial"
    ],
    "proximo_passo": "buscar a fonte oficial (o link proposto não é oficial ou não abre)",
    "trecho": {
@@ -12998,7 +12713,7 @@
     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/02292266000180/compras/2026/83/arquivos/1",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T01:28:16+00:00"
+   "conferido_em": "2026-10-10T23:06:35+00:00"
   },
   {
    "id": "a79ca2660a0964f27c52",
@@ -13030,6 +12745,93 @@
     "pagina": "html"
    },
    "conferido_em": "2026-10-10T20:09:23+00:00"
+  },
+  {
+   "id": "op-op-6cce62c69c59",
+   "titulo": "Secretaria de Estado da Cultura (Secult) — Secult abre chamamento público de OSC para apoio com a Política Nac… — Goiás",
+   "orgao": "Secretaria de Estado da Cultura (Secult)",
+   "link_acesso": "https://goias.gov.br/cultura/secult-abre-chamamento-publico-de-osc-para-apoio-com-a-politica-nacional-aldir-blanc-em-goias/",
+   "link_oficial": "https://goias.gov.br/cultura/secult-abre-chamamento-publico-de-osc-para-apoio-com-a-politica-nacional-aldir-blanc-em-goias/",
+   "link_oficial_proposto": "https://goias.gov.br/cultura/secult-abre-chamamento-publico-de-osc-para-apoio-com-a-politica-nacional-aldir-blanc-em-goias/",
+   "classe_do_link_oficial": "órgão público",
+   "mesmo_link": true,
+   "captada_direto_na_fonte_oficial": true,
+   "curadoria": "aprovado",
+   "criterios": {
+    "C1 domínio oficial": true,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
+    "C4 contém a oportunidade": true,
+    "C5 informações completas": true,
+    "C6 atualizado (7 dias)": true
+   },
+   "falham": [],
+   "proximo_passo": "validar e seguir ao Farol",
+   "trecho": {
+    "texto": "steio na Lei nº 13.019/2014 e no Decreto nº 8.726/2016, torna público o presente Edital de Chamamento Público, visando a seleção de organização da sociedade civil interessada em celebrar Termo de Colaboração que tem por objeto a operacionalização do Programa Nacional Aldir Blanc de Fomento à Cultura no Estado de Goiás. 1. DAS DISPOSIÇÕES PRELIMINARES 1.1 O período de divulgação do Ed",
+    "fonte": "documento oficial",
+    "documento": "http://goias.gov.br/cultura/wp-content/uploads/sites/25/2023/12/SEI_54833517_Edital1-536.pdf",
+    "pagina": 1
+   },
+   "conferido_em": "2026-10-16T01:32:45+00:00"
+  },
+  {
+   "id": "op-op-eb5659a9f752",
+   "titulo": "Secretaria de Estado de Meio Ambiente e Desenvolvimento Sustentável (Semad) — Edital para credenciamento — Goiás",
+   "orgao": "Secretaria de Estado de Meio Ambiente e Desenvolvimento Sustentável (Semad)",
+   "link_acesso": "https://goias.gov.br/meioambiente/edital-de-credenciamento/",
+   "link_oficial": "https://goias.gov.br/meioambiente/edital-de-credenciamento/",
+   "link_oficial_proposto": "https://goias.gov.br/meioambiente/edital-de-credenciamento/",
+   "classe_do_link_oficial": "órgão público",
+   "mesmo_link": true,
+   "captada_direto_na_fonte_oficial": true,
+   "curadoria": "aprovado",
+   "criterios": {
+    "C1 domínio oficial": true,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
+    "C4 contém a oportunidade": true,
+    "C5 informações completas": true,
+    "C6 atualizado (7 dias)": true
+   },
+   "falham": [],
+   "proximo_passo": "validar e seguir ao Farol",
+   "trecho": {
+    "texto": "2025 EDITAL PARA CREDENCIAMENTO Nº 01/2025 Objeto: CREDENCIAMENTO DE ORGANIZAÇÕES DA SOCIEDADE CIVIL (ASSOCIAÇÕES/COOPERATIVAS RELACIONADAS À SOCIOBIODIVERSIDADE DO CERRADO GOIANO) COM SEDE NO ESTADO DE GOIÁS, INTERESSADAS EM SUBMETER PROPOSTAS PARA O BANCO DE PROJETOS DA AUTOCOMPOSIÇÃO AMBIENTAL DA SEMAD Edital publicado no dia 05 de fevereiro de 2025 Edital retific",
+    "fonte": "documento oficial",
+    "documento": "https://goias.gov.br/meioambiente/edital-de-credenciamento/",
+    "pagina": 1
+   },
+   "conferido_em": "2026-10-16T01:29:40+00:00"
+  },
+  {
+   "id": "775cb96382a4c3a3bcd4",
+   "titulo": "Ministério da Cultura — Edital Biblioteca Comunitária é Cultura Viva",
+   "orgao": "Ministério da Cultura",
+   "link_acesso": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-abertas/edital-biblioteca-comunitaria-e-cultura-viva1/edital-biblioteca-comunitaria-e-cultura-viva",
+   "link_oficial": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-abertas/edital-biblioteca-comunitaria-e-cultura-viva1/edital-biblioteca-comunitaria-e-cultura-viva",
+   "link_oficial_proposto": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-abertas/edital-biblioteca-comunitaria-e-cultura-viva1/edital-biblioteca-comunitaria-e-cultura-viva",
+   "classe_do_link_oficial": "órgão público",
+   "mesmo_link": true,
+   "captada_direto_na_fonte_oficial": true,
+   "curadoria": "aprovado",
+   "criterios": {
+    "C1 domínio oficial": true,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
+    "C4 contém a oportunidade": true,
+    "C5 informações completas": true,
+    "C6 atualizado (7 dias)": true
+   },
+   "falham": [],
+   "proximo_passo": "validar e seguir ao Farol",
+   "trecho": {
+    "texto": "ntes da Política Nacional de Cultura Viva. 1.1. O presente Edital tem por objeto o reconhecimento e a certificação de Bibliotecas Comunitárias como Pontos de Cultura , integrando -as à Rede Nacional da Política Nacional de Cultura Viva (PNCV) e ao Sistema Nacional de Bibliotecas Públicas (SNBP). 2.1. A Política Nacional de Cultura Viva (PNCV), instituída pela L",
+    "fonte": "documento oficial",
+    "documento": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-abertas/edital-biblioteca-comunitaria-e-cultura-viva1/Edital_BC_Cultura_Viva_v106082026.pdf",
+    "pagina": 1
+   },
+   "conferido_em": "2026-10-16T01:30:38+00:00"
   },
   {
    "id": "ebc8c536f562b184c9ba",
