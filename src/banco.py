@@ -338,12 +338,17 @@ def historico_para_livros(caminho: Path = EXPORT, gravar: bool = True) -> dict:
     cid = lambda t: (re.search(r"diario oficial d[eoa] ([a-z ]+?)(?: \(|$| \d)", sem(t)) or [None, None])[1]
     cat = json.loads(CAT.read_text(encoding="utf-8")); L = cat.get("motores") or []
     urls, idx = {}, defaultdict(set)
-    for lv in L:
-        if not lv.get("oportunidade") and not lv.get("coleta"):
-            continue                                      # só livro de OPORTUNIDADE recebe histórico
+    ids_hist = {}
+    for lv in L:                                          # todo livro é de uma oportunidade (atual ou passada)
         for u in [lv.get("pagina"), lv.get("site_oficial"), *(lv.get("paginas") if isinstance(lv.get("paginas"), list) else [])]:
             if isinstance(u, str) and u.startswith("http"):
                 urls[u.rstrip("/")] = lv["id"]
+        for e in lv.get("historico") or []:               # a edição já registrada no histórico do livro (id ou link)
+            if isinstance(e, dict):
+                if e.get("id"):
+                    ids_hist[e["id"]] = lv["id"]
+                if isinstance(e.get("pagina_oficial"), str):
+                    urls.setdefault(e["pagina_oficial"].rstrip("/"), lv["id"])
         lv["_t"] = tok(f"{lv.get('programa') or ''} {lv.get('orgao') or ''}")
         for w in lv["_t"]:
             idx[w].add(lv["id"])
@@ -356,7 +361,7 @@ def historico_para_livros(caminho: Path = EXPORT, gravar: bool = True) -> dict:
     for d in linhas:
         if d.get("_t") != "historico":
             continue
-        alvo = urls.get(str(d.get("url") or "").rstrip("/"))
+        alvo = ids_hist.get(d.get("id")) or urls.get(str(d.get("url") or "").rstrip("/"))
         if not alvo:
             T = tok(f"{d.get('titulo')} {d.get('financiador')}"); F = tok(d.get("financiador"))
             for i, _c in Counter(i for w in T for i in idx.get(w, ())).most_common(15):

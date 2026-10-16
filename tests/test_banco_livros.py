@@ -223,7 +223,7 @@ class SoTrechoELinks16_10(unittest.TestCase):
              "evidencia": "x" * 5000, "qualidade": {"nota": 9}, "destinacao": {"m": "y"}, "lexico": ["a"], "caracterizacao": "z", "uf": "GO"}
         m = B.so_o_necessario(a)
         self.assertEqual(set(m), {"id", "titulo", "url", "link_oficial", "evidencia", "uf"})
-        self.assertEqual(len(m["evidencia"]), B.TRECHO_MAX)
+        self.assertEqual(len(m["evidencia"]), 5000)                                      # sem limite: a oportunidade inteira
 
     def test_historico_so_ligado_a_livro_de_oportunidade(self):
         import gzip
@@ -240,7 +240,7 @@ class SoTrechoELinks16_10(unittest.TestCase):
                 g.write(json.dumps(d) + "\n")
         with mock.patch.object(BC, "RAIZ", r), mock.patch.object(BC, "CAMINHO_BANCO", r / "x.db"):
             res = BC.historico_para_livros(arq)
-        self.assertEqual((res["ligadas_a_livros"], res["edicoes_removidas"]), (1, 2))       # lv2 não é livro de oportunidade
+        self.assertEqual((res["ligadas_a_livros"], res["edicoes_removidas"]), (2, 1))       # todo livro recebe; k3 não se liga
         L = {lv["id"]: lv for lv in json.loads((r / "biblioteca_alexandria/fontes/motores.json").read_text())["motores"]}
-        h = L["lv1"]["historico_edicoes"][0]
+        h = L["lv1"]["historico_edicoes"][0]; self.assertIn("historico_edicoes", L["lv2"])
         self.assertEqual((h["link_publicacao"], h["link_oficial"], h["buscar_link_oficial"]), ("https://goiania.go.gov.br/fia", None, True))
