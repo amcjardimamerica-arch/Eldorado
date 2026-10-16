@@ -128,3 +128,30 @@ class Etapa2Interceptador(unittest.TestCase):
             d = B.fluxo_por_uf()["itens_por_uf"]
         self.assertEqual({uf: [x["id"] for x in L] for uf, L in d.items()}, {"GO": ["1"], "BR": ["2"]})
         self.assertNotIn("_uf", d["GO"][0]); self.assertNotIn("_fonte", d["GO"][0])
+
+
+class Etapa3Portao(unittest.TestCase):
+    """16/10/2026: o motor só guarda o que é oportunidade; a base bruta fica só com oportunidade e histórico de livro."""
+    def test_portao(self):
+        from src.porta_oportunidade import motivo_para_nao_guardar as M
+        self.assertIsNone(M({"titulo": "Chamamento público de OSC — termo de colaboração", "fim": "2026-12-01"}, "2026-10-16"))
+        self.assertIn("vaga", M({"titulo": "Instituto X abre vaga de estágio"}, "2026-10-16"))
+        self.assertIn("prazo encerrado", M({"titulo": "Edital de fomento cultural 2026", "fim": "2026-10-01"}, "2026-10-16"))
+        self.assertIn("PNCP", M({"titulo": "MUNICIPIO DE NAZARENO — Pregão eletrônico para aquisição de equipamentos",
+                                 "url": "https://pncp.gov.br/app/editais/18557561000151/2026/136", "uf": "MG"}, "2026-10-16"))
+        self.assertEqual(M({"titulo": "x"}), "sem título")
+
+    def test_limpar_base(self):
+        r = Path(tempfile.mkdtemp()); (r / "biblioteca_alexandria/fontes").mkdir(parents=True)
+        cat = r / "biblioteca_alexandria/fontes/motores.json"
+        cat.write_text(json.dumps({"motores": [{"id": "l1", "historico": [{"pagina": "https://x.go.gov.br/edital-2024"}]}]}))
+        base = r / "o.jsonl"
+        base.write_text("\n".join(json.dumps(x) for x in [
+            {"id": "a", "titulo": "Chamamento público de OSC 2026", "fim": "2026-12-01"},
+            {"id": "b", "titulo": "Diário Oficial de X 2023 — edital", "url": "https://qd.org/x"},
+            {"id": "c", "titulo": "Edital de fomento 2024", "url": "https://x.go.gov.br/edital-2024"},
+            {"id": "d", "titulo": "Instituto abre vaga de estágio"}]) + "\n")
+        with mock.patch.object(B, "CAT", cat):
+            res = B.limpar_base_bruta(base)
+        self.assertEqual([json.loads(l)["id"] for l in base.read_text().splitlines()], ["a", "c"])   # 'c' é histórico de livro
+        self.assertEqual(res["removidas"], 2)

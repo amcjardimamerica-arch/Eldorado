@@ -208,7 +208,8 @@ def fases(ctx: dict) -> list[dict]:
          "cmds": [[py, "scripts/treino_fontes.py", "--aplicar"]], "t": 420, "pular": None},
         # 5b' EXPURGO — o que não é oportunidade (e o que foi descartado) sai por completo, uma vez por dia
         {"etapa": "expurgo", "finalidade": "remove por completo o que não é oportunidade: registros, livros, pastas, banco e releitura",
-         "cmds": [[py, "-m", "src.expurgo", "--executar"]], "t": 900,
+         "cmds": [[py, "-m", "src.expurgo", "--executar"],
+                  [py, "-c", "import json; from src import banco_livros as B; print(json.dumps(B.limpar_base_bruta(), ensure_ascii=False))"]], "t": 1200,
          "pular": "já feito hoje" if (ROOT / "estado/expurgo" / f"{_hoje_brt()}.json").exists() else None},
         # 5c' PNCP — dossiê integrado (portões + metadados + arquivos + site de origem → 12/12 ou descarte justificado)
         {"etapa": "pncp", "finalidade": "dossiê do PNCP: 12 de 12 com informação confirmada ou descarte justificado; o que faltar vai ao Interceptador",
