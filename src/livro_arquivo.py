@@ -124,6 +124,16 @@ def ligar(k, v, idx: dict) -> str | None:
     return None
 
 
+def _candidata(v) -> bool:
+    """16/10/2026 (titular): entrada de DESCOBERTA (agregadores, Piloto) ganha livro se passar no portão de oportunidade,
+    com ou sem prazo — a candidata sem prazo é justamente a 'possível' que o sistema existe para verificar. Com prazo
+    já encerrado, não ganha livro."""
+    if not isinstance(v, dict) or not (v.get("titulo") and (v.get("url") or v.get("link_oficial"))):
+        return False
+    from .porta_oportunidade import motivo_para_nao_guardar
+    return motivo_para_nao_guardar(v) is None
+
+
 def _oportunidade_vigente(v) -> bool:
     if not isinstance(v, dict) or not (v.get("titulo") and (v.get("url") or v.get("link_oficial"))):
         return False
@@ -176,7 +186,8 @@ def _expandir(o, caminho=""):
     return o, []
 
 
-def absorver(caminhos: list, gravar_: bool = True, apagar: bool = True, controle_sem_livro: bool = False) -> dict:
+def absorver(caminhos: list, gravar_: bool = True, apagar: bool = True, controle_sem_livro: bool = False,
+             descoberta: bool = False) -> dict:
     """controle_sem_livro=True: a parte que não é oportunidade (ex.: diagnóstico e aposta do voo do piloto) fica no
     CONTROLE (_origens), não nos livros nem descartada — é memória operacional, não dado de oportunidade."""
     from .banco_livros import _novo_livro
@@ -190,7 +201,7 @@ def absorver(caminhos: list, gravar_: bool = True, apagar: bool = True, controle
     def guardar(rel, cam, k, v):
         nonlocal criados
         lid = ligar(k, v, idx)
-        if not lid and _oportunidade_vigente(v):            # oportunidade sem livro: ganha livro
+        if not lid and (_candidata(v) if descoberta else _oportunidade_vigente(v)):   # oportunidade sem livro: ganha livro
             lv = _novo_livro(v, chave(v)); L.append(lv); idx[chave(v)] = lv["id"]; lid = lv["id"]; criados += 1
         if not lid:
             st["descartadas (não ligam e não são oportunidade vigente)"] += 1
@@ -339,13 +350,13 @@ def arquivos(pasta, padrao: str = "*.json") -> list[Path]:
     return [ROOT / r for r in sorted(fis | nos_livros)]
 
 
-def guardar_lote(itens: list) -> dict:
+def guardar_lote(itens: list, descoberta: bool = False) -> dict:
     """Grava vários 'arquivos' de uma vez NOS LIVROS (o índice de ligação é montado uma só vez)."""
     caminhos = []
     for caminho, obj in itens:
         caminho = Path(caminho); caminho.parent.mkdir(parents=True, exist_ok=True)
         caminho.write_text(json.dumps(obj, ensure_ascii=False), encoding="utf-8"); caminhos.append(caminho)
-    return absorver(caminhos) if caminhos else {"arquivos": 0}
+    return absorver(caminhos, descoberta=descoberta) if caminhos else {"arquivos": 0}
 
 
 def idade_h(caminho) -> float:

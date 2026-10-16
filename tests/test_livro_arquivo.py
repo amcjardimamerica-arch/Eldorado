@@ -57,3 +57,13 @@ class ChaveComPrefixo(unittest.TestCase):
         self.assertEqual(LA.ligar("estrela:op-123", {}, idx), "lv1")
         self.assertEqual(LA.ligar("livro:captacao-118", {}, idx), "lv2")
         self.assertIsNone(LA.ligar("estrela:op-999", {}, idx))
+
+
+class Candidata16_10(unittest.TestCase):
+    """Entrada de descoberta ganha livro pelo portão de oportunidade, com ou sem prazo; prazo encerrado não."""
+    def test_criterio(self):
+        sem_prazo = {"titulo": "Instituto X abre chamamento de organizações da sociedade civil", "url": "https://institutox.org.br/edital"}
+        self.assertTrue(LA._candidata(sem_prazo))
+        self.assertFalse(LA._oportunidade_vigente(sem_prazo))                     # pela regra antiga, seria apagada
+        self.assertFalse(LA._candidata({**sem_prazo, "fim": "2020-01-01"}))       # prazo encerrado
+        self.assertFalse(LA._candidata({"titulo": "Instituto X abre vaga de estágio", "url": "https://x.org/vaga"}))
