@@ -277,3 +277,45 @@ def total(banco: Path = CAMINHO_BANCO) -> int:
 
 if __name__ == "__main__":
     print(json.dumps(sincronizar(), ensure_ascii=False, indent=2))
+
+
+def expurgar_acervo(caminho: Path = EXPORT, gravar: bool = True) -> dict:
+    """16/10/2026 (titular): o histórico de edições passa pelos MESMOS portões do resto do sistema — território (outros
+    estados só estaduais e capitais), pertinência para associação e portão do PNCP. Prazo e 'ano anterior' não valem
+    aqui (histórico é passado por natureza). A edição que não passa sai de TODAS as tabelas (histórico, confirmação,
+    destinação, itens, extração)."""
+    import gzip, json
+    from collections import Counter
+    from .repositorio_unico import municipal_fora_de_goias, nao_e_oportunidade
+    from .pncp_osc import veredito_por_titulo
+    if not caminho.exists():
+        return {"acervo": "ausente"}
+    linhas = []
+    with gzip.open(caminho, "rt", encoding="utf-8") as gz:
+        for l in gz:
+            linhas.append(json.loads(l))
+    fora, motivos = set(), Counter()
+    for d in linhas:
+        if d.get("_t") != "historico":
+            continue
+        uf = None if d.get("uf") in (None, "None", "") else d.get("uf")
+        a = {"titulo": d.get("titulo"), "orgao": d.get("financiador"), "uf": uf, "url": d.get("url"), "nivel": d.get("nivel")}
+        m = municipal_fora_de_goias(a)
+        if not m:
+            n = nao_e_oportunidade(a)
+            m = n if n and not n.startswith("edital de ano anterior") else None
+        if not m and "pncp.gov.br" in str(d.get("url")):
+            m = veredito_por_titulo(str(d.get("titulo") or ""), str(d.get("url") or ""), uf)
+        if m:
+            fora.add((d.get("chave"), str(d.get("ano")), d.get("id"))); motivos[str(m).split(" —")[0].split(" (")[0][:50]] += 1
+    manter = [d for d in linhas if d.get("_t") == "__schema__" or (d.get("chave"), str(d.get("ano")), d.get("id")) not in fora]
+    if gravar and fora:
+        tmp = caminho.with_suffix(".tmp.gz")
+        with gzip.open(tmp, "wt", encoding="utf-8", compresslevel=6) as gz:
+            for d in manter:
+                gz.write(json.dumps(d, ensure_ascii=False) + "\n")
+        tmp.replace(caminho)
+        if CAMINHO_BANCO.exists():                       # o índice temporário é remontado a partir do acervo limpo
+            CAMINHO_BANCO.unlink()
+    return {"edicoes_removidas": len(fora), "linhas_removidas": len(linhas) - len(manter), "linhas_mantidas": len(manter),
+            "motivos": dict(motivos.most_common())}
