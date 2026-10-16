@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `do-goias`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 19
-- Distribuição por ano pesquisado/coletado: {'2026': 19}
+- Pistas aguardando confirmação: 20
+- Distribuição por ano pesquisado/coletado: {'2026': 20}
 
 ## Padrões
 
@@ -31,3 +31,4 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Prefeitura de Mossâmedes — DOE - MOSSAMEDES - CHAMAMENTO 01](https://diariooficial.abc.go.gov.br/portal/visualizacoes/html/7403/#e:7403/#m:750332) — coletado em 2026-10-13T12:17:23+00:00
 - [SES-GO (saúde) — Edital nº 01/2026](https://diariooficial.abc.go.gov.br/portal/visualizacoes/pdf/7397/#e:7397) — coletado em 2026-10-14T16:04:35+00:00
 - [3ª Alteração do Cronograma, “Tabela 2”, item “11.1” referente ao EDITAL DE CHAMAMENTO PÚBLICO Nº 02/2026 – SECULT/GO](https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/04/diario_oficial_2026_04_07_completo.pdf) — coletado em 2026-09-21T08:19:47+00:00
+- [Prefeitura de São Miguel do Araguaia — DOE - SÃO MIGUEL DO ARAGUAIA - CHAMAMENTO PNAB](https://diariooficial.abc.go.gov.br/portal/visualizacoes/html/7407/#e:7407/#m:751053) — coletado em 2026-10-15T15:26:29+00:00

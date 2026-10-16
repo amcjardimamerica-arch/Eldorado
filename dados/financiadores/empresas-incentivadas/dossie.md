@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `empresas-incentivadas`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 29
-- Distribuição por ano pesquisado/coletado: {'2026': 29}
+- Pistas aguardando confirmação: 31
+- Distribuição por ano pesquisado/coletado: {'2026': 31}
 
 ## Padrões
 
@@ -51,3 +51,5 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Prêmio Boas Práticas na Mineração do Brasil 2026 realiza apresentação final de projetos e cerimônia de premiação em 20 de outubro -
                                                             07/10/2026](https://ibram.org.br/noticia/premio-boas-praticas-mineracao-do-brasil-2026-4) — coletado em 2026-10-12T00:37:45+00:00
 - [Desafio UNAIDS](https://unaids.org.br/desafiounaids) — coletado em 2026-10-12T00:37:46+00:00
+- [MRV firma parceria com Apae Brasil para capacitar pessoas com deficiência e ampliar inclusão no mercado de trabalho](https://esginside.com.br/2026/10/15/mrv-firma-parceria-com-apae-brasil-para-capacitar-pessoas-com-deficiencia-e-ampliar-inclusao-no-mercado-de-trabalho) — coletado em 2026-10-15T16:31:04+00:00
+- [Fomento · 16 de out Secretaria de Fomento do MinC homologa 110 projetos da Lei Rouanet, com captação autorizada de até R$ 206,5 milhões A Secretaria de Fomento e Incentivo à Cultura, do Ministério da Cultura, homologou 110 projetos culturais e audiovisuais por meio da Portaria SEFIC/MINC nº 702, ass](https://atlaspublico.com.br/noticias/secretaria-de-fomento-do-minc-homologa-110-projetos-da-lei-92728) — coletado em 2026-10-16T05:22:38+00:00

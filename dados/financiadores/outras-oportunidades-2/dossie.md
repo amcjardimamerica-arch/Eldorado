@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `outras-oportunidades-2`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 47
-- Distribuição por ano pesquisado/coletado: {'2026': 47}
+- Pistas aguardando confirmação: 48
+- Distribuição por ano pesquisado/coletado: {'2026': 48}
 
 ## Padrões
 
@@ -76,3 +76,4 @@ EM CONTRAPARTIDA O MUNICÍPIO PERMITIRÁ A PUBLICIDADE DIRETA OU INDIRETA DO COO
 - [Edital do Chamamento Público nº 01/2026, cujo objeto é: Seleção de propostas para a celebração de parceria com o Município de Nova Independência, por intermédio da Secretaria Municipal de Assistência Social, mediante a formalização de Termo de... 
                                      
               ](https://www.novaindependencia.sp.gov.br/portal/editais/0/5/500) — coletado em 2026-10-14T16:28:20+00:00
+- [Edital 2026](https://www.institutodonanenembrz.com/edital-2026) — coletado em 2026-10-15T12:30:13+00:00

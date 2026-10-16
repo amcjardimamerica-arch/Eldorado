@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `outras-oportunidades-1`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 37
-- Distribuição por ano pesquisado/coletado: {'2026': 37}
+- Pistas aguardando confirmação: 38
+- Distribuição por ano pesquisado/coletado: {'2026': 38}
 
 ## Padrões
 
@@ -73,3 +73,4 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [CHAMAMENTO FINAL  LEI ALDIR BLANC](https://www.maranguape.ce.gov.br/informa/369/chamamento-final-lei-aldir-blanc) — coletado em 2026-10-11T11:39:34+00:00
 - [Edital 012/2026 – Seleção de Associações e/ou Cooperativas de Catadores de Materiais Recicláveis e Reutilizáveis para atuação no Programa Coleta Seletiva Cidadã](https://ifrs.edu.br/restinga/wp-content/uploads/sites/5/2026/05/Edital_012_2026_Programa_Coleta_Seletiva_Cidada_assinado.pdf) — coletado em 2026-10-14T20:18:37+00:00
 - [EDITAL CHAMAMENTO PUBLICO 007/2026 FOMENTO A PROJETOS CONTIN [...]](https://www.maranguape.ce.gov.br/informa/365/edital-chamamento-p-blico-007-2026-fomento-a-proje) — coletado em 2026-10-11T11:39:34+00:00
+- [EditalFomento](https://editalfomento.com.br/) — coletado em 2026-10-16T05:09:53+00:00

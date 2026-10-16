@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `outras-oportunidades-6`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 15
-- Distribuição por ano pesquisado/coletado: {'2026': 15}
+- Pistas aguardando confirmação: 18
+- Distribuição por ano pesquisado/coletado: {'2026': 18}
 
 ## Padrões
 
@@ -49,3 +49,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
                                          Inexigibilidade de chamamento público com vista à celebração de parceria, a ser executada em regime de cooperação, destinado a repasse de recurso financeir](https://www.penapolis.sp.gov.br/portal/editais/0/5/3043) — coletado em 2026-10-13T14:08:14+00:00
 - [Edital PNAB Niterói – 2026](https://smc.niteroi.rj.gov.br/2026/09/11/edital-pnab-niteroi-2026) — coletado em 2026-10-12T15:02:02+00:00
 - [Primeiro Ciclo Edital Reecatingar: divulgação prorrogada](https://floresta-viva.fbds.org.br/primeiro-ciclo-edital-reecatingar-divulgacao-prorrogada) — coletado em 2026-10-14T20:24:47+00:00
+- [# Programa Petrobras Socioambiental](https://agencia.petrobras.com.br/busca?q=&category=11449755) — coletado em 2026-10-15T17:01:54+00:00
+- [Prestação de Contas de Auxílio Financeiro](https://www.fapepi.pi.gov.br/prestacao-de-contas-de-auxilio-financeiro) — coletado em 2026-10-15T17:02:11+00:00
+- [Edital Aldir Blanc 2026 já...](https://jaragua.go.gov.br/edital-aldir-blanc-2026-ja-disponivel-artistas-de-jaragua-preparem-se-para-as-inscricoes) — coletado em 2026-10-15T17:02:13+00:00

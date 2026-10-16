@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `outras-oportunidades-5`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 30
-- Distribuição por ano pesquisado/coletado: {'2026': 30}
+- Pistas aguardando confirmação: 34
+- Distribuição por ano pesquisado/coletado: {'2026': 34}
 
 ## Padrões
 
@@ -56,3 +56,7 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Plano de Trabalho do Termo de Fomento](https://www.sicredi.com.br/media/produtos/filer_public/2024/01/05/plano-de-trabalho-termo-de-fomento-municipio-de-planaltopufv2024.pdf) — coletado em 2026-10-12T15:01:27+00:00
 - [Plano de Trabalho (Anexo I) do Termo de Fomento](https://www.sicredi.com.br/media/produtos/filer_public/2023/11/21/plano_de_trabalho_-_municipio_de_pinheirinho_do_vale_-_2023.pdf) — coletado em 2026-10-12T15:01:27+00:00
 - [Prêmio Nacional de Inovação](https://editaisdobrasil.com/oportunidade/premio-nacional-de-inovacao) — coletado em 2026-10-11T14:04:35+00:00
+- [Continue lendo  “EDITAL DE SELEÇÃO PÚBLICA Nº 017/ 2026 Subvenção Econômica à Pesquisa,Desenvolvimento e Inovação (P,D&I) Soluções de Sistemas Inteligentes para a Administração Estadual – Rodada 2”](https://www.fapesb.ba.gov.br/edital-de-selecao-publica-no-017-2026-subvencao-economica-a-pesquisadesenvolvimento-e-inovacao-pdi-solucoes-de-sistemas-inteligentes-para-a-administracao-estadual-rodada-2) — coletado em 2026-10-15T15:21:55+00:00
+- [EDITAL FAPESB/SECTI/IEL nº 004/2026 – Chamada Estratégica FAPESB/SECTI/IEL -](https://www.fapesb.ba.gov.br/edital-fapesbsectiiel-no-0042026-chamada-estrategica-fapesbsectiiel) — coletado em 2026-10-15T15:21:55+00:00
+- [Secretaria da Cultura divulga resultado final do edital da LIC para produção e fruição](https://cultura.rs.gov.br/secretaria-da-cultura-divulga-resultado-final-do-edital-da-lic-para-producao-e-fruicao) — coletado em 2026-10-15T22:29:07+00:00
+- [Prefeitura de Ceres lança Edital PNAB – Ciclo 2 e abre inscrições para projetos culturais](https://ceres.go.gov.br/pnab-ciclo-2) — coletado em 2026-10-16T00:16:34+00:00

@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `plat-piloto-aberto`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 212
-- Distribuição por ano pesquisado/coletado: {'2026': 212}
+- Pistas aguardando confirmação: 213
+- Distribuição por ano pesquisado/coletado: {'2026': 213}
 
 ## Padrões
 
@@ -12,7 +12,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 ## Eventos e pistas
 
-- [Aviso de Chamamento Público Nº 1/2026 - FMAS Prefeitura Municipal de Lagarto R$ 66 mil Aceita:   organizações da sociedade civil Prazo:  13/11/2026 (40d) Ver detalhes →](https://capitaai.com.br/captacao/aviso-chamamento-publico-12026-fmas-prefeitura-municipal-lagarto-5rblw7) — coletado em 2026-10-04T16:22:07+00:00
 - [Acesse aqui o formulário e os documentos do edital](https://brasil.unwomen.org/pt-br/stories/noticia/2026/04/onu-mulheres-brasil-e-ministerio-das-mulheres-lancam-edital-de-apoio-financeiro-para-organizacoes-da-sociedade-civil-na-area-de-justica-climatica) — coletado em 2026-09-28T13:45:44+00:00
 - [Prêmio Nacional Liga STEAM 2026 prorroga inscrições para 26 de junho Observatório 3º Setor (fonte) R$ 25 mil Aceita:   organizações da sociedade civil Prazo:  Contínuo Ver detalhes →](https://capitaai.com.br/captacao/premio-nacional-liga-steam-2026-prorroga-inscricoes-junho-q419kv) — coletado em 2026-10-04T16:22:07+00:00
 - [i3s.org.br/edital/](https://duckduckgo.com/l?uddg=https%3A%2F%2Fi3s.org.br%2Fedital%2F&rut=e21f5cfa82e39bd057d31508850cf76783687acca7ca61feaa65bd90ac08e21f) — coletado em 2026-09-24T09:57:34+00:00
@@ -63,3 +62,4 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [capitaai.com.br/editais-abertos/assistencia-social-para-ong](https://capitaai.com.br/editais-abertos/assistencia-social-para-ong) — coletado em 2026-10-01T14:33:36+00:00
 - [capitaai.com.br/editais-abertos/para-ong](https://capitaai.com.br/editais-abertos/para-ong) — coletado em 2026-09-25T11:57:10+00:00
 - [Editais Sociais 2026 — Banco do Nordeste Banco do Nordeste R$ 1,5 mi Aceita:   organizações da sociedade civil Prazo:  30/09/2026 (3d) Ver detalhes →](https://capitaai.com.br/captacao/editais-sociais-2026-banco-nordeste-banco-nordeste-nsnx3s) — coletado em 2026-09-28T13:45:49+00:00
+- [Prorrogadas as inscrições de trabalhos técnicos para o IX CBUC Fundação Grupo Boticário de Proteção à Natureza Aceita:   universidades, pesquisadores, organizações da sociedade civil Prazo:  Encerrado Ver detalhes →](https://capitaai.com.br/captacao/prorrogacao-das-inscricoes-trabalhos-tecnicos-cbuc-fundacao-grupo-4pa3uh) — coletado em 2026-10-15T15:26:39+00:00

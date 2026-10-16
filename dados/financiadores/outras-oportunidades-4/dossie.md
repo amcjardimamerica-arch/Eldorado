@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `outras-oportunidades-4`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 28
-- Distribuição por ano pesquisado/coletado: {'2026': 28}
+- Pistas aguardando confirmação: 33
+- Distribuição por ano pesquisado/coletado: {'2026': 33}
 
 ## Padrões
 
@@ -51,3 +51,8 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Edital Paraná Literário](https://www.cultura.pr.gov.br/Pagina/Edital-Parana-Literario) — coletado em 2026-10-13T14:06:14+00:00
 - [EDITAL DE CHAMAMENTO PÚBLICO N° 001-CMDCA-2026_compressed](https://itaberai.go.gov.br/wp-content/uploads/2026/09/EDITAL-DE-CHAMAMENTO-PUBLICO-N°-001-CMDCA-2026_compressed.pdf) — coletado em 2026-10-11T14:03:27+00:00
 - [Editais Fechados – PNAB I](https://www.cultura.pr.gov.br/Pagina/Programa-Mobilidade-Cultural) — coletado em 2026-10-13T14:06:14+00:00
+- [Acesse aqui.](https://drive.google.com/drive/folders/1NqknMHq1R5dsvFcVdD9HQeasIoJju0Ct?usp=sharing) — coletado em 2026-10-15T15:23:23+00:00
+- [https://investidor.bussolasocial.com.br/petrobras/editais/doacaoescolasmunicipais-2025](https://investidor.bussolasocial.com.br/petrobras/editais/doacaoescolasmunicipais-2025) — coletado em 2026-10-16T05:16:33+00:00
+- [https://investidor.bussolasocial.com.br/petrobras/editais/doacoesorganizacoes-2025](https://investidor.bussolasocial.com.br/petrobras/editais/doacoesorganizacoes-2025) — coletado em 2026-10-16T05:16:33+00:00
+- [https://investidor.bussolasocial.com.br/petrobras/editais/habilitacao-cadastro-petrobras](https://investidor.bussolasocial.com.br/petrobras/editais/habilitacao-cadastro-petrobras) — coletado em 2026-10-16T05:16:33+00:00
+- [https://investidor.bussolasocial.com.br/petrobras/editais/hpc2025](https://investidor.bussolasocial.com.br/petrobras/editais/hpc2025) — coletado em 2026-10-16T05:16:33+00:00
