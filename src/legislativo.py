@@ -6,10 +6,10 @@ oportunidade e NÃO gera livro: é acompanhado — cada mudança de situação (
 sancionado) entra na linha do tempo da proposição.
 
 Fontes (o que os motores 04, 05 e Congresso já coletam):
-  estado/camara_goiania.json          utilidade pública (com a situação na pauta) e itens a acompanhar
+  biblioteca_alexandria/livros/especiais/legislativo/camara_goiania.json          utilidade pública (com a situação na pauta) e itens a acompanhar
   dados/financiadores/<motor>/eventos  pistas dos motores legislativos (notícias e proposições)
-  estado/legislativo_entrada.json      atos desviados dos livros (livros_regra.registrar_achados)
-Saídas: estado/legislativo.json (histórico, com movimentações) e docs/dados/legislativo.json (painel).
+  biblioteca_alexandria/livros/especiais/legislativo/legislativo_entrada.json      atos desviados dos livros (livros_regra.registrar_achados)
+Saídas: biblioteca_alexandria/livros/especiais/legislativo/legislativo.json (histórico, com movimentações) e docs/dados/legislativo.json (painel).
 """
 from __future__ import annotations
 
@@ -21,10 +21,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-ESTADO = ROOT / "estado/legislativo.json"
-ENTRADA = ROOT / "estado/legislativo_entrada.json"
+ESTADO = ROOT / "biblioteca_alexandria/livros/especiais/legislativo/legislativo.json"
+ENTRADA = ROOT / "biblioteca_alexandria/livros/especiais/legislativo/legislativo_entrada.json"
 PAINEL = ROOT / "docs/dados/legislativo.json"
-CAMARA = ROOT / "estado/camara_goiania.json"
+CAMARA = ROOT / "biblioteca_alexandria/livros/especiais/legislativo/camara_goiania.json"
 MOTORES = {"camara-goiania-pl": "Câmara Municipal de Goiânia", "alego-pl": "Assembleia Legislativa de Goiás (ALEGO)",
            "congresso-nacional": "Congresso Nacional"}
 CASA_POR_HOST = (("goiania.go.leg.br", "camara-goiania-pl"), ("camaragyn", "camara-goiania-pl"), ("al.go.leg.br", "alego-pl"),

@@ -21,8 +21,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / "biblioteca_alexandria/base/incentivos"
-SAIDA = ROOT / "biblioteca_alexandria/empresas/catalogo_incentivos.jsonl.gz"
-RESUMO = ROOT / "biblioteca_alexandria/empresas/catalogo_incentivos_resumo.json"
+SAIDA = ROOT / "biblioteca_alexandria/livros/especiais/empresas/catalogo_incentivos.jsonl.gz"
+RESUMO = ROOT / "biblioteca_alexandria/livros/especiais/empresas/catalogo_incentivos_resumo.json"
 PAT_FONTE = "MTE — relação de beneficiárias do PAT até 31/03/2026 (somente matriz)"
 PAT_MATRIZES = BASE / "pat_matrizes_das_empresas_do_sistema_2026-03-31.jsonl.gz"
 
@@ -161,7 +161,7 @@ def construir() -> dict:
         process = None
     # SISTEMA — base verificada e rankings
     try:
-        IV = json.loads((ROOT / "biblioteca_alexandria/empresas/incentivos_verificados.json").read_text(encoding="utf-8"))
+        IV = json.loads((ROOT / "biblioteca_alexandria/livros/especiais/empresas/incentivos_verificados.json").read_text(encoding="utf-8"))
     except Exception:
         IV = {}
     for ev in IV.get("empresas") or []:
@@ -173,7 +173,7 @@ def construir() -> dict:
             if mec != "PAT" and isinstance(v, dict) and str(v.get("status") or "") in ("destinou", "consta", "participou", "verificado", "incentivador"):
                 e["incentivos"].setdefault(mec, {k: v.get(k) for k in ("status", "anos", "valor", "fonte") if v.get(k) is not None})
         e.setdefault("no_sistema", []).append("base verificada")
-    for f in ("biblioteca_alexandria/empresas/ranking_destinacao_tributaria.json", "biblioteca_alexandria/empresas/ranking_patrocinio_privado.json"):
+    for f in ("biblioteca_alexandria/livros/especiais/empresas/ranking_destinacao_tributaria.json", "biblioteca_alexandria/livros/especiais/empresas/ranking_patrocinio_privado.json"):
         try:
             for er in json.loads((ROOT / f).read_text(encoding="utf-8")).get("empresas", []):
                 c = dig(er.get("cnpj"))

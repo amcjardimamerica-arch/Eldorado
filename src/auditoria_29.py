@@ -157,13 +157,14 @@ def limpar_acervo() -> dict:
     d["itens"] = itens
     d["total"] = len(itens)
     d["limpeza"] = {"em": now_iso(), "removidos": len(fora), "motivos": dict(motivos.most_common(10)),
-                    "onde_ficaram": "estado/piloto/aprendizados/acervo_fora_do_objeto.json",
+                    "onde_ficaram": "Manual do Piloto Espião (livro especial) › historico_de_aprendizado",
                     "regra": "não se apaga sem guardar: o descartado vira matéria de estudo, não lixo"}
     write_json(arq, d)
-    pasta = ROOT / "estado/piloto/aprendizados"
-    pasta.mkdir(parents=True, exist_ok=True)
-    write_json(pasta / "acervo_fora_do_objeto.json",
-               {"em": now_iso(), "total": len(fora), "motivos": dict(motivos), "itens": fora})
+    from . import manual_piloto as MP                 # 16/10: matéria de estudo no MANUAL DO PILOTO (livro especial)
+    m = MP.ler("espiao")
+    m.setdefault("historico_de_aprendizado", {})["acervo_fora_do_objeto"] = {"em": now_iso(), "total": len(fora),
+                                                                            "motivos": dict(motivos), "itens": fora}
+    MP.gravar(m)
     return d["limpeza"]
 
 

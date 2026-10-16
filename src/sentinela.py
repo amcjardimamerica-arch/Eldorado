@@ -21,7 +21,7 @@ def run() -> dict:
         try:
             data,final,ctype=fetch(source,cfg["politica"])
             digest=_hash_candidatos(candidates(source,data,final,ctype))
-            state_path=ROOT/"estado/sentinela"/(source["id"]+".json")
+            state_path=ROOT/"biblioteca_alexandria/livros/especiais/legislativo/sentinela"/(source["id"]+".json")
             state=load_json(state_path) if state_path.exists() else {}
             if digest!=state.get("hash_candidatos"):
                 changed.add(source["id"])
@@ -30,7 +30,7 @@ def run() -> dict:
             failures.append({"fonte":source["id"],"erro":type(exc).__name__})
     report={"executado_em":now_iso(),"fontes_verificadas":checked,"fontes_na_fila":len(changed),"falhas":failures}
     write_json(queue_path,{"fontes":sorted(changed),"atualizado_em":report["executado_em"]})
-    write_json(ROOT/"estado/ultima_sentinela.json",report)
+    write_json(ROOT/"biblioteca_alexandria/livros/especiais/legislativo/ultima_sentinela.json",report)
     return report
 
 if __name__=="__main__": print(json.dumps(run(),ensure_ascii=False,indent=2))

@@ -32,7 +32,7 @@ from urllib.request import Request, urlopen
 from .nucleo import ROOT, load_json, now_iso, slug, write_json
 
 CFG = ROOT / "config/emendas.json"
-ESTADO = ROOT / "estado/emendas"
+ESTADO = ROOT / "biblioteca_alexandria/livros/especiais/legislativo/emendas"
 BIBLIOTECA = ROOT / "biblioteca_alexandria/emendas"
 
 

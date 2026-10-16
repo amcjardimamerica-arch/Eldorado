@@ -25,8 +25,8 @@ from urllib.parse import urlsplit
 
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-BASE = ROOT / "dados/empresas/base_empresas.jsonl.gz"
-PATROC = ROOT / "dados/empresas/go/patrocinios.json"
+BASE = ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados/base_empresas.jsonl.gz"
+PATROC = ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados/go/patrocinios.json"
 SAIDA = ROOT / "config/rotas_empresas.json"
 
 # caminhos onde as empresas costumam publicar o que financiam (observado em Renner, Porto Itapoá, BNDES, Maria Emília)

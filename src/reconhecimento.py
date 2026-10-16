@@ -317,7 +317,7 @@ def _validada_para_lista(nome: str) -> str | None:
     f = ((load_json(fe) or {}).get("fichas") or {}).get(nome) if fe.exists() else None
     if f and f.get("qualidade") in ("fonte_confirmada", "fonte_possivel"):
         return f"confirmada pelo Piloto - Interceptador ({f['qualidade']})"
-    vb = ROOT / "biblioteca_alexandria/empresas/incentivos_verificados.json"
+    vb = ROOT / "biblioteca_alexandria/livros/especiais/empresas/incentivos_verificados.json"
     V = load_json(vb) if vb.exists() else {}
     nomes = [x.get("nome") for x in (V.get("empresas") or [])] + [x.get("nome") if isinstance(x, dict) else x for x in (V.get("descobertas_goyazes") or [])]
     for x in nomes:
@@ -344,8 +344,8 @@ def alimentar_listas_de_empresas() -> dict:
     a origem e as evidências gravadas, para o ranking avaliá-la pelos mesmos critérios."""
     import re as _re
     a = alvos()
-    destino = {"patrocinio_privado": ROOT / "biblioteca_alexandria/empresas/ranking_patrocinio_privado.json",
-               "destinacao_tributaria": ROOT / "biblioteca_alexandria/empresas/ranking_destinacao_tributaria.json"}
+    destino = {"patrocinio_privado": ROOT / "biblioteca_alexandria/livros/especiais/empresas/ranking_patrocinio_privado.json",
+               "destinacao_tributaria": ROOT / "biblioteca_alexandria/livros/especiais/empresas/ranking_destinacao_tributaria.json"}
     fiscal = _re.compile(r"incentivo|rouanet|lie|pronon|pronas|fia|idoso|icms|isen[cç]", _re.I)
     social = _re.compile(r"patroc|doa[cç]|marketing|apoio|convenio|conv[êe]nio", _re.I)
     contagem = {k: 0 for k in destino}

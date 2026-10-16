@@ -11,7 +11,7 @@ evento; menções com 'Rouanet/incentivo fiscal/edital' são EXCLUÍDAS (não é
 patrocínio privado); nada é inventado — sem CNPJ no texto, a empresa fica
 'a identificar' até casar com a base ou com o cadastro.
 
-Saída: dados/empresas/<uf>/patrocinios.json (achados) e a agregação na base
+Saída: biblioteca_alexandria/livros/especiais/empresas/dados/<uf>/patrocinios.json (achados) e a agregação na base
 (campo `patrocinios`), com score e classe próprios.
 """
 from __future__ import annotations
@@ -240,7 +240,7 @@ def run(uf: str = "GO") -> dict:
                                                      "coleta": col, "total": len(saida), "empresas": saida})
     rel = {"uf": uf, **col, "empresas_com_patrocinio": agregadas, "novas_na_base": novas, "executado_em": now_iso()}
     # registro no diário semanal (alimenta o calendário do motor no painel)
-    sem_p = ROOT / "estado/empresas_semanal.jsonl"
+    sem_p = ROOT / "biblioteca_alexandria/livros/especiais/empresas/empresas_semanal.jsonl"
     if sem_p.exists():
         linhas = [l for l in sem_p.read_text(encoding="utf-8").splitlines() if l.strip()]
         if linhas:

@@ -29,8 +29,8 @@ from pathlib import Path
 
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-DESTINO = ROOT / "biblioteca_alexandria/empresas"
-BASE = ROOT / "dados/empresas/base_empresas.jsonl.gz"
+DESTINO = ROOT / "biblioteca_alexandria/livros/especiais/empresas"
+BASE = ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados/base_empresas.jsonl.gz"
 
 # ── Programas de investimento social conhecidos publicamente (a confirmar na fonte) ──
 # (nome, instituto/programa, o que apoia, via de entrada, incentivo fiscal usado)
@@ -153,14 +153,14 @@ def _norm(s: str) -> str:
 
 
 def _gife() -> set[str]:
-    arq = ROOT / "dados/empresas/gife_associados.json"
+    arq = ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados/gife_associados.json"
     if not arq.exists():
         return set()
     return {_norm(a["nome"]) for a in load_json(arq).get("associados", [])}
 
 
 def _patrocinios_observados() -> dict:
-    arq = ROOT / "dados/empresas/go/patrocinios.json"
+    arq = ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados/go/patrocinios.json"
     if not arq.exists():
         return {}
     saida = {}
@@ -216,8 +216,8 @@ def novas_de_patrocinio() -> list[tuple]:
     """(nome normalizado, nome, evento) das empresas de DOAÇÃO/PATROCÍNIO por três fontes: patrocínio observado na
     imprensa (motor de patrocínio), Piloto Espião e chamamento privado aberto (repositório único)."""
     out = []
-    for arq, orig, tipo in ((ROOT / "dados/empresas/go/patrocinios.json", "observada", "patrocínio observado na imprensa"),
-                            (ROOT / "dados/empresas/go/espiao_empresas.json", "espiao", None)):
+    for arq, orig, tipo in ((ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados/go/patrocinios.json", "observada", "patrocínio observado na imprensa"),
+                            (ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados/go/espiao_empresas.json", "espiao", None)):
         if arq.exists():
             for a in load_json(arq).get("achados") or []:
                 nome = str(a.get("empresa") or "").strip()
@@ -251,7 +251,7 @@ def ranking(categoria: str, limite: int = 100) -> list[dict]:
         if pos:
             icms[_norm(e["nome"])] = {"posicao": min(pos), "cnpj": e.get("cnpj"), "nome": e["nome"], "anos": sorted((e.get("anos") or {}).keys())}
     # lista oficial completa dos maiores contribuintes do ICMS de Goiás (299 por ano)
-    lst = ROOT / "dados/empresas/go/contribuintes_icms.json"
+    lst = ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados/go/contribuintes_icms.json"
     if lst.exists():
         for ano, bloco in sorted((load_json(lst).get("anos") or {}).items(), reverse=True):
             for emp in bloco.get("empresas", []):

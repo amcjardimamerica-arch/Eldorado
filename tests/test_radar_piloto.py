@@ -74,12 +74,12 @@ class TesteRadarDeCaptacao(unittest.TestCase):
     def test_radar_e_lista_propria_sem_furar_o_ranking(self):
         """O ranking oficial tem 100 posições ordenadas por pontuação: o Piloto não fura a fila.
         As descobertas viram lista própria e só entram no ranking depois da pesquisa concluída."""
-        rk = json.loads((ROOT / "biblioteca_alexandria/empresas/ranking_destinacao_tributaria.json").read_text(encoding="utf-8"))
+        rk = json.loads((ROOT / "biblioteca_alexandria/livros/especiais/empresas/ranking_destinacao_tributaria.json").read_text(encoding="utf-8"))
         # 24/09 (titular): as empresas achadas pelo Piloto são ACRESCENTADAS à lista; o ranking próprio segue com 100
         do_piloto = sum(1 for e in rk["empresas"] if "Piloto" in str(e.get("origem")))
         self.assertEqual(rk["total"], 100); self.assertEqual(len(rk["empresas"]) - do_piloto, 100)
         self.assertFalse(any(str(x.get("origem", "")).startswith("piloto") for x in rk["empresas"]))
-        rd = json.loads((ROOT / "biblioteca_alexandria/empresas/radar_captacao.json").read_text(encoding="utf-8"))
+        rd = json.loads((ROOT / "biblioteca_alexandria/livros/especiais/empresas/radar_captacao.json").read_text(encoding="utf-8"))
         self.assertIn("entram no ranking oficial quando a pesquisa concluir", rd["regra"])
         self.assertTrue(all(e.get("marcador") in MARCADORES for e in rd["empresas"]))
         pc = (ROOT / "src/pacote_conselho.py").read_text(encoding="utf-8")

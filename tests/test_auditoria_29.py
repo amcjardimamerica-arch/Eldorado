@@ -71,7 +71,7 @@ class TesteAuditoriaDosMotores(unittest.TestCase):
         marcados = [v for v in d["itens"].values() if v.get("fora_do_objeto")]
         self.assertGreater(len(marcados), 200, "o que não serve fica marcado, não apagado")
         self.assertTrue(all(v.get("motivo_fora") for v in marcados))
-        f = json.loads((ROOT / "estado/piloto/aprendizados/acervo_fora_do_objeto.json").read_text(encoding="utf-8"))
+        f = json.loads((ROOT / "biblioteca_alexandria/livros/especiais/manual-do-piloto-espiao.json").read_text(encoding="utf-8"))["historico_de_aprendizado"]["acervo_fora_do_objeto"]   # 16/10
         self.assertGreater(f["total"], 200)                               # o descartado ficou guardado
         self.assertTrue(all(v.get("motivo") for v in f["itens"].values()))  # cada um com seu motivo
 

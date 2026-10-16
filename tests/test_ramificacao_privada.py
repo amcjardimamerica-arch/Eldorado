@@ -25,7 +25,7 @@ class TesteSaidasDoEspiao(unittest.TestCase):
         self.assertIn('c.get("origem") != "catálogo do Piloto - Espião"', c)
         w = (ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8")
         linha = next(l for l in w.splitlines() if l.strip().startswith("for P in config/parametros_pilotos_fixos.json") and "espiao_empresas" in l)
-        self.assertIn("dados/empresas/go/espiao_empresas.json", linha, "o arquivo de empresas entra na cópia de segurança do voo")
+        self.assertIn("biblioteca_alexandria/livros/especiais/empresas/dados/go/espiao_empresas.json", linha, "o arquivo de empresas entra na cópia de segurança do voo")
 
     def test_banco_de_empresas_e_livro(self):
         p = (ROOT / "src/patrocinios.py").read_text(encoding="utf-8")

@@ -145,7 +145,8 @@ class TesteParametrosDaAuditoria(unittest.TestCase):
     def test_restricao_territorial_do_renner(self):
         """O edital Encantando Comunidades é real e aberto, mas restrito a municípios de
         RJ, SP e RS — Goiás não é elegível (confirmado pelo titular no site oficial)."""
-        ex = json.loads((ROOT / "dados/editais/extraidos/c5c7e37e2e275d2e69fe.json").read_text(encoding="utf-8"))
+        from src.nucleo import load_json as _lj                             # 16/10: a edição está no livro
+        ex = _lj(ROOT / "dados/editais/extraidos/c5c7e37e2e275d2e69fe.json")
         self.assertEqual(ex["pagina_divulgacao"], "https://www.institutolojasrenner.org.br/edital-encantando-comunidades/")
         self.assertEqual(ex["restricao_territorial"]["ufs"], ["RJ", "SP", "RS"])
         self.assertIn("GOIÁS NÃO ELEGÍVEL", ex["itens"]["Território"])

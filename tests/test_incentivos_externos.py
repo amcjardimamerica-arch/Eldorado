@@ -6,11 +6,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class TesteCatalogo(unittest.TestCase):
     def test_esporte_e_goyazes_no_catalogo(self):
-        r = json.loads((ROOT / "biblioteca_alexandria/empresas/catalogo_incentivos_resumo.json").read_text(encoding="utf-8"))
+        r = json.loads((ROOT / "biblioteca_alexandria/livros/especiais/empresas/catalogo_incentivos_resumo.json").read_text(encoding="utf-8"))
         self.assertGreater(r["por_incentivo"]["Esporte"], 9000); self.assertGreaterEqual(r["por_incentivo"]["Goyazes"], 100)
         self.assertGreater(r["por_incentivo"]["PRONON"], 1500); self.assertGreater(r["por_incentivo"]["PRONAS"], 700)   # 11/10: Transferegov
         raizes, cpf = set(), 0
-        with gzip.open(ROOT / "biblioteca_alexandria/empresas/catalogo_incentivos.jsonl.gz", "rt", encoding="utf-8") as fh:
+        with gzip.open(ROOT / "biblioteca_alexandria/livros/especiais/empresas/catalogo_incentivos.jsonl.gz", "rt", encoding="utf-8") as fh:
             for l in fh:
                 e = json.loads(l)
                 self.assertNotIn(e["raiz"], raizes, "uma empresa por raiz"); raizes.add(e["raiz"])

@@ -48,7 +48,7 @@ from .nucleo import (ROOT, append_jsonl, has_prompt_injection, load_json, now_is
 
 MOTOR_ID = "camara-goiania-pl"
 CFG = ROOT / "config/camara_goiania.json"
-ESTADO = ROOT / "estado/camara_goiania.json"
+ESTADO = ROOT / "biblioteca_alexandria/livros/especiais/legislativo/camara_goiania.json"
 QUARENTENA = ROOT / "estado/quarentena.jsonl"
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36 Eldorado-OSC/1.0"
 _PRAZO = {"ate": None}

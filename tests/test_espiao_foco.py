@@ -69,7 +69,7 @@ class TesteFiltroEFrentes(Base):
     def test_patrocinio_agrega_as_empresas_do_espiao(self):
         s = (ROOT / "src/patrocinios.py").read_text(encoding="utf-8")
         self.assertIn('espiao_empresas.json', s)
-        self.assertIn("dados/empresas/go/espiao_empresas.json", (ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8"))
+        self.assertIn("biblioteca_alexandria/livros/especiais/empresas/dados/go/espiao_empresas.json", (ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8"))
 
 
 class TesteCerebro(Base):

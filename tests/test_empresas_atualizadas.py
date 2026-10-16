@@ -10,7 +10,7 @@ class TesteEmpresasAtuais(unittest.TestCase):
     def test_arquivo_do_painel_e_o_da_coleta(self):
         from src.empresas import arquivo_do_painel
         a = arquivo_do_painel("GO")
-        self.assertEqual(a.parent.name, "go", "o painel lê biblioteca_alexandria/empresas/go/go.json (o da raiz estava vazio)")
+        self.assertEqual(a.parent.name, "go", "o painel lê biblioteca_alexandria/livros/especiais/empresas/go/go.json (o da raiz estava vazio)")
         self.assertIn("from .empresas import arquivo_do_painel", (ROOT / "src/dashboard_dados.py").read_text(encoding="utf-8"))
 
     def test_rodada_diaria(self):

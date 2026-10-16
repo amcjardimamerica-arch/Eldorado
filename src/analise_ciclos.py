@@ -88,7 +88,7 @@ def workflow(P: list, problema) -> dict:
     ultima_var = vr[-1].rsplit("/", 1)[-1][:21] if vr else None
     if not vr or (vr and (_idade_h(_j(Path(vr[-1])).get("periodo", [None, None])[1] + "T23:59:00+00:00") or 0) > 24 * 16):
         problema(P, "varredura_desatualizada", "media", "varredura de referência dos diários e casas legislativas com mais de 15 dias", "disparar o fluxo 40")
-    rb = _j(ROOT / "estado/robots_motores.json"); lg = _j(ROOT / "estado/legislativo.json")
+    rb = _j(ROOT / "estado/robots_motores.json"); lg = _j(ROOT / "biblioteca_alexandria/livros/especiais/legislativo/legislativo.json")
     return {"comando": {"atualizado_em": cm.get("atualizado_em"), "ciclos_hoje": len(hoje), "vermelhos_hoje": cm.get("vermelhos_hoje"),
                         "etapas_com_erro_hoje": len(erros), "fases_puladas_hoje": dict(puladas),
                         "ultimo_ciclo": {"estado": u.get("estado"), "novos_na_base": u.get("novos_na_base"),

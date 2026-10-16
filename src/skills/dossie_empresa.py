@@ -56,7 +56,7 @@ def receita(cnpj: str) -> dict:
 def projetos(cnpj: str, nome: str) -> list[dict]:
     """Participações verificadas em mecanismos de incentivo (fonte oficial), da base do sistema."""
     try:
-        base = json.loads((ROOT / "biblioteca_alexandria/empresas/incentivos_verificados.json").read_text(encoding="utf-8"))
+        base = json.loads((ROOT / "biblioteca_alexandria/livros/especiais/empresas/incentivos_verificados.json").read_text(encoding="utf-8"))
     except Exception:
         return []
     c8 = re.sub(r"\D", "", cnpj or "")[:8]
@@ -152,7 +152,7 @@ def indexar() -> None:
 def empresas_goias_sem_dossie() -> list[dict]:
     feitos = {f.stem for f in DIR.glob("*.json")} if DIR.exists() else set()
     out, vistos = [], set()
-    for f in ("biblioteca_alexandria/empresas/ranking_destinacao_tributaria.json", "biblioteca_alexandria/empresas/ranking_patrocinio_privado.json"):
+    for f in ("biblioteca_alexandria/livros/especiais/empresas/ranking_destinacao_tributaria.json", "biblioteca_alexandria/livros/especiais/empresas/ranking_patrocinio_privado.json"):
         try:
             for e in json.loads((ROOT / f).read_text(encoding="utf-8")).get("empresas", []):
                 uf = str((e.get("cadastro") or {}).get("uf") or e.get("uf") or "")

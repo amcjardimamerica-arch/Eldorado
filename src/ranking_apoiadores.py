@@ -7,7 +7,7 @@ Junta três origens numa lista só, ordenada por pontuação:
 
 Cada empresa carrega, quando houver: site, CNPJ, CNAE principal e secundários, quadro
 societário (QSA), contatos (telefone, e-mail), porte, situação e o que sustenta a
-pontuação. Os dados cadastrais vêm do que já está guardado em dados/empresas/ (cadastro
+pontuação. Os dados cadastrais vêm do que já está guardado em biblioteca_alexandria/livros/especiais/empresas/dados/ (cadastro
 da Receita coletado pelo motor de empresas) e do radar; o que faltar fica marcado como
 "a completar", nunca inventado.
 
@@ -32,7 +32,7 @@ def _so_digitos(s: str) -> str:
 
 def _base_cadastral() -> dict:
     """CNPJ → cadastro (Receita) do que o motor de empresas já coletou."""
-    arq = ROOT / "dados/empresas/base_empresas.jsonl.gz"
+    arq = ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados/base_empresas.jsonl.gz"
     if not arq.exists():
         return {}
     out = {}
@@ -99,7 +99,7 @@ def montar() -> dict:
     # As descobertas do Piloto NÃO entram aqui: esta tela lê apenas os dois rankings
     # qualificados. Fonte recém-achada fica no posto do Piloto até ser classificada.
     def _carregar(cat: str) -> list[dict]:
-        arq = ROOT / f"biblioteca_alexandria/empresas/ranking_{cat}.json"
+        arq = ROOT / f"biblioteca_alexandria/livros/especiais/empresas/ranking_{cat}.json"
         if not arq.exists():
             return []
         saida, por_chave = [], {}
@@ -228,7 +228,7 @@ def montar() -> dict:
     try:
         import gzip as _gz
         _pat, _goy, _todos = {}, {}, {}
-        with _gz.open(ROOT / "biblioteca_alexandria/empresas/catalogo_incentivos.jsonl.gz", "rt", encoding="utf-8") as fh:
+        with _gz.open(ROOT / "biblioteca_alexandria/livros/especiais/empresas/catalogo_incentivos.jsonl.gz", "rt", encoding="utf-8") as fh:
             for l in fh:
                 c = json.loads(l)
                 if "PAT" in c["incentivos"]:

@@ -89,7 +89,7 @@ def alimentar_agregadores(fontes: dict | None = None) -> dict:
     for d, f in fontes.items():
         if not GOV.search(d) and not d.endswith("in.gov.br"):
             priv[d] = {"url": f["url"], "nome": d, "origem": f.get("origem")}
-    for a in (_j(ROOT / "dados/empresas/go/espiao_empresas.json", {}).get("achados") or []):
+    for a in (_j(ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados/go/espiao_empresas.json", {}).get("achados") or []):
         d = _dom(a.get("url"))
         if d and not GOV.search(d):
             priv.setdefault(d, {"url": f"{urlsplit(a['url']).scheme}://{urlsplit(a['url']).netloc}", "nome": a.get("empresa") or d, "origem": "Espião"})
