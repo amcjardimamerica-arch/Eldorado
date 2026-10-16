@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-16T16:21:06+00:00",
+  "em": "2026-10-16T16:36:16+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-16T16:08:53+00:00",
+  "ultimo_voo": "2026-10-16T16:25:39+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,88 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 337,
+    "missoes": 338,
     "validadas": 11,
     "parciais": 87,
-    "insuficientes": 234,
+    "insuficientes": 235,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
       "sim": 256,
-      "nao": 39
+      "nao": 40
     },
     "estrelas_de_ouro": 14,
-    "fontes_novas_para_os_motores": 29,
+    "fontes_novas_para_os_motores": 30,
     "tempo_medio_min": 13.0
   },
   "missoes": [
+    {
+      "em": "2026-10-16T16:25:39+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (o Cartório não achou em 2 abordagens; busca",
+      "alvo": "Edital de Publicação de Teses e Dissertações",
+      "qualidade": "insuficiente",
+      "comprovados": 5,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Prazo de inscrição",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Anexos",
+        "Destinação",
+        "Área de atuação"
+      ],
+      "pagina_oficial": "http://www.fapeal.br",
+      "parecer_fonte": {
+        "serve_como_fonte": "nao",
+        "por_que": "O edital mencionado é sobre a publicação de teses e dissertações, não oferece informações sobre financiamento ou apoio a organizações da sociedade civil.",
+        "para_a_amc": "A associação comunitária de Goiânia não teria como acessar esse edital, pois ele não se destina a organizações da sociedade civil, mas sim a instituições de ensino e pesquisadores.",
+        "proximo_passo": "Consultar editais específicos para organizações da sociedade civil oferecidos por órgãos federais ou estaduais.",
+        "risco": "A falta de informações sobre prazo, requisitos e valor torna impossível a participação da associação comunitária nesse edital."
+      },
+      "erro": null,
+      "segundos": 634,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 5,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "descartável: não se mostrou oportunidade de recurso",
+      "id": "agr-0bcb3c1bda8f",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Publicação de teses e dissertações",
+          "trecho": "Biblioteca Digital de Teses e Dissertações",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Fundação de Amparo à Pesquisa do Estado de Alagoas - FAPEAL",
+          "trecho": "Fundação de Amparo à Pesquisa do Estado de Alagoas - FAPEAL - Fundação de Amparo à Pesquisa do Estado de Alagoas",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "AL",
+          "trecho": "Fundação de Amparo à Pesquisa do Estado de Alagoas",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "FAPEAL - Fundação de Amparo à Pesquisa do Estado de Alagoas",
+      "indicios": [
+        {
+          "url": "https://www.fapeal.br/2026/06/edital-publicar-teses-dissertacoes",
+          "tipo": "noticia"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital"
+      ]
+    },
     {
       "em": "2026-10-16T16:08:53+00:00",
       "modo": "validar",
@@ -2749,75 +2816,6 @@
         "financiador_ano",
         "governo",
         "programa_puro"
-      ]
-    },
-    {
-      "em": "2026-10-16T04:48:25+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "0 · PNCP · faltam Resultado, Prazo de recurso, Requisitos, Destinação, Área de atuação",
-      "alvo": "TRIBUNAL SUPERIOR DO TRABALHO — Credenciamento TRT4 n° 01/2023 Credenciamento de associações e/ou cooperativas de catadores de materiais recicláveis para recolhimento e processamento de material reciclável e reutilizável produzido nas dependências da J",
-      "qualidade": "insuficiente",
-      "comprovados": 5,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Anexos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": "https://buscarlicitacao.com.br/licitacao/rs/porto-alegre/00509968000148-1-000969/2024/edital-de-chamamento-publico-no-135-2024",
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O edital comprovado refere-se ao credenciamento de associações e cooperativas de catadores de materiais recicláveis para atuar nas dependências da Justiça do Trabalho da 4ª Região, o que é relevante para organizações que atuam na área de reciclagem.",
-        "para_a_amc": "Para acessar, a associação comunitária de Goiânia precisaria comprovar regularidade fiscal federal, regularidade do FGTSE, regularidade trabalhista, contrato social, capacidade técnica e objeto compatível com o edital.",
-        "proximo_passo": "Verificar se a associação comunitária atende aos requisitos do edital e se está localizada na região de atuação do TRT4.",
-        "risco": "A associação comunitária de Goiânia pode não estar localizada na região de atuação do TRT4 (RS), o que impediria seu acesso ao edital."
-      },
-      "erro": null,
-      "segundos": 690,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": true,
-      "fontes_oficiais": 5,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "9b629429aba64de24cec",
-      "encontrou": {
-        "Objeto": {
-          "valor": "Credenciamento de associações e/ou cooperativas de catadores de materiais recicláveis para recolhimento e processamento de material reciclável e reutilizável produzido nas dependências da Justiça do Trabalho da 4ª Região",
-          "trecho": "Credenciamento TRT4 n° 01/2023 Credenciamento de associações e/ou cooperativas de catadores de materiais recicláveis para recolhimento e processamento de material reciclável e reut",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "TRIBUNAL SUPERIOR DO TRABALHO",
-          "trecho": "Órgão TRIBUNAL SUPERIOR DO TRABALHO",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "RS",
-          "trecho": "Cidade Porto Alegre — RS",
-          "oficial": true,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "Certidão de regularidade fiscal federalVálida na data da sessão, Certificado de regularidade do FGTSEmitido nos últimos 30 dias, Prova de regularidade trabalhistaCNDT sem débitos, Contrato social e alteraçõesObjeto compatível com o edital, Atestado de capacidade técnicaServiço semelhante, com quanti",
-          "trecho": "Certidão de regularidade fiscal federalVálida na data da sessão, Certificado de regularidade do FGTSEmitido nos últimos 30 dias, Prova de regularidade trabalhistaCNDT sem débitos, ",
-          "oficial": true,
-          "dispensado": false
-        }
-      },
-      "financiador": "TRIBUNAL SUPERIOR DO TRABALHO",
-      "indicios": [],
-      "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento"
       ]
     }
   ],
