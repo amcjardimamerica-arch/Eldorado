@@ -376,6 +376,7 @@ def _abrir(url: str, timeout: int = 12, max_bytes: int = 2_500_000) -> tuple[str
     from urllib.request import Request, urlopen
     if url.startswith("http://"):                   # 16/10 (sala de controle): http:// virava ValueError e saía da fila
         url = "https://" + url[len("http://"):]
+    url = url.strip().split()[0] if url.strip() else url   # 16/10: rota com texto colado depois do endereço (InvalidURL)
     if not url.startswith("file://"):
         validate_public_https(url, urlsplit(url).hostname)
     if _pela_ponte(url):                       # 15/10: portal que recusa a nuvem → ponte Brasil (medida: funciona)
@@ -699,7 +700,20 @@ def _ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, 
             continue
         try:
             tmo = lim.get("timeout_segundos", 12) if sensor.get("tipo") != "api" else max(30, lim.get("timeout_segundos", 12))
-            html, final, status = _abrir(url, timeout=tmo, max_bytes=lim["bytes_por_pagina"])
+            try:
+                html, final, status = _abrir(url, timeout=tmo, max_bytes=lim["bytes_por_pagina"])
+            except Exception as _e1:                    # 16/10 (sala): 403/recusa de datacenter → tenta a PONTE Brasil sozinho
+                _c1 = getattr(_e1, "code", None)
+                if (_c1 in (403, 451) or type(_e1).__name__ in ("URLError", "ConnectionRefusedError", "RemoteDisconnected")) \
+                        and not _pela_ponte(url) and not _na_nuvem_sem_brasil():
+                    from . import ponte_brasil
+                    st_, final, corpo_, _h = ponte_brasil.abrir(url, timeout=max(tmo, 30), max_bytes=lim["bytes_por_pagina"])
+                    if not (200 <= int(st_ or 0) < 400):
+                        raise _e1
+                    html, status = corpo_.decode("utf-8", "replace") if isinstance(corpo_, bytes) else str(corpo_), int(st_)
+                    diag.setdefault("lidas_pela_ponte_por_bloqueio", []).append(url)
+                else:
+                    raise
             saude.append({"url": url, "http": status, "bytes": len(html)}); diag["paginas_lidas"] += 1
             FR.sucesso(url)
         except Exception as exc:
@@ -713,8 +727,11 @@ def _ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, 
                      "conexão recusada/derrubada — filtro de rede ou IP estrangeiro" if type(exc).__name__ in ("URLError", "RemoteDisconnected", "ConnectionResetError") else
                      "tempo esgotado — servidor lento ou filtrando o IP" if "Timeout" in type(exc).__name__ else
                      f"HTTP {code}" if code else type(exc).__name__)
-            falhas.append({"url": url, "erro": type(exc).__name__, "code": code, "waf": waf, "causa": causa,
-                           "retentativa": FR.falhou(url, sensor["id"], FR.tipo_erro(exc, code), causa).get("estado")})
+            # 16/10 (sala): 404/410 não é erro de ACESSO — a página não existe; repetir não resolve: vai direto ao
+            # mostrador como rota quebrada (a corrigir na configuração do motor)
+            _ret = FR.rota_quebrada(url, sensor["id"], f"HTTP {code}") if code in (404, 410) else \
+                FR.falhou(url, sensor["id"], FR.tipo_erro(exc, code), causa)
+            falhas.append({"url": url, "erro": type(exc).__name__, "code": code, "waf": waf, "causa": causa, "retentativa": _ret.get("estado")})
             try:
                 from .alternativas import registrar_bloqueio
                 registrar_bloqueio(url, type(exc).__name__, sensor.get("nome", ""))

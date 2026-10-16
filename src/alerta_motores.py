@@ -34,7 +34,8 @@ def alerta_diario(hoje: date | None = None) -> dict:
     esq = load_json(ROOT / "estado/esquadra.json").get("sensores", {}) if (ROOT / "estado/esquadra.json").exists() else {}
     rotas = load_json(ROOT / "config/rotas_motores.json") if (ROOT / "config/rotas_motores.json").exists() else {}
     regulares = [s for s in registro() if not s.get("fontes_260")]
-    alertas, ok = [], []
+    alertas, ok, bloqueados = [], [], []
+    _BLOQUEIO = {k: v for k, v in ((load_json(ROOT / "config/sensores.json") or {}).get("bloqueio_permanente") or {}).items() if not k.startswith("_")}
     for s in regulares:
         e = esq.get(s["id"]) or {}
         cad = _cadencia(s["id"], rotas)
@@ -45,11 +46,14 @@ def alerta_diario(hoje: date | None = None) -> dict:
             continue
         dias = (hoje - date.fromisoformat(ult)).days
         saude = e.get("saude") or []
-        falhou_tudo = bool(saude) and all(x.get("erro") for x in saude)
+        # 16/10 (sala): adaptador de API registra só as fontes que FALHARAM; com achados, ele leu (não "falhou tudo")
+        falhou_tudo = bool(saude) and all(x.get("erro") for x in saude) and not int(e.get("achados_ultima") or 0)
         aguarda_local = e.get("pulado_exige_brasil") or ("aguardando coleta local" in str((e.get("diagnostico") or {}).get("motivo_zero") or "") and not saude)
         if aguarda_local:
             alertas.append({"id": s["id"], "nome": s["nome"], "gravidade": "media", "problema": "aguardando coleta local (portal recusa IP estrangeiro)",
                             "acao": "rodar scripts/coleta_brasil.py no computador do titular — ou o Claude Desktop faz isso ao abrir"})
+        elif s["id"] in _BLOQUEIO:                  # 16/10: bloqueio permanente conhecido — à parte, com o caminho alternativo
+            bloqueados.append({"id": s["id"], "nome": s["nome"], "gravidade": "conhecido", "problema": _BLOQUEIO[s["id"]]})
         elif falhou_tudo:
             alertas.append({"id": s["id"], "nome": s["nome"], "gravidade": "alta", "problema": f"todas as páginas falharam em {ult}",
                             "acao": "conferir bloqueio/mudança de formato; o Claude Desktop abre a rota no navegador"})
@@ -60,7 +64,7 @@ def alerta_diario(hoje: date | None = None) -> dict:
             ok.append(s["id"])
     alertas.sort(key=lambda a: (0 if a["gravidade"] == "alta" else 1, a["id"]))
     res = {"em": now_iso(), "data": hoje.isoformat(), "total": len(regulares), "funcionando": len(ok), "em_alerta": len(alertas),
-           "alertas": alertas, "ok": ok,
+           "alertas": alertas, "ok": ok, "bloqueio_conhecido": bloqueados,
            "regra": "todo motor regular tem de ler dentro da sua cadência; o que não leu vira alerta e vai para o pacote do Claude Desktop"}
     write_json(ROOT / "estado/alerta_motores.json", res)
     write_json(ROOT / "docs/dados/alerta_motores.json", res)

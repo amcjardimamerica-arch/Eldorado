@@ -67,6 +67,22 @@ def _instr(lst: list, agora: datetime, **k):
     lst.append({**k, "idade_h": idade, "estado": est, "motivo": mot})
 
 
+def _ultima_do_fluxo(arquivo: str, agora: datetime) -> dict | None:
+    """16/10/2026: a última execução de UM fluxo — o diário (35) saía da lista das 100 execuções mais recentes de todos."""
+    tok = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+    rep = os.environ.get("GITHUB_REPOSITORY", "amcjardimamerica-arch/Eldorado")
+    if not tok:
+        return None
+    try:
+        req = urllib.request.Request(f"https://api.github.com/repos/{rep}/actions/workflows/{arquivo}/runs?per_page=1",
+                                     headers={"Authorization": f"Bearer {tok}", "Accept": "application/vnd.github+json"})
+        r = (json.loads(urllib.request.urlopen(req, timeout=20).read()).get("workflow_runs") or [None])[0]
+    except Exception:  # noqa: BLE001
+        return None
+    return {"nome": r.get("name"), "quando": r.get("created_at"), "situacao": r.get("status"), "conclusao": r.get("conclusion"),
+            "idade_h": _horas(r.get("created_at"), agora), "url": r.get("html_url")} if r else None
+
+
 def _fluxos(agora: datetime) -> list[dict]:
     """Última execução de cada fluxo do GitHub Actions (quando há token no ambiente)."""
     tok = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
@@ -183,7 +199,9 @@ def montar(agora: datetime | None = None) -> dict:
     _instr(I, agora, id="mo_cadencia", sub="Motores", nome="Motores regulares fora da cadência", valor=al.get("em_alerta"), unidade="motores", escala=[0, 10],
            faixa={"normal": [None, 2], "alarme": [None, 5]}, quando=al.get("em"), cadencia_h=26,
            faz="Todo motor regular tem de ler dentro da sua cadência.", efeito=f"{al.get('funcionando', 0)} de {al.get('total', 0)} dentro da cadência",
-           resultado=", ".join(str(a.get("motor") or a.get("id") or a) for a in (al.get("alertas") or []))[:300] or "nenhum alerta")
+           resultado=(", ".join(str(a.get("motor") or a.get("id") or a) for a in (al.get("alertas") or []))[:300] or "nenhum alerta")
+           + (f" · bloqueio conhecido (à parte): {', '.join(b['id'] for b in al.get('bloqueio_conhecido') or [])} — editais pelo PNCP e pelo Diário da Justiça; página pelo Chrome"
+              if al.get("bloqueio_conhecido") else ""))
 
     # ── ESTEIRA · coleta, repositório, livros
     fu = li.get("funil") or {}
@@ -268,7 +286,7 @@ def montar(agora: datetime | None = None) -> dict:
            faz="Descarte da titular não apaga o livro: sinaliza para o Claude analisar a exclusão.",
            efeito=f"{sum(1 for v in dec.values() if v.get('estado') == 'descartado')} descartadas · {sum(1 for v in dec.values() if v.get('estado') == 'inscrito')} inscritas",
            resultado=f"{len(fila.get('pendentes') or [])} livros sinalizados aguardando análise")
-    ext = next((f for f in _fluxos(agora) if str(f.get("nome", "")).startswith("35 ")), None)
+    ext = next((f for f in _fluxos(agora) if str(f.get("nome", "")).startswith("35 ")), None) or _ultima_do_fluxo("alimentacao-externa.yml", agora)
     _instr(I, agora, id="al_externa", sub="Destino", nome="Alimentação externa diária", valor=(100 if ext and ext.get("conclusao") == "success" else 0) if ext else None,
            unidade="%", escala=[0, 100], faixa={"normal": [100, None], "alarme": [1, None]}, quando=(ext or {}).get("quando"), cadencia_h=26,
            faz="Uma vez por dia envia os editais abertos, certificados (SHA-256) e assinados, ao site de editais.",

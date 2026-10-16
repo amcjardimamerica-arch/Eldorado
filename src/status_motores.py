@@ -196,7 +196,8 @@ def status_de(p: dict, hoje: str) -> dict:
         if up and up.date().isoformat() == hoje:
             fontes = u.get("fonte_do_dia") or {}
             if u.get("falhas") and not fontes and not (u.get("vereditos") or u.get("achados") is not None):
-                cor_dia, falha = "vermelho", "falha: " + str(u["falhas"][0])[:120]
+                _f = u["falhas"]                         # 16/10: o diário grava a CONTAGEM (número) ou a lista de falhas
+                cor_dia, falha = "vermelho", "falha: " + (str(_f[0])[:120] if isinstance(_f, list) else f"{_f} falha(s) na leitura")
             elif fontes and all(not str(v).startswith(("leu", "em dia")) for v in fontes.values()):   # 03/10: "em dia" = já lido
                 cor_dia, falha = "vermelho", "nenhuma fonte leu: " + ", ".join(f"{k} {v}" for k, v in fontes.items())
             else:

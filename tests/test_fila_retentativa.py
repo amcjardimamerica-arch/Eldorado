@@ -229,3 +229,17 @@ class SalaDeControle16_10(unittest.TestCase):
         self.assertEqual(sorted(voltam), ["http://doem.org.br/ba/x", "https://fundacaotelefonicavivo.org.br/"])
         self.assertIn("https://y.gov.br/", FR._CACHE["fora_da_fila"])                          # causa não corrigida: fica
         FR._CACHE = None
+
+
+class Sala16_10b(unittest.TestCase):
+    def test_404_e_rota_quebrada_e_sondagem_do_cartorio_sai(self):
+        FR._CACHE = {"fila": {"https://x.org/sitemap.xml": {"escopo": "cartorio", "erro": "HTTP 404"}},
+                     "fora_da_fila": {"https://y.org/wp-json/wp/v2/media?search=a": {"escopo": "cartorio", "erro": "HTTP 404"},
+                                      "https://licitanet.com.br/a": {"escopo": "outras-oportunidades-5", "erro": "HTTP 403"},
+                                      "https://z.gov.br/morto": {"escopo": "m1", "erro": "gaierror"}}}
+        FR.reabrir_corrigidos(set())
+        self.assertEqual(list(FR._CACHE["fora_da_fila"]), ["https://z.gov.br/morto"])           # só a falha real fica
+        self.assertEqual(FR._CACHE["fila"], {})
+        r = FR.rota_quebrada("https://w.gov.br/editais-antigos", "m2", "HTTP 404")
+        self.assertEqual(r["estado"], "fora_da_fila"); self.assertIn("rota quebrada", r["motivo"])
+        FR._CACHE = None
