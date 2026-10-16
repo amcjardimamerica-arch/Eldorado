@@ -66,8 +66,21 @@ def gravar(lid: str, d: dict) -> None:
 
 
 # ── ligação ───────────────────────────────────────────────────────────────────────────────────────────────────────
+_IDX_MEMO: dict = {}
+
+
 def indice() -> dict:
-    """chave/id/link/título → livro, a partir da capa (catálogo) e do conteúdo já registrado."""
+    """chave/id/link/título → livro. 16/10: em MEMÓRIA enquanto o catálogo não muda (gravar centenas de edições não
+    reconstrói o índice a cada uma)."""
+    marca = CAT.stat().st_mtime_ns if CAT.exists() else 0
+    if _IDX_MEMO.get("marca") == marca and _IDX_MEMO.get("idx") is not None:
+        return dict(_IDX_MEMO["idx"])
+    idx = _indice()
+    _IDX_MEMO.update({"marca": marca, "idx": idx})
+    return dict(idx)
+
+
+def _indice() -> dict:
     from .banco_livros import _chaves_do_livro
     L = (_j(CAT, {}) or {}).get("motores") or []
     idx = {}
@@ -396,3 +409,9 @@ def idade_h(caminho) -> float:
     if not g:
         return 10 ** 6
     return (datetime.now(timezone.utc) - datetime.fromisoformat(g)).total_seconds() / 3600
+
+
+def existe(caminho) -> bool:
+    """O 'arquivo' antigo existe — em disco ou já absorvido nos livros (substitui Path.exists() nos leitores)."""
+    p = Path(caminho)
+    return p.exists() or _rel(p) in (_j(ORIGENS, {}) or {})
