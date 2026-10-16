@@ -1,11 +1,11 @@
-commit: 3cbffd54235f8d11959d8293221a6d1edad686af
-em: 2026-10-16T10:50:21Z
+commit: 4d717af6db6d7476ee9165d8d95541d890ecae25
+em: 2026-10-16T13:39:52Z
 rc: 1
-::error title=teste falhou::tests.test_validacao_mapa.TestArquivoDeValidacao0929.test_universo_inteiro_decidido — AssertionError: 173 != 154
-::error title=teste falhou::tests.test_verificacao_63_2026_09_15.TesteBaseDaVerificacao.test_a_base_existe_e_tem_os_63 — AssertionError: 43 != 63
-::error title=teste falhou::tests.test_verificacao_63_2026_09_15.TesteBaseDaVerificacao.test_resumo_bate_com_a_lista — ?              ^              ^               ^^
-::error title=teste falhou::tests.test_incentivos_externos.TesteCatalogo.test_gerador_le_as_bases_externas — KeyError: 'derivadas'
-::error title=teste falhou::tests.test_motor_judiciario_go.Motor.test_cnj_recusado_na_nuvem_passa_ao_computador — KeyError: 'recusado_na_nuvem_em'
+::error title=teste falhou::tests.test_pareceres_livros.TestPareceresLivros.test_pareceres_tem_iniciativa_valida — AssertionError: 11 != 12
+::error title=teste falhou::tests.test_validacao_mapa.TestArquivoDeValidacao.test_universo_inteiro_decidido — AssertionError: 1046 != 1031
+::error title=teste falhou::tests.test_validacao_mapa.TestArquivoDeValidacao0929.test_universo_inteiro_decidido — AssertionError: 142 not greater than or equal to 150
+::error title=teste falhou::tests.test_verificacao_63_2026_09_15.TesteBaseDaVerificacao.test_a_base_existe_e_tem_os_63 — AssertionError: 37 != 63
+::error title=teste falhou::tests.test_verificacao_63_2026_09_15.TesteBaseDaVerificacao.test_resumo_bate_com_a_lista — ?              ^             ^^               +
 ---- falhas ----
 ERROR: test_gerador_le_as_bases_externas (tests.test_incentivos_externos.TesteCatalogo.test_gerador_le_as_bases_externas)
 ----------------------------------------------------------------------
@@ -23,6 +23,15 @@ Traceback (most recent call last):
     self.assertEqual(est["cnj"]["recusado_na_nuvem_em"], "2026-09-10")
                      ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
 KeyError: 'recusado_na_nuvem_em'
+
+======================================================================
+ERROR: test_v_a_r_trazem_os_12_com_status (tests.test_parametros_opressores.TestArquivo.test_v_a_r_trazem_os_12_com_status)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/eldorado_testes/tests/test_parametros_opressores.py", line 37, in test_v_a_r_trazem_os_12_com_status
+    self.assertEqual(set(r["dados"]), set(PO.ITENS), r["id"])
+                         ~^^^^^^^^^
+KeyError: 'dados'
 
 ======================================================================
 ERROR: test_cartorio_incorpora_e_fluxo_recebe (tests.test_revisoes_partes_1_a_3.TesteCartorioEFluxo.test_cartorio_incorpora_e_fluxo_recebe)
@@ -57,7 +66,7 @@ FAIL: test_resumo_bate_com_a_lista (tests.test_abertos_sem_informacao.TesteSaida
 Traceback (most recent call last):
   File "/tmp/eldorado_testes/tests/test_abertos_sem_informacao.py", line 107, in test_resumo_bate_com_a_lista
     self.assertEqual(self.pacote["resumo"]["total"], len(self.pacote["itens"]))
-AssertionError: 107 != 24
+AssertionError: 107 != 21
 
 ======================================================================
 FAIL: test_composicao (tests.test_dispensas_itens.TestParametros1001.test_composicao)
@@ -65,7 +74,15 @@ FAIL: test_composicao (tests.test_dispensas_itens.TestParametros1001.test_compos
 Traceback (most recent call last):
   File "/tmp/eldorado_testes/tests/test_dispensas_itens.py", line 137, in test_composicao
     self.assertEqual(len(self.itens), c["novos"] + c["completados"] + c["v_para_a_por_prazo_vencido_na_base"])
-AssertionError: 131 != 142
+AssertionError: 98 != 142
+
+======================================================================
+FAIL: test_recorrencia_uma_rota_por_validada_com_cadencia_por_estado (tests.test_evolucao_busca.TesteDescobertaERecorrencia.test_recorrencia_uma_rota_por_validada_com_cadencia_por_estado)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/eldorado_testes/tests/test_evolucao_busca.py", line 43, in test_recorrencia_uma_rota_por_validada_com_cadencia_por_estado
+    self.assertGreaterEqual(r["total"], 50)
+AssertionError: 38 not greater than or equal to 50
 
 ======================================================================
 FAIL: test_sem_lista_e_sem_catalogo_a_cobertura_fica_nao_medida (tests.test_motor01_diario_goiania.TestCoberturaDoDia.test_sem_lista_e_sem_catalogo_a_cobertura_fica_nao_medida)
@@ -98,9 +115,9 @@ AssertionError: True is not false
 FAIL: test_dez_blocos_e_todos_decididos (tests.test_parametros_opressores.TestArquivo.test_dez_blocos_e_todos_decididos)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/tmp/eldorado_testes/tests/test_parametros_opressores.py", line 29, in test_dez_blocos_e_todos_decididos
-    self.assertEqual(sum(self.d["contagem"].values()), len(self.itens))
-AssertionError: 329 != 317
+  File "/tmp/eldorado_testes/tests/test_parametros_opressores.py", line 27, in test_dez_blocos_e_todos_decididos
+    self.assertGreaterEqual(len(self.itens), 300)
+AssertionError: 283 not greater than or equal to 300
 
 ======================================================================
 FAIL: test_atualizado_guarda_a_data_da_confirmacao (tests.test_parecer_23_09.TesteAtualizacaoAplicada.test_atualizado_guarda_a_data_da_confirmacao)
@@ -128,6 +145,14 @@ Traceback (most recent call last):
 AssertionError: 228 != 238
 
 ======================================================================
+FAIL: test_pareceres_tem_iniciativa_valida (tests.test_pareceres_livros.TestPareceresLivros.test_pareceres_tem_iniciativa_valida)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/eldorado_testes/tests/test_pareceres_livros.py", line 28, in test_pareceres_tem_iniciativa_valida
+    self.assertEqual(len(p.get("doze_itens") or {}), 12)
+AssertionError: 11 != 12
+
+======================================================================
 FAIL: test_universo_inteiro_decidido (tests.test_validacao_mapa.TestArquivoDeValidacao.test_universo_inteiro_decidido)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
@@ -139,9 +164,9 @@ AssertionError: 1046 != 1031
 FAIL: test_universo_inteiro_decidido (tests.test_validacao_mapa.TestArquivoDeValidacao0929.test_universo_inteiro_decidido)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/tmp/eldorado_testes/tests/test_validacao_mapa.py", line 32, in test_universo_inteiro_decidido
-    self.assertEqual(sum(self.dados["contagem"].values()), len(self.itens))
-AssertionError: 173 != 154
+  File "/tmp/eldorado_testes/tests/test_validacao_mapa.py", line 27, in test_universo_inteiro_decidido
+    self.assertGreaterEqual(len(self.itens), self.MINIMO)
+AssertionError: 142 not greater than or equal to 150
 
 ======================================================================
 FAIL: test_a_base_existe_e_tem_os_63 (tests.test_verificacao_63_2026_09_15.TesteBaseDaVerificacao.test_a_base_existe_e_tem_os_63)
@@ -149,7 +174,7 @@ FAIL: test_a_base_existe_e_tem_os_63 (tests.test_verificacao_63_2026_09_15.Teste
 Traceback (most recent call last):
   File "/tmp/eldorado_testes/tests/test_verificacao_63_2026_09_15.py", line 31, in test_a_base_existe_e_tem_os_63
     self.assertEqual(len(d["itens"]), 63)
-AssertionError: 43 != 63
+AssertionError: 37 != 63
 
 ======================================================================
 FAIL: test_resumo_bate_com_a_lista (tests.test_verificacao_63_2026_09_15.TesteBaseDaVerificacao.test_resumo_bate_com_a_lista)
@@ -157,29 +182,29 @@ FAIL: test_resumo_bate_com_a_lista (tests.test_verificacao_63_2026_09_15.TesteBa
 Traceback (most recent call last):
   File "/tmp/eldorado_testes/tests/test_verificacao_63_2026_09_15.py", line 38, in test_resumo_bate_com_a_lista
     self.assertEqual(vere, d["resumo"]["veredito"])
-AssertionError: {'reprovado': 30, 'aprovado': 3, 'atencao': 10} != {'atencao': 17, 'reprovado': 42, 'aprovado': 4}
-- {'aprovado': 3, 'atencao': 10, 'reprovado': 30}
-?              ^              ^               ^^
+AssertionError: {'reprovado': 26, 'aprovado': 3, 'atencao': 8} != {'atencao': 17, 'reprovado': 42, 'aprovado': 4}
+- {'aprovado': 3, 'atencao': 8, 'reprovado': 26}
+?              ^             ^                -
 
 + {'aprovado': 4, 'atencao': 17, 'reprovado': 42}
-?              ^              ^               ^^
+?              ^             ^^               +
 
 
 ----------------------------------------------------------------------
-Ran 1241 tests in 152.290s
+Ran 1244 tests in 139.012s
 
-FAILED (failures=13, errors=5, skipped=2)
-::error title=teste falhou::tests.test_abertos_sem_informacao.TesteSaida.test_resumo_bate_com_a_lista — AssertionError: 107 != 24
-::error title=teste falhou::tests.test_dispensas_itens.TestParametros1001.test_composicao — AssertionError: 131 != 142
+FAILED (failures=15, errors=6, skipped=2)
+::error title=teste falhou::tests.test_abertos_sem_informacao.TesteSaida.test_resumo_bate_com_a_lista — AssertionError: 107 != 21
+::error title=teste falhou::tests.test_dispensas_itens.TestParametros1001.test_composicao — AssertionError: 98 != 142
+::error title=teste falhou::tests.test_evolucao_busca.TesteDescobertaERecorrencia.test_recorrencia_uma_rota_por_validada_com_cadencia_por_estado — AssertionError: 38 not greater than or equal to 50
 ::error title=teste falhou::tests.test_motor01_diario_goiania.TestCoberturaDoDia.test_sem_lista_e_sem_catalogo_a_cobertura_fica_nao_medida — AssertionError: True is not false
 ::error title=teste falhou::tests.test_motor_judiciario_go.Motor.test_computador_le_o_tjgo_e_a_nuvem_entrega_a_base — + nuvem
 ::error title=teste falhou::tests.test_motor_prefeituras_25_go.TesteHonestidade.test_github_sem_brasil_nao_tenta_sites_e_nao_marca_lida — AssertionError: True is not false
-::error title=teste falhou::tests.test_parametros_opressores.TestArquivo.test_dez_blocos_e_todos_decididos — AssertionError: 329 != 317
+::error title=teste falhou::tests.test_parametros_opressores.TestArquivo.test_dez_blocos_e_todos_decididos — AssertionError: 283 not greater than or equal to 300
 ::error title=teste falhou::tests.test_parecer_23_09.TesteAtualizacaoAplicada.test_atualizado_guarda_a_data_da_confirmacao — AssertionError: 9 not greater than or equal to 19
 ::error title=teste falhou::tests.test_parecer_23_09.TesteAtualizacaoAplicada.test_rebaixado_diz_quando_volta — AssertionError: 228 != 238
 ::error title=teste falhou::tests.test_parecer_23_09.TesteM1_AbrangenciaAntes.test_reproduz_o_veredito_do_parecer — AssertionError: 228 != 238
+::error title=teste falhou::tests.test_pareceres_livros.TestPareceresLivros.test_pareceres_tem_iniciativa_valida — AssertionError: 11 != 12
 ::error title=teste falhou::tests.test_validacao_mapa.TestArquivoDeValidacao.test_universo_inteiro_decidido — AssertionError: 1046 != 1031
-::error title=teste falhou::tests.test_validacao_mapa.TestArquivoDeValidacao0929.test_universo_inteiro_decidido — AssertionError: 173 != 154
-::error title=teste falhou::tests.test_verificacao_63_2026_09_15.TesteBaseDaVerificacao.test_a_base_existe_e_tem_os_63 — AssertionError: 43 != 63
-::error title=teste falhou::tests.test_verificacao_63_2026_09_15.TesteBaseDaVerificacao.test_resumo_bate_com_a_lista — ?              ^              ^               ^^
-::error title=teste falhou::tests.test_incentivos_externos.TesteCatalogo.test_gerador_le_as_bases_externas — KeyError: 'derivadas'
+::error title=teste falhou::tests.test_validacao_mapa.TestArquivoDeValidacao0929.test_universo_inteiro_decidido — AssertionError: 142 not greater than or equal to 150
+::error title=teste falhou::tests.test_verificacao_63_2026_09_15.TesteBaseDaVerificacao.test_a_base_existe_e_tem_os_63 — AssertionError: 37 != 63
