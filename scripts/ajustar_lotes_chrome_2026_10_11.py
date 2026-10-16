@@ -2,14 +2,14 @@
 - 'ouro' que não fecha 12/12 com prova completa (núcleo certificado, PDF com página) → validacao_manual, com o motivo;
 - vermelho do lote C (lido SEM as ferramentas do Chrome: PDF do PNCP/diário ilegível no leitor web) e vermelho com
   menos de 8 rotas registradas → motivo 'refazer no Chrome';
-- lista dados/revisoes/fila_chrome_2026_10_11/refazer_no_chrome.json com esses registros."""
+- lista biblioteca_alexandria/livros/_acervo/revisoes/fila_chrome_2026_10_11/refazer_no_chrome.json com esses registros."""
 import collections, json, sys
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 import importar_revisao_abertas as I
 
-PASTA = ROOT / "dados/revisoes/fila_chrome_2026_10_11"
+PASTA = ROOT / "biblioteca_alexandria/livros/_acervo/revisoes/fila_chrome_2026_10_11"
 
 
 def main() -> dict:

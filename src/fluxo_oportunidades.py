@@ -9,7 +9,7 @@
                      (de empresa, instituto ou ente público)
     5. OPRESSOR      oportunidade nova (não coberta por opressor existente) gera um livro de oportunidade próprio,
                      ligado por 30 dias, com a página dela — e o Interceptador a lê (5ª fila)
-    6. PREDITIVO     cada oportunidade é cadastrada em biblioteca_alexandria/base/preditivo/oportunidades.jsonl
+    6. PREDITIVO     cada oportunidade é cadastrada em biblioteca_alexandria/livros/_acervo/base/preditivo/oportunidades.jsonl
                      com órgão, tipo (pontual/recorrente), prazo e próxima janela estimada
 
 Publica docs/dados/fluxo_oportunidades.json: etapas, números do mapa por estado (1º número = confirmadas,
@@ -30,7 +30,7 @@ MESTRE = ROOT / "dados/oportunidades/oportunidades.jsonl"
 EXT = ROOT / "dados/editais/extraidos"
 CAT_OPR = ROOT / "biblioteca_alexandria/fontes/motores.json"
 EST_OPR = ROOT / "estado/opressores.json"
-PRED = ROOT / "biblioteca_alexandria/base/preditivo/oportunidades.jsonl"
+PRED = ROOT / "biblioteca_alexandria/livros/_acervo/base/preditivo/oportunidades.jsonl"
 SAIDA = ROOT / "docs/dados/fluxo_oportunidades.json"
 AGREGADORES = re.compile(r"duckduckgo|bing\.com|google\.|queridodiario|captadores\.org|observatorio3setor|prosas\.com|filantropia\.ong|gife\.org|idis\.org|pncp\.gov\.br/app", re.I)
 CHECKLIST = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador", "Território", "Esfera",
@@ -158,7 +158,7 @@ def consolidar() -> list[dict]:
         brutos.append(("motor " + str(m.get("fonte_id") or m.get("fonte_nome") or ""), m))
     # 10/10 (revisão humana, Partes 1 a 3): OPORTUNIDADES NOVAS (derivadas) — entram com o id da revisão, para a
     # certidão da revisão (estrela:<id>) se ligar a elas; só as não descartadas (ruído, fora do perfil, encerrada, duplicata ficam fora)
-    for _rid, _dv in ((_j(ROOT / "dados/editais/derivadas_revisao.json", {}).get("derivadas") or {}).items()):
+    for _rid, _dv in ((_j(ROOT / "biblioteca_alexandria/livros/_acervo/editais/derivadas_revisao.json", {}).get("derivadas") or {}).items()):
         if (_dv or {}).get("veredito") in ("ruido", "fora_perfil", "encerrada", "duplicata"):
             continue
         _ob = ((_dv.get("itens") or {}).get("Objeto") or {}).get("valor") or _dv.get("parecer") or _rid
@@ -223,7 +223,7 @@ def consolidar() -> list[dict]:
     from . import validacao_mapa as _vm
     from . import dispensas_itens as _DI
     VAL = _vm.carregar(); HER = _vm.indice_heranca(VAL)
-    ARQ = _j(ROOT / "dados/editais/arquivados.json", {})
+    ARQ = _j(ROOT / "biblioteca_alexandria/livros/_acervo/editais/arquivados.json", {})
     TRIAGEM.clear(); TRIAGEM.update({"saiu_por_validacao": 0, "saiu_por_arquivo": 0, "dispensado_pela_regra": 0, "regras": {}})
     for origem, m in brutos:
         tit = re.sub(r"\s+", " ", str(m.get("titulo") or "")).strip()
@@ -543,7 +543,7 @@ def _resumo_opressores(itens: list[dict]) -> dict:
             "abertas_com_opressor": sum(1 for x in itens if x.get("opressor")), "abertas_dispensadas": sum(1 for x in itens if x.get("opressor_dispensa")),
             "abertas_sem_opressor_nem_dispensa": sum(1 for x in itens if not x.get("opressor") and not x.get("opressor_dispensa")),
             "com_historico_de_edicoes": sum(1 for x in C if len(x.get("historico") or []) >= 2), "com_previsao": sum(1 for x in C if x.get("previsao")),
-            "arquivadas_encerradas": sum(1 for v in ((_j(ROOT / "dados/editais/arquivados.json", {}) or {}).values() if isinstance(_j(ROOT / "dados/editais/arquivados.json", {}), dict) else [])
+            "arquivadas_encerradas": sum(1 for v in ((_j(ROOT / "biblioteca_alexandria/livros/_acervo/editais/arquivados.json", {}) or {}).values() if isinstance(_j(ROOT / "biblioteca_alexandria/livros/_acervo/editais/arquivados.json", {}), dict) else [])
                                          if "encerr" in json.dumps(v, ensure_ascii=False).lower())}
 
 
@@ -559,7 +559,7 @@ def aplicar_parametro(itens: list[dict], vereditos: dict | None = None, hoje: st
     Abertas = validadas + em verificação + validação manual — o mesmo número em todos os painéis."""
     from datetime import date as _date
     if vereditos is None:
-        vereditos = (_j(ROOT / "dados/editais/vereditos_revisao.json", {}) or {}).get("vereditos") or {}
+        vereditos = (_j(ROOT / "biblioteca_alexandria/livros/_acervo/editais/vereditos_revisao.json", {}) or {}).get("vereditos") or {}
     hoje = hoje or _date.today().isoformat()
     fora = {"fechada por veredito": 0, "prazo vencido": 0}
     abertas = []

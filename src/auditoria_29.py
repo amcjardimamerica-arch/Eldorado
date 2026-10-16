@@ -46,7 +46,7 @@ def _achados_por_motor() -> dict:
 
 def _efetividade_do_acervo() -> dict:
     """Quantos dos editais capturados realmente servem. Mede o ruído na origem."""
-    base = sorted(glob.glob(str(ROOT / "dados/editais/*-eldorado-*-completo.json")))
+    base = sorted(glob.glob(str(ROOT / "biblioteca_alexandria/livros/_acervo/editais/*-eldorado-*-completo.json")))
     if not base:
         return {}
     itens = load_json(Path(base[-1])).get("itens") or {}
@@ -138,7 +138,7 @@ def aplicar_correcoes() -> dict:
 
 def limpar_acervo() -> dict:
     """Tira do acervo o que nunca serviria à finalidade — e guarda o porquê."""
-    base = sorted(glob.glob(str(ROOT / "dados/editais/*-eldorado-*-completo.json")))
+    base = sorted(glob.glob(str(ROOT / "biblioteca_alexandria/livros/_acervo/editais/*-eldorado-*-completo.json")))
     if not base:
         return {}
     arq = Path(base[-1])

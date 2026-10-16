@@ -69,7 +69,7 @@ def sementes_de_associacoes() -> list[dict]:
 
 def empresas_ja_conhecidas() -> set[str]:
     """Empresas que já constam da base de incentivadores (SALIC etc.): o Piloto não gasta voo 'descobrindo'."""
-    arq = ROOT / "biblioteca_alexandria/base/incentivos/empresas_incentivadoras.jsonl"
+    arq = ROOT / "biblioteca_alexandria/livros/especiais/empresas/incentivos/empresas_incentivadoras.jsonl"
     if not arq.exists():
         return set()
     import json as _j

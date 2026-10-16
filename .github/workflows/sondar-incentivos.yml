@@ -22,11 +22,11 @@ jobs:
         if: always()
         run: |
           git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
-          rm -rf /tmp/s && mkdir -p /tmp/s && cp -r biblioteca_alexandria/base/incentivos/sondagem_fontes.json biblioteca_alexandria/base/incentivos/historico /tmp/s/ 2>/dev/null || true
+          rm -rf /tmp/s && mkdir -p /tmp/s && cp -r biblioteca_alexandria/livros/especiais/empresas/incentivos/sondagem_fontes.json biblioteca_alexandria/livros/especiais/empresas/incentivos/historico /tmp/s/ 2>/dev/null || true
           for i in 1 2 3 4; do
             git fetch -q origin main && git reset -q --hard origin/main
-            mkdir -p biblioteca_alexandria/base/incentivos && cp -r /tmp/s/. biblioteca_alexandria/base/incentivos/ 2>/dev/null || true
-            git add biblioteca_alexandria/base/incentivos
+            mkdir -p biblioteca_alexandria/livros/especiais/empresas/incentivos && cp -r /tmp/s/. biblioteca_alexandria/livros/especiais/empresas/incentivos/ 2>/dev/null || true
+            git add biblioteca_alexandria/livros/especiais/empresas/incentivos
             git commit -q -m "sondagem: fontes de destinação tributária $(date -u +%F\ %H:%M)" || break
             git push -q origin main && break; sleep 5
           done

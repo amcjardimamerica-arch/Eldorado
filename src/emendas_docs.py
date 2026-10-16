@@ -23,7 +23,7 @@ from pathlib import Path
 from .biblioteca import ASSOCIACOES, pasta_edital_da_associacao
 from .nucleo import ROOT, load_json, now_iso, slug, write_json
 
-BIBLIOTECA = ROOT / "biblioteca_alexandria/emendas"
+BIBLIOTECA = ROOT / "biblioteca_alexandria/livros/especiais/legislativo/emendas_fontes"
 
 _TRATAMENTO = {
     "Vereador(a)": ("Ao Excelentíssimo Senhor", "Vereador", "Senhor Vereador"),

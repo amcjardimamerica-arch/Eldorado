@@ -135,7 +135,7 @@ def _previsao(hist: list[dict]) -> dict | None:
 def canonica_por_revisao() -> dict:
     """id → id da oportunidade CANÔNICA, pelos vereditos de duplicata da revisão humana (segue cadeias)."""
     try:
-        V = json.loads((ROOT / "dados/editais/vereditos_revisao.json").read_text(encoding="utf-8")).get("vereditos") or {}
+        V = json.loads((ROOT / "biblioteca_alexandria/livros/_acervo/editais/vereditos_revisao.json").read_text(encoding="utf-8")).get("vereditos") or {}
     except Exception:  # noqa: BLE001
         return {}
     out = {}
@@ -347,7 +347,7 @@ def sincronizar() -> dict:
     # 11/10 (titular): FORA DO PRAZO → o livro é ATUALIZADO e GUARDADO (arquivado, nunca apagado): a edição fica com a
     # situação 'encerrada' e o prazo; o livro sai das estantes ativas até chegar uma edição nova aberta
     try:
-        _ver = (json.loads((ROOT / "dados/editais/vereditos_revisao.json").read_text(encoding="utf-8")).get("vereditos") or {})
+        _ver = (json.loads((ROOT / "biblioteca_alexandria/livros/_acervo/editais/vereditos_revisao.json").read_text(encoding="utf-8")).get("vereditos") or {})
         _enc = {i: x for i, x in _ver.items() if x.get("veredito") == "encerrada"}
         for x in C.get("motores") or []:
             hist = [h for h in (x.get("historico") or []) if isinstance(h, dict)]

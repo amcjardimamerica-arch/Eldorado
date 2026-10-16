@@ -9,7 +9,7 @@ from src import dispensas_itens as DI
 from src import parametros_opressores as PO
 
 ROOT = Path(__file__).resolve().parents[1]
-ARQ = ROOT / "dados/opressores/parametros/parametros_2026-10-01.json"
+ARQ = ROOT / "biblioteca_alexandria/livros/_acervo/opressores/parametros/parametros_2026-10-01.json"
 PROIBIDAS = ("queridodiario", "pncp.gov.br/app", "observatorio3setor", "captadores.org", "bussolasocial",
              "prosas.com.br", "idis.org.br", "filantropia.ong", "capitaai", "farolcultural", "duckduckgo")
 
@@ -159,7 +159,7 @@ class TestParametros1001(unittest.TestCase):
                 self.assertGreaterEqual(r["prazo"], self.d["data"], r["id"])
 
     def test_completados_nao_perdem_o_que_ja_estava_fechado(self):
-        ant = {r["id"]: r for r in json.loads((ROOT / "dados/opressores/parametros/parametros_2026-09-29.json").read_text(encoding="utf-8"))["itens"]}
+        ant = {r["id"]: r for r in json.loads((ROOT / "biblioteca_alexandria/livros/_acervo/opressores/parametros/parametros_2026-09-29.json").read_text(encoding="utf-8"))["itens"]}
         for r in self.itens:
             a = ant.get(r.get("id_pesquisado") or r["id"])
             if r.get("completado_em") and a:

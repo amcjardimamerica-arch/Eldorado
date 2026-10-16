@@ -3,17 +3,17 @@
 
 Entrada: uma pasta com `resultado_ABERTAS_<parte>_<lote>.json` (formato dos prompts, mesmo das certidões).
 Saídas:
-  1. dados/editais/vereditos_revisao.json — o veredito humano por id (ruido, fora_perfil, encerrada, duplicata,
+  1. biblioteca_alexandria/livros/_acervo/editais/vereditos_revisao.json — o veredito humano por id (ruido, fora_perfil, encerrada, duplicata,
      ouro/prata/bronze/pendente), que o saneamento (src/saneamento_motores.py) aplica ANTES de qualquer regra automática;
   2. estado/cartorio/certidoes.json — certidão `estrela:<id>` com os itens certificados (valor + trecho + documento +
      página) das vigentes e pendentes. Item que o Cartório já tinha certificado é mantido; os novos se somam.
      Dispensa sem justificativa de "não se aplica" é RECUSADA (regra permanente de 04/10, src/criterio_selos.py);
-  3. dados/editais/derivadas_revisao.json — oportunidades novas achadas na revisão (`novo-…`), como pista com fonte
+  3. biblioteca_alexandria/livros/_acervo/editais/derivadas_revisao.json — oportunidades novas achadas na revisão (`novo-…`), como pista com fonte
      oficial, para o motor da área confirmar e gravar.
 
 USO (na raiz do repositório):
-    python scripts/importar_revisao_abertas.py dados/revisoes/abertas_p1_go_2026_10_10 --verificar   # só confere
-    python scripts/importar_revisao_abertas.py dados/revisoes/abertas_p1_go_2026_10_10               # importa
+    python scripts/importar_revisao_abertas.py biblioteca_alexandria/livros/_acervo/revisoes/abertas_p1_go_2026_10_10 --verificar   # só confere
+    python scripts/importar_revisao_abertas.py biblioteca_alexandria/livros/_acervo/revisoes/abertas_p1_go_2026_10_10               # importa
 É idempotente: rodar de novo não duplica nada.
 """
 from __future__ import annotations
@@ -29,8 +29,8 @@ sys.path.insert(0, str(ROOT))
 
 from src.criterio_selos import DOZE, dispensa_valida, nivel  # noqa: E402
 
-VEREDITOS = ROOT / "dados/editais/vereditos_revisao.json"
-DERIVADAS = ROOT / "dados/editais/derivadas_revisao.json"
+VEREDITOS = ROOT / "biblioteca_alexandria/livros/_acervo/editais/vereditos_revisao.json"
+DERIVADAS = ROOT / "biblioteca_alexandria/livros/_acervo/editais/derivadas_revisao.json"
 # 10/10 (implantação): as certidões da revisão humana vão para um arquivo PRÓPRIO, que o Cartório incorpora a cada
 # execução (a revisão humana prevalece). Gravar direto em estado/cartorio/certidoes.json se perdia: o fluxo do
 # Cartório regrava esse arquivo de hora em hora.
@@ -231,7 +231,7 @@ def gravar_aprendizado(regs: dict, origem: str) -> list[str]:
 
 def main(argv: list[str]) -> None:
     args = [a for a in argv if not a.startswith("--")]
-    pasta = Path(args[0]) if args else ROOT / "dados/revisoes/abertas_p1_go_2026_10_10"
+    pasta = Path(args[0]) if args else ROOT / "biblioteca_alexandria/livros/_acervo/revisoes/abertas_p1_go_2026_10_10"
     origem = next((a.split("=", 1)[1] for a in argv if a.startswith("--origem=")), pasta.name)
     print(json.dumps(importar(pasta if pasta.is_absolute() else ROOT / pasta, origem, gravar="--verificar" not in argv,
                               externa="--externa" in argv),

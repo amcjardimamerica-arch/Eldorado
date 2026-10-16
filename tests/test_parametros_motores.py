@@ -129,7 +129,7 @@ class TesteParametrosDaAuditoria(unittest.TestCase):
     def test_duplicatas_consolidadas(self):
         """09/09: o mesmo edital aparecia 5 vezes (Lojas Renner) e 2 vezes (Prêmio MOL),
         captado por portais diferentes. O canônico conta; os demais viram duplicata."""
-        d = json.loads((ROOT / "dados/editais/duplicatas.json").read_text(encoding="utf-8"))
+        d = json.loads((ROOT / "biblioteca_alexandria/livros/_acervo/editais/duplicatas.json").read_text(encoding="utf-8"))
         gr = {g["titulo"][:20]: g for g in d["grupos"]}
         renner = [g for g in d["grupos"] if "Renner" in g["titulo"]][0]
         self.assertEqual(len(renner["duplicatas"]), 4); self.assertEqual(renner["canonico"], "c5c7e37e2e275d2e69fe")
@@ -150,7 +150,7 @@ class TesteParametrosDaAuditoria(unittest.TestCase):
         self.assertEqual(ex["pagina_divulgacao"], "https://www.institutolojasrenner.org.br/edital-encantando-comunidades/")
         self.assertEqual(ex["restricao_territorial"]["ufs"], ["RJ", "SP", "RS"])
         self.assertIn("GOIÁS NÃO ELEGÍVEL", ex["itens"]["Território"])
-        an = json.loads((ROOT / "dados/editais/analises.json").read_text(encoding="utf-8"))
+        an = json.loads((ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json").read_text(encoding="utf-8"))
         self.assertEqual(an["c5c7e37e2e275d2e69fe"]["selo"], "inconformidade")
         self.assertTrue(an["c5c7e37e2e275d2e69fe"]["verificacoes"]["territorio_incompativel"])
 

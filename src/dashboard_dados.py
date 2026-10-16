@@ -887,7 +887,7 @@ TIPOS_DECISAO = ("resultado_preliminar", "resultado_final", "recurso")
 
 
 def _carrega_analises() -> dict:
-    arq = ROOT / "dados/editais/analises.json"
+    arq = ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json"
     return load_json(arq) if arq.exists() else {}
 
 
@@ -931,7 +931,7 @@ def _marca_etapas(editais: list[dict], hoje: date | None = None) -> list[dict]:
                 for p in _OP.glob(padrao)} if _OP.exists() else set()
     decididos = conjunto("*/*/decisao.json")
     preparados = conjunto("*/*/preparacao.json")
-    praiz = ROOT / "biblioteca_alexandria/pareceres"
+    praiz = ROOT / "biblioteca_alexandria/livros/_acervo/pareceres"
     com_parecer = ({f"{p.parent.parent.name}/{p.parent.name}"
                     for p in praiz.glob("*/*/parecer.json")} if praiz.exists() else set())
     com_parecer |= conjunto("*/*/conselho.json")
@@ -951,7 +951,7 @@ def _marca_etapas(editais: list[dict], hoje: date | None = None) -> list[dict]:
         e["situacao_inscricao"] = si["situacao"]; e["regime_inscricao"] = si["regime"]; e["base_situacao"] = si["base"]
         if e.get("sem_edital") or e.get("janela_confirmada"):   # etapa e ciclo próprios
             continue
-        _an = (load_json(ROOT / "dados/editais/analises.json") if (ROOT / "dados/editais/analises.json").exists() else {}).get(e["id"]) if not hasattr(etapa_do_edital, "_an") else etapa_do_edital._an.get(e["id"])
+        _an = (load_json(ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json") if (ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json").exists() else {}).get(e["id"]) if not hasattr(etapa_do_edital, "_an") else etapa_do_edital._an.get(e["id"])
         e["_verificado"] = bool(_an and _an.get("selo") in ("conformidade", "inconformidade", "analise_incompleta"))
         if _an:
             e["verificado_em"] = _an.get("em", "")[:10]; e["verificado_por"] = _an.get("por")
@@ -1172,7 +1172,7 @@ TIPO_RX = [
 
 def _duplicatas() -> dict:
     """Registros que são o MESMO edital captado por fontes diferentes: só o canônico conta."""
-    arq = ROOT / "dados/editais/duplicatas.json"
+    arq = ROOT / "biblioteca_alexandria/livros/_acervo/editais/duplicatas.json"
     if not arq.exists():
         return {}
     fora = {}
@@ -1313,8 +1313,8 @@ def _funil_5_passos(base: list[dict], completos: list[dict], _=None) -> dict:
     em_campanha = sum(1 for c in campanhas.values() if c.get("status") == "monitorando")
     decididos = len(list(_OP.glob("*/*/decisao.json"))) if _OP.exists() else 0
     preparados = len(list(_OP.glob("*/*/preparacao.json"))) if _OP.exists() else 0
-    pareceres = len(list((ROOT / "biblioteca_alexandria/pareceres").glob("*/*/parecer.json"))) \
-        if (ROOT / "biblioteca_alexandria/pareceres").exists() else 0
+    pareceres = len(list((ROOT / "biblioteca_alexandria/livros/_acervo/pareceres").glob("*/*/parecer.json"))) \
+        if (ROOT / "biblioteca_alexandria/livros/_acervo/pareceres").exists() else 0
     conselhos = len(list(_OP.glob("*/*/conselho.json"))) if _OP.exists() else 0
     passos = [
         {"n": 1, "nome": "Descobrir", "modulo": "Eldorado",
@@ -1422,7 +1422,7 @@ def coletar(hoje: date | None = None) -> dict:
     historicos = _historicos_encerrados(hoje)
     from .emendas import oportunidades_do_painel as _emendas
     emendas = _emendas(hoje)
-    prev_p = ROOT / "biblioteca_alexandria/previsoes/previsoes.json"
+    prev_p = ROOT / "biblioteca_alexandria/livros/_acervo/previsoes/previsoes.json"
     previsoes = load_json(prev_p) if prev_p.exists() else {"itens": [], "previsoes": 0}
     dos_p = ROOT / "biblioteca_alexandria/fontes/indice.json"
     dossies = load_json(dos_p) if dos_p.exists() else {"itens": []}
@@ -1443,7 +1443,7 @@ def coletar(hoje: date | None = None) -> dict:
         esquadra = {"erro": type(exc).__name__}
     ft_p = ROOT / "biblioteca_alexandria/fontes/fichas_tres_tempos.json"
     fichas = load_json(ft_p) if ft_p.exists() else {"fontes_lista": []}
-    aud_p = ROOT / "biblioteca_alexandria/historico/auditoria_individual.json"
+    aud_p = ROOT / "biblioteca_alexandria/livros/_acervo/historico/auditoria_individual.json"
     auditoria = load_json(aud_p) if aud_p.exists() else {}
     # ÚNICO BANCO PARA TODO O PAINEL: as fontes ativas dos livros de oportunidades da Biblioteca
     # (época prevista ou menção) alimentam também o Radar e o Calendário
@@ -1506,7 +1506,7 @@ def coletar(hoje: date | None = None) -> dict:
                             "status": x["status"]} for x in itens]
                     for tema, itens in d0.get("por_tema", {}).items()}
     pareceres = {}
-    praiz = ROOT / "biblioteca_alexandria/pareceres"
+    praiz = ROOT / "biblioteca_alexandria/livros/_acervo/pareceres"
     if praiz.exists():
         for pj in praiz.glob("*/*/parecer.json"):
             try:
@@ -1588,8 +1588,8 @@ def coletar(hoje: date | None = None) -> dict:
         "fila_verificacao": (lambda f: {k: (v if k != "reprovados_por_objeto" else {kk: vv for kk, vv in v.items() if kk != "itens"}) for k, v in f.items() if k != "itens"} if f else None)(
             load_json(ROOT / "estado/fila_verificacao.json") if (ROOT / "estado/fila_verificacao.json").exists() else None),
         "drive": (load_json(ROOT / "config/drive.json") if (ROOT / "config/drive.json").exists() else {}),
-        "arquivados_eldorado": (load_json(ROOT / "dados/editais/arquivados.json") if (ROOT / "dados/editais/arquivados.json").exists() else {}),
-        "analise_editais": (load_json(ROOT / "dados/editais/analises.json") if (ROOT / "dados/editais/analises.json").exists() else {}),
+        "arquivados_eldorado": (load_json(ROOT / "biblioteca_alexandria/livros/_acervo/editais/arquivados.json") if (ROOT / "biblioteca_alexandria/livros/_acervo/editais/arquivados.json").exists() else {}),
+        "analise_editais": (load_json(ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json") if (ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json").exists() else {}),
         "municipios_maiores": (load_json(ROOT / "config/municipios_maiores.json").get("maiores", {}) if (ROOT / "config/municipios_maiores.json").exists() else {}),
         "enquadramento": [load_json(pathlib.Path(f)) for f in sorted(__import__("glob").glob(str(ROOT / "dados/associacoes/*/enquadramento.json"))) if "EXEMPLO" not in f],
         "documentos_associacoes": [dict(load_json(pathlib.Path(f)), imagem_perfil=_imagem_perfil(pathlib.Path(f).parent.parent), parecer_md=(pathlib.Path(f).parent / "parecer.md").read_text(encoding="utf-8") if (pathlib.Path(f).parent / "parecer.md").exists() else "")

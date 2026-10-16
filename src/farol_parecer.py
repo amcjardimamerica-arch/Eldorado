@@ -32,7 +32,7 @@ from .biblioteca import ASSOCIACOES, OPORTUNIDADES
 from .nucleo import ROOT, load_json, now_iso, sha256, slug, write_json
 
 CFG_IA = ROOT / "config/ia.json"
-PARECERES = ROOT / "biblioteca_alexandria/pareceres"
+PARECERES = ROOT / "biblioteca_alexandria/livros/_acervo/pareceres"
 USO = ROOT / "estado/ia_uso.jsonl"
 
 _TRECHO = re.compile(

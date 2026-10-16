@@ -24,7 +24,7 @@ from .biblioteca import OPORTUNIDADES
 from .conselho_edital import PESOS, PONTOS_DE_VISTA, ROTULOS, sorteia_conselheiros
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-SAIDA = ROOT / "biblioteca_alexandria/historico"
+SAIDA = ROOT / "biblioteca_alexandria/livros/_acervo/historico"
 
 
 def _lentes(ficha: dict) -> dict:

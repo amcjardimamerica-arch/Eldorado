@@ -32,7 +32,7 @@ from pathlib import Path
 from .nucleo import ROOT, load_json, now_iso, slug, write_json
 
 CFG_ESPECIAIS = ROOT / "config/previsoes_especiais.json"
-SAIDA = ROOT / "biblioteca_alexandria/previsoes"
+SAIDA = ROOT / "biblioteca_alexandria/livros/_acervo/previsoes"
 
 _DIARIO = re.compile(r"Di[áa]rio Oficial d[eoa]s? ([^(—-]+?)\s*\(([A-Z]{2})\)")
 

@@ -2045,7 +2045,7 @@ class SystemTests(unittest.TestCase):
             self.assertFalse(by[lac]["comprovado"]); self.assertIsNone(by[lac]["valor"])
             self.assertIn("não consta",by[lac]["lacuna"])
         self.assertEqual(r["comprovados"],10)   # 9 + Área de atuação (12º item)
-        rel=pathlib.Path("biblioteca_alexandria/historico/completude_11_itens.json")
+        rel=pathlib.Path("biblioteca_alexandria/livros/_acervo/historico/completude_11_itens.json")
         self.assertTrue(rel.exists())
         d=load_json(rel)
         self.assertEqual(set(d["completude_por_item"]),set(ITENS))
@@ -2225,11 +2225,11 @@ class SystemTests(unittest.TestCase):
         # fora do escopo
         f3={**f1,"destinacao":{"elegivel":False,"motivo":"comercial"}}
         self.assertEqual(diagnosticar(f3,onze_itens(f3),sens)["causa_principal"],"fonte_fora_do_escopo")
-        rel=load_json(pathlib.Path("biblioteca_alexandria/historico/auditoria_individual.json"))
+        rel=load_json(pathlib.Path("biblioteca_alexandria/livros/_acervo/historico/auditoria_individual.json"))
         self.assertGreater(rel["editais_auditados"],1000)
         self.assertTrue(rel["causas"])
         self.assertTrue(all(c["causa"] and c["editais"] for c in rel["causas"]))
-        self.assertTrue(pathlib.Path("biblioteca_alexandria/historico/auditoria_editais.jsonl").exists())
+        self.assertTrue(pathlib.Path("biblioteca_alexandria/livros/_acervo/historico/auditoria_editais.jsonl").exists())
         d=dash_coletar(date(2026,9,2))
         self.assertIn("auditoria",d)
         self.assertEqual(d["auditoria"]["editais_auditados"],rel["editais_auditados"])
@@ -2291,7 +2291,7 @@ class SystemTests(unittest.TestCase):
         for f in i["itens"]:
             j=f.get("proxima_janela")
             if j: self.assertGreaterEqual(len(j.get("anos_observados") or []),2,f["nome"])
-        p=load_json(pathlib.Path("biblioteca_alexandria/previsoes/previsoes.json"))
+        p=load_json(pathlib.Path("biblioteca_alexandria/livros/_acervo/previsoes/previsoes.json"))
         for x in p["itens"]:
             if x.get("das_260"):
                 self.assertIn("ano", x.get("base",""))
@@ -3801,7 +3801,7 @@ class SystemTests(unittest.TestCase):
 
 
     def test_selo_so_com_analise_completa_e_itens_dispensaveis(self):
-        an=load_json(pathlib.Path("dados/editais/analises.json"))
+        an=load_json(pathlib.Path("biblioteca_alexandria/livros/_acervo/editais/analises.json"))
         for v in an.values():
             if v["selo"]=="conformidade" and "itens_12" in (v.get("verificacoes") or {}):
                 self.assertTrue(v["completo"]); self.assertTrue(all(v["verificacoes"][k] for k in ("itens_12","requisitos_condicoes","documentos")))
@@ -3825,7 +3825,7 @@ class SystemTests(unittest.TestCase):
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ("ed-analise","window.exportarArquivados","arquivados_eldorado","exclusão SISTÊMICA"): self.assertIn(x,html,x)
         enq=open("src/enquadramento.py",encoding="utf-8").read(); self.assertIn("arquivados.json",enq); self.assertNotIn("if not any(filtro_geografico(a, e) for a in assoc):\n            continue\n        ex = extraido(e)",enq)
-        self.assertTrue(pathlib.Path("dados/editais/arquivados.json").exists())
+        self.assertTrue(pathlib.Path("biblioteca_alexandria/livros/_acervo/editais/arquivados.json").exists())
 
 
     def test_coleta_local_brasil_sem_custo(self):
@@ -3990,7 +3990,7 @@ class SystemTests(unittest.TestCase):
     def test_verificacao_de_prazos_e_mapa_sem_filtro_de_meses(self):
         """Rodada de prazos de 07/09: cada oportunidade verificada individualmente;
         mapa sem filtro de meses, com ativas x inativas."""
-        an=load_json(pathlib.Path("dados/editais/analises.json"))
+        an=load_json(pathlib.Path("biblioteca_alexandria/livros/_acervo/editais/analises.json"))
         self.assertGreaterEqual(len(an),30)
         ex=load_json(pathlib.Path("dados/editais/extraidos/443dfeed2a9493ab123d.json"))
         self.assertIn("Prazo de inscrição",ex["dispensaveis"])                       # termo já celebrado: prazo dispensado com motivo
@@ -4050,7 +4050,7 @@ class SystemTests(unittest.TestCase):
         for f in glob.glob("biblioteca_alexandria/livros/anexos/textos/*.txt.gz"):
             t0=gzip.open(f,"rt",encoding="utf-8").read(400)
             self.assertNotIn("Midia Kit",t0); self.assertNotIn("%PDF",t0)       # nada de veículo nem binário guardado
-        an=load_json(pathlib.Path("dados/editais/analises.json")); self.assertGreaterEqual(len(an),45)
+        an=load_json(pathlib.Path("biblioteca_alexandria/livros/_acervo/editais/analises.json")); self.assertGreaterEqual(len(an),45)
         ex=load_json(pathlib.Path("dados/editais/extraidos/443dfeed2a9493ab123d.json"))
         self.assertIn("2.400.000,00",ex["itens"]["Valor"])                        # valor confirmado no texto real
 
@@ -4076,7 +4076,7 @@ class SystemTests(unittest.TestCase):
         import json as J
         from src.enquadramento import ingerir_navegador
         from src.fonte_edital import EXTRAIDOS
-        pasta=ROOT/"dados/editais/coleta_navegador"; pasta.mkdir(parents=True,exist_ok=True)
+        pasta=ROOT/"biblioteca_alexandria/livros/_acervo/editais/coleta_navegador"; pasta.mkdir(parents=True,exist_ok=True)
         arq=pasta/"teste_unit.json"
         arq.write_text(J.dumps({"lab-t1":{"objeto":"Chamamento de cultura","inicio":"2026-10-01","fim":"2026-11-30","pagina_oficial":"https://orgao.gov.br/editais"},
                                 "lab-t2":{"objeto":"y","fim":"2026-12-01","pagina_oficial":"https://pncp.gov.br/app/editais/9"}}),encoding="utf-8")
@@ -4128,7 +4128,7 @@ class SystemTests(unittest.TestCase):
         go=[x for x in amp if x.get("uf")=="GO"]
         editais=[x for x in go if x["tipo_registro"]=="edital"]
         self.assertLess(len(editais),40); self.assertGreater(len(go),200)          # o ruído existe, mas não conta como oportunidade
-        an=load_json(pathlib.Path("dados/editais/analises.json"))
+        an=load_json(pathlib.Path("biblioteca_alexandria/livros/_acervo/editais/analises.json"))
         nao_diario=[x for x in go if x["tipo_registro"]!="edicao_diario"]
         self.assertTrue(all(x["id"] in an for x in nao_diario))                     # TODAS as de Goiás verificadas uma a uma
         html=open("docs/dashboard.html",encoding="utf-8").read()
@@ -4177,8 +4177,8 @@ class SystemTests(unittest.TestCase):
         """08/09: 140 registros verificados pelo titular (4 lotes do navegador + triagem)
         entram com parecer, selo e prazo real; prazo verificado prevalece sobre o cadastro."""
         import glob
-        an=load_json(pathlib.Path("dados/editais/analises.json"))
-        arqs=glob.glob("dados/editais/coleta_navegador/*.ingerido")
+        an=load_json(pathlib.Path("biblioteca_alexandria/livros/_acervo/editais/analises.json"))
+        arqs=glob.glob("biblioteca_alexandria/livros/_acervo/editais/coleta_navegador/*.ingerido")
         self.assertGreaterEqual(len(arqs)+sum(1 for v in an.values() if "titular" in (v.get("por") or "")),5)
         ver=[v for v in an.values() if "verificação externa" in (v.get("por") or "")]
         self.assertGreaterEqual(sum(1 for v in an.values() if "titular" in (v.get("por") or "")),200)   # todas as rodadas de verificação do titular
@@ -4214,7 +4214,7 @@ class SystemTests(unittest.TestCase):
         self.assertEqual(arquivo["selo_validacao"],"validada")
         vencido=selo_validacao({"id":"c","objeto":"x","fim":"2025-10-01"},{"pagina_divulgacao":"https://pncp.gov.br/pncp-api/v1/orgaos/876/compras/2026/373/arquivos/1"})
         self.assertEqual(vencido["selo_validacao"],"nao_verificada"); self.assertIn("prazo vigente",vencido["validacao"]["faltam"])
-        an=load_json(pathlib.Path("dados/editais/analises.json"))
+        an=load_json(pathlib.Path("biblioteca_alexandria/livros/_acervo/editais/analises.json"))
         self.assertGreaterEqual(sum(1 for v in an.values() if v["selo"]=="conformidade"),60)
         from src.compacto import expandir
         amp=[x for x in expandir(load_json(pathlib.Path("docs/dados/abertas.json"))) if x.get("tipo_registro") in ("edital","regra_anual")]
@@ -4244,13 +4244,13 @@ class SystemTests(unittest.TestCase):
     def test_verificacao_completa_dos_210(self):
         """08/09: verificação completa do titular — 210 ids, 93 com prazo em documento,
         7 abertos, 0 datas estimadas, 0 fontes proibidas."""
-        an=load_json(pathlib.Path("dados/editais/analises.json"))
+        an=load_json(pathlib.Path("biblioteca_alexandria/livros/_acervo/editais/analises.json"))
         completa=[v for v in an.values() if "verificação completa" in (v.get("por") or "")]
         self.assertGreaterEqual(len(completa)+sum(1 for v in an.values() if "15/09" in (v.get("por") or "")),200)   # 26 foram reverificados na rodada dos 63
         self.assertGreaterEqual(sum(1 for v in completa if v["selo"]=="conformidade"),80)
         self.assertGreaterEqual(sum(1 for v in completa if v["selo"]=="inconformidade"),70)
         self.assertGreaterEqual(sum(1 for v in an.values() if (v.get("verificacoes") or {}).get("aberto")),7)   # abertos confirmados em qualquer rodada
-        q=load_json(pathlib.Path("dados/editais/qualidade_verificacao.json"))
+        q=load_json(pathlib.Path("biblioteca_alexandria/livros/_acervo/editais/qualidade_verificacao.json"))
         self.assertEqual(q["resumo"]["datas_estimadas"],0); self.assertEqual(q["resumo"]["fontes_proibidas_usadas"],0)
         self.assertEqual(q["resumo"]["ids"],210); self.assertEqual(q["resumo"]["unidades_reais"],155)
         self.assertEqual(q["divergencias_pncp_x_edital"]["total"],8); self.assertIn("prevaleceu sempre o edital",q["divergencias_pncp_x_edital"]["regra"])
@@ -4302,7 +4302,7 @@ class SystemTests(unittest.TestCase):
     def test_validacao_individual_dos_467(self):
         """09/09: validação individual do titular — 468 registros com veredito, família,
         prazo e rota; acervo por UF e rotas de coleta incorporados."""
-        an=load_json(pathlib.Path("dados/editais/analises.json"))
+        an=load_json(pathlib.Path("biblioteca_alexandria/livros/_acervo/editais/analises.json"))
         v9=[v for v in an.values() if "validação individual do titular (09/09" in (v.get("por") or "")]
         self.assertGreaterEqual(len(v9),400)
         self.assertGreaterEqual(sum(1 for v in v9 if (v.get("verificacoes") or {}).get("validado_individualmente")),200)   # 231 validados um a um
@@ -4314,8 +4314,8 @@ class SystemTests(unittest.TestCase):
         self.assertGreaterEqual(len(com),400)
         ex=load_json(pathlib.Path(com[0])); self.assertIn("VALIDAÇÃO INDIVIDUAL",ex["mini_parecer"])
         self.assertIn(ex["validacao_individual"]["veredito"],("aprovado","atencao","reprovado","pendencia","vetor","ruido"))
-        self.assertGreaterEqual(len(_g.glob("dados/acervo/INDICE-*.json")),18)
-        b=load_json(pathlib.Path("dados/acervo/BANCO-EDITAIS-HISTORICOS-v2.json"))
+        self.assertGreaterEqual(len(_g.glob("biblioteca_alexandria/livros/_acervo/acervo/INDICE-*.json")),18)
+        b=load_json(pathlib.Path("biblioteca_alexandria/livros/_acervo/acervo/BANCO-EDITAIS-HISTORICOS-v2.json"))
         self.assertGreaterEqual(len(b.get("itens") or b.get("editais") or b),100)
         r=load_json(pathlib.Path("config/rotas_de_coleta.json")); self.assertIn("rotas",r)
         f=load_json(pathlib.Path("estado/fila_verificacao.json"))

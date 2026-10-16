@@ -21,7 +21,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 AREAS = ("dados", "estado", "biblioteca_alexandria")
-LIVROS = re.compile(r"^biblioteca_alexandria/(fontes/motores\.json|livros/)")
+LIVROS = re.compile(r"^biblioteca_alexandria/(fontes/|livros/)")   # 16/10: a área do CATÁLOGO (catálogo, índices, ficha de cada livro) é dos livros
 FAROL = re.compile(r"^(dados/farol|dados/associacoes|biblioteca_alexandria/associacoes)(/|$)")
 CONTROLE = re.compile(r"^estado/(esquadra[^/]*\.json|achados_vistos\.json|fila_retentativa\.json|comando/|maestro[^/]*|analise_[^/]*|"
                       r"expurgo/|[a-z_]*migracao\.json|modalidade_[a-z]+\.json|rotas/|ponte/|robots[^/]*|pausa[^/]*|vigilancia_diaria\.txt|unir_livros\.txt|"
@@ -33,7 +33,15 @@ def grupo(rel: str) -> str:
     return "/".join(p[:3]) if len(p) > 3 else "/".join(p[:2])
 
 
+# 16/10/2026 (titular): estado/ guarda os REGISTROS OPERACIONAIS das ferramentas (execução, cursores, logs, estado dos
+# motores) = controle. Exceção: os arquivos que guardam DADO DE OPORTUNIDADE continuam contados até irem aos livros.
+OPORTUNIDADE_EM_ESTADO = re.compile(r"^estado/(fila_verificacao\.json|curadoria_links\.json|outras_oportunidades/|abertos_sem_informacao\.json|"
+                                    r"resultados_editais\.jsonl|catalogo_achados_ia\.json|previsoes\.json|prazos_ia\.json|cartorio/)")
+
+
 def classe(rel: str) -> str:
+    if rel.startswith("estado/") and not OPORTUNIDADE_EM_ESTADO.search(rel):
+        return "controle"
     if LIVROS.search(rel):
         return "livros"
     if FAROL.search(rel):

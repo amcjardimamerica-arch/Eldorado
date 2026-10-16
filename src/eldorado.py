@@ -128,7 +128,7 @@ def record_edital_history(item: dict, previous: dict | None) -> None:
     tracked=("titulo","url","status","prazo_texto","ano_referencia","evidencia","hash_evidencia","requisitos")
     changes={key:{"anterior":previous.get(key) if previous else None,"atual":item.get(key)} for key in tracked if not previous or previous.get(key)!=item.get(key)}
     if not changes: return
-    folder=ROOT/"dados/editais"/item["id"]; folder.mkdir(parents=True,exist_ok=True)
+    folder=ROOT/"biblioteca_alexandria/livros/_acervo/editais"/item["id"]; folder.mkdir(parents=True,exist_ok=True)
     append_jsonl(folder/"historico.jsonl",{"registrado_em":now_iso(),"fonte_id":item.get("fonte_id"),"alteracoes":changes})
     write_json(folder/"atual.json",item)
 

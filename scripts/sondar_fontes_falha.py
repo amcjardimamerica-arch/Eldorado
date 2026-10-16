@@ -17,5 +17,5 @@ for f in json.loads((R / "config/_sondagem_fontes_falha.json").read_text(encodin
         except Exception as e:
             r.update({"erro": type(e).__name__, "msg": str(e)[:160]})
         out.append(r); time.sleep(0.5)
-(R / "biblioteca_alexandria/base/sondagem_fontes_falha.json").write_text(json.dumps({"em": time.strftime("%Y-%m-%dT%H:%M:%S"), "itens": out}, ensure_ascii=False, indent=1), encoding="utf-8")
+(R / "biblioteca_alexandria/livros/_acervo/base/sondagem_fontes_falha.json").write_text(json.dumps({"em": time.strftime("%Y-%m-%dT%H:%M:%S"), "itens": out}, ensure_ascii=False, indent=1), encoding="utf-8")
 print(len(out), "sondagens")

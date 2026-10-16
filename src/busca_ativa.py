@@ -331,7 +331,7 @@ def _indicios(hoje: date) -> list[dict]:
                                                        "territorio", "inicio", "fim", "objeto", "url")},
                               "origem": "indicio_publicado"})
     saida += _pendentes_da_fase2()
-    pj = ROOT / "biblioteca_alexandria/previsoes/previsoes.json"
+    pj = ROOT / "biblioteca_alexandria/livros/_acervo/previsoes/previsoes.json"
     if pj.exists():
         lim = (hoje + timedelta(days=60)).isoformat()
         for p in load_json(pj).get("itens", []):

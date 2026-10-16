@@ -28,6 +28,6 @@ jobs:
         if: always()
         run: |
           git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
-          git add biblioteca_alexandria/base/incentivos || true
+          git add biblioteca_alexandria/livros/especiais/empresas/incentivos || true
           git commit -q -m "base: incentivos (5 anos) $(date -u +%F)" || exit 0
           for i in 1 2 3; do git pull --rebase -q -X theirs origin main && git push -q origin main && break; sleep 5; done

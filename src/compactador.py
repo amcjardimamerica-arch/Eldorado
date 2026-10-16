@@ -7,7 +7,7 @@
                               repositório; o original vai inteiro, sem perda, no pacote.
   restaurar(pacote, destino)  devolve os arquivos originais e confere cada assinatura.
 
-O manifesto (biblioteca_alexandria/arquivo_frio/manifesto.json) diz, para cada pacote: o que tem dentro, as
+O manifesto (biblioteca_alexandria/livros/_acervo/arquivo_frio/manifesto.json) diz, para cada pacote: o que tem dentro, as
 assinaturas, o tamanho antes e depois, e ONDE está guardado (Release do GitHub e/ou Google Drive). Nada é apagado
 do repositório sem pacote verificado e guardado fora dele.
 
@@ -28,8 +28,8 @@ from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-MANIFESTO = ROOT / "biblioteca_alexandria/arquivo_frio/manifesto.json"
-TRANSCRICOES = ROOT / "biblioteca_alexandria/arquivo_frio/transcricoes"
+MANIFESTO = ROOT / "biblioteca_alexandria/livros/_acervo/arquivo_frio/manifesto.json"
+TRANSCRICOES = ROOT / "biblioteca_alexandria/livros/_acervo/arquivo_frio/transcricoes"
 
 
 def _sha(b: bytes) -> str:

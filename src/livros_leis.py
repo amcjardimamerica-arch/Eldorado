@@ -1,6 +1,6 @@
 """LIVROS DE LEIS (titular, 01/10) — parametrizam o Farol de Alexandria.
 
-Cada lei ou norma da Biblioteca (biblioteca_alexandria/leis/<tema>/<tipo>/*.json) vira um livro com o que ela é e O QUE
+Cada lei ou norma da Biblioteca (biblioteca_alexandria/livros/especiais/legislativo/leis/<tema>/<tipo>/*.json) vira um livro com o que ela é e O QUE
 ELA PARAMETRIZA: as áreas e os tipos de oportunidade que regula e os livros de oportunidade sob ela (Goiás primeiro).
 Só dados — nenhum arquivo anexado (o texto integral, quando há, continua no acervo e é citado pelo caminho).
 Saída compacta: biblioteca_alexandria/livros/leis.json · resumo para o painel: docs/dados/livros_leis.json
@@ -13,7 +13,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-LEIS = ROOT / "biblioteca_alexandria/leis"
+LEIS = ROOT / "biblioteca_alexandria/livros/especiais/legislativo/leis"
 CAT = ROOT / "biblioteca_alexandria/fontes/motores.json"
 SAIDA = ROOT / "biblioteca_alexandria/livros/leis.json"
 PAINEL = ROOT / "docs/dados/livros_leis.json"

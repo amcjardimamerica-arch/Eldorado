@@ -83,7 +83,7 @@ def construir() -> dict:
     if ab.exists():
         for o in expandir(load_json(ab)):
             universo.setdefault(o["id"], o)
-    an = load_json(ROOT / "dados/editais/analises.json") if (ROOT / "dados/editais/analises.json").exists() else {}
+    an = load_json(ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json") if (ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json").exists() else {}
     ach = load_json(ROOT / "docs/dados/achados_dia.json") if (ROOT / "docs/dados/achados_dia.json").exists() else {}
     primeira = ach.get("primeira_data") or {}
     # dicionário zstd treinado sobre amostra do acervo (fichas + textos)

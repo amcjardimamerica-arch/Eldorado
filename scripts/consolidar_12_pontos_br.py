@@ -43,7 +43,7 @@ def _lista(d):
 def carregar():
     fila = {x["id"]: x for x in _j(PASTA / "fila_br.json")["fila"]}
     par = {}
-    for f in sorted(glob.glob(str(ROOT / "dados/opressores/parametros/parametros_*.json"))):
+    for f in sorted(glob.glob(str(ROOT / "biblioteca_alexandria/livros/_acervo/opressores/parametros/parametros_*.json"))):
         for r in _j(f).get("itens", []):
             par[r["id"]] = r
     p1 = {}

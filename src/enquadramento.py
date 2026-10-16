@@ -56,12 +56,12 @@ def editais_abertos(dados: dict) -> list[dict]:
     return [e for e in dados.get("editais", []) if e.get("situacao_inscricao") in ("aberta", "possivel")]
 
 
-COMPLEMENTOS = ROOT / "dados/editais/complementos"
+COMPLEMENTOS = ROOT / "biblioteca_alexandria/livros/_acervo/editais/complementos"
 
 
 def complementos(e: dict) -> dict:
     """Informações faltantes que o titular subiu à mão para este edital
-    (dados/editais/complementos/<id>/*.json ou *.md): viram itens comprovados
+    (biblioteca_alexandria/livros/_acervo/editais/complementos/<id>/*.json ou *.md): viram itens comprovados
     com fonte 'complemento manual'."""
     pasta = COMPLEMENTOS / e["id"]
     saida = {}
@@ -427,7 +427,7 @@ def run(limite_ia: int = 8) -> dict:
     for a in assoc:
         dec_p = ROOT / "dados/associacoes" / a["_pasta"] / "decisoes_editais.json"
         dec = load_json(dec_p) if dec_p.exists() else {}
-        arq_p = ROOT / "dados/editais/arquivados.json"; arquivados = load_json(arq_p) if arq_p.exists() else {}
+        arq_p = ROOT / "biblioteca_alexandria/livros/_acervo/editais/arquivados.json"; arquivados = load_json(arq_p) if arq_p.exists() else {}
         inc_p = ROOT / "dados/associacoes" / a["_pasta"] / "incluidos_editais.json"
         incluidos = set((load_json(inc_p).get("editais") or [])) if inc_p.exists() else set()
         geo = [e for e in abertos if e["id"] not in arquivados and (filtro_geografico(a, e) or e["id"] in incluidos) and dec.get(e["id"]) != "dispensado"]
@@ -478,7 +478,7 @@ def run(limite_ia: int = 8) -> dict:
 
 # ───────────────────────── operação por AGENTE CLAUDE (sem API) ─────────────────────────
 PACOTE = ROOT / "estado/pacote_agente.md"
-RESPOSTAS = ROOT / "dados/editais/respostas_agente"
+RESPOSTAS = ROOT / "biblioteca_alexandria/livros/_acervo/editais/respostas_agente"
 
 
 def historico_5_anos(nome: str) -> dict:
@@ -670,11 +670,11 @@ def pacote(limite: int = 6) -> dict:
     """Monta um pacote compacto com os editais pendentes (texto guardado, itens
     que faltam, associação) para um agente Claude — este chat ou o Claude Code
     na conta do titular — analisar SEM API: o agente lê o pacote, escreve um JSON
-    por edital em dados/editais/respostas_agente/<id>.json e roda 'ingerir'."""
+    por edital em biblioteca_alexandria/livros/_acervo/editais/respostas_agente/<id>.json e roda 'ingerir'."""
     from .fonte_edital import texto_guardado
     dados = load_json(ROOT / "docs/dashboard-dados.json")
     assoc = associacoes()
-    an_p = ROOT / "dados/editais/analises.json"; analisados = load_json(an_p) if an_p.exists() else {}
+    an_p = ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json"; analisados = load_json(an_p) if an_p.exists() else {}
     # universo: tudo o que está em Oportunidades Abertas › Em andamento — núcleo + base ampla — com atuação nacional, GO ou município de GO
     universo = list(editais_abertos(dados))
     ab = ROOT / "docs/dados/abertas.json"
@@ -690,7 +690,7 @@ def pacote(limite: int = 6) -> dict:
             pass
     pend = []
     edicoes_brutas = 0
-    arq_p = ROOT / "dados/editais/arquivados.json"; arquivados = load_json(arq_p) if arq_p.exists() else {}
+    arq_p = ROOT / "biblioteca_alexandria/livros/_acervo/editais/arquivados.json"; arquivados = load_json(arq_p) if arq_p.exists() else {}
     for e in universo:
         if e["id"] in arquivados:
             continue                                          # exclusão manual em Oportunidades Abertas: sai do sistema inteiro
@@ -712,7 +712,7 @@ def pacote(limite: int = 6) -> dict:
     L = ["# Pacote para o agente Claude — Enquadramento (Farol de Alexandria)\n",
          "Regras: (1) use SÓ o texto abaixo e o conhecimento do sistema; busque na internet apenas se o texto não trouxer o item; (2) nunca invente — sem base, null; "
          "(3) PNCP e diários são vetores: a fonte é o site do órgão publicador — informe-o em `pagina_divulgacao`; (4) escreva UM arquivo JSON por edital em "
-         "`dados/editais/respostas_agente/<id>.json` com o formato indicado; depois rode `python -m src.enquadramento ingerir`.\n",
+         "`biblioteca_alexandria/livros/_acervo/editais/respostas_agente/<id>.json` com o formato indicado; depois rode `python -m src.enquadramento ingerir`.\n",
          "Formato: {\"itens\": {<item>: <valor|null>}, \"regras\": <texto>, \"requisitos\": [..], \"pontuacao\": [{\"criterio\":..,\"peso\":..}], \"documentos_exigidos\": [..], "
          "\"anexos\": [{\"nome\":..,\"url\":..}], \"pagina_divulgacao\": <url do órgão|null>, \"mini_parecer\": <3-5 frases>, "
          "\"enquadramento\": {<id_associacao>: {\"aderencia\": 0-100, \"chances\": 0-100, \"pontuacao_estimada\": <texto>, \"decisao\": <texto>, \"para_subir\": [..], \"riscos\": [..]}}, "
@@ -781,7 +781,7 @@ def ingerir() -> dict:
                     cur["ia"] = {**par, "modelo": "agente-claude (conta do titular)", "em": now_iso()}; cur["aderencia"] = par.get("aderencia", cur.get("aderencia"))
                     write_json(fp, cur)
         # SELO DE ANÁLISE: conformidade (aproveitável em Goiás/Brasil) ou inconformidade (sem aproveitamento) → arquivado
-        an_p = ROOT / "dados/editais/analises.json"; an = load_json(an_p) if an_p.exists() else {}
+        an_p = ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json"; an = load_json(an_p) if an_p.exists() else {}
         conf = r.get("conformidade")
         if conf is None:
             enq = r.get("enquadramento") or {}
@@ -809,9 +809,9 @@ def ingerir_navegador() -> dict:
     Só grava o que veio da fonte oficial — descarta vetores e veículos."""
     from .fonte_edital import EXTRAIDOS
     VET = re.compile(r"pncp\.gov|queridodiario|in\.gov\.br|diariooficial|observatorio3setor|captadores\.org|bussolasocial|prosas\.com", re.I)
-    pasta = ROOT / "dados/editais/coleta_navegador"
+    pasta = ROOT / "biblioteca_alexandria/livros/_acervo/editais/coleta_navegador"
     if not pasta.exists():
-        return {"ingeridos": 0, "nota": "pasta dados/editais/coleta_navegador não existe"}
+        return {"ingeridos": 0, "nota": "pasta biblioteca_alexandria/livros/_acervo/editais/coleta_navegador não existe"}
     n, recusados = 0, []
     for arq in sorted(pasta.glob("*.json")):
         try:

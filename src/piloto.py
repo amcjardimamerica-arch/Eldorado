@@ -109,7 +109,7 @@ def entender() -> dict:
     """Catálogo compacto do que a Biblioteca contém — o Piloto só orienta o que conhece."""
     from collections import Counter
     dados = load_json(ROOT / "docs/dashboard-dados.json")
-    an = load_json(ROOT / "dados/editais/analises.json") if (ROOT / "dados/editais/analises.json").exists() else {}
+    an = load_json(ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json") if (ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json").exists() else {}
     cat = load_json(ROOT / "config/fontes_captacao_260.json").get("fontes", [])
     leis = load_json(ROOT / "biblioteca/leis/catalogo.json").get("itens", []) if (ROOT / "biblioteca/leis/catalogo.json").exists() else []
     rotas = load_json(ROOT / "config/rotas_motores.json").get("motores", {}) if (ROOT / "config/rotas_motores.json").exists() else {}
@@ -165,7 +165,7 @@ def aprender(tarefa: str, tentou: str, impediu: str, aprendeu: str, nivel: int |
 
 def fila_nivel1() -> list[str]:
     """Editais que precisam de complementação: novos sem análise, incompletos, não verificados."""
-    an = load_json(ROOT / "dados/editais/analises.json") if (ROOT / "dados/editais/analises.json").exists() else {}
+    an = load_json(ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json") if (ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json").exists() else {}
     dados = load_json(ROOT / "docs/dashboard-dados.json")
     ids = []
     for e in dados.get("editais") or []:
@@ -180,7 +180,7 @@ def fila_nivel1() -> list[str]:
 def nivel2_classificar(ia: IALocal, limite: int = 30) -> dict:
     """NÍVEL 2 (escopo de 22/09): apenas CLASSIFICAR e pontuar a oportunidade — requisitos,
     critérios e a quem se destina. A elaboração de projeto e de documentos SAIU do cargo."""
-    an = load_json(ROOT / "dados/editais/analises.json") if (ROOT / "dados/editais/analises.json").exists() else {}
+    an = load_json(ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json") if (ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json").exists() else {}
     dados = load_json(ROOT / "docs/dashboard-dados.json")
     from .fonte_edital import EXTRAIDOS
     from .cargo_piloto import licoes_para_o_prompt, registrar_erro

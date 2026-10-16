@@ -290,7 +290,7 @@ class TesteLimpezaDosDiarios(unittest.TestCase):
 
     def test_o_indice_guarda_o_endereco_para_voltar(self):
         import json as _j
-        i = _j.loads((ROOT / "dados/editais/indice_diarios.json").read_text(encoding="utf-8"))
+        i = _j.loads((ROOT / "biblioteca_alexandria/livros/_acervo/editais/indice_diarios.json").read_text(encoding="utf-8"))
         self.assertGreater(i["total"], 15000)
         self.assertIn("matéria-prima", i["porque_sairam_da_biblioteca"])
         self.assertIn("Diário nunca é fonte de prazo", i["como_voltar"])
@@ -317,7 +317,7 @@ class TesteLeiturasLocaisAplicadas(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         import json as _j
-        cls.an = _j.loads((ROOT / "dados/editais/analises.json").read_text(encoding="utf-8"))
+        cls.an = _j.loads((ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json").read_text(encoding="utf-8"))
         cls.reg = _j.loads((ROOT / "estado/leituras_locais_23_09_aplicadas.json").read_text(encoding="utf-8"))
 
     def test_as_catorze_desceram_aos_registros(self):
@@ -361,8 +361,8 @@ class TesteLeiturasLocaisAplicadas(unittest.TestCase):
             elif "88866396000155" in str(o):
                 s.append(cam)
             return s
-        for arq in ("dados/editais/analises.json", "dados/editais/marcacoes_ia.json"):
-            campos = ativos(_j.loads((ROOT / arq).read_text(encoding="utf-8")))
+        for arq in ("biblioteca_alexandria/livros/_acervo/editais/analises.json", "dados/editais/marcacoes_ia.json"):
+            campos = ativos(__import__("src.nucleo", fromlist=["x"]).load_json(ROOT / arq))   # 16/10: arquivo ou livro
             vivos = [c for c in campos
                      if not any(x in c for x in ("anterior", "porque_mudou", "observacao"))]
             self.assertEqual(vivos, [], f"{arq}: {vivos[:2]}")

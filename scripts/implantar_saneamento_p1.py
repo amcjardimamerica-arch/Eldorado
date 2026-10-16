@@ -29,7 +29,7 @@ def main(argv: list[str]) -> int:
     spec = importlib.util.spec_from_file_location("importar_revisao_abertas", ROOT / "scripts/importar_revisao_abertas.py")
     mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
     importar = mod.importar
-    rel = importar(ROOT / "dados/revisoes/abertas_p1_go_2026_10_10", "P1-GO-2026-10-10", gravar=not verificar)
+    rel = importar(ROOT / "biblioteca_alexandria/livros/_acervo/revisoes/abertas_p1_go_2026_10_10", "P1-GO-2026-10-10", gravar=not verificar)
     print("1) revisão importada:" if not verificar else "1) revisão conferida (nada gravado):",
           json.dumps({k: rel[k] for k in ("lidos", "vereditos", "certidoes", "derivadas", "selos_das_certidoes")}, ensure_ascii=False))
     t = subprocess.run([sys.executable, "-m", "unittest", "tests.test_saneamento_motores"], cwd=ROOT, capture_output=True, text=True)

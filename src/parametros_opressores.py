@@ -5,7 +5,7 @@ inscrição, Resultado, Prazo de recurso, Valor, Órgão / financiador, Territó
 Modalidade e Área de atuação. Quando o recurso não tem algum deles (programa permanente, fluxo contínuo, doação,
 destinação de imposto, TAC, emenda), fica registrada a DISPENSA e o porquê.
 
-A pesquisa é feita por blocos e gravada em `dados/opressores/parametros/parametros_AAAA-MM-DD.json` (um registro
+A pesquisa é feita por blocos e gravada em `biblioteca_alexandria/livros/_acervo/opressores/parametros/parametros_AAAA-MM-DD.json` (um registro
 por opressor; o arquivo mais recente prevalece). Este módulo leva esses dados para:
 
 - `estado/opressores.json` → `ligados[id].itens` (texto que a rotina dos disjuntores já entende: o item preenchido
@@ -26,7 +26,7 @@ from pathlib import Path
 
 from .nucleo import ROOT
 
-PASTA = ROOT / "dados/opressores/parametros"
+PASTA = ROOT / "biblioteca_alexandria/livros/_acervo/opressores/parametros"
 EST = ROOT / "estado/opressores.json"
 ITENS = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador",
          "Território", "Esfera", "Requisitos", "Anexos", "Modalidade", "Área de atuação")

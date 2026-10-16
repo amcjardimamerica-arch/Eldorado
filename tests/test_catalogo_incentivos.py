@@ -29,7 +29,7 @@ class TesteCatalogo(unittest.TestCase):
         pat = [e["incentivos"]["PAT"] for e in self.cat if "PAT" in e["incentivos"]]
         self.assertGreater(len(pat), 1000)
         self.assertTrue(all("não destina" in p.get("papel", "") or "não associações" in p.get("papel", "") or "trabalhadores" in p.get("papel", "") for p in pat[:500]))
-        self.assertFalse((ROOT / "biblioteca_alexandria/base/incentivos/pat_beneficiarias_ativas_2026-03-31.jsonl.gz").exists())
+        self.assertFalse((ROOT / "biblioteca_alexandria/livros/especiais/empresas/incentivos/pat_beneficiarias_ativas_2026-03-31.jsonl.gz").exists())
 
     def test_icone_do_pat_aceso_no_painel(self):
         R = json.loads((ROOT / "docs/dados/ranking_apoiadores.json").read_text(encoding="utf-8"))

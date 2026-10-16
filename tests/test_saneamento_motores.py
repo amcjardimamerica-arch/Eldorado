@@ -116,7 +116,7 @@ class SemRevisaoHumana(unittest.TestCase):
 
 
 class ComRevisaoHumana(unittest.TestCase):
-    """Com dados/editais/vereditos_revisao.json, o veredito humano vence."""
+    """Com biblioteca_alexandria/livros/_acervo/editais/vereditos_revisao.json, o veredito humano vence."""
 
     def setUp(self):
         S.limpar_cache()

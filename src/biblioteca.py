@@ -34,7 +34,7 @@ from pathlib import Path
 from .nucleo import ROOT, load_json, now_iso, sha256, slug, write_json
 
 RAIZ = ROOT / "biblioteca_alexandria"
-LEIS = RAIZ / "leis"
+LEIS = RAIZ / "livros" / "especiais" / "legislativo" / "leis"   # 16/10: capítulo do livro do Legislativo
 OPORTUNIDADES = RAIZ / "livros" / "anexos"            # 16/10: as pastas antigas são os anexos dos livros
 ASSOCIACOES = RAIZ / "associacoes"
 
@@ -129,7 +129,7 @@ def indexar_oportunidades() -> dict:
         for dj in sorted(origem.glob("*/*/dados.json")):
             d = load_json(dj)
             # EDIÇÃO DE DIÁRIO NÃO É FICHA (24/09). Uma edição do Querido Diário é matéria-prima e
-            # vive em dados/editais/indice_diarios.json; virar ficha aqui recriou 14.906 fichas
+            # vive em biblioteca_alexandria/livros/_acervo/editais/indice_diarios.json; virar ficha aqui recriou 14.906 fichas
             # (234 MB) a cada varredura, depois de terem sido apagadas.
             if str(d.get("fonte_id") or "") == "querido-diario" and re.search(r"diario[- ]oficial", str(d.get("chave") or d.get("titulo") or ""), re.I):
                 continue
@@ -187,7 +187,7 @@ def indexar_oportunidades() -> dict:
                 total_banco = load_json(ant).get("no_banco") or 0
             except Exception:
                 pass
-    cons_p = ROOT / "biblioteca_alexandria/historico/consolidado.json"
+    cons_p = ROOT / "biblioteca_alexandria/livros/_acervo/historico/consolidado.json"
     if cons_p.exists():
         consolidado = load_json(cons_p)
     if not exig_global and consolidado.get("exigencias_mais_cobradas"):
@@ -260,7 +260,7 @@ def pasta_edital_da_associacao(assoc_slug: str, titulo_edital: str) -> Path:
 
 
 def limpar_edicoes_de_diario() -> int:
-    """28/09: as edições do Querido Diário vivem em dados/editais/indice_diarios.json e o arquivo delas está no
+    """28/09: as edições do Querido Diário vivem em biblioteca_alexandria/livros/_acervo/editais/indice_diarios.json e o arquivo delas está no
     arquivo frio (Release + Drive). Pasta de edição que reaparecer na Biblioteca — por cópia antiga de um voo ou por
     outro processo — é removida ao fim de cada varredura."""
     import shutil

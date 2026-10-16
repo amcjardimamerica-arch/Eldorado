@@ -22,7 +22,7 @@ class TesteCatalogo(unittest.TestCase):
         s = (ROOT / "src/catalogo_incentivos.py").read_text(encoding="utf-8")
         self.assertIn('(BASE / "externos").glob("incentivos_*.jsonl.gz")', s)
         self.assertIn("ano já vindo da planilha da Secult: não duplica", s)
-        d = json.loads((ROOT / "dados/editais/derivadas_revisao.json").read_text(encoding="utf-8"))["derivadas"]
+        d = json.loads((ROOT / "biblioteca_alexandria/livros/_acervo/editais/derivadas_revisao.json").read_text(encoding="utf-8"))["derivadas"]
         self.assertEqual(sum(1 for x in d.values() if x.get("origem") == "CHROME-INCENTIVOS-2026-10-11"), 3)
 
 

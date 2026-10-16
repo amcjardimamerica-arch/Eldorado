@@ -99,7 +99,7 @@ def run() -> dict:
     """Percorre o universo e produz o painel do fluxo + a fila da ação externa."""
     from .fonte_edital import EXTRAIDOS
     dados = load_json(ROOT / "docs/dashboard-dados.json")
-    an = load_json(ROOT / "dados/editais/analises.json") if (ROOT / "dados/editais/analises.json").exists() else {}
+    an = load_json(ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json") if (ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json").exists() else {}
     universo = list(dados.get("editais") or [])
     ab = ROOT / "docs/dados/abertas.json"
     if ab.exists():

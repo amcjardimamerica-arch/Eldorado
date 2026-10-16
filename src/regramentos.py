@@ -28,7 +28,7 @@ from urllib.parse import urlsplit
 from .nucleo import ROOT, load_json, now_iso, sha256, slug, write_json
 
 CFG = ROOT / "config/regramentos.json"
-NORMAS = ROOT / "biblioteca_alexandria/leis/normas_das_fontes"
+NORMAS = ROOT / "biblioteca_alexandria/livros/especiais/legislativo/leis/normas_das_fontes"
 FONTES = ROOT / "biblioteca_alexandria/fontes"
 ESTADO = ROOT / "estado/regramentos.json"
 

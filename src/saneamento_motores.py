@@ -19,7 +19,7 @@ AS REGRAS (cada uma com o código do relatório docs/pareceres/saneamento-motore
   M13 painel de qualidade por motor (estado/qualidade_motores.json).
 
 REGRA DE OURO: nada é apagado. "Descartar" = sair da caixa de abertas com o MOTIVO gravado e reversível.
-A revisão humana (dados/editais/vereditos_revisao.json) vence qualquer regra automática.
+A revisão humana (biblioteca_alexandria/livros/_acervo/editais/vereditos_revisao.json) vence qualquer regra automática.
 Biblioteca-padrão apenas.
 """
 from __future__ import annotations
@@ -34,7 +34,7 @@ from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 CFG = ROOT / "config/saneamento_motores.json"
-VEREDITOS = ROOT / "dados/editais/vereditos_revisao.json"
+VEREDITOS = ROOT / "biblioteca_alexandria/livros/_acervo/editais/vereditos_revisao.json"
 ESTADO = ROOT / "estado/saneamento_motores.json"
 PAINEL = ROOT / "estado/qualidade_motores.json"
 

@@ -1,7 +1,7 @@
 """AVALIAÇÃO DO CARTÓRIO COM GABARITO (titular, 15/10/2026).
 
 Mede a extração atual dos 12 itens contra os casos JÁ COMPROVADOS por leitura humana do documento oficial
-(conferências no Chrome de 10–11/10: dados/revisoes/fila_chrome_2026_10_11). O gabarito aprendido por órgão
+(conferências no Chrome de 10–11/10: biblioteca_alexandria/livros/_acervo/revisoes/fila_chrome_2026_10_11). O gabarito aprendido por órgão
 (estado/cartorio/gabaritos.json) NUNCA é usado como verdade: foi produzido pela própria extração.
 
 Duas etapas:
@@ -39,7 +39,7 @@ sys.path.insert(0, str(ROOT))
 
 from src import cartorio_leitura as L  # noqa: E402
 
-FILA = ROOT / "dados/revisoes/fila_chrome_2026_10_11"
+FILA = ROOT / "biblioteca_alexandria/livros/_acervo/revisoes/fila_chrome_2026_10_11"
 PASTA = ROOT / "biblioteca_alexandria/livros/anexos/cartorio_avaliacao"
 TEXTOS = PASTA / "textos.json.gz"
 RESULTADO = PASTA / "resultado.json"

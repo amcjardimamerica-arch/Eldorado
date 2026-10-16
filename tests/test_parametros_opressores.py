@@ -11,7 +11,7 @@ from pathlib import Path
 from src import parametros_opressores as PO
 
 ROOT = Path(__file__).resolve().parents[1]
-ARQ = ROOT / "dados/opressores/parametros/parametros_2026-09-29.json"
+ARQ = ROOT / "biblioteca_alexandria/livros/_acervo/opressores/parametros/parametros_2026-09-29.json"
 PROIBIDAS = ("queridodiario", "pncp.gov.br/app", "observatorio3setor", "captadores.org", "bussolasocial",
              "prosas.com.br", "idis.org.br", "filantropia.ong", "capitaai", "farolcultural", "duckduckgo")
 

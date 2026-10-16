@@ -66,7 +66,7 @@ class TesteAuditoriaDosMotores(unittest.TestCase):
         # Os 334 fora do objeto NÃO são apagados: ficam marcados. Apagar esvaziava as
         # estatísticas históricas de que o fluxo de decisão depende.
         import json as _j, glob as _g
-        base = sorted(_g.str if False else _g.glob(str(ROOT / "dados/editais/*-eldorado-*-completo.json")))[-1]
+        base = sorted(_g.str if False else _g.glob(str(ROOT / "biblioteca_alexandria/livros/_acervo/editais/*-eldorado-*-completo.json")))[-1]
         d = _j.loads(open(base, encoding="utf-8").read())
         marcados = [v for v in d["itens"].values() if v.get("fora_do_objeto")]
         self.assertGreater(len(marcados), 200, "o que não serve fica marcado, não apagado")

@@ -23,7 +23,7 @@ VETOR = re.compile(r"pncp\.gov|queridodiario|in\.gov\.br|diariooficial|observato
 
 def _chave_dedup(e: dict) -> str:
     """Duas capturas do mesmo edital em fontes diferentes viram uma só: título normalizado
-    + órgão. (As duplicatas já consolidadas em dados/editais/duplicatas.json também caem aqui.)"""
+    + órgão. (As duplicatas já consolidadas em biblioteca_alexandria/livros/_acervo/editais/duplicatas.json também caem aqui.)"""
     t = re.sub(r"\s+", " ", (e.get("titulo") or "").lower())
     t = re.sub(r"^(continue lendo|leia mais)\s*", "", t)
     t = re.sub(r"[^a-z0-9à-ú ]", "", t)[:90]
@@ -59,7 +59,7 @@ def montar() -> dict:
         vistos = {x["id"] for x in universo}
         universo += [o for o in expandir(load_json(ab)) if o.get("id") not in vistos]
     op = [e for e in universo if e.get("tipo_registro") in ("edital", "regra_anual")]
-    dups = load_json(ROOT / "dados/editais/duplicatas.json") if (ROOT / "dados/editais/duplicatas.json").exists() else {}
+    dups = load_json(ROOT / "biblioteca_alexandria/livros/_acervo/editais/duplicatas.json") if (ROOT / "biblioteca_alexandria/livros/_acervo/editais/duplicatas.json").exists() else {}
     fora = {d for g in dups.get("grupos", []) for d in g.get("duplicatas", [])}
     op = [e for e in op if e["id"] not in fora]
     try:                                               # 16/10/2026 (titular): outros estados, só estaduais e capitais

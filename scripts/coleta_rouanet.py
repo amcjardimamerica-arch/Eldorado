@@ -28,7 +28,7 @@ from datetime import date
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[1]
-BASE = RAIZ / "biblioteca_alexandria/base/incentivos"
+BASE = RAIZ / "biblioteca_alexandria/livros/especiais/empresas/incentivos"
 PUB = RAIZ / "docs/dados/doadoras"
 SALIC = "https://api.salic.cultura.gov.br/api/v1"
 UA = {"User-Agent": "Eldorado/1.0 (dados publicos; associacao sem fins lucrativos)", "Accept": "application/json"}
