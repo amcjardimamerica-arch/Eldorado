@@ -8,14 +8,15 @@
 
 ```json
 {
- "cegos_da_1a_rodada": 29,
- "testados": 22,
+ "cegos_da_1a_rodada": 31,
+ "testados": 24,
  "com_rota_nova": 7,
- "via_ponte": 0,
+ "via_ponte": 1,
  "continuam_cegos": [
   "camara-goiania-pl",
   "f260-captacao-218",
   "f260-captacao-223",
+  "f260-captacao-227",
   "f260-captacao-229",
   "f260-captacao-230",
   "f260-captacao-233",
@@ -24,10 +25,11 @@
   "f260-captacao-222",
   "f260-curadoria-008",
   "f260-espalhado-acessoainformacao-cavalcante-go-gov-br",
+  "f260-captacao-228",
   "f260-captacao-252",
-  "f260-captacao-242",
   "f260-captacao-240",
-  "f260-espalhado-rouanet-cultura-gov-br"
+  "f260-espalhado-rouanet-cultura-gov-br",
+  "f260-espalhado-sistema-mirassoldoeste-mt-gov-br"
  ],
  "aguardando_afinador": 7
 }
@@ -40,19 +42,19 @@
 
 ```json
 {
- "motores_de_ruido_1a": 13,
+ "motores_de_ruido_1a": 14,
  "ruido_agora": [
   {
    "motor": "empresas-incentivadas",
-   "achados_total_1a": 28,
-   "achados_total_agora": 28,
-   "no_fluxo": 5,
+   "achados_total_1a": 29,
+   "achados_total_agora": 29,
+   "no_fluxo": 4,
    "confirmadas": 0
   },
   {
    "motor": "f260-captacao-118",
-   "achados_total_1a": 29,
-   "achados_total_agora": 29,
+   "achados_total_1a": 31,
+   "achados_total_agora": 31,
    "no_fluxo": 0,
    "confirmadas": 0
   },
@@ -65,72 +67,79 @@
   },
   {
    "motor": "plat-cnpq-extensao",
-   "achados_total_1a": 131,
-   "achados_total_agora": 131,
+   "achados_total_1a": 133,
+   "achados_total_agora": 133,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plat-empresas-editais-incentivados",
-   "achados_total_1a": 39,
-   "achados_total_agora": 39,
-   "no_fluxo": 8,
+   "achados_total_1a": 47,
+   "achados_total_agora": 47,
+   "no_fluxo": 9,
    "confirmadas": 0
   },
   {
    "motor": "f260-captacao-069",
-   "achados_total_1a": 27,
-   "achados_total_agora": 27,
+   "achados_total_1a": 54,
+   "achados_total_agora": 54,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "f260-captacao-025",
-   "achados_total_1a": 35,
-   "achados_total_agora": 35,
+   "achados_total_1a": 37,
+   "achados_total_agora": 37,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "f260-curadoria-009",
-   "achados_total_1a": 61,
-   "achados_total_agora": 61,
+   "achados_total_1a": 68,
+   "achados_total_agora": 68,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "outras-oportunidades-1",
-   "achados_total_1a": 80,
-   "achados_total_agora": 80,
-   "no_fluxo": 18,
+   "achados_total_1a": 97,
+   "achados_total_agora": 97,
+   "no_fluxo": 5,
    "confirmadas": 0
   },
   {
    "motor": "outras-oportunidades-2",
-   "achados_total_1a": 48,
-   "achados_total_agora": 48,
-   "no_fluxo": 16,
+   "achados_total_1a": 55,
+   "achados_total_agora": 55,
+   "no_fluxo": 3,
    "confirmadas": 0
   },
   {
    "motor": "outras-oportunidades-6",
-   "achados_total_1a": 36,
-   "achados_total_agora": 36,
-   "no_fluxo": 9,
+   "achados_total_1a": 42,
+   "achados_total_agora": 42,
+   "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "outras-oportunidades-7",
-   "achados_total_1a": 77,
-   "achados_total_agora": 77,
+   "achados_total_1a": 82,
+   "achados_total_agora": 82,
    "no_fluxo": 0,
    "confirmadas": 0
   },
   {
    "motor": "plataforma-mapas-culturais",
-   "achados_total_1a": 66,
-   "achados_total_agora": 66,
-   "no_fluxo": 12,
+   "achados_total_1a": 68,
+   "achados_total_agora": 68,
+   "no_fluxo": 10,
+   "confirmadas": 0
+  },
+  {
+   "motor": "outras-oportunidades-8",
+   "achados_total_1a": 26,
+   "achados_total_agora": 26,
+   "no_fluxo": 2,
    "confirmadas": 0
   }
  ],
@@ -148,7 +157,7 @@
  "pontos_com_redundancia": 17,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 10408
+ "exemplos_da_rede_de_rotas": 10498
 }
 ```
 
@@ -159,33 +168,17 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 70.0,
- "fora_dos_motores_pct_agora": 70.0,
+ "fora_dos_motores_pct_1a": 73.6,
+ "fora_dos_motores_pct_agora": 73.6,
  "origem": {
-  "Piloto": 139,
-  "agregador/outra": 246,
-  "motor": 165
+  "motor": 111,
+  "Piloto": 131,
+  "agregador/outra": 178
  },
  "dominios_so_de_agregador": [
   {
-   "dominio": "data.queridodiario.ok.org.br",
-   "oportunidades": 7
-  },
-  {
    "dominio": "fapesp.br",
    "oportunidades": 5
-  },
-  {
-   "dominio": "fapemig.br",
-   "oportunidades": 2
-  },
-  {
-   "dominio": "dgartes.gov.pt",
-   "oportunidades": 2
-  },
-  {
-   "dominio": "salinas.mg.gov.br",
-   "oportunidades": 2
   },
   {
    "dominio": "performeurope.eu",
@@ -216,15 +209,27 @@
    "oportunidades": 1
   },
   {
-   "dominio": "transparencia.adustina.ba.gov.br",
+   "dominio": "wordpress.sea.sc.gov.br",
    "oportunidades": 1
   },
   {
-   "dominio": "macajuba.ba.gov.br",
+   "dominio": "sape.sc.gov.br",
    "oportunidades": 1
   },
   {
-   "dominio": "pmalcobaca.ba.gov.br",
+   "dominio": "fapemig.br",
+   "oportunidades": 1
+  },
+  {
+   "dominio": "api.site.fapemig.br",
+   "oportunidades": 1
+  },
+  {
+   "dominio": "mapacultural.pe.gov.br",
+   "oportunidades": 1
+  },
+  {
+   "dominio": "prefeitura.poa.br",
    "oportunidades": 1
   }
  ],
@@ -239,14 +244,13 @@
 
 ```json
 {
- "dia_de_referencia": "2026-10-15",
- "ativos": 159,
- "lidos_ontem": 51,
- "lidos_hoje": 134,
+ "dia_de_referencia": "2026-10-16",
+ "ativos": 157,
+ "lidos_ontem": 129,
+ "lidos_hoje": 130,
  "nao_lidos_ontem_nem_hoje": [
   "plat-captamos",
-  "plat-rede-filantropia",
-  "pncp-api"
+  "plat-rede-filantropia"
  ],
  "ainda_sem_primeira_leitura": [
   "motor-gife",
@@ -282,69 +286,69 @@
 
 ```json
 {
- "fontes_recebidas": 413,
+ "fontes_recebidas": 395,
  "por_origem": {
-  "conselho (fontes irmãs)": 167,
-  "Cartório (site oficial certificado)": 203,
-  "Espião (privado/internacional)": 43
+  "conselho (fontes irmãs)": 166,
+  "Cartório (site oficial certificado)": 181,
+  "Espião (privado/internacional)": 48
  },
- "lidas_nas_ultimas_24h": 315,
+ "lidas_nas_ultimas_24h": 338,
  "dimensionamento": {
-  "fontes": 413,
+  "fontes": 395,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
   "clones": 8,
-  "cobertura_diaria": 408,
+  "cobertura_diaria": 395,
   "segundos_por_execucao": {
    "tipico": 88,
    "pior_caso": 238
   },
-  "le_todas_no_dia": false
+  "le_todas_no_dia": true
  },
  "clones_que_ja_leram": {
   "outras-oportunidades-1": {
-   "ultima": "2026-10-16T00:13:45+00:00",
-   "duracao_s": 90,
+   "ultima": "2026-10-16T12:20:42+00:00",
+   "duracao_s": 43,
    "achados": 39
   },
   "outras-oportunidades-2": {
-   "ultima": "2026-10-15T23:08:48+00:00",
-   "duracao_s": 97,
+   "ultima": "2026-10-16T12:24:57+00:00",
+   "duracao_s": 98,
    "achados": 1
   },
   "outras-oportunidades-3": {
-   "ultima": "2026-10-16T00:15:56+00:00",
-   "duracao_s": 131,
-   "achados": 6
+   "ultima": "2026-10-16T11:23:04+00:00",
+   "duracao_s": 64,
+   "achados": 4
   },
   "outras-oportunidades-4": {
-   "ultima": "2026-10-15T15:24:09+00:00",
-   "duracao_s": 84,
-   "achados": 12
+   "ultima": "2026-10-16T13:52:07+00:00",
+   "duracao_s": 74,
+   "achados": 3
   },
   "outras-oportunidades-5": {
-   "ultima": "2026-10-16T00:17:51+00:00",
+   "ultima": "2026-10-16T11:22:00+00:00",
    "duracao_s": 115,
    "achados": 3
   },
   "outras-oportunidades-6": {
-   "ultima": "2026-10-16T00:25:18+00:00",
-   "duracao_s": 118,
-   "achados": 24
+   "ultima": "2026-10-16T12:21:55+00:00",
+   "duracao_s": 72,
+   "achados": 20
   },
   "outras-oportunidades-7": {
-   "ultima": "2026-10-16T00:21:14+00:00",
-   "duracao_s": 69,
-   "achados": 10
+   "ultima": "2026-10-16T11:13:18+00:00",
+   "duracao_s": 137,
+   "achados": 13
   },
   "outras-oportunidades-8": {
-   "ultima": "2026-10-15T23:11:00+00:00",
-   "duracao_s": 131,
-   "achados": 5
+   "ultima": "2026-10-16T12:26:29+00:00",
+   "duracao_s": 92,
+   "achados": 1
   }
  },
- "com_achado": 64
+ "com_achado": 56
 }
 ```
 
@@ -357,26 +361,26 @@
 {
  "adaptadores": {
   "plataforma-wordpress": {
-   "ultima": "2026-10-15T23:05:37+00:00",
-   "achados": 9,
+   "ultima": "2026-10-16T12:23:19+00:00",
+   "achados": 3,
    "diagnostico": {
     "sites": 20,
     "instancias": null,
-    "respostas_json": 43,
-    "posts": 60,
+    "respostas_json": 42,
+    "posts": 40,
     "oportunidades": null,
     "motivo_zero": null
    }
   },
   "plataforma-mapas-culturais": {
-   "ultima": "2026-10-16T00:20:05+00:00",
-   "achados": 17,
+   "ultima": "2026-10-16T11:03:51+00:00",
+   "achados": 15,
    "diagnostico": {
     "sites": null,
-    "instancias": 12,
-    "respostas_json": 5,
+    "instancias": 11,
+    "respostas_json": 4,
     "posts": null,
-    "oportunidades": 49,
+    "oportunidades": 40,
     "motivo_zero": null
    }
   }
@@ -405,36 +409,36 @@
    ]
   },
   "Diário municipal em lote (AGM/DOM)": {
-   "orgaos": 18,
+   "orgaos": 14,
    "exemplos": [
-    "campobelo.mg.gov.br",
     "diariooficial.abc.go.gov.br",
     "diariooficial.goiania.go.gov.br",
     "diariooficial.palmas.to.gov.br",
     "diariooficial.vitoria.es.gov.br",
-    "divinopolisdotocantins.to.gov.br"
+    "divinopolisdotocantins.to.gov.br",
+    "dom.morrodochapeu.ba.gov.br"
    ]
   },
   "Portal de transparência de fornecedor": {
-   "orgaos": 21,
+   "orgaos": 15,
    "exemplos": [
     "bndes.gov.br",
     "comunidade.transparenciainternacional.org.br",
     "gov.br",
-    "itacoatiara.am.gov.br",
     "itumbiara.go.gov.br",
-    "mpf.mp.br"
+    "mpf.mp.br",
+    "rio.rj.gov.br"
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 49,
+   "orgaos": 43,
    "exemplos": [
-    "adustina.ba.gov.br",
     "alteditais.com.br",
-    "arapongas.pr.gov.br",
     "banrisulcultural.com.br",
     "bonde.org",
-    "cajuru.sp.gov.br"
+    "cajuru.sp.gov.br",
+    "chamamentos.serpro.gov.br",
+    "climaesociedade.org"
    ]
   }
  }
