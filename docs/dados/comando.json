@@ -1,89 +1,102 @@
 {
- "atualizado_em": "2026-10-16T09:58:52+00:00",
+ "atualizado_em": "2026-10-16T11:00:57+00:00",
  "regra": "REDE NEURAL DE COMANDO — maestro e rede neural são UMA coisa só (titular, 15/10/2026).\n\nA rede neural determina o caminho de todo o fluxo; o maestro é a mão dela: aciona os motores de busca e devolve o que\nfoi coletado. A rede avalia o que voltou e direciona para a fase seguinte. Um ciclo, do começo ao fim:\n\n  1. DECIDIR    sem agenda: TODO motor ativo é lido TODO dia (premissa de 100% das informações disponíveis no dia);\n                a cada passagem entram os que ainda não completaram — adiado → nunca lido hoje → parcial — e, dentro\n                de cada grupo, o de maior valor esperado (nota média que a rede deu aos achados dele);\n  2. ACIONAR    o maestro roda os motores escolhidos e devolve um recibo (lidos, achados, falhas, adiados, erro);\n  3. AVALIAR    a rede mede a completude de cada motor (completa · parcial · pendente · só do Brasil) e o que entrou;\n  4. REACIONAR  parciais e pendentes voltam na mesma passagem enquanto houver tempo; o que só o Brasil/Chrome lê vai\n                para a fila de conferência humana (estado/comando/para_chrome.json);\n  5. DIRECIONAR as fases seguintes, em ordem, cada uma com RECIBO e PORTÃO (roda ou pula com motivo):\n                catalogar → treinar a rede → site oficial → certificar (trecho dos 12 itens) → curadoria do link\n                oficial (dois links, trecho exato, 6 critérios) → validar por exceção →\n                recalcular → biblioteca → fichas e Farol → legislativo → sala de controle → diagnóstico;\n  6. VEREDITO   etapa com erro torna o ciclo VERMELHO (o fluxo do GitHub falha à vista; acabou a falha silenciosa).",
  "ultimo_ciclo": {
-  "inicio": "2026-10-16T09:01:31+00:00",
+  "inicio": "2026-10-16T09:59:26+00:00",
   "recibos": [
    {
     "etapa": "acionar",
     "rc": 0,
-    "segundos": 1489.0,
+    "segundos": 1501.4,
     "erro": null,
     "motores": [
+     "outras-oportunidades-2",
+     "plat-prefeituras-50-go",
+     "f260-curadoria-001",
+     "f260-captacao-151",
+     "alego-pl",
+     "recorrencia",
+     "outras-oportunidades-5",
+     "outras-oportunidades-1",
+     "outras-oportunidades-3",
+     "plataforma-mapas-culturais",
      "outras-oportunidades-6",
      "outras-oportunidades-8",
-     "plat-empresas-editais-incentivados",
      "plataforma-wordpress",
+     "plat-empresas-editais-incentivados",
      "empresas-incentivadas",
      "outras-oportunidades-7",
-     "plat-prefeituras-50-go",
-     "plat-estaduais-go-gov",
+     "judiciario-cnj-tjgo",
      "f260-captacao-237",
      "f260-captacao-039",
      "f260-captacao-228",
      "f260-captacao-242",
      "f260-espalhado-rouanet-cultura-gov-br",
      "f260-espalhado-www-rosariodosul-rs-gov-br",
+     "f260-captacao-221",
      "f260-curadoria-005",
-     "f260-espalhado-www-novohamburgo-rs-gov-br",
-     "f260-espalhado-sistema-mirassoldoeste-mt-gov-br",
      "f260-espalhado-www-bentogoncalves-rs-gov-br",
      "f260-captacao-224",
-     "mptgo-destinacao",
-     "f260-captacao-218",
-     "f260-captacao-255",
-     "f260-captacao-253",
-     "f260-captacao-221",
-     "f260-curadoria-008",
-     "f260-captacao-233",
-     "recorrencia",
-     "outras-oportunidades-5",
-     "outras-oportunidades-1",
-     "outras-oportunidades-3",
-     "plataforma-mapas-culturais",
-     "outras-oportunidades-2",
-     "judiciario-cnj-tjgo",
-     "f260-curadoria-001",
+     "judiciario-tjgo",
      "f260-captacao-044",
      "f260-captacao-227",
-     "f260-captacao-118",
-     "f260-captacao-151",
-     "judiciario-tjgo",
-     "alego-pl"
+     "f260-captacao-118"
     ],
-    "executados": 35,
-    "achados": 148,
-    "novos_na_base": 9,
+    "executados": 10,
+    "achados": 89,
+    "novos_na_base": 3,
     "adiados_por_tempo": [
-     "plat-prefeituras-50-go",
-     "outras-oportunidades-2",
-     "f260-curadoria-001",
-     "f260-captacao-151",
-     "alego-pl"
+     "plataforma-mapas-culturais",
+     "outras-oportunidades-6",
+     "outras-oportunidades-8",
+     "plataforma-wordpress",
+     "plat-empresas-editais-incentivados",
+     "outras-oportunidades-7",
+     "judiciario-cnj-tjgo",
+     "f260-captacao-237",
+     "f260-captacao-039",
+     "f260-captacao-228",
+     "f260-captacao-242",
+     "f260-espalhado-rouanet-cultura-gov-br",
+     "f260-espalhado-www-rosariodosul-rs-gov-br",
+     "f260-captacao-221",
+     "f260-curadoria-005",
+     "f260-espalhado-www-bentogoncalves-rs-gov-br",
+     "f260-captacao-224",
+     "judiciario-tjgo",
+     "f260-captacao-044",
+     "f260-captacao-227",
+     "f260-captacao-118"
     ]
    },
    {
     "etapa": "catalogar",
     "finalidade": "achados por motor, status de cada motor e repositório único das oportunidades",
-    "segundos": 133.5,
+    "segundos": 136.5,
     "erro": null
    },
    {
     "etapa": "site_oficial",
     "finalidade": "do replicador à fonte oficial e ao PDF do edital (navegação e PNCP)",
-    "segundos": 26.7,
+    "segundos": 15.5,
+    "erro": null
+   },
+   {
+    "etapa": "expurgo",
+    "finalidade": "remove por completo o que não é oportunidade: registros, livros, pastas, banco e releitura",
+    "segundos": 121.2,
     "erro": null
    },
    {
     "etapa": "pncp",
     "finalidade": "dossiê do PNCP: 12 de 12 com informação confirmada ou descarte justificado; o que faltar vai ao Interceptador",
-    "segundos": 1202.2,
-    "erro": null
+    "segundos": 1300.1,
+    "erro": "pncp:1: código 124"
    },
    {
     "etapa": "certificar",
     "finalidade": "trecho literal e página de cada um dos 12 itens no documento oficial (Cartório)",
-    "segundos": 436.1,
+    "segundos": 473.3,
     "erro": null
    },
    {
@@ -101,19 +114,19 @@
    {
     "etapa": "recalcular",
     "finalidade": "estados das oportunidades com as certidões e validações desta passagem",
-    "segundos": 114.5,
+    "segundos": 100.1,
     "erro": null
    },
    {
     "etapa": "livros",
     "finalidade": "os livros são o banco: cada oportunidade cria ou vincula o seu livro com links, checklist12, achados e análises",
-    "segundos": 2.0,
+    "segundos": 1.5,
     "erro": null
    },
    {
     "etapa": "fichas_farol",
     "finalidade": "ficha e janela de cada oportunidade aberta; o que está pronto vai ao Farol",
-    "segundos": 2.0,
+    "segundos": 1.9,
     "erro": null
    },
    {
@@ -125,76 +138,44 @@
    {
     "etapa": "sala_de_controle",
     "finalidade": "instrumentos de cada etapa",
-    "segundos": 6.0,
+    "segundos": 5.5,
     "erro": null
    },
    {
     "etapa": "diagnostico",
     "finalidade": "diagnóstico da passagem (arquivo próprio; o relatório da análise não é sobrescrito)",
-    "segundos": 25.8,
+    "segundos": 29.8,
     "erro": null
    }
   ],
   "decisoes": [
    {
     "fase": "decidir",
-    "motores": 40,
+    "motores": 31,
     "adiados_primeiro": [
-     "empresas-incentivadas",
-     "f260-captacao-039",
-     "f260-captacao-218",
-     "f260-captacao-224",
-     "f260-captacao-228",
-     "f260-captacao-237",
-     "f260-captacao-242",
-     "f260-curadoria-005",
-     "f260-espalhado-rouanet-cultura-gov-br",
-     "f260-espalhado-sistema-mirassoldoeste-mt-gov-br",
-     "f260-espalhado-www-bentogoncalves-rs-gov-br",
-     "f260-espalhado-www-novohamburgo-rs-gov-br",
-     "f260-espalhado-www-rosariodosul-rs-gov-br",
-     "mptgo-destinacao",
-     "outras-oportunidades-6",
-     "outras-oportunidades-7",
-     "outras-oportunidades-8",
-     "plat-empresas-editais-incentivados",
-     "plat-estaduais-go-gov",
-     "plat-prefeituras-50-go",
-     "plataforma-wordpress"
+     "alego-pl",
+     "f260-captacao-151",
+     "f260-curadoria-001",
+     "outras-oportunidades-2",
+     "plat-prefeituras-50-go"
     ],
     "planejados_no_dia": 127,
-    "cobertura_antes_pct": 68.5
+    "cobertura_antes_pct": 75.6
    },
    {
     "fase": "reacionar",
     "adiado_para_a_proxima_passagem": [
-     "plat-prefeituras-50-go",
-     "f260-captacao-237",
-     "f260-captacao-039",
-     "f260-captacao-228",
-     "f260-captacao-242",
-     "f260-espalhado-rouanet-cultura-gov-br",
-     "f260-espalhado-www-rosariodosul-rs-gov-br",
-     "f260-curadoria-005",
-     "f260-espalhado-www-bentogoncalves-rs-gov-br",
-     "f260-captacao-224",
      "f260-captacao-221",
+     "judiciario-tjgo",
      "f260-captacao-044",
      "f260-captacao-227",
-     "f260-captacao-118",
-     "f260-captacao-151",
-     "judiciario-tjgo",
-     "alego-pl"
+     "f260-captacao-118"
     ],
     "motivo": "sem tempo nesta passagem"
    },
    {
     "fase": "treinar_rede",
     "pulou": "modelo recente e sem rótulos novos suficientes"
-   },
-   {
-    "fase": "expurgo",
-    "pulou": "já feito hoje"
    },
    {
     "fase": "biblioteca_diaria",
@@ -206,76 +187,62 @@
    }
   ],
   "avaliacao": {
-   "cobertura_do_dia_pct": 75.6,
+   "cobertura_do_dia_pct": 77.6,
    "estado": {
+    "outras-oportunidades-2": "parcial",
+    "plat-prefeituras-50-go": "parcial",
+    "f260-curadoria-001": "completa",
+    "f260-captacao-151": "completa",
+    "alego-pl": "completa",
+    "recorrencia": "parcial",
+    "outras-oportunidades-5": "parcial",
+    "outras-oportunidades-1": "parcial",
+    "outras-oportunidades-3": "parcial",
+    "plataforma-mapas-culturais": "parcial",
     "outras-oportunidades-6": "parcial",
     "outras-oportunidades-8": "parcial",
-    "plat-empresas-editais-incentivados": "parcial",
     "plataforma-wordpress": "parcial",
+    "plat-empresas-editais-incentivados": "parcial",
     "empresas-incentivadas": "parcial",
     "outras-oportunidades-7": "parcial",
-    "plat-prefeituras-50-go": "parcial",
-    "plat-estaduais-go-gov": "completa",
+    "judiciario-cnj-tjgo": "parcial",
     "f260-captacao-237": "parcial",
     "f260-captacao-039": "parcial",
     "f260-captacao-228": "parcial",
     "f260-captacao-242": "parcial",
     "f260-espalhado-rouanet-cultura-gov-br": "parcial",
     "f260-espalhado-www-rosariodosul-rs-gov-br": "parcial",
+    "f260-captacao-221": "parcial",
     "f260-curadoria-005": "parcial",
-    "f260-espalhado-www-novohamburgo-rs-gov-br": "completa",
-    "f260-espalhado-sistema-mirassoldoeste-mt-gov-br": "completa",
     "f260-espalhado-www-bentogoncalves-rs-gov-br": "parcial",
     "f260-captacao-224": "parcial",
-    "mptgo-destinacao": "completa",
-    "f260-captacao-218": "completa",
-    "f260-captacao-255": "completa",
-    "f260-captacao-253": "completa",
-    "f260-captacao-221": "parcial",
-    "f260-curadoria-008": "completa",
-    "f260-captacao-233": "completa",
-    "recorrencia": "parcial",
-    "outras-oportunidades-5": "parcial",
-    "outras-oportunidades-1": "parcial",
-    "outras-oportunidades-3": "parcial",
-    "plataforma-mapas-culturais": "parcial",
-    "outras-oportunidades-2": "parcial",
-    "judiciario-cnj-tjgo": "parcial",
-    "f260-curadoria-001": "parcial",
+    "judiciario-tjgo": "parcial",
     "f260-captacao-044": "parcial",
     "f260-captacao-227": "parcial",
-    "f260-captacao-118": "parcial",
-    "f260-captacao-151": "parcial",
-    "judiciario-tjgo": "parcial",
-    "alego-pl": "parcial"
+    "f260-captacao-118": "parcial"
    },
    "reacionar": [
-    "plat-prefeituras-50-go",
-    "f260-captacao-237",
-    "f260-captacao-039",
-    "f260-captacao-228",
-    "f260-captacao-242",
-    "f260-espalhado-rouanet-cultura-gov-br",
-    "f260-espalhado-www-rosariodosul-rs-gov-br",
-    "f260-curadoria-005",
-    "f260-espalhado-www-bentogoncalves-rs-gov-br",
-    "f260-captacao-224",
     "f260-captacao-221",
+    "judiciario-tjgo",
     "f260-captacao-044",
     "f260-captacao-227",
-    "f260-captacao-118",
-    "f260-captacao-151",
-    "judiciario-tjgo",
-    "alego-pl"
+    "f260-captacao-118"
    ],
    "para_humano": [],
-   "completos": 9
+   "completos": 3
   },
-  "novos_na_base": 9,
-  "fim": "2026-10-16T09:58:52+00:00",
-  "erros": [],
-  "estado": "verde"
+  "novos_na_base": 3,
+  "fim": "2026-10-16T11:00:57+00:00",
+  "erros": [
+   {
+    "etapa": "pncp",
+    "finalidade": "dossiê do PNCP: 12 de 12 com informação confirmada ou descarte justificado; o que faltar vai ao Interceptador",
+    "segundos": 1300.1,
+    "erro": "pncp:1: código 124"
+   }
+  ],
+  "estado": "vermelho"
  },
- "ciclos_hoje": 5,
- "vermelhos_hoje": 2
+ "ciclos_hoje": 6,
+ "vermelhos_hoje": 3
 }
