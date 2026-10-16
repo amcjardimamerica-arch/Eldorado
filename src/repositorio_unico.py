@@ -133,6 +133,13 @@ NAO_OPORTUNIDADE = [
 ]
 AGREGADOR_HOST = re.compile(r"(?i)https?://(?:www\.)?(?:capitaai|captadores)\.[a-z.]+(/[^?#]*)?")   # estrutura de caminhos conhecida
 PAGINA_DE_AGREGADOR = re.compile(r"(?i)https?://(?:www\.)?(?:capitaai|captadores|editaisdobrasil|farolcultural|observatorio3setor|prosas)\.[a-z.]+/(?:planos|precos|preços|sobre|assin|login|cadastro|contato|quem-somos)?/?(?:\?|$)")
+# 16/10/2026 (titular, validação dos livros): "organizações sociais" no sentido comum (entidades da sociedade civil) NÃO
+# é OS — a regra barrava BNDES (R$ 35 mi a organizações sociais), Movimento Bem Maior, Lojas Renner, Zurich. Só barra
+# contrato de gestão, qualificação como OS ou OS gerindo unidade (hospital, museu, unidade de saúde).
+OS_CONTRATO_DE_GESTAO = re.compile(r"Organiza[çc](?:[ãa]o|[õo]es) Sociais?\b|"     # maiúsculas: a figura jurídica OS
+                                   r"(?i:contrato de gest[ãa]o)|qualifica[çc][ãa]o como (?:os\b|organiza)|"
+                                   r"organiza[çc](?:[ãa]o|[õo]es) sociais?\b(?! civil)[^.]{0,80}\b(?:gest[ãa]o|gerenciamento|administra[çc][ãa]o) d[eoa]s? "
+                                   r"(?:unidade|hospital|museu|equipamento|policl[íi]nica|upa|caps)")
 ORGANIZACAO_SOCIAL = re.compile(r"(?i)\borganiza[çc](?:[ãa]o|[õo]es) sociais?\b(?! civil)|contrato de gest[ãa]o|qualifica[çc][ãa]o como (?:os|organiza)")
 ANO_ANTERIOR = re.compile(r"\b(20(?:1\d|2[0-4]))\b")   # 15/10: 2025 pode seguir aberto (ciclos da PNAB) — só 2024 ou antes
 PERMITE_CREDENCIAMENTO = re.compile(r"(?i)organiza[çc](?:[ãa]o|[õo]es) da sociedade civil|\boscs?\b|sem fins lucrativos|entidades? (?:socioassist|filantr)|associa[çc]")
@@ -144,13 +151,13 @@ LEGISLATIVO_ABERTAS = re.compile(r"(?i)lei or[çc]ament[áa]ria|\bLOA\b|projeto 
 
 def nao_e_oportunidade(r: dict) -> str | None:
     t = f"{r.get('titulo') or ''} {r.get('objeto') or ''} {re.sub(r'[-_/.]', ' ', str(r.get('url') or ''))}"
-    if LEGISLATIVO_ABERTAS.search(t):
+    if LEGISLATIVO_ABERTAS.search(t) and not re.search(r"(?i)emenda parlamentar.{0,60}capta[çc][ãa]o", t):   # 16/10: emenda em captação é oportunidade
         return "ato legislativo — vai ao acompanhamento legislativo (Oportunidades Abertas › Legislativo)"
     tit = str(r.get("titulo") or "")
     _ag = AGREGADOR_HOST.match(str(r.get("url") or ""))
     if PAGINA_DE_AGREGADOR.search(str(r.get("url") or "")) or (_ag and not re.search(r"(?i)capta|edita|oportunidad|chamad|premi|fomento|noticia|/20\d\d/", _ag.group(1) or "")):
         return "página institucional ou comercial do agregador — não é oportunidade"   # 15/10 (ciclo 7): só captação/edital vale
-    if ORGANIZACAO_SOCIAL.search(t) and not re.search(r"(?i)sociedade civil|\bosc", tit):
+    if OS_CONTRATO_DE_GESTAO.search(t) and not re.search(r"(?i)sociedade civil|\bosc", tit):   # 16/10: só OS de verdade
         return "Organização Social (contrato de gestão) — acompanhar, não é oportunidade da associação"
     if "credenciamento" in t.lower() and SAUDE_SERVICO.search(f"{t} {r.get('orgao') or ''}") and not re.search(r"(?i)sociedade civil|\bosc", tit):
         return "credenciamento de prestadores — não é fomento a OSC"
