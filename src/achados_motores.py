@@ -13,6 +13,7 @@ import re
 import unicodedata
 from pathlib import Path
 from urllib.parse import urlsplit
+from .nucleo import load_json  # 16/10: leitura pelo núcleo (disco ou livros)
 
 ROOT = Path(__file__).resolve().parents[1]
 MESTRE = ROOT / "dados/oportunidades/oportunidades.jsonl"
@@ -116,7 +117,7 @@ def montar() -> dict:
                     continue
                 r0 = por_id.get(eid) or {}
                 try:
-                    e0 = json.loads((ext / f"{eid}.json").read_text(encoding="utf-8"))
+                    e0 = load_json(ext / f"{eid}.json")
                 except Exception:
                     e0 = {}
                 tit = r0.get("titulo") or e0.get("titulo")
@@ -172,7 +173,7 @@ def montar() -> dict:
             vistos_t.add(kt); vistos_u.add(ku)
             e = {}
             try:
-                e = json.loads((ext / f"{r.get('id')}.json").read_text(encoding="utf-8"))
+                e = load_json(ext / f"{r.get('id')}.json")
             except Exception:
                 pass
             ve = e.get("verificacao_externa") if isinstance(e.get("verificacao_externa"), dict) else {}

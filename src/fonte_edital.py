@@ -381,7 +381,7 @@ def investigar(e: dict, chamar, modelos: list[str], forcar: bool = False, rede: 
     dados/editais/extraidos/<id>.json."""
     EXTRAIDOS.mkdir(parents=True, exist_ok=True)
     arq = EXTRAIDOS / f"{e['id']}.json"
-    reg = load_json(arq) if arq.exists() else {"edital_id": e["id"], "titulo": e.get("titulo"), "tentativas": []}
+    reg = load_json(arq) if __import__("src.livro_arquivo", fromlist=["x"]).existe(arq) else {"edital_id": e["id"], "titulo": e.get("titulo"), "tentativas": []}
     if reg.get("completo") and not forcar:
         return reg
     # sem repetição: se as duas últimas tentativas não avançaram e nada mudou (sem texto novo nem complemento), aguarda

@@ -39,7 +39,7 @@ def run(limite: int = 25, modo: str = "completo") -> dict:
             sem_texto.append({"id": it["id"], "titulo": it["titulo"][:80], "motivo": f"{type(exc).__name__} ao abrir {alvo[:60]}"}); continue
         if ob.get("texto"):
             arq = EXTRAIDOS / f"{it['id']}.json"
-            reg = load_json(arq) if arq.exists() else {"edital_id": it["id"], "titulo": it["titulo"], "tentativas": []}
+            reg = load_json(arq) if __import__("src.livro_arquivo", fromlist=["x"]).existe(arq) else {"edital_id": it["id"], "titulo": it["titulo"], "tentativas": []}
             reg.update({k: ob[k] for k in ("arquivo", "kb_compacto", "fontes", "site_institucional", "pagina_divulgacao", "erros", "anexos") if k in ob})
             reg["coletado_em"] = now_iso(); write_json(arq, reg)
             feitos.append({"id": it["id"], "titulo": it["titulo"][:80], "kb": ob["kb_compacto"], "arquivos": len(ob.get("fontes") or [])})

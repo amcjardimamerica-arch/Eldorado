@@ -233,10 +233,32 @@ def absorver(caminhos: list, gravar_: bool = True, apagar: bool = True, controle
         except Exception:  # noqa: BLE001
             st["arquivo ilegível"] += 1; continue
         rel = _rel(p)
+        # 16/10: arquivo que SE IDENTIFICA (edital_id ou o nome do arquivo) e liga a um livro vai INTEIRO para ele — sem
+        # descer nas listas internas (ex.: as tentativas de extração de uma edição não são registros de oportunidade)
+        _id_arq = (obj.get("edital_id") or obj.get("id")) if isinstance(obj, dict) else None
+        _chv = str(_id_arq or p.stem)                     # só o IDENTIFICADOR (sem procurar links dentro do arquivo)
+        _lid_arq = (idx.get(_chv) or idx.get(_chv.split(":", 1)[-1])) if isinstance(obj, dict) else None
+        if _lid_arq:
+            d = livros.setdefault(_lid_arq, ler(_lid_arq))
+            d.setdefault("acervo", {}).setdefault(rel, {})["|_arquivo"] = {"dado": obj, "absorvido_em": _agora()}
+            st["absorvidas"] += 1
+            origens[rel] = {"jsonl": p.suffix == ".jsonl", "esqueleto": None, "conteineres": {}, "inteiro": [_lid_arq, "|_arquivo"],
+                            "gravado_em": _agora()}
+            arquivos.append(p); continue
         esq, conts = _expandir(obj)
         reg = {"jsonl": p.suffix == ".jsonl", "esqueleto": esq, "conteineres": {}}
         if not conts:                                     # o arquivo inteiro é o registro de uma oportunidade
-            lid = guardar(rel, "", "_arquivo", obj)
+            if isinstance(obj, dict) and not obj.get("id") and (obj.get("edital_id") or p.stem):
+                obj_l = {**obj, "id": obj.get("edital_id") or p.stem}    # 16/10: o id está no NOME do arquivo / edital_id
+                lid = ligar(obj_l["id"], obj_l, idx) or None
+                if lid:
+                    d = livros.setdefault(lid, ler(lid))
+                    d.setdefault("acervo", {}).setdefault(rel, {})["|_arquivo"] = {"dado": obj, "absorvido_em": _agora()}
+                    st["absorvidas"] += 1
+                else:
+                    lid = guardar(rel, "", "_arquivo", obj)
+            else:
+                lid = guardar(rel, "", "_arquivo", obj)
             reg["inteiro"] = [lid, "|_arquivo"] if lid else None
             if not lid and controle_sem_livro:
                 reg["controle"] = obj; st["descartadas (não ligam e não são oportunidade vigente)"] -= 1
@@ -341,7 +363,8 @@ def guardar(caminho, obj, controle_sem_livro: bool = False) -> dict:
 PROIBIDOS = ["estado/piloto/briefings",          # cresce a cada lote absorvido (16/10/2026)
              "dados/oportunidades/pareceres_livros", "dados/coleta_3_anos",   # lote 2
              "estado/cartorio/certidoes.json", "estado/cartorio/certidoes_manuais.json",   # lote 3
-             "estado/agregadores/itens.json", "estado/piloto/candidatas_do_catalogo.json"]  # entradas do fluxo
+             "estado/agregadores/itens.json", "estado/piloto/candidatas_do_catalogo.json",  # entradas do fluxo
+             "dados/editais/extraidos"]                     # edições extraídas
 
 
 def absorver_proibidos() -> dict:
@@ -414,4 +437,7 @@ def idade_h(caminho) -> float:
 def existe(caminho) -> bool:
     """O 'arquivo' antigo existe — em disco ou já absorvido nos livros (substitui Path.exists() nos leitores)."""
     p = Path(caminho)
-    return p.exists() or _rel(p) in (_j(ORIGENS, {}) or {})
+    if p.exists():
+        return True
+    o = (_j(ORIGENS, {}) or {}).get(_rel(p))            # 16/10: só existe se houver conteúdo para montar
+    return bool(o and (o.get("inteiro") or "controle" in o or any(c.get("entradas") for c in (o.get("conteineres") or {}).values())))
