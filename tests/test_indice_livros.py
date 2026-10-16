@@ -25,3 +25,15 @@ class Indice16_10(unittest.TestCase):
     def test_conflito_de_local_impede(self):
         self.assertIsNone(self.I.encontrar({"titulo": "FIA — Fundo da Infância e Adolescência", "orgao": "Prefeitura de Anápolis",
                                             "uf": "GO", "municipio": "Goiânia"})[0])
+
+
+class Rigor16_10(unittest.TestCase):
+    """A 50% o índice juntava programas diferentes; a regra exige 75% e 3 palavras, e diário de outra cidade não liga."""
+    def test_programas_diferentes_nao_ligam(self):
+        L = [{"id": "a", "programa": "PNAB Goiás - Audiovisual", "orgao": "Secretaria de Estado da Cultura", "uf": "GO"},
+             {"id": "b", "programa": "Fundo Nacional da Criança e Adolescente", "orgao": "Conanda — Fundo Nacional", "uf": "BR"},
+             {"id": "c", "programa": "Diário Oficial de Florianópolis (SC) 2026-10-08 — chamamento", "orgao": "Querido Diário", "uf": "SC"}]
+        I = Indice([entrada(x) for x in L])
+        self.assertIsNone(I.encontrar({"titulo": "PNAB Goiás - Música", "orgao": "Secretaria de Estado da Cultura", "uf": "GO"})[0])
+        self.assertIsNone(I.encontrar({"titulo": "Fundo Estadual da Criança e Adolescente de Goiás", "orgao": "Conanda — Fundo Nacional"})[0])
+        self.assertIsNone(I.encontrar({"titulo": "Diário Oficial de Simão Dias (SE) 2026-08-17 — chamamento", "orgao": "Querido Diário"})[0])

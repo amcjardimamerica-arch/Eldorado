@@ -70,7 +70,8 @@ def entrada(lv: dict) -> dict:
             "esfera": _sem(lv.get("esfera") or lv.get("abrangencia")) or None, "uf": (str(lv.get("uf") or "").upper() or None),
             "municipio": _sem(lv.get("municipio")) or None, "modalidade": _modalidade(lv), "tipo": _sem(lv.get("tipo_objeto")) or None,
             "area": _sem(lv.get("objeto_area") or lv.get("area_atuacao")) or None,
-            "dominios": sorted({d for d in (_dominio(u) for u in links if isinstance(u, str)) if d})}
+            "dominios": sorted({d for d in (_dominio(u) for u in links if isinstance(u, str)) if d}),
+            "cidade_diario": (lambda m: m.group(1).strip() if m else None)(re.search(r"diario oficial d[eoa] ([a-z ]+?)(?: \(|$| \d)", _sem(lv.get("programa"))))}
 
 
 def construir(gravar: bool = True) -> dict:
@@ -98,7 +99,7 @@ class Indice:
             construir()
         return cls(json.loads(INDICE.read_text(encoding="utf-8")).get("livros") or [])
 
-    def encontrar(self, op: dict) -> tuple[str | None, float, list[str]]:
+    def encontrar(self, op: dict, excluir: str | None = None) -> tuple[str | None, float, list[str]]:
         prog = programa(op.get("titulo") or op.get("programa"), op.get("orgao"))
         org = palavras(op.get("orgao"))
         dom = {d for d in (_dominio(op.get(k)) for k in ("url", "link_oficial")) if d}
@@ -112,12 +113,18 @@ class Indice:
         melhor = (None, 0.0, [])
         for i in cands:
             e = self.E[i]; P = set(e["programa"])
+            if excluir and e["id"] == excluir:
+                continue
             if not prog or not P:
                 continue
             comuns = prog & P
             j = len(comuns) / len(prog | P)
-            if j < 0.5 or len(comuns) < 2:                 # pelo menos 2 palavras significativas em comum
-                continue
+            if j < 0.75 or len(comuns) < 3:                # 16/10: 75% e 3 palavras — a 50% juntava 'Fundo Estadual' com 'Fundo
+                continue                                   # Nacional' e 'PNAB Audiovisual' com 'PNAB Música'
+            _c1 = re.search(r"diario oficial d[eoa] ([a-z ]+?)(?: \(|$| \d)", _sem(op.get("titulo") or op.get("programa")))
+            _c2 = re.search(r"diario oficial d[eoa] ([a-z ]+?)(?: \(|$| \d)", " ".join(e["programa"]))
+            if _c1 and e.get("cidade_diario") and _c1.group(1).strip() != e["cidade_diario"]:
+                continue                                   # diário oficial de outra cidade
             org_ok = bool(org and e["orgao"] and len(org & set(e["orgao"])) / max(1, len(org | set(e["orgao"]))) >= 0.5)
             dom_ok = bool(dom & set(e["dominios"]))
             if not (org_ok or dom_ok):
