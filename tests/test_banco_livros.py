@@ -137,8 +137,10 @@ class Etapa3Portao(unittest.TestCase):
         self.assertIsNone(M({"titulo": "Chamamento público de OSC — termo de colaboração", "fim": "2026-12-01"}, "2026-10-16"))
         self.assertIn("vaga", M({"titulo": "Instituto X abre vaga de estágio"}, "2026-10-16"))
         self.assertIn("prazo encerrado", M({"titulo": "Edital de fomento cultural 2026", "fim": "2026-10-01"}, "2026-10-16"))
-        self.assertIn("PNCP", M({"titulo": "MUNICIPIO DE NAZARENO — Pregão eletrônico para aquisição de equipamentos",
-                                 "url": "https://pncp.gov.br/app/editais/18557561000151/2026/136", "uf": "MG"}, "2026-10-16"))
+        self.assertIn("PNCP", M({"titulo": "MUNICIPIO DE ANAPOLIS — Pregão eletrônico para aquisição de equipamentos",
+                                 "url": "https://pncp.gov.br/app/editais/01005727000124/2026/136", "uf": "GO"}, "2026-10-16"))
+        self.assertIn("outro estado", M({"titulo": "MUNICIPIO DE NAZARENO — Pregão eletrônico para aquisição de equipamentos",
+                                         "url": "https://pncp.gov.br/app/editais/18557561000151/2026/136", "uf": "MG"}, "2026-10-16"))
         self.assertEqual(M({"titulo": "x"}), "sem título")
 
     def test_limpar_base(self):

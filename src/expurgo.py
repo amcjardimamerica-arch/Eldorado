@@ -25,14 +25,31 @@ from pathlib import Path
 
 from .nucleo import ROOT
 
+VERSAO = 2          # 16/10/2026: regra territorial em todo o sistema — mudou a regra, o expurgo roda de novo no mesmo dia
 PNCP = re.compile(r"pncp\.gov\.br/(?:app/editais|pncp-api/v1/orgaos|api/(?:pncp|consulta)/v1/orgaos)/(\d{14})/(?:compras/)?(\d{4})/(\d+)", re.I)
 AREAS = ["dados", "estado", "docs/dados", "biblioteca_alexandria"]
 NUNCA = re.compile(r"(^|/)(config|tests|src|scripts)/|estado/expurgo/|estado/pncp/estudo_mes\.json|/arquivo_frio/")
 TITULO = ("titulo", "nome", "programa", "nome_classificado", "objeto")
 
 
+URL = re.compile(r"https?://[^\s\"'<>\\]+")
+VEREDITO: dict = {}          # chave → True (inválida) / False (válida); só chaves JULGADAS contam
+
+
+def _url_chave(u: str) -> str:
+    from .vistos import chave
+    return chave({"url": u.rstrip(".,;)")})
+
+
 def _chaves(txt: str) -> set:
-    return {f"{a}/{b}/{int(c)}" for a, b, c in PNCP.findall(txt)}
+    ks = {f"{a}/{b}/{int(c)}" for a, b, c in PNCP.findall(txt)}
+    if VEREDITO:
+        for u in URL.findall(txt):
+            if "pncp.gov.br" not in u:
+                k = _url_chave(u)
+                if k in VEREDITO:
+                    ks.add(k)
+    return ks
 
 
 def _arquivos():
@@ -60,6 +77,27 @@ def _carregar(p: Path):
 
 
 # ── 1. CLASSIFICAR ─────────────────────────────────────────────────────────────────────────────────────────────────
+def _julgar_territorio(obj, juizo: dict):
+    """16/10/2026 (titular): em outros estados só ESTADUAIS e CAPITAIS — julga cada registro com endereço."""
+    if isinstance(obj, dict):
+        u = next((obj.get(f) for f in ("url", "pagina", "link_oficial", "site_oficial") if isinstance(obj.get(f), str) and obj[f].startswith("http")), None)
+        t = next((obj.get(f) for f in TITULO if isinstance(obj.get(f), str)), None)
+        if u and t and "pncp.gov.br" not in u:
+            from .repositorio_unico import municipal_fora_de_goias
+            try:
+                ruim = bool(municipal_fora_de_goias({"titulo": t, "orgao": obj.get("orgao"), "url": u, "uf": obj.get("uf"),
+                                                      "nivel": obj.get("nivel"), "link_oficial": obj.get("link_oficial")}))
+            except Exception:  # noqa: BLE001
+                ruim = False
+            k = _url_chave(u); juizo.setdefault(k, set()).add(ruim)
+        for v in obj.values():
+            if isinstance(v, (dict, list)):
+                _julgar_territorio(v, juizo)
+    elif isinstance(obj, list):
+        for v in obj:
+            _julgar_territorio(v, juizo)
+
+
 def _coletar_registros(obj, out: dict):
     """Para cada chave do PNCP, o melhor título/órgão/UF que algum registro traz."""
     if isinstance(obj, dict):
@@ -101,7 +139,8 @@ def classificar(info: dict) -> tuple[bool, str | None]:
 # ── 2. REMOVER ─────────────────────────────────────────────────────────────────────────────────────────────────────
 def _invalido(obj, inval: set) -> bool:
     ks = _chaves(json.dumps(obj, ensure_ascii=False) if not isinstance(obj, str) else obj)
-    return bool(ks) and ks <= inval
+    julgadas = {k for k in ks if k in inval or VEREDITO.get(k) is False or "/" in k and not k.startswith(("url:", "txt:"))}
+    return bool(julgadas) and julgadas <= inval
 
 
 def _colunar(obj: dict, inval: set, cont: Counter) -> dict:
@@ -148,6 +187,7 @@ def _filtrar(obj, inval: set, cont: Counter):
 
 
 def executar(simular: bool = True) -> dict:
+    VEREDITO.clear()
     regs: dict = {}
     arqs = list(_arquivos())
     cache = {}
@@ -166,6 +206,14 @@ def executar(simular: bool = True) -> dict:
     except Exception:  # noqa: BLE001
         pass
     exemplos = defaultdict(list)
+    juizo: dict = {}
+    for p_, (tipo_, obj_) in cache.items():
+        _julgar_territorio(obj_, juizo)
+    VEREDITO.clear()
+    for k, vs in juizo.items():
+        VEREDITO[k] = (vs == {True})                  # inválida só se TODO registro que cita o endereço é inválido
+        if VEREDITO[k]:
+            inval.add(k); motivos["município de outro estado (não capital)"] += 1
     for k, info in regs.items():
         if k in inval:
             continue
@@ -232,13 +280,13 @@ def executar(simular: bool = True) -> dict:
     if vist.exists():
         V = json.loads(vist.read_text(encoding="utf-8"))
         for m_ in V.values():
-            for k in [k for k in m_ if k.startswith("pncp:") and k[5:] in inval]:
+            for k in [k for k in m_ if (k.startswith("pncp:") and k[5:] in inval) or k in inval]:
                 nv += 1
                 if not simular:
                     del m_[k]
         if not simular:
             vist.write_text(json.dumps(V, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    res = {"em": date.today().isoformat(), "simulacao": simular, "compras_pncp_citadas": len(regs), "invalidas": len(inval),
+    res = {"em": date.today().isoformat(), "versao": VERSAO, "simulacao": simular, "compras_pncp_citadas": len(regs), "invalidas": len(inval),
            "motivos": dict(motivos.most_common()), "exemplos": dict(exemplos), "registros_removidos_por_arquivo": dict(sorted(por_arquivo.items(), key=lambda x: -x[1])),
            "total_registros_removidos": sum(por_arquivo.values()), "livros_removidos": livros_removidos, "pastas_de_livros_removidas": pastas,
            "linhas_do_banco_removidas": banco, "registro_de_releitura": nv}

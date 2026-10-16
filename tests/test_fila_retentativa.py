@@ -243,3 +243,23 @@ class Sala16_10b(unittest.TestCase):
         r = FR.rota_quebrada("https://w.gov.br/editais-antigos", "m2", "HTTP 404")
         self.assertEqual(r["estado"], "fora_da_fila"); self.assertIn("rota quebrada", r["motivo"])
         FR._CACHE = None
+
+
+class Territorio16_10(unittest.TestCase):
+    """16/10/2026 (titular): em outros estados, só ESTADUAIS e CAPITAIS — sem falsos positivos."""
+    def test_regra(self):
+        from src.repositorio_unico import municipal_fora_de_goias as F
+        ficam = [{"titulo": "XII Prêmio Hermilo Borba Filho", "orgao": "SECULT-PE", "uf": "PE", "url": "https://mapacultural.pe.gov.br/x"},
+                 {"titulo": "MUNICIPIO DE CURITIBA — Chamamento público", "orgao": "MUNICIPIO DE CURITIBA", "uf": "PR"},
+                 {"titulo": "Promac 2026", "orgao": "Secretaria Municipal de Cultura — São Paulo", "uf": "SP"},
+                 {"titulo": "SLU — Credenciamento de Cooperativas", "orgao": "SERVICO DE LIMPEZA URBANA", "uf": "DF"},
+                 {"titulo": "Programa SC Rural", "orgao": "Secretaria de Estado da Agricultura", "url": "https://www.agricultura.sc.gov.br/x"},
+                 {"titulo": "FCP — edital de fomento", "url": "https://www.palmas.to.gov.br/editais/x"},
+                 {"titulo": "Chamamento - Prefeitura de Anápolis", "uf": "GO", "url": "https://anapolis.go.gov.br/x"}]
+        for r in ficam:
+            self.assertIsNone(F(r), r["titulo"])
+        saem = [{"titulo": "Chamamento Público 1/2026: Prefeitura de Cajuru (Educação)", "orgao": "Prefeitura de Cajuru", "uf": "SP"},
+                {"titulo": "CHAMAMENTO PÚBLICO Nº 11/2026 - O MUNICÍPIO DE ITAPEVI", "url": "https://chamamentos.itapevi.sp.gov.br/x"},
+                {"titulo": "Concurso de Projetos", "url": "https://www.juatuba.mg.gov.br/portal/editais/0/5/1093"}]
+        for r in saem:
+            self.assertTrue(F(r), r["titulo"])

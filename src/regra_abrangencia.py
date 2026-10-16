@@ -38,7 +38,9 @@ def capital_citada(texto: str) -> str | None:
     for cap, uf in _capitais().items():
         c = re.escape(cap)
         if re.search(rf"\b(?:prefeitura|municipio|camara|diario oficial|secretaria municipal [a-z ]{{0,40}})(?: municipal)? (?:de |do |da )?{c}\b", t) \
-                or re.search(rf"\b{c}\s*(?:[-/(]\s*){uf.lower()}\b", t):
+                or re.search(rf"\b{c}\s*(?:[-/(—–]\s*){uf.lower()}\b", t) \
+                or re.search(rf"\b(?:secretaria|fundacao|fundo|instituto|agencia) municipal\b.{{0,80}}\b{c}\b|\b{c}\b.{{0,40}}\bmunicipal\b", t):
+            return uf                                  # 16/10: "Secretaria Municipal de Cultura — São Paulo", "MUNICIPIO DE CURITIBA"
             return uf
     return None
 

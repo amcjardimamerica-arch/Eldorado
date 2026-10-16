@@ -641,6 +641,13 @@ def incluir_do_repositorio(res: dict) -> int:
 
 def montar() -> dict:
     itens = consolidar()
+    # 16/10/2026 (titular): em outros estados, só ESTADUAIS e CAPITAIS — município de outro estado não entra no fluxo
+    # (a página inicial, as abertas, os achados do dia e a fila de verificação vêm daqui)
+    try:
+        from .repositorio_unico import municipal_fora_de_goias
+        itens = [x for x in itens if not municipal_fora_de_goias(x)]
+    except Exception:  # noqa: BLE001
+        pass
     itens, _DEDUP = deduplicar(itens)
     itens, _PARAM = aplicar_parametro(itens)
     etapa = opressores_e_preditivo(itens)
