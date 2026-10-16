@@ -285,7 +285,8 @@ def guardar(caminho, obj, controle_sem_livro: bool = False) -> dict:
 
 
 # ── TRAVA: pastas cujo conteúdo só pode existir DENTRO dos livros ───────────────────────────────────────────────────
-PROIBIDOS = ["estado/piloto/briefings"]          # cresce a cada lote absorvido (16/10/2026)
+PROIBIDOS = ["estado/piloto/briefings",          # cresce a cada lote absorvido (16/10/2026)
+             "dados/oportunidades/pareceres_livros", "dados/coleta_3_anos"]   # lote 2
 
 
 def absorver_proibidos() -> dict:
@@ -303,3 +304,33 @@ def proibido(rel: str) -> bool:
     if FAROL.search(rel):
         return False                                       # o Farol nunca é proibido (fora da regra)
     return any(rel == g or rel.startswith(g.rstrip("/") + "/") for g in PROIBIDOS)
+
+
+# ── transição: módulos antigos leem e gravam pelos livros (16/10/2026) ──────────────────────────────────────────────
+def ler_arquivo(caminho, padrao=None):
+    """Lê o 'arquivo' antigo: em disco enquanto não foi absorvido; depois, montado a partir dos livros."""
+    p = Path(caminho)
+    if p.is_file():
+        try:
+            return json.loads(p.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            return padrao
+    return carregar(p, padrao)
+
+
+def arquivos(pasta, padrao: str = "*.json") -> list[Path]:
+    """Os 'arquivos' de uma pasta: os ainda em disco + os que já estão nos livros (para quem fazia glob)."""
+    import fnmatch
+    pasta = Path(pasta)
+    fis = {_rel(p) for p in pasta.glob(padrao)} if pasta.is_dir() else set()
+    nos_livros = {r for r in arquivos_de(pasta) if fnmatch.fnmatch(Path(r).name, padrao) and "/" not in r[len(_rel(pasta)) + 1:]}
+    return [ROOT / r for r in sorted(fis | nos_livros)]
+
+
+def guardar_lote(itens: list) -> dict:
+    """Grava vários 'arquivos' de uma vez NOS LIVROS (o índice de ligação é montado uma só vez)."""
+    caminhos = []
+    for caminho, obj in itens:
+        caminho = Path(caminho); caminho.parent.mkdir(parents=True, exist_ok=True)
+        caminho.write_text(json.dumps(obj, ensure_ascii=False), encoding="utf-8"); caminhos.append(caminho)
+    return absorver(caminhos) if caminhos else {"arquivos": 0}

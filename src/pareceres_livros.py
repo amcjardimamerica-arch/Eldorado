@@ -32,8 +32,9 @@ MAX_PARECERES = 12          # por livro: os mais recentes (o resto continua no a
 def carregar() -> dict[str, dict]:
     """id da oportunidade → parecer mais recente (arquivos em ordem de nome; o mais novo prevalece)."""
     out: dict[str, dict] = {}
-    for arq in sorted(PASTA.glob("pareceres_*.json")) if PASTA.exists() else []:
-        for p in (load_json(arq).get("pareceres") or []):
+    from . import livro_arquivo as LA                 # 16/10: nos livros (e o que ainda não foi absorvido)
+    for arq in LA.arquivos(PASTA, "pareceres_*.json"):
+        for p in ((LA.ler_arquivo(arq, {}) or {}).get("pareceres") or []):
             if p.get("id"):
                 out[p["id"]] = {**p, "_arquivo": arq.name}
     for p in out.values():                            # 14/10: dois tipos na mesma pasta — verificação (decisão) e parecer completo (12 itens)
