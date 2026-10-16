@@ -175,9 +175,14 @@ def consolidar() -> list[dict]:
     # Goiânia) abre todo ano em 01/10 e vai a 30/11 (config/emendas.json). Ficavam só no conjunto antigo do painel e
     # sumiram do Radar, do mapa e dos calendários quando eles passaram a ler o fluxo validado. Voltam, a cada ano.
     try:
-        _dd = (ROOT / "docs/dashboard-dados.js").read_text(encoding="utf-8")
-        _D = json.loads(_dd[_dd.index("{"):_dd.rindex("}") + 1])
-        for em in (_D.get("editais") or []):
+        # 16/10/2026 (titular): da CONFIGURAÇÃO (config/emendas.json), não do painel do site lido de volta
+        from .emendas import _cfg as _ecfg, oportunidade as _eop
+        _ec = _ecfg(); _hj = date.today()
+        class _LevVazio(dict):                          # o fluxo não usa o levantamento dos parlamentares
+            def __missing__(self, k):
+                return [] if k == "parlamentares" else 0
+        _ems = [_eop(t, _hj.year, _LevVazio(), _hj) for t in (_ec.get("tipos") or [])]
+        for em in _ems:
             if em.get("area") == "emendas_parlamentares" and em.get("fim"):
                 _u = em.get("url") or ""
                 if "dadosabertos.camara.leg.br/api" in _u:      # endereço de API não é página para a entidade abrir
