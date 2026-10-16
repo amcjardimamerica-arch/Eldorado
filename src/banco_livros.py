@@ -100,9 +100,19 @@ def consolidar(gravar: bool = True) -> dict:
             if isinstance(it, dict) and it.get("id"):
                 val[it["id"]] = it
     criados = vinculados = 0
+    try:                                               # 16/10 (titular): ÍNDICE — a nova edição encontra o livro do programa
+        from .indice_livros import Indice, entrada
+        _IDX = Indice([entrada(lv) for lv in L if lv.get("id")])
+    except Exception:  # noqa: BLE001
+        _IDX = None
+    pelo_indice = 0
     for r in regs:
         k = chave(r)
         lid = r.get("livro") if r.get("livro") in por_id else (idx.get(k) or (idx.get(chave({"url": r["link_oficial"]})) if r.get("link_oficial") else None))
+        if lid not in por_id and _IDX:
+            _lid, _s, _mot = _IDX.encontrar(r)
+            if _lid in por_id:
+                lid = _lid; pelo_indice += 1
         if lid in por_id:
             lv = por_id[lid]; vinculados += 1
         else:
@@ -201,7 +211,13 @@ def consolidar(gravar: bool = True) -> dict:
     if gravar:
         CAT.write_text(json.dumps(cat_doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         INDICE.write_text(json.dumps({"em": _agora(), "chaves": idx}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    return {"oportunidades": len(regs), "livros_criados": criados, "livros_vinculados": vinculados, "livros_removidos": removidos,
+    try:
+        from .indice_livros import construir as _ci
+        _ci(gravar)                                    # o índice é refeito a cada passagem
+    except Exception:  # noqa: BLE001
+        pass
+    return {"oportunidades": len(regs), "livros_criados": criados, "livros_vinculados": vinculados, "ligados_pelo_indice": pelo_indice,
+            "livros_removidos": removidos,
             "livros_de_entrada_removidos": entrada_removidos, "achados_juntados": juntados, "livros": len(L)}
 
 
