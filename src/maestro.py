@@ -157,9 +157,10 @@ def relatorio_etapas(dia=None, controle: dict | None = None) -> dict:
     from .integridade import verificar, situacao
     novos, sit, sinais, d1, sem_pub, atrasos = 0, Counter(), Counter(), 0, 0, []
     base = ROOT / "dados/oportunidades/oportunidades.jsonl"
-    if base.exists():
-        with base.open(encoding="utf-8") as fh:
-            for l in fh:
+    if True:                                           # 16/10: dos livros
+        from .nucleo import achados_linhas
+        if True:
+            for l in achados_linhas():
                 if d0 not in l and ontem not in l:
                     continue
                 try:

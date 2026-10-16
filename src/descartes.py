@@ -76,9 +76,10 @@ def motores_de_origem(x: dict) -> list[str]:
     ms = set((x.get("indexacao") or {}).get("motores") or []) | set((x.get("chave_acionamento") or {}).get("motores") or [])
     urls = {url_canonica(u) for u in [x.get("pagina")] + [h.get("pagina_oficial") for h in (x.get("historico") or []) if isinstance(h, dict)] if u}
     base = ROOT / "dados/oportunidades/oportunidades.jsonl"
-    if base.exists() and urls:
-        with base.open(encoding="utf-8") as fh:
-            for l in fh:
+    if urls:                                           # 16/10: dos livros
+        from .nucleo import achados_linhas
+        if True:
+            for l in achados_linhas():
                 try:
                     r = json.loads(l)
                 except ValueError:

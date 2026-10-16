@@ -404,3 +404,26 @@ def migrar_se_preciso() -> dict:
     MARCO_MIGRACAO.write_text(json.dumps({"em": _agora(), "limpeza": {k: v for k, v in limpeza.items() if k != "motivos"}, **r},
                                          ensure_ascii=False, indent=1), encoding="utf-8")
     return {"migracao": "feita agora", **r}
+
+
+def sincronizar_achados(registros: dict) -> dict:
+    """Etapa 3: quem antes regravava a base inteira (gravar_oportunidades) agora sincroniza os livros — achado
+    alterado é atualizado no livro dele, achado removido sai, achado novo entra (cria ou vincula o livro)."""
+    cat_doc = _j(CAT, {"motores": []}); L = cat_doc.setdefault("motores", [])
+    onde = {}
+    for lv in L:
+        for i in (lv.get("coleta") or {}):
+            onde[str(i)] = lv
+    alt = rem = 0
+    for i, lv in list(onde.items()):
+        if i not in registros:
+            lv["coleta"].pop(i, None); rem += 1
+        else:
+            atual = lv["coleta"][i]
+            internos = {k: atual[k] for k in ("_seq", "relido_por") if k in atual}
+            if {k: v for k, v in atual.items() if k not in internos} != registros[i]:
+                lv["coleta"][i] = {**registros[i], **internos}; alt += 1
+    novos = [x for i, x in registros.items() if str(i) not in onde]
+    CAT.write_text(json.dumps(cat_doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    r = registrar_achados(novos) if novos else {}
+    return {"alterados": alt, "removidos": rem, "novos": len(novos), **r}

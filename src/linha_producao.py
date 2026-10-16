@@ -172,7 +172,8 @@ def _registrar(eventos: list[dict]) -> None:
 def run(regs: list[dict] | None = None, gravar: bool = True) -> dict:
     cfg = _j(CFG, {})
     if regs is None:
-        regs = [json.loads(l) for l in BASE.open(encoding="utf-8") if l.strip()] if BASE.exists() else []
+        from .nucleo import achados_linhas             # 16/10: dos livros
+        regs = [json.loads(l) for l in achados_linhas()]
     agora = datetime.now(timezone.utc).isoformat(timespec="seconds")
     idx = {}
     if gravar and INDICE.exists():

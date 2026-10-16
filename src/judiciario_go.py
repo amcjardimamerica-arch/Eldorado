@@ -782,8 +782,10 @@ def fonte_d(cfg: dict, diag: dict) -> list[dict]:
     cnpjs = set((f.get("cnpjs") or {}).keys())
     rx = re.compile(f.get("orgao_regex") or r"$^")
     out = []
-    with DB.open(encoding="utf-8") as fh:
-        for linha in fh:
+    from .nucleo import _migrado, achados_linhas         # 16/10: dos livros depois da migração; antes, a base do módulo
+    _linhas = achados_linhas() if _migrado() else (DB.read_text(encoding="utf-8").splitlines() if DB.exists() else [])
+    if True:
+        for linha in _linhas:
             if '"pncp-api"' not in linha or not (any(c in linha for c in cnpjs) or rx.search(_N(linha[:4000]))):
                 continue
             try:

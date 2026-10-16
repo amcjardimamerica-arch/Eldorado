@@ -24,7 +24,8 @@ $('aiExport').onclick=()=>{const q=$('q').value.toLowerCase(),rows=opp.filter(x=
 
 def run() -> None:
     db = ROOT / "dados/oportunidades/oportunidades.jsonl"
-    opp = [json.loads(x) for x in db.read_text(encoding="utf-8").splitlines() if x.strip()] if db.exists() else []
+    from .nucleo import achados_linhas                 # 16/10: dos livros
+    opp = [json.loads(x) for x in achados_linhas()]
     execution = load_json(ROOT / "estado/ultima_execucao.json") if (ROOT / "estado/ultima_execucao.json").exists() else {}
     social = load_json(ROOT / "estado/verificacao_social.json") if (ROOT / "estado/verificacao_social.json").exists() else {}
     catalog = load_json(ROOT / "catalogo_captacao/catalogo_anexo.json")
