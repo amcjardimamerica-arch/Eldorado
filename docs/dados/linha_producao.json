@@ -1,13 +1,13 @@
 {
- "em": "2026-10-16T12:03:32+00:00",
+ "em": "2026-10-16T13:03:42+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 1748,
-  "oportunidades_distintas": 549,
+  "coletados": 1750,
+  "oportunidades_distintas": 551,
   "entidades_em_2_ou_mais_canais": 23,
   "etapas": {
-   "EM_LIVRO": 446,
-   "CONSOLIDADO": 1223,
+   "EM_LIVRO": 452,
+   "CONSOLIDADO": 1219,
    "REPROCESSAR": 57,
    "QUALIFICADO": 22
   },
@@ -179,9 +179,9 @@
   {
    "canal": "plataforma-wordpress",
    "familia": "outros",
-   "registros": 25,
-   "entidades": 23,
-   "exclusivas": 19,
+   "registros": 26,
+   "entidades": 24,
+   "exclusivas": 20,
    "corroboradas": 4,
    "validadas_como_reais": 1
   },
@@ -314,9 +314,9 @@
   {
    "canal": "empresas-editais-incentivados",
    "familia": "empresas",
-   "registros": 35,
-   "entidades": 30,
-   "exclusivas": 25,
+   "registros": 36,
+   "entidades": 31,
+   "exclusivas": 26,
    "corroboradas": 5,
    "validadas_como_reais": 0
   },
@@ -720,5 +720,5 @@
    ]
   }
  ],
- "eventos_no_livro_razao": 3
+ "eventos_no_livro_razao": 1
 }
