@@ -90,7 +90,7 @@ class TesteCicloEAplicacao(unittest.TestCase):
         self.assertEqual(CFG["motor"]["nome"], "llama.cpp"); self.assertLessEqual(CFG["motor"]["tamanho_mb"], 25)
         self.assertIn("prazo", CFG["validacao"]["trecho_literal_obrigatorio_para"])
         self.assertTrue((ROOT / "scripts/ia_local_instalar.py").exists())
-        self.assertTrue((ROOT / "biblioteca_alexandria/IA-LOCAL-ESTUDO-DO-CONSELHO-2026-09-20.md").exists())
+        self.assertTrue((ROOT / "biblioteca_alexandria/livros/_acervo/relatorios/IA-LOCAL-ESTUDO-DO-CONSELHO-2026-09-20.md").exists())
         self.assertIn("ia_local/", (ROOT / ".gitignore").read_text(encoding="utf-8"))
 
 

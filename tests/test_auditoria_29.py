@@ -76,7 +76,7 @@ class TesteAuditoriaDosMotores(unittest.TestCase):
         self.assertTrue(all(v.get("motivo") for v in f["itens"].values()))  # cada um com seu motivo
 
     def test_relatorio_tem_os_motores_um_por_um(self):
-        r = (ROOT / "biblioteca_alexandria/AUDITORIA-MOTORES-29-2026-09-22.md").read_text(encoding="utf-8")
+        r = (ROOT / "biblioteca_alexandria/livros/_acervo/relatorios/AUDITORIA-MOTORES-29-2026-09-22.md").read_text(encoding="utf-8")
         d = json.loads((ROOT / "docs/dados/auditoria_29.json").read_text(encoding="utf-8"))
         for f in d["fichas"]:
             self.assertIn(f"`{f['id']}`", r, f["id"])

@@ -406,7 +406,7 @@ def _novas_sem_referencia(mencoes: list[dict], fontes: list[dict]) -> list[dict]
     return novas[:60]
 
 
-MAPEADAS = ROOT / "dados/oportunidades_mapeadas.json"
+MAPEADAS = ROOT / "biblioteca_alexandria/livros/_vistas/oportunidades_mapeadas.json"
 
 
 def mapear_novas(novas: list[dict], fontes: list[dict]) -> list[dict]:

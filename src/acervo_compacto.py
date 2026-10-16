@@ -33,7 +33,7 @@ from pathlib import Path
 from .nucleo import ROOT, load_json, now_iso, write_json
 
 ACERVO = ROOT / "biblioteca_alexandria/acervo.sqlite"
-DICIONARIO = ROOT / "biblioteca_alexandria/acervo.zstd-dict"
+DICIONARIO = ROOT / "biblioteca_alexandria/livros/_acervo/banco/acervo.zstd-dict"
 
 try:
     import zstandard as zstd

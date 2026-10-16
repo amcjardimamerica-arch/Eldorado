@@ -8,7 +8,7 @@ o seu registro por completo." Começa pelo PNCP, de onde vem a maior parte do ru
    acolhimento fora de Goiás e das capitais). Dúvida (título curto, sem sinal claro) NÃO é apagada.
 2. REMOVE um registro (elemento de lista, entrada de dicionário, linha de JSONL, linha do banco) só quando TODAS as
    compras do PNCP que ele cita são inválidas — um livro com edições válidas e inválidas não se perde.
-3. Alcança: dados/, estado/, docs/dados/, biblioteca_alexandria/ (JSON e JSONL), o banco dados/eldorado.db, o catálogo
+3. Alcança: dados/, estado/, docs/dados/, biblioteca_alexandria/ (JSON e JSONL), o banco biblioteca_alexandria/livros/_acervo/banco/eldorado.db, o catálogo
    de livros e as PASTAS dos livros eliminados, e o registro de releitura (estado/achados_vistos.json).
 4. Simulação primeiro (--simular); a execução grava estado/expurgo/AAAA-MM-DD.json com o que saiu de cada lugar.
 """
@@ -260,7 +260,7 @@ def executar(simular: bool = True) -> dict:
                     shutil.rmtree(d)
     # banco
     banco = {}
-    db = ROOT / "dados/eldorado.db"
+    db = ROOT / "biblioteca_alexandria/livros/_acervo/banco/eldorado.db"
     if db.exists() and inval:
         con = sqlite3.connect(db)
         for (tab,) in con.execute("select name from sqlite_master where type='table'"):
