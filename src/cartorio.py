@@ -637,7 +637,9 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
     base = _ler_certidoes() or {}
     certs = base.get("certidoes") or {}
     # 10/10: CERTIDÕES DA REVISÃO HUMANA (Partes 1, 2 e 3) — incorporadas a cada execução; a revisão prevalece nos itens
-    for _k, _m in ((_j(PASTA / "certidoes_manuais.json", {}) or {}).get("certidoes") or {}).items():
+    # 16/10: as certidões manuais (resultado do Chrome) estão NOS LIVROS desde o lote 3 — lidas pelo motor (arquivo ou livro);
+    # a leitura direta do arquivo fazia o Cartório IGNORAR tudo o que vinha do Chrome
+    for _k, _m in ((__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(PASTA / "certidoes_manuais.json", {}) or {}).get("certidoes") or {}).items():
         _a = certs.get(_k) or {}
         _it = {**(_a.get("itens") or {}), **(_m.get("itens") or {})}
         certs[_k] = {**_a, **{k: v for k, v in _m.items() if v not in (None, [], {})}, "itens": _it,
@@ -919,3 +921,53 @@ if __name__ == "__main__":
     lim = int(a[a.index("--limite") + 1]) if "--limite" in a else None
     seg = int(a[a.index("--segundos") + 1]) if "--segundos" in a else None
     print(json.dumps(run(lim, seg), ensure_ascii=False, indent=1))
+
+
+
+# ── CARTÓRIO, PONTO CENTRAL DO QUE FALTA (titular, 16/10/2026) ─────────────────────────────────────────────────────────
+PENDENCIAS = ROOT / "docs/dados/cartorio_pendencias.json"
+
+
+def pendencias(gravar: bool = True, lote_chrome: bool = True) -> dict:
+    """Para cada oportunidade aberta: o que está CERTIFICADO (com o documento oficial) e o que FALTA, e o próximo passo
+    — Cartório na fonte ou Claude no Chrome. O lote do Chrome sai DAQUI (o mesmo universo do repositório)."""
+    from . import repositorio_unico as R
+    regs = (_j(R.SAIDA, {}) or {}).get("registros") or []
+    certs = (_ler_certidoes() or {}).get("certidoes") or {}
+    import re as _re
+
+    def _ao_chrome(r) -> bool:                       # parada na fonte: sem site oficial, 3+ tentativas, ou já na busca externa
+        p = str(r.get("proximo_passo") or "")
+        m = _re.search(r"abordagem (\d+) de", p)
+        return p.startswith("Busca externa") or "achar o site oficial" in p or bool(m and int(m.group(1)) >= 3)
+    chrome = {r["id"] for r in regs if r.get("estado") != "fechada" and r.get("faltam") and _ao_chrome(r)}
+    out = []
+    for r in regs:
+        if r.get("estado") == "fechada":
+            continue
+        it = r.get("itens") or {}
+        cert = {k: {"valor": (v.get("valor") or "")[:200], "documento": v.get("documento"), "trecho": (v.get("trecho") or "")[:200]}
+                for k, v in it.items() if isinstance(v, dict) and v.get("estado") in ("comprovado", "dispensado")}
+        c = certs.get(f"estrela:{r['id']}") or {}
+        out.append({"id": r["id"], "titulo": r.get("titulo"), "uf": r.get("uf"), "link_oficial": r.get("link_oficial"),
+                    "link_publicacao_referencia": r.get("url") if r.get("url") != r.get("link_oficial") else None,
+                    "documentos_oficiais": [d.get("url") for d in (c.get("documentos") or []) if isinstance(d, dict)][:8],
+                    "certificados": cert, "faltam": r.get("faltam") or [k for k in it if k not in cert],
+                    "proximo_passo": "Claude no Chrome" if r["id"] in chrome else "Cartório na fonte oficial",
+                    "selo": r.get("selo") or r.get("estado")})
+    out.sort(key=lambda x: (x["proximo_passo"] != "Claude no Chrome", -len(x["faltam"])))
+    res = {"em": _agora(), "regra": "o Cartório reúne o que falta em cada oportunidade; só documento oficial (link oficial, "
+           "anexos, registro oficial) certifica — o link de publicação é só referência; nada é suposto",
+           "abertas": len(out), "completas": sum(1 for x in out if not x["faltam"]),
+           "para_o_chrome": sum(1 for x in out if x["proximo_passo"] == "Claude no Chrome"), "oportunidades": out}
+    if gravar:
+        PENDENCIAS.parent.mkdir(parents=True, exist_ok=True)
+        PENDENCIAS.write_text(json.dumps(res, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        if lote_chrome:
+            try:
+                import subprocess, sys as _s
+                subprocess.run([_s.executable, str(ROOT / "scripts/gerar_lote_chrome.py")], cwd=ROOT, timeout=300,
+                               capture_output=True)
+            except Exception:  # noqa: BLE001
+                pass
+    return {k: v for k, v in res.items() if k != "oportunidades"}

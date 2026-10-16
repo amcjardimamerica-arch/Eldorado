@@ -14,7 +14,7 @@ class TesteEsquadraSemPerda(unittest.TestCase):
         def falso(s, *a, **k):
             return {"achados": [], "falhas": [], "saude": [], "lido_em": "2026-10-02T14:30:00+00:00", "diagnostico": {}}
         with mock.patch.dict(os.environ, {"MOTORES_BLOCO": "manual", "MOTORES_FONTES": "dou,pncp-api,do-goias", "SENSORES_PRAZO_S": "100"}), \
-             mock.patch.object(S, "ler", falso), mock.patch.object(S, "load_json", lambda p: est0 if str(p).endswith("esquadra.json") else json.load(open(p))), \
+             mock.patch.object(S, "ler", falso), mock.patch.object(S, "load_json", lambda p: est0 if str(p).endswith("esquadra.json") else __import__("src.nucleo", fromlist=["x"]).load_json(p)), \
              mock.patch.object(S, "write_json", lambda p, d: grav.append(str(p))), mock.patch.object(S, "registrar_dia", lambda *a, **k: None), \
              mock.patch.object(S, "append_jsonl", lambda *a, **k: None):
             r = S.run()

@@ -15,10 +15,13 @@ from src import repositorio_unico as R  # noqa: E402
 
 
 def gerar(tamanho: int = 150) -> dict:
-    fila = R.fila("Busca externa")
-    resumo = json.loads(R.RESUMO.read_text(encoding="utf-8")) if R.RESUMO.exists() else {}
-    if len(fila) != int(resumo.get("fila_chrome", -1)):
-        raise SystemExit(f"RECUSADO: a fila ({len(fila)}) não bate com o resumo do repositório ({resumo.get('fila_chrome')}). Reconstrua o repositório.")
+    # 16/10 (titular): o lote sai das PENDÊNCIAS DO CARTÓRIO (ponto central do que falta); o mesmo universo do repositório
+    pend = json.loads((ROOT / "docs/dados/cartorio_pendencias.json").read_text(encoding="utf-8"))
+    alvo = {o["id"] for o in pend.get("oportunidades") or [] if o.get("proximo_passo") == "Claude no Chrome"}
+    regs = (json.loads(R.SAIDA.read_text(encoding="utf-8")) if R.SAIDA.exists() else {}).get("registros") or []
+    fila = [x for x in regs if x["id"] in alvo]
+    if len(fila) != len(alvo):
+        raise SystemExit(f"RECUSADO: {len(alvo)} pendências para o Chrome, {len(fila)} no repositório. Reconstrua o repositório.")
     pasta = ROOT / "biblioteca_alexandria/livros/_acervo/revisoes/fila_chrome_atual"; pasta.mkdir(parents=True, exist_ok=True)
     for f in pasta.glob("lote_*.json"):
         f.unlink()

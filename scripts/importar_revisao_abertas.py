@@ -64,7 +64,28 @@ def ler_lotes(pasta: Path) -> dict:
     return regs
 
 
-def _item_ok(v) -> bool:
+# 16/10/2026 (titular): só DOCUMENTO OFICIAL certifica. O link de PUBLICAÇÃO (agregador, notícia, buscador, rede social,
+# indexador de diários) é só referência — item comprovado por ele é recusado.
+PUBLICACAO = re.compile(r"(?i)capitaai|captadores|prosas\.com|observatorio3setor|editaisdobrasil|queridodiario|google\.|bing\.|"
+                        r"duckduckgo|facebook\.|instagram\.|linkedin\.|twitter\.|x\.com|youtube\.|g1\.globo|uol\.com|"
+                        r"terra\.com|abcr\.org|gife\.org\.br/noticia|/noticia|/noticias/|/blog/")
+OFICIAL_PUBLICO = re.compile(r"(?i)\.(gov|leg|jus|mp|def|tc)\.br\b|pncp\.gov\.br")
+
+
+def _dom(u) -> str:
+    m = re.match(r"https?://([^/]+)", str(u or "")); return (m.group(1).lower().removeprefix("www.") if m else "")
+
+
+def documento_oficial(doc, link_oficial=None) -> bool:
+    if not str(doc or "").startswith("http") or PUBLICACAO.search(str(doc)):
+        return False
+    d, o = _dom(doc), _dom(link_oficial)
+    return bool(OFICIAL_PUBLICO.search(str(doc)) or (o and (d == o or d.endswith("." + o) or o.endswith("." + d))))
+
+
+def _item_ok(v, link_oficial=None) -> bool:
+    if isinstance(v, dict) and not documento_oficial(v.get("documento"), link_oficial or v.get("link_oficial")):
+        return False
     """Valor + trecho literal + documento; a PÁGINA é exigida só de PDF (página de site/HTML não tem número de página —
     a mesma regra do Cartório). 10/10: sem isso, itens certificados em páginas oficiais das Partes 2 e 3 eram ignorados."""
     if not (isinstance(v, dict) and all(str(v.get(k) or "").strip() for k in ("valor", "trecho", "documento"))):
@@ -79,7 +100,7 @@ def certidao_de(x: dict, origem: str) -> tuple[dict, list[str]]:
     for k, v in (x.get("itens") or {}).items():
         if k not in DOZE:
             avisos.append(f"{x['id']}: item fora dos 12 ignorado ({k})"); continue
-        if _item_ok(v):
+        if _item_ok(v, x.get("site_oficial") or x.get("link_documento")):
             itens[k] = {"valor": str(v["valor"]), "trecho": str(v["trecho"]), "pagina": v["pagina"],
                         "documento": v["documento"], "metodo": v.get("metodo") or "revisão manual (leitura do documento oficial)"}
         else:
@@ -238,5 +259,21 @@ def main(argv: list[str]) -> None:
                      ensure_ascii=False, indent=2))
 
 
+def atualizar_ja() -> dict:
+    """16/10 (titular): o resultado do Chrome aparece NA HORA — repositório, fluxo e pendências do Cartório refeitos."""
+    out = {}
+    for nome, f in (("repositorio", lambda: __import__("src.repositorio_unico", fromlist=["x"]).construir(gravar=True)),
+                    ("fluxo", lambda: __import__("src.fluxo_oportunidades", fromlist=["x"]).montar()),
+                    ("pendencias", lambda: __import__("src.cartorio", fromlist=["x"]).pendencias())):
+        try:
+            r = f(); out[nome] = "ok" if not isinstance(r, dict) else {k: v for k, v in r.items() if not isinstance(v, (list, dict))}
+        except Exception as e:  # noqa: BLE001
+            out[nome] = f"falhou: {e}"
+    return out
+
+
+
 if __name__ == "__main__":
     main(sys.argv[1:])
+    if "--verificar" not in sys.argv:
+        print(json.dumps({"atualizado_na_hora": atualizar_ja()}, ensure_ascii=False))
