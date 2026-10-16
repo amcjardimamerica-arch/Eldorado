@@ -3,8 +3,8 @@
 - Classe: `doadores`
 - Fonte: `petrobras`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 4
-- Distribuição por ano pesquisado/coletado: {'2025': 4}
+- Pistas aguardando confirmação: 2
+- Distribuição por ano pesquisado/coletado: {'2026': 2}
 
 ## Padrões
 
@@ -12,7 +12,5 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 ## Eventos e pistas
 
-- [Agência Petrobras de Notícias](https://agencia.petrobras.com.br/) — coletado em 2026-10-14T22:53:35+00:00
-- [Brazilian Energy | Petrobras](https://petrobras.com.br/en) — coletado em 2026-10-14T22:53:35+00:00
-- [United States of America (USA) | Petrobras](https://petrobras.com.br/usa) — coletado em 2026-10-14T22:53:35+00:00
-- [Petrobras News Agency - Agência](https://agencia.petrobras.com.br/en) — coletado em 2026-10-14T22:53:35+00:00
+- [Annual Report and Form 20-F 2023 - Petrobras](https://petrobras.com.br/documents/d/f3a44542-113e-11ee-be56-0242ac120002/form-20f-2023-en?download=true) — coletado em 2026-10-16T17:02:44+00:00
+- [ACORDO COLETIVO DE TRABALHO 2025-2027 - petrobras.com.br](https://petrobras.com.br/documents/d/f3a44542-113e-11ee-be56-0242ac120002/minuta-act-2025-2027ajustada-final-limpa?download=true) — coletado em 2026-10-16T17:02:44+00:00

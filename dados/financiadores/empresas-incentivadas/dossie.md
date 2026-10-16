@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `empresas-incentivadas`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 26
-- Distribuição por ano pesquisado/coletado: {'2026': 26}
+- Pistas aguardando confirmação: 20
+- Distribuição por ano pesquisado/coletado: {'2026': 20}
 
 ## Padrões
 
@@ -12,29 +12,10 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 ## Eventos e pistas
 
-- [Read More » Ifac abre 125 vagas para curso técnico gratuito em Secretaria Escolar na modalidade EaD](https://conectaprofessores.com/2026/10/11/ifac-abre-125-vagas-para-curso-tecnico-gratuito-em-secretaria-escolar-na-modalidade-ead) — coletado em 2026-10-14T05:51:16+00:00
-- [Read More » Instituto Federal oferece 7 cursos de pós-graduação gratuitos e on-line; veja como se inscrever](https://conectaprofessores.com/2026/10/14/instituto-federal-oferece-7-cursos-de-pos-graduacao-gratuitos-e-on-line-veja-como-se-inscrever) — coletado em 2026-10-15T06:18:29+00:00
-- [Termo de Fomento – FUMCAD](https://www.agenciadobem.org.br/termo-fomento-fumcad) — coletado em 2026-10-10T11:46:21+00:00
-- [banco para ONG
- (1)](https://institutosocialcrescervida.blogspot.com/search/label/banco%20para%20ONG) — coletado em 2026-10-10T11:46:10+00:00
-- [Instituto Assaí](https://www.institutoassai.org.br/?utm_source=assai&utm_medium=menu-principal) — coletado em 2026-10-10T11:46:31+00:00
-- [Fundação Aperam Acesita](https://brasil.aperam.com/sustentabilidade/social/fundacao-aperam-acesita) — coletado em 2026-10-10T11:46:52+00:00
-- [Suporte a projetos de Fomento](https://www.bancoamazonia.com.br/rural/orientacao-formento) — coletado em 2026-10-10T11:46:33+00:00
-- [Prêmio da Mega-Sena acumula e chega a R$ 170 milhões após concurso sem ganhador](https://extranewsgo.com.br/2026/10/14/premio-da-mega-sena-acumula-e-chega-a-r-170-milhoes-apos-concurso-sem-ganhador) — coletado em 2026-10-15T06:18:41+00:00
-- [ArcelorMittal transforma uniformes usados em 360 cobertores para instituições de João Monlevade e Bela Vista de Minas](https://brasil.arcelormittal.com/sala-imprensa/noticias/brasil/arcelormittal-transforma-uniformes-usados-em-360-cobertores-para-instituicoes-de-joao-monlevade-e-bela-vista-de-minas) — coletado em 2026-10-11T03:14:44+00:00
-- [Fomento a Amazônia](https://www.bancoamazonia.com.br/linhas-de-fomento/pronaf) — coletado em 2026-10-10T11:46:33+00:00
-- [IFPE abre 4.585 vagas em cursos técnicos e superiores gratuitos para 2027; veja como participar](https://conectaprofessores.com/2026/10/14/ifpe-abre-4-585-vagas-em-cursos-tecnicos-e-superiores-gratuitos-para-2027-veja-como-participar) — coletado em 2026-10-15T06:18:29+00:00
-- [IFAM oferece seleção para mestrado em Docência com 100 vagas; inscrições até 2 de novembro](https://conectaprofessores.com/2026/10/11/ifam-oferece-selecao-para-mestrado-em-docencia-com-100-vagas-inscricoes-ate-2-de-novembro) — coletado em 2026-10-14T05:51:16+00:00
-- [Parque Bondinho Pão de Açúcar® abre inscrições para o Edital 2026 de Seleção de Projetos Culturais](https://blog.bondinho.com.br/parque-bondinho-pao-de-acucar-abre-inscricoes-para-o-edital-2026-de-selecao-de-projetos-culturais) — coletado em 2026-10-10T11:46:48+00:00
-- [Instituto Assaí](https://www.institutoassai.org.br/) — coletado em 2026-10-10T11:46:31+00:00
-- [Crianças do Cariri criam jogo com universidade e conquistam três prêmios nacionais](https://boanoticiabrasil.com.br/cultura/jogo-imaginario-cariri-premios-criancas) — coletado em 2026-10-15T06:18:24+00:00
-- [Prêmios e Reconhecimentos](https://www.assai.com.br/premios-e-reconhecimentos) — coletado em 2026-10-10T11:46:31+00:00
-- [Termo de Fomento – Funarte](https://www.agenciadobem.org.br/termo-fomento-funarte) — coletado em 2026-10-10T11:46:21+00:00
-- [Instituto do inox](https://brasil.aperam.com/sustentabilidade/social/fundacao-aperam-acesita/instituto-do-inox) — coletado em 2026-10-10T11:46:52+00:00
-- [Novo edital da Anater/MDA destina recursos para agroecologia, juventude e povos tradicionais](https://www.anater.org/novo-edital-da-anater-mda-destina-recursos-para-agroecologia-juventude-e-povos-tradicionais) — coletado em 2026-10-10T11:46:29+00:00
-- [Prêmios e reconhecimentos](https://brasil.arcelormittal.com/arcelormittal-brasil/premios-reconhecimentos) — coletado em 2026-10-10T11:46:53+00:00
-- [Edital BNDES de Cinema](https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/cultura-e-economia-criativa/selecao-de-projetos-cinematograficos/selecao-publica-projetos-cinematograficos/!ut/p/z0/jU49b8IwEP0tDBmtsxBCMEYIhNpQEOqQekEXY8LRxBfsM23_fd0OjIjtPb1PMFCD8XijFoXYY5f5h5keqvnrcj3Z6mq7X890WS2q991qpndvU3gB89iQG-hyvZoSjGUv7lugbvzRxQP5KCTJ_i8V-sy9KzRnSaEk7DkW2qZOUkDlcpR7QmUD5Ws3LHR0nbPId6CG1HRkUQ2BL044Kkve9SjcBjyR5fh3ZRw2i00LZkA5K_Inhvr5_PBpmp-vcvQL4WAY2g!!) — coletado em 2026-09-04T20:59:14+00:00
 - [Atos Normativos Planejamento abre crédito suplementar de R$ 8,77 bilhões, com R$ 5,75 bilhões para programas do BNDES](https://atlaspublico.com.br/noticias/planejamento-abre-credito-suplementar-de-rs-8-77-bilhoes-92443) — coletado em 2026-10-15T06:18:19+00:00
+- [ArcelorMittal transforma uniformes usados em 360 cobertores para instituições de João Monlevade e Bela Vista de Minas](https://brasil.arcelormittal.com/sala-imprensa/noticias/brasil/arcelormittal-transforma-uniformes-usados-em-360-cobertores-para-instituicoes-de-joao-monlevade-e-bela-vista-de-minas) — coletado em 2026-10-11T03:14:44+00:00
+- [Novo edital da Anater/MDA destina recursos para agroecologia, juventude e povos tradicionais](https://www.anater.org/novo-edital-da-anater-mda-destina-recursos-para-agroecologia-juventude-e-povos-tradicionais) — coletado em 2026-10-10T11:46:29+00:00
+- [Desafio UNAIDS](https://unaids.org.br/desafiounaids) — coletado em 2026-10-12T00:37:46+00:00
 - [PRÊMIO BOAS PRÁTICAS NA MINERAÇÃO DO BRASIL - 7ª EDIÇÃO 
                          
                          
@@ -44,6 +25,18 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
                              
                                  20 de Outubro 
                    ](https://ibram-eventos.com.br/event-landing-page/207/pt) — coletado em 2026-10-12T00:37:45+00:00
-- [ArcelorMittal abre inscrições para edital inédito de apoio a projetos de Associações de Moradores de São Francisco do Sul](https://brasil.arcelormittal.com/sala-imprensa/noticias/vega/arcelormittal-abre-inscricoes-para-edital-inedito-de-apoio-a-projetos-de-associacoes-de-moradores-de-sao-francisco-do-sul) — coletado em 2026-10-10T11:46:53+00:00
+- [IFAM oferece seleção para mestrado em Docência com 100 vagas; inscrições até 2 de novembro](https://conectaprofessores.com/2026/10/11/ifam-oferece-selecao-para-mestrado-em-docencia-com-100-vagas-inscricoes-ate-2-de-novembro) — coletado em 2026-10-14T05:51:16+00:00
+- [Read More » Ifac abre 125 vagas para curso técnico gratuito em Secretaria Escolar na modalidade EaD](https://conectaprofessores.com/2026/10/11/ifac-abre-125-vagas-para-curso-tecnico-gratuito-em-secretaria-escolar-na-modalidade-ead) — coletado em 2026-10-14T05:51:16+00:00
+- [Crianças do Cariri criam jogo com universidade e conquistam três prêmios nacionais](https://boanoticiabrasil.com.br/cultura/jogo-imaginario-cariri-premios-criancas) — coletado em 2026-10-15T06:18:24+00:00
+- [IFPE abre 4.585 vagas em cursos técnicos e superiores gratuitos para 2027; veja como participar](https://conectaprofessores.com/2026/10/14/ifpe-abre-4-585-vagas-em-cursos-tecnicos-e-superiores-gratuitos-para-2027-veja-como-participar) — coletado em 2026-10-15T06:18:29+00:00
+- [Read More » Instituto Federal oferece 7 cursos de pós-graduação gratuitos e on-line; veja como se inscrever](https://conectaprofessores.com/2026/10/14/instituto-federal-oferece-7-cursos-de-pos-graduacao-gratuitos-e-on-line-veja-como-se-inscrever) — coletado em 2026-10-15T06:18:29+00:00
+- [Prêmio da Mega-Sena acumula e chega a R$ 170 milhões após concurso sem ganhador](https://extranewsgo.com.br/2026/10/14/premio-da-mega-sena-acumula-e-chega-a-r-170-milhoes-apos-concurso-sem-ganhador) — coletado em 2026-10-15T06:18:41+00:00
 - [Fomento · 16 de out Secretaria de Fomento do MinC homologa 110 projetos da Lei Rouanet, com captação autorizada de até R$ 206,5 milhões A Secretaria de Fomento e Incentivo à Cultura, do Ministério da Cultura, homologou 110 projetos culturais e audiovisuais por meio da Portaria SEFIC/MINC nº 702, ass](https://atlaspublico.com.br/noticias/secretaria-de-fomento-do-minc-homologa-110-projetos-da-lei-92728) — coletado em 2026-10-16T05:22:38+00:00
-- [Desafio UNAIDS](https://unaids.org.br/desafiounaids) — coletado em 2026-10-12T00:37:46+00:00
+- [Termo de Fomento – FUMCAD](https://www.agenciadobem.org.br/termo-fomento-fumcad) — coletado em 2026-10-10T11:46:21+00:00
+- [Suporte a projetos de Fomento](https://www.bancoamazonia.com.br/rural/orientacao-formento) — coletado em 2026-10-10T11:46:33+00:00
+- [Fomento a Amazônia](https://www.bancoamazonia.com.br/linhas-de-fomento/pronaf) — coletado em 2026-10-10T11:46:33+00:00
+- [Parque Bondinho Pão de Açúcar® abre inscrições para o Edital 2026 de Seleção de Projetos Culturais](https://blog.bondinho.com.br/parque-bondinho-pao-de-acucar-abre-inscricoes-para-o-edital-2026-de-selecao-de-projetos-culturais) — coletado em 2026-10-10T11:46:48+00:00
+- [Prêmios e Reconhecimentos](https://www.assai.com.br/premios-e-reconhecimentos) — coletado em 2026-10-10T11:46:31+00:00
+- [Termo de Fomento – Funarte](https://www.agenciadobem.org.br/termo-fomento-funarte) — coletado em 2026-10-10T11:46:21+00:00
+- [Edital BNDES de Cinema](https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/cultura-e-economia-criativa/selecao-de-projetos-cinematograficos/selecao-publica-projetos-cinematograficos/!ut/p/z0/jU49b8IwEP0tDBmtsxBCMEYIhNpQEOqQekEXY8LRxBfsM23_fd0OjIjtPb1PMFCD8XijFoXYY5f5h5keqvnrcj3Z6mq7X890WS2q991qpndvU3gB89iQG-hyvZoSjGUv7lugbvzRxQP5KCTJ_i8V-sy9KzRnSaEk7DkW2qZOUkDlcpR7QmUD5Ws3LHR0nbPId6CG1HRkUQ2BL044Kkve9SjcBjyR5fh3ZRw2i00LZkA5K_Inhvr5_PBpmp-vcvQL4WAY2g!!) — coletado em 2026-09-04T20:59:14+00:00
+- [ArcelorMittal abre inscrições para edital inédito de apoio a projetos de Associações de Moradores de São Francisco do Sul](https://brasil.arcelormittal.com/sala-imprensa/noticias/vega/arcelormittal-abre-inscricoes-para-edital-inedito-de-apoio-a-projetos-de-associacoes-de-moradores-de-sao-francisco-do-sul) — coletado em 2026-10-10T11:46:53+00:00
