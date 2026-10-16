@@ -71,10 +71,10 @@ def _estado_do_banco() -> dict:
 
 
 def anteriores(n: int = LIMITE_HISTORICO) -> list[dict]:
-    if not PASTA.exists():
-        return []
-    arqs = sorted(PASTA.glob("*.json"), reverse=True)[:n]
-    return [load_json(a) for a in arqs]
+    # 16/10/2026 (titular): os briefings vivem NOS LIVROS (cada alvo no livro da sua oportunidade)
+    from . import livro_arquivo as LA
+    arqs = sorted(LA.arquivos_de(PASTA), reverse=True)[:n]
+    return [LA.carregar(a, {}) or {} for a in arqs]
 
 
 def _resumo_dos_anteriores(hist: list[dict]) -> list[str]:
@@ -177,7 +177,7 @@ def escrever(ia, motor_cfg: dict | None = None) -> dict:
         '"pergunta_de_pesquisa": "a pergunta que orienta o voo", '
         '"o_que_procurar": ["site oficial", "..."], "nivel": "regional|estadual|nacional|internacional"}')
 
-    b = {"em": now_iso(), "voo": len(list(PASTA.glob("*.json"))) + 1 if PASTA.exists() else 1,
+    b = {"em": now_iso(), "voo": len(__import__("src.livro_arquivo", fromlist=["x"]).arquivos_de(PASTA)) + 1,
          "banco": banco,
          "diagnostico": (r or {}).get("diagnostico"),
          "aposta": (r or {}).get("aposta") or {},
@@ -217,10 +217,10 @@ def escrever(ia, motor_cfg: dict | None = None) -> dict:
         _registrar_mudez(True)
     else:
         _registrar_mudez(False)
-    PASTA.mkdir(parents=True, exist_ok=True)
     # o carimbo vai ao milissegundo: dois briefings no mesmo segundo colidiam no mesmo
     # arquivo, e o histórico deixava de crescer — a rede de segurança repetia o rumo
-    write_json(PASTA / f"{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S-%f')}.json", b)
+    from . import livro_arquivo as LA                    # 16/10: grava NO LIVRO (o arquivo não fica)
+    LA.guardar(PASTA / f"{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S-%f')}.json", b)
     return b
 
 
@@ -232,16 +232,17 @@ def fechar(briefing: dict, achados: list[dict], abertas: int = 0, arquivadas: in
                                         "prazo": a.get("prazo"), "situacao": a.get("situacao"),
                                         "territorio": a.get("territorio"), "novo": a.get("novo")} for a in achados[:12]],   # 08/10
                              "fechado_em": now_iso()}
-    arqs = sorted(PASTA.glob("*.json"), reverse=True) if PASTA.exists() else []
+    from . import livro_arquivo as LA                    # 16/10: no livro
+    arqs = sorted(LA.arquivos_de(PASTA), reverse=True)
     if arqs:
-        write_json(arqs[0], briefing)
+        LA.guardar(ROOT / arqs[0], briefing)
     publicar()
     return briefing
 
 
 def publicar() -> dict:
     hist = anteriores(12)
-    saida = {"em": now_iso(), "total": len(list(PASTA.glob("*.json"))) if PASTA.exists() else 0,
+    saida = {"em": now_iso(), "total": len(__import__("src.livro_arquivo", fromlist=["x"]).arquivos_de(PASTA)),
              "voos": [{"em": b.get("em", "")[:16], "diagnostico": b.get("diagnostico"),
                        "aposta": b.get("aposta"), "pergunta": b.get("pergunta_de_pesquisa"),
                        "nivel": b.get("nivel"), "resultado": b.get("resultado")} for b in hist]}
