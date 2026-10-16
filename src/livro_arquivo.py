@@ -223,6 +223,7 @@ def absorver(caminhos: list, gravar_: bool = True, apagar: bool = True, controle
                 if lid:
                     ent.append([lid, f"{cam}|{k}", k])
             reg["conteineres"][cam] = {"forma": forma, "entradas": ent}
+        reg["gravado_em"] = _agora()
         origens[rel] = reg
         arquivos.append(p)
     if gravar_:
@@ -296,7 +297,8 @@ def guardar(caminho, obj, controle_sem_livro: bool = False) -> dict:
 
 # ── TRAVA: pastas cujo conteúdo só pode existir DENTRO dos livros ───────────────────────────────────────────────────
 PROIBIDOS = ["estado/piloto/briefings",          # cresce a cada lote absorvido (16/10/2026)
-             "dados/oportunidades/pareceres_livros", "dados/coleta_3_anos"]   # lote 2
+             "dados/oportunidades/pareceres_livros", "dados/coleta_3_anos",   # lote 2
+             "estado/cartorio/certidoes.json", "estado/cartorio/certidoes_manuais.json"]   # lote 3
 
 
 def absorver_proibidos() -> dict:
@@ -344,3 +346,15 @@ def guardar_lote(itens: list) -> dict:
         caminho = Path(caminho); caminho.parent.mkdir(parents=True, exist_ok=True)
         caminho.write_text(json.dumps(obj, ensure_ascii=False), encoding="utf-8"); caminhos.append(caminho)
     return absorver(caminhos) if caminhos else {"arquivos": 0}
+
+
+def idade_h(caminho) -> float:
+    """Horas desde a última gravação do 'arquivo' antigo — em disco (mtime) ou nos livros (controle)."""
+    import time
+    p = Path(caminho)
+    if p.exists():
+        return (time.time() - p.stat().st_mtime) / 3600
+    g = ((_j(ORIGENS, {}) or {}).get(_rel(p)) or {}).get("gravado_em")
+    if not g:
+        return 10 ** 6
+    return (datetime.now(timezone.utc) - datetime.fromisoformat(g)).total_seconds() / 3600

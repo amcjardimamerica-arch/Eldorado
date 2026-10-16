@@ -140,7 +140,7 @@ def curar(r: dict, cert: dict | None, agora: datetime) -> dict:
 def run() -> dict:
     agora = datetime.now(timezone.utc).replace(microsecond=0)
     regs = (_j(REPO, {}) or {}).get("registros") or []
-    certs = (_j(CERT, {}) or {}).get("certidoes") or {}
+    certs = (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(CERT, {}) or {}).get("certidoes") or {}
     por_id: dict = {}
     for k, c in certs.items():
         por_id[str(k).split(":", 1)[-1]] = c

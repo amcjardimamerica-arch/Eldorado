@@ -149,7 +149,7 @@ def decisoes(P: list, problema) -> list[dict]:
     conf("site_oficial", "link oficial gravado no repositório", "agregador ou replicador nunca é link oficial", agreg, sum(1 for r in ab if r.get("link_oficial")),
          "buscar a fonte oficial (resolvedor e Cartório)")
 
-    C = (_j(ROOT / "estado/cartorio/certidoes.json").get("certidoes") or {})
+    C = (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/cartorio/certidoes.json", {}).get("certidoes") or {})
     sem_prova = []
     for k, c in C.items():
         for item, v in (c.get("itens") or {}).items():

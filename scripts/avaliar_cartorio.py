@@ -46,7 +46,7 @@ RESULTADO = PASTA / "resultado.json"
 HISTORICO = PASTA / "historico.json"
 RELATORIOS = ROOT / "docs/relatorios"
 
-TEXTUAIS = ("Objeto", "Requisitos", "Destinação")
+TEXTUAIS = ("Objeto", "Requisitos", "Modalidade")
 STOP = set("para pela pelo pelas pelos como mais seus suas esta este essa esse entre sobre todos todas cada desde "
            "serao sera deverao devera poderao podera com sem que dos das nos nas uma umas uns por qual quais "
            "edital chamamento publico publica presente".split())
@@ -277,7 +277,7 @@ def medir(com_gabarito_orgao: bool = False, gravar: bool = True, rotulo: str = "
             chaves = L.chaves_orgao((r or {}).get("url") or c["url"], c["orgao"])
             for kk, v in L.aplicar_gabarito(pgs, C.ancoras_do_orgao(gab_org, chaves), r["url"], set(ex["pontos"])).items():
                 ex["pontos"][kk] = v
-        ex_mod[k] = ex["pontos"].get("Destinação") or {}
+        ex_mod[k] = ex["pontos"].get("Modalidade") or {}
         T = L.Texto(pgs) if ok else None
         doc = compacto(T.t) if T else ("", [])
         res = {}
@@ -286,7 +286,7 @@ def medir(com_gabarito_orgao: bool = False, gravar: bool = True, rotulo: str = "
             e, ed = ex["pontos"].get(item), ex["dispensas"].get(item)
             if not g and not gd:
                 continue
-            if item == "Destinação":   # 15/10: virou MODALIDADE; o gabarito de 10–11/10 registrou a finalidade → sem régua ainda
+            if item == "Modalidade":   # 15/10: virou MODALIDADE; o gabarito de 10–11/10 registrou a finalidade → sem régua ainda
                 continue
             if not ok:
                 cl = "sem_texto"

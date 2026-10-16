@@ -63,7 +63,7 @@ def receber() -> dict:
     for c in (_j(ROOT / "estado/piloto/candidatas_do_catalogo.json", {}).get("candidatas") or []):
         if str(c.get("origem") or "").startswith("Piloto - Espião (privado"):
             pôr(c.get("url"), "Espião (privado/internacional)", 1)
-    for c in ((_j(ROOT / "estado/cartorio/certidoes.json", {}).get("certidoes") or {}).values()):
+    for c in ((__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/cartorio/certidoes.json", {}).get("certidoes") or {}).values()):
         if c.get("link_oficial"):
             pôr(c["link_oficial"], "Cartório (site oficial certificado)", 1)
     out = {"em": datetime.now(timezone.utc).replace(microsecond=0).isoformat(), "regra": (__doc__ or "").split("\n\n")[1],

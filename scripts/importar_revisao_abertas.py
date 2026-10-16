@@ -125,7 +125,8 @@ def importar(pasta: Path, origem: str, gravar: bool = True, externa: bool = Fals
         raise SystemExit(f"nenhum resultado_ABERTAS_*.json em {pasta}")
     ver = json.loads(VEREDITOS.read_text(encoding="utf-8")) if VEREDITOS.exists() else {"vereditos": {}}
     der = json.loads(DERIVADAS.read_text(encoding="utf-8")) if DERIVADAS.exists() else {"derivadas": {}}
-    base = json.loads(CERTIDOES.read_text(encoding="utf-8")) if CERTIDOES.exists() else {"certidoes": {}}
+    sys.path.insert(0, str(ROOT)); from src import livro_arquivo as _LA
+    base = _LA.ler_arquivo(CERTIDOES, None) or {"certidoes": {}}
     certs = base.setdefault("certidoes", {})
     avisos, n_cert, n_ver, n_der, selos = [], 0, 0, 0, {}
     for rid, x in regs.items():
@@ -179,7 +180,7 @@ def importar(pasta: Path, origem: str, gravar: bool = True, externa: bool = Fals
         DERIVADAS.write_text(json.dumps(der, ensure_ascii=False, indent=1), encoding="utf-8")
         CERTIDOES.parent.mkdir(parents=True, exist_ok=True)
         base["em"] = _agora()
-        CERTIDOES.write_text(json.dumps(base, ensure_ascii=False, indent=1), encoding="utf-8")
+        _LA.guardar_lote([(CERTIDOES, base)])                    # 16/10: no livro
     return rel
 
 

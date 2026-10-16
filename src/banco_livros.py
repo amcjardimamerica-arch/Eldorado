@@ -89,7 +89,7 @@ def consolidar(gravar: bool = True) -> dict:
         for k in _chaves_do_livro(lv):
             idx.setdefault(k, lv.get("id"))
     regs = (_j(ROOT / "dados/oportunidades/repositorio_unico.json", {}) or {}).get("registros") or []
-    certs = {str(k).split(":", 1)[-1]: c for k, c in ((_j(ROOT / "estado/cartorio/certidoes.json", {}) or {}).get("certidoes") or {}).items()}
+    certs = {str(k).split(":", 1)[-1]: c for k, c in ((__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/cartorio/certidoes.json", {}) or {}).get("certidoes") or {}).items()}
     cur = {x.get("id"): x for x in (_j(ROOT / "estado/curadoria_links.json", {}) or {}).get("itens") or []}
     dos = (_j(ROOT / "estado/pncp/dossies.json", {}) or {}).get("dossies") or {}
     inter = (_j(ROOT / "estado/interceptador/estado.json", {}) or {}).get("feitos") or {}
@@ -590,12 +590,13 @@ def revisar_modalidade_nos_livros(gravar: bool = True) -> dict:
     certs = {}
     for nome in ("certidoes.json", "certidoes_manuais.json"):
         p = ROOT / "estado/cartorio" / nome
-        if p.exists():
-            certs[p] = _j(p, {}); andar(certs[p])
+        d_ = __import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(p, None)
+        if d_:
+            certs[p] = d_; andar(certs[p])
     if gravar:
         CAT.write_text(json.dumps(cat_doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-        for p, d in certs.items():
-            p.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
+        if certs:
+            __import__("src.livro_arquivo", fromlist=["x"]).guardar_lote(list(certs.items()))
     return dict(res)
 
 

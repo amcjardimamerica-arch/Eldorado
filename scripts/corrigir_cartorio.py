@@ -31,7 +31,7 @@ from pathlib import Path
 
 MARCA = "CARTORIO-12-PONTOS-V1"
 DOZE = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador",
-        "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação"]
+        "Território", "Esfera", "Requisitos", "Anexos", "Modalidade", "Área de atuação"]
 
 # (antigo, novo) — cada antigo é um trecho EXATO da página publicada em 10/10/2026.
 JS_COB = (
