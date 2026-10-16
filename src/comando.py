@@ -228,7 +228,7 @@ def fases(ctx: dict) -> list[dict]:
          "t": 900, "pular": "já feita" if (ROOT / "estado/livros_migracao.json").exists() else None},
         # 5c' PNCP — dossiê integrado (portões + metadados + arquivos + site de origem → 12/12 ou descarte justificado)
         {"etapa": "pncp", "finalidade": "dossiê do PNCP: 12 de 12 com informação confirmada ou descarte justificado; o que faltar vai ao Interceptador",
-         "cmds": [[py, "-m", "src.pncp_dossie", "60"]], "t": 1300, "pular": None},
+         "cmds": [[py, "-m", "src.pncp_dossie", "25", "780"]], "t": 1100, "pular": None},   # 16/10: estourava 1.300 s (código 124)
         # 5d EXTRAIR E CERTIFICAR — o Cartório lê o documento e extrai o trecho de cada um dos 12 itens
         {"etapa": "certificar", "finalidade": "trecho literal e página de cada um dos 12 itens no documento oficial (Cartório)",
          "cmds": [[py, "-m", "src.cartorio", "--limite", "40", "--segundos", "1200"]], "t": 1350, "pular": None},   # 15/10: 20 → 40 por passagem

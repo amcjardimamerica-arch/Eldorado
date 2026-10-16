@@ -1805,6 +1805,11 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
         campos_a = ["id", "titulo", "url", "fonte_nome", "orgao", "uf", "nivel", "area", "fim", "prazo_texto",
                     "valor_texto", "coletado_em", "campanha", "campanha_dia", "pertinencia", "situacao", "objeto", "confirmacao",
                     "tipo_registro", "motivo_tipo", "selo_validacao", "validacao"]
+        try:                                           # 16/10/2026 (titular): outros estados, só estaduais e capitais
+            from .repositorio_unico import municipal_fora_de_goias as _fora
+            abertas = [e for e in abertas if not _fora(e)]
+        except Exception:  # noqa: BLE001
+            pass
         pac_a = compactar(abertas, campos_a)
         pac_a["total"] = len(abertas)
         _grava_se_mudou(pasta / "abertas.json", pac_a, separators=(",", ":"))

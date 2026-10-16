@@ -130,7 +130,7 @@ def ordem_dos_arquivos(lista: list[dict]) -> list[dict]:
     return sorted([a for a in lista if isinstance(a, dict) and a.get("statusAtivo") is not False], key=peso)
 
 
-def dossie(r: dict, rede, hoje: str, max_arquivos: int = 6) -> dict:
+def dossie(r: dict, rede, hoje: str, max_arquivos: int = 6, prazo: float | None = None) -> dict:
     url = r.get("link_oficial") if L.url_meta_pncp(r.get("link_oficial")) else r.get("url")
     api = L.url_meta_pncp(url) or L.url_meta_pncp(r.get("url"))
     out = {"id": r["id"], "titulo": r.get("titulo"), "api": api, "em": _agora(), "fontes": []}
@@ -154,6 +154,9 @@ def dossie(r: dict, rede, hoje: str, max_arquivos: int = 6) -> dict:
     titulo, orgao = str(r.get("titulo") or ""), str(r.get("orgao") or "")
     for a in arquivos[:max_arquivos]:
         if len(ex["pontos"]) + len(ex["dispensas"]) >= len(DOZE):
+            break
+        if prazo and time.time() > prazo:               # 16/10: o relógio também entre os arquivos (a fase estourava)
+            out["fontes"].append({"fonte": "arquivos restantes", "erro": "tempo da passagem esgotado — continua na próxima"})
             break
         au = str(a.get("url") or a.get("uri") or "")
         raw, tipo, err = rede.get(au) if au else (None, "", "sem endereço")
@@ -227,7 +230,7 @@ def run(limite: int = 60, segundos: int = 1200) -> dict:
             break
         if (ant.get(r["id"]) or {}).get("status") == "completo":
             continue
-        d = dossie(r, rede, hoje)
+        d = dossie(r, rede, hoje, prazo=t0 + segundos)
         ant[r["id"]] = d; feitos += 1
         gravar_certidao(certs, d)
     from collections import Counter
@@ -245,4 +248,4 @@ def run(limite: int = 60, segundos: int = 1200) -> dict:
 
 if __name__ == "__main__":
     import sys
-    print(json.dumps(run(int(sys.argv[1]) if len(sys.argv) > 1 else 60), ensure_ascii=False))
+    print(json.dumps(run(int(sys.argv[1]) if len(sys.argv) > 1 else 60, int(sys.argv[2]) if len(sys.argv) > 2 else 1200), ensure_ascii=False))
