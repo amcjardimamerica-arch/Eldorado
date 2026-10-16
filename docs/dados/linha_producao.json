@@ -1,15 +1,15 @@
 {
- "em": "2026-10-15T23:02:56+00:00",
+ "em": "2026-10-15T23:59:23+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 18674,
-  "oportunidades_distintas": 2776,
-  "entidades_em_2_ou_mais_canais": 20,
+  "coletados": 18683,
+  "oportunidades_distintas": 2783,
+  "entidades_em_2_ou_mais_canais": 22,
   "etapas": {
-   "CONSOLIDADO": 18106,
-   "EM_LIVRO": 462,
+   "CONSOLIDADO": 18107,
+   "EM_LIVRO": 468,
    "REPROCESSAR": 82,
-   "QUALIFICADO": 24
+   "QUALIFICADO": 26
   },
   "fila_de_reprocessamento": {
    "URL de buscador (falta o site oficial)": 63,
@@ -209,10 +209,10 @@
   {
    "canal": "plataforma-wordpress",
    "familia": "outros",
-   "registros": 8,
-   "entidades": 8,
-   "exclusivas": 7,
-   "corroboradas": 1,
+   "registros": 17,
+   "entidades": 17,
+   "exclusivas": 14,
+   "corroboradas": 3,
    "validadas_como_reais": 1
   },
   {
@@ -220,8 +220,8 @@
    "familia": "portal_chamamentos",
    "registros": 13,
    "entidades": 6,
-   "exclusivas": 5,
-   "corroboradas": 1,
+   "exclusivas": 3,
+   "corroboradas": 3,
    "validadas_como_reais": 1
   },
   {
@@ -699,6 +699,13 @@
    ]
   },
   {
+   "entidade": "8cb6616b906acf12d56c",
+   "canais": [
+    "plataforma-wordpress",
+    "prefeituras-50-go"
+   ]
+  },
+  {
    "entidade": "97292f2d3c686703e79e",
    "canais": [
     "abcr",
@@ -717,6 +724,13 @@
    "canais": [
     "do-goias",
     "estaduais-go-gov"
+   ]
+  },
+  {
+   "entidade": "172778273259e0e773ad",
+   "canais": [
+    "plataforma-wordpress",
+    "prefeituras-50-go"
    ]
   }
  ],
