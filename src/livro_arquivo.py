@@ -140,6 +140,10 @@ def _eh_registro(v) -> bool:
     return isinstance(v, dict) and any(k in v for k in REG)
 
 
+_IDX_ATUAL: dict = {}
+DESCARTES: list = []                                     # (arquivo, caminho, chave, registro) descartados na última absorção
+
+
 def _eh_conteiner(v) -> bool:
     """Lista de registros, ou dicionário cujas chaves são links/ids e os valores são dicionários."""
     if isinstance(v, list) and v:
@@ -148,8 +152,10 @@ def _eh_conteiner(v) -> bool:
         ks = list(v)
         chaves_id = sum(1 for k in ks if isinstance(k, str) and (k.startswith("http") or re.fullmatch(r"[\w.:-]{6,80}", k) and not k.islower()
                                                               or re.fullmatch(r"(?:op|cat|agr|lv|estrela|livro)[-:][\w-]+|[0-9a-f]{12,40}", str(k))))
-        dicts = sum(1 for x in v.values() if isinstance(x, dict))
-        return dicts >= max(1, len(v) // 2) and chaves_id >= max(1, len(v) // 2)
+        dicts = sum(1 for x in v.values() if isinstance(x, (dict, list)))
+        # 16/10: a chave É um livro (ou oportunidade/link conhecido)? — 'captacao-118' não tem formato de id, mas é livro
+        conhecidas = sum(1 for k in ks if isinstance(k, str) and (k in _IDX_ATUAL or (k.startswith("http") and chave({"url": k}) in _IDX_ATUAL)))
+        return dicts >= max(1, len(v) // 2) and max(chaves_id, conhecidas) >= max(1, len(v) // 2)
     return False
 
 
@@ -173,6 +179,7 @@ def absorver(caminhos: list, gravar_: bool = True, apagar: bool = True, controle
     CONTROLE (_origens), não nos livros nem descartada — é memória operacional, não dado de oportunidade."""
     from .banco_livros import _novo_livro
     idx = indice()
+    _IDX_ATUAL.clear(); _IDX_ATUAL.update(idx)
     cat = _j(CAT, {"motores": []}); L = cat.setdefault("motores", [])
     origens = _j(ORIGENS, {})
     livros: dict = {}
@@ -184,7 +191,8 @@ def absorver(caminhos: list, gravar_: bool = True, apagar: bool = True, controle
         if not lid and _oportunidade_vigente(v):            # oportunidade sem livro: ganha livro
             lv = _novo_livro(v, chave(v)); L.append(lv); idx[chave(v)] = lv["id"]; lid = lv["id"]; criados += 1
         if not lid:
-            st["descartadas (não ligam e não são oportunidade vigente)"] += 1; return None
+            st["descartadas (não ligam e não são oportunidade vigente)"] += 1
+            DESCARTES.append((rel, cam, k, v)); return None
         d = livros.setdefault(lid, ler(lid))
         d.setdefault("acervo", {}).setdefault(rel, {})[f"{cam}|{k}"] = {"dado": v, "absorvido_em": _agora()}
         st["absorvidas"] += 1
@@ -285,7 +293,8 @@ def guardar(caminho, obj, controle_sem_livro: bool = False) -> dict:
 
 
 # ── TRAVA: pastas cujo conteúdo só pode existir DENTRO dos livros ───────────────────────────────────────────────────
-PROIBIDOS = ["estado/piloto/briefings"]          # cresce a cada lote absorvido (16/10/2026)
+PROIBIDOS = ["estado/piloto/briefings",          # cresce a cada lote absorvido (16/10/2026)
+             "dados/oportunidades/pareceres_livros", "dados/coleta_3_anos"]   # lote 2
 
 
 def absorver_proibidos() -> dict:
@@ -303,3 +312,33 @@ def proibido(rel: str) -> bool:
     if FAROL.search(rel):
         return False                                       # o Farol nunca é proibido (fora da regra)
     return any(rel == g or rel.startswith(g.rstrip("/") + "/") for g in PROIBIDOS)
+
+
+# ── transição: módulos antigos leem e gravam pelos livros (16/10/2026) ──────────────────────────────────────────────
+def ler_arquivo(caminho, padrao=None):
+    """Lê o 'arquivo' antigo: em disco enquanto não foi absorvido; depois, montado a partir dos livros."""
+    p = Path(caminho)
+    if p.is_file():
+        try:
+            return json.loads(p.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            return padrao
+    return carregar(p, padrao)
+
+
+def arquivos(pasta, padrao: str = "*.json") -> list[Path]:
+    """Os 'arquivos' de uma pasta: os ainda em disco + os que já estão nos livros (para quem fazia glob)."""
+    import fnmatch
+    pasta = Path(pasta)
+    fis = {_rel(p) for p in pasta.glob(padrao)} if pasta.is_dir() else set()
+    nos_livros = {r for r in arquivos_de(pasta) if fnmatch.fnmatch(Path(r).name, padrao) and "/" not in r[len(_rel(pasta)) + 1:]}
+    return [ROOT / r for r in sorted(fis | nos_livros)]
+
+
+def guardar_lote(itens: list) -> dict:
+    """Grava vários 'arquivos' de uma vez NOS LIVROS (o índice de ligação é montado uma só vez)."""
+    caminhos = []
+    for caminho, obj in itens:
+        caminho = Path(caminho); caminho.parent.mkdir(parents=True, exist_ok=True)
+        caminho.write_text(json.dumps(obj, ensure_ascii=False), encoding="utf-8"); caminhos.append(caminho)
+    return absorver(caminhos) if caminhos else {"arquivos": 0}

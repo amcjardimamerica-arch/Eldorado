@@ -153,16 +153,13 @@ def incorporar(livros: list[dict]) -> int:
     dados/coleta_3_anos/entrada/<bloco>_AAAA-MM-DD.json = {"<id do livro>": {"edicoes": [{"ano", "titulo", "abertura",
     "encerramento", "pagina_oficial", "valor", "trecho"}], "observacao": "..."}}. Só entra edição com página oficial e
     ano; nada sem prova. Idempotente (mesma página + mesmo ano não entra duas vezes)."""
-    if not ENTRADA.exists():
-        return 0
     por_id = {x.get("id"): x for x in livros}; n = 0
     for x in livros:                                       # a coleta é a fonte da verdade: correções em entrada/ removem edição antiga
         if any(str(h.get("origem") or "").startswith("coleta 3 anos") for h in x.get("historico") or []):
             x["historico"] = [h for h in x["historico"] if not str(h.get("origem") or "").startswith("coleta 3 anos")]
-    for arq in sorted(ENTRADA.glob("*.json")):
-        try:
-            d = json.loads(arq.read_text(encoding="utf-8"))
-        except ValueError:
+    for arq in __import__("src.livro_arquivo", fromlist=["x"]).arquivos(ENTRADA):   # 16/10: nos livros
+        d = __import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(arq, None)   # 16/10: nos livros
+        if not isinstance(d, dict):
             continue
         for lid, v in (d.items() if isinstance(d, dict) else []):
             x = por_id.get(lid)
@@ -234,11 +231,11 @@ def aplicar(hoje: date | None = None, gravar: bool = True) -> dict:
         CAT.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         SAIDA.parent.mkdir(parents=True, exist_ok=True)
         SAIDA.write_text(json.dumps(res, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-        FILAS.mkdir(parents=True, exist_ok=True)
+        _filas = []                                          # 16/10: as filas das 3 coletas vão PARA OS LIVROS
         for b in ("GO", "BR", "INT"):                       # filas das 3 coletas (só quem ainda não é ouro)
             fila = [{**r, "tipo": t} for t, v in res["blocos"][b]["tipos"].items() for r in v if r["selo_livro"] != "ouro"]
-            (FILAS / f"fila_{b.lower()}.json").write_text(json.dumps({"bloco": NOME_BLOCO[b], "gerado_em": hoje.isoformat(), "total": len(fila),
-                                                                     "itens": fila}, ensure_ascii=False, indent=1), encoding="utf-8")
+            _filas.append((FILAS / f"fila_{b.lower()}.json", {"bloco": NOME_BLOCO[b], "gerado_em": hoje.isoformat(), "total": len(fila), "itens": fila}))
+        __import__("src.livro_arquivo", fromlist=["x"]).guardar_lote(_filas)
     return {"livros": len(livros), "por_selo": dict(cont), "por_bloco": {b: res["blocos"][b]["total"] for b in BLOCOS}, "edicoes_coletadas_novas": novas}
 
 

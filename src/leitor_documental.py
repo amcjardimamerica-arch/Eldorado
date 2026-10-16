@@ -42,7 +42,7 @@ def fila_go() -> list[dict]:
     for l in res:
         if l.get("bloco") != "GO" or l.get("selo") == "ouro":
             continue
-        r = _j(SAIDA / f"relatorios/{l['id']}.json", {})
+        r = __import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(SAIDA / f"relatorios/{l['id']}.json", {}) or {}
         out.append({"id": l["id"], "livro": l.get("livro"), "orgao": r.get("orgao"), "situacao": l.get("situacao"),
                     "edicoes_conhecidas": [{"mes": e["mes"], "pagina_oficial": e.get("pagina_oficial")} for e in r.get("edicoes") or []],
                     "falta": "edições de anos distintos com documento oficial e os 12 itens lidos no edital"})
@@ -108,16 +108,14 @@ def aplicar(arquivos: list[Path] | None = None) -> dict:
                 edicoes[lid] = {"edicoes": limpo["edicoes"]}
             if limpo["veredito"] == "ouro_regime":
                 regimes[lid] = {"base_legal": limpo["base_legal"], "evidencias": limpo.get("evidencias_regime") or [], "parecer": limpo["parecer"]}
-    PARECERES.parent.mkdir(parents=True, exist_ok=True)
-    PARECERES.write_text(json.dumps(pareceres, ensure_ascii=False, indent=1), encoding="utf-8")
-    REGIME.write_text(json.dumps(regimes, ensure_ascii=False, indent=1), encoding="utf-8")
-    EDICOES.write_text(json.dumps(edicoes, ensure_ascii=False, indent=1), encoding="utf-8")
+    from . import livro_arquivo as LA                 # 16/10: grava NOS LIVROS
+    LA.guardar_lote([(PARECERES, pareceres), (REGIME, regimes), (EDICOES, edicoes)])
     return {"livros": len(pareceres), "com_edicoes": len(edicoes), "regimes": len(regimes), "rejeicoes": len(rejeicoes)}
 
 
 def pareceres() -> dict:
-    return _j(PARECERES, {})
+    return __import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(PARECERES, {}) or {}
 
 
 def regimes() -> dict:
-    return _j(REGIME, {})
+    return __import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(REGIME, {}) or {}
