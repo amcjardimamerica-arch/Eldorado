@@ -9,7 +9,7 @@ sys.path.insert(0, str(ROOT))
 class TesteCatalogo(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.cat = [json.loads(l) for l in gzip.open(ROOT / "biblioteca_alexandria/empresas/catalogo_incentivos.jsonl.gz", "rt", encoding="utf-8")]
+        cls.cat = [json.loads(l) for l in gzip.open(ROOT / "biblioteca_alexandria/livros/especiais/empresas/catalogo_incentivos.jsonl.gz", "rt", encoding="utf-8")]
 
     def test_nenhuma_empresa_repetida(self):
         self.assertEqual([k for k, v in Counter(e["raiz"] for e in self.cat).items() if v > 1], [])

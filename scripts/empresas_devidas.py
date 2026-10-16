@@ -15,7 +15,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[1]
-LOG = RAIZ / "estado/empresas_semanal.jsonl"
+LOG = RAIZ / "biblioteca_alexandria/livros/especiais/empresas/empresas_semanal.jsonl"
 
 
 def ultima_semanal() -> datetime | None:

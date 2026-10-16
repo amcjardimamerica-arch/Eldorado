@@ -117,7 +117,7 @@ def montar(agora: datetime | None = None) -> dict:
     it, es = _j(D / "interceptador.json"), _j(D / "espiao_avaliacao.json")
     pi, al = _j(D / "piloto.json"), _j(D / "alerta_motores.json")
     op, us = _j(ROOT / "estado/opressores.json"), _j(D / "uso_arquivos.json")
-    ei = _j(ROOT / "biblioteca_alexandria/empresas/indice.json")
+    ei = _j(ROOT / "biblioteca_alexandria/livros/especiais/empresas/indice.json")
     _fr = _j(ROOT / "biblioteca_alexandria/arquivo_frio/manifesto.json", [])
     fr = _fr if isinstance(_fr, list) else (_fr.get("pacotes") or _fr.get("conjuntos") or [])
     esg = ma.get("esgotaram_tentativas"); n_esg = len(esg) if isinstance(esg, list) else esg

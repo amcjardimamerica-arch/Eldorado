@@ -3398,7 +3398,7 @@ class SystemTests(unittest.TestCase):
         self.assertEqual(pr["pontos"],50); self.assertTrue(any("parceria" in x for x in pr["por"]))
         self.assertGreater(E.prioridade_previa("X",None,1,[],{},None)["pontos"],E.prioridade_previa("X",None,300,[],{},None)["pontos"])
         lab=pathlib.Path(tempfile.mkdtemp()); P,B,BA=E.PASTA,E.BIB,E.BASE; fns=(E.coletar_maiores_contribuintes,E.coletar_gife,E.varrer_parcerias)
-        sem=ROOT/"estado/empresas_semanal.jsonl"; bk=sem.read_text() if sem.exists() else None
+        sem=ROOT/"biblioteca_alexandria/livros/especiais/empresas/empresas_semanal.jsonl"; bk=sem.read_text() if sem.exists() else None
         try:
             E.PASTA=lab/"d"; E.BIB=lab/"b"; E.BASE=E.PASTA/"base_empresas.jsonl.gz"; (E.PASTA/"go").mkdir(parents=True)
             _j.dump({"uf":"GO","anos":{"2024":{"empresas":[{"posicao":1,"nome":"ALFA S.A.","cnpj":None},{"posicao":80,"nome":"BETA LTDA","cnpj":None}]},"2025":{"empresas":[{"posicao":2,"nome":"ALFA S.A.","cnpj":None}]}}},open(E.PASTA/"go/contribuintes_icms.json","w"))
@@ -3471,7 +3471,7 @@ class SystemTests(unittest.TestCase):
         self.assertEqual(cnpj_matriz_da_raiz("33000167"),"33.000.167/0001-01")                 # Petrobras (dígitos reais)
         r=extrair_contribuintes("6º 03560974 MERCK SHARP & DOHME FARMACEUTICA LTDA. APARECIDA DE GOIANIA GO COMÉRCIO ATACADISTA E DISTRIBUIDOR",2025)[0]
         self.assertEqual(r["nome"],"MERCK SHARP & DOHME FARMACEUTICA LTDA."); self.assertEqual(r["municipio_lista"],"Aparecida De Goiania"); self.assertEqual(r["cnpj"],"03.560.974/0001-18")
-        d=load_json(pathlib.Path("dados/empresas/go/contribuintes_icms.json"))
+        d=load_json(pathlib.Path("biblioteca_alexandria/livros/especiais/empresas/dados/go/contribuintes_icms.json"))
         self.assertGreaterEqual(len(d["anos"]["2025"]["empresas"]),290)                           # lista oficial real, limpa
 
 
@@ -3883,12 +3883,12 @@ class SystemTests(unittest.TestCase):
         self.assertGreaterEqual(sum(1 for f in fs if f.get("ultimo_edital")),150)
         src=open("src/sensores.py",encoding="utf-8").read(); self.assertIn("def _local_conhecido",src)
         for cat in ("destinacao_tributaria","patrocinio_privado"):
-            r=load_json(pathlib.Path(f"biblioteca_alexandria/empresas/ranking_{cat}.json"))
+            r=load_json(pathlib.Path(f"biblioteca_alexandria/livros/especiais/empresas/ranking_{cat}.json"))
             self.assertEqual(r["total"],100); self.assertEqual(r["empresas"][0]["posicao"],1)
             self.assertTrue(all(e["pontos"]>=r["empresas"][i+1]["pontos"] for i,e in enumerate(r["empresas"][:-1])))
             self.assertTrue(all(e.get("por") for e in r["empresas"][:20]))
             self.assertTrue(pathlib.Path(f"docs/dados/ranking_{cat}.json").exists())
-        fiscal=load_json(pathlib.Path("biblioteca_alexandria/empresas/ranking_destinacao_tributaria.json"))["empresas"]
+        fiscal=load_json(pathlib.Path("biblioteca_alexandria/livros/especiais/empresas/ranking_destinacao_tributaria.json"))["empresas"]
         self.assertTrue(any(e.get("incentivos") for e in fiscal)); self.assertTrue(all("LUCRO REAL" in (e.get("condicao") or "").upper() for e in fiscal[:10]))
         html=open("docs/dashboard.html",encoding="utf-8").read()
         for x in ('data-aba="ranking_empresas"',"window.desenhaApoiadores","ep-l","Destinação tributária","Doação e patrocínio"):

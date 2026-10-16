@@ -267,7 +267,7 @@ class TesteSaidasGravadas(unittest.TestCase):
                 self.assertIsNone(f["mecanismos"][m]["valor"], (f["nome"], m))
 
     def test_painel_de_goias_tem_destinacoes_e_nenhum_registro_falso(self):
-        g = json.loads((ROOT / "biblioteca_alexandria/empresas/go/go.json").read_text(encoding="utf-8"))
+        g = json.loads((ROOT / "biblioteca_alexandria/livros/especiais/empresas/go/go.json").read_text(encoding="utf-8"))
         nomes = {e["nome"] for e in g["empresas"]}
         self.assertNotIn("WhatsApp Agenda Grupo", nomes)
         self.assertNotIn("Diário de Goiás Comunicação LTDA", nomes)
@@ -279,7 +279,7 @@ class TesteSaidasGravadas(unittest.TestCase):
 
     def test_ranking_gravado_sem_hipotese_na_etiqueta(self):
         for cat in ("destinacao_tributaria", "patrocinio_privado"):
-            d = json.loads((ROOT / f"biblioteca_alexandria/empresas/ranking_{cat}.json").read_text(encoding="utf-8"))
+            d = json.loads((ROOT / f"biblioteca_alexandria/livros/especiais/empresas/ranking_{cat}.json").read_text(encoding="utf-8"))
             for e in d["empresas"]:
                 for m in e.get("incentivos") or []:
                     self.assertIn(m, ("Rouanet", "Goyazes"), (cat, e["nome"]))

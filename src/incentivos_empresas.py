@@ -9,7 +9,7 @@ PRONON, PRONAS, Goyazes, PAT."
 O QUE HAVIA ANTES DESTA ROTINA
 
 Nada verificado. O campo `destinacoes_5_anos` estava vazio em todas as empresas,
-e os 26 arquivos de consulta ao SALIC gravados em `dados/empresas/destinacoes/`
+e os 26 arquivos de consulta ao SALIC gravados em `biblioteca_alexandria/livros/especiais/empresas/dados/destinacoes/`
 diziam a mesma coisa: "falha: HTTPError". A API do Ministério da Cultura tinha
 mudado de endereço — de `/v1/incentivadores` para `/api/v1/incentivadores` — e
 o motor continuava batendo na porta antiga. Ao mesmo tempo, o ranking exibia no
@@ -19,7 +19,7 @@ O painel não. Quem olhava a etiqueta lia fato.
 
 O QUE ESTA ROTINA FAZ
 
-Lê três extratos oficiais gravados em `dados/empresas/destinacoes/fontes/`,
+Lê três extratos oficiais gravados em `biblioteca_alexandria/livros/especiais/empresas/dados/destinacoes/fontes/`,
 todos obtidos pelo navegador local do titular em 26/09/2026:
 
   • Rouanet — SALIC (MinC): total histórico por CNPJ na API nova e cada doação,
@@ -53,11 +53,11 @@ from pathlib import Path
 
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-FONTES = ROOT / "dados/empresas/destinacoes/fontes"
+FONTES = ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados/destinacoes/fontes"
 ROUANET = FONTES / "rouanet_salic_2026-09-26.json"
 GOYAZES = FONTES / "goyazes_creditos_2024-2026.json"
 PAT = FONTES / "pat_recorte_2026-03-31.json"
-SAIDA = ROOT / "biblioteca_alexandria/empresas/incentivos_verificados.json"
+SAIDA = ROOT / "biblioteca_alexandria/livros/especiais/empresas/incentivos_verificados.json"
 SAIDA_PAINEL = ROOT / "docs/dados/incentivos_verificados.json"
 
 REFERENCIA = "2026-09-26"
@@ -552,7 +552,7 @@ def aplicar_em_ranking(itens: list[dict], categoria: str, bases: dict | None = N
 
 def resumo_da_ficha(f: dict) -> dict:
     """O que o ranking e o painel precisam — o detalhe doação a doação fica na
-    base verificada (biblioteca_alexandria/empresas/incentivos_verificados.json),
+    base verificada (biblioteca_alexandria/livros/especiais/empresas/incentivos_verificados.json),
     para que o arquivo do painel não carregue milhares de linhas por empresa."""
     mec = f.get("mecanismos") or {}
     resumo = {}
@@ -574,7 +574,7 @@ def resumo_da_ficha(f: dict) -> dict:
     saida = {k: f[k] for k in ("cnpj", "verificado_em", "confirmados", "confirmados_5_anos", "lucro_real",
                                "cnpj_corrigido", "cnpj_resolvido_por_nome", "incentivo_fiscal", "observacao") if f.get(k)}
     saida["mecanismos"] = resumo
-    saida["detalhe"] = "biblioteca_alexandria/empresas/incentivos_verificados.json"
+    saida["detalhe"] = "biblioteca_alexandria/livros/especiais/empresas/incentivos_verificados.json"
     return saida
 
 
@@ -626,13 +626,13 @@ def descobertas_goyazes(conhecidos: set[str], bases: dict | None = None) -> list
 # ───────────────────────── execução ─────────────────────────
 def _todas_as_empresas() -> list[tuple[str, str | None]]:
     vistos, lista = set(), []
-    painel = _carregar(ROOT / "biblioteca_alexandria/empresas/go/go.json")
+    painel = _carregar(ROOT / "biblioteca_alexandria/livros/especiais/empresas/go/go.json")
     for e in painel.get("empresas") or []:
         chave = (e.get("nome"), so_digitos(e.get("cnpj")))
         if chave not in vistos:
             vistos.add(chave); lista.append((e.get("nome"), e.get("cnpj")))
     for cat in ("destinacao_tributaria", "patrocinio_privado"):
-        for e in (_carregar(ROOT / f"biblioteca_alexandria/empresas/ranking_{cat}.json").get("empresas") or []):
+        for e in (_carregar(ROOT / f"biblioteca_alexandria/livros/especiais/empresas/ranking_{cat}.json").get("empresas") or []):
             chave = (e.get("nome"), so_digitos(e.get("cnpj")))
             if chave not in vistos:
                 vistos.add(chave); lista.append((e.get("nome"), e.get("cnpj")))
@@ -689,11 +689,11 @@ def run() -> dict:
                               "lucro_real": (f.get("lucro_real") or {}).get("classe")} for f in saida["empresas"]]})
 
     # aplica na biblioteca, para que o painel e os rankings já saiam verificados
-    go = ROOT / "biblioteca_alexandria/empresas/go/go.json"
+    go = ROOT / "biblioteca_alexandria/livros/especiais/empresas/go/go.json"
     if go.exists():
         write_json(go, aplicar_em_painel(load_json(go), b))
     for cat in ("destinacao_tributaria", "patrocinio_privado"):
-        for destino in (ROOT / f"biblioteca_alexandria/empresas/ranking_{cat}.json", ROOT / f"docs/dados/ranking_{cat}.json"):
+        for destino in (ROOT / f"biblioteca_alexandria/livros/especiais/empresas/ranking_{cat}.json", ROOT / f"docs/dados/ranking_{cat}.json"):
             if destino.exists():
                 d = load_json(destino)
                 d["empresas"] = aplicar_em_ranking(d.get("empresas") or [], cat, b)

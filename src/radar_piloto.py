@@ -1,7 +1,7 @@
 """RADAR DE CAPTAÇÃO — o que o Piloto descobre vira empresa no ranking.
 
 Cada alvo confirmado pelo Piloto (empresa, instituto, fundação, programa) entra em
-dados/empresas/radar_piloto.json com um MARCADOR de pesquisa, igual ao selo das
+biblioteca_alexandria/livros/especiais/empresas/dados/radar_piloto.json com um MARCADOR de pesquisa, igual ao selo das
 oportunidades:
 
   a_pesquisar ...... descoberta com site oficial, mas falta o resto (ESG, editais
@@ -22,7 +22,7 @@ from urllib.parse import urlsplit
 
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-RADAR = ROOT / "dados/empresas/radar_piloto.json"
+RADAR = ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados/radar_piloto.json"
 PUB = ROOT / "docs/dados/radar_piloto.json"
 MARCADORES = ("a_pesquisar", "em_pesquisa", "concluido")
 
@@ -115,7 +115,7 @@ def publicar() -> dict:
     # o ranking oficial tem 100 posições ordenadas por pontuação e não é alterado pelo Piloto.
     # As descobertas viram uma LISTA PRÓPRIA — "Radar", que o painel mostra ao lado do ranking —
     # e só entram no ranking depois que o Claude concluir a pesquisa e houver o que pontuar.
-    rk = ROOT / "biblioteca_alexandria/empresas/radar_captacao.json"
+    rk = ROOT / "biblioteca_alexandria/livros/especiais/empresas/radar_captacao.json"
     prontas = [e for e in emp.values() if e.get("marcador") == "concluido"]
     write_json(rk, {"gerado_em": now_iso(), "regra": "descobertas do Piloto; entram no ranking oficial quando a pesquisa concluir e houver pontuação",
                     "total": len(emp), "concluidas": len(prontas),

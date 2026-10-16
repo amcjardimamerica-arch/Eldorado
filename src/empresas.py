@@ -21,7 +21,7 @@ motor registra "não divulgado publicamente" e usa Lucro Real + capital + histó
 como proxies. ICMS pago vem da lista de maiores contribuintes quando o valor é
 divulgado; senão, a posição no ranking.
 
-Saída: biblioteca_alexandria/empresas/<uf>.json (completo) e fragmento compacto
+Saída: biblioteca_alexandria/livros/especiais/empresas/<uf>.json (completo) e fragmento compacto
 para o painel (docs/dados/empresas.json).
 """
 from __future__ import annotations
@@ -38,8 +38,8 @@ from urllib.request import Request, urlopen
 from .nucleo import ROOT, load_json, now_iso, write_json
 
 CFG = ROOT / "config/empresas.json"
-PASTA = ROOT / "dados/empresas"
-BIB = ROOT / "biblioteca_alexandria/empresas"
+PASTA = ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados"
+BIB = ROOT / "biblioteca_alexandria/livros/especiais/empresas"
 UA = {"User-Agent": "Eldorado-OSC/1.0 contato-via-repositorio", "Accept": "text/html,application/json,application/pdf;q=0.8,*/*;q=0.2"}
 CNPJ_RX = re.compile(r"\b(\d{2}\.?\d{3}\.?\d{3}/?\d{4}-?\d{2})\b")
 VALOR_RX = re.compile(r"R\$\s?([\d\.]+,\d{2})|(\d{1,3}(?:\.\d{3}){2,},\d{2})")
@@ -180,7 +180,7 @@ def extrair_contribuintes(texto: str, ano: int | None = None) -> list[dict]:
 
 def coletar_maiores_contribuintes(uf: str) -> dict:
     """Lê a página oficial e seus anexos (PDF) e guarda a lista por ano em
-    dados/empresas/<uf>/contribuintes_icms.json. Nunca inventa: se a página não
+    biblioteca_alexandria/livros/especiais/empresas/dados/<uf>/contribuintes_icms.json. Nunca inventa: se a página não
     trouxer a lista, registra o motivo."""
     est = _cfg()["estados"][uf]
     fonte = est["maiores_contribuintes_icms"]
@@ -872,11 +872,11 @@ def run_semanal(uf: str = "GO", minimo_novas: int | None = None) -> dict:
     for k, e in base.items():
         for ano, delta in e.get("anos", {}).items():
             pasta = BIB / uf.lower() / ano / _slug(e["nome"]); pasta.mkdir(parents=True, exist_ok=True)
-            write_json(pasta / "ano.json", {"chave": k, "nome": e["nome"], "cnpj": e.get("cnpj"), "ano": ano, **delta, "ver_registro_completo": "dados/empresas/base_empresas.jsonl.gz"})
+            write_json(pasta / "ano.json", {"chave": k, "nome": e["nome"], "cnpj": e.get("cnpj"), "ano": ano, **delta, "ver_registro_completo": "biblioteca_alexandria/livros/especiais/empresas/dados/base_empresas.jsonl.gz"})
     write_json(BIB / uf.lower() / "analise_preditiva.json", _preditiva_base(uf, base))
     write_json(BIB / uf.lower() / f"{uf.lower()}.json", _saida_painel(uf, base, lista, col))
-    (ROOT / "estado/empresas_semanal.jsonl").parent.mkdir(parents=True, exist_ok=True)
-    with (ROOT / "estado/empresas_semanal.jsonl").open("a", encoding="utf-8") as h:
+    (ROOT / "biblioteca_alexandria/livros/especiais/empresas/empresas_semanal.jsonl").parent.mkdir(parents=True, exist_ok=True)
+    with (ROOT / "biblioteca_alexandria/livros/especiais/empresas/empresas_semanal.jsonl").open("a", encoding="utf-8") as h:
         h.write(json.dumps({k2: v for k2, v in rel.items() if k2 != "leitura_icms"}, ensure_ascii=False) + "\n")
     return rel
 
@@ -993,7 +993,7 @@ def run(uf: str | None = None, limite_cadastros: int | None = None) -> dict:
 
 
 def arquivo_do_painel(uf: str) -> Path:
-    """11/10: o painel completo de empresas fica em biblioteca_alexandria/empresas/<uf>/<uf>.json (onde a coleta grava);
+    """11/10: o painel completo de empresas fica em biblioteca_alexandria/livros/especiais/empresas/<uf>/<uf>.json (onde a coleta grava);
     o arquivo antigo na raiz (<uf>.json) só vale se o novo não existir. O painel lia o antigo — vazio desde 04/09."""
     novo, antigo = BIB / uf.lower() / f"{uf.lower()}.json", BIB / f"{uf.lower()}.json"
     return novo if novo.exists() or not antigo.exists() else antigo
@@ -1015,7 +1015,7 @@ def atualizar_painel(uf: str = "GO") -> dict:
         pass
     cat = {}
     try:
-        with gzip.open(ROOT / "biblioteca_alexandria/empresas/catalogo_incentivos.jsonl.gz", "rt", encoding="utf-8") as fh:
+        with gzip.open(ROOT / "biblioteca_alexandria/livros/especiais/empresas/catalogo_incentivos.jsonl.gz", "rt", encoding="utf-8") as fh:
             for l in fh:
                 c = json.loads(l)
                 cat[str(c.get("raiz") or "")] = c

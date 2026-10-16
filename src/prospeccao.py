@@ -359,7 +359,7 @@ def para_biblioteca(dominio: str) -> dict:
     it = fontes()["itens"].get(dominio)
     if not it or not it.get("tipos"):
         return {}
-    pasta = (ROOT / "biblioteca_alexandria/empresas/fichas" /
+    pasta = (ROOT / "biblioteca_alexandria/livros/especiais/empresas/fichas" /
              re.sub(r"[^a-z0-9-]", "-", dominio.replace(".", "-"))[:60])
     pasta.mkdir(parents=True, exist_ok=True)
     v = it.get("validacao") or {}

@@ -1819,7 +1819,7 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
 
     # EMPRESAS.JSON — motor de empresas com afinidade com o terceiro setor (por estado)
     try:
-        emp_dir = ROOT / "biblioteca_alexandria/empresas"
+        emp_dir = ROOT / "biblioteca_alexandria/livros/especiais/empresas"
         pac_e = {"gerado_em": now_iso(), "estados": {}}
         cfg_e = load_json(ROOT / "config/empresas.json") if (ROOT / "config/empresas.json").exists() else {"estados": {}}
         for uf, est in cfg_e.get("estados", {}).items():

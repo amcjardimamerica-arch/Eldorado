@@ -602,9 +602,9 @@ def run() -> dict:
     # ── dois motores de EMPRESAS como motores regulares individuais ──
     # GIFE = captação de INCENTIVOS FISCAIS (empresas do Lucro Real, Rouanet/LIE/FIA/PRONON)
     # Patrocínio Privado = captação PRIVADA (marketing, recursos próprios, sem benefício fiscal)
-    emp_go = ROOT / "biblioteca_alexandria/empresas/go/go.json"
-    pat_go = ROOT / "biblioteca_alexandria/empresas/go/patrocinios.json"
-    sem_p = ROOT / "estado/empresas_semanal.jsonl"
+    emp_go = ROOT / "biblioteca_alexandria/livros/especiais/empresas/go/go.json"
+    pat_go = ROOT / "biblioteca_alexandria/livros/especiais/empresas/go/patrocinios.json"
+    sem_p = ROOT / "biblioteca_alexandria/livros/especiais/empresas/empresas_semanal.jsonl"
     sem = [json.loads(l) for l in sem_p.read_text(encoding="utf-8").splitlines() if l.strip()] if sem_p.exists() else []
     eg = load_json(emp_go) if emp_go.exists() else {}
     pg = load_json(pat_go) if pat_go.exists() else {}
@@ -620,7 +620,7 @@ def run() -> dict:
     # não editais. O painel rotulava "52 editais" — falso. Passam a listar as empresas, com o link.
     def _empresas_top(n=8):
         import gzip as _gz
-        arq = ROOT / "dados/empresas/base_empresas.jsonl.gz"
+        arq = ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados/base_empresas.jsonl.gz"
         if not arq.exists():
             return []
         base = [json.loads(l) for l in _gz.open(arq, "rt", encoding="utf-8") if l.strip()]

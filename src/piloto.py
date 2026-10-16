@@ -348,7 +348,7 @@ def escolher_rumo(ia: IALocal, ent: dict) -> dict:
     Ele olha o que já tem, o que falta, o que rendeu e o que veio seco, e propõe o rumo do voo."""
     m = load_json(MOTOR29)
     b = load_json(ROOT / "estado/piloto/bordo.json") if (ROOT / "estado/piloto/bordo.json").exists() else {}
-    rad = load_json(ROOT / "dados/empresas/radar_piloto.json") if (ROOT / "dados/empresas/radar_piloto.json").exists() else {}
+    rad = load_json(ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados/radar_piloto.json") if (ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados/radar_piloto.json").exists() else {}
     ultimas = [{"angulo": x.get("alvo"), "abates": x.get("abates", 0)} for x in (b.get("missoes") or [])[:12]]
     secos = [x["id"] for x in (m.get("memoria_negativa") or {}).get("itens", [])]
     setores_ja = sorted({(e.get("angulos") or ["?"])[0] for e in (rad.get("empresas") or {}).values()})

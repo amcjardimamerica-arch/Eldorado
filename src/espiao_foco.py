@@ -38,7 +38,7 @@ _CAND_ORIGINAL = CANDIDATAS                           # 16/10: só o caminho ORI
 def _ler_cand(padrao):
     return (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(CANDIDATAS, None) if CANDIDATAS is _CAND_ORIGINAL
             else _j(CANDIDATAS, None)) or padrao
-EMPRESAS_ESPIAO = ROOT / "dados/empresas/go/espiao_empresas.json"
+EMPRESAS_ESPIAO = ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados/go/espiao_empresas.json"
 AVALIACAO = ROOT / "docs/dados/espiao_avaliacao.json"
 CICLO_VOOS = 100
 
@@ -110,8 +110,8 @@ def _agora() -> str:
 def _empresas_semente() -> list[str]:
     """Empresas já conhecidas que patrocinam ou destinam — viram ponto de partida para achar o instituto e o edital delas."""
     out = []
-    for f in ("biblioteca_alexandria/empresas/ranking_patrocinio_privado.json", "docs/dados/ranking_apoiadores.json",
-              "biblioteca_alexandria/empresas/go/patrocinios.json"):
+    for f in ("biblioteca_alexandria/livros/especiais/empresas/ranking_patrocinio_privado.json", "docs/dados/ranking_apoiadores.json",
+              "biblioteca_alexandria/livros/especiais/empresas/go/patrocinios.json"):
         for e in (_j(ROOT / f, {}).get("empresas") or [])[:200]:
             n = str(e.get("nome") or e.get("razao_social") or "").strip()
             if 4 <= len(n) <= 60 and not NAO_EMPRESA.search(n):

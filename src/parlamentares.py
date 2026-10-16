@@ -145,7 +145,7 @@ def run(ano: int | None = None) -> dict:
         },
     })
     relatorio["carregados"] = len(todos)
-    write_json(ROOT / "estado/ultima_carga_parlamentares.json", relatorio)
+    write_json(ROOT / "biblioteca_alexandria/livros/especiais/legislativo/ultima_carga_parlamentares.json", relatorio)
     return relatorio
 
 def carregar_do_disco(ano: int) -> dict:

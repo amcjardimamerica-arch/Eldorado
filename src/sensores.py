@@ -103,7 +103,7 @@ def _sites_empresas_go(limite: int = 22) -> list[str]:
     """Sites institucionais das empresas da base (maiores contribuintes do ICMS de
     GO), inferidos do e-mail corporativo do cadastro RFB; ordem = posição no ICMS."""
     import gzip
-    b = ROOT / "dados/empresas/base_empresas.jsonl.gz"
+    b = ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados/base_empresas.jsonl.gz"
     if not b.exists():
         return []
     saida, vistos = [], set()

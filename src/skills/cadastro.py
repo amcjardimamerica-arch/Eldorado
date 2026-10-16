@@ -23,7 +23,7 @@ def norm(nome: str) -> str:
 @lru_cache(maxsize=1)
 def _conhecidos() -> tuple[frozenset, frozenset]:
     nomes, cnpjs = set(), set()
-    for f in ("biblioteca_alexandria/empresas/ranking_destinacao_tributaria.json", "biblioteca_alexandria/empresas/ranking_patrocinio_privado.json",
+    for f in ("biblioteca_alexandria/livros/especiais/empresas/ranking_destinacao_tributaria.json", "biblioteca_alexandria/livros/especiais/empresas/ranking_patrocinio_privado.json",
               "docs/dados/ranking_apoiadores.json"):
         try:
             for e in json.loads((ROOT / f).read_text(encoding="utf-8")).get("empresas", []):
@@ -42,7 +42,7 @@ def _conhecidos() -> tuple[frozenset, frozenset]:
     except Exception:
         pass
     try:                                   # 29/09: catálogo único — Rouanet e Goyazes (PAT sozinho não é destinação a OSC)
-        with gzip.open(ROOT / "biblioteca_alexandria/empresas/catalogo_incentivos.jsonl.gz", "rt", encoding="utf-8") as fh:
+        with gzip.open(ROOT / "biblioteca_alexandria/livros/especiais/empresas/catalogo_incentivos.jsonl.gz", "rt", encoding="utf-8") as fh:
             for l in fh:
                 e = json.loads(l)
                 if "Rouanet" in e["incentivos"] or "Goyazes" in e["incentivos"]:
