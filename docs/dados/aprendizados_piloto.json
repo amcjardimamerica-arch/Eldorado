@@ -1,13 +1,15 @@
 {
-  "em": "2026-10-16T06:53:32+00:00",
+  "em": "2026-10-16T06:59:48+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
       "missoes": 40,
-      "achados": 0,
+      "achados": 1,
       "uteis": 0,
       "motivos": {
-        "nada_no_crivo": 40
+        "nada_no_crivo": 36,
+        "busca_vazia": 3,
+        "sem_texto": 1
       },
       "efetividade": 0.0
     }
@@ -16,7 +18,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 11901,
+      "vezes": 11904,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -29,21 +31,21 @@
       ],
       "ultima": "2026-10-16",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 11901 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 11904 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
       "motivo": "busca_vazia",
-      "vezes": 186,
+      "vezes": 190,
       "tipos": [
         "cacar_oportunidade",
         "descobrir",
         "aposta",
         "espionar"
       ],
-      "ultima": "2026-10-15",
+      "ultima": "2026-10-16",
       "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
-      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 186 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 190 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -180,6 +182,13 @@
   "melhorias_pendentes": [
     {
       "motor": "piloto-aberto",
+      "sugestao": "O motor deve ser capaz de extrair e analisar o conteúdo dos trechos fornecidos para identificar informações relevantes sobre recursos disponíveis.",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-10-16T06:46",
+      "aplicada": false
+    },
+    {
+      "motor": "piloto-aberto",
       "sugestao": "O motor deveria validar se o edital menciona explicitamente a atuação em assistência social e cultura, além de incluir informações sobre prazo, valor, objeto e página do edital para garantir que o achado seja realmente v",
       "efetividade_na_hora": 0.0,
       "em": "2026-10-16T00:46",
@@ -310,19 +319,12 @@
       "efetividade_na_hora": 0.0,
       "em": "2026-10-14T21:15",
       "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "O motor deve priorizar a extração de informações específicas como objeto, prazo, valor e página dos editais, mesmo que o trecho esteja vazio, para permitir uma avaliação mais precisa.",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-10-14T18:39",
-      "aplicada": false
     }
   ],
-  "editais_tratados": 604,
-  "entregues_ao_claude": 527,
+  "editais_tratados": 605,
+  "entregues_ao_claude": 528,
   "ultima_faxina": {
-    "em": "2026-10-16T06:53:32+00:00",
+    "em": "2026-10-16T06:59:48+00:00",
     "dias": 2,
     "arquivos_de_quarentena_apagados": 18,
     "achados_descartados_removidos": 3019,
