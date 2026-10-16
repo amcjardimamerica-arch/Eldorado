@@ -251,8 +251,26 @@ def absorver(caminhos: list, gravar_: bool = True, apagar: bool = True, controle
 
 
 # ── leitura pelos módulos antigos ─────────────────────────────────────────────────────────────────────────────────
+_MEMO: dict = {}
+
+
 def carregar(caminho, padrao=None):
-    """O leitor pede o CAMINHO antigo e recebe a mesma estrutura, montada a partir dos livros."""
+    """O leitor pede o CAMINHO antigo e recebe a mesma estrutura, montada a partir dos livros. 16/10: a montagem fica em
+    MEMÓRIA enquanto os livros não mudam (a fase de recálculo estourava o tempo relendo milhares de livros); cada
+    chamada recebe uma CÓPIA, para um módulo não alterar o que o outro lê."""
+    import copy
+    rel = _rel(caminho)
+    marca = ORIGENS.stat().st_mtime_ns if ORIGENS.exists() else 0
+    if (rel, marca) in _MEMO:
+        v = _MEMO[(rel, marca)]
+        return copy.deepcopy(v) if v is not None else padrao
+    v = _carregar(caminho, None)
+    _MEMO.clear() if len(_MEMO) > 64 else None
+    _MEMO[(rel, marca)] = v
+    return copy.deepcopy(v) if v is not None else padrao
+
+
+def _carregar(caminho, padrao=None):
     rel = _rel(caminho)
     o = (_j(ORIGENS, {}) or {}).get(rel)
     if not o:
@@ -318,6 +336,10 @@ def absorver_proibidos() -> dict:
     DESCOBERTA = ("estado/agregadores/itens.json", "estado/piloto/candidatas_do_catalogo.json")
     fs = [p for g in PROIBIDOS if g not in DESCOBERTA for p in ((ROOT / g).rglob("*") if (ROOT / g).is_dir() else [ROOT / g]) if p.is_file()]
     fd = [ROOT / g for g in DESCOBERTA if (ROOT / g).is_file()]       # entradas de descoberta: livro pelo portão, com ou sem prazo
+    for g in PROIBIDOS:                                   # 16/10: .md nas pastas proibidas são cópias em texto do que está no livro
+        if (ROOT / g).is_dir():
+            for m_ in (ROOT / g).rglob("*.md"):
+                m_.unlink()
     r = absorver(fs) if fs else {"arquivos": 0}
     if fd:
         r = {"geral": r, "descoberta": absorver(fd, descoberta=True)}
