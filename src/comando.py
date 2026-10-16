@@ -219,7 +219,8 @@ def fases(ctx: dict) -> list[dict]:
         # 5b' EXPURGO — o que não é oportunidade (e o que foi descartado) sai por completo, uma vez por dia
         {"etapa": "expurgo", "finalidade": "remove por completo o que não é oportunidade: registros, livros, pastas, banco e releitura",
          "cmds": [[py, "-m", "src.expurgo", "--executar"],
-                  [py, "-c", "import json; from src import banco_livros as B; print(json.dumps(B.limpar_base_bruta(), ensure_ascii=False))"]], "t": 1200,
+                  [py, "-c", "import json; from src import banco_livros as B; print(json.dumps(B.limpar_base_bruta(), ensure_ascii=False))"],
+                  [py, "-c", "import json; from src import banco as B; print(json.dumps(B.expurgar_acervo(), ensure_ascii=False))"]], "t": 1500,
          "pular": "já feito hoje" if _expurgo_feito_hoje() else None},
         # 5b'' MIGRAÇÃO ÚNICA — os achados da base (já limpa) vão para os livros; depois disso, motores, fluxo e painel
         # usam os livros (16/10/2026, etapa 3)

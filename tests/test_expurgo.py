@@ -56,3 +56,24 @@ class Expurgo(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Acervo16_10(unittest.TestCase):
+    """16/10/2026: o histórico de edições passa pelos portões; quem não passa sai de todas as tabelas."""
+    def test_expurgar_acervo(self):
+        import gzip
+        from src import banco as BC
+        r = Path(tempfile.mkdtemp()); arq = r / "h.jsonl.gz"
+        linhas = [{"_t": "__schema__", "tabela": "historico", "sql": "CREATE TABLE IF NOT EXISTS historico (chave TEXT)"}]
+        for i, (tit, fin, uf) in enumerate([("Chamamento de OSC 2024", "MUNICIPIO DE ITUPEVA", "SP"), ("Fomento cultural 2023", "Secretaria de Estado da Cultura", "SP"),
+                                             ("Chamamento de OSC 2022", "Prefeitura de Anápolis", "GO")]):
+            linhas += [{"_t": "historico", "chave": f"c{i}", "ano": "2024", "id": f"i{i}", "titulo": tit, "financiador": fin, "uf": uf},
+                       {"_t": "confirmacao", "chave": f"c{i}", "ano": "2024", "id": f"i{i}"}]
+        with gzip.open(arq, "wt", encoding="utf-8") as g:
+            g.write("\n".join(json.dumps(x) for x in linhas) + "\n")
+        with mock.patch.object(BC, "CAMINHO_BANCO", r / "x.db"):
+            res = BC.expurgar_acervo(arq)
+        self.assertEqual(res["edicoes_removidas"], 1)                     # só Itupeva (município de SP)
+        with gzip.open(arq, "rt", encoding="utf-8") as g:
+            ficou = {json.loads(l).get("chave") for l in g if '"historico"' in l or '"confirmacao"' in l}
+        self.assertEqual(ficou - {None}, {"c1", "c2"})
