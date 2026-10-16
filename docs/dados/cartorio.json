@@ -1,172 +1,174 @@
 {
- "em": "2026-10-16T13:02:33+00:00",
+ "em": "2026-10-16T13:47:41+00:00",
  "versao": "cartório v5 · linha de produção (09/10/2026)",
  "regra": "CARTÓRIO DE FONTES OFICIAIS (titular, 09/10/2026).\n\nOs motores DESCOBREM; o Cartório CERTIFICA. Toda estrela (oportunidade aberta) e todo livro (histórico) que tenha\nQUALQUER um dos 12 itens indisponível entra na fila do Cartório. Para cada um, ele sobe uma escada de degraus — do mais\nbarato e confiável ao mais caro — até achar o documento OFICIAL, lê o documento por seções e emite uma CERTIDÃO:\nlink oficial (régua única: vetor nunca é fonte), degrau em que foi achado, impressão digital do documento, e cada item\ncom valor + trecho literal + página — ou a DISPENSA com a justificativa de que o requisito não existe naquele edital.\n\nBalcões (como chegar ao documento em cada tipo de fonte):\n  pncp      página do PNCP → API de arquivos do órgão (PDF ou ZIP), o edital primeiro\n  diario    DOU, Diário de Goiás/Goiânia, Querido Diário → o ato dentro da edição (só as páginas do ato)\n  orgao     domínio público → documentos da página + biblioteca de mídia do WordPress pelo número do edital\n  privado   site do financiador → documentos da página (regulamento, edital)\n  pista     agregador/notícia → links de SAÍDA para o financiador; o resto vai ao Interceptador\n  proprio   Ministério Público e Judiciário: já leem o PDF; o Cartório só converte em certidão\n\nEscada: 0 documento na mão · 1 link de saída da pista · 2 busca do número do edital dentro do domínio oficial ·\n        3 Interceptador (IA) · 4 Chrome. O Cartório resolve 0–2 sem IA; 3 e 4 recebem só o que sobrou.\nIntegração: a fila é ordenada pela urgência (prazo), pela nota da REDE NEURAL e pela distância até o ouro (menos\nitens faltando primeiro: cada certidão vira selo). Estrelas: o fluxo de oportunidades lê a certidão no checklist.\nLivros: linhas no formato do importador (scripts/importar_verificacao_livros.py), que confere e entrega à esteira.",
  "identidade_visual": "provisória (config/identidade_visual.json aguarda o design de referência)",
  "resumo": {
   "pontos_12_total": 4800,
-  "pontos_certificados": 3137,
-  "pontos_dispensados": 196,
+  "pontos_certificados": 3138,
+  "pontos_dispensados": 194,
   "pontos_ja_constavam": 1253,
-  "pontos_faltam": 214,
-  "pct_certificado_12": 0.6944,
+  "pontos_faltam": 215,
+  "pct_certificado_12": 0.6942,
   "certidoes_12_de_12": 128,
   "certidoes_sem_item_faltando": 247,
   "nota_denominador": "eficiencia_itens = resolvidos ÷ itens que faltavam na ENTRADA da fila (não é % dos 12); use pct_certificado_12",
-  "certidoes": 2399,
-  "nesta_execucao": 37,
-  "fila_estrelas": 331,
-  "fila_livros": 2011,
-  "itens_que_faltavam": 21149,
-  "itens_obtidos": 7197,
+  "certidoes": 2406,
+  "nesta_execucao": 31,
+  "fila_estrelas": 321,
+  "fila_livros": 3061,
+  "itens_que_faltavam": 21219,
+  "itens_obtidos": 7221,
   "itens_dispensados": 461,
   "eficiencia_itens": 0.362,
-  "com_link_oficial": 1549,
-  "taxa_link_oficial": 0.646,
+  "com_link_oficial": 1552,
+  "taxa_link_oficial": 0.645,
   "certidoes_completas": 222,
-  "para_o_interceptador": 1665,
+  "para_o_interceptador": 1672,
   "para_o_chrome": 518,
   "selos_que_mudaram": {
-   "sem selo → ouro": 107,
+   "sem selo → ouro": 108,
    "prata → ouro": 6,
-   "sem selo → prata": 35,
-   "sem selo → bronze": 38,
+   "sem selo → prata": 36,
+   "sem selo → bronze": 37,
    "bronze → ouro": 11,
-   "bronze → prata": 3
+   "bronze → prata": 3,
+   "bronze → sem selo": 1,
+   "prata → sem selo": 1
   },
   "por_degrau": {
-   "degrau 0": 1468,
+   "degrau 0": 1470,
    "degrau 2": 2,
-   "degrau 1": 103
+   "degrau 1": 104
   }
  },
  "cinza_conferidos": {
-  "conferidos": 828,
-  "certificados": 589,
-  "certidoes": 136
+  "conferidos": 854,
+  "certificados": 602,
+  "certidoes": 141
  },
  "por_item": {
   "Objeto": {
-   "faltavam": 1451,
-   "obtidos": 426,
+   "faltavam": 1455,
+   "obtidos": 428,
    "dispensados": 0,
    "eficiencia": 0.294
   },
   "Prazo de inscrição": {
-   "faltavam": 1612,
-   "obtidos": 457,
+   "faltavam": 1620,
+   "obtidos": 458,
    "dispensados": 126,
-   "eficiencia": 0.362
+   "eficiencia": 0.36
   },
   "Resultado": {
-   "faltavam": 2150,
+   "faltavam": 2158,
    "obtidos": 514,
    "dispensados": 206,
-   "eficiencia": 0.335
+   "eficiencia": 0.334
   },
   "Prazo de recurso": {
-   "faltavam": 2109,
-   "obtidos": 506,
+   "faltavam": 2116,
+   "obtidos": 507,
    "dispensados": 31,
-   "eficiencia": 0.255
+   "eficiencia": 0.254
   },
   "Valor": {
-   "faltavam": 1844,
-   "obtidos": 565,
+   "faltavam": 1851,
+   "obtidos": 568,
    "dispensados": 61,
-   "eficiencia": 0.339
+   "eficiencia": 0.34
   },
   "Órgão / financiador": {
-   "faltavam": 1286,
-   "obtidos": 703,
+   "faltavam": 1290,
+   "obtidos": 705,
    "dispensados": 0,
    "eficiencia": 0.547
   },
   "Território": {
-   "faltavam": 1520,
-   "obtidos": 427,
+   "faltavam": 1524,
+   "obtidos": 429,
    "dispensados": 0,
    "eficiencia": 0.281
   },
   "Esfera": {
-   "faltavam": 1811,
-   "obtidos": 1042,
+   "faltavam": 1815,
+   "obtidos": 1045,
    "dispensados": 0,
-   "eficiencia": 0.575
+   "eficiencia": 0.576
   },
   "Requisitos": {
-   "faltavam": 2046,
-   "obtidos": 480,
+   "faltavam": 2053,
+   "obtidos": 482,
    "dispensados": 0,
    "eficiencia": 0.235
   },
   "Anexos": {
-   "faltavam": 1366,
+   "faltavam": 1371,
    "obtidos": 278,
    "dispensados": 8,
    "eficiencia": 0.209
   },
   "Destinação": {
-   "faltavam": 1985,
-   "obtidos": 518,
+   "faltavam": 1990,
+   "obtidos": 522,
    "dispensados": 29,
-   "eficiencia": 0.276
+   "eficiencia": 0.277
   },
   "Área de atuação": {
-   "faltavam": 1969,
-   "obtidos": 1281,
+   "faltavam": 1976,
+   "obtidos": 1285,
    "dispensados": 0,
-   "eficiencia": 0.651
+   "eficiencia": 0.65
   }
  },
  "por_balcao": {
   "diario": {
-   "certidoes": 147,
-   "com_link_oficial": 58,
-   "faltavam": 1238,
-   "resolvidos": 225,
+   "certidoes": 149,
+   "com_link_oficial": 59,
+   "faltavam": 1250,
+   "resolvidos": 228,
    "eficiencia": 0.182,
-   "taxa_link_oficial": 0.395
+   "taxa_link_oficial": 0.396
   },
   "orgao": {
-   "certidoes": 1117,
-   "com_link_oficial": 871,
-   "faltavam": 9551,
-   "resolvidos": 4113,
-   "eficiencia": 0.431,
-   "taxa_link_oficial": 0.78
+   "certidoes": 1119,
+   "com_link_oficial": 872,
+   "faltavam": 9568,
+   "resolvidos": 4117,
+   "eficiencia": 0.43,
+   "taxa_link_oficial": 0.779
   },
   "pista": {
-   "certidoes": 343,
-   "com_link_oficial": 62,
-   "faltavam": 3114,
-   "resolvidos": 702,
-   "eficiencia": 0.225,
-   "taxa_link_oficial": 0.181
+   "certidoes": 345,
+   "com_link_oficial": 63,
+   "faltavam": 3138,
+   "resolvidos": 717,
+   "eficiencia": 0.228,
+   "taxa_link_oficial": 0.183
   },
   "pncp": {
-   "certidoes": 102,
-   "com_link_oficial": 70,
-   "faltavam": 946,
-   "resolvidos": 456,
-   "eficiencia": 0.482,
-   "taxa_link_oficial": 0.686
+   "certidoes": 101,
+   "com_link_oficial": 69,
+   "faltavam": 934,
+   "resolvidos": 449,
+   "eficiencia": 0.481,
+   "taxa_link_oficial": 0.683
   },
   "privado": {
-   "certidoes": 538,
+   "certidoes": 539,
    "com_link_oficial": 365,
-   "faltavam": 4485,
-   "resolvidos": 1238,
-   "eficiencia": 0.276,
-   "taxa_link_oficial": 0.678
+   "faltavam": 4502,
+   "resolvidos": 1240,
+   "eficiencia": 0.275,
+   "taxa_link_oficial": 0.677
   },
   "revisão": {
-   "certidoes": 151,
-   "com_link_oficial": 123,
-   "faltavam": 1812,
-   "resolvidos": 1089,
-   "eficiencia": 0.601,
-   "taxa_link_oficial": 0.815
+   "certidoes": 152,
+   "com_link_oficial": 124,
+   "faltavam": 1824,
+   "resolvidos": 1101,
+   "eficiencia": 0.604,
+   "taxa_link_oficial": 0.816
   },
   "proprio": {
    "certidoes": 1,
@@ -179,20 +181,20 @@
  },
  "por_safra": {
   "primeira tentativa": {
-   "certidoes": 2251,
-   "faltavam": 19857,
-   "resolvidos": 6867,
-   "eficiencia": 0.346,
-   "com_link_oficial": 1414,
-   "taxa_link_oficial": 0.628
+   "certidoes": 2239,
+   "faltavam": 19759,
+   "resolvidos": 6825,
+   "eficiencia": 0.345,
+   "com_link_oficial": 1400,
+   "taxa_link_oficial": 0.625
   },
   "refeitas": {
-   "certidoes": 148,
-   "faltavam": 1292,
-   "resolvidos": 956,
-   "eficiencia": 0.74,
-   "com_link_oficial": 135,
-   "taxa_link_oficial": 0.912
+   "certidoes": 167,
+   "faltavam": 1460,
+   "resolvidos": 1027,
+   "eficiencia": 0.703,
+   "com_link_oficial": 152,
+   "taxa_link_oficial": 0.91
   }
  },
  "por_versao": {
@@ -213,54 +215,54 @@
    "taxa_link_oficial": 0.733
   },
   "cartório v5 · linha de produção": {
-   "certidoes": 2231,
-   "faltavam": 19196,
-   "resolvidos": 6675,
+   "certidoes": 2237,
+   "faltavam": 19254,
+   "resolvidos": 6692,
    "eficiencia": 0.348,
-   "com_link_oficial": 1413,
+   "com_link_oficial": 1415,
    "taxa_link_oficial": 0.633
   },
   "revisão manual": {
-   "certidoes": 151,
-   "faltavam": 1812,
-   "resolvidos": 1089,
-   "eficiencia": 0.601,
-   "com_link_oficial": 123,
-   "taxa_link_oficial": 0.815
+   "certidoes": 152,
+   "faltavam": 1824,
+   "resolvidos": 1101,
+   "eficiencia": 0.604,
+   "com_link_oficial": 124,
+   "taxa_link_oficial": 0.816
   }
  },
  "por_abordagem": {
   "1": {
    "nome": "documento na mão",
-   "vezes": 2273,
-   "renderam": 1453,
-   "itens": 7507,
-   "links_oficiais": 1351,
+   "vezes": 2281,
+   "renderam": 1457,
+   "itens": 7528,
+   "links_oficiais": 1354,
    "taxa_de_acerto": 0.639
   },
   "2": {
    "nome": "anexos completos",
-   "vezes": 72,
-   "renderam": 11,
-   "itens": 47,
+   "vezes": 80,
+   "renderam": 12,
+   "itens": 49,
    "links_oficiais": 1,
-   "taxa_de_acerto": 0.153
+   "taxa_de_acerto": 0.15
   },
   "3": {
    "nome": "página oficial e citados",
-   "vezes": 112,
+   "vezes": 120,
    "renderam": 49,
    "itens": 320,
    "links_oficiais": 38,
-   "taxa_de_acerto": 0.438
+   "taxa_de_acerto": 0.408
   },
   "4": {
    "nome": "biblioteca de sites",
-   "vezes": 60,
-   "renderam": 32,
-   "itens": 96,
+   "vezes": 64,
+   "renderam": 35,
+   "itens": 103,
    "links_oficiais": 13,
-   "taxa_de_acerto": 0.533
+   "taxa_de_acerto": 0.547
   },
   "5": {
    "nome": "mídia do WordPress",
@@ -296,46 +298,46 @@
   },
   "9": {
    "nome": "leitura profunda",
-   "vezes": 57,
+   "vezes": 59,
    "renderam": 8,
    "itens": 27,
    "links_oficiais": 2,
-   "taxa_de_acerto": 0.14
+   "taxa_de_acerto": 0.136
   },
   "10": {
    "nome": "busca no domínio",
-   "vezes": 7,
-   "renderam": 4,
-   "itens": 7,
+   "vezes": 8,
+   "renderam": 5,
+   "itens": 14,
    "links_oficiais": 0,
-   "taxa_de_acerto": 0.571
+   "taxa_de_acerto": 0.625
   }
  },
  "por_balcao_selo": {
   "sem_estrela": {
    "nome": "Sem estrela → bronze",
-   "certidoes": 1131,
-   "faltavam": 9338,
-   "resolvidos": 2386,
-   "eficiencia": 0.256,
-   "entraram_aqui": 1240,
+   "certidoes": 1139,
+   "faltavam": 9402,
+   "resolvidos": 2399,
+   "eficiencia": 0.255,
+   "entraram_aqui": 1247,
    "esgotadas": 0
   },
   "bronze": {
    "nome": "Bronze → prata",
-   "certidoes": 34,
-   "faltavam": 295,
-   "resolvidos": 189,
-   "eficiencia": 0.641,
+   "certidoes": 33,
+   "faltavam": 291,
+   "resolvidos": 194,
+   "eficiencia": 0.667,
    "entraram_aqui": 11,
    "esgotadas": 0
   },
   "prata": {
    "nome": "Prata → ouro",
    "certidoes": 1021,
-   "faltavam": 9292,
-   "resolvidos": 3801,
-   "eficiencia": 0.409,
+   "faltavam": 9302,
+   "resolvidos": 3812,
+   "eficiencia": 0.41,
    "entraram_aqui": 1000,
    "esgotadas": 1
   },
@@ -352,15 +354,15 @@
  "gabarito": {
   "orgaos_com_gabarito": 1140,
   "itens_achados_pelo_gabarito": {
-   "Objeto": 59,
+   "Objeto": 60,
    "Requisitos": 40,
    "Prazo de inscrição": 1,
    "Destinação": 11,
    "Resultado": 3,
-   "Valor": 2,
-   "Prazo de recurso": 13
+   "Valor": 3,
+   "Prazo de recurso": 14
   },
-  "certidoes_ajudadas": 119
+  "certidoes_ajudadas": 122
  },
  "certidoes": [
   {
@@ -26128,6 +26130,263 @@
    }
   },
   {
+   "id": "6c8557f6af0d252d6429",
+   "tipo": "estrela",
+   "titulo": "Edital de Credenciamento 30/2026 do TJGO (Goiânia): entidades sem fins lucrativos (catadores) recebem os recicláveis do Tribunal em revezamento trimestral, sem repasse; inscrições contínuas até 22/07/",
+   "balcao": "revisão",
+   "link_oficial": "https://www.tjgo.jus.br",
+   "degrau": 0,
+   "como": "revisão manual: leitura do documento oficial no Chrome da titular",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Requisitos",
+    "Anexos"
+   ],
+   "tentativa": 1,
+   "versao": "revisão manual (CHROME-2026-10-11)",
+   "gabarito": null,
+   "estagio": "bronze",
+   "estagio_inicio": "sem_estrela",
+   "esgotada": null,
+   "eficiencia": 1.0,
+   "encaminhado": "Interceptador: 5 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": "ouro",
+   "em": "2026-10-10T23:06:35+00:00",
+   "prazo": "2031-07-22T23:59",
+   "uf": "GO",
+   "orgao": null,
+   "fim": "2031-07-22T23:59",
+   "itens": {
+    "Órgão / financiador": {
+     "valor": "município de Itaberaí-GO",
+     "trecho": "cunho social, a critério desta unidade gestora, que atuem no município de Itaberaí-GO; 1.2. A receita da conta vinculada financiará projetos apresen",
+     "pagina": 1,
+     "documento": "https://www.tjgo.jus.br/images/docs/CCS/editalitaberai.pdf",
+     "metodo": "cabeçalho"
+    },
+    "Esfera": {
+     "valor": "municipal",
+     "trecho": "domínio/órgão: www.tjgo.jus.br · município de Itaberaí-GO",
+     "pagina": 1,
+     "documento": "https://www.tjgo.jus.br/images/docs/CCS/editalitaberai.pdf",
+     "metodo": "domínio e órgão"
+    },
+    "Destinação": {
+     "valor": "Destinação de prestação pecuniária / TAC",
+     "trecho": "leção de Projetos, visando a destinação dos recursos provenientes de prestação pecuniária fixada como condição de suspensão condicional do processo, transação penal ou como pena restritiva de direito",
+     "pagina": 1,
+     "documento": "https://www.tjgo.jus.br/images/docs/CCS/editalitaberai.pdf",
+     "metodo": "modalidade de recebimento"
+    },
+    "Área de atuação": {
+     "valor": "Educação, Saúde",
+     "trecho": "termos do objeto e do título: Educação, Saúde",
+     "pagina": 1,
+     "documento": "https://www.tjgo.jus.br/images/docs/CCS/editalitaberai.pdf",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Objeto": {
+     "valor": "Credenciamento de entidades sem fins lucrativos aptas à coleta, transportes, pesagem, triagem e destinação ambientalmente adequada dos resíduos recicláveis, tais como papel, papelão, peças automotivas, pneus, metais, pilhas, vidros, equipamentos eletrônicos inservíveis e outros tipos de resíduos separados no edifício sede e anexos do Tribunal de Justiça e Fórum Heitor Moraes Fleury, conforme orien",
+     "trecho": "objetoCompra: Credenciamento de entidades sem fins lucrativos aptas à coleta, transportes, pesagem, triagem e destinação ambientalmente adequada dos resíduos recicláveis, tais como papel, papelão, peças automotivas, pneus, metais, pilhas, vidros, equipamentos eletrônicos inservíveis e outros tipos de resíduos sep",
+     "pagina": null,
+     "documento": "https://pncp.gov.br/api/consulta/v1/orgaos/02292266000180/compras/2026/83",
+     "metodo": "metadados oficiais do PNCP"
+    },
+    "Prazo de inscrição": {
+     "valor": "2026-07-22 a 2031-07-22",
+     "trecho": "dataAberturaProposta/dataEncerramentoProposta: 2026-07-22T08:00:00 — 2031-07-22T23:59:00",
+     "pagina": null,
+     "documento": "https://pncp.gov.br/api/consulta/v1/orgaos/02292266000180/compras/2026/83",
+     "metodo": "metadados oficiais do PNCP"
+    },
+    "Território": {
+     "valor": "Goiânia/GO",
+     "trecho": "unidadeOrgao.municipioNome/ufSigla: Goiânia/GO",
+     "pagina": null,
+     "documento": "https://pncp.gov.br/api/consulta/v1/orgaos/02292266000180/compras/2026/83",
+     "metodo": "metadados oficiais do PNCP"
+    }
+   },
+   "dispensas": {},
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "revisão manual (CHROME-2026-10-11)",
+     "em": "2026-10-10T23:06:35+00:00",
+     "ganhou": [
+      "Anexos",
+      "Destinação",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Prazo de recurso",
+      "Requisitos",
+      "Resultado",
+      "Território",
+      "Área de atuação",
+      "Órgão / financiador",
+      "Valor"
+     ],
+     "legado": null
+    },
+    {
+     "n": 9,
+     "nome": "leitura profunda",
+     "em": "2026-10-11T16:21:29+00:00",
+     "ganhou": [],
+     "legado": null
+    },
+    {
+     "n": 3,
+     "nome": "página oficial e citados",
+     "em": "2026-10-12T13:35:39+00:00",
+     "ganhou": [],
+     "legado": null
+    },
+    {
+     "n": 2,
+     "nome": "anexos completos",
+     "em": "2026-10-16T01:28:16+00:00",
+     "ganhou": [],
+     "legado": null
+    },
+    {
+     "n": 4,
+     "nome": "biblioteca de sites",
+     "em": "2026-10-16T11:50:57+00:00",
+     "ganhou": [
+      "Destinação",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Território",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    },
+    {
+     "n": 7,
+     "nome": "releitura com gabarito",
+     "em": "2026-10-16T11:51:02+00:00",
+     "ganhou": [],
+     "legado": null
+    },
+    {
+     "n": 8,
+     "nome": "ponte do titular",
+     "em": "2026-10-16T12:55:16+00:00",
+     "ganhou": [],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://www.tjgo.jus.br",
+     "degrau": 1,
+     "como": "página oficial e documentos citados nela",
+     "motivo": null,
+     "falha": "erro_rede: HTTPError",
+     "oficial": null,
+     "paginas": null,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.tjgo.jus.br/images/docs/CCS/editalitaberai.pdf",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 8,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.tjgo.jus.br",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": "erro_rede: HTTPError",
+     "oficial": null,
+     "paginas": null,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.tjgo.jus.br/images/docs/CCS/editalitaberai.pdf",
+     "degrau": 0,
+     "como": "releitura com o gabarito do órgão atualizado",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 8,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.tjgo.jus.br",
+     "degrau": 0,
+     "como": "ponte do titular (IP do Brasil)",
+     "motivo": null,
+     "falha": "erro_rede: RuntimeError",
+     "oficial": null,
+     "paginas": null,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "certificado",
+     "Resultado": "falta",
+     "Prazo de recurso": "falta",
+     "Valor": "falta",
+     "Órgão / financiador": "certificado",
+     "Território": "certificado",
+     "Esfera": "certificado",
+     "Requisitos": "falta",
+     "Anexos": "falta",
+     "Destinação": "certificado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 7,
+    "dispensados": 0,
+    "ja_constavam": 0,
+    "faltam": 5,
+    "pct_certificado_12": 0.5833,
+    "pct_cobertura_12": 0.5833
+   }
+  },
+  {
    "id": "a0aae2f7b6e37e779978",
    "tipo": "estrela",
    "titulo": "Edital de Credenciamento de OSCs nº 01/2026 da SEGEPE Mossoró/RN, aberto por 12 meses desde 28/07/2026, para OSCs de educação, saúde e assistência social; publicado na íntegra no DOM (p.6-8), vigente ",
@@ -35078,7 +35337,7 @@
    "encaminhado": null,
    "selo_antes": null,
    "selo_depois": "ouro",
-   "em": "2026-10-16T08:38:34+00:00",
+   "em": "2026-10-16T13:31:03+00:00",
    "prazo": "2027-08-07",
    "uf": null,
    "orgao": "MUNICIPIO DE TRINDADE",
@@ -45139,7 +45398,7 @@
    "encaminhado": null,
    "selo_antes": "bronze",
    "selo_depois": "ouro",
-   "em": "2026-10-16T08:42:44+00:00",
+   "em": "2026-10-16T13:36:02+00:00",
    "prazo": "2028-12-04",
    "uf": null,
    "orgao": "TRIBUNAL SUPERIOR DO TRABALHO",
@@ -47902,6 +48161,300 @@
      "Requisitos": "certificado",
      "Anexos": "certificado",
      "Destinação": "falta",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 10,
+    "dispensados": 1,
+    "ja_constavam": 0,
+    "faltam": 1,
+    "pct_certificado_12": 0.9167,
+    "pct_cobertura_12": 0.9167
+   }
+  },
+  {
+   "id": "agr-7c66d0288d5b",
+   "tipo": "estrela",
+   "titulo": "Chamada Pública 19/2026 - Programa de Apoio à Fixação de Doutores no Brasil (PROFIX-CB)",
+   "balcao": "orgao",
+   "link_oficial": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2026-09/cp_19-2026_profix.pdf",
+   "degrau": 1,
+   "como": "página oficial e documentos citados nela",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Anexos"
+   ],
+   "tentativa": 3,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "sem_estrela",
+   "esgotada": null,
+   "eficiencia": 0.917,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": "prata",
+   "em": "2026-10-16T13:44:26+00:00",
+   "prazo": null,
+   "uf": null,
+   "orgao": "Fundação Araucária / CNPq / CAPES",
+   "fim": null,
+   "itens": {
+    "Resultado": {
+     "valor": "03/12/2026",
+     "trecho": "as propostas apresentadas Entre os dias 09/11/2026 a 30/11/2026; 5.8 Divulgação dos resultados de relevância A partir de 03/12/2026; 5.9 Prazo de questionamento via plataforma Sparkx do resultado de",
+     "pagina": 3,
+     "documento": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2026-09/cp_19-2026_profix.pdf",
+     "metodo": "seção"
+    },
+    "Valor": {
+     "valor": "R$ 55.252.800,00 (cinquenta e cinco milhões, duzentos e cinquenta e dois mil e oitocentos reais)",
+     "trecho": "investimento total previsto para a presente Chamada Pública é de até R$ 55.252.800,00 (cinquenta e cinco milhões, duzentos e cinquenta e dois mil e oitocentos reais), composto pelos aportes das instituições parceiras, assim distribuíd",
+     "pagina": 3,
+     "documento": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2026-09/cp_19-2026_profix.pdf",
+     "metodo": "seção"
+    },
+    "Órgão / financiador": {
+     "valor": "FUNDAÇÃO ARAUCÁRIA / CNPQ / CAPES",
+     "trecho": "2026 PROGRAMA DE APOIO À FIXAÇÃO DE DOUTORES NO BRASIL (PROFIX-CB) FUNDAÇÃO ARAUCÁRIA / CNPQ / CAPES A Fundação Araucária de Apoio ao Desenvolvimento Científico e Tecno",
+     "pagina": 1,
+     "documento": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2026-09/cp_19-2026_profix.pdf",
+     "metodo": "cabeçalho"
+    },
+    "Território": {
+     "valor": "no Estado do Paraná",
+     "trecho": "tos estratégicos de pesquisa, desenvolvimento tecnológico e inovação no Estado do Paraná. 1. APRESENTAÇÃO A presente Chamada Pública é realizada no âmbito",
+     "pagina": 1,
+     "documento": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2026-09/cp_19-2026_profix.pdf",
+     "metodo": "texto"
+    },
+    "Esfera": {
+     "valor": "municipal",
+     "trecho": "domínio/órgão: www.fappr.pr.gov.br · FUNDAÇÃO ARAUCÁRIA / CNPQ / CAPES Fundação Araucária / CNPq / CAPES",
+     "pagina": 1,
+     "documento": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2026-09/cp_19-2026_profix.pdf",
+     "metodo": "domínio e órgão"
+    },
+    "Destinação": {
+     "valor": "Bolsa",
+     "trecho": "Pós-Graduação Stricto Sensu. 3.3 Resumo das modalidades e tipos de bolsas previstas: RESUMO: Modalidade 1 Modalidade 2A Modalidade 2B Instituição Executora (ICT-PR) ICT-PR com Programa de Pó",
+     "pagina": 2,
+     "documento": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2026-09/cp_19-2026_profix.pdf",
+     "metodo": "modalidade de recebimento"
+    },
+    "Área de atuação": {
+     "valor": "Meio ambiente, Ciência e tecnologia",
+     "trecho": "termos do objeto e do título: Meio ambiente, Ciência e tecnologia",
+     "pagina": 1,
+     "documento": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2026-09/cp_19-2026_profix.pdf",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Objeto": {
+     "valor": "promover um significativo aumento das atividades de inovação e o incremento da competitividade das empresas e da economia do país.",
+     "trecho": "PROGRAMA TECNOVA III Tem como objetivo promover um significativo aumento das atividades de inovação e o incremento da competitividade das empresas e da economia do país. Desta forma, esta chamada visa apoiar projetos de inovação de empresa",
+     "pagina": 1,
+     "documento": "https://www.fappr.pr.gov.br/Pagina/Programa-Tecnova",
+     "metodo": "texto"
+    },
+    "Prazo de recurso": {
+     "valor": "15 dias úteis",
+     "trecho": "uisitos para a liberação da parcela (item 18 da seleção pública), os recursos iniciais para o desenvolvimento do projeto deverão ser liberados em até 15 dias úteis, conforme normativa da Fundação Araucária. 10.1.3. Em relação as dem",
+     "pagina": 5,
+     "documento": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2025-04/faq_novo_tecnova_iii_pr_0.pdf",
+     "metodo": "seção"
+    },
+    "Requisitos": {
+     "valor": "poderá participar de apenas uma proposta;",
+     "trecho": "Leis do Trabalho – CLT); 1.5.2 Cada Coordenador Técnico do projeto poderá participar de apenas uma proposta; 1.5.3 Os demais profissionais integrantes da Equipe Executora, que d",
+     "pagina": 2,
+     "documento": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2025-04/faq_novo_tecnova_iii_pr_0.pdf",
+     "metodo": "texto"
+    }
+   },
+   "dispensas": {
+    "Prazo de inscrição": {
+     "motivo": "dispensado pelo Cartório — não se aplica: inscrição em fluxo contínuo (cadastro permanente, sem data-limite)",
+     "trecho": "m as condições aqui estabelecidas. 20. REVOGAÇÃO OU ANULAÇÃO 20.1 A qualquer tempo a presente Chamada poderá ser revogada ou anulada, no todo ou em part",
+     "pagina": 16,
+     "documento": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2026-09/cp_19-2026_profix.pdf"
+    }
+   },
+   "abordagens": [
+    {
+     "n": 3,
+     "nome": "página oficial e citados",
+     "em": "2026-10-16T02:21:56+00:00",
+     "ganhou": [
+      "Destinação",
+      "Esfera",
+      "Prazo de inscrição",
+      "Resultado",
+      "Território",
+      "Valor",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    },
+    {
+     "n": 4,
+     "nome": "biblioteca de sites",
+     "em": "2026-10-16T13:43:53+00:00",
+     "ganhou": [
+      "Objeto",
+      "Prazo de recurso",
+      "Requisitos"
+     ],
+     "legado": null
+    },
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-16T13:44:26+00:00",
+     "ganhou": [],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2026-09/cp_19-2026_profix.pdf",
+     "degrau": 1,
+     "como": "página oficial e documentos citados nela",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 16,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2026-09/cp_19-2026_profix.pdf",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 16,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.fappr.pr.gov.br/Pagina/Programa-Tecnova",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.googletagmanager.com/ns.html?id=GTM-PPG4SZPB",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": "pagina_vazia",
+     "falha": null,
+     "oficial": null,
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2025-04/faq_novo_tecnova_iii_pr_0.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 8,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2025-06/lista_empresas_crdenciadas_tecnova_iii_pr_internacionalizacao_contatos_atualizada_jun25.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2025-05/lista_empresas_credenciadas_tecnova_iii_pr_aceleracao_contatos.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 2,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2025-11/ato_defa_231-2025_-_cp_05-2025_programa_tecnova_iii_elegiveis-sub_judice.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2025-11/ato_defa_229-2025_-_cp_05-2025_programa_tecnova_iii_elegiveis-sub_judice.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 2,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2026-09/cp_19-2026_profix.pdf",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 16,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "dispensado",
+     "Resultado": "certificado",
+     "Prazo de recurso": "certificado",
+     "Valor": "certificado",
+     "Órgão / financiador": "certificado",
+     "Território": "certificado",
+     "Esfera": "certificado",
+     "Requisitos": "certificado",
+     "Anexos": "falta",
+     "Destinação": "certificado",
      "Área de atuação": "certificado"
     },
     "certificados": 10,
@@ -53700,9 +54253,14 @@
    "ainda_faltam": [
     "Território"
    ],
-   "tentativa": 1,
+   "tentativa": 2,
    "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
+   "gabarito": {
+    "orgao": "dominio:cultura.pr.gov.br",
+    "itens_pelo_gabarito": [
+     "Objeto"
+    ]
+   },
    "estagio": "sem_estrela",
    "estagio_inicio": "sem_estrela",
    "esgotada": null,
@@ -53710,7 +54268,7 @@
    "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
    "selo_antes": null,
    "selo_depois": null,
-   "em": "2026-10-16T02:22:17+00:00",
+   "em": "2026-10-16T13:46:02+00:00",
    "prazo": null,
    "uf": null,
    "orgao": null,
@@ -53814,6 +54372,13 @@
       "Órgão / financiador"
      ],
      "legado": null
+    },
+    {
+     "n": 3,
+     "nome": "página oficial e citados",
+     "em": "2026-10-16T13:46:02+00:00",
+     "ganhou": [],
+     "legado": null
     }
    ],
    "documentos": [
@@ -53889,6 +54454,96 @@
     },
     {
      "url": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2024-09/pnab-premiacaopontosepontoes-anexov.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.cultura.pr.gov.br/PNAB/Pagina/Edital-Premiacao-de-Pontos-de-Cultura",
+     "degrau": 1,
+     "como": "página oficial e documentos citados nela",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.googletagmanager.com/ns.html?id=GTM-WK32TR88",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": "pagina_vazia",
+     "falha": null,
+     "oficial": null,
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2024-08/pnab-premiacaopontosepontoes-r01.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 60,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2026-01/ci_202408281.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 2,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2024-09/pnab-pontos_e_pontoes-anexoi_1.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 20,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2024-09/pnab-pontos_e_pontoes-anexoii_1.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 41,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2026-05/anexo_04_-_declaracao_de_representacao_do_grupo_coletivo_cultural.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 4,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2024-09/pnab-premiacaopontosepontoes-anexov.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.cultura.pr.gov.br/sites/default/arquivos_restritos/files/documento/2024-09/pnab-premiacaopontosepontoes-anexovi.pdf",
      "degrau": 1,
      "como": "documento citado na página oficial: documento embutido na página",
      "motivo": null,
@@ -59996,6 +60651,377 @@
     "ja_constavam": 2,
     "faltam": 1,
     "pct_certificado_12": 0.75,
+    "pct_cobertura_12": 0.9167
+   }
+  },
+  {
+   "id": "agr-88c1d4a2ec7b",
+   "tipo": "estrela",
+   "titulo": "Chamamento Público Conjunto nº 1/2026 - PET Saúde Informação e Saúde Digital",
+   "balcao": "orgao",
+   "link_oficial": "http://conselho.saude.gov.br/",
+   "degrau": 1,
+   "como": "página oficial e documentos citados nela",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Território",
+    "Requisitos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Requisitos",
+    "Destinação",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Território"
+   ],
+   "tentativa": 2,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "sem_estrela",
+   "estagio_inicio": "sem_estrela",
+   "esgotada": null,
+   "eficiencia": 0.889,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": null,
+   "em": "2026-10-16T13:45:40+00:00",
+   "prazo": null,
+   "uf": null,
+   "orgao": "Ministério da Saúde",
+   "fim": "2025-11-05",
+   "itens": {
+    "Esfera": {
+     "valor": "federal",
+     "trecho": "domínio/órgão: conselho.saude.gov.br · Ministério da Saúde",
+     "pagina": 1,
+     "documento": "http://conselho.saude.gov.br/",
+     "metodo": "domínio e órgão"
+    },
+    "Requisitos": {
+     "valor": "podem se inscrever de 1º a 15 de outubro para concorrer às vagas externas da Comissão",
+     "trecho": "idades e movimentos sociais nacionais que não integram o Pleno do CNS podem se inscrever de 1º a 15 de outubro para concorrer às vagas externas da Comissão Saiba mais sobre CNS abre inscrições para recomposição da Conep",
+     "pagina": 1,
+     "documento": "http://conselho.saude.gov.br/",
+     "metodo": "texto"
+    },
+    "Destinação": {
+     "valor": "Bolsa",
+     "trecho": "Crimes Celular Seguro Assistência Direta Novo Bolsa Família (PBF) Info",
+     "pagina": 1,
+     "documento": "http://conselho.saude.gov.br/",
+     "metodo": "modalidade de recebimento"
+    },
+    "Área de atuação": {
+     "valor": "Saúde",
+     "trecho": "termos do objeto e do título: Saúde",
+     "pagina": 1,
+     "documento": "http://conselho.saude.gov.br/",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Prazo de inscrição": {
+     "valor": "20/08/2026 a 19/10/2026",
+     "trecho": "dital Conjunto SEIDIGI/SGTES-MS nº 1/2026 Publicação: 17/08/2026 Período de inscrições: 20/08/2026 a 19/10/2026 Duração dos projetos: 24 meses Grupos de aprendizagem tutorial:",
+     "pagina": 1,
+     "documento": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-conjunto-no-1-2026-seidigi-sgtes",
+     "metodo": "cronograma"
+    },
+    "Resultado": {
+     "valor": "30/11/2026",
+     "trecho": "/10/2026 a 30/10/2026 Respostas aos recursos 09/11/2026 Divulgação do resultado preliminar dos projetos selecionados 30/11/2026 Interposição de recursos 30/11/2026 a 04/12/2026 Respos",
+     "pagina": 1,
+     "documento": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-conjunto-no-1-2026-seidigi-sgtes",
+     "metodo": "seção"
+    },
+    "Prazo de recurso": {
+     "valor": "27/10/2026 a 30/10/2026",
+     "trecho": "Divulgação da relação dos projetos habilitados 27/10/2026 Interposição de recursos 27/10/2026 a 30/10/2026 Respostas aos recursos 09/11/2026 Divulgação do resulta",
+     "pagina": 1,
+     "documento": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-conjunto-no-1-2026-seidigi-sgtes",
+     "metodo": "seção"
+    },
+    "Objeto": {
+     "valor": "Edital Conjunto SEIDIGI/SGTES-MS nº 1/2026 , para seleção de projetos do Programa de Educação pelo Trabalho para a Saúde – PET Saúde Informação e Saúde Digital (PET Saúde I&amp",
+     "trecho": "Secretaria de Gestão do Trabalho e da Educação na Saúde (SGTES/MS) , torna público o Edital Conjunto SEIDIGI/SGTES-MS nº 1/2026 , para seleção de projetos do Programa de Educação pelo Trabalho para a Saúde – PET Saúde Informação e Saúde Digital (PET Saúde I&amp;SD) . O edital convida as Instituições da Rede Federal de Educação",
+     "pagina": 1,
+     "documento": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-conjunto-no-1-2026-seidigi-sgtes",
+     "metodo": "texto"
+    },
+    "Órgão / financiador": {
+     "valor": "Ministério da Saúde",
+     "trecho": "gital (SEIDIGI) e Gestão do Trabalho e da Educação na Saúde (SGTES) — Ministério da Saúde",
+     "pagina": 1,
+     "documento": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-conjunto-no-1-2026-seidigi-sgtes",
+     "metodo": "cabeçalho"
+    },
+    "Anexos": {
+     "valor": "ANEXO I – Formulário de Submissão das Propostas de Projeto PET Saúde Informação; ANEXO II – Termo de Compromisso; e; ANEXO III – Avaliação de Mérito Técnico, contendo critérios para a avaliação das; ANEXO I Formulário de Submissão das Propostas de Projeto PET Saúde Informação; ANEXO II Termo de Comp",
+     "trecho": "pet-saude-digital , bem como pelos normativos indicados no preâmbulo: ANEXO I – Formulário de Submissão das Propostas de Projeto PET Saúde Informação e Saúde Digital (PET Saúde I&SD); ANEXO II – Termo de Compromisso; e ANEXO III – Avaliação de Mérito Técnico,",
+     "pagina": 1,
+     "documento": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-conjunto-no-1-2026-seidigi-sgtes/edital",
+     "metodo": "lista de anexos"
+    },
+    "Valor": {
+     "valor": "R$ 250.000,00 (duzentos e cinquenta mil reais)",
+     "trecho": "mbito do PRONAS/PCD. O valor mínimo da proposta de projeto será de R$ 250.000,00 (duzentos e cinquenta mil reais) e o valor máximo de R$ 4.000.000,00 (quatro milhões de reais) . O",
+     "pagina": 1,
+     "documento": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2025/chamamento-publico-no-02-2025-se-pronas",
+     "metodo": "seção"
+    }
+   },
+   "dispensas": {},
+   "abordagens": [
+    {
+     "n": 3,
+     "nome": "página oficial e citados",
+     "em": "2026-10-16T02:28:08+00:00",
+     "ganhou": [
+      "Anexos",
+      "Destinação",
+      "Esfera",
+      "Objeto",
+      "Prazo de inscrição",
+      "Prazo de recurso",
+      "Requisitos",
+      "Resultado",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    },
+    {
+     "n": 4,
+     "nome": "biblioteca de sites",
+     "em": "2026-10-16T13:45:40+00:00",
+     "ganhou": [
+      "Valor"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "http://conselho.saude.gov.br/",
+     "degrau": 1,
+     "como": "página oficial e documentos citados nela",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-conjunto-no-1-2026-seidigi-sgtes",
+     "degrau": 1,
+     "como": "página oficial e documentos citados nela",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.googletagmanager.com/ns.html?id=GTM-NHZSKTD",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": "pagina_vazia",
+     "falha": null,
+     "oficial": null,
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/conselho-nacional-de-saude/pt-br/acesso-a-informacao/chamamentos-publicos",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Chamamentos Públicos",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-conjunto-no-1-2026-seidigi-sgtes/2a-retificacao-cronograma.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-conjunto-no-1-2026-seidigi-sgtes/cronograma-retificado-05-10-26.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 2,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-conjunto-no-1-2026-seidigi-sgtes/cronograma-retificado-07-10-26.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Chamamentos Públicos",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-conjunto-no-1-2026-seidigi-sgtes/edital",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Edital",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 16,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-conjunto-no-1-2026-seidigi-sgtes/cronograma-do-edital",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Cronograma do Edital",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.in.gov.br/web/dou/-/edital-737082251",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Retificação do Edital",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "http://conselho.saude.gov.br/",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2025/chamamento-publico-no-02-2025-se-pronas",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2025/chamamento-publico-no-02-2025-se-pronas/edital",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 35,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2025/chamamento-publico-no-03-2025-se-pronon",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.googletagmanager.com/ns.html?id=GTM-NHZSKTD",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": "pagina_vazia",
+     "falha": null,
+     "oficial": null,
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/conselho-nacional-de-saude/pt-br/acesso-a-informacao/chamamentos-publicos",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Chamamentos Públicos",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "certificado",
+     "Resultado": "certificado",
+     "Prazo de recurso": "certificado",
+     "Valor": "certificado",
+     "Órgão / financiador": "certificado",
+     "Território": "falta",
+     "Esfera": "certificado",
+     "Requisitos": "certificado",
+     "Anexos": "certificado",
+     "Destinação": "certificado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 11,
+    "dispensados": 0,
+    "ja_constavam": 0,
+    "faltam": 1,
+    "pct_certificado_12": 0.9167,
     "pct_cobertura_12": 0.9167
    }
   },
@@ -80522,714 +81548,35 @@
     "pct_certificado_12": 0.8333,
     "pct_cobertura_12": 0.8333
    }
-  },
-  {
-   "id": "9a64fee8a5cb67d5cbf0",
-   "tipo": "estrela",
-   "titulo": "MINAS GERAIS SECRETARIA DE ESTADO DA EDUCACAO — Reabertura do Edital de Credenciamento SEE nº 02/2025 - Credenciamento de instituições públi. Veredito: prata — Objeto, Prazo, Território, Valor e Requi",
-   "balcao": "revisão",
-   "link_oficial": "https://pncp.gov.br/app/editais/18715599000105/2026/622",
-   "degrau": 0,
-   "como": "revisão manual: leitura do documento oficial no Chrome da titular",
-   "faltavam": [
-    "Prazo de recurso",
-    "Destinação",
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Prazo de recurso",
-    "Destinação"
-   ],
-   "tentativa": 1,
-   "versao": "revisão manual (P2-BR-PUBLICAS-2026-10-10)",
-   "gabarito": null,
-   "estagio": null,
-   "estagio_inicio": null,
-   "esgotada": null,
-   "eficiencia": 0.833,
-   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido na revisão",
-   "selo_antes": null,
-   "selo_depois": "prata",
-   "em": "2026-10-10T20:09:23+00:00",
-   "prazo": "2027-07-30T23:59",
-   "uf": null,
-   "orgao": null,
-   "fim": "2027-07-30T23:59",
-   "itens": {
-    "Objeto": {
-     "valor": "Reabertura do Edital de Credenciamento SEE nº 02/2025 - Credenciamento de instituições públicas ou privadas, com ou sem fins lucrativos, que poderão ofertar formação profissional e técnica de nível médio, no\nâmbito do Projeto Trilhas de Futuro, conforme especificações, exigências e quantidades estabelecidas no Edital e em seus anexos.\nA Secretaria de Estado de Educação, por intermédio da Subsecret",
-     "trecho": "MAIO DE 2025. OBJETO : Credenciamento de instituições públicas ou privadas, com ou sem fins lucrativos, que poderão ofertar formação profissional e técnica de nível médio, no âmbito do Projeto Trilhas de Futuro, conforme especificações, exigências e quantidades",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/18715599000105/compras/2026/622/arquivos/1",
-     "metodo": "pdf.js"
-    },
-    "Prazo de inscrição": {
-     "valor": "de 2026-07-30 00:00 até 2027-07-30 23:59",
-     "trecho": "dataAberturaProposta/dataEncerramentoProposta: de 2026-07-30 00:00 até 2027-07-30 23:59",
-     "pagina": null,
-     "documento": "https://pncp.gov.br/app/editais/18715599000105/2026/622",
-     "metodo": "registro oficial no PNCP (API de consulta)"
-    },
-    "Resultado": {
-     "valor": "conforme trecho do edital",
-     "trecho": "3.10. As instituições poderão acompanhar o resultado do credenciamento pelo sistema SEI e a publicação da homologação de credenciamento no Diário Oficial Eletrônico de Minas Gerais, através do site: https://www.jornalminasgerais.mg.gov.br/ 3.11. Os recursos, bem como quaisquer documentações",
-     "pagina": 2,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/18715599000105/compras/2026/622/arquivos/1",
-     "metodo": "pdf.js"
-    },
-    "Valor": {
-     "valor": "R$ 800.000.000,00",
-     "trecho": "Lote Item Código do item no SIAD Qtde.Unidade de Aquisição Valor unitário Valor Total 1 1 000109460 1 CURSO TÉCNICO PROFISSIONALIZANTE EM ATENDIMENTO AO PROGRAMA TRILHAS DE FUTURO R$800.000.000,00 R$R$800.000.000,00 R$ 800.000.000,00 * O valor estimado foi calculado com base no quantitativo de vagas a serem ofertadas, em consonância com os",
-     "pagina": 12,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/18715599000105/compras/2026/622/arquivos/1",
-     "metodo": "pdf.js"
-    },
-    "Órgão / financiador": {
-     "valor": "MINAS GERAIS SECRETARIA DE ESTADO DA EDUCACAO — SEE/DGCO-COMPRAS",
-     "trecho": "orgaoEntidade.razaoSocial: MINAS GERAIS SECRETARIA DE ESTADO DA EDUCACAO — SEE/DGCO-COMPRAS",
-     "pagina": null,
-     "documento": "https://pncp.gov.br/app/editais/18715599000105/2026/622",
-     "metodo": "registro oficial no PNCP (API de consulta)"
-    },
-    "Território": {
-     "valor": "Belo Horizonte/MG (ver restrição no trecho)",
-     "trecho": "Minas Gerais, por meio da Secretaria de Estado de Educação, sediada na Rodovia Papa João Paulo II, nº 4143 – Prédio Minas/11º andar – Cidade Administrativa – Belo Horizonte/MG, CEP 31.630-900, realizará CREDENCIAMENTO, nos termos da Lei Federal nº 14.133, de 1º",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/18715599000105/compras/2026/622/arquivos/1",
-     "metodo": "pdf.js"
-    },
-    "Esfera": {
-     "valor": "E (Estadual)",
-     "trecho": "orgaoEntidade.esferaId: E (Estadual)",
-     "pagina": null,
-     "documento": "https://pncp.gov.br/app/editais/18715599000105/2026/622",
-     "metodo": "registro oficial no PNCP (API de consulta)"
-    },
-    "Requisitos": {
-     "valor": "conforme trecho do documento",
-     "trecho": "credenciamento. 2.4. Não poderão participar do credenciamento: 2.4.1. Aquele que não atenda às condições deste Edital e seus Anexos; 2.4.2. Pessoa física ou jurídica que esteja impedida de licitar ou contratar com a administração pública em decorrência de sanção que",
-     "pagina": 2,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/18715599000105/compras/2026/622/arquivos/1",
-     "metodo": "pdf.js"
-    },
-    "Anexos": {
-     "valor": "Anexo I – TERMO DE REFERÊNCIA (114705774) ANEXO ; Anexo III – MODELO FORMULÁRIO CREDENCIAMENTO (SE; Anexo V – MINUTA DE TERMO DE CONTRATO (114705292; Anexo VII – TABELA DE PREÇOS (114708089) ANEXO V; Anexo VI; Anexo II – IMC Objeto: Oferta de Cursos Técnicos; Anexo IV – FORMULÁRIO DE CURSO CNPJ: NOME FANTAS; Anexo VIII – RELAÇÃO DE CURSOS TÉCNICOS PRIORITÁ",
-     "trecho": "os seguintes anexos: ANEXO I - TERMO DE REFERÊNCIA (114705774) ANEXO II - ÍNDICE DE MEDIÇÃO DE RESULTADOS (114706448) ANEXO III - MODELO FORMULÁRIO CREDENCIAMENTO (SEI) (114706649) ANEXO IV - MODELO FORMULÁRIO DE CURSO (114706926)",
-     "pagina": 11,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/18715599000105/compras/2026/622/arquivos/1",
-     "metodo": "pdf.js"
-    },
-    "Área de atuação": {
-     "valor": "Educação",
-     "trecho": "Reabertura do Edital de Credenciamento SEE nº 02/2025 - Credenciamento de instituições públicas ou privadas, com ou sem fins lucrativos, que poderão ofertar formação profissional e técnica de nível médio, no\nâmbito do Projeto Trilhas de Futuro, conforme especificações, exigências e quantidades estabelecidas no Edital e em seus anexos.\nA Secretaria de Estado de Educação, por intermédio da Subsecretaria de Desenvolvimento da Educação Básica - Projeto Trilhas do Futuro, torna pública a reabertura do Edital de Credenciamento nº 02/2025, em conformidade com a Lei de Licitações nº 14.133, de 1º de abril de 2021, da Resolução SEE nº 4.583 de 22 de junho de 2021 e demais normativas aplicáveis, para credenciamento de Instituições públicas ou privadas, com ou sem fins lucrativos, que poderão ofertar formação profissional e técnica de nível médio, no âmbito do Projeto Trilhas de Futuro, conforme especificações, exigências e quantidades estabelecidas no Edital e em seus anexos, no site https://www.educacao.mg.gov.br/a-secretaria/concursos-e-editais.",
-     "pagina": null,
-     "documento": "https://pncp.gov.br/app/editais/18715599000105/2026/622",
-     "metodo": "registro oficial no PNCP"
-    }
-   },
-   "dispensas": {},
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "revisão manual (P2-BR-PUBLICAS-2026-10-10)",
-     "em": "2026-10-10T20:09:23+00:00",
-     "ganhou": [
-      "Anexos",
-      "Esfera",
-      "Objeto",
-      "Prazo de inscrição",
-      "Requisitos",
-      "Resultado",
-      "Território",
-      "Valor",
-      "Área de atuação",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/18715599000105/compras/2026/622/arquivos/1",
-     "degrau": null,
-     "como": null,
-     "motivo": null,
-     "falha": null,
-     "oficial": "documento oficial lido na revisão",
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/18715599000105/compras/2026/622/arquivos/4",
-     "degrau": null,
-     "como": null,
-     "motivo": null,
-     "falha": null,
-     "oficial": "documento oficial lido na revisão",
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/18715599000105/compras/2026/622/arquivos/2",
-     "degrau": null,
-     "como": null,
-     "motivo": null,
-     "falha": null,
-     "oficial": "documento oficial lido na revisão",
-     "paginas": null,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/18715599000105/compras/2026/622/arquivos/3",
-     "degrau": null,
-     "como": null,
-     "motivo": null,
-     "falha": null,
-     "oficial": "documento oficial lido na revisão",
-     "paginas": null,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "certificado",
-     "Prazo de inscrição": "certificado",
-     "Resultado": "certificado",
-     "Prazo de recurso": "falta",
-     "Valor": "certificado",
-     "Órgão / financiador": "certificado",
-     "Território": "certificado",
-     "Esfera": "certificado",
-     "Requisitos": "certificado",
-     "Anexos": "certificado",
-     "Destinação": "falta",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 10,
-    "dispensados": 0,
-    "ja_constavam": 0,
-    "faltam": 2,
-    "pct_certificado_12": 0.8333,
-    "pct_cobertura_12": 0.8333
-   }
-  },
-  {
-   "id": "op-81991a04c231",
-   "tipo": "livro",
-   "titulo": "O presente procedimento tem por objeto subsidiar o Chamamento Público para a seleção de associações e/ou cooperativas para a coleta e destinação de resíduos rec",
-   "balcao": "pncp",
-   "link_oficial": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2",
-   "degrau": 0,
-   "como": "PNCP: arquivo anexado pelo órgão (Termo de Referência)",
-   "faltavam": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Prazo de recurso",
-    "Destinação"
-   ],
-   "tentativa": 1,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "prata",
-   "estagio_inicio": "prata",
-   "esgotada": null,
-   "eficiencia": 0.833,
-   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido (pdf_escaneado)",
-   "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-10T10:26:26+00:00",
-   "prazo": null,
-   "uf": "RJ",
-   "orgao": "PNCP — ESTADO DO RIO DE JANEIRO",
-   "fim": null,
-   "itens": {
-    "Objeto": {
-     "valor": "subsidiar o Chamamento Público para a seleção de Associações e/ou Cooperativas para a coleta e destinação de resíduos recicláveis gerados nas unidades do Departamento de Trânsito do Estado do Rio de Janeiro - DETRAN-RJ, conforme lotes relacionados no anexo C.",
-     "trecho": "1. OBJETO 1.1. O presente Termo de Referência tem como objetivo subsidiar o Chamamento Público para a seleção de Associações e/ou Cooperativas para a coleta e destinação de resíduos recicláveis gerados nas unidades do Departamento de Trânsito do Estado do Rio de Janeiro - DETRAN-RJ, conforme lotes relacionados no anexo C. 2. JUSTIFICATIVA 2.1. O encaminhamento dos recicláveis produzidos p",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2",
-     "metodo": "texto"
-    },
-    "Órgão / financiador": {
-     "valor": "Governo do Estado do Rio de Janeiro",
-     "trecho": "Governo do Estado do Rio de Janeiro Secretaria de Estado da Casa Civil Departamento de Trânsito do Estad",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2",
-     "metodo": "cabeçalho"
-    },
-    "Território": {
-     "valor": "do Estado do Rio de Janeiro",
-     "trecho": "Governo do Estado do Rio de Janeiro Secretaria de Estado da Casa Civil Departamento de Trânsito do Estad",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2",
-     "metodo": "texto"
-    },
-    "Esfera": {
-     "valor": "federal",
-     "trecho": "domínio/órgão: pncp.gov.br · Governo do Estado do Rio de Janeiro PNCP — ESTADO DO RIO DE JANEIRO",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2",
-     "metodo": "domínio e órgão"
-    },
-    "Requisitos": {
-     "valor": "Poderão participar do processo seletivo as associações e/ou cooperativas de catadores de materiais recicláveis que atenderem aos seguintes requisitos, previstos no art.",
-     "trecho": "do do Rio de Janeiro – DETRAN-RJ. 6. DAS CONDIÇÕES GERAIS 6.1. Poderão participar do processo seletivo as associações e/ou cooperativas de catadores de materiais recicláveis que atenderem aos seguintes requisitos, previstos no art. 3º do Decreto Estadual 40.645/2007: Governo do Estado do Rio de Jane",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2",
-     "metodo": "texto"
-    },
-    "Área de atuação": {
-     "valor": "Cultura, Meio ambiente",
-     "trecho": "termos do objeto e do título: Cultura, Meio ambiente",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2",
-     "metodo": "palavras-chave do objeto"
-    },
-    "Anexos": {
-     "valor": "ANEXO V.; ANEXO V, informando ao DETRAN -RJ a eventual; ANEXO V - Divisão de Arquivo Central - conforme Resolução do CONARQ n º 40/14; ANEXO V: 2.29.1. O procedimento de recolhimento das placas veiculares inutiliza",
-     "trecho": "Casa Civil Departamento de Trânsito do Estado do Rio de Janeiro ANEXO A MINUTA DE ACORDO DE COOPERAÇÃO ACORDO DE COOPERAÇÃO PARA DESTINAÇÃO DE RESÍDUOS RECICLÁVEIS DESCARTADOS PELO DEPARTAMENTO DE TRÂNSITO DO ESTADO DO RIO DE JANEIRO – DETR",
-     "pagina": 1,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/3",
-     "metodo": "lista de anexos"
-    }
-   },
-   "dispensas": {
-    "Prazo de inscrição": {
-     "motivo": "dispensado pelo Cartório — não se aplica: inscrição em fluxo contínuo (cadastro permanente, sem data-limite)",
-     "trecho": "16. RESCISÃO 16.1. O termo de compromisso poderá ser reincidido a qualquer tempo: a) Por iniciativa de qualquer das partes, mediante comunicação fo",
-     "pagina": 10,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2"
-    },
-    "Resultado": {
-     "motivo": "dispensado pelo Cartório — não se aplica: fluxo contínuo — cada proposta é analisada ao chegar, não há resultado único",
-     "trecho": "16. RESCISÃO 16.1. O termo de compromisso poderá ser reincidido a qualquer tempo: a) Por iniciativa de qualquer das partes, mediante comunicação fo",
-     "pagina": 10,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2"
-    },
-    "Valor": {
-     "motivo": "dispensado pelo Cartório — não se aplica: sem repasse financeiro (cooperação, cessão ou habilitação sem recurso)",
-     "trecho": "aneiro 10. VALOR ESTIMADO DA CONTRATAÇÃO 10.1. Não haverá transferência de recursos financeiros entre as partes para execução do objeto de presente Term",
-     "pagina": 4,
-     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2"
-    }
-   },
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-10T10:26:26+00:00",
-     "ganhou": [
-      "Anexos",
-      "Esfera",
-      "Objeto",
-      "Prazo de inscrição",
-      "Requisitos",
-      "Resultado",
-      "Território",
-      "Valor",
-      "Área de atuação",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/1",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Edital)",
-     "motivo": "pdf_escaneado",
-     "falha": null,
-     "oficial": null,
-     "paginas": 7,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/2",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Termo de Referência)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 12,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/42498600000171/compras/2025/4383/arquivos/3",
-     "degrau": 0,
-     "como": "PNCP: arquivo anexado pelo órgão (Outros Documentos)",
-     "motivo": null,
-     "falha": null,
-     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
-     "paginas": 10,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "certificado",
-     "Prazo de inscrição": "dispensado",
-     "Resultado": "dispensado",
-     "Prazo de recurso": "falta",
-     "Valor": "dispensado",
-     "Órgão / financiador": "certificado",
-     "Território": "certificado",
-     "Esfera": "certificado",
-     "Requisitos": "certificado",
-     "Anexos": "certificado",
-     "Destinação": "falta",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 7,
-    "dispensados": 3,
-    "ja_constavam": 0,
-    "faltam": 2,
-    "pct_certificado_12": 0.8333,
-    "pct_cobertura_12": 0.8333
-   }
-  },
-  {
-   "id": "agr-49c752701a30",
-   "tipo": "estrela",
-   "titulo": "Plan Brasil lança fundo de R$ 600 mil para projetos voltados à igualdade de gênero",
-   "balcao": "privado",
-   "link_oficial": "https://plan.org.br/wp-content/uploads/2026/10/Regulamento-Edital-Fundo-Acelere-o-Relogio-2026.pdf",
-   "degrau": 1,
-   "como": "página oficial e documentos citados nela",
-   "faltavam": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Destinação",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Prazo de recurso",
-    "Anexos"
-   ],
-   "tentativa": 2,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "prata",
-   "estagio_inicio": "sem_estrela",
-   "esgotada": null,
-   "eficiencia": 0.833,
-   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": "prata",
-   "em": "2026-10-16T07:52:15+00:00",
-   "prazo": null,
-   "uf": null,
-   "orgao": null,
-   "fim": "2026-10-11",
-   "itens": {
-    "Prazo de inscrição": {
-     "valor": "até 11 de outubro de 2026",
-     "trecho": "zações da Sociedade Civil - até R$ 30.000,00 (trinta mil reais) As inscrições são gratuitas e deverão ser realizadas na plataforma Aceleradora da Igualdade, a partir de 11 de outubro de 2026, data que carrega um significado especial: o Dia Internacional da Me",
-     "pagina": 3,
-     "documento": "https://plan.org.br/wp-content/uploads/2026/10/Regulamento-Edital-Fundo-Acelere-o-Relogio-2026.pdf",
-     "metodo": "cronograma"
-    },
-    "Resultado": {
-     "valor": "8 de março de 2027",
-     "trecho": "/2027 Due Dilligence | Checagem de Documentos 15/02/2027 a 26/02/2027 Resultado Final 8 de março de 2027 Contratualização e Repasses Financeiros Abril de 2027 11. GOVER",
-     "pagina": 13,
-     "documento": "https://plan.org.br/wp-content/uploads/2026/10/Regulamento-Edital-Fundo-Acelere-o-Relogio-2026.pdf",
-     "metodo": "seção"
-    },
-    "Valor": {
-     "valor": "R$ 600.000,00 (seiscentos e vinte cintos mil reais)",
-     "trecho": "ados a todas as pessoas envolvidas. 9. RECURSOS FINANCEIROS O montante total de recurso financeiro disponibilizado para este edital é de até R$ 600.000,00 (seiscentos e vinte cintos mil reais), que será distribuído para as iniciativas selecionadas, conforme des",
-     "pagina": 12,
-     "documento": "https://plan.org.br/wp-content/uploads/2026/10/Regulamento-Edital-Fundo-Acelere-o-Relogio-2026.pdf",
-     "metodo": "seção"
-    },
-    "Objeto": {
-     "valor": "Alcançar a Igualdade de Gênero e Empoderar Todas as Mulheres e Meninas.",
-     "trecho": "to Sustentável 5 (ODS 5) da Organização das Nações Unidas (ONU), que tem por objetivo Alcançar a Igualdade de Gênero e Empoderar Todas as Mulheres e Meninas. 4 Ao apoiar iniciativas que valorizam a diversidade e prom",
-     "pagina": 3,
-     "documento": "https://plan.org.br/wp-content/uploads/2026/10/Regulamento-Edital-Fundo-Acelere-o-Relogio-2026.pdf",
-     "metodo": "texto"
-    },
-    "Território": {
-     "valor": "todo o território nacional",
-     "trecho": "ede com o terceiro setor e movimentos sociais, a organização alcança todo o território nacional, inspirando e mobilizando a sociedade para transformar realidades, p",
-     "pagina": 14,
-     "documento": "https://plan.org.br/wp-content/uploads/2026/10/Regulamento-Edital-Fundo-Acelere-o-Relogio-2026.pdf",
-     "metodo": "texto"
-    },
-    "Requisitos": {
-     "valor": "poderá participar desta ed ição (2026), podendo retomar a participação a partir de 2028.",
-     "trecho": "ou projeto. Quem foi contemplado na edição de 2024, por exemplo, não poderá participar desta ed ição (2026), podendo retomar a participação a partir de 2028. • Organizações selecionadas pelo Projeto Bacuri, por estarem em fase",
-     "pagina": 7,
-     "documento": "https://plan.org.br/wp-content/uploads/2026/10/Regulamento-Edital-Fundo-Acelere-o-Relogio-2026.pdf",
-     "metodo": "texto"
-    },
-    "Destinação": {
-     "valor": "Doação",
-     "trecho": "disponíveis aqui: Word e Excel. 2. CONTEXTO Com o apoio de uma doação da filantropa MacKenzie Scott, a Plan International Brasil lança esta segunda e dição para fomentar iniciativas da socied",
-     "pagina": 3,
-     "documento": "https://plan.org.br/wp-content/uploads/2026/10/Regulamento-Edital-Fundo-Acelere-o-Relogio-2026.pdf",
-     "metodo": "modalidade de recebimento"
-    },
-    "Área de atuação": {
-     "valor": "Direitos humanos",
-     "trecho": "termos do objeto e do título: Direitos humanos",
-     "pagina": 1,
-     "documento": "https://plan.org.br/wp-content/uploads/2026/10/Regulamento-Edital-Fundo-Acelere-o-Relogio-2026.pdf",
-     "metodo": "palavras-chave do objeto"
-    },
-    "Esfera": {
-     "valor": "privada",
-     "trecho": "domínio/órgão: plan.org.br · Gravidez na Adolescência e seus Impactos na Vida de Mulheres no Brasil \n \n\n \n \n ",
-     "pagina": 1,
-     "documento": "https://plan.org.br/sem-categoria/marcas-do-tempo-gravidez-na-adolescencia-e-seus-impactos-na-vida-de-mulheres-no-brasil/",
-     "metodo": "domínio e órgão"
-    },
-    "Órgão / financiador": {
-     "valor": "Instituto QualiBest",
-     "trecho": "il Responsável pelo Estudo Plan International Brasil e Instituto QualiBest Objetivo O objetivo do estudo “Percepções sobre Violên",
-     "pagina": 1,
-     "documento": "https://plan.org.br/estudos/percepcoes-violencia-vulnerabilidade-meninas-brasil/",
-     "metodo": "cabeçalho"
-    }
-   },
-   "dispensas": {},
-   "abordagens": [
-    {
-     "n": 3,
-     "nome": "página oficial e citados",
-     "em": "2026-10-16T07:52:10+00:00",
-     "ganhou": [
-      "Destinação",
-      "Objeto",
-      "Prazo de inscrição",
-      "Requisitos",
-      "Resultado",
-      "Território",
-      "Valor",
-      "Área de atuação"
-     ],
-     "legado": null
-    },
-    {
-     "n": 10,
-     "nome": "busca no domínio",
-     "em": "2026-10-16T07:52:15+00:00",
-     "ganhou": [
-      "Esfera",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://plan.org.br/wp-content/uploads/2026/10/Regulamento-Edital-Fundo-Acelere-o-Relogio-2026.pdf",
-     "degrau": 1,
-     "como": "página oficial e documentos citados nela",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 18,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://plan.org.br/sem-categoria/marcas-do-tempo-gravidez-na-adolescencia-e-seus-impactos-na-vida-de-mulheres-no-brasil/",
-     "degrau": 2,
-     "como": "busca restrita ao domínio oficial",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://plan.org.br/estudos/percepcoes-violencia-vulnerabilidade-meninas-brasil/",
-     "degrau": 2,
-     "como": "busca restrita ao domínio oficial",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://plan.org.br/estudos/tirando-o-veu-estudo-casamento-infantil-no-brasil/",
-     "degrau": 2,
-     "como": "busca restrita ao domínio oficial",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://www.googletagmanager.com/ns.html?id=GTM-KM8QBV6",
-     "degrau": 2,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": "pagina_vazia",
-     "falha": null,
-     "oficial": null,
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://plan.org.br/wp-content/uploads/2026/07/PlanBrasil_PesquisaMarcasdoTempo_2026_resumoexecutivo.pdf",
-     "degrau": 2,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": "pdf_corrompido",
-     "falha": null,
-     "oficial": null,
-     "paginas": 0,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://plan.org.br/wp-content/uploads/2026/07/PlanBrasil_Marcas-do-Tempo_2026.pdf",
-     "degrau": 2,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 60,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://plan.org.br/wp-content/uploads/2025/11/RELATORIO-MENINAS-FINAL.pdf",
-     "degrau": 2,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 19,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://plan.org.br/wp-content/uploads/2019/06/Tirando-o-veu-estudo-casamento-infantil-no-brasil-Plan-International.pdf",
-     "degrau": 2,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio próprio do financiador",
-     "paginas": 60,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "certificado",
-     "Prazo de inscrição": "certificado",
-     "Resultado": "certificado",
-     "Prazo de recurso": "falta",
-     "Valor": "certificado",
-     "Órgão / financiador": "certificado",
-     "Território": "certificado",
-     "Esfera": "certificado",
-     "Requisitos": "certificado",
-     "Anexos": "falta",
-     "Destinação": "certificado",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 10,
-    "dispensados": 0,
-    "ja_constavam": 0,
-    "faltam": 2,
-    "pct_certificado_12": 0.8333,
-    "pct_cobertura_12": 0.8333
-   }
   }
  ],
  "linha_de_producao": {
   "na_linha": {
-   "sem_estrela": 1039,
+   "sem_estrela": 2148,
    "bronze": 27,
-   "prata": 1276
+   "prata": 1207
   },
   "na_linha_por_tipo": {
    "estrela": {
-    "sem_estrela": 279,
+    "sem_estrela": 270,
     "bronze": 19,
-    "prata": 33
+    "prata": 32
    },
    "livro": {
-    "sem_estrela": 760,
+    "sem_estrela": 1878,
     "bronze": 8,
-    "prata": 1243
+    "prata": 1175
    }
   },
-  "fila_oportunidades": 331,
-  "fila_livros": 2011,
-  "devidas_nesta_hora": 2247,
-  "promovidas_nesta_execucao": 9,
+  "fila_oportunidades": 321,
+  "fila_livros": 3061,
+  "devidas_nesta_hora": 3294,
+  "promovidas_nesta_execucao": 1,
   "sem_material_agora": 10,
   "esgotadas_10_abordagens": 0,
   "biblioteca_de_sites": {
-   "chaves": 936,
-   "sites": 2058
+   "chaves": 935,
+   "sites": 2029
   },
   "intervalo_horas": 12,
   "limite": 10,
