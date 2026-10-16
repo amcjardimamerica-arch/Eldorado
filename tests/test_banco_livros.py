@@ -157,3 +157,37 @@ class Etapa3Portao(unittest.TestCase):
             res = B.limpar_base_bruta(base)
         self.assertEqual([json.loads(l)["id"] for l in base.read_text().splitlines()], ["a", "c"])   # 'c' é histórico de livro
         self.assertEqual(res["removidas"], 2)
+
+
+class Etapa3Leitores(unittest.TestCase):
+    """16/10/2026: achados nos livros — primeiro fica, ordem de chegada, entrada sem oportunidade sai."""
+    def test_achados_nos_livros(self):
+        r = Path(tempfile.mkdtemp())
+        for d in ("biblioteca_alexandria/fontes", "dados/oportunidades"):
+            (r / d).mkdir(parents=True)
+        cat = r / "biblioteca_alexandria/fontes/motores.json"; cat.write_text(json.dumps({"motores": []}))
+        rep = r / "dados/oportunidades/repositorio_unico.json"
+        with mock.patch.object(B, "ROOT", r), mock.patch.object(B, "CAT", cat), mock.patch.object(B, "INDICE", r / "i.json"):
+            B.registrar_achados([{"id": "a", "titulo": "Chamamento OSC", "url": "https://x.go.gov.br/a", "sensor": "m1"},
+                                 {"id": "z", "titulo": "Ruído", "url": "https://y.com/z", "sensor": "m1"}])
+            B.registrar_achados([{"id": "a", "titulo": "Chamamento OSC (relido)", "url": "https://x.go.gov.br/a", "sensor": "m2"}])
+            self.assertEqual([x["id"] for x in B.achados()], ["a", "z"])
+            self.assertEqual(B.achados()[0]["titulo"], "Chamamento OSC")                    # o primeiro fica
+            rep.write_text(json.dumps({"registros": [{"id": "a", "titulo": "Chamamento OSC", "url": "https://x.go.gov.br/a"}]}))
+            res = B.consolidar()
+            self.assertEqual(res["livros_de_entrada_removidos"], 1)                          # 'z' não virou oportunidade
+            self.assertEqual([x["id"] for x in B.achados()], ["a"])
+
+
+class MigracaoUnica(unittest.TestCase):
+    def test_uma_vez(self):
+        r = Path(tempfile.mkdtemp())
+        for d in ("biblioteca_alexandria/fontes", "dados/oportunidades", "estado"):
+            (r / d).mkdir(parents=True)
+        cat = r / "biblioteca_alexandria/fontes/motores.json"; cat.write_text(json.dumps({"motores": []}))
+        base = r / "dados/oportunidades/oportunidades.jsonl"
+        base.write_text(json.dumps({"id": "a", "titulo": "Chamamento público de OSC", "url": "https://x.go.gov.br/a", "fim": "2099-01-01"}) + "\n")
+        with mock.patch.object(B, "ROOT", r), mock.patch.object(B, "CAT", cat), mock.patch.object(B, "MARCO_MIGRACAO", r / "estado/livros_migracao.json"):
+            self.assertEqual(B.migrar_se_preciso()["migracao"], "feita agora")
+            self.assertEqual([x["id"] for x in B.achados()], ["a"])
+            self.assertEqual(B.migrar_se_preciso()["migracao"], "já feita")

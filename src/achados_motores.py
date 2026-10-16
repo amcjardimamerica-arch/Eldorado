@@ -46,7 +46,13 @@ def _data(*v) -> str | None:
 def montar() -> dict:
     D = json.loads((ROOT / "docs/dados/descricao_motores.json").read_text(encoding="utf-8"))
     motores = list((D.get("motores") or D).keys())
-    regs = [json.loads(l) for l in MESTRE.open(encoding="utf-8") if l.strip()] if MESTRE.exists() else []
+    try:                                               # 16/10/2026 (etapa 3): os achados vêm dos LIVROS
+        from .banco_livros import achados as _ach
+        regs = _ach()
+    except Exception:  # noqa: BLE001
+        regs = []
+    if not regs:
+        regs = [json.loads(l) for l in MESTRE.open(encoding="utf-8") if l.strip()] if MESTRE.exists() else []
     # a data de publicação de muitas fontes (ABCR, Diário de Goiás) está na ficha da Biblioteca, não no registro
     pub_ficha = {}
     for f in (ROOT / "biblioteca_alexandria/oportunidades").glob("*/*/ficha.json"):

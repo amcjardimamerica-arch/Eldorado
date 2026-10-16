@@ -958,6 +958,7 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
     except Exception:  # noqa: BLE001
         _RESTR = {"itens": []}
     executados, adiados = 0, []
+    _para_livros: list = []
     for s in escala["saem"][: (limite or len(escala["saem"]))]:
         _est = float((sens.get(s["id"]) or {}).get("duracao_s") or 60)
         if executados and _t.monotonic() - _ini + _est > _prazo:
@@ -1033,11 +1034,17 @@ def run(hoje: date | None = None, limite: int | None = None, pausa: float | None
                 if _m:
                     reg["fora_do_portao"] = int(reg.get("fora_do_portao") or 0) + 1
                     continue
-                append_jsonl(DB, a); existentes[a["id"]] = a; novos += 1
+                _para_livros.append(a)                    # 16/10 (etapa 3): o achado vai ao LIVRO
+                append_jsonl(DB, a); existentes[a["id"]] = a; novos += 1   # cópia temporária até migrar os outros leitores
         t = por_tipo.setdefault(s["tipo"], {"sensores": 0, "achados": 0, "falhas": 0})
         t["sensores"] += 1; t["achados"] += len(r["achados"]); t["falhas"] += len(r["falhas"])
         write_json(ESTADO, est)                                  # registro gravado a cada motor (sobrevive ao limite de tempo)
         print(f"  {s['id']}: {len(r['achados'])} achado(s), {len(r['falhas'])} falha(s), {reg['duracao_s']} s", flush=True)
+    try:                                                   # 16/10 (etapa 3): uma gravação dos livros por execução
+        from . import banco_livros as _BL
+        _BL.registrar_achados(_para_livros)
+    except Exception as _e:  # noqa: BLE001
+        print(f"  livros: achados não registrados ({type(_e).__name__}: {_e})", flush=True)
     est["ultima_execucao"] = {"data": hoje.isoformat(), "em": now_iso(),
                               "manual": escala.get("manual"), "bloco": escala.get("bloco", bloco),
                               "sensores_executados": executados, "adiados_por_tempo": adiados,
