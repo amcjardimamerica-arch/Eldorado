@@ -60,7 +60,7 @@ def receber() -> dict:
         fontes[d]["peso"] = max(int(fontes[d].get("peso") or 0), int(peso))
     for f in (_j(ROOT / "estado/conselho/fontes_irmas.json", {}).get("fontes") or []):
         pôr(f.get("url"), "conselho (fontes irmãs)", f.get("peso") or 1)
-    for c in (_j(ROOT / "estado/piloto/candidatas_do_catalogo.json", {}).get("candidatas") or []):
+    for c in ((__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/piloto/candidatas_do_catalogo.json", {}) or {}).get("candidatas") or []):
         if str(c.get("origem") or "").startswith("Piloto - Espião (privado"):
             pôr(c.get("url"), "Espião (privado/internacional)", 1)
     for c in ((__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/cartorio/certidoes.json", {}).get("certidoes") or {}).values()):

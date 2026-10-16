@@ -24,7 +24,7 @@ def montar() -> dict:
     fila = load_json(FILA) if FILA.exists() else {"itens": {}, "analises_do_claude": []}
     itens = fila.setdefault("itens", {})
     # 1) indícios do Espião (candidatas), com o que o Interceptador comprovou
-    cand = (load_json(ROOT / "estado/piloto/candidatas_do_catalogo.json") or {}).get("candidatas") or []
+    cand = (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/piloto/candidatas_do_catalogo.json", {}) or {}).get("candidatas") or []
     for c in cand:
         k = "cand:" + c["url"]
         it = itens.setdefault(k, {"origem": "Piloto - Espião", "tipo": "edital", "status": "a_analisar", "descoberto_em": c.get("descoberto_em")})

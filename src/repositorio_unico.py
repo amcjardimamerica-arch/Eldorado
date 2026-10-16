@@ -319,7 +319,7 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
     _DEC = _decisoes()
     from .fonte_oficial import eh_replicador as _eh_rep
     _RESOLV = (_j(ROOT / "estado/fontes_resolvidas.json", {}) or {}).get("resolvidas") or {}
-    uf_ag = {str(x.get("id")): x.get("uf") for x in ((_j(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens") or []) if x.get("uf")}
+    uf_ag = {str(x.get("id")): x.get("uf") for x in ((__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens") or []) if x.get("uf")}
     _foto = _j(ROOT / "dados/oportunidades/arquivamento_municipais_2026-10-11.json", {}) or {}
     _arq_ids = {i: f"arquivada em 11/10/2026: municipal fora de Goiás ({o.get('uf')}) — o livro fica guardado"
                 for o in (_foto.get("oportunidades") or []) for i in [o["id"], *(o.get("ids_origem") or [])]}

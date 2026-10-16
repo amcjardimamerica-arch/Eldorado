@@ -67,3 +67,9 @@ class Candidata16_10(unittest.TestCase):
         self.assertFalse(LA._oportunidade_vigente(sem_prazo))                     # pela regra antiga, seria apagada
         self.assertFalse(LA._candidata({**sem_prazo, "fim": "2020-01-01"}))       # prazo encerrado
         self.assertFalse(LA._candidata({"titulo": "Instituto X abre vaga de estágio", "url": "https://x.org/vaga"}))
+
+
+class EntradasDescoberta16_10(unittest.TestCase):
+    def test_entradas_na_trava_e_no_modo_descoberta(self):
+        self.assertTrue(LA.proibido("estado/agregadores/itens.json"))
+        self.assertTrue(LA.proibido("estado/piloto/candidatas_do_catalogo.json"))

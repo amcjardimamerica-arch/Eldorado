@@ -48,7 +48,7 @@ def coletar() -> dict:
         if not any((x.get("url") or x["titulo"]).lower() == chave for x in lista):
             lista.append(it)
     # ESPIÃO
-    for c in (_j(ROOT / "estado/piloto/candidatas_do_catalogo.json", {}).get("itens") or _j(ROOT / "estado/piloto/candidatas_do_catalogo.json", [])):
+    for c in ((__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/piloto/candidatas_do_catalogo.json", {}) or {}).get("itens") or (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/piloto/candidatas_do_catalogo.json", []) or [])):
         if isinstance(c, dict):
             por("espiao", str(c.get("descoberto_em") or ""), _item(c.get("titulo"), c.get("url"), situacao=c.get("enquadramento")))
     for m in (_j(ROOT / "estado/piloto/bordo.json", {}).get("missoes") or []):

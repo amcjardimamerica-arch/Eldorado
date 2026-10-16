@@ -167,7 +167,7 @@ def consolidar() -> list[dict]:
                                           "link_oficial": _dv.get("link_documento") or _dv.get("site_oficial"), "fim": (_pz.get("fim") or None),
                                           "inicio": (_pz.get("inicio") or None), "fonte_id": "revisao-humana", "descoberto_em": str(_dv.get("em") or "")[:10],
                                           "derivada_de": _dv.get("derivada_de"), "orgao": ((_dv.get("itens") or {}).get("Órgão / financiador") or {}).get("valor")}))
-    for c in (_j(ROOT / "estado/piloto/candidatas_do_catalogo.json", {}).get("candidatas") or []):
+    for c in ((__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/piloto/candidatas_do_catalogo.json", {}) or {}).get("candidatas") or []):
         cid = "cat-" + hashlib.sha1(c["url"].encode()).hexdigest()[:12]
         brutos.append(("Piloto - Espião", {"id": cid, "titulo": c.get("titulo"), "url": c.get("url"), "orgao": c.get("visto_em"),
                                             "descoberto_em": c.get("descoberto_em"), "fonte_id": "piloto-espiao", "enquadramento": c.get("enquadramento")}))
@@ -190,7 +190,7 @@ def consolidar() -> list[dict]:
         pass
     # MOTOR AGREGADORES NO FLUXO (28/09): capitaai, farolcultural, IDIS — indícios com o link da fonte oficial
     # 02/10: os MOTORES INDEXADORES (src/indexadores) gravam o mesmo arquivo, com financiador, áreas e o motor da família
-    for ag in (_j(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens", []):
+    for ag in (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens", []):
         brutos.append((f"motor agregadores · {ag.get('fonte')}", {"id": ag["id"], "titulo": ag.get("titulo"), "url": ag.get("link_oficial") or ag.get("pagina_agregador"),
                        # 29/09: prazo de agregador NÃO é prazo (regra do titular) — fica como pista até a fonte oficial confirmar
                        "fim": None, "prazo_agregador": ag.get("prazo"), "uf": ag.get("uf"), "data_publicacao": ag.get("primeiro_visto"), "fonte_id": "motor-agregadores",

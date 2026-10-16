@@ -597,7 +597,7 @@ def missao_aposta(brief: dict, ordem: int) -> tuple[str, list[dict], str]:
     res = buscar(q, maximo=8) or []
     ach, cand = [], []
     arq = ROOT / "estado/piloto/candidatas_do_catalogo.json"
-    C = _lj(arq) if arq.exists() else {"candidatas": []}
+    C = __import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(arq, None) or {"candidatas": []}
     ja = {x.get("url") for x in C.get("candidatas") or []}
     for r in res[:5]:
         url = r.get("url") or ""; titulo = (r.get("titulo") or "")[:160]
@@ -612,7 +612,7 @@ def missao_aposta(brief: dict, ordem: int) -> tuple[str, list[dict], str]:
             if it:
                 ach.append({"titulo": it.get("empresa"), "empresa": it.get("empresa"), "via": rs.get("via"), "url": url, "novo": True})
     if cand:
-        C["candidatas"] = (C.get("candidatas") or []) + cand; C["em"] = date.today().isoformat(); _wj(arq, C)
+        C["candidatas"] = (C.get("candidatas") or []) + cand; C["em"] = date.today().isoformat(); __import__("src.livro_arquivo", fromlist=["x"]).guardar_lote([(arq, C)], descoberta=True)
         # INCENTIVO (titular, 26/09): aposta que rendeu candidata fica registrada como exemplo — "faça mais assim"
         arq2 = ROOT / "estado/piloto/apostas_que_renderam.json"
         A = _lj(arq2) if arq2.exists() else {"regra": "apostas do briefing que produziram candidatas; o briefing seguinte as recebe como exemplos a seguir", "apostas": []}

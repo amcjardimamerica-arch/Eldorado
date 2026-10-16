@@ -32,6 +32,12 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 CEREBRO = ROOT / "estado/piloto/espiao_cerebro.json"
 CANDIDATAS = ROOT / "estado/piloto/candidatas_do_catalogo.json"
+_CAND_ORIGINAL = CANDIDATAS                           # 16/10: só o caminho ORIGINAL vai aos livros (teste aponta outro)
+
+
+def _ler_cand(padrao):
+    return (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(CANDIDATAS, None) if CANDIDATAS is _CAND_ORIGINAL
+            else _j(CANDIDATAS, None)) or padrao
 EMPRESAS_ESPIAO = ROOT / "dados/empresas/go/espiao_empresas.json"
 AVALIACAO = ROOT / "docs/dados/espiao_avaliacao.json"
 CICLO_VOOS = 100
@@ -317,7 +323,7 @@ def missao(ordem: int, buscar=None, ler_pagina=None, conhecida=None, rnd: random
     c = cerebro()
     fam, q = escolher(c, rnd)
     res = buscar(q, maximo=8) or []
-    ja_cand = {x.get("url") for x in (_j(CANDIDATAS, {}).get("candidatas") or [])}
+    ja_cand = {x.get("url") for x in (_ler_cand({}).get("candidatas") or [])}
     emp_arq = _j(EMPRESAS_ESPIAO, {"uf": "GO", "achados": []})
     ja_emp = {(x.get("empresa") or "").upper() for x in emp_arq.get("achados") or []}
     ach, cand, emps, motivos, notas = [], [], [], {}, []
@@ -369,7 +375,7 @@ def missao(ordem: int, buscar=None, ler_pagina=None, conhecida=None, rnd: random
                          "frente": fr, "nota_rede": round(nt, 3), "consulta": q, "territorio": terr})
         ach.append({"titulo": titulo or org, "url": url, "novo": True, "empresa": org if nova_emp else None, "frente": fr, "nota_rede": round(nt, 3)})
     if cand:
-        C = _j(CANDIDATAS, {"candidatas": []}); C["candidatas"] = (C.get("candidatas") or []) + cand; C["em"] = date.today().isoformat(); _w(CANDIDATAS, C)
+        C = _ler_cand({"candidatas": []}); C["candidatas"] = (C.get("candidatas") or []) + cand; C["em"] = date.today().isoformat(); (__import__("src.livro_arquivo", fromlist=["x"]).guardar_lote([(CANDIDATAS, C)], descoberta=True) if CANDIDATAS is _CAND_ORIGINAL else _w(CANDIDATAS, C))
     if emps:
         emp_arq["achados"] = ((emp_arq.get("achados") or []) + emps)[-3000:]; emp_arq["em"] = _agora()
         emp_arq["regra"] = "empresas e organizações privadas/internacionais descobertas pelo Espião, fora da lista de incentivo fiscal; o motor de patrocínio as agrega ao painel"
@@ -454,7 +460,7 @@ def avaliar_e_evoluir(rnd: random.Random | None = None) -> dict:
 def publicar(c: dict | None = None) -> dict:
     c = c or cerebro()
     E = _j(EMPRESAS_ESPIAO, {}).get("achados") or []
-    C = [x for x in (_j(CANDIDATAS, {}).get("candidatas") or []) if str(x.get("origem") or "").startswith("Piloto - Espião (privado")]
+    C = [x for x in (_ler_cand({}).get("candidatas") or []) if str(x.get("origem") or "").startswith("Piloto - Espião (privado")]
     out = {"em": _agora(), "regra": (__doc__ or "").split("\n\n")[0], "voos": c["voos"], "proxima_avaliacao_em_voos": CICLO_VOOS - c["voos_desde_avaliacao"],
            "familias": c["familias"], "avaliacoes": c["avaliacoes"][-10:],
            "empresas_novas": len(E), "empresas_por_modalidade": _conta(E, "modalidade"), "empresas_por_frente": _conta(E, "frente"),
