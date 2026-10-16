@@ -1,15 +1,15 @@
 {
- "em": "2026-10-16T09:00:00+00:00",
+ "em": "2026-10-16T09:57:50+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 18340,
-  "oportunidades_distintas": 2476,
-  "entidades_em_2_ou_mais_canais": 23,
+  "coletados": 18349,
+  "oportunidades_distintas": 2480,
+  "entidades_em_2_ou_mais_canais": 25,
   "etapas": {
-   "CONSOLIDADO": 17575,
-   "EM_LIVRO": 651,
+   "CONSOLIDADO": 17579,
+   "EM_LIVRO": 657,
    "REPROCESSAR": 71,
-   "QUALIFICADO": 43
+   "QUALIFICADO": 42
   },
   "fila_de_reprocessamento": {
    "URL de buscador (falta o site oficial)": 63,
@@ -47,8 +47,8 @@
    "familia": "outros",
    "registros": 38,
    "entidades": 38,
-   "exclusivas": 37,
-   "corroboradas": 1,
+   "exclusivas": 36,
+   "corroboradas": 2,
    "validadas_como_reais": 11
   },
   {
@@ -99,10 +99,10 @@
   {
    "canal": "outras-oportunidades-5",
    "familia": "outros",
-   "registros": 34,
-   "entidades": 24,
-   "exclusivas": 24,
-   "corroboradas": 0,
+   "registros": 38,
+   "entidades": 28,
+   "exclusivas": 27,
+   "corroboradas": 1,
    "validadas_como_reais": 5
   },
   {
@@ -198,10 +198,10 @@
   {
    "canal": "plataforma-wordpress",
    "familia": "outros",
-   "registros": 20,
-   "entidades": 20,
+   "registros": 22,
+   "entidades": 21,
    "exclusivas": 17,
-   "corroboradas": 3,
+   "corroboradas": 4,
    "validadas_como_reais": 1
   },
   {
@@ -209,8 +209,8 @@
    "familia": "portal_chamamentos",
    "registros": 13,
    "entidades": 6,
-   "exclusivas": 3,
-   "corroboradas": 3,
+   "exclusivas": 2,
+   "corroboradas": 4,
    "validadas_como_reais": 1
   },
   {
@@ -333,9 +333,9 @@
   {
    "canal": "empresas-editais-incentivados",
    "familia": "empresas",
-   "registros": 45,
-   "entidades": 38,
-   "exclusivas": 33,
+   "registros": 46,
+   "entidades": 39,
+   "exclusivas": 34,
    "corroboradas": 5,
    "validadas_como_reais": 0
   },
@@ -351,7 +351,7 @@
   {
    "canal": "outras-oportunidades-8",
    "familia": "outros",
-   "registros": 5,
+   "registros": 7,
    "entidades": 5,
    "exclusivas": 5,
    "corroboradas": 0,
@@ -631,10 +631,24 @@
    ]
   },
   {
+   "entidade": "1091d1624f7f9ddd0bc9",
+   "canais": [
+    "outras-oportunidades-1",
+    "outras-oportunidades-5"
+   ]
+  },
+  {
    "entidade": "11942f03820e082026d5",
    "canais": [
     "empresas-editais-incentivados",
     "outras-oportunidades-3"
+   ]
+  },
+  {
+   "entidade": "121e678688eb15b27634",
+   "canais": [
+    "plataforma-wordpress",
+    "prefeituras-50-go"
    ]
   },
   {
@@ -757,5 +771,5 @@
    ]
   }
  ],
- "eventos_no_livro_razao": 7
+ "eventos_no_livro_razao": 8
 }
