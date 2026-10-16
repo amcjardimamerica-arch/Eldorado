@@ -1332,7 +1332,7 @@ class SystemTests(unittest.TestCase):
     def test_historico_no_banco_e_no_filtro_encerradas(self):
         """Melhoria do parecer: acervo histórico vive no SQLite (196 MB em
         arquivos não cabem no Git) e alimenta o filtro «encerradas»."""
-        # O banco (dados/eldorado.db) não é versionado: no CI ele nasce vazio e
+        # O banco (biblioteca_alexandria/livros/_acervo/banco/eldorado.db) não é versionado: no CI ele nasce vazio e
         # é preenchido pelo workflow. O teste valida o CONTRATO em banco próprio.
         import tempfile
         from src.banco import indexar_historico, total_historico, consultar_historico
@@ -3307,7 +3307,7 @@ class SystemTests(unittest.TestCase):
         o workflow exporta ao fim de cada saída."""
         import tempfile, gzip, json as _j
         from src import banco as B
-        exp=pathlib.Path("dados/historico_export.jsonl.gz"); self.assertTrue(exp.exists())
+        exp=pathlib.Path("biblioteca_alexandria/livros/_acervo/banco/historico_export.jsonl.gz"); self.assertTrue(exp.exists())
         with gzip.open(exp,"rt",encoding="utf-8") as gz:
             primeira=_j.loads(gz.readline())
         self.assertEqual(primeira["_t"],"__schema__")
@@ -4260,7 +4260,7 @@ class SystemTests(unittest.TestCase):
         amp=[x for x in expandir(load_json(pathlib.Path("docs/dados/abertas.json"))) if x.get("tipo_registro") in ("edital","regra_anual")]
         curso=[x for x in amp if x.get("selo_validacao")=="validada" and x.get("fim") and x["fim"]>="2026-09-08"]
         self.assertGreaterEqual(len(curso),8); self.assertTrue({"RJ","RO","RS"} <= {x.get("uf") for x in curso})
-        self.assertTrue(pathlib.Path("biblioteca_alexandria/RELATORIO-VERIFICACAO-2026-09-08.md").exists())
+        self.assertTrue(pathlib.Path("biblioteca_alexandria/livros/_acervo/relatorios/RELATORIO-VERIFICACAO-2026-09-08.md").exists())
 
 
     def test_publicacao_destaques_e_links_dos_motores(self):

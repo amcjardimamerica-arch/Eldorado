@@ -76,7 +76,7 @@ class TesteCorrecoesDaAuditoria(unittest.TestCase):
         self.assertLess(r["total_incompletos"], 200)                     # de 438 para menos de 200
 
     def test_parecer_do_conselho_existe_com_as_sete_posicoes(self):
-        p = (ROOT / "biblioteca_alexandria/PARECER-CONSELHO-PILOTO-2026-09-22.md").read_text(encoding="utf-8")
+        p = (ROOT / "biblioteca_alexandria/livros/_acervo/relatorios/PARECER-CONSELHO-PILOTO-2026-09-22.md").read_text(encoding="utf-8")
         for pos in ("Extremamente pessimista", "Pessimista", "Levemente pessimista", "Neutro",
                     "Levemente otimista", "Otimista", "Extremamente otimista"):
             self.assertIn(pos, p, pos)

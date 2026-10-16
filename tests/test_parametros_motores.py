@@ -224,8 +224,8 @@ class TesteParametrosDaAuditoria(unittest.TestCase):
         self.assertTrue(all(x.get("teste_de_aceite") and x.get("medida_de_origem") for x in p["parametros"]))
         r = json.loads((ROOT / "config/REGRAS-CANDIDATAS-MEDIDAS.json").read_text(encoding="utf-8"))
         self.assertGreaterEqual(len(r["regras"]), 8)
-        self.assertTrue((ROOT / "biblioteca_alexandria/AUDITORIA-COMPLETA-2026-09-09.md").exists())
-        self.assertTrue((ROOT / "biblioteca_alexandria/MAPA-DE-PUBLICACAO-OFICIAL.md").exists())
+        self.assertTrue((ROOT / "biblioteca_alexandria/livros/_acervo/relatorios/AUDITORIA-COMPLETA-2026-09-09.md").exists())
+        self.assertTrue((ROOT / "biblioteca_alexandria/livros/_acervo/relatorios/MAPA-DE-PUBLICACAO-OFICIAL.md").exists())
 
 
 if __name__ == "__main__":

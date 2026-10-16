@@ -6,7 +6,7 @@ permanece como espelho legível e trilha de auditoria) para um banco SQLite
 com índices, permitindo consultas em milissegundos sem carregar tudo.
 
 SQLite vem embutido no Python: nenhuma dependência nova, um arquivo só
-(dados/eldorado.db), transações seguras contra interrupção de workflow.
+(biblioteca_alexandria/livros/_acervo/banco/eldorado.db), transações seguras contra interrupção de workflow.
 
 Limiares definidos no parecer:
   - até 2.000 editais: JSONL direto ainda é confortável;
@@ -20,7 +20,7 @@ import sqlite3
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
-CAMINHO_BANCO = RAIZ / "dados" / "eldorado.db"
+CAMINHO_BANCO = RAIZ / "biblioteca_alexandria" / "livros" / "_acervo" / "banco" / "eldorado.db"
 CAMINHO_JSONL = RAIZ / "dados" / "oportunidades" / "oportunidades.jsonl"
 
 _ESQUEMA_HISTORICO = """

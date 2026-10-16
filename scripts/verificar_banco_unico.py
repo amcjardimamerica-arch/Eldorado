@@ -21,7 +21,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 AREAS = ("dados", "estado", "biblioteca_alexandria")
-LIVROS = re.compile(r"^biblioteca_alexandria/(fontes/|livros/)")   # 16/10: a área do CATÁLOGO (catálogo, índices, ficha de cada livro) é dos livros
+LIVROS = re.compile(r"^biblioteca_alexandria/(fontes/|livros/|indice\.json$)")   # 16/10: a área do CATÁLOGO (catálogo, índices, ficha de cada livro) é dos livros
 FAROL = re.compile(r"^(dados/farol|dados/associacoes|biblioteca_alexandria/associacoes)(/|$)")
 CONTROLE = re.compile(r"^estado/(esquadra[^/]*\.json|achados_vistos\.json|fila_retentativa\.json|comando/|maestro[^/]*|analise_[^/]*|"
                       r"expurgo/|[a-z_]*migracao\.json|modalidade_[a-z]+\.json|rotas/|ponte/|robots[^/]*|pausa[^/]*|vigilancia_diaria\.txt|unir_livros\.txt|"
