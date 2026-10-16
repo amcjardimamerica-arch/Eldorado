@@ -6,7 +6,7 @@ As Estantes de Investigação Bronze e Prata podem encaminhar a oportunidade par
   3. grava a RESTRIÇÃO aprendida desse motor (config/restricoes_aprendidas.json): o endereço canônico e a assinatura do
      título — para o motor NÃO OBTER DE NOVO aquele dado, que passa a ser RUÍDO (o motor conta como ruído filtrado);
   4. vira exemplo NEGATIVO (ruído) para a rede neural.
-Pedidos de descarte chegam de fora (estado/esteira/descartar.json: [{"livro", "motivo", "por"}]). O sistema PROPÕE o
+Pedidos de descarte chegam de fora (biblioteca_alexandria/livros/anexos/esteira/descartar.json: [{"livro", "motivo", "por"}]). O sistema PROPÕE o
 descarte dos livros parados na estante há 30 dias ou mais sem informação nova, mas não descarta sozinho.
 Saída: docs/dados/descartes.json
 """
@@ -21,7 +21,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CAT = ROOT / "biblioteca_alexandria/fontes/motores.json"
-PEDIDOS = ROOT / "estado/esteira/descartar.json"
+PEDIDOS = ROOT / "biblioteca_alexandria/livros/anexos/esteira/descartar.json"
 RESTR = ROOT / "config/restricoes_aprendidas.json"
 SAIDA = ROOT / "docs/dados/descartes.json"
 ESTANTES = ("investigacao_bronze", "investigacao_prata")

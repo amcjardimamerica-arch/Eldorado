@@ -4047,7 +4047,7 @@ class SystemTests(unittest.TestCase):
         self.assertFalse(VEICULO.search("https://goias.gov.br/cultura/editais"))
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("src.coleta_editais",wf)
         import gzip, glob
-        for f in glob.glob("dados/editais/textos/*.txt.gz"):
+        for f in glob.glob("biblioteca_alexandria/livros/anexos/textos/*.txt.gz"):
             t0=gzip.open(f,"rt",encoding="utf-8").read(400)
             self.assertNotIn("Midia Kit",t0); self.assertNotIn("%PDF",t0)       # nada de veículo nem binário guardado
         an=load_json(pathlib.Path("dados/editais/analises.json")); self.assertGreaterEqual(len(an),45)

@@ -6,7 +6,7 @@ contratação (API oficial do PNCP) e/ou no site institucional do órgão
   1. localiza a fonte original (arquivos do PNCP; site institucional; página do
      edital em outras fontes) e baixa até 3 PDFs (≤ 8 MB cada);
   2. extrai o texto (pypdf) e o guarda COMPACTO (gzip, ≤ 120 mil caracteres) em
-     dados/editais/textos/<id>.txt.gz — nunca o PDF inteiro no repositório;
+     biblioteca_alexandria/livros/anexos/textos/<id>.txt.gz — nunca o PDF inteiro no repositório;
   3. extrai deterministicamente o que dá (prazo, valor, objeto, resultado,
      recurso, requisitos, anexos, pontuação) antes de qualquer IA;
   4. entrega o texto compacto para a IA mais barata completar os 12 itens e
@@ -24,7 +24,7 @@ from urllib.request import Request, urlopen
 from .nucleo import ROOT, load_json, now_iso, write_json
 from .rotas_coleta import serve_como_fonte as _serve_como_fonte
 
-TEXTOS = ROOT / "dados/editais/textos"
+TEXTOS = ROOT / "biblioteca_alexandria/livros/anexos/textos"
 EXTRAIDOS = ROOT / "dados/editais/extraidos"
 UA = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36 Eldorado-OSC/1.0", "From": "contato-via-repositorio",
       "Accept": "application/json,text/html,application/pdf;q=0.9,*/*;q=0.5"}

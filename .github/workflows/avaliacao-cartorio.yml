@@ -33,11 +33,11 @@ jobs:
       - name: Gravar a avaliação (só estes arquivos)
         run: |
           git config user.name "avaliacao-cartorio" && git config user.email "avaliacao@eldorado"
-          mkdir -p /tmp/a && cp -r estado/cartorio/avaliacao /tmp/a/ && cp docs/relatorios/avaliacao-cartorio-*.md /tmp/a/ 2>/dev/null || true
+          mkdir -p /tmp/a && cp -r biblioteca_alexandria/livros/anexos/cartorio_avaliacao /tmp/a/ && cp docs/relatorios/avaliacao-cartorio-*.md /tmp/a/ 2>/dev/null || true
           for i in 1 2 3 4 5; do
             git fetch -q origin main && git reset -q --hard origin/main
             mkdir -p estado/cartorio docs/relatorios && cp -r /tmp/a/avaliacao estado/cartorio/ && cp /tmp/a/*.md docs/relatorios/ 2>/dev/null || true
-            git add estado/cartorio/avaliacao docs/relatorios/avaliacao-cartorio-*.md 2>/dev/null || true
+            git add biblioteca_alexandria/livros/anexos/cartorio_avaliacao docs/relatorios/avaliacao-cartorio-*.md 2>/dev/null || true
             git diff --cached --quiet && { echo "nada mudou"; exit 0; }
             git commit -q -m "avaliação do Cartório com gabarito $(date -u +%F)" && git push -q && { echo "gravado ($i)"; exit 0; }
             sleep 5

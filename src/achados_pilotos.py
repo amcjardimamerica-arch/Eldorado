@@ -59,7 +59,7 @@ def coletar() -> dict:
         if "Piloto - Espião" in str(x.get("motivo_status") or ""):
             por("espiao", str(x.get("criado_em") or ""), _item(x.get("nome_classificado") or x.get("programa"), x.get("pagina"), x.get("geo"), livro=x.get("id")))
     # INTERCEPTADOR
-    for f in sorted(glob.glob(str(ROOT / "estado/interceptador/relatorios/*.json"))):
+    for f in sorted(glob.glob(str(ROOT / "biblioteca_alexandria/livros/especiais/interceptador/relatorios/*.json"))):
         for v in (_j(f, {}).get("voos") or []):
             if v.get("tipo") == "edital" and v.get("qualidade") in UTIL:
                 por("interceptador", str(v.get("em") or v.get("inicio") or ""),

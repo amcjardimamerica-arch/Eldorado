@@ -9,7 +9,7 @@ bloqueios que o servidor do GitHub sofre. Lê as filas de docs/dados/esteira.jso
   PRATA   ler o edital no site oficial (página + PDF, no IP do titular); Opus 5.5 (esforço baixo) extrai prazos, os 12
           dados e as dispensas; o CÓDIGO confere se está completo (o modelo não valida sozinho).
 
-O que voltar vai para estado/esteira/resultados_local.jsonl (a esteira aplica no próximo ciclo e grava o aprendizado no
+O que voltar vai para biblioteca_alexandria/livros/anexos/esteira/resultados_local.jsonl (a esteira aplica no próximo ciclo e grava o aprendizado no
 livro). Texto da web é DADO: conteúdo com instrução ao modelo vai à quarentena. Sem credencial (FAROL_AI_API_KEY no
 computador), nada é analisado e nada é simulado.
 Uso: python3 scripts/interceptador_local.py [--limite N] [--so-bronze | --so-prata]
@@ -32,7 +32,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-RESULTADOS = ROOT / "estado/esteira/resultados_local.jsonl"
+RESULTADOS = ROOT / "biblioteca_alexandria/livros/anexos/esteira/resultados_local.jsonl"
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 
 SISTEMA_PRATA = """Você é o analista de editais do Eldorado. Leia o edital (texto abaixo, extraído do site oficial) e extraia, sem inventar:
@@ -135,7 +135,7 @@ def main(limite: int | None = None, etapas=("prata",), externo: bool = False) ->
         print("Interceptador local: sem credencial de IA (FAROL_AI_API_KEY) neste computador — nada foi analisado nem simulado.")
         return {"analisados": 0, "sem_credencial": True}
     cfg = _j(ROOT / "config/esteira.json", {}); fila = (_j(ROOT / "docs/dados/esteira.json", {}) or {}).get("filas", {})
-    feito_p = ROOT / f"estado/esteira/local_{date.today().isoformat()}.json"; feito = _j(feito_p, {"livros": []})
+    feito_p = ROOT / f"biblioteca_alexandria/livros/anexos/esteira/local_{date.today().isoformat()}.json"; feito = _j(feito_p, {"livros": []})
     n = 0; RESULTADOS.parent.mkdir(parents=True, exist_ok=True)
     for etapa in etapas:
         lim = int(limite or cfg.get(etapa, {}).get("por_dia", 10))

@@ -91,7 +91,7 @@ def construir() -> dict:
     for i, (eid, e) in enumerate(universo.items()):
         if i % 7 == 0:
             amostra.append(json.dumps(e, ensure_ascii=False).encode("utf-8"))
-    for f in sorted((ROOT / "dados/editais/textos").glob("*.txt.gz"))[:120]:
+    for f in sorted((ROOT / "biblioteca_alexandria/livros/anexos/textos").glob("*.txt.gz"))[:120]:
         try:
             amostra.append(gzip.open(f, "rb").read()[:20000])
         except Exception:
@@ -113,7 +113,7 @@ def construir() -> dict:
         bytes_in += len(ficha)
         texto_zst = None
         ex = EXTRAIDOS / f"{eid}.json"
-        tx = ROOT / "dados/editais/textos" / f"{eid}.txt.gz"
+        tx = ROOT / "biblioteca_alexandria/livros/anexos/textos" / f"{eid}.txt.gz"
         objeto = (e.get("objeto") or "")
         if ex.exists():
             exd = load_json(ex); objeto = objeto or ((exd.get("itens") or {}).get("Objeto") or "")

@@ -81,7 +81,7 @@ def workflow(P: list, problema) -> dict:
         problema(P, "link_acesso_como_oficial", "media", f"{len(usam)} oportunidade(s) usam o link de acesso como oficial sem serem fonte oficial",
                  "buscar a fonte oficial (resolvedor e Cartório)", len(usam), usam)
     ve = _j(ROOT / "estado/comando/validacao_excecao.json")
-    av = _j(ROOT / "estado/cartorio/avaliacao/resultado.json"); acerto = (av.get("geral") or {}).get("acerto_pct")
+    av = _j(ROOT / "biblioteca_alexandria/livros/anexos/cartorio_avaliacao/resultado.json"); acerto = (av.get("geral") or {}).get("acerto_pct")
     if (_idade_h(av.get("em")) or 0) > 24 * 8:
         problema(P, "gabarito_desatualizado", "media", f"avaliação do Cartório com gabarito tem {_idade_h(av.get('em'))} h (semanal)", "disparar o fluxo 39")
     vr = sorted(glob.glob(str(ROOT / "estado/varredura_referencia/*.json")))

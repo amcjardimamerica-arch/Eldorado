@@ -234,7 +234,7 @@ def ciclo(ia: IALocal | None = None, limite: int | None = None) -> dict:
     # 1) registros em "análise incompleta" com texto disponível → classificar e extrair
     alvo = [eid for eid, a in an.items() if a.get("selo") == "analise_incompleta" and eid in universo][:limite]
     for eid in alvo:
-        e = universo[eid]; tx = ROOT / "dados/editais/textos" / f"{eid}.txt.gz"
+        e = universo[eid]; tx = ROOT / "biblioteca_alexandria/livros/anexos/textos" / f"{eid}.txt.gz"
         texto = gzip.open(tx, "rt", encoding="utf-8").read() if tx.exists() else (e.get("objeto") or "")
         if len(texto) < 60:
             continue

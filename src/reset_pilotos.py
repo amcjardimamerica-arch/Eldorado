@@ -207,7 +207,7 @@ def run() -> dict:
         antes = len(b["missoes"]); b["missoes"] = [m for m in b["missoes"] if str(m.get("inicio") or m.get("fim") or "") >= RESET]
         if len(b["missoes"]) != antes:
             B.write_text(json.dumps(b, ensure_ascii=False, indent=1), encoding="utf-8")
-    for f in (ROOT / "estado/interceptador/relatorios").glob("*.json"):
+    for f in (ROOT / "biblioteca_alexandria/livros/especiais/interceptador/relatorios").glob("*.json"):
         d = _j(f, {}); vs = d.get("voos") or []
         novos = [v for v in vs if str(v.get("em") or v.get("inicio") or "") >= RESET]
         if len(novos) != len(vs):
