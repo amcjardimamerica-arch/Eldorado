@@ -169,7 +169,10 @@ class Rede:
             FR.sucesso(url)
             return b, t or "", None
         except Exception as e:  # noqa: BLE001
-            FR.falhou(url, "cartorio", FR.tipo_erro(e, getattr(e, "code", None)))
+            # 16/10 (sala): 404/410 é "não existe" (as sondagens de sitemap e busca do WordPress dão 404 por natureza) —
+            # não entra na retentativa; só tempo esgotado e erro de acesso entram
+            if getattr(e, "code", None) not in (404, 410):
+                FR.falhou(url, "cartorio", FR.tipo_erro(e, getattr(e, "code", None)))
             return None, "", f"erro_rede: {type(e).__name__}"
 
 

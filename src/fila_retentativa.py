@@ -111,6 +111,21 @@ def reabrir_corrigidos(exige_brasil: set | None = None) -> list[str]:
     d = _carregar(); voltam = []
     for u, r in list(d["fora_da_fila"].items()):
         host = urlsplit(u).hostname or ""
-        if (u.startswith("http://") and "ValueError" in str(r.get("erro"))) or (exige_brasil and host in exige_brasil):
-            d["fora_da_fila"].pop(u); voltam.append(u)
+        e = str(r.get("erro") or "")
+        if r.get("escopo") == "cartorio" and e in ("HTTP 404", "HTTP 410"):
+            d["fora_da_fila"].pop(u); voltam.append(u); continue          # sondagem que não existe: nunca foi falha
+        if (u.startswith("http://") and "ValueError" in e) or (exige_brasil and host in exige_brasil) \
+                or e in ("HTTP 403", "HTTP 451", "InvalidURL") or (e == "URLError" and "recusada" in str(r.get("causa") or "")):
+            d["fora_da_fila"].pop(u); voltam.append(u)                     # 16/10: ponte automática e endereço limpo
+    for u in [u for u, r in d["fila"].items() if r.get("escopo") == "cartorio" and r.get("erro") in ("HTTP 404", "HTTP 410")]:
+        d["fila"].pop(u); voltam.append(u)
     return voltam
+
+
+def rota_quebrada(url: str, escopo: str, erro: str) -> dict:
+    """16/10/2026 (sala): página que NÃO EXISTE (404/410) — não é erro de acesso; vai direto ao mostrador como falha."""
+    d = _carregar(); a = _agora()
+    d["fila"].pop(url, None)
+    d["fora_da_fila"][url] = {"escopo": escopo, "erro": erro, "tentativas": 1, "saiu_em": a.isoformat(),
+                              "motivo": "página não existe (rota quebrada) — corrigir o endereço na configuração do motor"}
+    return {"estado": "fora_da_fila", **d["fora_da_fila"][url]}
