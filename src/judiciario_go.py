@@ -783,7 +783,8 @@ def fonte_d(cfg: dict, diag: dict) -> list[dict]:
     rx = re.compile(f.get("orgao_regex") or r"$^")
     out = []
     from .nucleo import _migrado, achados_linhas         # 16/10: dos livros depois da migração; antes, a base do módulo
-    _linhas = achados_linhas() if _migrado() else (DB.read_text(encoding="utf-8").splitlines() if DB.exists() else [])
+    _padrao = DB == ROOT / "dados/oportunidades/oportunidades.jsonl"   # base apontada para outro arquivo (teste): ela vale
+    _linhas = achados_linhas() if (_migrado() and _padrao) else (DB.read_text(encoding="utf-8").splitlines() if DB.exists() else [])
     if True:
         for linha in _linhas:
             if '"pncp-api"' not in linha or not (any(c in linha for c in cnpjs) or rx.search(_N(linha[:4000]))):
