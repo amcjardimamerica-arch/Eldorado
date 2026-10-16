@@ -45,7 +45,7 @@ SAIDA_REL = ROOT / "docs/dados/validacao_motores.json"
 DECISOES = ("valida_aberta", "valida_fora_abrangencia", "arquivada_encerrada", "descartada", "pendente")
 SAEM_DO_MAPA = ("arquivada_encerrada", "descartada")
 ITENS = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador",
-         "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação")
+         "Território", "Esfera", "Requisitos", "Anexos", "Modalidade", "Área de atuação")
 
 
 def _norm(s: str) -> str:

@@ -449,7 +449,7 @@ def run(limite_ia: int = 8) -> dict:
                           "modelos_documentos": [x for x in anexos if isinstance(x, dict)][:8],
                           "itens": [{"item": i, "valor": (f.get("itens") or {}).get(i) or (comp.get(i) or {}).get("valor"), "fonte": (f.get("fontes_itens") or {}).get(i) or ("complemento manual" if i in comp else None),
                                      "dispensavel": ((extraido(e) or {}).get("dispensaveis") or {}).get(i)}
-                                    for i in ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador", "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação")],
+                                    for i in ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador", "Território", "Esfera", "Requisitos", "Anexos", "Modalidade", "Área de atuação")],
                           "regras": f.get("regras"), "requisitos": f.get("requisitos"), "pontuacao": f.get("criterios_pontuacao"), "pontuacao_texto": f.get("pontuacao_texto"),
                           "fonte_original": f.get("fonte_original"),
                           "documentos_exigidos": f.get("documentos_exigidos_ia") or [],

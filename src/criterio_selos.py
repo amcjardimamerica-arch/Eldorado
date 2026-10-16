@@ -10,7 +10,7 @@ from __future__ import annotations
 import re
 
 DOZE = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador",
-        "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação"]
+        "Território", "Esfera", "Requisitos", "Anexos", "Modalidade", "Área de atuação"]
 BRONZE = ("Objeto", "Prazo de inscrição", "Território")
 PRATA = BRONZE + ("Valor", "Requisitos")
 FALTA = re.compile(r"^\s*(n[ãa]o (informad|localizad|encontrad|consta)|sem informa|pendente|—|-|\?)", re.I)

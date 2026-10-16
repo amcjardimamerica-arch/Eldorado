@@ -281,8 +281,13 @@ def extrair_deterministico(texto: str, pncp: dict | None = None) -> dict:
     if m: itens["Requisitos"] = re.sub(r"\s+", " ", m.group(1)).strip()[:900]; fontes["Requisitos"] = "texto do edital"
     anexos = sorted(set(re.findall(r"\bANEXO\s+([IVXLC]+|\d+)\b", t)))
     if anexos: itens["Anexos"] = ", ".join("Anexo " + a for a in anexos[:15]); fontes["Anexos"] = "texto do edital"
-    m = re.search(r"(?:destina[çc][ãa]o|finalidade|p[úu]blico[- ]alvo|benefici[áa]rios?)[^.\n]{0,20}[:\-–]\s*(.{30,400}?)(?:\.|\n)", t, re.I | re.S)
-    if m: itens["Destinação"] = re.sub(r"\s+", " ", m.group(1)).strip()[:300]; fontes["Destinação"] = "texto do edital"
+    try:                                             # 16/10 (titular): MODALIDADE = como o recurso chega (não a finalidade)
+        from .cartorio_leitura import Texto as _Tx, modalidade as _mod
+        _md = _mod(_Tx([t]))
+        if _md and _md.get("valor"):
+            itens["Modalidade"] = _md["valor"]; fontes["Modalidade"] = "texto do edital: " + str(_md.get("trecho") or "")[:200]
+    except Exception:  # noqa: BLE001
+        pass
     docs = sorted({d.lower() for d in re.findall(r"(estatuto social|ata de (?:elei[çc][ãa]o|posse)|certid[ãa]o negativa[^,;.]{0,40}|CNDT|CRF|FGTS|comprovante de endere[çc]o|cart[ãa]o (?:do )?CNPJ|balan[çc]o patrimonial|relat[óo]rio de atividades|inscri[çc][ãa]o no (?:CMAS|CMDCA|CMI|conselho)[^,;.]{0,30})", t, re.I)})
     if pncp:
         if pncp.get("objeto_pncp") and "Objeto" not in itens: itens["Objeto"] = pncp["objeto_pncp"][:300]; fontes["Objeto"] = "PNCP (divulgação)"
@@ -402,7 +407,7 @@ def investigar(e: dict, chamar, modelos: list[str], forcar: bool = False, rede: 
     for k, v in (conh.get("itens") or {}).items():
         if not itens.get(k): itens[k] = v; fontes[k] = conh["fonte"]
     if conh.get("pagina") and not reg.get("site_institucional"): reg["site_institucional"] = conh["pagina"]
-    alvo = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador", "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação"]
+    alvo = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador", "Território", "Esfera", "Requisitos", "Anexos", "Modalidade", "Área de atuação"]
     faltam = [i for i in alvo if not itens.get(i)]
     # IA em escalada: só sobre o que falta, com o texto compacto
     for i, modelo in enumerate(modelos):

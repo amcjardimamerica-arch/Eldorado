@@ -9,7 +9,7 @@ import re
 from urllib.parse import urlparse
 
 ITENS = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador",
-         "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação"]
+         "Território", "Esfera", "Requisitos", "Anexos", "Modalidade", "Área de atuação"]
 
 # Portais oficiais conferidos em 03/10/2026 (título e órgão da página) — ver relatório.
 _GOIAS = {

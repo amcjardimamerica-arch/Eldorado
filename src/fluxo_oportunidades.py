@@ -34,7 +34,7 @@ PRED = ROOT / "biblioteca_alexandria/base/preditivo/oportunidades.jsonl"
 SAIDA = ROOT / "docs/dados/fluxo_oportunidades.json"
 AGREGADORES = re.compile(r"duckduckgo|bing\.com|google\.|queridodiario|captadores\.org|observatorio3setor|prosas\.com|filantropia\.ong|gife\.org|idis\.org|pncp\.gov\.br/app", re.I)
 CHECKLIST = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador", "Território", "Esfera",
-             "Requisitos", "Anexos", "Destinação", "Área de atuação"]
+             "Requisitos", "Anexos", "Modalidade", "Área de atuação"]
 UFS = {"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"}
 
 
@@ -324,7 +324,7 @@ def consolidar() -> list[dict]:
                        "Órgão / financiador": (str(m.get("orgao") or "casa legislativa")[:90], "val"), "Território": ("nacional" if m.get("nivel") == "federal" else "Goiás", "val"),
                        "Esfera": (str(m.get("nivel") or ""), "val"), "Área de atuação": ("qualquer área de atuação da entidade", "val"),
                        "Requisitos": ("entidade regular: CNPJ, certidões e cadastro na casa legislativa", "val"),
-                       "Valor": ("definido pelo parlamentar", "disp"), "Destinação": ("definida pelo parlamentar na indicação", "disp"),
+                       "Valor": ("definido pelo parlamentar", "disp"), "Modalidade": ("definida pelo parlamentar na indicação", "disp"),
                        "Resultado": ("não há edital: indicação do parlamentar", "disp"), "Prazo de recurso": ("não há edital nem recurso", "disp"),
                        "Anexos": ("não há edital: ofício e plano de trabalho da entidade", "disp")}
                 vv, ss = _em.get(k, ("", "pend")); checklist[k] = {"s": ss, "v": vv}

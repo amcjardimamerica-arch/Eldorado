@@ -2264,7 +2264,7 @@ window.investigarEdital=function(e){
     +lin("Resultado",c.resultado?`${esc(c.resultado.data)}${c.resultado.projetado?" <span class=meta>(projetado)</span>":""}`:"não publicado")
     +lin("Recurso",c.recurso?`${esc(c.recurso.inicio)} a ${esc(c.recurso.fim)}${c.recurso.projetado?" <span class=meta>(projetado)</span>":""}`:"não publicado")
     +lin("Valor",e.valor_texto?esc(e.valor_texto):"não publicado")
-    +lin("Destinação",dest.motivo?`${dest.elegivel?'<span style="color:var(--ok)">elegível</span>':'<span style="color:var(--urgente)">fora do escopo</span>'} — ${esc(dest.motivo)}`:"não avaliada")
+    +lin("Elegibilidade",dest.motivo?`${dest.elegivel?'<span style="color:var(--ok)">elegível</span>':'<span style="color:var(--urgente)">fora do escopo</span>'} — ${esc(dest.motivo)}`:"não avaliada")
     +lin("Confirmação",esc(e.confirmacao||"—"))
     +lista("Documentos exigidos identificados",d.documentos_exigidos)
     +lista("Pendências declaradas",d.pendencias)
@@ -3502,7 +3502,7 @@ function empDetalhe(x){const pt=x.potencial||{};
 /* GRADE PADRONIZADA — os 12 itens em toda caixa, com ou sem análise da etapa 2:
    usa a análise quando existe; senão monta cada item a partir dos campos do
    registro, marcando 'não comprovado' onde falta. Apresentação sempre completa. */
-const DOZE=["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Destinação","Área de atuação"];
+const DOZE=["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Modalidade","Área de atuação"];
 function gradeDoze(e,b){
   const an=(b&&b.analise_etapa2)||[]; const por={}; an.forEach(a=>por[a.item]=a);
   const marcos={}; (e.marcos||[]).forEach(m=>marcos[m.tipo]=m);
@@ -3517,7 +3517,7 @@ function gradeDoze(e,b){
     "Esfera":["federal","estadual","municipal"].includes(e.nivel)?e.nivel:null,
     "Requisitos":(e.detalhes&&e.detalhes.documentos_exigidos&&e.detalhes.documentos_exigidos.length)?e.detalhes.documentos_exigidos.map(d=>d.replace(/_/g," ")).join(", "):null,
     "Anexos":(e.anexos&&e.anexos.length)?e.anexos.length+" anexo(s)":((b&&b.anexos&&b.anexos.length)?b.anexos.length+" anexo(s)":null),
-    "Destinação":(e.destinacao&&e.destinacao.elegivel)?(e.destinacao.natureza||"recurso")+(e.destinacao.motivo?" — "+e.destinacao.motivo:""):(b&&b.pertinencia)||null,
+    "Modalidade":null,   /* 16/10: elegibilidade não é modalidade — vem do checklist, com trecho */
     "Área de atuação":(e.area&&e.area!=="outros")?AREA(e.area).rotulo:null};
   return DOZE.map(item=>{const a=por[item];if(a&&a.comprovado)return {item,comprovado:true,valor:a.dispensado?("dispensa: "+(a.justificativa||a.valor||"")):a.valor,dispensado:!!a.dispensado};const v=val[item];return {item,comprovado:!!v,valor:v||null};});
 }
@@ -3950,7 +3950,7 @@ window.mtLimpar=function(){["mt-familia","mt-segmento","mt-uf","mt-estado"].forE
 window.mtSelecionar=function(on){mtFiltrados().forEach(m=>on?mtSel.add(m.id):mtSel.delete(m.id));desenhaMotores();};
 window.mtToggle=function(id){mtSel.has(id)?mtSel.delete(id):mtSel.add(id);$("mt-sel").textContent=`${mtSel.size} selecionado(s)`;};
 function camadasHtml(m){
-  const C=(MT._resumo||{}).camadas||["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Destinação"];
+  const C=(MT._resumo||{}).camadas||["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Modalidade"];
   const vals=(m.camadas_val||"").split("|");
   return `<div class="mt-cam">${C.map((c,i)=>`<span class="${m.camadas_ok[i]==="1"?"ok":"pend"}" title="${esc(c)}: ${m.camadas_ok[i]==="1"?esc(vals[i]||"obtida"):"ainda não obtida"}">${esc(c.split(" ")[0].slice(0,9))}</span>`).join("")}</div>`;
 }
@@ -5155,7 +5155,7 @@ window.fichaOportunidade=async function(x){
       ${a.trecho?`<div style="margin-top:6px;padding:8px 10px;background:#F6F8FB;border-left:3px solid #0B4EA2;border-radius:6px;font-size:13px">“${esc(a.trecho)}”</div>`:""}
       ${a.url?`<div class=meta style="margin-top:4px"><a href="${esc(a.url)}" target=_blank rel="noopener noreferrer">abrir onde foi encontrada ↗</a></div>`:""}</div>`).join("");
   const T=f.esteira||{}, I=T.itens||{};
-  const ordem=["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Destinação","Área de atuação"];
+  const ordem=["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Modalidade","Área de atuação"];
   const COR_IT={comprovado:"#1E7B4A",validado:"#1E7B4A",dispensado:"#0B4EA2",nao_comprovado:"#B26A00"};
   const SIM_IT={comprovado:"✓",validado:"✓",dispensado:"⊘",nao_comprovado:"◐"};
   const ROT_IT={comprovado:"comprovado na fonte oficial",validado:"validado",dispensado:"dispensado (não se aplica)",nao_comprovado:"encontrado, ainda não comprovado na fonte oficial",falta:"falta"};
@@ -5234,7 +5234,7 @@ function _desenhaAbertasFluxo(){
       <div class="oa-l"><span class="oa-p${x.confirmada?" ok":""}">${x.fim?"inscrições até "+br(x.fim):x.confirmada?"fluxo contínuo":"prazo a confirmar"}</span>
         ${u?`<span class="oa-s${of?" ok":""}">${of?"site oficial ✓":"indício — site oficial em busca"}</span>`:""}</div>
       ${x.objeto?`<div class="oa-o" title="${esc(x.objeto)}">${esc(String(x.objeto).slice(0,180))}</div>`:""}
-      <div class="oa-k">${(()=>{const K=x.checklist||{}; const ord=["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Destinação","Área de atuação"];
+      <div class="oa-k">${(()=>{const K=x.checklist||{}; const ord=["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Modalidade","Área de atuação"];
           // 09/10 (titular): CONHECIDO (✓ verde forte) mostra a INFORMAÇÃO CONFIRMADA no lugar do nome do item;
           // DISPENSADO (azul) mantém o nome; tudo o que ainda não é conhecido é ✕ vermelho (o Interceptador busca, até 3 vezes).
           const grupo=s=>["ok","val","dt"].includes(s)?"conhecido":(s==="disp"?"disp":"buscar");
@@ -5297,7 +5297,7 @@ function _desenhaAbertasFluxo(){
             if(k==="Resultado"){const d=datas(v); if(d.length) return d[d.length-1]; const n=v.match(/^0*(\d+)\s*(?:\([^)]*\)\s*)?dias?\s*(úteis|corridos)?/i); if(n) return `${n[1]} dia${+n[1]>1?"s":""}${n[2]?" "+n[2].toLowerCase():""}`; return frase(v);}
             if(k==="Prazo de recurso"){const n=v.match(/0*(\d+)\s*(?:\([^)]*\)\s*)?dias?\s*(úteis|corridos)?/i); if(n) return `${n[1]} dia${+n[1]>1?"s":""}${n[2]?" "+n[2].toLowerCase():""}`; const d=datas(v); if(d.length) return d[d.length-1]; return frase(v);}
             if(k==="Órgão / financiador") return acentua(titulo(v));
-            if(k==="Destinação") return frase(acentua(v));
+            if(k==="Modalidade") return frase(acentua(v));
             if(k==="Território"){ if(/^(todo o territ[óo]rio )?nacional|^brasil$/i.test(v)) return "Nacional"; if(/^internacional$/i.test(v)) return "Internacional";
               if(/^[A-Z]{2}$/i.test(v)) return v.toUpperCase();
               const c=v.replace(/^(n?[oa]s?|d[oa]s?)\s+/i,"").replace(/^(munic[íi]pio|estado|cidade)\s+d[eoa]\s+/i,"").replace(/\s*\/\s*/,"/");
@@ -5623,7 +5623,7 @@ function desenhaMotores(){
   /* 26/09 (titular): verificação de FUNCIONAMENTO separada da de RESULTADO. verde = lê e traz resultado;
      verde-claro = lê a fonte, sem resultado ainda (a fonte pode não ter edital hoje); vermelho = bloqueio; sem cor = sem leitura */
   const semaforo=s=>/captando|satisfat|comprovando|funcion/.test(s)&&!/bloque/.test(s)?["verde","funcionando com resultado"]:/bloque|inoper|não funcion/.test(s)?["vermelho","bloqueio ou inoperância — precisa de ação"]:/ativo, sem|lendo, sem|aguardando alvos/.test(s)?["lendo","funcionando, sem resultado ainda"]:["neutro",""];
-  const CAM=(MT._resumo||{}).camadas||["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Destinação"];
+  const CAM=(MT._resumo||{}).camadas||["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Modalidade"];
   /* calendário do motor — mesmo desenho do Mapa de oportunidades, um por motor */
   const SEMd=["DOM","SEG","TER","QUA","QUI","SEX","SAB"];
   const mesRef=`${HOJE.getFullYear()}-${String(HOJE.getMonth()+1).padStart(2,"0")}`;
@@ -6331,7 +6331,7 @@ b.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})
 /* ═══ CARTÓRIO (titular, 10/10): seção do painel, desenhada ao abrir — antes era a página própria cartorio.html ═══ */
 window.desenhaCartorio=function(){ if(window._CAR_INIT){ if(window._carRecarregar) window._carRecarregar(); return; } window._CAR_INIT=1;
 
-const DOZE=["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Destinação","Área de atuação"];
+const DOZE=["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Modalidade","Área de atuação"];
 const BALCAO={pncp:"PNCP",diario:"Diários oficiais",orgao:"Sites de órgãos públicos",privado:"Financiadores privados",pista:"Pistas (agregadores e imprensa)",proprio:"MP e Judiciário (leitura própria)"};
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const pct=x=>x==null?"—":Math.round(x*100)+"%";

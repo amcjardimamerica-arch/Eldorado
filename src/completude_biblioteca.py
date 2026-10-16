@@ -3,7 +3,7 @@
 Determinação do titular: em cada pasta de edital anterior devem constar os
 requisitos, condições e valores; onde já existir, conferir a completude dos
 11 itens — Objeto, Prazo de inscrição, Resultado, Prazo de recurso, Valor,
-Órgão/financiador, Território, Esfera, Requisitos, Anexos e Destinação — e
+Órgão/financiador, Território, Esfera, Requisitos, Anexos e Modalidade — e
 catalogar os SITES históricos desses editais para compor o motor de busca.
 Foco em Goiás e Goiânia, sem deixar nenhum edital de fora.
 
@@ -32,7 +32,7 @@ RELATORIO = ROOT / "biblioteca_alexandria/historico/completude_11_itens.json"
 
 # 12 itens: os 11 originais + Área de atuação (educação, esporte, cultura…)
 ITENS = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor",
-         "Órgão / financiador", "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação")
+         "Órgão / financiador", "Território", "Esfera", "Requisitos", "Anexos", "Modalidade", "Área de atuação")
 
 _ANEXO = re.compile(r"\banexos?\b|\bmodelos?\b|\bformul[áa]rios?\b", re.I)
 _OBJETO = re.compile(r"\bobjeto\b|\bfinalidade\b|\bdestina\w*\s+a\b|\bvisa\b", re.I)
@@ -68,7 +68,7 @@ def onze_itens(ficha: dict, parecer: dict | None = None) -> dict:
         ("Esfera", ficha.get("nivel") if ficha.get("nivel") in ("federal", "estadual", "municipal") else None),
         ("Requisitos", ", ".join(ficha.get("exigencias_detectadas") or []) or None),
         ("Anexos", "menciona anexos/modelos" if _ANEXO.search(texto) else None),
-        ("Destinação", dest.get("motivo") if dest.get("elegivel") is not None else None),
+        ("Modalidade", None),                        # 16/10: elegibilidade não é modalidade
         ("Área de atuação", _area_do_edital(ficha, texto)),
     ]
     saida = []

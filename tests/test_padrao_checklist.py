@@ -31,7 +31,7 @@ CASOS = [
     ("Área de atuação", "meio_ambiente", "Meio ambiente"),
     ("Anexos", "3 anexo(s)", "3 anexos"),
     ("Anexos", "ANEXO I AMPLA; ANEXO II FORMULÁRIO; ANEXO III DECLARAÇÃO", "3 anexos"),
-    ("Destinação", "fora do escopo · premio", "Fora do escopo · prêmio"),
+    ("Modalidade", "fora do escopo · premio", "Fora do escopo · prêmio"),
 ]
 
 

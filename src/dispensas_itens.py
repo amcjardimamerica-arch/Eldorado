@@ -1,7 +1,7 @@
 """Dispensa dos 12 itens por tipo de recurso (titular, 01/10/2026).
 
 Cada oportunidade e cada livro da Biblioteca persegue os 12 itens de um edital: Objeto, Prazo de inscrição, Resultado,
-Prazo de recurso, Valor, Órgão / financiador, Território, Esfera, Requisitos, Anexos, Destinação e Área de atuação.
+Prazo de recurso, Valor, Órgão / financiador, Território, Esfera, Requisitos, Anexos, Modalidade e Área de atuação.
 Alguns recursos não têm certos itens (emenda parlamentar não tem edital, fluxo contínuo não tem data final,
 destinação judicial tem valor fixado no processo). Este módulo classifica o recurso num REGIME
 (`config/dispensas_por_regime.json`) e diz que itens ainda faltantes são DISPENSA PROVÁVEL.
@@ -22,7 +22,7 @@ from .nucleo import ROOT
 
 MATRIZ = ROOT / "config/dispensas_por_regime.json"
 ITENS = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador",
-         "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação")
+         "Território", "Esfera", "Requisitos", "Anexos", "Modalidade", "Área de atuação")
 PADRAO = "chamamento_publico"
 
 _RX_CONTINUO = re.compile(r"fluxo cont[ií]nuo|demanda cont[ií]nua|credenciamento permanente|cadastro permanente|inscri[cç][õo]es? permanentes?", re.I)

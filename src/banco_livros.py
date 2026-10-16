@@ -447,3 +447,58 @@ def sincronizar_achados(registros: dict) -> dict:
     CAT.write_text(json.dumps(cat_doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     r = registrar_achados(novos) if novos else {}
     return {"alterados": alt, "removidos": rem, "novos": len(novos), **r}
+
+
+MARCO_MODALIDADE = ROOT / "estado/modalidade_migracao.json"
+
+
+def renomear_modalidade_nos_dados(simular: bool = False) -> dict:
+    """16/10/2026 (titular): o item 'Destinação' passa a se chamar 'Modalidade' — a forma como o recurso chega à
+    associação (convênio, termo de fomento/colaboração, contrato, doação, prêmio, incentivo fiscal…), que diz ao Farol
+    qual legislação se aplica, quais documentos, como é a inscrição e a prestação de contas. Uma vez, em todos os dados:
+    CHAVES 'Destinação' e o NOME do item em listas; texto livre ('Destinação judicial', 'de prestações…') não muda."""
+    if MARCO_MODALIDADE.exists() and not simular:
+        return {"migracao": "já feita"}
+    from collections import Counter
+
+    def trocar(o, c):
+        if isinstance(o, dict):
+            return {("Modalidade" if k == "Destinação" and not c.update(chaves=1) else k): trocar(v, c) for k, v in o.items()}
+        if isinstance(o, list):
+            return [("Modalidade" if v == "Destinação" and not c.update(nomes=1) else trocar(v, c)) for v in o]
+        return o
+    tot, arquivos = Counter(), 0
+    for area in ("dados", "estado", "docs/dados", "biblioteca_alexandria"):
+        for p in (ROOT / area).rglob("*"):
+            if not p.is_file() or p.suffix not in (".json", ".jsonl") or p.stat().st_size > 120_000_000:
+                continue
+            txt = p.read_text(encoding="utf-8", errors="replace")
+            if "Destinação" not in txt and "Destina\\u00e7\\u00e3o" not in txt:   # também o acento escapado
+                continue
+            c = Counter()
+            if p.suffix == ".jsonl":
+                novas = []
+                for l in txt.splitlines():
+                    try:
+                        novas.append(json.dumps(trocar(json.loads(l), c), ensure_ascii=False, separators=(",", ":")))
+                    except ValueError:
+                        novas.append(l)
+                novo = "\n".join(novas) + ("\n" if txt.endswith("\n") else "")
+            else:
+                try:
+                    obj = json.loads(txt)
+                except ValueError:
+                    continue
+                o2 = trocar(obj, c)
+                compacto = "\n" not in txt.strip()[:200]
+                novo = json.dumps(o2, ensure_ascii=False, separators=(",", ":")) if compacto else \
+                    json.dumps(o2, ensure_ascii=False, indent=2 if txt.startswith(("{\n  ", "[\n  ")) else 1)
+            if sum(c.values()):
+                tot.update(c); arquivos += 1
+                if not simular:
+                    p.write_text(novo, encoding="utf-8")
+    r = {"arquivos": arquivos, **dict(tot)}
+    if not simular:
+        MARCO_MODALIDADE.parent.mkdir(parents=True, exist_ok=True)
+        MARCO_MODALIDADE.write_text(json.dumps({"em": _agora(), **r}, ensure_ascii=False, indent=1), encoding="utf-8")
+    return r

@@ -167,12 +167,12 @@ class TesteCorrecoesV2(unittest.TestCase):
         self.assertIsNone(L.localizar_ato(pgs2, "Diário Oficial sem identificação"))
 
     def test_destinacao_e_requisitos_em_outras_redacoes(self):
-        # 15/10/2026 (titular): "Destinação" = MODALIDADE de recebimento (por qual forma o dinheiro chega), não a finalidade
+        # 15/10/2026 (titular): "Modalidade" = MODALIDADE de recebimento (por qual forma o dinheiro chega), não a finalidade
         r = L.extrair(["Sao despesas elegiveis: pagamento de pessoal, material de consumo e servicos de terceiros. "
                        "A parceria sera formalizada por meio de Termo de Fomento, nos termos da Lei nº 13.019/2014. "
                        "As proponentes deverao comprovar no minimo dois anos de existencia e regularidade fiscal."], "https://x.go.gov.br/a.pdf", "t")
-        self.assertEqual(r["pontos"]["Destinação"]["modalidade"], "Termo de Fomento")
-        self.assertIn("13.019", r["pontos"]["Destinação"]["base_legal"])
+        self.assertEqual(r["pontos"]["Modalidade"]["modalidade"], "Termo de Fomento")
+        self.assertIn("13.019", r["pontos"]["Modalidade"]["base_legal"])
         self.assertIn("deverao comprovar", r["pontos"]["Requisitos"]["valor"])
 
 

@@ -44,7 +44,7 @@ ORDEM = {"sem_estrela": [1, 4, 3, 10, 6, 5, 8, 2, 9, 7],
          "prata": [1, 2, 9, 7, 3, 4, 10, 6, 5, 8]}
 FOCO = {"sem_estrela": ["Objeto", "Prazo de inscrição", "Território"],
         "bronze": ["Valor", "Requisitos"],
-        "prata": ["Resultado", "Prazo de recurso", "Órgão / financiador", "Esfera", "Anexos", "Destinação", "Área de atuação"]}
+        "prata": ["Resultado", "Prazo de recurso", "Órgão / financiador", "Esfera", "Anexos", "Modalidade", "Área de atuação"]}
 NOME_BALCAO = {"sem_estrela": "Sem estrela → bronze", "bronze": "Bronze → prata", "prata": "Prata → ouro"}
 
 

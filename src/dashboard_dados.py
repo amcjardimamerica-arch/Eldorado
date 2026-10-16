@@ -508,9 +508,7 @@ def _bussola(editais: list[dict], hoje: date | None = None) -> dict:
             {"item": "Anexos", "valor": (f'{len(e.get("anexos") or [])} anexo(s)'
                                          if e.get("anexos") else None),
              "comprovado": bool(e.get("anexos"))},
-            {"item": "Destinação",
-             "valor": (e.get("destinacao") or {}).get("motivo"),
-             "comprovado": (e.get("destinacao") or {}).get("elegivel") is True},
+            {"item": "Modalidade", "valor": None, "comprovado": False},   # 16/10: elegibilidade não é modalidade
         ]
         # O INVESTIGADOR MANDA NOS 12 ITENS (26/09): quando o Qwen3-8B investigou o edital, cada item da ficha
         # reflete o que ele COMPROVOU com trecho literal na fonte — e só isso.

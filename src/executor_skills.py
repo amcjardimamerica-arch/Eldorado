@@ -34,7 +34,9 @@ REGRAS = {   # (padrão, grupo do valor) — o trecho é o entorno literal do ac
     "Prazo de recurso": (rf"recurso[^.]{{0,90}}?(\d+\s*\(?[a-z ]*\)?\s*dias(?: úteis)?|{DATA})", 1),
     "Órgão / financiador": (r"((?:Secretaria|Prefeitura Municipal de|Minist[ée]rio|Funda[çc][ãa]o|Instituto|Fundo)\s[^,.;\n]{3,80})", 1),
     "Requisitos": (r"(poder[ãa]o participar[^.;]{20,300}[.;]|requisitos? (?:para|de) (?:participa|inscri)[^.;]{20,300}[.;])", 1),
-    "Destinação": (r"(destina-se a[^.;]{20,220}[.;]|recursos? (?:ser[ãa]o )?destinados?[^.;]{20,220}[.;])", 1),
+    "Modalidade": (r"((?:termo de fomento|termo de colabora[çc][ãa]o|termo de execu[çc][ãa]o cultural|acordo de coopera[çc][ãa]o(?! t[ée]cnica)|"
+                   r"conv[êe]nio|contrato de gest[ãa]o|termo de parceria|pr[êe]mio|premia[çc][ãa]o|bolsa|incentivo fiscal|lei de incentivo|"
+                   r"patroc[íi]nio|doa[çc][ãa]o|subven[çc][ãa]o social|emenda parlamentar|presta[çc][ãa]o pecuni[áa]ria)[^.;]{0,220}[.;])", 1),   # 16/10: como o recurso chega
     "Território": (r"((?:Munic[ií]pio|Estado) de [A-ZÀ-Ú][\wÀ-ú ]{2,40}|todo o territ[óo]rio nacional)", 1),
 }
 AREAS = {"Cultura": r"cultur|artes?\b|patrim[oô]nio", "Assistência social": r"assist[eê]ncia social|vulnerabilidade|suas\b",
