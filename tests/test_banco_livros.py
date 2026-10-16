@@ -81,3 +81,18 @@ class Etapa2Repositorio(unittest.TestCase):
         L = json.loads((self.r / "biblioteca_alexandria/fontes/motores.json").read_text())["motores"]
         self.assertEqual([lv["id"] for lv in L], ["op-antigo"])                                   # livro só daquele registro sai
         self.assertEqual([b["id"] for b in B.brutos_dos_livros()], ["1"])
+
+
+class Etapa2Cartorio(unittest.TestCase):
+    """16/10/2026: a fila do Cartório vem dos livros, com os mesmos registros e as mesmas assinaturas."""
+    def test_fila_dos_livros(self):
+        from src import cartorio as C
+        r = Path(tempfile.mkdtemp()); (r / "biblioteca_alexandria/fontes").mkdir(parents=True)
+        cat = r / "biblioteca_alexandria/fontes/motores.json"; cat.write_text(json.dumps({"motores": []}))
+        x = {"id": "e1", "_fonte": "fluxo", "titulo": "Chamamento", "url": "https://x.go.gov.br/c", "checklist": {"Objeto": {"s": "falta"}}}
+        with mock.patch.object(B, "CAT", cat), mock.patch.object(C, "_repositorio", lambda: None), mock.patch.object(C, "_situacao_caixa", lambda: {}):
+            B.ingerir([x])
+            nova = C.fila_estrelas()
+            velha = C.fila_estrelas({"itens_por_uf": {"GO": [x]}})
+        self.assertEqual([o["id"] for o in nova], ["e1"])
+        self.assertEqual(C._assinatura(nova[0]), C._assinatura(velha[0]))
