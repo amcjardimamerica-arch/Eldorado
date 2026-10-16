@@ -80,10 +80,13 @@ def _livro(L: dict | None) -> dict | None:
 def montar() -> dict:
     R = (_j(REP, {}).get("registros") or [])
     abertas = [r for r in R if r.get("estado") != "fechada"]
-    fl = {x.get("id"): x for v in ((_j(FLUXO, {}) or {}).get("itens_por_uf") or {}).values() for x in v}
+    # 16/10/2026 (titular, etapa 2): as fichas leem dos LIVROS — fluxo, achado bruto de cada motor e agregador ficam no
+    # livro; os arquivos antigos só como reserva enquanto o livro ainda não tem a seção
+    from . import banco_livros as BL
     ids_origem = {i for r in abertas for i in [r["id"], *(r.get("ids_origem") or [])]}
-    col = _coleta(ids_origem)
-    ag = {str(x.get("id")): x for x in ((_j(AGREG, {}) or {}).get("itens") or [])}
+    fl = BL.secoes_dos_livros("brutos:fluxo") or {x.get("id"): x for v in ((_j(FLUXO, {}) or {}).get("itens_por_uf") or {}).values() for x in v}
+    col = {i: x for i, x in BL.secoes_dos_livros("coleta").items() if i in ids_origem} or _coleta(ids_origem)
+    ag = BL.secoes_dos_livros("agregador") or {str(x.get("id")): x for x in ((_j(AGREG, {}) or {}).get("itens") or [])}
     cat = {m.get("id"): m for m in ((_j(CATALOGO, {}) or {}).get("motores") or [])}
     cur = {x.get("id"): x for x in ((_j(ROOT / "estado/curadoria_links.json", {}) or {}).get("itens") or [])}   # 15/10: curadoria
     fichas, alias = {}, {}

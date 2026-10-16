@@ -96,3 +96,21 @@ class Etapa2Cartorio(unittest.TestCase):
             velha = C.fila_estrelas({"itens_por_uf": {"GO": [x]}})
         self.assertEqual([o["id"] for o in nova], ["e1"])
         self.assertEqual(C._assinatura(nova[0]), C._assinatura(velha[0]))
+
+
+class Etapa2Fichas(unittest.TestCase):
+    """16/10/2026: o achado bruto de cada motor e o registro do agregador ficam no livro; as fichas leem de lá."""
+    def test_coleta_e_agregador_no_livro(self):
+        r = Path(tempfile.mkdtemp())
+        for d in ("biblioteca_alexandria/fontes", "dados/oportunidades", "estado/agregadores"):
+            (r / d).mkdir(parents=True)
+        (r / "biblioteca_alexandria/fontes/motores.json").write_text(json.dumps({"motores": []}))
+        (r / "dados/oportunidades/repositorio_unico.json").write_text(json.dumps({"registros": [
+            {"id": "c1", "titulo": "Chamamento", "url": "https://x.go.gov.br/c", "ids_origem": ["c1", "c2"]}]}))
+        (r / "dados/oportunidades/oportunidades.jsonl").write_text(json.dumps({"id": "c2", "sensor": "motor-x", "fonte_nome": "Fonte X"}) + "\n")
+        (r / "estado/agregadores/itens.json").write_text(json.dumps({"itens": [{"id": "c1", "agregador": "Prosas"}]}))
+        with mock.patch.object(B, "ROOT", r), mock.patch.object(B, "CAT", r / "biblioteca_alexandria/fontes/motores.json"), \
+                mock.patch.object(B, "INDICE", r / "biblioteca_alexandria/fontes/indice_chaves.json"):
+            B.consolidar()
+            self.assertEqual(B.secoes_dos_livros("coleta")["c2"]["sensor"], "motor-x")
+            self.assertEqual(B.secoes_dos_livros("agregador")["c1"]["agregador"], "Prosas")

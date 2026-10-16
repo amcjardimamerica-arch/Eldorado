@@ -142,6 +142,33 @@ def consolidar(gravar: bool = True) -> dict:
             else:
                 lv.pop("oportunidade", None)
     idx = {k: v for k, v in idx.items() if v in {lv.get("id") for lv in L}}
+    # etapa 2 (fichas): o ACHADO BRUTO de cada motor (coleta) e o registro do agregador ficam no livro da oportunidade
+    try:
+        ids = {}
+        for r in regs:
+            lid = idx.get(chave(r))
+            if lid:
+                for i in [r["id"], *(r.get("ids_origem") or [])]:
+                    ids[str(i)] = lid
+        col = ROOT / "dados/oportunidades/oportunidades.jsonl"
+        if col.exists() and ids:
+            with col.open(encoding="utf-8") as fh:
+                for linha in fh:
+                    if '"id"' not in linha:
+                        continue
+                    try:
+                        x = json.loads(linha)
+                    except ValueError:
+                        continue
+                    lid = ids.get(str(x.get("id")))
+                    if lid in por_id:
+                        por_id[lid].setdefault("coleta", {})[str(x["id"])] = x
+        for x in (_j(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens") or []:
+            lid = ids.get(str(x.get("id")))
+            if lid in por_id:
+                por_id[lid].setdefault("agregador", {})[str(x["id"])] = x
+    except Exception:  # noqa: BLE001
+        pass
     cat_doc["total"] = len(L); cat_doc["gerado_em"] = _agora()
     if gravar:
         CAT.write_text(json.dumps(cat_doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
@@ -212,3 +239,17 @@ def brutos_dos_livros() -> list[dict]:
                 vistos.add(i); out.append(b)
     out.sort(key=lambda b: b.get("_ordem", 10**9))
     return [{k: v for k, v in b.items() if k != "_ordem"} for b in out]
+
+
+def secoes_dos_livros(secao: str) -> dict:
+    """Etapa 2: {id: registro} de uma seção guardada nos livros ('coleta', 'agregador' ou 'brutos:fluxo')."""
+    out = {}
+    fonte = secao.split(":", 1)[1] if ":" in secao else None
+    for lv in (_j(CAT, {}) or {}).get("motores") or []:
+        if secao.startswith("brutos"):
+            for b in (lv.get("brutos") or {}).values():
+                if isinstance(b, dict) and b.get("_fonte") == fonte:
+                    out[b.get("id")] = b
+        else:
+            out.update(lv.get(secao) or {})
+    return out
