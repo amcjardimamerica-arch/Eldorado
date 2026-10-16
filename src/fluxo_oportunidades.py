@@ -135,13 +135,24 @@ def area_tematica(*textos: str) -> str | None:
     return None
 
 
+def _achados_dos_livros() -> list[dict]:
+    """Achados dos motores lidos dos livros; a base bruta só como reserva enquanto os livros não têm os achados."""
+    try:
+        from .banco_livros import achados
+        a = achados()
+        if a:
+            return a
+    except Exception:  # noqa: BLE001
+        pass
+    return [json.loads(l) for l in MESTRE.open(encoding="utf-8") if l.strip()] if MESTRE.exists() else []
+
+
 def consolidar() -> list[dict]:
     hoje = date.today(); lim = (hoje - timedelta(days=60)).isoformat()
     brutos = []
-    for l in MESTRE.open(encoding="utf-8") if MESTRE.exists() else []:
-        if not l.strip():
+    for m in _achados_dos_livros():                  # 16/10/2026 (etapa 3): os achados vêm dos LIVROS
+        if not isinstance(m, dict):
             continue
-        m = json.loads(l)
         if m.get("estado_export") in ("arquivado", "excluido"):
             continue
         brutos.append(("motor " + str(m.get("fonte_id") or m.get("fonte_nome") or ""), m))

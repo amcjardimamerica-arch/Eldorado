@@ -221,6 +221,11 @@ def fases(ctx: dict) -> list[dict]:
          "cmds": [[py, "-m", "src.expurgo", "--executar"],
                   [py, "-c", "import json; from src import banco_livros as B; print(json.dumps(B.limpar_base_bruta(), ensure_ascii=False))"]], "t": 1200,
          "pular": "já feito hoje" if _expurgo_feito_hoje() else None},
+        # 5b'' MIGRAÇÃO ÚNICA — os achados da base (já limpa) vão para os livros; depois disso, motores, fluxo e painel
+        # usam os livros (16/10/2026, etapa 3)
+        {"etapa": "migracao_livros", "finalidade": "uma vez: os achados da base dos motores entram nos livros",
+         "cmds": [[py, "-c", "import json; from src import banco_livros as B; print(json.dumps(B.migrar_se_preciso(), ensure_ascii=False))"]],
+         "t": 900, "pular": "já feita" if (ROOT / "estado/livros_migracao.json").exists() else None},
         # 5c' PNCP — dossiê integrado (portões + metadados + arquivos + site de origem → 12/12 ou descarte justificado)
         {"etapa": "pncp", "finalidade": "dossiê do PNCP: 12 de 12 com informação confirmada ou descarte justificado; o que faltar vai ao Interceptador",
          "cmds": [[py, "-m", "src.pncp_dossie", "60"]], "t": 1300, "pular": None},

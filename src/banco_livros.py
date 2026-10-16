@@ -142,6 +142,30 @@ def consolidar(gravar: bool = True) -> dict:
             else:
                 lv.pop("oportunidade", None)
     idx = {k: v for k, v in idx.items() if v in {lv.get("id") for lv in L}}
+    # etapa 3: JUNÇÃO — os achados da mesma oportunidade (ids_origem) vão para o livro dela; o livro de entrada que
+    # ficar vazio sai (sem multiplicar livros)
+    onde = {}
+    for lv in L:
+        for i in (lv.get("coleta") or {}):
+            onde.setdefault(str(i), lv.get("id"))
+    juntados = 0
+    for r in regs:
+        alvo = por_id.get(idx.get(chave(r)))
+        if not alvo:
+            continue
+        for i in [r["id"], *(r.get("ids_origem") or [])]:
+            src_id = onde.get(str(i))
+            if src_id and src_id != alvo.get("id") and src_id in por_id:
+                src = por_id[src_id]; x = (src.get("coleta") or {}).pop(str(i), None)
+                if x is not None:
+                    alvo.setdefault("coleta", {})[str(i)] = x; onde[str(i)] = alvo["id"]; juntados += 1
+    ids_repo = {str(i) for r in regs for i in [r["id"], *(r.get("ids_origem") or [])]}
+    entrada_removidos = 0
+    for lv in list(L):
+        if lv.get("motor") != "banco de livros" or lv.get("oportunidade") or lv.get("brutos") or lv.get("historico"):
+            continue
+        if not lv.get("coleta") or (regs and not (set(lv["coleta"]) & ids_repo)):
+            L.remove(lv); por_id.pop(lv.get("id"), None); entrada_removidos += 1   # 16/10: não virou oportunidade → não fica
     # etapa 2 (fichas): o ACHADO BRUTO de cada motor (coleta) e o registro do agregador ficam no livro da oportunidade
     try:
         ids = {}
@@ -173,7 +197,8 @@ def consolidar(gravar: bool = True) -> dict:
     if gravar:
         CAT.write_text(json.dumps(cat_doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         INDICE.write_text(json.dumps({"em": _agora(), "chaves": idx}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    return {"oportunidades": len(regs), "livros_criados": criados, "livros_vinculados": vinculados, "livros_removidos": removidos, "livros": len(L)}
+    return {"oportunidades": len(regs), "livros_criados": criados, "livros_vinculados": vinculados, "livros_removidos": removidos,
+            "livros_de_entrada_removidos": entrada_removidos, "achados_juntados": juntados, "livros": len(L)}
 
 
 def livro_da_oportunidade(a: dict) -> dict | None:
@@ -222,8 +247,8 @@ def ingerir(brutos: list[dict], gravar: bool = True) -> dict:
         br = lv.get("brutos") or {}
         for i in [i for i in br if i not in atuais]:
             del br[i]; retirados += 1
-        if lv.get("motor") == "banco de livros" and not br and not lv.get("oportunidade"):
-            L.remove(lv)                                # livro criado só para um registro que a origem não traz mais
+        if lv.get("motor") == "banco de livros" and not br and not lv.get("oportunidade") and not lv.get("coleta"):
+            L.remove(lv)                                # livro criado só para um registro que a origem não traz mais (16/10: nunca com achados)
     cat_doc["total"] = len(L); cat_doc["gerado_em"] = _agora()
     if gravar:
         CAT.write_text(json.dumps(cat_doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
@@ -282,15 +307,26 @@ def registrar_achados(achados: list[dict], motor: str | None = None, gravar: boo
                 if isinstance(b, dict):
                     idx.setdefault(chave(b), lv.get("id"))
     criados = vinculados = 0
+    seq = int(cat_doc.get("seq_achados") or 0)
     for a in achados:
         if a.get("id") is None:
             continue
+        seq += 1
+        a = {**a, "_seq": a.get("_seq") or seq}           # ordem de chegada (o fluxo e o painel dependem dela)
         k = chave(a); lid = idx.get(k)
         if lid not in por_id:
             lv = _novo_livro(a, k); L.append(lv); por_id[lv["id"]] = lv; idx[k] = lv["id"]; criados += 1
         else:
             lv = por_id[lid]; vinculados += 1
-        lv.setdefault("coleta", {})[str(a["id"])] = {**a, **({"motor": motor} if motor and not a.get("motor") else {})}
+        col = lv.setdefault("coleta", {})
+        if str(a["id"]) in col:                          # releitura padrão: o PRIMEIRO achado fica; os seguintes são anotados
+            x = col[str(a["id"])]
+            quem = a.get("sensor") or a.get("motor") or motor
+            if quem and quem not in (x.get("relido_por") or []):
+                x["relido_por"] = (x.get("relido_por") or []) + [quem]
+            continue
+        col[str(a["id"])] = {**a, **({"motor": motor} if motor and not a.get("motor") else {})}
+    cat_doc["seq_achados"] = seq
     if gravar:
         cat_doc["total"] = len(L); cat_doc["gerado_em"] = _agora()
         CAT.write_text(json.dumps(cat_doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
@@ -298,11 +334,28 @@ def registrar_achados(achados: list[dict], motor: str | None = None, gravar: boo
 
 
 def achados() -> list[dict]:
-    """Leitura padrão dos achados dos motores — a partir dos LIVROS (substitui a base bruta oportunidades.jsonl)."""
+    """Leitura padrão dos achados dos motores — a partir dos LIVROS (substitui a base bruta oportunidades.jsonl), na
+    ordem de chegada e sem campos internos."""
     out = []
     for lv in (_j(CAT, {}) or {}).get("motores") or []:
         out.extend(x for x in (lv.get("coleta") or {}).values() if isinstance(x, dict))
-    return out
+    out.sort(key=lambda x: x.get("_seq") or 0)
+    return [{k: v for k, v in x.items() if k not in ("_seq", "relido_por")} for x in out]
+
+
+def migrar_base_para_livros(base: Path | None = None) -> dict:
+    """Uma vez: as linhas da base bruta (já limpa pelo portão) entram nos livros, na ordem em que estão."""
+    base = base or ROOT / "dados/oportunidades/oportunidades.jsonl"
+    linhas = []
+    if base.exists():
+        for n, l in enumerate(base.open(encoding="utf-8"), 1):
+            try:
+                a = json.loads(l)
+            except ValueError:
+                continue
+            if isinstance(a, dict) and a.get("id") is not None:
+                a["_seq"] = n; linhas.append(a)
+    return registrar_achados(linhas, None)
 
 
 def limpar_base_bruta(base: Path | None = None, gravar: bool = True) -> dict:
@@ -335,3 +388,19 @@ def limpar_base_bruta(base: Path | None = None, gravar: bool = True) -> dict:
     if gravar:
         base.write_text("".join(manter), encoding="utf-8")
     return {"mantidas": len(manter), "removidas": sum(fora.values()), "motivos": dict(fora.most_common())}
+
+
+MARCO_MIGRACAO = ROOT / "estado/livros_migracao.json"
+
+
+def migrar_se_preciso() -> dict:
+    """Uma única vez, depois do expurgo e da limpeza da base: os achados da base vão para os livros. Depois disso,
+    o fluxo e o painel dos motores leem dos livros e cada motor grava direto neles."""
+    if MARCO_MIGRACAO.exists():
+        return {"migracao": "já feita", **(_j(MARCO_MIGRACAO, {}) or {})}
+    limpeza = limpar_base_bruta()
+    r = migrar_base_para_livros()
+    MARCO_MIGRACAO.parent.mkdir(parents=True, exist_ok=True)
+    MARCO_MIGRACAO.write_text(json.dumps({"em": _agora(), "limpeza": {k: v for k, v in limpeza.items() if k != "motivos"}, **r},
+                                         ensure_ascii=False, indent=1), encoding="utf-8")
+    return {"migracao": "feita agora", **r}
