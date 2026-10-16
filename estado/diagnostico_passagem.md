@@ -1,4 +1,4 @@
-# Diagnóstico do sistema · 2026-10-16 15:12 UTC
+# Diagnóstico do sistema · 2026-10-16 15:38 UTC
 
 ## Cumprimento da finalidade · índice geral 68%
 - Motores: 100% (ok) — todo motor ativo lê dentro da sua cadência
@@ -15,13 +15,13 @@
 - Execução sem falha silenciosa: 20% (falha) — nenhuma etapa falha em silêncio
 
 ## Execução · fluxos: {'falha': 1, 'ok': 32, 'atencao': 7, 'atrasado': 2, 'manual': 2}
-- 00 · Verificar prontidão: falha · última 2026-10-16T13:56 · sucesso 0% · cadência 24.0 h
+- 00 · Verificar prontidão: falha · última 2026-10-16T15:33 · sucesso 0% · cadência 24.0 h
 - 35 · Alimentação diária externa (editais abertos): atencao · última 2026-10-16T14:17 · sucesso 22% · cadência 24.0 h
 - 05 · Busca ativa (a cada 3 dias): atencao · última 2026-10-15T17:32 · sucesso 10% · cadência None h
 - 09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes: atrasado · última 2026-10-03T11:56 · sucesso 100% · cadência 24.0 h
 - 10 · Histórico de doações da Rouanet (empresa por empresa) — retoma sozinho até completar: atencao · última 2026-10-15T16:09 · sucesso 25% · cadência None h
 - 01 · Eldorado — motores por hora (00h–06h BRT): atencao · última 2026-10-16T13:37 · sucesso 20% · cadência 24.0 h
-- 22 · Motores da vez — cada passagem calcula sozinha o que está pendente (agenda + maestro): atencao · última 2026-10-16T15:01 · sucesso 38% · cadência 1.0 h
+- 22 · Motores da vez — cada passagem calcula sozinha o que está pendente (agenda + maestro): atencao · última 2026-10-16T15:01 · sucesso 44% · cadência 1.0 h
 - 34 · Motores de empresas (semanal, com recuperação): atencao · última 2026-10-16T11:39 · sucesso 60% · cadência 24.0 h
 - 03 · Eldorado — carga histórica de cinco anos (campanha única, mês a mês): atencao · última 2026-10-16T11:10 · sucesso 50% · cadência 6.0 h
 - 02 · Alexandria — revisão mensal de leis e procedimentos: atrasado · última 2026-10-01T10:36 · sucesso 50% · cadência 24.0 h
@@ -50,7 +50,7 @@
 
 ## Integração
 - contagens: {'repositorio_abertas': 391, 'diagnostico_abertas': 391, 'tela_cartoes': 420, 'fichas': 396, 'sala_controle_abertas': 391}
-- idade (h): {'repositorio': 0.0, 'fluxo': 0.0, 'fichas': 0.0, 'sala_controle': 0.0, 'status_motores': 0.4, 'maestro': 0.4, 'rede_neural': 0.0, 'saude': 1.4}
+- idade (h): {'repositorio': 0.0, 'fluxo': 0.0, 'fichas': 0.0, 'sala_controle': 0.0, 'status_motores': 0.4, 'maestro': 0.4, 'rede_neural': 0.0, 'saude': 1.8}
 - decisões da titular: 0 · não aplicadas: 0
 
 ## Problemas (19)
@@ -61,8 +61,8 @@
 - [alta] fluxo '00 · Verificar prontidão' falhou nas últimas execuções (0% de sucesso) → investigar o fluxo (sem correção automática)
 - [alta] tela mostra 420 oportunidades e o repositório conta 391 → refazer a tela
 - [alta] 3 módulos de teste em quarentena por DEFEITO REAL → corrigir o código e tirar da quarentena (sem correção automática)
-- [media] fluxo '09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes' sem rodar há 315.3 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
-- [media] fluxo '02 · Alexandria — revisão mensal de leis e procedimentos' sem rodar há 364.6 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
+- [media] fluxo '09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes' sem rodar há 315.7 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
+- [media] fluxo '02 · Alexandria — revisão mensal de leis e procedimentos' sem rodar há 365.0 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
 - [media] 26 livros municipais de outros estados no catálogo (só Goiás tem livros municipais) → refazer a tela
 - [media] 29 página(s)/documento(s) fora da fila após 5 erros iguais → corrigir a rota ou ler no Chrome (sem correção automática)
 - [media] saúde · claude: 1180 item(ns) esperando a análise do Claude (próxima: 2026-10-16) → ver o fluxo/arquivo indicado
@@ -81,7 +81,7 @@
 - curadoria do link oficial: {'em curadoria': 238, 'reprovado': 75, 'aprovado': 44, 'sem link oficial': 36}
 - validação por exceção: trava fechada: acerto do Cartório 77.4% < 85.0% — candidatas vão à frente da conferência humana
 - auditorias: {'gabarito_do_cartorio': {'em': '2026-10-15T19:53:25+00:00', 'acerto_pct': 77.4, 'documentos_lidos': 142}, 'varredura_referencia': '2026-10-01_2026-10-15', 'robots': {'em': '2026-10-15T10:07:53+00:00', 'motores_com_bloqueio': 5}, 'ponte': {'ponte_ok': 7, 'direto_ok': 5, 'so_pela_ponte': ['ALEGO · SPL (proposições)', 'MPGO'], 'nenhum': ['TJGO · portal'], 'total': 8}}
-- legislativo: {'atualizado_em': '2026-10-16T15:11:57+00:00', 'proposicoes': 12}
+- legislativo: {'atualizado_em': '2026-10-16T15:37:18+00:00', 'proposicoes': 12}
 
 ## Decisões do Eldorado: agiu como deveria?
 - decidir · motores escolhidos para ler na passagem: **correto** (0 de 127) — regra: todo motor pendente ou parcial com tentativa sobrando entra na passagem (sem agenda)
