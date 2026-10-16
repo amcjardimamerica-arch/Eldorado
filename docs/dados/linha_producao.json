@@ -1,13 +1,13 @@
 {
- "em": "2026-10-16T05:57:16+00:00",
+ "em": "2026-10-16T06:57:51+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 18331,
-  "oportunidades_distintas": 2470,
-  "entidades_em_2_ou_mais_canais": 22,
+  "coletados": 18339,
+  "oportunidades_distintas": 2475,
+  "entidades_em_2_ou_mais_canais": 23,
   "etapas": {
-   "CONSOLIDADO": 17579,
-   "EM_LIVRO": 639,
+   "CONSOLIDADO": 17582,
+   "EM_LIVRO": 644,
    "REPROCESSAR": 71,
    "QUALIFICADO": 42
   },
@@ -108,10 +108,10 @@
   {
    "canal": "outras-oportunidades-6",
    "familia": "outros",
-   "registros": 18,
-   "entidades": 17,
+   "registros": 21,
+   "entidades": 18,
    "exclusivas": 17,
-   "corroboradas": 0,
+   "corroboradas": 1,
    "validadas_como_reais": 5
   },
   {
@@ -137,8 +137,8 @@
    "familia": "outros",
    "registros": 33,
    "entidades": 32,
-   "exclusivas": 32,
-   "corroboradas": 0,
+   "exclusivas": 31,
+   "corroboradas": 1,
    "validadas_como_reais": 2
   },
   {
@@ -198,9 +198,9 @@
   {
    "canal": "plataforma-wordpress",
    "familia": "outros",
-   "registros": 17,
-   "entidades": 17,
-   "exclusivas": 14,
+   "registros": 20,
+   "entidades": 20,
+   "exclusivas": 17,
    "corroboradas": 3,
    "validadas_como_reais": 1
   },
@@ -333,9 +333,9 @@
   {
    "canal": "empresas-editais-incentivados",
    "familia": "empresas",
-   "registros": 44,
-   "entidades": 37,
-   "exclusivas": 32,
+   "registros": 45,
+   "entidades": 38,
+   "exclusivas": 33,
    "corroboradas": 5,
    "validadas_como_reais": 0
   },
@@ -563,13 +563,22 @@
    "exclusivas": 1,
    "corroboradas": 0,
    "validadas_como_reais": 0
+  },
+  {
+   "canal": "f260-captacao-025",
+   "familia": "orgao_publico",
+   "registros": 1,
+   "entidades": 1,
+   "exclusivas": 1,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
   }
  ],
  "familias": {
   "diario_oficial": 4,
   "outros": 18,
   "portal_chamamentos": 3,
-  "orgao_publico": 27,
+  "orgao_publico": 28,
   "pilotos": 1,
   "terceiro_setor": 4,
   "empresas": 2,
@@ -722,6 +731,13 @@
    "canais": [
     "do-goias",
     "estaduais-go-gov"
+   ]
+  },
+  {
+   "entidade": "26dc868a37eb78e76d11",
+   "canais": [
+    "outras-oportunidades-4",
+    "outras-oportunidades-6"
    ]
   },
   {
