@@ -1,14 +1,15 @@
 {
-  "em": "2026-10-16T10:21:04+00:00",
+  "em": "2026-10-16T10:28:21+00:00",
   "regra": "só informação correta entra na Biblioteca; insucesso fica na pasta do Piloto",
   "por_motor": {
     "piloto-aberto": {
       "missoes": 40,
-      "achados": 0,
+      "achados": 2,
       "uteis": 0,
       "motivos": {
         "nada_no_crivo": 37,
-        "busca_vazia": 3
+        "sem_texto": 1,
+        "busca_vazia": 2
       },
       "efetividade": 0.0
     }
@@ -17,7 +18,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "nada_no_crivo",
-      "vezes": 12003,
+      "vezes": 12002,
       "tipos": [
         "cacar_oportunidade",
         "descobrir_local",
@@ -30,12 +31,12 @@
       ],
       "ultima": "2026-10-16",
       "explicacao": "vieram resultados, mas nenhum era oportunidade de verdade",
-      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 12003 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por vieram resultados, mas nenhum era oportunidade de verdade há 12002 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "piloto-aberto",
       "motivo": "busca_vazia",
-      "vezes": 187,
+      "vezes": 192,
       "tipos": [
         "cacar_oportunidade",
         "descobrir",
@@ -44,7 +45,7 @@
       ],
       "ultima": "2026-10-16",
       "explicacao": "o buscador não devolveu nada (bloqueio ou rede)",
-      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 187 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por o buscador não devolveu nada (bloqueio ou rede) há 192 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "missao-especial",
@@ -97,7 +98,7 @@
     {
       "motor": "piloto-aberto",
       "motivo": "sem_texto",
-      "vezes": 90,
+      "vezes": 93,
       "tipos": [
         "aposta",
         "descobrir",
@@ -105,7 +106,7 @@
       ],
       "ultima": "2026-10-16",
       "explicacao": "sem_texto",
-      "regra": "o motor 'piloto-aberto' falha por sem_texto há 90 vezes — precisa de correção, não de mais tentativas"
+      "regra": "o motor 'piloto-aberto' falha por sem_texto há 93 vezes — precisa de correção, não de mais tentativas"
     },
     {
       "motor": "motor-patrocinio",
@@ -179,6 +180,13 @@
     }
   ],
   "melhorias_pendentes": [
+    {
+      "motor": "piloto-aberto",
+      "sugestao": "O motor deveria identificar automaticamente se o achado menciona edital, patrocínio, doação de empresa ou incentivo fiscal, e extrair informações como prazo, valor, objeto e página, para facilitar a análise.",
+      "efetividade_na_hora": 0.0,
+      "em": "2026-10-16T10:28",
+      "aplicada": false
+    },
     {
       "motor": "piloto-aberto",
       "sugestao": "O motor deve priorizar a extração de informações específicas como prazo, valor, objeto e página dos editais, para facilitar a avaliação de sua relevância para as organizações da sociedade civil.",
@@ -311,19 +319,12 @@
       "efetividade_na_hora": 0.0,
       "em": "2026-10-15T02:19",
       "aplicada": false
-    },
-    {
-      "motor": "piloto-aberto",
-      "sugestao": "O motor deve priorizar a extração e análise de informações específicas dos editais, como objeto, prazo, valor e critérios de seleção, para facilitar a identificação de oportunidades relevantes para as organizações da soc",
-      "efetividade_na_hora": 0.0,
-      "em": "2026-10-15T01:39",
-      "aplicada": false
     }
   ],
-  "editais_tratados": 610,
-  "entregues_ao_claude": 533,
+  "editais_tratados": 612,
+  "entregues_ao_claude": 535,
   "ultima_faxina": {
-    "em": "2026-10-16T10:21:04+00:00",
+    "em": "2026-10-16T10:28:21+00:00",
     "dias": 2,
     "arquivos_de_quarentena_apagados": 18,
     "achados_descartados_removidos": 3019,
