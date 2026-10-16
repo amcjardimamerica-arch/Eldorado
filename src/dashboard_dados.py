@@ -1561,7 +1561,7 @@ def coletar(hoje: date | None = None) -> dict:
             "lexico_aprendido": (lambda d: {"positivos": len(d.get("positivos") or {}), "vetos": len(d.get("vetos") or {}), "candidatos": len(d.get("candidatos") or {}), "base": d.get("base"), "em": d.get("em")} if d else None)(
                 load_json(ROOT / "config/lexico_aprendido.json") if (ROOT / "config/lexico_aprendido.json").exists() else None),
             "recorrencia": (lambda d: {"total": d.get("total"), "por_cadencia": d.get("por_cadencia")} if d else None)(
-                load_json(ROOT / "estado/rotas_recorrencia.json") if (ROOT / "estado/rotas_recorrencia.json").exists() else None),
+                load_json(ROOT / "estado/rotas_recorrencia.json") if __import__("src.livro_arquivo", fromlist=["x"]).existe(ROOT / "estado/rotas_recorrencia.json") else None),
             "empresas_rotas": (lambda d: {"empresas": d.get("total_empresas"), "rotas": sum(len(r.get("rotas") or []) for r in d.get("empresas") or [])} if d else None)(
                 load_json(ROOT / "config/rotas_empresas.json") if (ROOT / "config/rotas_empresas.json").exists() else None),
             "finalidade": (lambda d: {"descoberta": sum(1 for v in (d.get("motores") or {}).values() if v.get("finalidade") == "descoberta"), "insumo": sum(1 for v in (d.get("motores") or {}).values() if v.get("finalidade") == "insumo"), "espalhados": (d.get("espalhamento") or {}).get("total_novos")} if d else None)(
