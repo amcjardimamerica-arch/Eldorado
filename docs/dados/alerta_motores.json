@@ -1,37 +1,14 @@
 {
-  "em": "2026-10-16T05:57:37+00:00",
+  "em": "2026-10-16T12:01:55+00:00",
   "data": "2026-10-16",
   "total": 33,
-  "funcionando": 30,
-  "em_alerta": 3,
-  "alertas": [
-    {
-      "id": "judiciario-tjgo",
-      "nome": "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
-      "gravidade": "alta",
-      "problema": "todas as páginas falharam em 2026-10-16",
-      "acao": "conferir bloqueio/mudança de formato; o Claude Desktop abre a rota no navegador"
-    },
-    {
-      "id": "plataforma-mapas-culturais",
-      "nome": "Adaptador Mapas Culturais — oportunidades com inscrição aberta",
-      "gravidade": "alta",
-      "problema": "todas as páginas falharam em 2026-10-16",
-      "acao": "conferir bloqueio/mudança de formato; o Claude Desktop abre a rota no navegador"
-    },
-    {
-      "id": "plataforma-wordpress",
-      "nome": "Adaptador WordPress — sites oficiais pela API pública",
-      "gravidade": "alta",
-      "problema": "todas as páginas falharam em 2026-10-15",
-      "acao": "conferir bloqueio/mudança de formato; o Claude Desktop abre a rota no navegador"
-    }
-  ],
+  "funcionando": 31,
+  "em_alerta": 0,
+  "alertas": [],
   "ok": [
     "do-goiania",
     "do-goias",
     "dou",
-    "judiciario-cnj-tjgo",
     "dj-trf1-go",
     "camara-goiania-pl",
     "alego-pl",
@@ -42,6 +19,8 @@
     "mpgo-destinacao",
     "mptgo-destinacao",
     "mpu-destinacao",
+    "plataforma-wordpress",
+    "plataforma-mapas-culturais",
     "outras-oportunidades-1",
     "outras-oportunidades-2",
     "outras-oportunidades-3",
@@ -58,6 +37,20 @@
     "plat-piloto-aberto",
     "plat-estaduais-go-gov",
     "recorrencia"
+  ],
+  "bloqueio_conhecido": [
+    {
+      "id": "judiciario-cnj-tjgo",
+      "nome": "Judiciário — CNJ e TJGO: editais das varas de execução penal e das comarcas (prestações pecuniárias) e credenciamentos de entidades",
+      "gravidade": "conhecido",
+      "problema": "TJ-GO recusa o robô (403) direto e pela ponte Brasil — editais seguem pelo PNCP e pelo Diário da Justiça; a página só pelo Chrome"
+    },
+    {
+      "id": "judiciario-tjgo",
+      "nome": "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
+      "gravidade": "conhecido",
+      "problema": "TJ-GO recusa o robô (403) direto e pela ponte Brasil — editais seguem pelo PNCP e pelo Diário da Justiça; a página só pelo Chrome"
+    }
   ],
   "regra": "todo motor regular tem de ler dentro da sua cadência; o que não leu vira alerta e vai para o pacote do Claude Desktop"
 }

@@ -1,9 +1,9 @@
 {
- "em": "2026-10-16T11:00:05+00:00",
+ "em": "2026-10-16T11:59:24+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
- "rotulados": 1673,
- "positivos": 587,
- "pendentes": 676,
+ "rotulados": 1738,
+ "positivos": 627,
+ "pendentes": 732,
  "validacao_cruzada": {
   "auc": 0.843,
   "precisao": 0.74,
@@ -37,12 +37,6 @@
    "incerteza": 0.997
   },
   {
-   "titulo": "Chamadas Abertas",
-   "url": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
-   "nota": 0.498,
-   "incerteza": 0.996
-  },
-  {
    "titulo": "“CHAMAMENTO PÚBLICO PARA CREDENCIAMENTO DE ARTISTAS LOCAIS/REGIONAIS”, mediante pagamento de cachê, com base… — MUNICIPIO DE ALMIRANTE TAMAN",
    "url": "https://pncp.gov.br/app/editais/76105659000174/2026/227",
    "nota": 0.503,
@@ -53,18 +47,6 @@
    "url": "https://confio.org.mx/inicio/convocatorias-para-las-osc/",
    "nota": 0.503,
    "incerteza": 0.994
-  },
-  {
-   "titulo": "Edital PNAB Niterói – 2026",
-   "url": "https://smc.niteroi.rj.gov.br/2026/09/11/edital-pnab-niteroi-2026",
-   "nota": 0.497,
-   "incerteza": 0.993
-  },
-  {
-   "titulo": "EDITAL Nº 003/2026 – ADMPLAN – TERCEIRA AUDIÊNCIA PÚBLICA DO PLANO DIRETOR DO MUNICÍPIO DE COLINAS DO SUL/GO.",
-   "url": "https://colinasdosul.go.gov.br/aviso/2862",
-   "nota": 0.504,
-   "incerteza": 0.993
   },
   {
    "titulo": "EDITAL DE CHAMAMENTO PÚBLICO Nº 009/2026 POLÍTICA NACIONAL ALDIR BLANC (PNAB) CICLO II - SECULT CHOROZINHO EDITAL FESTIVAL CULTURAL ITINERAN",
@@ -85,16 +67,10 @@
    "incerteza": 0.991
   },
   {
-   "titulo": "Fundo Socioambiental da CAIXA lança edital de R$ 50 milhões para projetos de agricultura regenerativa",
-   "url": "https://captadores.org.br/editais/fundo-socioambiental-da-caixa-lanca-edital-de-r-50-milhoes-para-projetos-de-agricultura-regenerativa-na-amazonia-legal",
-   "nota": 0.494,
-   "incerteza": 0.988
-  },
-  {
-   "titulo": "Diário Oficial de Pratânia (SP) 2026-10-05 — \"termo de execução cultural\"",
-   "url": "https://data.queridodiario.ok.org.br/3541059/2026-10-05/09f6e527feb6f3f99ec6d42f7348b622574410a7.pdf",
-   "nota": 0.506,
-   "incerteza": 0.988
+   "titulo": "O credenciamento de Organizações da Sociedade Civil, com atuação na área assistencial, para execução indireta do serviço de proteção social ",
+   "url": "https://www.ribeiraopires.sp.gov.br/portal/editais/0/5/2658",
+   "nota": 0.495,
+   "incerteza": 0.989
   },
   {
    "titulo": "Edital Itapajé 2026: Medidas Socioeducativas para OSC · Capitaai",
@@ -103,22 +79,22 @@
    "incerteza": 0.987
   },
   {
-   "titulo": "Diário Oficial de Itaúna (MG) 2026-10-08 — \"termo de execução cultural\"",
-   "url": "https://data.queridodiario.ok.org.br/3133808/2026-10-08/3ff7b2018ab056f86d374fde7bc7caf5daad0c90.pdf",
-   "nota": 0.493,
-   "incerteza": 0.986
-  },
-  {
    "titulo": "Prefeitura de Goiânia: chamamento para seleção de instituições de ...",
    "url": "https://goiasemcena.com.br/prefeitura-de-goiania-chamamento-publico-para-selecao-de-instituicoes-de-permanencia-e-casa-lar-para-idosos/",
    "nota": 0.493,
    "incerteza": 0.986
   },
   {
-   "titulo": "Diário Oficial de Sumidouro (RJ) 2026-09-14 — \"edital de premiação\" cultura",
-   "url": "https://data.queridodiario.ok.org.br/3305703/2026-09-14/efaecfdca0bf5f566dd4daf0db595fb5d8a95cb0.pdf",
-   "nota": 0.508,
+   "titulo": "Edital Fundos da Infância e da Adolescência 2026 Devido a revisões estratégicas internas, o edital Fundos da Infância e da Adolescência - FI",
+   "url": "https://www.itausocial.org.br/editais/edital-fundos-da-infancia-e-da-adolescencia-2026",
+   "nota": 0.507,
    "incerteza": 0.985
+  },
+  {
+   "titulo": "Diário Oficial de Itapeva (SP) 2026-09-23 — \"edital de chamamento público\" associação — Prefeitura Municipal de Itapeva",
+   "url": "https://itapeva.mg.gov.br/",
+   "nota": 0.492,
+   "incerteza": 0.984
   },
   {
    "titulo": "Instituto Porto abre edital de R$ 400 mil para OSCs da Grande São Paulo e Grande Belo Horizonte",
@@ -151,12 +127,6 @@
    "incerteza": 0.982
   },
   {
-   "titulo": "Diário Oficial de Esplanada (BA) 2026-10-09 — \"edital de premiação\" cultura",
-   "url": "https://data.queridodiario.ok.org.br/2910602/2026-10-09/cf574e49fefd17a51aefc9ba05720078d3696ff8.pdf",
-   "nota": 0.509,
-   "incerteza": 0.981
-  },
-  {
    "titulo": "Jataí — SMC PUBLICA COMUNICADO SOBRE OS EDITAIS DA PNAB EM JATAÍ Ajustes garantem mais clareza e precisão nas … — Goiás / Jataí",
    "url": "https://www.jatai.go.gov.br/smc-publica-comunicado-sobre-os-editais-da-pnab-em-jatai-ajustes-garantem-mais-clareza-e-precisao-nas-regras-do-processo-de-selecao-cultural/",
    "nota": 0.51,
@@ -175,20 +145,26 @@
    "incerteza": 0.98
   },
   {
+   "titulo": "Itumbiara — INSCRIÇÕES ABERTAS PARA EDITAIS DE PREMIAÇÃO E FOMENTO DE PROJETOS CULTURAIS",
+   "url": "https://itumbiara.go.gov.br/inscricoes-abertas-para-editais-de-premiacao-e-fomento-de-projetos-culturais/",
+   "nota": 0.51,
+   "incerteza": 0.979
+  },
+  {
    "titulo": "Chamada Pública PSA para Conservação da Vegetação Nativa em Territórios Coletivos",
    "url": "https://florestamaisamazonia.mma.gov.br/login",
    "nota": 0.51,
    "incerteza": 0.979
   },
   {
-   "titulo": "Edital Suplementar de Subvenção Econômica FAPESC N.º 65/2025 - Programa Horizonte Europa (2026–2027)",
-   "url": "https://fapesc.sc.gov.br/edital-suplementar-de-subvencao-economica-fapesc-n-o-65-2025-programa-horizonte-europa-2026-2027",
-   "nota": 0.512,
-   "incerteza": 0.976
+   "titulo": "Diário Oficial de Jundiá (AL) 2026-10-05 — \"termo de fomento\" \"chamamento público\"",
+   "url": "https://data.queridodiario.ok.org.br/2700000/2026-10-05/8e3eb60f57b80a1eef6637d054171564cacb0e5a.pdf",
+   "nota": 0.489,
+   "incerteza": 0.978
   },
   {
-   "titulo": "Edital de notificação de lançamento",
-   "url": "https://catalao.go.gov.br/producao/public/index.php/avisos/edital-de-chamamento-publico/avisos/Edital-de-Notificacao-de-Lancamento",
+   "titulo": "Edital Suplementar de Subvenção Econômica FAPESC N.º 65/2025 - Programa Horizonte Europa (2026–2027)",
+   "url": "https://fapesc.sc.gov.br/edital-suplementar-de-subvencao-economica-fapesc-n-o-65-2025-programa-horizonte-europa-2026-2027",
    "nota": 0.512,
    "incerteza": 0.976
   },
@@ -217,6 +193,30 @@
    "incerteza": 0.974
   },
   {
+   "titulo": "14/09/2026 14h38",
+   "url": "https://www.juatuba.mg.gov.br/portal/download/chamamento-publico-anexos/hR-wPP",
+   "nota": 0.486,
+   "incerteza": 0.973
+  },
+  {
+   "titulo": "14/09/2026 14h38",
+   "url": "https://www.juatuba.mg.gov.br/portal/download/chamamento-publico-anexos/Kd-wPP",
+   "nota": 0.486,
+   "incerteza": 0.973
+  },
+  {
+   "titulo": "14/09/2026 14h38",
+   "url": "https://www.juatuba.mg.gov.br/portal/download/chamamento-publico-anexos/sh-wPP",
+   "nota": 0.486,
+   "incerteza": 0.973
+  },
+  {
+   "titulo": "14/09/2026 14h38",
+   "url": "https://www.juatuba.mg.gov.br/portal/download/chamamento-publico-anexos/CK-wPP",
+   "nota": 0.486,
+   "incerteza": 0.973
+  },
+  {
    "titulo": "Processo de Seleção de Gestor Escolar",
    "url": "https://goias.gov.br/educacao?page_id=27121",
    "nota": 0.486,
@@ -235,12 +235,6 @@
    "incerteza": 0.969
   },
   {
-   "titulo": "Chamamento Público nº004/2026 - CELEBRAÇÃO DE TERMO DE COLABORAÇÃO  PARA A CONSECUÇÃO DE FINALIDADE DE INTERESSE PÚBLICO DE PROMOVER À GESTÃ",
-   "url": "https://www.juatuba.mg.gov.br/portal/editais/0/5/1193",
-   "nota": 0.516,
-   "incerteza": 0.969
-  },
-  {
    "titulo": "Secretaria de Estado da Saúde — EDITAL DE CHAMAMENTO PÚBLICO Nº 1/2026",
    "url": "https://www.in.gov.br/web/dou/-/edital-de-chamamento-publico-n-1/2026-737406347",
    "nota": 0.516,
@@ -253,10 +247,10 @@
    "incerteza": 0.965
   },
   {
-   "titulo": "Itumbiara — INSCRIÇÕES ABERTAS PARA EDITAIS DE PREMIAÇÃO E FOMENTO DE PROJETOS CULTURAIS",
-   "url": "https://itumbiara.go.gov.br/inscricoes-abertas-para-editais-de-premiacao-e-fomento-de-projetos-culturais/",
-   "nota": 0.519,
-   "incerteza": 0.963
+   "titulo": "Diário Oficial de Marau (RS) 2026-09-28 — \"chamamento público\" \"organizações da sociedade civil\"",
+   "url": "https://data.queridodiario.ok.org.br/4311809/2026-09-28/34f213403b80cfbedbdcc977ce62aa64e8d15d86.pdf",
+   "nota": 0.482,
+   "incerteza": 0.964
   },
   {
    "titulo": "Mapa de donantes y convocatorias para organizaciones | Terraetica",
@@ -269,12 +263,6 @@
    "url": "https://data.queridodiario.ok.org.br/2900801/2026-09-22/5c3a4963405fbd659368b0af3dc946eb43703a04.pdf",
    "nota": 0.519,
    "incerteza": 0.963
-  },
-  {
-   "titulo": "Termo de Revogação de Edital: 001/2026  29/05/2026 · TERMO DE REVOGAÇÃO EDITAL DE CHAMAMENTO PÚBLICO N° 001/2026 PREMIAÇÃO PARA AGENTES CULT",
-   "url": "https://potengi.ce.gov.br/publicacoes.php?id=897",
-   "nota": 0.481,
-   "incerteza": 0.961
   },
   {
    "titulo": "Edital de Chamamento Público Nº 6/2026",
@@ -343,27 +331,15 @@
    "incerteza": 0.953
   },
   {
-   "titulo": "Banco de Talentos",
-   "url": "https://forms.gle/wszUTLSEKetCabJLA",
-   "nota": 0.477,
-   "incerteza": 0.953
-  },
-  {
    "titulo": "Edital Rio Doce Participativo e Comunitário abre seleção de projetos",
    "url": "https://fbb.org.br/edital-publico/editalriodoce/",
    "nota": 0.524,
    "incerteza": 0.953
   },
   {
-   "titulo": "Diário Oficial de Maceió (AL) 2026-10-06 — \"edital de chamamento público\" associação",
-   "url": "https://data.queridodiario.ok.org.br/2704302/2026-10-06/cda45c93ee062238f3519e13b63442b8e4912f5b.pdf",
-   "nota": 0.476,
-   "incerteza": 0.952
-  },
-  {
-   "titulo": "QUIZ UNAIDS",
-   "url": "https://unaids.org.br/quiz-unaids",
-   "nota": 0.476,
+   "titulo": "EDITAL CHAMAMENTO PUBLICO 007/2026 FOMENTO A PROJETOS CONTIN [...]",
+   "url": "https://www.maranguape.ce.gov.br/informa/365/edital-chamamento-p-blico-007-2026-fomento-a-proje",
+   "nota": 0.524,
    "incerteza": 0.952
   },
   {
@@ -371,7 +347,31 @@
    "url": "https://itumbiara.go.gov.br/inscricoes-em-chamada-publica-de-agentes-culturais-de-itumbiara-irao-ate-o-dia-8-de-novembro/",
    "nota": 0.476,
    "incerteza": 0.951
+  },
+  {
+   "titulo": "Comarca de Serranópolis abre seleção de projetos sociais ... - Jusbrasil",
+   "url": "https://www.jusbrasil.com.br/noticias/comarca-de-serranopolis-abre-selecao-de-projetos-sociais-para-receber-recursos-de-penas-pecuniarias/6662850176",
+   "nota": 0.476,
+   "incerteza": 0.951
+  },
+  {
+   "titulo": "Convênios - Repasses Recebidos",
+   "url": "https://apex.fapeg.go.gov.br/ords/r/charles/mapa/instrumentos-conveniais-com-repasses-recebidos?session=17189381554599",
+   "nota": 0.525,
+   "incerteza": 0.951
+  },
+  {
+   "titulo": "EDITAL DE CONVOCAÇÃO E CHAMAMENTO PÚBLICO N° 001/2026",
+   "url": "https://mapacultural.pa.gov.br/oportunidade/2472/",
+   "nota": 0.525,
+   "incerteza": 0.95
+  },
+  {
+   "titulo": "Convocatoria a Organizaciones Territoriales 2026 - América Solidaria",
+   "url": "https://sumate.americasolidaria.org/convocatoria/convocatoria-a-organizaciones-territoriales-2026/68a3686caa6d97964c50ab0a/",
+   "nota": 0.475,
+   "incerteza": 0.95
   }
  ],
- "pendentes_provaveis_reais": 332
+ "pendentes_provaveis_reais": 398
 }
