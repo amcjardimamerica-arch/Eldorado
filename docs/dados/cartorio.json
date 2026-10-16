@@ -1,27 +1,27 @@
 {
- "em": "2026-10-16T18:16:32+00:00",
+ "em": "2026-10-16T18:42:02+00:00",
  "versao": "cartório v5 · linha de produção (09/10/2026)",
  "regra": "CARTÓRIO DE FONTES OFICIAIS (titular, 09/10/2026).\n\nOs motores DESCOBREM; o Cartório CERTIFICA. Toda estrela (oportunidade aberta) e todo livro (histórico) que tenha\nQUALQUER um dos 12 itens indisponível entra na fila do Cartório. Para cada um, ele sobe uma escada de degraus — do mais\nbarato e confiável ao mais caro — até achar o documento OFICIAL, lê o documento por seções e emite uma CERTIDÃO:\nlink oficial (régua única: vetor nunca é fonte), degrau em que foi achado, impressão digital do documento, e cada item\ncom valor + trecho literal + página — ou a DISPENSA com a justificativa de que o requisito não existe naquele edital.\n\nBalcões (como chegar ao documento em cada tipo de fonte):\n  pncp      página do PNCP → API de arquivos do órgão (PDF ou ZIP), o edital primeiro\n  diario    DOU, Diário de Goiás/Goiânia, Querido Diário → o ato dentro da edição (só as páginas do ato)\n  orgao     domínio público → documentos da página + biblioteca de mídia do WordPress pelo número do edital\n  privado   site do financiador → documentos da página (regulamento, edital)\n  pista     agregador/notícia → links de SAÍDA para o financiador; o resto vai ao Interceptador\n  proprio   Ministério Público e Judiciário: já leem o PDF; o Cartório só converte em certidão\n\nEscada: 0 documento na mão · 1 link de saída da pista · 2 busca do número do edital dentro do domínio oficial ·\n        3 Interceptador (IA) · 4 Chrome. O Cartório resolve 0–2 sem IA; 3 e 4 recebem só o que sobrou.\nIntegração: a fila é ordenada pela urgência (prazo), pela nota da REDE NEURAL e pela distância até o ouro (menos\nitens faltando primeiro: cada certidão vira selo). Estrelas: o fluxo de oportunidades lê a certidão no checklist.\nLivros: linhas no formato do importador (scripts/importar_verificacao_livros.py), que confere e entrega à esteira.",
  "identidade_visual": "provisória (config/identidade_visual.json aguarda o design de referência)",
  "resumo": {
   "pontos_12_total": 4800,
-  "pontos_certificados": 3148,
-  "pontos_dispensados": 192,
+  "pontos_certificados": 3151,
+  "pontos_dispensados": 191,
   "pontos_ja_constavam": 1259,
-  "pontos_faltam": 201,
-  "pct_certificado_12": 0.6958,
+  "pontos_faltam": 199,
+  "pct_certificado_12": 0.6963,
   "certidoes_12_de_12": 130,
   "certidoes_sem_item_faltando": 255,
   "nota_denominador": "eficiencia_itens = resolvidos ÷ itens que faltavam na ENTRADA da fila (não é % dos 12); use pct_certificado_12",
   "certidoes": 2423,
-  "nesta_execucao": 30,
-  "fila_estrelas": 315,
-  "fila_livros": 1781,
+  "nesta_execucao": 32,
+  "fila_estrelas": 299,
+  "fila_livros": 1775,
   "itens_que_faltavam": 21303,
-  "itens_obtidos": 7328,
+  "itens_obtidos": 7352,
   "itens_dispensados": 467,
-  "eficiencia_itens": 0.366,
-  "com_link_oficial": 1563,
+  "eficiencia_itens": 0.367,
+  "com_link_oficial": 1564,
   "taxa_link_oficial": 0.645,
   "certidoes_completas": 232,
   "para_o_interceptador": 1676,
@@ -29,7 +29,7 @@
   "selos_que_mudaram": {
    "sem selo → ouro": 102,
    "prata → ouro": 16,
-   "sem selo → prata": 36,
+   "sem selo → prata": 38,
    "sem selo → bronze": 41,
    "bronze → ouro": 11,
    "prata → sem selo": 2,
@@ -39,7 +39,7 @@
   "por_degrau": {
    "degrau 0": 1470,
    "degrau 2": 2,
-   "degrau 1": 115
+   "degrau 1": 116
   }
  },
  "cinza_conferidos": {
@@ -50,73 +50,73 @@
  "por_item": {
   "Objeto": {
    "faltavam": 1461,
-   "obtidos": 433,
+   "obtidos": 436,
    "dispensados": 0,
-   "eficiencia": 0.296
+   "eficiencia": 0.298
   },
   "Prazo de inscrição": {
    "faltavam": 1626,
-   "obtidos": 470,
+   "obtidos": 473,
    "dispensados": 128,
-   "eficiencia": 0.368
+   "eficiencia": 0.37
   },
   "Resultado": {
    "faltavam": 2163,
-   "obtidos": 522,
+   "obtidos": 524,
    "dispensados": 208,
-   "eficiencia": 0.337
+   "eficiencia": 0.338
   },
   "Prazo de recurso": {
    "faltavam": 2121,
-   "obtidos": 511,
+   "obtidos": 512,
    "dispensados": 31,
    "eficiencia": 0.256
   },
   "Valor": {
    "faltavam": 1856,
-   "obtidos": 577,
+   "obtidos": 579,
    "dispensados": 61,
-   "eficiencia": 0.344
+   "eficiencia": 0.345
   },
   "Órgão / financiador": {
    "faltavam": 1296,
-   "obtidos": 714,
+   "obtidos": 717,
    "dispensados": 0,
-   "eficiencia": 0.551
+   "eficiencia": 0.553
   },
   "Território": {
    "faltavam": 1530,
-   "obtidos": 435,
+   "obtidos": 436,
    "dispensados": 0,
-   "eficiencia": 0.284
+   "eficiencia": 0.285
   },
   "Esfera": {
    "faltavam": 1821,
-   "obtidos": 1055,
+   "obtidos": 1058,
    "dispensados": 0,
-   "eficiencia": 0.579
+   "eficiencia": 0.581
   },
   "Requisitos": {
    "faltavam": 2058,
-   "obtidos": 489,
+   "obtidos": 491,
    "dispensados": 0,
-   "eficiencia": 0.238
+   "eficiencia": 0.239
   },
   "Anexos": {
    "faltavam": 1376,
-   "obtidos": 283,
+   "obtidos": 284,
    "dispensados": 9,
-   "eficiencia": 0.212
+   "eficiencia": 0.213
   },
   "Modalidade": {
    "faltavam": 2013,
-   "obtidos": 545,
+   "obtidos": 547,
    "dispensados": 30,
-   "eficiencia": 0.286
+   "eficiencia": 0.287
   },
   "Área de atuação": {
    "faltavam": 1982,
-   "obtidos": 1294,
+   "obtidos": 1295,
    "dispensados": 0,
    "eficiencia": 0.653
   }
@@ -124,11 +124,11 @@
  "por_balcao": {
   "diario": {
    "certidoes": 150,
-   "com_link_oficial": 59,
+   "com_link_oficial": 60,
    "faltavam": 1251,
-   "resolvidos": 228,
-   "eficiencia": 0.182,
-   "taxa_link_oficial": 0.393
+   "resolvidos": 246,
+   "eficiencia": 0.197,
+   "taxa_link_oficial": 0.4
   },
   "orgao": {
    "certidoes": 1128,
@@ -142,7 +142,7 @@
    "certidoes": 344,
    "com_link_oficial": 61,
    "faltavam": 3100,
-   "resolvidos": 703,
+   "resolvidos": 705,
    "eficiencia": 0.227,
    "taxa_link_oficial": 0.177
   },
@@ -158,8 +158,8 @@
    "certidoes": 547,
    "com_link_oficial": 373,
    "faltavam": 4555,
-   "resolvidos": 1285,
-   "eficiencia": 0.282,
+   "resolvidos": 1289,
+   "eficiencia": 0.283,
    "taxa_link_oficial": 0.682
   },
   "revisão": {
@@ -181,20 +181,20 @@
  },
  "por_safra": {
   "primeira tentativa": {
-   "certidoes": 2119,
-   "faltavam": 18357,
-   "resolvidos": 6453,
-   "eficiencia": 0.352,
-   "com_link_oficial": 1322,
-   "taxa_link_oficial": 0.624
+   "certidoes": 2089,
+   "faltavam": 18033,
+   "resolvidos": 6380,
+   "eficiencia": 0.354,
+   "com_link_oficial": 1309,
+   "taxa_link_oficial": 0.627
   },
   "refeitas": {
-   "certidoes": 304,
-   "faltavam": 2946,
-   "resolvidos": 1508,
-   "eficiencia": 0.512,
-   "com_link_oficial": 241,
-   "taxa_link_oficial": 0.793
+   "certidoes": 334,
+   "faltavam": 3270,
+   "resolvidos": 1605,
+   "eficiencia": 0.491,
+   "com_link_oficial": 255,
+   "taxa_link_oficial": 0.763
   }
  },
  "por_versao": {
@@ -217,9 +217,9 @@
   "cartório v5 · linha de produção": {
    "certidoes": 2254,
    "faltavam": 19338,
-   "resolvidos": 6780,
-   "eficiencia": 0.351,
-   "com_link_oficial": 1426,
+   "resolvidos": 6804,
+   "eficiencia": 0.352,
+   "com_link_oficial": 1427,
    "taxa_link_oficial": 0.633
   },
   "revisão manual": {
@@ -234,35 +234,35 @@
  "por_abordagem": {
   "1": {
    "nome": "documento na mão",
-   "vezes": 2291,
-   "renderam": 1460,
-   "itens": 7546,
+   "vezes": 2292,
+   "renderam": 1461,
+   "itens": 7552,
    "links_oficiais": 1355,
    "taxa_de_acerto": 0.637
   },
   "2": {
    "nome": "anexos completos",
-   "vezes": 115,
-   "renderam": 20,
-   "itens": 71,
+   "vezes": 127,
+   "renderam": 21,
+   "itens": 73,
    "links_oficiais": 2,
-   "taxa_de_acerto": 0.174
+   "taxa_de_acerto": 0.165
   },
   "3": {
    "nome": "página oficial e citados",
-   "vezes": 216,
-   "renderam": 73,
-   "itens": 413,
+   "vezes": 225,
+   "renderam": 74,
+   "itens": 414,
    "links_oficiais": 44,
-   "taxa_de_acerto": 0.338
+   "taxa_de_acerto": 0.329
   },
   "4": {
    "nome": "biblioteca de sites",
-   "vezes": 85,
-   "renderam": 43,
-   "itens": 137,
-   "links_oficiais": 16,
-   "taxa_de_acerto": 0.506
+   "vezes": 90,
+   "renderam": 45,
+   "itens": 151,
+   "links_oficiais": 17,
+   "taxa_de_acerto": 0.5
   },
   "5": {
    "nome": "mídia do WordPress",
@@ -298,28 +298,28 @@
   },
   "9": {
    "nome": "leitura profunda",
-   "vezes": 72,
+   "vezes": 76,
    "renderam": 12,
    "itens": 35,
    "links_oficiais": 2,
-   "taxa_de_acerto": 0.167
+   "taxa_de_acerto": 0.158
   },
   "10": {
    "nome": "busca no domínio",
-   "vezes": 11,
-   "renderam": 7,
-   "itens": 23,
+   "vezes": 12,
+   "renderam": 8,
+   "itens": 24,
    "links_oficiais": 0,
-   "taxa_de_acerto": 0.636
+   "taxa_de_acerto": 0.667
   }
  },
  "por_balcao_selo": {
   "sem_estrela": {
    "nome": "Sem estrela → bronze",
-   "certidoes": 1145,
-   "faltavam": 9422,
-   "resolvidos": 2422,
-   "eficiencia": 0.257,
+   "certidoes": 1143,
+   "faltavam": 9400,
+   "resolvidos": 2426,
+   "eficiencia": 0.258,
    "entraram_aqui": 1261,
    "esgotadas": 0
   },
@@ -334,10 +334,10 @@
   },
   "prata": {
    "nome": "Prata → ouro",
-   "certidoes": 1024,
-   "faltavam": 9316,
-   "resolvidos": 3828,
-   "eficiencia": 0.411,
+   "certidoes": 1026,
+   "faltavam": 9338,
+   "resolvidos": 3848,
+   "eficiencia": 0.412,
    "entraram_aqui": 1012,
    "esgotadas": 1
   },
@@ -352,7 +352,7 @@
   }
  },
  "gabarito": {
-  "orgaos_com_gabarito": 1149,
+  "orgaos_com_gabarito": 1150,
   "itens_achados_pelo_gabarito": {
    "Objeto": 60,
    "Requisitos": 41,
@@ -360,9 +360,9 @@
    "Modalidade": 12,
    "Resultado": 3,
    "Valor": 3,
-   "Prazo de recurso": 14
+   "Prazo de recurso": 15
   },
-  "certidoes_ajudadas": 124
+  "certidoes_ajudadas": 125
  },
  "certidoes": [
   {
@@ -37173,7 +37173,7 @@
    "encaminhado": null,
    "selo_antes": null,
    "selo_depois": "ouro",
-   "em": "2026-10-16T17:30:58+00:00",
+   "em": "2026-10-16T18:30:04+00:00",
    "prazo": "2027-08-07",
    "uf": null,
    "orgao": "MUNICIPIO DE TRINDADE",
@@ -47317,7 +47317,7 @@
    "encaminhado": null,
    "selo_antes": "bronze",
    "selo_depois": "ouro",
-   "em": "2026-10-16T17:35:42+00:00",
+   "em": "2026-10-16T18:35:07+00:00",
    "prazo": "2028-12-04",
    "uf": null,
    "orgao": "TRIBUNAL SUPERIOR DO TRABALHO",
@@ -52855,6 +52855,334 @@
     },
     "certificados": 9,
     "dispensados": 2,
+    "ja_constavam": 0,
+    "faltam": 1,
+    "pct_certificado_12": 0.9167,
+    "pct_cobertura_12": 0.9167
+   }
+  },
+  {
+   "id": "20f4c9b65fd6be49a189",
+   "tipo": "estrela",
+   "titulo": "Diário Oficial de Florianópolis (SC) 2026-10-08 — \"edital de chamamento público\" associação",
+   "balcao": "diario",
+   "link_oficial": "https://www.gov.br/cultura/pt-br/assuntos/editais-e-portarias/editais/2023/inscricoes-abertas/edital-comites-de-cultura?_authenticator=c61c3a08fab23fa4cd1e7ede07d7403cfa1a6523",
+   "degrau": 1,
+   "como": "biblioteca de sites oficiais conhecidos do órgão",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Anexos",
+    "Modalidade",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Órgão / financiador",
+    "Território",
+    "Esfera",
+    "Requisitos",
+    "Modalidade",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Anexos"
+   ],
+   "tentativa": 3,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": {
+    "orgao": "orgao:associacao",
+    "itens_pelo_gabarito": [
+     "Prazo de recurso"
+    ]
+   },
+   "estagio": "prata",
+   "estagio_inicio": "sem_estrela",
+   "esgotada": null,
+   "eficiencia": 0.917,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": "prata",
+   "em": "2026-10-16T18:40:53+00:00",
+   "prazo": null,
+   "uf": null,
+   "orgao": "associação",
+   "fim": "2023-10-30",
+   "itens": {
+    "Prazo de inscrição": {
+     "valor": "até 30 de outubro de 2023",
+     "trecho": "ividades relacionadas ao projeto. INSCRIÇÃO: Quando acontecem as inscrições? De 29 de setembro a 30 de outubro de 2023. Onde se inscrever? Na plataforma Transferegov Como realizar",
+     "pagina": 1,
+     "documento": "https://www.gov.br/cultura/pt-br/assuntos/editais-e-portarias/editais/2023/inscricoes-abertas/edital-comites-de-cultura?_authenticator=c61c3a08fab23fa4cd1e7ede07d7403cfa1a6523",
+     "metodo": "cronograma"
+    },
+    "Resultado": {
+     "valor": "01/12/2023",
+     "trecho": "eleção para UF Sergipe OSCs Classificadas na Região Nordeste DOU Resultado Definitivo da Fase de Seleção e Convocação das Organizações (01/12/2023) Recursos interpostos ao Edital PNCC Resultado Preliminar Edita",
+     "pagina": 1,
+     "documento": "https://www.gov.br/cultura/pt-br/assuntos/editais-e-portarias/editais/2023/inscricoes-abertas/edital-comites-de-cultura?_authenticator=c61c3a08fab23fa4cd1e7ede07d7403cfa1a6523",
+     "metodo": "seção"
+    },
+    "Órgão / financiador": {
+     "valor": "Ministério da Cultura",
+     "trecho": "Edital Comitês de Cultura — Ministério da Cultura",
+     "pagina": 1,
+     "documento": "https://www.gov.br/cultura/pt-br/assuntos/editais-e-portarias/editais/2023/inscricoes-abertas/edital-comites-de-cultura?_authenticator=c61c3a08fab23fa4cd1e7ede07d7403cfa1a6523",
+     "metodo": "cabeçalho"
+    },
+    "Esfera": {
+     "valor": "federal",
+     "trecho": "domínio/órgão: www.gov.br · Ministério da Cultura associação",
+     "pagina": 1,
+     "documento": "https://www.gov.br/cultura/pt-br/assuntos/editais-e-portarias/editais/2023/inscricoes-abertas/edital-comites-de-cultura?_authenticator=c61c3a08fab23fa4cd1e7ede07d7403cfa1a6523",
+     "metodo": "domínio e órgão"
+    },
+    "Requisitos": {
+     "valor": "Podem participar as Organizações da Sociedade Civil, que sejam:",
+     "trecho": "o dos respectivos Termos de Colaboração. Quem pode participar? Podem participar as Organizações da Sociedade Civil, que sejam: a) Entidades privadas sem fins lucrativos - associações ou fundaçõ",
+     "pagina": 1,
+     "documento": "https://www.gov.br/cultura/pt-br/assuntos/editais-e-portarias/editais/2023/inscricoes-abertas/edital-comites-de-cultura?_authenticator=c61c3a08fab23fa4cd1e7ede07d7403cfa1a6523",
+     "metodo": "texto"
+    },
+    "Modalidade": {
+     "valor": "Termo de Colaboração — Lei nº 13.019",
+     "trecho": "a seleção de Organizações da Sociedade Civil visando à celebração de Termos de Colaboração que têm por objeto a execução de ações no âmbito do Programa Nacional dos Comitês de Cultura Passo 2: I",
+     "pagina": 1,
+     "documento": "https://www.gov.br/cultura/pt-br/assuntos/editais-e-portarias/editais/2023/inscricoes-abertas/edital-comites-de-cultura?_authenticator=c61c3a08fab23fa4cd1e7ede07d7403cfa1a6523",
+     "metodo": "modalidade de recebimento"
+    },
+    "Área de atuação": {
+     "valor": "Cultura, Ciência e tecnologia",
+     "trecho": "termos do objeto e do título: Cultura, Ciência e tecnologia",
+     "pagina": 1,
+     "documento": "https://www.gov.br/cultura/pt-br/assuntos/editais-e-portarias/editais/2023/inscricoes-abertas/edital-comites-de-cultura?_authenticator=c61c3a08fab23fa4cd1e7ede07d7403cfa1a6523",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Prazo de recurso": {
+     "valor": "26/10/2023",
+     "trecho": "Inclusão da proposta - Passo a Passo no Transfere Gov 📲 Clique aqui e assista ao Webinário de 26/10/2023 : 🗂️ ÍNDICE DO VÍDEO: Índice do Plantão de Dúvidas - TransfereGov:",
+     "pagina": 1,
+     "documento": "https://www.gov.br/cultura/pt-br/assuntos/editais-e-portarias/editais/2023/inscricoes-abertas/edital-comites-de-cultura?_authenticator=c61c3a08fab23fa4cd1e7ede07d7403cfa1a6523",
+     "metodo": "gabarito do órgão (rótulo “e assista ao webinario de”)"
+    },
+    "Valor": {
+     "valor": "R$ 2.059,57 (dois mil e cinquenta e nove reais e cinquenta e sete centavos )",
+     "trecho": "GRANDE reconhece o dever de indenizar a SICREDI INTEGRAÇÃO PR/SC no montante de R$ 2.059,57 (dois mil e cinquenta e nove reais e cinquenta e sete centavos ), decorrente da ausência de repasse das parcelas retidas dos subsídios",
+     "pagina": 1,
+     "documento": "https://ecrie.com.br/sistema/conteudos/arquivo/a_61_0_1_31032025131336.pdf",
+     "metodo": "seção"
+    },
+    "Objeto": {
+     "valor": "CÂMARA MUNICIPAL DE FAZENDA RIO GRANDE reconhece o dever de indenizar \na SICREDI INTEGRAÇÃO PR/SC no montante de R$ 2.",
+     "trecho": "mediante boleto bancário emitido pela credora. CLÁUSULA SEGUNDA – DO OBJETO A CÂMARA MUNICIPAL DE FAZENDA RIO GRANDE reconhece o dever de indenizar a SICREDI INTEGRAÇÃO PR/SC no montante de R$ 2.059,57 (dois mil e cinquenta e nove reais e cinquenta e sete centavos ), dec",
+     "pagina": 1,
+     "documento": "https://ecrie.com.br/sistema/conteudos/arquivo/a_61_0_1_31032025131336.pdf",
+     "metodo": "seção"
+    },
+    "Território": {
+     "valor": "do Município de São Paulo",
+     "trecho": "23 de Março de 2022 | Horário: 08:35 FERNANDO HADDAD, Prefeito do Município de São Paulo, no uso das atribuições que lhe são conferidas por lei, faz saber que",
+     "pagina": 1,
+     "documento": "https://www2.prefeitura.sp.gov.br/web/controladoria_geral/legislacao",
+     "metodo": "texto"
+    }
+   },
+   "dispensas": {},
+   "abordagens": [
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-16T08:55:00+00:00",
+     "ganhou": [],
+     "legado": null
+    },
+    {
+     "n": 4,
+     "nome": "biblioteca de sites",
+     "em": "2026-10-16T18:40:23+00:00",
+     "ganhou": [
+      "Esfera",
+      "Modalidade",
+      "Objeto",
+      "Prazo de inscrição",
+      "Prazo de recurso",
+      "Requisitos",
+      "Resultado",
+      "Território",
+      "Valor",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    },
+    {
+     "n": 9,
+     "nome": "leitura profunda",
+     "em": "2026-10-16T18:40:53+00:00",
+     "ganhou": [],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://data.queridodiario.ok.org.br/4205407/2026-10-08/62605aafc3b8cbb82d3a515bfd2196ca256f65e4.pdf",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": "pdf_corrompido",
+     "falha": null,
+     "oficial": null,
+     "paginas": 0,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais-e-portarias/editais/2023/inscricoes-abertas/edital-comites-de-cultura?_authenticator=c61c3a08fab23fa4cd1e7ede07d7403cfa1a6523",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://govgestao.com.br/790d8a",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": null,
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://ecrie.com.br/sistema/conteudos/arquivo/a_61_0_1_31032025131336.pdf",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio próprio do financiador",
+     "paginas": 3,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www2.prefeitura.sp.gov.br/web/controladoria_geral/legislacao",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/82892282000143/compras/2026/129/arquivos/5",
+     "degrau": 1,
+     "como": "biblioteca de sites oficiais conhecidos do órgão",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 3,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.googletagmanager.com/ns.html?id=GTM-NHZSKTD",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": "pagina_vazia",
+     "falha": null,
+     "oficial": null,
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-comite-de-cultura-1/resultado-definitivo-da-fase-de-selecao-1.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 3,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais/inscricoes-encerradas/edital-comite-de-cultura-1/resultado-da-selecao-para-uf-sergipe.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.gov.br/cultura/pt-br/assuntos/editais-e-portarias/editais/2023/inscricoes-abertas/edital-comites-de-cultura?_authenticator=c61c3a08fab23fa4cd1e7ede07d7403cfa1a6523",
+     "degrau": 0,
+     "como": "leitura profunda (até 150 páginas e tabelas)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://ecrie.com.br/sistema/conteudos/arquivo/a_61_0_1_31032025131336.pdf",
+     "degrau": 0,
+     "como": "leitura profunda (até 150 páginas e tabelas)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio próprio do financiador",
+     "paginas": 3,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www2.prefeitura.sp.gov.br/web/controladoria_geral/legislacao",
+     "degrau": 0,
+     "como": "leitura profunda (até 150 páginas e tabelas)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://pncp.gov.br/pncp-api/v1/orgaos/82892282000143/compras/2026/129/arquivos/5",
+     "degrau": 0,
+     "como": "leitura profunda (até 150 páginas e tabelas)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "arquivo do edital anexado pelo órgão no PNCP",
+     "paginas": 3,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "certificado",
+     "Resultado": "certificado",
+     "Prazo de recurso": "certificado",
+     "Valor": "certificado",
+     "Órgão / financiador": "certificado",
+     "Território": "certificado",
+     "Esfera": "certificado",
+     "Requisitos": "certificado",
+     "Anexos": "falta",
+     "Modalidade": "certificado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 11,
+    "dispensados": 0,
     "ja_constavam": 0,
     "faltam": 1,
     "pct_certificado_12": 0.9167,
@@ -63007,6 +63335,367 @@
     "ja_constavam": 2,
     "faltam": 1,
     "pct_certificado_12": 0.75,
+    "pct_cobertura_12": 0.9167
+   }
+  },
+  {
+   "id": "ba9480cf71f5655f6a93",
+   "tipo": "estrela",
+   "titulo": "Prefeitura de Mossâmedes — AVISO DE CHAMAMENTO PÚBLICO Nº 1/2026",
+   "balcao": "diario",
+   "link_oficial": "https://www.mossamedes.go.gov.br/",
+   "degrau": 0,
+   "como": "leitura profunda (até 150 páginas e tabelas)",
+   "faltavam": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Prazo de recurso",
+    "Valor",
+    "Território",
+    "Requisitos",
+    "Anexos",
+    "Modalidade",
+    "Área de atuação"
+   ],
+   "resolvidos": [
+    "Objeto",
+    "Prazo de inscrição",
+    "Resultado",
+    "Valor",
+    "Território",
+    "Requisitos",
+    "Anexos",
+    "Modalidade",
+    "Área de atuação"
+   ],
+   "ainda_faltam": [
+    "Prazo de recurso"
+   ],
+   "tentativa": 3,
+   "versao": "cartório v5 · linha de produção (09/10/2026)",
+   "gabarito": null,
+   "estagio": "prata",
+   "estagio_inicio": "sem_estrela",
+   "esgotada": null,
+   "eficiencia": 0.9,
+   "encaminhado": "Interceptador: 1 item(ns) não estão no documento oficial lido",
+   "selo_antes": null,
+   "selo_depois": "prata",
+   "em": "2026-10-16T18:39:42+00:00",
+   "prazo": null,
+   "uf": null,
+   "orgao": "Prefeitura de Mossâmedes",
+   "fim": "2026-09-24",
+   "itens": {
+    "Órgão / financiador": {
+     "valor": "Município de Mossâmedes-GO",
+     "trecho": "rir postagem: Edital de Processo Seletivo Simplificado nº 002/2026 do Município de Mossâmedes-GO 18 set 2026 Edital de Processo Seletivo Simplificad",
+     "pagina": 1,
+     "documento": "https://www.mossamedes.go.gov.br/",
+     "metodo": "cabeçalho"
+    },
+    "Território": {
+     "valor": "do Município de Mossâmedes-GO",
+     "trecho": "Abrir postagem: Edital de Processo Seletivo Simplificado nº 002/2026 do Município de Mossâmedes-GO 18 set 2026 Edital de Processo Seletivo Simplifica",
+     "pagina": 1,
+     "documento": "https://www.mossamedes.go.gov.br/",
+     "metodo": "texto"
+    },
+    "Esfera": {
+     "valor": "municipal",
+     "trecho": "domínio/órgão: www.mossamedes.go.gov.br · Município de Mossâmedes-GO Prefeitura de Mossâmedes",
+     "pagina": 1,
+     "documento": "https://www.mossamedes.go.gov.br/",
+     "metodo": "domínio e órgão"
+    },
+    "Área de atuação": {
+     "valor": "Meio ambiente",
+     "trecho": "termos do objeto e do título: Meio ambiente",
+     "pagina": 1,
+     "documento": "https://www.mossamedes.go.gov.br/",
+     "metodo": "palavras-chave do objeto"
+    },
+    "Objeto": {
+     "valor": "Registro de preços para contratação de empresa especializada no fornecimento de móveis e itens de informática, para atender as necessidades da Secretaria Municipal de Educação de Mossâmedes, conforme especificações constantes nas planilhas e Termo de Referência - Anexo I, do Edital.",
+     "trecho": "Pregão Eletrônico nº 030/2026, Processo Administrativo nº 2540/2026. Objeto: Registro de preços para contratação de empresa especializada no fornecimento de móveis e itens de informática, para atender as necessidades da Secretaria Municipal de Educação de Mossâmedes, conforme especificações constantes nas planilhas e Termo de Referência - Anexo I, do Edital. Data da sessão: 27/10/2026 às 08:01 hor",
+     "pagina": 1,
+     "documento": "https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-1/2026-737946617",
+     "metodo": "texto"
+    },
+    "Modalidade": {
+     "valor": "Termo de Execução Cultural — Lei nº 14.399/2022",
+     "trecho": "co nº 001/2026, destinado à seleção de projetos culturais para firmar Termo de Execução Cultural, com recursos remanescentes da Política Nacional Aldir Blanc de Fomento à Cultura - PNAB, instituída pe",
+     "pagina": 1,
+     "documento": "https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-1/2026-737946617",
+     "metodo": "modalidade de recebimento"
+    },
+    "Prazo de inscrição": {
+     "valor": "até 24/09/2026",
+     "trecho": "zada por análise curricular e documental . Data de abertura das inscrições Data de encerramento das inscrições 24/09/2026 30/09/2026 Edital Processo Seletivo Simplificado n° 002/2026 B",
+     "pagina": 1,
+     "documento": "https://www.mossamedes.go.gov.br/edital-de-processo-seletivo-simplificado-no-002-2026-do-municipio-de-mossamedes-go/",
+     "metodo": "cronograma"
+    },
+    "Resultado": {
+     "valor": "06/10/2026",
+     "trecho": "via e-mail: processoseletivomds@gmail.com) 05/10/2026 Segunda-feira Resultado Preliminar da Análise Curricular e Documentos 06/10/2026 Terça-feira Início do Prazo Recursal contra Resultado Preliminar 07/",
+     "pagina": 1,
+     "documento": "https://www.mossamedes.go.gov.br/wp-content/uploads/2026/09/Anexos-PSS-n°-0022026.pdf",
+     "metodo": "seção"
+    },
+    "Valor": {
+     "valor": "R$ 2.378,00",
+     "trecho": "ÁRIO 1 MOTORISTA Ensino Fundamental / CNH correspondente 06 18 40h R$ 2.378,00 2 AUXILIAR DE SERVIÇOS GERAIS Ensino Fundamental 03 09 40h R$ 1.62",
+     "pagina": 2,
+     "documento": "https://www.mossamedes.go.gov.br/wp-content/uploads/2026/09/Anexos-PSS-n°-0022026.pdf",
+     "metodo": "seção"
+    },
+    "Anexos": {
+     "valor": "ANEXO I CRONOGRAMA DO PROCESSO SELETIVO SIMPLIFICADO; ANEXO II DEMONSTRATIVO DE FUNÇÕES, REQUISITOS, ATRIBUIÇÕES, CARGA HORÁRIA,; ANEXO III FICHA DE INSCRIÇÃO PADRONIZADA; ANEXO IV MODELO PADRONIZADO DE CURRÍCULO; ANEXO V DECLARAÇÃO DE ACÚMULO DE CARGO OU FUNÇÃO PÚBLICA; ANEXO VI DECLARAÇÃO DE NÃO R",
+     "trecho": "MEDES PROCESSO SELETIVO SIMPLIFICADO Nº 002/2026 CADERNO OFICIAL DE ANEXOS ANEXO I CRONOGRAMA DO PROCESSO SELETIVO SIMPLIFICADO DATA DIA DA SEMANA FASE / EVENTO 18/09/2026 Sexta-feira Publicação Oficial do Edital 21/09/2026 Segunda-feira Início do Praz",
+     "pagina": 1,
+     "documento": "https://www.mossamedes.go.gov.br/wp-content/uploads/2026/09/Anexos-PSS-n°-0022026.pdf",
+     "metodo": "lista de anexos"
+    },
+    "Requisitos": {
+     "valor": "Poderão se habilitar as entidades, públicas ou privadas, sem fins lucrativos, que atendam, \ncumulativamente, aos seguintes requisitos: \na) estar regularmente constituída e em funcionamento, com ato constitutivo, estatuto social ou contrato \nsocial registrado no órgão competente;",
+     "trecho": "tério do juízo, observadas as particularidades de cada processo. 2. DOS REQUISITOS PARA HABILITAÇÃO 2.1. Poderão se habilitar as entidades, públicas ou privadas, sem fins lucrativos, que atendam, cumulativamente, aos seguintes requisitos: a) estar regularmente constituída e em funcionamento, com ato constitutivo, estatuto social ou contrato social registrado no órgão competente; b) possuir finalid",
+     "pagina": 1,
+     "documento": "https://www.mossamedes.go.gov.br/wp-content/uploads/2026/07/Edital_Projetos_Sociais_assinado.pdf",
+     "metodo": "seção"
+    }
+   },
+   "dispensas": {},
+   "abordagens": [
+    {
+     "n": 9,
+     "nome": "leitura profunda",
+     "em": "2026-10-16T07:53:06+00:00",
+     "ganhou": [
+      "Esfera",
+      "Território",
+      "Área de atuação",
+      "Órgão / financiador"
+     ],
+     "legado": null
+    },
+    {
+     "n": 1,
+     "nome": "documento na mão",
+     "em": "2026-10-16T18:38:55+00:00",
+     "ganhou": [
+      "Anexos",
+      "Modalidade",
+      "Objeto",
+      "Prazo de inscrição",
+      "Resultado",
+      "Valor"
+     ],
+     "legado": null
+    },
+    {
+     "n": 10,
+     "nome": "busca no domínio",
+     "em": "2026-10-16T18:39:42+00:00",
+     "ganhou": [
+      "Requisitos"
+     ],
+     "legado": null
+    }
+   ],
+   "documentos": [
+    {
+     "url": "https://www.mossamedes.go.gov.br/",
+     "degrau": 0,
+     "como": "leitura profunda (até 150 páginas e tabelas)",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.mossamedes.go.gov.br/",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-1/2026-737946617",
+     "degrau": 0,
+     "como": "página/documento oficial já conhecido",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.mossamedes.go.gov.br/suspensao-do-processo-seletivo-simplificado-regido-pelo-edital-no-002-2026/",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Abrir postagem: Suspensão do Processo Seletivo Simplificado regido pelo Edital nº 002/2026.",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.mossamedes.go.gov.br/edital-de-processo-seletivo-simplificado-no-002-2026-do-municipio-de-mossamedes-go/",
+     "degrau": 1,
+     "como": "documento citado na página oficial: Abrir postagem: Edital de Processo Seletivo Simplificado nº 002/2026 do Município de Mossâmedes-GO",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.mossamedes.go.gov.br/wp-content/uploads/2026/10/Despacho-de-Suspensao-da-Homologacao-do-Processo_Seletivo_Mossamedes-1.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 2,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.mossamedes.go.gov.br/wp-content/uploads/2026/09/Edital-PSS-n°-0022026.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": "pdf_escaneado",
+     "falha": null,
+     "oficial": null,
+     "paginas": 6,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.mossamedes.go.gov.br/wp-content/uploads/2026/09/Anexos-PSS-n°-0022026.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 13,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.mossamedes.go.gov.br/wp-content/uploads/2026/09/Retificacao_Edital_002_2026_Motorista_assinado.pdf",
+     "degrau": 1,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.mossamedes.go.gov.br/",
+     "degrau": 2,
+     "como": "busca restrita ao domínio oficial",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.mossamedes.go.gov.br/decreto-no-019-2026-valor-de-terra-nua-vtn/",
+     "degrau": 2,
+     "como": "busca restrita ao domínio oficial",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.mossamedes.go.gov.br/edital-de-chamamento-publico-para-cadastro-de-entidades-sociais-publicas-e-privadas-para-projetos-sociais-da-comarca-de-mossamedes/",
+     "degrau": 2,
+     "como": "busca restrita ao domínio oficial",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.mossamedes.go.gov.br/edital-de-processo-seletivo-simplificado-no-002-2026-do-municipio-de-mossamedes-go/",
+     "degrau": 2,
+     "como": "busca restrita ao domínio oficial",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.mossamedes.go.gov.br/suspensao-do-processo-seletivo-simplificado-regido-pelo-edital-no-002-2026/",
+     "degrau": 2,
+     "como": "documento citado na página oficial: Abrir postagem: Suspensão do Processo Seletivo Simplificado regido pelo Edital nº 002/2026.",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 1,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.mossamedes.go.gov.br/wp-content/uploads/2026/08/DECRETO-VTN.pdf",
+     "degrau": 2,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 2,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.mossamedes.go.gov.br/wp-content/uploads/2026/07/Edital_Projetos_Sociais_assinado.pdf",
+     "degrau": 2,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": null,
+     "falha": null,
+     "oficial": "domínio público oficial",
+     "paginas": 3,
+     "edicao_inteira": null
+    },
+    {
+     "url": "https://www.mossamedes.go.gov.br/wp-content/uploads/2026/09/Edital-PSS-n°-0022026.pdf",
+     "degrau": 2,
+     "como": "documento citado na página oficial: documento embutido na página",
+     "motivo": "pdf_escaneado",
+     "falha": null,
+     "oficial": null,
+     "paginas": 6,
+     "edicao_inteira": null
+    }
+   ],
+   "cobertura_12": {
+    "estados": {
+     "Objeto": "certificado",
+     "Prazo de inscrição": "certificado",
+     "Resultado": "certificado",
+     "Prazo de recurso": "falta",
+     "Valor": "certificado",
+     "Órgão / financiador": "certificado",
+     "Território": "certificado",
+     "Esfera": "certificado",
+     "Requisitos": "certificado",
+     "Anexos": "certificado",
+     "Modalidade": "certificado",
+     "Área de atuação": "certificado"
+    },
+    "certificados": 11,
+    "dispensados": 0,
+    "ja_constavam": 0,
+    "faltam": 1,
+    "pct_certificado_12": 0.9167,
     "pct_cobertura_12": 0.9167
    }
   },
@@ -81512,467 +82201,35 @@
     "pct_certificado_12": 0.8333,
     "pct_cobertura_12": 0.8333
    }
-  },
-  {
-   "id": "op-e716a89d80d1",
-   "tipo": "livro",
-   "titulo": "Edital de Chamada Pública FAPESC/SED n.º 054/2026 – Programa de Fomento à Pesquisa e Inovação para o Desenvolvimento da Educação Catarinense",
-   "balcao": "orgao",
-   "link_oficial": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-   "degrau": 0,
-   "como": "página/documento oficial já conhecido",
-   "faltavam": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Modalidade",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Anexos",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Requisitos",
-    "Modalidade"
-   ],
-   "tentativa": 1,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "prata",
-   "estagio_inicio": "prata",
-   "esgotada": null,
-   "eficiencia": 0.833,
-   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-14T13:24:29+00:00",
-   "prazo": null,
-   "uf": "BR",
-   "orgao": "FAPESC",
-   "fim": null,
-   "itens": {
-    "Resultado": {
-     "valor": "16/11/2026",
-     "trecho": "ilidade das propostas | | | 21/10/2026 a 11/11/2026 | | Resultado preliminar de admissibilidade 16/11/2026 Período para apresentação de recursos administrativos 17/11/2026 a 2",
-     "pagina": 5,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "seção"
-    },
-    "Prazo de recurso": {
-     "valor": "17/11/2026",
-     "trecho": "reliminar de admissibilidade 16/11/2026 Período para apresentação de recursos administrativos 17/11/2026 a 23/11/2026 Resultado final de admissibilidade 26/11/2026 Análise",
-     "pagina": 5,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "seção"
-    },
-    "Valor": {
-     "valor": "R$ 6.703.500,00 (seis milhões, setecentos e três mil e quinhentos reais)",
-     "trecho": "de vigência da bolsa 01/03/2027 5. RECURSOS FINANCEIROS 5.1. O valor global da presente Chamada Pública é de até R$ 6.703.500,00 (seis milhões, setecentos e três mil e quinhentos reais), oriundos do orçamento da SED. 5.2. Os recursos disponibilizados no",
-     "pagina": 5,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "seção"
-    },
-    "Objeto": {
-     "valor": "s de pesquisa na área da educação, por meio da seleção de propostas \nque contribuam para o desenvolvimento científico e tecnológico do Estado de Santa Catarina, \nmediante a concessão de bolsas de iniciação científica, voltadas à produção de c onhecimento \naplicado e ao desenvolvimento de soluções ed",
-     "trecho": "m articulação com instituições de ensino, pesquisa e inovação. 1. DO OBJETIVO 1.1. Fomentar projetos de pesquisa na área da educação, por meio da seleção de propostas que contribuam para o desenvolvimento científico e tecnológico do Estado de Santa Catarina, mediante a concessão de bolsas de iniciação científica, voltadas à produção de c onhecimento aplicado e ao desenvolvimento de soluções educac",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "seção"
-    },
-    "Órgão / financiador": {
-     "valor": "FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA",
-     "trecho": "QUISA E INOVAÇÃO PARA O DESENVOLVIMENTO DA EDUCAÇÃO CATARINENSE A FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA CATARINA (FAPESC) em colaboração com a SECRETARIA DE ESTADO DA EDUCAÇ",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "cabeçalho"
-    },
-    "Território": {
-     "valor": "no Estado de Santa Catarina",
-     "trecho": "sediadas e inscritas no Cadastro Nacional de Pessoa Jurídica (CNPJ) no Estado de Santa Catarina, a apresentarem propostas de projeto de pesquisa relacionados às lin",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "texto"
-    },
-    "Esfera": {
-     "valor": "estadual",
-     "trecho": "domínio/órgão: fapesc.sc.gov.br · FUNDAÇÃO DE AMPARO À PESQUISA E INOVAÇÃO DO ESTADO DE SANTA FAPESC",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "domínio e órgão"
-    },
-    "Anexos": {
-     "valor": "ANEXO I RELAÇÃO DE CURSOS DE LICENCIATURA E PROGRAMAS DE PÓS-GRADUAÇÃO NA; ANEXO II TERMO DE COMPROMISSO DE BOLSA FAPESC; ANEXO III PLANO DE TRABALHO DO(A) BOLSISTA; ANEXO IV TERMO DE DISPONIBILIDADE DE CARGA HORÁRIA; ANEXO V DECLARAÇÃO DE RESIDÊNCIA",
-     "trecho": "me o processo FAPESC 00002256/2026 e o código 5TC037ZF. 138 ANEXO I RELAÇÃO DE CURSOS DE LICENCIATURA E PROGRAMAS DE PÓS-GRADUAÇÃO NA ÁREA DE EDUCAÇÃO ELEGÍVEIS Quadro 01: Cursos de Licenciatura INSTITUIÇÃO CURSO CAMPUS CATÓLICA/SC PEDAGOGIA",
-     "pagina": 17,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "lista de anexos"
-    },
-    "Área de atuação": {
-     "valor": "Educação, Meio ambiente, Ciência e tecnologia",
-     "trecho": "termos do objeto e do título: Educação, Meio ambiente, Ciência e tecnologia",
-     "pagina": 1,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "metodo": "palavras-chave do objeto"
-    }
-   },
-   "dispensas": {
-    "Prazo de inscrição": {
-     "motivo": "dispensado pelo Cartório — não se aplica: inscrição em fluxo contínuo (cadastro permanente, sem data-limite)",
-     "trecho": "ivulgado na página da FAPESC. 7.5. O CPAA da FAPESC poderá realizar, a qualquer tempo, diligências para verificar a autenticidade das informações e dos do",
-     "pagina": 9,
-     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf"
-    }
-   },
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-14T13:24:29+00:00",
-     "ganhou": [
-      "Anexos",
-      "Esfera",
-      "Objeto",
-      "Prazo de inscrição",
-      "Prazo de recurso",
-      "Resultado",
-      "Território",
-      "Valor",
-      "Área de atuação",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-     "degrau": 0,
-     "como": "página/documento oficial já conhecido",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 41,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "certificado",
-     "Prazo de inscrição": "dispensado",
-     "Resultado": "certificado",
-     "Prazo de recurso": "certificado",
-     "Valor": "certificado",
-     "Órgão / financiador": "certificado",
-     "Território": "certificado",
-     "Esfera": "certificado",
-     "Requisitos": "falta",
-     "Anexos": "certificado",
-     "Modalidade": "falta",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 9,
-    "dispensados": 1,
-    "ja_constavam": 0,
-    "faltam": 2,
-    "pct_certificado_12": 0.8333,
-    "pct_cobertura_12": 0.8333
-   }
-  },
-  {
-   "id": "nova-39a0f56e7cc5",
-   "tipo": "livro",
-   "titulo": "Edital de Chamamento CPA",
-   "balcao": "orgao",
-   "link_oficial": "https://goias.gov.br/social/edital-de-chamamento-cpa",
-   "degrau": 0,
-   "como": "página/documento oficial já conhecido",
-   "faltavam": [
-    "Objeto",
-    "Prazo de inscrição",
-    "Resultado",
-    "Prazo de recurso",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Modalidade",
-    "Área de atuação"
-   ],
-   "resolvidos": [
-    "Prazo de inscrição",
-    "Resultado",
-    "Valor",
-    "Órgão / financiador",
-    "Território",
-    "Esfera",
-    "Requisitos",
-    "Anexos",
-    "Modalidade",
-    "Área de atuação"
-   ],
-   "ainda_faltam": [
-    "Objeto",
-    "Prazo de recurso"
-   ],
-   "tentativa": 1,
-   "versao": "cartório v5 · linha de produção (09/10/2026)",
-   "gabarito": null,
-   "estagio": "prata",
-   "estagio_inicio": "prata",
-   "esgotada": null,
-   "eficiencia": 0.833,
-   "encaminhado": "Interceptador: 2 item(ns) não estão no documento oficial lido",
-   "selo_antes": null,
-   "selo_depois": null,
-   "em": "2026-10-15T06:14:04+00:00",
-   "prazo": null,
-   "uf": "BR",
-   "orgao": "Fundo Estadual dos Direitos da Pessoa Idosa Goiás",
-   "fim": "2026-08-17",
-   "itens": {
-    "Esfera": {
-     "valor": "federal",
-     "trecho": "domínio/órgão: goias.gov.br · Fundo Estadual dos Direitos da Pessoa Idosa Goiás",
-     "pagina": 1,
-     "documento": "https://goias.gov.br/social/edital-de-chamamento-cpa",
-     "metodo": "domínio e órgão"
-    },
-    "Requisitos": {
-     "valor": "Poderão participar adolescentes que atendam aos critérios estabelecidos no edital, observando os prazos, documentos e procedimentos de incrição previstos.",
-     "trecho": "es relacionadas às políticas públicas para a infância e adolescência. Poderão participar adolescentes que atendam aos critérios estabelecidos no edital, observando os prazos, documentos e procedimentos de incrição previstos. O processo seletivo visa garantir representatividade, diversidade e p",
-     "pagina": 1,
-     "documento": "https://goias.gov.br/social/edital-de-chamamento-cpa",
-     "metodo": "texto"
-    },
-    "Modalidade": {
-     "valor": "Convênio",
-     "trecho": "Prestação de Contas Licitações Contratos Acordos, Convênios, Parcerias, Termos e Transferências Aquisições e Contratações – COVID19 Editais – 2023 Apostila Gestão de Pes",
-     "pagina": 1,
-     "documento": "https://goias.gov.br/social/edital-de-chamamento-cpa",
-     "metodo": "modalidade de recebimento"
-    },
-    "Área de atuação": {
-     "valor": "Assistência social, Educação, Criança e adolescente",
-     "trecho": "termos do objeto e do título: Assistência social, Educação, Criança e adolescente",
-     "pagina": 1,
-     "documento": "https://goias.gov.br/social/edital-de-chamamento-cpa",
-     "metodo": "palavras-chave do objeto"
-    },
-    "Valor": {
-     "valor": "R$ 1.565.190,00 (um milhão, quinhentos e sessenta e cinco mil, cento e noventa reais)",
-     "trecho": "te será pra\u0000cado após a vigência deste termo de apos\u0000lamento. 4 - O valor global do Contrato nº 8/2021 passará de R$ 1.565.190,00 (um milhão, quinhentos e sessenta e cinco mil, cento e noventa reais) para R$ 1.612.568,64 (um milhão, seiscentos e doze mil, quinhentos e",
-     "pagina": 1,
-     "documento": "http://goias.gov.br/social/wp-content/uploads/sites/24/2024/01/apostila_2.pdf",
-     "metodo": "seção"
-    },
-    "Órgão / financiador": {
-     "valor": "SECRETARIA DE ESTADO DE DESENVOLVIMENTO SOCIAL",
-     "trecho": "ESTADO DE GOIÁS SECRETARIA DE ESTADO DE DESENVOLVIMENTO SOCIAL APOSTILA O SECRETÁRIO DE ESTADO",
-     "pagina": 1,
-     "documento": "http://goias.gov.br/social/wp-content/uploads/sites/24/2024/01/apostila_2.pdf",
-     "metodo": "cabeçalho"
-    },
-    "Prazo de inscrição": {
-     "valor": "22/06/2026 a 17/08/2026",
-     "trecho": "tal obedecerá ao seguinte cronograma: Lançamento do Edital 17/06/2026 Período de Inscrições 22/06/2026 a 17/08/2026 Análise de Documentos 18/08/2026 a 24/08/2026 Publicação do Resultad",
-     "pagina": 2,
-     "documento": "https://goias.gov.br/social/wp-content/uploads/sites/24/2026/06/Edital_de_Chamamento___CPA.pdf",
-     "metodo": "cronograma"
-    },
-    "Resultado": {
-     "valor": "25/08/2026",
-     "trecho": "/06/2026 a 17/08/2026 Análise de Documentos 18/08/2026 a 24/08/2026 Publicação do Resultado 25/08/2026 Homologação e Publicação da Composição do CPA-GO / Gestão 2025 e 202",
-     "pagina": 2,
-     "documento": "https://goias.gov.br/social/wp-content/uploads/sites/24/2026/06/Edital_de_Chamamento___CPA.pdf",
-     "metodo": "seção"
-    },
-    "Território": {
-     "valor": "do Estado de Goiás",
-     "trecho": "e Referência Especializado de Assistência Social, Defensoria Pública do Estado de Goiás e Conselhos Municipais dos Direitos da Criança e do Adolescente - CM",
-     "pagina": 1,
-     "documento": "https://goias.gov.br/social/wp-content/uploads/sites/24/2026/06/Edital_de_Chamamento___CPA.pdf",
-     "metodo": "texto"
-    },
-    "Anexos": {
-     "valor": "ANEXO I), observados os seguintes quantitativos:; ANEXO II);; ANEXO III);",
-     "trecho": "ntendo a indicação dos adolescentes e do profissional de referência (ANEXO I), observados os seguintes quantitativos: a.1 As Secretarias de Estado poderão indicar até 05 (cinco) adolescentes, sendo 03 (três) titulares e 02 (dois) suplentes, e 01 (um) profis",
-     "pagina": 1,
-     "documento": "https://goias.gov.br/social/wp-content/uploads/sites/24/2026/06/Edital_de_Chamamento___CPA.pdf",
-     "metodo": "lista de anexos"
-    }
-   },
-   "dispensas": {},
-   "abordagens": [
-    {
-     "n": 1,
-     "nome": "documento na mão",
-     "em": "2026-10-15T06:14:04+00:00",
-     "ganhou": [
-      "Anexos",
-      "Modalidade",
-      "Esfera",
-      "Prazo de inscrição",
-      "Requisitos",
-      "Resultado",
-      "Território",
-      "Valor",
-      "Área de atuação",
-      "Órgão / financiador"
-     ],
-     "legado": null
-    }
-   ],
-   "documentos": [
-    {
-     "url": "https://goias.gov.br/social/edital-de-chamamento-cpa",
-     "degrau": 0,
-     "como": "página/documento oficial já conhecido",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "http://goias.gov.br/social/wp-content/uploads/sites/24/2024/01/apostila_2.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 2,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://goias.gov.br/social/wp-content/uploads/sites/24/2026/06/Edital_de_Chamamento___CPA.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 3,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://chat.social.go.gov.br/",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": "pagina_vazia",
-     "falha": null,
-     "oficial": null,
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://goias.gov.br/social/convocacao-dos-aprovados-no-processo-seletivo-edital-no-07-2025-sead-seds/",
-     "degrau": 1,
-     "como": "documento citado na página oficial: Convocação dos aprovados no processo seletivo – Edital nº 07/2025 Sead/Seds",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://goias.gov.br/social/edital-de-chamamento-de-ex-empregados-celetistas-da-extinta-fundacao-de-promocao-social/",
-     "degrau": 1,
-     "como": "documento citado na página oficial: Edital de chamamento de ex-empregados celetistas da extinta Fundação de Promoção Social",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://goias.gov.br/social/edital-de-chamamento-cpa/",
-     "degrau": 1,
-     "como": "documento citado na página oficial: Edital de Chamamento CPA",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 1,
-     "edicao_inteira": null
-    },
-    {
-     "url": "https://goias.gov.br/social/wp-content/uploads/sites/24/2026/10/SEI_97066862__Convocacao_25_.pdf",
-     "degrau": 1,
-     "como": "documento citado na página oficial: documento embutido na página",
-     "motivo": null,
-     "falha": null,
-     "oficial": "domínio público oficial",
-     "paginas": 4,
-     "edicao_inteira": null
-    }
-   ],
-   "cobertura_12": {
-    "estados": {
-     "Objeto": "falta",
-     "Prazo de inscrição": "certificado",
-     "Resultado": "certificado",
-     "Prazo de recurso": "falta",
-     "Valor": "certificado",
-     "Órgão / financiador": "certificado",
-     "Território": "certificado",
-     "Esfera": "certificado",
-     "Requisitos": "certificado",
-     "Anexos": "certificado",
-     "Modalidade": "certificado",
-     "Área de atuação": "certificado"
-    },
-    "certificados": 10,
-    "dispensados": 0,
-    "ja_constavam": 0,
-    "faltam": 2,
-    "pct_certificado_12": 0.8333,
-    "pct_cobertura_12": 0.8333
-   }
   }
  ],
  "linha_de_producao": {
   "na_linha": {
-   "sem_estrela": 893,
+   "sem_estrela": 872,
    "bronze": 30,
-   "prata": 1173
+   "prata": 1172
   },
   "na_linha_por_tipo": {
    "estrela": {
-    "sem_estrela": 261,
+    "sem_estrela": 245,
     "bronze": 22,
     "prata": 32
    },
    "livro": {
-    "sem_estrela": 632,
+    "sem_estrela": 627,
     "bronze": 8,
-    "prata": 1141
+    "prata": 1140
    }
   },
-  "fila_oportunidades": 315,
-  "fila_livros": 1781,
-  "devidas_nesta_hora": 2006,
-  "promovidas_nesta_execucao": 0,
+  "fila_oportunidades": 299,
+  "fila_livros": 1775,
+  "devidas_nesta_hora": 1968,
+  "promovidas_nesta_execucao": 3,
   "sem_material_agora": 10,
   "esgotadas_10_abordagens": 0,
   "biblioteca_de_sites": {
    "chaves": 939,
-   "sites": 2031
+   "sites": 2027
   },
   "intervalo_horas": 12,
   "limite": 10,
