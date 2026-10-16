@@ -301,13 +301,11 @@ CAMPOS_DO_ACHADO = ("id", "titulo", "evidencia", "url", "link_oficial", "pagina_
                     "tipo_fonte", "tipo_registro", "coletado_em", "data_publicacao", "data_consulta", "descoberto_em", "visto_em", "inicio",
                     "fim", "prazo_texto", "prazo_situacao", "nivel", "uf", "territorio", "orgao", "objeto", "valor", "area", "status",
                     "estado_export", "confianca", "_seq", "relido_por")
-TRECHO_MAX = 1500
+# 16/10/2026 (titular): SEM limite — o trecho guardado é o suficiente para a oportunidade INTEIRA
 
 
 def so_o_necessario(a: dict) -> dict:
     x = {k: a[k] for k in CAMPOS_DO_ACHADO if k in a and a[k] not in (None, "", [], {})}
-    if isinstance(x.get("evidencia"), str) and len(x["evidencia"]) > TRECHO_MAX:
-        x["evidencia"] = x["evidencia"][:TRECHO_MAX]
     return x
 
 
