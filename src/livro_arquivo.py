@@ -99,6 +99,8 @@ def ligar(k, v, idx: dict) -> str | None:
     cands = []
     if isinstance(k, str):
         cands.append(k)
+        if re.match(r"^(?:estrela|livro|pncp|op|url|txt):", k):     # 16/10: chave com prefixo ('estrela:<id>', 'livro:<id>')
+            cands.append(k.split(":", 1)[1])
         if k.startswith("http"):
             cands.append(chave({"url": k}))
     if isinstance(v, dict):

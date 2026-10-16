@@ -49,3 +49,11 @@ class BriefingNosLivros(unittest.TestCase):
             self.assertEqual(LA.carregar(c, {})["aposta"], "empresas de GO")
             self.assertTrue(LA.proibido("estado/piloto/briefings/x.json"))
             self.assertFalse(LA.proibido("dados/associacoes/amc/x.json"))
+
+
+class ChaveComPrefixo(unittest.TestCase):
+    def test_estrela_e_livro(self):
+        idx = {"op-123": "lv1", "captacao-118": "lv2"}
+        self.assertEqual(LA.ligar("estrela:op-123", {}, idx), "lv1")
+        self.assertEqual(LA.ligar("livro:captacao-118", {}, idx), "lv2")
+        self.assertIsNone(LA.ligar("estrela:op-999", {}, idx))
