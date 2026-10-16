@@ -171,9 +171,24 @@ _ROTULO_ESTADUAL = re.compile(r"^(?:www|portal|cultura|saude|educacao|esporte|fa
                               r"mulher|direitoshumanos|assistencia|trabalho|juventude|idoso|esportes|lazer|infraestrutura|obras|comunicacao|ses|sema|semad|dpe)$")
 
 
+_MUN_POR_UF: dict = {}
+_CAPITAIS_SEM_ESPACO = {"riobranco", "maceio", "macapa", "manaus", "salvador", "fortaleza", "brasilia", "vitoria", "goiania", "saoluis",
+                        "cuiaba", "campogrande", "belohorizonte", "belem", "joaopessoa", "curitiba", "recife", "teresina", "riodejaneiro",
+                        "natal", "portoalegre", "portovelho", "boavista", "florianopolis", "saopaulo", "aracaju", "palmas", "rio", "bh", "poa"}
+
+
 def municipio_pelo_endereco(url: str) -> bool:
+    """16/10/2026: o rótulo do endereço só indica município quando É um município daquele estado (lista do IBGE) —
+    'mapacultural.pe.gov.br' é a plataforma ESTADUAL de Pernambuco, não um município."""
     m = re.search(r"https?://(?:[\w-]+\.)*?([\w-]+)\.([a-z]{2})\.(?:gov|leg)\.br", str(url or ""))
-    return bool(m) and m.group(2).upper() in UFS and not _ROTULO_ESTADUAL.match(m.group(1))
+    if not (m and m.group(2).upper() in UFS) or _ROTULO_ESTADUAL.match(m.group(1)):
+        return False
+    if not _MUN_POR_UF:
+        for nome, ufs in ((_j(ROOT / "config/municipios_brasil.json", {}) or {}).get("municipios") or {}).items():
+            for u in ufs:
+                _MUN_POR_UF.setdefault(u, set()).add(re.sub(r"[^a-z]", "", nome))
+        _MUN_POR_UF.setdefault("-", set())
+    return re.sub(r"[^a-z]", "", m.group(1).lower()) in _MUN_POR_UF.get(m.group(2).upper(), set())
 
 
 _CUR: dict = {}
@@ -220,6 +235,13 @@ def municipal_fora_de_goias(r: dict, uf_agregador: str | None = None) -> str | N
     A municipal de outro estado é DESCARTADA do sistema (estado fechada: sai das abertas, da tela, das filas e não ganha
     livro). Sem UF determinada, fica (há municípios homônimos)."""
     t = f"{r.get('titulo') or ''} {r.get('orgao') or ''}"
+    # 16/10/2026: órgão ESTADUAL nunca é municipal (a menos que o texto traga a prefeitura); o DF inteiro é a capital
+    if re.search(r"(?i)secretaria (?:de|da) estado|governo d[eo] estado|governo de (?!munic)|do estado d[eo]|\bestadual\b|"
+                 r"\bsecult[- ](?:[a-z]{2})\b|assembleia legislativa|tribunal de justi[çc]a|minist[ée]rio p[úu]blico", t) \
+            and not re.search(r"(?i)prefeitura|munic[íi]pio d[eoa]|c[âa]mara municipal|secretaria municipal|fundo municipal", t):
+        return None
+    if str(r.get("uf") or "").upper() == "DF" or re.search(r"(?i)\bdistrito federal\b|\bbras[íi]lia\b", t):
+        return None
     municipal = str(r.get("nivel") or "").lower() == "municipal" or bool(_MUN.search(t)) or \
         any(municipio_pelo_endereco(u) for u in (r.get("url"), r.get("link_oficial")))   # 15/10: pelo endereço
     if not municipal or str(r.get("nivel") or "").lower() in ("estadual", "federal", "internacional"):
@@ -229,6 +251,10 @@ def municipal_fora_de_goias(r: dict, uf_agregador: str | None = None) -> str | N
     from .regra_abrangencia import capital_citada       # 14/10 (titular): municipais das CAPITAIS de outros estados ficam
     if capital_citada(f"{r.get('orgao') or ''} {r.get('titulo') or ''} {r.get('url') or ''}"):
         return None
+    for _u in (r.get("url"), r.get("link_oficial")):     # 16/10: a capital também pelo ENDEREÇO (palmas.to.gov.br)
+        _m = re.search(r"https?://(?:[\w-]+\.)*?([\w-]+)\.([a-z]{2})\.(?:gov|leg)\.br", str(_u or ""))
+        if _m and re.sub(r"[^a-z]", "", _m.group(1)) in _CAPITAIS_SEM_ESPACO:
+            return None
     uf = str(r.get("uf") or uf_agregador or "").upper()
     if uf not in UFS:
         uf = uf_por_municipio(f"{r.get('titulo') or ''} {r.get('orgao') or ''}") or uf

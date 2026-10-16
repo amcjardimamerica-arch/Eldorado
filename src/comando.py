@@ -186,6 +186,16 @@ def _hoje_brt() -> str:
     return hoje_brt().isoformat()
 
 
+def _expurgo_feito_hoje() -> bool:
+    """16/10: feito hoje COM a regra atual (a versão do expurgo muda quando a regra muda)."""
+    try:
+        from .expurgo import VERSAO
+        d = json.loads((ROOT / "estado/expurgo" / f"{_hoje_brt()}.json").read_text(encoding="utf-8"))
+        return int(d.get("versao") or 1) >= VERSAO
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def fases(ctx: dict) -> list[dict]:
     """(etapa, finalidade, comando, tempo, decisão da rede). A decisão devolve None (roda) ou o motivo de pular."""
     py = sys.executable
@@ -210,7 +220,7 @@ def fases(ctx: dict) -> list[dict]:
         {"etapa": "expurgo", "finalidade": "remove por completo o que não é oportunidade: registros, livros, pastas, banco e releitura",
          "cmds": [[py, "-m", "src.expurgo", "--executar"],
                   [py, "-c", "import json; from src import banco_livros as B; print(json.dumps(B.limpar_base_bruta(), ensure_ascii=False))"]], "t": 1200,
-         "pular": "já feito hoje" if (ROOT / "estado/expurgo" / f"{_hoje_brt()}.json").exists() else None},
+         "pular": "já feito hoje" if _expurgo_feito_hoje() else None},
         # 5c' PNCP — dossiê integrado (portões + metadados + arquivos + site de origem → 12/12 ou descarte justificado)
         {"etapa": "pncp", "finalidade": "dossiê do PNCP: 12 de 12 com informação confirmada ou descarte justificado; o que faltar vai ao Interceptador",
          "cmds": [[py, "-m", "src.pncp_dossie", "60"]], "t": 1300, "pular": None},

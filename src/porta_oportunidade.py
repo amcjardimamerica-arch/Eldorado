@@ -26,6 +26,13 @@ def motivo_para_nao_guardar(a: dict, hoje: str | None = None) -> str | None:
             return m
     except Exception:  # noqa: BLE001
         pass
+    try:                                                   # 16/10: em outros estados, só estaduais e capitais
+        from .repositorio_unico import municipal_fora_de_goias
+        m = municipal_fora_de_goias({**a, "titulo": titulo})
+        if m:
+            return "município de outro estado (não capital)"
+    except Exception:  # noqa: BLE001
+        pass
     url = f"{a.get('url') or ''} {a.get('link_oficial') or ''}"
     if "pncp.gov.br" in url:
         try:
