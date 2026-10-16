@@ -540,17 +540,24 @@ def fila_verificacao() -> dict:
     executa — e que a varredura imediata percorre."""
     from .fonte_edital import EXTRAIDOS
     VETOR_RX = re.compile(r"pncp\.gov\.br|queridodiario|in\.gov\.br|diariooficial|portaldecompraspublicas|licitamaisbrasil", re.I)
-    dados = load_json(ROOT / "docs/dashboard-dados.json")
-    universo = list(editais_abertos(dados))
-    ab = ROOT / "docs/dados/abertas.json"
-    if ab.exists():
-        try:
-            from .compacto import expandir
-            vistos = {e["id"] for e in universo}
-            universo += [{**o, "situacao_inscricao": o.get("situacao") or "possivel"} for o in expandir(load_json(ab)) if o.get("id") not in vistos]
-        except Exception:
-            pass
-    arq = load_json(ROOT / "dados/editais/arquivados.json") if (ROOT / "dados/editais/arquivados.json").exists() else {}
+    # 16/10/2026 (titular): a fila é calculada DOS LIVROS — o universo é o repositório (montado a partir dos livros),
+    # não o painel do site lido de volta; o que falta vem do checklist de cada oportunidade, não das edições extraídas
+    _rep = (load_json(ROOT / "dados/oportunidades/repositorio_unico.json") or {}).get("registros") or []
+    _OK = ("comprovado", "dispensado", "dispensa", "ok")
+    universo, _CK = [], {}
+    for r in _rep:
+        if r.get("estado") == "fechada" or r.get("arquivada"):
+            continue
+        it = r.get("itens") or {}
+        _CK[r["id"]] = {"itens": {k: (v.get("valor") if isinstance(v, dict) else v) for k, v in it.items()
+                                  if isinstance(v, dict) and str(v.get("estado") or "").lower() in _OK},
+                        "faltam": [k for k in ITENS if not (isinstance(it.get(k), dict) and str(it[k].get("estado") or "").lower() in _OK)],
+                        "pagina_divulgacao": r.get("link_oficial"), "investigado": any(isinstance(v, dict) and v.get("estado") for v in it.values())}
+        _CK[r["id"]]["completo"] = not _CK[r["id"]]["faltam"]
+        universo.append({"id": r["id"], "titulo": r.get("titulo"), "url": r.get("url"), "uf": r.get("uf"), "area": r.get("area"),
+                         "fim": r.get("fim"), "objeto": (it.get("Objeto") or {}).get("valor") if isinstance(it.get("Objeto"), dict) else None,
+                         "orgao": r.get("orgao"), "fonte_nome": r.get("origem"), "situacao_inscricao": r.get("situacao") or r.get("estado")})
+    arq = {}
     itens = []
     edicoes_brutas = 0
     reprovados_objeto: list = []
@@ -573,7 +580,7 @@ def fila_verificacao() -> dict:
             fora_das_50.append({"id": e["id"], "titulo": (e.get("titulo") or "")[:120], "uf": e.get("uf"), "cidade": geo.get("cidade"),
                                 "motivo": geo["motivo"], "url": e.get("url")})
             continue                                   # depuração: sai da fila; volta em rosa quando o titular aprovar a cidade
-        ex = load_json(EXTRAIDOS / f"{e['id']}.json") if (EXTRAIDOS / f"{e['id']}.json").exists() else {}
+        ex = _CK.get(e["id"]) or {}                    # 16/10: o checklist da oportunidade (dos livros)
         faltam = ex.get("faltam") if ex else None
         ciclo = e.get("ciclo") or {}
         sem_prazo = not (e.get("fim") or ((ciclo.get("inscricao") or {}).get("fim")))
@@ -592,7 +599,7 @@ def fila_verificacao() -> dict:
                       "sem_prazo": sem_prazo, "faltam": faltam if faltam is not None else list(ITENS),
                       "link_oficial": oficial, "link_anuncio": e.get("url"),
                       "anuncio_e_vetor": bool(e.get("url") and VETOR_RX.search(e["url"])),
-                      "motivo": motivo, "prioridade": prio, "ja_investigado": bool(ex),
+                      "motivo": motivo, "prioridade": prio, "ja_investigado": bool(ex.get("investigado")),
                       "escopo": geo["escopo"], "cidade": geo.get("cidade"), "geo_motivo": geo["motivo"]})
     # MODO por regra do titular: Goiás e nacionais = automação completa (12 itens, parecer, selo);
     # demais estados = verificação LEVE: objeto, início e fim das inscrições e o link oficial do edital, para avaliação manual
@@ -607,7 +614,7 @@ def fila_verificacao() -> dict:
     itens.sort(key=lambda x: (x["prioridade"], -len(x["faltam"] or []), str(x.get("uf") or "")))
     # MARCAÇÃO persistente: cada edital sem prazo final fica marcado, com data e contagem de vezes que a IA o viu
     marc_p = ROOT / "dados/editais/marcacoes_ia.json"
-    marc = load_json(marc_p) if marc_p.exists() else {}
+    marc = __import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(marc_p, {}) or {}        # 16/10: marcações de IA nos livros
     vivos = set()
     for x in itens:
         if not x["sem_prazo"] and x["ja_investigado"]:
@@ -620,10 +627,10 @@ def fila_verificacao() -> dict:
     for k in list(marc):
         if k not in vivos:
             marc[k]["resolvido_em"] = marc[k].get("resolvido_em") or now_iso()[:10]
-    write_json(marc_p, marc)
+    __import__("src.livro_arquivo", fromlist=["x"]).guardar_lote([(marc_p, marc)])
     MINIMAS = ["Objeto", "Prazo de inscrição", "Página oficial do edital"]
     for x in itens:
-        ex = load_json(EXTRAIDOS / f"{x['id']}.json") if (EXTRAIDOS / f"{x['id']}.json").exists() else {}
+        ex = _CK.get(x["id"]) or {}
         it = ex.get("itens") or {}
         tem = {"Objeto": bool(it.get("Objeto")), "Prazo de inscrição": bool(it.get("Prazo de inscrição")) or not x["sem_prazo"],
                "Página oficial do edital": bool(ex.get("pagina_divulgacao") or x.get("link_oficial"))}
