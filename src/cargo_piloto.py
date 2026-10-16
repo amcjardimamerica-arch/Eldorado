@@ -23,7 +23,7 @@ from pathlib import Path
 from .nucleo import ROOT, load_json, now_iso, write_json
 
 CARGO = ROOT / "config/cargo_piloto.json"
-MEM = ROOT / "estado/piloto/memoria_erros.json"
+MEM = ROOT / "biblioteca_alexandria/livros/especiais/espiao/memoria_erros.json"
 MAX_NO_PROMPT = 12
 
 
@@ -32,7 +32,7 @@ def _porque_faltou(cand_id: str) -> str:
     devolveu só 'modelo não disponível no runner' — sem código HTTP, sem endereço — e sem
     acesso ao log do Actions não dava para saber se era URL errada, arquivo renomeado na
     origem ou rede. O download passa a anotar, e aqui se lê a anotação."""
-    a = ROOT / "estado/piloto/downloads_falhos.tsv"
+    a = ROOT / "biblioteca_alexandria/livros/especiais/espiao/downloads_falhos.tsv"
     if not a.exists():
         return "o download não deixou registro: verificar o log do Actions"
     for linha in reversed(a.read_text(encoding="utf-8").strip().split("\n")):
@@ -95,7 +95,7 @@ def deve_sair(medida: dict | None = None) -> tuple[bool, str]:
     o = c.get("ocupante_atual") or {}
     if not o.get("nome"):
         return False, "cargo já está vago"
-    _a = ROOT / "estado/piloto/desempenho_em_voo.json"
+    _a = ROOT / "biblioteca_alexandria/livros/especiais/espiao/desempenho_em_voo.json"
     d = ((load_json(_a) if _a.exists() else {}).get(o.get("id") or "") or o.get("desempenho_em_voo") or {})
     if d.get("pedidos", 0) >= 10 and d.get("taxa_de_resposta", 1) < 0.5:
         return True, (f"responde a {d['taxa_de_resposta']:.0%} dos pedidos em voo, "
@@ -244,7 +244,7 @@ def avaliar_candidato(cand_id: str, limite: int = 120, porta: int = 8082) -> dic
              "ocupante_hoje": {"id": ocupante()["id"], "acerto": atual.get("acerto")}}
     if melhor:
         saida["troca"] = trocar_ocupante(cand, r, f"{cand['nome']}: acerto {r.get('acerto')} contra {atual.get('acerto')} do ocupante, {r.get('tokens_por_s')} tok/s, {cand.get('gb')} GB")
-    write_json(ROOT / "estado/piloto" / f"avaliacao-{cand_id}-{date.today().isoformat()}.json", saida)
+    write_json(ROOT / "biblioteca_alexandria/livros/especiais/espiao" / f"avaliacao-{cand_id}-{date.today().isoformat()}.json", saida)
     return saida
 
 

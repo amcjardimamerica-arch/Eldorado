@@ -15,7 +15,7 @@ Cada registro leva:
                  (config/skills_extracao_origem.json); o Chrome é EXCEÇÃO — só depois das 10 abordagens do Cartório
 Todos os painéis e filas derivam DESTE repositório (o mesmo universo): a tela inicial, a fila do Cartório e os lotes
 do Chrome. A auditoria confere que os números batem.
-Saída: dados/oportunidades/repositorio_unico.json e docs/dados/repositorio_resumo.json.
+Saída: biblioteca_alexandria/livros/_vistas/repositorio_unico.json e docs/dados/repositorio_resumo.json.
 """
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SAIDA = ROOT / "dados/oportunidades/repositorio_unico.json"
+SAIDA = ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json"
 RESUMO = ROOT / "docs/dados/repositorio_resumo.json"
 DOZE = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador", "Território",
         "Esfera", "Requisitos", "Anexos", "Modalidade", "Área de atuação"]
@@ -327,7 +327,7 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
     from .fonte_oficial import eh_replicador as _eh_rep
     _RESOLV = (_j(ROOT / "estado/fontes_resolvidas.json", {}) or {}).get("resolvidas") or {}
     uf_ag = {str(x.get("id")): x.get("uf") for x in ((__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens") or []) if x.get("uf")}
-    _foto = _j(ROOT / "dados/oportunidades/arquivamento_municipais_2026-10-11.json", {}) or {}
+    _foto = _j(ROOT / "biblioteca_alexandria/livros/_vistas/arquivamento_municipais_2026-10-11.json", {}) or {}
     _arq_ids = {i: f"arquivada em 11/10/2026: municipal fora de Goiás ({o.get('uf')}) — o livro fica guardado"
                 for o in (_foto.get("oportunidades") or []) for i in [o["id"], *(o.get("ids_origem") or [])]}
     # 11/10: o criador de livros já concluiu, para algumas, que não são seleção para OSC — o repositório usa o motivo

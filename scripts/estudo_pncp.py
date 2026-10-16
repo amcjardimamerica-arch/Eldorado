@@ -61,7 +61,7 @@ def main() -> dict:
     hoje = date.today().isoformat()
     ev = _j(ROOT / "dados/financiadores/pncp-api/eventos.compacto.json", {})
     linhas = [dict(zip(ev.get("schema") or [], x)) for x in ev.get("linhas") or []]
-    regs = (_j(ROOT / "dados/oportunidades/repositorio_unico.json", {}) or {}).get("registros") or []
+    regs = (_j(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json", {}) or {}).get("registros") or []
     repo = {}
     for r in regs:
         for u in (r.get("url"), r.get("link_oficial")):

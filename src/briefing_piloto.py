@@ -58,7 +58,7 @@ def _estado_do_banco() -> dict:
         f["empresas_no_radar"] = len(emp)
         f["radar_a_pesquisar"] = sum(1 for e in emp.values() if e.get("marcador") == "a_pesquisar")
         f["setores_ja_vistos"] = sorted({a for e in emp.values() for a in (e.get("angulos") or [])})[:14]
-    fr = ROOT / "estado/piloto/fila_resgate.json"
+    fr = ROOT / "biblioteca_alexandria/livros/especiais/espiao/fila_resgate.json"
     if fr.exists():
         its = (load_json(fr).get("itens") or {}).values()
         f["editais_incompletos_na_fila"] = sum(1 for v in its if v.get("estado") == "aguardando")
@@ -114,7 +114,7 @@ def _registrar_mudez(mudo: bool) -> None:
     if _os.environ.get("ELDORADO_VOO_REAL") != "1":
         return
     from .cargo_piloto import ocupante as _oc
-    arq = ROOT / "estado/piloto/desempenho_em_voo.json"
+    arq = ROOT / "biblioteca_alexandria/livros/especiais/espiao/desempenho_em_voo.json"
     tudo = load_json(arq) if arq.exists() else {}
     oid = (_oc() or {}).get("id") or "vago"
     d = tudo.setdefault(oid, {"pedidos": 0, "mudos": 0})
@@ -136,7 +136,7 @@ def _apostas_que_renderam() -> str:
     como exemplos — 'faça mais assim' —; as que vieram secas duas vezes já estão na memória de lugares secos."""
     try:
         import json as _j
-        a = _j.loads((ROOT / "estado/piloto/apostas_que_renderam.json").read_text(encoding="utf-8")).get("apostas") or []
+        a = _j.loads((ROOT / "biblioteca_alexandria/livros/especiais/espiao/apostas_que_renderam.json").read_text(encoding="utf-8")).get("apostas") or []
     except Exception:
         a = []
     if not a:

@@ -429,7 +429,7 @@ _REP: dict = {}
 def _repositorio() -> set | None:
     """ids (todas as origens) das oportunidades ABERTAS do repositório único; None se ele ainda não existe."""
     if "s" not in _REP:
-        d = _j(ROOT / "dados/oportunidades/repositorio_unico.json", {})
+        d = _j(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json", {})
         _REP["s"] = ({i for x in (d.get("registros") or []) if x.get("estado") in ("em_verificacao", "validada", "validacao_manual")
                       for i in [x["id"]] + list(x.get("ids_origem") or [])} if d.get("registros") else None)
     return _REP["s"]

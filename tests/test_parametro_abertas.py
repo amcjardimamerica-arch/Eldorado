@@ -38,8 +38,8 @@ class TesteUmUniverso(unittest.TestCase):
         res = {"itens_por_uf": {"GO": [{"id": "a"}, {"id": "a2"}, {"id": "b"}]}}
         with tempfile.TemporaryDirectory() as t:
             orig = F.ROOT; F.ROOT = Path(t)
-            (Path(t) / "dados/oportunidades").mkdir(parents=True)
-            (Path(t) / "dados/oportunidades/repositorio_unico.json").write_text(_json.dumps(rep))
+            (Path(t) / "biblioteca_alexandria/livros/_vistas").mkdir(parents=True)
+            (Path(t) / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json").write_text(_json.dumps(rep))
             try:
                 n = F.incluir_do_repositorio(res)
             finally:

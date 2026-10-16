@@ -83,9 +83,9 @@ def checar() -> dict:
         (alertas.append({"area": "coerência", "texto": f"mapa e lista divergem em {', '.join(div[:5])}"}) if div else ok.append("número do mapa = lista de cada estado"))
     except Exception as e:
         alertas.append({"area": "coerência", "texto": f"fluxo ilegível ({type(e).__name__})"})
-    falha = ROOT / "estado/piloto/gerador_painel_falhou.txt"
+    falha = ROOT / "biblioteca_alexandria/livros/especiais/espiao/gerador_painel_falhou.txt"
     if falha.exists():
-        h_falha, h_ger = _idade_h("estado/piloto/gerador_painel_falhou.txt"), _idade_h("docs/dashboard-dados.js")
+        h_falha, h_ger = _idade_h("biblioteca_alexandria/livros/especiais/espiao/gerador_painel_falhou.txt"), _idade_h("docs/dashboard-dados.js")
         if h_falha is not None and h_ger is not None and h_falha < h_ger:
             alertas.append({"area": "gerador", "texto": "o gerador principal do painel falhou depois da última geração"})
     try:

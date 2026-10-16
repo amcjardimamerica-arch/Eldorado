@@ -30,7 +30,7 @@ from urllib.parse import urlsplit
 
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-ALVOS = ROOT / "estado/piloto/reconhecimento.json"
+ALVOS = ROOT / "biblioteca_alexandria/livros/especiais/espiao/reconhecimento.json"
 PUB = ROOT / "docs/dados/reconhecimento.json"
 
 # Onde as entidades e as matérias vivem. Cada frente rende um tipo de rastro diferente.

@@ -12,7 +12,7 @@ from datetime import date, timedelta
 from pathlib import Path
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-P = ROOT / "estado/piloto"
+P = ROOT / "biblioteca_alexandria/livros/especiais/espiao"
 
 
 def montar(dias: int = 3) -> dict:
@@ -69,7 +69,7 @@ def montar(dias: int = 3) -> dict:
           "2. Quais enquadramentos avançam para preparação de documentos e projeto (nível 2)?",
           "3. Que bloqueios exigem ação do titular (coleta local, documento ao órgão, decisão)?",
           "4. O modelo eleito deve continuar? (reexecutar o benchmark se a taxa de propostas inválidas subir)",
-          "", "_Ao final, registrar em `estado/piloto/validacoes_claude.jsonl`: data, modelo do Claude, decisões._"]
+          "", "_Ao final, registrar em `biblioteca_alexandria/livros/especiais/espiao/validacoes_claude.jsonl`: data, modelo do Claude, decisões._"]
     (ROOT / "estado/pacote_conselho.md").write_text("\n".join(L), encoding="utf-8")
     (ROOT / "docs/dados/pacote_conselho.md").write_text("\n".join(L), encoding="utf-8")
     res = {"em": now_iso(), "dias": dias, "ciclos": len(rels), "bloqueios": len(apr), "pesquisas": len(mem), "rotas_pendentes": len(pend), "enquadramentos_pendentes": len(enq)}

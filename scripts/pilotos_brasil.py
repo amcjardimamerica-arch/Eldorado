@@ -33,13 +33,13 @@ from pathlib import Path
 REPO = "https://github.com/amcjardimamerica-arch/Eldorado.git"
 AQUI = Path(__file__).resolve().parents[1]
 MODELO = "Qwen3-8B-Q4_K_M.gguf"
-CAMINHOS_INTERCEPTADOR = ["docs/dados/interceptador.json", "estado/piloto/fila_resgate.json", "dados/editais/extraidos",
+CAMINHOS_INTERCEPTADOR = ["docs/dados/interceptador.json", "biblioteca_alexandria/livros/especiais/espiao/fila_resgate.json", "dados/editais/extraidos",
                           "biblioteca_alexandria/livros/anexos", "estado/pilotos", "estado/aprendizado", "docs/dados/achados_pilotos.json"]
-CAMINHOS_ESPIAO = ["estado/piloto", "estado/pilotos", "estado/aprendizado", "docs/dados/piloto.json", "docs/dados/achados_pilotos.json",
+CAMINHOS_ESPIAO = ["biblioteca_alexandria/livros/especiais/espiao", "estado/pilotos", "estado/aprendizado", "docs/dados/piloto.json", "docs/dados/achados_pilotos.json",
                    "estado/rotas_sugeridas_ia.json", "config/lexico_aprendido.json", "dados/editais/extraidos"]
 REGERAR = [["-m", "src.reset_pilotos"], ["-m", "src.skills.aprendizado"], ["-m", "src.achados_pilotos"],
            ["-m", "src.fluxo_oportunidades", "--completo"], ["-m", "src.achados_motores"]]
-ADICIONAR = ["estado/sede_pilotos.json", "estado/interceptador", "docs/dados/interceptador.json", "estado/piloto", "estado/pilotos",
+ADICIONAR = ["estado/sede_pilotos.json", "estado/interceptador", "docs/dados/interceptador.json", "biblioteca_alexandria/livros/especiais/espiao", "estado/pilotos",
              "estado/aprendizado", "dados/editais/extraidos", "biblioteca_alexandria/livros/anexos", "docs/dados/piloto.json",
              "docs/dados/achados_pilotos.json", "docs/dados/fluxo_oportunidades.json", "docs/dados/achados_motores.json",
              "biblioteca_alexandria/fontes/motores.json", "config/parametros_pilotos.json", "config/lexico_aprendido.json"]

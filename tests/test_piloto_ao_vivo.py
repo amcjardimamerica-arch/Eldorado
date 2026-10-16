@@ -85,6 +85,6 @@ class TesteCorrecoesDaAuditoria(unittest.TestCase):
         self.assertGreaterEqual(len(re.findall(r"^\| \d+ \|", p, re.M)), 12)   # cada erro listado
 
     def test_abate_de_laboratorio_saiu_do_painel(self):
-        b = json.loads((ROOT / "estado/piloto/bordo.json").read_text(encoding="utf-8"))
+        b = json.loads((ROOT / "biblioteca_alexandria/livros/especiais/espiao/bordo.json").read_text(encoding="utf-8"))
         self.assertNotIn("lab-motor", b.get("abates") or {})
         self.assertEqual(b["total_abates"], sum(v.get("n", 0) for v in (b.get("abates") or {}).values()))

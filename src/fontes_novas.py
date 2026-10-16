@@ -71,7 +71,7 @@ def agregar_pagina_oficial(reg_edital: dict, origem: str = "Piloto - Interceptad
 
 def agregar_do_catalogo(minimo_paginas: int = 3) -> int:
     """Site do terceiro setor com várias páginas de editais/inscrições é um AGREGADOR: vira fonte."""
-    cat = load_json(ROOT / "estado/piloto/catalogo_terceiro_setor.json") or {}
+    cat = load_json(ROOT / "biblioteca_alexandria/livros/especiais/empresas/catalogo_terceiro_setor.json") or {}
     n = 0
     for v in (cat.get("sites") or {}).values():
         pags = [p for p in (v.get("paginas_para_entidades") or []) if re.search(r"edital|editais|chamada|inscri|pr[eê]mio|fundo", str(p.get("rotulo", "")) + str(p.get("url", "")), re.I)]

@@ -53,7 +53,7 @@ jobs:
             timeout 300 python -c "from src import repositorio_unico as R; R.construir(gravar=True)" || echo "repositório: registrado"
             timeout 200 python -m src.fichas_oportunidades >/dev/null || echo "fichas: registrado"
             git add -A estado/decisoes_editais.json biblioteca_alexandria/fontes/motores.json docs/dados/fila_revisao_exclusao.json \
-                       dados/oportunidades/repositorio_unico.json docs/dados/repositorio_resumo.json docs/dados/fichas_oportunidades.json
+                       biblioteca_alexandria/livros/_vistas/repositorio_unico.json docs/dados/repositorio_resumo.json docs/dados/fichas_oportunidades.json
             git diff --cached --quiet && { echo "nada mudou"; break; }
             git commit -q -m "decisão da titular: $OID $ESTADO" && git push -q origin HEAD:main && { echo "gravado ($i)"; break; }
             sleep 7

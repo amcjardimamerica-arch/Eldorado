@@ -40,10 +40,10 @@ class _Base(unittest.TestCase):
         return json.loads((self.tmp / rel).read_text(encoding="utf-8"))
 
     def producao_antiga(self):
-        self.w("estado/piloto/bordo.json", {"missao_atual": None, "missoes": [{"tipo": "descobrir", "inicio": "2026-10-07T10:00:00+00:00"}] * 60,
+        self.w("biblioteca_alexandria/livros/especiais/espiao/bordo.json", {"missao_atual": None, "missoes": [{"tipo": "descobrir", "inicio": "2026-10-07T10:00:00+00:00"}] * 60,
                                              "abates": {"piloto-aberto": {"n": 292, "ultimos": []}}, "total_abates": 295,
                                              "iniciado_em": "2026-09-22T10:34:19+00:00", "contagem_reiniciada_em": "2026-10-08T18:21:48+00:00"})
-        self.w("estado/piloto/voos.json", {"2026-10-07": 73, "2026-10-08": 56, "2026-10-09": 37})
+        self.w("biblioteca_alexandria/livros/especiais/espiao/voos.json", {"2026-10-07": 73, "2026-10-08": 56, "2026-10-09": 37})
         self.w("estado/interceptador/bordo.json", {"abates": {"piloto-aberto": {"n": 2, "ouro": 2}}, "missoes": [{"em": "2026-10-09T10:00:00+00:00"}] * 60,
                                                     "total_abates": 55})
         self.w("docs/dados/interceptador.json", {"papel": "Piloto - Interceptador", "fila": {"x": 3},
@@ -72,18 +72,18 @@ class TesteZeramento(_Base):
             r = R.zerar_se_preciso(piloto, agora=agora)
             self.assertTrue(r["zerou"]); self.assertTrue((self.tmp / r["numeros_antigos_em"]).exists())
             self.assertFalse(R.zerar_se_preciso(piloto, agora=agora)["zerou"], "segundo voo da mesma semana não zera")
-        b = self.r("estado/piloto/bordo.json")
+        b = self.r("biblioteca_alexandria/livros/especiais/espiao/bordo.json")
         self.assertEqual((b["missoes"], b["abates"], b["total_abates"]), ([], {}, 0))
         self.assertNotIn("contagem_reiniciada_em", b); self.assertEqual(b["contagem"]["desde"], "2026-10-05T03:00:00+00:00")
-        self.assertEqual(self.r("estado/piloto/voos.json"), {"_contagem": b["contagem"]})
+        self.assertEqual(self.r("biblioteca_alexandria/livros/especiais/espiao/voos.json"), {"_contagem": b["contagem"]})
         bi = self.r("estado/interceptador/bordo.json"); self.assertEqual((bi["missoes"], bi["abates"], bi["total_abates"]), ([], {}, 0))
         pub = self.r("docs/dados/interceptador.json")
         self.assertEqual(pub["acumulado"]["missoes"], 0); self.assertEqual(pub["missoes"], []); self.assertEqual(pub["fila"], {"x": 3})
         # os números antigos estão inteiros no histórico
         arqs = sorted(R.HIST_SEMANAL.glob("espiao_*.json.xz"))
         h = json.loads(lzma.decompress(arqs[0].read_bytes()))
-        self.assertEqual(h["arquivos"]["estado/piloto/bordo.json"]["total_abates"], 295)
-        self.assertEqual(h["resumo"]["estado/piloto/voos.json"], {"voos": 166, "dias": 3})
+        self.assertEqual(h["arquivos"]["biblioteca_alexandria/livros/especiais/espiao/bordo.json"]["total_abates"], 295)
+        self.assertEqual(h["resumo"]["biblioteca_alexandria/livros/especiais/espiao/voos.json"], {"voos": 166, "dias": 3})
 
     def test_voo_antigo_que_pousa_depois_nao_ressuscita_a_contagem(self):
         """O defeito de 08/10: o voo decolado antes do reset gravou os números velhos por cima."""
@@ -91,29 +91,29 @@ class TesteZeramento(_Base):
         R.zerar_se_preciso("espiao", agora=U("2026-10-09T15:00:00+00:00"))
         self.producao_antiga()                                      # o pouso do voo antigo (código velho, sem carimbo)
         r = R.zerar_se_preciso("espiao", agora=U("2026-10-09T15:05:00+00:00"))
-        self.assertTrue(r["zerou"]); self.assertEqual(self.r("estado/piloto/bordo.json")["total_abates"], 0)
+        self.assertTrue(r["zerou"]); self.assertEqual(self.r("biblioteca_alexandria/livros/especiais/espiao/bordo.json")["total_abates"], 0)
         self.assertEqual(len(list(R.HIST_SEMANAL.glob("espiao_*"))), 2, "o pouso tardio também fica guardado")
 
     def test_segunda_feira_e_pedido(self):
         self.producao_antiga()
         R.zerar_se_preciso("espiao", agora=U("2026-10-09T15:00:00+00:00"))
-        b = self.r("estado/piloto/bordo.json"); b["missoes"] = [{"tipo": "x"}]; b["total_abates"] = 4
-        self.w("estado/piloto/bordo.json", b)
+        b = self.r("biblioteca_alexandria/livros/especiais/espiao/bordo.json"); b["missoes"] = [{"tipo": "x"}]; b["total_abates"] = 4
+        self.w("biblioteca_alexandria/livros/especiais/espiao/bordo.json", b)
         self.assertFalse(R.zerar_se_preciso("espiao", agora=U("2026-10-12T02:59:00+00:00"))["zerou"], "domingo 23h59 ainda é a mesma semana")
         r = R.zerar_se_preciso("espiao", agora=U("2026-10-12T03:00:00+00:00"))
         self.assertTrue(r["zerou"]); self.assertEqual(r["motivo"], "segunda-feira 0h (Brasília)")
-        self.w("estado/piloto/bordo.json", {**self.r("estado/piloto/bordo.json"), "total_abates": 9})
+        self.w("biblioteca_alexandria/livros/especiais/espiao/bordo.json", {**self.r("biblioteca_alexandria/livros/especiais/espiao/bordo.json"), "total_abates": 9})
         R.pedir("titular", agora=U("2026-10-13T12:00:00+00:00"))
         r = R.zerar_se_preciso("espiao", agora=U("2026-10-13T12:01:00+00:00"))
         self.assertTrue(r["zerou"]); self.assertEqual(r["motivo"], "pedido da titular")
-        self.assertEqual(self.r("estado/piloto/bordo.json")["contagem"]["desde"], "2026-10-13T12:00:00+00:00")
+        self.assertEqual(self.r("biblioteca_alexandria/livros/especiais/espiao/bordo.json")["contagem"]["desde"], "2026-10-13T12:00:00+00:00")
 
     def test_contar_voo_preserva_o_carimbo(self):
         from src import piloto as P
         R.zerar_se_preciso("espiao", agora=U("2026-10-09T15:00:00+00:00"))
-        with mock.patch.object(P, "PASTA", self.tmp / "estado/piloto"):
+        with mock.patch.object(P, "PASTA", self.tmp / "biblioteca_alexandria/livros/especiais/espiao"):
             self.assertEqual(P._contar_voo(), 1); self.assertEqual(P._contar_voo(), 2)
-        v = self.r("estado/piloto/voos.json")
+        v = self.r("biblioteca_alexandria/livros/especiais/espiao/voos.json")
         self.assertIn("_contagem", v); self.assertEqual(sum(x for k, x in v.items() if not k.startswith("_")), 2)
 
 

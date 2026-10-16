@@ -50,7 +50,7 @@ class TesteUso(unittest.TestCase):
         self.assertEqual(r["monitorados"], r["em_uso"] + r["alertas"])
         self.assertIsNone(U.citado("dados/oportunidades/oportunidades.jsonl", "", set()) if False else None)
         cfg = json.loads((ROOT / "config/uso_arquivos.json").read_text(encoding="utf-8"))
-        self.assertIn("dados/oportunidades/", cfg["banco_de_dados"]); self.assertEqual(cfg["dias_sem_uso"], 30)
+        self.assertIn("biblioteca_alexandria/livros/_vistas/", cfg["banco_de_dados"]); self.assertEqual(cfg["dias_sem_uso"], 30)
         self.assertIn("python -m src.uso_arquivos", (ROOT / ".github/workflows/monitoramento-diario.yml").read_text(encoding="utf-8"))
 
 

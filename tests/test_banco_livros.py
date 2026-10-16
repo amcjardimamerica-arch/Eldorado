@@ -2,6 +2,10 @@
 import json
 import tempfile
 import unittest
+
+
+def _mk(p):
+    p.parent.mkdir(parents=True, exist_ok=True); return p
 from pathlib import Path
 from unittest import mock
 
@@ -11,13 +15,13 @@ from src import banco_livros as B
 class BancoLivros(unittest.TestCase):
     def setUp(self):
         self.r = Path(tempfile.mkdtemp())
-        for d in ("biblioteca_alexandria/fontes", "dados/oportunidades/validacao_mapa", "estado/cartorio"):
+        for d in ("biblioteca_alexandria/fontes", "biblioteca_alexandria/livros/_vistas/validacao_mapa", "estado/cartorio"):
             (self.r / d).mkdir(parents=True)
         (self.r / "biblioteca_alexandria/fontes/motores.json").write_text(json.dumps({"motores": [
             {"id": "op-antigo", "programa": "FIA Goiânia", "pagina": "https://www.goiania.go.gov.br/fia/edital-2026", "historico": [{"ano": 2025}]}]}))
         regs = [{"id": "a1", "titulo": "FIA Goiânia 2026", "url": "https://goiania.go.gov.br/fia/edital-2026", "itens": {"Objeto": {"estado": "comprovado", "valor": "x"}}},
                 {"id": "b2", "titulo": "Chamamento novo", "url": "https://anapolis.go.gov.br/chamamento-7", "nota_rede": 0.8}]
-        (self.r / "dados/oportunidades/repositorio_unico.json").write_text(json.dumps({"registros": regs}))
+        (self.r / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json").write_text(json.dumps({"registros": regs}))
         (self.r / "estado/cartorio/certidoes.json").write_text(json.dumps({"certidoes": {"estrela:b2": {"em": "2026-10-15", "leitura": "total",
             "itens": {"Valor": {"valor": "R$ 10.000,00", "trecho": "valor global de R$ 10.000,00", "pagina": 3, "documento": "https://anapolis.go.gov.br/e.pdf"}}}}}))
         self.p = [mock.patch.object(B, "ROOT", self.r), mock.patch.object(B, "CAT", self.r / "biblioteca_alexandria/fontes/motores.json"),
@@ -42,7 +46,7 @@ class BancoLivros(unittest.TestCase):
 
     def test_eliminada_some(self):
         B.consolidar()
-        (self.r / "dados/oportunidades/repositorio_unico.json").write_text(json.dumps({"registros": []}))
+        (self.r / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json").write_text(json.dumps({"registros": []}))
         r = B.consolidar()
         L = json.loads((self.r / "biblioteca_alexandria/fontes/motores.json").read_text())["motores"]
         self.assertEqual(r["livros_removidos"], 1)
@@ -102,12 +106,12 @@ class Etapa2Fichas(unittest.TestCase):
     """16/10/2026: o achado bruto de cada motor e o registro do agregador ficam no livro; as fichas leem de lá."""
     def test_coleta_e_agregador_no_livro(self):
         r = Path(tempfile.mkdtemp())
-        for d in ("biblioteca_alexandria/fontes", "dados/oportunidades", "estado/agregadores"):
+        for d in ("biblioteca_alexandria/fontes", "biblioteca_alexandria/livros/_vistas", "estado/agregadores"):
             (r / d).mkdir(parents=True)
         (r / "biblioteca_alexandria/fontes/motores.json").write_text(json.dumps({"motores": []}))
-        (r / "dados/oportunidades/repositorio_unico.json").write_text(json.dumps({"registros": [
+        (r / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json").write_text(json.dumps({"registros": [
             {"id": "c1", "titulo": "Chamamento", "url": "https://x.go.gov.br/c", "ids_origem": ["c1", "c2"]}]}))
-        (r / "dados/oportunidades/oportunidades.jsonl").write_text(json.dumps({"id": "c2", "sensor": "motor-x", "fonte_nome": "Fonte X"}) + "\n")
+        (_mk((r / "dados/oportunidades/oportunidades.jsonl"))).write_text(json.dumps({"id": "c2", "sensor": "motor-x", "fonte_nome": "Fonte X"}) + "\n")
         (r / "estado/agregadores/itens.json").write_text(json.dumps({"itens": [{"id": "c1", "agregador": "Prosas"}]}))
         with mock.patch.object(B, "ROOT", r), mock.patch.object(B, "CAT", r / "biblioteca_alexandria/fontes/motores.json"), \
                 mock.patch.object(B, "INDICE", r / "biblioteca_alexandria/fontes/indice_chaves.json"):
@@ -163,10 +167,10 @@ class Etapa3Leitores(unittest.TestCase):
     """16/10/2026: achados nos livros — primeiro fica, ordem de chegada, entrada sem oportunidade sai."""
     def test_achados_nos_livros(self):
         r = Path(tempfile.mkdtemp())
-        for d in ("biblioteca_alexandria/fontes", "dados/oportunidades"):
+        for d in ("biblioteca_alexandria/fontes", "biblioteca_alexandria/livros/_vistas"):
             (r / d).mkdir(parents=True)
         cat = r / "biblioteca_alexandria/fontes/motores.json"; cat.write_text(json.dumps({"motores": []}))
-        rep = r / "dados/oportunidades/repositorio_unico.json"
+        rep = r / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json"
         with mock.patch.object(B, "ROOT", r), mock.patch.object(B, "CAT", cat), mock.patch.object(B, "INDICE", r / "i.json"):
             B.registrar_achados([{"id": "a", "titulo": "Chamamento OSC", "url": "https://x.go.gov.br/a", "sensor": "m1"},
                                  {"id": "z", "titulo": "Ruído", "url": "https://y.com/z", "sensor": "m1"}])
@@ -182,10 +186,10 @@ class Etapa3Leitores(unittest.TestCase):
 class MigracaoUnica(unittest.TestCase):
     def test_uma_vez(self):
         r = Path(tempfile.mkdtemp())
-        for d in ("biblioteca_alexandria/fontes", "dados/oportunidades", "estado"):
+        for d in ("biblioteca_alexandria/fontes", "biblioteca_alexandria/livros/_vistas", "estado"):
             (r / d).mkdir(parents=True)
         cat = r / "biblioteca_alexandria/fontes/motores.json"; cat.write_text(json.dumps({"motores": []}))
-        base = r / "dados/oportunidades/oportunidades.jsonl"
+        base = _mk(r / "dados/oportunidades/oportunidades.jsonl")
         base.write_text(json.dumps({"id": "a", "titulo": "Chamamento público de OSC", "url": "https://x.go.gov.br/a", "fim": "2099-01-01"}) + "\n")
         with mock.patch.object(B, "ROOT", r), mock.patch.object(B, "CAT", cat), mock.patch.object(B, "MARCO_MIGRACAO", r / "estado/livros_migracao.json"):
             self.assertEqual(B.migrar_se_preciso()["migracao"], "feita agora")
@@ -198,10 +202,10 @@ class LeituraUnicaNucleo(unittest.TestCase):
     def test_nucleo(self):
         from src import nucleo as N
         r = Path(tempfile.mkdtemp())
-        for d in ("biblioteca_alexandria/fontes", "dados/oportunidades", "estado"):
+        for d in ("biblioteca_alexandria/fontes", "biblioteca_alexandria/livros/_vistas", "estado"):
             (r / d).mkdir(parents=True)
         cat = r / "biblioteca_alexandria/fontes/motores.json"; cat.write_text(json.dumps({"motores": []}))
-        base = r / "dados/oportunidades/oportunidades.jsonl"; base.write_text(json.dumps({"id": "velho", "titulo": "Base antiga"}) + "\n")
+        base = _mk(r / "dados/oportunidades/oportunidades.jsonl"); base.write_text(json.dumps({"id": "velho", "titulo": "Base antiga"}) + "\n")
         with mock.patch.object(N, "ROOT", r), mock.patch.object(N, "DB_OPORTUNIDADES", base), mock.patch.object(B, "CAT", cat):
             self.assertEqual(list(N.carregar_oportunidades()), ["velho"])                   # antes da migração: a base
             (r / "estado/livros_migracao.json").write_text("{}")

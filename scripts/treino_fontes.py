@@ -54,7 +54,7 @@ def mesmo_site(a: str | None, b: str | None) -> bool:
 
 
 def casos() -> list[dict]:
-    R = json.loads((RAIZ / "dados/oportunidades/repositorio_unico.json").read_text(encoding="utf-8"))["registros"]
+    R = json.loads((RAIZ / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json").read_text(encoding="utf-8"))["registros"]
     return [r for r in R if r.get("url") and F.eh_replicador(r["url"]) and r.get("link_oficial") and F.eh_fonte(r["link_oficial"])]
 
 
@@ -110,7 +110,7 @@ def aprender(C: list[dict], A: dict) -> dict:
 
 
 def aplicar(A: dict, limite: int = 120, so_novas: bool = False, teto_segundos: int = 1500) -> dict:
-    R = json.loads((RAIZ / "dados/oportunidades/repositorio_unico.json").read_text(encoding="utf-8"))["registros"]
+    R = json.loads((RAIZ / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json").read_text(encoding="utf-8"))["registros"]
     alvo = [r for r in R if r.get("estado") != "fechada" and not r.get("arquivada") and r.get("url") and F.eh_replicador(r["url"])
             and (not r.get("link_oficial") or F.eh_replicador(r["link_oficial"]))]
     try:

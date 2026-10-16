@@ -85,6 +85,6 @@ class FarolForaDoExpurgo16_10(unittest.TestCase):
         for rel in ("dados/associacoes/amc-jardim-america/triagem_oportunidades_2026-10-02.json", "dados/farol/editais/x.json",
                     "biblioteca_alexandria/associacoes/amc/dossie.json", "docs/dados/preparacao_farol.json"):
             self.assertTrue(X.FAROL.search(rel), rel)
-        self.assertFalse(X.FAROL.search("dados/oportunidades/repositorio_unico.json"))
+        self.assertFalse(X.FAROL.search("biblioteca_alexandria/livros/_vistas/repositorio_unico.json"))
         from src import livro_arquivo as LA
         self.assertTrue(LA.FAROL.search("dados/associacoes/amc/x.json"))

@@ -14,7 +14,7 @@
     "marcar o que não foi possível e por quê (PDF imagem, portal fora, IP estrangeiro, sem cronograma)"
    ],
    "gatilho": "todo edital novo identificado pelos motores aciona a IA local imediatamente; todo edital com selo 'análise incompleta' ou 'não verificada' entra na fila do nível 1",
-   "saida": "registro completo (objeto, prazo, página oficial, forma de inscrição, documentos) ou motivo da parada, em estado/piloto/nivel1-<data>.json"
+   "saida": "registro completo (objeto, prazo, página oficial, forma de inscrição, documentos) ou motivo da parada, em biblioteca_alexandria/livros/especiais/espiao/nivel1-<data>.json"
   },
   {
    "nivel": 2,
@@ -39,7 +39,7 @@
     "resultado negativo é registrado em uma linha (caminho, data, por que não rendeu) para nunca repetir; resultado positivo vira rota candidata a confirmar"
    ],
    "gatilho": "sistema ocioso (níveis 1 e 2 sem trabalho pendente) ou orçamento de tempo sobrando no ciclo",
-   "saida": "estado/piloto/memoria_mineracao.jsonl (uma linha por pesquisa) e estado/rotas_sugeridas_ia.json (pistas a confirmar)"
+   "saida": "biblioteca_alexandria/livros/especiais/espiao/memoria_mineracao.jsonl (uma linha por pesquisa) e estado/rotas_sugeridas_ia.json (pistas a confirmar)"
   }
  ],
  "divisao_de_trabalho": {
@@ -48,7 +48,7 @@
   "claude_desktop_diario": "ao ligar o Claude no computador, rotina diária: abre estado/pacote_desktop.md e atualiza o que está desatualizado (coleta local, navegador, IP brasileiro)"
  },
  "relatorio_de_aprendizado": {
-  "arquivo": "estado/piloto/aprendizado.jsonl",
+  "arquivo": "biblioteca_alexandria/livros/especiais/espiao/aprendizado.jsonl",
   "regra": "todo bloqueio, impedimento ou hipótese descartada vira uma linha: data, tarefa, o que tentou, o que impediu, o que aprendeu; o Claude lê a cada 3 dias e o conselho decide"
  },
  "identificacao_do_modelo": "todo relatório diz com que modelo foi feito: o Piloto com o modelo eleito no benchmark; o Claude com o nome do modelo da sessão (Claude Fable 5.1 nesta implantação)",

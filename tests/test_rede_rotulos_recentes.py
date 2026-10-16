@@ -11,7 +11,7 @@ from src import rede_neural as RN
 class TesteRotulos(unittest.TestCase):
     def test_decisao_mais_recente_vence_e_pendente_nao_bloqueia(self):
         with tempfile.TemporaryDirectory() as t:
-            pasta = Path(t) / "dados/oportunidades/validacao_mapa"; pasta.mkdir(parents=True)
+            pasta = Path(t) / "biblioteca_alexandria/livros/_vistas/validacao_mapa"; pasta.mkdir(parents=True)
             (pasta / "validacao_0000-automatica.json").write_text(json.dumps({"itens": [
                 {"url": "https://a.gov.br/e1", "titulo": "E1", "decisao": "pendente"},
                 {"url": "https://a.gov.br/e2", "titulo": "E2", "decisao": "valida_aberta"}]}), encoding="utf-8")

@@ -212,7 +212,7 @@ def run(regs: list[dict] | None = None, gravar: bool = True) -> dict:
     # contribuição de cada canal: entidades que SÓ ele trouxe, corroboradas e validadas como oportunidade real
     import glob as _g
     validas = set()
-    for f in _g.glob(str(ROOT / "dados/oportunidades/validacao_mapa/validacao_*.json")):
+    for f in _g.glob(str(ROOT / "biblioteca_alexandria/livros/_vistas/validacao_mapa/validacao_*.json")):
         for d in (_j(Path(f), {}).get("itens") or []):
             if str(d.get("decisao") or "").startswith(("valida", "arquivada")):
                 validas.add(str(d.get("url") or "").split("#")[0].rstrip("/").lower())

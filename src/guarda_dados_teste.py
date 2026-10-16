@@ -59,7 +59,7 @@ def limpar_arquivos(ids: list[str] | None = None) -> dict:
         for f in (ROOT / "dados/editais/extraidos").glob(f"*{i}*.json"):
             f.unlink(); extr += 1
     val = 0
-    for f in (ROOT / "dados/oportunidades/validacao_mapa").glob("validacao_*.json"):
+    for f in (ROOT / "biblioteca_alexandria/livros/_vistas/validacao_mapa").glob("validacao_*.json"):
         try:
             d = json.loads(f.read_text(encoding="utf-8"))
         except Exception:  # noqa: BLE001

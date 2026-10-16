@@ -26,7 +26,7 @@ class TestePiloto(unittest.TestCase):
         e = entender()
         for k in ("editais", "analises", "fontes", "leis", "motores", "empresas"):
             self.assertIn(k, e); self.assertTrue(e[k].get("total") is not None)
-        self.assertTrue((ROOT / "estado/piloto/catalogo_entendimento.json").exists())
+        self.assertTrue((ROOT / "biblioteca_alexandria/livros/especiais/espiao/catalogo_entendimento.json").exists())
         cfg = json.loads((ROOT / "config/piloto.json").read_text(encoding="utf-8"))
         self.assertIn("orcamento", cfg); self.assertIn("prazo inventado", cfg["regra"])
 

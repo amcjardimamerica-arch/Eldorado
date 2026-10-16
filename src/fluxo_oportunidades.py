@@ -622,7 +622,7 @@ def incluir_do_repositorio(res: dict) -> int:
     """11/10/2026 (titular): a tela inicial contava a lista do fluxo (465) e a Bússola o repositório único (558) — as
     oportunidades que vêm só da caixa dos motores não estavam na lista. Elas entram aqui, com o estado do repositório,
     e a lista passa a ter o mesmo universo do parâmetro."""
-    rep = (_j(ROOT / "dados/oportunidades/repositorio_unico.json", {}) or {}).get("registros") or []
+    rep = (_j(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json", {}) or {}).get("registros") or []
     por_uf = res.setdefault("itens_por_uf", {})
     if rep:                                  # a lista segue o repositório: sem fechadas e uma linha por oportunidade
         dono = {i: r for r in rep for i in [r["id"], *(r.get("ids_origem") or [])]}
@@ -714,7 +714,7 @@ def montar() -> dict:
         _r = _repo()
         res["incluidas_do_repositorio"] = incluir_do_repositorio(res)        # 11/10: UM universo — a lista = o repositório
         res["parametro"] = {**(res.get("parametro") or {}), **{k: _r[k] for k in ("abertas", "validadas", "em_verificacao", "validacao_manual")},
-                            "estantes": _r.get("estantes"), "fonte": "repositório único (dados/oportunidades/repositorio_unico.json)",
+                            "estantes": _r.get("estantes"), "fonte": "repositório único (biblioteca_alexandria/livros/_vistas/repositorio_unico.json)",
                             "auditoria": _r.get("auditoria")}
         SAIDA.write_text(json.dumps(res, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     except Exception as ex:  # noqa: BLE001 — o repositório nunca derruba o fluxo

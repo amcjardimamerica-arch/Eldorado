@@ -30,7 +30,7 @@ from urllib.parse import urlsplit
 
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-FONTES = ROOT / "estado/piloto/fontes_descobertas.json"
+FONTES = ROOT / "biblioteca_alexandria/livros/especiais/espiao/fontes_descobertas.json"
 PUB = ROOT / "docs/dados/prospeccao.json"
 
 # Os seis tipos de recurso que uma empresa pode oferecer. Cada um tem porta de entrada

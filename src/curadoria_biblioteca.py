@@ -194,8 +194,8 @@ def conferir() -> dict:
     # oportunidade aberta tem livro). Antes, o criador fazia o livro e esta conferência o apagava a cada rodada.
     IDX = ROOT / "estado/opressores_indice.json"
     _idx = (json.loads(IDX.read_text(encoding="utf-8")) if IDX.exists() else {}).get("indice") or {}
-    _rep = (json.loads((ROOT / "dados/oportunidades/repositorio_unico.json").read_text(encoding="utf-8")).get("registros") or []) \
-        if (ROOT / "dados/oportunidades/repositorio_unico.json").exists() else []
+    _rep = (json.loads((ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json").read_text(encoding="utf-8")).get("registros") or []) \
+        if (ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json").exists() else []
     protegidos = {(_idx.get(i) or {}).get("opressor") for r in _rep if r.get("estado") != "fechada" and not r.get("arquivada")
                   for i in [r.get("id"), *(r.get("ids_origem") or [])] if (_idx.get(i) or {}).get("opressor")}
     # 1) abrangência

@@ -91,7 +91,7 @@ class TesteMudezMedidaNoCargo(unittest.TestCase):
 
     def test_fora_do_voo_real_nada_e_contado(self):
         import os; os.environ.pop("ELDORADO_VOO_REAL", None)
-        arq = ROOT / "estado/piloto/desempenho_em_voo.json"
+        arq = ROOT / "biblioteca_alexandria/livros/especiais/espiao/desempenho_em_voo.json"
         antes = arq.read_text(encoding="utf-8") if arq.exists() else None
         _registrar_mudez(True)
         depois = arq.read_text(encoding="utf-8") if arq.exists() else None
@@ -104,7 +104,7 @@ class TesteMudezMedidaNoCargo(unittest.TestCase):
         """O contador mora em estado/ desde 24/09: o voo não commita o arquivo do cargo, e ali
         ele sumia a cada pouso (0 pedidos depois de dois voos do Qwen3)."""
         from src.cargo_piloto import ocupante
-        arq = ROOT / "estado/piloto/desempenho_em_voo.json"
+        arq = ROOT / "biblioteca_alexandria/livros/especiais/espiao/desempenho_em_voo.json"
         antes = arq.read_text(encoding="utf-8") if arq.exists() else None
         oid = (ocupante() or {}).get("id") or "vago"
         try:
@@ -126,7 +126,7 @@ class TesteMudezMedidaNoCargo(unittest.TestCase):
 
     def test_sem_alerta_enquanto_a_amostra_e_pequena(self):
         from src.cargo_piloto import ocupante
-        arq = ROOT / "estado/piloto/desempenho_em_voo.json"
+        arq = ROOT / "biblioteca_alexandria/livros/especiais/espiao/desempenho_em_voo.json"
         antes = arq.read_text(encoding="utf-8") if arq.exists() else None
         oid = (ocupante() or {}).get("id") or "vago"
         try:

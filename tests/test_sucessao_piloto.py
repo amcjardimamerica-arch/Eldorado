@@ -32,7 +32,7 @@ class TesteTresBarreiras(unittest.TestCase):
         self.assertIn("UM ERRO QUE NÃO DIZ A CAUSA CUSTA UMA RODADA INTEIRA", src)
 
     def test_a_leitura_do_http_e_em_portugues(self):
-        a = ROOT / "estado/piloto/downloads_falhos.tsv"
+        a = ROOT / "biblioteca_alexandria/livros/especiais/espiao/downloads_falhos.tsv"
         antes = a.read_text(encoding="utf-8") if a.exists() else None
         try:
             a.write_text("Qwen3-1.7B-Q4_K_M.gguf\t404\thttps://exemplo/x.gguf\n", encoding="utf-8")
@@ -46,7 +46,7 @@ class TesteTresBarreiras(unittest.TestCase):
                 a.write_text(antes, encoding="utf-8")
 
     def test_sem_registro_o_erro_diz_que_nao_sabe(self):
-        a = ROOT / "estado/piloto/downloads_falhos.tsv"
+        a = ROOT / "biblioteca_alexandria/livros/especiais/espiao/downloads_falhos.tsv"
         if not a.exists():
             self.assertIn("não deixou registro", _porque_faltou("qwen3-1.7b"))
 

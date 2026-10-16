@@ -1,6 +1,6 @@
 """VALIDAÇÃO INDIVIDUAL DO MAPA (titular, 27/09/2026) — nada de dado podre ou inútil no mapa.
 
-Cada oportunidade do mapa recebe UMA decisão, registrada em dados/oportunidades/validacao_mapa/validacao_AAAA-MM-DD.json
+Cada oportunidade do mapa recebe UMA decisão, registrada em biblioteca_alexandria/livros/_vistas/validacao_mapa/validacao_AAAA-MM-DD.json
 (o arquivo mais recente prevalece, item a item):
 
     valida_aberta             aberta, dentro da abrangência aprovada (nacional + Goiás + Goiânia), com os 12 dados
@@ -34,7 +34,7 @@ from urllib.parse import urlsplit
 
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-PASTA = ROOT / "dados/oportunidades/validacao_mapa"
+PASTA = ROOT / "biblioteca_alexandria/livros/_vistas/validacao_mapa"
 FILTROS = ROOT / "config/filtros_motores.json"
 ARQUIVADOS = ROOT / "dados/editais/arquivados.json"
 EXT = ROOT / "dados/editais/extraidos"

@@ -26,7 +26,7 @@ from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTADOR = ROOT / "estado/piloto/navegador_local.json"
+CONTADOR = ROOT / "biblioteca_alexandria/livros/especiais/espiao/navegador_local.json"
 TETO_DIA = int(os.environ.get("ELDORADO_NAVEGADOR_TETO", "400"))
 PAUSA = (3.0, 7.0)                                         # segundos entre buscas: ritmo de pessoa
 _ESTADO: dict = {}

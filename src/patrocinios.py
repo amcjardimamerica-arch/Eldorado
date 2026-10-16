@@ -197,7 +197,7 @@ def run(uf: str = "GO") -> dict:
         achados = achados + [a for a in (load_json(_esp).get("achados") or []) if a.get("empresa") and a.get("url")]
     try:                                             # 11/10 (titular): toda empresa com CHAMAMENTO privado aberto entra/atualiza
         from .repositorio_unico import _privada, CHAMAMENTO   # o banco de patrocinadoras e doadoras (sem virar oportunidade por si)
-        _rep = load_json(ROOT / "dados/oportunidades/repositorio_unico.json").get("registros") or []
+        _rep = load_json(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json").get("registros") or []
         for r in _rep:
             if r.get("estado") in ("em_verificacao", "validada") and _privada(r) and CHAMAMENTO.search(str(r.get("titulo") or "")) and r.get("orgao"):
                 achados.append({"empresa": str(r["orgao"])[:120], "evento": str(r.get("titulo") or "")[:160], "area": classificar_area(str(r.get("titulo") or "")),

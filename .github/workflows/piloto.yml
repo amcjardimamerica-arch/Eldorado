@@ -79,19 +79,19 @@ jobs:
           # Uma requisicao de cabecalho por endereco: diz se o arquivo existe e o tamanho,
           # sem gastar os minutos de um download. E o que faltava em 23/09, quando a avaliacao
           # do Qwen3 morreu sem dizer se era URL errada, nome mudado na origem ou rede.
-          mkdir -p estado/piloto
-          echo "modelo	url	http	tamanho_bytes" > estado/piloto/sondagem_gguf.tsv
+          mkdir -p biblioteca_alexandria/livros/especiais/espiao
+          echo "modelo	url	http	tamanho_bytes" > biblioteca_alexandria/livros/especiais/espiao/sondagem_gguf.tsv
           python3 -c "import json;d=json.load(open('config/espelhos_gguf.json'))['espelhos'];[print(k+'	'+u) for k,us in d.items() for u in us]" > /tmp/urls.tsv
           while IFS=$'\t' read -r MOD URL; do
             [ -z "$URL" ] && continue
             R=$(curl -sIL --max-time 45 -o /dev/null -w "%{http_code}	%{size_download}	%{content_type}" "$URL" || echo "sem-resposta	0	-")
             COD=$(echo "$R" | cut -f1)
             LEN=$(curl -sIL --max-time 45 "$URL" 2>/dev/null | grep -i "^content-length:" | tail -1 | tr -d " \r" | cut -d: -f2)
-            printf '%s\t%s\t%s\t%s\n' "$MOD" "$URL" "$COD" "${LEN:-0}" >> estado/piloto/sondagem_gguf.tsv
+            printf '%s\t%s\t%s\t%s\n' "$MOD" "$URL" "$COD" "${LEN:-0}" >> biblioteca_alexandria/livros/especiais/espiao/sondagem_gguf.tsv
             echo "  $MOD  HTTP $COD  ${LEN:-0} bytes  $URL"
           done < /tmp/urls.tsv
           git config user.name "piloto" && git config user.email "piloto@eldorado"
-          git add estado/piloto/sondagem_gguf.tsv
+          git add biblioteca_alexandria/livros/especiais/espiao/sondagem_gguf.tsv
           git commit -q -m "sondagem dos enderecos GGUF $(date -u +%H:%M)" || true
           git pull --rebase -q origin main || true
           git push -q origin main || true
@@ -146,7 +146,7 @@ jobs:
             done
             [ -n "$BAIXOU" ] \
               && echo "  ok: $(du -h "$DEST" | cut -f1)" \
-              || { COD=$(curl -L -o /dev/null -s -w "%{http_code}" --max-time 40 "$URL" || echo "sem-resposta"); mkdir -p estado/piloto; printf '%s\t%s\t%s\n' "$ARQ" "$COD" "$URL" >> estado/piloto/downloads_falhos.tsv; echo "  FALHOU: $ARQ — HTTP $COD em $URL"; rm -f "$DEST"; }
+              || { COD=$(curl -L -o /dev/null -s -w "%{http_code}" --max-time 40 "$URL" || echo "sem-resposta"); mkdir -p estado/piloto; printf '%s\t%s\t%s\n' "$ARQ" "$COD" "$URL" >> biblioteca_alexandria/livros/especiais/espiao/downloads_falhos.tsv; echo "  FALHOU: $ARQ — HTTP $COD em $URL"; rm -f "$DEST"; }
           done < /tmp/alvos.txt
           ls -la ia_local/modelos/ || true
           df -h / | tail -1
@@ -157,12 +157,12 @@ jobs:
           import json, pathlib
           from src.piloto_busca import diagnostico
           d = diagnostico()
-          pathlib.Path("estado/piloto").mkdir(parents=True, exist_ok=True)
-          pathlib.Path("estado/piloto/diagnostico_busca.json").write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
+          pathlib.Path("biblioteca_alexandria/livros/especiais/espiao").mkdir(parents=True, exist_ok=True)
+          pathlib.Path("biblioteca_alexandria/livros/especiais/espiao/diagnostico_busca.json").write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
           print(json.dumps(d, ensure_ascii=False, indent=1))
           PY
           git config user.name "piloto" && git config user.email "piloto@eldorado"
-          git add estado/piloto/diagnostico_busca.json && git commit -q -m "piloto: diagnóstico dos buscadores" && git push -q origin main || true
+          git add biblioteca_alexandria/livros/especiais/espiao/diagnostico_busca.json && git commit -q -m "piloto: diagnóstico dos buscadores" && git push -q origin main || true
       - name: BATIMENTO — avisar que o voo COMEÇOU, antes de decolar
         run: |
           # Sem isto o painel só sabia do voo quando ele terminava, e entre um commit e outro
@@ -211,7 +211,7 @@ jobs:
           import traceback
           # O ERRO FICA NO REPOSITÓRIO. Em 24/09 voos alternados quebravam no fechamento, depois
           # das missões, e o log do Actions não é legível de fora. O traceback vai para
-          # estado/piloto/erro_do_voo.json, que o passo de commit leva junto.
+          # biblioteca_alexandria/livros/especiais/espiao/erro_do_voo.json, que o passo de commit leva junto.
           etapa = "ciclo"
           try:
               r = ciclo(porta=cfg.get("porta", 8081))
@@ -220,9 +220,9 @@ jobs:
           except Exception:
               tb = traceback.format_exc()
               print(tb)
-              os.makedirs("estado/piloto", exist_ok=True)
+              os.makedirs("biblioteca_alexandria/livros/especiais/espiao", exist_ok=True)
               json.dump({"em": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "etapa": etapa,
-                         "erro": tb[-6000:]}, open("estado/piloto/erro_do_voo.json", "w"),
+                         "erro": tb[-6000:]}, open("biblioteca_alexandria/livros/especiais/espiao/erro_do_voo.json", "w"),
                         ensure_ascii=False, indent=1)
               srv.kill()
               sys.exit(1)
@@ -280,7 +280,7 @@ jobs:
         with:
           name: piloto-${{ github.run_id }}
           path: |
-            estado/piloto/
+            biblioteca_alexandria/livros/especiais/espiao/
             config/piloto.json
           retention-days: 90
       - name: Regenerar painel e commitar — a prova de conflito, os arquivos do Piloto mandam nos seus caminhos
@@ -296,13 +296,13 @@ jobs:
           # histórico); os Pilotos regeneram no máximo a cada 30 min — o ciclo dos motores, o Cartório e o diário seguem
           IDADE_PAINEL=$(python3 -c "import re,datetime as d;t=open('docs/dashboard-dados.js',encoding='utf-8').read(300);m=re.search(r'gerado_em\":\"([^\"]+)',t);print(int((d.datetime.now(d.timezone.utc)-d.datetime.fromisoformat(m.group(1))).total_seconds()//60) if m else 9999)" 2>/dev/null || echo 9999)
           if [ "${IDADE_PAINEL}" -ge 30 ]; then
-            timeout 300 python -m src.dashboard_dados || { echo "::error::o gerador principal do painel (src.dashboard_dados) falhou — o painel ficaria congelado"; date -u +%FT%TZ > estado/piloto/gerador_painel_falhou.txt; }
+            timeout 300 python -m src.dashboard_dados || { echo "::error::o gerador principal do painel (src.dashboard_dados) falhou — o painel ficaria congelado"; date -u +%FT%TZ > biblioteca_alexandria/livros/especiais/espiao/gerador_painel_falhou.txt; }
           else echo "painel regenerado há ${IDADE_PAINEL} min — os Pilotos só regeneram a cada 30 min"; fi
           # 1) guarda o que o Piloto produziu
           BASE_DO_VOO=$(git rev-parse HEAD)          # onde a cópia do voo começou
           rm -rf docs/dados/dados                    # 27/09: pasta aninhada de 22/09 (220 MB) — nunca mais volta
           rm -rf /tmp/sind && mkdir -p /tmp/sind
-          for P in config/parametros_pilotos_fixos.json estado/pilotos docs/dados/achados_pilotos.json config/parametros_pilotos.json estado/aprendizado estado/piloto docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados biblioteca_alexandria/livros/especiais/empresas/dados/go/espiao_empresas.json; do
+          for P in config/parametros_pilotos_fixos.json estado/pilotos docs/dados/achados_pilotos.json config/parametros_pilotos.json estado/aprendizado biblioteca_alexandria/livros/especiais/espiao docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados biblioteca_alexandria/livros/especiais/empresas/dados/go/espiao_empresas.json; do
             # cp -r PASTA DESTINO copia PARA DENTRO quando o destino ja existe (gerava docs/dados/dados).
             # Com diretorio, copiamos o CONTEUDO; com arquivo, o arquivo.
             if [ -d "$P" ]; then mkdir -p "/tmp/sind/$P" && cp -r "$P/." "/tmp/sind/$P/" || true
@@ -338,7 +338,7 @@ jobs:
           json.dump(atual, open("config/piloto.json","w"), ensure_ascii=False, indent=1)
           PY
           # 28/09: SÓ os caminhos do Piloto — nunca "git add -A" geral (levava a cópia velha de src/ e desfez uma correção)
-          PILOTO_PATHS="config/parametros_pilotos_fixos.json estado/pilotos docs/dados/achados_pilotos.json config/parametros_pilotos.json estado/aprendizado estado/piloto docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados biblioteca_alexandria/livros/especiais/empresas/dados/go/espiao_empresas.json"
+          PILOTO_PATHS="config/parametros_pilotos_fixos.json estado/pilotos docs/dados/achados_pilotos.json config/parametros_pilotos.json estado/aprendizado biblioteca_alexandria/livros/especiais/espiao docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados biblioteca_alexandria/livros/especiais/empresas/dados/go/espiao_empresas.json"
           for P in $PILOTO_PATHS; do [ -e "$P" ] && git add -A -- "$P"; done
           git status --short | head -20
           git commit -q -m "piloto: $(date -u +%F) ${MODO:-ciclo}" || echo "nada a commitar"

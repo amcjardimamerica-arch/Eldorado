@@ -198,7 +198,7 @@ def _atuais() -> set | None:
     páginas, 98% de registros eliminados. Sem repositório, None (gera como antes)."""
     try:
         from .arquivo_frio import paginas_editais_orfas  # noqa: F401 — mesma definição de 'atual'
-        rep = json.loads((ROOT / "dados/oportunidades/repositorio_unico.json").read_text(encoding="utf-8")).get("registros") or []
+        rep = json.loads((ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json").read_text(encoding="utf-8")).get("registros") or []
         s = {i for x in rep for i in [x["id"], *(x.get("ids_origem") or [])]}
         ab = json.loads((ROOT / "docs/dados/abertas.json").read_text(encoding="utf-8"))
         k = ab["campos"].index("id"); ks = ab["campos"].index("situacao"); dic = ab.get("dic") or {}

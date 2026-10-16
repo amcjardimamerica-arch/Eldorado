@@ -107,7 +107,7 @@ CHAVES = {
 # REVEZAMENTO DAS VIAS. Cada consulta usa UMA via, e a seguinte usa a próxima da roda. Assim
 # nenhuma apanha o volume inteiro — que foi o que fez o DuckDuckGo começar a cortar. A via só
 # é pulada quando está BLOQUEADA: falhou, entra em descanso e a roda segue sem ela até voltar.
-VIAS = ROOT / "estado/piloto/vias.json"
+VIAS = ROOT / "biblioteca_alexandria/livros/especiais/espiao/vias.json"
 DESCANSO_MIN = 25          # quanto tempo uma via fica de fora depois de bloquear
 
 
@@ -275,7 +275,7 @@ def _google_noticias(consulta: str, maximo: int, tempo: float) -> list[dict]:
 #      Notícias — nessa ordem, sempre;
 #   3. no computador do titular ou na VM do Brasil (ELDORADO_LOCAL_BR=1), IP que o buscador não trata como robô de
 #      datacenter: até 30 buscas por voo no DuckDuckGo, com 6 s de intervalo.
-CACHE_BUSCAS = ROOT / "estado/piloto/cache_buscas.json"
+CACHE_BUSCAS = ROOT / "biblioteca_alexandria/livros/especiais/espiao/cache_buscas.json"
 _PONTE_NO_VOO = {"usadas": 0}
 
 

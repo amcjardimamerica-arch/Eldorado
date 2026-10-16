@@ -15,7 +15,7 @@ LÉXICO E RESTRIÇÕES EM CADA LIVRO (titular, 02/10): a cada ciclo, cada livro 
   Achado de um livro é julgado pelas restrições DO livro; achado novo com veto (NÃO APLICA) não vira livro (fica registrado
   em `vetados_pelas_restricoes`). Território NÃO impede livro: edital de OSC de outro município é coletado pelo PNCP e ganha
   livro próprio, com o território anotado como enquadramento (src/regras_restricao.py).
-SEMENTE DO PARECER DAS 238 (02/10): dados/oportunidades/livros_parecer_238.json — as oportunidades para OSC validadas no
+SEMENTE DO PARECER DAS 238 (02/10): biblioteca_alexandria/livros/_vistas/livros_parecer_238.json — as oportunidades para OSC validadas no
   parecer entram como livros (ou atualizam o livro existente) no primeiro ciclo; idempotente.
 Só dados — nenhum arquivo é anexado a um livro.
 """
@@ -32,7 +32,7 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 CAT = ROOT / "biblioteca_alexandria/fontes/motores.json"
 FLUXO = ROOT / "docs/dados/fluxo_oportunidades.json"
-SEMENTE = ROOT / "dados/oportunidades/livros_parecer_238.json"
+SEMENTE = ROOT / "biblioteca_alexandria/livros/_vistas/livros_parecer_238.json"
 INDICE = ROOT / "estado/opressores_indice.json"
 LOCAIS = ROOT / "docs/dados/locais_de_busca.json"
 DOZE = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador", "Território", "Esfera",
@@ -171,7 +171,7 @@ def _aplicar_semente(C: dict) -> dict:
     return {"versao": sem.get("versao"), "aplicada_em": _agora(), **r}
 
 
-SEMENTE_2439 = ROOT / "dados/oportunidades/livros_motores_24_39.json"
+SEMENTE_2439 = ROOT / "biblioteca_alexandria/livros/_vistas/livros_motores_24_39.json"
 FILA_2439 = ROOT / "estado/interceptador/fila_semente_24_39.json"
 
 
@@ -248,7 +248,7 @@ def registrar_achados(achados: list[dict], origem: str, catalogo: dict | None = 
     # 01/10: o que a validação individual já DESCARTOU não volta como livro
     import glob as _g
     descartados = set()
-    for f in _g.glob(str(ROOT / "dados/oportunidades/validacao_mapa/validacao_*.json")):
+    for f in _g.glob(str(ROOT / "biblioteca_alexandria/livros/_vistas/validacao_mapa/validacao_*.json")):
         for d in (_j(Path(f), {}).get("itens") or []):
             if d.get("decisao") == "descartada":
                 descartados.add(chave(d.get("titulo") or "")); descartados.add(str(d.get("url") or "").rstrip("/"))
