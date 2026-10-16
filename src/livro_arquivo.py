@@ -168,7 +168,9 @@ def _expandir(o, caminho=""):
     return o, []
 
 
-def absorver(caminhos: list, gravar_: bool = True, apagar: bool = True) -> dict:
+def absorver(caminhos: list, gravar_: bool = True, apagar: bool = True, controle_sem_livro: bool = False) -> dict:
+    """controle_sem_livro=True: a parte que não é oportunidade (ex.: diagnóstico e aposta do voo do piloto) fica no
+    CONTROLE (_origens), não nos livros nem descartada — é memória operacional, não dado de oportunidade."""
     from .banco_livros import _novo_livro
     idx = indice()
     cat = _j(CAT, {"motores": []}); L = cat.setdefault("motores", [])
@@ -202,6 +204,8 @@ def absorver(caminhos: list, gravar_: bool = True, apagar: bool = True) -> dict:
         if not conts:                                     # o arquivo inteiro é o registro de uma oportunidade
             lid = guardar(rel, "", "_arquivo", obj)
             reg["inteiro"] = [lid, "|_arquivo"] if lid else None
+            if not lid and controle_sem_livro:
+                reg["controle"] = obj; st["descartadas (não ligam e não são oportunidade vigente)"] -= 1
         for cam, forma, itens in conts:
             ent = []
             for k, v in itens:
@@ -239,6 +243,8 @@ def carregar(caminho, padrao=None):
         return None if x is None else x["dado"]
     if o.get("inteiro"):
         return valor(*o["inteiro"])
+    if "controle" in o and not o["conteineres"]:
+        return o["controle"]
     if "inteiro" in o and not o["conteineres"]:
         return padrao
 
@@ -260,7 +266,7 @@ def arquivos_de(pasta) -> list[str]:
     return sorted(k for k in (_j(ORIGENS, {}) or {}) if k.startswith(pre))
 
 
-def guardar(caminho, obj) -> dict:
+def guardar(caminho, obj, controle_sem_livro: bool = False) -> dict:
     """Quem gravava num arquivo passa a gravar NO LIVRO: a estrutura é absorvida na hora e o arquivo não fica.
     A versão anterior do mesmo 'arquivo' é tirada dos livros antes (sem restos)."""
     caminho = Path(caminho); rel = _rel(caminho)
@@ -275,7 +281,7 @@ def guardar(caminho, obj) -> dict:
                 gravar(lid, d)
     caminho.parent.mkdir(parents=True, exist_ok=True)
     caminho.write_text(json.dumps(obj, ensure_ascii=False), encoding="utf-8")
-    return absorver([caminho])
+    return absorver([caminho], controle_sem_livro=controle_sem_livro)
 
 
 # ── TRAVA: pastas cujo conteúdo só pode existir DENTRO dos livros ───────────────────────────────────────────────────
@@ -294,4 +300,6 @@ def absorver_proibidos() -> dict:
 
 
 def proibido(rel: str) -> bool:
+    if FAROL.search(rel):
+        return False                                       # o Farol nunca é proibido (fora da regra)
     return any(rel == g or rel.startswith(g.rstrip("/") + "/") for g in PROIBIDOS)
