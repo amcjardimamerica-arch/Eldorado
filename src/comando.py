@@ -208,8 +208,9 @@ def fases(ctx: dict) -> list[dict]:
         # 5a CATALOGAR — o que a coleta trouxe vira registro: achados por motor, status, repositório e mapa
         # 16/10/2026 (titular): o item 'Destinação' passa a se chamar 'Modalidade' em todos os dados (uma vez)
         {"etapa": "modalidade", "finalidade": "uma vez: o item 'Destinação' vira 'Modalidade' em todos os dados guardados",
-         "cmds": [[py, "-c", "import json; from src import banco_livros as B; print(json.dumps(B.renomear_modalidade_nos_dados(), ensure_ascii=False))"]],
-         "t": 900, "pular": "já feita" if (ROOT / "estado/modalidade_migracao.json").exists() else None},
+         "cmds": [[py, "-c", "import json; from src import banco_livros as B; print(json.dumps(B.renomear_modalidade_nos_dados(), ensure_ascii=False)); "
+                   "print(json.dumps(B.revisar_modalidade_uma_vez(), ensure_ascii=False))"]],
+         "t": 900, "pular": "já feita" if (ROOT / "estado/modalidade_migracao.json").exists() and (ROOT / "estado/modalidade_revisao.json").exists() else None},
         {"etapa": "catalogar", "finalidade": "achados por motor, status de cada motor e repositório único das oportunidades",
          "cmds": [[py, "-m", "src.achados_motores"], [py, "-c", "import src.motores as M; M.run()"], [py, "-m", "src.status_motores"],
                   [py, "-m", "src.fluxo_oportunidades", "--completo"]], "t": 900,

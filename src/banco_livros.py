@@ -502,3 +502,95 @@ def renomear_modalidade_nos_dados(simular: bool = False) -> dict:
         MARCO_MODALIDADE.parent.mkdir(parents=True, exist_ok=True)
         MARCO_MODALIDADE.write_text(json.dumps({"em": _agora(), **r}, ensure_ascii=False, indent=1), encoding="utf-8")
     return r
+
+
+def _modalidade_do_texto(*textos) -> tuple[str, str, str] | None:
+    """(modalidade oficial, base legal, texto onde está escrita) — só se ESTIVER escrita; nunca inferida."""
+    import re
+    from .cartorio_leitura import FORMALIZA, MODALIDADES
+    NEGA = re.compile(r"(?i)(?:vedad[oa]s?|duplicidade|exceto|salvo|n[ãa]o (?:poder[áa]|ser[áa]|se aplica|é)|proibid[oa])[^.;]{0,40}$")
+    melhor = None
+    for n, t in enumerate(textos):
+        if not isinstance(t, str) or not t.strip():
+            continue
+        for nome, rx, base, peso in MODALIDADES:
+            for m in re.finditer(rx, t, re.I):
+                antes = t[max(0, m.start() - 60):m.start()]
+                if NEGA.search(antes):
+                    continue                                 # menção negada ('vedada duplicidade com a Lei Rouanet')
+                if n > 0 and not re.search(FORMALIZA + r"[^.;]{0,40}$", antes, re.I):
+                    continue                                 # no TRECHO: só como forma de formalização
+                if melhor is None or peso > melhor[3]:
+                    melhor = (nome, base, t[max(0, m.start() - 120):m.end() + 120], peso)
+                break
+    return melhor[:3] if melhor else None
+
+
+def revisar_modalidade_nos_livros(gravar: bool = True) -> dict:
+    """16/10/2026 (titular): a Modalidade é a FORMA COMO O RECURSO CHEGA à associação — não a finalidade nem a
+    elegibilidade. Em cada checklist dos livros: valor que já é modalidade é padronizado na lista oficial (com a base
+    legal); elegibilidade ou finalidade no lugar → procura a modalidade escrita no próprio valor ou no trecho; se não
+    estiver escrita, o item fica EM ABERTO para o Cartório extrair do documento. O log de mudanças não é alterado."""
+    from collections import Counter
+    cat_doc = _j(CAT, {"motores": []}); L = cat_doc.get("motores") or []
+    res = Counter()
+    LOG = ("mudou", "historico_parametros")
+
+    def rever(item: dict) -> None:
+        if not isinstance(item, dict):
+            return
+        v = item.get("valor", item.get("v"))
+        if v in (None, "", "None"):
+            res["vazio"] += 1; return
+        achada = _modalidade_do_texto(str(v), item.get("trecho") or item.get("t"))
+        chave_v = "valor" if "valor" in item else "v"
+        if achada:
+            nome, base, onde = achada
+            if item.get(chave_v) != nome:
+                res["padronizada" if str(v).strip().lower().startswith(nome.lower()[:6]) else "corrigida (estava escrita)"] += 1
+            else:
+                res["ja_correta"] += 1
+            item[chave_v] = nome; item["base_legal"] = base
+            item.setdefault("trecho", onde)
+        else:
+            res["em_aberto (era finalidade/elegibilidade)"] += 1
+            item[chave_v] = None; item["estado"] = "falta"
+            item["revisao_modalidade"] = f"valor anterior não era modalidade de recebimento: {str(v)[:120]}"
+            for k in ("s",):
+                if k in item:
+                    item[k] = "falta"
+
+    def andar(o, dentro_log=False):
+        if isinstance(o, dict):
+            for k, v in o.items():
+                if k == "Modalidade" and not dentro_log:
+                    rever(v)
+                else:
+                    andar(v, dentro_log or k in LOG)
+        elif isinstance(o, list):
+            for x in o:
+                andar(x, dentro_log)
+    for lv in L:
+        andar(lv)
+    # as certidões do Cartório são copiadas para os livros a cada passagem — revistas também, senão desfariam a revisão
+    certs = {}
+    for nome in ("certidoes.json", "certidoes_manuais.json"):
+        p = ROOT / "estado/cartorio" / nome
+        if p.exists():
+            certs[p] = _j(p, {}); andar(certs[p])
+    if gravar:
+        CAT.write_text(json.dumps(cat_doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        for p, d in certs.items():
+            p.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
+    return dict(res)
+
+
+def revisar_modalidade_uma_vez() -> dict:
+    """A revisão do CONTEÚDO da Modalidade roda uma vez, com registro próprio (independe da troca do nome)."""
+    marco = ROOT / "estado/modalidade_revisao.json"
+    if marco.exists():
+        return {"revisao": "já feita"}
+    r = revisar_modalidade_nos_livros()
+    marco.parent.mkdir(parents=True, exist_ok=True)
+    marco.write_text(json.dumps({"em": _agora(), **r}, ensure_ascii=False, indent=1), encoding="utf-8")
+    return {"revisao": "feita agora", **r}
