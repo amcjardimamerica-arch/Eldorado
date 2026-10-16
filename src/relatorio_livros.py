@@ -60,10 +60,7 @@ _MANUAL = ROOT / "dados/coleta_3_anos/classificacao_livros.json"
 
 
 def _manual() -> dict:
-    try:
-        return json.loads(_MANUAL.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
-        return {}
+    return __import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(_MANUAL, {}) or {}   # 16/10: nos livros
 
 
 def _item_status(nome: str, ed: dict, x: dict, reg: str) -> dict:
@@ -140,12 +137,11 @@ def _derivado(nome: str, x: dict) -> dict | None:
 def _itens_por_pagina() -> dict:
     """dados/coleta_3_anos/itens12/*.json = {"<pagina_oficial>": {"<item>": {"estado","valor","trecho"}}} lidos da própria página/PDF/API."""
     out: dict = {}
-    for arq in sorted((ROOT / "dados/coleta_3_anos/itens12").glob("*.json")):
-        try:
-            for u, v in json.loads(arq.read_text(encoding="utf-8")).items():
+    from . import livro_arquivo as LA                 # 16/10: nos livros
+    for arq in LA.arquivos(ROOT / "dados/coleta_3_anos/itens12"):
+        for u, v in (LA.ler_arquivo(arq, {}) or {}).items():
+            if isinstance(v, dict):
                 out.setdefault(u, {}).update(v)
-        except ValueError:
-            continue
     return out
 
 
@@ -319,13 +315,12 @@ def md(r: dict) -> str:
 
 def gerar() -> dict:
     C = json.loads(CAT.read_text(encoding="utf-8"))
-    SAIDA.mkdir(parents=True, exist_ok=True)
     cont, itens = Counter(), Counter()
+    _lote = []                                         # 16/10: o relatório de cada livro vai PARA O LIVRO (de uma vez)
     resumo = []
     for x in C.get("motores") or []:
         r = relatorio(x)
-        (SAIDA / f"{r['id']}.json").write_text(json.dumps(r, ensure_ascii=False, indent=1), encoding="utf-8")
-        (SAIDA / f"{r['id']}.md").write_text(md(r), encoding="utf-8")
+        _lote.append((SAIDA / f"{r['id']}.json", r))     # o .md (mesmo conteúdo) deixa de ser gravado
         cont[r["validacao"]["situacao"].split(":")[0] + (":" + r["validacao"]["situacao"].split(":")[1] if ":" in r["validacao"]["situacao"] else "")] += 1
         for e in r["edicoes"]:
             itens.update(v["estado"] for v in e["itens"].values())
@@ -338,6 +333,7 @@ def gerar() -> dict:
                    "faltam_ouro": [{"id": r["id"], "livro": r["livro"], "selo": r["selo"], "situacao": r["situacao"]} for r in valid if r["selo"] != "ouro"]}
     RESUMO.write_text(json.dumps({"gerado_em": hoje_brt().isoformat(), "por_situacao": dict(cont), "itens_das_edicoes": dict(itens), "universo_go": universo_go, "livros": resumo},
                                  ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    __import__("src.livro_arquivo", fromlist=["x"]).guardar_lote(_lote)
     return {"por_situacao": dict(cont), "itens_das_edicoes": dict(itens), "universo_go": {k: v for k, v in universo_go.items() if k != "faltam_ouro"} | {"faltam": len(universo_go["faltam_ouro"])}, "livros": len(resumo)}
 
 
