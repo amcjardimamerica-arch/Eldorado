@@ -250,7 +250,7 @@ class TesteLivrosDoParecer(unittest.TestCase):
         self.assertEqual((r1["livros_novos"], r2["livros_novos"], r3["livros_novos"]), (1, 1, 0), "mesma chave junta; chave diferente separa")
 
     def test_semente_do_parecer(self):
-        sem = json.loads((ROOT / "dados/oportunidades/livros_parecer_238.json").read_text(encoding="utf-8"))
+        sem = json.loads((ROOT / "biblioteca_alexandria/livros/_vistas/livros_parecer_238.json").read_text(encoding="utf-8"))
         self.assertTrue(sem["itens"])
         self.assertTrue(all(i["acao"] in ("criar_livro", "atualizar_livro") for i in sem["itens"]))
         self.assertTrue(all(i["veredito"] != "NÃO APLICA" for i in sem["itens"]))

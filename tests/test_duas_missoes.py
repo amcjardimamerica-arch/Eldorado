@@ -40,7 +40,7 @@ class TesteMissao1_PNCPForaDoPiloto(unittest.TestCase):
         self.assertIn("Claude Desktop", d["regra"])
         self.assertTrue(all(v.get("porque") for v in d["itens"].values()))
         # e nada de PNCP sobra na fila do Piloto
-        f = json.loads((ROOT / "estado/piloto/fila_resgate.json").read_text(encoding="utf-8"))
+        f = json.loads((ROOT / "biblioteca_alexandria/livros/especiais/espiao/fila_resgate.json").read_text(encoding="utf-8"))
         for v in f["itens"].values():
             if v.get("estado") == "aguardando":
                 self.assertFalse(_e_pncp(v), v.get("titulo"))

@@ -51,7 +51,7 @@ def coletar() -> dict:
     for c in ((__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/piloto/candidatas_do_catalogo.json", {}) or {}).get("itens") or (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/piloto/candidatas_do_catalogo.json", []) or [])):
         if isinstance(c, dict):
             por("espiao", str(c.get("descoberto_em") or ""), _item(c.get("titulo"), c.get("url"), situacao=c.get("enquadramento")))
-    for m in (_j(ROOT / "estado/piloto/bordo.json", {}).get("missoes") or []):
+    for m in (_j(ROOT / "biblioteca_alexandria/livros/especiais/espiao/bordo.json", {}).get("missoes") or []):
         for a in (m.get("alvos") or []):
             if isinstance(a, dict):
                 por("espiao", str(m.get("fim") or m.get("inicio") or ""), _item(a.get("titulo") or a.get("nome"), a.get("url") or a.get("onde"), a.get("uf"), a.get("prazo")))

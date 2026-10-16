@@ -275,7 +275,7 @@ def sincronizar() -> dict:
             idx[it["id"]] = {"opressor": opressor_de(it, "aberta", True)}
     # 1b) 11/10 (titular): TODA oportunidade aberta do REPOSITÓRIO ÚNICO tem livro — inclusive as que vêm só da caixa
     #     dos motores (não passam pelo fluxo); as mesmas regras de dispensa valem
-    _rep = _j(ROOT / "dados/oportunidades/repositorio_unico.json", {})
+    _rep = _j(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json", {})
     for x in _rep.get("registros") or []:
         # 11/10: a arquivada (municipal de fora de GO) mantém o estado — o livro é criado/vinculado como o de qualquer aberta
         if x.get("estado") not in ("em_verificacao", "validada", "validacao_manual") or str(x.get("proximo_passo") or "").startswith("dispensar"):

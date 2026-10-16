@@ -10,7 +10,7 @@ class TesteReducao(unittest.TestCase):
         c = {x["nome"] for x in json.loads((ROOT / "config/arquivo_frio.json").read_text(encoding="utf-8"))["conjuntos"]}
         for n in ("validacao-abertas-sem-ouro-2026-10-03", "coleta-3-anos-relatorios-oportunidades", "contagens-anteriores-pilotos"):
             self.assertIn(n, c)
-        self.assertIn("estado/piloto/servidor-*.log", (ROOT / ".gitignore").read_text(encoding="utf-8"))
+        self.assertIn("biblioteca_alexandria/livros/especiais/espiao/servidor-*.log", (ROOT / ".gitignore").read_text(encoding="utf-8"))
 
     def test_painel_dos_pilotos_a_cada_30_min(self):
         w = (ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8")

@@ -13,7 +13,7 @@ Descarta: domínio de governo (é dos motores), agregadores, endereço já vigia
 Buscas CRIATIVAS por famílias (combinações de setor, empresa conhecida, público, região, idioma, operador de busca,
 financiador internacional, rastro de patrocínio). A família é escolhida por amostragem de Thompson (aprende sozinha).
 A cada 100 VOOS: avaliação com a REDE NEURAL (nota de oportunidade real de cada achado) — reforça as famílias que
-rendem, aposenta as consultas que falharam, cria mutações novas das melhores. Histórico em estado/piloto/espiao_cerebro.json.
+rendem, aposenta as consultas que falharam, cria mutações novas das melhores. Histórico em biblioteca_alexandria/livros/especiais/espiao/espiao_cerebro.json.
 
 Empresas novas encontradas vão ao campo de empresas (motor de patrocínio privado → painel "Oportunidades de Empresas"),
 marcadas com a modalidade (doação, patrocínio, edital próprio, internacional) e se estão FORA da lista de incentivo fiscal.
@@ -30,7 +30,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-CEREBRO = ROOT / "estado/piloto/espiao_cerebro.json"
+CEREBRO = ROOT / "biblioteca_alexandria/livros/especiais/espiao/espiao_cerebro.json"
 CANDIDATAS = ROOT / "estado/piloto/candidatas_do_catalogo.json"
 _CAND_ORIGINAL = CANDIDATAS                           # 16/10: só o caminho ORIGINAL vai aos livros (teste aponta outro)
 

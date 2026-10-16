@@ -211,7 +211,7 @@ def dados_rotulados() -> tuple[list[dict], list[int], list[dict]]:
     # lidos em ordem alfabética e a primeira decisão vencia — a validação automática (validacao_0000, quase tudo
     # "pendente") vinha primeiro e as decisões humanas de 02/10 (352 na fonte oficial) eram ignoradas.
     decisoes: dict[str, tuple[dict, dict]] = {}
-    for f in sorted(_g.glob(str(ROOT / "dados/oportunidades/validacao_mapa/validacao_*.json")), reverse=True):
+    for f in sorted(_g.glob(str(ROOT / "biblioteca_alexandria/livros/_vistas/validacao_mapa/validacao_*.json")), reverse=True):
         for d in (_j(Path(f), {}).get("itens") or []):
             u = str(d.get("url") or "").split("#")[0].rstrip("/").lower()
             chave = u or str(d.get("titulo"))

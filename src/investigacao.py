@@ -130,7 +130,7 @@ def run(limite_fontes: int | None = None) -> dict:
         falhas_t += fal
         for a in ach:
             if a["id"] not in existentes:
-                append_jsonl(DB_OPORTUNIDADES, a); novos += 1
+                __import__("src.banco_livros", fromlist=["x"]).registrar_achados([a]); novos += 1   # 16/10: no LIVRO
             total.append({"fonte": fonte["id"], "titulo": a["titulo"][:80],
                           "prazo": a["prazo_texto"], "valor": a["valor_texto"]})
     resumo = {"executado_em": now_iso(), "fontes": len(cfg.get("fontes") or []),

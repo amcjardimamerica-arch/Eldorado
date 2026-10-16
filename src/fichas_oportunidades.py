@@ -16,7 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SAIDA = ROOT / "docs/dados/fichas_oportunidades.json"
-REP = ROOT / "dados/oportunidades/repositorio_unico.json"
+REP = ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json"
 COLETA = ROOT / "dados/oportunidades/oportunidades.jsonl"
 AGREG = ROOT / "estado/agregadores/itens.json"
 CATALOGO = ROOT / "biblioteca_alexandria/fontes/motores.json"

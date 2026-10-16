@@ -17,7 +17,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DECISOES = ROOT / "estado/decisoes_editais.json"
-REP = ROOT / "dados/oportunidades/repositorio_unico.json"
+REP = ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json"
 CATALOGO = ROOT / "biblioteca_alexandria/fontes/motores.json"
 FILA = ROOT / "docs/dados/fila_revisao_exclusao.json"
 POR = "titular (painel)"

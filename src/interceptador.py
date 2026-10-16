@@ -27,7 +27,7 @@ from .investigador import DOZE, investigar_um, registro
 from .nucleo import load_json, now_iso, write_json
 
 ROOT = Path(__file__).resolve().parents[1]
-FILA = ROOT / "estado/piloto/fila_resgate.json"
+FILA = ROOT / "biblioteca_alexandria/livros/especiais/espiao/fila_resgate.json"
 ESTADO = ROOT / "estado/interceptador/estado.json"          # pasta PRÓPRIA: o Espião nunca a toca
 PUB = ROOT / "docs/dados/interceptador.json"
 BORDO_INT = ROOT / "estado/interceptador/bordo.json"
@@ -383,7 +383,7 @@ def alvo_do_repositorio(feitos: dict, dias: int = 7) -> dict | None:
     banco: o site oficial certificado (ponto de partida já confirmado), os itens já comprovados (não refazer), o que
     falta, onde buscar (páginas do livro) e os editais anteriores do livro."""
     from datetime import date as _d, timedelta as _td
-    rep = load_json(ROOT / "dados/oportunidades/repositorio_unico.json") if (ROOT / "dados/oportunidades/repositorio_unico.json").exists() else {}
+    rep = load_json(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json") if (ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json").exists() else {}
     lim = (_d.today() - _td(days=dias)).isoformat()
     for x in rep.get("registros") or []:
         if x.get("estado") != "em_verificacao" or not str(x.get("proximo_passo") or "").startswith("Interceptador"):

@@ -83,7 +83,7 @@ class IALocal:
         import os as _os, time as _t
         if _os.environ.get("ELDORADO_VOO_REAL") != "1":
             return
-        arq = ROOT / "estado/piloto/respostas_modelo.jsonl"
+        arq = ROOT / "biblioteca_alexandria/livros/especiais/espiao/respostas_modelo.jsonl"
         try:
             linhas = arq.read_text(encoding="utf-8").splitlines()[-199:] if arq.exists() else []
             linhas.append(json.dumps({"em": _t.strftime("%Y-%m-%dT%H:%M:%S"), **kw}, ensure_ascii=False))

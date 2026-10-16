@@ -98,7 +98,7 @@ jobs:
           path: |
             docs/dados/interceptador.json
             estado/interceptador/
-            estado/piloto/fila_resgate.json
+            biblioteca_alexandria/livros/especiais/espiao/fila_resgate.json
             dados/editais/extraidos/
           retention-days: 30
       - name: Guardar e publicar (à prova de conflito)
@@ -107,7 +107,7 @@ jobs:
           git config user.name "piloto-interceptador" && git config user.email "interceptador@eldorado"
           rm -rf /tmp/int && mkdir -p /tmp/int/extraidos
           # SÓ OS ARQUIVOS DO INTERCEPTADOR (e o que este voo alterou): nunca o bordo do Espião
-          cp docs/dados/interceptador.json estado/piloto/fila_resgate.json /tmp/int/ 2>/dev/null || true
+          cp docs/dados/interceptador.json biblioteca_alexandria/livros/especiais/espiao/fila_resgate.json /tmp/int/ 2>/dev/null || true
           # 28/09: os DERIVADOS (fluxo, catálogo e ligados dos opressores, cadastro preditivo, saúde) não são mais copiados
           # da cópia do voo — ela é velha e religava opressores desligados e duplicados removidos. São REGENERADOS sobre
           # a main atual, depois do reset (validação, fluxo e saúde são idempotentes).
@@ -117,7 +117,7 @@ jobs:
           for i in 1 2 3 4 5; do
             git fetch -q origin main && git reset -q --hard origin/main
             cp /tmp/int/interceptador.json docs/dados/ 2>/dev/null || true
-            cp /tmp/int/fila_resgate.json estado/piloto/ 2>/dev/null || true
+            cp /tmp/int/fila_resgate.json biblioteca_alexandria/livros/especiais/espiao/ 2>/dev/null || true
             # a pasta é SÓ do Interceptador: substitui inteira (propaga exclusões — o aguardando.json nunca saía)
             # 02/10: MESCLA, não substitui — o Interceptador também voa no Brasil (computador/VM); por alvo vence o mais recente
             [ -d /tmp/int/interceptador ] && python -m src.pilotos_sede mesclar-interceptador /tmp/int/interceptador
@@ -135,7 +135,7 @@ jobs:
             # 04/10 (titular): o Piloto grava SÓ o que é dele e o seu livro — os DERIVADOS (mapa, ligados, preditivo, saúde,
             # achados por motor) ficam com o ciclo do sistema (fluxo 22), que os regenera de forma consistente
             # 30/09: só os caminhos que EXISTEM — "git add" de arquivo inexistente (dossies_empresas.json, ainda sem dossiê) saía com erro e a etapa inteira falhava: nenhum resultado do Interceptador era gravado
-            for P in config/parametros_pilotos_fixos.json estado/pilotos docs/dados/achados_pilotos.json config/parametros_pilotos.json estado/aprendizado docs/dados/dossies_empresas.json docs/dados/aprendizado_pilotos.json docs/dados/interceptador.json estado/interceptador estado/piloto/fila_resgate.json dados/editais/extraidos biblioteca_alexandria/livros/anexos docs/dados/esquadrilha.json biblioteca_alexandria/fontes/motores.json; do [ -e "$P" ] && git add -A -- "$P"; done; true
+            for P in config/parametros_pilotos_fixos.json estado/pilotos docs/dados/achados_pilotos.json config/parametros_pilotos.json estado/aprendizado docs/dados/dossies_empresas.json docs/dados/aprendizado_pilotos.json docs/dados/interceptador.json estado/interceptador biblioteca_alexandria/livros/especiais/espiao/fila_resgate.json dados/editais/extraidos biblioteca_alexandria/livros/anexos docs/dados/esquadrilha.json biblioteca_alexandria/fontes/motores.json; do [ -e "$P" ] && git add -A -- "$P"; done; true
             git commit -q -m "interceptador: voo $(date -u +%F\ %H:%M)" || { echo "nada a gravar"; ENVIADO=1; break; }
             if git push -q origin main; then echo "gravado ($i)"; ENVIADO=1; break; fi
             sleep $((i * 5))

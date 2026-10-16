@@ -227,7 +227,7 @@ def novas_de_patrocinio() -> list[tuple]:
                                                     "cnpj": a.get("cnpj")}))
     try:
         from .repositorio_unico import _privada, CHAMAMENTO
-        for r in (load_json(ROOT / "dados/oportunidades/repositorio_unico.json").get("registros") or []):
+        for r in (load_json(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json").get("registros") or []):
             if r.get("estado") in ("em_verificacao", "validada") and _privada(r) and r.get("orgao") and CHAMAMENTO.search(str(r.get("titulo") or "")):
                 nome = str(r["orgao"]).split(" — ")[0].strip()
                 if parece_nome_de_empresa(nome) and doadora_privada(nome) and ".gov.br" not in str(r.get("link_oficial") or r.get("url") or ""):

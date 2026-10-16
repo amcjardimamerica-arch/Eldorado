@@ -50,7 +50,7 @@ jobs:
             timeout 420 python scripts/treino_fontes.py --aplicar 2>&1 | tail -c 300 || echo "fontes dos achados de replicador: falhou"   # 14/10
             timeout 300 python -m src.fluxo_oportunidades --completo >/dev/null 2>&1 || echo "mapa: falhou"
             timeout 120 python -m src.achados_motores >/dev/null 2>&1 || true
-            for P in entrada_manual/indexadores/deltas estado/agregadores estado/indexadores docs/dados/indexadores.json docs/dados/fluxo_oportunidades.json docs/dados/achados_motores.json biblioteca_alexandria/fontes/motores.json estado/opressores.json estado/opressores_indice.json biblioteca_alexandria/base/preditivo dados/oportunidades/validacao_mapa docs/dados/validacao_motores.json; do [ -e "$P" ] && git add -A -- "$P"; done
+            for P in entrada_manual/indexadores/deltas estado/agregadores estado/indexadores docs/dados/indexadores.json docs/dados/fluxo_oportunidades.json docs/dados/achados_motores.json biblioteca_alexandria/fontes/motores.json estado/opressores.json estado/opressores_indice.json biblioteca_alexandria/base/preditivo biblioteca_alexandria/livros/_vistas/validacao_mapa docs/dados/validacao_motores.json; do [ -e "$P" ] && git add -A -- "$P"; done
             git commit -q -m "motores indexadores: $(date -u +%F\ %H:%M)" || break
             git push -q origin main && break; sleep 8
           done

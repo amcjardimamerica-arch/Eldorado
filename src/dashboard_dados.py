@@ -1571,7 +1571,7 @@ def coletar(hoje: date | None = None) -> dict:
                                               "ex_ocupantes": len(c.get("ex_ocupantes") or [])} if c else None)(
                             load_json(ROOT / "config/cargo_piloto.json") if (ROOT / "config/cargo_piloto.json").exists() else None),
                         "memoria_erros": (lambda m: {"total": m.get("total"), "distintos": len(m.get("erros") or {})} if m else None)(
-                            load_json(ROOT / "estado/piloto/memoria_erros.json") if (ROOT / "estado/piloto/memoria_erros.json").exists() else None),
+                            load_json(ROOT / "biblioteca_alexandria/livros/especiais/espiao/memoria_erros.json") if (ROOT / "biblioteca_alexandria/livros/especiais/espiao/memoria_erros.json").exists() else None),
                         "config": load_json(ROOT / "config/piloto.json") if (ROOT / "config/piloto.json").exists() else None,
                         "benchmark": None,   # sem benchmark desde 24/09
                         "ultimo": load_json(ROOT / "docs/dados/piloto.json") if (ROOT / "docs/dados/piloto.json").exists() else None},

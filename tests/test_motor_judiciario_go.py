@@ -8,6 +8,10 @@ import os
 import shutil
 import tempfile
 import unittest
+
+
+def _mk(p):
+    p.parent.mkdir(parents=True, exist_ok=True); return p
 from datetime import date
 from pathlib import Path
 from unittest import mock
@@ -186,8 +190,8 @@ class Motor(unittest.TestCase):
         for nome, alvo in (("ESTADO", "estado/judiciario_go.json"), ("ESTADO_LOCAL", "estado/judiciario_go_local.json"),
                            ("QUARENTENA", "estado/quarentena.jsonl"), ("DB", "dados/oportunidades/oportunidades.jsonl")):
             p = mock.patch.object(J, nome, self.tmp / alvo); p.start(); self.addCleanup(p.stop)
-        (self.tmp / "dados/oportunidades").mkdir(parents=True)
-        (self.tmp / "dados/oportunidades/oportunidades.jsonl").write_text("\n".join(json.dumps(x, ensure_ascii=False) for x in (
+        (self.tmp / "biblioteca_alexandria/livros/_vistas").mkdir(parents=True)
+        (_mk((self.tmp / "dados/oportunidades/oportunidades.jsonl"))).write_text("\n".join(json.dumps(x, ensure_ascii=False) for x in (
             {"id": "pncp1", "fonte_id": "pncp-api", "orgao": "GOIAS TRIBUNAL DE JUSTICA DO ESTADO DE GOIAS", "titulo": "Credenciamento de entidades sem fins lucrativos",
              "url": "https://pncp.gov.br/app/editais/02292266000180/2026/83", "fim": "2031-07-22"},
             {"id": "pncp2", "fonte_id": "pncp-api", "orgao": "PREFEITURA DE X", "titulo": "Chamamento", "url": "https://pncp.gov.br/app/editais/1/2026/1"},

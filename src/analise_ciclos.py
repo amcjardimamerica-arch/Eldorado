@@ -49,7 +49,7 @@ def _idade_h(ts) -> float | None:
 
 
 def _abertas() -> list[dict]:
-    regs = (_j(ROOT / "dados/oportunidades/repositorio_unico.json") or {}).get("registros") or []
+    regs = (_j(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json") or {}).get("registros") or []
     return [r for r in regs if not r.get("arquivada") and r.get("estado") not in ("arquivada", "encerrada", "descartada", "fechada")]
 
 
@@ -157,7 +157,7 @@ def decisoes(P: list, problema) -> list[dict]:
                 sem_prova.append(f"{k} · {item}"); break
     conf("certificar", "itens certificados pelo Cartório", "todo item certificado tem trecho literal e documento", sem_prova, len(C), "rever a extração (sem correção automática)")
 
-    v1 = ROOT / "dados/oportunidades/validacao_mapa/validacao_0001-excecao.json"
+    v1 = ROOT / "biblioteca_alexandria/livros/_vistas/validacao_mapa/validacao_0001-excecao.json"
     ve = _j(ROOT / "estado/comando/validacao_excecao.json")
     trava = [f"{len((_j(v1).get('itens') or []))} validada(s) por exceção com a trava fechada"] if (v1.exists() and ve and not ve.get("trava_aberta")) else []
     conf("validar", "validação por exceção", "só valida sozinho com acerto do Cartório ≥ 85% no gabarito e link oficial aprovado na curadoria",

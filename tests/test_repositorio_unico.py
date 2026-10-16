@@ -69,7 +69,7 @@ class TesteMelhoriasMotores(unittest.TestCase):
         self.assertEqual(fica[0]["link_oficial"], "https://x.go.gov.br/e.pdf"); self.assertEqual(fica[0]["checklist"]["Valor"]["s"], "ok")
 
     def test_criador_le_o_repositorio_e_ajuste_generico(self):
-        self.assertIn("dados/oportunidades/repositorio_unico.json", (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8"))
+        self.assertIn("biblioteca_alexandria/livros/_vistas/repositorio_unico.json", (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8"))
         self.assertTrue((ROOT / "scripts/ajustar_ouro_sem_prova.py").exists())
 
 
@@ -153,7 +153,7 @@ class TesteMunicipaisForaDeGoias(unittest.TestCase):
         self.assertIsNone(f({"titulo": "Edital estadual", "orgao": "Secretaria de Estado da Cultura de São Paulo", "nivel": "estadual", "uf": "SP"}))
 
     def test_lista_fixa_e_nao_regra_continua(self):
-        foto = json.loads((ROOT / "dados/oportunidades/arquivamento_municipais_2026-10-11.json").read_text(encoding="utf-8"))
+        foto = json.loads((ROOT / "biblioteca_alexandria/livros/_vistas/arquivamento_municipais_2026-10-11.json").read_text(encoding="utf-8"))
         self.assertGreater(foto["total"], 0); self.assertEqual(foto["total"], len(foto["oportunidades"]))
         src = (ROOT / "src/repositorio_unico.py").read_text(encoding="utf-8")
         self.assertIn("arquivamento_municipais_2026-10-11.json", src)

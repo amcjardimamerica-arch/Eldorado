@@ -6,7 +6,7 @@ documento). TRAVA: a passagem automática só é ligada quando a avaliação do 
 (biblioteca_alexandria/livros/anexos/cartorio_avaliacao/resultado.json) mostra acerto geral ≥ REGUA_PCT — antes disso a lista é produzida e as
 candidatas vão à frente da fila humana, mas nada é validado sozinho.
 Saídas: estado/comando/validacao_excecao.json (sempre) e, com a trava aberta,
-dados/oportunidades/validacao_mapa/validacao_0001-excecao.json (mesmo formato da validação, decisão "valida").
+biblioteca_alexandria/livros/_vistas/validacao_mapa/validacao_0001-excecao.json (mesmo formato da validação, decisão "valida").
 """
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CERT = ROOT / "estado/cartorio/certidoes.json"
 AVAL = ROOT / "biblioteca_alexandria/livros/anexos/cartorio_avaliacao/resultado.json"
 SAIDA = ROOT / "estado/comando/validacao_excecao.json"
-VALIDACAO = ROOT / "dados/oportunidades/validacao_mapa/validacao_0001-excecao.json"
+VALIDACAO = ROOT / "biblioteca_alexandria/livros/_vistas/validacao_mapa/validacao_0001-excecao.json"
 REGUA_PCT = 85.0
 
 

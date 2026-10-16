@@ -108,7 +108,7 @@ class TesteFonteViraMotor(unittest.TestCase):
 class TesteRenomeacao(unittest.TestCase):
     def test_sindico_virou_piloto_no_sistema(self):
         self.assertTrue((ROOT / "src/piloto.py").exists())
-        self.assertTrue((ROOT / "estado/piloto").is_dir())
+        self.assertTrue((ROOT / "biblioteca_alexandria/livros/especiais/espiao").is_dir())
         antigo = "sin" + "dico"                       # o nome antigo, montado para não reaparecer no código
         self.assertFalse((ROOT / f"estado/{antigo}").exists())
         self.assertFalse((ROOT / f"src/{antigo}.py").exists())

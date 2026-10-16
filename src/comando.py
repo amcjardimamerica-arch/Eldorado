@@ -83,7 +83,7 @@ def executar(etapa: str, cmd: list[str], timeout: int, env: dict | None = None) 
 def valor_por_motor() -> dict:
     """Valor esperado de cada motor: nota média que a rede neural deu aos registros dele no repositório (0–1).
     O repositório guarda a origem em texto ("motor pncp-api", "motor Querido Diário — …"): casa por código ou nome."""
-    regs = (_j(ROOT / "dados/oportunidades/repositorio_unico.json", {}) or {}).get("registros") or []
+    regs = (_j(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json", {}) or {}).get("registros") or []
     try:
         from .sensores import registro
         chaves = [(str(x["id"]).lower(), str(x.get("nome") or "").lower()) for x in registro()]

@@ -57,7 +57,7 @@ def run() -> dict:
     if not cfg.get("ativa", True):
         return {"executado_em": now_iso(), "status": "desativada"}
     escopo = load_json(ROOT / "config/escopo.json")
-    saida_path = ROOT / "dados/oportunidades/pistas_imprensa.jsonl"
+    saida_path = ROOT / "biblioteca_alexandria/livros/_vistas/pistas_imprensa.jsonl"
     conhecidas = {}
     if saida_path.exists():
         for linha in saida_path.read_text(encoding="utf-8").splitlines():

@@ -5,7 +5,7 @@ Não havendo o que resgatar, ele vai aos sites especializados do terceiro setor 
 para identificar as EMPRESAS que aparecem neles — apoiadores, patrocinadores, parceiros — e as empresas
 que declaram ESG no próprio site, catalogando os sites oficiais e as páginas voltadas a entidades.
 
-O que cada visita grava no catálogo (estado/piloto/catalogo_terceiro_setor.json):
+O que cada visita grava no catálogo (biblioteca_alexandria/livros/especiais/empresas/catalogo_terceiro_setor.json):
     site           o endereço oficial e quando foi lido
     paginas_para_entidades   links da página que se dirigem a OSC (editais, parcerias, apoio, inscrições)
     empresas       empresas que aparecem no texto como apoiadoras/patrocinadoras (via ler_rastros)
@@ -23,7 +23,7 @@ from urllib.parse import urljoin, urlsplit
 
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-CATALOGO = ROOT / "estado/piloto/catalogo_terceiro_setor.json"
+CATALOGO = ROOT / "biblioteca_alexandria/livros/especiais/empresas/catalogo_terceiro_setor.json"
 PUB = ROOT / "docs/dados/catalogo_terceiro_setor.json"
 SEMENTES = ROOT / "config/sites_terceiro_setor.json"
 REVISITA_DIAS = 7

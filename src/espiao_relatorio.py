@@ -1,7 +1,7 @@
 """RELATÓRIO DO PILOTO - ESPIÃO no MESMO FORMATO do Interceptador (titular, 30/09) — docs/dados/espiao.json.
 
 O quadro dos dois Pilotos é o mesmo: acumulado, fila, última missão e a lista de missões com o que cada uma
-encontrou. Fontes: estado/piloto/bordo.json (diário de bordo), avaliações de cada missão (inclusive o arquivo mensal
+encontrou. Fontes: biblioteca_alexandria/livros/especiais/espiao/bordo.json (diário de bordo), avaliações de cada missão (inclusive o arquivo mensal
 compactado), a esquadrilha (estrelas) e o relatório do Interceptador (indícios entregues a ele).
 Gerado ao fim de cada voo do Espião.
 """
@@ -35,7 +35,7 @@ def _dur(a, b):
 
 
 def montar() -> dict:
-    B = _j(ROOT / "estado/piloto/bordo.json", {}); P = _j(ROOT / "docs/dados/piloto.json", {}); E = _j(ROOT / "docs/dados/esquadrilha.json", {})
+    B = _j(ROOT / "biblioteca_alexandria/livros/especiais/espiao/bordo.json", {}); P = _j(ROOT / "docs/dados/piloto.json", {}); E = _j(ROOT / "docs/dados/esquadrilha.json", {})
     I = _j(ROOT / "docs/dados/interceptador.json", {})
     av = [a for a in (_j(f, None) for f in glob.glob(str(ROOT / "estado/piloto/aprendizados/avaliacoes/*.json"))) if a]
     from .aprendizados_piloto import avaliacoes_arquivadas   # 09/10: em fluxo e sem as ~200 cópias por avaliação

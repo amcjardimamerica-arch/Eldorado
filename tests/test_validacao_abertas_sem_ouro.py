@@ -2,7 +2,7 @@
 import json, unittest
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
-V = json.loads((ROOT / "dados/oportunidades/validacao_mapa/validacao_2026-10-03-sem-ouro.json").read_text(encoding="utf-8"))
+V = json.loads((ROOT / "biblioteca_alexandria/livros/_vistas/validacao_mapa/validacao_2026-10-03-sem-ouro.json").read_text(encoding="utf-8"))
 
 
 class TesteEntrada(unittest.TestCase):
@@ -12,7 +12,7 @@ class TesteEntrada(unittest.TestCase):
     def test_sem_ponto_nao_lido(self):         # "não lido nesta rodada" não pode entrar: só herdado das validações anteriores
         import glob
         ant = {}
-        for f in sorted(glob.glob(str(ROOT / "dados/oportunidades/validacao_mapa/validacao_*.json"))):
+        for f in sorted(glob.glob(str(ROOT / "biblioteca_alexandria/livros/_vistas/validacao_mapa/validacao_*.json"))):
             if f.endswith("sem-ouro.json"):
                 continue
             for x in json.loads(Path(f).read_text(encoding="utf-8")).get("itens") or []:

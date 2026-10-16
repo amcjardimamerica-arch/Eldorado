@@ -542,7 +542,7 @@ def fila_verificacao() -> dict:
     VETOR_RX = re.compile(r"pncp\.gov\.br|queridodiario|in\.gov\.br|diariooficial|portaldecompraspublicas|licitamaisbrasil", re.I)
     # 16/10/2026 (titular): a fila é calculada DOS LIVROS — o universo é o repositório (montado a partir dos livros),
     # não o painel do site lido de volta; o que falta vem do checklist de cada oportunidade, não das edições extraídas
-    _rep = (load_json(ROOT / "dados/oportunidades/repositorio_unico.json") or {}).get("registros") or []
+    _rep = (load_json(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json") or {}).get("registros") or []
     _OK = ("comprovado", "dispensado", "dispensa", "ok")
     universo, _CK = [], {}
     for r in _rep:

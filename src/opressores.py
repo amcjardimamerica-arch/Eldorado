@@ -70,7 +70,7 @@ def alvo_de_monitoramento(fontes: dict, hoje: date) -> dict:
     """fid → {tipo, motivo, foco}: os livros que DEVEM ser monitorados e o foco da pesquisa de cada um."""
     h = hoje.isoformat(); out = {}
     try:
-        rep = (load_json(ROOT / "dados/oportunidades/repositorio_unico.json") or {}).get("registros") or []
+        rep = (load_json(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json") or {}).get("registros") or []
     except Exception:  # noqa: BLE001
         rep = []
     for r in rep:

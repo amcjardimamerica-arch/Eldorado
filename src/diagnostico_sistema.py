@@ -101,7 +101,7 @@ def sistemas(P: list) -> dict:
 
 
 def oportunidades(P: list, hoje: str) -> dict:
-    R = (_j(ROOT / "dados/oportunidades/repositorio_unico.json", {}).get("registros") or [])
+    R = (_j(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json", {}).get("registros") or [])
     abertas = [r for r in R if r.get("estado") != "fechada" and not r.get("arquivada")]
     cat = {m.get("id"): m for m in (_j(ROOT / "biblioteca_alexandria/fontes/motores.json", {}).get("motores") or [])}
     fl = {x.get("id") for v in (_j(D / "fluxo_oportunidades.json", {}).get("itens_por_uf") or {}).values() for x in v}
@@ -206,7 +206,7 @@ def integracao(P: list, op: dict) -> dict:
                       {"repositorio": "refazer o repositório", "fluxo": "refazer a tela", "fichas": "refazer as fichas", "sala_controle": "refazer a sala de controle",
                        "saude": "refazer a saúde"}.get(k, "ver o fluxo que gera este dado"))
     dec = _j(ROOT / "estado/decisoes_editais.json", {}); dec = dec.get("decisoes") if isinstance(dec.get("decisoes"), dict) else {}
-    R = {r["id"]: r for r in (_j(ROOT / "dados/oportunidades/repositorio_unico.json", {}).get("registros") or [])}
+    R = {r["id"]: r for r in (_j(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json", {}).get("registros") or [])}
     nao_aplicadas = [k for k, v in dec.items() if v.get("estado") in ("descartado", "inscrito") and k in R and not R[k].get("arquivada") and R[k].get("estado") != "fechada"]
     if nao_aplicadas:
         _problema(P, "decisao_nao_aplicada", "alta", f"{len(nao_aplicadas)} decisões da titular ainda não aplicadas no repositório", "aplicar as decisões", len(nao_aplicadas), nao_aplicadas)

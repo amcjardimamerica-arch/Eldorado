@@ -23,8 +23,8 @@ from pathlib import Path
 
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-FILA = ROOT / "estado/piloto/fila_resgate.json"
-PARA_O_CLAUDE = ROOT / "estado/piloto/fila_do_claude.json"
+FILA = ROOT / "biblioteca_alexandria/livros/especiais/espiao/fila_resgate.json"
+PARA_O_CLAUDE = ROOT / "biblioteca_alexandria/livros/especiais/espiao/fila_do_claude.json"
 
 # O PNCP NÃO É TRABALHO DO PILOTO. São dados genéricos de compras públicas: quem os analisa é
 # o Claude, por fora, com acesso à máquina do titular. Em 23/09 a fila do Piloto tinha 57

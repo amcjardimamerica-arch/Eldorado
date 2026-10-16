@@ -47,7 +47,7 @@ def run(hoje: date | None = None) -> dict:
                       "edital": x["preparacao"].get("edital"), "janela": x["preparacao"].get("janela"), "passos": x["preparacao"].get("passos")})
     # 11/10 (titular): a oportunidade COMPLETA (12/12, com livro e prazo vigente) chega ao Farol sozinha, em primeiro lugar
     try:
-        _rep = json.loads((ROOT / "dados/oportunidades/repositorio_unico.json").read_text(encoding="utf-8")).get("registros") or []
+        _rep = json.loads((ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json").read_text(encoding="utf-8")).get("registros") or []
         _ja = {f["livro"] for f in farol}
         for r in _rep:
             if not r.get("pronta_para_farol") or not r.get("livro"):

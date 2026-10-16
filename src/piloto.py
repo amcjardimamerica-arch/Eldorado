@@ -35,7 +35,7 @@ from .nucleo import ROOT, load_json, now_iso, write_json
 from .ia_local import IALocal, t_classificar_objeto, t_extrair_objeto_prazo, t_propor_lexico, t_diagnosticar_rota, t_catalogar_achado, _trecho_existe, _norm
 
 CFG_P = ROOT / "config/piloto.json"
-PASTA = ROOT / "estado/piloto"
+PASTA = ROOT / "biblioteca_alexandria/livros/especiais/espiao"
 PASTA.mkdir(parents=True, exist_ok=True)
 
 # DUAS LISTAS QUE NÃO CONVERSAVAM. O benchmark lia esta lista, fixa no código, enquanto o
@@ -224,7 +224,7 @@ def _angulo_do_dia() -> dict:
     except Exception:
         pass
     secos = {x["id"] for x in (m.get("memoria_negativa") or {}).get("itens", [])}
-    b = load_json(ROOT / "estado/piloto/bordo.json") if (ROOT / "estado/piloto/bordo.json").exists() else {}
+    b = load_json(ROOT / "biblioteca_alexandria/livros/especiais/espiao/bordo.json") if (ROOT / "biblioteca_alexandria/livros/especiais/espiao/bordo.json").exists() else {}
     recentes = {x.get("alvo") for x in (b.get("missoes") or [])[:8]}
     fila = [a for a in m["angulos_de_ataque"] if a["id"] not in secos and a["id"] not in recentes] or \
            [a for a in m["angulos_de_ataque"] if a["id"] not in secos] or m["angulos_de_ataque"]
@@ -277,7 +277,7 @@ def missao_cacar(ia: IALocal, conhecidos: set[str]) -> tuple[str, list[dict], st
     """Caça oportunidade que o sistema NÃO conhece. Abate = título inédito com onde procurar."""
     from .cargo_piloto import licoes_para_o_prompt
     from .piloto import PROMPTS_MINERACAO
-    b = load_json(ROOT / "estado/piloto/bordo.json") if (ROOT / "estado/piloto/bordo.json").exists() else {}
+    b = load_json(ROOT / "biblioteca_alexandria/livros/especiais/espiao/bordo.json") if (ROOT / "biblioteca_alexandria/livros/especiais/espiao/bordo.json").exists() else {}
     feitos = {m.get("alvo") for m in (b.get("missoes") or [])[:10]}
     chave, prompt = next(((k, p) for k, p in PROMPTS_MINERACAO if k not in feitos), PROMPTS_MINERACAO[0])
     r = ia.perguntar((licoes_para_o_prompt() + "\n\n" if licoes_para_o_prompt() else "") + prompt,
@@ -347,7 +347,7 @@ def escolher_rumo(ia: IALocal, ent: dict) -> dict:
     """ANTES de voar, o Piloto lê a Biblioteca e decide ONDE procurar — não sorteia no vazio.
     Ele olha o que já tem, o que falta, o que rendeu e o que veio seco, e propõe o rumo do voo."""
     m = load_json(MOTOR29)
-    b = load_json(ROOT / "estado/piloto/bordo.json") if (ROOT / "estado/piloto/bordo.json").exists() else {}
+    b = load_json(ROOT / "biblioteca_alexandria/livros/especiais/espiao/bordo.json") if (ROOT / "biblioteca_alexandria/livros/especiais/espiao/bordo.json").exists() else {}
     rad = load_json(ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados/radar_piloto.json") if (ROOT / "biblioteca_alexandria/livros/especiais/empresas/dados/radar_piloto.json").exists() else {}
     ultimas = [{"angulo": x.get("alvo"), "abates": x.get("abates", 0)} for x in (b.get("missoes") or [])[:12]]
     secos = [x["id"] for x in (m.get("memoria_negativa") or {}).get("itens", [])]
@@ -614,7 +614,7 @@ def missao_aposta(brief: dict, ordem: int) -> tuple[str, list[dict], str]:
     if cand:
         C["candidatas"] = (C.get("candidatas") or []) + cand; C["em"] = date.today().isoformat(); __import__("src.livro_arquivo", fromlist=["x"]).guardar_lote([(arq, C)], descoberta=True)
         # INCENTIVO (titular, 26/09): aposta que rendeu candidata fica registrada como exemplo — "faça mais assim"
-        arq2 = ROOT / "estado/piloto/apostas_que_renderam.json"
+        arq2 = ROOT / "biblioteca_alexandria/livros/especiais/espiao/apostas_que_renderam.json"
         A = _lj(arq2) if arq2.exists() else {"regra": "apostas do briefing que produziram candidatas; o briefing seguinte as recebe como exemplos a seguir", "apostas": []}
         A["apostas"] = ([{"em": date.today().isoformat(), "aposta": ap.get("onde"), "pergunta": q, "candidatas": [x["titulo"][:80] for x in cand]}] + A["apostas"])[:30]
         _wj(arq2, A)
@@ -669,7 +669,7 @@ def missao_descobrir(ordem: int) -> tuple[str, list[dict], str]:
     _boas = [c["consulta"] for c in (_pe.get("consultas_boas") or []) if c.get("com_resultado")]
     _novas = [c.format(ano=_d.today().year) for c in CONSULTAS_DESCOBERTA if c.format(ano=_d.today().year).lower() not in _ruins]
     # 01/10: a mesma consulta no máximo N vezes por dia (uma chegou a 98 repetições)
-    _usos_arq = ROOT / "estado/piloto/consultas_do_dia.json"
+    _usos_arq = ROOT / "biblioteca_alexandria/livros/especiais/espiao/consultas_do_dia.json"
     try:
         _usos = json.loads(_usos_arq.read_text(encoding="utf-8"))
     except Exception:

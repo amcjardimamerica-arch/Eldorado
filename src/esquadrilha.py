@@ -8,7 +8,7 @@ ABATE = oportunidade NOVA na base, com objeto e onde procurar. É o que vira est
 lado do motor onde foi encontrada — como os aviões de guerra marcavam no fuselagem.
 
 Saídas:
-  estado/piloto/bordo.json ....... missão atual, últimas missões, abates por motor
+  biblioteca_alexandria/livros/especiais/espiao/bordo.json ....... missão atual, últimas missões, abates por motor
   docs/dados/esquadrilha.json ..... o mesmo, enxuto, para o painel
 """
 from __future__ import annotations
@@ -22,7 +22,7 @@ from pathlib import Path
 
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-BORDO = ROOT / "estado/piloto/bordo.json"
+BORDO = ROOT / "biblioteca_alexandria/livros/especiais/espiao/bordo.json"
 PUB = ROOT / "docs/dados/esquadrilha.json"
 MISSOES = ("cacar_oportunidade", "afiar_motor", "descobrir_local")
 

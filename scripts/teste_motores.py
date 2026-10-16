@@ -7,7 +7,7 @@ Para cada motor, um por vez, monta o DOSSIÊ do que o sistema registrou (sem red
      com fontes=<id>), o módulo de código e os testes;
   3. onde coleta — os endereços configurados e os que a última leitura de fato abriu (estado/esquadra.json › saude);
   4. resultado — última leitura, leituras, achados, falhas, luz do status (docs/dados/status_motores.json),
-     oportunidades únicas (docs/dados/achados_motores.json) e registros na base (dados/oportunidades);
+     oportunidades únicas (docs/dados/achados_motores.json) e registros na base (biblioteca_alexandria/livros/_vistas);
   5. histórico de 3 anos — registros da base por ano de publicação, desde 3 anos antes de hoje.
 
 O teste AO VIVO de cada fonte é feito à parte, no navegador do titular (o ambiente de execução não alcança os portais).
@@ -75,8 +75,9 @@ def _ano(r: dict) -> int | None:
 
 def _base() -> list[dict]:
     saida = []
-    with open(RAIZ / "dados/oportunidades/oportunidades.jsonl", encoding="utf-8") as fh:
-        for linha in fh:
+    import sys as _s; _s.path.insert(0, str(RAIZ)); from src.nucleo import achados_linhas   # 16/10: dos livros
+    if True:
+        for linha in achados_linhas():
             try:
                 saida.append(json.loads(linha))
             except ValueError:

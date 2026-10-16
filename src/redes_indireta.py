@@ -41,7 +41,7 @@ from xml.etree import ElementTree as ET
 from .nucleo import (ROOT, append_jsonl, canonical_url, has_prompt_injection, load_json,
                      novo_id, now_iso, sha256, validate_public_https, write_json)
 
-SAIDA = ROOT / "dados/oportunidades/pistas_sociais.jsonl"
+SAIDA = ROOT / "biblioteca_alexandria/livros/_vistas/pistas_sociais.jsonl"
 TERMOS_EDITAL = re.compile(
     r"(edital|chamamento|chamada p[úu]blica|inscri[çc][õo]es|sele[çc][ãa]o p[úu]blica|"
     r"resolu[çc][ãa]o|termo de fomento|termo de colabora[çc][ãa]o|fundo municipal|"

@@ -701,9 +701,8 @@ def reclassificar_base(hoje: date | None = None) -> dict:
     from .nucleo import DB_OPORTUNIDADES
     hoje = hoje or date.today()
     out = {"lidos": 0, "OPORTUNIDADE": 0, "ACOMPANHAR": 0, "RUIDO": 0, "exemplos": []}
-    if not DB_OPORTUNIDADES.exists():
-        return out
-    for linha in DB_OPORTUNIDADES.open(encoding="utf-8"):
+    from .nucleo import achados_linhas               # 16/10: os achados estão nos LIVROS
+    for linha in achados_linhas():
         try:
             r = json.loads(linha)
         except ValueError:

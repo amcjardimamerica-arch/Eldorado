@@ -88,14 +88,14 @@ def consolidar(gravar: bool = True) -> dict:
     for lv in L:
         for k in _chaves_do_livro(lv):
             idx.setdefault(k, lv.get("id"))
-    regs = (_j(ROOT / "dados/oportunidades/repositorio_unico.json", {}) or {}).get("registros") or []
+    regs = (_j(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json", {}) or {}).get("registros") or []
     certs = {str(k).split(":", 1)[-1]: c for k, c in ((__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/cartorio/certidoes.json", {}) or {}).get("certidoes") or {}).items()}
     cur = {x.get("id"): x for x in (_j(ROOT / "estado/curadoria_links.json", {}) or {}).get("itens") or []}
     dos = (_j(ROOT / "estado/pncp/dossies.json", {}) or {}).get("dossies") or {}
     inter = (_j(ROOT / "estado/interceptador/estado.json", {}) or {}).get("feitos") or {}
     piloto = (_j(ROOT / "estado/piloto/aprendizados/tratados.json", {}) or {}).get("itens") or {}
     val = {}
-    for f in sorted((ROOT / "dados/oportunidades/validacao_mapa").glob("validacao_*.json")):
+    for f in sorted((ROOT / "biblioteca_alexandria/livros/_vistas/validacao_mapa").glob("validacao_*.json")):
         for it in (_j(f, {}) or {}).get("itens") or []:
             if isinstance(it, dict) and it.get("id"):
                 val[it["id"]] = it

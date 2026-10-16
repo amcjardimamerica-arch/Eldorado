@@ -57,7 +57,7 @@ def paginas_editais_orfas() -> list[str]:
     (ex.: edições de diário eliminadas pela regra M14). As atuais ficam."""
     vivos = set()
     try:
-        for x in (json.loads((ROOT / "dados/oportunidades/repositorio_unico.json").read_text(encoding="utf-8")).get("registros") or []):
+        for x in (json.loads((ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json").read_text(encoding="utf-8")).get("registros") or []):
             vivos |= {x["id"], *(x.get("ids_origem") or [])}
         ab = json.loads((ROOT / "docs/dados/abertas.json").read_text(encoding="utf-8"))
         i = ab["campos"].index("id"); dic = (ab.get("dic") or {}).get("id")

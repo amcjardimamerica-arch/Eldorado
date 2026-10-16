@@ -47,7 +47,7 @@ def ler(rede, url: str) -> dict:
 
 def main(n: int = 20) -> dict:
     from src.cartorio import Rede
-    regs = (_j(ROOT / "dados/oportunidades/repositorio_unico.json", {}) or {}).get("registros") or []
+    regs = (_j(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json", {}) or {}).get("registros") or []
     ab = [r for r in regs if not r.get("arquivada") and r.get("estado") not in ("arquivada", "encerrada", "descartada", "fechada") and r.get("url")]
     from datetime import datetime, timezone
     semente = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M")      # 15/10: amostra nova a cada análise

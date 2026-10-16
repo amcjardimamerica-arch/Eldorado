@@ -1,7 +1,7 @@
 """CURADORIA AUTOMÁTICA (titular, 28/09) — nenhuma oportunidade fica no mapa sem decisão.
 
 O que chega depois da validação individual (motores, Espião, Interceptador) é decidido aqui, pelas regras abaixo,
-e gravado no MESMO formato da validação, em dados/oportunidades/validacao_mapa/validacao_0000-automatica.json.
+e gravado no MESMO formato da validação, em biblioteca_alexandria/livros/_vistas/validacao_mapa/validacao_0000-automatica.json.
 O nome faz este arquivo ser lido PRIMEIRO: qualquer decisão humana ou do Claude, para o mesmo item, prevalece.
 Depois, src.validacao_mapa leva cada decisão ao arquivo da Biblioteca, ao preditivo e aos opressores.
 
@@ -21,7 +21,7 @@ from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-ARQ = ROOT / "dados/oportunidades/validacao_mapa/validacao_0000-automatica.json"
+ARQ = ROOT / "biblioteca_alexandria/livros/_vistas/validacao_mapa/validacao_0000-automatica.json"
 FLUXO = ROOT / "docs/dados/fluxo_oportunidades.json"
 
 CHAMADA = re.compile(r"edital|chamad|chamamento|pr[eê]mio|sele[cç][aã]o|inscri[cç]|convocat|apoio a projetos|financiamento|credenciamento", re.I)

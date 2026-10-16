@@ -285,7 +285,7 @@ def fonte_b(hoje: date, cfg: dict, diag: dict, vistos: set) -> list[dict]:
 
 def _livros_a_localizar(cfg: dict) -> list[dict]:
     """Livros cuja oportunidade ainda não tem chave no PNCP (consulta gravada no próprio livro, src/regras_restricao) e os
-    registros do parecer das 238 que aguardam o ato oficial (dados/oportunidades/livros_parecer_238.json › aguardar)."""
+    registros do parecer das 238 que aguardam o ato oficial (biblioteca_alexandria/livros/_vistas/livros_parecer_238.json › aguardar)."""
     out = []
     try:
         ms = load_json(ROOT / "biblioteca_alexandria/fontes/motores.json").get("motores") or []
@@ -298,7 +298,7 @@ def _livros_a_localizar(cfg: dict) -> list[dict]:
             out.append({"id": x["id"], "consulta": pn["consulta"], "uf": pn.get("ufs"), "municipio": lx["municipio"],
                         "numeros": lx.get("numeros") or [], "termos": lx.get("termos") or []})
     try:
-        sem = load_json(ROOT / "dados/oportunidades/livros_parecer_238.json").get("aguardar") or []
+        sem = load_json(ROOT / "biblioteca_alexandria/livros/_vistas/livros_parecer_238.json").get("aguardar") or []
     except Exception:  # noqa: BLE001
         sem = []
     for e in sem:

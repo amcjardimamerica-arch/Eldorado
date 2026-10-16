@@ -57,7 +57,7 @@ jobs:
       - name: Gravar só a leitura (à prova de conflito)
         run: |
           git config user.name "sala-tempo-real" && git config user.email "sala@eldorado"
-          ARQS="docs/dados/sala_controle.json estado/sala_controle_historico.json docs/dados/status_motores.json docs/dados/repositorio_resumo.json dados/oportunidades/repositorio_unico.json docs/dados/fichas_oportunidades.json estado/diagnostico_sistema.json estado/diagnostico_sistema.md"
+          ARQS="docs/dados/sala_controle.json estado/sala_controle_historico.json docs/dados/status_motores.json docs/dados/repositorio_resumo.json biblioteca_alexandria/livros/_vistas/repositorio_unico.json docs/dados/fichas_oportunidades.json estado/diagnostico_sistema.json estado/diagnostico_sistema.md"
           for i in 1 2 3 4 5; do
             mkdir -p /tmp/leitura && for f in $ARQS; do [ -f "$f" ] && mkdir -p "/tmp/leitura/$(dirname $f)" && cp "$f" "/tmp/leitura/$f"; done
             git fetch -q origin main && git reset -q --hard origin/main

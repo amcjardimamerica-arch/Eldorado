@@ -29,7 +29,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-REPO = ROOT / "dados/oportunidades/repositorio_unico.json"
+REPO = ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json"
 CERT = ROOT / "estado/cartorio/certidoes.json"
 ESTADO = ROOT / "estado/curadoria_links.json"
 PAINEL = ROOT / "docs/dados/curadoria_links.json"

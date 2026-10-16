@@ -13,7 +13,7 @@
      estado/pilotos/historico/contagem_semanal/ e zera missões, abates e voos por dia;
    - um voo antigo que pousar depois e gravar números velhos por cima leva junto o carimbo velho — e o voo seguinte
      zera de novo. O carimbo viaja com os números, então eles não conseguem mais "ressuscitar".
-   Arquivos: Espião → estado/piloto/bordo.json e estado/piloto/voos.json; Interceptador → estado/interceptador/bordo.json
+   Arquivos: Espião → biblioteca_alexandria/livros/especiais/espiao/bordo.json e biblioteca_alexandria/livros/especiais/espiao/voos.json; Interceptador → estado/interceptador/bordo.json
    e docs/dados/interceptador.json. Os painéis e o aprendizado (a cada 100 buscas) contam só a partir de
    `inicio_contagem()`.
 """
@@ -32,7 +32,7 @@ BRASILIA = timezone(timedelta(hours=-3), "Brasília")   # sem horário de verão
 PEDIDO = ROOT / "estado/pilotos/zerar_contagem.json"
 HIST_SEMANAL = ROOT / "estado/pilotos/historico/contagem_semanal"
 ARQUIVOS = {
-    "espiao": ("estado/piloto/bordo.json", "estado/piloto/voos.json"),
+    "espiao": ("biblioteca_alexandria/livros/especiais/espiao/bordo.json", "biblioteca_alexandria/livros/especiais/espiao/voos.json"),
     "interceptador": ("estado/interceptador/bordo.json", "docs/dados/interceptador.json"),
 }
 
@@ -164,7 +164,7 @@ def _resumo(antigos: dict) -> dict:
 def _zerado(arquivo: str, d: dict, carimbo: dict) -> dict:
     if arquivo.endswith("voos.json"):
         return {"_contagem": carimbo}
-    if arquivo == "estado/piloto/bordo.json":
+    if arquivo == "biblioteca_alexandria/livros/especiais/espiao/bordo.json":
         fora = {"missao_atual", "missoes", "abates", "total_abates", "iniciado_em", "contagem_reiniciada_em", "contagem"}
         return {**{k: v for k, v in d.items() if k not in fora}, "missao_atual": None, "missoes": [], "abates": {}, "total_abates": 0,
                 "iniciado_em": carimbo["desde"], "contagem": carimbo}
@@ -202,7 +202,7 @@ def run() -> dict:
                 tirou += 1
         if tirou:
             f.write_bytes(lzma.compress(b"".join(fica))) if fica else f.unlink(); n_arq += 1
-    B = ROOT / "estado/piloto/bordo.json"; b = _j(B, {})
+    B = ROOT / "biblioteca_alexandria/livros/especiais/espiao/bordo.json"; b = _j(B, {})
     if b.get("missoes"):
         antes = len(b["missoes"]); b["missoes"] = [m for m in b["missoes"] if str(m.get("inicio") or m.get("fim") or "") >= RESET]
         if len(b["missoes"]) != antes:

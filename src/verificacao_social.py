@@ -12,7 +12,7 @@ def run() -> dict:
     policy = load_json(ROOT / "config/fontes.json")["politica"]
     scope = load_json(ROOT / "config/escopo.json")
     report = {"executado_em": now_iso(), "fontes_total": 0, "fontes_ok": 0, "fontes_falha": 0, "pistas": 0, "falhas": []}
-    output = ROOT / "dados/oportunidades/pistas_sociais.jsonl"
+    output = ROOT / "biblioteca_alexandria/livros/_vistas/pistas_sociais.jsonl"
     known = {}
     if output.exists():
         for line in output.read_text(encoding="utf-8").splitlines():

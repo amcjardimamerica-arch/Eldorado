@@ -28,7 +28,7 @@ def confirmar(pista_id: str, url_primaria: str, por: str) -> dict:
     catalogo = hosts_catalogados()
     if not any(host == h or host.endswith("." + h) for h in catalogo):
         raise SystemExit(f"host {host} não está entre os domínios catalogados; adicione a fonte antes")
-    pistas_path = ROOT / "dados/oportunidades/pistas_imprensa.jsonl"
+    pistas_path = ROOT / "biblioteca_alexandria/livros/_vistas/pistas_imprensa.jsonl"
     pista = None
     if pistas_path.exists():
         for linha in pistas_path.read_text(encoding="utf-8").splitlines():
