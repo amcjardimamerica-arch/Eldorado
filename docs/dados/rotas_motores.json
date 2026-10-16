@@ -1,5 +1,5 @@
 {
- "em": "2026-10-16T04:26:43+00:00",
+ "em": "2026-10-16T06:01:13+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
@@ -7,7 +7,7 @@
   "alterar_rota": 51,
   "rota_nova": 50,
   "via_ponte": 3,
-  "exemplos_da_rede": 10306
+  "exemplos_da_rede": 10408
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
@@ -17,7 +17,7 @@
    ],
    [
     "origem:biblioteca",
-    2.4819
+    2.4802
    ],
    [
     "tok:mpf",
@@ -32,16 +32,16 @@
     2.2113
    ],
    [
+    "origem:rota original",
+    1.8752
+   ],
+   [
     "tok:leipaulogustavo",
     1.7516
    ],
    [
     "tok:portarias",
     1.543
-   ],
-   [
-    "origem:rota original",
-    1.4366
    ],
    [
     "tok:abertas",
@@ -56,18 +56,18 @@
     1.3977
    ],
    [
-    "tld:org",
-    1.3639
+    "gov:True",
+    1.3955
    ]
   ],
   "piores_sinais": [
    [
-    "tok:ccs",
-    -1.7384
+    "raiz:True",
+    -1.6458
    ],
    [
-    "raiz:True",
-    -1.8578
+    "tok:ccs",
+    -1.7384
    ],
    [
     "tok:content",
@@ -79,11 +79,11 @@
    ],
    [
     "tipo:internacional",
-    -2.2732
+    -2.275
    ],
    [
     "gov:False",
-    -2.4806
+    -2.5159
    ],
    [
     "origem:câmara",
@@ -91,7 +91,7 @@
    ],
    [
     "origem:padrão",
-    -3.0005
+    -2.9245
    ]
   ]
  },
@@ -426,7 +426,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T10:57:50+00:00",
+    "em": "2026-10-16T06:01:13+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -552,7 +552,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T09:26:33+00:00",
+    "em": "2026-10-16T05:59:45+00:00",
     "testes": 24,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1006,7 +1006,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T09:26:22+00:00",
+    "em": "2026-10-16T05:59:34+00:00",
     "testes": 22,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1199,7 +1199,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T10:57:29+00:00",
+    "em": "2026-10-16T06:00:56+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1337,7 +1337,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T10:57:37+00:00",
+    "em": "2026-10-16T06:01:03+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1576,22 +1576,22 @@
    ],
    "rota_aprendida": {
     "urls": [
-     "https://www.bentogoncalves.rs.gov.br/feed"
+     "https://www.bentogoncalves.rs.gov.br/transparencia/editais"
     ],
     "via": "ponte",
-    "origem": "rota original",
-    "pontos": 13,
-    "aprendido_em": "2026-10-15T10:57:19+00:00"
+    "origem": "padrão",
+    "pontos": 5,
+    "aprendido_em": "2026-10-16T06:00:09+00:00"
    },
    "afinado": {
-    "em": "2026-10-15T10:57:19+00:00",
-    "testes": 18,
+    "em": "2026-10-16T06:00:09+00:00",
+    "testes": 20,
     "melhor": {
-     "url": "https://www.bentogoncalves.rs.gov.br/feed",
+     "url": "https://www.bentogoncalves.rs.gov.br/transparencia/editais",
      "via": "ponte",
-     "origem": "rota original",
-     "pontos": 13,
-     "formato": "sitemap/feed"
+     "origem": "padrão",
+     "pontos": 5,
+     "formato": "html"
     },
     "resultado": "rota nova em teste"
    }

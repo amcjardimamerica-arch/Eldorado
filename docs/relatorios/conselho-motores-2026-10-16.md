@@ -45,9 +45,9 @@
 
 ## Cobertura (Dr. Otávio)
 
-70.3% das oportunidades vieram de fora dos motores: {'Piloto': 141, 'agregador/outra': 249, 'motor': 165}.
+70.0% das oportunidades vieram de fora dos motores: {'Piloto': 139, 'agregador/outra': 246, 'motor': 165}.
 
-- GO: 16 oportunidades, nenhuma de motor ({'agregador/outra': 16})
+- GO: 15 oportunidades, nenhuma de motor ({'agregador/outra': 15})
 
 ## Fontes irmãs (Profa. Clara)
 
@@ -63,8 +63,10 @@
 - brazilfoundation.org (peso 13)
 - bnccompras.com (peso 11)
 - transforma.fbb.org.br (peso 10)
+- ifrs.edu.br (peso 10)
 - institutoinad.org.br (peso 10)
 - bancoamazonia.com.br (peso 10)
+- fondationfrancoisschneider.org (peso 9)
 - feirapreta.com.br (peso 9)
 - contrafluxofestival.com.br (peso 9)
 - fbb.org.br (peso 9)
@@ -72,12 +74,10 @@
 - agencia.petrobras.com.br (peso 8)
 - ibermusicas.org (peso 8)
 - difusionconcausa.com (peso 8)
-- ifrs.edu.br (peso 8)
 - jornadasocial.com.br (peso 8)
 - ibram-eventos.com.br (peso 8)
 - brasil.aperam.com (peso 8)
 - jatai.go.leg.br (peso 7)
-- fondationfrancoisschneider.org (peso 7)
 
 ## Plataformas e inovações (Dr. Fábio)
 
@@ -85,7 +85,7 @@
 - Mapas Culturais: 11 órgãos
 - Diário municipal em lote (AGM/DOM): 18 órgãos
 - Portal de transparência de fornecedor: 21 órgãos
-- Sistemas de editais (Prosas/Editais): 48 órgãos
+- Sistemas de editais (Prosas/Editais): 49 órgãos
 - Querido Diário: 0 órgãos
 - PNCP: 1 órgãos
 - Leis e atos (Leis Municipais): 1 órgãos
@@ -285,7 +285,7 @@
 - **RUÍDO** (funil): 48 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'fluxo → confirmada'. → faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório
 
-### Outras Oportunidades 4/5 (`outras-oportunidades-4`) — ruído, 57 achados em 30 dias
+### Outras Oportunidades 4/5 (`outras-oportunidades-4`) — ouro, 57 achados em 30 dias
 - **RUÍDO** (funil): 28 achados e nenhuma oportunidade confirmada. → exigir no motor o sinal mínimo (prazo ou chamamento + OSC) antes de registrar; o resto vira indício
 - **VAZAMENTO** (funil): perde 100% na etapa 'fluxo → confirmada'. → faltam prazo ou site oficial: entregar o documento (url_documento) ao Cartório
 

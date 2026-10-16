@@ -40,7 +40,7 @@
 
 ```json
 {
- "motores_de_ruido_1a": 14,
+ "motores_de_ruido_1a": 13,
  "ruido_agora": [
   {
    "motor": "empresas-incentivadas",
@@ -113,13 +113,6 @@
    "confirmadas": 0
   },
   {
-   "motor": "outras-oportunidades-4",
-   "achados_total_1a": 28,
-   "achados_total_agora": 28,
-   "no_fluxo": 23,
-   "confirmadas": 0
-  },
-  {
    "motor": "outras-oportunidades-6",
    "achados_total_1a": 36,
    "achados_total_agora": 36,
@@ -155,7 +148,7 @@
  "pontos_com_redundancia": 17,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 10306
+ "exemplos_da_rede_de_rotas": 10408
 }
 ```
 
@@ -166,11 +159,11 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 70.3,
- "fora_dos_motores_pct_agora": 70.3,
+ "fora_dos_motores_pct_1a": 70.0,
+ "fora_dos_motores_pct_agora": 70.0,
  "origem": {
-  "Piloto": 141,
-  "agregador/outra": 249,
+  "Piloto": 139,
+  "agregador/outra": 246,
   "motor": 165
  },
  "dominios_so_de_agregador": [
@@ -434,7 +427,7 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 48,
+   "orgaos": 49,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",
