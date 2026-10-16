@@ -428,7 +428,7 @@ def mapear_novas(novas: list[dict], fontes: list[dict]) -> list[dict]:
                               "uf": m.get("uf") or "BR", "area": inferir_area(f'{m.get("titulo","")} {m.get("evidencia","")}'), "sites": [m.get("url")] if m.get("url") else [],
                               "confianca_site": "primaria", "lexico": [], "origem": "anunciada sem referência histórica", "primeira_mencao": (m.get("coletado_em") or "")[:10],
                               "ultima_mencao": (m.get("coletado_em") or "")[:10], "mencoes": 1, "fonte_da_mencao": m.get("fonte_nome")})
-        pasta = ROOT / "biblioteca_alexandria/oportunidades_mapeadas" / fid
+        pasta = ROOT / "biblioteca_alexandria/livros/anexos/mapeadas" / fid
         pasta.mkdir(parents=True, exist_ok=True)
         write_json(pasta / "ficha.json", {"id": fid, "titulo": m.get("titulo"), "url": m.get("url"), "fonte": m.get("fonte_nome"), "uf": m.get("uf"),
                                           "primeira_mencao": (m.get("coletado_em") or "")[:10], "evidencia": (m.get("evidencia") or "")[:600],
