@@ -53,22 +53,22 @@
 
 237 domínios oficiais já renderam e não têm motor. Os primeiros:
 
-- baoba.org.br (peso 29)
+- baoba.org.br (peso 28)
+- chamadas.funbio.org.br (peso 18)
 - licitario.com.br (peso 17)
 - institutolojasrenner.org.br (peso 17)
-- chamadas.funbio.org.br (peso 16)
 - fundoecos.org.br (peso 14)
 - mariaemilia.org.br (peso 13)
 - zurich.com.br (peso 13)
 - brazilfoundation.org (peso 13)
 - bnccompras.com (peso 11)
+- transforma.fbb.org.br (peso 10)
 - institutoinad.org.br (peso 10)
 - bancoamazonia.com.br (peso 10)
 - feirapreta.com.br (peso 9)
 - contrafluxofestival.com.br (peso 9)
 - fbb.org.br (peso 9)
 - licitacoes.agencia.baciaspcj.org.br (peso 8)
-- transforma.fbb.org.br (peso 8)
 - agencia.petrobras.com.br (peso 8)
 - ibermusicas.org (peso 8)
 - difusionconcausa.com (peso 8)
@@ -76,8 +76,8 @@
 - jornadasocial.com.br (peso 8)
 - ibram-eventos.com.br (peso 8)
 - brasil.aperam.com (peso 8)
-- equatorial.gestaocpp.com.br (peso 7)
 - jatai.go.leg.br (peso 7)
+- fondationfrancoisschneider.org (peso 7)
 
 ## Plataformas e inovações (Dr. Fábio)
 
