@@ -28,9 +28,9 @@ class TesteImportador(unittest.TestCase):
     def test_pagina_exigida_so_de_pdf(self):
         import importar_revisao_abertas as I
         base = {"valor": "x", "trecho": "y"}
-        self.assertTrue(I._item_ok({**base, "documento": "https://orgao.org.br/edital", "pagina": None}), "HTML não tem página")
-        self.assertFalse(I._item_ok({**base, "documento": "https://orgao.org.br/edital.pdf", "pagina": None}), "PDF exige página")
-        self.assertTrue(I._item_ok({**base, "documento": "https://orgao.org.br/edital.pdf", "pagina": 3}))
+        self.assertTrue(I._item_ok({**base, "documento": "https://orgao.org.br/edital", "pagina": None}, "https://orgao.org.br"), "HTML não tem página")
+        self.assertFalse(I._item_ok({**base, "documento": "https://orgao.org.br/edital.pdf", "pagina": None}, "https://orgao.org.br"), "PDF exige página")
+        self.assertTrue(I._item_ok({**base, "documento": "https://orgao.org.br/edital.pdf", "pagina": 3}, "https://orgao.org.br"))
         self.assertTrue(I.CERTIDOES.name == "certidoes_manuais.json", "certidões da revisão em arquivo próprio")
 
     def test_le_formato_da_parte_2_e_derivadas_da_parte_3(self):

@@ -61,7 +61,7 @@ class TesteRelatorioDePrazos(unittest.TestCase):
     """O relatorio gravado nao pode voltar a dizer zero."""
 
     def setUp(self):
-        self.relatorio = json.loads((ROOT / "estado/prazos.json").read_text(encoding="utf-8"))
+        self.relatorio = __import__("src.nucleo", fromlist=["x"]).load_json(ROOT / "estado/prazos.json")
 
     def test_o_vigia_nao_esta_cego(self):
         self.assertGreater(self.relatorio["com_prazo"], 0,
