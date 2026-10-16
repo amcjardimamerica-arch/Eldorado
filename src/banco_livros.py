@@ -201,7 +201,7 @@ def consolidar(gravar: bool = True) -> dict:
                     lid = ids.get(str(x.get("id")))
                     if lid in por_id:
                         por_id[lid].setdefault("coleta", {})[str(x["id"])] = x
-        for x in (_j(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens") or []:
+        for x in (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens") or []:
             lid = ids.get(str(x.get("id")))
             if lid in por_id:
                 por_id[lid].setdefault("agregador", {})[str(x["id"])] = x

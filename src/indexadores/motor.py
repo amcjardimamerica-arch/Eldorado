@@ -36,6 +36,7 @@ FILA = PASTA / "fila_assistida.json"
 DIARIO = PASTA / "diario.json"
 ANGULOS = PASTA / "angulos_piloto.json"
 FLUXO = ROOT / "estado/agregadores/itens.json"
+_FLUXO_ORIGINAL = FLUXO                               # 16/10: só o caminho ORIGINAL vai aos livros (teste aponta outro)
 PAINEL = ROOT / "docs/dados/indexadores.json"
 DELTAS_BRASIL = ROOT / "entrada_manual/indexadores/deltas"     # rodadas feitas no computador do titular (um arquivo por rodada)
 ESQUADRA = ROOT / "estado/esquadra.json"
@@ -581,10 +582,10 @@ def aplicar(delta: dict, gravar: bool = True) -> dict:
         _gravar(DIARIO, diario)
         _gravar(FILA, montar_fila(cat, est, rotas, hoje, acervo))
         _gravar(ANGULOS, {"em": est["em"], "angulos": angulos_piloto(cat, rotas)})
-        _gravar(FLUXO, {"em": est["em"], "regra": "INDÍCIOS dos motores indexadores (config/indexadores.json): link da fonte oficial quando o "
+        (__import__("src.livro_arquivo", fromlist=["x"]).guardar_lote if FLUXO is _FLUXO_ORIGINAL else (lambda L, descoberta=False: [_gravar(p, d) for p, d in L]))([(FLUXO, {"em": est["em"], "regra": "INDÍCIOS dos motores indexadores (config/indexadores.json): link da fonte oficial quando o "
                                                   "indexador o traz; o prazo é pista até a fonte oficial confirmar.",
                         "ordem_do_fluxo": list(lim.get("ordem_do_fluxo") or ORDEM_PADRAO), "limite": int(lim.get("indicios_no_fluxo_max", 1000)),
-                        "por_grupo": por_grupo(entrada, por_id), "por_fonte": _por_fonte(entrada), "fora_do_fluxo": fora, "itens": entrada})
+                        "por_grupo": por_grupo(entrada, por_id), "por_fonte": _por_fonte(entrada), "fora_do_fluxo": fora, "itens": entrada})], descoberta=True)
         _gravar(PAINEL, painel(cat, est, acervo, rotas, entrada, hoje), indent=None)
     return {"novos": n, "atualizados": a, "podados": podados, "no_fluxo": len(entrada), "por_grupo": por_grupo(entrada, por_id),
             "fora_do_fluxo": fora, "acervo": len(acervo.get("itens") or {})}
@@ -619,7 +620,7 @@ def aplicar_deltas_do_brasil(remover: bool = False, gravar: bool = True) -> dict
 def _migrar_antigo(acervo: dict, hoje: date) -> None:
     """Primeira rodada: os itens do antigo motor de agregadores (CapitaAI, Farol, IDIS) entram no acervo com o mesmo
     id e a data em que foram vistos pela primeira vez — validações já registradas continuam valendo."""
-    antigo = _j(FLUXO, {}) or {}
+    antigo = (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(FLUXO, {}) if FLUXO is _FLUXO_ORIGINAL else _j(FLUXO, {})) or {}
     nomes = {"capitaai": "site-capitaai", "farolcultural": "site-farol-cultural", "idis": "site-idis"}   # 02/10: motores por site
     velhos = []
     for x in antigo.get("itens") or []:

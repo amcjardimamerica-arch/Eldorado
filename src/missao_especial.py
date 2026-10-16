@@ -186,7 +186,7 @@ def montar_fila(limite: int = 60) -> dict:
     # setor entram na fila de resgate — é aqui que ele confirma prazo e página oficial. A data de descoberta
     # vale como publicação recente: são anúncios lidos na semana, não arquivo.
     cc = ROOT / "estado/piloto/candidatas_do_catalogo.json"
-    for c in ((load_json(cc) or {}).get("candidatas") or []) if cc.exists() else []:
+    for c in ((__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(cc, {}) or {}).get("candidatas") or []):
         cid = "cat-" + __import__("hashlib").sha1(c["url"].encode()).hexdigest()[:12]
         if cid in feitos or tentados.get(cid, 0) >= 1:
             continue

@@ -309,13 +309,18 @@ def guardar(caminho, obj, controle_sem_livro: bool = False) -> dict:
 # ── TRAVA: pastas cujo conteúdo só pode existir DENTRO dos livros ───────────────────────────────────────────────────
 PROIBIDOS = ["estado/piloto/briefings",          # cresce a cada lote absorvido (16/10/2026)
              "dados/oportunidades/pareceres_livros", "dados/coleta_3_anos",   # lote 2
-             "estado/cartorio/certidoes.json", "estado/cartorio/certidoes_manuais.json"]   # lote 3
+             "estado/cartorio/certidoes.json", "estado/cartorio/certidoes_manuais.json",   # lote 3
+             "estado/agregadores/itens.json", "estado/piloto/candidatas_do_catalogo.json"]  # entradas do fluxo
 
 
 def absorver_proibidos() -> dict:
     """A cada passagem do comando: o que existir nas pastas proibidas é absorvido nos livros e apagado."""
-    fs = [p for g in PROIBIDOS for p in (ROOT / g).rglob("*") if p.is_file()]
+    DESCOBERTA = ("estado/agregadores/itens.json", "estado/piloto/candidatas_do_catalogo.json")
+    fs = [p for g in PROIBIDOS if g not in DESCOBERTA for p in ((ROOT / g).rglob("*") if (ROOT / g).is_dir() else [ROOT / g]) if p.is_file()]
+    fd = [ROOT / g for g in DESCOBERTA if (ROOT / g).is_file()]       # entradas de descoberta: livro pelo portão, com ou sem prazo
     r = absorver(fs) if fs else {"arquivos": 0}
+    if fd:
+        r = {"geral": r, "descoberta": absorver(fd, descoberta=True)}
     for g in PROIBIDOS:
         d = ROOT / g
         if d.is_dir() and not any(d.rglob("*")):

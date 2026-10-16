@@ -131,7 +131,7 @@ def montar() -> dict:
                 _sm = {x["id"]: x.get("motor") for x in json.loads((ROOT / "config/indexadores.json").read_text(encoding="utf-8")).get("sites") or []}
                 xs = [{"id": g["id"], "titulo": g.get("titulo"), "url": g.get("link_oficial") or g.get("pagina_agregador"), "fim": g.get("prazo"),
                        "uf": g.get("uf"), "descoberto_em": g.get("primeiro_visto")}
-                      for g in json.loads((ROOT / "estado/agregadores/itens.json").read_text(encoding="utf-8")).get("itens", [])
+                      for g in (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens", [])
                       if any(_sm.get(f) == mid for f in (g.get("fontes") or [g.get("fonte")]))]
             except Exception:
                 xs = []
@@ -143,7 +143,7 @@ def montar() -> dict:
             if _sit:
                 xs = list(xs) + [{"id": g["id"], "titulo": g.get("titulo"), "url": g.get("link_oficial") or g.get("pagina_agregador"),
                                   "fim": g.get("prazo"), "uf": g.get("uf"), "descoberto_em": g.get("primeiro_visto")}
-                                 for g in json.loads((ROOT / "estado/agregadores/itens.json").read_text(encoding="utf-8")).get("itens", [])
+                                 for g in (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens", [])
                                  if _sit & set(g.get("fontes") or [g.get("fonte")])]
         except Exception:
             pass
@@ -151,7 +151,7 @@ def montar() -> dict:
             try:
                 xs = [{"id": g["id"], "titulo": g.get("titulo"), "url": g.get("link_oficial") or g.get("pagina_agregador"), "fim": g.get("prazo"),
                        "uf": g.get("uf"), "descoberto_em": g.get("primeiro_visto")}
-                      for g in json.loads((ROOT / "estado/agregadores/itens.json").read_text(encoding="utf-8")).get("itens", [])]
+                      for g in (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/agregadores/itens.json", {}) or {}).get("itens", [])]
             except Exception:
                 xs = []
         if mid == "do-goiania":

@@ -202,7 +202,7 @@ def candidatas_do_catalogo() -> int:
     from urllib.parse import urlsplit as _u
     cat = catalogo(); vistos = {}; hoje = date.today().isoformat()
     arq = ROOT / "estado/piloto/candidatas_do_catalogo.json"
-    ant = load_json(arq) if arq.exists() else {}
+    ant = __import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(arq, {}) or {}
     ja = {c["url"]: c for c in (ant.get("candidatas") or [])}
     for v in cat["sites"].values():
         for p in v.get("paginas_para_entidades") or []:
@@ -230,5 +230,5 @@ def candidatas_do_catalogo() -> int:
     # 11/10: preserva as candidatas de OUTRAS origens (o Espião privado/internacional grava no mesmo arquivo); antes
     # esta regravação as apagava a cada rodada
     outras = [c for c in (ant.get("candidatas") or []) if c.get("origem") != "catálogo do Piloto - Espião" and c.get("url") not in vistos]
-    write_json(arq, {"em": hoje, "regra": "o que o Espião descobre; o Interceptador comprova", "candidatas": list(vistos.values()) + outras})
+    __import__("src.livro_arquivo", fromlist=["x"]).guardar_lote([(arq, {"em": hoje, "regra": "o que o Espião descobre; o Interceptador comprova", "candidatas": list(vistos.values()) + outras})], descoberta=True)
     return len(vistos)

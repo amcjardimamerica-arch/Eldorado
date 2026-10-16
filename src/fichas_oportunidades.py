@@ -86,7 +86,7 @@ def montar() -> dict:
     ids_origem = {i for r in abertas for i in [r["id"], *(r.get("ids_origem") or [])]}
     fl = BL.secoes_dos_livros("brutos:fluxo") or {x.get("id"): x for v in ((_j(FLUXO, {}) or {}).get("itens_por_uf") or {}).values() for x in v}
     col = {i: x for i, x in BL.secoes_dos_livros("coleta").items() if i in ids_origem} or _coleta(ids_origem)
-    ag = BL.secoes_dos_livros("agregador") or {str(x.get("id")): x for x in ((_j(AGREG, {}) or {}).get("itens") or [])}
+    ag = BL.secoes_dos_livros("agregador") or {str(x.get("id")): x for x in ((__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(AGREG, {}) or {}).get("itens") or [])}
     cat = {m.get("id"): m for m in ((_j(CATALOGO, {}) or {}).get("motores") or [])}
     cur = {x.get("id"): x for x in ((_j(ROOT / "estado/curadoria_links.json", {}) or {}).get("itens") or [])}   # 15/10: curadoria
     fichas, alias = {}, {}
