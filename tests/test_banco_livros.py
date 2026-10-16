@@ -269,3 +269,29 @@ class Modalidade16_10(unittest.TestCase):
         restos = [f for f in glob.glob(str(Path(__file__).resolve().parents[1] / "src/*.py"))
                   if '"Destinação"' in open(f, encoding="utf-8").read() and not f.endswith("banco_livros.py")]   # a migração cita o antigo
         self.assertEqual(restos, [])
+
+
+class ConteudoModalidade16_10(unittest.TestCase):
+    """16/10/2026 (titular): Modalidade = forma como o recurso chega; não finalidade nem elegibilidade; nada inventado."""
+    def test_regua(self):
+        M = B._modalidade_do_texto
+        self.assertEqual(M("premiação (concurso)")[0], "Prêmio")
+        self.assertEqual(M("elegível · convenio")[0], "Convênio")
+        self.assertIsNone(M("elegível · fomento"))
+        self.assertIsNone(M("Apoio financeiro a projetos culturais; vedada duplicidade de fontes no âmbito da Lei Rouanet"))
+        self.assertEqual(M("Despesas do projeto", "A parceria será formalizada por meio de Termo de Colaboração.")[0], "Termo de Colaboração")
+        self.assertIsNone(M("Despesas do projeto", "O projeto não poderá receber recursos de convênio."))
+
+    def test_revisao_nos_livros(self):
+        r = Path(tempfile.mkdtemp()); (r / "biblioteca_alexandria/fontes").mkdir(parents=True)
+        cat = r / "biblioteca_alexandria/fontes/motores.json"
+        cat.write_text(json.dumps({"motores": [{"id": "l", "oportunidade": {"checklist12": {
+            "Modalidade": {"estado": "comprovado", "valor": "Exclusivamente no projeto; vedadas despesas de manutenção"}}},
+            "livro": {"checklist": {"Modalidade": {"valor": "termo de fomento (Lei 13.019/2014)"}},
+                      "historico_parametros": [{"mudou": {"Modalidade": {"valor": "elegível · fomento"}}}]}}]}))
+        with mock.patch.object(B, "CAT", cat), mock.patch.object(B, "ROOT", r):
+            B.revisar_modalidade_nos_livros()
+        lv = json.loads(cat.read_text())["motores"][0]
+        self.assertIsNone(lv["oportunidade"]["checklist12"]["Modalidade"]["valor"])            # finalidade → em aberto
+        self.assertEqual(lv["livro"]["checklist"]["Modalidade"]["valor"], "Termo de Fomento")
+        self.assertEqual(lv["livro"]["historico_parametros"][0]["mudou"]["Modalidade"]["valor"], "elegível · fomento")   # log intacto
