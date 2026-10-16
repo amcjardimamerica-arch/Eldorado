@@ -1,8 +1,8 @@
 {
- "atualizado_em": "2026-10-16T20:22:33+00:00",
+ "atualizado_em": "2026-10-16T22:08:28+00:00",
  "regra": "REDE NEURAL DE COMANDO — maestro e rede neural são UMA coisa só (titular, 15/10/2026).\n\nA rede neural determina o caminho de todo o fluxo; o maestro é a mão dela: aciona os motores de busca e devolve o que\nfoi coletado. A rede avalia o que voltou e direciona para a fase seguinte. Um ciclo, do começo ao fim:\n\n  1. DECIDIR    sem agenda: TODO motor ativo é lido TODO dia (premissa de 100% das informações disponíveis no dia);\n                a cada passagem entram os que ainda não completaram — adiado → nunca lido hoje → parcial — e, dentro\n                de cada grupo, o de maior valor esperado (nota média que a rede deu aos achados dele);\n  2. ACIONAR    o maestro roda os motores escolhidos e devolve um recibo (lidos, achados, falhas, adiados, erro);\n  3. AVALIAR    a rede mede a completude de cada motor (completa · parcial · pendente · só do Brasil) e o que entrou;\n  4. REACIONAR  parciais e pendentes voltam na mesma passagem enquanto houver tempo; o que só o Brasil/Chrome lê vai\n                para a fila de conferência humana (estado/comando/para_chrome.json);\n  5. DIRECIONAR as fases seguintes, em ordem, cada uma com RECIBO e PORTÃO (roda ou pula com motivo):\n                catalogar → treinar a rede → site oficial → certificar (trecho dos 12 itens) → curadoria do link\n                oficial (dois links, trecho exato, 6 critérios) → validar por exceção →\n                recalcular → biblioteca → fichas e Farol → legislativo → sala de controle → diagnóstico;\n  6. VEREDITO   etapa com erro torna o ciclo VERMELHO (o fluxo do GitHub falha à vista; acabou a falha silenciosa).",
  "ultimo_ciclo": {
-  "inicio": "2026-10-16T19:51:40+00:00",
+  "inicio": "2026-10-16T21:23:46+00:00",
   "recibos": [
    {
     "etapa": "acionar",
@@ -14,49 +14,43 @@
    {
     "etapa": "catalogar",
     "finalidade": "achados por motor, status de cada motor e repositório único das oportunidades",
-    "segundos": 161.5,
-    "erro": null
+    "segundos": 1036.4,
+    "erro": "catalogar:4: código 124"
    },
    {
     "etapa": "site_oficial",
     "finalidade": "do replicador à fonte oficial e ao PDF do edital (navegação e PNCP)",
-    "segundos": 13.7,
+    "segundos": 168.5,
     "erro": null
    },
    {
     "etapa": "absorver",
     "finalidade": "dado de oportunidade só nos livros: absorve e apaga as pastas proibidas",
-    "segundos": 1.2,
+    "segundos": 1.3,
     "erro": null
    },
    {
     "etapa": "pncp",
     "finalidade": "dossiê do PNCP: 12 de 12 com informação confirmada ou descarte justificado; o que faltar vai ao Interceptador",
-    "segundos": 787.2,
+    "segundos": 812.1,
     "erro": null
    },
    {
     "etapa": "certificar",
     "finalidade": "trecho literal e página de cada um dos 12 itens no documento oficial (Cartório)",
-    "segundos": 700.7,
+    "segundos": 601.1,
     "erro": null
    },
    {
     "etapa": "curadoria",
     "finalidade": "link de acesso, link oficial com curadoria objetiva (6 critérios) e trecho exato da oportunidade",
-    "segundos": 1.1,
+    "segundos": 1.2,
     "erro": null
    },
    {
     "etapa": "validar",
     "finalidade": "validação por exceção: 12 de 12 comprovados seguem ao Farol; o resto à conferência humana",
-    "segundos": 1.0,
-    "erro": null
-   },
-   {
-    "etapa": "recalcular",
-    "finalidade": "estados das oportunidades com as certidões e validações desta passagem",
-    "segundos": 135.6,
+    "segundos": 1.1,
     "erro": null
    },
    {
@@ -68,13 +62,13 @@
    {
     "etapa": "banco_unico",
     "finalidade": "teste: bancos de dados que ainda existem fora dos livros",
-    "segundos": 2.3,
+    "segundos": 1.8,
     "erro": null
    },
    {
     "etapa": "fichas_farol",
     "finalidade": "ficha e janela de cada oportunidade aberta; o que está pronto vai ao Farol",
-    "segundos": 1.9,
+    "segundos": 1.8,
     "erro": null
    },
    {
@@ -86,13 +80,13 @@
    {
     "etapa": "sala_de_controle",
     "finalidade": "instrumentos de cada etapa",
-    "segundos": 5.6,
+    "segundos": 6.8,
     "erro": null
    },
    {
     "etapa": "diagnostico",
     "finalidade": "diagnóstico da passagem (arquivo próprio; o relatório da análise não é sobrescrito)",
-    "segundos": 25.7,
+    "segundos": 34.4,
     "erro": null
    }
   ],
@@ -121,6 +115,10 @@
     "pulou": "já feita"
    },
    {
+    "fase": "recalcular",
+    "pulou": "o Cartório não certificou nada nesta passagem"
+   },
+   {
     "fase": "unir_livros",
     "pulou": "já feita hoje"
    },
@@ -141,10 +139,17 @@
    "completos": 0
   },
   "novos_na_base": 0,
-  "fim": "2026-10-16T20:22:33+00:00",
-  "erros": [],
-  "estado": "verde"
+  "fim": "2026-10-16T22:08:28+00:00",
+  "erros": [
+   {
+    "etapa": "catalogar",
+    "finalidade": "achados por motor, status de cada motor e repositório único das oportunidades",
+    "segundos": 1036.4,
+    "erro": "catalogar:4: código 124"
+   }
+  ],
+  "estado": "vermelho"
  },
- "ciclos_hoje": 18,
- "vermelhos_hoje": 9
+ "ciclos_hoje": 19,
+ "vermelhos_hoje": 10
 }
