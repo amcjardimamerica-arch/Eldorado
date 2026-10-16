@@ -373,11 +373,11 @@ def historico_para_livros(caminho: Path = EXPORT, gravar: bool = True) -> dict:
                     alvo = i; break
         if alvo:
             ligadas[(d.get("chave"), str(d.get("ano")), d.get("id"))] = alvo
-            h = por_id[alvo].setdefault("historico_edicoes", [])
-            if not any(x.get("id") == d.get("id") for x in h):
-                h.append({"ano": d.get("ano"), "id": d.get("id"), "titulo": d.get("titulo"), "link_publicacao": d.get("url"),
-                          "link_oficial": None, "buscar_link_oficial": True, "data_publicacao": d.get("data_publicacao"),
-                          "inicio": d.get("inicio"), "fim": d.get("fim")})
+            h = por_id[alvo].setdefault("historico", [])           # 16/10: o histórico ÚNICO do livro
+            if not any(isinstance(x, dict) and x.get("id") == d.get("id") for x in h):
+                h.append({"id": d.get("id"), "titulo": d.get("titulo"), "ano": d.get("ano"), "pagina_oficial": None,
+                          "link_publicacao": d.get("url"), "buscar_link_oficial": True, "publicado_em": d.get("data_publicacao"),
+                          "inicio": d.get("inicio"), "fim": d.get("fim"), "origem": "acervo de histórico"})
     for lv in L:
         lv.pop("_t", None)
     manter = [d for d in linhas if d.get("_t") == "__schema__" or (d.get("chave"), str(d.get("ano")), d.get("id")) in ligadas]
