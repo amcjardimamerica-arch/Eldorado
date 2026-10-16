@@ -262,6 +262,9 @@ def fases(ctx: dict) -> list[dict]:
          "pular": "já feita hoje" if (ROOT / "estado/vigilancia_diaria.txt").exists() and
                   (ROOT / "estado/vigilancia_diaria.txt").read_text(encoding="utf-8").strip() == _hoje_brt() else None,
          "depois": lambda: (ROOT / "estado/vigilancia_diaria.txt").write_text(_hoje_brt(), encoding="utf-8")},
+        # 16/10/2026 (titular): TESTE DO BANCO ÚNICO — lista o que ainda existe fora dos livros (mostrador da sala)
+        {"etapa": "banco_unico", "finalidade": "teste: bancos de dados que ainda existem fora dos livros",
+         "cmds": [[py, "scripts/verificar_banco_unico.py", "0"]], "t": 300, "pular": None},
         # 6 ENTREGAR — fichas (Farol), legislativo, sala de controle e diagnóstico
         {"etapa": "fichas_farol", "finalidade": "ficha e janela de cada oportunidade aberta; o que está pronto vai ao Farol",
          "cmds": [[py, "-m", "src.fichas_oportunidades"]], "t": 200, "pular": None},
