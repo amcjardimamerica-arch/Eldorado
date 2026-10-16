@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-16T05:43:20+00:00",
+  "em": "2026-10-16T06:00:42+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-16T05:30:45+00:00",
+  "ultimo_voo": "2026-10-16T05:46:29+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,21 +37,104 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 301,
+    "missoes": 302,
     "validadas": 9,
-    "parciais": 76,
+    "parciais": 77,
     "insuficientes": 211,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 229,
+      "sim": 230,
       "nao": 34
     },
-    "estrelas_de_ouro": 13,
-    "fontes_novas_para_os_motores": 24,
+    "estrelas_de_ouro": 14,
+    "fontes_novas_para_os_motores": 25,
     "tempo_medio_min": 13.1
   },
   "missoes": [
+    {
+      "em": "2026-10-16T05:46:29+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "repositório único: Interceptador: achar o site oficial (o Cartório não achou em 4 abordagens; busca",
+      "alvo": "Prêmio Açorianos de Dança 2026: 18 categorias abertas à cena de Porto Alegre, inscrições até 29 de novembro",
+      "qualidade": "parcial",
+      "comprovados": 6,
+      "dispensados": 0,
+      "total": 12,
+      "nao_resolvidos": [
+        "Resultado",
+        "Prazo de recurso",
+        "Valor",
+        "Requisitos",
+        "Anexos",
+        "Destinação"
+      ],
+      "pagina_oficial": "https://prefeitura.poa.br/taxonomy/term/10896",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital comprova a existência do Prêmio Açorianos de Dança 2026, com informações sobre objeto, prazo de inscrição e órgão financiador.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria verificar se seu projeto de dança se enquadra no objeto do edital e se está localizado em Porto Alegre, Rio Grande do Sul, para participar.",
+        "proximo_passo": "Consultar o edital completo para verificar se os requisitos e a destinação do prêmio se aplicam ao projeto da associação.",
+        "risco": "A associação pode não ter capacidade de atuação em Porto Alegre ou o projeto pode não se enquadrar no objeto do edital."
+      },
+      "erro": null,
+      "segundos": 852,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 6,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Valor, Requisitos",
+      "id": "agr-d06432bde44c",
+      "encontrou": {
+        "Objeto": {
+          "valor": "Premiação para grupos e coreógrafos que desenvolvam projetos de dança em Porto Alegre",
+          "trecho": "Prêmio Açorianos de Dança | Prefeitura de Porto Alegre",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "2026-04-03 a 2026-11-29",
+          "trecho": "Abertas as inscrições para o Prêmio Açorianos de Dança 2026",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Prefeitura de Porto Alegre",
+          "trecho": "Prêmio Açorianos de Dança | Prefeitura de Porto Alegre",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "RS",
+          "trecho": "Prefeitura de Porto Alegre",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "cultura",
+          "trecho": "Prêmio Açorianos de Dança | Prefeitura de Porto Alegre",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Prefeitura de Porto Alegre",
+      "indicios": [
+        {
+          "url": "https://prefeitura.poa.br/smc/noticias/abertas-inscricoes-para-o-premio-acorianos-de-danca-2026",
+          "tipo": "noticia"
+        }
+      ],
+      "rotas": [
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano",
+        "governo",
+        "programa_puro"
+      ]
+    },
     {
       "em": "2026-10-16T05:30:45+00:00",
       "modo": "validar",
@@ -2234,69 +2317,6 @@
         "Requisitos": {
           "valor": "estar atento aos prazos e critérios disponíveis no edital",
           "trecho": "Para se inscrever é preciso estar atento aos prazos e critérios disponíveis no edital!",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Jaraguá",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador"
-      ]
-    },
-    {
-      "em": "2026-10-15T09:11:40+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Jaraguá — 📢 As inscrições para a Lei Paulo Gustavo encerrarão no próximo domingo (22), não perca essa oportuni… — Goiás",
-      "qualidade": "insuficiente",
-      "comprovados": 4,
-      "dispensados": 1,
-      "total": 12,
-      "nao_resolvidos": [
-        "Objeto",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor",
-        "Requisitos",
-        "Anexos",
-        "Destinação",
-        "Área de atuação"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprova que a Prefeitura Municipal de Jaraguá está ofertando um edital de Lei Paulo Gustavo, o que é relevante para a AMC.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se inscrever no edital da Prefeitura Municipal de Jaraguá, que está disponível até o próximo domingo (22), e apresentar propostas alinhadas ao objeto do edital, que não foi especificado no texto.",
-        "proximo_passo": "Verificar o edital completo da Prefeitura Municipal de Jaraguá para entender os requisitos e o objeto do fomento.",
-        "risco": "O prazo de inscrição encerra no próximo domingo (22), o que pode impedir a participação se a AMC não se inscrever a tempo."
-      },
-      "erro": null,
-      "segundos": 368,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-op-35dba751a9ee",
-      "encontrou": {
-        "Prazo de inscrição": {
-          "valor": "dispensado — O prazo de inscrição é explicitado no texto.",
-          "trecho": "As inscrições para a Lei Paulo Gustavo encerrarão no próximo domingo (22) [rejeitado: data implausível para edital aberto]",
-          "oficial": false,
-          "dispensado": true
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal de Jaraguá",
-          "trecho": "Acesse o site da prefeitura para saber mais.",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "Jaraguá - GO.",
           "oficial": false,
           "dispensado": false
         }
