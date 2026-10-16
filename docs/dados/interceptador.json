@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-16T03:19:47+00:00",
+  "em": "2026-10-16T03:40:48+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-16T03:04:21+00:00",
+  "ultimo_voo": "2026-10-16T03:23:00+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -37,10 +37,10 @@
     "empresas sem ficha": 134
   },
   "acumulado": {
-    "missoes": 290,
+    "missoes": 291,
     "validadas": 8,
     "parciais": 73,
-    "insuficientes": 205,
+    "insuficientes": 206,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
@@ -52,6 +52,40 @@
     "tempo_medio_min": 13.3
   },
   "missoes": [
+    {
+      "em": "2026-10-16T03:23:00+00:00",
+      "modo": "validar",
+      "tipo": "edital",
+      "de": "0 · PNCP · faltam Resultado, Prazo de recurso, Requisitos, Destinação, Área de atuação",
+      "alvo": "FUNDO MUNICIPAL DA CULTURA DE COLINAS DO SUL — CHAMAMENTO PUBLICO PARA CREDENCIAMENTO DE AGENTES CULTURAIS PNAB CICLO 2.",
+      "qualidade": "insuficiente",
+      "comprovados": 0,
+      "dispensados": null,
+      "total": 12,
+      "nao_resolvidos": null,
+      "pagina_oficial": null,
+      "parecer_fonte": {},
+      "erro": "o modelo não devolveu JSON",
+      "segundos": 1067,
+      "site_oficial": null,
+      "resultado": null,
+      "fonte_nova_para_os_motores": false,
+      "fontes_oficiais": 0,
+      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
+      "avaliacao": "falhou: o modelo não devolveu JSON",
+      "id": "d1083dc9318cbddc7077",
+      "encontrou": {},
+      "financiador": "Prefeitura Municipal de Colinas do Sul",
+      "indicios": [],
+      "rotas": [
+        "site_do_financiador",
+        "site_do_financiador_edital",
+        "financiador_programa_edital",
+        "financiador_regulamento",
+        "financiador_pdf",
+        "financiador_ano"
+      ]
+    },
     {
       "em": "2026-10-16T03:04:21+00:00",
       "modo": "validar",
@@ -2423,84 +2457,6 @@
       "rotas": [
         "financiador_programa_edital",
         "financiador_regulamento"
-      ]
-    },
-    {
-      "em": "2026-10-15T06:24:42+00:00",
-      "modo": "validar",
-      "tipo": "edital",
-      "de": "1 · Goiás · livro da Biblioteca",
-      "alvo": "Itumbiara — inscrições em chamada pública de agentes culturais de itumbiara irão até o dia 8 de novembro — Goiás / Itumbiara",
-      "qualidade": "insuficiente",
-      "comprovados": 8,
-      "dispensados": 0,
-      "total": 12,
-      "nao_resolvidos": [
-        "Prazo de inscrição",
-        "Resultado",
-        "Prazo de recurso",
-        "Valor"
-      ],
-      "pagina_oficial": null,
-      "parecer_fonte": {
-        "serve_como_fonte": "sim",
-        "por_que": "O texto comprovado menciona a destinação de recursos da Lei Paulo Gustavo para agentes culturais de Itumbiara, indicando que a Prefeitura Municipal de Itumbiara é o financiador.",
-        "para_a_amc": "A associação comunitária de Goiânia precisaria se inscrever na chamada pública, provavelmente apresentando um projeto cultural alinhado ao objeto do edital, e atender aos requisitos de pessoa física ou jurídica.",
-        "proximo_passo": "Verificar os anexos e se inscrever na chamada pública antes do prazo de inscrição, que não foi especificado no texto.",
-        "risco": "O prazo de inscrição não foi encontrado, o que pode impedir a associação de se inscrever a tempo."
-      },
-      "erro": null,
-      "segundos": 828,
-      "site_oficial": null,
-      "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "a completar: sem página oficial ou poucas condições comprovadas",
-      "id": "op-op-04c478f6e512",
-      "encontrou": {
-        "Objeto": {
-          "valor": "destinação de recursos remanescentes da Lei Paulo Gustavo para agentes culturais de Itumbiara",
-          "trecho": "O prazo para artistas e agentes culturais de Itumbiara se inscreverem no processo de chamada pública para destinação de recursos remanescentes da Lei Paulo Gustavo",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Órgão / financiador": {
-          "valor": "Prefeitura Municipal de Itumbiara",
-          "trecho": "INSCRIÇÕES EM CHAMADA PÚBLICA DE AGENTES CULTURAIS DE ITUMBIARA IRÃO ATÉ O DIA 8 DE NOVEMBRO - Prefeitura Municipal de Itumbiara",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Território": {
-          "valor": "GO",
-          "trecho": "Itumbiara — inscrições em chamada pública de agentes culturais de itumbiara irão até o dia 8 de novembro — Goiás / Itumbiara",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Área de atuação": {
-          "valor": "cultura",
-          "trecho": "As inscrições são na área de audiovisual, na produção de curtas-metragens.",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Destinação": {
-          "valor": "fora do escopo · fomento",
-          "trecho": "A Lei Complementar n.º 195/2022 é de incentivo à cultura e leva o nome de Paulo Gustavo",
-          "oficial": false,
-          "dispensado": false
-        },
-        "Requisitos": {
-          "valor": "pessoa física ou pessoa jurídica",
-          "trecho": "Pode se inscrever como pessoa física ou pessoa jurídica.",
-          "oficial": false,
-          "dispensado": false
-        }
-      },
-      "financiador": "Prefeitura Municipal de Itumbiara",
-      "indicios": [],
-      "rotas": [
-        "site_do_financiador",
-        "site_do_financiador_edital"
       ]
     }
   ],
