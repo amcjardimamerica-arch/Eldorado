@@ -146,7 +146,7 @@ def run() -> dict:
         por_id[str(k).split(":", 1)[-1]] = c
     out = []
     for r in regs:
-        if r.get("arquivada") or r.get("estado") in ("arquivada", "encerrada", "descartada"):
+        if r.get("arquivada") or r.get("estado") in ("arquivada", "encerrada", "descartada", "fechada"):   # 16/10: "fechada" faltava
             continue
         c = por_id.get(r.get("id")) or next((por_id[i] for i in (r.get("ids_origem") or []) if i in por_id), None)
         out.append(curar(r, c, agora))

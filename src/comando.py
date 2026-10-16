@@ -233,6 +233,12 @@ def fases(ctx: dict) -> list[dict]:
         {"etapa": "biblioteca_diaria", "finalidade": "leitor documental, selos e decisões da titular nos livros (1 vez por dia)",
          "cmds": [[py, "-c", "from src.leitor_documental import aplicar; print(aplicar())"], [py, "-m", "src.selo_livros"], [py, "-m", "src.decisoes_titular"]],
          "t": 700, "pular": "já feita hoje" if feita_hoje else None, "depois": lambda: diaria.write_text(_hoje_brt(), encoding="utf-8")},
+        # 16/10/2026 (sala de controle): os produtores que só rodavam no fluxo 01 (que falhava) — uma vez por dia
+        {"etapa": "vigilancia_diaria", "finalidade": "vigilância dos livros pelo próprio motor, alerta de cadência dos motores e medição de uso dos arquivos",
+         "cmds": [[py, "-m", "src.opressores"], [py, "-m", "src.alerta_motores"], [py, "-m", "src.uso_arquivos"]], "t": 1300,
+         "pular": "já feita hoje" if (ROOT / "estado/vigilancia_diaria.txt").exists() and
+                  (ROOT / "estado/vigilancia_diaria.txt").read_text(encoding="utf-8").strip() == _hoje_brt() else None,
+         "depois": lambda: (ROOT / "estado/vigilancia_diaria.txt").write_text(_hoje_brt(), encoding="utf-8")},
         # 6 ENTREGAR — fichas (Farol), legislativo, sala de controle e diagnóstico
         {"etapa": "fichas_farol", "finalidade": "ficha e janela de cada oportunidade aberta; o que está pronto vai ao Farol",
          "cmds": [[py, "-m", "src.fichas_oportunidades"]], "t": 200, "pular": None},

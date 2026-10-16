@@ -374,6 +374,8 @@ def _pela_ponte(url: str) -> bool:
 
 def _abrir(url: str, timeout: int = 12, max_bytes: int = 2_500_000) -> tuple[str, str, int]:
     from urllib.request import Request, urlopen
+    if url.startswith("http://"):                   # 16/10 (sala de controle): http:// virava ValueError e saía da fila
+        url = "https://" + url[len("http://"):]
     if not url.startswith("file://"):
         validate_public_https(url, urlsplit(url).hostname)
     if _pela_ponte(url):                       # 15/10: portal que recusa a nuvem → ponte Brasil (medida: funciona)
@@ -674,6 +676,7 @@ def _ler(sensor: dict, limites: dict | None = None, pausa: float | None = None, 
     fila = list(_todas[:n_pag])
     # 15/10/2026 (titular): FILA DE RETENTATIVA — página com erro volta 30 min depois; após 5 erros iguais sai da fila
     from . import fila_retentativa as FR
+    FR.reabrir_corrigidos(set((load_json(CFG).get("exige_brasil") or {}).get("dominios") or []))   # 16/10: causa corrigida volta
     for _u in reversed(FR.devidas(sensor["id"])):
         if _u not in fila:
             fila.insert(0, _u)                          # o que venceu os 30 minutos vem primeiro

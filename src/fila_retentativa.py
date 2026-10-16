@@ -102,3 +102,15 @@ def resumo() -> dict:
         por_escopo[r.get("escopo") or "—"] = por_escopo.get(r.get("escopo") or "—", 0) + 1
     return {"aguardando_retentativa": len(d["fila"]), "fora_da_fila": len(d["fora_da_fila"]), "fora_da_fila_por_escopo": por_escopo,
             "regra": f"volta em {ESPERA_MIN} min; sai após {LIMITE} tentativas com o mesmo erro"}
+
+
+def reabrir_corrigidos(exige_brasil: set | None = None) -> list[str]:
+    """16/10/2026 (sala de controle): devolve à fila as páginas cuja CAUSA foi corrigida — endereço http:// (agora vira
+    https://) e site que passou a ser lido pela ponte Brasil."""
+    from urllib.parse import urlsplit
+    d = _carregar(); voltam = []
+    for u, r in list(d["fora_da_fila"].items()):
+        host = urlsplit(u).hostname or ""
+        if (u.startswith("http://") and "ValueError" in str(r.get("erro"))) or (exige_brasil and host in exige_brasil):
+            d["fora_da_fila"].pop(u); voltam.append(u)
+    return voltam

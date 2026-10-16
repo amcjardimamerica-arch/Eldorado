@@ -218,3 +218,14 @@ class AmostraCiclo7_15_10(unittest.TestCase):
             self.assertIsNone(R.nao_e_oportunidade({"titulo": t, "url": u}), t)
         self.assertEqual(R.uf_por_municipio("Edital Itagibá 2026: Guia de Captação"), "BA")
         self.assertEqual(R.uf_por_municipio("Edital Planaltina 2026"), "GO")
+
+
+class SalaDeControle16_10(unittest.TestCase):
+    def test_reabre_os_corrigidos(self):
+        FR._CACHE = {"fila": {}, "fora_da_fila": {"http://doem.org.br/ba/x": {"erro": "ValueError"},
+                                                  "https://fundacaotelefonicavivo.org.br/": {"erro": "HTTP 403"},
+                                                  "https://y.gov.br/": {"erro": "HTTP 404"}}}
+        voltam = FR.reabrir_corrigidos({"fundacaotelefonicavivo.org.br"})
+        self.assertEqual(sorted(voltam), ["http://doem.org.br/ba/x", "https://fundacaotelefonicavivo.org.br/"])
+        self.assertIn("https://y.gov.br/", FR._CACHE["fora_da_fila"])                          # causa não corrigida: fica
+        FR._CACHE = None
