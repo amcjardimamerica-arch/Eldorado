@@ -62,6 +62,11 @@ def montar() -> dict:
     dups = load_json(ROOT / "dados/editais/duplicatas.json") if (ROOT / "dados/editais/duplicatas.json").exists() else {}
     fora = {d for g in dups.get("grupos", []) for d in g.get("duplicatas", [])}
     op = [e for e in op if e["id"] not in fora]
+    try:                                               # 16/10/2026 (titular): outros estados, só estaduais e capitais
+        from .repositorio_unico import municipal_fora_de_goias as _fora
+        op = [e for e in op if not _fora(e)]
+    except Exception:  # noqa: BLE001
+        pass
     mapa_fontes = {"observatorio-terceiro-setor": "plat-observatorio-3setor", "abcr": "plat-abcr", "gife": "plat-gife",
                    "prosas": "plat-prosas", "pncp": "pncp-api", "querido-diario": "diarios-municipais", "dou": "dou"}
     # primeira data de cada edital (deduplicado por chave)
