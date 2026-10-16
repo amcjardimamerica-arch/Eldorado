@@ -16,7 +16,7 @@ Regra dura: nada é inventado. Quando o texto não traz vencedor ou critério de
 escolha, isso fica registrado como lacuna — e entra na fila de busca, nunca
 como suposição.
 
-Saída por edital: `biblioteca_alexandria/oportunidades/<chave>/<ANO>/ficha.json`
+Saída por edital: `biblioteca_alexandria/livros/anexos/<chave>/<ANO>/ficha.json`
 e o índice consolidado. Registros que são notícia ou página de navegação não
 viram edital: ficam no índice de descartados, com o motivo.
 """

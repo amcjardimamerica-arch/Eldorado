@@ -67,7 +67,7 @@ def coletar() -> dict:
     # o elo registro → motor: a ficha da Biblioteca guarda de que fonte o registro veio
     from src.nucleo import chave_curta
     por_fonte = collections.defaultdict(lambda: collections.Counter())
-    for f in (RAIZ / "biblioteca_alexandria/oportunidades").glob("*/*/ficha.json"):
+    for f in (RAIZ / "biblioteca_alexandria/livros/anexos").glob("*/*/ficha.json"):
         try:
             v = json.loads(f.read_text(encoding="utf-8"))
         except Exception:

@@ -311,7 +311,7 @@ def registrar_resgate(alvo_id: str, dados: dict, achou: bool) -> dict:
 
 def _para_biblioteca(alvo_id: str, it: dict) -> None:
     """Edital completo vira ficha na Biblioteca de Alexandria."""
-    pasta = ROOT / "biblioteca_alexandria/oportunidades" / re.sub(r"[^a-z0-9-]", "-", str(it.get("titulo", ""))[:60].lower()).strip("-") / str(date.today().year)
+    pasta = ROOT / "biblioteca_alexandria/livros/anexos" / re.sub(r"[^a-z0-9-]", "-", str(it.get("titulo", ""))[:60].lower()).strip("-") / str(date.today().year)
     pasta.mkdir(parents=True, exist_ok=True)
     write_json(pasta / "ficha.json", {
         "titulo": it.get("titulo"), "orgao": it.get("orgao"), "uf": it.get("uf"),

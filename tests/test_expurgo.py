@@ -26,8 +26,8 @@ class Expurgo(unittest.TestCase):
         (self.r / "biblioteca_alexandria/fontes/motores.json").write_text(json.dumps({"motores": [
             {"id": "op-ruim", "programa": "MUNICIPIO DE NAZARENO — Pregão eletrônico para aquisição", "uf": "MG", "pagina": RUIM},
             {"id": "op-bom", "programa": "MUNICIPIO DE ANAPOLIS — Chamamento de OSC", "uf": "GO", "pagina": BOM}]}), encoding="utf-8")
-        p = self.r / "biblioteca_alexandria/oportunidades/pasta-ruim"; p.mkdir(parents=True); (p / "x.json").write_text(json.dumps({"u": RUIM}))
-        p2 = self.r / "biblioteca_alexandria/oportunidades/pasta-boa"; p2.mkdir(parents=True); (p2 / "x.json").write_text(json.dumps({"u": BOM}))
+        p = self.r / "biblioteca_alexandria/livros/anexos/pasta-ruim"; p.mkdir(parents=True); (p / "x.json").write_text(json.dumps({"u": RUIM}))
+        p2 = self.r / "biblioteca_alexandria/livros/anexos/pasta-boa"; p2.mkdir(parents=True); (p2 / "x.json").write_text(json.dumps({"u": BOM}))
         from src import repositorio_unico as R
         self.p = mock.patch.object(X, "ROOT", self.r); self.p.start()
         self.q = mock.patch.object(R, "construir", lambda gravar=True: {}); self.q.start()      # isola o repositório real
@@ -39,7 +39,7 @@ class Expurgo(unittest.TestCase):
     def test_simulacao_nao_apaga(self):
         j = X.executar(simular=True)
         self.assertEqual(j["invalidas"], 1)
-        self.assertTrue((self.r / "biblioteca_alexandria/oportunidades/pasta-ruim").exists())
+        self.assertTrue((self.r / "biblioteca_alexandria/livros/anexos/pasta-ruim").exists())
 
     def test_execucao(self):
         j = X.executar(simular=False)
@@ -50,8 +50,8 @@ class Expurgo(unittest.TestCase):
         self.assertEqual([l[0] for l in col["linhas"]], ["b"])
         self.assertEqual(len(col["dic"]["titulo"]), 2)                                 # dicionário intacto
         self.assertEqual(j["livros_removidos"], ["op-ruim"])
-        self.assertFalse((self.r / "biblioteca_alexandria/oportunidades/pasta-ruim").exists())
-        self.assertTrue((self.r / "biblioteca_alexandria/oportunidades/pasta-boa").exists())
+        self.assertFalse((self.r / "biblioteca_alexandria/livros/anexos/pasta-ruim").exists())
+        self.assertTrue((self.r / "biblioteca_alexandria/livros/anexos/pasta-boa").exists())
 
 
 if __name__ == "__main__":

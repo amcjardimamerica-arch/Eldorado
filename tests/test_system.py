@@ -1534,7 +1534,7 @@ class SystemTests(unittest.TestCase):
         do Radar de recursos."""
         from src.dashboard_dados import etapa_do_edital
         dec={"c/2026"}; prep={"c/2026"}; par={"c/2026","d/2026"}
-        base={"pasta_farol":"biblioteca_alexandria/oportunidades/c/2026"}
+        base={"pasta_farol":"biblioteca_alexandria/livros/anexos/c/2026"}
         self.assertEqual(etapa_do_edital(base,dec,prep,par)["etapa"],5)
         self.assertEqual(etapa_do_edital(base,dec,set(),par)["etapa"],4)
         self.assertEqual(etapa_do_edital(base,set(),set(),par)["etapa"],3)
@@ -2112,7 +2112,7 @@ class SystemTests(unittest.TestCase):
         from src.banco import total_historico
         if total_historico()>0:
             self.assertEqual(ac["oportunidades"],total_historico())
-        i=load_json(pathlib.Path("biblioteca_alexandria/oportunidades/indice.json"))
+        i=load_json(pathlib.Path("biblioteca_alexandria/livros/anexos/indice.json"))
         self.assertIn("no_banco",i); self.assertIn("em_pasta",i)
         self.assertGreaterEqual(i["total"],i["em_pasta"])
 

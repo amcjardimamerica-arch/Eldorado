@@ -5,7 +5,7 @@ pelo parecer ou encerrado após a inscrição — suas informações não se per
 são arquivadas na Biblioteca, na pasta do respectivo edital e do ANO em que
 aconteceu, para compor o histórico que alimenta a leitura de padrões.
 
-Entra na pasta `biblioteca_alexandria/oportunidades/<chave>/<ANO>/`:
+Entra na pasta `biblioteca_alexandria/livros/anexos/<chave>/<ANO>/`:
   arquivamento.json   motivo, data, decisão e quem decidiu
   historico.jsonl     uma linha por movimento (trilha append-only)
 

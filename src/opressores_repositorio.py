@@ -31,7 +31,7 @@ CAT = ROOT / "biblioteca_alexandria/fontes/motores.json"
 LIG = ROOT / "estado/opressores.json"
 IDX = ROOT / "estado/opressores_indice.json"
 FLUXO = ROOT / "docs/dados/fluxo_oportunidades.json"
-FICHAS = ROOT / "biblioteca_alexandria/oportunidades"
+FICHAS = ROOT / "biblioteca_alexandria/livros/anexos"
 
 SELECAO = re.compile(r"edital|chamad|chamamento|sele[cç][aã]o|pr[eê]mio|concurso|credenciamento|inscri[cç]|convocat|processo seletivo", re.I)
 SEM_CONCORRENCIA = re.compile(r"doa[cç][aã]o|doa[cç][õo]es|patroc[ií]nio|patrocina|propaganda|publicidade|como solicitar|fale conosco|"

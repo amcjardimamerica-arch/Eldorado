@@ -56,7 +56,7 @@ def montar() -> dict:
         regs = [json.loads(l) for l in MESTRE.open(encoding="utf-8") if l.strip()] if MESTRE.exists() else []
     # a data de publicação de muitas fontes (ABCR, Diário de Goiás) está na ficha da Biblioteca, não no registro
     pub_ficha = {}
-    for f in (ROOT / "biblioteca_alexandria/oportunidades").glob("*/*/ficha.json"):
+    for f in (ROOT / "biblioteca_alexandria/livros/anexos").glob("*/*/ficha.json"):
         try:
             fi = json.loads(f.read_text(encoding="utf-8"))
         except Exception:

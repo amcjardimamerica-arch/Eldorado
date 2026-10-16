@@ -42,7 +42,7 @@ def limpar_catalogo(C: dict) -> dict:
 
 def limpar_arquivos(ids: list[str] | None = None) -> dict:
     fichas = 0
-    for f in (ROOT / "biblioteca_alexandria/oportunidades").glob("*/*/ficha.json"):
+    for f in (ROOT / "biblioteca_alexandria/livros/anexos").glob("*/*/ficha.json"):
         try:
             d = json.loads(f.read_text(encoding="utf-8"))
         except Exception:  # noqa: BLE001

@@ -247,9 +247,9 @@ def executar(simular: bool = True) -> dict:
                     compacto = "\n" not in ini.strip()[:200]
                     p.write_text(json.dumps(novo, ensure_ascii=False, separators=(",", ":")) if compacto else
                                  json.dumps(novo, ensure_ascii=False, indent=2 if ini.startswith(("{\n  ", "[\n  ")) else 1), encoding="utf-8")
-    # pastas dos livros eliminados (biblioteca_alexandria/oportunidades/<pasta>) que só citam compras inválidas
+    # pastas dos livros eliminados (biblioteca_alexandria/livros/anexos/<pasta>) que só citam compras inválidas
     pastas = []
-    base = ROOT / "biblioteca_alexandria/oportunidades"
+    base = ROOT / "biblioteca_alexandria/livros/anexos"
     for d in (base.iterdir() if base.exists() else []):
         if d.is_dir():
             txt = " ".join(f.read_text(encoding="utf-8", errors="replace") for f in d.rglob("*") if f.is_file() and f.stat().st_size < 5_000_000)
