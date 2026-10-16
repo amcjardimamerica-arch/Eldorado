@@ -242,8 +242,8 @@ class SoTrechoELinks16_10(unittest.TestCase):
             res = BC.historico_para_livros(arq)
         self.assertEqual((res["ligadas_a_livros"], res["edicoes_removidas"]), (2, 1))       # todo livro recebe; k3 não se liga
         L = {lv["id"]: lv for lv in json.loads((r / "biblioteca_alexandria/fontes/motores.json").read_text())["motores"]}
-        h = L["lv1"]["historico_edicoes"][0]; self.assertIn("historico_edicoes", L["lv2"])
-        self.assertEqual((h["link_publicacao"], h["link_oficial"], h["buscar_link_oficial"]), ("https://goiania.go.gov.br/fia", None, True))
+        h = L["lv1"]["historico"][0]; self.assertIn("historico", L["lv2"])                # 16/10: o histórico ÚNICO
+        self.assertEqual((h["link_publicacao"], h["pagina_oficial"], h["buscar_link_oficial"]), ("https://goiania.go.gov.br/fia", None, True))
 
 
 class Modalidade16_10(unittest.TestCase):
@@ -319,3 +319,22 @@ class UnirDuplicados16_10(unittest.TestCase):
         self.assertIn("c1", L["a"]["coleta"]); self.assertIn("https://goiania.go.gov.br/lpg12", L["a"]["paginas"])
         self.assertEqual(L["a"]["juntados"][0]["id"], "b")
         self.assertGreaterEqual(res["mantidos_separados"], 1)                          # 002/2023 e 004/2023 ficam separados
+
+
+class HistoricoEEpoca16_10(unittest.TestCase):
+    """Histórico único; época de abertura calculada das edições, cada data com fonte; sem fonte, sem época."""
+    def test_historico_e_epoca(self):
+        r = Path(tempfile.mkdtemp()); (r / "biblioteca_alexandria/fontes").mkdir(parents=True)
+        cat = r / "biblioteca_alexandria/fontes/motores.json"
+        cat.write_text(json.dumps({"motores": [
+            {"id": "a", "historico": [{"id": "e24", "inicio": "2024-03-10", "pagina_oficial": "https://x.go.gov.br/2024"}],
+             "historico_edicoes": [{"id": "e25", "inicio": "2025-03-05", "link_publicacao": "https://x.go.gov.br/2025"}]},
+            {"id": "b", "historico": [{"id": "z", "inicio": "2024-05-01"}]}]}))                # sem fonte
+        with mock.patch.object(B, "CAT", cat):
+            res = B.historico_e_epoca()
+        L = {x["id"]: x for x in json.loads(cat.read_text())["motores"]}
+        self.assertNotIn("historico_edicoes", L["a"]); self.assertEqual({e["id"] for e in L["a"]["historico"]}, {"e24", "e25"})
+        self.assertEqual(L["a"]["epoca_abertura"]["mes_mais_comum"], "03")
+        self.assertTrue(all(x["fonte"].startswith("https://") for x in L["a"]["epoca_abertura"]["edicoes"]))
+        self.assertNotIn("epoca_abertura", L["b"])
+        self.assertEqual((res["historico_paralelo_migrado"], res["com_epoca_de_abertura"]), (1, 1))

@@ -687,5 +687,44 @@ def unir_duplicados(gravar: bool = True) -> dict:
     return {"pares": len(pares), "juntados": len(juntados), "mantidos_separados": mantidos_separados,
             "lista": [{"fica": f, "sai": s_, "programa_fica": pf, "programa_sai": ps} for f, s_, pf, ps in juntados]}
 
+
+def historico_e_epoca(gravar: bool = True) -> dict:
+    """16/10/2026 (titular): (1) o histórico do livro é UM SÓ — o campo paralelo 'historico_edicoes' entra no
+    'historico' (sem repetir edição) e deixa de existir; (2) a ÉPOCA DE ABERTURA é calculada das edições do próprio
+    livro, cada data com a edição e o link de onde veio. Livro sem edição datada com fonte fica sem época (nada estimado)."""
+    import re as _re
+    from collections import Counter
+    cat_doc = _j(CAT, {"motores": []}); L = cat_doc.get("motores") or []
+    migrados = com_epoca = 0
+    for lv in L:
+        if lv.get("historico_edicoes"):
+            h = lv.setdefault("historico", []); ids = {x.get("id") for x in h if isinstance(x, dict)}
+            for e in lv.pop("historico_edicoes"):
+                if isinstance(e, dict) and e.get("id") not in ids:
+                    h.append({"id": e.get("id"), "titulo": e.get("titulo"), "ano": e.get("ano"), "pagina_oficial": e.get("link_oficial"),
+                              "link_publicacao": e.get("link_publicacao"), "buscar_link_oficial": not e.get("link_oficial"),
+                              "publicado_em": e.get("data_publicacao"), "inicio": e.get("inicio"), "fim": e.get("fim"),
+                              "origem": "acervo de histórico"}); ids.add(e.get("id"))
+            migrados += 1
+        base = []
+        for e in lv.get("historico") or []:
+            if not isinstance(e, dict):
+                continue
+            data = str(e.get("inicio") or e.get("publicado_em") or "")[:10]
+            fonte = e.get("pagina_oficial") or e.get("link_publicacao")
+            if _re.fullmatch(r"\d{4}-\d{2}-\d{2}", data) and isinstance(fonte, str) and fonte.startswith("http"):
+                base.append({"id": e.get("id"), "ano": data[:4], "data": data, "tipo": "abertura" if e.get("inicio") else "publicação", "fonte": fonte})
+        if base:
+            meses = Counter(b["data"][5:7] for b in base)
+            lv["epoca_abertura"] = {"meses": [m for m, _ in meses.most_common()], "mes_mais_comum": meses.most_common(1)[0][0],
+                                    "edicoes": sorted(base, key=lambda b: b["data"]), "calculada_em": _agora()[:10],
+                                    "regra": "calculada das edições do próprio livro; cada data com a edição e o link de onde veio"}
+            com_epoca += 1
+        else:
+            lv.pop("epoca_abertura", None)
+    if gravar:
+        CAT.write_text(json.dumps(cat_doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    return {"livros": len(L), "historico_paralelo_migrado": migrados, "com_epoca_de_abertura": com_epoca}
+
 if __name__ == "__main__":
     print(json.dumps(consolidar(), ensure_ascii=False))
