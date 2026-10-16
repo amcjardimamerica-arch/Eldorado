@@ -25,7 +25,7 @@ from pathlib import Path
 
 from .nucleo import ROOT
 
-VERSAO = 3          # 16/10/2026: v3 = o acervo de histórico também passa pelos portões; v2: regra territorial em todo o sistema — mudou a regra, o expurgo roda de novo no mesmo dia
+VERSAO = 4          # 16/10/2026: v4 = histórico só ligado a livro de oportunidade; achado só trecho e links; v3 = o acervo de histórico também passa pelos portões; v2: regra territorial em todo o sistema — mudou a regra, o expurgo roda de novo no mesmo dia
 PNCP = re.compile(r"pncp\.gov\.br/(?:app/editais|pncp-api/v1/orgaos|api/(?:pncp|consulta)/v1/orgaos)/(\d{14})/(?:compras/)?(\d{4})/(\d+)", re.I)
 AREAS = ["dados", "estado", "docs/dados", "biblioteca_alexandria"]
 NUNCA = re.compile(r"(^|/)(config|tests|src|scripts)/|estado/expurgo/|estado/pncp/estudo_mes\.json|/arquivo_frio/")

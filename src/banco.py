@@ -319,3 +319,72 @@ def expurgar_acervo(caminho: Path = EXPORT, gravar: bool = True) -> dict:
             CAMINHO_BANCO.unlink()
     return {"edicoes_removidas": len(fora), "linhas_removidas": len(linhas) - len(manter), "linhas_mantidas": len(manter),
             "motivos": dict(motivos.most_common())}
+
+
+def historico_para_livros(caminho: Path = EXPORT, gravar: bool = True) -> dict:
+    """16/10/2026 (titular): 'cada oportunidade validada gera um livro ou se liga ao livro dela' — o histórico só fica se
+    se LIGAR com segurança ao livro de uma oportunidade (mesmo endereço; ou título ≥ 60% igual com o mesmo financiador
+    e, em diários oficiais, a mesma cidade). Vai para o histórico do livro com o link da publicação; o link oficial fica
+    marcado como 'a encontrar'. O que não se liga sai do acervo (todas as tabelas)."""
+    import gzip, json, re, unicodedata
+    from collections import Counter, defaultdict
+    CAT = RAIZ / "biblioteca_alexandria" / "fontes" / "motores.json"
+    if not caminho.exists() or not CAT.exists():
+        return {"acervo": "ausente"}
+    sem = lambda s: "".join(c for c in unicodedata.normalize("NFD", str(s or "").lower()) if unicodedata.category(c) != "Mn")
+    STOP = set("de da do das dos e a o em para por com no na nos nas edital chamada publica publico selecao programa projetos "
+               "projeto premio n no".split())
+    tok = lambda s: {w for w in re.findall(r"[a-z0-9]{3,}", sem(s)) if w not in STOP and not w.isdigit()}
+    cid = lambda t: (re.search(r"diario oficial d[eoa] ([a-z ]+?)(?: \(|$| \d)", sem(t)) or [None, None])[1]
+    cat = json.loads(CAT.read_text(encoding="utf-8")); L = cat.get("motores") or []
+    urls, idx = {}, defaultdict(set)
+    for lv in L:
+        if not lv.get("oportunidade") and not lv.get("coleta"):
+            continue                                      # só livro de OPORTUNIDADE recebe histórico
+        for u in [lv.get("pagina"), lv.get("site_oficial"), *(lv.get("paginas") if isinstance(lv.get("paginas"), list) else [])]:
+            if isinstance(u, str) and u.startswith("http"):
+                urls[u.rstrip("/")] = lv["id"]
+        lv["_t"] = tok(f"{lv.get('programa') or ''} {lv.get('orgao') or ''}")
+        for w in lv["_t"]:
+            idx[w].add(lv["id"])
+    por_id = {lv["id"]: lv for lv in L}
+    linhas = []
+    with gzip.open(caminho, "rt", encoding="utf-8") as gz:
+        for l in gz:
+            linhas.append(json.loads(l))
+    ligadas = {}
+    for d in linhas:
+        if d.get("_t") != "historico":
+            continue
+        alvo = urls.get(str(d.get("url") or "").rstrip("/"))
+        if not alvo:
+            T = tok(f"{d.get('titulo')} {d.get('financiador')}"); F = tok(d.get("financiador"))
+            for i, _c in Counter(i for w in T for i in idx.get(w, ())).most_common(15):
+                lv = por_id[i]; j = len(T & lv["_t"]) / max(1, len(T | lv["_t"]))
+                c1, c2 = cid(d.get("titulo")), cid(lv.get("programa"))
+                if (c1 or c2) and c1 != c2:
+                    continue
+                if j >= 0.6 and (not F or F & tok(lv.get("orgao"))):
+                    alvo = i; break
+        if alvo:
+            ligadas[(d.get("chave"), str(d.get("ano")), d.get("id"))] = alvo
+            h = por_id[alvo].setdefault("historico_edicoes", [])
+            if not any(x.get("id") == d.get("id") for x in h):
+                h.append({"ano": d.get("ano"), "id": d.get("id"), "titulo": d.get("titulo"), "link_publicacao": d.get("url"),
+                          "link_oficial": None, "buscar_link_oficial": True, "data_publicacao": d.get("data_publicacao"),
+                          "inicio": d.get("inicio"), "fim": d.get("fim")})
+    for lv in L:
+        lv.pop("_t", None)
+    manter = [d for d in linhas if d.get("_t") == "__schema__" or (d.get("chave"), str(d.get("ano")), d.get("id")) in ligadas]
+    n_hist = sum(1 for d in linhas if d.get("_t") == "historico")
+    if gravar:
+        CAT.write_text(json.dumps(cat, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        tmp = caminho.with_suffix(".tmp.gz")
+        with gzip.open(tmp, "wt", encoding="utf-8", compresslevel=6) as gz:
+            for d in manter:
+                gz.write(json.dumps(d, ensure_ascii=False) + "\n")
+        tmp.replace(caminho)
+        if CAMINHO_BANCO.exists():
+            CAMINHO_BANCO.unlink()
+    return {"edicoes": n_hist, "ligadas_a_livros": len(ligadas), "livros_com_historico": len(set(ligadas.values())),
+            "edicoes_removidas": n_hist - len(ligadas)}

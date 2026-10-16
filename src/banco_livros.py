@@ -142,6 +142,10 @@ def consolidar(gravar: bool = True) -> dict:
             else:
                 lv.pop("oportunidade", None)
     idx = {k: v for k, v in idx.items() if v in {lv.get("id") for lv in L}}
+    for lv in L:                                       # 16/10: achados já guardados ficam só com o necessário
+        for i, x in list((lv.get("coleta") or {}).items()):
+            if isinstance(x, dict):
+                lv["coleta"][i] = so_o_necessario(x)
     # etapa 3: JUNÇÃO — os achados da mesma oportunidade (ids_origem) vão para o livro dela; o livro de entrada que
     # ficar vazio sai (sem multiplicar livros)
     onde = {}
@@ -290,6 +294,23 @@ def fluxo_por_uf() -> dict:
     return {"itens_por_uf": grupos} if regs else {}
 
 
+# 16/10/2026 (titular): do motor fica SÓ o trecho exato da oportunidade, o link da publicação, o link oficial e a
+# identificação mínima que o fluxo, as fichas e o painel usam. Nada mais do documento; análises derivadas (qualidade,
+# destinação, pertinência, caracterização, léxico) não ficam no achado.
+CAMPOS_DO_ACHADO = ("id", "titulo", "evidencia", "url", "link_oficial", "pagina_oficial", "fonte_nome", "fonte_id", "sensor", "motor",
+                    "tipo_fonte", "tipo_registro", "coletado_em", "data_publicacao", "data_consulta", "descoberto_em", "visto_em", "inicio",
+                    "fim", "prazo_texto", "prazo_situacao", "nivel", "uf", "territorio", "orgao", "objeto", "valor", "area", "status",
+                    "estado_export", "confianca", "_seq", "relido_por")
+TRECHO_MAX = 1500
+
+
+def so_o_necessario(a: dict) -> dict:
+    x = {k: a[k] for k in CAMPOS_DO_ACHADO if k in a and a[k] not in (None, "", [], {})}
+    if isinstance(x.get("evidencia"), str) and len(x["evidencia"]) > TRECHO_MAX:
+        x["evidencia"] = x["evidencia"][:TRECHO_MAX]
+    return x
+
+
 # ── ETAPA 3 · os motores gravam no LIVRO ─────────────────────────────────────────────────────────────────────────────
 def registrar_achados(achados: list[dict], motor: str | None = None, gravar: bool = True) -> dict:
     """Cada achado (já aprovado pelo portão de oportunidade) cria o seu livro ou se vincula ao que já tem o histórico,
@@ -325,7 +346,7 @@ def registrar_achados(achados: list[dict], motor: str | None = None, gravar: boo
             if quem and quem not in (x.get("relido_por") or []):
                 x["relido_por"] = (x.get("relido_por") or []) + [quem]
             continue
-        col[str(a["id"])] = {**a, **({"motor": motor} if motor and not a.get("motor") else {})}
+        col[str(a["id"])] = so_o_necessario({**a, **({"motor": motor} if motor and not a.get("motor") else {})})
     cat_doc["seq_achados"] = seq
     if gravar:
         cat_doc["total"] = len(L); cat_doc["gerado_em"] = _agora()
@@ -421,8 +442,9 @@ def sincronizar_achados(registros: dict) -> dict:
         else:
             atual = lv["coleta"][i]
             internos = {k: atual[k] for k in ("_seq", "relido_por") if k in atual}
-            if {k: v for k, v in atual.items() if k not in internos} != registros[i]:
-                lv["coleta"][i] = {**registros[i], **internos}; alt += 1
+            novo = so_o_necessario(registros[i])
+            if {k: v for k, v in atual.items() if k not in internos} != {k: v for k, v in novo.items() if k not in internos}:
+                lv["coleta"][i] = {**novo, **internos}; alt += 1
     novos = [x for i, x in registros.items() if str(i) not in onde]
     CAT.write_text(json.dumps(cat_doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     r = registrar_achados(novos) if novos else {}
