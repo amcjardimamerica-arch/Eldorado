@@ -227,7 +227,7 @@ def ciclo(ia: IALocal | None = None, limite: int | None = None) -> dict:
     limite = limite or CFG["limites"]["itens_por_ciclo"]
     from .fonte_edital import EXTRAIDOS
     import gzip
-    an = load_json(ROOT / "dados/editais/analises.json") if (ROOT / "dados/editais/analises.json").exists() else {}
+    an = load_json(ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json") if (ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json").exists() else {}
     dados = load_json(ROOT / "docs/dashboard-dados.json")
     universo = {e["id"]: e for e in (dados.get("editais") or [])}
     propostas = []

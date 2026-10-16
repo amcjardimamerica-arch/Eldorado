@@ -20,7 +20,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-BASE = ROOT / "biblioteca_alexandria/base/incentivos"
+BASE = ROOT / "biblioteca_alexandria/livros/especiais/empresas/incentivos"
 SAIDA = ROOT / "biblioteca_alexandria/livros/especiais/empresas/catalogo_incentivos.jsonl.gz"
 RESUMO = ROOT / "biblioteca_alexandria/livros/especiais/empresas/catalogo_incentivos_resumo.json"
 PAT_FONTE = "MTE — relação de beneficiárias do PAT até 31/03/2026 (somente matriz)"
@@ -256,7 +256,7 @@ def construir() -> dict:
                                                   for a, p in sorted(g["por_ano"].items())},
                                       "grafias": sorted(g["grafias"]), "casamento": modo, "fonte": "Secult-GO — créditos concedidos (Programa Goyazes)"}
         g_st[modo.split(" (")[0]] += 1
-    # 11/10/2026 (titular): BASES EXTERNAS — busca do Claude no Chrome, só fonte oficial (biblioteca_alexandria/base/
+    # 11/10/2026 (titular): BASES EXTERNAS — busca do Claude no Chrome, só fonte oficial (biblioteca_alexandria/livros/_acervo/base/
     # incentivos/externos): Lei de Incentivo ao Esporte (painel completo 2007–2026, com CNPJ), FIA e Goyazes 2024–2026.
     # Esporte/FIA entram como incentivos novos (por ano: valor e número de doações); Goyazes completa os anos que faltam
     # (casamento pelo nome, como a planilha da Secult). Pessoa física nunca entra (só CNPJ de 14 dígitos ou nome de PJ).

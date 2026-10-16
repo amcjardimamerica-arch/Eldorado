@@ -2,7 +2,7 @@
 
 Estuda ao vivo onde MP-GO (programa Destina), MPT-GO, MPT, MPF, MPDFT, MPM, MPU, CNMP e o Fundo de Defesa de Direitos Difusos
 publicam editais de destinação de recursos de reparação e bens lesados. Respeita o robots.txt; não contorna login nem
-CAPTCHA; conteúdo coletado é dado. Só biblioteca-padrão. Saída: biblioteca_alexandria/base/ministerios_publicos/sondagem.json
+CAPTCHA; conteúdo coletado é dado. Só biblioteca-padrão. Saída: biblioteca_alexandria/livros/_acervo/base/ministerios_publicos/sondagem.json
 """
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SAIDA = ROOT / "biblioteca_alexandria/base/ministerios_publicos/sondagem.json"
+SAIDA = ROOT / "biblioteca_alexandria/livros/_acervo/base/ministerios_publicos/sondagem.json"
 UA = "Mozilla/5.0 (compatible; EldoradoBot/1.0; +https://github.com/amcjardimamerica-arch/Eldorado)"
 KW = re.compile(r"destina|destina[cç][aã]o|editai?s?\b|chamamento|cadastr|entidades?|projetos? socia|\bTAC\b|ajustamento|fundo|"
                 r"repara[cç][aã]o|bens lesados|dano moral coletivo|multas?|presta[cç][aã]o pecuni|transa[cç][aã]o penal|benefici[aá]ri|"
@@ -175,7 +175,7 @@ def run() -> dict:
 
 def bruto(urls: list[str]) -> dict:
     """02/10: guarda o HTML COMPLETO (com os scripts) das páginas pedidas, para achar de onde a tabela montada por
-    JavaScript busca os dados. Respeita o robots.txt. Saída: biblioteca_alexandria/base/ministerios_publicos/bruto/"""
+    JavaScript busca os dados. Respeita o robots.txt. Saída: biblioteca_alexandria/livros/_acervo/base/ministerios_publicos/bruto/"""
     pasta = SAIDA.parent / "bruto"; pasta.mkdir(parents=True, exist_ok=True); out = {}
     for u in urls:
         b = "{0.scheme}://{0.netloc}".format(urllib.parse.urlsplit(u)); rp, _ = robots(b)

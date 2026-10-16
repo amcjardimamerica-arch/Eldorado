@@ -136,7 +136,7 @@ def _urgencia(e: dict, falta: list[str]) -> int:
 def _acervo() -> list[dict]:
     """Os editais que o sistema já conhece, venham de onde vierem."""
     saida = []
-    base = sorted((ROOT / "dados/editais").glob("*-eldorado-*-completo.json"), reverse=True)
+    base = sorted((ROOT / "biblioteca_alexandria/livros/_acervo/editais").glob("*-eldorado-*-completo.json"), reverse=True)
     if base:
         itens = load_json(base[0]).get("itens") or {}
         for k, e in (itens.items() if isinstance(itens, dict) else enumerate(itens)):

@@ -70,5 +70,5 @@ for dom in ("https://www.opendatacenter.com.br", "https://opendatacenter.com.br"
         paginas.append({"url": l, "status": st2, "texto": t2[:1800]})
     out["open_datacenter"].append({"site": dom, "status": st, "titulo": (re.findall(r"<title>(.*?)</title>", h, re.I) or [""])[0], "texto": txt[:3000], "links": links, "paginas": paginas})
     break
-(R / "biblioteca_alexandria/base/limites_busca_2026-10-01.json").write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
+(R / "biblioteca_alexandria/livros/_acervo/base/limites_busca_2026-10-01.json").write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
 print("ok")

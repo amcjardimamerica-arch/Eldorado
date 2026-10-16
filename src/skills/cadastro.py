@@ -31,7 +31,7 @@ def _conhecidos() -> tuple[frozenset, frozenset]:
         except Exception:
             pass
     try:
-        with gzip.open(ROOT / "biblioteca_alexandria/base/incentivos/rouanet_incentivadores.jsonl.gz", "rt", encoding="utf-8") as fh:
+        with gzip.open(ROOT / "biblioteca_alexandria/livros/especiais/empresas/incentivos/rouanet_incentivadores.jsonl.gz", "rt", encoding="utf-8") as fh:
             for l in fh:
                 r = json.loads(l); nomes.add(norm(r.get("nome"))); cnpjs.add(re.sub(r"\D", "", str(r.get("cnpj") or ""))[:8])
     except Exception:

@@ -9,7 +9,7 @@ Marcador NOVO — iniciativa: poder_publico · iniciativa_privada · mista (recu
 incentivo, parcerias). Vai para livro.iniciativa e para o cartão do painel (campo `iniciativa`).
 
 Oportunidade sem livro (fora da abrangência ou não seleção de associações): o parecer fica em
-biblioteca_alexandria/pareceres/sem_livro.json, com o motivo da dispensa do livro.
+biblioteca_alexandria/livros/_acervo/pareceres/sem_livro.json, com o motivo da dispensa do livro.
 
 Idempotente: o mesmo parecer (mesma data + mesma oportunidade) nunca é gravado duas vezes.
 """
@@ -24,7 +24,7 @@ from .nucleo import ROOT, load_json, now_iso, write_json
 
 PASTA = ROOT / "dados/oportunidades/pareceres_livros"
 CAT = ROOT / "biblioteca_alexandria/fontes/motores.json"
-SEM_LIVRO = ROOT / "biblioteca_alexandria/pareceres/sem_livro.json"
+SEM_LIVRO = ROOT / "biblioteca_alexandria/livros/_acervo/pareceres/sem_livro.json"
 INICIATIVAS = ("poder_publico", "iniciativa_privada", "mista")
 MAX_PARECERES = 12          # por livro: os mais recentes (o resto continua no arquivo de pareceres)
 

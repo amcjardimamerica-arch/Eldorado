@@ -1,6 +1,6 @@
 """MOTOR 12 — MINISTÉRIOS PÚBLICOS: destinação de recursos de reparação e bens lesados (titular, 02/10/2026).
 
-Base: estudo ao vivo de 02/10/2026 (biblioteca_alexandria/base/ministerios_publicos/estudo/) e catálogo
+Base: estudo ao vivo de 02/10/2026 (biblioteca_alexandria/livros/_acervo/base/ministerios_publicos/estudo/) e catálogo
 config/ministerios_publicos.json (48 fontes). Lê pela ESTRUTURA de cada fonte:
 
   tabela_mpt          MPT-GO: tabela DataTables (POST /index.php, option=com_mpt) — o que a página faz no navegador; o PDF de
@@ -34,7 +34,7 @@ from .nucleo import ROOT, has_prompt_injection, load_json, now_iso, robots_permi
 MOTOR_ID = "plat-mp-destinacoes-reparacao"
 CFG = ROOT / "config/ministerios_publicos.json"
 ESTADO = ROOT / "estado/ministerios_publicos.json"
-INVENTARIO = ROOT / "biblioteca_alexandria/base/ministerios_publicos/estudo/historico_3_anos_motor_12.csv"
+INVENTARIO = ROOT / "biblioteca_alexandria/livros/_acervo/base/ministerios_publicos/estudo/historico_3_anos_motor_12.csv"
 UA = "Mozilla/5.0 (compatible; EldoradoBot/1.0; +https://github.com/amcjardimamerica-arch/Eldorado)"
 CPF = re.compile(r"\b\d{3}\.?\d{3}\.?\d{3}-?\d{2}\b")
 PROC = re.compile(r"\b\d{6}\.\d{4}\.\d{2}\.\d{3}-\d\b")

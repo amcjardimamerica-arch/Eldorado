@@ -28,7 +28,7 @@ ONDE FICA O QUE
   Drive: pasta 1CF1VdDgGxsVhxlmYum1_erCtd8A3T2o8 (Editais Históricos)
          subpasta 17oInKWlCCcDIyhV7QjcZfOmUHYVwG-4p (GO — Goiás)
          banco: BANCO-EDITAIS-HISTORICOS.json
-  Repo:  espelho local em `dados/acervo/banco_editais_historicos.json`, para
+  Repo:  espelho local em `biblioteca_alexandria/livros/_acervo/acervo/banco_editais_historicos.json`, para
          que o painel e os testes funcionem sem rede e sem credencial.
 
 O upload dos PDFs é feito por `scripts/espelhar_editais_drive.py`, que roda no
@@ -43,7 +43,7 @@ import re
 from .inconformidade import avaliar_item as _avaliar_inconformidade
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-BANCO = ROOT / "dados/acervo/banco_editais_historicos.json"
+BANCO = ROOT / "biblioteca_alexandria/livros/_acervo/acervo/banco_editais_historicos.json"
 
 PASTA_ACERVO_DRIVE = "1CF1VdDgGxsVhxlmYum1_erCtd8A3T2o8"
 PASTA_GO_DRIVE = "17oInKWlCCcDIyhV7QjcZfOmUHYVwG-4p"

@@ -38,7 +38,7 @@ from .nucleo import (ROOT, append_jsonl, canonical_url, carregar_oportunidades, 
 CFG = ROOT / "config/sensores.json"
 F260 = ROOT / "config/fontes_captacao_260.json"
 INVEST = ROOT / "config/investigacao.json"
-PREV = ROOT / "biblioteca_alexandria/previsoes/previsoes.json"
+PREV = ROOT / "biblioteca_alexandria/livros/_acervo/previsoes/previsoes.json"
 ESTADO = ROOT / "estado/esquadra.json"
 DIARIO = ROOT / "estado/esquadra_diario.json"        # 30 dias por sensor: cor + trecho
 ATIVACAO = ROOT / "estado/ativacao_fontes.json"      # fontes específicas ativas hoje (época/menção)

@@ -169,7 +169,7 @@ META_ZONA_ATENCAO = 0.15
 
 def zona_de_atencao() -> dict:
     """P25 — mede quanto do trabalho o motor deixa para leitura humana."""
-    an = load_json(ROOT / "dados/editais/analises.json") if (ROOT / "dados/editais/analises.json").exists() else {}
+    an = load_json(ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json") if (ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json").exists() else {}
     if not an:
         return {"medido": False}
     total = len(an)

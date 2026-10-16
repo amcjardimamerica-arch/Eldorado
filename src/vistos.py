@@ -76,7 +76,7 @@ def distintas(motor: str, desde: str | None = None) -> int:
 def semear(gravar: bool = True) -> dict:
     """1ª execução: o histórico de cada motor (bases de eventos, já distintas) vira o registro de vistos."""
     d = _carregar()
-    for f in sorted((ROOT / "dados/financiadores").glob("*/eventos.compacto.json")):
+    for f in sorted((ROOT / "biblioteca_alexandria/livros/especiais/empresas/financiadores").glob("*/eventos.compacto.json")):
         motor = f.parent.name
         try:
             ev = json.loads(f.read_text(encoding="utf-8")); sc = ev.get("schema") or []

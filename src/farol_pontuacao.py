@@ -1,7 +1,7 @@
 """PONTUAÇÃO DO FAROL — cada edital medido contra o que o titular já selecionou.
 
 Os pesos não são opinião: são as taxas de aprovação observadas nos vereditos do titular
-(biblioteca_alexandria/base/pontuacao/criterios.json), refeitas a cada varredura. Critério sem
+(biblioteca_alexandria/livros/_acervo/base/pontuacao/criterios.json), refeitas a cada varredura. Critério sem
 três casos julgados não pontua — não se inventa peso. A nota vai de 0 a 100 e vem com o porquê.
 """
 from __future__ import annotations
@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CRITERIOS = ROOT / "biblioteca_alexandria/base/pontuacao/criterios.json"
+CRITERIOS = ROOT / "biblioteca_alexandria/livros/_acervo/base/pontuacao/criterios.json"
 PESOS = {"por_tema": 30, "por_esfera": 15, "por_abrangencia": 25, "por_fonte": 10, "por_faixa_de_valor": 10, "exigencias": 10}
 
 

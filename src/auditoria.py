@@ -18,7 +18,7 @@ As causas são fechadas num vocabulário curto, para virar estatística:
   `sem_sensor_para_a_fonte` ... nenhum motor cobre o domínio de origem
   `fonte_fora_do_escopo` ...... não é edital para OSC
 
-Saída: `biblioteca_alexandria/historico/auditoria_individual.json` (resumo e
+Saída: `biblioteca_alexandria/livros/_acervo/historico/auditoria_individual.json` (resumo e
 estatística) e uma linha por edital em `auditoria_editais.jsonl` — formato
 enxuto, para não pesar o repositório.
 """
@@ -33,7 +33,7 @@ from urllib.parse import urlsplit
 from .completude_biblioteca import ITENS, onze_itens
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-SAIDA = ROOT / "biblioteca_alexandria/historico"
+SAIDA = ROOT / "biblioteca_alexandria/livros/_acervo/historico"
 # ACHADO DA AUDITORIA: a URL do Querido Diário é o PDF da EDIÇÃO INTEIRA do
 # diário oficial — o ato do edital está dentro dela. Não é agregador: é a
 # fonte primária, e o sistema só precisava abrir o documento.

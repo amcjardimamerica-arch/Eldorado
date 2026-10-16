@@ -53,7 +53,7 @@ class TesteTresBarreiras(unittest.TestCase):
 
 class TesteParecer(unittest.TestCase):
     def test_as_sete_posicoes_e_a_recusa(self):
-        p = (ROOT / "biblioteca_alexandria/pareceres/PARECER-SUCESSAO-PILOTO-2026-09-23.md").read_text(encoding="utf-8")
+        p = (ROOT / "biblioteca_alexandria/livros/_acervo/pareceres/PARECER-SUCESSAO-PILOTO-2026-09-23.md").read_text(encoding="utf-8")
         for pos in ("Extremamente pessimista", "Pessimista", "Levemente pessimista", "Neutro",
                     "Levemente otimista", "Otimista", "Extremamente otimista"):
             self.assertIn(pos, p, pos)
@@ -62,6 +62,6 @@ class TesteParecer(unittest.TestCase):
         self.assertIn("Não há dado", p)
 
     def test_o_parecer_corrige_a_nota_inventada(self):
-        p = (ROOT / "biblioteca_alexandria/pareceres/PARECER-SUCESSAO-PILOTO-2026-09-23.md").read_text(encoding="utf-8")
+        p = (ROOT / "biblioteca_alexandria/livros/_acervo/pareceres/PARECER-SUCESSAO-PILOTO-2026-09-23.md").read_text(encoding="utf-8")
         self.assertIn("substitutos que **eu mesmo parametrizei**", p)
         self.assertIn("nunca chegou a ser executado", p)

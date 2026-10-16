@@ -12,7 +12,7 @@ O léxico aprendido fica em config/lexico_aprendido.json e é somado à camada 1
 os motores de descoberta. Cada termo carrega a contagem e os ids que o sustentam —
 auditável, reversível, nunca invisível.
 
-Fonte de verdade: dados/editais/analises.json (selo) + docs/dashboard-dados.json (títulos/objetos).
+Fonte de verdade: biblioteca_alexandria/livros/_acervo/editais/analises.json (selo) + docs/dashboard-dados.json (títulos/objetos).
 """
 from __future__ import annotations
 
@@ -69,7 +69,7 @@ def _lexico_atual() -> set[str]:
 
 
 def aprender() -> dict:
-    an = load_json(ROOT / "dados/editais/analises.json") if (ROOT / "dados/editais/analises.json").exists() else {}
+    an = load_json(ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json") if (ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json").exists() else {}
     dados = load_json(ROOT / "docs/dashboard-dados.json")
     universo = {e["id"]: e for e in (dados.get("editais") or [])}
     ab = ROOT / "docs/dados/abertas.json"

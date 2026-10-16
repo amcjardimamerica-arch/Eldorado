@@ -13,7 +13,7 @@ A carga é FRACIONADA: cada execução processa o que cabe no orçamento de temp
 onde parou, do mais recente para o mais antigo. Nada é inventado: o que o texto não diz fica null.
 
 Saídas
-  biblioteca_alexandria/base/historico_3_anos/<motor>/<ano>.jsonl   arquivo (encerradas e abertas, uma linha por oportunidade)
+  biblioteca_alexandria/livros/_acervo/base/historico_3_anos/<motor>/<ano>.jsonl   arquivo (encerradas e abertas, uma linha por oportunidade)
   livros (Biblioteca de Alexandria)                                 livro novo ou edição nova (src.livros_regra.registrar_achados)
   estado/historico_3_anos/<motor>.json                              cursor e contagens
   docs/dados/historico_3_anos.json                                  resumo para o painel
@@ -34,7 +34,7 @@ from pathlib import Path
 
 from .nucleo import ROOT, now_iso, write_json
 
-ARQ = ROOT / "biblioteca_alexandria/base/historico_3_anos"
+ARQ = ROOT / "biblioteca_alexandria/livros/_acervo/base/historico_3_anos"
 EST = ROOT / "estado/historico_3_anos"
 RESUMO = ROOT / "docs/dados/historico_3_anos.json"
 ANOS = 3

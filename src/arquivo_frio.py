@@ -23,7 +23,7 @@ from .compactador import ROOT, empacotar, registrar
 
 CFG = ROOT / "config/arquivo_frio.json"
 TMP = Path("/tmp/arquivo_frio")
-LISTAS = ROOT / "biblioteca_alexandria/arquivo_frio/listas"
+LISTAS = ROOT / "biblioteca_alexandria/livros/_acervo/arquivo_frio/listas"
 
 
 def _api(metodo, url, dados=None, cab=None):

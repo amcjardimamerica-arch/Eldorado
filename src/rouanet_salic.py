@@ -33,7 +33,7 @@ from .nucleo import ROOT, load_json, now_iso, sha256, validate_public_https, wri
 
 MOTOR_ID = "plat-salic"
 ESTADO = ROOT / "estado/salic_go.json"
-ARQ = ROOT / "biblioteca_alexandria/base/historico_3_anos/salic"
+ARQ = ROOT / "biblioteca_alexandria/livros/_acervo/base/historico_3_anos/salic"
 API = "https://api.salic.cultura.gov.br/api/v1/projetos/?UF={uf}&ano_projeto={ano}&limit={lim}&offset={off}&format=json"
 NORMA = {"ato": "Instrução Normativa MinC nº 29, de 29 de janeiro de 2026", "artigo": "art. 5º",
          "texto": "O período para apresentação de propostas culturais é de 1º de fevereiro a 31 de outubro de cada ano.",

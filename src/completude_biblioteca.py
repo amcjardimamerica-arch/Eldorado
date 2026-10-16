@@ -28,7 +28,7 @@ from .biblioteca import OPORTUNIDADES
 from .nucleo import ROOT, load_json, now_iso, write_json
 
 SAIDA = ROOT / "biblioteca_alexandria/fontes"
-RELATORIO = ROOT / "biblioteca_alexandria/historico/completude_11_itens.json"
+RELATORIO = ROOT / "biblioteca_alexandria/livros/_acervo/historico/completude_11_itens.json"
 
 # 12 itens: os 11 originais + Área de atuação (educação, esporte, cultura…)
 ITENS = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor",

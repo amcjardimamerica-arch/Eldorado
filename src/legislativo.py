@@ -7,7 +7,7 @@ sancionado) entra na linha do tempo da proposição.
 
 Fontes (o que os motores 04, 05 e Congresso já coletam):
   biblioteca_alexandria/livros/especiais/legislativo/camara_goiania.json          utilidade pública (com a situação na pauta) e itens a acompanhar
-  dados/financiadores/<motor>/eventos  pistas dos motores legislativos (notícias e proposições)
+  biblioteca_alexandria/livros/especiais/empresas/financiadores/<motor>/eventos  pistas dos motores legislativos (notícias e proposições)
   biblioteca_alexandria/livros/especiais/legislativo/legislativo_entrada.json      atos desviados dos livros (livros_regra.registrar_achados)
 Saídas: biblioteca_alexandria/livros/especiais/legislativo/legislativo.json (histórico, com movimentações) e docs/dados/legislativo.json (painel).
 """
@@ -120,7 +120,7 @@ def _chave(casa: str | None, numero: str | None, titulo: str, url: str) -> str:
 
 
 def _eventos(motor: str) -> list[dict]:
-    d = _j(ROOT / f"dados/financiadores/{motor}/eventos.compacto.json", {})
+    d = _j(ROOT / f"biblioteca_alexandria/livros/especiais/empresas/financiadores/{motor}/eventos.compacto.json", {})
     sc = d.get("schema") or []
     return [dict(zip(sc, ln)) for ln in d.get("linhas") or []] if sc else []
 

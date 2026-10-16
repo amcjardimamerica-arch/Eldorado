@@ -22,12 +22,12 @@ jobs:
         if: always()
         run: |
           git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
-          git add biblioteca_alexandria/base/incentivos docs/dados/doadoras || true
+          git add biblioteca_alexandria/livros/especiais/empresas/incentivos docs/dados/doadoras || true
           git commit -q -m "base: histórico de doações da Rouanet $(date -u +%F\ %H:%M)" || exit 0
           for i in 1 2 3; do git pull --rebase -q -X theirs origin main && git push -q origin main && break; sleep 5; done
       - name: Se ainda falta, continua na próxima execução
         if: success()
         run: |
-          python3 -c "import json;s=json.load(open('biblioteca_alexandria/base/incentivos/rouanet_status.json'));exit(0 if (s.get('b') or {}).get('completo') else 1)" && { echo "histórico completo"; exit 0; }
+          python3 -c "import json;s=json.load(open('biblioteca_alexandria/livros/especiais/empresas/incentivos/rouanet_status.json'));exit(0 if (s.get('b') or {}).get('completo') else 1)" && { echo "histórico completo"; exit 0; }
           curl -s -o /dev/null -w "continua: %{http_code}\n" -X POST -H "Authorization: Bearer ${{ github.token }}" -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${{ github.repository }}/actions/workflows/coleta-rouanet.yml/dispatches" -d '{"ref":"main"}'

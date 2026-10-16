@@ -8,8 +8,8 @@
 2. LEI DE INCENTIVO AO ESPORTE. A página está em defeso eleitoral ('Conteúdo restrito'). Procura as cópias
    anteriores no Internet Archive (web.archive.org): planilhas e relatórios de projetos captados e patrocinadores.
 
-Grava tudo o que achou — e o que não achou — em biblioteca_alexandria/base/incentivos/sondagem_fontes.json;
-arquivos de dados baixados vão para biblioteca_alexandria/base/incentivos/historico/.
+Grava tudo o que achou — e o que não achou — em biblioteca_alexandria/livros/especiais/empresas/incentivos/sondagem_fontes.json;
+arquivos de dados baixados vão para biblioteca_alexandria/livros/especiais/empresas/incentivos/historico/.
 """
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ from pathlib import Path
 from urllib.parse import urljoin
 
 RAIZ = Path(__file__).resolve().parents[1]
-SAIDA = RAIZ / "biblioteca_alexandria/base/incentivos"
+SAIDA = RAIZ / "biblioteca_alexandria/livros/especiais/empresas/incentivos"
 HIST = SAIDA / "historico"
 UA = {"User-Agent": "Mozilla/5.0 (Eldorado; associacao sem fins lucrativos; dados publicos)"}
 CHAVE = re.compile(r"benef[ií]c|incentiv|ren[uú]ncia|gasto[s]? tribut|dirbi|transpar[eê]ncia fiscal|doa[cç][õo]|imunidade|dgt|lei 14\.973|lc 187", re.I)

@@ -1,5 +1,5 @@
 """02/10/2026: motor 12 — Ministérios Públicos. Testes SEM REDE com os itens-âncora do estudo ao vivo
-(biblioteca_alexandria/base/ministerios_publicos/estudo/itens_ancora.md). As linhas da tabela seguem o formato real
+(biblioteca_alexandria/livros/_acervo/base/ministerios_publicos/estudo/itens_ancora.md). As linhas da tabela seguem o formato real
 devolvido pelo PRT-18 na nuvem em 02/10 (aaData: unidade, data, número, procedimento, código do PDF)."""
 import json, re, sys, tempfile, unittest
 from datetime import date

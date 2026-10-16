@@ -3,7 +3,7 @@
 Só entram oportunidades do REPOSITÓRIO ÚNICO (o mesmo universo da tela inicial) cujo próximo passo é o Chrome, isto é,
 depois das 10 abordagens do Cartório na fonte. Cada registro leva os itens já comprovados (não refazer) e os que faltam.
 O lote só é gravado se o total bater com a fila do Chrome do repositório — sem isso, recusa (não repete o erro de
-11/10, quando os lotes saíram de outro conjunto). Saída: dados/revisoes/fila_chrome_atual/lote_<N>.json (até 150 por lote).
+11/10, quando os lotes saíram de outro conjunto). Saída: biblioteca_alexandria/livros/_acervo/revisoes/fila_chrome_atual/lote_<N>.json (até 150 por lote).
 """
 import json
 import sys
@@ -19,7 +19,7 @@ def gerar(tamanho: int = 150) -> dict:
     resumo = json.loads(R.RESUMO.read_text(encoding="utf-8")) if R.RESUMO.exists() else {}
     if len(fila) != int(resumo.get("fila_chrome", -1)):
         raise SystemExit(f"RECUSADO: a fila ({len(fila)}) não bate com o resumo do repositório ({resumo.get('fila_chrome')}). Reconstrua o repositório.")
-    pasta = ROOT / "dados/revisoes/fila_chrome_atual"; pasta.mkdir(parents=True, exist_ok=True)
+    pasta = ROOT / "biblioteca_alexandria/livros/_acervo/revisoes/fila_chrome_atual"; pasta.mkdir(parents=True, exist_ok=True)
     for f in pasta.glob("lote_*.json"):
         f.unlink()
     lotes = [fila[i:i + tamanho] for i in range(0, len(fila), tamanho)]

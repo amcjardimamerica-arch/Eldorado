@@ -27,6 +27,6 @@ jobs:
       - name: Gravar
         run: |
           git config user.name "arquivo-frio" && git config user.email "arquivo@eldorado"
-          git add -A biblioteca_alexandria/arquivo_frio docs biblioteca_alexandria/livros/anexos 2>/dev/null || true
+          git add -A biblioteca_alexandria/livros/_acervo/arquivo_frio docs biblioteca_alexandria/livros/anexos 2>/dev/null || true
           git commit -q -m "arquivo frio: pacotes guardados fora do repositório e originais removidos ($(date -u +%F))" || exit 0
           for i in 1 2 3 4; do git pull --rebase -q -X ours origin main && git push -q origin main && break; sleep 5; done

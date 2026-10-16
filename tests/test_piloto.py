@@ -54,7 +54,7 @@ class TesteConstituicaoEConselho(unittest.TestCase):
         for x in ("Relatório de aprendizado e bloqueios", "Perguntas para o conselho", "anota o modelo"): self.assertIn(x, t)
 
     def test_relatorio_aponta_o_modelo(self):
-        an = json.loads((ROOT / "dados/editais/analises.json").read_text(encoding="utf-8"))
+        an = json.loads((ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json").read_text(encoding="utf-8"))
         self.assertTrue(all(v.get("modelo") for v in an.values()))
         self.assertTrue(any(v["modelo"] == "Claude Fable 5.1" for v in an.values()))
         html = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")

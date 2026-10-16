@@ -33,7 +33,7 @@ from .nucleo import ROOT, load_json, now_iso, slug, write_json
 
 CFG = ROOT / "config/emendas.json"
 ESTADO = ROOT / "biblioteca_alexandria/livros/especiais/legislativo/emendas"
-BIBLIOTECA = ROOT / "biblioteca_alexandria/emendas"
+BIBLIOTECA = ROOT / "biblioteca_alexandria/livros/especiais/legislativo/emendas_fontes"
 
 
 def _cfg() -> dict:

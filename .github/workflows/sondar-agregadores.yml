@@ -17,11 +17,11 @@ jobs:
         if: always()
         run: |
           git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
-          cp biblioteca_alexandria/base/sondagem_agregadores.json /tmp/s.json 2>/dev/null || exit 0
+          cp biblioteca_alexandria/livros/_acervo/base/sondagem_agregadores.json /tmp/s.json 2>/dev/null || exit 0
           for i in 1 2 3 4; do
             git fetch -q origin main && git reset -q --hard origin/main
-            mkdir -p biblioteca_alexandria/base && cp /tmp/s.json biblioteca_alexandria/base/sondagem_agregadores.json
-            git add biblioteca_alexandria/base/sondagem_agregadores.json
+            mkdir -p biblioteca_alexandria/livros/_acervo/base && cp /tmp/s.json biblioteca_alexandria/livros/_acervo/base/sondagem_agregadores.json
+            git add biblioteca_alexandria/livros/_acervo/base/sondagem_agregadores.json
             git commit -q -m "sondagem dos agregadores de editais $(date -u +%F\ %H:%M)" || break
             git push -q origin main && break; sleep 5
           done

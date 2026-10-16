@@ -3,7 +3,7 @@
 
 Para cada site: a listagem responde? o conteúdo vem no HTML ou depende de JavaScript? há RSS / sitemap? o robots.txt
 permite? quantos editais aparecem? e, lendo algumas páginas de edital, QUANTAS apontam para a fonte oficial — é isso
-que decide se o site serve como motor de INDÍCIOS. Grava biblioteca_alexandria/base/sondagem_agregadores.json.
+que decide se o site serve como motor de INDÍCIOS. Grava biblioteca_alexandria/livros/_acervo/base/sondagem_agregadores.json.
 """
 from __future__ import annotations
 
@@ -114,7 +114,7 @@ def sondar(urls):
 
 if __name__ == "__main__":
     out = {"em": time.strftime("%Y-%m-%dT%H:%M:%S"), "sites": {n: sondar(u) for n, u in SITES.items()}}
-    dest = RAIZ / "biblioteca_alexandria/base/sondagem_agregadores.json"
+    dest = RAIZ / "biblioteca_alexandria/livros/_acervo/base/sondagem_agregadores.json"
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps({n: s["resumo"] for n, s in out["sites"].items()}, ensure_ascii=False, indent=1))

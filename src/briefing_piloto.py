@@ -31,7 +31,7 @@ LIMITE_HISTORICO = 8
 def _estado_do_banco() -> dict:
     """Uma fotografia curta do que a Biblioteca tem hoje."""
     f = {}
-    base = sorted((ROOT / "dados/editais").glob("*-eldorado-*-completo.json"), reverse=True)
+    base = sorted((ROOT / "biblioteca_alexandria/livros/_acervo/editais").glob("*-eldorado-*-completo.json"), reverse=True)
     if base:
         d = load_json(base[0])
         itens = d.get("itens") or {}

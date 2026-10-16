@@ -11,7 +11,7 @@ Cada oportunidade do mapa recebe UMA decisão, registrada em biblioteca_alexandr
     descartada                não é oportunidade (notícia, vaga, blog, inexigibilidade, licitação, ato de pessoal…): sai
     pendente                  não foi possível confirmar na fonte oficial agora: fica no mapa, com o motivo
 
-aplicar()   leva as decisões ao sistema — arquivo (dados/editais/arquivados.json), cadastro preditivo, estudo de cada
+aplicar()   leva as decisões ao sistema — arquivo (biblioteca_alexandria/livros/_acervo/editais/arquivados.json), cadastro preditivo, estudo de cada
             oportunidade válida (dados/editais/extraidos/<id>.json → verificacao_externa) e livros de oportunidades (cria o
             opressor individual da válida que ainda não tinha; desliga o opressor criado para item descartado/encerrado).
 dispensa()  o APRENDIZADO: regras de config/filtros_motores.json que dispensam na origem o que a validação mostrou
@@ -36,11 +36,11 @@ from .nucleo import ROOT, load_json, now_iso, write_json
 
 PASTA = ROOT / "biblioteca_alexandria/livros/_vistas/validacao_mapa"
 FILTROS = ROOT / "config/filtros_motores.json"
-ARQUIVADOS = ROOT / "dados/editais/arquivados.json"
+ARQUIVADOS = ROOT / "biblioteca_alexandria/livros/_acervo/editais/arquivados.json"
 EXT = ROOT / "dados/editais/extraidos"
 CAT_OPR = ROOT / "biblioteca_alexandria/fontes/motores.json"
 EST_OPR = ROOT / "estado/opressores.json"
-PRED = ROOT / "biblioteca_alexandria/base/preditivo/oportunidades.jsonl"
+PRED = ROOT / "biblioteca_alexandria/livros/_acervo/base/preditivo/oportunidades.jsonl"
 SAIDA_REL = ROOT / "docs/dados/validacao_motores.json"
 DECISOES = ("valida_aberta", "valida_fora_abrangencia", "arquivada_encerrada", "descartada", "pendente")
 SAEM_DO_MAPA = ("arquivada_encerrada", "descartada")

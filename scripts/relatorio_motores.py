@@ -32,7 +32,7 @@ from urllib.parse import urlsplit
 RAIZ = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(RAIZ))
 
-SAIDA_MD = RAIZ / "biblioteca_alexandria/pareceres/RELATORIO-MOTORES-INDIVIDUAL-2026-09-24.md"
+SAIDA_MD = RAIZ / "biblioteca_alexandria/livros/_acervo/pareceres/RELATORIO-MOTORES-INDIVIDUAL-2026-09-24.md"
 SAIDA_JSON = RAIZ / "docs/dados/relatorio_motores.json"
 
 
@@ -62,7 +62,7 @@ def coletar() -> dict:
     alertas = {x["id"]: x for x in (ler("estado/alerta_motores.json", {}).get("alertas") or [])}
     bloq = ler("estado/bloqueios.json", {}).get("dominios") or {}
     fin = dict(ler("config/finalidade_motores.json", {}).get("motores") or [])
-    an = ler("dados/editais/analises.json", {}) or {}
+    an = ler("biblioteca_alexandria/livros/_acervo/editais/analises.json", {}) or {}
 
     # o elo registro → motor: a ficha da Biblioteca guarda de que fonte o registro veio
     from src.nucleo import chave_curta

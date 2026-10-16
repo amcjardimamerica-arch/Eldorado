@@ -384,7 +384,7 @@ def _novas_sem_referencia(mencoes: list[dict], fontes: list[dict]) -> list[dict]
         from .validacao_mapa import carregar as _val, SAEM_DO_MAPA
         from .curadoria_automatica import decidir as _decidir
         VAL = _val()
-        ARQ = load_json(ROOT / "dados/editais/arquivados.json") if (ROOT / "dados/editais/arquivados.json").exists() else {}
+        ARQ = load_json(ROOT / "biblioteca_alexandria/livros/_acervo/editais/arquivados.json") if (ROOT / "biblioteca_alexandria/livros/_acervo/editais/arquivados.json").exists() else {}
     except Exception:
         VAL, ARQ, SAEM_DO_MAPA, _decidir = {}, {}, (), (lambda x: None)
     RUIDO_TIT = re.compile(r"^\s*extrato|termo aditivo|homologa|resultado|inexigibilidade|dispensa de chamamento", re.I)

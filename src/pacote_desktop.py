@@ -48,7 +48,7 @@ def montar() -> dict:
             for r in (m.get("rotas") or [])[:3]:
                 if r.get("url") and str(r["url"]).startswith("http"):
                     L.append(f"    - abrir {r['url']} e procurar: {', '.join((m.get('lexico_camada1') or [])[:6])}")
-        L.append(""); L.append("Para cada rota aberta, liste os editais publicados nos últimos 30 dias que casem com o léxico e que ainda não estejam em `dados/editais/`. Devolva em `dados/editais/coleta_navegador/<data>-motores.json` no formato `{\"<id ou novo>\": {\"objeto\":..., \"inicio\":..., \"fim\":..., \"pagina_oficial\":..., \"observacao\":...}}`.")
+        L.append(""); L.append("Para cada rota aberta, liste os editais publicados nos últimos 30 dias que casem com o léxico e que ainda não estejam em `biblioteca_alexandria/livros/_acervo/editais/`. Devolva em `biblioteca_alexandria/livros/_acervo/editais/coleta_navegador/<data>-motores.json` no formato `{\"<id ou novo>\": {\"objeto\":..., \"inicio\":..., \"fim\":..., \"pagina_oficial\":..., \"observacao\":...}}`.")
     else:
         L.append("Nenhum motor em alerta.")
     L += ["", f"## Etapa 3 — oportunidades aguardando ação externa ({len(externa)})", ""]

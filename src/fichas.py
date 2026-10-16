@@ -223,7 +223,7 @@ def run() -> dict:
         if item.get("status") in {"quarentena_prompt_injection", "descartada"}:
             continue
         aprendizado = None
-        caminho_ap = ROOT / "dados/financiadores" / (item.get("fonte_id") or "") / "aprendizado.json"
+        caminho_ap = ROOT / "biblioteca_alexandria/livros/especiais/empresas/financiadores" / (item.get("fonte_id") or "") / "aprendizado.json"
         if caminho_ap.exists():
             try:
                 aprendizado = load_json(caminho_ap)

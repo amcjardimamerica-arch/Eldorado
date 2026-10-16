@@ -15,7 +15,7 @@ lacuna fica visível em vez de virar silêncio.
     pat          empresas beneficiárias do PAT                          portal de dados abertos (CKAN)
     goyazes      projetos aprovados pela Lei Goyazes (Secult-GO)        sem base estruturada pública conhecida
 
-Saída: biblioteca_alexandria/base/incentivos/<fonte>.jsonl.gz, empresas_incentivadoras.jsonl (a lista
+Saída: biblioteca_alexandria/livros/especiais/empresas/incentivos/<fonte>.jsonl.gz, empresas_incentivadoras.jsonl (a lista
 de empresas que já destinaram por lei, que o Piloto consulta antes de "descobrir" uma empresa) e
 status.json com o resultado de cada fonte.
 
@@ -33,7 +33,7 @@ from datetime import date
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[1]
-SAIDA = RAIZ / "biblioteca_alexandria/base/incentivos"
+SAIDA = RAIZ / "biblioteca_alexandria/livros/especiais/empresas/incentivos"
 ANOS = list(range(date.today().year - 4, date.today().year + 1))   # os últimos 5 anos
 UA = {"User-Agent": "Eldorado/1.0 (coleta de dados publicos; associacao sem fins lucrativos)", "Accept": "application/json"}
 

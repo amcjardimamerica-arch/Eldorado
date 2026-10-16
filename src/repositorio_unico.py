@@ -310,7 +310,7 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
     _CUR = {x.get("id"): x for x in ((_j(ROOT / "estado/curadoria_links.json", {}) or {}).get("itens") or [])}   # 15/10
     _PNCP = (_j(ROOT / "estado/pncp/dossies.json", {}) or {}).get("dossies") or {}                              # 15/10
     hoje = hoje or date.today().isoformat()
-    V = (_j(ROOT / "dados/editais/vereditos_revisao.json", {}) or {}).get("vereditos") or {}
+    V = (_j(ROOT / "biblioteca_alexandria/livros/_acervo/editais/vereditos_revisao.json", {}) or {}).get("vereditos") or {}
     certs = dict((__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/cartorio/certidoes.json", {}) or {}).get("certidoes") or {})
     for k, m in ((__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(ROOT / "estado/cartorio/certidoes_manuais.json", {}) or {}).get("certidoes") or {}).items():
         a = certs.get(k) or {}
@@ -624,7 +624,7 @@ def auditar(resumo: dict) -> dict:
     cart = ((_j(ROOT / "docs/dados/cartorio.json", {}) or {}).get("linha_de_producao") or {}).get("fila_oportunidades")
     if cart is not None and cart > resumo["abertas"]:
         alertas.append(f"fila do Cartório ({cart}) maior que as abertas do repositório ({resumo['abertas']}) — o Cartório passa a ler a fila do repositório")
-    lote = ROOT / "dados/revisoes/fila_chrome_atual/lote.json"
+    lote = ROOT / "biblioteca_alexandria/livros/_acervo/revisoes/fila_chrome_atual/lote.json"
     if lote.exists():
         n = len((_j(lote, {}) or {}).get("registros") or [])
         if n != resumo["fila_chrome"]:

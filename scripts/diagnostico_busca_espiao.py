@@ -15,5 +15,5 @@ for c in CONS:
         t1 = time.time(); tx = ler_pagina(r["url"])
         item["paginas"].append({"url": r["url"][:120], "caracteres": len(tx or ""), "segundos": round(time.time() - t1, 1), "trecho_busca": (r.get("trecho") or "")[:80]})
     out.append(item)
-(R / "biblioteca_alexandria/base/diagnostico_busca_espiao.json").write_text(json.dumps({"em": time.strftime("%Y-%m-%dT%H:%M:%S"), "itens": out}, ensure_ascii=False, indent=1), encoding="utf-8")
+(R / "biblioteca_alexandria/livros/_acervo/base/diagnostico_busca_espiao.json").write_text(json.dumps({"em": time.strftime("%Y-%m-%dT%H:%M:%S"), "itens": out}, ensure_ascii=False, indent=1), encoding="utf-8")
 print(json.dumps(out, ensure_ascii=False)[:3000])

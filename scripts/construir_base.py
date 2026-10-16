@@ -6,7 +6,7 @@ guardados FORA da Biblioteca (em dados/editais/extraidos) e uma "previsão" cons
 diário (Betim/MG a cada mês não é edital que volta: é o diário que sai). Nada disso era base para
 direcionar motor, Piloto ou Farol.
 
-O que esta base produz, em biblioteca_alexandria/base/ (JSONL: uma linha por registro, abre em qualquer
+O que esta base produz, em biblioteca_alexandria/livros/_acervo/base/ (JSONL: uma linha por registro, abre em qualquer
 ferramenta, grep e pandas leem em milissegundos):
 
     editais/<ano>.jsonl        HISTÓRICO — todo edital conhecido, um esquema só, com o veredito do titular
@@ -76,7 +76,7 @@ def historico() -> tuple[list[dict], list[dict]]:
         if isinstance(d, dict):
             ext[chave_curta(f.stem)] = d
     familias = {}
-    g = RAIZ / "dados/verificacao/parecer_2026-09-23/EXCLUIR-2026-09-23.csv"
+    g = RAIZ / "biblioteca_alexandria/livros/_acervo/verificacao/parecer_2026-09-23/EXCLUIR-2026-09-23.csv"
     if g.exists():
         for r in csv.DictReader(open(g, encoding="utf-8-sig"), delimiter=";"):
             familias[chave_curta(r.get("id", ""))] = r.get("familia")

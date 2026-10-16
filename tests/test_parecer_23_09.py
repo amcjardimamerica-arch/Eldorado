@@ -6,7 +6,7 @@ from src.correcoes_motor_23_09 import (ABRANGENCIA, alcance, territorio_do_objet
                                        e_permanente, classificar_prazo, hora_de_encerramento,
                                        restricao_eleitoral, avaliar)
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-ANALISES = json.loads((ROOT / "dados/editais/analises.json").read_text(encoding="utf-8"))
+ANALISES = json.loads((ROOT / "biblioteca_alexandria/livros/_acervo/editais/analises.json").read_text(encoding="utf-8"))
 
 
 class TesteAtualizacaoAplicada(unittest.TestCase):

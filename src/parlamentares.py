@@ -33,7 +33,7 @@ from urllib.request import Request, urlopen
 
 from .nucleo import ROOT, load_json, now_iso, validate_public_https, write_json
 
-BASE = ROOT / "dados/parlamentares"
+BASE = ROOT / "biblioteca_alexandria/livros/especiais/legislativo/parlamentares"
 
 def _buscar(url: str, timeout: int = 30) -> dict:
     validate_public_https(url)
