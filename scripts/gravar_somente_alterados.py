@@ -35,6 +35,15 @@ def salvar() -> dict:
     for l in mud:
         caminho = l[3:].split(" -> ")[-1].strip().strip('"')
         (apagados if l[:2].strip() == "D" else alterados).append(caminho)
+    try:                                              # 16/10/2026 (titular): TRAVA — dado de oportunidade só nos livros
+        sys.path.insert(0, str(ROOT))
+        from src.livro_arquivo import proibido
+        recusados = [c for c in alterados if proibido(c)]
+        if recusados:
+            print(f"TRAVA: {len(recusados)} arquivo(s) em pasta proibida recusado(s) (o dado só existe nos livros): {recusados[:3]}")
+            alterados = [c for c in alterados if not proibido(c)]
+    except Exception:  # noqa: BLE001
+        pass
     if GUARDA.exists():
         shutil.rmtree(GUARDA)
     for c in alterados:

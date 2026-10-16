@@ -23,6 +23,7 @@ from pathlib import Path
 from .nucleo import ROOT, load_json, now_iso, write_json
 
 PASTA = ROOT / "estado/piloto/briefings"
+_PASTA_ORIGINAL = PASTA                                    # 16/10: só a pasta ORIGINAL vai aos livros (teste aponta outra)
 PUB = ROOT / "docs/dados/briefings_piloto.json"
 LIMITE_HISTORICO = 8
 
@@ -71,10 +72,12 @@ def _estado_do_banco() -> dict:
 
 
 def anteriores(n: int = LIMITE_HISTORICO) -> list[dict]:
-    if not PASTA.exists():
-        return []
-    arqs = sorted(PASTA.glob("*.json"), reverse=True)[:n]
-    return [load_json(a) for a in arqs]
+    # 16/10/2026 (titular): os briefings vivem NOS LIVROS (cada alvo no livro da sua oportunidade)
+    from . import livro_arquivo as LA
+    if PASTA is not _PASTA_ORIGINAL:            # pasta apontada para outro lugar (teste)
+        return [load_json(a) for a in sorted(PASTA.glob("*.json"), reverse=True)[:n]] if PASTA.exists() else []
+    arqs = sorted(LA.arquivos_de(PASTA), reverse=True)[:n]
+    return [LA.carregar(a, {}) or {} for a in arqs]
 
 
 def _resumo_dos_anteriores(hist: list[dict]) -> list[str]:
@@ -177,7 +180,8 @@ def escrever(ia, motor_cfg: dict | None = None) -> dict:
         '"pergunta_de_pesquisa": "a pergunta que orienta o voo", '
         '"o_que_procurar": ["site oficial", "..."], "nivel": "regional|estadual|nacional|internacional"}')
 
-    b = {"em": now_iso(), "voo": len(list(PASTA.glob("*.json"))) + 1 if PASTA.exists() else 1,
+    b = {"em": now_iso(), "voo": (len(__import__("src.livro_arquivo", fromlist=["x"]).arquivos_de(PASTA)) if PASTA is _PASTA_ORIGINAL
+                                     else len(list(PASTA.glob("*.json"))) if PASTA.exists() else 0) + 1,
          "banco": banco,
          "diagnostico": (r or {}).get("diagnostico"),
          "aposta": (r or {}).get("aposta") or {},
@@ -217,10 +221,14 @@ def escrever(ia, motor_cfg: dict | None = None) -> dict:
         _registrar_mudez(True)
     else:
         _registrar_mudez(False)
-    PASTA.mkdir(parents=True, exist_ok=True)
     # o carimbo vai ao milissegundo: dois briefings no mesmo segundo colidiam no mesmo
     # arquivo, e o histórico deixava de crescer — a rede de segurança repetia o rumo
-    write_json(PASTA / f"{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S-%f')}.json", b)
+    from . import livro_arquivo as LA                    # 16/10: grava NO LIVRO (o arquivo não fica)
+    _nome = PASTA / f"{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S-%f')}.json"
+    if PASTA is _PASTA_ORIGINAL:           # uso normal: no livro (a memória do voo fica no controle)
+        LA.guardar(_nome, b, controle_sem_livro=True)
+    else:                                                  # pasta apontada para outro lugar (teste): grava nela
+        PASTA.mkdir(parents=True, exist_ok=True); write_json(_nome, b)
     return b
 
 
@@ -232,16 +240,23 @@ def fechar(briefing: dict, achados: list[dict], abertas: int = 0, arquivadas: in
                                         "prazo": a.get("prazo"), "situacao": a.get("situacao"),
                                         "territorio": a.get("territorio"), "novo": a.get("novo")} for a in achados[:12]],   # 08/10
                              "fechado_em": now_iso()}
-    arqs = sorted(PASTA.glob("*.json"), reverse=True) if PASTA.exists() else []
-    if arqs:
-        write_json(arqs[0], briefing)
+    from . import livro_arquivo as LA                    # 16/10: no livro
+    if PASTA is not _PASTA_ORIGINAL:
+        arqs = sorted(PASTA.glob("*.json"), reverse=True) if PASTA.exists() else []
+        if arqs:
+            write_json(arqs[0], briefing)
+    else:
+        arqs = sorted(LA.arquivos_de(PASTA), reverse=True)
+        if arqs:
+            LA.guardar(ROOT / arqs[0], briefing, controle_sem_livro=True)
     publicar()
     return briefing
 
 
 def publicar() -> dict:
     hist = anteriores(12)
-    saida = {"em": now_iso(), "total": len(list(PASTA.glob("*.json"))) if PASTA.exists() else 0,
+    saida = {"em": now_iso(), "total": len(__import__("src.livro_arquivo", fromlist=["x"]).arquivos_de(PASTA)) if PASTA is _PASTA_ORIGINAL
+             else (len(list(PASTA.glob("*.json"))) if PASTA.exists() else 0),
              "voos": [{"em": b.get("em", "")[:16], "diagnostico": b.get("diagnostico"),
                        "aposta": b.get("aposta"), "pergunta": b.get("pergunta_de_pesquisa"),
                        "nivel": b.get("nivel"), "resultado": b.get("resultado")} for b in hist]}

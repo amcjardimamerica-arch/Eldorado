@@ -133,44 +133,87 @@ def _oportunidade_vigente(v) -> bool:
 
 
 # ── absorção ──────────────────────────────────────────────────────────────────────────────────────────────────────
-def _unidades(p: Path):
-    t = p.read_text(encoding="utf-8", errors="replace")
-    if p.suffix == ".jsonl":
-        return "jsonl", [(str(i), json.loads(l)) for i, l in enumerate(t.splitlines()) if l.strip()]
-    o = json.loads(t)
+REG = ("id", "url", "titulo", "livro", "pagina", "link_oficial", "pagina_oficial", "programa", "opressor", "oportunidade_id")
+
+
+def _eh_registro(v) -> bool:
+    return isinstance(v, dict) and any(k in v for k in REG)
+
+
+def _eh_conteiner(v) -> bool:
+    """Lista de registros, ou dicionário cujas chaves são links/ids e os valores são dicionários."""
+    if isinstance(v, list) and v:
+        return sum(1 for x in v if _eh_registro(x)) >= max(1, len(v) // 2)
+    if isinstance(v, dict) and len(v) >= 1:
+        ks = list(v)
+        chaves_id = sum(1 for k in ks if isinstance(k, str) and (k.startswith("http") or re.fullmatch(r"[\w.:-]{6,80}", k) and not k.islower()
+                                                              or re.fullmatch(r"(?:op|cat|agr|lv|estrela|livro)[-:][\w-]+|[0-9a-f]{12,40}", str(k))))
+        dicts = sum(1 for x in v.values() if isinstance(x, dict))
+        return dicts >= max(1, len(v) // 2) and chaves_id >= max(1, len(v) // 2)
+    return False
+
+
+def _expandir(o, caminho=""):
+    """(esqueleto, contêineres) — cada contêiner: (caminho, forma, [(chave, registro)])."""
+    if _eh_conteiner(o):
+        forma = "list" if isinstance(o, list) else "dict"
+        itens = [(str(i), x) for i, x in enumerate(o)] if forma == "list" else list(o.items())
+        return {"__conteiner__": caminho}, [(caminho, forma, itens)]
     if isinstance(o, dict):
-        return "dict", list(o.items())
-    if isinstance(o, list):
-        return "list", [(str(i), x) for i, x in enumerate(o)]
-    return "valor", [("_", o)]
+        esq, conts = {}, []
+        for k, v in o.items():
+            e, c = _expandir(v, f"{caminho}/{k}")
+            esq[k] = e; conts += c
+        return esq, conts
+    return o, []
 
 
-def absorver(caminhos: list, gravar_: bool = True, apagar: bool = True) -> dict:
+def absorver(caminhos: list, gravar_: bool = True, apagar: bool = True, controle_sem_livro: bool = False) -> dict:
+    """controle_sem_livro=True: a parte que não é oportunidade (ex.: diagnóstico e aposta do voo do piloto) fica no
+    CONTROLE (_origens), não nos livros nem descartada — é memória operacional, não dado de oportunidade."""
     from .banco_livros import _novo_livro
     idx = indice()
     cat = _j(CAT, {"motores": []}); L = cat.setdefault("motores", [])
     origens = _j(ORIGENS, {})
     livros: dict = {}
     st = Counter(); criados = 0; arquivos = []
+
+    def guardar(rel, cam, k, v):
+        nonlocal criados
+        lid = ligar(k, v, idx)
+        if not lid and _oportunidade_vigente(v):            # oportunidade sem livro: ganha livro
+            lv = _novo_livro(v, chave(v)); L.append(lv); idx[chave(v)] = lv["id"]; lid = lv["id"]; criados += 1
+        if not lid:
+            st["descartadas (não ligam e não são oportunidade vigente)"] += 1; return None
+        d = livros.setdefault(lid, ler(lid))
+        d.setdefault("acervo", {}).setdefault(rel, {})[f"{cam}|{k}"] = {"dado": v, "absorvido_em": _agora()}
+        st["absorvidas"] += 1
+        return lid
     for p in caminhos:
         p = Path(p)
         if not p.is_file() or p.suffix not in (".json", ".jsonl") or FAROL.search(_rel(p)):
             continue                                       # o Farol (e a associação) nunca é absorvido
         try:
-            forma, unidades = _unidades(p)
+            t = p.read_text(encoding="utf-8", errors="replace")
+            obj = [json.loads(l) for l in t.splitlines() if l.strip()] if p.suffix == ".jsonl" else json.loads(t)
         except Exception:  # noqa: BLE001
             st["arquivo ilegível"] += 1; continue
-        rel = _rel(p); mapa = []
-        for k, v in unidades:
-            lid = ligar(k, v, idx)
-            if not lid and _oportunidade_vigente(v):        # oportunidade sem livro: ganha livro (com o que foi levantado)
-                lv = _novo_livro(v, chave(v)); L.append(lv); idx[chave(v)] = lv["id"]; lid = lv["id"]; criados += 1
-            if not lid:
-                st["descartadas (não ligam e não são oportunidade vigente)"] += 1; continue
-            d = livros.setdefault(lid, ler(lid))
-            d.setdefault("acervo", {}).setdefault(rel, {})[k] = {"dado": v, "absorvido_em": _agora()}
-            mapa.append([lid, k]); st["absorvidas"] += 1
-        origens[rel] = {"forma": forma, "entradas": mapa}
+        rel = _rel(p)
+        esq, conts = _expandir(obj)
+        reg = {"jsonl": p.suffix == ".jsonl", "esqueleto": esq, "conteineres": {}}
+        if not conts:                                     # o arquivo inteiro é o registro de uma oportunidade
+            lid = guardar(rel, "", "_arquivo", obj)
+            reg["inteiro"] = [lid, "|_arquivo"] if lid else None
+            if not lid and controle_sem_livro:
+                reg["controle"] = obj; st["descartadas (não ligam e não são oportunidade vigente)"] -= 1
+        for cam, forma, itens in conts:
+            ent = []
+            for k, v in itens:
+                lid = guardar(rel, cam, k, v)
+                if lid:
+                    ent.append([lid, f"{cam}|{k}", k])
+            reg["conteineres"][cam] = {"forma": forma, "entradas": ent}
+        origens[rel] = reg
         arquivos.append(p)
     if gravar_:
         for lid, d in livros.items():
@@ -193,20 +236,70 @@ def carregar(caminho, padrao=None):
     if not o:
         return padrao
     cache: dict = {}
-    vals = []
-    for lid, k in o["entradas"]:
+
+    def valor(lid, chave_int):
         d = cache.setdefault(lid, ler(lid))
-        x = ((d.get("acervo") or {}).get(rel) or {}).get(k)
-        if x is not None:
-            vals.append((k, x["dado"]))
-    if o["forma"] == "dict":
-        return {k: v for k, v in vals}
-    if o["forma"] in ("list", "jsonl"):
-        return [v for _k, v in vals]
-    return vals[0][1] if vals else padrao
+        x = ((d.get("acervo") or {}).get(rel) or {}).get(chave_int)
+        return None if x is None else x["dado"]
+    if o.get("inteiro"):
+        return valor(*o["inteiro"])
+    if "controle" in o and not o["conteineres"]:
+        return o["controle"]
+    if "inteiro" in o and not o["conteineres"]:
+        return padrao
+
+    def montar(e):
+        if isinstance(e, dict) and set(e) == {"__conteiner__"}:
+            c = o["conteineres"].get(e["__conteiner__"]) or {"forma": "list", "entradas": []}
+            pares = [(k, valor(lid, ci)) for lid, ci, k in c["entradas"]]
+            pares = [(k, v) for k, v in pares if v is not None]
+            return {k: v for k, v in pares} if c["forma"] == "dict" else [v for _k, v in pares]
+        if isinstance(e, dict):
+            return {k: montar(v) for k, v in e.items()}
+        return e
+    return montar(o["esqueleto"])
 
 
 def arquivos_de(pasta) -> list[str]:
     """Os 'arquivos' antigos de uma pasta (agora dentro dos livros), para quem fazia glob."""
     pre = _rel(pasta).rstrip("/") + "/"
     return sorted(k for k in (_j(ORIGENS, {}) or {}) if k.startswith(pre))
+
+
+def guardar(caminho, obj, controle_sem_livro: bool = False) -> dict:
+    """Quem gravava num arquivo passa a gravar NO LIVRO: a estrutura é absorvida na hora e o arquivo não fica.
+    A versão anterior do mesmo 'arquivo' é tirada dos livros antes (sem restos)."""
+    caminho = Path(caminho); rel = _rel(caminho)
+    o = (_j(ORIGENS, {}) or {}).get(rel)
+    if o:
+        lids = {e[0] for c in (o.get("conteineres") or {}).values() for e in c.get("entradas") or []}
+        if o.get("inteiro"):
+            lids.add(o["inteiro"][0])
+        for lid in lids:
+            d = ler(lid)
+            if (d.get("acervo") or {}).pop(rel, None) is not None:
+                gravar(lid, d)
+    caminho.parent.mkdir(parents=True, exist_ok=True)
+    caminho.write_text(json.dumps(obj, ensure_ascii=False), encoding="utf-8")
+    return absorver([caminho], controle_sem_livro=controle_sem_livro)
+
+
+# ── TRAVA: pastas cujo conteúdo só pode existir DENTRO dos livros ───────────────────────────────────────────────────
+PROIBIDOS = ["estado/piloto/briefings"]          # cresce a cada lote absorvido (16/10/2026)
+
+
+def absorver_proibidos() -> dict:
+    """A cada passagem do comando: o que existir nas pastas proibidas é absorvido nos livros e apagado."""
+    fs = [p for g in PROIBIDOS for p in (ROOT / g).rglob("*") if p.is_file()]
+    r = absorver(fs) if fs else {"arquivos": 0}
+    for g in PROIBIDOS:
+        d = ROOT / g
+        if d.is_dir() and not any(d.rglob("*")):
+            d.rmdir()
+    return {"pastas_proibidas": PROIBIDOS, **r}
+
+
+def proibido(rel: str) -> bool:
+    if FAROL.search(rel):
+        return False                                       # o Farol nunca é proibido (fora da regra)
+    return any(rel == g or rel.startswith(g.rstrip("/") + "/") for g in PROIBIDOS)

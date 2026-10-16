@@ -28,3 +28,24 @@ class Absorcao(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class BriefingNosLivros(unittest.TestCase):
+    def test_alvo_no_livro_e_memoria_de_voo_no_controle(self):
+        r = Path(tempfile.mkdtemp()); (r / "biblioteca_alexandria/fontes").mkdir(parents=True)
+        (r / "biblioteca_alexandria/fontes/motores.json").write_text(json.dumps({"motores": [
+            {"id": "lv1", "programa": "FIA Goiânia", "pagina": "https://goiania.go.gov.br/fia"}]}))
+        with mock.patch.object(LA, "ROOT", r), mock.patch.object(LA, "PASTA", r / "biblioteca_alexandria/livros"), \
+                mock.patch.object(LA, "ORIGENS", r / "biblioteca_alexandria/livros/_origens.json"), \
+                mock.patch.object(LA, "CAT", r / "biblioteca_alexandria/fontes/motores.json"):
+            a = r / "estado/piloto/briefings/1.json"
+            LA.guardar(a, {"aposta": "FIA", "resultado": {"alvos": [{"nome": "FIA", "url": "https://goiania.go.gov.br/fia"}]}}, controle_sem_livro=True)
+            self.assertFalse(a.exists())
+            b = LA.carregar(a, {})
+            self.assertEqual((b["aposta"], b["resultado"]["alvos"][0]["nome"]), ("FIA", "FIA"))
+            self.assertIn("estado/piloto/briefings/1.json", LA.ler("lv1")["acervo"])
+            c = r / "estado/piloto/briefings/2.json"                        # voo sem alvo ligado: a memória fica
+            LA.guardar(c, {"aposta": "empresas de GO", "diagnostico": "x"}, controle_sem_livro=True)
+            self.assertEqual(LA.carregar(c, {})["aposta"], "empresas de GO")
+            self.assertTrue(LA.proibido("estado/piloto/briefings/x.json"))
+            self.assertFalse(LA.proibido("dados/associacoes/amc/x.json"))

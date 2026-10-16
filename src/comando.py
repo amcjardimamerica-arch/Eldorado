@@ -228,6 +228,10 @@ def fases(ctx: dict) -> list[dict]:
                   [py, "-c", "import json; from src import banco as B; print(json.dumps(B.expurgar_acervo(), ensure_ascii=False))"],
                   [py, "-c", "import json; from src import banco as B; print(json.dumps(B.historico_para_livros(), ensure_ascii=False))"]], "t": 1500,
          "pular": "já feito hoje" if _expurgo_feito_hoje() else None},
+        # 16/10/2026 (titular): ABSORÇÃO — o que existir nas pastas proibidas vai para os livros e é apagado
+        {"etapa": "absorver", "finalidade": "dado de oportunidade só nos livros: absorve e apaga as pastas proibidas",
+         "cmds": [[py, "-c", "import json; from src import livro_arquivo as LA; print(json.dumps(LA.absorver_proibidos(), ensure_ascii=False))"]],
+         "t": 900, "pular": None},
         # 5b'' MIGRAÇÃO ÚNICA — os achados da base (já limpa) vão para os livros; depois disso, motores, fluxo e painel
         # usam os livros (16/10/2026, etapa 3)
         {"etapa": "migracao_livros", "finalidade": "uma vez: os achados da base dos motores entram nos livros",
