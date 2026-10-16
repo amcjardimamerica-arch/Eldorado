@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `observatorio-terceiro-setor`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 11
-- Distribuição por ano pesquisado/coletado: {'2026': 10, '2027': 1}
+- Pistas aguardando confirmação: 10
+- Distribuição por ano pesquisado/coletado: {'2026': 9, '2027': 1}
 
 ## Padrões
 
@@ -17,7 +17,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [Festival Ubuntu abre edital para selecionar 21 artistas e projetos culturais](https://observatorio3setor.org.br/festival-ubuntu-abre-edital-para-selecionar-21-artistas-e-projetos-culturais) — coletado em 2026-10-07T13:04:26+00:00
 - [Doação e projetos sociais](https://observatorio3setor.org.br/doacao-e-projetos-sociais) — coletado em 2026-10-07T13:06:33+00:00
 - [Prêmio LED Globo 2027 abre inscrições com R$ 1,2 milhão em premiação](https://observatorio3setor.org.br/premio-led-globo-2027-abre-inscricoes-com-r-12-milhao-em-premiacao) — coletado em 2026-10-07T13:04:26+00:00
-- [Instituto Lojas Renner abre edital com até R$ 10 mil para fortalecer organizações sociais](https://observatorio3setor.org.br/instituto-lojas-renner-abre-edital-com-ate-r-10-mil-para-fortalecer-organizacoes-sociais) — coletado em 2026-10-07T13:07:04+00:00
 - [Parque Bondinho Pão de Açúcar abre edital para projetos culturais incentivados](https://observatorio3setor.org.br/parque-bondinho-pao-de-acucar-abre-edital-para-projetos-culturais-incentivados) — coletado em 2026-10-07T13:04:26+00:00
 - [Instituto Benera quer transformar a doação em prática de cidadania](https://observatorio3setor.org.br/instituto-benera-quer-transformar-a-doacao-em-pratica-de-cidadania) — coletado em 2026-10-03T00:44:33+00:00
 - [Instituto Clima e Sociedade abre edital de até R$ 500 mil para projetos de comunicação climática](https://observatorio3setor.org.br/instituto-clima-e-sociedade-abre-edital-de-ate-r-500-mil-para-projetos-de-comunicacao-climatica) — coletado em 2026-10-07T13:06:17+00:00

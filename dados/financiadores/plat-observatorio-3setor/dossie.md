@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `plat-observatorio-3setor`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 18
-- Distribuição por ano pesquisado/coletado: {'2026': 18}
+- Pistas aguardando confirmação: 17
+- Distribuição por ano pesquisado/coletado: {'2026': 17}
 
 ## Padrões
 
@@ -21,7 +21,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [ODS 17 – Parcerias](https://observatorio3setor.org.br/ods/ods-17) — coletado em 2026-09-21T10:43:31+00:00
 - [Cultura de Doação](https://observatorio3setor.org.br/secoes_tematicas/cultura-de-doacao) — coletado em 2026-09-21T10:43:31+00:00
 - [Edital Alimento no Prato oferece até R$ 800 mil para projetos de agricultura urbana](https://observatorio3setor.org.br/edital-alimento-no-prato-oferece-ate-r-800-mil-para-projetos-de-agricultura-urbana) — coletado em 2026-09-21T10:43:27+00:00
-- [Instituto Lojas Renner abre edital com até R$ 10 mil para fortalecer organizações sociais](https://observatorio3setor.org.br/instituto-lojas-renner-abre-edital-com-ate-r-10-mil-para-fortalecer-organizacoes-sociais) — coletado em 2026-09-04T19:48:28+00:00
 - [Prêmio nacional da Enap oferece até R$ 20 mil para iniciativas que protegem crianças e adolescentes em situação de rua](https://observatorio3setor.org.br/premio-nacional-da-enap-oferece-ate-r-20-mil-para-iniciativas-que-protegem-criancas-e-adolescentes-em-situacao-de-rua) — coletado em 2026-09-21T10:43:27+00:00
 - [Instituto Clima e Sociedade abre edital de até R$ 500 mil para projetos de comunicação climática](https://observatorio3setor.org.br/instituto-clima-e-sociedade-abre-edital-de-ate-r-500-mil-para-projetos-de-comunicacao-climatica) — coletado em 2026-09-04T19:48:28+00:00
 - [Karibu Foundation abre inscrições para iniciativas do Sul Global com bolsas de até US$ 20 mil](https://observatorio3setor.org.br/karibu-foundation-abre-inscricoes-para-iniciativas-do-sul-global-com-bolsas-de-ate-us-20-mil) — coletado em 2026-09-29T17:05:59+00:00

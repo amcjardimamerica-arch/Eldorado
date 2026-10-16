@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `dou`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 26
-- Distribuição por ano pesquisado/coletado: {'2026': 26}
+- Pistas aguardando confirmação: 23
+- Distribuição por ano pesquisado/coletado: {'2026': 23}
 
 ## Padrões
 
@@ -28,7 +28,6 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [EXTRATO DE ACORDO DE COOPERAÇÃO TÉCNICA](https://www.in.gov.br/web/dou/-/extrato-de-acordo-de-cooperacao-tecnica-733073978) — coletado em 2026-09-21T08:20:26+00:00
 - [Prefeitura de Piracanjuba — AVISO DE CHAMAMENTO PÚBLICO Nº 1/2026](https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-1/2026-737996471) — coletado em 2026-10-13T08:27:26+00:00
 - [EDITAL DE INTIMAÇÃO](https://www.in.gov.br/web/dou/-/edital-de-intimacao-733801219) — coletado em 2026-09-24T07:56:27+00:00
-- [Prefeitura de Corumbá de Goiás — AVISO DE CHAMAMENTO PÚBLICO Nº 3/2026](https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-3/2026-736008019) — coletado em 2026-10-02T11:09:46+00:00
 - [EXTRATO DE ACORDO DE COOPERAÇÃO TÉCNICA Nº 7 /2026](https://www.in.gov.br/web/dou/-/extrato-de-acordo-de-cooperacao-tecnica-n-7-/2026-735243117) — coletado em 2026-09-29T10:23:55+00:00
 - [EXTRATO DE ACORDO DE COOPERAÇÃO TÉCNICA Nº 1.2026/AGEDOCE](https://www.in.gov.br/web/dou/-/extrato-de-acordo-de-cooperacao-tecnica-n-1.2026/agedoce-735219338) — coletado em 2026-09-29T10:23:55+00:00
 - [Agência Nacional de Assistência Técnica e Extensão Rural — AVISO DE SELEÇÃO PÚBLICA](https://www.in.gov.br/web/dou/-/aviso-de-selecao-publica-735913080) — coletado em 2026-10-02T11:09:46+00:00
@@ -36,5 +35,3 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 - [EXTRATO DE ACORDO DE COOPERAÇÃO TÉCNICA](https://www.in.gov.br/web/dou/-/extrato-de-acordo-de-cooperacao-tecnica-733173172) — coletado em 2026-09-21T08:20:26+00:00
 - [EXTRATO DE TERMO DE FOMENTO](https://www.in.gov.br/web/dou/-/extrato-de-termo-de-fomento-734970912) — coletado em 2026-09-28T13:40:09+00:00
 - [EXTRATO DE TERMO DE FOMENTO](https://www.in.gov.br/web/dou/-/extrato-de-termo-de-fomento-735200691) — coletado em 2026-09-29T10:23:55+00:00
-- [Prefeitura de Santa Rita do Araguaia — EDITAL](https://www.in.gov.br/web/dou/-/edital-737063275) — coletado em 2026-10-07T10:17:34+00:00
-- [Prefeitura de Goiatuba — Aviso de Chamamento Público nº 4/2026 — do Edital é a seleção de projetos culturais para recebimento de apoio financeiro, com o objetivo de incentivar as divers](https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-4/2026-734365925) — coletado em 2026-10-03T12:17:30+00:00

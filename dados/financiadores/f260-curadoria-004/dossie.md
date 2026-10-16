@@ -3,8 +3,8 @@
 - Classe: `financiadores`
 - Fonte: `f260-curadoria-004`
 - Eventos verificados: 0
-- Pistas aguardando confirmação: 4
-- Distribuição por ano pesquisado/coletado: {'2026': 4}
+- Pistas aguardando confirmação: 3
+- Distribuição por ano pesquisado/coletado: {'2026': 3}
 
 ## Padrões
 
@@ -14,5 +14,4 @@ Nenhum padrão é afirmado automaticamente sem ao menos duas ocorrências indepe
 
 - [Ver edital](https://rededobem.org.br/editais/12-edital-de-microprojetos-rj) — coletado em 2026-10-03T01:12:41+00:00
 - [Ver edital](https://rededobem.org.br/editais/14o-edital-de-microprojetos-da-rede-do-bem) — coletado em 2026-10-03T01:12:41+00:00
-- [Editais de Microprojetos](https://rededobem.org.br/editais-de-microprojetos) — coletado em 2026-10-03T01:12:38+00:00
 - [Ver edital](https://rededobem.org.br/editais/13-edital-de-microprojetos-rj) — coletado em 2026-10-03T01:12:41+00:00
