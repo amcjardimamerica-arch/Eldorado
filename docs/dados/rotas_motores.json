@@ -1,5 +1,5 @@
 {
- "em": "2026-10-16T02:16:46+00:00",
+ "em": "2026-10-16T03:55:38+00:00",
  "regra": "Toda leitura de motor é registrada. Leitura VAZIA = página sem conteúdo útil: não respondeu, sem links (JavaScript),\nrecusou a nuvem, endereço errado, ou só página institucional sem rótulo de edital. Ao chegar a 5 VAZIAS SEGUIDAS numa\nrota, o motor entra no relatório como \"ALTERAR ROTA\" e o afinador testa rotas alternativas:\n  · caminhos de edital no mesmo domínio (/editais, /chamamentos, /chamadas-publicas, /transparencia/editais, /noticias)\n  · a API e o mapa do site (/wp-json/wp/v2/posts?search=edital, /feed, /sitemap.xml)\n  · sites oficiais já conhecidos do mesmo órgão (biblioteca do Cartório)\n  · CÂMARAS MUNICIPAIS: sessões e matérias do SAPL (Interlegis), pauta / ordem do dia, diário oficial da câmara, notícias —\n    qualquer uma prova a atividade do dia, mesmo sem oportunidade\n  · cada rota é tentada DIRETO e, se o site recusar a nuvem, pela PONTE do titular (IP do Brasil)\nA melhor rota entra no motor (as originais ficam, pela redundância) e, se só funcionou pela ponte, o domínio passa a\natravessar a ponte. Uma rede neural pequena (regressão logística online sobre o padrão da rota, o tipo do motor e o\ncaminho de acesso) aprende com cada teste ONDE costuma estar o lugar certo de busca e ordena as próximas tentativas.\nRelatório: docs/dados/rotas_motores.json.\n",
  "limiar_vazias": 5,
  "resumo": {
@@ -7,17 +7,17 @@
   "alterar_rota": 51,
   "rota_nova": 50,
   "via_ponte": 3,
-  "exemplos_da_rede": 10106
+  "exemplos_da_rede": 10187
  },
  "a_rede_aprendeu": {
   "melhores_sinais": [
    [
-    "origem:biblioteca",
-    2.8972
-   ],
-   [
     "tok:secult",
     2.5299
+   ],
+   [
+    "origem:biblioteca",
+    2.5201
    ],
    [
     "tok:mpf",
@@ -41,11 +41,7 @@
    ],
    [
     "origem:rota original",
-    1.538
-   ],
-   [
-    "tipo:privada",
-    1.4783
+    1.5053
    ],
    [
     "tok:abertas",
@@ -58,24 +54,28 @@
    [
     "tok:assuntos",
     1.3977
+   ],
+   [
+    "tipo:privada",
+    1.3768
    ]
   ],
   "piores_sinais": [
    [
-    "tok:prefeitura",
-    -1.6055
+    "tok:ccs",
+    -1.7384
    ],
    [
-    "tok:ccs",
-    -1.7121
+    "raiz:True",
+    -1.79
    ],
    [
     "tok:content",
-    -2.0292
+    -2.0297
    ],
    [
     "tok:uploads",
-    -2.0292
+    -2.0297
    ],
    [
     "tipo:internacional",
@@ -83,7 +83,7 @@
    ],
    [
     "gov:False",
-    -2.3569
+    -2.4584
    ],
    [
     "origem:câmara",
@@ -91,7 +91,7 @@
    ],
    [
     "origem:padrão",
-    -2.8968
+    -2.9378
    ]
   ]
  },
@@ -141,7 +141,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T06:28:08+00:00",
+    "em": "2026-10-16T03:54:27+00:00",
     "testes": 17,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -184,15 +184,16 @@
   "f260-captacao-227": {
    "nome": "Instituto Coca-Cola Brasil",
    "status": "alterar rota",
-   "vazias_seguidas": 49,
-   "leituras": 49,
+   "vazias_seguidas": 50,
+   "leituras": 50,
    "ok": 0,
    "ultima": {
-    "em": "2026-10-16T00:58:35+00:00",
+    "em": "2026-10-16T01:38:36+00:00",
     "classe": "vazia",
     "motivo": "falha: ErroPonte"
    },
    "historico": [
+    "v",
     "v",
     "v",
     "v",
@@ -243,7 +244,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T06:11:54+00:00",
+    "em": "2026-10-16T03:54:23+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -459,7 +460,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T06:29:24+00:00",
+    "em": "2026-10-16T03:55:37+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -486,6 +487,39 @@
    "afinado": {
     "em": "2026-10-15T09:25:44+00:00",
     "testes": 14,
+    "melhor": null,
+    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
+   }
+  },
+  "f260-captacao-240": {
+   "nome": "UNESCO – Fundo Internacional para Diversidade Cultural",
+   "status": "alterar rota",
+   "vazias_seguidas": 29,
+   "leituras": 29,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-16T01:38:31+00:00",
+    "classe": "vazia",
+    "motivo": ""
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": null,
+   "afinado": {
+    "em": "2026-10-15T12:13:36+00:00",
+    "testes": 26,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -575,7 +609,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T06:29:26+00:00",
+    "em": "2026-10-16T03:55:38+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -610,38 +644,6 @@
    "afinado": {
     "em": "2026-10-15T07:53:15+00:00",
     "testes": 22,
-    "melhor": null,
-    "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
-   }
-  },
-  "f260-captacao-240": {
-   "nome": "UNESCO – Fundo Internacional para Diversidade Cultural",
-   "status": "alterar rota",
-   "vazias_seguidas": 28,
-   "leituras": 28,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-16T00:58:41+00:00",
-    "classe": "vazia",
-    "motivo": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": null,
-   "afinado": {
-    "em": "2026-10-15T12:13:36+00:00",
-    "testes": 26,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
@@ -712,7 +714,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T06:28:57+00:00",
+    "em": "2026-10-16T03:55:15+00:00",
     "testes": 16,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -736,7 +738,7 @@
    ],
    "rota_aprendida": null,
    "afinado": {
-    "em": "2026-10-15T06:29:00+00:00",
+    "em": "2026-10-16T03:55:18+00:00",
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
@@ -1203,6 +1205,54 @@
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
    }
   },
+  "f260-captacao-238": {
+   "nome": "Sebrae Goiás - parcerias com OSC para empreendedorismo",
+   "status": "alterar rota",
+   "vazias_seguidas": 7,
+   "leituras": 62,
+   "ok": 0,
+   "ultima": {
+    "em": "2026-10-16T01:38:39+00:00",
+    "classe": "vazia",
+    "motivo": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas"
+   },
+   "historico": [
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v",
+    "v"
+   ],
+   "rota_aprendida": {
+    "urls": [
+     "https://sebraego.com.br/feed"
+    ],
+    "via": "direto",
+    "origem": "rota original",
+    "pontos": 9,
+    "aprendido_em": "2026-10-16T02:15:34+00:00"
+   },
+   "afinado": {
+    "em": "2026-10-16T02:15:34+00:00",
+    "testes": 20,
+    "melhor": {
+     "url": "https://sebraego.com.br/feed",
+     "via": "direto",
+     "origem": "rota original",
+     "pontos": 9,
+     "formato": "sitemap/feed"
+    },
+    "resultado": "rota nova em teste"
+   }
+  },
   "f260-espalhado-www-arapongas-pr-gov-br": {
    "nome": "Querido Diário — diários oficiais municipais — oportunidades (espalhado de edital validado)",
    "status": "alterar rota",
@@ -1339,53 +1389,6 @@
     "testes": 12,
     "melhor": null,
     "resultado": "nenhuma alternativa funcionou — segue ao Interceptador/Chrome"
-   }
-  },
-  "f260-captacao-238": {
-   "nome": "Sebrae Goiás - parcerias com OSC para empreendedorismo",
-   "status": "alterar rota",
-   "vazias_seguidas": 6,
-   "leituras": 61,
-   "ok": 0,
-   "ultima": {
-    "em": "2026-10-16T00:58:38+00:00",
-    "classe": "vazia",
-    "motivo": "o portal recusa acesso automatizado (HTTP 403/404) — escada de alternativas"
-   },
-   "historico": [
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v",
-    "v"
-   ],
-   "rota_aprendida": {
-    "urls": [
-     "https://sebraego.com.br/feed"
-    ],
-    "via": "direto",
-    "origem": "rota original",
-    "pontos": 9,
-    "aprendido_em": "2026-10-16T02:15:34+00:00"
-   },
-   "afinado": {
-    "em": "2026-10-16T02:15:34+00:00",
-    "testes": 20,
-    "melhor": {
-     "url": "https://sebraego.com.br/feed",
-     "via": "direto",
-     "origem": "rota original",
-     "pontos": 9,
-     "formato": "sitemap/feed"
-    },
-    "resultado": "rota nova em teste"
    }
   },
   "f260-curadoria-005": {

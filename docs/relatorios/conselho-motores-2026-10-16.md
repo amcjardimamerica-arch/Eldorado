@@ -39,58 +39,58 @@
 - CEGO: 23
 - CONGELADO: 21
 - RUÍDO: 15
-- PÁGINA VAZIA: 6
+- PÁGINA VAZIA: 7
 - CUSTO SEM RETORNO: 3
 - INTERMITENTE: 2
 
 ## Cobertura (Dr. Otávio)
 
-70.5% das oportunidades vieram de fora dos motores: {'Piloto': 147, 'agregador/outra': 253, 'motor': 167}.
+70.3% das oportunidades vieram de fora dos motores: {'Piloto': 141, 'agregador/outra': 249, 'motor': 165}.
 
 - GO: 16 oportunidades, nenhuma de motor ({'agregador/outra': 16})
 
 ## Fontes irmãs (Profa. Clara)
 
-238 domínios oficiais já renderam e não têm motor. Os primeiros:
+237 domínios oficiais já renderam e não têm motor. Os primeiros:
 
 - baoba.org.br (peso 29)
 - licitario.com.br (peso 17)
 - institutolojasrenner.org.br (peso 17)
-- chamadas.funbio.org.br (peso 15)
+- chamadas.funbio.org.br (peso 16)
 - fundoecos.org.br (peso 14)
 - mariaemilia.org.br (peso 13)
 - zurich.com.br (peso 13)
 - brazilfoundation.org (peso 13)
 - bnccompras.com (peso 11)
-- ifrs.edu.br (peso 10)
 - institutoinad.org.br (peso 10)
 - bancoamazonia.com.br (peso 10)
-- jatai.go.leg.br (peso 9)
 - feirapreta.com.br (peso 9)
 - contrafluxofestival.com.br (peso 9)
 - fbb.org.br (peso 9)
+- licitacoes.agencia.baciaspcj.org.br (peso 8)
 - transforma.fbb.org.br (peso 8)
 - agencia.petrobras.com.br (peso 8)
 - ibermusicas.org (peso 8)
 - difusionconcausa.com (peso 8)
+- ifrs.edu.br (peso 8)
 - jornadasocial.com.br (peso 8)
 - ibram-eventos.com.br (peso 8)
 - brasil.aperam.com (peso 8)
 - equatorial.gestaocpp.com.br (peso 7)
-- licitacoes.agencia.baciaspcj.org.br (peso 7)
+- jatai.go.leg.br (peso 7)
 
 ## Plataformas e inovações (Dr. Fábio)
 
-- WordPress: 113 órgãos
-- Mapas Culturais: 12 órgãos
-- Diário municipal em lote (AGM/DOM): 17 órgãos
+- WordPress: 114 órgãos
+- Mapas Culturais: 11 órgãos
+- Diário municipal em lote (AGM/DOM): 18 órgãos
 - Portal de transparência de fornecedor: 21 órgãos
-- Sistemas de editais (Prosas/Editais): 49 órgãos
+- Sistemas de editais (Prosas/Editais): 48 órgãos
 - Querido Diário: 0 órgãos
 - PNCP: 1 órgãos
 - Leis e atos (Leis Municipais): 1 órgãos
 
-- **Adaptador por plataforma** — um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão. Alcance: 113 órgãos WordPress e 12 instâncias de Mapas Culturais já conhecidos de uma vez.
+- **Adaptador por plataforma** — um leitor por plataforma (WordPress: /wp-json/wp/v2/posts?search=edital; Mapas Culturais: API /api/opportunity/find) em vez de um por órgão. Alcance: 114 órgãos WordPress e 11 instâncias de Mapas Culturais já conhecidos de uma vez.
 - **Detecção de mudança barata** — ler o sitemap.xml (lastmod) e os feeds RSS/Atom dos sites oficiais; só baixar a página quando muda. Alcance: permite vigiar 10× mais fontes no mesmo tempo de execução.
 - **Consulta inversa** — frases distintivas de editais confirmados (ex.: 'Política Nacional Aldir Blanc' + 'chamamento') viram buscas por editais irmãos em outros municípios. Alcance: cada edital confirmado gera pistas em dezenas de municípios que publicam o mesmo modelo.
 - **Motor de fontes irmãs** — domínios oficiais que já renderam oportunidade e nenhum motor vigia passam a ser lidos todos os dias. Alcance: implantado como motor Outras Oportunidades (clones calculados para ler todas as fontes no dia).
@@ -253,6 +253,10 @@
 - **PÁGINA VAZIA** (falso_verde): leitura em 0 s com 0 página(s). → a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte
 - **SILÊNCIO LONGO** (falso_verde): 28 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
+### UNESCO – Fundo Internacional para Diversidade Cultural (`f260-captacao-240`) — baixo volume, 0 achados em 30 dias
+- **PÁGINA VAZIA** (falso_verde): leitura em 0 s com 0 página(s). → a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte
+- **SILÊNCIO LONGO** (falso_verde): 29 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+
 ### MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos) (`mpgo-destinacao`) — baixo volume, 13 achados em 30 dias
 - **CONGELADO** (falso_verde): o mesmo achado repetido em 13 dias. → detectar mudança por hash/lastmod e só contar o que é novo
 - **PÁGINA VAZIA** (falso_verde): leitura em 0 s com 0 página(s). → a fonte provavelmente monta o conteúdo por JavaScript ou bloqueia: usar a API/JSON da página ou a ponte
@@ -314,7 +318,7 @@
 - **CONGELADO** (falso_verde): o mesmo achado repetido em 26 dias. → detectar mudança por hash/lastmod e só contar o que é novo
 
 ### Sebrae Goiás - parcerias com OSC para empreendedorismo (`f260-captacao-238`) — baixo volume, 0 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 61 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 62 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### Lei Rouanet - doação de pessoa física (`f260-captacao-035`) — baixo volume, 69 achados em 30 dias
 - **CONGELADO** (falso_verde): o mesmo achado repetido em 23 dias. → detectar mudança por hash/lastmod e só contar o que é novo
@@ -329,7 +333,7 @@
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
 
 ### Instituto Coca-Cola Brasil (`f260-captacao-227`) — baixo volume, 0 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 49 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
+- **SILÊNCIO LONGO** (falso_verde): 50 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### Instituto Neoenergia (`f260-captacao-232`) — baixo volume, 9 achados em 30 dias
 - **VAZAMENTO** (funil): perde 100% na etapa 'achado → fluxo'. → achados não chegam ao fluxo: registrar com id/URL canônica e prazo quando houver
@@ -375,9 +379,6 @@
 
 ### Projeto de coleta seletiva inclusiva (`f260-captacao-180`) — baixo volume, 8 achados em 30 dias
 - **CONGELADO** (falso_verde): o mesmo achado repetido em 8 dias. → detectar mudança por hash/lastmod e só contar o que é novo
-
-### UNESCO – Fundo Internacional para Diversidade Cultural (`f260-captacao-240`) — baixo volume, 0 achados em 30 dias
-- **SILÊNCIO LONGO** (falso_verde): 28 leituras vazias seguidas. → reavaliar a URL de entrada: a seção de editais pode ter mudado de endereço
 
 ### Banco do Nordeste — Editais Sociais (incentivo fiscal) (`f260-curadoria-001`) — baixo volume, 12 achados em 30 dias
 - **CONGELADO** (falso_verde): o mesmo achado repetido em 7 dias. → detectar mudança por hash/lastmod e só contar o que é novo

@@ -8,8 +8,8 @@
 
 ```json
 {
- "cegos_da_1a_rodada": 28,
- "testados": 21,
+ "cegos_da_1a_rodada": 29,
+ "testados": 22,
  "com_rota_nova": 7,
  "via_ponte": 0,
  "continuam_cegos": [
@@ -26,6 +26,7 @@
   "f260-espalhado-acessoainformacao-cavalcante-go-gov-br",
   "f260-captacao-252",
   "f260-captacao-242",
+  "f260-captacao-240",
   "f260-espalhado-rouanet-cultura-gov-br"
  ],
  "aguardando_afinador": 7
@@ -101,7 +102,7 @@
    "motor": "outras-oportunidades-1",
    "achados_total_1a": 80,
    "achados_total_agora": 80,
-   "no_fluxo": 19,
+   "no_fluxo": 18,
    "confirmadas": 0
   },
   {
@@ -154,7 +155,7 @@
  "pontos_com_redundancia": 17,
  "redundancia_vazia": [],
  "dominios_via_ponte": 3,
- "exemplos_da_rede_de_rotas": 10106
+ "exemplos_da_rede_de_rotas": 10187
 }
 ```
 
@@ -165,29 +166,21 @@
 
 ```json
 {
- "fora_dos_motores_pct_1a": 70.5,
- "fora_dos_motores_pct_agora": 70.5,
+ "fora_dos_motores_pct_1a": 70.3,
+ "fora_dos_motores_pct_agora": 70.3,
  "origem": {
-  "Piloto": 147,
-  "agregador/outra": 253,
-  "motor": 167
+  "Piloto": 141,
+  "agregador/outra": 249,
+  "motor": 165
  },
  "dominios_so_de_agregador": [
   {
    "dominio": "data.queridodiario.ok.org.br",
-   "oportunidades": 6
+   "oportunidades": 7
   },
   {
    "dominio": "fapesp.br",
    "oportunidades": 5
-  },
-  {
-   "dominio": "culteditais.cultura.gov.br",
-   "oportunidades": 4
-  },
-  {
-   "dominio": "conselho.saude.gov.br",
-   "oportunidades": 3
   },
   {
    "dominio": "fapemig.br",
@@ -231,6 +224,14 @@
   },
   {
    "dominio": "transparencia.adustina.ba.gov.br",
+   "oportunidades": 1
+  },
+  {
+   "dominio": "macajuba.ba.gov.br",
+   "oportunidades": 1
+  },
+  {
+   "dominio": "pmalcobaca.ba.gov.br",
    "oportunidades": 1
   }
  ],
@@ -288,15 +289,15 @@
 
 ```json
 {
- "fontes_recebidas": 409,
+ "fontes_recebidas": 413,
  "por_origem": {
   "conselho (fontes irmãs)": 167,
-  "Cartório (site oficial certificado)": 200,
-  "Espião (privado/internacional)": 42
+  "Cartório (site oficial certificado)": 203,
+  "Espião (privado/internacional)": 43
  },
  "lidas_nas_ultimas_24h": 315,
  "dimensionamento": {
-  "fontes": 409,
+  "fontes": 413,
   "sites_por_execucao": 17,
   "execucoes_por_dia": 3,
   "sites_por_clone_por_dia": 51,
@@ -389,7 +390,7 @@
  },
  "proximos_candidatos": {
   "WordPress": {
-   "orgaos": 113,
+   "orgaos": 114,
    "exemplos": [
     "abong.org.br",
     "acaoeducativa.org.br",
@@ -400,18 +401,18 @@
    ]
   },
   "Mapas Culturais": {
-   "orgaos": 12,
+   "orgaos": 11,
    "exemplos": [
     "culteditais.cultura.gov.br",
     "editaisdobrasil.com",
     "mapa.cultura.es.gov.br",
     "mapa.cultura.gov.br",
-    "mapacultural.cim-amfri.sc.gov.br",
-    "mapacultural.pa.gov.br"
+    "mapacultural.pa.gov.br",
+    "mapacultural.pe.gov.br"
    ]
   },
   "Diário municipal em lote (AGM/DOM)": {
-   "orgaos": 17,
+   "orgaos": 18,
    "exemplos": [
     "campobelo.mg.gov.br",
     "diariooficial.abc.go.gov.br",
@@ -433,7 +434,7 @@
    ]
   },
   "Sistemas de editais (Prosas/Editais)": {
-   "orgaos": 49,
+   "orgaos": 48,
    "exemplos": [
     "adustina.ba.gov.br",
     "alteditais.com.br",
