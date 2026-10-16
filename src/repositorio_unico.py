@@ -301,7 +301,10 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
     disp_livro = {k: (v or {}).get("dispensa") for k, v in ((_j(ROOT / "estado/opressores_indice.json", {}) or {}).get("indice") or {}).items() if (v or {}).get("dispensa")}
 
     # 1 · todas as origens num só conjunto, com o id canônico (duplicatas fundidas)
-    brutos = _fluxo() + _caixa()
+    # 16/10/2026 (titular, etapa 2): o repositório LÊ DOS LIVROS — o que os motores trazem entra primeiro nos livros
+    from . import banco_livros as _BL
+    _BL.ingerir(_fluxo() + _caixa(), gravar=gravar)
+    brutos = _BL.brutos_dos_livros() if gravar else (_fluxo() + _caixa())
     try:
         from .opressores_repositorio import canonica_por_revisao
         canon = canonica_por_revisao()

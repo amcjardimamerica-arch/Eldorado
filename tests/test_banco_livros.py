@@ -52,3 +52,32 @@ class BancoLivros(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class Etapa2Repositorio(unittest.TestCase):
+    """16/10/2026: o repositório lê dos livros — ingestão com a origem separada, a ordem preservada e a sincronia."""
+    def setUp(self):
+        self.r = Path(tempfile.mkdtemp()); (self.r / "biblioteca_alexandria/fontes").mkdir(parents=True)
+        (self.r / "biblioteca_alexandria/fontes/motores.json").write_text(json.dumps({"motores": [
+            {"id": "op-antigo", "programa": "FIA", "pagina": "https://goiania.go.gov.br/fia"}]}))
+        self.p = [mock.patch.object(B, "CAT", self.r / "biblioteca_alexandria/fontes/motores.json")]
+        for x in self.p:
+            x.start()
+
+    def tearDown(self):
+        for x in self.p:
+            x.stop()
+
+    def test_ingerir_e_ler(self):
+        brutos = [{"id": "1", "_fonte": "fluxo", "url": "https://goiania.go.gov.br/fia", "link_oficial": "https://goiania.go.gov.br/fia/edital.pdf"},
+                  {"id": "2", "_fonte": "fluxo", "url": "https://x.gov.br/a"},
+                  {"id": "1", "_fonte": "caixa dos motores", "url": "https://goiania.go.gov.br/fia"}]       # mesma oportunidade, outra origem
+        r = B.ingerir(brutos)
+        self.assertEqual((r["vinculados"], r["livros_criados"]), (2, 1))
+        lidos = B.brutos_dos_livros()
+        self.assertEqual([(b["id"], b["_fonte"]) for b in lidos], [("1", "fluxo"), ("2", "fluxo"), ("1", "caixa dos motores")])
+        self.assertEqual(lidos[0]["link_oficial"], "https://goiania.go.gov.br/fia/edital.pdf")    # a 2ª origem não apaga a 1ª
+        B.ingerir([brutos[0]])                                                                    # a origem deixou de trazer o '2'
+        L = json.loads((self.r / "biblioteca_alexandria/fontes/motores.json").read_text())["motores"]
+        self.assertEqual([lv["id"] for lv in L], ["op-antigo"])                                   # livro só daquele registro sai
+        self.assertEqual([b["id"] for b in B.brutos_dos_livros()], ["1"])

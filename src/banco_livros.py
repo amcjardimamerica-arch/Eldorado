@@ -157,3 +157,58 @@ def livro_da_oportunidade(a: dict) -> dict | None:
 
 if __name__ == "__main__":
     print(json.dumps(consolidar(), ensure_ascii=False))
+
+
+# ── ETAPA 2 · o repositório lê dos livros ───────────────────────────────────────────────────────────────────────────
+# Enquanto os motores ainda entregam pelos arquivos antigos (a etapa 3 os tira), tudo o que eles trazem ENTRA PRIMEIRO
+# nos livros: cada registro bruto cria o seu livro ou se vincula ao que já tem o histórico, e fica guardado nele
+# (livro["brutos"][id]). O repositório deixa de ler os arquivos dos motores e lê os livros (brutos_dos_livros).
+# Sincronia: o que a origem deixou de trazer (expurgado, encerrado na fonte) sai do livro também.
+def ingerir(brutos: list[dict], gravar: bool = True) -> dict:
+    cat_doc = _j(CAT, {"motores": []}); L = cat_doc.setdefault("motores", [])
+    por_id = {lv.get("id"): lv for lv in L}
+    idx = {}
+    for lv in L:
+        for k in _chaves_do_livro(lv):
+            idx.setdefault(k, lv.get("id"))
+        for b in (lv.get("brutos") or {}).values():
+            if isinstance(b, dict):
+                idx.setdefault(chave(b), lv.get("id"))
+    # chave interna = origem + id: a MESMA oportunidade vem do fluxo e da caixa com o mesmo id e campos diferentes
+    _k = lambda b: f"{b.get('_fonte') or 'caixa'}:{b.get('id')}"
+    for n, b in enumerate(brutos):
+        b["_ordem"] = n                               # a ordem de chegada é preservada (o repositório depende dela)
+    atuais = {_k(b) for b in brutos if b.get("id") is not None}
+    criados = vinculados = 0
+    for b in brutos:
+        if b.get("id") is None:
+            continue
+        k = chave(b)
+        lid = idx.get(k)
+        if lid not in por_id:
+            lv = _novo_livro(b, k); L.append(lv); por_id[lv["id"]] = lv; criados += 1; idx[k] = lv["id"]
+        else:
+            lv = por_id[lid]; vinculados += 1
+        lv.setdefault("brutos", {})[_k(b)] = b
+    retirados = 0
+    for lv in list(L):
+        br = lv.get("brutos") or {}
+        for i in [i for i in br if i not in atuais]:
+            del br[i]; retirados += 1
+        if lv.get("motor") == "banco de livros" and not br and not lv.get("oportunidade"):
+            L.remove(lv)                                # livro criado só para um registro que a origem não traz mais
+    cat_doc["total"] = len(L); cat_doc["gerado_em"] = _agora()
+    if gravar:
+        CAT.write_text(json.dumps(cat_doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    return {"brutos": len(atuais), "livros_criados": criados, "vinculados": vinculados, "retirados": retirados, "livros": len(L)}
+
+
+def brutos_dos_livros() -> list[dict]:
+    """A entrada do repositório, lida dos LIVROS (a ordem estável é a do catálogo)."""
+    out, vistos = [], set()
+    for lv in (_j(CAT, {}) or {}).get("motores") or []:
+        for i, b in (lv.get("brutos") or {}).items():
+            if i not in vistos and isinstance(b, dict):
+                vistos.add(i); out.append(b)
+    out.sort(key=lambda b: b.get("_ordem", 10**9))
+    return [{k: v for k, v in b.items() if k != "_ordem"} for b in out]
