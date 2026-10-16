@@ -196,10 +196,30 @@ def gravar_oportunidades(registros: dict) -> None:
     )
     DB_OPORTUNIDADES.write_text(corpo, encoding="utf-8")
 
+def _proibido(path) -> bool:
+    """16/10/2026 (titular): TRAVA NO NÚCLEO — caminho cujo conteúdo só pode existir nos livros (só no Eldorado)."""
+    try:
+        from .livro_arquivo import _rel, proibido
+        return proibido(_rel(path))
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def load_json(path: Path):
+    path = Path(path)
+    if not path.exists() and _proibido(path):         # já absorvido: montado a partir dos livros
+        from .livro_arquivo import carregar
+        v = carregar(path, None)
+        if v is not None:
+            return v
     return json.loads(path.read_text(encoding="utf-8"))
 
 def write_json(path: Path, value) -> None:
+    path = Path(path)
+    if _proibido(path):                                # 16/10: grava NO LIVRO; o arquivo não chega a existir
+        from .livro_arquivo import guardar_lote
+        guardar_lote([(path, value)])
+        return
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
