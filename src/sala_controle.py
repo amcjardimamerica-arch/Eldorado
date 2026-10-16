@@ -155,11 +155,12 @@ def montar(agora: datetime | None = None) -> dict:
     fret = _j(ROOT / "estado/fila_retentativa.json") or {}
     frr = fret.get("resumo") or {}
     fora = fret.get("fora_da_fila") or {}
-    _instr(I, agora, id="mo_retentativa", sub="Motores", nome="Páginas aguardando nova tentativa", valor=frr.get("aguardando_retentativa"),
+    _pag = [u for u, r in (fret.get("fila") or {}).items() if not str(u).startswith("oportunidade:")]   # 16/10: só PÁGINAS
+    _instr(I, agora, id="mo_retentativa", sub="Motores", nome="Páginas aguardando nova tentativa", valor=len(_pag) if fret else None,
            unidade="páginas", escala=[0, 50], quando=fret.get("em"), cadencia_h=2, faixa={"normal": [0, 30], "alarme": [None, 100]},
            faz="Página com tempo esgotado ou erro de acesso sai da passagem e volta 30 minutos depois; a pesquisa segue com as próximas.",
            efeito=frr.get("regra") or "volta em 30 min; sai após 5 tentativas com o mesmo erro",
-           resultado=f"{frr.get('aguardando_retentativa', 0)} página(s) voltam na próxima passagem")
+           resultado=f"{len(_pag) if fret else 0} página(s) voltam na próxima passagem (as oportunidades em leitura parcial têm mostrador próprio)")
     _instr(I, agora, id="mo_fora_da_fila", sub="Motores", nome="Páginas fora da fila (5 erros iguais)", valor=frr.get("fora_da_fila"),
            unidade="páginas", escala=[0, 20], quando=fret.get("em"), cadencia_h=2, faixa={"alarme": [None, 0]},
            faz="Falha: a página deu o mesmo erro 5 vezes seguidas e saiu da fila. Precisa de correção da rota ou leitura no Chrome.",

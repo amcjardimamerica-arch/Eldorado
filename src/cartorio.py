@@ -646,7 +646,10 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
     devidas.sort(key=prio)
     livros_max = int(c["livros_por_execucao"])
     est_q = [o for o in devidas if o["_tipo"] == "estrela"]; liv_q = [o for o in devidas if o["_tipo"] == "livro"]
-    fila = deque((est_q[:max(1, limite - min(len(liv_q), livros_max))] + liv_q[:livros_max])[:limite])
+    # 16/10/2026 (sala de controle): as ABERTAS primeiro — os livros só usam as vagas que sobrarem. Antes, com --limite 40
+    # e 30 reservadas aos livros, sobravam 10 vagas por passagem para 354 abertas (curadoria parada em 3%)
+    _est = est_q[:limite]
+    fila = deque(_est + liv_q[:max(0, min(livros_max, limite - len(_est)))])
     feitas, novas_linhas, erros, promovidas, sem_material, repassadas = [], [], [], 0, 0, set()
     while fila and time.time() - t0 <= segundos:
         op = fila.popleft()
