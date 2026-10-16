@@ -938,7 +938,7 @@ def _marca_etapas(editais: list[dict], hoje: date | None = None) -> list[dict]:
     _dups = _duplicatas()
     etapa_do_edital._an = _carrega_analises()
     for e in editais:
-        _ex = load_json(ROOT / "dados/editais/extraidos" / f"{e['id']}.json") if (ROOT / "dados/editais/extraidos" / f"{e['id']}.json").exists() else {}
+        _ex = load_json(ROOT / "dados/editais/extraidos" / f"{e['id']}.json") if __import__("src.livro_arquivo", fromlist=["x"]).existe(ROOT / "dados/editais/extraidos" / f"{e['id']}.json") else {}
         e.update(classificar_registro(e, _ex))
         _integrar_analise(e)
         e.update(selo_validacao(e, _ex))
@@ -1125,7 +1125,7 @@ def _integrar_analise(e: dict) -> None:
     compor o edital — sem pedir atualização a ninguém. Só sobrescreve o que o
     edital ainda não tinha; registra a origem."""
     arq = ROOT / "dados/editais/extraidos" / f"{e['id']}.json"
-    if not arq.exists():
+    if not __import__("src.livro_arquivo", fromlist=["x"]).existe(arq):
         return
     try:
         ex = load_json(arq)
@@ -1477,7 +1477,7 @@ def coletar(hoje: date | None = None) -> dict:
     editais = emendas + janelas + editais
     for e in emendas + janelas:                       # curadoria também nas regras anuais
         e["area"] = area_canonica(e.get("area"))
-        _exr = load_json(ROOT / "dados/editais/extraidos" / f"{e['id']}.json") if (ROOT / "dados/editais/extraidos" / f"{e['id']}.json").exists() else {}
+        _exr = load_json(ROOT / "dados/editais/extraidos" / f"{e['id']}.json") if __import__("src.livro_arquivo", fromlist=["x"]).existe(ROOT / "dados/editais/extraidos" / f"{e['id']}.json") else {}
         e.update(classificar_registro(e, _exr)); e.update(selo_validacao(e, _exr))
         si = situacao_inscricao(e, hoje)
         e["situacao_inscricao"] = si["situacao"]; e["regime_inscricao"] = si["regime"]; e["base_situacao"] = si["base"]
@@ -1777,10 +1777,10 @@ def publicar_fragmentos(dados: dict, hoje: date) -> dict:
                                     "situacao": ("aberta" if (_data_de((_ex.get("verificacao_externa") or {}).get("prazo") or "") or "") >= hoje.isoformat() else "encerrada"),
                                     "origem_fim": "verificação externa pelo titular (site oficial)"}
                                    if (_ex.get("verificacao_externa") or {}).get("prazo") else {})}
-                  )(load_json(ROOT / "dados/editais/extraidos" / f"{o['id']}.json") if (ROOT / "dados/editais/extraidos" / f"{o['id']}.json").exists() else {}),
+                  )(load_json(ROOT / "dados/editais/extraidos" / f"{o['id']}.json") if __import__("src.livro_arquivo", fromlist=["x"]).existe(ROOT / "dados/editais/extraidos" / f"{o['id']}.json") else {}),
                 **({"tipo_registro": "duplicata", "duplicata_de": _duplicatas()[o["id"]]["canonico"],
                     "motivo_tipo": "mesmo edital captado por outra fonte"} if o["id"] in _duplicatas() else {}),
-                **{k: v for k, v in selo_validacao(o, load_json(ROOT / "dados/editais/extraidos" / f"{o['id']}.json") if (ROOT / "dados/editais/extraidos" / f"{o['id']}.json").exists() else {}).items()},
+                **{k: v for k, v in selo_validacao(o, load_json(ROOT / "dados/editais/extraidos" / f"{o['id']}.json") if __import__("src.livro_arquivo", fromlist=["x"]).existe(ROOT / "dados/editais/extraidos" / f"{o['id']}.json") else {}).items()},
             })
             if _s and _s["regras"]:
                 _a = abertas[-1]

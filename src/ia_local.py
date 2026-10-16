@@ -284,7 +284,7 @@ def aplicar(dia: str | None = None) -> dict:
     cat_p = ROOT / "estado/catalogo_achados_ia.json"; cat = load_json(cat_p) if cat_p.exists() else {"dias": {}}
     for p in props:
         if p["tarefa"] in ("classificar_objeto", "extrair_objeto_prazo"):
-            fp = EXTRAIDOS / f"{p['id']}.json"; ex = load_json(fp) if fp.exists() else {"edital_id": p["id"], "itens": {}}
+            fp = EXTRAIDOS / f"{p['id']}.json"; ex = load_json(fp) if __import__("src.livro_arquivo", fromlist=["x"]).existe(fp) else {"edital_id": p["id"], "itens": {}}
             ex.setdefault("propostas_ia_local", []).append({**{k: v for k, v in p.items() if k != "id"}, "em": now_iso(), "origem": CFG["validacao"]["origem"]})
             if p["tarefa"] == "extrair_objeto_prazo":
                 # entra como PROPOSTA no registro (campo próprio), nunca sobrescreve o que o titular ou o robô confirmou

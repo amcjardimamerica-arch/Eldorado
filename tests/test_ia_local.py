@@ -65,6 +65,9 @@ class TesteCicloEAplicacao(unittest.TestCase):
         r = ciclo(Off()); self.assertFalse(r["disponivel"]); self.assertIn("iniciar", r["nota"])
 
     def test_aplicar_grava_como_proposta_nunca_sobrescreve(self):
+        from unittest import mock as _mock
+        from src import livro_arquivo as _LA
+        _p = _mock.patch.object(_LA, "PROIBIDOS", []); _p.start(); self.addCleanup(_p.stop)   # 16/10: o teste é da regra da IA, não da trava
         import datetime
         dia = datetime.date.today().isoformat()
         pasta = ROOT / "estado/ia_local"; pasta.mkdir(parents=True, exist_ok=True)

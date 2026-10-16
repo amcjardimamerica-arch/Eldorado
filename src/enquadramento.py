@@ -148,7 +148,7 @@ def candidato_aprovacao(a: dict, e: dict) -> bool:
 def extraido(e: dict) -> dict:
     from .fonte_edital import EXTRAIDOS
     arq = EXTRAIDOS / f"{e['id']}.json"
-    return load_json(arq) if arq.exists() else {}
+    return load_json(arq) if __import__("src.livro_arquivo", fromlist=["x"]).existe(arq) else {}
 
 
 def itens_faltantes(e: dict) -> list[str]:
@@ -752,7 +752,7 @@ def ingerir() -> dict:
         except Exception:
             continue
         eid = arq.stem
-        ex_p = EXTRAIDOS / f"{eid}.json"; ex = load_json(ex_p) if ex_p.exists() else {"edital_id": eid, "tentativas": [], "itens": {}, "fontes_itens": {}}
+        ex_p = EXTRAIDOS / f"{eid}.json"; ex = load_json(ex_p) if __import__("src.livro_arquivo", fromlist=["x"]).existe(ex_p) else {"edital_id": eid, "tentativas": [], "itens": {}, "fontes_itens": {}}
         itens = dict(ex.get("itens") or {}); fontes = dict(ex.get("fontes_itens") or {}); novos = 0
         disp = dict(ex.get("dispensaveis") or {})
         for k, v in (r.get("itens") or {}).items():
@@ -825,7 +825,7 @@ def ingerir_navegador() -> dict:
             if pag and VET.search(pag) and not re.search(r"pncp\.gov[^ ]*/arquivos/", pag, re.I):
                 recusados.append({"id": eid, "motivo": "página informada é vetor/veículo, não a fonte oficial", "url": pag}); pag = ""
             fp = EXTRAIDOS / f"{eid}.json"
-            reg = load_json(fp) if fp.exists() else {"edital_id": eid, "tentativas": [], "itens": {}, "fontes_itens": {}}
+            reg = load_json(fp) if __import__("src.livro_arquivo", fromlist=["x"]).existe(fp) else {"edital_id": eid, "tentativas": [], "itens": {}, "fontes_itens": {}}
             itens = dict(reg.get("itens") or {}); fontes = dict(reg.get("fontes_itens") or {})
             if v.get("objeto"): itens["Objeto"] = str(v["objeto"])[:400]; fontes["Objeto"] = "coleta pelo navegador (titular) — página oficial"
             if v.get("fim"): itens["Prazo de inscrição"] = str(v["fim"])[:40]; fontes["Prazo de inscrição"] = "coleta pelo navegador (titular) — edital"

@@ -83,7 +83,7 @@ def aprender() -> dict:
     n_pos = n_neg = 0
     for eid, a in an.items():
         e = universo.get(eid) or {}
-        ex = load_json(EXTRAIDOS / f"{eid}.json") if (EXTRAIDOS / f"{eid}.json").exists() else {}
+        ex = load_json(EXTRAIDOS / f"{eid}.json") if __import__("src.livro_arquivo", fromlist=["x"]).existe(EXTRAIDOS / f"{eid}.json") else {}
         texto = " ".join(str(x) for x in [e.get("titulo"), e.get("objeto"), (ex.get("itens") or {}).get("Objeto")] if x)
         if not texto.strip():
             continue

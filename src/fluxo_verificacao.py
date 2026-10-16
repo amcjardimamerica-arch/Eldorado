@@ -114,7 +114,7 @@ def run() -> dict:
     externa = []
     for e in universo:
         arq = EXTRAIDOS / f"{e['id']}.json"
-        ex = load_json(arq) if arq.exists() else {}
+        ex = load_json(arq) if __import__("src.livro_arquivo", fromlist=["x"]).existe(arq) else {}
         r = etapa_de_verificacao(e, ex, an.get(e["id"]))
         por_etapa.setdefault(r["etapa_verificacao"], []).append(e["id"])
         if r["etapa_verificacao"] == 3:

@@ -202,8 +202,8 @@ def consolidar() -> list[dict]:
                        "orgao": ag.get("financiador"), "motor_indexador": ag.get("motor"),
                        "pagina_agregador": ag.get("pagina_agregador"),
                        "areas_fonte": ag.get("areas") or (["cultura"] if ag.get("fonte") == "farolcultural" else [])}))
-    for arq in EXT.glob("*.json"):
-        e = _j(arq, {})
+    for arq in __import__("src.livro_arquivo", fromlist=["x"]).arquivos(EXT):                  # 16/10: disco + livros
+        e = __import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(arq, {}) or {}
         if e.get("investigacao_ia") and arq.stem.startswith(("cat-", "op-")):
             brutos.append(("Piloto - Interceptador", {"id": arq.stem, "titulo": e.get("titulo"), "url": e.get("url"), "orgao": e.get("orgao"),
                                                       "descoberto_em": str((e.get("investigacao_ia") or {}).get("em", ""))[:10], "fonte_id": "piloto-interceptador"}))
