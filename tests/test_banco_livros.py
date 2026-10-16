@@ -244,3 +244,28 @@ class SoTrechoELinks16_10(unittest.TestCase):
         L = {lv["id"]: lv for lv in json.loads((r / "biblioteca_alexandria/fontes/motores.json").read_text())["motores"]}
         h = L["lv1"]["historico_edicoes"][0]; self.assertIn("historico_edicoes", L["lv2"])
         self.assertEqual((h["link_publicacao"], h["link_oficial"], h["buscar_link_oficial"]), ("https://goiania.go.gov.br/fia", None, True))
+
+
+class Modalidade16_10(unittest.TestCase):
+    """16/10/2026 (titular): 'Destinação' vira 'Modalidade' — chaves e nomes do item; texto livre não muda."""
+    def test_migracao(self):
+        r = Path(tempfile.mkdtemp())
+        for d in ("dados", "estado", "docs/dados", "biblioteca_alexandria"):
+            (r / d).mkdir(parents=True)
+        (r / "estado/c.json").write_text(json.dumps({"certidoes": {"x": {"itens": {"Destinação": {"valor": "Termo de Fomento"}},
+                                                                        "ainda_faltam": ["Valor", "Destinação"], "tipo": "Destinação judicial"}}}))
+        (r / "dados/b.jsonl").write_text(json.dumps({"id": "1", "checklist": {"Destinação": {"s": "ok"}}}) + "\n")
+        with mock.patch.object(B, "ROOT", r), mock.patch.object(B, "MARCO_MODALIDADE", r / "estado/m.json"):
+            res = B.renomear_modalidade_nos_dados()
+            self.assertEqual(B.renomear_modalidade_nos_dados()["migracao"], "já feita")
+        c = json.loads((r / "estado/c.json").read_text())["certidoes"]["x"]
+        self.assertEqual(list(c["itens"]), ["Modalidade"]); self.assertEqual(c["ainda_faltam"], ["Valor", "Modalidade"])
+        self.assertEqual(c["tipo"], "Destinação judicial")                                     # texto livre não muda
+        self.assertIn("Modalidade", (r / "dados/b.jsonl").read_text())
+        self.assertEqual((res["chaves"], res["nomes"]), (2, 1))
+
+    def test_codigo_sem_o_item_antigo(self):
+        import glob, re
+        restos = [f for f in glob.glob(str(Path(__file__).resolve().parents[1] / "src/*.py"))
+                  if '"Destinação"' in open(f, encoding="utf-8").read() and not f.endswith("banco_livros.py")]   # a migração cita o antigo
+        self.assertEqual(restos, [])

@@ -31,7 +31,7 @@ DESTINO = ROOT / "biblioteca_alexandria/fontes"
 CATALOGO = ROOT / "config/fontes_captacao_260.json"
 
 ITENS_14 = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador",
-            "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação",
+            "Território", "Esfera", "Requisitos", "Anexos", "Modalidade", "Área de atuação",
             "Requisitos de habilitação", "Critérios de pontuação"]
 
 # ── Documentos: Lei 13.019/2014 e Decreto 8.726/2016 (base legal de cada exigência) ──
@@ -193,7 +193,6 @@ def itens_14(fonte: dict, historico: dict, valores: dict) -> list[dict]:
         "Esfera": (fonte["nivel"], "catálogo"),
         "Requisitos": ("OSC constituída, regularidade fiscal e trabalhista, experiência na área e tempo mínimo de existência conforme a esfera", "Lei 13.019/2014, art. 33"),
         "Anexos": ("edital, plano de trabalho, declarações e planilha orçamentária (modelos publicados com o edital)", "prática do rito"),
-        "Destinação": (f"projetos de {fonte['area'].replace('_', ' ')}", "catálogo"),
         "Área de atuação": (fonte["area"], "catálogo"),
         "Requisitos de habilitação": (perfil["rito"], "regramento"),
         "Critérios de pontuação": ("; ".join(f"{c} ({p})" for c, p in perfil["pontuacao"]) or perfil["base_pontuacao"], perfil["base_pontuacao"]),

@@ -2,7 +2,7 @@
 
 Regra do titular: cada opressor ligado persegue os 12 parâmetros do edital do seu recurso — Objeto, Prazo de
 inscrição, Resultado, Prazo de recurso, Valor, Órgão / financiador, Território, Esfera, Requisitos, Anexos,
-Destinação e Área de atuação. Quando o recurso não tem algum deles (programa permanente, fluxo contínuo, doação,
+Modalidade e Área de atuação. Quando o recurso não tem algum deles (programa permanente, fluxo contínuo, doação,
 destinação de imposto, TAC, emenda), fica registrada a DISPENSA e o porquê.
 
 A pesquisa é feita por blocos e gravada em `dados/opressores/parametros/parametros_AAAA-MM-DD.json` (um registro
@@ -29,7 +29,7 @@ from .nucleo import ROOT
 PASTA = ROOT / "dados/opressores/parametros"
 EST = ROOT / "estado/opressores.json"
 ITENS = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador",
-         "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação")
+         "Território", "Esfera", "Requisitos", "Anexos", "Modalidade", "Área de atuação")
 STATUS = ("confirmado", "dispensado pelo edital", "não informado no edital", "não localizado")
 DECISOES = {"V": "edital vigente aberto", "A": "última edição encerrada (histórico)", "R": "programa permanente sem edital periódico",
             "D": "não é recurso para OSC — opressor desligado", "P": "pendente"}

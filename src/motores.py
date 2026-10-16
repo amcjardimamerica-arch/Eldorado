@@ -5,7 +5,7 @@ segmentados por território: Rouanet é nacional; a Aldir Blanc tem um bloco
 estadual (todos os editais do Estado) e um municipal (todos os de Goiânia).
 Com filtro de estado e de quais editais buscar. Cada ponto mostra as 11
 camadas (Objeto, Prazo de inscrição, Resultado, Prazo de recurso, Valor,
-Órgão/financiador, Território, Esfera, Requisitos, Anexos, Destinação), o link
+Órgão/financiador, Território, Esfera, Requisitos, Anexos, Modalidade), o link
 da página de publicação e a validação do conteúdo pelo motor — e um
 diagnóstico quando faltam camadas: o que falta, a causa e a ação.
 
@@ -24,7 +24,7 @@ from datetime import date
 from .nucleo import ROOT, load_json, now_iso, slug, write_json
 
 CAMADAS = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor",
-           "Órgão / financiador", "Território", "Esfera", "Requisitos", "Anexos", "Destinação",
+           "Órgão / financiador", "Território", "Esfera", "Requisitos", "Anexos", "Modalidade",
            "Área de atuação")
 
 _FAMILIAS = [
@@ -131,7 +131,7 @@ def _camadas_de_itens(ficha: dict, itens: dict) -> dict:
         ("Esfera", ficha.get("nivel")),
         ("Requisitos", ", ".join(ficha.get("exigencias_detectadas") or []) or None),
         ("Anexos", ", ".join(ficha.get("anexos_no_ato") or ficha.get("modelos") or []) or None),
-        ("Destinação", (ficha.get("destinacao") or {}).get("motivo")),
+        ("Modalidade", None),                        # 16/10: elegibilidade não é modalidade — o Cartório extrai com trecho
         ("Área de atuação", (lambda a: None if a in (None, "outros") else a)(ficha.get("area"))),
     ]
     return {"itens": [{"item": k, "valor": (str(v)[:200] if v else None), "comprovado": bool(v)} for k, v in val]}

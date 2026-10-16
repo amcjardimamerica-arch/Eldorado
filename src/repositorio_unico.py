@@ -29,7 +29,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SAIDA = ROOT / "dados/oportunidades/repositorio_unico.json"
 RESUMO = ROOT / "docs/dados/repositorio_resumo.json"
 DOZE = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador", "Território",
-        "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação"]
+        "Esfera", "Requisitos", "Anexos", "Modalidade", "Área de atuação"]
 FECHADAS = ("ruido", "encerrada", "fora_perfil", "duplicata")
 LIMIAR_OSC = 0.12            # rede neural: abaixo disso, sem prova e sem prazo → dispensa sugerida (não se aplica a OSC)
 
@@ -195,7 +195,7 @@ _CUR: dict = {}
 DESCARTADAS: list = []
 _PNCP: dict = {}
 ITENS_12 = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador",
-            "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação")
+            "Território", "Esfera", "Requisitos", "Anexos", "Modalidade", "Área de atuação")
 
 
 _MUN_BR: dict = {}

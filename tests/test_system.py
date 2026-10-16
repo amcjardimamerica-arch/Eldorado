@@ -1717,7 +1717,7 @@ class SystemTests(unittest.TestCase):
                 rotulos=[a["item"] for a in e["analise_etapa2"]]
                 for esperado in ("Objeto","Prazo de inscrição","Resultado",
                                  "Prazo de recurso","Valor","Órgão / financiador",
-                                 "Território","Esfera","Requisitos","Anexos","Destinação"):
+                                 "Território","Esfera","Requisitos","Anexos","Modalidade"):
                     self.assertIn(esperado,rotulos,esperado)
                 self.assertEqual(e["total_itens"],len(e["analise_etapa2"]))
                 self.assertEqual(e["comprovados"],
@@ -2039,7 +2039,7 @@ class SystemTests(unittest.TestCase):
         self.assertEqual([i["item"] for i in r["itens"]],list(ITENS))
         by={i["item"]:i for i in r["itens"]}
         for ok in ("Objeto","Prazo de inscrição","Valor","Órgão / financiador","Território",
-                   "Esfera","Requisitos","Anexos","Destinação"):
+                   "Esfera","Requisitos","Anexos","Modalidade"):
             self.assertTrue(by[ok]["comprovado"],ok)
         for lac in ("Resultado","Prazo de recurso"):
             self.assertFalse(by[lac]["comprovado"]); self.assertIsNone(by[lac]["valor"])
@@ -3639,12 +3639,12 @@ class SystemTests(unittest.TestCase):
         F.TEXTOS.mkdir(parents=True,exist_ok=True)
         with gzip.open(F.TEXTOS/"lab-fe.txt.gz","wt",encoding="utf-8") as gz: gz.write(texto)
         chamados=[]
-        def ia(m,pr,mx,**kw): chamados.append(m); return {"status":"respondeu","itens":{"Destinação":"OSCs culturais","Requisitos":"estatuto; CNDT"},"documentos_exigidos":["estatuto","cndt"],"pontuacao":[{"criterio":"experiência","peso":30}]}
+        def ia(m,pr,mx,**kw): chamados.append(m); return {"status":"respondeu","itens":{"Modalidade":"OSCs culturais","Requisitos":"estatuto; CNDT"},"documentos_exigidos":["estatuto","cndt"],"pontuacao":[{"criterio":"experiência","peso":30}]}
         try:
             r=F.investigar(e,ia,["haiku","sonnet"])
             self.assertEqual(chamados,["haiku"])                                   # reforço não foi preciso
             self.assertTrue(r["completo"]); self.assertEqual(r["documentos_exigidos"],["estatuto","cndt"])
-            self.assertIn("cadastro do edital",r["fontes_itens"]["Esfera"]); self.assertIn("IA (haiku)",r["fontes_itens"]["Destinação"])
+            self.assertIn("cadastro do edital",r["fontes_itens"]["Esfera"]); self.assertIn("IA (haiku)",r["fontes_itens"]["Modalidade"])
         finally:
             (F.EXTRAIDOS/"lab-fe.json").unlink(missing_ok=True); (F.TEXTOS/"lab-fe.txt.gz").unlink(missing_ok=True)
         html=open("docs/dashboard.html",encoding="utf-8").read()

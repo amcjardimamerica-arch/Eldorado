@@ -124,7 +124,7 @@ def _derivado(nome: str, x: dict) -> dict | None:
         a = x.get("objeto_area") or x.get("area_atuacao") or x.get("segmento")
         if a:
             return {"estado": "catalogo", "valor": str(a), "fonte": "catálogo do livro (área do objeto)"}
-    if nome == "Destinação":
+    if nome == "Modalidade":
         t = x.get("tipo_objeto"); pub = x.get("publico")
         if t or pub:
             pub = ", ".join(pub) if isinstance(pub, list) else (pub or "")

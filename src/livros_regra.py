@@ -36,7 +36,7 @@ SEMENTE = ROOT / "dados/oportunidades/livros_parecer_238.json"
 INDICE = ROOT / "estado/opressores_indice.json"
 LOCAIS = ROOT / "docs/dados/locais_de_busca.json"
 DOZE = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador", "Território", "Esfera",
-        "Requisitos", "Anexos", "Destinação", "Área de atuação"]
+        "Requisitos", "Anexos", "Modalidade", "Área de atuação"]
 
 
 def _j(p: Path, padrao):

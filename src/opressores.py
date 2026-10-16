@@ -27,7 +27,7 @@ ESTADO = ROOT / "estado/opressores.json"
 DURACAO = 30
 INTERVALO_IA = 3
 ITENS = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador",
-         "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação")
+         "Território", "Esfera", "Requisitos", "Anexos", "Modalidade", "Área de atuação")
 
 
 def _estado() -> dict:

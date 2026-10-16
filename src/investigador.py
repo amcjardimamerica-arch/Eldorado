@@ -33,7 +33,7 @@ SAIDA = ROOT / "docs/dados/investigacoes_ia.json"
 UA = {"User-Agent": "Mozilla/5.0 (Eldorado Investigador; associacao sem fins lucrativos)"}
 
 DOZE = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador",
-        "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação"]
+        "Território", "Esfera", "Requisitos", "Anexos", "Modalidade", "Área de atuação"]
 
 ESQUEMA = {
     "objeto": {"valor": "o que o edital financia, em uma frase", "trecho": "trecho literal"},
@@ -295,9 +295,7 @@ def aplicar(e: dict, r: dict, texto: str, fontes: list[dict], modelo: str) -> di
     c = bool(lidos) or (ok(b) and bool(decl))
     campos["Anexos"] = {"valor": f"{len(lidos or decl)} anexo(s)" if (lidos or decl) else None, "trecho": b.get("trecho"), "comprovado": c}
     if c: e["anexos"] = lidos or decl
-    # Destinação
-    b = g("destinacao"); el = str(b.get("elegivel")).lower() in ("true", "1", "sim"); c = ok(b)
-    campos["Destinação"] = {"valor": ("elegível" if el else "fora do escopo") + (f" · {b.get('natureza')}" if b.get("natureza") else ""), "trecho": b.get("trecho"), "comprovado": c}
+    # Modalidade de recebimento: não é a elegibilidade — fica para o Cartório extrair com trecho (16/10, titular)
     if c: e["destinacao"] = {"elegivel": el, "natureza": b.get("natureza"), "motivo": str(b.get("trecho"))[:160]}
     # Área
     b = g("area"); _areas = ("cultura", "educacao", "saude", "assistencia_social", "esporte", "meio_ambiente", "direitos")
@@ -445,7 +443,7 @@ TEXTO DA FONTE (pode estar truncado):
 
 CHAVE_ITEM = {"Objeto": "objeto", "Prazo de inscrição": "prazo_inscricao", "Resultado": "resultado", "Prazo de recurso": "prazo_recurso",
               "Valor": "valor", "Órgão / financiador": "orgao", "Território": "territorio", "Esfera": "esfera", "Requisitos": "requisitos",
-              "Anexos": "anexos", "Destinação": "destinacao", "Área de atuação": "area"}
+              "Anexos": "anexos", "Modalidade": "destinacao", "Área de atuação": "area"}
 
 
 def _links_da_pagina(url: str) -> list[tuple[str, str]]:

@@ -13,7 +13,7 @@ import re
 from urllib.parse import urlsplit
 
 DOZE = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador",
-        "Território", "Esfera", "Requisitos", "Anexos", "Destinação", "Área de atuação"]
+        "Território", "Esfera", "Requisitos", "Anexos", "Modalidade", "Área de atuação"]
 
 # ── RÉGUA ÚNICA DE SITE OFICIAL (regra do titular de 07/09: vetor não é fonte) ──────────────────────────────────────
 VETOR_ESTRITO = re.compile(r"pncp\.gov\.br/(?:app|pncp-api/v1/(?:orgaos/[^/]+/compras/[^/]+/[^/]+)?$)|queridodiario|capitaai|prosas\.com|"
@@ -275,7 +275,7 @@ def _achar(T: Texto, rx: str, secao_rx: str | None = None, grupo: int = 1, flags
     return None
 
 
-# ── MODALIDADE DE RECEBIMENTO (item "Destinação", titular 15/10/2026) ───────────────────────────────────────────
+# ── MODALIDADE DE RECEBIMENTO (item "Modalidade", titular 15/10/2026) ───────────────────────────────────────────
 # (nome, padrão do instrumento, base legal típica, peso). A escolha pondera: instrumento citado com verbo de
 # formalização ("celebração de", "firmar", "por meio de") vale mais; título e objeto valem mais que o resto do texto.
 MODALIDADES = [
@@ -564,10 +564,10 @@ def extrair(paginas_: list[str], documento: str, titulo: str = "", orgao_hint: s
         P["Anexos"] = {"valor": "; ".join(an)[:300], "trecho": T.trecho(i, i + 120), "pagina": T.pagina(i), "documento": documento, "metodo": "lista de anexos"}
     # DESTINAÇÃO = MODALIDADE (titular, 15/10/2026): POR QUAL FORMA o dinheiro chega à associação e QUEM destina —
     # termo de fomento, termo de colaboração, prêmio, incentivo fiscal, doação, contrato… Define a prestação de contas
-    # e o enquadramento legal. Não é a finalidade do recurso. Chave interna mantida ("Destinação"); rótulo: Modalidade.
+    # e o enquadramento legal. Não é a finalidade do recurso. Chave interna mantida ("Modalidade"); rótulo: Modalidade.
     mod = modalidade(T, titulo)
     if mod:
-        P["Destinação"] = {"valor": mod["valor"], "trecho": mod["trecho"], "pagina": mod["pagina"], "documento": documento,
+        P["Modalidade"] = {"valor": mod["valor"], "trecho": mod["trecho"], "pagina": mod["pagina"], "documento": documento,
                            "metodo": "modalidade de recebimento", "modalidade": mod["modalidade"], "base_legal": mod.get("base_legal")}
     # ÁREA DE ATUAÇÃO
     base = (P.get("Objeto") or {}).get("valor", "") + " " + titulo + " " + T.plano[:6000]
@@ -661,7 +661,7 @@ def chave_orgao(url: str, orgao: str = "") -> str | None:
     return ("orgao:" + re.sub(r"[^a-z0-9]+", " ", o).strip()[:60]) if o.strip() else None
 
 
-COM_ROTULO = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Requisitos", "Anexos", "Destinação")
+COM_ROTULO = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Requisitos", "Anexos", "Modalidade")
 
 
 def chaves_orgao(url: str, orgao: str = "") -> list[str]:

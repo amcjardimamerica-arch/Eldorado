@@ -901,7 +901,7 @@ def _dados_do_registro(eid: str) -> dict:
         x = c.get(k) or {}
         return {"valor": x.get("valor"), "trecho": (x.get("trecho") or x.get("trecho_dispensa") or "")[:180],
                 "oficial": bool(x.get("fonte_oficial")), "dispensado": bool(x.get("dispensado"))} if (x.get("comprovado") or x.get("dispensado")) else None
-    out = {k: v(k) for k in ("Objeto", "Prazo de inscrição", "Valor", "Órgão / financiador", "Território", "Área de atuação", "Destinação", "Requisitos")}
+    out = {k: v(k) for k in ("Objeto", "Prazo de inscrição", "Valor", "Órgão / financiador", "Território", "Área de atuação", "Modalidade", "Requisitos")}
     return {k: x for k, x in out.items() if x}
 
 
