@@ -13,6 +13,7 @@ Roda em toda passagem do fluxo 22 (agenda + maestro + rede neural), logo depois 
 from __future__ import annotations
 
 import json
+import re
 import os
 import urllib.request
 from datetime import datetime, timezone
@@ -171,7 +172,8 @@ def montar(agora: datetime | None = None) -> dict:
     fret = _j(ROOT / "estado/fila_retentativa.json") or {}
     frr = fret.get("resumo") or {}
     fora = fret.get("fora_da_fila") or {}
-    _pag = [u for u, r in (fret.get("fila") or {}).items() if not str(u).startswith("oportunidade:")]   # 16/10: só PÁGINAS
+    _pag = [u for u, r in (fret.get("fila") or {}).items() if not str(u).startswith("oportunidade:")   # 16/10: só PÁGINAS
+            and not ((r or {}).get("escopo") == "cartorio" and re.search(r"(?i)403|401|429|ponte|503", str((r or {}).get("erro"))))]  # 17/10: bloqueadas → Chrome
     _instr(I, agora, id="mo_retentativa", sub="Motores", nome="Páginas aguardando nova tentativa", valor=len(_pag) if fret else None,
            unidade="páginas", escala=[0, 50], quando=fret.get("em"), cadencia_h=2, faixa={"normal": [0, 30], "alarme": [None, 100]},
            faz="Página com tempo esgotado ou erro de acesso sai da passagem e volta 30 minutos depois; a pesquisa segue com as próximas.",
@@ -182,6 +184,26 @@ def montar(agora: datetime | None = None) -> dict:
            faz="Falha: a página deu o mesmo erro 5 vezes seguidas e saiu da fila. Precisa de correção da rota ou leitura no Chrome.",
            efeito=" · ".join(f"{(r.get('escopo') or '—')}: {u[:70]} ({r.get('erro')})" for u, r in list(fora.items())[:6]) or "nenhuma",
            resultado=" · ".join(f"{k}: {v}" for k, v in (frr.get("fora_da_fila_por_escopo") or {}).items()) or "nenhuma página fora da fila")
+    # 17/10/2026 (titular): ETAPA 07 — VERIFICAÇÃO EXTERNA, alimentada pelo Cartório (ponto central do que falta)
+    pend = _j(ROOT / "docs/dados/cartorio_pendencias.json") or {}
+    pg = pend.get("para_o_chrome_por_grupo") or {}
+    _instr(I, agora, id="ve_para_o_chrome", sub="Verificação externa", nome="Para o Claude no Chrome", valor=pend.get("para_o_chrome"),
+           unidade="oportunidades", escala=None, quando=pend.get("em"), cadencia_h=2,
+           faz="O Cartório reúne o que falta em cada oportunidade; o que parou na fonte vai ao Claude no Chrome, que arquiva, elimina ou completa.",
+           efeito=" · ".join(f"{g} {n}" for g, n in pg.items()) or "sem pendências publicadas",
+           resultado="docs/dados/cartorio_pendencias.json — prompts 1 (Goiás), 2 (Nacional) e 3 (Sem site oficial)")
+    _instr(I, agora, id="ve_bloqueadas", sub="Verificação externa", nome="Documentos bloqueados para o robô", valor=pend.get("bloqueadas_na_fonte"),
+           unidade="oportunidades", escala=None, quando=pend.get("em"), cadencia_h=2,
+           faz="Documento oficial que o site bloqueia (403, 401, 429, ponte) não abre na 5ª tentativa: vai direto ao Chrome.",
+           efeito=f"{pend.get('paginas_bloqueadas_do_cartorio') or 0} página(s) do Cartório bloqueadas", resultado="entregues ao Chrome")
+    _instr(I, agora, id="ve_completas", sub="Verificação externa", nome="Oportunidades com os 12 itens", valor=pend.get("completas"),
+           unidade="oportunidades", escala=None, quando=pend.get("em"), cadencia_h=2,
+           faz="Cada item certificado no documento oficial (valor, trecho, documento); o link de publicação é só referência.",
+           efeito=f"{pend.get('completas') or 0} de {pend.get('abertas') or 0} abertas", resultado="nada é suposto")
+    _instr(I, agora, id="ve_importado", sub="Verificação externa", nome="Última importação do Chrome", valor=None,
+           unidade="", escala=None, quando=pend.get("ultima_importacao_do_chrome"), cadencia_h=168,
+           faz="O resultado do Chrome entra nas certidões (nos livros) e atualiza na hora repositório, fluxo e pendências.",
+           efeito=str(pend.get("ultima_importacao_do_chrome") or "nenhuma importação ainda")[:19], resultado=pend.get("como_importar") or "")
     cl = _j(ROOT / "biblioteca_alexandria/livros/_vistas/curadoria_links.json") or {}
     clc = cl.get("curadoria") or {}
     _instr(I, agora, id="es_curadoria", sub="Esteira", nome="Links oficiais aprovados na curadoria",
@@ -320,7 +342,7 @@ def montar(agora: datetime | None = None) -> dict:
     mimico = [{"etapa": "Coleta", "valor": fu.get("coletados")}, {"etapa": "Distintas", "valor": fu.get("oportunidades_distintas")},
               {"etapa": "Abertas", "valor": rp.get("abertas")}, {"etapa": "Com livro", "valor": cz.get("com_livro")},
               {"etapa": "Cartório", "valor": rs.get("certidoes_sem_item_faltando")}, {"etapa": "Interceptador", "valor": rp.get("fila_interceptador")},
-              {"etapa": "Verificação externa", "valor": rp.get("fila_busca_externa")}, {"etapa": "Prontas para o Farol", "valor": rp.get("prontas_para_o_farol")}]
+              {"etapa": "Verificação externa", "valor": pend.get("para_o_chrome", rp.get("fila_busca_externa"))}, {"etapa": "Prontas para o Farol", "valor": rp.get("prontas_para_o_farol")}]
     tempo = sorted(({"id": x["id"], "quando": x["quando"], "nome": x["nome"], "sub": x["sub"], "estado": x["estado"], "efeito": x.get("efeito"), "resultado": x.get("resultado")}
                     for x in I if x.get("quando")), key=lambda e: str(e["quando"]), reverse=True)
     # 11/10 (v3, constelação): o detalhe de cada etapa — cada motor vira uma estrela no fundo da página

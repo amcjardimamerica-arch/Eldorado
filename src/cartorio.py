@@ -941,6 +941,18 @@ def pendencias(gravar: bool = True, lote_chrome: bool = True) -> dict:
         m = _re.search(r"abordagem (\d+) de", p)
         return p.startswith("Busca externa") or "achar o site oficial" in p or bool(m and int(m.group(1)) >= 3)
     chrome = {r["id"] for r in regs if r.get("estado") != "fechada" and r.get("faltam") and _ao_chrome(r)}
+    # 17/10 (titular): documento oficial BLOQUEADO para o robô (403, 401, 429, ponte) não abre na 5ª tentativa: vai ao Chrome
+    _fr = (_j(ROOT / "estado/fila_retentativa.json", {}) or {}).get("fila") or {}
+    _BLOQ = _re.compile(r"(?i)403|401|429|ponte|503")
+    bloqueadas = {u for u, x in _fr.items() if (x or {}).get("escopo") == "cartorio" and _BLOQ.search(str((x or {}).get("erro")))}
+    _bloq_op = set()
+    for r in regs:
+        if r.get("estado") == "fechada" or not r.get("faltam"):
+            continue
+        c_ = certs.get(f"estrela:{r['id']}") or {}
+        urls = {r.get("link_oficial"), r.get("url")} | {d.get("url") for d in (c_.get("documentos") or []) if isinstance(d, dict)}
+        if urls & bloqueadas:
+            chrome.add(r["id"]); _bloq_op.add(r["id"])
     out = []
     for r in regs:
         if r.get("estado") == "fechada":
@@ -954,12 +966,23 @@ def pendencias(gravar: bool = True, lote_chrome: bool = True) -> dict:
                     "documentos_oficiais": [d.get("url") for d in (c.get("documentos") or []) if isinstance(d, dict)][:8],
                     "certificados": cert, "faltam": r.get("faltam") or [k for k in it if k not in cert],
                     "proximo_passo": "Claude no Chrome" if r["id"] in chrome else "Cartório na fonte oficial",
-                    "selo": r.get("selo") or r.get("estado")})
+                    # 17/10 (titular): o GRUPO dos prompts do Chrome — explícito, para o prompt não deduzir
+                    "grupo": ("Sem site oficial" if not r.get("link_oficial") else
+                              "Goiás" if str(r.get("uf") or "").upper() == "GO" else "Nacional"),
+                    "selo": r.get("selo") or r.get("estado"),
+                    "motivo_chrome": ("documento oficial bloqueado para o robô" if r["id"] in _bloq_op else
+                                      "parado na fonte" if r["id"] in chrome else None)})
     out.sort(key=lambda x: (x["proximo_passo"] != "Claude no Chrome", -len(x["faltam"])))
     res = {"em": _agora(), "regra": "o Cartório reúne o que falta em cada oportunidade; só documento oficial (link oficial, "
            "anexos, registro oficial) certifica — o link de publicação é só referência; nada é suposto",
            "abertas": len(out), "completas": sum(1 for x in out if not x["faltam"]),
-           "para_o_chrome": sum(1 for x in out if x["proximo_passo"] == "Claude no Chrome"), "oportunidades": out}
+           "para_o_chrome": sum(1 for x in out if x["proximo_passo"] == "Claude no Chrome"),
+           "para_o_chrome_por_grupo": {g: sum(1 for x in out if x["proximo_passo"] == "Claude no Chrome" and x["grupo"] == g)
+                                       for g in ("Goiás", "Nacional", "Sem site oficial")},
+           "bloqueadas_na_fonte": len(_bloq_op), "paginas_bloqueadas_do_cartorio": len(bloqueadas),
+           "ultima_importacao_do_chrome": (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(PASTA / "certidoes_manuais.json", {}) or {}).get("em"),
+           "como_importar": "python scripts/importar_revisao_abertas.py <pasta com resultado_ABERTAS_*.json>",
+           "oportunidades": out}
     if gravar:
         PENDENCIAS.parent.mkdir(parents=True, exist_ok=True)
         PENDENCIAS.write_text(json.dumps(res, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
