@@ -757,8 +757,27 @@ if __name__ == "__main__":
 
 
 
+CHAMADA = re.compile(r"(?i)\bedita(l|is)\b|chamad[ao]s?\b|chamamento|inscri[çc]|sele[çc][ãa]o (p[úu]blica|de projetos)|pr[êe]mio|"
+                     r"apoia(r)? projetos|financia projetos|seleciona|programa .{0,30}(apoio|fomento)|grants?\b|call for|apply|"
+                     r"convocat|fundo .{0,40}(iniciativas|projetos)")
+NOTICIA = re.compile(r"(?i)arrecad|relato|experi[êe]ncia|\bcria fundo|fundos patrimoniais|milh(ão|ões) por ano|\bdicas?\b|"
+                     r"como (fazer|captar)|lista de|\d+ oportunidades|modelo de|resultado|selecionad|\bconfira\b|\bsaiba\b|"
+                     r"\bre[úu]ne\b|reuni[õo]es|movimenta|\bavalia\b|repasse concedido|\bdata\b$")
+
+
 def _triagem(a: dict) -> str | None:
-    """'ruido' (o portão barra), 'encerrada' (prazo de inscrição já passou) ou None (entra)."""
+    """'ruido' (o portão barra), 'encerrada' (prazo de inscrição já passou) ou None (entra).
+    17/10/2026 (titular): achado de PILOTO (Espião, Interceptador) só entra se for CHAMADA, não notícia."""
+    _sen = str(a.get("sensor") or a.get("motor") or a.get("origem") or "")
+    if re.search(r"(?i)minist[ée]rios?[- ]p[úu]blicos?", _sen):     # 17/10: o motor dos MPs lê notícias — só cadastro/chamada
+        _t = str(a.get("titulo") or "")
+        if not (CHAMADA.search(_t) or re.search(r"(?i)cadastr|habilita|credenciamento de (?:entidades|institui)|solicita[çc][ãa]o de (?:bens|recursos)", _t)) \
+                or NOTICIA.search(_t):
+            return "ruido"
+    if re.search(r"(?i)piloto|espi[ãa]o|interceptador", _sen):
+        _t = str(a.get("titulo") or "")
+        if not CHAMADA.search(_t) or NOTICIA.search(_t):
+            return "ruido"
     try:
         from .porta_oportunidade import motivo_para_nao_guardar
         _mot = motivo_para_nao_guardar({k: v for k, v in a.items() if v})
@@ -875,3 +894,47 @@ def sincronizar_fontes_260(gravar: bool = True) -> dict:
         cfg["origem_dos_dados"] = "VISTA gerada a partir dos livros (banco_livros.sincronizar_fontes_260) — editar no livro"
         FONTES_260.write_text(json.dumps(cfg, ensure_ascii=False, indent=1), encoding="utf-8")
     return {**st, "fontes_no_arquivo": len(novas)}
+
+
+
+def registrar_do_estado_dos_motores(gravar: bool = True) -> dict:
+    """17/10/2026 (titular): MOTOR CRIA LIVRO OU LIGA A UM EXISTENTE. Os motores de diário (União, Goiânia, Goiás), a fila
+    'para o Claude' e outros guardavam achados só no próprio estado — nunca chegavam a um livro. A cada passagem, todo
+    registro de oportunidade nos arquivos de estado e nas telas NÃO declaradas como vista, que ainda não está em livro,
+    passa pelo caminho normal: portão, triagem e ÍNDICE DOS LIVROS (programa, órgão, domínio, local, esfera, modalidade,
+    área, objeto) — liga ao livro existente ou cria um novo."""
+    import importlib.util as _iu
+    sp = _iu.spec_from_file_location("vbu", ROOT / "scripts/verificar_banco_unico.py"); vbu = _iu.module_from_spec(sp); sp.loader.exec_module(vbu)
+    nat = vbu.natureza()
+    def nu(u):
+        return re.sub(r"^https?://(www\.)?", "", str(u or "")).rstrip("/").split("#")[0].lower()
+    U = set()
+    rep = _j(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json", {}) or {}
+    for r in rep.get("registros") or []:
+        U.add(nu(r.get("url"))); U.add(nu(r.get("link_oficial")))
+    for lv in (_j(CAT, {}) or {}).get("motores") or []:
+        U.add(nu(lv.get("pagina")))
+        for a in (lv.get("coleta") or {}).values():
+            if isinstance(a, dict):
+                U.add(nu(a.get("url")))
+    U.discard("")
+    lote, vistos, por_arq = [], set(), {}
+    for x in nat.get("paralelos_por_natureza") or []:
+        if x["natureza"] != "oportunidade" or re.search(r"rede_neural", x["arquivo"]):   # amostras do modelo, não base
+            continue
+        try:
+            regs = vbu._colecao(json.loads((ROOT / x["arquivo"]).read_text(encoding="utf-8")))
+        except Exception:  # noqa: BLE001
+            continue
+        sensor = re.sub(r"\.json$", "", x["arquivo"].split("/")[-1]).replace("_", "-")
+        if "para_claude" in x["arquivo"] or "pilot" in x["arquivo"] or "interceptador" in x["arquivo"]:
+            sensor = "piloto-" + sensor
+        for r in regs:
+            u = r.get("url") or r.get("link_original") or r.get("pagina_oficial"); k = nu(u)
+            if not k or k in U or k in vistos:
+                continue
+            vistos.add(k); por_arq[x["arquivo"]] = por_arq.get(x["arquivo"], 0) + 1
+            lote.append({**r, "url": u, "sensor": r.get("sensor") or sensor,
+                         "id": r.get("id") or ("rec-" + re.sub(r"[^a-z0-9]", "", k)[-16:])})
+    res = registrar_achados(lote, motor="estado-dos-motores", gravar=gravar) if lote else {"achados": 0}
+    return {**res, "fora_dos_livros_por_arquivo": por_arq}

@@ -368,6 +368,8 @@ def fases(ctx: dict) -> list[dict]:
         # todas as telas leem o MESMO retrato, tirado depois de tudo o que mexe nos livros
         {"etapa": "fechamento", "finalidade": "repositório por último; fluxo e pendências do Cartório derivados dele (uma só fonte)",
          "cmds": [
+                  # 17/10 (titular): MOTOR CRIA LIVRO OU LIGA — o que os motores guardaram só no estado vai ao livro (índice)
+                  [py, "-c", "import json; from src import banco_livros as B; r=B.registrar_do_estado_dos_motores(); print(json.dumps({k: v for k, v in r.items() if k != 'fora_dos_livros_por_arquivo'}, ensure_ascii=False))"],
                   # 17/10 (titular): os "opressores" viraram LIVROS — junta o que uma passagem antiga gravou com o nome antigo
                   [py, "-c", "import json; from src import livros_monitoramento as M; print(json.dumps(M.migrar_nome_antigo(), ensure_ascii=False))"],
                   # 17/10 (testes P0): as fontes de Outras oportunidades são ATUALIZADAS aqui (consultar não grava)
