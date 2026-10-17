@@ -202,7 +202,7 @@ def etapa_d(incs: list[dict], ds: list[dict], cache: dict, status: dict) -> None
                                    "por_uf_destino": {k: round(v, 2) for k, v in ufs.items()},
                                    "projetos": sorted(h["projetos"], key=lambda p: p["data"], reverse=True)}
     indice.sort(key=lambda x: -x["t"])
-    (PUB / "indice.json").write_text(json.dumps({"em": time.strftime("%Y-%m-%d"), "leis": ["Rouanet"], "total": len(indice),
+    ((RAIZ / "biblioteca_alexandria/livros/especiais/empresas/doadoras/indice.json")).write_text(json.dumps({"em": time.strftime("%Y-%m-%d"), "leis": ["Rouanet"], "total": len(indice),
                                                   "empresas": indice}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     (PUB / "h").mkdir(exist_ok=True)
     for k, v in fatias.items():

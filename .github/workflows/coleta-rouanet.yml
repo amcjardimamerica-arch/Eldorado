@@ -22,7 +22,7 @@ jobs:
         if: always()
         run: |
           git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
-          git add biblioteca_alexandria/livros/especiais/empresas/incentivos docs/dados/doadoras || true
+          git add biblioteca_alexandria/livros/especiais/empresas/incentivos biblioteca_alexandria/livros/especiais/empresas/doadoras docs/dados/doadoras || true
           python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
           git commit -q -m "base: histórico de doações da Rouanet $(date -u +%F\ %H:%M)" || exit 0
           for i in 1 2 3; do git pull --rebase -q -X theirs origin main && git push -q origin main && break; sleep 5; done

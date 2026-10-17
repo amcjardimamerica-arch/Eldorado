@@ -318,7 +318,7 @@ def investigar_empresa(ia, emp: dict) -> dict:
     # leis: o texto do site OU o histórico público (SALIC) comprovam
     hist = []
     try:
-        idx = load_json(ROOT / "docs/dados/doadoras/indice.json") or {}
+        idx = load_json(ROOT / "biblioteca_alexandria/livros/especiais/empresas/doadoras/indice.json") or {}
         kn = re.sub(r"[^a-z0-9]", "", nome.lower())
         hist = [x.get("l", ["Rouanet"]) for x in idx.get("empresas", []) if kn and re.sub(r"[^a-z0-9]", "", str(x.get("n", "")).lower()).startswith(kn[:12])][:1]
     except Exception:
