@@ -1,14 +1,14 @@
 {
- "em": "2026-10-17T13:52:09+00:00",
+ "em": "2026-10-17T14:27:43+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 846,
-  "oportunidades_distintas": 521,
-  "entidades_em_2_ou_mais_canais": 74,
+  "coletados": 863,
+  "oportunidades_distintas": 528,
+  "entidades_em_2_ou_mais_canais": 76,
   "etapas": {
-   "EM_LIVRO": 743,
-   "CONSOLIDADO": 24,
-   "QUALIFICADO": 66,
+   "EM_LIVRO": 766,
+   "CONSOLIDADO": 20,
+   "QUALIFICADO": 64,
    "REPROCESSAR": 13
   },
   "fila_de_reprocessamento": {
@@ -26,10 +26,10 @@
   {
    "canal": "piloto-interceptador",
    "familia": "pilotos",
-   "registros": 534,
-   "entidades": 347,
-   "exclusivas": 278,
-   "corroboradas": 69,
+   "registros": 542,
+   "entidades": 350,
+   "exclusivas": 279,
+   "corroboradas": 71,
    "validadas_como_reais": 82
   },
   {
@@ -78,6 +78,15 @@
    "validadas_como_reais": 3
   },
   {
+   "canal": "do-goias",
+   "familia": "diario_oficial",
+   "registros": 9,
+   "entidades": 9,
+   "exclusivas": 3,
+   "corroboradas": 6,
+   "validadas_como_reais": 3
+  },
+  {
    "canal": "observatorio-3setor",
    "familia": "terceiro_setor",
    "registros": 7,
@@ -98,9 +107,9 @@
   {
    "canal": "piloto-aberto",
    "familia": "pilotos",
-   "registros": 34,
-   "entidades": 30,
-   "exclusivas": 23,
+   "registros": 35,
+   "entidades": 31,
+   "exclusivas": 24,
    "corroboradas": 7,
    "validadas_como_reais": 2
   },
@@ -116,7 +125,7 @@
   {
    "canal": "plataforma-mapas-culturais",
    "familia": "outros",
-   "registros": 11,
+   "registros": 12,
    "entidades": 10,
    "exclusivas": 10,
    "corroboradas": 0,
@@ -141,15 +150,6 @@
    "validadas_como_reais": 2
   },
   {
-   "canal": "do-goias",
-   "familia": "diario_oficial",
-   "registros": 7,
-   "entidades": 7,
-   "exclusivas": 2,
-   "corroboradas": 5,
-   "validadas_como_reais": 2
-  },
-  {
    "canal": "plataforma-wordpress",
    "familia": "outros",
    "registros": 18,
@@ -161,7 +161,7 @@
   {
    "canal": "dou",
    "familia": "diario_oficial",
-   "registros": 8,
+   "registros": 9,
    "entidades": 7,
    "exclusivas": 5,
    "corroboradas": 2,
@@ -170,19 +170,28 @@
   {
    "canal": "recorrencia",
    "familia": "terceiro_setor",
-   "registros": 6,
-   "entidades": 6,
-   "exclusivas": 4,
+   "registros": 7,
+   "entidades": 7,
+   "exclusivas": 5,
    "corroboradas": 2,
    "validadas_como_reais": 1
   },
   {
    "canal": "prefeituras-50-go",
    "familia": "portal_chamamentos",
-   "registros": 6,
-   "entidades": 4,
+   "registros": 7,
+   "entidades": 5,
    "exclusivas": 0,
-   "corroboradas": 4,
+   "corroboradas": 5,
+   "validadas_como_reais": 1
+  },
+  {
+   "canal": "outras-oportunidades-2",
+   "familia": "outros",
+   "registros": 4,
+   "entidades": 4,
+   "exclusivas": 3,
+   "corroboradas": 1,
    "validadas_como_reais": 1
   },
   {
@@ -195,18 +204,9 @@
    "validadas_como_reais": 1
   },
   {
-   "canal": "outras-oportunidades-2",
-   "familia": "outros",
-   "registros": 3,
-   "entidades": 3,
-   "exclusivas": 2,
-   "corroboradas": 1,
-   "validadas_como_reais": 1
-  },
-  {
    "canal": "f260-captacao-177",
    "familia": "orgao_publico",
-   "registros": 2,
+   "registros": 3,
    "entidades": 2,
    "exclusivas": 1,
    "corroboradas": 1,
@@ -305,10 +305,10 @@
   {
    "canal": "empresas-incentivadas",
    "familia": "empresas",
-   "registros": 8,
-   "entidades": 8,
+   "registros": 7,
+   "entidades": 7,
    "exclusivas": 3,
-   "corroboradas": 5,
+   "corroboradas": 4,
    "validadas_como_reais": 0
   },
   {
@@ -348,6 +348,15 @@
    "validadas_como_reais": 0
   },
   {
+   "canal": "captacao-081",
+   "familia": "outros",
+   "registros": 2,
+   "entidades": 2,
+   "exclusivas": 0,
+   "corroboradas": 2,
+   "validadas_como_reais": 0
+  },
+  {
    "canal": "secult-go",
    "familia": "outros",
    "registros": 2,
@@ -381,15 +390,6 @@
    "entidades": 1,
    "exclusivas": 1,
    "corroboradas": 0,
-   "validadas_como_reais": 0
-  },
-  {
-   "canal": "captacao-081",
-   "familia": "outros",
-   "registros": 1,
-   "entidades": 1,
-   "exclusivas": 0,
-   "corroboradas": 1,
    "validadas_como_reais": 0
   },
   {
@@ -597,13 +597,6 @@
    ]
   },
   {
-   "entidade": "d7da28b885b3f78c56c7",
-   "canais": [
-    "piloto-interceptador",
-    "prefeituras-50-go"
-   ]
-  },
-  {
    "entidade": "4b30661ea4d6e01e0607",
    "canais": [
     "piloto-interceptador",
@@ -611,9 +604,23 @@
    ]
   },
   {
+   "entidade": "d7da28b885b3f78c56c7",
+   "canais": [
+    "piloto-interceptador",
+    "prefeituras-50-go"
+   ]
+  },
+  {
    "entidade": "54ee8b615bf4777b9470",
    "canais": [
     "empresas-incentivadas",
+    "piloto-interceptador"
+   ]
+  },
+  {
+   "entidade": "448c8e19f08994a9661f",
+   "canais": [
+    "do-goias",
     "piloto-interceptador"
    ]
   },
@@ -629,13 +636,6 @@
    "canais": [
     "do-goias",
     "piloto-interceptador"
-   ]
-  },
-  {
-   "entidade": "ebc8c536f562b184c9ba",
-   "canais": [
-    "piloto-interceptador",
-    "recorrencia"
    ]
   },
   {
@@ -716,6 +716,13 @@
    ]
   },
   {
+   "entidade": "90de619cc79aa4de9634",
+   "canais": [
+    "piloto-interceptador",
+    "prefeituras-50-go"
+   ]
+  },
+  {
    "entidade": "2cf3652dbd2fd9bcc3c0",
    "canais": [
     "cnpq-extensao",
@@ -749,14 +756,7 @@
     "piloto-interceptador",
     "recorrencia"
    ]
-  },
-  {
-   "entidade": "e849fe9bb1b0e568dd98",
-   "canais": [
-    "piloto-interceptador",
-    "plataforma-wordpress"
-   ]
   }
  ],
- "eventos_no_livro_razao": 15
+ "eventos_no_livro_razao": 8
 }

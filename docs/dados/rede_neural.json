@@ -1,9 +1,9 @@
 {
- "em": "2026-10-17T13:52:11+00:00",
+ "em": "2026-10-17T14:27:46+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
- "rotulados": 1685,
+ "rotulados": 1684,
  "positivos": 581,
- "pendentes": 731,
+ "pendentes": 733,
  "validacao_cruzada": {
   "auc": 0.843,
   "precisao": 0.74,
@@ -85,6 +85,12 @@
    "incerteza": 0.99
   },
   {
+   "titulo": "Anápolis — Prefeitura lança editais da Lei Aldir Blanc para o setor cultural — Goiás / Anápolis — Goiás / Anápolis",
+   "url": "https://goias.gov.br/cultura/categoria/politica-nacional-aldir-blanc/",
+   "nota": 0.494,
+   "incerteza": 0.988
+  },
+  {
    "titulo": "Diário Oficial de Pratânia (SP) 2026-10-05 — \"termo de execução cultural\"",
    "url": "https://data.queridodiario.ok.org.br/3541059/2026-10-05/09f6e527feb6f3f99ec6d42f7348b622574410a7.pdf",
    "nota": 0.506,
@@ -113,6 +119,12 @@
    "url": "https://www.jatai.go.gov.br/atualizacao-necessaria-em-formulario-do-edital-lei-paulo-gustavo-em-jatai/",
    "nota": 0.493,
    "incerteza": 0.986
+  },
+  {
+   "titulo": "Tutóia — Tutóia divulga resultado de seleção para projetos sociais — Goiás",
+   "url": "https://www.cnj.jus.br/comarca-de-tutoia-divulga-resultado-de-selecao-para-projetos-sociais/",
+   "nota": 0.507,
+   "incerteza": 0.985
   },
   {
    "titulo": "Diário Oficial de Sumidouro (RJ) 2026-09-14 — \"edital de premiação\" cultura",
@@ -359,19 +371,7 @@
    "url": "https://goias.gov.br/educacao?page_id=27121",
    "nota": 0.521,
    "incerteza": 0.959
-  },
-  {
-   "titulo": "Prorrogadas as inscrições de trabalhos técnicos para o IX CBUC",
-   "url": "https://fundacaogrupoboticario.org.br/prorrogadas-as-inscricoes-de-trabalhos-tecnicos-para-o-ix-cbuc",
-   "nota": 0.479,
-   "incerteza": 0.958
-  },
-  {
-   "titulo": "Chamadas Edital nº 002/2026 – Programa Nacional de Apoio à Geração de Empreendimentos Inovadores – Programa Centelha 3 Pará",
-   "url": "https://www.fapespa.pa.gov.br/2026/03",
-   "nota": 0.521,
-   "incerteza": 0.957
   }
  ],
- "pendentes_provaveis_reais": 347
+ "pendentes_provaveis_reais": 352
 }
