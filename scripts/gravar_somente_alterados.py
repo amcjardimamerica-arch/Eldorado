@@ -105,8 +105,12 @@ def aplicar(msg: str, tentativas: int = 6) -> bool:
         # 17/10/2026 (titular): TRAVA DOS LIVROS — as mudanças desta passagem já estão sobre o main mais recente (HEAD):
         # nenhum livro apagado nem sobrescrito; só informação nova (o que outra gravação fez no main é preservado)
         subprocess.run([sys.executable, "-m", "src.trava_livros"], cwd=ROOT, capture_output=True)
+        # 17/10 (titular): a Bússola recalculada pelo catálogo FINAL (o que vai ser gravado agora)
+        subprocess.run([sys.executable, "-c", "from src import fluxo_oportunidades as F; F.sincronizar_catalogo()"], cwd=ROOT, capture_output=True)
         _cat = "biblioteca_alexandria/fontes/motores.json"
         _extra = [_cat] if _git("diff", "--name-only", "--", _cat).strip() else []
+        _flx = "docs/dados/fluxo_oportunidades.json"
+        _extra += [_flx] if _git("diff", "--name-only", "--", _flx).strip() and _flx not in m["alterados"] else []
         _extra += [l[3:] for l in _git("status", "--porcelain", "--", "biblioteca_alexandria/livros").splitlines()
                    if l.strip() and l[3:] not in m["alterados"]]
         _git("add", "--", *[c for c in m["alterados"] + _extra if (ROOT / c).exists()], ok=True)

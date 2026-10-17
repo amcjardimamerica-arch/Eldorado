@@ -747,6 +747,22 @@ def montar() -> dict:
     return {"mapa_total": tot, **res["etapas"]}
 
 
+def sincronizar_catalogo(gravar: bool = True) -> dict:
+    """17/10/2026 (titular, terceira vez): a Bússola mostra os LIVROS DO SISTEMA — o total vem do CATÁLOGO GRAVADO, não do
+    retrato que a passagem tirou no meio da execução (uma passagem que começou com o catálogo reduzido publicava 1.451
+    com o catálogo em 2.245). Recalcula o bloco 'opressores' (livros, monitorados, com histórico) e o total das etapas."""
+    res = _j(SAIDA, {}) or {}
+    if not res:
+        return {"sincronizado": False}
+    itens = [x for v in (res.get("itens_por_uf") or {}).values() for x in v]
+    antes = (res.get("opressores") or {}).get("catalogo")
+    res["opressores"] = _resumo_opressores(itens)
+    res.setdefault("etapas", {})["opressores_total"] = res["opressores"].get("catalogo")
+    if gravar:
+        SAIDA.write_text(json.dumps(res, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    return {"livros_na_bussola_antes": antes, "livros_na_bussola": res["opressores"].get("catalogo")}
+
+
 def sincronizar_com_repositorio() -> dict:
     """16/10/2026 (titular): FONTE ÚNICA, leve (fase de fechamento) — o fluxo publicado passa a conter só as oportunidades
     abertas do repositório, e o parâmetro é o resumo do repositório. Segundos, sem refazer a montagem."""
