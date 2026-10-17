@@ -757,7 +757,15 @@ def run() -> dict:
     _grp = {}
     for x in motores:
         _grp.setdefault(_re.sub(r"[^a-z0-9]", "", f"{x.get('programa')}{x.get('orgao')}".lower())[:80], []).append(x)
-    motores = [sorted(g, key=lambda y: (y.get("id") in _lig, not str(y.get("id", "")).startswith("nova-"), len(json.dumps(y, ensure_ascii=False))), reverse=True)[0] for g in _grp.values()]
+    # 17/10/2026 (titular): UNE os do mesmo programa + órgão — o que fica recebe o conteúdo dos outros e registra a união
+    _ord = lambda y: (y.get("id") in _lig, not str(y.get("id", "")).startswith("nova-"), len(json.dumps(y, ensure_ascii=False)))  # noqa: E731
+    _fica = []
+    for _g in _grp.values():
+        _g = sorted(_g, key=_ord, reverse=True)
+        for _y in _g[1:]:
+            __import__("src.banco_livros", fromlist=["x"]).juntar_em(_g[0], _y, "mesmo programa e órgão (painel dos motores)")
+        _fica.append(_g[0])
+    motores = _fica
     # título que é data/hora ou lixo de página não vira opressor (28/09)
     _lixo = re.compile(r"^\s*\d{1,2}\s+[a-zç]{3}\.?\s+\d{1,2}:\d{2}|^\s*\d{1,2}:\d{2}\b|^\W*$", re.I)
     motores = [x for x in motores if x.get("parametros") or not (str(x.get("id", "")).startswith(("nova-", "op-")) and _lixo.search(str(x.get("programa") or "")))]

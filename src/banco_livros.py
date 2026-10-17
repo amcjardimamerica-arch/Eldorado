@@ -788,3 +788,29 @@ def _registrar_triagem(barrados, por_motor) -> None:
     d["por_dia"] = dict(sorted(d["por_dia"].items())[-30:])
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
+
+def juntar_em(fica: dict, sai: dict, motivo: str = "mesmo programa e órgão") -> dict:
+    """17/10/2026 (titular): UNIR, nunca apagar — o livro que fica recebe o histórico, a coleta, as menções e os anexos do
+    que sai, e registra a união em 'juntados' (a trava dos livros guarda o que saiu, inteiro, em _arquivados)."""
+    for k in ("historico", "mencoes", "edicoes"):
+        a = fica.get(k) if isinstance(fica.get(k), list) else []
+        ids = {json.dumps(x, sort_keys=True, ensure_ascii=False) if not (isinstance(x, dict) and x.get("id")) else f"id:{x['id']}" for x in a}
+        for x in sai.get(k) or []:
+            ch = f"id:{x['id']}" if isinstance(x, dict) and x.get("id") else json.dumps(x, sort_keys=True, ensure_ascii=False)
+            if ch not in ids:
+                a.append(x); ids.add(ch)
+        if a:
+            fica[k] = a
+    for k in ("coleta", "brutos", "anexos"):
+        if isinstance(sai.get(k), dict):
+            d = fica.setdefault(k, {})
+            for kk, vv in sai[k].items():
+                d.setdefault(kk, vv)
+    for k, v in sai.items():                                  # campo que só o que sai tem: passa para o que fica
+        if k not in fica and v not in (None, "", [], {}):
+            fica[k] = v
+    fica.setdefault("juntados", []).append({"id": sai.get("id"), "programa": sai.get("programa"), "motivo": motivo,
+                                            "em": _agora()[:10]})
+    return fica
