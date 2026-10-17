@@ -1,13 +1,13 @@
 {
- "em": "2026-10-17T09:38:45+00:00",
+ "em": "2026-10-17T11:00:14+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 422,
-  "oportunidades_distintas": 302,
+  "coletados": 412,
+  "oportunidades_distintas": 296,
   "entidades_em_2_ou_mais_canais": 28,
   "etapas": {
-   "EM_LIVRO": 367,
-   "CONSOLIDADO": 20,
+   "EM_LIVRO": 356,
+   "CONSOLIDADO": 21,
    "QUALIFICADO": 28,
    "REPROCESSAR": 7
   },
@@ -25,11 +25,11 @@
   {
    "canal": "piloto-interceptador",
    "familia": "pilotos",
-   "registros": 255,
-   "entidades": 190,
-   "exclusivas": 164,
+   "registros": 250,
+   "entidades": 187,
+   "exclusivas": 161,
    "corroboradas": 26,
-   "validadas_como_reais": 53
+   "validadas_como_reais": 52
   },
   {
    "canal": "f260-captacao-069",
@@ -59,15 +59,6 @@
    "validadas_como_reais": 3
   },
   {
-   "canal": "outras-oportunidades-7",
-   "familia": "outros",
-   "registros": 13,
-   "entidades": 12,
-   "exclusivas": 12,
-   "corroboradas": 0,
-   "validadas_como_reais": 3
-  },
-  {
    "canal": "f260-captacao-039",
    "familia": "orgao_publico",
    "registros": 13,
@@ -75,6 +66,15 @@
    "exclusivas": 1,
    "corroboradas": 2,
    "validadas_como_reais": 3
+  },
+  {
+   "canal": "outras-oportunidades-7",
+   "familia": "outros",
+   "registros": 9,
+   "entidades": 9,
+   "exclusivas": 9,
+   "corroboradas": 0,
+   "validadas_como_reais": 2
   },
   {
    "canal": "plataforma-wordpress",
@@ -187,9 +187,9 @@
   {
    "canal": "empresas-editais-incentivados",
    "familia": "empresas",
-   "registros": 14,
-   "entidades": 14,
-   "exclusivas": 12,
+   "registros": 13,
+   "entidades": 13,
+   "exclusivas": 11,
    "corroboradas": 2,
    "validadas_como_reais": 0
   },
@@ -205,10 +205,10 @@
   {
    "canal": "recorrencia",
    "familia": "terceiro_setor",
-   "registros": 6,
-   "entidades": 6,
+   "registros": 5,
+   "entidades": 5,
    "exclusivas": 2,
-   "corroboradas": 4,
+   "corroboradas": 3,
    "validadas_como_reais": 0
   },
   {
@@ -262,6 +262,15 @@
    "registros": 2,
    "entidades": 2,
    "exclusivas": 2,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
+  },
+  {
+   "canal": "f260-captacao-118",
+   "familia": "orgao_publico",
+   "registros": 1,
+   "entidades": 1,
+   "exclusivas": 1,
    "corroboradas": 0,
    "validadas_como_reais": 0
   },
@@ -322,7 +331,7 @@
  ],
  "familias": {
   "pilotos": 2,
-  "orgao_publico": 13,
+  "orgao_publico": 14,
   "portal_chamamentos": 3,
   "outros": 10,
   "terceiro_setor": 2,
@@ -339,11 +348,17 @@
    ]
   },
   {
-   "entidade": "11942f03820e082026d5",
+   "entidade": "0cf08bd4449cd07d0f4e",
    "canais": [
-    "empresas-editais-incentivados",
-    "piloto-interceptador",
-    "recorrencia"
+    "f260-captacao-039",
+    "f260-captacao-069"
+   ]
+  },
+  {
+   "entidade": "1842a0610c725538766a",
+   "canais": [
+    "f260-captacao-039",
+    "f260-captacao-069"
    ]
   },
   {
@@ -438,6 +453,13 @@
    ]
   },
   {
+   "entidade": "aac9a702f98dd54de496",
+   "canais": [
+    "empresas-editais-incentivados",
+    "piloto-interceptador"
+   ]
+  },
+  {
    "entidade": "54b6080c92de6b6a835f",
    "canais": [
     "piloto-interceptador",
@@ -513,21 +535,7 @@
     "f260-captacao-069",
     "piloto-interceptador"
    ]
-  },
-  {
-   "entidade": "0cf08bd4449cd07d0f4e",
-   "canais": [
-    "f260-captacao-039",
-    "f260-captacao-069"
-   ]
-  },
-  {
-   "entidade": "1842a0610c725538766a",
-   "canais": [
-    "f260-captacao-039",
-    "f260-captacao-069"
-   ]
   }
  ],
- "eventos_no_livro_razao": 1
+ "eventos_no_livro_razao": 0
 }
