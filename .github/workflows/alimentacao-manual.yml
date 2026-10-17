@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   alimentar:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # 17/10: fixo (o ubuntu-latest vira Ubuntu 26 em 19/10)
     timeout-minutes: 20
     # 02/10 (titular): sem IA Claude nos fluxos do GitHub — a chave FAROL_AI_API_KEY não é mais passada
     # 03/10: o "env:" vazio deixava o arquivo INVÁLIDO para o GitHub (falha a cada push desde 02/10)

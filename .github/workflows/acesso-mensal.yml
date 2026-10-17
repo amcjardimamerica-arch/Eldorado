@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   ciclo:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # 17/10: fixo (o ubuntu-latest vira Ubuntu 26 em 19/10)
     timeout-minutes: 15
     env:
       ACESSO_MASTER: ${{ secrets.ACESSO_MASTER }}

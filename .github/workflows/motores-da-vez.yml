@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   motores:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # 17/10: fixo (o ubuntu-latest vira Ubuntu 26 em 19/10)
     timeout-minutes: 150   # 15/10: comando único (coleta + cadeia completa até o Farol); 03/10: a rotina semanal de empresas pode entrar aqui quando o domingo for pulado
     env:
       MOTORES_BLOCO: manual

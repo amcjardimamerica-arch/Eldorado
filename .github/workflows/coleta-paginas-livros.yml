@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   coletar:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # 17/10: fixo (o ubuntu-latest vira Ubuntu 26 em 19/10)
     timeout-minutes: 120
     env:
       ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}
