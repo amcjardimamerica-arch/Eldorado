@@ -22,6 +22,34 @@ GUARDA = Path("/tmp/alterados_pelo_fluxo")
 AREAS = ["biblioteca_alexandria", "dados", "estado", "docs/dados", "docs/dashboard-dados.js", "docs/relatorios"]
 
 
+# 17/10/2026: arquivos-ÍNDICE que vários fluxos gravam ao mesmo tempo. Copiar a versão do fluxo por cima do main apagava
+# o que os outros fluxos tinham acrescentado enquanto este rodava (o índice dos livros caiu de 8.412 para 1 e depois
+# ficou em 263 entradas). Para eles, a gravação JUNTA: tudo o que está no main fica; o que este fluxo gravou prevalece.
+INDICES_JUNTADOS = {"biblioteca_alexandria/livros/_origens.json"}
+
+
+def juntar_indice(no_main: dict, do_fluxo: dict) -> dict:
+    """União sem perda: chaves só do main ficam; chaves do fluxo prevalecem."""
+    return {**(no_main or {}), **(do_fluxo or {})}
+
+
+def _copiar(origem: Path, c: str) -> None:
+    destino = ROOT / c
+    destino.parent.mkdir(parents=True, exist_ok=True)
+    if c in INDICES_JUNTADOS and destino.is_file():
+        try:
+            no_main = json.loads(destino.read_text(encoding="utf-8"))
+            do_fluxo = json.loads(origem.read_text(encoding="utf-8"))
+        except ValueError:
+            raise RuntimeError(f"{c}: índice ilegível no main ou no fluxo — nada gravado para não apagar entradas")
+        if isinstance(no_main, dict) and isinstance(do_fluxo, dict):
+            junto = juntar_indice(no_main, do_fluxo)
+            destino.write_text(json.dumps(junto, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+            print(f"{c}: juntado (main {len(no_main)} + fluxo {len(do_fluxo)} = {len(junto)} entradas)")
+            return
+    shutil.copy2(origem, destino)
+
+
 def _git(*a, ok=False) -> str:
     r = subprocess.run(["git", *a], cwd=ROOT, capture_output=True, text=True)
     if r.returncode and not ok:
@@ -68,9 +96,10 @@ def aplicar(msg: str, tentativas: int = 6) -> bool:
         for c in m["alterados"]:
             o = GUARDA / "arquivos" / c
             if o.is_file():
-                (ROOT / c).parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(o, ROOT / c)
+                _copiar(o, c)                                 # 17/10: índices são JUNTADOS, não substituídos
         for c in m["apagados"]:
+            if c in INDICES_JUNTADOS:
+                continue                                       # 17/10: um fluxo nunca apaga o índice compartilhado
             if (ROOT / c).exists():
                 _git("rm", "-q", "--", c, ok=True)
         _git("add", "--", *[c for c in m["alterados"] if (ROOT / c).exists()], ok=True)
