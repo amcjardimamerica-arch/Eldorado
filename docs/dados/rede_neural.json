@@ -1,9 +1,9 @@
 {
- "em": "2026-10-17T11:00:15+00:00",
+ "em": "2026-10-17T11:22:33+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
  "rotulados": 1683,
  "positivos": 581,
- "pendentes": 727,
+ "pendentes": 729,
  "validacao_cruzada": {
   "auc": 0.843,
   "precisao": 0.74,
@@ -67,6 +67,12 @@
    "incerteza": 0.994
   },
   {
+   "titulo": "Edital BH Fomento a projetos Anuais e Ações Continuadas",
+   "url": "https://prefeitura.pbh.gov.br/cultura/edital-bh-fomento-projetos-anuais-e-acoes-continuadas",
+   "nota": 0.503,
+   "incerteza": 0.994
+  },
+  {
    "titulo": "EDITAL Nº 003/2026 – ADMPLAN – TERCEIRA AUDIÊNCIA PÚBLICA DO PLANO DIRETOR DO MUNICÍPIO DE COLINAS DO SUL/GO.",
    "url": "https://colinasdosul.go.gov.br/aviso/2862",
    "nota": 0.504,
@@ -103,6 +109,12 @@
    "incerteza": 0.988
   },
   {
+   "titulo": "Secretaria de Estado da Cultura (Secult) — Inscrições prorrogadas para editais de Pontos e Pontões de Cultura … — Goiás",
+   "url": "https://goias.gov.br/cultura/inscricoes-prorrogadas-para-editais-de-pontos-e-pontoes-de-cultura-da-pnab-2026/",
+   "nota": 0.506,
+   "incerteza": 0.988
+  },
+  {
    "titulo": "Edital Itapajé 2026: Medidas Socioeducativas para OSC · Capitaai",
    "url": "https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2014/lei/l13019.htm",
    "nota": 0.506,
@@ -118,12 +130,6 @@
    "titulo": "Prefeitura de Goiânia: chamamento para seleção de instituições de ...",
    "url": "https://goiasemcena.com.br/prefeitura-de-goiania-chamamento-publico-para-selecao-de-instituicoes-de-permanencia-e-casa-lar-para-idosos/",
    "nota": 0.493,
-   "incerteza": 0.986
-  },
-  {
-   "titulo": "Inscrições para os Jogos Interculturais 2026 seguem abertas até 23 de outubro",
-   "url": "https://goias.gov.br/educacao/inscricoes-para-os-jogos-interculturais-2026-seguem-abertas-ate-23-de-outubro",
-   "nota": 0.507,
    "incerteza": 0.986
   },
   {
@@ -143,12 +149,6 @@
    "url": "https://unaids.org.br/desafiounaids",
    "nota": 0.508,
    "incerteza": 0.984
-  },
-  {
-   "titulo": "Instituto Lojas Renner abre edital para fortalecer organizações sociais em três estados",
-   "url": "https://captadores.org.br/editais/instituto-lojas-renner-abre-edital-para-fortalecer-organizacoes-sociais-em-tres-estados",
-   "nota": 0.508,
-   "incerteza": 0.983
   },
   {
    "titulo": "Diário Oficial de Salvador (BA) 2026-10-09 — \"termo de fomento\" \"chamamento público\"",
@@ -373,5 +373,5 @@
    "incerteza": 0.957
   }
  ],
- "pendentes_provaveis_reais": 328
+ "pendentes_provaveis_reais": 324
 }
