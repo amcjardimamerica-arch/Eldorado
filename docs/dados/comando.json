@@ -1,40 +1,30 @@
 {
- "atualizado_em": "2026-10-17T16:13:10+00:00",
+ "atualizado_em": "2026-10-17T16:48:00+00:00",
  "regra": "REDE NEURAL DE COMANDO — maestro e rede neural são UMA coisa só (titular, 15/10/2026).\n\nA rede neural determina o caminho de todo o fluxo; o maestro é a mão dela: aciona os motores de busca e devolve o que\nfoi coletado. A rede avalia o que voltou e direciona para a fase seguinte. Um ciclo, do começo ao fim:\n\n  1. DECIDIR    sem agenda: TODO motor ativo é lido TODO dia (premissa de 100% das informações disponíveis no dia);\n                a cada passagem entram os que ainda não completaram — adiado → nunca lido hoje → parcial — e, dentro\n                de cada grupo, o de maior valor esperado (nota média que a rede deu aos achados dele);\n  2. ACIONAR    o maestro roda os motores escolhidos e devolve um recibo (lidos, achados, falhas, adiados, erro);\n  3. AVALIAR    a rede mede a completude de cada motor (completa · parcial · pendente · só do Brasil) e o que entrou;\n  4. REACIONAR  parciais e pendentes voltam na mesma passagem enquanto houver tempo; o que só o Brasil/Chrome lê vai\n                para a fila de conferência humana (estado/comando/para_chrome.json);\n  5. DIRECIONAR as fases seguintes, em ordem, cada uma com RECIBO e PORTÃO (roda ou pula com motivo):\n                catalogar → treinar a rede → site oficial → certificar (trecho dos 12 itens) → curadoria do link\n                oficial (dois links, trecho exato, 6 critérios) → validar por exceção →\n                recalcular → biblioteca → fichas e Farol → legislativo → sala de controle → diagnóstico;\n  6. VEREDITO   etapa com erro torna o ciclo VERMELHO (o fluxo do GitHub falha à vista; acabou a falha silenciosa).",
  "ultimo_ciclo": {
-  "inicio": "2026-10-17T15:38:35+00:00",
+  "inicio": "2026-10-17T16:14:01+00:00",
   "recibos": [
    {
     "etapa": "acionar",
     "rc": 0,
-    "segundos": 224.6,
+    "segundos": 50.0,
     "erro": null,
-    "livros_antes": 2404,
-    "livros_depois": 2404,
     "motores": [
-     "f260-captacao-034",
-     "f260-captacao-018",
      "f260-captacao-001",
-     "f260-captacao-134",
-     "f260-captacao-095",
-     "f260-captacao-081",
      "f260-captacao-113",
-     "f260-captacao-193",
-     "f260-captacao-041",
-     "f260-captacao-072",
-     "f260-captacao-159",
-     "f260-captacao-143",
-     "f260-captacao-149"
+     "f260-captacao-240",
+     "f260-captacao-221",
+     "f260-captacao-238"
     ],
-    "executados": 13,
-    "achados": 7,
-    "novos_na_base": 1,
+    "executados": 5,
+    "achados": 0,
+    "novos_na_base": 0,
     "adiados_por_tempo": []
    },
    {
     "etapa": "reacionar",
     "rc": 0,
-    "segundos": 9.7,
+    "segundos": 8.1,
     "erro": null,
     "motores": [
      "f260-captacao-001",
@@ -48,13 +38,13 @@
    {
     "etapa": "catalogar",
     "finalidade": "achados por motor, status de cada motor e repositório único das oportunidades",
-    "segundos": 129.6,
+    "segundos": 80.9,
     "erro": null
    },
    {
     "etapa": "site_oficial",
     "finalidade": "do replicador à fonte oficial e ao PDF do edital (navegação e PNCP)",
-    "segundos": 8.5,
+    "segundos": 10.6,
     "erro": null
    },
    {
@@ -66,49 +56,49 @@
    {
     "etapa": "pncp",
     "finalidade": "dossiê do PNCP: 12 de 12 com informação confirmada ou descarte justificado; o que faltar vai ao Interceptador",
-    "segundos": 814.8,
+    "segundos": 814.4,
     "erro": null
    },
    {
     "etapa": "certificar",
     "finalidade": "trecho literal e página de cada um dos 12 itens no documento oficial (Cartório)",
-    "segundos": 574.6,
+    "segundos": 845.6,
     "erro": null
    },
    {
     "etapa": "curadoria",
     "finalidade": "link de acesso, link oficial com curadoria objetiva (6 critérios) e trecho exato da oportunidade",
-    "segundos": 0.5,
+    "segundos": 0.4,
     "erro": null
    },
    {
     "etapa": "validar",
     "finalidade": "validação por exceção: 12 de 12 comprovados seguem ao Farol; o resto à conferência humana",
-    "segundos": 0.4,
+    "segundos": 0.3,
     "erro": null
    },
    {
     "etapa": "recalcular",
     "finalidade": "estados das oportunidades com as certidões e validações desta passagem",
-    "segundos": 112.4,
+    "segundos": 67.6,
     "erro": null
    },
    {
     "etapa": "livros",
     "finalidade": "os livros são o banco: cada oportunidade cria ou vincula o seu livro com links, checklist12, achados e análises",
-    "segundos": 3.4,
+    "segundos": 2.5,
     "erro": null
    },
    {
     "etapa": "banco_unico",
     "finalidade": "teste: bancos de dados que ainda existem fora dos livros",
-    "segundos": 2.7,
+    "segundos": 1.6,
     "erro": null
    },
    {
     "etapa": "fichas_farol",
     "finalidade": "ficha e janela de cada oportunidade aberta; o que está pronto vai ao Farol",
-    "segundos": 1.9,
+    "segundos": 1.3,
     "erro": null
    },
    {
@@ -120,29 +110,29 @@
    {
     "etapa": "fechamento",
     "finalidade": "repositório por último; fluxo e pendências do Cartório derivados dele (uma só fonte)",
-    "segundos": 159.5,
+    "segundos": 118.1,
     "erro": null
    },
    {
     "etapa": "sala_de_controle",
     "finalidade": "instrumentos de cada etapa",
-    "segundos": 4.2,
+    "segundos": 5.5,
     "erro": null
    },
    {
     "etapa": "diagnostico",
     "finalidade": "diagnóstico da passagem (arquivo próprio; o relatório da análise não é sobrescrito)",
-    "segundos": 23.3,
+    "segundos": 29.6,
     "erro": null
    }
   ],
   "decisoes": [
    {
     "fase": "decidir",
-    "motores": 13,
+    "motores": 5,
     "adiados_primeiro": [],
-    "planejados_no_dia": 125,
-    "cobertura_antes_pct": 70.4
+    "planejados_no_dia": 129,
+    "cobertura_antes_pct": 77.5
    },
    {
     "fase": "reacionar",
@@ -150,7 +140,7 @@
      "f260-captacao-001",
      "f260-captacao-113"
     ],
-    "completos_depois": 11
+    "completos_depois": 1
    },
    {
     "fase": "modalidade",
@@ -182,34 +172,26 @@
    }
   ],
   "avaliacao": {
-   "cobertura_do_dia_pct": 79.2,
+   "cobertura_do_dia_pct": 78.3,
    "estado": {
-    "f260-captacao-034": "completa",
-    "f260-captacao-018": "completa",
     "f260-captacao-001": "parcial",
-    "f260-captacao-134": "completa",
-    "f260-captacao-095": "completa",
-    "f260-captacao-081": "completa",
     "f260-captacao-113": "parcial",
-    "f260-captacao-193": "completa",
-    "f260-captacao-041": "completa",
-    "f260-captacao-072": "completa",
-    "f260-captacao-159": "completa",
-    "f260-captacao-143": "completa",
-    "f260-captacao-149": "completa"
+    "f260-captacao-240": "parcial",
+    "f260-captacao-221": "parcial",
+    "f260-captacao-238": "completa"
    },
    "reacionar": [
     "f260-captacao-001",
     "f260-captacao-113"
    ],
    "para_humano": [],
-   "completos": 11
+   "completos": 1
   },
-  "novos_na_base": 1,
-  "fim": "2026-10-17T16:13:10+00:00",
+  "novos_na_base": 0,
+  "fim": "2026-10-17T16:48:00+00:00",
   "erros": [],
   "estado": "verde"
  },
- "ciclos_hoje": 18,
+ "ciclos_hoje": 19,
  "vermelhos_hoje": 6
 }
