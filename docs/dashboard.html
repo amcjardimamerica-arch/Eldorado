@@ -1813,7 +1813,7 @@ box-sizing:border-box;}
   </div>
 </div>
 
-<!-- MOTORES OPRESSORES · fontes específicas, ativas só na época ou após menção -->
+<!-- MOTORES LIVROS · fontes específicas, ativas só na época ou após menção -->
 <div class="cartao" style="margin-bottom:16px">
   <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Biblioteca
     <span class=meta style="font-weight:500" title="Cada edital ou fonte específica mapeada. Fica oculto até ser mencionado nos locais de publicação oficial/plataformas ou até a época prevista pelo histórico — então o motor é ativado automaticamente. Os motores regulares (diários, justiça, legislativo, plataformas) rodam sempre e capturam qualquer oportunidade.">— editais e fontes específicas, ativos só na época ou após menção</span></div>
@@ -3226,7 +3226,7 @@ function desenhaBussola(){
     [ICOB.exec, `${doMes.length}<span class="bz-tot">/${nd}</span>`, "Dias com busca"],
     [ICOB.ok,   `${ult.fontes_ok??0}<span class="bz-tot">/${totF}</span>`, "Fontes respondendo"],
     [ICOB.falha,`${ult.fontes_falha??0}<span class="bz-tot">/${totF}</span>`, "Fontes com falha"],
-    [ICOB.novo, (()=>{const PM=(((window._FLUXO||{}).opressores||{}).por_mes||{})[mesId]||{}; return `${PM.criados??0}<span class="bz-tot">/${PM.com_resultado??0}</span>`;})(), "Descobertas no mês"]]   // livros criados no mês / acionados com resultado
+    [ICOB.novo, (()=>{const PM=(((window._FLUXO||{}).livros_do_sistema||(window._FLUXO||{}).opressores||{}).por_mes||{})[mesId]||{}; return `${PM.criados??0}<span class="bz-tot">/${PM.com_resultado??0}</span>`;})(), "Descobertas no mês"]]   // livros criados no mês / acionados com resultado
     .map(x=>`<div class="met linha">${x[0]}<div><div class=v style="color:var(--tinta)">${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
   const cat=(D.bussola&&D.bussola.categorias)||{};
   $("bus-legenda").innerHTML=Object.values(cat).map(c=>`<span><span class=ponto style="background:${c.cor}"></span>${esc(c.rotulo)}</span>`).join("");
@@ -4066,7 +4066,7 @@ function achadosDoMotor(o){
   if(!A.total_unicas) return `<div class="mt-achados"><b>0 oportunidades encontradas</b> <span class=meta>· nenhuma oportunidade reconhecida nesta fonte até agora</span></div>`;
   return `<div class="mt-achados"><b>${A.total_unicas} oportunidade(s) encontrada(s)</b>${A.total_registros>A.total_unicas?` <span class=meta>(${A.total_registros} registros, sem repetição)</span>`:""} — ${Math.min(5,A.ultimas.length)} mais recente(s):
     ${A.ultimas.map(e=>{   // 28/09 (titular): UMA linha por oportunidade — nome · prazo de inscrição · livro de oportunidade · site oficial
-        const O=e.opressor||{}, dec=e.decisao||"";
+        const O=e.livro||{}, dec=e.decisao||"";
         const venc=e.prazo&&e.prazo<HOJE.toISOString().slice(0,10);
         const prazo=e.prazo?(venc?"encerrada em "+br(e.prazo):"inscrições até "+br(e.prazo)):dec==="arquivada_encerrada"?"encerrada":"prazo a confirmar";
         const opr=O.id?`livro <b>${esc(O.id)}</b><i class="mt-ach-lg${O.ligado?" on":""}" title="${O.ligado?"ligado":"desligado"}"></i>`:dec==="descartada"?"sem livro · descartada":dec==="arquivada_encerrada"?"sem livro · encerrada":"livro no próximo ciclo";
@@ -5079,7 +5079,7 @@ document.addEventListener("visibilitychange",()=>{ if(!document.hidden) conferir
 /* 28/09: nada recarrega a página ao fechar janelas */
 /* ═══ OPORTUNIDADES ABERTAS — CARTÕES DO FLUXO VALIDADO (titular, 28/09) ═══════════════════════════════════════════
    Um cartão por oportunidade aberta: nasce quando ela é descoberta (motores, Espião, Interceptador) e é atualizado a
-   cada estudo do Interceptador — condições comprovadas, dispensadas e em falta, prazo, site oficial, e o MOTOR OPRESSOR
+   cada estudo do Interceptador — condições comprovadas, dispensadas e em falta, prazo, site oficial, e o MOTOR LIVRO
    que guarda a oportunidade (com as edições anteriores e a previsão da próxima) ou o motivo da dispensa dele. */
 window._oaF={uf:"",a:"",s:""};
 /* 02/10 (titular): selo da esteira em cada oportunidade aberta. O ciclo grava x.selo (o maior entre o livro e o quadro);
@@ -5223,7 +5223,7 @@ function _desenhaAbertasFluxo(){
   const f=window._oaF, nUF={}; todos.forEach(x=>{const k=x._uf||"__nac__"; nUF[k]=(nUF[k]||0)+1;});
   let L=todos.filter(x=>(!f.uf||(f.uf==="__nac__"?!x._uf:x._uf===f.uf))&&(!f.a||areaCal(x)===f.a)&&(!f.s||seloEsteira(x)===f.s));
   L.sort((a,b)=>((SELO_ORD[seloEsteira(b)]??-1)-(SELO_ORD[seloEsteira(a)]??-1))||(b.confirmada-a.confirmada)||(a.confirmada?String(a.fim||"9999").localeCompare(String(b.fim||"9999")):((a._uf==="GO"?0:1)-(b._uf==="GO"?0:1))||String(b.publicado_em||"").localeCompare(String(a.publicado_em||""))));
-  const conf=L.filter(x=>x.confirmada).length, insp=L.filter(x=>x.inspecao).length, opr=L.filter(x=>x.opressor).length;
+  const conf=L.filter(x=>x.confirmada).length, insp=L.filter(x=>x.inspecao).length, opr=L.filter(x=>x.livro_vinculado||x.opressor).length;
   const sel=(id,opts,v)=>`<select class="ep-sel" onchange="_oaF['${id}']=this.value;desenhaAbertasFluxo()">${opts.map(([k,r])=>`<option value="${k}" ${v===k?"selected":""}>${r}</option>`).join("")}</select>`;
   const cartao=x=>{const I=x.inspecao, C=x.condicoes, a=areaCal(x), u=x.link_oficial||(I&&I.pagina_oficial)||x.url, of=!!(x.link_oficial||(I&&I.pagina_oficial));
     const cor=x.confirmada?"verde":!I?"cinza":I.ok?"verde":"verm";
@@ -5310,7 +5310,7 @@ function _desenhaAbertasFluxo(){
             <div class="oa-kl">${ord.map(k=>{const it=K[k]||{s:"pend"}, g=grupo(it.s), rot=g==="conhecido"&&it.v?padroniza(k,it.v):k;
               return `<span class="oa-ki ${g}" title="${esc(k)} — ${NOTA[it.s]||NOTA.pend}${it.v?": "+esc(it.v):""}${it.t?" · “"+esc(it.t)+"”":""}"><i>${SIM[g]}</i>${esc(rot)}</span>`;}).join("")}</div>`;})()}
         ${I?`<div class=meta style="margin-top:3px">estudada pelo Interceptador em ${esc(I.em.slice(8,10)+"/"+I.em.slice(5,7))}: ${esc(I.qualidade||"—")} ${I.comprovados??""}/12</div>`:`<div class=meta style="margin-top:3px">na fila do Interceptador${x._uf==="GO"?" (Goiás tem prioridade)":""} — ele busca os itens com ✕ (até 3 vezes por oportunidade)</div>`}</div>
-      <div class="oa-r">${x.opressor?`livro <b>${esc(x.opressor)}</b>${x.opressor_edicoes?` · ${x.opressor_edicoes} edição(ões) guardada(s)`:""}${x.opressor_previsao?` · próxima janela prevista: ${esc(x.opressor_previsao.proxima_janela)}`:""}`:x.opressor_dispensa?`sem livro — ${esc(x.opressor_dispensa)}`:"livro será criado no próximo ciclo"}</div>
+      <div class="oa-r">${(x.livro_vinculado||x.opressor)?`livro <b>${esc(x.livro_vinculado||x.opressor)}</b>${x.livro_edicoes?` · ${x.livro_edicoes} edição(ões) guardada(s)`:""}${x.livro_previsao?` · próxima janela prevista: ${esc(x.livro_previsao.proxima_janela)}`:""}`:x.livro_dispensa?`sem livro — ${esc(x.livro_dispensa)}`:"livro será criado no próximo ciclo"}</div>
         </div>`;};
   window._oaMapa=Object.fromEntries(todos.map(x=>[_edDoFluxo(x).id,x]));
   if(!cx._acoes){ cx._acoes=true; cx.addEventListener("click",ev=>{
@@ -5610,7 +5610,7 @@ function desenhaMotores(){
   MT._horaDe=horaDe;
   const rel=MT._relHoje||{};const cons=rel.consolidado||{};
   $("mt-conta").innerHTML=`motores regulares e gerais — cada tipo sai na sua hora, entre 00h e 06h de Brasília: `
-    +HZ.filter(b=>b.tipos&&b.tipos.length&&b.bloco!=="opressores").map(b=>`<b>${b.hora_brt}</b> ${esc(b.descricao.split(";")[0].slice(0,44))}`).join(" · ")
+    +HZ.filter(b=>b.tipos&&b.tipos.length&&b.bloco!=="livros_do_sistema").map(b=>`<b>${b.hora_brt}</b> ${esc(b.descricao.split(";")[0].slice(0,44))}`).join(" · ")
     +(cons.blocos_executados?`<br>relatório de hoje: blocos ${cons.blocos_executados.join(", ")} · ${cons.sensores||0} sensores · ${cons.achados||0} achados · ${cons.novos_na_base||0} novos na base`:"<br>relatório de hoje: nenhum bloco executado ainda");
   if($("mo-conta"))$("mo-conta").innerHTML=`${rows.length} de ${MT.length} fontes específicas no filtro · ${rows.filter(m=>m.goias).length} de Goiás/Goiânia · `
     +`<b>saem às 04:00</b> (Brasília), só os ativos — época histórica de publicação, menção captada pelos Motores de Busca na madrugada, ou acionamento manual · `
@@ -5672,7 +5672,7 @@ function desenhaMotores(){
   /* categorias APENAS por área de atuação (rótulos da página inicial) */
   const rotArea=rotArea0;
   const grupos={};rows.forEach(m=>{const k=rotArea(m.area_atuacao);(grupos[k]=grupos[k]||{})["_"]=(grupos[k]["_"]||[]).concat(m);});
-  /* MOTORES OPRESSORES como BOTÕES (o mesmo desenho do quadro de disjuntores):
+  /* MOTORES LIVROS como BOTÕES (o mesmo desenho do quadro de disjuntores):
      fogo à esquerda para desligar, nome curado, dia N/30 do disjuntor; agrupados
      por ÁREA. O detalhe completo (12 itens, página, diagnóstico) abre no clique. */
   window._mtPorId=window._mtPorId||{}; rows.forEach(m=>window._mtPorId[m.id]=m);
@@ -5705,7 +5705,7 @@ function desenhaMotores(){
     ${novas.map((n,i)=>`<div class="mt-item nova sem-verde" data-id="nova-${i}"><div class="mt-lado-esq"></div>
       <div class="mt-corpo"><div><b>${esc(n.titulo)}</b> <span class=tag>nova</span> <span class=tag>${esc(n.uf||"BR")}</span></div>
         <div class=meta>anunciada em ${esc(n.fonte||"")} em ${n.em?br(n.em):"—"}${n.prazo?" · prazo "+esc(n.prazo):""}${n.valor?" · "+esc(n.valor):""} · <a href="${esc(n.url)}" target=_blank rel="noopener noreferrer">publicação ↗</a></div>
-        <div class="mt-diag">${(()=>{const O=n.opressor,V=n.validacao;const dec={valida_aberta:"válida e aberta",valida_fora_abrangencia:"válida, fora da abrangência",pendente:"pendente",descartada:"descartada",arquivada_encerrada:"encerrada — na Biblioteca"}; return `livro ${O?esc(O.id)+(O.ligado?" · ligado":" · desligado")+" · "+esc(O.leitura||"sem leitura"):"não criado"}${V?` · validação: <b>${esc(dec[V.decisao]||V.decisao)}</b>${V.prazo?" · até "+br(V.prazo):""} — ${esc(V.motivo)}`:" · ainda sem decisão"}`;})()}</div></div>
+        <div class="mt-diag">${(()=>{const O=n.livro,V=n.validacao;const dec={valida_aberta:"válida e aberta",valida_fora_abrangencia:"válida, fora da abrangência",pendente:"pendente",descartada:"descartada",arquivada_encerrada:"encerrada — na Biblioteca"}; return `livro ${O?esc(O.id)+(O.ligado?" · ligado":" · desligado")+" · "+esc(O.leitura||"sem leitura"):"não criado"}${V?` · validação: <b>${esc(dec[V.decisao]||V.decisao)}</b>${V.prazo?" · até "+br(V.prazo):""} — ${esc(V.motivo)}`:" · ainda sem decisão"}`;})()}</div></div>
       <div class="mt-lado-dir"></div></div>`).join("")}</div>`:"";
   $("mt-lista").innerHTML=oficiaisHtml||'<div class=meta>Nenhum local de publicação neste filtro.</div>';
   if(window._bibAba==="leis"){ desenhaLeis(); return; }
@@ -5832,7 +5832,7 @@ function desenhaBzCards(){
     livro:`<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="${c}" stroke-width="1.9"><path d="M12 5.5C10 4 7.4 3.6 4 3.8v14.7c3.4-.2 6 .2 8 1.7 2-1.5 4.6-1.9 8-1.7V3.8c-3.4-.2-6 .2-8 1.7z" stroke-linejoin="round"/><path d="M12 5.5v14.7"/></svg>`});
   const mon=bp.monitoramentos||{}; const tot=bp.totais||{};
   // 28/09 (titular): os cartões leem o FLUXO VALIDADO e o catálogo real dos livros — não mais o conjunto antigo
-  const FX=window._FLUXO||{}, OP=FX.opressores||{}, its=Object.values(FX.itens_por_uf||{}).flat();
+  const FX=window._FLUXO||{}, OP=FX.livros_do_sistema||FX.opressores||{}, its=Object.values(FX.itens_por_uf||{}).flat();
   // 11/10 (titular): PARÂMETRO ÚNICO — abertas = validadas + em verificação + validação manual (o mesmo número em todo o painel)
   const PR=FX.parametro||{abertas:its.length,validadas:its.filter(x=>x.confirmada).length,em_verificacao:its.filter(x=>!x.confirmada).length,validacao_manual:0};
   const hj=HOJE.toISOString().slice(0,10), em7=new Date(HOJE.getTime()+7*864e5).toISOString().slice(0,10);
@@ -5845,7 +5845,7 @@ function desenhaBzCards(){
     [IC("#0B4EA2").banco,"Fontes monitoradas",fr(OP.ligados??0,OP.catalogo??0),"","azul",`livros monitorados (lidos todos os dias pelo motor do próprio livro, com pesquisa focada) / total de livros na Biblioteca`],   // 12/10 (titular): só os números
     [IC("#0B4EA2").escudo,"Validadas",fr(PR.validadas,PR.abertas),"","azul","validadas (objeto, prazo vigente e site oficial comprovados, ou ouro) / oportunidades abertas"],
     [IC("#C0392B").relogio,"Prazos urgentes",fr(urg.length,conf.length),"","vermelho","inscrições validadas terminando em até 7 dias / validadas"],
-    [IC("#0B4EA2").farol,"Repositório",fr(OP.com_historico_de_edicoes??0,OP.catalogo??0),"","azul","opressores com duas ou mais edições guardadas / livros de oportunidades na Biblioteca"],
+    [IC("#0B4EA2").farol,"Repositório",fr(OP.com_historico_de_edicoes??0,OP.catalogo??0),"","azul","livros com duas ou mais edições guardadas / livros de oportunidades na Biblioteca"],
     [IC("#0B4EA2").livro,"Base legal",((D.biblioteca||{}).acervos||{}).leis??0,"","azul","normas na Biblioteca"]];
   $("bz-cards").innerHTML=cards.map(c=>`<div class="bz-card" title="${esc(c[5])}">${c[0]}<div class=r>${c[1]}</div><div class=v>${c[2]}</div>${c[3]?`<div class=s>${esc(c[3])}</div>`:""}</div>`).join("");
   const na=$("bz-cards").children[0];
@@ -5924,8 +5924,8 @@ function mpMotoresUF(uf){
   const regUF=reg.filter(o=>{const t=(o.id||"")+" "+(o.nome||"");const isGO=/goi[âa]nia|goi[áa]s|tjgo|alego|go\b|-go\b/i.test(t)&&!/uni[ãa]o|dou|cnj|trf1|pncp|prosas/i.test(t);return nac?!isGO:(uf==="GO"?isGO:false);});
   const opUF=MT.filter(m=>nac?(m.uf==="BR"||!m.uf||m.nivel==="federal"):m.uf===uf);
   const ligados=[...regUF.filter(o=>mtAtivo(o.id)),...opUF.filter(m=>mtAtivo(m.id))];
-  const res=x=>({nome:x.nome||x.programa,tipo:x.tipo||(x.programa?"opressor":"regular"),aceso:mtAtivo(x.id),lida:x.ultima_leitura,achados:x.achados||0,situacao:x.situacao||x.validacao||"",disjuntor:x.disjuntor?JSON.parse(x.disjuntor):null,id:x.id});
-  return {total:regUF.length+opUF.length,ligados:ligados.length,regulares:regUF.map(res),opressores:opUF.map(res),
+  const res=x=>({nome:x.nome||x.programa,tipo:x.tipo||(x.programa?"livro":"regular"),aceso:mtAtivo(x.id),lida:x.ultima_leitura,achados:x.achados||0,situacao:x.situacao||x.validacao||"",disjuntor:x.disjuntor?JSON.parse(x.disjuntor):null,id:x.id});
+  return {total:regUF.length+opUF.length,ligados:ligados.length,regulares:regUF.map(res),livros:opUF.map(res),
     achados:[...regUF,...opUF].reduce((s,x)=>s+(x.achados||0),0),lidos:[...regUF,...opUF].filter(x=>x.ultima_leitura).length};
 }
 function mpIndicesUF(uf){

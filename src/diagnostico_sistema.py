@@ -106,7 +106,7 @@ def oportunidades(P: list, hoje: str) -> dict:
     cat = {m.get("id"): m for m in (_j(ROOT / "biblioteca_alexandria/fontes/motores.json", {}).get("motores") or [])}
     fl = {x.get("id") for v in (_j(D / "fluxo_oportunidades.json", {}).get("itens_por_uf") or {}).values() for x in v}
     fichas = _j(D / "fichas_oportunidades.json", {}); fid = set((fichas.get("fichas") or {}).keys()) | set((fichas.get("alias") or {}).keys())
-    idx = (_j(ROOT / "estado/opressores_indice.json", {}).get("indice") or {})
+    idx = (_j(ROOT / "estado/livros_monitoramento_indice.json", {}).get("indice") or {})
     sem_livro_regra = Counter()
     sem_livro, livro_inexistente, sem_site, sem_prazo, vencida, fora_tela, sem_ficha = [], [], [], [], [], [], []
     estados = Counter(); faltam = Counter()
@@ -434,7 +434,7 @@ def corrigir(diag: dict) -> list:
     if "aplicar as decisões" in precisa:
         from . import decisoes_titular; _etapa("decisões da titular → livros e repositório", decisoes_titular.run, log)
     if precisa & {"criar/vincular livros", "criar/vincular livros e refazer o repositório"}:
-        from . import opressores_repositorio; _etapa("livros: criar ou vincular para cada oportunidade", opressores_repositorio.sincronizar, log)
+        from . import livros_repositorio; _etapa("livros: criar ou vincular para cada oportunidade", livros_repositorio.sincronizar, log)
     from . import repositorio_unico
     _etapa("repositório único", lambda: repositorio_unico.construir(gravar=True), log)
     if precisa & {"refazer a tela", "refazer tela e indicadores", "refazer o repositório", "criar/vincular livros", "criar/vincular livros e refazer o repositório", "aplicar as decisões"}:

@@ -2737,7 +2737,7 @@ class SystemTests(unittest.TestCase):
             else: cfgp.unlink(missing_ok=True)
 
 
-    def test_motores_opressores_ativacao_por_epoca_ou_mencao(self):
+    def test_motores_livros_ativacao_por_epoca_ou_mencao(self):
         """Fonte específica só fica ATIVA com menção nos locais oficiais ou na
         época prevista; emendas não entram; menção exige termos distintivos."""
         from src.motores import status_da_fonte, _toks, familia
@@ -2804,9 +2804,9 @@ class SystemTests(unittest.TestCase):
         self.assertIn(".mt-item.oficial.sem-cinza{",html); self.assertNotIn("semaforoTres",html)
 
 
-    def test_calendario_por_motor_e_opressores_por_area(self):
+    def test_calendario_por_motor_e_livros_por_area(self):
         """Cada motor regular tem o calendário do Mapa (dias coloridos); os
-        Motores Opressores agrupam só por área, com ativação pelo ícone."""
+        Motores Livros agrupam só por área, com ativação pelo ícone."""
         mo=load_json(pathlib.Path("biblioteca_alexandria/fontes/motores.json"))
         for o in mo["oficiais"]:
             ds=[x["d"] for x in o["dias"]]
@@ -2829,7 +2829,7 @@ class SystemTests(unittest.TestCase):
 
     def test_areas_canonicas_unificadas_em_todo_o_painel(self):
         """Um só vocabulário de áreas (as 13 da tela inicial) para editais,
-        fontes ativas, Radar, Calendário e Motores Opressores; esfera sem 'Privada'."""
+        fontes ativas, Radar, Calendário e Motores Livros; esfera sem 'Privada'."""
         from src.dashboard_dados import AREAS_CANONICAS, area_canonica, AREAS
         self.assertEqual(len(AREAS_CANONICAS),13)
         for a in AREAS_CANONICAS: self.assertIn(a,AREAS,a)
@@ -2898,17 +2898,17 @@ class SystemTests(unittest.TestCase):
 
 
     def test_horarios_por_bloco_e_dupla_etapa(self):
-        """Cada tipo de motor tem a sua hora entre 00h e 06h BRT; Opressores às 04h
+        """Cada tipo de motor tem a sua hora entre 00h e 06h BRT; Livros às 04h
         só os ativos e com léxico ESPECÍFICO (2ª etapa); relatório diário por bloco."""
         import os
         hz=load_json(pathlib.Path("config/horarios.json"))
         blocos={b["bloco"]:b for b in hz["blocos"]}
-        for b in ("diarios","justica_legislativo","plataformas_api","completude","opressores","busca_ativa","relatorio"):
+        for b in ("diarios","justica_legislativo","plataformas_api","completude","livros_do_sistema","busca_ativa","relatorio"):
             self.assertIn(b,blocos,b)
         horas=[b["hora_brt"] for b in hz["blocos"]]
         self.assertTrue(all("00:00"<=h<="06:00" for h in horas),horas)
         self.assertEqual(len(set(horas)),len(horas))                       # alternados, sem sobreposição
-        self.assertIn("site_oficial",blocos["opressores"]["tipos"]); self.assertEqual(blocos["opressores"]["hora_brt"],"04:00")
+        self.assertIn("site_oficial",blocos["livros_do_sistema"]["tipos"]); self.assertEqual(blocos["livros_do_sistema"]["hora_brt"],"04:00")
         wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read()
         for c in ("0 3 * * *","0 4 * * *","0 5 * * *","0 6 * * *","0 7 * * *","0 9 * * *"): self.assertIn(c,wf,c)
         self.assertIn("MOTORES_BLOCO",wf); self.assertIn("src.relatorio_diario",wf)
@@ -3132,11 +3132,11 @@ class SystemTests(unittest.TestCase):
         self.assertGreaterEqual(src.count('self.skipTest("PIL ausente no runner")'),2)
 
 
-    def test_disjuntores_opressores_30_dias_ia_e_conselho(self):
+    def test_disjuntores_livros_30_dias_ia_e_conselho(self):
         """Quadro de disjuntores: inativos com poça (cinza sem época, rosa chegando);
         ligado = 30 dias, IA sob medida a cada 3 dias, conselho Fable 5.1 na 3ª IA."""
         import os, tempfile
-        from src import opressores as O
+        from src import livros_monitoramento as O
         from datetime import timedelta
         h=date(2026,9,3)
         self.assertEqual(O.proximidade({"proxima_data":None},h),"cinza")
@@ -3171,7 +3171,7 @@ class SystemTests(unittest.TestCase):
         for x in ("Quadro de disjuntores","function desenhaDisjuntores","dj-grade","dj.rosa","dj.cinza","nomeCurto",
                   "ligados_em","@keyframes folha-vento",'class="folha"',"ligado · dia"): self.assertIn(x,html,x)
         self.assertNotIn('class="coluna"',html)                       # apagado = só a poça
-        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("src.opressores",wf)
+        wf=open(".github/workflows/monitoramento-diario.yml",encoding="utf-8").read(); self.assertIn("src.livros_monitoramento",wf)
 
 
     def test_calendario_mensal_com_faixa_continua_confirmada(self):
@@ -3281,14 +3281,14 @@ class SystemTests(unittest.TestCase):
         src=open("src/dashboard_dados.py",encoding="utf-8").read(); self.assertIn("def _versionar_scripts",src)
 
 
-    def test_opressores_acesos_como_botoes_por_area(self):
+    def test_livros_acesos_como_botoes_por_area(self):
         """Acesos e apagados com o mesmo desenho de botão (fogo/poça + nome curado),
         ambos agrupados por área; o detalhe completo abre no clique do nome."""
         html=open("docs/dashboard.html",encoding="utf-8").read()
-        for x in ("MOTORES OPRESSORES como BOTÕES","const chipAceso=","dj aceso","window.mtDetalhe=function","dj-acoes",
+        for x in ("MOTORES LIVROS como BOTÕES","const chipAceso=","dj aceso","window.mtDetalhe=function","dj-acoes",
                   "mtDetalhe('${esc(m.id)}')"):
             self.assertIn(x,html,x)
-        # o cartão grande dos Opressores não é mais montado na lista
+        # o cartão grande dos Livros não é mais montado na lista
         self.assertNotIn('return `<div class="mt-item ${m.faltam?"":"completo"} sem-${st[0]}" data-id="${esc(m.id)}">',html)
 
 
@@ -3734,7 +3734,7 @@ class SystemTests(unittest.TestCase):
 
     def test_orcamento_de_ia_sem_repeticao_e_documentos_de_submissao(self):
         import os
-        from src.opressores import _orcamento, _chamar
+        from src.livros_monitoramento import _orcamento, _chamar
         c=load_json(pathlib.Path("config/ia.json"))["orcamento"]; self.assertEqual(c["percentual_por_edital"],0.05)
         o=_orcamento("edital:teste-x"); self.assertEqual(o["teto_tarefa"],int(o["limite_periodo"]*0.05))
         chave=os.environ.pop("FAROL_AI_API_KEY",None)

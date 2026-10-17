@@ -7,7 +7,7 @@
                      últimos 60 dias — mesmo sem informação nenhuma (menção em diário oficial conta)
     4. CONFIRMADAS   com o MÍNIMO: objeto + data-limite de inscrição ainda aberta + link do site oficial
                      (de empresa, instituto ou ente público)
-    5. OPRESSOR      oportunidade nova (não coberta por opressor existente) gera um livro de oportunidade próprio,
+    5. LIVRO      oportunidade nova (não coberta por livro existente) gera um livro de oportunidade próprio,
                      ligado por 30 dias, com a página dela — e o Interceptador a lê (5ª fila)
     6. PREDITIVO     cada oportunidade é cadastrada em biblioteca_alexandria/livros/_acervo/base/preditivo/oportunidades.jsonl
                      com órgão, tipo (pontual/recorrente), prazo e próxima janela estimada
@@ -28,8 +28,8 @@ from urllib.parse import urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 MESTRE = ROOT / "dados/oportunidades/oportunidades.jsonl"
 EXT = ROOT / "dados/editais/extraidos"
-CAT_OPR = ROOT / "biblioteca_alexandria/fontes/motores.json"
-EST_OPR = ROOT / "estado/opressores.json"
+CAT_LIVROS_SIS = ROOT / "biblioteca_alexandria/fontes/motores.json"
+EST_LIVROS_MON = ROOT / "estado/livros_monitoramento.json"
 PRED = ROOT / "biblioteca_alexandria/livros/_acervo/base/preditivo/oportunidades.jsonl"
 SAIDA = ROOT / "docs/dados/fluxo_oportunidades.json"
 AGREGADORES = re.compile(r"duckduckgo|bing\.com|google\.|queridodiario|captadores\.org|observatorio3setor|prosas\.com|filantropia\.ong|gife\.org|idis\.org|pncp\.gov\.br/app", re.I)
@@ -224,13 +224,13 @@ def consolidar() -> list[dict]:
     # Retificação e alteração de cronograma FICAM: indicam edital aberto.
     RUIDO = re.compile(r"^\s*\d{1,2}:\d{2}\b|vota[cç][õo]es|requerimentos|t[ií]tulos? de cidadania|utilidades? p[uú]blica|convoca[cç][aã]o de assembleia|"
                        r"^\s*extrato|resultado|lista de aprovados|aprovados e suplentes|heteroidentifica|homologa|inexigibilidade|dispensa de chamamento|termo aditivo", re.I)
-    _IDX = (_j(ROOT / "estado/opressores_indice.json", {}) or {}).get("indice") or {}
+    _IDX = (_j(ROOT / "estado/livros_monitoramento_indice.json", {}) or {}).get("indice") or {}
     try:                                     # 11/10 (validação das 558 abertas): a mesma régua do motor dos agregadores
         from .indexadores.extracao import nao_e_fomento as _nao_fom
     except Exception:  # noqa: BLE001
         _nao_fom = lambda t: None
-    _OPR = {x.get("id"): x for x in (_j(CAT_OPR, {}) or {}).get("motores", [])}
-    _EO = (_j(EST_OPR, {}) or {}).get("ligados") or {}
+    _OPR = {x.get("id"): x for x in (_j(CAT_LIVROS_SIS, {}) or {}).get("motores", [])}
+    _EO = (_j(EST_LIVROS_MON, {}) or {}).get("ligados") or {}
     vistos_t, vistos_u, out = set(), set(), []
     # VALIDAÇÃO INDIVIDUAL (27/09): decisão registrada prevalece; o que não foi validado passa pelas regras aprendidas
     from . import validacao_mapa as _vm
@@ -294,7 +294,7 @@ def consolidar() -> list[dict]:
         # fluxo contínuo: o próprio edital dispensa a data-limite (validação no site oficial) — vale como prazo aberto
         prazo_disp = bool(v and v["decisao"].startswith("valida") and ((v.get("doze_itens") or {}).get("Prazo de inscrição") or {}).get("status") == "dispensado pelo edital")
         confirmada = bool(objeto and link and ((fim and fim >= hoje.isoformat()) or (prazo_disp and not fim)))
-        # CONDIÇÕES E OPRESSOR DE CADA OPORTUNIDADE (28/09)
+        # CONDIÇÕES E LIVRO DE CADA OPORTUNIDADE (28/09)
         _cp = [k for k, c in campos.items() if (c or {}).get("comprovado")]; _dp = [k for k, c in campos.items() if (c or {}).get("dispensado")]
         condicoes = {"comprovadas": len(_cp), "dispensadas": len(_dp), "faltam": [k for k in campos if k not in _cp and k not in _dp],
                      "dispensas": {k: str((campos[k] or {}).get("trecho_dispensa") or "")[:120] for k in _dp}} if campos else None
@@ -309,7 +309,7 @@ def consolidar() -> list[dict]:
                    "Território": _vv.get("uf") or _vv.get("territorio"), "Requisitos": _vv.get("requisitos")} if _vok else {}
         # 01/10: os 12 itens da validação individual (doze_itens) e os parâmetros do livro também alimentam o checklist.
         # Antes só valiam campos que a validação nem grava (orgao, valor, territorio...) e 'doze_itens' era ignorado.
-        _par = ((_EO.get(_ix.get("opressor")) or {}).get("parametros") or {}) if _ix.get("opressor") else {}
+        _par = ((_EO.get(_ix.get("livro_vinculado")) or {}).get("parametros") or {}) if _ix.get("livro_vinculado") else {}
         _pdz = _par.get("doze") or {}
         _mesmo = bool(link and _par and _nu(link) in {_nu(x) for x in (_par.get("fonte_oficial"), (_par.get("edital") or {}).get("url")) if x})
         checklist = {}
@@ -349,7 +349,7 @@ def consolidar() -> list[dict]:
             else:
                 checklist[k] = {"s": "pend"}
         # 01/10: DISPENSA PROVÁVEL pelo tipo de recurso (config/dispensas_por_regime.json). Não conta como item feito.
-        _mo = _OPR.get(_ix.get("opressor"))
+        _mo = _OPR.get(_ix.get("livro_vinculado"))
         # esfera comprovada vale mais que o 'nivel' bruto do motor (que erra em agregadores e diários)
         _esf = str((checklist.get("Esfera") or {}).get("v") or "").lower() if (checklist.get("Esfera") or {}).get("s") in ("ok", "val", "disp") else ""
         _privada = ("privad" in _esf or "internacional" in _esf) if re.search(r"privad|internacional|federal|estadual|municipal|distrital", _esf) \
@@ -374,9 +374,9 @@ def consolidar() -> list[dict]:
                     "objeto": str(objeto)[:240] if objeto else None, "confirmada": confirmada, "url": m.get("url"), "inspecao": insp, "condicoes": condicoes, "checklist": checklist, "regime": dispensa_analise["regime"], "dispensa_analise": dispensa_analise,
                     "area": area_tematica(((checklist.get("Área de atuação") or {}).get("v") or ""), str(objeto or ""), tit, str(m.get("orgao") or ""),
                                           " ".join(m.get("areas_fonte") or []) if isinstance(m.get("areas_fonte"), list) else str(m.get("areas_fonte") or ""))
-                            or ("diario" if diario else None), "opressor": _ix.get("opressor"), "opressor_dispensa": _ix.get("dispensa"),
-                    "opressor_edicoes": len((_OPR.get(_ix.get("opressor")) or {}).get("historico") or []) or None,
-                    "opressor_previsao": (_OPR.get(_ix.get("opressor")) or {}).get("previsao"),
+                            or ("diario" if diario else None), "livro_vinculado": _ix.get("livro_vinculado"), "livro_dispensa": _ix.get("dispensa"),
+                    "livro_edicoes": len((_OPR.get(_ix.get("livro_vinculado")) or {}).get("historico") or []) or None,
+                    "livro_previsao": (_OPR.get(_ix.get("livro_vinculado")) or {}).get("previsao"),
                     "validacao": ({"decisao": v["decisao"], "motivo": v.get("motivo"), "em": v.get("validado_em")} if v else None)})
     return out
 
@@ -387,10 +387,10 @@ def _tipo_ciclo(t: str) -> str:
     return "recorrente" if rec and not pon else "pontual" if pon else "indefinido"
 
 
-def opressores_e_preditivo(itens: list[dict]) -> dict:
-    """Oportunidade nova (não coberta) → opressor próprio ligado por 30 dias + cadastro preditivo."""
-    C = _j(CAT_OPR, {"motores": []}); L = _j(EST_OPR, {"ligados": {}})
-    # DUPLICADOS NA REGENERAÇÃO (28/09): cópia velha de um voo pode trazer opressores repetidos (mesmo programa +
+def livros_e_preditivo(itens: list[dict]) -> dict:
+    """Oportunidade nova (não coberta) → livro próprio ligado por 30 dias + cadastro preditivo."""
+    C = _j(CAT_LIVROS_SIS, {"motores": []}); L = _j(EST_LIVROS_MON, {"ligados": {}})
+    # DUPLICADOS NA REGENERAÇÃO (28/09): cópia velha de um voo pode trazer livros repetidos (mesmo programa +
     # órgão); a cada regeneração fica um só — o que tem dados da validação ou está ligado.
     grupos = {}
     for x in C.get("motores") or []:
@@ -405,10 +405,10 @@ def opressores_e_preditivo(itens: list[dict]) -> dict:
         C["motores"] = [x for x in C["motores"] if x["id"] not in set(fora)]
         for i in fora:
             (L.get("ligados") or {}).pop(i, None)
-        CAT_OPR.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 11/10: formato único (compacto)
-        EST_OPR.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
-    # OPRESSOR ACOMPANHA A VALIDAÇÃO (28/09): oportunidade descartada ou encerrada desliga o opressor dela; válida
-    # marca o opressor com os dados confirmados. Antes, 9 "novas anunciadas" tinham opressor e NENHUM estava coerente.
+        CAT_LIVROS_SIS.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 11/10: formato único (compacto)
+        EST_LIVROS_MON.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
+    # LIVRO ACOMPANHA A VALIDAÇÃO (28/09): oportunidade descartada ou encerrada desliga o livro dela; válida
+    # marca o livro com os dados confirmados. Antes, 9 "novas anunciadas" tinham livro e NENHUM estava coerente.
     from . import validacao_mapa as _vmo
     _VAL = {_nt(v.get("titulo")): v for v in _vmo.carregar().values() if v.get("titulo")}
     _ruido = re.compile(r"^\s*extrato|termo de (fomento|colabora[cç][aã]o) n[ºo°]|resultado|homologa", re.I)
@@ -425,8 +425,8 @@ def opressores_e_preditivo(itens: list[dict]) -> dict:
             if v.get("fonte_oficial"): x["pagina"] = v["fonte_oficial"]
             mudou = True
     if mudou:
-        CAT_OPR.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 11/10: formato único (compacto)
-        EST_OPR.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
+        CAT_LIVROS_SIS.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 11/10: formato único (compacto)
+        EST_LIVROS_MON.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
     cobertos_u = {_nu(x.get("pagina") or "") for x in C.get("motores") or [] if x.get("pagina")}
     cobertos_t = {_nt(f"{x.get('programa')}") for x in C.get("motores") or []} | {_nt(f"{x.get('programa')}{x.get('orgao')}") for x in C.get("motores") or []}
     PRED.parent.mkdir(parents=True, exist_ok=True)
@@ -435,17 +435,17 @@ def opressores_e_preditivo(itens: list[dict]) -> dict:
     linhas_pred = []
     for it in itens:
         if it["tipo"] == "menção em diário oficial":
-            continue                                   # menção sem página própria: conta no mapa, não vira opressor
+            continue                                   # menção sem página própria: conta no mapa, não vira livro
         pagina = it.get("link_oficial") or it.get("url")
         ku, kt = _nu(pagina), _nt(it["titulo"])
-        # só vira opressor o que tem CARA DE OPORTUNIDADE — não notícia, não dispensa de chamamento
+        # só vira livro o que tem CARA DE OPORTUNIDADE — não notícia, não dispensa de chamamento
         cara = re.search(r"edital|chamad|chamamento|pr[eê]mio|sele[cç][aã]o|fundo|inscri[cç]|apoio a projetos|patroc", it["titulo"], re.I) \
                and not re.match(r"(?i)(dispensa|extrato|homologa|resultado|termo aditivo|inexigibilidade)", it["titulo"])
-        # oportunidade VALIDADA ganha opressor mesmo com título de notícia (ex.: o credenciamento do Goiás Social)
+        # oportunidade VALIDADA ganha livro mesmo com título de notícia (ex.: o credenciamento do Goiás Social)
         if (it.get("validacao") or {}).get("decisao") in ("valida_aberta", "valida_fora_abrangencia"):
             cara = True
             pagina = it.get("link_oficial") or pagina; ku = _nu(pagina)
-        if False and pagina and cara and ku not in cobertos_u and kt not in cobertos_t:   # 28/09: quem cria é src/opressores_repositorio.py
+        if False and pagina and cara and ku not in cobertos_u and kt not in cobertos_t:   # 28/09: quem cria é src/livros_repositorio.py
             oid = "nova-" + hashlib.sha1(ku.encode()).hexdigest()[:12]
             C.setdefault("motores", []).append({"id": oid, "programa": it["titulo"][:160], "orgao": it.get("orgao") or "", "motor": "f260-" + oid,
                                                 "familia": "Outros programas", "esfera": "Estado" if it.get("uf") else "Brasil", "uf": it.get("uf") or "BR",
@@ -454,7 +454,7 @@ def opressores_e_preditivo(itens: list[dict]) -> dict:
                                                 "proxima_data": {"inicio": it.get("inicio"), "fim": it.get("fim")} if it.get("fim") else None, "mencoes": [{"titulo": it["titulo"][:120], "url": it.get("url")}]})
             L.setdefault("ligados", {})[oid] = {"desde": hoje.isoformat(), "ate": (hoje + timedelta(days=30)).isoformat(),
                                                 "origem": f"automática: oportunidade nova ({it['origem']})", "dias": 0, "ia": [], "itens": {}}
-            cobertos_u.add(ku); cobertos_t.add(kt); novos_opr += 1; it["opressor"] = oid
+            cobertos_u.add(ku); cobertos_t.add(kt); novos_opr += 1; it["livro_vinculado"] = oid
         if it["id"] not in ja_pred:
             ciclo = _tipo_ciclo(it["titulo"])
             prox = None
@@ -468,14 +468,14 @@ def opressores_e_preditivo(itens: list[dict]) -> dict:
                                 "confirmada": it["confirmada"], "cadastrado_em": hoje.isoformat()})
             novos_pred += 1
     if novos_opr:
-        CAT_OPR.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 11/10: formato único (compacto)
-        EST_OPR.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
+        CAT_LIVROS_SIS.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 11/10: formato único (compacto)
+        EST_LIVROS_MON.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
     if linhas_pred:
         with PRED.open("a", encoding="utf-8") as f:
             for x in linhas_pred:
                 f.write(json.dumps(x, ensure_ascii=False) + "\n")
-    return {"opressores_criados": novos_opr, "cadastrados_para_previsao": novos_pred,
-            "opressores_total": len(C.get("motores") or []), "previsao_total": len(ja_pred) + novos_pred}
+    return {"livros_monitorados_criados": novos_opr, "cadastrados_para_previsao": novos_pred,
+            "livros_total": len(C.get("motores") or []), "previsao_total": len(ja_pred) + novos_pred}
 
 
 def atualizar_preditivo(eid: str, dados: dict) -> bool:
@@ -537,12 +537,12 @@ def _selos_dos_itens(itens: list[dict]) -> dict:
     return dict(Counter(it["selo"] for it in itens if it.get("selo")))
 
 
-def _resumo_opressores(itens: list[dict]) -> dict:
-    """28/09: os números REAIS dos livros de oportunidades, para a Bússola ('fontes monitoradas' = opressores ligados)."""
-    C = (_j(CAT_OPR, {}) or {}).get("motores", []); L = (_j(EST_OPR, {}) or {}).get("ligados", {})
+def _resumo_livros(itens: list[dict]) -> dict:
+    """28/09: os números REAIS dos livros de oportunidades, para a Bússola ('fontes monitoradas' = livros ligados)."""
+    C = (_j(CAT_LIVROS_SIS, {}) or {}).get("motores", []); L = (_j(EST_LIVROS_MON, {}) or {}).get("ligados", {})
     ids = {x.get("id") for x in C}; lig = [k for k in L if k in ids]
-    de_abertas = {x.get("opressor") for x in itens if x.get("opressor")}
-    # por mês: opressores CRIADOS e, deles, os ACIONADOS COM RESULTADO (geraram oportunidade: uma aberta agora ou edição guardada)
+    de_abertas = {x.get("livro_vinculado") for x in itens if x.get("livro_vinculado")}
+    # por mês: livros CRIADOS e, deles, os ACIONADOS COM RESULTADO (geraram oportunidade: uma aberta agora ou edição guardada)
     por_mes = {}
     for x in C:
         m = str(x.get("criado_em") or "")[:7]
@@ -551,12 +551,12 @@ def _resumo_opressores(itens: list[dict]) -> dict:
         p = por_mes.setdefault(m, {"criados": 0, "com_resultado": 0}); p["criados"] += 1
         if x.get("id") in de_abertas or any(h.get("origem") == "aberta" for h in (x.get("historico") or [])):
             p["com_resultado"] += 1
-    _mon = (_j(EST_OPR, {}) or {}).get("monitoramento") or {}
+    _mon = (_j(EST_LIVROS_MON, {}) or {}).get("monitoramento") or {}
     return {"por_mes": por_mes, "catalogo": len(C), "ligados": len(lig), "ligados_de_oportunidades_abertas": sum(1 for k in lig if k in de_abertas),
             "monitorados_abertos": _mon.get("abertos"), "monitorados_prestes": _mon.get("prestes_a_abrir"), "monitorados_continuos": _mon.get("fluxo_continuo"),
             "ligados_fontes_permanentes": sum(1 for k in lig if k not in de_abertas),
-            "abertas_com_opressor": sum(1 for x in itens if x.get("opressor")), "abertas_dispensadas": sum(1 for x in itens if x.get("opressor_dispensa")),
-            "abertas_sem_opressor_nem_dispensa": sum(1 for x in itens if not x.get("opressor") and not x.get("opressor_dispensa")),
+            "abertas_com_livro": sum(1 for x in itens if x.get("livro_vinculado")), "abertas_dispensadas": sum(1 for x in itens if x.get("livro_dispensa")),
+            "abertas_sem_livro_nem_dispensa": sum(1 for x in itens if not x.get("livro_vinculado") and not x.get("livro_dispensa")),
             "com_historico_de_edicoes": sum(1 for x in C if len(x.get("historico") or []) >= 2), "com_previsao": sum(1 for x in C if x.get("previsao")),
             "arquivadas_encerradas": sum(1 for v in ((_j(ROOT / "biblioteca_alexandria/livros/_acervo/editais/arquivados.json", {}) or {}).values() if isinstance(_j(ROOT / "biblioteca_alexandria/livros/_acervo/editais/arquivados.json", {}), dict) else [])
                                          if "encerr" in json.dumps(v, ensure_ascii=False).lower())}
@@ -601,7 +601,7 @@ def deduplicar(itens: list[dict]) -> tuple[list[dict], dict]:
     URL canônica, nº do edital + órgão), completada com o que só a cópia tinha (site oficial, prazo, itens lidos)."""
     canon = {}
     try:
-        from .opressores_repositorio import canonica_por_revisao
+        from .livros_repositorio import canonica_por_revisao
         canon.update(canonica_por_revisao())
     except Exception:  # noqa: BLE001
         pass
@@ -681,7 +681,7 @@ def montar() -> dict:
         pass
     itens, _DEDUP = deduplicar(itens)
     itens, _PARAM = aplicar_parametro(itens)
-    etapa = opressores_e_preditivo(itens)
+    etapa = livros_e_preditivo(itens)
     try:                                     # 02/10 (titular): marcador de iniciativa (poder público / privada / mista)
         from .pareceres_livros import iniciativa_por_id
         _INI = iniciativa_por_id()
@@ -693,7 +693,7 @@ def montar() -> dict:
         from .selo_livros import selo_por_livro
         _SL = selo_por_livro()
         for it in itens:
-            it["selo_livro"] = _SL.get(it.get("opressor"))
+            it["selo_livro"] = _SL.get(it.get("livro_vinculado"))
     except Exception:
         pass
     mapa = {}
@@ -716,10 +716,10 @@ def montar() -> dict:
                       "por_validacao": {d: sum(1 for x in itens if (x.get("validacao") or {}).get("decisao") == d) for d in ("valida_aberta", "valida_fora_abrangencia", "pendente")},
                       "triagem": dict(TRIAGEM), **etapa},
            "selos": _selos_dos_itens(itens),
-           "mapa": {"total": tot, "por_uf": mapa}, "calendario": cal, "opressores": _resumo_opressores(itens),
+           "mapa": {"total": tot, "por_uf": mapa}, "calendario": cal, "livros_do_sistema": _resumo_livros(itens),
            "confirmadas": [x for x in itens if x["confirmada"]][:300],
            "itens_por_uf": {k: sorted([{kk: x.get(kk) for kk in ("id", "titulo", "url", "link_oficial", "fim", "inicio", "tipo", "origem", "confirmada", "estado", "inspecao", "orgao", "publicado_em", "validacao",
-                                                                  "objeto", "condicoes", "checklist", "regime", "dispensa_analise", "area", "opressor", "opressor_dispensa", "opressor_edicoes", "opressor_previsao", "selo", "selo_de", "iniciativa", "selo_livro")}
+                                                                  "objeto", "condicoes", "checklist", "regime", "dispensa_analise", "area", "livro_vinculado", "livro_dispensa", "livro_edicoes", "livro_previsao", "selo", "selo_de", "iniciativa", "selo_livro")}
                                        for x in itens if (x["uf"] or "__nac__") == k], key=lambda y: (not y["confirmada"], not y["inspecao"], str(y.get("fim") or "9"), y["titulo"]))
                             for k in mapa},
            "possiveis_sem_minimo": [x for x in itens if not x["confirmada"] and x["tipo"] != "menção em diário oficial"][:300]}
@@ -750,17 +750,18 @@ def montar() -> dict:
 def sincronizar_catalogo(gravar: bool = True) -> dict:
     """17/10/2026 (titular, terceira vez): a Bússola mostra os LIVROS DO SISTEMA — o total vem do CATÁLOGO GRAVADO, não do
     retrato que a passagem tirou no meio da execução (uma passagem que começou com o catálogo reduzido publicava 1.451
-    com o catálogo em 2.245). Recalcula o bloco 'opressores' (livros, monitorados, com histórico) e o total das etapas."""
+    com o catálogo em 2.245). Recalcula o bloco 'livros_do_sistema' (livros, monitorados, com histórico) e o total das etapas."""
     res = _j(SAIDA, {}) or {}
     if not res:
         return {"sincronizado": False}
     itens = [x for v in (res.get("itens_por_uf") or {}).values() for x in v]
-    antes = (res.get("opressores") or {}).get("catalogo")
-    res["opressores"] = _resumo_opressores(itens)
-    res.setdefault("etapas", {})["opressores_total"] = res["opressores"].get("catalogo")
+    antes = (res.get("livros_do_sistema") or {}).get("catalogo")
+    res.pop("opressores", None)                               # 17/10: o nome antigo sai (passagem antiga pode recolocá-lo)
+    res["livros_do_sistema"] = _resumo_livros(itens)
+    res.setdefault("etapas", {})["livros_total"] = res["livros_do_sistema"].get("catalogo")
     if gravar:
         SAIDA.write_text(json.dumps(res, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    return {"livros_na_bussola_antes": antes, "livros_na_bussola": res["opressores"].get("catalogo")}
+    return {"livros_na_bussola_antes": antes, "livros_na_bussola": res["livros_do_sistema"].get("catalogo")}
 
 
 def sincronizar_com_repositorio() -> dict:
@@ -816,17 +817,17 @@ def atualizar_mapa() -> dict:
     except Exception as ex:
         c["validacao_mapa"] = f"falhou: {type(ex).__name__}"
     try:
-        from .opressores_repositorio import sincronizar
-        c["repositorio_dos_opressores"] = sincronizar()
+        from .livros_repositorio import sincronizar
+        c["repositorio_dos_livros"] = sincronizar()
     except Exception as ex:
-        c["repositorio_dos_opressores"] = f"falhou: {type(ex).__name__}"
+        c["repositorio_dos_livros"] = f"falhou: {type(ex).__name__}"
     try:                                     # 01/10: livros de LEIS — parametrizam o Farol de Alexandria
         from .livros_leis import montar as _leis
         c["livros_de_leis"] = _leis()
     except Exception as ex:
         c["livros_de_leis"] = f"falhou: {type(ex).__name__}"
-    try:                                     # 29/09: cada opressor é um LIVRO — curadoria (separa/junta) e classificação
-        from .livros_opressores import curar
+    try:                                     # 29/09: cada livro é um LIVRO — curadoria (separa/junta) e classificação
+        from .livros_curadoria import curar
         c["livros"] = curar()
     except Exception as ex:
         c["livros"] = f"falhou: {type(ex).__name__}"
@@ -907,11 +908,11 @@ def atualizar_mapa() -> dict:
         c["planos_de_correcao"] = _planos()
     except Exception as ex:
         c["planos_de_correcao"] = f"falhou: {type(ex).__name__}"
-    try:                                     # 29/09: os 12 parâmetros de cada opressor, pesquisados na fonte oficial
-        from .parametros_opressores import aplicar as _par
-        c["parametros_opressores"] = _par()
+    try:                                     # 29/09: os 12 parâmetros de cada livro, pesquisados na fonte oficial
+        from .livros_parametros import aplicar as _par
+        c["livros_parametros"] = _par()
     except Exception as ex:
-        c["parametros_opressores"] = f"falhou: {type(ex).__name__}"
+        c["livros_parametros"] = f"falhou: {type(ex).__name__}"
     r = montar(); r["curadoria"] = c
     return r
 

@@ -7,7 +7,7 @@ do painel mostra quantos alertas há e, ao passar o cursor, quais. Checagens:
   coerência   número do mapa = lista por estado; soma dos estados = total
   gerador     o gerador principal falhou depois da última geração?
   claude      a análise a cada 3 dias está atrasada?
-  opressores  duplicados no catálogo
+  livros  duplicados no catálogo
   workflows   algum workflow com as últimas execuções todas em falha ou cancelamento (API do GitHub, no servidor)
 """
 from __future__ import annotations
@@ -103,7 +103,7 @@ def checar() -> dict:
         from collections import Counter
         d = sum(v - 1 for v in Counter(re.sub(r"[^a-z0-9]", "", f"{x.get('programa')}{x.get('orgao')}".lower())[:80] for x in C).values() if v > 1)
         if d:
-            alertas.append({"area": "opressores", "texto": f"{d} opressor(es) duplicado(s) no catálogo"})
+            alertas.append({"area": "livros_do_sistema", "texto": f"{d} livro(es) duplicado(s) no catálogo"})
     except Exception:
         pass
     # CÓDIGO NO AR = CÓDIGO DO REPOSITÓRIO (regra máxima, 28/09)

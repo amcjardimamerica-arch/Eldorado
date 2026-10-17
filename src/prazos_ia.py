@@ -23,7 +23,7 @@ import re
 from datetime import date
 
 from .nucleo import ROOT, load_json, now_iso, write_json
-from .opressores import _chamar
+from .livros_monitoramento import _chamar
 
 ESTADO = ROOT / "biblioteca_alexandria/livros/_vistas/prazos_ia.json"
 

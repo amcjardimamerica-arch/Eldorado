@@ -1,4 +1,4 @@
-"""MOTORES OPRESSORES = LIVROS ESPECIALIZADOS DA BIBLIOTECA (titular, 29/09).
+"""MOTORES LIVROS = LIVROS ESPECIALIZADOS DA BIBLIOTECA (titular, 29/09).
 
 Cada livro de oportunidade é um LIVRO sobre UMA oportunidade: escrito com o que se sabe e atualizado a cada informação nova
 (edição nova, estudo do Interceptador, prazo confirmado). Nenhum livro se mistura com outro — cada um é distinto por:
@@ -27,7 +27,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CAT = ROOT / "biblioteca_alexandria/fontes/motores.json"
-LIG = ROOT / "estado/opressores.json"
+LIG = ROOT / "estado/livros_monitoramento.json"
 UFS = "AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO".split()
 OBJETOS = [("Emendas", r"emenda parlamentar"),
            ("Pessoa idosa", r"\bidos[oa]s?\b|envelhec|longevid|pessoa idosa"),
@@ -114,7 +114,7 @@ def uf_do_dominio(url) -> tuple[str | None, str | None]:
 
 
 def geografia(x: dict) -> dict:
-    from .opressores_repositorio import internacional
+    from .livros_repositorio import internacional
     if x.get("internacional") or internacional(x):
         return {"codigo": "INT", "abrangencia": "internacional", "uf": None, "municipio": None}
     ufs = [h.get("uf") for h in (x.get("historico") or []) if h.get("uf") in UFS]
@@ -233,7 +233,7 @@ def classificar(x: dict) -> dict:
 
 
 def _assinatura(x: dict) -> str:
-    from .opressores_repositorio import chave
+    from .livros_repositorio import chave
     return "|".join([x.get("geo") or "", x.get("municipio") or "", x.get("objeto_area") or "", x.get("tipo_objeto") or "",
                      chave(x.get("programa") or "", x.get("orgao") or "")])
 
@@ -272,7 +272,7 @@ def curar() -> dict:
             _anota(x, "classificação escrita" if not antes[0] else ("nova edição registrada" if antes[1] != x["livro"]["edicoes"] else "classificação atualizada"))
             st["atualizados"] += 1
     lig = L.get("ligados") or {}; por_ass, fica = {}, []    # 3) JUNTAR mesma assinatura
-    # 30/09: opressor PESQUISADO (12 parâmetros) é sempre o sobrevivente e nunca é absorvido por outro
+    # 30/09: livro PESQUISADO (12 parâmetros) é sempre o sobrevivente e nunca é absorvido por outro
     for x in sorted(ms, key=lambda y: (not y.get("parametros"), y.get("id") not in lig, -len(y.get("historico") or []))):
         a = _assinatura(x)
         if a in por_ass and x.get("tipo") == "repositorio_de_oportunidade" and not x.get("parametros"):

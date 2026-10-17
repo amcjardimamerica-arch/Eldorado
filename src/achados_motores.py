@@ -64,10 +64,10 @@ def montar() -> dict:
         if fi.get("id") and _data(fi.get("data_publicacao"), fi.get("publicado_em")):
             pub_ficha[fi["id"]] = _data(fi.get("data_publicacao"), fi.get("publicado_em"))
     ext = ROOT / "dados/editais/extraidos"
-    # OPRESSOR E SITE OFICIAL DE CADA OPORTUNIDADE (28/09): onde a informação fica guardada e onde ela nasce
+    # LIVRO E SITE OFICIAL DE CADA OPORTUNIDADE (28/09): onde a informação fica guardada e onde ela nasce
     from .sites_oficiais import e_republicador
     cat = json.loads((ROOT / "biblioteca_alexandria/fontes/motores.json").read_text(encoding="utf-8")).get("motores", []) if (ROOT / "biblioteca_alexandria/fontes/motores.json").exists() else []
-    lig = (json.loads((ROOT / "estado/opressores.json").read_text(encoding="utf-8")) or {}).get("ligados", {}) if (ROOT / "estado/opressores.json").exists() else {}
+    lig = (json.loads((ROOT / "estado/livros_monitoramento.json").read_text(encoding="utf-8")) or {}).get("ligados", {}) if (ROOT / "estado/livros_monitoramento.json").exists() else {}
     opr_u = {_norm_url(x.get("pagina")): x for x in cat if x.get("pagina")}
     opr_t = {_norm_tit(x.get("programa")): x for x in cat}
     try:
@@ -121,7 +121,7 @@ def montar() -> dict:
                 except Exception:
                     e0 = {}
                 tit = r0.get("titulo") or e0.get("titulo")
-                from .opressores_repositorio import NAO_E_SELECAO
+                from .livros_repositorio import NAO_E_SELECAO
                 if tit and not NAO_E_SELECAO.search(tit):        # dispensa de chamamento, pessoa física e compra não são oportunidade
                     xs.append({**r0, "id": eid, "titulo": tit, "url": r0.get("url") or e0.get("url"),
                                "descoberto_em": str(f.get("em") or "")[:10], "fim": r0.get("fim") or e0.get("fim")})
@@ -183,15 +183,15 @@ def montar() -> dict:
             o = opr_u.get(_norm_url(of)) or opr_u.get(ku) or opr_t.get(kt)
             dec = v.get("decisao")
             if o:
-                opr = {"id": o["id"], "ligado": o["id"] in lig, "estado": "informação guardada no opressor"}
+                opr = {"id": o["id"], "ligado": o["id"] in lig, "estado": "informação guardada no livro"}
             elif dec in ("descartada", "arquivada_encerrada"):
                 opr = {"id": None, "estado": ("encerrada — vai para a Biblioteca" if dec == "arquivada_encerrada" else "descartada") + f": {str(v.get('motivo') or '')[:90]}"}
             elif fx:
-                opr = {"id": None, "estado": "opressor será criado no próximo ciclo do fluxo"}
+                opr = {"id": None, "estado": "livro será criado no próximo ciclo do fluxo"}
             else:
                 opr = {"id": None, "estado": "fora da janela das possíveis (mais de 60 dias sem prazo)"}
             unicas.append({"id": r.get("id"), "titulo": re.sub(r"(?i)^continue lendo\s+", "", tit)[:160],
-                           "site_oficial": of, "opressor": opr, "decisao": dec,
+                           "site_oficial": of, "livro_vinculado": opr, "decisao": dec,
                            "url": ve.get("pagina_oficial") or e.get("pagina_oficial") or r.get("url"),
                            "publicado_em": r["_pub"], "visto_em": None if r["_pub"] else _data(r.get("descoberto_em"), r.get("coletado_em")),
                            "prazo": _data(r.get("fim"), ve.get("prazo"), e.get("fim")), "uf": r.get("uf")})

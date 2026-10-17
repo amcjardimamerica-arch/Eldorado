@@ -22,7 +22,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CAT = ROOT / "biblioteca_alexandria/fontes/motores.json"
-LIG = ROOT / "estado/opressores.json"
+LIG = ROOT / "estado/livros_monitoramento.json"
 REL = ROOT / "estado/biblioteca/unificacao_livros.json"
 
 
@@ -69,7 +69,7 @@ def mesmo_programa(a: dict, b: dict, par: dict) -> bool:
 
 
 def unificar(gravar: bool = True) -> dict:
-    from .opressores_repositorio import canonica_por_revisao
+    from .livros_repositorio import canonica_por_revisao
     from .curadoria_biblioteca import _juntar, mesma_oportunidade, editais_distintos
     PAR = _j(ROOT / "config/parametros_biblioteca.json", {}).get("duplicidade") or {}
     C = _j(CAT, {"motores": []}); ms = C.get("motores") or []

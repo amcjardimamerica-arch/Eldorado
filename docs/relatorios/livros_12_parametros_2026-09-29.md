@@ -1,8 +1,8 @@
-# Motores opressores — os 12 parâmetros de cada edital (29/09/2026)
+# Motores livros — os 12 parâmetros de cada edital (29/09/2026)
 
 ## O que foi feito
 
-Os **329 opressores ligados** foram divididos em **10 blocos temáticos**. Cada um foi pesquisado na fonte oficial para obter os 12 parâmetros do edital vigente ou, quando não havia edital aberto, os da última edição, que vão para o histórico e servem para prever a próxima.
+Os **329 livros ligados** foram divididos em **10 blocos temáticos**. Cada um foi pesquisado na fonte oficial para obter os 12 parâmetros do edital vigente ou, quando não havia edital aberto, os da última edição, que vão para o histórico e servem para prever a próxima.
 
 Os 12 parâmetros são: objeto, prazo de inscrição, resultado, prazo de recurso, valor, órgão/financiador, território, esfera, requisitos, anexos, destinação e área de atuação.
 
@@ -12,7 +12,7 @@ A pesquisa foi feita de três formas:
 
 - **Nuvem:** 10 pesquisadores em paralelo, um por bloco.
 - **Navegador do seu computador:** usado para os sites que bloqueiam a nuvem (MPGO, Prêmio LED, Impactarte, Unibanco, Ambev) e para os PDFs do próprio órgão anexados ao PNCP (Vera Cruz/RS e Adustina/BA).
-- **Reaproveitamento:** 92 opressores já tinham sido verificados item a item em 27 e 29/09.
+- **Reaproveitamento:** 92 livros já tinham sido verificados item a item em 27 e 29/09.
 
 **Regras seguidas:**
 
@@ -24,10 +24,10 @@ A pesquisa foi feita de três formas:
 
 | Decisão | Qtd. | O que acontece no sistema |
 |---|---:|---|
-| **V** — edital vigente aberto | 53 | Os 12 parâmetros entram no opressor; a IA não pergunta de novo o que já está fechado |
+| **V** — edital vigente aberto | 53 | Os 12 parâmetros entram no livro; a IA não pergunta de novo o que já está fechado |
 | **A** — última edição encerrada | 66 | Os 12 parâmetros da edição ficam no histórico e alimentam a previsão |
 | **R** — programa permanente, sem edital periódico | 37 | Regramento oficial com as dispensas registradas (IR a fundos, Rouanet, LIE, MPGO/MPT, emendas ALEGO, doação da Receita) |
-| **D** — não é recurso para OSC | 94 | O opressor é desligado e **não volta a ser ligado automaticamente** |
+| **D** — não é recurso para OSC | 94 | O livro é desligado e **não volta a ser ligado automaticamente** |
 | **P** — pendente | 79 | O motivo fica registrado; a busca continua nos itens "não localizado" |
 
 Parâmetros levantados: **1.483 confirmados**, **106 dispensados pelo edital**, **72 "não informado no edital"** e **211 "não localizado"**.
@@ -36,13 +36,13 @@ Parâmetros levantados: **1.483 confirmados**, **106 dispensados pelo edital**, 
 
 | Situação | Antes | Depois |
 |---|---:|---:|
-| Opressores ligados | 329 | 235 (94 desligados como não-recurso) |
-| Opressores com os 12 fechados | 10 | 98 |
-| Opressores com nenhum parâmetro | 299 | 80 (os pendentes) |
+| Livros ligados | 329 | 235 (94 desligados como não-recurso) |
+| Livros com os 12 fechados | 10 | 98 |
+| Livros com nenhum parâmetro | 299 | 80 (os pendentes) |
 
 ## Os 10 blocos
 
-| # | Bloco | Opressores | V | A | R | D | P | 12/12 fechados | Página do motor corrigida |
+| # | Bloco | Livros | V | A | R | D | P | 12/12 fechados | Página do motor corrigida |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
 | 1 | Goiás — governo estadual | 27 | 4 | 11 | 2 | 9 | 1 | 15 | 15 |
 | 2 | Goiânia e ALEGO (emendas estaduais) | 28 | 0 | 5 | 18 | 4 | 1 | 22 | 25 |
@@ -88,24 +88,24 @@ Os demais editais abertos são de municípios fora da abrangência aprovada (CE,
 
 ## O que a pesquisa revelou sobre os motores
 
-1. **Um terço dos opressores ligados não era recurso (94 de 329).** Os casos foram:
+1. **Um terço dos livros ligados não era recurso (94 de 329).** Os casos foram:
    - agregadores tratados como programa: Prosas, Bússola, Capta, GIFE Mosaico, Mapa das OSC, CapitaAí e vagas.terceirosetor;
    - "histórias de sucesso" de blog;
    - bolsas de pesquisa para pessoa física: FAPEG e universidades estrangeiras;
    - rótulos genéricos sem programa por trás, como "Projeto de biblioteca comunitária" ligado ao Conanda;
    - fundações que declaram oficialmente não abrir editais a OSC externas: Vale, Bradesco, Votorantim, Sicoob, Claro e Ford.
 
-   Agora esses opressores são desligados e não voltam.
+   Agora esses livros são desligados e não voltam.
    > **Decisão sua:** se quiser continuar acompanhando alguma dessas fundações por relacionamento, é só pedir para religar.
-2. **Os opressores de diário oficial são os mais difíceis (56 dos 79 pendentes).** O diário mostra o extrato, mas a prefeitura não publica o edital no site, ou o site bloqueia leitura automática (portais atende.net, sites com robots.txt, certificado inválido).
+2. **Os livros de diário oficial são os mais difíceis (56 dos 79 pendentes).** O diário mostra o extrato, mas a prefeitura não publica o edital no site, ou o site bloqueia leitura automática (portais atende.net, sites com robots.txt, certificado inválido).
    - O PNCP do próprio órgão resolveu alguns casos (Vera Cruz/RS e Adustina/BA). A maioria das prefeituras pequenas não anexa o chamamento de OSC no PNCP.
    - Todos esses pendentes são de fora da abrangência. **Não há pendente de diário em Goiás**, com uma exceção: o "Natal no Parque" de Goiânia, que só aparece no Diário Oficial e não tem página própria no portal da Prefeitura.
 3. **Os programas permanentes estavam sem regramento (37).** Destinação de IR a fundos, Lei Rouanet, LIE, doação da Receita, MPGO/MPT e emendas da ALEGO agora têm os 12 parâmetros com as dispensas explicadas. Assim a IA dos disjuntores não gasta mais tentativas procurando "prazo de inscrição" onde ele não existe.
-4. **Páginas erradas:** 198 opressores monitoravam uma página que não era a do recurso. A página verificada ficou registrada.
+4. **Páginas erradas:** 198 livros monitoravam uma página que não era a do recurso. A página verificada ficou registrada.
 
 ## Pendentes que valem sua atenção
 
-| Opressor | Por que ficou pendente |
+| Livro | Por que ficou pendente |
 |---|---|
 | Goiânia — "Natal no Parque" (Edital 001/2026, R$ 5 mi segundo o Diário) | Não publicado no portal da Prefeitura nem no PNCP; vale confirmar direto com a Secretaria de Gestão de Negócios e Parcerias |
 | Fundo Municipal do Idoso de Goiânia | O motor estava ligado a dados de outro município (Vilhena/RO); falta a página oficial do Conselho Municipal do Idoso |
@@ -116,10 +116,10 @@ Os demais editais abertos são de municípios fora da abrangência aprovada (CE,
 
 ## Conselho das 7 lentes
 
-- **Extremamente pessimista:** 79 opressores seguem sem os 12 parâmetros, e 56 deles dependem de prefeituras que não publicam o edital. O motor de diários continua trazendo trabalho que ninguém consegue confirmar.
-- **Pessimista:** desligar 94 opressores de uma vez pode apagar uma fundação que abra edital no ano que vem. Vale, Votorantim e Bradesco mudam de política.
+- **Extremamente pessimista:** 79 livros seguem sem os 12 parâmetros, e 56 deles dependem de prefeituras que não publicam o edital. O motor de diários continua trazendo trabalho que ninguém consegue confirmar.
+- **Pessimista:** desligar 94 livros de uma vez pode apagar uma fundação que abra edital no ano que vem. Vale, Votorantim e Bradesco mudam de política.
 - **Levemente pessimista:** os parâmetros vieram do edital lido hoje. Uma retificação amanhã deixa o dado velho, e o sistema precisa reler as páginas dos V.
-- **Neutro (decisor):** o ganho é real. Os opressores com os 12 fechados passaram de 10 para 98, e o custo de IA caiu, porque 94 opressores inúteis saíram e 37 permanentes já não perguntam o que não existe. As proteções são quatro:
+- **Neutro (decisor):** o ganho é real. Os livros com os 12 fechados passaram de 10 para 98, e o custo de IA caiu, porque 94 livros inúteis saíram e 37 permanentes já não perguntam o que não existe. As proteções são quatro:
   - dispensa não é eterna: basta o titular religar;
   - todo V tem a fonte oficial gravada para reverificação;
   - "não localizado" continua sendo buscado;
@@ -132,10 +132,10 @@ Os demais editais abertos são de municípios fora da abrangência aprovada (CE,
 
 ## Como entra no sistema
 
-- **Dados da pesquisa:** `dados/opressores/parametros/parametros_2026-09-29.json`, com um registro por opressor e os 12 parâmetros com status, fonte, edição de referência, página verificada e recomendação ao motor.
-- **Aplicação:** `src/parametros_opressores.py`. É idempotente e roda sozinha em três momentos:
+- **Dados da pesquisa:** `dados/livros/parametros/parametros_2026-09-29.json`, com um registro por livro e os 12 parâmetros com status, fonte, edição de referência, página verificada e recomendação ao motor.
+- **Aplicação:** `src/livros_parametros.py`. É idempotente e roda sozinha em três momentos:
   - no fluxo completo das oportunidades;
   - na rotina diária dos disjuntores;
   - na geração do catálogo, com o campo `parametros` em cada motor e o resumo "V · 12/12 · prazo" no painel.
-- Os opressores com decisão D não são religados, nem pela ativação automática nem pelo repositório.
+- Os livros com decisão D não são religados, nem pela ativação automática nem pelo repositório.
 - **Testes:** 9 testes novos, que passam. A suíte completa tem as mesmas 41 falhas que já existem no `main`, sem nenhuma nova. A checagem de privacidade passou.

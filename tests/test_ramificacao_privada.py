@@ -30,7 +30,7 @@ class TesteSaidasDoEspiao(unittest.TestCase):
     def test_banco_de_empresas_e_livro(self):
         p = (ROOT / "src/patrocinios.py").read_text(encoding="utf-8")
         self.assertIn('"tipo_fonte": "chamamento privado aberto"', p)
-        o = (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8")
+        o = (ROOT / "src/livros_repositorio.py").read_text(encoding="utf-8")
         self.assertIn('str(x.get("proximo_passo") or "").startswith("dispensar")', o)
 
 

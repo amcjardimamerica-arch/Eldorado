@@ -3,7 +3,7 @@
 O que chega depois da validação individual (motores, Espião, Interceptador) é decidido aqui, pelas regras abaixo,
 e gravado no MESMO formato da validação, em biblioteca_alexandria/livros/_vistas/validacao_mapa/validacao_0000-automatica.json.
 O nome faz este arquivo ser lido PRIMEIRO: qualquer decisão humana ou do Claude, para o mesmo item, prevalece.
-Depois, src.validacao_mapa leva cada decisão ao arquivo da Biblioteca, ao preditivo e aos opressores.
+Depois, src.validacao_mapa leva cada decisão ao arquivo da Biblioteca, ao preditivo e aos livros.
 
   ENCERRADA   → Biblioteca (arquivo + preditivo)   prazo vencido, ou só anos passados no título/endereço
   DESCARTADA  → sai do sistema                     não serve a entidade do terceiro setor: fundo patrimonial ou

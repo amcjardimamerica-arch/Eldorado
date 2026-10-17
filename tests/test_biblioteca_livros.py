@@ -1,4 +1,4 @@
-"""01/10: Motores Opressores viram a BIBLIOTECA — livros de oportunidades e de leis; Interceptador guiado pelos livros."""
+"""01/10: Motores Livros viram a BIBLIOTECA — livros de oportunidades e de leis; Interceptador guiado pelos livros."""
 import json, sys, unittest
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
@@ -7,14 +7,14 @@ sys.path.insert(0, str(ROOT))
 
 class TesteBiblioteca(unittest.TestCase):
     def test_nome_do_livro(self):
-        from src.livros_opressores import classificar
+        from src.livros_curadoria import classificar
         self.assertEqual(classificar({"programa": "Edital PNAB Dança", "uf": "SP"})["nome_classificado"], "Edital PNAB Dança — São Paulo")
         d = classificar({"programa": 'Diário Oficial de Campinas (SP) 2026-07-31 — "chamamento público" OSC', "uf": "SP",
                          "historico": [{"titulo": "Diário Oficial de Campinas (SP)", "uf": "SP"}]})
         self.assertEqual(d["nome_classificado"], "Chamamento público publicado no Diário Oficial em 31/07/2026 — São Paulo / Campinas")
 
     def test_toda_oportunidade_vira_livro(self):
-        from src.opressores_repositorio import dispensa
+        from src.livros_repositorio import dispensa
         self.assertIsNone(dispensa({"titulo": "Emenda parlamentar estadual 2026"}))
         self.assertIsNotNone(dispensa({"titulo": "Programa de doação da empresa X", "tipo": "empresa/instituto"}))   # 01/10: empresa só como edital
         self.assertIsNone(dispensa({"titulo": "Instituto X abre edital de projetos sociais", "tipo": "empresa/instituto"}))
@@ -42,7 +42,7 @@ class TesteBiblioteca(unittest.TestCase):
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
         self.assertIn(">Biblioteca", h); self.assertIn("window.desenhaLeis=", h); self.assertIn("repeat(2,minmax(0,1fr))", h)
         import re
-        self.assertNotIn("Motores Opressores", h); self.assertNotIn("motores opressores", h)
+        self.assertNotIn("Motores Livros", h); self.assertNotIn("motores livros", h)
 
     def test_cartao_do_livro(self):
         """01/10: Lendo / Na Estante; nome numa linha; lugar com ícone à direita; sem 'Cultura · Grant internacional'."""
@@ -50,7 +50,7 @@ class TesteBiblioteca(unittest.TestCase):
         self.assertIn('<option value="ativo">Lendo</option><option value="inativo">Na Estante</option>', h)
         self.assertNotIn("Acesos (automático ou manual)", h); self.assertNotIn("Apagados (poça de óleo)", h)
         self.assertIn("window.lugarLivro=", h); self.assertIn('class="livro-lugar"', h)
-        from src.livros_opressores import classificar
+        from src.livros_curadoria import classificar
         self.assertEqual(classificar({"programa": "PNAB Goiânia - Audiovisual", "uf": "GO"})["municipio"], "Goiânia")
 
     def test_cada_edital_tem_o_seu_livro(self):

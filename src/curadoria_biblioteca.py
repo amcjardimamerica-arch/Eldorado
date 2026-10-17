@@ -19,7 +19,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CAT = ROOT / "biblioteca_alexandria/fontes/motores.json"
-LIG = ROOT / "estado/opressores.json"
+LIG = ROOT / "estado/livros_monitoramento.json"
 PAR = ROOT / "config/parametros_biblioteca.json"
 ARQ = ROOT / "biblioteca_alexandria/livros/arquivo_fora_da_abrangencia.jsonl.xz"
 REL = ROOT / "docs/dados/conferencia_livros.json"
@@ -50,7 +50,7 @@ def natureza(x: dict) -> str:
 
 
 def municipal(x: dict) -> bool:
-    from .livros_opressores import uf_do_dominio
+    from .livros_curadoria import uf_do_dominio
     return bool(MUN.search(_txt(x)) or x.get("abrangencia") == "municipal" or uf_do_dominio(x.get("pagina"))[1] == "municipal")
 
 
@@ -83,7 +83,7 @@ def fora_da_abrangencia(x: dict) -> bool:
     from .repositorio_unico import _municipio_goiano    # 14/10: os 246 municípios de Goiás (IBGE) — nunca apaga livro goiano
     if _municipio_goiano(f"{_txt(x)} {x.get('orgao') or ''}"):
         return False
-    from .livros_opressores import uf_do_dominio
+    from .livros_curadoria import uf_do_dominio
     _uf, _niv = uf_do_dominio(x.get("pagina"))
     if _niv == "municipal" and _uf != "GO":
         return True                                    # site oficial de prefeitura/câmara de outro estado
@@ -192,12 +192,12 @@ def conferir() -> dict:
     lig = L.get("ligados") or {}; ms = C.get("motores") or []
     # 14/10 (diagnóstico do sistema): livro ligado a oportunidade ABERTA do repositório não sai (regra de 11/10: toda
     # oportunidade aberta tem livro). Antes, o criador fazia o livro e esta conferência o apagava a cada rodada.
-    IDX = ROOT / "estado/opressores_indice.json"
+    IDX = ROOT / "estado/livros_monitoramento_indice.json"
     _idx = (json.loads(IDX.read_text(encoding="utf-8")) if IDX.exists() else {}).get("indice") or {}
     _rep = (json.loads((ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json").read_text(encoding="utf-8")).get("registros") or []) \
         if (ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json").exists() else []
-    protegidos = {(_idx.get(i) or {}).get("opressor") for r in _rep if r.get("estado") != "fechada" and not r.get("arquivada")
-                  for i in [r.get("id"), *(r.get("ids_origem") or [])] if (_idx.get(i) or {}).get("opressor")}
+    protegidos = {(_idx.get(i) or {}).get("livro_vinculado") for r in _rep if r.get("estado") != "fechada" and not r.get("arquivada")
+                  for i in [r.get("id"), *(r.get("ids_origem") or [])] if (_idx.get(i) or {}).get("livro_vinculado")}
     # 1) abrangência
     # 14/10/2026 (titular, decisão definitiva): livro de município de OUTRO ESTADO que não seja capital é APAGADO —
     # inclusive o pesquisado e o ligado a oportunidade aberta (a oportunidade também é descartada); não fica em arquivo
@@ -210,7 +210,7 @@ def conferir() -> dict:
         if IDX.exists():
             _I = json.loads(IDX.read_text(encoding="utf-8"))
             for k, v in list((_I.get("indice") or {}).items()):
-                if isinstance(v, dict) and v.get("opressor") in ids_fora:
+                if isinstance(v, dict) and v.get("livro_vinculado") in ids_fora:
                     _I["indice"][k] = {"dispensa": "fora da abrangência: município de outro estado que não é capital (livro apagado)"}
             IDX.write_text(json.dumps(_I, ensure_ascii=False), encoding="utf-8")
     if ARQ.exists():                                   # o arquivo antigo desses livros também é apagado
@@ -218,7 +218,7 @@ def conferir() -> dict:
     if IDX.exists():                                   # 14/10: nenhuma entrada do índice aponta para livro que não existe
         _ok = {x["id"] for x in ms}; _I = json.loads(IDX.read_text(encoding="utf-8")); _n = 0
         for k, v in list((_I.get("indice") or {}).items()):
-            if isinstance(v, dict) and v.get("opressor") and v["opressor"] not in _ok:
+            if isinstance(v, dict) and v.get("livro_vinculado") and v["livro_vinculado"] not in _ok:
                 _I["indice"].pop(k); _n += 1
         if _n:
             IDX.write_text(json.dumps(_I, ensure_ascii=False), encoding="utf-8")
@@ -283,8 +283,8 @@ def conferir() -> dict:
     if destino and IDX.exists():
         _I = json.loads(IDX.read_text(encoding="utf-8")); _n = 0
         for v in (_I.get("indice") or {}).values():
-            if isinstance(v, dict) and v.get("opressor") in destino:
-                v["opressor"] = destino[v["opressor"]]; _n += 1
+            if isinstance(v, dict) and v.get("livro_vinculado") in destino:
+                v["livro_vinculado"] = destino[v["livro_vinculado"]]; _n += 1
         if _n:
             IDX.write_text(json.dumps(_I, ensure_ascii=False), encoding="utf-8")
     C["motores"] = ms

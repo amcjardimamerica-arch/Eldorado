@@ -13,7 +13,7 @@ Cada oportunidade do mapa recebe UMA decisão, registrada em biblioteca_alexandr
 
 aplicar()   leva as decisões ao sistema — arquivo (biblioteca_alexandria/livros/_acervo/editais/arquivados.json), cadastro preditivo, estudo de cada
             oportunidade válida (dados/editais/extraidos/<id>.json → verificacao_externa) e livros de oportunidades (cria o
-            opressor individual da válida que ainda não tinha; desliga o opressor criado para item descartado/encerrado).
+            livro individual da válida que ainda não tinha; desliga o livro criado para item descartado/encerrado).
 dispensa()  o APRENDIZADO: regras de config/filtros_motores.json que dispensam na origem o que a validação mostrou
             ser lixo (usada pelo fluxo das oportunidades antes de o item chegar ao mapa).
 relatorio() um relatório por motor de busca: o que ele achou, o que valeu, o site original a monitorar e a regra que
@@ -38,8 +38,8 @@ PASTA = ROOT / "biblioteca_alexandria/livros/_vistas/validacao_mapa"
 FILTROS = ROOT / "config/filtros_motores.json"
 ARQUIVADOS = ROOT / "biblioteca_alexandria/livros/_acervo/editais/arquivados.json"
 EXT = ROOT / "dados/editais/extraidos"
-CAT_OPR = ROOT / "biblioteca_alexandria/fontes/motores.json"
-EST_OPR = ROOT / "estado/opressores.json"
+CAT_LIVROS_SIS = ROOT / "biblioteca_alexandria/fontes/motores.json"
+EST_LIVROS_MON = ROOT / "estado/livros_monitoramento.json"
 PRED = ROOT / "biblioteca_alexandria/livros/_acervo/base/preditivo/oportunidades.jsonl"
 SAIDA_REL = ROOT / "docs/dados/validacao_motores.json"
 DECISOES = ("valida_aberta", "valida_fora_abrangencia", "arquivada_encerrada", "descartada", "pendente")
@@ -156,7 +156,7 @@ def _oid(pagina: str) -> str:
 
 
 def _itens_confirmados(r: dict) -> dict:
-    """Itens já confirmados na validação entram prontos no opressor (a IA não gasta tokens com o que já se sabe)."""
+    """Itens já confirmados na validação entram prontos no livro (a IA não gasta tokens com o que já se sabe)."""
     out = {}
     for k, v in (r.get("doze_itens") or {}).items():
         if not isinstance(v, dict):
@@ -172,7 +172,7 @@ def aplicar(hoje: date | None = None) -> dict:
     """Idempotente: rodar de novo não duplica nada."""
     hoje = hoje or date.today(); V = carregar()
     res = {"arquivados_novos": 0, "estudos_gravados": 0, "preditivo_atualizado": 0, "preditivo_novo": 0,
-           "opressores_criados": 0, "opressores_desligados": 0}
+           "livros_monitorados_criados": 0, "livros_desligados": 0}
     if not V:
         return res
     # 1. ARQUIVO: descartadas e encerradas saem do sistema inteiro (mapa, enquadramento, análises)
@@ -239,17 +239,17 @@ def aplicar(hoje: date | None = None) -> dict:
     if linhas:
         PRED.parent.mkdir(parents=True, exist_ok=True)
         PRED.write_text("".join(json.dumps(x, ensure_ascii=False) + "\n" for x in linhas), encoding="utf-8")
-    # 4. MOTORES OPRESSORES: apresentação individual de cada válida; nada de opressor gastando IA com lixo
-    C = load_json(CAT_OPR) if CAT_OPR.exists() else {"motores": []}; L = load_json(EST_OPR) if EST_OPR.exists() else {"ligados": {}}
+    # 4. MOTORES LIVROS: apresentação individual de cada válida; nada de livro gastando IA com lixo
+    C = load_json(CAT_LIVROS_SIS) if CAT_LIVROS_SIS.exists() else {"motores": []}; L = load_json(EST_LIVROS_MON) if EST_LIVROS_MON.exists() else {"ligados": {}}
     L.setdefault("ligados", {}); cat = {x["id"]: x for x in C.get("motores") or []}
-    usados_por_validas = {_opid(r.get("opressor")) for r in V.values() if r["decisao"] in ("valida_aberta", "valida_fora_abrangencia", "pendente")}
+    usados_por_validas = {_opid(r.get("livro_vinculado")) for r in V.values() if r["decisao"] in ("valida_aberta", "valida_fora_abrangencia", "pendente")}
     for eid, r in V.items():
-        op = _opid(r.get("opressor"))
+        op = _opid(r.get("livro_vinculado"))
         if r["decisao"] in ("valida_aberta", "valida_fora_abrangencia") and op and op in cat:
             # já tinha apresentação individual: garante que está ligado, com os dados confirmados (a IA só busca o que falta)
             if not cat[op].get("ativa", True):
                 cat[op]["ativa"] = True; cat[op]["motivo_status"] = f"religado pela validação do mapa: oportunidade aberta confirmada no site oficial ({r.get('validado_em')})"
-                res["opressores_religados"] = res.get("opressores_religados", 0) + 1
+                res["livros_religados"] = res.get("livros_religados", 0) + 1
             reg = L["ligados"].get(op)
             if reg is None:
                 L["ligados"][op] = {"desde": hoje.isoformat(), "ate": (hoje + timedelta(days=30)).isoformat(),
@@ -259,7 +259,7 @@ def aplicar(hoje: date | None = None) -> dict:
                     reg.setdefault("itens", {}).setdefault(k, v)
         if r["decisao"] in ("valida_aberta", "valida_fora_abrangencia") and r.get("fonte_oficial") and not op and not r.get("mesma_de"):
             oid = _oid(r["fonte_oficial"])
-            # já existe opressor com o mesmo programa (título) — reaproveita em vez de duplicar (o fluxo funde duplicados)
+            # já existe livro com o mesmo programa (título) — reaproveita em vez de duplicar (o fluxo funde duplicados)
             mesmo = [k for k, x in cat.items() if _nt(x.get("programa")) == _nt(str(r.get("titulo") or "")[:160]) or _nu(x.get("pagina")) == _nu(r["fonte_oficial"])]
             if mesmo and oid not in cat:
                 oid = mesmo[0]
@@ -270,20 +270,20 @@ def aplicar(hoje: date | None = None) -> dict:
                      "motivo_status": f"criado pela validação individual do mapa ({r.get('validado_em')})", "criado_em": hoje.isoformat(),
                      "proxima_data": {"inicio": r.get("inicio"), "fim": r.get("prazo")} if r.get("prazo") else None,
                      "mencoes": [{"titulo": str(r.get("titulo") or "")[:120], "url": r.get("url")}], "oportunidade_id": eid}
-                C.setdefault("motores", []).append(x); cat[oid] = x; res["opressores_criados"] += 1
+                C.setdefault("motores", []).append(x); cat[oid] = x; res["livros_monitorados_criados"] += 1
             if oid not in L["ligados"]:
                 L["ligados"][oid] = {"desde": hoje.isoformat(), "ate": (hoje + timedelta(days=30)).isoformat(),
                                      "origem": "automática: oportunidade validada no site oficial", "dias": 0, "ia": [], "itens": _itens_confirmados(r)}
         if r["decisao"] in SAEM_DO_MAPA and op and op in cat and op not in usados_por_validas and cat[op].get("tipo") == "oportunidade_mapeada" and cat[op].get("ativa", True) \
-                and cat[op].get("atual") in (None, eid):      # 29/09: opressor que hoje serve outra oportunidade aberta não é desligado
-            # só desliga opressor criado para ESTA oportunidade (fontes permanentes nunca são desligadas aqui)
+                and cat[op].get("atual") in (None, eid):      # 29/09: livro que hoje serve outra oportunidade aberta não é desligado
+            # só desliga livro criado para ESTA oportunidade (fontes permanentes nunca são desligadas aqui)
             cat[op]["ativa"] = False; cat[op]["motivo_status"] = f"desligado pela validação do mapa: {str(r.get('motivo') or '')[:160]}"
             if op in L["ligados"]:
                 L.setdefault("historico", []).append({**L["ligados"].pop(op), "id": op, "desligado_em": hoje.isoformat(), "motivo": "validação do mapa"})
-            res["opressores_desligados"] += 1
+            res["livros_desligados"] += 1
     # mesmo formato que o fluxo e o repositório usam (indent=1): evita reescrever o catálogo inteiro a cada execução
-    CAT_OPR.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 01/10: compacto
-    EST_OPR.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
+    CAT_LIVROS_SIS.write_text(json.dumps(C, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 01/10: compacto
+    EST_LIVROS_MON.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
     return res
 
 
@@ -320,7 +320,7 @@ def relatorio() -> dict:
 
 
 def _opid(o):
-    """17/10: o opressor pode vir como objeto ({id, ...}) ou só pelo id (texto)."""
+    """17/10: o livro pode vir como objeto ({id, ...}) ou só pelo id (texto)."""
     return o.get("id") if isinstance(o, dict) else (o or None)
 
 

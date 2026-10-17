@@ -345,7 +345,7 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
     _arq_ids = {i: f"arquivada em 11/10/2026: municipal fora de Goiás ({o.get('uf')}) — o livro fica guardado"
                 for o in (_foto.get("oportunidades") or []) for i in [o["id"], *(o.get("ids_origem") or [])]}
     # 11/10: o criador de livros já concluiu, para algumas, que não são seleção para OSC — o repositório usa o motivo
-    disp_livro = {k: (v or {}).get("dispensa") for k, v in ((_j(ROOT / "estado/opressores_indice.json", {}) or {}).get("indice") or {}).items() if (v or {}).get("dispensa")}
+    disp_livro = {k: (v or {}).get("dispensa") for k, v in ((_j(ROOT / "estado/livros_monitoramento_indice.json", {}) or {}).get("indice") or {}).items() if (v or {}).get("dispensa")}
 
     # 1 · todas as origens num só conjunto, com o id canônico (duplicatas fundidas)
     # 16/10/2026 (titular, etapa 2): o repositório LÊ DOS LIVROS — o que os motores trazem entra primeiro nos livros
@@ -353,7 +353,7 @@ def construir(gravar: bool = True, hoje: str | None = None) -> dict:
     _BL.ingerir(_fluxo() + _caixa(), gravar=gravar)
     brutos = _BL.brutos_dos_livros() if gravar else (_fluxo() + _caixa())
     try:
-        from .opressores_repositorio import canonica_por_revisao
+        from .livros_repositorio import canonica_por_revisao
         canon = canonica_por_revisao()
     except Exception:  # noqa: BLE001
         canon = {}
@@ -581,7 +581,7 @@ def _etapa(estado: str, passo: str, tem_livro: bool, pronta: bool) -> tuple[str,
     if passo.startswith(("Busca externa", "validação manual")):
         return f"8 · {ETAPAS[8]}", "Claude (busca externa) ou titular (vermelho)"
     if estado == "validada" and not tem_livro:
-        return f"5 · {ETAPAS[5]}", "criador de livros (opressores_repositorio)"
+        return f"5 · {ETAPAS[5]}", "criador de livros (livros_repositorio)"
     if estado == "validada":
         return f"9 · {ETAPAS[9]} (aguarda prazo vigente)", "acompanhamento do prazo"
     if "achar o site oficial" in passo:

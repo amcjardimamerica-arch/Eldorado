@@ -9,7 +9,7 @@ barato, pergunta fechada, só o que ainda falta). No 3º acionamento da IA (dia
 duas primeiras tentativas não obtiveram resultado — e a decisão mais
 inteligente para fechar os 12 itens do recurso.
 
-Estado: `estado/opressores.json`
+Estado: `estado/livros_monitoramento.json`
   { "ligados": { fonte_id: { "desde", "ate", "origem", "dias": N,
                               "ia": [ {dia, modelo, resultado, itens_obtidos} ],
                               "conselho": {...}, "itens": {...} } } }
@@ -23,7 +23,7 @@ from datetime import date, timedelta
 
 from .nucleo import ROOT, load_json, now_iso, write_json
 
-ESTADO = ROOT / "estado/opressores.json"
+ESTADO = ROOT / "estado/livros_monitoramento.json"
 DURACAO = 30
 INTERVALO_IA = 3
 ITENS = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador",
@@ -111,7 +111,7 @@ def sincronizar(hoje: date | None = None) -> dict:
     except Exception:
         pass
     try:                                   # 29/09: o que a pesquisa dos 12 parâmetros mostrou não ser recurso não religa
-        from .parametros_opressores import dispensados as _disp
+        from .livros_parametros import dispensados as _disp
         desligados |= _disp()
     except Exception:
         pass
@@ -262,7 +262,7 @@ def _chamar(modelo: str, prompt: str, max_tokens: int = 900, web: bool = False, 
         return {"status": f"falha: {type(exc).__name__}"}
     texto = " ".join(b.get("text", "") for b in dados.get("content", []) if b.get("type") == "text")
     with (ROOT / "estado/ia_uso.jsonl").open("a", encoding="utf-8") as h:
-        h.write(json.dumps({"em": now_iso(), "modelo": modelo, "tarefa": tarefa or "opressor", "uso": dados.get("usage", {})}, ensure_ascii=False) + "\n")
+        h.write(json.dumps({"em": now_iso(), "modelo": modelo, "tarefa": tarefa or "livro_vinculado", "uso": dados.get("usage", {})}, ensure_ascii=False) + "\n")
     try:
         js = json.loads(re.sub(r"^```(?:json)?|```$", "", texto.strip(), flags=re.M).strip())
         return {"status": "respondeu", **js, "uso": dados.get("usage", {})}
@@ -276,7 +276,7 @@ def run(hoje: date | None = None) -> dict:
     hoje = hoje or date.today()
     sincronizar(hoje)
     try:                                   # 29/09: os 12 parâmetros pesquisados na fonte oficial entram antes da IA
-        from .parametros_opressores import aplicar as _par
+        from .livros_parametros import aplicar as _par
         _par(hoje)
     except Exception:
         pass
@@ -301,13 +301,13 @@ def run(hoje: date | None = None) -> dict:
             regr = _regramento(f)
             n_ia = len(reg["ia"]) + 1
             if n_ia >= 3 and not reg.get("conselho"):
-                r = _chamar(modelo_conselho, prompt_conselho(f, regr, reg["ia"], faltam), 1600, web=True, tarefa=f"opressor:{fid}")
+                r = _chamar(modelo_conselho, prompt_conselho(f, regr, reg["ia"], faltam), 1600, web=True, tarefa=f"livro:{fid}")
                 reg["conselho"] = {"dia": reg["dias"], "modelo": modelo_conselho, "em": now_iso(),
                                    "lentes": r.get("lentes"), "decisao": r.get("decisao"), "status": r.get("status")}
                 resumo["conselho_hoje"] += 1
             else:
                 modelo = modelo_barato if n_ia == 1 else modelo_medio
-                r = _chamar(modelo, prompt_para_fonte(f, regr, faltam, reg["ia"]), web=True, tarefa=f"opressor:{fid}")
+                r = _chamar(modelo, prompt_para_fonte(f, regr, faltam, reg["ia"]), web=True, tarefa=f"livro:{fid}")
                 resumo["ia_hoje"] += 1
             obtidos = {k: v for k, v in (r.get("itens") or {}).items() if v}
             reg["itens"].update(obtidos)
@@ -323,3 +323,30 @@ def run(hoje: date | None = None) -> dict:
 
 if __name__ == "__main__":
     print(json.dumps(run(), ensure_ascii=False, indent=2))
+
+
+
+def migrar_nome_antigo() -> dict:
+    """17/10/2026 (titular): os "opressores" viraram LIVROS. Passagem que começou antes da renomeação grava
+    estado/opressores.json; o conteúdo é JUNTADO ao estado/livros_monitoramento.json e o arquivo antigo sai."""
+    import json as _json
+    from pathlib import Path as _P
+    raiz = _P(__file__).resolve().parents[1] / "estado"
+    out = {}
+    for antigo, novo in (("opressores.json", "livros_monitoramento.json"), ("opressores_indice.json", "livros_monitoramento_indice.json")):
+        a, n = raiz / antigo, raiz / novo
+        if not a.exists():
+            continue
+        try:
+            da = _json.loads(a.read_text(encoding="utf-8")); dn = _json.loads(n.read_text(encoding="utf-8")) if n.exists() else {}
+        except ValueError:
+            continue
+        for k, v in da.items():
+            if isinstance(v, dict) and isinstance(dn.get(k), dict):
+                for kk, vv in v.items():
+                    dn[k].setdefault(kk, vv)
+            else:
+                dn.setdefault(k, v)
+        n.write_text(_json.dumps(dn, ensure_ascii=False, indent=1), encoding="utf-8"); a.unlink()
+        out[antigo] = "juntado em " + novo
+    return out

@@ -176,7 +176,7 @@ def ligar(k, v, idx: dict) -> str | None:
         if k.startswith("http"):
             cands.append(chave({"url": k}))
     if isinstance(v, dict):
-        for f in ("livro", "livro_id", "opressor", "oportunidade_id", "id_repositorio", "id"):
+        for f in ("livro", "livro_id", "livro_vinculado", "oportunidade_id", "id_repositorio", "id"):
             if isinstance(v.get(f), str):
                 cands.append(v[f])
         for f in ("url", "link_oficial", "pagina", "pagina_oficial", "site_oficial", "fonte"):
@@ -217,7 +217,7 @@ def _oportunidade_vigente(v) -> bool:
 
 
 # ── absorção ──────────────────────────────────────────────────────────────────────────────────────────────────────
-REG = ("id", "url", "titulo", "livro", "pagina", "link_oficial", "pagina_oficial", "programa", "opressor", "oportunidade_id")
+REG = ("id", "url", "titulo", "livro", "pagina", "link_oficial", "pagina_oficial", "programa", "livro_vinculado", "oportunidade_id")
 
 
 def _eh_registro(v) -> bool:
@@ -434,7 +434,7 @@ PROIBIDOS = ["estado/piloto/briefings",          # cresce a cada lote absorvido 
              "dados/oportunidades/oportunidades.jsonl", "dados/oportunidades/repositorio_unico.json", "dados/oportunidades/validacao_mapa",
              "estado/piloto/catalogo_terceiro_setor.json", "estado/piloto/bordo.json", "estado/piloto/cache_buscas.json",
              "biblioteca_alexandria/oportunidades_sem_prazo", "biblioteca_alexandria/oportunidades_mapeadas", "dados/editais/marcacoes_ia.json", "dados/eldorado.db", "dados/historico_export.jsonl.gz", "dados/oportunidades_mapeadas.json", "estado/fila_verificacao.json", "estado/curadoria_links.json", "estado/abertos_sem_informacao.json", "estado/resultados_editais.jsonl", "estado/catalogo_achados_ia.json", "estado/previsoes.json", "estado/prazos_ia.json", "estado/cartorio/resultados_livros.jsonl", "estado/cartorio/biblioteca_sites.json", "estado/cartorio/gabaritos.json",
-             "biblioteca_alexandria/base/incentivos", "dados/financiadores", "dados/doadores", "biblioteca_alexandria/base/leis", "biblioteca_alexandria/leis", "biblioteca_alexandria/emendas", "dados/parlamentares", "biblioteca_alexandria/historico", "biblioteca_alexandria/previsoes", "biblioteca_alexandria/pareceres", "biblioteca_alexandria/arquivo_frio", "dados/revisoes", "dados/acervo", "dados/verificacao", "dados/opressores"]                           # passo 2(b): viraram anexos dos livros          # passo 2(a): análises de oportunidade
+             "biblioteca_alexandria/base/incentivos", "dados/financiadores", "dados/doadores", "biblioteca_alexandria/base/leis", "biblioteca_alexandria/leis", "biblioteca_alexandria/emendas", "dados/parlamentares", "biblioteca_alexandria/historico", "biblioteca_alexandria/previsoes", "biblioteca_alexandria/pareceres", "biblioteca_alexandria/arquivo_frio", "dados/revisoes", "dados/acervo", "dados/verificacao", "dados/livros"]                           # passo 2(b): viraram anexos dos livros          # passo 2(a): análises de oportunidade
 
 
 def absorver_proibidos() -> dict:

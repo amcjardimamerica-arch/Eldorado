@@ -19,7 +19,7 @@ class TesteAlimentacao(unittest.TestCase):
     def test_certificacao(self):
         corpo, h = X.pacote([{"nome": "x", "link": "https://a.gov.br", "objeto": "Cultura", "abrangencia": "federal", "uf": "", "prazo": None, "continuo": False}])
         p = json.loads(corpo); self.assertEqual(hashlib.sha256(p["itens_json"].encode()).hexdigest(), h); self.assertEqual(p["sha256"], h)
-        for proibido in ("eldorado", "livro", "motor", "opressor", "github"):
+        for proibido in ("eldorado", "livro", "motor", "livro_vinculado", "github"):
             self.assertNotIn(proibido, corpo.decode().lower())
 
     def test_destino_so_nos_segredos(self):

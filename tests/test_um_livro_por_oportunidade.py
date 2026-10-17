@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from src import unificar_livros as U
-from src import opressores_repositorio as O
+from src import livros_repositorio as O
 
 
 def L(i, prog, hist, **kw):
@@ -45,7 +45,7 @@ class TesteUnificar(unittest.TestCase):
 
 class TesteCriador(unittest.TestCase):
     def test_canonica_e_fusao_sem_repeticao(self):
-        src = (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8")
+        src = (ROOT / "src/livros_repositorio.py").read_text(encoding="utf-8")
         self.assertIn("duplicata → o livro da canônica", src); self.assertIn("agrupar_duplicatas", src)
         from src.curadoria_biblioteca import _juntar
         s = {"id": "s", "ids_juntados": ["o"]}; _juntar(s, {"id": "o", "ids_juntados": ["o"]})

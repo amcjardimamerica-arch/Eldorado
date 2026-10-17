@@ -15,7 +15,7 @@ for uf,l in d['itens_por_uf'].items():
         if x.get('selo')=='ouro':continue
         ck=x.get('checklist') or {}
         esf=str((ck.get('Esfera') or {}).get('v') or '').lower()
-        if x.get('opressor') in fi or 'internacional' in esf: g='3-INT'
+        if x.get('livro_vinculado') in fi or 'internacional' in esf: g='3-INT'
         elif uf=='GO': g='1-GO'
         elif uf=='__nac__': g='2-BR'
         else: g='4-OUTROS'
@@ -24,7 +24,7 @@ for uf,l in d['itens_por_uf'].items():
           'inicio':x.get('inicio'),'fim':x.get('fim'),'tipo':x.get('tipo'),'regime':x.get('regime'),'selo':x.get('selo'),'objeto':x.get('objeto'),
           'validacao':(x.get('validacao') or {}).get('decisao'),'validacao_motivo':(x.get('validacao') or {}).get('motivo'),
           'nota_rede':nota.get(x.get('url')),'itens_feitos':feitos,'itens_faltam':[k for k in ITENS if k not in feitos],
-          'checklist':{k:ck.get(k) for k in ITENS if ck.get(k)},'opressor':x.get('opressor')})
+          'checklist':{k:ck.get(k) for k in ITENS if ck.get(k)},'livro_vinculado':x.get('livro_vinculado')})
 rows.sort(key=lambda r:(r['grupo'],-(r['nota_rede'] or 0),r['fim'] or '9999'))
 for i,r in enumerate(rows,1): r['ordem']=i
 out=R/'dados/validacao_abertas/entrada_triagem.json'
