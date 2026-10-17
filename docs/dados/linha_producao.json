@@ -1,14 +1,14 @@
 {
- "em": "2026-10-17T06:47:03+00:00",
+ "em": "2026-10-17T07:49:13+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 698,
-  "oportunidades_distintas": 510,
+  "coletados": 679,
+  "oportunidades_distintas": 490,
   "entidades_em_2_ou_mais_canais": 26,
   "etapas": {
-   "EM_LIVRO": 620,
+   "EM_LIVRO": 602,
    "CONSOLIDADO": 28,
-   "QUALIFICADO": 41,
+   "QUALIFICADO": 40,
    "REPROCESSAR": 9
   },
   "fila_de_reprocessamento": {
@@ -25,7 +25,7 @@
   {
    "canal": "piloto-interceptador",
    "familia": "pilotos",
-   "registros": 523,
+   "registros": 524,
    "entidades": 389,
    "exclusivas": 365,
    "corroboradas": 24,
@@ -68,38 +68,29 @@
    "validadas_como_reais": 3
   },
   {
-   "canal": "plataforma-mapas-culturais",
-   "familia": "outros",
-   "registros": 10,
-   "entidades": 10,
-   "exclusivas": 10,
-   "corroboradas": 0,
-   "validadas_como_reais": 2
-  },
-  {
    "canal": "plataforma-wordpress",
    "familia": "outros",
-   "registros": 14,
-   "entidades": 14,
-   "exclusivas": 11,
+   "registros": 12,
+   "entidades": 12,
+   "exclusivas": 9,
    "corroboradas": 3,
    "validadas_como_reais": 1
   },
   {
    "canal": "outras-oportunidades-1",
    "familia": "outros",
-   "registros": 8,
-   "entidades": 8,
-   "exclusivas": 8,
+   "registros": 7,
+   "entidades": 7,
+   "exclusivas": 7,
    "corroboradas": 0,
    "validadas_como_reais": 1
   },
   {
    "canal": "outras-oportunidades-8",
    "familia": "outros",
-   "registros": 5,
-   "entidades": 5,
-   "exclusivas": 5,
+   "registros": 4,
+   "entidades": 4,
+   "exclusivas": 4,
    "corroboradas": 0,
    "validadas_como_reais": 1
   },
@@ -115,9 +106,9 @@
   {
    "canal": "f260-captacao-237",
    "familia": "orgao_publico",
-   "registros": 2,
-   "entidades": 2,
-   "exclusivas": 2,
+   "registros": 1,
+   "entidades": 1,
+   "exclusivas": 1,
    "corroboradas": 0,
    "validadas_como_reais": 1
   },
@@ -196,27 +187,18 @@
   {
    "canal": "outras-oportunidades-5",
    "familia": "outros",
-   "registros": 8,
-   "entidades": 8,
-   "exclusivas": 8,
+   "registros": 9,
+   "entidades": 9,
+   "exclusivas": 9,
    "corroboradas": 0,
    "validadas_como_reais": 0
   },
   {
-   "canal": "outras-oportunidades-7",
+   "canal": "plataforma-mapas-culturais",
    "familia": "outros",
-   "registros": 7,
-   "entidades": 7,
-   "exclusivas": 7,
-   "corroboradas": 0,
-   "validadas_como_reais": 0
-  },
-  {
-   "canal": "empresas-incentivadas",
-   "familia": "empresas",
-   "registros": 6,
-   "entidades": 6,
-   "exclusivas": 6,
+   "registros": 4,
+   "entidades": 4,
+   "exclusivas": 4,
    "corroboradas": 0,
    "validadas_como_reais": 0
   },
@@ -230,11 +212,20 @@
    "validadas_como_reais": 0
   },
   {
-   "canal": "outras-oportunidades-3",
+   "canal": "outras-oportunidades-7",
    "familia": "outros",
    "registros": 3,
    "entidades": 3,
-   "exclusivas": 2,
+   "exclusivas": 3,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
+  },
+  {
+   "canal": "outras-oportunidades-3",
+   "familia": "outros",
+   "registros": 2,
+   "entidades": 2,
+   "exclusivas": 1,
    "corroboradas": 1,
    "validadas_como_reais": 0
   },
@@ -266,11 +257,11 @@
    "validadas_como_reais": 0
   },
   {
-   "canal": "f260-captacao-118",
-   "familia": "orgao_publico",
-   "registros": 1,
-   "entidades": 1,
-   "exclusivas": 1,
+   "canal": "empresas-incentivadas",
+   "familia": "empresas",
+   "registros": 2,
+   "entidades": 2,
+   "exclusivas": 2,
    "corroboradas": 0,
    "validadas_como_reais": 0
   },
@@ -331,7 +322,7 @@
  ],
  "familias": {
   "pilotos": 2,
-  "orgao_publico": 14,
+  "orgao_publico": 13,
   "portal_chamamentos": 3,
   "outros": 10,
   "terceiro_setor": 2,
@@ -524,5 +515,5 @@
    ]
   }
  ],
- "eventos_no_livro_razao": 10
+ "eventos_no_livro_razao": 1
 }
