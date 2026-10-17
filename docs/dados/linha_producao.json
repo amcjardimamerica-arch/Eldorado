@@ -1,14 +1,14 @@
 {
- "em": "2026-10-17T02:25:36+00:00",
+ "em": "2026-10-17T02:35:49+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 484,
-  "oportunidades_distintas": 389,
+  "coletados": 530,
+  "oportunidades_distintas": 394,
   "entidades_em_2_ou_mais_canais": 0,
   "etapas": {
-   "EM_LIVRO": 422,
-   "QUALIFICADO": 32,
-   "CONSOLIDADO": 27,
+   "EM_LIVRO": 462,
+   "QUALIFICADO": 36,
+   "CONSOLIDADO": 29,
    "REPROCESSAR": 3
   },
   "fila_de_reprocessamento": {
@@ -19,16 +19,16 @@
   {
    "canal": "piloto-interceptador",
    "familia": "pilotos",
-   "registros": 481,
-   "entidades": 389,
-   "exclusivas": 389,
+   "registros": 527,
+   "entidades": 394,
+   "exclusivas": 394,
    "corroboradas": 0,
-   "validadas_como_reais": 75
+   "validadas_como_reais": 82
   }
  ],
  "familias": {
   "pilotos": 1
  },
  "corroboradas": [],
- "eventos_no_livro_razao": 55
+ "eventos_no_livro_razao": 10
 }
