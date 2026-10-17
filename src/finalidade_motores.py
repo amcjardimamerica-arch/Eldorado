@@ -77,6 +77,18 @@ def montar() -> dict:
         vistos = {x["id"] for x in universo}
         universo += [o for o in expandir(load_json(ab)) if o.get("id") not in vistos]
     op = [e for e in universo if e.get("tipo_registro") in ("edital", "regra_anual") and e.get("selo_validacao") == "validada"]
+    # 17/10/2026: a FONTE ÚNICA — toda oportunidade VALIDADA do repositório (que nasce dos livros) com link oficial ganha a
+    # sua rota (a base antiga do painel esvaziou com a migração e as rotas caíram para 2)
+    try:
+        _rep = (load_json(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json") or {}).get("registros") or []
+    except Exception:  # noqa: BLE001
+        _rep = []
+    _ja = {e.get("id") for e in op}
+    for r in _rep:
+        if r.get("estado") == "validada" and r.get("link_oficial") and r.get("id") not in _ja:
+            op.append({"id": r["id"], "titulo": r.get("titulo"), "pagina_divulgacao": r["link_oficial"], "orgao": r.get("orgao"),
+                       "uf": r.get("uf"), "area": r.get("area"), "fim": r.get("fim"), "tipo_registro": "edital",
+                       "selo_validacao": "validada"})
     rotas = []
     novas_fontes = []
     for e in op:

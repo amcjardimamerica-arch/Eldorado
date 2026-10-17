@@ -39,8 +39,15 @@ class TesteDescobertaERecorrencia(unittest.TestCase):
         self.assertEqual(_cadencia_recorrencia({"fim": "2026-03-01"}, hoje)[0], 30)         # encerrada, longe da época
         self.assertEqual(_cadencia_recorrencia({"fim": "2025-09-25"}, hoje)[0], 1)          # época de reabertura
         self.assertEqual(_cadencia_recorrencia({}, hoje)[0], 7)
-        r = json.loads((ROOT / "estado/rotas_recorrencia.json").read_text(encoding="utf-8"))
-        self.assertGreaterEqual(r["total"], 50)
+        r = __import__("src.nucleo", fromlist=["x"]).load_json(ROOT / "estado/rotas_recorrencia.json")   # 17/10: está nos livros
+        # 17/10/2026: a REGRA (uma rota por validada), não um número — o limite de 50 era de antes da migração para os
+        # livros (16/10 já eram 34). Toda validada do repositório com link oficial válido tem a sua rota.
+        from src.finalidade_motores import VETOR
+        rep = (__import__("src.nucleo", fromlist=["x"]).load_json(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json") or {}).get("registros") or []
+        devidas = {x["link_oficial"] for x in rep if x.get("estado") == "validada" and x.get("link_oficial")
+                   and not (VETOR.search(str(x["link_oficial"])) and "/arquivos/" not in str(x["link_oficial"]))}
+        self.assertTrue(devidas <= {x["url"] for x in r["rotas"]}, "validada sem rota de recorrência")
+        self.assertGreater(r["total"], 0)
         self.assertTrue(all(x["url"] and x["cadencia_dias"] and x["proxima_leitura"] for x in r["rotas"]))
 
     def test_recorrencia_e_sensor_regular_e_reprograma(self):
