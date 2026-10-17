@@ -86,7 +86,8 @@ class TesteCicloEAplicacao(unittest.TestCase):
         (ROOT / "dados/editais/extraidos/lab-ia-1.json").unlink(); (pasta / f"propostas-{dia}.json").unlink()
 
     def test_configuracao_e_instalador(self):
-        self.assertEqual(CFG["modelos"]["principal"]["nome"], "Qwen2.5-3B-Instruct"); self.assertLessEqual(CFG["modelos"]["principal"]["tamanho_gb"], 2.5)
+        # 17/10/2026 (item 3): o modelo passou a ser o Qwen3-8B, "único modelo do sistema" (titular, 26/09)
+        self.assertEqual(CFG["modelos"]["principal"]["nome"], "Qwen3-8B"); self.assertLessEqual(CFG["modelos"]["principal"]["gb"], 5)
         self.assertEqual(CFG["motor"]["nome"], "llama.cpp"); self.assertLessEqual(CFG["motor"]["tamanho_mb"], 25)
         self.assertIn("prazo", CFG["validacao"]["trecho_literal_obrigatorio_para"])
         self.assertTrue((ROOT / "scripts/ia_local_instalar.py").exists())

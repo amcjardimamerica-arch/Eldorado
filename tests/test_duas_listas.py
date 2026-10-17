@@ -89,7 +89,7 @@ class TesteTela(unittest.TestCase):
     def test_mostra_os_criterios_de_cada_lista(self):
         self.assertIn("Como esta lista é pontuada", H)
         self.assertIn("ep-crit-t", H)
-        self.assertIn("Nota nesta lista", H)
+        self.assertIn("Nota da lista", H)
         self.assertIn("Porta de entrada", H)
 
     def test_declara_o_que_nao_foi_levantado(self):

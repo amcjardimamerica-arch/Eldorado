@@ -30,8 +30,9 @@ class TesteReestruturacaoDosMotores(unittest.TestCase):
         ativas = {f"plat-{f['id']}" for f in inv["fontes"] if f.get("ativa", True)}
         ids = {s["id"] for s in registro()}
         self.assertTrue(ativas <= ids, f"plataformas sem sensor: {ativas - ids}")
-        for pid in ("plat-prosas", "plat-salic", "plat-secult-go"):
-            self.assertIn(pid, ids)
+        # 17/10/2026 (item 3): Prosas e Secult-GO foram desativadas em config/investigacao.json; a regra que importa
+        # (toda plataforma ATIVA vira sensor) está acima. A SALIC segue ativa:
+        self.assertIn("plat-salic", ids)
         self.assertNotIn("plat-mapa-osc", ids)                      # desativado com motivo
 
     def test_motores_novos_do_radar(self):

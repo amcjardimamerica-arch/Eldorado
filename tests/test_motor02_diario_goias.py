@@ -308,7 +308,9 @@ class TestCoberturaMotor02(TestMotor):
         import urllib.error
         from src import ponte_brasil
         erro = urllib.error.HTTPError("https://diariooficial.abc.go.gov.br/x", 403, "Forbidden", {}, None)
-        with mock.patch("urllib.request.urlopen", side_effect=erro), mock.patch.object(ponte_brasil, "configurada", return_value=True), \
+        # 17/10/2026 (item 3): o domínio é fictício — sem simular a checagem de DNS o teste dependia da internet
+        with mock.patch.object(dg, "validate_public_https", return_value=None), \
+                mock.patch("urllib.request.urlopen", side_effect=erro), mock.patch.object(ponte_brasil, "configurada", return_value=True), \
                 mock.patch.object(ponte_brasil, "abrir", return_value=(200, "u", b'{"ok": 1}', {})) as ab:
             self.assertEqual(dg._get("https://diariooficial.abc.go.gov.br/x"), b'{"ok": 1}')
         ab.assert_called_once()

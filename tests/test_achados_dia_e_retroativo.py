@@ -56,10 +56,9 @@ class TesteMotoresDeEmpresasERetroativo(unittest.TestCase):
         dou = [x for x in registro() if x["id"] == "dou"][0]
         u = [x for x in _paginas(dict(dou, _data=datetime.date(2026, 9, 5))) if "leiturajornal" in x][0]
         self.assertIn("data=05-09-2026", u)
-        pn = [x for x in registro() if x["id"] == "pncp-api"][0]
-        u2 = _paginas(dict(pn, _data=datetime.date(2026, 9, 5)))[0]
-        self.assertIn("dataInicial=20260905", u2); self.assertIn("dataFinal=20260905", u2)
-        self.assertEqual(SUPORTAM_DATA, {"dou", "pncp-api"})
+        # 17/10/2026 (item 3): desde 01/10 o PNCP é lido pelas propostas ABERTAS (src/pncp_osc.py), não por data de
+        # publicação — por isso saiu da leitura retroativa
+        self.assertEqual(SUPORTAM_DATA, {"dou"})
         faltam = dias_sem_leitura("dou", 2026, 9, datetime.date(2026, 9, 19))
         self.assertIsInstance(faltam, list)
         r = json.loads((ROOT / "estado/varredura_retroativa.json").read_text(encoding="utf-8"))

@@ -15,7 +15,8 @@ class TesteMotor05(unittest.TestCase):
         self.s = next(x for x in sensores.registro() if x["id"] == "alego-pl")
 
     def test_spl_e_rota_principal_e_exige_brasil(self):
-        self.assertTrue(self.s["urls"][0].startswith("https://alegodigital.al.go.leg.br/spl/"))
+        # 17/10/2026 (item 3): o portal da Alego passou a ser a 1ª rota; o SPL segue como rota de leitura
+        self.assertTrue(any(u.startswith("https://alegodigital.al.go.leg.br/spl/") for u in self.s["urls"]))
         self.assertIn("alegodigital.al.go.leg.br", self.cfg["exige_brasil"]["dominios"])
 
     def test_vetos_do_noticiario(self):

@@ -79,8 +79,10 @@ class TestePostoSoEmDuasPaginas(unittest.TestCase):
         i_pb = next(k for k, l in enumerate(L) if 'id="pil-posto-bussola"' in l)
         fim_bus = next(k for k, l in enumerate(L) if k > i_pb and l.strip() == "</section>")
         self.assertTrue(i_bus < i_pb < fim_bus)
-        self.assertEqual(fim_bus, i_pb + 1, "na Bússola o posto é a última coisa da seção")
+        # 17/10/2026 (item 3): o posto do Interceptador entrou logo abaixo; os dois postos fecham a seção
+        self.assertIn('id="int-posto-bussola"', L[i_pb + 1])
+        self.assertEqual(fim_bus, i_pb + 2, "na Bússola os postos dos Pilotos são a última coisa da seção")
 
     def test_texto_do_rodape_nao_fala_mais_de_horarios(self):
         self.assertNotIn("04h", H); self.assertNotIn("10h · 16h", H)
-        self.assertIn("o próximo decola em segundos", H)   # a frase do rodapé foi absorvida pelo bloco ao vivo
+        self.assertIn("O Piloto decola em segundos", H)   # 17/10/2026 (item 3): a frase mudou de lugar e de redação

@@ -47,11 +47,12 @@ class TesteCicloContinuoEAviao(unittest.TestCase):
         w = (ROOT / ".github/workflows/piloto.yml").read_text(encoding="utf-8")
         self.assertIn("Pousar 3 segundos e decolar de novo", w)
         self.assertIn("estado/piloto_pausado", w)                              # trava manual
-        self.assertIn("teto do dia atingido", w)
+        self.assertIn("SEM TETO DIÁRIO", w)    # 17/10/2026 (item 3): o teto diário saiu por decisão do titular (24/09)
         self.assertIn("in_progress", w)                                      # não empilha voo
         self.assertIn('cron: "0 */2 * * *"', w)                                # rede de segurança
         c = json.loads((ROOT / "config/piloto.json").read_text(encoding="utf-8"))
-        self.assertGreaterEqual(c["voos_por_dia"], 10); self.assertLessEqual(c["orcamento"]["teto_minutos"], 40)
+        self.assertNotIn("voos_por_dia", c)              # 17/10/2026 (item 3): sem teto diário (titular, 24/09)
+        self.assertLessEqual(c["orcamento"]["teto_minutos"], 40)
 
     def test_piloto_escolhe_o_rumo_lendo_a_biblioteca(self):
         src = (ROOT / "src/piloto.py").read_text(encoding="utf-8")
@@ -71,5 +72,10 @@ class TesteCicloContinuoEAviao(unittest.TestCase):
 
     def test_painel_protegido_do_job_de_dados(self):
         w = (ROOT / ".github/workflows/monitoramento-diario.yml").read_text(encoding="utf-8")
-        self.assertIn("PROTEÇÃO DO PAINEL", w)
-        self.assertIn("docs/dashboard.html", w.split("PROTEÇÃO DO PAINEL")[1][:400])
+        # 17/10/2026 (item 3): a proteção passou a ser o gravar_somente_alterados — o fluxo só grava pastas de DADOS,
+        # então o painel (docs/dashboard.html) nunca é sobrescrito por uma cópia velha do job
+        self.assertIn("scripts/gravar_somente_alterados.py aplicar", w)
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("gsa", ROOT / "scripts/gravar_somente_alterados.py")
+        g = importlib.util.module_from_spec(spec); spec.loader.exec_module(g)
+        self.assertFalse(any("docs/dashboard.html".startswith(a + "/") or a == "docs/dashboard.html" for a in g.AREAS))
