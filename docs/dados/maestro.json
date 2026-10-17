@@ -1,6 +1,6 @@
 {
  "dia": "2026-10-17",
- "em": "2026-10-17T10:32:53+00:00",
+ "em": "2026-10-17T11:18:43+00:00",
  "regra": "MAESTRO — A MÃO DA REDE NEURAL DE COMANDO (titular, 02/10/2026; unificado em 15/10/2026).\n\n15/10/2026 (titular): maestro e rede neural são UMA coisa só. Quem decide o caminho do fluxo inteiro é src/comando.py\n(a rede neural de comando); este módulo é a parte que MEDE e EXECUTA para ela:\n  · planejar()   quais motores rodam hoje (agenda) com a prioridade de rendimento — matéria-prima da decisão do comando;\n  · cobertura()  completa · parcial · pendente · pendente_local de cada motor no dia;\n  · controlar()  pendentes e parciais a disparar (até 3 tentativas), dia fechado ou não;\n  · relatorio_etapas() o relatório do dia que o painel mostra.\nO comando chama planejar/controlar antes de acionar os motores (decidir) e depois deles (avaliar e reacionar).",
  "planejados": 127,
  "cobertura": {
@@ -10,11 +10,7 @@
  "cobertura_percentual": 81.1,
  "a_disparar": [
   "plat-empresas-editais-incentivados",
-  "judiciario-tjgo",
-  "f260-captacao-230",
-  "plat-prefeituras-50-go",
-  "f260-captacao-218",
-  "f260-captacao-118"
+  "f260-captacao-230"
  ],
  "esgotaram_tentativas": [
   "outras-oportunidades-7",
@@ -34,7 +30,11 @@
   "f260-espalhado-sistema-mirassoldoeste-mt-gov-br",
   "f260-curadoria-005",
   "f260-captacao-224",
-  "f260-captacao-227"
+  "judiciario-tjgo",
+  "plat-prefeituras-50-go",
+  "f260-captacao-218",
+  "f260-captacao-227",
+  "f260-captacao-118"
  ],
  "dia_fechado": false,
  "dia_anterior_nao_observado": [
@@ -48,9 +48,9 @@
  "plano": [
   {
    "motor": "plat-piloto-aberto",
-   "prioridade": 1.825,
+   "prioridade": 1.505,
    "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 91,
+   "livros_com_abertura_proxima": 75,
    "horarios": "05:53,10:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
@@ -70,7 +70,7 @@
   },
   {
    "motor": "outras-oportunidades-7",
-   "prioridade": 0.1842,
+   "prioridade": 0.1316,
    "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
    "horarios": "08:23,13:23,18:23",
@@ -220,7 +220,7 @@
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 4
+   "tentativas_hoje": 5
   },
   {
    "motor": "plataforma-mapas-culturais",
@@ -1235,17 +1235,6 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "judiciario-tjgo",
-   "prioridade": 0.0045,
-   "diagnostico": "bloqueio",
-   "livros_com_abertura_proxima": 0,
-   "horarios": "07:53,16:23",
-   "coleta": "nuvem + local",
-   "dia_anterior": "nao_observado",
-   "cobertura": "parcial",
-   "tentativas_hoje": 5
-  },
-  {
    "motor": "f260-captacao-223",
    "prioridade": 0.0045,
    "diagnostico": "sem_rendimento",
@@ -1257,6 +1246,17 @@
    "tentativas_hoje": 1
   },
   {
+   "motor": "judiciario-tjgo",
+   "prioridade": 0.0044,
+   "diagnostico": "bloqueio",
+   "livros_com_abertura_proxima": 0,
+   "horarios": "07:53,16:23",
+   "coleta": "nuvem + local",
+   "dia_anterior": "nao_observado",
+   "cobertura": "parcial",
+   "tentativas_hoje": 6
+  },
+  {
    "motor": "f260-captacao-190",
    "prioridade": 0.0044,
    "diagnostico": "sem_rendimento",
@@ -1265,17 +1265,6 @@
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "completa",
-   "tentativas_hoje": 2
-  },
-  {
-   "motor": "f260-captacao-230",
-   "prioridade": 0.0044,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "parcial",
    "tentativas_hoje": 2
   },
   {
@@ -1290,6 +1279,17 @@
    "tentativas_hoje": 0
   },
   {
+   "motor": "f260-captacao-230",
+   "prioridade": 0.0043,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "parcial",
+   "tentativas_hoje": 3
+  },
+  {
    "motor": "plat-salic",
    "prioridade": 0.0043,
    "diagnostico": "saudavel",
@@ -1299,17 +1299,6 @@
    "dia_anterior": "observado",
    "cobertura": "completa",
    "tentativas_hoje": 0
-  },
-  {
-   "motor": "plat-prefeituras-50-go",
-   "prioridade": 0.0043,
-   "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 0,
-   "horarios": "09:23,15:23",
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "parcial",
-   "tentativas_hoje": 5
   },
   {
    "motor": "alego-pl",
@@ -1323,15 +1312,15 @@
    "tentativas_hoje": 3
   },
   {
-   "motor": "f260-captacao-218",
-   "prioridade": 0.0041,
-   "diagnostico": "sem_rendimento",
+   "motor": "plat-prefeituras-50-go",
+   "prioridade": 0.0042,
+   "diagnostico": "saudavel",
    "livros_com_abertura_proxima": 0,
-   "horarios": null,
+   "horarios": "09:23,15:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "parcial",
-   "tentativas_hoje": 5
+   "tentativas_hoje": 6
   },
   {
    "motor": "f260-captacao-196",
@@ -1343,6 +1332,17 @@
    "dia_anterior": "observado",
    "cobertura": "completa",
    "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-captacao-218",
+   "prioridade": 0.004,
+   "diagnostico": "sem_rendimento",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "parcial",
+   "tentativas_hoje": 6
   },
   {
    "motor": "f260-captacao-151",
@@ -1389,17 +1389,6 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "f260-captacao-118",
-   "prioridade": 0.0037,
-   "diagnostico": "falha_parcial",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "parcial",
-   "tentativas_hoje": 5
-  },
-  {
    "motor": "do-goias",
    "prioridade": 0.0036,
    "diagnostico": "saudavel",
@@ -1409,6 +1398,17 @@
    "dia_anterior": "observado",
    "cobertura": "completa",
    "tentativas_hoje": 0
+  },
+  {
+   "motor": "f260-captacao-118",
+   "prioridade": 0.0036,
+   "diagnostico": "falha_parcial",
+   "livros_com_abertura_proxima": 0,
+   "horarios": null,
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "parcial",
+   "tentativas_hoje": 6
   },
   {
    "motor": "dou",
