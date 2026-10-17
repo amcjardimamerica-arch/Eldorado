@@ -67,8 +67,8 @@ def montar_copia(raiz: Path, destino: Path) -> int:
     return n
 
 
-IGNORAR_PADRAO = ["tests/test_system.py",            # suíte de sistema: roda à parte
-                  "tests/test_validacao_mapa.py"]    # passa de 100 s: tratado no item 2 do plano de testes
+IGNORAR_PADRAO = ["tests/test_system.py"]            # suíte de sistema: roda à parte
+LIMITE_POR_TESTE = 120   # segundos; o teste mais lento medido em 17/10/2026 levou ~20 s (ver docs/TESTES.md)
 
 
 def arquivos_de_teste(extras: list[str]) -> list[str]:
@@ -122,6 +122,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--manter", action="store_true", help="não apaga as cópias temporárias ao terminar")
     ap.add_argument("--comando", help="roda este comando (texto) dentro de UMA cópia, em vez da bateria")
     ap.add_argument("-j", "--paralelo", type=int, default=1, help="processos; cada um com a SUA cópia")
+    ap.add_argument("--limite", type=int, default=LIMITE_POR_TESTE, help="tempo máximo POR TESTE, em segundos")
     ap.add_argument("--falhas", help="grava aqui a lista de testes que falharam (um id por linha)")
     ap.add_argument("--junit", help="copia aqui o relatório JUnit unificado do último grupo (ou do único)")
     ap.add_argument("extras", nargs=argparse.REMAINDER, help="argumentos repassados ao pytest (depois de --)")
@@ -153,7 +154,7 @@ def main(argv: list[str] | None = None) -> int:
                 xml = base / f"g{i}.xml"
                 log = open(base / f"g{i}.log", "w", encoding="utf-8")
                 cmd = [sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider", "-rfE",
-                       f"--junitxml={xml}", *opcoes, *grupo]
+                       f"--junitxml={xml}", f"--timeout={a.limite}", "--durations=15", *opcoes, *grupo]
                 procs.append((i, subprocess.Popen(cmd, cwd=copia, env=env, stdout=log, stderr=subprocess.STDOUT), log, xml))
             print(f"[isolamento] {len(grupos)} cópia(s) prontas em {time.time() - t0:.1f} s; "
                   f"{len(arquivos)} arquivos de teste", flush=True)
