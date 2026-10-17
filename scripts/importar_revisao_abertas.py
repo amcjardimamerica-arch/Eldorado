@@ -68,7 +68,9 @@ def ler_lotes(pasta: Path) -> dict:
 # indexador de diários) é só referência — item comprovado por ele é recusado.
 PUBLICACAO = re.compile(r"(?i)capitaai|captadores|prosas\.com|observatorio3setor|editaisdobrasil|queridodiario|google\.|bing\.|"
                         r"duckduckgo|facebook\.|instagram\.|linkedin\.|twitter\.|x\.com|youtube\.|g1\.globo|uol\.com|"
-                        r"terra\.com|abcr\.org|gife\.org\.br/noticia|/noticia|/noticias/|/blog/")
+                        r"terra\.com|abcr\.org")
+# notícia/blog SÓ é publicação fora do domínio oficial (17/10: a notícia no próprio site da prefeitura é fonte oficial)
+NOTICIA_FORA = re.compile(r"(?i)/noticias?/|/blog/")
 OFICIAL_PUBLICO = re.compile(r"(?i)\.(gov|leg|jus|mp|def|tc)\.br\b|pncp\.gov\.br")
 
 
@@ -80,7 +82,10 @@ def documento_oficial(doc, link_oficial=None) -> bool:
     if not str(doc or "").startswith("http") or PUBLICACAO.search(str(doc)):
         return False
     d, o = _dom(doc), _dom(link_oficial)
-    return bool(OFICIAL_PUBLICO.search(str(doc)) or (o and (d == o or d.endswith("." + o) or o.endswith("." + d))))
+    mesmo_dominio = bool(o and (d == o or d.endswith("." + o) or o.endswith("." + d)))
+    if NOTICIA_FORA.search(str(doc)) and not mesmo_dominio and not OFICIAL_PUBLICO.search(str(doc)):
+        return False
+    return bool(OFICIAL_PUBLICO.search(str(doc)) or mesmo_dominio)
 
 
 def _item_ok(v, link_oficial=None) -> bool:
@@ -101,7 +106,7 @@ def certidao_de(x: dict, origem: str) -> tuple[dict, list[str]]:
         if k not in DOZE:
             avisos.append(f"{x['id']}: item fora dos 12 ignorado ({k})"); continue
         if _item_ok(v, x.get("site_oficial") or x.get("link_documento")):
-            itens[k] = {"valor": str(v["valor"]), "trecho": str(v["trecho"]), "pagina": v["pagina"],
+            itens[k] = {"valor": str(v["valor"]), "trecho": str(v["trecho"]), "pagina": v.get("pagina"),
                         "documento": v["documento"], "metodo": v.get("metodo") or "revisão manual (leitura do documento oficial)"}
         else:
             avisos.append(f"{x['id']}: item {k} sem valor/trecho/documento/página — ignorado")
@@ -263,7 +268,7 @@ def atualizar_ja() -> dict:
     """16/10 (titular): o resultado do Chrome aparece NA HORA — repositório, fluxo e pendências do Cartório refeitos."""
     out = {}
     for nome, f in (("repositorio", lambda: __import__("src.repositorio_unico", fromlist=["x"]).construir(gravar=True)),
-                    ("fluxo", lambda: __import__("src.fluxo_oportunidades", fromlist=["x"]).montar()),
+                    ("fluxo", lambda: __import__("src.fluxo_oportunidades", fromlist=["x"]).sincronizar_com_repositorio()),   # 17/10: rápido
                     ("pendencias", lambda: __import__("src.cartorio", fromlist=["x"]).pendencias())):
         try:
             r = f(); out[nome] = "ok" if not isinstance(r, dict) else {k: v for k, v in r.items() if not isinstance(v, (list, dict))}

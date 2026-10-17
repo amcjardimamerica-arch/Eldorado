@@ -955,7 +955,7 @@ def pendencias(gravar: bool = True, lote_chrome: bool = True) -> dict:
             chrome.add(r["id"]); _bloq_op.add(r["id"])
     out = []
     for r in regs:
-        if r.get("estado") == "fechada":
+        if r.get("estado") == "fechada" or r.get("arquivada"):     # 17/10: arquivadas não são abertas
             continue
         it = r.get("itens") or {}
         cert = {k: {"valor": (v.get("valor") or "")[:200], "documento": v.get("documento"), "trecho": (v.get("trecho") or "")[:200]}
