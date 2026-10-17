@@ -859,6 +859,44 @@ def ciclo_do_edital(e: dict) -> dict:
     return ciclo
 
 
+def _do_repositorio(editais: list[dict], ja: set, hoje: date) -> list[dict]:
+    """As oportunidades ABERTAS do repositório único (validada, em verificação, validação manual), com as datas dele."""
+    rep = (load_json(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json") or {}).get("registros") or []
+    dono = {}
+    for r in rep:
+        if r.get("estado") in ("fechada",) or r.get("arquivada"):
+            continue
+        for i in [r.get("id"), *(r.get("ids_origem") or [])]:
+            if i:
+                dono[str(i)] = r
+    # o DIA EM QUE FOI ENCONTRADA vem dos LIVROS: a data mais antiga entre os achados da oportunidade na coleta do livro
+    achado_em: dict = {}
+    for lv in (load_json(ROOT / "biblioteca_alexandria/fontes/motores.json") or {}).get("motores") or []:
+        for k, a in (lv.get("coleta") or {}).items():
+            if isinstance(a, dict):
+                d = str(a.get("descoberto_em") or a.get("coletado_em") or "")[:10]
+                for i in {str(k), str(a.get("id") or k)}:
+                    if len(d) == 10 and (i not in achado_em or d < achado_em[i]):
+                        achado_em[i] = d
+    saida, vistos = [], set()
+    for e in editais:
+        r = dono.get(str(e.get("id")))
+        if not r or e["id"] in ja or r["id"] in vistos:
+            continue
+        vistos.add(r["id"])
+        e = dict(e)
+        _d = lambda v: (str(v)[:10] if v and len(str(v)) >= 10 and str(v)[4] == "-" else None)  # noqa: E731 — só a data
+        e["inicio"] = _d(r.get("inicio")) or e.get("inicio"); e["fim"] = _d(r.get("fim")) or e.get("fim")
+        e["datas"] = "ambas" if e["inicio"] and e["fim"] else ("so_fim" if e["fim"] else e.get("datas"))
+        e["estado_export"] = _situacao(e["inicio"], e["fim"], hoje)["estado"]
+        e["verificacao_repositorio"] = r.get("estado"); e["link_oficial"] = r.get("link_oficial") or e.get("link_oficial")
+        _ds = sorted(achado_em[i] for i in [str(r["id"]), str(e["id"]), *map(str, r.get("ids_origem") or [])] if i in achado_em)
+        if _ds and not (e.get("publicado_em") or e.get("coletado_em")):
+            e["coletado_em"] = _ds[0]; e.setdefault("detalhes", {}).setdefault("coletado_em", _ds[0])
+        saida.append(e)
+    return saida
+
+
 def _so_completos(editais: list[dict], hoje: date) -> list[dict]:
     """REGRA DO TITULAR: apenas editais VERIFICADOS EM DUPLA (fonte + conteúdo
     completo pela campanha de 30 dias) compõem o Dashboard. Datas passam a vir
@@ -1419,6 +1457,10 @@ def coletar(hoje: date | None = None) -> dict:
     hoje = hoje or date.today()
     editais_base = _editais(hoje)
     completos_lista = _so_completos(editais_base, hoje)
+    # 17/10/2026 (titular): a verificação atual é o REPOSITÓRIO (dos livros: Cartório, Chrome, validação) — a Bússola mostra
+    # as oportunidades abertas dele, dia a dia, além das que a completude antiga (campanha de 30 dias) reconhece; antes só 1
+    # das 840 passava e os dias anteriores ficavam vazios. O portão de fidelidade continua sendo o último passo.
+    completos_lista = completos_lista + _do_repositorio(editais_base, {e["id"] for e in completos_lista}, hoje)
     historicos = _historicos_encerrados(hoje)
     from .emendas import oportunidades_do_painel as _emendas
     emendas = _emendas(hoje)
