@@ -372,6 +372,8 @@ def fases(ctx: dict) -> list[dict]:
                   [py, "-c", "import json; from src import livros_monitoramento as M; print(json.dumps(M.migrar_nome_antigo(), ensure_ascii=False))"],
                   # 17/10 (testes P0): as fontes de Outras oportunidades são ATUALIZADAS aqui (consultar não grava)
                   [py, "-c", "from src import outras_oportunidades as O; r=O.receber(gravar=True); print(len(r.get('fontes') or {}), 'fontes')"],
+                  # 17/10 (titular): as 260 fontes de captação SÃO LIVROS — arquivo ↔ livros (o livro é o dono)
+                  [py, "-c", "import json; from src import banco_livros as B; print(json.dumps(B.sincronizar_fontes_260(), ensure_ascii=False))"],
                   # 17/10 (titular): REAPLICA a restauração dos livros retirados em massa às 02:28 (idempotente)
                   [py, "scripts/restaurar_livros.py", "--aplicar"],
                   # 17/10 (titular): REAPLICA as importações do Chrome (idempotente) — uma passagem que começou antes de uma

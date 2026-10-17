@@ -816,3 +816,62 @@ def juntar_em(fica: dict, sai: dict, motivo: str = "mesmo programa e órgão") -
     fica.setdefault("juntados", []).append({"id": sai.get("id"), "programa": sai.get("programa"), "motivo": motivo,
                                             "em": _agora()[:10]})
     return fica
+
+
+FONTES_260 = ROOT / "config/fontes_captacao_260.json"
+_CAMPOS_FONTE = ("sites", "dominios", "confianca_site", "padrao", "forma_divulgacao", "publicacao_obrigatoria",
+                 "verificado_em", "origem")
+
+
+def sincronizar_fontes_260(gravar: bool = True) -> dict:
+    """17/10/2026 (titular): as 260 fontes de captação SÃO LIVROS, cada uma com as suas oportunidades.
+    1. config → livros (aditivo): fonte sem livro ganha livro; fonte com livro tem os dados da fonte acrescentados em
+       livro['fonte_260'] (o que algum módulo gravou no arquivo não se perde); o papel 'fonte_de_busca' sai — é livro de
+       oportunidade como os demais.
+    2. livros → config: o arquivo é REGERADO a partir dos livros (vista declarada): o livro é o dono da informação."""
+    cfg = _j(FONTES_260, {}) or {}
+    fontes = cfg.get("fontes") or []
+    cat_doc = _j(CAT, {"motores": []}); L = cat_doc.setdefault("motores", [])
+    por_id = {x.get("id"): x for x in L}
+    st = {"livros_criados": 0, "livros_enriquecidos": 0, "papel_fonte_de_busca_retirado": 0}
+    for f in fontes:
+        fid = f.get("id")
+        if not fid:
+            continue
+        bloco = {k: f.get(k) for k in _CAMPOS_FONTE if f.get(k) not in (None, "", [], {})}
+        lv = por_id.get(fid)
+        if lv is None:
+            lv = {"id": fid, "programa": f.get("programa"), "orgao": f.get("orgao"), "uf": f.get("uf"), "esfera": f.get("nivel"),
+                  "area": f.get("area"), "tipo": f.get("tipo"), "goias": f.get("goias"),
+                  "pagina": (f.get("sites") or [None])[0], "criado_em": _agora()[:10], "origem": "fontes de captação (260)",
+                  "historico": [], "coleta": {}}
+            L.append(lv); por_id[fid] = lv; st["livros_criados"] += 1
+        else:
+            for k, v in (("programa", f.get("programa")), ("orgao", f.get("orgao")), ("uf", f.get("uf")), ("area", f.get("area")),
+                         ("tipo", f.get("tipo")), ("pagina", (f.get("sites") or [None])[0])):
+                if v and not lv.get(k):
+                    lv[k] = v
+            st["livros_enriquecidos"] += 1
+        atual = lv.setdefault("fonte_260", {})
+        for k, v in bloco.items():
+            if isinstance(v, list) and isinstance(atual.get(k), list):
+                atual[k] = list(dict.fromkeys([*atual[k], *v]))
+            else:
+                atual[k] = v
+        if lv.get("papel") == "fonte_de_busca":
+            lv["papel"] = None; st["papel_fonte_de_busca_retirado"] += 1
+    # livros → config (a vista)
+    novas = []
+    for lv in L:
+        b = lv.get("fonte_260")
+        if not isinstance(b, dict):
+            continue
+        novas.append({"id": lv["id"], "programa": lv.get("programa"), "nivel": lv.get("esfera"), "area": lv.get("area"),
+                      "tipo": lv.get("tipo"), "uf": lv.get("uf"), "goias": bool(lv.get("goias") or lv.get("uf") == "GO"),
+                      "orgao": lv.get("orgao"), **b, "sites": b.get("sites") or [], "dominios": b.get("dominios") or []})
+    if gravar:
+        CAT.write_text(json.dumps(cat_doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        cfg["fontes"] = novas
+        cfg["origem_dos_dados"] = "VISTA gerada a partir dos livros (banco_livros.sincronizar_fontes_260) — editar no livro"
+        FONTES_260.write_text(json.dumps(cfg, ensure_ascii=False, indent=1), encoding="utf-8")
+    return {**st, "fontes_no_arquivo": len(novas)}
