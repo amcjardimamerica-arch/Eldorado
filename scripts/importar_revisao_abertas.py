@@ -280,5 +280,5 @@ def atualizar_ja() -> dict:
 
 if __name__ == "__main__":
     main(sys.argv[1:])
-    if "--verificar" not in sys.argv:
+    if "--verificar" not in sys.argv and "--sem-atualizar" not in sys.argv:   # no fechamento, a passagem refaz em seguida
         print(json.dumps({"atualizado_na_hora": atualizar_ja()}, ensure_ascii=False))
