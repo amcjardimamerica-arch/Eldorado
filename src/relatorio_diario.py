@@ -1,7 +1,7 @@
 """Relatório de funcionamento — um por dia, um registro por bloco.
 
 Cada saída dos motores (00h diários, 01h justiça/legislativo, 02h plataformas/
-API, 03h completude, 04h Opressores, 05h busca ativa, 06h relatório) grava o
+API, 03h completude, 04h Livros, 05h busca ativa, 06h relatório) grava o
 que fez: sensores executados, achados, novos na base, falhas, bloqueios e
 tempo. O painel mostra o dia consolidado na caixa Motores de Busca e o
 histórico dos últimos 30 dias — é o "relatório de funcionamento automatizado".

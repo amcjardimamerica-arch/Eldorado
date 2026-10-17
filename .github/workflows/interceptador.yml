@@ -125,8 +125,8 @@ jobs:
           rm -rf /tmp/int && mkdir -p /tmp/int/extraidos
           # SÓ OS ARQUIVOS DO INTERCEPTADOR (e o que este voo alterou): nunca o bordo do Espião
           cp docs/dados/interceptador.json biblioteca_alexandria/livros/especiais/espiao/fila_resgate.json /tmp/int/ 2>/dev/null || true
-          # 28/09: os DERIVADOS (fluxo, catálogo e ligados dos opressores, cadastro preditivo, saúde) não são mais copiados
-          # da cópia do voo — ela é velha e religava opressores desligados e duplicados removidos. São REGENERADOS sobre
+          # 28/09: os DERIVADOS (fluxo, catálogo e ligados dos livros, cadastro preditivo, saúde) não são mais copiados
+          # da cópia do voo — ela é velha e religava livros desligados e duplicados removidos. São REGENERADOS sobre
           # a main atual, depois do reset (validação, fluxo e saúde são idempotentes).
           cp -r estado/interceptador /tmp/int/ 2>/dev/null || true
           mkdir -p /tmp/int/extra && for P in config/parametros_pilotos_fixos.json estado/pilotos docs/dados/achados_pilotos.json config/parametros_pilotos.json estado/aprendizado docs/dados/dossies_empresas.json docs/dados/aprendizado_pilotos.json; do [ -e "$P" ] && cp -r --parents "$P" /tmp/int/extra/; done; true

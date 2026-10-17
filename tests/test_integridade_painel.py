@@ -34,7 +34,7 @@ class TesteIntegridadePainel(unittest.TestCase):
         self.assertIn("alertas", r); self.assertIn("ok", r)
         json.loads((ROOT / "docs/dados/saude.json").read_text(encoding="utf-8"))
 
-    def test_catalogo_de_opressores_sem_duplicados(self):
+    def test_catalogo_de_livros_sem_duplicados(self):
         C = json.loads((ROOT / "biblioteca_alexandria/fontes/motores.json").read_text(encoding="utf-8")).get("motores", [])
         ch = [re.sub(r"[^a-z0-9]", "", f"{x.get('programa')}{x.get('orgao')}".lower())[:80] for x in C]
         self.assertEqual(len(ch), len(set(ch)))
@@ -97,7 +97,7 @@ class TesteIntegridadePainel(unittest.TestCase):
             tits = [re.sub(r"[^a-z0-9]", "", e["titulo"].lower())[:60] for e in x.get("ultimas", [])]
             self.assertEqual(len(tits), len(set(tits)), f"{mid} repete oportunidade")
             for e in x.get("ultimas", []):
-                self.assertIn("opressor", e, f"{mid}: oportunidade sem destino de opressor")
+                self.assertIn("livro_vinculado", e, f"{mid}: oportunidade sem destino de livro")
 
     def test_radar_so_com_o_fluxo_validado(self):
         """28/09: o Radar lia editais sem validação e chamava programas do catálogo de 'editais possíveis'."""
@@ -139,19 +139,19 @@ class TesteIntegridadePainel(unittest.TestCase):
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
         self.assertIn(".mt-item{grid-template-columns:44px minmax(0,1fr) 40px}", h)
         self.assertIn("#mt-lista .mt-ach{display:grid", h)
-        self.assertIn('class="mt-ach mt-ach1"', h, "oportunidade encontrada em uma linha: nome, prazo, opressor, site oficial")
+        self.assertIn('class="mt-ach mt-ach1"', h, "oportunidade encontrada em uma linha: nome, prazo, livro, site oficial")
 
-    def test_oportunidades_abertas_do_fluxo_e_opressores(self):
+    def test_oportunidades_abertas_do_fluxo_e_livros(self):
         """28/09: os cartões de oportunidades abertas liam o conjunto antigo; toda oportunidade com seleção precisa de
-        motor opressor (ou do motivo da dispensa); o quadro 'Aguardando verificação da IA' saiu."""
+        motor livro (ou do motivo da dispensa); o quadro 'Aguardando verificação da IA' saiu."""
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
         self.assertIn("function _desenhaAbertasFluxo(", h)
         self.assertIn("_desenhaAbertasFluxo();       //", h)
         F = json.loads((ROOT / "docs/dados/fluxo_oportunidades.json").read_text(encoding="utf-8"))
         its = [x for v in F["itens_por_uf"].values() for x in v]
-        sem = [x["titulo"][:60] for x in its if not x.get("opressor") and not x.get("opressor_dispensa")]
-        self.assertEqual(sem, [], "oportunidade aberta sem motor opressor e sem motivo de dispensa")
-        from src.opressores_repositorio import dispensa, chave
+        sem = [x["titulo"][:60] for x in its if not x.get("livro_vinculado") and not x.get("livro_dispensa")]
+        self.assertEqual(sem, [], "oportunidade aberta sem motor livro e sem motivo de dispensa")
+        from src.livros_repositorio import dispensa, chave
         self.assertIsNone(dispensa({"titulo": "Patrocínios", "tipo": "empresa/instituto"}))   # 01/10 (titular): toda oportunidade mapeada vira livro
         self.assertIsNone(dispensa({"titulo": "Edital de seleção de projetos 2026", "tipo": "empresa/instituto"}))
         self.assertEqual(chave("Edital nº 02/2026 — Prêmio X"), chave("Edital nº 05/2025 — Prêmio X"))
@@ -167,19 +167,19 @@ class TesteIntegridadePainel(unittest.TestCase):
         self.assertIn('class="oa-sec"', h); self.assertIn("oa-ki", h)
 
     def test_bussola_numeros_reais(self):
-        """28/09: os cartões da Bússola liam o conjunto antigo; 'fontes monitoradas' não batia com os opressores ligados."""
+        """28/09: os cartões da Bússola liam o conjunto antigo; 'fontes monitoradas' não batia com os livros ligados."""
         F = json.loads((ROOT / "docs/dados/fluxo_oportunidades.json").read_text(encoding="utf-8"))
-        O = F.get("opressores") or {}
-        self.assertEqual(O.get("abertas_sem_opressor_nem_dispensa"), 0)
+        O = F.get("livros_do_sistema") or {}
+        self.assertEqual(O.get("abertas_sem_livro_nem_dispensa"), 0)
         C = {x["id"] for x in json.loads((ROOT / "biblioteca_alexandria/fontes/motores.json").read_text(encoding="utf-8"))["motores"]}
-        L = json.loads((ROOT / "estado/opressores.json").read_text(encoding="utf-8"))["ligados"]
-        self.assertEqual([k for k in L if k not in C], [], "opressor ligado que não existe no catálogo")
+        L = json.loads((ROOT / "estado/livros_monitoramento.json").read_text(encoding="utf-8"))["ligados"]
+        self.assertEqual([k for k in L if k not in C], [], "livro ligado que não existe no catálogo")
         self.assertEqual(O.get("ligados"), len(L))
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
         cards = h[h.index("function desenhaBzCards(){"):h.index('$("bz-cards").innerHTML=cards.map(')]
-        self.assertIn("FX.opressores", cards); self.assertNotIn("eds.filter(e=>situacaoDe(e)", cards)
+        self.assertIn("FX.livros", cards); self.assertNotIn("eds.filter(e=>situacaoDe(e)", cards)
         # 11/10 (titular): fontes monitoradas = livros ligados (edital aberto, prestes a abrir ou fluxo contínuo) — o mesmo
-        # número dos opressores ligados; o total da Biblioteca vai no balão
+        # número dos livros ligados; o total da Biblioteca vai no balão
         self.assertIn('"Fontes monitoradas",fr(OP.ligados??0,OP.catalogo??0)', cards, "fontes monitoradas: monitorados / total de livros")
         self.assertIn("prestes a abrir", cards, "com a divisão: edital aberto, prestes a abrir e contínuas")
         self.assertNotIn('<div class="s ${c[4]}">', h, "cartão da Bússola sem texto além do título")
@@ -212,19 +212,19 @@ class TesteIntegridadePainel(unittest.TestCase):
         y = (ROOT / ".github/workflows/monitoramento-diario.yml").read_text(encoding="utf-8")
         self.assertIn('"0 6 * * 0"', y); self.assertIn("motor-gife|motor-patrocinio", y)
 
-    def test_opressores_mesma_contagem_em_todo_lugar(self):
-        """28/09: cartão 317/994, painel dos opressores 774 acesos e painel de busca 366 — três contagens diferentes."""
+    def test_livros_mesma_contagem_em_todo_lugar(self):
+        """28/09: cartão 317/994, painel dos livros 774 acesos e painel de busca 366 — três contagens diferentes."""
         M = json.loads((ROOT / "docs/dados/motores.json").read_text(encoding="utf-8"))
-        L = json.loads((ROOT / "estado/opressores.json").read_text(encoding="utf-8"))["ligados"]
+        L = json.loads((ROOT / "estado/livros_monitoramento.json").read_text(encoding="utf-8"))["ligados"]
         C = json.loads((ROOT / "biblioteca_alexandria/fontes/motores.json").read_text(encoding="utf-8"))["motores"]
         self.assertEqual(M["resumo"]["total"], len(C)); self.assertEqual(M["resumo"]["ligados"], len(L))
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
-        self.assertIn('return m?m.proximidade==="ligado":true;', h, "opressor aceso = ligado; motor regular sempre aceso")
-        self.assertIn('id="mo-uf"', h, "filtro por estado dos motores opressores")
+        self.assertIn('return m?m.proximidade==="ligado":true;', h, "livro aceso = ligado; motor regular sempre aceso")
+        self.assertIn('id="mo-uf"', h, "filtro por estado dos motores livros")
 
     def test_separacao_internacional(self):
-        """28/09: separação e filtro das oportunidades internacionais nos motores opressores."""
-        from src.opressores_repositorio import internacional
+        """28/09: separação e filtro das oportunidades internacionais nos motores livros."""
+        from src.livros_repositorio import internacional
         self.assertTrue(internacional({"programa": "Ford Foundation"}))
         self.assertTrue(internacional({"programa": "União Europeia – Erasmus+"}))
         self.assertFalse(internacional({"programa": "Editais FICA Goiás — Festival Internacional de Cinema Ambiental"}))

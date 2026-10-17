@@ -9,7 +9,7 @@ sys.path.insert(0, str(ROOT))
 class TesteRegraDosLivros(unittest.TestCase):
     def test_checklist_vai_ao_livro_e_e_preservado(self):
         from src.livros_regra import anotar_checklist
-        from src.livros_opressores import classificar
+        from src.livros_curadoria import classificar
         x = {"programa": "Edital X", "uf": "GO"}
         self.assertEqual(anotar_checklist(x, {"Objeto": {"v": "apoio a projetos"}, "Valor": "R$ 10 mil"}, "motor teste"), 2)
         classificar(x)

@@ -1,20 +1,20 @@
 """Os 12 parâmetros de cada Livro de oportunidade, pesquisados na fonte oficial (29/09/2026).
 
-Regra do titular: cada opressor ligado persegue os 12 parâmetros do edital do seu recurso — Objeto, Prazo de
+Regra do titular: cada livro ligado persegue os 12 parâmetros do edital do seu recurso — Objeto, Prazo de
 inscrição, Resultado, Prazo de recurso, Valor, Órgão / financiador, Território, Esfera, Requisitos, Anexos,
 Modalidade e Área de atuação. Quando o recurso não tem algum deles (programa permanente, fluxo contínuo, doação,
 destinação de imposto, TAC, emenda), fica registrada a DISPENSA e o porquê.
 
-A pesquisa é feita por blocos e gravada em `biblioteca_alexandria/livros/_acervo/opressores/parametros/parametros_AAAA-MM-DD.json` (um registro
-por opressor; o arquivo mais recente prevalece). Este módulo leva esses dados para:
+A pesquisa é feita por blocos e gravada em `biblioteca_alexandria/livros/_acervo/livros/parametros/parametros_AAAA-MM-DD.json` (um registro
+por livro; o arquivo mais recente prevalece). Este módulo leva esses dados para:
 
-- `estado/opressores.json` → `ligados[id].itens` (texto que a rotina dos disjuntores já entende: o item preenchido
+- `estado/livros_monitoramento.json` → `ligados[id].itens` (texto que a rotina dos disjuntores já entende: o item preenchido
   não é mais perguntado à IA) e `ligados[id].parametros` (os 12 com status, a edição de referência e a fonte);
 - o histórico dos desligados (`historico[].parametros`), para a edição encerrada alimentar a previsão;
 - o catálogo (`parametros` em cada motor), chamado por `src.motores` antes de gravar.
 
 Decisões: V = edital vigente aberto · A = última edição encerrada (histórico) · R = programa permanente sem edital
-periódico · D = não é recurso para OSC (o opressor é desligado e não volta a ser ligado automaticamente) ·
+periódico · D = não é recurso para OSC (o livro é desligado e não volta a ser ligado automaticamente) ·
 P = pendente, com o motivo. Nada é inventado: dado sem fonte oficial fica null com o status "não localizado".
 Aplicação idempotente: rodar duas vezes não muda nada.
 """
@@ -26,13 +26,13 @@ from pathlib import Path
 
 from .nucleo import ROOT
 
-PASTA = ROOT / "biblioteca_alexandria/livros/_acervo/opressores/parametros"
-EST = ROOT / "estado/opressores.json"
+PASTA = ROOT / "biblioteca_alexandria/livros/_acervo/livros/parametros"
+EST = ROOT / "estado/livros_monitoramento.json"
 ITENS = ("Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador",
          "Território", "Esfera", "Requisitos", "Anexos", "Modalidade", "Área de atuação")
 STATUS = ("confirmado", "dispensado pelo edital", "não informado no edital", "não localizado")
 DECISOES = {"V": "edital vigente aberto", "A": "última edição encerrada (histórico)", "R": "programa permanente sem edital periódico",
-            "D": "não é recurso para OSC — opressor desligado", "P": "pendente"}
+            "D": "não é recurso para OSC — livro desligado", "P": "pendente"}
 
 
 def _j(p: Path, padrao):
@@ -43,7 +43,7 @@ def _j(p: Path, padrao):
 
 
 def carregar() -> dict[str, dict]:
-    """Registro por opressor; arquivos lidos em ordem alfabética — o mais recente prevalece."""
+    """Registro por livro; arquivos lidos em ordem alfabética — o mais recente prevalece."""
     out: dict[str, dict] = {}
     for arq in sorted(PASTA.glob("parametros_*.json")) if PASTA.exists() else []:
         d = _j(arq, {})
@@ -51,7 +51,7 @@ def carregar() -> dict[str, dict]:
             if r.get("id") and r.get("decisao") in DECISOES:
                 out[r["id"]] = {**r, "verificado_em": r.get("verificado_em") or d.get("data")}
     _reg = out
-    # 30/09: a curadoria dos livros pode ter juntado/renomeado o opressor pesquisado — segue o mapa de identificadores
+    # 30/09: a curadoria dos livros pode ter juntado/renomeado o livro pesquisado — segue o mapa de identificadores
     _m = dict((_j(PASTA / "mapa_ids_2026-09-30.json", {}) or {}).get("mapa") or {})
     try:                                       # 01/10: livro juntado a outro na conferência — a pesquisa segue para o que ficou
         for _x in (_j(ROOT / "biblioteca_alexandria/fontes/motores.json", {}) or {}).get("motores") or []:
@@ -66,7 +66,7 @@ def carregar() -> dict[str, dict]:
 
 
 def dispensados() -> set[str]:
-    """Opressores que a pesquisa mostrou não serem recurso: não voltam a ser ligados automaticamente."""
+    """Livros que a pesquisa mostrou não serem recurso: não voltam a ser ligados automaticamente."""
     return {k for k, r in carregar().items() if r["decisao"] == "D"}
 
 
@@ -113,7 +113,7 @@ def aplicar(hoje: date | None = None) -> dict:
     P = carregar(); CAT = _catalogo()
     est = _j(EST, {"ligados": {}})
     est.setdefault("ligados", {}); est.setdefault("historico", [])
-    res = {"registros": len(P), "itens_gravados": 0, "opressores_atualizados": 0, "desligados": 0, "historico_anotado": 0}
+    res = {"registros": len(P), "itens_gravados": 0, "livros_atualizados": 0, "desligados": 0, "historico_anotado": 0}
     mudou = False
     for oid in list(est["ligados"]):
         r = P.get(oid)
@@ -125,7 +125,7 @@ def aplicar(hoje: date | None = None) -> dict:
                 from . import dispensas_itens as DI
                 DI.no_livro(par, CAT.get(oid), str((par.get("edital") or {}).get("titulo") or ""), str((CAT.get(oid) or {}).get("programa") or ""))
                 if json.dumps(par, sort_keys=True, ensure_ascii=False) != antes:
-                    res["opressores_atualizados"] += 1; mudou = True
+                    res["livros_atualizados"] += 1; mudou = True
             continue
         reg = est["ligados"][oid]
         if r["decisao"] == "D":
@@ -146,7 +146,7 @@ def aplicar(hoje: date | None = None) -> dict:
         if r.get("fonte_oficial") and r["decisao"] in ("V", "A", "R") and reg.get("url_edital") != ((r.get("edital_referencia") or {}).get("url") or r["fonte_oficial"]):
             reg["url_edital"] = (r.get("edital_referencia") or {}).get("url") or r["fonte_oficial"]; alterou = True
         if alterou:
-            res["opressores_atualizados"] += 1; mudou = True
+            res["livros_atualizados"] += 1; mudou = True
     for h in est["historico"]:
         r = P.get(h.get("id"))
         if r and h.get("id") not in est["ligados"] and h.get("parametros") != _resumo_com_dispensa(r, CAT.get(h.get("id"))):

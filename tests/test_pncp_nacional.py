@@ -33,7 +33,7 @@ class TestePncpNacional(unittest.TestCase):
         """14/10/2026 (titular, decisão definitiva): a exceção de 02/10 (PNCP em qualquer estado) caiu — município de outro
         estado que não é capital não tem livro, venha de onde vier; capital e Goiás continuam."""
         from src.curadoria_biblioteca import fora_da_abrangencia
-        from src.opressores_repositorio import dispensa
+        from src.livros_repositorio import dispensa
         self.assertTrue(fora_da_abrangencia({"programa": "Chamamento", "orgao": "Prefeitura de Campinas", "geo": "SP", "pagina": "https://pncp.gov.br/app/editais/1/2026/3"}))
         self.assertIsNotNone(dispensa({"titulo": "Chamamento público OSC", "orgao": "Prefeitura de Campinas", "uf": "SP", "origem": "motor pncp"}))
         self.assertIsNone(dispensa({"titulo": "Chamamento público OSC", "orgao": "Prefeitura de Curitiba", "uf": "PR", "origem": "motor pncp"}))   # capital

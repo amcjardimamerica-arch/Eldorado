@@ -59,10 +59,10 @@ class TestArquivoDeValidacao(unittest.TestCase):
             if r["decisao"] not in VM.SAEM_DO_MAPA:
                 self.assertIsNone(r.get("regra_aprendida"), f"{r['id']} seria dispensado por {r.get('regra_aprendida')}")
 
-    def test_toda_valida_tem_opressor_ou_motivo(self):
+    def test_toda_valida_tem_livro_ou_motivo(self):
         for r in self.itens:
             if r["decisao"].startswith("valida"):
-                op = r.get("opressor") or {}
+                op = r.get("livro_vinculado") or {}
                 self.assertTrue(op.get("id") or op.get("acao"), r["id"])
 
 
@@ -112,19 +112,19 @@ class TestRegrasAprendidas(unittest.TestCase):
 class TestAplicacaoIdempotente(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp())
-        self.orig = {k: getattr(VM, k) for k in ("PASTA", "ARQUIVADOS", "EXT", "CAT_OPR", "EST_OPR", "PRED")}
+        self.orig = {k: getattr(VM, k) for k in ("PASTA", "ARQUIVADOS", "EXT", "CAT_LIVROS_SIS", "EST_LIVROS_MON", "PRED")}
         VM.PASTA = self.tmp / "val"; VM.PASTA.mkdir()
         VM.ARQUIVADOS = self.tmp / "arquivados.json"; VM.EXT = self.tmp / "ext"
-        VM.CAT_OPR = self.tmp / "motores.json"; VM.EST_OPR = self.tmp / "opressores.json"; VM.PRED = self.tmp / "pred.jsonl"
-        VM.CAT_OPR.write_text(json.dumps({"motores": [{"id": "nova-lixo", "tipo": "oportunidade_mapeada", "ativa": True, "programa": "lixo"}]}), encoding="utf-8")
-        VM.EST_OPR.write_text(json.dumps({"ligados": {"nova-lixo": {"desde": "2026-09-20", "ate": "2026-10-20", "ia": [], "itens": {}}}}), encoding="utf-8")
+        VM.CAT_LIVROS_SIS = self.tmp / "motores.json"; VM.EST_LIVROS_MON = self.tmp / "livros.json"; VM.PRED = self.tmp / "pred.jsonl"
+        VM.CAT_LIVROS_SIS.write_text(json.dumps({"motores": [{"id": "nova-lixo", "tipo": "oportunidade_mapeada", "ativa": True, "programa": "lixo"}]}), encoding="utf-8")
+        VM.EST_LIVROS_MON.write_text(json.dumps({"ligados": {"nova-lixo": {"desde": "2026-09-20", "ate": "2026-10-20", "ia": [], "itens": {}}}}), encoding="utf-8")
         dz = {k: {"valor": "v", "status": "confirmado"} for k in VM.ITENS}
         itens = [
             {"id": "ok1", "titulo": "Edital bom", "decisao": "valida_aberta", "motivo": "aberto", "fonte_oficial": "https://org.br/edital",
-             "origem_fonte": "site oficial do patrocinador", "prazo": "2026-10-30", "doze_itens": dz, "validado_em": "2026-09-27", "opressor": {"id": None}},
+             "origem_fonte": "site oficial do patrocinador", "prazo": "2026-10-30", "doze_itens": dz, "validado_em": "2026-09-27", "livro_vinculado": {"id": None}},
             {"id": "enc1", "titulo": "Edital encerrado", "decisao": "arquivada_encerrada", "motivo": "fechou", "fonte_oficial": "https://org.br/velho",
-             "origem_fonte": "site oficial do órgão", "prazo": "2026-04-17", "validado_em": "2026-09-27", "opressor": {"id": None}},
-            {"id": "lixo1", "titulo": "Notícia", "decisao": "descartada", "motivo": "notícia", "validado_em": "2026-09-27", "opressor": {"id": "nova-lixo"}},
+             "origem_fonte": "site oficial do órgão", "prazo": "2026-04-17", "validado_em": "2026-09-27", "livro_vinculado": {"id": None}},
+            {"id": "lixo1", "titulo": "Notícia", "decisao": "descartada", "motivo": "notícia", "validado_em": "2026-09-27", "livro_vinculado": {"id": "nova-lixo"}},
         ]
         (VM.PASTA / "validacao_2026-09-27.json").write_text(json.dumps({"itens": itens}), encoding="utf-8")
 
@@ -136,15 +136,15 @@ class TestAplicacaoIdempotente(unittest.TestCase):
     def test_aplica_uma_vez_so(self):
         r1 = VM.aplicar(date(2026, 9, 27))
         self.assertEqual(r1["arquivados_novos"], 2)
-        self.assertEqual(r1["opressores_criados"], 1)
-        self.assertEqual(r1["opressores_desligados"], 1)
+        self.assertEqual(r1["livros_monitorados_criados"], 1)
+        self.assertEqual(r1["livros_desligados"], 1)
         self.assertEqual(r1["preditivo_novo"], 2)
         arq = json.loads(VM.ARQUIVADOS.read_text(encoding="utf-8"))
         self.assertEqual(arq["lixo1"]["estado"], "descartado"); self.assertEqual(arq["enc1"]["estado"], "encerrado")
-        est = json.loads(VM.EST_OPR.read_text(encoding="utf-8"))
+        est = json.loads(VM.EST_LIVROS_MON.read_text(encoding="utf-8"))
         self.assertNotIn("nova-lixo", est["ligados"])
         novo = [k for k in est["ligados"] if k != "nova-lixo"][0]
-        self.assertEqual(len(est["ligados"][novo]["itens"]), 12, "opressor nasce com os 12 dados confirmados")
+        self.assertEqual(len(est["ligados"][novo]["itens"]), 12, "livro nasce com os 12 dados confirmados")
         ve = json.loads((VM.EXT / "ok1.json").read_text(encoding="utf-8"))["verificacao_externa"]
         self.assertEqual(ve["prazo"], "2026-10-30")
         pred = [json.loads(l) for l in VM.PRED.read_text(encoding="utf-8").splitlines()]

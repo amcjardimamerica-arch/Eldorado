@@ -45,7 +45,7 @@ PARAMETROS = {
                   "para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
     "ordem_dos_alvos": ["0. PRIORIDADE: possíveis oportunidades de GOIÁS no mapa; depois as dos outros estados em sorteio (titular, 27/09)","1. edital NOVO trazido pelos motores de busca (descoberto desde o corte)", "2. indício NOVO trazido pelo Espião (candidatas)",
                         "3. oportunidade ABERTA atual com itens em falta (alimenta o que já está no painel)", "4. empresa NOVA do radar do Espião (ficha de fonte de recurso)",
-                        "5. motor OPRESSOR que nunca leu a própria página (lê e devolve prazo e condições ao opressor)"],
+                        "5. motor LIVRO que nunca leu a própria página (lê e devolve prazo e condições ao livro)"],
     "modos": {
         "validar": "editais dos motores de busca e oportunidades abertas atuais: mapear a fonte oficial e comprovar as doze condições",
         "complementar": "os achados do Piloto - Espião — indícios de edital e empresas sem edital (fontes de recurso)",
@@ -451,7 +451,7 @@ def proximo_alvo() -> dict | None:
 
     def pend(x):
         return x.get("id") and x["id"] not in feitos and not x.get("inspecao") and not (x.get("confirmada") and (x.get("condicoes") or {}).get("comprovadas", 0) >= 9) \
-            and not x.get("opressor_dispensa") and "emendas" not in str(x.get("origem") or "")   # emenda já é confirmada pela configuração
+            and not x.get("livro_dispensa") and "emendas" not in str(x.get("origem") or "")   # emenda já é confirmada pela configuração
 
     def alvo_fluxo(x, uf, de):
         arq = ROOT / "dados/editais/extraidos" / f"{x['id']}.json"
@@ -464,7 +464,7 @@ def proximo_alvo() -> dict | None:
         arq = ROOT / "dados/editais/extraidos" / f"{oid}.json"
         if not arq.exists():
             write_json(arq, {"edital_id": oid, "titulo": x.get("nome_classificado") or x.get("programa"), "url": x.get("pagina"), "orgao": x.get("orgao"), "origem": de, "livro": x["id"]})
-        return {"id": oid, "opressor": x["id"], "titulo": f"{x.get('nome_classificado') or x.get('programa')}"[:160], "url": x.get("pagina"),
+        return {"id": oid, "livro_vinculado": x["id"], "titulo": f"{x.get('nome_classificado') or x.get('programa')}"[:160], "url": x.get("pagina"),
                 "de": de, "modo": "validar", "tipo": "edital", "uf": x.get("geo")}
 
     # livros que precisam de estudo: com página, sem os 12 parâmetros fechados (ou pendentes), não estudados há 7 dias
@@ -594,12 +594,12 @@ def novos_dos_motores(maximo: int = 30) -> list[dict]:
     return out[:maximo]
 
 
-def opressores_sem_leitura(maximo: int = 40) -> list[dict]:
-    """OPRESSORES QUE NUNCA LERAM A PRÓPRIA PÁGINA (27/09): 92 foram criados de oportunidades novas e todos estão
+def livros_sem_leitura(maximo: int = 40) -> list[dict]:
+    """LIVROS QUE NUNCA LERAM A PRÓPRIA PÁGINA (27/09): 92 foram criados de oportunidades novas e todos estão
     'não lida ainda' — a fase de IA deles depende de chave externa que não existe. O Interceptador lê a página com
-    o modelo local e comprova as condições; o resultado volta ao catálogo do opressor (prazo, regime, camadas)."""
+    o modelo local e comprova as condições; o resultado volta ao catálogo do livro (prazo, regime, camadas)."""
     cat = ROOT / "biblioteca_alexandria/fontes/motores.json"
-    lig = ROOT / "estado/opressores.json"
+    lig = ROOT / "estado/livros_monitoramento.json"
     if not cat.exists():
         return []
     C = load_json(cat).get("motores") or []
@@ -613,19 +613,19 @@ def opressores_sem_leitura(maximo: int = 40) -> list[dict]:
         if chave in vistos:                      # 'Convênios e parcerias' criado 4 vezes: estuda uma
             continue
         vistos.add(chave)
-        out.append({"id": "op-" + x["id"], "opressor": x["id"], "titulo": f"{x.get('programa')} — {x.get('orgao')}"[:160], "url": pag,
-                    "de": "opressor sem leitura", "orgao": x.get("orgao")})
+        out.append({"id": "op-" + x["id"], "livro_vinculado": x["id"], "titulo": f"{x.get('programa')} — {x.get('orgao')}"[:160], "url": pag,
+                    "de": "livro sem leitura", "orgao": x.get("orgao")})
         if len(out) >= maximo:
             break
     return out
 
 
-def _devolver_ao_opressor(alvo: dict, inv: dict) -> None:
+def _devolver_ao_livro(alvo: dict, inv: dict) -> None:
     cat = ROOT / "biblioteca_alexandria/fontes/motores.json"
     C = load_json(cat)
     reg = registro(alvo["id"]) or {}
     for x in C.get("motores") or []:
-        if x.get("id") == alvo.get("opressor"):
+        if x.get("id") == alvo.get("livro_vinculado"):
             campos = inv.get("campos") or {}
             x["validacao"] = f"lida pelo Piloto - Interceptador em {now_iso()[:10]}: {inv.get('comprovados', 0)}/12"
             x["ultima_leitura"] = now_iso()
@@ -679,14 +679,14 @@ def _proximo_alvo_anterior() -> dict | None:
     if go:
         x = go[0]
         return {"id": x["id"], "titulo": x.get("titulo"), "url": x.get("url"), "de": "mapa · Goiás (prioridade)", "modo": "validar", "tipo": "edital", "uf": "GO"}
-    # OPRESSOR ATIVO SEM LEITURA (28/09): o opressor nasce com a página da oportunidade, mas nada a lia (a fase de IA
+    # LIVRO ATIVO SEM LEITURA (28/09): o livro nasce com a página da oportunidade, mas nada a lia (a fase de IA
     # dele depende de chave externa). Vem logo depois de Goiás — antes, ficava no fim da fila e nunca era alcançado.
-    op0 = [o for o in opressores_sem_leitura() if o["id"] not in feitos]
+    op0 = [o for o in livros_sem_leitura() if o["id"] not in feitos]
     if op0:
         o = op0[0]
         arq = ROOT / "dados/editais/extraidos" / f"{o['id']}.json"
         if not arq.exists():
-            write_json(arq, {"edital_id": o["id"], "titulo": o["titulo"], "url": o["url"], "orgao": o.get("orgao"), "origem": "opressor sem leitura"})
+            write_json(arq, {"edital_id": o["id"], "titulo": o["titulo"], "url": o["url"], "orgao": o.get("orgao"), "origem": "livro sem leitura"})
         return {**o, "modo": "validar", "tipo": "edital"}
     outros = [(k, x) for k, v in fx.items() if k != "GO" for x in v if _pend(x)]
     if outros:
@@ -704,7 +704,7 @@ def _proximo_alvo_anterior() -> dict | None:
     abertos = [a for a in lista if a["de"] == "edital aberto com itens em falta" and a["id"] not in feitos]
     if abertos:
         return {**abertos[0], "modo": "validar", "tipo": "edital"}
-    op = [o for o in opressores_sem_leitura() if o["id"] not in feitos]
+    op = [o for o in livros_sem_leitura() if o["id"] not in feitos]
     emp = sorted([e for e in empresas_pendentes() if e["chave"] not in feitos],
                  key=lambda e: _prio(str(e.get("empresa") or ""), str(e.get("site") or "")))
     if emp:
@@ -713,7 +713,7 @@ def _proximo_alvo_anterior() -> dict | None:
         o = op[0]
         arq = ROOT / "dados/editais/extraidos" / f"{o['id']}.json"
         if not arq.exists():
-            write_json(arq, {"edital_id": o["id"], "titulo": o["titulo"], "url": o["url"], "orgao": o.get("orgao"), "origem": "opressor sem leitura"})
+            write_json(arq, {"edital_id": o["id"], "titulo": o["titulo"], "url": o["url"], "orgao": o.get("orgao"), "origem": "livro sem leitura"})
         return {**o, "modo": "validar", "tipo": "edital"}
     return None
 
@@ -776,9 +776,9 @@ def voo(ia) -> dict:
         if arq.exists():
             e = json.loads(arq.read_text(encoding="utf-8")); e["investigacao_ia"] = inv; arq.write_text(json.dumps(e, ensure_ascii=False, indent=1), encoding="utf-8")
         _devolver_a_fila(a, inv); _abate_proprio(reg, inv, a)
-        if a.get("opressor"):
+        if a.get("livro_vinculado"):
             try:
-                _devolver_ao_opressor(a, inv)
+                _devolver_ao_livro(a, inv)
             except Exception:
                 pass
         try:

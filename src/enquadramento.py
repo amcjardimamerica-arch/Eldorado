@@ -196,7 +196,7 @@ def prompt_enquadramento(a: dict, e: dict, itens: dict, criterios: list[dict]) -
 
 
 def _chamar(modelo: str, prompt: str, max_tokens: int = 1400, web: bool = False, tarefa: str | None = None) -> dict:
-    from .opressores import _chamar as _c
+    from .livros_monitoramento import _chamar as _c
     return _c(modelo, prompt, max_tokens, web=web, tarefa=tarefa)
 
 

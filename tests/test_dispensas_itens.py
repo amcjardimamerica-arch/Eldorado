@@ -6,10 +6,10 @@ import unittest
 from pathlib import Path
 
 from src import dispensas_itens as DI
-from src import parametros_opressores as PO
+from src import livros_parametros as PO
 
 ROOT = Path(__file__).resolve().parents[1]
-ARQ = ROOT / "biblioteca_alexandria/livros/_acervo/opressores/parametros/parametros_2026-10-01.json"
+ARQ = ROOT / "biblioteca_alexandria/livros/_acervo/livros/parametros/parametros_2026-10-01.json"
 PROIBIDAS = ("queridodiario", "pncp.gov.br/app", "observatorio3setor", "captadores.org", "bussolasocial",
              "prosas.com.br", "idis.org.br", "filantropia.ong", "capitaai", "farolcultural", "duckduckgo")
 
@@ -101,10 +101,10 @@ class TestLivroVerificadoPorOutraVia(unittest.TestCase):
             doze = {k: {"valor": "v", "status": "confirmado"} for k in DI.ITENS}
             doze["Prazo de recurso"] = {"valor": None, "status": "não localizado"}
             PO.EST.write_text(json.dumps({"ligados": {"x": {"itens": {}, "parametros": {"decisao": "V", "doze": doze}}}, "historico": []}), encoding="utf-8")
-            r1 = PO.aplicar(); self.assertEqual(r1["opressores_atualizados"], 1)
+            r1 = PO.aplicar(); self.assertEqual(r1["livros_atualizados"], 1)
             par = json.loads(PO.EST.read_text(encoding="utf-8"))["ligados"]["x"]["parametros"]
             self.assertIn("regime", par); self.assertEqual(par["faltam_exigidos"], ["Prazo de recurso"])
-            self.assertEqual(PO.aplicar()["opressores_atualizados"], 0, "segunda aplicação não muda nada")
+            self.assertEqual(PO.aplicar()["livros_atualizados"], 0, "segunda aplicação não muda nada")
         finally:
             PO.PASTA, PO.EST = orig; shutil.rmtree(tmp, ignore_errors=True)
 
@@ -159,7 +159,7 @@ class TestParametros1001(unittest.TestCase):
                 self.assertGreaterEqual(r["prazo"], self.d["data"], r["id"])
 
     def test_completados_nao_perdem_o_que_ja_estava_fechado(self):
-        ant = {r["id"]: r for r in json.loads((ROOT / "biblioteca_alexandria/livros/_acervo/opressores/parametros/parametros_2026-09-29.json").read_text(encoding="utf-8"))["itens"]}
+        ant = {r["id"]: r for r in json.loads((ROOT / "biblioteca_alexandria/livros/_acervo/livros/parametros/parametros_2026-09-29.json").read_text(encoding="utf-8"))["itens"]}
         for r in self.itens:
             a = ant.get(r.get("id_pesquisado") or r["id"])
             if r.get("completado_em") and a:

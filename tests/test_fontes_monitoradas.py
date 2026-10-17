@@ -5,7 +5,7 @@ from datetime import date
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from src import opressores as O
+from src import livros_monitoramento as O
 
 
 class TesteAlvo(unittest.TestCase):
@@ -26,7 +26,7 @@ class TesteAlvo(unittest.TestCase):
         self.assertIn("deve ABRIR por volta de 2026-10-20", p); self.assertIn("Não reaproveite dados da edição anterior", p)
 
     def test_regra_no_ciclo_e_cartao(self):
-        s = (ROOT / "src/opressores.py").read_text(encoding="utf-8")
+        s = (ROOT / "src/livros_monitoramento.py").read_text(encoding="utf-8")
         self.assertIn('if o.startswith("automática") and fid not in alvo:', s); self.assertIn('"monitoramento"', s)
         self.assertNotIn("prestes a abrir (previsão)", (ROOT / "docs/dashboard.html").read_text(encoding="utf-8"), "12/10 (titular): o mostrador mostra só os números")
 

@@ -14,7 +14,7 @@ on:
         required: false
         default: ""
       bloco:
-        description: "Bloco a executar: diarios | justica_legislativo | plataformas_api | completude | opressores | relatorio | empresas | regulares | documentos | completo"
+        description: "Bloco a executar: diarios | justica_legislativo | plataformas_api | completude | livros | relatorio | empresas | regulares | documentos | completo"
         required: false
         default: "completo"
 permissions:
@@ -61,7 +61,7 @@ jobs:
             "0 4 * * *") B=justica_legislativo;;
             "0 5 * * *") B=plataformas_api;;
             "0 6 * * *") B=completude;;
-            "0 7 * * *") B=opressores;;
+            "0 7 * * *") B=livros;;
             "0 9 * * *") B=relatorio;;
             "0 6 * * 0") B=empresas;;
             "30 6 1 * *") B=documentos;;
@@ -121,7 +121,7 @@ jobs:
           # 03/10 (teste do motor 09): o pypdf só era instalado DEPOIS deste passo — os PDFs dos editais (MPT, TJGO…) nunca eram lidos
           pip install pypdf --quiet || echo "pypdf: instalação falhou — PDFs ficam sem texto (registrado no diagnóstico)"
           case "$MOTORES_BLOCO" in
-            diarios|justica_legislativo|plataformas_api|opressores|manual|regulares|completo)
+            diarios|justica_legislativo|plataformas_api|livros|manual|regulares|completo)
               # 02/10: saída sem buffer (o progresso aparece no log) e aviso REAL de falha/estouro (antes o "||" valia para o
               # tee, que sempre termina bem, e o aviso nunca aparecia); a parada graciosa fica antes do limite (1380 s < 1500 s)
               set +e
@@ -169,8 +169,8 @@ jobs:
           if [ "$MOTORES_BLOCO" = "relatorio" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             timeout 600 python -m src.emendas_docs || echo 'emendas_docs: registrado'
           fi
-          if [ "$MOTORES_BLOCO" = "opressores" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
-            timeout 600 python -m src.opressores || echo "disjuntores: registrado"
+          if [ "$MOTORES_BLOCO" = "livros_do_sistema" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
+            timeout 600 python -m src.livros_monitoramento || echo "disjuntores: registrado"
           fi
           if [ "$MOTORES_BLOCO" = "plataformas_api" ] || [ "$MOTORES_BLOCO" = "completo" ]; then
             timeout 600 python -m src.investigacao || echo "src.investigacao: encerrado no orçamento de 600s ou falhou — registrado"

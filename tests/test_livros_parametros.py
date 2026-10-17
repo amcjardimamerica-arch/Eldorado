@@ -1,4 +1,4 @@
-"""Os 12 parâmetros dos Motores Opressores (29/09/2026): arquivo de dados, regras de fonte e aplicação idempotente."""
+"""Os 12 parâmetros dos Motores Livros (29/09/2026): arquivo de dados, regras de fonte e aplicação idempotente."""
 from __future__ import annotations
 
 import json
@@ -8,10 +8,10 @@ import unittest
 from datetime import date
 from pathlib import Path
 
-from src import parametros_opressores as PO
+from src import livros_parametros as PO
 
 ROOT = Path(__file__).resolve().parents[1]
-ARQ = ROOT / "biblioteca_alexandria/livros/_acervo/opressores/parametros/parametros_2026-09-29.json"
+ARQ = ROOT / "biblioteca_alexandria/livros/_acervo/livros/parametros/parametros_2026-09-29.json"
 PROIBIDAS = ("queridodiario", "pncp.gov.br/app", "observatorio3setor", "captadores.org", "bussolasocial",
              "prosas.com.br", "idis.org.br", "filantropia.ong", "capitaai", "farolcultural", "duckduckgo")
 
@@ -71,7 +71,7 @@ class TestAplicacao(unittest.TestCase):
         self.tmp = Path(tempfile.mkdtemp())
         self.orig = (PO.PASTA, PO.EST)
         PO.PASTA = self.tmp / "par"; PO.PASTA.mkdir()
-        PO.EST = self.tmp / "opressores.json"
+        PO.EST = self.tmp / "livros.json"
         PO.EST.write_text(json.dumps({"ligados": {
             "ok": {"desde": "2026-09-20", "ate": "2026-10-20", "ia": [], "itens": {}},
             "lixo": {"desde": "2026-09-20", "ate": "2026-10-20", "ia": [], "itens": {}},
@@ -115,9 +115,9 @@ class TestAplicacao(unittest.TestCase):
 
 class TestLigacao(unittest.TestCase):
     def test_dispensado_nao_religa(self):
-        src = (ROOT / "src/opressores.py").read_text(encoding="utf-8")
+        src = (ROOT / "src/livros_monitoramento.py").read_text(encoding="utf-8")
         self.assertIn("desligados |= _disp()", src)
-        src = (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8")
+        src = (ROOT / "src/livros_repositorio.py").read_text(encoding="utf-8")
         self.assertIn('x["id"] not in _disp', src)
 
 

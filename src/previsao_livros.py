@@ -19,7 +19,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CAT = ROOT / "biblioteca_alexandria/fontes/motores.json"
-LIG = ROOT / "estado/opressores.json"
+LIG = ROOT / "estado/livros_monitoramento.json"
 PAR = ROOT / "config/parametros_biblioteca.json"
 SAIDA = ROOT / "docs/dados/previsao_livros.json"
 PADRAO = {"ativar_dias_antes": 30, "duracao_padrao_dias": 30, "confianca_minima": "media", "anual_com_uma_janela": True, "horizonte_painel_dias": 120}
@@ -121,7 +121,7 @@ def run(hoje: date | None = None) -> dict:
     cfg = {**PADRAO, **((_j(PAR, {}) or {}).get("previsao") or {})}
     C = _j(CAT, {}); L = _j(LIG, {"ligados": {}}); L.setdefault("ligados", {})
     try:
-        from .parametros_opressores import dispensados
+        from .livros_parametros import dispensados
         disp = dispensados()
     except Exception:
         disp = set()

@@ -69,7 +69,7 @@ class TesteMelhoriasMotores(unittest.TestCase):
         self.assertEqual(fica[0]["link_oficial"], "https://x.go.gov.br/e.pdf"); self.assertEqual(fica[0]["checklist"]["Valor"]["s"], "ok")
 
     def test_criador_le_o_repositorio_e_ajuste_generico(self):
-        self.assertIn("biblioteca_alexandria/livros/_vistas/repositorio_unico.json", (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8"))
+        self.assertIn("biblioteca_alexandria/livros/_vistas/repositorio_unico.json", (ROOT / "src/livros_repositorio.py").read_text(encoding="utf-8"))
         self.assertTrue((ROOT / "scripts/ajustar_ouro_sem_prova.py").exists())
 
 
@@ -88,7 +88,7 @@ class TesteRegraExterna(unittest.TestCase):
 
     def test_livro_direciona_e_arquiva(self):
         self.assertIn("REGRA_EXTERNA", (ROOT / "src/repositorio_unico.py").read_text(encoding="utf-8"))
-        o = (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8"); self.assertIn('x["arquivado"] =', o); self.assertIn("livros_reabertos", o)
+        o = (ROOT / "src/livros_repositorio.py").read_text(encoding="utf-8"); self.assertIn('x["arquivado"] =', o); self.assertIn("livros_reabertos", o)
         self.assertIn("regra_de_resolucao", (ROOT / "scripts/gerar_lote_chrome.py").read_text(encoding="utf-8"))
         self.assertTrue((ROOT / "docs/prompts/PROMPT-BUSCA-EXTERNA-PADRAO.md").exists())
 
@@ -119,7 +119,7 @@ class TesteEsteiraFarol(unittest.TestCase):
         self.assertTrue(R._etapa("validada", "acompanhar o prazo", False, False)[0].startswith("5"))
 
     def test_livro_farol_e_aprendizado(self):
-        o = (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8")
+        o = (ROOT / "src/livros_repositorio.py").read_text(encoding="utf-8")
         self.assertIn('if m and not re.match(r"(?i)sem crit[ée]rio de sele", m):', o)   # 14/10: municipal de outro estado não ganha livro
         self.assertIn("não se aplica a OSC: o destino é a dispensa", o); self.assertIn('x["pagina_aprendida"]', o)
         self.assertIn('"modelo": "oportunidade completa", "pronta": True', (ROOT / "src/preparacao_livros.py").read_text(encoding="utf-8"))

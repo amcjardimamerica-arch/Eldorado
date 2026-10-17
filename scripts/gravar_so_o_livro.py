@@ -29,7 +29,7 @@ def alvos_do_voo(pasta: Path, janela_min: int = 90) -> set[str]:
         for v in d.get("voos") or []:
             if str(v.get("em") or v.get("inicio") or "") >= desde[:19]:
                 a = v.get("alvo") or {}
-                for k in ("id", "livro", "opressor"):
+                for k in ("id", "livro", "livro_vinculado"):
                     x = a.get(k) if isinstance(a, dict) else (a if k == "id" else None)
                     if x:
                         ids.add(str(x))
@@ -43,8 +43,8 @@ def livros_dos_alvos(ids: set[str], cat: dict) -> set[str]:
         F = json.loads((ROOT / "docs/dados/fluxo_oportunidades.json").read_text(encoding="utf-8"))
         for v in F.get("itens_por_uf", {}).values():
             for it in v:
-                if it.get("id") in ids and it.get("opressor") in livros:
-                    out.add(it["opressor"])
+                if it.get("id") in ids and it.get("livro_vinculado") in livros:
+                    out.add(it["livro_vinculado"])
     except Exception:  # noqa: BLE001
         pass
     return out

@@ -189,7 +189,7 @@ class TesteLexicoERestricoesNoLivro(unittest.TestCase):
         self.assertIn("continuos", lexico_especifico(x))
 
     def test_prompt_do_livro_leva_lexico_e_restricoes(self):
-        from src.opressores import prompt_para_fonte
+        from src.livros_monitoramento import prompt_para_fonte
         x = dict(LIVRO); x["busca"] = R.bloco_do_livro(x, HOJE)
         p = prompt_para_fonte(x, None, ["Valor"], [])
         self.assertIn("Léxico do livro", p); self.assertIn("NA-02", p); self.assertIn("Enquadramento", p)

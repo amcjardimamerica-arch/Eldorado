@@ -35,6 +35,18 @@ OPERACIONAIS = {
     "restaurado_de", "segmento", "familia", "goias", "nivel", "contagem", "resumo", "ligado", "ligados", "cursor",
 }
 MAX_ANTERIORES = 10
+# 17/10/2026 (titular): os "opressores" viraram LIVROS — campo renomeado não é campo sumido; a versão gravada é lida com
+# os nomes novos (o nome antigo sai de vez, sem voltar pela trava)
+RENOMEADOS = {"opressor": "livro_vinculado", "opressores": "livros_do_sistema", "opressor_dispensa": "livro_dispensa",
+              "opressor_edicoes": "livro_edicoes", "opressor_previsao": "livro_previsao", "opressores_total": "livros_total"}
+
+
+def renomear(o):
+    if isinstance(o, dict):
+        return {RENOMEADOS.get(k, k): renomear(v) for k, v in o.items()}
+    if isinstance(o, list):
+        return [renomear(x) for x in o]
+    return o
 
 
 def _agora() -> str:
@@ -58,6 +70,8 @@ def _chave_item(x) -> str:
 
 def reconciliar(antes: dict, depois: dict, st: dict, nivel: int = 0) -> dict:
     """O 'depois' só pode GANHAR em relação ao 'antes' (nos campos de conteúdo)."""
+    if nivel == 0:
+        antes = renomear(antes)
     for k, va in antes.items():
         if nivel == 0 and k in OPERACIONAIS:
             continue

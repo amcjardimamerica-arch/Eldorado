@@ -352,7 +352,7 @@ def fases(ctx: dict) -> list[dict]:
          "t": 700, "pular": "já feita hoje" if feita_hoje else None, "depois": lambda: diaria.write_text(_hoje_brt(), encoding="utf-8")},
         # 16/10/2026 (sala de controle): os produtores que só rodavam no fluxo 01 (que falhava) — uma vez por dia
         {"etapa": "vigilancia_diaria", "finalidade": "vigilância dos livros pelo próprio motor, alerta de cadência dos motores e medição de uso dos arquivos",
-         "cmds": [[py, "-m", "src.opressores"], [py, "-m", "src.alerta_motores"], [py, "-m", "src.uso_arquivos"]], "t": 1300,
+         "cmds": [[py, "-m", "src.livros_monitoramento"], [py, "-m", "src.alerta_motores"], [py, "-m", "src.uso_arquivos"]], "t": 1300,
          "pular": "já feita hoje" if (ROOT / "estado/vigilancia_diaria.txt").exists() and
                   (ROOT / "estado/vigilancia_diaria.txt").read_text(encoding="utf-8").strip() == _hoje_brt() else None,
          "depois": lambda: (ROOT / "estado/vigilancia_diaria.txt").write_text(_hoje_brt(), encoding="utf-8")},
@@ -368,6 +368,8 @@ def fases(ctx: dict) -> list[dict]:
         # todas as telas leem o MESMO retrato, tirado depois de tudo o que mexe nos livros
         {"etapa": "fechamento", "finalidade": "repositório por último; fluxo e pendências do Cartório derivados dele (uma só fonte)",
          "cmds": [
+                  # 17/10 (titular): os "opressores" viraram LIVROS — junta o que uma passagem antiga gravou com o nome antigo
+                  [py, "-c", "import json; from src import livros_monitoramento as M; print(json.dumps(M.migrar_nome_antigo(), ensure_ascii=False))"],
                   # 17/10 (titular): REAPLICA a restauração dos livros retirados em massa às 02:28 (idempotente)
                   [py, "scripts/restaurar_livros.py", "--aplicar"],
                   # 17/10 (titular): REAPLICA as importações do Chrome (idempotente) — uma passagem que começou antes de uma

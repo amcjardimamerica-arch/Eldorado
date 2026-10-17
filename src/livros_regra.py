@@ -33,7 +33,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CAT = ROOT / "biblioteca_alexandria/fontes/motores.json"
 FLUXO = ROOT / "docs/dados/fluxo_oportunidades.json"
 SEMENTE = ROOT / "biblioteca_alexandria/livros/_vistas/livros_parecer_238.json"
-INDICE = ROOT / "estado/opressores_indice.json"
+INDICE = ROOT / "estado/livros_monitoramento_indice.json"
 LOCAIS = ROOT / "docs/dados/locais_de_busca.json"
 DOZE = ["Objeto", "Prazo de inscrição", "Resultado", "Prazo de recurso", "Valor", "Órgão / financiador", "Território", "Esfera",
         "Requisitos", "Anexos", "Modalidade", "Área de atuação"]
@@ -105,13 +105,13 @@ def aplicar_motores() -> dict:
     atual, criado = Counter(), Counter()
     for uf, itens in (F.get("itens_por_uf") or {}).items():
         for it in itens:
-            oid = (idx.get(it.get("id")) or {}).get("opressor")
+            oid = (idx.get(it.get("id")) or {}).get("livro_vinculado")
             x = por_id.get(oid)
             if not x:
                 continue
             origem = str(it.get("origem") or "motor")
             if "pncp" in origem.lower() or "pncp.gov.br" in str(it.get("url") or ""):
-                from .livros_opressores import classificar as _cl
+                from .livros_curadoria import classificar as _cl
                 _corrigir_territorio(x, {"uf": it.get("uf"), "municipio": it.get("municipio")}, _cl)   # RC-01: PNCP diz a UF
             if str(x.get("criado_em") or "") == hoje:
                 criado[origem] += 1
@@ -216,8 +216,8 @@ def _aplicar_semente_24_39(C: dict) -> dict:
 def registrar_achados(achados: list[dict], origem: str, catalogo: dict | None = None, gravar: bool = True) -> dict:
     """Achado que não está nos livros vira um livro novo; o que já existe recebe a informação nova e, se for outra
     publicação, ENTRA COMO EDIÇÃO no histórico do livro (alimenta a previsão). Usado pelo Espião e pelo motor estadual."""
-    from .opressores_repositorio import chave, internacional
-    from .livros_opressores import classificar
+    from .livros_repositorio import chave, internacional
+    from .livros_curadoria import classificar
     from .regras_restricao import avaliar, julgar_no_livro, bloco_do_livro
     C = catalogo if catalogo is not None else _j(CAT, {}); ms = C.setdefault("motores", [])
     vetados = C.setdefault("vetados_pelas_restricoes", [])

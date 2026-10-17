@@ -728,8 +728,8 @@ def run() -> dict:
                                   "uf": m.get("uf"), "nivel": m.get("nivel")} for m in novas],
         "camadas": list(CAMADAS),
     }
-    # 28/09: o catálogo não é só deste gerador — o fluxo das oportunidades cria opressores próprios ('nova-…') a partir
-    # do que é encontrado. Reescrever só com a lista daqui APAGAVA esses opressores (24 numa rodada) e trazia duplicados.
+    # 28/09: o catálogo não é só deste gerador — o fluxo das oportunidades cria livros próprios ('nova-…') a partir
+    # do que é encontrado. Reescrever só com a lista daqui APAGAVA esses livros (24 numa rodada) e trazia duplicados.
     # Preserva os que não são deste gerador e deixa um só por programa + órgão.
     import re as _re
     _cat_arq = ROOT / "biblioteca_alexandria/fontes/motores.json"
@@ -753,7 +753,7 @@ def run() -> dict:
         x["diagnostico"] = {"faltam": d0.get("faltam") or [], "causa": d0.get("causa"), "acao": d0.get("acao"), "estado": d0.get("estado") or "repositorio"}
         return x
     motores = motores + [_neutro(x) for x in _ant if x.get("id") not in _ids]
-    _lig = set(((load_json(ROOT / "estado/opressores.json") or {}).get("ligados") or {}).keys()) if (ROOT / "estado/opressores.json").exists() else set()
+    _lig = set(((load_json(ROOT / "estado/livros_monitoramento.json") or {}).get("ligados") or {}).keys()) if (ROOT / "estado/livros_monitoramento.json").exists() else set()
     _grp = {}
     for x in motores:
         _grp.setdefault(_re.sub(r"[^a-z0-9]", "", f"{x.get('programa')}{x.get('orgao')}".lower())[:80], []).append(x)
@@ -766,14 +766,14 @@ def run() -> dict:
             __import__("src.banco_livros", fromlist=["x"]).juntar_em(_g[0], _y, "mesmo programa e órgão (painel dos motores)")
         _fica.append(_g[0])
     motores = _fica
-    # título que é data/hora ou lixo de página não vira opressor (28/09)
+    # título que é data/hora ou lixo de página não vira livro (28/09)
     _lixo = re.compile(r"^\s*\d{1,2}\s+[a-zç]{3}\.?\s+\d{1,2}:\d{2}|^\s*\d{1,2}:\d{2}\b|^\W*$", re.I)
     motores = [x for x in motores if x.get("parametros") or not (str(x.get("id", "")).startswith(("nova-", "op-")) and _lixo.search(str(x.get("programa") or "")))]
     # PARÂMETROS DA BIBLIOTECA NO GERADOR (01/10): o gerador reconstrói os registros originais a cada ciclo — sem isto,
     # a conferência era desfeita (municipal de outro estado voltava; empresa sem edital voltava a ser livro)
     try:
         from .curadoria_biblioteca import fora_da_abrangencia, empresa_sem_edital
-        from .livros_opressores import classificar as _cl0
+        from .livros_curadoria import classificar as _cl0
         _arq = set()
         _af = ROOT / "biblioteca_alexandria/livros/arquivo_fora_da_abrangencia.jsonl.xz"
         if _af.exists():
@@ -809,9 +809,9 @@ def run() -> dict:
         motores = _f
     except Exception:
         pass
-    # SEPARAÇÃO INTERNACIONAL (28/09): uma regra só (src/opressores_repositorio.internacional); o opressor internacional
+    # SEPARAÇÃO INTERNACIONAL (28/09): uma regra só (src/livros_repositorio.internacional); o livro internacional
     # vai para a família "Internacionais", esfera "Internacional"
-    from .opressores_repositorio import internacional as _intl
+    from .livros_repositorio import internacional as _intl
     for _m in motores:
         if _intl(_m):
             _m["internacional"] = True; _m["familia"] = "Internacionais"; _m["esfera"] = "Internacional"
@@ -820,9 +820,9 @@ def run() -> dict:
             if _m.get("esfera") == "Internacional":
                 _m["esfera"] = "Brasil"
     resumo["internacionais"] = sum(1 for _m in motores if _m.get("internacional"))
-    # LIVROS (29/09): todo opressor — os originais também — com geografia, objeto, tipo, público e inscrição, e o nome
+    # LIVROS (29/09): todo livro — os originais também — com geografia, objeto, tipo, público e inscrição, e o nome
     # classificado ("GO - Cultura · Edital — programa")
-    from .livros_opressores import classificar as _classificar
+    from .livros_curadoria import classificar as _classificar
     for _m in motores:
         try:
             _classificar(_m)
@@ -836,8 +836,8 @@ def run() -> dict:
     resumo["total"] = len(motores); resumo["ligados"] = sum(1 for _m in motores if _m.get("id") in _lig)
     resumo["ativas"] = resumo["ligados"]; resumo["inativas"] = resumo["total"] - resumo["ligados"]
     resumo["repositorios_de_oportunidade"] = sum(1 for _m in motores if _m.get("tipo") == "repositorio_de_oportunidade")
-    try:                                   # 29/09: os 12 parâmetros pesquisados (ou a dispensa) em cada opressor
-        from .parametros_opressores import no_catalogo as _par_cat
+    try:                                   # 29/09: os 12 parâmetros pesquisados (ou a dispensa) em cada livro
+        from .livros_parametros import no_catalogo as _par_cat
         resumo["com_parametros"] = _par_cat(motores)
     except Exception:
         pass
@@ -845,7 +845,7 @@ def run() -> dict:
     _cat_arq.write_text(json.dumps({**resumo, **_cab, "motores": motores}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")   # 01/10: compacto
     from .compacto import compactar
     pasta = ROOT / "docs/dados"; pasta.mkdir(parents=True, exist_ok=True)
-    from .opressores import proximidade as _prox, _estado as _est_op
+    from .livros_monitoramento import proximidade as _prox, _estado as _est_op
     lig = _est_op().get("ligados", {})
     for m in motores:
         m["proximidade"] = "ligado" if m["id"] in lig else _prox(m, hoje)
@@ -876,18 +876,18 @@ def run() -> dict:
             for m in motores]
     pac = compactar(leve)
     pac["resumo"] = {k: v for k, v in resumo.items() if k not in ("plataformas", "oficiais", "novas_sem_referencia")}
-    # ESTADO REAL DE CADA NOVA (28/09): a caixa dizia "o motor persegue os 12 itens" e nenhum opressor lia a página
+    # ESTADO REAL DE CADA NOVA (28/09): a caixa dizia "o motor persegue os 12 itens" e nenhum livro lia a página
     try:
         import re as _re
         _nt = lambda t: _re.sub(r"[^a-z0-9]", "", str(t or "").lower())[:60]
         _cat = load_json(ROOT / "biblioteca_alexandria/fontes/motores.json").get("motores", [])
-        _lig = (load_json(ROOT / "estado/opressores.json") or {}).get("ligados", {})
+        _lig = (load_json(ROOT / "estado/livros_monitoramento.json") or {}).get("ligados", {})
         from .validacao_mapa import carregar as _valc
         _val = {_nt(v.get("titulo")): v for v in _valc().values()}
         for n in resumo["novas_sem_referencia"]:
             o = next((x for x in _cat if _nt(x.get("programa")) == _nt(n.get("titulo"))), None)
             v = _val.get(_nt(n.get("titulo")))
-            n["opressor"] = {"id": o["id"], "ligado": o["id"] in _lig, "leitura": o.get("validacao")} if o else None
+            n["livro_vinculado"] = {"id": o["id"], "ligado": o["id"] in _lig, "leitura": o.get("validacao")} if o else None
             n["validacao"] = {"decisao": v.get("decisao"), "motivo": str(v.get("motivo") or "")[:160], "prazo": v.get("prazo"), "fonte_oficial": v.get("fonte_oficial")} if v else None
     except Exception:
         pass

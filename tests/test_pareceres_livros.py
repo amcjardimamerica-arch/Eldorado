@@ -1,7 +1,7 @@
 import json
 import unittest
 
-from src import dispensas_itens, livros_opressores, pareceres_livros
+from src import dispensas_itens, livros_curadoria, pareceres_livros
 
 
 class TestPareceresLivros(unittest.TestCase):
@@ -9,7 +9,7 @@ class TestPareceresLivros(unittest.TestCase):
         x = {"id": "op-teste", "programa": "Edital PNAB Ciclo 2", "orgao": "Prefeitura", "uf": "GO", "historico": [],
              "livro": {"pareceres": [{"data": "2026-10-02", "oportunidade": "a"}], "iniciativa": {"valor": "poder_publico"},
                        "historico_3_anos": {"situacao": "recorrente"}}}
-        livros_opressores.classificar(x)
+        livros_curadoria.classificar(x)
         self.assertEqual(x["livro"]["pareceres"][0]["oportunidade"], "a")
         self.assertEqual(x["livro"]["iniciativa"]["valor"], "poder_publico")
         self.assertEqual(x["livro"]["historico_3_anos"]["situacao"], "recorrente")

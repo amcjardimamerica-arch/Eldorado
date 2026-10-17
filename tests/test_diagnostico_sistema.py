@@ -25,7 +25,7 @@ class TesteDiagnostico(unittest.TestCase):
 
     def test_correcao_em_sequencia_com_as_rotinas_do_sistema(self):
         src = (ROOT / "src/diagnostico_sistema.py").read_text(encoding="utf-8")
-        for r in ("decisoes_titular.run", "opressores_repositorio.sincronizar", "repositorio_unico.construir", "fluxo_oportunidades.atualizar_mapa",
+        for r in ("decisoes_titular.run", "livros_repositorio.sincronizar", "repositorio_unico.construir", "fluxo_oportunidades.atualizar_mapa",
                   "fichas_oportunidades.run", "sala_controle.run", "saude.checar"):
             self.assertIn(r, src)
 
@@ -44,7 +44,7 @@ class TesteDiagnostico(unittest.TestCase):
         cur = (ROOT / "src/curadoria_biblioteca.py").read_text(encoding="utf-8")
         self.assertIn('fora = [x for x in ms if fora_da_abrangencia(x)]', cur); self.assertIn("ARQ.unlink()", cur)   # 14/10: apagados, sem arquivo
         self.assertNotIn('"recuperado_por"', cur)
-        self.assertIn("só Goiás tem livros municipais", (ROOT / "src/opressores_repositorio.py").read_text(encoding="utf-8"))
+        self.assertIn("só Goiás tem livros municipais", (ROOT / "src/livros_repositorio.py").read_text(encoding="utf-8"))
         self.assertIn('_m.get("id") in _arq or', (ROOT / "src/motores.py").read_text(encoding="utf-8"))
         d = D.diagnosticar()["oportunidades"]
         self.assertIn("municipais_de_outro_estado_abertas", d); self.assertIn("livros_municipais_de_outro_estado", d)

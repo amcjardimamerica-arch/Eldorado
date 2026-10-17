@@ -1,6 +1,6 @@
-"""MOTOR OPRESSOR = REPOSITÓRIO DE UMA OPORTUNIDADE (titular, 28/09).
+"""MOTOR LIVRO = REPOSITÓRIO DE UMA OPORTUNIDADE (titular, 28/09).
 
-Cada opressor guarda UMA oportunidade (um programa/edital recorrente de um financiador): as edições que já existiram
+Cada livro guarda UMA oportunidade (um programa/edital recorrente de um financiador): as edições que já existiram
 (com prazo, página oficial, condições comprovadas e o estudo do Interceptador), a edição atual e a previsão da
 próxima. Serve de rota de busca (a página oficial) e de histórico para a análise preditiva.
 
@@ -8,13 +8,13 @@ próxima. Serve de rota de busca (a página oficial) e de histórico para a aná
                      credenciamento, seleção — aberta ou já encerrada (o histórico é o que permite prever).
   QUEM É DISPENSADO  empresa, doação, patrocínio, propaganda/publicidade e demais atos sem concorrência nem abertura a
                      todas as associações (inclusive emenda parlamentar, que é indicação); fica registrado o motivo.
-  EDIÇÕES            a mesma oportunidade de anos diferentes cai no MESMO opressor (chave = programa + financiador,
+  EDIÇÕES            a mesma oportunidade de anos diferentes cai no MESMO livro (chave = programa + financiador,
                      sem anos, números de edital e "nª edição"); cada edição entra no histórico.
   PREVISÃO           com duas ou mais edições, o mês em que as inscrições costumam fechar dá a próxima janela.
 
 Fontes: oportunidades abertas do fluxo validado e as oportunidades catalogadas na Biblioteca. O que a validação
-descartou (não é oportunidade) não vira opressor. Grava o catálogo (biblioteca_alexandria/fontes/motores.json), os
-ligados (estado/opressores.json) e o índice oportunidade → opressor (estado/opressores_indice.json).
+descartou (não é oportunidade) não vira livro. Grava o catálogo (biblioteca_alexandria/fontes/motores.json), os
+ligados (estado/livros_monitoramento.json) e o índice oportunidade → livro (estado/livros_monitoramento_indice.json).
 """
 from __future__ import annotations
 
@@ -28,8 +28,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CAT = ROOT / "biblioteca_alexandria/fontes/motores.json"
-LIG = ROOT / "estado/opressores.json"
-IDX = ROOT / "estado/opressores_indice.json"
+LIG = ROOT / "estado/livros_monitoramento.json"
+IDX = ROOT / "estado/livros_monitoramento_indice.json"
 FLUXO = ROOT / "docs/dados/fluxo_oportunidades.json"
 FICHAS = ROOT / "biblioteca_alexandria/livros/anexos"
 
@@ -69,7 +69,7 @@ def dispensa(item: dict) -> str | None:
 
 
 def _dispensa_regras(item: dict) -> str | None:
-    """Motivo da dispensa de opressor, ou None (precisa de opressor)."""
+    """Motivo da dispensa de livro, ou None (precisa de livro)."""
     t = f"{item.get('titulo') or ''} {item.get('orgao') or ''}"
     if NAO_E_SELECAO.search(t):     # 28/09: dispensa de chamamento, inexigibilidade, pessoa física, compra — não é seleção aberta a associações
         return "não é seleção aberta a associações (dispensa/inexigibilidade de chamamento, credenciamento de pessoa física ou compra)"
@@ -79,7 +79,7 @@ def _dispensa_regras(item: dict) -> str | None:
         x = {"programa": item.get("titulo"), "orgao": item.get("orgao"), "geo": item.get("uf") or None,
              "pagina": item.get("pagina_oficial") or item.get("link_oficial") or item.get("url"), "origem": item.get("origem")}
         if not x["geo"]:
-            from .livros_opressores import uf_do_dominio
+            from .livros_curadoria import uf_do_dominio
             x["geo"] = uf_do_dominio(x["pagina"])[0]
         if fora_da_abrangencia(x):     # 14/10/2026 (titular, confirmado): só Goiás tem livros municipais
             return "fora da abrangência: oportunidade pública municipal de outro estado (só Goiás tem livros municipais)"
@@ -151,8 +151,8 @@ def canonica_por_revisao() -> dict:
 
 def sincronizar() -> dict:
     C = _j(CAT, {"motores": []}); L = _j(LIG, {"ligados": {}}); L.setdefault("ligados", {})
-    try:                                   # 29/09: opressor que a pesquisa dos 12 parâmetros descartou não religa
-        from .parametros_opressores import dispensados
+    try:                                   # 29/09: livro que a pesquisa dos 12 parâmetros descartou não religa
+        from .livros_parametros import dispensados
         _disp = dispensados()
     except Exception:
         _disp = set()
@@ -165,7 +165,7 @@ def sincronizar() -> dict:
     _pg = lambda u: re.sub(r"^https?://(www\.)?", "", str(u or "")).rstrip("/").lower()
     for x in C.get("motores") or []:
         por_chave.setdefault(chave(x.get("programa") or "", x.get("orgao") or ""), x)
-        por_chave.setdefault(chave(x.get("programa") or ""), x)          # o fluxo criava opressor só com o título
+        por_chave.setdefault(chave(x.get("programa") or ""), x)          # o fluxo criava livro só com o título
         if x.get("pagina"):
             por_pag.setdefault(_pg(x["pagina"]), x)
     hoje = date.today(); idx = {}; st = Counter()
@@ -177,7 +177,7 @@ def sincronizar() -> dict:
                 por_item.setdefault(str(h["id"]), x)
     _canon = canonica_por_revisao()
 
-    def opressor_de(item: dict, origem: str, aberta: bool) -> str:
+    def livro_de(item: dict, origem: str, aberta: bool) -> str:
         k = chave(item.get("titulo") or "", item.get("orgao") or "")
         x = por_chave.get(k) or por_chave.get(chave(item.get("titulo") or ""))
         pelo_nome = bool(x)
@@ -272,7 +272,7 @@ def sincronizar() -> dict:
                 idx[it["id"]] = {"dispensa": m}; st["dispensadas"] += 1; continue
             if it.get("tipo") == "menção em diário oficial" and not SELECAO.search(it.get("titulo") or ""):
                 idx[it["id"]] = {"dispensa": "menção em diário sem ato de seleção identificado"}; continue
-            idx[it["id"]] = {"opressor": opressor_de(it, "aberta", True)}
+            idx[it["id"]] = {"livro_vinculado": livro_de(it, "aberta", True)}
     # 1b) 11/10 (titular): TODA oportunidade aberta do REPOSITÓRIO ÚNICO tem livro — inclusive as que vêm só da caixa
     #     dos motores (não passam pelo fluxo); as mesmas regras de dispensa valem
     _rep = _j(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json", {})
@@ -281,7 +281,7 @@ def sincronizar() -> dict:
         if x.get("estado") not in ("em_verificacao", "validada", "validacao_manual") or str(x.get("proximo_passo") or "").startswith("dispensar"):
             continue                                    # 11/10: o que vai ser dispensado (não é chamamento) não ganha livro
         _ja = [idx[i] for i in [x["id"]] + list(x.get("ids_origem") or []) if i in idx]
-        if any("opressor" in j for j in _ja):
+        if any("livro_vinculado" in j for j in _ja):
             continue
         _motivo = next((j.get("dispensa") for j in _ja if j.get("dispensa")), "") or ""
         if re.match(r"(?i)n[ãa]o [ée] sele[çc][ãa]o aberta|empresa sem edital", _motivo):
@@ -291,8 +291,8 @@ def sincronizar() -> dict:
         m = dispensa(it)
         if m and not re.match(r"(?i)sem crit[ée]rio de sele", m):     # 14/10: municipal de outro estado também não ganha livro
             idx[x["id"]] = {"dispensa": m}; st["dispensadas"] += 1; continue
-        _lid = opressor_de(it, "aberta", True)                 # 11/10: aberta (por decisão da titular) → tem livro
-        idx[x["id"]] = {"opressor": _lid}; st["do_repositorio_unico"] += 1
+        _lid = livro_de(it, "aberta", True)                 # 11/10: aberta (por decisão da titular) → tem livro
+        idx[x["id"]] = {"livro_vinculado": _lid}; st["do_repositorio_unico"] += 1
         if m:
             for _x in C.get("motores") or []:
                 if _x.get("id") == _lid:
@@ -315,7 +315,7 @@ def sincronizar() -> dict:
             idx[fid] = {"dispensa": m}; st["dispensadas_biblioteca"] += 1; continue
         if not SELECAO.search(f"{tit} {item['orgao']}"):
             idx[fid] = {"dispensa": "sem critério de seleção identificado no título"}; continue
-        idx[fid] = {"opressor": opressor_de(item, "biblioteca", False)}
+        idx[fid] = {"livro_vinculado": livro_de(item, "biblioteca", False)}
     # REPOSITÓRIO CRIADO PARA ATO QUE NÃO É SELEÇÃO (28/09): sai do catálogo
     antes = len(C["motores"])
     C["motores"] = [x for x in C["motores"] if x.get("parametros") or not (x.get("tipo") == "repositorio_de_oportunidade" and NAO_E_SELECAO.search(f"{x.get('programa') or ''} {x.get('orgao') or ''}"))]   # 30/09: pesquisado nunca sai
@@ -323,7 +323,7 @@ def sincronizar() -> dict:
     _lixo = re.compile(r"^\s*\d{1,2}\s+[a-zç]{3}\.?\s+\d{1,2}:\d{2}|^\s*\d{1,2}:\d{2}\b|^\W*$", re.I)
     C["motores"] = [x for x in C["motores"] if x.get("parametros") or not (str(x.get("id", "")).startswith(("nova-", "op-")) and _lixo.search(str(x.get("programa") or "")))]
     st["repositorios_indevidos_removidos"] = antes - len(C["motores"])
-    # LIGADO SEM OPRESSOR NÃO É FONTE MONITORADA (28/09): 33 ligados não existiam mais no catálogo e inflavam a contagem
+    # LIGADO SEM LIVRO NÃO É FONTE MONITORADA (28/09): 33 ligados não existiam mais no catálogo e inflavam a contagem
     ids = {x.get("id") for x in C.get("motores") or []}
     orfaos = [k for k in L["ligados"] if k not in ids]
     for k in orfaos:
@@ -371,7 +371,7 @@ def sincronizar() -> dict:
     LIG.write_text(json.dumps(L, ensure_ascii=False, indent=1), encoding="utf-8")
     IDX.write_text(json.dumps({"regra": __doc__.split("Fontes:")[0].strip(), "indice": idx}, ensure_ascii=False), encoding="utf-8")
     com_hist = [x for x in C["motores"] if len(x.get("historico") or []) >= 2]
-    return {**st, "opressores": len(C["motores"]), "com_duas_ou_mais_edicoes": len(com_hist),
+    return {**st, "livros_do_sistema": len(C["motores"]), "com_duas_ou_mais_edicoes": len(com_hist),
             "com_previsao": sum(1 for x in C["motores"] if x.get("previsao")), "indice": len(idx)}
 
 

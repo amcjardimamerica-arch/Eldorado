@@ -1,4 +1,4 @@
-"""Motores opressores como LIVROS (29/09): classificação, nome "GO - Cultura", curadoria sem mistura, filtros e dossiê."""
+"""Motores livros como LIVROS (29/09): classificação, nome "GO - Cultura", curadoria sem mistura, filtros e dossiê."""
 import json, sys, unittest
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
@@ -7,7 +7,7 @@ sys.path.insert(0, str(ROOT))
 
 class TesteLivros(unittest.TestCase):
     def test_classificacao_e_nome(self):
-        from src.livros_opressores import classificar
+        from src.livros_curadoria import classificar
         x = classificar({"programa": "Programa Goyazes - projetos até R$ 20 mil", "uf": "GO"})
         self.assertTrue(x["rotulo"].startswith("GO - Cultura · Incentivo fiscal"))
         self.assertTrue(x["nome_classificado"].startswith("Programa Goyazes") and x["nome_classificado"].endswith("— Goiás"))   # 01/10: nome da oportunidade — Estado / Cidade

@@ -2,7 +2,7 @@
 
 Entradas (todas já gravadas em dados/):
   - fila_br.json (1.123 livros);
-  - opressores/parametros/parametros_*.json (142 livros já com os 12 pontos, de rodadas anteriores);
+  - livros/parametros/parametros_*.json (142 livros já com os 12 pontos, de rodadas anteriores);
   - coleta_3_anos/lotes12_out/ (1ª passagem) e lotes12b_out/ (2ª passagem, pendências);
   - coleta_3_anos/entrada/br_2026-10-03.json (edições dos 40 programas âncora).
 Saídas:
@@ -43,7 +43,7 @@ def _lista(d):
 def carregar():
     fila = {x["id"]: x for x in _j(PASTA / "fila_br.json")["fila"]}
     par = {}
-    for f in sorted(glob.glob(str(ROOT / "biblioteca_alexandria/livros/_acervo/opressores/parametros/parametros_*.json"))):
+    for f in sorted(glob.glob(str(ROOT / "biblioteca_alexandria/livros/_acervo/livros/parametros/parametros_*.json"))):
         for r in _j(f).get("itens", []):
             par[r["id"]] = r
     p1 = {}

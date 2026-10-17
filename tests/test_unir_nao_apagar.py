@@ -41,5 +41,5 @@ class ContratoDaBussola(unittest.TestCase):
         R = Path(__file__).resolve().parents[1]
         cat = len(json.loads((R / "biblioteca_alexandria/fontes/motores.json").read_text(encoding="utf-8"))["motores"])
         flx = json.loads((R / "docs/dados/fluxo_oportunidades.json").read_text(encoding="utf-8"))
-        self.assertEqual(flx["opressores"]["catalogo"], cat)
-        self.assertEqual(flx["etapas"]["opressores_total"], cat)
+        self.assertEqual(flx["livros_do_sistema"]["catalogo"], cat)
+        self.assertEqual(flx["etapas"]["livros_total"], cat)

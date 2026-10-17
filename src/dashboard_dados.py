@@ -1454,7 +1454,7 @@ def coletar(hoje: date | None = None) -> dict:
         if not m.get("ativa"):
             continue
         pd = m.get("proxima_data") or {}
-        if isinstance(pd, str):                      # 27/09: opressor novo gravou só a data; aceita as duas formas
+        if isinstance(pd, str):                      # 27/09: livro novo gravou só a data; aceita as duas formas
             pd = {"fim": pd}
         fontes_ativas.append({
             "id": f'fonte-{m["id"]}', "fonte_260": m["id"], "programa": m["programa"],
