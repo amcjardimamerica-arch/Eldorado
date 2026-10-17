@@ -795,6 +795,8 @@ def juntar_em(fica: dict, sai: dict, motivo: str = "mesmo programa e órgão") -
     """17/10/2026 (titular): UNIR, nunca apagar — o livro que fica recebe o histórico, a coleta, as menções e os anexos do
     que sai, e registra a união em 'juntados' (a trava dos livros guarda o que saiu, inteiro, em _arquivados)."""
     for k in ("historico", "mencoes", "edicoes"):
+        if not isinstance(sai.get(k), list) or (k in fica and not isinstance(fica.get(k), list)):
+            continue                                          # 17/10: 'edicoes' pode ser um NÚMERO (contagem) — só lista com lista
         a = fica.get(k) if isinstance(fica.get(k), list) else []
         ids = {json.dumps(x, sort_keys=True, ensure_ascii=False) if not (isinstance(x, dict) and x.get("id")) else f"id:{x['id']}" for x in a}
         for x in sai.get(k) or []:
@@ -804,7 +806,7 @@ def juntar_em(fica: dict, sai: dict, motivo: str = "mesmo programa e órgão") -
         if a:
             fica[k] = a
     for k in ("coleta", "brutos", "anexos"):
-        if isinstance(sai.get(k), dict):
+        if isinstance(sai.get(k), dict) and isinstance(fica.get(k, {}), dict):
             d = fica.setdefault(k, {})
             for kk, vv in sai[k].items():
                 d.setdefault(kk, vv)

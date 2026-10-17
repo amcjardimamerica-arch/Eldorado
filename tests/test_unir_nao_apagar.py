@@ -20,3 +20,26 @@ class Unir(unittest.TestCase):
         fica = {"id": "a", "programa": "PNAB"}
         B.juntar_em(fica, {"id": "b", "programa": "PNAB"})
         self.assertIn("b", T._juntados([fica]), "com o registro, a trava arquiva em vez de devolver ao catálogo")
+
+
+class UnirComTiposDiferentes(unittest.TestCase):
+    def test_edicoes_numerico_nao_quebra(self):
+        """17/10: 'edicoes' é um NÚMERO em muitos livros — a união quebrava a leitura dos motores e a montagem do fluxo
+        (TypeError: 'int' object is not iterable) e a Bússola ficava com o número velho."""
+        fica = {"id": "a", "edicoes": 3, "coleta": {"x": 1}}
+        sai = {"id": "b", "edicoes": 2, "coleta": "texto", "historico": [{"id": "e1"}]}
+        B.juntar_em(fica, sai)
+        self.assertEqual(fica["edicoes"], 3); self.assertEqual(fica["coleta"], {"x": 1})
+        self.assertEqual(fica["historico"], [{"id": "e1"}])
+
+
+class ContratoDaBussola(unittest.TestCase):
+    def test_bussola_mostra_os_livros_do_catalogo(self):
+        """17/10 (titular): a Bússola mostra os livros do sistema — o número publicado é o do catálogo gravado."""
+        import json
+        from pathlib import Path
+        R = Path(__file__).resolve().parents[1]
+        cat = len(json.loads((R / "biblioteca_alexandria/fontes/motores.json").read_text(encoding="utf-8"))["motores"])
+        flx = json.loads((R / "docs/dados/fluxo_oportunidades.json").read_text(encoding="utf-8"))
+        self.assertEqual(flx["opressores"]["catalogo"], cat)
+        self.assertEqual(flx["etapas"]["opressores_total"], cat)
