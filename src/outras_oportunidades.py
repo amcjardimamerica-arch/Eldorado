@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import math
 from datetime import datetime, timezone
 from pathlib import Path
@@ -120,7 +121,8 @@ def _prioridade(d: str, f: dict) -> float:
 def lista_do_clone(k: int, n: int, agora: datetime | None = None) -> list[str]:
     """Os sites que o clone k (1…n) lê NESTA execução: sua parte das fontes, na ordem da rede, janela do horário."""
     fontes = (_j(FONTES, {}).get("fontes") or {})
-    parte = [(d, f) for d, f in fontes.items() if int(hashlib.md5(d.encode()).hexdigest(), 16) % n == (k - 1)]
+    parte = [(d, f) for d, f in fontes.items() if int(hashlib.md5(d.encode()).hexdigest(), 16) % n == (k - 1)
+             and not f.get("desativada")]                          # 17/10: fonte desativada não é mais lida
     parte.sort(key=lambda df: -_prioridade(*df))
     if not parte:
         return []
@@ -157,8 +159,22 @@ def contabilizar(r: dict, sensor: dict) -> None:
         if _dom(u) in fontes:
             fontes[_dom(u)]["leituras"] = int(fontes[_dom(u)].get("leituras") or 0) + 1
             fontes[_dom(u)]["ultima_leitura"] = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+    # 17/10/2026 (titular): só conta como ACHADO o que passa no portão; achado barrado por território (municipal de
+    # outro estado) ou por ser antigo conta contra a fonte — 2+ barrados e nenhum válido = fonte DESATIVADA
+    try:
+        from .porta_oportunidade import motivo_para_nao_guardar as _mot
+    except Exception:  # noqa: BLE001
+        _mot = lambda _a: None  # noqa: E731
     for a in r.get("achados") or []:
-        if _dom(a.get("url")) in fontes:
-            fontes[_dom(a.get("url"))]["achados"] = int(fontes[_dom(a.get("url"))].get("achados") or 0) + 1
+        dm = _dom(a.get("url"))
+        if dm not in fontes:
+            continue
+        m = _mot({k: v for k, v in a.items() if v})
+        if m is None or not re.search(r"(?i)munic|territ|fora de goi|outro estado|ano anterior|encerrad", str(m)):
+            fontes[dm]["achados"] = int(fontes[dm].get("achados") or 0) + 1
+        else:
+            fontes[dm]["barrados"] = int(fontes[dm].get("barrados") or 0) + 1
+            if fontes[dm]["barrados"] >= 2 and not int(fontes[dm].get("achados") or 0):
+                fontes[dm]["desativada"] = f"achados barrados pelo portão ({m}) e nenhum válido"
     d["fontes"] = fontes
     FONTES.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")

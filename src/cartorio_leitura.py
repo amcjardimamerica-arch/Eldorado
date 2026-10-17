@@ -166,9 +166,13 @@ def links_de_documento(html: str, base: str) -> list[tuple[str, str]]:
         r = re.sub(r"<[^>]+>|\s+", " ", rot).strip()
         if not u.startswith("http"):
             continue
-        doc = re.search(r"\.pdf($|\?)|/download/|/wp-content/uploads/|/arquivos?/|anexo", u, re.I)
-        if doc or re.search(r"(?i)\bedital\b|regulamento|chamamento|termo de refer", r):
-            peso = (3 if re.search(r"(?i)edital|regulamento|chamamento", r + u) else 0) + (2 if doc else 0) - \
+        # 17/10/2026 (titular): anexos em DOCX/ODT/XLSX/ZIP, Google Drive/Docs e rótulos de anexo também são documento
+        doc = re.search(r"\.(pdf|docx?|odt|ods|xlsx?|zip|rar)($|\?)|/download/|/wp-content/uploads/|/arquivos?/|anexo|"
+                        r"drive\.google\.com/(file/d/|open\?id=|uc\?)|docs\.google\.com/(document|spreadsheets)/d/", u, re.I)
+        anexo_rot = re.search(r"(?i)\banexo\b|formul[áa]rio|ficha de inscri|plano de trabalho|cronograma|declara[çc][ãa]o|"
+                              r"modelo de|planilha|or[çc]amento", r)
+        if doc or anexo_rot or re.search(r"(?i)\bedital\b|regulamento|chamamento|termo de refer", r):
+            peso = (3 if re.search(r"(?i)edital|regulamento|chamamento", r + u) else 0) + (2 if doc else 0) + (1 if anexo_rot else 0) - \
                    (2 if re.search(r"(?i)resultado|homologa|errata|retifica|ata\b|recurso", r + u) else 0)
             out.append((peso, u, r[:120]))
     for m in EMBUTIDO.finditer(html or ""):                 # PDF embutido no visualizador (iframe/embed/object/data-pdf)
@@ -183,7 +187,7 @@ def links_de_documento(html: str, base: str) -> list[tuple[str, str]]:
     for _p, u, r in sorted(out, key=lambda x: -x[0]):
         if u not in vistos:
             vistos.add(u); res.append((u, r))
-    return res[:8]
+    return res[:12]                                    # 17/10: anexos completos pedem mais que 8
 
 
 def links_de_saida(html: str, base: str) -> list[str]:

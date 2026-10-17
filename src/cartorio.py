@@ -371,7 +371,7 @@ def certificar(op: dict, faltam: list[str], rede: Rede, maximo_docs: int = 4, ga
             if L.regua(d["url"])[0]:
                 for u, rot in L.links_de_documento(html, d["url"]):
                     if len(fila) < maximo_docs + int(aj.get("extra") or 4) and u not in {x["url"] for x in fila}:
-                        fila.append({"url": u, "degrau": max(1, d["degrau"]), "como": f"documento citado na página oficial: {rot or u}"})
+                        fila.append({"url": _download_direto(u), "degrau": max(1, d["degrau"]), "como": f"documento citado na página oficial: {rot or u}"})
                 num = re.search(r"\b(\d{1,4}\s*/\s*20\d{2})\b", titulo)
                 if num and L.GOV.search(urlsplit(d["url"]).hostname or "") and re.search(r"(?i)wp-content|wordpress|wp-json", html):
                     base = "{0.scheme}://{0.netloc}".format(urlsplit(d["url"]))
