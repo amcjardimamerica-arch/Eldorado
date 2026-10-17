@@ -383,9 +383,12 @@ def fases(ctx: dict) -> list[dict]:
                   [py, "-c", "import json; from src import qualidade_motores as Q; print(json.dumps(Q.montar(), ensure_ascii=False))"],
                   # 17/10/2026 (titular): TRAVA DOS LIVROS — por último: nenhum livro apagado nem sobrescrito, só acrescido
                   [py, "-m", "src.trava_livros"],
+                  # 17/10 (titular): a BASE DO PAINEL (calendário e dias da Bússola) refeita a cada passagem, a partir do
+                  # repositório e dos livros — antes só fluxos diários/mensais a refaziam e os dias ficavam vazios
+                  [py, "-m", "src.dashboard_dados"],
                   # 17/10 (titular): a Bússola com o número do CATÁLOGO gravado (depois da trava)
                   [py, "-c", "import json; from src import fluxo_oportunidades as F; print(json.dumps(F.sincronizar_catalogo(), ensure_ascii=False))"]],
-         "t": 600, "pular": None},
+         "t": 900, "pular": None},
         {"etapa": "sala_de_controle", "finalidade": "instrumentos de cada etapa", "cmds": [[py, "-m", "src.sala_controle"]], "t": 150, "pular": None},
         {"etapa": "diagnostico", "finalidade": "diagnóstico da passagem (arquivo próprio; o relatório da análise não é sobrescrito)",
          "cmds": [[py, "-m", "src.diagnostico_sistema"]], "t": 300, "pular": None, "env": {"DIAG_PASSAGEM": "1"}},

@@ -19,7 +19,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 GUARDA = Path("/tmp/alterados_pelo_fluxo")
-AREAS = ["biblioteca_alexandria", "dados", "estado", "docs/dados", "docs/dashboard-dados.js", "docs/relatorios"]
+AREAS = ["biblioteca_alexandria", "dados", "estado", "docs/dados", "docs/dashboard-dados.js", "docs/dashboard-dados.json", "docs/relatorios"]
 
 
 # 17/10/2026: arquivos-ÍNDICE que vários fluxos gravam ao mesmo tempo. Copiar a versão do fluxo por cima do main apagava
