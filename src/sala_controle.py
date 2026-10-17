@@ -179,11 +179,14 @@ def montar(agora: datetime | None = None) -> dict:
            faz="Página com tempo esgotado ou erro de acesso sai da passagem e volta 30 minutos depois; a pesquisa segue com as próximas.",
            efeito=frr.get("regra") or "volta em 30 min; sai após 5 tentativas com o mesmo erro",
            resultado=f"{len(_pag) if fret else 0} página(s) voltam na próxima passagem (as oportunidades em leitura parcial têm mostrador próprio)")
-    _instr(I, agora, id="mo_fora_da_fila", sub="Motores", nome="Páginas fora da fila (5 erros iguais)", valor=frr.get("fora_da_fila"),
+    _dest = frr.get("destinos") or {}
+    _instr(I, agora, id="mo_fora_da_fila", sub="Motores", nome="Páginas fora da fila sem destino",   # 17/10: alarme = SEM destino
+           valor=_dest.get("sem destino", frr.get("fora_da_fila")),
            unidade="páginas", escala=[0, 20], quando=fret.get("em"), cadencia_h=2, faixa={"alarme": [None, 0]},
            faz="Falha: a página deu o mesmo erro 5 vezes seguidas e saiu da fila. Precisa de correção da rota ou leitura no Chrome.",
            efeito=" · ".join(f"{(r.get('escopo') or '—')}: {u[:70]} ({r.get('erro')})" for u, r in list(fora.items())[:6]) or "nenhuma",
-           resultado=" · ".join(f"{k}: {v}" for k, v in (frr.get("fora_da_fila_por_escopo") or {}).items()) or "nenhuma página fora da fila")
+           resultado=(" · ".join(f"{k}: {v}" for k, v in _dest.items() if v) or
+                      " · ".join(f"{k}: {v}" for k, v in (frr.get("fora_da_fila_por_escopo") or {}).items()) or "nenhuma página fora da fila"))
     # 17/10/2026 (titular): ETAPA 07 — VERIFICAÇÃO EXTERNA, alimentada pelo Cartório (ponto central do que falta)
     pend = _j(ROOT / "docs/dados/cartorio_pendencias.json") or {}
     pg = pend.get("para_o_chrome_por_grupo") or {}

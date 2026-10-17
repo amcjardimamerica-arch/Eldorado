@@ -129,3 +129,39 @@ def rota_quebrada(url: str, escopo: str, erro: str) -> dict:
     d["fora_da_fila"][url] = {"escopo": escopo, "erro": erro, "tentativas": 1, "saiu_em": a.isoformat(),
                               "motivo": "página não existe (rota quebrada) — corrigir o endereço na configuração do motor"}
     return {"estado": "fora_da_fila", **d["fora_da_fila"][url]}
+
+
+def dar_destino(gravar: bool = True) -> dict:
+    """17/10/2026 (titular): página FORA DA FILA (5 erros iguais) não fica parada acendendo alarme — cada uma ganha destino:
+    Cartório → Claude no Chrome; 404/410/domínio inexistente → ROTA QUEBRADA (registrada para correção do motor e
+    retirada da fila); 403/401/429/tempo esgotado → ponte ou Chrome. O alarme passa a ser só o que ficou SEM destino."""
+    import re as _re
+    from .nucleo import load_json, now_iso, write_json
+    d = load_json(ARQ) if ARQ.exists() else {}
+    fora = d.get("fora_da_fila") or {}
+    rotas_p = ROOT / "estado/rotas_quebradas.json"
+    rotas = (load_json(rotas_p) if rotas_p.exists() else {}) or {}
+    cont = {"Claude no Chrome": 0, "rota quebrada": 0, "ponte ou Chrome": 0, "sem destino": 0}
+    for u, r in list(fora.items()):
+        r = r or {}
+        erro = str(r.get("erro") or "")
+        if str(r.get("escopo")) == "cartorio":
+            r["destino"] = "Claude no Chrome"
+        elif _re.search(r"(?i)404|410|400|gaierror|name or service|nodename|ssl|valueerror|invalidurl", erro):
+            r["destino"] = "rota quebrada"
+            rotas[u] = {"escopo": r.get("escopo"), "erro": erro, "registrada_em": now_iso()[:10],
+                        "acao": "corrigir ou retirar a rota no motor"}
+            fora.pop(u, None)
+        elif _re.search(r"(?i)403|401|429|500|502|503|504|tempo esgotado|timeout|ponte", erro):
+            r["destino"] = "ponte ou Chrome"
+        else:
+            r["destino"] = "sem destino"
+        cont[r.get("destino") or "sem destino"] = cont.get(r.get("destino") or "sem destino", 0) + 1
+    d["fora_da_fila"] = fora
+    d.setdefault("resumo", {})["fora_da_fila"] = len(fora)
+    d["resumo"]["destinos"] = cont
+    if gravar:
+        write_json(ARQ, d)
+        rotas_p.parent.mkdir(parents=True, exist_ok=True)
+        write_json(rotas_p, rotas)
+    return cont

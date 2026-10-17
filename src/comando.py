@@ -290,6 +290,7 @@ def fases(ctx: dict) -> list[dict]:
         # todas as telas leem o MESMO retrato, tirado depois de tudo o que mexe nos livros
         {"etapa": "fechamento", "finalidade": "repositório por último; fluxo e pendências do Cartório derivados dele (uma só fonte)",
          "cmds": [[py, "-c", "import json; from src import repositorio_unico as R; print(json.dumps({k: v for k, v in R.construir().items() if not isinstance(v, (list, dict))}, ensure_ascii=False))"],
+                  [py, "-c", "import json; from src import fila_retentativa as FR; print(json.dumps(FR.dar_destino(), ensure_ascii=False))"],
                   [py, "-c", "import json; from src import fluxo_oportunidades as F; print(json.dumps(F.sincronizar_com_repositorio(), ensure_ascii=False))"],
                   [py, "-c", "import json; from src import cartorio as C; print(json.dumps(C.pendencias(), ensure_ascii=False))"]],
          "t": 600, "pular": None},
