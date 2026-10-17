@@ -97,11 +97,32 @@ def assinatura(x: dict) -> str:
     return hashlib.sha1(json.dumps([h, ck], ensure_ascii=False, default=str).encode()).hexdigest()[:12]
 
 
+def itens_do_livro(x: dict) -> dict:
+    """Os 12 itens do livro, juntando todas as fontes (checklist do livro, checklist dos 12 e parâmetros), com o item
+    resolvido de qualquer fonte prevalecendo; o rótulo antigo é 'Modalidade'."""
+    from .criterio_selos import resolvido
+    out: dict = {}
+    for fonte in ((x.get("livro") or {}).get("checklist"), x.get("checklist12"), (x.get("parametros") or {}).get("checklist"),
+                  (x.get("parametros") or {}).get("itens")):
+        if not isinstance(fonte, dict):
+            continue
+        for k, v in fonte.items():
+            k = "Modalidade" if k == "Destina\u00e7\u00e3o" else k   # rótulo antigo
+            if isinstance(v, dict) and (k not in out or (not resolvido(out[k]) and resolvido(v))):
+                out[k] = v
+    return out
+
+
 def avaliar(x: dict, cfg: dict) -> dict:
+    # 17/10/2026 (testes P0, regra permanente de 04/10): o selo é o do CRITÉRIO ÚNICO sobre os 12 itens do livro
+    # (bronze = objeto + prazo + território; prata = + valor + requisitos; ouro = os 12). Antes a esteira dava bronze/prata
+    # pelo site confirmado — 1.792 capas tinham selo acima do que os itens permitem.
+    from .criterio_selos import nivel as _nivel, faltando as _faltando, DOZE as _DOZE
     ok, url, como = site_confirmado(x)
-    res, falta = doze_dados(x, cfg)
+    itens = itens_do_livro(x)
+    falta = _faltando(itens); res = [k for k in _DOZE if k not in falta]
     pz = prazo_definido(x)
-    nivel = "bronze" if not ok else ("ouro" if pz and not falta else "prata")
+    nivel = _nivel(itens)
     return {"nivel": nivel, "site_oficial": url, "site_confirmado_por": como if ok else None, "prazo_definido": pz,
             "doze_resolvidos": len(res), "doze_faltando": falta}
 
@@ -120,8 +141,10 @@ def atualizar_livro(x: dict, cfg: dict, hoje: str) -> dict:
         estante = "investigacao_bronze" if int(e.get("tentativas_bronze") or 0) >= lim_b else "fila_bronze"
     elif a["nivel"] == "prata":
         estante = "investigacao_prata" if int(e.get("tentativas_prata") or 0) >= lim_p else "fila_prata"
-    else:
+    elif a["nivel"] == "ouro":
         estante = "farol"
+    else:                                              # 17/10: sem o núcleo (objeto, prazo, território) — fila do bronze
+        estante = "investigacao_bronze" if int(e.get("tentativas_bronze") or 0) >= lim_b else "fila_bronze"
     e.update({"selo": a["nivel"], "estante": estante, "prazo_definido": a["prazo_definido"], "doze_resolvidos": a["doze_resolvidos"],
               "doze_faltando": a["doze_faltando"], "avaliado_em": hoje})
     if a["site_confirmado_por"] and not e.get("site_confirmado_por"):
@@ -233,6 +256,14 @@ def run(hoje: str | None = None, gravar: bool = True) -> dict:
               and (x.get("qualificacao") or {}).get("veredito") not in ("NÃO APLICA", "DESCARTADA")]
     for x in livros:
         atualizar_livro(x, cfg, hoje)
+    # 17/10 (testes P0): toda CAPA mostra o selo verdadeiro — os que a esteira não trabalha (fonte de busca, "não aplica",
+    # "descartada") também têm o selo e o que falta recalculados pelo critério único
+    from .criterio_selos import nivel as _nivel, faltando as _faltando
+    _ids = {id(x) for x in livros}
+    for x in C.get("motores") or []:
+        if id(x) not in _ids and isinstance(x.get("esteira"), dict):
+            _it = itens_do_livro(x)
+            x["esteira"]["selo"] = _nivel(_it); x["esteira"]["doze_faltando"] = _faltando(_it)
     cont = Counter((x["esteira"]["selo"], x["esteira"]["estante"]) for x in livros)
     F = filas(livros, cfg)
     out = {"em": _agora(), "regra": __doc__.split("Confirmação")[0].strip(),

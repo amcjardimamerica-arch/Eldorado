@@ -370,6 +370,8 @@ def fases(ctx: dict) -> list[dict]:
          "cmds": [
                   # 17/10 (titular): os "opressores" viraram LIVROS — junta o que uma passagem antiga gravou com o nome antigo
                   [py, "-c", "import json; from src import livros_monitoramento as M; print(json.dumps(M.migrar_nome_antigo(), ensure_ascii=False))"],
+                  # 17/10 (testes P0): as fontes de Outras oportunidades são ATUALIZADAS aqui (consultar não grava)
+                  [py, "-c", "from src import outras_oportunidades as O; r=O.receber(gravar=True); print(len(r.get('fontes') or {}), 'fontes')"],
                   # 17/10 (titular): REAPLICA a restauração dos livros retirados em massa às 02:28 (idempotente)
                   [py, "scripts/restaurar_livros.py", "--aplicar"],
                   # 17/10 (titular): REAPLICA as importações do Chrome (idempotente) — uma passagem que começou antes de uma
