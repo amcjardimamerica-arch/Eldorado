@@ -103,7 +103,7 @@ class TesteTelaDeProgramas(unittest.TestCase):
         self.assertIn("Como se entra:", H)                                  # a porta de cada lei
         self.assertIn("ep-prog-l", H); self.assertIn("já destinou", H)
         self.assertIn("citado — a confirmar", H)                            # distingue comprovado de citado
-        self.assertIn("Nota nesta lista", H)
+        self.assertIn("Nota da lista", H)
 
     def test_explica_a_ordem_ao_leitor(self):
         self.assertIn("A ordem é por evidência social, e cada lista tem a sua", H)
@@ -184,7 +184,12 @@ class TesteColunaNaoDependeDoArquivo(unittest.TestCase):
 
     def test_o_ci_nao_reverte_codigo(self):
         w = (ROOT / ".github/workflows/monitoramento-diario.yml").read_text(encoding="utf-8")
-        self.assertIn("PROTEÇÃO DE CÓDIGO", w)
-        self.assertIn("git checkout origin/main -- src tests scripts config docs/dashboard.html", w)
         self.assertNotIn("pull --rebase -X theirs", w)   # fazia a cópia velha do job vencer a main
-        self.assertIn("pela versão do job; em", w)
+        # 17/10/2026 (item 3): a proteção de código passou a ser o gravar_somente_alterados — só pastas de DADOS são
+        # gravadas, sempre por cima do main mais recente; código, testes, scripts e config nunca voltam à cópia do job
+        self.assertIn("scripts/gravar_somente_alterados.py aplicar", w)
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("gsa", ROOT / "scripts/gravar_somente_alterados.py")
+        g = importlib.util.module_from_spec(spec); spec.loader.exec_module(g)
+        for codigo in ("src", "tests", "scripts", "config", "docs/dashboard.html"):
+            self.assertNotIn(codigo, g.AREAS, codigo)

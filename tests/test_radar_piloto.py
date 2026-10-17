@@ -91,5 +91,6 @@ class TesteRadarDeCaptacao(unittest.TestCase):
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
         self.assertEqual(h.count('id="pil-posto"'), 1); self.assertEqual(h.count('id="pil-posto-bussola"'), 1)
         self.assertIn('desenhaPostoPiloto("pil-posto")', h); self.assertIn('desenhaPostoPiloto("pil-posto-bussola")', h)
-        self.assertIn("Radar de captação", h); self.assertIn("a pesquisar", h)
+        # 17/10/2026 (item 3): o bloco titulado "Radar de captação" saiu da tela; o radar segue carregado no posto
+        self.assertIn('fetch("dados/radar_piloto.json', h); self.assertIn("window._RADAR", h)
         self.assertIn("carregaRadar", h)

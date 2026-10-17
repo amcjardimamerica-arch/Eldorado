@@ -23,24 +23,26 @@ class TesteEstadoAoVivo(unittest.TestCase):
         d = montar()
         self.assertTrue(d["em"]); self.assertEqual(d["sem_sinal_a_partir_de_min"], SEM_SINAL_MIN)
         # o painel recalcula pelo relógio de quem olha, em vez de confiar no rótulo gravado
-        self.assertIn("o painel NÃO confia no rótulo gravado", H)
-        self.assertIn("V.sem_sinal_a_partir_de_min", H)
+        # 17/10/2026 (item 3): a frase e o campo sem_sinal saíram do painel; a regra continua — a idade do sinal é
+        # calculada pelo relógio de quem olha, a partir do carimbo gravado
+        self.assertIn("Math.round((Date.now()-new Date(V.atualizado_em))/60000)", H)
 
     def test_mostra_o_motor_ligado(self):
-        self.assertIn('motor <b>${esc(M.motor||M.alvo||"—")}</b>', H)
-        self.assertIn("EM VOO", H); self.assertIn("ENTRE VOOS", H); self.assertIn("MOTOR PARADO", H)
+        # 17/10/2026 (item 3): os rótulos "EM VOO"/"ENTRE VOOS" e o "motor <b>…</b>" saíram do quadro redesenhado
+        self.assertIn("Agora — em voo", H); self.assertIn("MOTOR PARADO", H)
         # a hélice é o interruptor: gira quando a corrente está ativa, para quando não está
         self.assertIn("MOTOR LIGADO", H)
         self.assertIn(".pil-partida.m-ligado .pil-pa{animation:pil-pa-gira", H)
         self.assertIn(".pil-partida.m-parado .pil-pa,.pil-partida.m-desligado .pil-pa{animation:none", H)
 
     def test_oferece_acionamento_quando_parado(self):
-        self.assertIn("pil-bt-acionar", H); self.assertIn("acionar o Piloto", H)
-        self.assertIn('est==="parado"?`<div class="pil-acionar">', H)   # só quando parado
-        self.assertIn("workflows/piloto.yml", H)
+        self.assertIn("pil-bt-acionar", H)
+        # 17/10/2026 (item 3): o acionamento passou a ser a hélice do posto (darPartida), que dispara o fluxo direto
+        self.assertIn("window.darPartida", H); self.assertIn('ghDispatch("piloto.yml"', H)
 
     def test_numeros_reais_e_nao_enfeite(self):
-        for x in ("voo(s) hoje", "com achado", "a resgatar", "resgatado(s)", "abate(s)"):
+        # 17/10/2026 (item 3): o quadro redesenhado mostra as métricas do Espião (missões, com resultado, achados)
+        for x in ("missões</span>", "com resultado</span>", "itens achados</span>", "abate(s)"):
             self.assertIn(x, H, x)
         self.assertIn("Última missão:", H)                               # inclusive quando falhou
 

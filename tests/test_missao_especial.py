@@ -203,5 +203,6 @@ class TestePrioridadeETempo(unittest.TestCase):
 
     def test_painel_mostra_as_missoes_especiais(self):
         h = (ROOT / "docs/dashboard.html").read_text(encoding="utf-8")
-        for x in ("pil-resg", "Missões especiais", "carregaResgates", "pil-urg"):
+        # 17/10/2026 (item 3): o título "Missões especiais" saiu do painel; o bloco e a carga continuam
+        for x in ("pil-resg", "carregaResgates", "pil-urg"):
             self.assertIn(x, h, x)
