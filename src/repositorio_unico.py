@@ -157,6 +157,20 @@ def nao_e_oportunidade(r: dict) -> str | None:
     _ag = AGREGADOR_HOST.match(str(r.get("url") or ""))
     if PAGINA_DE_AGREGADOR.search(str(r.get("url") or "")) or (_ag and not re.search(r"(?i)capta|edita|oportunidad|chamad|premi|fomento|noticia|/20\d\d/", _ag.group(1) or "")):
         return "página institucional ou comercial do agregador — não é oportunidade"   # 15/10 (ciclo 7): só captação/edital vale
+    # 17/10/2026 (titular, portão com casos reais): ruído que a migração mostrou passando pelo portão
+    if not re.search(r"(?i)sociedade civil|\bosc\b|organiza[çc][õo]es? da sociedade|associa[çc][õo]es|cooperativas? de catadores|entidades? sem fins", t):
+        if re.search(r"(?i)prospec[çc][ãa]o (do mercado )?imobili|im[óo]vel para loca[çc][ãa]o|loca[çc][ãa]o de im[óo]vel", t):
+            return "prospecção/locação de imóvel — compra pública, não é fomento"
+        if re.search(r"(?i)credenciamento de (pessoa jur[íi]dica|empresas?)|cadastrar empresas|empresas? (especializadas?|sediadas)", t):
+            return "credenciamento/cadastro de empresas — não é fomento a OSC"
+        if re.search(r"(?i)aquisi[çc][ãa]o de g[êe]neros|g[êe]neros aliment[íi]cios", t):
+            return "aquisição de gêneros — compra pública"
+        if re.search(r"(?i)m[ãa]o de obra|torneiro|soldador|presta[çc][ãa]o de servi[çc]os de (administra|gerenciamento|limpeza|vigil)", t):
+            return "contratação de serviço/mão de obra — não é fomento"
+        if re.search(r"(?i)concess[ãa]o de incentivos? (fiscais? )?(a|para) empresas|empresas para concess[ãa]o de incentivo", t):
+            return "incentivo a empresas — não é para associação"
+    if re.search(r"(?i)^\s*presta[çc][ãa]o de contas\b", tit):
+        return "prestação de contas — não é oportunidade"
     if OS_CONTRATO_DE_GESTAO.search(t) and not re.search(r"(?i)sociedade civil|\bosc", tit):   # 16/10: só OS de verdade
         return "Organização Social (contrato de gestão) — acompanhar, não é oportunidade da associação"
     if "credenciamento" in t.lower() and SAUDE_SERVICO.search(f"{t} {r.get('orgao') or ''}") and not re.search(r"(?i)sociedade civil|\bosc", tit):
