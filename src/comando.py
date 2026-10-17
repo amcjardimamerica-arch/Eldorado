@@ -284,6 +284,13 @@ def fases(ctx: dict) -> list[dict]:
          "cmds": [[py, "-m", "src.fichas_oportunidades"]], "t": 200, "pular": None},
         {"etapa": "legislativo", "finalidade": "projetos de lei, utilidades públicas e orçamento — acompanhamento sem livro",
          "cmds": [[py, "-m", "src.legislativo"]], "t": 120, "pular": None},
+        # 16/10/2026 (titular): FECHAMENTO — repositório (dos livros) POR ÚLTIMO e, dele, o fluxo e as pendências do Cartório:
+        # todas as telas leem o MESMO retrato, tirado depois de tudo o que mexe nos livros
+        {"etapa": "fechamento", "finalidade": "repositório por último; fluxo e pendências do Cartório derivados dele (uma só fonte)",
+         "cmds": [[py, "-c", "import json; from src import repositorio_unico as R; print(json.dumps({k: v for k, v in R.construir().items() if not isinstance(v, (list, dict))}, ensure_ascii=False))"],
+                  [py, "-c", "import json; from src import fluxo_oportunidades as F; print(json.dumps(F.sincronizar_com_repositorio(), ensure_ascii=False))"],
+                  [py, "-c", "import json; from src import cartorio as C; print(json.dumps(C.pendencias(), ensure_ascii=False))"]],
+         "t": 600, "pular": None},
         {"etapa": "sala_de_controle", "finalidade": "instrumentos de cada etapa", "cmds": [[py, "-m", "src.sala_controle"]], "t": 150, "pular": None},
         {"etapa": "diagnostico", "finalidade": "diagnóstico da passagem (arquivo próprio; o relatório da análise não é sobrescrito)",
          "cmds": [[py, "-m", "src.diagnostico_sistema"]], "t": 300, "pular": None, "env": {"DIAG_PASSAGEM": "1"}},
