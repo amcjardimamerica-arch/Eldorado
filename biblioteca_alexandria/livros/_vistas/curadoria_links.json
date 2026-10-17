@@ -1,21 +1,21 @@
 {
- "em": "2026-10-17T00:08:02+00:00",
+ "em": "2026-10-17T00:52:31+00:00",
  "regra": "CURADORIA DO LINK OFICIAL (titular, 15/10/2026) — dois links por oportunidade e o trecho exato dela.\n\nCada oportunidade aberta passa a ter:\n  · LINK DE ACESSO — onde o motor a encontrou (notícia, agregador, diário, portal);\n  · LINK OFICIAL   — onde o órgão ou financiador a publicou, usado pelo sistema para análise e validação interna.\n    Os dois só são o mesmo quando a oportunidade foi captada direto no local oficial de publicação;\n  · TRECHO         — exatamente o texto da oportunidade, com a fonte do trecho: do documento oficial (com página) ou,\n    enquanto não comprovado, do link de acesso.\n\nO link oficial precisa oferecer todas as informações e atualizações da oportunidade; por isso passa por curadoria com\ncritérios objetivos, todos verificáveis:\n  C1 domínio oficial       órgão público (.gov.br, .leg.br, .jus.br, .mp.br, .def.br, .tc.br), arquivo do órgão no PNCP,\n                           plataforma de publicação do próprio emissor (Prosas, Mapas Culturais…) ou site do financiador;\n  C2 não é agregador       nem replicador de notícias ou editais;\n  C3 acessível             não está fora da fila de retentativa (5 erros iguais);\n  C4 contém a oportunidade o Cartório extraiu ao menos um item desse documento;\n  C5 informações completas leitura total no Cartório (12 de 12 comprovados ou dispensados);\n  C6 atualizado            conferido pelo Cartório nos últimos 7 dias (retificações e prorrogações).\nResultado: APROVADO (C1–C5; C6 vencido só alerta) · EM CURADORIA (C1–C3 ok, falta C4 ou C5) · REPROVADO (falha C1, C2 ou\nC3: o link deixa de valer como oficial e a oportunidade volta à busca da fonte oficial) · SEM LINK OFICIAL (a buscar).",
  "abertas": 397,
  "curadoria": {
-  "em curadoria": 235,
-  "aprovado": 46,
+  "em curadoria": 242,
+  "aprovado": 40,
   "reprovado": 78,
-  "sem link oficial": 38
+  "sem link oficial": 37
  },
  "classe_do_link_oficial": {
   "site do financiador": 59,
-  "órgão público": 196,
+  "órgão público": 197,
   "não identificado como oficial": 33,
   "plataforma de publicação do emissor": 17,
   "página inicial genérica (não é a oportunidade)": 25,
   "página do PNCP (não é o documento)": 12,
-  "sem link": 38,
+  "sem link": 37,
   "texto de lei (não é a oportunidade)": 3,
   "instituição pública ou de ensino": 8,
   "agregador ou replicador": 4,
@@ -23,7 +23,7 @@
  },
  "mesmo_link_e_oficial": 204,
  "mesmo_link_reprovado": 44,
- "trecho_do_documento_oficial": 169,
+ "trecho_do_documento_oficial": 166,
  "itens": [
   {
    "id": "agr-f43c233385e2",
@@ -338,24 +338,26 @@
    "classe_do_link_oficial": "órgão público",
    "mesmo_link": true,
    "captada_direto_na_fonte_oficial": true,
-   "curadoria": "aprovado",
+   "curadoria": "em curadoria",
    "criterios": {
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
     "C4 contém a oportunidade": true,
-    "C5 informações completas": true,
+    "C5 informações completas": false,
     "C6 atualizado (7 dias)": true
    },
-   "falham": [],
-   "proximo_passo": "validar e seguir ao Farol",
+   "falham": [
+    "C5 informações completas"
+   ],
+   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
     "texto": "v.br EDITAL Nº 3/2026 - DIQUA/DGA Processo nº 02001.022530/2026-71 OBJETO : Edital de Chamamento Público destinado à seleção de Organização da Sociedade Civil para celebração de Instrumento Jurídico sui generis , na condição de enti",
     "fonte": "documento oficial",
     "documento": "https://www.gov.br/ibama/pt-br/assuntos/notas/2026/edital-de-chamamento-publico-seleciona-organizacao-para-executar-aplicacao-de-recursos-do-fundo-rio-doce/20260923_SEI_Ibama_28844023_Edital_3.pdf",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T06:49:32+00:00"
+   "conferido_em": "2026-10-17T00:48:45+00:00"
   },
   {
    "id": "agr-0f683412d9a8",
@@ -1116,7 +1118,7 @@
     "documento": "https://pncp.gov.br/api/consulta/v1/orgaos/00394429000100/compras/2026/1995",
     "pagina": null
    },
-   "conferido_em": "2026-10-16T21:02:48+00:00"
+   "conferido_em": "2026-10-17T00:36:47+00:00"
   },
   {
    "id": "agr-168747de7e13",
@@ -1334,7 +1336,7 @@
     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/01217538000115/compras/2026/115/arquivos/1",
     "pagina": 2
    },
-   "conferido_em": "2026-10-16T21:01:49+00:00"
+   "conferido_em": "2026-10-17T00:35:49+00:00"
   },
   {
    "id": "54b6080c92de6b6a835f",
@@ -1366,7 +1368,7 @@
     "documento": "https://pncp.gov.br/api/consulta/v1/orgaos/04892707000100/compras/2026/136",
     "pagina": null
    },
-   "conferido_em": "2026-10-16T21:03:47+00:00"
+   "conferido_em": "2026-10-17T00:37:29+00:00"
   },
   {
    "id": "09390d9edbe6eaf14fad",
@@ -1615,21 +1617,22 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": true,
+    "C4 contém a oportunidade": false,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": true
    },
    "falham": [
+    "C4 contém a oportunidade",
     "C5 informações completas"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
     "texto": "ior, para o desenvolvimento científ ico e tecnológico do país. 1. DO OBJETIVO 1.1. Implementar o Programa de Apoio à Fixação de Doutores no Brasil (PROFIX-CB), por meio da seleção de projetos de pesquisa que contribuam para o desenvolvimento científico e tecnológico do Estado, mediante a concessão de bolsas a doutores em áreas estratégicas, visando à atração e fixação de pesquisadores em IES sedia",
-    "fonte": "documento oficial",
+    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/CP-55_2026-PROFIX.pdf",
-    "pagina": 1
+    "pagina": null
    },
-   "conferido_em": "2026-10-16T19:41:49+00:00"
+   "conferido_em": "2026-10-17T00:41:33+00:00"
   },
   {
    "id": "op-op-555316c50431",
@@ -1847,7 +1850,7 @@
     "documento": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/07/ANEXO-01-Edital-de-Infancia-e-Cultura.pdf",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T13:42:50+00:00"
+   "conferido_em": "2026-10-17T00:50:07+00:00"
   },
   {
    "id": "op-op-a7de4588f64f",
@@ -1878,7 +1881,7 @@
     "documento": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2025/10/SEI_81439519_Edital-1.pdf",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T13:44:30+00:00"
+   "conferido_em": "2026-10-17T00:50:27+00:00"
   },
   {
    "id": "agr-98931d7b9ad1",
@@ -1890,24 +1893,28 @@
    "classe_do_link_oficial": "órgão público",
    "mesmo_link": true,
    "captada_direto_na_fonte_oficial": true,
-   "curadoria": "aprovado",
+   "curadoria": "em curadoria",
    "criterios": {
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": true,
-    "C5 informações completas": true,
-    "C6 atualizado (7 dias)": true
+    "C4 contém a oportunidade": false,
+    "C5 informações completas": false,
+    "C6 atualizado (7 dias)": false
    },
-   "falham": [],
-   "proximo_passo": "validar e seguir ao Farol",
+   "falham": [
+    "C4 contém a oportunidade",
+    "C5 informações completas",
+    "C6 atualizado (7 dias)"
+   ],
+   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": "nto executora da política estadual de ciência, tecnologia e inovação, tem como finalidade a promoção do ecossistema catarinense de Ciência, Tecnologia e Inovação (CT&I) para o avanço de todas as áreas do conhecimento, o equilíbrio regional, o desenvolvimento econômico sustentável e a melhoria da qualidade de vida da população do Estado; •que compete à FAPESC apoiar a formação e a capacitação de pe",
-    "fonte": "documento oficial",
+    "texto": null,
+    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-FAPESC-52-2026-assinado.pdf",
-    "pagina": 1
+    "pagina": null
    },
-   "conferido_em": "2026-10-16T23:58:24+00:00"
+   "conferido_em": null
   },
   {
    "id": "op-op-b92c2d699c14",
@@ -2032,7 +2039,7 @@
     "documento": "https://colinasdosul.go.gov.br/inscricoes-abertas",
     "pagina": null
    },
-   "conferido_em": "2026-10-16T13:45:34+00:00"
+   "conferido_em": "2026-10-17T00:50:42+00:00"
   },
   {
    "id": "op-op-f2c73a616aa6",
@@ -2080,21 +2087,23 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": true,
+    "C4 contém a oportunidade": false,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": true
+    "C6 atualizado (7 dias)": false
    },
    "falham": [
-    "C5 informações completas"
+    "C4 contém a oportunidade",
+    "C5 informações completas",
+    "C6 atualizado (7 dias)"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
     "texto": "PROGRAMA TECNOVA III Tem como objetivo promover um significativo aumento das atividades de inovação e o incremento da competitividade das empresas e da economia do país. Desta forma, esta chamada visa apoiar projetos de inovação de empresa",
-    "fonte": "documento oficial",
-    "documento": "https://www.fappr.pr.gov.br/Pagina/Programa-Tecnova",
-    "pagina": 1
+    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
+    "documento": "https://www.fappr.pr.gov.br/sites/fundacao-araucaria/arquivos_restritos/files/documento/2026-09/cp_19-2026_profix.pdf",
+    "pagina": null
    },
-   "conferido_em": "2026-10-16T13:44:26+00:00"
+   "conferido_em": null
   },
   {
    "id": "aadff5d4009abaa439d1",
@@ -2436,7 +2445,7 @@
     "documento": "https://goias.gov.br/cultura/secult-abre-chamamento-publico-para-osc-atuar-na-operacionalizacao-do-2o-ciclo-da-pnab/",
     "pagina": null
    },
-   "conferido_em": "2026-10-16T18:10:40+00:00"
+   "conferido_em": "2026-10-17T00:50:49+00:00"
   },
   {
    "id": "agr-3585d362076d",
@@ -2598,7 +2607,7 @@
     "documento": "https://elportavoznoticias.com.mx/invita-gobierno-del-estado-a-participar-en-la-convocatoria-para-organizaciones-civiles-2026/",
     "pagina": null
    },
-   "conferido_em": "2026-10-16T13:46:55+00:00"
+   "conferido_em": "2026-10-17T00:51:10+00:00"
   },
   {
    "id": "837499ca129ea5f43f36",
@@ -2629,7 +2638,7 @@
     "documento": "https://www.goiania.go.gov.br/secult/wp-content/uploads/sites/5/2024/08/pnab-2024-13-edital-cultura-viva-para-fomento-a-pontos-de-cultura.pdf",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T02:30:48+00:00"
+   "conferido_em": "2026-10-17T00:52:18+00:00"
   },
   {
    "id": "2d949c7cfc9703097277",
@@ -2660,7 +2669,7 @@
     "documento": "https://goias.gov.br/cultura/secult-goias-divulga-resultado-final-do-edital-cultura-no-social-da-pnab",
     "pagina": null
    },
-   "conferido_em": "2026-10-16T13:47:06+00:00"
+   "conferido_em": "2026-10-17T00:51:13+00:00"
   },
   {
    "id": "agr-7b6fbd56e08a",
@@ -2708,12 +2717,14 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": true,
+    "C4 contém a oportunidade": false,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": true
+    "C6 atualizado (7 dias)": false
    },
    "falham": [
-    "C5 informações completas"
+    "C4 contém a oportunidade",
+    "C5 informações completas",
+    "C6 atualizado (7 dias)"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
@@ -2722,7 +2733,7 @@
     "documento": "https://www.fapesb.ba.gov.br/chamada-gcub-mob-no-20262027-programa-de-mobilidade-internacional-do-gcub-gcub-mob",
     "pagina": null
    },
-   "conferido_em": "2026-10-16T23:58:35+00:00"
+   "conferido_em": null
   },
   {
    "id": "agr-a8433e260565",
@@ -3324,7 +3335,7 @@
     "documento": "https://floresta-viva.fbds.org.br/edital-001-2026",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T13:43:37+00:00"
+   "conferido_em": "2026-10-17T00:52:02+00:00"
   },
   {
    "id": "op-op-c501e2550cc5",
@@ -3677,7 +3688,7 @@
     "documento": "https://captadores.org.br/editais/instituto-porto-abre-edital-para-apoiar-projetos-educacionais-na-grande-sao-paulo/",
     "pagina": null
    },
-   "conferido_em": "2026-10-16T21:14:34+00:00"
+   "conferido_em": "2026-10-17T00:44:46+00:00"
   },
   {
    "id": "op-op-fc3e32dc23e5",
@@ -3865,7 +3876,7 @@
     "documento": "https://www.rioverde.go.gov.br/chamamento-publico-para-execucao-de-acoes-culturais-com-recursos-da-politica-nacional-aldir-blanc-de-fomento-a-cultura-pnab/",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T21:15:05+00:00"
+   "conferido_em": "2026-10-17T00:44:33+00:00"
   },
   {
    "id": "agr-aa550443eb1d",
@@ -4407,7 +4418,7 @@
     "documento": "https://observatorio3setor.org.br/dia-de-doar-lanca-edital-para-apoiar-campanhas-comunitarias/",
     "pagina": null
    },
-   "conferido_em": "2026-10-16T21:15:10+00:00"
+   "conferido_em": "2026-10-17T00:47:54+00:00"
   },
   {
    "id": "b399f4dbdf85bba98dd2",
@@ -4753,7 +4764,7 @@
     "documento": "https://www.bndes.gov.br/wps/wcm/connect/site/b4f23023-6a63-4d27-96c8-2844900438ff/Minuta+do+Edital+de+Cinema.pdf?MOD=AJPERES&CVID=pY0CM5k",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T21:15:12+00:00"
+   "conferido_em": "2026-10-17T00:44:06+00:00"
   },
   {
    "id": "agr-07bde2aaa8b4",
@@ -5187,12 +5198,14 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": true,
+    "C4 contém a oportunidade": false,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": true
+    "C6 atualizado (7 dias)": false
    },
    "falham": [
-    "C5 informações completas"
+    "C4 contém a oportunidade",
+    "C5 informações completas",
+    "C6 atualizado (7 dias)"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
@@ -5201,7 +5214,7 @@
     "documento": "https://www.gov.br/planalto/pt-br",
     "pagina": null
    },
-   "conferido_em": "2026-10-17T00:00:07+00:00"
+   "conferido_em": null
   },
   {
    "id": "fa359a0aafb11debea10",
@@ -5286,12 +5299,14 @@
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": true,
+    "C4 contém a oportunidade": false,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": true
+    "C6 atualizado (7 dias)": false
    },
    "falham": [
-    "C5 informações completas"
+    "C4 contém a oportunidade",
+    "C5 informações completas",
+    "C6 atualizado (7 dias)"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
@@ -5300,7 +5315,7 @@
     "documento": "https://www.fapespa.pa.gov.br/2026/07/01/chamada-n-o-009-2026-fapespa-cnpq-capes",
     "pagina": null
    },
-   "conferido_em": "2026-10-17T00:00:08+00:00"
+   "conferido_em": null
   },
   {
    "id": "742cdbc4a73e615cb545",
@@ -5364,7 +5379,7 @@
     "documento": "https://itumbiara.go.gov.br/inscricoes-abertas-para-editais-de-premiacao-e-fomento-de-projetos-culturais/",
     "pagina": null
    },
-   "conferido_em": "2026-10-16T21:16:23+00:00"
+   "conferido_em": "2026-10-17T00:47:18+00:00"
   },
   {
    "id": "agr-403f1e2d46a6",
@@ -5376,24 +5391,28 @@
    "classe_do_link_oficial": "órgão público",
    "mesmo_link": true,
    "captada_direto_na_fonte_oficial": true,
-   "curadoria": "aprovado",
+   "curadoria": "em curadoria",
    "criterios": {
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": true,
-    "C5 informações completas": true,
-    "C6 atualizado (7 dias)": true
+    "C4 contém a oportunidade": false,
+    "C5 informações completas": false,
+    "C6 atualizado (7 dias)": false
    },
-   "falham": [],
-   "proximo_passo": "validar e seguir ao Farol",
+   "falham": [
+    "C4 contém a oportunidade",
+    "C5 informações completas",
+    "C6 atualizado (7 dias)"
+   ],
+   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": "a ativa sobre as regras de contratação. A presente Nota Explicativa tem por finalidade apenas promover o devido esclarecimento e assegurar a correta compreensão dos documentos integrantes da Chamada. Carina Melo da Silva Coordenadora de Ciência e Tecnologia",
-    "fonte": "documento oficial",
-    "documento": "https://www.fapespa.pa.gov.br/wp-content/uploads/2026/08/Nota_Explicativa_SNCT.pdf",
-    "pagina": 1
+    "texto": null,
+    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
+    "documento": "https://www.fapespa.pa.gov.br/2026/08/20/chamada-publica-no-015-2026",
+    "pagina": null
    },
-   "conferido_em": "2026-10-17T00:00:43+00:00"
+   "conferido_em": null
   },
   {
    "id": "3f657148fe8a0d7b5b39",
@@ -5549,12 +5568,12 @@
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
-    "texto": null,
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
-    "documento": "https://www.gov.br/cultura/pt-br",
-    "pagina": null
+    "texto": "É O PROGRAMA? O Programa Já É: Educação e Equidade racial tem como objetivo ampliar as oportunidades de jovens negros acessar o ensino superior, prioritariamente a universidade pública. Dirigido a jovens de até 26 anos, residentes na cidade de São Paulo",
+    "fonte": "documento oficial",
+    "documento": "https://baoba.org.br/programa-ja-e/",
+    "pagina": 1
    },
-   "conferido_em": "2026-10-16T21:16:32+00:00"
+   "conferido_em": "2026-10-17T00:47:05+00:00"
   },
   {
    "id": "33ec2cc42a8b5201b5ff",
@@ -5713,7 +5732,7 @@
     "documento": "https://diariooficial.abc.go.gov.br/portal/visualizacoes/html/7407/#e:7407/#m:751053",
     "pagina": null
    },
-   "conferido_em": "2026-10-16T06:53:51+00:00"
+   "conferido_em": "2026-10-17T00:47:50+00:00"
   },
   {
    "id": "cat-a7c5ee926a91",
@@ -5808,7 +5827,7 @@
     "documento": "https://www.gov.br/mma",
     "pagina": null
    },
-   "conferido_em": "2026-10-16T21:16:44+00:00"
+   "conferido_em": "2026-10-17T00:47:33+00:00"
   },
   {
    "id": "agr-6fc91a3f5f6e",
@@ -5998,7 +6017,7 @@
     "documento": "https://captadores.org.br/editais/itau-viver-mais-abre-inscricoes-para-a-7a-edicao-do-edital-de-projetos-voltados-a-longevidade/",
     "pagina": null
    },
-   "conferido_em": "2026-10-16T21:17:22+00:00"
+   "conferido_em": "2026-10-17T00:47:57+00:00"
   },
   {
    "id": "a75475e150b853bf4b90",
@@ -6797,7 +6816,7 @@
     "documento": "https://www.andifes.org.br/2026/09/28/mec-e-minc-abrem-edital-para-difundir-saberes-tradicionais/",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T21:17:47+00:00"
+   "conferido_em": "2026-10-17T00:44:38+00:00"
   },
   {
    "id": "95cd34152fb299dc9c96",
@@ -6906,24 +6925,26 @@
    "classe_do_link_oficial": "órgão público",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "aprovado",
+   "curadoria": "em curadoria",
    "criterios": {
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
     "C4 contém a oportunidade": true,
-    "C5 informações completas": true,
+    "C5 informações completas": false,
     "C6 atualizado (7 dias)": true
    },
-   "falham": [],
-   "proximo_passo": "validar e seguir ao Farol",
+   "falham": [
+    "C5 informações completas"
+   ],
+   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
     "texto": "ciobioeconomia na Amazônia Legal. O edital “Prospera Amazônia” tem como objetivo central a seleção de redes multi-institucionais para coordenarem a implementação de Núcleos de Desenvolvimento da Sociobioeconomia em nove Territórios da Sociobioeconomia (TSBios) nos nove estados da Amazônia Legal, no âmbito do Programa Nacional de Sociobioeconomia – PROSPERA. A parceria adota um modelo de seleção em",
     "fonte": "documento oficial",
     "documento": "https://www.fundoamazonia.gov.br/pt/como-apresentar-projetos/chamadas-publicas/prospera-amazonia",
     "pagina": 1
    },
-   "conferido_em": "2026-10-11T00:55:35+00:00"
+   "conferido_em": "2026-10-17T00:44:53+00:00"
   },
   {
    "id": "op-op-4cf5be37fe9b",
@@ -7017,7 +7038,7 @@
     "documento": "https://senadorcanedo.go.gov.br/senador-canedo-divulga-edital-de-apoio-a-projetos-para-a-pessoa-idosa/",
     "pagina": null
    },
-   "conferido_em": "2026-10-16T21:17:55+00:00"
+   "conferido_em": "2026-10-17T00:47:15+00:00"
   },
   {
    "id": "op-op-7a2cf73ecf5d",
@@ -7227,11 +7248,12 @@
     "C3 acessível": true,
     "C4 contém a oportunidade": false,
     "C5 informações completas": false,
-    "C6 atualizado (7 dias)": true
+    "C6 atualizado (7 dias)": false
    },
    "falham": [
     "C4 contém a oportunidade",
-    "C5 informações completas"
+    "C5 informações completas",
+    "C6 atualizado (7 dias)"
    ],
    "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
@@ -7240,7 +7262,7 @@
     "documento": "https://www.fapespa.pa.gov.br/2026/07/06/chamada-publica-fapespa-no-008-2026",
     "pagina": null
    },
-   "conferido_em": "2026-10-17T00:01:35+00:00"
+   "conferido_em": null
   },
   {
    "id": "35e62e6a17ff0b070924",
@@ -8601,35 +8623,31 @@
    "titulo": "Diário Oficial de Rio de Janeiro (RJ) 2026-09-29 — \"chamamento público\" \"organizações da sociedade civil\"",
    "orgao": null,
    "link_acesso": "https://data.queridodiario.ok.org.br/3304557/2026-09-29/ee1ac7d76b78e83ef6837bf27dc71745a646cb10.pdf",
-   "link_oficial": null,
-   "link_oficial_proposto": null,
-   "classe_do_link_oficial": "sem link",
+   "link_oficial": "https://www.gov.br/funarte/pt-br/editais/2024/programa-funarte-aberta-2025-ocupacao-dos-espacos-culturais-da-funarte-no-rio-de-janeiro",
+   "link_oficial_proposto": "https://www.gov.br/funarte/pt-br/editais/2024/programa-funarte-aberta-2025-ocupacao-dos-espacos-culturais-da-funarte-no-rio-de-janeiro",
+   "classe_do_link_oficial": "órgão público",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "sem link oficial",
+   "curadoria": "em curadoria",
    "criterios": {
-    "C1 domínio oficial": false,
-    "C2 não é agregador": false,
-    "C3 acessível": false,
-    "C4 contém a oportunidade": false,
+    "C1 domínio oficial": true,
+    "C2 não é agregador": true,
+    "C3 acessível": true,
+    "C4 contém a oportunidade": true,
     "C5 informações completas": false,
     "C6 atualizado (7 dias)": true
    },
    "falham": [
-    "C1 domínio oficial",
-    "C2 não é agregador",
-    "C3 acessível",
-    "C4 contém a oportunidade",
     "C5 informações completas"
    ],
-   "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
+   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
     "texto": null,
     "fonte": "link de acesso (ainda não comprovado no documento oficial)",
     "documento": "https://data.queridodiario.ok.org.br/3304557/2026-09-29/ee1ac7d76b78e83ef6837bf27dc71745a646cb10.pdf",
     "pagina": null
    },
-   "conferido_em": "2026-10-16T09:53:53+00:00"
+   "conferido_em": "2026-10-17T00:49:35+00:00"
   },
   {
    "id": "39b0a15acd889e7bfbad",
@@ -9366,7 +9384,7 @@
     "documento": "https://jaragua.go.gov.br/inscricoes-abertas-para-o-38o-premio-rodrigo-melo-franco-de-andrade-valorize-a-preservacao-do-patrimonio-cultural/",
     "pagina": null
    },
-   "conferido_em": "2026-10-16T10:57:26+00:00"
+   "conferido_em": "2026-10-17T00:48:01+00:00"
   },
   {
    "id": "d263843346c4c5c4362b",
@@ -9494,12 +9512,12 @@
    ],
    "proximo_passo": "buscar a fonte oficial (resolvedor e Cartório)",
    "trecho": {
-    "texto": null,
-    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
+    "texto": "pecial de Alta Complexidade.” O valor de referência para execução do objeto deste edital é de R$ 1.234.922,31 (um milhão, duzentos e trinta e quatro mil, novecentos e vinte e dois reais e trinta e um centavos) para o período de vigência de 24 (vinte e quatro) meses. O Edital e seus anexos serão disponibilizados na íntegra no Portal d",
+    "fonte": "documento oficial",
     "documento": "https://data.queridodiario.ok.org.br/3205309/2026-09-29/e4e6dddf43137203fa04d96f0d35d05e72269004.pdf",
-    "pagina": null
+    "pagina": 8
    },
-   "conferido_em": "2026-10-16T01:27:25+00:00"
+   "conferido_em": "2026-10-17T00:50:04+00:00"
   },
   {
    "id": "6b203d045dc5c632775b",
@@ -9952,7 +9970,7 @@
     "documento": "https://itumbiara.go.gov.br/wp-content/uploads/2023/11/3EB01020BFDAFF0C07E709.pdf",
     "pagina": 2
    },
-   "conferido_em": "2026-10-16T12:02:21+00:00"
+   "conferido_em": "2026-10-17T00:49:58+00:00"
   },
   {
    "id": "cat-18a981b5b36d",
@@ -10692,24 +10710,28 @@
    "classe_do_link_oficial": "órgão público",
    "mesmo_link": true,
    "captada_direto_na_fonte_oficial": true,
-   "curadoria": "aprovado",
+   "curadoria": "em curadoria",
    "criterios": {
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
-    "C4 contém a oportunidade": true,
-    "C5 informações completas": true,
-    "C6 atualizado (7 dias)": true
+    "C4 contém a oportunidade": false,
+    "C5 informações completas": false,
+    "C6 atualizado (7 dias)": false
    },
-   "falham": [],
-   "proximo_passo": "validar e seguir ao Farol",
+   "falham": [
+    "C4 contém a oportunidade",
+    "C5 informações completas",
+    "C6 atualizado (7 dias)"
+   ],
+   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
     "texto": "to executora da política estadual de ciência, tecnologia e inovação, tem como finalidade a promoção do ecossistema catarinense de Ciência, Tecnologia e Inovação (CTI) para o avanço de todas as áreas do conhecimento, o equilíbrio regional, o desenvolvimento econômico sustentável e a melhoria da qualidade de vida da população do Estado; ● que compete à FAPESC apoiar e promover a realização de estudo",
-    "fonte": "documento oficial",
+    "fonte": "link de acesso (ainda não comprovado no documento oficial)",
     "documento": "https://fapesc.sc.gov.br/wp-content/uploads/2026/09/Edital-54_2026_ASS_-FAPESC_2256_2026.pdf",
-    "pagina": 1
+    "pagina": null
    },
-   "conferido_em": "2026-10-16T02:29:01+00:00"
+   "conferido_em": null
   },
   {
    "id": "c47cd9cc1dca7fbc7d41",
@@ -10772,7 +10794,7 @@
     "documento": "https://pncp.gov.br/app/editais/14951451000119/2026/45",
     "pagina": null
    },
-   "conferido_em": "2026-10-16T23:44:56+00:00"
+   "conferido_em": "2026-10-10T23:06:35+00:00"
   },
   {
    "id": "097bcd4b298c7e73615e",
@@ -11316,7 +11338,7 @@
     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/65554728000100/compras/2026/12/arquivos/2",
     "pagina": 2
    },
-   "conferido_em": "2026-10-16T23:49:21+00:00"
+   "conferido_em": "2026-10-10T20:09:23+00:00"
   },
   {
    "id": "b7aa39bfeae73ea37efd",
@@ -11376,7 +11398,7 @@
     "documento": "https://bussola-prod.storage.googleapis.com/conta/123/edital/1002/0d5c12b13734f1c66d52ca2f4af4ad4b.pdf",
     "pagina": 2
    },
-   "conferido_em": "2026-10-17T00:07:50+00:00"
+   "conferido_em": "2026-10-10T23:06:35+00:00"
   },
   {
    "id": "1b259c84aabf58826786",
@@ -11470,7 +11492,7 @@
     "documento": "https://pesquisa.in.gov.br/imprensa/jsp/visualiza/index.jsp?data=07/10/2026&jornal=530&pagina=198",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T23:58:10+00:00"
+   "conferido_em": "2026-10-11T02:43:49+00:00"
   },
   {
    "id": "90de619cc79aa4de9634",
@@ -11542,24 +11564,26 @@
    "classe_do_link_oficial": "arquivo do órgão no PNCP",
    "mesmo_link": false,
    "captada_direto_na_fonte_oficial": false,
-   "curadoria": "aprovado",
+   "curadoria": "em curadoria",
    "criterios": {
     "C1 domínio oficial": true,
     "C2 não é agregador": true,
     "C3 acessível": true,
     "C4 contém a oportunidade": true,
-    "C5 informações completas": true,
+    "C5 informações completas": false,
     "C6 atualizado (7 dias)": true
    },
-   "falham": [],
-   "proximo_passo": "validar e seguir ao Farol",
+   "falham": [
+    "C5 informações completas"
+   ],
+   "proximo_passo": "Cartório: ler o documento oficial até 12 de 12",
    "trecho": {
     "texto": "Constitui objeto da 2ª Edição do Concurso de Boas Práticas Pedagógicas em Educação Contextualizad a para a Convivência com o Semiárido Brasileiro a habilitação e seleção de Práticas Pedagógicas em Educação Contextualizada para a Convivência com o Semiárido",
     "fonte": "documento oficial",
     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/09773169000159/compras/2026/121/arquivos/1",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T21:00:15+00:00"
+   "conferido_em": "2026-10-10T20:09:23+00:00"
   },
   {
    "id": "2f556273766464bcdc19",
@@ -11652,7 +11676,7 @@
     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13950733000139/compras/2026/2/arquivos/1",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T23:53:43+00:00"
+   "conferido_em": "2026-10-10T23:06:35+00:00"
   },
   {
    "id": "4b7b01fdcbb766bdb605",
@@ -11683,7 +11707,7 @@
     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/71832679000123/compras/2026/64/arquivos/2",
     "pagina": 3
    },
-   "conferido_em": "2026-10-16T23:54:40+00:00"
+   "conferido_em": "2026-10-11T02:43:49+00:00"
   },
   {
    "id": "64b098a6f46de27ba9d0",
@@ -11712,7 +11736,7 @@
     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/13501444000152/compras/2026/10/arquivos/3",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T23:56:04+00:00"
+   "conferido_em": "2026-10-10T20:09:23+00:00"
   },
   {
    "id": "agr-c0d50b19cfa1",
@@ -11772,7 +11796,7 @@
     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/25053190000136/compras/2025/54/arquivos/2",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T20:53:15+00:00"
+   "conferido_em": "2026-10-11T02:43:49+00:00"
   },
   {
    "id": "a8b026eec92ee050dabe",
@@ -11803,7 +11827,7 @@
     "documento": "https://pncp.gov.br/app/editais/12473062000108/2024/121",
     "pagina": null
    },
-   "conferido_em": "2026-10-16T20:54:56+00:00"
+   "conferido_em": "2026-10-11T02:43:49+00:00"
   },
   {
    "id": "9b629429aba64de24cec",
@@ -11834,7 +11858,7 @@
     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2024/969/arquivos/1",
     "pagina": 2
    },
-   "conferido_em": "2026-10-16T20:55:57+00:00"
+   "conferido_em": "2026-10-11T02:43:49+00:00"
   },
   {
    "id": "52a1fdf5d0e54202eeb0",
@@ -11865,7 +11889,7 @@
     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/10648539000105/compras/2025/3/arquivos/1",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T20:56:56+00:00"
+   "conferido_em": "2026-10-10T23:06:35+00:00"
   },
   {
    "id": "41375e79a6330c95344c",
@@ -11896,7 +11920,7 @@
     "documento": "https://pncp.gov.br/pncp-api/v1/orgaos/00509968000148/compras/2025/585/arquivos/1",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T20:57:54+00:00"
+   "conferido_em": "2026-10-11T02:43:49+00:00"
   },
   {
    "id": "849804fe44fce0d2ff4e",
@@ -12393,7 +12417,7 @@
     "documento": "https://feirapreta.com.br/pretas-potencias-2/",
     "pagina": 1
    },
-   "conferido_em": "2026-10-16T20:13:14+00:00"
+   "conferido_em": "2026-10-11T02:43:49+00:00"
   },
   {
    "id": "fd492598a239b416cd63",
