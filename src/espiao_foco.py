@@ -191,8 +191,17 @@ def _consulta_dos_livros(r: random.Random, a: int) -> str | None:
         return None
     grupos: dict = {}
     for lv in L:
-        if str(lv.get("uf") or "") not in ("GO", "BR") or not lv.get("orgao") or re.search(r"(?i)piloto|di[áa]rio oficial|querido", str(lv.get("orgao"))):
+        # 17/10 (titular): SEM UF É AVALIADO, NÃO ELIMINADO — sai só o livro municipal de outro estado com a cidade
+        # VERIFICADA (a mesma regra do repositório); estaduais de outros estados, capitais e sem UF ficam
+        if not lv.get("orgao") or re.search(r"(?i)piloto|di[áa]rio oficial|querido", str(lv.get("orgao"))):
             continue
+        try:
+            from .repositorio_unico import municipal_fora_de_goias as _mfg
+            if _mfg({"titulo": lv.get("programa"), "orgao": lv.get("orgao"), "uf": lv.get("uf"), "url": lv.get("pagina"),
+                     "nivel": lv.get("esfera")}):
+                continue
+        except Exception:  # noqa: BLE001
+            pass
         grupos.setdefault((str(lv.get("modalidade") or "?"), str(lv.get("area") or "?")), []).append(lv)
     if not grupos:
         return None
