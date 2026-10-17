@@ -1,20 +1,18 @@
 {
  "dia": "2026-10-17",
- "em": "2026-10-17T14:33:59+00:00",
+ "em": "2026-10-17T15:08:21+00:00",
  "regra": "MAESTRO — A MÃO DA REDE NEURAL DE COMANDO (titular, 02/10/2026; unificado em 15/10/2026).\n\n15/10/2026 (titular): maestro e rede neural são UMA coisa só. Quem decide o caminho do fluxo inteiro é src/comando.py\n(a rede neural de comando); este módulo é a parte que MEDE e EXECUTA para ela:\n  · planejar()   quais motores rodam hoje (agenda) com a prioridade de rendimento — matéria-prima da decisão do comando;\n  · cobertura()  completa · parcial · pendente · pendente_local de cada motor no dia;\n  · controlar()  pendentes e parciais a disparar (até 3 tentativas), dia fechado ou não;\n  · relatorio_etapas() o relatório do dia que o painel mostra.\nO comando chama planejar/controlar antes de acionar os motores (decidir) e depois deles (avaliar e reacionar).",
- "planejados": 128,
+ "planejados": 126,
  "cobertura": {
-  "completa": 102,
-  "parcial": 26
+  "completa": 101,
+  "parcial": 25
  },
- "cobertura_percentual": 79.7,
- "a_disparar": [
-  "camara-goiania-pl"
- ],
+ "cobertura_percentual": 80.2,
+ "a_disparar": [],
  "esgotaram_tentativas": [
   "plat-prefeituras-50-go",
-  "plat-empresas-editais-incentivados",
   "outras-oportunidades-7",
+  "plat-empresas-editais-incentivados",
   "judiciario-cnj-tjgo",
   "plataforma-mapas-culturais",
   "empresas-incentivadas",
@@ -38,7 +36,7 @@
   "f260-captacao-227",
   "f260-captacao-118"
  ],
- "dia_fechado": false,
+ "dia_fechado": true,
  "dia_anterior_nao_observado": [
   "outras-oportunidades-7",
   "judiciario-cnj-tjgo",
@@ -50,21 +48,10 @@
  "plano": [
   {
    "motor": "plat-piloto-aberto",
-   "prioridade": 4.9045,
+   "prioridade": 4.8343,
    "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 244,
+   "livros_com_abertura_proxima": 240,
    "horarios": "05:53,10:23",
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "pncp-api",
-   "prioridade": 0.4563,
-   "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 18,
-   "horarios": "08:53,13:53,19:53",
    "coleta": "nuvem",
    "dia_anterior": "observado",
    "cobertura": "completa",
@@ -80,6 +67,17 @@
    "dia_anterior": "observado",
    "cobertura": "completa",
    "tentativas_hoje": 2
+  },
+  {
+   "motor": "pncp-api",
+   "prioridade": 0.4363,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 17,
+   "horarios": "08:53,13:53,19:53",
+   "coleta": "nuvem",
+   "dia_anterior": "observado",
+   "cobertura": "completa",
+   "tentativas_hoje": 0
   },
   {
    "motor": "f260-captacao-069",
@@ -126,6 +124,17 @@
    "tentativas_hoje": 0
   },
   {
+   "motor": "outras-oportunidades-7",
+   "prioridade": 0.235,
+   "diagnostico": "saudavel",
+   "livros_com_abertura_proxima": 3,
+   "horarios": "08:23,13:23,18:23",
+   "coleta": "nuvem",
+   "dia_anterior": "nao_observado",
+   "cobertura": "parcial",
+   "tentativas_hoje": 6
+  },
+  {
    "motor": "plat-empresas-editais-incentivados",
    "prioridade": 0.2221,
    "diagnostico": "falha_parcial",
@@ -133,17 +142,6 @@
    "horarios": "10:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
-   "cobertura": "parcial",
-   "tentativas_hoje": 6
-  },
-  {
-   "motor": "outras-oportunidades-7",
-   "prioridade": 0.185,
-   "diagnostico": "saudavel",
-   "livros_com_abertura_proxima": 3,
-   "horarios": "08:23,13:23,18:23",
-   "coleta": "nuvem",
-   "dia_anterior": "nao_observado",
    "cobertura": "parcial",
    "tentativas_hoje": 6
   },
@@ -315,7 +313,7 @@
   {
    "motor": "outras-oportunidades-2",
    "prioridade": 0.075,
-   "diagnostico": "falha_parcial",
+   "diagnostico": "sem_rendimento",
    "livros_com_abertura_proxima": 0,
    "horarios": "08:23,13:23,18:23",
    "coleta": "nuvem",
@@ -764,17 +762,6 @@
    "tentativas_hoje": 0
   },
   {
-   "motor": "f260-captacao-259",
-   "prioridade": 0.0167,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
    "motor": "f260-captacao-250",
    "prioridade": 0.0167,
    "diagnostico": "sem_rendimento",
@@ -798,17 +785,6 @@
   },
   {
    "motor": "f260-captacao-253",
-   "prioridade": 0.0167,
-   "diagnostico": "sem_rendimento",
-   "livros_com_abertura_proxima": 0,
-   "horarios": null,
-   "coleta": "nuvem",
-   "dia_anterior": "observado",
-   "cobertura": "completa",
-   "tentativas_hoje": 0
-  },
-  {
-   "motor": "f260-captacao-257",
    "prioridade": 0.0167,
    "diagnostico": "sem_rendimento",
    "livros_com_abertura_proxima": 0,
@@ -1442,8 +1418,8 @@
    "horarios": "12:53,20:23",
    "coleta": "nuvem",
    "dia_anterior": "observado",
-   "cobertura": "parcial",
-   "tentativas_hoje": 1
+   "cobertura": "completa",
+   "tentativas_hoje": 2
   },
   {
    "motor": "f260-captacao-118",
