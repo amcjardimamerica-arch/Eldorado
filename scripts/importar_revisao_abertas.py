@@ -269,7 +269,8 @@ def atualizar_ja() -> dict:
     out = {}
     for nome, f in (("repositorio", lambda: __import__("src.repositorio_unico", fromlist=["x"]).construir(gravar=True)),
                     ("fluxo", lambda: __import__("src.fluxo_oportunidades", fromlist=["x"]).sincronizar_com_repositorio()),   # 17/10: rápido
-                    ("pendencias", lambda: __import__("src.cartorio", fromlist=["x"]).pendencias())):
+                    ("pendencias", lambda: __import__("src.cartorio", fromlist=["x"]).pendencias()),
+                    ("sala", lambda: __import__("src.sala_controle", fromlist=["x"]).run())):   # 17/10: a página inicial lê a sala
         try:
             r = f(); out[nome] = "ok" if not isinstance(r, dict) else {k: v for k, v in r.items() if not isinstance(v, (list, dict))}
         except Exception as e:  # noqa: BLE001
