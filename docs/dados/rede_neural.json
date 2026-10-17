@@ -1,5 +1,5 @@
 {
- "em": "2026-10-17T08:40:48+00:00",
+ "em": "2026-10-17T09:38:46+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
  "rotulados": 1684,
  "positivos": 581,
@@ -22,6 +22,12 @@
    "titulo": "Brasilcap abre edital para projetos sociais, culturais, esportivos e de saúde",
    "url": "https://cmsbrasilcap-prd.brasilcap.com/uploads/Edital_de_patrocinios_link_3_1_7093d2b3d3.pdf",
    "nota": 0.5,
+   "incerteza": 0.999
+  },
+  {
+   "titulo": "Itaberaí — EDITAL DE CHAMAMENTO PÚBLICO N° 001-CMDCA-2026",
+   "url": "https://itaberai.go.gov.br/edital-de-chamamento-publico-n-001-cmdca-2026/",
+   "nota": 0.501,
    "incerteza": 0.999
   },
   {
@@ -55,12 +61,6 @@
    "incerteza": 0.995
   },
   {
-   "titulo": "Itumbiara — inscrições para projetos culturais de audiovisual e multilinguagem. pela lei paulo gustavo , irão … — Goiás / Itumbiara",
-   "url": "https://itumbiara.go.gov.br/inscricoes-para-projetos-culturais-de-audiovisual-e-multilinguagem-pela-lei-paulo-gustavo-irao-ate-esta-quarta-dia-8-de-novembro/",
-   "nota": 0.503,
-   "incerteza": 0.995
-  },
-  {
    "titulo": "CREDENCIAMENTO DE BANDAS E DJS PARA APRESENTACOES MUSICAIS NOS DIVERSOS POLOS DO CICLO CARNAVALESCO DE 2027 — MUNICIPIO DE FORTALEZA",
    "url": "https://pncp.gov.br/app/editais/07954605000160/2026/956",
    "nota": 0.497,
@@ -73,10 +73,22 @@
    "incerteza": 0.994
   },
   {
+   "titulo": "Edital BH Fomento a projetos Anuais e Ações Continuadas",
+   "url": "https://prefeitura.pbh.gov.br/cultura/edital-bh-fomento-projetos-anuais-e-acoes-continuadas",
+   "nota": 0.503,
+   "incerteza": 0.994
+  },
+  {
    "titulo": "EDITAL Nº 003/2026 – ADMPLAN – TERCEIRA AUDIÊNCIA PÚBLICA DO PLANO DIRETOR DO MUNICÍPIO DE COLINAS DO SUL/GO.",
    "url": "https://colinasdosul.go.gov.br/aviso/2862",
    "nota": 0.504,
    "incerteza": 0.993
+  },
+  {
+   "titulo": "Instituições podem receber até R$ 50 mil para projetos sobre moradia digna",
+   "url": "https://www.cnbb.org.br/cnbb-lanca-edital-do-fns-para-apoio-financeiro-a-projetos-relativos-a-campanha-da-fraternidade-2026/",
+   "nota": 0.496,
+   "incerteza": 0.992
   },
   {
    "titulo": "Instituto Lojas Renner",
@@ -97,8 +109,20 @@
    "incerteza": 0.99
   },
   {
+   "titulo": "Edital Prefeitura Municipal de Planaltina 2026 — Goiás / Planaltina — Goiás / Planaltina",
+   "url": "https://planaltina.go.gov.br/wp-content/uploads/2026/09/Edital_de_chamamento_publico_no_06-2026-.pdf",
+   "nota": 0.506,
+   "incerteza": 0.988
+  },
+  {
    "titulo": "Diário Oficial de Pratânia (SP) 2026-10-05 — \"termo de execução cultural\"",
    "url": "https://data.queridodiario.ok.org.br/3541059/2026-10-05/09f6e527feb6f3f99ec6d42f7348b622574410a7.pdf",
+   "nota": 0.506,
+   "incerteza": 0.988
+  },
+  {
+   "titulo": "Secretaria de Estado da Cultura (Secult) — Inscrições prorrogadas para editais de Pontos e Pontões de Cultura … — Goiás",
+   "url": "https://goias.gov.br/cultura/inscricoes-prorrogadas-para-editais-de-pontos-e-pontoes-de-cultura-da-pnab-2026/",
    "nota": 0.506,
    "incerteza": 0.988
   },
@@ -121,9 +145,15 @@
    "incerteza": 0.986
   },
   {
-   "titulo": "Jataí — Atualização necessária em formulário do Edital Lei Paulo Gustavo em Jataí — Goiás / Jataí",
-   "url": "https://www.jatai.go.gov.br/atualizacao-necessaria-em-formulario-do-edital-lei-paulo-gustavo-em-jatai/",
-   "nota": 0.493,
+   "titulo": "Inscrições para os Jogos Interculturais 2026 seguem abertas até 23 de outubro",
+   "url": "https://goias.gov.br/educacao/inscricoes-para-os-jogos-interculturais-2026-seguem-abertas-ate-23-de-outubro",
+   "nota": 0.507,
+   "incerteza": 0.986
+  },
+  {
+   "titulo": "Edital 2 | Seleção de OSCs para desenvolver ações nos territórios | Formulário para Perguntas e Dúvidas",
+   "url": "https://forms.gle/7oQBGFK4q52T9Np69",
+   "nota": 0.507,
    "incerteza": 0.986
   },
   {
@@ -133,10 +163,22 @@
    "incerteza": 0.985
   },
   {
+   "titulo": "Zurich Seguros abre edital para apoio de projetos sociais com incentivo fiscal",
+   "url": "https://www.idis.org.br/zurich-seguros-abre-edital-para-apoio-de-projetos-sociais-com-incentivo-fiscal/",
+   "nota": 0.492,
+   "incerteza": 0.984
+  },
+  {
    "titulo": "Desafio UNAIDS",
    "url": "https://unaids.org.br/desafiounaids",
    "nota": 0.508,
    "incerteza": 0.984
+  },
+  {
+   "titulo": "Instituto Lojas Renner abre edital para fortalecer organizações sociais em três estados",
+   "url": "https://captadores.org.br/editais/instituto-lojas-renner-abre-edital-para-fortalecer-organizacoes-sociais-em-tres-estados",
+   "nota": 0.508,
+   "incerteza": 0.983
   },
   {
    "titulo": "Diário Oficial de Salvador (BA) 2026-10-09 — \"termo de fomento\" \"chamamento público\"",
@@ -149,6 +191,12 @@
    "url": "https://fapemig.br/oportunidades/chamadas-e-editais/chamada-fapemig-sede-018-2026-hubmg-gov-resolucao-de-desafios-publicos-por-meio-de-inovacao-aberta",
    "nota": 0.491,
    "incerteza": 0.983
+  },
+  {
+   "titulo": "Edital Prefeitura Municipal de Planaltina 2026 — Goiás / Planaltina",
+   "url": "https://planaltina.go.gov.br/chamamento-publico-no-06-2026-processo-no-23713-2026/",
+   "nota": 0.509,
+   "incerteza": 0.982
   },
   {
    "titulo": "Undertake: the Practical Side of Death",
@@ -181,27 +229,27 @@
    "incerteza": 0.982
   },
   {
+   "titulo": "Itau viver mais abre inscricoes para a 7a edicao do edital de projetos voltados a longevidade",
+   "url": "https://captadores.org.br/editais/itau-viver-mais-abre-inscricoes-para-a-7a-edicao-do-edital-de-projetos-voltados-a-longevidade/",
+   "nota": 0.509,
+   "incerteza": 0.982
+  },
+  {
    "titulo": "Diário Oficial de Esplanada (BA) 2026-10-09 — \"edital de premiação\" cultura",
    "url": "https://data.queridodiario.ok.org.br/2910602/2026-10-09/cf574e49fefd17a51aefc9ba05720078d3696ff8.pdf",
    "nota": 0.509,
    "incerteza": 0.981
   },
   {
-   "titulo": "Edital Rouanet nas Favelas 2 (2026): Guia de Captação · Capitaai",
-   "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2023/lei/l14535.htm",
-   "nota": 0.491,
-   "incerteza": 0.981
+   "titulo": "Jataí — SMC PUBLICA COMUNICADO SOBRE OS EDITAIS DA PNAB EM JATAÍ Ajustes garantem mais clareza e precisão nas … — Goiás / Jataí",
+   "url": "https://www.jatai.go.gov.br/smc-publica-comunicado-sobre-os-editais-da-pnab-em-jatai-ajustes-garantem-mais-clareza-e-precisao-nas-regras-do-processo-de-selecao-cultural/",
+   "nota": 0.51,
+   "incerteza": 0.98
   },
   {
    "titulo": "Chamada nº 009/2026 – FAPESPA/CNPq/CAPES",
    "url": "https://www.fapespa.pa.gov.br/2026/07/01/chamada-n-o-009-2026-fapespa-cnpq-capes",
    "nota": 0.49,
-   "incerteza": 0.98
-  },
-  {
-   "titulo": "Aviso de Chamamento Público nº 1/2026",
-   "url": "https://www.novaamerica.go.gov.br/politica-nacional-aldir-blanc-ciclo-ii/",
-   "nota": 0.51,
    "incerteza": 0.98
   },
   {
@@ -211,34 +259,16 @@
    "incerteza": 0.98
   },
   {
-   "titulo": "CNBB lança edital do FNS para apoio financeiro a projetos relativos à Campanha da Fraternidade 2026",
-   "url": "https://captadores.org.br/editais/cnbb-lanca-edital-do-fns-para-apoio-financeiro-a-projetos-relativos-a-campanha-da-fraternidade-2026",
-   "nota": 0.51,
-   "incerteza": 0.979
-  },
-  {
    "titulo": "Chamada Pública PSA para Conservação da Vegetação Nativa em Territórios Coletivos",
    "url": "https://florestamaisamazonia.mma.gov.br/login",
    "nota": 0.51,
    "incerteza": 0.979
   },
   {
-   "titulo": "Cidade Ocidental — Cidade Ocidental abre as inscrições para o edital da Lei Paulo Gustavo — Goiás / Cidade Ocidental",
-   "url": "https://cidadeocidental.go.gov.br/cidade-ocidental-abre-as-inscricoes-para-o-edital-da-lei-paulo-gustavo/",
-   "nota": 0.489,
-   "incerteza": 0.978
-  },
-  {
    "titulo": "BNDES Data",
    "url": "https://www.bndes.gov.br/wps/portal/site/home/bndes-data",
    "nota": 0.489,
    "incerteza": 0.977
-  },
-  {
-   "titulo": "Jataí — PNAB | JATAÍ PUBLICA EDITAL DE FOMENTO A AÇÕES CULTURAIS E PREMIAÇÃO POR TRAJETÓRIA Secretaria de Cult… — Goiás / Jataí",
-   "url": "https://www.jatai.go.gov.br/pnab-jatai-publica-edital-de-fomento-a-acoes-culturais-e-premiacao-por-trajetoria-secretaria-de-cultura-de-jatai-lanca-edital-para-impulsionar-projetos-culturais-e-valorizar-trajetorias-artisticas-n/",
-   "nota": 0.488,
-   "incerteza": 0.976
   },
   {
    "titulo": "Edital Suplementar de Subvenção Econômica FAPESC N.º 65/2025 - Programa Horizonte Europa (2026–2027)",
@@ -251,6 +281,12 @@
    "url": "https://catalao.go.gov.br/producao/public/index.php/avisos/edital-de-chamamento-publico/avisos/Edital-de-Notificacao-de-Lancamento",
    "nota": 0.512,
    "incerteza": 0.976
+  },
+  {
+   "titulo": "Fundo municipal de assistencia social — edital de chamamento público visando à seleção de organizações da soci… — Goiás",
+   "url": "https://pncp.gov.br/app/editais/13501444000152/2026/10",
+   "nota": 0.512,
+   "incerteza": 0.975
   },
   {
    "titulo": "Finep Mais Inovação Brasil - Rodada 2 – Tecnologias Digitais",
@@ -269,6 +305,12 @@
    "url": "https://www.gov.br/planalto/pt-br",
    "nota": 0.487,
    "incerteza": 0.974
+  },
+  {
+   "titulo": "Governo de Goiás abre inscrições para o Agrocolégio Estadual Maguito Vilela",
+   "url": "https://goias.gov.br/educacao/governo-de-goias-abre-inscricoes-para-o-agrocolegio-estadual-maguito-vilela",
+   "nota": 0.487,
+   "incerteza": 0.973
   },
   {
    "titulo": "Edital Centralizadora 2026: Guia para Captar Recursos · Capitaai",
@@ -295,6 +337,12 @@
    "incerteza": 0.967
   },
   {
+   "titulo": "Anápolis — Após diversas ações, segundo ciclo da Lei Aldir Blanc registra mais de 300 inscrições em Anápolis — Goiás / Anápolis",
+   "url": "https://www.anapolis.go.gov.br/apos-diversas-acoes-segundo-ciclo-da-lei-aldir-blanc-registra-mais-de-300-inscricoes-em-anapolis/",
+   "nota": 0.483,
+   "incerteza": 0.967
+  },
+  {
    "titulo": "Chamamento Público nº 06/2026 - Secretaria Executiva (SE) | PRONON",
    "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-06-2026-se-pronon",
    "nota": 0.483,
@@ -313,65 +361,17 @@
    "incerteza": 0.965
   },
   {
+   "titulo": "Perguntas Frequentes | Edital UNAIDS/DATHI",
+   "url": "https://unaids.org.br/faq-edital-unaids-dathi",
+   "nota": 0.518,
+   "incerteza": 0.964
+  },
+  {
    "titulo": "Mapa de donantes y convocatorias para organizaciones | Terraetica",
    "url": "https://terraetica.com/mapa-de-donantes",
    "nota": 0.481,
    "incerteza": 0.963
-  },
-  {
-   "titulo": "Diário Oficial de Alcobaça (BA) 2026-09-22 — \"termo de execução cultural\"",
-   "url": "https://data.queridodiario.ok.org.br/2900801/2026-09-22/5c3a4963405fbd659368b0af3dc946eb43703a04.pdf",
-   "nota": 0.519,
-   "incerteza": 0.963
-  },
-  {
-   "titulo": "Edital de Chamamento Público Nº 6/2026",
-   "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026",
-   "nota": 0.519,
-   "incerteza": 0.961
-  },
-  {
-   "titulo": "Chamada Pública CNPq/MMULHERES Nº 19/2026 - Programa Asas para o Futuro",
-   "url": "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-19-2026/chamada-publica-cnpq-N-19-2026",
-   "nota": 0.48,
-   "incerteza": 0.961
-  },
-  {
-   "titulo": "Itaberaí — Chamamento Público para Audiência Pública – Lei Aldir Blanc II — Goiás",
-   "url": "https://itaberai.go.gov.br/chamamento-publico-para-audiencia-publica-lei-aldir-blanc-ii/",
-   "nota": 0.48,
-   "incerteza": 0.96
-  },
-  {
-   "titulo": "Edital Educação e Trabalho 2026 – Escola e Território",
-   "url": "https://www.itausocial.org.br/editais/edital-educacao-e-trabalho-2026-escola-e-territorio",
-   "nota": 0.48,
-   "incerteza": 0.96
-  },
-  {
-   "titulo": "Processo de Seleção de Gestor Escolar",
-   "url": "https://goias.gov.br/educacao?page_id=27121",
-   "nota": 0.521,
-   "incerteza": 0.959
-  },
-  {
-   "titulo": "Prorrogadas as inscrições de trabalhos técnicos para o IX CBUC",
-   "url": "https://fundacaogrupoboticario.org.br/prorrogadas-as-inscricoes-de-trabalhos-tecnicos-para-o-ix-cbuc",
-   "nota": 0.479,
-   "incerteza": 0.958
-  },
-  {
-   "titulo": "Chamadas Edital nº 002/2026 – Programa Nacional de Apoio à Geração de Empreendimentos Inovadores – Programa Centelha 3 Pará",
-   "url": "https://www.fapespa.pa.gov.br/2026/03",
-   "nota": 0.521,
-   "incerteza": 0.957
-  },
-  {
-   "titulo": "Convocatoria UE Ecuador 2026 para sociedad civil y derechos humanos",
-   "url": "https://re-cid.org/convocatoria-union-europea-ecuador-sociedad-civil-derechos-humanos-2026/",
-   "nota": 0.479,
-   "incerteza": 0.957
   }
  ],
- "pendentes_provaveis_reais": 342
+ "pendentes_provaveis_reais": 322
 }
