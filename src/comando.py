@@ -67,6 +67,7 @@ def executar(etapa: str, cmd: list[str], timeout: int, env: dict | None = None) 
     """Roda um passo e devolve o recibo: código, tempo, erro (Traceback ou exceção), fim da saída."""
     t0 = time.time()
     _cat_antes = _CAT_LIVROS.read_bytes() if _CAT_LIVROS.exists() else None   # 17/10: proteção do catálogo dos livros
+    _ind_antes = _INDICE_LIVROS.read_bytes() if _INDICE_LIVROS.exists() else None   # 17/10: e do índice (_origens)
     try:
         r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=timeout,
                            env={**os.environ, "PYTHONUNBUFFERED": "1", **(env or {})})
@@ -78,10 +79,48 @@ def executar(etapa: str, cmd: list[str], timeout: int, env: dict | None = None) 
         linhas = [l for l in saida.splitlines() if ERRO.search(l) or re.match(r"\s*\w+(Error|Exception)\b", l)]
         erro = (linhas[-1] if linhas else f"código {rc}")[:300]
     prot = _proteger_livros(etapa, cmd, _cat_antes)
+    prot.update(_proteger_indice(etapa, cmd, _ind_antes))
     return {"etapa": etapa, "rc": rc, "segundos": round(time.time() - t0, 1), "erro": erro, "saida": saida[-3000:], **prot}
 
 
 _CAT_LIVROS = ROOT / "biblioteca_alexandria/fontes/motores.json"
+_INDICE_LIVROS = ROOT / "biblioteca_alexandria/livros/_origens.json"
+
+
+def _proteger_indice(etapa: str, cmd: list, antes: bytes | None, limite_frac: float = 0.10, limite_abs: int = 100) -> dict:
+    """17/10/2026 (passagem do chat de testes): o índice dos livros caiu de 8.412 para 1 entrada às 09:11 e para 265 às
+    11:00. Se um comando retirar mais de 10% E 100 entradas, elas voltam na hora (as que ficaram não são tocadas)."""
+    if antes is None or not _INDICE_LIVROS.exists():
+        return {}
+    depois_b = _INDICE_LIVROS.read_bytes()
+    if depois_b == antes:
+        return {}
+    try:
+        A = json.loads(antes)
+    except ValueError:
+        return {}
+    try:
+        D = json.loads(depois_b)
+    except ValueError:                                  # ilegível depois do comando: volta o anterior inteiro
+        _INDICE_LIVROS.write_bytes(antes)
+        return {"indice_devolvido_inteiro": len(A)}
+    falt = [k for k in A if k not in D]
+    if len(falt) >= limite_abs and len(falt) > limite_frac * max(1, len(A)):
+        for k in falt:
+            D[k] = A[k]
+        tmp = _INDICE_LIVROS.with_suffix(".tmp")
+        tmp.write_text(json.dumps(D, ensure_ascii=False, separators=(",", ":")), encoding="utf-8"); tmp.replace(_INDICE_LIVROS)
+        try:
+            P = json.loads(PROTECAO.read_text(encoding="utf-8")) if PROTECAO.exists() else {"ocorrencias": []}
+        except ValueError:
+            P = {"ocorrencias": []}
+        P["ocorrencias"] = (P.get("ocorrencias") or [])[-49:] + [{
+            "em": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "etapa": etapa, "comando": " ".join(map(str, cmd))[-200:],
+            "objeto": "índice dos livros", "antes": len(A), "depois_do_comando": len(D) - len(falt), "devolvidas": len(falt)}]
+        PROTECAO.parent.mkdir(parents=True, exist_ok=True)
+        PROTECAO.write_text(json.dumps(P, ensure_ascii=False, indent=1), encoding="utf-8")
+        return {"indice_entradas_devolvidas": len(falt)}
+    return {}
 PROTECAO = ROOT / "estado/protecao_livros.json"
 
 
