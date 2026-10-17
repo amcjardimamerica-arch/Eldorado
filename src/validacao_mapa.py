@@ -185,9 +185,15 @@ def aplicar(hoje: date | None = None) -> dict:
     write_json(ARQUIVADOS, arq)
     # 2. ESTUDO de cada oportunidade verdadeira com fonte oficial (válida ou encerrada)
     EXT.mkdir(parents=True, exist_ok=True)
+    # 17/10/2026: as edições estão NOS LIVROS — lidas em bloco (cada livro 1 vez) e gravadas num LOTE só, e só o que mudou.
+    # Antes: fp.exists() era sempre falso → as 257 edições eram regravadas em toda passagem, uma a uma (46 s; estourava
+    # a fase recalcular no GitHub)
+    from . import livro_arquivo as _LA
+    _ja = _LA.ler_pasta(EXT)
+    _lote = []
     for eid, r in V.items():
         if r["decisao"] in ("valida_aberta", "valida_fora_abrangencia", "arquivada_encerrada") and r.get("fonte_oficial"):
-            fp = EXT / f"{eid}.json"; e = load_json(fp) if fp.exists() else {"id": eid, "titulo": r.get("titulo"), "url": r.get("url")}
+            fp = EXT / f"{eid}.json"; e = dict(_ja.get(fp) or {"id": eid, "titulo": r.get("titulo"), "url": r.get("url")})
             ve = {"prazo": r.get("prazo"), "inicio": r.get("inicio"), "pagina_oficial": r.get("fonte_oficial"),
                   "origem_fonte": r.get("origem_fonte"), "decisao": r["decisao"], "motivo": r.get("motivo"),
                   "doze_itens": r.get("doze_itens"), "verificado_em": r.get("validado_em"), "via": "validação individual do mapa"}
@@ -195,7 +201,17 @@ def aplicar(hoje: date | None = None) -> dict:
                 e["verificacao_externa"] = ve
                 if r.get("objeto") and not e.get("objeto"):
                     e["objeto"] = r["objeto"]
-                write_json(fp, e); res["estudos_gravados"] += 1
+                _lote.append((fp, e)); res["estudos_gravados"] += 1
+    if _lote:
+        try:
+            _no_repo = Path(EXT).resolve().is_relative_to(_LA.ROOT.resolve())
+        except Exception:  # noqa: BLE001
+            _no_repo = False
+        if _no_repo:
+            _LA.guardar_lote(_lote)                    # nos livros: um lote só
+        else:
+            for _fp, _e in _lote:                      # fora do repositório (ex.: pasta de teste): gravação direta
+                write_json(_fp, _e)
     # 3. PREDITIVO: toda oportunidade verdadeira compõe a previsão (encerradas principalmente)
     linhas = [json.loads(l) for l in PRED.read_text(encoding="utf-8").splitlines() if l.strip()] if PRED.exists() else []
     por_id = {x.get("id"): x for x in linhas}
@@ -226,9 +242,9 @@ def aplicar(hoje: date | None = None) -> dict:
     # 4. MOTORES OPRESSORES: apresentação individual de cada válida; nada de opressor gastando IA com lixo
     C = load_json(CAT_OPR) if CAT_OPR.exists() else {"motores": []}; L = load_json(EST_OPR) if EST_OPR.exists() else {"ligados": {}}
     L.setdefault("ligados", {}); cat = {x["id"]: x for x in C.get("motores") or []}
-    usados_por_validas = {(r.get("opressor") or {}).get("id") for r in V.values() if r["decisao"] in ("valida_aberta", "valida_fora_abrangencia", "pendente")}
+    usados_por_validas = {_opid(r.get("opressor")) for r in V.values() if r["decisao"] in ("valida_aberta", "valida_fora_abrangencia", "pendente")}
     for eid, r in V.items():
-        op = (r.get("opressor") or {}).get("id")
+        op = _opid(r.get("opressor"))
         if r["decisao"] in ("valida_aberta", "valida_fora_abrangencia") and op and op in cat:
             # já tinha apresentação individual: garante que está ligado, com os dados confirmados (a IA só busca o que falta)
             if not cat[op].get("ativa", True):
@@ -301,6 +317,11 @@ def relatorio() -> dict:
            "motores": sorted(mot.values(), key=lambda m: -m["total"])}
     write_json(SAIDA_REL, out)
     return out
+
+
+def _opid(o):
+    """17/10: o opressor pode vir como objeto ({id, ...}) ou só pelo id (texto)."""
+    return o.get("id") if isinstance(o, dict) else (o or None)
 
 
 def run() -> dict:
