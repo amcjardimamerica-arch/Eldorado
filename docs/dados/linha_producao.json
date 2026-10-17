@@ -1,13 +1,13 @@
 {
- "em": "2026-10-17T14:27:43+00:00",
+ "em": "2026-10-17T15:03:55+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 863,
-  "oportunidades_distintas": 528,
-  "entidades_em_2_ou_mais_canais": 76,
+  "coletados": 884,
+  "oportunidades_distintas": 538,
+  "entidades_em_2_ou_mais_canais": 77,
   "etapas": {
-   "EM_LIVRO": 766,
-   "CONSOLIDADO": 20,
+   "EM_LIVRO": 774,
+   "CONSOLIDADO": 33,
    "QUALIFICADO": 64,
    "REPROCESSAR": 13
   },
@@ -26,10 +26,10 @@
   {
    "canal": "piloto-interceptador",
    "familia": "pilotos",
-   "registros": 542,
+   "registros": 543,
    "entidades": 350,
-   "exclusivas": 279,
-   "corroboradas": 71,
+   "exclusivas": 278,
+   "corroboradas": 72,
    "validadas_como_reais": 82
   },
   {
@@ -60,6 +60,15 @@
    "validadas_como_reais": 5
   },
   {
+   "canal": "piloto-aberto",
+   "familia": "pilotos",
+   "registros": 39,
+   "entidades": 35,
+   "exclusivas": 28,
+   "corroboradas": 7,
+   "validadas_como_reais": 3
+  },
+  {
    "canal": "outras-oportunidades-6",
    "familia": "outros",
    "registros": 15,
@@ -78,6 +87,15 @@
    "validadas_como_reais": 3
   },
   {
+   "canal": "outras-oportunidades-7",
+   "familia": "outros",
+   "registros": 17,
+   "entidades": 11,
+   "exclusivas": 10,
+   "corroboradas": 1,
+   "validadas_como_reais": 3
+  },
+  {
    "canal": "do-goias",
    "familia": "diario_oficial",
    "registros": 9,
@@ -89,10 +107,10 @@
   {
    "canal": "observatorio-3setor",
    "familia": "terceiro_setor",
-   "registros": 7,
-   "entidades": 5,
+   "registros": 10,
+   "entidades": 6,
    "exclusivas": 0,
-   "corroboradas": 5,
+   "corroboradas": 6,
    "validadas_como_reais": 3
   },
   {
@@ -103,15 +121,6 @@
    "exclusivas": 0,
    "corroboradas": 4,
    "validadas_como_reais": 3
-  },
-  {
-   "canal": "piloto-aberto",
-   "familia": "pilotos",
-   "registros": 35,
-   "entidades": 31,
-   "exclusivas": 24,
-   "corroboradas": 7,
-   "validadas_como_reais": 2
   },
   {
    "canal": "querido-diario",
@@ -129,15 +138,6 @@
    "entidades": 10,
    "exclusivas": 10,
    "corroboradas": 0,
-   "validadas_como_reais": 2
-  },
-  {
-   "canal": "outras-oportunidades-7",
-   "familia": "outros",
-   "registros": 10,
-   "entidades": 10,
-   "exclusivas": 9,
-   "corroboradas": 1,
    "validadas_como_reais": 2
   },
   {
@@ -296,9 +296,9 @@
   {
    "canal": "empresas-editais-incentivados",
    "familia": "empresas",
-   "registros": 17,
-   "entidades": 12,
-   "exclusivas": 7,
+   "registros": 22,
+   "entidades": 17,
+   "exclusivas": 12,
    "corroboradas": 5,
    "validadas_como_reais": 0
   },
@@ -332,7 +332,7 @@
   {
    "canal": "cnpq-extensao",
    "familia": "orgao_publico",
-   "registros": 3,
+   "registros": 4,
    "entidades": 3,
    "exclusivas": 2,
    "corroboradas": 1,
@@ -716,6 +716,13 @@
    ]
   },
   {
+   "entidade": "0fd16ad50306fbb939f0",
+   "canais": [
+    "observatorio-3setor",
+    "piloto-interceptador"
+   ]
+  },
+  {
    "entidade": "90de619cc79aa4de9634",
    "canais": [
     "piloto-interceptador",
@@ -748,13 +755,6 @@
    "canais": [
     "observatorio-3setor",
     "piloto-interceptador"
-   ]
-  },
-  {
-   "entidade": "2f2bbd52c9f4ae6855d8",
-   "canais": [
-    "piloto-interceptador",
-    "recorrencia"
    ]
   }
  ],
