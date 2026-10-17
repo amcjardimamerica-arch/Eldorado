@@ -39,6 +39,7 @@ jobs:
             mkdir -p estado/cartorio docs/relatorios && cp -r /tmp/a/avaliacao estado/cartorio/ && cp /tmp/a/*.md docs/relatorios/ 2>/dev/null || true
             git add biblioteca_alexandria/livros/anexos/cartorio_avaliacao docs/relatorios/avaliacao-cartorio-*.md 2>/dev/null || true
             git diff --cached --quiet && { echo "nada mudou"; exit 0; }
+            python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
             git commit -q -m "avaliação do Cartório com gabarito $(date -u +%F)" && git push -q && { echo "gravado ($i)"; exit 0; }
             sleep 5
           done

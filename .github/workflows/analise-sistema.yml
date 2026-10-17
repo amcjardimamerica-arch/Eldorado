@@ -79,5 +79,6 @@ jobs:
             git fetch -q origin main && git reset -q --hard origin/main
             python scripts/pausa_analise.py retomar >/dev/null 2>&1 || true
             git add estado/analise_pausa.json 2>/dev/null; git diff --cached --quiet && exit 0
+            python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
             git commit -q -m "análise do sistema: fluxos retomados $(date -u +%F\ %H:%M)" && git push -q && exit 0; sleep 5
           done

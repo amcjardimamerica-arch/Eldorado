@@ -60,6 +60,7 @@ jobs:
           git config user.name "eldorado-robo"
           git config user.email "eldorado-robo@users.noreply.github.com"
           git add -A
+          python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
           git diff --cached --quiet || git commit -m "chore: ciclo mensal de acesso (recifragem)"
           git pull --rebase origin main || true
           git push origin main || true

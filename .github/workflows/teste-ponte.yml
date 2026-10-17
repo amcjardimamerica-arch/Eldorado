@@ -30,6 +30,7 @@ jobs:
             git fetch -q origin main && git reset -q --hard origin/main
             mkdir -p docs/relatorios/teste-ponte && cp -r /tmp/r/. docs/relatorios/teste-ponte/
             git add docs/relatorios/teste-ponte
+            python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
             git commit -q -m "teste da ponte Hostgator $(date -u +%F\ %H:%M)" || break
             git push -q origin main && break; sleep 7
           done

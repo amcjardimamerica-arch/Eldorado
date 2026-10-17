@@ -25,5 +25,6 @@ jobs:
           git pull --rebase --autostash origin main || true
           git add -A estado
           git diff --cached --quiet && exit 0
+          python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
           git commit -m "dados: sentinela diária $(date -u +%F)"
           git push

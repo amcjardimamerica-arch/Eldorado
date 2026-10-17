@@ -52,6 +52,7 @@ jobs:
             [ -s estado/cartorio/novos_livros.jsonl ] && python3 scripts/importar_verificacao_livros.py estado/cartorio/novos_livros.jsonl || true
             rm -f estado/cartorio/novos_livros.jsonl
             for P in estado/cartorio docs/dados/cartorio.json estado/conselho docs/dados/conselho_motores.json docs/relatorios estado/rotas docs/dados/rotas_motores.json docs/dados/conselho_validacao.json estado/indexadores/robots_verificacao.json biblioteca_alexandria/livros/anexos/esteira/resultados_local.jsonl dados/oportunidades/pareceres_livros; do [ -e "$P" ] && git add -A -- "$P"; done; true
+            python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
             git commit -q -m "cartório: $(date -u +%F\ %H:%M)" || { echo "nada a gravar"; break; }
             git push -q origin main && { echo "gravado ($i)"; break; }; sleep 9
           done

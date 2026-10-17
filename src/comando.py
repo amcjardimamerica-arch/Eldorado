@@ -337,7 +337,9 @@ def fases(ctx: dict) -> list[dict]:
                   [py, "-c", "import json; from src import fila_retentativa as FR; print(json.dumps(FR.dar_destino(), ensure_ascii=False))"],
                   [py, "-c", "import json; from src import fluxo_oportunidades as F; print(json.dumps(F.sincronizar_com_repositorio(), ensure_ascii=False))"],
                   [py, "-c", "import json; from src import cartorio as C; print(json.dumps(C.pendencias(), ensure_ascii=False))"],
-                  [py, "-c", "import json; from src import qualidade_motores as Q; print(json.dumps(Q.montar(), ensure_ascii=False))"]],
+                  [py, "-c", "import json; from src import qualidade_motores as Q; print(json.dumps(Q.montar(), ensure_ascii=False))"],
+                  # 17/10/2026 (titular): TRAVA DOS LIVROS — por último: nenhum livro apagado nem sobrescrito, só acrescido
+                  [py, "-m", "src.trava_livros"]],
          "t": 600, "pular": None},
         {"etapa": "sala_de_controle", "finalidade": "instrumentos de cada etapa", "cmds": [[py, "-m", "src.sala_controle"]], "t": 150, "pular": None},
         {"etapa": "diagnostico", "finalidade": "diagnóstico da passagem (arquivo próprio; o relatório da análise não é sobrescrito)",

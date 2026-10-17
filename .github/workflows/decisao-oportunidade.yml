@@ -55,6 +55,7 @@ jobs:
             git add -A estado/decisoes_editais.json biblioteca_alexandria/fontes/motores.json docs/dados/fila_revisao_exclusao.json \
                        biblioteca_alexandria/livros/_vistas/repositorio_unico.json docs/dados/repositorio_resumo.json docs/dados/fichas_oportunidades.json
             git diff --cached --quiet && { echo "nada mudou"; break; }
+            python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
             git commit -q -m "decisão da titular: $OID $ESTADO" && git push -q origin HEAD:main && { echo "gravado ($i)"; break; }
             sleep 7
           done

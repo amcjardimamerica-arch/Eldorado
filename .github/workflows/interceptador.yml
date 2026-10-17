@@ -153,6 +153,7 @@ jobs:
             # achados por motor) ficam com o ciclo do sistema (fluxo 22), que os regenera de forma consistente
             # 30/09: só os caminhos que EXISTEM — "git add" de arquivo inexistente (dossies_empresas.json, ainda sem dossiê) saía com erro e a etapa inteira falhava: nenhum resultado do Interceptador era gravado
             for P in config/parametros_pilotos_fixos.json estado/pilotos docs/dados/achados_pilotos.json config/parametros_pilotos.json estado/aprendizado docs/dados/dossies_empresas.json docs/dados/aprendizado_pilotos.json docs/dados/interceptador.json estado/interceptador biblioteca_alexandria/livros/especiais/espiao/fila_resgate.json dados/editais/extraidos biblioteca_alexandria/livros/anexos docs/dados/esquadrilha.json biblioteca_alexandria/fontes/motores.json; do [ -e "$P" ] && git add -A -- "$P"; done; true
+            python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
             git commit -q -m "interceptador: voo $(date -u +%F\ %H:%M)" || { echo "nada a gravar"; ENVIADO=1; break; }
             if git push -q origin main; then echo "gravado ($i)"; ENVIADO=1; break; fi
             sleep $((i * 5))

@@ -33,6 +33,7 @@ jobs:
             git fetch -q origin main && git reset -q --hard origin/main
             mkdir -p docs/verificacao-livros/paginas && cp /tmp/p/* docs/verificacao-livros/paginas/
             git add docs/verificacao-livros/paginas
+            python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
             git commit -q -m "verificação dos livros: páginas coletadas ($(date -u +%F\ %H:%M))" || break
             git push -q origin main && break; sleep 7
           done
