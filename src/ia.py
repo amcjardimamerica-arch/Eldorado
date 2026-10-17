@@ -63,7 +63,7 @@ def _post(chave: str, corpo: dict) -> dict:
         return json.loads(resp.read(20_000_000).decode("utf-8"))
 
 
-def chamar(tarefa: str, sistema: str, usuario: str, max_tokens: int | None = None,
+def chamar(tarefa: str, sistema: str, usuario, max_tokens: int | None = None,   # 16/10: usuario pode ser lista de blocos (imagens)
            ferramentas: list[str] | None = None, esforco: str | None = None) -> str:
     """Chamada única ao modelo da TAREFA. 02/10: aceita ESFORÇO (output_config.effort: low…max, por tarefa em
     config/ia.json) e FERRAMENTAS do servidor (busca e leitura na web). Pausa no meio da busca (pause_turn) continua
