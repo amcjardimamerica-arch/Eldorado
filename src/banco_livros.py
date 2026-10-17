@@ -699,7 +699,7 @@ def unir_duplicados(gravar: bool = True) -> dict:
             (LA.PASTA / f"{sai['id']}.json").unlink(missing_ok=True)
         L.remove(sai); por.pop(sai["id"], None)
     if gravar and juntados:
-        orig = _j(LA.ORIGENS, {}) or {}
+        orig = LA.ler_origens_para_gravar()              # 17/10: ilegível = erro, nunca {} (apagava o índice)
         for reg in orig.values():
             for c in (reg.get("conteineres") or {}).values():
                 for e in c.get("entradas") or []:
@@ -707,8 +707,7 @@ def unir_duplicados(gravar: bool = True) -> dict:
                         e[0] = mapa[e[0]]
             if reg.get("inteiro") and reg["inteiro"][0] in mapa:
                 reg["inteiro"][0] = mapa[reg["inteiro"][0]]
-        LA.ORIGENS.parent.mkdir(parents=True, exist_ok=True)
-        LA.ORIGENS.write_text(json.dumps(orig, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        LA.gravar_origens(orig)                          # 17/10: atômico
         cat_doc["total"] = len(L)
         CAT.write_text(json.dumps(cat_doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     return {"pares": len(pares), "juntados": len(juntados), "mantidos_separados": mantidos_separados,

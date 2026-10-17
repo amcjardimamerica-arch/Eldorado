@@ -39,6 +39,41 @@ def _j(p: Path, padrao):
         return padrao
 
 
+class IndiceIlegivel(RuntimeError):
+    """O índice dos livros existe mas não pôde ser lido: gravar por cima apagaria milhares de ligações."""
+
+
+def ler_origens_para_gravar() -> dict:
+    """17/10/2026: leitura do índice ANTES DE REGRAVÁ-LO. Arquivo ausente = índice novo (vazio). Arquivo presente e
+    ilegível (cortado por uma fase encerrada no meio da gravação, conflito, disco cheio) = ERRO: antes devolvia {} em
+    silêncio e o índice era regravado só com as entradas novas (17/10, 09:11: de 8.412 para 1 entrada)."""
+    if not ORIGENS.exists():
+        return {}
+    try:
+        v = json.loads(ORIGENS.read_text(encoding="utf-8"))
+    except Exception as e:  # noqa: BLE001
+        raise IndiceIlegivel(f"{ORIGENS} ilegível ({e.__class__.__name__}); nada foi gravado") from e
+    if not isinstance(v, dict):
+        raise IndiceIlegivel(f"{ORIGENS} não é um objeto JSON; nada foi gravado")
+    return v
+
+
+def gravar_origens(origens: dict) -> None:
+    """Gravação ATÔMICA: escreve num arquivo temporário e troca de uma vez (os.replace). Se o processo morrer no meio,
+    o índice anterior continua inteiro."""
+    import os
+    import tempfile
+    ORIGENS.parent.mkdir(parents=True, exist_ok=True)
+    fd, tmp = tempfile.mkstemp(prefix=".origens.", suffix=".tmp", dir=ORIGENS.parent)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as fh:
+            fh.write(json.dumps(origens, ensure_ascii=False, separators=(",", ":")))
+        os.replace(tmp, ORIGENS)
+    except BaseException:
+        Path(tmp).unlink(missing_ok=True)
+        raise
+
+
 def _agora() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
 
@@ -231,7 +266,7 @@ def absorver(caminhos: list, gravar_: bool = True, apagar: bool = True, controle
     idx = indice()
     _IDX_ATUAL.clear(); _IDX_ATUAL.update(idx)
     cat = _j(CAT, {"motores": []}); L = cat.setdefault("motores", [])
-    origens = _j(ORIGENS, {})
+    origens = ler_origens_para_gravar()                 # 17/10: ilegível = erro, nunca {} (apagava o índice)
     livros: dict = {}
     st = Counter(); criados = 0; arquivos = []
 
@@ -300,7 +335,7 @@ def absorver(caminhos: list, gravar_: bool = True, apagar: bool = True, controle
         for lid, d in livros.items():
             gravar(lid, d)
         PASTA.mkdir(parents=True, exist_ok=True)
-        ORIGENS.write_text(json.dumps(origens, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        gravar_origens(origens)                          # 17/10: atômico
         if criados:
             CAT.write_text(json.dumps(cat, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         if apagar:
