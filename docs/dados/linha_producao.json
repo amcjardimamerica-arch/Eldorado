@@ -1,15 +1,15 @@
 {
- "em": "2026-10-17T04:50:36+00:00",
+ "em": "2026-10-17T05:52:19+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 654,
-  "oportunidades_distintas": 475,
+  "coletados": 635,
+  "oportunidades_distintas": 459,
   "entidades_em_2_ou_mais_canais": 21,
   "etapas": {
-   "EM_LIVRO": 577,
+   "EM_LIVRO": 561,
    "CONSOLIDADO": 28,
-   "QUALIFICADO": 39,
-   "REPROCESSAR": 10
+   "QUALIFICADO": 37,
+   "REPROCESSAR": 9
   },
   "fila_de_reprocessamento": {
    "URL de buscador (falta o site oficial)": 3,
@@ -18,71 +18,52 @@
    "PRAZO_IMPOSSIVEL: prazo impossível: 2034-04-26 → reler o prazo na fonte": 1,
    "PRAZO_IMPOSSIVEL: prazo impossível: 2035-01-15 → reler o prazo na fonte": 1,
    "PRAZO_IMPOSSIVEL: prazo impossível: 2035-03-12 → reler o prazo na fonte": 1,
-   "PRAZO_IMPOSSIVEL: prazo impossível: 2035-05-14 → reler o prazo na fonte": 1,
-   "PRAZO_IMPOSSIVEL: prazo impossível: 2035-06-15 → reler o prazo na fonte": 1
+   "PRAZO_IMPOSSIVEL: prazo impossível: 2035-05-14 → reler o prazo na fonte": 1
   }
  },
  "canais": [
   {
    "canal": "piloto-interceptador",
    "familia": "pilotos",
-   "registros": 520,
+   "registros": 525,
    "entidades": 389,
-   "exclusivas": 370,
-   "corroboradas": 19,
+   "exclusivas": 368,
+   "corroboradas": 21,
    "validadas_como_reais": 80
-  },
-  {
-   "canal": "pncp-api",
-   "familia": "portal_chamamentos",
-   "registros": 21,
-   "entidades": 21,
-   "exclusivas": 16,
-   "corroboradas": 5,
-   "validadas_como_reais": 9
   },
   {
    "canal": "f260-captacao-069",
    "familia": "orgao_publico",
    "registros": 14,
    "entidades": 8,
-   "exclusivas": 5,
-   "corroboradas": 3,
+   "exclusivas": 7,
+   "corroboradas": 1,
    "validadas_como_reais": 8
+  },
+  {
+   "canal": "pncp-api",
+   "familia": "portal_chamamentos",
+   "registros": 15,
+   "entidades": 15,
+   "exclusivas": 11,
+   "corroboradas": 4,
+   "validadas_como_reais": 7
   },
   {
    "canal": "outras-oportunidades-6",
    "familia": "outros",
-   "registros": 12,
-   "entidades": 12,
-   "exclusivas": 11,
+   "registros": 11,
+   "entidades": 11,
+   "exclusivas": 10,
    "corroboradas": 1,
    "validadas_como_reais": 3
   },
   {
-   "canal": "f260-captacao-039",
-   "familia": "orgao_publico",
-   "registros": 13,
-   "entidades": 3,
-   "exclusivas": 1,
-   "corroboradas": 2,
-   "validadas_como_reais": 3
-  },
-  {
-   "canal": "outras-oportunidades-7",
-   "familia": "outros",
-   "registros": 7,
-   "entidades": 6,
-   "exclusivas": 6,
-   "corroboradas": 0,
-   "validadas_como_reais": 1
-  },
-  {
    "canal": "outras-oportunidades-1",
    "familia": "outros",
-   "registros": 5,
-   "entidades": 5,
-   "exclusivas": 5,
+   "registros": 3,
+   "entidades": 3,
+   "exclusivas": 3,
    "corroboradas": 0,
    "validadas_como_reais": 1
   },
@@ -105,12 +86,48 @@
    "validadas_como_reais": 1
   },
   {
-   "canal": "f260-captacao-237",
-   "familia": "orgao_publico",
+   "canal": "gife",
+   "familia": "terceiro_setor",
    "registros": 2,
    "entidades": 2,
-   "exclusivas": 2,
+   "exclusivas": 1,
+   "corroboradas": 1,
+   "validadas_como_reais": 1
+  },
+  {
+   "canal": "f260-captacao-039",
+   "familia": "orgao_publico",
+   "registros": 5,
+   "entidades": 1,
+   "exclusivas": 1,
    "corroboradas": 0,
+   "validadas_como_reais": 1
+  },
+  {
+   "canal": "f260-captacao-237",
+   "familia": "orgao_publico",
+   "registros": 1,
+   "entidades": 1,
+   "exclusivas": 1,
+   "corroboradas": 0,
+   "validadas_como_reais": 1
+  },
+  {
+   "canal": "estaduais-go-gov",
+   "familia": "orgao_publico",
+   "registros": 1,
+   "entidades": 1,
+   "exclusivas": 0,
+   "corroboradas": 1,
+   "validadas_como_reais": 1
+  },
+  {
+   "canal": "f260-captacao-152",
+   "familia": "orgao_publico",
+   "registros": 1,
+   "entidades": 1,
+   "exclusivas": 0,
+   "corroboradas": 1,
    "validadas_como_reais": 1
   },
   {
@@ -168,24 +185,6 @@
    "validadas_como_reais": 0
   },
   {
-   "canal": "f260-captacao-217",
-   "familia": "orgao_publico",
-   "registros": 3,
-   "entidades": 3,
-   "exclusivas": 3,
-   "corroboradas": 0,
-   "validadas_como_reais": 0
-  },
-  {
-   "canal": "outras-oportunidades-3",
-   "familia": "outros",
-   "registros": 3,
-   "entidades": 3,
-   "exclusivas": 2,
-   "corroboradas": 1,
-   "validadas_como_reais": 0
-  },
-  {
    "canal": "plataforma-mapas-culturais",
    "familia": "outros",
    "registros": 3,
@@ -201,6 +200,33 @@
    "entidades": 3,
    "exclusivas": 3,
    "corroboradas": 0,
+   "validadas_como_reais": 0
+  },
+  {
+   "canal": "outras-oportunidades-7",
+   "familia": "outros",
+   "registros": 2,
+   "entidades": 2,
+   "exclusivas": 2,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
+  },
+  {
+   "canal": "outras-oportunidades-3",
+   "familia": "outros",
+   "registros": 2,
+   "entidades": 2,
+   "exclusivas": 1,
+   "corroboradas": 1,
+   "validadas_como_reais": 0
+  },
+  {
+   "canal": "salic",
+   "familia": "portal_chamamentos",
+   "registros": 2,
+   "entidades": 2,
+   "exclusivas": 1,
+   "corroboradas": 1,
    "validadas_como_reais": 0
   },
   {
@@ -231,7 +257,7 @@
    "validadas_como_reais": 0
   },
   {
-   "canal": "f260-captacao-208",
+   "canal": "cnpq-extensao",
    "familia": "orgao_publico",
    "registros": 1,
    "entidades": 1,
@@ -240,26 +266,8 @@
    "validadas_como_reais": 0
   },
   {
-   "canal": "f260-captacao-216",
-   "familia": "orgao_publico",
-   "registros": 1,
-   "entidades": 1,
-   "exclusivas": 1,
-   "corroboradas": 0,
-   "validadas_como_reais": 0
-  },
-  {
-   "canal": "mpgo-destinacao",
-   "familia": "outros",
-   "registros": 1,
-   "entidades": 1,
-   "exclusivas": 0,
-   "corroboradas": 1,
-   "validadas_como_reais": 0
-  },
-  {
-   "canal": "mptgo-destinacao",
-   "familia": "outros",
+   "canal": "prefeituras-50-go",
+   "familia": "portal_chamamentos",
    "registros": 1,
    "entidades": 1,
    "exclusivas": 0,
@@ -314,19 +322,19 @@
  ],
  "familias": {
   "pilotos": 2,
-  "portal_chamamentos": 1,
   "orgao_publico": 14,
-  "outros": 12,
-  "terceiro_setor": 1,
+  "portal_chamamentos": 3,
+  "outros": 10,
+  "terceiro_setor": 2,
   "empresas": 1,
   "diario_oficial": 1
  },
  "corroboradas": [
   {
-   "entidade": "f00ce5ebecc841a69911",
+   "entidade": "4b30661ea4d6e01e0607",
    "canais": [
-    "mpgo-destinacao",
-    "piloto-interceptador"
+    "piloto-interceptador",
+    "salic"
    ]
   },
   {
@@ -334,6 +342,13 @@
    "canais": [
     "piloto-interceptador",
     "pncp-api"
+   ]
+  },
+  {
+   "entidade": "90de619cc79aa4de9634",
+   "canais": [
+    "piloto-interceptador",
+    "prefeituras-50-go"
    ]
   },
   {
@@ -355,6 +370,13 @@
    "canais": [
     "piloto-interceptador",
     "pncp-api"
+   ]
+  },
+  {
+   "entidade": "7a5b6e2eb4296c1398e4",
+   "canais": [
+    "estaduais-go-gov",
+    "piloto-interceptador"
    ]
   },
   {
@@ -393,6 +415,13 @@
    ]
   },
   {
+   "entidade": "1078158fdb0136be112b",
+   "canais": [
+    "gife",
+    "piloto-interceptador"
+   ]
+  },
+  {
    "entidade": "11942f03820e082026d5",
    "canais": [
     "piloto-interceptador",
@@ -407,17 +436,10 @@
    ]
   },
   {
-   "entidade": "5425dc199791a93ca520",
+   "entidade": "65aa2703bbca74c02b19",
    "canais": [
-    "mptgo-destinacao",
+    "f260-captacao-152",
     "piloto-interceptador"
-   ]
-  },
-  {
-   "entidade": "b0984d0a767b7ae674dc",
-   "canais": [
-    "piloto-interceptador",
-    "pncp-api"
    ]
   },
   {
@@ -454,21 +476,7 @@
     "f260-captacao-069",
     "piloto-interceptador"
    ]
-  },
-  {
-   "entidade": "0cf08bd4449cd07d0f4e",
-   "canais": [
-    "f260-captacao-039",
-    "f260-captacao-069"
-   ]
-  },
-  {
-   "entidade": "1842a0610c725538766a",
-   "canais": [
-    "f260-captacao-039",
-    "f260-captacao-069"
-   ]
   }
  ],
- "eventos_no_livro_razao": 6
+ "eventos_no_livro_razao": 0
 }
