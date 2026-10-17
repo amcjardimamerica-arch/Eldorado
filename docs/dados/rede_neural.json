@@ -1,9 +1,9 @@
 {
- "em": "2026-10-17T05:52:20+00:00",
+ "em": "2026-10-17T06:47:05+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
- "rotulados": 1681,
- "positivos": 580,
- "pendentes": 718,
+ "rotulados": 1683,
+ "positivos": 581,
+ "pendentes": 723,
  "validacao_cruzada": {
   "auc": 0.843,
   "precisao": 0.74,
@@ -51,6 +51,12 @@
   {
    "titulo": "“CHAMAMENTO PÚBLICO PARA CREDENCIAMENTO DE ARTISTAS LOCAIS/REGIONAIS”, mediante pagamento de cachê, com base… — MUNICIPIO DE ALMIRANTE TAMAN",
    "url": "https://pncp.gov.br/app/editais/76105659000174/2026/227",
+   "nota": 0.503,
+   "incerteza": 0.995
+  },
+  {
+   "titulo": "Itumbiara — inscrições para projetos culturais de audiovisual e multilinguagem. pela lei paulo gustavo , irão … — Goiás / Itumbiara",
+   "url": "https://itumbiara.go.gov.br/inscricoes-para-projetos-culturais-de-audiovisual-e-multilinguagem-pela-lei-paulo-gustavo-irao-ate-esta-quarta-dia-8-de-novembro/",
    "nota": 0.503,
    "incerteza": 0.995
   },
@@ -115,8 +121,8 @@
    "incerteza": 0.986
   },
   {
-   "titulo": "Inscrições para os Jogos Interculturais 2026 seguem abertas até 23 de outubro",
-   "url": "https://goias.gov.br/educacao/inscricoes-para-os-jogos-interculturais-2026-seguem-abertas-ate-23-de-outubro",
+   "titulo": "Edital 2 | Seleção de OSCs para desenvolver ações nos territórios | Formulário para Perguntas e Dúvidas",
+   "url": "https://forms.gle/7oQBGFK4q52T9Np69",
    "nota": 0.507,
    "incerteza": 0.986
   },
@@ -133,10 +139,10 @@
    "incerteza": 0.985
   },
   {
-   "titulo": "Desafio UNAIDS",
-   "url": "https://unaids.org.br/desafiounaids",
+   "titulo": "Instituto Lojas Renner abre edital para fortalecer organizações sociais em três estados",
+   "url": "https://captadores.org.br/editais/instituto-lojas-renner-abre-edital-para-fortalecer-organizacoes-sociais-em-tres-estados",
    "nota": 0.508,
-   "incerteza": 0.984
+   "incerteza": 0.983
   },
   {
    "titulo": "Diário Oficial de Salvador (BA) 2026-10-09 — \"termo de fomento\" \"chamamento público\"",
@@ -199,10 +205,22 @@
    "incerteza": 0.98
   },
   {
+   "titulo": "Aviso de Chamamento Público nº 1/2026",
+   "url": "https://www.novaamerica.go.gov.br/politica-nacional-aldir-blanc-ciclo-ii/",
+   "nota": 0.51,
+   "incerteza": 0.98
+  },
+  {
    "titulo": "Secult Goiás divulga plano de ação final do edital Arranjos Regionais 2026",
    "url": "https://goias.gov.br/cultura/secult-goias-divulga-plano-de-acao-final-do-edital-arranjos-regionais-2026",
    "nota": 0.49,
    "incerteza": 0.98
+  },
+  {
+   "titulo": "CNBB lança edital do FNS para apoio financeiro a projetos relativos à Campanha da Fraternidade 2026",
+   "url": "https://captadores.org.br/editais/cnbb-lanca-edital-do-fns-para-apoio-financeiro-a-projetos-relativos-a-campanha-da-fraternidade-2026",
+   "nota": 0.51,
+   "incerteza": 0.979
   },
   {
    "titulo": "Chamada Pública PSA para Conservação da Vegetação Nativa em Territórios Coletivos",
@@ -265,12 +283,6 @@
    "incerteza": 0.971
   },
   {
-   "titulo": "11º edital anual de seleção pública de projetos",
-   "url": "https://fundopositivo.org.br/11o-edital-anual-de-selecao-publica-deprojetos",
-   "nota": 0.485,
-   "incerteza": 0.971
-  },
-  {
    "titulo": "Com vagas para Goiás e outros estados, EDP abre inscrições para seleção ...",
    "url": "https://blogdoamarildo.com.br/com-vagas-para-goias-e-outros-estados-edp-abre-inscricoes-para-selecao-de-projetos-incentivados-e-preve-destinar-ate-r-12-milhoes-a-iniciativas-sociais-esportivas-e-de-saude/",
    "nota": 0.515,
@@ -305,6 +317,12 @@
    "url": "https://data.queridodiario.ok.org.br/2704302/2026-09-22/4b8f731e0cdc33af172610881879a91dc1c10653.pdf",
    "nota": 0.517,
    "incerteza": 0.965
+  },
+  {
+   "titulo": "Perguntas Frequentes | Edital UNAIDS/DATHI",
+   "url": "https://unaids.org.br/faq-edital-unaids-dathi",
+   "nota": 0.518,
+   "incerteza": 0.964
   },
   {
    "titulo": "Mapa de donantes y convocatorias para organizaciones | Terraetica",
@@ -343,35 +361,17 @@
    "incerteza": 0.96
   },
   {
+   "titulo": "Processo de Seleção de Gestor Escolar",
+   "url": "https://goias.gov.br/educacao?page_id=27121",
+   "nota": 0.521,
+   "incerteza": 0.959
+  },
+  {
    "titulo": "Prorrogadas as inscrições de trabalhos técnicos para o IX CBUC",
    "url": "https://fundacaogrupoboticario.org.br/prorrogadas-as-inscricoes-de-trabalhos-tecnicos-para-o-ix-cbuc",
    "nota": 0.479,
    "incerteza": 0.958
-  },
-  {
-   "titulo": "Chamadas Edital nº 002/2026 – Programa Nacional de Apoio à Geração de Empreendimentos Inovadores – Programa Centelha 3 Pará",
-   "url": "https://www.fapespa.pa.gov.br/2026/03",
-   "nota": 0.521,
-   "incerteza": 0.957
-  },
-  {
-   "titulo": "Convocatoria UE Ecuador 2026 para sociedad civil y derechos humanos",
-   "url": "https://re-cid.org/convocatoria-union-europea-ecuador-sociedad-civil-derechos-humanos-2026/",
-   "nota": 0.479,
-   "incerteza": 0.957
-  },
-  {
-   "titulo": "Edital Nº 03/2026 - Chamamento Público - Programa Coleta Seletiva ...",
-   "url": "https://www.gravatai.ifsul.edu.br/editais-e-projetos/item/305-edital-n-03-2026-chamamento-publico-programa-coleta-seletiva-cidada-selecao-de-associacoes-e-cooperativas-de-catadores-de-materiais-reciclaveis-e-reutilizaveis",
-   "nota": 0.478,
-   "incerteza": 0.957
-  },
-  {
-   "titulo": "Edital Nº 06/2026 - Chamamento Público - Programa Coleta Seletiva ...",
-   "url": "https://www.gravatai.ifsul.edu.br/editais-e-projetos/item/310-edital-n-06-2026-chamamento-publico-programa-coleta-seletiva-cidada-selecao-de-associacoes-e-cooperativas-de-catadores-de-materiais-reciclaveis-e-reutilizaveis",
-   "nota": 0.478,
-   "incerteza": 0.957
   }
  ],
- "pendentes_provaveis_reais": 320
+ "pendentes_provaveis_reais": 338
 }
