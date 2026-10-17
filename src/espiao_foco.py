@@ -147,6 +147,16 @@ def familias() -> dict:
         # 10/10 (titular): SITES FECHADOS a robôs (Prosas, FINEP…) — o Espião acha o FINANCIADOR e o edital no site oficial
         # dele, fora do site fechado (religa o ângulo dos indexadores, que ia nas missões de aposta desligadas pelo foco)
         "sites_fechados": lambda r, a: (lambda q: q.format(ano=a) if q else None)(r.choice(_consultas_sites_fechados())),
+        # 16/10 (titular): internacional em várias línguas; associações de Goiás e eventos (patrocinadores); livros da biblioteca
+        "internacional_frances": lambda r, a: r.choice(["appel à projets ONG Brésil {ano}", "subventions associations Brésil {ano}",
+                                                        "fonds pour la société civile Amérique latine Brésil {ano}"]).format(ano=a),
+        "internacional_alemao": lambda r, a: r.choice(["Förderung Zivilgesellschaft Brasilien {ano}", "Ausschreibung NGO Brasilien Projekte {ano}",
+                                                       "Kleinprojekte Botschaft Brasilien {ano}"]).format(ano=a),
+        "internacional_italiano": lambda r, a: r.choice(["bando ONG Brasile {ano}", "finanziamenti società civile Brasile {ano}"]).format(ano=a),
+        "associacoes_goias_eventos": lambda r, a: f'{r.choice(["associação", "instituto", "ONG", "projeto social", "festival", "corrida beneficente", "evento beneficente"])} '
+                                                  f'{r.choice(["Goiânia", "Goiás", "Anápolis", "Aparecida de Goiânia", "Rio Verde"])} '
+                                                  f'{r.choice(["patrocínio", "patrocinadores", "apoio", "realização", "parceiros"])} {a}',
+        "livros_da_biblioteca": lambda r, a: _consulta_dos_livros(r, a),
         "premio_empresarial": lambda r, a: f"prêmio {r.choice(['inovação social', 'empreendedorismo social', 'impacto social', 'boas práticas'])} {r.choice(SETORES)} {_regiao(r)} inscrições {a}",
     }
 
@@ -163,10 +173,59 @@ def cerebro() -> dict:
     for f in familias():
         fam.setdefault(f, {"a": 1.0, "b": 1.0, "usos": 0, "achados": 0, "empresas": 0, "nota_media": None})
     c.setdefault("consultas", {}); c.setdefault("mutacoes", [])
+    if not c.get("internacional_zerado_16_10"):            # 16/10 (titular): o internacional aprendeu antes da regra
+        for f, v in fam.items():
+            if f.startswith("internacional"):
+                v.update({"a": 1.0, "b": 1.0, "usos": 0, "achados": 0, "empresas": 0, "nota_media": None})
+        c["rodizio"] = {}
+        c["internacional_zerado_16_10"] = True
     return c
 
 
+def _consulta_dos_livros(r: random.Random, a: int) -> str | None:
+    """Busca criativa a partir dos livros: sorteia um TIPO (modalidade, área) e depois um livro dele — um programa com
+    muitos livros não pesa mais que os outros; todas as oportunidades valem igual."""
+    try:
+        L = (_j(ROOT / "biblioteca_alexandria/fontes/motores.json", {}) or {}).get("motores") or []
+    except Exception:  # noqa: BLE001
+        return None
+    grupos: dict = {}
+    for lv in L:
+        if str(lv.get("uf") or "") not in ("GO", "BR") or not lv.get("orgao") or re.search(r"(?i)piloto|di[áa]rio oficial|querido", str(lv.get("orgao"))):
+            continue
+        grupos.setdefault((str(lv.get("modalidade") or "?"), str(lv.get("area") or "?")), []).append(lv)
+    if not grupos:
+        return None
+    lv = r.choice(r.choice(list(grupos.values())))
+    orgao = re.sub(r"\s*[—-].*$", "", str(lv.get("orgao")))[:60]
+    return f'"{orgao}" {r.choice(["edital", "chamamento", "seleção de projetos", "patrocínio", "apoio a projetos"])} {lv.get("area") or ""} {a}'
+
+
 def escolher(c: dict, rnd: random.Random | None = None) -> tuple[str, str]:
+    """16/10/2026 (titular): RODÍZIO EQUILIBRADO — cada voo usa a família MENOS usada no ciclo (empate sorteado): todas
+    as possibilidades são atendidas igualmente. 1 em 6 voos usa uma mutação de consulta que já rendeu."""
+    rnd = rnd or random.Random()
+    ano = date.today().year
+    ruins = {q for q, v in c["consultas"].items() if v.get("usos", 0) >= 3 and not v.get("achados")}
+    if c.get("mutacoes") and rnd.random() < 1 / 6:
+        q = rnd.choice(c["mutacoes"])
+        if q not in ruins:
+            return "mutacao", q
+    fams = familias()
+    rod = c.setdefault("rodizio", {})
+    for f in fams:
+        rod.setdefault(f, 0)
+    ordem = sorted(fams, key=lambda f: (rod.get(f, 0), rnd.random()))
+    for f in ordem:
+        for _ in range(6):
+            q = fams[f](rnd, ano)
+            if q and q not in ruins:
+                rod[f] = rod.get(f, 0) + 1
+                return f, re.sub(r"\s+", " ", q).strip()
+    return "setor_apoio_regiao", fams["setor_apoio_regiao"](rnd, ano)
+
+
+def _escolher_thompson(c: dict, rnd: random.Random | None = None) -> tuple[str, str]:
     """(família, consulta). Amostragem de Thompson entre as famílias; 1 em 4 vezes usa uma MUTAÇÃO de consulta boa."""
     rnd = rnd or random.Random()
     ano = date.today().year
@@ -212,8 +271,9 @@ def fora_dos_motores(url: str) -> tuple[bool, str]:
 def frente(url: str, texto: str, fam: str) -> str:
     h = (urlsplit(url).hostname or "").lower()
     t = (texto or "")[:3000]
-    if fam in FRENTE_DA_FAMILIA and FRENTE_DA_FAMILIA[fam] == "internacional" or not h.endswith(".br") and \
-            re.search(r"(?i)\b(the|grants?|apply|convocatoria|organizaciones)\b", t):
+    # 16/10 (titular): a frente é do ENDEREÇO do resultado, não da família da busca — domínio .br é nacional
+    if not h.endswith(".br") and (FRENTE_DA_FAMILIA.get(fam) == "internacional" or
+                                  re.search(r"(?i)\b(the|grants?|apply|convocatoria|organizaciones|appel|förderung|bando)\b", t)):
         return "internacional"
     if re.search(r"(?i)edital|regulamento|chamada|sele[çc][ãa]o de projetos|inscri[çc][õo]es", t):
         return "editais_de_empresas"
@@ -376,6 +436,19 @@ def missao(ordem: int, buscar=None, ler_pagina=None, conhecida=None, rnd: random
         ach.append({"titulo": titulo or org, "url": url, "novo": True, "empresa": org if nova_emp else None, "frente": fr, "nota_rede": round(nt, 3)})
     if cand:
         C = _ler_cand({"candidatas": []}); C["candidatas"] = (C.get("candidatas") or []) + cand; C["em"] = date.today().isoformat(); (__import__("src.livro_arquivo", fromlist=["x"]).guardar_lote([(CANDIDATAS, C)], descoberta=True) if CANDIDATAS is _CAND_ORIGINAL else _w(CANDIDATAS, C))
+    # 16/10 (titular): SKILL DE LEITURA DE IMAGENS — flyers, cartazes e faixas de logos dos sites de associações e eventos
+    if fam in ("associacoes_goias_eventos", "rastro_de_patrocinio"):
+        try:
+            from .skills.leitura_imagens import patrocinadores as _pat
+            for _u in [x.get("url") for x in (res or [])[:2] if isinstance(x, dict) and x.get("url")]:
+                for _p in _pat(_u, None):
+                    _org = _p["empresa"]
+                    if not NAO_EMPRESA.search(_org) and not conhecida(_org) and _org.upper() not in ja_emp:
+                        ja_emp.add(_org.upper())
+                        emps.append({"empresa": _org, "evento": f"{_p.get('papel') or 'apoio'} em imagem — {_u}"[:140], "area": None,
+                                     "prova_imagem": _p["imagem"], "pagina": _u, "origem": "Espião · leitura de imagens"})
+        except Exception:  # noqa: BLE001
+            pass
     if emps:
         emp_arq["achados"] = ((emp_arq.get("achados") or []) + emps)[-3000:]; emp_arq["em"] = _agora()
         emp_arq["regra"] = "empresas e organizações privadas/internacionais descobertas pelo Espião, fora da lista de incentivo fiscal; o motor de patrocínio as agrega ao painel"
