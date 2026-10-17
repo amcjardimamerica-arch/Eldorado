@@ -748,7 +748,7 @@ def sincronizar_com_repositorio() -> dict:
     from .repositorio_unico import SAIDA as _RS
     rep = _j(_RS, {}) or {}
     regs = rep.get("registros") or []
-    ab = {x["id"] for x in regs if x.get("estado") != "fechada"}
+    ab = {x["id"] for x in regs if x.get("estado") != "fechada" and not x.get("arquivada")}   # 17/10: arquivadas não são abertas
     res = _j(SAIDA, {}) or {}
     if not ab or not res:
         return {"sincronizado": False}
@@ -775,9 +775,9 @@ def sincronizar_com_repositorio() -> dict:
     res["itens_por_uf"] = novo
     for k in ("confirmadas", "possiveis_sem_minimo"):
         res[k] = [x for x in res.get(k) or [] if dono.get(str(x.get("id"))) in ab]
-    cont = {"abertas": len(ab), "validadas": sum(1 for x in regs if x.get("estado") == "validada"),
-            "em_verificacao": sum(1 for x in regs if x.get("estado") == "em_verificacao"),
-            "validacao_manual": sum(1 for x in regs if x.get("estado") == "validacao_manual")}
+    cont = {"abertas": len(ab), "validadas": sum(1 for x in regs if x["id"] in ab and x.get("estado") == "validada"),
+            "em_verificacao": sum(1 for x in regs if x["id"] in ab and x.get("estado") == "em_verificacao"),
+            "validacao_manual": sum(1 for x in regs if x["id"] in ab and x.get("estado") == "validacao_manual")}
     res["parametro"] = {**(res.get("parametro") or {}), **cont, "fonte": "repositório único (dos livros), no fechamento da passagem"}
     res["fora_do_repositorio_retiradas"] = antes - sum(len(v) for v in res["itens_por_uf"].values())
     SAIDA.write_text(json.dumps(res, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
