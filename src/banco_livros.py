@@ -339,7 +339,8 @@ def registrar_achados(achados: list[dict], motor: str | None = None, gravar: boo
             for b in (lv.get(sec) or {}).values():
                 if isinstance(b, dict):
                     idx.setdefault(chave(b), lv.get("id"))
-    criados = vinculados = 0
+    criados = vinculados = pelo_indice = 0
+    _ind = None
     seq = int(cat_doc.get("seq_achados") or 0)
     for a in achados:
         if a.get("id") is None:
@@ -347,6 +348,14 @@ def registrar_achados(achados: list[dict], motor: str | None = None, gravar: boo
         seq += 1
         a = {**a, "_seq": a.get("_seq") or seq}           # ordem de chegada (o fluxo e o painel dependem dela)
         k = chave(a); lid = idx.get(k)
+        if lid not in por_id:                             # 17/10 (titular): o MOTOR consulta o índice antes de criar livro
+            if _ind is None:
+                from .indice_livros import Indice, entrada
+                _ind = Indice([entrada(x) for x in L if x.get("id")])
+            _lid, _s, _mot = _ind.encontrar(a)
+            if _lid in por_id:
+                lid = _lid; idx[k] = lid; a = {**a, "_indice": _mot}
+                pelo_indice += 1
         if lid not in por_id:
             lv = _novo_livro(a, k); L.append(lv); por_id[lv["id"]] = lv; idx[k] = lv["id"]; criados += 1
         else:
@@ -363,7 +372,7 @@ def registrar_achados(achados: list[dict], motor: str | None = None, gravar: boo
     if gravar:
         cat_doc["total"] = len(L); cat_doc["gerado_em"] = _agora()
         CAT.write_text(json.dumps(cat_doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    return {"achados": len(achados), "livros_criados": criados, "vinculados": vinculados}
+    return {"achados": len(achados), "livros_criados": criados, "vinculados": vinculados, "ligados_pelo_indice": pelo_indice}
 
 
 def achados() -> list[dict]:

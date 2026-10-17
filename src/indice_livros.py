@@ -135,6 +135,10 @@ class Indice:
                 continue                                   # conflito de local: outro município
             s = 4 * j + 2 * org_ok + 1 * dom_ok
             mot = [f"programa {round(j * 100)}%", "órgão" if org_ok else "domínio"]
+            if mun and e["municipio"] and mun == e["municipio"]:
+                s += 1; mot.append("cidade")                # 17/10: mesma cidade pontua (não só veta)
+            elif uf and e["uf"] and uf == e["uf"]:
+                s += 0.5; mot.append("uf")
             for campo, peso in (("esfera", 0.5), ("modalidade", 1), ("tipo", 0.5), ("area", 0.5)):
                 v = _sem(op.get(campo)) if campo != "esfera" else _sem(op.get("esfera") or op.get("nivel"))
                 if v and e.get(campo) and _sem(e[campo]) == v:

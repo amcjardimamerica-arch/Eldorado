@@ -342,3 +342,20 @@ class HistoricoEEpoca16_10(unittest.TestCase):
         self.assertTrue(all(x["fonte"].startswith("https://") for x in L["a"]["epoca_abertura"]["edicoes"]))
         self.assertNotIn("epoca_abertura", L["b"])
         self.assertEqual((res["historico_paralelo_migrado"], res["com_epoca_de_abertura"]), (1, 1))
+
+
+class IndiceNoMotor17_10(unittest.TestCase):
+    """O achado de um programa que já tem livro, mas com link diferente, entra no livro pelo ÍNDICE (não cria outro)."""
+    def test_achado_entra_pelo_indice(self):
+        r = Path(tempfile.mkdtemp()); (r / "biblioteca_alexandria/fontes").mkdir(parents=True)
+        cat = r / "biblioteca_alexandria/fontes/motores.json"
+        cat.write_text(json.dumps({"motores": [
+            {"id": "lv-pnab", "programa": "Edital PNAB Goiânia Pontos de Cultura fomento", "orgao": "Secretaria Municipal de Cultura de Goiânia",
+             "uf": "GO", "municipio": "Goiânia", "pagina": "https://goiania.go.gov.br/cultura/pnab-2025"}]}))
+        with mock.patch.object(B, "CAT", cat):
+            res = B.registrar_achados([{"id": "novo-1", "titulo": "Edital PNAB Goiânia Pontos de Cultura fomento 2026",
+                                        "orgao": "Secretaria Municipal de Cultura de Goiânia", "uf": "GO", "municipio": "Goiânia",
+                                        "url": "https://www.goiania.go.gov.br/cultura/pnab-2026-pontos"}], motor="teste")
+        L = json.loads(cat.read_text())["motores"]
+        self.assertEqual(len(L), 1, "não cria livro novo para o mesmo programa")
+        self.assertIn("novo-1", L[0]["coleta"]); self.assertEqual(res["ligados_pelo_indice"], 1)
