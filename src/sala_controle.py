@@ -222,12 +222,14 @@ def montar(agora: datetime | None = None) -> dict:
            efeito=f"fora da fila por leitura parcial: {sum(1 for r in (fret.get('fora_da_fila') or {}).values() if r.get('escopo') == 'cartorio')}",
            resultado="voltam ao Cartório em 30 min até a leitura total")
     bu = _j(D / "banco_unico.json") or {}
-    _instr(I, agora, id="es_banco_unico", sub="Esteira", nome="Bancos de dados fora dos livros", valor=bu.get("bancos_paralelos"),
+    _instr(I, agora, id="es_banco_unico", sub="Esteira", nome="Bancos de dados fora dos livros", valor=(bu.get("bancos_paralelos") or 0) + (bu.get("bancos_paralelos_por_natureza") or 0),   # 17/10: pasta + NATUREZA
            unidade="bancos", escala=[0, 50], quando=bu.get("em"), cadencia_h=2, faixa={"alarme": [None, 0]},
            faz="O único banco de dados do Eldorado são os livros (o Farol fica fora). Todo outro banco é absorvido nos livros e apagado.",
            efeito=f"{(bu.get('por_classe') or {}).get('PARALELO', {}).get('arquivos', '?')} arquivos, "
                   f"{(bu.get('por_classe') or {}).get('PARALELO', {}).get('mb', '?')} MB fora dos livros",
-           resultado=" · ".join(f"{x['grupo']} ({x['mb']} MB)" for x in (bu.get("paralelos") or [])[:5]) or "nenhum")
+           resultado=(" · ".join(f"{x['grupo']} ({x['mb']} MB)" for x in (bu.get("paralelos") or [])[:3]) + " · " if bu.get("paralelos") else "") +
+                     " · ".join(f"{x['arquivo'].split('/')[-1]} ({x['registros']} {x['natureza']})" for x in (bu.get("paralelos_por_natureza") or [])[:5])
+                     or "nenhum")
     _instr(I, agora, id="mo_cadencia", sub="Motores", nome="Motores regulares fora da cadência", valor=al.get("em_alerta"), unidade="motores", escala=[0, 10],
            faixa={"normal": [None, 2], "alarme": [None, 5]}, quando=al.get("em"), cadencia_h=26,
            faz="Todo motor regular tem de ler dentro da sua cadência.", efeito=f"{al.get('funcionando', 0)} de {al.get('total', 0)} dentro da cadência",

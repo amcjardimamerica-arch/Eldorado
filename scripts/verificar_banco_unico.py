@@ -52,6 +52,77 @@ def classe(rel: str) -> str:
     return "PARALELO"
 
 
+CHAVES = {"oportunidade": ({"titulo"}, {"url", "link_oficial", "fim", "prazo", "edital_id", "pagina_oficial"}),
+          "empresa": (set(), {"cnpj", "cnpj_raiz", "razao_social", "empresa"}),
+          "livro": ({"programa", "orgao"}, set())}
+
+
+def _colecao(d):
+    """A maior coleção de registros (dicionários) do arquivo."""
+    melhor = []
+    def ver(o, prof=0):
+        nonlocal melhor
+        if prof > 3:
+            return
+        if isinstance(o, list):
+            regs = [x for x in o if isinstance(x, dict)]
+            if len(regs) > len(melhor):
+                melhor = regs
+            for x in o[:3]:
+                ver(x, prof + 1)
+        elif isinstance(o, dict):
+            regs = [x for x in o.values() if isinstance(x, dict)]
+            if len(regs) > len(melhor) and len(regs) >= 10:
+                melhor = regs
+            for v in o.values():
+                if isinstance(v, (list, dict)):
+                    ver(v, prof + 1)
+    ver(d)
+    return melhor
+
+
+def _natureza_de(regs):
+    amostra = regs[:40]
+    for nome, (todas, alguma) in CHAVES.items():
+        ok = sum(1 for x in amostra if todas <= set(x) and (not alguma or alguma & set(x)))
+        if amostra and ok >= 0.6 * len(amostra):
+            return nome
+    return None
+
+
+def natureza(minimo: int = 50) -> dict:
+    """Arquivo FORA da área dos livros com >= 50 registros de oportunidade, empresa ou livro, não declarado como vista em
+    config/vistas_permitidas.json, é BANCO PARALELO — esteja na pasta que estiver. Dentro da área dos livros, o arquivo
+    que guarda registros de muitas oportunidades juntas é COLETIVO (a distribuir em cada livro)."""
+    vistas = (json.loads((ROOT / "config/vistas_permitidas.json").read_text(encoding="utf-8")).get("vistas") or {}) \
+        if (ROOT / "config/vistas_permitidas.json").exists() else {}
+    alvos = [p for a in (*AREAS, "docs/dados", "config") for p in (ROOT / a).rglob("*.json*")] + list((ROOT / "docs").glob("*.json"))
+    par, vis, col = [], [], []
+    for p in alvos:
+        rel = str(p.relative_to(ROOT))
+        if p.stat().st_size > 60_000_000 or p.suffix not in (".json", ".jsonl"):
+            continue
+        if LIVROS.search(rel) and not rel.startswith("biblioteca_alexandria/livros/_acervo/"):
+            continue                                       # o livro, o catálogo e as vistas dos livros
+        try:
+            if p.suffix == ".jsonl":
+                d = [json.loads(l) for l in p.read_text(encoding="utf-8").splitlines()[:5000] if l.strip()]
+            else:
+                d = json.loads(p.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            continue
+        regs = _colecao(d)
+        nat = _natureza_de(regs) if len(regs) >= minimo else None
+        if not nat:
+            continue
+        reg = {"arquivo": rel, "natureza": nat, "registros": len(regs), "mb": round(p.stat().st_size / 1e6, 2)}
+        (vis if rel in vistas else col if rel.startswith("biblioteca_alexandria/livros/") else par).append(reg)
+    ordem = lambda x: -x["registros"]  # noqa: E731
+    return {"paralelos_por_natureza": sorted(par, key=ordem), "vistas_declaradas": sorted(vis, key=ordem),
+            "coletivos_nos_livros": sorted(col, key=ordem),
+            "bancos_paralelos_por_natureza": len(par)}
+
+
 def run() -> dict:
     g = defaultdict(lambda: {"classe": None, "arquivos": 0, "mb": 0.0})
     for a in AREAS:
@@ -69,6 +140,7 @@ def run() -> dict:
            "bancos_paralelos": len(par),
            "paralelos": sorted(({"grupo": k, "arquivos": v["arquivos"], "mb": round(v["mb"], 2)} for k, v in par.items()),
                                key=lambda x: -x["mb"])}
+    res.update(natureza())                                    # 17/10: pela NATUREZA do dado, não só pela pasta
     out = ROOT / "docs/dados/banco_unico.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
