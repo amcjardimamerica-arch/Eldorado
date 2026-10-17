@@ -93,6 +93,14 @@ class Indice:
             for d in e["dominios"]:
                 self.por_dominio[d].add(i)
 
+    def adicionar(self, e: dict) -> None:
+        """17/10: livro criado no meio de um lote entra no índice na hora (o lote liga como chamadas avulsas ligariam)."""
+        i = len(self.E); self.E.append(e)
+        for w in e["programa"]:
+            self.por_palavra[w].add(i)
+        for d in e["dominios"]:
+            self.por_dominio[d].add(i)
+
     @classmethod
     def carregar(cls) -> "Indice":
         if not INDICE.exists():

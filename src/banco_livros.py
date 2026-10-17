@@ -370,6 +370,9 @@ def registrar_achados(achados: list[dict], motor: str | None = None, gravar: boo
                 pelo_indice += 1
         if lid not in por_id:
             lv = _novo_livro(a, k); L.append(lv); por_id[lv["id"]] = lv; idx[k] = lv["id"]; criados += 1
+            if _ind is not None:                          # 17/10: o próximo achado do MESMO lote já enxerga este livro
+                from .indice_livros import entrada
+                _ind.adicionar(entrada(lv))
         else:
             lv = por_id[lid]; vinculados += 1
         col = lv.setdefault("coleta", {})

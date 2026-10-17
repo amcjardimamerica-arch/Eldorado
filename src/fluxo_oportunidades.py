@@ -202,6 +202,7 @@ def consolidar() -> list[dict]:
                        "orgao": ag.get("financiador"), "motor_indexador": ag.get("motor"),
                        "pagina_agregador": ag.get("pagina_agregador"),
                        "areas_fonte": ag.get("areas") or (["cultura"] if ag.get("fonte") == "farolcultural" else [])}))
+    _lote_interceptador = []                        # 17/10: UMA gravação do catálogo para todos (eram 621 × 1,1 s)
     for arq, e in __import__("src.livro_arquivo", fromlist=["x"]).ler_pasta(EXT).items():   # 16/10: em bloco (cada livro 1 vez)
         e = e or {}
         if e.get("investigacao_ia") and arq.stem.startswith(("cat-", "op-")):
@@ -211,12 +212,14 @@ def consolidar() -> list[dict]:
             from .porta_oportunidade import motivo_para_nao_guardar as _mot
             if _mot({k: v for k, v in _it.items() if v}) is not None:
                 continue
-            try:
-                from .banco_livros import registrar_achados as _reg
-                _reg([{**_it, "sensor": "piloto-interceptador"}], motor="piloto-interceptador")
-            except Exception:  # noqa: BLE001
-                pass
+            _lote_interceptador.append({**_it, "sensor": "piloto-interceptador"})
             brutos.append(("Piloto - Interceptador", _it))
+    if _lote_interceptador:
+        try:
+            from .banco_livros import registrar_achados as _reg
+            _reg(_lote_interceptador, motor="piloto-interceptador")
+        except Exception:  # noqa: BLE001
+            pass
     # NÃO É OPORTUNIDADE (27/09): pauta legislativa, assembleia, contrato já assinado, resultado e lista de aprovados.
     # Retificação e alteração de cronograma FICAM: indicam edital aberto.
     RUIDO = re.compile(r"^\s*\d{1,2}:\d{2}\b|vota[cç][õo]es|requerimentos|t[ií]tulos? de cidadania|utilidades? p[uú]blica|convoca[cç][aã]o de assembleia|"
