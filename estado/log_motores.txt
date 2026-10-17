@@ -130,3 +130,16 @@ Traceback (most recent call last):
     s = esq.get(e["id"]); b = _bloqueio_vigente(blq.get(urlsplit(e["urls"][0]).hostname), s)
                                                                  ~~~~~~~~~^^^
 IndexError: list index out of range
+src.motores FALHOU — o monitor da Bússola não atualiza sem este passo
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/runner/work/Eldorado/Eldorado/src/motores.py", line 922, in <module>
+    print(json.dumps(run(), ensure_ascii=False, indent=2))
+                     ^^^^^
+  File "/home/runner/work/Eldorado/Eldorado/src/motores.py", line 766, in run
+    __import__("src.banco_livros", fromlist=["x"]).juntar_em(_g[0], _y, "mesmo programa e órgão (painel dos motores)")
+  File "/home/runner/work/Eldorado/Eldorado/src/banco_livros.py", line 800, in juntar_em
+    for x in sai.get(k) or []:
+             ^^^^^^^^^^^^^^^^
+TypeError: 'int' object is not iterable

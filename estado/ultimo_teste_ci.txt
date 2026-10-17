@@ -1,27 +1,12 @@
-commit: 0bada8f20d9af45cc600b12f0fc292c27d5db4b9
-em: 2026-10-17T10:15:23Z
+commit: cbf681fb480603a7a124033deedf32d8643b516c
+em: 2026-10-17T12:43:59Z
 rc: 1
-::error title=teste falhou::tests.test_parecer_23_09.TesteAtualizacaoAplicada.test_rebaixado_diz_quando_volta — AssertionError: 228 != 238
 ::error title=teste falhou::tests.test_parecer_23_09.TesteM1_AbrangenciaAntes.test_reproduz_o_veredito_do_parecer — AssertionError: 228 != 238
 ::error title=teste falhou::tests.test_validacao_mapa.TestArquivoDeValidacao.test_universo_inteiro_decidido — AssertionError: 1046 != 1031
 ::error title=teste falhou::tests.test_validacao_mapa.TestArquivoDeValidacao0929.test_universo_inteiro_decidido — AssertionError: 142 not greater than or equal to 150
 ::error title=teste falhou::tests.test_verificacao_63_2026_09_15.TesteBaseDaVerificacao.test_a_base_existe_e_tem_os_63 — AssertionError: 37 != 63
+::error title=teste falhou::tests.test_verificacao_63_2026_09_15.TesteBaseDaVerificacao.test_resumo_bate_com_a_lista — ?              ^             ^^               +
 ---- falhas ----
-ERROR: test_recorrencia_uma_rota_por_validada_com_cadencia_por_estado (tests.test_evolucao_busca.TesteDescobertaERecorrencia.test_recorrencia_uma_rota_por_validada_com_cadencia_por_estado)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/tmp/eldorado_testes/tests/test_evolucao_busca.py", line 42, in test_recorrencia_uma_rota_por_validada_com_cadencia_por_estado
-    r = json.loads((ROOT / "estado/rotas_recorrencia.json").read_text(encoding="utf-8"))
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py", line 1027, in read_text
-    with self.open(mode='r', encoding=encoding, errors=errors) as f:
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py", line 1013, in open
-    return io.open(self, mode, buffering, encoding, errors, newline)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: '/tmp/eldorado_testes/estado/rotas_recorrencia.json'
-
-======================================================================
 ERROR: test_gerador_le_as_bases_externas (tests.test_incentivos_externos.TesteCatalogo.test_gerador_le_as_bases_externas)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
@@ -40,25 +25,6 @@ Traceback (most recent call last):
 KeyError: 'recusado_na_nuvem_em'
 
 ======================================================================
-ERROR: test_restricao_territorial_do_renner (tests.test_parametros_motores.TesteParametrosDaAuditoria.test_restricao_territorial_do_renner)
-O edital Encantando Comunidades é real e aberto, mas restrito a municípios de
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/tmp/eldorado_testes/tests/test_parametros_motores.py", line 149, in test_restricao_territorial_do_renner
-    ex = _lj(ROOT / "dados/editais/extraidos/c5c7e37e2e275d2e69fe.json")
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/eldorado_testes/src/nucleo.py", line 215, in load_json
-    return json.loads(path.read_text(encoding="utf-8"))
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py", line 1027, in read_text
-    with self.open(mode='r', encoding=encoding, errors=errors) as f:
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py", line 1013, in open
-    return io.open(self, mode, buffering, encoding, errors, newline)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: '/tmp/eldorado_testes/dados/editais/extraidos/c5c7e37e2e275d2e69fe.json'
-
-======================================================================
 ERROR: test_v_a_r_trazem_os_12_com_status (tests.test_parametros_opressores.TestArquivo.test_v_a_r_trazem_os_12_com_status)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
@@ -66,60 +32,6 @@ Traceback (most recent call last):
     self.assertEqual(set(r["dados"]), set(PO.ITENS), r["id"])
                          ~^^^^^^^^^
 KeyError: 'dados'
-
-======================================================================
-ERROR: test_alerta_dispara_quando_ha_critico (tests.test_prazos_bases_verificadas.TesteRelatorioDePrazos.test_alerta_dispara_quando_ha_critico)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/tmp/eldorado_testes/tests/test_prazos_bases_verificadas.py", line 64, in setUp
-    self.relatorio = __import__("src.nucleo", fromlist=["x"]).load_json(ROOT / "estado/prazos.json")
-                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/eldorado_testes/src/nucleo.py", line 215, in load_json
-    return json.loads(path.read_text(encoding="utf-8"))
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py", line 1027, in read_text
-    with self.open(mode='r', encoding=encoding, errors=errors) as f:
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py", line 1013, in open
-    return io.open(self, mode, buffering, encoding, errors, newline)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: '/tmp/eldorado_testes/estado/prazos.json'
-
-======================================================================
-ERROR: test_ha_prazo_em_aberto_no_relatorio (tests.test_prazos_bases_verificadas.TesteRelatorioDePrazos.test_ha_prazo_em_aberto_no_relatorio)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/tmp/eldorado_testes/tests/test_prazos_bases_verificadas.py", line 64, in setUp
-    self.relatorio = __import__("src.nucleo", fromlist=["x"]).load_json(ROOT / "estado/prazos.json")
-                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/eldorado_testes/src/nucleo.py", line 215, in load_json
-    return json.loads(path.read_text(encoding="utf-8"))
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py", line 1027, in read_text
-    with self.open(mode='r', encoding=encoding, errors=errors) as f:
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py", line 1013, in open
-    return io.open(self, mode, buffering, encoding, errors, newline)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: '/tmp/eldorado_testes/estado/prazos.json'
-
-======================================================================
-ERROR: test_o_vigia_nao_esta_cego (tests.test_prazos_bases_verificadas.TesteRelatorioDePrazos.test_o_vigia_nao_esta_cego)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/tmp/eldorado_testes/tests/test_prazos_bases_verificadas.py", line 64, in setUp
-    self.relatorio = __import__("src.nucleo", fromlist=["x"]).load_json(ROOT / "estado/prazos.json")
-                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/eldorado_testes/src/nucleo.py", line 215, in load_json
-    return json.loads(path.read_text(encoding="utf-8"))
-                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py", line 1027, in read_text
-    with self.open(mode='r', encoding=encoding, errors=errors) as f:
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py", line 1013, in open
-    return io.open(self, mode, buffering, encoding, errors, newline)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: '/tmp/eldorado_testes/estado/prazos.json'
 
 ======================================================================
 ERROR: test_cartorio_incorpora_e_fluxo_recebe (tests.test_revisoes_partes_1_a_3.TesteCartorioEFluxo.test_cartorio_incorpora_e_fluxo_recebe)
@@ -157,15 +69,6 @@ Traceback (most recent call last):
 AssertionError: 107 != 19
 
 ======================================================================
-FAIL: test_briefing_alimenta_o_voo_seguinte (tests.test_briefing_piloto.TesteBriefing.test_briefing_alimenta_o_voo_seguinte)
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/tmp/eldorado_testes/tests/test_briefing_piloto.py", line 74, in test_briefing_alimenta_o_voo_seguinte
-    self.assertIn("VOOS ANTERIORES", p)                                  # lê o que já fez
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError: 'VOOS ANTERIORES' not found in 'VOCÊ É O PILOTO do Eldorado, e está no pátio prestes a decolar. Antes de sair, faça a leitura da casa e decida ONDE vale procurar dinheiro que ainda não mapeamos.\n\nO QUE A BIBLIOTECA TEM HOJE:\n{\n "editais_no_banco": 374,\n "oportunidades_abertas": 55,\n "arquivadas": 284,\n "sem_prazo_confirmado": 129,\n "por_uf": {\n  "PR": 61,\n  "?": 52,\n  "MG": 42,\n  "SC": 34,\n  "GO": 26,\n  "BA": 26,\n  "SP": 22,\n  "RS": 19\n },\n "orgaos_mais_frequentes": {\n  "?": 64,\n  "CONSORCIO INTERMUNICIPAL DE SAUDE": 26,\n  "CONSORCIO INTERMUNICIPAL DE SAUDE COSTA ": 10,\n  "MUNICIPIO DE PATOS DE MINAS": 6,\n  "FUNDO MUNICIPAL DE SAUDE": 6,\n  "SECRETARIA DE ESTADO DA SAUDE": 6,\n  "CONSORCIO PUBLICO INTERMUNICIPAL DE SAUD": 5,\n  "ESTADO DO ESPIRITO SANTO": 4\n },\n "nota": "quase tudo aqui é fonte PÚBLICA — o Piloto existe para trazer o que falta: dinheiro privado",\n "linhas_na_vitrine": 175,\n "empresas_no_radar": 0,\n "radar_a_pesquisar": 0,\n "setores_ja_vistos": [],\n "editais_incompletos_na_fila": 60,\n "editais_ja_resgatados": 4,\n "apoiadores_mapeados": 22096,\n "sem_dado_cadastral": 90\n}\n\n\nATENÇÃO: há editais incompletos esperando resgate. Eles são atendidos ANTES desta exploração — o que você planeja aqui é o que sobra de tempo depois deles.\n\nO QUE JÁ ESTÁ COBERTO por motor próprio (não perca voo com isto): agenciadobem.org.br, alegodigital.al.go.leg.br, api-publica.transferegov.gestao.gov.br, api.queridodiario.ok.org.br, banrisulcultural.com.br, boavista.rr.gov.br, camara.leg.br, capitaai.com.br, capta.org.br, captadores.org.br, casa.org.br, cese.org.br, chamamentos.itapevi.sp.gov.br, cnbb.org.br e outros.\nTambém já são lidos todo dia: diário oficial, PNCP, Rouanet e as plataformas agregadoras conhecidas.\nSEU LUGAR É ONDE ISTO NÃO ALCANÇA:\n- instituto ou fundação empresarial que seleciona por formulário no próprio site (não publica em diário oficial nem em plataforma agregadora)\n- patrocínio declarado no rodapé do site de outra entidade (é rastro, não é edital: nenhum motor procura rodapé de site alheio)\n- relatório ESG com o valor investido e onde (documento corporativo, fora de qualquer portal de editais)\n- edital de anos anteriores de um financiador privado (já encerrado, some dos agregadores — mas indica quando o próximo sai)\n- notícia que anuncia edital ainda não lançado (o motor só vê o edital depois de publicado; a notícia vem antes)\n- ata de conselho municipal que aprova repasse (o repasse aprovado vira edital semanas depois, e ninguém lê atas)\n- programa de doação de multinacional com inscrição local (publicado em inglês, no site global, fora do radar brasileiro)\n- portal especializado em captação que agrega editais (é fonte de fontes: se for bom, vira motor próprio e sai da mão do Piloto)\n\nAPOSTAS QUE RENDERAM (faça MAIS assim, com a mesma ousadia): «regiões com baixa cobertura de editais em Goiás e setores de economia criativa e cultura» → 2 candidata(s); «regiões com baixa cobertura de editais em Goiás e setores de economia criativa e cultura» → 5 candidata(s); «regiões com baixa cobertura de editais em Goiás e setores de economia criativa e cultura» → 2 candidata(s); «regiões com baixa cobertura de editais em Goiás e setores de economia criativa e cultura» → 5 candidata(s); «regiões com baixa cobertura de editais em Goiás e setores de economia criativa e cultura» → 2 candidata(s). Oportunidade INTERNACIONAL vale para Goiás. MANUAL DO PILOTO (o que você aprendeu nos últimos ciclos de 100 missões — aplique):\n- missões do tipo \'espionar\' — 100 no ciclo sem nenhum achado útil: reformular a abordagem antes de repetir (outra fonte, outra consulta)\n- metade ou mais das missões falhou porque nenhum achado passou no crivo (100 de 100): fechar a consulta no objeto (OSC, chamamento, fomento)\n- consultas que renderam achado útil: [\'"W.K. Kellogg Foundation" inscrições 2026\', \'"Jornal O Popular" edital projetos sociais 2026\', \'convocatoria organizaciones de la sociedad civil todo o Brasil 2026\', \'request for proposals Brazil social projects 2026\', \'"Coca-Cola Femsa" instituto projetos sociais 2026\', \'empresa patrocínio a projetos culturais população em situação de rua Centro-Oest\', \'"Embaixada dos Países Baixos" call for proposals 2026\', \'empresa seleção de projetos mulheres Brasil 2026\', \'empresa fundo de doação para ONGs mulheres Centro-Oeste 2026\', \'edital criança e adolescente organizações da sociedade civil inscriçõe\']\n(ciclo 249: efetividade média 0.0)\n\nMETA DE ENTIDADES (titular, 27/09): priorize entidades que agremiam empresas ou lutam por objetivo comum delas — associações comerciais e industriais, federações, confederações, sindicatos patronais, câmaras, CDLs, GIFE, ACIEG, Fecomércio, FIEG — de nível NACIONAL ou de GOIÁS. Entidade de outro estado sem vínculo nacional nem com Goiás: descarte. REGRA PRINCIPAL DO ESPIÃO (titular, 26/09): encontre o que os outros motores NÃO encontram. Seja criativo. Procure oportunidades em geral — empresas, fundações, institutos, editais abertos, prêmios, fundos, programas — onde os 30 motores não chegam (a cobertura mostra onde eles já estão). Sua finalidade primordial é CRIAR oportunidades novas que virem fontes permanentes de busca. Pense como quem caça a FONTE do dinheiro, não o edital: que empresa deduz imposto, que empresa patrocina evento, quem tem instituto ou fundação, quem publica relatório ESG, quem aparece como apoiadora no site de outra entidade, que setor da economia está com caixa e ainda não foi procurado por ninguém daqui.\nFaça uma APOSTA: onde provavelmente existe recurso que nós ainda não vimos? Diga por que acredita nisso (o raciocínio importa) e escreva a pergunta de pesquisa que este voo deve responder.'
-
-======================================================================
 FAIL: test_itens_so_dos_12_e_situacao_valida (tests.test_dispensas_itens.TestMatriz.test_itens_so_dos_12_e_situacao_valida)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
@@ -182,13 +85,12 @@ Traceback (most recent call last):
 AssertionError: 97 != 142
 
 ======================================================================
-FAIL: test_recorrencia_e_sensor_regular_e_reprograma (tests.test_evolucao_busca.TesteDescobertaERecorrencia.test_recorrencia_e_sensor_regular_e_reprograma)
+FAIL: test_recorrencia_uma_rota_por_validada_com_cadencia_por_estado (tests.test_evolucao_busca.TesteDescobertaERecorrencia.test_recorrencia_uma_rota_por_validada_com_cadencia_por_estado)
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/tmp/eldorado_testes/tests/test_evolucao_busca.py", line 50, in test_recorrencia_e_sensor_regular_e_reprograma
-    self.assertTrue(rec); self.assertLessEqual(len(rec[0]["urls"]), 40)
-    ^^^^^^^^^^^^^^^^^^^^
-AssertionError: [] is not true
+  File "/tmp/eldorado_testes/tests/test_evolucao_busca.py", line 49, in test_recorrencia_uma_rota_por_validada_com_cadencia_por_estado
+    self.assertTrue(devidas <= {x["url"] for x in r["rotas"]}, "validada sem rota de recorrência")
+AssertionError: False is not true : validada sem rota de recorrência
 
 ======================================================================
 FAIL: test_sem_lista_e_sem_catalogo_a_cobertura_fica_nao_medida (tests.test_motor01_diario_goiania.TestCoberturaDoDia.test_sem_lista_e_sem_catalogo_a_cobertura_fica_nao_medida)
@@ -289,14 +191,13 @@ AssertionError: {'reprovado': 26, 'aprovado': 3, 'atencao': 8} != {'atencao': 17
 
 
 ----------------------------------------------------------------------
-Ran 1272 tests in 71.736s
+Ran 1292 tests in 118.749s
 
-FAILED (failures=16, errors=11, skipped=2)
+FAILED (failures=15, errors=6, skipped=2)
 ::error title=teste falhou::tests.test_abertos_sem_informacao.TesteSaida.test_resumo_bate_com_a_lista — AssertionError: 107 != 19
-::error title=teste falhou::tests.test_briefing_piloto.TesteBriefing.test_briefing_alimenta_o_voo_seguinte — AssertionError: 'VOOS ANTERIORES' not found in 'VOCÊ É O PILOTO do Eldorado, e está no pátio prestes a decolar. Antes de sair, faça a leitura da casa e decida ONDE vale procurar di
 ::error title=teste falhou::tests.test_dispensas_itens.TestMatriz.test_itens_so_dos_12_e_situacao_valida — AssertionError: 'Destinação' not found in ('Objeto', 'Prazo de inscrição', 'Resultado', 'Prazo de recurso', 'Valor', 'Órgão / financiador', 'Território', 'Esfera', 'Requisitos', 'A
 ::error title=teste falhou::tests.test_dispensas_itens.TestParametros1001.test_composicao — AssertionError: 97 != 142
-::error title=teste falhou::tests.test_evolucao_busca.TesteDescobertaERecorrencia.test_recorrencia_e_sensor_regular_e_reprograma — AssertionError: [] is not true
+::error title=teste falhou::tests.test_evolucao_busca.TesteDescobertaERecorrencia.test_recorrencia_uma_rota_por_validada_com_cadencia_por_estado — AssertionError: False is not true : validada sem rota de recorrência
 ::error title=teste falhou::tests.test_motor01_diario_goiania.TestCoberturaDoDia.test_sem_lista_e_sem_catalogo_a_cobertura_fica_nao_medida — AssertionError: True is not false
 ::error title=teste falhou::tests.test_motor_judiciario_go.Motor.test_computador_le_o_tjgo_e_a_nuvem_entrega_a_base — + nuvem
 ::error title=teste falhou::tests.test_motor_prefeituras_25_go.TesteHonestidade.test_github_sem_brasil_nao_tenta_sites_e_nao_marca_lida — AssertionError: True is not false
@@ -306,3 +207,4 @@ FAILED (failures=16, errors=11, skipped=2)
 ::error title=teste falhou::tests.test_parecer_23_09.TesteM1_AbrangenciaAntes.test_reproduz_o_veredito_do_parecer — AssertionError: 228 != 238
 ::error title=teste falhou::tests.test_validacao_mapa.TestArquivoDeValidacao.test_universo_inteiro_decidido — AssertionError: 1046 != 1031
 ::error title=teste falhou::tests.test_validacao_mapa.TestArquivoDeValidacao0929.test_universo_inteiro_decidido — AssertionError: 142 not greater than or equal to 150
+::error title=teste falhou::tests.test_verificacao_63_2026_09_15.TesteBaseDaVerificacao.test_a_base_existe_e_tem_os_63 — AssertionError: 37 != 63
