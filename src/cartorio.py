@@ -940,7 +940,17 @@ def pendencias(gravar: bool = True, lote_chrome: bool = True) -> dict:
         p = str(r.get("proximo_passo") or "")
         m = _re.search(r"abordagem (\d+) de", p)
         return p.startswith("Busca externa") or "achar o site oficial" in p or bool(m and int(m.group(1)) >= 3)
-    chrome = {r["id"] for r in regs if r.get("estado") != "fechada" and r.get("faltam") and _ao_chrome(r)}
+    # 17/10/2026 (titular): VERIFICAÇÃO EXTERNA ÚNICA — TODA oportunidade aberta e incompleta vai ao Claude no Chrome, para
+    # ser resolvida UMA vez (certificar, dispensar com justificativa ou eliminar). Só não vai a que o Chrome já declarou
+    # "pendente" (sem fonte oficial) há menos de 30 dias: fica aguardando a fonte, sem repetir a pesquisa.
+    _ver = ((_j(ROOT / "biblioteca_alexandria/livros/_acervo/editais/vereditos_revisao.json", {}) or {}).get("vereditos") or {})
+    _man = ((__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(PASTA / "certidoes_manuais.json", {}) or {}).get("certidoes") or {})
+    _corte = (datetime.now(timezone.utc) - timedelta(days=30)).isoformat()
+    aguardando = {i for i, v in _ver.items() if (v or {}).get("veredito") == "pendente"
+                  and str((_man.get(f"estrela:{i}") or {}).get("em") or _ver_em(v) or "9") >= _corte}
+    retorno = {k.split(":", 1)[1] for k in _man if k.startswith("estrela:")}
+    chrome = {r["id"] for r in regs if r.get("estado") != "fechada" and not r.get("arquivada") and r.get("faltam")
+              and r["id"] not in aguardando}
     # 17/10 (titular): documento oficial BLOQUEADO para o robô (403, 401, 429, ponte) não abre na 5ª tentativa: vai ao Chrome
     _fr = (_j(ROOT / "estado/fila_retentativa.json", {}) or {}).get("fila") or {}
     _BLOQ = _re.compile(r"(?i)403|401|429|ponte|503")
@@ -965,7 +975,15 @@ def pendencias(gravar: bool = True, lote_chrome: bool = True) -> dict:
                     "link_publicacao_referencia": r.get("url") if r.get("url") != r.get("link_oficial") else None,
                     "documentos_oficiais": [d.get("url") for d in (c.get("documentos") or []) if isinstance(d, dict)][:8],
                     "certificados": cert, "faltam": r.get("faltam") or [k for k in it if k not in cert],
-                    "proximo_passo": "Claude no Chrome" if r["id"] in chrome else "Cartório na fonte oficial",
+                    "proximo_passo": ("Claude no Chrome" if r["id"] in chrome else
+                                      "Aguardando fonte oficial (o Chrome não achou; revisar em 30 dias)" if r["id"] in aguardando
+                                      else "Completa: os 12 itens resolvidos" if not (r.get("faltam") or [])
+                                      else "Cartório na fonte oficial"),
+                    "retorno": r["id"] in retorno,          # já passou pelo Chrome: volta SÓ com o que falta
+                    "resolver_cada_item": {k: "certificar (valor + trecho + documento oficial + página se PDF) OU dispensar "
+                                              "(justificar que NÃO SE APLICA; nunca Objeto, Prazo de inscrição ou Território)"
+                                           for k in (r.get("faltam") or [])},
+                    "ou_eliminar": "encerrada (prazo vencido, com trecho) | ruido | fora_perfil | duplicata (com o id)",
                     # 17/10 (titular): o GRUPO dos prompts do Chrome — explícito, para o prompt não deduzir
                     "grupo": ("Sem site oficial" if not r.get("link_oficial") else
                               "Goiás" if str(r.get("uf") or "").upper() == "GO" else "Nacional"),
@@ -977,6 +995,9 @@ def pendencias(gravar: bool = True, lote_chrome: bool = True) -> dict:
            "anexos, registro oficial) certifica — o link de publicação é só referência; nada é suposto",
            "abertas": len(out), "completas": sum(1 for x in out if not x["faltam"]),
            "para_o_chrome": sum(1 for x in out if x["proximo_passo"] == "Claude no Chrome"),
+           "aguardando_fonte_oficial": sum(1 for x in out if x["proximo_passo"].startswith("Aguardando")),
+           "regra_unica": "cada oportunidade é resolvida UMA vez: todo item que falta termina certificado, dispensado com "
+                          "justificativa, ou a oportunidade é eliminada; 'pendente' só quando não existe fonte oficial",
            "para_o_chrome_por_grupo": {g: sum(1 for x in out if x["proximo_passo"] == "Claude no Chrome" and x["grupo"] == g)
                                        for g in ("Goiás", "Nacional", "Sem site oficial")},
            "bloqueadas_na_fonte": len(_bloq_op), "paginas_bloqueadas_do_cartorio": len(bloqueadas),
@@ -994,3 +1015,8 @@ def pendencias(gravar: bool = True, lote_chrome: bool = True) -> dict:
             except Exception:  # noqa: BLE001
                 pass
     return {k: v for k, v in res.items() if k != "oportunidades"}
+
+
+
+def _ver_em(v: dict) -> str | None:
+    return (v or {}).get("em") or (v or {}).get("decidido_em")
