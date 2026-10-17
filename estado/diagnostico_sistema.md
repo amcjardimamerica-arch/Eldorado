@@ -1,4 +1,4 @@
-# Diagnóstico do sistema · 2026-10-17 09:31 UTC
+# Diagnóstico do sistema · 2026-10-17 09:44 UTC
 
 ## Cumprimento da finalidade · índice geral 63%
 - Motores: 100% (ok) — todo motor ativo lê dentro da sua cadência
@@ -21,7 +21,7 @@
 - 05 · Busca ativa (a cada 3 dias): atencao · última 2026-10-15T17:32 · sucesso 10% · cadência None h
 - 09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes: atrasado · última 2026-10-03T11:56 · sucesso 100% · cadência 24.0 h
 - 10 · Histórico de doações da Rouanet (empresa por empresa) — retoma sozinho até completar: atencao · última 2026-10-15T16:09 · sucesso 25% · cadência None h
-- 12 · Piloto - Interceptador — um alvo por voo, a cada 3 segundos: atencao · última 2026-10-17T09:31 · sucesso 67% · cadência 1.0 h
+- 12 · Piloto - Interceptador — um alvo por voo, a cada 3 segundos: atencao · última 2026-10-17T09:36 · sucesso 78% · cadência 1.0 h
 - 01 · Eldorado — motores por hora (00h–06h BRT): atencao · última 2026-10-16T13:37 · sucesso 20% · cadência 24.0 h
 - 22 · Motores da vez — cada passagem calcula sozinha o que está pendente (agenda + maestro): atencao · última 2026-10-17T09:12 · sucesso 33% · cadência 1.0 h
 - 34 · Motores de empresas (semanal, com recuperação): atencao · última 2026-10-16T11:39 · sucesso 60% · cadência 24.0 h
@@ -52,7 +52,7 @@
 
 ## Integração
 - contagens: {'repositorio_abertas': 221, 'diagnostico_abertas': 221, 'tela_cartoes': 186, 'fichas': 222, 'sala_controle_abertas': 221}
-- idade (h): {'repositorio': 0.0, 'fluxo': 0.4, 'fichas': 0.0, 'sala_controle': 0.0, 'status_motores': 0.0, 'maestro': 0.9, 'rede_neural': 0.8, 'saude': 19.7}
+- idade (h): {'repositorio': 0.0, 'fluxo': 0.6, 'fichas': 0.0, 'sala_controle': 0.0, 'status_motores': 0.0, 'maestro': 1.2, 'rede_neural': 1.1, 'saude': 20.0}
 - decisões da titular: 0 · não aplicadas: 0
 
 ## Problemas (20)
@@ -64,8 +64,8 @@
 - [alta] 9 de 221 oportunidades abertas sem livro e sem regra que justifique → criar/vincular livros
 - [alta] tela mostra 186 oportunidades e o repositório conta 221 → refazer a tela
 - [alta] 3 módulos de teste em quarentena por DEFEITO REAL → corrigir o código e tirar da quarentena (sem correção automática)
-- [media] fluxo '09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes' sem rodar há 333.6 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
-- [media] fluxo '02 · Alexandria — revisão mensal de leis e procedimentos' sem rodar há 382.9 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
+- [media] fluxo '09 · Base histórica dos incentivos (5 anos) — Rouanet, Esporte, PRONON, PRONAS, FIA, Idoso, PAT, Goyazes' sem rodar há 333.8 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
+- [media] fluxo '02 · Alexandria — revisão mensal de leis e procedimentos' sem rodar há 383.1 h (cadência 24.0 h) → investigar o agendamento (sem correção automática)
 - [media] 52 livros municipais de outros estados no catálogo (só Goiás tem livros municipais) → refazer a tela
 - [media] 38 página(s)/documento(s) fora da fila após 5 erros iguais → corrigir a rota ou ler no Chrome (sem correção automática)
 - [media] saúde · claude: 1180 item(ns) esperando a análise do Claude (próxima: 2026-10-16) → ver o fluxo/arquivo indicado
