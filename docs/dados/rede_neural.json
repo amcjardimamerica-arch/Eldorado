@@ -1,7 +1,7 @@
 {
- "em": "2026-10-17T11:48:33+00:00",
+ "em": "2026-10-17T12:22:43+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
- "rotulados": 1683,
+ "rotulados": 1685,
  "positivos": 581,
  "pendentes": 727,
  "validacao_cruzada": {
@@ -115,6 +115,12 @@
    "incerteza": 0.986
   },
   {
+   "titulo": "Jataí — Atualização necessária em formulário do Edital Lei Paulo Gustavo em Jataí — Goiás / Jataí",
+   "url": "https://www.jatai.go.gov.br/atualizacao-necessaria-em-formulario-do-edital-lei-paulo-gustavo-em-jatai/",
+   "nota": 0.493,
+   "incerteza": 0.986
+  },
+  {
    "titulo": "Diário Oficial de Sumidouro (RJ) 2026-09-14 — \"edital de premiação\" cultura",
    "url": "https://data.queridodiario.ok.org.br/3305703/2026-09-14/efaecfdca0bf5f566dd4daf0db595fb5d8a95cb0.pdf",
    "nota": 0.508,
@@ -181,15 +187,21 @@
    "incerteza": 0.981
   },
   {
-   "titulo": "Jataí — SMC PUBLICA COMUNICADO SOBRE OS EDITAIS DA PNAB EM JATAÍ Ajustes garantem mais clareza e precisão nas … — Goiás / Jataí",
-   "url": "https://www.jatai.go.gov.br/smc-publica-comunicado-sobre-os-editais-da-pnab-em-jatai-ajustes-garantem-mais-clareza-e-precisao-nas-regras-do-processo-de-selecao-cultural/",
-   "nota": 0.51,
-   "incerteza": 0.98
+   "titulo": "Edital Rouanet nas Favelas 2 (2026): Guia de Captação · Capitaai",
+   "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2023/lei/l14535.htm",
+   "nota": 0.491,
+   "incerteza": 0.981
   },
   {
    "titulo": "Chamada nº 009/2026 – FAPESPA/CNPq/CAPES",
    "url": "https://www.fapespa.pa.gov.br/2026/07/01/chamada-n-o-009-2026-fapespa-cnpq-capes",
    "nota": 0.49,
+   "incerteza": 0.98
+  },
+  {
+   "titulo": "Secretaria de Estado da Cultura (Secult) — Secult lança edital de chamamento público para execução do projeto … — Goiás",
+   "url": "https://goias.gov.br/cultura/secult-lanca-edital-de-chamamento-publico-para-execucao-do-projeto-cineleitura-do-bem/",
+   "nota": 0.51,
    "incerteza": 0.98
   },
   {
@@ -205,10 +217,22 @@
    "incerteza": 0.979
   },
   {
+   "titulo": "Cidade Ocidental — Cidade Ocidental abre as inscrições para o edital da Lei Paulo Gustavo — Goiás / Cidade Ocidental",
+   "url": "https://cidadeocidental.go.gov.br/cidade-ocidental-abre-as-inscricoes-para-o-edital-da-lei-paulo-gustavo/",
+   "nota": 0.489,
+   "incerteza": 0.978
+  },
+  {
    "titulo": "BNDES Data",
    "url": "https://www.bndes.gov.br/wps/portal/site/home/bndes-data",
    "nota": 0.489,
    "incerteza": 0.977
+  },
+  {
+   "titulo": "Jataí — PNAB | JATAÍ PUBLICA EDITAL DE FOMENTO A AÇÕES CULTURAIS E PREMIAÇÃO POR TRAJETÓRIA Secretaria de Cult… — Goiás / Jataí",
+   "url": "https://www.jatai.go.gov.br/pnab-jatai-publica-edital-de-fomento-a-acoes-culturais-e-premiacao-por-trajetoria-secretaria-de-cultura-de-jatai-lanca-edital-para-impulsionar-projetos-culturais-e-valorizar-trajetorias-artisticas-n/",
+   "nota": 0.488,
+   "incerteza": 0.976
   },
   {
    "titulo": "Edital Suplementar de Subvenção Econômica FAPESC N.º 65/2025 - Programa Horizonte Europa (2026–2027)",
@@ -347,31 +371,7 @@
    "url": "https://www.gravatai.ifsul.edu.br/editais-e-projetos/item/305-edital-n-03-2026-chamamento-publico-programa-coleta-seletiva-cidada-selecao-de-associacoes-e-cooperativas-de-catadores-de-materiais-reciclaveis-e-reutilizaveis",
    "nota": 0.478,
    "incerteza": 0.957
-  },
-  {
-   "titulo": "Edital Nº 06/2026 - Chamamento Público - Programa Coleta Seletiva ...",
-   "url": "https://www.gravatai.ifsul.edu.br/editais-e-projetos/item/310-edital-n-06-2026-chamamento-publico-programa-coleta-seletiva-cidada-selecao-de-associacoes-e-cooperativas-de-catadores-de-materiais-reciclaveis-e-reutilizaveis",
-   "nota": 0.478,
-   "incerteza": 0.957
-  },
-  {
-   "titulo": "Prestação de Contas de Auxílio Financeiro",
-   "url": "https://www.fapepi.pi.gov.br/prestacao-de-contas-de-auxilio-financeiro",
-   "nota": 0.478,
-   "incerteza": 0.957
-  },
-  {
-   "titulo": "Edital de Chamamento Público",
-   "url": "https://catalao.go.gov.br/producao/public/index.php/avisos/edital-de-chamamento-publico/avisos/edital-de-chamamento-publico",
-   "nota": 0.478,
-   "incerteza": 0.955
-  },
-  {
-   "titulo": "Aviso de Chamamento Público Credenciamento Nº 006/2026",
-   "url": "https://www.gov.br/saude",
-   "nota": 0.477,
-   "incerteza": 0.954
   }
  ],
- "pendentes_provaveis_reais": 338
+ "pendentes_provaveis_reais": 333
 }
