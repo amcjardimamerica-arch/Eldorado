@@ -1,14 +1,14 @@
 {
- "em": "2026-10-17T02:35:49+00:00",
+ "em": "2026-10-17T03:47:54+00:00",
  "regra": "LINHA DE PRODUÇÃO DE INFORMAÇÃO (titular, 02/10/2026).\n\nCada canal (motor ou Piloto) só COLETA. As etapas seguintes são comuns e nada é eliminado:\n  (02/10: os nomes BRONZE/PRATA/OURO passaram a ser só os SELOS da esteira — src/esteira.py; aqui as etapas são:)\n  COLETADO    o registro coletado, como chegou (base dados/oportunidades/oportunidades.jsonl)\n  CONSOLIDADO canal canônico + contrato de dados conferido + ENTIDADE resolvida entre canais (a mesma oportunidade vista\n              em vários canais vira uma entidade só, e o número de canais é a CORROBORAÇÃO)\n  EM_LIVRO    a entidade chegou ao mapa ou a um livro da Biblioteca\n  QUALIFICADO o livro recebeu veredito (APLICÁVEL / EM REVISÃO / NÃO APLICA) — arquivamento só manual\nRegistro que viola o contrato vai à FILA DE REPROCESSAMENTO (nunca ao lixo) com o plano de correção.\nO LIVRO-RAZÃO (estado/linha/razao-AAAA-MM.jsonl.gz) guarda só acréscimos: cada mudança de etapa, com data e motivo.",
  "funil": {
-  "coletados": 530,
-  "oportunidades_distintas": 394,
-  "entidades_em_2_ou_mais_canais": 0,
+  "coletados": 641,
+  "oportunidades_distintas": 468,
+  "entidades_em_2_ou_mais_canais": 13,
   "etapas": {
-   "EM_LIVRO": 462,
-   "QUALIFICADO": 36,
-   "CONSOLIDADO": 29,
+   "EM_LIVRO": 565,
+   "CONSOLIDADO": 35,
+   "QUALIFICADO": 38,
    "REPROCESSAR": 3
   },
   "fila_de_reprocessamento": {
@@ -19,16 +19,302 @@
   {
    "canal": "piloto-interceptador",
    "familia": "pilotos",
-   "registros": 527,
-   "entidades": 394,
-   "exclusivas": 394,
+   "registros": 529,
+   "entidades": 392,
+   "exclusivas": 380,
+   "corroboradas": 12,
+   "validadas_como_reais": 81
+  },
+  {
+   "canal": "f260-captacao-069",
+   "familia": "orgao_publico",
+   "registros": 27,
+   "entidades": 9,
+   "exclusivas": 8,
+   "corroboradas": 1,
+   "validadas_como_reais": 9
+  },
+  {
+   "canal": "plataforma-mapas-culturais",
+   "familia": "outros",
+   "registros": 12,
+   "entidades": 12,
+   "exclusivas": 12,
    "corroboradas": 0,
-   "validadas_como_reais": 82
+   "validadas_como_reais": 2
+  },
+  {
+   "canal": "f260-curadoria-009",
+   "familia": "orgao_publico",
+   "registros": 5,
+   "entidades": 5,
+   "exclusivas": 4,
+   "corroboradas": 1,
+   "validadas_como_reais": 1
+  },
+  {
+   "canal": "plataforma-wordpress",
+   "familia": "outros",
+   "registros": 3,
+   "entidades": 3,
+   "exclusivas": 2,
+   "corroboradas": 1,
+   "validadas_como_reais": 1
+  },
+  {
+   "canal": "f260-captacao-177",
+   "familia": "orgao_publico",
+   "registros": 2,
+   "entidades": 2,
+   "exclusivas": 1,
+   "corroboradas": 1,
+   "validadas_como_reais": 1
+  },
+  {
+   "canal": "f260-captacao-176",
+   "familia": "orgao_publico",
+   "registros": 1,
+   "entidades": 1,
+   "exclusivas": 1,
+   "corroboradas": 0,
+   "validadas_como_reais": 1
+  },
+  {
+   "canal": "f260-captacao-180",
+   "familia": "orgao_publico",
+   "registros": 1,
+   "entidades": 1,
+   "exclusivas": 1,
+   "corroboradas": 0,
+   "validadas_como_reais": 1
+  },
+  {
+   "canal": "piloto-aberto",
+   "familia": "pilotos",
+   "registros": 18,
+   "entidades": 16,
+   "exclusivas": 13,
+   "corroboradas": 3,
+   "validadas_como_reais": 0
+  },
+  {
+   "canal": "recorrencia",
+   "familia": "terceiro_setor",
+   "registros": 10,
+   "entidades": 10,
+   "exclusivas": 5,
+   "corroboradas": 5,
+   "validadas_como_reais": 0
+  },
+  {
+   "canal": "outras-oportunidades-5",
+   "familia": "outros",
+   "registros": 6,
+   "entidades": 6,
+   "exclusivas": 6,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
+  },
+  {
+   "canal": "empresas-incentivadas",
+   "familia": "empresas",
+   "registros": 5,
+   "entidades": 5,
+   "exclusivas": 5,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
+  },
+  {
+   "canal": "outras-oportunidades-8",
+   "familia": "outros",
+   "registros": 4,
+   "entidades": 4,
+   "exclusivas": 4,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
+  },
+  {
+   "canal": "outras-oportunidades-4",
+   "familia": "outros",
+   "registros": 4,
+   "entidades": 4,
+   "exclusivas": 3,
+   "corroboradas": 1,
+   "validadas_como_reais": 0
+  },
+  {
+   "canal": "do-goias",
+   "familia": "diario_oficial",
+   "registros": 2,
+   "entidades": 2,
+   "exclusivas": 1,
+   "corroboradas": 1,
+   "validadas_como_reais": 0
+  },
+  {
+   "canal": "f260-captacao-236",
+   "familia": "orgao_publico",
+   "registros": 2,
+   "entidades": 2,
+   "exclusivas": 2,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
+  },
+  {
+   "canal": "f260-curadoria-001",
+   "familia": "orgao_publico",
+   "registros": 2,
+   "entidades": 2,
+   "exclusivas": 2,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
+  },
+  {
+   "canal": "f260-curadoria-010",
+   "familia": "orgao_publico",
+   "registros": 1,
+   "entidades": 1,
+   "exclusivas": 1,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
+  },
+  {
+   "canal": "f260-captacao-225",
+   "familia": "orgao_publico",
+   "registros": 1,
+   "entidades": 1,
+   "exclusivas": 1,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
+  },
+  {
+   "canal": "f260-curadoria-004",
+   "familia": "orgao_publico",
+   "registros": 1,
+   "entidades": 1,
+   "exclusivas": 1,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
+  },
+  {
+   "canal": "f260-curadoria-007",
+   "familia": "orgao_publico",
+   "registros": 1,
+   "entidades": 1,
+   "exclusivas": 1,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
+  },
+  {
+   "canal": "f260-captacao-090",
+   "familia": "orgao_publico",
+   "registros": 1,
+   "entidades": 1,
+   "exclusivas": 1,
+   "corroboradas": 0,
+   "validadas_como_reais": 0
   }
  ],
  "familias": {
-  "pilotos": 1
+  "pilotos": 2,
+  "orgao_publico": 12,
+  "outros": 5,
+  "terceiro_setor": 1,
+  "empresas": 1,
+  "diario_oficial": 1
  },
- "corroboradas": [],
- "eventos_no_livro_razao": 10
+ "corroboradas": [
+  {
+   "entidade": "3b192de7cc2c621d55b3",
+   "canais": [
+    "do-goias",
+    "piloto-interceptador"
+   ]
+  },
+  {
+   "entidade": "e849fe9bb1b0e568dd98",
+   "canais": [
+    "piloto-interceptador",
+    "plataforma-wordpress"
+   ]
+  },
+  {
+   "entidade": "2f2bbd52c9f4ae6855d8",
+   "canais": [
+    "piloto-interceptador",
+    "recorrencia"
+   ]
+  },
+  {
+   "entidade": "ebc8c536f562b184c9ba",
+   "canais": [
+    "piloto-interceptador",
+    "recorrencia"
+   ]
+  },
+  {
+   "entidade": "9787570f0e5cd65b24d8",
+   "canais": [
+    "piloto-aberto",
+    "piloto-interceptador"
+   ]
+  },
+  {
+   "entidade": "41eb463ef0cbfad69ed6",
+   "canais": [
+    "outras-oportunidades-4",
+    "piloto-interceptador"
+   ]
+  },
+  {
+   "entidade": "b75d0bbaa62e06b8606a",
+   "canais": [
+    "f260-captacao-177",
+    "piloto-interceptador"
+   ]
+  },
+  {
+   "entidade": "edd56a57c698ff1e09f8",
+   "canais": [
+    "piloto-interceptador",
+    "recorrencia"
+   ]
+  },
+  {
+   "entidade": "d94cd9a3d245f2393f2f",
+   "canais": [
+    "piloto-aberto",
+    "piloto-interceptador"
+   ]
+  },
+  {
+   "entidade": "11942f03820e082026d5",
+   "canais": [
+    "piloto-interceptador",
+    "recorrencia"
+   ]
+  },
+  {
+   "entidade": "d5a20d71c4aebe0a2b06",
+   "canais": [
+    "f260-curadoria-009",
+    "piloto-interceptador"
+   ]
+  },
+  {
+   "entidade": "2ec00cd4dba804571ea6",
+   "canais": [
+    "f260-captacao-069",
+    "piloto-interceptador"
+   ]
+  },
+  {
+   "entidade": "1605e8fcffe87410b7d3",
+   "canais": [
+    "piloto-aberto",
+    "recorrencia"
+   ]
+  }
+ ],
+ "eventos_no_livro_razao": 30
 }
