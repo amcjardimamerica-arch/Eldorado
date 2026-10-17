@@ -43,8 +43,9 @@ def _dom(u) -> str:
         return ""
 
 
-def receber() -> dict:
-    """Junta as fontes (conselho + Espião + Cartório), preservando a estatística de cada domínio."""
+def receber(gravar: bool = False) -> dict:
+    """Junta as fontes (conselho + Espião + Cartório), preservando a estatística de cada domínio.
+    17/10/2026 (testes P0): CONSULTAR NÃO GRAVA — só grava com gravar=True (passo próprio no fechamento do comando)."""
     from .cartorio_leitura import regua
     atual = _j(FONTES, {}) or {}
     fontes = atual.get("fontes") or {}
@@ -69,6 +70,8 @@ def receber() -> dict:
             pôr(c["link_oficial"], "Cartório (site oficial certificado)", 1)
     out = {"em": datetime.now(timezone.utc).replace(microsecond=0).isoformat(), "regra": (__doc__ or "").split("\n\n")[1],
            "fontes": fontes, "novas_nesta_rodada": novas[-50:]}
+    if not gravar:
+        return out
     FONTES.parent.mkdir(parents=True, exist_ok=True)
     FONTES.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     try:

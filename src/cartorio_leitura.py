@@ -432,6 +432,13 @@ def extrair(paginas_: list[str], documento: str, titulo: str = "", orgao_hint: s
             if isos:
                 fim = max(isos)
                 val = f"{ds[0]} a {ds[-1]}" if len(ds) > 1 else f"até {ds[0]}"
+                # 17/10/2026 (testes P0, sonda C08.2): início e fim das inscrições em LINHAS SEPARADAS — o fim tem rótulo
+                # próprio ("Fim do período de inscrições: 08/10/2026"); a janela pegava só o início
+                if len(ds) == 1:
+                    _fr = re.search(r"(?i)(?:fim|t[ée]rmino|encerramento|data (?:final|limite))[^\n\d]{0,40}?inscri[^\n\d]{0,40}?(" + DATA + ")", T.t)
+                    _fi = _data_iso(_fr.group(1)) if _fr else None
+                    if _fi and _fi > fim:
+                        val, fim = f"{ds[0]} a {_fr.group(1)}", _fi
                 pôr("Prazo de inscrição", val, r[1], r[2], "cronograma" if sec else "texto")
                 break
     # RESULTADO

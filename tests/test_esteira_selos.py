@@ -17,15 +17,23 @@ def livro(pagina, completos=True, prazo=True, lid="op-teste"):
     return {"id": lid, "programa": "Edital Goyazes de cultura", "pagina": pagina, "historico": h, "livro": {"checklist": ck}}
 
 
+def livro_itens(itens, pagina="https://cultura.go.gov.br/edital"):
+    x = livro(pagina); x["livro"]["checklist"] = {i: {"v": "valor"} for i in itens}
+    return x
+
+
 class TesteSelos(unittest.TestCase):
     def test_bronze_prata_ouro(self):
+        """17/10/2026 (regra permanente de 04/10, teste do sistema P0): o selo é o do CRITÉRIO ÚNICO sobre os 12 itens —
+        bronze = objeto + prazo + território; prata = + valor + requisitos; ouro = os 12. O site não decide o selo."""
         self.assertEqual(E.avaliar(livro("https://cultura.go.gov.br/edital"), CFG)["nivel"], "ouro")
-        self.assertEqual(E.avaliar(livro("https://cultura.go.gov.br/edital", completos=False), CFG)["nivel"], "prata")
-        self.assertEqual(E.avaliar(livro("https://instituto-qualquer.org/edital"), CFG)["nivel"], "bronze")
-        self.assertEqual(E.avaliar(livro("https://observatorio3setor.org.br/noticia/x"), CFG)["nivel"], "bronze")
+        self.assertEqual(E.avaliar(livro("https://instituto-qualquer.org/edital"), CFG)["nivel"], "ouro", "o site não decide")
+        self.assertEqual(E.avaliar(livro_itens(["Objeto", "Prazo de inscrição", "Território", "Valor", "Requisitos"]), CFG)["nivel"], "prata")
+        self.assertEqual(E.avaliar(livro_itens(["Objeto", "Prazo de inscrição", "Território"]), CFG)["nivel"], "bronze")
+        self.assertIsNone(E.avaliar(livro("https://cultura.go.gov.br/edital", completos=False), CFG)["nivel"], "sem território, sem selo")
 
     def test_estantes_tentativas_e_reabertura(self):
-        x = livro("https://instituto-qualquer.org/edital")
+        x = livro_itens(["Objeto", "Prazo de inscrição", "Território"], "https://instituto-qualquer.org/edital")   # nível bronze
         E.atualizar_livro(x, CFG, "2026-10-02"); self.assertEqual(x["esteira"]["estante"], "fila_bronze")
         x["esteira"]["tentativas_bronze"] = 2
         E.atualizar_livro(x, CFG, "2026-10-02"); self.assertEqual(x["esteira"]["estante"], "investigacao_bronze")
@@ -42,7 +50,7 @@ class TesteSelos(unittest.TestCase):
                 {"livro": "op-a", "etapa": "bronze", "site_oficial": "https://instituto.org.br/edital", "confirmado_localmente": True,
                  "modelo": "claude-sonnet-5-5", "aprendizado": "o edital fica em /editais"},
                 {"livro": "op-a", "etapa": "prata", "modelo": "claude-opus-5-5", "edital_validado": True, "prazo_inscricao_fim": "2026-11-30",
-                 "doze": {i: "ok" for i in DOZE[3:9]}, "dispensas": {i: "não se aplica" for i in DOZE[9:]}, "aprendizado": "exige CNPJ de 2 anos"}]), encoding="utf-8")
+                 "doze": {i: "valor conferido no edital" for i in DOZE[3:9]}, "dispensas": {i: "não se aplica a este edital: a etapa não existe no regulamento" for i in DOZE[9:]}, "aprendizado": "exige CNPJ de 2 anos"}]), encoding="utf-8")
             with mock.patch.object(E, "RESULTADOS", R), mock.patch.object(E, "APLICADOS", A):
                 r = E.aplicar_resultados(C, CFG, "2026-10-02")
             E.atualizar_livro(x, CFG, "2026-10-02")
