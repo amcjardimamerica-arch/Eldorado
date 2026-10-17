@@ -170,7 +170,8 @@ def contabilizar(r: dict, sensor: dict) -> None:
         if dm not in fontes:
             continue
         m = _mot({k: v for k, v in a.items() if v})
-        if m is None or not re.search(r"(?i)munic|territ|fora de goi|outro estado|ano anterior|encerrad", str(m)):
+        # 17/10 (titular): só conta contra a fonte a MUNICIPAL DE OUTRO ESTADO com a cidade verificada — sem UF é avaliado
+        if m is None or not re.search(r"(?i)munic[íi]p\w* (de )?(fora de goi|outro estado)|municipal de outro estado", str(m)):
             fontes[dm]["achados"] = int(fontes[dm].get("achados") or 0) + 1
         else:
             fontes[dm]["barrados"] = int(fontes[dm].get("barrados") or 0) + 1

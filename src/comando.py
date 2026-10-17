@@ -66,6 +66,7 @@ def _idade_h(p: Path) -> float:
 def executar(etapa: str, cmd: list[str], timeout: int, env: dict | None = None) -> dict:
     """Roda um passo e devolve o recibo: código, tempo, erro (Traceback ou exceção), fim da saída."""
     t0 = time.time()
+    _cat_antes = _CAT_LIVROS.read_bytes() if _CAT_LIVROS.exists() else None   # 17/10: proteção do catálogo dos livros
     try:
         r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=timeout,
                            env={**os.environ, "PYTHONUNBUFFERED": "1", **(env or {})})
@@ -76,7 +77,45 @@ def executar(etapa: str, cmd: list[str], timeout: int, env: dict | None = None) 
     if rc != 0 or ERRO.search(saida):
         linhas = [l for l in saida.splitlines() if ERRO.search(l) or re.match(r"\s*\w+(Error|Exception)\b", l)]
         erro = (linhas[-1] if linhas else f"código {rc}")[:300]
-    return {"etapa": etapa, "rc": rc, "segundos": round(time.time() - t0, 1), "erro": erro, "saida": saida[-3000:]}
+    prot = _proteger_livros(etapa, cmd, _cat_antes)
+    return {"etapa": etapa, "rc": rc, "segundos": round(time.time() - t0, 1), "erro": erro, "saida": saida[-3000:], **prot}
+
+
+_CAT_LIVROS = ROOT / "biblioteca_alexandria/fontes/motores.json"
+PROTECAO = ROOT / "estado/protecao_livros.json"
+
+
+def _proteger_livros(etapa: str, cmd: list, antes: bytes | None, limite_frac: float = 0.10, limite_abs: int = 100) -> dict:
+    """17/10/2026 (titular): nenhum comando retira livros em massa sem motivo. Às 02:28 de 17/10 uma passagem retirou
+    1.434 livros do catálogo (1.011 com histórico). Se um comando reduzir o catálogo em mais de 10% E 100 livros, os
+    retirados voltam na hora e a fase fica registrada; quedas menores (união de duplicatas, consolidação) seguem normais."""
+    if antes is None or not _CAT_LIVROS.exists():
+        return {}
+    depois_b = _CAT_LIVROS.read_bytes()
+    if depois_b == antes:
+        return {}
+    try:
+        A = json.loads(antes); D = json.loads(depois_b)
+    except ValueError:
+        return {"livros": "catálogo ilegível depois do comando — restaurado", "livros_devolvidos": -1} if not _CAT_LIVROS.write_bytes(antes) else {}
+    la = {x.get("id"): x for x in A.get("motores") or [] if x.get("id")}
+    ld = {x.get("id") for x in D.get("motores") or [] if x.get("id")}
+    falt = [i for i in la if i not in ld]
+    reg = {"livros_antes": len(la), "livros_depois": len(ld)}
+    if len(falt) >= limite_abs and len(falt) > limite_frac * max(1, len(la)):
+        D.setdefault("motores", []).extend(la[i] for i in falt)
+        _CAT_LIVROS.write_text(json.dumps(D, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        reg["livros_devolvidos"] = len(falt)
+        try:
+            P = json.loads(PROTECAO.read_text(encoding="utf-8")) if PROTECAO.exists() else {"ocorrencias": []}
+        except ValueError:
+            P = {"ocorrencias": []}
+        P["ocorrencias"] = (P.get("ocorrencias") or [])[-49:] + [{
+            "em": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "etapa": etapa, "comando": " ".join(map(str, cmd))[-200:],
+            "livros_antes": len(la), "livros_depois_do_comando": len(ld), "devolvidos": len(falt), "exemplos": falt[:10]}]
+        PROTECAO.parent.mkdir(parents=True, exist_ok=True)
+        PROTECAO.write_text(json.dumps(P, ensure_ascii=False, indent=1), encoding="utf-8")
+    return reg
 
 
 # ── 1. DECIDIR ─────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -290,6 +329,8 @@ def fases(ctx: dict) -> list[dict]:
         # todas as telas leem o MESMO retrato, tirado depois de tudo o que mexe nos livros
         {"etapa": "fechamento", "finalidade": "repositório por último; fluxo e pendências do Cartório derivados dele (uma só fonte)",
          "cmds": [
+                  # 17/10 (titular): REAPLICA a restauração dos livros retirados em massa às 02:28 (idempotente)
+                  [py, "scripts/restaurar_livros.py", "--aplicar"],
                   # 17/10 (titular): REAPLICA as importações do Chrome (idempotente) — uma passagem que começou antes de uma
                   # importação gravava a sua versão dos livros por cima e apagava as certidões do Chrome
                   ["bash", "-c", "for d in entrada_manual/chrome_*; do [ -d \"$d\" ] && " + py + " scripts/importar_revisao_abertas.py \"$d\" --sem-atualizar | tail -c 300; done; true"],[py, "-c", "import json; from src import repositorio_unico as R; print(json.dumps({k: v for k, v in R.construir().items() if not isinstance(v, (list, dict))}, ensure_ascii=False))"],
