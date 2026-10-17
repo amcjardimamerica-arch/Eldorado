@@ -56,6 +56,30 @@ FAROL = re.compile(r"(^|/)(dados/farol|dados/associacoes|biblioteca_alexandria/a
 
 
 # ── livro em arquivo ──────────────────────────────────────────────────────────────────────────────────────────────
+_RO: dict = {}
+
+
+def _origens_ro() -> dict:
+    """O controle da absorção, em memória enquanto não muda no disco — SOMENTE LEITURA (não alterar o retorno)."""
+    m = ORIGENS.stat().st_mtime_ns if ORIGENS.exists() else 0
+    if _RO.get("orig_m") != m:
+        _RO["orig_m"], _RO["orig"] = m, (_j(ORIGENS, {}) or {})
+    return _RO["orig"]
+
+
+def _ler_ro(lid: str) -> dict:
+    """Um livro em memória enquanto não muda no disco — SOMENTE LEITURA (o caminho de gravação usa ler())."""
+    p = PASTA / f"{lid}.json"
+    m = p.stat().st_mtime_ns if p.exists() else 0
+    k = ("livro", lid)
+    if _RO.get(k, (None,))[0] != m:
+        if len([x for x in _RO if isinstance(x, tuple)]) > 3000:
+            for x in [x for x in _RO if isinstance(x, tuple)]:
+                _RO.pop(x, None)
+        _RO[k] = (m, ler(lid))
+    return _RO[k][1]
+
+
 def ler(lid: str) -> dict:
     return _j(PASTA / f"{lid}.json", {"id": lid, "acervo": {}})
 
@@ -307,13 +331,13 @@ def carregar(caminho, padrao=None):
 
 def _carregar(caminho, padrao=None):
     rel = _rel(caminho)
-    o = (_j(ORIGENS, {}) or {}).get(rel)
+    o = _origens_ro().get(rel)                           # 16/10: memória somente leitura
     if not o:
         return padrao
     cache: dict = {}
 
     def valor(lid, chave_int):
-        d = cache.setdefault(lid, ler(lid))
+        d = cache.setdefault(lid, _ler_ro(lid))           # 16/10: memória somente leitura
         x = ((d.get("acervo") or {}).get(rel) or {}).get(chave_int)
         return None if x is None else x["dado"]
     if o.get("inteiro"):
@@ -452,3 +476,40 @@ def existe(caminho) -> bool:
         return True
     o = (_j(ORIGENS, {}) or {}).get(_rel(p))            # 16/10: só existe se houver conteúdo para montar
     return bool(o and (o.get("inteiro") or "controle" in o or any(c.get("entradas") for c in (o.get("conteineres") or {}).values())))
+
+
+def ler_pasta(pasta, padrao: str = "*.json") -> dict:
+    """16/10/2026: LEITURA EM BLOCO — todos os 'arquivos' de uma pasta, abrindo CADA LIVRO UMA VEZ (a leitura um a um
+    reabria o livro a cada edição: ~9 min para as edições extraídas, e a catalogação estourava o tempo). Devolve
+    {Path: conteúdo}; o que ainda está em disco é lido do disco."""
+    import fnmatch
+    pasta = Path(pasta)
+    out: dict = {}
+    if pasta.is_dir():
+        for p in pasta.glob(padrao):
+            try:
+                out[p] = json.loads(p.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                pass
+    base = _rel(pasta).rstrip("/") + "/"
+    orig = _origens_ro()
+    livros: dict = {}
+    for rel, reg in orig.items():
+        if not rel.startswith(base) or "/" in rel[len(base):] or not fnmatch.fnmatch(Path(rel).name, padrao):
+            continue
+        p = ROOT / rel
+        if p in out:
+            continue
+        inteiro = reg.get("inteiro")
+        if inteiro:
+            lid, chave = inteiro[0], inteiro[1]
+            if lid not in livros:
+                livros[lid] = _ler_ro(lid)
+            ent = ((livros[lid].get("acervo") or {}).get(rel) or {}).get(chave)
+            if isinstance(ent, dict) and "dado" in ent:
+                out[p] = ent["dado"]
+        elif reg.get("conteineres") or "controle" in reg:
+            v = carregar(p, None)
+            if v is not None:
+                out[p] = v
+    return out
