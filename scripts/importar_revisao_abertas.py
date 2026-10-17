@@ -126,7 +126,9 @@ def certidao_de(x: dict, origem: str) -> tuple[dict, list[str]]:
             avisos.append(f"{x['id']}: item fora dos 12 ignorado ({k})"); continue
         if _item_ok(v, x.get("site_oficial") or x.get("link_documento")):
             itens[k] = {"valor": str(v["valor"]), "trecho": str(v["trecho"]), "pagina": v.get("pagina"),
-                        "documento": v["documento"], "metodo": v.get("metodo") or "revisão manual (leitura do documento oficial)"}
+                        "documento": v["documento"], "metodo": v.get("metodo") or "revisão manual (leitura do documento oficial)",
+                        # 17/10 (titular): COMO O CHROME ACHOU o dado — orienta a melhoria dos motores
+                        **({"como_encontrou": str(v["como_encontrou"])[:400]} if v.get("como_encontrou") else {})}
         else:
             avisos.append(f"{x['id']}: item {k} sem valor/trecho/documento/página — ignorado")
     for k, v in (x.get("dispensas") or {}).items():
@@ -158,6 +160,8 @@ def certidao_de(x: dict, origem: str) -> tuple[dict, list[str]]:
             "encaminhado": None if (link and not faltam) else
             f"Interceptador: {len(faltam)} item(ns) não estão no documento oficial lido na revisão",
             "selo_depois": nivel(ck), "veredito_revisao": x.get("veredito")}
+    if isinstance(x.get("aprendizado"), dict):          # 17/10 (titular): o aprendizado da busca, por oportunidade
+        cert["aprendizado"] = {k: (v[:600] if isinstance(v, str) else v) for k, v in x["aprendizado"].items()}
     return cert, avisos
 
 
@@ -284,12 +288,37 @@ def main(argv: list[str]) -> None:
                      ensure_ascii=False, indent=2))
 
 
+def gerar_aprendizado() -> dict:
+    """17/10/2026 (titular): o que o Chrome ensinou sobre ONDE e COMO os dados estavam — consolidado para melhorar os
+    motores e definir skills. Fonte: as certidões manuais (nos livros). Saída: docs/dados/aprendizado_chrome.json."""
+    import collections as _c
+    from urllib.parse import urlsplit as _us
+    sys.path.insert(0, str(ROOT))
+    from src.livro_arquivo import ler_arquivo as _ler
+    certs = ((_ler(ROOT / "estado/cartorio/certidoes_manuais.json", {}) or {}).get("certidoes") or {})
+    ap = [(k, c["aprendizado"]) for k, c in certs.items() if isinstance(c.get("aprendizado"), dict)]
+    def cont(campo):
+        return _c.Counter(str(a.get(campo)).strip()[:120] for _k, a in ap if a.get(campo)).most_common(25)
+    dom = _c.Counter((_us(str(it.get("documento") or "")).hostname or "?").removeprefix("www.")
+                     for c in certs.values() for it in (c.get("itens") or {}).values() if isinstance(it, dict) and it.get("como_encontrou"))
+    out = {"em": _agora(), "oportunidades_com_aprendizado": len(ap),
+           "onde_estava": cont("onde_estava"), "tipo_de_documento": cont("tipo_de_documento"),
+           "busca_que_funcionou": cont("busca_que_funcionou"), "bloqueios": cont("bloqueio"),
+           "sugestao_para_o_motor": cont("sugestao_para_o_motor"), "skill_necessaria": cont("skill_necessaria"),
+           "dominios_dos_documentos": dom.most_common(30),
+           "regra": "como o Claude no Chrome achou cada dado — base para melhorar os motores e criar skills"}
+    p = ROOT / "docs/dados/aprendizado_chrome.json"; p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
+    return {"oportunidades_com_aprendizado": len(ap)}
+
+
 def atualizar_ja() -> dict:
     """16/10 (titular): o resultado do Chrome aparece NA HORA — repositório, fluxo e pendências do Cartório refeitos."""
     out = {}
     for nome, f in (("repositorio", lambda: __import__("src.repositorio_unico", fromlist=["x"]).construir(gravar=True)),
                     ("fluxo", lambda: __import__("src.fluxo_oportunidades", fromlist=["x"]).sincronizar_com_repositorio()),   # 17/10: rápido
                     ("pendencias", lambda: __import__("src.cartorio", fromlist=["x"]).pendencias()),
+                    ("aprendizado", gerar_aprendizado),
                     ("sala", lambda: __import__("src.sala_controle", fromlist=["x"]).run())):   # 17/10: a página inicial lê a sala
         try:
             r = f(); out[nome] = "ok" if not isinstance(r, dict) else {k: v for k, v in r.items() if not isinstance(v, (list, dict))}
