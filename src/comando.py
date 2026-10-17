@@ -289,7 +289,10 @@ def fases(ctx: dict) -> list[dict]:
         # 16/10/2026 (titular): FECHAMENTO — repositório (dos livros) POR ÚLTIMO e, dele, o fluxo e as pendências do Cartório:
         # todas as telas leem o MESMO retrato, tirado depois de tudo o que mexe nos livros
         {"etapa": "fechamento", "finalidade": "repositório por último; fluxo e pendências do Cartório derivados dele (uma só fonte)",
-         "cmds": [[py, "-c", "import json; from src import repositorio_unico as R; print(json.dumps({k: v for k, v in R.construir().items() if not isinstance(v, (list, dict))}, ensure_ascii=False))"],
+         "cmds": [
+                  # 17/10 (titular): REAPLICA as importações do Chrome (idempotente) — uma passagem que começou antes de uma
+                  # importação gravava a sua versão dos livros por cima e apagava as certidões do Chrome
+                  ["bash", "-c", "for d in entrada_manual/chrome_*; do [ -d \"$d\" ] && " + py + " scripts/importar_revisao_abertas.py \"$d\" --sem-atualizar | tail -c 300; done; true"],[py, "-c", "import json; from src import repositorio_unico as R; print(json.dumps({k: v for k, v in R.construir().items() if not isinstance(v, (list, dict))}, ensure_ascii=False))"],
                   [py, "-c", "import json; from src import fila_retentativa as FR; print(json.dumps(FR.dar_destino(), ensure_ascii=False))"],
                   [py, "-c", "import json; from src import fluxo_oportunidades as F; print(json.dumps(F.sincronizar_com_repositorio(), ensure_ascii=False))"],
                   [py, "-c", "import json; from src import cartorio as C; print(json.dumps(C.pendencias(), ensure_ascii=False))"]],
