@@ -399,6 +399,8 @@ def opressores_e_preditivo(itens: list[dict]) -> dict:
     for g in grupos.values():
         g.sort(key=lambda x: (bool(x.get("validacao_mapa") or x.get("dados_confirmados") or x.get("decisao")), x["id"] in (L.get("ligados") or {}), len(json.dumps(x))), reverse=True)
         manter.append(g[0]); fora += [y["id"] for y in g[1:]]
+        for y in g[1:]:                                       # 17/10 (titular): UNE — o conteúdo do que sai vai para o que fica
+            __import__("src.banco_livros", fromlist=["x"]).juntar_em(g[0], y, "duplicado na regeneração (programa + órgão)")
     if fora:
         C["motores"] = [x for x in C["motores"] if x["id"] not in set(fora)]
         for i in fora:
