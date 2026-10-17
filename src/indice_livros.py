@@ -109,6 +109,8 @@ class Indice:
 
     def encontrar(self, op: dict, excluir: str | None = None) -> tuple[str | None, float, list[str]]:
         prog = programa(op.get("titulo") or op.get("programa"), op.get("orgao"))
+        if op.get("objeto"):                               # 17/10 (titular): o OBJETO também norteia a ligação ao livro
+            prog = type(prog)(set(prog) | set(programa(str(op.get("objeto"))[:200], op.get("orgao"))))
         org = palavras(op.get("orgao"))
         dom = {d for d in (_dominio(op.get(k)) for k in ("url", "link_oficial")) if d}
         uf = str(op.get("uf") or "").upper() or None

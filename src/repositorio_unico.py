@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import json
 import re
+import unicodedata
 from collections import Counter
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -171,6 +172,19 @@ def nao_e_oportunidade(r: dict) -> str | None:
             return "incentivo a empresas — não é para associação"
     if re.search(r"(?i)^\s*presta[çc][ãa]o de contas\b", tit):
         return "prestação de contas — não é oportunidade"
+    # 17/10/2026 (amostra dos 744 achados fora dos livros): EXTRATO de parceria já firmada e ato de execução não são
+    # oportunidade — o DOU publicava centenas como "achado"
+    if re.search(r"(?i)\bextrato (?:de |do |da )?(?:termo|contrato|conv[eê]nio|compromisso|doa[çc][ãa]o|distrato|prorroga|"
+                 r"apostilamento|rescis|aditiv|acordo|parceria)|\bextrato_aditivo|\bdistrato\b|prorroga[çc][ãa]o de of[íi]cio|"
+                 r"^\W*termo aditivo\b|apostilamento", tit):
+        return "extrato/ato de execução de parceria já firmada — não é oportunidade"
+    if re.search(r"(?i)\bextratos? (?:de |do |da |dos |das )?(?:fomento|colabora[çc][ãa]o|termos?\b)|parceria celebrada|"
+                 r"dispensa de chamamento|inexigibilidade|resultado de julgamento|^\W*(?:\S+ — )?(?:aviso de )?retifica[çc][ãa]o\W*$|"
+                 r"aviso de prorroga[çc][ãa]o\W*$", tit):
+        return "extrato/resultado/dispensa de parceria — ato de execução, não é oportunidade"
+    if re.search(r"(?i)convoca[çc][ãa]o (?:de|para) assembl|assembleia geral (?:ordin|extraordin)|edital de convoca[çc][ãa]o de assembl|"
+                 r"\bbazar\b", tit):
+        return "assembleia/bazar — não é oportunidade"
     if OS_CONTRATO_DE_GESTAO.search(t) and not re.search(r"(?i)sociedade civil|\bosc", tit):   # 16/10: só OS de verdade
         return "Organização Social (contrato de gestão) — acompanhar, não é oportunidade da associação"
     if "credenciamento" in t.lower() and SAUDE_SERVICO.search(f"{t} {r.get('orgao') or ''}") and not re.search(r"(?i)sociedade civil|\bosc", tit):
@@ -256,6 +270,10 @@ def municipal_fora_de_goias(r: dict, uf_agregador: str | None = None) -> str | N
     A municipal de outro estado é DESCARTADA do sistema (estado fechada: sai das abertas, da tela, das filas e não ganha
     livro). Sem UF determinada, fica (há municípios homônimos)."""
     t = f"{r.get('titulo') or ''} {r.get('orgao') or ''}"
+    _do = re.search(r"(?i)di[áa]rio oficial d[eoa] ([\wÀ-ú' -]{3,40}?) \(([A-Z]{2})\)", t)   # 17/10: "Diário Oficial de X (UF)"
+    if _do and _do.group(2).upper() not in ("GO", "DF") and \
+            re.sub(r"[^a-z]", "", unicodedata.normalize("NFKD", _do.group(1)).encode("ascii", "ignore").decode().lower()) not in _CAPITAIS_SEM_ESPACO:
+        return f"município de outro estado ({_do.group(2).upper()}, não capital)"
     # 16/10/2026: órgão ESTADUAL nunca é municipal (a menos que o texto traga a prefeitura); o DF inteiro é a capital
     if re.search(r"(?i)secretaria (?:de|da) estado|governo d[eo] estado|governo de (?!munic)|do estado d[eo]|\bestadual\b|"
                  r"\bsecult[- ](?:[a-z]{2})\b|assembleia legislativa|tribunal de justi[çc]a|minist[ée]rio p[úu]blico", t) \
