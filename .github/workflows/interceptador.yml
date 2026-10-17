@@ -16,7 +16,7 @@ jobs:
   sede:
     # 02/10 (parecer dos pilotos): se o Interceptador está voando no Brasil (computador do titular ou VM), a nuvem fica
     # em terra — sem dois pilotos no mesmo alvo. Parou o batimento do Brasil, a nuvem reassume aqui, sozinha.
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # 17/10: fixo (o ubuntu-latest vira Ubuntu 26 em 19/10)
     timeout-minutes: 5
     outputs:
       voar: ${{ steps.s.outputs.voar }}
@@ -30,7 +30,7 @@ jobs:
   interceptar:
     needs: sede
     if: ${{ needs.sede.outputs.voar == 'true' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # 17/10: fixo (o ubuntu-latest vira Ubuntu 26 em 19/10)
     timeout-minutes: 45
     env:
       ELDORADO_VOO_REAL: "1"

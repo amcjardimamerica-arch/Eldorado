@@ -23,7 +23,7 @@ jobs:
   sede:
     # 02/10 (parecer dos pilotos): com o Espião voando no Brasil (computador do titular ou VM), a nuvem fica em terra;
     # parou o batimento, a nuvem reassume aqui. Benchmark, avaliação e sondagem não dependem da sede.
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # 17/10: fixo (o ubuntu-latest vira Ubuntu 26 em 19/10)
     timeout-minutes: 5
     outputs:
       voar: ${{ steps.s.outputs.voar }}
@@ -37,7 +37,7 @@ jobs:
   piloto:
     needs: sede
     if: ${{ needs.sede.outputs.voar == 'true' || (github.event.inputs.modo != '' && github.event.inputs.modo != 'ciclo') }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # 17/10: fixo (o ubuntu-latest vira Ubuntu 26 em 19/10)
     # TETO POR MODO. Os 30 minutos foram desenhados para o VOO: uma pesquisa por execução,
     # para que nenhum voo monopolize o runner. O benchmark é outra coisa — cinco modelos
     # contra 120 itens em 4 CPUs — e em 23/09 foi cancelado no meio por esse mesmo teto,
