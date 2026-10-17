@@ -236,6 +236,48 @@ def _prioridade_anexo(nome: str) -> int:
     return 3
 
 
+MAPAS_OPORT = re.compile(r"(https?://[^/]*(?:mapa|cultura)[^/]*)/(?:oportunidade|opportunity)/(?:single/)?(\d+)", re.I)
+_DRIVE = re.compile(r"https?://drive\.google\.com/(?:file/d/|open\?id=|uc\?id=)([\w-]{20,})")
+_GDOCS = re.compile(r"https?://docs\.google\.com/document/d/([\w-]{20,})")
+
+
+def _download_direto(u):
+    """Link de visualização do Google Drive/Docs → link que entrega o arquivo (o leitor não lê o visualizador)."""
+    if not u:
+        return u
+    m = _DRIVE.search(str(u))
+    if m:
+        return f"https://drive.google.com/uc?export=download&id={m.group(1)}"
+    m = _GDOCS.search(str(u))
+    if m:
+        return f"https://docs.google.com/document/d/{m.group(1)}/export?format=pdf"
+    return u
+
+
+def _arquivos_mapas(base: str, oid: str, rede) -> list[str]:
+    """Arquivos de uma oportunidade do Mapas Culturais pela API pública (regulamento e anexos)."""
+    raw, _t, _e = rede.get(f"{base}/api/opportunity/findOne?id=EQ({oid})&@select=id,name,files")
+    try:
+        d = json.loads(raw or b"{}")
+    except ValueError:
+        return []
+    urls: list[str] = []
+
+    def andar(o):
+        if isinstance(o, dict):
+            u = o.get("url")
+            if isinstance(u, str) and re.search(r"(?i)\.(pdf|docx?|odt|xlsx?)(\?|$)|/files/", u) and u not in urls:
+                urls.append(u)
+            for v in o.values():
+                andar(v)
+        elif isinstance(o, list):
+            for v in o:
+                andar(v)
+    andar((d or {}).get("files") or d)
+    urls.sort(key=lambda u: 0 if re.search(r"(?i)regulamento|edital|rules", u) else 1)
+    return urls[:6]
+
+
 def documentos(op: dict, rede: Rede, maximo: int = 4, pncp_teto: int | None = None) -> list[dict]:
     """Escada de degraus: devolve documentos candidatos [{url, degrau, como, bytes, tipo}] — o oficial primeiro."""
     b = balcao(op); out, vistos = [], set()
@@ -244,8 +286,18 @@ def documentos(op: dict, rede: Rede, maximo: int = 4, pncp_teto: int | None = No
     teto = max(maximo, _pt) if b == "pncp" else maximo
 
     def add(url, degrau, como):
+        url = _download_direto(url)                    # 17/10: Google Drive/Docs → arquivo para leitura
         if url and url not in vistos and len(out) < teto:
             vistos.add(url); out.append({"url": url, "degrau": degrau, "como": como})
+
+    # 17/10/2026 (titular): MAPAS CULTURAIS — a página é dinâmica (0 itens certificados); a API pública da plataforma
+    # devolve os arquivos da oportunidade (regulamento/edital), como o PNCP
+    for _u in (op.get("link_oficial"), op.get("url")):
+        _mm = MAPAS_OPORT.search(str(_u or ""))
+        if _mm:
+            for _arq in _arquivos_mapas(_mm.group(1), _mm.group(2), rede):
+                add(_arq, 0, "Mapas Culturais: arquivo da oportunidade (API pública)")
+            break
 
     for k in ("url_documento", "url_edital"):
         if op.get(k):
@@ -675,7 +727,9 @@ def run(limite: int | None = None, segundos: int | None = None, rede: Rede | Non
     def prio(op):
         fim = str(op.get("fim") or "")[:10]
         foco_falta = sum(1 for k in LN.FOCO[op["_estagio"]] if k in (op.get("_faltam") or []))
-        return (0 if op.get("_faltam") or op.get("_sem_site") else 1,       # primeiro quem tem item FALTANDO; conferir os cinza depois
+        _novo = str(op.get("descoberto_em") or op.get("criado_em") or "")[:10] >= (date.today() - timedelta(days=1)).isoformat()
+        return (0 if _novo else 1,                    # 17/10 (titular): CERTIFICAR NA DESCOBERTA — o achado do dia vem primeiro
+                0 if op.get("_faltam") or op.get("_sem_site") else 1,       # primeiro quem tem item FALTANDO; conferir os cinza depois
                 0 if (fim and fim >= hoje) else 1, fim or "9999", len(op["_usadas"]), -_nota_rede(op), foco_falta)
     devidas.sort(key=prio)
     livros_max = int(c["livros_por_execucao"])
