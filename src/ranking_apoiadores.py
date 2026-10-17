@@ -160,7 +160,7 @@ def montar() -> dict:
     # na lista de destinação tributária — não numa segunda lista. Quem já estava (curadoria ou Piloto) é
     # ENRIQUECIDO com CNPJ, total e histórico; quem não estava entra como registro leve, pontuado pelos
     # mesmos critérios (lei com histórico, valor, recorrência), depois dos que têm mais critérios levantados.
-    idx = ROOT / "docs/dados/doadoras/indice.json"
+    idx = ROOT / "biblioteca_alexandria/livros/especiais/empresas/doadoras/indice.json"
     if idx.exists():
         salic = (load_json(idx) or {}).get("empresas") or []
         itens = listas["destinacao_tributaria"]
