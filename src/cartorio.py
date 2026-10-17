@@ -1001,6 +1001,8 @@ def pendencias(gravar: bool = True, lote_chrome: bool = True) -> dict:
            "para_o_chrome_por_grupo": {g: sum(1 for x in out if x["proximo_passo"] == "Claude no Chrome" and x["grupo"] == g)
                                        for g in ("Goiás", "Nacional", "Sem site oficial")},
            "bloqueadas_na_fonte": len(_bloq_op), "paginas_bloqueadas_do_cartorio": len(bloqueadas),
+           # 17/10 (titular): a LISTA das páginas que o robô não abre (nem pela ponte) — para a rotina no computador do titular
+           "paginas_para_o_navegador_local": _paginas_bloqueadas(_fr, regs, certs),
            "ultima_importacao_do_chrome": (__import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(PASTA / "certidoes_manuais.json", {}) or {}).get("em"),
            "como_importar": "python scripts/importar_revisao_abertas.py <pasta com resultado_ABERTAS_*.json>",
            "oportunidades": out}
@@ -1020,3 +1022,25 @@ def pendencias(gravar: bool = True, lote_chrome: bool = True) -> dict:
 
 def _ver_em(v: dict) -> str | None:
     return (v or {}).get("em") or (v or {}).get("decidido_em")
+
+
+
+def _paginas_bloqueadas(fila: dict, regs: list, certs: dict) -> list:
+    """Páginas que o robô não abre (403/401/429/5xx/ponte/tempo), com o erro e as oportunidades abertas que dependem delas."""
+    import re as _r
+    dono: dict = {}
+    for r in regs:
+        if r.get("estado") == "fechada" or r.get("arquivada"):
+            continue
+        c_ = certs.get(f"estrela:{r['id']}") or {}
+        for u in {r.get("link_oficial"), r.get("url")} | {d.get("url") for d in (c_.get("documentos") or []) if isinstance(d, dict)}:
+            if u:
+                dono.setdefault(u, []).append(r["id"])
+    out = []
+    for u, x in (fila or {}).items():
+        e = str((x or {}).get("erro") or "")
+        if str(u).startswith("oportunidade:") or not _r.search(r"(?i)403|401|429|50\d|ponte|tempo|timeout|reset", e):
+            continue
+        out.append({"url": u, "erro": e[:80], "escopo": (x or {}).get("escopo"), "oportunidades": dono.get(u, [])})
+    out.sort(key=lambda y: (-len(y["oportunidades"]), y["url"]))
+    return out[:300]
