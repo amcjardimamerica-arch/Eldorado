@@ -304,3 +304,40 @@ if __name__ == "__main__":
     r = executar(simular="--executar" not in sys.argv)
     print(json.dumps({k: (v if k not in ("exemplos",) else v) for k, v in r.items() if k not in ("registros_removidos_por_arquivo",)}, ensure_ascii=False, indent=1)[:5000])
     print("arquivos:", json.dumps(dict(list(r["registros_removidos_por_arquivo"].items())[:40]), ensure_ascii=False, indent=0))
+
+
+
+def reter_controle(dias_registros: int = 30, dias_vistos: int = 180, gravar: bool = True) -> dict:
+    """17/10/2026 (titular): RETENÇÃO DO CONTROLE — o controle é memória de trabalho, não banco que cresce sem fim.
+    Registros datados (relatórios, logs por dia, Interceptador) com mais de 30 dias são apagados; a memória de "já
+    visto" esquece links com mais de 180 dias. Pontos de parada, estado de motor e modelos são sobrescritos (não crescem)."""
+    import re as _re
+    from datetime import date as _d, timedelta as _td
+    raiz = ROOT / "estado"
+    corte = (_d.today() - _td(days=dias_registros)).isoformat()
+    apagados = 0
+    for p in raiz.rglob("*"):
+        if not p.is_file():
+            continue
+        m = _re.search(r"(20\d\d-\d\d-\d\d)", p.name)
+        if m and m.group(1) < corte and p.suffix in (".json", ".jsonl", ".txt", ".md", ".log", ".csv"):
+            if gravar:
+                p.unlink()
+            apagados += 1
+    vistos = raiz / "achados_vistos.json"
+    esquecidos = 0
+    if vistos.exists():
+        try:
+            d = json.loads(vistos.read_text(encoding="utf-8"))
+            corte_v = (_d.today() - _td(days=dias_vistos)).isoformat()
+            itens = d.get("itens") if isinstance(d, dict) and isinstance(d.get("itens"), dict) else None
+            if itens is not None:
+                velhos = [k for k, v in itens.items() if isinstance(v, dict) and str(v.get("visto_em") or v.get("em") or "9")[:10] < corte_v]
+                for k in velhos:
+                    itens.pop(k, None)
+                esquecidos = len(velhos)
+                if gravar and velhos:
+                    vistos.write_text(json.dumps(d, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        except Exception:  # noqa: BLE001
+            pass
+    return {"registros_apagados": apagados, "vistos_esquecidos": esquecidos, "regra": f"registros datados {dias_registros} dias; já visto {dias_vistos} dias"}
