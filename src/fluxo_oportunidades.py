@@ -205,8 +205,18 @@ def consolidar() -> list[dict]:
     for arq in __import__("src.livro_arquivo", fromlist=["x"]).arquivos(EXT):                  # 16/10: disco + livros
         e = __import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(arq, {}) or {}
         if e.get("investigacao_ia") and arq.stem.startswith(("cat-", "op-")):
-            brutos.append(("Piloto - Interceptador", {"id": arq.stem, "titulo": e.get("titulo"), "url": e.get("url"), "orgao": e.get("orgao"),
-                                                      "descoberto_em": str((e.get("investigacao_ia") or {}).get("em", ""))[:10], "fonte_id": "piloto-interceptador"}))
+            # 16/10 (titular): o Interceptador passa pelo PORTÃO e pelo LIVRO, como qualquer motor
+            _it = {"id": arq.stem, "titulo": e.get("titulo"), "url": e.get("url"), "orgao": e.get("orgao"), "uf": e.get("uf"),
+                   "descoberto_em": str((e.get("investigacao_ia") or {}).get("em", ""))[:10], "fonte_id": "piloto-interceptador"}
+            from .porta_oportunidade import motivo_para_nao_guardar as _mot
+            if _mot({k: v for k, v in _it.items() if v}) is not None:
+                continue
+            try:
+                from .banco_livros import registrar_achados as _reg
+                _reg([{**_it, "sensor": "piloto-interceptador"}], motor="piloto-interceptador")
+            except Exception:  # noqa: BLE001
+                pass
+            brutos.append(("Piloto - Interceptador", _it))
     # NÃO É OPORTUNIDADE (27/09): pauta legislativa, assembleia, contrato já assinado, resultado e lista de aprovados.
     # Retificação e alteração de cronograma FICAM: indicam edital aberto.
     RUIDO = re.compile(r"^\s*\d{1,2}:\d{2}\b|vota[cç][õo]es|requerimentos|t[ií]tulos? de cidadania|utilidades? p[uú]blica|convoca[cç][aã]o de assembleia|"
@@ -713,6 +723,16 @@ def montar() -> dict:
         from .repositorio_unico import construir as _repo     # inicial, o Cartório e o Chrome contam o MESMO universo
         _r = _repo()
         res["incluidas_do_repositorio"] = incluir_do_repositorio(res)        # 11/10: UM universo — a lista = o repositório
+        # 16/10 (titular): FONTE ÚNICA — a lista contém SÓ as oportunidades abertas do repositório (nada por fora)
+        _ab = {x["id"] for x in (_j(ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json", {}) or {}).get("registros") or []
+               if x.get("estado") != "fechada"}
+        if _ab:
+            _antes = sum(len(v) for v in (res.get("itens_por_uf") or {}).values())
+            res["itens_por_uf"] = {u: [x for x in v if x.get("id") in _ab] for u, v in (res.get("itens_por_uf") or {}).items()}
+            res["itens_por_uf"] = {u: v for u, v in res["itens_por_uf"].items() if v}
+            for _k in ("confirmadas", "possiveis_sem_minimo"):
+                res[_k] = [x for x in res.get(_k) or [] if x.get("id") in _ab]
+            res["fora_do_repositorio_retiradas"] = _antes - sum(len(v) for v in res["itens_por_uf"].values())
         res["parametro"] = {**(res.get("parametro") or {}), **{k: _r[k] for k in ("abertas", "validadas", "em_verificacao", "validacao_manual")},
                             "estantes": _r.get("estantes"), "fonte": "repositório único (biblioteca_alexandria/livros/_vistas/repositorio_unico.json)",
                             "auditoria": _r.get("auditoria")}
@@ -720,6 +740,49 @@ def montar() -> dict:
     except Exception as ex:  # noqa: BLE001 — o repositório nunca derruba o fluxo
         res.setdefault("etapas", {})["repositorio_unico"] = f"falhou: {type(ex).__name__}"
     return {"mapa_total": tot, **res["etapas"]}
+
+
+def sincronizar_com_repositorio() -> dict:
+    """16/10/2026 (titular): FONTE ÚNICA, leve (fase de fechamento) — o fluxo publicado passa a conter só as oportunidades
+    abertas do repositório, e o parâmetro é o resumo do repositório. Segundos, sem refazer a montagem."""
+    from .repositorio_unico import SAIDA as _RS
+    rep = _j(_RS, {}) or {}
+    regs = rep.get("registros") or []
+    ab = {x["id"] for x in regs if x.get("estado") != "fechada"}
+    res = _j(SAIDA, {}) or {}
+    if not ab or not res:
+        return {"sincronizado": False}
+    try:
+        res["incluidas_do_repositorio"] = incluir_do_repositorio(res)     # o que o repositório tem e a lista não
+    except Exception:  # noqa: BLE001
+        pass
+    antes = sum(len(v) for v in (res.get("itens_por_uf") or {}).values())
+    dono = {str(o): r["id"] for r in regs for o in [r["id"], *(r.get("ids_origem") or [])]}   # origem → id do repositório
+    vistos, novo = set(), {}
+    for u, v in (res.get("itens_por_uf") or {}).items():
+        for x in v:
+            rid = dono.get(str(x.get("id")))
+            if rid in ab and rid not in vistos:
+                vistos.add(rid)
+                if x.get("id") != rid:
+                    x["id_origem"], x["id"] = x.get("id"), rid
+                novo.setdefault(u, []).append(x)
+    for r in regs:                                    # o que o repositório tem aberto e ainda falta: entra do próprio registro
+        if r["id"] in ab and r["id"] not in vistos:
+            vistos.add(r["id"])
+            novo.setdefault(r.get("uf") or "__nac__", []).append({k: r.get(k) for k in ("id", "titulo", "url", "link_oficial", "fim", "inicio",
+                                                                     "origem", "estado", "uf", "area", "objeto")} | {"confirmada": r.get("estado") == "validada"})
+    res["itens_por_uf"] = novo
+    for k in ("confirmadas", "possiveis_sem_minimo"):
+        res[k] = [x for x in res.get(k) or [] if dono.get(str(x.get("id"))) in ab]
+    cont = {"abertas": len(ab), "validadas": sum(1 for x in regs if x.get("estado") == "validada"),
+            "em_verificacao": sum(1 for x in regs if x.get("estado") == "em_verificacao"),
+            "validacao_manual": sum(1 for x in regs if x.get("estado") == "validacao_manual")}
+    res["parametro"] = {**(res.get("parametro") or {}), **cont, "fonte": "repositório único (dos livros), no fechamento da passagem"}
+    res["fora_do_repositorio_retiradas"] = antes - sum(len(v) for v in res["itens_por_uf"].values())
+    SAIDA.write_text(json.dumps(res, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    lista = sum(len(v) for v in res["itens_por_uf"].values())
+    return {**cont, "lista": lista, "retiradas": res["fora_do_repositorio_retiradas"], "abertas_fora_da_lista": len(ab) - lista}
 
 
 def atualizar_mapa() -> dict:
