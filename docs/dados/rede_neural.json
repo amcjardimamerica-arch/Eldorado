@@ -1,9 +1,9 @@
 {
- "em": "2026-10-17T12:22:43+00:00",
+ "em": "2026-10-17T13:52:11+00:00",
  "regra": "REDE NEURAL DA LINHA DE PRODUÇÃO (titular, 02/10/2026) — Python puro, sem dependência nova, sem GPU.\n\nO que faz: estima a probabilidade de um registro ser OPORTUNIDADE REAL para OSC. É APOIO, nunca filtro (identificar\nprimeiro, qualificar depois): ordena a fila de validação, dá a nota dos livros e aponta rótulos suspeitos.\n\nArquitetura: rede de 1 camada oculta (ReLU) sobre entradas esparsas; saída sigmoide; Adam; pesos por classe.\nEntradas (técnicas de referência no GitHub):\n  · TEXTO — palavras e pares de palavras do título e da evidência, por *feature hashing* (2^13 posições);\n  · SUPERVISÃO FRACA (snorkel-team/snorkel) — as regras atuais do sistema viram \"rotuladores\": veredito e regra de\n    restrição dos livros (regras_restricao.avaliar), sinais de OSC, de abertura e de prazo, link oficial, família do canal;\n  · CORROBORAÇÃO — quantos canais viram a mesma entidade (linha_producao).\nRótulos: as decisões da validação individual (válida/arquivada = 1; descartada = 0; pendente = sem rótulo).\nAvaliação: validação cruzada em 5 partes (AUC, precisão, revocação, Brier) contra a linha de base das regras sozinhas.\nRÓTULOS SUSPEITOS (cleanlab/cleanlab, *confident learning*): decisão que a rede, fora da amostra, contradiz com mais de\n90% de confiança vai à revisão. APRENDIZADO ATIVO (argilla-io/argilla): os pendentes de maior incerteza vêm primeiro.",
  "rotulados": 1685,
  "positivos": 581,
- "pendentes": 727,
+ "pendentes": 731,
  "validacao_cruzada": {
   "auc": 0.843,
   "precisao": 0.74,
@@ -37,12 +37,6 @@
    "incerteza": 0.998
   },
   {
-   "titulo": "EDITAL DE CHAMAMENTO PÚBLICO Nº002/2026 CICLO 2 PNAB QUADRILHA JUNINA,CAPOEIRA,DANÇA E LITERATURA DE SÃOBENEDITO",
-   "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8421/",
-   "nota": 0.502,
-   "incerteza": 0.996
-  },
-  {
    "titulo": "Chamadas Abertas",
    "url": "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
    "nota": 0.498,
@@ -51,6 +45,12 @@
   {
    "titulo": "“CHAMAMENTO PÚBLICO PARA CREDENCIAMENTO DE ARTISTAS LOCAIS/REGIONAIS”, mediante pagamento de cachê, com base… — MUNICIPIO DE ALMIRANTE TAMAN",
    "url": "https://pncp.gov.br/app/editais/76105659000174/2026/227",
+   "nota": 0.503,
+   "incerteza": 0.995
+  },
+  {
+   "titulo": "Itumbiara — inscrições para projetos culturais de audiovisual e multilinguagem. pela lei paulo gustavo , irão … — Goiás / Itumbiara",
+   "url": "https://itumbiara.go.gov.br/inscricoes-para-projetos-culturais-de-audiovisual-e-multilinguagem-pela-lei-paulo-gustavo-irao-ate-esta-quarta-dia-8-de-novembro/",
    "nota": 0.503,
    "incerteza": 0.995
   },
@@ -82,12 +82,6 @@
    "titulo": "Publicações Licitações CHAMAMENTO PÚBLICO N° 008/SME/ 2026 - Seleção de Organização da Sociedade Civil (OSC) Chamamento Público Vigente 2026",
    "url": "https://itaqua.sp.gov.br/publicacoes/licitacao.php?id=2792",
    "nota": 0.495,
-   "incerteza": 0.99
-  },
-  {
-   "titulo": "YouTube do BNDES",
-   "url": "https://www.youtube.com/@BNDES2026",
-   "nota": 0.505,
    "incerteza": 0.99
   },
   {
@@ -133,14 +127,8 @@
    "incerteza": 0.984
   },
   {
-   "titulo": "Instituto Lojas Renner abre edital para fortalecer organizações sociais em três estados",
-   "url": "https://captadores.org.br/editais/instituto-lojas-renner-abre-edital-para-fortalecer-organizacoes-sociais-em-tres-estados",
-   "nota": 0.508,
-   "incerteza": 0.983
-  },
-  {
-   "titulo": "Diário Oficial de Salvador (BA) 2026-10-09 — \"termo de fomento\" \"chamamento público\"",
-   "url": "https://data.queridodiario.ok.org.br/2927408/2026-10-09/6d53858bd58d11f850f00443b22ef3ec8ecfeca0.pdf",
+   "titulo": "Inscrições para o Agrocolégio seguem até 31 de outubro",
+   "url": "https://goias.gov.br/inscricoes-para-o-agrocolegio-seguem-ate-31-de-outubro",
    "nota": 0.492,
    "incerteza": 0.983
   },
@@ -149,6 +137,12 @@
    "url": "https://fapemig.br/oportunidades/chamadas-e-editais/chamada-fapemig-sede-018-2026-hubmg-gov-resolucao-de-desafios-publicos-por-meio-de-inovacao-aberta",
    "nota": 0.491,
    "incerteza": 0.983
+  },
+  {
+   "titulo": "EDITAL DE CHAMAMENTO PÚBLICO Nº002/2026 CICLO 2 PNAB QUADRILHA JUNINA,CAPOEIRA,DANÇA E LITERATURA DE SÃOBENEDITO",
+   "url": "https://mapacultural.secult.ce.gov.br/oportunidade/8421/",
+   "nota": 0.491,
+   "incerteza": 0.982
   },
   {
    "titulo": "Undertake: the Practical Side of Death",
@@ -187,12 +181,6 @@
    "incerteza": 0.981
   },
   {
-   "titulo": "Edital Rouanet nas Favelas 2 (2026): Guia de Captação · Capitaai",
-   "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2023/lei/l14535.htm",
-   "nota": 0.491,
-   "incerteza": 0.981
-  },
-  {
    "titulo": "Chamada nº 009/2026 – FAPESPA/CNPq/CAPES",
    "url": "https://www.fapespa.pa.gov.br/2026/07/01/chamada-n-o-009-2026-fapespa-cnpq-capes",
    "nota": 0.49,
@@ -201,6 +189,12 @@
   {
    "titulo": "Secretaria de Estado da Cultura (Secult) — Secult lança edital de chamamento público para execução do projeto … — Goiás",
    "url": "https://goias.gov.br/cultura/secult-lanca-edital-de-chamamento-publico-para-execucao-do-projeto-cineleitura-do-bem/",
+   "nota": 0.51,
+   "incerteza": 0.98
+  },
+  {
+   "titulo": "Aviso de Chamamento Público nº 1/2026",
+   "url": "https://www.novaamerica.go.gov.br/politica-nacional-aldir-blanc-ciclo-ii/",
    "nota": 0.51,
    "incerteza": 0.98
   },
@@ -283,6 +277,12 @@
    "incerteza": 0.969
   },
   {
+   "titulo": "Edital Santa Bárbara do Pará 2026: Projetos Culturais · Capitaai",
+   "url": "https://www.planalto.gov.br/ccivil_03/leis/LCP/Lcp195.htm",
+   "nota": 0.516,
+   "incerteza": 0.967
+  },
+  {
    "titulo": "Chamada Biodiversa + “BiodivFuture 2026‑2027 – Novos Ecossistemas”",
    "url": "https://www.fapesb.ba.gov.br/wp-content/uploads/2019/08/DIRETRIZES___COOPINTER___BIODIVERSA_V1.pdf",
    "nota": 0.484,
@@ -301,16 +301,16 @@
    "incerteza": 0.965
   },
   {
-   "titulo": "Diário Oficial de Maceió (AL) 2026-09-22 — \"termo de execução cultural\"",
-   "url": "https://data.queridodiario.ok.org.br/2704302/2026-09-22/4b8f731e0cdc33af172610881879a91dc1c10653.pdf",
-   "nota": 0.517,
+   "titulo": "Anápolis — CRAS Leste 1 recebe inscrições para o Programa Bombeiro Mirim em Anápolis",
+   "url": "https://www.anapolis.go.gov.br/cras-leste-1-recebe-inscricoes-para-o-programa-bombeiro-mirim-em-anapolis/",
+   "nota": 0.482,
    "incerteza": 0.965
   },
   {
-   "titulo": "Perguntas Frequentes | Edital UNAIDS/DATHI",
-   "url": "https://unaids.org.br/faq-edital-unaids-dathi",
-   "nota": 0.518,
-   "incerteza": 0.964
+   "titulo": "Itumbiara — INSCRIÇÕES ABERTAS PARA EDITAIS DE PREMIAÇÃO E FOMENTO DE PROJETOS CULTURAIS",
+   "url": "https://itumbiara.go.gov.br/inscricoes-abertas-para-editais-de-premiacao-e-fomento-de-projetos-culturais/",
+   "nota": 0.519,
+   "incerteza": 0.963
   },
   {
    "titulo": "Mapa de donantes y convocatorias para organizaciones | Terraetica",
@@ -323,6 +323,12 @@
    "url": "https://data.queridodiario.ok.org.br/2900801/2026-09-22/5c3a4963405fbd659368b0af3dc946eb43703a04.pdf",
    "nota": 0.519,
    "incerteza": 0.963
+  },
+  {
+   "titulo": "Chamada Pública CNPq/CAPES Nº 30/2026 – Programa de Mestrado e Doutorado Acadêmico para Inovação – MAI/DAI",
+   "url": "https://www.gov.br/cnpq/pt-br/chamadas/todas-as-chamadas/chamadas-2026/chamada-no-30-2026/chamada-publica-cnpq-N-30-2026",
+   "nota": 0.519,
+   "incerteza": 0.962
   },
   {
    "titulo": "Edital de Chamamento Público Nº 6/2026",
@@ -349,6 +355,12 @@
    "incerteza": 0.96
   },
   {
+   "titulo": "Processo de Seleção de Gestor Escolar",
+   "url": "https://goias.gov.br/educacao?page_id=27121",
+   "nota": 0.521,
+   "incerteza": 0.959
+  },
+  {
    "titulo": "Prorrogadas as inscrições de trabalhos técnicos para o IX CBUC",
    "url": "https://fundacaogrupoboticario.org.br/prorrogadas-as-inscricoes-de-trabalhos-tecnicos-para-o-ix-cbuc",
    "nota": 0.479,
@@ -359,19 +371,7 @@
    "url": "https://www.fapespa.pa.gov.br/2026/03",
    "nota": 0.521,
    "incerteza": 0.957
-  },
-  {
-   "titulo": "Convocatoria UE Ecuador 2026 para sociedad civil y derechos humanos",
-   "url": "https://re-cid.org/convocatoria-union-europea-ecuador-sociedad-civil-derechos-humanos-2026/",
-   "nota": 0.479,
-   "incerteza": 0.957
-  },
-  {
-   "titulo": "Edital Nº 03/2026 - Chamamento Público - Programa Coleta Seletiva ...",
-   "url": "https://www.gravatai.ifsul.edu.br/editais-e-projetos/item/305-edital-n-03-2026-chamamento-publico-programa-coleta-seletiva-cidada-selecao-de-associacoes-e-cooperativas-de-catadores-de-materiais-reciclaveis-e-reutilizaveis",
-   "nota": 0.478,
-   "incerteza": 0.957
   }
  ],
- "pendentes_provaveis_reais": 333
+ "pendentes_provaveis_reais": 347
 }
