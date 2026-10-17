@@ -84,8 +84,8 @@ def guardar_nos_livros() -> dict:
     esp = [dict(it, prazo=it.get("prazo")) for dia in (H.get("espiao") or {}).values() for it in dia if it.get("url")]
     r_esp = registrar_achados_do_espiao(esp)
     C = _j(CAT, {}); por_id = {x.get("id"): x for x in (C.get("motores") or [])}; n = 0
-    for f in map(str, __import__("src.livro_arquivo", fromlist=["x"]).arquivos(ROOT / "dados/editais/extraidos", "op-*.json")):   # 16/10: disco + livros
-        e = __import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(f, {}) or {}; I = e.get("investigacao_ia") or {}
+    for f, e in ((str(k), v) for k, v in __import__("src.livro_arquivo", fromlist=["x"]).ler_pasta(ROOT / "dados/editais/extraidos", "op-*.json").items()):   # 16/10: em bloco
+        e = e or {}; I = e.get("investigacao_ia") or {}
         lid = Path(f).stem[3:]
         if lid in por_id and I.get("campos"):
             ck = {k: (v.get("valor") or v.get("trecho")) for k, v in I["campos"].items() if isinstance(v, dict) and v.get("comprovado")}

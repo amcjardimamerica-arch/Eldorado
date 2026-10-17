@@ -202,8 +202,8 @@ def consolidar() -> list[dict]:
                        "orgao": ag.get("financiador"), "motor_indexador": ag.get("motor"),
                        "pagina_agregador": ag.get("pagina_agregador"),
                        "areas_fonte": ag.get("areas") or (["cultura"] if ag.get("fonte") == "farolcultural" else [])}))
-    for arq in __import__("src.livro_arquivo", fromlist=["x"]).arquivos(EXT):                  # 16/10: disco + livros
-        e = __import__("src.livro_arquivo", fromlist=["x"]).ler_arquivo(arq, {}) or {}
+    for arq, e in __import__("src.livro_arquivo", fromlist=["x"]).ler_pasta(EXT).items():   # 16/10: em bloco (cada livro 1 vez)
+        e = e or {}
         if e.get("investigacao_ia") and arq.stem.startswith(("cat-", "op-")):
             # 16/10 (titular): o Interceptador passa pelo PORTÃO e pelo LIVRO, como qualquer motor
             _it = {"id": arq.stem, "titulo": e.get("titulo"), "url": e.get("url"), "orgao": e.get("orgao"), "uf": e.get("uf"),
