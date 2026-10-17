@@ -53,6 +53,7 @@ jobs:
             # -A sobre as pastas: grava o arquivo novo, o alterado e o APAGADO (pausa dos Pilotos) sem falhar por caminho inexistente
             git add -A config/motores_manuais.json docs/dados/motores_manuais.json estado/
             git diff --cached --quiet && { echo "nada mudou"; break; }
+            python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
             git commit -q -m "fogo: $MOTOR $ESTADO pelo titular" && git push -q origin HEAD:main && { echo "gravado ($i)"; break; }
             sleep 7
           done

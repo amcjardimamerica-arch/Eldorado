@@ -29,6 +29,7 @@ jobs:
             python -m src.motores >/dev/null || true                                          # 4. painel dos motores
             python -m src.status_motores >/dev/null || true                                   # 5. status
             git add -A biblioteca_alexandria docs/dados estado dados/coleta_3_anos
+            python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
             git commit -q -m "Biblioteca atualizada por completo $(date -u +%F\ %H:%M)" || break
             git push -q origin main && break; sleep 10
           done

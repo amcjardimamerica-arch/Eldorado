@@ -102,7 +102,14 @@ def aplicar(msg: str, tentativas: int = 6) -> bool:
                 continue                                       # 17/10: um fluxo nunca apaga o índice compartilhado
             if (ROOT / c).exists():
                 _git("rm", "-q", "--", c, ok=True)
-        _git("add", "--", *[c for c in m["alterados"] if (ROOT / c).exists()], ok=True)
+        # 17/10/2026 (titular): TRAVA DOS LIVROS — as mudanças desta passagem já estão sobre o main mais recente (HEAD):
+        # nenhum livro apagado nem sobrescrito; só informação nova (o que outra gravação fez no main é preservado)
+        subprocess.run([sys.executable, "-m", "src.trava_livros"], cwd=ROOT, capture_output=True)
+        _cat = "biblioteca_alexandria/fontes/motores.json"
+        _extra = [_cat] if _git("diff", "--name-only", "--", _cat).strip() else []
+        _extra += [l[3:] for l in _git("status", "--porcelain", "--", "biblioteca_alexandria/livros").splitlines()
+                   if l.strip() and l[3:] not in m["alterados"]]
+        _git("add", "--", *[c for c in m["alterados"] + _extra if (ROOT / c).exists()], ok=True)
         if not _git("diff", "--cached", "--name-only"):
             print("nada mudou em relação ao main"); return True
         _git("commit", "-q", "-m", msg)

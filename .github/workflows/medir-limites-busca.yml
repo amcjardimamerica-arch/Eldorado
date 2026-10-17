@@ -17,4 +17,5 @@ jobs:
           git config user.name "eldorado-bot" && git config user.email "bot@eldorado"
           cp biblioteca_alexandria/livros/_acervo/base/limites_busca_2026-10-01.json /tmp/l.json
           for i in 1 2 3 4; do git fetch -q origin main && git reset -q --hard origin/main; cp /tmp/l.json biblioteca_alexandria/livros/_acervo/base/limites_busca_2026-10-01.json
+            python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
             git add biblioteca_alexandria/livros/_acervo/base/limites_busca_2026-10-01.json; git commit -q -m "medicao dos limites de busca" || break; git push -q origin main && break; sleep 5; done

@@ -92,6 +92,7 @@ jobs:
           done < /tmp/urls.tsv
           git config user.name "piloto" && git config user.email "piloto@eldorado"
           git add biblioteca_alexandria/livros/especiais/espiao/sondagem_gguf.tsv
+          python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
           git commit -q -m "sondagem dos enderecos GGUF $(date -u +%H:%M)" || true
           git pull --rebase -q origin main || true
           git push -q origin main || true
@@ -162,6 +163,7 @@ jobs:
           print(json.dumps(d, ensure_ascii=False, indent=1))
           PY
           git config user.name "piloto" && git config user.email "piloto@eldorado"
+          python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
           git add biblioteca_alexandria/livros/especiais/espiao/diagnostico_busca.json && git commit -q -m "piloto: diagnóstico dos buscadores" && git push -q origin main || true
       - name: BATIMENTO — avisar que o voo COMEÇOU, antes de decolar
         run: |
@@ -182,6 +184,7 @@ jobs:
           PY
           git config user.name "piloto" && git config user.email "piloto@eldorado"
           git add docs/dados/piloto_ao_vivo.json
+          python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
           git commit -q -m "piloto: decolou $(date -u +%H:%M)" && git push -q origin main || true
       - name: Ciclo do piloto (entender → curar → afiar → minerar → anunciar)
         env:
@@ -341,11 +344,13 @@ jobs:
           PILOTO_PATHS="config/parametros_pilotos_fixos.json estado/pilotos docs/dados/achados_pilotos.json config/parametros_pilotos.json estado/aprendizado biblioteca_alexandria/livros/especiais/espiao docs/dados/piloto.json estado/rotas_sugeridas_ia.json config/lexico_aprendido.json dados/editais/extraidos docs/dashboard-dados.js docs/dados biblioteca_alexandria/livros/especiais/empresas/dados/go/espiao_empresas.json"
           for P in $PILOTO_PATHS; do [ -e "$P" ] && git add -A -- "$P"; done
           git status --short | head -20
+          python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
           git commit -q -m "piloto: $(date -u +%F) ${MODO:-ciclo}" || echo "nada a commitar"
           # envio recusado (outro processo gravou antes): recompõe sobre a main NOVA, com --hard — o --soft mantinha os
           # arquivos velhos na pasta e o "git add -A" os gravava por cima (assim a correção das 16h36 de 28/09 foi desfeita)
           for i in 1 2 3; do git push -q origin main && break; echo "push $i falhou; recompondo sobre a main nova…"
             git fetch -q origin main; git reset -q --hard origin/main; cp -r /tmp/sind/. .; git checkout origin/main -- docs/dashboard.html 2>/dev/null || true
             for P in $PILOTO_PATHS; do [ -e "$P" ] && git add -A -- "$P"; done
+            python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
             git commit -q -m "piloto: $(date -u +%F) ${MODO:-ciclo}" || true; sleep 10; done
           git log --oneline -1

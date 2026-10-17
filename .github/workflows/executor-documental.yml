@@ -32,6 +32,7 @@ jobs:
             cp /tmp/x/* entrada_manual/skills_documentais/
             python3 scripts/importar_verificacao_livros.py entrada_manual/skills_documentais/resultados_robo_*.jsonl || true
             git add entrada_manual/skills_documentais biblioteca_alexandria/livros/anexos/esteira/resultados_local.jsonl dados/oportunidades/pareceres_livros
+            python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
             git commit -q -m "executor documental: $(date -u +%F\ %H:%M)" || break
             git push -q origin main && break; sleep 7
           done

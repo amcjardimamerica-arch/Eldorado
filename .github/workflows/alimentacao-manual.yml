@@ -35,6 +35,7 @@ jobs:
           git config user.name "eldorado-bot"
           git config user.email "eldorado-bot@users.noreply.github.com"
           git add biblioteca_alexandria estado docs config
+          python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
           git diff --cached --quiet && echo "sem alteracoes" || git commit -m "alimentacao manual: $(date -u +%F)"
           git pull --rebase origin main || true
           git push

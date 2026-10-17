@@ -64,6 +64,7 @@ jobs:
             for f in $ARQS; do [ -f "/tmp/leitura/$f" ] && cp "/tmp/leitura/$f" "$f"; done
             git add $ARQS 2>/dev/null || true
             git diff --cached --quiet && { echo "nada mudou"; exit 0; }
+            python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
             git commit -q -m "sala de controle: leitura em tempo real $(date -u +%H:%M)" && git push -q && { echo "gravado ($i)"; exit 0; }
             sleep 5
           done

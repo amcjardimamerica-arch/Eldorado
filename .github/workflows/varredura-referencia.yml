@@ -52,6 +52,7 @@ jobs:
             mkdir -p estado && cp -r /tmp/v/varredura_referencia estado/
             git add estado/varredura_referencia
             git diff --cached --quiet && { echo "nada mudou"; exit 0; }
+            python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
             git commit -q -m "varredura de referência dos motores $(date -u +%F)" && git push -q && { echo "gravado ($i)"; exit 0; }
             sleep 5
           done

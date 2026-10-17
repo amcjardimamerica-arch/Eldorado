@@ -34,6 +34,7 @@ jobs:
             git fetch -q origin main && git reset -q --hard origin/main
             mkdir -p biblioteca_alexandria/livros/_acervo/base/ministerios_publicos && cp -r /tmp/s/. biblioteca_alexandria/livros/_acervo/base/ministerios_publicos/
             git add biblioteca_alexandria/livros/_acervo/base/ministerios_publicos
+            python3 -m src.trava_livros > /dev/null 2>&1 || true   # 17/10: trava dos livros (nada apagado nem sobrescrito)
             git commit -q -m "sondagem: Ministérios Públicos (motor 12) $(date -u +%F\ %H:%M)" || break
             git push -q origin main && break; sleep 5
           done
