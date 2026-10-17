@@ -67,7 +67,7 @@ def montar() -> dict:
           "", "## Etapa 5 — fechar o ciclo", "",
           "```", "python -m src.enquadramento ingerir_navegador", "python -m src.enquadramento", "python -m src.enquadramento fila",
           "python -m src.alerta_motores", "python -m src.auditoria_motores", "python -m src.dashboard_dados",
-          "python -m unittest tests.test_system  # só siga com tudo verde",
+          "python scripts/testar.py -- tests/test_system.py  # só siga com tudo verde",
           "python scripts/verificar_privacidade.py", "git add -A && git commit -m \"desktop: complementacao <data>\" && git pull --rebase origin main && git push", "```", "",
           "## Resumo final que você deve me dar", "",
           "Quantos motores voltaram a ler, quantas oportunidades foram completadas, quantas não eram editais, quais sites não abriram — e o que ficou para o titular decidir."]

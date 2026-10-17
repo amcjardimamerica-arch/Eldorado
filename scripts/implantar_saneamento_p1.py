@@ -32,7 +32,7 @@ def main(argv: list[str]) -> int:
     rel = importar(ROOT / "biblioteca_alexandria/livros/_acervo/revisoes/abertas_p1_go_2026_10_10", "P1-GO-2026-10-10", gravar=not verificar)
     print("1) revisão importada:" if not verificar else "1) revisão conferida (nada gravado):",
           json.dumps({k: rel[k] for k in ("lidos", "vereditos", "certidoes", "derivadas", "selos_das_certidoes")}, ensure_ascii=False))
-    t = subprocess.run([sys.executable, "-m", "unittest", "tests.test_saneamento_motores"], cwd=ROOT, capture_output=True, text=True)
+    t = subprocess.run([sys.executable, "scripts/testar.py", "--comando", f"{sys.executable} -m unittest tests.test_saneamento_motores"], cwd=ROOT, capture_output=True, text=True)
     print("2) testes do saneamento:", "OK" if t.returncode == 0 else "FALHOU\n" + t.stderr[-2000:])
     if t.returncode:
         return 1

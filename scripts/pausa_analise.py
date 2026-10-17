@@ -108,7 +108,9 @@ def aguardar(minutos: int = 45) -> dict:
 
 
 def testes() -> dict:
-    r = subprocess.run([sys.executable, "-m", "unittest", "-v", *TESTES_DA_ANALISE], cwd=ROOT, capture_output=True, text=True, timeout=600)
+    # 17/10: os testes rodam numa cópia isolada (scripts/testar.py); a saída do unittest segue no stderr, como antes
+    cmd = f"{sys.executable} -m unittest -v " + " ".join(TESTES_DA_ANALISE)
+    r = subprocess.run([sys.executable, "scripts/testar.py", "--comando", cmd], cwd=ROOT, capture_output=True, text=True, timeout=600)
     linhas = [l for l in r.stderr.splitlines() if " ... " in l]
     res = {"em": _agora(), "modulos": TESTES_DA_ANALISE, "ok": r.returncode == 0,
            "testes": [{"teste": l.split(" ... ")[0].strip(), "resultado": l.split(" ... ")[-1].strip()} for l in linhas],
