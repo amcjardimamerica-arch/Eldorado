@@ -173,7 +173,7 @@ class Etapa3Leitores(unittest.TestCase):
         rep = r / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json"
         with mock.patch.object(B, "ROOT", r), mock.patch.object(B, "CAT", cat), mock.patch.object(B, "INDICE", r / "i.json"):
             B.registrar_achados([{"id": "a", "titulo": "Chamamento OSC", "url": "https://x.go.gov.br/a", "sensor": "m1"},
-                                 {"id": "z", "titulo": "Ruído", "url": "https://y.com/z", "sensor": "m1"}])
+                                 {"id": "z", "titulo": "Edital de apoio a projetos sociais", "url": "https://y.com/z", "sensor": "m1"}])
             B.registrar_achados([{"id": "a", "titulo": "Chamamento OSC (relido)", "url": "https://x.go.gov.br/a", "sensor": "m2"}])
             self.assertEqual([x["id"] for x in B.achados()], ["a", "z"])
             self.assertEqual(B.achados()[0]["titulo"], "Chamamento OSC")                    # o primeiro fica
@@ -213,7 +213,7 @@ class LeituraUnicaNucleo(unittest.TestCase):
                                  {"id": "b", "titulo": "Fomento cultural", "url": "https://y.go.gov.br/b"}])
             regs = N.carregar_oportunidades()
             self.assertEqual(sorted(regs), ["a", "b"])                                         # depois: os livros
-            regs["a"]["status"] = "verificada"; del regs["b"]; regs["c"] = {"id": "c", "titulo": "Novo", "url": "https://z.go.gov.br/c"}
+            regs["a"]["status"] = "verificada"; del regs["b"]; regs["c"] = {"id": "c", "titulo": "Chamamento público de fomento a projetos", "url": "https://z.go.gov.br/c"}
             N.gravar_oportunidades(regs)
             depois = N.carregar_oportunidades()
             self.assertEqual(sorted(depois), ["a", "c"]); self.assertEqual(depois["a"]["status"], "verificada")

@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -341,13 +342,24 @@ def registrar_achados(achados: list[dict], motor: str | None = None, gravar: boo
                     idx.setdefault(chave(b), lv.get("id"))
     criados = vinculados = pelo_indice = 0
     _ind = None
+    import collections as _col
+    barrados = _col.Counter(); barrados_por_motor = _col.Counter()
     seq = int(cat_doc.get("seq_achados") or 0)
     for a in achados:
         if a.get("id") is None:
             continue
         seq += 1
         a = {**a, "_seq": a.get("_seq") or seq}           # ordem de chegada (o fluxo e o painel dependem dela)
+        # 17/10/2026 (titular): TRIAGEM NA ENTRADA — o portão e o prazo são conferidos AQUI, onde todo motor entra.
+        # Ruído não entra. Encerrado entra só como edição do histórico de um livro que já existe; nunca cria livro novo.
+        _m = _triagem(a)
+        if _m == "ruido":
+            barrados["ruido"] += 1; barrados_por_motor[str(motor or a.get("sensor") or "?")] += 1
+            continue
         k = chave(a); lid = idx.get(k)
+        if _m == "encerrada" and lid not in por_id:
+            barrados["encerrada_sem_livro"] += 1; barrados_por_motor[str(motor or a.get("sensor") or "?")] += 1
+            continue
         if lid not in por_id:                             # 17/10 (titular): o MOTOR consulta o índice antes de criar livro
             if _ind is None:
                 from .indice_livros import Indice, entrada
@@ -372,7 +384,10 @@ def registrar_achados(achados: list[dict], motor: str | None = None, gravar: boo
     if gravar:
         cat_doc["total"] = len(L); cat_doc["gerado_em"] = _agora()
         CAT.write_text(json.dumps(cat_doc, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    return {"achados": len(achados), "livros_criados": criados, "vinculados": vinculados, "ligados_pelo_indice": pelo_indice}
+    if barrados and gravar:
+        _registrar_triagem(barrados, barrados_por_motor)
+    return {"achados": len(achados), "livros_criados": criados, "vinculados": vinculados, "ligados_pelo_indice": pelo_indice,
+            "barrados_na_entrada": dict(barrados)}
 
 
 def achados() -> list[dict]:
@@ -737,3 +752,37 @@ def historico_e_epoca(gravar: bool = True) -> dict:
 
 if __name__ == "__main__":
     print(json.dumps(consolidar(), ensure_ascii=False))
+
+
+
+def _triagem(a: dict) -> str | None:
+    """'ruido' (o portão barra), 'encerrada' (prazo de inscrição já passou) ou None (entra)."""
+    try:
+        from .porta_oportunidade import motivo_para_nao_guardar
+        _mot = motivo_para_nao_guardar({k: v for k, v in a.items() if v})
+        if _mot is not None:
+            # prazo vencido / edital de ano anterior = ENCERRADA (vira edição do histórico de um livro existente)
+            return "encerrada" if re.search(r"(?i)prazo encerrado|ano anterior|encerrad|vencid", str(_mot)) else "ruido"
+    except Exception:  # noqa: BLE001
+        pass
+    from datetime import date as _d
+    fim = str(a.get("fim") or a.get("prazo_fim") or (a.get("prazo") or {}).get("fim") if isinstance(a.get("prazo"), dict) else a.get("fim") or "")[:10]
+    if len(fim) == 10 and fim[4] == "-" and fim < _d.today().isoformat():
+        return "encerrada"
+    return None
+
+
+def _registrar_triagem(barrados, por_motor) -> None:
+    """Acumula, por dia e por motor, o que a triagem barrou (controle; alimenta o placar de qualidade dos motores)."""
+    from datetime import date as _d
+    p = ROOT / "estado/triagem_entrada.json"
+    d = (_j(p, {}) or {})
+    dia = d.setdefault("por_dia", {}).setdefault(_d.today().isoformat(), {})
+    for k, v in barrados.items():
+        dia[k] = dia.get(k, 0) + v
+    pm = d.setdefault("por_motor", {})
+    for k, v in por_motor.items():
+        pm[k] = pm.get(k, 0) + v
+    d["por_dia"] = dict(sorted(d["por_dia"].items())[-30:])
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")

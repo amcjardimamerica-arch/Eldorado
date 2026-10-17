@@ -78,6 +78,25 @@ def _dom(u) -> str:
     m = re.match(r"https?://([^/]+)", str(u or "")); return (m.group(1).lower().removeprefix("www.") if m else "")
 
 
+_MOTOR: dict = {}
+
+
+def _motor_de(rid: str) -> str | None:
+    """O motor de origem da oportunidade (repositório: origem e ids de origem)."""
+    if not _MOTOR:
+        try:
+            regs = json.loads((ROOT / "biblioteca_alexandria/livros/_vistas/repositorio_unico.json").read_text(encoding="utf-8")).get("registros") or []
+        except Exception:  # noqa: BLE001
+            regs = []
+        for r in regs:
+            m = re.sub(r"^motor\s+", "", str(r.get("origem") or "")).strip() or None
+            for i in [r.get("id"), *(r.get("ids_origem") or [])]:
+                if i:
+                    _MOTOR[str(i)] = m
+        _MOTOR.setdefault("__carregado__", "1")
+    return _MOTOR.get(str(rid))
+
+
 def documento_oficial(doc, link_oficial=None) -> bool:
     if not str(doc or "").startswith("http") or PUBLICACAO.search(str(doc)):
         return False
@@ -174,7 +193,8 @@ def importar(pasta: Path, origem: str, gravar: bool = True, externa: bool = Fals
         ver["vereditos"][rid] = {"veredito": v, "duplicata_de": x.get("duplicata_de") or None,
                                  "reclassificar": {k: y for k, y in (x.get("reclassificar") or {}).items() if y},
                                  "fim": (x.get("prazo") or {}).get("fim"), "veredito_edicao": x.get("veredito_edicao") or None,
-                                 "motivo": str(x.get("parecer") or "")[:300], "origem": origem, "em": _agora()}
+                                 "motivo": str(x.get("parecer") or "")[:300], "origem": origem, "em": _agora(),
+                                 "motor": _motor_de(rid)}   # 17/10: RASTRO — o motor que trouxe a oportunidade
         n_ver += 1
         if v in VIGENTES:
             cert, av = certidao_de(x, origem)
