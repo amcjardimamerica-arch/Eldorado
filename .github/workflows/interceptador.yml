@@ -80,7 +80,24 @@ jobs:
           from src.interceptador import voo
           CFG["limites"]["tokens_resposta"] = 1400
           CFG["limites"]["tempo_maximo_s"] = 1500
-          r = voo(IALocal(porta=8082, timeout=1500))
+          # 17/10/2026: a falha intermitente (código 1, depois de 7 a 8 minutos de voo) não deixava rastro — o registro do
+          # voo só era gravado no sucesso. Agora a exceção vai, completa, para docs/dados/interceptador.json (ultimo_erro),
+          # que o passo de publicação envia mesmo na falha; o passo continua falhando (vermelho), mas diagnosticável.
+          import traceback, datetime, pathlib as _pl
+          try:
+              r = voo(IALocal(porta=8082, timeout=1500))
+          except Exception as _e:
+              _tb = traceback.format_exc()
+              print(_tb)
+              _p = _pl.Path("docs/dados/interceptador.json")
+              try:
+                  _d = json.loads(_p.read_text(encoding="utf-8"))
+              except Exception:
+                  _d = {}
+              _d["ultimo_erro"] = {"em": datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat(),
+                                   "erro": f"{type(_e).__name__}: {str(_e)[:300]}", "rastro": _tb[-4000:]}
+              _p.write_text(json.dumps(_d, ensure_ascii=False, indent=1), encoding="utf-8")
+              raise SystemExit(1)
           print(json.dumps({k: v for k, v in r.items() if k not in ("passos", "itens")}, ensure_ascii=False)[:1500])
           import os, pathlib
           ag = pathlib.Path("estado/interceptador/aguardando.json")
