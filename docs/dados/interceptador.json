@@ -1,9 +1,9 @@
 {
-  "em": "2026-10-17T09:34:44+00:00",
+  "em": "2026-10-17T10:44:40+00:00",
   "papel": "Piloto - Interceptador",
   "modelo": "qwen3-8b",
   "estado": "em atividade",
-  "ultimo_voo": "2026-10-17T09:32:27+00:00",
+  "ultimo_voo": "2026-10-17T10:33:57+00:00",
   "parametros": {
     "regra": "um alvo por voo, a cada 3 segundos; nada entra sem trecho literal na fonte; dispensa só se o edital a disser; estuda o que os motores de busca e o Espião trouxerem — informação nova a partir de 2026-09-26 — e nunca refaz o que já fez",
     "finalidade": "levantar os dados mínimos de cada possibilidade (link original, fonte oficial, condições comprovadas, parecer 'como serve como fonte') para a decisão externa do Claude, que analisa, valida ou descarta a cada 3 dias",
@@ -39,51 +39,100 @@
   "acumulado": {
     "missoes": 308,
     "validadas": 9,
-    "parciais": 64,
-    "insuficientes": 230,
+    "parciais": 65,
+    "insuficientes": 229,
     "fontes_confirmadas": 0,
     "fontes_possiveis": 0,
     "serve_como_fonte": {
-      "sim": 232,
+      "sim": 233,
       "nao": 34
     },
     "estrelas_de_ouro": 14,
-    "fontes_novas_para_os_motores": 29,
+    "fontes_novas_para_os_motores": 30,
     "tempo_medio_min": 13.0
   },
   "missoes": [
     {
-      "em": "2026-10-17T09:32:27+00:00",
+      "em": "2026-10-17T10:33:57+00:00",
       "modo": "validar",
       "tipo": "edital",
-      "de": "0 · PNCP · faltam Resultado, Prazo de recurso, Requisitos, Modalidade, Área de atuação",
-      "alvo": "FUNDACAO JOAQUIM NABUCO FUNDAJ — Realização de concurso de premiação destinado à seleção de Práticas Pedagógic… — Brasil",
-      "qualidade": "insuficiente",
-      "comprovados": 0,
-      "dispensados": null,
+      "de": "repositório único: Interceptador: achar o site oficial (o Cartório não achou em 2 abordagens; busca",
+      "alvo": "Instituto porto abre edital para apoiar projetos educacionais na grande sao paulo",
+      "qualidade": "parcial",
+      "comprovados": 7,
+      "dispensados": 0,
       "total": 12,
-      "nao_resolvidos": null,
-      "pagina_oficial": null,
-      "parecer_fonte": {},
-      "erro": "nenhuma fonte legível",
-      "segundos": 121,
+      "nao_resolvidos": [
+        "Resultado",
+        "Prazo de recurso",
+        "Requisitos",
+        "Anexos"
+      ],
+      "pagina_oficial": "https://alteditais.com.br/oportunidades/regulamento-do-edital-social-instituto-porto-2026--f2f1ec1a-989a-446e-a6fd-9d06cec0ee8d",
+      "parecer_fonte": {
+        "serve_como_fonte": "sim",
+        "por_que": "O edital foi comprovado com informações sobre objeto, prazo de inscrição, valor e financiador.",
+        "para_a_amc": "A associação comunitária de Goiânia precisaria se inscrever no edital do Instituto Porto, apresentando um projeto educacional que atenda ao objeto do edital, mesmo que o território do edital seja SP.",
+        "proximo_passo": "Verificar se a associação comunitária de Goiânia pode se inscrever no edital, mesmo que o território do edital seja SP, e preparar o projeto educacional necessário.",
+        "risco": "O território do edital é SP, o que pode impedir a associação comunitária de Goiânia de acessar o edital, a menos que haja uma ampliação da área de atuação."
+      },
+      "erro": null,
+      "segundos": 624,
       "site_oficial": null,
       "resultado": null,
-      "fonte_nova_para_os_motores": false,
-      "fontes_oficiais": 0,
-      "justificativa": "sem página oficial mapeada ou menos de 6 condições comprovadas",
-      "avaliacao": "falhou: nenhuma fonte legível",
-      "id": "op-op-c29ea5dde3a2",
-      "encontrou": {},
-      "financiador": "FUNDACAO JOAQUIM NABUCO FUNDAJ",
-      "indicios": [],
+      "fonte_nova_para_os_motores": true,
+      "fontes_oficiais": 6,
+      "justificativa": "página oficial mapeada e 6 ou mais condições; falta o que está em 'faltou'",
+      "avaliacao": "aproveitável: falta Resultado, Prazo de recurso, Requisitos, Anexos",
+      "id": "cat-5aaf22c5429f",
+      "encontrou": {
+        "Objeto": {
+          "valor": "apoiar projetos educacionais na Grande São Paulo",
+          "trecho": "Instituto Porto abre edital para apoiar projetos educacionais na Grande São Paulo",
+          "oficial": false,
+          "dispensado": false
+        },
+        "Prazo de inscrição": {
+          "valor": "2026-04-14 a 2026-05-22",
+          "trecho": "Abertura14/04/2026 PrazoEncerrado em 22/05/2026",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Valor": {
+          "valor": "Até R$ 100.000,00",
+          "trecho": "ValorAté R$ 100.000,00",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Órgão / financiador": {
+          "valor": "Instituto Porto",
+          "trecho": "FinanciadorInstituto Porto",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Território": {
+          "valor": "SP",
+          "trecho": "Território elegívelSudeste, SP",
+          "oficial": true,
+          "dispensado": false
+        },
+        "Área de atuação": {
+          "valor": "educacao",
+          "trecho": "ÁreasEducação, Assistência Social, Ciência e Tecnologia",
+          "oficial": true,
+          "dispensado": false
+        }
+      },
+      "financiador": "Instituto Porto",
+      "indicios": [
+        {
+          "url": "https://captadores.org.br/editais/instituto-porto-abre-edital-para-apoiar-projetos-educacionais-na-grande-sao-paulo/",
+          "tipo": "noticia"
+        }
+      ],
       "rotas": [
-        "financiador_programa_edital",
-        "financiador_regulamento",
-        "financiador_pdf",
-        "financiador_ano",
-        "governo",
-        "programa_puro"
+        "site_do_financiador",
+        "site_do_financiador_edital"
       ]
     },
     {
