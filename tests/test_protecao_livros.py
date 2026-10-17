@@ -28,3 +28,22 @@ class Protecao(unittest.TestCase):
             r = C._proteger_livros("livros", ["python"], antes)
         self.assertNotIn("livros_devolvidos", r)
         self.assertEqual(len(json.loads(cat.read_text())["motores"]), 1933)
+
+
+class ProtecaoDoIndice(unittest.TestCase):
+    def test_indice_que_desaba_volta(self):
+        d = Path(tempfile.mkdtemp()); ind = d / "_origens.json"
+        antes = json.dumps({f"estado/x{i}.json": {"inteiro": ["lv", "k"]} for i in range(8412)}).encode()
+        ind.write_text(json.dumps({"estado/novo.json": {"inteiro": ["lv2", "k"]}}))          # 09:11: sobrou 1
+        with mock.patch.object(C, "_INDICE_LIVROS", ind), mock.patch.object(C, "PROTECAO", d / "p.json"):
+            r = C._proteger_indice("catalogar", ["python"], antes)
+        D = json.loads(ind.read_text())
+        self.assertEqual(r["indice_entradas_devolvidas"], 8412); self.assertEqual(len(D), 8413)
+        self.assertIn("estado/novo.json", D, "a entrada nova fica")
+
+    def test_indice_ilegivel_volta_inteiro(self):
+        d = Path(tempfile.mkdtemp()); ind = d / "_origens.json"
+        antes = json.dumps({"a": 1, "b": 2}).encode(); ind.write_text('{"a": 1, "b"')   # cortado no meio
+        with mock.patch.object(C, "_INDICE_LIVROS", ind), mock.patch.object(C, "PROTECAO", d / "p.json"):
+            C._proteger_indice("x", ["python"], antes)
+        self.assertEqual(json.loads(ind.read_text()), {"a": 1, "b": 2})
