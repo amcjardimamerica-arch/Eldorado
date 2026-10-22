@@ -216,14 +216,20 @@ def auditar(con: sqlite3.Connection, hoje: date, somente: set[str] | None = None
         motivos: list[str] = []
         contestadas: list[str] = []
         validas: dict[str, dict] = {}
+        validadas = {c["item"]: c for c in todas.get(lv["id"], []) if c.get("fase") in I.FASES_VALIDADAS}
+        boas = []
         for c in todas.get(lv["id"], []):
             if c["situacao"] == "comprovado":
                 m = conferir_certidao(c["item"], c["valor"])
+                v = validadas.get(c["item"])
+                if not m and v is not None and c.get("fase") not in I.FASES_VALIDADAS and _norm(str(v.get("valor"))) != _norm(str(c.get("valor"))):
+                    m = "conflita com a certidão validada"                 # a automática nunca supera a validada
                 if m:
                     contestadas.append(f"{c['item']}: {m} ({(c['valor'] or '')[:50]})")
                     c["_contestar"] = m
                     continue
-            validas[c["item"]] = c                                  # a mais recente válida de cada item
+            boas.append(c)
+        validas = I.melhor(boas)
         abr, municipio = territorio(lv, validas)
         motivo_portao = portao.motivo({"titulo": lv["titulo"], "orgao": lv["orgao"], "uf": lv["uf"], "url": lv["link_oficial"]}, hoje.isoformat())
         sem_titulo = not lv["titulo"] or lv["titulo"] == lv["id"]

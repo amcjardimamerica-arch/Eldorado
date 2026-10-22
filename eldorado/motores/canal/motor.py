@@ -92,6 +92,20 @@ class CfgLexico(_Base):
     termos_em: Literal["tudo", "titulo"] = "tudo"   # "titulo": em sites de notícias, o título de um edital diz que é edital
 
 
+class CfgNormas(_Base):
+    """Seguir, na página de legislação, os links das normas mais recentes (onde estão de fato os prazos e limites)."""
+    padrao: str = "resolucao|instrucao normativa|portaria|decreto"
+    maximo: int = Field(3, ge=1, le=10)
+
+
+class CfgExtracao(_Base):
+    """A análise própria do motor: para cada item, as expressões que reconhecem o valor no SEU tipo de texto (o primeiro
+    grupo é o valor; sem grupo, o trecho todo). nao_certificar: os itens que a extração genérica não deve tentar nesse
+    tipo de fonte (no texto de uma lei, a "data do resultado" seria a data da própria lei)."""
+    itens: dict[str, list[str]] = Field(default_factory=dict)
+    nao_certificar: list[str] = Field(default_factory=list)
+
+
 class CfgPrograma(_Base):
     """A oportunidade é o próprio programa (incentivo fiscal, fundo, mecanismo permanente): o livro é relido sempre que
     a página oficial (a legislação, a norma vigente) muda, e o Cartório recertifica os itens a partir do texto oficial."""
@@ -101,6 +115,7 @@ class CfgPrograma(_Base):
     link_oficial: str
     documentos: list[str]
     modalidade: str | None = None
+    normas: CfgNormas | None = None
 
 
 class CfgLegislacao(_Base):
@@ -117,6 +132,7 @@ class Configuracao(_Base):
     lexico: CfgLexico = CfgLexico()
     programa: CfgPrograma | None = None
     legislacao: CfgLegislacao = CfgLegislacao()
+    extracao: CfgExtracao = CfgExtracao()
     alvos: dict[str, Any] = Field(default_factory=dict)
     metas: dict[str, Any] = Field(default_factory=dict)
     agenda: dict[str, Any] = Field(default_factory=dict)
@@ -227,13 +243,23 @@ class MotorCanal(Motor):
     def _programa(self) -> Achado | None:
         """O livro do programa: entregue de novo só quando o texto oficial muda (nova norma, novo prazo)."""
         pr, m = self.cfg.programa, self.cfg.motor
-        textos, alertas = [], []
-        for url in pr.documentos:
+        textos, alertas, origens = [], [], []
+        for i, url in enumerate(pr.documentos):
             try:
-                lido = self.leitura.ler(self.escada.buscar(url).conteudo, url)
-                textos.append(lido.texto)
+                bruto = self.escada.buscar(url).conteudo
+                textos.append(self.leitura.ler(bruto, url).texto)
+                origens.append(url)
             except (Bloqueado, Indisponivel, Pendente, leitores.SemLeitor) as e:
                 alertas.append(f"{url}: {str(e)[:150]}")
+                continue
+            if i == 0 and pr.normas:                                   # as normas mais recentes da página de legislação
+                from ..descoberta import fonte_oficial
+                for n in fonte_oficial.normas_recentes(bruto, url, pr.normas.padrao, pr.normas.maximo):
+                    try:
+                        textos.append(self.leitura.ler(self.escada.buscar(n["url"]).conteudo, n["url"]).texto)
+                        origens.append(n["url"])
+                    except (Bloqueado, Indisponivel, Pendente, leitores.SemLeitor) as e:
+                        alertas.append(f"norma {n['texto'][:60]}: {str(e)[:120]}")
         if not textos:
             self.relatorio.append(f"programa: nenhum documento oficial lido ({'; '.join(alertas)})")
             self.estado.leitura("programa", _agora(), erro="; ".join(alertas)[:300])
@@ -250,7 +276,7 @@ class MotorCanal(Motor):
         self.relatorio.append(f"programa: texto oficial novo ou alterado ({len(textos)} documento(s))" + (f"; {len(alertas)} não lido(s)" if alertas else ""))
         return Achado(id=aid, motor=m.id, encontrado_em=_agora()[:10], link_divulgacao=pr.link_divulgacao, link_oficial=pr.link_oficial, titulo=pr.titulo,
                       dados={"uf": m.uf, "orgao": pr.orgao, "modalidade": pr.modalidade, "leis": self.cfg.legislacao.leis, "fonte": "programa",
-                             "origem": "programa (legislação e norma vigente)"},
+                             "origem": "programa (legislação e norma vigente)", "documentos_lidos": origens, **self._extrair(textos)},
                       documento={"url": pr.link_oficial, "sha256": sha, "tipo": "html", "leitor": "programa (páginas oficiais)", "oficial": True,
                                  "paginas": textos, "alertas": alertas})
 
@@ -324,6 +350,21 @@ class MotorCanal(Motor):
                 return True
         return False
 
+    def _extrair(self, paginas: list[str]) -> dict[str, Any]:
+        """A extração própria do motor: o primeiro trecho, na ordem das páginas, que casa com a expressão de cada item."""
+        ex = self.cfg.extracao
+        itens: dict[str, dict] = {}
+        for item, padroes in ex.itens.items():
+            for n, texto in enumerate(paginas, 1):
+                t = re.sub(r"[ \t]+", " ", texto)
+                achou = next((m for rx in padroes if (m := re.search(rx, t, re.I | re.S))), None)
+                if achou:
+                    valor = re.sub(r"\s+", " ", achou.group(1) if achou.lastindex else achou.group(0)).strip(" .;:,–-")
+                    trecho = re.sub(r"\s+", " ", t[max(0, achou.start() - 80):achou.end() + 80]).strip()
+                    itens[item] = {"valor": valor[:300], "trecho": trecho[:500], "pagina": n}
+                    break
+        return {k: v for k, v in (("itens", itens), ("nao_certificar", ex.nao_certificar)) if v}
+
     def _seguir_oficial(self, pista: Pista) -> tuple[str, str, dict] | None:
         """Da página de divulgação ao documento oficial: (oficial, divulgação, documento lido) ou None."""
         from ..descoberta import fonte_oficial
@@ -377,5 +418,6 @@ class MotorCanal(Motor):
         return Achado(id=f"{m.id}-{chave}", motor=m.id, encontrado_em=_agora()[:10], link_divulgacao=divulgacao, link_oficial=oficial,
                       titulo=pista.titulo[:300], publicado_em=(pista.data or None) and str(pista.data)[:10],
                       dados={"uf": m.uf, "orgao": m.orgao, **pista.extra, "fonte": fonte.nome, "origem": pista.origem,
+                             **(self._extrair(documento["paginas"]) if documento and self.cfg.extracao.itens else {}),
                              **({"leis": self.cfg.legislacao.leis} if self.cfg.legislacao.leis else {}),
                              **({"resumo": pista.resumo} if pista.resumo else {})}, documento=documento)

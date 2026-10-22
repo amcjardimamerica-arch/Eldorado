@@ -19,6 +19,10 @@ link_oficial = "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-poli
 documentos = ["https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet/legislacao",
               "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet"]
 
+[programa.normas]
+padrao = "instrucao normativa|portaria|decreto"
+maximo = 2
+
 [legislacao]
 leis = ["lei-8313-1991"]
 notas = "A janela anual de propostas, os limites e as regras vêm da instrução normativa vigente, lida na página oficial."
@@ -40,3 +44,20 @@ max_documentos = 10
 termos = ["re:edital|chamada|chamamento|selecao|instrucao normativa|calendario|prazo|apresentacao de propostas"]
 vetos = ["re:resultado|homologa|aprovad|contemplad"]
 termos_em = "titulo"
+
+[extracao]
+# A análise própria do motor de incentivo, para o texto das NORMAS (resoluções, instruções normativas, portarias).
+nao_certificar = ["Resultado", "Prazo de recurso", "Anexos", "Esfera", "Modalidade", "Órgão / financiador", "Território", "Área de atuação"]
+
+[extracao.itens]
+"Prazo de inscrição" = [
+  '(?:apresenta[çc][ãa]o de (?:propostas|projetos)|inscri[çc][ãa]o de (?:propostas|projetos)|(?:propostas|projetos) (?:culturais )?(?:poder[ãa]o ser|ser[ãa]o) (?:apresentad|inscrit)[oa]s)[^.;]{0,200}?((?:de|entre|no per[íi]odo de)\s+\d{1,2}[ºo°]?(?:\s*de\s+[a-zç]+|/\d{1,2})(?:\s*de\s+\d{4}|/\d{2,4})?\s+(?:a|e|at[ée])\s+\d{1,2}[ºo°]?(?:\s*de\s+[a-zç]+|/\d{1,2})(?:\s*de\s+\d{4}|/\d{2,4})?)',
+  '(?:prazo|per[íi]odo) (?:para|de) (?:a )?(?:apresenta[çc][ãa]o|inscri[çc][ãa]o)[^.;]{0,160}?(\d{1,2}[ºo°]?(?:\s*de\s+[a-zç]+|/\d{1,2})(?:\s*de\s+\d{4}|/\d{2,4})?\s+(?:a|at[ée])\s+\d{1,2}[ºo°]?(?:\s*de\s+[a-zç]+|/\d{1,2})(?:\s*de\s+\d{4}|/\d{2,4})?)',
+]
+"Valor" = [
+  '((?:limite|valor m[áa]ximo|teto|n[ãa]o poder[áa] ultrapassar|at[ée] o (?:limite|valor) de)[^.;]{0,120}?R\$\s*[\d.,]+(?:\s*(?:mil|milh[õo]es))?)',
+]
+"Requisitos" = [
+  '((?:poder[ãa]o (?:apresentar|propor|inscrever)|s[ãa]o (?:proponentes|eleg[íi]veis)|o proponente (?:dever[áa]|deve))[^.;]{15,300})',
+]
+"Objeto" = ['((?:apresenta[çc][ãa]o|propostas?) de (?:projetos|propostas) culturais[^.;]{10,200})']

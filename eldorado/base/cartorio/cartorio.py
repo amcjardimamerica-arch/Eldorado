@@ -35,6 +35,18 @@ class Cartorio:
         self.certificacao = Certificacao(diario)
         self.ano = ano_atual or datetime.now(timezone.utc).year
 
+    def _do_motor(self, livro: str, a: Achado, resolvidos: set[str]) -> dict[str, dict]:
+        """Os itens que o motor extraiu com as suas próprias regras (com o valor, o trecho e a página)."""
+        novas: dict[str, dict] = {}
+        for item, x in ((a.dados or {}).get("itens") or {}).items():
+            if item in resolvidos or item not in I.DOZE or not x.get("valor"):
+                continue
+            c = {"livro_id": livro, "item": item, "valor": str(x["valor"])[:300], "trecho": str(x.get("trecho") or "")[:500], "pagina": x.get("pagina"),
+                 "fase": "certificacao", "situacao": "comprovado", "em": agora()}
+            self.diario.emitir("certidao.gravada", "cartorio", c)
+            novas[item] = c
+        return novas
+
     def _paginas(self, sha256: str | None) -> list[Pagina]:
         if not sha256 or self.con is None:
             return []
@@ -48,10 +60,7 @@ class Cartorio:
         if self.con is None:
             return {}
         self.con.row_factory = sqlite3.Row
-        out: dict[str, dict] = {}
-        for c in self.con.execute("SELECT * FROM certidao WHERE livro_id=? AND situacao IN ('comprovado','dispensado') ORDER BY id", (livro,)):
-            out[c["item"]] = dict(c)
-        return out
+        return I.melhor([dict(c) for c in self.con.execute("SELECT * FROM certidao WHERE livro_id=? AND situacao IN ('comprovado','dispensado')", (livro,))])
 
     def _edicoes(self, livro: str, atual: Achado) -> list[selos.Edicao]:
         anos: dict[int, selos.Edicao] = {}
@@ -88,7 +97,10 @@ class Cartorio:
                 self.diario.emitir("livro.legislacao", "cartorio", {"livro_id": livro, "lei_id": lei, "papel": "rege o programa", "em": agora()})
             certidoes = self._certidoes(livro)
             sha = (a.dados or {}).get("documento_sha256") or a.documento_sha256 or (a.documento or {}).get("sha256")
-            novas = self.certificacao.certificar(livro, self._paginas(sha), {k for k, c in certidoes.items() if I.resolvido(c)})
+            resolvidos = {k for k, c in certidoes.items() if I.resolvido(c)}
+            novas = self._do_motor(livro, a, resolvidos)                           # a extração própria do motor, primeiro
+            pular = resolvidos | set(novas) | set((a.dados or {}).get("nao_certificar") or [])
+            novas.update(self.certificacao.certificar(livro, self._paginas(sha), pular))
             certidoes.update(novas)
             estrela, selo = selos.calcular(self.diario, livro, certidoes, self._edicoes(livro, a), self.ano)
             faltam = I.faltando(certidoes)

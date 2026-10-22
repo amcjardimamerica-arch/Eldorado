@@ -68,3 +68,21 @@ def candidatos(html: bytes | str, url: str, titulo: str = "", limite: int = 3) -
 
 def mesmo_site(a: str, b: str) -> bool:
     return (urlsplit(a).hostname or "").removeprefix("www.") == (urlsplit(b).hostname or "").removeprefix("www.")
+
+
+def normas_recentes(html: bytes | str, url: str, padrao: str, maximo: int = 3) -> list[dict]:
+    """Na página de legislação de um programa, as normas mais recentes (resoluções, instruções normativas, portarias):
+    pelo ano no título do link; no mesmo ano, pelo número e, por fim, pela ordem na página (a mais abaixo é a mais nova)."""
+    texto = html.decode("utf-8", errors="replace") if isinstance(html, bytes) else html
+    rx = re.compile(padrao, re.I)
+    normas = []
+    for ordem, a in enumerate(LexborHTMLParser(texto).css("a[href]")):
+        txt = a.text(strip=True)
+        href = urljoin(url, (a.attributes.get("href") or "").strip())
+        if not txt or not rx.search(_sem(txt)) or not href.startswith("http") or any(n in href.lower() for n in NAO_FONTE):
+            continue
+        anos = [int(x) for x in re.findall(r"\b(20\d\d|19\d\d)\b", txt)]
+        num = re.search(r"n[º°o.]*\s*(\d{1,4})", _sem(txt))
+        normas.append({"url": href, "texto": txt, "ano": max(anos) if anos else 0, "numero": int(num.group(1)) if num else 0, "ordem": ordem})
+    unicas = {n["url"]: n for n in normas}.values()
+    return sorted(unicas, key=lambda n: (n["ano"], n["numero"], n["ordem"]), reverse=True)[:maximo]

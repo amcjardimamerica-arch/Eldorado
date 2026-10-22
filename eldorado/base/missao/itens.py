@@ -51,3 +51,15 @@ def faltando(certidoes: dict[str, dict]) -> list[str]:
 
 def itens() -> list[dict[str, str]]:
     return [{"codigo": k, "nome": k, "nucleo": "sim" if k in NUCLEO else "não"} for k in DOZE]
+
+
+FASES_VALIDADAS = ("eldorado0", "verificacao externa", "titular")   # validadas por pessoa ou por verificação externa
+
+
+def melhor(certidoes: list[dict]) -> dict[str, dict]:
+    """A certidão que vale para cada item: a validada antes da automática; entre as do mesmo tipo, a mais recente.
+    Uma automática nunca supera uma validada (22/10/2026)."""
+    out: dict[str, dict] = {}
+    for c in sorted(certidoes, key=lambda c: (c.get("fase") in FASES_VALIDADAS, c.get("id") or 0)):
+        out[c["item"]] = c
+    return out

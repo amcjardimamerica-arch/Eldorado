@@ -104,3 +104,64 @@ def test_cartorio_liga_o_livro_a_lei(gravador, bancos, diario, tmp_path):
     assert any("lei-inexistente" in e.dados.get("mensagem", "") for e in eventos if e.tipo == "alarme.aberto")
     assert gravador.aplicar(eventos).ok
     assert [tuple(r) for r in bancos["biblioteca"].execute("SELECT lei_id, papel FROM livro_lei")] == [("lei-8313-1991", "rege o programa")]
+
+
+LEGISLACAO = """<html><body><main><h1>Legislação – Goyazes</h1><ul>
+<li><a href="/l/lei-13613.pdf">Lei Nº 13.613, de 11 de maio de 2000</a></li><li><a href="/l/decreto-10302.pdf">DECRETO Nº 10.302, DE 12 DE AGOSTO DE 2023</a></li>
+<li><a href="/l/res-1-2022.pdf">Resolução nº 001/2022 – de 19 de abril de 2022</a></li><li><a href="/l/res-5-2025.pdf">Resolução nº 05/2025, de 01 de julho de 2025</a></li>
+<li><a href="/l/res-1-2026.pdf">Resolução nº 01/2026, de 12 de janeiro de 2026</a></li><li><a href="/l/in-1-2024.pdf">Instrução Normativa Nº 1/2024</a></li>
+<li><a href="https://facebook.com/secult">Resolução no Facebook</a></li></ul></main></body></html>"""
+
+
+def test_normas_mais_recentes_da_pagina_de_legislacao():
+    n = fonte_oficial.normas_recentes(LEGISLACAO, "https://goias.gov.br/cultura/programa-goyazes/legislacao/", "resolucao|instrucao normativa|portaria", 3)
+    assert [x["url"].rsplit("/", 1)[1] for x in n] == ["res-1-2026.pdf", "res-5-2025.pdf", "in-1-2024.pdf"]      # a lei e o decreto não são norma de prazo
+
+
+def test_extracao_propria_do_motor_de_incentivo(tmp_path):
+    m = MotorCanal("eldorado/motores/canal/config/goyazes.toml", dados=tmp_path / "d", ponte=tmp_path / "p")
+    r = m._extrair(["Lista de normas.", "RESOLUÇÃO Nº 01/2026. Art. 2º Os projetos culturais poderão ser apresentados no período de 12 de janeiro de 2026 "
+                    "a 23 de março de 2026. Art. 5º O valor máximo por projeto não poderá ultrapassar R$ 500.000,00. Art. 7º Poderão apresentar projetos "
+                    "pessoas físicas e jurídicas domiciliadas em Goiás há pelo menos dois anos."])
+    assert r["itens"]["Prazo de inscrição"]["valor"].endswith("12 de janeiro de 2026 a 23 de março de 2026") and r["itens"]["Prazo de inscrição"]["pagina"] == 2
+    assert "R$ 500.000,00" in r["itens"]["Valor"]["valor"] and r["itens"]["Requisitos"]["valor"].startswith("Poderão apresentar projetos")
+    assert "Resultado" in r["nao_certificar"]
+
+
+def test_precedencia_a_validada_vale_e_o_conflito_e_contestado(gravador, bancos, diario, tmp_path):
+    from datetime import date
+
+    from eldorado.base.cartorio.auditoria import aplicar, auditar
+    from eldorado.base.missao import itens as I
+    assert I.melhor([{"id": 1, "item": "Resultado", "fase": "eldorado0", "valor": "30 dias"},
+                     {"id": 9, "item": "Resultado", "fase": "certificacao", "valor": "23 de dezembro de 1991"}])["Resultado"]["valor"] == "30 dias"
+    assert gravador.aplicar([ev("livro.criado", id="R", missao="oportunidades", chave="r", titulo="Lei Rouanet — propostas no Salic", uf="BR", estrela="sem",
+                                selo_livro="sem", informacoes_validadas=0, situacao="em trabalho", criado_em=AGORA, atualizado_em=AGORA),
+                             ev("certidao.gravada", livro_id="R", item="Resultado", valor="Portaria publicada no DOU em até 30 dias", fase="eldorado0",
+                                situacao="comprovado", em=AGORA),
+                             ev("certidao.gravada", livro_id="R", item="Resultado", valor="23 de dezembro de 1991", fase="certificacao", situacao="comprovado", em=AGORA)]).ok
+    r = next(auditar(bancos["biblioteca"], date(2026, 10, 22)))
+    assert any("conflita com a certidão validada" in x for x in r.contestadas)
+    aplicar([r], diario)
+    assert gravador.aplicar(list(ler(tmp_path / "eventos"))).ok
+    assert dict(bancos["biblioteca"].execute("SELECT fase, situacao FROM certidao WHERE item='Resultado'").fetchall()) == {"eldorado0": "comprovado",
+                                                                                                                            "certificacao": "contestado"}
+
+
+def test_cartorio_usa_a_extracao_do_motor_e_respeita_o_nao_certificar(gravador, bancos, diario, tmp_path):
+    import msgspec
+
+    from eldorado.base.cerebro.regencia import achado_para_evento
+    from eldorado.base.nucleo.contratos import Achado
+    texto = "Lei de 23 de dezembro de 1991. O resultado final será publicado em 15/12/2026. " * 3
+    a = Achado(id="g1", motor="goyazes", encontrado_em="2026-10-22", link_divulgacao="https://x", titulo="Programa Goyazes — incentivo fiscal à cultura em Goiás",
+               dados={"uf": "GO", "orgao": "Secult", "nao_certificar": ["Resultado"],
+                      "itens": {"Prazo de inscrição": {"valor": "de 12 de janeiro de 2026 a 23 de março de 2026", "trecho": "Art. 2º ...", "pagina": 2}}},
+               documento={"url": "https://x/norma", "sha256": "sha-norma", "tipo": "html", "paginas": [texto]})
+    assert gravador.aplicar([ev("documento.registrado", url="https://x/norma", sha256="sha-norma", obtido_em=AGORA, oficial=1),
+                             ev("pagina.gravada", documento_sha256="sha-norma", numero=1, texto=texto),
+                             ev("achado.entregue", **achado_para_evento(a), decisao="aceito", motivo="oportunidade")]).ok
+    Cartorio(bancos["biblioteca"], MissaoOportunidades(), diario).processar([msgspec.to_builtins(a)])
+    assert gravador.aplicar(list(ler(tmp_path / "eventos"))).ok
+    c = dict(bancos["biblioteca"].execute("SELECT item, valor FROM certidao").fetchall())
+    assert c["Prazo de inscrição"].startswith("de 12 de janeiro") and "Resultado" not in c
