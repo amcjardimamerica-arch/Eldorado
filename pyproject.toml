@@ -1,0 +1,31 @@
+[project]
+name = "eldorado"
+version = "0.1.0"
+description = "Plataforma modular de busca de dados na internet: base fixa, motores e banco de dados modulares."
+readme = "README.md"
+requires-python = ">=3.12"
+license = "AGPL-3.0-or-later"
+# Fase 1 (Fundação): só o necessário para os contratos, os eventos, o gravador e os bancos.
+dependencies = ["loguru==0.7.3", "msgspec==0.22.0", "pydantic==2.13.5", "typer==0.27.3", "zstandard==0.25.0"]
+
+[project.optional-dependencies]
+# Versões fixadas com pelo menos 14 dias de publicação (regra de segurança), compatíveis com o Python 3.12.
+base = ["dspy==3.4.0", "fastapi==0.142.4", "htmldate==1.11.0", "huey==3.4.0", "loguru==0.7.3", "msgspec==0.22.0", "orjson==3.13.0", "psutil==7.2.2", "pydantic==2.13.5", "pydantic-ai-slim==2.54.0", "river==0.26.1", "ruff==0.16.10", "scikit-learn==1.9.1", "typer==0.27.3", "uv==0.12.23", "vcrpy==8.3.0"]
+motores = ["aiolimiter==1.3.0", "camoufox==0.5.8", "cdx_toolkit==0.9.39", "charset-normalizer==3.5.2", "chompjs==1.4.1", "ckanapi==4.11", "curl_cffi==0.16.3", "datefinder==1.0.0", "dateparser==1.4.3", "ddgs==9.16.0", "docx2python==3.7.1", "extruct==0.18.0", "faster-whisper==1.2.1", "feedparser==6.0.14", "httpx==0.28.1", "jmespath==1.1.0", "lingua-language-detector==2.2.0", "liteparse==2.15.1", "lxml==6.1.3", "odfpy==1.4.1", "patchright==1.63.0", "pdf-inspector==1.25.2", "playwright==1.63.0", "polars==2.0.0", "price-parser==0.5.1", "primp==2.0.1", "protego==0.7.0", "py7zr==1.1.3", "pymupdf==1.28.2", "pypdfium2==5.14.0", "python-calamine==0.8.2", "python-docx==1.2.0", "python-pptx==1.0.2", "rapidocr==3.9.2", "rarfile==4.5", "resiliparse==1.0.9", "scrapling==0.4.15", "selectolax==1.0.0", "stem==1.8.2", "tenacity==9.2.1", "tesserocr==2.11.0", "tika==3.3.2", "trafilatura==2.3.1", "ultimate-sitemap-parser==1.8.1", "validate-docbr==2.0.1", "waybackpy==3.0.6", "webtech==1.3.4", "xmltodict==1.0.4"]
+banco = ["datasette==0.65.5", "datasketch==2.0.0", "duckdb==1.5.6", "google-api-python-client==2.201.0", "sqlite-utils==4.2.1", "zstandard==0.25.0"]
+testes = ["pytest==8.4.2"]
+
+[tool.pytest.ini_options]
+testpaths = ["testes"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 160
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+"eldorado/banco/*/esquema.py" = ["E501"]   # o SQL das regras fica numa linha por gatilho, para ser lido inteiro
+"testes/*" = ["E501"]

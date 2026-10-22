@@ -1,0 +1,196 @@
+"""Os eventos: a única forma de escrita do Eldorado.
+
+Cada módulo trabalha e grava eventos; só o gravador aplica os eventos aos bancos. O catálogo diz, para cada tipo,
+em qual banco e tabela ele é aplicado e com qual operação. Um tipo fora do catálogo é recusado na criação.
+
+O diário guarda os eventos de cada execução num arquivo que só recebe acréscimos (eventos/AAAA/MM/DD/<execução>.jsonl).
+"""
+from __future__ import annotations
+
+import os
+import threading
+import time
+import uuid
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Callable, Iterator
+
+import msgspec
+
+from .contratos import Linhagem
+
+VERSAO_CATALOGO = 1
+
+
+class Evento(msgspec.Struct, kw_only=True, omit_defaults=True):
+    id: str
+    tipo: str
+    modulo: str
+    em: str
+    dados: dict[str, Any]
+    linhagem: Linhagem = Linhagem()
+    versao: int = VERSAO_CATALOGO
+
+
+@dataclass(frozen=True)
+class Alvo:
+    banco: str                       # 'biblioteca', 'especial', 'cerebro'
+    tabela: str
+    operacao: str                    # 'inserir', 'atualizar', 'inserir_ou_atualizar', 'pagina', 'expandir'
+    chave: tuple[str, ...] = ()      # colunas que identificam a linha (atualizar e inserir_ou_atualizar)
+    mapa: Callable[[dict[str, Any]], dict[str, Any]] | None = field(default=None, compare=False)
+
+
+def _rotulo(d: dict[str, Any]) -> dict[str, Any]:
+    return {"referencia": d["livro_id"], "origem": d["origem"], "decisao": d["decisao"], "em": d["em"]}
+
+
+def _decisao_no_achado(d: dict[str, Any]) -> dict[str, Any]:
+    return {"id": d["referencia"], "decisao": d["decisao"], "motivo": d.get("motivo")}
+
+
+def _passaporte(d: dict[str, Any]) -> dict[str, Any]:
+    return {"livro_id": d["livro_id"], "fase": d["para"], "entrou_em": d["em"]}
+
+
+def _so(*colunas: str) -> Callable[[dict[str, Any]], dict[str, Any]]:
+    return lambda d: {c: d[c] for c in colunas if c in d}
+
+
+B, E, C = "biblioteca", "especial", "cerebro"
+CATALOGO: dict[str, tuple[Alvo, ...]] = {
+    # Regência, fluxo e medição (cerebro.db)
+    "plano.criado": (Alvo(C, "plano", "inserir"),),
+    "acionamento.feito": (Alvo(C, "acionamento", "inserir"),),
+    "execucao.iniciada": (Alvo(C, "execucao", "inserir"),),
+    "execucao.concluida": (Alvo(C, "execucao", "atualizar", ("id",), _so("id", "fim", "estado")),),
+    "execucao.passo": (Alvo(C, "execucao_passo", "inserir"),),
+    "chamada.recibo": (Alvo(C, "recibo", "inserir"),),
+    "motor.execucao": (Alvo(C, "execucao_motor", "inserir"),),
+    "medicao.registrada": (Alvo(C, "medicao", "inserir_ou_atualizar", ("marcador", "nivel", "em")),),
+    "maquina.leitura": (Alvo(C, "maquina", "inserir"),),
+    "cobertura.dia": (Alvo(C, "cobertura_dia", "inserir_ou_atualizar", ("dia",)),),
+    "agenda.definida": (Alvo(C, "agenda", "inserir_ou_atualizar", ("modulo", "janela_inicio")),),
+    "dominio.aprendido": (Alvo(C, "dominio", "inserir_ou_atualizar", ("dominio",)),),
+    "modulo.registrado": (Alvo(C, "modulo", "inserir_ou_atualizar", ("id",)),),
+    "workflow.versao": (Alvo(C, "workflow", "inserir"),),
+    "alarme.aberto": (Alvo(C, "alarme", "inserir"),),
+    "alarme.fechado": (Alvo(C, "alarme", "atualizar", ("id",), _so("id", "fechado_em")),),
+    "regra.registrada": (Alvo(C, "regra", "inserir"),),
+    "regra.substituida": (Alvo(C, "regra", "atualizar", ("id",), _so("id", "vigente", "substituida_por")),),
+    "modelo.treinado": (Alvo(C, "modelo", "inserir"),),
+    "aprendizado.registrado": (Alvo(C, "aprendizado_temporario", "inserir"),),
+    "aprendizado.promovido": (Alvo(C, "aprendizado_permanente", "inserir"),),
+    "aprendizado.arquivado": (Alvo(C, "aprendizado_permanente", "atualizar", ("id",), _so("id", "arquivado")),),
+    # Pertinência: a decisão fica no Cérebro e no próprio achado
+    "pertinencia.decidida": (Alvo(C, "decisao_pertinencia", "inserir"),
+                             Alvo(B, "achado", "atualizar", ("id",), _decisao_no_achado)),
+    # Coleta e Cartório (biblioteca.db)
+    "achado.entregue": (Alvo(B, "achado", "inserir"),),
+    "documento.registrado": (Alvo(B, "documento", "inserir"),),
+    "pagina.gravada": (Alvo(B, "pagina", "pagina"),),
+    "livro.criado": (Alvo(B, "livro", "inserir"),),
+    "livro.vinculado": (Alvo(B, "achado", "atualizar", ("id",), lambda d: {"id": d["achado_id"], "livro_id": d["livro_id"]}),),
+    "livro.unido": (Alvo(B, "uniao", "inserir"),),
+    "livro.situacao": (Alvo(B, "livro", "atualizar", ("id",), _so("id", "situacao", "atualizado_em")),),
+    "livro.passagem": (Alvo(B, "passagem", "inserir"), Alvo(B, "passaporte", "inserir_ou_atualizar", ("livro_id",), _passaporte)),
+    "livro.excluido_logicamente": (Alvo(B, "livro", "atualizar", ("id",), lambda d: {"id": d["id"], "situacao": "excluido",
+                                    "justificativa_exclusao": d.get("justificativa_exclusao"), "atualizado_em": d["atualizado_em"]}),),
+    "tentativa.registrada": (Alvo(B, "tentativa", "inserir"),),
+    "certidao.gravada": (Alvo(B, "certidao", "inserir"),),
+    "certidao.contestada": (Alvo(B, "certidao", "atualizar", ("id",), _so("id", "situacao")),),
+    "selo.calculado": (Alvo(B, "livro", "atualizar", ("id",), _so("id", "estrela", "selo_livro", "informacoes_validadas", "atualizado_em")),),
+    "relatorio.etapa": (Alvo(B, "relatorio_etapa", "inserir"),),
+    "analise.rede": (Alvo(B, "analise_rede", "inserir"),),
+    "veredito.gravado": (Alvo(B, "veredito", "inserir"), Alvo(C, "rotulo", "inserir", (), _rotulo)),
+    "previsao.calculada": (Alvo(B, "previsao", "inserir_ou_atualizar", ("livro_id",)),),
+    "alerta.preditivo": (Alvo(B, "previsao", "atualizar", ("livro_id",), _so("livro_id", "alerta_em")),),
+    "transferencia.feita": (Alvo(B, "transferencia", "inserir"),),
+    "lei.registrada": (Alvo(B, "lei", "inserir_ou_atualizar", ("id",)),),
+    # Especial (especial.db)
+    "empresa.registrada": (Alvo(E, "empresa", "inserir_ou_atualizar", ("cnpj",)),),
+    "incentivo.registrado": (Alvo(E, "incentivo", "inserir"),),
+    "ranking.calculado": (Alvo(E, "ranking", "inserir"),),
+    "oportunidade_empresa.registrada": (Alvo(E, "oportunidade_empresa", "inserir_ou_atualizar", ("id",)),),
+    "vinculo_livro.registrado": (Alvo(E, "vinculo_livro", "inserir_ou_atualizar", ("cnpj", "livro_id", "papel")),),
+    "aprofundamento.registrado": (Alvo(E, "aprofundamento", "inserir"),),
+    # Migração do Eldorado0 (temporária): um lote de eventos dentro de um evento
+    "importacao.lote": (Alvo("*", "*", "expandir"),),
+}
+
+
+class EventoInvalido(Exception):
+    pass
+
+
+_contador = 0
+_trava = threading.Lock()
+
+
+def novo_id() -> str:
+    """Identificador que preserva a ordem de criação (nanossegundos + contador + sufixo aleatório)."""
+    global _contador
+    with _trava:
+        _contador = (_contador + 1) % 1_000_000
+        n = _contador
+    return f"{time.time_ns():020d}-{n:06d}-{uuid.uuid4().hex[:8]}"
+
+
+def agora() -> str:
+    return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+
+
+def criar(tipo: str, modulo: str, dados: dict[str, Any], linhagem: Linhagem | None = None) -> Evento:
+    if tipo not in CATALOGO:
+        raise EventoInvalido(f"tipo de evento fora do catálogo: {tipo}")
+    if not modulo:
+        raise EventoInvalido("todo evento precisa do módulo que o emitiu")
+    if not isinstance(dados, dict):
+        raise EventoInvalido("os dados do evento devem ser um dicionário")
+    return Evento(id=novo_id(), tipo=tipo, modulo=modulo, em=agora(), dados=dados, linhagem=linhagem or Linhagem())
+
+
+_enc = msgspec.json.Encoder()
+_dec = msgspec.json.Decoder(Evento)
+
+
+class Diario:
+    """Os eventos de uma execução, num arquivo que só recebe acréscimos."""
+
+    def __init__(self, pasta: str | Path, execucao: str | None = None):
+        self.execucao = execucao or novo_id()
+        d = datetime.now(timezone.utc)
+        self.arquivo = Path(pasta) / f"{d:%Y}" / f"{d:%m}" / f"{d:%d}" / f"{self.execucao}.jsonl"
+        self.arquivo.parent.mkdir(parents=True, exist_ok=True)
+        self._trava = threading.Lock()
+
+    def gravar(self, evento: Evento) -> Evento:
+        linha = _enc.encode(evento) + b"\n"
+        with self._trava, open(self.arquivo, "ab") as f:
+            f.write(linha)
+            f.flush()
+            os.fsync(f.fileno())
+        return evento
+
+    def emitir(self, tipo: str, modulo: str, dados: dict[str, Any], linhagem: Linhagem | None = None) -> Evento:
+        return self.gravar(criar(tipo, modulo, dados, linhagem))
+
+
+def ler(pasta: str | Path) -> Iterator[Evento]:
+    """Lê todos os eventos da pasta, na ordem de criação. Linha corrompida levanta EventoInvalido (nunca é ignorada)."""
+    arquivos = sorted(Path(pasta).rglob("*.jsonl"))
+    eventos: list[Evento] = []
+    for a in arquivos:
+        for n, linha in enumerate(a.read_bytes().splitlines(), 1):
+            if not linha.strip():
+                continue
+            try:
+                ev = _dec.decode(linha)
+            except msgspec.DecodeError as e:
+                raise EventoInvalido(f"{a.name}, linha {n}: {e}") from e
+            if ev.tipo not in CATALOGO:
+                raise EventoInvalido(f"{a.name}, linha {n}: tipo fora do catálogo: {ev.tipo}")
+            eventos.append(ev)
+    eventos.sort(key=lambda e: e.id)
+    return iter(eventos)
