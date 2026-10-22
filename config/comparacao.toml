@@ -1,0 +1,20 @@
+# Os 14 dias de comparação (critério da Fase 7 e da Fase 10): cada motor novo roda em paralelo com o de origem no
+# Eldorado0 e só o substitui com resultado igual ou melhor. A contagem começa no primeiro dia completo com o agendamento
+# funcionando.
+inicio = "2026-10-23"
+dias = 14
+
+# motor novo = os motores de origem no Eldorado0 (do aprendizado migrado)
+[motores]
+dou = ["dou"]
+pncp = ["pncp-api"]
+mapas-culturais = ["plataforma-mapas-culturais", "site-mapas-culturais"]
+wordpress-goias = ["plataforma-wordpress"]
+wordpress-financiadores = ["plataforma-wordpress", "plat-empresas-editais-incentivados"]
+querido-diario = []          # a API está fora do ar desde 22/10 (sondagem); sem comparação até voltar
+transferegov = ["site-transferegov"]
+rouanet = ["plat-salic"]
+goyazes = []                 # motor novo, sem equivalente direto no Eldorado0
+
+[decisoes]
+salic = "A API do Salic funciona (projetos e propostas de Goiás), mas não traz oportunidades para a associação: os dados entram na análise do painel (Fase 9). O mecanismo da Rouanet é coberto pelo motor rouanet."
