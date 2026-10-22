@@ -80,6 +80,12 @@ class Cartorio:
             if oficial:
                 self.diario.emitir("livro.links", "cartorio", {"id": livro, "link_divulgacao": a.link_divulgacao, "link_oficial": oficial,
                                                                "atualizado_em": agora()})
+            for lei in (a.dados or {}).get("leis") or []:                # a legislação que rege o programa
+                if self.con is not None and self.con.execute("SELECT 1 FROM lei WHERE id=?", (lei,)).fetchone() is None:
+                    self.diario.emitir("alarme.aberto", "cartorio", {"gravidade": "baixa", "modulo": a.motor, "aberto_em": agora(),
+                                                                     "mensagem": f"lei {lei} citada pelo motor não está na Biblioteca"})
+                    continue
+                self.diario.emitir("livro.legislacao", "cartorio", {"livro_id": livro, "lei_id": lei, "papel": "rege o programa", "em": agora()})
             certidoes = self._certidoes(livro)
             sha = (a.dados or {}).get("documento_sha256") or a.documento_sha256 or (a.documento or {}).get("sha256")
             novas = self.certificacao.certificar(livro, self._paginas(sha), {k for k, c in certidoes.items() if I.resolvido(c)})

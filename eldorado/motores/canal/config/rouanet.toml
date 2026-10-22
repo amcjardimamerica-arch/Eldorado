@@ -1,0 +1,42 @@
+# Lei Rouanet (Lei 8.313/1991): incentivo fiscal federal à cultura. A oportunidade é o próprio mecanismo: a apresentação
+# de propostas culturais no Salic, nas condições da instrução normativa vigente. Nenhuma data ou limite fica fixado
+# aqui: o motor lê a página oficial de legislação e o Cartório certifica a partir do texto. Lição do Eldorado0: o
+# www.gov.br bloqueou 223 vezes clientes que não pareciam navegador (o motor começa pela assinatura de navegador).
+[motor]
+id = "rouanet"
+nome = "Lei Rouanet — incentivo fiscal federal à cultura"
+categoria = "Incentivos fiscais"
+finalidade = "o mecanismo de incentivo (propostas no Salic) e os editais publicados no âmbito da Lei Rouanet"
+canal = "portal"
+uf = "BR"
+
+[programa]
+titulo = "Lei Rouanet (Lei 8.313/1991) — apresentação de propostas culturais no Salic"
+orgao = "Ministério da Cultura"
+modalidade = "incentivo fiscal (mecenato)"
+link_divulgacao = "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet"
+link_oficial = "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet/legislacao"
+documentos = ["https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet/legislacao",
+              "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet"]
+
+[legislacao]
+leis = ["lei-8313-1991"]
+notas = "A janela anual de propostas, os limites e as regras vêm da instrução normativa vigente, lida na página oficial."
+
+[[fonte]]
+nome = "Lei Rouanet — página do programa (editais e normas)"
+url = "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet"
+tipo = "pagina"
+
+[acesso]
+degraus = ["leve", "api"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+max_documentos = 10
+
+[lexico]
+termos = ["re:edital|chamada|chamamento|selecao|instrucao normativa|calendario|prazo|apresentacao de propostas"]
+vetos = ["re:resultado|homologa|aprovad|contemplad"]
+termos_em = "titulo"

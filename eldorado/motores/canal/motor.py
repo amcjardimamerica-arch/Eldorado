@@ -77,6 +77,7 @@ class CfgAcesso(_Base):
 
 class CfgLeitura(_Base):
     documentos: bool = True
+    seguir_oficial: bool = False              # na página de divulgação, achar e ler o documento oficial do edital
     paginas_dos_achados: bool = False         # a página do achado como documento oficial (ex.: a íntegra da matéria do DOU)
     tabelas: Literal["nao", "uteis", "todas"] = "uteis"
     max_documentos: int = Field(20, ge=0, le=500)
@@ -91,12 +92,31 @@ class CfgLexico(_Base):
     termos_em: Literal["tudo", "titulo"] = "tudo"   # "titulo": em sites de notícias, o título de um edital diz que é edital
 
 
+class CfgPrograma(_Base):
+    """A oportunidade é o próprio programa (incentivo fiscal, fundo, mecanismo permanente): o livro é relido sempre que
+    a página oficial (a legislação, a norma vigente) muda, e o Cartório recertifica os itens a partir do texto oficial."""
+    titulo: str
+    orgao: str
+    link_divulgacao: str
+    link_oficial: str
+    documentos: list[str]
+    modalidade: str | None = None
+
+
+class CfgLegislacao(_Base):
+    """As leis que regem o que o motor encontra (identificadores dos livros de leis da Biblioteca)."""
+    leis: list[str] = Field(default_factory=list)
+    notas: str | None = None
+
+
 class Configuracao(_Base):
     motor: CfgMotor
     fonte: list[CfgFonte]
     acesso: CfgAcesso = CfgAcesso()
     leitura: CfgLeitura = CfgLeitura()
     lexico: CfgLexico = CfgLexico()
+    programa: CfgPrograma | None = None
+    legislacao: CfgLegislacao = CfgLegislacao()
     alvos: dict[str, Any] = Field(default_factory=dict)
     metas: dict[str, Any] = Field(default_factory=dict)
     agenda: dict[str, Any] = Field(default_factory=dict)
@@ -169,6 +189,10 @@ class MotorCanal(Motor):
     # ------------------------------------------------------------------ busca
     def buscar(self, plano: Plano) -> Iterable[Achado]:
         self.relatorio = []
+        if self.cfg.programa:
+            achado = self._programa()
+            if achado:
+                yield achado
         for fonte in self.cfg.fonte:
             try:
                 pistas = self._descobrir(fonte)
@@ -196,6 +220,36 @@ class MotorCanal(Motor):
                 yield achado
             self.estado.leitura(fonte.nome, _agora(), achados=entregues)
             self.relatorio.append(f"{fonte.nome}: {len(pistas)} pista(s), {entregues} achado(s)")
+
+    def _programa(self) -> Achado | None:
+        """O livro do programa: entregue de novo só quando o texto oficial muda (nova norma, novo prazo)."""
+        pr, m = self.cfg.programa, self.cfg.motor
+        textos, alertas = [], []
+        for url in pr.documentos:
+            try:
+                lido = self.leitura.ler(self.escada.buscar(url).conteudo, url)
+                textos.append(lido.texto)
+            except (Bloqueado, Indisponivel, Pendente, leitores.SemLeitor) as e:
+                alertas.append(f"{url}: {str(e)[:150]}")
+        if not textos:
+            self.relatorio.append(f"programa: nenhum documento oficial lido ({'; '.join(alertas)})")
+            self.estado.leitura("programa", _agora(), erro="; ".join(alertas)[:300])
+            return None
+        sha = hashlib.sha256("\n".join(re.sub(r"\s+", " ", t) for t in textos).encode()).hexdigest()
+        chave = f"programa:{sha[:24]}"
+        if self.estado.ja_entregue(chave):
+            self.relatorio.append("programa: o texto oficial não mudou")
+            self.estado.leitura("programa", _agora(), sem_mudanca=True)
+            return None
+        aid = f"{m.id}-programa-{sha[:12]}"
+        self.estado.marcar_entregue(chave, _agora(), aid, "programa")
+        self.estado.leitura("programa", _agora(), achados=1)
+        self.relatorio.append(f"programa: texto oficial novo ou alterado ({len(textos)} documento(s))" + (f"; {len(alertas)} não lido(s)" if alertas else ""))
+        return Achado(id=aid, motor=m.id, encontrado_em=_agora()[:10], link_divulgacao=pr.link_divulgacao, link_oficial=pr.link_oficial, titulo=pr.titulo,
+                      dados={"uf": m.uf, "orgao": pr.orgao, "modalidade": pr.modalidade, "leis": self.cfg.legislacao.leis, "fonte": "programa",
+                             "origem": "programa (legislação e norma vigente)"},
+                      documento={"url": pr.link_oficial, "sha256": sha, "tipo": "html", "leitor": "programa (páginas oficiais)", "oficial": True,
+                                 "paginas": textos, "alertas": alertas})
 
     def _descobrir(self, f: CfgFonte) -> list[Pista] | None:
         buscar = self.escada.buscar
@@ -267,6 +321,27 @@ class MotorCanal(Motor):
                 return True
         return False
 
+    def _seguir_oficial(self, pista: Pista) -> tuple[str, str, dict] | None:
+        """Da página de divulgação ao documento oficial: (oficial, divulgação, documento lido) ou None."""
+        from ..descoberta import fonte_oficial
+        try:
+            pagina = self.escada.buscar(pista.link)
+            cands = fonte_oficial.candidatos(pagina.conteudo, pista.link, pista.titulo)
+        except (Bloqueado, Indisponivel, Pendente) as e:
+            self.relatorio.append(f"seguir até o oficial: divulgação não lida ({pista.link}: {str(e)[:120]})")
+            return None
+        for c in cands:
+            try:
+                r = self.escada.buscar(c["url"])
+                lido = self.leitura.ler(r.conteudo, c["url"])
+            except (Bloqueado, Indisponivel, Pendente, leitores.SemLeitor) as e:
+                self.relatorio.append(f"seguir até o oficial: {c['url']} não lido ({str(e)[:120]})")
+                continue
+            doc = {"url": c["url"], "sha256": lido.sha256, "tipo": lido.tipo, "leitor": lido.leitor, "oficial": not r.copia_arquivada,
+                   "paginas": [p.texto for p in lido.paginas], "alertas": lido.alertas + [f"achado a partir da divulgação ({c['pontos']} pontos)"]}
+            return c["url"], pista.link, doc
+        return None
+
     def _passa_lexico(self, titulo: str, resumo: str = "") -> bool:
         lx = self.cfg.lexico
         t, tudo = _sem_acento(titulo), _sem_acento(f"{titulo} {resumo}")
@@ -276,7 +351,13 @@ class MotorCanal(Motor):
 
     def _achado(self, fonte: CfgFonte, pista: Pista, n: int) -> Achado | None:
         documento = None
+        oficial, divulgacao = pista.link, fonte.url
         ler = (self.cfg.leitura.documentos and DOCUMENTO.search(pista.link)) or (self.cfg.leitura.paginas_dos_achados and not DOCUMENTO.search(pista.link))
+        if self.cfg.leitura.seguir_oficial and not DOCUMENTO.search(pista.link) and n < self.cfg.leitura.max_documentos:
+            achado_oficial = self._seguir_oficial(pista)
+            if achado_oficial:
+                oficial, divulgacao, documento = achado_oficial
+                ler = False
         if ler and n < self.cfg.leitura.max_documentos:
             try:
                 r = self.escada.buscar(pista.link)
@@ -290,7 +371,8 @@ class MotorCanal(Motor):
                              "paginas": [p.texto for p in lido.paginas], "alertas": lido.alertas}
         m = self.cfg.motor
         chave = hashlib.sha256(pista.link.encode()).hexdigest()[:16]
-        return Achado(id=f"{m.id}-{chave}", motor=m.id, encontrado_em=_agora()[:10], link_divulgacao=fonte.url, link_oficial=pista.link,
+        return Achado(id=f"{m.id}-{chave}", motor=m.id, encontrado_em=_agora()[:10], link_divulgacao=divulgacao, link_oficial=oficial,
                       titulo=pista.titulo[:300], publicado_em=(pista.data or None) and str(pista.data)[:10],
                       dados={"uf": m.uf, "orgao": m.orgao, **pista.extra, "fonte": fonte.nome, "origem": pista.origem,
+                             **({"leis": self.cfg.legislacao.leis} if self.cfg.legislacao.leis else {}),
                              **({"resumo": pista.resumo} if pista.resumo else {})}, documento=documento)

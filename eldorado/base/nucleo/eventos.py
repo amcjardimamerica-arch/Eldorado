@@ -104,6 +104,7 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "tentativa.registrada": (Alvo(B, "tentativa", "inserir"),),
     "certidao.gravada": (Alvo(B, "certidao", "inserir"),),
     "certidao.contestada": (Alvo(B, "certidao", "atualizar", ("id",), _so("id", "situacao")),),
+    "livro.legislacao": (Alvo(B, "livro_lei", "inserir_ou_atualizar", ("livro_id", "lei_id")),),
     "livro.decupado": (Alvo(B, "livro_dados", "inserir_ou_atualizar", ("livro_id",)),),
     "selo.calculado": (Alvo(B, "livro", "atualizar", ("id",), _so("id", "estrela", "selo_livro", "informacoes_validadas", "atualizado_em")),),
     "relatorio.etapa": (Alvo(B, "relatorio_etapa", "inserir"),),

@@ -244,6 +244,8 @@ class Importador:
             return
         vistas: set[str] = set()
         for lei in json.loads(p.read_text(encoding="utf-8")).get("livros", []):
+            if lei.get("id") in (None, "indice") or not lei.get("nome"):
+                continue                                                      # o índice do arquivo de leis não é lei
             self.r.origem["leis (registros)"] += 1
             if lei["id"] in vistas:
                 self.r.lacuna("lei repetida no Eldorado0 (mantida uma)", lei["id"])

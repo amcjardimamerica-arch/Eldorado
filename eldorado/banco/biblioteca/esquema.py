@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .._sqlite import abrir as _abrir
 
-VERSAO = 3
+VERSAO = 4
 
 DDL_V2 = r"""
 CREATE TABLE livro_dados (livro_id TEXT PRIMARY KEY REFERENCES livro(id),
@@ -109,8 +109,14 @@ CREATE TRIGGER expurgo_externo_sem_alteracao BEFORE UPDATE ON expurgo_externo BE
 CREATE TRIGGER expurgo_externo_sem_apagar BEFORE DELETE ON expurgo_externo BEGIN SELECT RAISE(ABORT, 'o registro do expurgo não se apaga'); END
 """
 
-MIGRACOES = {2: DDL_V2, 3: DDL_V3}   # 2: a decupagem (livro_dados); 3: o registro do expurgo pela análise externa           # versão 1 → 2 (22/10/2026): a decupagem dos livros em colunas (livro_dados)
+DDL_V4 = r"""
+CREATE TABLE livro_lei (livro_id TEXT NOT NULL REFERENCES livro(id), lei_id TEXT NOT NULL REFERENCES lei(id), papel TEXT NOT NULL,
+  em TEXT NOT NULL, PRIMARY KEY (livro_id, lei_id));
+CREATE INDEX livro_lei_lei ON livro_lei(lei_id)
+"""
+
+MIGRACOES = {2: DDL_V2, 3: DDL_V3, 4: DDL_V4}   # 2: a decupagem (livro_dados); 3: o registro do expurgo; 4: a legislação (livro_lei)
 
 
 def abrir(caminho: str | Path):
-    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V3, VERSAO, MIGRACOES)
+    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V3 + ";\n" + DDL_V4, VERSAO, MIGRACOES)

@@ -1,0 +1,45 @@
+# Programa Goyazes (Lei estadual 13.613/2000): incentivo fiscal de Goiás à cultura (ICMS). A oportunidade é o próprio
+# programa, nas regras da legislação vigente, e os editais e calendários que a Secult publica dentro dele.
+[motor]
+id = "goyazes"
+nome = "Programa Goyazes — incentivo fiscal estadual à cultura"
+categoria = "Incentivos fiscais"
+finalidade = "o programa de incentivo e os editais, calendários e chamadas do Goyazes publicados pela Secult"
+canal = "portal"
+uf = "GO"
+orgao = "Secretaria de Estado da Cultura de Goiás"
+
+[programa]
+titulo = "Programa Goyazes (Lei estadual 13.613/2000) — incentivo fiscal à cultura em Goiás"
+orgao = "Secretaria de Estado da Cultura de Goiás"
+modalidade = "incentivo fiscal estadual (ICMS)"
+link_divulgacao = "https://goias.gov.br/cultura/programa-goyazes/"
+link_oficial = "https://goias.gov.br/cultura/programa-goyazes/legislacao/"
+documentos = ["https://goias.gov.br/cultura/programa-goyazes/legislacao/", "https://goias.gov.br/cultura/programa-goyazes/"]
+
+[legislacao]
+leis = ["lei-go-13613-2000"]
+notas = "Prazos de inscrição, limites e contrapartidas vêm da legislação e das portarias vigentes, lidas na página oficial."
+
+[[fonte]]
+nome = "Programa Goyazes — página do programa"
+url = "https://goias.gov.br/cultura/programa-goyazes/"
+tipo = "pagina"
+
+[[fonte]]
+nome = "Secult — publicações sobre o Goyazes"
+url = "https://goias.gov.br/cultura/wp-json/wp/v2/posts"
+tipo = "wordpress"
+termos = "goyazes"
+
+[acesso]
+degraus = ["api", "leve"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+max_documentos = 10
+
+[lexico]
+termos = ["re:goyazes"]
+vetos = ["re:resultado|homologa|aprovad|contemplad|habilitad"]
