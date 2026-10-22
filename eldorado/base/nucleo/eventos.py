@@ -65,6 +65,7 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "acionamento.feito": (Alvo(C, "acionamento", "inserir"),),
     "execucao.iniciada": (Alvo(C, "execucao", "inserir"),),
     "execucao.concluida": (Alvo(C, "execucao", "atualizar", ("id",), _so("id", "fim", "estado")),),
+    "execucao.retomada": (Alvo(C, "execucao", "atualizar", ("id",), _so("id", "estado")),),
     "execucao.passo": (Alvo(C, "execucao_passo", "inserir"),),
     "chamada.recibo": (Alvo(C, "recibo", "inserir"),),
     "motor.execucao": (Alvo(C, "execucao_motor", "inserir"),),
@@ -74,7 +75,7 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "agenda.definida": (Alvo(C, "agenda", "inserir_ou_atualizar", ("modulo", "janela_inicio")),),
     "dominio.aprendido": (Alvo(C, "dominio", "inserir_ou_atualizar", ("dominio",)),),
     "modulo.registrado": (Alvo(C, "modulo", "inserir_ou_atualizar", ("id",)),),
-    "workflow.versao": (Alvo(C, "workflow", "inserir"),),
+    "workflow.versao": (Alvo(C, "workflow", "inserir_ou_atualizar", ("id", "versao")),),
     "alarme.aberto": (Alvo(C, "alarme", "inserir"),),
     "alarme.fechado": (Alvo(C, "alarme", "atualizar", ("id",), _so("id", "fechado_em")),),
     "regra.registrada": (Alvo(C, "regra", "inserir"),),
@@ -159,11 +160,24 @@ class Diario:
     """Os eventos de uma execução, num arquivo que só recebe acréscimos."""
 
     def __init__(self, pasta: str | Path, execucao: str | None = None):
+        """Abre o diário de uma execução. Se a execução já tem diário (retomada), continua no mesmo arquivo."""
+        self.pasta = Path(pasta)
         self.execucao = execucao or novo_id()
-        d = datetime.now(timezone.utc)
-        self.arquivo = Path(pasta) / f"{d:%Y}" / f"{d:%m}" / f"{d:%d}" / f"{self.execucao}.jsonl"
+        existente = next(self.pasta.rglob(f"{self.execucao}.jsonl"), None) if execucao and self.pasta.exists() else None
+        if existente:
+            self.arquivo = existente
+        else:
+            d = datetime.now(timezone.utc)
+            self.arquivo = self.pasta / f"{d:%Y}" / f"{d:%m}" / f"{d:%d}" / f"{self.execucao}.jsonl"
         self.arquivo.parent.mkdir(parents=True, exist_ok=True)
         self._trava = threading.Lock()
+
+    def eventos(self) -> list[Evento]:
+        """Os eventos já gravados nesta execução, na ordem."""
+        if not self.arquivo.exists():
+            return []
+        evs = [_dec.decode(linha) for linha in self.arquivo.read_bytes().splitlines() if linha.strip()]
+        return sorted(evs, key=lambda e: e.id)
 
     def gravar(self, evento: Evento) -> Evento:
         linha = _enc.encode(evento) + b"\n"

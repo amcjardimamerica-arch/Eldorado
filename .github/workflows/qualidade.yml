@@ -1,0 +1,32 @@
+# Qualidade: a cada gravação, instala as dependências fixadas, roda o verificador e a bateria inteira.
+name: Qualidade
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qualidade-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Instalar (versões fixadas)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[testes]" "ruff==0.16.10"
+      - name: Verificador
+        run: ruff check eldorado testes
+      - name: Bateria
+        run: pytest

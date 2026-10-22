@@ -1,0 +1,20 @@
+# Manutenção da plataforma: lê a máquina e aplica aos bancos os eventos pendentes.
+[workflow]
+id = "manutencao"
+descricao = "Lê a máquina (mostrador) e aplica os eventos pendentes aos três bancos"
+
+[[no]]
+id = "maquina"
+tipo = "eldorado.base.fluxo.nos:ler_maquina"
+tentativas = 2
+esperas_s = [1]
+
+[[no]]
+id = "aplicar"
+tipo = "eldorado.base.fluxo.nos:aplicar_eventos"
+tentativas = 3
+esperas_s = [2, 5]
+
+[[conexao]]
+de = "maquina"
+para = "aplicar"

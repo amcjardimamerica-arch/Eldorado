@@ -5,8 +5,11 @@ description = "Plataforma modular de busca de dados na internet: base fixa, moto
 readme = "README.md"
 requires-python = ">=3.12"
 license = "AGPL-3.0-or-later"
-# Fase 1 (Fundação): só o necessário para os contratos, os eventos, o gravador e os bancos.
-dependencies = ["loguru==0.7.3", "msgspec==0.22.0", "pydantic==2.13.5", "typer==0.27.3", "zstandard==0.25.0"]
+# Fases 1 e 2 (Fundação e Execução): contratos, eventos, gravador, bancos, workflow, executor, fila, agenda e governador.
+dependencies = ["loguru==0.7.3", "msgspec==0.22.0", "pydantic==2.13.5", "typer==0.27.3", "zstandard==0.25.0", "huey==3.4.0", "psutil==7.2.2"]
+
+[project.scripts]
+eldorado = "eldorado.base.nucleo.comandos:app"
 
 [project.optional-dependencies]
 # Versões fixadas com pelo menos 14 dias de publicação (regra de segurança), compatíveis com o Python 3.12.

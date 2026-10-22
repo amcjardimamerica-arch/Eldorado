@@ -1,3 +1,8 @@
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))   # as funções de nó dos testes (nos_teste)
+
 import pytest
 
 from eldorado.banco.biblioteca import esquema as bib

@@ -22,7 +22,7 @@ CREATE TABLE dominio (dominio TEXT PRIMARY KEY, degrau_que_funciona INTEGER, blo
 CREATE TABLE workflow (id TEXT, versao INTEGER, definicao TEXT NOT NULL, criado_em TEXT NOT NULL, PRIMARY KEY (id, versao));
 CREATE TABLE plano (passagem TEXT PRIMARY KEY, criado_em TEXT NOT NULL, motores TEXT, livros_por_etapa TEXT, tempo_por_etapa TEXT);
 CREATE TABLE acionamento (id INTEGER PRIMARY KEY, passagem TEXT REFERENCES plano(passagem), etapa TEXT, modulo TEXT, motivo TEXT, em TEXT NOT NULL);
-CREATE TABLE execucao (id TEXT PRIMARY KEY, workflow TEXT, versao INTEGER, inicio TEXT NOT NULL, fim TEXT, estado TEXT CHECK (estado IN ('rodando','concluida','falhou','retomada')));
+CREATE TABLE execucao (id TEXT PRIMARY KEY, workflow TEXT, versao INTEGER, inicio TEXT NOT NULL, fim TEXT, estado TEXT CHECK (estado IN ('rodando','concluida','falhou','retomada','aguardando')));
 CREATE TABLE execucao_passo (execucao TEXT REFERENCES execucao(id), passo INTEGER, no TEXT, estado TEXT, entrada TEXT, saida TEXT, em TEXT NOT NULL, PRIMARY KEY (execucao, passo));
 CREATE TABLE recibo (id INTEGER PRIMARY KEY, execucao TEXT, modulo TEXT NOT NULL, chamado_por TEXT, ok INTEGER NOT NULL, duracao_ms INTEGER,
   cpu_ms INTEGER, memoria_pico_kb INTEGER, erro TEXT, em TEXT NOT NULL);
