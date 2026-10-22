@@ -8,7 +8,19 @@ from pathlib import Path
 
 from .._sqlite import abrir as _abrir
 
-VERSAO = 1
+VERSAO = 2
+
+DDL_V2 = r"""
+CREATE TABLE livro_dados (livro_id TEXT PRIMARY KEY REFERENCES livro(id),
+  abrangencia TEXT CHECK (abrangencia IN ('municipal_go','estadual_go','capital_outro_estado','municipal_fora_go','estadual_outro_estado','nacional','internacional','indeterminado')),
+  municipio TEXT, uf TEXT, esfera TEXT CHECK (esfera IN ('municipal','estadual','federal','privada','internacional') OR esfera IS NULL),
+  inscricao_inicio TEXT, inscricao_fim TEXT, resultado_em TEXT, recurso_dias INTEGER, valor_min REAL, valor_max REAL, modalidade TEXT, area TEXT,
+  situacao_prazo TEXT CHECK (situacao_prazo IN ('aberta','encerrada','sem prazo')),
+  link_oficial_tipo TEXT CHECK (link_oficial_tipo IN ('fonte','republicador','ausente')),
+  validacao TEXT NOT NULL CHECK (validacao IN ('aprovado','revisar','expurgado')), motivos TEXT, validado_em TEXT NOT NULL);
+CREATE INDEX livro_dados_abrangencia ON livro_dados(abrangencia);
+CREATE INDEX livro_dados_prazo ON livro_dados(situacao_prazo, inscricao_fim)
+"""
 
 DDL = r"""
 PRAGMA foreign_keys=ON;
@@ -90,5 +102,8 @@ CREATE VIEW achados_por_motor AS SELECT motor, COUNT(*) AS achados, SUM(decisao=
 """
 
 
+MIGRACOES = {2: DDL_V2}           # versão 1 → 2 (22/10/2026): a decupagem dos livros em colunas (livro_dados)
+
+
 def abrir(caminho: str | Path):
-    return _abrir(caminho, DDL, VERSAO)
+    return _abrir(caminho, DDL + ";\n" + DDL_V2, VERSAO, MIGRACOES)

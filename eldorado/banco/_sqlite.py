@@ -9,8 +9,9 @@ class EsquemaIncompativel(Exception):
     pass
 
 
-def abrir(caminho: str | Path, ddl: str, versao: int) -> sqlite3.Connection:
-    """Abre (ou cria) o banco. Na criação, aplica o esquema e grava a versão; depois, exige a versão esperada."""
+def abrir(caminho: str | Path, ddl: str, versao: int, migracoes: dict[int, str] | None = None) -> sqlite3.Connection:
+    """Abre (ou cria) o banco. Na criação, aplica o esquema e grava a versão. Banco numa versão anterior é migrado, passo a
+    passo (migracoes[n] leva da versão n-1 à n), dentro de uma transação; versão sem caminho de migração é recusada."""
     p = str(caminho)
     if p != ":memory:":
         Path(p).parent.mkdir(parents=True, exist_ok=True)
@@ -23,9 +24,21 @@ def abrir(caminho: str | Path, ddl: str, versao: int) -> sqlite3.Connection:
         con.executescript(ddl)
         con.execute(f"PRAGMA user_version={versao}")
         con.execute("PRAGMA foreign_keys=ON")
+    elif atual < versao and migracoes and all(n in migracoes for n in range(atual + 1, versao + 1)):
+        con.execute("BEGIN IMMEDIATE")
+        try:
+            for n in range(atual + 1, versao + 1):
+                for comando in (c for c in migracoes[n].split(";\n") if c.strip()):
+                    con.execute(comando)
+                con.execute(f"PRAGMA user_version={n}")
+            con.execute("COMMIT")
+        except Exception:
+            con.execute("ROLLBACK")
+            con.close()
+            raise
     elif atual != versao:
         con.close()
-        raise EsquemaIncompativel(f"{p}: esquema na versão {atual}, esperada {versao} (rode a migração)")
+        raise EsquemaIncompativel(f"{p}: esquema na versão {atual}, esperada {versao} (sem caminho de migração)")
     return con
 
 

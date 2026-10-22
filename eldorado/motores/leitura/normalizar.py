@@ -15,9 +15,10 @@ from validate_docbr import CNPJ
 MESES = {"janeiro": 1, "fevereiro": 2, "março": 3, "marco": 3, "abril": 4, "maio": 5, "junho": 6, "julho": 7, "agosto": 8,
          "setembro": 9, "outubro": 10, "novembro": 11, "dezembro": 12}
 _MES = "|".join(MESES)
-DATA = re.compile(rf"\b(\d{{1,2}})/(\d{{1,2}})(?:/(\d{{2,4}}))?\b"
-                  rf"|\b(\d{{4}})-(\d{{2}})-(\d{{2}})\b"
-                  rf"|\b(\d{{1,2}})º?\s+de\s+({_MES})(?:\s+de\s+(\d{{4}}))?\b", re.I)
+DATA = re.compile(rf"\b(?P<d1>\d{{1,2}})/(?P<m1>\d{{1,2}})(?:/(?P<a1>\d{{2,4}}))?\b"
+                  rf"|\b(?P<dp>\d{{1,2}})\.(?P<mp>\d{{1,2}})\.(?P<ap>\d{{4}})\b"
+                  rf"|\b(?P<ai>\d{{4}})-(?P<mi>\d{{2}})-(?P<di>\d{{2}})\b"
+                  rf"|\b(?P<dx>\d{{1,2}})º?\s+de\s+(?P<mx>{_MES})(?:\s+de\s+(?P<ax>\d{{4}}))?\b", re.I)
 _ESCALA = r"(?:\s*(?:milh(?:ões|oes|ão|ao)|bilh(?:ões|oes|ão|ao)|mil)\b)?"
 VALOR = re.compile(r"R\$\s*\d{1,3}(?:\.\d{3})+(?:,\d{1,2})?" + _ESCALA + r"|R\$\s*\d+(?:,\d{1,2})?" + _ESCALA, re.I)
 CNPJ_RX = re.compile(r"\b\d{2}\.?\d{3}\.?\d{3}/?\d{4}-?\d{2}\b")
@@ -51,15 +52,18 @@ def datas(texto: str, referencia: date | None = None) -> list[date]:
     ref = referencia or date.today()
     saida = []
     for m in DATA.finditer(texto):
+        g = m.groupdict()
         try:
-            if m.group(1):
-                d, mes = int(m.group(1)), int(m.group(2))
-                saida.append(date(_ano(m.group(3), ref, mes, d), mes, d))
-            elif m.group(4):
-                saida.append(date(int(m.group(4)), int(m.group(5)), int(m.group(6))))
+            if g["d1"]:
+                d, mes = int(g["d1"]), int(g["m1"])
+                saida.append(date(_ano(g["a1"], ref, mes, d), mes, d))
+            elif g["dp"]:                             # 22.05.2026 (só com o ano completo, para não confundir com valores)
+                saida.append(date(int(g["ap"]), int(g["mp"]), int(g["dp"])))
+            elif g["ai"]:
+                saida.append(date(int(g["ai"]), int(g["mi"]), int(g["di"])))
             else:
-                d, mes = int(m.group(7)), MESES[m.group(8).lower()]
-                saida.append(date(_ano(m.group(9), ref, mes, d), mes, d))
+                d, mes = int(g["dx"]), MESES[g["mx"].lower()]
+                saida.append(date(_ano(g["ax"], ref, mes, d), mes, d))
         except ValueError:
             continue
     return saida

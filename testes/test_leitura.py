@@ -219,6 +219,7 @@ def test_normalizacao():
     assert N.datas("de 01/10/2026 a 30/11/2026; até o dia 4 de outubro; 2026-12-03; 31/02/2026", date(2026, 9, 20)) == [
         date(2026, 10, 1), date(2026, 11, 30), date(2026, 10, 4), date(2026, 12, 3)]
     assert N.datas("até 15 de janeiro", date(2026, 11, 20)) == [date(2027, 1, 15)]           # sem ano, já passou: o ano seguinte
+    assert N.datas("22.05.2026 a 30.12.2026; valor 1.500,00") == [date(2026, 5, 22), date(2026, 12, 30)]    # com ponto, sem confundir valores
     assert N.valores("R$ 500.000,00, R$ 100 mil, R$ 1,5 milhão e trinta mil reais") == [500000.0, 100000.0, 1500000.0, 30000.0]
     assert N.extenso("dois milhões e quinhentos mil") == 2500000 and N.extenso("edital") is None
     assert N.cnpjs("02.167.849/0001-80 e 11.111.111/1111-11") == ["02167849000180"]
