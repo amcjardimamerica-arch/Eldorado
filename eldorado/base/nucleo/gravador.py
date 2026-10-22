@@ -119,9 +119,17 @@ class Gravador:
     def _pagina(self, con: sqlite3.Connection, d: dict[str, Any]) -> None:
         """O texto literal da página: comprimido com zstd e indexado na busca, sem uma segunda cópia do texto."""
         texto = d["texto"]
+        doc = d.get("documento_id")
+        if doc is None:                                         # ligada pela assinatura do documento
+            linha = con.execute("SELECT id FROM documento WHERE sha256=?", (d["documento_sha256"],)).fetchone()
+            if linha is None:
+                raise ValueError(f"documento não registrado: {d['documento_sha256']}")
+            doc = linha[0]
+        if con.execute("SELECT 1 FROM pagina WHERE documento_id=? AND numero=?", (doc, d["numero"])).fetchone():
+            return                                              # já gravada: o texto de uma página nunca muda (idempotência)
         con.execute("INSERT INTO pagina(documento_id, numero, texto_zstd, caracteres, expurgado) VALUES (?,?,?,?,?)",
-                    (d["documento_id"], d["numero"], self._zstd.compress(texto.encode("utf-8")), len(texto), int(d.get("expurgado", 0))))
-        rowid = con.execute("INSERT INTO busca_mapa(documento_id, numero) VALUES (?,?)", (d["documento_id"], d["numero"])).lastrowid
+                    (doc, d["numero"], self._zstd.compress(texto.encode("utf-8")), len(texto), int(d.get("expurgado", 0))))
+        rowid = con.execute("INSERT INTO busca_mapa(documento_id, numero) VALUES (?,?)", (doc, d["numero"])).lastrowid
         con.execute("INSERT INTO busca(rowid, texto) VALUES (?,?)", (rowid, texto))
 
     def _expandir(self, ev: Evento, r: Relatorio) -> None:

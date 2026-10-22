@@ -81,7 +81,7 @@ class Cartorio:
                 self.diario.emitir("livro.links", "cartorio", {"id": livro, "link_divulgacao": a.link_divulgacao, "link_oficial": oficial,
                                                                "atualizado_em": agora()})
             certidoes = self._certidoes(livro)
-            sha = (a.dados or {}).get("documento_sha256") or a.documento_sha256
+            sha = (a.dados or {}).get("documento_sha256") or a.documento_sha256 or (a.documento or {}).get("sha256")
             novas = self.certificacao.certificar(livro, self._paginas(sha), {k for k, c in certidoes.items() if I.resolvido(c)})
             certidoes.update(novas)
             estrela, selo = selos.calcular(self.diario, livro, certidoes, self._edicoes(livro, a), self.ano)

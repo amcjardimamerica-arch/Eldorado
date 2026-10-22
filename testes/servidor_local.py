@@ -19,8 +19,10 @@ class Estado:
         self.porta = 0
 
 
-def criar_servidor():
+def criar_servidor(extra=None):
+    """extra: {caminho: (status, corpo, tipo)} para rotas próprias de cada teste."""
     estado = Estado()
+    extra = extra or {}
 
     class H(BaseHTTPRequestHandler):
         def log_message(self, *a):
@@ -38,6 +40,9 @@ def criar_servidor():
             cliente = "navegador" if "Chrome" in ua or "Mozilla" in ua else "outro"
             caminho = self.path.split("?")[0]
             estado.acessos[(caminho, cliente)] += 1
+            if caminho in extra:
+                st, corpo, tipo = extra[caminho]
+                return self.responder(st, corpo() if callable(corpo) else corpo, tipo)
             if caminho == "/robots.txt":
                 return self.responder(200, b"User-agent: *\nDisallow: /restrito/\nCrawl-delay: 2\n", "text/plain")
             if caminho in ("/ok.html", "/restrito/pagina.html"):

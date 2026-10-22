@@ -91,7 +91,7 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
                              Alvo(B, "achado", "atualizar", ("id",), _decisao_no_achado)),
     # Coleta e Cartório (biblioteca.db)
     "achado.entregue": (Alvo(B, "achado", "inserir"),),
-    "documento.registrado": (Alvo(B, "documento", "inserir"),),
+    "documento.registrado": (Alvo(B, "documento", "inserir_ou_atualizar", ("sha256",)),),
     "pagina.gravada": (Alvo(B, "pagina", "pagina"),),
     "livro.criado": (Alvo(B, "livro", "inserir"),),
     "livro.vinculado": (Alvo(B, "achado", "atualizar", ("id",), lambda d: {"id": d["achado_id"], "livro_id": d["livro_id"]}),),

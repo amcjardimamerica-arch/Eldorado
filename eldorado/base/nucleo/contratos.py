@@ -35,6 +35,7 @@ class Achado(msgspec.Struct, kw_only=True, omit_defaults=True):
     drive_id: str | None = None
     veio_de_copia_arquivada: bool = False
     pista: bool = False
+    documento: dict[str, Any] | None = None   # o documento oficial lido: url, sha256, tipo, leitor, paginas (texto literal), oficial
 
 
 class Plano(msgspec.Struct, kw_only=True, omit_defaults=True):

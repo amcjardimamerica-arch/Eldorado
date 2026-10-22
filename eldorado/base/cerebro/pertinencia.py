@@ -44,9 +44,18 @@ def no_decidir(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto
     """Nó do workflow: decide cada achado recebido; segue adiante só o que foi aceito."""
     p = Pertinencia(instanciar(parametros["missao"], parametros.get("missao_parametros")), contexto.diario)
     aceitos = []
+    retornos: dict[str, list[Retorno]] = {}
     for item in itens:
         achado = msgspec.convert({k: v for k, v in item.items() if not k.startswith("_")}, Achado)
-        if p.decidir(achado).decisao == "aceito":
+        r = p.decidir(achado)
+        retornos.setdefault(achado.motor, []).append(r)
+        if r.decisao == "aceito":
             aceitos.append(item)
     p.medir_etapa("coleta", len(itens), len(aceitos))
+    if parametros.get("modulos"):                               # o retorno volta a cada motor, para ele aprender
+        from ..nucleo.registro import carregar as carregar_registro
+        registro = carregar_registro(parametros["modulos"])
+        for motor, lista in retornos.items():
+            if motor in registro.ids():
+                registro.obter(motor).aprender(lista)
     return aceitos

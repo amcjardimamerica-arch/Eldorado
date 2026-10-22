@@ -49,6 +49,8 @@ def achado_para_evento(a: Achado) -> dict[str, Any]:
     d = msgspec.to_builtins(a)
     ev = {k: (int(v) if isinstance(v, bool) else v) for k, v in d.items() if k in COLUNAS_ACHADO}
     extras = {k: d[k] for k in ("documento_sha256", "drive_id") if d.get(k)}
+    if a.documento and a.documento.get("sha256"):
+        extras["documento_sha256"] = a.documento["sha256"]
     if extras:
         ev["dados"] = {**(ev.get("dados") or {}), **extras}
     return ev
@@ -91,10 +93,25 @@ class Regencia:
             self.diario.emitir("motor.execucao", "regencia", {"motor": modulo, "inicio": inicio, "fim": agora(), "achados": len(lista),
                                                               "erro": med.erro or None})
             for a in lista:
+                if a.documento:
+                    self._documento(modulo, a.documento)
                 ev = achado_para_evento(a)
                 self.diario.emitir("achado.entregue", modulo, ev)
-                achados.append(msgspec.to_builtins(a))
+                achados.append(_sem_paginas(msgspec.to_builtins(a)) | {"documento": _sem_paginas(a.documento) if a.documento else None})
         return achados, adiados
+
+    def _documento(self, modulo: str, doc: dict[str, Any]) -> None:
+        """O documento oficial que o motor leu: o registro (pela assinatura) e o texto literal de cada página."""
+        self.diario.emitir("documento.registrado", modulo, {"url": doc["url"], "sha256": doc["sha256"], "tipo": doc.get("tipo"),
+                                                            "paginas": len(doc.get("paginas") or []), "obtido_em": agora(),
+                                                            "oficial": int(bool(doc.get("oficial"))), "drive_id": doc.get("drive_id"),
+                                                            "leitor": doc.get("leitor"), "versao_leitor": doc.get("versao_leitor")})
+        for i, texto in enumerate(doc.get("paginas") or [], 1):
+            self.diario.emitir("pagina.gravada", modulo, {"documento_sha256": doc["sha256"], "numero": i, "texto": texto})
+
+
+def _sem_paginas(d: dict[str, Any]) -> dict[str, Any]:
+    return {k: v for k, v in d.items() if k != "paginas"}
 
 
 def _governador(parametros: dict[str, Any], diario: Diario) -> Governador:
