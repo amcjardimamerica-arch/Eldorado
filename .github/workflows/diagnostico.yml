@@ -1,0 +1,26 @@
+# Diagnóstico (análise externa): sonda endereços a partir do GitHub, que alcança a internet, e publica o resultado de
+# cada um como anotação da execução (legível pela API). Não grava nada no repositório.
+name: Diagnóstico
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: "Endereços separados por espaço"
+        required: true
+permissions:
+  contents: read
+jobs:
+  sondar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e ".[leitura,acesso,descoberta]"
+      - name: Sondar
+        env:
+          URLS: ${{ inputs.urls }}
+        run: eldorado sondar $URLS --anotar

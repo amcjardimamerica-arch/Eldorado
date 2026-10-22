@@ -187,6 +187,27 @@ def fechar(config: Path = CONFIG):
 
 
 @app.command()
+def sondar(urls: list[str], anotar: bool = typer.Option(False, "--anotar", help="publica cada resultado como anotação do GitHub")):
+    """ANÁLISE EXTERNA: acessa endereços pela escada (API e assinatura de navegador) e mostra o status e o começo da resposta."""
+    from ...motores.acesso.api import DegrauAPI
+    from ...motores.acesso.escada import Bloqueado, Escada
+    from ...motores.acesso.leve import DegrauLeve
+    escada = Escada([DegrauAPI(), DegrauLeve()], intervalo_padrao=0.5, tentativas=1, tempo_limite=25)
+    for url in urls:
+        try:
+            r = escada.buscar(url)
+            texto = r.conteudo[:400].decode("utf-8", errors="replace").replace("\n", " ")
+            linha = f"{r.status} · {len(r.conteudo)} bytes · {r.tipo} · degrau {r.degrau[:1]} · {texto}"
+        except Bloqueado as e:
+            linha = f"FALHOU · {str(e)[:400]}"
+        except Exception as e:  # noqa: BLE001 — a sondagem relata qualquer falha, sem parar as outras
+            linha = f"ERRO · {type(e).__name__}: {str(e)[:300]}"
+        typer.echo(f"{url}\n   {linha}")
+        if anotar:
+            typer.echo(f"::notice title={url[:120]}::{linha.replace(chr(37), ' por cento')[:900]}")
+
+
+@app.command()
 def pausar(config: Path = CONFIG):
     """Pausa o sistema: nada novo começa até despausar."""
     _, dados, _ = _cfg(config)
