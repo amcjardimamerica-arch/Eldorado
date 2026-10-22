@@ -134,7 +134,7 @@ def migrar(origem: Path, config: Path = CONFIG, lote: int = 500, aprendizado: Op
         for grupo in lotes(fluxo, lote):
             r = g.aplicar(grupo)
             aplicados, recusados = aplicados + r.aplicados, recusados + len(r.recusados)
-        typer.echo(f"eventos aplicados: {aplicados} · recusados: {recusados} · CPF mascarados: {imp.r.cpf_mascarados}")
+        typer.echo(f"eventos aplicados: {aplicados} · recusados: {recusados}")
         tabela = conferir(imp, bancos)
         for q, a, c, ok in tabela:
             typer.echo(f"  {'ok ' if ok else 'DIVERGE'} {q}: origem {a} · banco {c}")

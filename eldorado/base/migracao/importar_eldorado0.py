@@ -2,7 +2,7 @@
 o aprendizado dos motores, em eventos aplicados pelo gravador.
 
 - Eventos com identidades deterministas (eldorado0-000001…): rodar de novo não duplica nada.
-- CPF mascarado em todo texto importado (cada ocorrência contada).
+- CPF removido de todo texto importado, sem máscara e sem menção.
 - Nada inventado: o que falta vira lacuna no relatório. Tudo o que é lido é contado na origem, para a conferência.
 - Duas identidades com a mesma chave não são fundidas: os dois livros entram e a união é registrada.
 - Os pedaços do acervo do Eldorado0 são "achatados": cada um é um mapa caminho → {"dado": valor}.
@@ -17,13 +17,12 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Iterator
 
-from ...motores.leitura.leitores import mascarar_cpf
+from ...motores.leitura.leitores import remover_cpf
 from ..missao import itens as I
 from ..missao.chave import chave as chave_missao
 from ..nucleo.eventos import Evento, Linhagem
 from ..nucleo.eventos import agora as _agora
 
-CPF = re.compile(r"\b\d{3}\.\d{3}\.\d{3}-\d{2}\b")
 FASE = "eldorado0"
 
 
@@ -31,7 +30,6 @@ FASE = "eldorado0"
 class Relatorio:
     origem: Counter = field(default_factory=Counter)
     lacunas: Counter = field(default_factory=Counter)
-    cpf_mascarados: int = 0
     exemplos_lacuna: dict[str, list[str]] = field(default_factory=dict)
 
     def lacuna(self, tipo: str, ref: str) -> None:
@@ -58,12 +56,7 @@ class Importador:
     def _txt(self, v: Any, limite: int = 2000) -> str | None:
         if v is None:
             return None
-        t = str(v)
-        n = len(CPF.findall(t))
-        if n:
-            self.r.cpf_mascarados += n
-            t = mascarar_cpf(t)
-        return t[:limite]
+        return remover_cpf(str(v))[:limite]
 
     @staticmethod
     def _dados(peca: dict) -> Iterator[Any]:

@@ -49,7 +49,7 @@ def montar(raiz):
         {"nome": "Empresa B", "cnpj": "07526557000100", "confirmados": ["Rouanet"], "rouanet_5_anos": {"valor": 41700.0, "anos": ["2024"]}, "pat": "inscrita"}]}))
 
 
-def test_migracao_confere_mascara_cpf_e_e_idempotente(tmp_path):
+def test_migracao_confere_remove_cpf_e_e_idempotente(tmp_path):
     montar(tmp_path)
     b = abrir_bancos(tmp_path / "dados")
     try:
@@ -65,7 +65,7 @@ def test_migracao_confere_mascara_cpf_e_e_idempotente(tmp_path):
         assert bib.execute("SELECT situacao, justificativa_exclusao FROM livro WHERE id='op-velho'").fetchone()[1].startswith("arquivado no Eldorado0")
         assert tuple(bib.execute("SELECT livro_que_fica, livro_unido FROM uniao").fetchone()) == ("captacao-001", "op-duplicado")    # unidos, não fundidos
         trecho = bib.execute("SELECT trecho FROM certidao WHERE item='Valor'").fetchone()[0]
-        assert "123.456.789-09" not in trecho and "***.***.***-**" in trecho and imp.r.cpf_mascarados == 1
+        assert "123.456.789-09" not in trecho and "***" not in trecho and "CPF" not in trecho and "R$ 300.000,00" in trecho
         assert dict(bib.execute("SELECT item, situacao FROM certidao WHERE livro_id='captacao-001'").fetchall()) == {
             "Objeto": "comprovado", "Valor": "comprovado", "Prazo de recurso": "dispensado", "Resultado": "pendente"}              # "não informado" é falta
         assert bib.execute("SELECT informacoes_validadas FROM livro WHERE id='captacao-001'").fetchone()[0] == 3                 # o pendente não conta

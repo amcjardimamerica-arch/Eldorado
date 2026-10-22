@@ -43,7 +43,7 @@ def test_pdf_expurgo_seguro_ocr_e_valores_preservados():
     texto = r.texto
     assert "SEI/GO" not in texto and "Página 1 de 4" not in texto                     # cabeçalho e rodapé repetidos saíram
     assert texto.count("R$ 50.000,00") == 3 and texto.count("02.167.849/0001-80") == 3
-    assert "123.456.789-09" not in texto and "***.***.***-**" in texto               # CPF mascarado
+    assert "123.456.789-09" not in texto and "***" not in texto and "CPF" not in texto   # CPF removido, sem marca nem menção
     assert any("aguardando OCR" in a for a in r.alertas)
 
 

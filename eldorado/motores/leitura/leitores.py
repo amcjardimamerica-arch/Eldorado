@@ -5,7 +5,8 @@
 - Todo leitor entrega o mesmo formato (Leitura): o texto literal por página, os links, as tabelas, os dados
   estruturados, os alertas e as páginas que precisam de OCR.
 - Tipo sem leitor: vai à reserva (o leitor universal, quando ligado) ou é erro claro (nunca silêncio).
-- O CPF é mascarado no texto que sai de qualquer leitor (regra da titular: CPF removido onde não for necessário).
+- O CPF é removido do texto que sai de qualquer leitor, sem máscara e sem menção (titular, 22/10/2026). Só o cadastro
+  feito pela titular guarda CPF (com a autorização da LGPD); a leitura de fontes nunca.
 """
 from __future__ import annotations
 
@@ -19,7 +20,8 @@ from typing import Any, Protocol
 
 from charset_normalizer import from_bytes
 
-CPF = re.compile(r"\b\d{3}\.\d{3}\.\d{3}-\d{2}\b|\bCPF:?\s*\d{11}\b", re.I)
+CPF = re.compile(r"(?:\bC\.?P\.?F\.?(?:/MF)?\s*(?:n[º°o.]*\s*)?[:\-–]?\s*)?(?:\b\d{3}\.\d{3}\.\d{3}-\d{2}\b|(?<=CPF)\s*\d{11}\b)"
+                 r"|\bC\.?P\.?F\.?(?:/MF)?\s*(?:n[º°o.]*\s*)?[:\-–]?\s*\d{11}\b", re.I)
 
 
 @dataclass
@@ -58,8 +60,10 @@ class Leitor(Protocol):
     def ler(self, conteudo: bytes, nome: str | None, registro: "Registro") -> Leitura: ...
 
 
-def mascarar_cpf(texto: str) -> str:
-    return CPF.sub("***.***.***-**", texto)
+def remover_cpf(texto: str) -> str:
+    """Tira o CPF (e a palavra "CPF" que o acompanha) sem deixar marca no lugar."""
+    t = CPF.sub("", texto)
+    return re.sub(r"[ \t]{2,}", " ", re.sub(r"[ \t]+([,;.)])", r"\1", t)) if t != texto else texto
 
 
 def decodificar(conteudo: bytes) -> str:
@@ -150,7 +154,7 @@ class Registro:
             self.profundidade = anterior
         r.tipo = tipo
         for p in r.paginas:
-            p.texto = mascarar_cpf(p.texto)
+            p.texto = remover_cpf(p.texto)
         return r
 
 
