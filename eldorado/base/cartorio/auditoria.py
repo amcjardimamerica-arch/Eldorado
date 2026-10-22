@@ -132,9 +132,15 @@ def _primeiro(certidoes: dict[str, dict], item: str) -> str | None:
     return c.get("valor") if c else None
 
 
-def auditar(con: sqlite3.Connection, hoje: date) -> Iterator[Resultado]:
+def pendentes(con: sqlite3.Connection) -> set[str]:
+    """Os livros sem a validação, ou alterados depois dela."""
+    return {r[0] for r in con.execute("SELECT l.id FROM livro l LEFT JOIN livro_dados d ON d.livro_id = l.id "
+                                      "WHERE d.livro_id IS NULL OR l.atualizado_em > d.validado_em")}
+
+
+def auditar(con: sqlite3.Connection, hoje: date, somente: set[str] | None = None) -> Iterator[Resultado]:
     con.row_factory = sqlite3.Row
-    livros = [dict(r) for r in con.execute("SELECT * FROM livro ORDER BY id")]
+    livros = [dict(r) for r in con.execute("SELECT * FROM livro ORDER BY id") if somente is None or r["id"] in somente]
     todas: dict[str, list[dict]] = {}
     for c in con.execute("SELECT * FROM certidao WHERE situacao IN ('comprovado','dispensado') ORDER BY id"):
         todas.setdefault(c["livro_id"], []).append(dict(c))
@@ -214,3 +220,19 @@ def aplicar(resultados: list[Resultado], diario: Diario) -> None:
                                                        "gerou": f"{r.validacao}; território {r.abrangencia}; estrela {r.estrela_antes} → {r.estrela_depois}; "
                                                                 f"{len(contestar)} certidão(ões) contestada(s)",
                                                        "aprendeu": None, "faltou": "; ".join(r.motivos) or None})
+
+
+def no_auditar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
+    """Nó da passagem: valida e decupa os livros novos ou alterados (a automação só exclui logicamente)."""
+    from pathlib import Path
+    p = Path(parametros.get("dados", "dados")) / "biblioteca.db"
+    if not p.exists():
+        return []
+    con = sqlite3.connect(f"file:{p}?mode=ro", uri=True)
+    try:
+        alvo = pendentes(con)
+        res = list(auditar(con, date.today(), alvo)) if alvo else []
+    finally:
+        con.close()
+    aplicar(res, contexto.diario)
+    return [{"auditados": len(res), "expurgados": sum(r.validacao == "expurgado" for r in res), "revisar": sum(r.validacao == "revisar" for r in res)}]

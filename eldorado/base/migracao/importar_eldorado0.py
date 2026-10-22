@@ -2,7 +2,7 @@
 o aprendizado dos motores, em eventos aplicados pelo gravador.
 
 - Eventos com identidades deterministas (eldorado0-000001…): rodar de novo não duplica nada.
-- CPF removido de todo texto importado, sem máscara e sem menção.
+- O texto é importado íntegro, como estava na fonte (dados públicos).
 - Nada inventado: o que falta vira lacuna no relatório. Tudo o que é lido é contado na origem, para a conferência.
 - Duas identidades com a mesma chave não são fundidas: os dois livros entram e a união é registrada.
 - Os pedaços do acervo do Eldorado0 são "achatados": cada um é um mapa caminho → {"dado": valor}.
@@ -17,7 +17,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Iterator
 
-from ...motores.leitura.leitores import remover_cpf
 from ..missao import itens as I
 from ..missao.chave import chave as chave_missao
 from ..nucleo.eventos import Evento, Linhagem
@@ -56,7 +55,7 @@ class Importador:
     def _txt(self, v: Any, limite: int = 2000) -> str | None:
         if v is None:
             return None
-        return remover_cpf(str(v))[:limite]
+        return str(v)[:limite]
 
     @staticmethod
     def _dados(peca: dict) -> Iterator[Any]:

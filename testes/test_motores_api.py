@@ -36,7 +36,8 @@ def pncp(pagina):
     item = lambda n: {"orgaoEntidade": {"cnpj": "01409580000138", "razaoSocial": "SECRETARIA DE ESTADO DA CULTURA"}, "anoCompra": 2026, "sequencialCompra": n,  # noqa: E731
                       "objetoCompra": f"Credenciamento de organizações da sociedade civil para projetos culturais {n}", "dataPublicacaoPncp": "2026-10-20T10:00:00",
                       "dataEncerramentoProposta": f"{FUTURO}T23:59:00", "unidadeOrgao": {"ufSigla": "GO", "municipioNome": "Goiânia"}, "modalidadeNome": "Credenciamento"}
-    return json.dumps({"data": [item(pagina)], "totalPaginas": 2}).encode()
+    ruido = dict(item(90 + pagina), objetoCompra="CREDENCIAMENTO PARA A PRESTAÇÃO DE SERVIÇO DE TRANSPORTE ESCOLAR")
+    return json.dumps({"data": [item(pagina), ruido], "totalPaginas": 2}).encode()
 
 
 def siconv_zip():
@@ -55,16 +56,18 @@ ROTAS = {
     "/web/dou/-/edital-de-chamamento-3-2026": (200, ("<html><body><div class='texto-dou'>" + "O Ministério da Cultura torna público o chamamento. " * 6
                                                      + "</div></body></html>").encode(), "text/html"),
     "/api/consulta/v1/contratacoes/proposta": (200, None, "application/json"),
-    "/api/opportunity/find": (200, json.dumps([{"id": 4321, "name": "Edital de Fomento à Cultura Viva 2026", "shortDescription": "pontos de cultura",
+    "/api/opportunity/find": (200, json.dumps([{"id": 999, "name": "Vaga para arte-educador(a) em oficinas", "registrationTo": {"date": f"{FUTURO} 23:59:00.000000"}},
+                                               {"id": 4321, "name": "Edital de Fomento à Cultura Viva 2026", "shortDescription": "pontos de cultura",
                                                 "registrationFrom": {"date": "2026-10-01 00:00:00.000000"}, "registrationTo": {"date": f"{FUTURO} 23:59:00.000000"}}]).encode(),
                               "application/json"),
-    "/cultura/wp-json/wp/v2/posts": (200, json.dumps([{"title": {"rendered": "Secult abre edital de chamamento para festivais"}, "link": "{base}/cultura/edital-festivais",
+    "/cultura/wp-json/wp/v2/posts": (200, json.dumps([{"title": {"rendered": "Secult abre edital de chamamento para festivais &#8211; 2026"}, "link": "{base}/cultura/edital-festivais",
                                                        "date": "2026-10-20T10:00:00", "excerpt": {"rendered": "<p>inscrições abertas</p>"}},
+                                                      {"title": {"rendered": "EDITAL PREGÃO ELETRÔNICO Nº 05/2026"}, "link": "{base}/cultura/pregao", "date": "2026-10-19T10:00:00"},
                                                       {"title": {"rendered": "Resultado final do edital de 2025"}, "link": "{base}/cultura/resultado", "date": "2026-10-19T10:00:00"}]).encode(),
                                      "application/json"),
     "/social/wp-json/wp/v2/posts": (200, b"[]", "application/json"),
     "/cultura/edital-festivais": (200, ("<html><body>" + "Edital de chamamento para festivais culturais em Goiás. " * 6 + "</body></html>").encode(), "text/html"),
-    "/gazettes": (200, json.dumps({"total_gazettes": 1, "gazettes": [{"territory_name": "Goiânia", "state_code": "GO", "date": "2026-10-20",
+    "/api/gazettes": (200, json.dumps({"total_gazettes": 1, "gazettes": [{"territory_name": "Goiânia", "state_code": "GO", "date": "2026-10-20",
                                                                      "url": "https://qd/goiania-2026-10-20.pdf",
                                                                      "excerpts": ["EDITAL DE CHAMAMENTO PÚBLICO para organizações da sociedade civil — Secretaria Municipal de Cultura"]}]}).encode(),
                   "application/json"),
@@ -92,7 +95,7 @@ def api():
 
 def motor(nome, base, tmp_path):
     texto = (CONFIG / f"{nome}.toml").read_text(encoding="utf-8")
-    texto = re.sub(r"https://(?:www\.in\.gov\.br|pncp\.gov\.br|mapa\.cultura\.gov\.br|goias\.gov\.br|api\.queridodiario\.ok\.org\.br|api-publica\.transferegov\.gestao\.gov\.br)",
+    texto = re.sub(r"https://(?:www\.in\.gov\.br|pncp\.gov\.br|mapa\.cultura\.gov\.br|goias\.gov\.br|queridodiario\.ok\.org\.br|api-publica\.transferegov\.gestao\.gov\.br)",
                    base, texto)
     texto = texto.replace('intervalo_s = 1.0', 'intervalo_s = 0')
     (tmp_path / f"{nome}.toml").write_text(texto + ("\n" if "[acesso]" in texto else ""), encoding="utf-8")
@@ -116,6 +119,7 @@ def test_pncp_pagina_e_traz_os_dados_de_cada_item(api, tmp_path):
     paginas["n"] = 0
     achados = list(motor("pncp", base, tmp_path).buscar(None))
     assert paginas["n"] == 8                                                                     # 4 modalidades × 2 páginas
+    assert len(achados) == 8 and not any("TRANSPORTE ESCOLAR" in a.titulo for a in achados)      # sem sinal de OSC: barrado
     a = achados[0]
     assert "/app/editais/01409580000138/2026/" in a.link_oficial
     assert (a.dados["uf"], a.dados["municipio"], a.dados["fim"][:10], a.dados["orgao"]) == ("GO", "Goiânia", FUTURO, "SECRETARIA DE ESTADO DA CULTURA")
@@ -123,21 +127,23 @@ def test_pncp_pagina_e_traz_os_dados_de_cada_item(api, tmp_path):
 
 def test_mapa_da_cultura(api, tmp_path):
     base, _, _ = api
-    a = list(motor("mapas-culturais", base, tmp_path).buscar(None))[0]
+    achados = list(motor("mapas-culturais", base, tmp_path).buscar(None))
+    assert len(achados) == 1                                                                     # a vaga de arte-educador foi vetada
+    a = achados[0]
     assert a.link_oficial.endswith("/oportunidade/4321") and a.dados["fim"].startswith(FUTURO) and a.dados["resumo"] == "pontos de cultura"
 
 
 def test_wordpress_de_goias(api, tmp_path):
     base, _, _ = api
     achados = list(motor("wordpress-goias", base, tmp_path).buscar(None))
-    assert [a.titulo for a in achados] == ["Secult abre edital de chamamento para festivais"]          # o resultado final foi vetado
+    assert [a.titulo for a in achados] == ["Secult abre edital de chamamento para festivais – 2026"]    # pregão e resultado vetados; HTML decodificado
     assert achados[0].dados["uf"] == "GO" and "festivais culturais" in achados[0].documento["paginas"][0]
 
 
 def test_querido_diario(api, tmp_path):
     base, _, _ = api
     a = list(motor("querido-diario", base, tmp_path).buscar(None))[0]
-    assert (a.dados["municipio"], a.dados["uf"]) == ("Goiânia", "GO") and "CHAMAMENTO" in a.titulo and a.documento is None
+    assert (a.dados["municipio"], a.dados["uf"], a.dados["nivel"]) == ("Goiânia", "GO", "municipal") and "CHAMAMENTO" in a.titulo and a.documento is None
 
 
 def test_transferegov(api, tmp_path):

@@ -242,7 +242,8 @@ class MotorCanal(Motor):
                 try:
                     doc = dados_abertos.carregar_json(self.escada.buscar, url, f.json_em)
                 except (Bloqueado, ValueError) as e:
-                    erros.append(f"{url.split('?')[0]} {vals}: {e}")
+                    curtos = {k: (str(v)[:30] + "…" if len(str(v)) > 30 else v) for k, v in vals.items()}
+                    erros.append(f"{type(e).__name__}: {str(e)[:220]} · {url.split('?')[0]} {curtos}")   # o motivo primeiro
                     break
                 novas = dados_abertos.pistas_da_api(doc, f.caminhos, f"{f.nome}")
                 pistas += novas

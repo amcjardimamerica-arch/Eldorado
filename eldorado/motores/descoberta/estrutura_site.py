@@ -71,7 +71,9 @@ def links(buscar: Buscar, url: str, mesmo_dominio: bool = True) -> list[Pista]:
 
 
 def _texto(v) -> str:
+    """O texto sem as marcações e com os códigos de HTML decodificados (&#8211; → –)."""
+    import html
     import re
     t = v.get("rendered", "") if isinstance(v, dict) else str(v or "")
-    return re.sub(r"<[^>]+>", "", t).strip()
+    return html.unescape(re.sub(r"<[^>]+>", "", t)).strip()
 

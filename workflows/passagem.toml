@@ -38,6 +38,11 @@ esperas_s = [2, 5]
 parametros = { dados = "dados", eventos = "eventos" }
 
 [[no]]
+id = "auditar"
+tipo = "eldorado.base.cartorio.auditoria:no_auditar"
+parametros = { dados = "dados" }
+
+[[no]]
 id = "aprender"
 tipo = "eldorado.base.cerebro.aprendizado:no_aprendizado"
 parametros = { dados = "dados" }
@@ -77,6 +82,9 @@ de = "cartorio"
 para = "aplicar_cartorio"
 [[conexao]]
 de = "aplicar_cartorio"
+para = "auditar"
+[[conexao]]
+de = "auditar"
 para = "aprender"
 [[conexao]]
 de = "aprender"

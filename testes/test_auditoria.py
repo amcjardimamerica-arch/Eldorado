@@ -87,3 +87,15 @@ def test_auditoria_expurga_mantem_historico_contesta_e_decupa(gravador, bancos, 
     assert b.execute("SELECT situacao FROM certidao WHERE item='Resultado'").fetchone()[0] == "contestado"
     assert b.execute("SELECT COUNT(*) FROM livro_dados").fetchone()[0] == 5
     assert b.execute("SELECT estrela FROM livro WHERE id='ok'").fetchone()[0] == "bronze"                             # recalculada sem a contestada
+
+
+def test_so_os_livros_novos_ou_alterados_sao_auditados(gravador, bancos, diario, tmp_path):
+    from eldorado.base.cartorio.auditoria import pendentes
+    assert gravador.aplicar([livro("a", "Edital de fomento cultural para organizações da sociedade civil", "GO", "Secretaria de Estado da Cultura"),
+                             livro("b", "Chamamento público para organizações da sociedade civil", "GO", "Secretaria de Estado da Cultura")]).ok
+    assert pendentes(bancos["biblioteca"]) == {"a", "b"}
+    aplicar(list(auditar(bancos["biblioteca"], HOJE)), diario)
+    assert gravador.aplicar(list(ler(tmp_path / "eventos"))).ok
+    assert pendentes(bancos["biblioteca"]) == set()
+    assert gravador.aplicar([ev("livro.situacao", id="a", situacao="em trabalho", atualizado_em="2999-01-01T00:00:00+00:00")]).ok
+    assert pendentes(bancos["biblioteca"]) == {"a"}                                                  # alterado depois da validação

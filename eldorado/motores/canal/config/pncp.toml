@@ -26,9 +26,16 @@ orgao = "orgaoEntidade.razaoSocial"
 uf = "unidadeOrgao.ufSigla"
 municipio = "unidadeOrgao.municipioNome"
 modalidade = "modalidadeNome"
+resumo = "informacaoComplementar"
 
 [acesso]
 degraus = ["api", "leve"]
 
 [leitura]
 documentos = false                  # o edital do órgão (/arquivos) é lido pelo Interceptador (Fase 8)
+
+[lexico]
+# Do motor do PNCP do Eldorado0 (pncp_osc.py): só passa o que tem sinal de OSC; compra é vetada (no título).
+termos = ["re:13\\.019|termo de (fomento|colaboracao)|organizac(ao|oes) da sociedade civil|\\boscs?\\b|mrosc|associac(ao|oes) (de )?estudant|gremios? estudant|centros? academic|\\bilpis?\\b|longa permanencia|cooperativas? (e|ou|/)? ?associac(ao|oes) de catadores|associac(ao|oes) de catadores|acordo de cooperacao(?! tecnica)|entidades? (socioassistencia|de assistencia social)|\\bcmas\\b|\\bcmdca\\b|pnab|aldir blanc|paulo gustavo|agentes? cultura|pontos? de cultura|(entidades|instituicoes) (de assistencia social|privadas sem fins|filantropicas|sem fins)|termo de execucao cultural"]
+vetos = ["re:\\bpregao\\b|\\bconcorrencia\\b|\\bleilao\\b|registro de precos?|\\baquisicao de\\b|\\bfornecimento de\\b|contratacao de empresa|empresas? especializadas?|menor preco|\\bme/epp\\b|microempresas?|eventuais e futuras contratacoes|contratac(ao|oes) de servicos?|generos alimenticios|alimentacao escolar|\\bpnae\\b"]
+salvos = ["re:13\\.019|termo de (fomento|colaboracao)|mrosc|termo de execucao cultural"]
