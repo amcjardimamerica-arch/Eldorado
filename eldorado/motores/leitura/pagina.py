@@ -87,7 +87,13 @@ class LeitorPagina:
         sistema = sistema_do_site(html, base)
         if sistema:
             r.dados["sistema"] = sistema
-        r.paginas.append(Pagina(1, extract_plain_text(html, main_content=False, links=False, list_bullets=True)))
+        # o CONTEÚDO PRINCIPAL, sem menus e rodapés (lição do goias.gov.br, 22/10: "Fundo de Arte" e "Convênios" do menu
+        # viravam certidão); a página inteira só quando o conteúdo principal vem quase vazio
+        principal = extract_plain_text(html, main_content=True, links=False, list_bullets=True)
+        if len(principal.strip()) < 200:
+            principal = extract_plain_text(html, main_content=False, links=False, list_bullets=True)
+            r.alertas.append("conteúdo principal quase vazio: lida a página inteira")
+        r.paginas.append(Pagina(1, principal))
         return r
 
 

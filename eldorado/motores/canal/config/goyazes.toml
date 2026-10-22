@@ -41,5 +41,7 @@ seguir_oficial = true
 max_documentos = 10
 
 [lexico]
-termos = ["re:goyazes"]
-vetos = ["re:resultado|homologa|aprovad|contemplad|habilitad"]
+# Notícias sobre projetos já financiados não são oportunidade: o título tem de anunciar inscrição, edital, norma ou prazo.
+termos = ["re:inscric|edital|chamamento|instrucao normativa|portaria|prazo|calendario|cartas? de intencao|regras|reabert|prorroga"]
+vetos = ["re:resultado|homologa|aprov|contemplad|habilitad|captad|celebra|festa|leva |apresentac|show|maior investimento"]
+termos_em = "titulo"

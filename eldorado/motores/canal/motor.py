@@ -209,7 +209,10 @@ class MotorCanal(Motor):
                 self.estado.leitura(fonte.nome, _agora(), sem_mudanca=True)
                 continue
             entregues = 0
+            proprios = {self.cfg.programa.link_divulgacao.rstrip("/"), self.cfg.programa.link_oficial.rstrip("/")} if self.cfg.programa else set()
             for pista in pistas:
+                if pista.link.rstrip("/") in proprios:
+                    continue                                        # o próprio programa já é entregue pela seção programa
                 if not self._passa_lexico(pista.titulo, pista.resumo or "") or self.estado.ja_entregue(pista.link):
                     continue
                 achado = self._achado(fonte, pista, entregues)

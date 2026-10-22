@@ -228,3 +228,12 @@ def test_normalizacao():
 def test_leitores_registrados_cobrem_os_formatos():
     assert set(REG.tipos()) >= {"pdf", "html", "texto", "json", "xml", "csv", "xlsx", "xls", "ods", "docx", "odt", "pptx", "zip", "7z", "rar"}
     json.dumps(REG.tipos())
+
+
+def test_pagina_le_o_conteudo_principal_sem_o_menu():
+    """Lição do goias.gov.br (22/10/2026): os itens do menu ("Fundo de Arte", "Convênios") viravam certidão."""
+    html = ("<html><body><nav><a href='/a'>Fundo de Arte</a> <a href='/b'>Convênios</a></nav><main><article><h1>Inscrições do Programa</h1>"
+            + "<p>As inscrições de projetos culturais seguem a Instrução Normativa vigente e estão abertas até 23 de março.</p>" * 4
+            + "</article></main><footer>Todos os direitos reservados</footer></body></html>").encode()
+    t = REG.ler(html, "https://goias.gov.br/cultura/x").texto
+    assert "Instrução Normativa vigente" in t and "Fundo de Arte" not in t and "Convênios" not in t
