@@ -208,6 +208,15 @@ def sondar(urls: list[str], anotar: bool = typer.Option(False, "--anotar", help=
 
 
 @app.command()
+def painel(config: Path = CONFIG, saida: Path = Path("docs")):
+    """Gera o painel (a página e os dados das visões) na pasta publicada pelo GitHub Pages."""
+    from ..painel.visoes import publicar
+    _, dados, _ = _cfg(config)
+    r = publicar(dados, saida, config.parent)
+    typer.echo(f"painel gerado em {saida}: {r['livros']} livros, {r['abertas']} abertas, dados com {r['bytes'] / 1e6:.1f} MB")
+
+
+@app.command()
 def pausar(config: Path = CONFIG):
     """Pausa o sistema: nada novo começa até despausar."""
     _, dados, _ = _cfg(config)
