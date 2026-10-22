@@ -237,3 +237,8 @@ def test_pagina_le_o_conteudo_principal_sem_o_menu():
             + "</article></main><footer>Todos os direitos reservados</footer></body></html>").encode()
     t = REG.ler(html, "https://goias.gov.br/cultura/x").texto
     assert "Instrução Normativa vigente" in t and "Fundo de Arte" not in t and "Convênios" not in t
+
+
+def test_ligaduras_dos_pdf_viram_letras():
+    from eldorado.motores.leitura.leitores import sem_ligaduras
+    assert sem_ligaduras("benefício ﬁscal e ﬂuxo") == "benefício fiscal e fluxo"

@@ -37,7 +37,7 @@ class Evento(msgspec.Struct, kw_only=True, omit_defaults=True):
 class Alvo:
     banco: str                       # 'biblioteca', 'especial', 'cerebro'
     tabela: str
-    operacao: str                    # 'inserir', 'atualizar', 'inserir_ou_atualizar', 'pagina', 'expandir'
+    operacao: str                    # 'inserir', 'inserir_se_novo', 'atualizar', 'inserir_ou_atualizar', 'pagina', 'expandir'
     chave: tuple[str, ...] = ()      # colunas que identificam a linha (atualizar e inserir_ou_atualizar)
     mapa: Callable[[dict[str, Any]], dict[str, Any]] | None = field(default=None, compare=False)
 
@@ -90,7 +90,7 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "pertinencia.decidida": (Alvo(C, "decisao_pertinencia", "inserir"),
                              Alvo(B, "achado", "atualizar", ("id",), _decisao_no_achado)),
     # Coleta e Cartório (biblioteca.db)
-    "achado.entregue": (Alvo(B, "achado", "inserir"),),
+    "achado.entregue": (Alvo(B, "achado", "inserir_se_novo"),),
     "documento.registrado": (Alvo(B, "documento", "inserir_ou_atualizar", ("sha256",)),),
     "pagina.gravada": (Alvo(B, "pagina", "pagina"),),
     "livro.criado": (Alvo(B, "livro", "inserir"),),

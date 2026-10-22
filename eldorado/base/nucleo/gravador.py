@@ -110,6 +110,8 @@ class Gravador:
                               [dados[c] for c in muda] + [dados[c] for c in alvo.chave])
             if cur.rowcount == 0:
                 raise ValueError(f"linha não encontrada em {alvo.tabela} para {dict((c, dados[c]) for c in alvo.chave)}")
+        elif alvo.operacao == "inserir_se_novo":                       # o mesmo registro encontrado de novo não é erro
+            con.execute(f"INSERT INTO {alvo.tabela} ({', '.join(nomes)}) VALUES ({', '.join('?' * len(nomes))}) ON CONFLICT DO NOTHING", list(dados.values()))
         elif alvo.operacao == "inserir_ou_atualizar":
             muda = [c for c in nomes if c not in alvo.chave]
             conflito = f"ON CONFLICT ({', '.join(alvo.chave)}) DO " + (f"UPDATE SET {', '.join(f'{c}=excluded.{c}' for c in muda)}" if muda else "NOTHING")

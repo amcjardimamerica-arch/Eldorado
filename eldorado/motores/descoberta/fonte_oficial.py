@@ -70,16 +70,19 @@ def mesmo_site(a: str, b: str) -> bool:
     return (urlsplit(a).hostname or "").removeprefix("www.") == (urlsplit(b).hostname or "").removeprefix("www.")
 
 
-def normas_recentes(html: bytes | str, url: str, padrao: str, maximo: int = 3) -> list[dict]:
+def normas_recentes(html: bytes | str, url: str, padrao: str, maximo: int = 3, excluir: str | None = None) -> list[dict]:
     """Na página de legislação de um programa, as normas mais recentes (resoluções, instruções normativas, portarias):
     pelo ano no título do link; no mesmo ano, pelo número e, por fim, pela ordem na página (a mais abaixo é a mais nova)."""
     texto = html.decode("utf-8", errors="replace") if isinstance(html, bytes) else html
     rx = re.compile(padrao, re.I)
+    fora = re.compile(excluir, re.I) if excluir else None
     normas = []
     for ordem, a in enumerate(LexborHTMLParser(texto).css("a[href]")):
         txt = a.text(strip=True)
         href = urljoin(url, (a.attributes.get("href") or "").strip())
         if not txt or not rx.search(_sem(txt)) or not href.startswith("http") or any(n in href.lower() for n in NAO_FONTE):
+            continue
+        if fora and (fora.search(_sem(txt)) or fora.search(_sem(href.rsplit("/", 1)[-1]))):
             continue
         anos = [int(x) for x in re.findall(r"\b(20\d\d|19\d\d)\b", txt)]
         num = re.search(r"n[º°o.]*\s*(\d{1,4})", _sem(txt))

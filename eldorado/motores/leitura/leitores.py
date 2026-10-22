@@ -45,6 +45,14 @@ class Leitura:
         return "\n\n".join(p.texto for p in self.paginas)
 
 
+LIGADURAS = {0xFB00: "ff", 0xFB01: "fi", 0xFB02: "fl", 0xFB03: "ffi", 0xFB04: "ffl", 0xFB05: "st", 0xFB06: "st"}
+
+
+def sem_ligaduras(texto: str) -> str:
+    """As ligaduras tipográficas dos PDF ("ﬁ" de "beneﬁcio") viram as letras: a mesma palavra, como publicada."""
+    return texto.translate(LIGADURAS)
+
+
 class SemLeitor(Exception):
     pass
 
@@ -143,6 +151,8 @@ class Registro:
         finally:
             self.profundidade = anterior
         r.tipo = tipo
+        for p in r.paginas:
+            p.texto = sem_ligaduras(p.texto)
         return r
 
 

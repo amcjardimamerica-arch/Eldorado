@@ -56,13 +56,18 @@ nao_certificar = ["Resultado", "Prazo de recurso", "Anexos", "Esfera", "Modalida
 
 [extracao.itens]
 "Prazo de inscrição" = [
+  # calibrada na IN Secult nº 3/2026: "não implica reabertura de prazo" (as inscrições comuns do exercício estão encerradas)
+  '((?:sem|n[ãa]o implica) reabertura de prazo[^.;]{0,140})',
+  'inscri[çc][õo]es[^.;]{0,100}?(?:prorrogad[ao]s? )?at[ée] (?:o dia )?(\d{1,2}[ºo°]?\s+de\s+[a-zç]+(?:\s+de\s+\d{4})?)',
   '(?:apresenta[çc][ãa]o de (?:propostas|projetos)|inscri[çc][ãa]o de (?:propostas|projetos)|(?:propostas|projetos) (?:culturais )?(?:poder[ãa]o ser|ser[ãa]o) (?:apresentad|inscrit)[oa]s)[^.;]{0,200}?((?:de|entre|no per[íi]odo de)\s+\d{1,2}[ºo°]?(?:\s*de\s+[a-zç]+|/\d{1,2})(?:\s*de\s+\d{4}|/\d{2,4})?\s+(?:a|e|at[ée])\s+\d{1,2}[ºo°]?(?:\s*de\s+[a-zç]+|/\d{1,2})(?:\s*de\s+\d{4}|/\d{2,4})?)',
   '(?:prazo|per[íi]odo) (?:para|de) (?:a )?(?:apresenta[çc][ãa]o|inscri[çc][ãa]o)[^.;]{0,160}?(\d{1,2}[ºo°]?(?:\s*de\s+[a-zç]+|/\d{1,2})(?:\s*de\s+\d{4}|/\d{2,4})?\s+(?:a|at[ée])\s+\d{1,2}[ºo°]?(?:\s*de\s+[a-zç]+|/\d{1,2})(?:\s*de\s+\d{4}|/\d{2,4})?)',
 ]
 "Valor" = [
+  # calibrada na IN Secult nº 3/2026: "o montante global do benefício fiscal ... para o exercício de 2026 foi fixado em R$ 40.000.000,00"
+  '(montante global do benef[íi]cio fiscal[^.;]{0,180}?R\$\s*[\d.,]+)',
   '((?:limite|valor m[áa]ximo|teto|n[ãa]o poder[áa] ultrapassar|at[ée] o (?:limite|valor) de)[^.;]{0,120}?R\$\s*[\d.,]+(?:\s*(?:mil|milh[õo]es))?)',
 ]
 "Requisitos" = [
   '((?:poder[ãa]o (?:apresentar|propor|inscrever)|s[ãa]o (?:proponentes|eleg[íi]veis)|o proponente (?:dever[áa]|deve))[^.;]{15,300})',
 ]
-"Objeto" = ['((?:incentivo|apoio) (?:fiscal )?(?:a|à|aos) projetos culturais[^.;]{10,200})']
+"Objeto" = ['(Programa Estadual de Incentivo [àa] Cultura\s*[–-]\s*GOYAZES)', '((?:incentivo|apoio) (?:fiscal )?(?:a|à|aos) projetos culturais[^.;]{10,200})']

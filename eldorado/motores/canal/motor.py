@@ -95,6 +95,7 @@ class CfgLexico(_Base):
 class CfgNormas(_Base):
     """Seguir, na página de legislação, os links das normas mais recentes (onde estão de fato os prazos e limites)."""
     padrao: str = "resolucao|instrucao normativa|portaria|decreto"
+    excluir: str = "aprovad|resultado|homolog|habilitad|governanca|diario oficial|\\bdoe\\b|edicao"
     maximo: int = Field(3, ge=1, le=10)
 
 
@@ -254,7 +255,7 @@ class MotorCanal(Motor):
                 continue
             if i == 0 and pr.normas:                                   # as normas mais recentes da página de legislação
                 from ..descoberta import fonte_oficial
-                for n in fonte_oficial.normas_recentes(bruto, url, pr.normas.padrao, pr.normas.maximo):
+                for n in fonte_oficial.normas_recentes(bruto, url, pr.normas.padrao, pr.normas.maximo, pr.normas.excluir):
                     try:
                         textos.append(self.leitura.ler(self.escada.buscar(n["url"]).conteudo, n["url"]).texto)
                         origens.append(n["url"])
@@ -356,14 +357,16 @@ class MotorCanal(Motor):
         itens: dict[str, dict] = {}
         for item, padroes in ex.itens.items():
             for n, texto in enumerate(paginas, 1):
-                t = re.sub(r"[ \t]+", " ", texto)
+                t = re.sub(r"[ \t]+", " ", leitores.sem_ligaduras(texto))
                 achou = next((m for rx in padroes if (m := re.search(rx, t, re.I | re.S))), None)
                 if achou:
                     valor = re.sub(r"\s+", " ", achou.group(1) if achou.lastindex else achou.group(0)).strip(" .;:,–-")
                     trecho = re.sub(r"\s+", " ", t[max(0, achou.start() - 80):achou.end() + 80]).strip()
                     itens[item] = {"valor": valor[:300], "trecho": trecho[:500], "pagina": n}
                     break
-        return {k: v for k, v in (("itens", itens), ("nao_certificar", ex.nao_certificar)) if v}
+        # o item que o motor declara como seu nunca vai para a extração genérica, mesmo quando a dele não encontra
+        nao = sorted(set(ex.nao_certificar) | set(ex.itens))
+        return {k: v for k, v in (("itens", itens), ("nao_certificar", nao)) if v}
 
     def _seguir_oficial(self, pista: Pista) -> tuple[str, str, dict] | None:
         """Da página de divulgação ao documento oficial: (oficial, divulgação, documento lido) ou None."""
