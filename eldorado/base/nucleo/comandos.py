@@ -34,6 +34,7 @@ def _cfg(config: Path):
 CONFIG = typer.Option(Path("config/eldorado.toml"), "--config", help="Arquivo de configuração")
 AGENDA = typer.Option(Path("config/agenda.toml"), help="Agenda dos módulos")
 AGORA = typer.Option(None, help="Data e hora ISO com fuso (padrão: agora)")
+APRENDIZADO = typer.Option(None, help="APRENDIZADO-ELDORADO.json (o aprendizado dos motores)")
 
 
 @app.command()
@@ -113,6 +114,37 @@ def devidos(agora: Optional[str] = AGORA, arquivo: Path = AGENDA):
     quando = datetime.fromisoformat(agora) if agora else datetime.now(timezone.utc)
     for d in agenda_mod.carregar(arquivo).devidos(quando):
         typer.echo(f"{d.modulo}: janela {d.janela_inicio} a {d.janela_fim} ({d.motivo})")
+
+
+@app.command()
+def migrar(origem: Path, config: Path = CONFIG, lote: int = 500, aprendizado: Optional[Path] = APRENDIZADO):
+    """Importa o Eldorado0 (cópia local do repositório) e confere as contagens. Sai com erro se algo divergir."""
+    from itertools import chain
+
+    from ..migracao.importar_eldorado0 import Importador, amostra, conferir, lotes
+    from ..migracao.importar_eldorado0 import aprendizado as aprendizado_motores
+    _, dados, _ = _cfg(config)
+    bancos = abrir_bancos(dados)
+    try:
+        imp = Importador(origem)
+        g = Gravador(bancos)
+        aplicados = recusados = 0
+        fluxo = chain(imp.eventos(), aprendizado_motores(imp, aprendizado) if aprendizado else [])
+        for grupo in lotes(fluxo, lote):
+            r = g.aplicar(grupo)
+            aplicados, recusados = aplicados + r.aplicados, recusados + len(r.recusados)
+        typer.echo(f"eventos aplicados: {aplicados} · recusados: {recusados} · CPF mascarados: {imp.r.cpf_mascarados}")
+        tabela = conferir(imp, bancos)
+        for q, a, c, ok in tabela:
+            typer.echo(f"  {'ok ' if ok else 'DIVERGE'} {q}: origem {a} · banco {c}")
+        am = amostra(origem, bancos)
+        typer.echo(f"  amostra campo a campo: {sum(ok for _, _, ok in am)} de {len(am)} livros iguais")
+        for tipo, n in imp.r.lacunas.items():
+            typer.echo(f"  lacuna: {tipo}: {n} (ex.: {', '.join(imp.r.exemplos_lacuna.get(tipo, [])[:3])})")
+    finally:
+        for c in bancos.values():
+            c.close()
+    raise typer.Exit(0 if recusados == 0 and all(ok for *_, ok in tabela) and all(ok for *_, ok in am) else 1)
 
 
 @app.command()

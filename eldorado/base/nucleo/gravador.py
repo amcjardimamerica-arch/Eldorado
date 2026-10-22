@@ -85,6 +85,13 @@ class Gravador:
             self._pagina(con, dados)
             return
         cols = self._cols(alvo.banco, alvo.tabela)
+        if "documento_sha256" in dados and "documento_id" in cols:      # ligação ao documento pela assinatura
+            sha = dados.pop("documento_sha256")
+            if sha:
+                linha = con.execute("SELECT id FROM documento WHERE sha256=?", (sha,)).fetchone()
+                if linha is None:
+                    raise ValueError(f"documento não registrado: {sha}")
+                dados["documento_id"] = linha[0]
         desconhecidas = set(dados) - cols
         if desconhecidas:
             raise ValueError(f"colunas desconhecidas: {', '.join(sorted(desconhecidas))}")

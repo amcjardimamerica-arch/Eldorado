@@ -23,7 +23,7 @@ A mecânica é única: a Regência planeja e aciona; cada módulo **só grava ev
 | **F5.1 · Leitura** (o canivete suíço: PDF, página, planilha, documento, compactado, expurgo, normalização, OCR e universal como reserva) | **concluída** |
 | **F5.2 · Acesso** (a escada de 9 degraus, o aprendizado por domínio, o robots como informação, o computador da titular) | **concluída** |
 | **F5.3 · Descoberta e motor genérico** (as 5 formas; o motor de canal feito só de configuração; o estado de cada motor) | **concluída** |
-| F6 · Migração do Eldorado0 | a fazer |
+| **F6 · Migração do Eldorado0** (livros, certidões, documentos, vereditos, leis, empresas, incentivos e o aprendizado dos motores; conferência das contagens; idempotente) | **concluída** (o envio ao Drive aguarda a pasta) |
 | F7 · Primeiros motores (com API) | a fazer |
 | F8 · Etapas e pilotos | a fazer |
 | F9 · Análise e painel | a fazer |
@@ -43,6 +43,7 @@ eldorado retomar <workflow> <execucao>  # retoma do passo em que parou
 eldorado aplicar                        # aplica aos bancos os eventos pendentes (sem duplicar)
 eldorado maquina                        # uso da máquina, folga até 85% e tamanho de cada parte
 eldorado devidos                        # módulos devidos agora (uma passagem por janela)
+eldorado migrar <cópia do Eldorado0> --aprendizado APRENDIZADO-ELDORADO.json   # importa e confere
 eldorado pausar | despausar
 eldorado trabalhar                      # consumidor da fila, sob o governador
 ```

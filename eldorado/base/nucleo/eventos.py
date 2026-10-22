@@ -107,7 +107,7 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "selo.calculado": (Alvo(B, "livro", "atualizar", ("id",), _so("id", "estrela", "selo_livro", "informacoes_validadas", "atualizado_em")),),
     "relatorio.etapa": (Alvo(B, "relatorio_etapa", "inserir"),),
     "analise.rede": (Alvo(B, "analise_rede", "inserir"),),
-    "veredito.gravado": (Alvo(B, "veredito", "inserir"), Alvo(C, "rotulo", "inserir", (), _rotulo)),
+    "veredito.gravado": (Alvo(B, "veredito", "inserir"), Alvo(C, "rotulo", "inserir_ou_atualizar", ("referencia", "origem", "em"), _rotulo)),
     "previsao.calculada": (Alvo(B, "previsao", "inserir_ou_atualizar", ("livro_id",)),),
     "alerta.preditivo": (Alvo(B, "previsao", "atualizar", ("livro_id",), _so("livro_id", "alerta_em")),),
     "transferencia.feita": (Alvo(B, "transferencia", "inserir"),),
