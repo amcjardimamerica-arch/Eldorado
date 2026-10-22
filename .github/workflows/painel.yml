@@ -1,0 +1,42 @@
+# O painel (titular, 22/10/2026): o MESMO painel do Eldorado0, com todas as telas, os dados, o bloqueio de celular e a
+# entrada restrita; as melhorias entram depois. O site é montado na hora de publicar (sem gravar 72 MB no repositório):
+# a pasta docs/ do Eldorado0 e, à medida que o sistema novo produzir cada parte no formato do painel, os dados novos
+# por cima. A cifra dos dados (AES-256-GCM, senha do mês) passa a ser feita aqui quando os segredos do acesso mensal
+# (ACESSO_MASTER, WHATSAPP_PHONE, CALLMEBOT_APIKEY) forem copiados para este repositório.
+name: Painel
+on:
+  workflow_run:
+    workflows: ["Eldorado"]
+    types: [completed]
+  schedule:
+    - cron: "50 */6 * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  publicar:
+    environment:
+      name: github-pages
+      url: ${{ steps.publicacao.outputs.page_url }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - name: Montar o painel do Eldorado0 (a mesma página, as mesmas telas e os mesmos dados)
+        run: |
+          git clone -q --depth 1 --filter=blob:none --sparse https://github.com/amcjardimamerica-arch/Eldorado0.git origem
+          git -C origem sparse-checkout set docs
+          cp -r origem/docs _site
+          echo "painel montado: $(find _site -type f | wc -l) arquivos, $(du -sh _site | cut -f1)"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Publicar
+        id: publicacao
+        uses: actions/deploy-pages@v4
