@@ -32,6 +32,7 @@ HISTORICO = re.compile(r"(?i)edital de ano anterior|fase de resultado")   # temp
 SEM_VALOR = re.compile(r"(?i)n[ãa]o h[áa] valor|sem valor|vari[áa]vel|conforme|a definir|n[ãa]o se aplica|isen|sem repasse|sem contrapartida|"
                        r"n[ãa]o onerosa|US\$|U\$|€|EUR\b|USD\b|libras?|ienes?|euros?|d[óo]lares")
 CONTINUO = re.compile(r"(?i)fluxo cont[íi]nuo|perman(?:ente|entemente)|sem prazo de encerramento|em aberto|o ano (?:todo|inteiro)|ao longo de todo")
+ENCERRADO = re.compile(r"(?i)sem reabertura de prazo|n[ãa]o implica reabertura|inscri[çc][õo]es encerradas|prazo encerrado|recursos? esgotad|limites? esgotad")
 RELATIVO = re.compile(r"(?i)\d+\s*(?:\([a-zç ]+\))?\s*dias")
 ESFERAS = [(re.compile(r"(?i)internac"), "internacional"), (re.compile(r"(?i)feder|uni[ãa]o|nacional"), "federal"),
            (re.compile(r"(?i)estad"), "estadual"), (re.compile(r"(?i)munic"), "municipal"),
@@ -170,7 +171,7 @@ def conferir_certidao(item: str, valor: str | None) -> str | None:
     v = (valor or "").strip()
     if len(v) < 3:
         return "valor vazio"
-    if item == "Prazo de inscrição" and not N.datas(v, date(2026, 10, 22)) and not CONTINUO.search(v):
+    if item == "Prazo de inscrição" and not N.datas(v, date(2026, 10, 22)) and not CONTINUO.search(v) and not ENCERRADO.search(v):
         return "não tem data"
     if item == "Resultado" and not N.datas(v, date(2026, 10, 22)) and not RELATIVO.search(v):
         return "não tem data nem prazo"
@@ -259,6 +260,7 @@ def auditar(con: sqlite3.Connection, hoje: date, somente: set[str] | None = None
         rec = re.search(r"(\d+)\s*(?:\([a-zç ]+\))?\s*dias", _primeiro(validas, "Prazo de recurso") or "")
         fim = max(insc) if insc else None
         continuo = bool(CONTINUO.search(_primeiro(validas, "Prazo de inscrição") or ""))
+        historico = historico or bool(ENCERRADO.search(_primeiro(validas, "Prazo de inscrição") or ""))   # a norma diz que não reabre
         link = lv["link_oficial"]
         dados = {"livro_id": lv["id"], "abrangencia": abr, "municipio": municipio, "uf": lv["uf"],
                  "esfera": esfera(_primeiro(validas, "Esfera")) or esfera((esfera_pelo_orgao(lv["orgao"] or "") or (None,))[0]),

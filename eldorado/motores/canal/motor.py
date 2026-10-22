@@ -95,7 +95,7 @@ class CfgLexico(_Base):
 class CfgNormas(_Base):
     """Seguir, na página de legislação, os links das normas mais recentes (onde estão de fato os prazos e limites)."""
     padrao: str = "resolucao|instrucao normativa|portaria|decreto"
-    excluir: str = "aprovad|resultado|homolog|habilitad|governanca|diario oficial|\\bdoe\\b|edicao"
+    excluir: str = "aprovad|resultado|homolog|habilitad|governanca|diario[ _-]?oficial|\\bdoe\\b|edicao|_pag_"
     maximo: int = Field(3, ge=1, le=10)
 
 

@@ -51,6 +51,7 @@ def test_conferencia_de_cada_certidao():
     assert conferir_certidao("Prazo de inscrição", "até 20/08/2026") is None
     assert conferir_certidao("Prazo de inscrição", "fluxo contínuo, sem prazo de encerramento") is None
     assert conferir_certidao("Prazo de inscrição", "a definir") == "não tem data"
+    assert conferir_certidao("Prazo de inscrição", "sem reabertura de prazo, renovação da oportunidade de captação") is None   # norma: encerradas
     assert conferir_certidao("Resultado", "30 (trinta) dias após a inscrição") is None
     assert conferir_certidao("Resultado", "00.0.00") == "não tem data nem prazo"
     assert conferir_certidao("Valor", "R$ 25.105,28") is None and conferir_certidao("Valor", "US$ 5.000 a 20.000/ano") is None
