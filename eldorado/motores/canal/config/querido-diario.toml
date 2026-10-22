@@ -11,11 +11,13 @@ canal = "api"
 # Como o motor do Eldorado0 que funcionava: o país inteiro, sem lista de municípios; o portão aplica a regra do
 # território (município de outro estado só fica se for capital).
 nome = "Querido Diário — busca nos diários"
-url = "https://queridodiario.ok.org.br/api/gazettes?querystring={consulta}&published_since={hoje-5:%Y-%m-%d}&published_until={hoje:%Y-%m-%d}&excerpt_size=500&number_of_excerpts=1&size=50"
+url = "{base}/gazettes?querystring={consulta}&published_since={hoje-5:%Y-%m-%d}&published_until={hoje:%Y-%m-%d}&excerpt_size=500&number_of_excerpts=1&size=50"
 tipo = "api"
 
 [fonte.valores]
-consulta = ["%22chamamento%20p%C3%BAblico%22%20%22organiza%C3%A7%C3%B5es%20da%20sociedade%20civil%22", "%22edital%20de%20chamamento%20p%C3%BAblico%22%20associa%C3%A7%C3%A3o", "%22termo%20de%20execu%C3%A7%C3%A3o%20cultural%22", "%22edital%20de%20premia%C3%A7%C3%A3o%22%20cultura", "%22termo%20de%20fomento%22%20%22chamamento%20p%C3%BAblico%22"]
+# A API respondeu erro 500 em 22/10: tenta os dois endereços que o Eldorado0 usava e a consulta com e sem aspas.
+base = ["https://queridodiario.ok.org.br/api", "https://api.queridodiario.ok.org.br"]
+consulta = ["chamamento%20p%C3%BAblico%20organiza%C3%A7%C3%B5es%20da%20sociedade%20civil", "termo%20de%20fomento%20chamamento", "%22chamamento%20p%C3%BAblico%22%20%22organiza%C3%A7%C3%B5es%20da%20sociedade%20civil%22", "%22edital%20de%20chamamento%20p%C3%BAblico%22%20associa%C3%A7%C3%A3o", "%22termo%20de%20execu%C3%A7%C3%A3o%20cultural%22", "%22edital%20de%20premia%C3%A7%C3%A3o%22%20cultura", "%22termo%20de%20fomento%22%20%22chamamento%20p%C3%BAblico%22"]
 
 [fonte.caminhos]
 itens = "gazettes[*]"
