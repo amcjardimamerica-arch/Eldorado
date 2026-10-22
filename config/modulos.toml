@@ -1,8 +1,30 @@
-# Os módulos ligados (motores e pilotos). Cada um entra escrevendo um bloco, sem mudar a base:
-#
-# [[modulo]]
-# classe = "eldorado.motores.canal.motor:MotorCanal"
-# parametros = { configuracao = "eldorado/motores/canal/config/do-goias.toml" }
-# ligado = true
-#
-# O registro confere o contrato de cada módulo antes de aceitá-lo. Os motores reais entram na Fase 7.
+# Os módulos ligados. Cada motor é um arquivo de configuração do motor genérico (eldorado/motores/canal/config/).
+# O registro confere o contrato de cada um antes de aceitá-lo. O estado de cada motor fica em dados/motores/.
+
+[[modulo]]
+classe = "eldorado.motores.canal.motor:MotorCanal"
+parametros = { configuracao = "eldorado/motores/canal/config/dou.toml", dados = "dados/motores" }
+
+[[modulo]]
+classe = "eldorado.motores.canal.motor:MotorCanal"
+parametros = { configuracao = "eldorado/motores/canal/config/pncp.toml", dados = "dados/motores" }
+
+[[modulo]]
+classe = "eldorado.motores.canal.motor:MotorCanal"
+parametros = { configuracao = "eldorado/motores/canal/config/transferegov.toml", dados = "dados/motores" }
+
+[[modulo]]
+classe = "eldorado.motores.canal.motor:MotorCanal"
+parametros = { configuracao = "eldorado/motores/canal/config/querido-diario.toml", dados = "dados/motores" }
+
+[[modulo]]
+classe = "eldorado.motores.canal.motor:MotorCanal"
+parametros = { configuracao = "eldorado/motores/canal/config/wordpress-goias.toml", dados = "dados/motores" }
+
+[[modulo]]
+classe = "eldorado.motores.canal.motor:MotorCanal"
+parametros = { configuracao = "eldorado/motores/canal/config/wordpress-financiadores.toml", dados = "dados/motores" }
+
+[[modulo]]
+classe = "eldorado.motores.canal.motor:MotorCanal"
+parametros = { configuracao = "eldorado/motores/canal/config/mapas-culturais.toml", dados = "dados/motores" }

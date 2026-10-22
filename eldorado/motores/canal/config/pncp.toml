@@ -1,0 +1,34 @@
+# PNCP: as contratações recebendo proposta, por UF (Goiás) e pelas modalidades em que as seleções de OSC aparecem
+# (12 credenciamento, 3 concurso, 10 manifestação de interesse, 11 pré-qualificação). Lição de 01/10: ler o país inteiro
+# sem filtro trazia registros sem data de encerramento e fora de Goiás; o portão e a validação cuidam do resto.
+[motor]
+id = "pncp"
+nome = "PNCP — contratações recebendo proposta"
+categoria = "Plataformas federais"
+finalidade = "credenciamentos, concursos e chamamentos com prazo oficial de encerramento"
+canal = "api"
+uf = "GO"
+
+[[fonte]]
+nome = "API do PNCP — propostas abertas"
+url = "https://pncp.gov.br/api/consulta/v1/contratacoes/proposta?dataFinal={hoje+500:%Y%m%d}&codigoModalidadeContratacao={mod}&uf={uf}&pagina={pagina}&tamanhoPagina=50"
+tipo = "api"
+valores = { mod = [12, 3, 10, 11], uf = ["GO"] }
+paginacao = { inicio = 1, maximo = 5, total = "totalPaginas" }
+
+[fonte.caminhos]
+itens = "data[*]"
+titulo = "join(' — ', [orgaoEntidade.razaoSocial || '', objetoCompra || ''])"
+link = "join('', ['https://pncp.gov.br/app/editais/', orgaoEntidade.cnpj, '/', to_string(anoCompra), '/', to_string(sequencialCompra)])"
+data = "dataPublicacaoPncp"
+fim = "dataEncerramentoProposta"
+orgao = "orgaoEntidade.razaoSocial"
+uf = "unidadeOrgao.ufSigla"
+municipio = "unidadeOrgao.municipioNome"
+modalidade = "modalidadeNome"
+
+[acesso]
+degraus = ["api", "leve"]
+
+[leitura]
+documentos = false                  # o edital do órgão (/arquivos) é lido pelo Interceptador (Fase 8)

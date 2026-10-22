@@ -1,0 +1,26 @@
+# Mapa da Cultura (Ministério da Cultura): as oportunidades com inscrição aberta, pela API padrão do Mapas Culturais.
+[motor]
+id = "mapas-culturais"
+nome = "Mapa da Cultura — oportunidades com inscrição aberta"
+categoria = "Plataformas de cultura"
+finalidade = "editais e chamadas culturais de órgãos federais, estaduais e municipais publicados no Mapa da Cultura"
+canal = "api"
+
+[[fonte]]
+nome = "Mapa da Cultura — API de oportunidades"
+url = "https://mapa.cultura.gov.br/api/opportunity/find?@select=id,name,shortDescription,registrationFrom,registrationTo&registrationTo=GTE({hoje:%Y-%m-%d})&@order=registrationTo%20ASC&@limit=200"
+tipo = "api"
+
+[fonte.caminhos]
+itens = "[*]"
+titulo = "name"
+link = "join('', ['https://mapa.cultura.gov.br/oportunidade/', to_string(id)])"
+data = "registrationFrom.date || registrationFrom"
+fim = "registrationTo.date || registrationTo"
+resumo = "shortDescription"
+
+[acesso]
+degraus = ["api", "leve"]
+
+[leitura]
+documentos = false

@@ -13,6 +13,10 @@ on:
         description: "Gravar o banco nesta execução"
         type: boolean
         default: true
+      acionar_todos:
+        description: "Acionar todos os motores agora (fora da agenda)"
+        type: boolean
+        default: false
 concurrency:
   group: eldorado-sistema
   cancel-in-progress: false
@@ -37,6 +41,8 @@ jobs:
       - name: Reaplicar os eventos pendentes
         run: eldorado aplicar
       - name: Passagem
+        env:
+          ELDORADO_FORCAR: ${{ inputs.acionar_todos && '1' || '0' }}
         run: eldorado executar workflows/passagem.toml
       - name: Aplicar os últimos eventos da passagem (o recibo do passo final e o fechamento)
         if: always()

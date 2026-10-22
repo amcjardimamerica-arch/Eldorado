@@ -1,0 +1,32 @@
+# Querido Diário: os diários oficiais municipais de Goiânia, Aparecida de Goiânia e das capitais (a regra de território
+# inclui as capitais dos outros estados). Lição de 10/10: em Goiás, só Goiânia e Aparecida têm busca.
+[motor]
+id = "querido-diario"
+nome = "Querido Diário — diários municipais de Goiânia, Aparecida e das capitais"
+categoria = "Diários oficiais"
+finalidade = "chamamentos e editais municipais de Goiânia, Aparecida de Goiânia e das capitais"
+canal = "api"
+
+[[fonte]]
+nome = "Querido Diário — busca nos diários"
+url = "https://api.queridodiario.ok.org.br/gazettes?territory_ids={municipios}&querystring={consulta}&published_since={hoje-5:%Y-%m-%d}&excerpt_size=500&number_of_excerpts=1&size=50"
+tipo = "api"
+
+[fonte.valores]
+municipios = ["5208707&territory_ids=5201405&territory_ids=1200401&territory_ids=2704302&territory_ids=1600303&territory_ids=1302603&territory_ids=2927408&territory_ids=2304400&territory_ids=5300108&territory_ids=3205309&territory_ids=2111300&territory_ids=5103403&territory_ids=5002704&territory_ids=3106200&territory_ids=1501402&territory_ids=2507507&territory_ids=4106902&territory_ids=2611606&territory_ids=2211001&territory_ids=3304557&territory_ids=2408102&territory_ids=4314902&territory_ids=1100205&territory_ids=1400100&territory_ids=4205407&territory_ids=3550308&territory_ids=2800308&territory_ids=1721000"]
+consulta = ["%22chamamento%20p%C3%BAblico%22%20%22organiza%C3%A7%C3%B5es%20da%20sociedade%20civil%22", "%22edital%20de%20chamamento%20p%C3%BAblico%22%20associa%C3%A7%C3%A3o", "%22termo%20de%20execu%C3%A7%C3%A3o%20cultural%22", "%22edital%20de%20premia%C3%A7%C3%A3o%22%20cultura", "%22termo%20de%20fomento%22%20%22chamamento%20p%C3%BAblico%22"]
+
+[fonte.caminhos]
+itens = "gazettes[*]"
+titulo = "join('', [territory_name || '', ' (', state_code || '', '): ', excerpts[0] || ''])"
+link = "url"
+data = "date"
+resumo = "excerpts[0]"
+municipio = "territory_name"
+uf = "state_code"
+
+[acesso]
+degraus = ["api", "leve"]
+
+[leitura]
+documentos = false                  # o diário inteiro tem centenas de atos: a certificação lê o ato, na Fase 8

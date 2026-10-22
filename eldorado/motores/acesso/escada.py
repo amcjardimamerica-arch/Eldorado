@@ -76,7 +76,8 @@ def avaliar(r: Resposta) -> None:
     amostra = r.conteudo[:20000]
     if SINAIS_BLOQUEIO.search(amostra) and len(r.conteudo) < 200_000:
         raise Bloqueado("página de desafio ou captcha")
-    sem_codigo = re.sub(rb"(?is)<(script|style|noscript)\b.*?</\1>", b"", amostra)
+    # o código executável não conta como conteúdo; os blocos de DADOS (JSON, JSON-LD) contam (lição do DOU, 22/10)
+    sem_codigo = re.sub(rb"(?is)<script\b(?![^>]*type=[\"']application/(?:ld\+)?json)[^>]*>.*?</script>|<(style|noscript)\b.*?</\1>", b"", amostra)
     eh_html = "html" in r.tipo or amostra.lstrip()[:15].lower().startswith((b"<!doctype", b"<html"))
     if eh_html and len(re.sub(rb"<[^>]+>|\s+", b"", sem_codigo)) < 40:
         raise Bloqueado("página HTML quase vazia (provável bloqueio ou conteúdo só com JavaScript)")

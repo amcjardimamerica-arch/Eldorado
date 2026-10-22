@@ -123,6 +123,8 @@ def test_lightpanda_le_a_pagina_que_so_existe_com_javascript(site):
 def test_avaliacao_das_respostas():
     ok = Resposta("u", 200, b"<html><body>" + b"texto de verdade " * 10 + b"</body></html>", "text/html")
     avaliar(ok)
+    dados_em_json = b'<html><body><script id="params" type="application/json">{"jsonArray": [{"title": "Edital de chamamento"}]}</script></body></html>'
+    avaliar(Resposta("u", 200, dados_em_json, "text/html"))                       # os dados embutidos são conteúdo (DOU)
     for r in (Resposta("u", 403, b"x"), Resposta("u", 429, b"x"), Resposta("u", 200, b"<html>captcha</html>"),
               Resposta("u", 503, b"<html>Just a moment...</html>"),
               Resposta("u", 200, b"<!doctype html><html><body><script>" + b"var x=1;" * 500 + b"</script></body></html>", "text/html")):

@@ -1,12 +1,46 @@
 # A agenda dos módulos: horários, dias, cadência e janelas previstas. Uma passagem por janela.
 fuso = "America/Sao_Paulo"
-#
-# [[modulo]]
-# id = "do-goias"
-# horarios = ["06:23", "12:53", "20:23"]
-# dias = ["seg", "ter", "qua", "qui", "sex", "sab"]
-# cadencia_dias = 1
-# janela_min = 30
-# motivo = "as edições saem de madrugada; depois vêm as extras e as da noite"
-#
-# Os motores reais entram na Fase 7, com a agenda herdada do Eldorado0.
+# Janela de 90 minutos: o fluxo roda de hora em hora (com atraso eventual do agendador); cada horário é atendido
+# por uma única passagem (a trava "uma passagem por janela").
+
+[[modulo]]
+id = "dou"
+horarios = ["06:23", "12:53", "20:23"]
+janela_min = 90
+motivo = "as edições saem de madrugada; depois vêm as extras e as edições da noite (itinerário de 02/10)"
+
+[[modulo]]
+id = "pncp"
+horarios = ["08:53", "13:53", "19:53"]
+janela_min = 90
+motivo = "atualização contínua em horário comercial (itinerário de 02/10)"
+
+[[modulo]]
+id = "transferegov"
+horarios = ["07:13"]
+janela_min = 90
+motivo = "o arquivo de dados abertos é atualizado uma vez por dia"
+
+[[modulo]]
+id = "querido-diario"
+horarios = ["07:43"]
+janela_min = 90
+motivo = "os diários municipais saem de madrugada"
+
+[[modulo]]
+id = "wordpress-goias"
+horarios = ["09:53", "17:53"]
+janela_min = 90
+motivo = "sites oficiais publicam no expediente (conselho dos motores, 10/10)"
+
+[[modulo]]
+id = "wordpress-financiadores"
+horarios = ["10:23"]
+janela_min = 90
+motivo = "sites dos financiadores publicam no expediente"
+
+[[modulo]]
+id = "mapas-culturais"
+horarios = ["11:23"]
+janela_min = 90
+motivo = "sites oficiais publicam no expediente (conselho dos motores, 10/10)"

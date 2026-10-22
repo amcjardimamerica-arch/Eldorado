@@ -1,0 +1,31 @@
+# Sites oficiais do Governo de Goiás em WordPress, pela API pública (as secretarias de Cultura e Social).
+[motor]
+id = "wordpress-goias"
+nome = "Sites do Governo de Goiás (WordPress)"
+categoria = "Sites oficiais"
+finalidade = "editais e chamamentos publicados nos sites das secretarias de Goiás"
+canal = "api"
+uf = "GO"
+
+[[fonte]]
+nome = "Secretaria de Cultura de Goiás"
+url = "https://goias.gov.br/cultura/wp-json/wp/v2/posts"
+tipo = "wordpress"
+termos = "edital"
+
+[[fonte]]
+nome = "Secretaria de Desenvolvimento Social de Goiás"
+url = "https://goias.gov.br/social/wp-json/wp/v2/posts"
+tipo = "wordpress"
+termos = "edital"
+
+[acesso]
+degraus = ["api", "leve"]
+
+[leitura]
+paginas_dos_achados = true
+max_documentos = 20
+
+[lexico]
+termos = ["re:edital|chamamento|chamada|selecao|premio|fomento|credenciamento|inscric"]
+vetos = ["re:resultado (final|preliminar)|homologa"]

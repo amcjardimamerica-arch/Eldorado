@@ -7,14 +7,15 @@
 """
 from __future__ import annotations
 
+import os
 import sqlite3
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
 import msgspec
 
-from ..fluxo.agenda import Agenda
+from ..fluxo.agenda import Agenda, Devido
 from ..fluxo.agenda import carregar as carregar_agenda
 from ..nucleo.contratos import Achado, Plano
 from ..nucleo.eventos import Diario, agora, novo_id
@@ -62,8 +63,14 @@ class Regencia:
         self.notas = notas or {}
 
     def planejar(self, agora_: datetime, acionadas: set[tuple[str, str]] = frozenset(),
-                 ultima: dict[str, datetime] | None = None) -> dict[str, Any]:
-        devidos = [d for d in self.agenda.devidos(agora_, acionadas, ultima) if d.modulo in self.registro.ids()]
+                 ultima: dict[str, datetime] | None = None, forcar: bool = False) -> dict[str, Any]:
+        """Os módulos devidos pela agenda. forcar: todos os registrados, agora (acionamento à mão pela titular ou pela
+        análise externa); a janela é a deste minuto, então a trava "uma passagem por janela" continua valendo."""
+        if forcar:
+            ini = agora_.replace(second=0, microsecond=0)
+            devidos = [Devido(m, ini.isoformat(), (ini + timedelta(minutes=30)).isoformat(), "acionado à mão") for m in sorted(self.registro.ids())]
+        else:
+            devidos = [d for d in self.agenda.devidos(agora_, acionadas, ultima) if d.modulo in self.registro.ids()]
         devidos.sort(key=lambda d: -self.notas.get(d.modulo, 0.5))
         plano = {"passagem": novo_id(), "criado_em": agora(), "paralelismo": self.governador.paralelismo(),
                  "motores": [{"modulo": d.modulo, "janela_inicio": d.janela_inicio, "janela_fim": d.janela_fim, "motivo": d.motivo,
@@ -140,7 +147,8 @@ def no_planejar(itens: list[dict[str, Any]], parametros: dict[str, Any], context
     registro = carregar_registro(parametros.get("modulos", "config/modulos.toml"), contexto.diario)
     acion, ultima = _acionadas(parametros.get("dados", "dados"))
     r = Regencia(carregar_agenda(parametros.get("agenda", "config/agenda.toml")), _governador(parametros, contexto.diario), registro, contexto.diario)
-    return [{"plano": r.planejar(quando, acion, ultima)}]
+    forcar = bool(parametros.get("forcar")) or os.environ.get("ELDORADO_FORCAR") == "1"
+    return [{"plano": r.planejar(quando, acion, ultima, forcar=forcar)}]
 
 
 def no_acionar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:

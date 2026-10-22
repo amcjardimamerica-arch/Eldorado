@@ -9,9 +9,10 @@ from __future__ import annotations
 import hashlib
 import re
 import tomllib
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Iterable, Literal
+from zoneinfo import ZoneInfo
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -46,13 +47,24 @@ class CfgMotor(_Base):
     orgao: str | None = None
 
 
+class CfgPaginacao(_Base):
+    inicio: int = 1
+    maximo: int = Field(5, ge=1, le=100)
+    total: str | None = None                  # onde está o total de páginas na resposta (jmespath)
+
+
 class CfgFonte(_Base):
+    """Uma fonte. No endereço: {hoje:%Y%m%d}, {hoje-1:%d-%m-%Y}, {hoje+500:%Y%m%d}, {pagina} e cada chave de `valores`
+    (uma consulta por combinação de valores)."""
     nome: str
     url: str
-    tipo: Literal["pagina", "feed", "mapa", "wordpress", "ckan", "api", "metabusca", "wayback"] = "pagina"
+    tipo: Literal["pagina", "feed", "mapa", "wordpress", "ckan", "api", "metabusca", "wayback", "siconv"] = "pagina"
     seletor: str | None = None
     termos: str | None = None
     caminhos: dict[str, str] = Field(default_factory=dict)
+    valores: dict[str, list[str | int]] = Field(default_factory=dict)
+    paginacao: CfgPaginacao | None = None
+    json_em: str | None = None                # o seletor EXATO do JSON dentro de uma página HTML
     exige_brasil: bool = False
 
 
@@ -65,13 +77,17 @@ class CfgAcesso(_Base):
 
 class CfgLeitura(_Base):
     documentos: bool = True
+    paginas_dos_achados: bool = False         # a página do achado como documento oficial (ex.: a íntegra da matéria do DOU)
     tabelas: Literal["nao", "uteis", "todas"] = "uteis"
     max_documentos: int = Field(20, ge=0, le=500)
 
 
 class CfgLexico(_Base):
+    """termos: no título e no resumo (basta um); vetos: só no título; salvos: título que nunca é vetado.
+    Um item com o prefixo "re:" é uma expressão; a comparação é sempre sem acento e sem distinguir maiúsculas."""
     termos: list[str] = Field(default_factory=list)
     vetos: list[str] = Field(default_factory=list)
+    salvos: list[str] = Field(default_factory=list)
 
 
 class Configuracao(_Base):
@@ -83,6 +99,22 @@ class Configuracao(_Base):
     alvos: dict[str, Any] = Field(default_factory=dict)
     metas: dict[str, Any] = Field(default_factory=dict)
     agenda: dict[str, Any] = Field(default_factory=dict)
+
+
+DATA_MODELO = re.compile(r"\{hoje(?P<d>[+-]\d+)?(?::(?P<f>[^}]+))?\}")
+
+
+def hoje_local() -> date:
+    """A data de hoje no fuso do Brasil (as edições e os prazos são do horário de Brasília)."""
+    return datetime.now(ZoneInfo("America/Sao_Paulo")).date()
+
+
+def preencher(modelo: str, hoje: date, valores: dict[str, Any] | None = None) -> str:
+    """{hoje:%Y%m%d}, {hoje-1:%d-%m-%Y}, {hoje+500:%Y%m%d} e as chaves de `valores` ({pagina}, {mod}...)."""
+    t = DATA_MODELO.sub(lambda m: (hoje + timedelta(days=int(m.group("d") or 0))).strftime(m.group("f") or "%Y-%m-%d"), modelo)
+    for k, v in (valores or {}).items():
+        t = t.replace("{" + k + "}", str(v))
+    return t
 
 
 def _agora() -> str:
@@ -153,7 +185,7 @@ class MotorCanal(Motor):
                 continue
             entregues = 0
             for pista in pistas:
-                if not self._passa_lexico(f"{pista.titulo} {pista.resumo or ''}") or self.estado.ja_entregue(pista.link):
+                if not self._passa_lexico(pista.titulo, pista.resumo or "") or self.estado.ja_entregue(pista.link):
                     continue
                 achado = self._achado(fonte, pista, entregues)
                 if achado is None:
@@ -183,7 +215,9 @@ class MotorCanal(Motor):
         if f.tipo == "ckan":
             return dados_abertos.ckan(buscar, f.url, f.termos or "")
         if f.tipo == "api":
-            return dados_abertos.api_oficial(buscar, f.url, f.caminhos)
+            return self._api(f)
+        if f.tipo == "siconv":
+            return dados_abertos.siconv_programas(buscar, f.url, hoje_local().isoformat())
         if f.tipo == "wayback":
             from ..acesso.escada import dominio
             return arquivos_web.indice_wayback(buscar, dominio(f.url))
@@ -191,26 +225,70 @@ class MotorCanal(Motor):
         self.relatorio.extend(f"{f.nome}: {x}" for x in relato)
         return pistas
 
-    def _passa_lexico(self, texto: str) -> bool:
-        t = _sem_acento(texto)
-        termos = [_sem_acento(x) for x in self.cfg.lexico.termos]
-        if termos and not any(x in t for x in termos):
+    def _api(self, f: CfgFonte) -> list[Pista]:
+        """Uma consulta por combinação de valores, com paginação; a primeira falha de uma combinação não derruba as outras."""
+        import itertools
+
+        import jmespath
+        hoje = hoje_local()
+        chaves = list(f.valores)
+        pistas: list[Pista] = []
+        erros: list[str] = []
+        for combinacao in itertools.product(*(f.valores[k] for k in chaves)) if chaves else [()]:
+            vals = {k: preencher(str(v), hoje) for k, v in zip(chaves, combinacao, strict=True)}
+            paginas = range(f.paginacao.inicio, f.paginacao.inicio + f.paginacao.maximo) if f.paginacao else [None]
+            for pg in paginas:
+                url = preencher(f.url, hoje, {**vals, **({"pagina": pg} if pg is not None else {})})
+                try:
+                    doc = dados_abertos.carregar_json(self.escada.buscar, url, f.json_em)
+                except (Bloqueado, ValueError) as e:
+                    erros.append(f"{url.split('?')[0]} {vals}: {e}")
+                    break
+                novas = dados_abertos.pistas_da_api(doc, f.caminhos, f"{f.nome}")
+                pistas += novas
+                total = jmespath.search(f.paginacao.total, doc) if f.paginacao and f.paginacao.total else None
+                if not novas or pg is None or (total is not None and pg >= int(total)):
+                    break
+        if erros:
+            self.relatorio.extend(f"{f.nome}: {e}" for e in erros[:10])
+        if erros and not pistas:
+            raise Bloqueado("; ".join(erros[:3]))
+        return pistas
+
+    @staticmethod
+    def _casa(texto: str, itens: list[str]) -> bool:
+        for x in itens:
+            if x.startswith("re:"):
+                if re.search(_sem_acento(x[3:]), texto, re.I):
+                    return True
+            elif _sem_acento(x) in texto:
+                return True
+        return False
+
+    def _passa_lexico(self, titulo: str, resumo: str = "") -> bool:
+        lx = self.cfg.lexico
+        t, tudo = _sem_acento(titulo), _sem_acento(f"{titulo} {resumo}")
+        if lx.termos and not self._casa(tudo, lx.termos):
             return False
-        return not any(_sem_acento(v) in t for v in self.cfg.lexico.vetos)
+        return not (lx.vetos and self._casa(t, lx.vetos) and not self._casa(t, lx.salvos))
 
     def _achado(self, fonte: CfgFonte, pista: Pista, n: int) -> Achado | None:
         documento = None
-        if self.cfg.leitura.documentos and DOCUMENTO.search(pista.link) and n < self.cfg.leitura.max_documentos:
+        ler = (self.cfg.leitura.documentos and DOCUMENTO.search(pista.link)) or (self.cfg.leitura.paginas_dos_achados and not DOCUMENTO.search(pista.link))
+        if ler and n < self.cfg.leitura.max_documentos:
             try:
                 r = self.escada.buscar(pista.link)
                 lido = self.leitura.ler(r.conteudo, pista.link)
             except (Bloqueado, Indisponivel, Pendente, leitores.SemLeitor) as e:
-                self.relatorio.append(f"{fonte.nome}: documento não lido ({pista.link}: {e})")
-                return None
-            documento = {"url": pista.link, "sha256": lido.sha256, "tipo": lido.tipo, "leitor": lido.leitor, "oficial": not r.copia_arquivada,
-                         "paginas": [p.texto for p in lido.paginas], "alertas": lido.alertas}
+                # o achado não se perde por causa do documento: ele segue sem o documento, que é lido depois (Fase 8)
+                self.relatorio.append(f"{fonte.nome}: documento não lido, achado entregue sem ele ({pista.link}: {str(e)[:200]})")
+                r = lido = None
+            if lido is not None:
+                documento = {"url": pista.link, "sha256": lido.sha256, "tipo": lido.tipo, "leitor": lido.leitor, "oficial": not r.copia_arquivada,
+                             "paginas": [p.texto for p in lido.paginas], "alertas": lido.alertas}
         m = self.cfg.motor
         chave = hashlib.sha256(pista.link.encode()).hexdigest()[:16]
         return Achado(id=f"{m.id}-{chave}", motor=m.id, encontrado_em=_agora()[:10], link_divulgacao=fonte.url, link_oficial=pista.link,
                       titulo=pista.titulo[:300], publicado_em=(pista.data or None) and str(pista.data)[:10],
-                      dados={"uf": m.uf, "orgao": m.orgao, "fonte": fonte.nome, "origem": pista.origem}, documento=documento)
+                      dados={"uf": m.uf, "orgao": m.orgao, **pista.extra, "fonte": fonte.nome, "origem": pista.origem,
+                             **({"resumo": pista.resumo} if pista.resumo else {})}, documento=documento)
