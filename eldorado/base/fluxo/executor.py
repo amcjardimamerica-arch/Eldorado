@@ -102,7 +102,10 @@ class Executor:
     def _entradas(self, no_id: str, estado: "_Estado", entrada: list[dict[str, Any]]) -> list[dict[str, Any]] | None:
         principais = self.d.entradas(no_id, "principal")
         de_erro = self.d.entradas(no_id, "erro")
+        so_ordem = self.d.entradas(no_id, "ordem")
         if not principais and not de_erro:
+            if so_ordem:                                  # só ordem: roda depois dos indicados, sem receber dados
+                return [] if any(p in estado.saidas or p in estado.desviados for p in so_ordem) else None
             return list(entrada)
         itens: list[dict[str, Any]] = []
         ativado = False

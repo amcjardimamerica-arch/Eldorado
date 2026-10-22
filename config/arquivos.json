@@ -271,7 +271,7 @@
     "eldorado/banco/biblioteca/livro.py"
    ],
    "critico": false,
-   "metrica": "itens certificados por livro; livros 12 de 12"
+   "metrica": "certidões reais: reconhece 64%, valor certo 84%, ponta a ponta 54% (linha de base 22/10)"
   },
   {
    "arquivo": "eldorado/base/cartorio/selos.py",
@@ -371,7 +371,8 @@
    "parte": "BASE",
    "componente": "Missão (finalidade trocável)",
    "ligacoes": [
-    "eldorado/base/cerebro/regras.py"
+    "eldorado/base/cerebro/regras.py",
+    "eldorado/base/missao/regras_portao.py"
    ],
    "critico": false,
    "metrica": "decisões contrariadas por veredito (zero)"
@@ -926,6 +927,26 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "bancos abertos íntegros"
+  },
+  {
+   "arquivo": "eldorado/base/missao/regras_portao.py",
+   "parte": "BASE",
+   "componente": "Missão (finalidade trocável)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "casos de ouro do portão (100%)"
+  },
+  {
+   "arquivo": "eldorado/base/missao/oportunidades.py",
+   "parte": "BASE",
+   "componente": "Missão (finalidade trocável)",
+   "ligacoes": [
+    "eldorado/base/missao/portao.py",
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/missao/chave.py"
+   ],
+   "critico": false,
+   "metrica": "missão com os dados presentes"
   }
  ]
 }

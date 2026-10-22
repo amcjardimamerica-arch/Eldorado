@@ -9,8 +9,8 @@ description = "Plataforma modular de busca de dados na internet: base fixa, moto
 readme = "README.md"
 requires-python = ">=3.12"
 license = "AGPL-3.0-or-later"
-# Fases 1 a 3 (Fundação, Execução e Cérebro): o núcleo, o workflow, o executor, a fila, a agenda, o governador e o Cérebro.
-dependencies = ["loguru==0.7.3", "msgspec==0.22.0", "pydantic==2.13.5", "typer==0.27.3", "zstandard==0.25.0", "huey==3.4.0", "psutil==7.2.2", "river==0.26.1"]
+# Fases 1 a 4 (Fundação, Execução, Cérebro, Cartório e missão).
+dependencies = ["loguru==0.7.3", "msgspec==0.22.0", "pydantic==2.13.5", "typer==0.27.3", "zstandard==0.25.0", "huey==3.4.0", "psutil==7.2.2", "river==0.26.1", "datasketch==2.0.0"]
 
 [project.scripts]
 eldorado = "eldorado.base.nucleo.comandos:app"
@@ -39,3 +39,5 @@ select = ["E", "F", "W", "B", "I"]
 [tool.ruff.lint.per-file-ignores]
 "eldorado/banco/*/esquema.py" = ["E501"]   # o SQL das regras fica numa linha por gatilho, para ser lido inteiro
 "testes/*" = ["E501"]
+"eldorado/base/cartorio/certificacao.py" = ["E501"]   # os padrões de texto ficam numa linha cada, para serem lidos inteiros
+"eldorado/base/missao/itens.py" = ["E501"]            # o padrão de justificativa, aproveitado do Eldorado0

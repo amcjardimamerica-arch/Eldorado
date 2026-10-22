@@ -1,0 +1,89 @@
+# A passagem: planejar, acionar, decidir, aplicar, certificar no Cartório, aprender, conferir a completude e medir.
+[workflow]
+id = "passagem"
+descricao = "A passagem completa do Eldorado (fases 1 a 4)"
+
+[[no]]
+id = "planejar"
+tipo = "eldorado.base.cerebro.regencia:no_planejar"
+parametros = { agenda = "config/agenda.toml", modulos = "config/modulos.toml", dados = "dados" }
+
+[[no]]
+id = "acionar"
+tipo = "eldorado.base.cerebro.regencia:no_acionar"
+parametros = { modulos = "config/modulos.toml", dados = "dados" }
+
+[[no]]
+id = "decidir"
+tipo = "eldorado.base.cerebro.pertinencia:no_decidir"
+parametros = { missao = "eldorado.base.missao.oportunidades:MissaoOportunidades" }
+
+[[no]]
+id = "aplicar_coleta"
+tipo = "eldorado.base.fluxo.nos:aplicar_eventos"
+tentativas = 3
+esperas_s = [2, 5]
+parametros = { dados = "dados", eventos = "eventos" }
+
+[[no]]
+id = "cartorio"
+tipo = "eldorado.base.cartorio.cartorio:no_cartorio"
+parametros = { dados = "dados", missao = "eldorado.base.missao.oportunidades:MissaoOportunidades" }
+
+[[no]]
+id = "aplicar_cartorio"
+tipo = "eldorado.base.fluxo.nos:aplicar_eventos"
+tentativas = 3
+esperas_s = [2, 5]
+parametros = { dados = "dados", eventos = "eventos" }
+
+[[no]]
+id = "aprender"
+tipo = "eldorado.base.cerebro.aprendizado:no_aprendizado"
+parametros = { dados = "dados" }
+
+[[no]]
+id = "completude"
+tipo = "eldorado.base.cerebro.completude:no_completude"
+
+[[no]]
+id = "medir"
+tipo = "eldorado.base.cerebro.medicao:no_medir"
+parametros = { catalogo = "config/arquivos.json" }
+
+[[no]]
+id = "aplicar_final"
+tipo = "eldorado.base.fluxo.nos:aplicar_eventos"
+parametros = { dados = "dados", eventos = "eventos" }
+
+[[conexao]]
+de = "planejar"
+para = "acionar"
+[[conexao]]
+de = "acionar"
+para = "decidir"
+[[conexao]]
+de = "decidir"
+para = "aplicar_coleta"
+[[conexao]]
+de = "aplicar_coleta"
+para = "cartorio"
+saida = "ordem"                 # aplicar antes de certificar, sem passar dados
+[[conexao]]
+de = "decidir"
+para = "cartorio"
+[[conexao]]
+de = "cartorio"
+para = "aplicar_cartorio"
+[[conexao]]
+de = "aplicar_cartorio"
+para = "aprender"
+[[conexao]]
+de = "aprender"
+para = "completude"
+[[conexao]]
+de = "completude"
+para = "medir"
+[[conexao]]
+de = "medir"
+para = "aplicar_final"

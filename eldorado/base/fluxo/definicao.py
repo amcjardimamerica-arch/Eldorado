@@ -17,7 +17,8 @@ Um workflow é um arquivo TOML com nós e conexões:
     [[conexao]]
     de = "ler"
     para = "gravar"
-    saida = "principal"                          # ou "erro": o caminho tomado quando o nó esgota as tentativas
+    saida = "principal"                          # "erro": o caminho tomado quando o nó esgota as tentativas;
+                                                 # "ordem": só garante que este nó roda depois do outro, sem passar dados
 
 A versão é a assinatura do conteúdo normalizado: a mesma definição tem sempre a mesma versão.
 """
@@ -144,7 +145,7 @@ def de_dicionario(d: dict[str, Any], conferir_funcoes: bool = True) -> Definicao
         cx = Conexao(de=c.get("de", ""), para=c.get("para", ""), saida=c.get("saida", "principal"))
         if cx.de not in ids or cx.para not in ids:
             raise WorkflowInvalido(f"conexão para nó inexistente: {cx.de} → {cx.para}")
-        if cx.saida not in ("principal", "erro"):
+        if cx.saida not in ("principal", "erro", "ordem"):
             raise WorkflowInvalido(f"saída desconhecida: {cx.saida}")
         if cx.de == cx.para:
             raise WorkflowInvalido(f"nó ligado a si mesmo: {cx.de}")

@@ -45,8 +45,13 @@ def autorizar(fase_atual: str | None, para: str, tentativas_na_fase: int = 0, ma
 
 
 def achado_para_evento(a: Achado) -> dict[str, Any]:
+    """O achado no formato da tabela; a assinatura do documento e o endereço no Drive vão dentro dos dados."""
     d = msgspec.to_builtins(a)
-    return {k: (int(v) if isinstance(v, bool) else v) for k, v in d.items() if k in COLUNAS_ACHADO}
+    ev = {k: (int(v) if isinstance(v, bool) else v) for k, v in d.items() if k in COLUNAS_ACHADO}
+    extras = {k: d[k] for k in ("documento_sha256", "drive_id") if d.get(k)}
+    if extras:
+        ev["dados"] = {**(ev.get("dados") or {}), **extras}
+    return ev
 
 
 class Regencia:

@@ -19,7 +19,7 @@ A mecânica é única: a Regência planeja e aciona; cada módulo **só grava ev
 | **F1 · Fundação** (contratos, configuração, eventos, alarmes, os três bancos, o gravador) | **concluída** |
 | **F2 · Execução** (workflow, executor durável, fila, agenda, governador de carga, comandos) | **concluída** |
 | **F3 · Cérebro** (indicadores, regras, Pertinência, Regência, aprendizado, rede, completude) | **concluída** |
-| F4 · Cartório e missão | a fazer |
+| **F4 · Cartório e missão** (portão com os casos de ouro, 12 itens, chave, índice, passaporte, certificação, selos, site oficial, passagem real) | **concluída** |
 | F5 · Ferramentas dos motores | a fazer |
 | F6 · Migração do Eldorado0 | a fazer |
 | F7 · Primeiros motores (com API) | a fazer |
@@ -35,6 +35,7 @@ Cada fase só começa quando a anterior cumpre o seu critério de pronto, com os
 pip install -e ".[testes]"
 
 eldorado iniciar                        # cria (ou confere) os três bancos
+eldorado executar workflows/passagem.toml    # a passagem completa
 eldorado executar workflows/manutencao.toml
 eldorado retomar <workflow> <execucao>  # retoma do passo em que parou
 eldorado aplicar                        # aplica aos bancos os eventos pendentes (sem duplicar)

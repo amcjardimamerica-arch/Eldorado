@@ -97,6 +97,7 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "livro.vinculado": (Alvo(B, "achado", "atualizar", ("id",), lambda d: {"id": d["achado_id"], "livro_id": d["livro_id"]}),),
     "livro.unido": (Alvo(B, "uniao", "inserir"),),
     "livro.situacao": (Alvo(B, "livro", "atualizar", ("id",), _so("id", "situacao", "atualizado_em")),),
+    "livro.links": (Alvo(B, "livro", "atualizar", ("id",), _so("id", "link_divulgacao", "link_oficial", "atualizado_em")),),
     "livro.passagem": (Alvo(B, "passagem", "inserir"), Alvo(B, "passaporte", "inserir_ou_atualizar", ("livro_id",), _passaporte)),
     "livro.excluido_logicamente": (Alvo(B, "livro", "atualizar", ("id",), lambda d: {"id": d["id"], "situacao": "excluido",
                                     "justificativa_exclusao": d.get("justificativa_exclusao"), "atualizado_em": d["atualizado_em"]}),),

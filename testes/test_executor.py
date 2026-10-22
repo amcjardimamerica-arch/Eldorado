@@ -119,3 +119,13 @@ def test_eventos_do_executor_sao_aceitos_pelo_gravador(tmp_path, gravador, banco
     assert c.execute("SELECT estado FROM execucao").fetchone()[0] == "concluida"
     assert c.execute("SELECT COUNT(*) FROM recibo WHERE cpu_ms IS NOT NULL AND memoria_pico_kb IS NOT NULL").fetchone()[0] == 2
     assert c.execute("SELECT COUNT(*) FROM workflow").fetchone()[0] == 1
+
+
+def test_ligacao_de_ordem_nao_passa_dados(tmp_path):
+    d = wf([{"id": "a", "tipo": T + "contar"}, {"id": "b", "tipo": T + "contar"}, {"id": "c", "tipo": T + "contar"}],
+           [{"de": "a", "para": "c"}, {"de": "b", "para": "c", "saida": "ordem"}])
+    r = Executor(d, tmp_path).executar([{"x": 1}])
+    assert r.estado == "concluida" and len(r.saidas["c"]) == 1 and r.saidas["c"][0]["passou_por"] == ["a", "c"]
+    d2 = wf([{"id": "a", "tipo": T + "contar"}, {"id": "depois", "tipo": T + "contar"}], [{"de": "a", "para": "depois", "saida": "ordem"}])
+    r2 = Executor(d2, tmp_path / "2").executar([{"x": 1}])
+    assert r2.saidas["depois"] == [{"passou_por": ["depois"]}]           # rodou depois, sem receber os itens de "a"
