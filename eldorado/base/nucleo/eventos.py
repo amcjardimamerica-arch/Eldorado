@@ -84,6 +84,8 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "aprendizado.registrado": (Alvo(C, "aprendizado_temporario", "inserir"),),
     "aprendizado.promovido": (Alvo(C, "aprendizado_permanente", "inserir"),),
     "aprendizado.arquivado": (Alvo(C, "aprendizado_permanente", "atualizar", ("id",), _so("id", "arquivado")),),
+    "aprendizado.usado": (Alvo(C, "aprendizado_temporario", "atualizar", ("id",), _so("id", "usos", "resultado")),),
+    "aprendizado.expirado": (Alvo(C, "aprendizado_temporario", "apagar", ("id",)),),
     # Pertinência: a decisão fica no Cérebro e no próprio achado
     "pertinencia.decidida": (Alvo(C, "decisao_pertinencia", "inserir"),
                              Alvo(B, "achado", "atualizar", ("id",), _decisao_no_achado)),
@@ -152,7 +154,15 @@ def criar(tipo: str, modulo: str, dados: dict[str, Any], linhagem: Linhagem | No
     return Evento(id=novo_id(), tipo=tipo, modulo=modulo, em=agora(), dados=dados, linhagem=linhagem or Linhagem())
 
 
-_enc = msgspec.json.Encoder()
+def _converter(obj: Any) -> Any:
+    """Números de bibliotecas numéricas (NumPy e afins) viram números comuns; o resto é erro (nunca descartado)."""
+    item = getattr(obj, "item", None)
+    if callable(item):
+        return item()
+    raise NotImplementedError(f"tipo não serializável no evento: {type(obj).__name__}")
+
+
+_enc = msgspec.json.Encoder(enc_hook=_converter)
 _dec = msgspec.json.Decoder(Evento)
 
 

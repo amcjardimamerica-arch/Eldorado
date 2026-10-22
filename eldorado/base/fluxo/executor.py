@@ -13,13 +13,13 @@
 from __future__ import annotations
 
 import time
-import tracemalloc
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable
 
 from ..nucleo.alarmes import Alarmes
 from ..nucleo.eventos import Diario, agora
+from ..nucleo.recibo import emitir_recibo, medir
 from .definicao import ESPERA_MAXIMA_EM_PROCESSO_S, Definicao, No, resolver
 
 LINHAGEM = "_linhagem"
@@ -149,31 +149,15 @@ class Executor:
         raise _Falhou(f"{no.id}: {ultimo_erro}")
 
     def _chamar(self, fn: Callable[..., Any], no: No, itens: list[dict[str, Any]], ctx: Contexto, diario: Diario) -> tuple[bool, list[dict[str, Any]], str]:
-        rastreando = False
-        if self.medir_memoria:
-            rastreando = not tracemalloc.is_tracing()
-            if rastreando:
-                tracemalloc.start()
-            tracemalloc.reset_peak()
-        t0, c0 = time.perf_counter(), time.process_time()
-        ok, saida, erro = True, [], ""
-        try:
+        def chamada():
             r = fn([dict(x) for x in itens], dict(no.parametros), ctx)
             saida = [] if r is None else r
             if not isinstance(saida, list) or not all(isinstance(x, dict) for x in saida):
                 raise TypeError("o nó deve devolver uma lista de dicionários")
-        except Exception as e:  # noqa: BLE001 — toda falha vira recibo e tentativa; nada é engolido
-            ok, erro = False, f"{type(e).__name__}: {e}"
-        duracao = int((time.perf_counter() - t0) * 1000)
-        cpu = int((time.process_time() - c0) * 1000)
-        pico = None
-        if self.medir_memoria:
-            pico = tracemalloc.get_traced_memory()[1] // 1024
-            if rastreando:
-                tracemalloc.stop()
-        diario.emitir("chamada.recibo", "executor", {"execucao": ctx.execucao, "modulo": no.tipo, "chamado_por": no.id, "ok": int(ok),
-                                                      "duracao_ms": duracao, "cpu_ms": cpu, "memoria_pico_kb": pico, "erro": erro or None, "em": agora()})
-        return ok, saida, erro
+            return saida
+        m = medir(chamada, medir_memoria=self.medir_memoria)
+        emitir_recibo(diario, ctx.execucao, no.tipo, no.id, m)
+        return m.ok, (m.resultado or []), m.erro
 
     @staticmethod
     def _herdar_linhagem(entrada: list[dict[str, Any]], saida: list[dict[str, Any]]) -> list[dict[str, Any]]:

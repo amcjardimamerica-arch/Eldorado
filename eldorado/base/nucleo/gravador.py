@@ -21,6 +21,8 @@ from ...banco._sqlite import colunas
 from .contratos import Linhagem
 from .eventos import CATALOGO, Alvo, Diario, Evento, agora
 
+APAGAVEIS = {"aprendizado_temporario"}     # a única tabela em que algo se apaga: o temporário vence em 30 dias (regra da titular)
+
 
 @dataclass
 class Relatorio:
@@ -105,6 +107,12 @@ class Gravador:
             muda = [c for c in nomes if c not in alvo.chave]
             conflito = f"ON CONFLICT ({', '.join(alvo.chave)}) DO " + (f"UPDATE SET {', '.join(f'{c}=excluded.{c}' for c in muda)}" if muda else "NOTHING")
             con.execute(f"INSERT INTO {alvo.tabela} ({', '.join(nomes)}) VALUES ({', '.join('?' * len(nomes))}) {conflito}", list(dados.values()))
+        elif alvo.operacao == "apagar":
+            if alvo.tabela not in APAGAVEIS:
+                raise ValueError(f"nada se apaga em {alvo.tabela}")
+            cur = con.execute(f"DELETE FROM {alvo.tabela} WHERE {' AND '.join(f'{c}=?' for c in alvo.chave)}", [dados[c] for c in alvo.chave])
+            if cur.rowcount == 0:
+                raise ValueError(f"linha não encontrada em {alvo.tabela}")
         else:
             raise ValueError(f"operação desconhecida: {alvo.operacao}")
 

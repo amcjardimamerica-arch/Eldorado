@@ -34,3 +34,14 @@ def test_todo_alvo_do_catalogo_aponta_para_um_banco_conhecido():
     for tipo, alvos in CATALOGO.items():
         for a in alvos:
             assert a.banco in ("biblioteca", "especial", "cerebro", "*"), tipo
+
+
+def test_numeros_do_numpy_sao_convertidos_e_objetos_estranhos_sao_erro(tmp_path):
+    import numpy as np
+    import pytest as _pytest
+    d = Diario(tmp_path)
+    d.emitir("maquina.leitura", "teste", {"em": "x", "processador": np.float64(0.5), "paralelismo": np.int64(3)})
+    ev = next(ler(tmp_path))
+    assert ev.dados["processador"] == 0.5 and ev.dados["paralelismo"] == 3
+    with _pytest.raises(NotImplementedError):
+        d.emitir("maquina.leitura", "teste", {"em": "x", "objeto": object()})

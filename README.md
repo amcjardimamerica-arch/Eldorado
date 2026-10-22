@@ -18,7 +18,7 @@ A mecânica é única: a Regência planeja e aciona; cada módulo **só grava ev
 | --- | --- |
 | **F1 · Fundação** (contratos, configuração, eventos, alarmes, os três bancos, o gravador) | **concluída** |
 | **F2 · Execução** (workflow, executor durável, fila, agenda, governador de carga, comandos) | **concluída** |
-| F3 · Cérebro | a fazer |
+| **F3 · Cérebro** (indicadores, regras, Pertinência, Regência, aprendizado, rede, completude) | **concluída** |
 | F4 · Cartório e missão | a fazer |
 | F5 · Ferramentas dos motores | a fazer |
 | F6 · Migração do Eldorado0 | a fazer |

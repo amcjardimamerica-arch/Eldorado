@@ -1,0 +1,931 @@
+{
+ "versao": 1,
+ "arquivos": [
+  {
+   "arquivo": "eldorado/base/nucleo/contratos.py",
+   "parte": "BASE",
+   "componente": "Núcleo da plataforma",
+   "ligacoes": [],
+   "critico": true,
+   "metrica": "todo módulo registrado passa no teste de contrato"
+  },
+  {
+   "arquivo": "eldorado/base/nucleo/registro.py",
+   "parte": "BASE",
+   "componente": "Núcleo da plataforma",
+   "ligacoes": [
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/base/nucleo/config.py"
+   ],
+   "critico": false,
+   "metrica": "módulos ligados × módulos com contrato válido; módulo recusado gera alarme"
+  },
+  {
+   "arquivo": "eldorado/base/nucleo/config.py",
+   "parte": "BASE",
+   "componente": "Núcleo da plataforma",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "configuração válida na carga"
+  },
+  {
+   "arquivo": "eldorado/base/nucleo/eventos.py",
+   "parte": "BASE",
+   "componente": "Núcleo da plataforma",
+   "ligacoes": [
+    "eldorado/base/nucleo/contratos.py"
+   ],
+   "critico": true,
+   "metrica": "eventos gravados por execução; eventos inválidos (devem ser zero)"
+  },
+  {
+   "arquivo": "eldorado/base/nucleo/gravador.py",
+   "parte": "BASE",
+   "componente": "Núcleo da plataforma",
+   "ligacoes": [
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/banco/biblioteca/esquema.py",
+    "eldorado/banco/especial/esquema.py",
+    "eldorado/banco/cerebro_db/esquema.py",
+    "eldorado/base/painel/visoes.py"
+   ],
+   "critico": true,
+   "metrica": "atraso entre evento e banco; violações barradas pelas regras do banco"
+  },
+  {
+   "arquivo": "eldorado/base/nucleo/alarmes.py",
+   "parte": "BASE",
+   "componente": "Núcleo da plataforma",
+   "ligacoes": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": true,
+   "metrica": "alarmes abertos por gravidade; tempo até o alarme ser visto"
+  },
+  {
+   "arquivo": "eldorado/base/nucleo/ia.py",
+   "parte": "BASE",
+   "componente": "Núcleo da plataforma",
+   "ligacoes": [
+    "eldorado/base/nucleo/config.py",
+    "eldorado/base/cerebro/governador.py"
+   ],
+   "critico": false,
+   "metrica": "respostas válidas (meta 90%); custo e tempo por tarefa"
+  },
+  {
+   "arquivo": "eldorado/base/nucleo/comandos.py",
+   "parte": "BASE",
+   "componente": "Núcleo da plataforma",
+   "ligacoes": [
+    "eldorado/base/fluxo/executor.py",
+    "eldorado/base/nucleo/config.py"
+   ],
+   "critico": false,
+   "metrica": "comandos executados sem erro"
+  },
+  {
+   "arquivo": "eldorado/base/nucleo/seguranca.py",
+   "parte": "BASE",
+   "componente": "Núcleo da plataforma",
+   "ligacoes": [
+    "eldorado/base/painel/api.py"
+   ],
+   "critico": false,
+   "metrica": "nenhuma credencial ou CPF desnecessário publicado"
+  },
+  {
+   "arquivo": "eldorado/base/fluxo/definicao.py",
+   "parte": "BASE",
+   "componente": "Workflow, fila e agenda",
+   "ligacoes": [
+    "eldorado/base/nucleo/contratos.py"
+   ],
+   "critico": false,
+   "metrica": "workflows válidos e versionados"
+  },
+  {
+   "arquivo": "eldorado/base/fluxo/executor.py",
+   "parte": "BASE",
+   "componente": "Workflow, fila e agenda",
+   "ligacoes": [
+    "eldorado/base/fluxo/definicao.py",
+    "eldorado/base/fluxo/fila.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/recibo.py"
+   ],
+   "critico": true,
+   "metrica": "execuções retomadas sem perda; passos com falha"
+  },
+  {
+   "arquivo": "eldorado/base/fluxo/fila.py",
+   "parte": "BASE",
+   "componente": "Workflow, fila e agenda",
+   "ligacoes": [
+    "eldorado/base/cerebro/governador.py"
+   ],
+   "critico": false,
+   "metrica": "tarefas atrasadas; tarefas com erro"
+  },
+  {
+   "arquivo": "eldorado/base/fluxo/agenda.py",
+   "parte": "BASE",
+   "componente": "Workflow, fila e agenda",
+   "ligacoes": [
+    "eldorado/base/fluxo/fila.py",
+    "eldorado/base/analise/preditivo.py"
+   ],
+   "critico": false,
+   "metrica": "motores devidos e acionados no horário"
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/rede.py",
+   "parte": "BASE",
+   "componente": "Cérebro: Regência e Pertinência e aprendizado",
+   "ligacoes": [
+    "eldorado/banco/cerebro_db/esquema.py"
+   ],
+   "critico": false,
+   "metrica": "discernimento, precisão, revocação; idade do modelo"
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/regencia.py",
+   "parte": "BASE",
+   "componente": "Cérebro: Regência e Pertinência e aprendizado",
+   "ligacoes": [
+    "eldorado/base/cartorio/cartorio.py",
+    "eldorado/base/cerebro/governador.py",
+    "eldorado/base/cerebro/rede.py",
+    "eldorado/base/fluxo/agenda.py",
+    "eldorado/base/fluxo/executor.py",
+    "eldorado/base/nucleo/recibo.py"
+   ],
+   "critico": true,
+   "metrica": "acionamentos no horário; passagens autorizadas"
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/pertinencia.py",
+   "parte": "BASE",
+   "componente": "Cérebro: Regência e Pertinência e aprendizado",
+   "ligacoes": [
+    "eldorado/base/cerebro/rede.py",
+    "eldorado/base/missao/portao.py",
+    "eldorado/base/cerebro/regras.py"
+   ],
+   "critico": true,
+   "metrica": "achados aceitos e barrados com motivo; decisões contrariadas por veredito"
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/aprendizado.py",
+   "parte": "BASE",
+   "componente": "Cérebro: Regência e Pertinência e aprendizado",
+   "ligacoes": [
+    "eldorado/banco/cerebro_db/esquema.py",
+    "eldorado/base/nucleo/registro.py"
+   ],
+   "critico": false,
+   "metrica": "aprendizados promovidos e arquivados"
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/regras.py",
+   "parte": "BASE",
+   "componente": "Cérebro: Regência e Pertinência e aprendizado",
+   "ligacoes": [
+    "eldorado/banco/cerebro_db/esquema.py"
+   ],
+   "critico": false,
+   "metrica": "decisões aplicadas; contradições abertas (devem ser zero)"
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/completude.py",
+   "parte": "BASE",
+   "componente": "Cérebro: Regência e Pertinência e aprendizado",
+   "ligacoes": [
+    "eldorado/base/cerebro/regencia.py"
+   ],
+   "critico": false,
+   "metrica": "cobertura do dia (meta 100%)"
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/medicao.py",
+   "parte": "BASE",
+   "componente": "Cérebro: Regência e Pertinência e aprendizado",
+   "ligacoes": [
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/registro.py"
+   ],
+   "critico": true,
+   "metrica": "arquivos com as três medições na passagem (meta 100%)"
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/governador.py",
+   "parte": "BASE",
+   "componente": "Cérebro: Regência e Pertinência e aprendizado",
+   "ligacoes": [
+    "eldorado/base/fluxo/fila.py"
+   ],
+   "critico": true,
+   "metrica": "tempo acima de 85% (meta zero)"
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/cartorio.py",
+   "parte": "BASE",
+   "componente": "Cartório: base de passagem",
+   "ligacoes": [
+    "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/cartorio/indice.py",
+    "eldorado/base/cartorio/certificacao.py",
+    "eldorado/base/cartorio/selos.py",
+    "eldorado/banco/biblioteca/livro.py"
+   ],
+   "critico": true,
+   "metrica": "livros movidos por passagem; livros parados além do previsto"
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/passaporte.py",
+   "parte": "BASE",
+   "componente": "Cartório: base de passagem",
+   "ligacoes": [
+    "eldorado/banco/biblioteca/livro.py"
+   ],
+   "critico": false,
+   "metrica": "livros sem passaporte (zero)"
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/indice.py",
+   "parte": "BASE",
+   "componente": "Cartório: base de passagem",
+   "ligacoes": [
+    "eldorado/base/missao/chave.py",
+    "eldorado/banco/biblioteca/livro.py"
+   ],
+   "critico": false,
+   "metrica": "duplicados unidos; livros criados e vinculados"
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/certificacao.py",
+   "parte": "BASE",
+   "componente": "Cartório: base de passagem",
+   "ligacoes": [
+    "eldorado/base/missao/itens.py",
+    "eldorado/banco/biblioteca/livro.py"
+   ],
+   "critico": false,
+   "metrica": "itens certificados por livro; livros 12 de 12"
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/selos.py",
+   "parte": "BASE",
+   "componente": "Cartório: base de passagem",
+   "ligacoes": [
+    "eldorado/banco/biblioteca/livro.py",
+    "eldorado/base/analise/preditivo.py"
+   ],
+   "critico": false,
+   "metrica": "livros sem selo (zero; hoje 70%)"
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/site_oficial.py",
+   "parte": "BASE",
+   "componente": "Cartório: base de passagem",
+   "ligacoes": [
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/banco/biblioteca/livro.py"
+   ],
+   "critico": false,
+   "metrica": "livros com link oficial aprovado"
+  },
+  {
+   "arquivo": "eldorado/base/investigacao/investigacao.py",
+   "parte": "BASE",
+   "componente": "Etapa de Investigação",
+   "ligacoes": [
+    "eldorado/motores/pilotos/interceptador.py",
+    "eldorado/base/cartorio/cartorio.py"
+   ],
+   "critico": false,
+   "metrica": "livros investigados e itens comprovados por livro"
+  },
+  {
+   "arquivo": "eldorado/base/verificacao/verificacao.py",
+   "parte": "BASE",
+   "componente": "Etapa de Verificação externa",
+   "ligacoes": [
+    "eldorado/base/verificacao/lote.py",
+    "eldorado/base/verificacao/importacao.py",
+    "eldorado/base/cartorio/cartorio.py"
+   ],
+   "critico": false,
+   "metrica": "livros em verificação; decisões recebidas"
+  },
+  {
+   "arquivo": "eldorado/base/verificacao/lote.py",
+   "parte": "BASE",
+   "componente": "Etapa de Verificação externa",
+   "ligacoes": [
+    "eldorado/banco/biblioteca/livro.py"
+   ],
+   "critico": false,
+   "metrica": "lotes gerados"
+  },
+  {
+   "arquivo": "eldorado/base/verificacao/importacao.py",
+   "parte": "BASE",
+   "componente": "Etapa de Verificação externa",
+   "ligacoes": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": false,
+   "metrica": "respostas importadas e recusadas"
+  },
+  {
+   "arquivo": "eldorado/base/verificacao/relatorio_faltas.py",
+   "parte": "BASE",
+   "componente": "Etapa de Verificação externa",
+   "ligacoes": [
+    "eldorado/base/analise/historia.py"
+   ],
+   "critico": false,
+   "metrica": "livros com relatório final"
+  },
+  {
+   "arquivo": "eldorado/base/transferencia/farol.py",
+   "parte": "BASE",
+   "componente": "Transferência ao Farol",
+   "ligacoes": [
+    "eldorado/banco/biblioteca/livro.py"
+   ],
+   "critico": false,
+   "metrica": "livros transferidos; recusados pelo contrato"
+  },
+  {
+   "arquivo": "eldorado/base/missao/oportunidades.toml",
+   "parte": "BASE",
+   "componente": "Missão (finalidade trocável)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "missão válida"
+  },
+  {
+   "arquivo": "eldorado/base/missao/portao.py",
+   "parte": "BASE",
+   "componente": "Missão (finalidade trocável)",
+   "ligacoes": [
+    "eldorado/base/cerebro/regras.py"
+   ],
+   "critico": false,
+   "metrica": "decisões contrariadas por veredito (zero)"
+  },
+  {
+   "arquivo": "eldorado/base/missao/itens.py",
+   "parte": "BASE",
+   "componente": "Missão (finalidade trocável)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "itens definidos"
+  },
+  {
+   "arquivo": "eldorado/base/missao/chave.py",
+   "parte": "BASE",
+   "componente": "Missão (finalidade trocável)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "chaves que geraram duplicado"
+  },
+  {
+   "arquivo": "eldorado/base/painel/api.py",
+   "parte": "BASE",
+   "componente": "Painel, API e Sala de controle",
+   "ligacoes": [
+    "eldorado/base/painel/visoes.py",
+    "eldorado/base/nucleo/seguranca.py"
+   ],
+   "critico": false,
+   "metrica": "respostas no prazo; erros"
+  },
+  {
+   "arquivo": "eldorado/base/painel/visoes.py",
+   "parte": "BASE",
+   "componente": "Painel, API e Sala de controle",
+   "ligacoes": [
+    "eldorado/banco/biblioteca/esquema.py",
+    "eldorado/banco/cerebro_db/esquema.py"
+   ],
+   "critico": false,
+   "metrica": "visões iguais à consulta ao banco"
+  },
+  {
+   "arquivo": "eldorado/base/painel/maquina.py",
+   "parte": "BASE",
+   "componente": "Painel, API e Sala de controle",
+   "ligacoes": [
+    "eldorado/base/cerebro/governador.py"
+   ],
+   "critico": false,
+   "metrica": "mostrador atualizado em tempo real"
+  },
+  {
+   "arquivo": "eldorado/base/painel/sala.py",
+   "parte": "BASE",
+   "componente": "Painel, API e Sala de controle",
+   "ligacoes": [
+    "eldorado/banco/cerebro_db/esquema.py"
+   ],
+   "critico": false,
+   "metrica": "sala publicada no prazo"
+  },
+  {
+   "arquivo": "eldorado/base/painel/paginas/",
+   "parte": "BASE",
+   "componente": "Painel, API e Sala de controle",
+   "ligacoes": [
+    "eldorado/base/painel/visoes.py",
+    "eldorado/base/painel/maquina.py"
+   ],
+   "critico": false,
+   "metrica": "páginas sem erro de carga"
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/escada.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de acesso (escada de 9 degraus)",
+   "ligacoes": [
+    "eldorado/motores/acesso/api.py",
+    "eldorado/motores/acesso/leve.py",
+    "eldorado/motores/acesso/navegador.py",
+    "eldorado/motores/acesso/arquivo_web.py",
+    "eldorado/motores/acesso/local.py",
+    "eldorado/base/cerebro/governador.py"
+   ],
+   "critico": false,
+   "metrica": "leituras com sucesso por domínio; degrau usado"
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/api.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de acesso (escada de 9 degraus)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "respostas válidas"
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/leve.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de acesso (escada de 9 degraus)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "sucesso por domínio"
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/navegador.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de acesso (escada de 9 degraus)",
+   "ligacoes": [
+    "eldorado/base/cerebro/governador.py"
+   ],
+   "critico": false,
+   "metrica": "sucesso por degrau"
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/arquivo_web.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de acesso (escada de 9 degraus)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "cópias encontradas"
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/rotas_alternativas.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de acesso (escada de 9 degraus)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "sucesso das reservas"
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/local.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de acesso (escada de 9 degraus)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "pedidos resolvidos localmente"
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/leitores.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [
+    "eldorado/motores/leitura/pagina.py",
+    "eldorado/motores/leitura/pdf.py",
+    "eldorado/motores/leitura/ocr.py",
+    "eldorado/motores/leitura/planilha.py",
+    "eldorado/motores/leitura/documento.py",
+    "eldorado/motores/leitura/compactado.py",
+    "eldorado/motores/leitura/universal.py",
+    "eldorado/motores/leitura/expurgo.py",
+    "eldorado/motores/leitura/normalizar.py"
+   ],
+   "critico": false,
+   "metrica": "conteúdos lidos por tipo; tipos sem leitor"
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/pagina.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "páginas lidas; links por página"
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/pdf.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [
+    "eldorado/motores/leitura/ocr.py",
+    "eldorado/motores/leitura/expurgo.py"
+   ],
+   "critico": false,
+   "metrica": "páginas por segundo; páginas sem texto"
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/ocr.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "páginas com OCR; confiança média"
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/planilha.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "planilhas lidas"
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/documento.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "documentos lidos"
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/compactado.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "critico": false,
+   "metrica": "arquivos abertos"
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/universal.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "usos da reserva (deve ser raro)"
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/expurgo.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "palavras-chave e valores preservados (teste obrigatório)"
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/normalizar.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "campos normalizados por achado"
+  },
+  {
+   "arquivo": "eldorado/motores/descoberta/metabusca.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de descoberta (5 formas)",
+   "ligacoes": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "critico": false,
+   "metrica": "consultas respondidas por rota"
+  },
+  {
+   "arquivo": "eldorado/motores/descoberta/dados_abertos.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de descoberta (5 formas)",
+   "ligacoes": [
+    "eldorado/motores/acesso/api.py"
+   ],
+   "critico": false,
+   "metrica": "registros novos por fonte"
+  },
+  {
+   "arquivo": "eldorado/motores/descoberta/estrutura_site.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de descoberta (5 formas)",
+   "ligacoes": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "critico": false,
+   "metrica": "endereços novos por domínio"
+  },
+  {
+   "arquivo": "eldorado/motores/descoberta/arquivos_web.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de descoberta (5 formas)",
+   "ligacoes": [
+    "eldorado/motores/acesso/arquivo_web.py"
+   ],
+   "critico": false,
+   "metrica": "endereços históricos encontrados"
+  },
+  {
+   "arquivo": "eldorado/motores/descoberta/vigilancia.py",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de descoberta (5 formas)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "mudanças detectadas que viraram achado"
+  },
+  {
+   "arquivo": "eldorado/motores/canal/motor.py",
+   "parte": "MOTORES",
+   "componente": "Motores de canal (45) e o seu motor genérico",
+   "ligacoes": [
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/leitura/leitores.py",
+    "eldorado/motores/descoberta/vigilancia.py",
+    "eldorado/motores/canal/estado.py"
+   ],
+   "critico": false,
+   "metrica": "as 6 metas de qualidade do dossiê dos motores"
+  },
+  {
+   "arquivo": "eldorado/motores/canal/achado.py",
+   "parte": "MOTORES",
+   "componente": "Motores de canal (45) e o seu motor genérico",
+   "ligacoes": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": false,
+   "metrica": "achados completos"
+  },
+  {
+   "arquivo": "eldorado/motores/canal/estado.py",
+   "parte": "MOTORES",
+   "componente": "Motores de canal (45) e o seu motor genérico",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "idade do último aprendizado"
+  },
+  {
+   "arquivo": "eldorado/motores/canal/config/",
+   "parte": "MOTORES",
+   "componente": "Motores de canal (45) e o seu motor genérico",
+   "ligacoes": [
+    "eldorado/motores/canal/motor.py"
+   ],
+   "critico": false,
+   "metrica": "configurações válidas"
+  },
+  {
+   "arquivo": "eldorado/motores/pilotos/espiao.py",
+   "parte": "MOTORES",
+   "componente": "Pilotos: motores livres com IA",
+   "ligacoes": [
+    "eldorado/base/nucleo/ia.py",
+    "eldorado/motores/descoberta/metabusca.py",
+    "eldorado/motores/canal/achado.py"
+   ],
+   "critico": false,
+   "metrica": "achados por voo; fontes novas propostas"
+  },
+  {
+   "arquivo": "eldorado/motores/pilotos/interceptador.py",
+   "parte": "MOTORES",
+   "componente": "Pilotos: motores livres com IA",
+   "ligacoes": [
+    "eldorado/base/nucleo/ia.py",
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/leitura/leitores.py",
+    "eldorado/banco/biblioteca/livro.py"
+   ],
+   "critico": false,
+   "metrica": "livros resolvidos por voo; respostas válidas"
+  },
+  {
+   "arquivo": "eldorado/motores/skills/",
+   "parte": "MOTORES",
+   "componente": "Skills dos motores e pilotos",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "skills ativas e o seu resultado"
+  },
+  {
+   "arquivo": "eldorado/banco/biblioteca/esquema.py",
+   "parte": "BANCO",
+   "componente": "Biblioteca (biblioteca.db)",
+   "ligacoes": [],
+   "critico": true,
+   "metrica": "integridade; violações barradas"
+  },
+  {
+   "arquivo": "eldorado/banco/biblioteca/livro.py",
+   "parte": "BANCO",
+   "componente": "Biblioteca (biblioteca.db)",
+   "ligacoes": [
+    "eldorado/banco/biblioteca/esquema.py",
+    "eldorado/banco/biblioteca/texto.py"
+   ],
+   "critico": false,
+   "metrica": "leituras e acréscimos por livro"
+  },
+  {
+   "arquivo": "eldorado/banco/biblioteca/texto.py",
+   "parte": "BANCO",
+   "componente": "Biblioteca (biblioteca.db)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "taxa de compressão; busca em menos de 1 ms"
+  },
+  {
+   "arquivo": "eldorado/base/analise/historia.py",
+   "parte": "BASE",
+   "componente": "Análise: história do livro, previsão e calendário",
+   "ligacoes": [
+    "eldorado/banco/biblioteca/livro.py"
+   ],
+   "critico": false,
+   "metrica": "livros com história completa"
+  },
+  {
+   "arquivo": "eldorado/base/analise/preditivo.py",
+   "parte": "BASE",
+   "componente": "Análise: história do livro, previsão e calendário",
+   "ligacoes": [
+    "eldorado/banco/biblioteca/livro.py"
+   ],
+   "critico": false,
+   "metrica": "alertas emitidos antes da abertura"
+  },
+  {
+   "arquivo": "eldorado/base/analise/calendario.py",
+   "parte": "BASE",
+   "componente": "Análise: história do livro, previsão e calendário",
+   "ligacoes": [
+    "eldorado/base/analise/preditivo.py"
+   ],
+   "critico": false,
+   "metrica": "calendário atualizado na passagem"
+  },
+  {
+   "arquivo": "eldorado/banco/biblioteca/leis.py",
+   "parte": "BANCO",
+   "componente": "Biblioteca (biblioteca.db)",
+   "ligacoes": [
+    "eldorado/banco/biblioteca/esquema.py"
+   ],
+   "critico": false,
+   "metrica": "leis atualizadas"
+  },
+  {
+   "arquivo": "eldorado/banco/especial/esquema.py",
+   "parte": "BANCO",
+   "componente": "Especial: empresas (especial.db)",
+   "ligacoes": [],
+   "critico": true,
+   "metrica": "integridade"
+  },
+  {
+   "arquivo": "eldorado/banco/especial/empresas.py",
+   "parte": "BANCO",
+   "componente": "Especial: empresas (especial.db)",
+   "ligacoes": [
+    "eldorado/banco/especial/esquema.py"
+   ],
+   "critico": false,
+   "metrica": "empresas atualizadas"
+  },
+  {
+   "arquivo": "eldorado/banco/cerebro_db/esquema.py",
+   "parte": "BANCO",
+   "componente": "Banco do Cérebro (cerebro.db)",
+   "ligacoes": [],
+   "critico": true,
+   "metrica": "retenção cumprida"
+  },
+  {
+   "arquivo": "eldorado/banco/originais/drive.py",
+   "parte": "BANCO",
+   "componente": "Originais no Drive",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "originais no Drive × documentos citados"
+  },
+  {
+   "arquivo": "eldorado/banco/fotografia.py",
+   "parte": "BANCO",
+   "componente": "Originais no Drive",
+   "ligacoes": [
+    "eldorado/banco/biblioteca/esquema.py",
+    "eldorado/banco/especial/esquema.py",
+    "eldorado/banco/cerebro_db/esquema.py"
+   ],
+   "critico": false,
+   "metrica": "última fotografia; reconstrução testada"
+  },
+  {
+   "arquivo": "eldorado/base/migracao/importar_eldorado0.py",
+   "parte": "BASE",
+   "componente": "Migração do Eldorado0 (operação temporária, 30 dias)",
+   "ligacoes": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": false,
+   "metrica": "contagens importadas iguais às de origem"
+  },
+  {
+   "arquivo": "eldorado/testes/",
+   "parte": "BASE",
+   "componente": "Qualidade e testes",
+   "ligacoes": [
+    "eldorado/base/nucleo/contratos.py"
+   ],
+   "critico": false,
+   "metrica": "bateria verde; casos de ouro 100%"
+  },
+  {
+   "arquivo": ".github/workflows/passagem.yml",
+   "parte": "BASE",
+   "componente": "Fluxos do GitHub e operação",
+   "ligacoes": [
+    "eldorado/base/cerebro/regencia.py",
+    "eldorado/base/nucleo/gravador.py"
+   ],
+   "critico": false,
+   "metrica": "passagens no horário"
+  },
+  {
+   "arquivo": ".github/workflows/pilotos.yml",
+   "parte": "BASE",
+   "componente": "Fluxos do GitHub e operação",
+   "ligacoes": [
+    "eldorado/motores/pilotos/espiao.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "critico": false,
+   "metrica": "voos com sucesso"
+  },
+  {
+   "arquivo": ".github/workflows/painel.yml",
+   "parte": "BASE",
+   "componente": "Fluxos do GitHub e operação",
+   "ligacoes": [
+    "eldorado/base/painel/visoes.py"
+   ],
+   "critico": false,
+   "metrica": "publicações no prazo"
+  },
+  {
+   "arquivo": ".github/workflows/qualidade.yml",
+   "parte": "BASE",
+   "componente": "Fluxos do GitHub e operação",
+   "ligacoes": [
+    "eldorado/testes/"
+   ],
+   "critico": false,
+   "metrica": "mudanças aprovadas"
+  },
+  {
+   "arquivo": "eldorado/base/nucleo/recibo.py",
+   "parte": "BASE",
+   "componente": "Núcleo da plataforma",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "chamadas medidas"
+  },
+  {
+   "arquivo": "eldorado/base/fluxo/nos.py",
+   "parte": "BASE",
+   "componente": "Workflow, fila e agenda",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "nós executados sem erro"
+  },
+  {
+   "arquivo": "eldorado/banco/_sqlite.py",
+   "parte": "BANCO",
+   "componente": "Biblioteca (biblioteca.db)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "bancos abertos íntegros"
+  }
+ ]
+}
