@@ -58,6 +58,64 @@ def esfera(texto: str | None) -> str | None:
     return None
 
 
+NOME = r"[A-ZÀ-Ú][\wÀ-ú'’]+(?:\s+(?:d[aeo]s?\s+)?[A-ZÀ-Ú][\wÀ-ú'’]+){0,4}"
+CIDADE_UF = re.compile(rf"({NOME})\s*(?:/|\(|[-–]\s)\s*([A-Z]{{2}})\b")
+ORGAO_MUNICIPAL = re.compile(r"(?i)(?:funda[çc][ãa]o cultural|secretaria municipal de [\wÀ-ú ]{3,40}?|prefeitura(?: municipal)?|munic[íi]pio|"
+                             r"c[âa]mara municipal|fundo municipal de [\wÀ-ú ]{3,40}?)"
+                             r" (?:de |do |da )([A-ZÀ-Ú][\wÀ-ú'’]+(?:\s+(?:d[aeo]s?\s+)?[A-ZÀ-Ú][\wÀ-ú'’]+){0,4})")
+
+
+def _norm(t: str) -> str:
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFKD", t.lower()) if not unicodedata.combining(c)).strip()
+
+
+def _municipios() -> dict[str, list[str]]:
+    if not hasattr(_municipios, "m"):
+        from pathlib import Path
+        raiz = Path(__file__).resolve().parents[3] / "config/missao"
+        _municipios.m = json.loads((raiz / "municipios_brasil.json").read_text(encoding="utf-8"))["municipios"]
+        t = json.loads((raiz / "territorio_goias.json").read_text(encoding="utf-8"))
+        _municipios.capitais = {_norm(v["capital"]): uf for uf, v in t["outros_estados"].items() if v.get("capital")} | {"goiania": "GO"}
+    return _municipios.m
+
+
+FEDERAL = re.compile(r"(?i)\bibama\b|icmbio|minist[ée]rio|governo federal|fundo nacional|\bsesai\b|\bdsei\b|funai|universidade federal|"
+                     r"instituto federal|\bbndes\b|caixa econ[ôo]mica|banco do brasil|petrobras|\bfiocruz\b|\bembrapa\b|\btrt\s?\d+|\btrf\s?\d|"
+                     r"justi[çc]a federal|comando da aeron[áa]utica|\bex[ée]rcito\b|\bmarinha\b|for[çc]a a[ée]rea|\bdcta\b")
+
+
+ORGAO_MUNICIPAL_FORTE = re.compile(r"(?i)prefeitura|secretaria municipal|c[âa]mara municipal|fundo municipal|funda[çc][ãa]o cultural de")
+ESTADUAL = re.compile(r"(?i)secretaria de estado|governo do estado|assembleia legislativa|tribunal de justi[çc]a|\btj[a-z]{2}\b|"
+                      r"minist[ée]rio p[úu]blico|\bmp[a-z]{2}\b|defensoria p[úu]blica")
+SIGLA_ESTADUAL = re.compile(r"\b[A-Z]{3,7}-(?:AC|AL|AP|AM|BA|CE|DF|ES|GO|MA|MT|MS|MG|PA|PB|PR|PE|PI|RJ|RN|RS|RO|RR|SC|SP|SE|TO)\b")
+LOCAL_PUBLICO = re.compile(r"(?i)prefeitura|municipal|c[âa]mara|di[áa]rio|\bpnab\b|aldir blanc|paulo gustavo|chamamento|credenciamento|\bvara\b|comarca|"
+                           r"funda[çc][ãa]o cultural")
+
+
+def cidade_e_uf(texto: str) -> tuple[str, str] | None:
+    """O município nomeado no texto e a sua UF, conferidos na lista oficial: "Cidade/UF", "Cidade (UF)", "Cidade – UF", ou um
+    órgão municipal nomeado ("Fundação Cultural de X") quando o nome existe numa só UF."""
+    m = _municipios()
+    texto = texto or ""
+    externo = FEDERAL.search(texto) or ESTADUAL.search(texto) or SIGLA_ESTADUAL.search(texto)
+    if externo and not ORGAO_MUNICIPAL_FORTE.search(texto):
+        return None                                                 # órgão federal ou estadual: a cidade citada é só o local
+    for nome, uf in CIDADE_UF.findall(texto) if LOCAL_PUBLICO.search(texto) else []:   # "Cidade/UF" só com sinal de ato público local
+        partes = nome.split()
+        for i in range(len(partes)):                                # o nome pode vir depois de outras palavras
+            cand = _norm(" ".join(partes[i:]))
+            if uf in m.get(cand, []):
+                return " ".join(partes[i:]), uf
+    for nome in ORGAO_MUNICIPAL.findall(texto or ""):
+        partes = nome.split()
+        for j in range(len(partes), 0, -1):
+            ufs = m.get(_norm(" ".join(partes[:j])), [])
+            if len(ufs) == 1:
+                return " ".join(partes[:j]), ufs[0]
+    return None
+
+
 def territorio(livro: dict[str, Any], certidoes: dict[str, dict]) -> tuple[str, str | None]:
     """(abrangência, município) pelas regras do portão, já validadas pela titular."""
     uf = (livro.get("uf") or "").upper()
@@ -67,6 +125,16 @@ def territorio(livro: dict[str, Any], certidoes: dict[str, dict]) -> tuple[str, 
             "url": livro.get("link_oficial"), "link_oficial": livro.get("link_oficial")}
     cidade = CIDADE.search(texto)
     municipio = cidade.group(1).strip() if cidade else None
+    # a evidência do município vence a UF de origem, e vem de QUEM PUBLICA (título e órgão), nunca da descrição do território
+    nomeada = cidade_e_uf(f"{livro.get('titulo') or ''} {livro.get('orgao') or ''}")
+    if nomeada:
+        nome, uf_cidade = nomeada
+        _municipios()
+        if uf_cidade == "GO":
+            return "municipal_go", nome
+        if _municipios.capitais.get(_norm(nome)) == uf_cidade:
+            return "capital_outro_estado", nome
+        return "municipal_fora_go", nome
     if uf == "IN" or (not uf and INTERNACIONAL.search(texto)):
         return "internacional", None
     if R.municipal_fora_de_goias(item):

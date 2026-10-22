@@ -99,3 +99,17 @@ def test_so_os_livros_novos_ou_alterados_sao_auditados(gravador, bancos, diario,
     assert pendentes(bancos["biblioteca"]) == set()
     assert gravador.aplicar([ev("livro.situacao", id="a", situacao="em trabalho", atualizado_em="2999-01-01T00:00:00+00:00")]).ok
     assert pendentes(bancos["biblioteca"]) == {"a"}                                                  # alterado depois da validação
+
+
+def test_municipio_identificado_por_quem_publica():
+    """Casos reais da revalidação de 22/10: a evidência do município vem do título e do órgão; federal e estadual não viram municipais."""
+    T = lambda titulo, orgao=None, uf="BR": territorio({"titulo": titulo, "orgao": orgao, "uf": uf}, {})[0]  # noqa: E731
+    assert T("PNAB Ciclo 2 - Edital nº 01/2026 – Fomento a Projetos Culturais - Morro do Chapéu/BA") == "municipal_fora_go"
+    assert T("ITAJAÍ EM TRAÇOS: concurso cultural livre", "Fundação Cultural de Itajaí") == "municipal_fora_go"
+    assert T("Chamamento — Prefeitura Municipal de Curitiba") == "capital_outro_estado"
+    assert T("Edital Pnab Goiânia (GO)") == "municipal_go" and T("Edital da Prefeitura de Anápolis") == "municipal_go"
+    assert T("Edital Ibama 3/2026 do Fundo Rio Doce para OSC ambiental") == "nacional"                       # federal
+    assert T("Chamamento Público nº 49/2026 - DSEI - Cuiabá - Secretaria de Saúde Indígena (SESAI)") == "nacional"
+    assert T("Credenciamento 002/2024 do TJAL para associações", uf="AL") == "estadual_outro_estado"           # estadual
+    assert T("Credenciamento do Comando da Aeronáutica (DCTA, São José dos Campos/SP)") == "nacional"
+    assert T("Fortalece Cursinhos Populares lança edital — Campinas/SP") == "nacional"                         # sem ato público local

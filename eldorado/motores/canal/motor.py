@@ -88,6 +88,7 @@ class CfgLexico(_Base):
     termos: list[str] = Field(default_factory=list)
     vetos: list[str] = Field(default_factory=list)
     salvos: list[str] = Field(default_factory=list)
+    termos_em: Literal["tudo", "titulo"] = "tudo"   # "titulo": em sites de notícias, o título de um edital diz que é edital
 
 
 class Configuracao(_Base):
@@ -269,7 +270,7 @@ class MotorCanal(Motor):
     def _passa_lexico(self, titulo: str, resumo: str = "") -> bool:
         lx = self.cfg.lexico
         t, tudo = _sem_acento(titulo), _sem_acento(f"{titulo} {resumo}")
-        if lx.termos and not self._casa(tudo, lx.termos):
+        if lx.termos and not self._casa(t if lx.termos_em == "titulo" else tudo, lx.termos):
             return False
         return not (lx.vetos and self._casa(t, lx.vetos) and not self._casa(t, lx.salvos))
 
