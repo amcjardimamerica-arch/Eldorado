@@ -71,6 +71,12 @@ def test_casos_de_ouro_do_territorio():
     assert R.capital_citada("Prefeitura de Belo Horizonte/MG") == "MG"
 
 
+def test_servico_ao_cidadao_nao_e_oportunidade():
+    for t in ("Obter o Certificado de Registro e Licenciamento de Veículo (CRLV-e) — Goiás", "Solicitar Certificado do Encceja — Goiás",
+              "Requerer Bolsa de Formação - FAPEG — Goiás", "Acessar Edital — Brasil"):
+        assert portao.motivo({"titulo": t}).startswith("serviço público ao cidadão"), t
+
+
 def test_prazo_encerrado_e_sem_titulo():
     assert portao.motivo({"titulo": "Edital de fomento cultural", "fim": "2026-01-10"}, hoje="2026-10-22").startswith("prazo encerrado")
     assert portao.motivo({"titulo": "abc"}) == "sem título"

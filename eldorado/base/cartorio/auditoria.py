@@ -231,6 +231,8 @@ def auditar(con: sqlite3.Connection, hoje: date, somente: set[str] | None = None
                     continue
             boas.append(c)
         validas = I.melhor(boas)
+        conflitos = sorted({c["item"] for c in boas if c["item"] in I.CRITICOS and c.get("fase") in I.FASES_VALIDADAS
+                            and _norm(str(c.get("valor"))) != _norm(str((validas.get(c["item"]) or {}).get("valor")))})
         abr, municipio = territorio(lv, validas)
         motivo_portao = portao.motivo({"titulo": lv["titulo"], "orgao": lv["orgao"], "uf": lv["uf"], "url": lv["link_oficial"]}, hoje.isoformat())
         sem_titulo = not lv["titulo"] or lv["titulo"] == lv["id"]
@@ -249,6 +251,8 @@ def auditar(con: sqlite3.Connection, hoje: date, somente: set[str] | None = None
                 motivos.append("sem título real (o título é o identificador)")
             if abr == "indeterminado":
                 motivos.append("território indeterminado (sem cidade verificada não se elimina)")
+            if conflitos:
+                motivos.append(f"certidões validadas que se contradizem em: {', '.join(conflitos)} (herdadas do Eldorado0)")
             if any(not m.startswith("edição anterior") for m in motivos):
                 validacao = "revisar"
         historico = bool(motivo_portao and HISTORICO.search(motivo_portao)) and validacao != "expurgado"

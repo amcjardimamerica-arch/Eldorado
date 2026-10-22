@@ -11,6 +11,9 @@ from datetime import date
 
 from . import regras_portao as R
 
+SERVICO = re.compile(r"^\s*(?:obter|solicitar|emitir|consultar|agendar|renovar|requerer|acessar|pagar|cadastrar|atualizar|imprimir|verificar|declarar)\b",
+                     re.I)
+
 
 def motivo(a: dict, hoje: str | None = None) -> str | None:
     """O motivo para NÃO aceitar o achado; None se for oportunidade."""
@@ -24,6 +27,8 @@ def motivo(a: dict, hoje: str | None = None) -> str | None:
         return m
     if R.municipal_fora_de_goias(item):
         return "município de outro estado (não capital)"
+    if SERVICO.search(titulo):                                    # 22/10/2026: carta de serviços não é oportunidade
+        return "serviço público ao cidadão (carta de serviços) — não é oportunidade"
     url = f"{a.get('url') or a.get('link_divulgacao') or ''} {a.get('link_oficial') or ''}"
     if "pncp.gov.br" in url:
         m = R.veredito_por_titulo(titulo, str(a.get("url") or a.get("link_divulgacao") or ""), a.get("uf"), a.get("fim"))

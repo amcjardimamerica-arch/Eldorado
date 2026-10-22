@@ -57,9 +57,12 @@ FASES_VALIDADAS = ("eldorado0", "verificacao externa", "titular")   # validadas 
 
 
 def melhor(certidoes: list[dict]) -> dict[str, dict]:
-    """A certidão que vale para cada item: a validada antes da automática; entre as do mesmo tipo, a mais recente.
-    Uma automática nunca supera uma validada (22/10/2026)."""
+    """A certidão que vale para cada item: a validada antes da automática; entre as do mesmo tipo, a que tem prova
+    literal (o trecho e a página da fonte); depois, a mais recente. Uma automática nunca supera uma validada (22/10/2026)."""
     out: dict[str, dict] = {}
-    for c in sorted(certidoes, key=lambda c: (c.get("fase") in FASES_VALIDADAS, c.get("id") or 0)):
+    for c in sorted(certidoes, key=lambda c: (c.get("fase") in FASES_VALIDADAS, bool(c.get("trecho")) and c.get("pagina") is not None, c.get("id") or 0)):
         out[c["item"]] = c
     return out
+
+
+CRITICOS = ("Prazo de inscrição", "Valor", "Esfera", "Território")   # contradição nesses itens manda o livro para revisão

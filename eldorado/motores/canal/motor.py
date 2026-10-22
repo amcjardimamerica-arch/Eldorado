@@ -244,12 +244,14 @@ class MotorCanal(Motor):
     def _programa(self) -> Achado | None:
         """O livro do programa: entregue de novo só quando o texto oficial muda (nova norma, novo prazo)."""
         pr, m = self.cfg.programa, self.cfg.motor
-        textos, alertas, origens = [], [], []
+        textos, alertas, origens, injecoes = [], [], [], []
         for i, url in enumerate(pr.documentos):
             try:
                 bruto = self.escada.buscar(url).conteudo
-                textos.append(self.leitura.ler(bruto, url).texto)
+                lido = self.leitura.ler(bruto, url)
+                textos.append(lido.texto)
                 origens.append(url)
+                injecoes.append(lido.dados.get("injecao"))
             except (Bloqueado, Indisponivel, Pendente, leitores.SemLeitor) as e:
                 alertas.append(f"{url}: {str(e)[:150]}")
                 continue
@@ -257,8 +259,10 @@ class MotorCanal(Motor):
                 from ..descoberta import fonte_oficial
                 for n in fonte_oficial.normas_recentes(bruto, url, pr.normas.padrao, pr.normas.maximo, pr.normas.excluir):
                     try:
-                        textos.append(self.leitura.ler(self.escada.buscar(n["url"]).conteudo, n["url"]).texto)
+                        lido_n = self.leitura.ler(self.escada.buscar(n["url"]).conteudo, n["url"])
+                        textos.append(lido_n.texto)
                         origens.append(n["url"])
+                        injecoes.append(lido_n.dados.get("injecao"))
                     except (Bloqueado, Indisponivel, Pendente, leitores.SemLeitor) as e:
                         alertas.append(f"norma {n['texto'][:60]}: {str(e)[:120]}")
         if not textos:
@@ -279,7 +283,7 @@ class MotorCanal(Motor):
                       dados={"uf": m.uf, "orgao": pr.orgao, "modalidade": pr.modalidade, "leis": self.cfg.legislacao.leis, "fonte": "programa",
                              "origem": "programa (legislação e norma vigente)", "documentos_lidos": origens, **self._extrair(textos)},
                       documento={"url": pr.link_oficial, "sha256": sha, "tipo": "html", "leitor": "programa (páginas oficiais)", "oficial": True,
-                                 "paginas": textos, "alertas": alertas})
+                                 "paginas": textos, "alertas": alertas, "injecao": next((x for x in injecoes if x), None)})
 
     def _descobrir(self, f: CfgFonte) -> list[Pista] | None:
         buscar = self.escada.buscar
@@ -385,7 +389,8 @@ class MotorCanal(Motor):
                 self.relatorio.append(f"seguir até o oficial: {c['url']} não lido ({str(e)[:120]})")
                 continue
             doc = {"url": c["url"], "sha256": lido.sha256, "tipo": lido.tipo, "leitor": lido.leitor, "oficial": not r.copia_arquivada,
-                   "paginas": [p.texto for p in lido.paginas], "alertas": lido.alertas + [f"achado a partir da divulgação ({c['pontos']} pontos)"]}
+                   "paginas": [p.texto for p in lido.paginas], "alertas": lido.alertas + [f"achado a partir da divulgação ({c['pontos']} pontos)"],
+                   "injecao": lido.dados.get("injecao")}
             return c["url"], pista.link, doc
         return None
 
@@ -415,7 +420,7 @@ class MotorCanal(Motor):
                 r = lido = None
             if lido is not None:
                 documento = {"url": pista.link, "sha256": lido.sha256, "tipo": lido.tipo, "leitor": lido.leitor, "oficial": not r.copia_arquivada,
-                             "paginas": [p.texto for p in lido.paginas], "alertas": lido.alertas}
+                             "paginas": [p.texto for p in lido.paginas], "alertas": lido.alertas, "injecao": lido.dados.get("injecao")}
         m = self.cfg.motor
         chave = hashlib.sha256(pista.link.encode()).hexdigest()[:16]
         return Achado(id=f"{m.id}-{chave}", motor=m.id, encontrado_em=_agora()[:10], link_divulgacao=divulgacao, link_oficial=oficial,

@@ -153,6 +153,11 @@ class Registro:
         r.tipo = tipo
         for p in r.paginas:
             p.texto = sem_ligaduras(p.texto)
+        from ...base.nucleo.seguranca import injecao
+        trecho = next((t for p in r.paginas if (t := injecao(p.texto))), None)
+        if trecho:                                                  # o texto fica íntegro; a leitura recebe a marca
+            r.dados["injecao"] = trecho
+            r.alertas.append(f"padrão de injeção de instruções: “{trecho[:160]}”")
         return r
 
 

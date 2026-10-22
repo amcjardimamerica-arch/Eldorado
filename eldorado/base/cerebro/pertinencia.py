@@ -20,8 +20,12 @@ class Pertinencia:
         self.diario = diario
 
     def decidir(self, achado: Achado) -> Retorno:
+        injecao = (achado.documento or {}).get("injecao")
         try:
-            aceito, motivo = self.missao.portao(achado)
+            if injecao:                                              # reprovação automática, antes do portão
+                aceito, motivo = False, f"reprovação automática: padrão de injeção de instruções no documento: “{str(injecao)[:200]}”"
+            else:
+                aceito, motivo = self.missao.portao(achado)
         except Exception as e:  # noqa: BLE001 — o portão com erro não aceita nem descarta: barra com o motivo e alarma
             aceito, motivo = False, f"erro no portão: {type(e).__name__}: {e}"
             self.diario.emitir("alarme.aberto", "pertinencia", {"gravidade": "alta", "modulo": "pertinencia", "mensagem": motivo, "aberto_em": agora()})
