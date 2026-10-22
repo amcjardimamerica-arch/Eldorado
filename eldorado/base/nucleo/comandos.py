@@ -5,6 +5,7 @@ Códigos de saída: 0 deu certo · 1 falhou · 75 adiado (sistema pausado ou sem
 from __future__ import annotations
 
 import json
+import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
@@ -145,6 +146,44 @@ def migrar(origem: Path, config: Path = CONFIG, lote: int = 500, aprendizado: Op
         for c in bancos.values():
             c.close()
     raise typer.Exit(0 if recusados == 0 and all(ok for *_, ok in tabela) and all(ok for *_, ok in am) else 1)
+
+
+@app.command()
+def expurgar(motivo: str, config: Path = CONFIG, validacao: bool = typer.Option(False, "--validacao", help="os livros que a validação marcou como expurgados"),
+             livro: Optional[list[str]] = None):
+    """ANÁLISE EXTERNA: apaga fisicamente livros e tudo o que depende deles, com o registro do expurgo (a automação não apaga)."""
+    from .expurgo_externo import expurgar as _expurgar
+    _, dados, _ = _cfg(config)
+    b = abrir_bancos(dados)
+    try:
+        ids = list(livro or [])
+        if validacao:
+            ids += [r[0] for r in b["biblioteca"].execute("SELECT livro_id FROM livro_dados WHERE validacao='expurgado'")]
+        r = _expurgar(b["biblioteca"], b["cerebro"], sorted(set(ids)), motivo)
+        typer.echo(f"expurgados {r['livros']} livro(s) · {r['linhas']} linha(s): {json.dumps(r['por_tabela'], ensure_ascii=False)}")
+        for c in b.values():
+            c.execute("VACUUM")
+    finally:
+        for c in b.values():
+            c.close()
+
+
+@app.command()
+def fechar(config: Path = CONFIG):
+    """Consolida os bancos (o arquivo auxiliar de escrita volta para o banco) antes de gravar no Git."""
+    _, dados, _ = _cfg(config)
+    for p in sorted(Path(dados).rglob("*.db")):
+        con = sqlite3.connect(p)
+        try:
+            con.execute("PRAGMA wal_checkpoint(TRUNCATE)")
+            con.execute("PRAGMA optimize")
+            ok = con.execute("PRAGMA integrity_check").fetchone()[0]
+        finally:
+            con.close()
+        if ok != "ok":
+            typer.echo(f"{p}: integridade {ok}", err=True)
+            raise typer.Exit(1)
+        typer.echo(f"{p}: consolidado ({p.stat().st_size / 1e6:.1f} MB)")
 
 
 @app.command()

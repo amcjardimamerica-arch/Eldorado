@@ -1,16 +1,13 @@
-# bancos, eventos e fotografias nunca vão para o Git
-*.db
+# Os bancos e o diário de eventos VÃO para o Git, junto com o sistema e os motores (desenho modular, titular 22/10/2026).
+# Ficam fora só os arquivos auxiliares do SQLite (consolidados por "eldorado fechar") e as fotografias (vão ao Drive).
 *.db-wal
 *.db-shm
-/eventos/
+*.db-journal
 /fotografias/
-/dados/
-# arquivos dos motores (aprendizado de uso próprio) ficam fora do Git
-eldorado/motores/estado/
 __pycache__/
 *.pyc
 .pytest_cache/
 .venv/
 .env
-*.zst
 .ruff_cache/
+eldorado.egg-info/

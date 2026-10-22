@@ -20,7 +20,7 @@ def certidao(livro_id, item, valor):
     return ev("certidao.gravada", livro_id=livro_id, item=item, valor=valor, fase="eldorado0", situacao="comprovado", em=AGORA)
 
 
-def test_migracao_do_esquema_1_para_2_sem_perder_dados(tmp_path):
+def test_migracao_do_esquema_da_versao_1_a_atual_sem_perder_dados(tmp_path):
     p = tmp_path / "b.db"
     con = sqlite3.connect(p)
     con.executescript(bib.DDL)
@@ -30,8 +30,8 @@ def test_migracao_do_esquema_1_para_2_sem_perder_dados(tmp_path):
     con.commit()
     con.close()
     c = bib.abrir(p)
-    assert c.execute("PRAGMA user_version").fetchone()[0] == 2 and c.execute("SELECT COUNT(*) FROM livro").fetchone()[0] == 1
-    assert c.execute("SELECT COUNT(*) FROM sqlite_master WHERE name='livro_dados'").fetchone()[0] == 1
+    assert c.execute("PRAGMA user_version").fetchone()[0] == bib.VERSAO == 3 and c.execute("SELECT COUNT(*) FROM livro").fetchone()[0] == 1
+    assert c.execute("SELECT COUNT(*) FROM sqlite_master WHERE name IN ('livro_dados','expurgo_externo')").fetchone()[0] == 2
 
 
 def test_territorio():

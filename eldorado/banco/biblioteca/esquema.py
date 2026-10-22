@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .._sqlite import abrir as _abrir
 
-VERSAO = 2
+VERSAO = 3
 
 DDL_V2 = r"""
 CREATE TABLE livro_dados (livro_id TEXT PRIMARY KEY REFERENCES livro(id),
@@ -102,8 +102,15 @@ CREATE VIEW achados_por_motor AS SELECT motor, COUNT(*) AS achados, SUM(decisao=
 """
 
 
-MIGRACOES = {2: DDL_V2}           # versão 1 → 2 (22/10/2026): a decupagem dos livros em colunas (livro_dados)
+DDL_V3 = r"""
+CREATE TABLE expurgo_externo (id INTEGER PRIMARY KEY, em TEXT NOT NULL, por TEXT NOT NULL, motivo TEXT NOT NULL, livros INTEGER NOT NULL,
+  linhas INTEGER NOT NULL, ids TEXT NOT NULL);
+CREATE TRIGGER expurgo_externo_sem_alteracao BEFORE UPDATE ON expurgo_externo BEGIN SELECT RAISE(ABORT, 'o registro do expurgo não se altera'); END;
+CREATE TRIGGER expurgo_externo_sem_apagar BEFORE DELETE ON expurgo_externo BEGIN SELECT RAISE(ABORT, 'o registro do expurgo não se apaga'); END
+"""
+
+MIGRACOES = {2: DDL_V2, 3: DDL_V3}   # 2: a decupagem (livro_dados); 3: o registro do expurgo pela análise externa           # versão 1 → 2 (22/10/2026): a decupagem dos livros em colunas (livro_dados)
 
 
 def abrir(caminho: str | Path):
-    return _abrir(caminho, DDL + ";\n" + DDL_V2, VERSAO, MIGRACOES)
+    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V3, VERSAO, MIGRACOES)
