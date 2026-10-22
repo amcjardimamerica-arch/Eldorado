@@ -21,7 +21,7 @@ A mecânica é única: a Regência planeja e aciona; cada módulo **só grava ev
 | **F3 · Cérebro** (indicadores, regras, Pertinência, Regência, aprendizado, rede, completude) | **concluída** |
 | **F4 · Cartório e missão** (portão com os casos de ouro, 12 itens, chave, índice, passaporte, certificação, selos, site oficial, passagem real) | **concluída** |
 | **F5.1 · Leitura** (o canivete suíço: PDF, página, planilha, documento, compactado, expurgo, normalização, OCR e universal como reserva) | **concluída** |
-| F5.2 · Acesso (a escada de 9 degraus) | a fazer |
+| **F5.2 · Acesso** (a escada de 9 degraus, o aprendizado por domínio, o robots como informação, o computador da titular) | **concluída** |
 | F5.3 · Descoberta e motor genérico | a fazer |
 | F6 · Migração do Eldorado0 | a fazer |
 | F7 · Primeiros motores (com API) | a fazer |
@@ -34,7 +34,7 @@ Cada fase só começa quando a anterior cumpre o seu critério de pronto, com os
 ## Comandos
 
 ```bash
-pip install -e ".[testes,leitura]"     # extras opcionais: ocr, universal, idioma, leitura_completa
+pip install -e ".[testes,leitura,acesso]"   # opcionais: navegador, tor, ocr, universal, idioma, leitura_completa
 
 eldorado iniciar                        # cria (ou confere) os três bancos
 eldorado executar workflows/passagem.toml    # a passagem completa
