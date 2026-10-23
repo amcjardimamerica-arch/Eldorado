@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+        <meta name="csrf-token" content="jb2MwygILQa4xUzMiAcBC5P7ZJSRstyKqvXtjKsQ">
+        <title>Mapa das OSC - Editais</title>
+        <base href="https://mapaosc.ipea.gov.br/">
+        <meta name="keywords" content="editais, organizacoes, sociedade, parceria, plataforma, prosas, selecao, iniciativas, impacto, gestao, oferece, acesso, diversos, editais, organizacoes, oscs, esses, abrangem, publico, privado, contratacao, atuacao, acoes, variados, editais, divulgados"/>
+<meta name="description" content="&amp;nbsp; Editais &amp;nbsp; O Mapa das Organiza&amp;ccedil;&amp;otilde;es da Sociedade Civil, em parceria com a plataforma Prosas &amp;mdash; plataforma para">
+<meta name="author" content="Mapa das OSC">
+
+<meta property="og:url" content="https://mapaosc.ipea.gov.br/editais" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Mapa das OSC - Editais" />
+<meta property="og:description" content="&amp;nbsp; Editais &amp;nbsp; O Mapa das Organiza&amp;ccedil;&amp;otilde;es da Sociedade Civil, em parceria com a plataforma Prosas &amp;mdash; plataforma para" />
+<meta property="og:image" content="http://mapaosc.ipea.gov.br/imagens/modulos/lg-" />        <link rel="alternate" hreflang="pt-br" href="http://mapaosc.ipea.gov.br" />
+<link rel="icon" href="/img/favicons/icon_16x16.png" sizes="16x16">
+<link rel="icon" href="/img/favicons/icon_32x32.png" sizes="32x32">
+<link rel="icon" href="/img/favicons/icon_48x48.png" sizes="48x48">
+<link rel="icon" href="/img/favicons/icon_64x64.png" sizes="64x64">
+<link rel="icon" href="/img/favicons/icon_72x72.png" sizes="72x72">
+<link rel="icon" href="/img/favicons/icon_96x96.png" sizes="96x96">
+<link rel="icon" href="/img/favicons/icon_114x114.png" sizes="114x114">
+<link rel="icon" href="/img/favicons/icon_128x128.png" sizes="128x128">
+<link rel="icon" href="/img/favicons/icon_144x144.png" sizes="144x144">
+<link rel="icon" href="/img/favicons/icon_256x256.png" sizes="256x256">
+        <link rel="stylesheet" href="css/app.css">
+<style>
+    .invalid-field{
+        border-color: red;
+    }
+</style>
+<style>
+    .owl-nav{
+        text-align: center;
+    }
+    .owl-prev, .owl-next{
+        top: 40%;
+        position: absolute;
+        opacity: 0.05;
+        transition: .3s;
+    }
+    .owl-prev:hover, .owl-next:hover{
+        transform: scale(1.1);
+        transition: .3s;
+    }
+    .owl-prev{
+        left: 20px;
+    }
+    .owl-next{
+        right: 20px;
+    }
+</style>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-KX3DW5V6TJ"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-KX3DW5V6TJ');
+        </script>
+     </head>
+    <body id="contrast" >
+        <div id="barra-brasil" style="background:#7F7F7F; height: 20px; padding:0 0 0 10px;display:block;">
+    <ul id="menu-barra-temp" style="list-style:none;">
+        <li style="display:inline; float:left;padding-right:10px; margin-right:10px; border-right:1px solid #EDEDED">
+            <a href="http://brasil.gov.br" style="font-family:sans,sans-serif; text-decoration:none; color:white;">Portal do Governo Brasileiro</a>
+        </li>
+    </ul>
+</div>
+
+<div class="progress">
+    <div  id="progress" class="progress-bar bg-success" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+
+<div class="bg-lgt d-print-none" id="acessibilidade" >
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-xs-12">
+                <ul id="atalhos" class="top-links">
+                    <li><a href="editais#iniciodoconteudo" accesskey="1">Ir para o Conteúdo [1]</a></li>
+                    <li><a href="editais#iniciodomenu" accesskey="2">Ir para o Menu [2]</a></li>
+                    <li><a href="editais#search" accesskey="3">Ir para a busca [3]</a></li>
+                    <li><a href="editais#iniciodorodape" accesskey="4" class="link-to-menu">Ir para o rodapé [4]</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2 col-sm-6 col-xs-6 text-lg-right text-md-right top-ipea">
+                <a href="https://www.ipea.gov.br" target="_blank" alt="Link externo para o IPEA." title="Link externo para o IPEA."><img src="img/logo-ipea.png" width="150"/></a>
+            </div>
+            <div class="col-md-4 col-sm-6 col-xs-6 text-lg-right text-md-right top-icons" style="display: flex">
+                <ul id="botoes" >
+                    <li class="bg-pri box-font-size rounded-circle cursor"><a id="aumenta_fonte" >A+</a></li>
+                    <li class="bg-sec box-font-size rounded-circle cursor"><a id="reset_fonte">A&nbsp;</a></li>
+                    <li class="bg-ter box-font-size rounded-circle cursor"><a id="reduz_fonte">A-</a></li>
+                    <li><a class="btn-constrat cursor"><i class="fas fa-adjust fa-2x" style="vertical-align: middle;"></i> </a></li>
+                    <li><a href="acessibilidade"><i class="fas fa-universal-access fa-2x" style="vertical-align: middle;"></i> <!--Acessibilidade--></a></li>
+                </ul>
+
+                <a href="javascript:trocarIdioma('pt')" style="margin-right: 3px"><img alt="português" src="img/pt.jpg"></a>
+                <a href="javascript:trocarIdioma('es')" style="margin-right: 3px"><img alt="espanhol" src="img/es.jpg"></a>
+                <a href="javascript:trocarIdioma('en')" style="margin-right: 3px"><img alt="ingles" src="img/en.jpg"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="google_translate_element" class="boxTradutor"></div>
+
+<script type="text/javascript">
+    var comboGoogleTradutor = null; //Varialvel global
+
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'pt',
+            includedLanguages: 'en,es,pt',
+            layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
+        }, 'google_translate_element');
+
+        comboGoogleTradutor = document.getElementById("google_translate_element").querySelector(".goog-te-combo");
+    }
+
+    function changeEvent(el) {
+        if (el.fireEvent) {
+            el.fireEvent('onchange');
+        } else {
+            var evObj = document.createEvent("HTMLEvents");
+
+            evObj.initEvent("change", false, true);
+            el.dispatchEvent(evObj);
+        }
+    }
+
+    function trocarIdioma(sigla) {
+        if (comboGoogleTradutor) {
+            comboGoogleTradutor.value = sigla;
+            changeEvent(comboGoogleTradutor);//Dispara a troca
+        }
+    }
+</script>
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<style type="text/css">
+    #google_translate_element {
+        display: none;
+    }
+
+    .skiptranslate {
+        display: none !important;
+    }
+    .goog-te-banner-frame {
+        display: none !important;
+    }
+    body {
+        position: static !important;
+        top: 0 !important;
+    }
+
+</style>
+
+
+
+<script>
+    (function (){
+        'use strict';
+
+        var btnSetItem = document.querySelector('.btn-constrat')
+
+        function setLocalStorage(){
+
+            if(localStorage.getItem('contrast')==='true'){
+                document.getElementById('contrast').className = 'contrast';
+            }else{
+                document.getElementById('contrast').className = 'contrast-off';
+            }
+
+            btnSetItem.addEventListener('click', () => {
+                if(localStorage.getItem('contrast')==='true'){
+                    localStorage.setItem('contrast', false);
+                    document.getElementById('contrast').className = 'contrast-off';
+                }else{
+                    localStorage.setItem('contrast', true);
+                    document.getElementById('contrast').className = 'contrast';
+                }
+            })
+
+        }
+
+        setLocalStorage();
+
+
+    }());
+</script>
+
+<style>
+    .box-font-size{
+        width: 25px;
+        height: 25px;
+        color: #FFFFFF;
+        cursor: pointer;
+        text-align: center;
+        padding-top: -1px;
+    }
+    .box-font-size a{
+        display: block;
+    }
+</style>
+
+
+<div class="header-cel text-center d-block d-sm-none" >
+    <div class="row">
+        <div class="col-xs-2">
+            <i class="fas fa-bars fa-2x btn-cel menu-cel-icon"></i>
+            <i class="fas fa-times fa-2x btn-cel menu-cel-hide"></i>
+        </div>
+        <div class="col-xs-8">
+            
+            <a href="/">
+                <picture>
+                    <source srcset="imagens/settings/2799-logo.png" media="(max-width: 468px)">
+                    <source srcset="imagens/settings/2799-logo.png" class="img-responsive">
+                    <img src="img/pre-img.gif" srcset="imagens/settings/2799-logo.png" alt="Mapa das OSC" title="Mapa das OSC" width="240" style="margin-left: 30px;">
+                </picture>
+            </a>
+        </div>
+        <div class="col-xs-2"></div>
+    </div>
+</div>
+
+<div class="menu-cel hidden-lg hidden-md hidden-sm menu-cel-hide" style="display: none;" id="iniciodomenu">
+        <ul>
+        <br>
+<!--        <li role="presentation"><a href="" >Home</a></li>-->
+        <li role="presentation"><a href="sobre" >O Portal</a></li>
+        <li role="presentation"><a href="mapa" >Mapa</a></li>
+
+        <li role="presentation"><a >Dados</a></li>
+        <li role="presentation"><a href="base-dados" >&nbsp;&nbsp;&nbsp;Base de Dados</a></li>
+        <li role="presentation"><a href="indicadores" >&nbsp;&nbsp;&nbsp;Indicadores</a></li>
+        <li role="presentation"><a href="posts/1/analises" >&nbsp;&nbsp;&nbsp;Análises</a></li>
+                <li role="presentation"><a >Biblioteca</a></li>
+        <li role="presentation"><a href="posts/3/analises" >&nbsp;&nbsp;&nbsp;Análises</a></li>
+        <li role="presentation"><a href="posts/2/noticias" >&nbsp;&nbsp;&nbsp;Notícias</a></li>
+        <li role="presentation"><a href="videos" >&nbsp;&nbsp;&nbsp;Vídeos</a></li>
+        <li role="presentation"><a href="editais" >Editais</a></li>
+
+
+
+        <li role="presentation"><a href="glossario"  >Ajuda</a></li>
+    </ul>
+</div>
+<div class="box-menu menu-cel-hide" style="display: none;"></div>
+
+
+
+
+<header id="iniciodoconteudo"  role="banner">
+
+    <div class="container d-none d-xl-block d-sm-block">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar navbar-light">
+                    <a class="navbar-brand" href="#">
+                        <picture>
+                            <source srcset="imagens/settings/2799-logo.png" media="(max-width: 468px)">
+                            <source srcset="imagens/settings/2799-logo.png" class="img-responsive">
+                            <img src="img/pre-img.gif" srcset="imagens/settings/2799-logo.png" alt="Mapa das OSC" title="Mapa das OSC"  width="300">
+                        </picture>
+                    </a>
+                    <div>
+                        <br>
+                        <div class="btn-group">
+                            <ul id="menu-desk">
+<!--                                <li role="presentation"><a href="" accesskey="h" >Home</a></li>-->
+                                <li role="presentation"><a href="sobre" accesskey="q" >O Portal</a>
+                                    <ul class="noJS menu-desk-sub">
+                                                                                    <li role="presentation"><a href="/sobre"  >Sobre o Mapa</a></li>
+                                                                                    <li role="presentation"><a href="/metodologia"  >Metodologia</a></li>
+                                                                                    <li role="presentation"><a href="/termosuso"  >Termos de uso</a></li>
+                                                                                    <li role="presentation"><a href="/mapa-do-site"  >Mapa do site</a></li>
+                                                                                    <li role="presentation"><a href="/equipe"  >Equipe</a></li>
+                                                                                    <li role="presentation"><a href="/parceiros"  >Parceiros</a></li>
+                                                                                    <li role="presentation"><a href="/links"  >Links úteis</a></li>
+                                                                            </ul>
+                                </li>
+                                <li role="presentation"><a href="mapa" a >Mapa</a></li>
+                                <li role="presentation"><a >Dados</a>
+                                    <ul class="noJS menu-desk-sub">
+                                        <li role="presentation"><a href="base-dados" >Base de Dados</a></li>
+                                        <li role="presentation"><a href="indicadores" >Indicadores</a></li>
+                                        <li role="presentation"><a href="superset" >Superset</a></li>                                        <li role="presentation"><a href="posts/1/analises"  >Análises</a></li>
+                                    </ul>
+                                </li>
+                                                                <li role="presentation"><a  >Biblioteca</a>
+                                    <ul class="noJS menu-desk-sub">
+                                                                                    <li role="presentation"><a href="posts/3/noticias" >Notícias</a></li>
+                                                                                    <li role="presentation"><a href="posts/2/publicacoes" >Publicações</a></li>
+                                                                                <li role="presentation"><a href="videos" >Vídeos</a></li>
+                                    </ul>
+                                </li>
+
+                                <li role="presentation"><a href="editais" >Editais</a></li>
+
+                                <li role="presentation"><a >Ajuda</a>
+                                    <ul class="noJS menu-desk-sub">
+                                                                                    <li role="presentation"><a href="/api/api/documentation" target=&quot;_blank&quot;>API</a></li>
+                                                                                    <li role="presentation"><a href="glossario" >Glossário</a></li>
+                                                                                    <li role="presentation"><a href="perguntas-frequentes" >Perguntas Frequentes</a></li>
+                                                                                    <li role="presentation"><a href="tutorial" >Tutoriais</a></li>
+                                                                                <li role="presentation"><a href="contato" accesskey="c" >Fale conosco</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <div id="menu-usuario"></div>
+                            <!--<div class="login" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <div class="login-icon rounded-circle">
+                                    <i class="far fa-user"></i>
+                                </div>
+                                <p>Olá, faça seu login ou se cadastre-se</p>
+                            </div>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a href="login"><button class="btn btn-primary btn-login-menu" type="button">Entrar</button></a>
+                                <a href="register"><button class="dropdown-item" type="button">Cadastre-se</button></a>
+                                <a href="register"><button class="dropdown-item" type="button">Estado e Município</button></a>
+                                <a href="oscs-user"><button class="dropdown-item" type="button">Minha OSCs</button></a>
+                                <a href="oscs-user"><button class="dropdown-item " type="button">Editar</button></a>
+                                <a href="logout-user"><button class="dropdown-item" type="button">Sair</button></a>
+                            </div>-->
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+<style>
+    .btn-login-menu{
+        width: -webkit-fill-available;
+        border-radius: 2px;
+        margin: 5px 10px;
+        text-align: left;
+    }
+
+    .owl-prev, .owl-next{
+        opacity: 0.5;
+    }
+</style>
+
+    
+
+
+
+</header>
+<div role="main" id="iniciodoconteudo">
+    
+
+
+
+    <style>
+        .mb-0{
+            background-color: #FFFFFF !important;
+            font-weight: bold;
+            color: #333333;
+            margin: 0 0 5px 0 !important;
+            border: 0 !important;
+        }
+        .mb-0:hover{
+            background-color: #EEEEEE !important;
+        }
+        .card {
+            border: 0;
+            border-radius: 0;
+            box-shadow: none !important;
+        }
+    </style>
+
+    <div class="bg-lgt">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <header>
+                        <br>
+                        <h1>Editais</h1>
+                        <h5><a href="/">Home</a> / Editais</h5>
+                        <br>
+                    </header>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="container containerFull">
+        <div class="row">
+                        <div  class="col-md-12" >
+                <article>
+                    
+                    <p tabindex="0"><h2>&nbsp;</h2>
+<h1 style="text-align: justify;"><strong>Editais</strong></h1>
+<p style="text-align: justify;">&nbsp;</p>
+<p style="text-align: justify;">O Mapa das Organiza&ccedil;&otilde;es da Sociedade Civil, em parceria com a plataforma <strong>Prosas</strong> &mdash; plataforma para sele&ccedil;&atilde;o e monitoramento de iniciativas de impacto social e gest&atilde;o de parcerias &mdash; oferece acesso a diversos editais para Organiza&ccedil;&otilde;es da Sociedade Civil (OSCs). Esses editais, que abrangem projetos dos setores p&uacute;blico e privado, preveem a contrata&ccedil;&atilde;o ou atua&ccedil;&atilde;o de OSCs em a&ccedil;&otilde;es e projetos variados.</p>
+<p style="text-align: justify;">&nbsp;</p>
+<p style="text-align: justify;">Ressaltamos que os editais s&atilde;o divulgados como parte do trabalho de promover e fortalecer a capta&ccedil;&atilde;o de recursos no Brasil. O Mapa n&atilde;o possui responsabilidade sobre eles, tampouco responde a d&uacute;vidas. Todas as informa&ccedil;&otilde;es devem ser obtidas diretamente com a organiza&ccedil;&atilde;o promotora do edital.</p>
+<p style="text-align: justify;">&nbsp;</p>
+<p style="text-align: justify;">Caso n&atilde;o esteja visualizando os demais editais, acesse: <span style="color: #0000ff;"><a id="menure7r" class="fui-Link ___1q1shib f2hkw1w f3rmtva f1ewtqcl fyind8e f1k6fduh f1w7gpdv fk6fouc fjoy568 figsok6 f1s184ao f1mk8lai fnbmjn9 f1o700av f13mvf36 f1cmlufx f9n3di6 f1ids18y f1tx3yz7 f1deo86v f1eh06m1 f1iescvh fhgqx19 f1olyrje f1p93eir f1nev41a f1h8hb77 f1lqvz6u f10aw75t fsle3fq f17ae5zn" style="color: #0000ff;" title="https://prosas.com.br/editais" href="https://prosas.com.br/editais" target="_blank" rel="noreferrer noopener">https://prosas.com.br/editais</a>.</span></p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;<iframe id="iframeId" src="https://prosas.com.br/selecao/widgets/listagem-editais" width="100%" height="800" frameborder="0"></iframe></p></p>
+                    
+
+
+                                                                                    <div class="accordion" id="accordionExample">
+
+
+    </div>
+<style>
+    .btn-file{
+        background-color: #EEEEEE;
+        border-radius: 5px;
+        padding: 20px;
+    }
+    .btn-file:hover{
+        background-color: #3A559B ;
+        color: #FFFFFF;
+    }
+</style>
+                                                    
+
+
+
+                    
+
+                    
+                    
+                    
+                    <br>
+                </article>
+            </div>
+        </div>
+    </div>
+
+
+        
+
+</div>
+<footer id="iniciodorodape" role="contentinfo" class="cel-footer d-print-none" >
+
+    
+    <div class="menu-cel-footer bg-lgt menu-cel-login-hide" style="display: none;">
+        <div id="menu-usuario-mobile"></div>
+    </div>
+    
+    <div class="footer-cel d-block d-sm-none">
+        <div class="container">
+            <div class="row">
+                <div class="col-3 col-md-3 text-center">
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                    <p><a href="/">Home</a></p>
+                </div>
+                <div class="col-3 col-md-3 text-center">
+                    <i class="fa fa-archive" aria-hidden="true"></i>
+                    <p><a href="mapa">Mapa</a></p>
+                </div>
+                <div class="col-3 col-md-3 text-center">
+                    <i class="fa fa-paper-plane"></i>
+                    <p><a href="contato">Contato</a></p>
+                </div>
+                <div class="col-3 col-md-3 text-center">
+                    <i class="fa fa-user"></i>
+                    <p><a id="btn-cel-login">Login</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <style>
+        .menu-cel-footer{
+            width: 100%;
+            bottom:50px;
+            position: fixed;
+            padding: 6px 0 2px 0;
+            border-top: solid 1px #CCCCCC;
+            background-color: #FFFFFF;
+            z-index: 9999999999;
+        }
+    </style>
+
+    <div class="bg-lgt" style="position: relative;">
+        
+        <div class="rp-menu" >
+            <div class="container">
+                <br>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div>
+                            <h3>O Portal</h3>
+                            <ul>
+                                                                <li><a href="sobre">Sobre o Mapa</a></li>
+                                                                <li><a href="metodologia">Metodologia</a></li>
+                                                                <li><a href="termosuso">Termos de uso</a></li>
+                                                                <li><a href="mapa-do-site">Mapa do site</a></li>
+                                                                <li><a href="equipe">Equipe</a></li>
+                                                                <li><a href="parceiros">Parceiros</a></li>
+                                                                <li><a href="links">Links úteis</a></li>
+                                                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div>
+                            <h3><a href="mapa">Mapa</a></h3>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div>
+                            <h3>Dados</h3>
+                            <ul>
+                                                                    <li><a href="base-dados">Base de Dados</a></li>
+                                                                    <li role="presentation"><a href="indicadores" accesskey="h" >Indicadores</a></li>
+                                    <li role="presentation"><a href="posts/1/analises" accesskey="h" >Análises</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div>
+                            <h3>Biblioteca</h3>
+                            <ul>
+                                                                    <li role="presentation"><a href="posts/3/noticias" accesskey="q" >Notícias</a></li>
+                                                                    <li role="presentation"><a href="posts/2/publicacoes" accesskey="q" >Publicações</a></li>
+                                                                <li><a href="videos">Vídeos</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div>
+                            <h3><a href="editais">Editais</a></h3>
+                        </div>
+                    </div>
+
+                                            <div class="col-md-2">
+                            <div>
+                                <h3>Ajuda</h3>
+                                <ul>
+                                                                            <li><a href="api">API</a></li>
+                                                                            <li><a href="glossario">Glossário</a></li>
+                                                                            <li><a href="perguntas-frequentes">Perguntas Frequentes</a></li>
+                                                                            <li><a href="tutorial">Tutoriais</a></li>
+                                                                            <li role="presentation"><a href="contato" accesskey="a" >Fale conosco</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <br>
+        <br>
+
+        <div>
+            <a href="#acessibilidade" class="link-to-menu bg-pri btn-circle rounded-circle">
+                <p>Topo</p>
+                <i class="fas fa-angle-up"></i>
+            </a>
+        </div>
+    </div>
+    <div class="bg-pri">
+                <script defer="defer" src="//barra.brasil.gov.br/barra.js" type="text/javascript"></script>
+                <div id="footer-brasil"></div>
+        <style>
+            div#wrapper-barra-brasil {
+                position: relative;
+                margin: 0 auto;
+                width: 100%;
+                max-width: 1100px;
+                height: 100%;
+            }
+        </style>
+    </div>
+
+
+</footer>
+
+
+        <!-- Piwik -->
+        
+        <!-- End Piwik Code -->
+    </body>
+</html>
+
+
+<style type="text/css">
+    .contrast-off{
+
+    }
+    .contrast{
+        background-color: #000000!important;
+        color: #FFFFFF!important;
+    }
+    .contrast > div{
+        background-color: #000000!important;
+        color: #FFFFFF!important;
+    }
+    .contrast > div > div{
+        background-color: #000000!important;
+        color: #FFFFFF!important;
+    }
+    .contrast > div > div > div{
+        background-color: #000000!important;
+        color: #FFFFFF!important;
+    }
+    .contrast > header > div > div > div > nav{
+        background-color: #000000!important;
+        color: #FFFFFF!important;
+    }
+</style>
+
+<script src="js/app.js"></script>
+<script src="js/utils.js"></script>
+<!--<script src="js/rotas.js"></script>-->
+
+<script>
+    getBaseUrl = "";
+    getBaseUrl2 = "https://mapaosc.ipea.gov.br/api/api/";
+</script>
+<script>
+
+
+
+    function titleize(text, qtd) {
+        let qtdString = qtd;
+        let qtdTxt = text.length;
+
+        var words = text.toLowerCase().split(" ");
+
+        for (var a = 0; a < words.length; a++) {
+            if(words[a] != "de" && words[a] != "da" && words[a] != "do" && words[a] != "dos" && words[a] != "das"){
+                var w = words[a];
+                words[a] = w[0]?.toUpperCase() + w.slice(1);
+            }
+        }
+        words = words.join(" ");
+        words = words.substr(0, qtdString)
+        words = words + (qtdString > qtdTxt ? '' : '...');
+        return words;
+    }
+
+    function clean(text){
+        text = text.toLowerCase();
+        text = text.replace(/[áàãâä]/g,'a');
+        text = text.replace(/[éèêë]/g,'e');
+        text = text.replace(/[íìîï]/g,'i');
+        text = text.replace(/[óòõôö]/g,'o');
+        text = text.replace(/[úùûü]/g,'u');
+        text = text.replace(/[ç]/g,'c');
+
+        text = text.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()'"]/g,'');
+        text = text.replace(/[ ]/g,'-');
+
+        return text;
+    }
+
+</script>
+
+
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+            pageRoute = true;
+    </script>
+
+
+
+<script src="js/react/react.development.js" crossorigin></script>
+<script src="js/react/react-dom.development.js" crossorigin></script>
+
+<script>
+    function get_location() {
+        //console.log('get_location');
+        if(navigator.geolocation){
+
+            function saveLocation (position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                localStorage.setItem('geo', JSON.stringify({lat: lat, lon: lon}));
+                //console.log(localStorage.getItem('geo'));
+                $.ajax({
+                    url: "https://nominatim.openstreetmap.org/reverse?format=json&lat="+lat+"&lon="+lon,
+                    success: function(data){
+                        console.log(data)
+                        if(data.address){
+                            localStorage.setItem('city', data.address.city);
+                            localStorage.setItem('state', data.address.state);
+                            localStorage.setItem('region', data.address.region);
+                            localStorage.setItem('country', data.address.country);
+                        }
+                    },
+                    error: function(xhr, status, err){
+                        console.error(status, err.toString());
+                    }
+                });
+            }
+            // Solicitação de posição instantânea.
+            navigator.geolocation.getCurrentPosition (saveLocation);
+
+            //console.log(localStorage.getItem('aaa'));
+
+            return;
+        }
+
+        console.log("O NAVEGADOR NÃO É COMPATÍVEL COM GEOLOCALIZAÇÃO");
+    }
+    get_location();
+</script>
+
+<script>
+    var conselhosAtivo = false;
+</script>
+<script src="js/components/login/menuUsuario.js"></script>
+<script src="js/components/login/menuUsuarioMobile.js"></script>
+
+
+
+
+
+
+
+
+
+
+<script>
+    // Basic usage of $.animateScroll.
+    //$('#iniciodorodape a', '#acessibilidade a').animateScroll();
+
+    // $.animateScroll with options.
+    /*$('.link-to-menu').animateScroll({
+        speed: 800,
+        offset: 30
+    });*/
+</script>
+<script>
+    $(document).ready(function(){
+        var fonte = 15;
+
+        if(fonte==15){
+            $('#contrast').css({'font-size' : localStorage.getItem('fonte')+'px'});
+        }
+        $('#aumenta_fonte').click(function(){
+            if (fonte<22){
+                fonte = fonte+2;
+                localStorage.setItem('fonte', fonte);
+                $('#contrast').css({'font-size' : fonte+'px'});
+            }
+        });
+        $('#reset_fonte').click(function(){
+            fonte = 15;
+            localStorage.setItem('fonte', fonte);
+            $('#contrast').css({'font-size': '16px'});
+        });
+        $('#reduz_fonte').click(function(){
+            if (fonte>10){
+                fonte = fonte-2;
+                localStorage.setItem('fonte', fonte);
+                $('#contrast').css({'font-size' : fonte+'px'});
+            }
+        });
+    });
+</script>
+<script>
+    //Barra scroll
+    $(window).on('scroll', function(){
+        var s = $(window).scrollTop(),
+            d = $(document).height(),
+            c = $(window).height();
+
+        var scrollPercent = (s / (d - c)) * 100;
+        scrollPercent = Math.round(scrollPercent);
+        document.getElementById('progress').style.width = scrollPercent+'%';
+
+        //console.clear();
+        //console.log(scrollPercent);
+    })
+</script>
+<script>$('.block').smoove({offset:'40%'});</script>
+<script>
+    $(document).ready(function() {
+        $('.menu-cel-hide').hide();
+        $('.menu-cel-login-hide').hide();
+
+        $('.btn-cel').click(function() {
+            $('.menu-cel-hide').animate({width:'toggle'},350);
+            $('.menu-cel-icon').toggle('slow, 1000');
+        });
+        $('#btn-cel-login').click(function() {
+            $('.menu-cel-login-hide').animate({height:'toggle'},350);
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('.fa-chevron-right').hide();
+
+        $('.btn-right').click(function() {
+            $('.box-floating').hide();
+        });
+
+        $('.btn-menu-txt').click(function() {
+            $('.menu-icons-txt').hide();
+            $('.fa-chevron-right').hide();
+            $('.fa-chevron-left').show();
+            $('.box-floating').css('width', '45px');
+            $('.menu-icons li').css('border', '0');
+            $('.menu-icons li').css('padding-bottom', 0);
+            $('.menu-icons li').css('margin-bottom', 0);
+        });
+
+        $('.btn-menu-txt-show').click(function() {
+            $('.menu-icons-txt').show();
+            $('.fa-chevron-right').show();
+            $('.fa-chevron-left').hide();
+            $('.box-floating').css('width', '250px');
+            $('.menu-icons li').css('border-bottom', 'solid 1px #CCCCCC');
+            $('.menu-icons li').css('padding-bottom', '3px');
+            $('.menu-icons li').css('margin-bottom', '2px');
+
+        });
+
+    });
+</script>
+
+<!--///////////////////////////////REACT////////////////////////////-->
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    $('#ativarBox').click(function(){
+        $('.box-busca').toggle();
+    });
+    $('.box-busca').mouseleave(function(){
+        $('.box-busca').toggle();
+    });
+</script>
+
+<!--NOVA BUSCA-->
+<script>
+    document.addEventListener('click', function (event) {
+        var dropdown = document.getElementById('myDropdownSearch');
+        var input = document.getElementById('searchInput');
+
+        if(dropdown){
+            if (event.target === input) {
+                dropdown.style.display = 'block';
+            } else if (!dropdown?.contains(event.target) && event?.target !== input) {
+                dropdown.style.display = 'none';
+            }
+        }
+
+    });
+
+</script>
+<!--NOVA BUSCA-->
