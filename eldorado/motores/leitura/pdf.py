@@ -62,6 +62,27 @@ class LeitorPDF:
             r.paginas.append(Pagina(i, texto, removidos))
             if i in com_imagem and len(texto.strip()) < MIN_CARACTERES:
                 r.precisa_ocr.append(i)                # escaneada: só sobrava o carimbo de impressão (cabeçalho e rodapé)
+        try:                                           # a classificação do plano (pdf-inspector): texto, escaneado ou misto
+            import pdf_inspector
+            c = pdf_inspector.classify_pdf_bytes(conteudo)
+            r.dados["pdf_tipo"] = str(c.pdf_type)
+            r.dados["pdf_confianca"] = float(c.confidence)
+            for n in getattr(c, "pages_needing_ocr", None) or []:
+                if n not in r.precisa_ocr and 1 <= n <= len(r.paginas) and len(r.paginas[n - 1].texto.strip()) < 80:
+                    r.precisa_ocr.append(n)
+        except Exception:  # noqa: BLE001 — sem a biblioteca, segue a detecção própria
+            pass
+        if r.precisa_ocr and self.ocr is None:         # sem OCR: a extração com layout de reserva (pdf-inspector, markdown)
+            try:
+                import pdf_inspector
+                md = pdf_inspector.extract_pages_markdown_bytes(conteudo, pages=list(r.precisa_ocr))
+                for item in md or []:
+                    n, texto = getattr(item, "page", None), getattr(item, "markdown", None) or getattr(item, "text", "")
+                    if n and texto and len(texto.strip()) > 80 and 1 <= n <= len(r.paginas):
+                        r.paginas[n - 1] = Pagina(n, texto)
+                        r.precisa_ocr.remove(n)
+            except Exception:  # noqa: BLE001
+                pass
         if r.precisa_ocr and self.ocr is not None:
             for n in r.precisa_ocr:
                 img = doc[n - 1].get_pixmap(dpi=200).tobytes("png")

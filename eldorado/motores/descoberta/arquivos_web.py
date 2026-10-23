@@ -22,3 +22,26 @@ def indice_wayback(buscar: Buscar, dominio: str, prefixo: str = "", base: str = 
         saida.append(Pista(titulo=url.rstrip("/").rsplit("/", 1)[-1], link=url, origem="arquivos da web (Wayback)",
                            data=c.get("timestamp"), extra={"tipo": c.get("mimetype")}))
     return saida
+
+
+def indice_commoncrawl(dominio: str, prefixo: str = "", limite: int = 300) -> list[Pista]:
+    """O índice do Common Crawl (cdx_toolkit): a segunda cópia arquivada, além do Wayback; as URLs que o rastreio aberto
+    já guardou do domínio (páginas que saíram do ar, editais antigos)."""
+    import cdx_toolkit
+    cdx = cdx_toolkit.CDXFetcher(source="cc")
+    saida, vistos = [], set()
+    for obj in cdx.iter(f"{dominio.rstrip('/')}/{prefixo.lstrip('/')}*", limit=limite, filter=["status:200"]):
+        u = obj.data.get("url")
+        if u and u not in vistos:
+            vistos.add(u)
+            saida.append(Pista(titulo=u.rstrip("/").rsplit("/", 1)[-1], link=u, data=(obj.data.get("timestamp") or "")[:8] or None,
+                               origem="índice do Common Crawl"))
+    return saida
+
+
+def arquivar(url: str) -> str | None:
+    """Arquiva a página no Wayback (waybackpy) e devolve o endereço da cópia: a prova da oportunidade fica guardada mesmo
+    que o site mude. Lento (segundos a minutos): usado com parcimônia (os achados com prazo, com limite por execução)."""
+    from waybackpy import WaybackMachineSaveAPI
+    salvo = WaybackMachineSaveAPI(url, user_agent="Eldorado/1.0 (arquivo de oportunidades para OSC)").save()
+    return str(salvo) if salvo else None

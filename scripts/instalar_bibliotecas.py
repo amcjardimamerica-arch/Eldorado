@@ -28,18 +28,18 @@ def main() -> int:
     if not instalar(["-e", f".[{','.join(NUCLEO)}]"], 900):
         print("::error::o núcleo do Eldorado não instalou (leitura, acesso, descoberta, metabusca, navegador)")
         return 1
-    print(f"::notice::núcleo instalado em {int(time.time() - t)} s")
+    tempos = [f"núcleo={int(time.time() - t)}s"]
     falharam = []
     for g in GRUPOS:
         t = time.time()
         if instalar([*extras[g]], 600):
-            print(f"::notice::grupo {g} instalado em {int(time.time() - t)} s")
+            tempos.append(f"{g}={int(time.time() - t)}s")
             continue
         for pacote in extras[g]:                      # o grupo falhou: um por um, para achar o culpado
             if not instalar([pacote], 300):
                 falharam.append(pacote)
                 print(f"::warning::pacote do plano não instalou: {pacote} (grupo {g})")
-    print(f"::notice::bibliotecas: {len(falharam)} pacote(s) não instalaram" + (f": {', '.join(falharam)}" if falharam else ""))
+    print(f"::notice::bibliotecas: grupos {' '.join(tempos)}; {len(falharam)} pacote(s) não instalaram" + (f": {', '.join(falharam)}" if falharam else ""))
     return 0
 
 

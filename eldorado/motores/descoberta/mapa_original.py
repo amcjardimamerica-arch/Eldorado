@@ -45,8 +45,17 @@ def mapas(buscar: Callable[[str], object], raiz: str) -> list[str]:
 
 
 def urls(buscar: Callable[[str], object], raiz: str, limite: int = 5000) -> list[Pista]:
-    """Todas as URLs dos mapas do domínio (os mapas que não abrem são pulados)."""
+    """Todas as URLs dos mapas do domínio: o leitor completo do plano (ultimate-sitemap-parser, pela escada) e, de reserva,
+    o leitor próprio (os mapas que não abrem são pulados)."""
     vistas: dict[str, Pista] = {}
+    try:
+        from .estrutura_site import mapa_completo
+        for p in mapa_completo(buscar, raiz, limite=limite):
+            vistas.setdefault(p.link, p)
+        if vistas:
+            return list(vistas.values())[:limite]
+    except Exception:  # noqa: BLE001 — sem a biblioteca, ou o leitor completo falhou: o próprio
+        pass
     for m in mapas(buscar, raiz):
         try:
             for p in mapa_do_site(buscar, m, limite=limite):

@@ -7,10 +7,13 @@
 # Cada parte que falhar vira aviso: o sistema segue com as reservas de cada ferramenta (nada é simulado).
 set -u
 # cada parte tem um tempo máximo: passou, vira aviso, e o sistema segue com as reservas (o funcionamento não espera)
-inicio=$(date +%s); marca() { echo "::notice::instalação: $1 em $(( $(date +%s) - inicio )) s"; }
+inicio=$(date +%s); TEMPOS=""; marca() { TEMPOS="$TEMPOS $1=$(( $(date +%s) - inicio ))s"; }
 aviso() { echo "::warning::$1"; }
-timeout 300 sudo apt-get -qq update && timeout 400 sudo apt-get -qq install -y tesseract-ocr tesseract-ocr-por libtesseract-dev libleptonica-dev pkg-config default-jre-headless > /dev/null \
-  || aviso "programas do sistema (Tesseract, Java): a instalação falhou"
+PROGRAMAS="tesseract-ocr tesseract-ocr-por libtesseract-dev libleptonica-dev pkg-config"
+# primeiro sem atualizar a lista (os executores do GitHub já a trazem; a atualização é lenta); só atualiza se faltar
+timeout 300 sudo apt-get install -y -qq --no-install-recommends $PROGRAMAS > /dev/null 2>&1 \
+  || { timeout 300 sudo apt-get update -qq > /dev/null 2>&1; timeout 300 sudo apt-get install -y -qq --no-install-recommends $PROGRAMAS > /dev/null 2>&1; } \
+  || aviso "programas do sistema (Tesseract): a instalação falhou"
 marca "programas do sistema"
 timeout 120 python -m pip install -q --upgrade pip uv || aviso "uv não instalou"
 timeout 1800 python scripts/instalar_bibliotecas.py || { echo "::error::o núcleo do Eldorado não instalou"; exit 1; }
@@ -28,6 +31,7 @@ if command -v docker > /dev/null; then
     && echo "ELDORADO_SEARXNG=http://127.0.0.1:8888" >> "${GITHUB_ENV:-/dev/null}" || aviso "SearXNG não subiu; a metabusca segue pelo ddgs"
 fi
 marca "SearXNG"
+marca "SearXNG"; export TEMPOS
 python - <<'P' || true
 import importlib
 ok = []
@@ -40,5 +44,5 @@ for m in ("fitz", "rapidocr", "tesserocr", "tika", "trafilatura", "extruct", "li
         print(f"::warning::ferramenta do plano não importou: {m} ({type(e).__name__}: {str(e)[:80]})")
 import os, shutil
 binarios = {"tesseract": shutil.which("tesseract"), "java": shutil.which("java"), "lightpanda": os.environ.get("ELDORADO_LIGHTPANDA") or os.path.exists(os.environ.get("RUNNER_TEMP", "/tmp") + "/lightpanda")}
-print(f"::notice::instalação completa: {len(ok)} bibliotecas do plano importam; programas: " + ", ".join(f"{k}={'sim' if v else 'não'}" for k, v in binarios.items()))
+print(f"::notice::instalação completa: {len(ok)} de 31 ferramentas do plano importam; programas: " + ", ".join(f"{k}={'sim' if v else 'não'}" for k, v in binarios.items()) + "; tempos:" + os.environ.get("TEMPOS", ""))
 P

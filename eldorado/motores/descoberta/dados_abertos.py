@@ -31,6 +31,9 @@ def carregar_json(buscar: Buscar, url: str, json_em: str | None = None) -> Any:
     a mesma página tem outro bloco, o da busca, com uma lista vazia que enganava a versão antiga)."""
     conteudo = buscar(url).conteudo
     if not json_em:
+        if conteudo.lstrip()[:1] == b"<":                 # a API que responde em XML (xmltodict): os mesmos caminhos jmespath
+            import xmltodict
+            return xmltodict.parse(conteudo, attr_prefix="", cdata_key="texto")
         return json.loads(conteudo)
     from selectolax.lexbor import LexborHTMLParser
     no = LexborHTMLParser(conteudo.decode("utf-8", errors="replace")).css_first(json_em)
