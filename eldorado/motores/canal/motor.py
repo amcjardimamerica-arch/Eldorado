@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any, Iterable, Literal
 from zoneinfo import ZoneInfo
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from ...base.nucleo.contratos import Achado, Descricao, Motor, Plano, Retorno, Saude
 from ..acesso.api import DegrauAPI
@@ -48,6 +48,7 @@ class CfgMotor(_Base):
     # a reorganização da titular (19/10/2026): a categoria do estudo e os nomes que o motor já teve ou os motores que ele
     # reúne; o histórico desses nomes é lido como do próprio motor (o motor leva o aprendizado dos que reúne)
     categoria_estudo: Literal["EXE", "JUD", "LEG", "POR", "IA"] | None = None
+    tipo_finalidade: Literal["descoberta", "recorrencia"] = "descoberta"   # oportunidades novas, ou as edições de programas conhecidos
     nomes_anteriores: list[str] = Field(default_factory=list)
 
 
@@ -70,6 +71,7 @@ class CfgFonte(_Base):
     paginacao: CfgPaginacao | None = None
     json_em: str | None = None                # o seletor EXATO do JSON dentro de uma página HTML
     exige_brasil: bool = False
+    papel: Literal["principal", "alternativa"] = "principal"   # todo motor tem ao menos duas rotas: a principal e a alternativa
 
 
 class CfgAcesso(_Base):
@@ -111,6 +113,31 @@ class CfgExtracao(_Base):
     nao_certificar: list[str] = Field(default_factory=list)
 
 
+class CfgAlvo(_Base):
+    """Um ponto de captação vigiado pelo motor do seu canal (estudo da titular, 19/10/2026): lido na janela prevista da
+    próxima edição. A previsão é aprendida pelo próprio motor (os meses em que o alvo mudou); a configurada vale antes."""
+    id: str
+    nome: str
+    enderecos: list[str] = Field(min_length=1)       # o primeiro que funciona é a rota; os outros, as alternativas
+    orgao: str | None = None
+    previsao_meses: list[int] = Field(default_factory=list)
+
+
+class CfgAprendizado(_Base):
+    """O aprendizado mora dentro do motor (nunca no sistema); só o próprio motor (ou a titular) o altera."""
+    licoes: list[str] = Field(default_factory=list)
+    bloqueios_conhecidos: list[str] = Field(default_factory=list)
+    alternativas_para_bloqueio: list[str] = Field(default_factory=list)
+    rotas_que_falharam: list[str] = Field(default_factory=list)
+
+
+class CfgMetrica(_Base):
+    """A métrica da finalidade: ATINGE se leu dentro da cadência e entregou ao menos um achado aceito no período; NÃO
+    ATINGE se ficou sem leitura além do dobro da cadência ou se todos os achados foram barrados."""
+    cadencia_h: float = Field(24, gt=0)
+    periodo_dias: int = Field(14, ge=1)
+
+
 class CfgPrograma(_Base):
     """A oportunidade é o próprio programa (incentivo fiscal, fundo, mecanismo permanente): o livro é relido sempre que
     a página oficial (a legislação, a norma vigente) muda, e o Cartório recertifica os itens a partir do texto oficial."""
@@ -132,16 +159,28 @@ class CfgLegislacao(_Base):
 
 class Configuracao(_Base):
     motor: CfgMotor
-    fonte: list[CfgFonte]
+    fonte: list[CfgFonte] = Field(default_factory=list)
     acesso: CfgAcesso = CfgAcesso()
     leitura: CfgLeitura = CfgLeitura()
     lexico: CfgLexico = CfgLexico()
     programa: CfgPrograma | None = None
     legislacao: CfgLegislacao = CfgLegislacao()
     extracao: CfgExtracao = CfgExtracao()
+    alvo: list[CfgAlvo] = Field(default_factory=list)
+    aprendizado: CfgAprendizado = CfgAprendizado()
+    metrica: CfgMetrica = CfgMetrica()
     alvos: dict[str, Any] = Field(default_factory=dict)
     metas: dict[str, Any] = Field(default_factory=dict)
     agenda: dict[str, Any] = Field(default_factory=dict)
+
+    @model_validator(mode="after")
+    def _aceitavel(self) -> "Configuracao":
+        """O registro recusa motor sem finalidade ou sem nenhuma rota (fonte, alvo ou programa)."""
+        if not self.motor.finalidade.strip():
+            raise ValueError("motor sem finalidade")
+        if not (self.fonte or self.alvo or self.programa):
+            raise ValueError("motor sem nenhuma rota (fonte, alvo ou programa)")
+        return self
 
 
 DATA_MODELO = re.compile(r"\{hoje(?P<d>[+-]\d+)?(?::(?P<f>[^}]+))?\}")
@@ -245,6 +284,51 @@ class MotorCanal(Motor):
                 yield achado
             self.estado.leitura(fonte.nome, _agora(), achados=entregues)
             self.relatorio.append(f"{fonte.nome}: {len(pistas)} pista(s), {entregues} achado(s)")
+        yield from self._alvos()
+
+    def _na_janela(self, alvo: CfgAlvo, mes: int) -> bool:
+        """A janela prevista da próxima edição: os meses configurados, ou os aprendidos (com 3 ou mais mudanças), com um
+        mês de folga de cada lado; sem previsão, o alvo é lido sempre."""
+        meses = set(alvo.previsao_meses) or (set(self.estado.meses_do_alvo(alvo.id)) if len(self.estado.meses_do_alvo(alvo.id)) >= 3 else set())
+        return not meses or any(((mes - m) % 12) in (0, 1, 11) for m in meses)
+
+    def _alvos(self) -> Iterable[Achado]:
+        """Os pontos de captação vigiados: na janela, a primeira rota que funciona; mudou, registra o mês (a previsão se
+        aprende) e entrega os links que passam no léxico, ou a própria página do alvo."""
+        mes = int(_agora()[5:7])
+        for alvo in self.cfg.alvo:
+            if not self._na_janela(alvo, mes):
+                self.relatorio.append(f"alvo {alvo.nome}: fora da janela prevista")
+                continue
+            for n, url in enumerate(alvo.enderecos):
+                fonte = CfgFonte(nome=f"alvo · {alvo.id}", url=url, tipo="pagina", papel="principal" if n == 0 else "alternativa")
+                try:
+                    pistas = self._descobrir(fonte)
+                except (Bloqueado, Indisponivel, Pendente, ValueError) as e:
+                    self.estado.leitura(fonte.nome, _agora(), erro=f"{url}: {str(e)[:250]}")
+                    continue                                        # a próxima rota do alvo
+                if pistas is None:
+                    self.estado.leitura(fonte.nome, _agora(), sem_mudanca=True)
+                    self.relatorio.append(f"alvo {alvo.nome}: sem mudança")
+                    break
+                self.estado.mudanca_do_alvo(alvo.id, _agora())
+                entregues = 0
+                for pista in pistas:
+                    if self._passa_lexico(pista.titulo, pista.resumo or "") and not self.estado.ja_entregue(pista.link):
+                        a = self._achado(fonte, pista, entregues)
+                        if a is not None:
+                            entregues += 1
+                            self.estado.marcar_entregue(pista.link, _agora(), a.id, fonte.nome)
+                            yield a
+                if not entregues and not self.estado.ja_entregue(f"{url}#{_agora()[:7]}"):
+                    a = self._achado(fonte, Pista(titulo=alvo.nome, link=url, origem=f"alvo {alvo.id} mudou"), 0)
+                    if a is not None:
+                        entregues += 1
+                        self.estado.marcar_entregue(f"{url}#{_agora()[:7]}", _agora(), a.id, fonte.nome)
+                        yield a
+                self.estado.leitura(fonte.nome, _agora(), achados=entregues)
+                self.relatorio.append(f"alvo {alvo.nome}: mudou ({entregues} achado(s))")
+                break
 
     def _programa(self) -> Achado | None:
         """O livro do programa: entregue de novo só quando o texto oficial muda (nova norma, novo prazo)."""

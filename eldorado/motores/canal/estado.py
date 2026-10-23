@@ -10,6 +10,7 @@ from pathlib import Path
 
 DDL = """
 CREATE TABLE IF NOT EXISTS assinatura (fonte TEXT PRIMARY KEY, valor TEXT NOT NULL, em TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS alvo_mudanca (alvo TEXT NOT NULL, em TEXT NOT NULL, mes INTEGER NOT NULL, PRIMARY KEY (alvo, em));
 CREATE TABLE IF NOT EXISTS entregue (chave TEXT PRIMARY KEY, em TEXT NOT NULL, achado TEXT, fonte TEXT);
 CREATE TABLE IF NOT EXISTS fonte (nome TEXT PRIMARY KEY, leituras INTEGER NOT NULL DEFAULT 0, sem_mudanca INTEGER NOT NULL DEFAULT 0,
   achados INTEGER NOT NULL DEFAULT 0, aceitos INTEGER NOT NULL DEFAULT 0, barrados INTEGER NOT NULL DEFAULT 0, falhas INTEGER NOT NULL DEFAULT 0,
@@ -34,6 +35,14 @@ class EstadoMotor:
 
     def gravar_assinatura(self, fonte: str, valor: str, em: str) -> None:
         self.con.execute("INSERT INTO assinatura VALUES (?,?,?) ON CONFLICT(fonte) DO UPDATE SET valor=excluded.valor, em=excluded.em", (fonte, valor, em))
+
+    def mudanca_do_alvo(self, alvo: str, em: str) -> None:
+        """O alvo mudou: o mês fica registrado (é assim que o motor aprende a previsão de edição)."""
+        self.con.execute("INSERT OR IGNORE INTO alvo_mudanca VALUES (?, ?, ?)", (alvo, em, int(em[5:7])))
+        self.con.commit()
+
+    def meses_do_alvo(self, alvo: str) -> list[int]:
+        return [r[0] for r in self.con.execute("SELECT DISTINCT mes FROM alvo_mudanca WHERE alvo = ? ORDER BY mes", (alvo,))]
 
     def ja_entregue(self, chave: str) -> bool:
         return self.con.execute("SELECT 1 FROM entregue WHERE chave=?", (chave,)).fetchone() is not None

@@ -21,7 +21,7 @@
   },
   {
    "arquivo": "eldorado/base/nucleo/comandos.py",
-   "linhas": 372,
+   "linhas": 407,
    "finalidade": "Os comandos da plataforma: os mesmos no GitHub, no computador da titular e (depois) no painel.",
    "depende_de": [
     "eldorado/base/cartorio/analise_externa.py",
@@ -42,7 +42,8 @@
     "eldorado/base/painel/visoes.py",
     "eldorado/motores/acesso/api.py",
     "eldorado/motores/acesso/escada.py",
-    "eldorado/motores/acesso/leve.py"
+    "eldorado/motores/acesso/leve.py",
+    "eldorado/motores/canal/fabrica.py"
    ],
    "eventos": [],
    "acionado_por": [
@@ -76,7 +77,8 @@
     "eldorado/base/painel/visoes.py",
     "eldorado/motores/acesso/api.py",
     "eldorado/motores/acesso/escada.py",
-    "eldorado/motores/acesso/leve.py"
+    "eldorado/motores/acesso/leve.py",
+    "eldorado/motores/canal/fabrica.py"
    ],
    "critico": false,
    "metrica": "comandos executados sem erro",
@@ -1178,7 +1180,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 2035,
+   "linhas": 5249,
    "situacao": "em funcionamento",
    "ordem": 42
   },
@@ -1254,6 +1256,7 @@
    "acionado_por": [],
    "usado_por": [],
    "testes": [
+    "test_alvos.py",
     "test_incentivos.py",
     "test_motor_canal.py",
     "test_motores_api.py"
@@ -1289,7 +1292,7 @@
   },
   {
    "arquivo": "eldorado/motores/canal/estado.py",
-   "linhas": 64,
+   "linhas": 73,
    "finalidade": "O estado de cada motor: o seu aprendizado de uso próprio, num banco só dele (dados/motores/<id>.db, fora do Git).",
    "depende_de": [],
    "eventos": [],
@@ -1729,8 +1732,34 @@
    "ordem": 64
   },
   {
+   "arquivo": "eldorado/motores/canal/fabrica.py",
+   "linhas": 110,
+   "finalidade": "A fábrica de motores: executa a orientação de design (eldorado/motores/skills/criar-motor/SKILL.md).",
+   "depende_de": [
+    "eldorado/motores/canal/motor.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/nucleo/comandos.py"
+   ],
+   "testes": [
+    "test_alvos.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Coleta: os motores e o canivete suíço",
+   "ligacoes": [
+    "eldorado/motores/canal/motor.py"
+   ],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 65
+  },
+  {
    "arquivo": "eldorado/motores/canal/motor.py",
-   "linhas": 468,
+   "linhas": 552,
    "finalidade": "O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio.",
    "depende_de": [
     "eldorado/base/nucleo/contratos.py",
@@ -1769,9 +1798,11 @@
    "usado_por": [
     "eldorado/base/cerebro/encaminhamento.py",
     "eldorado/base/cerebro/rede.py",
-    "eldorado/base/cerebro/regencia.py"
+    "eldorado/base/cerebro/regencia.py",
+    "eldorado/motores/canal/fabrica.py"
    ],
    "testes": [
+    "test_alvos.py",
     "test_incentivos.py",
     "test_motor_canal.py",
     "test_motores_api.py"
@@ -1801,7 +1832,7 @@
    ],
    "critico": false,
    "metrica": "as 6 metas de qualidade do dossiê dos motores",
-   "ordem": 65
+   "ordem": 66
   },
   {
    "arquivo": "eldorado/motores/leitura/compactado.py",
@@ -1825,7 +1856,7 @@
    ],
    "critico": false,
    "metrica": "arquivos abertos",
-   "ordem": 66
+   "ordem": 67
   },
   {
    "arquivo": "eldorado/motores/leitura/documento.py",
@@ -1849,7 +1880,7 @@
    ],
    "critico": false,
    "metrica": "documentos lidos",
-   "ordem": 67
+   "ordem": 68
   },
   {
    "arquivo": "eldorado/motores/leitura/leitores.py",
@@ -1895,7 +1926,7 @@
    ],
    "critico": false,
    "metrica": "conteúdos lidos por tipo; tipos sem leitor",
-   "ordem": 68
+   "ordem": 69
   },
   {
    "arquivo": "eldorado/motores/leitura/ocr.py",
@@ -1919,7 +1950,7 @@
    ],
    "critico": false,
    "metrica": "páginas com OCR; confiança média",
-   "ordem": 69
+   "ordem": 70
   },
   {
    "arquivo": "eldorado/motores/leitura/pagina.py",
@@ -1943,7 +1974,7 @@
    ],
    "critico": false,
    "metrica": "páginas lidas; links por página",
-   "ordem": 70
+   "ordem": 71
   },
   {
    "arquivo": "eldorado/motores/leitura/pdf.py",
@@ -1973,7 +2004,7 @@
    ],
    "critico": false,
    "metrica": "páginas por segundo; páginas sem texto",
-   "ordem": 71
+   "ordem": 72
   },
   {
    "arquivo": "eldorado/motores/leitura/planilha.py",
@@ -1997,7 +2028,7 @@
    ],
    "critico": false,
    "metrica": "planilhas lidas",
-   "ordem": 72
+   "ordem": 73
   },
   {
    "arquivo": "eldorado/motores/leitura/universal.py",
@@ -2020,7 +2051,7 @@
    ],
    "critico": false,
    "metrica": "usos da reserva (deve ser raro)",
-   "ordem": 73
+   "ordem": 74
   },
   {
    "arquivo": "eldorado/base/cerebro/pertinencia.py",
@@ -2057,7 +2088,7 @@
    ],
    "critico": true,
    "metrica": "achados aceitos e barrados com motivo; decisões contrariadas por veredito",
-   "ordem": 74
+   "ordem": 75
   },
   {
    "arquivo": "eldorado/base/missao/__init__.py",
@@ -2084,7 +2115,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 75
+   "ordem": 76
   },
   {
    "arquivo": "eldorado/base/missao/chave.py",
@@ -2106,7 +2137,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "chaves que geraram duplicado",
-   "ordem": 76
+   "ordem": 77
   },
   {
    "arquivo": "eldorado/base/missao/itens.py",
@@ -2134,7 +2165,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "itens definidos",
-   "ordem": 77
+   "ordem": 78
   },
   {
    "arquivo": "eldorado/base/missao/regras_portao.py",
@@ -2155,7 +2186,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "casos de ouro do portão (100%)",
-   "ordem": 78
+   "ordem": 79
   },
   {
    "arquivo": "eldorado/base/missao/portao.py",
@@ -2180,7 +2211,7 @@
    ],
    "critico": false,
    "metrica": "decisões contrariadas por veredito (zero)",
-   "ordem": 79
+   "ordem": 80
   },
   {
    "arquivo": "eldorado/base/missao/oportunidades.py",
@@ -2222,7 +2253,7 @@
    ],
    "critico": false,
    "metrica": "missão com os dados presentes",
-   "ordem": 80
+   "ordem": 81
   },
   {
    "arquivo": "eldorado/base/cartorio/certificacao.py",
@@ -2253,7 +2284,7 @@
    ],
    "critico": false,
    "metrica": "certidões reais: reconhece 64%, valor certo 84%, ponta a ponta 54% (linha de base 22/10)",
-   "ordem": 81
+   "ordem": 82
   },
   {
    "arquivo": "eldorado/base/cartorio/indice.py",
@@ -2287,7 +2318,7 @@
    ],
    "critico": false,
    "metrica": "duplicados unidos; livros criados e vinculados",
-   "ordem": 82
+   "ordem": 83
   },
   {
    "arquivo": "eldorado/base/cartorio/passaporte.py",
@@ -2323,7 +2354,7 @@
    ],
    "critico": false,
    "metrica": "livros sem passaporte (zero)",
-   "ordem": 83
+   "ordem": 84
   },
   {
    "arquivo": "eldorado/base/cartorio/selos.py",
@@ -2352,7 +2383,7 @@
    ],
    "critico": false,
    "metrica": "livros sem selo (zero; hoje 70%)",
-   "ordem": 84
+   "ordem": 85
   },
   {
    "arquivo": "eldorado/base/cartorio/site_oficial.py",
@@ -2374,7 +2405,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "livros com link oficial aprovado",
-   "ordem": 85
+   "ordem": 86
   },
   {
    "arquivo": "eldorado/base/cartorio/cartorio.py",
@@ -2431,7 +2462,7 @@
    ],
    "critico": true,
    "metrica": "livros movidos por passagem; livros parados além do previsto",
-   "ordem": 86
+   "ordem": 87
   },
   {
    "arquivo": "eldorado/base/cartorio/auditoria.py",
@@ -2483,7 +2514,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 87
+   "ordem": 88
   },
   {
    "arquivo": "eldorado/motores/pilotos/__init__.py",
@@ -2506,7 +2537,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 88
+   "ordem": 89
   },
   {
    "arquivo": "eldorado/motores/pilotos/espiao.py",
@@ -2532,7 +2563,7 @@
    ],
    "critico": false,
    "metrica": "achados por voo; fontes novas propostas",
-   "ordem": 89
+   "ordem": 90
   },
   {
    "arquivo": "eldorado/motores/pilotos/interceptador.py",
@@ -2582,7 +2613,7 @@
    ],
    "critico": false,
    "metrica": "livros resolvidos por voo; respostas válidas",
-   "ordem": 90
+   "ordem": 91
   },
   {
    "arquivo": "eldorado/base/cerebro/encaminhamento.py",
@@ -2639,7 +2670,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 91
+   "ordem": 92
   },
   {
    "arquivo": "eldorado/base/cartorio/analise_externa.py",
@@ -2679,7 +2710,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 92
+   "ordem": 93
   },
   {
    "arquivo": "eldorado/base/verificacao/importacao.py",
@@ -2699,7 +2730,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "respostas importadas e recusadas",
-   "ordem": 93
+   "ordem": 94
   },
   {
    "arquivo": "eldorado/base/verificacao/lote.py",
@@ -2719,7 +2750,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "lotes gerados",
-   "ordem": 94
+   "ordem": 95
   },
   {
    "arquivo": "eldorado/base/verificacao/relatorio_faltas.py",
@@ -2739,7 +2770,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "livros com relatório final",
-   "ordem": 95
+   "ordem": 96
   },
   {
    "arquivo": "eldorado/base/verificacao/verificacao.py",
@@ -2761,7 +2792,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "livros em verificação; decisões recebidas",
-   "ordem": 96
+   "ordem": 97
   },
   {
    "arquivo": "eldorado/base/transferencia/farol.py",
@@ -2781,7 +2812,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "livros transferidos; recusados pelo contrato",
-   "ordem": 97
+   "ordem": 98
   },
   {
    "arquivo": "eldorado/base/cerebro/aprendizado.py",
@@ -2813,7 +2844,7 @@
    ],
    "critico": false,
    "metrica": "aprendizados promovidos e arquivados",
-   "ordem": 98
+   "ordem": 99
   },
   {
    "arquivo": "eldorado/base/cerebro/completude.py",
@@ -2842,7 +2873,7 @@
    ],
    "critico": false,
    "metrica": "cobertura do dia (meta 100%)",
-   "ordem": 99
+   "ordem": 100
   },
   {
    "arquivo": "eldorado/base/cerebro/inventario.py",
@@ -2864,7 +2895,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 100
+   "ordem": 101
   },
   {
    "arquivo": "eldorado/base/cerebro/medicao.py",
@@ -2893,7 +2924,7 @@
    ],
    "critico": true,
    "metrica": "arquivos com as três medições na passagem (meta 100%)",
-   "ordem": 101
+   "ordem": 102
   },
   {
    "arquivo": "eldorado/base/cerebro/rede.py",
@@ -2927,7 +2958,7 @@
    ],
    "critico": false,
    "metrica": "discernimento, precisão, revocação; idade do modelo",
-   "ordem": 102
+   "ordem": 103
   },
   {
    "arquivo": "eldorado/base/cerebro/regras.py",
@@ -2955,7 +2986,7 @@
    ],
    "critico": false,
    "metrica": "decisões aplicadas; contradições abertas (devem ser zero)",
-   "ordem": 103
+   "ordem": 104
   },
   {
    "arquivo": "eldorado/base/analise/calendario.py",
@@ -2975,7 +3006,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "calendário atualizado na passagem",
-   "ordem": 104
+   "ordem": 105
   },
   {
    "arquivo": "eldorado/base/analise/historia.py",
@@ -2995,7 +3026,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "livros com história completa",
-   "ordem": 105
+   "ordem": 106
   },
   {
    "arquivo": "eldorado/base/analise/preditivo.py",
@@ -3015,7 +3046,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "alertas emitidos antes da abertura",
-   "ordem": 106
+   "ordem": 107
   },
   {
    "arquivo": "eldorado/base/painel/__init__.py",
@@ -3035,7 +3066,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 107
+   "ordem": 108
   },
   {
    "arquivo": "eldorado/base/painel/api.py",
@@ -3056,7 +3087,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "respostas no prazo; erros",
-   "ordem": 108
+   "ordem": 109
   },
   {
    "arquivo": "eldorado/base/painel/maquina.py",
@@ -3076,7 +3107,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "mostrador atualizado em tempo real",
-   "ordem": 109
+   "ordem": 110
   },
   {
    "arquivo": "eldorado/base/painel/sala.py",
@@ -3096,7 +3127,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "sala publicada no prazo",
-   "ordem": 110
+   "ordem": 111
   },
   {
    "arquivo": "eldorado/base/painel/visoes.py",
@@ -3122,7 +3153,7 @@
    ],
    "critico": false,
    "metrica": "visões iguais à consulta ao banco",
-   "ordem": 111
+   "ordem": 112
   },
   {
    "arquivo": "eldorado/base/migracao/__init__.py",
@@ -3142,7 +3173,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 112
+   "ordem": 113
   },
   {
    "arquivo": "eldorado/base/migracao/importar_eldorado0.py",
@@ -3172,7 +3203,7 @@
    ],
    "critico": false,
    "metrica": "contagens importadas iguais às de origem",
-   "ordem": 113
+   "ordem": 114
   },
   {
    "arquivo": ".github/workflows/painel.yml",
@@ -3190,7 +3221,7 @@
    "testes": [],
    "linhas": 42,
    "situacao": "em funcionamento",
-   "ordem": 114
+   "ordem": 115
   },
   {
    "arquivo": ".github/workflows/passagem.yml",
@@ -3211,7 +3242,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "passagens no horário",
-   "ordem": 115
+   "ordem": 116
   },
   {
    "arquivo": ".github/workflows/pilotos.yml",
@@ -3232,7 +3263,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "voos com sucesso",
-   "ordem": 116
+   "ordem": 117
   },
   {
    "arquivo": "config/motores_previstos.toml",
@@ -3250,7 +3281,7 @@
    "testes": [],
    "linhas": 0,
    "situacao": "a construir",
-   "ordem": 117
+   "ordem": 118
   },
   {
    "arquivo": "eldorado/__init__.py",
@@ -3264,6 +3295,7 @@
     "test_acesso.py",
     "test_agenda.py",
     "test_alarmes.py",
+    "test_alvos.py",
     "test_auditoria.py",
     "test_bancos.py",
     "test_cartorio.py",
@@ -3304,7 +3336,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 118
+   "ordem": 119
   },
   {
    "arquivo": "eldorado/base/__init__.py",
@@ -3355,7 +3387,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 119
+   "ordem": 120
   },
   {
    "arquivo": "eldorado/base/cartorio/__init__.py",
@@ -3381,7 +3413,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 120
+   "ordem": 121
   },
   {
    "arquivo": "eldorado/base/cerebro/__init__.py",
@@ -3417,7 +3449,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 121
+   "ordem": 122
   },
   {
    "arquivo": "eldorado/base/cerebro/pilotos.py",
@@ -3450,7 +3482,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 122
+   "ordem": 123
   },
   {
    "arquivo": "eldorado/base/investigacao/investigacao.py",
@@ -3471,7 +3503,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "livros investigados e itens comprovados por livro",
-   "ordem": 123
+   "ordem": 124
   },
   {
    "arquivo": "eldorado/motores/__init__.py",
@@ -3483,6 +3515,7 @@
    "usado_por": [],
    "testes": [
     "test_acesso.py",
+    "test_alvos.py",
     "test_descoberta.py",
     "test_espiao.py",
     "test_ia.py",
@@ -3501,7 +3534,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 124
+   "ordem": 125
   }
  ],
  "motores": [
@@ -3522,7 +3555,18 @@
       "diariooficial.goiania.go.gov.br",
       "www.goiania.go.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (publicado no Diário de Goiânia)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (publicado no Diário de Goiânia)",
+     "enderecos": [
+      "https://www.goiania.go.gov.br/cultura/",
+      "https://diariooficial.goiania.go.gov.br/"
+     ],
+     "orgao": "Secretaria Municipal de Cultura de Goiânia",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "diario_oficial_municipio"
     },
     {
      "id": "f260-captacao-039",
@@ -3531,12 +3575,54 @@
       "diariooficial.goiania.go.gov.br",
       "www.goiania.go.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (publicado no Diário de Goiânia)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (publicado no Diário de Goiânia)",
+     "enderecos": [
+      "https://www.goiania.go.gov.br/cultura/",
+      "https://diariooficial.goiania.go.gov.br/"
+     ],
+     "orgao": "Secretaria Municipal de Cultura de Goiânia",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "diario_oficial_municipio"
     }
    ],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 220,
+    "com_resultado": 19,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (diariooficial.goiania.go.gov.br, www.goiania.go.gov.br): ponte pelo Brasil, navegador do titular ou espelho.",
+     "O afinador já achou 11 rota(s) que funcionaram: entram como rotas do motor.",
+     "Os 2 alvos são vigiados só na janela prevista da próxima edição."
+    ],
+    "dominios": [
+     "api.queridodiario.ok.org.br",
+     "www.goiania.go.gov.br"
+    ],
+    "bloqueados": [
+     "www.goiania.go.gov.br"
+    ],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['api.queridodiario.ok.org.br', 'www.goiania.go.gov.br']",
+     "bloqueios_registrados: {'www.goiania.go.gov.br': {'bloqueios': 58, 'erros': {'HTTPError': 56, 'TimeoutError': 2}, 'ultimo': '2026-10-18T07:08:04+00:00'}}",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: ['https://www.goiania.go.gov.br/cultura/']"
+    ],
+    "rotas_conhecidas": [
+     "https://www.goiania.go.gov.br/shtml//portal/casacivil/lista_diarios.asp?ano=2026",
+     "https://api.queridodiario.ok.org.br/gazettes?territory_ids=5208707",
+     "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-cultura/",
+     "https://www.goiania.go.gov.br/conselhos-municipais/"
+    ]
+   }
   },
   {
    "id": "do-goias",
@@ -3555,7 +3641,19 @@
       "diariooficial.abc.go.gov.br",
       "goias.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (publicado no Diário do Estado)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (publicado no Diário do Estado)",
+     "enderecos": [
+      "https://goias.gov.br/cultura/",
+      "https://diariooficial.abc.go.gov.br/",
+      "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/"
+     ],
+     "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "portais_estaduais + querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "diario_oficial_estado"
     },
     {
      "id": "f260-captacao-206",
@@ -3563,12 +3661,58 @@
      "dominios": [
       "diariooficial.abc.go.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (publicado no Diário do Estado)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (publicado no Diário do Estado)",
+     "enderecos": [
+      "https://pncp.gov.br/",
+      "https://diariooficial.abc.go.gov.br/"
+     ],
+     "orgao": "PNCP / Diário Oficial de Goiás",
+     "padrao": {
+      "natureza": "outro",
+      "canal": "api_pncp",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "portal_compras_pncp"
     }
    ],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 150,
+    "com_resultado": 66,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (diariooficial.abc.go.gov.br, goias.gov.br): ponte pelo Brasil, navegador do titular ou espelho.",
+     "O afinador já achou 1 rota(s) que funcionaram: entram como rotas do motor.",
+     "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.",
+     "Os 2 alvos são vigiados só na janela prevista da próxima edição."
+    ],
+    "dominios": [
+     "diariooficial.abc.go.gov.br",
+     "goias.gov.br"
+    ],
+    "bloqueados": [
+     "diariooficial.abc.go.gov.br",
+     "goias.gov.br"
+    ],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['diariooficial.abc.go.gov.br', 'goias.gov.br']",
+     "bloqueios_registrados: {'diariooficial.abc.go.gov.br': {'bloqueios': 4, 'erros': {'HTTPError': 4}, 'ultimo': '2026-09-03T16:51:52+00:00'}, 'goias.gov.br': {'bloqueios': 97, 'erros': {'HTTPError': 65, 'URLError': 6, 'TimeoutError': 25, 'RemoteDisconnected': 1}, 'ultimo': '2",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: ['https://goias.gov.br/social/cedca/']"
+    ],
+    "rotas_conhecidas": [
+     "https://diariooficial.abc.go.gov.br/busca/busca/buscar/query/0/",
+     "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/edicoes_from_data/",
+     "https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14/",
+     "https://goias.gov.br/cultura/chamamentos-publicos-secult/",
+     "https://goias.gov.br/social/wp-json/wp/v2/posts",
+     "https://goias.gov.br/esporte/chamamento-publico/"
+    ]
+   }
   },
   {
    "id": "dou",
@@ -3586,7 +3730,19 @@
      "dominios": [
       "www.in.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (publicado no DOU)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (publicado no DOU)",
+     "enderecos": [
+      "https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento+p%C3%BAblico+organiza%C3%A7%C3%B5es+da+sociedade+civil&s=do3",
+      "https://www.in.gov.br/consulta/-/buscar/dou?q=resolu%C3%A7%C3%A3o+fundo+edital+entidade&s=do1",
+      "https://www.in.gov.br/"
+     ],
+     "orgao": "Diário Oficial da União — Seção 3 (avisos e editais)",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "in_dou",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "diario_oficial_uniao"
     },
     {
      "id": "f260-captacao-207",
@@ -3594,12 +3750,55 @@
      "dominios": [
       "www.in.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (publicado no DOU)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (publicado no DOU)",
+     "enderecos": [
+      "https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento+p%C3%BAblico+organiza%C3%A7%C3%B5es+da+sociedade+civil&s=do3",
+      "https://www.in.gov.br/consulta/-/buscar/dou?q=resolu%C3%A7%C3%A3o+fundo+edital+entidade&s=do1",
+      "https://www.in.gov.br/"
+     ],
+     "orgao": "Diário Oficial da União — Seção 3 (avisos e editais)",
+     "padrao": {
+      "natureza": "outro",
+      "canal": "in_dou",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "diario_oficial_uniao"
     }
    ],
    "motor_novo": "dou",
    "situacao": "conforme",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 180,
+    "com_resultado": 62,
+    "melhorias": [
+     "Ler primeiro pela API do in.gov.br; as páginas ficam como reserva.",
+     "Rota de acesso única para os domínios com bloqueio (www.in.gov.br): ponte pelo Brasil, navegador do titular ou espelho.",
+     "O afinador já achou 10 rota(s) que funcionaram: entram como rotas do motor.",
+     "Os 2 alvos são vigiados só na janela prevista da próxima edição."
+    ],
+    "dominios": [
+     "www.in.gov.br"
+    ],
+    "bloqueados": [
+     "www.in.gov.br"
+    ],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['www.in.gov.br']",
+     "bloqueios_registrados: {'www.in.gov.br': {'bloqueios': 334, 'erros': {'HTTPError': 301, 'RemoteDisconnected': 5, 'URLError': 2, 'TimeoutError': 26}, 'ultimo': '2026-10-15T18:18:02+00:00'}}",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://www.in.gov.br/leiturajornal?secao=do1",
+     "https://www.in.gov.br/leiturajornal?secao=do3",
+     "https://www.in.gov.br/leiturajornal?secao=do1e",
+     "https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento&s=todos&exactDate=semana"
+    ]
+   }
   },
   {
    "id": "prefeituras-50-go",
@@ -3617,7 +3816,27 @@
       "pncp.gov.br",
       "queridodiario.ok.org.br",
       "www.goiania.go.gov.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['pncp.gov.br', 'queridodiario.ok.org.br', 'www.goiania.go.gov.br']",
+      "bloqueios_registrados: {'pncp.gov.br': {'bloqueios': 162, 'erros': {'HTTPError': 74, 'TimeoutError': 73, 'URLError': 11, 'RemoteDisconnected': 4}, 'ultimo': '2026-10-10T01:03:12+00:00'}, 'queridodiario.ok.org.br': {'bloqueios': 1, 'erros': {'TimeoutError': 1}, 'ultimo': '2",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: ['https://www.goiania.go.gov.br/cultura/']"
+     ],
+     "rotas_conhecidas": [
+      "config/municipios_maiores.json",
+      "https://queridodiario.ok.org.br/",
+      "https://pncp.gov.br/"
+     ],
+     "bloqueados": [
+      "pncp.gov.br",
+      "queridodiario.ok.org.br",
+      "www.goiania.go.gov.br"
+     ],
+     "leituras": 117,
+     "com_resultado": 60
     }
    ],
    "alvos": [
@@ -3627,7 +3846,21 @@
      "dominios": [
       "www.goiania.go.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site da Prefeitura de Goiânia)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site da Prefeitura de Goiânia)",
+     "enderecos": [
+      "https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento+p%C3%BAblico+organiza%C3%A7%C3%B5es+da+sociedade+civil&s=do3",
+      "https://www.in.gov.br/consulta/-/buscar/dou?q=resolu%C3%A7%C3%A3o+fundo+edital+entidade&s=do1",
+      "https://www.goiania.go.gov.br/educacao/",
+      "https://diariooficial.goiania.go.gov.br/",
+      "https://www.in.gov.br/"
+     ],
+     "orgao": "Diário Oficial da União — Seção 3 (avisos e editais)",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "in_dou",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "diario_oficial_uniao"
     },
     {
      "id": "f260-captacao-149",
@@ -3635,7 +3868,18 @@
      "dominios": [
       "saude.goiania.go.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site da Prefeitura de Goiânia)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site da Prefeitura de Goiânia)",
+     "enderecos": [
+      "https://saude.goiania.go.gov.br/",
+      "https://diariooficial.goiania.go.gov.br/"
+     ],
+     "orgao": "Secretaria Municipal de Saúde de Goiânia",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "diario_oficial_municipio"
     },
     {
      "id": "f260-espalhado-acessoainformacao-cavalcante-go-gov-br",
@@ -3643,7 +3887,17 @@
      "dominios": [
       "acessoainformacao.cavalcante.go.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (município de Goiás: vira alvo das Prefeituras e continua coberto pelo PNCP)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (município de Goiás: vira alvo das Prefeituras e continua coberto pelo PNCP)",
+     "enderecos": [
+      "https://acessoainformacao.cavalcante.go.gov.br/"
+     ],
+     "orgao": "PNCP — FUNDO MUNICIPAL DE CULTURA - CAVALCANTE",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     },
     {
      "id": "f260-espalhado-senadorcanedo-go-gov-br",
@@ -3651,12 +3905,46 @@
      "dominios": [
       "senadorcanedo.go.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (município de Goiás: vira alvo das Prefeituras e continua coberto pelo PNCP)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (município de Goiás: vira alvo das Prefeituras e continua coberto pelo PNCP)",
+     "enderecos": [
+      "https://senadorcanedo.go.gov.br/"
+     ],
+     "orgao": "PNCP — FUNDO MUNICIPAL DE EDUCACAO E CULTURA - FMEC",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     }
    ],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 165,
+    "com_resultado": 62,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (acessoainformacao.cavalcante.go.gov.br, pncp.gov.br, queridodiario.ok.org.br, saude.goiania.go.gov.br, senadorcanedo.go.gov.br…): ponte pelo Brasil, navegador do titular ou espelho.",
+     "O afinador já achou 15 rota(s) que funcionaram: entram como rotas do motor.",
+     "2 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.",
+     "Os 4 alvos são vigiados só na janela prevista da próxima edição."
+    ],
+    "dominios": [],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "17 das 25 cidades só abrem pelo Brasil: leitura pela ponte da Hostgator quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados.",
+     "17 das 25 cidades só abrem pelo Brasil: leitura pela ponte da Hostgator quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados.",
+     "dominios: []",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": []
+   }
   },
   {
    "id": "estaduais-go-gov",
@@ -3672,7 +3960,25 @@
      "nome": "Oportunidade Estaduais Governamentais de Goiás",
      "dominios": [
       "goias.gov.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['goias.gov.br']",
+      "bloqueios_registrados: {'goias.gov.br': {'bloqueios': 97, 'erros': {'HTTPError': 65, 'URLError': 6, 'TimeoutError': 25, 'RemoteDisconnected': 1}, 'ultimo': '2026-10-18T07:11:16+00:00'}}",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: ['https://goias.gov.br/social/cedca/']"
+     ],
+     "rotas_conhecidas": [
+      "https://goias.gov.br/",
+      "https://goias.gov.br/cultura/editais/",
+      "https://goias.gov.br/social/editais/"
+     ],
+     "bloqueados": [
+      "goias.gov.br"
+     ],
+     "leituras": 86,
+     "com_resultado": 30
     },
     {
      "id": "plat-fapeg",
@@ -3680,7 +3986,25 @@
      "dominios": [
       "diariooficial.abc.go.gov.br",
       "goias.gov.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['diariooficial.abc.go.gov.br', 'goias.gov.br']",
+      "bloqueios_registrados: {'diariooficial.abc.go.gov.br': {'bloqueios': 4, 'erros': {'HTTPError': 4}, 'ultimo': '2026-09-03T16:51:52+00:00'}, 'goias.gov.br': {'bloqueios': 97, 'erros': {'HTTPError': 65, 'URLError': 6, 'TimeoutError': 25, 'RemoteDisconnected': 1}, 'ultimo': '2",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: ['https://goias.gov.br/social/cedca/']"
+     ],
+     "rotas_conhecidas": [
+      "https://goias.gov.br/fapeg/",
+      "https://diariooficial.abc.go.gov.br/"
+     ],
+     "bloqueados": [
+      "diariooficial.abc.go.gov.br",
+      "goias.gov.br"
+     ],
+     "leituras": 19,
+     "com_resultado": 0
     },
     {
      "id": "plat-fundos-estaduais-go",
@@ -3688,14 +4012,51 @@
      "dominios": [
       "diariooficial.abc.go.gov.br",
       "goias.gov.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['diariooficial.abc.go.gov.br', 'goias.gov.br']",
+      "bloqueios_registrados: {'diariooficial.abc.go.gov.br': {'bloqueios': 4, 'erros': {'HTTPError': 4}, 'ultimo': '2026-09-03T16:51:52+00:00'}, 'goias.gov.br': {'bloqueios': 97, 'erros': {'HTTPError': 65, 'URLError': 6, 'TimeoutError': 25, 'RemoteDisconnected': 1}, 'ultimo': '2",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: ['https://goias.gov.br/social/cedca/']"
+     ],
+     "rotas_conhecidas": [
+      "https://goias.gov.br/desenvolvimento-social/",
+      "https://goias.gov.br/desenvolvimento-social/",
+      "https://goias.gov.br/meioambiente/",
+      "https://diariooficial.abc.go.gov.br/"
+     ],
+     "bloqueados": [
+      "diariooficial.abc.go.gov.br",
+      "goias.gov.br"
+     ],
+     "leituras": 19,
+     "com_resultado": 0
     },
     {
      "id": "plat-goias-social",
      "nome": "Goiás Social — programas e editais para entidades",
      "dominios": [
       "goias.gov.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['goias.gov.br']",
+      "bloqueios_registrados: {'goias.gov.br': {'bloqueios': 97, 'erros': {'HTTPError': 65, 'URLError': 6, 'TimeoutError': 25, 'RemoteDisconnected': 1}, 'ultimo': '2026-10-18T07:11:16+00:00'}}",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: ['https://goias.gov.br/social/cedca/']"
+     ],
+     "rotas_conhecidas": [
+      "https://goias.gov.br/social/",
+      "https://goias.gov.br/desenvolvimento-social/"
+     ],
+     "bloqueados": [
+      "goias.gov.br"
+     ],
+     "leituras": 19,
+     "com_resultado": 0
     },
     {
      "id": "plat-ovg",
@@ -3704,7 +4065,28 @@
       "diariooficial.abc.go.gov.br",
       "goias.gov.br",
       "www.ovg.org.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['diariooficial.abc.go.gov.br', 'goias.gov.br', 'www.ovg.org.br']",
+      "bloqueios_registrados: {'diariooficial.abc.go.gov.br': {'bloqueios': 4, 'erros': {'HTTPError': 4}, 'ultimo': '2026-09-03T16:51:52+00:00'}, 'goias.gov.br': {'bloqueios': 97, 'erros': {'HTTPError': 65, 'URLError': 6, 'TimeoutError': 25, 'RemoteDisconnected': 1}, 'ultimo': '2",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: ['https://goias.gov.br/social/cedca/']"
+     ],
+     "rotas_conhecidas": [
+      "https://www.ovg.org.br/",
+      "https://www.ovg.org.br/editais",
+      "https://goias.gov.br/social/",
+      "https://diariooficial.abc.go.gov.br/"
+     ],
+     "bloqueados": [
+      "diariooficial.abc.go.gov.br",
+      "goias.gov.br",
+      "www.ovg.org.br"
+     ],
+     "leituras": 19,
+     "com_resultado": 0
     },
     {
      "id": "plat-secult-go",
@@ -3714,7 +4096,29 @@
       "goias.gov.br",
       "pnab.cultura.go.gov.br",
       "www.goias.gov.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['diariooficial.abc.go.gov.br', 'goias.gov.br', 'pnab.cultura.go.gov.br', 'www.goias.gov.br']",
+      "bloqueios_registrados: {'diariooficial.abc.go.gov.br': {'bloqueios': 4, 'erros': {'HTTPError': 4}, 'ultimo': '2026-09-03T16:51:52+00:00'}, 'goias.gov.br': {'bloqueios': 97, 'erros': {'HTTPError': 65, 'URLError': 6, 'TimeoutError': 25, 'RemoteDisconnected': 1}, 'ultimo': '2",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: ['https://goias.gov.br/social/cedca/']"
+     ],
+     "rotas_conhecidas": [
+      "https://goias.gov.br/cultura/chamamentos-publicos-2026/",
+      "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+      "https://pnab.cultura.go.gov.br",
+      "https://diariooficial.abc.go.gov.br/"
+     ],
+     "bloqueados": [
+      "diariooficial.abc.go.gov.br",
+      "goias.gov.br",
+      "pnab.cultura.go.gov.br",
+      "www.goias.gov.br"
+     ],
+     "leituras": 19,
+     "com_resultado": 0
     },
     {
      "id": "plataforma-wordpress",
@@ -3722,7 +4126,25 @@
      "dominios": [
       "goias.gov.br",
       "www.anater.org"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['goias.gov.br', 'www.anater.org']",
+      "bloqueios_registrados: {'goias.gov.br': {'bloqueios': 97, 'erros': {'HTTPError': 65, 'URLError': 6, 'TimeoutError': 25, 'RemoteDisconnected': 1}, 'ultimo': '2026-10-18T07:11:16+00:00'}, 'www.anater.org': {'bloqueios': 2, 'erros': {'HTTPError': 2}, 'ultimo': '2026-10-12T21:",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: ['https://goias.gov.br/social/cedca/']"
+     ],
+     "rotas_conhecidas": [
+      "https://goias.gov.br/cultura/wp-json/wp/v2/posts?search=edital",
+      "https://goias.gov.br/cultura/editais/"
+     ],
+     "bloqueados": [
+      "goias.gov.br",
+      "www.anater.org"
+     ],
+     "leituras": 23,
+     "com_resultado": 23
     }
    ],
    "alvos": [
@@ -3732,7 +4154,20 @@
      "dominios": [
       "pnab.cultura.go.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)",
+     "enderecos": [
+      "https://goias.gov.br/cultura/",
+      "https://diariooficial.abc.go.gov.br/",
+      "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+      "https://pnab.cultura.go.gov.br"
+     ],
+     "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "portais_estaduais + querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "diario_oficial_estado"
     },
     {
      "id": "f260-captacao-025",
@@ -3740,7 +4175,20 @@
      "dominios": [
       "pnab.cultura.go.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)",
+     "enderecos": [
+      "https://goias.gov.br/cultura/",
+      "https://diariooficial.abc.go.gov.br/",
+      "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/",
+      "https://pnab.cultura.go.gov.br"
+     ],
+     "orgao": "Secretaria de Estado da Cultura de Goiás (Secult-GO)",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "portais_estaduais + querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "diario_oficial_estado"
     },
     {
      "id": "f260-captacao-038",
@@ -3749,7 +4197,21 @@
       "fica.go.gov.br",
       "web.ufg.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)",
+     "enderecos": [
+      "https://goias.gov.br/cultura/",
+      "https://diariooficial.abc.go.gov.br/",
+      "https://fica.go.gov.br",
+      "https://web.ufg.br/plateia-editais/",
+      "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/"
+     ],
+     "orgao": "FICA — Festival Internacional de Cinema e Vídeo Ambiental (Secult-GO)",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "portais_estaduais + querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "diario_oficial_estado"
     },
     {
      "id": "f260-captacao-051",
@@ -3757,7 +4219,18 @@
      "dominios": [
       "goias.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)",
+     "enderecos": [
+      "https://goias.gov.br/esporte/",
+      "https://diariooficial.abc.go.gov.br/"
+     ],
+     "orgao": "Secretaria de Estado de Esporte e Lazer (SEEL-GO)",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "portais_estaduais + querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "diario_oficial_estado"
     },
     {
      "id": "f260-captacao-081",
@@ -3765,7 +4238,17 @@
      "dominios": [
       "goias.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)",
+     "enderecos": [
+      "https://goias.gov.br/educacao/"
+     ],
+     "orgao": "Seduc-GO",
+     "padrao": {
+      "natureza": "outro",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-captacao-095",
@@ -3773,7 +4256,18 @@
      "dominios": [
       "goias.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)",
+     "enderecos": [
+      "https://goias.gov.br/social/",
+      "https://diariooficial.abc.go.gov.br/"
+     ],
+     "orgao": "Secretaria de Estado de Desenvolvimento Social (SEDS-GO) / FEAS",
+     "padrao": {
+      "natureza": "outro",
+      "canal": "portais_estaduais + querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "diario_oficial_estado"
     },
     {
      "id": "f260-captacao-098",
@@ -3781,7 +4275,24 @@
      "dominios": [
       "goias.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)",
+     "enderecos": [
+      "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-crianca-e-do-adolescente-conanda",
+      "https://goias.gov.br/social/cedca/",
+      "https://www.goiania.go.gov.br/sme/cmdca/",
+      "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-pessoa-idosa-cndi",
+      "https://www.goiania.go.gov.br/semasdh/",
+      "https://www.gov.br/mds/pt-br/orgaos-colegiados/conselho-nacional-de-assistencia-social-cnas",
+      "https://goias.gov.br/social/",
+      "https://diariooficial.abc.go.gov.br/"
+     ],
+     "orgao": "Conanda — Fundo Nacional para a Criança e o Adolescente",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "querido_diario + varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "resolucao_conselho"
     },
     {
      "id": "f260-captacao-159",
@@ -3789,7 +4300,20 @@
      "dominios": [
       "goias.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)",
+     "enderecos": [
+      "https://portal.al.go.leg.br/",
+      "https://www.goiania.go.leg.br/",
+      "https://goias.gov.br/saude/",
+      "https://diariooficial.abc.go.gov.br/"
+     ],
+     "orgao": "ALEGO — Assembleia Legislativa de Goiás (emendas e orçamento)",
+     "padrao": {
+      "natureza": "outro",
+      "canal": "portais_federativos + transferegov + querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "emenda_parlamentar"
     },
     {
      "id": "f260-captacao-177",
@@ -3797,7 +4321,17 @@
      "dominios": [
       "goias.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)",
+     "enderecos": [
+      "https://goias.gov.br/meioambiente/"
+     ],
+     "orgao": "Semad-GO",
+     "padrao": {
+      "natureza": "outro",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-curadoria-009",
@@ -3805,12 +4339,39 @@
      "dominios": [
       "goias.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)",
+     "enderecos": [
+      "https://goias.gov.br/cultura/chamamentos-publicos-2026-lei-13-019-14/",
+      "https://goias.gov.br/cultura/editais/"
+     ],
+     "orgao": "Secretaria de Estado da Cultura de Goiás — SECULT",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "site_oficial"
     }
    ],
    "motor_novo": "estaduais-go-gov",
    "situacao": "incompleto",
-   "observacao": "Secult, SEDS, FAPEG, PNAB Goiás, FICA e o Goyazes; faltam OVG, SEMAD, Goiás Social, fundos estaduais e Anater (endereços a localizar; a API da Anater recusa) e 5 alvos"
+   "observacao": "Secult, SEDS, FAPEG, PNAB Goiás, FICA e o Goyazes; faltam OVG, SEMAD, Goiás Social, fundos estaduais e Anater (endereços a localizar; a API da Anater recusa) e 5 alvos",
+   "aprendizado_eldorado0": {
+    "leituras": 382,
+    "com_resultado": 85,
+    "melhorias": [
+     "Ler primeiro pela API pública WordPress do goias.gov.br (23 de 23 leituras com resultado); as páginas ficam como reserva.",
+     "Rota de acesso única para os domínios com bloqueio (diariooficial.abc.go.gov.br, fica.go.gov.br, goias.gov.br, pnab.cultura.go.gov.br, www.anater.org…): ponte pelo Brasil, navegador do titular ou espelho.",
+     "O afinador já achou 10 rota(s) que funcionaram: entram como rotas do motor.",
+     "5 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.",
+     "Os 10 alvos são vigiados só na janela prevista da próxima edição."
+    ],
+    "dominios": [],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [],
+    "rotas_conhecidas": []
+   }
   },
   {
    "id": "pncp-api",
@@ -3828,7 +4389,17 @@
      "dominios": [
       "carazinho.atende.net"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)",
+     "enderecos": [
+      "https://carazinho.atende.net/"
+     ],
+     "orgao": "PNCP — MUNICIPIO DE CARAZINHO",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     },
     {
      "id": "f260-espalhado-carire-ce-gov-br",
@@ -3836,7 +4407,17 @@
      "dominios": [
       "carire.ce.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)",
+     "enderecos": [
+      "https://carire.ce.gov.br/"
+     ],
+     "orgao": "PNCP — MUNICIPIO DE CARIRE",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     },
     {
      "id": "f260-espalhado-crcgo-org-br",
@@ -3844,7 +4425,17 @@
      "dominios": [
       "crcgo.org.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)",
+     "enderecos": [
+      "https://crcgo.org.br/"
+     ],
+     "orgao": "PNCP — CONSELHO REGIONAL DE CONTABILIDADE DO ESTADO DE GOIAS",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     },
     {
      "id": "f260-espalhado-sistema-mirassoldoeste-mt-gov-br",
@@ -3852,7 +4443,17 @@
      "dominios": [
       "sistema.mirassoldoeste.mt.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)",
+     "enderecos": [
+      "https://sistema.mirassoldoeste.mt.gov.br/"
+     ],
+     "orgao": "PNCP — MUNICIPIO DE MIRASSOL D'OESTE",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     },
     {
      "id": "f260-espalhado-transparencia-agilicloud-com-br",
@@ -3860,7 +4461,17 @@
      "dominios": [
       "transparencia.agilicloud.com.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)",
+     "enderecos": [
+      "https://transparencia.agilicloud.com.br/"
+     ],
+     "orgao": "PNCP — MUNICIPIO DE PARANATINGA",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     },
     {
      "id": "f260-espalhado-transparencia-cacoal-ro-gov-br",
@@ -3868,7 +4479,17 @@
      "dominios": [
       "transparencia.cacoal.ro.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)",
+     "enderecos": [
+      "https://transparencia.cacoal.ro.gov.br/"
+     ],
+     "orgao": "PNCP — MUNICIPIO DE CACOAL",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     },
     {
      "id": "f260-espalhado-transparencia-nobres-mt-gov-br",
@@ -3876,7 +4497,17 @@
      "dominios": [
       "transparencia.nobres.mt.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)",
+     "enderecos": [
+      "https://transparencia.nobres.mt.gov.br/"
+     ],
+     "orgao": "PNCP — MUNICIPIO DE NOBRES",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     },
     {
      "id": "f260-espalhado-www-bentogoncalves-rs-gov-br",
@@ -3884,7 +4515,17 @@
      "dominios": [
       "www.bentogoncalves.rs.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)",
+     "enderecos": [
+      "https://www.bentogoncalves.rs.gov.br/"
+     ],
+     "orgao": "PNCP — MUNICIPIO DE BENTO GONCALVES",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     },
     {
      "id": "f260-espalhado-www-detran-rj-gov-br",
@@ -3892,7 +4533,17 @@
      "dominios": [
       "www.detran.rj.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)",
+     "enderecos": [
+      "https://www.detran.rj.gov.br/"
+     ],
+     "orgao": "PNCP — ESTADO DO RIO DE JANEIRO",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     },
     {
      "id": "f260-espalhado-www-ipora-pr-gov-br",
@@ -3900,7 +4551,17 @@
      "dominios": [
       "www.ipora.pr.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)",
+     "enderecos": [
+      "https://www.ipora.pr.gov.br/"
+     ],
+     "orgao": "PNCP — MUNICIPIO DE IPORA",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     },
     {
      "id": "f260-espalhado-www-itabaianinha-se-gov-br",
@@ -3908,7 +4569,17 @@
      "dominios": [
       "www.itabaianinha.se.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)",
+     "enderecos": [
+      "https://www.itabaianinha.se.gov.br/"
+     ],
+     "orgao": "PNCP — MUNICIPIO DE ITABAIANINHA",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     },
     {
      "id": "f260-espalhado-www-novohamburgo-rs-gov-br",
@@ -3916,7 +4587,17 @@
      "dominios": [
       "www.novohamburgo.rs.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)",
+     "enderecos": [
+      "https://www.novohamburgo.rs.gov.br/"
+     ],
+     "orgao": "PNCP — MUNICIPIO DE NOVO HAMBURGO",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     },
     {
      "id": "f260-espalhado-www-ribeiraodasneves-mg-gov-br",
@@ -3924,7 +4605,17 @@
      "dominios": [
       "www.ribeiraodasneves.mg.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)",
+     "enderecos": [
+      "https://www.ribeiraodasneves.mg.gov.br/"
+     ],
+     "orgao": "PNCP — MUNICIPIO DE RIBEIRAO DAS NEVES",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     },
     {
      "id": "f260-espalhado-www-riopreto-sp-gov-br",
@@ -3932,7 +4623,17 @@
      "dominios": [
       "www.riopreto.sp.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)",
+     "enderecos": [
+      "https://www.riopreto.sp.gov.br/"
+     ],
+     "orgao": "PNCP — MUNICIPIO DE SAO JOSE DO RIO PRETO",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     },
     {
      "id": "f260-espalhado-www-rosariodosul-rs-gov-br",
@@ -3940,7 +4641,17 @@
      "dominios": [
       "www.rosariodosul.rs.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)",
+     "enderecos": [
+      "https://www.rosariodosul.rs.gov.br/"
+     ],
+     "orgao": "PNCP — MUNICIPIO DE ROSARIO DO SUL",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     },
     {
      "id": "f260-espalhado-www-senadorpompeu-ce-gov-br",
@@ -3948,7 +4659,17 @@
      "dominios": [
       "www.senadorpompeu.ce.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)",
+     "enderecos": [
+      "https://www.senadorpompeu.ce.gov.br/"
+     ],
+     "orgao": "PNCP — MUNICIPIO DE SENADOR POMPEU",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     },
     {
      "id": "f260-espalhado-www-vilarica-mt-gov-br",
@@ -3956,12 +4677,53 @@
      "dominios": [
       "www.vilarica.mt.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)",
+     "enderecos": [
+      "https://www.vilarica.mt.gov.br/"
+     ],
+     "orgao": "PNCP — MUNICIPIO DE VILA RICA",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     }
    ],
    "motor_novo": "pncp-api",
    "situacao": "conforme",
-   "observacao": "faltam os 17 alvos"
+   "observacao": "faltam os 17 alvos",
+   "aprendizado_eldorado0": {
+    "leituras": 165,
+    "com_resultado": 23,
+    "melhorias": [
+     "Ler primeiro pela API do PNCP; as páginas ficam como reserva.",
+     "Rota de acesso única para os domínios com bloqueio (carazinho.atende.net, pncp.gov.br, sistema.mirassoldoeste.mt.gov.br, transparencia.agilicloud.com.br, www.bentogoncalves.rs.gov.br…): ponte pelo Brasil, navegador do titular ou espelho.",
+     "O afinador já achou 17 rota(s) que funcionaram: entram como rotas do motor.",
+     "3 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.",
+     "Os 17 alvos são vigiados só na janela prevista da próxima edição."
+    ],
+    "dominios": [
+     "pncp.gov.br"
+    ],
+    "bloqueados": [
+     "pncp.gov.br"
+    ],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['pncp.gov.br']",
+     "bloqueios_registrados: {'pncp.gov.br': {'bloqueios': 162, 'erros': {'HTTPError': 74, 'TimeoutError': 73, 'URLError': 11, 'RemoteDisconnected': 4}, 'ultimo': '2026-10-10T01:03:12+00:00'}}",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://pncp.gov.br/api/consulta/v1/contratacoes/proposta",
+     "https://pncp.gov.br/api/search/",
+     "https://pncp.gov.br/pncp-api/v1/orgaos/"
+    ]
+   }
   },
   {
    "id": "salic",
@@ -3977,7 +4739,23 @@
      "nome": "Ministério da Cultura — SALIC — oportunidades (espalhado de edital validado)",
      "dominios": [
       "rouanet.cultura.gov.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['rouanet.cultura.gov.br']",
+      "bloqueios_registrados: {'rouanet.cultura.gov.br': {'bloqueios': 86, 'erros': {'ValueError': 39, 'gaierror': 47}, 'ultimo': '2026-10-18T06:58:58+00:00'}}",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: ['https://rouanet.cultura.gov.br/', 'http://rouanet.cultura.gov.br/']"
+     ],
+     "rotas_conhecidas": [
+      "https://rouanet.cultura.gov.br/"
+     ],
+     "bloqueados": [
+      "rouanet.cultura.gov.br"
+     ],
+     "leituras": 40,
+     "com_resultado": 0
     },
     {
      "id": "plat-salic",
@@ -3987,7 +4765,27 @@
       "salic.cultura.gov.br",
       "versalic.cultura.gov.br",
       "www.gov.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['api.salic.cultura.gov.br', 'salic.cultura.gov.br', 'versalic.cultura.gov.br', 'www.gov.br']",
+      "bloqueios_registrados: {'salic.cultura.gov.br': {'bloqueios': 1, 'erros': {'HTTPError': 1}, 'ultimo': '2026-10-02T19:48:14+00:00'}, 'www.gov.br': {'bloqueios': 223, 'erros': {'HTTPError': 202, 'URLError': 18, 'TimeoutError': 1, 'RemoteDisconnected': 2}, 'ultimo': '2026-10-",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: ['https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias']"
+     ],
+     "rotas_conhecidas": [
+      "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet",
+      "https://salic.cultura.gov.br/",
+      "https://www.gov.br/cultura/pt-br/assuntos/acoes-programas-e-politicas/lei-rouanet/legislacao",
+      "https://versalic.cultura.gov.br/"
+     ],
+     "bloqueados": [
+      "salic.cultura.gov.br",
+      "www.gov.br"
+     ],
+     "leituras": 117,
+     "com_resultado": 65
     }
    ],
    "alvos": [
@@ -3997,12 +4795,36 @@
      "dominios": [
       "www.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (Lei Rouanet)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (Lei Rouanet)",
+     "enderecos": [
+      "https://www.gov.br/cultura/pt-br/assuntos/editais"
+     ],
+     "orgao": "Ministério da Cultura / SALIC",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + api_quando_houver",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "lista_projetos_aptos"
     }
    ],
    "motor_novo": "salic",
    "situacao": "conforme",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 194,
+    "com_resultado": 71,
+    "melhorias": [
+     "Ler primeiro pela API do SALIC; as páginas ficam como reserva.",
+     "Rota de acesso única para os domínios com bloqueio (rouanet.cultura.gov.br, salic.cultura.gov.br, www.gov.br): ponte pelo Brasil, navegador do titular ou espelho.",
+     "Os 1 alvos são vigiados só na janela prevista da próxima edição."
+    ],
+    "dominios": [],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [],
+    "rotas_conhecidas": []
+   }
   },
   {
    "id": "motor-gife",
@@ -4019,13 +4841,65 @@
      "dominios": [
       "html.duckduckgo.com",
       "www.opopular.com.br"
-     ]
+     ],
+     "licoes": [
+      "{\"tarefa\": \"diagnosticar_rota\", \"motor\": \"motor-patrocinio\", \"causa_provavel\": null, \"tentar\": [{\"tipo\": \"url\", \"valor\": \"https://www.opopular.com.br/\", \"porque\": \"imprensa e portais de eventos de Goi",
+      "{\"tarefa\": \"diagnosticar_rota\", \"motor\": \"motor-patrocinio\", \"causa_provavel\": \"Empresas que patrocinam eventos culturais, esportivos e educacionais em Goiás com recurso próprio (marketing, sem benefí",
+      "{\"tarefa\": \"diagnosticar_rota\", \"motor\": \"motor-patrocinio\", \"causa_provavel\": null, \"tentar\": [{\"tipo\": \"url\", \"valor\": \"https://www.opopular.com.br/\", \"porque\": \"imprensa e portais de eventos de Goi",
+      "{\"tarefa\": \"diagnosticar_rota\", \"motor\": \"motor-patrocinio\", \"causa_provavel\": \"Empresas que patrocinam eventos culturais, esportivos e educacionais em Goiás com recurso próprio (marketing, sem benefí",
+      "dominios: ['html.duckduckgo.com', 'www.opopular.com.br']",
+      "bloqueios_registrados: {'html.duckduckgo.com': {'bloqueios': 4, 'erros': {'URLError': 4}, 'ultimo': '2026-10-13T08:50:24+00:00'}}",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [
+      "https://www.opopular.com.br/",
+      null,
+      "https://html.duckduckgo.com/html/?q=patroc%C3%ADnio+evento+cultural+Goi%C3%A2nia+2026"
+     ],
+     "bloqueados": [
+      "html.duckduckgo.com"
+     ],
+     "leituras": 0,
+     "com_resultado": 0
     }
    ],
    "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 0,
+    "com_resultado": 0,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (goias.gov.br, html.duckduckgo.com, salic.cultura.gov.br): ponte pelo Brasil, navegador do titular ou espelho.",
+     "Recebe como alvo o patrocínio da Zurich (zurich.com.br), que só o Motor de Recorrência lia."
+    ],
+    "dominios": [
+     "goias.gov.br",
+     "salic.cultura.gov.br"
+    ],
+    "bloqueados": [
+     "goias.gov.br",
+     "salic.cultura.gov.br"
+    ],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['goias.gov.br', 'salic.cultura.gov.br']",
+     "bloqueios_registrados: {'goias.gov.br': {'bloqueios': 97, 'erros': {'HTTPError': 65, 'URLError': 6, 'TimeoutError': 25, 'RemoteDisconnected': 1}, 'ultimo': '2026-10-18T07:11:16+00:00'}, 'salic.cultura.gov.br': {'bloqueios': 1, 'erros': {'HTTPError': 1}, 'ultimo': '2026-10-",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: ['https://goias.gov.br/social/cedca/']"
+    ],
+    "rotas_conhecidas": [
+     "https://goias.gov.br/economia/os-maiores-contribuintes-do-icms/",
+     null,
+     "https://salic.cultura.gov.br/"
+    ]
+   }
   },
   {
    "id": "empresas-editais-incentivados",
@@ -4045,14 +4919,53 @@
       "paraquemdoar.org",
       "www.abcdacomunicacao.com.br",
       "www.saneago.com.br"
-     ]
+     ],
+     "licoes": [
+      "{\"tarefa\": \"diagnosticar_rota\", \"motor\": \"empresas-incentivadas\", \"causa_provavel\": \"parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam\", \"tentar\": [{\"tipo\": \"ur",
+      "{\"tarefa\": \"diagnosticar_rota\", \"motor\": \"empresas-incentivadas\", \"causa_provavel\": \"parte das páginas respondeu e parte falhou; nenhum edital reconhecido nas que responderam\", \"tentar\": [{\"tipo\": \"ur",
+      "dominios: ['go.equatorialenergia.com.br', 'observatorio3setor.org.br', 'paraquemdoar.org', 'www.abcdacomunicacao.com.br', 'www.saneago.com.br']",
+      "bloqueios_registrados: {'go.equatorialenergia.com.br': {'bloqueios': 27, 'erros': {'HTTPError': 22, 'ErroPonte': 5}, 'ultimo': '2026-10-17T08:25:05+00:00'}, 'paraquemdoar.org': {'bloqueios': 1, 'erros': {'ErroPonte': 1}, 'ultimo': '2026-10-19T08:53:24+00:00'}, 'www.saneago",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [
+      "biblioteca_alexandria/livros/especiais/empresas/ranking_destinacao_tributaria.json",
+      "https://observatorio3setor.org.br/editais/"
+     ],
+     "bloqueados": [
+      "go.equatorialenergia.com.br",
+      "paraquemdoar.org",
+      "www.saneago.com.br"
+     ],
+     "leituras": 32,
+     "com_resultado": 24
     },
     {
      "id": "plat-empresas-editais-incentivados",
      "nome": "Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes",
      "dominios": [
       "captadores.org.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['captadores.org.br']",
+      "bloqueios_registrados: {'captadores.org.br': {'bloqueios': 12, 'erros': {'HTTPError': 6, 'TimeoutError': 6}, 'ultimo': '2026-10-18T05:36:42+00:00'}}",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [
+      "config/empresas_destinadoras.json",
+      "https://captadores.org.br/editais/",
+      null
+     ],
+     "bloqueados": [
+      "captadores.org.br"
+     ],
+     "leituras": 120,
+     "com_resultado": 77
     }
    ],
    "alvos": [
@@ -4062,7 +4975,17 @@
      "dominios": [
       "www.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (lei de incentivo com captação junto a empresas (FIA, LIE, Pronas))"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (lei de incentivo com captação junto a empresas (FIA, LIE, Pronas))",
+     "enderecos": [
+      "https://www.gov.br/esporte/pt-br"
+     ],
+     "orgao": "Ministério do Esporte",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + api_quando_houver",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "lista_projetos_aptos"
     },
     {
      "id": "f260-captacao-044",
@@ -4070,7 +4993,17 @@
      "dominios": [
       "www.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (lei de incentivo com captação junto a empresas (FIA, LIE, Pronas))"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (lei de incentivo com captação junto a empresas (FIA, LIE, Pronas))",
+     "enderecos": [
+      "https://www.gov.br/esporte/pt-br/acoes-e-programas/lei-de-incentivo-ao-esporte"
+     ],
+     "orgao": "Lei de Incentivo ao Esporte — projetos aptos",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + api_quando_houver",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "lista_projetos_aptos"
     },
     {
      "id": "f260-captacao-118",
@@ -4079,7 +5012,23 @@
       "goias.gov.br",
       "www.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (lei de incentivo com captação junto a empresas (FIA, LIE, Pronas))"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (lei de incentivo com captação junto a empresas (FIA, LIE, Pronas))",
+     "enderecos": [
+      "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-crianca-e-do-adolescente-conanda",
+      "https://goias.gov.br/social/cedca/",
+      "https://www.goiania.go.gov.br/sme/cmdca/",
+      "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-pessoa-idosa-cndi",
+      "https://www.goiania.go.gov.br/semasdh/",
+      "https://www.gov.br/mds/pt-br/orgaos-colegiados/conselho-nacional-de-assistencia-social-cnas",
+      "https://www.goiania.go.gov.br/"
+     ],
+     "orgao": "Conanda — Fundo Nacional para a Criança e o Adolescente",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "querido_diario + varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "resolucao_conselho"
     },
     {
      "id": "f260-captacao-119",
@@ -4087,7 +5036,17 @@
      "dominios": [
       "www.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (lei de incentivo com captação junto a empresas (FIA, LIE, Pronas))"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (lei de incentivo com captação junto a empresas (FIA, LIE, Pronas))",
+     "enderecos": [
+      "https://www.gov.br/participamaisbrasil/conanda"
+     ],
+     "orgao": "Destinação de IR ao Fundo da Criança (via conselhos)",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-captacao-143",
@@ -4095,12 +5054,36 @@
      "dominios": [
       "www.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (lei de incentivo com captação junto a empresas (FIA, LIE, Pronas))"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (lei de incentivo com captação junto a empresas (FIA, LIE, Pronas))",
+     "enderecos": [
+      "https://www.gov.br/saude/pt-br"
+     ],
+     "orgao": "Ministério da Saúde",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + api_quando_houver",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "lista_projetos_aptos"
     }
    ],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 312,
+    "com_resultado": 140,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (captadores.org.br, go.equatorialenergia.com.br, goias.gov.br, paraquemdoar.org, www.gov.br…): ponte pelo Brasil, navegador do titular ou espelho.",
+     "O afinador já achou 30 rota(s) que funcionaram: entram como rotas do motor.",
+     "Os 5 alvos são vigiados só na janela prevista da próxima edição."
+    ],
+    "dominios": [],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [],
+    "rotas_conhecidas": []
+   }
   },
   {
    "id": "cnpq-extensao",
@@ -4116,18 +5099,62 @@
      "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
      "dominios": [
       "www.gov.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['www.gov.br']",
+      "bloqueios_registrados: {'www.gov.br': {'bloqueios': 223, 'erros': {'HTTPError': 202, 'URLError': 18, 'TimeoutError': 1, 'RemoteDisconnected': 2}, 'ultimo': '2026-10-17T08:30:10+00:00'}}",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: ['https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias']"
+     ],
+     "rotas_conhecidas": [
+      "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao",
+      "https://www.gov.br/mcti/pt-br/centrais-de-conteudo/comunicados-mcti",
+      "https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/popciencia",
+      "https://www.gov.br/mec/pt-br/composicao/setec"
+     ],
+     "bloqueados": [
+      "www.gov.br"
+     ],
+     "leituras": 97,
+     "com_resultado": 53
     },
     {
      "id": "site-finep",
      "nome": "site-finep",
-     "dominios": []
+     "dominios": [],
+     "licoes": [
+      "dominios: []",
+      "bloqueios_registrados: None",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [],
+     "bloqueados": [],
+     "leituras": 0,
+     "com_resultado": 0
     }
    ],
    "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 97,
+    "com_resultado": 53,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (www.gov.br): ponte pelo Brasil, navegador do titular ou espelho.",
+     "O afinador já achou 10 rota(s) que funcionaram: entram como rotas do motor."
+    ],
+    "dominios": [],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [],
+    "rotas_conhecidas": []
+   }
   },
   {
    "id": "site-funarte",
@@ -4141,7 +5168,26 @@
    "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 0,
+    "com_resultado": 0,
+    "melhorias": [],
+    "dominios": [],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: []",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     null
+    ]
+   }
   },
   {
    "id": "site-transferegov",
@@ -4159,7 +5205,17 @@
      "dominios": [
       "www.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (programa federal com parceria de OSC)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (programa federal com parceria de OSC)",
+     "enderecos": [
+      "https://www.gov.br/esporte/pt-br"
+     ],
+     "orgao": "Ministério do Esporte / Comitê Paralímpico",
+     "padrao": {
+      "natureza": "outro",
+      "canal": "varredura_html + api_quando_houver",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "lista_projetos_aptos"
     },
     {
      "id": "f260-captacao-090",
@@ -4167,7 +5223,18 @@
      "dominios": [
       "www.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (programa federal com parceria de OSC)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (programa federal com parceria de OSC)",
+     "enderecos": [
+      "https://www.gov.br/mds/pt-br",
+      "https://pncp.gov.br/"
+     ],
+     "orgao": "MDS / FNAS / CNAS",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "api_pncp",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "portal_compras_pncp"
     },
     {
      "id": "f260-captacao-180",
@@ -4175,7 +5242,18 @@
      "dominios": [
       "www.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (programa federal com parceria de OSC)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (programa federal com parceria de OSC)",
+     "enderecos": [
+      "https://www.gov.br/mma/pt-br",
+      "https://www.bndes.gov.br/"
+     ],
+     "orgao": "MMA / Fundo Nacional do Meio Ambiente / BNDES",
+     "padrao": {
+      "natureza": "outro",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-curadoria-010",
@@ -4183,12 +5261,48 @@
      "dominios": [
       "www.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (programa federal com parceria de OSC)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (programa federal com parceria de OSC)",
+     "enderecos": [
+      "https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente/publicacoes/editais"
+     ],
+     "orgao": "Ministerio dos Direitos Humanos e da Cidadania — Conselho Nacional dos Direitos da Crianca e do Adolescente",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "site_oficial"
     }
    ],
    "motor_novo": "site-transferegov",
    "situacao": "conforme",
-   "observacao": "faltam os 4 alvos"
+   "observacao": "faltam os 4 alvos",
+   "aprendizado_eldorado0": {
+    "leituras": 66,
+    "com_resultado": 22,
+    "melhorias": [
+     "Ler primeiro pela API de dados abertos do Transferegov; as páginas ficam como reserva.",
+     "Rota de acesso única para os domínios com bloqueio (www.gov.br): ponte pelo Brasil, navegador do titular ou espelho.",
+     "O afinador já achou 20 rota(s) que funcionaram: entram como rotas do motor.",
+     "Os 4 alvos são vigiados só na janela prevista da próxima edição."
+    ],
+    "dominios": [
+     "api-publica.transferegov.gestao.gov.br"
+    ],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['api-publica.transferegov.gestao.gov.br']",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://api-publica.transferegov.gestao.gov.br/downloads/dadosgov/siconv_programa.zip"
+    ]
+   }
   },
   {
    "id": "novo-diarios-municipais-go",
@@ -4206,12 +5320,35 @@
      "dominios": [
       "www.arapongas.pr.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (diário municipal pelo Querido Diário)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (diário municipal pelo Querido Diário)",
+     "enderecos": [
+      "https://www.arapongas.pr.gov.br/"
+     ],
+     "orgao": "Querido Diário — diários oficiais municipais",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": null
     }
    ],
    "motor_novo": "novo-diarios-municipais-go",
    "situacao": "sem fonte",
-   "observacao": "a API do Querido Diário está fora do ar desde 22/10"
+   "observacao": "a API do Querido Diário está fora do ar desde 22/10",
+   "aprendizado_eldorado0": {
+    "leituras": 1,
+    "com_resultado": 0,
+    "melhorias": [
+     "Ler primeiro pela API do Querido Diário; as páginas ficam como reserva.",
+     "Os 1 alvos são vigiados só na janela prevista da próxima edição."
+    ],
+    "dominios": [],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [],
+    "rotas_conhecidas": []
+   }
   },
   {
    "id": "novo-bancos-publicos",
@@ -4225,7 +5362,19 @@
     {
      "id": "site-petrobras",
      "nome": "site-petrobras",
-     "dominios": []
+     "dominios": [],
+     "licoes": [
+      "dominios: []",
+      "bloqueios_registrados: None",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [],
+     "bloqueados": [],
+     "leituras": 0,
+     "com_resultado": 0
     }
    ],
    "alvos": [
@@ -4236,7 +5385,22 @@
       "portal.bndes.gov.br",
       "www.bndes.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (banco público ou Sistema S)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (banco público ou Sistema S)",
+     "enderecos": [
+      "https://www.bndes.gov.br/periferias",
+      "https://portal.bndes.gov.br/prc/",
+      "https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento+p%C3%BAblico+organiza%C3%A7%C3%B5es+da+sociedade+civil&s=do3",
+      "https://www.in.gov.br/consulta/-/buscar/dou?q=resolu%C3%A7%C3%A3o+fundo+edital+entidade&s=do1",
+      "https://www.bndes.gov.br/",
+      "https://www.in.gov.br/"
+     ],
+     "orgao": "Diário Oficial da União — Seção 3 (avisos e editais)",
+     "padrao": {
+      "natureza": "outro",
+      "canal": "in_dou",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "diario_oficial_uniao"
     },
     {
      "id": "f260-captacao-176",
@@ -4244,7 +5408,20 @@
      "dominios": [
       "www.bndes.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (banco público ou Sistema S)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (banco público ou Sistema S)",
+     "enderecos": [
+      "https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento+p%C3%BAblico+organiza%C3%A7%C3%B5es+da+sociedade+civil&s=do3",
+      "https://www.in.gov.br/consulta/-/buscar/dou?q=resolu%C3%A7%C3%A3o+fundo+edital+entidade&s=do1",
+      "https://www.bndes.gov.br/",
+      "https://www.in.gov.br/"
+     ],
+     "orgao": "Diário Oficial da União — Seção 3 (avisos e editais)",
+     "padrao": {
+      "natureza": "outro",
+      "canal": "in_dou",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "diario_oficial_uniao"
     },
     {
      "id": "f260-captacao-220",
@@ -4252,7 +5429,21 @@
      "dominios": [
       "www.bndes.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (banco público ou Sistema S)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (banco público ou Sistema S)",
+     "enderecos": [
+      "https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/desenvolvimento-social-e-urbano/bndes-fundo-social",
+      "https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento+p%C3%BAblico+organiza%C3%A7%C3%B5es+da+sociedade+civil&s=do3",
+      "https://www.in.gov.br/consulta/-/buscar/dou?q=resolu%C3%A7%C3%A3o+fundo+edital+entidade&s=do1",
+      "https://www.bndes.gov.br/",
+      "https://www.in.gov.br/"
+     ],
+     "orgao": "Diário Oficial da União — Seção 3 (avisos e editais)",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "in_dou",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "diario_oficial_uniao"
     },
     {
      "id": "f260-captacao-238",
@@ -4260,7 +5451,18 @@
      "dominios": [
       "sebraego.com.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (banco público ou Sistema S)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (banco público ou Sistema S)",
+     "enderecos": [
+      "https://sebraego.com.br/",
+      "https://diariooficial.abc.go.gov.br/"
+     ],
+     "orgao": "Sebrae Goiás",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "portais_estaduais + querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "diario_oficial_estado"
     },
     {
      "id": "f260-curadoria-001",
@@ -4268,12 +5470,36 @@
      "dominios": [
       "www.bnb.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (banco público ou Sistema S)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (banco público ou Sistema S)",
+     "enderecos": [
+      "https://www.bnb.gov.br/web/guest/sustentabilidade/investimentos-sociais-e-esportivos",
+      "https://www.bnb.gov.br/ConveniosWeb/Logar.aspx"
+     ],
+     "orgao": "Banco do Nordeste do Brasil — BNB",
+     "padrao": {
+      "natureza": "incentivo_fiscal",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "site_oficial"
     }
    ],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 127,
+    "com_resultado": 27,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (sebraego.com.br, www.bnb.gov.br, www.bndes.gov.br): ponte pelo Brasil, navegador do titular ou espelho.",
+     "Os 5 alvos são vigiados só na janela prevista da próxima edição."
+    ],
+    "dominios": [],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [],
+    "rotas_conhecidas": []
+   }
   },
   {
    "id": "judiciario-tjgo",
@@ -4290,7 +5516,25 @@
      "dominios": [
       "corregedoria.tjgo.jus.br",
       "www.tjgo.jus.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['corregedoria.tjgo.jus.br', 'www.tjgo.jus.br']",
+      "bloqueios_registrados: {'www.tjgo.jus.br': {'bloqueios': 140, 'erros': {'HTTPError': 140}, 'ultimo': '2026-09-20T12:10:23+00:00'}}",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [
+      "https://www.tjgo.jus.br/",
+      "https://www.tjgo.jus.br/index.php/dje",
+      "https://corregedoria.tjgo.jus.br/"
+     ],
+     "bloqueados": [
+      "www.tjgo.jus.br"
+     ],
+     "leituras": 40,
+     "com_resultado": 0
     },
     {
      "id": "judiciario-cnj-tjgo",
@@ -4300,7 +5544,29 @@
       "pncp.gov.br",
       "www.cnj.jus.br",
       "www.tjgo.jus.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['corregedoria.tjgo.jus.br', 'pncp.gov.br', 'www.cnj.jus.br', 'www.tjgo.jus.br']",
+      "bloqueios_registrados: {'pncp.gov.br': {'bloqueios': 162, 'erros': {'HTTPError': 74, 'TimeoutError': 73, 'URLError': 11, 'RemoteDisconnected': 4}, 'ultimo': '2026-10-10T01:03:12+00:00'}, 'www.cnj.jus.br': {'bloqueios': 55, 'erros': {'HTTPError': 52, 'TimeoutError': 3}, 'ul",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [
+      "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss",
+      "https://www.tjgo.jus.br/files/",
+      "https://corregedoria.tjgo.jus.br/basesocial",
+      "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+edital",
+      "https://pncp.gov.br/app/editais"
+     ],
+     "bloqueados": [
+      "pncp.gov.br",
+      "www.cnj.jus.br",
+      "www.tjgo.jus.br"
+     ],
+     "leituras": 30,
+     "com_resultado": 0
     }
    ],
    "alvos": [
@@ -4310,12 +5576,64 @@
      "dominios": [
       "www.trt18.jus.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (penas pecuniárias do TJGO (o cadastro aponta para o TRT-18: corrigir o domínio))"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (penas pecuniárias do TJGO (o cadastro aponta para o TRT-18: corrigir o domínio))",
+     "enderecos": [
+      "https://www.cnj.jus.br/",
+      "https://www.tjgo.jus.br/",
+      "https://www.trt18.jus.br/portal/"
+     ],
+     "orgao": "CNJ — política de destinação de penas e prestações pecuniárias",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "edital_destinacao_judicial"
     }
    ],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 235,
+    "com_resultado": 0,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (pncp.gov.br, www.cnj.jus.br, www.tjgo.jus.br, www.trt18.jus.br): ponte pelo Brasil, navegador do titular ou espelho.",
+     "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.",
+     "Os 1 alvos são vigiados só na janela prevista da próxima edição.",
+     "Corrigir o domínio dos alvos cadastrados com o site do TRT-18.",
+     "Nenhum resultado em 235 leituras: diagnosticar se é bloqueio ou fonte errada antes de reconstruir."
+    ],
+    "dominios": [
+     "corregedoria.tjgo.jus.br",
+     "pncp.gov.br",
+     "www.cnj.jus.br",
+     "www.tjgo.jus.br"
+    ],
+    "bloqueados": [
+     "pncp.gov.br",
+     "www.cnj.jus.br",
+     "www.tjgo.jus.br"
+    ],
+    "robots_proibe": [],
+    "licoes": [
+     "Leitura do TJGO pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.",
+     "Leitura do TJGO pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.",
+     "dominios: ['corregedoria.tjgo.jus.br', 'pncp.gov.br', 'www.cnj.jus.br', 'www.tjgo.jus.br']",
+     "bloqueios_registrados: {'pncp.gov.br': {'bloqueios': 162, 'erros': {'HTTPError': 74, 'TimeoutError': 73, 'URLError': 11, 'RemoteDisconnected': 4}, 'ultimo': '2026-10-10T01:03:12+00:00'}, 'www.cnj.jus.br': {'bloqueios': 55, 'erros': {'HTTPError': 52, 'TimeoutError': 3}, 'ul",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss",
+     "https://www.tjgo.jus.br/files/",
+     "https://corregedoria.tjgo.jus.br/basesocial",
+     "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+edital",
+     "https://pncp.gov.br/app/editais"
+    ]
+   }
   },
   {
    "id": "dj-trf1-go",
@@ -4329,7 +5647,38 @@
    "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 80,
+    "com_resultado": 0,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (www.cnj.jus.br): ponte pelo Brasil, navegador do titular ou espelho.",
+     "O afinador já achou 2 rota(s) que funcionaram: entram como rotas do motor.",
+     "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.",
+     "Nenhum resultado em 80 leituras: diagnosticar se é bloqueio ou fonte errada antes de reconstruir."
+    ],
+    "dominios": [
+     "www.cnj.jus.br",
+     "www.trf1.jus.br"
+    ],
+    "bloqueados": [
+     "www.cnj.jus.br"
+    ],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['www.cnj.jus.br', 'www.trf1.jus.br']",
+     "bloqueios_registrados: {'www.cnj.jus.br': {'bloqueios': 55, 'erros': {'HTTPError': 52, 'TimeoutError': 3}, 'ultimo': '2026-10-02T15:20:14+00:00'}}",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://www.trf1.jus.br/sjgo/imprensa/noticias",
+     "https://www.trf1.jus.br/sjgo/processual/editais-e-portarias",
+     "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+Goi%C3%A1s"
+    ]
+   }
   },
   {
    "id": "judiciario-cnj",
@@ -4346,7 +5695,25 @@
      "dominios": [
       "www.cnj.jus.br",
       "www.tjgo.jus.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['www.cnj.jus.br', 'www.tjgo.jus.br']",
+      "bloqueios_registrados: {'www.cnj.jus.br': {'bloqueios': 55, 'erros': {'HTTPError': 52, 'TimeoutError': 3}, 'ultimo': '2026-10-02T15:20:14+00:00'}, 'www.tjgo.jus.br': {'bloqueios': 140, 'erros': {'HTTPError': 140}, 'ultimo': '2026-09-20T12:10:23+00:00'}}",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [
+      "https://www.cnj.jus.br/",
+      "https://www.tjgo.jus.br/"
+     ],
+     "bloqueados": [
+      "www.cnj.jus.br",
+      "www.tjgo.jus.br"
+     ],
+     "leituras": 40,
+     "com_resultado": 0
     }
    ],
    "alvos": [
@@ -4356,12 +5723,63 @@
      "dominios": [
       "www.trt18.jus.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (política do CNJ (o cadastro aponta para o TRT-18: corrigir o domínio))"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (política do CNJ (o cadastro aponta para o TRT-18: corrigir o domínio))",
+     "enderecos": [
+      "https://www.cnj.jus.br/",
+      "https://www.tjgo.jus.br/",
+      "https://www.trt18.jus.br/portal/"
+     ],
+     "orgao": "CNJ — política de destinação de penas e prestações pecuniárias",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "edital_destinacao_judicial"
     }
    ],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 113,
+    "com_resultado": 0,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (pncp.gov.br, www.cnj.jus.br, www.tjgo.jus.br, www.trt18.jus.br): ponte pelo Brasil, navegador do titular ou espelho.",
+     "O afinador já achou 10 rota(s) que funcionaram: entram como rotas do motor.",
+     "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.",
+     "Os 1 alvos são vigiados só na janela prevista da próxima edição.",
+     "Corrigir o domínio dos alvos cadastrados com o site do TRT-18.",
+     "Nenhum resultado em 113 leituras: diagnosticar se é bloqueio ou fonte errada antes de reconstruir."
+    ],
+    "dominios": [
+     "corregedoria.tjgo.jus.br",
+     "pncp.gov.br",
+     "www.cnj.jus.br",
+     "www.tjgo.jus.br"
+    ],
+    "bloqueados": [
+     "pncp.gov.br",
+     "www.cnj.jus.br",
+     "www.tjgo.jus.br"
+    ],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['corregedoria.tjgo.jus.br', 'pncp.gov.br', 'www.cnj.jus.br', 'www.tjgo.jus.br']",
+     "bloqueios_registrados: {'pncp.gov.br': {'bloqueios': 162, 'erros': {'HTTPError': 74, 'TimeoutError': 73, 'URLError': 11, 'RemoteDisconnected': 4}, 'ultimo': '2026-10-10T01:03:12+00:00'}, 'www.cnj.jus.br': {'bloqueios': 55, 'erros': {'HTTPError': 52, 'TimeoutError': 3}, 'ul",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs?format=feed&type=rss",
+     "https://www.tjgo.jus.br/files/",
+     "https://corregedoria.tjgo.jus.br/basesocial",
+     "https://www.cnj.jus.br/?s=presta%C3%A7%C3%A3o+pecuni%C3%A1ria+edital",
+     "https://pncp.gov.br/app/editais"
+    ]
+   }
   },
   {
    "id": "mpgo-destinacao",
@@ -4380,12 +5798,81 @@
       "mpt.mp.br",
       "www.mpf.mp.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (TAC com destinação social (MP-GO))"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (TAC com destinação social (MP-GO))",
+     "enderecos": [
+      "https://www.mpf.mp.br/",
+      "https://mpt.mp.br/",
+      "https://www.mpgo.mp.br/"
+     ],
+     "orgao": "Ministério Público Federal — chamamentos e destinação de recursos",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + diario_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "edital_ministerio_publico"
     }
    ],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 123,
+    "com_resultado": 57,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (mpt.mp.br, www.gov.br, www.mpgo.mp.br): ponte pelo Brasil, navegador do titular ou espelho.",
+     "O afinador já achou 9 rota(s) que funcionaram: entram como rotas do motor.",
+     "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.",
+     "Os 1 alvos são vigiados só na janela prevista da próxima edição."
+    ],
+    "dominios": [
+     "mpt.mp.br",
+     "www.gov.br",
+     "www.mpdft.mp.br",
+     "www.mpf.mp.br",
+     "www.mpgo.mp.br",
+     "www.mpm.mp.br",
+     "www.mpu.mp.br",
+     "www.prt18.mpt.mp.br"
+    ],
+    "bloqueados": [
+     "mpt.mp.br",
+     "www.gov.br",
+     "www.mpgo.mp.br"
+    ],
+    "robots_proibe": [],
+    "licoes": [
+     "PENDÊNCIA DO TITULAR — pedir o cadastro da A.M.C. no Programa Destina do MP-GO (Edital de Chamamento nº 02/2024, cadastro contínuo).",
+     "Contato: COMPOR — Centro de Autocomposição de Conflitos e Segurança Jurídica do MP-GO, telefone (62) 3243-8116.",
+     "PENDÊNCIA DO TITULAR — pedir o cadastro da A.M.C. no Programa Destina do MP-GO (Edital de Chamamento nº 02/2024, cadastro contínuo).",
+     "Contato: COMPOR — Centro de Autocomposição de Conflitos e Segurança Jurídica do MP-GO, telefone (62) 3243-8116.",
+     "O site do MP-GO proíbe robôs (robots.txt 'Disallow: /'): o motor não lê o site; a conferência é manual, uma vez por mês.",
+     "Histórico de 3 anos: só 2 registros públicos. Para completar, pedir ao COMPOR, pela Lei de Acesso à Informação, as destinações de 2023 a 2025 (área, valor, entidade).",
+     "dominios: ['mpt.mp.br', 'www.gov.br', 'www.mpdft.mp.br', 'www.mpf.mp.br', 'www.mpgo.mp.br', 'www.mpm.mp.br', 'www.mpu.mp.br', 'www.prt18.mpt.mp.br']",
+     "bloqueios_registrados: {'mpt.mp.br': {'bloqueios': 1, 'erros': {'URLError': 1}, 'ultimo': '2026-10-05T08:58:44+00:00'}, 'www.gov.br': {'bloqueios': 223, 'erros': {'HTTPError': 202, 'URLError': 18, 'TimeoutError': 1, 'RemoteDisconnected': 2}, 'ultimo': '2026-10-17T08:30:10+",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: ['https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias']"
+    ],
+    "rotas_conhecidas": [
+     "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
+     "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
+     "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go",
+     "https://mpt.mp.br/search_rss?SearchableText=edital+cadastramento+entidades&sort_on=Date&sort_order=reverse",
+     "https://mpt.mp.br/pgt/noticias/RSS",
+     "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
+     "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
+     "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia",
+     "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-em-goias-cadastra-entidades-e-orgaos-publicos-para-recebimento-bens-e-valores-decorrentes-da-atuacao-da-instituicao",
+     "https://www.mpf.mp.br/search?SearchableText=edital+chamamento+recebimento+bens+valores",
+     "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
+     "https://www.mpf.mp.br/servicos/mpf-servicos",
+     "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
+     "https://www.mpdft.mp.br/transparencia/index.php?item=tac",
+     "https://www.mpdft.mp.br/portal/index.php/comunicacao-menu/sala-de-imprensa/noticias/noticias-2026-completo"
+    ]
+   }
   },
   {
    "id": "mptgo-destinacao",
@@ -4399,7 +5886,53 @@
    "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 76,
+    "com_resultado": 58,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (mpt.mp.br, www.gov.br): ponte pelo Brasil, navegador do titular ou espelho."
+    ],
+    "dominios": [
+     "mpt.mp.br",
+     "www.gov.br",
+     "www.mpdft.mp.br",
+     "www.mpf.mp.br",
+     "www.mpm.mp.br",
+     "www.mpu.mp.br",
+     "www.prt18.mpt.mp.br"
+    ],
+    "bloqueados": [
+     "mpt.mp.br",
+     "www.gov.br"
+    ],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['mpt.mp.br', 'www.gov.br', 'www.mpdft.mp.br', 'www.mpf.mp.br', 'www.mpm.mp.br', 'www.mpu.mp.br', 'www.prt18.mpt.mp.br']",
+     "bloqueios_registrados: {'mpt.mp.br': {'bloqueios': 1, 'erros': {'URLError': 1}, 'ultimo': '2026-10-05T08:58:44+00:00'}, 'www.gov.br': {'bloqueios': 223, 'erros': {'HTTPError': 202, 'URLError': 18, 'TimeoutError': 1, 'RemoteDisconnected': 2}, 'ultimo': '2026-10-17T08:30:10+",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: ['https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias']"
+    ],
+    "rotas_conhecidas": [
+     "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
+     "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
+     "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go",
+     "https://mpt.mp.br/search_rss?SearchableText=edital+cadastramento+entidades&sort_on=Date&sort_order=reverse",
+     "https://mpt.mp.br/pgt/noticias/RSS",
+     "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
+     "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
+     "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia",
+     "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-em-goias-cadastra-entidades-e-orgaos-publicos-para-recebimento-bens-e-valores-decorrentes-da-atuacao-da-instituicao",
+     "https://www.mpf.mp.br/search?SearchableText=edital+chamamento+recebimento+bens+valores",
+     "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
+     "https://www.mpf.mp.br/servicos/mpf-servicos",
+     "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
+     "https://www.mpdft.mp.br/transparencia/index.php?item=tac",
+     "https://www.mpdft.mp.br/portal/index.php/comunicacao-menu/sala-de-imprensa/noticias/noticias-2026-completo"
+    ]
+   }
   },
   {
    "id": "mpu-destinacao",
@@ -4421,7 +5954,38 @@
       "www.mpm.mp.br",
       "www.mpu.mp.br",
       "www.prt18.mpt.mp.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['mpt.mp.br', 'www.gov.br', 'www.mpdft.mp.br', 'www.mpf.mp.br', 'www.mpm.mp.br', 'www.mpu.mp.br', 'www.prt18.mpt.mp.br']",
+      "bloqueios_registrados: {'mpt.mp.br': {'bloqueios': 1, 'erros': {'URLError': 1}, 'ultimo': '2026-10-05T08:58:44+00:00'}, 'www.gov.br': {'bloqueios': 223, 'erros': {'HTTPError': 202, 'URLError': 18, 'TimeoutError': 1, 'RemoteDisconnected': 2}, 'ultimo': '2026-10-17T08:30:10+",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: ['https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias']"
+     ],
+     "rotas_conhecidas": [
+      "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
+      "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
+      "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go",
+      "https://mpt.mp.br/search_rss?SearchableText=edital+cadastramento+entidades&sort_on=Date&sort_order=reverse",
+      "https://mpt.mp.br/pgt/noticias/RSS",
+      "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
+      "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
+      "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia",
+      "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-em-goias-cadastra-entidades-e-orgaos-publicos-para-recebimento-bens-e-valores-decorrentes-da-atuacao-da-instituicao",
+      "https://www.mpf.mp.br/search?SearchableText=edital+chamamento+recebimento+bens+valores",
+      "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
+      "https://www.mpf.mp.br/servicos/mpf-servicos",
+      "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
+      "https://www.mpdft.mp.br/transparencia/index.php?item=tac",
+      "https://www.mpdft.mp.br/portal/index.php/comunicacao-menu/sala-de-imprensa/noticias/noticias-2026-completo"
+     ],
+     "bloqueados": [
+      "mpt.mp.br",
+      "www.gov.br"
+     ],
+     "leituras": 20,
+     "com_resultado": 0
     }
    ],
    "alvos": [
@@ -4431,7 +5995,23 @@
      "dominios": [
       "www.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (destinação de bens e valores federais (FDD e bens apreendidos))"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (destinação de bens e valores federais (FDD e bens apreendidos))",
+     "enderecos": [
+      "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-crianca-e-do-adolescente-conanda",
+      "https://goias.gov.br/social/cedca/",
+      "https://www.goiania.go.gov.br/sme/cmdca/",
+      "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-pessoa-idosa-cndi",
+      "https://www.goiania.go.gov.br/semasdh/",
+      "https://www.gov.br/mds/pt-br/orgaos-colegiados/conselho-nacional-de-assistencia-social-cnas",
+      "https://www.gov.br/saude/pt-br"
+     ],
+     "orgao": "Conanda — Fundo Nacional para a Criança e o Adolescente",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "querido_diario + varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "resolucao_conselho"
     },
     {
      "id": "f260-captacao-208",
@@ -4439,12 +6019,77 @@
      "dominios": [
       "www.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (destinação de bens e valores federais (FDD e bens apreendidos))"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (destinação de bens e valores federais (FDD e bens apreendidos))",
+     "enderecos": [
+      "https://www.gov.br/receitafederal/pt-br"
+     ],
+     "orgao": "Receita Federal — destinação de mercadorias",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + api_quando_houver",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "lista_projetos_aptos"
     }
    ],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 124,
+    "com_resultado": 7,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (mpt.mp.br, www.gov.br): ponte pelo Brasil, navegador do titular ou espelho.",
+     "O afinador já achou 20 rota(s) que funcionaram: entram como rotas do motor.",
+     "2 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.",
+     "Os 2 alvos são vigiados só na janela prevista da próxima edição."
+    ],
+    "dominios": [
+     "mpt.mp.br",
+     "www.gov.br",
+     "www.mpdft.mp.br",
+     "www.mpf.mp.br",
+     "www.mpm.mp.br",
+     "www.mpu.mp.br",
+     "www.prt18.mpt.mp.br"
+    ],
+    "bloqueados": [
+     "mpt.mp.br",
+     "www.gov.br"
+    ],
+    "robots_proibe": [],
+    "licoes": [
+     "PENDÊNCIA DO TITULAR — pedidos de acesso à informação (Lei 12.527/2011) prontos para envio: docs/relatorios/lai/pedidos-lai-motor-10-2026-10-03.md.",
+     "MPF PR-GO: o edital de cadastro de entidades para receber bens e valores (notícia de 09/10/2025) tem o link quebrado (404); pedir o edital, a lista de entidades cadastradas e as destinações de 2023 a 2026.",
+     "PENDÊNCIA DO TITULAR — pedidos de acesso à informação (Lei 12.527/2011) prontos para envio: docs/relatorios/lai/pedidos-lai-motor-10-2026-10-03.md.",
+     "MPF PR-GO: o edital de cadastro de entidades para receber bens e valores (notícia de 09/10/2025) tem o link quebrado (404); pedir o edital, a lista de entidades cadastradas e as destinações de 2023 a 2026.",
+     "MPT (Procuradoria-Geral do Trabalho): pedir as destinações nacionais a entidades de Goiás de 2023 a 2026 e as regras do Sistema de Destinações.",
+     "FDD/CFDD: conferido em 03/10/2026 — a página 'seleção em andamento' diz 'Não há' (atualizada em 08/07/2026). O aviso anterior era falso: vinha do código da página lido como texto (corrigido no motor).",
+     "dominios: ['mpt.mp.br', 'www.gov.br', 'www.mpdft.mp.br', 'www.mpf.mp.br', 'www.mpm.mp.br', 'www.mpu.mp.br', 'www.prt18.mpt.mp.br']",
+     "bloqueios_registrados: {'mpt.mp.br': {'bloqueios': 1, 'erros': {'URLError': 1}, 'ultimo': '2026-10-05T08:58:44+00:00'}, 'www.gov.br': {'bloqueios': 223, 'erros': {'HTTPError': 202, 'URLError': 18, 'TimeoutError': 1, 'RemoteDisconnected': 2}, 'ultimo': '2026-10-17T08:30:10+",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: ['https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias']"
+    ],
+    "rotas_conhecidas": [
+     "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens",
+     "https://www.prt18.mpt.mp.br/servicos/entidades-assistenciais",
+     "https://www.prt18.mpt.mp.br/informe-se/noticias-do-mpt-go",
+     "https://mpt.mp.br/search_rss?SearchableText=edital+cadastramento+entidades&sort_on=Date&sort_order=reverse",
+     "https://mpt.mp.br/pgt/noticias/RSS",
+     "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias",
+     "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao",
+     "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia",
+     "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias/mpf-em-goias-cadastra-entidades-e-orgaos-publicos-para-recebimento-bens-e-valores-decorrentes-da-atuacao-da-instituicao",
+     "https://www.mpf.mp.br/search?SearchableText=edital+chamamento+recebimento+bens+valores",
+     "https://www.mpf.mp.br/o-mpf/unidades/pr-ba/destinacao-de-bens-e-valores",
+     "https://www.mpf.mp.br/servicos/mpf-servicos",
+     "https://www.mpdft.mp.br/portal/index.php/tags/medidas-alternativas",
+     "https://www.mpdft.mp.br/transparencia/index.php?item=tac",
+     "https://www.mpdft.mp.br/portal/index.php/comunicacao-menu/sala-de-imprensa/noticias/noticias-2026-completo"
+    ]
+   }
   },
   {
    "id": "camara-goiania-pl",
@@ -4462,7 +6107,20 @@
      "dominios": [
       "www.goiania.go.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (emenda municipal)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (emenda municipal)",
+     "enderecos": [
+      "https://portal.al.go.leg.br/",
+      "https://www.goiania.go.leg.br/",
+      "https://www.goiania.go.gov.br/educacao/",
+      "https://diariooficial.goiania.go.gov.br/"
+     ],
+     "orgao": "ALEGO — Assembleia Legislativa de Goiás (emendas e orçamento)",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "portais_federativos + transferegov + querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "emenda_parlamentar"
     },
     {
      "id": "f260-captacao-107",
@@ -4470,7 +6128,18 @@
      "dominios": [
       "www.goiania.go.leg.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (emenda municipal)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (emenda municipal)",
+     "enderecos": [
+      "https://portal.al.go.leg.br/",
+      "https://www.goiania.go.leg.br/"
+     ],
+     "orgao": "ALEGO — Assembleia Legislativa de Goiás (emendas e orçamento)",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "portais_federativos + transferegov + querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "emenda_parlamentar"
     },
     {
      "id": "f260-captacao-113",
@@ -4478,7 +6147,20 @@
      "dominios": [
       "www.goiania.go.leg.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (acompanhado na Câmara de Goiânia)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (acompanhado na Câmara de Goiânia)",
+     "enderecos": [
+      "https://portal.al.go.leg.br/",
+      "https://www.goiania.go.leg.br/",
+      "https://goias.gov.br/social/",
+      "https://diariooficial.abc.go.gov.br/"
+     ],
+     "orgao": "ALEGO — Assembleia Legislativa de Goiás (emendas e orçamento)",
+     "padrao": {
+      "natureza": "outro",
+      "canal": "portais_federativos + transferegov + querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "emenda_parlamentar"
     },
     {
      "id": "f260-captacao-152",
@@ -4486,12 +6168,58 @@
      "dominios": [
       "saude.goiania.go.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (emenda municipal)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (emenda municipal)",
+     "enderecos": [
+      "https://portal.al.go.leg.br/",
+      "https://www.goiania.go.leg.br/",
+      "https://saude.goiania.go.gov.br/",
+      "https://diariooficial.goiania.go.gov.br/"
+     ],
+     "orgao": "ALEGO — Assembleia Legislativa de Goiás (emendas e orçamento)",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "portais_federativos + transferegov + querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "emenda_parlamentar"
     }
    ],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 210,
+    "com_resultado": 60,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (saude.goiania.go.gov.br, www.goiania.go.gov.br, www.goiania.go.leg.br): ponte pelo Brasil, navegador do titular ou espelho.",
+     "O afinador já achou 14 rota(s) que funcionaram: entram como rotas do motor.",
+     "Os 4 alvos são vigiados só na janela prevista da próxima edição."
+    ],
+    "dominios": [
+     "suap.camaragyn.go.gov.br",
+     "www.goiania.go.leg.br"
+    ],
+    "bloqueados": [
+     "www.goiania.go.leg.br"
+    ],
+    "robots_proibe": [],
+    "licoes": [
+     "Leitura pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.",
+     "Acompanhar o Projeto de Lei nº 288/2026 (utilidade pública da A.M.C. Jardim América).",
+     "Leitura pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.",
+     "Acompanhar o Projeto de Lei nº 288/2026 (utilidade pública da A.M.C. Jardim América).",
+     "dominios: ['suap.camaragyn.go.gov.br', 'www.goiania.go.leg.br']",
+     "bloqueios_registrados: {'www.goiania.go.leg.br': {'bloqueios': 68, 'erros': {'HTTPError': 47, 'TimeoutError': 21}, 'ultimo': '2026-10-17T08:30:15+00:00'}}",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: {'www.goiania.go.leg.br': True}",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://suap.camaragyn.go.gov.br/camara/consulta_publica/",
+     "https://www.goiania.go.leg.br/search_rss"
+    ]
+   }
   },
   {
    "id": "alego-pl",
@@ -4509,7 +6237,19 @@
      "dominios": [
       "goias.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (emenda estadual)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (emenda estadual)",
+     "enderecos": [
+      "https://portal.al.go.leg.br/",
+      "https://www.goiania.go.leg.br/",
+      "https://goias.gov.br/educacao/"
+     ],
+     "orgao": "ALEGO — Assembleia Legislativa de Goiás (emendas e orçamento)",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "portais_federativos + transferegov + querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "emenda_parlamentar"
     },
     {
      "id": "f260-captacao-151",
@@ -4517,12 +6257,58 @@
      "dominios": [
       "goias.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (emenda estadual)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (emenda estadual)",
+     "enderecos": [
+      "https://portal.al.go.leg.br/",
+      "https://www.goiania.go.leg.br/",
+      "https://goias.gov.br/saude/",
+      "https://diariooficial.abc.go.gov.br/"
+     ],
+     "orgao": "ALEGO — Assembleia Legislativa de Goiás (emendas e orçamento)",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "portais_federativos + transferegov + querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "emenda_parlamentar"
     }
    ],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 226,
+    "com_resultado": 9,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (goias.gov.br, portal.al.go.leg.br): ponte pelo Brasil, navegador do titular ou espelho.",
+     "O afinador já achou 22 rota(s) que funcionaram: entram como rotas do motor.",
+     "Os 2 alvos são vigiados só na janela prevista da próxima edição."
+    ],
+    "dominios": [
+     "alegodigital.al.go.leg.br",
+     "portal.al.go.leg.br",
+     "www.economia.go.gov.br"
+    ],
+    "bloqueados": [
+     "portal.al.go.leg.br"
+    ],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['alegodigital.al.go.leg.br', 'portal.al.go.leg.br', 'www.economia.go.gov.br']",
+     "bloqueios_registrados: {'portal.al.go.leg.br': {'bloqueios': 138, 'erros': {'URLError': 138}, 'ultimo': '2026-10-16T08:00:36+00:00'}}",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://alegodigital.al.go.leg.br/spl/consulta-cronologico.aspx",
+     "https://alegodigital.al.go.leg.br/spl/consulta-tipo.aspx",
+     "https://alegodigital.al.go.leg.br/spl/sessoes.aspx",
+     "https://portal.al.go.leg.br/",
+     "https://www.economia.go.gov.br/"
+    ]
+   }
   },
   {
    "id": "congresso-nacional",
@@ -4541,12 +6327,61 @@
       "www.camara.leg.br",
       "www12.senado.leg.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (emenda federal)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (emenda federal)",
+     "enderecos": [
+      "https://portal.al.go.leg.br/",
+      "https://www.goiania.go.leg.br/",
+      "https://www.camara.leg.br/",
+      "https://www12.senado.leg.br/"
+     ],
+     "orgao": "ALEGO — Assembleia Legislativa de Goiás (emendas e orçamento)",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "portais_federativos + transferegov + querido_diario",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "emenda_parlamentar"
     }
    ],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 102,
+    "com_resultado": 69,
+    "melhorias": [
+     "Ler primeiro pela dados abertos da Câmara e do Senado; as páginas ficam como reserva.",
+     "O afinador já achou 3 rota(s) que funcionaram: entram como rotas do motor.",
+     "Os 1 alvos são vigiados só na janela prevista da próxima edição."
+    ],
+    "dominios": [
+     "dadosabertos.camara.leg.br",
+     "legis.senado.leg.br",
+     "www.camara.leg.br",
+     "www.congressonacional.leg.br",
+     "www12.senado.leg.br",
+     "www6g.senado.leg.br"
+    ],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['dadosabertos.camara.leg.br', 'legis.senado.leg.br', 'www.camara.leg.br', 'www.congressonacional.leg.br', 'www12.senado.leg.br', 'www6g.senado.leg.br']",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://www.congressonacional.leg.br/web/orcamento/acompanhe/orcamento-anual/-/loa/2027",
+     "https://www.congressonacional.leg.br/web/cmo/comunicados",
+     "https://dadosabertos.camara.leg.br/api/v2/proposicoes",
+     "https://legis.senado.leg.br/dadosabertos/processo",
+     "https://www.camara.leg.br/noticias/rss/ultimas-noticias",
+     "https://www12.senado.leg.br/noticias/feed/todasnoticias/rss",
+     "https://www6g.senado.leg.br/transparencia/licitacoes-e-contratos/sadcon/convocacoes-publicas"
+    ]
+   }
   },
   {
    "id": "gife",
@@ -4563,13 +6398,48 @@
      "dominios": [
       "capta.org.br",
       "gife.org.br"
-     ]
+     ],
+     "licoes": [
+      "{\"tarefa\": \"diagnosticar_rota\", \"motor\": \"plat-gife\", \"causa_provavel\": \"x\", \"tentar\": [{\"tipo\": \"url\", \"valor\": \"https://gife.org.br/agenda/\", \"valido\": true}], \"confianca\": 0.7, \"valido\": true, \"em\"",
+      "{\"tarefa\": \"diagnosticar_rota\", \"motor\": \"plat-gife\", \"causa_provavel\": \"x\", \"tentar\": [{\"tipo\": \"url\", \"valor\": \"https://gife.org.br/agenda/\", \"valido\": true}], \"confianca\": 0.7, \"valido\": true, \"em\"",
+      "{\"tarefa\": \"diagnosticar_rota\", \"motor\": \"plat-gife\", \"causa_provavel\": \"x\", \"tentar\": [{\"tipo\": \"url\", \"valor\": \"https://gife.org.br/agenda/\", \"valido\": true}], \"confianca\": 0.7, \"valido\": true, \"em\"",
+      "{\"tarefa\": \"diagnosticar_rota\", \"motor\": \"plat-gife\", \"causa_provavel\": \"x\", \"tentar\": [{\"tipo\": \"url\", \"valor\": \"https://gife.org.br/agenda/\", \"valido\": true}], \"confianca\": 0.7, \"valido\": true, \"em\"",
+      "{\"tarefa\": \"diagnosticar_rota\", \"motor\": \"plat-gife\", \"causa_provavel\": \"x\", \"tentar\": [{\"tipo\": \"url\", \"valor\": \"https://gife.org.br/agenda/\", \"valido\": true}], \"confianca\": 0.7, \"valido\": true, \"em\"",
+      "dominios: ['capta.org.br', 'gife.org.br']",
+      "bloqueios_registrados: {'gife.org.br': {'bloqueios': 26, 'erros': {'HTTPError': 26}, 'ultimo': '2026-10-01T15:00:19+00:00'}}",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [
+      "https://gife.org.br/wp-json/wp/v2/posts",
+      "https://capta.org.br/wp-json/wp/v2/posts"
+     ],
+     "bloqueados": [
+      "gife.org.br"
+     ],
+     "leituras": 102,
+     "com_resultado": 58
     }
    ],
    "alvos": [],
    "motor_novo": "gife",
    "situacao": "conforme",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 102,
+    "com_resultado": 58,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (gife.org.br): ponte pelo Brasil, navegador do titular ou espelho.",
+     "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10)."
+    ],
+    "dominios": [],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [],
+    "rotas_conhecidas": []
+   }
   },
   {
    "id": "plataforma-mapas-culturais",
@@ -4583,7 +6453,35 @@
    "alvos": [],
    "motor_novo": "plataforma-mapas-culturais",
    "situacao": "conforme",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 20,
+    "com_resultado": 20,
+    "melhorias": [
+     "Ler primeiro pela API do Mapas Culturais (20 de 20); as páginas ficam como reserva.",
+     "Rota de acesso única para os domínios com bloqueio (culteditais.cultura.gov.br): ponte pelo Brasil, navegador do titular ou espelho."
+    ],
+    "dominios": [
+     "culteditais.cultura.gov.br",
+     "mapa.cultura.gov.br"
+    ],
+    "bloqueados": [
+     "culteditais.cultura.gov.br"
+    ],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['culteditais.cultura.gov.br', 'mapa.cultura.gov.br']",
+     "bloqueios_registrados: {'culteditais.cultura.gov.br': {'bloqueios': 7, 'erros': {'HTTPError': 7}, 'ultimo': '2026-10-17T09:21:24+00:00'}}",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: ['https://culteditais.cultura.gov.br/search/events', 'https://culteditais.cultura.gov.br/search/spaces', 'https://culteditais.cultura.gov.br/circuitos']"
+    ],
+    "rotas_conhecidas": [
+     "https://mapa.cultura.gov.br/api/opportunity/find?@select=id,name,registrationTo",
+     "https://mapa.cultura.gov.br/oportunidades/"
+    ]
+   }
   },
   {
    "id": "site-farol-cultural",
@@ -4597,7 +6495,31 @@
    "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 0,
+    "com_resultado": 0,
+    "melhorias": [
+     "Ler primeiro pela API pública do portal; as páginas ficam como reserva.",
+     "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10)."
+    ],
+    "dominios": [
+     "farolcultural.art"
+    ],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['farolcultural.art']",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://farolcultural.art/api/v1/editais"
+    ]
+   }
   },
   {
    "id": "site-capitaai",
@@ -4611,7 +6533,30 @@
    "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 0,
+    "com_resultado": 0,
+    "melhorias": [
+     "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10)."
+    ],
+    "dominios": [
+     "capitaai.com.br"
+    ],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['capitaai.com.br']",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://capitaai.com.br/sitemap-captacao.xml"
+    ]
+   }
   },
   {
    "id": "site-observatorio-terceiro-setor",
@@ -4627,13 +6572,52 @@
      "nome": "Observatório do Terceiro Setor — editais",
      "dominios": [
       "observatorio3setor.org.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['observatorio3setor.org.br']",
+      "bloqueios_registrados: None",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [
+      "https://observatorio3setor.org.br/editais/",
+      null
+     ],
+     "bloqueados": [],
+     "leituras": 26,
+     "com_resultado": 0
     }
    ],
    "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 26,
+    "com_resultado": 0,
+    "melhorias": [
+     "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.",
+     "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10)."
+    ],
+    "dominios": [
+     "www.observatorio3setor.org.br"
+    ],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['www.observatorio3setor.org.br']",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://www.observatorio3setor.org.br/secoes_tematicas/editais/feed/"
+    ]
+   }
   },
   {
    "id": "site-mapas-culturais",
@@ -4647,7 +6631,28 @@
    "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 0,
+    "com_resultado": 0,
+    "melhorias": [
+     "Ler primeiro pela API do Mapas Culturais (20 de 20); as páginas ficam como reserva."
+    ],
+    "dominios": [],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: []",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     null
+    ]
+   }
   },
   {
    "id": "site-abcr",
@@ -4663,13 +6668,57 @@
      "nome": "ABCR — Associação Brasileira de Captadores",
      "dominios": [
       "captadores.org.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['captadores.org.br']",
+      "bloqueios_registrados: {'captadores.org.br': {'bloqueios': 12, 'erros': {'HTTPError': 6, 'TimeoutError': 6}, 'ultimo': '2026-10-18T05:36:42+00:00'}}",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [
+      "https://captadores.org.br/editais/",
+      null
+     ],
+     "bloqueados": [
+      "captadores.org.br"
+     ],
+     "leituras": 26,
+     "com_resultado": 0
     }
    ],
    "alvos": [],
    "motor_novo": "site-abcr",
    "situacao": "conforme",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 26,
+    "com_resultado": 0,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (captadores.org.br): ponte pelo Brasil, navegador do titular ou espelho.",
+     "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.",
+     "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10)."
+    ],
+    "dominios": [
+     "captadores.org.br"
+    ],
+    "bloqueados": [
+     "captadores.org.br"
+    ],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['captadores.org.br']",
+     "bloqueios_registrados: {'captadores.org.br': {'bloqueios': 12, 'erros': {'HTTPError': 6, 'TimeoutError': 6}, 'ultimo': '2026-10-18T05:36:42+00:00'}}",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://captadores.org.br/category/editais/feed/"
+    ]
+   }
   },
   {
    "id": "site-rede-comua",
@@ -4683,7 +6732,28 @@
    "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 0,
+    "com_resultado": 0,
+    "melhorias": [],
+    "dominios": [
+     "redecomua.org.br"
+    ],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['redecomua.org.br']",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://redecomua.org.br/wp-json/wp/v2/_editais"
+    ]
+   }
   },
   {
    "id": "site-fundo-baoba",
@@ -4697,7 +6767,26 @@
    "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 0,
+    "com_resultado": 0,
+    "melhorias": [],
+    "dominios": [],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: []",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     null
+    ]
+   }
   },
   {
    "id": "site-idis",
@@ -4711,7 +6800,28 @@
    "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 0,
+    "com_resultado": 0,
+    "melhorias": [],
+    "dominios": [
+     "www.idis.org.br"
+    ],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['www.idis.org.br']",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://www.idis.org.br/feed/"
+    ]
+   }
   },
   {
    "id": "site-fundo-casa",
@@ -4725,7 +6835,28 @@
    "alvos": [],
    "motor_novo": "site-fundo-casa",
    "situacao": "conforme",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 0,
+    "com_resultado": 0,
+    "melhorias": [],
+    "dominios": [
+     "casa.org.br"
+    ],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['casa.org.br']",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://casa.org.br/wp-json/wp/v2/chamadas"
+    ]
+   }
   },
   {
    "id": "site-cese",
@@ -4739,7 +6870,28 @@
    "alvos": [],
    "motor_novo": "site-cese",
    "situacao": "conforme",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 0,
+    "com_resultado": 0,
+    "melhorias": [],
+    "dominios": [
+     "cese.org.br"
+    ],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['cese.org.br']",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://cese.org.br/wp-json/wp/v2/edital"
+    ]
+   }
   },
   {
    "id": "site-rede-filantropia",
@@ -4753,13 +6905,46 @@
     {
      "id": "plat-rede-filantropia",
      "nome": "Rede Filantropia — editais",
-     "dominios": []
+     "dominios": [],
+     "licoes": [
+      "dominios: []",
+      "bloqueios_registrados: None",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [],
+     "bloqueados": [],
+     "leituras": 4,
+     "com_resultado": 0
     }
    ],
    "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 4,
+    "com_resultado": 0,
+    "melhorias": [
+     "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10)."
+    ],
+    "dominios": [],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: []",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     null
+    ]
+   }
   },
   {
    "id": "site-editais-culturais",
@@ -4773,7 +6958,28 @@
    "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 0,
+    "com_resultado": 0,
+    "melhorias": [
+     "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10)."
+    ],
+    "dominios": [],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: []",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     null
+    ]
+   }
   },
   {
    "id": "site-mapa-osc",
@@ -4787,7 +6993,19 @@
     {
      "id": "plat-mapa-osc",
      "nome": "Mapa das OSC — editais",
-     "dominios": []
+     "dominios": [],
+     "licoes": [
+      "dominios: []",
+      "bloqueios_registrados: None",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [],
+     "bloqueados": [],
+     "leituras": 8,
+     "com_resultado": 0
     }
    ],
    "alvos": [
@@ -4797,12 +7015,49 @@
      "dominios": [
       "mapaosc.ipea.gov.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (mesmo portal)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (mesmo portal)",
+     "enderecos": [
+      "https://mapaosc.ipea.gov.br/"
+     ],
+     "orgao": "Mapa das OSC (IPEA)",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     }
    ],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 40,
+    "com_resultado": 6,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (mapaosc.ipea.gov.br): ponte pelo Brasil, navegador do titular ou espelho.",
+     "Os 1 alvos são vigiados só na janela prevista da próxima edição.",
+     "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10)."
+    ],
+    "dominios": [
+     "mapaosc.ipea.gov.br"
+    ],
+    "bloqueados": [
+     "mapaosc.ipea.gov.br"
+    ],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['mapaosc.ipea.gov.br']",
+     "bloqueios_registrados: {'mapaosc.ipea.gov.br': {'bloqueios': 3, 'erros': {'URLError': 3}, 'ultimo': '2026-09-25T11:57:30+00:00'}}",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://mapaosc.ipea.gov.br/editais"
+    ]
+   }
   },
   {
    "id": "site-prosas",
@@ -4818,25 +7073,91 @@
      "nome": "Prosas — editais para o terceiro setor",
      "dominios": [
       "prosas.com.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['prosas.com.br']",
+      "bloqueios_registrados: None",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [
+      "https://prosas.com.br/editais",
+      null
+     ],
+     "bloqueados": [],
+     "leituras": 19,
+     "com_resultado": 0
     },
     {
      "id": "plat-prosas-oscs",
      "nome": "plat-prosas-oscs",
-     "dominios": []
+     "dominios": [],
+     "licoes": [
+      "dominios: []",
+      "bloqueios_registrados: None",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [],
+     "bloqueados": [],
+     "leituras": 0,
+     "com_resultado": 0
     },
     {
      "id": "plat-prosas-premios",
      "nome": "Prosas — prêmios, concursos e cursos para OSCs",
      "dominios": [
       "prosas.com.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['prosas.com.br']",
+      "bloqueios_registrados: None",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [
+      "https://prosas.com.br/editais?natureza=premio",
+      null
+     ],
+     "bloqueados": [],
+     "leituras": 26,
+     "com_resultado": 0
     }
    ],
    "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 45,
+    "com_resultado": 0,
+    "melhorias": [
+     "2 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.",
+     "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10)."
+    ],
+    "dominios": [
+     "prosas.com.br"
+    ],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['prosas.com.br']",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://prosas.com.br/selecao/widgets/listagem-editais"
+    ]
+   }
   },
   {
    "id": "site-fundo-brasil",
@@ -4850,7 +7171,28 @@
    "alvos": [],
    "motor_novo": "site-fundo-brasil",
    "situacao": "conforme",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 0,
+    "com_resultado": 0,
+    "melhorias": [],
+    "dominios": [
+     "www.fundobrasil.org.br"
+    ],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['www.fundobrasil.org.br']",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://www.fundobrasil.org.br/wp-json/wp/v2/edital"
+    ]
+   }
   },
   {
    "id": "site-undef",
@@ -4864,7 +7206,26 @@
    "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 0,
+    "com_resultado": 0,
+    "melhorias": [],
+    "dominios": [],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: []",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     null
+    ]
+   }
   },
   {
    "id": "site-brazilfoundation",
@@ -4878,7 +7239,26 @@
    "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 0,
+    "com_resultado": 0,
+    "melhorias": [],
+    "dominios": [],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: []",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     null
+    ]
+   }
   },
   {
    "id": "outros-agregadores",
@@ -4903,7 +7283,33 @@
       "www.institutococacolabrasil.com.br",
       "www.maranguape.ce.gov.br",
       "www.onumulheres.org.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['chamamentos.itapevi.sp.gov.br', 'conexoes.bndes.gov.br', 'culteditais.cultura.gov.br', 'mostratenpo.cultura.go.gov.br', 'www.administracao.go.gov.br', 'www.boavista.rr.gov.br', 'www.institutoacp.org.br', 'www.institutococacolabrasil.com.br', 'www.m",
+      "bloqueios_registrados: {'culteditais.cultura.gov.br': {'bloqueios': 7, 'erros': {'HTTPError': 7}, 'ultimo': '2026-10-17T09:21:24+00:00'}, 'www.administracao.go.gov.br': {'bloqueios': 1, 'erros': {'ValueError': 1}, 'ultimo': '2026-10-16T00:12:27+00:00'}, 'www.boavista.rr.go",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: ['https://culteditais.cultura.gov.br/search/events', 'https://culteditais.cultura.gov.br/search/spaces', 'https://culteditais.cultura.gov.br/circuitos']"
+     ],
+     "rotas_conhecidas": [
+      "https://www.boavista.rr.gov.br/",
+      "https://conexoes.bndes.gov.br/chamadas-e-editais",
+      "https://www.institutococacolabrasil.com.br/",
+      "https://chamamentos.itapevi.sp.gov.br/chamamentos",
+      "https://www.maranguape.ce.gov.br/informa/328/edital-de-fomento-n-004-2026-espa-os-culturais",
+      "https://www.institutoacp.org.br/chamadaaberta"
+     ],
+     "bloqueados": [
+      "culteditais.cultura.gov.br",
+      "www.administracao.go.gov.br",
+      "www.boavista.rr.gov.br",
+      "www.institutoacp.org.br",
+      "www.institutococacolabrasil.com.br",
+      "www.onumulheres.org.br"
+     ],
+     "leituras": 44,
+     "com_resultado": 38
     },
     {
      "id": "outras-oportunidades-2",
@@ -4918,7 +7324,30 @@
       "www.editalcorredor2025.com.br",
       "www.institutodonanenembrz.com",
       "www.palmas.to.gov.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['banrisulcultural.com.br', 'fase.org.br', 'fns.cnbb.org.br', 'institutogenesio.org.br', 'licitamaisbrasil.com.br', 'www.cnbb.org.br', 'www.editalcorredor2025.com.br', 'www.institutodonanenembrz.com', 'www.palmas.to.gov.br']",
+      "bloqueios_registrados: {'banrisulcultural.com.br': {'bloqueios': 2, 'erros': {'URLError': 1, 'ErroPonte': 1}, 'ultimo': '2026-10-17T09:23:22+00:00'}, 'fns.cnbb.org.br': {'bloqueios': 8, 'erros': {'URLError': 4, 'ErroPonte': 4}, 'ultimo': '2026-10-17T09:22:55+00:00'}, 'www.",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [
+      "https://www.cnbb.org.br/cnbb-lanca-edital-do-fns-para-apoio-financeiro-a-projetos-relativos-a-campanha-da-fraternidade-2026",
+      "https://institutogenesio.org.br/wp-content/uploads/2026/10/Edital-Nao-Incentivado-Instituto-Genesio-A-Mendes-2026.pdf?utm_source=Link+da+Bio+do+RD+Station&utm_medium=social&utm_campaign=CTA+no+Link+da+Bio",
+      "https://fns.cnbb.org.br/fundo/informativo/index",
+      "https://fase.org.br/pt/acervo/documentos/edital-agitando-pensamentos-2026-roteiro/",
+      "http://www.editalcorredor2025.com.br",
+      "https://banrisulcultural.com.br/editais/"
+     ],
+     "bloqueados": [
+      "banrisulcultural.com.br",
+      "fns.cnbb.org.br",
+      "www.editalcorredor2025.com.br"
+     ],
+     "leituras": 38,
+     "com_resultado": 35
     },
     {
      "id": "outras-oportunidades-3",
@@ -4934,7 +7363,28 @@
       "transparencia.caubr.gov.br",
       "www.editalong.com",
       "www.sicredi.com.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['gazetadoestado.com.br', 'iracemapolis.siscam.com.br', 'itamarandibahoje.com.br', 'legacy.finep.gov.br', 'luppa.comidadoamanha.org', 'news.confap.org.br', 'plataforma9.com', 'transparencia.caubr.gov.br', 'www.editalong.com', 'www.sicredi.com.br']",
+      "bloqueios_registrados: {'transparencia.caubr.gov.br': {'bloqueios': 4, 'erros': {'HTTPError': 4}, 'ultimo': '2026-10-16T09:23:09+00:00'}}",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [
+      "https://luppa.comidadoamanha.org/wp-content/uploads/2026/09/Edital-Chamada-Cidades-LUPPA-6a-Edicao.pdf",
+      "https://itamarandibahoje.com.br/business2/edital-de-projetos-fundacao-aperam-acesita-social-2026.html",
+      "https://iracemapolis.siscam.com.br/arquivo?Id=41354",
+      "https://plataforma9.com/financiamento/brasil-mec-minc-edital-ciclos-de-saberes-mestras-mestres-culturas-tradicionais-populares.htm",
+      "https://gazetadoestado.com.br/geral/goiania-abre-10-vagas-para-sociedade-civil-em-comite-sobre-refugiados-migrantes-e-apatridas-inscricoes-de-247-a-78",
+      "https://news.confap.org.br/wp-content/uploads/2026/09/Diretrizes-da-FAPERGS-para-a-Chamada-WBI-2026.pdf"
+     ],
+     "bloqueados": [
+      "transparencia.caubr.gov.br"
+     ],
+     "leituras": 36,
+     "com_resultado": 26
     },
     {
      "id": "outras-oportunidades-4",
@@ -4950,7 +7400,31 @@
       "www.goias365.com.br",
       "www.institutoassai.org.br",
       "www.orizona.go.gov.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['cultura.rs.gov.br', 'goiasemcena.com.br', 'itacoatiara.am.gov.br', 'mapacultural.secult.ce.gov.br', 'transparencia.agilicloud.com.br', 'www.academiaassai.com.br', 'www.editalong.com', 'www.goias365.com.br', 'www.institutoassai.org.br', 'www.orizona",
+      "bloqueios_registrados: {'cultura.rs.gov.br': {'bloqueios': 2, 'erros': {'URLError': 2}, 'ultimo': '2026-10-14T20:22:56+00:00'}, 'transparencia.agilicloud.com.br': {'bloqueios': 4, 'erros': {'HTTPError': 4}, 'ultimo': '2026-10-03T09:16:34+00:00'}, 'www.academiaassai.com.br'",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [
+      "https://mapacultural.secult.ce.gov.br/oportunidade/8356/",
+      "https://transparencia.agilicloud.com.br/novaubirata/licitacoes/licitacao?id=12891",
+      "https://cultura.rs.gov.br/edital-para-projetos-culturais-em-escolas-de-tempo-integral-esta-com-inscricoes-abertas",
+      "https://www.editalong.com/editais",
+      "https://itacoatiara.am.gov.br/2026/10/pnab-ciclo-ii-inscricoes-abertas-para-mais-de-90-projetos-culturais-em-itacoatiara/",
+      "https://www.orizona.go.gov.br"
+     ],
+     "bloqueados": [
+      "cultura.rs.gov.br",
+      "transparencia.agilicloud.com.br",
+      "www.academiaassai.com.br",
+      "www.goias365.com.br"
+     ],
+     "leituras": 22,
+     "com_resultado": 22
     },
     {
      "id": "outras-oportunidades-5",
@@ -4966,7 +7440,32 @@
       "www.amazoniamaisdez.org.br",
       "www.energiaesaneamento.org.br",
       "www.fapesb.ba.gov.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['corumbadegoias.go.gov.br', 'doem.org.br', 'editais.baoba.org.br', 'institutosabin.org.br', 'mapacultural.saobernardo.sp.gov.br', 'notasocial.com.br', 'www.agenciadobem.org.br', 'www.amazoniamaisdez.org.br', 'www.energiaesaneamento.org.br', 'www.fap",
+      "bloqueios_registrados: {'doem.org.br': {'bloqueios': 17, 'erros': {'ValueError': 13, 'ErroPonte': 4}, 'ultimo': '2026-10-18T06:19:50+00:00'}, 'institutosabin.org.br': {'bloqueios': 72, 'erros': {'HTTPError': 68, 'URLError': 2, 'ErroPonte': 2}, 'ultimo': '2026-10-18T07:07:5",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: ['https://institutosabin.org.br/publicacoes']"
+     ],
+     "rotas_conhecidas": [
+      "https://notasocial.com.br/edital-de-selecao-de-projetos-incentivados-2025-abre-inscricoes/",
+      "https://www.energiaesaneamento.org.br/sonhar-o-mundo-2026-abre-inscricoes-para-instituicoes-de-todo-o-estado-de-sao-paulo/",
+      "https://www.agenciadobem.org.br/inscricoes-abertas-para-o-vi-edital-de-microprojetos-da-rede-do-bem/",
+      "http://doem.org.br/ba/miguelcalmon/editais",
+      "https://institutosabin.org.br/edital-da-jornada-transformacao-de-2026-e-lancado",
+      "https://www.fapesb.ba.gov.br/diretrizes-especificas-da-fapesb-chamada-transnacional-conjunta-water4all-2026-2027-gestao-sustentavel-dos-recursos-hidricos"
+     ],
+     "bloqueados": [
+      "doem.org.br",
+      "institutosabin.org.br",
+      "mapacultural.saobernardo.sp.gov.br",
+      "notasocial.com.br",
+      "www.amazoniamaisdez.org.br"
+     ],
+     "leituras": 35,
+     "com_resultado": 28
     },
     {
      "id": "outras-oportunidades-6",
@@ -4982,7 +7481,31 @@
       "www.institutounibanco.org.br",
       "www.itauvivermais.com.br",
       "www.microsoft.com"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['floresta-viva.fbds.org.br', 'govgestao.com.br', 'grants.com', 'oei.int', 'plan.org.br', 'tuifund.com', 'www.crars.org.br', 'www.institutounibanco.org.br', 'www.itauvivermais.com.br', 'www.microsoft.com']",
+      "bloqueios_registrados: {'tuifund.com': {'bloqueios': 9, 'erros': {'HTTPError': 9}, 'ultimo': '2026-10-16T00:23:41+00:00'}, 'www.crars.org.br': {'bloqueios': 1, 'erros': {'TimeoutError': 1}, 'ultimo': '2026-10-15T17:02:53+00:00'}, 'www.institutounibanco.org.br': {'bloqueios",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [
+      "https://www.crars.org.br/arquivos/chamamentos/Edital_de_Chamamento_Publico_004-2026.pdf",
+      "https://www.microsoft.com/pt-br/corporate-responsibility/philanthropies",
+      "http://www.itauvivermais.com.br/pilares/editais/edital-ivm-2026",
+      "https://plan.org.br/wp-content/uploads/2026/10/Regulamento-Edital-Fundo-Acelere-o-Relogio-2026.pdf",
+      "https://floresta-viva.fbds.org.br/edital-001-2026",
+      "https://govgestao.com.br/790d8a"
+     ],
+     "bloqueados": [
+      "tuifund.com",
+      "www.crars.org.br",
+      "www.institutounibanco.org.br",
+      "www.itauvivermais.com.br"
+     ],
+     "leituras": 32,
+     "com_resultado": 20
     },
     {
      "id": "outras-oportunidades-7",
@@ -4998,7 +7521,31 @@
       "potengi.ce.gov.br",
       "www.ibermusicas.org",
       "www.votuporanga.sp.gov.br"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['baoba.org.br', 'difusionconcausa.com', 'editaisdobrasil.com', 'fundacaocargill.org.br', 'fundopositivo.org.br', 'jornadasocial.com.br', 'muribeca.se.gov.br', 'potengi.ce.gov.br', 'www.ibermusicas.org', 'www.votuporanga.sp.gov.br']",
+      "bloqueios_registrados: {'editaisdobrasil.com': {'bloqueios': 1, 'erros': {'TimeoutError': 1}, 'ultimo': '2026-10-17T13:27:47+00:00'}, 'fundacaocargill.org.br': {'bloqueios': 1, 'erros': {'ErroPonte': 1}, 'ultimo': '2026-10-17T09:33:46+00:00'}, 'jornadasocial.com.br': {'blo",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: ['https://muribeca.se.gov.br/portaltransparencia/portaltransparencia?servico=cidadao/informacoes', 'https://muribeca.se.gov.br/portaltransparencia/portaltransparencia?servico=cidadao/diariooficial']"
+     ],
+     "rotas_conhecidas": [
+      "https://fundopositivo.org.br/editais/",
+      "https://editaisdobrasil.com/calendario",
+      "https://potengi.ce.gov.br/publicacoes.php?pagina=1",
+      "https://fundacaocargill.org.br/edital-regional-nutrindo-solucoes-locais-2/",
+      "https://www.votuporanga.sp.gov.br",
+      "https://muribeca.se.gov.br/portaltransparencia/?servico=cidadao/diariooficial"
+     ],
+     "bloqueados": [
+      "editaisdobrasil.com",
+      "fundacaocargill.org.br",
+      "jornadasocial.com.br",
+      "muribeca.se.gov.br"
+     ],
+     "leituras": 22,
+     "com_resultado": 22
     },
     {
      "id": "outras-oportunidades-8",
@@ -5012,17 +7559,57 @@
       "voluntariadoempresarial.org.br",
       "www.diariomunicipal.com.br",
       "www.neoenergia.com"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['aceleradora.glocal.org.br', 'casafluminense.org.br', 'comitedeculturasc.org', 'confap.org.br', 'traineeunileverexecutivo.com.br', 'voluntariadoempresarial.org.br', 'www.diariomunicipal.com.br', 'www.neoenergia.com']",
+      "bloqueios_registrados: {'aceleradora.glocal.org.br': {'bloqueios': 2, 'erros': {'ErroPonte': 2}, 'ultimo': '2026-10-18T04:31:03+00:00'}, 'casafluminense.org.br': {'bloqueios': 12, 'erros': {'HTTPError': 12}, 'ultimo': '2026-10-18T06:58:15+00:00'}, 'www.diariomunicipal.com.",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [
+      "https://aceleradora.glocal.org.br/",
+      "https://voluntariadoempresarial.org.br/voluntariado-de-alto-impacto-para-as-osc-atraindo-e-mantendo-parcerias-de-valor",
+      "https://traineeunileverexecutivo.com.br/",
+      "https://casafluminense.org.br/atuacao/fundo-casa-fluminense/",
+      "https://www.diariomunicipal.com.br/maceio/",
+      "https://comitedeculturasc.org/editais/edital-ambev-brasilidades-2026-2026"
+     ],
+     "bloqueados": [
+      "aceleradora.glocal.org.br",
+      "casafluminense.org.br",
+      "www.diariomunicipal.com.br"
+     ],
+     "leituras": 18,
+     "com_resultado": 11
     },
     {
      "id": "plat-captamos",
      "nome": "Captamos — oportunidades de captação",
-     "dominios": []
+     "dominios": [],
+     "licoes": [
+      "dominios: []",
+      "bloqueios_registrados: None",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [],
+     "bloqueados": [],
+     "leituras": 4,
+     "com_resultado": 0
     },
     {
      "id": "outras-oportunidades",
      "nome": "Outras Oportunidades",
-     "dominios": []
+     "dominios": [],
+     "licoes": [],
+     "rotas_conhecidas": [],
+     "bloqueados": [],
+     "leituras": 0,
+     "com_resultado": 0
     }
    ],
    "alvos": [
@@ -5032,7 +7619,17 @@
      "dominios": [
       "bussolasocial.com.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (agregador sem motor próprio)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (agregador sem motor próprio)",
+     "enderecos": [
+      "https://bussolasocial.com.br/"
+     ],
+     "orgao": "Bússola Social — Bússola Editais",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-captacao-218",
@@ -5040,7 +7637,17 @@
      "dominios": [
       "prosas.com.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (agregador sem motor próprio)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (agregador sem motor próprio)",
+     "enderecos": [
+      "https://prosas.com.br/editais"
+     ],
+     "orgao": "órgão a localizar",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "secundaria"
+     },
+     "forma_divulgacao": "plataforma_agregadora"
     },
     {
      "id": "f260-curadoria-008",
@@ -5048,12 +7655,39 @@
      "dominios": [
       "www.impactarte.org.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (agregador sem motor próprio)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (agregador sem motor próprio)",
+     "enderecos": [
+      "https://www.impactarte.org.br/cadastro-proponente"
+     ],
+     "orgao": "Instituto Impactarte",
+     "padrao": {
+      "natureza": "doacao_patrocinio",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "site_oficial"
     }
    ],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 381,
+    "com_resultado": 208,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (aceleradora.glocal.org.br, banrisulcultural.com.br, casafluminense.org.br, culteditais.cultura.gov.br, cultura.rs.gov.br…): ponte pelo Brasil, navegador do titular ou espelho.",
+     "O afinador já achou 10 rota(s) que funcionaram: entram como rotas do motor.",
+     "2 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.",
+     "Os 3 alvos são vigiados só na janela prevista da próxima edição.",
+     "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10).",
+     "Os domínios do antigo “Outras oportunidades” que pertencem a um motor existente são transferidos a ele; o restante fica aqui."
+    ],
+    "dominios": [],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [],
+    "rotas_conhecidas": []
+   }
   },
   {
    "id": "novo-fundacoes-institutos",
@@ -5067,12 +7701,36 @@
     {
      "id": "site-fundacao-banco-do-brasil",
      "nome": "site-fundacao-banco-do-brasil",
-     "dominios": []
+     "dominios": [],
+     "licoes": [
+      "dominios: []",
+      "bloqueios_registrados: None",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [],
+     "bloqueados": [],
+     "leituras": 0,
+     "com_resultado": 0
     },
     {
      "id": "site-itau-social",
      "nome": "site-itau-social",
-     "dominios": []
+     "dominios": [],
+     "licoes": [
+      "dominios: []",
+      "bloqueios_registrados: None",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [],
+     "bloqueados": [],
+     "leituras": 0,
+     "com_resultado": 0
     }
    ],
    "alvos": [
@@ -5082,7 +7740,17 @@
      "dominios": [
       "www.fbb.org.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://www.fbb.org.br/"
+     ],
+     "orgao": "Fundação Banco do Brasil",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-captacao-222",
@@ -5090,7 +7758,17 @@
      "dominios": [
       "www.fundacaoitau.org.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://www.fundacaoitau.org.br/"
+     ],
+     "orgao": "Fundação Itaú",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-captacao-223",
@@ -5098,7 +7776,17 @@
      "dominios": [
       "fundacao.bradesco"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://fundacao.bradesco/"
+     ],
+     "orgao": "Fundação Bradesco",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-captacao-224",
@@ -5106,7 +7794,17 @@
      "dominios": [
       "fundacaotelefonicavivo.org.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://fundacaotelefonicavivo.org.br/"
+     ],
+     "orgao": "Fundação Telefônica Vivo",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-captacao-225",
@@ -5114,7 +7812,17 @@
      "dominios": [
       "www.institutoclaro.org.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://www.institutoclaro.org.br/"
+     ],
+     "orgao": "Instituto Claro",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-captacao-226",
@@ -5122,7 +7830,17 @@
      "dominios": [
       "www.institutonatura.org"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://www.institutonatura.org/"
+     ],
+     "orgao": "Instituto Natura",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-captacao-227",
@@ -5130,7 +7848,17 @@
      "dominios": [
       "www.institutococacolabrasil.com.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://www.institutococacolabrasil.com.br/"
+     ],
+     "orgao": "Instituto Coca-Cola Brasil",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-captacao-228",
@@ -5138,7 +7866,17 @@
      "dominios": [
       "institutolocaliza.com.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://institutolocaliza.com.br/"
+     ],
+     "orgao": "Instituto Localiza",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-captacao-229",
@@ -5146,7 +7884,17 @@
      "dominios": [
       "www.institutovotorantim.org.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://www.institutovotorantim.org.br/"
+     ],
+     "orgao": "Instituto Votorantim",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-captacao-230",
@@ -5154,7 +7902,17 @@
      "dominios": [
       "fundacaoarcelormittal.org.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://fundacaoarcelormittal.org.br/"
+     ],
+     "orgao": "Fundação ArcelorMittal",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-captacao-231",
@@ -5162,7 +7920,17 @@
      "dominios": [
       "www.fundacaovale.org"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://www.fundacaovale.org/"
+     ],
+     "orgao": "Fundação Vale",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-captacao-232",
@@ -5170,7 +7938,17 @@
      "dominios": [
       "www.institutoneoenergia.org.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://www.institutoneoenergia.org.br/"
+     ],
+     "orgao": "Instituto Neoenergia",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-captacao-233",
@@ -5178,7 +7956,17 @@
      "dominios": [
       "www.institutosicoob.org.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://www.institutosicoob.org.br/"
+     ],
+     "orgao": "Instituto Sicoob",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-captacao-234",
@@ -5186,7 +7974,17 @@
      "dominios": [
       "www.institutounibanco.org.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://www.institutounibanco.org.br/"
+     ],
+     "orgao": "Instituto Unibanco",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-captacao-235",
@@ -5194,7 +7992,18 @@
      "dominios": [
       "www.institutolojasrenner.org.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://www.institutolojasrenner.org.br/edital-encantando-comunidades/",
+      "https://www.institutolojasrenner.org.br/"
+     ],
+     "orgao": "Instituto Lojas Renner",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-captacao-236",
@@ -5202,7 +8011,17 @@
      "dominios": [
       "www.fundacaogrupoboticario.org.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://www.fundacaogrupoboticario.org.br/"
+     ],
+     "orgao": "Fundação Grupo Boticário",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-captacao-237",
@@ -5210,7 +8029,17 @@
      "dominios": [
       "www.institutosabin.org.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://www.institutosabin.org.br/"
+     ],
+     "orgao": "Instituto Sabin",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html + capilaridade_imprensa",
+      "confianca_rota": "primaria_quando_no_dominio_oficial"
+     },
+     "forma_divulgacao": "pagina_institucional_privada"
     },
     {
      "id": "f260-curadoria-002",
@@ -5218,7 +8047,19 @@
      "dominios": [
       "chamadas.funbio.org.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://chamadas.funbio.org.br/planodemanejo-rppn",
+      "https://chamadas.funbio.org.br/usopublico-rppn",
+      "https://www.funbio.org.br/chamadas-de-projetos/"
+     ],
+     "orgao": "Fundo Brasileiro para a Biodiversidade — Funbio",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "site_oficial"
     },
     {
      "id": "f260-curadoria-003",
@@ -5227,7 +8068,18 @@
       "editais.movimentobemmaior.org.br",
       "movimentobemmaior.org.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://editais.movimentobemmaior.org.br/2026/",
+      "https://movimentobemmaior.org.br/"
+     ],
+     "orgao": "Movimento Bem Maior",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "site_oficial"
     },
     {
      "id": "f260-curadoria-004",
@@ -5235,7 +8087,17 @@
      "dominios": [
       "rededobem.org.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://rededobem.org.br/editais/"
+     ],
+     "orgao": "Agência do Bem",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "site_oficial"
     },
     {
      "id": "f260-curadoria-005",
@@ -5244,7 +8106,18 @@
       "conteudo.fundacaotidesetubal.org.br",
       "fundacaotidesetubal.org.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://fundacaotidesetubal.org.br/editais/",
+      "https://conteudo.fundacaotidesetubal.org.br/"
+     ],
+     "orgao": "Fundação Tide Setubal",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "site_oficial"
     },
     {
      "id": "f260-curadoria-006",
@@ -5252,7 +8125,17 @@
      "dominios": [
       "climaesociedade.org"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://climaesociedade.org/editais/"
+     ],
+     "orgao": "Instituto Clima e Sociedade",
+     "padrao": {
+      "natureza": "grant",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "site_oficial"
     },
     {
      "id": "f260-curadoria-007",
@@ -5260,7 +8143,18 @@
      "dominios": [
       "banrisulcultural.com.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://banrisulcultural.com.br/editais/",
+      "https://banrisulcultural.com.br/projeto/merece/"
+     ],
+     "orgao": "Banrisul Instituto Cultural e Social",
+     "padrao": {
+      "natureza": "edital",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "site_oficial"
     },
     {
      "id": "f260-curadoria-011",
@@ -5268,12 +8162,38 @@
      "dominios": [
       "mariaemilia.org.br"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)",
+     "enderecos": [
+      "https://mariaemilia.org.br/edital-fme-transforma/",
+      "https://mariaemilia.org.br"
+     ],
+     "orgao": "Fundacao Maria Emilia",
+     "padrao": {
+      "natureza": "grant",
+      "canal": "site_oficial",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "site_oficial"
     }
    ],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 825,
+    "com_resultado": 49,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (banrisulcultural.com.br, chamadas.funbio.org.br, climaesociedade.org, conteudo.fundacaotidesetubal.org.br, fundacao.bradesco…): ponte pelo Brasil, navegador do titular ou espelho.",
+     "O afinador já achou 35 rota(s) que funcionaram: entram como rotas do motor.",
+     "10 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.",
+     "Os 24 alvos são vigiados só na janela prevista da próxima edição."
+    ],
+    "dominios": [],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [],
+    "rotas_conhecidas": []
+   }
   },
   {
    "id": "novo-internacional",
@@ -5287,17 +8207,53 @@
     {
      "id": "site-embaixada-eua",
      "nome": "site-embaixada-eua",
-     "dominios": []
+     "dominios": [],
+     "licoes": [
+      "dominios: []",
+      "bloqueios_registrados: None",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [],
+     "bloqueados": [],
+     "leituras": 0,
+     "com_resultado": 0
     },
     {
      "id": "site-embaixada-japao",
      "nome": "site-embaixada-japao",
-     "dominios": []
+     "dominios": [],
+     "licoes": [
+      "dominios: []",
+      "bloqueios_registrados: None",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [],
+     "bloqueados": [],
+     "leituras": 0,
+     "com_resultado": 0
     },
     {
      "id": "site-iaf",
      "nome": "site-iaf",
-     "dominios": []
+     "dominios": [],
+     "licoes": [
+      "dominios: []",
+      "bloqueios_registrados: None",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [],
+     "bloqueados": [],
+     "leituras": 0,
+     "com_resultado": 0
     }
    ],
    "alvos": [
@@ -5307,7 +8263,17 @@
      "dominios": [
       "www.unesco.org"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://www.unesco.org/creativity/pt/ifcd"
+     ],
+     "orgao": "UNESCO — Fundo Internacional para a Diversidade Cultural",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-241",
@@ -5315,7 +8281,17 @@
      "dominios": [
       "www.unicef.org"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://www.unicef.org/brazil/"
+     ],
+     "orgao": "UNICEF Brasil",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-242",
@@ -5323,7 +8299,17 @@
      "dominios": [
       "www.undp.org"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://www.undp.org/pt/brazil"
+     ],
+     "orgao": "PNUD Brasil",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-243",
@@ -5331,7 +8317,17 @@
      "dominios": [
       "www.worldbank.org"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://www.worldbank.org/pt/country/brazil"
+     ],
+     "orgao": "Banco Mundial",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-244",
@@ -5339,7 +8335,17 @@
      "dominios": [
       "www.iadb.org"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://www.iadb.org/pt-br"
+     ],
+     "orgao": "BID",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-245",
@@ -5347,7 +8353,17 @@
      "dominios": [
       "www.usaid.gov"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://www.usaid.gov/"
+     ],
+     "orgao": "USAID",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-246",
@@ -5355,7 +8371,17 @@
      "dominios": [
       "erasmus-plus.ec.europa.eu"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://erasmus-plus.ec.europa.eu/"
+     ],
+     "orgao": "União Europeia — Erasmus+",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-247",
@@ -5363,7 +8389,17 @@
      "dominios": [
       "international-partnerships.ec.europa.eu"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://international-partnerships.ec.europa.eu/"
+     ],
+     "orgao": "União Europeia — International Partnerships",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-248",
@@ -5371,7 +8407,17 @@
      "dominios": [
       "www.opensocietyfoundations.org"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://www.opensocietyfoundations.org/"
+     ],
+     "orgao": "Open Society Foundations",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-249",
@@ -5379,7 +8425,17 @@
      "dominios": [
       "www.fordfoundation.org"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://www.fordfoundation.org/"
+     ],
+     "orgao": "Ford Foundation",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-250",
@@ -5387,7 +8443,17 @@
      "dominios": [
       "www.gatesfoundation.org"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://www.gatesfoundation.org/"
+     ],
+     "orgao": "Gates Foundation",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-251",
@@ -5395,7 +8461,17 @@
      "dominios": [
       "www.google.org"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://www.google.org/"
+     ],
+     "orgao": "Google.org",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-252",
@@ -5403,7 +8479,17 @@
      "dominios": [
       "www.facebook.com"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://www.facebook.com/community/"
+     ],
+     "orgao": "Meta Community Grants",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-253",
@@ -5411,7 +8497,17 @@
      "dominios": [
       "www.microsoft.com"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://www.microsoft.com/pt-br/corporate-responsibility/philanthropies"
+     ],
+     "orgao": "Microsoft Philanthropies",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-254",
@@ -5419,7 +8515,17 @@
      "dominios": [
       "www.globalfundforwomen.org"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://www.globalfundforwomen.org/"
+     ],
+     "orgao": "Global Fund for Women",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-255",
@@ -5427,7 +8533,17 @@
      "dominios": [
       "www.cjrfund.org"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://www.cjrfund.org/"
+     ],
+     "orgao": "Climate Justice Resilience Fund",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-256",
@@ -5435,7 +8551,17 @@
      "dominios": [
       "sgp.undp.org"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://sgp.undp.org/"
+     ],
+     "orgao": "GEF Small Grants Programme",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-257",
@@ -5443,7 +8569,17 @@
      "dominios": [
       "www.rockefellerfoundation.org"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://www.rockefellerfoundation.org/"
+     ],
+     "orgao": "Rockefeller Foundation",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-258",
@@ -5451,7 +8587,17 @@
      "dominios": [
       "skoll.org"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://skoll.org/"
+     ],
+     "orgao": "Skoll Foundation",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-259",
@@ -5459,7 +8605,17 @@
      "dominios": [
       "echoinggreen.org"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://echoinggreen.org/"
+     ],
+     "orgao": "Echoing Green",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     },
     {
      "id": "f260-captacao-260",
@@ -5467,12 +8623,37 @@
      "dominios": [
       "oakfnd.org"
      ],
-     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)",
+     "enderecos": [
+      "https://oakfnd.org/"
+     ],
+     "orgao": "Oak Foundation",
+     "padrao": {
+      "natureza": "recurso",
+      "canal": "varredura_html",
+      "confianca_rota": "primaria"
+     },
+     "forma_divulgacao": "submissao_internacional"
     }
    ],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 297,
+    "com_resultado": 6,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (sgp.undp.org, www.facebook.com, www.globalfundforwomen.org, www.undp.org, www.unesco.org): ponte pelo Brasil, navegador do titular ou espelho.",
+     "O afinador já achou 6 rota(s) que funcionaram: entram como rotas do motor.",
+     "17 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.",
+     "Os 21 alvos são vigiados só na janela prevista da próxima edição."
+    ],
+    "dominios": [],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [],
+    "rotas_conhecidas": []
+   }
   },
   {
    "id": "piloto-aberto",
@@ -5488,13 +8669,59 @@
      "nome": "Piloto - Espião — busca aberta no terceiro setor",
      "dominios": [
       "html.duckduckgo.com"
-     ]
+     ],
+     "licoes": [
+      "dominios: ['html.duckduckgo.com']",
+      "bloqueios_registrados: {'html.duckduckgo.com': {'bloqueios': 4, 'erros': {'URLError': 4}, 'ultimo': '2026-10-13T08:50:24+00:00'}}",
+      "robots_proibe: None",
+      "ponte_brasil_aprendida: None",
+      "alternativas_conhecidas: None",
+      "rotas_quebradas: []"
+     ],
+     "rotas_conhecidas": [
+      "https://html.duckduckgo.com/html/?q=",
+      null,
+      "https://html.duckduckgo.com/html/?q=plataforma+editais+terceiro+setor+brasil"
+     ],
+     "bloqueados": [
+      "html.duckduckgo.com"
+     ],
+     "leituras": 98,
+     "com_resultado": 53
     }
    ],
    "alvos": [],
    "motor_novo": "espiao",
    "situacao": "conforme",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 98,
+    "com_resultado": 53,
+    "melhorias": [
+     "Rota de acesso única para os domínios com bloqueio (html.duckduckgo.com): ponte pelo Brasil, navegador do titular ou espelho.",
+     "É IA (piloto), não motor: fica na camada de Investigação, com o aprendizado e o provedor trocável."
+    ],
+    "dominios": [
+     "html.duckduckgo.com"
+    ],
+    "bloqueados": [
+     "html.duckduckgo.com"
+    ],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: ['html.duckduckgo.com']",
+     "bloqueios_registrados: {'html.duckduckgo.com': {'bloqueios': 4, 'erros': {'URLError': 4}, 'ultimo': '2026-10-13T08:50:24+00:00'}}",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": [
+     "https://html.duckduckgo.com/html/?q=",
+     null,
+     "https://html.duckduckgo.com/html/?q=plataforma+editais+terceiro+setor+brasil"
+    ]
+   }
   },
   {
    "id": "piloto-interceptador",
@@ -5508,7 +8735,26 @@
    "alvos": [],
    "motor_novo": "interceptador",
    "situacao": "conforme",
-   "observacao": ""
+   "observacao": "",
+   "aprendizado_eldorado0": {
+    "leituras": 0,
+    "com_resultado": 0,
+    "melhorias": [
+     "É IA (piloto), não motor: fica na camada de Investigação, com o aprendizado e o provedor trocável."
+    ],
+    "dominios": [],
+    "bloqueados": [],
+    "robots_proibe": [],
+    "licoes": [
+     "dominios: []",
+     "bloqueios_registrados: None",
+     "robots_proibe: None",
+     "ponte_brasil_aprendida: None",
+     "alternativas_conhecidas: None",
+     "rotas_quebradas: []"
+    ],
+    "rotas_conhecidas": []
+   }
   }
  ]
 }

@@ -307,6 +307,41 @@ def missao(config: Path = CONFIG, quantas: int = 1, anotar: bool = typer.Option(
             typer.echo(f"::notice title=Achado do Espião::{a.titulo[:200]} <{a.link_divulgacao}>")
 
 
+motor_app = typer.Typer(help="Criar motores pela orientação de design (eldorado/motores/skills/criar-motor/SKILL.md).")
+app.add_typer(motor_app, name="motor")
+
+
+@motor_app.command("ficha")
+def motor_ficha(id: str):
+    """O que o estudo definiu para o motor e o aprendizado do Eldorado0 (só para aprender)."""
+    from ...motores.canal.fabrica import ficha
+    typer.echo(ficha(id))
+
+
+@motor_app.command("criar")
+def motor_criar(id: str):
+    """O esqueleto da configuração, com a identidade, os alvos, o aprendizado e a métrica preenchidos."""
+    from ...motores.canal.fabrica import criar
+    typer.echo(f"criado: {criar(id)} — decida as rotas pela sondagem e valide com: eldorado motor validar {id}")
+
+
+@motor_app.command("validar")
+def motor_validar(id: str):
+    """O que a orientação exige: aceito pelo registro, conforme o estudo, duas rotas, os alvos do estudo e métrica."""
+    from ...motores.canal.fabrica import validar
+    r = validar(id)
+    for nome, ok, det in r:
+        typer.echo(f"  {'✓' if ok else '✗'} {nome}: {det}")
+    raise typer.Exit(0 if all(ok for _, ok, _ in r) else 1)
+
+
+@motor_app.command("sondar")
+def motor_sondar(id: str, anotar: bool = typer.Option(False, "--anotar")):
+    """Sonda todas as rotas do motor (fontes, alvos e documentos do programa); precisa de internet."""
+    from ...motores.canal.fabrica import enderecos
+    sondar(enderecos(id), anotar)
+
+
 @app.command()
 def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = CONFIG,
                limite_min: float = typer.Option(320, help="duração desta execução; perto do limite, grava e passa a vez à continuação"),
