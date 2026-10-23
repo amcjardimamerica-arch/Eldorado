@@ -78,7 +78,22 @@ class Gravador:
             except (sqlite3.Error, KeyError, ValueError, TypeError) as e:
                 if con.in_transaction:
                     con.execute("ROLLBACK")
+                if self._mesmo_livro_ja_criado(con, ev, e):        # a mesma criação feita por outra parte do sistema na mesma passagem
+                    con.execute("INSERT OR IGNORE INTO evento_aplicado(id, tipo, aplicado_em) VALUES (?,?,?)", (chave, ev.tipo, agora()))
+                    con.commit()
+                    r.repetidos += 1
+                    continue
                 self._recusar(ev, r, f"{alvo.banco}.{alvo.tabela}: {type(e).__name__}: {e}")
+
+    @staticmethod
+    def _mesmo_livro_ja_criado(con: sqlite3.Connection, ev: Evento, e: Exception) -> bool:
+        """O livro é identificado pela chave (o id é derivado dela): a segunda criação do mesmo livro, feita pelo Cartório e pela
+        rede na mesma passagem antes de a primeira ser aplicada, é uma repetição, não um erro de dado (23/10/2026)."""
+        if ev.tipo != "livro.criado" or not isinstance(e, sqlite3.IntegrityError) or "UNIQUE" not in str(e):
+            return False
+        d = ev.dados
+        sql = "SELECT 1 FROM livro WHERE id = ? AND missao = ? AND chave = ?"           # a criação idêntica: o mesmo id e a mesma chave
+        return con.execute(sql, (d.get("id"), d.get("missao"), d.get("chave"))).fetchone() is not None
 
     def _executar(self, con: sqlite3.Connection, alvo: Alvo, dados: dict[str, Any]) -> None:
         if alvo.operacao == "pagina":

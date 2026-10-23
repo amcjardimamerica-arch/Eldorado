@@ -90,3 +90,14 @@ def test_alarme_da_recusa_fica_no_diario(gravador, diario):
     gravador.aplicar([ev("livro.passagem", livro_id="nao-existe", para="farol", em=AGORA, autorizado_por="regencia")])
     tipos = [e.tipo for e in ler(diario.arquivo.parent.parent.parent.parent)]
     assert "alarme.aberto" in tipos
+
+
+def test_a_mesma_criacao_de_livro_duas_vezes_e_repeticao(gravador, bancos):
+    """O Cartório e a rede, na mesma passagem, criam o mesmo livro (o id vem da chave): a segunda é repetição, não recusa."""
+    from conftest import AGORA, ev
+    criar = dict(id="L-abc", missao="oportunidades", chave="abc", titulo="Edital", estrela="sem", selo_livro="sem", informacoes_validadas=0,
+                 situacao="em trabalho", criado_em=AGORA, atualizado_em=AGORA)
+    r = gravador.aplicar([ev("livro.criado", **criar), ev("livro.criado", **criar)])
+    assert r.ok and r.aplicados == 1 and r.repetidos == 1
+    outro = gravador.aplicar([ev("livro.criado", **{**criar, "id": "L-outro", "chave": "outra"}), ev("livro.criado", **{**criar, "id": "L-abc", "chave": "zzz"})])
+    assert not outro.ok and len(outro.recusados) == 1                                       # um id repetido com outra chave segue sendo recusado
