@@ -1,66 +1,226 @@
 {
- "versao": 1,
+ "versao": 2,
  "arquivos": [
   {
-   "arquivo": "eldorado/base/nucleo/contratos.py",
-   "parte": "BASE",
-   "componente": "Núcleo da plataforma",
+   "arquivo": ".github/workflows/eldorado.yml",
+   "etapa": "01 Operação: o que acorda o sistema",
+   "parte": "OPERACAO",
+   "componente": "Operação e configuração",
    "ligacoes": [],
    "critico": true,
-   "metrica": "todo módulo registrado passa no teste de contrato"
+   "metrica": "o sistema roda sem intervenção",
+   "finalidade": "",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 63,
+   "situacao": "em funcionamento",
+   "ordem": 1
   },
   {
-   "arquivo": "eldorado/base/nucleo/registro.py",
+   "arquivo": "eldorado/base/nucleo/comandos.py",
+   "linhas": 346,
+   "finalidade": "Os comandos da plataforma: os mesmos no GitHub, no computador da titular e (depois) no painel.",
+   "depende_de": [
+    "eldorado/base/cartorio/analise_externa.py",
+    "eldorado/base/cerebro/fila.py",
+    "eldorado/base/cerebro/governador.py",
+    "eldorado/base/cerebro/inventario.py",
+    "eldorado/base/fluxo/agenda.py",
+    "eldorado/base/fluxo/definicao.py",
+    "eldorado/base/fluxo/executor.py",
+    "eldorado/base/fluxo/fila.py",
+    "eldorado/base/fluxo/nos.py",
+    "eldorado/base/migracao/importar_eldorado0.py",
+    "eldorado/base/nucleo/config.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/expurgo_externo.py",
+    "eldorado/base/nucleo/gravador.py",
+    "eldorado/base/painel/visoes.py",
+    "eldorado/motores/acesso/api.py",
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/acesso/leve.py"
+   ],
+   "eventos": [],
+   "acionado_por": [
+    ".github/workflows/eldorado.yml (eldorado permanente)"
+   ],
+   "usado_por": [],
+   "testes": [
+    "test_comandos.py",
+    "test_migracao.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "01 Operação: o que acorda o sistema",
    "parte": "BASE",
    "componente": "Núcleo da plataforma",
    "ligacoes": [
-    "eldorado/base/nucleo/contratos.py",
-    "eldorado/base/nucleo/config.py"
+    "eldorado/base/cartorio/analise_externa.py",
+    "eldorado/base/cerebro/fila.py",
+    "eldorado/base/cerebro/governador.py",
+    "eldorado/base/cerebro/inventario.py",
+    "eldorado/base/fluxo/agenda.py",
+    "eldorado/base/fluxo/definicao.py",
+    "eldorado/base/fluxo/executor.py",
+    "eldorado/base/fluxo/fila.py",
+    "eldorado/base/fluxo/nos.py",
+    "eldorado/base/migracao/importar_eldorado0.py",
+    "eldorado/base/nucleo/config.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/expurgo_externo.py",
+    "eldorado/base/nucleo/gravador.py",
+    "eldorado/base/painel/visoes.py",
+    "eldorado/motores/acesso/api.py",
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/acesso/leve.py"
    ],
    "critico": false,
-   "metrica": "módulos ligados × módulos com contrato válido; módulo recusado gera alarme"
+   "metrica": "comandos executados sem erro",
+   "ordem": 2
+  },
+  {
+   "arquivo": "scripts/gravar.sh",
+   "etapa": "01 Operação: o que acorda o sistema",
+   "parte": "OPERACAO",
+   "componente": "Operação e configuração",
+   "ligacoes": [],
+   "critico": true,
+   "metrica": "o sistema roda sem intervenção",
+   "finalidade": "",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 18,
+   "situacao": "em funcionamento",
+   "ordem": 3
+  },
+  {
+   "arquivo": "eldorado/base/nucleo/__init__.py",
+   "linhas": 0,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_acesso.py",
+    "test_alarmes.py",
+    "test_auditoria.py",
+    "test_cartorio.py",
+    "test_cerebro.py",
+    "test_comandos.py",
+    "test_config.py",
+    "test_contratos.py",
+    "test_eventos.py",
+    "test_executor.py",
+    "test_expurgo_externo.py",
+    "test_governador.py",
+    "test_gravador.py",
+    "test_incentivos.py",
+    "test_interceptador.py",
+    "test_linha_cartorio.py",
+    "test_migracao.py",
+    "test_missao.py",
+    "test_motores_api.py",
+    "test_painel.py",
+    "test_passagem_real.py",
+    "test_seguranca.py"
+   ],
+   "situacao": "pacote",
+   "etapa": "02 Núcleo: contratos, eventos e gravação",
+   "parte": "BASE",
+   "componente": "Núcleo: contratos, eventos e gravação",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 4
   },
   {
    "arquivo": "eldorado/base/nucleo/config.py",
+   "linhas": 66,
+   "finalidade": "A configuração da plataforma, validada na carga.",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/nucleo/comandos.py"
+   ],
+   "testes": [
+    "test_config.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "02 Núcleo: contratos, eventos e gravação",
    "parte": "BASE",
    "componente": "Núcleo da plataforma",
    "ligacoes": [],
    "critico": false,
-   "metrica": "configuração válida na carga"
+   "metrica": "configuração válida na carga",
+   "ordem": 5
   },
   {
-   "arquivo": "eldorado/base/nucleo/eventos.py",
-   "parte": "BASE",
-   "componente": "Núcleo da plataforma",
-   "ligacoes": [
-    "eldorado/base/nucleo/contratos.py"
-   ],
-   "critico": true,
-   "metrica": "eventos gravados por execução; eventos inválidos (devem ser zero)"
-  },
-  {
-   "arquivo": "eldorado/base/nucleo/gravador.py",
-   "parte": "BASE",
-   "componente": "Núcleo da plataforma",
-   "ligacoes": [
+   "arquivo": "eldorado/base/nucleo/contratos.py",
+   "linhas": 179,
+   "finalidade": "Os contratos do Eldorado.",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/cartorio.py",
+    "eldorado/base/cartorio/indice.py",
+    "eldorado/base/cerebro/pertinencia.py",
+    "eldorado/base/cerebro/regencia.py",
+    "eldorado/base/missao/oportunidades.py",
     "eldorado/base/nucleo/eventos.py",
-    "eldorado/banco/biblioteca/esquema.py",
-    "eldorado/banco/especial/esquema.py",
-    "eldorado/banco/cerebro_db/esquema.py",
-    "eldorado/base/painel/visoes.py"
+    "eldorado/base/nucleo/gravador.py",
+    "eldorado/base/nucleo/registro.py",
+    "eldorado/motores/canal/motor.py",
+    "eldorado/motores/pilotos/interceptador.py"
    ],
-   "critico": true,
-   "metrica": "atraso entre evento e banco; violações barradas pelas regras do banco"
-  },
-  {
-   "arquivo": "eldorado/base/nucleo/alarmes.py",
+   "testes": [
+    "test_cartorio.py",
+    "test_cerebro.py",
+    "test_contratos.py",
+    "test_incentivos.py",
+    "test_interceptador.py",
+    "test_linha_cartorio.py",
+    "test_missao.py",
+    "test_painel.py",
+    "test_seguranca.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "02 Núcleo: contratos, eventos e gravação",
    "parte": "BASE",
    "componente": "Núcleo da plataforma",
-   "ligacoes": [
-    "eldorado/base/nucleo/eventos.py"
-   ],
+   "ligacoes": [],
    "critico": true,
-   "metrica": "alarmes abertos por gravidade; tempo até o alarme ser visto"
+   "metrica": "todo módulo registrado passa no teste de contrato",
+   "ordem": 6
+  },
+  {
+   "arquivo": "eldorado/base/nucleo/expurgo_externo.py",
+   "linhas": 75,
+   "finalidade": "O expurgo físico pela análise externa (titular, 22/10/2026): \"o sistema não apaga nada, mas o Claude pode apagar e",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/nucleo/comandos.py"
+   ],
+   "testes": [
+    "test_expurgo_externo.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "02 Núcleo: contratos, eventos e gravação",
+   "parte": "BASE",
+   "componente": "Núcleo: contratos, eventos e gravação",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 7
   },
   {
    "arquivo": "eldorado/base/nucleo/ia.py",
@@ -71,671 +231,312 @@
     "eldorado/base/cerebro/governador.py"
    ],
    "critico": false,
-   "metrica": "respostas válidas (meta 90%); custo e tempo por tarefa"
-  },
-  {
-   "arquivo": "eldorado/base/nucleo/comandos.py",
-   "parte": "BASE",
-   "componente": "Núcleo da plataforma",
-   "ligacoes": [
-    "eldorado/base/fluxo/executor.py",
-    "eldorado/base/nucleo/config.py"
-   ],
-   "critico": false,
-   "metrica": "comandos executados sem erro"
+   "metrica": "respostas válidas (meta 90%); custo e tempo por tarefa",
+   "etapa": "02 Núcleo: contratos, eventos e gravação",
+   "situacao": "a construir",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "respostas válidas (meta 90%); custo e tempo por tarefa",
+   "ordem": 8
   },
   {
    "arquivo": "eldorado/base/nucleo/seguranca.py",
+   "linhas": 36,
+   "finalidade": "A segurança dos textos lidos: os padrões de injeção de instruções (prompt injection).",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "testes": [
+    "test_seguranca.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "02 Núcleo: contratos, eventos e gravação",
+   "parte": "BASE",
+   "componente": "Núcleo da plataforma",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "nenhuma credencial ou CPF desnecessário publicado",
+   "ordem": 9
+  },
+  {
+   "arquivo": "eldorado/base/nucleo/eventos.py",
+   "linhas": 223,
+   "finalidade": "Os eventos: a única forma de escrita do Eldorado.",
+   "depende_de": [
+    "eldorado/base/nucleo/contratos.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/analise_externa.py",
+    "eldorado/base/cartorio/auditoria.py",
+    "eldorado/base/cartorio/cartorio.py",
+    "eldorado/base/cartorio/certificacao.py",
+    "eldorado/base/cartorio/indice.py",
+    "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/cartorio/selos.py",
+    "eldorado/base/cerebro/aprendizado.py",
+    "eldorado/base/cerebro/completude.py",
+    "eldorado/base/cerebro/encaminhamento.py",
+    "eldorado/base/cerebro/governador.py",
+    "eldorado/base/cerebro/medicao.py",
+    "eldorado/base/cerebro/pertinencia.py",
+    "eldorado/base/cerebro/rede.py",
+    "eldorado/base/cerebro/regencia.py",
+    "eldorado/base/cerebro/regras.py",
+    "eldorado/base/fluxo/executor.py",
+    "eldorado/base/fluxo/nos.py",
+    "eldorado/base/migracao/importar_eldorado0.py",
+    "eldorado/base/nucleo/alarmes.py",
+    "eldorado/base/nucleo/comandos.py",
+    "eldorado/base/nucleo/gravador.py",
+    "eldorado/base/nucleo/recibo.py",
+    "eldorado/base/nucleo/registro.py",
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "testes": [
+    "test_acesso.py",
+    "test_alarmes.py",
+    "test_auditoria.py",
+    "test_cerebro.py",
+    "test_eventos.py",
+    "test_executor.py",
+    "test_governador.py",
+    "test_gravador.py",
+    "test_incentivos.py",
+    "test_interceptador.py",
+    "test_linha_cartorio.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "02 Núcleo: contratos, eventos e gravação",
    "parte": "BASE",
    "componente": "Núcleo da plataforma",
    "ligacoes": [
-    "eldorado/base/painel/api.py"
-   ],
-   "critico": false,
-   "metrica": "nenhuma credencial ou CPF desnecessário publicado"
-  },
-  {
-   "arquivo": "eldorado/base/fluxo/definicao.py",
-   "parte": "BASE",
-   "componente": "Workflow, fila e agenda",
-   "ligacoes": [
     "eldorado/base/nucleo/contratos.py"
    ],
-   "critico": false,
-   "metrica": "workflows válidos e versionados"
+   "critico": true,
+   "metrica": "eventos gravados por execução; eventos inválidos (devem ser zero)",
+   "ordem": 10
   },
   {
-   "arquivo": "eldorado/base/fluxo/executor.py",
+   "arquivo": "eldorado/base/nucleo/alarmes.py",
+   "linhas": 41,
+   "finalidade": "Nenhum erro é engolido: todo erro vira um evento de alarme, e o erro continua subindo.",
+   "depende_de": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [
+    "alarme.aberto",
+    "alarme.fechado"
+   ],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/fluxo/executor.py"
+   ],
+   "testes": [
+    "test_alarmes.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "02 Núcleo: contratos, eventos e gravação",
    "parte": "BASE",
-   "componente": "Workflow, fila e agenda",
+   "componente": "Núcleo da plataforma",
    "ligacoes": [
-    "eldorado/base/fluxo/definicao.py",
-    "eldorado/base/fluxo/fila.py",
-    "eldorado/base/nucleo/eventos.py",
-    "eldorado/base/nucleo/recibo.py"
+    "eldorado/base/nucleo/eventos.py"
    ],
    "critico": true,
-   "metrica": "execuções retomadas sem perda; passos com falha"
+   "metrica": "alarmes abertos por gravidade; tempo até o alarme ser visto",
+   "ordem": 11
   },
   {
-   "arquivo": "eldorado/base/fluxo/fila.py",
+   "arquivo": "eldorado/base/nucleo/gravador.py",
+   "linhas": 169,
+   "finalidade": "O gravador único: o único que escreve nos bancos.",
+   "depende_de": [
+    "eldorado/banco/_sqlite.py",
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [
+    "alarme.aberto"
+   ],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/fluxo/nos.py",
+    "eldorado/base/nucleo/comandos.py"
+   ],
+   "testes": [
+    "test_migracao.py",
+    "test_passagem_real.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "02 Núcleo: contratos, eventos e gravação",
    "parte": "BASE",
-   "componente": "Workflow, fila e agenda",
+   "componente": "Núcleo da plataforma",
    "ligacoes": [
-    "eldorado/base/cerebro/governador.py"
+    "eldorado/banco/_sqlite.py",
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": true,
+   "metrica": "atraso entre evento e banco; violações barradas pelas regras do banco",
+   "ordem": 12
+  },
+  {
+   "arquivo": "eldorado/base/nucleo/recibo.py",
+   "linhas": 52,
+   "finalidade": "A medição de uma chamada: tempo, processador e memória de pico, e se deu certo.",
+   "depende_de": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [
+    "chamada.recibo"
+   ],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cerebro/regencia.py",
+    "eldorado/base/fluxo/executor.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "02 Núcleo: contratos, eventos e gravação",
+   "parte": "BASE",
+   "componente": "Núcleo da plataforma",
+   "ligacoes": [
+    "eldorado/base/nucleo/eventos.py"
    ],
    "critico": false,
-   "metrica": "tarefas atrasadas; tarefas com erro"
+   "metrica": "chamadas medidas",
+   "ordem": 13
   },
   {
-   "arquivo": "eldorado/base/fluxo/agenda.py",
-   "parte": "BASE",
-   "componente": "Workflow, fila e agenda",
-   "ligacoes": [
-    "eldorado/base/fluxo/fila.py",
-    "eldorado/base/analise/preditivo.py"
+   "arquivo": "eldorado/base/nucleo/registro.py",
+   "linhas": 81,
+   "finalidade": "O registro dos módulos ligados: confere o contrato antes de aceitar, e arquiva em vez de apagar.",
+   "depende_de": [
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/base/nucleo/eventos.py"
    ],
-   "critico": false,
-   "metrica": "motores devidos e acionados no horário"
-  },
-  {
-   "arquivo": "eldorado/base/cerebro/rede.py",
-   "parte": "BASE",
-   "componente": "Cérebro: Regência e Pertinência e aprendizado",
-   "ligacoes": [
-    "eldorado/banco/cerebro_db/esquema.py"
+   "eventos": [
+    "modulo.registrado"
    ],
-   "critico": false,
-   "metrica": "discernimento, precisão, revocação; idade do modelo"
-  },
-  {
-   "arquivo": "eldorado/base/cerebro/regencia.py",
-   "parte": "BASE",
-   "componente": "Cérebro: Regência e Pertinência e aprendizado",
-   "ligacoes": [
+   "acionado_por": [],
+   "usado_por": [
     "eldorado/base/cartorio/cartorio.py",
-    "eldorado/base/cerebro/governador.py",
-    "eldorado/base/cerebro/rede.py",
-    "eldorado/base/fluxo/agenda.py",
-    "eldorado/base/fluxo/executor.py",
-    "eldorado/base/nucleo/recibo.py"
-   ],
-   "critico": true,
-   "metrica": "acionamentos no horário; passagens autorizadas"
-  },
-  {
-   "arquivo": "eldorado/base/cerebro/pertinencia.py",
-   "parte": "BASE",
-   "componente": "Cérebro: Regência e Pertinência e aprendizado",
-   "ligacoes": [
-    "eldorado/base/cerebro/rede.py",
-    "eldorado/base/missao/portao.py",
-    "eldorado/base/cerebro/regras.py"
-   ],
-   "critico": true,
-   "metrica": "achados aceitos e barrados com motivo; decisões contrariadas por veredito"
-  },
-  {
-   "arquivo": "eldorado/base/cerebro/aprendizado.py",
-   "parte": "BASE",
-   "componente": "Cérebro: Regência e Pertinência e aprendizado",
-   "ligacoes": [
-    "eldorado/banco/cerebro_db/esquema.py",
-    "eldorado/base/nucleo/registro.py"
-   ],
-   "critico": false,
-   "metrica": "aprendizados promovidos e arquivados"
-  },
-  {
-   "arquivo": "eldorado/base/cerebro/regras.py",
-   "parte": "BASE",
-   "componente": "Cérebro: Regência e Pertinência e aprendizado",
-   "ligacoes": [
-    "eldorado/banco/cerebro_db/esquema.py"
-   ],
-   "critico": false,
-   "metrica": "decisões aplicadas; contradições abertas (devem ser zero)"
-  },
-  {
-   "arquivo": "eldorado/base/cerebro/completude.py",
-   "parte": "BASE",
-   "componente": "Cérebro: Regência e Pertinência e aprendizado",
-   "ligacoes": [
+    "eldorado/base/cerebro/encaminhamento.py",
+    "eldorado/base/cerebro/pertinencia.py",
     "eldorado/base/cerebro/regencia.py"
    ],
-   "critico": false,
-   "metrica": "cobertura do dia (meta 100%)"
-  },
-  {
-   "arquivo": "eldorado/base/cerebro/medicao.py",
+   "testes": [
+    "test_cerebro.py",
+    "test_interceptador.py",
+    "test_motores_api.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "02 Núcleo: contratos, eventos e gravação",
    "parte": "BASE",
-   "componente": "Cérebro: Regência e Pertinência e aprendizado",
-   "ligacoes": [
-    "eldorado/base/nucleo/eventos.py",
-    "eldorado/base/nucleo/registro.py"
-   ],
-   "critico": true,
-   "metrica": "arquivos com as três medições na passagem (meta 100%)"
-  },
-  {
-   "arquivo": "eldorado/base/cerebro/governador.py",
-   "parte": "BASE",
-   "componente": "Cérebro: Regência e Pertinência e aprendizado",
-   "ligacoes": [
-    "eldorado/base/fluxo/fila.py"
-   ],
-   "critico": true,
-   "metrica": "tempo acima de 85% (meta zero)"
-  },
-  {
-   "arquivo": "eldorado/base/cartorio/cartorio.py",
-   "parte": "BASE",
-   "componente": "Cartório: base de passagem",
-   "ligacoes": [
-    "eldorado/base/cartorio/passaporte.py",
-    "eldorado/base/cartorio/indice.py",
-    "eldorado/base/cartorio/certificacao.py",
-    "eldorado/base/cartorio/selos.py",
-    "eldorado/banco/biblioteca/livro.py"
-   ],
-   "critico": true,
-   "metrica": "livros movidos por passagem; livros parados além do previsto"
-  },
-  {
-   "arquivo": "eldorado/base/cartorio/passaporte.py",
-   "parte": "BASE",
-   "componente": "Cartório: base de passagem",
-   "ligacoes": [
-    "eldorado/banco/biblioteca/livro.py"
-   ],
-   "critico": false,
-   "metrica": "livros sem passaporte (zero)"
-  },
-  {
-   "arquivo": "eldorado/base/cartorio/indice.py",
-   "parte": "BASE",
-   "componente": "Cartório: base de passagem",
-   "ligacoes": [
-    "eldorado/base/missao/chave.py",
-    "eldorado/banco/biblioteca/livro.py"
-   ],
-   "critico": false,
-   "metrica": "duplicados unidos; livros criados e vinculados"
-  },
-  {
-   "arquivo": "eldorado/base/cartorio/certificacao.py",
-   "parte": "BASE",
-   "componente": "Cartório: base de passagem",
-   "ligacoes": [
-    "eldorado/base/missao/itens.py",
-    "eldorado/banco/biblioteca/livro.py"
-   ],
-   "critico": false,
-   "metrica": "certidões reais: reconhece 64%, valor certo 84%, ponta a ponta 54% (linha de base 22/10)"
-  },
-  {
-   "arquivo": "eldorado/base/cartorio/selos.py",
-   "parte": "BASE",
-   "componente": "Cartório: base de passagem",
-   "ligacoes": [
-    "eldorado/banco/biblioteca/livro.py",
-    "eldorado/base/analise/preditivo.py"
-   ],
-   "critico": false,
-   "metrica": "livros sem selo (zero; hoje 70%)"
-  },
-  {
-   "arquivo": "eldorado/base/cartorio/site_oficial.py",
-   "parte": "BASE",
-   "componente": "Cartório: base de passagem",
-   "ligacoes": [
-    "eldorado/motores/acesso/escada.py",
-    "eldorado/banco/biblioteca/livro.py"
-   ],
-   "critico": false,
-   "metrica": "livros com link oficial aprovado"
-  },
-  {
-   "arquivo": "eldorado/base/investigacao/investigacao.py",
-   "parte": "BASE",
-   "componente": "Etapa de Investigação",
-   "ligacoes": [
-    "eldorado/motores/pilotos/interceptador.py",
-    "eldorado/base/cartorio/cartorio.py"
-   ],
-   "critico": false,
-   "metrica": "livros investigados e itens comprovados por livro"
-  },
-  {
-   "arquivo": "eldorado/base/verificacao/verificacao.py",
-   "parte": "BASE",
-   "componente": "Etapa de Verificação externa",
-   "ligacoes": [
-    "eldorado/base/verificacao/lote.py",
-    "eldorado/base/verificacao/importacao.py",
-    "eldorado/base/cartorio/cartorio.py"
-   ],
-   "critico": false,
-   "metrica": "livros em verificação; decisões recebidas"
-  },
-  {
-   "arquivo": "eldorado/base/verificacao/lote.py",
-   "parte": "BASE",
-   "componente": "Etapa de Verificação externa",
-   "ligacoes": [
-    "eldorado/banco/biblioteca/livro.py"
-   ],
-   "critico": false,
-   "metrica": "lotes gerados"
-  },
-  {
-   "arquivo": "eldorado/base/verificacao/importacao.py",
-   "parte": "BASE",
-   "componente": "Etapa de Verificação externa",
-   "ligacoes": [
-    "eldorado/base/nucleo/eventos.py"
-   ],
-   "critico": false,
-   "metrica": "respostas importadas e recusadas"
-  },
-  {
-   "arquivo": "eldorado/base/verificacao/relatorio_faltas.py",
-   "parte": "BASE",
-   "componente": "Etapa de Verificação externa",
-   "ligacoes": [
-    "eldorado/base/analise/historia.py"
-   ],
-   "critico": false,
-   "metrica": "livros com relatório final"
-  },
-  {
-   "arquivo": "eldorado/base/transferencia/farol.py",
-   "parte": "BASE",
-   "componente": "Transferência ao Farol",
-   "ligacoes": [
-    "eldorado/banco/biblioteca/livro.py"
-   ],
-   "critico": false,
-   "metrica": "livros transferidos; recusados pelo contrato"
-  },
-  {
-   "arquivo": "eldorado/base/missao/oportunidades.toml",
-   "parte": "BASE",
-   "componente": "Missão (finalidade trocável)",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "missão válida"
-  },
-  {
-   "arquivo": "eldorado/base/missao/portao.py",
-   "parte": "BASE",
-   "componente": "Missão (finalidade trocável)",
-   "ligacoes": [
-    "eldorado/base/cerebro/regras.py",
-    "eldorado/base/missao/regras_portao.py"
-   ],
-   "critico": false,
-   "metrica": "decisões contrariadas por veredito (zero)"
-  },
-  {
-   "arquivo": "eldorado/base/missao/itens.py",
-   "parte": "BASE",
-   "componente": "Missão (finalidade trocável)",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "itens definidos"
-  },
-  {
-   "arquivo": "eldorado/base/missao/chave.py",
-   "parte": "BASE",
-   "componente": "Missão (finalidade trocável)",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "chaves que geraram duplicado"
-  },
-  {
-   "arquivo": "eldorado/base/painel/api.py",
-   "parte": "BASE",
-   "componente": "Painel, API e Sala de controle",
-   "ligacoes": [
-    "eldorado/base/painel/visoes.py",
-    "eldorado/base/nucleo/seguranca.py"
-   ],
-   "critico": false,
-   "metrica": "respostas no prazo; erros"
-  },
-  {
-   "arquivo": "eldorado/base/painel/visoes.py",
-   "parte": "BASE",
-   "componente": "Painel, API e Sala de controle",
-   "ligacoes": [
-    "eldorado/banco/biblioteca/esquema.py",
-    "eldorado/banco/cerebro_db/esquema.py"
-   ],
-   "critico": false,
-   "metrica": "visões iguais à consulta ao banco"
-  },
-  {
-   "arquivo": "eldorado/base/painel/maquina.py",
-   "parte": "BASE",
-   "componente": "Painel, API e Sala de controle",
-   "ligacoes": [
-    "eldorado/base/cerebro/governador.py"
-   ],
-   "critico": false,
-   "metrica": "mostrador atualizado em tempo real"
-  },
-  {
-   "arquivo": "eldorado/base/painel/sala.py",
-   "parte": "BASE",
-   "componente": "Painel, API e Sala de controle",
-   "ligacoes": [
-    "eldorado/banco/cerebro_db/esquema.py"
-   ],
-   "critico": false,
-   "metrica": "sala publicada no prazo"
-  },
-  {
-   "arquivo": "eldorado/base/painel/paginas/",
-   "parte": "BASE",
-   "componente": "Painel, API e Sala de controle",
-   "ligacoes": [
-    "eldorado/base/painel/visoes.py",
-    "eldorado/base/painel/maquina.py"
-   ],
-   "critico": false,
-   "metrica": "páginas sem erro de carga"
-  },
-  {
-   "arquivo": "eldorado/motores/acesso/escada.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de acesso (escada de 9 degraus)",
-   "ligacoes": [
-    "eldorado/motores/acesso/api.py",
-    "eldorado/motores/acesso/leve.py",
-    "eldorado/motores/acesso/navegador.py",
-    "eldorado/motores/acesso/arquivo_web.py",
-    "eldorado/motores/acesso/local.py",
-    "eldorado/base/cerebro/governador.py"
-   ],
-   "critico": false,
-   "metrica": "leituras com sucesso por domínio; degrau usado"
-  },
-  {
-   "arquivo": "eldorado/motores/acesso/api.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de acesso (escada de 9 degraus)",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "respostas válidas"
-  },
-  {
-   "arquivo": "eldorado/motores/acesso/leve.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de acesso (escada de 9 degraus)",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "sucesso por domínio"
-  },
-  {
-   "arquivo": "eldorado/motores/acesso/navegador.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de acesso (escada de 9 degraus)",
-   "ligacoes": [
-    "eldorado/base/cerebro/governador.py"
-   ],
-   "critico": false,
-   "metrica": "sucesso por degrau"
-  },
-  {
-   "arquivo": "eldorado/motores/acesso/arquivo_web.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de acesso (escada de 9 degraus)",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "cópias encontradas"
-  },
-  {
-   "arquivo": "eldorado/motores/acesso/rotas_alternativas.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de acesso (escada de 9 degraus)",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "sucesso das reservas"
-  },
-  {
-   "arquivo": "eldorado/motores/acesso/local.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de acesso (escada de 9 degraus)",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "pedidos resolvidos localmente"
-  },
-  {
-   "arquivo": "eldorado/motores/leitura/leitores.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de leitura (canivete suíço)",
-   "ligacoes": [
-    "eldorado/motores/leitura/pagina.py",
-    "eldorado/motores/leitura/pdf.py",
-    "eldorado/motores/leitura/ocr.py",
-    "eldorado/motores/leitura/planilha.py",
-    "eldorado/motores/leitura/documento.py",
-    "eldorado/motores/leitura/compactado.py",
-    "eldorado/motores/leitura/universal.py",
-    "eldorado/motores/leitura/expurgo.py",
-    "eldorado/motores/leitura/normalizar.py"
-   ],
-   "critico": false,
-   "metrica": "conteúdos lidos por tipo; tipos sem leitor"
-  },
-  {
-   "arquivo": "eldorado/motores/leitura/pagina.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de leitura (canivete suíço)",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "páginas lidas; links por página"
-  },
-  {
-   "arquivo": "eldorado/motores/leitura/pdf.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de leitura (canivete suíço)",
-   "ligacoes": [
-    "eldorado/motores/leitura/ocr.py",
-    "eldorado/motores/leitura/expurgo.py"
-   ],
-   "critico": false,
-   "metrica": "páginas por segundo; páginas sem texto"
-  },
-  {
-   "arquivo": "eldorado/motores/leitura/ocr.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de leitura (canivete suíço)",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "páginas com OCR; confiança média"
-  },
-  {
-   "arquivo": "eldorado/motores/leitura/planilha.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de leitura (canivete suíço)",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "planilhas lidas"
-  },
-  {
-   "arquivo": "eldorado/motores/leitura/documento.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de leitura (canivete suíço)",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "documentos lidos"
-  },
-  {
-   "arquivo": "eldorado/motores/leitura/compactado.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de leitura (canivete suíço)",
-   "ligacoes": [
-    "eldorado/motores/leitura/leitores.py"
-   ],
-   "critico": false,
-   "metrica": "arquivos abertos"
-  },
-  {
-   "arquivo": "eldorado/motores/leitura/universal.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de leitura (canivete suíço)",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "usos da reserva (deve ser raro)"
-  },
-  {
-   "arquivo": "eldorado/motores/leitura/expurgo.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de leitura (canivete suíço)",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "palavras-chave e valores preservados (teste obrigatório)"
-  },
-  {
-   "arquivo": "eldorado/motores/leitura/normalizar.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de leitura (canivete suíço)",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "campos normalizados por achado"
-  },
-  {
-   "arquivo": "eldorado/motores/descoberta/metabusca.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de descoberta (5 formas)",
-   "ligacoes": [
-    "eldorado/motores/acesso/escada.py"
-   ],
-   "critico": false,
-   "metrica": "consultas respondidas por rota"
-  },
-  {
-   "arquivo": "eldorado/motores/descoberta/dados_abertos.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de descoberta (5 formas)",
-   "ligacoes": [
-    "eldorado/motores/acesso/api.py"
-   ],
-   "critico": false,
-   "metrica": "registros novos por fonte"
-  },
-  {
-   "arquivo": "eldorado/motores/descoberta/estrutura_site.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de descoberta (5 formas)",
-   "ligacoes": [
-    "eldorado/motores/acesso/escada.py"
-   ],
-   "critico": false,
-   "metrica": "endereços novos por domínio"
-  },
-  {
-   "arquivo": "eldorado/motores/descoberta/arquivos_web.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de descoberta (5 formas)",
-   "ligacoes": [
-    "eldorado/motores/acesso/arquivo_web.py"
-   ],
-   "critico": false,
-   "metrica": "endereços históricos encontrados"
-  },
-  {
-   "arquivo": "eldorado/motores/descoberta/vigilancia.py",
-   "parte": "MOTORES",
-   "componente": "Ferramentas de descoberta (5 formas)",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "mudanças detectadas que viraram achado"
-  },
-  {
-   "arquivo": "eldorado/motores/canal/motor.py",
-   "parte": "MOTORES",
-   "componente": "Motores de canal (45) e o seu motor genérico",
+   "componente": "Núcleo da plataforma",
    "ligacoes": [
     "eldorado/base/nucleo/contratos.py",
-    "eldorado/motores/acesso/escada.py",
-    "eldorado/motores/leitura/leitores.py",
-    "eldorado/motores/descoberta/vigilancia.py",
-    "eldorado/motores/canal/estado.py"
-   ],
-   "critico": false,
-   "metrica": "as 6 metas de qualidade do dossiê dos motores"
-  },
-  {
-   "arquivo": "eldorado/motores/canal/achado.py",
-   "parte": "MOTORES",
-   "componente": "Motores de canal (45) e o seu motor genérico",
-   "ligacoes": [
     "eldorado/base/nucleo/eventos.py"
    ],
    "critico": false,
-   "metrica": "achados completos"
+   "metrica": "módulos ligados × módulos com contrato válido; módulo recusado gera alarme",
+   "ordem": 14
   },
   {
-   "arquivo": "eldorado/motores/canal/estado.py",
-   "parte": "MOTORES",
-   "componente": "Motores de canal (45) e o seu motor genérico",
+   "arquivo": "eldorado/banco/__init__.py",
+   "linhas": 0,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_auditoria.py",
+    "test_bancos.py"
+   ],
+   "situacao": "pacote",
+   "etapa": "03 Bancos",
+   "parte": "BANCO",
+   "componente": "Bancos",
    "ligacoes": [],
    "critico": false,
-   "metrica": "idade do último aprendizado"
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 15
   },
   {
-   "arquivo": "eldorado/motores/canal/config/",
-   "parte": "MOTORES",
-   "componente": "Motores de canal (45) e o seu motor genérico",
-   "ligacoes": [
-    "eldorado/motores/canal/motor.py"
+   "arquivo": "eldorado/banco/_sqlite.py",
+   "linhas": 50,
+   "finalidade": "Abertura padronizada dos bancos SQLite: configurações medidas, criação do esquema, versão e integridade.",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/banco/biblioteca/esquema.py",
+    "eldorado/banco/cerebro_db/esquema.py",
+    "eldorado/banco/especial/esquema.py",
+    "eldorado/base/nucleo/gravador.py"
    ],
-   "critico": false,
-   "metrica": "configurações válidas"
-  },
-  {
-   "arquivo": "eldorado/motores/pilotos/espiao.py",
-   "parte": "MOTORES",
-   "componente": "Pilotos: motores livres com IA",
-   "ligacoes": [
-    "eldorado/base/nucleo/ia.py",
-    "eldorado/motores/descoberta/metabusca.py",
-    "eldorado/motores/canal/achado.py"
+   "testes": [
+    "test_bancos.py"
    ],
-   "critico": false,
-   "metrica": "achados por voo; fontes novas propostas"
-  },
-  {
-   "arquivo": "eldorado/motores/pilotos/interceptador.py",
-   "parte": "MOTORES",
-   "componente": "Pilotos: motores livres com IA",
-   "ligacoes": [
-    "eldorado/base/nucleo/ia.py",
-    "eldorado/motores/acesso/escada.py",
-    "eldorado/motores/leitura/leitores.py",
-    "eldorado/banco/biblioteca/livro.py"
-   ],
-   "critico": false,
-   "metrica": "livros resolvidos por voo; respostas válidas"
-  },
-  {
-   "arquivo": "eldorado/motores/skills/",
-   "parte": "MOTORES",
-   "componente": "Skills dos motores e pilotos",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "skills ativas e o seu resultado"
-  },
-  {
-   "arquivo": "eldorado/banco/biblioteca/esquema.py",
+   "situacao": "em funcionamento",
+   "etapa": "03 Bancos",
    "parte": "BANCO",
    "componente": "Biblioteca (biblioteca.db)",
    "ligacoes": [],
-   "critico": true,
-   "metrica": "integridade; violações barradas"
+   "critico": false,
+   "metrica": "bancos abertos íntegros",
+   "ordem": 16
+  },
+  {
+   "arquivo": "eldorado/banco/biblioteca/__init__.py",
+   "linhas": 0,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_auditoria.py",
+    "test_bancos.py"
+   ],
+   "situacao": "pacote",
+   "etapa": "03 Bancos",
+   "parte": "BANCO",
+   "componente": "Bancos",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 17
+  },
+  {
+   "arquivo": "eldorado/banco/biblioteca/leis.py",
+   "parte": "BANCO",
+   "componente": "Biblioteca (biblioteca.db)",
+   "ligacoes": [
+    "eldorado/banco/biblioteca/esquema.py"
+   ],
+   "critico": false,
+   "metrica": "leis atualizadas",
+   "etapa": "03 Bancos",
+   "situacao": "a construir",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "leis atualizadas",
+   "ordem": 18
   },
   {
    "arquivo": "eldorado/banco/biblioteca/livro.py",
@@ -746,7 +547,17 @@
     "eldorado/banco/biblioteca/texto.py"
    ],
    "critico": false,
-   "metrica": "leituras e acréscimos por livro"
+   "metrica": "leituras e acréscimos por livro",
+   "etapa": "03 Bancos",
+   "situacao": "a construir",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "leituras e acréscimos por livro",
+   "ordem": 19
   },
   {
    "arquivo": "eldorado/banco/biblioteca/texto.py",
@@ -754,55 +565,53 @@
    "componente": "Biblioteca (biblioteca.db)",
    "ligacoes": [],
    "critico": false,
-   "metrica": "taxa de compressão; busca em menos de 1 ms"
+   "metrica": "taxa de compressão; busca em menos de 1 ms",
+   "etapa": "03 Bancos",
+   "situacao": "a construir",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "taxa de compressão; busca em menos de 1 ms",
+   "ordem": 20
   },
   {
-   "arquivo": "eldorado/base/analise/historia.py",
-   "parte": "BASE",
-   "componente": "Análise: história do livro, previsão e calendário",
-   "ligacoes": [
-    "eldorado/banco/biblioteca/livro.py"
-   ],
-   "critico": false,
-   "metrica": "livros com história completa"
-  },
-  {
-   "arquivo": "eldorado/base/analise/preditivo.py",
-   "parte": "BASE",
-   "componente": "Análise: história do livro, previsão e calendário",
-   "ligacoes": [
-    "eldorado/banco/biblioteca/livro.py"
-   ],
-   "critico": false,
-   "metrica": "alertas emitidos antes da abertura"
-  },
-  {
-   "arquivo": "eldorado/base/analise/calendario.py",
-   "parte": "BASE",
-   "componente": "Análise: história do livro, previsão e calendário",
-   "ligacoes": [
-    "eldorado/base/analise/preditivo.py"
-   ],
-   "critico": false,
-   "metrica": "calendário atualizado na passagem"
-  },
-  {
-   "arquivo": "eldorado/banco/biblioteca/leis.py",
+   "arquivo": "eldorado/banco/cerebro_db/__init__.py",
+   "linhas": 0,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [],
+   "situacao": "pacote",
+   "etapa": "03 Bancos",
    "parte": "BANCO",
-   "componente": "Biblioteca (biblioteca.db)",
-   "ligacoes": [
-    "eldorado/banco/biblioteca/esquema.py"
-   ],
-   "critico": false,
-   "metrica": "leis atualizadas"
-  },
-  {
-   "arquivo": "eldorado/banco/especial/esquema.py",
-   "parte": "BANCO",
-   "componente": "Especial: empresas (especial.db)",
+   "componente": "Bancos",
    "ligacoes": [],
-   "critico": true,
-   "metrica": "integridade"
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 21
+  },
+  {
+   "arquivo": "eldorado/banco/especial/__init__.py",
+   "linhas": 0,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [],
+   "situacao": "pacote",
+   "etapa": "03 Bancos",
+   "parte": "BANCO",
+   "componente": "Bancos",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 22
   },
   {
    "arquivo": "eldorado/banco/especial/empresas.py",
@@ -812,23 +621,17 @@
     "eldorado/banco/especial/esquema.py"
    ],
    "critico": false,
-   "metrica": "empresas atualizadas"
-  },
-  {
-   "arquivo": "eldorado/banco/cerebro_db/esquema.py",
-   "parte": "BANCO",
-   "componente": "Banco do Cérebro (cerebro.db)",
-   "ligacoes": [],
-   "critico": true,
-   "metrica": "retenção cumprida"
-  },
-  {
-   "arquivo": "eldorado/banco/originais/drive.py",
-   "parte": "BANCO",
-   "componente": "Originais no Drive",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "originais no Drive × documentos citados"
+   "metrica": "empresas atualizadas",
+   "etapa": "03 Bancos",
+   "situacao": "a construir",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "empresas atualizadas",
+   "ordem": 23
   },
   {
    "arquivo": "eldorado/banco/fotografia.py",
@@ -840,27 +643,2487 @@
     "eldorado/banco/cerebro_db/esquema.py"
    ],
    "critico": false,
-   "metrica": "última fotografia; reconstrução testada"
+   "metrica": "última fotografia; reconstrução testada",
+   "etapa": "03 Bancos",
+   "situacao": "a construir",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "última fotografia; reconstrução testada",
+   "ordem": 24
   },
   {
-   "arquivo": "eldorado/base/migracao/importar_eldorado0.py",
+   "arquivo": "eldorado/banco/originais/drive.py",
+   "parte": "BANCO",
+   "componente": "Originais no Drive",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "originais no Drive × documentos citados",
+   "etapa": "03 Bancos",
+   "situacao": "a construir",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "originais no Drive × documentos citados",
+   "ordem": 25
+  },
+  {
+   "arquivo": "eldorado/banco/biblioteca/esquema.py",
+   "linhas": 141,
+   "finalidade": "O esquema da Biblioteca (biblioteca.db): os livros e tudo o que se sabe de cada oportunidade.",
+   "depende_de": [
+    "eldorado/banco/_sqlite.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/fluxo/nos.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "03 Bancos",
+   "parte": "BANCO",
+   "componente": "Biblioteca (biblioteca.db)",
+   "ligacoes": [
+    "eldorado/banco/_sqlite.py"
+   ],
+   "critico": true,
+   "metrica": "integridade; violações barradas",
+   "ordem": 26
+  },
+  {
+   "arquivo": "eldorado/banco/cerebro_db/esquema.py",
+   "linhas": 59,
+   "finalidade": "O esquema do banco do Cérebro (cerebro.db): a operação e o aprendizado do sistema, sem nenhuma oportunidade.",
+   "depende_de": [
+    "eldorado/banco/_sqlite.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/fluxo/nos.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "03 Bancos",
+   "parte": "BANCO",
+   "componente": "Banco do Cérebro (cerebro.db)",
+   "ligacoes": [
+    "eldorado/banco/_sqlite.py"
+   ],
+   "critico": true,
+   "metrica": "retenção cumprida",
+   "ordem": 27
+  },
+  {
+   "arquivo": "eldorado/banco/especial/esquema.py",
+   "linhas": 38,
+   "finalidade": "O esquema do Especial (especial.db): as empresas, os incentivos e as oportunidades nas empresas conhecidas.",
+   "depende_de": [
+    "eldorado/banco/_sqlite.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/fluxo/nos.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "03 Bancos",
+   "parte": "BANCO",
+   "componente": "Especial: empresas (especial.db)",
+   "ligacoes": [
+    "eldorado/banco/_sqlite.py"
+   ],
+   "critico": true,
+   "metrica": "integridade",
+   "ordem": 28
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/governador.py",
+   "linhas": 125,
+   "finalidade": "O governador de carga: mantém a máquina abaixo do limite (85%).",
+   "depende_de": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [
+    "alarme.aberto",
+    "maquina.leitura"
+   ],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cerebro/regencia.py",
+    "eldorado/base/fluxo/fila.py",
+    "eldorado/base/fluxo/nos.py",
+    "eldorado/base/nucleo/comandos.py"
+   ],
+   "testes": [
+    "test_cerebro.py",
+    "test_fila.py",
+    "test_governador.py",
+    "test_motores_api.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "04 Execução: workflow, executor, fila e governador",
    "parte": "BASE",
-   "componente": "Migração do Eldorado0 (operação temporária, 30 dias)",
+   "componente": "Cérebro: Regência e Pertinência e aprendizado",
+   "ligacoes": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": true,
+   "metrica": "tempo acima de 85% (meta zero)",
+   "ordem": 29
+  },
+  {
+   "arquivo": "eldorado/base/fluxo/__init__.py",
+   "linhas": 0,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_agenda.py",
+    "test_cerebro.py",
+    "test_comandos.py",
+    "test_definicao.py",
+    "test_executor.py",
+    "test_fila.py",
+    "test_migracao.py",
+    "test_motor_canal.py",
+    "test_motores_api.py",
+    "test_passagem.py",
+    "test_passagem_real.py"
+   ],
+   "situacao": "pacote",
+   "etapa": "04 Execução: workflow, executor, fila e governador",
+   "parte": "BASE",
+   "componente": "Execução: workflow, executor, fila e governador",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 30
+  },
+  {
+   "arquivo": "eldorado/base/fluxo/agenda.py",
+   "linhas": 107,
+   "finalidade": "A agenda: quais módulos estão devidos agora.",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cerebro/regencia.py",
+    "eldorado/base/nucleo/comandos.py"
+   ],
+   "testes": [
+    "test_agenda.py",
+    "test_cerebro.py",
+    "test_motores_api.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "04 Execução: workflow, executor, fila e governador",
+   "parte": "BASE",
+   "componente": "Workflow, fila e agenda",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "motores devidos e acionados no horário",
+   "ordem": 31
+  },
+  {
+   "arquivo": "eldorado/base/fluxo/definicao.py",
+   "linhas": 170,
+   "finalidade": "A definição de um workflow (conceito do n8n, reescrito do zero para o Eldorado).",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/fluxo/executor.py",
+    "eldorado/base/fluxo/fila.py",
+    "eldorado/base/nucleo/comandos.py"
+   ],
+   "testes": [
+    "test_definicao.py",
+    "test_executor.py",
+    "test_motor_canal.py",
+    "test_passagem.py",
+    "test_passagem_real.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "04 Execução: workflow, executor, fila e governador",
+   "parte": "BASE",
+   "componente": "Workflow, fila e agenda",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "workflows válidos e versionados",
+   "ordem": 32
+  },
+  {
+   "arquivo": "workflows/passagem.toml",
+   "etapa": "04 Execução: workflow, executor, fila e governador",
+   "parte": "OPERACAO",
+   "componente": "Operação e configuração",
+   "ligacoes": [],
+   "critico": true,
+   "metrica": "o sistema roda sem intervenção",
+   "finalidade": "",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 153,
+   "situacao": "em funcionamento",
+   "ordem": 33
+  },
+  {
+   "arquivo": "eldorado/base/fluxo/executor.py",
+   "linhas": 218,
+   "finalidade": "O executor durável dos workflows.",
+   "depende_de": [
+    "eldorado/base/fluxo/definicao.py",
+    "eldorado/base/nucleo/alarmes.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/recibo.py"
+   ],
+   "eventos": [
+    "execucao.concluida",
+    "execucao.iniciada",
+    "execucao.passo",
+    "execucao.retomada",
+    "workflow.versao"
+   ],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/fluxo/fila.py",
+    "eldorado/base/nucleo/comandos.py"
+   ],
+   "testes": [
+    "test_executor.py",
+    "test_motor_canal.py",
+    "test_passagem.py",
+    "test_passagem_real.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "04 Execução: workflow, executor, fila e governador",
+   "parte": "BASE",
+   "componente": "Workflow, fila e agenda",
+   "ligacoes": [
+    "eldorado/base/fluxo/definicao.py",
+    "eldorado/base/nucleo/alarmes.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/recibo.py"
+   ],
+   "critico": true,
+   "metrica": "execuções retomadas sem perda; passos com falha",
+   "ordem": 34
+  },
+  {
+   "arquivo": "eldorado/base/fluxo/nos.py",
+   "linhas": 43,
+   "finalidade": "Os nós próprios da plataforma, usados nos workflows de operação (manutenção, aplicação de eventos).",
+   "depende_de": [
+    "eldorado/banco/biblioteca/esquema.py",
+    "eldorado/banco/cerebro_db/esquema.py",
+    "eldorado/banco/especial/esquema.py",
+    "eldorado/base/cerebro/governador.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/gravador.py"
+   ],
+   "eventos": [],
+   "acionado_por": [
+    "passagem, nó 10 «aplicar_rede»",
+    "passagem, nó 12 «aplicar_validacao»",
+    "passagem, nó 17 «aplicar_final»",
+    "passagem, nó 4 «aplicar_coleta»",
+    "passagem, nó 6 «aplicar_cartorio»"
+   ],
+   "usado_por": [
+    "eldorado/base/nucleo/comandos.py"
+   ],
+   "testes": [
+    "test_comandos.py",
+    "test_definicao.py",
+    "test_fila.py",
+    "test_migracao.py",
+    "test_motor_canal.py",
+    "test_passagem.py",
+    "test_passagem_real.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "04 Execução: workflow, executor, fila e governador",
+   "parte": "BASE",
+   "componente": "Workflow, fila e agenda",
+   "ligacoes": [
+    "eldorado/banco/biblioteca/esquema.py",
+    "eldorado/banco/cerebro_db/esquema.py",
+    "eldorado/banco/especial/esquema.py",
+    "eldorado/base/cerebro/governador.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/gravador.py"
+   ],
+   "critico": false,
+   "metrica": "nós executados sem erro",
+   "ordem": 35
+  },
+  {
+   "arquivo": "eldorado/base/fluxo/fila.py",
+   "linhas": 57,
+   "finalidade": "A fila de tarefas (Huey sobre SQLite): executa workflows, sob o governador e a pausa do sistema.",
+   "depende_de": [
+    "eldorado/base/cerebro/governador.py",
+    "eldorado/base/fluxo/definicao.py",
+    "eldorado/base/fluxo/executor.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/nucleo/comandos.py"
+   ],
+   "testes": [
+    "test_fila.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "04 Execução: workflow, executor, fila e governador",
+   "parte": "BASE",
+   "componente": "Workflow, fila e agenda",
+   "ligacoes": [
+    "eldorado/base/cerebro/governador.py",
+    "eldorado/base/fluxo/definicao.py",
+    "eldorado/base/fluxo/executor.py"
+   ],
+   "critico": false,
+   "metrica": "tarefas atrasadas; tarefas com erro",
+   "ordem": 36
+  },
+  {
+   "arquivo": "config/agenda.toml",
+   "etapa": "05 Cérebro decide: fila do sistema e acionamento",
+   "parte": "OPERACAO",
+   "componente": "Operação e configuração",
+   "ligacoes": [],
+   "critico": true,
+   "metrica": "o sistema roda sem intervenção",
+   "finalidade": "",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 61,
+   "situacao": "em funcionamento",
+   "ordem": 37
+  },
+  {
+   "arquivo": "config/modulos.toml",
+   "etapa": "05 Cérebro decide: fila do sistema e acionamento",
+   "parte": "OPERACAO",
+   "componente": "Operação e configuração",
+   "ligacoes": [],
+   "critico": true,
+   "metrica": "o sistema roda sem intervenção",
+   "finalidade": "",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 38,
+   "situacao": "em funcionamento",
+   "ordem": 38
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/decisao.py",
+   "linhas": 80,
+   "finalidade": "A decisão do Cérebro: a cada batimento, quais motores acionar, conforme a necessidade (titular, 22/10/2026).",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cerebro/fila.py",
+    "eldorado/base/cerebro/regencia.py"
+   ],
+   "testes": [
+    "test_decisao.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "05 Cérebro decide: fila do sistema e acionamento",
+   "parte": "BASE",
+   "componente": "Cérebro decide: fila do sistema e acionamento",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 39
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/regencia.py",
+   "linhas": 204,
+   "finalidade": "A Regência: planeja a passagem, aciona os motores e autoriza cada passagem de livro.",
+   "depende_de": [
+    "eldorado/base/cerebro/decisao.py",
+    "eldorado/base/cerebro/governador.py",
+    "eldorado/base/fluxo/agenda.py",
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/recibo.py",
+    "eldorado/base/nucleo/registro.py"
+   ],
+   "eventos": [
+    "achado.entregue",
+    "acionamento.feito",
+    "agenda.definida",
+    "alarme.aberto",
+    "documento.registrado",
+    "motor.execucao",
+    "pagina.gravada",
+    "plano.criado"
+   ],
+   "acionado_por": [
+    "passagem, nó 1 «planejar»",
+    "passagem, nó 2 «acionar»"
+   ],
+   "usado_por": [
+    "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/cerebro/encaminhamento.py",
+    "eldorado/base/cerebro/fila.py"
+   ],
+   "testes": [
+    "test_cerebro.py",
+    "test_incentivos.py",
+    "test_interceptador.py",
+    "test_linha_cartorio.py",
+    "test_motor_canal.py",
+    "test_motores_api.py",
+    "test_painel.py",
+    "test_passagem.py",
+    "test_passagem_real.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "05 Cérebro decide: fila do sistema e acionamento",
+   "parte": "BASE",
+   "componente": "Cérebro: Regência e Pertinência e aprendizado",
+   "ligacoes": [
+    "eldorado/base/cerebro/decisao.py",
+    "eldorado/base/cerebro/governador.py",
+    "eldorado/base/fluxo/agenda.py",
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/recibo.py",
+    "eldorado/base/nucleo/registro.py"
+   ],
+   "critico": true,
+   "metrica": "acionamentos no horário; passagens autorizadas",
+   "ordem": 40
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/fila.py",
+   "linhas": 42,
+   "finalidade": "A fila do sistema (titular, 22/10/2026): o Eldorado funciona de forma permanente, sem horário de trabalho e descanso.",
+   "depende_de": [
+    "eldorado/base/cerebro/decisao.py",
+    "eldorado/base/cerebro/regencia.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/nucleo/comandos.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "05 Cérebro decide: fila do sistema e acionamento",
+   "parte": "BASE",
+   "componente": "Cérebro decide: fila do sistema e acionamento",
+   "ligacoes": [
+    "eldorado/base/cerebro/decisao.py",
+    "eldorado/base/cerebro/regencia.py"
+   ],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 41
+  },
+  {
+   "arquivo": "config/motores_previstos.toml",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "OPERACAO",
+   "componente": "Operação e configuração",
+   "ligacoes": [],
+   "critico": true,
+   "metrica": "o sistema roda sem intervenção",
+   "finalidade": "",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 379,
+   "situacao": "em funcionamento",
+   "ordem": 42
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/__init__.py",
+   "linhas": 0,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_acesso.py",
+    "test_descoberta.py",
+    "test_interceptador.py"
+   ],
+   "situacao": "pacote",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Coleta: os motores e o canivete suíço",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 43
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/escada.py",
+   "linhas": 160,
+   "finalidade": "A escada de acesso: do degrau mais leve ao mais forte, aprendendo por domínio qual degrau funciona.",
+   "depende_de": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [
+    "dominio.aprendido"
+   ],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cerebro/encaminhamento.py",
+    "eldorado/base/nucleo/comandos.py",
+    "eldorado/motores/acesso/api.py",
+    "eldorado/motores/acesso/arquivo_web.py",
+    "eldorado/motores/acesso/leve.py",
+    "eldorado/motores/acesso/local.py",
+    "eldorado/motores/acesso/navegador.py",
+    "eldorado/motores/acesso/rotas_alternativas.py",
+    "eldorado/motores/canal/motor.py",
+    "eldorado/motores/descoberta/fonte_oficial.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "testes": [
+    "test_acesso.py",
+    "test_descoberta.py",
+    "test_interceptador.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de acesso (escada de 9 degraus)",
    "ligacoes": [
     "eldorado/base/nucleo/eventos.py"
    ],
    "critico": false,
-   "metrica": "contagens importadas iguais às de origem"
+   "metrica": "leituras com sucesso por domínio; degrau usado",
+   "ordem": 44
   },
   {
-   "arquivo": "eldorado/testes/",
-   "parte": "BASE",
-   "componente": "Qualidade e testes",
+   "arquivo": "eldorado/motores/canal/__init__.py",
+   "linhas": 0,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_incentivos.py",
+    "test_motor_canal.py",
+    "test_motores_api.py"
+   ],
+   "situacao": "pacote",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Coleta: os motores e o canivete suíço",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 45
+  },
+  {
+   "arquivo": "eldorado/motores/canal/achado.py",
+   "parte": "MOTORES",
+   "componente": "Motores de canal (45) e o seu motor genérico",
    "ligacoes": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": false,
+   "metrica": "achados completos",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "situacao": "a construir",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "achados completos",
+   "ordem": 46
+  },
+  {
+   "arquivo": "eldorado/motores/canal/estado.py",
+   "linhas": 64,
+   "finalidade": "O estado de cada motor: o seu aprendizado de uso próprio, num banco só dele (dados/motores/<id>.db, fora do Git).",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/canal/motor.py"
+   ],
+   "testes": [
+    "test_motor_canal.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Motores de canal (45) e o seu motor genérico",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "idade do último aprendizado",
+   "ordem": 47
+  },
+  {
+   "arquivo": "eldorado/motores/descoberta/__init__.py",
+   "linhas": 0,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_descoberta.py",
+    "test_incentivos.py"
+   ],
+   "situacao": "pacote",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Coleta: os motores e o canivete suíço",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 48
+  },
+  {
+   "arquivo": "eldorado/motores/descoberta/pistas.py",
+   "linhas": 17,
+   "finalidade": "O formato comum das cinco formas de descoberta: a pista (título, link, data, de onde veio).",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/canal/motor.py",
+    "eldorado/motores/descoberta/arquivos_web.py",
+    "eldorado/motores/descoberta/dados_abertos.py",
+    "eldorado/motores/descoberta/estrutura_site.py",
+    "eldorado/motores/descoberta/metabusca.py"
+   ],
+   "testes": [
+    "test_incentivos.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de descoberta (5 formas)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "pistas no formato comum",
+   "ordem": 49
+  },
+  {
+   "arquivo": "eldorado/motores/descoberta/vigilancia.py",
+   "linhas": 28,
+   "finalidade": "Forma 5: a vigilância: só segue quando a página mudou.",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/canal/motor.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de descoberta (5 formas)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "mudanças detectadas que viraram achado",
+   "ordem": 50
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/__init__.py",
+   "linhas": 0,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_leitura.py",
+    "test_seguranca.py"
+   ],
+   "situacao": "pacote",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Coleta: os motores e o canivete suíço",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 51
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/expurgo.py",
+   "linhas": 49,
+   "finalidade": "O expurgo seguro: tira só o que se repete na faixa do cabeçalho e do rodapé (pela posição na página).",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/leitura/pdf.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "palavras-chave e valores preservados (teste obrigatório)",
+   "ordem": 52
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/normalizar.py",
+   "linhas": 115,
+   "finalidade": "A normalização: datas, valores, números por extenso e CNPJ, a partir do texto literal.",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/auditoria.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "campos normalizados por achado",
+   "ordem": 53
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/api.py",
+   "linhas": 23,
+   "finalidade": "Degrau 1: as APIs oficiais (DOU, PNCP, Querido Diário, Transferegov, Câmara, Senado, WordPress, CKAN) com o httpx.",
+   "depende_de": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cerebro/encaminhamento.py",
+    "eldorado/base/nucleo/comandos.py",
+    "eldorado/motores/canal/motor.py"
+   ],
+   "testes": [
+    "test_acesso.py",
+    "test_interceptador.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de acesso (escada de 9 degraus)",
+   "ligacoes": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "critico": false,
+   "metrica": "respostas válidas",
+   "ordem": 54
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/arquivo_web.py",
+   "linhas": 38,
+   "finalidade": "Degrau 6: a cópia arquivada (Wayback Machine), quando o site está fora do ar ou bloqueou.",
+   "depende_de": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/canal/motor.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "testes": [
+    "test_acesso.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de acesso (escada de 9 degraus)",
+   "ligacoes": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "critico": false,
+   "metrica": "cópias encontradas",
+   "ordem": 55
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/leve.py",
+   "linhas": 48,
+   "finalidade": "Degrau 2: requisição leve com assinatura de navegador real (TLS e cabeçalhos de um Chrome).",
+   "depende_de": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cerebro/encaminhamento.py",
+    "eldorado/base/nucleo/comandos.py",
+    "eldorado/motores/acesso/rotas_alternativas.py",
+    "eldorado/motores/canal/motor.py"
+   ],
+   "testes": [
+    "test_acesso.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de acesso (escada de 9 degraus)",
+   "ligacoes": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "critico": false,
+   "metrica": "sucesso por domínio",
+   "ordem": 56
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/local.py",
+   "linhas": 41,
+   "finalidade": "Degrau 9: o computador da titular, quando o próprio site bloqueia o acesso remoto.",
+   "depende_de": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/canal/motor.py"
+   ],
+   "testes": [
+    "test_acesso.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de acesso (escada de 9 degraus)",
+   "ligacoes": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "critico": false,
+   "metrica": "pedidos resolvidos localmente",
+   "ordem": 57
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/navegador.py",
+   "linhas": 76,
+   "finalidade": "Degraus 3 a 5: os navegadores, para páginas que só existem depois do JavaScript.",
+   "depende_de": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/canal/motor.py"
+   ],
+   "testes": [
+    "test_acesso.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de acesso (escada de 9 degraus)",
+   "ligacoes": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "critico": false,
+   "metrica": "sucesso por degrau",
+   "ordem": 58
+  },
+  {
+   "arquivo": "eldorado/motores/descoberta/arquivos_web.py",
+   "linhas": 24,
+   "finalidade": "Forma 4: os arquivos da web: o índice da Wayback Machine lista as URLs já vistas de um domínio (inclusive editais",
+   "depende_de": [
+    "eldorado/motores/descoberta/pistas.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/canal/motor.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de descoberta (5 formas)",
+   "ligacoes": [
+    "eldorado/motores/descoberta/pistas.py"
+   ],
+   "critico": false,
+   "metrica": "endereços históricos encontrados",
+   "ordem": 59
+  },
+  {
+   "arquivo": "eldorado/motores/descoberta/dados_abertos.py",
+   "linhas": 130,
+   "finalidade": "Forma 2: os dados abertos: as APIs oficiais (pela configuração de cada motor) e os portais CKAN (dados.gov.br e",
+   "depende_de": [
+    "eldorado/motores/descoberta/pistas.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/canal/motor.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de descoberta (5 formas)",
+   "ligacoes": [
+    "eldorado/motores/descoberta/pistas.py"
+   ],
+   "critico": false,
+   "metrica": "registros novos por fonte",
+   "ordem": 60
+  },
+  {
+   "arquivo": "eldorado/motores/descoberta/estrutura_site.py",
+   "linhas": 79,
+   "finalidade": "Forma 3: a estrutura do site: o mapa do site, os feeds (RSS e Atom), a API do WordPress e os links da página.",
+   "depende_de": [
+    "eldorado/motores/descoberta/pistas.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/canal/motor.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de descoberta (5 formas)",
+   "ligacoes": [
+    "eldorado/motores/descoberta/pistas.py"
+   ],
+   "critico": false,
+   "metrica": "endereços novos por domínio",
+   "ordem": 61
+  },
+  {
+   "arquivo": "eldorado/motores/descoberta/fonte_oficial.py",
+   "linhas": 91,
+   "finalidade": "Seguir até a fonte oficial: na página de DIVULGAÇÃO (notícia, post, agregador), o documento OFICIAL do edital.",
+   "depende_de": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/canal/motor.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Coleta: os motores e o canivete suíço",
+   "ligacoes": [
+    "eldorado/motores/acesso/escada.py"
+   ],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 62
+  },
+  {
+   "arquivo": "eldorado/motores/descoberta/metabusca.py",
+   "linhas": 79,
+   "finalidade": "Forma 1: a metabusca, com rotas de reserva: SearXNG (serviço próprio) → ddgs → Marginalia.",
+   "depende_de": [
+    "eldorado/motores/descoberta/pistas.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/canal/motor.py"
+   ],
+   "testes": [
+    "test_descoberta.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de descoberta (5 formas)",
+   "ligacoes": [
+    "eldorado/motores/descoberta/pistas.py"
+   ],
+   "critico": false,
+   "metrica": "consultas respondidas por rota",
+   "ordem": 63
+  },
+  {
+   "arquivo": "eldorado/motores/acesso/rotas_alternativas.py",
+   "linhas": 41,
+   "finalidade": "Degraus 7 e 8, reservas desligadas até o teste real na criação: o Tor (IP diferente) e o leitor público de páginas.",
+   "depende_de": [
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/acesso/leve.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_acesso.py"
+   ],
+   "situacao": "desligado por desenho",
+   "observacao": "degraus de reserva (Tor e leitor público), até o teste real",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de acesso (escada de 9 degraus)",
+   "ligacoes": [
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/acesso/leve.py"
+   ],
+   "critico": false,
+   "metrica": "sucesso das reservas",
+   "ordem": 64
+  },
+  {
+   "arquivo": "eldorado/motores/canal/motor.py",
+   "linhas": 451,
+   "finalidade": "O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio.",
+   "depende_de": [
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/motores/acesso/api.py",
+    "eldorado/motores/acesso/arquivo_web.py",
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/acesso/leve.py",
+    "eldorado/motores/acesso/local.py",
+    "eldorado/motores/acesso/navegador.py",
+    "eldorado/motores/canal/estado.py",
+    "eldorado/motores/descoberta/arquivos_web.py",
+    "eldorado/motores/descoberta/dados_abertos.py",
+    "eldorado/motores/descoberta/estrutura_site.py",
+    "eldorado/motores/descoberta/fonte_oficial.py",
+    "eldorado/motores/descoberta/metabusca.py",
+    "eldorado/motores/descoberta/pistas.py",
+    "eldorado/motores/descoberta/vigilancia.py",
+    "eldorado/motores/leitura/leitores.py",
+    "eldorado/motores/leitura/pdf.py"
+   ],
+   "eventos": [],
+   "acionado_por": [
+    "config/modulos.toml (dou)",
+    "config/modulos.toml (goyazes)",
+    "config/modulos.toml (mapas-culturais)",
+    "config/modulos.toml (pncp)",
+    "config/modulos.toml (querido-diario)",
+    "config/modulos.toml (rouanet)",
+    "config/modulos.toml (transferegov)",
+    "config/modulos.toml (wordpress-financiadores)",
+    "config/modulos.toml (wordpress-goias)"
+   ],
+   "usado_por": [],
+   "testes": [
+    "test_incentivos.py",
+    "test_motor_canal.py",
+    "test_motores_api.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Motores de canal (45) e o seu motor genérico",
+   "ligacoes": [
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/motores/acesso/api.py",
+    "eldorado/motores/acesso/arquivo_web.py",
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/acesso/leve.py",
+    "eldorado/motores/acesso/local.py",
+    "eldorado/motores/acesso/navegador.py",
+    "eldorado/motores/canal/estado.py",
+    "eldorado/motores/descoberta/arquivos_web.py",
+    "eldorado/motores/descoberta/dados_abertos.py",
+    "eldorado/motores/descoberta/estrutura_site.py",
+    "eldorado/motores/descoberta/fonte_oficial.py",
+    "eldorado/motores/descoberta/metabusca.py",
+    "eldorado/motores/descoberta/pistas.py",
+    "eldorado/motores/descoberta/vigilancia.py",
+    "eldorado/motores/leitura/leitores.py",
+    "eldorado/motores/leitura/pdf.py"
+   ],
+   "critico": false,
+   "metrica": "as 6 metas de qualidade do dossiê dos motores",
+   "ordem": 65
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/compactado.py",
+   "linhas": 69,
+   "finalidade": "Arquivos ZIP, 7Z e RAR: abre e entrega cada arquivo interno ao leitor do seu tipo.",
+   "depende_de": [
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "critico": false,
+   "metrica": "arquivos abertos",
+   "ordem": 66
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/documento.py",
+   "linhas": 35,
+   "finalidade": "Documentos DOCX (com cabeçalhos, rodapés e notas), ODT e PPTX (uma página por slide).",
+   "depende_de": [
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "critico": false,
+   "metrica": "documentos lidos",
+   "ordem": 67
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/leitores.py",
+   "linhas": 176,
+   "finalidade": "O registro dos leitores: o canivete suíço da leitura.",
+   "depende_de": [
+    "eldorado/base/nucleo/seguranca.py",
+    "eldorado/motores/leitura/compactado.py",
+    "eldorado/motores/leitura/documento.py",
+    "eldorado/motores/leitura/pagina.py",
+    "eldorado/motores/leitura/pdf.py",
+    "eldorado/motores/leitura/planilha.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/canal/motor.py",
+    "eldorado/motores/leitura/compactado.py",
+    "eldorado/motores/leitura/documento.py",
+    "eldorado/motores/leitura/ocr.py",
+    "eldorado/motores/leitura/pagina.py",
+    "eldorado/motores/leitura/pdf.py",
+    "eldorado/motores/leitura/planilha.py",
+    "eldorado/motores/leitura/universal.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "testes": [
+    "test_leitura.py",
+    "test_seguranca.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [
+    "eldorado/base/nucleo/seguranca.py",
+    "eldorado/motores/leitura/compactado.py",
+    "eldorado/motores/leitura/documento.py",
+    "eldorado/motores/leitura/pagina.py",
+    "eldorado/motores/leitura/pdf.py",
+    "eldorado/motores/leitura/planilha.py"
+   ],
+   "critico": false,
+   "metrica": "conteúdos lidos por tipo; tipos sem leitor",
+   "ordem": 68
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/ocr.py",
+   "linhas": 36,
+   "finalidade": "O OCR (reserva, extra 'ocr'): RapidOCR, leve; só para o PDF digitalizado e as imagens.",
+   "depende_de": [
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_leitura.py"
+   ],
+   "situacao": "desligado (ninguém o usa nem o aciona)",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "critico": false,
+   "metrica": "páginas com OCR; confiança média",
+   "ordem": 69
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/pagina.py",
+   "linhas": 116,
+   "finalidade": "A leitura de páginas: estrutura, links, tabelas, texto limpo, dados embutidos e o sistema do site.",
+   "depende_de": [
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "critico": false,
+   "metrica": "páginas lidas; links por página",
+   "ordem": 70
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/pdf.py",
+   "linhas": 86,
+   "finalidade": "O leitor de PDF: o texto literal por página (com o expurgo seguro), as tabelas e as páginas que precisam de OCR.",
+   "depende_de": [
+    "eldorado/motores/leitura/expurgo.py",
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/canal/motor.py",
+    "eldorado/motores/leitura/leitores.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "testes": [
+    "test_leitura.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [
+    "eldorado/motores/leitura/expurgo.py",
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "critico": false,
+   "metrica": "páginas por segundo; páginas sem texto",
+   "ordem": 71
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/planilha.py",
+   "linhas": 28,
+   "finalidade": "Planilhas XLSX, XLS, XLSB e ODS (python-calamine, 13× mais rápido que o openpyxl, medido). Uma página por aba.",
+   "depende_de": [
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "critico": false,
+   "metrica": "planilhas lidas",
+   "ordem": 72
+  },
+  {
+   "arquivo": "eldorado/motores/leitura/universal.py",
+   "linhas": 24,
+   "finalidade": "O leitor universal de reserva (Apache Tika, extra 'universal'): mais de mil formatos, quando nenhum outro lê.",
+   "depende_de": [
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [],
+   "situacao": "desligado por desenho",
+   "observacao": "reserva para tipos sem leitor (liga-se na configuração)",
+   "etapa": "06 Coleta: os motores e o canivete suíço",
+   "parte": "MOTORES",
+   "componente": "Ferramentas de leitura (canivete suíço)",
+   "ligacoes": [
+    "eldorado/motores/leitura/leitores.py"
+   ],
+   "critico": false,
+   "metrica": "usos da reserva (deve ser raro)",
+   "ordem": 73
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/pertinencia.py",
+   "linhas": 65,
+   "finalidade": "A Pertinência: decide se cada achado é oportunidade (pelo portão da missão) e mede a saída de cada etapa.",
+   "depende_de": [
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/registro.py"
+   ],
+   "eventos": [
+    "alarme.aberto",
+    "medicao.registrada",
+    "pertinencia.decidida"
+   ],
+   "acionado_por": [
+    "passagem, nó 3 «decidir»",
+    "passagem, nó 9 «decidir_rede»"
+   ],
+   "usado_por": [],
+   "testes": [
+    "test_cerebro.py",
+    "test_passagem.py",
+    "test_seguranca.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "07 Pertinência e missão",
+   "parte": "BASE",
+   "componente": "Cérebro: Regência e Pertinência e aprendizado",
+   "ligacoes": [
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/registro.py"
+   ],
+   "critico": true,
+   "metrica": "achados aceitos e barrados com motivo; decisões contrariadas por veredito",
+   "ordem": 74
+  },
+  {
+   "arquivo": "eldorado/base/missao/__init__.py",
+   "linhas": 0,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_cartorio.py",
+    "test_incentivos.py",
+    "test_interceptador.py",
+    "test_linha_cartorio.py",
+    "test_missao.py",
+    "test_seguranca.py"
+   ],
+   "situacao": "pacote",
+   "etapa": "07 Pertinência e missão",
+   "parte": "BASE",
+   "componente": "Pertinência e missão",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 75
+  },
+  {
+   "arquivo": "eldorado/base/missao/chave.py",
+   "linhas": 27,
+   "finalidade": "A chave do livro nesta missão: o livro é o PROGRAMA, não a edição.",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/indice.py",
+    "eldorado/base/migracao/importar_eldorado0.py",
+    "eldorado/base/missao/oportunidades.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "07 Pertinência e missão",
+   "parte": "BASE",
+   "componente": "Missão (finalidade trocável)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "chaves que geraram duplicado",
+   "ordem": 76
+  },
+  {
+   "arquivo": "eldorado/base/missao/itens.py",
+   "linhas": 68,
+   "finalidade": "Os 12 itens do livro e o critério único da estrela (titular, 04/10/2026), aproveitado do Eldorado0.",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/analise_externa.py",
+    "eldorado/base/cartorio/auditoria.py",
+    "eldorado/base/cartorio/cartorio.py",
+    "eldorado/base/cartorio/certificacao.py",
+    "eldorado/base/cartorio/selos.py",
+    "eldorado/base/migracao/importar_eldorado0.py",
+    "eldorado/base/missao/oportunidades.py",
+    "eldorado/base/painel/visoes.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "07 Pertinência e missão",
+   "parte": "BASE",
+   "componente": "Missão (finalidade trocável)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "itens definidos",
+   "ordem": 77
+  },
+  {
+   "arquivo": "eldorado/base/missao/regras_portao.py",
+   "linhas": 426,
+   "finalidade": "As regras do portão da missão das oportunidades — aproveitadas do Eldorado0, com fidelidade.",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/auditoria.py",
+    "eldorado/base/missao/portao.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "07 Pertinência e missão",
+   "parte": "BASE",
+   "componente": "Missão (finalidade trocável)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "casos de ouro do portão (100%)",
+   "ordem": 78
+  },
+  {
+   "arquivo": "eldorado/base/missao/portao.py",
+   "linhas": 40,
+   "finalidade": "O portão da missão das oportunidades (titular, 16/10/2026), com as regras aproveitadas do Eldorado0.",
+   "depende_de": [
+    "eldorado/base/missao/regras_portao.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/auditoria.py",
+    "eldorado/base/missao/oportunidades.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "07 Pertinência e missão",
+   "parte": "BASE",
+   "componente": "Missão (finalidade trocável)",
+   "ligacoes": [
+    "eldorado/base/missao/regras_portao.py"
+   ],
+   "critico": false,
+   "metrica": "decisões contrariadas por veredito (zero)",
+   "ordem": 79
+  },
+  {
+   "arquivo": "eldorado/base/missao/oportunidades.py",
+   "linhas": 41,
+   "finalidade": "A missão das oportunidades, no contrato da plataforma: itens, chave e portão.",
+   "depende_de": [
+    "eldorado/base/missao/chave.py",
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/missao/portao.py",
+    "eldorado/base/nucleo/contratos.py"
+   ],
+   "eventos": [],
+   "acionado_por": [
+    "passagem, nó «cartorio» (parâmetro)",
+    "passagem, nó «decidir_rede» (parâmetro)",
+    "passagem, nó «decidir» (parâmetro)",
+    "passagem, nó «validar» (parâmetro)"
+   ],
+   "usado_por": [],
+   "testes": [
+    "test_cartorio.py",
+    "test_incentivos.py",
+    "test_interceptador.py",
+    "test_linha_cartorio.py",
+    "test_missao.py",
+    "test_seguranca.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "07 Pertinência e missão",
+   "parte": "BASE",
+   "componente": "Missão (finalidade trocável)",
+   "ligacoes": [
+    "eldorado/base/missao/chave.py",
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/missao/portao.py",
     "eldorado/base/nucleo/contratos.py"
    ],
    "critico": false,
-   "metrica": "bateria verde; casos de ouro 100%"
+   "metrica": "missão com os dados presentes",
+   "ordem": 80
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/certificacao.py",
+   "linhas": 132,
+   "finalidade": "A certificação: cada item no texto oficial, com o valor, o trecho e a página.",
+   "depende_de": [
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [
+    "certidao.gravada"
+   ],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/auditoria.py",
+    "eldorado/base/cartorio/cartorio.py"
+   ],
+   "testes": [
+    "test_cartorio.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "08 Cartório · etapas 1 e 2 (recepção e certificação)",
+   "parte": "BASE",
+   "componente": "Cartório: base de passagem",
+   "ligacoes": [
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": false,
+   "metrica": "certidões reais: reconhece 64%, valor certo 84%, ponta a ponta 54% (linha de base 22/10)",
+   "ordem": 81
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/indice.py",
+   "linhas": 71,
+   "finalidade": "O índice: cria o livro ou vincula ao existente pela chave da missão; reconhece o mesmo edital em canais diferentes.",
+   "depende_de": [
+    "eldorado/base/missao/chave.py",
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [
+    "livro.criado",
+    "livro.unido",
+    "livro.vinculado"
+   ],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/cartorio.py"
+   ],
+   "testes": [
+    "test_cartorio.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "08 Cartório · etapas 1 e 2 (recepção e certificação)",
+   "parte": "BASE",
+   "componente": "Cartório: base de passagem",
+   "ligacoes": [
+    "eldorado/base/missao/chave.py",
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": false,
+   "metrica": "duplicados unidos; livros criados e vinculados",
+   "ordem": 82
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/passaporte.py",
+   "linhas": 66,
+   "finalidade": "O passaporte: move o livro entre as fases só com a autorização da Regência, e registra as tentativas (até 3).",
+   "depende_de": [
+    "eldorado/base/cerebro/regencia.py",
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [
+    "livro.passagem",
+    "livro.situacao",
+    "relatorio.etapa",
+    "tentativa.registrada"
+   ],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/analise_externa.py",
+    "eldorado/base/cartorio/auditoria.py",
+    "eldorado/base/cartorio/cartorio.py",
+    "eldorado/base/cerebro/encaminhamento.py"
+   ],
+   "testes": [
+    "test_cartorio.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "08 Cartório · etapas 1 e 2 (recepção e certificação)",
+   "parte": "BASE",
+   "componente": "Cartório: base de passagem",
+   "ligacoes": [
+    "eldorado/base/cerebro/regencia.py",
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": false,
+   "metrica": "livros sem passaporte (zero)",
+   "ordem": 83
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/selos.py",
+   "linhas": 51,
+   "finalidade": "Os dois selos de cada livro, calculados a cada passagem.",
+   "depende_de": [
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [
+    "selo.calculado"
+   ],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/auditoria.py",
+    "eldorado/base/cartorio/cartorio.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "08 Cartório · etapas 1 e 2 (recepção e certificação)",
+   "parte": "BASE",
+   "componente": "Cartório: base de passagem",
+   "ligacoes": [
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": false,
+   "metrica": "livros sem selo (zero; hoje 70%)",
+   "ordem": 84
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/site_oficial.py",
+   "linhas": 41,
+   "finalidade": "O site oficial: a oportunidade se encontra NA FONTE (titular, 14/10/2026).",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/auditoria.py",
+    "eldorado/base/cartorio/cartorio.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "08 Cartório · etapas 1 e 2 (recepção e certificação)",
+   "parte": "BASE",
+   "componente": "Cartório: base de passagem",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "livros com link oficial aprovado",
+   "ordem": 85
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/cartorio.py",
+   "linhas": 191,
+   "finalidade": "O Cartório (titular, 22/10/2026): o ORGANIZADOR. Ele não busca nada: é onde o livro recebe informação nova, é",
+   "depende_de": [
+    "eldorado/base/cartorio/auditoria.py",
+    "eldorado/base/cartorio/certificacao.py",
+    "eldorado/base/cartorio/indice.py",
+    "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/cartorio/selos.py",
+    "eldorado/base/cartorio/site_oficial.py",
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/registro.py"
+   ],
+   "eventos": [
+    "alarme.aberto",
+    "certidao.gravada",
+    "livro.legislacao",
+    "livro.links",
+    "livro.vinculado"
+   ],
+   "acionado_por": [
+    "passagem, nó 11 «validar»",
+    "passagem, nó 5 «cartorio»"
+   ],
+   "usado_por": [
+    "eldorado/base/cartorio/analise_externa.py"
+   ],
+   "testes": [
+    "test_incentivos.py",
+    "test_interceptador.py",
+    "test_linha_cartorio.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "08 Cartório · etapas 1 e 2 (recepção e certificação)",
+   "parte": "BASE",
+   "componente": "Cartório: base de passagem",
+   "ligacoes": [
+    "eldorado/base/cartorio/auditoria.py",
+    "eldorado/base/cartorio/certificacao.py",
+    "eldorado/base/cartorio/indice.py",
+    "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/cartorio/selos.py",
+    "eldorado/base/cartorio/site_oficial.py",
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/registro.py"
+   ],
+   "critico": true,
+   "metrica": "livros movidos por passagem; livros parados além do previsto",
+   "ordem": 86
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/auditoria.py",
+   "linhas": 358,
+   "finalidade": "A auditoria de cada livro: a validação individual e a decupagem dos dados em colunas (livro_dados).",
+   "depende_de": [
+    "eldorado/base/cartorio/certificacao.py",
+    "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/cartorio/selos.py",
+    "eldorado/base/cartorio/site_oficial.py",
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/missao/portao.py",
+    "eldorado/base/missao/regras_portao.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/motores/leitura/normalizar.py"
+   ],
+   "eventos": [
+    "certidao.contestada",
+    "livro.decupado",
+    "livro.excluido_logicamente",
+    "relatorio.etapa",
+    "selo.calculado"
+   ],
+   "acionado_por": [
+    "passagem, nó 7 «auditar»"
+   ],
+   "usado_por": [
+    "eldorado/base/cartorio/cartorio.py"
+   ],
+   "testes": [
+    "test_auditoria.py",
+    "test_incentivos.py",
+    "test_linha_cartorio.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "09 Cartório · validação (auditoria e arquivo)",
+   "parte": "BASE",
+   "componente": "Cartório · validação (auditoria e arquivo)",
+   "ligacoes": [
+    "eldorado/base/cartorio/certificacao.py",
+    "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/cartorio/selos.py",
+    "eldorado/base/cartorio/site_oficial.py",
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/missao/portao.py",
+    "eldorado/base/missao/regras_portao.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/motores/leitura/normalizar.py"
+   ],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 87
+  },
+  {
+   "arquivo": "eldorado/motores/pilotos/__init__.py",
+   "linhas": 0,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_interceptador.py"
+   ],
+   "situacao": "pacote",
+   "etapa": "10 Cartório · etapa 3 (a rede neural encaminha)",
+   "parte": "MOTORES",
+   "componente": "Cartório · etapa 3 (a rede neural encaminha)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 88
+  },
+  {
+   "arquivo": "eldorado/motores/pilotos/espiao.py",
+   "parte": "MOTORES",
+   "componente": "Pilotos: motores livres com IA",
+   "ligacoes": [
+    "eldorado/base/nucleo/ia.py",
+    "eldorado/motores/descoberta/metabusca.py",
+    "eldorado/motores/canal/achado.py"
+   ],
+   "critico": false,
+   "metrica": "achados por voo; fontes novas propostas",
+   "etapa": "10 Cartório · etapa 3 (a rede neural encaminha)",
+   "situacao": "a construir",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "achados por voo; fontes novas propostas",
+   "ordem": 89
+  },
+  {
+   "arquivo": "eldorado/motores/pilotos/interceptador.py",
+   "linhas": 257,
+   "finalidade": "O PILOTO INTERCEPTADOR (do Eldorado0, titular, 26/09/2026): \"o Espião descobre; o Interceptador comprova\".",
+   "depende_de": [
+    "eldorado/base/cartorio/site_oficial.py",
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/motores/acesso/arquivo_web.py",
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/descoberta/estrutura_site.py",
+    "eldorado/motores/descoberta/fonte_oficial.py",
+    "eldorado/motores/leitura/leitores.py",
+    "eldorado/motores/leitura/pdf.py"
+   ],
+   "eventos": [
+    "tentativa.registrada"
+   ],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cerebro/encaminhamento.py"
+   ],
+   "testes": [
+    "test_interceptador.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "10 Cartório · etapa 3 (a rede neural encaminha)",
+   "parte": "MOTORES",
+   "componente": "Pilotos: motores livres com IA",
+   "ligacoes": [
+    "eldorado/base/cartorio/site_oficial.py",
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/motores/acesso/arquivo_web.py",
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/descoberta/estrutura_site.py",
+    "eldorado/motores/descoberta/fonte_oficial.py",
+    "eldorado/motores/leitura/leitores.py",
+    "eldorado/motores/leitura/pdf.py"
+   ],
+   "critico": false,
+   "metrica": "livros resolvidos por voo; respostas válidas",
+   "ordem": 90
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/encaminhamento.py",
+   "linhas": 96,
+   "finalidade": "A rede neural na fase 3 do Cartório (titular, 22/10/2026): quem age é a rede, não o Cartório.",
+   "depende_de": [
+    "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/cerebro/regencia.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/registro.py",
+    "eldorado/motores/acesso/api.py",
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/acesso/leve.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "eventos": [
+    "achado.entregue",
+    "documento.registrado",
+    "pagina.gravada",
+    "tentativa.registrada"
+   ],
+   "acionado_por": [
+    "passagem, nó 8 «encaminhar»"
+   ],
+   "usado_por": [],
+   "testes": [
+    "test_interceptador.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "10 Cartório · etapa 3 (a rede neural encaminha)",
+   "parte": "BASE",
+   "componente": "Cartório · etapa 3 (a rede neural encaminha)",
+   "ligacoes": [
+    "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/cerebro/regencia.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/registro.py",
+    "eldorado/motores/acesso/api.py",
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/acesso/leve.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 91
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/analise_externa.py",
+   "linhas": 158,
+   "finalidade": "A etapa 5 do Cartório: a ANÁLISE EXTERNA pelo Claude no Chrome (titular, 22/10/2026).",
+   "depende_de": [
+    "eldorado/base/cartorio/cartorio.py",
+    "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [
+    "alarme.aberto",
+    "aprendizado.registrado",
+    "certidao.gravada",
+    "livro.excluido_logicamente",
+    "veredito.gravado"
+   ],
+   "acionado_por": [
+    "passagem, nó 13 «analise_externa»"
+   ],
+   "usado_por": [
+    "eldorado/base/nucleo/comandos.py"
+   ],
+   "testes": [
+    "test_linha_cartorio.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "11 Cartório · etapa 5 (análise externa)",
+   "parte": "BASE",
+   "componente": "Cartório · etapa 5 (análise externa)",
+   "ligacoes": [
+    "eldorado/base/cartorio/cartorio.py",
+    "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 92
+  },
+  {
+   "arquivo": "eldorado/base/verificacao/importacao.py",
+   "parte": "BASE",
+   "componente": "Etapa de Verificação externa",
+   "ligacoes": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": false,
+   "metrica": "respostas importadas e recusadas",
+   "etapa": "11 Cartório · etapa 5 (análise externa)",
+   "situacao": "substituído por eldorado/base/cartorio/analise_externa.py",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "respostas importadas e recusadas",
+   "ordem": 93
+  },
+  {
+   "arquivo": "eldorado/base/verificacao/lote.py",
+   "parte": "BASE",
+   "componente": "Etapa de Verificação externa",
+   "ligacoes": [
+    "eldorado/banco/biblioteca/livro.py"
+   ],
+   "critico": false,
+   "metrica": "lotes gerados",
+   "etapa": "11 Cartório · etapa 5 (análise externa)",
+   "situacao": "substituído por eldorado/base/cartorio/analise_externa.py",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "lotes gerados",
+   "ordem": 94
+  },
+  {
+   "arquivo": "eldorado/base/verificacao/relatorio_faltas.py",
+   "parte": "BASE",
+   "componente": "Etapa de Verificação externa",
+   "ligacoes": [
+    "eldorado/base/analise/historia.py"
+   ],
+   "critico": false,
+   "metrica": "livros com relatório final",
+   "etapa": "11 Cartório · etapa 5 (análise externa)",
+   "situacao": "substituído por eldorado/base/cartorio/analise_externa.py (o que falta vai no lote)",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "livros com relatório final",
+   "ordem": 95
+  },
+  {
+   "arquivo": "eldorado/base/verificacao/verificacao.py",
+   "parte": "BASE",
+   "componente": "Etapa de Verificação externa",
+   "ligacoes": [
+    "eldorado/base/verificacao/lote.py",
+    "eldorado/base/verificacao/importacao.py",
+    "eldorado/base/cartorio/cartorio.py"
+   ],
+   "critico": false,
+   "metrica": "livros em verificação; decisões recebidas",
+   "etapa": "11 Cartório · etapa 5 (análise externa)",
+   "situacao": "substituído por eldorado/base/cartorio/analise_externa.py",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "livros em verificação; decisões recebidas",
+   "ordem": 96
+  },
+  {
+   "arquivo": "eldorado/base/transferencia/farol.py",
+   "parte": "BASE",
+   "componente": "Transferência ao Farol",
+   "ligacoes": [
+    "eldorado/banco/biblioteca/livro.py"
+   ],
+   "critico": false,
+   "metrica": "livros transferidos; recusados pelo contrato",
+   "etapa": "12 Farol e transferência",
+   "situacao": "a construir",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "livros transferidos; recusados pelo contrato",
+   "ordem": 97
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/aprendizado.py",
+   "linhas": 63,
+   "finalidade": "O ciclo de aprendizado: temporário (30 dias) → permanente, se funcionou; arquivado, se falhou; vencido, sai.",
+   "depende_de": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [
+    "aprendizado.expirado",
+    "aprendizado.promovido",
+    "aprendizado.registrado",
+    "aprendizado.usado"
+   ],
+   "acionado_por": [
+    "passagem, nó 14 «aprender»"
+   ],
+   "usado_por": [],
+   "testes": [
+    "test_cerebro.py",
+    "test_passagem.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "13 Aprender e medir",
+   "parte": "BASE",
+   "componente": "Cérebro: Regência e Pertinência e aprendizado",
+   "ligacoes": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": false,
+   "metrica": "aprendizados promovidos e arquivados",
+   "ordem": 98
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/completude.py",
+   "linhas": 32,
+   "finalidade": "A completude do dia: o que estava devido foi lido? O que precisa ser reacionado?",
+   "depende_de": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [
+    "cobertura.dia"
+   ],
+   "acionado_por": [
+    "passagem, nó 15 «completude»"
+   ],
+   "usado_por": [],
+   "testes": [
+    "test_cerebro.py",
+    "test_passagem.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "13 Aprender e medir",
+   "parte": "BASE",
+   "componente": "Cérebro: Regência e Pertinência e aprendizado",
+   "ligacoes": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": false,
+   "metrica": "cobertura do dia (meta 100%)",
+   "ordem": 99
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/inventario.py",
+   "linhas": 177,
+   "finalidade": "O inventário do sistema (titular, 22/10/2026): todo arquivo, do primeiro ao último no caminho do funcionamento, com a",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/nucleo/comandos.py"
+   ],
+   "testes": [
+    "test_inventario.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "13 Aprender e medir",
+   "parte": "BASE",
+   "componente": "Aprender e medir",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 100
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/medicao.py",
+   "linhas": 126,
+   "finalidade": "O motor de indicadores: ponto, círculo e linhas de cada arquivo, e a agregação por componente, parte e sistema.",
+   "depende_de": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [
+    "medicao.registrada"
+   ],
+   "acionado_por": [
+    "passagem, nó 16 «medir»"
+   ],
+   "usado_por": [],
+   "testes": [
+    "test_cerebro.py",
+    "test_passagem.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "13 Aprender e medir",
+   "parte": "BASE",
+   "componente": "Cérebro: Regência e Pertinência e aprendizado",
+   "ligacoes": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": true,
+   "metrica": "arquivos com as três medições na passagem (meta 100%)",
+   "ordem": 101
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/rede.py",
+   "linhas": 77,
+   "finalidade": "A rede neural única, de aprendizado contínuo (River): aprende a cada veredito e dá as notas.",
+   "depende_de": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [
+    "modelo.treinado"
+   ],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_cerebro.py"
+   ],
+   "situacao": "desligado (ninguém o usa nem o aciona)",
+   "etapa": "13 Aprender e medir",
+   "parte": "BASE",
+   "componente": "Cérebro: Regência e Pertinência e aprendizado",
+   "ligacoes": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": false,
+   "metrica": "discernimento, precisão, revocação; idade do modelo",
+   "ordem": 102
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/regras.py",
+   "linhas": 75,
+   "finalidade": "A tabela única de regras e decisões da titular.",
+   "depende_de": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [
+    "alarme.aberto",
+    "regra.registrada",
+    "regra.substituida"
+   ],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_cerebro.py"
+   ],
+   "situacao": "desligado (ninguém o usa nem o aciona)",
+   "etapa": "13 Aprender e medir",
+   "parte": "BASE",
+   "componente": "Cérebro: Regência e Pertinência e aprendizado",
+   "ligacoes": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": false,
+   "metrica": "decisões aplicadas; contradições abertas (devem ser zero)",
+   "ordem": 103
+  },
+  {
+   "arquivo": "eldorado/base/analise/calendario.py",
+   "parte": "BASE",
+   "componente": "Análise: história do livro, previsão e calendário",
+   "ligacoes": [
+    "eldorado/base/analise/preditivo.py"
+   ],
+   "critico": false,
+   "metrica": "calendário atualizado na passagem",
+   "etapa": "14 Análise e painel",
+   "situacao": "a construir",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "calendário atualizado na passagem",
+   "ordem": 104
+  },
+  {
+   "arquivo": "eldorado/base/analise/historia.py",
+   "parte": "BASE",
+   "componente": "Análise: história do livro, previsão e calendário",
+   "ligacoes": [
+    "eldorado/banco/biblioteca/livro.py"
+   ],
+   "critico": false,
+   "metrica": "livros com história completa",
+   "etapa": "14 Análise e painel",
+   "situacao": "a construir",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "livros com história completa",
+   "ordem": 105
+  },
+  {
+   "arquivo": "eldorado/base/analise/preditivo.py",
+   "parte": "BASE",
+   "componente": "Análise: história do livro, previsão e calendário",
+   "ligacoes": [
+    "eldorado/banco/biblioteca/livro.py"
+   ],
+   "critico": false,
+   "metrica": "alertas emitidos antes da abertura",
+   "etapa": "14 Análise e painel",
+   "situacao": "a construir",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "alertas emitidos antes da abertura",
+   "ordem": 106
+  },
+  {
+   "arquivo": "eldorado/base/painel/__init__.py",
+   "linhas": 0,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_painel.py"
+   ],
+   "situacao": "pacote",
+   "etapa": "14 Análise e painel",
+   "parte": "BASE",
+   "componente": "Análise e painel",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 107
+  },
+  {
+   "arquivo": "eldorado/base/painel/api.py",
+   "parte": "BASE",
+   "componente": "Painel, API e Sala de controle",
+   "ligacoes": [
+    "eldorado/base/painel/visoes.py",
+    "eldorado/base/nucleo/seguranca.py"
+   ],
+   "critico": false,
+   "metrica": "respostas no prazo; erros",
+   "etapa": "14 Análise e painel",
+   "situacao": "a construir",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "respostas no prazo; erros",
+   "ordem": 108
+  },
+  {
+   "arquivo": "eldorado/base/painel/maquina.py",
+   "parte": "BASE",
+   "componente": "Painel, API e Sala de controle",
+   "ligacoes": [
+    "eldorado/base/cerebro/governador.py"
+   ],
+   "critico": false,
+   "metrica": "mostrador atualizado em tempo real",
+   "etapa": "14 Análise e painel",
+   "situacao": "a construir",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "mostrador atualizado em tempo real",
+   "ordem": 109
+  },
+  {
+   "arquivo": "eldorado/base/painel/sala.py",
+   "parte": "BASE",
+   "componente": "Painel, API e Sala de controle",
+   "ligacoes": [
+    "eldorado/banco/cerebro_db/esquema.py"
+   ],
+   "critico": false,
+   "metrica": "sala publicada no prazo",
+   "etapa": "14 Análise e painel",
+   "situacao": "a construir",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "sala publicada no prazo",
+   "ordem": 110
+  },
+  {
+   "arquivo": "eldorado/base/painel/visoes.py",
+   "linhas": 107,
+   "finalidade": "As visões do painel: o que cada tela mostra, lido dos bancos (só leitura), num único arquivo de dados.",
+   "depende_de": [
+    "eldorado/base/missao/itens.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/nucleo/comandos.py"
+   ],
+   "testes": [
+    "test_painel.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "14 Análise e painel",
+   "parte": "BASE",
+   "componente": "Painel, API e Sala de controle",
+   "ligacoes": [
+    "eldorado/base/missao/itens.py"
+   ],
+   "critico": false,
+   "metrica": "visões iguais à consulta ao banco",
+   "ordem": 111
+  },
+  {
+   "arquivo": "eldorado/base/migracao/__init__.py",
+   "linhas": 0,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_migracao.py"
+   ],
+   "situacao": "pacote",
+   "etapa": "16 Migração do Eldorado0 (temporária)",
+   "parte": "BASE",
+   "componente": "Migração do Eldorado0 (temporária)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 112
+  },
+  {
+   "arquivo": "eldorado/base/migracao/importar_eldorado0.py",
+   "linhas": 375,
+   "finalidade": "A migração do Eldorado0 (temporária, 30 dias): livros, certidões, documentos, vereditos, selos, leis, empresas e",
+   "depende_de": [
+    "eldorado/base/missao/chave.py",
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/nucleo/comandos.py"
+   ],
+   "testes": [
+    "test_migracao.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "16 Migração do Eldorado0 (temporária)",
+   "parte": "BASE",
+   "componente": "Migração do Eldorado0 (operação temporária, 30 dias)",
+   "ligacoes": [
+    "eldorado/base/missao/chave.py",
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": false,
+   "metrica": "contagens importadas iguais às de origem",
+   "ordem": 113
+  },
+  {
+   "arquivo": ".github/workflows/painel.yml",
+   "etapa": "17 Outros",
+   "parte": "OPERACAO",
+   "componente": "Operação e configuração",
+   "ligacoes": [],
+   "critico": true,
+   "metrica": "o sistema roda sem intervenção",
+   "finalidade": "",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 42,
+   "situacao": "em funcionamento",
+   "ordem": 114
   },
   {
    "arquivo": ".github/workflows/passagem.yml",
@@ -871,7 +3134,17 @@
     "eldorado/base/nucleo/gravador.py"
    ],
    "critico": false,
-   "metrica": "passagens no horário"
+   "metrica": "passagens no horário",
+   "etapa": "17 Outros",
+   "situacao": "substituído por .github/workflows/eldorado.yml (funcionamento permanente)",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "passagens no horário",
+   "ordem": 115
   },
   {
    "arquivo": ".github/workflows/pilotos.yml",
@@ -882,79 +3155,599 @@
     "eldorado/motores/pilotos/interceptador.py"
    ],
    "critico": false,
-   "metrica": "voos com sucesso"
+   "metrica": "voos com sucesso",
+   "etapa": "17 Outros",
+   "situacao": "substituído por .github/workflows/eldorado.yml (os pilotos rodam dentro do funcionamento permanente)",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "voos com sucesso",
+   "ordem": 116
   },
   {
-   "arquivo": ".github/workflows/painel.yml",
+   "arquivo": "eldorado/__init__.py",
+   "linhas": 1,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_acesso.py",
+    "test_agenda.py",
+    "test_alarmes.py",
+    "test_auditoria.py",
+    "test_bancos.py",
+    "test_cartorio.py",
+    "test_cerebro.py",
+    "test_comandos.py",
+    "test_config.py",
+    "test_contratos.py",
+    "test_decisao.py",
+    "test_definicao.py",
+    "test_descoberta.py",
+    "test_eventos.py",
+    "test_executor.py",
+    "test_expurgo_externo.py",
+    "test_fila.py",
+    "test_governador.py",
+    "test_gravador.py",
+    "test_incentivos.py",
+    "test_interceptador.py",
+    "test_inventario.py",
+    "test_leitura.py",
+    "test_linha_cartorio.py",
+    "test_migracao.py",
+    "test_missao.py",
+    "test_motor_canal.py",
+    "test_motores_api.py",
+    "test_painel.py",
+    "test_passagem.py",
+    "test_passagem_real.py",
+    "test_seguranca.py"
+   ],
+   "situacao": "pacote",
+   "etapa": "17 Outros",
    "parte": "BASE",
-   "componente": "Fluxos do GitHub e operação",
+   "componente": "Outros",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 117
+  },
+  {
+   "arquivo": "eldorado/base/__init__.py",
+   "linhas": 0,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_acesso.py",
+    "test_agenda.py",
+    "test_alarmes.py",
+    "test_auditoria.py",
+    "test_cartorio.py",
+    "test_cerebro.py",
+    "test_comandos.py",
+    "test_config.py",
+    "test_contratos.py",
+    "test_decisao.py",
+    "test_definicao.py",
+    "test_eventos.py",
+    "test_executor.py",
+    "test_expurgo_externo.py",
+    "test_fila.py",
+    "test_governador.py",
+    "test_gravador.py",
+    "test_incentivos.py",
+    "test_interceptador.py",
+    "test_inventario.py",
+    "test_linha_cartorio.py",
+    "test_migracao.py",
+    "test_missao.py",
+    "test_motor_canal.py",
+    "test_motores_api.py",
+    "test_painel.py",
+    "test_passagem.py",
+    "test_passagem_real.py",
+    "test_seguranca.py"
+   ],
+   "situacao": "pacote",
+   "etapa": "17 Outros",
+   "parte": "BASE",
+   "componente": "Outros",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 118
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/__init__.py",
+   "linhas": 0,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_auditoria.py",
+    "test_cartorio.py",
+    "test_incentivos.py",
+    "test_interceptador.py",
+    "test_linha_cartorio.py"
+   ],
+   "situacao": "pacote",
+   "etapa": "17 Outros",
+   "parte": "BASE",
+   "componente": "Outros",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 119
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/__init__.py",
+   "linhas": 0,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_cerebro.py",
+    "test_decisao.py",
+    "test_fila.py",
+    "test_governador.py",
+    "test_incentivos.py",
+    "test_interceptador.py",
+    "test_inventario.py",
+    "test_linha_cartorio.py",
+    "test_motor_canal.py",
+    "test_motores_api.py",
+    "test_painel.py",
+    "test_passagem.py",
+    "test_passagem_real.py",
+    "test_seguranca.py"
+   ],
+   "situacao": "pacote",
+   "etapa": "17 Outros",
+   "parte": "BASE",
+   "componente": "Outros",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 120
+  },
+  {
+   "arquivo": "eldorado/base/investigacao/investigacao.py",
+   "parte": "BASE",
+   "componente": "Etapa de Investigação",
    "ligacoes": [
-    "eldorado/base/painel/visoes.py"
+    "eldorado/motores/pilotos/interceptador.py",
+    "eldorado/base/cartorio/cartorio.py"
    ],
    "critico": false,
-   "metrica": "publicações no prazo"
+   "metrica": "livros investigados e itens comprovados por livro",
+   "etapa": "17 Outros",
+   "situacao": "substituído por eldorado/base/cerebro/encaminhamento.py e eldorado/motores/pilotos/interceptador.py",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "finalidade": "livros investigados e itens comprovados por livro",
+   "ordem": 121
   },
   {
-   "arquivo": ".github/workflows/qualidade.yml",
-   "parte": "BASE",
-   "componente": "Fluxos do GitHub e operação",
-   "ligacoes": [
-    "eldorado/testes/"
+   "arquivo": "eldorado/motores/__init__.py",
+   "linhas": 0,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_acesso.py",
+    "test_descoberta.py",
+    "test_incentivos.py",
+    "test_interceptador.py",
+    "test_leitura.py",
+    "test_motor_canal.py",
+    "test_motores_api.py",
+    "test_seguranca.py"
    ],
-   "critico": false,
-   "metrica": "mudanças aprovadas"
-  },
-  {
-   "arquivo": "eldorado/base/nucleo/recibo.py",
-   "parte": "BASE",
-   "componente": "Núcleo da plataforma",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "chamadas medidas"
-  },
-  {
-   "arquivo": "eldorado/base/fluxo/nos.py",
-   "parte": "BASE",
-   "componente": "Workflow, fila e agenda",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "nós executados sem erro"
-  },
-  {
-   "arquivo": "eldorado/banco/_sqlite.py",
-   "parte": "BANCO",
-   "componente": "Biblioteca (biblioteca.db)",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "bancos abertos íntegros"
-  },
-  {
-   "arquivo": "eldorado/base/missao/regras_portao.py",
-   "parte": "BASE",
-   "componente": "Missão (finalidade trocável)",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "casos de ouro do portão (100%)"
-  },
-  {
-   "arquivo": "eldorado/base/missao/oportunidades.py",
-   "parte": "BASE",
-   "componente": "Missão (finalidade trocável)",
-   "ligacoes": [
-    "eldorado/base/missao/portao.py",
-    "eldorado/base/missao/itens.py",
-    "eldorado/base/missao/chave.py"
-   ],
-   "critico": false,
-   "metrica": "missão com os dados presentes"
-  },
-  {
-   "arquivo": "eldorado/motores/descoberta/pistas.py",
+   "situacao": "pacote",
+   "etapa": "17 Outros",
    "parte": "MOTORES",
-   "componente": "Ferramentas de descoberta (5 formas)",
+   "componente": "Outros",
    "ligacoes": [],
    "critico": false,
-   "metrica": "pistas no formato comum"
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 122
+  }
+ ],
+ "motores": [
+  {
+   "id": "do-goiania",
+   "nome": "Diário Oficial do Município de Goiânia",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "do-goias",
+   "nome": "Diário Oficial do Estado de Goiás",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "dou",
+   "nome": "Diário Oficial da União",
+   "tipo": "regular",
+   "motor_novo": "dou",
+   "situacao": "em funcionamento",
+   "observacao": ""
+  },
+  {
+   "id": "dj-trf1-go",
+   "nome": "Diário da Justiça Federal — Seção Judiciária de Goiás",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "camara-goiania-pl",
+   "nome": "Câmara Municipal de Goiânia — processos legislativos",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "alego-pl",
+   "nome": "Assembleia Legislativa de Goiás — proposições",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "congresso-nacional",
+   "nome": "Congresso Nacional — Câmara, Senado e Comissões",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "pncp-api",
+   "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
+   "tipo": "regular",
+   "motor_novo": "pncp",
+   "situacao": "em funcionamento",
+   "observacao": ""
+  },
+  {
+   "id": "judiciario-tjgo",
+   "nome": "TJ-GO — editais das comarcas (prestações pecuniárias)",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "judiciario-cnj",
+   "nome": "CNJ — destinação de prestações pecuniárias",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "mpgo-destinacao",
+   "nome": "MP-GO — Programa Destina",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "mptgo-destinacao",
+   "nome": "MPT-GO — editais de indicação de entidades",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "mpu-destinacao",
+   "nome": "MPU — MPF, MPDFT, MPM e MPT nacional: destinações",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "plataforma-wordpress",
+   "nome": "Adaptador WordPress — sites oficiais pela API",
+   "tipo": "regular",
+   "motor_novo": "wordpress-goias",
+   "situacao": "em funcionamento",
+   "observacao": "Secult-GO e SEDS-GO; as demais secretarias entram como fontes"
+  },
+  {
+   "id": "plataforma-mapas-culturais",
+   "nome": "Adaptador Mapas Culturais — oportunidades",
+   "tipo": "regular",
+   "motor_novo": "mapas-culturais",
+   "situacao": "em funcionamento",
+   "observacao": ""
+  },
+  {
+   "id": "outras-oportunidades",
+   "nome": "Outras Oportunidades",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "motor-gife",
+   "nome": "Motor Incentivos Fiscais — empresas da base",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": "empresas que distribuem renúncia fiscal (especial.db)"
+  },
+  {
+   "id": "motor-patrocinio",
+   "nome": "Motor Patrocínio Privado — mídia e eventos",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "gife",
+   "nome": "GIFE — Grupo de Institutos, Fundações e Empresas",
+   "tipo": "regular",
+   "motor_novo": "wordpress-financiadores",
+   "situacao": "em funcionamento",
+   "observacao": ""
+  },
+  {
+   "id": "salic",
+   "nome": "Lei Rouanet — janela de propostas no SALIC",
+   "tipo": "regular",
+   "motor_novo": "rouanet",
+   "situacao": "em funcionamento",
+   "observacao": "a API do Salic (projetos de Goiás) vai à análise do painel"
+  },
+  {
+   "id": "prefeituras-50-go",
+   "nome": "Prefeituras das 25 maiores cidades de Goiás",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": "há o catálogo de rotas das 25 prefeituras no projeto"
+  },
+  {
+   "id": "empresas-editais-incentivados",
+   "nome": "Empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas/Pronon",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "cnpq-extensao",
+   "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "estaduais-go-gov",
+   "nome": "Oportunidades estaduais governamentais de Goiás",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": "Goyazes já cobre o incentivo estadual à cultura"
+  },
+  {
+   "id": "site-farol-cultural",
+   "nome": "Farol Cultural",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "site-capitaai",
+   "nome": "CapitaAI",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "site-observatorio-terceiro-setor",
+   "nome": "Observatório do Terceiro Setor",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "site-mapas-culturais",
+   "nome": "Mapas Culturais — redes estaduais",
+   "tipo": "regular",
+   "motor_novo": "mapas-culturais",
+   "situacao": "parcial",
+   "observacao": "só o Mapa da Cultura federal; faltam as redes estaduais"
+  },
+  {
+   "id": "site-abcr",
+   "nome": "ABCR — Associação Brasileira de Captadores de Recursos",
+   "tipo": "regular",
+   "motor_novo": "wordpress-financiadores",
+   "situacao": "parcial",
+   "observacao": "fonte Captadores (Capta)"
+  },
+  {
+   "id": "site-funarte",
+   "nome": "Funarte",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "site-transferegov",
+   "nome": "Transferegov — programas e parcerias com OSC",
+   "tipo": "regular",
+   "motor_novo": "transferegov",
+   "situacao": "em funcionamento",
+   "observacao": ""
+  },
+  {
+   "id": "site-rede-comua",
+   "nome": "Rede Comuá",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "site-fundo-baoba",
+   "nome": "Fundo Baobá",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "site-editais-culturais",
+   "nome": "Editais Culturais",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "site-fundo-brasil",
+   "nome": "Fundo Brasil de Direitos Humanos",
+   "tipo": "regular",
+   "motor_novo": "wordpress-financiadores",
+   "situacao": "em funcionamento",
+   "observacao": ""
+  },
+  {
+   "id": "site-idis",
+   "nome": "IDIS",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "site-undef",
+   "nome": "UNDEF — Fundo das Nações Unidas para a Democracia",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "site-fundo-casa",
+   "nome": "Fundo Casa Socioambiental",
+   "tipo": "regular",
+   "motor_novo": "wordpress-financiadores",
+   "situacao": "em funcionamento",
+   "observacao": ""
+  },
+  {
+   "id": "site-cese",
+   "nome": "CESE — Coordenadoria Ecumênica de Serviço",
+   "tipo": "regular",
+   "motor_novo": "wordpress-financiadores",
+   "situacao": "em funcionamento",
+   "observacao": ""
+  },
+  {
+   "id": "site-brazilfoundation",
+   "nome": "BrazilFoundation",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "site-rede-filantropia",
+   "nome": "Rede Filantropia",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "site-mapa-osc",
+   "nome": "Mapa das OSC (Ipea)",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "site-prosas",
+   "nome": "Prosas",
+   "tipo": "regular",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "(novo) goyazes",
+   "nome": "Programa Goyazes — incentivo estadual à cultura",
+   "tipo": "regular",
+   "motor_novo": "goyazes",
+   "situacao": "em funcionamento",
+   "observacao": "fonte nova do sistema novo"
+  },
+  {
+   "id": "(novo) querido-diario",
+   "nome": "Querido Diário — diários municipais",
+   "tipo": "regular",
+   "motor_novo": "querido-diario",
+   "situacao": "sem fonte",
+   "observacao": "a API da fonte está fora do ar desde 22/10"
+  },
+  {
+   "id": "piloto-aberto",
+   "nome": "Piloto Espião — busca livre (privado e internacional)",
+   "tipo": "piloto",
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": "motores/pilotos/espiao.py"
+  },
+  {
+   "id": "piloto-interceptador",
+   "nome": "Piloto Interceptador — comprova na fonte oficial",
+   "tipo": "piloto",
+   "motor_novo": "interceptador",
+   "situacao": "parcial",
+   "observacao": "as 10 abordagens funcionam; falta a IA (o trecho literal item a item)"
   }
  ]
 }

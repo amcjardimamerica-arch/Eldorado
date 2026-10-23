@@ -268,6 +268,20 @@ def vereditos(arquivo: Path, config: Path = CONFIG):
 
 
 @app.command()
+def inventario(raiz: Path = Path(".")):
+    """Gera o inventário do sistema: o catálogo da medição (config/arquivos.json) e o mapa legível (MAPA-DO-SISTEMA.md)."""
+    import collections
+    import json
+
+    from ..cerebro.inventario import gerar, mapa
+    cat = gerar(raiz)
+    (raiz / "config/arquivos.json").write_text(json.dumps(cat, ensure_ascii=False, indent=1), encoding="utf-8")
+    (raiz / "MAPA-DO-SISTEMA.md").write_text(mapa(cat), encoding="utf-8")
+    typer.echo(f"{len(cat['arquivos'])} arquivos: {dict(collections.Counter(a['situacao'][:22] for a in cat['arquivos']))}")
+    typer.echo(f"{len(cat['motores'])} motores: {dict(collections.Counter((m['tipo'], m['situacao']) for m in cat['motores']))}")
+
+
+@app.command()
 def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = CONFIG,
                limite_min: float = typer.Option(320, help="duração desta execução; perto do limite, grava e passa a vez à continuação"),
                gravar_min: float = typer.Option(30, help="grava o trabalho no repositório a cada tantos minutos"),
