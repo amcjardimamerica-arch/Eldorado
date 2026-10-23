@@ -72,6 +72,7 @@ vetos = ["resultado final"]
             .replace('dados = "dados"', f"dados = {json.dumps(str(dados))}").replace('eventos = "eventos"', f"eventos = {json.dumps(str(tmp_path / 'eventos'))}"))
     wf = wf.replace('parametros = { agenda', f'parametros = {{ agora = "2026-10-22T{horario}:00-03:00", carga_fixa = 0.1, agenda', 1)
     wf = wf.replace('tipo = "eldorado.base.cerebro.regencia:no_acionar"\nparametros = { ', 'tipo = "eldorado.base.cerebro.regencia:no_acionar"\nparametros = { carga_fixa = 0.1, ', 1)
+    wf = wf.replace("orcamento_s = 300", "orcamento_s = 0")             # este teste mede o motor; a linha do Cartório tem teste próprio
     (tmp_path / f"passagem-{horario[:2]}.toml").write_text(wf)
     return carregar(tmp_path / f"passagem-{horario[:2]}.toml"), dados
 
