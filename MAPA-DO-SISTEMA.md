@@ -91,7 +91,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 42 | `config/motores_previstos.json` |  | em funcionamento |  |  | 0 |
 | 43 | `eldorado/motores/acesso/__init__.py` |  | pacote |  |  | 3 |
 | 44 | `eldorado/motores/acesso/escada.py` | A escada de acesso: do degrau mais leve ao mais forte, aprendendo por domínio qual degrau funciona. | em funcionamento | eventos | encaminhamento, pilotos, comandos, api, arquivo_web, leve, local, navegador, rotas_alternativas, motor, fonte_oficial, i | 3 |
-| 45 | `eldorado/motores/canal/__init__.py` |  | pacote |  |  | 8 |
+| 45 | `eldorado/motores/canal/__init__.py` |  | pacote |  |  | 9 |
 | 46 | `eldorado/motores/canal/achado.py` | achados completos | a construir |  |  | 0 |
 | 47 | `eldorado/motores/canal/estado.py` | O estado de cada motor: o seu aprendizado de uso próprio, num banco só dele (dados/motores/<id>.db, fora do Gi | em funcionamento |  | motor | 1 |
 | 48 | `eldorado/motores/descoberta/__init__.py` |  | pacote |  |  | 3 |
@@ -113,7 +113,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 64 | `eldorado/motores/descoberta/metabusca.py` | Forma 1: a metabusca, com rotas de reserva: SearXNG (serviço próprio) → ddgs → Marginalia. | em funcionamento | pistas | pilotos, motor | 1 |
 | 65 | `eldorado/motores/acesso/rotas_alternativas.py` | Degraus 7 e 8, reservas desligadas até o teste real na criação: o Tor (IP diferente) e o leitor público de pág | desligado por desenho | escada, leve |  | 1 |
 | 66 | `eldorado/motores/canal/fabrica.py` | A fábrica de motores: executa a orientação de design (eldorado/motores/skills/criar-motor/SKILL.md). | em funcionamento | motor | comandos | 1 |
-| 67 | `eldorado/motores/canal/motor.py` | O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio. | em funcionamento | contratos, seguranca, api, arquivo_web, escada, leve, local, navegador, estado, arquivos_web, cadeia, dados_abertos, estrutura_site, fonte_oficial, metabusca, pistas, vigilancia, leitores, pdf | config/modulos.toml (do-goiania); config/modulos.toml (do-goias); config/modulos.toml (dou); config/modulos.toml (estadu | 8 |
+| 67 | `eldorado/motores/canal/motor.py` | O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio. | em funcionamento | contratos, seguranca, api, arquivo_web, escada, leve, local, navegador, estado, arquivos_web, cadeia, dados_abertos, estrutura_site, fonte_oficial, metabusca, pistas, vigilancia, leitores, pdf | config/modulos.toml (do-goiania); config/modulos.toml (do-goias); config/modulos.toml (dou); config/modulos.toml (empres | 9 |
 | 68 | `eldorado/motores/descoberta/cadeia.py` | A leitura em cadeia (canivete suíço): a lista → cada item → o detalhe → o texto, sem código por fonte. | em funcionamento | atos, leitores | motor | 0 |
 | 69 | `eldorado/motores/leitura/compactado.py` | Arquivos ZIP, 7Z e RAR: abre e entrega cada arquivo interno ao leitor do seu tipo. | em funcionamento | leitores | leitores | 0 |
 | 70 | `eldorado/motores/leitura/documento.py` | Documentos DOCX (com cabeçalhos, rodapés e notas), ODT e PPTX (uma página por slide). | em funcionamento | leitores | leitores | 0 |
@@ -217,13 +217,13 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 118 | `.github/workflows/passagem.yml` | passagens no horário | substituído por .github/workflows/eldorado.yml (funcionamento permanente) |  |  | 0 |
 | 119 | `.github/workflows/pilotos.yml` | voos com sucesso | substituído por .github/workflows/eldorado.yml (os pilotos rodam dentro do funcionamento permanente) |  |  | 0 |
 | 120 | `config/motores_previstos.toml` | o sistema roda sem intervenção | a construir |  |  | 0 |
-| 121 | `eldorado/__init__.py` |  | pacote |  |  | 40 |
+| 121 | `eldorado/__init__.py` |  | pacote |  |  | 41 |
 | 122 | `eldorado/base/__init__.py` |  | pacote |  |  | 32 |
 | 123 | `eldorado/base/cartorio/__init__.py` |  | pacote |  |  | 7 |
 | 124 | `eldorado/base/cerebro/__init__.py` |  | pacote |  |  | 17 |
 | 125 | `eldorado/base/cerebro/pilotos.py` | O Cérebro dos pilotos (titular, 22/10/2026): mede a recorrência de cada piloto e manda nova missão sempre que | em funcionamento | escada, metabusca, leitores, espiao | encaminhamento, comandos | 1 |
 | 126 | `eldorado/base/investigacao/investigacao.py` | livros investigados e itens comprovados por livro | substituído por eldorado/base/cerebro/encaminhamento.py e eldorado/motores/pilotos/interceptador.py |  |  | 0 |
-| 127 | `eldorado/motores/__init__.py` |  | pacote |  |  | 16 |
+| 127 | `eldorado/motores/__init__.py` |  | pacote |  |  | 17 |
 
 ## Os 47 motores (o estudo de reorganização da titular: 45 regulares e 2 pilotos)
 
@@ -237,7 +237,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 6 | EXE | pncp-api | PNCP — API de contratações (chamamentos e credenciamentos) | 0 | 17 | pncp-api | conforme | faltam os 17 alvos |
 | 7 | EXE | salic | Lei Rouanet — janela de propostas no SALIC e projetos de Goiás (Ministério da Cultura) | 2 | 1 | salic | conforme |  |
 | 8 | EXE | motor-gife | Motor Incentivos Fiscais — empresas da base ICMS/RFB/SALIC (Goiás) | 1 | 0 | — | a construir |  |
-| 9 | EXE | empresas-editais-incentivados | Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes | 2 | 5 | — | a construir |  |
+| 9 | EXE | empresas-editais-incentivados | Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes | 2 | 5 | empresas-editais-incentivados | conforme | criado pela orientação: os chamamentos do Pronas/PCD e do Pronon, a apresentação de projetos e o credenciamento; a Lei de Incentivo ao Esporte pelo Brasil; os 5 alvos |
 | 10 | EXE | cnpq-extensao | CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC | 2 | 0 | — | a construir |  |
 | 11 | EXE | site-funarte | Funarte — editais da Fundação Nacional de Artes | 0 | 0 | — | a construir |  |
 | 12 | EXE | site-transferegov | Transferegov — programas e parcerias com OSC abertos na plataforma federal (dados abertos) | 0 | 4 | site-transferegov | conforme | faltam os 4 alvos |

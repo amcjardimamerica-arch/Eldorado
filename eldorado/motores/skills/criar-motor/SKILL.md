@@ -149,6 +149,11 @@ pela rede neural. A IA propõe; o sistema valida.
   do dia; o Querido Diário tem texto completo de só 2 municípios de Goiás. O recorte dos atos leva o município adiante
   (`campos = {{ localidade = '<regex>' }}` no elo `atos`). Num TOML, a string literal ('…') não interpreta a barra
   invertida: escreva o regex com UMA barra.
+- **empresas-editais-incentivados**: nos portais do gov.br, os menus trazem centenas de links; use `seletor = "#content"`
+  (o seletor limita a vigilância e os links à região do conteúdo). O canal deste motor são os mecanismos de incentivo,
+  não os sites institucionais das empresas (nenhum edital neles, no Eldorado0).
+- **Teste com links absolutos**: se a página real usa links com o domínio da fonte, o servidor do teste troca o domínio
+  dentro da página também (a extração só aceita links do mesmo domínio).
 - **Teste com página real**: página montada à mão costuma ser "HTML quase vazio", que a escada trata como bloqueio; use a
   página real gravada, alterando o mínimo.
 

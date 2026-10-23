@@ -1,0 +1,95 @@
+# Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "BR"
+canal = "portal"
+id = "empresas-editais-incentivados"
+nome = "Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes"
+categoria = "Executivo — diários e portais do governo"
+categoria_estudo = "EXE"
+finalidade = "encontrar as chamadas dos mecanismos de incentivo em que a OSC apresenta projeto para receber recurso de empresas e pessoas (Pronas/PCD, Pronon, Lei de Incentivo ao Esporte, fundos da criança e do idoso)"
+tipo_finalidade = "descoberta"
+nomes_anteriores = ["empresas-incentivadas", "plat-empresas-editais-incentivados"]
+
+# ---- rotas confirmadas (23/10/2026, testes/paginas/empresas-editais-incentivados/): o canal são os MECANISMOS de
+# incentivo em que a organização apresenta projeto para receber recurso de empresas e pessoas (Pronas/PCD e Pronon,
+# Lei de Incentivo ao Esporte, fundos da criança e do idoso). Os institutos e fundações das empresas são o canal do
+# motor novo-fundacoes-institutos. Nos portais do gov.br, o seletor limita os links à região do conteúdo (#content).
+[[fonte]]
+nome = "Pronas/PCD e Pronon — chamamentos públicos (Ministério da Saúde)"
+url = "https://www.gov.br/saude/pt-br/se/pronon-e-pronas-pcd/chamamentos-publicos"
+tipo = "pagina"
+seletor = "#content"
+papel = "principal"
+
+[[fonte]]
+nome = "Pronas/PCD e Pronon — legislação (apresentação de projetos e credenciamento)"
+url = "https://www.gov.br/saude/pt-br/se/pronon-e-pronas-pcd/legislacao"
+tipo = "pagina"
+seletor = "#content"
+papel = "alternativa"
+
+[[fonte]]
+nome = "Lei de Incentivo ao Esporte (Ministério do Esporte)"
+url = "https://www.gov.br/esporte/pt-br/acoes-e-programas/lei-de-incentivo-ao-esporte"
+tipo = "pagina"
+seletor = "#content"
+papel = "principal"
+exige_brasil = true                 # a nuvem recebe 401 (sondagem de 23/10/2026)
+
+[[alvo]]
+id = "f260-captacao-041"
+nome = "Lei de Incentivo ao Esporte - Esporte para Toda a Vida"
+enderecos = ["https://www.gov.br/esporte/pt-br"]
+orgao = "Ministério do Esporte"
+
+[[alvo]]
+id = "f260-captacao-044"
+nome = "Projetos aptos à captação na LIE"
+enderecos = ["https://www.gov.br/esporte/pt-br/acoes-e-programas/lei-de-incentivo-ao-esporte"]
+orgao = "Lei de Incentivo ao Esporte — projetos aptos"
+
+[[alvo]]
+id = "f260-captacao-118"
+nome = "Destinação de IR pessoa física para FMDCA"
+enderecos = ["https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-crianca-e-do-adolescente-conanda", "https://goias.gov.br/social/cedca/", "https://www.goiania.go.gov.br/sme/cmdca/", "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-pessoa-idosa-cndi", "https://www.goiania.go.gov.br/semasdh/", "https://www.gov.br/mds/pt-br/orgaos-colegiados/conselho-nacional-de-assistencia-social-cnas", "https://www.goiania.go.gov.br/"]
+orgao = "Conanda — Fundo Nacional para a Criança e o Adolescente"
+
+[[alvo]]
+id = "f260-captacao-119"
+nome = "Destinação de IR pessoa jurídica para Fundo da Criança"
+enderecos = ["https://www.gov.br/participamaisbrasil/conanda"]
+orgao = "Destinação de IR ao Fundo da Criança (via conselhos)"
+
+[[alvo]]
+id = "f260-captacao-143"
+nome = "Pronas/PCD - assistência à pessoa com deficiência"
+enderecos = ["https://www.gov.br/saude/pt-br"]
+orgao = "Ministério da Saúde"
+
+[acesso]
+degraus = ["api", "leve", "local"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+# o léxico próprio dos mecanismos de incentivo (nos títulos dos links da região do conteúdo):
+termos = ["re:chamamento|chamada p[uú]blica|apresenta[çc][ãa]o de projetos|credenciamento|edital|projetos aptos|capta[çc][ãa]o|inscri[çc]|sele[çc][ãa]o de projetos"]
+vetos = ["re:resultado|homologa|habilitad|aprovad|ouvidoria|contatos?$|documenta[çc][ãa]o (geral|obrigat|espec)|marcos legais"]
+termos_em = "titulo"
+
+[aprendizado]
+licoes = ["Rota de acesso única para os domínios com bloqueio (captadores.org.br, go.equatorialenergia.com.br, goias.gov.br, paraquemdoar.org, www.gov.br…): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 30 rota(s) que funcionaram: entram como rotas do motor.", "Os 5 alvos são vigiados só na janela prevista da próxima edição."]
+bloqueios_conhecidos = ["go.equatorialenergia.com.br", "paraquemdoar.org", "www.saneago.com.br", "captadores.org.br"]
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["https://www.gov.br/esporte/... (401 da nuvem, 23/10/2026: exige o Brasil)",
+                      "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-pessoa-idosa-cndpi (404)",
+                      "https://www.gov.br/esporte/pt-br/acoes-e-programas/lei-de-incentivo-ao-esporte/projetos-aptos-a-captacao (404)",
+                      "os sites institucionais das maiores contribuintes do ICMS (Equatorial, Saneago, JBS): nenhum edital reconhecido no Eldorado0"]
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14
