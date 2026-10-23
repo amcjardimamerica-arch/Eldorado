@@ -42,31 +42,42 @@ def _q(s: str) -> str:
     return json.dumps(s, ensure_ascii=False)
 
 
+MODELO = Path(__file__).resolve().parents[2] / "base" / "motor_modelo" / "modelo.toml"
+
+
 def esqueleto(mid: str, caminho: Path = ESTUDO) -> str:
+    """O motor novo a partir do MOTOR MODELO (eldorado/base/motor_modelo/modelo.toml): a cópia, com os marcadores
+    preenchidos pelo estudo (a identidade, os alvos, o aprendizado) e as rotas candidatas comentadas, para a sondagem."""
     m = estudo(caminho)[mid]
     a = m.get("aprendizado_eldorado0") or {}
     so_alvos = not (a.get("rotas_conhecidas") or [g for g in m["agrega"] if g.get("rotas_conhecidas")])
-    anteriores = [g["id"] for g in m["agrega"]]
-    t = [f"# {m['nome']} — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).",
-         "# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).", "", "[motor]", f"id = {_q(m['id'])}",
-         f"nome = {_q(m['nome'])}", f"categoria = {_q(m['categoria_nome'])}", f"categoria_estudo = {_q(m['categoria'])}",
-         f"finalidade = {_q(m['finalidade'] or 'DEFINIR EM UMA FRASE')}", f"tipo_finalidade = {_q('recorrencia' if so_alvos and m['alvos'] else 'descoberta')}",
-         f"nomes_anteriores = {json.dumps(anteriores, ensure_ascii=False)}", "", "# ---- rotas candidatas (do aprendizado; confirmar na sondagem):"]
     candidatas = list(dict.fromkeys((a.get("rotas_conhecidas") or []) + [r for g in m["agrega"] for r in g.get("rotas_conhecidas") or []]))
+    rotas = ["# ---- rotas candidatas (do aprendizado; confirmar na sondagem):"]
     for r in candidatas[:12]:
-        t += ["# [[fonte]]", f"# nome = {_q(urlsplit(str(r)).netloc or str(r))}", f"# url = {_q(str(r))}",
-              "# tipo = \"pagina\"   # api | wordpress | ckan | feed | mapa | pagina", "#"]
+        rotas += ["# [[fonte]]", f"# nome = {_q(urlsplit(str(r)).netloc or str(r))}", f"# url = {_q(str(r))}",
+                  "# tipo = \"pagina\"   # api | wordpress | ckan | feed | mapa | pagina", "#"]
+    alvos = []
     for al in m["alvos"]:
-        t += ["", "[[alvo]]", f"id = {_q(al['id'])}", f"nome = {_q(al['nome'])}", f"enderecos = {json.dumps(al.get('enderecos') or [], ensure_ascii=False)}"]
+        alvos += ["[[alvo]]", f"id = {_q(al['id'])}", f"nome = {_q(al['nome'])}", f"enderecos = {json.dumps(al.get('enderecos') or [], ensure_ascii=False)}"]
         if al.get("orgao"):
-            t.append(f"orgao = {_q(al['orgao'])}")
+            alvos.append(f"orgao = {_q(al['orgao'])}")
+        alvos.append("")
     bloq = list(dict.fromkeys((a.get("bloqueados") or []) + [b for g in m["agrega"] for b in g.get("bloqueados") or []]))
     licoes = [x for x in (a.get("melhorias") or []) + [li for li in (a.get("licoes") or []) if not li.startswith(("dominios:", "bloqueios_registrados:"))]][:10]
-    t += ["", "[acesso]", f"degraus = {json.dumps(['api', 'leve'] + (['local'] if bloq else []))}", "", "[leitura]", "paginas_dos_achados = true",
-          "seguir_oficial = true", "", "[lexico]", "termos = []   # o léxico PRÓPRIO da fonte (o comum da missão é herdado)", "vetos = []", "",
-          "[aprendizado]", f"licoes = {json.dumps(licoes, ensure_ascii=False)}", f"bloqueios_conhecidos = {json.dumps(bloq, ensure_ascii=False)}",
-          "alternativas_para_bloqueio = []", "rotas_que_falharam = []", "", "[metrica]", "cadencia_h = 24", "periodo_dias = 14", ""]
-    return "\n".join(t)
+    def dentro(v: str) -> str:                      # o valor dentro de aspas já existentes no modelo
+        return json.dumps(v, ensure_ascii=False)[1:-1]
+    texto = MODELO.read_text(encoding="utf-8")
+    trocas = {"«id»": dentro(m["id"]), "«nome»": dentro(m["nome"]), "«categoria»": dentro(m["categoria_nome"]),
+              "«categoria_estudo»": dentro(m["categoria"]), "«finalidade»": dentro(m["finalidade"] or "DEFINIR EM UMA FRASE"),
+              "«tipo_finalidade»": "recorrencia" if so_alvos and m["alvos"] else "descoberta",
+              "«nomes_anteriores»": json.dumps([g["id"] for g in m["agrega"]], ensure_ascii=False),
+              "«licoes»": json.dumps(licoes, ensure_ascii=False), "«bloqueios»": json.dumps(bloq, ensure_ascii=False),
+              "# «rotas_candidatas»": "\n".join(rotas), "# «alvos»": "\n".join(alvos)}
+    for k, v in trocas.items():
+        texto = texto.replace(k, v)
+    cabeca = (f"# {m['nome']} — criado a partir do MOTOR MODELO (eldorado/base/motor_modelo/modelo.toml) e do estudo da titular.\n"
+              "# Decida as rotas pela sondagem (eldorado gravar), ligue ou desligue as ferramentas e valide: eldorado motor validar.\n")
+    return cabeca + texto.split("\n[motor]", 1)[1].join(["\n[motor]", ""]) if "\n[motor]" in texto else cabeca + texto
 
 
 def criar(mid: str, pasta: Path = CONFIG, caminho: Path = ESTUDO) -> Path:

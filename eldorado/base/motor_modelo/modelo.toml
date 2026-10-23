@@ -1,0 +1,187 @@
+# =====================================================================================================================
+# O MOTOR MODELO do Eldorado (titular, 23/10/2026)
+#
+# A fórmula dos motores modulares: um motor que NÃO RODA e NÃO APARECE nos relatórios. Serve só de base para criar os
+# motores especializados: `eldorado motor criar <id>` copia este modelo e preenche os marcadores «...» com o que o
+# estudo da titular definiu (a identidade, os alvos e o aprendizado do Eldorado0). Quem cria decide as rotas pela
+# sondagem e liga ou desliga cada ferramenta conforme a finalidade.
+#
+# Regra: toda ferramenta nova do sistema entra aqui (o teste testes/test_motor_modelo.py falha enquanto faltar).
+# Orientação completa: eldorado/motores/skills/criar-motor/SKILL.md e eldorado/base/motor_modelo/LEIA-ME.md
+# =====================================================================================================================
+
+[motor]
+id = "«id»"                                 # o id do estudo (config/motores_previstos.json): um canal, um motor
+nome = "«nome»"
+categoria = "«categoria»"                   # o nome da categoria (Executivo, Judiciário, Legislativo, Portais)
+categoria_estudo = "«categoria_estudo»"     # EXE, JUD, LEG, POR ou IA
+finalidade = "«finalidade»"                 # em uma frase: o que este motor procura e para quê
+tipo_finalidade = "«tipo_finalidade»"       # descoberta (oportunidades novas) | recorrencia (edições de programas conhecidos)
+destino = "biblioteca"                      # biblioteca (oportunidades, livros) | especial (empresas e incentivos)
+canal = "portal"                            # diario | api | portal (a categoria visual no painel)
+uf = "GO"                                   # GO, BR ou a UF da fonte
+orgao = ""                                  # o órgão da fonte, quando o motor for de um órgão só
+nomes_anteriores = «nomes_anteriores»       # os motores antigos reunidos neste (o histórico deles passa a ser deste)
+
+# ---------------------------------------------------------------------------------------------------------------------
+# AS ROTAS: [[fonte]]. Só entra rota que respondeu na sondagem (eldorado gravar / o fluxo Gravar páginas). Ao menos duas
+# rotas por motor (a principal e a alternativa); o portal divulga, a origem é decidida por livro.
+#
+# Os 10 tipos de rota, cada um com o seu exemplo (descomente e ajuste):
+#   pagina     a página de editais; os links extraídos (seletor: a região do conteúdo, CSS ou "xpath:...", adaptável)
+#   feed       RSS e Atom
+#   mapa       o mapa do site (sitemap.xml, índices, compactados)
+#   wordpress  a API do WordPress (/wp-json/wp/v2/posts, ou um tipo próprio como /_editais); termos = a busca
+#   ckan       portais de dados abertos CKAN
+#   api        API JSON ou XML: caminhos (jmespath), valores (para várias consultas), paginacao, json_em (JSON na página)
+#   metabusca  a busca aberta (SearXNG próprio, ddgs, Marginalia); termos = a consulta
+#   wayback    o histórico do endereço no Wayback
+#   siconv     a API do Transferegov (convênios)
+#   cadeia     a listagem em etapas: [[fonte.cadeia]] (elos json | html | atos | linhas; corpo = POST na sessão) e [fonte.pista]
+# No endereço: {hoje:%Y-%m-%d}, {hoje-1:%Y%m%d}, {hoje+365:%Y}, {pagina} e as chaves de valores.
+# ---------------------------------------------------------------------------------------------------------------------
+# «rotas_candidatas»
+#
+# [[fonte]]
+# nome = "Exemplo — página de editais"
+# url = "https://exemplo.gov.br/editais"
+# tipo = "pagina"                    # pagina | feed | mapa | wordpress | ckan | api | metabusca | wayback | siconv | cadeia
+# seletor = "#content-core"          # a região do conteúdo (portais gov.br: #content-core); "xpath://div[@id='x']" também
+# papel = "principal"                # principal | alternativa
+# exige_brasil = false               # true: a fonte só responde do Brasil (o degrau local resolve)
+# termos = "edital"                  # wordpress e metabusca: a busca
+#
+# [[fonte]]
+# nome = "Exemplo — API"
+# url = "https://exemplo.gov.br/api/editais?ano={hoje:%Y}&pagina={pagina}"
+# tipo = "api"
+# caminhos = { itens = "dados", titulo = "titulo", link = "url", resumo = "descricao", data = "publicacao", fim = "prazo" }
+# valores = { uf = ["GO", "DF"] }    # uma consulta por valor ({uf} no endereço)
+# paginacao = { inicio = 1, maximo = 5, total = "meta.total_paginas" }
+# json_em = "script#dados"           # quando o JSON vem dentro de uma página HTML
+#
+# [[fonte]]
+# nome = "Exemplo — cadeia (a lista → cada item → o detalhe)"
+# url = "https://exemplo.gov.br/edicoes/{hoje:%Y-%m-%d}.json"
+# tipo = "cadeia"
+# especial = {}                      # destino especial: o mapa dos campos desta fonte (cnpj, razao_social, incentivo...)
+# [[fonte.cadeia]]
+# formato = "json"                   # json | html | atos (o documento recortado em atos) | linhas (registros por regex)
+# itens = "itens"                    # jmespath (json), seletor CSS (html), padrão dos cabeçalhos (atos) ou regex (linhas)
+# campos = { edicao = "id" }         # html: "texto" | "attr:<nome>" | "ancestrais:<seletor>" | "re:<regex>"
+# url = "https://exemplo.gov.br/sumario/{edicao}"
+# filtro = { titulo = "(?i)edital" }
+# limite = 300
+# corpo = { task = "lista", "{codigo}" = "1" }   # POST de formulário na sessão da página (Joomla, tabelas dinâmicas)
+# [fonte.pista]
+# titulo = "{titulo}"
+# link = "https://exemplo.gov.br/materia/{id}"
+# resumo = "{caminho}"
+# texto = "{texto}"                  # o texto do ato já lido (o documento, sem baixar de novo)
+
+# ---------------------------------------------------------------------------------------------------------------------
+# OS ALVOS: [[alvo]], os pontos de captação do estudo, vigiados na janela prevista da próxima edição (a previsão se aprende).
+# ---------------------------------------------------------------------------------------------------------------------
+# «alvos»
+#
+# [[alvo]]
+# id = "f260-captacao-000"
+# nome = "Exemplo de programa"
+# enderecos = ["https://exemplo.org/editais", "https://exemplo.org/"]   # o primeiro é a rota; os outros, alternativas
+# orgao = "Instituto Exemplo"
+# previsao_meses = [3, 9]            # os meses em que costuma publicar (vazio: aprendido pelo motor)
+# seletor = "#content"               # a região do conteúdo (os menus não entram)
+
+# ---------------------------------------------------------------------------------------------------------------------
+# A ESCADA DE ACESSO: os 7 degraus. Ela só sobe quando o degrau de baixo falha; ter todos não custa nada.
+#   api        a requisição direta (httpx, tenacity)
+#   leve       a requisição com assinatura de navegador (curl_cffi, primp)
+#   lightpanda o navegador leve (as páginas com script simples)
+#   patchright o navegador real que não denuncia robôs (Chromium sem marcas de automação)
+#   camoufox   o navegador anti-detecção (Firefox), a reserva do patchright
+#   arquivo    a cópia arquivada (Wayback; o Common Crawl na abordagem do Interceptador)
+#   local      o computador da titular (IP do Brasil), para quem recusa a nuvem
+# Lista só por script (Prosas, Mapa das OSC): ponha patchright e camoufox primeiro.
+# ---------------------------------------------------------------------------------------------------------------------
+[acesso]
+degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]
+intervalo_s = 2.0                           # a espera entre leituras do mesmo domínio (o robots é informação: vira intervalo)
+tentativas = 2
+espera_seletor = ""                         # navegador: esperar este elemento antes de ler (vazio: a rede ociosa)
+
+# A LEITURA: o que ler de cada achado (a leitura padrão: páginas, PDF com classificação, OCR, planilhas, CSV, documentos,
+# compactados, áudio e vídeo transcritos, e o leitor universal de reserva).
+[leitura]
+documentos = true                           # ler os documentos (PDF, planilhas...) dos achados
+paginas_dos_achados = true                  # ler a página de cada achado
+seguir_oficial = true                       # a busca cega: da divulgação a um documento candidato à origem
+tabelas = "nao"                             # PDF: extrair tabelas (nao | sim)
+max_documentos = 30
+
+# O LÉXICO PRÓPRIO DA FONTE (o comum da missão é herdado): o que abrir e o que vetar.
+[lexico]
+termos = ["re:edital|chamamento|chamada|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento"]
+vetos = ["re:resultado|homologa|licita|preg[ãa]o|concurso p[úu]blico"]
+salvos = []                                 # termos que salvam um título que cairia num veto
+termos_em = "titulo"                        # titulo | tudo (título e começo do ato/resumo)
+
+# O CANIVETE DE CADA ACHADO: todas as habilidades ligadas; desligue o que não fizer sentido na fonte.
+[canivete]
+ligado = true
+idioma = true                               # lingua: o idioma do texto
+publicacao = true                           # htmldate: a data de publicação da página
+datas = true                                # datefinder e dateparser: as datas citadas, marcando as de prazo
+valores = true                              # price-parser: os valores em reais, com o trecho
+metadados = true                            # extruct: JSON-LD, microdata, Open Graph
+texto_principal = true                      # trafilatura: o texto sem menus e rodapés
+arquivar = true                             # waybackpy: arquivar no Wayback a página da oportunidade com prazo
+arquivar_por_execucao = 3
+
+# A EXTRAÇÃO PRÓPRIA (opcional): itens que o motor extrai do documento por padrão próprio.
+[extracao]
+itens = {}                                  # { "Valor" = "re:R\\$ ?[\\d.,]+" }
+nao_certificar = []                         # itens que o motor extrai, mas o Cartório não certifica por eles
+
+# AS LEIS QUE REGEM A OPORTUNIDADE (opcional).
+[legislacao]
+leis = []
+notas = ""
+
+# O PROGRAMA PERMANENTE (opcional, para mecanismos como leis de incentivo e fundos): descomente.
+# [programa]
+# titulo = "Programa Exemplo"
+# orgao = "Secretaria Exemplo"
+# link_divulgacao = "https://exemplo.gov.br/programa"
+# link_oficial = "https://exemplo.gov.br/programa/legislacao"
+# documentos = ["https://exemplo.gov.br/programa/regulamento.pdf"]
+# modalidade = "incentivo fiscal"
+# [programa.normas]                         # as normas mais recentes da página de legislação
+# padrao = "re:(lei|decreto|portaria|instru[çc][ãa]o normativa) n"
+# excluir = []
+# maximo = 5
+# [programa.extracao]
+# itens = {}
+# nao_certificar = []
+
+# O DESTINO ESPECIAL (só quando destino = "especial"): o mapa dos campos da empresa e do incentivo.
+[especial]
+# cnpj = "{cnpj}"
+# razao_social = "{nome}"
+# incentivo = { lei = "Rouanet", valor = "{valor}" }   # lei: FIA, Idoso, Esporte, Rouanet, Pronas, Pronon, Goyazes, ICMS, PAT, outra
+
+# O APRENDIZADO DO MOTOR (dentro do motor; só ele o altera): o que o Eldorado0 e as sondagens ensinaram.
+[aprendizado]
+licoes = «licoes»
+bloqueios_conhecidos = «bloqueios»
+alternativas_para_bloqueio = []
+rotas_que_falharam = []
+
+# A MÉTRICA DA FINALIDADE: atinge se leu dentro da cadência e entregou ao menos um achado aceito no período.
+[metrica]
+cadencia_h = 24
+periodo_dias = 14
+
+# Campos antigos aceitos pela configuração (mantidos por compatibilidade; o Cérebro decide a agenda):
+[alvos]
+[metas]
+[agenda]

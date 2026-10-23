@@ -45,6 +45,12 @@ ele já aprendeu**. A estrutura do sistema não muda quando um motor entra.
    do domínio; os dados públicos são captados íntegros, como publicados; nada é simulado (sem rota, o motor diz que não
    leu); o léxico comum da missão é herdado, não copiado.
 
+## O motor modelo
+Todo motor novo parte do **motor modelo** (`eldorado/base/motor_modelo/modelo.toml`), que fica no sistema base, não
+roda e não aparece nos relatórios: uma configuração com **todas as ferramentas do sistema**, cada uma explicada.
+`eldorado motor criar <id>` copia o modelo e preenche a identidade, os alvos e o aprendizado do estudo. **Ferramenta
+nova implantada entra também no modelo** (o teste `testes/test_motor_modelo.py` falha enquanto faltar).
+
 ## O passo a passo
 
 1. **A ficha.** `eldorado motor ficha <id>` mostra o que o estudo definiu: categoria, finalidade, motores reunidos,
