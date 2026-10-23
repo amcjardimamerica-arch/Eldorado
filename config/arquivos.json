@@ -15,7 +15,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 63,
+   "linhas": 95,
    "situacao": "em funcionamento",
    "ordem": 1
   },
@@ -120,6 +120,7 @@
     "test_expurgo_externo.py",
     "test_governador.py",
     "test_gravador.py",
+    "test_ia.py",
     "test_incentivos.py",
     "test_interceptador.py",
     "test_linha_cartorio.py",
@@ -225,23 +226,25 @@
   },
   {
    "arquivo": "eldorado/base/nucleo/ia.py",
+   "linhas": 144,
+   "finalidade": "O serviço único de IA dos pilotos (do Eldorado0, titular, 26/09 e 02/10/2026).",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cerebro/encaminhamento.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "testes": [
+    "test_ia.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "02 Núcleo: contratos, eventos e gravação",
    "parte": "BASE",
    "componente": "Núcleo da plataforma",
-   "ligacoes": [
-    "eldorado/base/nucleo/config.py",
-    "eldorado/base/cerebro/governador.py"
-   ],
+   "ligacoes": [],
    "critico": false,
    "metrica": "respostas válidas (meta 90%); custo e tempo por tarefa",
-   "etapa": "02 Núcleo: contratos, eventos e gravação",
-   "situacao": "a construir",
-   "depende_de": [],
-   "usado_por": [],
-   "acionado_por": [],
-   "eventos": [],
-   "testes": [],
-   "linhas": 0,
-   "finalidade": "respostas válidas (meta 90%); custo e tempo por tarefa",
    "ordem": 8
   },
   {
@@ -312,6 +315,7 @@
     "test_executor.py",
     "test_governador.py",
     "test_gravador.py",
+    "test_ia.py",
     "test_incentivos.py",
     "test_interceptador.py",
     "test_linha_cartorio.py"
@@ -437,6 +441,7 @@
    ],
    "testes": [
     "test_cerebro.py",
+    "test_ia.py",
     "test_interceptador.py",
     "test_motores_api.py",
     "test_rede_neural.py"
@@ -2043,6 +2048,7 @@
    "usado_por": [],
    "testes": [
     "test_cartorio.py",
+    "test_ia.py",
     "test_incentivos.py",
     "test_interceptador.py",
     "test_linha_cartorio.py",
@@ -2174,6 +2180,7 @@
    "usado_por": [],
    "testes": [
     "test_cartorio.py",
+    "test_ia.py",
     "test_incentivos.py",
     "test_interceptador.py",
     "test_linha_cartorio.py",
@@ -2377,6 +2384,7 @@
     "eldorado/base/cartorio/analise_externa.py"
    ],
    "testes": [
+    "test_ia.py",
     "test_incentivos.py",
     "test_interceptador.py",
     "test_linha_cartorio.py"
@@ -2462,6 +2470,7 @@
    "acionado_por": [],
    "usado_por": [],
    "testes": [
+    "test_ia.py",
     "test_interceptador.py",
     "test_rede_neural.py"
    ],
@@ -2498,13 +2507,14 @@
   },
   {
    "arquivo": "eldorado/motores/pilotos/interceptador.py",
-   "linhas": 257,
+   "linhas": 268,
    "finalidade": "O PILOTO INTERCEPTADOR (do Eldorado0, titular, 26/09/2026): \"o Espião descobre; o Interceptador comprova\".",
    "depende_de": [
     "eldorado/base/cartorio/site_oficial.py",
     "eldorado/base/missao/itens.py",
     "eldorado/base/nucleo/contratos.py",
     "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/ia.py",
     "eldorado/motores/acesso/arquivo_web.py",
     "eldorado/motores/acesso/escada.py",
     "eldorado/motores/descoberta/estrutura_site.py",
@@ -2520,6 +2530,7 @@
     "eldorado/base/cerebro/encaminhamento.py"
    ],
    "testes": [
+    "test_ia.py",
     "test_interceptador.py",
     "test_rede_neural.py"
    ],
@@ -2532,6 +2543,7 @@
     "eldorado/base/missao/itens.py",
     "eldorado/base/nucleo/contratos.py",
     "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/ia.py",
     "eldorado/motores/acesso/arquivo_web.py",
     "eldorado/motores/acesso/escada.py",
     "eldorado/motores/descoberta/estrutura_site.py",
@@ -2545,13 +2557,14 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/encaminhamento.py",
-   "linhas": 117,
+   "linhas": 120,
    "finalidade": "A rede neural na fase 3 do Cartório (titular, 22/10/2026): quem age é a rede, não o Cartório.",
    "depende_de": [
     "eldorado/base/cartorio/passaporte.py",
     "eldorado/base/cerebro/rede.py",
     "eldorado/base/cerebro/regencia.py",
     "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/ia.py",
     "eldorado/base/nucleo/registro.py",
     "eldorado/motores/acesso/api.py",
     "eldorado/motores/acesso/escada.py",
@@ -2569,6 +2582,7 @@
    ],
    "usado_por": [],
    "testes": [
+    "test_ia.py",
     "test_interceptador.py",
     "test_rede_neural.py"
    ],
@@ -2581,6 +2595,7 @@
     "eldorado/base/cerebro/rede.py",
     "eldorado/base/cerebro/regencia.py",
     "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/ia.py",
     "eldorado/base/nucleo/registro.py",
     "eldorado/motores/acesso/api.py",
     "eldorado/motores/acesso/escada.py",
@@ -3210,6 +3225,7 @@
     "test_fila.py",
     "test_governador.py",
     "test_gravador.py",
+    "test_ia.py",
     "test_incentivos.py",
     "test_interceptador.py",
     "test_inventario.py",
@@ -3260,6 +3276,7 @@
     "test_fila.py",
     "test_governador.py",
     "test_gravador.py",
+    "test_ia.py",
     "test_incentivos.py",
     "test_interceptador.py",
     "test_inventario.py",
@@ -3294,6 +3311,7 @@
    "testes": [
     "test_auditoria.py",
     "test_cartorio.py",
+    "test_ia.py",
     "test_incentivos.py",
     "test_interceptador.py",
     "test_linha_cartorio.py"
@@ -3320,6 +3338,7 @@
     "test_decisao.py",
     "test_fila.py",
     "test_governador.py",
+    "test_ia.py",
     "test_incentivos.py",
     "test_interceptador.py",
     "test_inventario.py",
@@ -3373,6 +3392,7 @@
    "testes": [
     "test_acesso.py",
     "test_descoberta.py",
+    "test_ia.py",
     "test_incentivos.py",
     "test_interceptador.py",
     "test_leitura.py",

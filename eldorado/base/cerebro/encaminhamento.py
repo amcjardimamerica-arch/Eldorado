@@ -110,7 +110,10 @@ def no_encaminhar(itens: list[dict[str, Any]], parametros: dict[str, Any], conte
         rede = RedeNeural.treinar(con, c) if c is not None else None
         if c is not None:
             c.close()
-        achados, contagem = Encaminhamento(con, contexto.diario, registro, Interceptador(con, contexto.diario, escada), rede).andar(
+        from ..nucleo.ia import IA
+        ia = IA()
+        achados, contagem = Encaminhamento(con, contexto.diario, registro, Interceptador(con, contexto.diario, escada, ia=ia if ia.disponivel() else None),
+                                           rede).andar(
             float(parametros.get("orcamento_s", 300)))
     finally:
         con.close()

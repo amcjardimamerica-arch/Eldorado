@@ -1,0 +1,23 @@
+# A IA local dos pilotos (do Eldorado0, titular, 26/09/2026): um único modelo no sistema, o Qwen3-8B, servido pelo
+# llama.cpp dentro do funcionamento permanente. O modelo fica no cache do GitHub (chave fixa pelo nome: uma chave
+# variável gravava uma cópia nova de 4,9 GB a cada mudança). Sem o modelo, os pilotos seguem sem IA; nada é simulado.
+[motor]
+nome = "llama.cpp"
+release = "b11064"
+download = "https://github.com/ggml-org/llama.cpp/releases/download/b11064/llama-b11064-bin-ubuntu-x64.tar.gz"
+
+[modelo]
+nome = "Qwen3-8B"
+arquivo = "Qwen3-8B-Q4_K_M.gguf"
+gb = 4.9
+licenca = "Apache-2.0"
+espelhos = [
+  "https://huggingface.co/unsloth/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf",
+  "https://huggingface.co/bartowski/Qwen_Qwen3-8B-GGUF/resolve/main/Qwen_Qwen3-8B-Q4_K_M.gguf",
+  "https://huggingface.co/Qwen/Qwen3-8B-GGUF/resolve/main/Qwen3-8B-Q4_K_M.gguf",
+]
+
+[servidor]
+porta = 8082
+contexto = 16384
+nucleos = 4

@@ -99,8 +99,9 @@ def fila(con: sqlite3.Connection, hoje: str) -> list[Livro]:
 
 class Interceptador:
     def __init__(self, biblioteca: sqlite3.Connection, diario: Diario, escada: Escada, ponte: Escada | None = None,
-                 metabusca: Callable[[str], list[str]] | None = None, arquivo: str = "https://web.archive.org"):
+                 metabusca: Callable[[str], list[str]] | None = None, arquivo: str = "https://web.archive.org", ia=None):
         self.con, self.diario, self.escada, self.ponte, self.metabusca, self.arquivo = biblioteca, diario, escada, ponte, metabusca, arquivo
+        self.ia = ia                                                # o modelo local (nucleo/ia.py); sem ele, as abordagens seguem sem IA
         self.leitura = leitores.padrao()
         self.profunda = leitores.padrao()
         self.profunda.registrar(LeitorPDF(tabelas="todas"))
@@ -223,7 +224,8 @@ class Interceptador:
             self.diario.emitir("tentativa.registrada", "interceptador", {
                 "livro_id": lv.id, "fase": "preparacao", "ferramenta": f"abordagem {n}", "numero": 1, "em": agora(),
                 "resultado": json.dumps({"abordagem": ABORDAGENS[n], "balcao": lv.balcao, "enderecos": len(urls), "faltam": lv.faltam,
-                                         "documentos": len((achado.documento or {}).get("paginas") or []) if achado else 0}, ensure_ascii=False),
+                                         "documentos": len((achado.documento or {}).get("paginas") or []) if achado else 0,
+                                         "ia": (achado.dados or {}).get("ia") if achado else None}, ensure_ascii=False),
                 "proxima_em": None})
             lv.tentadas.add(n)
             return {"livro": lv.id, "abordagem": n, "achado": achado, "esgotado": False}
@@ -249,9 +251,18 @@ class Interceptador:
             oficial = oficial or (u if site_oficial.eh_fonte(u) else None)
         if not paginas:
             return None
+        itens_ia, ia_rel = {}, None
+        if self.ia is not None and not injecao and lv.faltam:       # a IA propõe; o sistema valida (o trecho tem de existir no texto)
+            from ...base.nucleo.ia import SemIA, comprovar
+            try:
+                itens_ia, uso = comprovar(self.ia, lv.faltam, paginas, lv.titulo, I.DOZE)
+                ia_rel = {"segundos": uso.segundos, "propostas": uso.propostas, "aceitas": uso.aceitas, "recusas": uso.recusas[:6]}
+            except SemIA as e:
+                ia_rel = {"indisponivel": str(e)[:200]}
         sha = __import__("hashlib").sha256("\n".join(paginas).encode()).hexdigest()
         return Achado(id=f"interceptador-{lv.id}-{n}", motor="interceptador", encontrado_em=agora()[:10],
                       link_divulgacao=lv.link_divulgacao or lv.link_oficial or urls[0], link_oficial=oficial or lv.link_oficial, titulo=lv.titulo,
-                      dados={"livro_id": lv.id, "orgao": lv.orgao, "abordagem": ABORDAGENS[n]},
+                      dados={"livro_id": lv.id, "orgao": lv.orgao, "abordagem": ABORDAGENS[n], **({"itens": itens_ia} if itens_ia else {}),
+                             **({"ia": ia_rel} if ia_rel else {})},
                       documento={"url": oficial or urls[0], "sha256": sha, "tipo": "investigacao", "leitor": f"interceptador · {ABORDAGENS[n]}",
                                  "oficial": True, "paginas": paginas, "alertas": alertas[:10], "injecao": injecao})

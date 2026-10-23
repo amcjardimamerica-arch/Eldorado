@@ -1,0 +1,70 @@
+# Teste da IA local no GitHub (análise externa): os mesmos passos do funcionamento permanente e uma comprovação de
+# trecho de edital; o resultado vai como anotação. Também deixa o modelo no cache do GitHub para o funcionamento.
+name: Teste da IA
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ia:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e ".[leitura,acesso,descoberta]"
+      - name: IA local — o motor llama.cpp (versão fixada)
+        continue-on-error: true
+        run: |
+          mkdir -p ia_local/motor ia_local/modelos
+          URL=$(python3 -c "import tomllib;print(tomllib.load(open('config/ia_local.toml','rb'))['motor']['download'])")
+          curl -sL --retry 3 -o /tmp/llama.tgz "$URL" && tar xzf /tmp/llama.tgz -C /tmp && cp -r /tmp/llama-*/* ia_local/motor/
+          ls ia_local/motor | head -5
+      - name: IA local — o modelo no cache do GitHub (chave fixa pelo nome do modelo)
+        uses: actions/cache@v4
+        with:
+          path: ia_local/modelos
+          key: modelos-gguf-Qwen3-8B-Q4_K_M
+      - name: IA local — baixar o modelo pelos espelhos, se faltar
+        continue-on-error: true
+        run: |
+          ARQ=$(python3 -c "import tomllib;print(tomllib.load(open('config/ia_local.toml','rb'))['modelo']['arquivo'])"); DEST="ia_local/modelos/$ARQ"
+          if [ -s "$DEST" ] && [ "$(stat -c%s "$DEST")" -gt 1000000000 ]; then echo "no cache: $(du -h "$DEST" | cut -f1)"; exit 0; fi
+          for U in $(python3 -c "import tomllib;print(' '.join(tomllib.load(open('config/ia_local.toml','rb'))['modelo']['espelhos']))"); do
+            if curl -L --retry 3 --retry-delay 10 --fail --silent --show-error -o "$DEST" "$U"; then echo "baixado: $(du -h "$DEST" | cut -f1)"; exit 0; fi
+            rm -f "$DEST"
+          done
+          echo "::warning::o modelo não foi baixado; os pilotos seguem sem IA"
+      - name: IA local — subir o modelo (sem ele, os pilotos seguem sem IA; nada é simulado)
+        continue-on-error: true
+        run: |
+          ARQ=$(python3 -c "import tomllib;print(tomllib.load(open('config/ia_local.toml','rb'))['modelo']['arquivo'])")
+          [ -s "ia_local/modelos/$ARQ" ] || { echo "sem o modelo"; exit 0; }
+          LD_LIBRARY_PATH=ia_local/motor nohup ia_local/motor/llama-server -m "ia_local/modelos/$ARQ" -c 16384 -t 4 --port 8082 --jinja --host 127.0.0.1 \
+            > /tmp/llama.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf http://127.0.0.1:8082/health > /dev/null && { echo "modelo no ar em ${i}x2 s"; exit 0; }; sleep 2; done
+          tail -20 /tmp/llama.log; echo "::warning::o modelo não respondeu; os pilotos seguem sem IA"
+      - name: Uma comprovação de trecho de edital
+        env:
+          ELDORADO_IA_URL: http://127.0.0.1:8082
+        run: |
+          python - <<'PY'
+          import time
+          from eldorado.base.missao import itens as I
+          from eldorado.base.nucleo.ia import IA, SemIA, comprovar
+          doc = ["EDITAL DE CHAMAMENTO PÚBLICO Nº 3/2026. O prazo para recurso é de 5 (cinco) dias úteis a contar da publicação do resultado.\n\n"
+                 "Anexo I — Plano de trabalho. Anexo II — Declaração de capacidade técnica.\n\nO valor global é de R$ 300.000,00, em até 3 projetos."]
+          ia = IA()
+          print("disponível:", ia.disponivel())
+          t = time.time()
+          try:
+              aceitos, uso = comprovar(ia, ["Prazo de recurso", "Anexos", "Valor"], doc, "Edital nº 3/2026", I.DOZE)
+              msg = f"IA local OK em {time.time() - t:.0f} s: aceitas {uso.aceitas}/{uso.propostas}; {aceitos}; recusas {uso.recusas}"
+          except SemIA as e:
+              msg = f"IA indisponível: {e}"
+          print(msg)
+          print("::notice title=Teste da IA::" + msg.replace("%", " por cento")[:900])
+          PY

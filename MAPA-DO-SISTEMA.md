@@ -6,9 +6,9 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 
 | Situação | Arquivos |
 |---|---|
-| em funcionamento | 76 |
+| em funcionamento | 77 |
 | pacote | 19 |
-| a construir | 16 |
+| a construir | 15 |
 | substituído por eldorado/base/cartorio/analise_externa.py | 3 |
 | desligado por desenho | 2 |
 | desligado (ninguém o usa nem o aciona) | 2 |
@@ -30,17 +30,17 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
-| 4 | `eldorado/base/nucleo/__init__.py` |  | pacote |  |  | 23 |
+| 4 | `eldorado/base/nucleo/__init__.py` |  | pacote |  |  | 24 |
 | 5 | `eldorado/base/nucleo/config.py` | A configuração da plataforma, validada na carga. | em funcionamento |  | comandos | 1 |
 | 6 | `eldorado/base/nucleo/contratos.py` | Os contratos do Eldorado. | em funcionamento |  | cartorio, indice, pertinencia, regencia, oportunidades, eventos, gravador, registro, motor, interceptador | 9 |
 | 7 | `eldorado/base/nucleo/expurgo_externo.py` | O expurgo físico pela análise externa (titular, 22/10/2026): "o sistema não apaga nada, mas o Claude pode apag | em funcionamento |  | comandos | 1 |
-| 8 | `eldorado/base/nucleo/ia.py` | respostas válidas (meta 90%); custo e tempo por tarefa | a construir |  |  | 0 |
+| 8 | `eldorado/base/nucleo/ia.py` | O serviço único de IA dos pilotos (do Eldorado0, titular, 26/09 e 02/10/2026). | em funcionamento |  | encaminhamento, interceptador | 1 |
 | 9 | `eldorado/base/nucleo/seguranca.py` | A segurança dos textos lidos: os padrões de injeção de instruções (prompt injection). | em funcionamento |  | leitores | 1 |
-| 10 | `eldorado/base/nucleo/eventos.py` | Os eventos: a única forma de escrita do Eldorado. | em funcionamento | contratos | analise_externa, auditoria, cartorio, certificacao, indice, passaporte, selos, aprendizado, completude, encaminhamento,  | 11 |
+| 10 | `eldorado/base/nucleo/eventos.py` | Os eventos: a única forma de escrita do Eldorado. | em funcionamento | contratos | analise_externa, auditoria, cartorio, certificacao, indice, passaporte, selos, aprendizado, completude, encaminhamento,  | 12 |
 | 11 | `eldorado/base/nucleo/alarmes.py` | Nenhum erro é engolido: todo erro vira um evento de alarme, e o erro continua subindo. | em funcionamento | eventos | executor | 1 |
 | 12 | `eldorado/base/nucleo/gravador.py` | O gravador único: o único que escreve nos bancos. | em funcionamento | _sqlite, contratos, eventos | nos, comandos | 2 |
 | 13 | `eldorado/base/nucleo/recibo.py` | A medição de uma chamada: tempo, processador e memória de pico, e se deu certo. | em funcionamento | eventos | regencia, executor | 0 |
-| 14 | `eldorado/base/nucleo/registro.py` | O registro dos módulos ligados: confere o contrato antes de aceitar, e arquiva em vez de apagar. | em funcionamento | contratos, eventos | cartorio, encaminhamento, pertinencia, regencia | 4 |
+| 14 | `eldorado/base/nucleo/registro.py` | O registro dos módulos ligados: confere o contrato antes de aceitar, e arquiva em vez de apagar. | em funcionamento | contratos, eventos | cartorio, encaminhamento, pertinencia, regencia | 5 |
 
 ## 03 Bancos
 
@@ -126,12 +126,12 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
 | 74 | `eldorado/base/cerebro/pertinencia.py` | A Pertinência: decide se cada achado é oportunidade (pelo portão da missão) e mede a saída de cada etapa. | em funcionamento | contratos, eventos, registro | passagem, nó 3 «decidir»; passagem, nó 9 «decidir_rede» | 3 |
-| 75 | `eldorado/base/missao/__init__.py` |  | pacote |  |  | 6 |
+| 75 | `eldorado/base/missao/__init__.py` |  | pacote |  |  | 7 |
 | 76 | `eldorado/base/missao/chave.py` | A chave do livro nesta missão: o livro é o PROGRAMA, não a edição. | em funcionamento |  | indice, importar_eldorado0, oportunidades | 0 |
 | 77 | `eldorado/base/missao/itens.py` | Os 12 itens do livro e o critério único da estrela (titular, 04/10/2026), aproveitado do Eldorado0. | em funcionamento |  | analise_externa, auditoria, cartorio, certificacao, selos, importar_eldorado0, oportunidades, visoes, interceptador | 0 |
 | 78 | `eldorado/base/missao/regras_portao.py` | As regras do portão da missão das oportunidades — aproveitadas do Eldorado0, com fidelidade. | em funcionamento |  | auditoria, portao | 0 |
 | 79 | `eldorado/base/missao/portao.py` | O portão da missão das oportunidades (titular, 16/10/2026), com as regras aproveitadas do Eldorado0. | em funcionamento | regras_portao | auditoria, oportunidades | 0 |
-| 80 | `eldorado/base/missao/oportunidades.py` | A missão das oportunidades, no contrato da plataforma: itens, chave e portão. | em funcionamento | chave, itens, portao, contratos | passagem, nó «cartorio» (parâmetro); passagem, nó «decidir_rede» (parâmetro); passagem, nó «decidir» (parâmetro); passag | 6 |
+| 80 | `eldorado/base/missao/oportunidades.py` | A missão das oportunidades, no contrato da plataforma: itens, chave e portão. | em funcionamento | chave, itens, portao, contratos | passagem, nó «cartorio» (parâmetro); passagem, nó «decidir_rede» (parâmetro); passagem, nó «decidir» (parâmetro); passag | 7 |
 
 ## 08 Cartório · etapas 1 e 2 (recepção e certificação)
 
@@ -142,7 +142,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 83 | `eldorado/base/cartorio/passaporte.py` | O passaporte: move o livro entre as fases só com a autorização da Regência, e registra as tentativas (até 3). | em funcionamento | regencia, eventos | analise_externa, auditoria, cartorio, encaminhamento | 1 |
 | 84 | `eldorado/base/cartorio/selos.py` | Os dois selos de cada livro, calculados a cada passagem. | em funcionamento | itens, eventos | auditoria, cartorio | 0 |
 | 85 | `eldorado/base/cartorio/site_oficial.py` | O site oficial: a oportunidade se encontra NA FONTE (titular, 14/10/2026). | em funcionamento |  | auditoria, cartorio, interceptador | 0 |
-| 86 | `eldorado/base/cartorio/cartorio.py` | O Cartório (titular, 22/10/2026): o ORGANIZADOR. Ele não busca nada: é onde o livro recebe informação nova, é | em funcionamento | auditoria, certificacao, indice, passaporte, selos, site_oficial, itens, contratos, eventos, registro | passagem, nó 11 «validar»; passagem, nó 5 «cartorio» | 3 |
+| 86 | `eldorado/base/cartorio/cartorio.py` | O Cartório (titular, 22/10/2026): o ORGANIZADOR. Ele não busca nada: é onde o livro recebe informação nova, é | em funcionamento | auditoria, certificacao, indice, passaporte, selos, site_oficial, itens, contratos, eventos, registro | passagem, nó 11 «validar»; passagem, nó 5 «cartorio» | 4 |
 
 ## 09 Cartório · validação (auditoria e arquivo)
 
@@ -154,10 +154,10 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
-| 88 | `eldorado/motores/pilotos/__init__.py` |  | pacote |  |  | 2 |
+| 88 | `eldorado/motores/pilotos/__init__.py` |  | pacote |  |  | 3 |
 | 89 | `eldorado/motores/pilotos/espiao.py` | achados por voo; fontes novas propostas | a construir |  |  | 0 |
-| 90 | `eldorado/motores/pilotos/interceptador.py` | O PILOTO INTERCEPTADOR (do Eldorado0, titular, 26/09/2026): "o Espião descobre; o Interceptador comprova". | em funcionamento | site_oficial, itens, contratos, eventos, arquivo_web, escada, estrutura_site, fonte_oficial, leitores, pdf | encaminhamento | 2 |
-| 91 | `eldorado/base/cerebro/encaminhamento.py` | A rede neural na fase 3 do Cartório (titular, 22/10/2026): quem age é a rede, não o Cartório. | em funcionamento | passaporte, rede, regencia, eventos, registro, api, escada, leve, interceptador | passagem, nó 8 «encaminhar» | 2 |
+| 90 | `eldorado/motores/pilotos/interceptador.py` | O PILOTO INTERCEPTADOR (do Eldorado0, titular, 26/09/2026): "o Espião descobre; o Interceptador comprova". | em funcionamento | site_oficial, itens, contratos, eventos, ia, arquivo_web, escada, estrutura_site, fonte_oficial, leitores, pdf | encaminhamento | 3 |
+| 91 | `eldorado/base/cerebro/encaminhamento.py` | A rede neural na fase 3 do Cartório (titular, 22/10/2026): quem age é a rede, não o Cartório. | em funcionamento | passaporte, rede, regencia, eventos, ia, registro, api, escada, leve, interceptador | passagem, nó 8 «encaminhar» | 3 |
 
 ## 11 Cartório · etapa 5 (análise externa)
 
@@ -213,12 +213,12 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 114 | `.github/workflows/painel.yml` |  | em funcionamento |  |  | 0 |
 | 115 | `.github/workflows/passagem.yml` | passagens no horário | substituído por .github/workflows/eldorado.yml (funcionamento permanente) |  |  | 0 |
 | 116 | `.github/workflows/pilotos.yml` | voos com sucesso | substituído por .github/workflows/eldorado.yml (os pilotos rodam dentro do funcionamento permanente) |  |  | 0 |
-| 117 | `eldorado/__init__.py` |  | pacote |  |  | 33 |
-| 118 | `eldorado/base/__init__.py` |  | pacote |  |  | 30 |
-| 119 | `eldorado/base/cartorio/__init__.py` |  | pacote |  |  | 5 |
-| 120 | `eldorado/base/cerebro/__init__.py` |  | pacote |  |  | 15 |
+| 117 | `eldorado/__init__.py` |  | pacote |  |  | 34 |
+| 118 | `eldorado/base/__init__.py` |  | pacote |  |  | 31 |
+| 119 | `eldorado/base/cartorio/__init__.py` |  | pacote |  |  | 6 |
+| 120 | `eldorado/base/cerebro/__init__.py` |  | pacote |  |  | 16 |
 | 121 | `eldorado/base/investigacao/investigacao.py` | livros investigados e itens comprovados por livro | substituído por eldorado/base/cerebro/encaminhamento.py e eldorado/motores/pilotos/interceptador.py |  |  | 0 |
-| 122 | `eldorado/motores/__init__.py` |  | pacote |  |  | 9 |
+| 122 | `eldorado/motores/__init__.py` |  | pacote |  |  | 10 |
 
 ## Os 47 motores (45 regulares e 2 pilotos)
 

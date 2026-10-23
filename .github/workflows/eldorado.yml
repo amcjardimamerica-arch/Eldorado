@@ -39,9 +39,41 @@ jobs:
         run: eldorado iniciar
       - name: Reaplicar os eventos pendentes
         run: eldorado aplicar
+      - name: IA local — o motor llama.cpp (versão fixada)
+        continue-on-error: true
+        run: |
+          mkdir -p ia_local/motor ia_local/modelos
+          URL=$(python3 -c "import tomllib;print(tomllib.load(open('config/ia_local.toml','rb'))['motor']['download'])")
+          curl -sL --retry 3 -o /tmp/llama.tgz "$URL" && tar xzf /tmp/llama.tgz -C /tmp && cp -r /tmp/llama-*/* ia_local/motor/
+          ls ia_local/motor | head -5
+      - name: IA local — o modelo no cache do GitHub (chave fixa pelo nome do modelo)
+        uses: actions/cache@v4
+        with:
+          path: ia_local/modelos
+          key: modelos-gguf-Qwen3-8B-Q4_K_M
+      - name: IA local — baixar o modelo pelos espelhos, se faltar
+        continue-on-error: true
+        run: |
+          ARQ=$(python3 -c "import tomllib;print(tomllib.load(open('config/ia_local.toml','rb'))['modelo']['arquivo'])"); DEST="ia_local/modelos/$ARQ"
+          if [ -s "$DEST" ] && [ "$(stat -c%s "$DEST")" -gt 1000000000 ]; then echo "no cache: $(du -h "$DEST" | cut -f1)"; exit 0; fi
+          for U in $(python3 -c "import tomllib;print(' '.join(tomllib.load(open('config/ia_local.toml','rb'))['modelo']['espelhos']))"); do
+            if curl -L --retry 3 --retry-delay 10 --fail --silent --show-error -o "$DEST" "$U"; then echo "baixado: $(du -h "$DEST" | cut -f1)"; exit 0; fi
+            rm -f "$DEST"
+          done
+          echo "::warning::o modelo não foi baixado; os pilotos seguem sem IA"
+      - name: IA local — subir o modelo (sem ele, os pilotos seguem sem IA; nada é simulado)
+        continue-on-error: true
+        run: |
+          ARQ=$(python3 -c "import tomllib;print(tomllib.load(open('config/ia_local.toml','rb'))['modelo']['arquivo'])")
+          [ -s "ia_local/modelos/$ARQ" ] || { echo "sem o modelo"; exit 0; }
+          LD_LIBRARY_PATH=ia_local/motor nohup ia_local/motor/llama-server -m "ia_local/modelos/$ARQ" -c 16384 -t 4 --port 8082 --jinja --host 127.0.0.1 \
+            > /tmp/llama.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf http://127.0.0.1:8082/health > /dev/null && { echo "modelo no ar em ${i}x2 s"; exit 0; }; sleep 2; done
+          tail -20 /tmp/llama.log; echo "::warning::o modelo não respondeu; os pilotos seguem sem IA"
       - name: Funcionamento permanente (uma passagem depois da outra enquanto houver fila)
         env:
           ELDORADO_FORCAR: ${{ inputs.acionar_todos && '1' || '0' }}
+          ELDORADO_IA_URL: http://127.0.0.1:8082
         run: eldorado permanente --limite-min 320 --gravar-min 30
       - name: Aplicar os últimos eventos da passagem (o recibo do passo final e o fechamento)
         if: always()
