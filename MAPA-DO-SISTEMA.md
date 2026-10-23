@@ -6,7 +6,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 
 | Situação | Arquivos |
 |---|---|
-| em funcionamento | 85 |
+| em funcionamento | 86 |
 | pacote | 20 |
 | a construir | 16 |
 | substituído por eldorado/base/cartorio/analise_externa.py | 3 |
@@ -23,7 +23,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
 | 1 | `.github/workflows/eldorado.yml` |  | em funcionamento |  |  | 0 |
-| 2 | `eldorado/base/nucleo/comandos.py` | Os comandos da plataforma: os mesmos no GitHub, no computador da titular e (depois) no painel. | em funcionamento | analise_externa, fila, governador, inventario, pilotos, agenda, definicao, executor, fila, nos, importar_eldorado0, config, eventos, expurgo_externo, gravador, visoes, api, escada, leve, fabrica, motor | .github/workflows/eldorado.yml (eldorado permanente) | 2 |
+| 2 | `eldorado/base/nucleo/comandos.py` | Os comandos da plataforma: os mesmos no GitHub, no computador da titular e (depois) no painel. | em funcionamento | analise_externa, fila, governador, inventario, pilotos, agenda, definicao, executor, fila, nos, importar_eldorado0, config, eventos, expurgo_externo, gravador, dados, visoes, api, escada, leve, fabrica, motor | .github/workflows/eldorado.yml (eldorado permanente) | 2 |
 | 3 | `scripts/gravar.sh` |  | em funcionamento |  |  | 0 |
 
 ## 02 Núcleo: contratos, eventos e gravação
@@ -132,7 +132,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 78 | `eldorado/base/cerebro/pertinencia.py` | A Pertinência: decide se cada achado é oportunidade (pelo portão da missão) e mede a saída de cada etapa. | em funcionamento | contratos, eventos, registro | passagem, nó 3 «decidir»; passagem, nó 9 «decidir_rede» | 3 |
 | 79 | `eldorado/base/missao/__init__.py` |  | pacote |  |  | 8 |
 | 80 | `eldorado/base/missao/chave.py` | A chave do livro nesta missão: o livro é o PROGRAMA, não a edição. | em funcionamento |  | indice, importar_eldorado0, oportunidades | 0 |
-| 81 | `eldorado/base/missao/itens.py` | Os 12 itens do livro e o critério único da estrela (titular, 04/10/2026), aproveitado do Eldorado0. | em funcionamento |  | analise_externa, auditoria, cartorio, certificacao, selos, importar_eldorado0, oportunidades, visoes, interceptador | 0 |
+| 81 | `eldorado/base/missao/itens.py` | Os 12 itens do livro e o critério único da estrela (titular, 04/10/2026), aproveitado do Eldorado0. | em funcionamento |  | analise_externa, auditoria, cartorio, certificacao, selos, importar_eldorado0, oportunidades, dados, visoes, interceptad | 0 |
 | 82 | `eldorado/base/missao/regras_portao.py` | As regras do portão da missão das oportunidades — aproveitadas do Eldorado0, com fidelidade. | em funcionamento |  | auditoria, portao | 0 |
 | 83 | `eldorado/base/missao/portao.py` | O portão da missão das oportunidades (titular, 16/10/2026), com as regras aproveitadas do Eldorado0. | em funcionamento | regras_portao | auditoria, oportunidades | 0 |
 | 84 | `eldorado/base/missao/oportunidades.py` | A missão das oportunidades, no contrato da plataforma: itens, chave e portão. | em funcionamento | chave, itens, portao, contratos | passagem, nó «cartorio» (parâmetro); passagem, nó «decidir_rede» (parâmetro); passagem, nó «decidir» (parâmetro); passag | 8 |
@@ -197,38 +197,39 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 108 | `eldorado/base/analise/calendario.py` | calendário atualizado na passagem | a construir |  |  | 0 |
 | 109 | `eldorado/base/analise/historia.py` | livros com história completa | a construir |  |  | 0 |
 | 110 | `eldorado/base/analise/preditivo.py` | alertas emitidos antes da abertura | a construir |  |  | 0 |
-| 111 | `eldorado/base/painel/__init__.py` |  | pacote |  |  | 1 |
+| 111 | `eldorado/base/painel/__init__.py` |  | pacote |  |  | 2 |
 | 112 | `eldorado/base/painel/api.py` | respostas no prazo; erros | a construir |  |  | 0 |
-| 113 | `eldorado/base/painel/maquina.py` | mostrador atualizado em tempo real | a construir |  |  | 0 |
-| 114 | `eldorado/base/painel/sala.py` | sala publicada no prazo | a construir |  |  | 0 |
-| 115 | `eldorado/base/painel/visoes.py` | As visões do painel: o que cada tela mostra, lido dos bancos (só leitura), num único arquivo de dados. | em funcionamento | itens | comandos | 1 |
+| 113 | `eldorado/base/painel/dados.py` | Os dados do painel, gerados do sistema novo (titular, 23/10/2026): o site é a imagem atual do sistema. | em funcionamento | itens | comandos | 1 |
+| 114 | `eldorado/base/painel/maquina.py` | mostrador atualizado em tempo real | a construir |  |  | 0 |
+| 115 | `eldorado/base/painel/sala.py` | sala publicada no prazo | a construir |  |  | 0 |
+| 116 | `eldorado/base/painel/visoes.py` | As visões do painel: o que cada tela mostra, lido dos bancos (só leitura), num único arquivo de dados. | em funcionamento | itens | comandos | 1 |
 
 ## 16 Migração do Eldorado0 (temporária)
 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
-| 116 | `eldorado/base/migracao/__init__.py` |  | pacote |  |  | 1 |
-| 117 | `eldorado/base/migracao/importar_eldorado0.py` | A migração do Eldorado0 (temporária, 30 dias): livros, certidões, documentos, vereditos, selos, leis, empresas | em funcionamento | chave, itens, eventos | comandos | 1 |
+| 117 | `eldorado/base/migracao/__init__.py` |  | pacote |  |  | 1 |
+| 118 | `eldorado/base/migracao/importar_eldorado0.py` | A migração do Eldorado0 (temporária, 30 dias): livros, certidões, documentos, vereditos, selos, leis, empresas | em funcionamento | chave, itens, eventos | comandos | 1 |
 
 ## 17 Outros
 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
-| 118 | `.github/workflows/painel.yml` |  | em funcionamento |  |  | 0 |
-| 119 | `.github/workflows/passagem.yml` | passagens no horário | substituído por .github/workflows/eldorado.yml (funcionamento permanente) |  |  | 0 |
-| 120 | `.github/workflows/pilotos.yml` | voos com sucesso | substituído por .github/workflows/eldorado.yml (os pilotos rodam dentro do funcionamento permanente) |  |  | 0 |
-| 121 | `config/motores_previstos.toml` | o sistema roda sem intervenção | a construir |  |  | 0 |
-| 122 | `eldorado/__init__.py` |  | pacote |  |  | 43 |
-| 123 | `eldorado/base/__init__.py` |  | pacote |  |  | 34 |
-| 124 | `eldorado/base/cartorio/__init__.py` |  | pacote |  |  | 7 |
-| 125 | `eldorado/base/cartorio/site_oficial.py` | O site oficial: a oportunidade se encontra NA FONTE (titular, 14/10/2026). | a construir |  |  | 0 |
-| 126 | `eldorado/base/cerebro/__init__.py` |  | pacote |  |  | 19 |
-| 127 | `eldorado/base/cerebro/originais.py` | A rede neural vigia os sites ORIGINAIS dos livros (titular, 23/10/2026): com o histórico do livro, ele tem um  | em funcionamento | encaminhamento | encaminhamento | 1 |
-| 128 | `eldorado/base/cerebro/pilotos.py` | O Cérebro dos pilotos (titular, 22/10/2026): mede a recorrência de cada piloto e manda nova missão sempre que | em funcionamento | escada, metabusca, leitores, espiao | encaminhamento, comandos | 1 |
-| 129 | `eldorado/base/especial/__init__.py` |  | pacote |  |  | 1 |
-| 130 | `eldorado/base/especial/registro.py` | O registro da base Especial (as empresas e os incentivos): o "cartório" do banco especial.db. | em funcionamento | eventos | regencia | 1 |
-| 131 | `eldorado/base/investigacao/investigacao.py` | livros investigados e itens comprovados por livro | substituído por eldorado/base/cerebro/encaminhamento.py e eldorado/motores/pilotos/interceptador.py |  |  | 0 |
-| 132 | `eldorado/motores/__init__.py` |  | pacote |  |  | 19 |
+| 119 | `.github/workflows/painel.yml` |  | em funcionamento |  |  | 0 |
+| 120 | `.github/workflows/passagem.yml` | passagens no horário | substituído por .github/workflows/eldorado.yml (funcionamento permanente) |  |  | 0 |
+| 121 | `.github/workflows/pilotos.yml` | voos com sucesso | substituído por .github/workflows/eldorado.yml (os pilotos rodam dentro do funcionamento permanente) |  |  | 0 |
+| 122 | `config/motores_previstos.toml` | o sistema roda sem intervenção | a construir |  |  | 0 |
+| 123 | `eldorado/__init__.py` |  | pacote |  |  | 44 |
+| 124 | `eldorado/base/__init__.py` |  | pacote |  |  | 35 |
+| 125 | `eldorado/base/cartorio/__init__.py` |  | pacote |  |  | 7 |
+| 126 | `eldorado/base/cartorio/site_oficial.py` | O site oficial: a oportunidade se encontra NA FONTE (titular, 14/10/2026). | a construir |  |  | 0 |
+| 127 | `eldorado/base/cerebro/__init__.py` |  | pacote |  |  | 19 |
+| 128 | `eldorado/base/cerebro/originais.py` | A rede neural vigia os sites ORIGINAIS dos livros (titular, 23/10/2026): com o histórico do livro, ele tem um  | em funcionamento | encaminhamento | encaminhamento | 1 |
+| 129 | `eldorado/base/cerebro/pilotos.py` | O Cérebro dos pilotos (titular, 22/10/2026): mede a recorrência de cada piloto e manda nova missão sempre que | em funcionamento | escada, metabusca, leitores, espiao | encaminhamento, comandos | 1 |
+| 130 | `eldorado/base/especial/__init__.py` |  | pacote |  |  | 1 |
+| 131 | `eldorado/base/especial/registro.py` | O registro da base Especial (as empresas e os incentivos): o "cartório" do banco especial.db. | em funcionamento | eventos | regencia | 1 |
+| 132 | `eldorado/base/investigacao/investigacao.py` | livros investigados e itens comprovados por livro | substituído por eldorado/base/cerebro/encaminhamento.py e eldorado/motores/pilotos/interceptador.py |  |  | 0 |
+| 133 | `eldorado/motores/__init__.py` |  | pacote |  |  | 19 |
 
 ## Os 47 motores (o estudo de reorganização da titular: 45 regulares e 2 pilotos)
 

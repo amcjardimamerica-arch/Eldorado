@@ -341,6 +341,16 @@ def gravar(urls: list[str], pasta: Path = PASTA_GRAVAR):
     idx_p.write_text(json.dumps(indice, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
+PASTA_PAINEL = typer.Option(Path("_site"), help="onde gerar o site do painel")
+
+
+@app.command()
+def site(saida: Path = PASTA_PAINEL):
+    """O site do painel: a página, com os dados gerados do sistema novo (nenhum dado do Eldorado0)."""
+    from ..painel.dados import gerar
+    typer.echo(gerar(saida))
+
+
 motor_app = typer.Typer(help="Criar motores pela orientação de design (eldorado/motores/skills/criar-motor/SKILL.md).")
 app.add_typer(motor_app, name="motor")
 

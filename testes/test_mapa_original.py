@@ -87,7 +87,7 @@ def test_mapa_do_site_original(site, tmp_path):
 
 def test_a_rede_escolhe_os_livros_com_origem_confirmada(gravador, bancos):
     evs = []
-    for i, (fase, origem) in enumerate((("preparacao", "confirmado"), ("arquivo", "confirmado"), ("arquivo", "candidato"))):
+    for i, (_fase, origem) in enumerate((("preparacao", "confirmado"), ("arquivo", "confirmado"), ("arquivo", "candidato"))):
         lid = f"L{i}"
         evs += [ev("livro.criado", id=lid, missao="oportunidades", chave=lid, titulo=f"Edital nº {i}/2026 do Fundo", orgao="Secult", uf="GO",
                    link_oficial="https://goias.gov.br/x", estrela="sem", selo_livro="sem", informacoes_validadas=0, situacao="em trabalho",

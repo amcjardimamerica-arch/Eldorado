@@ -1,15 +1,16 @@
-# O painel (titular, 22/10/2026): o MESMO painel do Eldorado0, com todas as telas, os dados, o bloqueio de celular e a
-# entrada restrita; as melhorias entram depois. O site é montado na hora de publicar (sem gravar 72 MB no repositório):
-# a pasta docs/ do Eldorado0 e, à medida que o sistema novo produzir cada parte no formato do painel, os dados novos
-# por cima. A cifra dos dados (AES-256-GCM, senha do mês) passa a ser feita aqui quando os segredos do acesso mensal
-# (ACESSO_MASTER, WHATSAPP_PHONE, CALLMEBOT_APIKEY) forem copiados para este repositório.
+# O painel (titular, 23/10/2026): a imagem atual do sistema. A página é a do Eldorado0 (o HTML, os scripts e as imagens,
+# copiados para eldorado/base/painel/pagina/), mas NENHUM dado do Eldorado0: os dados são gerados do sistema novo
+# (eldorado/base/painel/dados.py), a partir do banco da Biblioteca, dos motores e do estado do funcionamento; a seção sem
+# dado no sistema fica vazia. Os eventos mais recentes são aplicados antes, para o site refletir o estado de agora.
+# As gravações automáticas não acionam outros fluxos (regra do GitHub): o painel roda a cada 30 minutos e ao fim de cada
+# execução do sistema.
 name: Painel
 on:
   workflow_run:
     workflows: ["Eldorado"]
     types: [completed]
   schedule:
-    - cron: "50 */6 * * *"
+    - cron: "*/30 * * * *"
   workflow_dispatch:
 permissions:
   contents: read
@@ -24,15 +25,20 @@ jobs:
       name: github-pages
       url: ${{ steps.publicacao.outputs.page_url }}
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v5
-      - name: Montar o painel do Eldorado0 (a mesma página, as mesmas telas e os mesmos dados)
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e .
+      - name: Os eventos mais recentes no banco (o estado de agora)
+        run: eldorado aplicar
+      - name: Gerar o site do sistema (nenhum dado do Eldorado0)
         run: |
-          git clone -q --depth 1 --filter=blob:none --sparse https://github.com/amcjardimamerica-arch/Eldorado0.git origem
-          git -C origem sparse-checkout set docs
-          cp -r origem/docs _site
-          echo "painel montado: $(find _site -type f | wc -l) arquivos, $(du -sh _site | cut -f1)"
+          eldorado site --saida _site
+          echo "site: $(find _site -type f | wc -l) arquivos, $(du -sh _site | cut -f1)"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
