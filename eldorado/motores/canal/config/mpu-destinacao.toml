@@ -1,0 +1,65 @@
+# MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD) — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "BR"
+canal = "portal"
+id = "mpu-destinacao"
+nome = "MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD)"
+categoria = "Judiciário e Ministérios Públicos"
+categoria_estudo = "JUD"
+finalidade = "MPF PR-GO, MPDFT, MPM, MPT nacional, FDD e CNMP (pela cadência de cada fonte)"
+tipo_finalidade = "descoberta"
+nomes_anteriores = ["plat-mp-destinacoes-reparacao"]
+
+# ---- rotas (23/10/2026, testes/paginas/ministerios-publicos/ e mpu-sondagem/): os editais de doação de bens do MPF em
+# Goiás e as seleções do FDD (Ministério da Justiça); nos portais Plone, o seletor limita à região do conteúdo.
+[[fonte]]
+nome = "MPF em Goiás — bens para doação (editais de doação de bens)"
+url = "https://www.mpf.mp.br/o-mpf/unidades/pr-go/transparencia/bens-para-doacao"
+tipo = "pagina"
+seletor = "#content-core"
+papel = "principal"
+
+[[fonte]]
+nome = "FDD (Fundo de Defesa de Direitos Difusos) — seleções em andamento"
+url = "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos/selecao-em-andamento"
+tipo = "pagina"
+seletor = "#content-core"
+papel = "principal"
+
+[[fonte]]
+nome = "MPF em Goiás — notícias"
+url = "https://www.mpf.mp.br/o-mpf/unidades/pr-go/noticias"
+tipo = "pagina"
+seletor = "#content-core"
+papel = "alternativa"
+
+[[alvo]]
+id = "f260-captacao-169"
+nome = "FDD/Pronasci - cultura e cidadania em territórios vulneráveis"
+enderecos = ["https://www.gov.br/mj/pt-br/assuntos/seus-direitos/consumidor/direitos-difusos"]   # corrigido: o cadastro antigo apontava o CONANDA e o CEDCA
+orgao = "Conanda — Fundo Nacional para a Criança e o Adolescente"
+
+# o alvo f260-captacao-208 (cessão de bens apreendidos da Receita) fica fora: nenhum endereço responde (23/10/2026)
+[acesso]
+degraus = ["api", "leve", "local"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = ["re:edital|doa[çc][ãa]o|bens|sele[çc][ãa]o|chamamento|cadastr|projetos|destina"]
+vetos = ["re:resultado|homologa|^despacho|certid[ãa]o|^informa[çc][ãa]o|e-?pgea|^anexo|concurso|est[áa]gio"]
+termos_em = "titulo"
+
+[aprendizado]
+licoes = ["O alvo f260-captacao-208 (cessão de bens móveis apreendidos, Receita) ficou fora: nenhum endereço responde; a localizar pela análise externa.", "Rota de acesso única para os domínios com bloqueio (mpt.mp.br, www.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 20 rota(s) que funcionaram: entram como rotas do motor.", "2 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "PENDÊNCIA DO TITULAR — pedidos de acesso à informação (Lei 12.527/2011) prontos para envio: docs/relatorios/lai/pedidos-lai-motor-10-2026-10-03.md.", "MPF PR-GO: o edital de cadastro de entidades para receber bens e valores (notícia de 09/10/2025) tem o link quebrado (404); pedir o edital, a lista de entidades cadastradas e as destinações de 2023 a 2026.", "PENDÊNCIA DO TITULAR — pedidos de acesso à informação (Lei 12.527/2011) prontos para envio: docs/relatorios/lai/pedidos-lai-motor-10-2026-10-03.md.", "MPF PR-GO: o edital de cadastro de entidades para receber bens e valores (notícia de 09/10/2025) tem o link quebrado (404); pedir o edital, a lista de entidades cadastradas e as destinações de 2023 a 2026.", "MPT (Procuradoria-Geral do Trabalho): pedir as destinações nacionais a entidades de Goiás de 2023 a 2026 e as regras do Sistema de Destinações.", "FDD/CFDD: conferido em 03/10/2026 — a página 'seleção em andamento' diz 'Não há' (atualizada em 08/07/2026). O aviso anterior era falso: vinha do código da página lido como texto (corrigido no motor)."]
+bloqueios_conhecidos = ["mpt.mp.br", "www.gov.br"]
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["os endereços antigos do FDD em /consumidor/fundo-de-direitos-difusos (404)", "a destinação de mercadorias da Receita (/assuntos/destinacao-de-mercadorias: 404)", "MPDFT e MPM: nada relevante nas páginas iniciais (23/10/2026)"]
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14

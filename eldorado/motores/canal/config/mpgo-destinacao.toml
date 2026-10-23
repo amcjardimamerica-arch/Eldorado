@@ -1,0 +1,75 @@
+# MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos) — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "GO"
+canal = "portal"
+orgao = "Ministério Público do Estado de Goiás"
+id = "mpgo-destinacao"
+nome = "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)"
+categoria = "Judiciário e Ministérios Públicos"
+categoria_estudo = "JUD"
+finalidade = "Destina do MP-GO (Edital de Chamamento 02/2024, cadastro contínuo): regra fixa — o site do MP-GO proíbe robôs. Leitura indireta semanal pelo Diário do Estado (quem recebe recurso DAAMP publica lá) e lembrete de conferência manual mensal"
+tipo_finalidade = "descoberta"
+nomes_anteriores = []
+
+# ---- rotas (23/10/2026): o site do MP-GO não responde à nuvem (tempo esgotado na página e no robots): vai pelo
+# computador local. A alternativa vem da lição do Eldorado0: quem recebe recurso destinado pelo MP-GO publica no Diário
+# Oficial do Estado; a cadeia do diário filtrada pelas matérias do Ministério Público, da destinação e do TAC.
+[[fonte]]
+nome = "MP-GO — portal (destinação, Programa Destina, TAC)"
+url = "https://www.mpgo.mp.br/portal/"
+tipo = "pagina"
+papel = "principal"
+exige_brasil = true
+
+[[fonte]]
+nome = "Diário Oficial do Estado — as matérias do Ministério Público, da destinação e do TAC"
+url = "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/edicoes_from_data/{hoje:%Y-%m-%d}.json"
+tipo = "cadeia"
+papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "itens"
+campos = { edicao = "id", numero = "numero" }
+
+[[fonte.cadeia]]
+formato = "html"
+url = "https://diariooficial.abc.go.gov.br/portal/visualizacoes/view_html_diario/{edicao}"
+itens = "a.linkMateria"
+campos = { materia = "attr:data-materia-id", titulo = 're:#\d+\s*-\s*(.*?)\s*</a>', caminho = "ancestrais:span.folder" }
+filtro = { titulo = '(?i)minist[ée]rio p[úu]blico|mpgo|destina[çc][ãa]o|\btac\b|ajustamento de conduta|compor' }
+
+[fonte.pista]
+titulo = "{titulo}"
+link = "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/publicacoes_ver_conteudo/{materia}"
+resumo = "{caminho} · edição {numero}"
+
+[[alvo]]
+id = "f260-captacao-196"
+nome = "MPGO - TAC com destinação social"
+enderecos = ["https://www.mpgo.mp.br/portal/"]   # corrigido: o cadastro antigo apontava também o MPF e o MPT
+orgao = "Ministério Público Federal — chamamentos e destinação de recursos"
+
+[acesso]
+degraus = ["api", "leve", "local"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = ["re:destina|tac\\b|ajustamento de conduta|doa[çc][ãa]o|cadastr|chamamento|edital|entidade|compor|presta[çc][ãa]o pecuni"]
+vetos = ["re:concurso|est[áa]gio|licita|preg[ãa]o|resultado final|nomea|exonera"]
+termos_em = "tudo"
+
+[aprendizado]
+licoes = ["PENDÊNCIA DA TITULAR: pedir o cadastro da associação no Programa Destina do MP-GO (Edital de Chamamento nº 02/2024, cadastro contínuo); contato COMPOR, (62) 3243-8116.", "O robots.txt do MP-GO proíbe robôs: é informação (regra da titular); o motor lê devagar, pelo computador local.", "Rota de acesso única para os domínios com bloqueio (mpt.mp.br, www.gov.br, www.mpgo.mp.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 9 rota(s) que funcionaram: entram como rotas do motor.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 1 alvos são vigiados só na janela prevista da próxima edição.", "PENDÊNCIA DO TITULAR — pedir o cadastro da A.M.C. no Programa Destina do MP-GO (Edital de Chamamento nº 02/2024, cadastro contínuo).", "Contato: COMPOR — Centro de Autocomposição de Conflitos e Segurança Jurídica do MP-GO, telefone (62) 3243-8116.", "PENDÊNCIA DO TITULAR — pedir o cadastro da A.M.C. no Programa Destina do MP-GO (Edital de Chamamento nº 02/2024, cadastro contínuo).", "Contato: COMPOR — Centro de Autocomposição de Conflitos e Segurança Jurídica do MP-GO, telefone (62) 3243-8116.", "O site do MP-GO proíbe robôs (robots.txt 'Disallow: /'): o motor não lê o site; a conferência é manual, uma vez por mês.", "Histórico de 3 anos: só 2 registros públicos. Para completar, pedir ao COMPOR, pela Lei de Acesso à Informação, as destinações de 2023 a 2025 (área, valor, entidade)."]
+bloqueios_conhecidos = ["mpt.mp.br", "www.gov.br", "www.mpgo.mp.br"]
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["https://www.mpgo.mp.br/portal/ e o robots.txt pela nuvem (tempo esgotado, 23/10/2026)"]
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14
