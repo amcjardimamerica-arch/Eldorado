@@ -34,7 +34,7 @@ jobs:
           python-version: "3.12"
           cache: pip
       - name: Instalar (versões fixadas)
-        run: pip install -e ".[leitura,acesso,descoberta]"
+        run: pip install -e ".[leitura,acesso,descoberta,metabusca]"
       - name: Abrir os bancos (e aplicar as migrações do esquema)
         run: eldorado iniciar
       - name: Reaplicar os eventos pendentes

@@ -282,6 +282,32 @@ def inventario(raiz: Path = Path(".")):
 
 
 @app.command()
+def missao(config: Path = CONFIG, quantas: int = 1, anotar: bool = typer.Option(False, "--anotar")):
+    """PILOTOS: uma missão real do Espião (busca, descarte, leitura e filtro), sem gravar na Biblioteca."""
+    import sqlite3
+    import tempfile
+
+    from ...motores.acesso.api import DegrauAPI
+    from ...motores.acesso.escada import Escada
+    from ...motores.acesso.leve import DegrauLeve
+    from ..cerebro.pilotos import missoes
+    _, dados, _ = _cfg(config)
+    con = sqlite3.connect(f"file:{dados / 'biblioteca.db'}?mode=ro", uri=True) if (dados / "biblioteca.db").exists() else sqlite3.connect(":memory:")
+    escada = Escada([DegrauAPI(), DegrauLeve()], intervalo_padrao=1.0, tentativas=1, tempo_limite=25)
+    with tempfile.TemporaryDirectory() as tmp:
+        achados, rel = missoes(Path(tmp), con, escada, ociosidade=True, orcamento_s=600)
+    for m in rel.get("missoes", [])[:quantas]:
+        linha = f"família {m['familia']} · consulta «{m['consulta']}» · {m['resultados']} resultados · {m['achados']} achado(s) · descartes {m['motivos']}"
+        typer.echo(linha)
+        if anotar:
+            typer.echo(f"::notice title=Missão do Espião::{linha[:900]}")
+    for a in achados:
+        typer.echo(f"  achado: {a.titulo[:90]} <{a.link_divulgacao}>")
+        if anotar:
+            typer.echo(f"::notice title=Achado do Espião::{a.titulo[:200]} <{a.link_divulgacao}>")
+
+
+@app.command()
 def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = CONFIG,
                limite_min: float = typer.Option(320, help="duração desta execução; perto do limite, grava e passa a vez à continuação"),
                gravar_min: float = typer.Option(30, help="grava o trabalho no repositório a cada tantos minutos"),

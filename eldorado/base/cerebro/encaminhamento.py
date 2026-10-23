@@ -112,9 +112,17 @@ def no_encaminhar(itens: list[dict[str, Any]], parametros: dict[str, Any], conte
             c.close()
         from ..nucleo.ia import IA
         ia = IA()
-        achados, contagem = Encaminhamento(con, contexto.diario, registro, Interceptador(con, contexto.diario, escada, ia=ia if ia.disponivel() else None),
-                                           rede).andar(
-            float(parametros.get("orcamento_s", 300)))
+        enc = Encaminhamento(con, contexto.diario, registro, Interceptador(con, contexto.diario, escada, ia=ia if ia.disponivel() else None), rede)
+        achados, contagem = enc.andar(float(parametros.get("orcamento_s", 300)))
+        # os pilotos: o Cérebro mede a recorrência e, na ociosidade e sem bloqueio, manda as missões do Espião
+        from .fila import fila_do_sistema
+        from .pilotos import missoes
+        dados = Path(parametros.get("dados", "dados"))
+        ociosidade = not fila_do_sistema(dados, Path(parametros.get("config", "config")))["motores_devidos"]
+        do_espiao, relatorio = missoes(dados, con, escada, ociosidade, float(parametros.get("orcamento_pilotos_s", 180)))
+        achados += [enc._entregar(a, "espiao") for a in do_espiao]
+        print(f"pilotos: {relatorio.get('decisao')} · Espião {relatorio['espiao'].get('missoes')} missões recentes "
+              f"({relatorio['espiao'].get('com_resultado')} com resultado) · Interceptador {relatorio['interceptador']}")
     finally:
         con.close()
     return achados

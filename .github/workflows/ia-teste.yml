@@ -1,4 +1,4 @@
-# Teste da IA local no GitHub (análise externa): os mesmos passos do funcionamento permanente e uma comprovação de
+# Teste dos pilotos no GitHub: uma missão real do Espião e a IA local (análise externa): os mesmos passos do funcionamento permanente e uma comprovação de
 # trecho de edital; o resultado vai como anotação. Também deixa o modelo no cache do GitHub para o funcionamento.
 name: Teste da IA
 on:
@@ -15,7 +15,10 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-      - run: pip install -e ".[leitura,acesso,descoberta]"
+      - run: pip install -e ".[leitura,acesso,descoberta,metabusca]"
+      - name: Uma missão real do Espião (busca, descarte, leitura e filtro)
+        continue-on-error: true
+        run: eldorado missao --quantas 2 --anotar
       - name: IA local — o motor llama.cpp (versão fixada)
         continue-on-error: true
         run: |

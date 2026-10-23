@@ -21,13 +21,14 @@
   },
   {
    "arquivo": "eldorado/base/nucleo/comandos.py",
-   "linhas": 346,
+   "linhas": 372,
    "finalidade": "Os comandos da plataforma: os mesmos no GitHub, no computador da titular e (depois) no painel.",
    "depende_de": [
     "eldorado/base/cartorio/analise_externa.py",
     "eldorado/base/cerebro/fila.py",
     "eldorado/base/cerebro/governador.py",
     "eldorado/base/cerebro/inventario.py",
+    "eldorado/base/cerebro/pilotos.py",
     "eldorado/base/fluxo/agenda.py",
     "eldorado/base/fluxo/definicao.py",
     "eldorado/base/fluxo/executor.py",
@@ -61,6 +62,7 @@
     "eldorado/base/cerebro/fila.py",
     "eldorado/base/cerebro/governador.py",
     "eldorado/base/cerebro/inventario.py",
+    "eldorado/base/cerebro/pilotos.py",
     "eldorado/base/fluxo/agenda.py",
     "eldorado/base/fluxo/definicao.py",
     "eldorado/base/fluxo/executor.py",
@@ -115,6 +117,7 @@
     "test_comandos.py",
     "test_config.py",
     "test_contratos.py",
+    "test_espiao.py",
     "test_eventos.py",
     "test_executor.py",
     "test_expurgo_externo.py",
@@ -180,6 +183,7 @@
     "eldorado/base/nucleo/gravador.py",
     "eldorado/base/nucleo/registro.py",
     "eldorado/motores/canal/motor.py",
+    "eldorado/motores/pilotos/espiao.py",
     "eldorado/motores/pilotos/interceptador.py"
    ],
    "testes": [
@@ -311,6 +315,7 @@
     "test_alarmes.py",
     "test_auditoria.py",
     "test_cerebro.py",
+    "test_espiao.py",
     "test_eventos.py",
     "test_executor.py",
     "test_governador.py",
@@ -1102,6 +1107,7 @@
    ],
    "testes": [
     "test_cerebro.py",
+    "test_espiao.py",
     "test_incentivos.py",
     "test_interceptador.py",
     "test_linha_cartorio.py",
@@ -1140,6 +1146,7 @@
    "eventos": [],
    "acionado_por": [],
    "usado_por": [
+    "eldorado/base/cerebro/encaminhamento.py",
     "eldorado/base/nucleo/comandos.py"
    ],
    "testes": [],
@@ -1208,6 +1215,7 @@
    "acionado_por": [],
    "usado_por": [
     "eldorado/base/cerebro/encaminhamento.py",
+    "eldorado/base/cerebro/pilotos.py",
     "eldorado/base/nucleo/comandos.py",
     "eldorado/motores/acesso/api.py",
     "eldorado/motores/acesso/arquivo_web.py",
@@ -1309,6 +1317,7 @@
    "usado_por": [],
    "testes": [
     "test_descoberta.py",
+    "test_espiao.py",
     "test_incentivos.py"
    ],
    "situacao": "pacote",
@@ -1335,6 +1344,7 @@
     "eldorado/motores/descoberta/metabusca.py"
    ],
    "testes": [
+    "test_espiao.py",
     "test_incentivos.py"
    ],
    "situacao": "em funcionamento",
@@ -1672,6 +1682,7 @@
    "eventos": [],
    "acionado_por": [],
    "usado_por": [
+    "eldorado/base/cerebro/pilotos.py",
     "eldorado/motores/canal/motor.py"
    ],
    "testes": [
@@ -1846,6 +1857,7 @@
    "eventos": [],
    "acionado_por": [],
    "usado_por": [
+    "eldorado/base/cerebro/pilotos.py",
     "eldorado/motores/canal/motor.py",
     "eldorado/motores/leitura/compactado.py",
     "eldorado/motores/leitura/documento.py",
@@ -2048,6 +2060,7 @@
    "usado_por": [],
    "testes": [
     "test_cartorio.py",
+    "test_espiao.py",
     "test_ia.py",
     "test_incentivos.py",
     "test_interceptador.py",
@@ -2180,6 +2193,7 @@
    "usado_por": [],
    "testes": [
     "test_cartorio.py",
+    "test_espiao.py",
     "test_ia.py",
     "test_incentivos.py",
     "test_interceptador.py",
@@ -2384,6 +2398,7 @@
     "eldorado/base/cartorio/analise_externa.py"
    ],
    "testes": [
+    "test_espiao.py",
     "test_ia.py",
     "test_incentivos.py",
     "test_interceptador.py",
@@ -2470,6 +2485,7 @@
    "acionado_por": [],
    "usado_por": [],
    "testes": [
+    "test_espiao.py",
     "test_ia.py",
     "test_interceptador.py",
     "test_rede_neural.py"
@@ -2485,24 +2501,28 @@
   },
   {
    "arquivo": "eldorado/motores/pilotos/espiao.py",
+   "linhas": 209,
+   "finalidade": "O PILOTO ESPIÃO (do Eldorado0, titular, 09 e 16/10/2026): caça só o que nenhum motor alcança.",
+   "depende_de": [
+    "eldorado/base/nucleo/contratos.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cerebro/pilotos.py"
+   ],
+   "testes": [
+    "test_espiao.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "10 Cartório · etapa 3 (a rede neural encaminha)",
    "parte": "MOTORES",
    "componente": "Pilotos: motores livres com IA",
    "ligacoes": [
-    "eldorado/base/nucleo/ia.py",
-    "eldorado/motores/descoberta/metabusca.py",
-    "eldorado/motores/canal/achado.py"
+    "eldorado/base/nucleo/contratos.py"
    ],
    "critico": false,
    "metrica": "achados por voo; fontes novas propostas",
-   "etapa": "10 Cartório · etapa 3 (a rede neural encaminha)",
-   "situacao": "a construir",
-   "depende_de": [],
-   "usado_por": [],
-   "acionado_por": [],
-   "eventos": [],
-   "testes": [],
-   "linhas": 0,
-   "finalidade": "achados por voo; fontes novas propostas",
    "ordem": 89
   },
   {
@@ -2557,10 +2577,12 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/encaminhamento.py",
-   "linhas": 120,
+   "linhas": 128,
    "finalidade": "A rede neural na fase 3 do Cartório (titular, 22/10/2026): quem age é a rede, não o Cartório.",
    "depende_de": [
     "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/cerebro/fila.py",
+    "eldorado/base/cerebro/pilotos.py",
     "eldorado/base/cerebro/rede.py",
     "eldorado/base/cerebro/regencia.py",
     "eldorado/base/nucleo/eventos.py",
@@ -2592,6 +2614,8 @@
    "componente": "Cartório · etapa 3 (a rede neural encaminha)",
    "ligacoes": [
     "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/cerebro/fila.py",
+    "eldorado/base/cerebro/pilotos.py",
     "eldorado/base/cerebro/rede.py",
     "eldorado/base/cerebro/regencia.py",
     "eldorado/base/nucleo/eventos.py",
@@ -3219,6 +3243,7 @@
     "test_decisao.py",
     "test_definicao.py",
     "test_descoberta.py",
+    "test_espiao.py",
     "test_eventos.py",
     "test_executor.py",
     "test_expurgo_externo.py",
@@ -3270,6 +3295,7 @@
     "test_contratos.py",
     "test_decisao.py",
     "test_definicao.py",
+    "test_espiao.py",
     "test_eventos.py",
     "test_executor.py",
     "test_expurgo_externo.py",
@@ -3311,6 +3337,7 @@
    "testes": [
     "test_auditoria.py",
     "test_cartorio.py",
+    "test_espiao.py",
     "test_ia.py",
     "test_incentivos.py",
     "test_interceptador.py",
@@ -3336,6 +3363,7 @@
    "testes": [
     "test_cerebro.py",
     "test_decisao.py",
+    "test_espiao.py",
     "test_fila.py",
     "test_governador.py",
     "test_ia.py",
@@ -3361,6 +3389,39 @@
    "ordem": 120
   },
   {
+   "arquivo": "eldorado/base/cerebro/pilotos.py",
+   "linhas": 103,
+   "finalidade": "O Cérebro dos pilotos (titular, 22/10/2026): mede a recorrência de cada piloto e manda nova missão sempre que",
+   "depende_de": [
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/descoberta/metabusca.py",
+    "eldorado/motores/leitura/leitores.py",
+    "eldorado/motores/pilotos/espiao.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cerebro/encaminhamento.py",
+    "eldorado/base/nucleo/comandos.py"
+   ],
+   "testes": [
+    "test_espiao.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "17 Outros",
+   "parte": "BASE",
+   "componente": "Outros",
+   "ligacoes": [
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/descoberta/metabusca.py",
+    "eldorado/motores/leitura/leitores.py",
+    "eldorado/motores/pilotos/espiao.py"
+   ],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 121
+  },
+  {
    "arquivo": "eldorado/base/investigacao/investigacao.py",
    "parte": "BASE",
    "componente": "Etapa de Investigação",
@@ -3379,7 +3440,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "livros investigados e itens comprovados por livro",
-   "ordem": 121
+   "ordem": 122
   },
   {
    "arquivo": "eldorado/motores/__init__.py",
@@ -3392,6 +3453,7 @@
    "testes": [
     "test_acesso.py",
     "test_descoberta.py",
+    "test_espiao.py",
     "test_ia.py",
     "test_incentivos.py",
     "test_interceptador.py",
@@ -3408,7 +3470,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 122
+   "ordem": 123
   }
  ],
  "motores": [
