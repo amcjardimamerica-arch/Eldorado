@@ -18,6 +18,10 @@ from .pistas import Buscar, Pista
 class Metabusca:
     buscar: Buscar
     searxng: str | None = None                     # o serviço próprio (ex.: http://localhost:8888)
+
+    def __post_init__(self):
+        import os
+        self.searxng = self.searxng or os.environ.get("ELDORADO_SEARXNG")   # o SearXNG do próprio fluxo (scripts/instalar.sh)
     marginalia: str | None = "https://api.marginalia.nu/public"
     usar_ddgs: bool = True
     descanso_s: int = 3600

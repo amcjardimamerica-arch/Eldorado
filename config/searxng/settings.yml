@@ -1,0 +1,11 @@
+# O SearXNG do próprio fluxo (plano C: a metabusca própria, sem custo): só local, sem limitador, com a saída em JSON.
+use_default_settings: true
+server:
+  secret_key: "eldorado-searxng-local-somente-no-fluxo"
+  limiter: false
+  image_proxy: false
+search:
+  safe_search: 0
+  formats:
+    - html
+    - json

@@ -19,7 +19,8 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-      - run: pip install -e ".[leitura,acesso,descoberta]"
+      - name: A instalação completa (scripts/instalar.sh: todas as ferramentas do plano)
+        run: bash scripts/instalar.sh
       - name: Sondar
         env:
           URLS: ${{ inputs.urls }}

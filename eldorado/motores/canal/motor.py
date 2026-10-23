@@ -242,7 +242,8 @@ class MotorCanal(Motor):
         self.escada = Escada(self._degraus(ponte, lightpanda, mirror_wayback), intervalo_padrao=self.cfg.acesso.intervalo_s,
                              tentativas=self.cfg.acesso.tentativas)
         self.leitura = leitores.padrao()
-        self.leitura.registrar(LeitorPDF(tabelas=self.cfg.leitura.tabelas))
+        from ..leitura.ocr import disponivel as ocr_disponivel
+        self.leitura.registrar(LeitorPDF(tabelas=self.cfg.leitura.tabelas, ocr=ocr_disponivel()))
         self.relatorio: list[str] = []
 
     def _degraus(self, ponte, lightpanda, mirror):

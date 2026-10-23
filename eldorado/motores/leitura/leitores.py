@@ -166,11 +166,21 @@ def sha256(conteudo: bytes) -> str:
 
 
 def padrao() -> Registro:
-    """O registro com todos os leitores obrigatórios (o OCR e o universal entram quando instalados e ligados)."""
-    from . import compactado, documento, pagina, pdf, planilha
-    r = Registro()
-    leitores = (pagina.LeitorPagina(), pagina.LeitorTexto(), pdf.LeitorPDF(), planilha.LeitorPlanilha(), documento.LeitorDocumento(),
-                compactado.LeitorCompactado())
+    """O registro com todos os leitores (o motor padrão): os obrigatórios, o OCR das imagens e dos PDFs escaneados e o
+    leitor universal de reserva, estes dois sempre que instalados (o fluxo instala tudo: scripts/instalar.sh)."""
+    from . import compactado, documento, ocr, pagina, pdf, planilha
+    motor_ocr = ocr.disponivel()
+    universal = None
+    try:
+        from .universal import LeitorUniversal
+        universal = LeitorUniversal()
+    except SemLeitor:
+        pass
+    r = Registro(universal=universal) if universal is not None else Registro()
+    leitores = [pagina.LeitorPagina(), pagina.LeitorTexto(), pdf.LeitorPDF(ocr=motor_ocr), planilha.LeitorPlanilha(), documento.LeitorDocumento(),
+                compactado.LeitorCompactado()]
+    if motor_ocr is not None:
+        leitores.append(ocr.LeitorImagem(motor_ocr))
     for leitor in leitores:
         r.registrar(leitor)
     return r
