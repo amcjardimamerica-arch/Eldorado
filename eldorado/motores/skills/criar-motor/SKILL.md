@@ -183,6 +183,10 @@ Para tabelas em PDF, o elo `linhas` reconhece cada registro por um padrão com g
   escrever as conferências; "nenhuma entrega" pode ser o certo (as 4 chamadas abertas do CNPq eram para pesquisadores).
   O servidor comum das páginas gravadas está em `testes/paginas_servidor.py`. Várias gravações seguidas: a fila do GitHub
   cancela a que estava esperando; acione uma de cada vez, ou confira o índice depois.
+- **mptgo-destinacao**: a tabela que carrega por script costuma vir de um POST na sessão da página (Joomla, tabelas
+  dinâmicas): procure no código da página o endereço e os campos; a cadeia abre a sessão (elo `html` com o código) e
+  pede a tabela (elo com `corpo`). Confirme com `eldorado motor experimentar <id>` (o fluxo Experimentar motor), que roda
+  o motor inteiro com a internet de verdade.
 - **Teste com página real**: página montada à mão costuma ser "HTML quase vazio", que a escada trata como bloqueio; use a
   página real gravada, alterando o mínimo.
 

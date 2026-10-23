@@ -21,7 +21,7 @@
   },
   {
    "arquivo": "eldorado/base/nucleo/comandos.py",
-   "linhas": 451,
+   "linhas": 473,
    "finalidade": "Os comandos da plataforma: os mesmos no GitHub, no computador da titular e (depois) no painel.",
    "depende_de": [
     "eldorado/base/cartorio/analise_externa.py",
@@ -102,7 +102,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 18,
+   "linhas": 25,
    "situacao": "em funcionamento",
    "ordem": 3
   },
@@ -378,7 +378,7 @@
   },
   {
    "arquivo": "eldorado/base/nucleo/gravador.py",
-   "linhas": 169,
+   "linhas": 184,
    "finalidade": "O gravador único: o único que escreve nos bancos.",
    "depende_de": [
     "eldorado/banco/_sqlite.py",
@@ -1042,7 +1042,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 127,
+   "linhas": 133,
    "situacao": "em funcionamento",
    "ordem": 37
   },
@@ -1060,7 +1060,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 83,
+   "linhas": 87,
    "situacao": "em funcionamento",
    "ordem": 38
   },
@@ -1224,7 +1224,7 @@
   },
   {
    "arquivo": "eldorado/motores/acesso/escada.py",
-   "linhas": 167,
+   "linhas": 173,
    "finalidade": "A escada de acesso: do degrau mais leve ao mais forte, aprendendo por domínio qual degrau funciona.",
    "depende_de": [
     "eldorado/base/nucleo/eventos.py"
@@ -1273,6 +1273,7 @@
    "usado_por": [],
    "testes": [
     "test_alvos.py",
+    "test_cadeia_sessao.py",
     "test_incentivos.py",
     "test_mapa_original.py",
     "test_motor_canal.py",
@@ -1831,7 +1832,7 @@
   },
   {
    "arquivo": "eldorado/motores/canal/motor.py",
-   "linhas": 684,
+   "linhas": 685,
    "finalidade": "O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio.",
    "depende_de": [
     "eldorado/base/nucleo/contratos.py",
@@ -1865,6 +1866,7 @@
     "config/modulos.toml (estaduais-go-gov)",
     "config/modulos.toml (gife)",
     "config/modulos.toml (motor-gife)",
+    "config/modulos.toml (mptgo-destinacao)",
     "config/modulos.toml (novo-bancos-publicos)",
     "config/modulos.toml (novo-diarios-municipais-go)",
     "config/modulos.toml (plataforma-mapas-culturais)",
@@ -1887,6 +1889,7 @@
    ],
    "testes": [
     "test_alvos.py",
+    "test_cadeia_sessao.py",
     "test_incentivos.py",
     "test_mapa_original.py",
     "test_motor_canal.py",
@@ -1930,7 +1933,7 @@
   },
   {
    "arquivo": "eldorado/motores/descoberta/cadeia.py",
-   "linhas": 115,
+   "linhas": 117,
    "finalidade": "A leitura em cadeia (canivete suíço): a lista → cada item → o detalhe → o texto, sem código por fonte.",
    "depende_de": [
     "eldorado/motores/leitura/atos.py",
@@ -3454,6 +3457,7 @@
     "test_alvos.py",
     "test_auditoria.py",
     "test_bancos.py",
+    "test_cadeia_sessao.py",
     "test_cartorio.py",
     "test_cerebro.py",
     "test_comandos.py",
@@ -3778,6 +3782,7 @@
    "testes": [
     "test_acesso.py",
     "test_alvos.py",
+    "test_cadeia_sessao.py",
     "test_descoberta.py",
     "test_espiao.py",
     "test_ia.py",
@@ -6153,9 +6158,9 @@
    "finalidade": "editais de 5 dias do MPT-GO (todo dia) e habilitação da A.M.C.",
    "agrega": [],
    "alvos": [],
-   "motor_novo": "",
-   "situacao": "a construir",
-   "observacao": "",
+   "motor_novo": "mptgo-destinacao",
+   "situacao": "conforme",
+   "observacao": "criado pela orientação: a tabela dos editais da PRT 18 por POST na sessão da página; experimento real em 23/10: 30 editais com documento e 6 do RSS do MPT",
    "aprendizado_eldorado0": {
     "leituras": 76,
     "com_resultado": 58,

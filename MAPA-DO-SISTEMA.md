@@ -91,7 +91,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 42 | `config/motores_previstos.json` |  | em funcionamento |  |  | 0 |
 | 43 | `eldorado/motores/acesso/__init__.py` |  | pacote |  |  | 3 |
 | 44 | `eldorado/motores/acesso/escada.py` | A escada de acesso: do degrau mais leve ao mais forte, aprendendo por domínio qual degrau funciona. | em funcionamento | eventos | encaminhamento, pilotos, comandos, api, arquivo_web, leve, local, navegador, rotas_alternativas, motor, fonte_oficial, i | 3 |
-| 45 | `eldorado/motores/canal/__init__.py` |  | pacote |  |  | 11 |
+| 45 | `eldorado/motores/canal/__init__.py` |  | pacote |  |  | 12 |
 | 46 | `eldorado/motores/canal/achado.py` | achados completos | a construir |  |  | 0 |
 | 47 | `eldorado/motores/canal/estado.py` | O estado de cada motor: o seu aprendizado de uso próprio, num banco só dele (dados/motores/<id>.db, fora do Gi | em funcionamento |  | motor | 1 |
 | 48 | `eldorado/motores/descoberta/__init__.py` |  | pacote |  |  | 4 |
@@ -114,7 +114,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 65 | `eldorado/motores/acesso/rotas_alternativas.py` | Degraus 7 e 8, reservas desligadas até o teste real na criação: o Tor (IP diferente) e o leitor público de pág | desligado por desenho | escada, leve |  | 1 |
 | 66 | `eldorado/motores/descoberta/mapa_original.py` | O mapa do site ORIGINAL (titular, 23/10/2026): com o histórico do livro, ele tem um site de divulgação e um si | em funcionamento | estrutura_site, pistas | motor | 0 |
 | 67 | `eldorado/motores/canal/fabrica.py` | A fábrica de motores: executa a orientação de design (eldorado/motores/skills/criar-motor/SKILL.md). | em funcionamento | motor | comandos | 1 |
-| 68 | `eldorado/motores/canal/motor.py` | O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio. | em funcionamento | contratos, seguranca, api, arquivo_web, escada, leve, local, navegador, estado, arquivos_web, cadeia, dados_abertos, estrutura_site, fonte_oficial, mapa_original, metabusca, pistas, vigilancia, leitores, pdf | config/modulos.toml (cnpq-extensao); config/modulos.toml (do-goiania); config/modulos.toml (do-goias); config/modulos.to | 11 |
+| 68 | `eldorado/motores/canal/motor.py` | O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio. | em funcionamento | contratos, seguranca, api, arquivo_web, escada, leve, local, navegador, estado, arquivos_web, cadeia, dados_abertos, estrutura_site, fonte_oficial, mapa_original, metabusca, pistas, vigilancia, leitores, pdf | config/modulos.toml (cnpq-extensao); config/modulos.toml (do-goiania); config/modulos.toml (do-goias); config/modulos.to | 12 |
 | 69 | `eldorado/motores/descoberta/cadeia.py` | A leitura em cadeia (canivete suíço): a lista → cada item → o detalhe → o texto, sem código por fonte. | em funcionamento | atos, leitores | motor | 0 |
 | 70 | `eldorado/motores/leitura/compactado.py` | Arquivos ZIP, 7Z e RAR: abre e entrega cada arquivo interno ao leitor do seu tipo. | em funcionamento | leitores | leitores | 0 |
 | 71 | `eldorado/motores/leitura/documento.py` | Documentos DOCX (com cabeçalhos, rodapés e notas), ODT e PPTX (uma página por slide). | em funcionamento | leitores | leitores | 0 |
@@ -219,7 +219,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 120 | `.github/workflows/passagem.yml` | passagens no horário | substituído por .github/workflows/eldorado.yml (funcionamento permanente) |  |  | 0 |
 | 121 | `.github/workflows/pilotos.yml` | voos com sucesso | substituído por .github/workflows/eldorado.yml (os pilotos rodam dentro do funcionamento permanente) |  |  | 0 |
 | 122 | `config/motores_previstos.toml` | o sistema roda sem intervenção | a construir |  |  | 0 |
-| 123 | `eldorado/__init__.py` |  | pacote |  |  | 44 |
+| 123 | `eldorado/__init__.py` |  | pacote |  |  | 45 |
 | 124 | `eldorado/base/__init__.py` |  | pacote |  |  | 35 |
 | 125 | `eldorado/base/cartorio/__init__.py` |  | pacote |  |  | 7 |
 | 126 | `eldorado/base/cartorio/site_oficial.py` | O site oficial: a oportunidade se encontra NA FONTE (titular, 14/10/2026). | a construir |  |  | 0 |
@@ -229,7 +229,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 130 | `eldorado/base/especial/__init__.py` |  | pacote |  |  | 1 |
 | 131 | `eldorado/base/especial/registro.py` | O registro da base Especial (as empresas e os incentivos): o "cartório" do banco especial.db. | em funcionamento | eventos | regencia | 1 |
 | 132 | `eldorado/base/investigacao/investigacao.py` | livros investigados e itens comprovados por livro | substituído por eldorado/base/cerebro/encaminhamento.py e eldorado/motores/pilotos/interceptador.py |  |  | 0 |
-| 133 | `eldorado/motores/__init__.py` |  | pacote |  |  | 19 |
+| 133 | `eldorado/motores/__init__.py` |  | pacote |  |  | 20 |
 
 ## Os 47 motores (o estudo de reorganização da titular: 45 regulares e 2 pilotos)
 
@@ -253,7 +253,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 16 | JUD | dj-trf1-go | Diário da Justiça Federal — Seção Judiciária de Goiás | 0 | 0 | — | a construir |  |
 | 17 | JUD | judiciario-cnj | CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024) | 1 | 1 | — | a construir |  |
 | 18 | JUD | mpgo-destinacao | MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos) | 0 | 1 | — | a construir |  |
-| 19 | JUD | mptgo-destinacao | MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região) | 0 | 0 | — | a construir |  |
+| 19 | JUD | mptgo-destinacao | MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região) | 0 | 0 | mptgo-destinacao | conforme | criado pela orientação: a tabela dos editais da PRT 18 por POST na sessão da página; experimento real em 23/10: 30 editais com documento e 6 do RSS do MPT |
 | 20 | JUD | mpu-destinacao | MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD) | 1 | 2 | — | a construir |  |
 | 21 | LEG | camara-goiania-pl | Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos | 0 | 4 | — | a construir |  |
 | 22 | LEG | alego-pl | Assembleia Legislativa de Goiás — proposições | 0 | 2 | — | a construir |  |
