@@ -195,6 +195,10 @@ Para tabelas em PDF, o elo `linhas` reconhece cada registro por um padrão com g
   de reconstruir. Prefira o endereço de busca confirmado na sondagem (o CNJ responde diferente em /search/ e em /?s=).
   Vetos de palavra curta casam dentro de outras ("curso" em "recursos"): use a palavra inteira, `(^| )curso( |$)`.
   Numa string comum do TOML ("…"), a barra invertida é escape: use classes como `[a-z]*` no lugar de `\w*`.
+- **outros-agregadores**: páginas avulsas de editais (achadas uma a uma) não são canal: viram livros, e o site original
+  é vigiado pelo mapa do site. Agregador costuma misturar licitações com oportunidades: procure a área própria de
+  oportunidades. No teste local, páginas de domínios diferentes com o mesmo caminho (todas as "/") se sobrepõem no
+  servidor de teste: leia o arquivo gravado direto, ou use o experimento real.
 - **Teste com página real**: página montada à mão costuma ser "HTML quase vazio", que a escada trata como bloqueio; use a
   página real gravada, alterando o mínimo.
 

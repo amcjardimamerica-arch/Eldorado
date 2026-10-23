@@ -279,7 +279,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 40 | POR | site-fundo-brasil | Fundo Brasil de Direitos Humanos — editais de direitos humanos | 0 | 0 | site-fundo-brasil | conforme |  |
 | 41 | POR | site-undef | UNDEF — Fundo das Nações Unidas para a Democracia — chamadas anuais para a sociedade civil | 0 | 0 | — | a construir |  |
 | 42 | POR | site-brazilfoundation | BrazilFoundation — editais de apoio a organizações brasileiras | 0 | 0 | — | a construir |  |
-| 43 | POR | outros-agregadores | Outros agregadores e motores de busca | 10 | 3 | — | a construir |  |
+| 43 | POR | outros-agregadores | Outros agregadores e motores de busca | 10 | 3 | outros-agregadores | conforme | criado pela orientação: a área de oportunidades do Editais do Brasil, a Jornada Social e a busca aberta (metabusca); experimento: 41 achados (Cultura Viva, Biblioteca Comunitária, MinC) |
 | 44 | POR | novo-fundacoes-institutos | Fundações e institutos (sites próprios) | 2 | 24 | — | a construir |  |
 | 45 | POR | novo-internacional | Organismos e fundações internacionais | 3 | 21 | — | a construir |  |
 | 46 | IA | piloto-aberto | Piloto - Espião — busca aberta no terceiro setor | 1 | 0 | espiao | conforme |  |
