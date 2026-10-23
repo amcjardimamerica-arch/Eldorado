@@ -22,7 +22,9 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-      - run: pip install -e ".[leitura,acesso,descoberta,metabusca]"
+      - run: pip install -e ".[leitura,acesso,descoberta,metabusca,navegador]"
+      - name: O navegador do degrau 4 (Patchright, para as páginas que só existem com script)
+        run: patchright install --with-deps chromium || echo "::warning::o navegador não instalou; o degrau 4 fica de fora"
       - name: Experimentar
         env:
           MOTORES: ${{ inputs.motor }}
