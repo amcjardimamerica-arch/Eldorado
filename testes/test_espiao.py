@@ -58,7 +58,11 @@ def test_bloqueio_e_ociosidade(tmp_path, bancos):
     assert e.missao()["bloqueada"] and e.bloqueado()
     achados, rel = missoes(tmp_path, bancos["biblioteca"], None, ociosidade=True, consultar=falha, ler=lambda u: None)
     assert achados == [] and rel["decisao"].startswith("bloqueio")
-    achados, rel = missoes(tmp_path / "outro", bancos["biblioteca"], None, ociosidade=False, consultar=falha, ler=lambda u: None)
+    # o mínimo garantido (23/10/2026): sem missão recente, uma missão mesmo sem ociosidade; depois dela, volta a esperar
+    ok = lambda q: (PISTAS, ["ddgs: 7 pista(s)"])  # noqa: E731
+    achados, rel = missoes(tmp_path / "outro", bancos["biblioteca"], None, ociosidade=False, consultar=ok, ler=lambda u: PAGINAS.get(u))
+    assert rel["decisao"].startswith("mínimo garantido: 1 missão")
+    achados, rel = missoes(tmp_path / "outro", bancos["biblioteca"], None, ociosidade=False, consultar=ok, ler=lambda u: PAGINAS.get(u))
     assert achados == [] and rel["decisao"].startswith("sem ociosidade")
     assert dose({"missoes": 0}) == 2 and dose({"missoes": 5, "com_resultado": 1}) == 4 and dose({"missoes": 25, "com_resultado": 0}) == 1
 

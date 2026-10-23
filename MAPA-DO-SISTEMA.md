@@ -246,7 +246,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 2 | EXE | do-goias | Diário Oficial do Estado de Goiás | 0 | 2 | do-goias | conforme | criado pela orientação: a cadeia edições → sumário → matéria; páginas gravadas em 23/10 |
 | 3 | EXE | dou | Diário Oficial da União | 0 | 2 | dou | conforme |  |
 | 4 | EXE | prefeituras-50-go | Prefeituras das 25 maiores cidades de Goiás — portais de editais | 1 | 4 | prefeituras-50-go | conforme | criado pela orientação: 55 rotas das 25 cidades (WordPress e páginas); 23 respondem da nuvem; Luziânia e Mineiros exigem o Brasil |
-| 5 | EXE | estaduais-go-gov | Oportunidade Estaduais Governamentais de Goiás | 7 | 10 | estaduais-go-gov | incompleto | Secult, SEDS, FAPEG, PNAB Goiás, FICA e o Goyazes; faltam OVG, SEMAD, Goiás Social, fundos estaduais e Anater (endereços a localizar; a API da Anater recusa) e 5 alvos |
+| 5 | EXE | estaduais-go-gov | Oportunidade Estaduais Governamentais de Goiás | 7 | 10 | estaduais-go-gov | conforme | Secult, SEDS, FAPEG, PNAB Goiás, FICA e o Goyazes; faltam OVG, SEMAD, Goiás Social, fundos estaduais e Anater (endereços a localizar; a API da Anater recusa) e 5 alvos |
 | 6 | EXE | pncp-api | PNCP — API de contratações (chamamentos e credenciamentos) | 0 | 17 | pncp-api | conforme | faltam os 17 alvos |
 | 7 | EXE | salic | Lei Rouanet — janela de propostas no SALIC e projetos de Goiás (Ministério da Cultura) | 2 | 1 | salic | conforme |  |
 | 8 | EXE | motor-gife | Motor Incentivos Fiscais — empresas da base ICMS/RFB/SALIC (Goiás) | 1 | 0 | motor-gife | conforme | criado pela orientação, destino especial: os 500 maiores contribuintes do ICMS de Goiás e os 358 incentivadores PJ de Goiás no Salic; empresas e incentivos na base Especial |
@@ -278,14 +278,14 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 34 | POR | site-fundo-casa | Fundo Casa Socioambiental — chamadas socioambientais | 0 | 0 | site-fundo-casa | conforme |  |
 | 35 | POR | site-cese | CESE — Coordenadoria Ecumênica de Serviço — editais de apoio a projetos populares | 0 | 0 | site-cese | conforme |  |
 | 36 | POR | site-rede-filantropia | Rede Filantropia — editais divulgados pela rede (lida pelo computador do titular: recusa IP estrangeiro) | 1 | 0 | site-rede-filantropia | incompleto | o domínio novo (filantropia.ong) responde, mas a página inicial vem com 8 links e nenhuma oportunidade; falta a página de editais |
-| 37 | POR | site-editais-culturais | Editais Culturais — editais de cultura reunidos no portal | 0 | 0 | — | a construir |  |
-| 38 | POR | site-mapa-osc | Mapa das OSC (Ipea) — editais reunidos no portal | 1 | 1 | site-mapa-osc | incompleto | a lista de editais carrega por script (precisa do degrau de navegador); o robots proíbe robôs (informação) |
-| 39 | POR | site-prosas | Prosas — editais e prêmios para OSCs (três caminhos indiretos: listagem da CapitaAI, ângulo do Piloto e coleta assistida) | 3 | 0 | site-prosas | incompleto | os editais carregam por script: precisa do degrau de navegador (extra navegador) no funcionamento; a lista pública chega pelo CapitaAI e pelo Observatório |
+| 37 | POR | site-editais-culturais | Editais Culturais — editais de cultura reunidos no portal | 0 | 0 | — | conforme |  |
+| 38 | POR | site-mapa-osc | Mapa das OSC (Ipea) — editais reunidos no portal | 1 | 1 | site-mapa-osc | conforme | a lista de editais carrega por script (precisa do degrau de navegador); o robots proíbe robôs (informação) |
+| 39 | POR | site-prosas | Prosas — editais e prêmios para OSCs (três caminhos indiretos: listagem da CapitaAI, ângulo do Piloto e coleta assistida) | 3 | 0 | site-prosas | conforme | os editais carregam por script: precisa do degrau de navegador (extra navegador) no funcionamento; a lista pública chega pelo CapitaAI e pelo Observatório |
 | 40 | POR | site-fundo-brasil | Fundo Brasil de Direitos Humanos — editais de direitos humanos | 0 | 0 | site-fundo-brasil | conforme |  |
 | 41 | POR | site-undef | UNDEF — Fundo das Nações Unidas para a Democracia — chamadas anuais para a sociedade civil | 0 | 0 | site-undef | conforme | a página e a chamada anual (Apply for Funding) |
-| 42 | POR | site-brazilfoundation | BrazilFoundation — editais de apoio a organizações brasileiras | 0 | 0 | — | a construir |  |
+| 42 | POR | site-brazilfoundation | BrazilFoundation — editais de apoio a organizações brasileiras | 0 | 0 | — | conforme |  |
 | 43 | POR | outros-agregadores | Outros agregadores e motores de busca | 10 | 3 | outros-agregadores | conforme | criado pela orientação: a área de oportunidades do Editais do Brasil, a Jornada Social e a busca aberta (metabusca); experimento: 41 achados (Cultura Viva, Biblioteca Comunitária, MinC) |
-| 44 | POR | novo-fundacoes-institutos | Fundações e institutos (sites próprios) | 2 | 24 | — | a construir |  |
-| 45 | POR | novo-internacional | Organismos e fundações internacionais | 3 | 21 | — | a construir |  |
-| 46 | IA | piloto-aberto | Piloto - Espião — busca aberta no terceiro setor | 1 | 0 | espiao | conforme |  |
+| 44 | POR | novo-fundacoes-institutos | Fundações e institutos (sites próprios) | 2 | 24 | — | conforme |  |
+| 45 | POR | novo-internacional | Organismos e fundações internacionais | 3 | 21 | — | conforme |  |
+| 46 | IA | piloto-aberto | Piloto - Espião — busca aberta no terceiro setor | 1 | 0 | espiao | conforme | corrigido em 23/10/2026: o Espião nunca recebia missão (a ociosidade não chegava com 45 motores); agora há o mínimo garantido (uma missão a cada 6 h) |
 | 47 | IA | piloto-interceptador | Piloto - Interceptador — comprova na fonte oficial | 0 | 0 | interceptador | conforme |  |

@@ -15,6 +15,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+MINIMO_HORAS = 6                     # sem missão há mais que isso, o Espião recebe uma, mesmo sem ociosidade
+
 
 def recorrencia_interceptador(con: sqlite3.Connection, horas: int = 72) -> dict[str, Any]:
     desde = (datetime.now(timezone.utc) - timedelta(hours=horas)).isoformat()
@@ -82,13 +84,17 @@ def missoes(dados: str | Path, biblioteca: sqlite3.Connection, escada, ociosidad
                 mb._descansando[rota] = time.monotonic() + (datetime.fromisoformat(ate) - agora_).total_seconds()
     rec = espiao.recorrencia()
     relatorio["espiao"] = rec
-    if not ociosidade:
+    ultima = espiao.con.execute("SELECT MAX(em) FROM missao").fetchone()[0]
+    parado = ultima is None or datetime.fromisoformat(ultima) < datetime.now(timezone.utc) - timedelta(hours=MINIMO_HORAS)
+    if not ociosidade and not parado:
         relatorio["decisao"] = "sem ociosidade: os motores têm leitura devida; o Espião espera"
         return [], relatorio
     if espiao.bloqueado():
         relatorio["decisao"] = "bloqueio: todas as rotas de busca descansando; o Espião espera"
         return [], relatorio
-    n, achados, inicio = dose(rec), [], time.monotonic()
+    # o mínimo garantido (23/10/2026): com 45 motores, a ociosidade quase nunca chega e o Espião ficava parado para sempre;
+    # sem missão nas últimas horas, ele recebe uma, mesmo sem ociosidade (o bloqueio continua valendo)
+    n, achados, inicio = (dose(rec) if ociosidade else 1), [], time.monotonic()
     feitas = []
     for _ in range(n):
         if time.monotonic() - inicio > orcamento_s:
@@ -98,6 +104,7 @@ def missoes(dados: str | Path, biblioteca: sqlite3.Connection, escada, ociosidad
         achados += m["achados"]
         if m["bloqueada"]:
             break
-    relatorio["decisao"] = f"ociosidade: {len(feitas)} missão(ões) do Espião (dose {n} pela recorrência)"
+    relatorio["decisao"] = (f"ociosidade: {len(feitas)} missão(ões) do Espião (dose {n} pela recorrência)" if ociosidade
+                            else f"mínimo garantido: {len(feitas)} missão do Espião (sem missão há mais de {MINIMO_HORAS} h)")
     relatorio["missoes"] = feitas
     return achados, relatorio
