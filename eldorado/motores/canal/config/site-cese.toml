@@ -14,6 +14,16 @@ nomes_anteriores = []
 nome = "CESE — editais"
 url = "https://cese.org.br/wp-json/wp/v2/edital"
 tipo = "wordpress"
+exige_brasil = true                 # a nuvem recebe 403 (sondagem de 23/10/2026)
+
+
+# a rota alternativa (sondagem de 23/10/2026): o mapa do site, outro tipo de rota no mesmo órgão (o léxico filtra pelos endereços)
+[[fonte]]
+nome = "mapa do site (cese.org.br)"
+url = "https://cese.org.br/sitemap_index.xml"
+tipo = "mapa"
+papel = "alternativa"
+exige_brasil = true                 # a nuvem recebe 403 neste domínio (23/10/2026)
 
 [acesso]
 degraus = ["api", "leve"]
