@@ -51,11 +51,14 @@ def wordpress(buscar: Buscar, api: str, busca: str | None = None, por_pagina: in
                   resumo=_texto(i.get("excerpt"))[:500]) for i in itens if i.get("link")]
 
 
-def links(buscar: Buscar, url: str, mesmo_dominio: bool = True) -> list[Pista]:
-    """Os links da página (com o texto de cada um), pelo leitor de páginas."""
+def links(buscar: Buscar, url: str, mesmo_dominio: bool = True, seletor: str | None = None) -> list[Pista]:
+    """Os links da página (com o texto de cada um), pelo leitor de páginas; com seletor, só os da região do conteúdo
+    (em portais grandes, como o gov.br, os menus trazem centenas de links que não são da fonte)."""
     from selectolax.lexbor import LexborHTMLParser
     r = buscar(url)
     arvore = LexborHTMLParser(r.conteudo.decode("utf-8", errors="replace"))
+    if seletor and arvore.css_first(seletor) is not None:
+        arvore = arvore.css_first(seletor)
     dom = urlsplit(url).hostname
     saida, vistos = [], set()
     for a in arvore.css("a[href]"):

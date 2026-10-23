@@ -404,7 +404,7 @@ class MotorCanal(Motor):
             ass = vigilancia.assinatura(r.conteudo, f.seletor)
             if not vigilancia.mudou(self.estado.assinatura(f.nome), ass):
                 return None
-            pistas = estrutura_site.links(lambda _u, r=r: r, f.url)
+            pistas = estrutura_site.links(lambda _u, r=r: r, f.url, seletor=f.seletor)
             self.estado.gravar_assinatura(f.nome, ass, _agora())
             return pistas
         if f.tipo == "feed":
