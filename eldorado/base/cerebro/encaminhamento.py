@@ -33,8 +33,8 @@ def ja_pesquisado(con: sqlite3.Connection, livro: str, motor: str) -> bool:
 
 
 class Encaminhamento:
-    def __init__(self, biblioteca: sqlite3.Connection, diario, registro, interceptador):
-        self.con, self.diario, self.registro, self.interceptador = biblioteca, diario, registro, interceptador
+    def __init__(self, biblioteca: sqlite3.Connection, diario, registro, interceptador, rede=None):
+        self.con, self.diario, self.registro, self.interceptador, self.rede = biblioteca, diario, registro, interceptador, rede
         self.passaporte = Passaporte(biblioteca, diario, maximo=10)
 
     def _entregar(self, a, quem: str) -> dict[str, Any]:
@@ -48,15 +48,25 @@ class Encaminhamento:
 
     def encaminhar(self, lv) -> tuple[str, dict[str, Any] | None]:
         """Uma decisão da rede para um livro: quem age agora, e a informação nova (se veio)."""
-        for motor in motores_do_livro(self.con, lv.id):
-            if motor in self.registro.ids() and not ja_pesquisado(self.con, lv.id, motor):
+        from ...motores.pilotos.interceptador import ORDEM
+        vivo = {"link_oficial": lv.link_oficial, "estrela": lv.estrela, "faltam": lv.faltam}
+        motores = [m for m in motores_do_livro(self.con, lv.id) if m in self.registro.ids() and not ja_pesquisado(self.con, lv.id, m)]
+        abordagens = [n for n in ORDEM[lv.balcao] if n not in lv.tentadas]
+        if self.rede is not None:                                   # a rede escolhe a ação de maior nota; a ordem do balcão desempata
+            pos = {n: i for i, n in enumerate(ORDEM[lv.balcao])}
+            abordagens.sort(key=lambda n: (-round(self.rede.nota_acao(f"abordagem {n}", vivo), 2), pos[n]))
+            if motores and abordagens and self.rede.nota_acao("motor", vivo) < self.rede.nota_acao(f"abordagem {abordagens[0]}", vivo) - 0.1:
+                motores = []                                        # a rede prefere o Interceptador agora (o motor fica para depois)
+        for motor in motores:
+            if True:
                 m = self.registro.obter(motor)
                 a = m.pesquisar({"id": lv.id, "titulo": lv.titulo, "link_oficial": lv.link_oficial, "link_divulgacao": lv.link_divulgacao}) \
                     if hasattr(m, "pesquisar") else None
                 self.diario.emitir("tentativa.registrada", "rede", {"livro_id": lv.id, "fase": "preparacao", "ferramenta": f"motor {motor}", "numero": 1,
-                                                                    "em": agora(), "resultado": json.dumps({"trouxe": bool(a)}), "proxima_em": None})
+                                                                    "em": agora(), "resultado": json.dumps({"trouxe": bool(a), "faltam": lv.faltam}),
+                                                                    "proxima_em": None})
                 return f"motor {motor}", (self._entregar(a, motor) if a else None)
-        r = self.interceptador.investigar(lv)
+        r = self.interceptador.investigar(lv, abordagens if self.rede is not None else None)
         if r["esgotado"]:
             self.passaporte._tentativas[(lv.id, "preparacao", "rede")] = 0
             self.passaporte.mover(lv.id, "analise externa", "fase 5: a rede esgotou o motor da oportunidade e as abordagens do Interceptador")
@@ -66,7 +76,12 @@ class Encaminhamento:
     def andar(self, orcamento_s: float, hoje: str | None = None) -> tuple[list[dict[str, Any]], dict[str, int]]:
         from ...motores.pilotos.interceptador import fila
         inicio, achados, contagem = time.monotonic(), [], {}
-        for lv in fila(self.con, hoje or date.today().isoformat()):
+        livros = fila(self.con, hoje or date.today().isoformat())
+        if self.rede is not None:                                   # dentro da mesma urgência, os mais promissores primeiro
+            hj = hoje or date.today().isoformat()
+            livros.sort(key=lambda x: (0 if (x.fim and x.fim >= hj) else 1, x.fim or "9999",
+                                       -round(self.rede.nota_oportunidade({"titulo": x.titulo, "orgao": x.orgao, "link_oficial": x.link_oficial}), 2)))
+        for lv in livros:
             if time.monotonic() - inicio > orcamento_s:
                 break
             quem, a = self.encaminhar(lv)
@@ -89,7 +104,13 @@ def no_encaminhar(itens: list[dict[str, Any]], parametros: dict[str, Any], conte
     try:
         escada = Escada([DegrauAPI(), DegrauLeve()], intervalo_padrao=float(parametros.get("intervalo_s", 1.0)), tentativas=1, tempo_limite=25)
         registro = carregar_registro(parametros.get("modulos", "config/modulos.toml"), contexto.diario)
-        achados, contagem = Encaminhamento(con, contexto.diario, registro, Interceptador(con, contexto.diario, escada)).andar(
+        from .rede import RedeNeural
+        cer = Path(parametros.get("dados", "dados")) / "cerebro.db"
+        c = sqlite3.connect(f"file:{cer}?mode=ro", uri=True) if cer.exists() else None
+        rede = RedeNeural.treinar(con, c) if c is not None else None
+        if c is not None:
+            c.close()
+        achados, contagem = Encaminhamento(con, contexto.diario, registro, Interceptador(con, contexto.diario, escada), rede).andar(
             float(parametros.get("orcamento_s", 300)))
     finally:
         con.close()

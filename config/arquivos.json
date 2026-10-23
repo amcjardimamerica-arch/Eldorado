@@ -128,6 +128,7 @@
     "test_motores_api.py",
     "test_painel.py",
     "test_passagem_real.py",
+    "test_rede_neural.py",
     "test_seguranca.py"
    ],
    "situacao": "pacote",
@@ -437,7 +438,8 @@
    "testes": [
     "test_cerebro.py",
     "test_interceptador.py",
-    "test_motores_api.py"
+    "test_motores_api.py",
+    "test_rede_neural.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "02 Núcleo: contratos, eventos e gravação",
@@ -877,7 +879,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 153,
+   "linhas": 161,
    "situacao": "em funcionamento",
    "ordem": 33
   },
@@ -939,7 +941,7 @@
    "acionado_por": [
     "passagem, nó 10 «aplicar_rede»",
     "passagem, nó 12 «aplicar_validacao»",
-    "passagem, nó 17 «aplicar_final»",
+    "passagem, nó 18 «aplicar_final»",
     "passagem, nó 4 «aplicar_coleta»",
     "passagem, nó 6 «aplicar_cartorio»"
    ],
@@ -1039,7 +1041,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/decisao.py",
-   "linhas": 80,
+   "linhas": 86,
    "finalidade": "A decisão do Cérebro: a cada batimento, quais motores acionar, conforme a necessidade (titular, 22/10/2026).",
    "depende_de": [],
    "eventos": [],
@@ -1062,11 +1064,12 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/regencia.py",
-   "linhas": 204,
+   "linhas": 214,
    "finalidade": "A Regência: planeja a passagem, aciona os motores e autoriza cada passagem de livro.",
    "depende_de": [
     "eldorado/base/cerebro/decisao.py",
     "eldorado/base/cerebro/governador.py",
+    "eldorado/base/cerebro/rede.py",
     "eldorado/base/fluxo/agenda.py",
     "eldorado/base/nucleo/contratos.py",
     "eldorado/base/nucleo/eventos.py",
@@ -1110,6 +1113,7 @@
    "ligacoes": [
     "eldorado/base/cerebro/decisao.py",
     "eldorado/base/cerebro/governador.py",
+    "eldorado/base/cerebro/rede.py",
     "eldorado/base/fluxo/agenda.py",
     "eldorado/base/nucleo/contratos.py",
     "eldorado/base/nucleo/eventos.py",
@@ -2458,7 +2462,8 @@
    "acionado_por": [],
    "usado_por": [],
    "testes": [
-    "test_interceptador.py"
+    "test_interceptador.py",
+    "test_rede_neural.py"
    ],
    "situacao": "pacote",
    "etapa": "10 Cartório · etapa 3 (a rede neural encaminha)",
@@ -2515,7 +2520,8 @@
     "eldorado/base/cerebro/encaminhamento.py"
    ],
    "testes": [
-    "test_interceptador.py"
+    "test_interceptador.py",
+    "test_rede_neural.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "10 Cartório · etapa 3 (a rede neural encaminha)",
@@ -2539,10 +2545,11 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/encaminhamento.py",
-   "linhas": 96,
+   "linhas": 117,
    "finalidade": "A rede neural na fase 3 do Cartório (titular, 22/10/2026): quem age é a rede, não o Cartório.",
    "depende_de": [
     "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/cerebro/rede.py",
     "eldorado/base/cerebro/regencia.py",
     "eldorado/base/nucleo/eventos.py",
     "eldorado/base/nucleo/registro.py",
@@ -2562,7 +2569,8 @@
    ],
    "usado_por": [],
    "testes": [
-    "test_interceptador.py"
+    "test_interceptador.py",
+    "test_rede_neural.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "10 Cartório · etapa 3 (a rede neural encaminha)",
@@ -2570,6 +2578,7 @@
    "componente": "Cartório · etapa 3 (a rede neural encaminha)",
    "ligacoes": [
     "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/cerebro/rede.py",
     "eldorado/base/cerebro/regencia.py",
     "eldorado/base/nucleo/eventos.py",
     "eldorado/base/nucleo/registro.py",
@@ -2738,7 +2747,7 @@
     "aprendizado.usado"
    ],
    "acionado_por": [
-    "passagem, nó 14 «aprender»"
+    "passagem, nó 15 «aprender»"
    ],
    "usado_por": [],
    "testes": [
@@ -2767,7 +2776,7 @@
     "cobertura.dia"
    ],
    "acionado_por": [
-    "passagem, nó 15 «completude»"
+    "passagem, nó 16 «completude»"
    ],
    "usado_por": [],
    "testes": [
@@ -2818,7 +2827,7 @@
     "medicao.registrada"
    ],
    "acionado_por": [
-    "passagem, nó 16 «medir»"
+    "passagem, nó 17 «medir»"
    ],
    "usado_por": [],
    "testes": [
@@ -2838,7 +2847,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/rede.py",
-   "linhas": 77,
+   "linhas": 210,
    "finalidade": "A rede neural única, de aprendizado contínuo (River): aprende a cada veredito e dá as notas.",
    "depende_de": [
     "eldorado/base/nucleo/eventos.py"
@@ -2846,12 +2855,18 @@
    "eventos": [
     "modelo.treinado"
    ],
-   "acionado_por": [],
-   "usado_por": [],
-   "testes": [
-    "test_cerebro.py"
+   "acionado_por": [
+    "passagem, nó 14 «rede»"
    ],
-   "situacao": "desligado (ninguém o usa nem o aciona)",
+   "usado_por": [
+    "eldorado/base/cerebro/encaminhamento.py",
+    "eldorado/base/cerebro/regencia.py"
+   ],
+   "testes": [
+    "test_cerebro.py",
+    "test_rede_neural.py"
+   ],
+   "situacao": "em funcionamento",
    "etapa": "13 Aprender e medir",
    "parte": "BASE",
    "componente": "Cérebro: Regência e Pertinência e aprendizado",
@@ -3207,6 +3222,7 @@
     "test_painel.py",
     "test_passagem.py",
     "test_passagem_real.py",
+    "test_rede_neural.py",
     "test_seguranca.py"
    ],
    "situacao": "pacote",
@@ -3255,6 +3271,7 @@
     "test_painel.py",
     "test_passagem.py",
     "test_passagem_real.py",
+    "test_rede_neural.py",
     "test_seguranca.py"
    ],
    "situacao": "pacote",
@@ -3312,6 +3329,7 @@
     "test_painel.py",
     "test_passagem.py",
     "test_passagem_real.py",
+    "test_rede_neural.py",
     "test_seguranca.py"
    ],
    "situacao": "pacote",
@@ -3360,6 +3378,7 @@
     "test_leitura.py",
     "test_motor_canal.py",
     "test_motores_api.py",
+    "test_rede_neural.py",
     "test_seguranca.py"
    ],
    "situacao": "pacote",

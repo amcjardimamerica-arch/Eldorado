@@ -12,6 +12,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timedelta
+from typing import Callable
 from zoneinfo import ZoneInfo
 
 FUSO = ZoneInfo("America/Sao_Paulo")
@@ -47,13 +48,16 @@ def rendimento(motor: str, historico: list[Execucao]) -> float:
 
 
 def decidir(agora: datetime, motores: list[str], historico: list[Execucao], ponto_de_partida: dict[str, set[int]],
-            maximo_tentativas: int = 3) -> list[Decisao]:
+            maximo_tentativas: int = 3, nota: "Callable[[str, int, int], float] | None" = None, limiar: float = 0.6) -> list[Decisao]:
+    """nota: a rede neural ("este motor vai encontrar algo agora?"); entra na prioridade e aciona de novo o motor quando
+    a rede prevê achados com nota alta e a última leitura do dia tem mais de 2 horas."""
     local = agora.astimezone(FUSO)
     hoje = local.date()
     saida: list[Decisao] = []
     for m in motores:
         do_dia = sorted((e for e in historico if e.motor == m and e.inicio.astimezone(FUSO).date() == hoje), key=lambda e: e.inicio)
-        r = rendimento(m, historico)
+        n_rede = nota(m, local.hour, local.weekday()) if nota else 0.5
+        r = rendimento(m, historico) + 10 * n_rede
         if not do_dia:
             saida.append(Decisao(m, "primeira leitura do dia", 1000 + r))
             continue
@@ -65,6 +69,8 @@ def decidir(agora: datetime, motores: list[str], historico: list[Execucao], pont
         pendentes = sorted(h for h in horas_produtivas(m, historico, ponto_de_partida.get(m, set()), agora) if h_ultima < h <= local.hour)
         if pendentes:
             saida.append(Decisao(m, f"a fonte costuma publicar às {pendentes[-1]}h (aprendido do histórico); última leitura às {h_ultima}h", 100 + r))
+        elif nota and n_rede >= limiar and agora - ultima.inicio >= timedelta(hours=2):
+            saida.append(Decisao(m, f"a rede neural prevê achados agora (nota {n_rede:.2f}); última leitura às {h_ultima}h", 50 + r))
     return sorted(saida, key=lambda d: -d.prioridade)
 
 

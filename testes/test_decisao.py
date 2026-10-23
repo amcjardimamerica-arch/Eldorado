@@ -44,3 +44,11 @@ def test_proxima_acao_prevista():
     hist = [Execucao("dou", em(d, 20), 9) for d in range(10, 16)]
     assert proxima(em(22, 14), ["dou"], hist, {}).astimezone(BR).hour == 20                        # a hora aprendida
     assert proxima(em(22, 21), ["dou"], hist, {}).astimezone(BR).date().day == 23                   # passou: amanhã cedo
+
+
+def test_a_rede_aciona_de_novo_quando_preve_achados():
+    hist = [Execucao("dou", em(22, 6), 3)]
+    assert decidir(em(22, 9), ["dou"], hist, {}, nota=lambda m, h, d: 0.2) == []                        # nota baixa: sem necessidade
+    d = decidir(em(22, 9), ["dou"], hist, {}, nota=lambda m, h, d: 0.8)
+    assert d and d[0].motivo.startswith("a rede neural prevê achados agora (nota 0.80)")
+    assert decidir(em(22, 7), ["dou"], hist, {}, nota=lambda m, h, d: 0.9) == []                        # leitura recente (< 2 h)

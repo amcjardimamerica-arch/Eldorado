@@ -210,10 +210,10 @@ class Interceptador:
         return [u for u in self.metabusca(f"site:{dom} {lv.numero or ''} {lv.titulo[:80]}") if urlsplit(u).hostname == dom][:4]
 
     # ------------------------------------------------------------------ uma investigação
-    def investigar(self, lv: Livro) -> dict[str, Any]:
+    def investigar(self, lv: Livro, ordem: list[int] | None = None) -> dict[str, Any]:
         """Uma investigação: a primeira abordagem da ordem do balcão ainda não tentada e com material. Entrega um achado
         para o livro (o Cartório valida na fase 4); sem nenhuma abordagem restante, avisa que esgotou."""
-        for n in ORDEM[lv.balcao]:
+        for n in ordem or ORDEM[lv.balcao]:
             if n in lv.tentadas:
                 continue
             urls = getattr(self, f"_a{n}")(lv)
@@ -222,7 +222,7 @@ class Interceptador:
             achado = self._achado(lv, n, urls)
             self.diario.emitir("tentativa.registrada", "interceptador", {
                 "livro_id": lv.id, "fase": "preparacao", "ferramenta": f"abordagem {n}", "numero": 1, "em": agora(),
-                "resultado": json.dumps({"abordagem": ABORDAGENS[n], "balcao": lv.balcao, "enderecos": len(urls),
+                "resultado": json.dumps({"abordagem": ABORDAGENS[n], "balcao": lv.balcao, "enderecos": len(urls), "faltam": lv.faltam,
                                          "documentos": len((achado.documento or {}).get("paginas") or []) if achado else 0}, ensure_ascii=False),
                 "proxima_em": None})
             lv.tentadas.add(n)

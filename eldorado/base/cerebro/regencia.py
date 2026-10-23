@@ -188,7 +188,17 @@ def _decidir(quando: datetime, motores: list[str], parametros: dict[str, Any]) -
         import tomllib
         for mod in tomllib.loads(agenda.read_text(encoding="utf-8")).get("modulo", []):
             ponto[mod["id"]] = {int(h.split(":")[0]) for h in mod.get("horarios", [])}
-    return decidir(quando, list(motores), historico, ponto)
+    nota = None
+    if (dados / "biblioteca.db").exists() and (dados / "cerebro.db").exists():
+        from .rede import RedeNeural
+        b = sqlite3.connect(f"file:{dados / 'biblioteca.db'}?mode=ro", uri=True)
+        c = sqlite3.connect(f"file:{dados / 'cerebro.db'}?mode=ro", uri=True)
+        try:
+            nota = RedeNeural.treinar(b, c).nota_motor                  # a rede neural reaprende e dá a nota de cada motor
+        finally:
+            b.close()
+            c.close()
+    return decidir(quando, list(motores), historico, ponto, nota=nota)
 
 
 def no_acionar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:

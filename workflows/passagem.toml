@@ -77,6 +77,11 @@ tipo = "eldorado.base.cartorio.analise_externa:no_analise_externa"
 parametros = { dados = "dados", pasta = "verificacao" }
 
 [[no]]
+id = "rede"
+tipo = "eldorado.base.cerebro.rede:no_rede"
+parametros = { dados = "dados" }
+
+[[no]]
 id = "aprender"
 tipo = "eldorado.base.cerebro.aprendizado:no_aprendizado"
 parametros = { dados = "dados" }
@@ -141,6 +146,9 @@ de = "analise_externa"
 para = "aplicar_validacao"
 [[conexao]]
 de = "aplicar_validacao"
+para = "rede"
+[[conexao]]
+de = "rede"
 para = "aprender"
 [[conexao]]
 de = "aprender"
