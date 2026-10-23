@@ -307,8 +307,11 @@ def missao(config: Path = CONFIG, quantas: int = 1, anotar: bool = typer.Option(
             typer.echo(f"::notice title=Achado do Espião::{a.titulo[:200]} <{a.link_divulgacao}>")
 
 
+PASTA_GRAVAR = typer.Option(..., help="onde gravar (testes/paginas/<motor>)")
+
+
 @app.command()
-def gravar(urls: list[str], pasta: Path = typer.Option(..., help="onde gravar (testes/paginas/<motor>)")):
+def gravar(urls: list[str], pasta: Path = PASTA_GRAVAR):
     """Grava as respostas reais inteiras (para conhecer a fonte e para o teste nas páginas gravadas)."""
     import hashlib
     import json
