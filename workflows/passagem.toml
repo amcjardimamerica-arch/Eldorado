@@ -43,6 +43,11 @@ tipo = "eldorado.base.cartorio.auditoria:no_auditar"
 parametros = { dados = "dados" }
 
 [[no]]
+id = "linha"
+tipo = "eldorado.base.cartorio.linha:no_linha"
+parametros = { dados = "dados", orcamento_s = 300, intervalo_s = 1.0 }
+
+[[no]]
 id = "aprender"
 tipo = "eldorado.base.cerebro.aprendizado:no_aprendizado"
 parametros = { dados = "dados" }
@@ -85,6 +90,9 @@ de = "aplicar_cartorio"
 para = "auditar"
 [[conexao]]
 de = "auditar"
+para = "linha"
+[[conexao]]
+de = "linha"
 para = "aprender"
 [[conexao]]
 de = "aprender"

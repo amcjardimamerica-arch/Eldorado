@@ -70,7 +70,7 @@ def esfera_pelo_orgao(texto: str) -> tuple[str, str] | None:
 
 @dataclass
 class Pagina:
-    documento_id: int
+    documento_id: int | str          # o número do documento no banco, ou a assinatura (documento ainda em registro)
     numero: int
     texto: str
 
@@ -103,7 +103,8 @@ def _localizar(item: str, paginas: list[Pagina]) -> dict | None:
                 ini, fim = max(0, m.start() - 60), min(len(busca), m.end() + 60)
                 trecho = re.sub(r"\s+", " ", busca[ini:fim]).strip()
                 if len(valor) >= 3:
-                    return {"valor": valor[:300], "trecho": trecho[:500], "pagina": p.numero, "documento_id": p.documento_id}
+                    doc = {"documento_sha256": p.documento_id} if isinstance(p.documento_id, str) else {"documento_id": p.documento_id}
+                    return {"valor": valor[:300], "trecho": trecho[:500], "pagina": p.numero, **doc}
     return None
 
 
