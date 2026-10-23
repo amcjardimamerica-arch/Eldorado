@@ -13,10 +13,10 @@ timeout 300 sudo apt-get -qq update && timeout 400 sudo apt-get -qq install -y t
   || aviso "programas do sistema (Tesseract, Java): a instalação falhou"
 marca "programas do sistema"
 timeout 120 python -m pip install -q --upgrade pip uv || aviso "uv não instalou"
-timeout 2400 python scripts/instalar_bibliotecas.py || { echo "::error::o núcleo do Eldorado não instalou"; exit 1; }
+timeout 1800 python scripts/instalar_bibliotecas.py || { echo "::error::o núcleo do Eldorado não instalou"; exit 1; }
 marca "bibliotecas"
-timeout 400 patchright install --with-deps chromium > /dev/null 2>&1 || aviso "Patchright (degrau 4) não instalou"
-timeout 400 python -m camoufox fetch > /dev/null 2>&1 || aviso "Camoufox (degrau 5) não instalou"
+timeout 300 patchright install --with-deps chromium > /dev/null 2>&1 || aviso "Patchright (degrau 4) não instalou"
+timeout 300 python -m camoufox fetch > /dev/null 2>&1 || aviso "Camoufox (degrau 5) não instalou"
 marca "navegadores"
 LP="${RUNNER_TEMP:-/tmp}/lightpanda"
 curl -sfL -m 120 -o "$LP" https://github.com/lightpanda-io/browser/releases/download/nightly/lightpanda-x86_64-linux && chmod +x "$LP" \

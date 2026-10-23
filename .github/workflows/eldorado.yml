@@ -24,7 +24,7 @@ permissions:
 jobs:
   passagem:
     runs-on: ubuntu-24.04
-    timeout-minutes: 505
+    timeout-minutes: 705
     env:
       TZ: America/Sao_Paulo
     steps:
@@ -35,7 +35,7 @@ jobs:
           cache: pip
       - name: Instalar (versões fixadas)
         run: bash scripts/instalar.sh
-        timeout-minutes: 50
+        timeout-minutes: 70
       - name: Abrir os bancos (e aplicar as migrações do esquema)
         run: eldorado iniciar
       - name: Reaplicar os eventos pendentes
