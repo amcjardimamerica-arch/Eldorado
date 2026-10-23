@@ -1,0 +1,51 @@
+# CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "BR"
+canal = "portal"
+id = "cnpq-extensao"
+nome = "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC"
+categoria = "Executivo — diários e portais do governo"
+categoria_estudo = "EXE"
+finalidade = "encontrar as chamadas do CNPq, do MCTI e do MEC com componente de extensão, tecnologia social e parceria com organizações da sociedade civil"
+tipo_finalidade = "descoberta"
+nomes_anteriores = ["plat-cnpq-extensao", "site-finep"]
+
+# ---- rotas confirmadas (23/10/2026, testes/paginas/cnpq-extensao/): o gov.br do CNPq responde da nuvem hoje.
+
+[[fonte]]
+nome = "CNPq — chamadas abertas para submissão"
+url = "https://www.gov.br/cnpq/pt-br/chamadas/abertas-para-submissao"
+tipo = "pagina"
+seletor = "#content-core"
+papel = "principal"
+
+[[fonte]]
+nome = "CNPq — chamadas"
+url = "https://www.gov.br/cnpq/pt-br/chamadas"
+tipo = "pagina"
+seletor = "#content-core"
+papel = "alternativa"
+
+[acesso]
+degraus = ["api", "leve", "local"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = ["re:(chamada|edital|chamamento).{0,200}(extens|tecnolog\\w* socia|sociedade civil|comunidad|inclus|popular|solid[aá]ri|cooperat|divulga[çc][ãa]o cient|olimp|feira|museu|ci[êe]ncia (e|na|para)|educa[çc][ãa]o|territ)"]
+vetos = ["re:compartilhe|copiar|^faq|^anexo|plano de trabalho|declara[çc]|carta de|resultado|bolsa|mestrado|doutorado|p[óo]s-?doutor|produtividade|^busca"]
+termos_em = "titulo"
+
+[aprendizado]
+licoes = ["O gov.br do CNPq respondeu da nuvem em 23/10/2026 (o Eldorado0 registrava bloqueio).", "Rota de acesso única para os domínios com bloqueio (www.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 10 rota(s) que funcionaram: entram como rotas do motor."]
+bloqueios_conhecidos = ["www.gov.br"]
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["http://memoria2.cnpq.br/web/guest/chamadas-publicas (403)", "http://resultado.cnpq.br/chamadas (404)", "https://www.finep.gov.br/chamadas-publicas (responde, mas a lista não está numa região reconhecível: provável JavaScript; 23/10/2026)"]
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14

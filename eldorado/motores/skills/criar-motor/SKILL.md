@@ -166,6 +166,10 @@ Para tabelas em PDF, o elo `linhas` reconhece cada registro por um padrão com g
   dentro da página também (a extração só aceita links do mesmo domínio).
 - **motor-gife**: confira os padrões funcionando sobre os dados reais (499 das 500 linhas do PDF), não só a validação;
   as regras do banco (a lei do incentivo, quem descobriu a empresa) aparecem no teste, não antes.
+- **cnpq-extensao, site-funarte, novo-bancos-publicos**: rode o motor nas páginas gravadas e OLHE o que ele entrega antes de
+  escrever as conferências; "nenhuma entrega" pode ser o certo (as 4 chamadas abertas do CNPq eram para pesquisadores).
+  O servidor comum das páginas gravadas está em `testes/paginas_servidor.py`. Várias gravações seguidas: a fila do GitHub
+  cancela a que estava esperando; acione uma de cada vez, ou confira o índice depois.
 - **Teste com página real**: página montada à mão costuma ser "HTML quase vazio", que a escada trata como bloqueio; use a
   página real gravada, alterando o mínimo.
 

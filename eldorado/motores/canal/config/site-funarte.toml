@@ -1,0 +1,51 @@
+# Funarte — editais da Fundação Nacional de Artes — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "BR"
+canal = "portal"
+id = "site-funarte"
+nome = "Funarte — editais da Fundação Nacional de Artes"
+categoria = "Executivo — diários e portais do governo"
+categoria_estudo = "EXE"
+finalidade = "editais da Fundação Nacional de Artes"
+tipo_finalidade = "descoberta"
+nomes_anteriores = []
+
+# ---- rotas confirmadas (23/10/2026, testes/paginas/site-funarte/): a Funarte organiza os editais em abertos, em andamento e por ano.
+
+[[fonte]]
+nome = "Funarte — editais abertos"
+url = "https://www.gov.br/funarte/pt-br/editais/editais-abertos"
+tipo = "pagina"
+seletor = "#content-core"
+papel = "principal"
+
+[[fonte]]
+nome = "Funarte — editais do ano corrente"
+url = "https://www.gov.br/funarte/pt-br/editais/{hoje:%Y}"
+tipo = "pagina"
+seletor = "#content-core"
+papel = "alternativa"
+
+[acesso]
+degraus = ["api", "leve"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = ["re:edital|chamada|convocat|programa|pr[êe]mio|sele[çc][ãa]o|fomento|mostra|resid[êe]ncia"]
+vetos = ["re:resultado|homologa|habilita|selecionad|compartilhe|copiar"]
+termos_em = "titulo"
+
+[aprendizado]
+licoes = ["robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+bloqueios_conhecidos = []
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["https://www.gov.br/funarte/pt-br/editais-e-chamamentos (404)", "https://www.funarte.gov.br/editais/ (o site antigo)"]
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14
