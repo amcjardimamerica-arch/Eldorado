@@ -1,0 +1,40 @@
+# Gravar páginas (orientação de criação de motores, passo 3 e 8): grava as respostas reais inteiras das rotas de um
+# motor no repositório (testes/paginas/<motor>/), para conhecer a fonte antes de configurar e para o teste nas páginas
+# gravadas. Acionado à mão; grava só nessa pasta.
+name: Gravar páginas
+on:
+  workflow_dispatch:
+    inputs:
+      motor:
+        description: "O id do motor (a pasta testes/paginas/<motor>)"
+        required: true
+      urls:
+        description: "Endereços separados por espaço (aceita {hoje:%Y-%m-%d} e afins)"
+        required: true
+permissions:
+  contents: write
+concurrency:
+  group: gravar-paginas
+jobs:
+  gravar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e ".[leitura,acesso,descoberta]"
+      - name: Gravar
+        env:
+          URLS: ${{ inputs.urls }}
+        run: eldorado gravar $URLS --pasta "testes/paginas/${{ inputs.motor }}"
+      - name: Guardar no repositório
+        run: |
+          git config user.name "Eldorado"; git config user.email "eldorado@users.noreply.github.com"
+          git add "testes/paginas/${{ inputs.motor }}"
+          git diff --cached --quiet && exit 0
+          git commit -q -m "Páginas gravadas: ${{ inputs.motor }}"
+          for i in 1 2 3; do git pull -q --rebase --autostash origin main && git push -q origin main && exit 0; sleep $((i * 10)); done
+          exit 1

@@ -307,6 +307,37 @@ def missao(config: Path = CONFIG, quantas: int = 1, anotar: bool = typer.Option(
             typer.echo(f"::notice title=Achado do Espião::{a.titulo[:200]} <{a.link_divulgacao}>")
 
 
+@app.command()
+def gravar(urls: list[str], pasta: Path = typer.Option(..., help="onde gravar (testes/paginas/<motor>)")):
+    """Grava as respostas reais inteiras (para conhecer a fonte e para o teste nas páginas gravadas)."""
+    import hashlib
+    import json
+    from datetime import datetime, timezone
+
+    from ...motores.acesso.api import DegrauAPI
+    from ...motores.acesso.escada import Escada
+    from ...motores.acesso.leve import DegrauLeve
+    from ...motores.canal.motor import hoje_local, preencher
+    escada = Escada([DegrauAPI(), DegrauLeve()], intervalo_padrao=1.0, tentativas=2, tempo_limite=40)
+    pasta.mkdir(parents=True, exist_ok=True)
+    idx_p = pasta / "indice.json"
+    indice = json.loads(idx_p.read_text(encoding="utf-8")) if idx_p.exists() else {}
+    for modelo in urls:
+        url = preencher(modelo, hoje_local())
+        nome = hashlib.sha1(url.encode()).hexdigest()[:12]
+        try:
+            r = escada.buscar(url)
+            ext = "json" if "json" in (r.tipo or "") else "pdf" if "pdf" in (r.tipo or "") else "html"
+            (pasta / f"{nome}.{ext}").write_bytes(r.conteudo)
+            indice[url] = {"arquivo": f"{nome}.{ext}", "status": r.status, "tipo": r.tipo, "bytes": len(r.conteudo),
+                           "gravado_em": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+            typer.echo(f"gravado {nome}.{ext} · {len(r.conteudo)} bytes · {url}")
+        except Exception as e:  # noqa: BLE001 — a recusa também é registrada (vira aprendizado do motor)
+            indice[url] = {"erro": f"{type(e).__name__}: {str(e)[:300]}", "gravado_em": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+            typer.echo(f"FALHOU {url}: {str(e)[:200]}")
+    idx_p.write_text(json.dumps(indice, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
 motor_app = typer.Typer(help="Criar motores pela orientação de design (eldorado/motores/skills/criar-motor/SKILL.md).")
 app.add_typer(motor_app, name="motor")
 
