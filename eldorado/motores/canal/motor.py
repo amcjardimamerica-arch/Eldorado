@@ -98,7 +98,10 @@ class CfgFonte(_Base):
 
 
 class CfgAcesso(_Base):
-    degraus: list[Literal["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]] = ["api", "leve"]
+    # o motor padrão: a escada completa (ela só sobe quando o degrau de baixo falha; ter todos não custa nada quando tudo
+    # funciona e salva a leitura quando o site bloqueia ou só existe com script)
+    degraus: list[Literal["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]] = [
+        "api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]
     intervalo_s: float = 1.0
     espera_seletor: str | None = None
     tentativas: int = Field(2, ge=1, le=3)
@@ -258,6 +261,7 @@ class MotorCanal(Motor):
         self.caminho = Path(configuracao)
         self.cfg = Configuracao(**tomllib.loads(self.caminho.read_text(encoding="utf-8")))
         self.estado = EstadoMotor(Path(dados) / f"{self.cfg.motor.id}.db")
+        self.relatorio: list[str] = []
         self.escada = Escada(self._degraus(ponte, lightpanda, mirror_wayback), intervalo_padrao=self.cfg.acesso.intervalo_s,
                              tentativas=self.cfg.acesso.tentativas)
         self.leitura = leitores.padrao()
@@ -271,7 +275,13 @@ class MotorCanal(Motor):
                 "patchright": lambda: DegrauNavegador("patchright", self.cfg.acesso.espera_seletor),
                 "camoufox": lambda: DegrauNavegador("camoufox", self.cfg.acesso.espera_seletor),
                 "arquivo": lambda: DegrauArquivo(mirror) if mirror else DegrauArquivo(), "local": lambda: DegrauLocal(ponte)}
-        return [mapa[d]() for d in self.cfg.acesso.degraus]
+        degraus = []
+        for d in self.cfg.acesso.degraus:
+            try:
+                degraus.append(mapa[d]())
+            except Exception as e:  # noqa: BLE001 — o degrau que não pode ser montado aqui (o navegador ausente) é pulado
+                self.relatorio.append(f"degrau {d} indisponível neste ambiente: {type(e).__name__}")
+        return degraus
 
     # ------------------------------------------------------------------ contrato
     def descrever(self) -> Descricao:

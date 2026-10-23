@@ -82,6 +82,8 @@ def detectar_tipo(conteudo: bytes, nome: str | None = None) -> str:
     nome = (nome or "").lower()
     if c.startswith(b"%PDF"):
         return "pdf"
+    if nome.endswith(".csv"):
+        return "csv"
     if (c[:3] == b"ID3" or c[:2] in (b"\xff\xfb", b"\xff\xf3", b"\xff\xf2") or conteudo[4:8] == b"ftyp" or c[:4] in (b"OggS", b"fLaC", b"\x1aE\xdf\xa3")
             or (c[:4] == b"RIFF" and conteudo[8:12] in (b"WAVE", b"AVI "))):
         return "audio"                                    # áudio e vídeo (MP3, MP4/M4A, OGG, FLAC, WebM, WAV, AVI): a transcrição
@@ -182,6 +184,11 @@ def padrao() -> Registro:
     r = Registro(universal=universal) if universal is not None else Registro()
     leitores = [pagina.LeitorPagina(), pagina.LeitorTexto(), pdf.LeitorPDF(ocr=motor_ocr), planilha.LeitorPlanilha(), documento.LeitorDocumento(),
                 compactado.LeitorCompactado()]
+    try:
+        import polars  # noqa: F401
+        leitores.append(planilha.LeitorCSV())
+    except ImportError:
+        pass
     if motor_ocr is not None:
         leitores.append(ocr.LeitorImagem(motor_ocr))
     try:

@@ -83,6 +83,17 @@ class LeitorPDF:
                         r.precisa_ocr.remove(n)
             except Exception:  # noqa: BLE001
                 pass
+        if r.precisa_ocr and self.ocr is None:         # a segunda reserva com layout (liteparse)
+            try:
+                from liteparse import LiteParse
+                res = LiteParse(ocr_enabled=False, quiet=True).parse(conteudo)
+                for n in list(r.precisa_ocr):
+                    texto = getattr(res.get_page(n), "markdown", "") or ""
+                    if len(texto.strip()) > 80:
+                        r.paginas[n - 1] = Pagina(n, texto)
+                        r.precisa_ocr.remove(n)
+            except Exception:  # noqa: BLE001 — sem a biblioteca, segue o aviso de OCR
+                pass
         if r.precisa_ocr and self.ocr is not None:
             for n in r.precisa_ocr:
                 img = doc[n - 1].get_pixmap(dpi=200).tobytes("png")
