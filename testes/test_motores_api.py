@@ -140,12 +140,6 @@ def test_wordpress_de_goias(api, tmp_path):
     assert achados[0].dados["uf"] == "GO" and "festivais culturais" in achados[0].documento["paginas"][0]
 
 
-def test_querido_diario(api, tmp_path):
-    base, _, _ = api
-    a = list(motor("novo-diarios-municipais-go", base, tmp_path).buscar(None))[0]
-    assert (a.dados["municipio"], a.dados["uf"], a.dados["nivel"]) == ("Goiânia", "GO", "municipal") and "CHAMAMENTO" in a.titulo and a.documento is None
-
-
 def test_transferegov(api, tmp_path):
     base, _, _ = api
     achados = list(motor("site-transferegov", base, tmp_path).buscar(None))

@@ -143,6 +143,12 @@ pela rede neural. A IA propõe; o sistema valida.
   antigo inventava caminhos e ficou um mês sem ler, com a auditoria dizendo "funcionando". Grave antes de configurar.
 - **do-goiania**: a maior parte dos "EDITAL Nº" do diário são avisos de licença ambiental; o Querido Diário deve ser
   consultado pelo código do município (o nome mistura cidades vizinhas); a lista oficial responde da nuvem.
+- **prefeituras-50-go**: a sondagem mudou o aprendizado (23 das 25 cidades respondem da nuvem; o registro antigo dizia
+  17 só pelo Brasil). Aprendizado se confere, não se herda.
+- **novo-diarios-municipais-go**: a busca da AGM não devolve nada sem sessão, mas a página inicial aponta o PDF da edição
+  do dia; o Querido Diário tem texto completo de só 2 municípios de Goiás. O recorte dos atos leva o município adiante
+  (`campos = {{ localidade = '<regex>' }}` no elo `atos`). Num TOML, a string literal ('…') não interpreta a barra
+  invertida: escreva o regex com UMA barra.
 - **Teste com página real**: página montada à mão costuma ser "HTML quase vazio", que a escada trata como bloqueio; use a
   página real gravada, alterando o mínimo.
 

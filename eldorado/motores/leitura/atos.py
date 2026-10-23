@@ -14,8 +14,11 @@ ORGAO = re.compile(r"(?i)secretaria|fundo|funda[çc][ãa]o|instituto|procuradori
                    r"c[âa]mara|tribunal|minist[ée]rio|superintend|diretoria|coordena")
 
 
-def recortar(texto: str, cabecalho: str = CABECALHO, inicio: int = 400) -> list[dict[str, str | int]]:
+def recortar(texto: str, cabecalho: str = CABECALHO, inicio: int = 400, localidade: str | None = None) -> list[dict[str, str | int]]:
+    """localidade: o padrão do nome que aparece uma vez no começo de cada bloco (o município, num diário de vários) e vale
+    para os atos seguintes até o próximo bloco; o grupo 1 é o nome."""
     marcas = list(re.finditer(cabecalho, texto))
+    blocos = [(m.start(), re.sub(r"\s+", " ", m.group(1)).strip().title()) for m in re.finditer(localidade, texto)] if localidade else []
     atos = []
     for n, m in enumerate(marcas):
         fim = marcas[n + 1].start() if n + 1 < len(marcas) else len(texto)
@@ -25,6 +28,7 @@ def recortar(texto: str, cabecalho: str = CABECALHO, inicio: int = 400) -> list[
         acima = [x.strip() for x in texto[max(0, m.start() - 400):m.start()].splitlines() if x.strip()][-4:]
         orgao = " › ".join(x for x in acima if ORGAO.search(x) and len(x) < 140)
         depois = re.sub(r"\s+", " ", corpo[len(m.group(1)):])[:inicio].strip()
+        lugar = next((nome for pos, nome in reversed(blocos) if pos < m.start()), "") if blocos else ""
         atos.append({"ordem": len(atos) + 1, "titulo": re.sub(r"\s+", " ", m.group(1)).strip(), "orgao": orgao, "inicio": depois,
-                     "texto": corpo})
+                     "texto": corpo, "localidade": lugar})
     return atos

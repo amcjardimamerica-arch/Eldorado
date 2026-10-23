@@ -1,42 +1,96 @@
-# SITUAÇÃO (sondagem de 22/10/2026, a partir do GitHub): a API está fora do ar do lado da fonte. O endereço
-# queridodiario.ok.org.br/api responde erro 500 até na consulta mais simples (só o código de Goiânia), e
-# api.queridodiario.ok.org.br não completa a conexão segura (TLS). O motor segue tentando e volta sozinho com a API.
-#
-# Querido Diário: os diários oficiais municipais de Goiânia, Aparecida de Goiânia e das capitais (a regra de território
-# inclui as capitais dos outros estados). Lição de 10/10: em Goiás, só Goiânia e Aparecida têm busca.
+# Diários oficiais municipais de Goiás (Querido Diário) — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
 [motor]
+uf = "GO"
+canal = "diario"
 id = "novo-diarios-municipais-go"
-nome = "Querido Diário — diários municipais de Goiânia, Aparecida e das capitais"
-categoria = "Diários oficiais"
-finalidade = "chamamentos e editais municipais de Goiânia, Aparecida de Goiânia e das capitais"
-canal = "api"
+nome = "Diários oficiais municipais de Goiás (Querido Diário)"
+categoria = "Executivo — diários e portais do governo"
 categoria_estudo = "EXE"
+finalidade = "encontrar oportunidade aberta para OSC nos diários oficiais dos municípios de Goiás (o Diário Municipal da AGM e o Querido Diário), complementando o Diário de Goiânia"
+tipo_finalidade = "recorrencia"
 nomes_anteriores = ["querido-diario"]
 
+# ---- rotas confirmadas (23/10/2026, testes/paginas/novo-diarios-municipais-go/):
+# - o Diário Municipal de Goiás (AGM) publica uma edição diária única com os atos dos municípios associados (a nº 3730,
+#   de 23/10, tem atos de 50 municípios); a página inicial aponta o PDF da edição do dia (input#urlPdf). A busca do site
+#   não devolve resultados sem sessão, e o XML da edição recusa o acesso direto.
+# - o Querido Diário tem o texto completo de só 2 municípios de Goiás: Goiânia (motor próprio) e Aparecida de Goiânia.
 [[fonte]]
-# Como o motor do Eldorado0 que funcionava: o país inteiro, sem lista de municípios; o portão aplica a regra do
-# território (município de outro estado só fica se for capital).
-nome = "Querido Diário — busca nos diários"
-url = "{base}/gazettes?querystring={consulta}&published_since={hoje-5:%Y-%m-%d}&published_until={hoje:%Y-%m-%d}&excerpt_size=500&number_of_excerpts=1&size=50"
-tipo = "api"
+nome = "Diário Municipal de Goiás (AGM) — a edição do dia → os atos, com o município"
+url = "https://www.diariomunicipal.com.br/agm/"
+tipo = "cadeia"
+papel = "principal"
 
-[fonte.valores]
-# A API respondeu erro 500 em 22/10: tenta os dois endereços que o Eldorado0 usava e a consulta com e sem aspas.
-base = ["https://queridodiario.ok.org.br/api", "https://api.queridodiario.ok.org.br"]
-consulta = ["chamamento%20p%C3%BAblico%20organiza%C3%A7%C3%B5es%20da%20sociedade%20civil", "termo%20de%20fomento%20chamamento", "%22chamamento%20p%C3%BAblico%22%20%22organiza%C3%A7%C3%B5es%20da%20sociedade%20civil%22", "%22edital%20de%20chamamento%20p%C3%BAblico%22%20associa%C3%A7%C3%A3o", "%22termo%20de%20execu%C3%A7%C3%A3o%20cultural%22", "%22edital%20de%20premia%C3%A7%C3%A3o%22%20cultura", "%22termo%20de%20fomento%22%20%22chamamento%20p%C3%BAblico%22"]
+[[fonte.cadeia]]
+formato = "html"
+itens = "input#urlPdf"
+campos = { pdf = "attr:value" }
+limite = 1
 
-[fonte.caminhos]
-itens = "gazettes[*]"
-titulo = "join('', [territory_name || '', ' (', state_code || '', '): ', excerpts[0] || ''])"
-link = "url"
-data = "date"
-resumo = "excerpts[0]"
-municipio = "territory_name"
-uf = "state_code"
-nivel = "'municipal'"
+[[fonte.cadeia]]
+formato = "atos"
+url = "{pdf}"
+campos = { localidade = '(?m)^\s*(?:PREFEITURA\s+)?MUNIC(?:IPAL|ÍPIO)\s+DE\s+([A-ZÀ-Ú][A-ZÀ-Ú \-]{2,40}?)\s*$' }
+limite = 800
+
+[fonte.pista]
+titulo = "{titulo}"
+link = "{pdf}#ato-{ordem}"
+resumo = "{localidade} · {orgao} · {inicio}"
+texto = "{texto}"
+
+[[fonte]]
+nome = "Querido Diário — Aparecida de Goiânia (5201405), as edições dos últimos 3 dias → os atos"
+url = "https://queridodiario.ok.org.br/api/gazettes?territory_ids=5201405&published_since={hoje-3:%Y-%m-%d}&size=3&sort_by=descending_date"
+tipo = "cadeia"
+papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "gazettes"
+campos = { pdf = "url", edicao = "edition", data = "date", localidade = "territory_name" }
+limite = 3
+
+[[fonte.cadeia]]
+formato = "atos"
+url = "{pdf}"
+limite = 400
+
+[fonte.pista]
+titulo = "{titulo}"
+link = "{pdf}#ato-{ordem}"
+resumo = "{localidade} · {orgao} · {inicio}"
+texto = "{texto}"
+
+[[alvo]]
+id = "f260-espalhado-www-arapongas-pr-gov-br"
+nome = "Querido Diário — diários oficiais municipais — oportunidades (espalhado de edital validado)"
+enderecos = ["https://www.arapongas.pr.gov.br/"]
+orgao = "Querido Diário — diários oficiais municipais"
 
 [acesso]
 degraus = ["api", "leve"]
 
 [leitura]
-documentos = false                  # o diário inteiro tem centenas de atos: a certificação lê o ato, na Fase 8
+paginas_dos_achados = false         # o texto do ato vem recortado do PDF oficial
+seguir_oficial = false
+
+[lexico]
+# o léxico próprio dos diários municipais (no título E no começo do ato), da edição real nº 3730 da AGM:
+termos = ["re:chamamento|chamada p[uú]blica|credenciamento|termo de (fomento|colabora)|acordo de coopera|sele[çc][ãa]o (p[uú]blica|de (projetos|propostas|organiza|entidades))|pr[êe]mio|premia[çc][ãa]o|patroc[ií]nio|aldir blanc|pnab|paulo gustavo|cmdca|organiza[çc][õo]es da sociedade civil|subven[çc]"]
+vetos = ["re:licen[çc]a.{0,3}pr[êe]mio|rescis[ãa]o|ratifica|aviso de licita|preg[ãa]o|licen[çc]as? ambienta|requereu|extrato|contrato n|aditivo|apostila|portaria|decreto|nomea|exonera|f[ée]rias|aposentadoria|pens[ãa]o|homologa|resultado|tomada de pre[çc]os|concorr[êe]ncia|leil[ãa]o|inexigibilidade|dispensa|cita[çc][ãa]o|intima[çc][ãa]o|processo seletivo|concurso"]
+termos_em = "tudo"
+
+[aprendizado]
+licoes = ["Ler primeiro pela API do Querido Diário; as páginas ficam como reserva.", "Os 1 alvos são vigiados só na janela prevista da próxima edição."]
+bloqueios_conhecidos = []
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["https://www.diariomunicipal.com.br/agm/pesquisar (a busca não devolve resultados sem sessão, 23/10/2026)",
+                      "o XML da edição em www-storage.voxtecnologia.com.br (página vazia no acesso direto, 23/10/2026)",
+                      "https://api.queridodiario.ok.org.br (endereço antigo: o certo é queridodiario.ok.org.br/api)"]
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14

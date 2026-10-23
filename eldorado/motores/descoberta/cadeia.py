@@ -94,8 +94,9 @@ def percorrer(buscar: Callable[[str], Any], url: str, elos: list[Elo], relatorio
                 if elo.formato == "atos":
                     from ..leitura import leitores
                     from ..leitura.atos import recortar
-                    filhos = recortar(leitores.padrao().ler(r.conteudo, endereco).texto, elo.itens or None) if elo.itens else \
-                        recortar(leitores.padrao().ler(r.conteudo, endereco).texto)
+                    texto = leitores.padrao().ler(r.conteudo, endereco).texto
+                    loc = elo.campos.get("localidade")              # o padrão do nome que abre cada bloco (o município)
+                    filhos = recortar(texto, elo.itens, localidade=loc) if elo.itens else recortar(texto, localidade=loc)
                     filhos = filhos[:elo.limite]
                 else:
                     filhos = _itens_json(r.conteudo, elo) if elo.formato == "json" else _itens_html(r.conteudo, endereco, elo)

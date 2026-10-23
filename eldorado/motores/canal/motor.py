@@ -441,7 +441,7 @@ class MotorCanal(Motor):
         pistas = [Pista(titulo=formatar(f.pista.titulo, i), link=formatar(f.pista.link, i), origem=f.nome,
                         resumo=formatar(f.pista.resumo, i) if f.pista.resumo else None,
                         extra={**({"documento_texto": formatar(f.pista.texto, i)} if f.pista.texto else {}),
-                               **{k: i[k] for k in ("orgao", "edicao", "data", "protocolo", "caminho") if i.get(k)}}) for i in itens]
+                               **{k: i[k] for k in ("orgao", "edicao", "data", "protocolo", "caminho", "localidade") if i.get(k)}}) for i in itens]
         pistas = [p for p in pistas if p.titulo.strip() and p.link.startswith("http")]
         ass = hashlib.sha256("\n".join(sorted(p.link for p in pistas)).encode()).hexdigest()
         if pistas and ass == self.estado.assinatura(f.nome):
