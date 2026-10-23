@@ -191,6 +191,10 @@ Para tabelas em PDF, o elo `linhas` reconhece cada registro por um padrão com g
   e o MPT; o do FDD, o CONANDA): confira cada endereço de alvo antes de vigiar. Alvo em portal grande leva `seletor` (os
   menus entram como links e casam com palavras soltas do léxico, como "projetos"). Nos portais Plone, cada documento tem
   o link do ícone e o do título para o mesmo endereço: a extração guarda o do título.
+- **Judiciário (diagnóstico)**: o zero do Eldorado0 no TJ-GO era bloqueio da nuvem, não fonte errada; diagnostique antes
+  de reconstruir. Prefira o endereço de busca confirmado na sondagem (o CNJ responde diferente em /search/ e em /?s=).
+  Vetos de palavra curta casam dentro de outras ("curso" em "recursos"): use a palavra inteira, `(^| )curso( |$)`.
+  Numa string comum do TOML ("…"), a barra invertida é escape: use classes como `[a-z]*` no lugar de `\w*`.
 - **Teste com página real**: página montada à mão costuma ser "HTML quase vazio", que a escada trata como bloqueio; use a
   página real gravada, alterando o mínimo.
 
