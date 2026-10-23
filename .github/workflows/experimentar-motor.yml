@@ -29,7 +29,7 @@ jobs:
         run: |
           for m in $MOTORES; do
             echo "::group::$m"
-            timeout 600 eldorado motor experimentar "$m" --saida "testes/paginas/$m/experimento.json" | head -c 2000 || echo "o experimento de $m falhou ou passou de 10 minutos"
+            timeout 1500 eldorado motor experimentar "$m" --saida "testes/paginas/$m/experimento.json" | head -c 2000 || echo "o experimento de $m falhou ou passou de 25 minutos"
             echo "::endgroup::"
           done
       - name: Guardar no repositório
