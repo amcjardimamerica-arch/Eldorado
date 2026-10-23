@@ -1,0 +1,53 @@
+# Diário da Justiça Federal — Seção Judiciária de Goiás — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "GO"
+canal = "portal"
+orgao = "Justiça Federal — Seção Judiciária de Goiás (TRF1)"
+id = "dj-trf1-go"
+nome = "Diário da Justiça Federal — Seção Judiciária de Goiás"
+categoria = "Judiciário e Ministérios Públicos"
+categoria_estudo = "JUD"
+finalidade = "encontrar oportunidade aberta para OSC em destinações de pena federais — raras em Goiás"
+tipo_finalidade = "descoberta"
+nomes_anteriores = []
+
+# ---- diagnóstico (23/10/2026): a Justiça Federal em Goiás responde; não há página própria de prestação pecuniária (os
+# editais e portarias são processuais: correição, inspeção, varas). O motor fica com as notícias e os editais, com léxico estreito.
+
+[[fonte]]
+nome = "Justiça Federal em Goiás — notícias"
+url = "https://www.trf1.jus.br/sjgo/imprensa/noticias"
+tipo = "pagina"
+seletor = ".col-md-9"
+papel = "principal"
+
+[[fonte]]
+nome = "Justiça Federal em Goiás — editais e portarias"
+url = "https://www.trf1.jus.br/sjgo/processual/editais-e-portarias"
+tipo = "pagina"
+seletor = "#corpo_pagina"
+papel = "alternativa"
+
+[acesso]
+degraus = ["api", "leve", "local"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = ["re:pecuni|destina[çc][ãa]o de (valores|recursos|bens)|entidades? (sociais|assistenciais|benefici)|projetos socia|cadastr[a-z]* de entidades"]
+vetos = ["re:est[áa]gio|correi[çc][ãa]o|inspe[çc][ãa]o|perit|advogad|push|concurso|suprimento de fundos|portarias da"]
+termos_em = "titulo"
+
+[aprendizado]
+licoes = ["Destinações de pena federais são raras em Goiás; não há página própria de prestação pecuniária na SJGO (23/10/2026).", "Rota de acesso única para os domínios com bloqueio (www.cnj.jus.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 2 rota(s) que funcionaram: entram como rotas do motor.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Nenhum resultado em 80 leituras: diagnosticar se é bloqueio ou fonte errada antes de reconstruir.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+bloqueios_conhecidos = ["www.cnj.jus.br"]
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["https://www.cnj.jus.br/?s=prestação pecuniária Goiás (a busca do CNJ é do motor judiciario-cnj)"]
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14

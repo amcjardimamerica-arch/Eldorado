@@ -1,0 +1,59 @@
+# CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024) — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "BR"
+canal = "portal"
+id = "judiciario-cnj"
+nome = "CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024)"
+categoria = "Judiciário e Ministérios Públicos"
+categoria_estudo = "JUD"
+finalidade = "editais e regra nacional de destinação de prestações pecuniárias no Portal do CNJ"
+tipo_finalidade = "descoberta"
+nomes_anteriores = ["cnj-destinacoes"]
+
+# ---- diagnóstico (23/10/2026): o portal do CNJ responde à nuvem; a busca por "prestação pecuniária" traz as notícias
+# dos editais das comarcas (por exemplo, Itaberaí-GO): o CNJ divulga, a origem é a comarca (decidida por livro).
+
+[[fonte]]
+nome = "CNJ — busca por prestação pecuniária"
+url = "https://www.cnj.jus.br/search/presta%C3%A7%C3%A3o+pecuni%C3%A1ria/"
+tipo = "pagina"
+seletor = "main"
+papel = "principal"
+
+[[fonte]]
+nome = "CNJ — publicações sobre pecuniária (API do WordPress)"
+url = "https://www.cnj.jus.br/wp-json/wp/v2/posts"
+tipo = "wordpress"
+papel = "alternativa"
+termos = "pecuniária"
+
+[[alvo]]
+id = "f260-captacao-193"
+nome = "CNJ - política de destinação de penas pecuniárias"
+enderecos = ["https://www.cnj.jus.br/search/resolu%C3%A7%C3%A3o+558/"]   # corrigido: a busca da Resolução 558/2024 (a regra nacional)
+seletor = "main"
+orgao = "CNJ — política de destinação de penas e prestações pecuniárias"
+
+[acesso]
+degraus = ["api", "leve", "local"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = ["re:edital|sele[çc]|projetos|destina|cadastr|entidade|recursos de presta"]
+vetos = ["re:encontro de apenados|^continue lendo|resultados da pesquisa|curso|semin[áa]rio|webin|pr[êe]mio cnj"]
+termos_em = "titulo"
+
+[aprendizado]
+licoes = ["O CNJ divulga os editais das comarcas; a origem do livro é a comarca do tribunal (decidida por livro, regra da titular).", "Rota de acesso única para os domínios com bloqueio (pncp.gov.br, www.cnj.jus.br, www.tjgo.jus.br, www.trt18.jus.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 10 rota(s) que funcionaram: entram como rotas do motor.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 1 alvos são vigiados só na janela prevista da próxima edição.", "Corrigir o domínio dos alvos cadastrados com o site do TRT-18.", "Nenhum resultado em 113 leituras: diagnosticar se é bloqueio ou fonte errada antes de reconstruir.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+bloqueios_conhecidos = ["pncp.gov.br", "www.cnj.jus.br", "www.tjgo.jus.br"]
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["a frase inteira «prestação pecuniária» na API do WordPress (0 resultados; a palavra sozinha é a busca)"]
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14
