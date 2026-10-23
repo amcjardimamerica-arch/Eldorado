@@ -36,7 +36,9 @@ jobs:
       - name: Instalar (versões fixadas)
         run: pip install -e ".[leitura,acesso,descoberta,metabusca,navegador]"
       - name: O navegador do degrau 4 (Patchright, para as páginas que só existem com script)
-        run: patchright install --with-deps chromium || echo "::warning::o navegador não instalou; o degrau 4 fica de fora"
+        run: |
+          patchright install --with-deps chromium || echo "::warning::o Patchright não instalou; o degrau 4 fica de fora"
+          python -m camoufox fetch || echo "::warning::o Camoufox não instalou; o degrau 5 fica de fora"
       - name: Abrir os bancos (e aplicar as migrações do esquema)
         run: eldorado iniciar
       - name: Reaplicar os eventos pendentes

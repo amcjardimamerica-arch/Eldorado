@@ -83,6 +83,14 @@ ele já aprendeu**. A estrutura do sistema não muda quando um motor entra.
 | `arquivo` | a cópia arquivada (Wayback) quando o site mudou ou saiu do ar |
 | `local` | o computador da titular (IP do Brasil), para os domínios que recusam a nuvem |
 
+**Navegador que não denuncia robôs (degraus 4 e 5).** Quando a lista da página só existe depois dos scripts (Prosas,
+Mapa das OSC), ou quando o site barra robôs, o motor lê pela própria escada com um navegador real: o **Patchright**
+(degrau 4, Chromium sem as marcas de automação) e o **Camoufox** (degrau 5, Firefox anti-detecção, de reserva). Ponha-os
+primeiro na escada (`degraus = ["patchright", "camoufox", "leve", "api"]`), porque a escada só sobe quando o degrau de
+baixo falha, e uma página que responde sem a lista não é falha. O navegador espera a rede ficar ociosa (os scripts
+terminarem); `espera_seletor` espera um elemento específico. Os fluxos instalam os dois (`patchright install chromium` e
+`python -m camoufox fetch`). Leia devagar (`intervalo_s` maior): o robots é informação, e a espera vira intervalo.
+
 Use `exige_brasil = true` na fonte que só responde do Brasil; o degrau `local` resolve. A escada respeita o intervalo
 de cada domínio e descansa o que bloqueia.
 
