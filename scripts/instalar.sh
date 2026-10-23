@@ -6,22 +6,29 @@
 #   4. o SearXNG como serviço do próprio fluxo (a metabusca própria), em http://127.0.0.1:8888.
 # Cada parte que falhar vira aviso: o sistema segue com as reservas de cada ferramenta (nada é simulado).
 set -u
+# cada parte tem um tempo máximo: passou, vira aviso, e o sistema segue com as reservas (o funcionamento não espera)
+inicio=$(date +%s); marca() { echo "::notice::instalação: $1 em $(( $(date +%s) - inicio )) s"; }
 aviso() { echo "::warning::$1"; }
-sudo apt-get -qq update && sudo apt-get -qq install -y tesseract-ocr tesseract-ocr-por libtesseract-dev libleptonica-dev pkg-config default-jre-headless > /dev/null \
+timeout 300 sudo apt-get -qq update && timeout 400 sudo apt-get -qq install -y tesseract-ocr tesseract-ocr-por libtesseract-dev libleptonica-dev pkg-config default-jre-headless > /dev/null \
   || aviso "programas do sistema (Tesseract, Java): a instalação falhou"
-python -m pip install -q --upgrade pip uv || aviso "uv não instalou"
+marca "programas do sistema"
+timeout 120 python -m pip install -q --upgrade pip uv || aviso "uv não instalou"
 GRUPOS="leitura,acesso,descoberta,metabusca,navegador,ocr,universal,idioma,leitura_completa,base,banco,motores"
-uv pip install --system -q -e ".[$GRUPOS]" || pip install -q -e ".[$GRUPOS]" || aviso "bibliotecas: a instalação completa falhou"
-patchright install --with-deps chromium > /dev/null 2>&1 || aviso "Patchright (degrau 4) não instalou"
-python -m camoufox fetch > /dev/null 2>&1 || aviso "Camoufox (degrau 5) não instalou"
+timeout 900 uv pip install --system -q -e ".[$GRUPOS]" || timeout 900 pip install -q -e ".[leitura,acesso,descoberta,metabusca,navegador,ocr,universal,idioma,leitura_completa,base,banco]" || aviso "bibliotecas: a instalação completa falhou"
+marca "bibliotecas"
+timeout 400 patchright install --with-deps chromium > /dev/null 2>&1 || aviso "Patchright (degrau 4) não instalou"
+timeout 400 python -m camoufox fetch > /dev/null 2>&1 || aviso "Camoufox (degrau 5) não instalou"
+marca "navegadores"
 LP="${RUNNER_TEMP:-/tmp}/lightpanda"
-curl -sfL -o "$LP" https://github.com/lightpanda-io/browser/releases/download/nightly/lightpanda-x86_64-linux && chmod +x "$LP" \
+curl -sfL -m 120 -o "$LP" https://github.com/lightpanda-io/browser/releases/download/nightly/lightpanda-x86_64-linux && chmod +x "$LP" \
   && echo "ELDORADO_LIGHTPANDA=$LP" >> "${GITHUB_ENV:-/dev/null}" || aviso "Lightpanda (degrau 3) não instalou"
+marca "Lightpanda"
 if command -v docker > /dev/null; then
-  docker run -d --name searxng -p 127.0.0.1:8888:8080 -v "$PWD/config/searxng:/etc/searxng:rw" searxng/searxng:latest > /dev/null 2>&1 \
+  timeout 240 docker run -d --name searxng -p 127.0.0.1:8888:8080 -v "$PWD/config/searxng:/etc/searxng:rw" searxng/searxng:latest > /dev/null 2>&1 \
     && for i in $(seq 1 30); do curl -sf "http://127.0.0.1:8888/search?q=teste&format=json" > /dev/null && break; sleep 2; done \
     && echo "ELDORADO_SEARXNG=http://127.0.0.1:8888" >> "${GITHUB_ENV:-/dev/null}" || aviso "SearXNG não subiu; a metabusca segue pelo ddgs"
 fi
+marca "SearXNG"
 python - <<'P' || true
 import importlib
 ok = []

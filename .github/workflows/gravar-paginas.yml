@@ -31,6 +31,7 @@ jobs:
           cache: pip
       - name: "A instalação completa (scripts/instalar.sh, todas as ferramentas do plano)"
         run: bash scripts/instalar.sh
+        timeout-minutes: 35
       - name: Gravar
         env:
           URLS: ${{ inputs.urls }}

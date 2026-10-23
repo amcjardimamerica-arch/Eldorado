@@ -35,6 +35,7 @@ jobs:
           cache: pip
       - name: Instalar (versões fixadas)
         run: bash scripts/instalar.sh
+        timeout-minutes: 35
       - name: Abrir os bancos (e aplicar as migrações do esquema)
         run: eldorado iniciar
       - name: Reaplicar os eventos pendentes
