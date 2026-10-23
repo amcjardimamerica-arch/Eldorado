@@ -66,3 +66,15 @@ def decidir(agora: datetime, motores: list[str], historico: list[Execucao], pont
         if pendentes:
             saida.append(Decisao(m, f"a fonte costuma publicar às {pendentes[-1]}h (aprendido do histórico); última leitura às {h_ultima}h", 100 + r))
     return sorted(saida, key=lambda d: -d.prioridade)
+
+
+def proxima(agora: datetime, motores: list[str], historico: list[Execucao], ponto_de_partida: dict[str, set[int]]) -> datetime:
+    """Quando será a próxima ação prevista: a próxima hora aprendida de alguma fonte, ou a primeira leitura de amanhã."""
+    local = agora.astimezone(FUSO)
+    amanha = (local + timedelta(days=1)).replace(hour=0, minute=1, second=0, microsecond=0)
+    candidatas = [amanha]
+    for m in motores:
+        for h in horas_produtivas(m, historico, ponto_de_partida.get(m, set()), agora):
+            if h > local.hour:
+                candidatas.append(local.replace(hour=h, minute=0, second=0, microsecond=0))
+    return min(candidatas).astimezone(agora.tzinfo)

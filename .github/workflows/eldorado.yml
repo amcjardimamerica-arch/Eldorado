@@ -1,12 +1,10 @@
-# O Eldorado rodando: de hora em hora (e quando acionado à mão).
-# Cada execução parte do último banco gravado, reaplica os eventos pendentes (o gravador é idempotente), roda a
-# passagem e grava de volta: os eventos novos sempre (texto, pequeno); o banco uma vez por dia ou quando acionado à mão
-# (o Git guarda uma cópia inteira do binário a cada gravação: gravar a cada hora faria o repositório crescer centenas de
-# MB por dia). Uma execução nunca atropela a outra.
+# O Eldorado em FUNCIONAMENTO PERMANENTE (titular, 22/10/2026): sem horário fixo, sem trabalho e descanso. Cada execução
+# roda "eldorado permanente": uma passagem depois da outra enquanto houver fila (motores com leitura devida, livros
+# esperando a rede neural); sem fila, espera só até a próxima ação prevista pelo Cérebro. Grava o trabalho a cada 30
+# minutos (os eventos sempre; o banco uma vez por dia) e, perto do limite de 6 horas do GitHub, aciona a sua própria
+# continuação, que retoma do ponto exato. Um vigia na Sala de controle do Eldorado0 religa a cadeia se ela parar.
 name: Eldorado
 on:
-  schedule:
-    - cron: "41 * * * *"   # minuto alterado em 22/10 para o GitHub registrar de novo o agendamento
   workflow_dispatch:
     inputs:
       gravar_banco:
@@ -22,10 +20,11 @@ concurrency:
   cancel-in-progress: false
 permissions:
   contents: write
+  actions: write
 jobs:
   passagem:
     runs-on: ubuntu-24.04
-    timeout-minutes: 50
+    timeout-minutes: 355
     env:
       TZ: America/Sao_Paulo
     steps:
@@ -40,10 +39,10 @@ jobs:
         run: eldorado iniciar
       - name: Reaplicar os eventos pendentes
         run: eldorado aplicar
-      - name: Passagem
+      - name: Funcionamento permanente (uma passagem depois da outra enquanto houver fila)
         env:
           ELDORADO_FORCAR: ${{ inputs.acionar_todos && '1' || '0' }}
-        run: eldorado executar workflows/passagem.toml
+        run: eldorado permanente --limite-min 320 --gravar-min 30
       - name: Aplicar os últimos eventos da passagem (o recibo do passo final e o fechamento)
         if: always()
         run: eldorado aplicar
@@ -52,16 +51,13 @@ jobs:
         run: eldorado fechar
       - name: Gravar no repositório
         if: always()
+        run: bash scripts/gravar.sh "${{ inputs.gravar_banco }}"
+      - name: Continuar (o funcionamento é permanente)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          git config user.name "Eldorado"
-          git config user.email "eldorado@users.noreply.github.com"
-          git add eventos/
-          ultimo=$(git log -1 --format=%ct -- dados/ 2>/dev/null || echo 0)
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.gravar_banco }}" = "true" ] || [ $(( $(date +%s) - ${ultimo:-0} )) -gt 72000 ]; then
-            git add dados/
-            echo "banco incluído (instantâneo)"
-          fi
-          if git diff --cached --quiet; then echo "nada a gravar"; exit 0; fi
-          git commit -q -m "Eldorado: passagem de $(date '+%d/%m/%Y %H:%M')"
-          for i in 1 2 3; do git pull -q --rebase --autostash origin main && git push -q origin main && exit 0; sleep $((i * 10)); done
-          exit 1
+          if [ "${{ job.status }}" != "success" ]; then echo "execução com falha: pausa de 5 minutos antes de continuar"; sleep 300; fi
+          curl -s -o /dev/null -w "continuação acionada: %{http_code}\n" -X POST -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/eldorado.yml/dispatches" \
+            -d '{"ref":"main","inputs":{"gravar_banco":"false","acionar_todos":"false"}}'

@@ -37,3 +37,10 @@ def test_ponto_de_partida_so_com_historico_curto():
     longo = [Execucao("x", em(d, 7), 1) for d in range(15, 21)]
     assert horas_produtivas("x", longo, {9, 12}, agora) == {7}
     assert horas_produtivas("x", [Execucao("x", em(22, 7) - timedelta(days=40), 5)], {9}, agora) == {9}  # velho demais
+
+
+def test_proxima_acao_prevista():
+    from eldorado.base.cerebro.decisao import proxima
+    hist = [Execucao("dou", em(d, 20), 9) for d in range(10, 16)]
+    assert proxima(em(22, 14), ["dou"], hist, {}).astimezone(BR).hour == 20                        # a hora aprendida
+    assert proxima(em(22, 21), ["dou"], hist, {}).astimezone(BR).date().day == 23                   # passou: amanhã cedo

@@ -234,6 +234,56 @@ def despausar(config: Path = CONFIG):
 
 
 @app.command()
+def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = CONFIG,
+               limite_min: float = typer.Option(320, help="duração desta execução; perto do limite, grava e passa a vez à continuação"),
+               gravar_min: float = typer.Option(30, help="grava o trabalho no repositório a cada tantos minutos"),
+               espera_max_min: float = typer.Option(15, help="sem fila, olha de novo no máximo a cada tantos minutos"),
+               gravar: bool = typer.Option(True, help="gravar no repositório (desligue fora do GitHub)")):
+    """FUNCIONAMENTO PERMANENTE (titular, 22/10/2026): sem horário de trabalho e descanso. Uma passagem depois da outra
+    enquanto houver fila; sem fila, espera só até a próxima ação prevista pelo Cérebro e volta."""
+    import os
+    import subprocess
+    import time
+    from datetime import datetime, timezone
+
+    from ..cerebro.fila import fila_do_sistema
+    _, dados, _ = _cfg(config)
+    inicio = ultimo = time.monotonic()
+    ciclo = 0
+
+    def gravar_agora() -> None:
+        if gravar:
+            r = subprocess.run(["bash", "scripts/gravar.sh", "false"], capture_output=True, text=True)
+            typer.echo(f"  gravação: {(r.stdout or r.stderr).strip()[-200:] or 'ok'}")
+
+    while True:
+        ciclo += 1
+        try:
+            _rodar(workflow, config, None, None, "leve")
+        except typer.Exit as e:
+            if e.exit_code not in (0, None):
+                typer.echo(f"ciclo {ciclo}: a passagem terminou com o código {e.exit_code}; o sistema segue")
+        except Exception as e:  # noqa: BLE001 — o funcionamento é permanente: a falha de um ciclo vira registro e pausa curta
+            typer.echo(f"ciclo {ciclo}: falha {type(e).__name__}: {str(e)[:300]}")
+            time.sleep(60)
+        os.environ.pop("ELDORADO_FORCAR", None)                     # acionar todos vale só para o primeiro ciclo
+        f = fila_do_sistema(dados, config.parent)
+        decorrido = time.monotonic() - inicio
+        typer.echo(f"ciclo {ciclo} · {datetime.now(timezone.utc):%H:%M} UTC · motores devidos {len(f['motores_devidos'])} · "
+                   f"livros em trabalho {f['livros_em_trabalho']} · próxima ação prevista {f['proxima_acao'][11:16]}")
+        if decorrido > limite_min * 60:
+            break
+        if time.monotonic() - ultimo > gravar_min * 60:
+            gravar_agora()
+            ultimo = time.monotonic()
+        if not f["total"]:
+            espera = min(f["proxima_s"], espera_max_min * 60, max(0.0, limite_min * 60 - decorrido))
+            typer.echo(f"  sem fila: espera {espera / 60:.0f} min (até a próxima ação prevista)")
+            time.sleep(espera)
+    typer.echo(f"fim desta execução depois de {ciclo} ciclo(s); a continuação segue o trabalho")
+
+
+@app.command()
 def trabalhar(config: Path = CONFIG, trabalhadores: int = typer.Option(0, help="0 = o governador decide")):
     """Roda o consumidor da fila, sob o governador e a pausa."""
     c, dados, eventos = _cfg(config)
