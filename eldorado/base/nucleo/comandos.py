@@ -348,6 +348,16 @@ def gravar(urls: list[str], pasta: Path = PASTA_GRAVAR, navegador: bool = NAVEGA
     idx_p.write_text(json.dumps(indice, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
+PORTA_API = typer.Option(8000, help="a porta da API")
+
+
+@app.command()
+def api(porta: int = PORTA_API):
+    """A API do sistema (FastAPI): a saúde, os motores, os livros com as certidões e a história, as abertas."""
+    from ..painel.api import servir
+    servir(porta)
+
+
 PASTA_PAINEL = typer.Option(Path("_site"), help="onde gerar o site do painel")
 
 

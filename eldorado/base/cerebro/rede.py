@@ -104,7 +104,11 @@ class _Pergunta(Rede):
         super().__init__()
         self._car = car
 
+    lote = None                                                    # o modelo em lote, quando discerne melhor (cerebro/lote.py)
+
     def nota_de(self, x: dict[str, float]) -> float:
+        if self.lote is not None:
+            return self.lote.nota(x)
         return float(self.modelo.predict_proba_one(x).get(True, 0.5))
 
     def aprender_de(self, x: dict[str, float], valido: bool) -> None:
@@ -133,8 +137,10 @@ class RedeNeural:
     def nota_motor(self, motor: str, hora: int, dia: int) -> float:
         return self.p["motor"].nota_de(car_motor(motor, hora, dia))
 
+    lote: dict[str, Any] = {}
+
     def metricas(self) -> dict[str, dict]:
-        return {k: {"amostras": r.amostras, **r.metricas()} for k, r in self.p.items()}
+        return {k: {"amostras": r.amostras, **r.metricas(), **({"lote": self.lote[k]} if k in self.lote else {})} for k, r in self.p.items()}
 
     @classmethod
     def treinar(cls, biblioteca, cerebro) -> "RedeNeural":
@@ -185,8 +191,11 @@ class RedeNeural:
         for m, ini, ach in cerebro.execute("SELECT motor, inicio, achados FROM execucao_motor"):
             t = datetime.fromisoformat(ini).astimezone(fuso)
             casos.append((ini, "motor", car_motor(ap.get(m, m), t.hour, t.weekday()), (ach or 0) > 0))
-        for _, pergunta, x, valido in sorted(casos, key=lambda c: str(c[0])):
+        casos = sorted(casos, key=lambda c: str(c[0]))
+        for _, pergunta, x, valido in casos:
             rede.p[pergunta].aprender_de(x, valido)
+        from .lote import comparar_e_ligar  # o lote (scikit-learn): usado onde discerne melhor
+        rede.lote = comparar_e_ligar(rede, casos)
         return rede
 
 
