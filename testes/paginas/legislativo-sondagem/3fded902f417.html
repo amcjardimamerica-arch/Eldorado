@@ -1,0 +1,1757 @@
+<!DOCTYPE html>
+<!-- Versão atual do sistema: 5.25.13 -->
+<html ng-app="app.portal" lang="pt-BR">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Portal da Alego</title>
+    <meta name="description" content="Assembleia Legislativa de Goiás">
+    <!-- Facebook Open Graph data -->
+    <meta property="og:title" content="Portal da Alego"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:url" content="https://portal.al.go.leg.br/"/>
+    <meta property="og:image" content="https://portal.al.go.leg.br/assets/marca-433a063d88b5d6e0cc42820f9d7d457197e0c27d22f0f0412179d2c47e20bfc1.svg"/>
+    <meta property="og:description" content="Assembleia Legislativa de Goiás"/>
+    <meta property="og:site_name" content="Portal da Alego"/>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-675MZWTHB1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-675MZWTHB1');
+    </script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-25771255-1']);
+      _gaq.push(['_setDomainName', 'al.go.leg.br']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <!-- Twitter Card data -->
+    <!--
+		<meta name="twitter:card" content="summary_large_image">
+		<meta name="twitter:site" content="">
+		<meta name="twitter:title" content="">
+		<meta name="twitter:description" content="">
+		<meta name="twitter:creator" content="">
+		<meta name="twitter:image:src" content="">
+    -->
+    <script src="/assets/application.portal-4967644f36345315b4e089d0f0e77aed5b649a9fb12eb9b8f0b47012d986ef7b.js"></script>
+    <link rel="stylesheet" media="all" href="/assets/application.portal-43d862d9089b60aa213acf51ecbcce72c9b387aff3babc0d0c970e25aa56806d.css" />
+    <script src="/packs/js/application-4126552784d6276d0ce3.js" data-turbolinks-track="reload"></script>
+    <link rel="icon" type="image/png" href="/assets/favicon-portal-13ba34ada23815896f0ef6ed2cb318f9b8b30675419be4c65f7f1a16ee141c8d.png" />
+    <link rel="alternate" type="application/rss+xml" title="Assembleia Legislativa do Estado de Goiás" href="/noticias/feed"/>
+  </head>
+  <body>
+    <script>
+      const contraste = localStorage.getItem('contraste') === 'true'
+
+      if (contraste) {
+        document.body.classList.add('alto-contraste')
+      } else {
+        document.body.classList.remove('alto-contraste')
+      }
+    </script>
+    <!-- header -->
+<header class="header no-print">
+    <section class="header__principal">
+        <div class="flex-container flex-container--pg">
+            <!-- menu -->
+            <section class="menu-wrapper">
+                <!-- menu-button -->
+                <button class="menu-button" id="menu" title="clique para acessar o menu" type="button" onclick="toggleMenu()"
+                    aria-label="Acesso ao menu principal">
+                    <svg class="ico ico--fechado">
+                        <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#menu" /></svg>
+                    <svg class="ico ico--aberto">
+                        <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#fechar" /></svg>
+                </button>
+
+                <nav class="nav">
+                    <div class="nav-container">
+                        <ul class="menu">
+                                    <li class="menu__item group">
+                                        <label class="menu__label" title="A Instituição">A Instituição</label>
+                                        <ul class="submenu">
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Assessoramento Temático">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/assessoramento">Assessoramento Temático</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Conheça a Assembleia">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/poderlegislativo">Conheça a Assembleia</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Contatos">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/contatos">Contatos</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Escola do Legislativo">
+                                                        <a class="menu__link" target="_blank" onclick="closeMenu()"
+                                                            href="https://escola.al.go.leg.br">Escola do Legislativo</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Legislação e Regimento">
+                                                        <a class="menu__link" target="_blank" onclick="closeMenu()"
+                                                            href="https://transparencia.al.go.leg.br/legislacoes">Legislação e Regimento</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="LGPD">
+                                                        <a class="menu__link" target="_blank" onclick="closeMenu()"
+                                                            href="/sites/lgpd">LGPD</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Mapa do Palácio Maguito Vilela">
+                                                        <a class="menu__link" target="_blank" onclick="closeMenu()"
+                                                            href="/portal/mapa/mapa_alego_2024.pdf">Mapa do Palácio Maguito Vilela</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Memorial Legislativo">
+                                                        <a class="menu__link" target="_blank" onclick="closeMenu()"
+                                                            href="https://publicacoes.al.go.leg.br/memorial">Memorial Legislativo</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Procuradoria">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/procuradoria">Procuradoria</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Procuradoria da Mulher">
+                                                        <a class="menu__link" target="_blank" onclick="closeMenu()"
+                                                            href="/sites/procuradoriadamulher">Procuradoria da Mulher</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Publicações">
+                                                        <a class="menu__link" target="_blank" onclick="closeMenu()"
+                                                            href="https://publicacoes.al.go.leg.br">Publicações</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Validador de Contracheque">
+                                                        <a class="menu__link" target="_blank" onclick="closeMenu()"
+                                                            href="https://aeros.al.go.leg.br:8081/#/vcc/">Validador de Contracheque</a>
+
+                                                    </label>
+                                                </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu__item">
+                                        <a class="menu__link" title="Consulta Legislativa" target="_blank" href="https://alegodigital.al.go.leg.br" onclick="closeMenu()">Consulta Legislativa</a>
+                                    </li>
+                                    <li class="menu__item group">
+                                        <label class="menu__label" title="Imprensa">Imprensa</label>
+                                        <ul class="submenu">
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Últimas Notícias">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/noticias">Últimas Notícias</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Notícias dos Gabinetes">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/noticias-dos-gabinetes">Notícias dos Gabinetes</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Discursos">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/discursos">Discursos</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Galeria de Fotos">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/galerias">Galeria de Fotos</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="TV Assembleia">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/#tvassembleia">TV Assembleia</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Matérias Especiais">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/materias-especiais">Matérias Especiais</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Credenciamento para a Imprensa">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/credenciamento-imprensa">Credenciamento para a Imprensa</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Manual de Redação">
+                                                        <a class="menu__link" target="_blank" onclick="closeMenu()"
+                                                            href="/documentos/manual/manual_de_redacao.pdf">Manual de Redação</a>
+
+                                                    </label>
+                                                </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu__item">
+                                        <a class="menu__link" title="Agenda" target="_self" href="/agenda" onclick="closeMenu()">Agenda</a>
+                                    </li>
+                                    <li class="menu__item">
+                                        <a class="menu__link" title="Pauta Prévia" target="_blank" href="https://alegodigital.al.go.leg.br/spl/sessoes.aspx" onclick="closeMenu()">Pauta Prévia</a>
+                                    </li>
+                                    <li class="menu__item group">
+                                        <label class="menu__label" title="Deputados">Deputados</label>
+                                        <ul class="submenu">
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Deputados em Exercício">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/deputados/em-exercicio">Deputados em Exercício</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Liderança Parlamentar">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/deputados/liderancas-parlamentares">Liderança Parlamentar</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Mesa Diretora">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/deputados/mesa-diretora">Mesa Diretora</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Conselho de Ética e Decoro Parlamentar">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/19">Conselho de Ética e Decoro Parlamentar</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Deputados fora do exercício">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/deputados/fora-exercicio">Deputados fora do exercício</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Galeria de Presidentes">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/deputados/galeria-presidentes">Galeria de Presidentes</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Legislaturas anteriores">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/legislaturas">Legislaturas anteriores</a>
+
+                                                    </label>
+                                                </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu__item group">
+                                        <label class="menu__label" title="Comissões">Comissões</label>
+                                        <ul class="submenu">
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Todas as Comissões">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes">Todas as Comissões</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão da Criança e Adolescente">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/14">Comissão da Criança e Adolescente</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Agricultura, Pecuária e Cooperativismo">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/9">Comissão de Agricultura, Pecuária e Cooperativismo</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Assistência Social">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/18">Comissão de Assistência Social</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Atenção à Pessoa Idosa">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/22">Comissão de Atenção à Pessoa Idosa</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Constituição, Justiça e Redação">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/1">Comissão de Constituição, Justiça e Redação</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Cultura, Esporte e Lazer">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/21">Comissão de Cultura, Esporte e Lazer</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Defesa dos Direitos da Pessoa com Deficiência">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/39">Comissão de Defesa dos Direitos da Pessoa com Deficiência</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Defesa dos Direitos do Consumidor">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/10">Comissão de Defesa dos Direitos do Consumidor</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Desenvolvimento Econômico, Ciência, Tecnologia e Inovação">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/6">Comissão de Desenvolvimento Econômico, Ciência, Tecnologia e Inovação</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Direitos Humanos, Cidadania e Legislação Participativa">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/12">Comissão de Direitos Humanos, Cidadania e Legislação Participativa</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Educação">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/3">Comissão de Educação</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Empreendedorismo e Cidades Inteligentes">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/68">Comissão de Empreendedorismo e Cidades Inteligentes</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Habitação, Reforma Agrária e Urbana">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/15">Comissão de Habitação, Reforma Agrária e Urbana</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Integração e Desenvolvimento do Entorno do Distrito Federal">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/94">Comissão de Integração e Desenvolvimento do Entorno do Distrito Federal</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Meio Ambiente e Recursos Hídricos">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/7">Comissão de Meio Ambiente e Recursos Hídricos</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Minas e Energia">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/11">Comissão de Minas e Energia</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Organização dos Municípios">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/13">Comissão de Organização dos Municípios</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Promoção e Defesa dos Direitos das Pessoas com Transtorno do Espectro Autista e outros Transtornos do Neurodesenvolvimento">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/91">Comissão de Promoção e Defesa dos Direitos das Pessoas com Transtorno do Espectro Autista e outros Transtornos do Neurodesenvolvimento</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Relações Internacionais">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/40">Comissão de Relações Internacionais</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Saúde">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/4">Comissão de Saúde</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Segurança Pública">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/8">Comissão de Segurança Pública</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Serviços e Obras Públicas">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/5">Comissão de Serviços e Obras Públicas</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Tributação, Finanças e Orçamento">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/2">Comissão de Tributação, Finanças e Orçamento</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão de Turismo">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/16">Comissão de Turismo</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Comissão Executiva">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/42">Comissão Executiva</a>
+
+                                                    </label>
+                                                </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu__item group">
+                                        <label class="menu__label" title="Frente Parlamentar">Frente Parlamentar</label>
+                                        <ul class="submenu">
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frentes Parlamentares Ativas">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/frentes_parlamentares_ativas">Frentes Parlamentares Ativas</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frentes Parlamentares Inativas">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/frentees_parlamentares_inativas">Frentes Parlamentares Inativas</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar da Adoção">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/82">Frente Parlamentar da Adoção</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar da Universidade Estadual de Goiás">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/80">Frente Parlamentar da Universidade Estadual de Goiás</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar de Apoio a Consórcios Públicos">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/47">Frente Parlamentar de Apoio a Consórcios Públicos</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar de Energias Renováveis">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/60">Frente Parlamentar de Energias Renováveis</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar de Infraestrutura e Logística">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/49">Frente Parlamentar de Infraestrutura e Logística</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar de Integração Goiás - República Popular da China">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/69">Frente Parlamentar de Integração Goiás - República Popular da China</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar de Prevenção e Enfrentamento das Drogas">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/55">Frente Parlamentar de Prevenção e Enfrentamento das Drogas</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar do Agronegócio e da Infraestrutura">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/48">Frente Parlamentar do Agronegócio e da Infraestrutura</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar do Empreendedorismo e das Cidades Inteligentes">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/50">Frente Parlamentar do Empreendedorismo e das Cidades Inteligentes</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar do Entorno">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/83">Frente Parlamentar do Entorno</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar do Terceiro Setor">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/70">Frente Parlamentar do Terceiro Setor</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar em Defesa da Cannabis Medicinal">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/58">Frente Parlamentar em Defesa da Cannabis Medicinal</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar em Defesa da Saúde Bucal">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/63">Frente Parlamentar em Defesa da Saúde Bucal</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar em Defesa das Instituições Federais de Ensino Superior de Goiás">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/25">Frente Parlamentar em Defesa das Instituições Federais de Ensino Superior de Goiás</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar em Defesa da Transição Climática Justa e Promoção dos Créditos de Carbono como Solução Sustentável">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/81">Frente Parlamentar em Defesa da Transição Climática Justa e Promoção dos Créditos de Carbono como Solução Sustentável</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar em Defesa da Universalização do Acesso ao Saneamento Básico no Estado de Goiás">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/79">Frente Parlamentar em Defesa da Universalização do Acesso ao Saneamento Básico no Estado de Goiás</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar em Defesa do Esporte">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/66">Frente Parlamentar em Defesa do Esporte</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar em Defesa dos Agentes Comunitários de Saúde e dos Agentes de Combate às Endemias">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/62">Frente Parlamentar em Defesa dos Agentes Comunitários de Saúde e dos Agentes de Combate às Endemias</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar em Defesa dos Servidores Públicos">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/46">Frente Parlamentar em Defesa dos Servidores Públicos</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar em Defesa e Incentivo à Cultura, aos Eventos, a Hotelaria e ao Turismo Goiano e Produção Associada ao Turismo">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/65">Frente Parlamentar em Defesa e Incentivo à Cultura, aos Eventos, a Hotelaria e ao Turismo Goiano e Produção Associada ao Turismo</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar pela Aplicação do Piso de Enfermagem">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/59">Frente Parlamentar pela Aplicação do Piso de Enfermagem</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar pela Erradicação dos Lixões no Estado de Goiás">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/71">Frente Parlamentar pela Erradicação dos Lixões no Estado de Goiás</a>
+
+                                                    </label>
+                                                </li>
+                                                <li class="menu__item">
+                                                    <label class="menu__label" title="Frente Parlamentar Pró-Indústria">
+                                                        <a class="menu__link" target="_self" onclick="closeMenu()"
+                                                            href="/comissoes/54">Frente Parlamentar Pró-Indústria</a>
+
+                                                    </label>
+                                                </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu__item">
+                                        <a class="menu__link" title="Transparência" target="_blank" href="https://transparencia.al.go.leg.br" onclick="closeMenu()">Transparência</a>
+                                    </li>
+                                    <li class="menu__item">
+                                        <a class="menu__link" title="Opine Cidadão" target="_blank" href="https://alegodigital.al.go.leg.br/opinecidadao/" onclick="closeMenu()">Opine Cidadão</a>
+                                    </li>
+                                    <li class="menu__item">
+                                        <a class="menu__link" title="Fale Conosco" target="_blank" href="https://transparencia.al.go.leg.br/fale-conosco" onclick="closeMenu()">Fale Conosco</a>
+                                    </li>
+                                    <li class="menu__item">
+                                        <a class="menu__link" title="Portal do Servidor" target="_blank" href="https://aeros.al.go.leg.br:8081/#/" onclick="closeMenu()">Portal do Servidor</a>
+                                    </li>
+                                    <li class="menu__item">
+                                        <a class="menu__link" title="Cadastro de Veículos de Comunicação" target="_self" href="/sites/cvc" onclick="closeMenu()">Cadastro de Veículos de Comunicação</a>
+                                    </li>
+                                    <li class="menu__item">
+                                        <a class="menu__link" title="WIFI" target="_self" href="/wifi" onclick="closeMenu()">WIFI</a>
+                                    </li>
+                        </ul>
+                        <section class="redes">
+                            <p class="redes__texto"><span>Acompanhe a</span><br>Alego nas redes sociais</p>
+                            <div class="redes__itens">
+                                <a href="https://www.facebook.com/AssembleiaGO" class="portal-link" target="_blank" title="Siga-nos pelo Facebook">
+    <svg class="ico ico--facebook">
+        <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#facebook" /></svg>
+</a>
+
+<a href="https://www.instagram.com/assembleiago/" class="portal-link" target="_blank" title="Siga-nos pelo Instagram">
+    <svg class="ico ico--instagram">
+        <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#instagram" /></svg>
+</a>
+
+<a href="https://twitter.com/assembleiago" class="portal-link" target="_blank" title="Siga-nos pelo Twitter">
+    <svg class="ico ico--twitter">
+        <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#twitter" /></svg>
+</a>
+
+<a href="https://www.youtube.com/channel/UC62tBsh6awMUD5cyBrjvr8Q" class="portal-link" target="_blank" title="Siga-nos pelo Youtube">
+    <svg class="ico ico--youtube">
+        <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#youtube" /></svg>
+</a>
+
+                            </div>
+                        </section>
+                        <section class="destaques">
+                          <a class="destaques__item" target="_blank" href="https://transparencia.al.go.leg.br/perguntas-frequentes" title="Perguntas Frequentes" onclick="closeMenu()">
+                            <svg class="ico">
+                              <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#ajuda" /></svg>
+                            <div class="texto"><span>Perguntas</span><br><span>Frequentes</span></div>
+                          </a>
+                            <a class="destaques__item" target="_blank" href="https://transparencia.al.go.leg.br/licitacoes" title="Licitações" onclick="closeMenu()">
+                                <svg class="ico">
+                                    <use xlink:href="/assets/ico-extra-0e9c01eea3edbb329f40d7741b896b7c0853673c1c06602c99dd5b8bb4c47df2.svg#martelo" /></svg>
+                                <span class="texto">Licitações</span>
+                            </a>
+                            <a class="destaques__item" target="_blank" href="https://transparencia.al.go.leg.br" title="Portal da Transparência" onclick="closeMenu()">
+                                <svg class="ico">
+                                    <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#info" /></svg>
+                                <div class="texto"><span>Portal da</span><br><span>Transparência</span></div>
+                                <span></span>
+                            </a>
+                            <a class="destaques__item" target="_blank" href="https://transparencia.al.go.leg.br/fale-conosco" title="Deixe seu recado" onclick="closeMenu()">
+                                <svg class="ico">
+                                    <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#envelope" /></svg>
+                                <span class="texto">Deixe seu recado</span>
+                            </a>
+                        </section>
+                    </div>
+                </nav>
+
+                <!-- logo -->
+                <a href="/" class="logo">
+                    <img class="logo__img" src="/assets/marca-6767355f879fe354466145e1b1a89776030cf477a6dfa7ffe6ea29f9b686b3d5.png" alt="Marca Assembleia Legislativa do Estado de Goiás"
+                        title="Assembleia Legislativa do Estado de Goiás">
+                    <img class="logo__img contraste" src="/assets/marca_pb-e3af4455c02ff56bcb05ea8366fb32d577d941a576d73ad6a5be76f9b129bacb.png" alt="Marca Assembleia Legislativa do Estado de Goiás"
+                        title="Assembleia Legislativa do Estado de Goiás">
+                </a>
+                <!-- fim logo -->
+
+            </section>
+            <!-- fim menu -->
+            <!-- portais alego -->
+            <section class="header__item destaque oculta-medio">
+                <a class="portal-link" target="_blank" href="https://alegodigital.al.go.leg.br/opinecidadao/" title="Opine Cidadão">
+                    <svg class="ico ico--ajuste" alt="Opine Cidadão"><use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#opine" /></svg>
+                </a>
+                <!-- <a class="portais__link" target="_blank" href="https://escola.al.go.leg.br" title="Escola do Legislativo">
+                    <svg class="ico ico--ajuste" alt="Escola do Legislativo"><use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#escola" /></svg>
+                </a>
+                <a class="portal-link" href="/#tvassembleia" title="TV Assembleia">
+                    <svg class="ico ico--ajuste-maior" alt="TV Assembleia"><use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#tv-assembleia" /></svg>
+                </a> -->
+            </section>
+            <!-- fim portais alego -->
+            <section class="header__item header__item--consulta oculta-medio">
+                <a href="https://alegodigital.al.go.leg.br/spl/" target="_blank">
+                    <svg id="Camada_2" data-name="Camada 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1278.33 446.23">
+                        <defs>
+                            <style>
+                                .cls-1 {
+                                    fill: #2b70e0;
+                                }
+                    
+                                .cls-2 {
+                                    fill: #2fc15f;
+                                }
+                            </style>
+                        </defs>
+                        <g id="Layer_1" data-name="Layer 1">
+                            <g>
+                                <g>
+                                    <path class="cls-1"
+                                        d="m339.76,223.34c-11.58-6.42-20.66-15.5-27.26-27.26-6.6-11.75-9.9-25.32-9.9-40.69s3.39-28.93,10.17-40.69c6.78-11.75,16.05-20.84,27.8-27.26,11.75-6.42,24.86-9.63,39.33-9.63s27.58,3.21,39.33,9.63c11.75,6.42,21.02,15.51,27.8,27.26,6.78,11.76,10.17,25.32,10.17,40.69s-3.48,28.94-10.44,40.69c-6.96,11.76-16.37,20.85-28.21,27.26-11.85,6.42-25.09,9.63-39.74,9.63s-27.49-3.21-39.06-9.63Zm58.46-28.48c6.06-3.34,10.89-8.36,14.51-15.05,3.62-6.69,5.43-14.83,5.43-24.41,0-14.28-3.76-25.27-11.26-32.96-7.51-7.68-16.68-11.53-27.53-11.53s-19.94,3.84-27.26,11.53c-7.32,7.69-10.99,18.67-10.99,32.96s3.57,25.27,10.72,32.96c7.14,7.69,16.14,11.53,26.99,11.53,6.87,0,13.33-1.67,19.4-5.02Z" />
+                                    <path class="cls-1"
+                                        d="m605.06,95.04c11.03,11.3,16.55,27.08,16.55,47.34v88.16h-37.98v-83.01c0-11.94-2.98-21.11-8.95-27.53-5.97-6.42-14.11-9.63-24.41-9.63s-18.76,3.21-24.82,9.63c-6.06,6.42-9.09,15.6-9.09,27.53v83.01h-37.98V80.25h37.98v18.72c5.06-6.51,11.53-11.62,19.4-15.33,7.87-3.7,16.5-5.56,25.91-5.56,17.9,0,32.37,5.65,43.4,16.95Z" />
+                                    <path class="cls-1"
+                                        d="m675.31,226.33c-9.77-4.43-17.5-10.44-23.19-18.04-5.7-7.59-8.82-16-9.36-25.23h38.25c.72,5.79,3.57,10.58,8.54,14.38,4.97,3.8,11.16,5.7,18.58,5.7s12.88-1.45,16.95-4.34c4.07-2.89,6.1-6.6,6.1-11.12,0-4.88-2.49-8.54-7.46-10.99-4.98-2.44-12.89-5.11-23.74-8-11.22-2.71-20.39-5.51-27.53-8.41-7.15-2.89-13.29-7.32-18.45-13.29-5.15-5.97-7.73-14.01-7.73-24.14,0-8.32,2.39-15.91,7.19-22.79,4.79-6.87,11.66-12.3,20.62-16.28,8.95-3.98,19.48-5.97,31.6-5.97,17.9,0,32.19,4.48,42.86,13.43,10.67,8.95,16.55,21.02,17.63,36.21h-36.35c-.54-5.97-3.03-10.71-7.46-14.24-4.43-3.53-10.35-5.29-17.77-5.29-6.87,0-12.16,1.27-15.87,3.8-3.71,2.53-5.56,6.06-5.56,10.58,0,5.07,2.53,8.91,7.6,11.53,5.06,2.62,12.93,5.29,23.6,8,10.85,2.71,19.8,5.52,26.86,8.41,7.05,2.9,13.16,7.37,18.31,13.43,5.15,6.06,7.82,14.06,8,24.01,0,8.68-2.4,16.46-7.19,23.33-4.79,6.88-11.66,12.25-20.62,16.14-8.95,3.89-19.4,5.83-31.33,5.83s-23.33-2.22-33.09-6.65Z" />
+                                    <path class="cls-1"
+                                        d="m933.83,80.25v150.28h-38.25v-18.99c-4.88,6.51-11.26,11.62-19.12,15.33s-16.41,5.56-25.63,5.56c-11.76,0-22.15-2.48-31.2-7.46-9.04-4.97-16.14-12.3-21.29-21.97-5.15-9.67-7.73-21.2-7.73-34.59v-88.16h37.98v82.74c0,11.94,2.98,21.12,8.95,27.53,5.97,6.42,14.11,9.63,24.41,9.63s18.72-3.21,24.69-9.63c5.97-6.42,8.95-15.6,8.95-27.53v-82.74h38.25Z" />
+                                    <path class="cls-1" d="m1002.46,29.8v200.74h-37.98V29.8h37.98Z" />
+                                    <path class="cls-1"
+                                        d="m1077.33,111.45v72.7c0,5.07,1.22,8.73,3.66,10.99,2.44,2.26,6.55,3.39,12.34,3.39h17.63v32.01h-23.87c-32.01,0-48.01-15.55-48.01-46.66v-72.43h-17.9v-31.2h17.9v-37.16h38.25v37.16h33.64v31.2h-33.64Z" />
+                                    <path class="cls-1"
+                                        d="m1130.9,114.43c6.06-11.75,14.28-20.79,24.69-27.13,10.4-6.33,22.01-9.49,34.86-9.49,11.21,0,21.02,2.26,29.43,6.78,8.41,4.52,15.14,10.22,20.21,17.09v-21.43h38.25v150.28h-38.25v-21.97c-4.88,7.05-11.62,12.88-20.21,17.5-8.59,4.61-18.49,6.92-29.7,6.92-12.66,0-24.19-3.25-34.59-9.77-10.4-6.51-18.63-15.69-24.69-27.53-6.06-11.84-9.09-25.45-9.09-40.83s3.03-28.66,9.09-40.42Zm103.76,17.23c-3.62-6.6-8.5-11.67-14.65-15.19-6.15-3.53-12.75-5.29-19.8-5.29s-13.56,1.72-19.53,5.15c-5.97,3.44-10.81,8.46-14.51,15.06-3.71,6.6-5.56,14.42-5.56,23.46s1.85,16.95,5.56,23.74c3.7,6.78,8.59,11.98,14.65,15.6,6.06,3.62,12.52,5.43,19.4,5.43s13.65-1.76,19.8-5.29c6.15-3.53,11.03-8.59,14.65-15.19,3.62-6.6,5.42-14.51,5.42-23.74s-1.81-17.13-5.42-23.74Z" />
+                                </g>
+                                <g>
+                                    <path class="cls-2" d="m474.2,383.92h37.32v18.01h-60.04v-113.27h22.72v95.26Z" />
+                                    <path class="cls-2"
+                                        d="m604.84,363.8h-65.72c.54,6.49,2.81,11.58,6.82,15.25,4,3.68,8.93,5.52,14.77,5.52,8.44,0,14.44-3.62,18.01-10.87h24.5c-2.6,8.66-7.57,15.77-14.93,21.34-7.36,5.57-16.39,8.36-27.1,8.36-8.66,0-16.42-1.92-23.29-5.76-6.87-3.84-12.23-9.28-16.07-16.31-3.84-7.03-5.76-15.15-5.76-24.34s1.89-17.47,5.68-24.5c3.79-7.03,9.09-12.44,15.9-16.23,6.82-3.79,14.66-5.68,23.53-5.68s16.2,1.84,22.96,5.52c6.76,3.68,12.01,8.9,15.74,15.66,3.73,6.76,5.6,14.52,5.6,23.29,0,3.25-.22,6.17-.65,8.76Zm-22.88-15.25c-.11-5.84-2.22-10.52-6.33-14.04-4.11-3.51-9.14-5.27-15.09-5.27-5.63,0-10.36,1.7-14.2,5.11-3.84,3.41-6.19,8.14-7.06,14.2h42.68Z" />
+                                    <path class="cls-2"
+                                        d="m670.89,314.54c5.08,2.65,9.09,6.09,12.01,10.3v-12.82h22.88v90.55c0,8.33-1.68,15.77-5.03,22.31-3.35,6.54-8.39,11.74-15.09,15.58-6.71,3.84-14.82,5.76-24.34,5.76-12.77,0-23.23-2.98-31.4-8.92-8.17-5.95-12.79-14.07-13.88-24.34h22.56c1.19,4.11,3.76,7.38,7.71,9.82,3.95,2.44,8.74,3.65,14.36,3.65,6.6,0,11.95-1.98,16.07-5.92,4.11-3.95,6.17-9.93,6.17-17.93v-13.96c-2.92,4.22-6.95,7.74-12.09,10.55-5.14,2.81-11.01,4.22-17.61,4.22-7.57,0-14.5-1.95-20.77-5.84-6.28-3.89-11.23-9.38-14.85-16.47-3.63-7.09-5.44-15.23-5.44-24.42s1.81-17.15,5.44-24.18c3.62-7.03,8.55-12.44,14.77-16.23,6.22-3.79,13.17-5.68,20.85-5.68,6.71,0,12.6,1.33,17.69,3.98Zm8.76,28.24c-2.17-3.95-5.09-6.98-8.76-9.09-3.68-2.11-7.63-3.16-11.85-3.16s-8.11,1.03-11.68,3.08c-3.57,2.06-6.47,5.06-8.68,9.01-2.22,3.95-3.33,8.63-3.33,14.04s1.11,10.14,3.33,14.2c2.22,4.06,5.14,7.17,8.76,9.33,3.62,2.17,7.49,3.25,11.6,3.25s8.17-1.05,11.85-3.16c3.68-2.11,6.6-5.14,8.76-9.09,2.16-3.95,3.25-8.68,3.25-14.2s-1.08-10.25-3.25-14.2Z" />
+                                    <path class="cls-2"
+                                        d="m725.49,297.5c-2.65-2.54-3.98-5.7-3.98-9.49s1.32-6.95,3.98-9.49c2.65-2.54,5.98-3.81,9.98-3.81s7.33,1.27,9.98,3.81c2.65,2.54,3.98,5.71,3.98,9.49s-1.33,6.95-3.98,9.49c-2.65,2.54-5.98,3.81-9.98,3.81s-7.33-1.27-9.98-3.81Zm21.18,14.52v89.9h-22.72v-89.9h22.72Z" />
+                                    <path class="cls-2"
+                                        d="m779.61,399.42c-5.84-2.65-10.47-6.25-13.88-10.79s-5.27-9.58-5.6-15.09h22.88c.43,3.46,2.13,6.33,5.11,8.6,2.97,2.27,6.68,3.41,11.12,3.41s7.71-.87,10.14-2.6c2.43-1.73,3.65-3.95,3.65-6.65,0-2.92-1.49-5.11-4.46-6.57-2.98-1.46-7.71-3.06-14.2-4.79-6.71-1.62-12.2-3.3-16.47-5.03-4.28-1.73-7.95-4.38-11.03-7.95-3.08-3.57-4.63-8.38-4.63-14.44,0-4.98,1.43-9.52,4.3-13.63,2.87-4.11,6.98-7.36,12.33-9.74,5.36-2.38,11.66-3.57,18.91-3.57,10.71,0,19.26,2.68,25.64,8.03,6.38,5.36,9.9,12.58,10.55,21.66h-21.75c-.32-3.57-1.81-6.41-4.46-8.52-2.65-2.11-6.2-3.16-10.63-3.16-4.11,0-7.28.76-9.49,2.27-2.22,1.52-3.33,3.63-3.33,6.33,0,3.03,1.51,5.33,4.54,6.9,3.03,1.57,7.73,3.16,14.12,4.79,6.49,1.62,11.85,3.3,16.07,5.03,4.22,1.73,7.87,4.41,10.95,8.03,3.08,3.63,4.68,8.41,4.79,14.36,0,5.19-1.43,9.85-4.3,13.96-2.87,4.11-6.98,7.33-12.33,9.66-5.35,2.32-11.6,3.49-18.74,3.49s-13.96-1.33-19.8-3.98Z" />
+                                    <path class="cls-2" d="m872.11,281.84v120.09h-22.72v-120.09h22.72Z" />
+                                    <path class="cls-2"
+                                        d="m890.05,332.47c3.62-7.03,8.55-12.44,14.77-16.23,6.22-3.79,13.17-5.68,20.85-5.68,6.71,0,12.58,1.35,17.61,4.06,5.03,2.71,9.06,6.11,12.09,10.22v-12.82h22.88v89.9h-22.88v-13.14c-2.92,4.22-6.95,7.71-12.09,10.47-5.14,2.76-11.06,4.14-17.77,4.14-7.57,0-14.47-1.95-20.69-5.84-6.22-3.89-11.14-9.38-14.77-16.47-3.63-7.09-5.44-15.23-5.44-24.42s1.81-17.15,5.44-24.18Zm62.07,10.31c-2.17-3.95-5.09-6.98-8.76-9.09-3.68-2.11-7.63-3.16-11.85-3.16s-8.11,1.03-11.68,3.08c-3.57,2.06-6.47,5.06-8.68,9.01-2.22,3.95-3.33,8.63-3.33,14.04s1.11,10.14,3.33,14.2c2.22,4.06,5.14,7.17,8.76,9.33,3.62,2.17,7.49,3.25,11.6,3.25s8.17-1.05,11.85-3.16c3.68-2.11,6.6-5.14,8.76-9.09,2.16-3.95,3.25-8.68,3.25-14.2s-1.08-10.25-3.25-14.2Z" />
+                                    <path class="cls-2"
+                                        d="m1022.87,330.69v43.49c0,3.03.73,5.22,2.19,6.57,1.46,1.35,3.92,2.03,7.38,2.03h10.55v19.15h-14.28c-19.15,0-28.72-9.3-28.72-27.91v-43.33h-10.71v-18.66h10.71v-22.23h22.88v22.23h20.12v18.66h-20.12Z" />
+                                    <path class="cls-2"
+                                        d="m1056.87,297.5c-2.65-2.54-3.98-5.7-3.98-9.49s1.32-6.95,3.98-9.49c2.65-2.54,5.98-3.81,9.98-3.81s7.33,1.27,9.98,3.81c2.65,2.54,3.98,5.71,3.98,9.49s-1.33,6.95-3.98,9.49c-2.65,2.54-5.98,3.81-9.98,3.81s-7.33-1.27-9.98-3.81Zm21.18,14.52v89.9h-22.72v-89.9h22.72Z" />
+                                    <path class="cls-2"
+                                        d="m1133.87,381l22.72-68.97h24.18l-33.27,89.9h-27.59l-33.11-89.9h24.34l22.72,68.97Z" />
+                                    <path class="cls-2"
+                                        d="m1189.12,332.47c3.62-7.03,8.55-12.44,14.77-16.23,6.22-3.79,13.17-5.68,20.85-5.68,6.71,0,12.58,1.35,17.61,4.06,5.03,2.71,9.06,6.11,12.09,10.22v-12.82h22.88v89.9h-22.88v-13.14c-2.92,4.22-6.95,7.71-12.09,10.47-5.14,2.76-11.06,4.14-17.77,4.14-7.57,0-14.47-1.95-20.69-5.84-6.22-3.89-11.14-9.38-14.77-16.47-3.63-7.09-5.44-15.23-5.44-24.42s1.81-17.15,5.44-24.18Zm62.07,10.31c-2.17-3.95-5.09-6.98-8.76-9.09-3.68-2.11-7.63-3.16-11.85-3.16s-8.11,1.03-11.69,3.08c-3.57,2.06-6.46,5.06-8.68,9.01-2.22,3.95-3.33,8.63-3.33,14.04s1.11,10.14,3.33,14.2c2.22,4.06,5.14,7.17,8.76,9.33,3.62,2.17,7.49,3.25,11.6,3.25s8.17-1.05,11.85-3.16c3.68-2.11,6.6-5.14,8.76-9.09,2.16-3.95,3.25-8.68,3.25-14.2s-1.08-10.25-3.25-14.2Z" />
+                                </g>
+                                <path class="cls-1"
+                                    d="m386.98,388.32l-88.43-101.26c-4.9-5.61-12.7-7.46-19.48-4.91l-8.14-9.32c7.47-7.31,14.19-15.33,20.02-23.86,2.58-3.78,3.54-8.35,2.69-12.85-.85-4.5-3.4-8.4-7.19-10.98-7.81-5.32-18.5-3.31-23.83,4.5-24.91,36.5-67.73,57.34-111.77,54.35-68.76-4.65-120.91-64.37-116.26-133.13,2.25-33.25,17.35-63.67,42.53-85.66,25.17-21.98,57.35-32.86,90.6-30.6,33.19,2.24,63.56,17.25,85.5,42.26,3.02,3.44,7.2,5.51,11.77,5.8,4.57.3,8.98-1.2,12.43-4.22,7.11-6.24,7.82-17.09,1.58-24.2C251.04,22.36,212.34,3.23,170.03.37c-42.38-2.87-83.39,10.98-115.47,39C22.48,67.39,3.23,106.16.37,148.54c-5.93,87.63,60.54,163.74,148.17,169.66,34.31,2.32,68.99-6.83,98.01-25.79l8.99,10.29c-3.44,6.37-2.66,14.35,2.24,19.96l88.43,101.26c3.48,3.99,8.37,6.02,13.29,6.02,4.12,0,8.25-1.43,11.58-4.34l14.22-12.42c7.32-6.39,8.08-17.55,1.68-24.87Z" />
+                            </g>
+                        </g>
+                    </svg>
+                </a>
+            </section>
+
+            <!-- transparencia -->
+            <section class="header__item separador oculta-medio">
+                <a class="portal-link" target="_blank" title="Portal da transparência" href="https://transparencia.al.go.leg.br">
+                    <svg class="ico">
+                        <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#info" /></svg>
+                    <p class="portal-link__texto"><span>Acesso à</span><br><span>Transparência</span></p>
+                </a>
+            </section>
+            <!-- fim transparencia -->
+
+            <!-- alego digital -->
+            <a class="header__item separador oculta-medio" target="_blank" title="Alego Digital" href="https://alegodigital.al.go.leg.br/Portal/login.aspx?continue=default.aspx">
+                <img class="img-c" src="/assets/alego-digital-6fcc76304b5594c488c8fb12f481675e400615fcfba0db0ee12c1775ce9cf257.png" alt="Ícone alego digital">
+                <img class="img-p" src="/assets/alego-digital-pb-dc26401e6aef8c2cf4ca904467b7605b024bc1cb13b6aae2aaffb4915ac3356f.png" alt="Ícone alego digital">
+            </a>
+            <!-- fim alego digital -->
+
+            <!-- redes sociais -->
+            <section class="header__item separador oculta-medio">
+                <a href="https://www.facebook.com/AssembleiaGO" class="portal-link" target="_blank" title="Siga-nos pelo Facebook">
+    <svg class="ico ico--facebook">
+        <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#facebook" /></svg>
+</a>
+
+<a href="https://www.instagram.com/assembleiago/" class="portal-link" target="_blank" title="Siga-nos pelo Instagram">
+    <svg class="ico ico--instagram">
+        <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#instagram" /></svg>
+</a>
+
+<a href="https://twitter.com/assembleiago" class="portal-link" target="_blank" title="Siga-nos pelo Twitter">
+    <svg class="ico ico--twitter">
+        <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#twitter" /></svg>
+</a>
+
+<a href="https://www.youtube.com/channel/UC62tBsh6awMUD5cyBrjvr8Q" class="portal-link" target="_blank" title="Siga-nos pelo Youtube">
+    <svg class="ico ico--youtube">
+        <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#youtube" /></svg>
+</a>
+
+            </section>
+            <!-- fim redes sociais -->
+
+            <!-- acessibilidade -->
+            <section class="header__item separador acessibilidade" title="controles de acessibilidade">
+                <button id="acessibilidade_toggle" class="acessibilidade__toggle"
+                    aria-label="Ativar ou desativar menu de acessibilidade"
+                    title="toque ou click aqui para redimensionar a fonte ou ativar o modo alto contraste"
+                    type="button">
+                    <div class="portal-link">
+                        <svg class="ico acessibilidade__ico">
+                            <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#acessibilidade" /></svg>
+                    </div>
+                </button>
+                <ul class="acessibilidade__controles">
+                    <li class="portal-link">
+                        <button id="bt_diminuir_fonte" aria-label="Diminuir tamanho da fonte" title="diminuir a fonte"
+                            type="button">
+                            <svg class="ico acessibilidade__ico">
+                                <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#fonte-menos" /></svg>
+                        </button>
+                    </li>
+                    <li class="portal-link">
+                        <button id="bt_fonte_padrao" aria-label="Restaurar tamanho da fonte" title="fonte padrão"
+                            type="button">
+                            <svg class="ico acessibilidade__ico">
+                                <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#fonte-padrao" /></svg>
+                        </button>
+                    </li>
+                    <li class="portal-link">
+                        <button id="bt_aumentar_fonte" aria-label="Aumentar tamanho da fonte" title="aumentar a fonte"
+                            type="button">
+                            <svg class="ico acessibilidade__ico">
+                                <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#fonte-mais" /></svg>
+                        </button>
+                    </li>
+                    <li class="portal-link">
+                        <button id="bt_alto_contraste" aria-label="Alternar entre modos de contraste"
+                            title="Alternar entre modos de contraste">
+                            <svg class="ico acessibilidade__ico">
+                                <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#alto-contraste" /></svg>
+                        </button>
+                    </li>
+                    <li class="portal-link">
+                        <a href="/acessibilidade" id="bt_acessibilidade" aria-label="acessibilidade"
+                            title="Página de descrição dos recursos de acessibilidade">
+                            <svg class="ico acessibilidade__ico">
+                                <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#acessibilidade" /></svg>
+                        </a>
+                    </li>
+                    <li class="portal-link">
+                        <a href="/mapa-do-site" id="bt_mapa" aria-label="mapa do site"
+                            title="Mapa do site">
+                            <svg class="ico acessibilidade__ico">
+                                <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#fluxograma" /></svg>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+            <!-- fim acessibilidade -->
+
+            <!-- busca -->
+            <section class="busca">
+                <button aria-label="abrir ou fechar busca" id="busca_toggle" class="busca__toggle" type="button">
+                    <svg class="ico ico--abrir">
+                        <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#lupa" /></svg>
+                    <svg class="ico ico--fechar">
+                        <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#fechar" /></svg>
+                </button>
+                <form class="form busca__form" name="fbusca" action="/" method="get" onreset="clearFormBusca()">
+                    <div class="input-wrapper">
+                        <!-- o tipo deveria ser <input type="search">, mas o MOZFF não implementou o "X" que limpa a caixa de texto da busca -->
+                        <!-- <input aria-label="Campo de pesquisa" type="search" name="term" id="busca" placeholder="Pesquisar" value=""> -->
+                        <input aria-label="Campo de pesquisa" type="text" name="term" id="busca" placeholder="Pesquisar" oninput="setClearButtonState()" data-value="">
+                        <button id="clear" type="reset" aria-label="limpar busca">
+                          <svg class="ico ico--fechar"><use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#fechar" /></svg>
+                        </button>
+                    </div>
+                    <button aria-label="buscar no portal" type="submit">
+                        <svg class="ico"><use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#lupa" /></svg>
+                    </button>
+                    <input type="hidden" name="qtd_dias" id="qtd_dias" value="180" />
+                    <input type="hidden" name="qtd_por_pagina_global" id="qtd_por_pagina_global" value="20" />
+                    <input type="hidden" name="ordenacao" id="ordenacao" value="data" />
+                </form>
+            </section>
+            <!-- fim busca -->
+        </div>
+    </section>
+    <!-- seção breadcrumb & calendario -->
+    <!-- <section class="header__info">
+        <div class="flex-container flex-container--pg">
+            <ul class="breadcrumbs">
+                <li>
+                    <a title="Voltar à página inicial" aria-label="Link para página inicial" href="/">
+                        <svg class="ico">
+                            <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#casa" /></svg>
+                    </a>
+                </li>
+                <li>
+                    <span title="você está aqui">Notícias</span>
+                </li>
+            </ul>
+            <button id="calendario_toggle" aria-label="Filtrar notícias por data" class="calendario-button"
+                type="button">
+                <svg class="ico">
+                    <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#calendario" /></svg>
+                <p class="data data--long"><span>Goiânia</span>,
+                    <span>23 de Outubro de 2026</span></p>
+                <p class="data data--short"><span>Goiânia</span>, <span>23/10/2026</span>
+                </p>
+            </button>
+        </div>
+        <div class="calendario-wrapper">
+            <div class="calendario__container">
+                <div class="calendario">
+                    <span id="calendario"></span>
+                    <label for="filtro_calendario" class="oculta">Filtrar notícias por data</label>
+                    <button class="bt calendario__filtrar" id="filtro_calendario" type="button"
+                        aria-label="aplicar filtro por data" title="filtrar">Filtrar</button>
+                </div>
+            </div>
+        </div>
+    </section> -->
+    <!-- fim seção calendario -->
+</header>
+<!-- fim header -->
+
+<script>
+    function setClearButtonState() {
+        if (document.fbusca.term.value.length > 0) {
+            //console.log('reset - visible');
+            document.querySelector('#clear').classList.remove('oculta');
+        } else {
+            //console.log('reset hidden');
+            document.querySelector('#clear').classList.add('oculta');
+        }
+    }
+
+    function clearFormBusca() {
+      document.fbusca.term.value = '';
+      setClearButtonState();
+    }
+
+    (function () {
+        const term = document.querySelector('#busca').attributes['data-value'].value;
+        document.fbusca.term.value = term;
+        setClearButtonState();
+    })();
+
+</script>
+
+    <main class="main">
+
+  <!-- banner temporario na home: consulta legislativa -->
+    <section class="main-banner main-banner--premio-transparencia">
+      <a class="link" href="https://portal.al.go.leg.br/noticias/161194/terceiro-ano-de-selo-diamante" target="_blank">
+        <div>
+          <img class="main-banner--premio-transparencia__selo" src="/assets/selo_diamante2023-387bc2a4834355d23598f1ca99f32ba1f87cdfc6e22460393ef74ef70041c257.png" alt="Selo prêmio diamante de transparência 2023" title="Selo prêmio diamante de transparência 2023">
+          <img class="main-banner--premio-transparencia__selo" src="/assets/selo_diamante2024-15d236ad3b9132110c303d1e006b627433c3fcd288de3264133e77e6a5379808.png" alt="Selo prêmio diamante de transparência 2024" title="Selo prêmio diamante de transparência 2024">
+          <img class="main-banner--premio-transparencia__selo destaque" src="/assets/selo_diamante2025-907d327e0393f049999902e928d71038ada79083a26b41b22c7105f3eeaaed8a.png" alt="Selo prêmio diamante de transparência 2025" title="Selo prêmio diamante de transparência 2025">
+          <h3>Entre as mais transparentes do Brasil,<br> a Assembleia Legislativa mantém o Selo Diamante!</h3>
+          <span> Veja aqui</span>
+        </div>
+      </a>
+    </section>
+    <!-- <section class="main-banner main-banner--geral">
+      <a class="link" href="https://transparencia.al.go.leg.br/informacoes-institucionais/concursos" target="_blank">
+        <img src="/assets/concurso-alego-fbaf81679a13118bb31d025855f32489b964a61a5e8ffb7b86d133c19904cdc3.jpg" alt="Edital Concurso Alego 2025" title="Concurso ALEGO 2025">
+      </a>
+    </section> -->
+
+    <section class="main-banner main-banner--geral">
+      <a class="link" href="https://publicacoes.al.go.leg.br/biblioteca/cartilha_eleitoral-2026.pdf" target="_blank">
+        <img src="/assets/banner-cartilha-eleicoes-2026-e165afe098c238ea499335b86ee0b55b95a2f53315223ce833986c5577bfb64d.jpg" alt="Banner Cartilha Eleições 2026" title="Cartilha Eleições 202">
+      </a>
+    </section>
+
+
+  <!-- noticias -->
+  <section class="noticias-wrapper">
+    <!-- destaques -->
+    <div class="container--pg noticias destaques" title="Notícias em destaque">
+
+      <article class="noticias__item principal">
+  <a class="link" href="/noticias/168057/loa-2027-de-r-54-3-bilhoes-abre-tramitacao-e-marca-a-semana" title="">
+    <figure>
+      <span class="link__data"><b>23 Out.</b>&nbsp;<small>11:30</small></span>
+      <img src="https://spiderminio.al.go.leg.br:9000/portal-rails/uploads/portal/galeria_imagem/imagem/526615/thumb_grande_Will_Rosa_-_138.jpg?X-Amz-Expires=600&amp;X-Amz-Date=20261023T163035Z&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=cKsFvhBCaOTfZIZE%2F20261023%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Signature=47805c16a4993158719e43a37e914a3aa8be497fdffc436febeafd6bf705be41" onerror="this.src='/no_img.png'" alt="" alt="">
+    </figure>
+    <h4 class="titulo-principal">LOA 2027 de R$ 54,3 bilhões abre tramitação e marca a semana</h4>
+    <div class="texto"><p>Com previs&atilde;o de R$ 54,3 bilh&otilde;es, o Or&ccedil;amento do ano que vem inicia tramita&ccedil;&atilde;o na Casa, com a Comiss&atilde;o de Finan&ccedil;as j&aacute; definindo relator e calend&aacute;rio com audi&ecirc;ncias no pr&oacute;ximo dia 28 e em 4 de novembro. Tamb&eacute;m tiveram destaque na semana a revis&atilde;o da segrega&ccedil;&atilde;o previdenci&aacute;ria e novos crit&eacute;rios de migra&ccedil;&atilde;o entre fundos, a amplia&ccedil;&atilde;o do Negocie J&aacute; II para d&eacute;bitos at&eacute; abril de 2026 e a atualiza&ccedil;&atilde;o de taxas judici&aacute;rias. Na programa&ccedil;&atilde;o teve, ainda, homenagens a m&eacute;dicos e professores e a&ccedil;&otilde;es do Outubro Rosa e de forma&ccedil;&atilde;o cidad&atilde;.</p></div>
+  </a>
+</article>
+
+
+        <article class="noticias__item secundaria">
+  <a class="link" href="/noticias/168004/metropole-com-grandes-desafios" title="">
+    <figure>
+      <span class="link__data"><b>23 Out.</b>&nbsp;<small>10:30</small></span>
+      <img src="https://spiderminio.al.go.leg.br:9000/portal-rails/uploads/portal/noticia/imagem/168004/thumb_grande_09c50bdb-2ea9-42ee-8056-648092eee4b8.jpeg?X-Amz-Expires=600&amp;X-Amz-Date=20261023T163035Z&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=cKsFvhBCaOTfZIZE%2F20261023%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Signature=7fb859cc1f8214311e981efbb1b2949f74f2d6ad015033e3252142314d886085" onerror="this.src='/no_img.png'" alt="" alt="">
+    </figure>
+    <h5 class="titulo-principal">Metrópole com grandes desafios</h5>
+    <div class="texto"><p>S&iacute;mbolo de moderniza&ccedil;&atilde;o, cidade tornou-se um centro urbano de grande porte, mas enfrenta problemas de mobilidade, preserva&ccedil;&atilde;o ambiental e patrim&ocirc;nio hist&oacute;rico. Na Alego, v&aacute;rios projetos contemplam a capital.</p></div>
+  </a>
+</article>
+        <article class="noticias__item secundaria">
+  <a class="link" href="/noticias/168052/o-fruto-de-goias" title="">
+    <figure>
+      <span class="link__data"><b>23 Out.</b>&nbsp;<small>08:20</small></span>
+      <img src="https://spiderminio.al.go.leg.br:9000/portal-rails/uploads/portal/noticia/imagem/168052/thumb_grande_f91041e0-e835-4f9d-b0b0-a2cca2b88550.jpeg?X-Amz-Expires=600&amp;X-Amz-Date=20261023T163035Z&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=cKsFvhBCaOTfZIZE%2F20261023%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Signature=f3551ab37481bef72794da093186d4afa667adee26e6a2fbf33c3c1841c8f559" onerror="this.src='/no_img.png'" alt="" alt="">
+    </figure>
+    <h5 class="titulo-principal">O fruto de Goiás</h5>
+    <div class="texto"><p>Data foi institu&iacute;da pelo Parlamento e integra o Calend&aacute;rio C&iacute;vico, Cultural e Tur&iacute;stico do Estado em celebra&ccedil;&atilde;o que visa a conscientizar a popula&ccedil;&atilde;o sobre a relev&acirc;ncia desse vegetal de sabor e cheiro marcantes.</p></div>
+  </a>
+</article>
+    </div>
+    <!-- fim destaques -->
+
+    <!-- outras noticias -->
+    <div class="container--pg noticias outras">
+        <article class="noticias__item terciaria">
+  <a class="link" href="/noticias/168060/presidente-bruno-peixoto-confirma-que-assumira-interinamente-o-governo-de-goias-entre-29-de-outubro-e-3-de-novembro" title="">
+    <figure>
+      <span class="link__data"><b>23 Out.</b>&nbsp;<small>10:45</small></span>
+      <img src="https://spiderminio.al.go.leg.br:9000/portal-rails/uploads/portal/galeria_imagem/imagem/526633/thumb_Will_Rosa__-_362.jpg?X-Amz-Expires=600&amp;X-Amz-Date=20261023T163035Z&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=cKsFvhBCaOTfZIZE%2F20261023%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Signature=33bf426ed88c463cc682c483c02f8d5a372cb3ad8d124c8b55ad82d0e6a7bd85" onerror="this.src='/no_img.png'" alt="">
+    </figure>
+    <p>Presidente Bruno Peixoto confirma que assumirá interinamente o Governo de Goiás entre 29 de outubro e 3 de novembro</p>
+  </a>
+</article>
+
+        <article class="noticias__item terciaria">
+  <a class="link" href="/noticias/168061/comissao-de-tributacao-financas-e-orcamento-promove-audiencias-publicas-sobre-a-loa-2027-nas-proximas-quartas-feiras" title="">
+    <figure>
+      <span class="link__data"><b>23 Out.</b>&nbsp;<small>11:35</small></span>
+      <img src="https://spiderminio.al.go.leg.br:9000/portal-rails/uploads/portal/galeria_imagem/imagem/526060/thumb_Maykon_Cardoso_-_9.jpg?X-Amz-Expires=600&amp;X-Amz-Date=20261023T163035Z&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=cKsFvhBCaOTfZIZE%2F20261023%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Signature=d37264bab3baad6ebf8181a022a190c6dbdc5a0f7be2a93d4775f99e82f63c79" onerror="this.src='/no_img.png'" alt="">
+    </figure>
+    <p>Comissão de Tributação, Finanças e Orçamento promove audiências públicas sobre a LOA 2027 nas próximas quartas-feiras</p>
+  </a>
+</article>
+
+        <article class="noticias__item terciaria">
+  <a class="link" href="/noticias/167865/seguranca-preventiva-aos-idosos-chamada-de-botao-do-panico-esta-em-analise-do-relator-pela-comissao-de-seguranca-publica" title="">
+    <figure>
+      <span class="link__data"><b>22 Out.</b>&nbsp;<small>14:00</small></span>
+      <img src="https://spiderminio.al.go.leg.br:9000/portal-rails/uploads/portal/galeria_imagem/imagem/526452/thumb_Will_Rosa__-_398.jpg?X-Amz-Expires=600&amp;X-Amz-Date=20261023T163035Z&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=cKsFvhBCaOTfZIZE%2F20261023%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Signature=ef6720978c3bc8ae835d6652c330b9c282cabaf242047984235e7aaf86915682" onerror="this.src='/no_img.png'" alt="">
+    </figure>
+    <p>Segurança preventiva aos idosos, chamada de &quot;botão do pânico&quot;, está em análise do relator pela Comissão de Segurança Pública</p>
+  </a>
+</article>
+
+    </div>
+    <!-- fim outras noticias -->
+
+    <div class="noticias timeline">
+      <div class="timeline__container">
+        <section class="timeline__secao timeline__secao--tempo-real">
+
+          <h5 class="titulo">
+            <a class="feed" href="/noticias/feed" target="_blank">
+              <svg class="ico">
+                <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#rss"/>
+              </svg>
+            </a>
+            <span>ASSEMBLEIA EM TEMPO REAL</span>
+          </h5>
+
+          <div class="timeline__colunas">
+              <ul class="noticias__lista">
+                  <li class="noticias__item" data-title="23/10/2026">
+                    <a class="link" href="/noticias/168059/bia-de-lima-sugere-regras-para-sinalizacao-de-limites-de-velocidade-em-rodovias">
+                      <span class="hora">12:08</span>
+                      <span>Bia de Lima sugere regras para sinalização de limites de velocidade em rodovias</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="23/10/2026">
+                    <a class="link" href="/noticias/168049/virmondes-cruvinel-requer-sistema-de-alerta-silencioso-para-escolas-estaduais">
+                      <span class="hora">11:41</span>
+                      <span>Virmondes Cruvinel requer sistema de alerta silencioso para escolas estaduais</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="23/10/2026">
+                    <a class="link" href="/noticias/168055/deputado-jamil-calife-propoe-politica-de-reflorestamento-e-centros-de-terapia-assistida-por-animais">
+                      <span class="hora">10:27</span>
+                      <span>Deputado Jamil Calife propõe política de reflorestamento e centros de terapia assistida por animais</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="23/10/2026">
+                    <a class="link" href="/noticias/167925/paulo-cezar-martins-projeta-incentivo-ao-desenvolvimento-do-oeste-goiano">
+                      <span class="hora">07:33</span>
+                      <span>Paulo Cezar Martins projeta incentivo ao desenvolvimento do oeste goiano</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="23/10/2026">
+                    <a class="link" href="/noticias/168054/inicio-das-atividades">
+                      <span class="hora">07:00</span>
+                      <span>Início das Atividades</span>
+                    </a>
+                  </li>
+              </ul>
+              <ul class="noticias__lista">
+                  <li class="noticias__item" data-title="22/10/2026">
+                    <a class="link" href="/noticias/168053/encerramento-das-atividades">
+                      <span class="hora">18:00</span>
+                      <span>Encerramento das Atividades</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="22/10/2026">
+                    <a class="link" href="/noticias/167869/paulo-cezar-martins-propoe-atendimento-psicossocial-a-pais-de-criancas-com-autismo">
+                      <span class="hora">17:15</span>
+                      <span>Paulo Cezar Martins propõe atendimento psicossocial a pais de crianças com autismo</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="22/10/2026">
+                    <a class="link" href="/noticias/167934/dr-george-morais-defende-ampliar-protecao-de-mulheres-surdas-vitimas-de-violencia">
+                      <span class="hora">15:37</span>
+                      <span>Dr. George Morais defende ampliar proteção de mulheres surdas vítimas de violência</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="22/10/2026">
+                    <a class="link" href="/noticias/168043/julio-pina-pleiteia-reducao-do-itcd-para-doacoes-de-areas-publicas-destinadas-a-empresas">
+                      <span class="hora">14:15</span>
+                      <span>Julio Pina pleiteia redução do ITCD para doações de áreas públicas destinadas a empresas</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="22/10/2026">
+                    <a class="link" href="/noticias/168037/encerrada-segunda-sessao-extraordinaria-desta-quinta-feira-22">
+                      <span class="hora">12:20</span>
+                      <span>Encerrada segunda sessão extraordinária desta quinta-feira, 22</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="22/10/2026">
+                    <a class="link" href="/noticias/168038/plenario-chancela-proposta-de-tratamento-termico-de-residuos-solidos">
+                      <span class="hora">12:17</span>
+                      <span>Plenário chancela proposta de tratamento térmico de resíduos sólidos</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="22/10/2026">
+                    <a class="link" href="/noticias/168039/criacao-do-dia-estadual-do-amor-maior-vence-aprovacao-final">
+                      <span class="hora">12:16</span>
+                      <span>Criação do Dia Estadual do Amor Maior vence aprovação final</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="22/10/2026">
+                    <a class="link" href="/noticias/168036/inclusao-da-festa-em-louvor-a-nossa-senhora-da-conceicao-segue-para-analise-do-governo">
+                      <span class="hora">12:15</span>
+                      <span>Inclusão da Festa em Louvor a Nossa Senhora da Conceição segue para análise do Governo</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="22/10/2026">
+                    <a class="link" href="/noticias/168040/insercao-de-cavalgada-em-itapuranga-no-calendario-oficial-vai-para-2-votacao">
+                      <span class="hora">12:14</span>
+                      <span>Inserção de cavalgada em Itapuranga no calendário oficial vai para 2ª votação</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="22/10/2026">
+                    <a class="link" href="/noticias/168035/aprovada-em-definitivo-proposta-voltada-a-criacao-do-dia-pedalando-pela-paz-no-transito">
+                      <span class="hora">12:13</span>
+                      <span>Aprovada em definitivo proposta voltada à criação do Dia “Pedalando pela Paz no Trânsito”</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="22/10/2026">
+                    <a class="link" href="/noticias/168034/inclusao-da-festa-de-nossa-senhora-do-perpetuo-socorro-no-calendario-oficial-e-aprovada">
+                      <span class="hora">12:11</span>
+                      <span>Inclusão da Festa de Nossa Senhora do Perpétuo Socorro no calendário oficial é aprovada</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="22/10/2026">
+                    <a class="link" href="/noticias/168032/politica-de-atencao-psicossocial-continuada-as-vitimas-de-violencia-sexual-tem-aval-definitivo">
+                      <span class="hora">12:07</span>
+                      <span>Política de Atenção Psicossocial Continuada às Vítimas de Violência Sexual tem aval definitivo</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="22/10/2026">
+                    <a class="link" href="/noticias/168033/homenagem-postuma-a-amilton-filho-alcanca-aprovacao-final">
+                      <span class="hora">12:05</span>
+                      <span>Homenagem póstuma a Amilton Filho alcança aprovação final</span>
+                    </a>
+                  </li>
+              </ul>
+          </div>
+          <a class="noticias__link-mais" href="/noticias"
+             aria-label="ink para todas as notícias da Assembleia em Tempo Real"
+             title="link para todas as notícias da Assembleia em Tempo Real">ver mais</a>
+        </section>
+        <section class="timeline__secao timeline__secao--gabinete">
+          <h5 class="titulo">
+            <svg class="ico ico--ajuste">
+              <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#pessoa-3"/>
+            </svg>
+            <span>NOTÍCIAS DOS GABINETES</span>
+          </h5>
+          <!-- <img class="banner-restricao-eleitoral" src="/portal/<nome_do_arquivo>.png" alt="Restrição eleitoral: cadastro de notícias de gabinete suspenso durante o período eleitoral" title="Em cumprimento à legislação eleitoral,o espaço de “Notícias do Gabinete” ficará suspenso até o final do pleito."> -->
+          <div class="timeline__colunas">
+              <ul class="noticias__lista">
+                  <li class="noticias__item" data-title="22/10/2026">
+                    <a class="link" href="/noticias-dos-gabinetes/168050/lei-de-antonio-gomide-reconhece-festa-do-rosario-e-sao-benedito-como-patrimonio-cultural-de-goias">
+                      <span class="hora">17:00</span>
+                      <span>Lei de Antônio Gomide reconhece Festa do Rosário e São Benedito como patrimônio cultural de Goiás</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="22/10/2026">
+                    <a class="link" href="/noticias-dos-gabinetes/168051/projeto-de-antonio-gomide-que-cria-o-dia-estadual-do-engenheiro-ambiental-e-aprovado-por-unanimidade-na-alego">
+                      <span class="hora">16:00</span>
+                      <span>Projeto de Antônio Gomide que cria o Dia Estadual do Engenheiro Ambiental é aprovado por unanimidade na Alego</span>
+                    </a>
+                  </li>
+              </ul>
+              <ul class="noticias__lista">
+                  <li class="noticias__item" data-title="21/10/2026">
+                    <a class="link" href="/noticias-dos-gabinetes/167954/gomide-defende-fortalecimento-do-daia-para-ampliar-desenvolvimento-de-anapolis">
+                      <span class="hora">16:00</span>
+                      <span>Gomide defende fortalecimento do DAIA para ampliar desenvolvimento de Anápolis</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="21/10/2026">
+                    <a class="link" href="/noticias-dos-gabinetes/167961/jamil-calife-aponta-avanco-da-duplicacao-da-go-330-com-nova-etapa-que-chega-ao-rio-verissimo">
+                      <span class="hora">15:30</span>
+                      <span>Jamil Calife aponta avanço da duplicação da GO-330 com nova etapa que chega ao Rio Veríssimo</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="21/10/2026">
+                    <a class="link" href="/noticias-dos-gabinetes/167952/antonio-gomide-destina-r-23-5-milhoes-para-a-saude-em-mais-de-80-municipios-de-goias">
+                      <span class="hora">14:00</span>
+                      <span>Antônio Gomide destina R$ 23,5 milhões para a saúde em mais de 80 municípios de Goiás</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="21/10/2026">
+                    <a class="link" href="/noticias-dos-gabinetes/167945/lineu-olimpio-promove-sessao-solene-em-homenagem-ao-dia-dos-engenheiros">
+                      <span class="hora">13:00</span>
+                      <span>Lineu Olimpio promove sessão solene em homenagem ao Dia dos Engenheiros</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="21/10/2026">
+                    <a class="link" href="/noticias-dos-gabinetes/167918/paulo-cezar-martins-solicita-ao-governador-daniel-vilela-urgencia-na-pavimentacao-da-go-320">
+                      <span class="hora">12:30</span>
+                      <span>Paulo Cezar Martins solicita ao governador Daniel Vilela urgência na pavimentação da GO-320</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="21/10/2026">
+                    <a class="link" href="/noticias-dos-gabinetes/167953/deputado-antonio-gomide-destaca-necessidade-de-debate-sobre-mudancas-nas-custas-judiciais">
+                      <span class="hora">12:00</span>
+                      <span>Deputado Antônio Gomide destaca necessidade de debate sobre mudanças nas custas judiciais</span>
+                    </a>
+                  </li>
+              </ul>
+              <ul class="noticias__lista">
+                  <li class="noticias__item" data-title="20/10/2026">
+                    <a class="link" href="/noticias-dos-gabinetes/167910/julio-pina-propoe-normas-para-funcionamento-e-fiscalizacao-de-clinicas-de-estetica-e-cosmetologia">
+                      <span class="hora">18:14</span>
+                      <span>Julio Pina propõe normas para funcionamento e fiscalização de clínicas de estética e cosmetologia</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="20/10/2026">
+                    <a class="link" href="/noticias-dos-gabinetes/167903/antonio-gomide-destina-mais-de-r-6-milhoes-para-a-educacao-em-goias-em-2026">
+                      <span class="hora">18:00</span>
+                      <span>Antônio Gomide destina mais de R$ 6 milhões para a educação em Goiás em 2026</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="20/10/2026">
+                    <a class="link" href="/noticias-dos-gabinetes/167905/paulo-cezar-martins-propoe-plano-de-desenvolvimento-para-o-oeste-goiano">
+                      <span class="hora">16:00</span>
+                      <span>Paulo Cezar Martins propõe Plano de Desenvolvimento para o Oeste Goiano</span>
+                    </a>
+                  </li>
+                  <li class="noticias__item" data-title="20/10/2026">
+                    <a class="link" href="/noticias-dos-gabinetes/167875/paulo-cezar-martins-pede-ao-governador-daniel-vilela-criacao-de-plano-regional-de-desenvolvimento-e-industrializacao-para-o-oeste-goiano">
+                      <span class="hora">14:56</span>
+                      <span>Paulo Cezar Martins pede ao governador Daniel Vilela criação de Plano Regional de Desenvolvimento e Industrialização para o oeste goiano</span>
+                    </a>
+                  </li>
+              </ul>
+          </div>
+          <a href="/noticias-dos-gabinetes" class="noticias__link-mais" title="link para todas as notícias das Notícias de Gabinete">ver
+            mais</a>
+        </section>
+        <section class="timeline__secao timeline__secao--agenda">
+          <h5 class="titulo">
+            <svg class="ico ico--ajuste">
+              <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#calendario"/>
+            </svg>
+            <span>AGENDA</span>
+          </h5>
+
+          <div class="timeline__colunas">
+                <ul class="noticias__lista">
+                  <li class="noticias__item--titulo">
+                    <a class="link" href="/agenda?data=2026-10-27">
+                      27/10/2026
+                    </a>
+                  </li>
+                    <li class="noticias__item" data-title="27/10/2026">
+                      <a class="link" href="/agenda?data=2026-10-27#12483">
+                        <span class="hora">09:00</span>
+                        <span>Sessão solene</span>
+                      </a>
+                    </li>
+                    <li class="noticias__item" data-title="27/10/2026">
+                      <a class="link" href="/agenda?data=2026-10-27#12432">
+                        <span class="hora">14:00</span>
+                        <span>Comissão de Constituição, Justiça e Redação</span>
+                      </a>
+                    </li>
+                    <li class="noticias__item" data-title="27/10/2026">
+                      <a class="link" href="/agenda?data=2026-10-27#12433">
+                        <span class="hora">15:00</span>
+                        <span>Sessão ordinária</span>
+                      </a>
+                    </li>
+                    <li class="noticias__item" data-title="27/10/2026">
+                      <a class="link" href="/agenda?data=2026-10-27#12475">
+                        <span class="hora">19:00</span>
+                        <span>Sessão solene extraordinária</span>
+                      </a>
+                    </li>
+                    <li class="noticias__item" data-title="27/10/2026">
+                      <a class="link" href="/agenda?data=2026-10-27#12493">
+                        <span class="hora">19:00</span>
+                        <span>Evento</span>
+                      </a>
+                    </li>
+                </ul>
+                <ul class="noticias__lista">
+                  <li class="noticias__item--titulo">
+                    <a class="link" href="/agenda?data=2026-10-28">
+                      28/10/2026
+                    </a>
+                  </li>
+                    <li class="noticias__item" data-title="28/10/2026">
+                      <a class="link" href="/agenda?data=2026-10-28#12434">
+                        <span class="hora">14:00</span>
+                        <span>Comissão de Tributação, Finanças e Orçamento</span>
+                      </a>
+                    </li>
+                    <li class="noticias__item" data-title="28/10/2026">
+                      <a class="link" href="/agenda?data=2026-10-28#12435">
+                        <span class="hora">15:00</span>
+                        <span>Sessão ordinária</span>
+                      </a>
+                    </li>
+                </ul>
+                <ul class="noticias__lista">
+                  <li class="noticias__item--titulo">
+                    <a class="link" href="/agenda?data=2026-10-29">
+                      29/10/2026
+                    </a>
+                  </li>
+                    <li class="noticias__item" data-title="29/10/2026">
+                      <a class="link" href="/agenda?data=2026-10-29#12436">
+                        <span class="hora">09:00</span>
+                        <span>Comissão de Constituição, Justiça e Redação</span>
+                      </a>
+                    </li>
+                    <li class="noticias__item" data-title="29/10/2026">
+                      <a class="link" href="/agenda?data=2026-10-29#12437">
+                        <span class="hora">10:00</span>
+                        <span>Sessão ordinária</span>
+                      </a>
+                    </li>
+                    <li class="noticias__item" data-title="29/10/2026">
+                      <a class="link" href="/agenda?data=2026-10-29#12480">
+                        <span class="hora">19:00</span>
+                        <span>Evento</span>
+                      </a>
+                    </li>
+                </ul>
+              </div>
+              <a href="/agenda" class="noticias__link-mais" title="Link para todas as agendas">ver mais</a>
+  </section>
+  </div>
+  </div>
+  </section>
+  <!-- fim noticias -->
+
+  <!-- ao vivo -->
+  <section id="tvassembleia" class="tvassembleia">
+    <div class="container container--pg video">
+      <section class="video__player-wrapper">
+        <h4 class="titulo titulo--ao-vivo">Assista em tempo real</h4>
+        <div class="video__wrapper">
+          <iframe title="TV Assembleia" class="video__player" src="//zoevideos.net/player/aovivo/942"></iframe>
+        </div>
+      </section>
+
+      <section class="video__playlist">
+        <h4 class="titulo">
+          <svg class="ico ico--baixo">
+            <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#seta-completa"/>
+          </svg>
+          <span>Veja também</span>
+        </h4>
+        <ul class="video__lista">
+            <li>
+              <a href="https://www.youtube.com/watch?v=xiU47cCXVfI" class="video__link" target="_blank">
+                <img class="video__thumb" src="https://i.ytimg.com/vi/xiU47cCXVfI/hqdefault.jpg" alt="Acompanhe a transmissão ao vivo da programação da TV Assembleia Legislativa. Fique por dentro das sessões, audiências, ...">
+                <article class="video__texto">
+                  <h6 class="titulo" title="Sessão Extraordinária - 22/10/2026">Sessão Extraordinária - 22/10/2026</h6>
+                  <p title="2026-10-23">23/10/2026</p>
+                </article>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.youtube.com/watch?v=osUDFZHlvBg" class="video__link" target="_blank">
+                <img class="video__thumb" src="https://i.ytimg.com/vi/osUDFZHlvBg/hqdefault.jpg" alt="Acompanhe a transmissão ao vivo da programação da TV Assembleia Legislativa. Fique por dentro das sessões, audiências, ...">
+                <article class="video__texto">
+                  <h6 class="titulo" title="Sessão ordinária - 22/10/2026">Sessão ordinária - 22/10/2026</h6>
+                  <p title="2026-10-23">23/10/2026</p>
+                </article>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.youtube.com/watch?v=q4yA8bC6Y8Q" class="video__link" target="_blank">
+                <img class="video__thumb" src="https://i.ytimg.com/vi/q4yA8bC6Y8Q/hqdefault.jpg" alt="Agora Goiás Data: 22/10/2026 | Horário: 09:00:00 Local: Estúdio Equipe de Transmissão: • Operador de Transmissão: ...">
+                <article class="video__texto">
+                  <h6 class="titulo" title="Agora Goiás">Agora Goiás</h6>
+                  <p title="2026-10-23">23/10/2026</p>
+                </article>
+              </a>
+            </li>
+        </ul>
+      </section>
+    </div>
+    
+    <!-- audio player -->
+    <!-- <div class="container container--pg audio">
+      <h6 class="titulo">
+        <span class="titulo__texto">Ouça apenas o áudio da TV Alego</span>
+        <svg class="titulo__ico">
+          <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#seta-dupla" /></svg>
+      </h6>
+      <audio controls class="audio__player">
+        <source src="/audio-tv">
+      </audio>
+    </div> -->
+    <!-- fim audio player -->
+  </section>
+  <!-- fim ao vivo -->
+
+  <!-- banners  -->
+  <section class="banners">
+    <div class="container container--pg banners__carousel-wrapper">
+      <div class="owl-carousel">
+            <a class="link" target="_blank" href="https://publicacoes.al.go.leg.br/revista-alego/2022/08/index.html#page/1" aria-label="8ª edição da Revista Alego"><img alt="8ª edição da Revista Alego"
+                                                                                                                          src="https://thumbor.al.go.leg.br/-zlzTXP8XFnee2RqmCSIiwoss64=/300x0/https%3A%2F%2Fsaba.al.go.leg.br%2Fv1%2Fdownload%2Fportal%2Fpublic%2FR2TAChqko8HTcXgymOrcYQ%3D%3D%3Fupdated_at%3D1670424161"></a>
+            <div id="banner-4" data-banner="{&quot;id&quot;:4,&quot;titulo&quot;:&quot;Alego News&quot;,&quot;target&quot;:&quot;_blank&quot;,&quot;url&quot;:&quot;https://saba.al.go.leg.br/v1/view/portal/public/EGtxMYCCETRo8D4OQ74EKA==&quot;,&quot;imgUrl&quot;:&quot;https://saba.al.go.leg.br/v1/view/portal/public/EGtxMYCCETRo8D4OQ74EKA==&quot;,&quot;fecharIcone&quot;:&quot;/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#fechar&quot;}">
+              <a class="link" onclick="showBannerPopupModal('4')" aria-label="Alego News"><img
+                alt="Alego News" src="https://thumbor.al.go.leg.br/DXkw4Gx0k4ksdro4vLiNSJDFd-w=/300x0/https%3A%2F%2Fsaba.al.go.leg.br%2Fv1%2Fdownload%2Fportal%2Fpublic%2FPLO3NqHSb74Wv23dOk6wLg%3D%3D%3Fupdated_at%3D1601491356"></a>
+</div>            <a class="link" target="_blank" href="https://publicacoes.al.go.leg.br/biblioteca/direcionamento-estrategico-2023_revisado.pdf" aria-label="Quem faz a Alego é você"><img alt="Quem faz a Alego é você"
+                                                                                                                          src="https://thumbor.al.go.leg.br/g7lI6oQEAgD2onvXoJgQdvO8qx8=/300x0/https%3A%2F%2Fsaba.al.go.leg.br%2Fv1%2Fdownload%2Fportal%2Fpublic%2FixG5WPwTRHJYFVeiE-q6ig%3D%3D%3Fupdated_at%3D1580847587"></a>
+            <a class="link" target="_blank" href="https://portal.al.go.leg.br/legado/leituraparatodos" aria-label="Leitura para Todos"><img alt="Leitura para Todos"
+                                                                                                                          src="https://thumbor.al.go.leg.br/FO6Ctul1liex1t07WxOHVfXXF3M=/300x0/https%3A%2F%2Fsaba.al.go.leg.br%2Fv1%2Fdownload%2Fportal%2Fpublic%2F2AoJyz8Q6e2350m4h2-pYw%3D%3D%3Fupdated_at%3D1580855505"></a>
+            <a class="link" target="_blank" href="https://portal.al.go.leg.br/noticias/105044/agencia-de-noticias-celebra-os-30-anos-da-constituicao-estadual-com-reportagens-e-documentos-da-epoca" aria-label="30 Anos da Constituinte Estadual"><img alt="30 Anos da Constituinte Estadual"
+                                                                                                                          src="https://thumbor.al.go.leg.br/IBy8U0lpHkroegQ-yWwTroPNTq0=/300x0/https%3A%2F%2Fsaba.al.go.leg.br%2Fv1%2Fdownload%2Fportal%2Fpublic%2FiZtekrdwnrcLBmMxdWLHJA%3D%3D%3Fupdated_at%3D1580855780"></a>
+            <a class="link" target="_blank" href="https://saba.al.go.leg.br/v1/view/sabauploader/public/yuIOlheXPAhlJkUQz26-QA==/44_Cartilha" aria-label="Maria da Penha"><img alt="Maria da Penha"
+                                                                                                                          src="https://thumbor.al.go.leg.br/Nmx10mJG-ClBYvjPU4gQeHIBEs0=/300x0/https%3A%2F%2Fsaba.al.go.leg.br%2Fv1%2Fdownload%2Fportal%2Fpublic%2FruwE4LkRTkZ0bbr5IPmyDQ%3D%3D%3Fupdated_at%3D1741699073"></a>
+            <a class="link" target="_blank" href="https://sede-alego.al.go.leg.br/" aria-label="Obras nova sede Alego"><img alt="Obras nova sede Alego"
+                                                                                                                          src="https://thumbor.al.go.leg.br/YAef4uJLGJxFxxtAB8hzvgQP7xU=/300x0/https%3A%2F%2Fsaba.al.go.leg.br%2Fv1%2Fdownload%2Fportal%2Fpublic%2Fs-1v9TbyH_RrwuTd46ryhw%3D%3D%3Fupdated_at%3D1583254364"></a>
+            <a class="link" target="_blank" href="https://saba.al.go.leg.br/v1/view/sabauploader/public/VHsrpYZGg-JevsCwxILgog==/45_Cartilha_Mulheres_Assedio" aria-label="Contra Assedio Mulheres"><img alt="Contra Assedio Mulheres"
+                                                                                                                          src="https://thumbor.al.go.leg.br/vcdCILsRBRPbM9XZRJf0Npu3t84=/300x0/https%3A%2F%2Fsaba.al.go.leg.br%2Fv1%2Fdownload%2Fportal%2Fpublic%2F_f0FjnwDAy5tBeoDZpFNnQ%3D%3D%3Fupdated_at%3D1741699104"></a>
+            <a class="link" target="_blank" href="https://transparencia.al.go.leg.br/compliance" aria-label="Compliance"><img alt="Compliance"
+                                                                                                                          src="https://thumbor.al.go.leg.br/2wZ4_StgpPvJ8BAJOJCzsW8EC3s=/300x0/https%3A%2F%2Fsaba.al.go.leg.br%2Fv1%2Fdownload%2Fportal%2Fpublic%2FjSejKINzJ-7ZHJV1-XMXfA%3D%3D%3Fupdated_at%3D1747392418"></a>
+            <a class="link" target="_blank" href="https://publicacoes.al.go.leg.br/biblioteca/ECA_2026.pdf" aria-label="ECA"><img alt="ECA"
+                                                                                                                          src="https://thumbor.al.go.leg.br/jf3VwXQJ2dWxLkfYXeLfgzoKojE=/300x0/https%3A%2F%2Fsaba.al.go.leg.br%2Fv1%2Fdownload%2Fportal%2Fpublic%2F6-r6zZKdKnor7polaMgBzg%3D%3D%3Fupdated_at%3D1774971091"></a>
+            <a class="link" target="_blank" href="https://portal.al.go.leg.br/sites/clubededescontos" aria-label="Clube de descontos"><img alt="Clube de descontos"
+                                                                                                                          src="https://thumbor.al.go.leg.br/MWuVpR_doJJgusYb9dU8nf-r9YM=/300x0/https%3A%2F%2Fsaba.al.go.leg.br%2Fv1%2Fdownload%2Fportal%2Fpublic%2FZYiKoAEnohHNi2VEwEdLXw%3D%3D%3Fupdated_at%3D1775736384"></a>
+            <a class="link" target="_blank" href="https://cursos.al.go.leg.br/" aria-label="Alego Ativa Intercâmaras"><img alt="Alego Ativa Intercâmaras"
+                                                                                                                          src="https://thumbor.al.go.leg.br/ysNXG39R1Sb2TrLw8XqfBhELZ_0=/300x0/https%3A%2F%2Fsaba.al.go.leg.br%2Fv1%2Fdownload%2Fportal%2Fpublic%2FQS80nDcWNU1RZlOnhDSvhA%3D%3D%3Fupdated_at%3D1637074360"></a>
+            <a class="link" target="_blank" href="https://publicacoes.al.go.leg.br/biblioteca/cartilha_eleitoral-2026.pdf" aria-label="Cartilha Eleitoral"><img alt="Cartilha Eleitoral"
+                                                                                                                          src="https://thumbor.al.go.leg.br/oJmryQYgRi7O-bWpI75plthHFBQ=/300x0/https%3A%2F%2Fsaba.al.go.leg.br%2Fv1%2Fdownload%2Fportal%2Fpublic%2FiJ1JbT8Z1H1txC3bwxJinQ%3D%3D%3Fupdated_at%3D1782320950"></a>
+            <a class="link" target="_blank" href="https://controladoria.go.gov.br/consulta-publica2023/" aria-label="Plano de Governo Aberto do Estado de Goiás"><img alt="Plano de Governo Aberto do Estado de Goiás"
+                                                                                                                          src="https://thumbor.al.go.leg.br/KFsrPz3yo_Pe_ernwSqRFVRD24M=/300x0/https%3A%2F%2Fsaba.al.go.leg.br%2Fv1%2Fdownload%2Fportal%2Fpublic%2FbtT2Af18NVNRpEgOF4G_hw%3D%3D%3Fupdated_at%3D1693234014"></a>
+            <a class="link" target="_blank" href="https://saba.al.go.leg.br/v1/view/sabauploader/public/zRNRt3nLYNv6yyOAGNd9Hg==/49_CDC2026" aria-label="Codigo de Defesa do Consumidor"><img alt="Codigo de Defesa do Consumidor"
+                                                                                                                          src="https://thumbor.al.go.leg.br/DmM5NQ-8xhqNfAUjHke_6ujxXU8=/300x0/https%3A%2F%2Fsaba.al.go.leg.br%2Fv1%2Fdownload%2Fportal%2Fpublic%2FANszvjEMHO-3FfHCTu0-lQ%3D%3D%3Fupdated_at%3D1789044480"></a>
+            <a class="link" target="_blank" href="https://saba.al.go.leg.br/v1/view/sabauploader/public/8V4jCDQV1XzfmGVpR0OMJQ==/43_Manual" aria-label="Manual de Acessibilidade"><img alt="Manual de Acessibilidade"
+                                                                                                                          src="https://thumbor.al.go.leg.br/qdyUFAhu_Dnlb3O65JnibOJ3cxI=/300x0/https%3A%2F%2Fsaba.al.go.leg.br%2Fv1%2Fdownload%2Fportal%2Fpublic%2FIX8KUhLqPXg31aEF17xv7g%3D%3D%3Fupdated_at%3D1733331950"></a>
+      </div>
+    </div>
+    <div id="banner_popup">
+    </div>
+  </section>
+  <!-- fim banners -->
+
+  <!-- institucional -->
+  <section class="institucional">
+    <div class="institucional__container">
+      <article class="institucional__texto">
+        <h4 class="titulo">O Poder Legislativo<br>do Estado de Goiás</h4>
+        <h5 class="subtitulo">O legislativo e a sociedade</h5>
+        <div class="texto">
+          <p>Desde a proclamação da República, em 1889, o Poder Legislativo, entre os poderes constituídos, é o que melhor
+            reflete os diferentes momentos da política brasileira. Está presente no dia-a-dia das pessoas porque é o
+            responsável pela elaboração e discussão das leis que regem o país, o estado e o município.</p>
+          <p>O Legislativo também é responsável pela apreciação da maioria dos atos do Poder Executivo. Isso significa que
+            passam pelos Parlamentos das diferentes esferas quase todas as iniciativas tomadas pelo presidente da
+            República, pelo governador do estado ou pelo prefeito municipal, cabendo a senadores, deputados federais e
+            estaduais, além de vereadores, a aprovação ou não das questões em discussão.</p>
+        </div>
+      </article>
+      <!-- imagem institucional fundo -->
+      <figure class="institucional__foto">
+        <img src="/assets/portal/poder-legislativo-14a9cbd6c496a590d35589a56e7e83d5b1cb1602423a52f60f0ab58041cbb1aa.png" alt="">
+      </figure>
+      <!-- fim imagem institucional fundo -->
+    </div>
+
+    <div class="institucional__link-wrapper">
+      <a href="/poderlegislativo" class="institucional__link">
+        <svg class="ico">
+          <use xlink:href="/assets/ico-9e2ab1471c4e577bb00b90b73943b7f1e903e7c6e86dee3e71cb097ff37e263b.svg#seta-completa"/>
+        </svg>
+        <span>por dentro da <b>Alego</b></span>
+      </a>
+    </div>
+  </section>
+  <!-- fim institucional -->
+  <!-- deputados e comissoes -->
+</main>
+
+    <footer class="footer no-print">
+  <section class="deputados-e-comissoes">
+    <div class="deputados-e-comissoes__container">
+      <div class="deputados">
+        <h4 class="titulo">Deputados</h4>
+        <ul class="deputados-e-comissoes__lista">
+            <li><a href="/deputados/perfil/808">Alessandro Moreira</a></li>
+            <li><a href="/deputados/perfil/137">Amauri Ribeiro</a></li>
+            <li><a href="/deputados/perfil/138">Amilton Filho</a></li>
+            <li><a href="/deputados/perfil/809">Anderson Teodoro</a></li>
+            <li><a href="/deputados/perfil/810">André do Premium</a></li>
+            <li><a href="/deputados/perfil/139">Antônio Gomide</a></li>
+            <li><a href="/deputados/perfil/811">Bia de Lima</a></li>
+            <li><a href="/deputados/perfil/51">Bruno Peixoto</a></li>
+            <li><a href="/deputados/perfil/140">Cairo Salim</a></li>
+            <li><a href="/deputados/perfil/117">Charles Bento</a></li>
+            <li><a href="/deputados/perfil/812">Clécio Alves</a></li>
+            <li><a href="/deputados/perfil/142">Coronel Adailton</a></li>
+            <li><a href="/deputados/perfil/813">Cristiano Galindo</a></li>
+            <li><a href="/deputados/perfil/6">Cristóvão Tormin</a></li>
+            <li><a href="/deputados/perfil/143">Delegado Eduardo Prado</a></li>
+            <li><a href="/deputados/perfil/825">Dra.  Zeli</a></li>
+            <li><a href="/deputados/perfil/815">Dr. George Morais</a></li>
+            <li><a href="/deputados/perfil/831">Eliel Junior</a></li>
+            <li><a href="/deputados/perfil/817">Gugu Nader</a></li>
+            <li><a href="/deputados/perfil/122">Gustavo Sebba</a></li>
+            <li><a href="/deputados/perfil/134">Henrique César</a></li>
+            <li><a href="/deputados/perfil/406">Issy Quinan</a></li>
+            <li><a href="/deputados/perfil/818">Jamil Calife</a></li>
+            <li><a href="/deputados/perfil/814">José Machado</a></li>
+            <li><a href="/deputados/perfil/145">Julio Pina</a></li>
+            <li><a href="/deputados/perfil/63">Karlos Cabral</a></li>
+            <li><a href="/deputados/perfil/64">Lincoln Tejota</a></li>
+            <li><a href="/deputados/perfil/819">Lineu Olimpio</a></li>
+            <li><a href="/deputados/perfil/125">Lucas Calil</a></li>
+            <li><a href="/deputados/perfil/820">Lucas do Vale</a></li>
+            <li><a href="/deputados/perfil/62">Major Araújo</a></li>
+            <li><a href="/deputados/perfil/40">Mauro Rubem</a></li>
+            <li><a href="/deputados/perfil/28">Paulo Cezar Martins</a></li>
+            <li><a href="/deputados/perfil/821">Ricardo Quirino</a></li>
+            <li><a href="/deputados/perfil/822">Rosângela Rezende</a></li>
+            <li><a href="/deputados/perfil/148">Rubens Marques</a></li>
+            <li><a href="/deputados/perfil/68">Talles Barreto</a></li>
+            <li><a href="/deputados/perfil/149">Thiago Albernaz</a></li>
+            <li><a href="/deputados/perfil/823">Veter Martins</a></li>
+            <li><a href="/deputados/perfil/131">Virmondes Cruvinel</a></li>
+            <li><a href="/deputados/perfil/824">Vivian Naves</a></li>
+            <li><a href="/deputados/perfil/152">Wagner Camargo Neto</a></li>
+            <li><a href="/deputados/perfil/153">Wilde Cambão</a></li>
+        </ul>
+      </div>
+      <div class="comissoes">
+        <h4 class="titulo">Comissões</h4>
+        <ul class="deputados-e-comissoes__lista">
+            <li><a class="sem-hifenizacao" href="/comissoes/14">Comissão da Criança e Adolescente</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/9">Comissão de Agricultura, Pecuária e Cooperativismo</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/18">Comissão de Assistência Social</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/22">Comissão de Atenção à Pessoa Idosa</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/1">Comissão de Constituição, Justiça e Redação</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/21">Comissão de Cultura, Esporte e Lazer</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/39">Comissão de Defesa dos Direitos da Pessoa com Deficiência</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/10">Comissão de Defesa dos Direitos do Consumidor</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/6">Comissão de Desenvolvimento Econômico, Ciência, Tecnologia e Inovação</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/12">Comissão de Direitos Humanos, Cidadania e Legislação Participativa</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/3">Comissão de Educação</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/68">Comissão de Empreendedorismo e Cidades Inteligentes</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/15">Comissão de Habitação, Reforma Agrária e Urbana</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/94">Comissão de Integração e Desenvolvimento do Entorno do Distrito Federal</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/7">Comissão de Meio Ambiente e Recursos Hídricos</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/11">Comissão de Minas e Energia</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/13">Comissão de Organização dos Municípios</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/91">Comissão de Promoção e Defesa dos Direitos das Pessoas com Transtorno do Espectro Autista e outros Transtornos do Neurodesenvolvimento</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/40">Comissão de Relações Internacionais</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/4">Comissão de Saúde</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/8">Comissão de Segurança Pública</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/5">Comissão de Serviços e Obras Públicas</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/2">Comissão de Tributação, Finanças e Orçamento</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/16">Comissão de Turismo</a></li>
+            <li><a class="sem-hifenizacao" href="/comissoes/42">Comissão Executiva</a></li>
+        </ul>
+        <h4 class="titulo">frentes parlamentares</h4>
+        <ul class="deputados-e-comissoes__lista">
+          <li>
+            <a class="sem-hifenizacao" href="/frentes_parlamentares_ativas" target="_blank">Clique aqui para ver todas as frentes parlamentares ativas na Alego</a>
+          </li>
+        </ul>
+      </div>
+      <div class="frentes-parlamentares">
+      </div>
+    </div>
+  </section>
+  <!-- fim deputados e comissoes -->
+
+  <!-- fale conosco -->
+  <section class="fale-conosco">
+    <div class="links">
+      <a href="https://transparencia.al.go.leg.br/fale-conosco" target="_blank">Fale conosco</a>
+      <a href="/contatos/deputados/">Fale com os deputados</a>
+      <a href="/contatos/presidente/">Fale com o presidente</a>
+      <a href="/contatos/comissoes/">Fale Com as Comissões e Frentes Parlamentares</a>
+    </div>
+  </section>
+  <!-- fim fale conosco -->
+
+  <!-- portais externos  -->
+  <section class="footer__portais">
+    <a class="link texto-menor" href="https://radardatransparencia.atricon.org.br" target="_blank">
+      <img src="/assets/radar_transparencia-41f98db3e615a0ad956a20488fe0411b264896658d733c8b7843313994ca7594.png" alt="ícone do Radar da Transparência">
+      <span>Acesso ao <br><strong>Radar da Transparência</strong></span>
+    </a>
+  </section>
+
+  <!-- logo footer -->
+  <section class="logo">
+    <a href="/">
+      <img class="logo__img" src="/assets/marca-6767355f879fe354466145e1b1a89776030cf477a6dfa7ffe6ea29f9b686b3d5.png" alt="Marca Assembleia Legislativa do Estado de Goiás"
+           title="Assembleia Legislativa do Estado de Goiás">
+      <img class="logo__img contraste" src="/assets/marca_pb-e3af4455c02ff56bcb05ea8366fb32d577d941a576d73ad6a5be76f9b129bacb.png" alt="Marca Assembleia Legislativa do Estado de Goiás"
+           title="Assembleia Legislativa do Estado de Goiás">
+    </a>
+  </section>
+  <!-- fim logo footer -->
+
+  <section class="footer__endereco">
+    <p class="container container--pg">
+      <span class="grid-12">
+        Assembleia Legislativa do Estado de Goiás
+        <br>Palácio Maguito Vilela - Avenida Emival Bueno, Quadra G, Lote 01, Park Lozandes
+        <br>CEP: 74.884-090
+        <br>Goiânia, Goiás
+        <br>Tel: (62) 3221-3000</span>
+    </p>
+  </section>
+  <div class="credito-sistema"></div>
+</footer>
+
+      <form id="form_aceitar_politica_simples" class="privacidade" action="/" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="k9U52EjGtZoZONiffKxjLs43E6vNimqSGd02sMk6KE/eTrMmOs1ouVmTYGReb9ZpdL42SalBIvPHmCh/8drq9Q==" />
+    <p><p>N&oacute;s usamos cookies para<strong> melhorar sua experi&ecirc;ncia de navega&ccedil;&atilde;o no portal</strong>. Ao utilizar voc&ecirc; concorda com a pol&iacute;tica de monitoramento de cookies. Para ter mais informa&ccedil;&otilde;es sobre como isso &eacute; feito, acesse nossa <a title="Pol&iacute;tica de privacidade" href="https://saba.al.go.leg.br/v1/view/sabauploader/public/cD_aKkapBGKwnRaqEohs4w==/25_Pol%C3%ADtica%20de%20Privacidade%20da%20Alego" target="_blank" rel="noopener">pol&iacute;tica de privacidade</a>. Se voc&ecirc; concorda, clique em ESTOU CIENTE.</p></p>
+
+    <button class="bt" type="button" onclick="enviarDadosPoliticaSimples()">Estou Ciente</button>
+</form>
+<script>
+  function enviarDadosPoliticaSimples() {
+    var xhr = new XMLHttpRequest()
+
+    // Define what happens on successful data submission
+    xhr.addEventListener("load", function(event) {
+      document.getElementById('form_aceitar_politica_simples').remove()
+    } );
+
+    // Define what happens in case of error
+    xhr.addEventListener( "error", function( event ) {
+      console.log('error - aceitar politica', event);
+    } );
+
+    // Set up our request
+    xhr.open("POST", "/alego_shared/aceitar-politica-privacidade" );
+
+    var authenticityToken = document.getElementsByName('authenticity_token')[0].value
+
+    var formData = new FormData()
+    formData.append('authenticity_token', authenticityToken)
+    formData.append('tipo_politica_privacidade', 'politica_privacidade_simples')
+
+    // The data sent is what the user provided in the form
+    xhr.send(formData);
+  }
+</script>
+
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+      </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+      if (window.VLibras) {
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+      }
+    </script>
+  </body>
+</html>
