@@ -24,13 +24,14 @@ from ..nucleo.registro import Registro
 from ..nucleo.registro import carregar as carregar_registro
 from .governador import Governador, Leitura, medidor_psutil
 
-TRANSICOES = {                        # as 5 fases do Cartório (titular, 22/10/2026) e o Farol, a segunda metade do sistema
-    "recepcao": {"certificacao"},                                   # 1 → 2
-    "certificacao": {"preparacao", "farol"},                        # 2 → 3, ou completo → Farol
-    "preparacao": {"validacao", "analise externa"},                 # 3 → 4 (chegou informação), ou → 5 (tentativas esgotadas)
-    "validacao": {"preparacao", "analise externa", "farol"},        # 4 → 3, → 5, ou completo → Farol
-    "analise externa": {"validacao", "farol"},                      # 5 → 4 (o Chrome trouxe informação), ou → Farol
-    "farol": set(),
+TRANSICOES = {   # a linha de produção do Cartório (titular, 22/10/2026): uma etapa nunca acontece antes da outra
+    "recepcao": {"certificacao"},                                               # 1 → 2
+    "certificacao": {"preparacao", "farol", "arquivo"},                         # 2 → 3; ouro com prazo aberto → Farol; encerrada → arquivo
+    "preparacao": {"validacao", "analise externa", "arquivo"},                  # 3 → 4 (chegou informação); → 5 (rede esgotada)
+    "validacao": {"preparacao", "analise externa", "farol", "arquivo"},         # 4 → 3, → 5, → Farol, → arquivo
+    "analise externa": {"validacao", "farol", "arquivo"},                       # 5 → 4 (o Chrome trouxe informação), → Farol, → arquivo
+    "farol": {"arquivo"},                                                       # a oportunidade encerrou: a estrela vira o selo do livro
+    "arquivo": {"recepcao"},                                                    # nova oportunidade: volta à linha pela recepção
 }
 COLUNAS_ACHADO = {"id", "motor", "encontrado_em", "publicado_em", "link_divulgacao", "link_oficial", "titulo", "dados",
                   "veio_de_copia_arquivada", "pista"}

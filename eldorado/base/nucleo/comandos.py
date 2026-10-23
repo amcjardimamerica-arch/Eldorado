@@ -234,6 +234,40 @@ def despausar(config: Path = CONFIG):
 
 
 @app.command()
+def lote(config: Path = CONFIG, saida: Path = Path("verificacao/lotes")):
+    """ETAPA 5: gera o lote da análise externa (os livros na etapa 5, para o Claude no Chrome)."""
+    import json
+    import sqlite3
+    from datetime import date
+
+    from ..cartorio.analise_externa import gerar_lote
+    _, dados, _ = _cfg(config)
+    con = sqlite3.connect(f"file:{dados / 'biblioteca.db'}?mode=ro", uri=True)
+    lt = gerar_lote(con, date.today())
+    con.close()
+    saida.mkdir(parents=True, exist_ok=True)
+    (saida / f"{lt['lote']}.json").write_text(json.dumps(lt, ensure_ascii=False, indent=1), encoding="utf-8")
+    typer.echo(f"{saida / (lt['lote'] + '.json')}: {len(lt['livros'])} livro(s)")
+
+
+@app.command()
+def vereditos(arquivo: Path, config: Path = CONFIG):
+    """ETAPA 5: importa o veredito do Claude no Chrome (o Cartório valida e armazena; o livro segue na linha)."""
+    import sqlite3
+
+    from ..cartorio.analise_externa import importar
+    from .eventos import Diario
+    c, dados, eventos = _cfg(config)
+    diario = Diario(eventos, "analise-externa")
+    con = sqlite3.connect(f"file:{dados / 'biblioteca.db'}?mode=ro", uri=True)
+    r = importar(arquivo.read_bytes(), con, diario)
+    con.close()
+    for x in r:
+        typer.echo(f"  {x}")
+    typer.echo("aplique com: eldorado aplicar")
+
+
+@app.command()
 def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = CONFIG,
                limite_min: float = typer.Option(320, help="duração desta execução; perto do limite, grava e passa a vez à continuação"),
                gravar_min: float = typer.Option(30, help="grava o trabalho no repositório a cada tantos minutos"),

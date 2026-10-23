@@ -196,6 +196,16 @@ def _situacao(historico: bool, continuo: bool, fim: date | None, hoje: date) -> 
     return "aberta" if fim >= hoje else "encerrada"
 
 
+def prazo(certidoes: dict[str, dict], livro: dict[str, Any], hoje: date) -> str:
+    """A situação do prazo da oportunidade atual: aberta, encerrada ou sem prazo (a ferramenta de validação)."""
+    motivo = portao.motivo({"titulo": livro.get("titulo"), "orgao": livro.get("orgao"), "uf": livro.get("uf"), "url": livro.get("link_oficial")},
+                           hoje.isoformat())
+    texto = _primeiro(certidoes, "Prazo de inscrição") or ""
+    historico = bool(motivo and HISTORICO.search(motivo)) or bool(ENCERRADO.search(texto))
+    insc = N.datas(texto, hoje)
+    return _situacao(historico, bool(CONTINUO.search(texto)), insc[-1] if insc else None, hoje)
+
+
 def _primeiro(certidoes: dict[str, dict], item: str) -> str | None:
     c = certidoes.get(item)
     return c.get("valor") if c else None
@@ -302,6 +312,34 @@ def aplicar(resultados: list[Resultado], diario: Diario) -> None:
                                                        "aprendeu": None, "faltou": "; ".join(r.motivos) or None})
 
 
+LINHA = ("certificacao", "preparacao", "validacao", "analise externa", "farol")
+
+
+def arquivar_encerrados(con: sqlite3.Connection, diario: Diario, hoje: date) -> int:
+    """A validação pelo tempo: o livro na linha cuja oportunidade encerrou vai ao arquivo, com o relatório da etapa; a
+    estrela vira o selo do livro (estrela de ouro → livro de ouro) e a estrela volta a "sem", aguardando a próxima."""
+    from .passaporte import Passaporte
+    from .selos import RANK
+    con.row_factory = sqlite3.Row
+    certs: dict[str, list[dict]] = {}
+    for c in con.execute("SELECT * FROM certidao WHERE situacao IN ('comprovado','dispensado')"):
+        certs.setdefault(c["livro_id"], []).append(dict(c))
+    passaporte, n = Passaporte(con, diario, maximo=10), 0
+    for lv in con.execute(f"SELECT l.*, p.fase FROM livro l JOIN passaporte p ON p.livro_id = l.id WHERE p.fase IN ({','.join('?' * len(LINHA))})", LINHA):
+        validas = {k: v for k, v in I.melhor(certs.get(lv["id"], [])).items() if I.resolvido(v)}
+        if prazo(validas, dict(lv), hoje) != "encerrada":
+            continue
+        selo = max((lv["selo_livro"] or "sem", lv["estrela"] or "sem"), key=RANK.get)
+        ok, _ = passaporte.mover(lv["id"], "arquivo", "o prazo encerrou: a oportunidade foi arquivada",
+                                 {"gerou": f"oportunidade arquivada; a estrela {lv['estrela']} virou o selo do livro ({selo}); aguarda nova oportunidade",
+                                  "faltou": ", ".join(I.faltando(validas)) or None})
+        if ok:
+            diario.emitir("selo.calculado", "auditoria", {"id": lv["id"], "estrela": "sem", "selo_livro": selo, "informacoes_validadas": len(validas),
+                                                          "atualizado_em": agora()})
+            n += 1
+    return n
+
+
 def no_auditar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
     """Nó da passagem: valida e decupa os livros novos ou alterados (a automação só exclui logicamente)."""
     from pathlib import Path
@@ -312,7 +350,9 @@ def no_auditar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto
     try:
         alvo = pendentes(con)
         res = list(auditar(con, date.today(), alvo)) if alvo else []
+        arquivados = arquivar_encerrados(con, contexto.diario, date.today())
     finally:
         con.close()
     aplicar(res, contexto.diario)
-    return [{"auditados": len(res), "expurgados": sum(r.validacao == "expurgado" for r in res), "revisar": sum(r.validacao == "revisar" for r in res)}]
+    return [{"auditados": len(res), "expurgados": sum(r.validacao == "expurgado" for r in res), "revisar": sum(r.validacao == "revisar" for r in res),
+             "arquivados": arquivados}]

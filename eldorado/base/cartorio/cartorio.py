@@ -11,7 +11,7 @@ o livro vai ao Farol, a segunda metade do sistema.
 from __future__ import annotations
 
 import sqlite3
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -22,7 +22,7 @@ from ..missao import itens as I
 from ..nucleo.contratos import Achado, Missao
 from ..nucleo.eventos import Diario, agora
 from ..nucleo.registro import instanciar
-from . import selos, site_oficial
+from . import auditoria, selos, site_oficial
 from .certificacao import Certificacao, Pagina
 from .indice import Indice
 from .passaporte import Passaporte
@@ -65,12 +65,13 @@ class Cartorio:
         self.con.row_factory = sqlite3.Row
         return I.melhor([dict(c) for c in self.con.execute("SELECT * FROM certidao WHERE livro_id=? AND situacao IN ('comprovado','dispensado')", (livro,))])
 
-    def _edicoes(self, livro: str, atual: Achado) -> list[selos.Edicao]:
+    def _edicoes(self, livro: str, atual: Achado | None) -> list[selos.Edicao]:
         anos: dict[int, selos.Edicao] = {}
         linhas: list[tuple[str | None, str | None, str | None]] = []
         if self.con is not None:
             linhas = [tuple(r) for r in self.con.execute("SELECT publicado_em, encontrado_em, link_oficial FROM achado WHERE livro_id=?", (livro,))]
-        linhas.append((atual.publicado_em, atual.encontrado_em, atual.link_oficial))
+        if atual is not None:
+            linhas.append((atual.publicado_em, atual.encontrado_em, atual.link_oficial))
         for pub, enc, oficial in linhas:
             data = pub or enc
             if data and str(data)[:4].isdigit():
@@ -79,11 +80,24 @@ class Cartorio:
                 anos[ano] = max(anos.get(ano, e), e, key=lambda x: (x.pagina_oficial, x.data))
         return list(anos.values())
 
+    def _livro(self, livro: str, a: Achado | None) -> dict[str, Any]:
+        r = None
+        if self.con is not None:
+            self.con.row_factory = sqlite3.Row
+            r = self.con.execute("SELECT titulo, orgao, uf, link_oficial, selo_livro FROM livro WHERE id=?", (livro,)).fetchone()
+        if r:
+            return dict(r)
+        if a is None:
+            return {"titulo": None, "orgao": None, "uf": None, "link_oficial": None, "selo_livro": None}
+        return {"titulo": a.titulo, "orgao": (a.dados or {}).get("orgao"), "uf": (a.dados or {}).get("uf"), "link_oficial": a.link_oficial, "selo_livro": None}
+
     def processar(self, achados: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        """A linha de produção: a informação recebida passa pelas etapas na ordem, sem pular nenhuma; cada etapa
+        concluída deixa o seu relatório no livro. O Cartório valida e armazena; não busca e não decide quem age."""
         saida = []
         for bruto in achados:
             a = msgspec.convert({k: v for k, v in bruto.items() if not k.startswith("_")}, Achado)
-            # FASE 1 · recepção: liga a informação a um livro (a pedida pela rede para um livro vai direto a ele)
+            # ETAPA 1 · recepção: liga a informação a um livro (a pedida pela rede para um livro vai direto a ele)
             pedido = (a.dados or {}).get("livro_id")
             if pedido and self.passaporte.fase(pedido) is not None:
                 livro, novo, como = pedido, False, f"informação adicional pedida pela rede ({a.motor})"
@@ -91,14 +105,19 @@ class Cartorio:
             else:
                 livro, novo, como = self.indice.resolver(a)
             fase = self.passaporte.fase(livro)
-            if fase is None:
-                self.passaporte.mover(livro, "recepcao", "livro novo (fase 1)")
+            antes = I.faltando({k: v for k, v in self._certidoes(livro).items() if I.resolvido(v)})
+            if fase in (None, "arquivo"):                          # livro novo, ou nova oportunidade de um livro arquivado
+                self.passaporte.mover(livro, "recepcao", "livro novo" if fase is None else "nova oportunidade para o livro arquivado",
+                                      {"gerou": f"nova oportunidade recebida de {a.motor}: {a.titulo[:120]}"} if fase else None)
                 fase = "recepcao"
             if fase == "recepcao":
-                self.passaporte.mover(livro, "certificacao", "fase 2: certificar e classificar")
+                self.passaporte.mover(livro, "certificacao", "etapa 2: certificar e classificar",
+                                      {"gerou": f"informação de {a.motor} ligada ao livro ({como})", "faltou": None if a.link_oficial else "link oficial"})
                 fase = "certificacao"
             elif fase in ("preparacao", "analise externa"):
-                self.passaporte.mover(livro, "validacao", f"fase 4: validar a informação adicional ({a.motor})")
+                self.passaporte.mover(livro, "validacao", f"etapa 4: validar a informação adicional ({a.motor})",
+                                      {"gerou": f"pedido atendido por {a.motor}: {como}", "faltou": ", ".join(antes) or None,
+                                       "analise": "externa" if fase == "analise externa" else "interna"})
                 fase = "validacao"
             oficial = site_oficial.escolher([a.link_oficial, a.link_divulgacao])
             if oficial:
@@ -110,6 +129,7 @@ class Cartorio:
                                                                      "mensagem": f"lei {lei} citada pelo motor não está na Biblioteca"})
                     continue
                 self.diario.emitir("livro.legislacao", "cartorio", {"livro_id": livro, "lei_id": lei, "papel": "rege o programa", "em": agora()})
+            # ETAPA 2 (ou 4) · certificar e classificar: a estrela é da oportunidade aberta; o selo do livro, do histórico
             certidoes = self._certidoes(livro)
             sha = (a.dados or {}).get("documento_sha256") or a.documento_sha256 or (a.documento or {}).get("sha256")
             resolvidos = {k for k, c in certidoes.items() if I.resolvido(c)}
@@ -117,21 +137,47 @@ class Cartorio:
             pular = resolvidos | set(novas) | set((a.dados or {}).get("nao_certificar") or [])
             novas.update(self.certificacao.certificar(livro, self._paginas(sha), pular))
             certidoes.update(novas)
-            estrela, selo = selos.calcular(self.diario, livro, certidoes, self._edicoes(livro, a), self.ano)
-            faltam = I.faltando(certidoes)
-            self.diario.emitir("relatorio.etapa", "cartorio", {
-                "livro_id": livro, "fase": fase, "em": agora(), "analise": "interna",
-                "gerou": f"{len(novas)} item(ns) certificado(s); estrela {estrela}; selo do livro {selo}; {como}",
-                "aprendeu": None if oficial else "só pistas: falta o link oficial", "faltou": ", ".join(faltam) or None})
-            # o Cartório não busca: com todas as informações, ao Farol; senão, à fase 3, com o pedido para a rede neural
+            dados_livro = self._livro(livro, a)
+            situacao = auditoria.prazo({k: v for k, v in certidoes.items() if I.resolvido(v)}, dados_livro, date.fromisoformat(agora()[:10]))
+            estrela, selo = selos.calcular(self.diario, livro, certidoes, self._edicoes(livro, a), self.ano, situacao, dados_livro.get("selo_livro"))
+            faltam = I.faltando({k: v for k, v in certidoes.items() if I.resolvido(v)})
+            relatorio = {"gerou": f"{len(novas)} item(ns) certificado(s) ({', '.join(sorted(novas)) or 'nenhum'}); prazo {situacao}; estrela {estrela}; "
+                                  f"selo do livro {selo}", "faltou": ", ".join(faltam) or None,
+                         "aprendeu": None if oficial else "só pistas: falta o link oficial"}
             if fase in ("certificacao", "validacao"):
-                if not faltam:
-                    self.passaporte.mover(livro, "farol", "todas as informações: estrela de ouro (a segunda metade do sistema)")
+                if situacao == "encerrada":
+                    self.passaporte.mover(livro, "arquivo", "oportunidade arquivada: a estrela virou o selo do livro; aguarda nova oportunidade", relatorio)
+                elif not faltam:
+                    self.passaporte.mover(livro, "farol", "estrela de ouro com prazo em aberto: ao Farol (a segunda metade do sistema)", relatorio)
                 else:
-                    self.passaporte.mover(livro, "preparacao", f"fase 3: pedido à rede neural — faltam {', '.join(faltam)}")
-            saida.append({"livro": livro, "novo": novo, "como": como, "estrela": estrela, "selo_livro": selo, "faltam": faltam,
-                          "_linhagem": {"livro": livro, "achado": a.id}})
+                    self.passaporte.mover(livro, "preparacao", f"etapa 3: o pedido à rede neural — faltam {', '.join(faltam)}", relatorio)
+            elif fase == "farol" and situacao == "encerrada":
+                self.passaporte.mover(livro, "arquivo", "a oportunidade encerrou: a estrela virou o selo do livro", relatorio)
+            saida.append({"livro": livro, "novo": novo, "como": como, "estrela": estrela, "selo_livro": selo, "faltam": faltam, "prazo": situacao,
+                          "etapa": self.passaporte.fase(livro), "_linhagem": {"livro": livro, "achado": a.id}})
         return saida
+
+
+    def revalidar(self, livro: str, extras: dict[str, dict], gerou: str, analise: str = "externa") -> dict[str, Any]:
+        """A validação depois da análise externa (etapa 5 → 4): as certidões e dispensas que o veredito trouxe, junto com
+        as do livro; ouro com prazo aberto → Farol; encerrada → arquivo; faltando, volta à etapa 5, à espera."""
+        if self.passaporte.fase(livro) == "analise externa":
+            self.passaporte.mover(livro, "validacao", "etapa 4: validar o veredito da análise externa", {"gerou": gerou, "analise": analise})
+        certidoes = {**self._certidoes(livro), **extras}
+        validas = {k: v for k, v in certidoes.items() if I.resolvido(v)}
+        dados_livro = self._livro(livro, None)
+        situacao = auditoria.prazo(validas, dados_livro, date.fromisoformat(agora()[:10]))
+        estrela, selo = selos.calcular(self.diario, livro, certidoes, self._edicoes(livro, None), self.ano, situacao, dados_livro.get("selo_livro"))
+        faltam = I.faltando(validas)
+        rel = {"gerou": f"validado após a análise externa: prazo {situacao}; estrela {estrela}; selo do livro {selo}", "faltou": ", ".join(faltam) or None}
+        if self.passaporte.fase(livro) == "validacao":
+            if situacao == "encerrada":
+                self.passaporte.mover(livro, "arquivo", "oportunidade arquivada: a estrela virou o selo do livro", rel)
+            elif not faltam:
+                self.passaporte.mover(livro, "farol", "estrela de ouro com prazo em aberto: ao Farol", rel)
+            else:
+                self.passaporte.mover(livro, "analise externa", f"ainda faltam {', '.join(faltam)}: aguarda novo veredito", rel)
+        return {"livro": livro, "estrela": estrela, "selo_livro": selo, "prazo": situacao, "faltam": faltam, "etapa": self.passaporte.fase(livro)}
 
 
 def no_cartorio(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:

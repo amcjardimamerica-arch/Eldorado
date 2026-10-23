@@ -6,6 +6,7 @@ set -u
 git config user.name "Eldorado"
 git config user.email "eldorado@users.noreply.github.com"
 git add eventos/
+[ -d verificacao ] && git add verificacao/      # os lotes ao Chrome e os vereditos importados
 ultimo=$(git log -1 --format=%ct -- dados/ 2>/dev/null || echo 0)
 if [ "${1:-false}" = "true" ] || [ $(( $(date +%s) - ${ultimo:-0} )) -gt 72000 ]; then
   git add dados/

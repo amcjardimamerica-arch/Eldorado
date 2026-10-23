@@ -72,6 +72,11 @@ esperas_s = [2, 5]
 parametros = { dados = "dados", eventos = "eventos" }
 
 [[no]]
+id = "analise_externa"
+tipo = "eldorado.base.cartorio.analise_externa:no_analise_externa"
+parametros = { dados = "dados", pasta = "verificacao" }
+
+[[no]]
 id = "aprender"
 tipo = "eldorado.base.cerebro.aprendizado:no_aprendizado"
 parametros = { dados = "dados" }
@@ -130,6 +135,9 @@ de = "decidir_rede"
 para = "validar"
 [[conexao]]
 de = "validar"
+para = "analise_externa"
+[[conexao]]
+de = "analise_externa"
 para = "aplicar_validacao"
 [[conexao]]
 de = "aplicar_validacao"

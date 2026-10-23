@@ -32,9 +32,20 @@ def selo_do_livro(edicoes: list[Edicao], ano_atual: int) -> str:
     return "bronze"
 
 
-def calcular(diario: Diario, livro: str, certidoes: dict[str, dict], edicoes: list[Edicao], ano_atual: int) -> tuple[str, str]:
-    estrela = I.nivel(certidoes)
-    selo = selo_do_livro(edicoes, ano_atual)
+RANK = {"sem": 0, "bronze": 1, "prata": 2, "ouro": 3}
+
+
+def calcular(diario: Diario, livro: str, certidoes: dict[str, dict], edicoes: list[Edicao], ano_atual: int,
+             prazo: str | None = None, selo_atual: str | None = None) -> tuple[str, str]:
+    """A ESTRELA valida a oportunidade ATUAL (só existe com o prazo em aberto); o SELO DO LIVRO é o histórico. Quando a
+    oportunidade é arquivada (prazo encerrado), a estrela vira o selo do livro (estrela de ouro → livro de ouro) e a
+    estrela volta a "sem", aguardando a próxima oportunidade (titular, 22/10/2026)."""
+    nivel = I.nivel(certidoes)
+    selo = max((selo_do_livro(edicoes, ano_atual), selo_atual or "sem"), key=RANK.get)
+    if prazo == "encerrada":
+        estrela, selo = "sem", max((selo, nivel), key=RANK.get)
+    else:
+        estrela = nivel
     diario.emitir("selo.calculado", "selos", {"id": livro, "estrela": estrela, "selo_livro": selo,
                                               "informacoes_validadas": sum(1 for k in I.DOZE if I.resolvido(certidoes.get(k))), "atualizado_em": agora()})
     return estrela, selo

@@ -6,7 +6,8 @@ import sqlite3
 from ..cerebro.regencia import autorizar
 from ..nucleo.eventos import Diario, agora
 
-SITUACAO = {"analise externa": "verificacao externa", "farol": "transferido ao farol"}
+SITUACAO = {"analise externa": "verificacao externa", "farol": "transferido ao farol", "arquivo": "aguardando",
+            "recepcao": "em trabalho"}
 
 
 class Passaporte:
@@ -33,12 +34,19 @@ class Passaporte:
             self._tentativas[k] = n
         return self._tentativas[k]
 
-    def mover(self, livro: str, para: str, motivo: str = "") -> tuple[bool, str]:
+    def mover(self, livro: str, para: str, motivo: str = "", relatorio: dict | None = None) -> tuple[bool, str]:
+        """Passa o livro à etapa seguinte da linha de produção (autorizado pela Regência). Ao concluir uma etapa, o livro
+        guarda o RELATÓRIO daquela etapa: o que ela gerou, o que faltou e o que aprendeu (titular, 22/10/2026)."""
         de = self.fase(livro)
         n = max((t for (lv, f, _), t in self._tentativas.items() if lv == livro and f == de), default=0)
         ok, porque = autorizar(de, para, n, self.maximo)
         if not ok:
             return False, porque
+        if de is not None:                                          # o relatório da etapa concluída
+            r = relatorio or {}
+            self.diario.emitir("relatorio.etapa", "cartorio", {"livro_id": livro, "fase": de, "em": agora(), "analise": r.get("analise", "interna"),
+                                                               "gerou": r.get("gerou") or motivo or porque, "aprendeu": r.get("aprendeu"),
+                                                               "faltou": r.get("faltou")})
         self.diario.emitir("livro.passagem", "passaporte", {"livro_id": livro, "de": de, "para": para, "em": agora(),
                                                              "autorizado_por": "regencia", "motivo": motivo or porque})
         if para in SITUACAO:
