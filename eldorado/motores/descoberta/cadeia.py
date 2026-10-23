@@ -21,7 +21,7 @@ from selectolax.lexbor import LexborHTMLParser
 
 @dataclass
 class Elo:
-    formato: str                          # "json" ou "html"
+    formato: str                          # "json", "html" ou "atos" (o documento recortado em atos: leitura/atos.py)
     itens: str                            # jmespath (json) ou seletor CSS (html)
     campos: dict[str, str] = field(default_factory=dict)
     url: str | None = None                # o endereço deste elo, montado com os campos do item anterior (o primeiro usa o da fonte)
@@ -91,7 +91,14 @@ def percorrer(buscar: Callable[[str], Any], url: str, elos: list[Elo], relatorio
             endereco = pai["_url"] if n == 0 else formatar(elo.url or "", pai)
             try:
                 r = buscar(endereco)
-                filhos = _itens_json(r.conteudo, elo) if elo.formato == "json" else _itens_html(r.conteudo, endereco, elo)
+                if elo.formato == "atos":
+                    from ..leitura import leitores
+                    from ..leitura.atos import recortar
+                    filhos = recortar(leitores.padrao().ler(r.conteudo, endereco).texto, elo.itens or None) if elo.itens else \
+                        recortar(leitores.padrao().ler(r.conteudo, endereco).texto)
+                    filhos = filhos[:elo.limite]
+                else:
+                    filhos = _itens_json(r.conteudo, elo) if elo.formato == "json" else _itens_html(r.conteudo, endereco, elo)
             except Exception as e:  # noqa: BLE001 — a cadeia segue com os outros itens; a falha fica registrada
                 relatorio.append(f"elo {n + 1} ({endereco[:90]}): {type(e).__name__}: {str(e)[:150]}")
                 continue

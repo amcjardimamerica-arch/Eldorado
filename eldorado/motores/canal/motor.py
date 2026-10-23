@@ -60,8 +60,8 @@ class CfgPaginacao(_Base):
 
 class CfgElo(_Base):
     """Um elo da leitura em cadeia (descoberta/cadeia.py)."""
-    formato: Literal["json", "html"]
-    itens: str
+    formato: Literal["json", "html", "atos"]
+    itens: str = ""                         # jmespath (json), seletor CSS (html) ou o padrão dos cabeçalhos (atos; vazio = o padrão)
     campos: dict[str, str] = Field(default_factory=dict)
     url: str | None = None
     filtro: dict[str, str] = Field(default_factory=dict)
@@ -73,6 +73,7 @@ class CfgPistaCadeia(_Base):
     titulo: str
     link: str
     resumo: str | None = None
+    texto: str | None = None             # o texto do ato já lido (o motor não baixa de novo o documento inteiro)
 
 
 class CfgFonte(_Base):
@@ -436,7 +437,8 @@ class MotorCanal(Motor):
         itens = percorrer(self.escada.buscar, preencher(f.url, hoje_local()), [Elo(**e.model_dump()) for e in f.cadeia], relato)
         self.relatorio.extend(f"{f.nome}: {x}" for x in relato[:10])
         pistas = [Pista(titulo=formatar(f.pista.titulo, i), link=formatar(f.pista.link, i), origem=f.nome,
-                        resumo=formatar(f.pista.resumo, i) if f.pista.resumo else None) for i in itens]
+                        resumo=formatar(f.pista.resumo, i) if f.pista.resumo else None,
+                        extra={"documento_texto": formatar(f.pista.texto, i)} if f.pista.texto else {}) for i in itens]
         pistas = [p for p in pistas if p.titulo.strip() and p.link.startswith("http")]
         ass = hashlib.sha256("\n".join(sorted(p.link for p in pistas)).encode()).hexdigest()
         if pistas and ass == self.estado.assinatura(f.nome):
@@ -555,7 +557,13 @@ class MotorCanal(Motor):
         documento = None
         oficial, divulgacao = pista.link, fonte.url
         ler = (self.cfg.leitura.documentos and DOCUMENTO.search(pista.link)) or (self.cfg.leitura.paginas_dos_achados and not DOCUMENTO.search(pista.link))
-        if self.cfg.leitura.seguir_oficial and not DOCUMENTO.search(pista.link) and n < self.cfg.leitura.max_documentos:
+        texto_do_ato = (pista.extra or {}).get("documento_texto")
+        if texto_do_ato:                                            # o ato já recortado do documento oficial: é o próprio documento
+            from ...base.nucleo.seguranca import injecao
+            documento = {"url": pista.link, "sha256": hashlib.sha256(texto_do_ato.encode()).hexdigest(), "tipo": "ato", "leitor": "atos",
+                         "oficial": True, "paginas": [texto_do_ato], "alertas": [], "injecao": injecao(texto_do_ato)}
+            ler = False
+        if self.cfg.leitura.seguir_oficial and not texto_do_ato and not DOCUMENTO.search(pista.link) and n < self.cfg.leitura.max_documentos:
             achado_oficial = self._seguir_oficial(pista)
             if achado_oficial:
                 oficial, divulgacao, documento = achado_oficial
@@ -575,7 +583,8 @@ class MotorCanal(Motor):
         chave = hashlib.sha256(pista.link.encode()).hexdigest()[:16]
         return Achado(id=f"{m.id}-{chave}", motor=m.id, encontrado_em=_agora()[:10], link_divulgacao=divulgacao, link_oficial=oficial,
                       titulo=pista.titulo[:300], publicado_em=(pista.data or None) and str(pista.data)[:10],
-                      dados={"uf": m.uf, "orgao": m.orgao, **pista.extra, "fonte": fonte.nome, "origem": pista.origem,
+                      dados={"uf": m.uf, "orgao": m.orgao, **{k: v for k, v in pista.extra.items() if k != "documento_texto"}, "fonte": fonte.nome,
+                             "origem": pista.origem,
                              **(self._extrair(documento["paginas"]) if documento and self.cfg.extracao.itens else {}),
                              **({"leis": self.cfg.legislacao.leis} if self.cfg.legislacao.leis else {}),
                              **({"resumo": pista.resumo} if pista.resumo else {})}, documento=documento)
