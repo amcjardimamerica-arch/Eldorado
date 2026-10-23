@@ -1,0 +1,50 @@
+# Rede Filantropia — editais divulgados pela rede (lida pelo computador do titular: recusa IP estrangeiro) — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "BR"
+canal = "portal"
+id = "site-rede-filantropia"
+nome = "Rede Filantropia — editais divulgados pela rede (lida pelo computador do titular: recusa IP estrangeiro)"
+categoria = "Portais e fontes do terceiro setor"
+categoria_estudo = "POR"
+finalidade = "editais divulgados pela rede (lida pelo computador do titular: recusa IP estrangeiro)"
+tipo_finalidade = "descoberta"
+nomes_anteriores = ["plat-rede-filantropia"]
+
+# ---- rotas confirmadas nas sondagens de 23/10/2026 (testes/paginas/sondagem-a, -b, -c, -farol)
+
+[[fonte]]
+nome = "Rede Filantropia — página inicial (editais divulgados)"
+url = "https://www.filantropia.ong/"
+tipo = "pagina"
+papel = "principal"
+
+[[fonte]]
+nome = "busca aberta: site:filantropia.ong edital inscrições"
+url = ""
+tipo = "metabusca"
+papel = "alternativa"
+termos = "site:filantropia.ong edital inscrições"
+
+[acesso]
+degraus = ["api", "leve"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"]
+vetos = ["re:resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"]
+termos_em = "titulo"
+
+[aprendizado]
+licoes = ["O domínio novo (filantropia.ong) responde à nuvem (23/10/2026); o registro antigo de recusa a IP estrangeiro era do domínio velho.", "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10).", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+bloqueios_conhecidos = []
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["www.redefilantropia.org.br (o domínio antigo não existe mais; o novo é filantropia.ong)"]
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14

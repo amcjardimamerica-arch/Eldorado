@@ -1,0 +1,49 @@
+# Prosas — editais e prêmios para OSCs (três caminhos indiretos: listagem da CapitaAI, ângulo do Piloto e coleta assistida) — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "BR"
+canal = "portal"
+id = "site-prosas"
+nome = "Prosas — editais e prêmios para OSCs (três caminhos indiretos: listagem da CapitaAI, ângulo do Piloto e coleta assistida)"
+categoria = "Portais e fontes do terceiro setor"
+categoria_estudo = "POR"
+finalidade = "editais e prêmios para OSCs; o robots.txt proíbe robôs, então só pelos três caminhos indiretos decididos pelo titular"
+tipo_finalidade = "descoberta"
+nomes_anteriores = ["plat-prosas", "plat-prosas-oscs", "plat-prosas-premios"]
+
+# ---- rotas confirmadas nas sondagens de 23/10/2026 (testes/paginas/sondagem-a, -b, -c, -farol)
+
+[[fonte]]
+nome = "Prosas — editais"
+url = "https://prosas.com.br/editais"
+tipo = "pagina"
+papel = "principal"
+
+[[fonte]]
+nome = "Prosas — prêmios"
+url = "https://prosas.com.br/editais?natureza=premio"
+tipo = "pagina"
+papel = "alternativa"
+
+[acesso]
+degraus = ["api", "leve", "patchright"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"]
+vetos = ["re:resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"]
+termos_em = "titulo"
+
+[aprendizado]
+licoes = ["O Prosas carrega os editais por script: precisa do degrau de navegador (o extra navegador). Ele também replica e tem editais próprios (a origem é decidida por livro); a lista pública aparece pelo CapitaAI e pelo Observatório.", "2 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10).", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+bloqueios_conhecidos = []
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["o widget de listagem (vazio sem parâmetros)"]
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14

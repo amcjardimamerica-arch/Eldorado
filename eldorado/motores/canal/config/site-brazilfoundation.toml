@@ -1,0 +1,49 @@
+# BrazilFoundation — editais de apoio a organizações brasileiras — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "BR"
+canal = "portal"
+id = "site-brazilfoundation"
+nome = "BrazilFoundation — editais de apoio a organizações brasileiras"
+categoria = "Portais e fontes do terceiro setor"
+categoria_estudo = "POR"
+finalidade = "editais de apoio a organizações brasileiras"
+tipo_finalidade = "descoberta"
+nomes_anteriores = []
+
+# ---- rotas confirmadas nas sondagens de 23/10/2026 (testes/paginas/sondagem-a, -b, -c, -farol)
+
+[[fonte]]
+nome = "BrazilFoundation — editais"
+url = "https://brazilfoundation.org/edital/"
+tipo = "pagina"
+papel = "principal"
+
+[[fonte]]
+nome = "BrazilFoundation — página inicial"
+url = "https://brazilfoundation.org/"
+tipo = "pagina"
+papel = "alternativa"
+
+[acesso]
+degraus = ["api", "leve"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"]
+vetos = ["re:resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"]
+termos_em = "titulo"
+
+[aprendizado]
+licoes = ["robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+bloqueios_conhecidos = []
+alternativas_para_bloqueio = []
+rotas_que_falharam = []
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14

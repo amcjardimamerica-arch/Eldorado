@@ -1,0 +1,56 @@
+# Mapa das OSC (Ipea) — editais reunidos no portal — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "BR"
+canal = "portal"
+id = "site-mapa-osc"
+nome = "Mapa das OSC (Ipea) — editais reunidos no portal"
+categoria = "Portais e fontes do terceiro setor"
+categoria_estudo = "POR"
+finalidade = "editais reunidos no portal do Ipea (coleta assistida: o site proíbe robôs)"
+tipo_finalidade = "descoberta"
+nomes_anteriores = ["plat-mapa-osc"]
+
+# ---- rotas confirmadas nas sondagens de 23/10/2026 (testes/paginas/sondagem-a, -b, -c, -farol)
+
+[[fonte]]
+nome = "Mapa das OSC (Ipea) — editais"
+url = "https://mapaosc.ipea.gov.br/editais"
+tipo = "pagina"
+papel = "principal"
+
+[[fonte]]
+nome = "busca aberta: site:mapaosc.ipea.gov.br edital"
+url = ""
+tipo = "metabusca"
+papel = "alternativa"
+termos = "site:mapaosc.ipea.gov.br edital"
+
+[[alvo]]
+id = "f260-captacao-216"
+nome = "Mapa das OSC - área de editais"
+enderecos = ["https://mapaosc.ipea.gov.br/"]
+orgao = "Mapa das OSC (IPEA)"
+
+[acesso]
+degraus = ["api", "leve", "local"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"]
+vetos = ["re:resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"]
+termos_em = "titulo"
+
+[aprendizado]
+licoes = ["A página de editais do Mapa das OSC carrega a lista por script: a leitura direta traz pouco; o robots proíbe robôs (informação).", "Rota de acesso única para os domínios com bloqueio (mapaosc.ipea.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "Os 1 alvos são vigiados só na janela prevista da próxima edição.", "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10).", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+bloqueios_conhecidos = ["mapaosc.ipea.gov.br"]
+alternativas_para_bloqueio = []
+rotas_que_falharam = []
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14

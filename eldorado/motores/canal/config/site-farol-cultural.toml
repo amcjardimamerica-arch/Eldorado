@@ -1,0 +1,71 @@
+# Farol Cultural — editais de cultura de todo o Brasil, pela API pública do portal — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "BR"
+canal = "portal"
+id = "site-farol-cultural"
+nome = "Farol Cultural — editais de cultura de todo o Brasil, pela API pública do portal"
+categoria = "Portais e fontes do terceiro setor"
+categoria_estudo = "POR"
+finalidade = "editais de cultura de todo o Brasil, pela API pública do portal"
+tipo_finalidade = "descoberta"
+nomes_anteriores = []
+
+# ---- rotas confirmadas nas sondagens de 23/10/2026 (testes/paginas/sondagem-a, -b, -c, -farol)
+
+[[fonte]]
+nome = "Farol Cultural — editais abertos, página 1 (API pública)"
+url = "https://farolcultural.art/api/v1/editais?status=Aberto&order=desc&per_page=50&page=1"
+tipo = "cadeia"
+papel = "principal"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "data"
+campos = { titulo = "titulo", instituicao = "instituicao_nome", fim = "data_fim_inscricao", origem = "url_original", uf = "estado" }
+limite = 50
+
+[fonte.pista]
+titulo = "{titulo}"
+link = "{origem}"
+resumo = "{instituicao} · {uf} · inscrições até {fim}"
+
+[[fonte]]
+nome = "Farol Cultural — editais abertos, página 2 (API pública)"
+url = "https://farolcultural.art/api/v1/editais?status=Aberto&order=desc&per_page=50&page=2"
+tipo = "cadeia"
+papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "data"
+campos = { titulo = "titulo", instituicao = "instituicao_nome", fim = "data_fim_inscricao", origem = "url_original", uf = "estado" }
+limite = 50
+
+[fonte.pista]
+titulo = "{titulo}"
+link = "{origem}"
+resumo = "{instituicao} · {uf} · inscrições até {fim}"
+
+[acesso]
+degraus = ["api", "leve"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"]
+vetos = ["re:resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"]
+termos_em = "titulo"
+
+[aprendizado]
+licoes = ["A API traz o link original de cada edital (a origem) e o prazo; status=Aberto filtra os abertos (502 em 23/10/2026).", "Ler primeiro pela API pública do portal; as páginas ficam como reserva.", "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10).", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+bloqueios_conhecidos = []
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["a página pública por edital (farolcultural.art/editais/<slug>: 404); o link de cada edital é o original da API"]
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14
