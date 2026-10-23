@@ -15,9 +15,9 @@ class DegrauAPI:
     def __init__(self, cabecalhos: dict[str, str] | None = None):
         self.cliente = httpx.Client(follow_redirects=True, headers={"User-Agent": AGENTE, "Accept": "application/json, */*", **(cabecalhos or {})})
 
-    def buscar(self, url: str, tempo_limite: float) -> Resposta:
-        try:
-            r = self.cliente.get(url, timeout=tempo_limite)
+    def buscar(self, url: str, tempo_limite: float, corpo: dict[str, str] | None = None) -> Resposta:
+        try:                                                     # com corpo: POST de formulário, na mesma sessão (o cookie se mantém)
+            r = self.cliente.post(url, data=corpo, timeout=tempo_limite) if corpo is not None else self.cliente.get(url, timeout=tempo_limite)
         except httpx.TransportError as e:
             raise Passageiro(f"{type(e).__name__}: {e}") from e
         return Resposta(str(r.url), r.status_code, r.content, r.headers.get("content-type", ""))

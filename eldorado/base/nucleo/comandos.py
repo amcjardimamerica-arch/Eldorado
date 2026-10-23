@@ -379,6 +379,28 @@ def motor_validar(id: str):
     raise typer.Exit(0 if all(ok for _, ok, _ in r) else 1)
 
 
+SAIDA_EXPERIMENTO = typer.Option(None, help="onde gravar o resultado (JSON)")
+
+
+@motor_app.command("experimentar")
+def motor_experimentar(id: str, saida: Path = SAIDA_EXPERIMENTO):
+    """Roda o motor inteiro com a internet de verdade e grava o que ele entregou (títulos, links) e o relatório."""
+    import json
+    import tempfile
+
+    from ...motores.canal.motor import MotorCanal
+    with tempfile.TemporaryDirectory() as tmp:
+        m = MotorCanal(Path("eldorado/motores/canal/config") / f"{id}.toml", dados=Path(tmp) / "m", ponte=Path(tmp) / "p")
+        achados = list(m.buscar(None))
+        r = {"motor": id, "achados": len(achados), "relatorio": m.relatorio,
+             "entregues": [{"titulo": a.titulo, "divulgacao": a.link_divulgacao, "documento": bool(a.documento)} for a in achados[:200]]}
+    texto = json.dumps(r, ensure_ascii=False, indent=1)
+    if saida:
+        saida.parent.mkdir(parents=True, exist_ok=True)
+        saida.write_text(texto, encoding="utf-8")
+    typer.echo(texto[:6000])
+
+
 @motor_app.command("sondar")
 def motor_sondar(id: str, anotar: bool = typer.Option(False, "--anotar")):
     """Sonda todas as rotas do motor (fontes, alvos e documentos do programa); precisa de internet."""

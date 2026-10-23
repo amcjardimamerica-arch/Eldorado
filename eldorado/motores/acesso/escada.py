@@ -106,7 +106,8 @@ class Escada:
                 self.dormir(falta)
             self._ultimo[dom] = time.monotonic()
 
-    def buscar(self, url: str) -> Resposta:
+    def buscar(self, url: str, corpo: dict[str, str] | None = None) -> Resposta:
+        """corpo: os campos de um formulário (POST); os degraus que não fazem POST são pulados."""
         dom = dominio(url)
         inicio = self.aprendido.get(dom, 0)
         motivos: list[str] = []
@@ -120,7 +121,7 @@ class Escada:
                                           wait=wait_exponential(multiplier=0.5, max=8), sleep=self.dormir, reraise=True):
                     with tentativa:
                         self._esperar(dom)
-                        r = d.buscar(url, self.tempo_limite)
+                        r = d.buscar(url, self.tempo_limite, corpo=corpo) if corpo is not None else d.buscar(url, self.tempo_limite)
                         avaliar(r)
             except Bloqueado as e:
                 self.bloqueios[dom] = self.bloqueios.get(dom, 0) + 1
@@ -133,6 +134,11 @@ class Escada:
                 continue
             except Passageiro as e:
                 motivos.append(f"{d.nome}: passageiro ({e})")
+                continue
+            except TypeError as e:                                  # o degrau não faz POST
+                if corpo is None:
+                    raise
+                motivos.append(f"{d.nome}: não faz POST ({str(e)[:60]})")
                 continue
             except Pendente:
                 self._aprender(dom, i, exige_local=True)

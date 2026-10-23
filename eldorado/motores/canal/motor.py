@@ -67,6 +67,7 @@ class CfgElo(_Base):
     url: str | None = None
     filtro: dict[str, str] = Field(default_factory=dict)
     limite: int = Field(300, ge=1, le=5000)
+    corpo: dict[str, str] = Field(default_factory=dict)
 
 
 class CfgPistaCadeia(_Base):

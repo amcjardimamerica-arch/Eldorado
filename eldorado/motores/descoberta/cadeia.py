@@ -27,6 +27,7 @@ class Elo:
     url: str | None = None                # o endereço deste elo, montado com os campos do item anterior (o primeiro usa o da fonte)
     filtro: dict[str, str] = field(default_factory=dict)   # campo → regex: só seguem os itens que casam
     limite: int = 300
+    corpo: dict[str, str] = field(default_factory=dict)   # POST de formulário; chaves e valores aceitam {campo} do elo anterior
 
 
 class _Formato(dict):
@@ -89,8 +90,9 @@ def percorrer(buscar: Callable[[str], Any], url: str, elos: list[Elo], relatorio
         proximos: list[dict[str, Any]] = []
         for pai in atuais:
             endereco = pai["_url"] if n == 0 else formatar(elo.url or "", pai)
+            corpo = {formatar(k, pai): formatar(v, pai) for k, v in elo.corpo.items()} if elo.corpo else None
             try:
-                r = buscar(endereco)
+                r = buscar(endereco, corpo) if corpo is not None else buscar(endereco)
                 if elo.formato == "linhas":                         # registros de uma tabela: um padrão com grupos nomeados
                     from ..leitura import leitores
                     texto = leitores.padrao().ler(r.conteudo, endereco).texto

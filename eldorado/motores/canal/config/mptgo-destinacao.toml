@@ -1,0 +1,72 @@
+# MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região) — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "GO"
+canal = "portal"
+orgao = "Ministério Público do Trabalho em Goiás (PRT 18ª Região)"
+id = "mptgo-destinacao"
+nome = "MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região)"
+categoria = "Judiciário e Ministérios Públicos"
+categoria_estudo = "JUD"
+finalidade = "editais de 5 dias do MPT-GO (todo dia) e habilitação da A.M.C."
+tipo_finalidade = "descoberta"
+nomes_anteriores = []
+
+# ---- rotas (23/10/2026, testes/paginas/ministerios-publicos/): a página dos editais de destinação da PRT 18ª Região
+# carrega a tabela por POST (Joomla, com o código de sessão da página e o cookie); por GET, 404. A cadeia abre a sessão
+# na página (elo 1) e pede a tabela (elo 2). A alternativa é a busca em RSS do MPT nacional.
+[[fonte]]
+nome = "MPT-GO (PRT 18ª Região) — editais de destinação de recursos ou bens (os 30 mais recentes)"
+url = "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens"
+tipo = "cadeia"
+papel = "principal"
+
+[[fonte.cadeia]]
+formato = "html"
+itens = "html"
+campos = { codigo = 're:"name"\s*:\s*"([0-9a-f]{32})"\s*,\s*"value"\s*:\s*"1"' }
+limite = 1
+
+[[fonte.cadeia]]
+formato = "json"
+url = "https://www.prt18.mpt.mp.br/index.php"
+itens = "aaData"
+campos = { regiao = "[0]", data = "[1]", numero = "[2]", procedimento = "[3]", arquivo = "[4]" }
+corpo = { option = "com_mpt", task = "editaisdestinacaorecursosoubens", format = "raw", "{codigo}" = "1", sEcho = "1", iDisplayStart = "0", iDisplayLength = "30", iSortCol_0 = "1", sSortDir_0 = "desc" }
+limite = 30
+
+[fonte.pista]
+titulo = "Edital de destinação de recursos ou bens nº {numero} — {procedimento}"
+link = "https://www.prt18.mpt.mp.br/servicos/editais-de-destinacao-de-recursos-bens?task=baixa&format=raw&arq={arquivo}"
+resumo = "{regiao} · publicado em {data}"
+
+[[fonte]]
+nome = "MPT nacional — busca em RSS por editais de destinação"
+url = "https://mpt.mp.br/search_rss?SearchableText=edital+destina%C3%A7%C3%A3o&sort_on=Date&sort_order=reverse"
+tipo = "feed"
+papel = "alternativa"
+
+[acesso]
+degraus = ["api", "leve", "local"]
+
+[leitura]
+documentos = true                    # o edital de 5 dias (o arquivo da própria página)
+paginas_dos_achados = true
+seguir_oficial = false
+
+[lexico]
+termos = ["re:edital|destina|indica[çc][ãa]o|cadastr|entidade|bens|recursos"]
+vetos = ["re:resultado da sele|homologa"]
+termos_em = "titulo"
+
+[aprendizado]
+licoes = ["Rota de acesso única para os domínios com bloqueio (mpt.mp.br, www.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: ['https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias']"]
+bloqueios_conhecidos = ["mpt.mp.br", "www.gov.br"]
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["a tabela da PRT 18 por GET (404): só por POST, na sessão da página (23/10/2026)",
+                      "https://www.gov.br/receitafederal/pt-br/assuntos/leiloes-e-destinacao-de-mercadorias (quebrada, no Eldorado0)"]
+
+[metrica]
+cadencia_h = 12   # os editais de 5 dias pedem leitura diária
+periodo_dias = 14

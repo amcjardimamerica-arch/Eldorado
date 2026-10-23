@@ -191,7 +191,9 @@ Para tabelas em PDF, o elo `linhas` reconhece cada registro por um padrão com g
 1. Registre o bloqueio em `[aprendizado]` (domínio, erro, data).
 2. Tente, nesta ordem: a API do mesmo órgão; a página com o degrau `leve`; o degrau de navegador; a cópia arquivada; o
    computador da titular (`local`); outra rota do mesmo edital (o diário oficial, o Querido Diário, o portal federal).
-3. Se o `robots.txt` proíbe, a informação fica registrada e a fonte vai para a coleta assistida; o motor não insiste.
+3. O `robots.txt` é informação (regra da titular): a proibição fica registrada no aprendizado e a espera que ele pede
+   vira o intervalo do domínio; o motor lê devagar, sem insistir em quem recusa (403, 429), e não trata o robots como
+   bloqueio.
 
 ## Pronto quando
 
