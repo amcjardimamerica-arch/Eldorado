@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       motor:
-        description: "O id do motor"
+        description: "O id do motor (ou vários, separados por espaço: um depois do outro)"
         required: true
 permissions:
   contents: write
@@ -15,7 +15,7 @@ concurrency:
 jobs:
   experimentar:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -24,12 +24,19 @@ jobs:
           cache: pip
       - run: pip install -e ".[leitura,acesso,descoberta,metabusca]"
       - name: Experimentar
-        run: eldorado motor experimentar "${{ inputs.motor }}" --saida "testes/paginas/${{ inputs.motor }}/experimento.json"
+        env:
+          MOTORES: ${{ inputs.motor }}
+        run: |
+          for m in $MOTORES; do
+            echo "::group::$m"
+            timeout 600 eldorado motor experimentar "$m" --saida "testes/paginas/$m/experimento.json" | head -c 2000 || echo "o experimento de $m falhou ou passou de 10 minutos"
+            echo "::endgroup::"
+          done
       - name: Guardar no repositório
         run: |
           git config user.name "Eldorado"; git config user.email "eldorado@users.noreply.github.com"
-          git add "testes/paginas/${{ inputs.motor }}"
+          git add testes/paginas/
           git diff --cached --quiet && exit 0
-          git commit -q -m "Experimento do motor: ${{ inputs.motor }}"
+          git commit -q -m "Experimento dos motores: ${{ inputs.motor }}"
           for i in 1 2 3; do git pull -q --rebase -X theirs origin main && git push -q origin main && exit 0; sleep $((i * 10)); done
           exit 1
