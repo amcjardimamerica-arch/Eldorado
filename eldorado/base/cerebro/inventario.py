@@ -41,6 +41,8 @@ SUBSTITUIDOS = {   # previstos no projeto; a função já existe em outro arquiv
     "eldorado/base/cartorio/linha.py": "eldorado/motores/pilotos/interceptador.py (a linha de produção virou o Interceptador)",
     ".github/workflows/passagem.yml": ".github/workflows/eldorado.yml (funcionamento permanente)",
     ".github/workflows/pilotos.yml": ".github/workflows/eldorado.yml (os pilotos rodam dentro do funcionamento permanente)",
+    "config/motores_previstos.toml": "config/motores_previstos.json",
+    "eldorado/base/cartorio/site_oficial.py": "eldorado/base/cartorio/origem.py (a origem decidida por livro, 23/10/2026)",
 }
 DESLIGADOS_POR_DESENHO = {"eldorado/motores/leitura/universal.py": "reserva para tipos sem leitor (liga-se na configuração)",
                           "eldorado/motores/acesso/rotas_alternativas.py": "degraus de reserva (Tor e leitor público), até o teste real"}

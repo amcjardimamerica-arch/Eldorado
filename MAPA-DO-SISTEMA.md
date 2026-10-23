@@ -8,13 +8,15 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 |---|---|
 | em funcionamento | 86 |
 | pacote | 20 |
-| a construir | 16 |
+| a construir | 14 |
 | substituído por eldorado/base/cartorio/analise_externa.py | 3 |
 | desligado por desenho | 2 |
 | desligado (ninguém o usa nem o aciona) | 2 |
 | substituído por eldorado/base/cartorio/analise_externa.py (o que falta vai no lote) | 1 |
 | substituído por .github/workflows/eldorado.yml (funcionamento permanente) | 1 |
 | substituído por .github/workflows/eldorado.yml (os pilotos rodam dentro do funcionamento permanente) | 1 |
+| substituído por config/motores_previstos.json | 1 |
+| substituído por eldorado/base/cartorio/origem.py (a origem decidida por livro, 23/10/2026) | 1 |
 | substituído por eldorado/base/cerebro/encaminhamento.py e eldorado/motores/pilotos/interceptador.py | 1 |
 
 
@@ -218,11 +220,11 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 119 | `.github/workflows/painel.yml` |  | em funcionamento |  |  | 0 |
 | 120 | `.github/workflows/passagem.yml` | passagens no horário | substituído por .github/workflows/eldorado.yml (funcionamento permanente) |  |  | 0 |
 | 121 | `.github/workflows/pilotos.yml` | voos com sucesso | substituído por .github/workflows/eldorado.yml (os pilotos rodam dentro do funcionamento permanente) |  |  | 0 |
-| 122 | `config/motores_previstos.toml` | o sistema roda sem intervenção | a construir |  |  | 0 |
+| 122 | `config/motores_previstos.toml` | o sistema roda sem intervenção | substituído por config/motores_previstos.json |  |  | 0 |
 | 123 | `eldorado/__init__.py` |  | pacote |  |  | 45 |
 | 124 | `eldorado/base/__init__.py` |  | pacote |  |  | 35 |
 | 125 | `eldorado/base/cartorio/__init__.py` |  | pacote |  |  | 7 |
-| 126 | `eldorado/base/cartorio/site_oficial.py` | O site oficial: a oportunidade se encontra NA FONTE (titular, 14/10/2026). | a construir |  |  | 0 |
+| 126 | `eldorado/base/cartorio/site_oficial.py` | O site oficial: a oportunidade se encontra NA FONTE (titular, 14/10/2026). | substituído por eldorado/base/cartorio/origem.py (a origem decidida por livro, 23/10/2026) |  |  | 0 |
 | 127 | `eldorado/base/cerebro/__init__.py` |  | pacote |  |  | 19 |
 | 128 | `eldorado/base/cerebro/originais.py` | A rede neural vigia os sites ORIGINAIS dos livros (titular, 23/10/2026): com o histórico do livro, ele tem um  | em funcionamento | encaminhamento | encaminhamento | 1 |
 | 129 | `eldorado/base/cerebro/pilotos.py` | O Cérebro dos pilotos (titular, 22/10/2026): mede a recorrência de cada piloto e manda nova missão sempre que | em funcionamento | escada, metabusca, leitores, espiao | encaminhamento, comandos | 1 |
@@ -255,9 +257,9 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 18 | JUD | mpgo-destinacao | MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos) | 0 | 1 | mpgo-destinacao | conforme | criado pela orientação: o portal pelo computador local (a nuvem recebe tempo esgotado); o Diário do Estado filtrado pelo MP, destinação e TAC; o alvo corrigido |
 | 19 | JUD | mptgo-destinacao | MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região) | 0 | 0 | mptgo-destinacao | conforme | criado pela orientação: a tabela dos editais da PRT 18 por POST na sessão da página; experimento real em 23/10: 30 editais com documento e 6 do RSS do MPT |
 | 20 | JUD | mpu-destinacao | MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD) | 1 | 2 | mpu-destinacao | incompleto | criado pela orientação: os editais de doação de bens do MPF em Goiás e as seleções do FDD; o alvo da Receita fora (sem endereço que responda) |
-| 21 | LEG | camara-goiania-pl | Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos | 0 | 4 | camara-goiania-pl | conforme | criado pela orientação: o SUAP e o portal pelo computador local; o Querido Diário acompanhando o PL 288/2026; experimento: 2 edições do DOM com utilidade pública e Jardim América |
-| 22 | LEG | alego-pl | Assembleia Legislativa de Goiás — proposições | 0 | 2 | alego-pl | conforme | criado pela orientação: o portal da ALEGO (as audiências da LOA 2027, a Frente do Terceiro Setor) e o sistema de consulta pelo computador local |
-| 23 | LEG | congresso-nacional | Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos) | 0 | 1 | congresso-nacional | conforme | criado pela orientação: os comunicados da CMO (prazo das emendas), o orçamento do ano seguinte, as matérias do Senado (API) e o RSS; teste nas páginas reais |
+| 21 | LEG | camara-goiania-pl | Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos | 0 | 4 | camara-goiania-pl | conforme | todo ato do terceiro setor: o Querido Diário recortado em atos com o léxico estrito; experimento: edital de chamamento, termo de fomento, utilidade pública, PL 288/2026 |
+| 22 | LEG | alego-pl | Assembleia Legislativa de Goiás — proposições | 0 | 2 | alego-pl | conforme | todo ato do terceiro setor: o portal, o Diário do Estado filtrado e o sistema de consulta pelo computador local; experimento: destinação de emendas, Frente do Terceiro Setor |
+| 23 | LEG | congresso-nacional | Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos) | 0 | 1 | congresso-nacional | conforme | todo ato do terceiro setor: 11 rotas (CMO, orçamento, RSS e 8 de projetos de lei por termo nas duas casas); experimento: 17 projetos de lei, 4 alterando a Lei 13.019 |
 | 24 | POR | gife | GIFE — Grupo de Institutos, Fundações e Empresas | 1 | 0 | gife | conforme |  |
 | 25 | POR | plataforma-mapas-culturais | Adaptador Mapas Culturais — oportunidades com inscrição aberta | 0 | 0 | plataforma-mapas-culturais | conforme |  |
 | 26 | POR | site-farol-cultural | Farol Cultural — editais de cultura de todo o Brasil, pela API pública do portal | 0 | 0 | — | a construir |  |
