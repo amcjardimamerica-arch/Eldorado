@@ -28,6 +28,17 @@ SIGLAS_GOVBR = {"saude": "saúde", "esporte": "esporte", "cultura": "cultura", "
                 "turismo": "turismo", "mcti": "ciência"}
 
 
+# palavras de tipo de órgão e de SETOR não são o nome de um órgão: "cultura" no domínio não liga um edital a qualquer
+# Secretaria de Cultura (o defeito da primeira classificação, 23/10/2026)
+GENERICAS = {"secretaria", "municipal", "estadual", "estado", "fundacao", "instituto", "ministerio", "nacional", "prefeitura", "goias", "brasil",
+             "publico", "publica", "governo", "cultura", "cultural", "culturais", "social", "sociais", "saude", "esporte", "esportes", "lazer",
+             "educacao", "assistencia", "desenvolvimento", "ambiente", "turismo", "direitos", "humanos", "ciencia", "tecnologia", "inovacao",
+             "artes", "fomento", "apoio", "projetos", "juventude", "mulher", "mulheres", "crianca", "adolescente", "idoso", "pessoa", "fundo",
+             "programa", "conselho", "agencia", "coordenacao", "superintendencia", "diretoria", "gerencia", "camara", "assembleia", "tribunal",
+             "justica", "administracao", "planejamento", "economia", "fazenda", "infraestrutura", "habitacao", "cidades", "comunicacao",
+             "seguranca", "agricultura", "pecuaria", "trabalho", "renda", "empreendedorismo", "igualdade", "racial", "familia", "cidadania"}
+
+
 def _sem(t: str) -> str:
     return re.sub(r"[^a-z0-9 ]+", " ", "".join(c for c in unicodedata.normalize("NFKD", (t or "").lower()) if not unicodedata.combining(c)))
 
@@ -67,8 +78,7 @@ def evidencia(url: str | None, orgao: str | None, localidade: str | None = None)
         if caminho in SIGLAS_GOVBR and _sem(SIGLAS_GOVBR[caminho]) in o:
             return f"página do órgão no gov.br (/{caminho})"
     raiz = d.split(".")[0]
-    palavras = [p for p in o.split() if len(p) > 4 and p not in {"secretaria", "municipal", "estadual", "estado", "fundacao", "instituto", "ministerio",
-                                                                  "nacional", "prefeitura", "goias", "brasil", "publico", "publica", "governo"}]
+    palavras = [p for p in o.split() if len(p) > 4 and p not in GENERICAS]                  # só nome próprio é evidência
     for p in palavras:
         if p in raiz:
             return f"o domínio traz o nome do órgão ({p})"

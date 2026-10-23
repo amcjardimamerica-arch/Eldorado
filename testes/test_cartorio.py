@@ -72,6 +72,8 @@ def test_a_origem_e_decidida_por_livro_com_evidencia():
     assert origem.classificar("https://captadores.org.br/edital-x", "Secult")[0] == "candidato"                         # indício, não decide
     assert origem.classificar("https://x.org/y", "Qualquer", confirmado_antes=True)[0] == "confirmado"                 # nunca rebaixa
     assert origem.classificar(None, "x")[0] == "ausente"
+    assert origem.classificar("https://mapa.cultura.gov.br/oportunidade/1", "Secretaria Municipal de Cultura de Anápolis")[0] == "candidato"  # setor não é nome
+    assert origem.classificar("https://www.anapolis.go.gov.br/edital", "Secretaria Municipal de Cultura de Anápolis")[0] == "confirmado"
 
 
 def test_indice_vincula_pela_chave_e_pelo_mesmo_edital_em_outro_canal(diario):
