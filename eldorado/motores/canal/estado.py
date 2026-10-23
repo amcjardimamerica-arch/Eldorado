@@ -10,6 +10,8 @@ from pathlib import Path
 
 DDL = """
 CREATE TABLE IF NOT EXISTS assinatura (fonte TEXT PRIMARY KEY, valor TEXT NOT NULL, em TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS mapa_url (dominio TEXT NOT NULL, url TEXT NOT NULL, primeira_vez TEXT NOT NULL, PRIMARY KEY (dominio, url));
+CREATE TABLE IF NOT EXISTS mapa_dominio (dominio TEXT PRIMARY KEY, verificado_em TEXT NOT NULL, urls INTEGER);
 CREATE TABLE IF NOT EXISTS alvo_mudanca (alvo TEXT NOT NULL, em TEXT NOT NULL, mes INTEGER NOT NULL, PRIMARY KEY (alvo, em));
 CREATE TABLE IF NOT EXISTS entregue (chave TEXT PRIMARY KEY, em TEXT NOT NULL, achado TEXT, fonte TEXT);
 CREATE TABLE IF NOT EXISTS fonte (nome TEXT PRIMARY KEY, leituras INTEGER NOT NULL DEFAULT 0, sem_mudanca INTEGER NOT NULL DEFAULT 0,
@@ -35,6 +37,19 @@ class EstadoMotor:
 
     def gravar_assinatura(self, fonte: str, valor: str, em: str) -> None:
         self.con.execute("INSERT INTO assinatura VALUES (?,?,?) ON CONFLICT(fonte) DO UPDATE SET valor=excluded.valor, em=excluded.em", (fonte, valor, em))
+
+    def mapa_visto(self, dominio: str) -> set[str]:
+        """As URLs do mapa do site original já vistas neste domínio (conhecimento do motor: domínios e URLs, nunca livros)."""
+        return {r[0] for r in self.con.execute("SELECT url FROM mapa_url WHERE dominio = ?", (dominio,))}
+
+    def mapa_verificado_em(self, dominio: str) -> str | None:
+        r = self.con.execute("SELECT verificado_em FROM mapa_dominio WHERE dominio = ?", (dominio,)).fetchone()
+        return r[0] if r else None
+
+    def marcar_mapa(self, dominio: str, urls: list[str], em: str) -> None:
+        self.con.executemany("INSERT OR IGNORE INTO mapa_url VALUES (?, ?, ?)", [(dominio, u, em) for u in urls])
+        self.con.execute("INSERT OR REPLACE INTO mapa_dominio VALUES (?, ?, ?)", (dominio, em, len(urls)))
+        self.con.commit()
 
     def mudanca_do_alvo(self, alvo: str, em: str) -> None:
         """O alvo mudou: o mês fica registrado (é assim que o motor aprende a previsão de edição)."""

@@ -538,6 +538,54 @@ class MotorCanal(Motor):
         nao = sorted(set(ex.nao_certificar) | set(ex.itens))
         return {k: v for k, v in (("itens", itens), ("nao_certificar", nao)) if v}
 
+    def vigiar_original(self, livro: dict[str, Any], intervalo_dias: float = 7, maximo: int = 10) -> list[Achado]:
+        """O mapa do site ORIGINAL do livro (a origem confirmada), pedido pela rede neural (titular, 23/10/2026): as URLs
+        novas que têm a ver com o livro (a próxima oportunidade, os arquivos, os dados). O motor guarda o que já viu de cada
+        domínio (nunca o livro); na primeira visita, a base: só o que for relevante e recente; cada domínio, no máximo uma
+        vez por intervalo."""
+        from datetime import datetime, timedelta, timezone
+
+        from ..descoberta import mapa_original as M
+        link = livro.get("link_oficial")
+        if not link:
+            return []
+        raiz = M.base(link)
+        dominio = raiz.split("//", 1)[-1]
+        antes = self.estado.mapa_verificado_em(dominio)
+        if antes and datetime.fromisoformat(antes) > datetime.now(timezone.utc) - timedelta(days=intervalo_dias):
+            return []
+        pistas = M.urls(self.escada.buscar, raiz)
+        vistas = self.estado.mapa_visto(dominio)
+        primeira = not vistas
+        palavras = M.palavras_proprias(f"{livro.get('titulo') or ''} {livro.get('programa') or ''}")
+        numero = livro.get("numero")
+        entregar: list[tuple[Pista, str]] = []
+        for p in pistas:
+            if p.link in vistas or p.link.rstrip("/") == link.rstrip("/"):
+                continue
+            motivo = M.relevancia(p.link, palavras, numero)
+            if motivo and (not primeira or M.recente(p)):
+                entregar.append((p, motivo))
+        self.estado.marcar_mapa(dominio, [p.link for p in pistas], _agora())
+        self.relatorio.append(f"mapa do site original {dominio}: {len(pistas)} URL(s), {len(entregar)} nova(s) do livro"
+                              f"{' (primeira visita: a base)' if primeira else ''}")
+        achados = []
+        m = self.cfg.motor
+        for p, motivo in entregar[:maximo]:
+            documento = None
+            try:
+                r = self.escada.buscar(p.link)
+                lido = self.leitura.ler(r.conteudo, p.link)
+                documento = {"url": p.link, "sha256": lido.sha256, "tipo": lido.tipo, "leitor": lido.leitor, "oficial": False,
+                             "paginas": [x.texto for x in lido.paginas], "alertas": lido.alertas, "injecao": lido.dados.get("injecao")}
+            except (Bloqueado, Indisponivel, Pendente, leitores.SemLeitor) as e:
+                self.relatorio.append(f"mapa do site original: {p.link} não lido ({str(e)[:120]})")
+            achados.append(Achado(id=f"{m.id}-mapa-{hashlib.sha256(p.link.encode()).hexdigest()[:16]}", motor=m.id, encontrado_em=_agora()[:10],
+                                  link_divulgacao=p.link, link_oficial=p.link, titulo=livro.get("titulo") or p.titulo,
+                                  dados={"livro_id": livro["id"], "origem": "mapa do site original", "motivo": motivo, "modificado_em": p.data},
+                                  documento=documento))
+        return achados
+
     def pesquisar(self, livro: dict[str, Any]) -> Achado | None:
         """A pesquisa focada pedida pela rede neural (fase 3 do Cartório): o motor da oportunidade relê a divulgação e o
         oficial do livro, segue até o documento e aplica a sua extração própria. A informação vai direto ao livro."""

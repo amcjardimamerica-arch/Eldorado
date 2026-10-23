@@ -126,6 +126,11 @@ def no_encaminhar(itens: list[dict[str, Any]], parametros: dict[str, Any], conte
         ociosidade = not fila_do_sistema(dados, Path(parametros.get("config", "config")))["motores_devidos"]
         do_espiao, relatorio = missoes(dados, con, escada, ociosidade, float(parametros.get("orcamento_pilotos_s", 180)))
         achados += [enc._entregar(a, "espiao") for a in do_espiao]
+        # os sites originais dos livros: o mapa do site, pelo motor de cada livro (titular, 23/10/2026)
+        from .originais import vigiar
+        dos_originais, conta_originais = vigiar(con, registro, float(parametros.get("orcamento_originais_s", 120)))
+        achados += [enc._entregar(a, a.motor) for a in dos_originais]
+        print(f"sites originais: {conta_originais}")
         print(f"pilotos: {relatorio.get('decisao')} · Espião {relatorio['espiao'].get('missoes')} missões recentes "
               f"({relatorio['espiao'].get('com_resultado')} com resultado) · Interceptador {relatorio['interceptador']}")
     finally:

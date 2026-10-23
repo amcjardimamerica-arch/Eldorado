@@ -122,6 +122,14 @@ passam no léxico, ou a própria página.
 Para os mecanismos permanentes (leis de incentivo, fundos): o livro do programa, as normas mais recentes da página de
 legislação e a extração própria do texto normativo.
 
+### O mapa do site original (todo motor, sem configuração)
+Com o histórico do livro, ele tem um site de divulgação e um site original (a origem confirmada). A rede neural pede ao
+motor do livro `vigiar_original(livro)`: o motor lê os mapas do domínio original (o robots.txt, o sitemap.xml, o índice e
+o mapa do WordPress, por `descoberta/mapa_original.py`), compara com o que já viu daquele domínio (no estado do motor:
+domínios e URLs, nunca livros) e entrega as URLs novas que têm a ver com o livro (o número do edital, as palavras próprias
+do título, os arquivos). Na primeira visita, só o relevante e recente; cada domínio, no máximo uma vez por semana. No livro
+arquivado, a novidade é a próxima oportunidade, que volta pela recepção.
+
 ### Pilotos e IA
 O motor não chama IA. O que o motor não alcança é do **Espião**; o que falta num livro é do **Interceptador**, acionado
 pela rede neural. A IA propõe; o sistema valida.
