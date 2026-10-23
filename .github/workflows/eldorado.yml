@@ -66,7 +66,7 @@ jobs:
         run: |
           ARQ=$(python3 -c "import tomllib;print(tomllib.load(open('config/ia_local.toml','rb'))['modelo']['arquivo'])")
           [ -s "ia_local/modelos/$ARQ" ] || { echo "sem o modelo"; exit 0; }
-          LD_LIBRARY_PATH=ia_local/motor nohup ia_local/motor/llama-server -m "ia_local/modelos/$ARQ" -c 16384 -t 4 --port 8082 --jinja --host 127.0.0.1 \
+          LD_LIBRARY_PATH=ia_local/motor nohup ia_local/motor/llama-server -m "ia_local/modelos/$ARQ" -c 8192 -t 3 --cache-type-k q8_0 --cache-type-v q8_0 --port 8082 --jinja --host 127.0.0.1 \
             > /tmp/llama.log 2>&1 &
           for i in $(seq 1 60); do curl -sf http://127.0.0.1:8082/health > /dev/null && { echo "modelo no ar em ${i}x2 s"; exit 0; }; sleep 2; done
           tail -20 /tmp/llama.log; echo "::warning::o modelo não respondeu; os pilotos seguem sem IA"

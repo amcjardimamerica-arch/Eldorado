@@ -19,5 +19,8 @@ espelhos = [
 
 [servidor]
 porta = 8082
-contexto = 16384
-nucleos = 4
+# 23/10/2026: a execução das 06:48 perdeu a máquina (falta de memória provável: o modelo de 4,9 GB, 16 mil tokens de
+# contexto e a leitura de diários de até 11 MB numa máquina de 16 GB). Contexto de 8 mil, memória de atenção quantizada
+# (q8_0, metade) e 3 núcleos (um fica para a leitura e o sistema).
+contexto = 8192
+nucleos = 3

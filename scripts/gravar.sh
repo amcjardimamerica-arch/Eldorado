@@ -14,5 +14,12 @@ if [ "${1:-false}" = "true" ] || [ $(( $(date +%s) - ${ultimo:-0} )) -gt 72000 ]
 fi
 if git diff --cached --quiet; then echo "nada a gravar"; exit 0; fi
 git commit -q -m "Eldorado: trabalho até $(date '+%d/%m/%Y %H:%M')"
-for i in 1 2 3; do git pull -q --rebase --autostash origin main && git push -q origin main && exit 0; sleep $((i * 10)); done
+# O banco é binário e não se mescla: num conflito (outra gravação mexeu nele), vale a versão local (-X theirs: no rebase,
+# "theirs" é o commit local reaplicado). É seguro: o banco converge pelos eventos (nomes únicos, nunca conflitam), e a
+# próxima execução aplica, de forma idempotente, os eventos das outras gravações. Os eventos nunca se perdem (23/10/2026).
+for i in 1 2 3; do
+  if git pull -q --rebase -X theirs --autostash origin main && git push -q origin main; then exit 0; fi
+  git rebase --abort 2>/dev/null
+  sleep $((i * 10))
+done
 exit 1
