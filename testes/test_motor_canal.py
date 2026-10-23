@@ -76,7 +76,7 @@ vetos = ["resultado final"]
     return carregar(tmp_path / f"passagem-{horario[:2]}.toml"), dados
 
 
-def test_motor_so_de_configuracao_da_agenda_ao_livro_certificado(fonte, tmp_path):
+def test_motor_so_de_configuracao_da_agenda_ao_livro_certificado(fonte, tmp_path, monkeypatch):
     base, estado_srv = fonte
     wf, dados = montar(tmp_path, base)
     r = Executor(wf, tmp_path / "eventos").executar()
@@ -100,7 +100,8 @@ def test_motor_so_de_configuracao_da_agenda_ao_livro_certificado(fonte, tmp_path
     assert (fonte_["achados"], fonte_["aceitos"], fonte_["barrados"]) == (2, 1, 1)               # o motor aprendeu com o retorno
     acessos_pdf = estado_srv.acessos[("/docs/edital-3-2026.pdf", "outro")] + estado_srv.acessos[("/docs/edital-3-2026.pdf", "navegador")]
 
-    wf2, _ = montar(tmp_path, base, horario="12:10")                                       # segunda janela, página sem mudança
+    wf2, _ = montar(tmp_path, base, horario="12:10")                                       # segunda passagem, página sem mudança
+    monkeypatch.setenv("ELDORADO_FORCAR", "1")          # sem grade fixa: o Cérebro não relê sem necessidade; acionada à mão
     r2 = Executor(wf2, tmp_path / "eventos").executar()
     assert r2.estado == "concluida" and r2.saidas["acionar"] == []
     assert estado_srv.acessos[("/docs/edital-3-2026.pdf", "outro")] + estado_srv.acessos[("/docs/edital-3-2026.pdf", "navegador")] == acessos_pdf

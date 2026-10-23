@@ -63,10 +63,14 @@ class Regencia:
         self.notas = notas or {}
 
     def planejar(self, agora_: datetime, acionadas: set[tuple[str, str]] = frozenset(),
-                 ultima: dict[str, datetime] | None = None, forcar: bool = False) -> dict[str, Any]:
+                 ultima: dict[str, datetime] | None = None, forcar: bool = False, decisoes: list | None = None) -> dict[str, Any]:
         """Os módulos devidos pela agenda. forcar: todos os registrados, agora (acionamento à mão pela titular ou pela
         análise externa); a janela é a deste minuto, então a trava "uma passagem por janela" continua valendo."""
-        if forcar:
+        if decisoes is not None:                                         # a decisão do Cérebro (sem grade fixa)
+            ini = agora_.replace(second=0, microsecond=0)
+            devidos = [Devido(d.motor, ini.isoformat(), (ini + timedelta(minutes=60)).isoformat(), d.motivo) for d in decisoes
+                       if d.motor in self.registro.ids()]
+        elif forcar:
             ini = agora_.replace(second=0, microsecond=0)
             devidos = [Devido(m, ini.isoformat(), (ini + timedelta(minutes=30)).isoformat(), "acionado à mão") for m in sorted(self.registro.ids())]
         else:
@@ -148,7 +152,41 @@ def no_planejar(itens: list[dict[str, Any]], parametros: dict[str, Any], context
     acion, ultima = _acionadas(parametros.get("dados", "dados"))
     r = Regencia(carregar_agenda(parametros.get("agenda", "config/agenda.toml")), _governador(parametros, contexto.diario), registro, contexto.diario)
     forcar = bool(parametros.get("forcar")) or os.environ.get("ELDORADO_FORCAR") == "1"
-    return [{"plano": r.planejar(quando, acion, ultima, forcar=forcar)}]
+    decisoes = None if forcar else _decidir(quando, registro.ids(), parametros)
+    return [{"plano": r.planejar(quando, acion, ultima, forcar=forcar, decisoes=decisoes)}]
+
+
+def _decidir(quando: datetime, motores: list[str], parametros: dict[str, Any]) -> list:
+    """O que o Cérebro aprendeu: as execuções de cada motor e a situação da última leitura de cada fonte."""
+    from .decisao import Execucao, decidir
+    dados = Path(parametros.get("dados", "dados"))
+    historico: list[Execucao] = []
+    if (dados / "cerebro.db").exists():
+        con = sqlite3.connect(f"file:{dados / 'cerebro.db'}?mode=ro", uri=True)
+        try:
+            for m, ini, ach, erro in con.execute("SELECT motor, inicio, achados, erro FROM execucao_motor ORDER BY inicio"):
+                historico.append(Execucao(m, datetime.fromisoformat(ini), ach or 0, bool(erro)))
+        finally:
+            con.close()
+    for m in motores:                                                  # a fonte falhou depois da última execução?
+        est = dados / "motores" / f"{m}.db"
+        ultimas = [e for e in historico if e.motor == m]
+        if est.exists() and ultimas:
+            e = sqlite3.connect(f"file:{est}?mode=ro", uri=True)
+            try:
+                cols = {r[1] for r in e.execute("PRAGMA table_info(fonte)")}
+                if "situacao" in cols:
+                    ini = ultimas[-1].inicio.isoformat()
+                    ultimas[-1].falhou |= e.execute("SELECT COUNT(*) FROM fonte WHERE situacao='erro' AND ultima >= ?", (ini[:19],)).fetchone()[0] > 0
+            finally:
+                e.close()
+    ponto = {}
+    agenda = Path(parametros.get("agenda", "config/agenda.toml"))
+    if agenda.exists():
+        import tomllib
+        for mod in tomllib.loads(agenda.read_text(encoding="utf-8")).get("modulo", []):
+            ponto[mod["id"]] = {int(h.split(":")[0]) for h in mod.get("horarios", [])}
+    return decidir(quando, list(motores), historico, ponto)
 
 
 def no_acionar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:

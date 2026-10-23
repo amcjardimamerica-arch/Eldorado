@@ -25,6 +25,8 @@ class EstadoMotor:
         self.con = sqlite3.connect(p, isolation_level=None, check_same_thread=False)
         self.con.execute("PRAGMA journal_mode=WAL")
         self.con.executescript(DDL)
+        if "situacao" not in {r[1] for r in self.con.execute("PRAGMA table_info(fonte)")}:   # a situação da última leitura
+            self.con.execute("ALTER TABLE fonte ADD COLUMN situacao TEXT")
 
     def assinatura(self, fonte: str) -> str | None:
         r = self.con.execute("SELECT valor FROM assinatura WHERE fonte=?", (fonte,)).fetchone()
@@ -41,8 +43,10 @@ class EstadoMotor:
 
     def leitura(self, fonte: str, em: str, achados: int = 0, sem_mudanca: bool = False, erro: str | None = None) -> None:
         self.con.execute("INSERT OR IGNORE INTO fonte(nome) VALUES (?)", (fonte,))
+        situacao = "erro" if erro else ("sem mudança" if sem_mudanca else "lida")
         self.con.execute("UPDATE fonte SET leituras=leituras+1, sem_mudanca=sem_mudanca+?, achados=achados+?, falhas=falhas+?, "
-                         "ultimo_erro=COALESCE(?, ultimo_erro), ultima=? WHERE nome=?", (int(sem_mudanca), achados, int(bool(erro)), erro, em, fonte))
+                         "ultimo_erro=COALESCE(?, ultimo_erro), ultima=?, situacao=? WHERE nome=?",
+                         (int(sem_mudanca), achados, int(bool(erro)), erro, em, situacao, fonte))
 
     def retorno(self, achado: str, fonte: str | None, decisao: str, motivo: str | None, em: str) -> None:
         if fonte is None:                                      # a fonte de onde o achado veio, guardada na entrega
