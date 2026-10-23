@@ -158,6 +158,8 @@ class CfgCanivete(_Base):
     valores: bool = True
     metadados: bool = True
     texto_principal: bool = True
+    arquivar: bool = True                   # arquivar no Wayback a página da oportunidade com prazo (a prova guardada)
+    arquivar_por_execucao: int = Field(3, ge=0, le=20)
 
     def habilidades(self) -> tuple[str, ...]:
         return tuple(h for h in ("idioma", "publicacao", "datas", "valores", "metadados", "texto_principal") if getattr(self, h))
@@ -707,6 +709,18 @@ class MotorCanal(Motor):
         if not texto and not html:
             return None
         r = enriquecer(texto, html, url, self.cfg.canivete.habilidades())
+        feitos = getattr(self, "_arquivados", 0)
+        import os
+        if (self.cfg.canivete.arquivar and os.environ.get("ELDORADO_ARQUIVAR", "sim") != "nao" and feitos < self.cfg.canivete.arquivar_por_execucao
+                and any(d.get("prazo") for d in r.get("datas", []))):
+            self._arquivados = feitos + 1
+            try:
+                from ..descoberta.arquivos_web import arquivar
+                copia = arquivar(url)
+                if copia:
+                    r["arquivo_wayback"] = copia
+            except Exception as e:  # noqa: BLE001 — arquivar é um extra: a falha fica registrada, o achado segue
+                r.setdefault("falhas", []).append(f"arquivar: {type(e).__name__}")
         principal = r.pop("texto_principal", None)
         if principal and documento and documento.get("tipo") in ("html", "pagina"):
             documento["paginas"] = [principal]

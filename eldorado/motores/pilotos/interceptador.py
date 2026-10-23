@@ -197,7 +197,14 @@ class Interceptador:
         try:
             r = DegrauArquivo(self.arquivo).buscar(lv.link_oficial, 25)
         except (Bloqueado, Indisponivel, Pendente):
-            return []
+            try:                                            # a segunda cópia arquivada: o Common Crawl (cdx_toolkit)
+                import cdx_toolkit
+                obj = next(iter(cdx_toolkit.CDXFetcher(source="cc").iter(lv.link_oficial, limit=1, filter=["status:200"])), None)
+                if obj is None:
+                    return []
+                r = type("Copia", (), {"conteudo": obj.content, "status": 200, "tipo": obj.data.get("mime") or "text/html"})()
+            except Exception:  # noqa: BLE001 — sem a biblioteca ou sem cópia
+                return []
         self._copias = {**getattr(self, "_copias", {}), lv.link_oficial: r}
         return [lv.link_oficial] if r.status == 200 else []
 

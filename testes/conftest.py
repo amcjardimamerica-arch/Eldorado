@@ -1,3 +1,6 @@
+import os
+
+os.environ.setdefault("ELDORADO_ARQUIVAR", "nao")   # os testes nunca arquivam no Wayback (chamada externa)
 import sys
 from pathlib import Path
 

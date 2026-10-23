@@ -82,6 +82,9 @@ def detectar_tipo(conteudo: bytes, nome: str | None = None) -> str:
     nome = (nome or "").lower()
     if c.startswith(b"%PDF"):
         return "pdf"
+    if (c[:3] == b"ID3" or c[:2] in (b"\xff\xfb", b"\xff\xf3", b"\xff\xf2") or conteudo[4:8] == b"ftyp" or c[:4] in (b"OggS", b"fLaC", b"\x1aE\xdf\xa3")
+            or (c[:4] == b"RIFF" and conteudo[8:12] in (b"WAVE", b"AVI "))):
+        return "audio"                                    # áudio e vídeo (MP3, MP4/M4A, OGG, FLAC, WebM, WAV, AVI): a transcrição
     if c.startswith(b"PK\x03\x04"):
         try:
             with zipfile.ZipFile(io.BytesIO(conteudo)) as z:
@@ -181,6 +184,11 @@ def padrao() -> Registro:
                 compactado.LeitorCompactado()]
     if motor_ocr is not None:
         leitores.append(ocr.LeitorImagem(motor_ocr))
+    try:
+        from .audio import LeitorAudio
+        leitores.append(LeitorAudio())
+    except SemLeitor:
+        pass
     for leitor in leitores:
         r.registrar(leitor)
     return r
