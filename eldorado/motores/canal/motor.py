@@ -147,6 +147,22 @@ class CfgAlvo(_Base):
     seletor: str | None = None                        # a região do conteúdo (portais grandes: os menus não entram)
 
 
+class CfgCanivete(_Base):
+    """O motor padrão (titular, 23/10/2026): toda a caixa de ferramentas do plano ligada por padrão; um motor desliga o que
+    não fizer sentido nele. As habilidades de leitura (OCR, leitor universal, navegador) estão na escada e na leitura;
+    estas enriquecem cada achado (leitura/enriquecer.py)."""
+    ligado: bool = True
+    idioma: bool = True
+    publicacao: bool = True
+    datas: bool = True
+    valores: bool = True
+    metadados: bool = True
+    texto_principal: bool = True
+
+    def habilidades(self) -> tuple[str, ...]:
+        return tuple(h for h in ("idioma", "publicacao", "datas", "valores", "metadados", "texto_principal") if getattr(self, h))
+
+
 class CfgAprendizado(_Base):
     """O aprendizado mora dentro do motor (nunca no sistema); só o próprio motor (ou a titular) o altera."""
     licoes: list[str] = Field(default_factory=list)
@@ -192,6 +208,7 @@ class Configuracao(_Base):
     extracao: CfgExtracao = CfgExtracao()
     alvo: list[CfgAlvo] = Field(default_factory=list)
     especial: dict[str, Any] = Field(default_factory=dict)   # destino especial: o mapa dos campos da empresa e do incentivo ({campo})
+    canivete: CfgCanivete = CfgCanivete()
     aprendizado: CfgAprendizado = CfgAprendizado()
     metrica: CfgMetrica = CfgMetrica()
     alvos: dict[str, Any] = Field(default_factory=dict)
@@ -644,6 +661,7 @@ class MotorCanal(Motor):
         oficial, divulgacao = None, pista.link
         ler = (self.cfg.leitura.documentos and DOCUMENTO.search(pista.link)) or (self.cfg.leitura.paginas_dos_achados and not DOCUMENTO.search(pista.link))
         texto_do_ato = (pista.extra or {}).get("documento_texto")
+        html_bruto = None
         if texto_do_ato:                                            # o ato já recortado do documento oficial: é o próprio documento
             from ...base.nucleo.seguranca import injecao
             documento = {"url": pista.link, "sha256": hashlib.sha256(texto_do_ato.encode()).hexdigest(), "tipo": "ato", "leitor": "atos",
@@ -665,6 +683,9 @@ class MotorCanal(Motor):
             if lido is not None:
                 documento = {"url": pista.link, "sha256": lido.sha256, "tipo": lido.tipo, "leitor": lido.leitor, "oficial": False,
                              "paginas": [p.texto for p in lido.paginas], "alertas": lido.alertas, "injecao": lido.dados.get("injecao")}
+                if lido.tipo in ("html", "pagina") and r is not None:
+                    html_bruto = r.conteudo.decode("utf-8", errors="replace")
+        canivete = self._canivete(documento, texto_do_ato, html_bruto, pista.link)
         m = self.cfg.motor
         chave = hashlib.sha256(pista.link.encode()).hexdigest()[:16]
         return Achado(id=f"{m.id}-{chave}", motor=m.id, encontrado_em=_agora()[:10], link_divulgacao=divulgacao, link_oficial=oficial,
@@ -673,7 +694,24 @@ class MotorCanal(Motor):
                              "origem": pista.origem,
                              **(self._extrair(documento["paginas"]) if documento and self.cfg.extracao.itens else {}),
                              **({"leis": self.cfg.legislacao.leis} if self.cfg.legislacao.leis else {}),
-                             **({"resumo": pista.resumo} if pista.resumo else {})}, documento=documento)
+                             **({"resumo": pista.resumo} if pista.resumo else {}),
+                             **({"canivete": canivete} if canivete else {})}, documento=documento)
+
+    def _canivete(self, documento: dict | None, texto_do_ato: str | None, html: str | None, url: str) -> dict | None:
+        """O enriquecimento do achado (o motor padrão): idioma, publicação, datas, valores, metadados e o texto principal;
+        o texto principal substitui o da página no documento (sem menus e rodapés), em vez de se repetir nos dados."""
+        if not self.cfg.canivete.ligado:
+            return None
+        from ..leitura.enriquecer import enriquecer
+        texto = "\n".join(documento["paginas"]) if documento else (texto_do_ato or "")
+        if not texto and not html:
+            return None
+        r = enriquecer(texto, html, url, self.cfg.canivete.habilidades())
+        principal = r.pop("texto_principal", None)
+        if principal and documento and documento.get("tipo") in ("html", "pagina"):
+            documento["paginas"] = [principal]
+            documento["alertas"] = [*documento.get("alertas", []), "texto principal (trafilatura)"]
+        return r or None
 
 
 def apelidos(pasta: str | Path = Path(__file__).parent / "config") -> dict[str, str]:

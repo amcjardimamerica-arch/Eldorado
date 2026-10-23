@@ -130,6 +130,14 @@ passam no léxico, ou a própria página.
 Para os mecanismos permanentes (leis de incentivo, fundos): o livro do programa, as normas mais recentes da página de
 legislação e a extração própria do texto normativo.
 
+### O canivete de cada achado (o motor padrão, `[canivete]`)
+Todo motor nasce com a caixa de ferramentas ligada: depois de ler o documento ou a página de cada achado, o canivete
+(`leitura/enriquecer.py`) extrai o **idioma** (lingua), a **data de publicação** (htmldate), as **datas citadas com o
+trecho**, marcando as de prazo (datefinder, dateparser), os **valores em reais** com o trecho (price-parser), os
+**metadados estruturados** (extruct: JSON-LD, microdata, Open Graph) e o **texto principal** sem menus e rodapés
+(trafilatura, que substitui o texto da página no documento). Vai para `dados.canivete`. Um motor desliga o que não fizer
+sentido: `[canivete] valores = false`. A leitura padrão já traz o OCR (imagens e PDFs escaneados) e o leitor universal.
+
 ### O mapa do site original (todo motor, sem configuração)
 Com o histórico do livro, ele tem um site de divulgação e um site original (a origem confirmada). A rede neural pede ao
 motor do livro `vigiar_original(livro)`: o motor lê os mapas do domínio original (o robots.txt, o sitemap.xml, o índice e
