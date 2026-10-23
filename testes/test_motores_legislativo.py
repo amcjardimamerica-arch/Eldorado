@@ -24,7 +24,10 @@ def test_lexico_estrito_do_terceiro_setor_nos_atos_municipais_e_estaduais(tmp_pa
              "LEI Nº 11.300 · Declara de utilidade pública a Associação Moradores X": True,
              "Projeto da emenda impositiva destina recursos a entidades assistenciais": True,
              "DECRETO ORÇAMENTÁRIO Nº 233, DE 2026 · Abre ao Orçamento crédito suplementar ao Fundo Municipal": False,
-             "TERMO DE SERVIDÃO ADMINISTRATIVA Nº 08/2026": False}
+             "TERMO DE SERVIDÃO ADMINISTRATIVA Nº 08/2026": False,
+             "DECRETO Nº 202, DE 2026 · Declara de utilidade pública, para fins de desapropriação, o imóvel": False,
+             "EDITAL DE CHAMAMENTO PÚBLICO Nº 002/2026 - ARTE E MÍDIAS INTERATIVAS": True,
+             "EXTRATO DO TERMO DE FOMENTO N.º 001/2026": True}
     for m in ("camara-goiania-pl", "alego-pl"):
         mo = motor(m, "http://x", [], tmp_path / m)
         assert {k: mo._passa_lexico(k, "") for k in casos} == casos, m
