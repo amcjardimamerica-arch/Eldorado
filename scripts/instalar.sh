@@ -13,8 +13,7 @@ timeout 300 sudo apt-get -qq update && timeout 400 sudo apt-get -qq install -y t
   || aviso "programas do sistema (Tesseract, Java): a instalação falhou"
 marca "programas do sistema"
 timeout 120 python -m pip install -q --upgrade pip uv || aviso "uv não instalou"
-GRUPOS="leitura,acesso,descoberta,metabusca,navegador,ocr,universal,idioma,leitura_completa,base,banco,motores"
-timeout 900 uv pip install --system -q -e ".[$GRUPOS]" || timeout 900 pip install -q -e ".[leitura,acesso,descoberta,metabusca,navegador,ocr,universal,idioma,leitura_completa,base,banco]" || aviso "bibliotecas: a instalação completa falhou"
+timeout 2400 python scripts/instalar_bibliotecas.py || { echo "::error::o núcleo do Eldorado não instalou"; exit 1; }
 marca "bibliotecas"
 timeout 400 patchright install --with-deps chromium > /dev/null 2>&1 || aviso "Patchright (degrau 4) não instalou"
 timeout 400 python -m camoufox fetch > /dev/null 2>&1 || aviso "Camoufox (degrau 5) não instalou"
