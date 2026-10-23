@@ -20,7 +20,7 @@ ETAPAS = [
     ("03 Bancos", [r"^eldorado/banco/"]),
     ("04 Execução: workflow, executor, fila e governador", [r"base/fluxo/", r"cerebro/governador\.py$", r"^workflows/"]),
     ("05 Cérebro decide: fila do sistema e acionamento", [r"cerebro/(decisao|fila|regencia)\.py$", r"^config/(agenda|modulos)\.toml$"]),
-    ("06 Coleta: os motores e o canivete suíço", [r"^eldorado/motores/(canal|acesso|leitura|descoberta)/", r"^config/motores_previstos\.toml$"]),
+    ("06 Coleta: os motores e o canivete suíço", [r"^eldorado/motores/(canal|acesso|leitura|descoberta)/", r"^config/motores_previstos\.json$"]),
     ("07 Pertinência e missão", [r"cerebro/pertinencia\.py$", r"base/missao/", r"^config/missao/"]),
     ("08 Cartório · etapas 1 e 2 (recepção e certificação)", [r"cartorio/(indice|passaporte|site_oficial|certificacao|selos|cartorio)\.py$"]),
     ("09 Cartório · validação (auditoria e arquivo)", [r"cartorio/auditoria\.py$"]),
@@ -140,7 +140,7 @@ def gerar(raiz: str | Path = ".") -> dict[str, Any]:
                       "componente": a.get("componente") or _etapa(k)[3:], "ligacoes": v["depende_de"], "critico": bool(a.get("critico")),
                       "metrica": a.get("metrica") or "testes verdes e uso registrado"})
     for k in (".github/workflows/eldorado.yml", ".github/workflows/painel.yml", "scripts/gravar.sh", "workflows/passagem.toml", "config/agenda.toml",
-              "config/modulos.toml", "config/motores_previstos.toml"):
+              "config/modulos.toml", "config/motores_previstos.json"):
         if (raiz / k).exists():
             itens.append({"arquivo": k, "etapa": _etapa(k), "parte": "OPERACAO", "componente": "Operação e configuração", "ligacoes": [], "critico": True,
                           "metrica": "o sistema roda sem intervenção", "finalidade": "", "depende_de": [], "usado_por": [], "acionado_por": [],
@@ -150,8 +150,8 @@ def gerar(raiz: str | Path = ".") -> dict[str, Any]:
             situacao = f"substituído por {SUBSTITUIDOS[k]}" if k in SUBSTITUIDOS else "a construir"
             itens.append({**a, "arquivo": k, "etapa": _etapa(k), "situacao": situacao, "depende_de": [], "usado_por": [], "acionado_por": [],
                           "eventos": [], "testes": [], "linhas": 0, "finalidade": a.get("finalidade") or a.get("metrica", "")})
-    motores = tomllib.loads((raiz / "config/motores_previstos.toml").read_text(encoding="utf-8"))["motor"] \
-        if (raiz / "config/motores_previstos.toml").exists() else []
+    motores = json.loads((raiz / "config/motores_previstos.json").read_text(encoding="utf-8"))["motores"] \
+        if (raiz / "config/motores_previstos.json").exists() else []
     return {"versao": 2, "arquivos": _ordenar(itens), "motores": motores}
 
 
@@ -171,7 +171,8 @@ def mapa(cat: dict[str, Any]) -> str:
         linhas.append(f"| {a['ordem']} | `{a['arquivo']}` | {a.get('finalidade', '')[:110]} | {a['situacao']} | "
                       f"{', '.join(Path(x).stem for x in a.get('depende_de') or [])} | {uso[:120]} | {len(a.get('testes') or [])} |")
     m = cat["motores"]
-    linhas += ["", "## Os 47 motores (45 regulares e 2 pilotos)", "", "| # | Tipo | Motor (Eldorado0) | Nome | Motor novo | Situação | Observação |",
-               "|---|---|---|---|---|---|---|"]
-    linhas += [f"| {i} | {x['tipo']} | {x['id']} | {x['nome']} | {x['motor_novo'] or '—'} | {x['situacao']} | {x['observacao']} |" for i, x in enumerate(m, 1)]
+    linhas += ["", "## Os 47 motores (o estudo de reorganização da titular: 45 regulares e 2 pilotos)", "",
+               "| # | Categoria | Motor | Nome | Agrega | Alvos | Motor no sistema | Situação | Observação |", "|---|---|---|---|---|---|---|---|---|"]
+    linhas += [f"| {i} | {x['categoria']} | {x['id']} | {x['nome']} | {len(x['agrega'])} | {len(x['alvos'])} | {x['motor_novo'] or '—'} | {x['situacao']} | "
+               f"{x['observacao']} |" for i, x in enumerate(m, 1)]
     return "\n".join(linhas) + "\n"

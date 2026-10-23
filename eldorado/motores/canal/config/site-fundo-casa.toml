@@ -1,0 +1,29 @@
+# Financiadores do terceiro setor com site em WordPress (API pública). Alguns publicam editais num tipo próprio
+# (chamadas, edital), que já é só de oportunidades.
+[motor]
+id = "site-fundo-casa"
+nome = "Fundo Casa Socioambiental"
+categoria = "Portais e fontes do terceiro setor"
+finalidade = "chamadas socioambientais"
+canal = "api"
+uf = "BR"
+categoria_estudo = "POR"
+nomes_anteriores = []
+
+[[fonte]]
+nome = "Fundo Casa Socioambiental — chamadas"
+url = "https://casa.org.br/wp-json/wp/v2/chamadas"
+tipo = "wordpress"
+
+[acesso]
+degraus = ["api", "leve"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true               # do post de divulgação ao edital oficial
+max_documentos = 20
+
+[lexico]
+termos = ["re:edital|chamada|chamamento|abre (selecao|inscric)|inscricoes abertas|premio|premiacao|selecao de (projetos|propostas|organizac|iniciativas)|seleciona (projetos|propostas|iniciativas)|fomento|fundo de apoio|apoio a (projetos|iniciativas|organizac)"]
+termos_em = "titulo"            # site de notícias: o título de um edital diz que é edital
+vetos = ["re:resultado|selecionad[ao]s|contemplad|^confira|editais (com inscricoes )?abert|oportunidades (do|da|de) (mes|semana)|finalistas|vencedor"]

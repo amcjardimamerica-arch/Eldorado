@@ -3,12 +3,14 @@
 # aqui: o motor lê a página oficial de legislação e o Cartório certifica a partir do texto. Lição do Eldorado0: o
 # www.gov.br bloqueou 223 vezes clientes que não pareciam navegador (o motor começa pela assinatura de navegador).
 [motor]
-id = "rouanet"
+id = "salic"
 nome = "Lei Rouanet — incentivo fiscal federal à cultura"
 categoria = "Incentivos fiscais"
 finalidade = "o mecanismo de incentivo (propostas no Salic) e os editais publicados no âmbito da Lei Rouanet"
 canal = "portal"
 uf = "BR"
+categoria_estudo = "EXE"
+nomes_anteriores = ["rouanet", "plat-salic", "f260-espalhado-rouanet-cultura-gov-br"]
 
 [programa]
 titulo = "Lei Rouanet (Lei 8.313/1991) — apresentação de propostas culturais no Salic"
@@ -45,11 +47,11 @@ termos = ["re:edital|chamada|chamamento|selecao|instrucao normativa|calendario|p
 vetos = ["re:resultado|homologa|aprovad|contemplad"]
 termos_em = "titulo"
 
-[extracao]
+[programa.extracao]
 # A análise própria do motor de incentivo, para o texto das NORMAS (resoluções, instruções normativas, portarias).
 nao_certificar = ["Resultado", "Prazo de recurso", "Anexos", "Esfera", "Modalidade", "Órgão / financiador", "Território", "Área de atuação"]
 
-[extracao.itens]
+[programa.extracao.itens]
 "Prazo de inscrição" = [
   '(?:apresenta[çc][ãa]o de (?:propostas|projetos)|inscri[çc][ãa]o de (?:propostas|projetos)|(?:propostas|projetos) (?:culturais )?(?:poder[ãa]o ser|ser[ãa]o) (?:apresentad|inscrit)[oa]s)[^.;]{0,200}?((?:de|entre|no per[íi]odo de)\s+\d{1,2}[ºo°]?(?:\s*de\s+[a-zç]+|/\d{1,2})(?:\s*de\s+\d{4}|/\d{2,4})?\s+(?:a|e|at[ée])\s+\d{1,2}[ºo°]?(?:\s*de\s+[a-zç]+|/\d{1,2})(?:\s*de\s+\d{4}|/\d{2,4})?)',
   '(?:prazo|per[íi]odo) (?:para|de) (?:a )?(?:apresenta[çc][ãa]o|inscri[çc][ãa]o)[^.;]{0,160}?(\d{1,2}[ºo°]?(?:\s*de\s+[a-zç]+|/\d{1,2})(?:\s*de\s+\d{4}|/\d{2,4})?\s+(?:a|at[ée])\s+\d{1,2}[ºo°]?(?:\s*de\s+[a-zç]+|/\d{1,2})(?:\s*de\s+\d{4}|/\d{2,4})?)',

@@ -1,0 +1,29 @@
+# Financiadores do terceiro setor com site em WordPress (API pública). Alguns publicam editais num tipo próprio
+# (chamadas, edital), que já é só de oportunidades.
+[motor]
+id = "site-abcr"
+nome = "ABCR — Associação Brasileira de Captadores de Recursos"
+categoria = "Portais e fontes do terceiro setor"
+finalidade = "editais divulgados pela associação dos captadores"
+canal = "api"
+uf = "BR"
+categoria_estudo = "POR"
+nomes_anteriores = ["plat-abcr"]
+[[fonte]]
+nome = "ABCR — publicações (API do WordPress; sondagem de 22/10/2026)"
+url = "https://captadores.org.br/wp-json/wp/v2/posts"
+tipo = "wordpress"
+termos = "edital"
+
+[acesso]
+degraus = ["api", "leve"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true               # do post de divulgação ao edital oficial
+max_documentos = 20
+
+[lexico]
+termos = ["re:edital|chamada|chamamento|abre (selecao|inscric)|inscricoes abertas|premio|premiacao|selecao de (projetos|propostas|organizac|iniciativas)|seleciona (projetos|propostas|iniciativas)|fomento|fundo de apoio|apoio a (projetos|iniciativas|organizac)"]
+termos_em = "titulo"            # site de notícias: o título de um edital diz que é edital
+vetos = ["re:resultado|selecionad[ao]s|contemplad|^confira|editais (com inscricoes )?abert|oportunidades (do|da|de) (mes|semana)|finalistas|vencedor"]

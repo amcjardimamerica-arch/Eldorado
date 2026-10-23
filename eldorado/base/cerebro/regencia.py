@@ -166,8 +166,10 @@ def _decidir(quando: datetime, motores: list[str], parametros: dict[str, Any]) -
     if (dados / "cerebro.db").exists():
         con = sqlite3.connect(f"file:{dados / 'cerebro.db'}?mode=ro", uri=True)
         try:
+            from ...motores.canal.motor import apelidos
+            ap = apelidos()
             for m, ini, ach, erro in con.execute("SELECT motor, inicio, achados, erro FROM execucao_motor ORDER BY inicio"):
-                historico.append(Execucao(m, datetime.fromisoformat(ini), ach or 0, bool(erro)))
+                historico.append(Execucao(ap.get(m, m), datetime.fromisoformat(ini), ach or 0, bool(erro)))
         finally:
             con.close()
     for m in motores:                                                  # a fonte falhou depois da última execução?

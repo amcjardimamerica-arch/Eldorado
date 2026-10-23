@@ -69,7 +69,7 @@ seguir_oficial = true
 
 
 def motor_rouanet(site, tmp_path):
-    texto = Path("eldorado/motores/canal/config/rouanet.toml").read_text(encoding="utf-8")
+    texto = Path("eldorado/motores/canal/config/salic.toml").read_text(encoding="utf-8")
     texto = re.sub(r"https://www\.gov\.br/cultura/pt-br/assuntos/acoes-programas-e-politicas", site, texto)
     (tmp_path / "rouanet.toml").write_text(texto, encoding="utf-8")
     m = MotorCanal(tmp_path / "rouanet.toml", dados=tmp_path / "motores", ponte=tmp_path / "p")
@@ -119,10 +119,10 @@ def test_normas_mais_recentes_da_pagina_de_legislacao():
 
 
 def test_extracao_propria_do_motor_de_incentivo(tmp_path):
-    m = MotorCanal("eldorado/motores/canal/config/goyazes.toml", dados=tmp_path / "d", ponte=tmp_path / "p")
+    m = MotorCanal("eldorado/motores/canal/config/estaduais-go-gov.toml", dados=tmp_path / "d", ponte=tmp_path / "p")
     r = m._extrair(["Lista de normas.", "RESOLUÇÃO Nº 01/2026. Art. 2º Os projetos culturais poderão ser apresentados no período de 12 de janeiro de 2026 "
                     "a 23 de março de 2026. Art. 5º O valor máximo por projeto não poderá ultrapassar R$ 500.000,00. Art. 7º Poderão apresentar projetos "
-                    "pessoas físicas e jurídicas domiciliadas em Goiás há pelo menos dois anos."])
+                    "pessoas físicas e jurídicas domiciliadas em Goiás há pelo menos dois anos."], m.cfg.programa.extracao)
     assert r["itens"]["Prazo de inscrição"]["valor"].endswith("12 de janeiro de 2026 a 23 de março de 2026") and r["itens"]["Prazo de inscrição"]["pagina"] == 2
     assert "R$ 500.000,00" in r["itens"]["Valor"]["valor"] and r["itens"]["Requisitos"]["valor"].startswith("Poderão apresentar projetos")
     assert "Resultado" in r["nao_certificar"]

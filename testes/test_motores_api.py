@@ -117,7 +117,7 @@ def test_dou_le_o_bloco_certo_e_filtra_como_o_eldorado0(api, tmp_path):
 def test_pncp_pagina_e_traz_os_dados_de_cada_item(api, tmp_path):
     base, paginas, _ = api
     paginas["n"] = 0
-    achados = list(motor("pncp", base, tmp_path).buscar(None))
+    achados = list(motor("pncp-api", base, tmp_path).buscar(None))
     assert paginas["n"] == 8                                                                     # 4 modalidades × 2 páginas
     assert len(achados) == 8 and not any("TRANSPORTE ESCOLAR" in a.titulo for a in achados)      # sem sinal de OSC: barrado
     a = achados[0]
@@ -127,7 +127,7 @@ def test_pncp_pagina_e_traz_os_dados_de_cada_item(api, tmp_path):
 
 def test_mapa_da_cultura(api, tmp_path):
     base, _, _ = api
-    achados = list(motor("mapas-culturais", base, tmp_path).buscar(None))
+    achados = list(motor("plataforma-mapas-culturais", base, tmp_path).buscar(None))
     assert len(achados) == 1                                                                     # a vaga de arte-educador foi vetada
     a = achados[0]
     assert a.link_oficial.endswith("/oportunidade/4321") and a.dados["fim"].startswith(FUTURO) and a.dados["resumo"] == "pontos de cultura"
@@ -135,20 +135,20 @@ def test_mapa_da_cultura(api, tmp_path):
 
 def test_wordpress_de_goias(api, tmp_path):
     base, _, _ = api
-    achados = list(motor("wordpress-goias", base, tmp_path).buscar(None))
+    achados = list(motor("estaduais-go-gov", base, tmp_path).buscar(None))
     assert [a.titulo for a in achados] == ["Secult abre edital de chamamento para festivais – 2026"]    # pregão e resultado vetados; HTML decodificado
     assert achados[0].dados["uf"] == "GO" and "festivais culturais" in achados[0].documento["paginas"][0]
 
 
 def test_querido_diario(api, tmp_path):
     base, _, _ = api
-    a = list(motor("querido-diario", base, tmp_path).buscar(None))[0]
+    a = list(motor("novo-diarios-municipais-go", base, tmp_path).buscar(None))[0]
     assert (a.dados["municipio"], a.dados["uf"], a.dados["nivel"]) == ("Goiânia", "GO", "municipal") and "CHAMAMENTO" in a.titulo and a.documento is None
 
 
 def test_transferegov(api, tmp_path):
     base, _, _ = api
-    achados = list(motor("transferegov", base, tmp_path).buscar(None))
+    achados = list(motor("site-transferegov", base, tmp_path).buscar(None))
     assert [a.titulo for a in achados] == ["Fortalecimento de OSC (programa 111)"]                     # público e encerrado ficaram de fora
     assert (achados[0].dados["fim"], achados[0].dados["orgao"], achados[0].dados["uf"]) == (FUTURO, "Ministério das Mulheres", "GO")
 

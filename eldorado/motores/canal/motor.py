@@ -45,6 +45,10 @@ class CfgMotor(_Base):
     canal: Literal["api", "diario", "paginas", "portal"] = "paginas"
     uf: str | None = None
     orgao: str | None = None
+    # a reorganização da titular (19/10/2026): a categoria do estudo e os nomes que o motor já teve ou os motores que ele
+    # reúne; o histórico desses nomes é lido como do próprio motor (o motor leva o aprendizado dos que reúne)
+    categoria_estudo: Literal["EXE", "JUD", "LEG", "POR", "IA"] | None = None
+    nomes_anteriores: list[str] = Field(default_factory=list)
 
 
 class CfgPaginacao(_Base):
@@ -117,6 +121,7 @@ class CfgPrograma(_Base):
     documentos: list[str]
     modalidade: str | None = None
     normas: CfgNormas | None = None
+    extracao: "CfgExtracao | None" = None           # as regras de extração do texto das normas do programa (não valem para as outras fontes)
 
 
 class CfgLegislacao(_Base):
@@ -281,7 +286,8 @@ class MotorCanal(Motor):
         self.relatorio.append(f"programa: texto oficial novo ou alterado ({len(textos)} documento(s))" + (f"; {len(alertas)} não lido(s)" if alertas else ""))
         return Achado(id=aid, motor=m.id, encontrado_em=_agora()[:10], link_divulgacao=pr.link_divulgacao, link_oficial=pr.link_oficial, titulo=pr.titulo,
                       dados={"uf": m.uf, "orgao": pr.orgao, "modalidade": pr.modalidade, "leis": self.cfg.legislacao.leis, "fonte": "programa",
-                             "origem": "programa (legislação e norma vigente)", "documentos_lidos": origens, **self._extrair(textos)},
+                             "origem": "programa (legislação e norma vigente)", "documentos_lidos": origens,
+                             **self._extrair(textos, pr.extracao)},
                       documento={"url": pr.link_oficial, "sha256": sha, "tipo": "html", "leitor": "programa (páginas oficiais)", "oficial": True,
                                  "paginas": textos, "alertas": alertas, "injecao": next((x for x in injecoes if x), None)})
 
@@ -355,9 +361,9 @@ class MotorCanal(Motor):
                 return True
         return False
 
-    def _extrair(self, paginas: list[str]) -> dict[str, Any]:
+    def _extrair(self, paginas: list[str], ex: "CfgExtracao | None" = None) -> dict[str, Any]:
         """A extração própria do motor: o primeiro trecho, na ordem das páginas, que casa com a expressão de cada item."""
-        ex = self.cfg.extracao
+        ex = ex or self.cfg.extracao
         itens: dict[str, dict] = {}
         for item, padroes in ex.itens.items():
             for n, texto in enumerate(paginas, 1):
@@ -449,3 +455,14 @@ class MotorCanal(Motor):
                              **(self._extrair(documento["paginas"]) if documento and self.cfg.extracao.itens else {}),
                              **({"leis": self.cfg.legislacao.leis} if self.cfg.legislacao.leis else {}),
                              **({"resumo": pista.resumo} if pista.resumo else {})}, documento=documento)
+
+
+def apelidos(pasta: str | Path = Path(__file__).parent / "config") -> dict[str, str]:
+    """Cada nome anterior (ou motor reunido) → o motor de hoje, a partir das configurações."""
+    import tomllib
+    mapa: dict[str, str] = {}
+    for p in Path(pasta).glob("*.toml"):
+        m = tomllib.loads(p.read_text(encoding="utf-8")).get("motor", {})
+        for antigo in m.get("nomes_anteriores", []):
+            mapa[antigo] = m["id"]
+    return mapa

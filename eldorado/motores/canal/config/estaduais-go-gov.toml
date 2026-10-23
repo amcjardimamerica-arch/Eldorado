@@ -1,14 +1,16 @@
-# Programa Goyazes (Lei estadual 13.613/2000): incentivo fiscal de Goiás à cultura (ICMS). A oportunidade é o próprio
-# programa, nas regras da legislação vigente, e os editais e calendários que a Secult publica dentro dele.
+# Sites oficiais do Governo de Goiás em WordPress, pela API pública (as secretarias de Cultura e Social).
 [motor]
-id = "goyazes"
-nome = "Programa Goyazes — incentivo fiscal estadual à cultura"
-categoria = "Incentivos fiscais"
-finalidade = "o programa de incentivo e os editais, calendários e chamadas do Goyazes publicados pela Secult"
-canal = "portal"
+id = "estaduais-go-gov"
+nome = "Oportunidades estaduais governamentais de Goiás"
+categoria = "Executivo — portais do governo"
+finalidade = "editais, chamamentos e programas das secretarias e fundos de Goiás, pela API do WordPress (a rota principal) e pelas páginas oficiais"
+canal = "api"
 uf = "GO"
-orgao = "Secretaria de Estado da Cultura de Goiás"
+categoria_estudo = "EXE"
+nomes_anteriores = ["wordpress-goias", "goyazes", "plataforma-wordpress", "plat-estaduais-go-gov", "plat-fapeg", "plat-fundos-estaduais-go", "plat-goias-social", "plat-ovg", "plat-secult-go"]
 
+
+# O Programa Goyazes é um ALVO deste motor (estudo da titular, 19/10/2026), com as regras de extração das normas só para ele.
 [programa]
 titulo = "Programa Goyazes (Lei estadual 13.613/2000) — incentivo fiscal à cultura em Goiás"
 orgao = "Secretaria de Estado da Cultura de Goiás"
@@ -27,6 +29,18 @@ leis = ["lei-go-13613-2000"]
 notas = "Prazos de inscrição, limites e contrapartidas vêm da legislação e das portarias vigentes, lidas na página oficial."
 
 [[fonte]]
+nome = "Secretaria de Cultura de Goiás"
+url = "https://goias.gov.br/cultura/wp-json/wp/v2/posts"
+tipo = "wordpress"
+termos = "edital"
+
+[[fonte]]
+nome = "Secretaria de Desenvolvimento Social de Goiás"
+url = "https://goias.gov.br/social/wp-json/wp/v2/posts"
+tipo = "wordpress"
+termos = "edital"
+
+[[fonte]]
 nome = "Programa Goyazes — página do programa"
 url = "https://goias.gov.br/cultura/programa-goyazes/"
 tipo = "pagina"
@@ -37,25 +51,40 @@ url = "https://goias.gov.br/cultura/wp-json/wp/v2/posts"
 tipo = "wordpress"
 termos = "goyazes"
 
+[[fonte]]
+nome = "FAPEG — Fundação de Amparo à Pesquisa do Estado de Goiás"
+url = "https://goias.gov.br/fapeg/wp-json/wp/v2/posts"
+tipo = "wordpress"
+termos = "chamada"
+
+[[fonte]]
+nome = "PNAB Goiás — Política Nacional Aldir Blanc no estado (alvo do estudo)"
+url = "https://pnab.cultura.go.gov.br/"
+tipo = "pagina"
+
+[[fonte]]
+nome = "FICA — Festival Internacional de Cinema e Vídeo Ambiental (alvo do estudo)"
+url = "https://fica.go.gov.br/"
+tipo = "pagina"
+
 [acesso]
 degraus = ["api", "leve"]
 
 [leitura]
 paginas_dos_achados = true
-seguir_oficial = true
-max_documentos = 10
+seguir_oficial = true               # do post de divulgação ao edital oficial
+max_documentos = 20
 
 [lexico]
-# Notícias sobre projetos já financiados não são oportunidade: o título tem de anunciar inscrição, edital, norma ou prazo.
-termos = ["re:inscric|edital|chamamento|instrucao normativa|portaria|prazo|calendario|cartas? de intencao|regras|reabert|prorroga"]
-vetos = ["re:resultado|homologa|aprov|contemplad|habilitad|captad|celebra|festa|leva |apresentac|show|maior investimento"]
-termos_em = "titulo"
+termos = ["re:inscric|instrucao normativa|cartas? de intencao|reabert|prorroga|edital|chamamento|chamada publica|abre (selecao|inscric|chamada)|inscricoes abertas|premio|premiacao|selecao de (projetos|propostas|organizac)|seleciona (projetos|propostas)|fomento|credenciamento de (osc|organizac|entidades)"]
+termos_em = "titulo"            # site de notícias: o título de um edital diz que é edital
+vetos = ["re:resultado|homologa|pregao|licitac|tomada de precos|concorrencia|contemplad|selecionad|aprovad|habilitad|edital pe\\b|\\bvagas?\\b|cadastro de reserva|pareceristas?|oficinas?|eleic|plano de acao final|lista final"]
 
-[extracao]
+[programa.extracao]
 # A análise própria do motor de incentivo, para o texto das NORMAS (resoluções, instruções normativas, portarias).
 nao_certificar = ["Resultado", "Prazo de recurso", "Anexos", "Esfera", "Modalidade", "Órgão / financiador", "Território", "Área de atuação"]
 
-[extracao.itens]
+[programa.extracao.itens]
 "Prazo de inscrição" = [
   # calibrada na IN Secult nº 3/2026: "não implica reabertura de prazo" (as inscrições comuns do exercício estão encerradas)
   '((?:sem|n[ãa]o implica) reabertura de prazo[^.;]{0,140})',

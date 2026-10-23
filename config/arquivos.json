@@ -1027,7 +1027,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 61,
+   "linhas": 79,
    "situacao": "em funcionamento",
    "ordem": 37
   },
@@ -1045,7 +1045,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 38,
+   "linhas": 51,
    "situacao": "em funcionamento",
    "ordem": 38
   },
@@ -1074,7 +1074,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/regencia.py",
-   "linhas": 214,
+   "linhas": 216,
    "finalidade": "A Regência: planeja a passagem, aciona os motores e autoriza cada passagem de livro.",
    "depende_de": [
     "eldorado/base/cerebro/decisao.py",
@@ -1084,7 +1084,8 @@
     "eldorado/base/nucleo/contratos.py",
     "eldorado/base/nucleo/eventos.py",
     "eldorado/base/nucleo/recibo.py",
-    "eldorado/base/nucleo/registro.py"
+    "eldorado/base/nucleo/registro.py",
+    "eldorado/motores/canal/motor.py"
    ],
    "eventos": [
     "achado.entregue",
@@ -1129,7 +1130,8 @@
     "eldorado/base/nucleo/contratos.py",
     "eldorado/base/nucleo/eventos.py",
     "eldorado/base/nucleo/recibo.py",
-    "eldorado/base/nucleo/registro.py"
+    "eldorado/base/nucleo/registro.py",
+    "eldorado/motores/canal/motor.py"
    ],
    "critico": true,
    "metrica": "acionamentos no horário; passagens autorizadas",
@@ -1163,7 +1165,7 @@
    "ordem": 41
   },
   {
-   "arquivo": "config/motores_previstos.toml",
+   "arquivo": "config/motores_previstos.json",
    "etapa": "06 Coleta: os motores e o canivete suíço",
    "parte": "OPERACAO",
    "componente": "Operação e configuração",
@@ -1176,7 +1178,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 379,
+   "linhas": 2035,
    "situacao": "em funcionamento",
    "ordem": 42
   },
@@ -1728,7 +1730,7 @@
   },
   {
    "arquivo": "eldorado/motores/canal/motor.py",
-   "linhas": 451,
+   "linhas": 468,
    "finalidade": "O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio.",
    "depende_de": [
     "eldorado/base/nucleo/contratos.py",
@@ -1752,16 +1754,23 @@
    "eventos": [],
    "acionado_por": [
     "config/modulos.toml (dou)",
-    "config/modulos.toml (goyazes)",
-    "config/modulos.toml (mapas-culturais)",
-    "config/modulos.toml (pncp)",
-    "config/modulos.toml (querido-diario)",
-    "config/modulos.toml (rouanet)",
-    "config/modulos.toml (transferegov)",
-    "config/modulos.toml (wordpress-financiadores)",
-    "config/modulos.toml (wordpress-goias)"
+    "config/modulos.toml (estaduais-go-gov)",
+    "config/modulos.toml (gife)",
+    "config/modulos.toml (novo-diarios-municipais-go)",
+    "config/modulos.toml (plataforma-mapas-culturais)",
+    "config/modulos.toml (pncp-api)",
+    "config/modulos.toml (salic)",
+    "config/modulos.toml (site-abcr)",
+    "config/modulos.toml (site-cese)",
+    "config/modulos.toml (site-fundo-brasil)",
+    "config/modulos.toml (site-fundo-casa)",
+    "config/modulos.toml (site-transferegov)"
    ],
-   "usado_por": [],
+   "usado_por": [
+    "eldorado/base/cerebro/encaminhamento.py",
+    "eldorado/base/cerebro/rede.py",
+    "eldorado/base/cerebro/regencia.py"
+   ],
    "testes": [
     "test_incentivos.py",
     "test_motor_canal.py",
@@ -2501,7 +2510,7 @@
   },
   {
    "arquivo": "eldorado/motores/pilotos/espiao.py",
-   "linhas": 209,
+   "linhas": 211,
    "finalidade": "O PILOTO ESPIÃO (do Eldorado0, titular, 09 e 16/10/2026): caça só o que nenhum motor alcança.",
    "depende_de": [
     "eldorado/base/nucleo/contratos.py"
@@ -2577,7 +2586,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/encaminhamento.py",
-   "linhas": 128,
+   "linhas": 133,
    "finalidade": "A rede neural na fase 3 do Cartório (titular, 22/10/2026): quem age é a rede, não o Cartório.",
    "depende_de": [
     "eldorado/base/cartorio/passaporte.py",
@@ -2591,6 +2600,7 @@
     "eldorado/motores/acesso/api.py",
     "eldorado/motores/acesso/escada.py",
     "eldorado/motores/acesso/leve.py",
+    "eldorado/motores/canal/motor.py",
     "eldorado/motores/pilotos/interceptador.py"
    ],
    "eventos": [
@@ -2624,6 +2634,7 @@
     "eldorado/motores/acesso/api.py",
     "eldorado/motores/acesso/escada.py",
     "eldorado/motores/acesso/leve.py",
+    "eldorado/motores/canal/motor.py",
     "eldorado/motores/pilotos/interceptador.py"
    ],
    "critico": false,
@@ -2835,7 +2846,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/inventario.py",
-   "linhas": 177,
+   "linhas": 178,
    "finalidade": "O inventário do sistema (titular, 22/10/2026): todo arquivo, do primeiro ao último no caminho do funcionamento, com a",
    "depende_de": [],
    "eventos": [],
@@ -2886,10 +2897,11 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/rede.py",
-   "linhas": 210,
+   "linhas": 212,
    "finalidade": "A rede neural única, de aprendizado contínuo (River): aprende a cada veredito e dá as notas.",
    "depende_de": [
-    "eldorado/base/nucleo/eventos.py"
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/motores/canal/motor.py"
    ],
    "eventos": [
     "modelo.treinado"
@@ -2910,7 +2922,8 @@
    "parte": "BASE",
    "componente": "Cérebro: Regência e Pertinência e aprendizado",
    "ligacoes": [
-    "eldorado/base/nucleo/eventos.py"
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/motores/canal/motor.py"
    ],
    "critico": false,
    "metrica": "discernimento, precisão, revocação; idade do modelo",
@@ -3222,6 +3235,24 @@
    "ordem": 116
   },
   {
+   "arquivo": "config/motores_previstos.toml",
+   "etapa": "17 Outros",
+   "parte": "OPERACAO",
+   "componente": "Operação e configuração",
+   "ligacoes": [],
+   "critico": true,
+   "metrica": "o sistema roda sem intervenção",
+   "finalidade": "o sistema roda sem intervenção",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 0,
+   "situacao": "a construir",
+   "ordem": 117
+  },
+  {
    "arquivo": "eldorado/__init__.py",
    "linhas": 1,
    "finalidade": "",
@@ -3273,7 +3304,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 117
+   "ordem": 118
   },
   {
    "arquivo": "eldorado/base/__init__.py",
@@ -3324,7 +3355,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 118
+   "ordem": 119
   },
   {
    "arquivo": "eldorado/base/cartorio/__init__.py",
@@ -3350,7 +3381,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 119
+   "ordem": 120
   },
   {
    "arquivo": "eldorado/base/cerebro/__init__.py",
@@ -3386,7 +3417,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 120
+   "ordem": 121
   },
   {
    "arquivo": "eldorado/base/cerebro/pilotos.py",
@@ -3419,7 +3450,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 121
+   "ordem": 122
   },
   {
    "arquivo": "eldorado/base/investigacao/investigacao.py",
@@ -3440,7 +3471,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "livros investigados e itens comprovados por livro",
-   "ordem": 122
+   "ordem": 123
   },
   {
    "arquivo": "eldorado/motores/__init__.py",
@@ -3470,14 +3501,39 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 123
+   "ordem": 124
   }
  ],
  "motores": [
   {
    "id": "do-goiania",
    "nome": "Diário Oficial do Município de Goiânia",
+   "categoria": "EXE",
+   "categoria_nome": "Executivo — diários e portais do governo",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
+   "finalidade": "encontrar oportunidade aberta para OSC em diário oficial municipal — a fonte primária de Goiânia",
+   "agrega": [],
+   "alvos": [
+    {
+     "id": "f260-captacao-001",
+     "nome": "PNAB Goiânia - Audiovisual",
+     "dominios": [
+      "diariooficial.goiania.go.gov.br",
+      "www.goiania.go.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (publicado no Diário de Goiânia)"
+    },
+    {
+     "id": "f260-captacao-039",
+     "nome": "Editais de ocupação cultural municipal",
+     "dominios": [
+      "diariooficial.goiania.go.gov.br",
+      "www.goiania.go.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (publicado no Diário de Goiânia)"
+    }
+   ],
    "motor_novo": "",
    "situacao": "a construir",
    "observacao": ""
@@ -3485,7 +3541,31 @@
   {
    "id": "do-goias",
    "nome": "Diário Oficial do Estado de Goiás",
+   "categoria": "EXE",
+   "categoria_nome": "Executivo — diários e portais do governo",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
+   "finalidade": "encontrar oportunidade aberta para OSC em diário oficial estadual — SECULT, SEDS, SES, SEEL e decretos de emenda",
+   "agrega": [],
+   "alvos": [
+    {
+     "id": "f260-captacao-034",
+     "nome": "Fundo de Arte e Cultura de Goiás - projeto cultural geral",
+     "dominios": [
+      "diariooficial.abc.go.gov.br",
+      "goias.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (publicado no Diário do Estado)"
+    },
+    {
+     "id": "f260-captacao-206",
+     "nome": "Convênio com órgão público estadual",
+     "dominios": [
+      "diariooficial.abc.go.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (publicado no Diário do Estado)"
+    }
+   ],
    "motor_novo": "",
    "situacao": "a construir",
    "observacao": ""
@@ -3493,23 +3573,922 @@
   {
    "id": "dou",
    "nome": "Diário Oficial da União",
+   "categoria": "EXE",
+   "categoria_nome": "Executivo — diários e portais do governo",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
+   "finalidade": "encontrar oportunidade aberta para OSC em diário federal — ministérios, fundos e conselhos nacionais, prefeituras de Goiás que publicam no DOU, doação de bens e coleta solidária em Goiás/DF",
+   "agrega": [],
+   "alvos": [
+    {
+     "id": "f260-captacao-134",
+     "nome": "MDHC - editais de direitos humanos",
+     "dominios": [
+      "www.in.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (publicado no DOU)"
+    },
+    {
+     "id": "f260-captacao-207",
+     "nome": "Acordo de cooperação sem transferência financeira",
+     "dominios": [
+      "www.in.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (publicado no DOU)"
+    }
+   ],
    "motor_novo": "dou",
-   "situacao": "em funcionamento",
+   "situacao": "conforme",
+   "observacao": ""
+  },
+  {
+   "id": "prefeituras-50-go",
+   "nome": "Prefeituras das 25 maiores cidades de Goiás — portais de editais",
+   "categoria": "EXE",
+   "categoria_nome": "Executivo — diários e portais do governo",
+   "tipo_no_estudo": "mantido",
+   "tipo": "regular",
+   "finalidade": "",
+   "agrega": [
+    {
+     "id": "plat-prefeituras-50-go",
+     "nome": "Prefeituras das 25 maiores cidades de Goiás — portais de editais",
+     "dominios": [
+      "pncp.gov.br",
+      "queridodiario.ok.org.br",
+      "www.goiania.go.gov.br"
+     ]
+    }
+   ],
+   "alvos": [
+    {
+     "id": "f260-captacao-072",
+     "nome": "Arte e Cultura na Educação Integral",
+     "dominios": [
+      "www.goiania.go.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site da Prefeitura de Goiânia)"
+    },
+    {
+     "id": "f260-captacao-149",
+     "nome": "SMS Goiânia - parceria com entidade de saúde",
+     "dominios": [
+      "saude.goiania.go.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site da Prefeitura de Goiânia)"
+    },
+    {
+     "id": "f260-espalhado-acessoainformacao-cavalcante-go-gov-br",
+     "nome": "PNCP — FUNDO MUNICIPAL DE CULTURA - CAVALCANTE — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "acessoainformacao.cavalcante.go.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (município de Goiás: vira alvo das Prefeituras e continua coberto pelo PNCP)"
+    },
+    {
+     "id": "f260-espalhado-senadorcanedo-go-gov-br",
+     "nome": "PNCP — FUNDO MUNICIPAL DE EDUCACAO E CULTURA - FMEC — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "senadorcanedo.go.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (município de Goiás: vira alvo das Prefeituras e continua coberto pelo PNCP)"
+    }
+   ],
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "estaduais-go-gov",
+   "nome": "Oportunidade Estaduais Governamentais de Goiás",
+   "categoria": "EXE",
+   "categoria_nome": "Executivo — diários e portais do governo",
+   "tipo_no_estudo": "mantido",
+   "tipo": "regular",
+   "finalidade": "",
+   "agrega": [
+    {
+     "id": "plat-estaduais-go-gov",
+     "nome": "Oportunidade Estaduais Governamentais de Goiás",
+     "dominios": [
+      "goias.gov.br"
+     ]
+    },
+    {
+     "id": "plat-fapeg",
+     "nome": "FAPEG — Fundação de Amparo à Pesquisa de Goiás",
+     "dominios": [
+      "diariooficial.abc.go.gov.br",
+      "goias.gov.br"
+     ]
+    },
+    {
+     "id": "plat-fundos-estaduais-go",
+     "nome": "Fundos estaduais de Goiás com conselho — FIA, Idoso, FUNJUVE, Meio Ambiente",
+     "dominios": [
+      "diariooficial.abc.go.gov.br",
+      "goias.gov.br"
+     ]
+    },
+    {
+     "id": "plat-goias-social",
+     "nome": "Goiás Social — programas e editais para entidades",
+     "dominios": [
+      "goias.gov.br"
+     ]
+    },
+    {
+     "id": "plat-ovg",
+     "nome": "OVG — Organização das Voluntárias de Goiás: editais e chamamentos",
+     "dominios": [
+      "diariooficial.abc.go.gov.br",
+      "goias.gov.br",
+      "www.ovg.org.br"
+     ]
+    },
+    {
+     "id": "plat-secult-go",
+     "nome": "Secult Goiás — Goyazes e Aldir Blanc",
+     "dominios": [
+      "diariooficial.abc.go.gov.br",
+      "goias.gov.br",
+      "pnab.cultura.go.gov.br",
+      "www.goias.gov.br"
+     ]
+    },
+    {
+     "id": "plataforma-wordpress",
+     "nome": "Adaptador WordPress — sites oficiais pela API pública",
+     "dominios": [
+      "goias.gov.br",
+      "www.anater.org"
+     ]
+    }
+   ],
+   "alvos": [
+    {
+     "id": "f260-captacao-018",
+     "nome": "PNAB Goiás - Audiovisual",
+     "dominios": [
+      "pnab.cultura.go.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+    },
+    {
+     "id": "f260-captacao-025",
+     "nome": "PNAB Goiás - Artes Visuais",
+     "dominios": [
+      "pnab.cultura.go.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+    },
+    {
+     "id": "f260-captacao-038",
+     "nome": "Editais FICA Goiás - artes visuais/exposição",
+     "dominios": [
+      "fica.go.gov.br",
+      "web.ufg.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+    },
+    {
+     "id": "f260-captacao-051",
+     "nome": "Programa estadual de eventos esportivos",
+     "dominios": [
+      "goias.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+    },
+    {
+     "id": "f260-captacao-081",
+     "nome": "Projeto de educação para o trabalho",
+     "dominios": [
+      "goias.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+    },
+    {
+     "id": "f260-captacao-095",
+     "nome": "SEDS Goiás - Auxílio Nutricional a entidades",
+     "dominios": [
+      "goias.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+    },
+    {
+     "id": "f260-captacao-098",
+     "nome": "FEAS-GO - cofinanciamento da assistência social",
+     "dominios": [
+      "goias.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+    },
+    {
+     "id": "f260-captacao-159",
+     "nome": "Projeto de teleorientação em saúde comunitária",
+     "dominios": [
+      "goias.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+    },
+    {
+     "id": "f260-captacao-177",
+     "nome": "SEMAD Goiás - banco de projetos de autocomposição ambiental",
+     "dominios": [
+      "goias.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+    },
+    {
+     "id": "f260-curadoria-009",
+     "nome": "SECULT Goiás — chamamentos públicos da Lei 13.019/2014",
+     "dominios": [
+      "goias.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site do governo de Goiás)"
+    }
+   ],
+   "motor_novo": "estaduais-go-gov",
+   "situacao": "incompleto",
+   "observacao": "Secult, SEDS, FAPEG, PNAB Goiás, FICA e o Goyazes; faltam OVG, SEMAD, Goiás Social, fundos estaduais e Anater (endereços a localizar; a API da Anater recusa) e 5 alvos"
+  },
+  {
+   "id": "pncp-api",
+   "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
+   "categoria": "EXE",
+   "categoria_nome": "Executivo — diários e portais do governo",
+   "tipo_no_estudo": "mantido",
+   "tipo": "regular",
+   "finalidade": "encontrar no PNCP as seleções ABERTAS para OSC em Goiás e nos órgãos federais, com a data oficial de encerramento",
+   "agrega": [],
+   "alvos": [
+    {
+     "id": "f260-espalhado-carazinho-atende-net",
+     "nome": "PNCP — MUNICIPIO DE CARAZINHO — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "carazinho.atende.net"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+    },
+    {
+     "id": "f260-espalhado-carire-ce-gov-br",
+     "nome": "PNCP — MUNICIPIO DE CARIRE — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "carire.ce.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+    },
+    {
+     "id": "f260-espalhado-crcgo-org-br",
+     "nome": "PNCP — CONSELHO REGIONAL DE CONTABILIDADE DO ESTADO DE GOIAS — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "crcgo.org.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+    },
+    {
+     "id": "f260-espalhado-sistema-mirassoldoeste-mt-gov-br",
+     "nome": "PNCP — MUNICIPIO DE MIRASSOL D’OESTE — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "sistema.mirassoldoeste.mt.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+    },
+    {
+     "id": "f260-espalhado-transparencia-agilicloud-com-br",
+     "nome": "PNCP — MUNICIPIO DE PARANATINGA — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "transparencia.agilicloud.com.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+    },
+    {
+     "id": "f260-espalhado-transparencia-cacoal-ro-gov-br",
+     "nome": "PNCP — MUNICIPIO DE CACOAL — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "transparencia.cacoal.ro.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+    },
+    {
+     "id": "f260-espalhado-transparencia-nobres-mt-gov-br",
+     "nome": "PNCP — MUNICIPIO DE NOBRES — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "transparencia.nobres.mt.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+    },
+    {
+     "id": "f260-espalhado-www-bentogoncalves-rs-gov-br",
+     "nome": "PNCP — MUNICIPIO DE BENTO GONCALVES — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "www.bentogoncalves.rs.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+    },
+    {
+     "id": "f260-espalhado-www-detran-rj-gov-br",
+     "nome": "PNCP — ESTADO DO RIO DE JANEIRO — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "www.detran.rj.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+    },
+    {
+     "id": "f260-espalhado-www-ipora-pr-gov-br",
+     "nome": "PNCP — MUNICIPIO DE IPORA — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "www.ipora.pr.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+    },
+    {
+     "id": "f260-espalhado-www-itabaianinha-se-gov-br",
+     "nome": "PNCP — MUNICIPIO DE ITABAIANINHA — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "www.itabaianinha.se.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+    },
+    {
+     "id": "f260-espalhado-www-novohamburgo-rs-gov-br",
+     "nome": "PNCP — MUNICIPIO DE NOVO HAMBURGO — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "www.novohamburgo.rs.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+    },
+    {
+     "id": "f260-espalhado-www-ribeiraodasneves-mg-gov-br",
+     "nome": "PNCP — MUNICIPIO DE RIBEIRAO DAS NEVES — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "www.ribeiraodasneves.mg.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+    },
+    {
+     "id": "f260-espalhado-www-riopreto-sp-gov-br",
+     "nome": "PNCP — MUNICIPIO DE SAO JOSE DO RIO PRETO — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "www.riopreto.sp.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+    },
+    {
+     "id": "f260-espalhado-www-rosariodosul-rs-gov-br",
+     "nome": "PNCP — MUNICIPIO DE ROSARIO DO SUL — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "www.rosariodosul.rs.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+    },
+    {
+     "id": "f260-espalhado-www-senadorpompeu-ce-gov-br",
+     "nome": "PNCP — MUNICIPIO DE SENADOR POMPEU — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "www.senadorpompeu.ce.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+    },
+    {
+     "id": "f260-espalhado-www-vilarica-mt-gov-br",
+     "nome": "PNCP — MUNICIPIO DE VILA RICA — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "www.vilarica.mt.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (resto do espalhamento do PNCP: o ente continua coberto pelo PNCP)"
+    }
+   ],
+   "motor_novo": "pncp-api",
+   "situacao": "conforme",
+   "observacao": "faltam os 17 alvos"
+  },
+  {
+   "id": "salic",
+   "nome": "Lei Rouanet — janela de propostas no SALIC e projetos de Goiás (Ministério da Cultura)",
+   "categoria": "EXE",
+   "categoria_nome": "Executivo — diários e portais do governo",
+   "tipo_no_estudo": "mantido",
+   "tipo": "regular",
+   "finalidade": "",
+   "agrega": [
+    {
+     "id": "f260-espalhado-rouanet-cultura-gov-br",
+     "nome": "Ministério da Cultura — SALIC — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "rouanet.cultura.gov.br"
+     ]
+    },
+    {
+     "id": "plat-salic",
+     "nome": "Lei Rouanet — janela de propostas no SALIC e projetos de Goiás (Ministério da Cultura)",
+     "dominios": [
+      "api.salic.cultura.gov.br",
+      "salic.cultura.gov.br",
+      "versalic.cultura.gov.br",
+      "www.gov.br"
+     ]
+    }
+   ],
+   "alvos": [
+    {
+     "id": "f260-captacao-035",
+     "nome": "Lei Rouanet - doação de pessoa física",
+     "dominios": [
+      "www.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (Lei Rouanet)"
+    }
+   ],
+   "motor_novo": "salic",
+   "situacao": "conforme",
+   "observacao": ""
+  },
+  {
+   "id": "motor-gife",
+   "nome": "Motor Incentivos Fiscais — empresas da base ICMS/RFB/SALIC (Goiás)",
+   "categoria": "EXE",
+   "categoria_nome": "Executivo — diários e portais do governo",
+   "tipo_no_estudo": "mantido",
+   "tipo": "regular",
+   "finalidade": "empresas da base ICMS/RFB/SALIC de Goiás com potencial de destinação incentivada e os sites das maiores contribuintes do ICMS (editais incentivados)",
+   "agrega": [
+    {
+     "id": "motor-patrocinio",
+     "nome": "Empresas que patrocinam eventos culturais, esportivos e educacionais em Goiás com recurso próprio (marketing, sem benefício fiscal)",
+     "dominios": [
+      "html.duckduckgo.com",
+      "www.opopular.com.br"
+     ]
+    }
+   ],
+   "alvos": [],
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "empresas-editais-incentivados",
+   "nome": "Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes",
+   "categoria": "EXE",
+   "categoria_nome": "Executivo — diários e portais do governo",
+   "tipo_no_estudo": "mantido",
+   "tipo": "regular",
+   "finalidade": "",
+   "agrega": [
+    {
+     "id": "empresas-incentivadas",
+     "nome": "Editais incentivados — sites das maiores contribuintes do ICMS de Goiás (destinação tributária)",
+     "dominios": [
+      "go.equatorialenergia.com.br",
+      "observatorio3setor.org.br",
+      "paraquemdoar.org",
+      "www.abcdacomunicacao.com.br",
+      "www.saneago.com.br"
+     ]
+    },
+    {
+     "id": "plat-empresas-editais-incentivados",
+     "nome": "Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes",
+     "dominios": [
+      "captadores.org.br"
+     ]
+    }
+   ],
+   "alvos": [
+    {
+     "id": "f260-captacao-041",
+     "nome": "Lei de Incentivo ao Esporte - Esporte para Toda a Vida",
+     "dominios": [
+      "www.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (lei de incentivo com captação junto a empresas (FIA, LIE, Pronas))"
+    },
+    {
+     "id": "f260-captacao-044",
+     "nome": "Projetos aptos à captação na LIE",
+     "dominios": [
+      "www.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (lei de incentivo com captação junto a empresas (FIA, LIE, Pronas))"
+    },
+    {
+     "id": "f260-captacao-118",
+     "nome": "Destinação de IR pessoa física para FMDCA",
+     "dominios": [
+      "goias.gov.br",
+      "www.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (lei de incentivo com captação junto a empresas (FIA, LIE, Pronas))"
+    },
+    {
+     "id": "f260-captacao-119",
+     "nome": "Destinação de IR pessoa jurídica para Fundo da Criança",
+     "dominios": [
+      "www.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (lei de incentivo com captação junto a empresas (FIA, LIE, Pronas))"
+    },
+    {
+     "id": "f260-captacao-143",
+     "nome": "Pronas/PCD - assistência à pessoa com deficiência",
+     "dominios": [
+      "www.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (lei de incentivo com captação junto a empresas (FIA, LIE, Pronas))"
+    }
+   ],
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "cnpq-extensao",
+   "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
+   "categoria": "EXE",
+   "categoria_nome": "Executivo — diários e portais do governo",
+   "tipo_no_estudo": "mantido",
+   "tipo": "regular",
+   "finalidade": "",
+   "agrega": [
+    {
+     "id": "plat-cnpq-extensao",
+     "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC",
+     "dominios": [
+      "www.gov.br"
+     ]
+    },
+    {
+     "id": "site-finep",
+     "nome": "site-finep",
+     "dominios": []
+    }
+   ],
+   "alvos": [],
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "site-funarte",
+   "nome": "Funarte — editais da Fundação Nacional de Artes",
+   "categoria": "EXE",
+   "categoria_nome": "Executivo — diários e portais do governo",
+   "tipo_no_estudo": "mantido",
+   "tipo": "regular",
+   "finalidade": "editais da Fundação Nacional de Artes",
+   "agrega": [],
+   "alvos": [],
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "site-transferegov",
+   "nome": "Transferegov — programas e parcerias com OSC abertos na plataforma federal (dados abertos)",
+   "categoria": "EXE",
+   "categoria_nome": "Executivo — diários e portais do governo",
+   "tipo_no_estudo": "mantido",
+   "tipo": "regular",
+   "finalidade": "programas e parcerias com OSC abertos na plataforma federal (dados abertos)",
+   "agrega": [],
+   "alvos": [
+    {
+     "id": "f260-captacao-060",
+     "nome": "Escolinha de natação/paradesporto adaptado",
+     "dominios": [
+      "www.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (programa federal com parceria de OSC)"
+    },
+    {
+     "id": "f260-captacao-090",
+     "nome": "MDS - Cozinhas Solidárias 2026",
+     "dominios": [
+      "www.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (programa federal com parceria de OSC)"
+    },
+    {
+     "id": "f260-captacao-180",
+     "nome": "Projeto de coleta seletiva inclusiva",
+     "dominios": [
+      "www.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (programa federal com parceria de OSC)"
+    },
+    {
+     "id": "f260-curadoria-010",
+     "nome": "MDHC / CONANDA — Chamamentos publicos de fomento a OSC",
+     "dominios": [
+      "www.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (programa federal com parceria de OSC)"
+    }
+   ],
+   "motor_novo": "site-transferegov",
+   "situacao": "conforme",
+   "observacao": "faltam os 4 alvos"
+  },
+  {
+   "id": "novo-diarios-municipais-go",
+   "nome": "Diários oficiais municipais de Goiás (Querido Diário)",
+   "categoria": "EXE",
+   "categoria_nome": "Executivo — diários e portais do governo",
+   "tipo_no_estudo": "sugestão",
+   "tipo": "regular",
+   "finalidade": "sugestão: um só motor lê, pela API do Querido Diário, os diários de todos os municípios de Goiás, complementando o Diário de Goiânia",
+   "agrega": [],
+   "alvos": [
+    {
+     "id": "f260-espalhado-www-arapongas-pr-gov-br",
+     "nome": "Querido Diário — diários oficiais municipais — oportunidades (espalhado de edital validado)",
+     "dominios": [
+      "www.arapongas.pr.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (diário municipal pelo Querido Diário)"
+    }
+   ],
+   "motor_novo": "novo-diarios-municipais-go",
+   "situacao": "sem fonte",
+   "observacao": "a API do Querido Diário está fora do ar desde 22/10"
+  },
+  {
+   "id": "novo-bancos-publicos",
+   "nome": "Bancos públicos e Sistema S (BNDES, BNB, Caixa, Sebrae)",
+   "categoria": "EXE",
+   "categoria_nome": "Executivo — diários e portais do governo",
+   "tipo_no_estudo": "sugestão",
+   "tipo": "regular",
+   "finalidade": "sugestão: os editais sociais dos bancos públicos e do Sistema S estão hoje espalhados em pontos de captação e não cabem em nenhum motor mantido",
+   "agrega": [
+    {
+     "id": "site-petrobras",
+     "nome": "site-petrobras",
+     "dominios": []
+    }
+   ],
+   "alvos": [
+    {
+     "id": "f260-captacao-175",
+     "nome": "BNDES Periferias - geração de emprego e renda",
+     "dominios": [
+      "portal.bndes.gov.br",
+      "www.bndes.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (banco público ou Sistema S)"
+    },
+    {
+     "id": "f260-captacao-176",
+     "nome": "BNDES Corais - meio ambiente",
+     "dominios": [
+      "www.bndes.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (banco público ou Sistema S)"
+    },
+    {
+     "id": "f260-captacao-220",
+     "nome": "BNDES Fundo Socioambiental",
+     "dominios": [
+      "www.bndes.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (banco público ou Sistema S)"
+    },
+    {
+     "id": "f260-captacao-238",
+     "nome": "Sebrae Goiás - parcerias com OSC para empreendedorismo",
+     "dominios": [
+      "sebraego.com.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (banco público ou Sistema S)"
+    },
+    {
+     "id": "f260-curadoria-001",
+     "nome": "Banco do Nordeste — Editais Sociais (incentivo fiscal)",
+     "dominios": [
+      "www.bnb.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (banco público ou Sistema S)"
+    }
+   ],
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "judiciario-tjgo",
+   "nome": "TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
+   "categoria": "JUD",
+   "categoria_nome": "Judiciário e Ministérios Públicos",
+   "tipo_no_estudo": "mantido",
+   "tipo": "regular",
+   "finalidade": "editais das comarcas do TJ-GO (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO",
+   "agrega": [
+    {
+     "id": "dje-tjgo",
+     "nome": "Diário da Justiça Eletrônico — TJGO",
+     "dominios": [
+      "corregedoria.tjgo.jus.br",
+      "www.tjgo.jus.br"
+     ]
+    },
+    {
+     "id": "judiciario-cnj-tjgo",
+     "nome": "Judiciário — CNJ e TJGO: editais das varas de execução penal e das comarcas (prestações pecuniárias) e credenciamentos de entidades",
+     "dominios": [
+      "corregedoria.tjgo.jus.br",
+      "pncp.gov.br",
+      "www.cnj.jus.br",
+      "www.tjgo.jus.br"
+     ]
+    }
+   ],
+   "alvos": [
+    {
+     "id": "f260-captacao-190",
+     "nome": "TJGO - penas pecuniárias 1ª Vara de Execução Penal de Goiânia",
+     "dominios": [
+      "www.trt18.jus.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (penas pecuniárias do TJGO (o cadastro aponta para o TRT-18: corrigir o domínio))"
+    }
+   ],
+   "motor_novo": "",
+   "situacao": "a construir",
    "observacao": ""
   },
   {
    "id": "dj-trf1-go",
    "nome": "Diário da Justiça Federal — Seção Judiciária de Goiás",
+   "categoria": "JUD",
+   "categoria_nome": "Judiciário e Ministérios Públicos",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
+   "finalidade": "encontrar oportunidade aberta para OSC em destinações de pena federais — raras em Goiás",
+   "agrega": [],
+   "alvos": [],
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "judiciario-cnj",
+   "nome": "CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024)",
+   "categoria": "JUD",
+   "categoria_nome": "Judiciário e Ministérios Públicos",
+   "tipo_no_estudo": "mantido",
+   "tipo": "regular",
+   "finalidade": "editais e regra nacional de destinação de prestações pecuniárias no Portal do CNJ",
+   "agrega": [
+    {
+     "id": "cnj-destinacoes",
+     "nome": "CNJ — destinações de penas e prestações pecuniárias",
+     "dominios": [
+      "www.cnj.jus.br",
+      "www.tjgo.jus.br"
+     ]
+    }
+   ],
+   "alvos": [
+    {
+     "id": "f260-captacao-193",
+     "nome": "CNJ - política de destinação de penas pecuniárias",
+     "dominios": [
+      "www.trt18.jus.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (política do CNJ (o cadastro aponta para o TRT-18: corrigir o domínio))"
+    }
+   ],
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "mpgo-destinacao",
+   "nome": "MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos)",
+   "categoria": "JUD",
+   "categoria_nome": "Judiciário e Ministérios Públicos",
+   "tipo_no_estudo": "mantido",
+   "tipo": "regular",
+   "finalidade": "Destina do MP-GO (Edital de Chamamento 02/2024, cadastro contínuo): regra fixa — o site do MP-GO proíbe robôs. Leitura indireta semanal pelo Diário do Estado (quem recebe recurso DAAMP publica lá) e lembrete de conferência manual mensal",
+   "agrega": [],
+   "alvos": [
+    {
+     "id": "f260-captacao-196",
+     "nome": "MPGO - TAC com destinação social",
+     "dominios": [
+      "mpt.mp.br",
+      "www.mpf.mp.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (TAC com destinação social (MP-GO))"
+    }
+   ],
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "mptgo-destinacao",
+   "nome": "MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região)",
+   "categoria": "JUD",
+   "categoria_nome": "Judiciário e Ministérios Públicos",
+   "tipo_no_estudo": "mantido",
+   "tipo": "regular",
+   "finalidade": "editais de 5 dias do MPT-GO (todo dia) e habilitação da A.M.C.",
+   "agrega": [],
+   "alvos": [],
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "mpu-destinacao",
+   "nome": "MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD)",
+   "categoria": "JUD",
+   "categoria_nome": "Judiciário e Ministérios Públicos",
+   "tipo_no_estudo": "mantido",
+   "tipo": "regular",
+   "finalidade": "MPF PR-GO, MPDFT, MPM, MPT nacional, FDD e CNMP (pela cadência de cada fonte)",
+   "agrega": [
+    {
+     "id": "plat-mp-destinacoes-reparacao",
+     "nome": "Ministérios Públicos — editais de destinação de recursos de reparação e bens lesados",
+     "dominios": [
+      "mpt.mp.br",
+      "www.gov.br",
+      "www.mpdft.mp.br",
+      "www.mpf.mp.br",
+      "www.mpm.mp.br",
+      "www.mpu.mp.br",
+      "www.prt18.mpt.mp.br"
+     ]
+    }
+   ],
+   "alvos": [
+    {
+     "id": "f260-captacao-169",
+     "nome": "FDD/Pronasci - cultura e cidadania em territórios vulneráveis",
+     "dominios": [
+      "www.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (destinação de bens e valores federais (FDD e bens apreendidos))"
+    },
+    {
+     "id": "f260-captacao-208",
+     "nome": "Cessão de bens móveis apreendidos",
+     "dominios": [
+      "www.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (destinação de bens e valores federais (FDD e bens apreendidos))"
+    }
+   ],
    "motor_novo": "",
    "situacao": "a construir",
    "observacao": ""
   },
   {
    "id": "camara-goiania-pl",
-   "nome": "Câmara Municipal de Goiânia — processos legislativos",
+   "nome": "Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos",
+   "categoria": "LEG",
+   "categoria_nome": "Legislativo",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
+   "finalidade": "seguir a utilidade pública da própria associação e achar leis de fomento, parceria, isenção e emendas impositivas para entidades, e os chamamentos da Câmara",
+   "agrega": [],
+   "alvos": [
+    {
+     "id": "f260-captacao-069",
+     "nome": "Emenda municipal para projeto educativo em Goiânia",
+     "dominios": [
+      "www.goiania.go.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (emenda municipal)"
+    },
+    {
+     "id": "f260-captacao-107",
+     "nome": "Emenda municipal para entidade assistencial",
+     "dominios": [
+      "www.goiania.go.leg.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (emenda municipal)"
+    },
+    {
+     "id": "f260-captacao-113",
+     "nome": "Projeto de apoio a famílias de baixa renda",
+     "dominios": [
+      "www.goiania.go.leg.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (acompanhado na Câmara de Goiânia)"
+    },
+    {
+     "id": "f260-captacao-152",
+     "nome": "Emenda municipal para saúde preventiva",
+     "dominios": [
+      "saude.goiania.go.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (emenda municipal)"
+    }
+   ],
    "motor_novo": "",
    "situacao": "a construir",
    "observacao": ""
@@ -3517,103 +4496,54 @@
   {
    "id": "alego-pl",
    "nome": "Assembleia Legislativa de Goiás — proposições",
+   "categoria": "LEG",
+   "categoria_nome": "Legislativo",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
+   "finalidade": "alimentar o sistema com emenda parlamentar, a partir de insumo de EMENDA — proposições e emendas impositivas estaduais (janela out-nov); achados são projetos de lei, não editais",
+   "agrega": [],
+   "alvos": [
+    {
+     "id": "f260-captacao-068",
+     "nome": "Emenda estadual para projeto educativo em Goiás",
+     "dominios": [
+      "goias.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (emenda estadual)"
+    },
+    {
+     "id": "f260-captacao-151",
+     "nome": "Emenda estadual para saúde comunitária",
+     "dominios": [
+      "goias.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (emenda estadual)"
+    }
+   ],
    "motor_novo": "",
    "situacao": "a construir",
    "observacao": ""
   },
   {
    "id": "congresso-nacional",
-   "nome": "Congresso Nacional — Câmara, Senado e Comissões",
+   "nome": "Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos)",
+   "categoria": "LEG",
+   "categoria_nome": "Legislativo",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
-   "motor_novo": "",
-   "situacao": "a construir",
-   "observacao": ""
-  },
-  {
-   "id": "pncp-api",
-   "nome": "PNCP — API de contratações (chamamentos e credenciamentos)",
-   "tipo": "regular",
-   "motor_novo": "pncp",
-   "situacao": "em funcionamento",
-   "observacao": ""
-  },
-  {
-   "id": "judiciario-tjgo",
-   "nome": "TJ-GO — editais das comarcas (prestações pecuniárias)",
-   "tipo": "regular",
-   "motor_novo": "",
-   "situacao": "a construir",
-   "observacao": ""
-  },
-  {
-   "id": "judiciario-cnj",
-   "nome": "CNJ — destinação de prestações pecuniárias",
-   "tipo": "regular",
-   "motor_novo": "",
-   "situacao": "a construir",
-   "observacao": ""
-  },
-  {
-   "id": "mpgo-destinacao",
-   "nome": "MP-GO — Programa Destina",
-   "tipo": "regular",
-   "motor_novo": "",
-   "situacao": "a construir",
-   "observacao": ""
-  },
-  {
-   "id": "mptgo-destinacao",
-   "nome": "MPT-GO — editais de indicação de entidades",
-   "tipo": "regular",
-   "motor_novo": "",
-   "situacao": "a construir",
-   "observacao": ""
-  },
-  {
-   "id": "mpu-destinacao",
-   "nome": "MPU — MPF, MPDFT, MPM e MPT nacional: destinações",
-   "tipo": "regular",
-   "motor_novo": "",
-   "situacao": "a construir",
-   "observacao": ""
-  },
-  {
-   "id": "plataforma-wordpress",
-   "nome": "Adaptador WordPress — sites oficiais pela API",
-   "tipo": "regular",
-   "motor_novo": "wordpress-goias",
-   "situacao": "em funcionamento",
-   "observacao": "Secult-GO e SEDS-GO; as demais secretarias entram como fontes"
-  },
-  {
-   "id": "plataforma-mapas-culturais",
-   "nome": "Adaptador Mapas Culturais — oportunidades",
-   "tipo": "regular",
-   "motor_novo": "mapas-culturais",
-   "situacao": "em funcionamento",
-   "observacao": ""
-  },
-  {
-   "id": "outras-oportunidades",
-   "nome": "Outras Oportunidades",
-   "tipo": "regular",
-   "motor_novo": "",
-   "situacao": "a construir",
-   "observacao": ""
-  },
-  {
-   "id": "motor-gife",
-   "nome": "Motor Incentivos Fiscais — empresas da base",
-   "tipo": "regular",
-   "motor_novo": "",
-   "situacao": "a construir",
-   "observacao": "empresas que distribuem renúncia fiscal (especial.db)"
-  },
-  {
-   "id": "motor-patrocinio",
-   "nome": "Motor Patrocínio Privado — mídia e eventos",
-   "tipo": "regular",
+   "finalidade": "ler o prazo oficial das emendas ao orçamento da União e as regras e recursos para entidades que tramitam no Congresso",
+   "agrega": [],
+   "alvos": [
+    {
+     "id": "f260-captacao-200",
+     "nome": "Emenda parlamentar federal individual",
+     "dominios": [
+      "www.camara.leg.br",
+      "www12.senado.leg.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (emenda federal)"
+    }
+   ],
    "motor_novo": "",
    "situacao": "a construir",
    "observacao": ""
@@ -3621,234 +4551,964 @@
   {
    "id": "gife",
    "nome": "GIFE — Grupo de Institutos, Fundações e Empresas",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
-   "motor_novo": "wordpress-financiadores",
-   "situacao": "em funcionamento",
+   "finalidade": "",
+   "agrega": [
+    {
+     "id": "plat-gife",
+     "nome": "GIFE — Grupo de Institutos, Fundações e Empresas",
+     "dominios": [
+      "capta.org.br",
+      "gife.org.br"
+     ]
+    }
+   ],
+   "alvos": [],
+   "motor_novo": "gife",
+   "situacao": "conforme",
    "observacao": ""
   },
   {
-   "id": "salic",
-   "nome": "Lei Rouanet — janela de propostas no SALIC",
+   "id": "plataforma-mapas-culturais",
+   "nome": "Adaptador Mapas Culturais — oportunidades com inscrição aberta",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
-   "motor_novo": "rouanet",
-   "situacao": "em funcionamento",
-   "observacao": "a API do Salic (projetos de Goiás) vai à análise do painel"
-  },
-  {
-   "id": "prefeituras-50-go",
-   "nome": "Prefeituras das 25 maiores cidades de Goiás",
-   "tipo": "regular",
-   "motor_novo": "",
-   "situacao": "a construir",
-   "observacao": "há o catálogo de rotas das 25 prefeituras no projeto"
-  },
-  {
-   "id": "empresas-editais-incentivados",
-   "nome": "Empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas/Pronon",
-   "tipo": "regular",
-   "motor_novo": "",
-   "situacao": "a construir",
+   "finalidade": "ampliar o alcance: fontes que nenhum motor vigiava",
+   "agrega": [],
+   "alvos": [],
+   "motor_novo": "plataforma-mapas-culturais",
+   "situacao": "conforme",
    "observacao": ""
-  },
-  {
-   "id": "cnpq-extensao",
-   "nome": "CNPq / MCTI / Setec-MEC — chamadas com componente de extensão",
-   "tipo": "regular",
-   "motor_novo": "",
-   "situacao": "a construir",
-   "observacao": ""
-  },
-  {
-   "id": "estaduais-go-gov",
-   "nome": "Oportunidades estaduais governamentais de Goiás",
-   "tipo": "regular",
-   "motor_novo": "",
-   "situacao": "a construir",
-   "observacao": "Goyazes já cobre o incentivo estadual à cultura"
   },
   {
    "id": "site-farol-cultural",
-   "nome": "Farol Cultural",
+   "nome": "Farol Cultural — editais de cultura de todo o Brasil, pela API pública do portal",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
+   "finalidade": "editais de cultura de todo o Brasil, pela API pública do portal",
+   "agrega": [],
+   "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
    "observacao": ""
   },
   {
    "id": "site-capitaai",
-   "nome": "CapitaAI",
+   "nome": "CapitaAI — editais e oportunidades de captação, incluindo a lista pública dos editais do Prosas",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
+   "finalidade": "editais e oportunidades de captação, incluindo a lista pública dos editais do Prosas",
+   "agrega": [],
+   "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
    "observacao": ""
   },
   {
    "id": "site-observatorio-terceiro-setor",
-   "nome": "Observatório do Terceiro Setor",
+   "nome": "Observatório do Terceiro Setor — editais publicados na seção temática do portal",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
+   "finalidade": "editais publicados na seção temática do portal",
+   "agrega": [
+    {
+     "id": "plat-observatorio-3setor",
+     "nome": "Observatório do Terceiro Setor — editais",
+     "dominios": [
+      "observatorio3setor.org.br"
+     ]
+    }
+   ],
+   "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
    "observacao": ""
   },
   {
    "id": "site-mapas-culturais",
-   "nome": "Mapas Culturais — redes estaduais",
+   "nome": "Mapas Culturais — editais das redes estaduais e municipais de cultura que usam a plataforma",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
-   "motor_novo": "mapas-culturais",
-   "situacao": "parcial",
-   "observacao": "só o Mapa da Cultura federal; faltam as redes estaduais"
-  },
-  {
-   "id": "site-abcr",
-   "nome": "ABCR — Associação Brasileira de Captadores de Recursos",
-   "tipo": "regular",
-   "motor_novo": "wordpress-financiadores",
-   "situacao": "parcial",
-   "observacao": "fonte Captadores (Capta)"
-  },
-  {
-   "id": "site-funarte",
-   "nome": "Funarte",
-   "tipo": "regular",
+   "finalidade": "editais das redes estaduais e municipais de cultura que usam a plataforma",
+   "agrega": [],
+   "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
    "observacao": ""
   },
   {
-   "id": "site-transferegov",
-   "nome": "Transferegov — programas e parcerias com OSC",
+   "id": "site-abcr",
+   "nome": "ABCR — Associação Brasileira de Captadores de Recursos — editais divulgados pela associação dos captadores",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
-   "motor_novo": "transferegov",
-   "situacao": "em funcionamento",
+   "finalidade": "editais divulgados pela associação dos captadores",
+   "agrega": [
+    {
+     "id": "plat-abcr",
+     "nome": "ABCR — Associação Brasileira de Captadores",
+     "dominios": [
+      "captadores.org.br"
+     ]
+    }
+   ],
+   "alvos": [],
+   "motor_novo": "site-abcr",
+   "situacao": "conforme",
    "observacao": ""
   },
   {
    "id": "site-rede-comua",
-   "nome": "Rede Comuá",
+   "nome": "Rede Comuá — editais dos fundos independentes de filantropia",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
+   "finalidade": "editais dos fundos independentes de filantropia",
+   "agrega": [],
+   "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
    "observacao": ""
   },
   {
    "id": "site-fundo-baoba",
-   "nome": "Fundo Baobá",
+   "nome": "Fundo Baobá — editais para equidade racial",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
+   "finalidade": "editais para equidade racial",
+   "agrega": [],
+   "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
-   "observacao": ""
-  },
-  {
-   "id": "site-editais-culturais",
-   "nome": "Editais Culturais",
-   "tipo": "regular",
-   "motor_novo": "",
-   "situacao": "a construir",
-   "observacao": ""
-  },
-  {
-   "id": "site-fundo-brasil",
-   "nome": "Fundo Brasil de Direitos Humanos",
-   "tipo": "regular",
-   "motor_novo": "wordpress-financiadores",
-   "situacao": "em funcionamento",
    "observacao": ""
   },
   {
    "id": "site-idis",
-   "nome": "IDIS",
+   "nome": "IDIS — Instituto para o Desenvolvimento do Investimento Social — chamadas e editais de investimento social",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
-   "motor_novo": "",
-   "situacao": "a construir",
-   "observacao": ""
-  },
-  {
-   "id": "site-undef",
-   "nome": "UNDEF — Fundo das Nações Unidas para a Democracia",
-   "tipo": "regular",
+   "finalidade": "chamadas e editais de investimento social",
+   "agrega": [],
+   "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
    "observacao": ""
   },
   {
    "id": "site-fundo-casa",
-   "nome": "Fundo Casa Socioambiental",
+   "nome": "Fundo Casa Socioambiental — chamadas socioambientais",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
-   "motor_novo": "wordpress-financiadores",
-   "situacao": "em funcionamento",
+   "finalidade": "chamadas socioambientais",
+   "agrega": [],
+   "alvos": [],
+   "motor_novo": "site-fundo-casa",
+   "situacao": "conforme",
    "observacao": ""
   },
   {
    "id": "site-cese",
-   "nome": "CESE — Coordenadoria Ecumênica de Serviço",
+   "nome": "CESE — Coordenadoria Ecumênica de Serviço — editais de apoio a projetos populares",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
-   "motor_novo": "wordpress-financiadores",
-   "situacao": "em funcionamento",
+   "finalidade": "editais de apoio a projetos populares",
+   "agrega": [],
+   "alvos": [],
+   "motor_novo": "site-cese",
+   "situacao": "conforme",
    "observacao": ""
   },
   {
-   "id": "site-brazilfoundation",
-   "nome": "BrazilFoundation",
+   "id": "site-rede-filantropia",
+   "nome": "Rede Filantropia — editais divulgados pela rede (lida pelo computador do titular: recusa IP estrangeiro)",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
+   "finalidade": "editais divulgados pela rede (lida pelo computador do titular: recusa IP estrangeiro)",
+   "agrega": [
+    {
+     "id": "plat-rede-filantropia",
+     "nome": "Rede Filantropia — editais",
+     "dominios": []
+    }
+   ],
+   "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
    "observacao": ""
   },
   {
-   "id": "site-rede-filantropia",
-   "nome": "Rede Filantropia",
+   "id": "site-editais-culturais",
+   "nome": "Editais Culturais — editais de cultura reunidos no portal",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
+   "finalidade": "editais de cultura reunidos no portal",
+   "agrega": [],
+   "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
    "observacao": ""
   },
   {
    "id": "site-mapa-osc",
-   "nome": "Mapa das OSC (Ipea)",
+   "nome": "Mapa das OSC (Ipea) — editais reunidos no portal",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
+   "finalidade": "editais reunidos no portal do Ipea (coleta assistida: o site proíbe robôs)",
+   "agrega": [
+    {
+     "id": "plat-mapa-osc",
+     "nome": "Mapa das OSC — editais",
+     "dominios": []
+    }
+   ],
+   "alvos": [
+    {
+     "id": "f260-captacao-216",
+     "nome": "Mapa das OSC - área de editais",
+     "dominios": [
+      "mapaosc.ipea.gov.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (mesmo portal)"
+    }
+   ],
    "motor_novo": "",
    "situacao": "a construir",
    "observacao": ""
   },
   {
    "id": "site-prosas",
-   "nome": "Prosas",
+   "nome": "Prosas — editais e prêmios para OSCs (três caminhos indiretos: listagem da CapitaAI, ângulo do Piloto e coleta assistida)",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
+   "finalidade": "editais e prêmios para OSCs; o robots.txt proíbe robôs, então só pelos três caminhos indiretos decididos pelo titular",
+   "agrega": [
+    {
+     "id": "plat-prosas",
+     "nome": "Prosas — editais para o terceiro setor",
+     "dominios": [
+      "prosas.com.br"
+     ]
+    },
+    {
+     "id": "plat-prosas-oscs",
+     "nome": "plat-prosas-oscs",
+     "dominios": []
+    },
+    {
+     "id": "plat-prosas-premios",
+     "nome": "Prosas — prêmios, concursos e cursos para OSCs",
+     "dominios": [
+      "prosas.com.br"
+     ]
+    }
+   ],
+   "alvos": [],
    "motor_novo": "",
    "situacao": "a construir",
    "observacao": ""
   },
   {
-   "id": "(novo) goyazes",
-   "nome": "Programa Goyazes — incentivo estadual à cultura",
+   "id": "site-fundo-brasil",
+   "nome": "Fundo Brasil de Direitos Humanos — editais de direitos humanos",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
-   "motor_novo": "goyazes",
-   "situacao": "em funcionamento",
-   "observacao": "fonte nova do sistema novo"
+   "finalidade": "editais de direitos humanos",
+   "agrega": [],
+   "alvos": [],
+   "motor_novo": "site-fundo-brasil",
+   "situacao": "conforme",
+   "observacao": ""
   },
   {
-   "id": "(novo) querido-diario",
-   "nome": "Querido Diário — diários municipais",
+   "id": "site-undef",
+   "nome": "UNDEF — Fundo das Nações Unidas para a Democracia — chamadas anuais para a sociedade civil",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "mantido",
    "tipo": "regular",
-   "motor_novo": "querido-diario",
-   "situacao": "sem fonte",
-   "observacao": "a API da fonte está fora do ar desde 22/10"
+   "finalidade": "chamadas anuais para a sociedade civil",
+   "agrega": [],
+   "alvos": [],
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "site-brazilfoundation",
+   "nome": "BrazilFoundation — editais de apoio a organizações brasileiras",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "mantido",
+   "tipo": "regular",
+   "finalidade": "editais de apoio a organizações brasileiras",
+   "agrega": [],
+   "alvos": [],
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "outros-agregadores",
+   "nome": "Outros agregadores e motores de busca",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "novo (pedido)",
+   "tipo": "regular",
+   "finalidade": "pedido pela titular: reúne agregadores e buscas que não têm motor próprio",
+   "agrega": [
+    {
+     "id": "outras-oportunidades-1",
+     "nome": "Outras Oportunidades 1/8",
+     "dominios": [
+      "chamamentos.itapevi.sp.gov.br",
+      "conexoes.bndes.gov.br",
+      "culteditais.cultura.gov.br",
+      "mostratenpo.cultura.go.gov.br",
+      "www.administracao.go.gov.br",
+      "www.boavista.rr.gov.br",
+      "www.institutoacp.org.br",
+      "www.institutococacolabrasil.com.br",
+      "www.maranguape.ce.gov.br",
+      "www.onumulheres.org.br"
+     ]
+    },
+    {
+     "id": "outras-oportunidades-2",
+     "nome": "Outras Oportunidades 2/8",
+     "dominios": [
+      "banrisulcultural.com.br",
+      "fase.org.br",
+      "fns.cnbb.org.br",
+      "institutogenesio.org.br",
+      "licitamaisbrasil.com.br",
+      "www.cnbb.org.br",
+      "www.editalcorredor2025.com.br",
+      "www.institutodonanenembrz.com",
+      "www.palmas.to.gov.br"
+     ]
+    },
+    {
+     "id": "outras-oportunidades-3",
+     "nome": "Outras Oportunidades 3/8",
+     "dominios": [
+      "gazetadoestado.com.br",
+      "iracemapolis.siscam.com.br",
+      "itamarandibahoje.com.br",
+      "legacy.finep.gov.br",
+      "luppa.comidadoamanha.org",
+      "news.confap.org.br",
+      "plataforma9.com",
+      "transparencia.caubr.gov.br",
+      "www.editalong.com",
+      "www.sicredi.com.br"
+     ]
+    },
+    {
+     "id": "outras-oportunidades-4",
+     "nome": "Outras Oportunidades 4/8",
+     "dominios": [
+      "cultura.rs.gov.br",
+      "goiasemcena.com.br",
+      "itacoatiara.am.gov.br",
+      "mapacultural.secult.ce.gov.br",
+      "transparencia.agilicloud.com.br",
+      "www.academiaassai.com.br",
+      "www.editalong.com",
+      "www.goias365.com.br",
+      "www.institutoassai.org.br",
+      "www.orizona.go.gov.br"
+     ]
+    },
+    {
+     "id": "outras-oportunidades-5",
+     "nome": "Outras Oportunidades 5/8",
+     "dominios": [
+      "corumbadegoias.go.gov.br",
+      "doem.org.br",
+      "editais.baoba.org.br",
+      "institutosabin.org.br",
+      "mapacultural.saobernardo.sp.gov.br",
+      "notasocial.com.br",
+      "www.agenciadobem.org.br",
+      "www.amazoniamaisdez.org.br",
+      "www.energiaesaneamento.org.br",
+      "www.fapesb.ba.gov.br"
+     ]
+    },
+    {
+     "id": "outras-oportunidades-6",
+     "nome": "Outras Oportunidades 6/8",
+     "dominios": [
+      "floresta-viva.fbds.org.br",
+      "govgestao.com.br",
+      "grants.com",
+      "oei.int",
+      "plan.org.br",
+      "tuifund.com",
+      "www.crars.org.br",
+      "www.institutounibanco.org.br",
+      "www.itauvivermais.com.br",
+      "www.microsoft.com"
+     ]
+    },
+    {
+     "id": "outras-oportunidades-7",
+     "nome": "Outras Oportunidades 7/8",
+     "dominios": [
+      "baoba.org.br",
+      "difusionconcausa.com",
+      "editaisdobrasil.com",
+      "fundacaocargill.org.br",
+      "fundopositivo.org.br",
+      "jornadasocial.com.br",
+      "muribeca.se.gov.br",
+      "potengi.ce.gov.br",
+      "www.ibermusicas.org",
+      "www.votuporanga.sp.gov.br"
+     ]
+    },
+    {
+     "id": "outras-oportunidades-8",
+     "nome": "Outras Oportunidades 8/8",
+     "dominios": [
+      "aceleradora.glocal.org.br",
+      "casafluminense.org.br",
+      "comitedeculturasc.org",
+      "confap.org.br",
+      "traineeunileverexecutivo.com.br",
+      "voluntariadoempresarial.org.br",
+      "www.diariomunicipal.com.br",
+      "www.neoenergia.com"
+     ]
+    },
+    {
+     "id": "plat-captamos",
+     "nome": "Captamos — oportunidades de captação",
+     "dominios": []
+    },
+    {
+     "id": "outras-oportunidades",
+     "nome": "Outras Oportunidades",
+     "dominios": []
+    }
+   ],
+   "alvos": [
+    {
+     "id": "f260-captacao-217",
+     "nome": "Bússola Social - Bússola Editais",
+     "dominios": [
+      "bussolasocial.com.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (agregador sem motor próprio)"
+    },
+    {
+     "id": "f260-captacao-218",
+     "nome": "Capta - oportunidades e editais",
+     "dominios": [
+      "prosas.com.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (agregador sem motor próprio)"
+    },
+    {
+     "id": "f260-curadoria-008",
+     "nome": "Instituto Impactarte — cadastro de proponente em fluxo contínuo",
+     "dominios": [
+      "www.impactarte.org.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (agregador sem motor próprio)"
+    }
+   ],
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "novo-fundacoes-institutos",
+   "nome": "Fundações e institutos (sites próprios)",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "sugestão",
+   "tipo": "regular",
+   "finalidade": "sugestão: as fundações e institutos que não estão na lista (Itaú, Bradesco, Vale, Boticário, Sabin, Telefônica, Tide Setubal, iCS e outras) ganham um motor de sites próprios",
+   "agrega": [
+    {
+     "id": "site-fundacao-banco-do-brasil",
+     "nome": "site-fundacao-banco-do-brasil",
+     "dominios": []
+    },
+    {
+     "id": "site-itau-social",
+     "nome": "site-itau-social",
+     "dominios": []
+    }
+   ],
+   "alvos": [
+    {
+     "id": "f260-captacao-221",
+     "nome": "Fundação Banco do Brasil",
+     "dominios": [
+      "www.fbb.org.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-captacao-222",
+     "nome": "Fundação Itaú",
+     "dominios": [
+      "www.fundacaoitau.org.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-captacao-223",
+     "nome": "Fundação Bradesco",
+     "dominios": [
+      "fundacao.bradesco"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-captacao-224",
+     "nome": "Fundação Telefônica Vivo",
+     "dominios": [
+      "fundacaotelefonicavivo.org.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-captacao-225",
+     "nome": "Instituto Claro",
+     "dominios": [
+      "www.institutoclaro.org.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-captacao-226",
+     "nome": "Instituto Natura",
+     "dominios": [
+      "www.institutonatura.org"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-captacao-227",
+     "nome": "Instituto Coca-Cola Brasil",
+     "dominios": [
+      "www.institutococacolabrasil.com.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-captacao-228",
+     "nome": "Instituto Localiza",
+     "dominios": [
+      "institutolocaliza.com.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-captacao-229",
+     "nome": "Instituto Votorantim",
+     "dominios": [
+      "www.institutovotorantim.org.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-captacao-230",
+     "nome": "Fundação ArcelorMittal",
+     "dominios": [
+      "fundacaoarcelormittal.org.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-captacao-231",
+     "nome": "Fundação Vale",
+     "dominios": [
+      "www.fundacaovale.org"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-captacao-232",
+     "nome": "Instituto Neoenergia",
+     "dominios": [
+      "www.institutoneoenergia.org.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-captacao-233",
+     "nome": "Instituto Sicoob",
+     "dominios": [
+      "www.institutosicoob.org.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-captacao-234",
+     "nome": "Instituto Unibanco",
+     "dominios": [
+      "www.institutounibanco.org.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-captacao-235",
+     "nome": "Instituto Lojas Renner",
+     "dominios": [
+      "www.institutolojasrenner.org.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-captacao-236",
+     "nome": "Instituto Grupo Boticário",
+     "dominios": [
+      "www.fundacaogrupoboticario.org.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-captacao-237",
+     "nome": "Instituto Sabin",
+     "dominios": [
+      "www.institutosabin.org.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-curadoria-002",
+     "nome": "Funbio — Programa Biodiversidade Litoral do Paraná",
+     "dominios": [
+      "chamadas.funbio.org.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-curadoria-003",
+     "nome": "Movimento Bem Maior — Edital Futuro Bem Maior",
+     "dominios": [
+      "editais.movimentobemmaior.org.br",
+      "movimentobemmaior.org.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-curadoria-004",
+     "nome": "Agência do Bem / Rede do Bem — Edital de Microprojetos",
+     "dominios": [
+      "rededobem.org.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-curadoria-005",
+     "nome": "Fundação Tide Setubal — Edital Territórios Clínicos",
+     "dominios": [
+      "conteudo.fundacaotidesetubal.org.br",
+      "fundacaotidesetubal.org.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-curadoria-006",
+     "nome": "Instituto Clima e Sociedade (iCS) — chamadas de comunicação e clima",
+     "dominios": [
+      "climaesociedade.org"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-curadoria-007",
+     "nome": "Banrisul Instituto Cultural e Social — Edital Merece!",
+     "dominios": [
+      "banrisulcultural.com.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    },
+    {
+     "id": "f260-curadoria-011",
+     "nome": "Fundacao Maria Emilia — Edital FME Transforma",
+     "dominios": [
+      "mariaemilia.org.br"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (site próprio de fundação ou instituto)"
+    }
+   ],
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
+  },
+  {
+   "id": "novo-internacional",
+   "nome": "Organismos e fundações internacionais",
+   "categoria": "POR",
+   "categoria_nome": "Portais e fontes do terceiro setor",
+   "tipo_no_estudo": "sugestão",
+   "tipo": "regular",
+   "finalidade": "sugestão: ONU, UNESCO, UNICEF, Banco Mundial, BID, União Europeia, Ford, Open Society e embaixadas; o UNDEF continua separado",
+   "agrega": [
+    {
+     "id": "site-embaixada-eua",
+     "nome": "site-embaixada-eua",
+     "dominios": []
+    },
+    {
+     "id": "site-embaixada-japao",
+     "nome": "site-embaixada-japao",
+     "dominios": []
+    },
+    {
+     "id": "site-iaf",
+     "nome": "site-iaf",
+     "dominios": []
+    }
+   ],
+   "alvos": [
+    {
+     "id": "f260-captacao-240",
+     "nome": "UNESCO – Fundo Internacional para Diversidade Cultural",
+     "dominios": [
+      "www.unesco.org"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-241",
+     "nome": "UNICEF – Programas de parceria com OSC",
+     "dominios": [
+      "www.unicef.org"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-242",
+     "nome": "PNUD – Small Grants Programme",
+     "dominios": [
+      "www.undp.org"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-243",
+     "nome": "Banco Mundial – Social Development Grants",
+     "dominios": [
+      "www.worldbank.org"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-244",
+     "nome": "BID – Laboratório de Inovação",
+     "dominios": [
+      "www.iadb.org"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-245",
+     "nome": "USAID – Grants Globais",
+     "dominios": [
+      "www.usaid.gov"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-246",
+     "nome": "União Europeia – Erasmus+",
+     "dominios": [
+      "erasmus-plus.ec.europa.eu"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-247",
+     "nome": "União Europeia – EuropeAid",
+     "dominios": [
+      "international-partnerships.ec.europa.eu"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-248",
+     "nome": "Open Society Foundations",
+     "dominios": [
+      "www.opensocietyfoundations.org"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-249",
+     "nome": "Ford Foundation",
+     "dominios": [
+      "www.fordfoundation.org"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-250",
+     "nome": "Gates Foundation",
+     "dominios": [
+      "www.gatesfoundation.org"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-251",
+     "nome": "Google.org",
+     "dominios": [
+      "www.google.org"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-252",
+     "nome": "Meta Community Grants",
+     "dominios": [
+      "www.facebook.com"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-253",
+     "nome": "Microsoft Philanthropies",
+     "dominios": [
+      "www.microsoft.com"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-254",
+     "nome": "Global Fund for Women",
+     "dominios": [
+      "www.globalfundforwomen.org"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-255",
+     "nome": "Climate Justice Resilience Fund",
+     "dominios": [
+      "www.cjrfund.org"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-256",
+     "nome": "GEF Small Grants",
+     "dominios": [
+      "sgp.undp.org"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-257",
+     "nome": "Rockefeller Foundation",
+     "dominios": [
+      "www.rockefellerfoundation.org"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-258",
+     "nome": "Skoll Foundation",
+     "dominios": [
+      "skoll.org"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-259",
+     "nome": "Echoing Green",
+     "dominios": [
+      "echoinggreen.org"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    },
+    {
+     "id": "f260-captacao-260",
+     "nome": "Oak Foundation",
+     "dominios": [
+      "oakfnd.org"
+     ],
+     "motivo": "ponto de captação: vira alvo vigiado do motor (organismo ou fundação internacional)"
+    }
+   ],
+   "motor_novo": "",
+   "situacao": "a construir",
+   "observacao": ""
   },
   {
    "id": "piloto-aberto",
-   "nome": "Piloto Espião — busca livre (privado e internacional)",
+   "nome": "Piloto - Espião — busca aberta no terceiro setor",
+   "categoria": "IA",
+   "categoria_nome": "IAs do sistema (pilotos)",
+   "tipo_no_estudo": "mantido",
    "tipo": "piloto",
-   "motor_novo": "",
-   "situacao": "a construir",
-   "observacao": "motores/pilotos/espiao.py"
+   "finalidade": "encontrar oportunidade aberta para OSC em Procura o que os outros 28 motores NÃO alcançam: empresas, fundações, institutos, plataformas e programas que ninguém catalogou ainda. Não tem rota fixa — tem léxico, territórios e um rodízio de ângulos de ataque. Toda descoberta precisa apontar, no mínimo, o SITE OFICIAL da oportunidade.",
+   "agrega": [
+    {
+     "id": "plat-piloto-aberto",
+     "nome": "Piloto - Espião — busca aberta no terceiro setor",
+     "dominios": [
+      "html.duckduckgo.com"
+     ]
+    }
+   ],
+   "alvos": [],
+   "motor_novo": "espiao",
+   "situacao": "conforme",
+   "observacao": ""
   },
   {
    "id": "piloto-interceptador",
-   "nome": "Piloto Interceptador — comprova na fonte oficial",
+   "nome": "Piloto - Interceptador — comprova na fonte oficial",
+   "categoria": "IA",
+   "categoria_nome": "IAs do sistema (pilotos)",
+   "tipo_no_estudo": "mantido",
    "tipo": "piloto",
+   "finalidade": "",
+   "agrega": [],
+   "alvos": [],
    "motor_novo": "interceptador",
-   "situacao": "parcial",
-   "observacao": "as 10 abordagens funcionam; falta a IA (o trecho literal item a item)"
+   "situacao": "conforme",
+   "observacao": ""
   }
  ]
 }

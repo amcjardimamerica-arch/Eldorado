@@ -8,7 +8,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 |---|---|
 | em funcionamento | 79 |
 | pacote | 19 |
-| a construir | 14 |
+| a construir | 15 |
 | substituído por eldorado/base/cartorio/analise_externa.py | 3 |
 | desligado por desenho | 2 |
 | desligado (ninguém o usa nem o aciona) | 2 |
@@ -81,14 +81,14 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 37 | `config/agenda.toml` |  | em funcionamento |  |  | 0 |
 | 38 | `config/modulos.toml` |  | em funcionamento |  |  | 0 |
 | 39 | `eldorado/base/cerebro/decisao.py` | A decisão do Cérebro: a cada batimento, quais motores acionar, conforme a necessidade (titular, 22/10/2026). | em funcionamento |  | fila, regencia | 1 |
-| 40 | `eldorado/base/cerebro/regencia.py` | A Regência: planeja a passagem, aciona os motores e autoriza cada passagem de livro. | em funcionamento | decisao, governador, rede, agenda, contratos, eventos, recibo, registro | passagem, nó 1 «planejar»; passagem, nó 2 «acionar» | 10 |
+| 40 | `eldorado/base/cerebro/regencia.py` | A Regência: planeja a passagem, aciona os motores e autoriza cada passagem de livro. | em funcionamento | decisao, governador, rede, agenda, contratos, eventos, recibo, registro, motor | passagem, nó 1 «planejar»; passagem, nó 2 «acionar» | 10 |
 | 41 | `eldorado/base/cerebro/fila.py` | A fila do sistema (titular, 22/10/2026): o Eldorado funciona de forma permanente, sem horário de trabalho e de | em funcionamento | decisao, regencia | encaminhamento, comandos | 0 |
 
 ## 06 Coleta: os motores e o canivete suíço
 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
-| 42 | `config/motores_previstos.toml` |  | em funcionamento |  |  | 0 |
+| 42 | `config/motores_previstos.json` |  | em funcionamento |  |  | 0 |
 | 43 | `eldorado/motores/acesso/__init__.py` |  | pacote |  |  | 3 |
 | 44 | `eldorado/motores/acesso/escada.py` | A escada de acesso: do degrau mais leve ao mais forte, aprendendo por domínio qual degrau funciona. | em funcionamento | eventos | encaminhamento, pilotos, comandos, api, arquivo_web, leve, local, navegador, rotas_alternativas, motor, fonte_oficial, i | 3 |
 | 45 | `eldorado/motores/canal/__init__.py` |  | pacote |  |  | 3 |
@@ -111,7 +111,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 62 | `eldorado/motores/descoberta/fonte_oficial.py` | Seguir até a fonte oficial: na página de DIVULGAÇÃO (notícia, post, agregador), o documento OFICIAL do edital. | em funcionamento | escada | motor, interceptador | 0 |
 | 63 | `eldorado/motores/descoberta/metabusca.py` | Forma 1: a metabusca, com rotas de reserva: SearXNG (serviço próprio) → ddgs → Marginalia. | em funcionamento | pistas | pilotos, motor | 1 |
 | 64 | `eldorado/motores/acesso/rotas_alternativas.py` | Degraus 7 e 8, reservas desligadas até o teste real na criação: o Tor (IP diferente) e o leitor público de pág | desligado por desenho | escada, leve |  | 1 |
-| 65 | `eldorado/motores/canal/motor.py` | O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio. | em funcionamento | contratos, api, arquivo_web, escada, leve, local, navegador, estado, arquivos_web, dados_abertos, estrutura_site, fonte_oficial, metabusca, pistas, vigilancia, leitores, pdf | config/modulos.toml (dou); config/modulos.toml (goyazes); config/modulos.toml (mapas-culturais); config/modulos.toml (pn | 3 |
+| 65 | `eldorado/motores/canal/motor.py` | O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio. | em funcionamento | contratos, api, arquivo_web, escada, leve, local, navegador, estado, arquivos_web, dados_abertos, estrutura_site, fonte_oficial, metabusca, pistas, vigilancia, leitores, pdf | config/modulos.toml (dou); config/modulos.toml (estaduais-go-gov); config/modulos.toml (gife); config/modulos.toml (novo | 3 |
 | 66 | `eldorado/motores/leitura/compactado.py` | Arquivos ZIP, 7Z e RAR: abre e entrega cada arquivo interno ao leitor do seu tipo. | em funcionamento | leitores | leitores | 0 |
 | 67 | `eldorado/motores/leitura/documento.py` | Documentos DOCX (com cabeçalhos, rodapés e notas), ODT e PPTX (uma página por slide). | em funcionamento | leitores | leitores | 0 |
 | 68 | `eldorado/motores/leitura/leitores.py` | O registro dos leitores: o canivete suíço da leitura. | em funcionamento | seguranca, compactado, documento, pagina, pdf, planilha | pilotos, motor, compactado, documento, ocr, pagina, pdf, planilha, universal, interceptador | 2 |
@@ -157,7 +157,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 88 | `eldorado/motores/pilotos/__init__.py` |  | pacote |  |  | 4 |
 | 89 | `eldorado/motores/pilotos/espiao.py` | O PILOTO ESPIÃO (do Eldorado0, titular, 09 e 16/10/2026): caça só o que nenhum motor alcança. | em funcionamento | contratos | pilotos | 1 |
 | 90 | `eldorado/motores/pilotos/interceptador.py` | O PILOTO INTERCEPTADOR (do Eldorado0, titular, 26/09/2026): "o Espião descobre; o Interceptador comprova". | em funcionamento | site_oficial, itens, contratos, eventos, ia, arquivo_web, escada, estrutura_site, fonte_oficial, leitores, pdf | encaminhamento | 3 |
-| 91 | `eldorado/base/cerebro/encaminhamento.py` | A rede neural na fase 3 do Cartório (titular, 22/10/2026): quem age é a rede, não o Cartório. | em funcionamento | passaporte, fila, pilotos, rede, regencia, eventos, ia, registro, api, escada, leve, interceptador | passagem, nó 8 «encaminhar» | 3 |
+| 91 | `eldorado/base/cerebro/encaminhamento.py` | A rede neural na fase 3 do Cartório (titular, 22/10/2026): quem age é a rede, não o Cartório. | em funcionamento | passaporte, fila, pilotos, rede, regencia, eventos, ia, registro, api, escada, leve, motor, interceptador | passagem, nó 8 «encaminhar» | 3 |
 
 ## 11 Cartório · etapa 5 (análise externa)
 
@@ -183,7 +183,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 99 | `eldorado/base/cerebro/completude.py` | A completude do dia: o que estava devido foi lido? O que precisa ser reacionado? | em funcionamento | eventos | passagem, nó 16 «completude» | 2 |
 | 100 | `eldorado/base/cerebro/inventario.py` | O inventário do sistema (titular, 22/10/2026): todo arquivo, do primeiro ao último no caminho do funcionamento | em funcionamento |  | comandos | 1 |
 | 101 | `eldorado/base/cerebro/medicao.py` | O motor de indicadores: ponto, círculo e linhas de cada arquivo, e a agregação por componente, parte e sistema | em funcionamento | eventos | passagem, nó 17 «medir» | 2 |
-| 102 | `eldorado/base/cerebro/rede.py` | A rede neural única, de aprendizado contínuo (River): aprende a cada veredito e dá as notas. | em funcionamento | eventos | passagem, nó 14 «rede» | 2 |
+| 102 | `eldorado/base/cerebro/rede.py` | A rede neural única, de aprendizado contínuo (River): aprende a cada veredito e dá as notas. | em funcionamento | eventos, motor | passagem, nó 14 «rede» | 2 |
 | 103 | `eldorado/base/cerebro/regras.py` | A tabela única de regras e decisões da titular. | desligado (ninguém o usa nem o aciona) | eventos |  | 1 |
 
 ## 14 Análise e painel
@@ -213,62 +213,63 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 114 | `.github/workflows/painel.yml` |  | em funcionamento |  |  | 0 |
 | 115 | `.github/workflows/passagem.yml` | passagens no horário | substituído por .github/workflows/eldorado.yml (funcionamento permanente) |  |  | 0 |
 | 116 | `.github/workflows/pilotos.yml` | voos com sucesso | substituído por .github/workflows/eldorado.yml (os pilotos rodam dentro do funcionamento permanente) |  |  | 0 |
-| 117 | `eldorado/__init__.py` |  | pacote |  |  | 35 |
-| 118 | `eldorado/base/__init__.py` |  | pacote |  |  | 32 |
-| 119 | `eldorado/base/cartorio/__init__.py` |  | pacote |  |  | 7 |
-| 120 | `eldorado/base/cerebro/__init__.py` |  | pacote |  |  | 17 |
-| 121 | `eldorado/base/cerebro/pilotos.py` | O Cérebro dos pilotos (titular, 22/10/2026): mede a recorrência de cada piloto e manda nova missão sempre que | em funcionamento | escada, metabusca, leitores, espiao | encaminhamento, comandos | 1 |
-| 122 | `eldorado/base/investigacao/investigacao.py` | livros investigados e itens comprovados por livro | substituído por eldorado/base/cerebro/encaminhamento.py e eldorado/motores/pilotos/interceptador.py |  |  | 0 |
-| 123 | `eldorado/motores/__init__.py` |  | pacote |  |  | 11 |
+| 117 | `config/motores_previstos.toml` | o sistema roda sem intervenção | a construir |  |  | 0 |
+| 118 | `eldorado/__init__.py` |  | pacote |  |  | 35 |
+| 119 | `eldorado/base/__init__.py` |  | pacote |  |  | 32 |
+| 120 | `eldorado/base/cartorio/__init__.py` |  | pacote |  |  | 7 |
+| 121 | `eldorado/base/cerebro/__init__.py` |  | pacote |  |  | 17 |
+| 122 | `eldorado/base/cerebro/pilotos.py` | O Cérebro dos pilotos (titular, 22/10/2026): mede a recorrência de cada piloto e manda nova missão sempre que | em funcionamento | escada, metabusca, leitores, espiao | encaminhamento, comandos | 1 |
+| 123 | `eldorado/base/investigacao/investigacao.py` | livros investigados e itens comprovados por livro | substituído por eldorado/base/cerebro/encaminhamento.py e eldorado/motores/pilotos/interceptador.py |  |  | 0 |
+| 124 | `eldorado/motores/__init__.py` |  | pacote |  |  | 11 |
 
-## Os 47 motores (45 regulares e 2 pilotos)
+## Os 47 motores (o estudo de reorganização da titular: 45 regulares e 2 pilotos)
 
-| # | Tipo | Motor (Eldorado0) | Nome | Motor novo | Situação | Observação |
-|---|---|---|---|---|---|---|
-| 1 | regular | do-goiania | Diário Oficial do Município de Goiânia | — | a construir |  |
-| 2 | regular | do-goias | Diário Oficial do Estado de Goiás | — | a construir |  |
-| 3 | regular | dou | Diário Oficial da União | dou | em funcionamento |  |
-| 4 | regular | dj-trf1-go | Diário da Justiça Federal — Seção Judiciária de Goiás | — | a construir |  |
-| 5 | regular | camara-goiania-pl | Câmara Municipal de Goiânia — processos legislativos | — | a construir |  |
-| 6 | regular | alego-pl | Assembleia Legislativa de Goiás — proposições | — | a construir |  |
-| 7 | regular | congresso-nacional | Congresso Nacional — Câmara, Senado e Comissões | — | a construir |  |
-| 8 | regular | pncp-api | PNCP — API de contratações (chamamentos e credenciamentos) | pncp | em funcionamento |  |
-| 9 | regular | judiciario-tjgo | TJ-GO — editais das comarcas (prestações pecuniárias) | — | a construir |  |
-| 10 | regular | judiciario-cnj | CNJ — destinação de prestações pecuniárias | — | a construir |  |
-| 11 | regular | mpgo-destinacao | MP-GO — Programa Destina | — | a construir |  |
-| 12 | regular | mptgo-destinacao | MPT-GO — editais de indicação de entidades | — | a construir |  |
-| 13 | regular | mpu-destinacao | MPU — MPF, MPDFT, MPM e MPT nacional: destinações | — | a construir |  |
-| 14 | regular | plataforma-wordpress | Adaptador WordPress — sites oficiais pela API | wordpress-goias | em funcionamento | Secult-GO e SEDS-GO; as demais secretarias entram como fontes |
-| 15 | regular | plataforma-mapas-culturais | Adaptador Mapas Culturais — oportunidades | mapas-culturais | em funcionamento |  |
-| 16 | regular | outras-oportunidades | Outras Oportunidades | — | a construir |  |
-| 17 | regular | motor-gife | Motor Incentivos Fiscais — empresas da base | — | a construir | empresas que distribuem renúncia fiscal (especial.db) |
-| 18 | regular | motor-patrocinio | Motor Patrocínio Privado — mídia e eventos | — | a construir |  |
-| 19 | regular | gife | GIFE — Grupo de Institutos, Fundações e Empresas | wordpress-financiadores | em funcionamento |  |
-| 20 | regular | salic | Lei Rouanet — janela de propostas no SALIC | rouanet | em funcionamento | a API do Salic (projetos de Goiás) vai à análise do painel |
-| 21 | regular | prefeituras-50-go | Prefeituras das 25 maiores cidades de Goiás | — | a construir | há o catálogo de rotas das 25 prefeituras no projeto |
-| 22 | regular | empresas-editais-incentivados | Empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas/Pronon | — | a construir |  |
-| 23 | regular | cnpq-extensao | CNPq / MCTI / Setec-MEC — chamadas com componente de extensão | — | a construir |  |
-| 24 | regular | estaduais-go-gov | Oportunidades estaduais governamentais de Goiás | — | a construir | Goyazes já cobre o incentivo estadual à cultura |
-| 25 | regular | site-farol-cultural | Farol Cultural | — | a construir |  |
-| 26 | regular | site-capitaai | CapitaAI | — | a construir |  |
-| 27 | regular | site-observatorio-terceiro-setor | Observatório do Terceiro Setor | — | a construir |  |
-| 28 | regular | site-mapas-culturais | Mapas Culturais — redes estaduais | mapas-culturais | parcial | só o Mapa da Cultura federal; faltam as redes estaduais |
-| 29 | regular | site-abcr | ABCR — Associação Brasileira de Captadores de Recursos | wordpress-financiadores | parcial | fonte Captadores (Capta) |
-| 30 | regular | site-funarte | Funarte | — | a construir |  |
-| 31 | regular | site-transferegov | Transferegov — programas e parcerias com OSC | transferegov | em funcionamento |  |
-| 32 | regular | site-rede-comua | Rede Comuá | — | a construir |  |
-| 33 | regular | site-fundo-baoba | Fundo Baobá | — | a construir |  |
-| 34 | regular | site-editais-culturais | Editais Culturais | — | a construir |  |
-| 35 | regular | site-fundo-brasil | Fundo Brasil de Direitos Humanos | wordpress-financiadores | em funcionamento |  |
-| 36 | regular | site-idis | IDIS | — | a construir |  |
-| 37 | regular | site-undef | UNDEF — Fundo das Nações Unidas para a Democracia | — | a construir |  |
-| 38 | regular | site-fundo-casa | Fundo Casa Socioambiental | wordpress-financiadores | em funcionamento |  |
-| 39 | regular | site-cese | CESE — Coordenadoria Ecumênica de Serviço | wordpress-financiadores | em funcionamento |  |
-| 40 | regular | site-brazilfoundation | BrazilFoundation | — | a construir |  |
-| 41 | regular | site-rede-filantropia | Rede Filantropia | — | a construir |  |
-| 42 | regular | site-mapa-osc | Mapa das OSC (Ipea) | — | a construir |  |
-| 43 | regular | site-prosas | Prosas | — | a construir |  |
-| 44 | regular | (novo) goyazes | Programa Goyazes — incentivo estadual à cultura | goyazes | em funcionamento | fonte nova do sistema novo |
-| 45 | regular | (novo) querido-diario | Querido Diário — diários municipais | querido-diario | sem fonte | a API da fonte está fora do ar desde 22/10 |
-| 46 | piloto | piloto-aberto | Piloto Espião — busca livre (privado e internacional) | — | a construir | motores/pilotos/espiao.py |
-| 47 | piloto | piloto-interceptador | Piloto Interceptador — comprova na fonte oficial | interceptador | parcial | as 10 abordagens funcionam; falta a IA (o trecho literal item a item) |
+| # | Categoria | Motor | Nome | Agrega | Alvos | Motor no sistema | Situação | Observação |
+|---|---|---|---|---|---|---|---|---|
+| 1 | EXE | do-goiania | Diário Oficial do Município de Goiânia | 0 | 2 | — | a construir |  |
+| 2 | EXE | do-goias | Diário Oficial do Estado de Goiás | 0 | 2 | — | a construir |  |
+| 3 | EXE | dou | Diário Oficial da União | 0 | 2 | dou | conforme |  |
+| 4 | EXE | prefeituras-50-go | Prefeituras das 25 maiores cidades de Goiás — portais de editais | 1 | 4 | — | a construir |  |
+| 5 | EXE | estaduais-go-gov | Oportunidade Estaduais Governamentais de Goiás | 7 | 10 | estaduais-go-gov | incompleto | Secult, SEDS, FAPEG, PNAB Goiás, FICA e o Goyazes; faltam OVG, SEMAD, Goiás Social, fundos estaduais e Anater (endereços a localizar; a API da Anater recusa) e 5 alvos |
+| 6 | EXE | pncp-api | PNCP — API de contratações (chamamentos e credenciamentos) | 0 | 17 | pncp-api | conforme | faltam os 17 alvos |
+| 7 | EXE | salic | Lei Rouanet — janela de propostas no SALIC e projetos de Goiás (Ministério da Cultura) | 2 | 1 | salic | conforme |  |
+| 8 | EXE | motor-gife | Motor Incentivos Fiscais — empresas da base ICMS/RFB/SALIC (Goiás) | 1 | 0 | — | a construir |  |
+| 9 | EXE | empresas-editais-incentivados | Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes | 2 | 5 | — | a construir |  |
+| 10 | EXE | cnpq-extensao | CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC | 2 | 0 | — | a construir |  |
+| 11 | EXE | site-funarte | Funarte — editais da Fundação Nacional de Artes | 0 | 0 | — | a construir |  |
+| 12 | EXE | site-transferegov | Transferegov — programas e parcerias com OSC abertos na plataforma federal (dados abertos) | 0 | 4 | site-transferegov | conforme | faltam os 4 alvos |
+| 13 | EXE | novo-diarios-municipais-go | Diários oficiais municipais de Goiás (Querido Diário) | 0 | 1 | novo-diarios-municipais-go | sem fonte | a API do Querido Diário está fora do ar desde 22/10 |
+| 14 | EXE | novo-bancos-publicos | Bancos públicos e Sistema S (BNDES, BNB, Caixa, Sebrae) | 1 | 5 | — | a construir |  |
+| 15 | JUD | judiciario-tjgo | TJ-GO — editais das comarcas (prestações pecuniárias) e Banco de Projetos Sociais da CGJ/GO | 2 | 1 | — | a construir |  |
+| 16 | JUD | dj-trf1-go | Diário da Justiça Federal — Seção Judiciária de Goiás | 0 | 0 | — | a construir |  |
+| 17 | JUD | judiciario-cnj | CNJ — destinação de prestações pecuniárias: busca no Portal do CNJ e regra nacional (Res. 558/2024) | 1 | 1 | — | a construir |  |
+| 18 | JUD | mpgo-destinacao | MP-GO — Programa Destina (cadastro de entidades para receber bens e valores de acordos) | 0 | 1 | — | a construir |  |
+| 19 | JUD | mptgo-destinacao | MPT-GO — editais de 5 dias para indicação de destinação de recursos ou bens (PRT 18ª Região) | 0 | 0 | — | a construir |  |
+| 20 | JUD | mpu-destinacao | MPU — MPF, MPDFT, MPM e MPT nacional: destinação de bens e valores (com CNMP e FDD) | 1 | 2 | — | a construir |  |
+| 21 | LEG | camara-goiania-pl | Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos | 0 | 4 | — | a construir |  |
+| 22 | LEG | alego-pl | Assembleia Legislativa de Goiás — proposições | 0 | 2 | — | a construir |  |
+| 23 | LEG | congresso-nacional | Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos) | 0 | 1 | — | a construir |  |
+| 24 | POR | gife | GIFE — Grupo de Institutos, Fundações e Empresas | 1 | 0 | gife | conforme |  |
+| 25 | POR | plataforma-mapas-culturais | Adaptador Mapas Culturais — oportunidades com inscrição aberta | 0 | 0 | plataforma-mapas-culturais | conforme |  |
+| 26 | POR | site-farol-cultural | Farol Cultural — editais de cultura de todo o Brasil, pela API pública do portal | 0 | 0 | — | a construir |  |
+| 27 | POR | site-capitaai | CapitaAI — editais e oportunidades de captação, incluindo a lista pública dos editais do Prosas | 0 | 0 | — | a construir |  |
+| 28 | POR | site-observatorio-terceiro-setor | Observatório do Terceiro Setor — editais publicados na seção temática do portal | 1 | 0 | — | a construir |  |
+| 29 | POR | site-mapas-culturais | Mapas Culturais — editais das redes estaduais e municipais de cultura que usam a plataforma | 0 | 0 | — | a construir |  |
+| 30 | POR | site-abcr | ABCR — Associação Brasileira de Captadores de Recursos — editais divulgados pela associação dos captadores | 1 | 0 | site-abcr | conforme |  |
+| 31 | POR | site-rede-comua | Rede Comuá — editais dos fundos independentes de filantropia | 0 | 0 | — | a construir |  |
+| 32 | POR | site-fundo-baoba | Fundo Baobá — editais para equidade racial | 0 | 0 | — | a construir |  |
+| 33 | POR | site-idis | IDIS — Instituto para o Desenvolvimento do Investimento Social — chamadas e editais de investimento social | 0 | 0 | — | a construir |  |
+| 34 | POR | site-fundo-casa | Fundo Casa Socioambiental — chamadas socioambientais | 0 | 0 | site-fundo-casa | conforme |  |
+| 35 | POR | site-cese | CESE — Coordenadoria Ecumênica de Serviço — editais de apoio a projetos populares | 0 | 0 | site-cese | conforme |  |
+| 36 | POR | site-rede-filantropia | Rede Filantropia — editais divulgados pela rede (lida pelo computador do titular: recusa IP estrangeiro) | 1 | 0 | — | a construir |  |
+| 37 | POR | site-editais-culturais | Editais Culturais — editais de cultura reunidos no portal | 0 | 0 | — | a construir |  |
+| 38 | POR | site-mapa-osc | Mapa das OSC (Ipea) — editais reunidos no portal | 1 | 1 | — | a construir |  |
+| 39 | POR | site-prosas | Prosas — editais e prêmios para OSCs (três caminhos indiretos: listagem da CapitaAI, ângulo do Piloto e coleta assistida) | 3 | 0 | — | a construir |  |
+| 40 | POR | site-fundo-brasil | Fundo Brasil de Direitos Humanos — editais de direitos humanos | 0 | 0 | site-fundo-brasil | conforme |  |
+| 41 | POR | site-undef | UNDEF — Fundo das Nações Unidas para a Democracia — chamadas anuais para a sociedade civil | 0 | 0 | — | a construir |  |
+| 42 | POR | site-brazilfoundation | BrazilFoundation — editais de apoio a organizações brasileiras | 0 | 0 | — | a construir |  |
+| 43 | POR | outros-agregadores | Outros agregadores e motores de busca | 10 | 3 | — | a construir |  |
+| 44 | POR | novo-fundacoes-institutos | Fundações e institutos (sites próprios) | 2 | 24 | — | a construir |  |
+| 45 | POR | novo-internacional | Organismos e fundações internacionais | 3 | 21 | — | a construir |  |
+| 46 | IA | piloto-aberto | Piloto - Espião — busca aberta no terceiro setor | 1 | 0 | espiao | conforme |  |
+| 47 | IA | piloto-interceptador | Piloto - Interceptador — comprova na fonte oficial | 0 | 0 | interceptador | conforme |  |

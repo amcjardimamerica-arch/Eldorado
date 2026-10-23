@@ -180,9 +180,11 @@ class RedeNeural:
             casos.append((r["em"], "acao", car_acao(acao, {**lv, "estrela": estrela.get(r["livro_id"]), "faltam": res.get("faltam") or []}), bool(trouxe)))
         # motor: cada execução (achou ou não)
         fuso = ZoneInfo("America/Sao_Paulo")
+        from ...motores.canal.motor import apelidos
+        ap = apelidos()
         for m, ini, ach in cerebro.execute("SELECT motor, inicio, achados FROM execucao_motor"):
             t = datetime.fromisoformat(ini).astimezone(fuso)
-            casos.append((ini, "motor", car_motor(m, t.hour, t.weekday()), (ach or 0) > 0))
+            casos.append((ini, "motor", car_motor(ap.get(m, m), t.hour, t.weekday()), (ach or 0) > 0))
         for _, pergunta, x, valido in sorted(casos, key=lambda c: str(c[0])):
             rede.p[pergunta].aprender_de(x, valido)
         return rede
