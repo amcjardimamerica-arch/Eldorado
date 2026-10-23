@@ -1042,7 +1042,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 133,
+   "linhas": 145,
    "situacao": "em funcionamento",
    "ordem": 37
   },
@@ -1060,7 +1060,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 87,
+   "linhas": 95,
    "situacao": "em funcionamento",
    "ordem": 38
   },
@@ -1675,7 +1675,7 @@
   },
   {
    "arquivo": "eldorado/motores/descoberta/estrutura_site.py",
-   "linhas": 82,
+   "linhas": 92,
    "finalidade": "Forma 3: a estrutura do site: o mapa do site, os feeds (RSS e Atom), a API do WordPress e os links da página.",
    "depende_de": [
     "eldorado/motores/descoberta/pistas.py"
@@ -1687,7 +1687,9 @@
     "eldorado/motores/descoberta/mapa_original.py",
     "eldorado/motores/pilotos/interceptador.py"
    ],
-   "testes": [],
+   "testes": [
+    "test_descoberta.py"
+   ],
    "situacao": "em funcionamento",
    "etapa": "06 Coleta: os motores e o canivete suíço",
    "parte": "MOTORES",
@@ -1832,7 +1834,7 @@
   },
   {
    "arquivo": "eldorado/motores/canal/motor.py",
-   "linhas": 685,
+   "linhas": 686,
    "finalidade": "O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio.",
    "depende_de": [
     "eldorado/base/nucleo/contratos.py",
@@ -1866,7 +1868,9 @@
     "config/modulos.toml (estaduais-go-gov)",
     "config/modulos.toml (gife)",
     "config/modulos.toml (motor-gife)",
+    "config/modulos.toml (mpgo-destinacao)",
     "config/modulos.toml (mptgo-destinacao)",
+    "config/modulos.toml (mpu-destinacao)",
     "config/modulos.toml (novo-bancos-publicos)",
     "config/modulos.toml (novo-diarios-municipais-go)",
     "config/modulos.toml (plataforma-mapas-culturais)",
@@ -6087,9 +6091,9 @@
      "forma_divulgacao": "edital_ministerio_publico"
     }
    ],
-   "motor_novo": "",
-   "situacao": "a construir",
-   "observacao": "",
+   "motor_novo": "mpgo-destinacao",
+   "situacao": "conforme",
+   "observacao": "criado pela orientação: o portal pelo computador local (a nuvem recebe tempo esgotado); o Diário do Estado filtrado pelo MP, destinação e TAC; o alvo corrigido",
    "aprendizado_eldorado0": {
     "leituras": 123,
     "com_resultado": 57,
@@ -6306,9 +6310,9 @@
      "forma_divulgacao": "lista_projetos_aptos"
     }
    ],
-   "motor_novo": "",
-   "situacao": "a construir",
-   "observacao": "",
+   "motor_novo": "mpu-destinacao",
+   "situacao": "incompleto",
+   "observacao": "criado pela orientação: os editais de doação de bens do MPF em Goiás e as seleções do FDD; o alvo da Receita fora (sem endereço que responda)",
    "aprendizado_eldorado0": {
     "leituras": 124,
     "com_resultado": 7,

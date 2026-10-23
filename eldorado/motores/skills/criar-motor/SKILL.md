@@ -187,6 +187,10 @@ Para tabelas em PDF, o elo `linhas` reconhece cada registro por um padrão com g
   dinâmicas): procure no código da página o endereço e os campos; a cadeia abre a sessão (elo `html` com o código) e
   pede a tabela (elo com `corpo`). Confirme com `eldorado motor experimentar <id>` (o fluxo Experimentar motor), que roda
   o motor inteiro com a internet de verdade.
+- **mpu-destinacao, mpgo-destinacao**: o cadastro antigo trazia endereços de alvo trocados (o alvo do MP-GO apontava o MPF
+  e o MPT; o do FDD, o CONANDA): confira cada endereço de alvo antes de vigiar. Alvo em portal grande leva `seletor` (os
+  menus entram como links e casam com palavras soltas do léxico, como "projetos"). Nos portais Plone, cada documento tem
+  o link do ícone e o do título para o mesmo endereço: a extração guarda o do título.
 - **Teste com página real**: página montada à mão costuma ser "HTML quase vazio", que a escada trata como bloqueio; use a
   página real gravada, alterando o mínimo.
 

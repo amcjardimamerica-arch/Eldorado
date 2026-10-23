@@ -144,6 +144,7 @@ class CfgAlvo(_Base):
     enderecos: list[str] = Field(min_length=1)       # o primeiro que funciona é a rota; os outros, as alternativas
     orgao: str | None = None
     previsao_meses: list[int] = Field(default_factory=list)
+    seletor: str | None = None                        # a região do conteúdo (portais grandes: os menus não entram)
 
 
 class CfgAprendizado(_Base):
@@ -351,7 +352,7 @@ class MotorCanal(Motor):
                 self.relatorio.append(f"alvo {alvo.nome}: fora da janela prevista")
                 continue
             for n, url in enumerate(alvo.enderecos):
-                fonte = CfgFonte(nome=f"alvo · {alvo.id}", url=url, tipo="pagina", papel="principal" if n == 0 else "alternativa")
+                fonte = CfgFonte(nome=f"alvo · {alvo.id}", url=url, tipo="pagina", papel="principal" if n == 0 else "alternativa", seletor=alvo.seletor)
                 try:
                     pistas = self._descobrir(fonte)
                 except (Bloqueado, Indisponivel, Pendente, ValueError) as e:

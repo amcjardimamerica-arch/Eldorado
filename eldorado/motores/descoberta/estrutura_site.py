@@ -60,16 +60,26 @@ def links(buscar: Buscar, url: str, mesmo_dominio: bool = True, seletor: str | N
     if seletor and arvore.css_first(seletor) is not None:
         arvore = arvore.css_first(seletor)
     dom = urlsplit(url).hostname
-    saida, vistos = [], set()
+    saida: list[Pista] = []
+    posicao: dict[str, int] = {}
+    sem_texto: set[str] = set()
     for a in arvore.css("a[href]"):
         href = (a.attributes.get("href") or "").strip()
         if not href or href.startswith(("#", "javascript:", "mailto:", "tel:")):
             continue
         u = urljoin(url, href)
-        if (mesmo_dominio and urlsplit(u).hostname != dom) or u in vistos:
+        if mesmo_dominio and urlsplit(u).hostname != dom:
             continue
-        vistos.add(u)
-        saida.append(Pista(titulo=a.text(strip=True) or u.rsplit("/", 1)[-1], link=u, origem="links da página"))
+        texto = a.text(strip=True)
+        if u in posicao:                    # o mesmo endereço de novo: o link com texto substitui o do ícone, sem texto (Plone)
+            if texto and u in sem_texto:
+                saida[posicao[u]] = Pista(titulo=texto, link=u, origem="links da página")
+                sem_texto.discard(u)
+            continue
+        posicao[u] = len(saida)
+        if not texto:
+            sem_texto.add(u)
+        saida.append(Pista(titulo=texto or u.rstrip("/").rsplit("/", 1)[-1], link=u, origem="links da página"))
     return saida
 
 

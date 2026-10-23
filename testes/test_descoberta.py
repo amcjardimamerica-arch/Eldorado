@@ -77,3 +77,13 @@ def test_assinatura_ignora_o_que_muda_a_toda_hora():
     assert a == b != c and vigilancia.mudou(a, c) and not vigilancia.mudou(a, b)
     assert vigilancia.assinatura(b"<html><body><div id='e'>X</div><div>muda</div></body></html>", "#e") == \
         vigilancia.assinatura(b"<html><body><div id='e'>X</div><div>mudou outra coisa</div></body></html>", "#e")
+
+
+def test_link_do_icone_e_do_titulo_para_o_mesmo_endereco():
+    """Portais Plone: o ícone (sem texto) e o título apontam o mesmo endereço; fica o título (23/10/2026, MPF em Goiás)."""
+    from eldorado.motores.descoberta.estrutura_site import links
+    html = (b'<html><body><div id="c"><a href="/e/edital-1-2025/view"><img src="pdf.png"/></a>'
+            b'<a href="/e/edital-1-2025/view">Edital de Doacao de Bens N 01-2025.pdf</a><a href="/menu">Menu</a></div></body></html>')
+    r = type("R", (), {"conteudo": html})()
+    p = links(lambda _u: r, "https://www.mpf.mp.br/x", seletor="#c")
+    assert [x.titulo for x in p] == ["Edital de Doacao de Bens N 01-2025.pdf", "Menu"]
