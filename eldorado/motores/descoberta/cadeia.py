@@ -21,7 +21,7 @@ from selectolax.lexbor import LexborHTMLParser
 
 @dataclass
 class Elo:
-    formato: str                          # "json", "html" ou "atos" (o documento recortado em atos: leitura/atos.py)
+    formato: str                          # "json", "html", "atos" (o documento recortado em atos) ou "linhas" (registros por regex)
     itens: str                            # jmespath (json) ou seletor CSS (html)
     campos: dict[str, str] = field(default_factory=dict)
     url: str | None = None                # o endereço deste elo, montado com os campos do item anterior (o primeiro usa o da fonte)
@@ -91,7 +91,11 @@ def percorrer(buscar: Callable[[str], Any], url: str, elos: list[Elo], relatorio
             endereco = pai["_url"] if n == 0 else formatar(elo.url or "", pai)
             try:
                 r = buscar(endereco)
-                if elo.formato == "atos":
+                if elo.formato == "linhas":                         # registros de uma tabela: um padrão com grupos nomeados
+                    from ..leitura import leitores
+                    texto = leitores.padrao().ler(r.conteudo, endereco).texto
+                    filhos = [{k: (v or "").strip() for k, v in m.groupdict().items()} for m in re.finditer(elo.itens, texto)][:elo.limite]
+                elif elo.formato == "atos":
                     from ..leitura import leitores
                     from ..leitura.atos import recortar
                     texto = leitores.padrao().ler(r.conteudo, endereco).texto

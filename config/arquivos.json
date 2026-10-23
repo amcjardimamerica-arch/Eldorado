@@ -133,6 +133,7 @@
     "test_linha_cartorio.py",
     "test_migracao.py",
     "test_missao.py",
+    "test_motor_gife.py",
     "test_motores_api.py",
     "test_painel.py",
     "test_passagem_real.py",
@@ -198,6 +199,7 @@
     "test_interceptador.py",
     "test_linha_cartorio.py",
     "test_missao.py",
+    "test_motor_gife.py",
     "test_painel.py",
     "test_seguranca.py"
    ],
@@ -304,6 +306,7 @@
     "eldorado/base/cerebro/rede.py",
     "eldorado/base/cerebro/regencia.py",
     "eldorado/base/cerebro/regras.py",
+    "eldorado/base/especial/registro.py",
     "eldorado/base/fluxo/executor.py",
     "eldorado/base/fluxo/nos.py",
     "eldorado/base/migracao/importar_eldorado0.py",
@@ -328,7 +331,8 @@
     "test_ia.py",
     "test_incentivos.py",
     "test_interceptador.py",
-    "test_linha_cartorio.py"
+    "test_linha_cartorio.py",
+    "test_motor_gife.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "02 Núcleo: contratos, eventos e gravação",
@@ -453,6 +457,7 @@
     "test_cerebro.py",
     "test_ia.py",
     "test_interceptador.py",
+    "test_motor_gife.py",
     "test_motores_api.py",
     "test_rede_neural.py"
    ],
@@ -784,6 +789,7 @@
     "test_cerebro.py",
     "test_fila.py",
     "test_governador.py",
+    "test_motor_gife.py",
     "test_motores_api.py"
    ],
    "situacao": "em funcionamento",
@@ -814,6 +820,7 @@
     "test_fila.py",
     "test_migracao.py",
     "test_motor_canal.py",
+    "test_motor_gife.py",
     "test_motores_api.py",
     "test_passagem.py",
     "test_passagem_real.py"
@@ -841,6 +848,7 @@
    "testes": [
     "test_agenda.py",
     "test_cerebro.py",
+    "test_motor_gife.py",
     "test_motores_api.py"
    ],
    "situacao": "em funcionamento",
@@ -1032,7 +1040,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 103,
+   "linhas": 109,
    "situacao": "em funcionamento",
    "ordem": 37
   },
@@ -1050,7 +1058,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 67,
+   "linhas": 71,
    "situacao": "em funcionamento",
    "ordem": 38
   },
@@ -1079,12 +1087,13 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/regencia.py",
-   "linhas": 216,
+   "linhas": 226,
    "finalidade": "A Regência: planeja a passagem, aciona os motores e autoriza cada passagem de livro.",
    "depende_de": [
     "eldorado/base/cerebro/decisao.py",
     "eldorado/base/cerebro/governador.py",
     "eldorado/base/cerebro/rede.py",
+    "eldorado/base/especial/registro.py",
     "eldorado/base/fluxo/agenda.py",
     "eldorado/base/nucleo/contratos.py",
     "eldorado/base/nucleo/eventos.py",
@@ -1118,6 +1127,7 @@
     "test_interceptador.py",
     "test_linha_cartorio.py",
     "test_motor_canal.py",
+    "test_motor_gife.py",
     "test_motores_api.py",
     "test_painel.py",
     "test_passagem.py",
@@ -1131,6 +1141,7 @@
     "eldorado/base/cerebro/decisao.py",
     "eldorado/base/cerebro/governador.py",
     "eldorado/base/cerebro/rede.py",
+    "eldorado/base/especial/registro.py",
     "eldorado/base/fluxo/agenda.py",
     "eldorado/base/nucleo/contratos.py",
     "eldorado/base/nucleo/eventos.py",
@@ -1265,6 +1276,7 @@
     "test_motor_diarios_municipais.py",
     "test_motor_do_goiania.py",
     "test_motor_do_goias.py",
+    "test_motor_gife.py",
     "test_motor_incentivos_empresas.py",
     "test_motor_prefeituras.py",
     "test_motores_api.py"
@@ -1787,7 +1799,7 @@
   },
   {
    "arquivo": "eldorado/motores/canal/motor.py",
-   "linhas": 604,
+   "linhas": 635,
    "finalidade": "O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio.",
    "depende_de": [
     "eldorado/base/nucleo/contratos.py",
@@ -1818,6 +1830,7 @@
     "config/modulos.toml (empresas-editais-incentivados)",
     "config/modulos.toml (estaduais-go-gov)",
     "config/modulos.toml (gife)",
+    "config/modulos.toml (motor-gife)",
     "config/modulos.toml (novo-diarios-municipais-go)",
     "config/modulos.toml (plataforma-mapas-culturais)",
     "config/modulos.toml (pncp-api)",
@@ -1843,6 +1856,7 @@
     "test_motor_diarios_municipais.py",
     "test_motor_do_goiania.py",
     "test_motor_do_goias.py",
+    "test_motor_gife.py",
     "test_motor_incentivos_empresas.py",
     "test_motor_prefeituras.py",
     "test_motores_api.py"
@@ -1878,7 +1892,7 @@
   },
   {
    "arquivo": "eldorado/motores/descoberta/cadeia.py",
-   "linhas": 111,
+   "linhas": 115,
    "finalidade": "A leitura em cadeia (canivete suíço): a lista → cada item → o detalhe → o texto, sem código por fonte.",
    "depende_de": [
     "eldorado/motores/leitura/atos.py",
@@ -3394,6 +3408,7 @@
     "test_motor_diarios_municipais.py",
     "test_motor_do_goiania.py",
     "test_motor_do_goias.py",
+    "test_motor_gife.py",
     "test_motor_incentivos_empresas.py",
     "test_motor_prefeituras.py",
     "test_motores_api.py",
@@ -3447,6 +3462,7 @@
     "test_migracao.py",
     "test_missao.py",
     "test_motor_canal.py",
+    "test_motor_gife.py",
     "test_motores_api.py",
     "test_painel.py",
     "test_passagem.py",
@@ -3509,6 +3525,7 @@
     "test_inventario.py",
     "test_linha_cartorio.py",
     "test_motor_canal.py",
+    "test_motor_gife.py",
     "test_motores_api.py",
     "test_painel.py",
     "test_passagem.py",
@@ -3559,6 +3576,55 @@
    "ordem": 125
   },
   {
+   "arquivo": "eldorado/base/especial/__init__.py",
+   "linhas": 0,
+   "finalidade": "",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [
+    "test_motor_gife.py"
+   ],
+   "situacao": "pacote",
+   "etapa": "17 Outros",
+   "parte": "BASE",
+   "componente": "Outros",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 126
+  },
+  {
+   "arquivo": "eldorado/base/especial/registro.py",
+   "linhas": 79,
+   "finalidade": "O registro da base Especial (as empresas e os incentivos): o \"cartório\" do banco especial.db.",
+   "depende_de": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [
+    "empresa.registrada",
+    "incentivo.registrado"
+   ],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cerebro/regencia.py"
+   ],
+   "testes": [
+    "test_motor_gife.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "17 Outros",
+   "parte": "BASE",
+   "componente": "Outros",
+   "ligacoes": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 127
+  },
+  {
    "arquivo": "eldorado/base/investigacao/investigacao.py",
    "parte": "BASE",
    "componente": "Etapa de Investigação",
@@ -3577,7 +3643,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "livros investigados e itens comprovados por livro",
-   "ordem": 126
+   "ordem": 128
   },
   {
    "arquivo": "eldorado/motores/__init__.py",
@@ -3600,6 +3666,7 @@
     "test_motor_diarios_municipais.py",
     "test_motor_do_goiania.py",
     "test_motor_do_goias.py",
+    "test_motor_gife.py",
     "test_motor_incentivos_empresas.py",
     "test_motor_prefeituras.py",
     "test_motores_api.py",
@@ -3613,7 +3680,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 127
+   "ordem": 129
   }
  ],
  "motores": [
@@ -4946,9 +5013,9 @@
     }
    ],
    "alvos": [],
-   "motor_novo": "",
-   "situacao": "a construir",
-   "observacao": "",
+   "motor_novo": "motor-gife",
+   "situacao": "conforme",
+   "observacao": "criado pela orientação, destino especial: os 500 maiores contribuintes do ICMS de Goiás e os 358 incentivadores PJ de Goiás no Salic; empresas e incentivos na base Especial",
    "aprendizado_eldorado0": {
     "leituras": 0,
     "com_resultado": 0,

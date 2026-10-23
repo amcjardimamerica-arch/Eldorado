@@ -137,6 +137,16 @@ pela rede neural. A IA propõe; o sistema valida.
 [metrica]         # cadencia_h, periodo_dias
 ```
 
+## Motores de destino especial (a base de empresas)
+
+Um motor que alimenta a base Especial (empresas e incentivos), e não a Biblioteca, declara `destino = "especial"` e o mapa
+`[especial]` (ou `[fonte.especial]`, por fonte): `cnpj`, `razao_social`, `uf`, `atividade_principal`, `tipo_pessoa` e
+`incentivo = { lei, ano, valor }`, com os campos do item entre chaves. A Regência desvia esses registros para
+`base/especial/registro.py`, que valida o CNPJ (os dígitos verificadores; a raiz de 8 dígitos casa com a empresa
+conhecida), grava a empresa sem perder o que já se sabia e não duplica o incentivo da mesma fonte. As regras do banco
+valem: a lei é uma de FIA, Idoso, Esporte, Rouanet, Pronas, Pronon, Goyazes, ICMS, PAT ou outra; pessoa física fica fora.
+Para tabelas em PDF, o elo `linhas` reconhece cada registro por um padrão com grupos nomeados.
+
 ## Lições da criação dos primeiros motores (23/10/2026)
 
 - **do-goias**: a fonte certa era uma cadeia de três elos (edições do dia → sumário em árvore → texto da matéria); o motor
@@ -154,6 +164,8 @@ pela rede neural. A IA propõe; o sistema valida.
   não os sites institucionais das empresas (nenhum edital neles, no Eldorado0).
 - **Teste com links absolutos**: se a página real usa links com o domínio da fonte, o servidor do teste troca o domínio
   dentro da página também (a extração só aceita links do mesmo domínio).
+- **motor-gife**: confira os padrões funcionando sobre os dados reais (499 das 500 linhas do PDF), não só a validação;
+  as regras do banco (a lei do incentivo, quem descobriu a empresa) aparecem no teste, não antes.
 - **Teste com página real**: página montada à mão costuma ser "HTML quase vazio", que a escada trata como bloqueio; use a
   página real gravada, alterando o mínimo.
 

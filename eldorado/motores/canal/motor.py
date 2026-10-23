@@ -49,6 +49,7 @@ class CfgMotor(_Base):
     # reúne; o histórico desses nomes é lido como do próprio motor (o motor leva o aprendizado dos que reúne)
     categoria_estudo: Literal["EXE", "JUD", "LEG", "POR", "IA"] | None = None
     tipo_finalidade: Literal["descoberta", "recorrencia"] = "descoberta"   # oportunidades novas, ou as edições de programas conhecidos
+    destino: Literal["biblioteca", "especial"] = "biblioteca"   # especial: o motor entrega empresas e incentivos (a base Especial)
     nomes_anteriores: list[str] = Field(default_factory=list)
 
 
@@ -60,7 +61,7 @@ class CfgPaginacao(_Base):
 
 class CfgElo(_Base):
     """Um elo da leitura em cadeia (descoberta/cadeia.py)."""
-    formato: Literal["json", "html", "atos"]
+    formato: Literal["json", "html", "atos", "linhas"]
     itens: str = ""                         # jmespath (json), seletor CSS (html) ou o padrão dos cabeçalhos (atos; vazio = o padrão)
     campos: dict[str, str] = Field(default_factory=dict)
     url: str | None = None
@@ -91,6 +92,7 @@ class CfgFonte(_Base):
     exige_brasil: bool = False
     papel: Literal["principal", "alternativa"] = "principal"   # todo motor tem ao menos duas rotas: a principal e a alternativa
     cadeia: list[CfgElo] = Field(default_factory=list)          # tipo "cadeia": os elos, do primeiro (o endereço da fonte) ao último
+    especial: dict[str, Any] = Field(default_factory=dict)      # destino especial: o mapa desta fonte (vale sobre o do motor)
     pista: CfgPistaCadeia | None = None
 
 
@@ -187,6 +189,7 @@ class Configuracao(_Base):
     legislacao: CfgLegislacao = CfgLegislacao()
     extracao: CfgExtracao = CfgExtracao()
     alvo: list[CfgAlvo] = Field(default_factory=list)
+    especial: dict[str, Any] = Field(default_factory=dict)   # destino especial: o mapa dos campos da empresa e do incentivo ({campo})
     aprendizado: CfgAprendizado = CfgAprendizado()
     metrica: CfgMetrica = CfgMetrica()
     alvos: dict[str, Any] = Field(default_factory=dict)
@@ -290,6 +293,15 @@ class MotorCanal(Motor):
                 self.estado.leitura(fonte.nome, _agora(), sem_mudanca=True)
                 continue
             entregues = 0
+            if self.cfg.motor.destino == "especial":
+                for pista in pistas:
+                    a = self._registro_especial(fonte, pista)
+                    if a is not None:
+                        entregues += 1
+                        yield a
+                self.estado.leitura(fonte.nome, _agora(), achados=entregues)
+                self.relatorio.append(f"{fonte.nome}: {len(pistas)} registro(s), {entregues} para a base Especial")
+                continue
             proprios = {self.cfg.programa.link_divulgacao.rstrip("/"), self.cfg.programa.link_oficial.rstrip("/")} if self.cfg.programa else set()
             for pista in pistas:
                 if pista.link.rstrip("/") in proprios:
@@ -305,6 +317,23 @@ class MotorCanal(Motor):
             self.estado.leitura(fonte.nome, _agora(), achados=entregues)
             self.relatorio.append(f"{fonte.nome}: {len(pistas)} pista(s), {entregues} achado(s)")
         yield from self._alvos()
+
+    def _registro_especial(self, fonte: CfgFonte, pista: Pista) -> Achado | None:
+        """Destino especial: a empresa e o incentivo, pelo mapa [especial] (modelos com os campos do item)."""
+        from ..descoberta.cadeia import formatar
+        item = (pista.extra or {}).get("_item") or {}
+        def campo(v):
+            return formatar(v, item).strip() if isinstance(v, str) else v
+        mapa = fonte.especial or self.cfg.especial
+        dados = {k: campo(v) for k, v in mapa.items() if k != "incentivo"}
+        if isinstance(mapa.get("incentivo"), dict):
+            dados["incentivo"] = {k: campo(v) for k, v in mapa["incentivo"].items()}
+        if not dados.get("cnpj"):
+            return None
+        m = self.cfg.motor
+        return Achado(id=f"{m.id}-{hashlib.sha256((dados['cnpj'] + fonte.nome).encode()).hexdigest()[:16]}", motor=m.id, encontrado_em=_agora()[:10],
+                      link_divulgacao=fonte.url if fonte.url.startswith("http") else pista.link, link_oficial=pista.link or None,
+                      titulo=str(dados.get("razao_social") or dados["cnpj"])[:200], dados={"especial": dados, "fonte": fonte.nome})
 
     def _na_janela(self, alvo: CfgAlvo, mes: int) -> bool:
         """A janela prevista da próxima edição: os meses configurados, ou os aprendidos (com 3 ou mais mudanças), com um
@@ -441,7 +470,9 @@ class MotorCanal(Motor):
         pistas = [Pista(titulo=formatar(f.pista.titulo, i), link=formatar(f.pista.link, i), origem=f.nome,
                         resumo=formatar(f.pista.resumo, i) if f.pista.resumo else None,
                         extra={**({"documento_texto": formatar(f.pista.texto, i)} if f.pista.texto else {}),
-                               **{k: i[k] for k in ("orgao", "edicao", "data", "protocolo", "caminho", "localidade") if i.get(k)}}) for i in itens]
+                               **{k: i[k] for k in ("orgao", "edicao", "data", "protocolo", "caminho", "localidade") if i.get(k)},
+                               **({"_item": {k: v for k, v in i.items() if k != "texto"}} if self.cfg.motor.destino == "especial" else {})})
+                  for i in itens]
         pistas = [p for p in pistas if p.titulo.strip() and p.link.startswith("http")]
         ass = hashlib.sha256("\n".join(sorted(p.link for p in pistas)).encode()).hexdigest()
         if pistas and ass == self.estado.assinatura(f.nome):

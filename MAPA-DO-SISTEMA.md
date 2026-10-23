@@ -6,8 +6,8 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 
 | Situação | Arquivos |
 |---|---|
-| em funcionamento | 82 |
-| pacote | 19 |
+| em funcionamento | 83 |
+| pacote | 20 |
 | a construir | 15 |
 | substituído por eldorado/base/cartorio/analise_externa.py | 3 |
 | desligado por desenho | 2 |
@@ -30,17 +30,17 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
-| 4 | `eldorado/base/nucleo/__init__.py` |  | pacote |  |  | 25 |
+| 4 | `eldorado/base/nucleo/__init__.py` |  | pacote |  |  | 26 |
 | 5 | `eldorado/base/nucleo/config.py` | A configuração da plataforma, validada na carga. | em funcionamento |  | comandos | 1 |
-| 6 | `eldorado/base/nucleo/contratos.py` | Os contratos do Eldorado. | em funcionamento |  | cartorio, indice, pertinencia, regencia, oportunidades, eventos, gravador, registro, motor, espiao, interceptador | 9 |
+| 6 | `eldorado/base/nucleo/contratos.py` | Os contratos do Eldorado. | em funcionamento |  | cartorio, indice, pertinencia, regencia, oportunidades, eventos, gravador, registro, motor, espiao, interceptador | 10 |
 | 7 | `eldorado/base/nucleo/expurgo_externo.py` | O expurgo físico pela análise externa (titular, 22/10/2026): "o sistema não apaga nada, mas o Claude pode apag | em funcionamento |  | comandos | 1 |
 | 8 | `eldorado/base/nucleo/ia.py` | O serviço único de IA dos pilotos (do Eldorado0, titular, 26/09 e 02/10/2026). | em funcionamento |  | encaminhamento, interceptador | 1 |
 | 9 | `eldorado/base/nucleo/seguranca.py` | A segurança dos textos lidos: os padrões de injeção de instruções (prompt injection). | em funcionamento |  | motor, leitores | 1 |
-| 10 | `eldorado/base/nucleo/eventos.py` | Os eventos: a única forma de escrita do Eldorado. | em funcionamento | contratos | analise_externa, auditoria, cartorio, certificacao, indice, passaporte, selos, aprendizado, completude, encaminhamento,  | 13 |
+| 10 | `eldorado/base/nucleo/eventos.py` | Os eventos: a única forma de escrita do Eldorado. | em funcionamento | contratos | analise_externa, auditoria, cartorio, certificacao, indice, passaporte, selos, aprendizado, completude, encaminhamento,  | 14 |
 | 11 | `eldorado/base/nucleo/alarmes.py` | Nenhum erro é engolido: todo erro vira um evento de alarme, e o erro continua subindo. | em funcionamento | eventos | executor | 1 |
 | 12 | `eldorado/base/nucleo/gravador.py` | O gravador único: o único que escreve nos bancos. | em funcionamento | _sqlite, contratos, eventos | nos, comandos | 2 |
 | 13 | `eldorado/base/nucleo/recibo.py` | A medição de uma chamada: tempo, processador e memória de pico, e se deu certo. | em funcionamento | eventos | regencia, executor | 0 |
-| 14 | `eldorado/base/nucleo/registro.py` | O registro dos módulos ligados: confere o contrato antes de aceitar, e arquiva em vez de apagar. | em funcionamento | contratos, eventos | cartorio, encaminhamento, pertinencia, regencia | 5 |
+| 14 | `eldorado/base/nucleo/registro.py` | O registro dos módulos ligados: confere o contrato antes de aceitar, e arquiva em vez de apagar. | em funcionamento | contratos, eventos | cartorio, encaminhamento, pertinencia, regencia | 6 |
 
 ## 03 Bancos
 
@@ -65,9 +65,9 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
-| 29 | `eldorado/base/cerebro/governador.py` | O governador de carga: mantém a máquina abaixo do limite (85%). | em funcionamento | eventos | regencia, fila, nos, comandos | 4 |
-| 30 | `eldorado/base/fluxo/__init__.py` |  | pacote |  |  | 11 |
-| 31 | `eldorado/base/fluxo/agenda.py` | A agenda: quais módulos estão devidos agora. | em funcionamento |  | regencia, comandos | 3 |
+| 29 | `eldorado/base/cerebro/governador.py` | O governador de carga: mantém a máquina abaixo do limite (85%). | em funcionamento | eventos | regencia, fila, nos, comandos | 5 |
+| 30 | `eldorado/base/fluxo/__init__.py` |  | pacote |  |  | 12 |
+| 31 | `eldorado/base/fluxo/agenda.py` | A agenda: quais módulos estão devidos agora. | em funcionamento |  | regencia, comandos | 4 |
 | 32 | `eldorado/base/fluxo/definicao.py` | A definição de um workflow (conceito do n8n, reescrito do zero para o Eldorado). | em funcionamento |  | executor, fila, comandos | 5 |
 | 33 | `workflows/passagem.toml` |  | em funcionamento |  |  | 0 |
 | 34 | `eldorado/base/fluxo/executor.py` | O executor durável dos workflows. | em funcionamento | definicao, alarmes, eventos, recibo | fila, comandos | 4 |
@@ -81,7 +81,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 37 | `config/agenda.toml` |  | em funcionamento |  |  | 0 |
 | 38 | `config/modulos.toml` |  | em funcionamento |  |  | 0 |
 | 39 | `eldorado/base/cerebro/decisao.py` | A decisão do Cérebro: a cada batimento, quais motores acionar, conforme a necessidade (titular, 22/10/2026). | em funcionamento |  | fila, regencia | 1 |
-| 40 | `eldorado/base/cerebro/regencia.py` | A Regência: planeja a passagem, aciona os motores e autoriza cada passagem de livro. | em funcionamento | decisao, governador, rede, agenda, contratos, eventos, recibo, registro, motor | passagem, nó 1 «planejar»; passagem, nó 2 «acionar» | 10 |
+| 40 | `eldorado/base/cerebro/regencia.py` | A Regência: planeja a passagem, aciona os motores e autoriza cada passagem de livro. | em funcionamento | decisao, governador, rede, registro, agenda, contratos, eventos, recibo, registro, motor | passagem, nó 1 «planejar»; passagem, nó 2 «acionar» | 11 |
 | 41 | `eldorado/base/cerebro/fila.py` | A fila do sistema (titular, 22/10/2026): o Eldorado funciona de forma permanente, sem horário de trabalho e de | em funcionamento | decisao, regencia | encaminhamento, comandos | 0 |
 
 ## 06 Coleta: os motores e o canivete suíço
@@ -91,7 +91,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 42 | `config/motores_previstos.json` |  | em funcionamento |  |  | 0 |
 | 43 | `eldorado/motores/acesso/__init__.py` |  | pacote |  |  | 3 |
 | 44 | `eldorado/motores/acesso/escada.py` | A escada de acesso: do degrau mais leve ao mais forte, aprendendo por domínio qual degrau funciona. | em funcionamento | eventos | encaminhamento, pilotos, comandos, api, arquivo_web, leve, local, navegador, rotas_alternativas, motor, fonte_oficial, i | 3 |
-| 45 | `eldorado/motores/canal/__init__.py` |  | pacote |  |  | 9 |
+| 45 | `eldorado/motores/canal/__init__.py` |  | pacote |  |  | 10 |
 | 46 | `eldorado/motores/canal/achado.py` | achados completos | a construir |  |  | 0 |
 | 47 | `eldorado/motores/canal/estado.py` | O estado de cada motor: o seu aprendizado de uso próprio, num banco só dele (dados/motores/<id>.db, fora do Gi | em funcionamento |  | motor | 1 |
 | 48 | `eldorado/motores/descoberta/__init__.py` |  | pacote |  |  | 3 |
@@ -113,7 +113,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 64 | `eldorado/motores/descoberta/metabusca.py` | Forma 1: a metabusca, com rotas de reserva: SearXNG (serviço próprio) → ddgs → Marginalia. | em funcionamento | pistas | pilotos, motor | 1 |
 | 65 | `eldorado/motores/acesso/rotas_alternativas.py` | Degraus 7 e 8, reservas desligadas até o teste real na criação: o Tor (IP diferente) e o leitor público de pág | desligado por desenho | escada, leve |  | 1 |
 | 66 | `eldorado/motores/canal/fabrica.py` | A fábrica de motores: executa a orientação de design (eldorado/motores/skills/criar-motor/SKILL.md). | em funcionamento | motor | comandos | 1 |
-| 67 | `eldorado/motores/canal/motor.py` | O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio. | em funcionamento | contratos, seguranca, api, arquivo_web, escada, leve, local, navegador, estado, arquivos_web, cadeia, dados_abertos, estrutura_site, fonte_oficial, metabusca, pistas, vigilancia, leitores, pdf | config/modulos.toml (do-goiania); config/modulos.toml (do-goias); config/modulos.toml (dou); config/modulos.toml (empres | 9 |
+| 67 | `eldorado/motores/canal/motor.py` | O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio. | em funcionamento | contratos, seguranca, api, arquivo_web, escada, leve, local, navegador, estado, arquivos_web, cadeia, dados_abertos, estrutura_site, fonte_oficial, metabusca, pistas, vigilancia, leitores, pdf | config/modulos.toml (do-goiania); config/modulos.toml (do-goias); config/modulos.toml (dou); config/modulos.toml (empres | 10 |
 | 68 | `eldorado/motores/descoberta/cadeia.py` | A leitura em cadeia (canivete suíço): a lista → cada item → o detalhe → o texto, sem código por fonte. | em funcionamento | atos, leitores | motor | 0 |
 | 69 | `eldorado/motores/leitura/compactado.py` | Arquivos ZIP, 7Z e RAR: abre e entrega cada arquivo interno ao leitor do seu tipo. | em funcionamento | leitores | leitores | 0 |
 | 70 | `eldorado/motores/leitura/documento.py` | Documentos DOCX (com cabeçalhos, rodapés e notas), ODT e PPTX (uma página por slide). | em funcionamento | leitores | leitores | 0 |
@@ -217,13 +217,15 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 118 | `.github/workflows/passagem.yml` | passagens no horário | substituído por .github/workflows/eldorado.yml (funcionamento permanente) |  |  | 0 |
 | 119 | `.github/workflows/pilotos.yml` | voos com sucesso | substituído por .github/workflows/eldorado.yml (os pilotos rodam dentro do funcionamento permanente) |  |  | 0 |
 | 120 | `config/motores_previstos.toml` | o sistema roda sem intervenção | a construir |  |  | 0 |
-| 121 | `eldorado/__init__.py` |  | pacote |  |  | 41 |
-| 122 | `eldorado/base/__init__.py` |  | pacote |  |  | 32 |
+| 121 | `eldorado/__init__.py` |  | pacote |  |  | 42 |
+| 122 | `eldorado/base/__init__.py` |  | pacote |  |  | 33 |
 | 123 | `eldorado/base/cartorio/__init__.py` |  | pacote |  |  | 7 |
-| 124 | `eldorado/base/cerebro/__init__.py` |  | pacote |  |  | 17 |
+| 124 | `eldorado/base/cerebro/__init__.py` |  | pacote |  |  | 18 |
 | 125 | `eldorado/base/cerebro/pilotos.py` | O Cérebro dos pilotos (titular, 22/10/2026): mede a recorrência de cada piloto e manda nova missão sempre que | em funcionamento | escada, metabusca, leitores, espiao | encaminhamento, comandos | 1 |
-| 126 | `eldorado/base/investigacao/investigacao.py` | livros investigados e itens comprovados por livro | substituído por eldorado/base/cerebro/encaminhamento.py e eldorado/motores/pilotos/interceptador.py |  |  | 0 |
-| 127 | `eldorado/motores/__init__.py` |  | pacote |  |  | 17 |
+| 126 | `eldorado/base/especial/__init__.py` |  | pacote |  |  | 1 |
+| 127 | `eldorado/base/especial/registro.py` | O registro da base Especial (as empresas e os incentivos): o "cartório" do banco especial.db. | em funcionamento | eventos | regencia | 1 |
+| 128 | `eldorado/base/investigacao/investigacao.py` | livros investigados e itens comprovados por livro | substituído por eldorado/base/cerebro/encaminhamento.py e eldorado/motores/pilotos/interceptador.py |  |  | 0 |
+| 129 | `eldorado/motores/__init__.py` |  | pacote |  |  | 18 |
 
 ## Os 47 motores (o estudo de reorganização da titular: 45 regulares e 2 pilotos)
 
@@ -236,7 +238,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 5 | EXE | estaduais-go-gov | Oportunidade Estaduais Governamentais de Goiás | 7 | 10 | estaduais-go-gov | incompleto | Secult, SEDS, FAPEG, PNAB Goiás, FICA e o Goyazes; faltam OVG, SEMAD, Goiás Social, fundos estaduais e Anater (endereços a localizar; a API da Anater recusa) e 5 alvos |
 | 6 | EXE | pncp-api | PNCP — API de contratações (chamamentos e credenciamentos) | 0 | 17 | pncp-api | conforme | faltam os 17 alvos |
 | 7 | EXE | salic | Lei Rouanet — janela de propostas no SALIC e projetos de Goiás (Ministério da Cultura) | 2 | 1 | salic | conforme |  |
-| 8 | EXE | motor-gife | Motor Incentivos Fiscais — empresas da base ICMS/RFB/SALIC (Goiás) | 1 | 0 | — | a construir |  |
+| 8 | EXE | motor-gife | Motor Incentivos Fiscais — empresas da base ICMS/RFB/SALIC (Goiás) | 1 | 0 | motor-gife | conforme | criado pela orientação, destino especial: os 500 maiores contribuintes do ICMS de Goiás e os 358 incentivadores PJ de Goiás no Salic; empresas e incentivos na base Especial |
 | 9 | EXE | empresas-editais-incentivados | Busca de empresas para FIA, Idoso, Lei de Incentivo ao Esporte, Pronas, Pronon e Goyazes | 2 | 5 | empresas-editais-incentivados | conforme | criado pela orientação: os chamamentos do Pronas/PCD e do Pronon, a apresentação de projetos e o credenciamento; a Lei de Incentivo ao Esporte pelo Brasil; os 5 alvos |
 | 10 | EXE | cnpq-extensao | CNPq / MCTI / Setec-MEC — chamadas com componente de extensão e parceria com OSC | 2 | 0 | — | a construir |  |
 | 11 | EXE | site-funarte | Funarte — editais da Fundação Nacional de Artes | 0 | 0 | — | a construir |  |

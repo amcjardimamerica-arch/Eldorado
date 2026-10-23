@@ -1,0 +1,160 @@
+# Motor Incentivos Fiscais — empresas da base ICMS/RFB/SALIC (Goiás) — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+destino = "especial"
+uf = "GO"
+canal = "api"
+id = "motor-gife"
+nome = "Motor Incentivos Fiscais — empresas da base ICMS/RFB/SALIC (Goiás)"
+categoria = "Executivo — diários e portais do governo"
+categoria_estudo = "EXE"
+finalidade = "empresas da base ICMS/RFB/SALIC de Goiás com potencial de destinação incentivada e os sites das maiores contribuintes do ICMS (editais incentivados)"
+tipo_finalidade = "descoberta"
+nomes_anteriores = ["motor-patrocinio"]
+
+# ---- destino ESPECIAL: este motor alimenta a base de empresas (quem pode destinar incentivo) e os incentivos (o que
+# cada uma já destinou). Rotas confirmadas (23/10/2026, testes/paginas/motor-gife/): o PDF dos 500 maiores contribuintes
+# do ICMS de Goiás (um por ano, com a raiz do CNPJ) e os incentivadores pessoa jurídica de Goiás no Salic (358, com o
+# CNPJ completo e o total doado pela Rouanet).
+[[fonte]]
+nome = "Economia de Goiás — os 500 maiores contribuintes do ICMS (o PDF do ano mais recente)"
+url = "https://goias.gov.br/economia/os-maiores-contribuintes-do-icms/"
+tipo = "cadeia"
+papel = "principal"
+
+[[fonte.cadeia]]
+formato = "html"
+itens = 'a[href*="MAIORES_DO_ICMS"]'
+campos = { pdf = "attr:href", ano = 're:OFICIAL_(\d{4})' }
+limite = 1
+
+[[fonte.cadeia]]
+formato = "linhas"
+url = "{pdf}"
+itens = '(?m)^(?P<posicao>\d+) º\n(?P<raiz>\d{8})\n(?P<nome>[^\n]+)\n(?P<localidade>[^\n]+)\n(?P<uf>[A-Z]{2})\n(?P<atividade>[^\n]+)'
+limite = 500
+
+[fonte.pista]
+titulo = "{nome}"
+link = "{pdf}#{posicao}"
+
+[fonte.especial]
+cnpj = "{raiz}"
+razao_social = "{nome}"
+uf = "{uf}"
+atividade_principal = "{atividade}"
+incentivo = { lei = "ICMS", ano = "{ano}" }   # 500 maiores contribuintes do ICMS de Goiás
+
+[[fonte]]
+nome = "Salic — incentivadores pessoa jurídica de Goiás (registros 1 a 100)"
+url = "https://api.salic.cultura.gov.br/api/v1/incentivadores/?UF=GO&tipo_pessoa=juridica&limit=100&offset=0&format=json"
+tipo = "cadeia"
+papel = "principal"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "_embedded.incentivadores"
+campos = { cnpj = "cgccpf", nome = "nome", localidade = "municipio", uf = "UF", valor = "total_doado", tipo_pessoa = "tipo_pessoa" }
+limite = 100
+
+[fonte.pista]
+titulo = "{nome}"
+link = "https://api.salic.cultura.gov.br/api/v1/incentivadores/?UF=GO&tipo_pessoa=juridica#{cnpj}"
+
+[fonte.especial]
+cnpj = "{cnpj}"
+razao_social = "{nome}"
+uf = "{uf}"
+tipo_pessoa = "{tipo_pessoa}"
+incentivo = { lei = "Rouanet", valor = "{valor}" }   # Salic: o total doado
+
+[[fonte]]
+nome = "Salic — incentivadores pessoa jurídica de Goiás (registros 101 a 200)"
+url = "https://api.salic.cultura.gov.br/api/v1/incentivadores/?UF=GO&tipo_pessoa=juridica&limit=100&offset=100&format=json"
+tipo = "cadeia"
+papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "_embedded.incentivadores"
+campos = { cnpj = "cgccpf", nome = "nome", localidade = "municipio", uf = "UF", valor = "total_doado", tipo_pessoa = "tipo_pessoa" }
+limite = 100
+
+[fonte.pista]
+titulo = "{nome}"
+link = "https://api.salic.cultura.gov.br/api/v1/incentivadores/?UF=GO&tipo_pessoa=juridica#{cnpj}"
+
+[fonte.especial]
+cnpj = "{cnpj}"
+razao_social = "{nome}"
+uf = "{uf}"
+tipo_pessoa = "{tipo_pessoa}"
+incentivo = { lei = "Rouanet", valor = "{valor}" }   # Salic: o total doado
+
+[[fonte]]
+nome = "Salic — incentivadores pessoa jurídica de Goiás (registros 201 a 300)"
+url = "https://api.salic.cultura.gov.br/api/v1/incentivadores/?UF=GO&tipo_pessoa=juridica&limit=100&offset=200&format=json"
+tipo = "cadeia"
+papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "_embedded.incentivadores"
+campos = { cnpj = "cgccpf", nome = "nome", localidade = "municipio", uf = "UF", valor = "total_doado", tipo_pessoa = "tipo_pessoa" }
+limite = 100
+
+[fonte.pista]
+titulo = "{nome}"
+link = "https://api.salic.cultura.gov.br/api/v1/incentivadores/?UF=GO&tipo_pessoa=juridica#{cnpj}"
+
+[fonte.especial]
+cnpj = "{cnpj}"
+razao_social = "{nome}"
+uf = "{uf}"
+tipo_pessoa = "{tipo_pessoa}"
+incentivo = { lei = "Rouanet", valor = "{valor}" }   # Salic: o total doado
+
+[[fonte]]
+nome = "Salic — incentivadores pessoa jurídica de Goiás (registros 301 a 400)"
+url = "https://api.salic.cultura.gov.br/api/v1/incentivadores/?UF=GO&tipo_pessoa=juridica&limit=100&offset=300&format=json"
+tipo = "cadeia"
+papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "_embedded.incentivadores"
+campos = { cnpj = "cgccpf", nome = "nome", localidade = "municipio", uf = "UF", valor = "total_doado", tipo_pessoa = "tipo_pessoa" }
+limite = 100
+
+[fonte.pista]
+titulo = "{nome}"
+link = "https://api.salic.cultura.gov.br/api/v1/incentivadores/?UF=GO&tipo_pessoa=juridica#{cnpj}"
+
+[fonte.especial]
+cnpj = "{cnpj}"
+razao_social = "{nome}"
+uf = "{uf}"
+tipo_pessoa = "{tipo_pessoa}"
+incentivo = { lei = "Rouanet", valor = "{valor}" }   # Salic: o total doado
+
+[acesso]
+degraus = ["api", "leve", "local"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = []   # o léxico PRÓPRIO da fonte (o comum da missão é herdado)
+vetos = []
+
+[aprendizado]
+licoes = ["O patrocínio da Zurich (zurich.com.br), que só o Motor de Recorrência lia, fica para quando houver rota de patrocínio confirmada.", "Rota de acesso única para os domínios com bloqueio (goias.gov.br, html.duckduckgo.com, salic.cultura.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "Recebe como alvo o patrocínio da Zurich (zurich.com.br), que só o Motor de Recorrência lia.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: ['https://goias.gov.br/social/cedca/']"]
+bloqueios_conhecidos = ["goias.gov.br", "salic.cultura.gov.br", "html.duckduckgo.com"]
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["https://goias.gov.br/economia/wp-json/wp/v2/pages?search=maiores contribuintes (vazio: a lista é uma página com os PDFs)"]
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14

@@ -60,9 +60,11 @@ def achado_para_evento(a: Achado) -> dict[str, Any]:
 
 
 class Regencia:
-    def __init__(self, agenda: Agenda, governador: Governador, registro: Registro, diario: Diario, notas: dict[str, float] | None = None):
+    def __init__(self, agenda: Agenda, governador: Governador, registro: Registro, diario: Diario, notas: dict[str, float] | None = None,
+                 especial=None):
         self.agenda, self.governador, self.registro, self.diario = agenda, governador, registro, diario
         self.notas = notas or {}
+        self.especial = especial                                    # a base Especial (leitura), para o registro das empresas
 
     def planejar(self, agora_: datetime, acionadas: set[tuple[str, str]] = frozenset(),
                  ultima: dict[str, datetime] | None = None, forcar: bool = False, decisoes: list | None = None) -> dict[str, Any]:
@@ -106,6 +108,10 @@ class Regencia:
             self.diario.emitir("motor.execucao", "regencia", {"motor": modulo, "inicio": inicio, "fim": agora(), "achados": len(lista),
                                                               "erro": med.erro or None})
             for a in lista:
+                if (a.dados or {}).get("especial"):                  # empresa e incentivo: à base Especial, não à Pertinência
+                    from ..especial.registro import Registro as RegistroEspecial
+                    RegistroEspecial(self.especial, self.diario).registrar(a.dados["especial"], modulo, a.dados.get("fonte") or modulo)
+                    continue
                 if a.documento:
                     self._documento(modulo, a.documento)
                 ev = achado_para_evento(a)
@@ -205,7 +211,9 @@ def _decidir(quando: datetime, motores: list[str], parametros: dict[str, Any]) -
 
 def no_acionar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
     registro = carregar_registro(parametros.get("modulos", "config/modulos.toml"))
-    r = Regencia(Agenda([]), _governador(parametros, contexto.diario), registro, contexto.diario)
+    esp_p = Path(parametros.get("dados", "dados")) / "especial.db"
+    especial = sqlite3.connect(f"file:{esp_p}?mode=ro", uri=True) if esp_p.exists() else None
+    r = Regencia(Agenda([]), _governador(parametros, contexto.diario), registro, contexto.diario, especial=especial)
     achados: list[dict[str, Any]] = []
     for item in itens:
         a, adiados = r.acionar(item["plano"], contexto.execucao)
@@ -213,4 +221,6 @@ def no_acionar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto
         for m in adiados:
             contexto.diario.emitir("alarme.aberto", "regencia", {"gravidade": "baixa", "modulo": m, "aberto_em": agora(),
                                                                  "mensagem": f"motor adiado pelo governador: {r.governador.motivo()}"})
+    if especial is not None:
+        especial.close()
     return achados
