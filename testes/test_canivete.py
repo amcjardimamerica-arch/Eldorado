@@ -14,7 +14,8 @@ O resultado preliminar será divulgado em 15/12/2026, com prazo de recurso de ci
 
 
 def test_o_canivete_extrai_idioma_datas_valores_metadados_e_publicacao():
-    pytest.importorskip("lingua"); pytest.importorskip("datefinder"); pytest.importorskip("extruct"); pytest.importorskip("htmldate")
+    for m in ("lingua", "datefinder", "extruct", "htmldate"):
+        pytest.importorskip(m)
     r = enriquecer(None, HTML, "https://cultura.go.gov.br/edital")
     assert r["idioma"] == "pt"
     assert r["publicacao"] == "2026-10-10"
