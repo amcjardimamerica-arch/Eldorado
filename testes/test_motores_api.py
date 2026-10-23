@@ -110,7 +110,7 @@ def test_dou_le_o_bloco_certo_e_filtra_como_o_eldorado0(api, tmp_path):
     assert [a.titulo for a in achados] == ["Aviso — EDITAL DE CHAMAMENTO PÚBLICO Nº 3/2026", "Edital — EDITAL Nº 4/2026 — PRÊMIO CULTURA VIVA"]
     # extrato e pregão vetados pelo título; a portaria não tem termo; o prêmio passa (o veto não olha o resumo)
     a = achados[0]
-    assert a.link_oficial == f"{base}/web/dou/-/edital-de-chamamento-3-2026" and a.dados["orgao"] == "Ministério da Cultura/Secretaria"
+    assert a.link_divulgacao == f"{base}/web/dou/-/edital-de-chamamento-3-2026" and a.link_oficial is None and a.dados["orgao"] == "Ministério da Cultura/Secretaria"
     assert a.documento and "torna público o chamamento" in a.documento["paginas"][0]                   # a íntegra lida como documento
 
 
@@ -121,7 +121,7 @@ def test_pncp_pagina_e_traz_os_dados_de_cada_item(api, tmp_path):
     assert paginas["n"] == 8                                                                     # 4 modalidades × 2 páginas
     assert len(achados) == 8 and not any("TRANSPORTE ESCOLAR" in a.titulo for a in achados)      # sem sinal de OSC: barrado
     a = achados[0]
-    assert "/app/editais/01409580000138/2026/" in a.link_oficial
+    assert "/app/editais/01409580000138/2026/" in a.link_divulgacao
     assert (a.dados["uf"], a.dados["municipio"], a.dados["fim"][:10], a.dados["orgao"]) == ("GO", "Goiânia", FUTURO, "SECRETARIA DE ESTADO DA CULTURA")
 
 
@@ -130,7 +130,7 @@ def test_mapa_da_cultura(api, tmp_path):
     achados = list(motor("plataforma-mapas-culturais", base, tmp_path).buscar(None))
     assert len(achados) == 1                                                                     # a vaga de arte-educador foi vetada
     a = achados[0]
-    assert a.link_oficial.endswith("/oportunidade/4321") and a.dados["fim"].startswith(FUTURO) and a.dados["resumo"] == "pontos de cultura"
+    assert a.link_divulgacao.endswith("/oportunidade/4321") and a.dados["fim"].startswith(FUTURO) and a.dados["resumo"] == "pontos de cultura"
 
 
 def test_wordpress_de_goias(api, tmp_path):

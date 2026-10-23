@@ -91,3 +91,22 @@ def test_livro_novo_percorre_fases_1_2_3(gravador, bancos, diario, tmp_path):
     assert gravador.aplicar(list(ler(tmp_path / "eventos"))).ok
     assert [r[0] for r in bancos["biblioteca"].execute("SELECT para FROM passagem WHERE livro_id=? ORDER BY id", (livro,))] == \
         ["recepcao", "certificacao", "preparacao"]
+
+
+def test_abordagem_secretaria_do_municipio(bancos, diario):
+    """Titular, 23/10/2026: o diário divulga; a oportunidade original costuma estar no site da secretaria do município."""
+    from eldorado.motores.pilotos.interceptador import Livro
+
+    class Escada:
+        pedidos = []
+
+        def buscar(self, url):
+            self.pedidos.append(url)
+            if url.startswith("https://www.buritidegoias.go.gov.br/wp-json/wp/v2/posts?search=6"):
+                return type("R", (), {"conteudo": b'[{"link": "https://www.buritidegoias.go.gov.br/edital-de-credenciamento-006-2026/", "title": {}}]'})()
+            raise __import__("eldorado.motores.acesso.escada", fromlist=["Indisponivel"]).Indisponivel("não existe")
+    lv = Livro("L", "EDITAL DE CREDENCIAMENTO Nº 006/2026", "Fundo Municipal de Saúde", None, "https://diariomunicipal.com.br/agm/x.pdf#ato-9",
+               "sem", None, {}, set(), "Buriti de Goiás", "GO")
+    e = Escada()
+    assert Interceptador(bancos["biblioteca"], diario, e)._a11(lv) == ["https://www.buritidegoias.go.gov.br/edital-de-credenciamento-006-2026/"]
+    assert Interceptador(bancos["biblioteca"], diario, e)._a11(Livro("M", "Edital", None, None, None, "sem", None, {}, set())) == []   # sem município

@@ -52,10 +52,10 @@ def test_entrega_os_atos_de_chamamento_e_veta_o_ruido(prefeitura, tmp_path):
     assert "CHAMAMENTO PÚBLICO Nº 001/2026" in titulos
     a = next(a for a in achados if a.titulo == "CHAMAMENTO PÚBLICO Nº 001/2026")
     assert "Secretaria Municipal de Administração" in a.dados["orgao"] and a.documento["tipo"] == "ato"
-    assert a.documento["paginas"][0].startswith("CHAMAMENTO PÚBLICO Nº 001/2026") and a.link_oficial.endswith("8740.pdf#ato-53")
+    assert a.documento["paginas"][0].startswith("CHAMAMENTO PÚBLICO Nº 001/2026") and a.link_divulgacao.endswith("8740.pdf#ato-53")
     assert not [t for t in titulos if t.startswith(("EXTRATO", "PORTARIA", "DECRETO", "TERMO DE HOMOLOGA"))]
     assert not [a for a in achados if "requereu" in a.documento["paginas"][0][:600]]             # as licenças ambientais
-    assert len(titulos) == len(set(a.link_oficial for a in achados))
+    assert len(titulos) == len(set(a.link_divulgacao for a in achados))
 
 
 def test_sem_mudanca_na_segunda_leitura(prefeitura, tmp_path):

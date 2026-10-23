@@ -91,7 +91,7 @@ def test_motor_so_de_configuracao_da_agenda_ao_livro_certificado(fonte, tmp_path
         bib = b["biblioteca"]
         assert bib.execute("SELECT COUNT(*) FROM documento").fetchone()[0] == 2 and bib.execute("SELECT COUNT(*) FROM pagina").fetchone()[0] == 2
         assert bib.execute("SELECT COUNT(*) FROM certidao WHERE livro_id=? AND pagina=1", (livro["livro"],)).fetchone()[0] >= 6
-        assert bib.execute("SELECT link_oficial FROM livro WHERE id=?", (livro["livro"],)).fetchone()[0].endswith("/docs/edital-3-2026.pdf")
+        assert bib.execute("SELECT link_divulgacao FROM livro WHERE id=?", (livro["livro"],)).fetchone()[0].endswith("/docs/edital-3-2026.pdf")  # o link encontrado é a divulgação
         assert b["cerebro"].execute("SELECT achados, erro FROM execucao_motor WHERE motor='secult-go-teste'").fetchone()[:] == (2, None)
     finally:
         for c in b.values():

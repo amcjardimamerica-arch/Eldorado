@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 from conftest import AGORA, ev
 
-from eldorado.base.cartorio import selos, site_oficial
+from eldorado.base.cartorio import origem, selos
 from eldorado.base.cartorio.certificacao import Certificacao, Pagina, localizar
 from eldorado.base.cartorio.indice import Indice
 from eldorado.base.cartorio.passaporte import Passaporte
@@ -62,10 +62,16 @@ def test_selo_do_livro_pelo_historico():
     assert selos.selo_do_livro([], 2026) == "sem"
 
 
-def test_site_oficial_separa_a_fonte_dos_republicadores():
-    assert site_oficial.eh_republicador("https://www.captadores.org.br/edital-x")
-    assert site_oficial.escolher(["https://www.facebook.com/x", "https://goias.gov.br/edital"]) == "https://goias.gov.br/edital"
-    assert site_oficial.escolher(["https://captadores.org.br/a"]) is None
+def test_a_origem_e_decidida_por_livro_com_evidencia():
+    """Titular, 23/10/2026: nenhum site é original por regra; o mesmo portal pode replicar ou ter oportunidade própria."""
+    assert origem.classificar("https://prosas.com.br/editais/123", "Instituto Votorantim")[0] == "candidato"        # o Prosas replicando
+    assert origem.classificar("https://prosas.com.br/editais/123", "Prosas")[0] == "confirmado"                      # a oportunidade do próprio Prosas
+    assert origem.classificar("https://buritidegoias.go.gov.br/edital.pdf", "Fundo Municipal de Saúde de Buriti de Goiás")[0] == "confirmado"
+    assert origem.classificar("https://www.diariomunicipal.com.br/agm/edicao.pdf", "Prefeitura Municipal de Ipameri")[0] == "candidato"
+    assert origem.classificar("https://www.gov.br/saude/pt-br/se/pronon", "Ministério da Saúde")[0] == "confirmado"
+    assert origem.classificar("https://captadores.org.br/edital-x", "Secult")[0] == "candidato"                         # indício, não decide
+    assert origem.classificar("https://x.org/y", "Qualquer", confirmado_antes=True)[0] == "confirmado"                 # nunca rebaixa
+    assert origem.classificar(None, "x")[0] == "ausente"
 
 
 def test_indice_vincula_pela_chave_e_pelo_mesmo_edital_em_outro_canal(diario):

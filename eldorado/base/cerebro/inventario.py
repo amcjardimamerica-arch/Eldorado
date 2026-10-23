@@ -22,7 +22,7 @@ ETAPAS = [
     ("05 Cérebro decide: fila do sistema e acionamento", [r"cerebro/(decisao|fila|regencia)\.py$", r"^config/(agenda|modulos)\.toml$"]),
     ("06 Coleta: os motores e o canivete suíço", [r"^eldorado/motores/(canal|acesso|leitura|descoberta)/", r"^config/motores_previstos\.json$"]),
     ("07 Pertinência e missão", [r"cerebro/pertinencia\.py$", r"base/missao/", r"^config/missao/"]),
-    ("08 Cartório · etapas 1 e 2 (recepção e certificação)", [r"cartorio/(indice|passaporte|site_oficial|certificacao|selos|cartorio)\.py$"]),
+    ("08 Cartório · etapas 1 e 2 (recepção e certificação)", [r"cartorio/(indice|passaporte|origem|certificacao|selos|cartorio)\.py$"]),
     ("09 Cartório · validação (auditoria e arquivo)", [r"cartorio/auditoria\.py$"]),
     ("10 Cartório · etapa 3 (a rede neural encaminha)", [r"cerebro/encaminhamento\.py$", r"motores/pilotos/"]),
     ("11 Cartório · etapa 5 (análise externa)", [r"cartorio/analise_externa\.py$", r"base/verificacao/"]),

@@ -22,7 +22,7 @@ from ..missao import itens as I
 from ..nucleo.contratos import Achado, Missao
 from ..nucleo.eventos import Diario, agora
 from ..nucleo.registro import instanciar
-from . import auditoria, selos, site_oficial
+from . import auditoria, origem, selos
 from .certificacao import Certificacao, Pagina
 from .indice import Indice
 from .passaporte import Passaporte
@@ -72,13 +72,33 @@ class Cartorio:
             linhas = [tuple(r) for r in self.con.execute("SELECT publicado_em, encontrado_em, link_oficial FROM achado WHERE livro_id=?", (livro,))]
         if atual is not None:
             linhas.append((atual.publicado_em, atual.encontrado_em, atual.link_oficial))
+        orgao_livro = self._livro(livro, atual).get("orgao") or ""
         for pub, enc, oficial in linhas:
             data = pub or enc
             if data and str(data)[:4].isdigit():
                 ano = int(str(data)[:4])
-                e = selos.Edicao(ano, bool(oficial and site_oficial.eh_fonte(oficial)), bool(pub))
+                e = selos.Edicao(ano, bool(oficial and origem.evidencia(oficial, orgao_livro)), bool(pub))   # a origem confirmada pela evidência
                 anos[ano] = max(anos.get(ano, e), e, key=lambda x: (x.pagina_oficial, x.data))
         return list(anos.values())
+
+    def _origem(self, livro: str, a: Achado) -> str | None:
+        """A divulgação sempre; o link de origem candidato (a busca cega do motor) sem nunca trocar um confirmado; e a origem
+        do livro decidida com a evidência do próprio livro (titular, 23/10/2026). Devolve o link confirmado, se houver."""
+        atual_link, atual_origem, validado = None, None, False
+        if self.con is not None:
+            r = self.con.execute("SELECT l.link_oficial, d.origem, d.livro_id FROM livro l LEFT JOIN livro_dados d ON d.livro_id = l.id WHERE l.id = ?",
+                                 (livro,)).fetchone()
+            if r:
+                atual_link, atual_origem, validado = r[0], r[1], r[2] is not None
+        link = atual_link if (atual_origem == origem.CONFIRMADO and atual_link) else (a.link_oficial or atual_link)
+        self.diario.emitir("livro.links", "cartorio", {"id": livro, "link_divulgacao": a.link_divulgacao, "link_oficial": link, "atualizado_em": agora()})
+        certs = self._certidoes(livro)
+        orgao = (certs.get("Órgão / financiador") or {}).get("valor") or self._livro(livro, a).get("orgao") or (a.dados or {}).get("orgao")
+        cls, motivo = origem.classificar(link, orgao, (a.dados or {}).get("localidade"),
+                                         confirmado_antes=(atual_origem == origem.CONFIRMADO and link == atual_link))
+        if validado:                                                # no livro novo, a validação (auditoria) registra a origem no mesmo ciclo
+            self.diario.emitir("livro.origem", "cartorio", {"livro_id": livro, "origem": cls, "origem_motivo": motivo[:300]})
+        return link if cls == origem.CONFIRMADO else None
 
     def _livro(self, livro: str, a: Achado | None) -> dict[str, Any]:
         r = None
@@ -112,17 +132,15 @@ class Cartorio:
                 fase = "recepcao"
             if fase == "recepcao":
                 self.passaporte.mover(livro, "certificacao", "etapa 2: certificar e classificar",
-                                      {"gerou": f"informação de {a.motor} ligada ao livro ({como})", "faltou": None if a.link_oficial else "link oficial"})
+                                      {"gerou": f"informação de {a.motor} ligada ao livro ({como})",
+                                       "faltou": None if a.link_oficial else "a origem (só a divulgação): a rede aprofunda"})
                 fase = "certificacao"
             elif fase in ("preparacao", "analise externa"):
                 self.passaporte.mover(livro, "validacao", f"etapa 4: validar a informação adicional ({a.motor})",
                                       {"gerou": f"pedido atendido por {a.motor}: {como}", "faltou": ", ".join(antes) or None,
                                        "analise": "externa" if fase == "analise externa" else "interna"})
                 fase = "validacao"
-            oficial = site_oficial.escolher([a.link_oficial, a.link_divulgacao])
-            if oficial:
-                self.diario.emitir("livro.links", "cartorio", {"id": livro, "link_divulgacao": a.link_divulgacao, "link_oficial": oficial,
-                                                               "atualizado_em": agora()})
+            oficial = self._origem(livro, a)
             for lei in (a.dados or {}).get("leis") or []:                # a legislação que rege o programa
                 if self.con is not None and self.con.execute("SELECT 1 FROM lei WHERE id=?", (lei,)).fetchone() is None:
                     self.diario.emitir("alarme.aberto", "cartorio", {"gravidade": "baixa", "modulo": a.motor, "aberto_em": agora(),
@@ -143,7 +161,7 @@ class Cartorio:
             faltam = I.faltando({k: v for k, v in certidoes.items() if I.resolvido(v)})
             relatorio = {"gerou": f"{len(novas)} item(ns) certificado(s) ({', '.join(sorted(novas)) or 'nenhum'}); prazo {situacao}; estrela {estrela}; "
                                   f"selo do livro {selo}", "faltou": ", ".join(faltam) or None,
-                         "aprendeu": None if oficial else "só pistas: falta o link oficial"}
+                         "aprendeu": None if oficial else "a origem ainda não confirmada: a rede aprofunda (Interceptador e Chrome)"}
             if fase in ("certificacao", "validacao"):
                 if situacao == "encerrada":
                     self.passaporte.mover(livro, "arquivo", "oportunidade arquivada: a estrela virou o selo do livro; aguarda nova oportunidade", relatorio)

@@ -54,7 +54,7 @@ def test_entrega_o_chamamento_com_o_texto_integral_e_veta_o_ruido(diario, tmp_pa
     titulos = [a.titulo for a in achados]
     assert "Aviso de Chamamento Público Nº 02-2025 – SGG 3ª Retificação" in titulos
     a = next(a for a in achados if a.titulo.startswith("Aviso de Chamamento Público Nº 02-2025"))
-    assert "Credenciamento nº 02/2025-SGG" in a.documento["paginas"][0] and a.link_oficial.endswith("/publicacoes_ver_conteudo/752542")
+    assert "Credenciamento nº 02/2025-SGG" in a.documento["paginas"][0] and a.link_divulgacao.endswith("/publicacoes_ver_conteudo/752542")
     assert not [t for t in titulos if any(x in t.lower() for x in ("citação", "intimação", "convocação", "extrato", "portaria"))]
     assert len(titulos) == len(set(titulos))                                                        # hoje e ontem não duplicam
 

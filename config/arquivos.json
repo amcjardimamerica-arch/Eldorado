@@ -282,7 +282,7 @@
   },
   {
    "arquivo": "eldorado/base/nucleo/eventos.py",
-   "linhas": 223,
+   "linhas": 224,
    "finalidade": "Os eventos: a única forma de escrita do Eldorado.",
    "depende_de": [
     "eldorado/base/nucleo/contratos.py"
@@ -697,7 +697,7 @@
   },
   {
    "arquivo": "eldorado/banco/biblioteca/esquema.py",
-   "linhas": 141,
+   "linhas": 147,
    "finalidade": "O esquema da Biblioteca (biblioteca.db): os livros e tudo o que se sabe de cada oportunidade.",
    "depende_de": [
     "eldorado/banco/_sqlite.py"
@@ -1799,7 +1799,7 @@
   },
   {
    "arquivo": "eldorado/motores/canal/motor.py",
-   "linhas": 635,
+   "linhas": 636,
    "finalidade": "O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio.",
    "depende_de": [
     "eldorado/base/nucleo/contratos.py",
@@ -2407,6 +2407,28 @@
    "ordem": 85
   },
   {
+   "arquivo": "eldorado/base/cartorio/origem.py",
+   "linhas": 92,
+   "finalidade": "A origem da oportunidade, decidida POR LIVRO, com evidência (titular, 23/10/2026).",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/auditoria.py",
+    "eldorado/base/cartorio/cartorio.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "08 Cartório · etapas 1 e 2 (recepção e certificação)",
+   "parte": "BASE",
+   "componente": "Cartório · etapas 1 e 2 (recepção e certificação)",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 86
+  },
+  {
    "arquivo": "eldorado/base/cartorio/passaporte.py",
    "linhas": 66,
    "finalidade": "O passaporte: move o livro entre as fases só com a autorização da Regência, e registra as tentativas (até 3).",
@@ -2440,7 +2462,7 @@
    ],
    "critico": false,
    "metrica": "livros sem passaporte (zero)",
-   "ordem": 86
+   "ordem": 87
   },
   {
    "arquivo": "eldorado/base/cartorio/selos.py",
@@ -2469,41 +2491,19 @@
    ],
    "critico": false,
    "metrica": "livros sem selo (zero; hoje 70%)",
-   "ordem": 87
-  },
-  {
-   "arquivo": "eldorado/base/cartorio/site_oficial.py",
-   "linhas": 41,
-   "finalidade": "O site oficial: a oportunidade se encontra NA FONTE (titular, 14/10/2026).",
-   "depende_de": [],
-   "eventos": [],
-   "acionado_por": [],
-   "usado_por": [
-    "eldorado/base/cartorio/auditoria.py",
-    "eldorado/base/cartorio/cartorio.py",
-    "eldorado/motores/pilotos/interceptador.py"
-   ],
-   "testes": [],
-   "situacao": "em funcionamento",
-   "etapa": "08 Cartório · etapas 1 e 2 (recepção e certificação)",
-   "parte": "BASE",
-   "componente": "Cartório: base de passagem",
-   "ligacoes": [],
-   "critico": false,
-   "metrica": "livros com link oficial aprovado",
    "ordem": 88
   },
   {
    "arquivo": "eldorado/base/cartorio/cartorio.py",
-   "linhas": 191,
+   "linhas": 209,
    "finalidade": "O Cartório (titular, 22/10/2026): o ORGANIZADOR. Ele não busca nada: é onde o livro recebe informação nova, é",
    "depende_de": [
     "eldorado/base/cartorio/auditoria.py",
     "eldorado/base/cartorio/certificacao.py",
     "eldorado/base/cartorio/indice.py",
+    "eldorado/base/cartorio/origem.py",
     "eldorado/base/cartorio/passaporte.py",
     "eldorado/base/cartorio/selos.py",
-    "eldorado/base/cartorio/site_oficial.py",
     "eldorado/base/missao/itens.py",
     "eldorado/base/nucleo/contratos.py",
     "eldorado/base/nucleo/eventos.py",
@@ -2514,6 +2514,7 @@
     "certidao.gravada",
     "livro.legislacao",
     "livro.links",
+    "livro.origem",
     "livro.vinculado"
    ],
    "acionado_por": [
@@ -2538,9 +2539,9 @@
     "eldorado/base/cartorio/auditoria.py",
     "eldorado/base/cartorio/certificacao.py",
     "eldorado/base/cartorio/indice.py",
+    "eldorado/base/cartorio/origem.py",
     "eldorado/base/cartorio/passaporte.py",
     "eldorado/base/cartorio/selos.py",
-    "eldorado/base/cartorio/site_oficial.py",
     "eldorado/base/missao/itens.py",
     "eldorado/base/nucleo/contratos.py",
     "eldorado/base/nucleo/eventos.py",
@@ -2552,13 +2553,13 @@
   },
   {
    "arquivo": "eldorado/base/cartorio/auditoria.py",
-   "linhas": 362,
+   "linhas": 366,
    "finalidade": "A auditoria de cada livro: a validação individual e a decupagem dos dados em colunas (livro_dados).",
    "depende_de": [
     "eldorado/base/cartorio/certificacao.py",
+    "eldorado/base/cartorio/origem.py",
     "eldorado/base/cartorio/passaporte.py",
     "eldorado/base/cartorio/selos.py",
-    "eldorado/base/cartorio/site_oficial.py",
     "eldorado/base/missao/itens.py",
     "eldorado/base/missao/portao.py",
     "eldorado/base/missao/regras_portao.py",
@@ -2589,9 +2590,9 @@
    "componente": "Cartório · validação (auditoria e arquivo)",
    "ligacoes": [
     "eldorado/base/cartorio/certificacao.py",
+    "eldorado/base/cartorio/origem.py",
     "eldorado/base/cartorio/passaporte.py",
     "eldorado/base/cartorio/selos.py",
-    "eldorado/base/cartorio/site_oficial.py",
     "eldorado/base/missao/itens.py",
     "eldorado/base/missao/portao.py",
     "eldorado/base/missao/regras_portao.py",
@@ -2653,10 +2654,10 @@
   },
   {
    "arquivo": "eldorado/motores/pilotos/interceptador.py",
-   "linhas": 268,
+   "linhas": 295,
    "finalidade": "O PILOTO INTERCEPTADOR (do Eldorado0, titular, 26/09/2026): \"o Espião descobre; o Interceptador comprova\".",
    "depende_de": [
-    "eldorado/base/cartorio/site_oficial.py",
+    "eldorado/base/cartorio/origem.py",
     "eldorado/base/missao/itens.py",
     "eldorado/base/nucleo/contratos.py",
     "eldorado/base/nucleo/eventos.py",
@@ -2685,7 +2686,7 @@
    "parte": "MOTORES",
    "componente": "Pilotos: motores livres com IA",
    "ligacoes": [
-    "eldorado/base/cartorio/site_oficial.py",
+    "eldorado/base/cartorio/origem.py",
     "eldorado/base/missao/itens.py",
     "eldorado/base/nucleo/contratos.py",
     "eldorado/base/nucleo/eventos.py",
@@ -2760,7 +2761,7 @@
   },
   {
    "arquivo": "eldorado/base/cartorio/analise_externa.py",
-   "linhas": 158,
+   "linhas": 166,
    "finalidade": "A etapa 5 do Cartório: a ANÁLISE EXTERNA pelo Claude no Chrome (titular, 22/10/2026).",
    "depende_de": [
     "eldorado/base/cartorio/cartorio.py",
@@ -2773,6 +2774,8 @@
     "aprendizado.registrado",
     "certidao.gravada",
     "livro.excluido_logicamente",
+    "livro.links",
+    "livro.origem",
     "veredito.gravado"
    ],
    "acionado_por": [
@@ -3509,6 +3512,24 @@
    "ordem": 123
   },
   {
+   "arquivo": "eldorado/base/cartorio/site_oficial.py",
+   "linhas": 0,
+   "finalidade": "O site oficial: a oportunidade se encontra NA FONTE (titular, 14/10/2026).",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [],
+   "testes": [],
+   "situacao": "a construir",
+   "etapa": "17 Outros",
+   "parte": "BASE",
+   "componente": "Cartório: base de passagem",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "livros com link oficial aprovado",
+   "ordem": 124
+  },
+  {
    "arquivo": "eldorado/base/cerebro/__init__.py",
    "linhas": 0,
    "finalidade": "",
@@ -3543,7 +3564,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 124
+   "ordem": 125
   },
   {
    "arquivo": "eldorado/base/cerebro/pilotos.py",
@@ -3576,7 +3597,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 125
+   "ordem": 126
   },
   {
    "arquivo": "eldorado/base/especial/__init__.py",
@@ -3596,7 +3617,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 126
+   "ordem": 127
   },
   {
    "arquivo": "eldorado/base/especial/registro.py",
@@ -3625,7 +3646,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 127
+   "ordem": 128
   },
   {
    "arquivo": "eldorado/base/investigacao/investigacao.py",
@@ -3646,7 +3667,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "livros investigados e itens comprovados por livro",
-   "ordem": 128
+   "ordem": 129
   },
   {
    "arquivo": "eldorado/motores/__init__.py",
@@ -3683,7 +3704,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 129
+   "ordem": 130
   }
  ],
  "motores": [

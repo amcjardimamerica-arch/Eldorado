@@ -21,7 +21,7 @@ from ..missao import itens as I
 from ..missao import portao
 from ..missao import regras_portao as R
 from ..nucleo.eventos import Diario, agora
-from . import site_oficial
+from . import origem
 from .certificacao import esfera_pelo_orgao
 
 MUNICIPAL = re.compile(r"(?i)prefeitura|munic[íi]pio|\bmunicipal\b|c[âa]mara (?:municipal|de vereadores)|secretaria municipal")
@@ -276,6 +276,9 @@ def auditar(con: sqlite3.Connection, hoje: date, somente: set[str] | None = None
         continuo = bool(CONTINUO.search(_primeiro(validas, "Prazo de inscrição") or ""))
         historico = historico or bool(ENCERRADO.search(_primeiro(validas, "Prazo de inscrição") or ""))   # a norma diz que não reabre
         link = lv["link_oficial"]
+        antes = con.execute("SELECT origem FROM livro_dados WHERE livro_id = ?", (lv["id"],)).fetchone()
+        org_cert = _primeiro(validas, "Órgão / financiador") or lv["orgao"]
+        cls_origem, motivo_origem = origem.classificar(link, org_cert, municipio, confirmado_antes=bool(antes and antes[0] == origem.CONFIRMADO))
         dados = {"livro_id": lv["id"], "abrangencia": abr, "municipio": municipio, "uf": lv["uf"],
                  "esfera": esfera(_primeiro(validas, "Esfera")) or esfera((esfera_pelo_orgao(lv["orgao"] or "") or (None,))[0]),
                  "inscricao_inicio": min(insc).isoformat() if len(insc) > 1 else None, "inscricao_fim": fim.isoformat() if fim else None,
@@ -284,7 +287,8 @@ def auditar(con: sqlite3.Connection, hoje: date, somente: set[str] | None = None
                  "modalidade": (_primeiro(validas, "Modalidade") or "")[:120] or None,
                  "area": (_primeiro(validas, "Área de atuação") or lv["tema"] or "")[:120] or None,
                  "situacao_prazo": _situacao(historico, continuo, fim, hoje),
-                 "link_oficial_tipo": "ausente" if not link else ("republicador" if site_oficial.eh_republicador(link) else "fonte"),
+                 "link_oficial_tipo": "ausente" if not link else ("republicador" if origem.eh_republicador(link) else "fonte"),   # indício, não decide
+                 "origem": cls_origem, "origem_motivo": motivo_origem[:300],
                  "validacao": validacao, "motivos": json.dumps(motivos + [f"certidão contestada — {x}" for x in contestadas], ensure_ascii=False),
                  "validado_em": agora()}
         resolvidas = {k: v for k, v in validas.items() if I.resolvido(v)}

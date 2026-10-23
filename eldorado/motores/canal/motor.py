@@ -421,7 +421,7 @@ class MotorCanal(Motor):
                       dados={"uf": m.uf, "orgao": pr.orgao, "modalidade": pr.modalidade, "leis": self.cfg.legislacao.leis, "fonte": "programa",
                              "origem": "programa (legislação e norma vigente)", "documentos_lidos": origens,
                              **self._extrair(textos, pr.extracao)},
-                      documento={"url": pr.link_oficial, "sha256": sha, "tipo": "html", "leitor": "programa (páginas oficiais)", "oficial": True,
+                      documento={"url": pr.link_oficial, "sha256": sha, "tipo": "html", "leitor": "programa (páginas oficiais)", "oficial": False,
                                  "paginas": textos, "alertas": alertas, "injecao": next((x for x in injecoes if x), None)})
 
     def _descobrir(self, f: CfgFonte) -> list[Pista] | None:
@@ -589,13 +589,14 @@ class MotorCanal(Motor):
 
     def _achado(self, fonte: CfgFonte, pista: Pista, n: int) -> Achado | None:
         documento = None
-        oficial, divulgacao = pista.link, fonte.url
+        # o link encontrado é a DIVULGAÇÃO; a origem é só o candidato da busca cega (seguir_oficial), decidida por livro depois
+        oficial, divulgacao = None, pista.link
         ler = (self.cfg.leitura.documentos and DOCUMENTO.search(pista.link)) or (self.cfg.leitura.paginas_dos_achados and not DOCUMENTO.search(pista.link))
         texto_do_ato = (pista.extra or {}).get("documento_texto")
         if texto_do_ato:                                            # o ato já recortado do documento oficial: é o próprio documento
             from ...base.nucleo.seguranca import injecao
             documento = {"url": pista.link, "sha256": hashlib.sha256(texto_do_ato.encode()).hexdigest(), "tipo": "ato", "leitor": "atos",
-                         "oficial": True, "paginas": [texto_do_ato], "alertas": [], "injecao": injecao(texto_do_ato)}
+                         "oficial": False, "paginas": [texto_do_ato], "alertas": [], "injecao": injecao(texto_do_ato)}   # o ato como publicado
             ler = False
         if self.cfg.leitura.seguir_oficial and not texto_do_ato and not DOCUMENTO.search(pista.link) and n < self.cfg.leitura.max_documentos:
             achado_oficial = self._seguir_oficial(pista)
@@ -611,7 +612,7 @@ class MotorCanal(Motor):
                 self.relatorio.append(f"{fonte.nome}: documento não lido, achado entregue sem ele ({pista.link}: {str(e)[:200]})")
                 r = lido = None
             if lido is not None:
-                documento = {"url": pista.link, "sha256": lido.sha256, "tipo": lido.tipo, "leitor": lido.leitor, "oficial": not r.copia_arquivada,
+                documento = {"url": pista.link, "sha256": lido.sha256, "tipo": lido.tipo, "leitor": lido.leitor, "oficial": False,
                              "paginas": [p.texto for p in lido.paginas], "alertas": lido.alertas, "injecao": lido.dados.get("injecao")}
         m = self.cfg.motor
         chave = hashlib.sha256(pista.link.encode()).hexdigest()[:16]

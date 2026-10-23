@@ -23,7 +23,8 @@ from ..nucleo.eventos import Diario, agora
 
 INSTRUCOES = (
     "Para cada livro: abra o link oficial (e, se preciso, a divulgação). Confira cada certidão na fonte. Para cada item que falta, "
-    "traga o valor com o TRECHO LITERAL do documento oficial, a página e o endereço; ou a DISPENSA, com a justificativa de que o "
+    "traga o valor com o TRECHO LITERAL do documento da oportunidade original, a página e o endereço; informe em 'link_original' o "
+    "endereço da oportunidade original (o site do órgão ou do financiador; o livro pode ter só a divulgação); ou a DISPENSA, com a justificativa de que o "
     "requisito não existe naquele edital (escrita como 'não se aplica a este edital porque…' ou 'não há recurso previsto…'; objeto, "
     "órgão, esfera, território e prazo de inscrição nunca se dispensam). Se o livro não for uma oportunidade válida para a missão, "
     "decida 'descartar' com o motivo. "
@@ -51,6 +52,7 @@ class Veredito(msgspec.Struct):
     itens: list[ItemEncontrado] = []
     dispensas: list[Dispensa] = []
     aprendizado: str | None = None
+    link_original: str | None = None          # a oportunidade original, confirmada pelo Chrome (a divulgação fica como estava)
 
 
 class Retorno(msgspec.Struct):
@@ -105,6 +107,12 @@ def importar(retorno: bytes | str, con: sqlite3.Connection, diario: Diario) -> l
                                                                    "justificativa_exclusao": f"descartado na análise externa: {v.motivo or 'sem motivo'}"})
             saida.append({"livro": v.livro_id, "descartado": True})
             continue
+        if v.link_original and v.link_original.startswith("http"):    # a origem confirmada pela análise externa
+            diario.emitir("livro.links", "chrome", {"id": v.livro_id, "link_divulgacao": con.execute("SELECT link_divulgacao FROM livro WHERE id = ?",
+                                                                                                      (v.livro_id,)).fetchone()[0],
+                                                    "link_oficial": v.link_original, "atualizado_em": agora()})
+            diario.emitir("livro.origem", "chrome", {"livro_id": v.livro_id, "origem": "confirmado",
+                                                     "origem_motivo": "confirmado pela análise externa (Chrome)"})
         extras, recusas = {}, []
         for it in v.itens:
             if it.item not in I.DOZE or not it.trecho.strip():

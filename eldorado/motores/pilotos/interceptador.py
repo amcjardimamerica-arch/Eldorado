@@ -29,7 +29,7 @@ from urllib.parse import quote, urlsplit
 
 import zstandard
 
-from ...base.cartorio import site_oficial
+from ...base.cartorio import origem
 from ...base.missao import itens as I
 from ...base.nucleo.contratos import Achado
 from ...base.nucleo.eventos import Diario, agora
@@ -39,8 +39,9 @@ from ..leitura import leitores
 from ..leitura.pdf import LeitorPDF
 
 ABORDAGENS = {1: "documento na mão", 2: "anexos completos", 3: "página oficial e citados", 4: "biblioteca de sites",
-              5: "mídia do WordPress", 6: "mapa do site", 7: "cópia arquivada", 8: "ponte do titular", 9: "leitura profunda", 10: "busca no domínio"}
-ORDEM = {"sem estrela": [1, 4, 3, 10, 6, 5, 8, 2, 9, 7], "bronze": [1, 2, 3, 9, 7, 4, 10, 6, 5, 8], "prata": [1, 2, 9, 7, 3, 4, 10, 6, 5, 8]}
+              5: "mídia do WordPress", 6: "mapa do site", 7: "cópia arquivada", 8: "ponte do titular", 9: "leitura profunda", 10: "busca no domínio",
+              11: "secretaria do município"}
+ORDEM = {"sem estrela": [1, 11, 4, 3, 10, 6, 5, 8, 2, 9, 7], "bronze": [1, 11, 2, 3, 9, 7, 4, 10, 6, 5, 8], "prata": [1, 11, 2, 9, 7, 3, 4, 10, 6, 5, 8]}
 FOCO = {"sem estrela": I.BRONZE, "bronze": ("Valor", "Requisitos"), "prata": tuple(i for i in I.DOZE if i not in I.PRATA)}
 MAXIMO = 10
 NUMERO = re.compile(r"n[º°o.]*\s*0*(\d{1,4})\s*[/_-]\s*(20\d\d)", re.I)
@@ -62,6 +63,8 @@ class Livro:
     fim: str | None
     certidoes: dict[str, dict]
     tentadas: set[int]
+    municipio: str | None = None          # o município do livro (a secretaria do município é onde o diário costuma apontar)
+    uf: str | None = None
 
     @property
     def balcao(self) -> str:
@@ -87,11 +90,11 @@ def fila(con: sqlite3.Connection, hoje: str) -> list[Livro]:
     for c in con.execute("SELECT * FROM certidao WHERE situacao IN ('comprovado','dispensado')"):
         certs.setdefault(c["livro_id"], []).append(dict(c))
     saida = []
-    for r in con.execute("SELECT l.id, l.titulo, l.orgao, l.link_oficial, l.link_divulgacao, l.estrela, d.inscricao_fim FROM livro l "
+    for r in con.execute("SELECT l.id, l.titulo, l.orgao, l.link_oficial, l.link_divulgacao, l.estrela, d.inscricao_fim, d.municipio, l.uf FROM livro l "
                          "JOIN livro_dados d ON d.livro_id = l.id JOIN passaporte p ON p.livro_id = l.id WHERE p.fase = 'preparacao' "
                          "AND l.situacao <> 'excluido' AND d.validacao <> 'expurgado' AND l.id NOT IN (SELECT livro_unido FROM uniao)"):
         lv = Livro(r["id"], r["titulo"] or "", r["orgao"], r["link_oficial"], r["link_divulgacao"], r["estrela"] or "sem", r["inscricao_fim"],
-                   I.melhor(certs.get(r["id"], [])), tentadas.get(r["id"], set()))
+                   I.melhor(certs.get(r["id"], [])), tentadas.get(r["id"], set()), r["municipio"], r["uf"])
         if lv.faltam:
             saida.append(lv)
     return sorted(saida, key=lambda x: (0 if (x.fim and x.fim >= hoje) else 1, x.fim or "9999", len(x.faltam)))
@@ -198,6 +201,30 @@ class Interceptador:
         self._copias = {**getattr(self, "_copias", {}), lv.link_oficial: r}
         return [lv.link_oficial] if r.status == 200 else []
 
+    def _a11(self, lv: Livro) -> list[str]:
+        """A secretaria do município (titular, 23/10/2026): o diário divulga; a oportunidade original costuma estar no site
+        da prefeitura. Do município do livro (ou do órgão do ato) ao site <município>.<uf>.gov.br, e a busca da oportunidade
+        lá, pelo número do edital ou pelas palavras do título, na API do WordPress."""
+        import unicodedata
+        nome = lv.municipio
+        if not nome:
+            m = re.search(r"(?:munic[ií]pio|municipal|prefeitura)(?: municipal)? (?:de |do |da )([A-ZÀ-Úa-zà-ú' ]{3,40})", f"{lv.orgao or ''} {lv.titulo}")
+            nome = m.group(1).strip() if m else None
+        if not nome:
+            return []
+        slug = re.sub(r"[^a-z]", "", "".join(c for c in unicodedata.normalize("NFKD", nome.lower()) if not unicodedata.combining(c)))
+        uf = (lv.uf or "go").lower() if (lv.uf or "GO").upper() != "BR" else "go"
+        termo = lv.numero.split("/")[0] if lv.numero else " ".join(w for w in re.findall(r"[A-Za-zÀ-ú]{5,}", lv.titulo)[:3])
+        for base in (f"https://www.{slug}.{uf}.gov.br", f"https://{slug}.{uf}.gov.br"):
+            try:
+                itens = json.loads(self.escada.buscar(f"{base}/wp-json/wp/v2/posts?search={quote(termo)}&per_page=5&_fields=link,title").conteudo)
+            except (Bloqueado, Indisponivel, Pendente, ValueError):
+                continue
+            links = [i["link"] for i in itens if isinstance(i, dict) and i.get("link")]
+            if links:
+                return links[:3]
+        return []
+
     def _a8(self, lv: Livro) -> list[str]:
         return [lv.link_oficial] if (self.ponte and lv.link_oficial) else []
 
@@ -248,7 +275,7 @@ class Interceptador:
             paginas += [p.texto for p in leitura.paginas]
             alertas += leitura.alertas
             injecao = injecao or leitura.dados.get("injecao")
-            oficial = oficial or (u if site_oficial.eh_fonte(u) else None)
+            oficial = oficial or (u if origem.evidencia(u, lv.orgao) else None)      # a origem pela evidência do livro, não pelo domínio
         if not paginas:
             return None
         itens_ia, ia_rel = {}, None
@@ -265,4 +292,4 @@ class Interceptador:
                       dados={"livro_id": lv.id, "orgao": lv.orgao, "abordagem": ABORDAGENS[n], **({"itens": itens_ia} if itens_ia else {}),
                              **({"ia": ia_rel} if ia_rel else {})},
                       documento={"url": oficial or urls[0], "sha256": sha, "tipo": "investigacao", "leitor": f"interceptador · {ABORDAGENS[n]}",
-                                 "oficial": True, "paginas": paginas, "alertas": alertas[:10], "injecao": injecao})
+                                 "oficial": bool(oficial), "paginas": paginas, "alertas": alertas[:10], "injecao": injecao})

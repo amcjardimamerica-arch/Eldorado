@@ -28,10 +28,15 @@ ele já aprendeu**. A estrutura do sistema não muda quando um motor entra.
    Diário), ela é a rota principal; a página é a alternativa.
 4. **Ao menos duas rotas.** O mesmo edital sai em mais de um lugar (o diário oficial e o site da secretaria; o site da
    fundação e o portal do terceiro setor). Um motor com uma rota só fica cego quando ela muda.
-5. **O portal entrega pista; a fonte oficial entrega a prova.** Motor de portal que reúne editais de terceiros segue até
-   o documento oficial (`seguir_oficial`), e o link oficial é o do órgão, não o do portal.
-6. **O motor extrai o necessário e a prova**: os dados da oportunidade, o link de divulgação, o link oficial e o texto
-   literal do documento. Nada de informação de livro no motor: livro é do Cartório.
+5. **Nenhum motor é, por regra, a fonte original** (titular, 23/10/2026). Diários, portais e sites de divulgação
+   divulgam; um portal (como o Prosas) tanto replica oportunidades de outros quanto tem as suas. O motor entrega o link
+   onde encontrou (`link_divulgacao`) e, quando a tentativa cega acha um documento (`seguir_oficial`), o link
+   candidato à origem (`link_oficial`). Original ou divulgação é decidido POR LIVRO, com evidência
+   (`base/cartorio/origem.py`: o domínio do órgão ou do financiador do livro, o município, o Chrome, o Interceptador);
+   a rede neural vincula e aprofunda. Dado incompleto é esperado: o Interceptador e o Chrome completam. Nos diários, a
+   oportunidade original costuma estar no site da secretaria do município (a abordagem 11 do Interceptador).
+6. **O motor extrai o necessário e a prova**: os dados da oportunidade, o link de divulgação, o link candidato à origem
+   (quando houver) e o texto literal do que leu. Nada de informação de livro no motor: livro é do Cartório.
 7. **O aprendizado mora dentro do motor.** Lições, bloqueios conhecidos, alternativas e rotas que falharam ficam em
    `[aprendizado]`; o estado vivo (assinaturas, leituras, previsão dos alvos, retornos) fica em `dados/motores/<id>.db`,
    escrito só pelo motor. Um motor nunca lê o aprendizado de outro; o que é comum fica na missão ou no canivete.
