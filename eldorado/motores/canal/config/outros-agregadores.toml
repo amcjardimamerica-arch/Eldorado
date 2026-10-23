@@ -1,0 +1,96 @@
+# Outros agregadores e motores de busca — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "BR"
+canal = "portal"
+id = "outros-agregadores"
+nome = "Outros agregadores e motores de busca"
+categoria = "Portais e fontes do terceiro setor"
+categoria_estudo = "POR"
+finalidade = "reunir os agregadores de editais e a busca aberta de oportunidades para OSC que não têm motor próprio (pedido da titular)"
+tipo_finalidade = "descoberta"
+nomes_anteriores = ["outras-oportunidades-1", "outras-oportunidades-2", "outras-oportunidades-3", "outras-oportunidades-4", "outras-oportunidades-5", "outras-oportunidades-6", "outras-oportunidades-7", "outras-oportunidades-8", "plat-captamos", "outras-oportunidades"]
+
+# ---- rotas (23/10/2026, testes/paginas/agregadores-sondagem/): os agregadores que divulgam oportunidades de terceiros (a
+# origem é decidida por livro) e a busca aberta. As 48 páginas avulsas dos antigos blocos "Outras oportunidades" eram
+# oportunidades achadas uma a uma: hoje são livros, e o site original de cada uma é vigiado pelo mapa do site.
+
+[[fonte]]
+nome = "Editais do Brasil — oportunidades (fomento, bolsas, prêmios)"
+url = "https://editaisdobrasil.com/oportunidades"
+tipo = "pagina"
+papel = "principal"
+
+[[fonte]]
+nome = "Editais do Brasil — competições e prêmios"
+url = "https://editaisdobrasil.com/oportunidades/competicoes"
+tipo = "pagina"
+papel = "alternativa"
+
+[[fonte]]
+nome = "Jornada Social — o edital do programa (Jornada TransformAção)"
+url = "https://jornadasocial.com.br/"
+tipo = "pagina"
+papel = "alternativa"
+
+[[fonte]]
+nome = "busca aberta: edital chamamento público organizações da sociedade civil inscrições abertas"
+url = ""
+tipo = "metabusca"
+papel = "alternativa"
+termos = "edital chamamento público organizações da sociedade civil inscrições abertas"
+
+[[fonte]]
+nome = "busca aberta: edital para ONGs e associações inscrições abertas projetos sociais"
+url = ""
+tipo = "metabusca"
+papel = "alternativa"
+termos = "edital para ONGs e associações inscrições abertas projetos sociais"
+
+[[fonte]]
+nome = "busca aberta: chamada pública projetos sociais entidades sem fins lucrativos inscrições"
+url = ""
+tipo = "metabusca"
+papel = "alternativa"
+termos = "chamada pública projetos sociais entidades sem fins lucrativos inscrições"
+
+[[alvo]]
+id = "f260-captacao-217"
+nome = "Bússola Social - Bússola Editais"
+enderecos = ["https://bussolasocial.com.br/"]
+orgao = "Bússola Social — Bússola Editais"
+
+[[alvo]]
+id = "f260-captacao-218"
+nome = "Capta - oportunidades e editais"
+enderecos = ["https://prosas.com.br/editais"]
+orgao = "órgão a localizar"
+
+[[alvo]]
+id = "f260-curadoria-008"
+nome = "Instituto Impactarte — cadastro de proponente em fluxo contínuo"
+enderecos = ["https://www.impactarte.org.br/cadastro-proponente"]
+orgao = "Instituto Impactarte"
+
+[acesso]
+degraus = ["api", "leve", "local"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = ["re:edital|chamamento|chamada|sele[çc][ãa]o|pr[êe]mio|inscri[çc][õo]es|fomento|patroc[ií]nio|apoio a projetos|financiamento|programa de (apoio|acelera)"]
+vetos = ["re:licita[çc]|preg[ãa]o|tomada de pre[çc]os|concorr[êe]ncia|leil[ãa]o|concurso p[úu]blico|processo seletivo|vagas|est[áa]gio|resultado|homologa|^entrar$|^perguntar|editalai|planos|^setores|^modalidades|(^| )tese( |$)|mestrado|doutorado|produtividade|kaggle|^fomento e (bolsas|inova)|^competi[çc][õo]es e pr"]
+termos_em = "titulo"
+
+[aprendizado]
+licoes = ["O que um agregador mostra é divulgação: a origem de cada livro é decidida por livro (regra da titular, 23/10/2026).", "Os sites dos antigos blocos que pertencem a um motor existente (os institutos das empresas, por exemplo) vão para ele.", "Rota de acesso única para os domínios com bloqueio (aceleradora.glocal.org.br, banrisulcultural.com.br, casafluminense.org.br, culteditais.cultura.gov.br, cultura.rs.gov.br…): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 10 rota(s) que funcionaram: entram como rotas do motor.", "2 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 3 alvos são vigiados só na janela prevista da próxima edição.", "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10).", "Os domínios do antigo “Outras oportunidades” que pertencem a um motor existente são transferidos a ele; o restante fica aqui."]
+bloqueios_conhecidos = ["culteditais.cultura.gov.br", "www.administracao.go.gov.br", "www.boavista.rr.gov.br", "www.institutoacp.org.br", "www.institutococacolabrasil.com.br", "www.onumulheres.org.br", "banrisulcultural.com.br", "fns.cnbb.org.br", "www.editalcorredor2025.com.br", "transparencia.caubr.gov.br", "cultura.rs.gov.br", "transparencia.agilicloud.com.br", "www.academiaassai.com.br", "www.goias365.com.br", "doem.org.br", "institutosabin.org.br", "mapacultural.saobernardo.sp.gov.br", "notasocial.com.br", "www.amazoniamaisdez.org.br", "tuifund.com", "www.crars.org.br", "www.institutounibanco.org.br", "www.itauvivermais.com.br", "editaisdobrasil.com", "fundacaocargill.org.br", "jornadasocial.com.br", "muribeca.se.gov.br", "aceleradora.glocal.org.br", "casafluminense.org.br", "www.diariomunicipal.com.br"]
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["https://captamos.com.br (tempo esgotado da nuvem, 23/10/2026)", "https://www.editalong.com e https://doem.org.br (aplicativos sem lista pública)", "Nota Social e Agência do Bem (notícias, não agregadores de editais)", "https://editaisdobrasil.com/ e /editais (licitações, não oportunidades para OSC)"]
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14
