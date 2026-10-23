@@ -1,9 +1,12 @@
-"""O Cartório, base de passagem: recebe os achados aceitos e os transforma em livros certificados.
+"""O Cartório (titular, 22/10/2026): o ORGANIZADOR. Ele não busca nada: é onde o livro recebe informação nova, é
+certificado e classificado (o selo do livro, pelo histórico; a estrela, pela oportunidade aberta) e fica na fase em
+que está. Quem age é a rede neural, que aciona o motor da oportunidade ou o Interceptador.
 
-Para cada achado: cria ou vincula o livro (índice); confere o link oficial (site oficial); move de "coleta" para
-"certificacao" com a Regência (passaporte); certifica os itens no texto literal das páginas; calcula os dois selos;
-grava o relatório da etapa no livro. Livro sem os 12 itens registra a tentativa (até 3); depois, segue adiante.
-Só o Cartório move livros. Só grava eventos.
+As 5 fases: 1 recepção (liga a informação a um livro); 2 certificação (certifica e classifica); 3 preparação (o pedido
+do que falta, para a rede neural); 4 validação (valida a informação adicional e atualiza); 5 análise externa (o Claude no
+Chrome, que pode dispensar um item, com o aprendizado). Com todas as informações (estrela de ouro), na fase 2 ou 4,
+o livro vai ao Farol, a segunda metade do sistema.
+
 """
 from __future__ import annotations
 
@@ -80,11 +83,23 @@ class Cartorio:
         saida = []
         for bruto in achados:
             a = msgspec.convert({k: v for k, v in bruto.items() if not k.startswith("_")}, Achado)
-            livro, novo, como = self.indice.resolver(a)
-            if novo:
-                self.passaporte.mover(livro, "coleta", "livro novo")
-            if self.passaporte.fase(livro) == "coleta":
-                self.passaporte.mover(livro, "certificacao", "achado aceito pela Pertinência")
+            # FASE 1 · recepção: liga a informação a um livro (a pedida pela rede para um livro vai direto a ele)
+            pedido = (a.dados or {}).get("livro_id")
+            if pedido and self.passaporte.fase(pedido) is not None:
+                livro, novo, como = pedido, False, f"informação adicional pedida pela rede ({a.motor})"
+                self.diario.emitir("livro.vinculado", "cartorio", {"achado_id": a.id, "livro_id": livro})
+            else:
+                livro, novo, como = self.indice.resolver(a)
+            fase = self.passaporte.fase(livro)
+            if fase is None:
+                self.passaporte.mover(livro, "recepcao", "livro novo (fase 1)")
+                fase = "recepcao"
+            if fase == "recepcao":
+                self.passaporte.mover(livro, "certificacao", "fase 2: certificar e classificar")
+                fase = "certificacao"
+            elif fase in ("preparacao", "analise externa"):
+                self.passaporte.mover(livro, "validacao", f"fase 4: validar a informação adicional ({a.motor})")
+                fase = "validacao"
             oficial = site_oficial.escolher([a.link_oficial, a.link_divulgacao])
             if oficial:
                 self.diario.emitir("livro.links", "cartorio", {"id": livro, "link_divulgacao": a.link_divulgacao, "link_oficial": oficial,
@@ -105,11 +120,15 @@ class Cartorio:
             estrela, selo = selos.calcular(self.diario, livro, certidoes, self._edicoes(livro, a), self.ano)
             faltam = I.faltando(certidoes)
             self.diario.emitir("relatorio.etapa", "cartorio", {
-                "livro_id": livro, "fase": "certificacao", "em": agora(), "analise": "interna",
+                "livro_id": livro, "fase": fase, "em": agora(), "analise": "interna",
                 "gerou": f"{len(novas)} item(ns) certificado(s); estrela {estrela}; selo do livro {selo}; {como}",
                 "aprendeu": None if oficial else "só pistas: falta o link oficial", "faltou": ", ".join(faltam) or None})
-            if faltam:
-                self.passaporte.tentar(livro, "certificacao do documento oficial", f"faltam {len(faltam)} item(ns)")
+            # o Cartório não busca: com todas as informações, ao Farol; senão, à fase 3, com o pedido para a rede neural
+            if fase in ("certificacao", "validacao"):
+                if not faltam:
+                    self.passaporte.mover(livro, "farol", "todas as informações: estrela de ouro (a segunda metade do sistema)")
+                else:
+                    self.passaporte.mover(livro, "preparacao", f"fase 3: pedido à rede neural — faltam {', '.join(faltam)}")
             saida.append({"livro": livro, "novo": novo, "como": como, "estrela": estrela, "selo_livro": selo, "faltam": faltam,
                           "_linhagem": {"livro": livro, "achado": a.id}})
         return saida

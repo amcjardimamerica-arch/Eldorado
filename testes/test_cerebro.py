@@ -86,10 +86,14 @@ def test_pertinencia_decide_com_motivo_e_portao_com_erro_barra_e_alarma(diario, 
 
 # ------------------------------------------------------------------ regência
 def test_transicoes_de_fase():
-    assert autorizar("coleta", "certificacao")[0]
-    assert not autorizar("coleta", "farol")[0]
-    assert not autorizar("certificacao", "investigacao", tentativas_na_fase=4)[0]
-    assert not autorizar("farol", "coleta")[0]
+    assert autorizar(None, "recepcao")[0] and not autorizar(None, "certificacao")[0]         # todo livro entra pela fase 1
+    assert autorizar("recepcao", "certificacao")[0] and not autorizar("recepcao", "farol")[0]
+    assert autorizar("certificacao", "farol")[0] and autorizar("certificacao", "preparacao")[0]   # completo → Farol; senão → 3
+    assert autorizar("preparacao", "validacao")[0] and autorizar("preparacao", "analise externa")[0]
+    assert not autorizar("preparacao", "farol")[0]                                            # a fase 3 não certifica
+    assert autorizar("validacao", "farol")[0] and autorizar("analise externa", "farol")[0]
+    assert not autorizar("certificacao", "preparacao", tentativas_na_fase=4)[0]
+    assert not autorizar("farol", "recepcao")[0]
 
 
 def _regencia(diario, carga=0.1, motores=None):

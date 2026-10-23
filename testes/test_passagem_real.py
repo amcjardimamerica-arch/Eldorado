@@ -34,7 +34,7 @@ def test_achado_aceito_vira_livro_certificado_com_selos(tmp_path):
     try:
         bib = b["biblioteca"]
         lid = livro["livro"]
-        assert bib.execute("SELECT fase FROM passaporte WHERE livro_id=?", (lid,)).fetchone()[0] == "certificacao"
+        assert bib.execute("SELECT fase FROM passaporte WHERE livro_id=?", (lid,)).fetchone()[0] in ("preparacao", "farol")  # fase 3, ou completo
         assert {x[0] for x in bib.execute("SELECT autorizado_por FROM passagem WHERE livro_id=?", (lid,))} == {"regencia"}
         assert bib.execute("SELECT COUNT(*) FROM certidao WHERE livro_id=? AND trecho IS NOT NULL AND pagina=1", (lid,)).fetchone()[0] >= 6
         assert bib.execute("SELECT estrela, link_oficial FROM livro WHERE id=?", (lid,)).fetchone()[0] == livro["estrela"]

@@ -6,7 +6,7 @@ import sqlite3
 from ..cerebro.regencia import autorizar
 from ..nucleo.eventos import Diario, agora
 
-SITUACAO = {"verificacao externa": "verificacao externa", "farol": "transferido ao farol"}
+SITUACAO = {"analise externa": "verificacao externa", "farol": "transferido ao farol"}
 
 
 class Passaporte:

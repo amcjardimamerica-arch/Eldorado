@@ -81,8 +81,8 @@ def test_indice_vincula_pela_chave_e_pelo_mesmo_edital_em_outro_canal(diario):
 
 def test_passaporte_so_com_a_regencia_e_no_maximo_3_tentativas(diario):
     p = Passaporte(None, diario)
-    assert p.mover("L1", "coleta")[0] and p.mover("L1", "certificacao")[0]
-    assert not p.mover("L1", "coleta")[0]                            # volta não autorizada
+    assert p.mover("L1", "recepcao")[0] and p.mover("L1", "certificacao")[0]
+    assert not p.mover("L1", "recepcao")[0]                          # volta não autorizada
     assert [p.tentar("L1", "leitura", "faltam itens") for _ in range(4)] == [True, True, True, False]
 
 

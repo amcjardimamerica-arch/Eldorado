@@ -372,6 +372,26 @@ class MotorCanal(Motor):
         nao = sorted(set(ex.nao_certificar) | set(ex.itens))
         return {k: v for k, v in (("itens", itens), ("nao_certificar", nao)) if v}
 
+    def pesquisar(self, livro: dict[str, Any]) -> Achado | None:
+        """A pesquisa focada pedida pela rede neural (fase 3 do Cartório): o motor da oportunidade relê a divulgação e o
+        oficial do livro, segue até o documento e aplica a sua extração própria. A informação vai direto ao livro."""
+        import msgspec
+        link = livro.get("link_oficial") or livro.get("link_divulgacao")
+        if not link:
+            return None
+        leitura = self.cfg.leitura.model_copy(update={"documentos": True, "paginas_dos_achados": True, "seguir_oficial": True,
+                                                       "max_documentos": max(1, self.cfg.leitura.max_documentos)})
+        original, self.cfg = self.cfg, self.cfg.model_copy(update={"leitura": leitura})
+        try:
+            fonte = CfgFonte(nome="pesquisa focada", url=livro.get("link_divulgacao") or link)
+            a = self._achado(fonte, Pista(titulo=livro.get("titulo") or "", link=link, origem="pesquisa focada pedida pela rede neural"), 0)
+        finally:
+            self.cfg = original
+        if a is None or not a.documento:
+            return None
+        return msgspec.structs.replace(a, id=f"{self.cfg.id}-pesquisa-{livro['id']}-{_agora()[:10]}",
+                                       dados={**(a.dados or {}), "livro_id": livro["id"], "origem": "pesquisa focada pedida pela rede neural"})
+
     def _seguir_oficial(self, pista: Pista) -> tuple[str, str, dict] | None:
         """Da página de divulgação ao documento oficial: (oficial, divulgação, documento lido) ou None."""
         from ..descoberta import fonte_oficial

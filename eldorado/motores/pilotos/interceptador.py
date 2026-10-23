@@ -1,52 +1,45 @@
-"""A linha de produção do Cartório (do Eldorado0, titular, 09/10/2026): os motores descobrem; o Cartório certifica.
+"""O PILOTO INTERCEPTADOR (do Eldorado0, titular, 26/09/2026): "o Espião descobre; o Interceptador comprova".
 
-Todo livro com qualquer um dos 12 itens em falta entra na fila. A cada batimento, cada livro recebe UMA tentativa, com a
-abordagem seguinte da ordem do seu balcão; a fila anda até o tempo do batimento acabar e continua no próximo, até esgotar.
+Acionado pela REDE NEURAL para os livros na fase 3 do Cartório (preparação), quando falta informação. Ele não certifica
+nada: busca, na fonte oficial, os documentos que podem trazer o que falta e ENTREGA a informação nova ao livro; o Cartório
+a valida na fase 4. A cada acionamento, uma abordagem diferente (da ordem do balcão do livro), no máximo 10 por livro;
+abordagem sem material é pulada. Esgotadas as abordagens, a rede passa o livro à análise externa (fase 5).
 
-Balcões por selo (o livro passa sozinho ao seguinte quando sobe de selo):
-  sem estrela → bronze   foco: o site oficial, o objeto, o prazo de inscrição e o território
-  bronze → prata         foco: o valor e os requisitos
-  prata → ouro           foco: os demais itens e as dispensas
-
-As 10 abordagens (uma diferente a cada tentativa; sem material para aquele livro, é pulada e não gasta tentativa):
+As 10 abordagens (da linha de produção do Cartório do Eldorado0):
    1 documento na mão          o link oficial e os documentos ligados direto a ele
    2 anexos completos          todos os arquivos do processo (PNCP) e todos os documentos da página oficial
    3 página oficial e citados  o site do órgão mais fundo (até 8 páginas ou documentos a mais)
    4 biblioteca de sites       os sites oficiais já conhecidos do mesmo órgão (de outros livros)
    5 mídia do WordPress        o número do edital na biblioteca de mídia do site oficial
    6 mapa do site              o sitemap do domínio oficial, filtrado por edital e número
-   7 releitura                 relê os documentos oficiais já guardados, com as regras de hoje
+   7 cópia arquivada           a última cópia do link oficial na Wayback (o site mudou ou saiu do ar)
    8 ponte do titular          refaz pelo computador da titular o que o site recusou à nuvem
    9 leitura profunda          os documentos inteiros, com as tabelas (cronogramas)
   10 busca no domínio          a metabusca restrita ao domínio oficial, pelo número e pelo título
-Os itens se acumulam entre as tentativas (a certidão nunca perde o que já achou). Depois da 10ª, o livro passa à
-Investigação (o piloto Interceptador). Só grava eventos.
+A IA (a comprovação item a item com o trecho literal) entra sobre estes mesmos documentos.
 """
 from __future__ import annotations
 
 import json
 import re
 import sqlite3
-import time
 from dataclasses import dataclass
-from datetime import date
 from typing import Any, Callable, Iterator
 from urllib.parse import quote, urlsplit
 
 import zstandard
 
-from ...motores.acesso.escada import Bloqueado, Escada, Indisponivel, Pendente
-from ...motores.descoberta import fonte_oficial
-from ...motores.leitura import leitores
-from ...motores.leitura.pdf import LeitorPDF
-from ..missao import itens as I
-from ..nucleo.eventos import Diario, agora
-from . import site_oficial
-from .certificacao import Certificacao, Pagina
-from .passaporte import Passaporte
+from ...base.cartorio import site_oficial
+from ...base.missao import itens as I
+from ...base.nucleo.contratos import Achado
+from ...base.nucleo.eventos import Diario, agora
+from ..acesso.escada import Bloqueado, Escada, Indisponivel, Pendente
+from ..descoberta import fonte_oficial
+from ..leitura import leitores
+from ..leitura.pdf import LeitorPDF
 
 ABORDAGENS = {1: "documento na mão", 2: "anexos completos", 3: "página oficial e citados", 4: "biblioteca de sites",
-              5: "mídia do WordPress", 6: "mapa do site", 7: "releitura", 8: "ponte do titular", 9: "leitura profunda", 10: "busca no domínio"}
+              5: "mídia do WordPress", 6: "mapa do site", 7: "cópia arquivada", 8: "ponte do titular", 9: "leitura profunda", 10: "busca no domínio"}
 ORDEM = {"sem estrela": [1, 4, 3, 10, 6, 5, 8, 2, 9, 7], "bronze": [1, 2, 3, 9, 7, 4, 10, 6, 5, 8], "prata": [1, 2, 9, 7, 3, 4, 10, 6, 5, 8]}
 FOCO = {"sem estrela": I.BRONZE, "bronze": ("Valor", "Requisitos"), "prata": tuple(i for i in I.DOZE if i not in I.PRATA)}
 MAXIMO = 10
@@ -85,35 +78,32 @@ class Livro:
 
 
 def fila(con: sqlite3.Connection, hoje: str) -> list[Livro]:
-    """Os livros com itens em falta: as abertas que fecham antes primeiro; depois os que estão mais perto do ouro."""
+    """Os livros na fase 3 (preparação), na ordem do Cartório: as abertas que fecham antes; depois os mais perto do ouro."""
     con.row_factory = sqlite3.Row
     tentadas: dict[str, set[int]] = {}
-    for r in con.execute("SELECT livro_id, ferramenta FROM tentativa WHERE fase='certificacao' AND ferramenta LIKE 'abordagem %'"):
+    for r in con.execute("SELECT livro_id, ferramenta FROM tentativa WHERE fase='preparacao' AND ferramenta LIKE 'abordagem %'"):
         tentadas.setdefault(r["livro_id"], set()).add(int(r["ferramenta"].split()[1]))
     certs: dict[str, list[dict]] = {}
     for c in con.execute("SELECT * FROM certidao WHERE situacao IN ('comprovado','dispensado')"):
         certs.setdefault(c["livro_id"], []).append(dict(c))
     saida = []
     for r in con.execute("SELECT l.id, l.titulo, l.orgao, l.link_oficial, l.link_divulgacao, l.estrela, d.inscricao_fim FROM livro l "
-                         "JOIN livro_dados d ON d.livro_id = l.id WHERE l.situacao <> 'excluido' AND d.validacao <> 'expurgado' "
-                         "AND l.id NOT IN (SELECT livro_unido FROM uniao)"):
+                         "JOIN livro_dados d ON d.livro_id = l.id JOIN passaporte p ON p.livro_id = l.id WHERE p.fase = 'preparacao' "
+                         "AND l.situacao <> 'excluido' AND d.validacao <> 'expurgado' AND l.id NOT IN (SELECT livro_unido FROM uniao)"):
         lv = Livro(r["id"], r["titulo"] or "", r["orgao"], r["link_oficial"], r["link_divulgacao"], r["estrela"] or "sem", r["inscricao_fim"],
                    I.melhor(certs.get(r["id"], [])), tentadas.get(r["id"], set()))
-        if lv.faltam and len(lv.tentadas) < MAXIMO:
+        if lv.faltam:
             saida.append(lv)
     return sorted(saida, key=lambda x: (0 if (x.fim and x.fim >= hoje) else 1, x.fim or "9999", len(x.faltam)))
 
 
-class Linha:
+class Interceptador:
     def __init__(self, biblioteca: sqlite3.Connection, diario: Diario, escada: Escada, ponte: Escada | None = None,
-                 metabusca: Callable[[str], list[str]] | None = None, ano: int | None = None):
-        self.con, self.diario, self.escada, self.ponte, self.metabusca = biblioteca, diario, escada, ponte, metabusca
+                 metabusca: Callable[[str], list[str]] | None = None, arquivo: str = "https://web.archive.org"):
+        self.con, self.diario, self.escada, self.ponte, self.metabusca, self.arquivo = biblioteca, diario, escada, ponte, metabusca, arquivo
         self.leitura = leitores.padrao()
         self.profunda = leitores.padrao()
         self.profunda.registrar(LeitorPDF(tabelas="todas"))
-        self.certificacao = Certificacao(diario)
-        self.passaporte = Passaporte(biblioteca, diario, maximo=MAXIMO)
-        self.ano = ano or date.today().year
         self._conhecidos: dict[str, set[str]] | None = None
 
     # ------------------------------------------------------------------ leitura dos documentos
@@ -197,7 +187,15 @@ class Linha:
         return [p.link for p in pistas if CHAVE.search(p.link) and (not num or num in p.link)][:4]
 
     def _a7(self, lv: Livro) -> list[str]:
-        return ["__guardados__"] if self.con.execute("SELECT 1 FROM certidao WHERE livro_id=? AND pagina IS NOT NULL LIMIT 1", (lv.id,)).fetchone() else []
+        if not lv.link_oficial:
+            return []
+        from ..acesso.arquivo_web import DegrauArquivo
+        try:
+            r = DegrauArquivo(self.arquivo).buscar(lv.link_oficial, 25)
+        except (Bloqueado, Indisponivel, Pendente):
+            return []
+        self._copias = {**getattr(self, "_copias", {}), lv.link_oficial: r}
+        return [lv.link_oficial] if r.status == 200 else []
 
     def _a8(self, lv: Livro) -> list[str]:
         return [lv.link_oficial] if (self.ponte and lv.link_oficial) else []
@@ -211,96 +209,49 @@ class Linha:
         dom = urlsplit(lv.link_oficial).hostname
         return [u for u in self.metabusca(f"site:{dom} {lv.numero or ''} {lv.titulo[:80]}") if urlsplit(u).hostname == dom][:4]
 
-    # ------------------------------------------------------------------ uma tentativa
-    def tentar(self, lv: Livro) -> dict[str, Any]:
-        """Uma tentativa: a primeira abordagem da ordem do balcão que ainda não foi tentada e que tem material."""
+    # ------------------------------------------------------------------ uma investigação
+    def investigar(self, lv: Livro) -> dict[str, Any]:
+        """Uma investigação: a primeira abordagem da ordem do balcão ainda não tentada e com material. Entrega um achado
+        para o livro (o Cartório valida na fase 4); sem nenhuma abordagem restante, avisa que esgotou."""
         for n in ORDEM[lv.balcao]:
             if n in lv.tentadas:
                 continue
             urls = getattr(self, f"_a{n}")(lv)
             if not urls:
                 continue                                            # sem material: pulada, não gasta tentativa
-            novos = self._aplicar(lv, n, urls)
-            self.diario.emitir("tentativa.registrada", "cartorio", {
-                "livro_id": lv.id, "fase": "certificacao", "ferramenta": f"abordagem {n}", "numero": 1, "em": agora(),
-                "resultado": json.dumps({"abordagem": ABORDAGENS[n], "balcao": lv.balcao, "documentos": len(urls), "itens_novos": sorted(novos)},
-                                        ensure_ascii=False), "proxima_em": None})
+            achado = self._achado(lv, n, urls)
+            self.diario.emitir("tentativa.registrada", "interceptador", {
+                "livro_id": lv.id, "fase": "preparacao", "ferramenta": f"abordagem {n}", "numero": 1, "em": agora(),
+                "resultado": json.dumps({"abordagem": ABORDAGENS[n], "balcao": lv.balcao, "enderecos": len(urls),
+                                         "documentos": len((achado.documento or {}).get("paginas") or []) if achado else 0}, ensure_ascii=False),
+                "proxima_em": None})
             lv.tentadas.add(n)
-            return {"livro": lv.id, "abordagem": n, "itens_novos": sorted(novos)}
-        if len(lv.tentadas) < MAXIMO:
-            for n in ORDEM[lv.balcao]:                              # o que sobrou sem material conta como tentado
-                lv.tentadas.add(n)
-        self._encaminhar(lv)
-        return {"livro": lv.id, "abordagem": None, "itens_novos": [], "encaminhado": True}
+            return {"livro": lv.id, "abordagem": n, "achado": achado, "esgotado": False}
+        return {"livro": lv.id, "abordagem": None, "achado": None, "esgotado": True}
 
-    def _aplicar(self, lv: Livro, n: int, urls: list[str]) -> list[str]:
-        resolvidos = {k for k, v in lv.certidoes.items() if I.resolvido(v)}
-        paginas: list[Pagina] = []
-        oficial = None
-        if urls == ["__guardados__"]:                               # releitura: os documentos já guardados
-            for did, num, t in self.con.execute(SQL_GUARDADOS, (lv.id,)):
-
-                paginas.append(Pagina(did, num, _dz.decompress(t).decode("utf-8", errors="replace")))
-        else:
-            for u in urls:
+    def _achado(self, lv: Livro, n: int, urls: list[str]) -> Achado | None:
+        paginas, oficial, alertas, injecao = [], None, [], None
+        for u in urls:
+            if n == 7 and u in getattr(self, "_copias", {}):
+                r = self._copias[u]
+                try:
+                    leitura = self.leitura.ler(r.conteudo, u)
+                except leitores.SemLeitor:
+                    continue
+            else:
                 lido = self._ler(u, profunda=(n == 9), escada=self.ponte if n == 8 else None)
                 if lido is None:
                     continue
-                url, leitura, _ = lido
-                self.diario.emitir("documento.registrado", "cartorio", {"url": url, "sha256": leitura.sha256, "tipo": leitura.tipo,
-                                                                        "paginas": len(leitura.paginas), "obtido_em": agora(), "oficial": 1,
-                                                                        "leitor": leitura.leitor})
-                for p in leitura.paginas:
-                    self.diario.emitir("pagina.gravada", "cartorio", {"documento_sha256": leitura.sha256, "numero": p.numero, "texto": p.texto})
-                paginas += [Pagina(leitura.sha256, p.numero, p.texto) for p in leitura.paginas]
-                oficial = oficial or (url if site_oficial.eh_fonte(url) else None)
-        novas = self.certificacao.certificar(lv.id, paginas, resolvidos)
-        for item, c in novas.items():
-            lv.certidoes[item] = c
-        if oficial and not lv.link_oficial:
-            self.diario.emitir("livro.links", "cartorio",
-                               {"id": lv.id, "link_divulgacao": lv.link_divulgacao, "link_oficial": oficial, "atualizado_em": agora()})
-        if novas:                                                   # só a estrela (o selo do livro vem do histórico de edições)
-            resolvidas = {k: v for k, v in lv.certidoes.items() if I.resolvido(v)}
-            self.diario.emitir("selo.calculado", "cartorio", {"id": lv.id, "estrela": I.nivel(resolvidas), "informacoes_validadas": len(resolvidas),
-                                                              "atualizado_em": agora()})
-        return list(novas)
-
-    def _encaminhar(self, lv: Livro) -> None:
-        """Depois das 10 abordagens: à Investigação (o Interceptador), com a Regência autorizando a passagem."""
-        if self.passaporte.fase(lv.id) == "certificacao":
-            self.passaporte._tentativas[(lv.id, "certificacao", "linha")] = MAXIMO
-            ok, _ = self.passaporte.mover(lv.id, "investigacao", f"10 abordagens do Cartório sem completar: faltam {', '.join(lv.faltam)}")
-            if ok:
-                self.diario.emitir("relatorio.etapa", "cartorio", {"livro_id": lv.id, "fase": "certificacao", "analise": "interna", "em": agora(),
-                                                                   "gerou": "linha de produção esgotada (10 abordagens)", "aprendeu": None,
-                                                                   "faltou": ", ".join(lv.faltam)})
-
-    def andar(self, orcamento_s: float, hoje: str | None = None) -> list[dict[str, Any]]:
-        """A fila anda até o tempo do batimento acabar: uma tentativa por livro; o resto continua no próximo batimento."""
-        inicio, saida = time.monotonic(), []
-        for lv in fila(self.con, hoje or date.today().isoformat()):
-            if time.monotonic() - inicio > orcamento_s:
-                break
-            saida.append(self.tentar(lv))
-        return saida
-
-
-def no_linha(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
-    """Nó da passagem: a linha de produção anda durante o orçamento de tempo do batimento."""
-    from pathlib import Path
-
-    from ...motores.acesso.api import DegrauAPI
-    from ...motores.acesso.leve import DegrauLeve
-    from ...motores.acesso.local import DegrauLocal
-    p = Path(parametros.get("dados", "dados")) / "biblioteca.db"
-    if not p.exists():
-        return []
-    con = sqlite3.connect(f"file:{p}?mode=ro", uri=True)
-    try:
-        escada = Escada([DegrauAPI(), DegrauLeve()], intervalo_padrao=float(parametros.get("intervalo_s", 1.0)), tentativas=1, tempo_limite=25)
-        ponte = Escada([DegrauLocal(parametros.get("ponte", "dados/ponte"))], intervalo_padrao=0) if parametros.get("ponte") else None
-        r = Linha(con, contexto.diario, escada, ponte).andar(float(parametros.get("orcamento_s", 300)))
-    finally:
-        con.close()
-    return [{"tentativas": len(r), "itens_novos": sum(len(x["itens_novos"]) for x in r), "encaminhados": sum(1 for x in r if x.get("encaminhado"))}]
+                u, leitura, _ = lido
+            paginas += [p.texto for p in leitura.paginas]
+            alertas += leitura.alertas
+            injecao = injecao or leitura.dados.get("injecao")
+            oficial = oficial or (u if site_oficial.eh_fonte(u) else None)
+        if not paginas:
+            return None
+        sha = __import__("hashlib").sha256("\n".join(paginas).encode()).hexdigest()
+        return Achado(id=f"interceptador-{lv.id}-{n}", motor="interceptador", encontrado_em=agora()[:10],
+                      link_divulgacao=lv.link_divulgacao or lv.link_oficial or urls[0], link_oficial=oficial or lv.link_oficial, titulo=lv.titulo,
+                      dados={"livro_id": lv.id, "orgao": lv.orgao, "abordagem": ABORDAGENS[n]},
+                      documento={"url": oficial or urls[0], "sha256": sha, "tipo": "investigacao", "leitor": f"interceptador · {ABORDAGENS[n]}",
+                                 "oficial": True, "paginas": paginas, "alertas": alertas[:10], "injecao": injecao})

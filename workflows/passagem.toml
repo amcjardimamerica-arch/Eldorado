@@ -43,9 +43,33 @@ tipo = "eldorado.base.cartorio.auditoria:no_auditar"
 parametros = { dados = "dados" }
 
 [[no]]
-id = "linha"
-tipo = "eldorado.base.cartorio.linha:no_linha"
-parametros = { dados = "dados", orcamento_s = 300, intervalo_s = 1.0 }
+id = "encaminhar"
+tipo = "eldorado.base.cerebro.encaminhamento:no_encaminhar"
+parametros = { dados = "dados", modulos = "config/modulos.toml", orcamento_s = 300, intervalo_s = 1.0 }
+
+[[no]]
+id = "decidir_rede"
+tipo = "eldorado.base.cerebro.pertinencia:no_decidir"
+parametros = { missao = "eldorado.base.missao.oportunidades:MissaoOportunidades", modulos = "config/modulos.toml" }
+
+[[no]]
+id = "aplicar_rede"
+tipo = "eldorado.base.fluxo.nos:aplicar_eventos"
+tentativas = 3
+esperas_s = [2, 5]
+parametros = { dados = "dados", eventos = "eventos" }
+
+[[no]]
+id = "validar"
+tipo = "eldorado.base.cartorio.cartorio:no_cartorio"
+parametros = { dados = "dados", missao = "eldorado.base.missao.oportunidades:MissaoOportunidades" }
+
+[[no]]
+id = "aplicar_validacao"
+tipo = "eldorado.base.fluxo.nos:aplicar_eventos"
+tentativas = 3
+esperas_s = [2, 5]
+parametros = { dados = "dados", eventos = "eventos" }
 
 [[no]]
 id = "aprender"
@@ -90,9 +114,25 @@ de = "aplicar_cartorio"
 para = "auditar"
 [[conexao]]
 de = "auditar"
-para = "linha"
+para = "encaminhar"
 [[conexao]]
-de = "linha"
+de = "encaminhar"
+para = "decidir_rede"
+[[conexao]]
+de = "decidir_rede"
+para = "aplicar_rede"
+[[conexao]]
+de = "aplicar_rede"
+para = "validar"
+saida = "ordem"
+[[conexao]]
+de = "decidir_rede"
+para = "validar"
+[[conexao]]
+de = "validar"
+para = "aplicar_validacao"
+[[conexao]]
+de = "aplicar_validacao"
 para = "aprender"
 [[conexao]]
 de = "aprender"

@@ -24,11 +24,12 @@ from ..nucleo.registro import Registro
 from ..nucleo.registro import carregar as carregar_registro
 from .governador import Governador, Leitura, medidor_psutil
 
-TRANSICOES = {
-    "coleta": {"certificacao"},
-    "certificacao": {"investigacao", "verificacao externa", "farol"},
-    "investigacao": {"certificacao"},
-    "verificacao externa": {"certificacao", "farol"},
+TRANSICOES = {                        # as 5 fases do Cartório (titular, 22/10/2026) e o Farol, a segunda metade do sistema
+    "recepcao": {"certificacao"},                                   # 1 → 2
+    "certificacao": {"preparacao", "farol"},                        # 2 → 3, ou completo → Farol
+    "preparacao": {"validacao", "analise externa"},                 # 3 → 4 (chegou informação), ou → 5 (tentativas esgotadas)
+    "validacao": {"preparacao", "analise externa", "farol"},        # 4 → 3, → 5, ou completo → Farol
+    "analise externa": {"validacao", "farol"},                      # 5 → 4 (o Chrome trouxe informação), ou → Farol
     "farol": set(),
 }
 COLUNAS_ACHADO = {"id", "motor", "encontrado_em", "publicado_em", "link_divulgacao", "link_oficial", "titulo", "dados",
@@ -37,7 +38,7 @@ COLUNAS_ACHADO = {"id", "motor", "encontrado_em", "publicado_em", "link_divulgac
 
 def autorizar(fase_atual: str | None, para: str, tentativas_na_fase: int = 0, maximo: int = 3) -> tuple[bool, str]:
     if fase_atual is None:
-        return (para == "coleta" or para == "certificacao"), "entrada de um livro novo"
+        return para == "recepcao", "entrada de um livro novo (fase 1, recepção)"
     if para not in TRANSICOES.get(fase_atual, set()):
         return False, f"passagem não permitida: {fase_atual} → {para}"
     if tentativas_na_fase > maximo:
