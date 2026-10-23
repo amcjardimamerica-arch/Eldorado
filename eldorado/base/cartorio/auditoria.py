@@ -300,12 +300,16 @@ def aplicar(resultados: list[Resultado], diario: Diario) -> None:
         ja_excluido = r.dados.pop("_ja_excluido")
         for cid, _ in contestar:
             diario.emitir("certidao.contestada", "auditoria", {"id": cid, "situacao": "contestado"})
-        diario.emitir("livro.decupado", "auditoria", r.dados)
+        # a mesma hora na validação e nas mudanças que ela causa: senão o livro parece alterado depois de validado e é
+        # auditado de novo a cada ciclo (o defeito intermitente de 23/10/2026)
+        t = r.dados.get("validado_em") or agora()
+        r.dados["validado_em"] = t
         if r.estrela_depois != r.estrela_antes:
-            diario.emitir("selo.calculado", "auditoria", {"id": r.livro, "estrela": r.estrela_depois, "atualizado_em": agora()})
+            diario.emitir("selo.calculado", "auditoria", {"id": r.livro, "estrela": r.estrela_depois, "atualizado_em": t})
         if r.validacao == "expurgado" and not ja_excluido:
             justificativa = f"validação de 22/10/2026: {'; '.join(r.motivos)}"
-            diario.emitir("livro.excluido_logicamente", "auditoria", {"id": r.livro, "justificativa_exclusao": justificativa, "atualizado_em": agora()})
+            diario.emitir("livro.excluido_logicamente", "auditoria", {"id": r.livro, "justificativa_exclusao": justificativa, "atualizado_em": t})
+        diario.emitir("livro.decupado", "auditoria", r.dados)
         diario.emitir("relatorio.etapa", "auditoria", {"livro_id": r.livro, "fase": "validacao", "analise": "interna", "em": agora(),
                                                        "gerou": f"{r.validacao}; território {r.abrangencia}; estrela {r.estrela_antes} → {r.estrela_depois}; "
                                                                 f"{len(contestar)} certidão(ões) contestada(s)",

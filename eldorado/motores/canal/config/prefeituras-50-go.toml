@@ -1,0 +1,442 @@
+# Prefeituras das 25 maiores cidades de Goiás — portais de editais — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "GO"
+canal = "portal"
+id = "prefeituras-50-go"
+nome = "Prefeituras das 25 maiores cidades de Goiás — portais de editais"
+categoria = "Executivo — diários e portais do governo"
+categoria_estudo = "EXE"
+finalidade = "encontrar nos portais das 25 maiores prefeituras de Goiás os editais, chamamentos e programas abertos a OSC (cultura, esporte, assistência, conselhos e fundos municipais)"
+tipo_finalidade = "descoberta"
+nomes_anteriores = ["plat-prefeituras-50-go"]
+
+# ---- rotas confirmadas na sondagem de 23/10/2026 (testes/paginas/prefeituras-50-go/): 23 das 25 cidades respondem da
+# nuvem (o Eldorado0 registrava 17 só pelo Brasil); Luziânia (tempo esgotado) e Mineiros (página vazia) exigem o Brasil.
+# Os diários das cidades (AGM e Querido Diário) são o canal de outro motor (novo-diarios-municipais-go).
+
+[[fonte]]
+nome = "Prefeitura de Goiânia — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.goiania.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Goiânia — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.goiania.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Aparecida de Goiânia — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://aparecida.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Aparecida de Goiânia — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://aparecida.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Anápolis — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.anapolis.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Anápolis — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.anapolis.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Anápolis — página de editais (/publicacao-de-editais/)"
+url = "https://www.anapolis.go.gov.br/publicacao-de-editais/"
+tipo = "pagina"
+papel = "alternativa"
+
+[[fonte]]
+nome = "Prefeitura de Anápolis — página de editais (/espacocultural/)"
+url = "https://www.anapolis.go.gov.br/espacocultural/"
+tipo = "pagina"
+papel = "alternativa"
+
+[[fonte]]
+nome = "Prefeitura de Rio Verde — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.rioverde.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Rio Verde — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.rioverde.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Rio Verde — página de editais (/editais-e-downloads/)"
+url = "https://www.rioverde.go.gov.br/editais-e-downloads/"
+tipo = "pagina"
+papel = "alternativa"
+
+[[fonte]]
+nome = "Prefeitura de Águas Lindas de Goiás — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://aguaslindasdegoias.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Águas Lindas de Goiás — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://aguaslindasdegoias.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Luziânia — página de editais (/tabela-editais/)"
+url = "https://www.luziania.go.gov.br/tabela-editais/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true
+
+[[fonte]]
+nome = "Prefeitura de Luziânia — página de editais (/tabela-termos/)"
+url = "https://www.luziania.go.gov.br/tabela-termos/"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true
+
+[[fonte]]
+nome = "Prefeitura de Valparaíso de Goiás — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.valparaisodegoias.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Valparaíso de Goiás — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.valparaisodegoias.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Valparaíso de Goiás — página de editais (acessoainformacao.valparaisodegoias.go.gov.br/cidadao/atos_adm/mp/id=3)"
+url = "https://acessoainformacao.valparaisodegoias.go.gov.br/cidadao/atos_adm/mp/id=3"
+tipo = "pagina"
+papel = "alternativa"
+
+[[fonte]]
+nome = "Prefeitura de Trindade — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.trindade.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Trindade — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.trindade.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Formosa — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.formosa.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Formosa — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.formosa.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Novo Gama — página inicial (notícias)"
+url = "https://www.novogama.go.gov.br/"
+tipo = "pagina"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Senador Canedo — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.senadorcanedo.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Senador Canedo — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.senadorcanedo.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Itumbiara — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.itumbiara.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Itumbiara — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.itumbiara.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Catalão — página de editais (/avisos/edital-de-chamamento-publico)"
+url = "https://www.catalao.go.gov.br/avisos/edital-de-chamamento-publico"
+tipo = "pagina"
+papel = "alternativa"
+
+[[fonte]]
+nome = "Prefeitura de Catalão — página de editais (/avisos/termo-fomento)"
+url = "https://www.catalao.go.gov.br/avisos/termo-fomento"
+tipo = "pagina"
+papel = "alternativa"
+
+[[fonte]]
+nome = "Prefeitura de Jataí — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.jatai.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Jataí — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.jatai.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Planaltina — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.planaltina.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Planaltina — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.planaltina.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Caldas Novas — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.caldasnovas.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Caldas Novas — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.caldasnovas.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Santo Antônio do Descoberto — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.santoantoniododescoberto.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Santo Antônio do Descoberto — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.santoantoniododescoberto.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Goianésia — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.goianesia.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Goianésia — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.goianesia.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Goianésia — página de editais (/editais-e-publicacoes/)"
+url = "https://www.goianesia.go.gov.br/editais-e-publicacoes/"
+tipo = "pagina"
+papel = "alternativa"
+
+[[fonte]]
+nome = "Prefeitura de Cidade Ocidental — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://cidadeocidental.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Cidade Ocidental — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://cidadeocidental.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Mineiros — página de editais (/acesso-a-informacao/bids)"
+url = "https://www.mineiros.go.gov.br/acesso-a-informacao/bids"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true
+
+[[fonte]]
+nome = "Prefeitura de Mineiros — página de editais (/acesso-a-informacao/atos-de-inexigibilidade)"
+url = "https://www.mineiros.go.gov.br/acesso-a-informacao/atos-de-inexigibilidade"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true
+
+[[fonte]]
+nome = "Prefeitura de Cristalina — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://cristalina.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Cristalina — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://cristalina.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Inhumas — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.inhumas.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Inhumas — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.inhumas.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Itaberaí — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.itaberai.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Itaberaí — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.itaberai.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Itaberaí — página de editais (/aviso/)"
+url = "https://www.itaberai.go.gov.br/aviso/"
+tipo = "pagina"
+papel = "alternativa"
+
+[[fonte]]
+nome = "Prefeitura de Jaraguá — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.jaragua.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Jaraguá — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.jaragua.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Quirinópolis — publicações com \"chamamento\" (API do WordPress, 120 dias)"
+url = "https://www.quirinopolis.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "chamamento"
+papel = "principal"
+
+[[fonte]]
+nome = "Prefeitura de Quirinópolis — publicações com \"edital\" (API do WordPress, 120 dias)"
+url = "https://www.quirinopolis.go.gov.br/wp-json/wp/v2/posts?after={hoje-120:%Y-%m-%d}T00:00:00&_fields=id,date,title,excerpt,link"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
+[[alvo]]
+id = "f260-captacao-072"
+nome = "Arte e Cultura na Educação Integral"
+enderecos = ["https://www.in.gov.br/consulta/-/buscar/dou?q=chamamento+p%C3%BAblico+organiza%C3%A7%C3%B5es+da+sociedade+civil&s=do3", "https://www.in.gov.br/consulta/-/buscar/dou?q=resolu%C3%A7%C3%A3o+fundo+edital+entidade&s=do1", "https://www.goiania.go.gov.br/educacao/", "https://diariooficial.goiania.go.gov.br/", "https://www.in.gov.br/"]
+orgao = "Diário Oficial da União — Seção 3 (avisos e editais)"
+
+[[alvo]]
+id = "f260-captacao-149"
+nome = "SMS Goiânia - parceria com entidade de saúde"
+enderecos = ["https://saude.goiania.go.gov.br/", "https://diariooficial.goiania.go.gov.br/"]
+orgao = "Secretaria Municipal de Saúde de Goiânia"
+
+[[alvo]]
+id = "f260-espalhado-acessoainformacao-cavalcante-go-gov-br"
+nome = "PNCP — FUNDO MUNICIPAL DE CULTURA - CAVALCANTE — oportunidades (espalhado de edital validado)"
+enderecos = ["https://acessoainformacao.cavalcante.go.gov.br/"]
+orgao = "PNCP — FUNDO MUNICIPAL DE CULTURA - CAVALCANTE"
+
+[[alvo]]
+id = "f260-espalhado-senadorcanedo-go-gov-br"
+nome = "PNCP — FUNDO MUNICIPAL DE EDUCACAO E CULTURA - FMEC — oportunidades (espalhado de edital validado)"
+enderecos = ["https://senadorcanedo.go.gov.br/"]
+orgao = "PNCP — FUNDO MUNICIPAL DE EDUCACAO E CULTURA - FMEC"
+
+[acesso]
+degraus = ["api", "leve", "local"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true               # do post de divulgação ao edital oficial (o PDF)
+max_documentos = 30
+
+[lexico]
+# o léxico próprio dos portais municipais, calibrado com os títulos reais da sondagem de 23/10/2026:
+termos = ["re:chamamento|chamada p[uú]blica|credenciamento|termo de (fomento|colabora)|aldir blanc|pnab|paulo gustavo|cmdca|\\bfia\\b|fundo municipal|subven[çc]|pr[êe]mio|premia[çc]|patroc[ií]n|sele[çc][ãa]o (p[uú]blica|de (projetos|propostas|organiza|entidades|artistas))|(lan[çc]a|abre|publica)\\w* (o |os )?edita|inscri[çc][õo]es abertas|edital (de|n[ºo°.]|para|do|da)"]
+vetos = ["re:resultado|homologa|inexigibilidade|dispensa|extrato|lista de (inscri|inscritos|classifica)|inscritos|habilita[çc][ãa]o documental|concurso p[uú]blico|processo seletivo|contrata[çc][ãa]o tempor|convoca[çc][ãa]o|vacina|regulariza[çc][ãa]o fundi|permiss[ãa]o de uso|barracas|atividades comerciais|moradias|empresas que constru|licita[çc]|preg[ãa]o|audi[êe]ncia p[uú]blica|sess[ãa]o ordin|reuni[ãa]o|curso gratuito|aulas|matr[ií]cula|vagas|agentes de combate|sorteio|notifica[çc][ãa]o de lan[çc]amento|tabela de temporalidade"]
+termos_em = "titulo"
+
+[aprendizado]
+licoes = ["23 das 25 cidades respondem da nuvem (sondagem de 23/10/2026); o registro antigo de 17 só pelo Brasil ficou para trás.", "A busca do WordPress marca o termo no título (<mark>); o título é limpo antes do léxico.", "Rota de acesso única para os domínios com bloqueio (acessoainformacao.cavalcante.go.gov.br, pncp.gov.br, queridodiario.ok.org.br, saude.goiania.go.gov.br, senadorcanedo.go.gov.br…): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 15 rota(s) que funcionaram: entram como rotas do motor.", "2 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 4 alvos são vigiados só na janela prevista da próxima edição.", "17 das 25 cidades só abrem pelo Brasil: leitura pela ponte da Hostgator quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados.", "17 das 25 cidades só abrem pelo Brasil: leitura pela ponte da Hostgator quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+bloqueios_conhecidos = ["pncp.gov.br", "queridodiario.ok.org.br", "www.goiania.go.gov.br"]
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["https://www.luziania.go.gov.br (tempo esgotado da nuvem, 23/10/2026; a API do WordPress recusa: 401)",
+                      "https://www.mineiros.go.gov.br (página vazia da nuvem: bloqueio ou conteúdo só com JavaScript, 23/10/2026)"]
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14

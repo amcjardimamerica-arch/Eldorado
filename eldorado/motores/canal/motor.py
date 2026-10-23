@@ -397,6 +397,8 @@ class MotorCanal(Motor):
 
     def _descobrir(self, f: CfgFonte) -> list[Pista] | None:
         buscar = self.escada.buscar
+        if f.tipo in ("pagina", "feed", "mapa", "wordpress", "ckan") and "{hoje" in f.url:     # os modelos de data no endereço
+            f = f.model_copy(update={"url": preencher(f.url, hoje_local())})
         if f.tipo == "pagina":
             r = buscar(f.url)
             ass = vigilancia.assinatura(r.conteudo, f.seletor)
