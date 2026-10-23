@@ -61,7 +61,9 @@ OSC = re.compile(r"(?i)\bosc\b|\bongs?\b|organiza[çc][õo]es? (da sociedade civ
                  r"\bngos?\b|sin fines de lucro|terceiro setor|projetos sociais|entidades|associations|zivilgesellschaft")
 GOVERNO = re.compile(r"(?i)(\.gov\.br|\.leg\.br|\.jus\.br|\.mp\.br|\.def\.br|\.mil\.br|\.gov)$")
 FORA = re.compile(r"(?i)(^|\.)(duckduckgo\.com|bing\.com|google\.[a-z.]+|wikipedia\.org|youtube\.com|facebook\.com|instagram\.com|linkedin\.com|"
-                  r"twitter\.com|x\.com|tiktok\.com|prosas\.com\.br|editaiscult\w*\.com\.br|catarse\.me|vakinha\.com\.br)$")
+                  r"twitter\.com|x\.com|tiktok\.com|prosas\.com\.br|editaiscult\w*\.com\.br|catarse\.me|vakinha\.com\.br|"
+                  r"[\w-]+\.blogspot\.com(\.br)?|[\w-]+\.wordpress\.com|medium\.com|[\w-]+\.substack\.com|jusbrasil\.com\.br)$")
+# (o blog e a plataforma de publicação divulgam editais de terceiros: não são a fonte; teste real de 22/10/2026)
 DDL = """
 CREATE TABLE IF NOT EXISTS familia (nome TEXT PRIMARY KEY, a REAL NOT NULL DEFAULT 1, b REAL NOT NULL DEFAULT 1, usos INTEGER NOT NULL DEFAULT 0,
   achados INTEGER NOT NULL DEFAULT 0);

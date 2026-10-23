@@ -72,3 +72,8 @@ def test_achado_do_espiao_entra_pela_recepcao(tmp_path, gravador, bancos, diario
     livro = Cartorio(bancos["biblioteca"], MissaoOportunidades(), diario).processar([msgspec.to_builtins(a)])[0]["livro"]
     assert gravador.aplicar(list(ler(tmp_path / "eventos"))).ok
     assert [r[0] for r in bancos["biblioteca"].execute("SELECT para FROM passagem WHERE livro_id=? ORDER BY id", (livro,))][:2] == ["recepcao", "certificacao"]
+
+
+def test_blog_divulga_mas_nao_e_a_fonte(tmp_path):
+    e = espiao(tmp_path)
+    assert e.fora_dos_motores("https://institutosocialcrescervida.blogspot.com/2026/08/editais.html") == (False, "buscador, agregador ou rede social")
