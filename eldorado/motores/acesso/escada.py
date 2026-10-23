@@ -71,6 +71,8 @@ def avaliar(r: Resposta) -> None:
         raise Bloqueado("503 com desafio")
     if r.status >= 500:
         raise Passageiro(f"status {r.status}")
+    if r.status in (404, 410):                  # a página não existe: nenhum degrau muda isso (lição do Diário de Goiás, 23/10)
+        raise Indisponivel(f"status {r.status}: a página não existe")
     if r.status >= 400:
         raise Bloqueado(f"status {r.status}")
     amostra = r.conteudo[:20000]
@@ -124,8 +126,13 @@ class Escada:
                 self.bloqueios[dom] = self.bloqueios.get(dom, 0) + 1
                 motivos.append(f"{d.nome}: bloqueado ({e})")
                 continue
-            except (Indisponivel, Passageiro) as e:
-                motivos.append(f"{d.nome}: {type(e).__name__.lower()} ({e})")
+            except Indisponivel as e:
+                if "não existe" in str(e):              # sem subir degraus e sem aprender nada sobre o domínio
+                    raise Indisponivel(f"{dom}: {e}") from e
+                motivos.append(f"{d.nome}: indisponivel ({e})")
+                continue
+            except Passageiro as e:
+                motivos.append(f"{d.nome}: passageiro ({e})")
                 continue
             except Pendente:
                 self._aprender(dom, i, exige_local=True)

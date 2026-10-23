@@ -58,12 +58,29 @@ class CfgPaginacao(_Base):
     total: str | None = None                  # onde está o total de páginas na resposta (jmespath)
 
 
+class CfgElo(_Base):
+    """Um elo da leitura em cadeia (descoberta/cadeia.py)."""
+    formato: Literal["json", "html"]
+    itens: str
+    campos: dict[str, str] = Field(default_factory=dict)
+    url: str | None = None
+    filtro: dict[str, str] = Field(default_factory=dict)
+    limite: int = Field(300, ge=1, le=5000)
+
+
+class CfgPistaCadeia(_Base):
+    """Como os campos do último elo viram a pista: modelos com {campo}."""
+    titulo: str
+    link: str
+    resumo: str | None = None
+
+
 class CfgFonte(_Base):
     """Uma fonte. No endereço: {hoje:%Y%m%d}, {hoje-1:%d-%m-%Y}, {hoje+500:%Y%m%d}, {pagina} e cada chave de `valores`
     (uma consulta por combinação de valores)."""
     nome: str
     url: str
-    tipo: Literal["pagina", "feed", "mapa", "wordpress", "ckan", "api", "metabusca", "wayback", "siconv"] = "pagina"
+    tipo: Literal["pagina", "feed", "mapa", "wordpress", "ckan", "api", "metabusca", "wayback", "siconv", "cadeia"] = "pagina"
     seletor: str | None = None
     termos: str | None = None
     caminhos: dict[str, str] = Field(default_factory=dict)
@@ -72,6 +89,8 @@ class CfgFonte(_Base):
     json_em: str | None = None                # o seletor EXATO do JSON dentro de uma página HTML
     exige_brasil: bool = False
     papel: Literal["principal", "alternativa"] = "principal"   # todo motor tem ao menos duas rotas: a principal e a alternativa
+    cadeia: list[CfgElo] = Field(default_factory=list)          # tipo "cadeia": os elos, do primeiro (o endereço da fonte) ao último
+    pista: CfgPistaCadeia | None = None
 
 
 class CfgAcesso(_Base):
@@ -395,6 +414,8 @@ class MotorCanal(Motor):
             return dados_abertos.ckan(buscar, f.url, f.termos or "")
         if f.tipo == "api":
             return self._api(f)
+        if f.tipo == "cadeia":
+            return self._cadeia(f)
         if f.tipo == "siconv":
             return dados_abertos.siconv_programas(buscar, f.url, hoje_local().isoformat())
         if f.tipo == "wayback":
@@ -402,6 +423,25 @@ class MotorCanal(Motor):
             return arquivos_web.indice_wayback(buscar, dominio(f.url))
         pistas, relato = Metabusca(buscar, searxng=f.url or None).consultar(f.termos or "")
         self.relatorio.extend(f"{f.nome}: {x}" for x in relato)
+        return pistas
+
+    def _cadeia(self, f: CfgFonte) -> list[Pista] | None:
+        """A leitura em cadeia: os itens do último elo viram pistas; sem nada novo desde a última leitura, None."""
+        import hashlib
+
+        from ..descoberta.cadeia import Elo, formatar, percorrer
+        if not f.cadeia or f.pista is None:
+            raise ValueError("fonte em cadeia sem elos ou sem o modelo da pista")
+        relato: list[str] = []
+        itens = percorrer(self.escada.buscar, preencher(f.url, hoje_local()), [Elo(**e.model_dump()) for e in f.cadeia], relato)
+        self.relatorio.extend(f"{f.nome}: {x}" for x in relato[:10])
+        pistas = [Pista(titulo=formatar(f.pista.titulo, i), link=formatar(f.pista.link, i), origem=f.nome,
+                        resumo=formatar(f.pista.resumo, i) if f.pista.resumo else None) for i in itens]
+        pistas = [p for p in pistas if p.titulo.strip() and p.link.startswith("http")]
+        ass = hashlib.sha256("\n".join(sorted(p.link for p in pistas)).encode()).hexdigest()
+        if pistas and ass == self.estado.assinatura(f.nome):
+            return None
+        self.estado.gravar_assinatura(f.nome, ass, _agora())
         return pistas
 
     def _api(self, f: CfgFonte) -> list[Pista]:

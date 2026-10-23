@@ -1,17 +1,21 @@
 """Critério de pronto da Fase 3: uma passagem é planejada, acionada e medida, e cada arquivo ganha ponto, círculo e linhas."""
 import json
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from eldorado.base.fluxo.definicao import carregar
 from eldorado.base.fluxo.executor import Executor
 from eldorado.base.fluxo.nos import abrir_bancos
 
+# a hora da passagem no dia de HOJE: o histórico das execuções é gravado com o relógio real (um dia fixo quebra na virada)
+HOJE_0610 = datetime.now(ZoneInfo("America/Sao_Paulo")).replace(hour=6, minute=10, second=0, microsecond=0).isoformat()
 
 def preparar(tmp_path):
     (tmp_path / "modulos.toml").write_text('[[modulo]]\nclasse = "modulos_teste:MotorTeste"\nparametros = { id = "bom" }\n'
                                            '[[modulo]]\nclasse = "modulos_teste:MotorTeste"\nparametros = { id = "quebrado", falhar = true }\n')
     (tmp_path / "agenda.toml").write_text('[[modulo]]\nid = "bom"\nhorarios = ["06:00"]\n[[modulo]]\nid = "quebrado"\nhorarios = ["06:00"]\n')
     comum = {"modulos": str(tmp_path / "modulos.toml"), "dados": str(tmp_path / "dados"), "carga_fixa": 0.1}
-    nos = [("planejar", "eldorado.base.cerebro.regencia:no_planejar", {**comum, "agenda": str(tmp_path / "agenda.toml"), "agora": "2026-10-22T06:10:00-03:00"}),
+    nos = [("planejar", "eldorado.base.cerebro.regencia:no_planejar", {**comum, "agenda": str(tmp_path / "agenda.toml"), "agora": HOJE_0610}),
            ("acionar", "eldorado.base.cerebro.regencia:no_acionar", comum),
            ("decidir", "eldorado.base.cerebro.pertinencia:no_decidir", {"missao": "modulos_teste:MissaoTeste"}),
            ("aplicar", "eldorado.base.fluxo.nos:aplicar_eventos", {"dados": str(tmp_path / "dados"), "eventos": str(tmp_path / "ev")}),

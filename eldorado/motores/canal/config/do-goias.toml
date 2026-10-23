@@ -1,0 +1,97 @@
+# Diário Oficial do Estado de Goiás — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "GO"
+canal = "diario"
+id = "do-goias"
+nome = "Diário Oficial do Estado de Goiás"
+categoria = "Executivo — diários e portais do governo"
+categoria_estudo = "EXE"
+finalidade = "encontrar oportunidade aberta para OSC em diário oficial estadual — SECULT, SEDS, SES, SEEL e decretos de emenda"
+tipo_finalidade = "descoberta"
+nomes_anteriores = []
+
+# ---- rotas confirmadas na sondagem e nas páginas gravadas (23/10/2026, testes/paginas/do-goias/):
+# as edições do dia (JSON) → o sumário de cada edição (árvore por órgão e seção) → o texto integral de cada matéria.
+[[fonte]]
+nome = "Diário Oficial de Goiás — edições de hoje"
+url = "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/edicoes_from_data/{hoje:%Y-%m-%d}.json"
+tipo = "cadeia"
+papel = "principal"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "itens"
+campos = { edicao = "id", numero = "numero", suplemento = "suplemento" }
+
+[[fonte.cadeia]]
+formato = "html"
+url = "https://diariooficial.abc.go.gov.br/portal/visualizacoes/view_html_diario/{edicao}"
+itens = "a.linkMateria"
+campos = { materia = "attr:data-materia-id", protocolo = "attr:data-protocolo", titulo = 're:#\d+\s*-\s*(.*?)\s*</a>', caminho = "ancestrais:span.folder" }
+
+[fonte.pista]
+titulo = "{titulo}"
+link = "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/publicacoes_ver_conteudo/{materia}"
+resumo = "{caminho} · edição {numero} · protocolo {protocolo}"
+
+[[fonte]]
+nome = "Diário Oficial de Goiás — edições de ontem (os suplementos publicados depois)"
+url = "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/edicoes_from_data/{hoje-1:%Y-%m-%d}.json"
+tipo = "cadeia"
+papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "itens"
+campos = { edicao = "id", numero = "numero", suplemento = "suplemento" }
+
+[[fonte.cadeia]]
+formato = "html"
+url = "https://diariooficial.abc.go.gov.br/portal/visualizacoes/view_html_diario/{edicao}"
+itens = "a.linkMateria"
+campos = { materia = "attr:data-materia-id", protocolo = "attr:data-protocolo", titulo = 're:#\d+\s*-\s*(.*?)\s*</a>', caminho = "ancestrais:span.folder" }
+
+[fonte.pista]
+titulo = "{titulo}"
+link = "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/publicacoes_ver_conteudo/{materia}"
+resumo = "{caminho} · edição {numero} · protocolo {protocolo}"
+
+[[alvo]]
+id = "f260-captacao-034"
+nome = "Fundo de Arte e Cultura de Goiás - projeto cultural geral"
+enderecos = ["https://goias.gov.br/cultura/", "https://diariooficial.abc.go.gov.br/", "https://www.goias.gov.br/cultura/pnab/edital-2026-pnab/"]
+orgao = "Secretaria de Estado da Cultura de Goiás (Secult-GO)"
+
+[[alvo]]
+id = "f260-captacao-206"
+nome = "Convênio com órgão público estadual"
+enderecos = ["https://pncp.gov.br/", "https://diariooficial.abc.go.gov.br/"]
+orgao = "PNCP / Diário Oficial de Goiás"
+
+[acesso]
+degraus = ["api", "leve", "local"]
+
+[leitura]
+paginas_dos_achados = true          # o texto integral da matéria é o documento oficial
+seguir_oficial = false
+max_documentos = 40
+
+[lexico]
+# o léxico próprio do Diário de Goiás (camada de direcionamento, nos títulos das matérias), das páginas reais de 22/10:
+termos = ["re:chamamento|chamada p[uú]blica|credenciamento|termo de (fomento|colabora)|acordo de coopera|sele[çc][ãa]o (p[uú]blica|de (projetos|propostas|organiza|entidades))|pr[êe]mio|premia[çc][ãa]o|patroc[ií]nio|aldir blanc|pnab|fundo (estadual|de arte)|apoio a projetos|^edital$|edital (de|n[ºo°])"]
+vetos = ["re:cita[çc][ãa]o|intima[çc][ãa]o|notifica[çc][ãa]o|penalidade|convoca[çc][ãa]o de (candidatos|aprovados)|aprovados no processo seletivo|processo seletivo simplificado|concurso|resultado|homologa|preg[ãa]o|tomada de pre[çc]os|concorr[êe]ncia|extrato|aditivo|apostilamento|portaria|exonera|nomea|aposenta|leil[ãa]o|aliena[çc][ãa]o|inexigibilidade|dispensa de licita"]
+termos_em = "titulo"
+
+[aprendizado]
+licoes = ["Rota de acesso única para os domínios com bloqueio (diariooficial.abc.go.gov.br, goias.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 1 rota(s) que funcionaram: entram como rotas do motor.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: ['https://goias.gov.br/social/cedca/']"]
+bloqueios_conhecidos = ["diariooficial.abc.go.gov.br", "goias.gov.br"]
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["https://diariooficial.abc.go.gov.br/apifront/portal/visualizacoes/view_html_diario/{edicao} (404, 23/10/2026)",
+                      "https://diariooficial.abc.go.gov.br/portal/visualizacoes/view_html_materia/{materia} (404, 23/10/2026)",
+                      "/portal/edicoes e /portal/visualizacoes/pesquisa (caminhos que não existem: o motor antigo ficou um mês sem ler)"]
+
+[metrica]
+cadencia_h = 12
+periodo_dias = 14

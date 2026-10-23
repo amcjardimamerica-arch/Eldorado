@@ -135,3 +135,23 @@ def test_avaliacao_das_respostas():
 def test_cabecalhos_so_em_ascii():
     from eldorado.motores.acesso.api import AGENTE
     AGENTE.encode("ascii")
+
+
+def test_pagina_inexistente_nao_bloqueia_o_dominio():
+    """404 diz que a página não existe: a escada para ali, sem subir degraus e sem aprender nada sobre o domínio."""
+    from eldorado.motores.acesso.escada import Escada, Indisponivel, Resposta
+
+    class D:
+        def __init__(self, nome, status):
+            self.nome, self.pesado, self.status, self.chamadas = nome, False, status, 0
+
+        def buscar(self, url, tempo):
+            self.chamadas += 1
+            return Resposta(url=url, status=self.status(url), tipo="text/html", conteudo=b"<html><body>" + b"conteudo real " * 20 + b"</body></html>")
+    api = D("api", lambda u: 404 if "inexistente" in u else 200)
+    leve = D("leve", lambda u: 200)
+    e = Escada([api, leve], intervalo_padrao=0, tentativas=1)
+    with pytest.raises(Indisponivel):
+        e.buscar("https://diario.go.gov.br/materia/inexistente")
+    assert leve.chamadas == 0 and e.aprendido.get("diario.go.gov.br", 0) == 0          # não subiu, não aprendeu
+    assert e.buscar("https://diario.go.gov.br/materia/752542").degrau == "api"          # o domínio segue normal
