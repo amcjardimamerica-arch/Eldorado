@@ -1,0 +1,65 @@
+# Assembleia Legislativa de Goiás — proposições — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "GO"
+canal = "portal"
+orgao = "Assembleia Legislativa do Estado de Goiás"
+id = "alego-pl"
+nome = "Assembleia Legislativa de Goiás — proposições"
+categoria = "Legislativo"
+categoria_estudo = "LEG"
+finalidade = "alimentar o sistema com emenda parlamentar, a partir de insumo de EMENDA — proposições e emendas impositivas estaduais (janela out-nov); achados são projetos de lei, não editais"
+tipo_finalidade = "descoberta"
+nomes_anteriores = []
+
+# ---- rotas (23/10/2026): o portal da ALEGO responde à nuvem (o Eldorado0 o tinha como bloqueado); o sistema de consulta
+# (alegodigital) derruba a conexão da nuvem: computador local. As emendas impositivas estaduais têm janela em outubro e novembro.
+
+[[fonte]]
+nome = "ALEGO — portal (notícias)"
+url = "https://portal.al.go.leg.br/"
+tipo = "pagina"
+seletor = "main"
+papel = "principal"
+
+[[fonte]]
+nome = "ALEGO — consulta cronológica das proposições (alegodigital)"
+url = "https://alegodigital.al.go.leg.br/spl/consulta-cronologico.aspx"
+tipo = "pagina"
+papel = "alternativa"
+exige_brasil = true
+
+[[alvo]]
+id = "f260-captacao-068"
+nome = "Emenda estadual para projeto educativo em Goiás"
+enderecos = ["https://portal.al.go.leg.br/", "https://goias.gov.br/educacao/"]   # corrigido: começa pela casa legislativa do alvo
+orgao = "ALEGO — Assembleia Legislativa de Goiás (emendas e orçamento)"
+
+[[alvo]]
+id = "f260-captacao-151"
+nome = "Emenda estadual para saúde comunitária"
+enderecos = ["https://portal.al.go.leg.br/", "https://goias.gov.br/saude/"]   # corrigido: começa pela casa legislativa do alvo
+orgao = "ALEGO — Assembleia Legislativa de Goiás (emendas e orçamento)"
+
+[acesso]
+degraus = ["api", "leve", "local"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = ["re:emenda|impositiv|subven[çc]|utilidade p[úu]blica|fomento|edital|chamamento|entidades?|terceiro setor|organiza[çc][õo]es da sociedade civil|or[çc]amento|loa"]
+vetos = ["re:denomina|t[íi]tulo de cidad[ãa]o|honra|medalha|comenda|sess[ãa]o solene|homenage|dia estadual"]
+termos_em = "titulo"
+
+[aprendizado]
+licoes = ["As emendas impositivas estaduais têm janela em outubro e novembro; os achados são proposições e emendas, não editais.", "Rota de acesso única para os domínios com bloqueio (goias.gov.br, portal.al.go.leg.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 22 rota(s) que funcionaram: entram como rotas do motor.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+bloqueios_conhecidos = ["portal.al.go.leg.br"]
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["https://alegodigital.al.go.leg.br pela nuvem (conexão derrubada, 23/10/2026)"]
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14

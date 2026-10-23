@@ -1,0 +1,81 @@
+# Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos) — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "BR"
+canal = "portal"
+id = "congresso-nacional"
+nome = "Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos)"
+categoria = "Legislativo"
+categoria_estudo = "LEG"
+finalidade = "ler o prazo oficial das emendas ao orçamento da União e as regras e recursos para entidades que tramitam no Congresso"
+tipo_finalidade = "descoberta"
+nomes_anteriores = []
+
+# ---- rotas (23/10/2026, testes/paginas/legislativo-sondagem/): os comunicados da CMO (o prazo das emendas), a página do
+# orçamento do ano seguinte (a apresentação de emendas e o cronograma), as matérias do Senado sobre entidades (API) e o RSS.
+
+[[fonte]]
+nome = "Comissão Mista de Orçamento — comunicados (o prazo das emendas)"
+url = "https://www.congressonacional.leg.br/web/cmo/comunicados"
+tipo = "pagina"
+seletor = "#content"
+papel = "principal"
+
+[[fonte]]
+nome = "Orçamento da União do ano seguinte — etapas, emendas e cronograma"
+url = "https://www.congressonacional.leg.br/web/orcamento/acompanhe/orcamento-anual/-/loa/{hoje+365:%Y}"
+tipo = "pagina"
+seletor = "#content"
+papel = "principal"
+
+[[fonte]]
+nome = "Senado — matérias do ano sobre sociedade civil (API de dados abertos)"
+url = "https://legis.senado.leg.br/dadosabertos/processo?ano={hoje:%Y}&termo=sociedade%20civil"
+tipo = "cadeia"
+papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "@"
+campos = { ident = "identificacao", ementa = "ementa", data = "dataApresentacao", codigo = "codigoMateria" }
+limite = 50
+
+[fonte.pista]
+titulo = "{ident} — {ementa}"
+link = "https://www25.senado.leg.br/web/atividade/materias/-/materia/{codigo}"
+resumo = "apresentada em {data}"
+
+[[fonte]]
+nome = "Senado — notícias (RSS)"
+url = "https://www12.senado.leg.br/noticias/feed/todasnoticias/rss"
+tipo = "feed"
+papel = "alternativa"
+
+[[alvo]]
+id = "f260-captacao-200"
+nome = "Emenda parlamentar federal individual"
+enderecos = ["https://www.congressonacional.leg.br/web/orcamento/acompanhe/orcamento-anual/-/loa/{hoje+365:%Y}", "https://www.camara.leg.br/"]   # corrigido: começa pela casa legislativa do alvo
+orgao = "ALEGO — Assembleia Legislativa de Goiás (emendas e orçamento)"
+
+[acesso]
+degraus = ["api", "leve"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = ["re:emenda|prazo|cronograma|of[íi]cio de apoio|sociedade civil|entidades?|sem fins lucrativos|fomento|destina|terceiro setor|organiza[çc][õo]es"]
+vetos = ["re:nota t[ée]cnica|raio x|relatores|admissibilidade|an[áa]lise do relat[óo]rio|setoriais|preliminar|instru[çc][õo]es do lexor"]
+termos_em = "titulo"
+
+[aprendizado]
+licoes = ["O prazo das emendas da LOA sai nos comunicados da CMO (por exemplo, 21/10/2026: Matérias Novas/Relatórios Entregues e prazo de emendas).", "Ler primeiro pela dados abertos da Câmara e do Senado; as páginas ficam como reserva.", "O afinador já achou 3 rota(s) que funcionaram: entram como rotas do motor.", "Os 1 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+bloqueios_conhecidos = []
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["https://dadosabertos.camara.leg.br/api/v2/proposicoes?keywords=sociedade civil (vazio desde 01/09/2026: a palavra-chave da Câmara precisa de outro termo)"]
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14

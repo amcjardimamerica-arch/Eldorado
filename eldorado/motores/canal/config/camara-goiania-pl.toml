@@ -1,0 +1,94 @@
+# Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "GO"
+canal = "portal"
+orgao = "Câmara Municipal de Goiânia"
+id = "camara-goiania-pl"
+nome = "Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos"
+categoria = "Legislativo"
+categoria_estudo = "LEG"
+finalidade = "seguir a utilidade pública da própria associação e achar leis de fomento, parceria, isenção e emendas impositivas para entidades, e os chamamentos da Câmara"
+tipo_finalidade = "descoberta"
+nomes_anteriores = []
+
+# ---- rotas (23/10/2026): o SUAP da Câmara e o portal não respondem à nuvem (tempo esgotado e 502): computador local. Na
+# nuvem, o Querido Diário de Goiânia acompanha a sanção do PL 288/2026 (utilidade pública da associação) no Diário do Município.
+
+[[fonte]]
+nome = "Câmara de Goiânia — consulta pública de processos (SUAP)"
+url = "https://suap.camaragyn.go.gov.br/camara/consulta_publica/"
+tipo = "pagina"
+papel = "principal"
+exige_brasil = true
+
+[[fonte]]
+nome = "Câmara de Goiânia — busca (utilidade pública)"
+url = "https://www.goiania.go.leg.br/search_rss?SearchableText=utilidade+publica"
+tipo = "feed"
+papel = "alternativa"
+exige_brasil = true
+
+[[fonte]]
+nome = "Querido Diário — Goiânia: utilidade pública e Jardim América (a sanção do PL 288/2026)"
+url = "https://queridodiario.ok.org.br/api/gazettes?territory_ids=5208707&querystring=%22utilidade%20p%C3%BAblica%22%20%2B%20%22Jardim%20Am%C3%A9rica%22&published_since={hoje-30:%Y-%m-%d}&size=10&excerpt_size=300&number_of_excerpts=1&sort_by=descending_date"
+tipo = "cadeia"
+papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "gazettes"
+campos = { url = "url", data = "date", edicao = "edition", trecho = "excerpts[0]" }
+limite = 10
+
+[fonte.pista]
+titulo = "Diário de Goiânia de {data}: utilidade pública (Jardim América)"
+link = "{url}"
+resumo = "{trecho}"
+
+[[alvo]]
+id = "f260-captacao-069"
+nome = "Emenda municipal para projeto educativo em Goiânia"
+enderecos = ["https://www.goiania.go.leg.br/", "https://www.goiania.go.gov.br/educacao/"]   # corrigido: começa pela casa legislativa do alvo
+orgao = "ALEGO — Assembleia Legislativa de Goiás (emendas e orçamento)"
+
+[[alvo]]
+id = "f260-captacao-107"
+nome = "Emenda municipal para entidade assistencial"
+enderecos = ["https://www.goiania.go.leg.br/"]   # corrigido: começa pela casa legislativa do alvo
+orgao = "ALEGO — Assembleia Legislativa de Goiás (emendas e orçamento)"
+
+[[alvo]]
+id = "f260-captacao-113"
+nome = "Projeto de apoio a famílias de baixa renda"
+enderecos = ["https://www.goiania.go.leg.br/", "https://goias.gov.br/social/"]   # corrigido: começa pela casa legislativa do alvo
+orgao = "ALEGO — Assembleia Legislativa de Goiás (emendas e orçamento)"
+
+[[alvo]]
+id = "f260-captacao-152"
+nome = "Emenda municipal para saúde preventiva"
+enderecos = ["https://www.goiania.go.leg.br/", "https://saude.goiania.go.gov.br/"]   # corrigido: começa pela casa legislativa do alvo
+orgao = "ALEGO — Assembleia Legislativa de Goiás (emendas e orçamento)"
+
+[acesso]
+degraus = ["api", "leve", "local"]
+
+[leitura]
+paginas_dos_achados = true
+seguir_oficial = true
+
+[lexico]
+termos = ["re:utilidade p[úu]blica|emenda|fomento|parceria|isen[çc][ãa]o|subven[çc]|chamamento|edital|entidades?|organiza[çc][õo]es da sociedade civil|jardim am[ée]rica"]
+vetos = ["re:denomina|t[íi]tulo de cidad[ãa]o|honra|medalha|comenda|sess[ãa]o solene|homenage"]
+termos_em = "titulo"
+
+[aprendizado]
+licoes = ["Acompanhar o Projeto de Lei nº 288/2026 (utilidade pública da A.M.C. Jardim América): a sanção sai no Diário do Município.", "Rota de acesso única para os domínios com bloqueio (saude.goiania.go.gov.br, www.goiania.go.gov.br, www.goiania.go.leg.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 14 rota(s) que funcionaram: entram como rotas do motor.", "Os 4 alvos são vigiados só na janela prevista da próxima edição.", "Leitura pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.", "Acompanhar o Projeto de Lei nº 288/2026 (utilidade pública da A.M.C. Jardim América).", "Leitura pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.", "Acompanhar o Projeto de Lei nº 288/2026 (utilidade pública da A.M.C. Jardim América).", "robots_proibe: None", "ponte_brasil_aprendida: {'www.goiania.go.leg.br': True}", "alternativas_conhecidas: None"]
+bloqueios_conhecidos = ["www.goiania.go.leg.br"]
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["https://suap.camaragyn.go.gov.br e https://www.goiania.go.leg.br pela nuvem (tempo esgotado e 502, 23/10/2026)"]
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14
