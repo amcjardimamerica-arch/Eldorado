@@ -11,6 +11,10 @@ on:
       urls:
         description: "Endereços separados por espaço (aceita {hoje:%Y-%m-%d} e afins)"
         required: true
+      navegador:
+        description: "Gravar pelo navegador (a página depois dos scripts): sim ou não"
+        required: false
+        default: "nao"
 permissions:
   contents: write
 concurrency:
@@ -25,11 +29,14 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-      - run: pip install -e ".[leitura,acesso,descoberta]"
+      - run: pip install -e ".[leitura,acesso,descoberta,navegador]"
+      - name: O navegador (só quando pedido)
+        if: inputs.navegador == 'sim'
+        run: patchright install --with-deps chromium
       - name: Gravar
         env:
           URLS: ${{ inputs.urls }}
-        run: eldorado gravar $URLS --pasta "testes/paginas/${{ inputs.motor }}"
+        run: eldorado gravar $URLS --pasta "testes/paginas/${{ inputs.motor }}" $( [ "${{ inputs.navegador }}" = "sim" ] && echo --navegador )
       - name: Guardar no repositório
         run: |
           git config user.name "Eldorado"; git config user.email "eldorado@users.noreply.github.com"

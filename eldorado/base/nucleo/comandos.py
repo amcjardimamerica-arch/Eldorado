@@ -310,8 +310,11 @@ def missao(config: Path = CONFIG, quantas: int = 1, anotar: bool = typer.Option(
 PASTA_GRAVAR = typer.Option(..., help="onde gravar (testes/paginas/<motor>)")
 
 
+NAVEGADOR_GRAVAR = typer.Option(False, "--navegador", help="gravar a página como o navegador a vê (depois dos scripts)")
+
+
 @app.command()
-def gravar(urls: list[str], pasta: Path = PASTA_GRAVAR):
+def gravar(urls: list[str], pasta: Path = PASTA_GRAVAR, navegador: bool = NAVEGADOR_GRAVAR):
     """Grava as respostas reais inteiras (para conhecer a fonte e para o teste nas páginas gravadas)."""
     import hashlib
     import json
@@ -321,7 +324,11 @@ def gravar(urls: list[str], pasta: Path = PASTA_GRAVAR):
     from ...motores.acesso.escada import Escada
     from ...motores.acesso.leve import DegrauLeve
     from ...motores.canal.motor import hoje_local, preencher
-    escada = Escada([DegrauAPI(), DegrauLeve()], intervalo_padrao=1.0, tentativas=2, tempo_limite=40)
+    degraus = [DegrauAPI(), DegrauLeve()]
+    if navegador:                                   # a página renderizada: o navegador que não denuncia robôs (degrau 4)
+        from ...motores.acesso.navegador import DegrauNavegador
+        degraus = [DegrauNavegador("patchright"), *degraus]
+    escada = Escada(degraus, intervalo_padrao=1.0, tentativas=2, tempo_limite=60 if navegador else 40)
     pasta.mkdir(parents=True, exist_ok=True)
     idx_p = pasta / "indice.json"
     indice = json.loads(idx_p.read_text(encoding="utf-8")) if idx_p.exists() else {}
