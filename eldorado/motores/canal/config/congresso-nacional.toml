@@ -8,7 +8,7 @@ id = "congresso-nacional"
 nome = "Congresso Nacional — Câmara, Senado e Comissão Mista de Orçamento (emendas, regras e chamamentos)"
 categoria = "Legislativo"
 categoria_estudo = "LEG"
-finalidade = "ler o prazo oficial das emendas ao orçamento da União e as regras e recursos para entidades que tramitam no Congresso"
+finalidade = "monitorar no Congresso os projetos de lei e os atos do terceiro setor e das OSC, as emendas ao orçamento da União e o prazo delas, e as oportunidades para entidades"
 tipo_finalidade = "descoberta"
 nomes_anteriores = []
 
@@ -30,7 +30,99 @@ seletor = "#content"
 papel = "principal"
 
 [[fonte]]
-nome = "Senado — matérias do ano sobre sociedade civil (API de dados abertos)"
+nome = "Senado — notícias (RSS)"
+url = "https://www12.senado.leg.br/noticias/feed/todasnoticias/rss"
+tipo = "feed"
+papel = "alternativa"
+
+# ---- os projetos de lei do terceiro setor nas duas casas, por termo (titular, 23/10/2026)
+[[fonte]]
+nome = "Câmara dos Deputados — proposições do ano: terceiro setor (API de dados abertos)"
+url = "https://dadosabertos.camara.leg.br/api/v2/proposicoes?keywords=terceiro%20setor&ano={hoje:%Y}&itens=30&ordem=DESC&ordenarPor=id"
+tipo = "cadeia"
+papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "dados"
+campos = { sigla = "siglaTipo", numero = "numero", ano = "ano", ementa = "ementa", id = "id", data = "dataApresentacao" }
+limite = 30
+
+[fonte.pista]
+titulo = "{sigla} {numero}/{ano} — {ementa}"
+link = "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao={id}"
+resumo = "Câmara dos Deputados · apresentada em {data}"
+
+[[fonte]]
+nome = "Câmara dos Deputados — proposições do ano: organizações da sociedade civil (API de dados abertos)"
+url = "https://dadosabertos.camara.leg.br/api/v2/proposicoes?keywords=organiza%C3%A7%C3%B5es%20da%20sociedade%20civil&ano={hoje:%Y}&itens=30&ordem=DESC&ordenarPor=id"
+tipo = "cadeia"
+papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "dados"
+campos = { sigla = "siglaTipo", numero = "numero", ano = "ano", ementa = "ementa", id = "id", data = "dataApresentacao" }
+limite = 30
+
+[fonte.pista]
+titulo = "{sigla} {numero}/{ano} — {ementa}"
+link = "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao={id}"
+resumo = "Câmara dos Deputados · apresentada em {data}"
+
+[[fonte]]
+nome = "Câmara dos Deputados — proposições do ano: Lei 13.019 (API de dados abertos)"
+url = "https://dadosabertos.camara.leg.br/api/v2/proposicoes?keywords=13.019&ano={hoje:%Y}&itens=30&ordem=DESC&ordenarPor=id"
+tipo = "cadeia"
+papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "dados"
+campos = { sigla = "siglaTipo", numero = "numero", ano = "ano", ementa = "ementa", id = "id", data = "dataApresentacao" }
+limite = 30
+
+[fonte.pista]
+titulo = "{sigla} {numero}/{ano} — {ementa}"
+link = "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao={id}"
+resumo = "Câmara dos Deputados · apresentada em {data}"
+
+[[fonte]]
+nome = "Câmara dos Deputados — proposições do ano: entidades filantrópicas (API de dados abertos)"
+url = "https://dadosabertos.camara.leg.br/api/v2/proposicoes?keywords=filantr%C3%B3picas&ano={hoje:%Y}&itens=30&ordem=DESC&ordenarPor=id"
+tipo = "cadeia"
+papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "dados"
+campos = { sigla = "siglaTipo", numero = "numero", ano = "ano", ementa = "ementa", id = "id", data = "dataApresentacao" }
+limite = 30
+
+[fonte.pista]
+titulo = "{sigla} {numero}/{ano} — {ementa}"
+link = "https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao={id}"
+resumo = "Câmara dos Deputados · apresentada em {data}"
+
+[[fonte]]
+nome = "Senado — matérias do ano: terceiro setor (API de dados abertos)"
+url = "https://legis.senado.leg.br/dadosabertos/processo?ano={hoje:%Y}&termo=terceiro%20setor"
+tipo = "cadeia"
+papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "@"
+campos = { ident = "identificacao", ementa = "ementa", data = "dataApresentacao", codigo = "codigoMateria" }
+limite = 50
+
+[fonte.pista]
+titulo = "{ident} — {ementa}"
+link = "https://www25.senado.leg.br/web/atividade/materias/-/materia/{codigo}"
+resumo = "Senado · apresentada em {data}"
+
+[[fonte]]
+nome = "Senado — matérias do ano: sociedade civil (API de dados abertos)"
 url = "https://legis.senado.leg.br/dadosabertos/processo?ano={hoje:%Y}&termo=sociedade%20civil"
 tipo = "cadeia"
 papel = "alternativa"
@@ -44,13 +136,41 @@ limite = 50
 [fonte.pista]
 titulo = "{ident} — {ementa}"
 link = "https://www25.senado.leg.br/web/atividade/materias/-/materia/{codigo}"
-resumo = "apresentada em {data}"
+resumo = "Senado · apresentada em {data}"
 
 [[fonte]]
-nome = "Senado — notícias (RSS)"
-url = "https://www12.senado.leg.br/noticias/feed/todasnoticias/rss"
-tipo = "feed"
+nome = "Senado — matérias do ano: sem fins lucrativos (API de dados abertos)"
+url = "https://legis.senado.leg.br/dadosabertos/processo?ano={hoje:%Y}&termo=sem%20fins%20lucrativos"
+tipo = "cadeia"
 papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "@"
+campos = { ident = "identificacao", ementa = "ementa", data = "dataApresentacao", codigo = "codigoMateria" }
+limite = 50
+
+[fonte.pista]
+titulo = "{ident} — {ementa}"
+link = "https://www25.senado.leg.br/web/atividade/materias/-/materia/{codigo}"
+resumo = "Senado · apresentada em {data}"
+
+[[fonte]]
+nome = "Senado — matérias do ano: organizações da sociedade civil (API de dados abertos)"
+url = "https://legis.senado.leg.br/dadosabertos/processo?ano={hoje:%Y}&termo=organiza%C3%A7%C3%B5es%20da%20sociedade%20civil"
+tipo = "cadeia"
+papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "@"
+campos = { ident = "identificacao", ementa = "ementa", data = "dataApresentacao", codigo = "codigoMateria" }
+limite = 50
+
+[fonte.pista]
+titulo = "{ident} — {ementa}"
+link = "https://www25.senado.leg.br/web/atividade/materias/-/materia/{codigo}"
+resumo = "Senado · apresentada em {data}"
 
 [[alvo]]
 id = "f260-captacao-200"
@@ -66,8 +186,8 @@ paginas_dos_achados = true
 seguir_oficial = true
 
 [lexico]
-termos = ["re:emenda|prazo|cronograma|of[íi]cio de apoio|sociedade civil|entidades?|sem fins lucrativos|fomento|destina|terceiro setor|organiza[çc][õo]es"]
-vetos = ["re:nota t[ée]cnica|raio x|relatores|admissibilidade|an[áa]lise do relat[óo]rio|setoriais|preliminar|instru[çc][õo]es do lexor"]
+termos = ["re:terceiro setor|sociedade civil|(^| )oscs?( |$|,)|organiza[çc][õo]es? (da sociedade civil|sociais|n[ãa]o governamentais)|entidades?|sem fins lucrativos|filantr[óo]p|cebas|13.019|mrosc|utilidade p[úu]blica|subven[çc]|termo de (fomento|colabora)|fomento|voluntari|imunidade|isen[çc][ãa]o|emenda|fundo|chamamento|edital|doa[çc][ãa]o|associa[çc][õo]es|cooperativas? (sociais|solid)|economia solid|projetos? socia|prazo|cronograma|of[íi]cio de apoio|destina"]   # o léxico comum do Legislativo: todo ato do terceiro setor (titular, 23/10/2026)
+vetos = ["re:denomina|t[íi]tulo de cidad[ãa]o|honra ao m[ée]rito|medalha|comenda|sess[ãa]o solene|homenage|campanhas? de utilidade p|informa[çc][õo]es de utilidade p|emissoras de (r[áa]dio|televis)|nota t[ée]cnica|raio x|relatores|admissibilidade|an[áa]lise do relat[óo]rio|setoriais|preliminar|instru[çc][õo]es do lexor"]
 termos_em = "titulo"
 
 [aprendizado]

@@ -9,7 +9,7 @@ id = "alego-pl"
 nome = "Assembleia Legislativa de Goiás — proposições"
 categoria = "Legislativo"
 categoria_estudo = "LEG"
-finalidade = "alimentar o sistema com emenda parlamentar, a partir de insumo de EMENDA — proposições e emendas impositivas estaduais (janela out-nov); achados são projetos de lei, não editais"
+finalidade = "monitorar na Assembleia de Goiás os projetos de lei e os atos do terceiro setor e das OSC, as emendas impositivas estaduais, as declarações de utilidade pública e as oportunidades para entidades"
 tipo_finalidade = "descoberta"
 nomes_anteriores = []
 
@@ -29,6 +29,30 @@ url = "https://alegodigital.al.go.leg.br/spl/consulta-cronologico.aspx"
 tipo = "pagina"
 papel = "alternativa"
 exige_brasil = true
+
+
+[[fonte]]
+nome = "Diário Oficial do Estado — os atos legislativos do terceiro setor (leis de utilidade pública, subvenções, entidades)"
+url = "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/edicoes_from_data/{hoje:%Y-%m-%d}.json"
+tipo = "cadeia"
+papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "itens"
+campos = { edicao = "id", numero = "numero" }
+
+[[fonte.cadeia]]
+formato = "html"
+url = "https://diariooficial.abc.go.gov.br/portal/visualizacoes/view_html_diario/{edicao}"
+itens = "a.linkMateria"
+campos = { materia = "attr:data-materia-id", titulo = 're:#\d+\s*-\s*(.*?)\s*</a>', caminho = "ancestrais:span.folder" }
+filtro = { titulo = '(?i)utilidade p[úu]blica|terceiro setor|sociedade civil|subven[çc]|sem fins lucrativos|entidade|filantr|associa[çc][ãa]o|lei n' }
+
+[fonte.pista]
+titulo = "{titulo}"
+link = "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/publicacoes_ver_conteudo/{materia}"
+resumo = "{caminho} · edição {numero}"
 
 [[alvo]]
 id = "f260-captacao-068"
@@ -50,9 +74,9 @@ paginas_dos_achados = true
 seguir_oficial = true
 
 [lexico]
-termos = ["re:emenda|impositiv|subven[çc]|utilidade p[úu]blica|fomento|edital|chamamento|entidades?|terceiro setor|organiza[çc][õo]es da sociedade civil|or[çc]amento|loa"]
-vetos = ["re:denomina|t[íi]tulo de cidad[ãa]o|honra|medalha|comenda|sess[ãa]o solene|homenage|dia estadual"]
-termos_em = "titulo"
+termos = ["re:terceiro setor|sociedade civil|(^| )oscs?( |$|,)|organiza[çc][õo]es? (da sociedade civil|sociais|n[ãa]o governamentais)|entidades?|sem fins lucrativos|filantr[óo]p|cebas|13.019|mrosc|utilidade p[úu]blica|subven[çc]|termo de (fomento|colabora)|fomento|voluntari|imunidade|isen[çc][ãa]o|emenda|fundo|chamamento|edital|doa[çc][ãa]o|associa[çc][õo]es|cooperativas? (sociais|solid)|economia solid|projetos? socia|prazo|cronograma|of[íi]cio de apoio|destina"]   # o léxico comum do Legislativo: todo ato do terceiro setor (titular, 23/10/2026)
+vetos = ["re:denomina|t[íi]tulo de cidad[ãa]o|honra ao m[ée]rito|medalha|comenda|sess[ãa]o solene|homenage|campanhas? de utilidade p|informa[çc][õo]es de utilidade p|emissoras de (r[áa]dio|televis)|dia estadual"]
+termos_em = "tudo"
 
 [aprendizado]
 licoes = ["As emendas impositivas estaduais têm janela em outubro e novembro; os achados são proposições e emendas, não editais.", "Rota de acesso única para os domínios com bloqueio (goias.gov.br, portal.al.go.leg.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 22 rota(s) que funcionaram: entram como rotas do motor.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]

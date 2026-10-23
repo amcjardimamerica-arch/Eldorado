@@ -9,7 +9,7 @@ id = "camara-goiania-pl"
 nome = "Câmara Municipal de Goiânia — processos legislativos, utilidade pública e chamamentos"
 categoria = "Legislativo"
 categoria_estudo = "LEG"
-finalidade = "seguir a utilidade pública da própria associação e achar leis de fomento, parceria, isenção e emendas impositivas para entidades, e os chamamentos da Câmara"
+finalidade = "monitorar na Câmara de Goiânia os projetos de lei e os atos do terceiro setor e das OSC, a utilidade pública (a da associação: PL 288/2026), as emendas impositivas, as leis de fomento, parceria e isenção, e os chamamentos"
 tipo_finalidade = "descoberta"
 nomes_anteriores = []
 
@@ -47,6 +47,30 @@ titulo = "Diário de Goiânia de {data}: utilidade pública (Jardim América)"
 link = "{url}"
 resumo = "{trecho}"
 
+
+[[fonte]]
+nome = "Querido Diário — Goiânia: os atos do terceiro setor (utilidade pública, OSC, sem fins lucrativos), recortados em atos"
+url = "https://queridodiario.ok.org.br/api/gazettes?territory_ids=5208707&querystring=%22utilidade%20p%C3%BAblica%22%20%7C%20%22terceiro%20setor%22%20%7C%20%22organiza%C3%A7%C3%B5es%20da%20sociedade%20civil%22%20%7C%20%22sem%20fins%20lucrativos%22&published_since={hoje-3:%Y-%m-%d}&size=5&sort_by=descending_date"
+tipo = "cadeia"
+papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "gazettes"
+campos = { pdf = "url", edicao = "edition", data = "date" }
+limite = 5
+
+[[fonte.cadeia]]
+formato = "atos"
+url = "{pdf}"
+limite = 400
+
+[fonte.pista]
+titulo = "{titulo}"
+link = "{pdf}#ato-{ordem}"
+resumo = "{orgao} · {inicio}"
+texto = "{texto}"
+
 [[alvo]]
 id = "f260-captacao-069"
 nome = "Emenda municipal para projeto educativo em Goiânia"
@@ -79,9 +103,9 @@ paginas_dos_achados = true
 seguir_oficial = true
 
 [lexico]
-termos = ["re:utilidade p[úu]blica|emenda|fomento|parceria|isen[çc][ãa]o|subven[çc]|chamamento|edital|entidades?|organiza[çc][õo]es da sociedade civil|jardim am[ée]rica"]
-vetos = ["re:denomina|t[íi]tulo de cidad[ãa]o|honra|medalha|comenda|sess[ãa]o solene|homenage"]
-termos_em = "titulo"
+termos = ["re:terceiro setor|sociedade civil|(^| )oscs?( |$|,)|organiza[çc][õo]es? (da sociedade civil|sociais|n[ãa]o governamentais)|entidades?|sem fins lucrativos|filantr[óo]p|cebas|13.019|mrosc|utilidade p[úu]blica|subven[çc]|termo de (fomento|colabora)|fomento|voluntari|imunidade|isen[çc][ãa]o|emenda|fundo|chamamento|edital|doa[çc][ãa]o|associa[çc][õo]es|cooperativas? (sociais|solid)|economia solid|projetos? socia|prazo|cronograma|of[íi]cio de apoio|destina"]   # o léxico comum do Legislativo: todo ato do terceiro setor (titular, 23/10/2026)
+vetos = ["re:denomina|t[íi]tulo de cidad[ãa]o|honra ao m[ée]rito|medalha|comenda|sess[ãa]o solene|homenage|campanhas? de utilidade p|informa[çc][õo]es de utilidade p|emissoras de (r[áa]dio|televis)"]
+termos_em = "tudo"
 
 [aprendizado]
 licoes = ["Acompanhar o Projeto de Lei nº 288/2026 (utilidade pública da A.M.C. Jardim América): a sanção sai no Diário do Município.", "Rota de acesso única para os domínios com bloqueio (saude.goiania.go.gov.br, www.goiania.go.gov.br, www.goiania.go.leg.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 14 rota(s) que funcionaram: entram como rotas do motor.", "Os 4 alvos são vigiados só na janela prevista da próxima edição.", "Leitura pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.", "Acompanhar o Projeto de Lei nº 288/2026 (utilidade pública da A.M.C. Jardim América).", "Leitura pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.", "Acompanhar o Projeto de Lei nº 288/2026 (utilidade pública da A.M.C. Jardim América).", "robots_proibe: None", "ponte_brasil_aprendida: {'www.goiania.go.leg.br': True}", "alternativas_conhecidas: None"]
