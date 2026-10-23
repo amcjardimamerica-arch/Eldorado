@@ -118,6 +118,35 @@ def trechos_relevantes(paginas: list[str], itens: list[str], limite: int = 9000)
     return saida
 
 
+def _validado(ia: IA, pedido: str) -> tuple[list[dict], Uso] | None:
+    """A saída validada (plano C: pydantic-ai): a IA responde direto no formato dos itens propostos, validado pelo
+    esquema. None se a biblioteca faltar (o caminho do JSON segue de reserva)."""
+    try:
+        from pydantic import BaseModel
+        from pydantic_ai import Agent
+        from pydantic_ai.models.openai import OpenAIChatModel
+        from pydantic_ai.providers.openai import OpenAIProvider
+    except ImportError:
+        return None
+
+    class ItemProposto(BaseModel):
+        item: str
+        valor: str
+        trecho: str
+        pagina: int | None = None
+
+    class Proposta(BaseModel):
+        itens: list[ItemProposto] = []
+    modelo = getattr(ia, "_modelo_validado", None) or OpenAIChatModel("local", provider=OpenAIProvider(base_url=f"{ia.url}/v1", api_key="local"))
+    agente = Agent(modelo, output_type=Proposta, system_prompt=SISTEMA)
+    uso, t0 = Uso("comprovar"), time.monotonic()
+    r = agente.run_sync(pedido + "\n/no_think")
+    uso.segundos = round(time.monotonic() - t0, 1)
+    u = r.usage() if callable(r.usage) else r.usage                 # atributo nas versões novas, função nas antigas
+    uso.tokens_entrada, uso.tokens_saida = getattr(u, "input_tokens", 0) or 0, getattr(u, "output_tokens", 0) or 0
+    return [i.model_dump() for i in r.output.itens], uso
+
+
 def comprovar(ia: IA, itens: list[str], paginas: list[str], titulo: str, validos: tuple[str, ...]) -> tuple[dict[str, dict], Uso]:
     """A IA propõe cada item que falta, com o trecho e a página; o sistema valida (o trecho tem de existir naquela página)."""
     partes = trechos_relevantes(paginas, itens)
@@ -127,9 +156,24 @@ def comprovar(ia: IA, itens: list[str], paginas: list[str], titulo: str, validos
     pedido = (f"Oportunidade: {titulo}\nItens que faltam: {', '.join(itens)}\n<documento>\n{doc}\n</documento>\n"
               'Para cada item que o documento informa, devolva: {"itens": [{"item": "<nome exato do item>", "valor": "<valor curto>", '
               '"trecho": "<cópia literal do documento>", "pagina": <número>}]}. Item que o documento não informa: não inclua.')
-    resposta, uso = ia.pedir("comprovar", pedido)
+    from ...motores.pilotos.otimizacao import exemplos_para_instrucao
+    pedido = exemplos_para_instrucao() + pedido                       # os exemplos escolhidos pelo DSPy (certidões validadas)
+    if not ia.disponivel() and getattr(ia, "_modelo_validado", None) is None:
+        raise SemIA(f"o modelo local não está disponível em {ia.url}")
+    try:
+        validado = _validado(ia, pedido)
+    except Exception as e:  # noqa: BLE001 — a saída validada falhou: o caminho do JSON, de reserva
+        validado = None
+        motivo = f"{type(e).__name__}"
+    if validado is not None:
+        propostas, uso = validado
+    else:
+        resposta, uso = ia.pedir("comprovar", pedido)
+        propostas = (resposta or {}).get("itens", []) if isinstance(resposta, dict) else []
+        if "motivo" in locals():
+            uso.recusas.append(f"saída validada indisponível ({motivo}); JSON de reserva")
     aceitos: dict[str, dict] = {}
-    for p in (resposta or {}).get("itens", []) if isinstance(resposta, dict) else []:
+    for p in propostas:
         uso.propostas += 1
         item, trecho, pag = str(p.get("item") or ""), str(p.get("trecho") or ""), p.get("pagina")
         if item not in itens or item not in validos:

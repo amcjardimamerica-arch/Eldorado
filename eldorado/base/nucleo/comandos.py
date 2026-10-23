@@ -348,6 +348,30 @@ def gravar(urls: list[str], pasta: Path = PASTA_GRAVAR, navegador: bool = NAVEGA
     idx_p.write_text(json.dumps(indice, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
+DIAS_OTIMIZAR = typer.Option(7, "--se-antigo-dias", help="só refaz se os exemplos tiverem mais que estes dias")
+
+
+@app.command("otimizar-ia")
+def otimizar_ia(se_antigo_dias: int = DIAS_OTIMIZAR):
+    """A otimização das instruções dos pilotos (DSPy): os exemplos escolhidos das certidões validadas, pelo modelo local."""
+    import sqlite3
+    import time
+
+    from ...motores.pilotos import otimizacao as O
+    from ..nucleo.ia import IA
+    if O.ARQUIVO.exists() and time.time() - O.ARQUIVO.stat().st_mtime < se_antigo_dias * 86400:
+        typer.echo("os exemplos estão em dia")
+        return
+    ia = IA()
+    if not ia.disponivel():
+        typer.echo(f"o modelo local não está disponível em {ia.url}: a otimização fica para a próxima")
+        return
+    import dspy
+    exemplos = O.exemplos_validados(sqlite3.connect("dados/biblioteca.db"))
+    escolhidos = O.compilar(exemplos, lm=dspy.LM("openai/local", api_base=f"{ia.url}/v1", api_key="local", temperature=0.1, max_tokens=400))
+    typer.echo(f"{len(escolhidos)} exemplo(s) escolhido(s) de {len(exemplos)} certidões validadas")
+
+
 PORTA_API = typer.Option(8000, help="a porta da API")
 
 
