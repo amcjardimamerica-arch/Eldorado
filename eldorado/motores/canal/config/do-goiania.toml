@@ -1,0 +1,99 @@
+# Diário Oficial do Município de Goiânia — criado pela orientação eldorado/motores/skills/criar-motor/SKILL.md (a partir do estudo da titular, 19/10/2026).
+# Rotas candidatas comentadas: só entra a que respondeu na sondagem (eldorado sondar).
+
+[motor]
+uf = "GO"
+canal = "diario"
+id = "do-goiania"
+nome = "Diário Oficial do Município de Goiânia"
+categoria = "Executivo — diários e portais do governo"
+categoria_estudo = "EXE"
+finalidade = "encontrar oportunidade aberta para OSC em diário oficial municipal — a fonte primária de Goiânia"
+tipo_finalidade = "descoberta"
+nomes_anteriores = []
+
+# ---- rotas confirmadas (23/10/2026, testes/paginas/do-goiania/): a lista oficial do ano responde da nuvem; o Querido
+# Diário voltou (9.061 edições de Goiânia). Cada edição em PDF é recortada em atos (leitura/atos.py).
+[[fonte]]
+nome = "Diário Oficial de Goiânia — lista oficial do ano → as duas edições mais recentes → os atos"
+url = "https://www.goiania.go.gov.br/shtml//portal/casacivil/lista_diarios.asp?ano={hoje:%Y}"
+tipo = "cadeia"
+papel = "principal"
+
+[[fonte.cadeia]]
+formato = "html"
+itens = 'a[href$=".pdf"]'
+campos = { pdf = "attr:href", edicao = "texto" }
+limite = 2
+
+[[fonte.cadeia]]
+formato = "atos"
+url = "{pdf}"
+limite = 400
+
+[fonte.pista]
+titulo = "{titulo}"
+link = "{pdf}#ato-{ordem}"
+resumo = "{orgao} · {inicio}"
+texto = "{texto}"
+
+[[fonte]]
+nome = "Querido Diário — Goiânia pelo código do município (5208707), as edições dos últimos 3 dias → os atos"
+url = "https://queridodiario.ok.org.br/api/gazettes?territory_ids=5208707&published_since={hoje-3:%Y-%m-%d}&size=3&sort_by=descending_date"
+tipo = "cadeia"
+papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "gazettes"
+campos = { pdf = "url", edicao = "edition", data = "date" }
+limite = 3
+
+[[fonte.cadeia]]
+formato = "atos"
+url = "{pdf}"
+limite = 400
+
+[fonte.pista]
+titulo = "{titulo}"
+link = "{pdf}#ato-{ordem}"
+resumo = "{orgao} · {inicio}"
+texto = "{texto}"
+
+[[alvo]]
+id = "f260-captacao-001"
+nome = "PNAB Goiânia - Audiovisual"
+enderecos = ["https://www.goiania.go.gov.br/cultura/", "https://diariooficial.goiania.go.gov.br/"]
+orgao = "Secretaria Municipal de Cultura de Goiânia"
+
+[[alvo]]
+id = "f260-captacao-039"
+nome = "Editais de ocupação cultural municipal"
+enderecos = ["https://www.goiania.go.gov.br/cultura/", "https://diariooficial.goiania.go.gov.br/"]
+orgao = "Secretaria Municipal de Cultura de Goiânia"
+
+[acesso]
+degraus = ["api", "leve", "local"]
+
+[leitura]
+paginas_dos_achados = false         # o texto do ato vem recortado do PDF oficial
+seguir_oficial = false
+
+[lexico]
+# o léxico próprio do Diário de Goiânia (no título E no começo do ato: um "EDITAL Nº" de licença ambiental tem o mesmo título
+# de um edital de verdade), das edições reais 8740 e 8889:
+termos = ["re:chamamento|chamada p[uú]blica|credenciamento|termo de (fomento|colabora)|acordo de coopera|sele[çc][ãa]o (p[uú]blica|de (projetos|propostas|organiza|entidades))|pr[êe]mio|premia[çc][ãa]o|patroc[ií]nio|aldir blanc|pnab|organiza[çc][ãa]o social|organiza[çc][õo]es da sociedade civil|fundo municipal"]
+vetos = ["re:licen[çc]as? ambienta|requereu|extrato|contrato n|aditivo|apostila|portaria|decreta|nomea|exonera|f[ée]rias|aposentadoria|pens[ãa]o|homologa|resultado|preg[ãa]o|tomada de pre[çc]os|concorr[êe]ncia|leil[ãa]o|inexigibilidade|dispensa de (licita|chamamento)|ado[çc][ãa]o de logradouro|programa adote|cita[çc][ãa]o|intima[çc][ãa]o|designa gestor|comiss[ãa]o de monitoramento"]
+termos_em = "tudo"
+
+[aprendizado]
+licoes = ["Rota de acesso única para os domínios com bloqueio (diariooficial.goiania.go.gov.br, www.goiania.go.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 11 rota(s) que funcionaram: entram como rotas do motor.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: ['https://www.goiania.go.gov.br/cultura/']"]
+bloqueios_conhecidos = ["www.goiania.go.gov.br"]
+alternativas_para_bloqueio = []
+rotas_que_falharam = ["a Carta de Serviços (endereço errado do motor antigo)", "https://www.goiania.go.gov.br/cultura/ (quebrada)",
+                      "'goiânia' no título do Querido Diário (misturava Aparecida de Goiânia: use territory_ids=5208707)",
+                      "o operador OR no Querido Diário (não existe: | é OU, + é E)"]
+
+[metrica]
+cadencia_h = 24
+periodo_dias = 14

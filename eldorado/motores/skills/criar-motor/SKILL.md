@@ -90,14 +90,22 @@ de cada domínio e descansa o que bloqueia.
 | `feed` | RSS e Atom |
 | `mapa` | o mapa do site (sitemap) |
 | `pagina` | a página de editais, com os links extraídos; `seletor` para limitar a região |
+| `cadeia` | a listagem em etapas: a lista → cada item → o detalhe (`[[fonte.cadeia]]` com elos `json`, `html` ou `atos`; `[fonte.pista]` monta a pista com os campos do último elo). Diários oficiais, tribunais, portais com sumário |
 | `metabusca` | a busca restrita a um domínio ou tema, quando não há listagem |
 | `wayback` | o histórico do endereço |
 
 No endereço: `{hoje:%Y%m%d}`, `{hoje-1:%Y-%m-%d}`, `{hoje+500:...}`, `{pagina}` e as chaves de `valores`.
 
+### Gravação das páginas reais
+`eldorado gravar <endereços> --pasta testes/paginas/<motor>` (ou o fluxo **Gravar páginas**, no GitHub) grava as respostas
+inteiras: é como se conhece a estrutura real da fonte antes de configurar, e é a base do teste nas páginas gravadas.
+
 ### Leitura (`motores/leitura/`)
 Página, PDF (com tabelas), OCR, planilha, documento, compactado, normalização de datas e valores, expurgo de menus e
-rodapés, e a reserva universal. O motor entrega o **texto literal**; o sistema nunca recebe binário. Documentos com
+rodapés, e a reserva universal. **O recorte dos atos** (`leitura/atos.py`, o elo `atos` da cadeia) divide a edição inteira
+de um diário em atos: o cabeçalho, o órgão acima dele, o começo e o texto integral; o texto do ato vai na pista (`texto`) e
+é o documento, sem baixar de novo a edição. Quando o título engana (um "EDITAL Nº" de licença ambiental), use
+`termos_em = "tudo"` e ponha o começo do ato no resumo, para os vetos o verem. O motor entrega o **texto literal**; o sistema nunca recebe binário. Documentos com
 padrão de injeção de instruções são marcados e reprovados.
 
 ### Alvos (`[[alvo]]`)
@@ -128,6 +136,15 @@ pela rede neural. A IA propõe; o sistema valida.
 [aprendizado]     # licoes, bloqueios_conhecidos, alternativas_para_bloqueio, rotas_que_falharam
 [metrica]         # cadencia_h, periodo_dias
 ```
+
+## Lições da criação dos primeiros motores (23/10/2026)
+
+- **do-goias**: a fonte certa era uma cadeia de três elos (edições do dia → sumário em árvore → texto da matéria); o motor
+  antigo inventava caminhos e ficou um mês sem ler, com a auditoria dizendo "funcionando". Grave antes de configurar.
+- **do-goiania**: a maior parte dos "EDITAL Nº" do diário são avisos de licença ambiental; o Querido Diário deve ser
+  consultado pelo código do município (o nome mistura cidades vizinhas); a lista oficial responde da nuvem.
+- **Teste com página real**: página montada à mão costuma ser "HTML quase vazio", que a escada trata como bloqueio; use a
+  página real gravada, alterando o mínimo.
 
 ## Bloqueios
 
