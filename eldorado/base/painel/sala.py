@@ -106,7 +106,7 @@ def montar(
         }
 
     # ---- os dados comuns
-    reg = [m["id"] for m in motores if not str(m["id"]).startswith("piloto")]   # os pilotos são medidos à parte (Espião e Interceptador)
+    reg = [m["id"] for m in motores if not str(m["id"]).startswith("piloto")]  # os pilotos são medidos à parte (Espião e Interceptador)
     ult = {m: (i, e) for m, i, e in cer.execute("SELECT motor, MAX(inicio), erro FROM execucao_motor GROUP BY motor")}
     lidos24 = [m for m in reg if (ult.get(m) or (None,))[0] and ult[m][0] >= h24]
     ok24 = [m for m in lidos24 if not ult[m][1]]
@@ -475,14 +475,41 @@ def montar(
     ]
     # ---- os alarmes abertos, a linha do tempo e o histórico
     niv = {"alta": "vermelho", "critica": "vermelho", "crítica": "vermelho", "media": "amarelo", "média": "amarelo"}
-    anunc = [
-        {"id": f"al-{r[0]}", "nome": r[2], "nivel": niv.get(r[1], "amarelo"), "motivo": (r[3] or "")[:240], "quando": r[4], "repeticoes": r[5]}
-        for r in cer.execute(
-            "SELECT id, gravidade, modulo, mensagem, aberto_em, repeticoes FROM alarme WHERE fechado_em IS NULL AND aberto_em >= ? "
-            "ORDER BY aberto_em DESC LIMIT 30",
-            (h24,),
+    # os alarmes abertos: agrupados pelo que falhou (a mensagem), com a contagem; o de um nó que voltou a concluir depois da
+    # falha aparece resolvido (não aceso)
+    import re as _re
+
+    volta = dict(cer.execute("SELECT no, MAX(em) FROM execucao_passo WHERE estado = 'concluido' GROUP BY no").fetchall())
+    grupos: dict[str, dict[str, Any]] = {}
+    for id_, grav, mod, msg, quando, _rep in cer.execute(
+        "SELECT id, gravidade, modulo, mensagem, aberto_em, repeticoes FROM alarme WHERE fechado_em IS NULL AND aberto_em >= ? ORDER BY aberto_em",
+        (h24,),
+    ):
+        m_no = _re.search(r"o nó ([a-z_]+) falhou", msg or "")
+        resolvido = bool(m_no and volta.get(m_no.group(1), "") > (quando or ""))
+        chave = _re.sub(r"\d+", "#", (msg or mod or "")[:90])
+        g = grupos.setdefault(
+            chave,
+            {
+                "id": f"al-{id_}",
+                "nome": (msg or mod or "")[:70],
+                "nivel": niv.get(grav, "amarelo"),
+                "motivo": (msg or "")[:240],
+                "repeticoes": 0,
+                "abertos": 0,
+                "modulo": mod,
+            },
         )
-    ]
+        g["repeticoes"] += 1
+        g["abertos"] += int(not resolvido)
+        g["quando"] = quando
+    anunc = []
+    for g in grupos.values():
+        if g["repeticoes"] > 1:
+            g["nome"] = f"{g['nome']} (×{g['repeticoes']})"
+        if not g["abertos"]:
+            g["nivel"], g["motivo"] = "verde", "resolvido: o nó voltou a concluir depois da falha · " + g["motivo"]
+        anunc.append(g)
     linha = [
         {"em": r[1], "evento": f"{r[0]}: {r[2]}"} for r in cer.execute("SELECT workflow, inicio, estado FROM execucao ORDER BY inicio DESC LIMIT 30")
     ]
