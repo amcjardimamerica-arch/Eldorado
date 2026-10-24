@@ -14,11 +14,11 @@ Elas estão em **`config/regras_titular.json`**, cada uma com a data, o texto, o
    mudou: então a decisão da titular vem primeiro, registrada).
 5. `eldorado travas` roda todas as travas. O ciclo permanente roda esse portão antes de começar: **com uma regra
    quebrada, o sistema não trabalha**. O fluxo de qualidade roda a bateria inteira a cada envio.
-6. **Cada alteração é enviada ao GitHub na hora** (R00; a regra antiga de não enviar foi revogada pela titular).
+6. **Cada alteração é enviada ao GitHub na hora** (R00).
 
 ## As regras mais lembradas (o registro é a fonte; isto é só um resumo)
 - Só dois bancos: a **Biblioteca** (os livros e as empresas) e o **Cérebro** (o aprendizado, nunca livros).
 - **Nenhum motor tem banco**: motores são configuração e ferramentas; só leem o Cérebro e entregam por eventos.
-- **O site mostra exatamente a Biblioteca**, e nenhum dado do Eldorado0.
+- **O site mostra a Biblioteca em tempo real** (R09, em implantação), e nenhum dado do Eldorado0 (R01, até a eliminação dele).
 - A estrela pela régua da titular; **a dispensa é só pelo Claude no Chrome**; o arquivo é só para encerradas.
 - Todo motor novo parte do **motor modelo** (`eldorado/base/motor_modelo/`), e toda ferramenta nova entra nele.

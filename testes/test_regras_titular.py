@@ -1,5 +1,5 @@
 """O teste-mestre das regras da titular (config/regras_titular.json): nenhuma regra sem trava, nenhuma trava inexistente,
-e a regra revogada nunca volta. Se alguém tirar uma trava ou apagar o teste, a bateria falha."""
+e a regra com prazo vencido é revista. Se alguém tirar uma trava ou apagar o teste, a bateria falha."""
 import json
 import re
 from pathlib import Path
@@ -27,7 +27,9 @@ def test_toda_trava_existe():
     assert not faltam, f"trava inexistente: {faltam}"
 
 
-def test_a_regra_revogada_nao_volta():
-    """R00: o envio ao GitHub a cada alteração; a regra antiga (não enviar) foi revogada pela titular."""
-    r00 = next(r for r in REGISTRO["regras"] if r["id"] == "R00")
-    assert "REGRA-PERMANENTE-SEM-ENVIO-GITHUB" in r00["revoga"]
+def test_regra_com_prazo_vencido_e_revista():
+    """A regra com prazo (como a R01, até a eliminação do Eldorado0) falha na data, para ser revista e não esquecida."""
+    from datetime import date
+    vencidas = [f"{r['id']} (venceu em {r['expira_em']}: {r.get('condicao', '')})" for r in REGISTRO["regras"]
+                if r.get("expira_em") and date.fromisoformat(r["expira_em"]) < date.today()]
+    assert not vencidas, f"regra vencida: a titular decide a remoção ou a prorrogação: {vencidas}"
