@@ -540,10 +540,27 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
     inicio = ultimo = time.monotonic()
     ciclo = 0
 
+    import threading
+    trava_gravar = threading.Lock()
+
     def gravar_agora() -> None:
-        if gravar:
-            r = subprocess.run(["bash", "scripts/gravar.sh", "false"], capture_output=True, text=True)
-            typer.echo(f"  gravação: {(r.stdout or r.stderr).strip()[-200:] or 'ok'}")
+        if gravar and trava_gravar.acquire(blocking=False):            # uma gravação de cada vez
+            try:
+                r = subprocess.run(["bash", "scripts/gravar.sh", "false"], capture_output=True, text=True, timeout=600)
+                typer.echo(f"  gravação: {(r.stdout or r.stderr).strip()[-200:] or 'ok'}")
+            except subprocess.TimeoutExpired:
+                typer.echo("  gravação: passou de 10 minutos; a próxima tenta de novo")
+            finally:
+                trava_gravar.release()
+
+    # os dados a cada 15 minutos no máximo (titular, 24/10/2026): a gravação também em segundo plano, independente da duração
+    # da passagem (os eventos são gravados linha a linha, com trava); cada gravação aciona o site
+    parar = threading.Event()
+
+    def gravar_em_segundo_plano() -> None:
+        while not parar.wait(gravar_min * 60):
+            gravar_agora()
+    threading.Thread(target=gravar_em_segundo_plano, daemon=True, name="gravacao").start()
 
     while True:
         ciclo += 1
@@ -562,13 +579,14 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
                    f"livros em trabalho {f['livros_em_trabalho']} · próxima ação prevista {f['proxima_acao'][11:16]}")
         if decorrido > limite_min * 60:
             break
-        if time.monotonic() - ultimo > gravar_min * 60:
+        if time.monotonic() - ultimo > gravar_min * 60:                 # (a de segundo plano também grava; esta cobre o fim do ciclo)
             gravar_agora()
             ultimo = time.monotonic()
         if not f["total"]:
             espera = min(f["proxima_s"], espera_max_min * 60, max(0.0, limite_min * 60 - decorrido))
             typer.echo(f"  sem fila: espera {espera / 60:.0f} min (até a próxima ação prevista)")
             time.sleep(espera)
+    parar.set()
     typer.echo(f"fim desta execução depois de {ciclo} ciclo(s); a continuação segue o trabalho")
 
 

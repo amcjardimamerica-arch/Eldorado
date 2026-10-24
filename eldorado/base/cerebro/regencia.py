@@ -88,37 +88,62 @@ class Regencia:
         return plano
 
     def acionar(self, plano: dict[str, Any], execucao: str | None = None) -> tuple[list[dict[str, Any]], list[str]]:
+        """Os motores do plano, EM PARALELO (titular, 24/10/2026: operar perto de 85% da capacidade): o governador decide,
+        a cada motor, quantos trabalhadores cabem na carga atual (o custo aprendido de cada motor, o alvo de 85%); os
+        resultados são processados um a um, na ordem em que terminam. Sem folga e sem nenhum rodando, o motor é adiado."""
+        import time as _t
+        from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
         achados: list[dict[str, Any]] = []
         adiados: list[str] = []
-        for m in plano["motores"]:
-            modulo = m["modulo"]
-            if not self.governador.pode_iniciar(modulo):
-                adiados.append(modulo)
-                continue
-            motor = self.registro.obter(modulo)
-            self.diario.emitir("agenda.definida", "regencia", {"modulo": modulo, "janela_inicio": m["janela_inicio"],
-                                                               "janela_fim": m["janela_fim"], "motivo": m["motivo"]})
-            self.diario.emitir("acionamento.feito", "regencia", {"passagem": plano["passagem"], "etapa": "coleta", "modulo": modulo,
-                                                                 "motivo": m["motivo"], "em": agora()})
-            p = Plano(passagem=plano["passagem"], janela_inicio=m["janela_inicio"], janela_fim=m["janela_fim"])
-            inicio = agora()
-            if hasattr(motor, "estado"):                       # o motor entrega o que aprende ao Cérebro, pelo diário da execução
-                motor.estado.diario = self.diario
-            med = medir(lambda motor=motor, p=p: list(motor.buscar(p)))
-            emitir_recibo(self.diario, execucao, modulo, "regencia", med)
-            lista = med.resultado or []
-            self.diario.emitir("motor.execucao", "regencia", {"motor": modulo, "inicio": inicio, "fim": agora(), "achados": len(lista),
-                                                              "erro": med.erro or None})
-            for a in lista:
-                if (a.dados or {}).get("especial"):                  # empresa e incentivo: à base Especial, não à Pertinência
-                    from ..especial.registro import Registro as RegistroEspecial
-                    RegistroEspecial(self.especial, self.diario).registrar(a.dados["especial"], modulo, a.dados.get("fonte") or modulo)
+        pendentes: dict[Any, tuple[str, str]] = {}
+        fila = list(plano["motores"])
+        with ThreadPoolExecutor(max_workers=max(1, self.governador.paralelismo_maximo)) as pool:
+            while fila or pendentes:
+                while fila:
+                    m = fila[0]
+                    modulo = m["modulo"]
+                    cabe = max(1, self.governador.paralelismo(modulo)) if pendentes else 1
+                    if len(pendentes) >= cabe:
+                        break                                       # a carga está no alvo: espera um terminar
+                    if not pendentes and not self.governador.pode_iniciar(modulo):
+                        adiados.append(modulo)                      # sem folga nem com a máquina parada: adiado
+                        fila.pop(0)
+                        continue
+                    fila.pop(0)
+                    motor = self.registro.obter(modulo)
+                    self.diario.emitir("agenda.definida", "regencia", {"modulo": modulo, "janela_inicio": m["janela_inicio"],
+                                                                       "janela_fim": m["janela_fim"], "motivo": m["motivo"]})
+                    self.diario.emitir("acionamento.feito", "regencia", {"passagem": plano["passagem"], "etapa": "coleta", "modulo": modulo,
+                                                                         "motivo": m["motivo"], "em": agora()})
+                    p = Plano(passagem=plano["passagem"], janela_inicio=m["janela_inicio"], janela_fim=m["janela_fim"])
+                    if hasattr(motor, "estado"):                   # o motor entrega o que aprende ao Cérebro, pelo diário da execução
+                        motor.estado.diario = self.diario
+                    f = pool.submit(medir, lambda motor=motor, p=p: list(motor.buscar(p)), medir_memoria=False)
+                    pendentes[f] = (modulo, agora())
+                if not pendentes:
+                    break
+                prontos, _ = wait(list(pendentes), timeout=5, return_when=FIRST_COMPLETED)
+                if not prontos:
+                    _t.sleep(0.05)
                     continue
-                if a.documento:
-                    self._documento(modulo, a.documento)
-                ev = achado_para_evento(a)
-                self.diario.emitir("achado.entregue", modulo, ev)
-                achados.append(_sem_paginas(msgspec.to_builtins(a)) | {"documento": _sem_paginas(a.documento) if a.documento else None})
+                for f in prontos:
+                    modulo, inicio = pendentes.pop(f)
+                    med = f.result()
+                    emitir_recibo(self.diario, execucao, modulo, "regencia", med)
+                    self.governador.aprender_custo(modulo, med.cpu_ms, med.duracao_ms, med.memoria_pico_kb)
+                    lista = med.resultado or []
+                    self.diario.emitir("motor.execucao", "regencia", {"motor": modulo, "inicio": inicio, "fim": agora(), "achados": len(lista),
+                                                                      "erro": med.erro or None})
+                    for a in lista:
+                        if (a.dados or {}).get("especial"):              # empresa e incentivo: à base Especial, não à Pertinência
+                            from ..especial.registro import Registro as RegistroEspecial
+                            RegistroEspecial(self.especial, self.diario).registrar(a.dados["especial"], modulo, a.dados.get("fonte") or modulo)
+                            continue
+                        if a.documento:
+                            self._documento(modulo, a.documento)
+                        ev = achado_para_evento(a)
+                        self.diario.emitir("achado.entregue", modulo, ev)
+                        achados.append(_sem_paginas(msgspec.to_builtins(a)) | {"documento": _sem_paginas(a.documento) if a.documento else None})
         return achados, adiados
 
     def _documento(self, modulo: str, doc: dict[str, Any]) -> None:

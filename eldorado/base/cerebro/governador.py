@@ -51,7 +51,8 @@ class Governador:
     medidor: Callable[[], Leitura]
     limite: float = 0.85
     disco_critico: float = 0.95
-    paralelismo_maximo: int = max(1, (os.cpu_count() or 1))
+    # os motores esperam a rede a maior parte do tempo: quem limita é a carga medida (o alvo de 85%), não os núcleos
+    paralelismo_maximo: int = max(4, 4 * (os.cpu_count() or 1))
     diario: Diario | None = None
     custos: dict[str, float] = field(default_factory=dict)      # módulo → fração da máquina, aprendida dos recibos
     ultima: Leitura | None = None
@@ -107,8 +108,19 @@ class Governador:
         """Grava a leitura da máquina (para o mostrador): uso, paralelismo e o tamanho de cada parte."""
         leitura = self.ultima or self.ler()
         rede = psutil.net_io_counters()
+        import shutil
+        import subprocess
+        gpu = "não há placa de vídeo neste servidor"
+        if shutil.which("nvidia-smi"):
+            try:
+                gpu = subprocess.run(["nvidia-smi", "--query-gpu=name,utilization.gpu,memory.used,memory.total", "--format=csv,noheader"],
+                                     capture_output=True, text=True, timeout=10).stdout.strip()[:200] or gpu
+            except Exception:  # noqa: BLE001
+                pass
         dados = {"em": agora(), "processador": leitura.processador, "memoria": leitura.memoria, "disco": leitura.disco,
-                 "rede_entrada": float(rede.bytes_recv), "rede_saida": float(rede.bytes_sent), "paralelismo": paralelismo}
+                 "rede_entrada": float(rede.bytes_recv), "rede_saida": float(rede.bytes_sent), "paralelismo": paralelismo,
+                 "nucleos": psutil.cpu_count() or 1, "memoria_total_mb": psutil.virtual_memory().total // 2**20,
+                 "disco_total_gb": round(psutil.disk_usage(".").total / 2**30, 1), "gpu": gpu}
         for parte, tamanho in (tamanhos or {}).items():
             dados[f"tamanho_{parte}"] = tamanho
         if self.diario:

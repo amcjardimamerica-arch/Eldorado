@@ -212,6 +212,15 @@
    "travas": [
     "testes/test_sala_mostradores.py::test_todo_instrumento_da_sala_e_medido"
    ]
+  },
+  {
+   "id": "R21",
+   "data": "2026-10-24",
+   "regra": "O sistema opera perto de 85% da capacidade, sempre: a Regência aciona os motores em paralelo, com o número de trabalhadores que o governador permite pela carga medida e pelo custo aprendido de cada motor; acima do alvo, adia. A sala mostra o servidor (processador, memória, disco, GPU) e os dados chegam ao site a cada 15 minutos no máximo.",
+   "onde": "eldorado/base/cerebro/regencia.py (acionar), governador.py; a sala (o servidor); comandos.permanente (a gravação em segundo plano)",
+   "travas": [
+    "testes/test_capacidade.py::test_os_motores_rodam_em_paralelo_pela_carga"
+   ]
   }
  ]
 }

@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .._sqlite import abrir as _abrir
 
-VERSAO = 6
+VERSAO = 7
 
 DDL = r"""
 PRAGMA foreign_keys=ON;
@@ -101,8 +101,16 @@ DDL_V6 = r"""
 CREATE TABLE IF NOT EXISTS releitura (documento_id INTEGER PRIMARY KEY, tentativas INTEGER NOT NULL, ultima TEXT NOT NULL, resultado TEXT)
 """
 
+# 7: o servidor em cada leitura da máquina (os núcleos, a memória e o disco totais, a placa de vídeo), para o mostrador
+DDL_V7 = r"""
+ALTER TABLE maquina ADD COLUMN nucleos INTEGER;
+ALTER TABLE maquina ADD COLUMN memoria_total_mb INTEGER;
+ALTER TABLE maquina ADD COLUMN disco_total_gb REAL;
+ALTER TABLE maquina ADD COLUMN gpu TEXT
+"""
+
 
 def abrir(caminho: str | Path):
     """Na criação, o esquema inteiro (com a versão 2); um Cérebro na versão 1 é migrado (as tabelas motor_* e espiao_*)."""
-    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V4 + ";\n" + DDL_V5 + ";\n" + DDL_V6, VERSAO,
-                  {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6})
+    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V4 + ";\n" + DDL_V5 + ";\n" + DDL_V6 + ";\n" + DDL_V7, VERSAO,
+                  {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7})

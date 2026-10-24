@@ -31,7 +31,7 @@ def medir(fn: Callable[..., Any], *args: Any, medir_memoria: bool = True, **kwar
         if rastreando:
             tracemalloc.start()
         tracemalloc.reset_peak()
-    t0, c0 = time.perf_counter(), time.process_time()
+    t0, c0 = time.perf_counter(), time.thread_time()
     ok, resultado, erro, arquivos = True, None, "", ()
     try:
         resultado = fn(*args, **kwargs)
@@ -43,7 +43,7 @@ def medir(fn: Callable[..., Any], *args: Any, medir_memoria: bool = True, **kwar
         achados = (re.search(r"(eldorado/(?:base|motores|banco)/[^\s]+\.py)$", r) for r in rastro if "/site-packages/" not in r)
         arquivos = tuple(dict.fromkeys(a.group(1) for a in achados if a and not a.group(1).endswith("nucleo/recibo.py")))
     duracao = int((time.perf_counter() - t0) * 1000)
-    cpu = int((time.process_time() - c0) * 1000)
+    cpu = int((time.thread_time() - c0) * 1000)
     pico = None
     if medir_memoria:
         pico = tracemalloc.get_traced_memory()[1] // 1024

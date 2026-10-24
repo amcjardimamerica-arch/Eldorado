@@ -1330,6 +1330,17 @@ box-sizing:border-box;}
 #v-neural .vidro{background:var(--vidro);contain:paint;border:1px solid rgba(155,140,255,.22);
   border-radius:22px;box-shadow:0 30px 70px -40px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.06)}
 #v-neural .nucleo{display:flex;gap:18px;align-items:center;padding:16px 20px}
+/* 24/10/2026 (titular): o servidor abaixo do índice; a altura limitada à do painel de alarmes (preenche o que sobra da coluna) */
+#v-neural .topo>.titulo{display:flex;flex-direction:column;min-height:0}
+#v-neural .maquina{flex:1 1 0;min-height:0;overflow:auto;margin-top:16px;padding:14px 16px}
+#v-neural .maquina h3{margin:0 0 10px;font-size:14px}
+#v-neural .maquina .mq{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#v-neural .maquina .med{background:rgba(7,12,36,.45);border:1px solid rgba(155,140,255,.18);border-radius:10px;padding:8px 10px}
+#v-neural .maquina .med b{font:400 20px "Michroma",sans-serif;color:#EAF2FF}#v-neural .maquina .med small{display:block;color:#8B93B8;font-size:11px;margin-bottom:4px}
+#v-neural .maquina .barra{position:relative;height:6px;border-radius:4px;background:rgba(155,140,255,.18);margin-top:6px;overflow:visible}
+#v-neural .maquina .barra i{position:absolute;left:0;top:0;bottom:0;border-radius:4px}
+#v-neural .maquina .barra .alvo{position:absolute;top:-3px;bottom:-3px;width:2px;background:#EAF2FF;opacity:.7;left:85%}
+#v-neural .maquina .curva{margin-top:10px}#v-neural .maquina .rod{margin-top:8px;color:#8B93B8;font-size:11.5px;line-height:1.45}
 #v-neural .contagens{display:grid;gap:8px;font-size:15px}
 #v-neural .contagens span{display:flex;align-items:center;gap:9px}
 #v-neural .contagens i{width:10px;height:10px;border-radius:50%;box-shadow:0 0 12px currentColor}
@@ -1444,7 +1455,8 @@ box-sizing:border-box;}
     <div class="topo">
       <div class="titulo"><h2>Sala de controle</h2>
         <p>Cada estrela deste céu é um motor do Eldorado; cada constelação, uma etapa da rede neural. Siga o sinal de cima para baixo e clique em qualquer etapa, mostrador ou estrela para abrir o detalhe.</p>
-        <div class="vidro nucleo" onclick="nvVisao(this)" title="abrir a composição do índice"><div id="nv-indice" style="width:150px"></div><div class="contagens" id="nv-contagens"></div></div></div>
+        <div class="vidro nucleo" onclick="nvVisao(this)" title="abrir a composição do índice"><div id="nv-indice" style="width:150px"></div><div class="contagens" id="nv-contagens"></div></div>
+        <div class="vidro maquina" id="nv-maquina" aria-label="O servidor do sistema: processador, memória, disco e GPU"><h3>O servidor do sistema</h3><div class="faint">lendo…</div></div></div>
       <div class="vidro alarmes"><h3 id="nv-alarmes-tit">Painel de alarmes</h3><div class="janelas" id="nv-janelas"></div></div>
       <div class="vidro esteira"><h3>O caminho do dado</h3><div class="tubo" id="nv-tubo"></div><div class="faint" id="nv-leitura" style="font-size:13px;margin-top:12px">lendo…</div></div>
     </div>
@@ -1469,6 +1481,27 @@ box-sizing:border-box;}
   <div class="veu" id="nv-veu"></div>
   <div class="holo" id="nv-holo" role="dialog" aria-modal="true"></div>
 </div>
+<script>
+/* O servidor do sistema (titular, 24/10/2026): a última leitura do servidor do GitHub onde o sistema roda (o governador
+   grava a cada passagem): o processador, a memória, o disco e a GPU, com a marca do alvo de 85%, e as últimas 3 horas. */
+(function(){
+  const $=id=>document.getElementById(id), pc=v=>v==null?"—":Math.round(v*100)+"%";
+  const cor=v=>v==null?"#8B93B8":v>=.95?"#FF6B6B":v>=.85?"#FFB347":v>=.6?"#5EE6C8":"#7fb0de";
+  function med(nome,v,extra){ return `<div class="med"><small>${nome}</small><b style="color:${cor(v)}">${pc(v)}</b><div class="barra"><i style="width:${Math.min(100,Math.round((v||0)*100))}%;background:${cor(v)}"></i><span class="alvo" title="alvo: 85%"></span></div>${extra?`<div class="rod">${extra}</div>`:""}</div>`; }
+  function curva(S){ if(!S||S.length<2) return ""; const W=260,H=54, t0=new Date(S[0].em).getTime(), t1=new Date(S[S.length-1].em).getTime()||t0+1;
+    const x=e=>((new Date(e).getTime()-t0)/Math.max(1,t1-t0))*W, y=v=>H-(v||0)*H, L=k=>S.map((p,i)=>(i?"L":"M")+x(p.em).toFixed(1)+","+y(p[k]).toFixed(1)).join("");
+    return `<svg class="curva" viewBox="0 0 ${W} ${H}" width="100%" height="${H}" preserveAspectRatio="none"><line x1="0" x2="${W}" y1="${y(.85)}" y2="${y(.85)}" stroke="#EAF2FF" stroke-dasharray="3 3" opacity=".5"/><path d="${L("p")}" fill="none" stroke="#5EE6C8" stroke-width="1.6"/><path d="${L("m")}" fill="none" stroke="#b89cf5" stroke-width="1.6"/></svg><div class="rod"><span style="color:#5EE6C8">processador</span> · <span style="color:#b89cf5">memória</span> · tracejado: o alvo de 85% · últimas 3 h</div>`; }
+  function desenhar(M){ const el=$("nv-maquina"); if(!el) return;
+    if(!M||!M.em){ el.innerHTML='<h3>O servidor do sistema</h3><div class="faint">aguardando a primeira leitura do servidor (o governador grava a cada passagem)</div>'; return; }
+    const gpuTem=M.gpu&&!/não há/.test(M.gpu);
+    el.innerHTML=`<h3>O servidor do sistema</h3><div class="mq">${med("Processador",M.processador,M.nucleos?M.nucleos+" núcleos":"")}${med("Memória",M.memoria,M.memoria_total_mb?(M.memoria_total_mb/1024).toFixed(1)+" GB":"")}${med("Disco",M.disco,M.disco_total_gb?M.disco_total_gb+" GB":"")}`+
+      `<div class="med"><small>GPU</small><b style="color:${gpuTem?"#5EE6C8":"#8B93B8"}">${gpuTem?"em uso":"—"}</b><div class="rod">${gpuTem?M.gpu:"o servidor do GitHub não tem placa de vídeo"}</div></div></div>`+
+      curva(M.serie)+`<div class="rod">uso médio na última hora: <b>${pc(M.uso_medio_1h)}</b> (alvo: 85%) · paralelismo do governador: <b>${M.paralelismo??"—"}</b><br>leitura de ${new Date(M.em).toLocaleString("pt-BR")} · servidor do GitHub</div>`; }
+  function ler(){ fetch("dados/sala_controle.json?"+Date.now()).then(r=>r.json()).then(d=>desenhar(d.maquina)).catch(()=>{}); }
+  const alvo=$("nv-maquina"); if(!alvo) return; let t=null;
+  new IntersectionObserver(es=>{ if(es.some(x=>x.isIntersecting)){ ler(); clearInterval(t); t=setInterval(ler,60000);} else clearInterval(t); }).observe(alvo);
+})();
+</script>
 <script>
 /* O mapa dos arquivos do sistema (titular, 24/10/2026): o mapa REAL (dados/mapa_arquivos.json, extraído do código e das
    configurações que a produção executa) com a medição de cada arquivo: o ponto, o círculo e as ligações. */

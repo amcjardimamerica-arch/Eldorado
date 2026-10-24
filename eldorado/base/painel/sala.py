@@ -533,8 +533,33 @@ def montar(
             ).fetchall()
         ),
     }
+    # ---- a máquina (o servidor do GitHub onde o sistema roda): a última leitura e as últimas 3 horas
+    maq: dict[str, Any] = {"alvo": 0.85}
+    try:
+        cols = [r[1] for r in cer.execute("PRAGMA table_info(maquina)")]
+        ult_m = cer.execute("SELECT * FROM maquina ORDER BY em DESC LIMIT 1").fetchone()
+        if ult_m:
+            maq.update(
+                {
+                    c: ult_m[i]
+                    for i, c in enumerate(cols)
+                    if c in ("em", "processador", "memoria", "disco", "paralelismo", "nucleos", "memoria_total_mb", "disco_total_gb", "gpu")
+                }
+            )
+            maq["idade_h"] = _idade_h(maq.get("em"), agora)
+            maq["serie"] = [
+                {"em": e, "p": p_, "m": m_}
+                for e, p_, m_ in cer.execute(
+                    "SELECT em, processador, memoria FROM maquina WHERE em >= ? ORDER BY em", ((agora - timedelta(hours=3)).isoformat(),)
+                )
+            ]
+            serie_h = [max(x["p"] or 0, x["m"] or 0) for x in maq["serie"] if x["em"] >= (agora - timedelta(hours=1)).isoformat()]
+            maq["uso_medio_1h"] = round(sum(serie_h) / len(serie_h), 3) if serie_h else None
+    except sqlite3.Error:
+        pass
     return {
         "em": iso,
+        "maquina": maq,
         "regra": "cada mostrador ligado ao dado medido pelo sistema (titular, 24/10/2026)",
         "indice_saude": indice,
         "instrumentos": list(inst.values()),
