@@ -21,7 +21,7 @@ def test_previsao_pela_repeticao_das_aberturas():
 def copia(tmp_path_factory):
     from eldorado.base.fluxo.nos import abrir_bancos
     tmp_path = tmp_path_factory.mktemp("farol")                       # uma cópia só para os testes (o banco é grande)
-    for n in ("biblioteca", "cerebro", "especial"):
+    for n in ("biblioteca", "cerebro"):
         shutil.copy(f"dados/{n}.db", tmp_path / f"{n}.db")
     bancos = abrir_bancos(tmp_path)
     yield tmp_path, bancos

@@ -19,6 +19,9 @@ class LeitorUniversal:
         self._parser = parser
 
     def ler(self, conteudo: bytes, nome: str | None, registro: Registro) -> Leitura:
-        r = self._parser.from_buffer(conteudo)
+        try:
+            r = self._parser.from_buffer(conteudo)
+        except Exception as e:  # noqa: BLE001 — a reserva que falha (o servidor do Tika) nunca derruba o motor (24/10/2026)
+            raise SemLeitor(f"o leitor universal (Tika) falhou: {type(e).__name__}: {str(e)[:150]}") from e
         return Leitura(tipo="outro", leitor=self.nome, sha256=sha256(conteudo), paginas=[Pagina(1, r.get("content") or "")],
                        alertas=["lido pela reserva universal (uso deve ser raro)"])

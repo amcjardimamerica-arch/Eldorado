@@ -23,6 +23,17 @@ marca "bibliotecas"
   || aviso "Patchright (degrau 4) não instalou"
 timeout 300 python -m camoufox fetch > /dev/null 2>&1 || aviso "Camoufox (degrau 5) não instalou"
 marca "navegadores"
+# o servidor do Tika (o leitor universal de reserva), baixado aqui e não no meio do trabalho (24/10/2026: ele falhou ao baixar
+# durante a leitura e derrubou um motor); na versão que a biblioteca espera, com a assinatura de conferência
+TV=$(python -c "import tika.tika as t; print(t.TikaVersion)" 2>/dev/null)
+if [ -n "$TV" ]; then
+  TD="${RUNNER_TEMP:-/tmp}/tika"; mkdir -p "$TD"
+  URL="https://repo1.maven.org/maven2/org/apache/tika/tika-server-standard/$TV/tika-server-standard-$TV.jar"
+  if timeout 180 curl -sfL -o "$TD/tika-server.jar" "$URL" && timeout 60 curl -sfL -o "$TD/tika-server.jar.md5" "$URL.md5"; then
+    { echo "TIKA_SERVER_JAR=$TD/tika-server.jar"; echo "TIKA_PATH=$TD"; } >> "${GITHUB_ENV:-/dev/null}"
+  else aviso "o servidor do Tika ($TV) não baixou; o leitor universal fica sem servidor (a reserva não derruba os motores)"; fi
+fi
+marca "Tika"
 LP="${RUNNER_TEMP:-/tmp}/lightpanda"
 curl -sfL -m 120 -o "$LP" https://github.com/lightpanda-io/browser/releases/download/nightly/lightpanda-x86_64-linux && chmod +x "$LP" \
   && echo "ELDORADO_LIGHTPANDA=$LP" >> "${GITHUB_ENV:-/dev/null}" || aviso "Lightpanda (degrau 3) não instalou"
