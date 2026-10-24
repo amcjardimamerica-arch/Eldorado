@@ -243,7 +243,10 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
     motivo: dict[str, str] = {}
     # os nós dos workflows: o resultado de cada passo nas últimas 24 h
     por_no: dict[str, list[tuple[str, str | None]]] = defaultdict(list)
-    for no_id, estado, saida in cer.execute("SELECT no, estado, saida FROM execucao_passo WHERE em >= ?", (h24,)):
+    # os últimos 50 passos de cada nó (responde em minutos; a janela de 24 h deixava uma falha corrigida vermelha por um dia)
+    for no_id, estado, saida in cer.execute("SELECT no, estado, saida FROM (SELECT no, estado, saida, em, ROW_NUMBER() OVER "
+                                            "(PARTITION BY no ORDER BY em DESC) AS k FROM execucao_passo WHERE estado IN ('concluido', 'falhou')) "
+                                            "WHERE k <= 50"):
         por_no[no_id].append((estado, saida))
     vermelhos_do_erro: dict[str, str] = {}
     for no_id, lst in por_no.items():
@@ -263,7 +266,7 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
             c = "v" if taxa >= .95 else "a" if taxa >= .8 else "r"
             if PIOR[c] >= PIOR.get(circ.get(f, "v"), 0):
                 circ[f] = c
-                motivo[f] = f"nó {no_id}: {ok} de {total} passos concluídos em 24 h"
+                motivo[f] = f"nó {no_id}: {ok} dos últimos {total} passos concluídos"
             if falhas and not ponto.get(f) == "r":
                 ponto[f] = "r" if falhas and not ok else ponto.get(f, "v")
             ponto.setdefault(f, "v")
@@ -272,19 +275,40 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
     passagem_ok = any(e == "concluido" for lst in por_no.values() for e, _ in lst)
     # os motores: a execução (ponto) e a finalidade (círculo)
     ult = {m: (i, e) for m, i, e in cer.execute("SELECT motor, MAX(inicio), erro FROM execucao_motor GROUP BY motor")}
-    aceitos = {m for (m,) in bib.execute("SELECT DISTINCT motor FROM achado WHERE decisao = 'aceito' AND encontrado_em >= ?", (d14[:10],))}
+    # a finalidade de cada motor pela métrica da SUA configuração (o período, a cadência e o destino)
+    cfg_motor: dict[str, dict] = {}
+    for c in (RAIZ / "eldorado/motores/canal/config").glob("*.toml"):
+        try:
+            d_ = tomllib.loads(c.read_text(encoding="utf-8"))
+            cfg_motor[c.stem] = {"periodo": int(d_.get("metrica", {}).get("periodo_dias", 14)), "cadencia": float(d_.get("metrica", {}).get("cadencia_h", 24)),
+                                 "destino": d_.get("motor", {}).get("destino", "biblioteca")}
+        except (tomllib.TOMLDecodeError, ValueError):
+            pass
+    ultimo_aceito = dict(bib.execute("SELECT motor, MAX(encontrado_em) FROM achado WHERE decisao = 'aceito' GROUP BY motor").fetchall())
+    try:
+        ultimo_incentivo = bib.execute("SELECT MAX(em) FROM incentivo").fetchone()[0]       # as empresas: o destino especial
+    except sqlite3.Error:
+        ultimo_incentivo = None
     for n in mapa["nos"]:
         if not n["componente"].startswith("motor "):
             continue
         mid, p = n["componente"][6:], n["id"]
         i, e = ult.get(mid, (None, None))
+        cm = cfg_motor.get(mid, {"periodo": 14, "cadencia": 24, "destino": "biblioteca"})
+        janela_leitura = (agora - timedelta(hours=cm["cadencia"])).isoformat()
+        desde = (agora - timedelta(days=cm["periodo"])).date().isoformat()
+        entrega = ultimo_incentivo if cm["destino"] == "especial" else ultimo_aceito.get(mid)
+        atingiu = bool(entrega) and str(entrega)[:10] >= desde
+        o_que = "empresa ou incentivo registrado" if cm["destino"] == "especial" else "achado aceito"
         if i is None:
             ponto[p], circ[p], motivo[p] = "c", "r", "o motor nunca leu"
         else:
-            ponto[p] = "r" if e and i >= h24 else ("v" if i >= h24 else "c")
-            circ[p] = "v" if i >= h24 and mid in aceitos else "a" if i >= h48 else "r"
-            fim = "achado aceito em 14 dias" if mid in aceitos else "sem achado aceito em 14 dias"
-            motivo[p] = f"última leitura {i[:16]}{' com erro: ' + str(e)[:100] if e else ''}; {fim}"
+            ponto[p] = "r" if e and i >= h24 else ("v" if i >= h48 else "c")
+            leu = i >= janela_leitura
+            circ[p] = "v" if leu and atingiu else "a" if (leu or atingiu) else "r"
+            fim = f"{o_que} em {cm['periodo']} dias" if atingiu else f"sem {o_que} em {cm['periodo']} dias (último: {str(entrega or 'nenhum')[:10]})"
+            erro_txt = f" com erro: {str(e)[:100]}" if e else ""
+            motivo[p] = f"última leitura {i[:16]} ({'dentro' if leu else 'fora'} da cadência de {cm['cadencia']:.0f} h){erro_txt}; {fim}"
     # os bancos: a integridade e a gravação recente
     for f, con in (("dados/biblioteca.db", bib), ("dados/cerebro.db", cer)):
         integro = con.execute("PRAGMA quick_check").fetchone()[0] == "ok"
@@ -307,13 +331,17 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
         else:
             ponto[p] = "v" if passagem_ok else "c"
             motivo.setdefault(p, "rodou com a passagem (alcançado pela produção)" if passagem_ok else "nenhuma passagem concluída em 24 h")
-    for _ in range(6):                                          # o círculo herdado de quem o usa (até 6 níveis)
+    # o círculo das bibliotecas: vermelho só pelo próprio erro (no rastro); verde se algum usuário cumpre a finalidade;
+    # âmbar se todos os que o usam estão em falha (antes: o pior de quem usa, o que espalhava a falha de um nó por tudo)
+    for p in vermelhos_do_erro:
+        circ.setdefault(p, "r")
+    for _ in range(6):
         for p in nos:
             if p in circ:
                 continue
             herd = [circ[u] for u in usado_por.get(p, ()) if u in circ]
             if herd:
-                circ[p] = max(herd, key=PIOR.get)
+                circ[p] = "v" if "v" in herd else "a" if any(h in ("a", "r") for h in herd) else "c"
     for p in nos:
         circ.setdefault(p, "c")
     linhas = {f"{a['de']}>{a['para']}": ("r" if "r" in (ponto.get(a["de"]), ponto.get(a["para"])) else
