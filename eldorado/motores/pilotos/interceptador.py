@@ -33,7 +33,7 @@ from ...base.cartorio import origem
 from ...base.missao import itens as I
 from ...base.nucleo.contratos import Achado
 from ...base.nucleo.eventos import Diario, agora
-from ..acesso.escada import Bloqueado, Escada, Indisponivel, Pendente
+from ..acesso.escada import Bloqueado, Escada, Indisponivel, Passageiro, Pendente
 from ..descoberta import fonte_oficial
 from ..leitura import leitores
 from ..leitura.pdf import LeitorPDF
@@ -196,7 +196,7 @@ class Interceptador:
         from ..acesso.arquivo_web import DegrauArquivo
         try:
             r = DegrauArquivo(self.arquivo).buscar(lv.link_oficial, 25)
-        except (Bloqueado, Indisponivel, Pendente):
+        except (Bloqueado, Indisponivel, Pendente, Passageiro):           # a falha de rede no Wayback (24/10/2026: derrubava o nó)
             try:                                            # a segunda cópia arquivada: o Common Crawl (cdx_toolkit)
                 import cdx_toolkit
                 obj = next(iter(cdx_toolkit.CDXFetcher(source="cc").iter(lv.link_oficial, limit=1, filter=["status:200"])), None)
@@ -251,7 +251,10 @@ class Interceptador:
         for n in ordem or ORDEM[lv.balcao]:
             if n in lv.tentadas:
                 continue
-            urls = getattr(self, f"_a{n}")(lv)
+            try:
+                urls = getattr(self, f"_a{n}")(lv)
+            except Exception:  # noqa: BLE001 — uma abordagem que falha é pulada: nunca derruba a investigação nem o nó (R18)
+                urls = []
             if not urls:
                 continue                                            # sem material: pulada, não gasta tentativa
             achado = self._achado(lv, n, urls)

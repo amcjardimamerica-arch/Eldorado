@@ -34,6 +34,9 @@ def test_transferencia_ao_farol_de_ponta_a_ponta(copia):
     from eldorado.base.nucleo.gravador import Gravador
     pasta, bancos = copia
     con = bancos["biblioteca"]
+    # a condição criada na cópia (24/10/2026: a produção já transferiu todos; o teste não pode depender do estado do dia)
+    con.execute("DELETE FROM transferencia WHERE livro_id IN (SELECT livro_id FROM passaporte WHERE fase = 'farol' LIMIT 6)")
+    con.commit()
     antes = len(farol.para_transferir(con))
     assert antes > 0
     diario = Diario(pasta / "eventos", "teste")

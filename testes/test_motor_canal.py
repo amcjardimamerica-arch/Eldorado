@@ -149,8 +149,8 @@ def test_um_site_com_redirecionamento_em_laco_nao_derruba_o_motor(tmp_path):
 [acesso]\ndegraus = ["api"]\nintervalo_s = 0\ntentativas = 1\n
 [leitura]\npaginas_dos_achados = false\nseguir_oficial = false\n
 [lexico]\ntermos = ["edital"]\n[canivete]\nligado = false\n""")
-    from eldorado.motores.canal.motor import MotorCanal
     from eldorado.base.nucleo.contratos import Plano
+    from eldorado.motores.canal.motor import MotorCanal
     m = MotorCanal(tmp_path / "m.toml", tmp_path / "dados")
     try:
         achados = list(m.buscar(Plano(passagem="p", janela_inicio="", janela_fim="")))

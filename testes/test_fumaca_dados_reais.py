@@ -41,6 +41,8 @@ def test_os_pilotos_concluem_com_os_dados_reais(tmp_path, monkeypatch):
     from eldorado.motores.acesso import completa
     from eldorado.motores.acesso.escada import Escada
     monkeypatch.setattr(completa, "escada_completa", lambda *a, **k: Escada([], intervalo_padrao=0))   # sem rede: rápido e determinístico
+    from eldorado.base.nucleo import ia as _ia
+    monkeypatch.setattr(_ia.IA, "disponivel", lambda self: False)   # sem a IA local (na produção ela está ligada e o teste a esperava)
     for n in ("biblioteca", "cerebro"):
         shutil.copy(f"dados/{n}.db", tmp_path / f"{n}.db")
     for c in {id(x): x for x in abrir_bancos(tmp_path).values()}.values():

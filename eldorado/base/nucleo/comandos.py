@@ -431,7 +431,16 @@ def travas():
         typer.echo("::error::o portão não pôde rodar: o pytest não está instalado (o grupo 'testes'); o ciclo segue, sem a conferência das regras")
         return
     alvos = sorted({t for r in reg["regras"] for t in r.get("travas", [])}) + ["testes/test_regras_titular.py"]
-    r = subprocess.run([sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider", "-W", "ignore", *alvos], capture_output=True, text=True)
+    try:                                              # o tempo máximo do portão (24/10/2026: uma trava lenta segurou o ciclo)
+        r = subprocess.run([sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider", "-W", "ignore", "--durations=6", *alvos],
+                           capture_output=True, text=True, timeout=480)
+    except subprocess.TimeoutExpired as e:
+        saida = (e.stdout or b"").decode() if isinstance(e.stdout, bytes) else (e.stdout or "")
+        typer.echo(f"::error::o portão passou de 8 minutos (infraestrutura): o ciclo segue sem a conferência completa · {saida[-600:]}")
+        return
+    lentas = [x.strip() for x in r.stdout.splitlines() if x.strip().endswith(("call", "setup")) and "s " in x][:6]
+    if lentas:
+        typer.echo("::notice::as travas mais lentas: " + " | ".join(lentas))
     falhas = [linha for linha in r.stdout.splitlines() if linha.startswith(("FAILED", "ERROR"))]
     if r.returncode != 0:
         for f in falhas:
