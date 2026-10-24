@@ -232,12 +232,17 @@ def montar(
     )
     docs = q(bib, "SELECT COUNT(*) FROM documento")
     parciais = q(bib, "SELECT COUNT(*) FROM documento d WHERE NOT EXISTS (SELECT 1 FROM pagina p WHERE p.documento_id = d.id)")
+    try:
+        relidos = q(cer, "SELECT COUNT(*) FROM releitura WHERE resultado LIKE 'relido%'")
+    except sqlite3.Error:
+        relidos = 0
     I(
         "es_parcial",
         "Documentos sem texto lido",
         parciais,
         _faixa(parciais / docs if docs else 0, 0.05, 0.2, False),
-        f"{parciais} de {docs} documentos sem nenhuma página de texto",
+        f"{parciais} de {docs} documentos sem nenhuma página de texto (os herdados da migração do Eldorado0 são relidos a cada passagem: "
+        f"{relidos} já relidos)",
         iso,
     )
     # ---- 04 Investigação

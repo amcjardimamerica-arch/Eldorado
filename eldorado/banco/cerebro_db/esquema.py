@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .._sqlite import abrir as _abrir
 
-VERSAO = 5
+VERSAO = 6
 
 DDL = r"""
 PRAGMA foreign_keys=ON;
@@ -96,7 +96,13 @@ DDL_V5 = r"""
 CREATE TABLE IF NOT EXISTS medicao_arquivos (chave TEXT PRIMARY KEY, em TEXT NOT NULL, dados TEXT NOT NULL)
 """
 
+# 6: a releitura dos documentos herdados sem texto: as tentativas (aprendizado; o texto vai para o livro, na Biblioteca)
+DDL_V6 = r"""
+CREATE TABLE IF NOT EXISTS releitura (documento_id INTEGER PRIMARY KEY, tentativas INTEGER NOT NULL, ultima TEXT NOT NULL, resultado TEXT)
+"""
+
 
 def abrir(caminho: str | Path):
     """Na criação, o esquema inteiro (com a versão 2); um Cérebro na versão 1 é migrado (as tabelas motor_* e espiao_*)."""
-    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V4 + ";\n" + DDL_V5, VERSAO, {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5})
+    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V4 + ";\n" + DDL_V5 + ";\n" + DDL_V6, VERSAO,
+                  {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6})
