@@ -96,6 +96,11 @@ class Encaminhamento:
         return achados, contagem
 
 
+def _agora_iso() -> str:
+    from datetime import datetime, timezone
+    return datetime.now(timezone.utc).isoformat(timespec="seconds")
+
+
 def no_encaminhar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
     """Nó da passagem: a rede neural encaminha os livros da fase 3 e devolve a informação nova (para a Pertinência)."""
     from ...motores.acesso.api import DegrauAPI
@@ -118,21 +123,37 @@ def no_encaminhar(itens: list[dict[str, Any]], parametros: dict[str, Any], conte
         from ..nucleo.ia import IA
         ia = IA()
         enc = Encaminhamento(con, contexto.diario, registro, Interceptador(con, contexto.diario, escada, ia=ia if ia.disponivel() else None), rede)
-        achados, contagem = enc.andar(float(parametros.get("orcamento_s", 300)))
-        # os pilotos: o Cérebro mede a recorrência e, na ociosidade e sem bloqueio, manda as missões do Espião
+        # o parecer do conselho (24/10/2026): cada sub-trabalho ISOLADO; a falha de um nunca apaga os outros (antes, um erro
+        # no motor derrubou o nó 557 vezes, e com ele o Interceptador, o Espião e os sites originais, o dia inteiro)
+        from ..nucleo.recibo import medir as _medir
+        achados: list[dict[str, Any]] = []
+        estado_sub: dict[str, str] = {}
+
+        def sub(nome: str, fn):
+            m = _medir(fn, medir_memoria=False)
+            if m.ok:
+                estado_sub[nome] = "concluído"
+                return m.resultado
+            estado_sub[nome] = f"falhou: {m.erro[:200]}"
+            contexto.diario.emitir("alarme.aberto", "encaminhamento", {"gravidade": "media", "modulo": f"encaminhamento:{nome}",
+                                                                      "mensagem": f"o sub-trabalho {nome} falhou: {m.erro[:300]}",
+                                                                      "rastro": ", ".join(m.arquivos_do_erro)[:500] or None, "aberto_em": _agora_iso()})
+            return None
+        r_int = sub("interceptador", lambda: enc.andar(float(parametros.get("orcamento_s", 300))))
+        if r_int:
+            achados += r_int[0]
         from .fila import fila_do_sistema
         from .pilotos import missoes
         dados = Path(parametros.get("dados", "dados"))
-        ociosidade = not fila_do_sistema(dados, Path(parametros.get("config", "config")))["motores_devidos"]
-        do_espiao, relatorio = missoes(dados, con, escada, ociosidade, float(parametros.get("orcamento_pilotos_s", 180)))
-        achados += [enc._entregar(a, "espiao") for a in do_espiao]
-        # os sites originais dos livros: o mapa do site, pelo motor de cada livro (titular, 23/10/2026)
+        r_esp = sub("espiao", lambda: missoes(dados, con, escada, not fila_do_sistema(dados, Path(parametros.get("config", "config")))["motores_devidos"],
+                                              float(parametros.get("orcamento_pilotos_s", 180))))
+        if r_esp:
+            achados += [enc._entregar(a, "espiao") for a in r_esp[0]]
         from .originais import vigiar
-        dos_originais, conta_originais = vigiar(con, registro, float(parametros.get("orcamento_originais_s", 120)), contexto.diario)
-        achados += [enc._entregar(a, a.motor) for a in dos_originais]
-        print(f"sites originais: {conta_originais}")
-        print(f"pilotos: {relatorio.get('decisao')} · Espião {relatorio['espiao'].get('missoes')} missões recentes "
-              f"({relatorio['espiao'].get('com_resultado')} com resultado) · Interceptador {relatorio['interceptador']}")
+        r_ori = sub("sites originais", lambda: vigiar(con, registro, float(parametros.get("orcamento_originais_s", 120)), contexto.diario))
+        if r_ori:
+            achados += [enc._entregar(a, a.motor) for a in r_ori[0]]
+        print(f"encaminhamento: {estado_sub}")
     finally:
         con.close()
     return achados
