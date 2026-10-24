@@ -81,7 +81,8 @@ jobs:
         env:
           ELDORADO_FORCAR: ${{ inputs.acionar_todos && '1' || '0' }}
           ELDORADO_IA_URL: http://127.0.0.1:8082
-        run: eldorado permanente --limite-min 320 --gravar-min 30
+          GITHUB_TOKEN: ${{ github.token }}
+        run: eldorado permanente --limite-min 320 --gravar-min 10
       - name: Aplicar os últimos eventos da passagem (o recibo do passo final e o fechamento)
         if: always()
         run: eldorado aplicar
@@ -100,6 +101,8 @@ jobs:
         run: eldorado fechar
       - name: Gravar no repositório
         if: always()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: bash scripts/gravar.sh "${{ inputs.gravar_banco }}"
       - name: Continuar (o funcionamento é permanente)
         if: always()

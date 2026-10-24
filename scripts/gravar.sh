@@ -7,6 +7,8 @@ git config user.name "Eldorado"
 git config user.email "eldorado@users.noreply.github.com"
 git add eventos/
 [ -d verificacao ] && git add verificacao/      # os lotes ao Chrome e os vereditos importados
+# a consolidação dos bancos (R08): as REMOÇÕES dos bancos paralelos entram já (são pequenas), sem esperar o instantâneo diário
+git ls-files dados/motores dados/especial.db 2>/dev/null | while read -r f; do [ -e "$f" ] || git rm -q --cached "$f"; done
 ultimo=$(git log -1 --format=%ct -- dados/ 2>/dev/null || echo 0)
 if [ "${1:-false}" = "true" ] || [ $(( $(date +%s) - ${ultimo:-0} )) -gt 72000 ]; then
   git add dados/
@@ -18,7 +20,14 @@ git commit -q -m "Eldorado: trabalho até $(date '+%d/%m/%Y %H:%M')"
 # "theirs" é o commit local reaplicado). É seguro: o banco converge pelos eventos (nomes únicos, nunca conflitam), e a
 # próxima execução aplica, de forma idempotente, os eventos das outras gravações. Os eventos nunca se perdem (23/10/2026).
 for i in 1 2 3; do
-  if git pull -q --rebase -X theirs --autostash origin main && git push -q origin main; then exit 0; fi
+  if git pull -q --rebase -X theirs --autostash origin main && git push -q origin main; then
+    # o site acompanha o sistema (R09): a gravação automática não aciona outros fluxos, mas o despacho direto aciona
+    if [ -n "${GITHUB_TOKEN:-}" ] && [ -n "${GITHUB_REPOSITORY:-}" ]; then
+      curl -s -o /dev/null -X POST -H "Authorization: Bearer $GITHUB_TOKEN" \
+        "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/workflows/painel.yml/dispatches" -d '{"ref":"main"}' || true
+    fi
+    exit 0
+  fi
   git rebase --abort 2>/dev/null
   sleep $((i * 10))
 done
