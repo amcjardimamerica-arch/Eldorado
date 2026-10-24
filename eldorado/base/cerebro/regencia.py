@@ -178,18 +178,19 @@ def _decidir(quando: datetime, motores: list[str], parametros: dict[str, Any]) -
                 historico.append(Execucao(ap.get(m, m), datetime.fromisoformat(ini), ach or 0, bool(erro)))
         finally:
             con.close()
-    for m in motores:                                                  # a fonte falhou depois da última execução?
-        est = dados / "motores" / f"{m}.db"
-        ultimas = [e for e in historico if e.motor == m]
-        if est.exists() and ultimas:
-            e = sqlite3.connect(f"file:{est}?mode=ro", uri=True)
-            try:
-                cols = {r[1] for r in e.execute("PRAGMA table_info(fonte)")}
-                if "situacao" in cols:
+    cer = dados / "cerebro.db"
+    if cer.exists():                                                   # a fonte falhou depois da última execução? (motor_fonte, no Cérebro)
+        e = sqlite3.connect(f"file:{cer}?mode=ro", uri=True)
+        try:
+            tem = e.execute("SELECT 1 FROM sqlite_master WHERE name='motor_fonte'").fetchone()
+            for m in motores:
+                ultimas = [x for x in historico if x.motor == m]
+                if tem and ultimas:
                     ini = ultimas[-1].inicio.isoformat()
-                    ultimas[-1].falhou |= e.execute("SELECT COUNT(*) FROM fonte WHERE situacao='erro' AND ultima >= ?", (ini[:19],)).fetchone()[0] > 0
-            finally:
-                e.close()
+                    ultimas[-1].falhou |= e.execute("SELECT COUNT(*) FROM motor_fonte WHERE motor=? AND situacao='erro' AND ultima >= ?",
+                                                    (m, ini[:19])).fetchone()[0] > 0
+        finally:
+            e.close()
     ponto = {}
     agenda = Path(parametros.get("agenda", "config/agenda.toml"))
     if agenda.exists():

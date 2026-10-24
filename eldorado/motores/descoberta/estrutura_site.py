@@ -65,7 +65,7 @@ def _regiao(html: str, url: str, seletor: str) -> str | None:
 
         from scrapling import Selector
         pasta = os.environ.get("ELDORADO_DADOS", "dados")
-        sel = Selector(html, url=url, adaptive=True, storage_args={"storage_file": os.path.join(pasta, "motores", "seletores.db"), "url": url})
+        sel = Selector(html, url=url, adaptive=True, storage_args={"storage_file": os.path.join(pasta, "cerebro.db"), "url": url})   # no Cérebro
         achados = sel.css(seletor, auto_save=no is not None, adaptive=no is None)
         if no is None and achados:
             return achados[0].html_content                  # o site mudou: a região reencontrada

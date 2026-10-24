@@ -1,4 +1,4 @@
-"""A camada 4 (o banco): a busca por texto (sqlite-utils), as análises (DuckDB, com a reserva no SQLite), a consulta
+"""A camada 4 (o banco): a busca por texto (direto na Biblioteca), as análises (DuckDB, com a reserva no SQLite), a consulta
 (Datasette) e a cópia no Drive (aguarda a pasta)."""
 import shutil
 from pathlib import Path
@@ -18,8 +18,7 @@ def dados(tmp_path_factory):
 
 def test_busca_por_texto_sem_acento(dados):
     pytest.importorskip("sqlite_utils")
-    assert manutencao.indexar(dados) > 1000
-    r = manutencao.buscar("pontos de cultura", dados, limite=5)
+    r = manutencao.buscar("pontos de cultura", dados, limite=5)                                  # lida direto na Biblioteca
     assert r and all("ultura" in x["titulo"] or "ultura" in (x.get("orgao") or "") or True for x in r)
     assert manutencao.buscar("goias", dados, limite=3)                                           # sem acento acha Goiás
 

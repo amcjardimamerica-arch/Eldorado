@@ -394,10 +394,16 @@ def analise(dias: int = DIAS_ANALISE):
 
 @app.command()
 def manutencao():
-    """A manutenção dos bancos (sqlite-utils: analisar e otimizar) e o índice de busca por texto da Biblioteca."""
-    from ...banco.manutencao import indexar, otimizar
+    """A manutenção dos bancos (sqlite-utils: analisar e otimizar)."""
+    from ...banco.manutencao import otimizar
     typer.echo(f"otimizados: {otimizar()}")
-    typer.echo(f"índice de busca: {indexar()} livros")
+
+
+@app.command("consolidar-bancos")
+def consolidar_bancos():
+    """Os bancos paralelos para dentro do Cérebro, uma vez (a regra: só o Cérebro tem banco paralelo, o de aprendizado)."""
+    from ...banco.consolidar import consolidar
+    typer.echo(consolidar())
 
 
 @app.command("copia-drive")
@@ -542,7 +548,7 @@ def trabalhar(config: Path = CONFIG, trabalhadores: int = typer.Option(0, help="
     """Roda o consumidor da fila, sob o governador e a pausa."""
     c, dados, eventos = _cfg(config)
     g = Governador(medidor_psutil(str(dados if dados.exists() else ".")), limite=c.limites.carga_maxima)
-    fila = Fila(dados / "fila.db", eventos, g, dados / "PAUSADO")
+    fila = Fila(dados / "cerebro.db", eventos, g, dados / "PAUSADO")   # a fila, dentro do Cérebro
     n = trabalhadores or max(1, g.paralelismo())
     typer.echo(f"consumidor da fila com {n} trabalhador(es)")
     fila.huey.create_consumer(workers=n, periodic=True).run()

@@ -1,7 +1,7 @@
 """A manutenção dos bancos e a busca por texto (plano C: sqlite-utils).
 
-A busca por texto é um ÍNDICE DERIVADO (FTS5) em biblioteca_busca.db, refeito a partir da Biblioteca: os títulos, os
-órgãos e os valores certificados. Os dados continuam vindo só dos eventos; o índice nunca é fonte de verdade.
+A busca por texto lê direto a Biblioteca no momento da busca (os títulos, os órgãos e os valores certificados): nenhum
+índice nem cópia fora do banco relacional dos livros.
 """
 from __future__ import annotations
 
@@ -25,33 +25,30 @@ def otimizar(dados: Path = Path("dados")) -> dict[str, Any]:
     return r
 
 
-def indexar(dados: Path = Path("dados")) -> int:
-    """Refaz o índice de busca por texto da Biblioteca (biblioteca_busca.db)."""
-    import sqlite_utils
-    bib = sqlite3.connect(f"file:{dados / 'biblioteca.db'}?mode=ro", uri=True)
-    certs: dict[str, list[str]] = {}
-    for lid, item, valor in bib.execute("SELECT livro_id, item, valor FROM certidao WHERE situacao = 'comprovado' AND valor IS NOT NULL"):
-        certs.setdefault(lid, []).append(f"{item}: {valor}")
-    linhas = [{"id": lid, "titulo": t or "", "orgao": o or "", "certidoes": " | ".join(certs.get(lid, []))}
-              for lid, t, o in bib.execute("SELECT id, titulo, orgao FROM livro WHERE situacao <> 'excluido'")]
-    bib.close()
-    destino = dados / "biblioteca_busca.db"
-    destino.unlink(missing_ok=True)
-    db = sqlite_utils.Database(destino)
-    db["livro"].insert_all(linhas, pk="id")
-    db["livro"].enable_fts(["titulo", "orgao", "certidoes"], tokenize="unicode61 remove_diacritics 2")
-    db.conn.close()
-    return len(linhas)
+def _sem_acento(t: str) -> str:
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFD", (t or "").lower()) if unicodedata.category(c) != "Mn")
 
 
 def buscar(texto: str, dados: Path = Path("dados"), limite: int = 50) -> list[dict[str, Any]]:
-    """A busca por texto (sem acento, sem maiúsculas); [] sem o índice."""
-    p = dados / "biblioteca_busca.db"
-    if not p.exists():
+    """A busca por texto (sem acento, sem maiúsculas) lida DIRETO na Biblioteca, no momento da busca: nenhum índice ou
+    cópia fora do banco relacional dos livros (a regra da titular, 24/10/2026)."""
+    p = dados / "biblioteca.db"
+    if not p.exists() or not texto.strip():
         return []
-    import sqlite_utils
-    db = sqlite_utils.Database(p)
+    palavras = _sem_acento(texto).split()
+    con = sqlite3.connect(f"file:{p}?mode=ro", uri=True)
     try:
-        return [dict(r) for r in db["livro"].search(texto, limit=limite, columns=["id", "titulo", "orgao"])]
+        certs: dict[str, list[str]] = {}
+        for lid, valor in con.execute("SELECT livro_id, valor FROM certidao WHERE situacao = 'comprovado' AND valor IS NOT NULL"):
+            certs.setdefault(lid, []).append(valor)
+        saida = []
+        for lid, t, o in con.execute("SELECT id, titulo, orgao FROM livro WHERE situacao <> 'excluido' ORDER BY atualizado_em DESC"):
+            alvo = _sem_acento(f"{t} {o} {' '.join(certs.get(lid, []))}")
+            if all(w in alvo for w in palavras):
+                saida.append({"id": lid, "titulo": t, "orgao": o})
+                if len(saida) >= limite:
+                    break
+        return saida
     finally:
-        db.conn.close()
+        con.close()

@@ -260,7 +260,7 @@ class MotorCanal(Motor):
                  lightpanda: str | None = None, mirror_wayback: str | None = None):
         self.caminho = Path(configuracao)
         self.cfg = Configuracao(**tomllib.loads(self.caminho.read_text(encoding="utf-8")))
-        self.estado = EstadoMotor(Path(dados) / f"{self.cfg.motor.id}.db")
+        self.estado = EstadoMotor(dados, self.cfg.motor.id)          # o aprendizado do motor, dentro do Cérebro
         self.relatorio: list[str] = []
         self.escada = Escada(self._degraus(ponte, lightpanda, mirror_wayback), intervalo_padrao=self.cfg.acesso.intervalo_s,
                              tentativas=self.cfg.acesso.tentativas)

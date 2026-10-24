@@ -71,6 +71,8 @@ jobs:
             > /tmp/llama.log 2>&1 &
           for i in $(seq 1 60); do curl -sf http://127.0.0.1:8082/health > /dev/null && { echo "modelo no ar em ${i}x2 s"; exit 0; }; sleep 2; done
           tail -20 /tmp/llama.log; echo "::warning::o modelo não respondeu; os pilotos seguem sem IA"
+      - name: Os bancos paralelos para dentro do Cérebro (uma vez; idempotente)
+        run: eldorado consolidar-bancos || echo "::warning::a consolidação dos bancos não terminou"
       - name: Otimizar as instruções dos pilotos (DSPy, semanal; sem o modelo, fica para depois)
         run: timeout 900 eldorado otimizar-ia --se-antigo-dias 7 || echo "::warning::a otimização das instruções não terminou"
       - name: Funcionamento permanente (uma passagem depois da outra enquanto houver fila)

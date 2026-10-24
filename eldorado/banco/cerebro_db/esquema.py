@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .._sqlite import abrir as _abrir
 
-VERSAO = 1
+VERSAO = 2
 
 DDL = r"""
 PRAGMA foreign_keys=ON;
@@ -55,5 +55,31 @@ CREATE VIEW alarmes_abertos AS SELECT gravidade, modulo, mensagem, aberto_em, re
 """
 
 
+# 2: o aprendizado dos motores e do Espião DENTRO do Cérebro (titular, 24/10/2026: só o Cérebro tem um banco paralelo, o de
+# aprendizado; antes, cada motor tinha o seu arquivo em dados/motores/<id>.db, e o Espião, espiao.db)
+DDL_V2 = r"""
+CREATE TABLE IF NOT EXISTS motor_assinatura (motor TEXT NOT NULL, fonte TEXT NOT NULL, valor TEXT NOT NULL, em TEXT NOT NULL, PRIMARY KEY (motor, fonte));
+CREATE TABLE IF NOT EXISTS motor_mapa_url (motor TEXT NOT NULL, dominio TEXT NOT NULL, url TEXT NOT NULL, primeira_vez TEXT NOT NULL,
+  PRIMARY KEY (motor, dominio, url));
+CREATE TABLE IF NOT EXISTS motor_mapa_dominio (motor TEXT NOT NULL, dominio TEXT NOT NULL, verificado_em TEXT NOT NULL, urls INTEGER,
+  PRIMARY KEY (motor, dominio));
+CREATE TABLE IF NOT EXISTS motor_alvo_mudanca (motor TEXT NOT NULL, alvo TEXT NOT NULL, em TEXT NOT NULL, mes INTEGER NOT NULL, PRIMARY KEY (motor, alvo, em));
+CREATE TABLE IF NOT EXISTS motor_entregue (motor TEXT NOT NULL, chave TEXT NOT NULL, em TEXT NOT NULL, achado TEXT, fonte TEXT, PRIMARY KEY (motor, chave));
+CREATE INDEX IF NOT EXISTS motor_entregue_achado ON motor_entregue(motor, achado);
+CREATE TABLE IF NOT EXISTS motor_fonte (motor TEXT NOT NULL, nome TEXT NOT NULL, leituras INTEGER NOT NULL DEFAULT 0, sem_mudanca INTEGER NOT NULL DEFAULT 0,
+  achados INTEGER NOT NULL DEFAULT 0, aceitos INTEGER NOT NULL DEFAULT 0, barrados INTEGER NOT NULL DEFAULT 0, falhas INTEGER NOT NULL DEFAULT 0,
+  ultimo_erro TEXT, ultima TEXT, situacao TEXT, PRIMARY KEY (motor, nome));
+CREATE TABLE IF NOT EXISTS motor_retorno (motor TEXT NOT NULL, achado TEXT NOT NULL, fonte TEXT, decisao TEXT, motivo TEXT, em TEXT NOT NULL,
+  PRIMARY KEY (motor, achado));
+CREATE TABLE IF NOT EXISTS espiao_familia (nome TEXT PRIMARY KEY, a REAL NOT NULL DEFAULT 1, b REAL NOT NULL DEFAULT 1, usos INTEGER NOT NULL DEFAULT 0,
+  achados INTEGER NOT NULL DEFAULT 0);
+CREATE TABLE IF NOT EXISTS espiao_consulta (texto TEXT PRIMARY KEY, familia TEXT, usos INTEGER NOT NULL DEFAULT 0,
+    achados INTEGER NOT NULL DEFAULT 0, ultima TEXT);
+CREATE TABLE IF NOT EXISTS espiao_missao (id INTEGER PRIMARY KEY, em TEXT NOT NULL, familia TEXT, consulta TEXT, resultados INTEGER, candidatos INTEGER,
+  achados INTEGER, motivos TEXT, rotas TEXT, bloqueada INTEGER NOT NULL DEFAULT 0);
+CREATE TABLE IF NOT EXISTS espiao_rota (nome TEXT PRIMARY KEY, descansa_ate TEXT);
+"""
+
 def abrir(caminho: str | Path):
-    return _abrir(caminho, DDL, VERSAO)
+    """Na criação, o esquema inteiro (com a versão 2); um Cérebro na versão 1 é migrado (as tabelas motor_* e espiao_*)."""
+    return _abrir(caminho, DDL + ";\n" + DDL_V2, VERSAO, {2: DDL_V2})

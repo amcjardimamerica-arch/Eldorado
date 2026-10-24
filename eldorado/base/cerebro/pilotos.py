@@ -76,15 +76,15 @@ def missoes(dados: str | Path, biblioteca: sqlite3.Connection, escada, ociosidad
     if consultar is None:
         mb = Metabusca(buscar=escada.buscar)
         consultar = lambda q: mb.consultar(q, limite=10)  # noqa: E731
-    espiao = Espiao(dados / "motores" / "espiao.db", consultar, ler or _ler(escada, leitores.padrao()), vigiados_pelos_motores(), conhecidos, empresas)
+    espiao = Espiao(dados / "cerebro.db", consultar, ler or _ler(escada, leitores.padrao()), vigiados_pelos_motores(), conhecidos, empresas)
     if mb is not None:
         agora_ = datetime.now(timezone.utc)
-        for rota, ate in espiao.con.execute("SELECT nome, descansa_ate FROM rota"):   # o descanso vale entre as execuções
+        for rota, ate in espiao.con.execute("SELECT nome, descansa_ate FROM espiao_rota"):   # o descanso vale entre as execuções
             if ate and ate > agora_.isoformat():
                 mb._descansando[rota] = time.monotonic() + (datetime.fromisoformat(ate) - agora_).total_seconds()
     rec = espiao.recorrencia()
     relatorio["espiao"] = rec
-    ultima = espiao.con.execute("SELECT MAX(em) FROM missao").fetchone()[0]
+    ultima = espiao.con.execute("SELECT MAX(em) FROM espiao_missao").fetchone()[0]
     parado = ultima is None or datetime.fromisoformat(ultima) < datetime.now(timezone.utc) - timedelta(hours=MINIMO_HORAS)
     if not ociosidade and not parado:
         relatorio["decisao"] = "sem ociosidade: os motores têm leitura devida; o Espião espera"

@@ -7,7 +7,7 @@ sistema novo quando ele tem o dado; a seção sem correspondente fica vazia, sem
 De onde vem cada dado:
   - os motores: os 47 do estudo (config/motores_previstos.json), as configurações dos construídos
     (eldorado/motores/canal/config/), o registro (config/modulos.toml), a agenda de partida (config/agenda.toml), as
-    execuções registradas no Cérebro (cerebro.db: execucao_motor) e o estado de cada motor (dados/motores/<id>.db);
+    execuções registradas no Cérebro (cerebro.db: execucao_motor) e o estado de cada motor (cerebro.db: motor_fonte);
   - os livros: a Biblioteca (biblioteca.db: livro, livro_dados, passaporte, certidao, achado, lei).
 """
 
@@ -114,17 +114,11 @@ class Sistema:
         return por
 
     def estado(self, mid: str) -> list[sqlite3.Row]:
-        p = self.raiz / "dados/motores" / f"{mid}.db"
-        if not p.exists():
-            return []
-        c = sqlite3.connect(f"file:{p}?mode=ro", uri=True)
-        c.row_factory = sqlite3.Row
+        """O estado das fontes do motor, dentro do Cérebro (motor_fonte)."""
         try:
-            return list(c.execute("SELECT * FROM fonte"))
+            return list(self.cer.execute("SELECT * FROM motor_fonte WHERE motor = ? ORDER BY nome", (mid,)))
         except sqlite3.Error:
             return []
-        finally:
-            c.close()
 
     def livros_abertos(self) -> list[sqlite3.Row]:
         return list(

@@ -26,7 +26,7 @@ PISTAS = [Pista(titulo="Edital Instituto Exemplo", link="https://institutoexempl
 
 
 def espiao(tmp_path, consultar=None, seed=1):
-    return Espiao(tmp_path / "motores" / "espiao.db", consultar or (lambda q: (PISTAS, ["searxng: desligado", "ddgs: 7 pista(s)"])),
+    return Espiao(tmp_path / "cerebro.db", consultar or (lambda q: (PISTAS, ["searxng: desligado", "ddgs: 7 pista(s)"])),
                   lambda u: PAGINAS.get(u), vigiados={"gife.org.br"}, conhecidos={"https://conhecido.org/edital"}, rnd=random.Random(seed))
 
 
@@ -36,19 +36,19 @@ def test_missao_so_fora_dos_motores_e_com_sinal_de_osc(tmp_path):
     assert {a.link_divulgacao for a in m["achados"]} == {"https://institutoexemplo.org.br/edital-2026", "https://fundacaobeta.org/grants"}
     assert m["motivos"] == {"domínio de governo (território dos motores)": 1, "buscador, agregador ou rede social": 1,
                             "sem sinal de oportunidade para OSC": 1, "já vigiado por um motor": 1, "já está na Biblioteca": 1}
-    a, usos = e.con.execute("SELECT a, usos FROM familia WHERE nome = ?", (m["familia"],)).fetchone()
+    a, usos = e.con.execute("SELECT a, usos FROM espiao_familia WHERE nome = ?", (m["familia"],)).fetchone()
     assert a == 2.0 and usos == 1                                                                   # a família que rendeu é reforçada
     assert e.missao()["achados"] == []                                                             # o que já achou não volta
 
 
 def test_thompson_e_consulta_aposentada(tmp_path):
     e = espiao(tmp_path)
-    e.con.execute("UPDATE familia SET a = 1, b = 60")
-    e.con.execute("UPDATE familia SET a = 60, b = 1 WHERE nome = 'internacional_ingles'")
+    e.con.execute("UPDATE espiao_familia SET a = 1, b = 60")
+    e.con.execute("UPDATE espiao_familia SET a = 60, b = 1 WHERE nome = 'internacional_ingles'")
     assert sum(e.escolher()[0] == "internacional_ingles" for _ in range(30)) >= 27
     for q in ("call for proposals Brazil civil society 2026", "grants for NGOs in Brazil 2026", "small grants Brazil community organizations 2026",
               "funding opportunity nonprofits Latin America 2026 Brazil eligible", "request for proposals Brazil social projects 2026"):
-        e.con.execute("INSERT INTO consulta VALUES (?, 'internacional_ingles', 3, 0, NULL)", (q.replace("2026", str(__import__("datetime").date.today().year)),))
+        e.con.execute("INSERT INTO espiao_consulta VALUES (?, 'internacional_ingles', 3, 0, NULL)", (q.replace("2026", str(__import__("datetime").date.today().year)),))
     assert e.escolher()[0] != "internacional_ingles"                                                # todas aposentadas: outra família
 
 

@@ -96,7 +96,7 @@ def test_motor_so_de_configuracao_da_agenda_ao_livro_certificado(fonte, tmp_path
     finally:
         for c in b.values():
             c.close()
-    painel = EstadoMotor(dados / "motores/secult-go-teste.db").painel()
+    painel = EstadoMotor(dados / "motores", "secult-go-teste").painel()
     fonte_ = painel["fontes"][0]
     assert (fonte_["achados"], fonte_["aceitos"], fonte_["barrados"]) == (2, 1, 1)               # o motor aprendeu com o retorno
     acessos_pdf = estado_srv.acessos[("/docs/edital-3-2026.pdf", "outro")] + estado_srv.acessos[("/docs/edital-3-2026.pdf", "navegador")]
@@ -106,7 +106,7 @@ def test_motor_so_de_configuracao_da_agenda_ao_livro_certificado(fonte, tmp_path
     r2 = Executor(wf2, tmp_path / "eventos").executar()
     assert r2.estado == "concluida" and r2.saidas["acionar"] == []
     assert estado_srv.acessos[("/docs/edital-3-2026.pdf", "outro")] + estado_srv.acessos[("/docs/edital-3-2026.pdf", "navegador")] == acessos_pdf
-    assert EstadoMotor(dados / "motores/secult-go-teste.db").painel()["fontes"][0]["sem_mudanca"] == 1
+    assert EstadoMotor(dados / "motores", "secult-go-teste").painel()["fontes"][0]["sem_mudanca"] == 1
 
 
 def test_configuracao_invalida_e_recusada(tmp_path):
