@@ -712,8 +712,12 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     am.update({"em": agora, "regra": "os achados registrados na Biblioteca, por motor", "motores": _achados_por_motor(sis)})
     arquivos["achados_motores.json"] = am
     sc = _molde("sala_controle.json")
-    sc.update({"em": agora, "regra": "o estado dos motores registrado pelo sistema"})
     sc["detalhes"].update(sala)
+    from .sala import montar as sala_montar  # cada mostrador ligado ao dado medido (titular, 24/10/2026)
+    medido = sala_montar(sis.bib, sis.cer, raiz, sc["detalhes"].get("motores") or [])
+    detalhes = {**sc["detalhes"], **medido.pop("detalhes")}
+    sc.update(medido)
+    sc["detalhes"] = detalhes
     arquivos["sala_controle.json"] = sc
     ca = _molde("cartorio.json")
     pontos = sis.bib.execute("SELECT COUNT(DISTINCT livro_id || '|' || item) FROM certidao WHERE situacao = 'comprovado'").fetchone()[0]

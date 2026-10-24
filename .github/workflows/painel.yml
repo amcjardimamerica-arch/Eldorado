@@ -17,6 +17,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 concurrency:
@@ -39,6 +40,8 @@ jobs:
       - name: Os eventos mais recentes no banco (o estado de agora)
         run: eldorado aplicar
       - name: Gerar o site do sistema (nenhum dado do Eldorado0)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           eldorado site --saida _site
           echo "site: $(find _site -type f | wc -l) arquivos, $(du -sh _site | cut -f1)"
