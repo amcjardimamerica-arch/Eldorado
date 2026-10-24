@@ -42,3 +42,16 @@ def test_o_cerebro_guarda_so_o_resumo_dos_passos():
     r = mapa({"execucao": "x", "passo": 1, "no": "acionar", "estado": "concluido", "em": "2026",
               "entrada": [], "saida": [{"id": "a1", "titulo": "Edital de fomento", "link_divulgacao": "https://x"}]})
     assert r["saida"] == {"itens": 1, "ids": ["a1"]} and "titulo" not in str(r)
+
+
+def test_a_entrega_fantasma_volta_a_ser_entregue(tmp_path):
+    """24/10/2026: 'já entregue' só vale se o achado existe na Biblioteca (199 entregas fantasmas travavam 9 motores)."""
+    from eldorado.banco.biblioteca.esquema import abrir as abrir_bib
+    from eldorado.motores.canal.estado import EstadoMotor
+    abrir_bib(tmp_path / "biblioteca.db").close()
+    e = EstadoMotor(tmp_path / "motores", "teste")
+    e.marcar_entregue("https://x/edital-1", "2026-10-22", "teste-achado-1", "fonte")
+    e2 = EstadoMotor(tmp_path / "motores", "teste")                  # outro processo: lê o Cérebro
+    assert not e2.ja_entregue("https://x/edital-1")                  # o achado não está na Biblioteca: entrega de novo
+    e3 = EstadoMotor(tmp_path / "motores", "teste", especial=True)
+    assert e3.ja_entregue("https://x/edital-1")                      # o destino especial (empresas) não vira achado

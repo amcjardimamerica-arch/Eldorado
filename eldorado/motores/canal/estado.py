@@ -30,8 +30,12 @@ SQL_FONTES = """SELECT f.nome, f.leituras, f.sem_mudanca, f.achados,
 
 
 class EstadoMotor:
-    def __init__(self, cerebro: str | Path, motor: str = "motor", diario=None):
+    def __init__(self, cerebro: str | Path, motor: str = "motor", diario=None, especial: bool = False):
         self.caminho, self.motor, self.diario = caminho_do_cerebro(cerebro), motor, diario
+        # "já entregue" só vale se o achado EXISTE na Biblioteca (24/10/2026: 199 entregas "fantasmas" de experimentos e
+        # ciclos antigos travavam 9 motores; o Mapa da Cultura nunca mais entregava). O destino especial (empresas) não vira achado.
+        bib = self.caminho.parent / "biblioteca.db"
+        self._bib = sqlite3.connect(f"file:{bib}?mode=ro", uri=True, check_same_thread=False) if (bib.exists() and not especial) else None
         from ...banco.cerebro_db.esquema import abrir  # o esquema existe (as tabelas motor_*); o motor não escreve nele
         abrir(self.caminho).close()
         self.con = sqlite3.connect(f"file:{self.caminho}?mode=ro", uri=True, check_same_thread=False, timeout=60)
@@ -99,7 +103,18 @@ class EstadoMotor:
 
     # ---- o que já foi entregue (a chave e o id do achado) ----
     def ja_entregue(self, chave: str) -> bool:
-        return chave in self._entregues or self._um("SELECT 1 FROM motor_entregue WHERE motor=? AND chave=?", (chave,)) is not None
+        if chave in self._entregues:
+            return True
+        r = self._um("SELECT achado FROM motor_entregue WHERE motor=? AND chave=?", (chave,))
+        if r is None:
+            return False
+        if self._bib is not None and r[0]:
+            try:
+                if self._bib.execute("SELECT 1 FROM achado WHERE id = ?", (r[0],)).fetchone() is None:
+                    return False                                   # a entrega fantasma: o achado não está na Biblioteca
+            except sqlite3.Error:
+                pass
+        return True
 
     def marcar_entregue(self, chave: str, em: str, achado: str | None = None, fonte: str | None = None) -> None:
         if chave in self._entregues:
