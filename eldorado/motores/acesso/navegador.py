@@ -64,9 +64,14 @@ class DegrauNavegador:
             with gerente as g:
                 navegador = g.chromium.launch(headless=True) if self.motor == "patchright" else g
                 pagina = navegador.new_page()
-                resp = pagina.goto(url, timeout=tempo_limite * 1000, wait_until="networkidle")
+                tempo = max(tempo_limite, 60.0) * 1000              # o navegador é mais lento que um pedido simples
+                resp = pagina.goto(url, timeout=tempo, wait_until="domcontentloaded")
+                try:                                                # a rede acalma? (rastreadores e anúncios nunca acalmam)
+                    pagina.wait_for_load_state("networkidle", timeout=15000)
+                except Exception:  # noqa: BLE001 — segue com o que os scripts já montaram
+                    pagina.wait_for_timeout(3000)
                 if self.espera_seletor:
-                    pagina.wait_for_selector(self.espera_seletor, timeout=tempo_limite * 1000)
+                    pagina.wait_for_selector(self.espera_seletor, timeout=tempo)
                 html = pagina.content().encode("utf-8")
                 navegador.close()
         except Exception as e:  # noqa: BLE001 — falha do navegador (não do site) é passageira; o motor registra

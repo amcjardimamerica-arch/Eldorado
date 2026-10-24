@@ -28,9 +28,16 @@ curl -sfL -m 120 -o "$LP" https://github.com/lightpanda-io/browser/releases/down
   && echo "ELDORADO_LIGHTPANDA=$LP" >> "${GITHUB_ENV:-/dev/null}" || aviso "Lightpanda (degrau 3) não instalou"
 marca "Lightpanda"
 if command -v docker > /dev/null; then
-  timeout 240 docker run -d --name searxng -p 127.0.0.1:8888:8080 -v "$PWD/config/searxng:/etc/searxng:rw" searxng/searxng:latest > /dev/null 2>&1 \
-    && for i in $(seq 1 30); do curl -sf "http://127.0.0.1:8888/search?q=teste&format=json" > /dev/null && break; sleep 2; done \
-    && echo "ELDORADO_SEARXNG=http://127.0.0.1:8888" >> "${GITHUB_ENV:-/dev/null}" || aviso "SearXNG não subiu; a metabusca segue pelo ddgs"
+  # o endereço só é anunciado quando uma busca de verdade devolve JSON válido (antes, o laço sempre "dava certo")
+  if timeout 240 docker run -d --name searxng -p 127.0.0.1:8888:8080 -v "$PWD/config/searxng:/etc/searxng:rw" searxng/searxng:latest > /dev/null 2>&1; then
+    pronto=""
+    for i in $(seq 1 60); do
+      if curl -sf -m 10 "http://127.0.0.1:8888/search?q=edital&format=json" | python -c "import json,sys; d=json.load(sys.stdin); assert 'results' in d" 2> /dev/null; then pronto=1; break; fi
+      sleep 2
+    done
+    if [ -n "$pronto" ]; then echo "ELDORADO_SEARXNG=http://127.0.0.1:8888" >> "${GITHUB_ENV:-/dev/null}"
+    else aviso "SearXNG subiu mas não respondeu em JSON: $(docker logs searxng 2>&1 | tail -3 | tr '\n' ' ' | cut -c1-200)"; fi
+  else aviso "SearXNG não subiu; a metabusca segue pelo ddgs"; fi
 fi
 marca "SearXNG"
 marca "SearXNG"; export TEMPOS
