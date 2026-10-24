@@ -21,20 +21,8 @@ import msgspec
 from ..cartorio.passaporte import Passaporte
 from ..nucleo.eventos import agora
 from ..nucleo.registro import carregar as carregar_registro
+from .livros_motores import ja_pesquisado, motores_do_livro  # noqa: E402,F401 — comuns (sem a importação circular)
 from .regencia import _sem_paginas, achado_para_evento
-
-
-def motores_do_livro(con: sqlite3.Connection, livro: str) -> list[str]:
-    """Os motores que trouxeram o livro, pelo nome de hoje (o nome anterior aponta para o motor que o reúne)."""
-    from ...motores.canal.motor import apelidos
-    ap = apelidos()
-    nomes = [ap.get(r[0], r[0]) for r in con.execute("SELECT DISTINCT motor FROM achado WHERE livro_id=? AND motor NOT IN ('interceptador', 'espiao') "
-                                                     "ORDER BY motor", (livro,))]
-    return list(dict.fromkeys(nomes))
-
-
-def ja_pesquisado(con: sqlite3.Connection, livro: str, motor: str) -> bool:  # noqa: D103
-    return con.execute("SELECT 1 FROM tentativa WHERE livro_id=? AND fase='preparacao' AND ferramenta=?", (livro, f"motor {motor}")).fetchone() is not None
 
 
 class Encaminhamento:
@@ -96,64 +84,61 @@ class Encaminhamento:
         return achados, contagem
 
 
-def _agora_iso() -> str:
-    from datetime import datetime, timezone
-    return datetime.now(timezone.utc).isoformat(timespec="seconds")
+def _contexto_pilotos(parametros: dict[str, Any], contexto):
+    """O que os três nós dos pilotos usam: a Biblioteca (só leitura), a escada COMPLETA, o registro dos motores e a rede."""
+    from ...motores.acesso.completa import escada_completa
+    dados = Path(parametros.get("dados", "dados"))
+    con = sqlite3.connect(f"file:{dados / 'biblioteca.db'}?mode=ro", uri=True)
+    escada = escada_completa(float(parametros.get("intervalo_s", 1.0)), tentativas=1, tempo_limite=25)
+    registro = carregar_registro(parametros.get("modulos", "config/modulos.toml"), contexto.diario)
+    return dados, con, escada, registro
 
 
 def no_encaminhar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
-    """Nó da passagem: a rede neural encaminha os livros da fase 3 e devolve a informação nova (para a Pertinência)."""
-    from ...motores.acesso.api import DegrauAPI
-    from ...motores.acesso.escada import Escada
-    from ...motores.acesso.leve import DegrauLeve
-    from ...motores.pilotos.interceptador import Interceptador
-    p = Path(parametros.get("dados", "dados")) / "biblioteca.db"
-    if not p.exists():
+    """Nó da passagem: o Interceptador — a rede neural encaminha os livros da fase 3 e devolve a informação nova (para a
+    Pertinência). O parecer do conselho (24/10/2026): o Espião e os sites originais em nós próprios (no_espiao, no_originais);
+    a rede treinada é a mesma do nó da rede (guardada por 15 min), sem treino duplicado."""
+    if not (Path(parametros.get("dados", "dados")) / "biblioteca.db").exists():
         return []
-    con = sqlite3.connect(f"file:{p}?mode=ro", uri=True)
+    from ...motores.pilotos.interceptador import Interceptador
+    from ..nucleo.ia import IA
+    from .rede import rede_atual
+    dados, con, escada, registro = _contexto_pilotos(parametros, contexto)
     try:
-        escada = Escada([DegrauAPI(), DegrauLeve()], intervalo_padrao=float(parametros.get("intervalo_s", 1.0)), tentativas=1, tempo_limite=25)
-        registro = carregar_registro(parametros.get("modulos", "config/modulos.toml"), contexto.diario)
-        from .rede import RedeNeural
-        cer = Path(parametros.get("dados", "dados")) / "cerebro.db"
-        c = sqlite3.connect(f"file:{cer}?mode=ro", uri=True) if cer.exists() else None
-        rede = RedeNeural.treinar(con, c) if c is not None else None
-        if c is not None:
-            c.close()
-        from ..nucleo.ia import IA
         ia = IA()
-        enc = Encaminhamento(con, contexto.diario, registro, Interceptador(con, contexto.diario, escada, ia=ia if ia.disponivel() else None), rede)
-        # o parecer do conselho (24/10/2026): cada sub-trabalho ISOLADO; a falha de um nunca apaga os outros (antes, um erro
-        # no motor derrubou o nó 557 vezes, e com ele o Interceptador, o Espião e os sites originais, o dia inteiro)
-        from ..nucleo.recibo import medir as _medir
-        achados: list[dict[str, Any]] = []
-        estado_sub: dict[str, str] = {}
-
-        def sub(nome: str, fn):
-            m = _medir(fn, medir_memoria=False)
-            if m.ok:
-                estado_sub[nome] = "concluído"
-                return m.resultado
-            estado_sub[nome] = f"falhou: {m.erro[:200]}"
-            contexto.diario.emitir("alarme.aberto", "encaminhamento", {"gravidade": "media", "modulo": f"encaminhamento:{nome}",
-                                                                      "mensagem": f"o sub-trabalho {nome} falhou: {m.erro[:300]}",
-                                                                      "rastro": ", ".join(m.arquivos_do_erro)[:500] or None, "aberto_em": _agora_iso()})
-            return None
-        r_int = sub("interceptador", lambda: enc.andar(float(parametros.get("orcamento_s", 300))))
-        if r_int:
-            achados += r_int[0]
-        from .fila import fila_do_sistema
-        from .pilotos import missoes
-        dados = Path(parametros.get("dados", "dados"))
-        r_esp = sub("espiao", lambda: missoes(dados, con, escada, not fila_do_sistema(dados, Path(parametros.get("config", "config")))["motores_devidos"],
-                                              float(parametros.get("orcamento_pilotos_s", 180))))
-        if r_esp:
-            achados += [enc._entregar(a, "espiao") for a in r_esp[0]]
-        from .originais import vigiar
-        r_ori = sub("sites originais", lambda: vigiar(con, registro, float(parametros.get("orcamento_originais_s", 120)), contexto.diario))
-        if r_ori:
-            achados += [enc._entregar(a, a.motor) for a in r_ori[0]]
-        print(f"encaminhamento: {estado_sub}")
+        enc = Encaminhamento(con, contexto.diario, registro, Interceptador(con, contexto.diario, escada, ia=ia if ia.disponivel() else None),
+                             rede_atual(dados))
+        achados, contagem = enc.andar(float(parametros.get("orcamento_s", 300)))
+        return achados
     finally:
         con.close()
-    return achados
+
+
+def no_espiao(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
+    """Nó da passagem: o Espião — o Cérebro decide as missões (na ociosidade e o mínimo garantido) e ele age."""
+    if not (Path(parametros.get("dados", "dados")) / "biblioteca.db").exists():
+        return []
+    from .fila import fila_do_sistema
+    from .pilotos import missoes
+    dados, con, escada, registro = _contexto_pilotos(parametros, contexto)
+    try:
+        ociosidade = not fila_do_sistema(dados, Path(parametros.get("config", "config")))["motores_devidos"]
+        do_espiao, _ = missoes(dados, con, escada, ociosidade, float(parametros.get("orcamento_pilotos_s", 180)))
+        enc = Encaminhamento(con, contexto.diario, registro, None)
+        return [enc._entregar(a, "espiao") for a in do_espiao]
+    finally:
+        con.close()
+
+
+def no_originais(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
+    """Nó da passagem: a vigilância dos sites originais dos livros (o mapa do site, pelo motor de cada livro)."""
+    if not (Path(parametros.get("dados", "dados")) / "biblioteca.db").exists():
+        return []
+    from .originais import vigiar
+    dados, con, escada, registro = _contexto_pilotos(parametros, contexto)
+    try:
+        dos_originais, _ = vigiar(con, registro, float(parametros.get("orcamento_originais_s", 120)), contexto.diario)
+        enc = Encaminhamento(con, contexto.diario, registro, None)
+        return [enc._entregar(a, a.motor) for a in dos_originais]
+    finally:
+        con.close()

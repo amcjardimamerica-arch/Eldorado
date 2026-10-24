@@ -199,12 +199,20 @@ class RedeNeural:
         return rede
 
 
-def no_rede(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
-    """Nó da passagem: a rede reaprende com o histórico inteiro e registra as métricas de cada pergunta no Cérebro."""
+_GUARDADA: dict[str, tuple[float, "RedeNeural"]] = {}
+
+
+def rede_atual(dados: Path, max_idade_s: float = 900, forcar: bool = False) -> "RedeNeural | None":
+    """A rede treinada guardada no processo por até 15 min (o parecer do conselho, 24/10/2026: ela era treinada três vezes
+    por passagem — no planejamento, no encaminhamento e no nó da rede). O nó da rede treina (forcar) e atualiza a guardada."""
     import sqlite3
-    dados = Path(parametros.get("dados", "dados"))
+    import time as _t
+    dados = Path(dados)
+    k = str(dados.resolve())
+    if not forcar and k in _GUARDADA and _t.monotonic() - _GUARDADA[k][0] < max_idade_s:
+        return _GUARDADA[k][1]
     if not (dados / "biblioteca.db").exists() or not (dados / "cerebro.db").exists():
-        return []
+        return None
     b = sqlite3.connect(f"file:{dados / 'biblioteca.db'}?mode=ro", uri=True)
     c = sqlite3.connect(f"file:{dados / 'cerebro.db'}?mode=ro", uri=True)
     try:
@@ -212,6 +220,16 @@ def no_rede(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -
     finally:
         b.close()
         c.close()
+    _GUARDADA[k] = (_t.monotonic(), rede)
+    return rede
+
+
+def no_rede(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
+    """Nó da passagem: a rede reaprende com o histórico inteiro e registra as métricas de cada pergunta no Cérebro."""
+    dados = Path(parametros.get("dados", "dados"))
+    if not (dados / "biblioteca.db").exists() or not (dados / "cerebro.db").exists():
+        return []
+    rede = rede_atual(dados, forcar=True)                       # o nó da rede treina e atualiza a guardada
     m = rede.metricas()
     for pergunta, x in m.items():
         if x["amostras"]:

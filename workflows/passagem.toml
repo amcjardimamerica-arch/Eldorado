@@ -53,6 +53,16 @@ tipo = "eldorado.base.cerebro.encaminhamento:no_encaminhar"
 parametros = { dados = "dados", modulos = "config/modulos.toml", orcamento_s = 300, intervalo_s = 1.0 }
 
 [[no]]
+id = "espiao"
+tipo = "eldorado.base.cerebro.encaminhamento:no_espiao"
+parametros = { dados = "dados", modulos = "config/modulos.toml", orcamento_pilotos_s = 180, intervalo_s = 1.0 }
+
+[[no]]
+id = "originais"
+tipo = "eldorado.base.cerebro.encaminhamento:no_originais"
+parametros = { dados = "dados", modulos = "config/modulos.toml", orcamento_originais_s = 120, intervalo_s = 1.0 }
+
+[[no]]
 id = "decidir_rede"
 tipo = "eldorado.base.cerebro.pertinencia:no_decidir"
 parametros = { missao = "eldorado.base.missao.oportunidades:MissaoOportunidades", modulos = "config/modulos.toml" }
@@ -222,3 +232,19 @@ saida = "ordem"
 de = "medir_arquivos"
 para = "aplicar_final"
 saida = "ordem"
+# o parecer do conselho (24/10/2026): o Espião e os sites originais em nós próprios, depois do Interceptador, entregando à
+# mesma decisão da rede (a falha de um não apaga os outros; cada um com o seu passo e a sua medição)
+[[conexao]]
+de = "auditar"
+para = "espiao"
+saida = "ordem"
+[[conexao]]
+de = "espiao"
+para = "decidir_rede"
+[[conexao]]
+de = "auditar"
+para = "originais"
+saida = "ordem"
+[[conexao]]
+de = "originais"
+para = "decidir_rede"

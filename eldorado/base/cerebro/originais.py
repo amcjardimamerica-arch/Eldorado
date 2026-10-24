@@ -30,7 +30,7 @@ def livros_com_origem(con: sqlite3.Connection, limite: int = 200) -> list[dict[s
 
 def vigiar(con: sqlite3.Connection, registro, orcamento_s: float = 120, diario=None) -> tuple[list, dict[str, int]]:
     """Os mapas dos sites originais, pelo motor de cada livro, até o orçamento de tempo do batimento."""
-    from .encaminhamento import motores_do_livro
+    from .livros_motores import motores_do_livro
     inicio, achados, conta = time.monotonic(), [], {"livros": 0, "novidades": 0, "sem_motor": 0}
     vistos: set[tuple[str, str]] = set()
     for lv in livros_com_origem(con):

@@ -234,14 +234,9 @@ def _decidir(quando: datetime, motores: list[str], parametros: dict[str, Any]) -
             ponto[mod["id"]] = {int(h.split(":")[0]) for h in mod.get("horarios", [])}
     nota = None
     if (dados / "biblioteca.db").exists() and (dados / "cerebro.db").exists():
-        from .rede import RedeNeural
-        b = sqlite3.connect(f"file:{dados / 'biblioteca.db'}?mode=ro", uri=True)
-        c = sqlite3.connect(f"file:{dados / 'cerebro.db'}?mode=ro", uri=True)
-        try:
-            nota = RedeNeural.treinar(b, c).nota_motor                  # a rede neural reaprende e dá a nota de cada motor
-        finally:
-            b.close()
-            c.close()
+        from .rede import rede_atual
+        rede = rede_atual(dados)                                     # a rede guardada (até 15 min): a nota de cada motor
+        nota = rede.nota_motor if rede is not None else None
     return decidir(quando, list(motores), historico, ponto, nota=nota)
 
 
