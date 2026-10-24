@@ -644,6 +644,30 @@ def _tabelas(sis: Sistema, status: list[dict], descricao: dict, agora: str) -> d
     return {"motores.json": mo, "abertas.json": ab, "empresas.json": em}
 
 
+def _mapa_arquivos(sis: "Sistema", raiz: Path) -> dict[str, Any]:
+    """O mapa REAL dos arquivos (extraído do código e das configurações) com a medição mais recente de cada um."""
+    import json as _json
+
+    from ..cerebro.mapa_arquivos import finalidade, medir, montar
+    m = montar()
+    med = None
+    try:
+        r = sis.cer.execute("SELECT dados FROM medicao_arquivos WHERE chave = 'atual'").fetchone()
+        med = _json.loads(r[0]) if r else None
+    except sqlite3.Error:
+        med = None
+    if med is None:                                                  # sem medição gravada ainda: mede agora, pelos bancos
+        try:
+            med = medir(raiz / "dados", m)
+        except Exception:  # noqa: BLE001
+            med = {"em": None, "arquivos": {}, "linhas": {}}
+    for n in m["nos"]:
+        n["f"] = finalidade(n["id"])
+        n.update(med["arquivos"].get(n["id"], {"p": "c", "c": "c", "m": "sem medição"}))
+    return {"gerado_em": _agora().isoformat(timespec="seconds"), "medido_em": med.get("em"), "nos": m["nos"], "arestas": m["arestas"],
+            "linhas": med.get("linhas", {})}
+
+
 def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     sis = Sistema(raiz)
     agora = _agora().isoformat(timespec="seconds")
@@ -707,6 +731,7 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     )
     arquivos["cartorio.json"] = ca
     arquivos["fluxo_oportunidades.json"] = _fluxo(sis, agora)
+    arquivos["mapa_arquivos.json"] = _mapa_arquivos(sis, raiz)
     arquivos.update(_tabelas(sis, status, descricao, agora))
     for p in MOLDE.glob("*.json"):  # os demais arquivos: a estrutura, vazia (sem dado do Eldorado0)
         if p.name not in arquivos and p.name not in ("dashboard-dados.json", "itens.json"):

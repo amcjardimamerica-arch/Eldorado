@@ -60,7 +60,12 @@ def _resumo(x: Any) -> Any:
     if not isinstance(x, list):
         return None
     ids = [str(i.get("id") or i.get("livro") or i.get("livro_id") or "")[:60] for i in x if isinstance(i, dict)]
-    return {"itens": len(x), "ids": [i for i in ids if i][:20]}
+    r = {"itens": len(x), "ids": [i for i in ids if i][:20]}
+    falhas = [i for i in x if isinstance(i, dict) and i.get("erro")]   # da falha: só a mensagem e os arquivos do erro (o monitoramento)
+    if falhas:
+        r["erro"] = str(falhas[0]["erro"])[:300]
+        r["arquivos_do_erro"] = [str(a) for a in (falhas[0].get("arquivos_do_erro") or [])][:12]
+    return r
 
 
 def _passo(d: dict[str, Any]) -> dict[str, Any]:
@@ -90,6 +95,7 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "motor.mapa": (Alvo(C, "motor_mapa_dominio", "inserir_ou_atualizar", ("motor", "dominio")),),
     "motor.alvo": (Alvo(C, "motor_alvo_mudanca", "inserir_se_novo"),),
     "motor.retorno": (Alvo(C, "motor_retorno", "inserir_se_novo"),),
+    "arquivos.medidos": (Alvo(C, "medicao_arquivos", "inserir_ou_atualizar", ("chave",)),),   # o monitoramento de cada arquivo
     "medicao.registrada": (Alvo(C, "medicao", "inserir_ou_atualizar", ("marcador", "nivel", "em")),),
     "maquina.leitura": (Alvo(C, "maquina", "inserir"),),
     "cobertura.dia": (Alvo(C, "cobertura_dia", "inserir_ou_atualizar", ("dia",)),),

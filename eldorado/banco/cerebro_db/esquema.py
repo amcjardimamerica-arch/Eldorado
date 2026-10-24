@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .._sqlite import abrir as _abrir
 
-VERSAO = 4
+VERSAO = 5
 
 DDL = r"""
 PRAGMA foreign_keys=ON;
@@ -91,7 +91,12 @@ DDL_V4 = r"""
 ALTER TABLE motor_mapa_dominio ADD COLUMN vistas TEXT
 """
 
+# 5: o monitoramento de cada arquivo (titular, 24/10/2026): a medição atual e a do dia (o ponto, o círculo e as ligações)
+DDL_V5 = r"""
+CREATE TABLE IF NOT EXISTS medicao_arquivos (chave TEXT PRIMARY KEY, em TEXT NOT NULL, dados TEXT NOT NULL)
+"""
+
 
 def abrir(caminho: str | Path):
     """Na criação, o esquema inteiro (com a versão 2); um Cérebro na versão 1 é migrado (as tabelas motor_* e espiao_*)."""
-    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V4, VERSAO, {2: DDL_V2, 3: DDL_V3, 4: DDL_V4})
+    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V4 + ";\n" + DDL_V5, VERSAO, {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5})

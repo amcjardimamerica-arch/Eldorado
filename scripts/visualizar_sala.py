@@ -50,6 +50,19 @@ with sync_playwright() as p:
           return L.map((n,i)=>F[i]&&F[i+1]? Math.max(Math.abs(n[1]-(F[i][1]+2)), Math.abs(n[7]-(F[i+1][0]-2))):null); }""")
     except Exception as e:  # noqa: BLE001
         r["alinhamento"] = {"erro": str(e)[:300]}
+    try:                                                       # o mapa dos arquivos, com as linhas de um arquivo acesas
+        pg.evaluate("document.getElementById('nv-mapa').scrollIntoView()")
+        pg.wait_for_timeout(2500)
+        pg.screenshot(path=str(SAIDA / "mapa-1.png"))
+        pg.evaluate("()=>{const b=[...document.querySelectorAll('#nv-mapa .st')].find(x=>x.dataset.c.endsWith('cerebro/regencia.py'));"
+                    " if(b){b.scrollIntoView({block:'center'}); b.click();}}")
+        pg.wait_for_timeout(1200)
+        pg.screenshot(path=str(SAIDA / "mapa-2.png"))
+        r["mapa"] = pg.evaluate("()=>({arquivos:document.querySelectorAll('#nv-mapa .st').length,"
+                                " linhas_acesas:document.querySelectorAll('#nv-mapa-linhas path').length,"
+                                " ficha:!!document.querySelector('#nv-mapa-ficha.aberta')})")
+    except Exception as e:  # noqa: BLE001
+        r["mapa"] = {"erro": str(e)[:300]}
     r["erros_da_pagina"] = erros
     b.close()
 (SAIDA / "sala.json").write_text(json.dumps(r, ensure_ascii=False, indent=1), encoding="utf-8")

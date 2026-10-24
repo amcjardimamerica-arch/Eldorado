@@ -106,6 +106,11 @@ tipo = "eldorado.base.cerebro.medicao:no_medir"
 parametros = { catalogo = "config/arquivos.json" }
 
 [[no]]
+id = "medir_arquivos"
+tipo = "eldorado.base.cerebro.mapa_arquivos:no_medir_arquivos"
+parametros = { dados = "dados", intervalo_min = 10 }
+
+[[no]]
 id = "aplicar_final"
 tipo = "eldorado.base.fluxo.nos:aplicar_eventos"
 parametros = { dados = "dados", eventos = "eventos" }

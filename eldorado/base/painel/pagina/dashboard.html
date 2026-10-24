@@ -1282,6 +1282,33 @@ box-sizing:border-box;}
 #v-neural canvas.ceu{position:fixed;top:0;left:0;display:block;width:100vw;height:100vh;z-index:0;pointer-events:none}
 /* 24/10/2026 (titular): o fundo fixo ao rolar (sem paralaxe); a rede (as linhas entre as etapas, as constelações e as
    estrelas dos motores) presa ao conteúdo, numa camada vetorial remedida quando o conteúdo muda: sempre no lugar */
+
+#v-neural .mapa-arq{position:relative;margin-top:34px;padding:22px 24px 26px;--v:#16a34a;--am:#d97706;--r:#dc2626;--c:#a3a3a3;--acc:#7fb0de;--mot:#b89cf5;--ban:#5cc5d8}
+#v-neural .mapa-topo{display:flex;gap:20px;justify-content:space-between;align-items:flex-start}
+#v-neural .mapa-topo h3{margin:0 0 6px;font-size:20px}#v-neural .mapa-topo p{margin:0;font-size:13px;max-width:95ch;line-height:1.5}
+#v-neural #nv-mapa-q{min-width:300px;background:rgba(7,12,36,.6);border:1px solid rgba(155,140,255,.35);color:#EAF2FF;border-radius:8px;padding:8px 10px;font:inherit}
+#v-neural .mapa-leg{display:flex;flex-wrap:wrap;gap:16px;margin:14px 0 10px;font-size:12.5px;color:#C9CFEA}
+#v-neural .mapa-leg i{display:inline-block;vertical-align:middle;margin-right:6px}
+#v-neural .mapa-leg .pt{width:10px;height:10px;border-radius:50%}#v-neural .mapa-leg .anel{background:transparent;border:2px solid;width:12px;height:12px}
+#v-neural .mapa-leg .ln{width:18px;height:2px}
+#v-neural .mapa-placar{display:flex;flex-wrap:wrap;gap:10px;margin:6px 0 16px}
+#v-neural .mapa-placar div{background:rgba(7,12,36,.55);border:1px solid rgba(155,140,255,.2);border-radius:10px;padding:8px 12px;font-size:12px;color:#C9CFEA}
+#v-neural .mapa-placar b{display:block;font-size:20px;color:#EAF2FF}
+#v-neural .mapa-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+#v-neural .mapa-col h4{margin:0 0 10px;font-size:14px;display:flex;align-items:center;gap:8px}
+#v-neural .mapa-grupo{margin:0 0 12px;padding:8px 10px;border:1px solid rgba(155,140,255,.14);border-radius:10px;background:rgba(7,12,36,.35)}
+#v-neural .mapa-grupo .gt{font-size:11.5px;color:#8B93B8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+#v-neural .mapa-arq .st{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:0;color:#DDE3F7;padding:3px 4px;border-radius:6px;cursor:pointer;font:12.5px/1.3 "Saira Semi Condensed",sans-serif}
+#v-neural .mapa-arq .st:hover,#v-neural .mapa-arq .st.sel{background:rgba(127,176,222,.14)}#v-neural .mapa-arq .st.lig{background:rgba(22,163,74,.12)}
+#v-neural .mapa-arq .st .dot{flex:0 0 10px;width:10px;height:10px;border-radius:50%;box-shadow:0 0 0 2px #0b1030,0 0 0 4px var(--anel)}
+#v-neural .mapa-arq .st small{margin-left:auto;color:#8B93B8;font-size:10.5px}
+#v-neural .mapa-arq .st.oculto{display:none}#v-neural .mapa-arq.foco .st:not(.sel):not(.lig){opacity:.35}
+#v-neural .mapa-linhas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+#v-neural .mapa-ficha{display:none;position:sticky;bottom:12px;margin-top:16px;background:rgba(10,15,44,.96);border:1px solid rgba(127,176,222,.4);border-radius:12px;padding:16px 18px;font-size:13px;line-height:1.5;max-height:60vh;overflow:auto}
+#v-neural .mapa-ficha.aberta{display:block}#v-neural .mapa-ficha dt{color:#8B93B8;font-size:11.5px;margin-top:8px;text-transform:uppercase;letter-spacing:.04em}
+#v-neural .mapa-ficha dd{margin:2px 0 0}#v-neural .mapa-ficha code{font-size:12px;color:#BFD6F2}
+#v-neural .mapa-ficha .fechar{float:right;background:none;border:1px solid rgba(155,140,255,.35);color:#EAF2FF;border-radius:6px;padding:3px 10px;cursor:pointer}
+@media (max-width:1100px){#v-neural .mapa-cols{grid-template-columns:1fr}}
 #v-neural svg.rede{position:absolute;top:0;left:0;width:100%;z-index:0;pointer-events:none;overflow:visible}
 #v-neural svg.rede .cons line{stroke:rgba(155,140,255,.30);stroke-width:.9}
 #v-neural svg.rede .cons circle{fill:#EAF2FF;opacity:.8}
@@ -1424,11 +1451,73 @@ box-sizing:border-box;}
       <div class="vidro"><div style="padding:16px 18px 0" class="lista"><h4>Sistema nervoso · fluxos automáticos</h4></div><div class="fluxos" id="nv-fluxos"></div></div>
       <div class="vidro tempo" id="nv-tempo"></div>
     </div>
+    <section class="vidro mapa-arq" id="nv-mapa" aria-label="Mapa dos arquivos do sistema">
+      <div class="mapa-topo"><div><h3 class="mx">Mapa dos arquivos do sistema</h3>
+        <p class="faint">O mapa REAL: cada ligação é extraída do código e das configurações que a produção executa (as importações, os nós dos workflows, os fluxos do GitHub, o registro dos motores, os eventos que gravam os bancos e as tabelas lidas). <span id="nv-mapa-em"></span></p></div>
+        <input id="nv-mapa-q" type="search" placeholder="buscar arquivo, componente ou ligação" aria-label="buscar no mapa"></div>
+      <div class="mapa-leg"><span><i class="pt" style="background:#16a34a"></i>ponto: funcionamento (rodou sem erro quando chamado)</span><span><i class="pt anel" style="border-color:#d97706"></i>círculo: finalidade (verde, âmbar, vermelho)</span>
+        <span><i class="ln" style="background:#7fb0de"></i>usa</span><span><i class="ln" style="background:#16a34a"></i>é usado por</span><span><i class="ln" style="background:#dc2626"></i>ligação em erro</span><span><i class="pt" style="background:#a3a3a3"></i>sem medição ou parado</span></div>
+      <div class="mapa-placar" id="nv-mapa-placar"></div>
+      <div class="mapa-cols" id="nv-mapa-cols"></div>
+      <svg class="mapa-linhas" id="nv-mapa-linhas" aria-hidden="true"></svg>
+      <aside class="mapa-ficha" id="nv-mapa-ficha" aria-live="polite"></aside>
+    </section>
   </div>
   <div class="dica" id="nv-dica"></div>
   <div class="veu" id="nv-veu"></div>
   <div class="holo" id="nv-holo" role="dialog" aria-modal="true"></div>
 </div>
+<script>
+/* O mapa dos arquivos do sistema (titular, 24/10/2026): o mapa REAL (dados/mapa_arquivos.json, extraído do código e das
+   configurações que a produção executa) com a medição de cada arquivo: o ponto, o círculo e as ligações. */
+(function(){
+  const $=id=>document.getElementById(id), esc=v=>String(v??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const COR={v:"var(--v)",a:"var(--am)",r:"var(--r)",c:"var(--c)"}, NOMEC={v:"verde",a:"âmbar",r:"vermelho",c:"cinza"};
+  const PC={BASE:"var(--acc)",MOTORES:"var(--mot)",BANCO:"var(--ban)"}, NP={BASE:"Base",MOTORES:"Motores",BANCO:"Banco"};
+  const TIPO={importa:"importa",fluxo:"fluxo (nó do workflow)",sequencia:"sequência do fluxo",configura:"configura",grava:"grava (evento)",le:"lê",aciona:"aciona (produção)",define:"define o esquema"};
+  let M=null, POR={}, USA={}, USADO={}, fixo=null, ativo=null, carregado=false;
+  function carregar(){ if(carregado) return; carregado=true;
+    fetch("dados/mapa_arquivos.json?"+Date.now()).then(r=>r.json()).then(d=>{ M=d; montar(); }).catch(()=>{ $("nv-mapa-cols").innerHTML='<div class="faint">o mapa dos arquivos ainda não foi gerado</div>'; }); }
+  function montar(){ POR={}; USA={}; USADO={}; M.nos.forEach((n,i)=>{POR[n.id]=n; n.k=i; USA[n.id]=[]; USADO[n.id]=[];});
+    M.arestas.forEach(a=>{ if(USA[a.de]) USA[a.de].push(a); if(USADO[a.para]) USADO[a.para].push(a); });
+    $("nv-mapa-em").textContent=M.medido_em?`Medido em ${new Date(M.medido_em).toLocaleString("pt-BR")}.`:"";
+    const cont=k=>M.nos.filter(n=>n.p===k).length, parados=M.nos.filter(n=>!n.alcancado).length;
+    $("nv-mapa-placar").innerHTML=[[M.nos.length,"arquivos"],[M.arestas.length,"ligações reais"],[cont("v"),"funcionando"],[cont("r"),"em erro"],[cont("c"),"sem medição ou parados"],
+      [M.nos.filter(n=>n.c==="v").length,"finalidade cumprida"],[parados,"fora da produção"],[M.nos.filter(n=>n.id.endsWith(".py")&&!n.testado).length,"código sem teste"]]
+      .map(([v,t])=>`<div><b>${v}</b>${esc(t)}</div>`).join("");
+    const G={BASE:{},MOTORES:{},BANCO:{}}; M.nos.forEach(n=>{(G[n.parte][n.componente]=G[n.parte][n.componente]||[]).push(n);});
+    const ordem=(a,b)=>a[0].startsWith("motor ")-b[0].startsWith("motor ")||a[0].localeCompare(b[0]);
+    $("nv-mapa-cols").innerHTML=["BASE","MOTORES","BANCO"].map(p=>`<div class="mapa-col"><h4><i class="pt" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${PC[p]}"></i>${NP[p]} · ${M.nos.filter(n=>n.parte===p).length}</h4>`+
+      Object.entries(G[p]).sort(ordem).map(([g,L])=>`<div class="mapa-grupo"><div class="gt">${esc(g)}</div>`+L.map(n=>`<button class="st" id="ma-${n.k}" data-c="${esc(n.id)}" title="${esc(n.m||"")}"
+        data-b="${esc((n.id+" "+g+" "+(n.f||"")+" "+(USA[n.id]||[]).map(a=>a.rotulo).join(" ")).toLowerCase())}"><i class="dot" style="background:${COR[n.p]||COR.c};--anel:${COR[n.c]||COR.c}"></i><span>${esc(n.id.replace("eldorado/",""))}</span><small>${(USA[n.id].length+USADO[n.id].length)}</small></button>`).join("")+`</div>`).join("")+`</div>`).join("");
+  }
+  const el=c=>POR[c]?$("ma-"+POR[c].k):null;
+  function desenhar(c){ const sv=$("nv-mapa-linhas"), S=$("nv-mapa"); sv.innerHTML=""; S.querySelectorAll(".st.sel,.st.lig").forEach(e=>e.classList.remove("sel","lig")); if(!c){S.classList.remove("foco"); return;}
+    const e=el(c); if(!e) return; S.classList.add("foco"); e.classList.add("sel"); const R=S.getBoundingClientRect(), cen=x=>{const r=x.getBoundingClientRect(); return [r.left-R.left+10,r.top-R.top+r.height/2];};
+    const [x1,y1]=cen(e); let o=""; const L=M.linhas||{};
+    const ln=(a,outro,base)=>{ const b=el(outro); if(!b||b.classList.contains("oculto")) return; b.classList.add("lig"); const [x2,y2]=cen(b); const dx=Math.max(50,Math.abs(x2-x1)*.35);
+      const cor=L[a.de+">"+a.para]==="r"?"var(--r)":base; o+=`<path d="M${x1},${y1} C${x1-dx},${y1} ${x2-dx},${y2} ${x2},${y2}" fill="none" stroke="${cor}" stroke-width="1.7" opacity=".9"/><circle cx="${x2}" cy="${y2}" r="3.4" fill="${cor}"/>`; };
+    USA[c].forEach(a=>ln(a,a.para,"var(--acc)")); USADO[c].forEach(a=>ln(a,a.de,"var(--v)")); sv.innerHTML=o+`<circle cx="${x1}" cy="${y1}" r="5" fill="var(--acc)"/>`; }
+  function lista(L,lado){ if(!L.length) return "—"; return L.map(a=>{const o=lado==="usa"?a.para:a.de; return `<div><code>${esc(o.replace("eldorado/",""))}</code> · ${esc(TIPO[a.tipo]||a.tipo)}${a.rotulo?" · "+esc(a.rotulo):""}</div>`;}).join(""); }
+  function abrir(c){ const n=POR[c]; if(!n) return; fixo=c; desenhar(c); const F=$("nv-mapa-ficha");
+    F.innerHTML=`<button class="fechar" id="nv-mapa-fx">Fechar</button><div class="faint">${esc(NP[n.parte])} · ${esc(n.componente)}</div><h3 class="mx" style="margin:6px 0 4px;font-size:15px">${esc(n.id)}</h3>
+      <dl><dt>Finalidade</dt><dd>${esc(n.f||"—")}</dd>
+      <dt>Funcionamento (o ponto)</dt><dd><b style="color:${COR[n.p]}">${NOMEC[n.p]}</b> · ${esc(n.m||"")}</dd>
+      <dt>Finalidade cumprida (o círculo)</dt><dd><b style="color:${COR[n.c]}">${NOMEC[n.c]}</b></dd>
+      <dt>Na produção</dt><dd>${n.alcancado?"alcançado a partir dos fluxos da produção":"<b style='color:var(--c)'>fora do funcionamento</b>: nenhum fluxo da produção o alcança"}${n.id.endsWith(".py")?(n.testado?" · com teste":" · <b>sem teste</b>"):""}</dd>
+      ${n.tabelas&&n.tabelas.length?`<dt>Tabelas</dt><dd>${n.tabelas.map(t=>`<code>${esc(t)}</code>`).join(" ")}</dd>`:""}
+      <dt>Usa (${USA[c].length})</dt><dd>${lista(USA[c],"usa")}</dd><dt>É usado por (${USADO[c].length})</dt><dd>${lista(USADO[c],"usado")}</dd></dl>`;
+    F.classList.add("aberta"); $("nv-mapa-fx").onclick=fechar; }
+  function fechar(){ $("nv-mapa-ficha").classList.remove("aberta"); fixo=null; ativo=null; desenhar(null); }
+  document.addEventListener("click",ev=>{ const b=ev.target.closest("#nv-mapa .st"); if(b) abrir(b.dataset.c); });
+  document.addEventListener("mouseover",ev=>{ const b=ev.target.closest("#nv-mapa .st"); if(b&&!fixo&&b.dataset.c!==ativo){ativo=b.dataset.c; desenhar(ativo);} });
+  document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&fixo) fechar(); });
+  addEventListener("resize",()=>{ if(fixo||ativo) desenhar(fixo||ativo); });
+  document.addEventListener("input",ev=>{ if(ev.target.id!=="nv-mapa-q") return; const t=ev.target.value.trim().toLowerCase();
+    document.querySelectorAll("#nv-mapa .st").forEach(e=>e.classList.toggle("oculto",!!t&&!e.dataset.b.includes(t))); if(fixo) desenhar(fixo); });
+  const io=new IntersectionObserver(es=>{ if(es.some(x=>x.isIntersecting)) carregar(); }); const alvo=$("nv-mapa"); if(alvo) io.observe(alvo);
+})();
+</script>
 <script>
 (function(){
   const COR={verde:"#5EE6C8",amarelo:"#FFB347",vermelho:"#FF6B6B",cinza:"#8B93B8"}, EST={verde:"normal",amarelo:"atenção",vermelho:"alarme",cinza:"sem leitura"};
