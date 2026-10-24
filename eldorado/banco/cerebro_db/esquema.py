@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .._sqlite import abrir as _abrir
 
-VERSAO = 7
+VERSAO = 8
 
 DDL = r"""
 PRAGMA foreign_keys=ON;
@@ -109,8 +109,13 @@ ALTER TABLE maquina ADD COLUMN disco_total_gb REAL;
 ALTER TABLE maquina ADD COLUMN gpu TEXT
 """
 
+# 8: a sala de controle como parâmetro do funcionamento: a medição dos instrumentos (a atual e a do dia)
+DDL_V8 = r"""
+CREATE TABLE IF NOT EXISTS sala_medicao (chave TEXT PRIMARY KEY, em TEXT NOT NULL, dados TEXT NOT NULL)
+"""
+
 
 def abrir(caminho: str | Path):
     """Na criação, o esquema inteiro (com a versão 2); um Cérebro na versão 1 é migrado (as tabelas motor_* e espiao_*)."""
-    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V4 + ";\n" + DDL_V5 + ";\n" + DDL_V6 + ";\n" + DDL_V7, VERSAO,
-                  {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7})
+    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V4 + ";\n" + DDL_V5 + ";\n" + DDL_V6 + ";\n" + DDL_V7 + ";\n" + DDL_V8, VERSAO,
+                  {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7, 8: DDL_V8})

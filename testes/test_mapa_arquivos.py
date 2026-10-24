@@ -37,3 +37,10 @@ def test_o_fluxo_real_esta_ligado():
 def test_nenhum_arquivo_fora_do_funcionamento_sem_decisao():
     fora = {p for p, n in NOS.items() if not n["alcancado"] and p != "eldorado/base/cerebro/mapa_arquivos.py"}
     assert fora <= set(PARADOS), f"arquivo fora do funcionamento sem decisão da titular: {sorted(fora - set(PARADOS))}"
+
+
+def test_nenhum_no_da_passagem_sem_ligacao():
+    """24/10/2026: seis nós acrescentados ficaram sem ligação e rodavam no começo, fora da ordem do fluxo."""
+    d = tomllib.loads(Path("workflows/passagem.toml").read_text(encoding="utf-8"))
+    ligados = {x for c in d["conexao"] for x in (c["de"], c["para"])}
+    assert not [n["id"] for n in d["no"] if n["id"] not in ligados]

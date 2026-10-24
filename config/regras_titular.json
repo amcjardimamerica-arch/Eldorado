@@ -201,13 +201,14 @@
    "travas": [
     "testes/test_mapa_arquivos.py::test_todo_arquivo_do_sistema_esta_no_mapa",
     "testes/test_mapa_arquivos.py::test_o_fluxo_real_esta_ligado",
-    "testes/test_mapa_arquivos.py::test_nenhum_arquivo_fora_do_funcionamento_sem_decisao"
+    "testes/test_mapa_arquivos.py::test_nenhum_arquivo_fora_do_funcionamento_sem_decisao",
+    "testes/test_mapa_arquivos.py::test_nenhum_no_da_passagem_sem_ligacao"
    ]
   },
   {
    "id": "R20",
    "data": "2026-10-24",
-   "regra": "Todo mostrador da sala de controle é ligado ao dado medido pelo sistema; o que o sistema ainda não mede aparece cinza dizendo isso (nunca um zero por falta de ligação).",
+   "regra": "Todo mostrador da sala de controle é ligado ao dado medido pelo sistema; o que o sistema ainda não mede aparece cinza dizendo isso (nunca um zero por falta de ligação). A sala é o parâmetro do funcionamento: medida no início de cada passagem (no máximo a cada 15 min) e gravada no Cérebro; a Regência aciona primeiro os motores que ela mostra fora da cadência, e a releitura dobra quando os documentos sem texto estão em alarme.",
    "onde": "eldorado/base/painel/sala.py",
    "travas": [
     "testes/test_sala_mostradores.py::test_todo_instrumento_da_sala_e_medido"

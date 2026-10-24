@@ -188,6 +188,14 @@ def no_planejar(itens: list[dict[str, Any]], parametros: dict[str, Any], context
     r = Regencia(carregar_agenda(parametros.get("agenda", "config/agenda.toml")), _governador(parametros, contexto.diario), registro, contexto.diario)
     forcar = bool(parametros.get("forcar")) or os.environ.get("ELDORADO_FORCAR") == "1"
     decisoes = None if forcar else _decidir(quando, registro.ids(), parametros)
+    if decisoes is not None:                                          # a sala de controle como parâmetro do funcionamento
+        from ..painel.sala import ler_sala
+        sala = ler_sala(Path(parametros.get("dados", "dados"))) or {}
+        ja = {d.motor for d in decisoes}
+        atrasados = [m for m in (sala.get("detalhes") or {}).get("fora_da_cadencia", []) if m in registro.ids() and m not in ja]
+        if atrasados:
+            from .decisao import Decisao
+            decisoes = [Decisao(m, "a sala de controle: fora da cadência (acionado primeiro)", 1.0) for m in atrasados] + list(decisoes)
     return [{"plano": r.planejar(quando, acion, ultima, forcar=forcar, decisoes=decisoes)}]
 
 

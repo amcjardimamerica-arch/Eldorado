@@ -522,6 +522,8 @@ def montar(
     for d, e in cer.execute("SELECT substr(inicio, 1, 10), estado FROM execucao WHERE inicio >= ?", ((agora - timedelta(days=14)).isoformat(),)):
         hist[d]["concluidas" if e == "concluida" else "falhas" if e == "falhou" else "outras"] += 1
     detalhes = {
+        "fora_da_cadencia": fora_cad,
+        "com_erro": com_erro,
         "maestro": [{"id": m_, "cobertura": "lido" if m_ in lidos24 else "pendente"} for m_ in reg],
         "estantes": {k: estrelas.get(k, 0) for k in ("ouro", "prata", "bronze", "sem")},
         "por_etapa": dict(fases),
@@ -574,3 +576,53 @@ def montar(
         "detalhes": detalhes,
         "hoje": hoje,
     }
+
+
+def no_medir_sala(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
+    """Nó da passagem (o início): a sala de controle medida (no máximo a cada 15 min) e gravada no aprendizado do Cérebro;
+    a Regência e a releitura agem pelo que ela mostra (titular, 24/10/2026: a sala é o parâmetro do funcionamento)."""
+    import tomllib
+
+    dados = Path(parametros.get("dados", "dados"))
+    if not ((dados / "biblioteca.db").exists() and (dados / "cerebro.db").exists()):
+        return [{"sala": "sem os bancos nesta pasta"}]
+    agora = datetime.now(timezone.utc)
+    cer = sqlite3.connect(f"file:{dados / 'cerebro.db'}?mode=ro", uri=True)
+    bib = sqlite3.connect(f"file:{dados / 'biblioteca.db'}?mode=ro", uri=True)
+    try:
+        tem = cer.execute("SELECT 1 FROM sqlite_master WHERE name = 'sala_medicao'").fetchone()
+        ultima = cer.execute("SELECT em FROM sala_medicao WHERE chave = 'atual'").fetchone() if tem else None
+        if ultima and datetime.fromisoformat(ultima[0]) > agora - timedelta(minutes=int(parametros.get("intervalo_min", 15))):
+            return [{"sala": "em dia"}]
+        mods = tomllib.loads(Path(parametros.get("modulos", "config/modulos.toml")).read_text(encoding="utf-8")).get("modulo", [])
+        motores = [
+            {"id": Path((m.get("parametros") or {}).get("configuracao", "")).stem, "nome": "", "luz": ""}
+            for m in mods
+            if (m.get("parametros") or {}).get("configuracao")
+        ]
+        r = montar(bib, cer, Path(parametros.get("raiz", ".")), motores, agora)
+    finally:
+        cer.close()
+        bib.close()
+    texto = json.dumps(
+        {k: r[k] for k in ("em", "indice_saude", "contagem", "instrumentos", "compartimentos", "detalhes", "maquina")},
+        ensure_ascii=False,
+        separators=(",", ":"),
+        default=str,
+    )
+    for chave in ("atual", "dia-" + r["em"][:10]):
+        contexto.diario.emitir("sala.medida", "sala", {"chave": chave, "em": r["em"], "dados": texto})
+    return [{"indice_saude": r["indice_saude"], "contagem": r["contagem"], "fora_da_cadencia": len(r["detalhes"]["fora_da_cadencia"])}]
+
+
+def ler_sala(dados: Path) -> dict[str, Any] | None:
+    """A última medição da sala gravada no Cérebro (ou None)."""
+    try:
+        cer = sqlite3.connect(f"file:{dados / 'cerebro.db'}?mode=ro", uri=True)
+        try:
+            r = cer.execute("SELECT dados FROM sala_medicao WHERE chave = 'atual'").fetchone()
+        finally:
+            cer.close()
+        return json.loads(r[0]) if r else None
+    except (sqlite3.Error, ValueError):
+        return None

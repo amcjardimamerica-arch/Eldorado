@@ -91,4 +91,9 @@ def no_reler(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) 
     dados = Path(parametros.get("dados", "dados"))
     if not ((dados / "biblioteca.db").exists() and (dados / "cerebro.db").exists()):
         return [{"relidos": 0, "motivo": "sem os bancos nesta pasta"}]
-    return [reler(dados, contexto.diario, int(parametros.get("limite", 15)), float(parametros.get("orcamento_s", 90)))]
+    limite, orcamento = int(parametros.get("limite", 15)), float(parametros.get("orcamento_s", 90))
+    from ..painel.sala import ler_sala  # a sala de controle como parâmetro do funcionamento
+    sala = ler_sala(dados) or {}
+    if any(i.get("id") == "es_parcial" and i.get("estado") == "vermelho" for i in sala.get("instrumentos", [])):
+        limite, orcamento = limite * 2, orcamento * 2                  # os documentos sem texto em alarme: a releitura dobra
+    return [reler(dados, contexto.diario, limite, orcamento)]

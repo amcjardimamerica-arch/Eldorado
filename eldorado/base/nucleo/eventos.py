@@ -96,6 +96,7 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "motor.alvo": (Alvo(C, "motor_alvo_mudanca", "inserir_se_novo"),),
     "motor.retorno": (Alvo(C, "motor_retorno", "inserir_se_novo"),),
     "documento.relido": (Alvo(C, "releitura", "inserir_ou_atualizar", ("documento_id",)),),   # a tentativa da releitura (aprendizado)
+    "sala.medida": (Alvo(C, "sala_medicao", "inserir_ou_atualizar", ("chave",)),),   # a sala como parâmetro do funcionamento
     "arquivos.medidos": (Alvo(C, "medicao_arquivos", "inserir_ou_atualizar", ("chave",)),),   # o monitoramento de cada arquivo
     "medicao.registrada": (Alvo(C, "medicao", "inserir_ou_atualizar", ("marcador", "nivel", "em")),),
     "maquina.leitura": (Alvo(C, "maquina", "inserir"),),

@@ -4,6 +4,11 @@ id = "passagem"
 descricao = "A passagem completa do Eldorado (fases 1 a 4)"
 
 [[no]]
+id = "medir_sala"
+tipo = "eldorado.base.painel.sala:no_medir_sala"
+parametros = { dados = "dados", modulos = "config/modulos.toml", intervalo_min = 15 }
+
+[[no]]
 id = "planejar"
 tipo = "eldorado.base.cerebro.regencia:no_planejar"
 parametros = { agenda = "config/agenda.toml", modulos = "config/modulos.toml", dados = "dados" }
@@ -184,3 +189,36 @@ para = "medir"
 [[conexao]]
 de = "medir"
 para = "aplicar_final"
+# 24/10/2026: os nós acrescentados ligados na posição certa (soltos, rodavam no começo, fora da ordem do fluxo)
+[[conexao]]
+de = "medir_sala"
+para = "planejar"
+saida = "ordem"
+[[conexao]]
+de = "aplicar_validacao"
+para = "farol"
+saida = "ordem"
+[[conexao]]
+de = "farol"
+para = "analise"
+saida = "ordem"
+[[conexao]]
+de = "analise"
+para = "rede"
+saida = "ordem"
+[[conexao]]
+de = "medir"
+para = "maquina"
+saida = "ordem"
+[[conexao]]
+de = "maquina"
+para = "reler_documentos"
+saida = "ordem"
+[[conexao]]
+de = "reler_documentos"
+para = "medir_arquivos"
+saida = "ordem"
+[[conexao]]
+de = "medir_arquivos"
+para = "aplicar_final"
+saida = "ordem"
