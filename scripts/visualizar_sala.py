@@ -20,7 +20,7 @@ with sync_playwright() as p:
     pg.on("pageerror", lambda e: erros.append(str(e)[:300]))
     pg.goto("http://127.0.0.1:8765/dashboard.html", wait_until="load", timeout=60000)
     try:
-        pg.locator("button[data-v='neural']").first.click(force=True)   # a navegação da página (a função não é global)
+        pg.evaluate("()=>document.querySelector(\"button[data-v='neural']\").click()")   # o botão da navegação (escondido até abrir o menu)
     except Exception as e:  # noqa: BLE001
         r["erro_ao_abrir"] = str(e)[:300]
     pg.wait_for_timeout(6000)
