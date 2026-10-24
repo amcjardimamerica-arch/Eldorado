@@ -557,6 +557,27 @@ def montar(
             ]
             serie_h = [max(x["p"] or 0, x["m"] or 0) for x in maq["serie"] if x["em"] >= (agora - timedelta(hours=1)).isoformat()]
             maq["uso_medio_1h"] = round(sum(serie_h) / len(serie_h), 3) if serie_h else None
+
+        def ins(id_, nome, frac, normal, alarme, motivo):
+            v = None if frac is None else round(100 * frac, 1)
+            if v is None:
+                est = "cinza"
+            elif (alarme[0] is not None and v < alarme[0]) or (alarme[1] is not None and v > alarme[1]):
+                est = "vermelho"
+            elif (normal[0] is not None and v < normal[0]) or (normal[1] is not None and v > normal[1]):
+                est = "amarelo"
+            else:
+                est = "verde"
+            return {"id": id_, "nome": nome, "valor": v, "escala": [0, 100], "unidade": "%", "faixa": {"normal": normal, "alarme": alarme},
+                    "estado": est, "motivo": motivo, "quando": maq.get("em")}
+
+        maq["instrumentos"] = [
+            ins("sv_processador", "Processador", maq.get("processador"), [60, 90], [10, 97],
+                f"{maq.get('nucleos') or '?'} núcleos · alvo de operação: perto de 85% (verde de 60% a 90%)"),
+            ins("sv_memoria", "Memória", maq.get("memoria"), [None, 85], [None, 95], f"{(maq.get('memoria_total_mb') or 0) / 1024:.1f} GB no servidor"),
+            ins("sv_disco", "Disco", maq.get("disco"), [None, 85], [None, 95], f"{maq.get('disco_total_gb') or '?'} GB no servidor"),
+            ins("sv_gpu", "GPU", None, [None, None], [None, None], maq.get("gpu") or "o servidor do GitHub não tem placa de vídeo"),
+        ]
     except sqlite3.Error:
         pass
     return {

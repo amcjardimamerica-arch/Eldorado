@@ -1335,7 +1335,8 @@ box-sizing:border-box;}
 #v-neural .maquina{flex:1 1 0;min-height:0;overflow:auto;margin-top:16px;padding:14px 16px}
 #v-neural .maquina h3{margin:0 0 10px;font-size:14px}
 #v-neural .maquina .mq{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-#v-neural .maquina .med{background:rgba(7,12,36,.45);border:1px solid rgba(155,140,255,.18);border-radius:10px;padding:8px 10px}
+#v-neural .maquina .med{background:rgba(7,12,36,.45);border:1px solid rgba(155,140,255,.18);border-radius:10px;padding:8px 10px;text-align:center}
+#v-neural .maquina .med svg{display:block;margin:0 auto}#v-neural .maquina .med small{font-size:12px;color:#C9CFEA;margin-top:2px}
 #v-neural .maquina .med b{font:400 20px "Michroma",sans-serif;color:#EAF2FF}#v-neural .maquina .med small{display:block;color:#8B93B8;font-size:11px;margin-bottom:4px}
 #v-neural .maquina .barra{position:relative;height:6px;border-radius:4px;background:rgba(155,140,255,.18);margin-top:6px;overflow:visible}
 #v-neural .maquina .barra i{position:absolute;left:0;top:0;bottom:0;border-radius:4px}
@@ -1492,10 +1493,9 @@ box-sizing:border-box;}
     const x=e=>((new Date(e).getTime()-t0)/Math.max(1,t1-t0))*W, y=v=>H-(v||0)*H, L=k=>S.map((p,i)=>(i?"L":"M")+x(p.em).toFixed(1)+","+y(p[k]).toFixed(1)).join("");
     return `<svg class="curva" viewBox="0 0 ${W} ${H}" width="100%" height="${H}" preserveAspectRatio="none"><line x1="0" x2="${W}" y1="${y(.85)}" y2="${y(.85)}" stroke="#EAF2FF" stroke-dasharray="3 3" opacity=".5"/><path d="${L("p")}" fill="none" stroke="#5EE6C8" stroke-width="1.6"/><path d="${L("m")}" fill="none" stroke="#b89cf5" stroke-width="1.6"/></svg><div class="rod"><span style="color:#5EE6C8">processador</span> · <span style="color:#b89cf5">memória</span> · tracejado: o alvo de 85% · últimas 3 h</div>`; }
   function desenhar(M){ const el=$("nv-maquina"); if(!el) return;
-    if(!M||!M.em){ el.innerHTML='<h3>O servidor do sistema</h3><div class="faint">aguardando a primeira leitura do servidor (o governador grava a cada passagem)</div>'; return; }
-    const gpuTem=M.gpu&&!/não há/.test(M.gpu);
-    el.innerHTML=`<h3>O servidor do sistema</h3><div class="mq">${med("Processador",M.processador,M.nucleos?M.nucleos+" núcleos":"")}${med("Memória",M.memoria,M.memoria_total_mb?(M.memoria_total_mb/1024).toFixed(1)+" GB":"")}${med("Disco",M.disco,M.disco_total_gb?M.disco_total_gb+" GB":"")}`+
-      `<div class="med"><small>GPU</small><b style="color:${gpuTem?"#5EE6C8":"#8B93B8"}">${gpuTem?"em uso":"—"}</b><div class="rod">${gpuTem?M.gpu:"o servidor do GitHub não tem placa de vídeo"}</div></div></div>`+
+    if(!M||!M.em){ el.innerHTML='<h3>O servidor do sistema</h3><div class="faint">aguardando a primeira leitura do servidor (a cada 5 minutos)</div>'; return; }
+    const relogio=x=>`<div class="med" title="${x.motivo||""}">${window.nvMostrador?window.nvMostrador(x,104):""}<small>${x.nome}</small><div class="rod">${x.motivo||""}</div></div>`;
+    el.innerHTML=`<h3>O servidor do sistema</h3><div class="mq">${(M.instrumentos||[]).map(relogio).join("")}</div>`+
       curva(M.serie)+`<div class="rod">uso médio na última hora: <b>${pc(M.uso_medio_1h)}</b> (alvo: 85%) · paralelismo do governador: <b>${M.paralelismo??"—"}</b><br>leitura de ${new Date(M.em).toLocaleString("pt-BR")} · servidor do GitHub</div>`; }
   function ler(){ fetch("dados/sala_controle.json?"+Date.now()).then(r=>r.json()).then(d=>desenhar(d.maquina)).catch(()=>{}); }
   const alvo=$("nv-maquina"); if(!alvo) return; let t=null;
@@ -1587,6 +1587,7 @@ box-sizing:border-box;}
   function fontes(){ if($("fonte-nv3"))return; const l=document.createElement("link"); l.id="fonte-nv3"; l.rel="stylesheet";
     l.href="https://fonts.googleapis.com/css2?family=Michroma&family=Saira+Semi+Condensed:wght@400;500;600&display=swap"; document.head.appendChild(l); }
   /* mostrador: arco de 270°, faixas normal/atenção/alarme no anel externo, valor em arco luminoso e ponto-ponteiro */
+  window.nvMostrador=(x,t)=>mostrador(x,t);
   function mostrador(x,t){
     const esc=x.escala||[0,1], [a,b]=esc, v=typeof x.valor==="number"?x.valor:null, c=t/2, r=t*.36, R=t*.45, A0=135, A1=405;
     const ang=q=>A0+(A1-A0)*Math.min(1,Math.max(0,(q-a)/(b-a))), P=(g,rr)=>[c+rr*Math.cos(g*Math.PI/180),c+rr*Math.sin(g*Math.PI/180)];

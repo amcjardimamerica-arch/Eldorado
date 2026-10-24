@@ -539,7 +539,7 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
     from datetime import datetime, timezone
 
     from ..cerebro.fila import fila_do_sistema
-    _, dados, _ = _cfg(config)
+    _, dados, eventos = _cfg(config)
     inicio = ultimo = time.monotonic()
     ciclo = 0
 
@@ -560,9 +560,24 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
     # da passagem (os eventos são gravados linha a linha, com trava); cada gravação aciona o site
     parar = threading.Event()
 
+    def ler_maquina_agora() -> None:
+        """A leitura do servidor a cada 5 minutos, para o painel do servidor (não espera o fim da passagem)."""
+        try:
+            from ..cerebro.governador import Governador, medidor_psutil
+            from ..nucleo.eventos import Diario as _Diario
+            Governador(medidor_psutil("."), diario=_Diario(eventos, "maquina")).registrar(None, None)
+        except Exception as e:  # noqa: BLE001 — a leitura da máquina nunca para o sistema
+            typer.echo(f"  leitura da máquina: {type(e).__name__}: {str(e)[:120]}")
+
     def gravar_em_segundo_plano() -> None:
-        while not parar.wait(gravar_min * 60):
-            gravar_agora()
+        ler_maquina_agora()
+        passos = 0
+        while not parar.wait(5 * 60):
+            ler_maquina_agora()
+            passos += 1
+            if passos * 5 >= gravar_min:
+                passos = 0
+                gravar_agora()
     threading.Thread(target=gravar_em_segundo_plano, daemon=True, name="gravacao").start()
 
     while True:

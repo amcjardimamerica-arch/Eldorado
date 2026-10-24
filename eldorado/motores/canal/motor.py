@@ -320,6 +320,10 @@ class MotorCanal(Motor):
                 self.relatorio.append(f"{fonte.nome}: não lida ({e})")
                 self.estado.leitura(fonte.nome, _agora(), erro=str(e)[:300])
                 continue
+            except Exception as e:  # noqa: BLE001 — uma fonte nunca derruba o motor (24/10/2026: as prefeituras caíram por um site)
+                self.relatorio.append(f"{fonte.nome}: erro inesperado ({type(e).__name__}: {str(e)[:200]})")
+                self.estado.leitura(fonte.nome, _agora(), erro=f"{type(e).__name__}: {str(e)[:250]}")
+                continue
             if pistas is None:
                 self.relatorio.append(f"{fonte.nome}: sem mudança desde a última leitura")
                 self.estado.leitura(fonte.nome, _agora(), sem_mudanca=True)
@@ -340,7 +344,11 @@ class MotorCanal(Motor):
                     continue                                        # o próprio programa já é entregue pela seção programa
                 if not self._passa_lexico(pista.titulo, pista.resumo or "") or self.estado.ja_entregue(pista.link):
                     continue
-                achado = self._achado(fonte, pista, entregues)
+                try:
+                    achado = self._achado(fonte, pista, entregues)
+                except Exception as e:  # noqa: BLE001 — um achado nunca derruba o motor: registrado, segue para o próximo
+                    self.relatorio.append(f"{fonte.nome}: o achado {pista.link[:120]} falhou ({type(e).__name__}: {str(e)[:150]})")
+                    continue
                 if achado is None:
                     continue
                 entregues += 1
@@ -388,6 +396,10 @@ class MotorCanal(Motor):
                 except (Bloqueado, Indisponivel, Pendente, ValueError) as e:
                     self.estado.leitura(fonte.nome, _agora(), erro=f"{url}: {str(e)[:250]}")
                     continue                                        # a próxima rota do alvo
+                except Exception as e:  # noqa: BLE001 — um alvo nunca derruba o motor
+                    self.estado.leitura(fonte.nome, _agora(), erro=f"{url}: {type(e).__name__}: {str(e)[:220]}")
+                    self.relatorio.append(f"alvo {alvo.nome}: erro inesperado ({type(e).__name__})")
+                    continue
                 if pistas is None:
                     self.estado.leitura(fonte.nome, _agora(), sem_mudanca=True)
                     self.relatorio.append(f"alvo {alvo.nome}: sem mudança")

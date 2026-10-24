@@ -118,3 +118,43 @@ def test_configuracao_invalida_e_recusada(tmp_path):
         Configuracao(**{"motor": {"id": "x", "nome": "x", "categoria": "x", "finalidade": "x"}, "fonte": [{"nome": "a", "url": "u", "tipo": "inventado"}]})
     with pytest.raises(ValueError):
         Configuracao(**{"motor": {"id": "x", "nome": "x", "categoria": "x", "finalidade": "x"}, "fonte": [], "chave_inventada": 1})
+
+
+def test_um_site_com_redirecionamento_em_laco_nao_derruba_o_motor(tmp_path):
+    """24/10/2026: o motor das prefeituras caiu depois de 19 min por 'TooManyRedirects' num único site; as outras cidades se perderam."""
+    import threading
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+    class H(BaseHTTPRequestHandler):
+        def log_message(self, *a):
+            pass
+
+        def do_GET(self):
+            if self.path.startswith("/laco"):
+                self.send_response(302)
+                self.send_header("Location", "/laco")                       # o redirecionamento em laço
+                self.end_headers()
+                return
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.end_headers()
+            corpo = "<p>" + "Secretaria municipal de cultura: editais e chamamentos para organizações da sociedade civil. " * 20 + "</p>"
+            self.wfile.write(f'<html><body><main>{corpo}<a href="/edital-1.html">Edital de chamamento 01/2026</a></main></body></html>'.encode())
+    srv = ThreadingHTTPServer(("127.0.0.1", 0), H)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    base = f"http://127.0.0.1:{srv.server_address[1]}"
+    (tmp_path / "m.toml").write_text(f"""[motor]\nid = "teste-laco"\nnome = "Teste"\ncategoria = "Executivo"\nfinalidade = "teste"\ncanal = "portal"\n
+[[fonte]]\nnome = "o site em laço"\nurl = "{base}/laco"\ntipo = "pagina"\n
+[[fonte]]\nnome = "o site bom"\nurl = "{base}/editais"\ntipo = "pagina"\n
+[acesso]\ndegraus = ["api"]\nintervalo_s = 0\ntentativas = 1\n
+[leitura]\npaginas_dos_achados = false\nseguir_oficial = false\n
+[lexico]\ntermos = ["edital"]\n[canivete]\nligado = false\n""")
+    from eldorado.motores.canal.motor import MotorCanal
+    from eldorado.base.nucleo.contratos import Plano
+    m = MotorCanal(tmp_path / "m.toml", tmp_path / "dados")
+    try:
+        achados = list(m.buscar(Plano(passagem="p", janela_inicio="", janela_fim="")))
+    finally:
+        srv.shutdown()
+    assert [a.titulo for a in achados] == ["Edital de chamamento 01/2026"]          # o site bom foi lido
+    assert any("o site em laço" in r for r in m.relatorio)                            # o laço ficou registrado, sem derrubar
