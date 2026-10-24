@@ -199,6 +199,7 @@ class Espiao:
         empresas: list[str] | None = None,
         rnd: random.Random | None = None,
         descanso_h: float = 2.0,
+        diario=None,
     ):
         from ...banco.cerebro_db.esquema import abrir  # dentro do Cérebro (as tabelas espiao_* são da versão 2)
         self.con = abrir(estado)
@@ -209,9 +210,22 @@ class Espiao:
         self.fams = familias(empresas or [])
         self.rnd = rnd or random.Random()
         self.descanso_h = descanso_h
+        # o aprendizado do Espião vai ao Cérebro PELOS EVENTOS (24/10/2026: ele gravava direto no arquivo, e a sala, que lê o
+        # repositório e os eventos, nunca via as missões: o alarme "Missões do Espião em 24 h" ficava aceso); sem diário
+        # (os testes), grava direto
+        self.diario = diario
+        existentes = {r[0] for r in self.con.execute("SELECT nome FROM espiao_familia")}
         for f in self.fams:
-            self.con.execute("INSERT OR IGNORE INTO espiao_familia(nome) VALUES (?)", (f,))
+            if f not in existentes:
+                self._gravar("espiao.familia", {"nome": f, "a": 1.0, "b": 1.0, "usos": 0, "achados": 0},
+                             "INSERT OR IGNORE INTO espiao_familia(nome) VALUES (?)", (f,))
         self.con.commit()
+
+    def _gravar(self, tipo: str, dados: dict, sql: str, args: tuple) -> None:
+        if self.diario is not None:
+            self.diario.emitir(tipo, "espiao", dados)
+        else:
+            self.con.execute(sql, args)
 
     # ------------------------------------------------------------------ a escolha (Thompson) e o bloqueio
     def bloqueado(self) -> bool:
@@ -259,7 +273,8 @@ class Espiao:
         for linha in relato:  # o descanso das rotas vale entre as execuções
             if "descansa" in linha or "falhou" in linha:
                 ate = (datetime.now(timezone.utc) + timedelta(hours=self.descanso_h)).isoformat()
-                self.con.execute("INSERT OR REPLACE INTO espiao_rota VALUES (?, ?)", (linha.split(":")[0], ate))
+                self._gravar("espiao.rota", {"nome": linha.split(":")[0], "descansa_ate": ate}, "INSERT OR REPLACE INTO espiao_rota VALUES (?, ?)",
+                             (linha.split(":")[0], ate))
         motivos: dict[str, int] = {}
         achados: list[Achado] = []
         candidatos = 0
@@ -300,30 +315,21 @@ class Espiao:
             )
             self.conhecidos.add(p.link.rstrip("/"))
         bloqueada = not pistas and all(("descans" in r or "falhou" in r or "deslig" in r.lower()) for r in relato)
-        self.con.execute(
-            "INSERT INTO espiao_missao(em, familia, consulta, resultados, candidatos, achados, motivos, rotas, bloqueada) VALUES (?,?,?,?,?,?,?,?,?)",
-            (
-                datetime.now(timezone.utc).isoformat(),
-                fam,
-                q,
-                len(pistas),
-                candidatos,
-                len(achados),
-                json.dumps(motivos, ensure_ascii=False),
-                json.dumps(relato, ensure_ascii=False),
-                int(bloqueada),
-            ),
-        )
-        if not bloqueada:  # aprende: reforça a família que rendeu
-            self.con.execute(
-                "UPDATE espiao_familia SET usos = usos + 1, achados = achados + ?, a = a + ?, b = b + ? WHERE nome = ?",
-                (len(achados), 1.0 if achados else 0.0, 0.0 if achados else 0.3, fam),
-            )
-            self.con.execute(
-                "INSERT INTO espiao_consulta(texto, familia, usos, achados, ultima) VALUES (?, ?, 1, ?, ?) ON CONFLICT(texto) DO UPDATE SET "
-                "usos = usos + 1, achados = achados + excluded.achados, ultima = excluded.ultima",
-                (q, fam, len(achados), datetime.now(timezone.utc).isoformat()),
-            )
+        em = datetime.now(timezone.utc).isoformat()
+        linha_m = {"em": em, "familia": fam, "consulta": q, "resultados": len(pistas), "candidatos": candidatos, "achados": len(achados),
+                   "motivos": json.dumps(motivos, ensure_ascii=False), "rotas": json.dumps(relato, ensure_ascii=False), "bloqueada": int(bloqueada)}
+        self._gravar("espiao.missao", linha_m, "INSERT INTO espiao_missao(em, familia, consulta, resultados, candidatos, achados, motivos, rotas, "
+                     "bloqueada) VALUES (?,?,?,?,?,?,?,?,?)", tuple(linha_m.values()))
+        if not bloqueada:  # aprende: reforça a família que rendeu (os valores completos: nenhum incremento se perde)
+            f0 = self.con.execute("SELECT a, b, usos, achados FROM espiao_familia WHERE nome = ?", (fam,)).fetchone() or (1.0, 1.0, 0, 0)
+            fam_nova = {"nome": fam, "a": f0[0] + (1.0 if achados else 0.0), "b": f0[1] + (0.0 if achados else 0.3), "usos": f0[2] + 1,
+                        "achados": f0[3] + len(achados)}
+            self._gravar("espiao.familia", fam_nova, "UPDATE espiao_familia SET a = ?, b = ?, usos = ?, achados = ? WHERE nome = ?",
+                         (fam_nova["a"], fam_nova["b"], fam_nova["usos"], fam_nova["achados"], fam))
+            c0 = self.con.execute("SELECT usos, achados FROM espiao_consulta WHERE texto = ?", (q,)).fetchone() or (0, 0)
+            cons = {"texto": q, "familia": fam, "usos": c0[0] + 1, "achados": c0[1] + len(achados), "ultima": em}
+            self._gravar("espiao.consulta", cons, "INSERT OR REPLACE INTO espiao_consulta(texto, familia, usos, achados, ultima) VALUES (?,?,?,?,?)",
+                         tuple(cons.values()))
         self.con.commit()
         return {"familia": fam, "consulta": q, "resultados": len(pistas), "achados": achados, "motivos": motivos, "bloqueada": bloqueada}
 

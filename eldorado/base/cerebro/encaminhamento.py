@@ -123,7 +123,7 @@ def no_espiao(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto)
     dados, con, escada, registro = _contexto_pilotos(parametros, contexto)
     try:
         ociosidade = not fila_do_sistema(dados, Path(parametros.get("config", "config")))["motores_devidos"]
-        do_espiao, _ = missoes(dados, con, escada, ociosidade, float(parametros.get("orcamento_pilotos_s", 180)))
+        do_espiao, _ = missoes(dados, con, escada, ociosidade, float(parametros.get("orcamento_pilotos_s", 180)), diario=contexto.diario)
         enc = Encaminhamento(con, contexto.diario, registro, None)
         return [enc._entregar(a, "espiao") for a in do_espiao]
     finally:

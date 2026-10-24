@@ -105,6 +105,10 @@ class CfgAcesso(_Base):
     intervalo_s: float = 1.0
     espera_seletor: str | None = None
     tentativas: int = Field(2, ge=1, le=3)
+    # o tempo máximo de uma leitura do motor (24/10/2026: o motor das prefeituras levava mais de 19 min e segurava a
+    # passagem inteira): passado o tempo, ele para entre uma fonte e outra e continua na próxima passagem (as fontes
+    # lidas há mais tempo vêm primeiro)
+    tempo_maximo_s: float = Field(900, ge=30)
 
 
 class CfgLeitura(_Base):
@@ -309,7 +313,14 @@ class MotorCanal(Motor):
             achado = self._programa()
             if achado:
                 yield achado
-        for fonte in self.cfg.fonte:
+        import time as _t
+        inicio_leitura = _t.monotonic()
+        # as fontes lidas há mais tempo primeiro: o motor que parou pelo tempo máximo continua de onde parou
+        fontes = sorted(self.cfg.fonte, key=lambda f: str(self.estado._fonte(f.nome).get("ultima") or ""))
+        for fonte in fontes:
+            if _t.monotonic() - inicio_leitura > self.cfg.acesso.tempo_maximo_s:
+                self.relatorio.append(f"tempo máximo ({self.cfg.acesso.tempo_maximo_s:.0f} s): as fontes restantes ficam para a próxima passagem")
+                return
             try:
                 pistas = self._descobrir(fonte)
             except Pendente as e:

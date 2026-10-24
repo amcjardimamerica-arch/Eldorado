@@ -55,7 +55,7 @@ def _ler(escada, leitura):
 
 
 def missoes(dados: str | Path, biblioteca: sqlite3.Connection, escada, ociosidade: bool, orcamento_s: float = 180,
-            consultar=None, ler=None) -> tuple[list, dict[str, Any]]:
+            consultar=None, ler=None, diario=None) -> tuple[list, dict[str, Any]]:
     """Mede a recorrência dos pilotos e, havendo ociosidade e nenhum bloqueio, manda as missões do Espião."""
     import time
 
@@ -76,7 +76,8 @@ def missoes(dados: str | Path, biblioteca: sqlite3.Connection, escada, ociosidad
     if consultar is None:
         mb = Metabusca(buscar=escada.buscar)
         consultar = lambda q: mb.consultar(q, limite=10)  # noqa: E731
-    espiao = Espiao(dados / "cerebro.db", consultar, ler or _ler(escada, leitores.padrao()), vigiados_pelos_motores(), conhecidos, empresas)
+    espiao = Espiao(dados / "cerebro.db", consultar, ler or _ler(escada, leitores.padrao()), vigiados_pelos_motores(), conhecidos, empresas,
+                    diario=diario)
     if mb is not None:
         agora_ = datetime.now(timezone.utc)
         for rota, ate in espiao.con.execute("SELECT nome, descansa_ate FROM espiao_rota"):   # o descanso vale entre as execuções

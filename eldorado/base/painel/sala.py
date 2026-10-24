@@ -230,20 +230,39 @@ def montar(
         f"{conf} livros com a origem confirmada (o link original)",
         iso,
     )
-    docs = q(bib, "SELECT COUNT(*) FROM documento")
-    parciais = q(bib, "SELECT COUNT(*) FROM documento d WHERE NOT EXISTS (SELECT 1 FROM pagina p WHERE p.documento_id = d.id)")
+    # os documentos sem texto (24/10/2026): a leitura ATUAL (os do sistema novo) e a lacuna da migração (os herdados,
+    # relidos pela releitura) medidas em separado; vermelho só com falha da leitura atual ou a releitura travada
+    sem = "NOT EXISTS (SELECT 1 FROM pagina p WHERE p.documento_id = d.id)"
+    herd = "d.obtido_em LIKE '2026-10-22T18:58%'"
+    parciais = q(bib, f"SELECT COUNT(*) FROM documento d WHERE {sem}")
+    herd_sem = q(bib, f"SELECT COUNT(*) FROM documento d WHERE {herd} AND {sem}")
+    novos = q(bib, f"SELECT COUNT(*) FROM documento d WHERE NOT ({herd}) OR d.obtido_em IS NULL")
+    novos_sem = parciais - herd_sem
     try:
         relidos = q(cer, "SELECT COUNT(*) FROM releitura WHERE resultado LIKE 'relido%'")
+        relidos_24h = q(cer, "SELECT COUNT(*) FROM releitura WHERE resultado LIKE 'relido%' AND ultima >= ?", h24)
+        tentados_24h = q(cer, "SELECT COUNT(*) FROM releitura WHERE ultima >= ?", h24)
+        indisponiveis = q(cer, "SELECT COUNT(*) FROM releitura WHERE tentativas >= 3 AND resultado NOT LIKE 'relido%'")
+        ult_rel = q(cer, "SELECT MAX(ultima) FROM releitura")
     except sqlite3.Error:
-        relidos = 0
+        relidos = relidos_24h = tentados_24h = indisponiveis = 0
+        ult_rel = None
+    if novos and novos_sem / novos > 0.05:
+        est_p = "vermelho"
+    elif herd_sem - indisponiveis > 0 and tentados_24h and not relidos_24h:
+        est_p = "vermelho"  # a releitura tentou e não conseguiu nada em 24 h
+    elif herd_sem - indisponiveis > 0:
+        est_p = "amarelo"  # em correção: a fila dos herdados
+    else:
+        est_p = "verde"
     I(
         "es_parcial",
         "Documentos sem texto lido",
         parciais,
-        _faixa(parciais / docs if docs else 0, 0.05, 0.2, False),
-        f"{parciais} de {docs} documentos sem nenhuma página de texto (os herdados da migração do Eldorado0 são relidos a cada passagem: "
-        f"{relidos} já relidos)",
-        iso,
+        est_p,
+        f"a leitura atual: {novos_sem} de {novos} documentos novos sem texto; a migração: {herd_sem} herdados sem texto em correção "
+        f"(relidos: {relidos}, {relidos_24h} nas últimas 24 h; indisponíveis de vez: {indisponiveis})",
+        ult_rel or iso,
     )
     # ---- 04 Investigação
     fila_i = q(bib, f"SELECT COUNT(*) {AB} AND l.estrela <> 'ouro' AND l.id IN (SELECT livro_id FROM passaporte WHERE fase = 'preparacao')")
@@ -568,13 +587,30 @@ def montar(
                 est = "amarelo"
             else:
                 est = "verde"
-            return {"id": id_, "nome": nome, "valor": v, "escala": [0, 100], "unidade": "%", "faixa": {"normal": normal, "alarme": alarme},
-                    "estado": est, "motivo": motivo, "quando": maq.get("em")}
+            return {
+                "id": id_,
+                "nome": nome,
+                "valor": v,
+                "escala": [0, 100],
+                "unidade": "%",
+                "faixa": {"normal": normal, "alarme": alarme},
+                "estado": est,
+                "motivo": motivo,
+                "quando": maq.get("em"),
+            }
 
         maq["instrumentos"] = [
-            ins("sv_processador", "Processador", maq.get("processador"), [60, 90], [10, 97],
-                f"{maq.get('nucleos') or '?'} núcleos · alvo de operação: perto de 85% (verde de 60% a 90%)"),
-            ins("sv_memoria", "Memória", maq.get("memoria"), [None, 85], [None, 95], f"{(maq.get('memoria_total_mb') or 0) / 1024:.1f} GB no servidor"),
+            ins(
+                "sv_processador",
+                "Processador",
+                maq.get("processador"),
+                [60, 90],
+                [10, 97],
+                f"{maq.get('nucleos') or '?'} núcleos · alvo de operação: perto de 85% (verde de 60% a 90%)",
+            ),
+            ins(
+                "sv_memoria", "Memória", maq.get("memoria"), [None, 85], [None, 95], f"{(maq.get('memoria_total_mb') or 0) / 1024:.1f} GB no servidor"
+            ),
             ins("sv_disco", "Disco", maq.get("disco"), [None, 85], [None, 95], f"{maq.get('disco_total_gb') or '?'} GB no servidor"),
             ins("sv_gpu", "GPU", None, [None, None], [None, None], maq.get("gpu") or "o servidor do GitHub não tem placa de vídeo"),
         ]

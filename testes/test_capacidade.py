@@ -31,3 +31,19 @@ def test_os_motores_rodam_em_paralelo_pela_carga(bancos, diario):
     rg2 = Regencia(None, cheia, reg, diario, especial=bancos["biblioteca"])
     achados, adiados = rg2.acionar(plano)
     assert not achados and len(adiados) == 8                    # acima do alvo, sem folga: adia (não sobrecarrega)
+
+
+def test_o_orcamento_da_coleta_adia_os_que_faltam(bancos, diario):
+    """24/10/2026: uma coleta de mais de uma hora segurava a passagem (o encaminhamento não rodava desde a madrugada)."""
+    from eldorado.base.cerebro.regencia import Regencia
+    from eldorado.base.nucleo.registro import Registro
+    reg = Registro()
+    for i in range(6):
+        reg._modulos[f"m{i}"] = MotorLento(f"m{i}")
+    g = Governador(lambda: Leitura(processador=.2, memoria=.3, disco=.4))
+    g.paralelismo_maximo = 1                                           # um de cada vez: o orçamento corta no meio
+    rg = Regencia(None, g, reg, diario, especial=bancos["biblioteca"])
+    rg.orcamento_coleta_s = 0.9
+    plano = {"passagem": "p", "motores": [{"modulo": f"m{i}", "janela_inicio": "", "janela_fim": "", "motivo": "teste"} for i in range(6)]}
+    achados, adiados = rg.acionar(plano)
+    assert 1 <= len(achados) < 6 and len(achados) + len(adiados) == 6     # os que faltam ficam para a próxima passagem

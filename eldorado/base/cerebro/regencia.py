@@ -97,9 +97,15 @@ class Regencia:
         adiados: list[str] = []
         pendentes: dict[Any, tuple[str, str]] = {}
         fila = list(plano["motores"])
+        inicio_coleta = _t.monotonic()
+        orcamento = float(getattr(self, "orcamento_coleta_s", 1200))
         with ThreadPoolExecutor(max_workers=max(1, self.governador.paralelismo_maximo)) as pool:
             while fila or pendentes:
                 while fila:
+                    if _t.monotonic() - inicio_coleta > orcamento:      # o orçamento da coleta (24/10/2026: uma coleta de mais
+                        adiados.extend(x["modulo"] for x in fila)        # de uma hora segurava a passagem inteira): os motores
+                        fila.clear()                                     # que faltam ficam para a próxima passagem
+                        break
                     m = fila[0]
                     modulo = m["modulo"]
                     cabe = max(1, self.governador.paralelismo(modulo)) if pendentes else 1
@@ -245,6 +251,7 @@ def no_acionar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto
     esp_p = Path(parametros.get("dados", "dados")) / "biblioteca.db"   # as empresas, na Biblioteca
     especial = sqlite3.connect(f"file:{esp_p}?mode=ro", uri=True) if esp_p.exists() else None
     r = Regencia(Agenda([]), _governador(parametros, contexto.diario), registro, contexto.diario, especial=especial)
+    r.orcamento_coleta_s = float(parametros.get("orcamento_coleta_s", 1200))   # o orçamento da coleta (20 min)
     achados: list[dict[str, Any]] = []
     for item in itens:
         a, adiados = r.acionar(item["plano"], contexto.execucao)

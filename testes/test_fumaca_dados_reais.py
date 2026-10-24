@@ -28,3 +28,25 @@ def test_o_portao_roda_na_producao():
     m = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(m)
     assert "testes" in m.NUCLEO
+
+
+def test_os_pilotos_concluem_com_os_dados_reais(tmp_path):
+    """24/10/2026 (o parecer exclusivo do encaminhamento): os três nós dos pilotos rodam sobre a cópia dos bancos reais e
+    concluem; o Espião entrega o aprendizado pelos eventos (nada direto no arquivo)."""
+    from types import SimpleNamespace
+
+    from eldorado.base.cerebro import encaminhamento as E
+    from eldorado.base.fluxo.nos import abrir_bancos
+    from eldorado.base.nucleo.eventos import Diario, ler
+    for n in ("biblioteca", "cerebro"):
+        shutil.copy(f"dados/{n}.db", tmp_path / f"{n}.db")
+    for c in {id(x): x for x in abrir_bancos(tmp_path).values()}.values():
+        c.close()
+    antes = sqlite3.connect(tmp_path / "cerebro.db").execute("SELECT COUNT(*) FROM espiao_missao").fetchone()[0]
+    ctx = SimpleNamespace(diario=Diario(tmp_path / "eventos"))
+    par = {"dados": str(tmp_path), "modulos": "config/modulos.toml", "config": "config", "orcamento_s": 3, "orcamento_pilotos_s": 3,
+           "orcamento_originais_s": 3, "intervalo_s": 0.1}
+    for no in (E.no_encaminhar, E.no_espiao, E.no_originais):
+        assert isinstance(no([], par, ctx), list)                                      # conclui (não levanta exceção)
+    assert sqlite3.connect(tmp_path / "cerebro.db").execute("SELECT COUNT(*) FROM espiao_missao").fetchone()[0] == antes
+    assert all(e.tipo in __import__("eldorado.base.nucleo.eventos", fromlist=["CATALOGO"]).CATALOGO for e in ler(tmp_path / "eventos"))
