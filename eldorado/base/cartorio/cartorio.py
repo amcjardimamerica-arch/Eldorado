@@ -81,6 +81,13 @@ class Cartorio:
                 anos[ano] = max(anos.get(ano, e), e, key=lambda x: (x.pagina_oficial, x.data))
         return list(anos.values())
 
+    def _origem_confirmada(self, livro: str) -> bool:
+        """O link original da oportunidade está confirmado no livro (a origem decidida por livro)?"""
+        if self.con is None:
+            return False
+        r = self.con.execute("SELECT origem FROM livro_dados WHERE livro_id = ?", (livro,)).fetchone()
+        return bool(r and r[0] == origem.CONFIRMADO)
+
     def _origem(self, livro: str, a: Achado) -> str | None:
         """A divulgação sempre; o link de origem candidato (a busca cega do motor) sem nunca trocar um confirmado; e a origem
         do livro decidida com a evidência do próprio livro (titular, 23/10/2026). Devolve o link confirmado, se houver."""
@@ -157,7 +164,8 @@ class Cartorio:
             certidoes.update(novas)
             dados_livro = self._livro(livro, a)
             situacao = auditoria.prazo({k: v for k, v in certidoes.items() if I.resolvido(v)}, dados_livro, date.fromisoformat(agora()[:10]))
-            estrela, selo = selos.calcular(self.diario, livro, certidoes, self._edicoes(livro, a), self.ano, situacao, dados_livro.get("selo_livro"))
+            estrela, selo = selos.calcular(self.diario, livro, certidoes, self._edicoes(livro, a), self.ano, situacao, dados_livro.get("selo_livro"),
+                                           origem_confirmada=bool(oficial) or self._origem_confirmada(livro))
             faltam = I.faltando({k: v for k, v in certidoes.items() if I.resolvido(v)})
             relatorio = {"gerou": f"{len(novas)} item(ns) certificado(s) ({', '.join(sorted(novas)) or 'nenhum'}); prazo {situacao}; estrela {estrela}; "
                                   f"selo do livro {selo}", "faltou": ", ".join(faltam) or None,
@@ -185,7 +193,8 @@ class Cartorio:
         validas = {k: v for k, v in certidoes.items() if I.resolvido(v)}
         dados_livro = self._livro(livro, None)
         situacao = auditoria.prazo(validas, dados_livro, date.fromisoformat(agora()[:10]))
-        estrela, selo = selos.calcular(self.diario, livro, certidoes, self._edicoes(livro, None), self.ano, situacao, dados_livro.get("selo_livro"))
+        estrela, selo = selos.calcular(self.diario, livro, certidoes, self._edicoes(livro, None), self.ano, situacao, dados_livro.get("selo_livro"),
+                                       origem_confirmada=self._origem_confirmada(livro))
         faltam = I.faltando(validas)
         rel = {"gerou": f"validado após a análise externa: prazo {situacao}; estrela {estrela}; selo do livro {selo}", "faltou": ", ".join(faltam) or None}
         if self.passaporte.fase(livro) == "validacao":

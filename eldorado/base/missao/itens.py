@@ -33,17 +33,27 @@ def resolvido(certidao: dict | None) -> bool:
     return certidao.get("situacao") == "comprovado" and len(v) >= 3 and not FALTA.search(v)
 
 
-def nivel(certidoes: dict[str, dict]) -> str:
-    """A estrela pelo conjunto dos itens: 'ouro', 'prata', 'bronze' ou 'sem'."""
-    ok = {k for k in DOZE if resolvido(certidoes.get(k))}
-    if ok >= set(DOZE):
-        return "ouro"
-    if ok >= set(PRATA):
-        return "prata"
-    if ok >= set(BRONZE):
-        return "bronze"
-    return "sem"
+FASES_CHROME = ("verificacao externa", "analise externa")
 
+
+def nivel(certidoes: dict[str, dict], origem_confirmada: bool = False) -> str:
+    """A estrela pela régua da titular (23/10/2026): bronze = o prazo de inscrição certificado; prata = o prazo e o link
+    original da oportunidade (a origem confirmada do livro); ouro = prata e os 12 itens, cada um comprovado ou dispensado
+    pelo Claude no Chrome (as dispensas automáticas não valem para o ouro); sem o prazo, sem estrela."""
+    prazo = certidoes.get("Prazo de inscrição")
+    if not (prazo and prazo.get("situacao") == "comprovado" and resolvido(prazo)):
+        return "sem"
+    if not origem_confirmada:
+        return "bronze"
+
+    def completo(item: str) -> bool:
+        c = certidoes.get(item)
+        if not c:
+            return False
+        if c.get("situacao") == "dispensado":
+            return c.get("fase") in FASES_CHROME and dispensa_valida(item, c.get("justificativa"))
+        return resolvido(c)
+    return "ouro" if all(completo(k) for k in DOZE) else "prata"
 
 def faltando(certidoes: dict[str, dict]) -> list[str]:
     return [k for k in DOZE if not resolvido(certidoes.get(k))]

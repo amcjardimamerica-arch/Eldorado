@@ -8,7 +8,7 @@ from eldorado.base.fluxo.executor import Executor
 from eldorado.base.fluxo.nos import abrir_bancos
 
 # a hora da passagem no dia de HOJE: o histórico das execuções é gravado com o relógio real (um dia fixo quebra na virada)
-HOJE_0610 = datetime.now(ZoneInfo("America/Sao_Paulo")).replace(hour=6, minute=10, second=0, microsecond=0).isoformat()
+HOJE_0610 = datetime.now(ZoneInfo("America/Sao_Paulo")).replace(second=0, microsecond=0).isoformat()   # a hora real: um horário fixo ficava no futuro de madrugada
 
 def preparar(tmp_path):
     (tmp_path / "modulos.toml").write_text('[[modulo]]\nclasse = "modulos_teste:MotorTeste"\nparametros = { id = "bom" }\n'

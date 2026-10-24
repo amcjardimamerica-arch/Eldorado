@@ -97,13 +97,19 @@ def test_a_chave_junta_as_edicoes_do_mesmo_programa():
 
 
 def test_criterio_da_estrela():
+    """A régua da titular (23/10/2026): bronze = o prazo; prata = o prazo e o link original; ouro = todas as informações,
+    com as dispensas só pelo Claude no Chrome; sem o prazo, sem estrela."""
     prova = lambda i: {"item": i, "situacao": "comprovado", "valor": f"valor de {i}"}  # noqa: E731
-    bronze = {i: prova(i) for i in itens.BRONZE}
-    assert itens.nivel(bronze) == "bronze" and itens.nivel({}) == "sem"
-    assert itens.nivel({i: prova(i) for i in itens.PRATA}) == "prata"
+    prazo = {"Prazo de inscrição": prova("Prazo de inscrição")}
+    assert itens.nivel({}) == "sem" and itens.nivel({"Objeto": prova("Objeto")}, True) == "sem"
+    assert itens.nivel(prazo) == "bronze" and itens.nivel(prazo, origem_confirmada=True) == "prata"
     ouro = {i: prova(i) for i in itens.DOZE}
-    assert itens.nivel(ouro) == "ouro"
+    assert itens.nivel(ouro, True) == "ouro" and itens.nivel(ouro) == "bronze"                  # sem o link original, bronze
     ouro["Resultado"] = {"item": "Resultado", "situacao": "comprovado", "valor": "não informado"}
-    assert itens.nivel(ouro) == "prata"                                                   # "não informado" é falta
+    assert itens.nivel(ouro, True) == "prata"                                                   # "não informado" é falta
+    ouro["Resultado"] = {"item": "Resultado", "situacao": "dispensado", "fase": "cartorio", "justificativa": "não se aplica: fluxo contínuo"}
+    assert itens.nivel(ouro, True) == "prata"                                                   # dispensa automática não dá ouro
+    ouro["Resultado"]["fase"] = "verificacao externa"
+    assert itens.nivel(ouro, True) == "ouro"                                                    # dispensada pelo Chrome
     assert itens.dispensa_valida("Prazo de recurso", "não se aplica: prêmio sem etapa de recurso")
     assert not itens.dispensa_valida("Objeto", "não se aplica: qualquer justificativa longa")   # núcleo nunca é dispensado

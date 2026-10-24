@@ -29,7 +29,7 @@ def test_achado_aceito_vira_livro_certificado_com_selos(tmp_path):
     assert r.estado == "concluida", r.erro
     assert len(r.saidas["decidir"]) == 1                                               # a licitação foi barrada pelo portão
     livro = r.saidas["cartorio"][0]
-    assert livro["estrela"] in ("bronze", "prata", "ouro") and livro["selo_livro"] == "bronze"
+    assert livro["estrela"] in ("bronze", "prata", "ouro") and livro["selo_livro"] == "sem"      # o selo só quando a oportunidade encerra
     b = abrir_bancos(dados)
     try:
         bib = b["biblioteca"]

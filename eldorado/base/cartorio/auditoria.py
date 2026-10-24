@@ -288,11 +288,12 @@ def auditar(con: sqlite3.Connection, hoje: date, somente: set[str] | None = None
                  "area": (_primeiro(validas, "Área de atuação") or lv["tema"] or "")[:120] or None,
                  "situacao_prazo": _situacao(historico, continuo, fim, hoje),
                  "link_oficial_tipo": "ausente" if not link else ("republicador" if origem.eh_republicador(link) else "fonte"),   # indício, não decide
-                 "origem": cls_origem, "origem_motivo": motivo_origem[:300],
+                 "origem": cls_origem, "origem_motivo": motivo_origem[:300], "escada": escada_do_livro(con, lv["id"]),
                  "validacao": validacao, "motivos": json.dumps(motivos + [f"certidão contestada — {x}" for x in contestadas], ensure_ascii=False),
                  "validado_em": agora()}
         resolvidas = {k: v for k, v in validas.items() if I.resolvido(v)}
-        r = Resultado(lv["id"], lv["titulo"], validacao, abr, motivos, contestadas, lv["estrela"], I.nivel(resolvidas), dados)
+        estrela_regua = I.nivel(resolvidas, cls_origem == origem.CONFIRMADO) if dados["situacao_prazo"] != "encerrada" else "sem"
+        r = Resultado(lv["id"], lv["titulo"], validacao, abr, motivos, contestadas, lv["estrela"], estrela_regua, dados)
         r.dados["_contestar"] = [(c["id"], c["_contestar"]) for c in todas.get(lv["id"], []) if c.get("_contestar")]
         r.dados["_ja_excluido"] = lv["situacao"] == "excluido"
         yield r
@@ -346,6 +347,19 @@ def arquivar_encerrados(con: sqlite3.Connection, diario: Diario, hoje: date) -> 
                                                           "atualizado_em": agora()})
             n += 1
     return n
+
+
+def escada_do_livro(con: sqlite3.Connection, lid: str) -> str:
+    """A escada no livro (titular, 24/10/2026): o motor e o degrau de acesso que obtiveram a oportunidade (o achado mais
+    recente que os registra); os livros de antes do registro dizem isso, e os migrados do Eldorado0 também."""
+    achados = list(con.execute("SELECT motor, dados FROM achado WHERE livro_id = ? ORDER BY encontrado_em DESC", (lid,)))
+    for motor, dados in achados:
+        e = (json.loads(dados or "{}") or {}).get("escada")
+        if isinstance(e, dict) and e.get("degrau"):
+            return f"{e.get('motor') or motor} · degrau {e['degrau']}"
+    if achados:
+        return f"{achados[0][0]} · degrau não registrado (achado anterior a 24/10/2026)"
+    return "livro migrado do Eldorado0 · sem registro da escada"
 
 
 def no_auditar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:

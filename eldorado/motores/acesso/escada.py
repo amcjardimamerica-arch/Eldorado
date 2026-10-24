@@ -91,6 +91,7 @@ class Escada:
         self.degraus, self.diario, self.governador = degraus, diario, governador
         self.intervalo_padrao, self.tentativas, self.tempo_limite, self.dormir = intervalo_padrao, tentativas, tempo_limite, dormir
         self.aprendido: dict[str, int] = dict(aprendido or {})       # domínio → índice do degrau que funcionou
+        self.ultimo_degrau: str | None = None
         self.intervalos: dict[str, float] = {}
         self._ultimo: dict[str, float] = {}
         self._trava = threading.Lock()
@@ -144,6 +145,7 @@ class Escada:
                 self._aprender(dom, i, exige_local=True)
                 raise
             r.degrau = d.nome
+            self.ultimo_degrau = d.nome                         # o degrau que serviu a última leitura (vai para o livro)
             r.alertas = motivos + r.alertas
             if self.aprendido.get(dom) != i:
                 self._aprender(dom, i)

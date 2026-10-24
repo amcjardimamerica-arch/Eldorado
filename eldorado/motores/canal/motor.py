@@ -668,6 +668,8 @@ class MotorCanal(Motor):
         return not (lx.vetos and self._casa(t, lx.vetos) and not self._casa(t, lx.salvos))
 
     def _achado(self, fonte: CfgFonte, pista: Pista, n: int) -> Achado | None:
+        degrau_lista = getattr(self.escada, "ultimo_degrau", None)
+        r = None
         documento = None
         # o link encontrado é a DIVULGAÇÃO; a origem é só o candidato da busca cega (seguir_oficial), decidida por livro depois
         oficial, divulgacao = None, pista.link
@@ -698,6 +700,7 @@ class MotorCanal(Motor):
                 if lido.tipo in ("html", "pagina") and r is not None:
                     html_bruto = r.conteudo.decode("utf-8", errors="replace")
         canivete = self._canivete(documento, texto_do_ato, html_bruto, pista.link)
+        escada = {"motor": self.cfg.motor.id, "fonte": fonte.nome, "degrau": (r.degrau if ler and r is not None else None) or degrau_lista}
         m = self.cfg.motor
         chave = hashlib.sha256(pista.link.encode()).hexdigest()[:16]
         return Achado(id=f"{m.id}-{chave}", motor=m.id, encontrado_em=_agora()[:10], link_divulgacao=divulgacao, link_oficial=oficial,
@@ -707,7 +710,7 @@ class MotorCanal(Motor):
                              **(self._extrair(documento["paginas"]) if documento and self.cfg.extracao.itens else {}),
                              **({"leis": self.cfg.legislacao.leis} if self.cfg.legislacao.leis else {}),
                              **({"resumo": pista.resumo} if pista.resumo else {}),
-                             **({"canivete": canivete} if canivete else {})}, documento=documento)
+                             **({"canivete": canivete} if canivete else {}), "escada": escada}, documento=documento)
 
     def _canivete(self, documento: dict | None, texto_do_ato: str | None, html: str | None, url: str) -> dict | None:
         """O enriquecimento do achado (o motor padrão): idioma, publicação, datas, valores, metadados e o texto principal;

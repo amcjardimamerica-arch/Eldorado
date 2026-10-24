@@ -431,7 +431,7 @@ def _fluxo(sis: Sistema, agora: str) -> dict:
     origem_ct, tipo_ct, val_ct = Counter(), Counter(), Counter()
     for r in livros:
         c = certs.get(r["id"], {})
-        conf = r["origem"] == "confirmado" and bool(c.get("Objeto")) and bool(c.get("Prazo de inscrição"))
+        conf = (r["estrela"] or "sem") in ("prata", "ouro")            # a régua da titular: o prazo e o link original
         mid = motor_de.get(r["id"], "")
         origem = "Piloto - Espião" if mid == "espiao" else "Piloto - Interceptador" if mid == "interceptador" else "motor"
         tipo = "empresa/instituto" if (r["esfera"] or "").lower().startswith("priv") else "ente público"

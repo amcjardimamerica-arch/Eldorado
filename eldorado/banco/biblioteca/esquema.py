@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .._sqlite import abrir as _abrir
 
-VERSAO = 7
+VERSAO = 8
 
 DDL_V2 = r"""
 CREATE TABLE livro_dados (livro_id TEXT PRIMARY KEY REFERENCES livro(id),
@@ -138,10 +138,15 @@ ALTER TABLE livro_dados ADD COLUMN origem TEXT;
 ALTER TABLE livro_dados ADD COLUMN origem_motivo TEXT
 """
 
-MIGRACOES = {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7}   # 2: a decupagem (livro_dados); 3: o registro do expurgo; 4: a legislação (livro_lei);
+DDL_V8 = r"""
+ALTER TABLE livro_dados ADD COLUMN escada TEXT
+"""
+
+MIGRACOES = {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7, 8: DDL_V8}   # 2: a decupagem (livro_dados); 3: o registro do expurgo; 4: a legislação (livro_lei);
 # 5: as 5 fases do Cartório no passaporte (titular, 22/10/2026); 6: o arquivo (o livro aguardando nova oportunidade);
-# 7: a origem decidida por livro (confirmado, candidato, ausente) e o motivo (titular, 23/10/2026)
+# 7: a origem decidida por livro (confirmado, candidato, ausente) e o motivo (titular, 23/10/2026);
+# 8: a escada no livro (o motor e o degrau de acesso que obtiveram a oportunidade; titular, 24/10/2026)
 
 
 def abrir(caminho: str | Path):
-    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V3 + ";\n" + DDL_V4 + ";\n" + DDL_V5 + ";\n" + DDL_V6 + ";\n" + DDL_V7, VERSAO, MIGRACOES)
+    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V3 + ";\n" + DDL_V4 + ";\n" + DDL_V5 + ";\n" + DDL_V6 + ";\n" + DDL_V7 + ";\n" + DDL_V8, VERSAO, MIGRACOES)

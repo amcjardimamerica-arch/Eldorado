@@ -36,6 +36,8 @@ def livro(i, fase, fim="30/11/2099", itens=None):
                       situacao="comprovado", em=AGORA))
     evs.append(ev("certidao.gravada", livro_id=i, item="Prazo de inscrição", valor=f"de 01/10/2026 a {fim}", trecho=f"inscrições até {fim}", pagina=1,
                   fase="certificacao", situacao="comprovado", em=AGORA))
+    # a origem confirmada (o link original): sem ela, pela régua da titular, o livro não passa de bronze
+    evs.append(ev("livro.decupado", livro_id=i, validacao="aprovado", validado_em=AGORA, origem="confirmado", origem_motivo="teste"))
     return evs
 
 
