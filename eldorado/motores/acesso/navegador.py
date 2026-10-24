@@ -72,10 +72,14 @@ class DegrauNavegador:
                     pagina.wait_for_timeout(3000)
                 if self.espera_seletor:
                     pagina.wait_for_selector(self.espera_seletor, timeout=tempo)
-                html = pagina.content().encode("utf-8")
+                tipo = (resp.headers.get("content-type", "") if resp else "") or "text/html"
+                if resp is not None and "html" not in tipo.lower():
+                    html = resp.body()                              # JSON, XML, PDF: o conteúdo original, não a página que o navegador monta em volta
+                else:
+                    html = pagina.content().encode("utf-8")
                 navegador.close()
         except Exception as e:  # noqa: BLE001 — falha do navegador (não do site) é passageira; o motor registra
             if "Executable doesn't exist" in str(e) or "playwright install" in str(e):
                 raise Indisponivel(f"{self.motor}: navegador não instalado") from e
             raise Passageiro(f"{self.motor}: {type(e).__name__}: {e}") from e
-        return Resposta(url, resp.status if resp else 200, html, "text/html")
+        return Resposta(url, resp.status if resp else 200, html, tipo if resp is not None else "text/html")

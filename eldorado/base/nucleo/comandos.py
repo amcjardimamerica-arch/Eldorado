@@ -468,7 +468,10 @@ def motor_experimentar(id: str, saida: Path = SAIDA_EXPERIMENTO):
     with tempfile.TemporaryDirectory() as tmp:
         m = MotorCanal(Path("eldorado/motores/canal/config") / f"{id}.toml", dados=Path(tmp) / "m", ponte=Path(tmp) / "p")
         achados = list(m.buscar(None))
+        nomes = [d.nome for d in m.escada.degraus]
         r = {"motor": id, "achados": len(achados), "relatorio": m.relatorio,
+             "degraus_que_serviram": {dom: nomes[i] if i < len(nomes) else i for dom, i in m.escada.aprendido.items()},
+             "degraus_montados": nomes,
              "entregues": [{"titulo": a.titulo, "divulgacao": a.link_divulgacao, "documento": bool(a.documento)} for a in achados[:200]]}
     texto = json.dumps(r, ensure_ascii=False, indent=1)
     if saida:
