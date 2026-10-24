@@ -580,6 +580,25 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
                 gravar_agora()
     threading.Thread(target=gravar_em_segundo_plano, daemon=True, name="gravacao").start()
 
+    # o trabalho de fundo (titular, 24/10/2026: operar perto de 85% da capacidade): enquanto os motores esperam a rede, o
+    # processador fica ocioso (as leituras mostraram 1% a 5%); o governador libera a releitura dos documentos herdados
+    # (PDF e OCR, trabalho pesado) sempre que a carga estiver abaixo de 70%, e a retém quando passa (os motores primeiro)
+    def trabalho_de_fundo() -> None:
+        from ..cartorio.releitura import reler
+        from ..cerebro.governador import Governador, medidor_psutil
+        from ..nucleo.eventos import Diario as _Diario
+        g = Governador(medidor_psutil("."))
+        d = _Diario(eventos, "fundo")
+        while not parar.wait(30):
+            try:
+                if g.ler().carga < 0.70:
+                    r = reler(Path(dados), d, limite=10, orcamento_s=120)
+                    if r.get("escolhidos"):
+                        typer.echo(f"  trabalho de fundo: releitura {r}")
+            except Exception as e:  # noqa: BLE001 — o trabalho de fundo nunca para o sistema
+                typer.echo(f"  trabalho de fundo: {type(e).__name__}: {str(e)[:150]}")
+    threading.Thread(target=trabalho_de_fundo, daemon=True, name="fundo").start()
+
     while True:
         ciclo += 1
         try:

@@ -12,8 +12,12 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
+# os documentos já relidos (ou em releitura) neste processo: o trabalho de fundo e o nó da passagem não repetem o mesmo
+# documento antes de as tentativas chegarem ao banco (os eventos são aplicados no fim da passagem)
+_NESTE_PROCESSO: set[tuple[str, int]] = set()
 
-def escolher(bib: sqlite3.Connection, cer: sqlite3.Connection, limite: int) -> list[tuple[int, str, str]]:
+
+def escolher(bib: sqlite3.Connection, cer: sqlite3.Connection, limite: int, banco: str = "") -> list[tuple[int, str, str]]:
     ontem = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
     tentados = {r[0] for r in cer.execute("SELECT documento_id FROM releitura WHERE tentativas >= 3 OR ultima >= ?", (ontem,))}
     sql = (
@@ -24,7 +28,8 @@ def escolher(bib: sqlite3.Connection, cer: sqlite3.Connection, limite: int) -> l
     )
     saida = []
     for did, url, sha, _ in bib.execute(sql):
-        if did not in tentados:
+        if did not in tentados and (banco, did) not in _NESTE_PROCESSO:
+            _NESTE_PROCESSO.add((banco, did))
             saida.append((did, url, sha))
             if len(saida) >= limite:
                 break
@@ -42,7 +47,7 @@ def reler(dados: Path, diario, limite: int = 15, orcamento_s: float = 90) -> dic
     try:
         if not cer.execute("SELECT 1 FROM sqlite_master WHERE name = 'releitura'").fetchone():
             return {"relidos": 0, "motivo": "o Cérebro ainda sem a tabela da releitura"}
-        fila = escolher(bib, cer, limite)
+        fila = escolher(bib, cer, limite, str((dados / "biblioteca.db").resolve()))
         anteriores = {r[0]: r[1] for r in cer.execute("SELECT documento_id, tentativas FROM releitura")}
     finally:
         bib.close()
