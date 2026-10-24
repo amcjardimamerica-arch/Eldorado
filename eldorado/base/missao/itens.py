@@ -23,17 +23,19 @@ def dispensa_valida(item: str, justificativa: str | None) -> bool:
     return item not in NUCLEO and bool(JUSTIFICA.search(j)) and len(j) >= 20
 
 
+FASES_CHROME = ("verificacao externa", "analise externa")   # a análise externa: o Claude no Chrome
+
+
 def resolvido(certidao: dict | None) -> bool:
     """Item comprovado (valor real com prova) ou dispensado com justificativa válida."""
     if not certidao:
         return False
-    if certidao.get("situacao") == "dispensado":
-        return dispensa_valida(certidao.get("item", ""), certidao.get("justificativa"))
+    if certidao.get("situacao") == "dispensado":               # a dispensa só vale pelo Claude no Chrome (titular, 24/10/2026)
+        return certidao.get("fase") in FASES_CHROME and dispensa_valida(certidao.get("item", ""), certidao.get("justificativa"))
     v = str(certidao.get("valor") or "").strip()
     return certidao.get("situacao") == "comprovado" and len(v) >= 3 and not FALTA.search(v)
 
 
-FASES_CHROME = ("verificacao externa", "analise externa")
 
 
 def nivel(certidoes: dict[str, dict], origem_confirmada: bool = False) -> str:
@@ -46,14 +48,7 @@ def nivel(certidoes: dict[str, dict], origem_confirmada: bool = False) -> str:
     if not origem_confirmada:
         return "bronze"
 
-    def completo(item: str) -> bool:
-        c = certidoes.get(item)
-        if not c:
-            return False
-        if c.get("situacao") == "dispensado":
-            return c.get("fase") in FASES_CHROME and dispensa_valida(item, c.get("justificativa"))
-        return resolvido(c)
-    return "ouro" if all(completo(k) for k in DOZE) else "prata"
+    return "ouro" if all(resolvido(certidoes.get(k)) for k in DOZE) else "prata"   # o checklist completo, ou dispensado pelo Chrome
 
 def faltando(certidoes: dict[str, dict]) -> list[str]:
     return [k for k in DOZE if not resolvido(certidoes.get(k))]

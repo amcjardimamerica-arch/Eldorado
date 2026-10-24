@@ -125,8 +125,11 @@ class Certificacao:
         return novas
 
     def dispensar(self, livro: str, item: str, justificativa: str) -> dict | None:
+        """A dispensa é só do Claude no Chrome (titular, 24/10/2026): a certificação registra o INDÍCIO (pendente, com a
+        justificativa), e o item vai ao lote da análise externa para o Chrome decidir."""
         if not I.dispensa_valida(item, justificativa):
             return None
-        c = {"livro_id": livro, "item": item, "fase": "certificacao", "situacao": "dispensado", "justificativa": justificativa, "em": agora()}
+        c = {"livro_id": livro, "item": item, "fase": "certificacao", "situacao": "pendente",
+             "justificativa": f"indício de dispensa (aguarda o Claude no Chrome): {justificativa}"[:500], "em": agora()}
         self.diario.emitir("certidao.gravada", "certificacao", c)
         return c

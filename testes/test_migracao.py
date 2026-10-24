@@ -68,7 +68,7 @@ def test_migracao_confere_mantem_o_texto_integro_e_e_idempotente(tmp_path):
         assert trecho == "Responsável: CPF 123.456.789-09; total R$ 300.000,00"                 # íntegro, como estava na fonte
         assert dict(bib.execute("SELECT item, situacao FROM certidao WHERE livro_id='captacao-001'").fetchall()) == {
             "Objeto": "comprovado", "Valor": "comprovado", "Prazo de recurso": "dispensado", "Resultado": "pendente"}              # "não informado" é falta
-        assert bib.execute("SELECT informacoes_validadas FROM livro WHERE id='captacao-001'").fetchone()[0] == 3                 # o pendente não conta
+        assert bib.execute("SELECT informacoes_validadas FROM livro WHERE id='captacao-001'").fetchone()[0] == 2   # o pendente e a dispensa migrada (não é do Chrome) não contam
         assert bib.execute("SELECT d.url FROM certidao c JOIN documento d ON d.id = c.documento_id WHERE c.item='Objeto'").fetchone()[0].endswith("/e.pdf")
         assert bib.execute("SELECT COUNT(*) FROM veredito").fetchone()[0] == 2 and b["cerebro"].execute("SELECT COUNT(*) FROM rotulo").fetchone()[0] == 1
         assert {k for k in imp.r.lacunas} >= {"livro sem título em nenhuma fonte (título = identificador)", "lei repetida no Eldorado0 (mantida uma)",
