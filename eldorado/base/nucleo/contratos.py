@@ -54,6 +54,7 @@ class Retorno(msgspec.Struct, kw_only=True, omit_defaults=True):
     decisao: str            # 'aceito' ou 'barrado'
     motivo: str | None = None
     livro: str | None = None
+    fonte: str | None = None    # a fonte de onde o achado veio (o rendimento de cada fonte se aprende por ela)
 
 
 class Saude(msgspec.Struct, kw_only=True, omit_defaults=True):

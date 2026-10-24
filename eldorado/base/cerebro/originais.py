@@ -28,7 +28,7 @@ def livros_com_origem(con: sqlite3.Connection, limite: int = 200) -> list[dict[s
     return livros
 
 
-def vigiar(con: sqlite3.Connection, registro, orcamento_s: float = 120) -> tuple[list, dict[str, int]]:
+def vigiar(con: sqlite3.Connection, registro, orcamento_s: float = 120, diario=None) -> tuple[list, dict[str, int]]:
     """Os mapas dos sites originais, pelo motor de cada livro, até o orçamento de tempo do batimento."""
     from .encaminhamento import motores_do_livro
     inicio, achados, conta = time.monotonic(), [], {"livros": 0, "novidades": 0, "sem_motor": 0}
@@ -45,7 +45,10 @@ def vigiar(con: sqlite3.Connection, registro, orcamento_s: float = 120) -> tuple
             continue
         vistos.add((motores[0], dominio))
         conta["livros"] += 1
-        novos = registro.obter(motores[0]).vigiar_original(lv)
+        motor = registro.obter(motores[0])
+        if diario is not None and hasattr(motor, "estado"):          # o que o motor aprende vai ao Cérebro pelo diário
+            motor.estado.diario = diario
+        novos = motor.vigiar_original(lv)
         conta["novidades"] += len(novos)
         achados += novos
     return achados, conta

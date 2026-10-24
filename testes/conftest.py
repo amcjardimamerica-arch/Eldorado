@@ -10,7 +10,6 @@ import pytest
 
 from eldorado.banco.biblioteca import esquema as bib
 from eldorado.banco.cerebro_db import esquema as cer
-from eldorado.banco.especial import esquema as esp
 from eldorado.base.nucleo.eventos import Diario, criar
 from eldorado.base.nucleo.gravador import Gravador
 
@@ -19,7 +18,8 @@ AGORA = "2026-10-22T12:00:00+00:00"
 
 @pytest.fixture
 def bancos(tmp_path):
-    b = {"biblioteca": bib.abrir(tmp_path / "biblioteca.db"), "especial": esp.abrir(tmp_path / "especial.db"),
+    livros = bib.abrir(tmp_path / "biblioteca.db")                  # os livros e as empresas, no mesmo banco
+    b = {"biblioteca": livros, "especial": livros,
          "cerebro": cer.abrir(tmp_path / "cerebro.db")}
     yield b
     for c in b.values():

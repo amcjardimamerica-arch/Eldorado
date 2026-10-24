@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .._sqlite import abrir as _abrir
 
-VERSAO = 8
+VERSAO = 9
 
 DDL_V2 = r"""
 CREATE TABLE livro_dados (livro_id TEXT PRIMARY KEY REFERENCES livro(id),
@@ -142,11 +142,32 @@ DDL_V8 = r"""
 ALTER TABLE livro_dados ADD COLUMN escada TEXT
 """
 
-MIGRACOES = {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7, 8: DDL_V8}   # 2: a decupagem (livro_dados); 3: o registro do expurgo; 4: a legislação (livro_lei);
+# 9: os livros e as empresas no mesmo banco (titular, 24/10/2026; o desenho do plano): as tabelas da base Especial
+DDL_V9 = r"""
+CREATE TABLE IF NOT EXISTS empresa (cnpj TEXT PRIMARY KEY, razao_social TEXT NOT NULL, nome_fantasia TEXT, uf TEXT, municipio_ibge TEXT, porte TEXT,
+  atividade_principal TEXT, regime_tributario TEXT, site TEXT, descoberta_por TEXT CHECK (descoberta_por IN ('espiao','motor','importacao','titular')),
+  descoberta_em TEXT NOT NULL, atualizada_em TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS incentivo (id INTEGER PRIMARY KEY, cnpj TEXT NOT NULL REFERENCES empresa(cnpj),
+  lei TEXT NOT NULL CHECK (lei IN ('FIA','Idoso','Esporte','Rouanet','Pronas','Pronon','Goyazes','ICMS','PAT','outra')),
+  ano INTEGER, valor REAL, comprovado INTEGER NOT NULL DEFAULT 0, fonte TEXT NOT NULL, em TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS ranking (cnpj TEXT REFERENCES empresa(cnpj), criterio TEXT, posicao INTEGER, pontos REAL, calculado_em TEXT NOT NULL, PRIMARY KEY (cnpj, criterio, calculado_em));
+CREATE TABLE IF NOT EXISTS oportunidade_empresa (id TEXT PRIMARY KEY, cnpj TEXT NOT NULL REFERENCES empresa(cnpj), titulo TEXT NOT NULL, tipo TEXT,
+  link_oficial TEXT, abertura TEXT, encerramento TEXT, encontrada_por TEXT, encontrada_em TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS vinculo_livro (cnpj TEXT REFERENCES empresa(cnpj), livro_id TEXT NOT NULL, papel TEXT, em TEXT NOT NULL, PRIMARY KEY (cnpj, livro_id, papel));
+CREATE TABLE IF NOT EXISTS aprofundamento (id INTEGER PRIMARY KEY, cnpj TEXT NOT NULL REFERENCES empresa(cnpj), piloto TEXT NOT NULL DEFAULT 'interceptador',
+  o_que TEXT NOT NULL, achou TEXT, fonte TEXT, em TEXT NOT NULL);
+CREATE TRIGGER empresa_nao_se_apaga BEFORE DELETE ON empresa BEGIN SELECT RAISE(ABORT,'empresa não se apaga'); END;
+CREATE TRIGGER incentivo_nao_se_sobrescreve BEFORE UPDATE OF valor, ano, lei ON incentivo BEGIN SELECT RAISE(ABORT,'incentivo não se sobrescreve'); END;
+CREATE VIEW empresas_com_oportunidade_aberta AS
+  SELECT e.cnpj, e.razao_social, o.titulo, o.encerramento FROM empresa e JOIN oportunidade_empresa o ON o.cnpj = e.cnpj WHERE o.encerramento IS NULL OR o.encerramento >= date('now');
+"""
+
+MIGRACOES = {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7, 8: DDL_V8, 9: DDL_V9}   # 2: a decupagem (livro_dados); 3: o registro do expurgo; 4: a legislação (livro_lei);
 # 5: as 5 fases do Cartório no passaporte (titular, 22/10/2026); 6: o arquivo (o livro aguardando nova oportunidade);
 # 7: a origem decidida por livro (confirmado, candidato, ausente) e o motivo (titular, 23/10/2026);
+# 9: as empresas (a antiga base Especial) dentro da Biblioteca;
 # 8: a escada no livro (o motor e o degrau de acesso que obtiveram a oportunidade; titular, 24/10/2026)
 
 
 def abrir(caminho: str | Path):
-    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V3 + ";\n" + DDL_V4 + ";\n" + DDL_V5 + ";\n" + DDL_V6 + ";\n" + DDL_V7 + ";\n" + DDL_V8, VERSAO, MIGRACOES)
+    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V3 + ";\n" + DDL_V4 + ";\n" + DDL_V5 + ";\n" + DDL_V6 + ";\n" + DDL_V7 + ";\n" + DDL_V8 + ";\n" + DDL_V9, VERSAO, MIGRACOES)

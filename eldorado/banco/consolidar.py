@@ -1,6 +1,7 @@
 """A consolidação dos bancos (titular, 24/10/2026): só o Cérebro tem um banco paralelo, o de aprendizado; os livros vivem
 só na Biblioteca. Importa, uma vez, os bancos antigos de cada motor (dados/motores/<id>.db) e do Espião para dentro do
-Cérebro (tabelas motor_* e espiao_*), e apaga os arquivos paralelos: a fila e os seletores (refeitos no Cérebro) e o
+Cérebro (tabelas motor_* e espiao_*), as empresas (especial.db) para dentro da Biblioteca (os livros e as empresas no
+mesmo banco), e apaga os arquivos paralelos: a fila e os seletores (refeitos no Cérebro) e o
 índice de busca (a busca lê a Biblioteca). Idempotente: sem arquivo antigo, não faz nada.
 """
 from __future__ import annotations
@@ -10,6 +11,7 @@ from pathlib import Path
 
 TABELAS_MOTOR = {"assinatura": "motor_assinatura", "mapa_url": "motor_mapa_url", "mapa_dominio": "motor_mapa_dominio",
                  "alvo_mudanca": "motor_alvo_mudanca", "entregue": "motor_entregue", "fonte": "motor_fonte", "retorno": "motor_retorno"}
+TABELAS_EMPRESAS = {t: t for t in ("empresa", "incentivo", "ranking", "oportunidade_empresa", "vinculo_livro", "aprofundamento")}
 TABELAS_ESPIAO = {"familia": "espiao_familia", "consulta": "espiao_consulta", "missao": "espiao_missao", "rota": "espiao_rota"}
 
 
@@ -51,7 +53,16 @@ def consolidar(dados: Path = Path("dados")) -> dict[str, int]:
         cer.commit()
     finally:
         cer.close()
-    for p in [*((dados / "motores").glob("*.db*") if (dados / "motores").exists() else []), dados / "fila.db", dados / "biblioteca_busca.db"]:
+    esp = dados / "especial.db"                                            # as empresas para dentro da Biblioteca
+    if esp.exists():
+        from .biblioteca.esquema import abrir as abrir_biblioteca
+        bib = abrir_biblioteca(dados / "biblioteca.db")
+        bib.execute("BEGIN IMMEDIATE")
+        rel["empresas"] = _copiar(esp, bib, TABELAS_EMPRESAS, None)
+        bib.execute("COMMIT")
+        bib.close()
+    for p in [*((dados / "motores").glob("*.db*") if (dados / "motores").exists() else []), dados / "fila.db", dados / "biblioteca_busca.db",
+              *dados.glob("especial.db*")]:
         if p.exists():
             p.unlink()
             rel["apagados"] += 1

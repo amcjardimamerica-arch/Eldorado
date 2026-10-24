@@ -300,7 +300,7 @@ class MotorCanal(Motor):
 
     def aprender(self, retornos: list[Retorno]) -> None:
         for r in retornos:
-            self.estado.retorno(r.achado, None, r.decisao, r.motivo, _agora())
+            self.estado.retorno(r.achado, getattr(r, "fonte", None), r.decisao, r.motivo, _agora())
 
     # ------------------------------------------------------------------ busca
     def buscar(self, plano: Plano) -> Iterable[Achado]:

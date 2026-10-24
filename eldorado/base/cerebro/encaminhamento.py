@@ -128,7 +128,7 @@ def no_encaminhar(itens: list[dict[str, Any]], parametros: dict[str, Any], conte
         achados += [enc._entregar(a, "espiao") for a in do_espiao]
         # os sites originais dos livros: o mapa do site, pelo motor de cada livro (titular, 23/10/2026)
         from .originais import vigiar
-        dos_originais, conta_originais = vigiar(con, registro, float(parametros.get("orcamento_originais_s", 120)))
+        dos_originais, conta_originais = vigiar(con, registro, float(parametros.get("orcamento_originais_s", 120)), contexto.diario)
         achados += [enc._entregar(a, a.motor) for a in dos_originais]
         print(f"sites originais: {conta_originais}")
         print(f"pilotos: {relatorio.get('decisao')} · Espião {relatorio['espiao'].get('missoes')} missões recentes "

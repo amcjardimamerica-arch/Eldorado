@@ -1,4 +1,4 @@
-"""O registro da base Especial (as empresas e os incentivos): o "cartório" do banco especial.db.
+"""O registro das empresas e dos incentivos (na Biblioteca: os livros e as empresas no mesmo banco, titular 24/10/2026).
 
 Os motores de destino "especial" (como o motor-gife) não entregam oportunidades: entregam empresas (quem pode
 destinar incentivo) e incentivos (o que cada uma já destinou, por qual lei). O registro valida e armazena, por eventos:

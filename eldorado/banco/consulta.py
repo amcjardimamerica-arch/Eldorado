@@ -43,7 +43,7 @@ def servir(porta: int = 8001, dados: Path = Path("dados")) -> None:
 
     meta = Path(tempfile.gettempdir()) / "eldorado_datasette.json"
     meta.write_text(json.dumps(METADADOS, ensure_ascii=False), encoding="utf-8")
-    bancos = [str(p) for p in (dados / "biblioteca.db", dados / "cerebro.db", dados / "especial.db") if p.exists()]
+    bancos = [str(p) for p in (dados / "biblioteca.db", dados / "cerebro.db") if p.exists()]
     subprocess.run(
         [
             sys.executable,

@@ -102,10 +102,14 @@ class Sistema:
         ag = tomllib.loads((raiz / "config/agenda.toml").read_text(encoding="utf-8")).get("modulo", [])
         self.agenda = {a["id"]: a for a in ag}
         self.hoje = _agora().astimezone(BR).date().isoformat()
-        esp = d / "especial.db"
+        cols = {r[1] for r in self.bib.execute("PRAGMA table_info(livro_dados)")}
+        self._escada = "d.escada" if "escada" in cols else "NULL AS escada"   # um banco ainda não migrado (a produção migra antes)
+        esp = d / "biblioteca.db"                                   # as empresas, na Biblioteca
         self.esp = sqlite3.connect(f"file:{esp}?mode=ro", uri=True) if esp.exists() else None
         if self.esp is not None:
             self.esp.row_factory = sqlite3.Row
+            if not self.esp.execute("SELECT 1 FROM sqlite_master WHERE name = 'empresa'").fetchone():
+                self.esp = None                                       # a Biblioteca ainda sem as empresas (antes da migração 9)
 
     def execucoes(self) -> dict[str, list[sqlite3.Row]]:
         por = defaultdict(list)
@@ -116,7 +120,8 @@ class Sistema:
     def estado(self, mid: str) -> list[sqlite3.Row]:
         """O estado das fontes do motor, dentro do Cérebro (motor_fonte)."""
         try:
-            return list(self.cer.execute("SELECT * FROM motor_fonte WHERE motor = ? ORDER BY nome", (mid,)))
+            from ...motores.canal.estado import SQL_FONTES
+            return list(self.cer.execute(SQL_FONTES, (mid,)))
         except sqlite3.Error:
             return []
 
@@ -124,7 +129,8 @@ class Sistema:
         return list(
             self.bib.execute(
                 "SELECT l.*, d.abrangencia, d.esfera, d.inscricao_inicio, d.inscricao_fim, d.resultado_em, d.area AS area_d, d.validacao, "
-                "d.situacao_prazo, d.municipio, d.origem, p.fase FROM livro l JOIN livro_dados d ON d.livro_id = l.id JOIN passaporte p ON p.livro_id = l.id "
+                f"d.situacao_prazo, d.municipio, d.origem, {self._escada}, p.fase "
+                "FROM livro l JOIN livro_dados d ON d.livro_id = l.id JOIN passaporte p ON p.livro_id = l.id "
                 "WHERE d.situacao_prazo = 'aberta' AND l.situacao <> 'excluido' ORDER BY d.inscricao_fim"
             )
         )
@@ -133,10 +139,25 @@ class Sistema:
         from ..missao import itens as I
 
         por = defaultdict(list)
-        for r in self.bib.execute("SELECT livro_id, item, valor, fase, id FROM certidao WHERE situacao = 'comprovado'"):
+        for r in self.bib.execute("SELECT livro_id, item, valor, fase, trecho, pagina, id FROM certidao WHERE situacao = 'comprovado'"):
             if r["livro_id"] in ids:
                 por[r["livro_id"]].append(dict(r))
         return {lid: {k: v.get("valor") for k, v in I.melhor(cs).items()} for lid, cs in por.items()}
+
+    def checklist(self, ids: list[str]) -> dict[str, dict[str, dict[str, str]]]:
+        """O checklist dos 12 itens de cada livro, exatamente como o livro tem: comprovado (o valor) ou dispensado pelo
+        Chrome (a justificativa); o resto, vazio."""
+        from ..missao import itens as I
+        alvo, por = set(ids), defaultdict(list)
+        for r in self.bib.execute("SELECT livro_id, item, valor, situacao, fase, justificativa, trecho, pagina, id, em FROM certidao"):   # a regra do livro
+            if r["livro_id"] in alvo:
+                por[r["livro_id"]].append(dict(r))
+        saida = {}
+        for lid, cs in por.items():
+            m = I.melhor(cs)
+            saida[lid] = {k: ({"s": m[k]["situacao"], "v": (m[k].get("valor") if m[k]["situacao"] == "comprovado" else m[k].get("justificativa")) or ""}
+                              if I.resolvido(m.get(k)) else {"s": "", "v": ""}) for k in I.DOZE}
+        return saida
 
     def motor_do_livro(self) -> dict[str, str]:
         m = {}
@@ -418,6 +439,7 @@ def _fluxo(sis: Sistema, agora: str) -> dict:
     livros = sis.livros_abertos()
     ids = [r["id"] for r in livros]
     certs = sis.certidoes(ids)
+    listas = sis.checklist(ids)
     motor_de = sis.motor_do_livro()
     validados = sis.bib.execute("SELECT COUNT(*) FROM livro_dados").fetchone()[0]
     total = sis.bib.execute("SELECT COUNT(*) FROM livro WHERE situacao <> 'excluido'").fetchone()[0]
@@ -455,6 +477,9 @@ def _fluxo(sis: Sistema, agora: str) -> dict:
             selo_livro=r["selo_livro"] or "",
             selo=r["estrela"] or "",
             site_oficial_conhecido=r["origem"] == "confirmado",
+            checklist=listas.get(r["id"]) or _item("fluxo_item")["checklist"],
+            etapa=r["fase"] or "",
+            escada=r["escada"] or "",
         )
         itens.append((uf, item))
         (confirmadas if conf else possiveis).append(item)
@@ -594,8 +619,9 @@ def _tabelas(sis: Sistema, status: list[dict], descricao: dict, agora: str) -> d
         inc = defaultdict(list)
         for r in sis.esp.execute("SELECT cnpj, lei, ano, valor, fonte FROM incentivo"):
             inc[r["cnpj"]].append({"lei": r["lei"], "ano": r["ano"], "valor": r["valor"], "fonte": r["fonte"]})
-        empresas = [
-            _item(
+        por_uf: dict[str, list] = defaultdict(list)                  # todas as empresas da Biblioteca, cada uma na aba do seu estado
+        for r in sis.esp.execute("SELECT * FROM empresa ORDER BY razao_social"):
+            por_uf["GO" if r["uf"] in ("GO", "BR", None, "") else r["uf"]].append(_item(
                 "empresa",
                 id=r["cnpj"],
                 nome=r["razao_social"],
@@ -607,22 +633,14 @@ def _tabelas(sis: Sistema, status: list[dict], descricao: dict, agora: str) -> d
                 elegivel=bool(inc.get(r["cnpj"])),
                 destinacoes=inc.get(r["cnpj"], []),
                 fontes=sorted({i["fonte"] for i in inc.get(r["cnpj"], []) if i["fonte"]}),
-            )
-            for r in sis.esp.execute("SELECT * FROM empresa WHERE uf IN ('GO', 'BR') OR uf IS NULL ORDER BY razao_social")
-        ]
-        go = em["estados"].get("GO") or {}
-        go.update(
-            {
-                "nome": "Goiás",
-                "ativo": True,
-                "gerado_em": agora,
-                "total": len(empresas),
-                "com_cadastro": len(empresas),
-                "elegiveis": sum(1 for e in empresas if e["elegivel"]),
-                "empresas": empresas,
-            }
-        )
-        em["estados"]["GO"] = go
+            ))
+        for uf, empresas in por_uf.items():
+            aba = em["estados"].get(uf) or {"nome": uf}
+            aba.update({"ativo": True, "gerado_em": agora, "total": len(empresas), "com_cadastro": len(empresas),
+                        "elegiveis": sum(1 for e in empresas if e["elegivel"]), "empresas": empresas})
+            if uf == "GO":
+                aba["nome"] = "Goiás"
+            em["estados"][uf] = aba
     return {"motores.json": mo, "abertas.json": ab, "empresas.json": em}
 
 

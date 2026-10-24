@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .._sqlite import abrir as _abrir
 
-VERSAO = 2
+VERSAO = 4
 
 DDL = r"""
 PRAGMA foreign_keys=ON;
@@ -79,7 +79,19 @@ CREATE TABLE IF NOT EXISTS espiao_missao (id INTEGER PRIMARY KEY, em TEXT NOT NU
   achados INTEGER, motivos TEXT, rotas TEXT, bloqueada INTEGER NOT NULL DEFAULT 0);
 CREATE TABLE IF NOT EXISTS espiao_rota (nome TEXT PRIMARY KEY, descansa_ate TEXT);
 """
+# 3: o Cérebro jamais guarda livros (titular, 24/10/2026): as entradas e saídas dos passos passam a ser só o resumo (quantos
+# itens), e o conteúdo dos achados que já estava gravado é apagado
+DDL_V3 = r"""
+UPDATE execucao_passo SET entrada = CASE WHEN json_valid(entrada) AND json_type(entrada) = 'array' THEN json_object('itens', json_array_length(entrada)) END,
+  saida = CASE WHEN json_valid(saida) AND json_type(saida) = 'array' THEN json_object('itens', json_array_length(saida)) END
+"""
+
+# 4: o mapa do site visto por domínio numa linha (a lista das URLs), entregue pelo motor por evento
+DDL_V4 = r"""
+ALTER TABLE motor_mapa_dominio ADD COLUMN vistas TEXT
+"""
+
 
 def abrir(caminho: str | Path):
     """Na criação, o esquema inteiro (com a versão 2); um Cérebro na versão 1 é migrado (as tabelas motor_* e espiao_*)."""
-    return _abrir(caminho, DDL + ";\n" + DDL_V2, VERSAO, {2: DDL_V2})
+    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V4, VERSAO, {2: DDL_V2, 3: DDL_V3, 4: DDL_V4})

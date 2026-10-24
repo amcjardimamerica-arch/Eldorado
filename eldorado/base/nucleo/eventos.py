@@ -54,11 +54,25 @@ def _passaporte(d: dict[str, Any]) -> dict[str, Any]:
     return {"livro_id": d["livro_id"], "fase": d["para"], "entrou_em": d["em"]}
 
 
+def _resumo(x: Any) -> Any:
+    """O resumo de uma entrada ou saída de passo: quantos itens e os identificadores; nunca o conteúdo (titular, 24/10/2026:
+    o Cérebro jamais guarda livros; o conteúdo fica só no diário da execução, que é o que a retomada lê)."""
+    if not isinstance(x, list):
+        return None
+    ids = [str(i.get("id") or i.get("livro") or i.get("livro_id") or "")[:60] for i in x if isinstance(i, dict)]
+    return {"itens": len(x), "ids": [i for i in ids if i][:20]}
+
+
+def _passo(d: dict[str, Any]) -> dict[str, Any]:
+    return {**d, "entrada": _resumo(d.get("entrada")), "saida": _resumo(d.get("saida"))}
+
+
 def _so(*colunas: str) -> Callable[[dict[str, Any]], dict[str, Any]]:
     return lambda d: {c: d[c] for c in colunas if c in d}
 
 
-B, E, C = "biblioteca", "especial", "cerebro"
+B, C = "biblioteca", "cerebro"
+E = B                                # as empresas vivem na Biblioteca (titular, 24/10/2026)
 CATALOGO: dict[str, tuple[Alvo, ...]] = {
     # Regência, fluxo e medição (cerebro.db)
     "plano.criado": (Alvo(C, "plano", "inserir"),),
@@ -66,9 +80,16 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "execucao.iniciada": (Alvo(C, "execucao", "inserir"),),
     "execucao.concluida": (Alvo(C, "execucao", "atualizar", ("id",), _so("id", "fim", "estado")),),
     "execucao.retomada": (Alvo(C, "execucao", "atualizar", ("id",), _so("id", "estado")),),
-    "execucao.passo": (Alvo(C, "execucao_passo", "inserir"),),
+    "execucao.passo": (Alvo(C, "execucao_passo", "inserir", mapa=_passo),),   # só o resumo: o Cérebro não guarda livros
     "chamada.recibo": (Alvo(C, "recibo", "inserir"),),
     "motor.execucao": (Alvo(C, "execucao_motor", "inserir"),),
+    # o aprendizado dos motores, entregue ao Cérebro (nenhum motor tem banco; titular, 24/10/2026)
+    "motor.entregue": (Alvo(C, "motor_entregue", "inserir_se_novo"),),
+    "motor.fonte": (Alvo(C, "motor_fonte", "inserir_ou_atualizar", ("motor", "nome")),),
+    "motor.assinatura": (Alvo(C, "motor_assinatura", "inserir_ou_atualizar", ("motor", "fonte")),),
+    "motor.mapa": (Alvo(C, "motor_mapa_dominio", "inserir_ou_atualizar", ("motor", "dominio")),),
+    "motor.alvo": (Alvo(C, "motor_alvo_mudanca", "inserir_se_novo"),),
+    "motor.retorno": (Alvo(C, "motor_retorno", "inserir_se_novo"),),
     "medicao.registrada": (Alvo(C, "medicao", "inserir_ou_atualizar", ("marcador", "nivel", "em")),),
     "maquina.leitura": (Alvo(C, "maquina", "inserir"),),
     "cobertura.dia": (Alvo(C, "cobertura_dia", "inserir_ou_atualizar", ("dia",)),),
@@ -116,7 +137,7 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "alerta.preditivo": (Alvo(B, "previsao", "atualizar", ("livro_id",), _so("livro_id", "alerta_em")),),
     "transferencia.feita": (Alvo(B, "transferencia", "inserir"),),
     "lei.registrada": (Alvo(B, "lei", "inserir_ou_atualizar", ("id",)),),
-    # Especial (especial.db)
+    # as empresas e os incentivos (na Biblioteca, biblioteca.db)
     "empresa.registrada": (Alvo(E, "empresa", "inserir_ou_atualizar", ("cnpj",)),),
     "incentivo.registrado": (Alvo(E, "incentivo", "inserir"),),
     "ranking.calculado": (Alvo(E, "ranking", "inserir"),),

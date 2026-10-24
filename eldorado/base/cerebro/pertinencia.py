@@ -52,6 +52,7 @@ def no_decidir(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto
     for item in itens:
         achado = msgspec.convert({k: v for k, v in item.items() if not k.startswith("_")}, Achado)
         r = p.decidir(achado)
+        r.fonte = (achado.dados or {}).get("fonte")
         retornos.setdefault(achado.motor, []).append(r)
         if r.decisao == "aceito":
             aceitos.append(item)
@@ -61,5 +62,8 @@ def no_decidir(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto
         registro = carregar_registro(parametros["modulos"])
         for motor, lista in retornos.items():
             if motor in registro.ids():
-                registro.obter(motor).aprender(lista)
+                m = registro.obter(motor)
+                if hasattr(m, "estado"):                      # o aprendizado vai ao Cérebro pelo diário da execução
+                    m.estado.diario = contexto.diario
+                m.aprender(lista)
     return aceitos

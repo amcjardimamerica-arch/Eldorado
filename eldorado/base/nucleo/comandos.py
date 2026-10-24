@@ -40,11 +40,11 @@ APRENDIZADO = typer.Option(None, help="APRENDIZADO-ELDORADO.json (o aprendizado 
 
 @app.command()
 def iniciar(config: Path = CONFIG):
-    """Cria (ou confere) os três bancos."""
+    """Cria (ou confere) os dois bancos: a Biblioteca (os livros e as empresas) e o Cérebro (o aprendizado)."""
     _, dados, eventos = _cfg(config)
     eventos.mkdir(parents=True, exist_ok=True)
     bancos = abrir_bancos(dados)
-    for nome, con in bancos.items():
+    for nome, con in ((n, c) for n, c in bancos.items() if n != "especial"):   # 'especial' é a própria Biblioteca
         v = con.execute("PRAGMA user_version").fetchone()[0]
         ok = con.execute("PRAGMA integrity_check").fetchone()[0]
         typer.echo(f"{nome}: versão {v}, integridade {ok}")
@@ -105,7 +105,7 @@ def maquina(config: Path = CONFIG):
     leitura = g.ler()
     typer.echo(f"processador {leitura.processador:.0%} · memória {leitura.memoria:.0%} · disco {leitura.disco:.0%} · carga {leitura.carga:.0%} "
                f"(limite {g.limite:.0%}) · paralelismo permitido {g.paralelismo()}")
-    for parte, p in (("biblioteca", dados / "biblioteca.db"), ("especial", dados / "especial.db"), ("cerebro", dados / "cerebro.db"), ("eventos", eventos)):
+    for parte, p in (("biblioteca", dados / "biblioteca.db"), ("cerebro", dados / "cerebro.db"), ("eventos", eventos)):
         typer.echo(f"  {parte}: {tamanho(p) / 1e6:.2f} MB")
 
 

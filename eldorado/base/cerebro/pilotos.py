@@ -66,8 +66,8 @@ def missoes(dados: str | Path, biblioteca: sqlite3.Connection, escada, ociosidad
     relatorio: dict[str, Any] = {"interceptador": recorrencia_interceptador(biblioteca)}
     conhecidos = {(r[0] or "").rstrip("/") for r in biblioteca.execute("SELECT link_oficial FROM livro UNION SELECT link_divulgacao FROM livro") if r[0]}
     empresas: list[str] = []
-    if (dados / "especial.db").exists():
-        esp = sqlite3.connect(f"file:{dados / 'especial.db'}?mode=ro", uri=True)
+    if (dados / "biblioteca.db").exists():                       # as empresas, na Biblioteca
+        esp = sqlite3.connect(f"file:{dados / 'biblioteca.db'}?mode=ro", uri=True)
         try:
             empresas = [r[0] for r in esp.execute("SELECT COALESCE(nome_fantasia, razao_social) FROM empresa WHERE uf = 'GO' LIMIT 300") if r[0]]
         finally:

@@ -1,28 +1,18 @@
-"""O estado de cada motor: o seu aprendizado de uso próprio, DENTRO DO CÉREBRO (cerebro.db, tabelas motor_*, com a
-coluna motor). A regra da titular (24/10/2026): só o Cérebro tem um banco paralelo, o de aprendizado; os livros vivem só
-na Biblioteca. Guarda as assinaturas das páginas (vigilância), o que já foi entregue (a chave e o id do achado, nunca o
-achado), o rendimento de cada fonte, os retornos da Pertinência, o mapa dos sites originais e as mudanças dos alvos.
+"""O aprendizado de cada motor, entregue ao Cérebro (titular, 24/10/2026): NENHUM motor tem banco de dados. O motor só
+LÊ o que o Cérebro já aprendeu (cerebro.db, tabelas motor_*, só leitura) e ENTREGA o que aprende como eventos
+(motor.entregue, motor.fonte, motor.assinatura, motor.mapa, motor.alvo, motor.retorno), que o gravador registra no banco de
+aprendizado do Cérebro, como os achados. Dentro da mesma execução, o que já foi entregue fica em memória (os eventos só são
+aplicados no passo seguinte). Nada de livro: as entregas guardam a chave e o id do achado, nunca o achado.
+
+Na cadeia, a Regência dá ao motor o diário da execução. Fora dela (experimentos, testes), a entrega passa pelo mesmo
+gravador, na hora, sobre o Cérebro da pasta indicada.
 """
 from __future__ import annotations
 
+import json
 import sqlite3
 from pathlib import Path
-
-DDL = """
-CREATE TABLE IF NOT EXISTS motor_assinatura (motor TEXT NOT NULL, fonte TEXT NOT NULL, valor TEXT NOT NULL, em TEXT NOT NULL, PRIMARY KEY (motor, fonte));
-CREATE TABLE IF NOT EXISTS motor_mapa_url (motor TEXT NOT NULL, dominio TEXT NOT NULL, url TEXT NOT NULL, primeira_vez TEXT NOT NULL,
-  PRIMARY KEY (motor, dominio, url));
-CREATE TABLE IF NOT EXISTS motor_mapa_dominio (motor TEXT NOT NULL, dominio TEXT NOT NULL, verificado_em TEXT NOT NULL, urls INTEGER,
-  PRIMARY KEY (motor, dominio));
-CREATE TABLE IF NOT EXISTS motor_alvo_mudanca (motor TEXT NOT NULL, alvo TEXT NOT NULL, em TEXT NOT NULL, mes INTEGER NOT NULL, PRIMARY KEY (motor, alvo, em));
-CREATE TABLE IF NOT EXISTS motor_entregue (motor TEXT NOT NULL, chave TEXT NOT NULL, em TEXT NOT NULL, achado TEXT, fonte TEXT, PRIMARY KEY (motor, chave));
-CREATE INDEX IF NOT EXISTS motor_entregue_achado ON motor_entregue(motor, achado);
-CREATE TABLE IF NOT EXISTS motor_fonte (motor TEXT NOT NULL, nome TEXT NOT NULL, leituras INTEGER NOT NULL DEFAULT 0, sem_mudanca INTEGER NOT NULL DEFAULT 0,
-  achados INTEGER NOT NULL DEFAULT 0, aceitos INTEGER NOT NULL DEFAULT 0, barrados INTEGER NOT NULL DEFAULT 0, falhas INTEGER NOT NULL DEFAULT 0,
-  ultimo_erro TEXT, ultima TEXT, situacao TEXT, PRIMARY KEY (motor, nome));
-CREATE TABLE IF NOT EXISTS motor_retorno (motor TEXT NOT NULL, achado TEXT NOT NULL, fonte TEXT, decisao TEXT, motivo TEXT, em TEXT NOT NULL,
-  PRIMARY KEY (motor, achado));
-"""
+from typing import Any
 
 
 def caminho_do_cerebro(dados: str | Path) -> Path:
@@ -33,70 +23,125 @@ def caminho_do_cerebro(dados: str | Path) -> Path:
     return (p.parent if p.name == "motores" else p) / "cerebro.db"
 
 
+SQL_FONTES = """SELECT f.nome, f.leituras, f.sem_mudanca, f.achados,
+  (SELECT COUNT(*) FROM motor_retorno r WHERE r.motor = f.motor AND r.fonte = f.nome AND r.decisao = 'aceito') AS aceitos,
+  (SELECT COUNT(*) FROM motor_retorno r WHERE r.motor = f.motor AND r.fonte = f.nome AND r.decisao <> 'aceito') AS barrados,
+  f.falhas, f.ultimo_erro, f.ultima, f.situacao FROM motor_fonte f WHERE f.motor = ? ORDER BY f.nome"""
+
+
 class EstadoMotor:
-    def __init__(self, cerebro: str | Path, motor: str = "motor"):
-        p = caminho_do_cerebro(cerebro)
-        p.parent.mkdir(parents=True, exist_ok=True)
-        self.motor = motor
-        from ...banco.cerebro_db.esquema import abrir  # o Cérebro pelo esquema (as tabelas motor_* são da versão 2)
-        self.con = abrir(p)
-        self.con.row_factory = None
-        self.con.execute("PRAGMA busy_timeout=60000")
+    def __init__(self, cerebro: str | Path, motor: str = "motor", diario=None):
+        self.caminho, self.motor, self.diario = caminho_do_cerebro(cerebro), motor, diario
+        from ...banco.cerebro_db.esquema import abrir  # o esquema existe (as tabelas motor_*); o motor não escreve nele
+        abrir(self.caminho).close()
+        self.con = sqlite3.connect(f"file:{self.caminho}?mode=ro", uri=True, check_same_thread=False, timeout=60)
+        self._entregues: set[str] = set()
+        self._assinaturas: dict[str, str] = {}
+        self._fontes: dict[str, dict[str, Any]] = {}
+        self._mapa: dict[str, set[str]] = {}
+        self._retornos: set[str] = set()
+        self._entregue_fonte: dict[str, str] = {}
 
-    def _q(self, sql: str, args: tuple = ()) -> sqlite3.Cursor:
-        return self.con.execute(sql, (self.motor, *args))
+    # ---- a entrega ao Cérebro ----
+    def _entregar(self, tipo: str, dados: dict[str, Any]) -> None:
+        dados = {"motor": self.motor, **dados}
+        if self.diario is not None:
+            self.diario.emitir(tipo, self.motor, dados)
+            return
+        from ...banco.cerebro_db.esquema import abrir
+        from ...base.nucleo.eventos import criar  # fora da cadeia: o mesmo gravador, na hora
+        from ...base.nucleo.gravador import Gravador
+        con = abrir(self.caminho)
+        try:
+            vazio = sqlite3.connect(":memory:")
+            Gravador({"cerebro": con, "biblioteca": vazio, "especial": vazio}).aplicar([criar(tipo, self.motor, dados)])
+        finally:
+            con.close()
 
+    def _um(self, sql: str, args: tuple = ()) -> Any:
+        r = self.con.execute(sql, (self.motor, *args)).fetchone()
+        return r
+
+    # ---- assinaturas (vigilância) ----
     def assinatura(self, fonte: str) -> str | None:
-        r = self._q("SELECT valor FROM motor_assinatura WHERE motor=? AND fonte=?", (fonte,)).fetchone()
+        if fonte in self._assinaturas:
+            return self._assinaturas[fonte]
+        r = self._um("SELECT valor FROM motor_assinatura WHERE motor=? AND fonte=?", (fonte,))
         return r[0] if r else None
 
     def gravar_assinatura(self, fonte: str, valor: str, em: str) -> None:
-        self._q("INSERT INTO motor_assinatura VALUES (?,?,?,?) ON CONFLICT(motor, fonte) DO UPDATE SET valor=excluded.valor, em=excluded.em",
-                (fonte, valor, em))
+        self._assinaturas[fonte] = valor
+        self._entregar("motor.assinatura", {"fonte": fonte, "valor": valor, "em": em})
 
+    # ---- o mapa do site original (domínios e URLs, nunca livros) ----
     def mapa_visto(self, dominio: str) -> set[str]:
-        """As URLs do mapa do site original já vistas neste domínio (conhecimento do motor: domínios e URLs, nunca livros)."""
-        return {r[0] for r in self._q("SELECT url FROM motor_mapa_url WHERE motor=? AND dominio=?", (dominio,))}
+        vistas = {r[0] for r in self.con.execute("SELECT url FROM motor_mapa_url WHERE motor=? AND dominio=?", (self.motor, dominio))}
+        r = self._um("SELECT vistas FROM motor_mapa_dominio WHERE motor=? AND dominio=?", (dominio,))
+        if r and r[0]:
+            vistas |= set(json.loads(r[0]))
+        return vistas | self._mapa.get(dominio, set())
 
     def mapa_verificado_em(self, dominio: str) -> str | None:
-        r = self._q("SELECT verificado_em FROM motor_mapa_dominio WHERE motor=? AND dominio=?", (dominio,)).fetchone()
+        r = self._um("SELECT verificado_em FROM motor_mapa_dominio WHERE motor=? AND dominio=?", (dominio,))
         return r[0] if r else None
 
     def marcar_mapa(self, dominio: str, urls: list[str], em: str) -> None:
-        self.con.executemany("INSERT OR IGNORE INTO motor_mapa_url VALUES (?, ?, ?, ?)", [(self.motor, dominio, u, em) for u in urls])
-        self._q("INSERT OR REPLACE INTO motor_mapa_dominio VALUES (?, ?, ?, ?)", (dominio, em, len(urls)))
+        todas = self.mapa_visto(dominio) | set(urls)
+        self._mapa[dominio] = todas
+        self._entregar("motor.mapa", {"dominio": dominio, "verificado_em": em, "urls": len(urls), "vistas": json.dumps(sorted(todas))})
 
+    # ---- os alvos (a previsão de edição se aprende pelos meses em que mudaram) ----
     def mudanca_do_alvo(self, alvo: str, em: str) -> None:
-        """O alvo mudou: o mês fica registrado (é assim que o motor aprende a previsão de edição)."""
-        self._q("INSERT OR IGNORE INTO motor_alvo_mudanca VALUES (?, ?, ?, ?)", (alvo, em, int(em[5:7])))
+        self._entregar("motor.alvo", {"alvo": alvo, "em": em, "mes": int(em[5:7])})
 
     def meses_do_alvo(self, alvo: str) -> list[int]:
-        return [r[0] for r in self._q("SELECT DISTINCT mes FROM motor_alvo_mudanca WHERE motor=? AND alvo=? ORDER BY mes", (alvo,))]
+        return [r[0] for r in self.con.execute("SELECT DISTINCT mes FROM motor_alvo_mudanca WHERE motor=? AND alvo=? ORDER BY mes", (self.motor, alvo))]
 
+    # ---- o que já foi entregue (a chave e o id do achado) ----
     def ja_entregue(self, chave: str) -> bool:
-        return self._q("SELECT 1 FROM motor_entregue WHERE motor=? AND chave=?", (chave,)).fetchone() is not None
+        return chave in self._entregues or self._um("SELECT 1 FROM motor_entregue WHERE motor=? AND chave=?", (chave,)) is not None
 
     def marcar_entregue(self, chave: str, em: str, achado: str | None = None, fonte: str | None = None) -> None:
-        self._q("INSERT OR IGNORE INTO motor_entregue VALUES (?,?,?,?,?)", (chave, em, achado, fonte))
+        if chave in self._entregues:
+            return
+        self._entregues.add(chave)
+        if achado and fonte:
+            self._entregue_fonte[achado] = fonte
+        self._entregar("motor.entregue", {"chave": chave, "em": em, "achado": achado, "fonte": fonte})
+
+    # ---- o rendimento de cada fonte ----
+    def _fonte(self, nome: str) -> dict[str, Any]:
+        if nome not in self._fontes:
+            self.con.row_factory = sqlite3.Row
+            r = self.con.execute("SELECT * FROM motor_fonte WHERE motor=? AND nome=?", (self.motor, nome)).fetchone()
+            self.con.row_factory = None
+            self._fontes[nome] = ({k: r[k] for k in r.keys()} if r else
+                                  {"motor": self.motor, "nome": nome, "leituras": 0, "sem_mudanca": 0, "achados": 0, "aceitos": 0, "barrados": 0,
+                                   "falhas": 0, "ultimo_erro": None, "ultima": None, "situacao": None})
+        return self._fontes[nome]
 
     def leitura(self, fonte: str, em: str, achados: int = 0, sem_mudanca: bool = False, erro: str | None = None) -> None:
-        self._q("INSERT OR IGNORE INTO motor_fonte(motor, nome) VALUES (?, ?)", (fonte,))
-        situacao = "erro" if erro else ("sem mudança" if sem_mudanca else "lida")
-        self.con.execute("UPDATE motor_fonte SET leituras=leituras+1, sem_mudanca=sem_mudanca+?, achados=achados+?, falhas=falhas+?, "
-                         "ultimo_erro=COALESCE(?, ultimo_erro), ultima=?, situacao=? WHERE motor=? AND nome=?",
-                         (int(sem_mudanca), achados, int(bool(erro)), erro, em, situacao, self.motor, fonte))
+        f = self._fonte(fonte)
+        f.update(leituras=f["leituras"] + 1, sem_mudanca=f["sem_mudanca"] + int(sem_mudanca), achados=f["achados"] + achados,
+                 falhas=f["falhas"] + int(bool(erro)), ultimo_erro=erro or f["ultimo_erro"], ultima=em,
+                 situacao="erro" if erro else ("sem mudança" if sem_mudanca else "lida"))
+        self._entregar("motor.fonte", {k: v for k, v in f.items() if k != "motor"})
 
     def retorno(self, achado: str, fonte: str | None, decisao: str, motivo: str | None, em: str) -> None:
-        if fonte is None:                                      # a fonte de onde o achado veio, guardada na entrega
-            r = self._q("SELECT fonte FROM motor_entregue WHERE motor=? AND achado=?", (achado,)).fetchone()
-            fonte = r[0] if r else None
-        novo = self._q("INSERT OR IGNORE INTO motor_retorno VALUES (?,?,?,?,?,?)", (achado, fonte, decisao, motivo, em)).rowcount
-        if novo and fonte:
-            col = "aceitos" if decisao == "aceito" else "barrados"
-            self.con.execute(f"UPDATE motor_fonte SET {col}={col}+1 WHERE motor=? AND nome=?", (self.motor, fonte))
+        if achado in self._retornos or self._um("SELECT 1 FROM motor_retorno WHERE motor=? AND achado=?", (achado,)):
+            return
+        self._retornos.add(achado)
+        if fonte is None:
+            fonte = self._entregue_fonte.get(achado)
+            if fonte is None:
+                r = self._um("SELECT fonte FROM motor_entregue WHERE motor=? AND achado=?", (achado,))
+                fonte = r[0] if r else None
+        # aceitos e barrados de cada fonte se contam pelos próprios retornos (sem contador duplicado na linha da fonte)
+        self._entregar("motor.retorno", {"achado": achado, "fonte": fonte, "decisao": decisao, "motivo": motivo, "em": em})
 
     def painel(self) -> dict:
         self.con.row_factory = sqlite3.Row
-        fontes = [{k: r[k] for k in r.keys() if k != "motor"} for r in self._q("SELECT * FROM motor_fonte WHERE motor=? ORDER BY nome")]
+        fontes = [{k: r[k] for k in r.keys() if k != "motor"} for r in self.con.execute(SQL_FONTES, (self.motor,))]
         self.con.row_factory = None
-        return {"fontes": fontes, "entregues": self._q("SELECT COUNT(*) FROM motor_entregue WHERE motor=?").fetchone()[0]}
+        n = self._um("SELECT COUNT(*) FROM motor_entregue WHERE motor=?")[0]
+        return {"fontes": fontes, "entregues": n}

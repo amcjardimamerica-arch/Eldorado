@@ -102,6 +102,8 @@ class Regencia:
                                                                  "motivo": m["motivo"], "em": agora()})
             p = Plano(passagem=plano["passagem"], janela_inicio=m["janela_inicio"], janela_fim=m["janela_fim"])
             inicio = agora()
+            if hasattr(motor, "estado"):                       # o motor entrega o que aprende ao Cérebro, pelo diário da execução
+                motor.estado.diario = self.diario
             med = medir(lambda motor=motor, p=p: list(motor.buscar(p)))
             emitir_recibo(self.diario, execucao, modulo, "regencia", med)
             lista = med.resultado or []
@@ -212,7 +214,7 @@ def _decidir(quando: datetime, motores: list[str], parametros: dict[str, Any]) -
 
 def no_acionar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
     registro = carregar_registro(parametros.get("modulos", "config/modulos.toml"))
-    esp_p = Path(parametros.get("dados", "dados")) / "especial.db"
+    esp_p = Path(parametros.get("dados", "dados")) / "biblioteca.db"   # as empresas, na Biblioteca
     especial = sqlite3.connect(f"file:{esp_p}?mode=ro", uri=True) if esp_p.exists() else None
     r = Regencia(Agenda([]), _governador(parametros, contexto.diario), registro, contexto.diario, especial=especial)
     achados: list[dict[str, Any]] = []

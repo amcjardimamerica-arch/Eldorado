@@ -62,8 +62,8 @@ def gerar(dados: str | Path, config: str | Path = "config", hoje: date | None = 
             ult = c.execute("SELECT inicio, fim, achados, erro FROM execucao_motor WHERE motor=? ORDER BY id DESC LIMIT 1", (mid,)).fetchone()
             tot = c.execute("SELECT COUNT(*), COALESCE(SUM(achados), 0) FROM execucao_motor WHERE motor=?", (mid,)).fetchone()
             try:                                                  # o estado das fontes, dentro do Cérebro (motor_fonte)
-                fontes = [dict(x) for x in c.execute("SELECT nome, leituras, achados, aceitos, barrados, falhas, ultimo_erro, ultima "
-                                                     "FROM motor_fonte WHERE motor = ? ORDER BY nome", (mid,))]
+                from ...motores.canal.estado import SQL_FONTES
+                fontes = [dict(x) for x in c.execute(SQL_FONTES, (mid,))]
             except sqlite3.Error:
                 fontes = []
             aceitos = b.execute("SELECT COUNT(*) FROM achado WHERE motor=? AND decisao='aceito'", (mid,)).fetchone()[0]
