@@ -2,10 +2,13 @@
 # copiados para eldorado/base/painel/pagina/), mas NENHUM dado do Eldorado0: os dados são gerados do sistema novo
 # (eldorado/base/painel/dados.py), a partir do banco da Biblioteca, dos motores e do estado do funcionamento; a seção sem
 # dado no sistema fica vazia. Os eventos mais recentes são aplicados antes, para o site refletir o estado de agora.
-# As gravações automáticas não acionam outros fluxos (regra do GitHub): o painel roda a cada 30 minutos e ao fim de cada
-# execução do sistema.
+# As gravações automáticas não acionam outros fluxos (regra do GitHub): o painel roda a cada alteração do código, a cada
+# 30 minutos e ao fim de cada execução do sistema.
 name: Painel
 on:
+  push:                       # cada alteração do código, das configurações ou da página republica o site na hora
+    branches: [main]
+    paths: ["eldorado/**", "config/**", "workflows/**", ".github/workflows/painel.yml"]
   workflow_run:
     workflows: ["Eldorado"]
     types: [completed]
