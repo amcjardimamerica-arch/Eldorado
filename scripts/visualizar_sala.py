@@ -65,5 +65,23 @@ with sync_playwright() as p:
         r["mapa"] = {"erro": str(e)[:300]}
     r["erros_da_pagina"] = erros
     b.close()
+# o SITE PUBLICADO (o endereço público): a sala, o mapa e os mostradores lá, e não numa cópia
+try:
+    with sync_playwright() as p:
+        b = p.chromium.launch(headless=True)
+        pg = b.new_page(viewport={"width": 1600, "height": 950})
+        pg.goto("https://amcjardimamerica-arch.github.io/Eldorado/dashboard.html?v=" + str(__import__("time").time()), wait_until="load", timeout=60000)
+        pg.evaluate("()=>document.querySelector(\"button[data-v='neural']\").click()")
+        pg.wait_for_timeout(7000)
+        pg.screenshot(path=str(SAIDA / "publicado-sala.png"))
+        r["publicado"] = pg.evaluate("""()=>({mapa: !!document.getElementById('nv-mapa'), rede: !!document.getElementById('nv-rede'),
+            faixas: document.querySelectorAll('#v-neural .faixa').length, sem_leitura: [...document.querySelectorAll('#v-neural .faixa')].filter(f=>/sem leitura/.test(f.innerText)).length,
+            indice: (document.getElementById('nv-contagens')||{}).innerText||''})""")
+        pg.evaluate("document.getElementById('nv-mapa') && document.getElementById('nv-mapa').scrollIntoView()")
+        pg.wait_for_timeout(3000)
+        pg.screenshot(path=str(SAIDA / "publicado-mapa.png"))
+        b.close()
+except Exception as e:  # noqa: BLE001
+    r["publicado"] = {"erro": str(e)[:300]}
 (SAIDA / "sala.json").write_text(json.dumps(r, ensure_ascii=False, indent=1), encoding="utf-8")
 print(json.dumps(r, ensure_ascii=False))
