@@ -75,7 +75,8 @@ try:
         pg.wait_for_timeout(7000)
         pg.screenshot(path=str(SAIDA / "publicado-sala.png"))
         r["publicado"] = pg.evaluate("""()=>({mapa: !!document.getElementById('nv-mapa'), rede: !!document.getElementById('nv-rede'),
-            faixas: document.querySelectorAll('#v-neural .faixa').length, sem_leitura: [...document.querySelectorAll('#v-neural .faixa')].filter(f=>/sem leitura/.test(f.innerText)).length,
+            faixas: document.querySelectorAll('#v-neural .faixa').length,
+            sem_leitura: [...document.querySelectorAll('#v-neural .faixa')].filter(f=>/sem leitura/.test(f.innerText)).length,
             indice: (document.getElementById('nv-contagens')||{}).innerText||''})""")
         pg.evaluate("document.getElementById('nv-mapa') && document.getElementById('nv-mapa').scrollIntoView()")
         pg.wait_for_timeout(3000)

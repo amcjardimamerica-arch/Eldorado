@@ -69,10 +69,11 @@ def calcular(con: sqlite3.Connection, diario, hoje: date | None = None) -> dict[
         motores[lid].add(m)
     feitas = 0
     agora = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    atuais = {r[0]: (r[1], r[2], r[3]) for r in con.execute("SELECT livro_id, proxima_abertura_prevista, alerta_em, confianca FROM previsao")}
     for lid in sorted(alvo):
         p = prever(ab.get(lid, []), hoje)
-        if p is None:
-            continue
+        if p is None or atuais.get(lid) == (p["proxima_abertura_prevista"], p["alerta_em"], p["confianca"]):
+            continue                                      # só grava quando a previsão muda (antes: a mesma, a cada passagem)
         diario.emitir("previsao.calculada", "analise", {"livro_id": lid, "motores_que_encontraram": ", ".join(sorted(motores.get(lid, []))),
                                                         "datas_encontrado": ", ".join(d.isoformat() for d in ab.get(lid, [])),
                                                         "proxima_abertura_prevista": p["proxima_abertura_prevista"], "alerta_em": p["alerta_em"],

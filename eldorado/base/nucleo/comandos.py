@@ -359,9 +359,13 @@ def otimizar_ia(se_antigo_dias: int = DIAS_OTIMIZAR):
 
     from ...motores.pilotos import otimizacao as O
     from ..nucleo.ia import IA
-    if O.ARQUIVO.exists() and time.time() - O.ARQUIVO.stat().st_mtime < se_antigo_dias * 86400:
-        typer.echo("os exemplos estão em dia")
-        return
+    marca = O.ARQUIVO.with_name("otimizacao_tentada.txt")       # a tentativa registrada: uma vez por semana, termine ou não
+    for f in (O.ARQUIVO, marca):
+        if f.exists() and time.time() - f.stat().st_mtime < se_antigo_dias * 86400:
+            typer.echo("a otimização está em dia (feita ou tentada nesta semana)")
+            return
+    marca.parent.mkdir(parents=True, exist_ok=True)
+    marca.write_text(time.strftime("%Y-%m-%d %H:%M"), encoding="utf-8")
     ia = IA()
     if not ia.disponivel():
         typer.echo(f"o modelo local não está disponível em {ia.url}: a otimização fica para a próxima")
@@ -421,6 +425,11 @@ def travas():
     import subprocess
     import sys
     reg = json.loads(Path("config/regras_titular.json").read_text(encoding="utf-8"))
+    try:
+        import pytest  # noqa: F401
+    except ImportError:                               # a ferramenta do portão ausente: alarme, mas o sistema não para (R18)
+        typer.echo("::error::o portão não pôde rodar: o pytest não está instalado (o grupo 'testes'); o ciclo segue, sem a conferência das regras")
+        return
     alvos = sorted({t for r in reg["regras"] for t in r.get("travas", [])}) + ["testes/test_regras_titular.py"]
     r = subprocess.run([sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider", "-W", "ignore", *alvos], capture_output=True, text=True)
     falhas = [linha for linha in r.stdout.splitlines() if linha.startswith("FAILED")]

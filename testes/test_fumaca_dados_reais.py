@@ -19,3 +19,12 @@ def test_nenhum_codigo_pede_o_id_na_configuracao():
     erros = [f"{p}:{i}" for p in Path("eldorado").rglob("*.py") for i, linha in enumerate(p.read_text(encoding="utf-8").splitlines(), 1)
              if re.search(r"\bcfg\.id\b", linha)]
     assert not erros, erros
+
+
+def test_o_portao_roda_na_producao():
+    """24/10/2026: o portão falhou em todo ciclo por 5 horas porque a produção não instalava o pytest (o grupo 'testes')."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("instalar", "scripts/instalar_bibliotecas.py")
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    assert "testes" in m.NUCLEO

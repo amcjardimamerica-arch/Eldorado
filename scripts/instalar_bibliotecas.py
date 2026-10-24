@@ -6,7 +6,7 @@ import sys
 import time
 import tomllib
 
-NUCLEO = ["leitura", "acesso", "descoberta", "metabusca", "navegador"]
+NUCLEO = ["leitura", "acesso", "descoberta", "metabusca", "navegador", "testes"]   # testes: o portão das regras precisa do pytest
 GRUPOS = ["ocr", "universal", "idioma", "leitura_completa", "base", "banco", "motores"]
 
 
@@ -26,7 +26,7 @@ def main() -> int:
     extras = tomllib.load(open("pyproject.toml", "rb"))["project"]["optional-dependencies"]
     t = time.time()
     if not instalar(["-e", f".[{','.join(NUCLEO)}]"], 900):
-        print("::error::o núcleo do Eldorado não instalou (leitura, acesso, descoberta, metabusca, navegador)")
+        print("::error::o núcleo do Eldorado não instalou (leitura, acesso, descoberta, metabusca, navegador, testes)")
         return 1
     tempos = [f"núcleo={int(time.time() - t)}s"]
     falharam = []
