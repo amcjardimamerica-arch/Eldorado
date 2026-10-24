@@ -1,0 +1,29 @@
+name: Visualizar a sala de controle
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: gravar-paginas
+jobs:
+  visualizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -e . patchright==1.63.0 && patchright install chromium
+      - name: Os eventos mais recentes no banco
+        run: eldorado aplicar
+      - name: Gerar o site
+        run: eldorado site --saida _site
+      - name: Abrir, fotografar e medir
+        run: python scripts/visualizar_sala.py
+      - name: Guardar no repositório
+        run: |
+          git config user.name "Eldorado"; git config user.email "eldorado@users.noreply.github.com"
+          git add testes/capturas
+          git diff --cached --quiet && exit 0
+          git commit -q -m "Capturas da sala de controle"
+          for i in 1 2 3; do git pull -q --rebase --autostash origin main && git push -q origin main && exit 0; sleep $((i * 10)); done

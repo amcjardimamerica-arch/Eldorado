@@ -1279,7 +1279,18 @@ box-sizing:border-box;}
   font-family:"Saira Semi Condensed","Saira","Arial Narrow",sans-serif;color:var(--estrela)}
 #v-neural .obs{position:relative;width:calc(100vw - var(--sbw,0px));margin-left:calc(50% - 50vw + var(--sbw,0px) / 2);background:radial-gradient(1400px 900px at 78% 8%,#2A2470 0,transparent 60%),
   radial-gradient(1200px 1000px at 8% 52%,#0F3A4A 0,transparent 58%),radial-gradient(1000px 800px at 70% 96%,#3A1E5E 0,transparent 60%),linear-gradient(180deg,var(--ceu0),var(--ceu1) 55%,var(--ceu0))}
-#v-neural canvas.ceu{position:sticky;top:0;display:block;width:100%;height:100vh;margin-bottom:-100vh;z-index:0;pointer-events:none}
+#v-neural canvas.ceu{position:fixed;top:0;left:0;display:block;width:100vw;height:100vh;z-index:0;pointer-events:none}
+/* 24/10/2026 (titular): o fundo fixo ao rolar (sem paralaxe); a rede (as linhas entre as etapas, as constelações e as
+   estrelas dos motores) presa ao conteúdo, numa camada vetorial remedida quando o conteúdo muda: sempre no lugar */
+#v-neural svg.rede{position:absolute;top:0;left:0;width:100%;z-index:0;pointer-events:none;overflow:visible}
+#v-neural svg.rede .cons line{stroke:rgba(155,140,255,.30);stroke-width:.9}
+#v-neural svg.rede .cons circle{fill:#EAF2FF;opacity:.8}
+#v-neural svg.rede .cons.acesa line{stroke:rgba(94,230,200,.9);stroke-width:1.6}
+#v-neural svg.rede .cons.acesa circle{opacity:1}
+#v-neural svg.rede .vermelha{animation:nvpisca 1.3s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+#v-neural svg.rede .ambar{animation:nvpisca 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes nvpisca{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.72)}}
+@media (prefers-reduced-motion: reduce){#v-neural svg.rede .vermelha,#v-neural svg.rede .ambar{animation:none}}
 #v-neural .palco{position:relative;z-index:1;padding:42px 3.2vw 70px}
 #v-neural .mx,#nv-portal .mx{font-family:"Michroma","Saira",sans-serif;letter-spacing:.02em}
 #v-neural .faint,#nv-portal .faint{color:var(--nevoa)}
@@ -1400,6 +1411,7 @@ box-sizing:border-box;}
 <div class="obs" id="nv-obs">
   <canvas class="ceu" id="nv-ceu" aria-hidden="true"></canvas>
   <div class="palco" id="nv-palco">
+  <svg class="rede" id="nv-rede" aria-hidden="true"></svg>
     <div class="topo">
       <div class="titulo"><h2>Sala de controle</h2>
         <p>Cada estrela deste céu é um motor do Eldorado; cada constelação, uma etapa da rede neural. Siga o sinal de cima para baixo e clique em qualquer etapa, mostrador ou estrela para abrir o detalhe.</p>
@@ -1541,13 +1553,13 @@ box-sizing:border-box;}
       const prox=el.nextElementSibling; if(prox&&prox.classList.contains("det-caixa")){ prox.remove(); return; }
       H.querySelectorAll(".det-caixa").forEach(c=>c.remove()); const [tipo,...r]=el.dataset.det.split("|"); const c=document.createElement("div"); c.className="det-caixa"; c.innerHTML=detalheItem(tipo,r.join("|"));
       el.insertAdjacentElement("afterend",c); }; }
-  window.nvVisao=function(origem){ const H=$("nv-holo"),V=$("nv-veu"); foco=null; const ord=["vermelho","amarelo","cinza","verde"];
+  window.nvVisao=function(origem){ const H=$("nv-holo"),V=$("nv-veu"); foco=null; document.querySelectorAll("#nv-rede g.cons.acesa").forEach(g=>g.classList.remove("acesa")); const ord=["vermelho","amarelo","cinza","verde"];
     H.innerHTML=`<div class="conteudo"><button class="fechar" onclick="nvFecha()">Fechar</button><div class="faint" style="font-size:13px">observatório</div><h3>Índice de saúde do sistema: ${n(SC.indice_saude)}</h3>
       <p style="color:#C9CFEA;margin:0;max-width:80ch">Cada instrumento conta 100 quando normal, 60 em atenção e 15 em alarme; o índice é a média. Clique num instrumento para abrir a etapa dele.</p>
       ${ord.map(k=>{const L=(SC.instrumentos||[]).filter(x=>x.estado===k); return L.length?`<div class="bloco"><h4><span class="luz ${k}"></span>&nbsp; ${EST[k]} · ${L.length}</h4><div class="lista">${L.map(x=>`<div onclick="nvHolo('${(ETAPAS.find(t=>t.ids.includes(x.id))||{id:"farol"}).id}',this,'${x.id}')" style="cursor:pointer"><span>${e(x.nome)}</span><b>${n(x.valor)} ${e(x.unidade||"")}</b></div>`).join("")}</div></div>`:"";}).join("")}</div>`;
     abrirJanela(H,V,origem,null); };
   window.nvHolo=function(etId,origem,instId){
-    const et=ETAPAS.find(x=>x.id===etId); if(!et) return; const H=$("nv-holo"), V=$("nv-veu"); foco=etId;
+    const et=ETAPAS.find(x=>x.id===etId); if(!et) return; const H=$("nv-holo"), V=$("nv-veu"); foco=etId; document.querySelectorAll("#nv-rede g.cons.acesa").forEach(g=>g.classList.remove("acesa")); acenderConstelacao(etId,true);
     const L=et.ids.map(I).filter(Boolean);
     const C=CONSTELACOES[et.id];
     H.innerHTML=`<div class="conteudo"><button class="fechar" onclick="nvFecha()">Fechar</button>${C?`<div class="cabeca-const">${desenhoConst(C)}<div><span class="faint" style="font-size:12.5px">constelação desta etapa</span><br><b>${e(C.nome)}</b><br><span style="color:#C9CFEA;font-size:13.5px">${e(C.rel)}</span></div></div>`:""}<div class="faint" style="font-size:13px">etapa ${ETAPAS.indexOf(et)+1} de ${ETAPAS.length} · ${EST[pior(L)]}</div>
@@ -1569,7 +1581,7 @@ box-sizing:border-box;}
     H._tPronta=setTimeout(()=>{ if(H._sessao!==sessao) return; if(!instId) H.scrollTop=0; if(instId){const el=$("nv-i-"+instId); if(el){H.scrollTop=Math.max(0,el.offsetTop-90); el.style.borderColor="rgba(94,230,200,.7)";}} H.querySelector(".fechar").focus({preventScroll:true});},quieto?0:380);
     H._origem=origem;
   }
-  window.nvFluxo=function(i,origem){ const f=(SC.fluxos||[])[i]; if(!f) return; const H=$("nv-holo"),V=$("nv-veu"); foco=null;
+  window.nvFluxo=function(i,origem){ const f=(SC.fluxos||[])[i]; if(!f) return; const H=$("nv-holo"),V=$("nv-veu"); foco=null; document.querySelectorAll("#nv-rede g.cons.acesa").forEach(g=>g.classList.remove("acesa"));
     H.innerHTML=`<div class="conteudo"><button class="fechar" onclick="nvFecha()">Fechar</button><div class="faint" style="font-size:13px">sistema nervoso · fluxo automático</div>
       <h3>${e(f.nome)}</h3><div style="margin:8px 0 4px"><span class="luz ${luzFluxo(f)}"></span>&nbsp; última execução <b>${PT[f.conclusao||f.situacao]||e(f.situacao)}</b> · ${dm(f.quando)} · ${idade(f.idade_h)}</div>
       <div class="grade" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr))">
@@ -1584,7 +1596,7 @@ box-sizing:border-box;}
     clearTimeout(H._tPronta); const sessao=H._sessao;
     if(o&&!quieto){ H.style.transform=`translate(${o.left-innerWidth/2}px,${o.top-innerHeight/2}px) scale(${o.width/r.width},${o.height/r.height})`;
       H._tFecha=setTimeout(()=>{ if(H._sessao===sessao) H.style.display="none"; },520); } else H.style.display="none";
-    V.classList.remove("on"); foco=null; };
+    V.classList.remove("on"); foco=null; document.querySelectorAll("#nv-rede g.cons.acesa").forEach(g=>g.classList.remove("acesa")); };
   /* céu: estrelas de fundo e estrelas de dados (os motores); constelações ligam as etapas; o sinal viaja entre elas */
   const CONSTELACOES={
     regencia:{nome:"Lira",rel:"o instrumento do maestro",p:[[.50,.05,1],[.66,.14,3],[.42,.36,3],[.38,.62,3],[.60,.95,2],[.73,.70,3]],a:[[0,1],[0,2],[2,3],[3,4],[4,5],[5,2]]},
@@ -1597,8 +1609,10 @@ box-sizing:border-box;}
     externa:{nome:"Cruzeiro do Sul",rel:"a orientação final",p:[[.50,.96,1],[.45,.04,2],[.86,.46,1],[.14,.40,3],[.62,.56,3]],a:[[1,0],[2,3]]},
     farol:{nome:"Carina",rel:"Canopo guia os navegadores",p:[[.04,.30,1],[.30,.48,3],[.50,.60,2],[.86,.78,1],[.70,.40,2],[.96,.46,3],[.56,.18,3]],a:[[0,1],[1,2],[2,3],[2,4],[4,5],[4,6]]}};
   function semente(s){let h=2166136261;for(const c of String(s)){h^=c.charCodeAt(0);h=Math.imul(h,16777619);}return ()=>{h^=h<<13;h^=h>>>17;h^=h<<5;return ((h>>>0)%10000)/10000;};}
+  let FUNDO=[];
   function montarCeu(){ const P=$("nv-palco"), W=P.clientWidth, H=P.scrollHeight, rnd=semente("eldorado"); ESTRELAS=[];
-    for(let i=0;i<420;i++) ESTRELAS.push({x:rnd()*W,y:rnd()*H,r:rnd()*1.1+.2,a:rnd()*.6+.15,tw:rnd()*6.28,dado:null});
+    // o fundo: estrelas na TELA (fixas ao rolar), não no conteúdo
+    FUNDO=[]; for(let i=0;i<300;i++) FUNDO.push({x:rnd(),y:rnd(),r:rnd()*1.1+.2,a:rnd()*.6+.15,tw:rnd()*6.28});
     const faixas=[...document.querySelectorAll("#v-neural .faixa")], top=P.getBoundingClientRect().top;
     const pl=P.getBoundingClientRect().left;
     NOS=faixas.map((f,k)=>{const r=f.getBoundingClientRect(), xs=[.18,.82]; return {x:r.left-pl+r.width*xs[k%2],xin:r.left-pl+r.width*xs[(k+1)%2],y:r.top-top+r.height/2,y0:r.top-top,y1:r.bottom-top,id:f.dataset.et};});
@@ -1611,7 +1625,26 @@ box-sizing:border-box;}
       (SC.anunciadores||[]).filter(a=>a.id==="es_vigilancia_resumo"&&et.id==="biblioteca").forEach(a=>erros.push({nome:a.nome,motivo:a.motivo,nivel:a.nivel}));
       erros.forEach((er,k)=>{ const g=semente(et.id+":"+k+":"+er.nome); ESTRELAS.push({x:W*.05+g()*W*.9,y:no.y0+14+g()*(no.y1-no.y0-28),r:2.4,a:1,tw:g()*6.28,erro:er}); }); });
     NOS.forEach((no,k)=>{ const C=CONSTELACOES[no.id]; if(!C){no.cons=[];no.arestas=[];return;} const ah=no.y1-no.y0-34, aw=Math.min(W*.30,ah*1.9), x0=W*(k%2?.40:.36)-aw/2+W*.08;
-      no.cons=C.p.map(([x,y,m])=>({x:x0+x*aw,y:no.y0+17+y*ah,m})); no.arestas=C.a; no.nome=C.nome; no.rel=C.rel; no.lx=x0; no.ly=no.y0+14; }); }
+      no.cons=C.p.map(([x,y,m])=>({x:x0+x*aw,y:no.y0+17+y*ah,m})); no.arestas=C.a; no.nome=C.nome; no.rel=C.rel; no.lx=x0; no.ly=no.y0+14; });
+    redeSVG(W,H); }
+  // a rede, presa ao conteúdo: as linhas entre as etapas (com o sinal correndo), as constelações e as estrelas de dado
+  function redeSVG(W,H){ const sv=$("nv-rede"); if(!sv) return; sv.setAttribute("height",H); sv.style.height=H+"px"; sv.setAttribute("viewBox",`0 0 ${W} ${H}`);
+    const f=v=>v.toFixed(1); let o=`<defs><radialGradient id="nvbr"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".18" stop-color="#EAF2FF"/><stop offset="1" stop-color="#EAF2FF" stop-opacity="0"/></radialGradient>
+      <radialGradient id="nvvm"><stop offset="0" stop-color="#fff"/><stop offset=".2" stop-color="#FF3D4F"/><stop offset="1" stop-color="#FF3D4F" stop-opacity="0"/></radialGradient>
+      <radialGradient id="nvam"><stop offset="0" stop-color="#fff"/><stop offset=".2" stop-color="#FFC266"/><stop offset="1" stop-color="#FFC266" stop-opacity="0"/></radialGradient>
+      <radialGradient id="nvsn"><stop offset="0" stop-color="#5EE6C8" stop-opacity=".95"/><stop offset="1" stop-color="#5EE6C8" stop-opacity="0"/></radialGradient></defs>`;
+    for(let i=0;i<NOS.length-1;i++){ const A=NOS[i],B=NOS[i+1], ay=A.y1+2, by=B.y0-2, c1=ay+(by-ay)*.95, c2=by-(by-ay)*.95, d=`M${f(A.x)},${f(ay)} C${f(A.x)},${f(c1)} ${f(B.x)},${f(c2)} ${f(B.x)},${f(by)}`;
+      o+=`<path d="${d}" fill="none" stroke="rgba(130,180,240,.8)" stroke-width="2"/>`;
+      for(const [px,py] of [[A.x,ay],[B.x,by]]) o+=`<circle cx="${f(px)}" cy="${f(py)}" r="3.6" fill="#EAF2FF"/><circle cx="${f(px)}" cy="${f(py)}" r="9" fill="none" stroke="rgba(94,230,200,.55)" stroke-width="1"/>`;
+      if(!quieto) for(let k=0;k<3;k++) o+=`<circle r="9" fill="url(#nvsn)"><animateMotion dur="2.2s" begin="${(-(k/3+i*.11)*2.2).toFixed(2)}s" repeatCount="indefinite" path="${d}"/></circle>`; }
+    for(const no of NOS){ if(!no.cons||!no.cons.length) continue; o+=`<g class="cons${foco===no.id||no.hover?" acesa":""}" data-et="${no.id}">`;
+      (no.arestas||[]).forEach(([a,b])=>{const P1=no.cons[a],P2=no.cons[b]; if(P1&&P2) o+=`<line x1="${f(P1.x)}" y1="${f(P1.y)}" x2="${f(P2.x)}" y2="${f(P2.y)}"/>`;});
+      no.cons.forEach(p=>{ const r=(p.m===1?3.4:p.m===2?2.5:1.8); o+=`<circle cx="${f(p.x)}" cy="${f(p.y)}" r="${(r*1.6).toFixed(1)}" fill="url(#nvbr)" style="fill:url(#nvbr)"/>`; }); o+=`</g>`; }
+    for(const s of ESTRELAS){ if(s.erro&&s.erro.nivel==="amarelo") o+=`<circle class="ambar" cx="${f(s.x)}" cy="${f(s.y)}" r="11" fill="url(#nvam)"/>`;
+      else if((s.erro&&s.erro.nivel==="vermelho")||(s.dado&&s.dado.luz==="vermelho")) o+=`<g class="vermelha"><circle cx="${f(s.x)}" cy="${f(s.y)}" r="18" fill="url(#nvvm)"/><path d="M${f(s.x-16)},${f(s.y)}H${f(s.x+16)}M${f(s.x)},${f(s.y-16)}V${f(s.y+16)}" stroke="rgba(255,120,130,.8)" stroke-width="1"/></g>`;
+      else if(s.dado) o+=`<circle cx="${f(s.x)}" cy="${f(s.y)}" r="8" fill="${s.dado.luz==="verde"?COR.verde:COR.cinza}" opacity=".55"/><circle cx="${f(s.x)}" cy="${f(s.y)}" r="2.6" fill="#EAF2FF"/>`; }
+    sv.innerHTML=o; }
+  function acenderConstelacao(id,sim){ const g=document.querySelector(`#nv-rede g.cons[data-et="${id}"]`); if(g) g.classList.toggle("acesa",!!sim); }
   // ponteiros vivos: cada luz oscila em torno do valor (ruído suave de duas frequências), só nos mostradores visíveis
   const VIS_G=new Set(); const obsG=new IntersectionObserver(es=>es.forEach(en=>{ en.target.querySelectorAll(".vivo").forEach(g=>en.isIntersecting?VIS_G.add(g):VIS_G.delete(g)); }));
   function observarVivos(raiz){ raiz.querySelectorAll("svg").forEach(s=>{ if(s.querySelector(".vivo")) obsG.observe(s); }); }
@@ -1623,38 +1656,20 @@ box-sizing:border-box;}
   const SPR={}; function sprite(nome,cor,r){ if(SPR[nome]) return SPR[nome]; const c=document.createElement("canvas"); c.width=c.height=r*2; const g=c.getContext("2d");
     const hg=g.createRadialGradient(r,r,0,r,r,r); hg.addColorStop(0,"rgba(255,255,255,.95)"); hg.addColorStop(.18,cor); hg.addColorStop(1,"rgba(0,0,0,0)"); g.fillStyle=hg; g.beginPath(); g.arc(r,r,r,0,6.28); g.fill(); return SPR[nome]=c; }
   let ultimoQuadro=0;
-  function desenharCeu(t){ if(ativa&&t-ultimoQuadro<32){ requestAnimationFrame(desenharCeu); return; } ultimoQuadro=t;   // 30 quadros por segundo bastam
-    vivos(t); const cv=$("nv-ceu"), P=$("nv-palco"); if(!cv||!ativa) return; const dpr=Math.min(1.5,devicePixelRatio||1), W=cv.clientWidth, Hh=cv.clientHeight;
-    if(cv.width!==Math.round(W*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(Hh*dpr);} const g=cv.getContext("2d"); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,Hh);
-    const off=-P.getBoundingClientRect().top; // o céu acompanha o conteúdo: sem paralaxe
-    for(const s of ESTRELAS){ const y=s.y-off; if(y<-10||y>Hh+10) continue; const tw=quieto?1:(.75+.25*Math.sin(t/900+s.tw));
-      if(s.erro&&s.erro.nivel==="amarelo"){ const sp=sprite("a","rgba(255,194,102,.95)",18); g.globalAlpha=.95; g.drawImage(sp,s.x-11,y-11,22,22); g.globalAlpha=1; }
-      else if((s.erro&&s.erro.nivel==="vermelho")||(s.dado&&s.dado.luz==="vermelho")){ // motor em falha: estrela vermelha cintilante, com raios (o mesmo padrão das luzes do painel)
-        const ci=quieto?1:(.62+.38*Math.abs(Math.sin(t/260+s.tw)*Math.sin(t/610+s.tw*2))+.18*Math.sin(t/90+s.tw)), R=10*ci, sp=sprite("v","rgba(255,61,79,.95)",24);
-        g.globalAlpha=1; g.drawImage(sp,s.x-R*1.8,y-R*1.8,R*3.6,R*3.6);
-        g.strokeStyle=`rgba(255,120,130,${(.35+.5*ci).toFixed(2)})`; g.lineWidth=1; g.beginPath(); g.moveTo(s.x-R*1.6,y); g.lineTo(s.x+R*1.6,y); g.moveTo(s.x,y-R*1.6); g.lineTo(s.x,y+R*1.6); g.stroke(); }
-      else if(s.dado){ const sp=sprite(s.dado.luz==="verde"?"g":"c",s.dado.luz==="verde"?COR.verde:COR.cinza,16); g.globalAlpha=.85; g.drawImage(sp,s.x-8,y-8,16,16); }
-      else { g.fillStyle="#EAF2FF"; g.globalAlpha=s.a*tw; g.fillRect(s.x,y,s.r,s.r); } }
-    g.globalAlpha=1;
-    // espinha: a rede liga as etapas em sequência (inspirada no fluxograma), com o sinal correndo
-    if(NOS.length>1){ g.lineWidth=2; for(let i=0;i<NOS.length-1;i++){ const A=NOS[i],B=NOS[i+1]; const a={x:A.x},b={x:B.x}; const ay=A.y1-off+2, by=B.y0-off-2; if(Math.max(ay,by)<-50||Math.min(ay,by)>Hh+50) continue;
-        // a sinapse sai da base da etapa e entra no topo da seguinte, pelo espaço entre as faixas
-        g.strokeStyle="rgba(130,180,240,.8)";
-        g.beginPath(); g.moveTo(a.x,ay); g.bezierCurveTo(a.x,ay+(by-ay)*.95,b.x,by-(by-ay)*.95,b.x,by); g.stroke();
-        for(const [px,py] of [[a.x,ay],[b.x,by]]){ g.fillStyle="#EAF2FF"; g.beginPath(); g.arc(px,py,3.6,0,6.28); g.fill(); g.strokeStyle="rgba(94,230,200,.55)"; g.lineWidth=1; g.beginPath(); g.arc(px,py,8+(quieto?0:2*Math.sin(t/650+i)),0,6.28); g.stroke(); g.lineWidth=2; }
-        if(!quieto){ for(let k=0;k<3;k++){ const u=((t/2200+k/3+i*.11)%1), mt=1-u, c1y=ay+(by-ay)*.95, c2y=by-(by-ay)*.95, x=mt*mt*mt*a.x+3*mt*mt*u*a.x+3*mt*u*u*b.x+u*u*u*b.x, y=mt*mt*mt*ay+3*mt*mt*u*c1y+3*mt*u*u*c2y+u*u*u*by;
-          g.drawImage(sprite("p","rgba(94,230,200,.85)",20),x-10,y-10,20,20); } } }
-      for(const no of NOS){ const y=no.y-off; if(y<-300||y>Hh+300) continue; const acesa=foco===no.id||no.hover; g.strokeStyle=acesa?"rgba(94,230,200,.9)":"rgba(155,140,255,.30)"; g.lineWidth=acesa?1.6:.9;
-        g.beginPath(); (no.arestas||[]).forEach(([a,b])=>{const A=no.cons[a],B=no.cons[b]; if(A&&B){g.moveTo(A.x,A.y-off); g.lineTo(B.x,B.y-off);}}); g.stroke();
-        no.cons.forEach(p=>{ const r=(p.m===1?3.4:p.m===2?2.5:1.8)*(acesa?1.25:1); g.globalAlpha=acesa?1:.8; g.drawImage(sprite("e","rgba(234,242,255,.9)",14),p.x-r*2.2,p.y-off-r*2.2,r*4.4,r*4.4); g.globalAlpha=1; });
-
-      } }
+  let ultimoFundo=0;
+  function desenharCeu(t){ if(ativa&&t-ultimoQuadro<32){ requestAnimationFrame(desenharCeu); return; } ultimoQuadro=t;
+    vivos(t); const cv=$("nv-ceu"); if(!cv||!ativa) return;
+    if(t-ultimoFundo>=120||!ultimoFundo){ ultimoFundo=t;   // o fundo fixo: só o cintilar, sem acompanhar a rolagem
+      const dpr=Math.min(1.5,devicePixelRatio||1), W=cv.clientWidth, Hh=cv.clientHeight;
+      if(cv.width!==Math.round(W*dpr)||cv.height!==Math.round(Hh*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(Hh*dpr);}
+      const g=cv.getContext("2d"); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,Hh); g.fillStyle="#EAF2FF";
+      for(const s of FUNDO){ g.globalAlpha=s.a*(quieto?1:(.75+.25*Math.sin(t/900+s.tw))); g.fillRect(s.x*W,s.y*Hh,s.r,s.r); } g.globalAlpha=1; }
     requestAnimationFrame(desenharCeu); }
   function interacoes(){ const P=$("nv-palco"), dica=$("nv-dica");
     document.querySelectorAll("#v-neural .faixa").forEach(f=>{ const no=()=>NOS.find(x=>x.id===f.dataset.et);
       // página estática (titular, 11/10): só a constelação da etapa acende com o mouse
-      f.addEventListener("pointerenter",()=>{const k=no(); if(k) k.hover=true;});
-      f.addEventListener("pointerleave",()=>{const k=no(); if(k) k.hover=false;}); });
+      f.addEventListener("pointerenter",()=>{const k=no(); if(k){k.hover=true; acenderConstelacao(k.id,true);}});
+      f.addEventListener("pointerleave",()=>{const k=no(); if(k){k.hover=false; acenderConstelacao(k.id,false);}}); });
     // estrela de dado: passar o mouse diz qual motor é; clicar abre a coleta
     P.addEventListener("pointermove",ev=>{ const sobreVidro=!!ev.target.closest(".vidro"); const pr=P.getBoundingClientRect(), x=ev.clientX-pr.left, y=ev.clientY-pr.top;
       // sinapse entre as faixas: o nó de saída ou de entrada diz de qual etapa para qual
@@ -1675,6 +1690,7 @@ box-sizing:border-box;}
     const vis=new IntersectionObserver(es=>{ const v=es[0].isIntersecting&&!document.hidden; if(v&&!ativa){ativa=true;requestAnimationFrame(desenharCeu);} else if(!v) ativa=false; });
     vis.observe($("nv-obs")); document.addEventListener("visibilitychange",()=>{ if(document.hidden) ativa=false; else if(!$("v-neural").classList.contains("oculto")){ativa=true;requestAnimationFrame(desenharCeu);} });
     addEventListener("resize",()=>montarCeu());
+    let espera=null; new ResizeObserver(()=>{ clearTimeout(espera); espera=setTimeout(()=>{ if(SC) montarCeu(); },150); }).observe($("nv-palco"));
   }
   function barraRolagem(){ document.documentElement.style.setProperty("--sbw",(innerWidth-document.documentElement.clientWidth)+"px"); }
   addEventListener("resize",barraRolagem);
