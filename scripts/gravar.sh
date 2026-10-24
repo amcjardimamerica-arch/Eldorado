@@ -7,6 +7,7 @@ git config user.name "Eldorado"
 git config user.email "eldorado@users.noreply.github.com"
 git add eventos/
 [ -d verificacao ] && git add verificacao/      # os lotes ao Chrome e os vereditos importados
+[ -d dados/ia ] && git add dados/ia/            # os exemplos da otimização e a marca da tentativa (pequenos): ela roda só uma vez por semana
 # a consolidação dos bancos (R08): as REMOÇÕES dos bancos paralelos entram já (são pequenas), sem esperar o instantâneo diário
 git ls-files dados/motores dados/especial.db 2>/dev/null | while read -r f; do [ -e "$f" ] || git rm -q --cached "$f"; done
 ultimo=$(git log -1 --format=%ct -- dados/ 2>/dev/null || echo 0)
