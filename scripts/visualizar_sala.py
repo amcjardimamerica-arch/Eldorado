@@ -18,26 +18,38 @@ with sync_playwright() as p:
     pg = b.new_page(viewport={"width": 1600, "height": 950})
     erros = []
     pg.on("pageerror", lambda e: erros.append(str(e)[:300]))
-    pg.goto("http://127.0.0.1:8765/dashboard.html", wait_until="networkidle")
-    pg.evaluate("()=>{ if(window.modulo) modulo('eldorado'); mostra('neural'); }")
+    pg.goto("http://127.0.0.1:8765/dashboard.html", wait_until="load", timeout=60000)
+    try:
+        pg.evaluate("()=>{ if(window.modulo) modulo('eldorado'); mostra('neural'); }")
+    except Exception as e:  # noqa: BLE001
+        r["erro_ao_abrir"] = str(e)[:300]
     pg.wait_for_timeout(6000)
     for i, y in enumerate((0, 1400, 2800)):
         pg.evaluate(f"window.scrollTo(0,{y})")
         pg.wait_for_timeout(1200)
         pg.screenshot(path=str(SAIDA / f"sala-{i + 1}.png"))
-    r["medida"] = pg.evaluate("""()=>new Promise(ok=>{ const q=[]; let ant=performance.now(), y=0;
-      function passo(t){ q.push(t-ant); ant=t; y+=40; window.scrollTo(0,y); if(q.length<120) requestAnimationFrame(passo);
-        else { q.sort((a,b)=>a-b); ok({quadros:q.length, mediana_ms:+q[60].toFixed(1), p95_ms:+q[114].toFixed(1)}); } }
-      requestAnimationFrame(passo); })""")
-    r["rede"] = pg.evaluate("""()=>{ const s=document.getElementById('nv-rede'); const c=document.getElementById('nv-ceu');
-      return {linhas: s? s.querySelectorAll('path').length:0, constelacoes: s? s.querySelectorAll('g.cons').length:0,
-              estrelas_vermelhas: s? s.querySelectorAll('.vermelha').length:0, sinais: s? s.querySelectorAll('animateMotion').length:0,
-              fundo: c? getComputedStyle(c).position:null, faixas: document.querySelectorAll('#v-neural .faixa').length}; }""")
+    try:
+        r["medida"] = pg.evaluate("""()=>new Promise(ok=>{ const q=[]; let ant=performance.now(), y=0;
+          function passo(t){ q.push(t-ant); ant=t; y+=40; window.scrollTo(0,y); if(q.length<120) requestAnimationFrame(passo);
+            else { q.sort((a,b)=>a-b); ok({quadros:q.length, mediana_ms:+q[60].toFixed(1), p95_ms:+q[114].toFixed(1)}); } }
+          requestAnimationFrame(passo); })""")
+    except Exception as e:  # noqa: BLE001
+        r["medida"] = {"erro": str(e)[:300]}
+    try:
+        r["rede"] = pg.evaluate("""()=>{ const s=document.getElementById('nv-rede'); const c=document.getElementById('nv-ceu');
+          return {linhas: s? s.querySelectorAll('path').length:0, constelacoes: s? s.querySelectorAll('g.cons').length:0,
+                  estrelas_vermelhas: s? s.querySelectorAll('.vermelha').length:0, sinais: s? s.querySelectorAll('animateMotion').length:0,
+                  fundo: c? getComputedStyle(c).position:null, faixas: document.querySelectorAll('#v-neural .faixa').length}; }""")
+    except Exception as e:  # noqa: BLE001
+        r["rede"] = {"erro": str(e)[:300]}
     # as linhas no lugar: a ponta de cada sinapse tem de estar na borda da faixa (até 6 px)
-    r["alinhamento"] = pg.evaluate("""()=>{ const P=document.getElementById('nv-palco'), pt=P.getBoundingClientRect().top;
-      const F=[...document.querySelectorAll('#v-neural .faixa')].map(f=>{const q=f.getBoundingClientRect(); return [q.top-pt,q.bottom-pt];});
-      const L=[...document.querySelectorAll('#nv-rede > path')].map(p=>p.getAttribute('d').match(/-?[\\d.]+/g).map(Number));
-      return L.map((n,i)=>F[i]&&F[i+1]? Math.max(Math.abs(n[1]-(F[i][1]+2)), Math.abs(n[7]-(F[i+1][0]-2))):null); }""")
+    try:
+        r["alinhamento"] = pg.evaluate("""()=>{ const P=document.getElementById('nv-palco'), pt=P.getBoundingClientRect().top;
+          const F=[...document.querySelectorAll('#v-neural .faixa')].map(f=>{const q=f.getBoundingClientRect(); return [q.top-pt,q.bottom-pt];});
+          const L=[...document.querySelectorAll('#nv-rede > path')].map(p=>p.getAttribute('d').match(/-?[\\d.]+/g).map(Number));
+          return L.map((n,i)=>F[i]&&F[i+1]? Math.max(Math.abs(n[1]-(F[i][1]+2)), Math.abs(n[7]-(F[i+1][0]-2))):null); }""")
+    except Exception as e:  # noqa: BLE001
+        r["alinhamento"] = {"erro": str(e)[:300]}
     r["erros_da_pagina"] = erros
     b.close()
 (SAIDA / "sala.json").write_text(json.dumps(r, ensure_ascii=False, indent=1), encoding="utf-8")

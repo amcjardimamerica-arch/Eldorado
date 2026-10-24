@@ -143,7 +143,7 @@ class Executor:
                 if espera:
                     self.dormir(espera)
         desvio = self.d.saidas(no.id, "erro")
-        item_erro = [{"erro": ultimo_erro, "no": no.id, "itens": itens}]
+        item_erro = [{"erro": ultimo_erro, "no": no.id, "itens": itens, "arquivos_do_erro": getattr(self, "_arquivos_do_erro", [])}]
         if desvio:
             estado.registrar_passo(diario, no.id, "desviado", itens, item_erro)
             return
@@ -160,6 +160,7 @@ class Executor:
             return saida
         m = medir(chamada, medir_memoria=self.medir_memoria)
         emitir_recibo(diario, ctx.execucao, no.tipo, no.id, m)
+        self._arquivos_do_erro = list(m.arquivos_do_erro)
         return m.ok, (m.resultado or []), m.erro
 
     @staticmethod

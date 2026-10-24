@@ -21,6 +21,7 @@ class Medida:
     duracao_ms: int
     cpu_ms: int
     memoria_pico_kb: int | None
+    arquivos_do_erro: tuple[str, ...] = ()   # os arquivos do sistema no rastro do erro (o ponto vermelho do mapa dos arquivos)
 
 
 def medir(fn: Callable[..., Any], *args: Any, medir_memoria: bool = True, **kwargs: Any) -> Medida:
@@ -31,11 +32,16 @@ def medir(fn: Callable[..., Any], *args: Any, medir_memoria: bool = True, **kwar
             tracemalloc.start()
         tracemalloc.reset_peak()
     t0, c0 = time.perf_counter(), time.process_time()
-    ok, resultado, erro = True, None, ""
+    ok, resultado, erro, arquivos = True, None, "", ()
     try:
         resultado = fn(*args, **kwargs)
     except Exception as e:  # noqa: BLE001 — a falha é registrada no recibo; quem chamou decide o que fazer
         ok, erro = False, f"{type(e).__name__}: {e}"
+        import traceback
+        rastro = [f.filename.replace("\\", "/") for f in traceback.extract_tb(e.__traceback__)]
+        import re
+        achados = (re.search(r"(eldorado/(?:base|motores|banco)/[^\s]+\.py)$", r) for r in rastro if "/site-packages/" not in r)
+        arquivos = tuple(dict.fromkeys(a.group(1) for a in achados if a and not a.group(1).endswith("nucleo/recibo.py")))
     duracao = int((time.perf_counter() - t0) * 1000)
     cpu = int((time.process_time() - c0) * 1000)
     pico = None
@@ -43,7 +49,7 @@ def medir(fn: Callable[..., Any], *args: Any, medir_memoria: bool = True, **kwar
         pico = tracemalloc.get_traced_memory()[1] // 1024
         if rastreando:
             tracemalloc.stop()
-    return Medida(ok, resultado, erro, duracao, cpu, pico)
+    return Medida(ok, resultado, erro, duracao, cpu, pico, arquivos if not ok else ())
 
 
 def emitir_recibo(diario: Diario, execucao: str | None, modulo: str, chamado_por: str, m: Medida) -> None:
