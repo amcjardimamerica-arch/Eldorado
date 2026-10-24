@@ -26,7 +26,8 @@ def treinar(xs: list[dict[str, float]], ys: list[bool]) -> Lote | None:
     from sklearn.model_selection import TimeSeriesSplit
     from sklearn.pipeline import make_pipeline
     # esparso e linear: rápido o bastante para reaprender a cada batimento (as árvores densas levavam 160 s com 3.296 casos)
-    pipe = make_pipeline(DictVectorizer(sparse=True), LogisticRegression(C=2.0, max_iter=400, class_weight="balanced", solver="liblinear"))
+    pipe = make_pipeline(DictVectorizer(sparse=True), LogisticRegression(C=2.0, max_iter=600, class_weight="balanced", solver="lbfgs"))
+    # lbfgs: o liblinear recusa as matrizes esparsas com índices de 64 bits que os dados reais produzem (24/10/2026)
     # em ordem cronológica (os casos chegam ordenados): treina com o passado e testa no futuro, em janelas, a mesma condição
     # em que o contínuo é medido; embaralhar deixaria o lote ver o futuro e o favoreceria injustamente
     import numpy as np

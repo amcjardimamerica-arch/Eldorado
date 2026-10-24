@@ -635,7 +635,7 @@ class MotorCanal(Motor):
             self.cfg = original
         if a is None or not a.documento:
             return None
-        return msgspec.structs.replace(a, id=f"{self.cfg.id}-pesquisa-{livro['id']}-{_agora()[:10]}",
+        return msgspec.structs.replace(a, id=f"{self.cfg.motor.id}-pesquisa-{livro['id']}-{_agora()[:10]}",
                                        dados={**(a.dados or {}), "livro_id": livro["id"], "origem": "pesquisa focada pedida pela rede neural"})
 
     def _seguir_oficial(self, pista: Pista) -> tuple[str, str, dict] | None:

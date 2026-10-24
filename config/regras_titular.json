@@ -179,6 +179,17 @@
     "testes/test_arquitetura_bancos.py::test_o_motor_nao_escreve_banco",
     "testes/test_eventos.py::test_tipo_fora_do_catalogo_e_recusado"
    ]
+  },
+  {
+   "id": "R18",
+   "data": "2026-10-24",
+   "regra": "O sistema não pode parar: as passagens rodam sobre os dados reais sem erro (testes de fumaça com o banco real no portão; o defeito que só aparece com os dados reais não pode chegar à produção).",
+   "porque": "Em 24/10/2026, dois defeitos (o id do motor e o treino do lote) derrubaram todas as passagens desde a meia-noite; os testes usavam bancos pequenos.",
+   "onde": "testes/test_fumaca_dados_reais.py; o portão (eldorado travas)",
+   "travas": [
+    "testes/test_fumaca_dados_reais.py::test_o_cerebro_treina_com_o_banco_real",
+    "testes/test_fumaca_dados_reais.py::test_nenhum_codigo_pede_o_id_na_configuracao"
+   ]
   }
  ]
 }
