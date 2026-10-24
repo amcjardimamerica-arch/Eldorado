@@ -97,7 +97,7 @@ def missoes(dados: str | Path, biblioteca: sqlite3.Connection, escada, ociosidad
     n, achados, inicio = (dose(rec) if ociosidade else 1), [], time.monotonic()
     feitas = []
     for _ in range(n):
-        if time.monotonic() - inicio > orcamento_s:
+        if time.monotonic() - inicio >= orcamento_s:
             break
         m = espiao.missao()
         feitas.append({k: v for k, v in m.items() if k != "achados"} | {"achados": len(m["achados"])})

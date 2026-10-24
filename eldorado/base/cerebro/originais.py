@@ -34,7 +34,7 @@ def vigiar(con: sqlite3.Connection, registro, orcamento_s: float = 120, diario=N
     inicio, achados, conta = time.monotonic(), [], {"livros": 0, "novidades": 0, "sem_motor": 0}
     vistos: set[tuple[str, str]] = set()
     for lv in livros_com_origem(con):
-        if time.monotonic() - inicio > orcamento_s:
+        if time.monotonic() - inicio >= orcamento_s:
             break
         dominio = (lv["link_oficial"].split("//", 1)[-1].split("/", 1)[0])
         motores = [m for m in motores_do_livro(con, lv["id"]) if m in registro.ids() and hasattr(registro.obter(m), "vigiar_original")]

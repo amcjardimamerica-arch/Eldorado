@@ -432,11 +432,14 @@ def travas():
         return
     alvos = sorted({t for r in reg["regras"] for t in r.get("travas", [])}) + ["testes/test_regras_titular.py"]
     r = subprocess.run([sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider", "-W", "ignore", *alvos], capture_output=True, text=True)
-    falhas = [linha for linha in r.stdout.splitlines() if linha.startswith("FAILED")]
+    falhas = [linha for linha in r.stdout.splitlines() if linha.startswith(("FAILED", "ERROR"))]
     if r.returncode != 0:
         for f in falhas:
-            quebrada = [x["id"] + " — " + x["regra"][:90] for x in reg["regras"] if any(t in f for t in x.get("travas", []))]
-            typer.echo(f"::error::regra da titular quebrada: {f} {quebrada}")
+            quebrada = [x["id"] + " — " + x["regra"][:90] for x in reg["regras"] if any(t.split("::")[0] in f for t in x.get("travas", []))]
+            typer.echo(f"::error::regra da titular quebrada: {f[:300]} {quebrada}")
+        if not falhas:                                   # o erro que não é falha de teste (a coleta, a preparação): a saída inteira
+            ult = " | ".join(x for x in (r.stdout + r.stderr).splitlines()[-12:] if x.strip())
+            typer.echo(f"::error::o portão não terminou: {ult[:900]}")
         typer.echo(r.stdout[-3000:])
         raise typer.Exit(1)
     typer.echo(f"as {len(reg['regras'])} regras da titular estão de pé ({len(alvos)} travas)")
