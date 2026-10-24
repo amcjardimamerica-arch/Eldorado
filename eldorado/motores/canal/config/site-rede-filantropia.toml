@@ -14,11 +14,19 @@ nomes_anteriores = ["plat-rede-filantropia"]
 
 # ---- rotas confirmadas nas sondagens de 23/10/2026 (testes/paginas/sondagem-a, -b, -c, -farol)
 
+# a página é montada por script: pelo navegador, a página inicial traz 146 links, e os editais estão nas notícias
+# (/informacao/...): Plan International, Instituto Porto, CNBB, Fundação Abrinq, Prêmio Nestlé (gravação de 23/10/2026)
 [[fonte]]
-nome = "Rede Filantropia — página inicial (editais divulgados)"
+nome = "Rede Filantropia — página inicial (os editais divulgados nas notícias)"
 url = "https://www.filantropia.ong/"
 tipo = "pagina"
 papel = "principal"
+
+[[fonte]]
+nome = "Rede Filantropia — notícias"
+url = "https://www.filantropia.ong/informacao/"
+tipo = "pagina"
+papel = "alternativa"
 
 [[fonte]]
 nome = "busca aberta: site:filantropia.ong edital inscrições"
@@ -28,7 +36,7 @@ papel = "alternativa"
 termos = "site:filantropia.ong edital inscrições"
 
 [acesso]
-degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
+degraus = ["patchright", "camoufox", "lightpanda", "leve", "api", "arquivo", "local"]   # o navegador que não denuncia robôs primeiro
 
 [leitura]
 paginas_dos_achados = true
@@ -36,7 +44,7 @@ seguir_oficial = true
 
 [lexico]
 termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"]
-vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"]
+vetos = ["re:^área dos inscritos$|dicas para|^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"]
 termos_em = "titulo"
 
 [aprendizado]

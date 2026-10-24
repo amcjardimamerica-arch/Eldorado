@@ -18,7 +18,9 @@ marca "programas do sistema"
 timeout 120 python -m pip install -q --upgrade pip uv || aviso "uv não instalou"
 timeout 1800 python scripts/instalar_bibliotecas.py || { echo "::error::o núcleo do Eldorado não instalou"; exit 1; }
 marca "bibliotecas"
-timeout 300 patchright install --with-deps chromium > /dev/null 2>&1 || aviso "Patchright (degrau 4) não instalou"
+# os executores já trazem as dependências do Chromium: o navegador sem elas primeiro (a lista do sistema não é atualizada)
+{ timeout 300 patchright install chromium > /dev/null 2>&1 || timeout 400 patchright install --with-deps chromium > /dev/null 2>&1; } \
+  || aviso "Patchright (degrau 4) não instalou"
 timeout 300 python -m camoufox fetch > /dev/null 2>&1 || aviso "Camoufox (degrau 5) não instalou"
 marca "navegadores"
 LP="${RUNNER_TEMP:-/tmp}/lightpanda"
@@ -43,6 +45,7 @@ for m in ("fitz", "rapidocr", "tesserocr", "tika", "trafilatura", "extruct", "li
     except Exception as e:
         print(f"::warning::ferramenta do plano não importou: {m} ({type(e).__name__}: {str(e)[:80]})")
 import os, shutil
-binarios = {"tesseract": shutil.which("tesseract"), "java": shutil.which("java"), "lightpanda": os.environ.get("ELDORADO_LIGHTPANDA") or os.path.exists(os.environ.get("RUNNER_TEMP", "/tmp") + "/lightpanda")}
+import glob
+binarios = {"chromium do patchright": glob.glob(os.path.expanduser("~/.cache/ms-playwright/chromium*")), "tesseract": shutil.which("tesseract"), "java": shutil.which("java"), "lightpanda": os.environ.get("ELDORADO_LIGHTPANDA") or os.path.exists(os.environ.get("RUNNER_TEMP", "/tmp") + "/lightpanda")}
 print(f"::notice::instalação completa: {len(ok)} de 31 ferramentas do plano importam; programas: " + ", ".join(f"{k}={'sim' if v else 'não'}" for k, v in binarios.items()) + "; tempos:" + os.environ.get("TEMPOS", ""))
 P
