@@ -136,3 +136,17 @@ def test_o_arquivo_e_so_para_encerradas(gravador, bancos, diario, tmp_path):
     assert devolver_abertas_do_arquivo(bancos["biblioteca"], diario) == 1
     aplicar(gravador, tmp_path)
     assert etapa(bancos["biblioteca"], "V") == "recepcao"
+
+
+def test_a_aberta_com_o_prazo_vencido_e_arquivada(gravador, bancos, diario, tmp_path):
+    """24/10/2026: editais com o prazo vencido apareciam como abertos (a marca do prazo não seguia o tempo)."""
+    from datetime import date
+
+    from eldorado.base.cartorio.auditoria import arquivar_encerrados
+    assert gravador.aplicar(livro("W", "preparacao")).ok
+    assert gravador.aplicar([ev("livro.decupado", livro_id="W", validacao="aprovado", validado_em=AGORA, situacao_prazo="aberta",
+                                inscricao_fim="2026-10-23")]).ok
+    arquivar_encerrados(bancos["biblioteca"], diario, date(2026, 10, 24))
+    aplicar(gravador, tmp_path)
+    assert etapa(bancos["biblioteca"], "W") == "arquivo"
+    assert bancos["biblioteca"].execute("SELECT situacao_prazo FROM livro_dados WHERE livro_id = 'W'").fetchone()[0] == "encerrada"

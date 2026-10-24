@@ -334,15 +334,21 @@ def arquivar_encerrados(con: sqlite3.Connection, diario: Diario, hoje: date) -> 
     for c in con.execute("SELECT * FROM certidao WHERE situacao IN ('comprovado','dispensado')"):
         certs.setdefault(c["livro_id"], []).append(dict(c))
     passaporte, n = Passaporte(con, diario, maximo=10), 0
+    hoje_iso = hoje.isoformat()
+    for lid in [r[0] for r in con.execute("SELECT livro_id FROM livro_dados WHERE situacao_prazo = 'aberta' AND inscricao_fim < ?", (hoje_iso,))]:
+        diario.emitir("livro.prazo", "auditoria", {"livro_id": lid, "situacao_prazo": "encerrada"})   # o prazo pela passagem do tempo
+    fim = dict(con.execute("SELECT livro_id, inscricao_fim FROM livro_dados").fetchall())
     for lv in con.execute(f"SELECT l.*, p.fase FROM livro l JOIN passaporte p ON p.livro_id = l.id WHERE p.fase IN ({','.join('?' * len(LINHA))})", LINHA):
         validas = {k: v for k, v in I.melhor(certs.get(lv["id"], [])).items() if I.resolvido(v)}
-        if prazo(validas, dict(lv), hoje) != "encerrada":
+        vencido = bool(fim.get(lv["id"])) and fim[lv["id"]] < hoje_iso
+        if prazo(validas, dict(lv), hoje) != "encerrada" and not vencido:
             continue
         selo = max((lv["selo_livro"] or "sem", lv["estrela"] or "sem"), key=RANK.get)
         ok, _ = passaporte.mover(lv["id"], "arquivo", "o prazo encerrou: a oportunidade foi arquivada",
                                  {"gerou": f"oportunidade arquivada; a estrela {lv['estrela']} virou o selo do livro ({selo}); aguarda nova oportunidade",
                                   "faltou": ", ".join(I.faltando(validas)) or None})
         if ok:
+            diario.emitir("livro.prazo", "auditoria", {"livro_id": lv["id"], "situacao_prazo": "encerrada"})
             diario.emitir("selo.calculado", "auditoria", {"id": lv["id"], "estrela": "sem", "selo_livro": selo, "informacoes_validadas": len(validas),
                                                           "atualizado_em": agora()})
             n += 1
