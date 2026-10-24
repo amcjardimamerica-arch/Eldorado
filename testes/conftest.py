@@ -44,3 +44,15 @@ def livro(id="L1", chave="k1", **extra):
     d = dict(id=id, missao="oportunidades", chave=chave, titulo="Edital de fomento", situacao="em trabalho", criado_em=AGORA, atualizado_em=AGORA)
     d.update(extra)
     return ev("livro.criado", **d)
+
+
+@pytest.fixture(autouse=True)
+def _sem_servicos_da_producao(monkeypatch, request):
+    """Os testes não usam a IA local nem o buscador próprio (24/10/2026: no portão da produção eles estão ligados, e os
+    testes da passagem inteira chamavam o modelo e buscavam na internet; o portão passava de 8 min)."""
+    monkeypatch.delenv("ELDORADO_SEARXNG", raising=False)
+    if request.module.__name__.endswith("test_ia"):                  # os testes da IA usam a IA simulada deles
+        return
+    from eldorado.base.nucleo import ia as _ia
+    monkeypatch.setattr(_ia.IA, "disponivel", lambda self: False)
+    monkeypatch.delenv("ELDORADO_IA_URL", raising=False)
