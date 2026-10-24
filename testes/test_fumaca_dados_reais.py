@@ -30,7 +30,7 @@ def test_o_portao_roda_na_producao():
     assert "testes" in m.NUCLEO
 
 
-def test_os_pilotos_concluem_com_os_dados_reais(tmp_path):
+def test_os_pilotos_concluem_com_os_dados_reais(tmp_path, monkeypatch):
     """24/10/2026 (o parecer exclusivo do encaminhamento): os três nós dos pilotos rodam sobre a cópia dos bancos reais e
     concluem; o Espião entrega o aprendizado pelos eventos (nada direto no arquivo)."""
     from types import SimpleNamespace
@@ -38,6 +38,9 @@ def test_os_pilotos_concluem_com_os_dados_reais(tmp_path):
     from eldorado.base.cerebro import encaminhamento as E
     from eldorado.base.fluxo.nos import abrir_bancos
     from eldorado.base.nucleo.eventos import Diario, ler
+    from eldorado.motores.acesso import completa
+    from eldorado.motores.acesso.escada import Escada
+    monkeypatch.setattr(completa, "escada_completa", lambda *a, **k: Escada([], intervalo_padrao=0))   # sem rede: rápido e determinístico
     for n in ("biblioteca", "cerebro"):
         shutil.copy(f"dados/{n}.db", tmp_path / f"{n}.db")
     for c in {id(x): x for x in abrir_bancos(tmp_path).values()}.values():
@@ -45,7 +48,7 @@ def test_os_pilotos_concluem_com_os_dados_reais(tmp_path):
     antes = sqlite3.connect(tmp_path / "cerebro.db").execute("SELECT COUNT(*) FROM espiao_missao").fetchone()[0]
     ctx = SimpleNamespace(diario=Diario(tmp_path / "eventos"))
     par = {"dados": str(tmp_path), "modulos": "config/modulos.toml", "config": "config", "orcamento_s": 3, "orcamento_pilotos_s": 3,
-           "orcamento_originais_s": 3, "intervalo_s": 0.1}
+           "orcamento_originais_s": 0, "intervalo_s": 0.1}
     for no in (E.no_encaminhar, E.no_espiao, E.no_originais):
         assert isinstance(no([], par, ctx), list)                                      # conclui (não levanta exceção)
     assert sqlite3.connect(tmp_path / "cerebro.db").execute("SELECT COUNT(*) FROM espiao_missao").fetchone()[0] == antes
