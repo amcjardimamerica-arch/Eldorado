@@ -372,6 +372,41 @@ def otimizar_ia(se_antigo_dias: int = DIAS_OTIMIZAR):
     typer.echo(f"{len(escolhidos)} exemplo(s) escolhido(s) de {len(exemplos)} certidões validadas")
 
 
+PORTA_CONSULTA = typer.Option(8001, help="a porta da consulta")
+DIAS_ANALISE = typer.Option(7, help="os últimos N dias")
+
+
+@app.command()
+def consultar(porta: int = PORTA_CONSULTA):
+    """A consulta da Biblioteca pelo Datasette (só leitura), com consultas prontas."""
+    from ...banco.consulta import servir
+    servir(porta)
+
+
+@app.command()
+def analise(dias: int = DIAS_ANALISE):
+    """As análises pelo DuckDB: o rendimento de cada motor, o funil do Cartório, os achados por dia, a origem dos livros."""
+    import json
+
+    from ...banco.analise import relatorio
+    typer.echo(json.dumps(relatorio(Path("dados"), dias), ensure_ascii=False, indent=1, default=str)[:20000])
+
+
+@app.command()
+def manutencao():
+    """A manutenção dos bancos (sqlite-utils: analisar e otimizar) e o índice de busca por texto da Biblioteca."""
+    from ...banco.manutencao import indexar, otimizar
+    typer.echo(f"otimizados: {otimizar()}")
+    typer.echo(f"índice de busca: {indexar()} livros")
+
+
+@app.command("copia-drive")
+def copia_drive():
+    """A cópia dos bancos e dos eventos no Drive (aguarda a pasta: os segredos do Drive)."""
+    from ...banco.drive import copiar
+    typer.echo(copiar())
+
+
 PORTA_API = typer.Option(8000, help="a porta da API")
 
 

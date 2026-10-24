@@ -69,6 +69,16 @@ def criar_app(raiz: Path = Path(".")) -> FastAPI:
         achados = [{**dict(r), "dados": json.loads(r["dados"] or "{}")} for r in s.bib.execute(sql, (lid,))]
         return {"livro": dict(lv), "dados": dict(dados) if dados else None, "certidoes": certs, "historia": historia, "achados": achados}
 
+    @app.get("/busca")
+    def busca(q: str, limite: int = 50) -> list[dict[str, Any]]:
+        from ...banco.manutencao import buscar
+        return buscar(q, raiz / "dados", min(limite, 200))
+
+    @app.get("/analise")
+    def analise(dias: int = 7) -> dict[str, Any]:
+        from ...banco.analise import relatorio
+        return relatorio(raiz / "dados", dias)
+
     @app.get("/abertas")
     def abertas() -> list[dict[str, Any]]:
         return [{k: r[k] for k in ("id", "titulo", "orgao", "uf", "inscricao_fim", "link_oficial", "link_divulgacao", "fase", "origem")}

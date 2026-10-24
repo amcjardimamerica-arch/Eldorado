@@ -81,6 +81,16 @@ jobs:
       - name: Aplicar os últimos eventos da passagem (o recibo do passo final e o fechamento)
         if: always()
         run: eldorado aplicar
+      - name: A manutenção dos bancos e o índice de busca (sqlite-utils)
+        if: always()
+        run: timeout 600 eldorado manutencao || echo "::warning::a manutenção dos bancos não terminou"
+      - name: A cópia no Drive (aguarda a pasta; sem os segredos, só avisa)
+        if: always()
+        env:
+          ELDORADO_DRIVE_CREDENCIAIS: ${{ secrets.ELDORADO_DRIVE_CREDENCIAIS }}
+          ELDORADO_DRIVE_PASTA: ${{ secrets.ELDORADO_DRIVE_PASTA }}
+          ELDORADO_RCLONE_REMOTO: ${{ secrets.ELDORADO_RCLONE_REMOTO }}
+        run: timeout 900 eldorado copia-drive || echo "::warning::a cópia no Drive não terminou"
       - name: Consolidar os bancos
         if: always()
         run: eldorado fechar
