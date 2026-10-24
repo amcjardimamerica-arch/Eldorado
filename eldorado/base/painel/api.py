@@ -79,6 +79,22 @@ def criar_app(raiz: Path = Path(".")) -> FastAPI:
         from ...banco.analise import relatorio
         return relatorio(raiz / "dados", dias)
 
+    @app.get("/calendario")
+    def calendario(dias: int = 365) -> list[dict[str, Any]]:
+        from ..analise.previsao import calendario as cal
+        return cal(sis().bib, dias=dias)
+
+    @app.get("/livros/{lid}/historia")
+    def historia(lid: str) -> list[dict[str, Any]]:
+        from ..analise.previsao import historia as h
+        return h(sis().bib, lid)
+
+    @app.get("/farol")
+    def farol() -> dict[str, Any]:
+        import json as _json
+        m = raiz / "transferencia" / "farol" / "manifesto.json"
+        return _json.loads(m.read_text(encoding="utf-8")) if m.exists() else {"livros": []}
+
     @app.get("/abertas")
     def abertas() -> list[dict[str, Any]]:
         return [{k: r[k] for k in ("id", "titulo", "orgao", "uf", "inscricao_fim", "link_oficial", "link_divulgacao", "fase", "origem")}
