@@ -413,6 +413,26 @@ def copia_drive():
     typer.echo(copiar())
 
 
+@app.command()
+def travas():
+    """O portão das regras da titular: roda todas as travas do registro (config/regras_titular.json) e o teste-mestre.
+    Falha se alguma regra estiver quebrada (o ciclo permanente não começa)."""
+    import json
+    import subprocess
+    import sys
+    reg = json.loads(Path("config/regras_titular.json").read_text(encoding="utf-8"))
+    alvos = sorted({t for r in reg["regras"] for t in r.get("travas", [])}) + ["testes/test_regras_titular.py"]
+    r = subprocess.run([sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider", "-W", "ignore", *alvos], capture_output=True, text=True)
+    falhas = [linha for linha in r.stdout.splitlines() if linha.startswith("FAILED")]
+    if r.returncode != 0:
+        for f in falhas:
+            quebrada = [x["id"] + " — " + x["regra"][:90] for x in reg["regras"] if any(t in f for t in x.get("travas", []))]
+            typer.echo(f"::error::regra da titular quebrada: {f} {quebrada}")
+        typer.echo(r.stdout[-3000:])
+        raise typer.Exit(1)
+    typer.echo(f"as {len(reg['regras'])} regras da titular estão de pé ({len(alvos)} travas)")
+
+
 PORTA_API = typer.Option(8000, help="a porta da API")
 
 

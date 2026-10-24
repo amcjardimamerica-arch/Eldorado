@@ -75,6 +75,8 @@ jobs:
         run: eldorado consolidar-bancos || echo "::warning::a consolidação dos bancos não terminou"
       - name: Otimizar as instruções dos pilotos (DSPy, semanal; sem o modelo, fica para depois)
         run: timeout 900 eldorado otimizar-ia --se-antigo-dias 7 || echo "::warning::a otimização das instruções não terminou"
+      - name: O portão das regras da titular (sem as regras de pé, o ciclo não começa)
+        run: eldorado travas
       - name: Funcionamento permanente (uma passagem depois da outra enquanto houver fila)
         env:
           ELDORADO_FORCAR: ${{ inputs.acionar_todos && '1' || '0' }}

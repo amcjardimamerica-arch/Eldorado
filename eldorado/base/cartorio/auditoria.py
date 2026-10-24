@@ -362,6 +362,19 @@ def escada_do_livro(con: sqlite3.Connection, lid: str) -> str:
     return "livro migrado do Eldorado0 · sem registro da escada"
 
 
+def devolver_abertas_do_arquivo(con: sqlite3.Connection, diario: Diario) -> int:
+    """Regra da titular (24/10/2026): o arquivo é só para as oportunidades encerradas. O livro no arquivo com o prazo
+    aberto volta à linha do Cartório, pela recepção (a passagem permitida do arquivo), a cada passagem."""
+    from .passaporte import Passaporte
+    passaporte, n = Passaporte(con, diario, maximo=10), 0
+    for (lid,) in con.execute("SELECT p.livro_id FROM passaporte p JOIN livro_dados d ON d.livro_id = p.livro_id "
+                              "WHERE p.fase = 'arquivo' AND d.situacao_prazo = 'aberta'").fetchall():
+        ok, _ = passaporte.mover(lid, "recepcao", "o prazo está aberto: o arquivo é só para encerradas (regra da titular)",
+                                 {"gerou": "o livro com o prazo aberto saiu do arquivo e voltou à linha do Cartório"})
+        n += int(bool(ok))
+    return n
+
+
 def no_auditar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
     """Nó da passagem: valida e decupa os livros novos ou alterados (a automação só exclui logicamente)."""
     from pathlib import Path
@@ -373,8 +386,9 @@ def no_auditar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto
         alvo = pendentes(con)
         res = list(auditar(con, date.today(), alvo)) if alvo else []
         arquivados = arquivar_encerrados(con, contexto.diario, date.today())
+        devolvidos = devolver_abertas_do_arquivo(con, contexto.diario)
     finally:
         con.close()
     aplicar(res, contexto.diario)
     return [{"auditados": len(res), "expurgados": sum(r.validacao == "expurgado" for r in res), "revisar": sum(r.validacao == "revisar" for r in res),
-             "arquivados": arquivados}]
+             "arquivados": arquivados, "devolvidos_do_arquivo": devolvidos}]
