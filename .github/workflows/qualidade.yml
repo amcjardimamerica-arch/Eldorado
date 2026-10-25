@@ -17,7 +17,7 @@ concurrency:
 jobs:
   testes:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 60   # 25/10/2026: com as bibliotecas da produção, a instalação e a bateria passam de 20 min (a execução era encerrada como "cancelada")
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
