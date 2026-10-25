@@ -50,6 +50,7 @@ def test_a_medicao_das_finalidades_sem_cinza_indevido(tmp_path):
     """25/10/2026: 63 arquivos sem medição da finalidade (a raiz da herança, os fluxos do GitHub, não era medida) e uma
     falha antiga contando por dias (a janela de 50 passos). Sem a chave dos fluxos, as configurações e os parados medem."""
     import shutil
+
     from eldorado.base.cerebro.mapa_arquivos import AGUARDAM_DECISAO, POR_DESENHO, medir
     for n in ("biblioteca", "cerebro"):
         shutil.copy(f"dados/{n}.db", tmp_path / f"{n}.db")
