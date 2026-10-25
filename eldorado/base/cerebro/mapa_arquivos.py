@@ -4,7 +4,7 @@ Os nós são todos os arquivos do sistema (o código, as configurações, os wor
 as ligações são extraídas do que a produção executa:
   importa     a importação no código (a árvore de cada arquivo, com as importações relativas resolvidas)
   aciona      os fluxos do GitHub chamando os comandos (eldorado <comando>) e os scripts
-  fluxo       os nós dos workflows internos (passagem.toml, manutencao.toml), na ordem em que rodam
+  fluxo       os nós dos workflows internos (passagem.toml), na ordem em que rodam
   configura   o registro dos módulos (modulos.toml) ligando cada motor ao motor genérico
   grava       os eventos que o arquivo emite e o banco que eles gravam (o catálogo do gravador)
   le          as tabelas que o arquivo lê (a consulta SQL), e o banco delas
@@ -185,7 +185,7 @@ def montar() -> dict[str, Any]:
             if f:
                 liga(p.relative_to(RAIZ).as_posix(), f, "configura", "carregado pelo nome")
     # comandos e arquivos lidos por caminho literal (config/..., workflows/...)
-    lit = re.compile(r"""["'](config/[a-z_]+\.(?:toml|json)|workflows/[a-z_]+\.toml)["']""")
+    lit = re.compile(r"""["'](config/[a-z_]+\.(?:toml|json|txt)|workflows/[a-z_]+\.toml)["']""")
     for p in codigo:
         for c in set(lit.findall(p.read_text(encoding="utf-8"))):
             if (RAIZ / c).exists():
@@ -394,10 +394,9 @@ POR_DESENHO = {
     "eldorado/motores/acesso/rotas_alternativas.py": "o Tor, desligado por desenho no plano (não roda)",
 }
 AGUARDAM_DECISAO = {
-    "workflows/manutencao.toml": "parecer: retirar; superado (a leitura da máquina já está na passagem; a aplicação, no fim de cada passagem)",
-    "eldorado/base/cerebro/regras.py": "parecer: retirar; superado pelo registro das regras da titular (regras_titular.json, as travas e o portão)",
-    "config/regras.toml": "parecer: retirar; superado pelo registro das regras da titular (regras_titular.json, as travas e o portão)",
-    "config/comparacao.toml": "parecer: retirar; a comparação de 14 dias com o Eldorado0 nunca foi construída e o Eldorado0 sai em 23/11 (R01)",
+    "eldorado/base/cerebro/regras.py": "fica (titular, 25/10/2026): a detecção de contradições entre regras ainda não foi substituída",
+    "config/regras.toml": "fica (titular, 25/10/2026): 15 decisões da titular que ainda não estão no registro das regras",
+    "config/comparacao.toml": "fica (titular, 25/10/2026): a comprovação de cobertura antes de eliminar o Eldorado0 ainda não foi feita",
 }
 
 

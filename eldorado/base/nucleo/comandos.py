@@ -38,6 +38,16 @@ AGORA = typer.Option(None, help="Data e hora ISO com fuso (padrão: agora)")
 APRENDIZADO = typer.Option(None, help="APRENDIZADO-ELDORADO.json (o aprendizado dos motores)")
 
 
+@app.command("ponte-br")
+def ponte_br_teste(url: str = "https://cese.org.br/wp-json/wp/v2/edital"):
+    """Testa a ponte da HostGator (o IP brasileiro) com uma página da lista (25/10/2026)."""
+    from ...motores.acesso import ponte_br
+    r = ponte_br.diagnostico(url)
+    typer.echo(f"ponte BR: {r}")
+    if r.get("configurada") and not r.get("ok"):
+        typer.echo(f"::warning::a ponte BR não abriu {url}: {r.get('erro')}")
+
+
 @app.command("importar-empresas-e0")
 def importar_empresas_e0(arquivo: Path, config: Path = CONFIG):
     """Importa as empresas do Eldorado0 (o ranking_apoiadores.json dele), unificadas às da Biblioteca pelo CNPJ (25/10/2026)."""

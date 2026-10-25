@@ -16,6 +16,9 @@ class DegrauAPI:
         self.cliente = httpx.Client(follow_redirects=True, headers={"User-Agent": AGENTE, "Accept": "application/json, */*", **(cabecalhos or {})})
 
     def buscar(self, url: str, tempo_limite: float, corpo: dict[str, str] | None = None) -> Resposta:
+        from . import ponte_br
+        if corpo is None and ponte_br.usar(url):                   # o site recusa a nuvem: pela ponte BR (25/10/2026)
+            return ponte_br.buscar(url, tempo_limite)
         try:                                                     # com corpo: POST de formulário, na mesma sessão (o cookie se mantém)
             r = self.cliente.post(url, data=corpo, timeout=tempo_limite) if corpo is not None else self.cliente.get(url, timeout=tempo_limite)
         except httpx.TransportError as e:

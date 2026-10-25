@@ -387,7 +387,7 @@ def montar(
             "Arquivos fora do funcionamento",
             len(parados),
             "verde" if not parados else "amarelo",
-            "aguardando a decisão da titular: " + ", ".join(parados) if parados else "nenhum arquivo fora do funcionamento sem decisão",
+            "ficam por decisão da titular, com a função aguardando a migração: " + ", ".join(parados) if parados else "nenhum arquivo fora do funcionamento",
             iso,
         )
     except Exception as e:  # noqa: BLE001

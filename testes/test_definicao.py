@@ -9,8 +9,8 @@ def wf(nos, conexoes=()):
     return {"workflow": {"id": "w"}, "no": nos, "conexao": list(conexoes)}
 
 
-def test_workflow_do_repositorio_e_valido():
-    d = carregar("workflows/manutencao.toml")
+def test_workflow_de_exemplo_e_valido():
+    d = carregar("testes/workflow_exemplo.toml")
     assert d.ordem() == ["maquina", "aplicar"] and len(d.versao) == 16
 
 

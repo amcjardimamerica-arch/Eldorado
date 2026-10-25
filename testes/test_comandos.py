@@ -29,7 +29,7 @@ def test_iniciar_executar_e_aplicar(tmp_path, monkeypatch):
 def test_pausado_nao_executa(tmp_path):
     cfg = preparar(tmp_path)
     R.invoke(app, ["pausar", "--config", cfg])
-    r = R.invoke(app, ["executar", "workflows/manutencao.toml", "--config", cfg])
+    r = R.invoke(app, ["executar", "testes/workflow_exemplo.toml", "--config", cfg])
     assert r.exit_code == ADIADO and "pausado" in r.output
     R.invoke(app, ["despausar", "--config", cfg])
     assert not (tmp_path / "dados" / "PAUSADO").exists()
@@ -39,7 +39,7 @@ def test_sem_folga_adia(tmp_path, monkeypatch):
     cfg = preparar(tmp_path)
     monkeypatch.setattr("eldorado.base.nucleo.comandos.Governador.pode_iniciar", lambda self, *a, **k: False)
     monkeypatch.setattr("eldorado.base.nucleo.comandos.Governador.motivo", lambda self: "carga 90%")
-    assert R.invoke(app, ["executar", "workflows/manutencao.toml", "--config", cfg]).exit_code == ADIADO
+    assert R.invoke(app, ["executar", "testes/workflow_exemplo.toml", "--config", cfg]).exit_code == ADIADO
 
 
 def test_maquina_mostra_a_folga(tmp_path):

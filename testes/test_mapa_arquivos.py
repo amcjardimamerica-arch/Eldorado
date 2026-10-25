@@ -10,7 +10,6 @@ PARADOS = {
     "eldorado/base/cerebro/regras.py": "a tabela de regras foi desligada (ninguém a usa)",
     "config/regras.toml": "a tabela de regras foi desligada (ninguém a usa)",
     "config/comparacao.toml": "a comparação de 14 dias com o Eldorado0 não foi construída",
-    "workflows/manutencao.toml": "um workflow interno que nenhum fluxo executa",
     "eldorado/motores/acesso/rotas_alternativas.py": "o Tor, desligado por desenho no plano",
     "eldorado/base/motor_modelo/__init__.py": "o motor modelo não roda (é só modelo)",
 }
@@ -59,6 +58,6 @@ def test_a_medicao_das_finalidades_sem_cinza_indevido(tmp_path):
         c.close()
     A = medir(tmp_path)["arquivos"]
     assert all(A[p]["c"] == "v" for p in POR_DESENHO if p in A)                         # o que não roda por desenho cumpre
-    assert all(A[p]["c"] == "a" and "parecer" in A[p]["m"] for p in AGUARDAM_DECISAO if p in A)
+    assert all(A[p]["c"] == "a" and A[p]["m"].startswith("fica") for p in AGUARDAM_DECISAO if p in A)
     assert all(A[p]["c"] == "v" for p in A if p.startswith("config/") and p not in AGUARDAM_DECISAO)   # as configurações válidas
     assert set(PARADOS) == set(POR_DESENHO) | set(AGUARDAM_DECISAO)                     # todo parado tem o seu parecer

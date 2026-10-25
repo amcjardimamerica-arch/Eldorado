@@ -82,6 +82,8 @@ jobs:
           ELDORADO_FORCAR: ${{ inputs.acionar_todos && '1' || '0' }}
           ELDORADO_IA_URL: http://127.0.0.1:8082
           GITHUB_TOKEN: ${{ github.token }}
+          ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}        # a ponte da HostGator (o IP brasileiro, 25/10/2026)
+          ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
         run: eldorado permanente --limite-min 320 --gravar-min 5
       - name: Aplicar os últimos eventos da passagem (o recibo do passo final e o fechamento)
         if: always()
@@ -103,6 +105,8 @@ jobs:
         if: always()
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}        # a ponte da HostGator (o IP brasileiro, 25/10/2026)
+          ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
         run: bash scripts/gravar.sh "${{ inputs.gravar_banco }}"
       - name: Continuar (o funcionamento é permanente)
         if: always()

@@ -30,6 +30,9 @@ class DegrauLeve:
         return Resposta(str(r.url), r.status_code, r.content, (r.headers or {}).get("content-type", ""))
 
     def buscar(self, url: str, tempo_limite: float) -> Resposta:
+        from . import ponte_br
+        if ponte_br.usar(url):                                     # o site recusa a nuvem: pela ponte BR (25/10/2026)
+            return ponte_br.buscar(url, tempo_limite)
         try:
             r = self.sessao.get(url, timeout=tempo_limite, allow_redirects=True)
             resp = Resposta(str(r.url), r.status_code, r.content, r.headers.get("content-type", ""))
