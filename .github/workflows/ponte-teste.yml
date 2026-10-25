@@ -1,0 +1,33 @@
+name: Ponte BR (teste)
+# Testa a ponte da HostGator (o IP brasileiro) com os sites que recusam a nuvem (25/10/2026). Sob demanda.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  testar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -q "httpx==0.28.1"
+      - env:
+          ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}
+          ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
+        run: |
+          python - <<'P'
+          import importlib.util, sys, httpx, time
+          sys.path.insert(0, ".")
+          from eldorado.motores.acesso import ponte_br
+          for url in ("https://cese.org.br/wp-json/wp/v2/edital", "https://cese.org.br/", "https://www.tjgo.jus.br/", "https://www.mpgo.mp.br/"):
+              t = time.monotonic()
+              try:
+                  direto = httpx.get(url, timeout=20, follow_redirects=True).status_code
+              except Exception as e:
+                  direto = type(e).__name__
+              r = ponte_br.diagnostico(url)
+              print(f"::notice title={url}::direto da nuvem: {direto} · pela ponte: {r}")
+          P
