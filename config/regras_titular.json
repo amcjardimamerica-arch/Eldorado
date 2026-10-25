@@ -92,15 +92,15 @@
   },
   {
    "id": "R09",
-   "data": "2026-10-24",
-   "regra": "As informações do site são em tempo real da Biblioteca: lidas da própria Biblioteca, de um só lugar, sem cópia intermediária.",
-   "onde": "eldorado/base/painel/dados.py",
+   "data": "2026-10-25",
+   "regra": "O painel é atualizado por inteiro a cada mudança no sistema (cada envio e cada gravação) e a cada 15 minutos; a sala de controle no menor tempo possível (o sistema grava e aciona o painel a cada 5 minutos). Toda mudança no sistema o PARA por completo, implanta e o RELIGA, atualizando naquele momento todas as mudanças. Um evento recusado não pode deixar o site velho. (Substitui a regra anterior do site acompanhando a Biblioteca.)",
+   "onde": ".github/workflows/painel.yml, implantar.yml, eldorado.yml; scripts/gravar.sh; eldorado/base/painel/",
    "travas": [
-    "testes/test_painel_site.py::test_o_item_do_radar_e_o_livro_campo_a_campo",
-    "testes/test_painel_site.py::test_o_site_gerado_bate_com_o_banco"
-   ],
-   "situacao": "em implantação",
-   "implantacao": "hoje o site é gerado da Biblioteca a cada 30 minutos (as travas garantem que é igual a ela, livro a livro); o tempo real exige que a página leia a Biblioteca diretamente (a leitura do SQLite no próprio navegador, ou a API do sistema num servidor) — proposta para a etapa da sala de controle"
+    "testes/test_regra_r09.py::test_o_painel_a_cada_mudanca_e_a_cada_15_minutos",
+    "testes/test_regra_r09.py::test_toda_mudanca_para_implanta_e_religa",
+    "testes/test_regra_r09.py::test_o_radar_nao_repete_livro_nem_mostra_unido",
+    "testes/test_painel_site.py::test_o_item_do_radar_e_o_livro_campo_a_campo"
+   ]
   },
   {
    "id": "R10",
@@ -230,7 +230,7 @@
   {
    "id": "R21",
    "data": "2026-10-24",
-   "regra": "O sistema opera perto de 85% da capacidade, sempre: a Regência aciona os motores em paralelo, com o número de trabalhadores que o governador permite pela carga medida e pelo custo aprendido de cada motor; acima do alvo, adia. A sala mostra o servidor (processador, memória, disco, GPU) e os dados chegam ao site a cada 15 minutos no máximo.",
+   "regra": "O sistema opera perto de 85% da capacidade, sempre: a Regência aciona os motores em paralelo, com o número de trabalhadores que o governador permite pela carga medida e pelo custo aprendido de cada motor; acima do alvo, adia. A sala mostra o servidor (processador, memória, disco, GPU) e os dados chegam ao site pela regra R09.",
    "onde": "eldorado/base/cerebro/regencia.py (acionar), governador.py; a sala (o servidor); comandos.permanente (a gravação em segundo plano)",
    "travas": [
     "testes/test_capacidade.py::test_os_motores_rodam_em_paralelo_pela_carga"

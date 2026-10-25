@@ -71,6 +71,11 @@ try:
         b = p.chromium.launch(headless=True)
         pg = b.new_page(viewport={"width": 1600, "height": 950})
         pg.goto("https://amcjardimamerica-arch.github.io/Eldorado/dashboard.html?v=" + str(__import__("time").time()), wait_until="load", timeout=60000)
+        pg.wait_for_timeout(5000)                               # a página inicial: as oportunidades repetidas na tela
+        pg.screenshot(path=str(SAIDA / "publicado-inicio.png"))
+        r["repetidos_inicio"] = pg.evaluate("""()=>{ const t=[...document.querySelectorAll('a,div,li,span')].filter(e=>e.children.length===0)
+            .map(e=>e.innerText.trim()).filter(x=>x.length>25); const c={}; t.forEach(x=>c[x]=(c[x]||0)+1);
+            return Object.entries(c).filter(([k,v])=>v>1).sort((a,b)=>b[1]-a[1]).slice(0,15); }""")
         pg.evaluate("()=>document.querySelector(\"button[data-v='neural']\").click()")
         pg.wait_for_timeout(7000)
         pg.screenshot(path=str(SAIDA / "publicado-sala.png"))

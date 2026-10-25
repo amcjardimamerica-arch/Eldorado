@@ -1,0 +1,35 @@
+name: Implantar (parar, implantar e religar)
+# A regra R09 (titular, 25/10/2026): toda mudança no sistema o PARA por completo, implanta e o RELIGA, atualizando naquele
+# momento todas as mudanças. Cada envio de código ou configuração interrompe o ciclo em andamento e inicia um novo com a
+# mudança; o painel é republicado pelo próprio envio. As gravações do sistema não acionam este fluxo (regra do GitHub).
+on:
+  push:
+    branches: [main]
+    paths: ["eldorado/**", "config/**", "workflows/**", "scripts/**", "pyproject.toml", ".github/workflows/eldorado.yml"]
+  workflow_dispatch:
+permissions:
+  actions: write
+  contents: read
+concurrency:
+  group: implantar
+  cancel-in-progress: true
+jobs:
+  implantar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Parar o ciclo em andamento
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for id in $(gh run list -R "$GITHUB_REPOSITORY" -w eldorado.yml --json databaseId,status -q '.[] | select(.status=="in_progress" or .status=="queued" or .status=="waiting") | .databaseId'); do
+            echo "parando o ciclo $id"; gh run cancel "$id" -R "$GITHUB_REPOSITORY" || true
+          done
+          for i in $(seq 1 30); do
+            n=$(gh run list -R "$GITHUB_REPOSITORY" -w eldorado.yml --json status -q '[.[] | select(.status=="in_progress")] | length')
+            [ "$n" = "0" ] && break; sleep 10
+          done
+      - name: Religar com a mudança
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run eldorado.yml -R "$GITHUB_REPOSITORY" --ref main && echo "religado com o código ${GITHUB_SHA::7}"

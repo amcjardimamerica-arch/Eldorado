@@ -19,6 +19,6 @@ Elas estão em **`config/regras_titular.json`**, cada uma com a data, o texto, o
 ## As regras mais lembradas (o registro é a fonte; isto é só um resumo)
 - Só dois bancos: a **Biblioteca** (os livros e as empresas) e o **Cérebro** (o aprendizado, nunca livros).
 - **Nenhum motor tem banco**: motores são configuração e ferramentas; só leem o Cérebro e entregam por eventos.
-- **O site mostra a Biblioteca em tempo real** (R09, em implantação), e nenhum dado do Eldorado0 (R01, até a eliminação dele).
+- **O painel inteiro a cada mudança e a cada 15 minutos; a sala a cada 5 minutos; toda mudança para o sistema, implanta e religa** (R09). Nenhum dado do Eldorado0 no site (R01, até a eliminação dele).
 - A estrela pela régua da titular; **a dispensa é só pelo Claude no Chrome**; o arquivo é só para encerradas.
 - Todo motor novo parte do **motor modelo** (`eldorado/base/motor_modelo/`), e toda ferramenta nova entra nele.

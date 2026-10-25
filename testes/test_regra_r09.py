@@ -1,0 +1,35 @@
+"""A regra R09 (titular, 25/10/2026): o painel inteiro a cada mudança e a cada 15 min (a sala no menor tempo possível);
+toda mudança no sistema o para, implanta e religa, atualizando tudo naquele momento."""
+import re
+from pathlib import Path
+
+import yaml
+
+
+def _wf(nome):
+    return yaml.safe_load(Path(f".github/workflows/{nome}").read_text(encoding="utf-8"))
+
+
+def test_o_painel_a_cada_mudanca_e_a_cada_15_minutos():
+    p = _wf("painel.yml")
+    gatilhos = p.get("on") or p.get(True)
+    assert "push" in gatilhos and "workflow_dispatch" in gatilhos and "workflow_run" in gatilhos
+    assert any(c["cron"].startswith("*/15") for c in gatilhos["schedule"])
+    assert p["concurrency"]["cancel-in-progress"] is False                         # uma republicação não cancela a outra
+    texto = Path(".github/workflows/painel.yml").read_text(encoding="utf-8")
+    assert re.search(r"eldorado aplicar \|\|", texto)                                 # um evento recusado não deixa o site velho
+    assert "--gravar-min 5" in Path(".github/workflows/eldorado.yml").read_text(encoding="utf-8")     # a sala: a cada 5 min
+    assert "painel.yml/dispatches" in Path("scripts/gravar.sh").read_text(encoding="utf-8")         # cada gravação aciona o painel
+
+
+def test_toda_mudanca_para_implanta_e_religa():
+    i = _wf("implantar.yml")
+    gatilhos = i.get("on") or i.get(True)
+    assert "eldorado/**" in gatilhos["push"]["paths"] and "config/**" in gatilhos["push"]["paths"]
+    texto = Path(".github/workflows/implantar.yml").read_text(encoding="utf-8")
+    assert "gh run cancel" in texto and "gh workflow run eldorado.yml" in texto
+
+
+def test_o_radar_nao_repete_livro_nem_mostra_unido():
+    fonte = Path("eldorado/base/painel/dados.py").read_text(encoding="utf-8")
+    assert "situacao NOT IN ('excluido', 'unido')" in fonte

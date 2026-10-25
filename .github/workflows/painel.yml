@@ -13,7 +13,7 @@ on:
     workflows: ["Eldorado"]
     types: [completed]
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "*/15 * * * *"        # a regra R09 (titular, 25/10/2026): a cada 15 minutos, além de cada mudança
   workflow_dispatch:
 permissions:
   contents: read
@@ -22,7 +22,7 @@ permissions:
   id-token: write
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false     # uma republicação não cancela a outra: a mais nova fica na fila (o site nunca fica sem atualizar)
 jobs:
   publicar:
     environment:
@@ -38,7 +38,9 @@ jobs:
           cache: pip
       - run: pip install -e .
       - name: Os eventos mais recentes no banco (o estado de agora)
-        run: eldorado aplicar
+        # um evento recusado não pode deixar o site velho (25/10/2026: a republicação ficou parada pelas uniões repetidas):
+        # avisa e segue, publicando com o que foi aplicado
+        run: eldorado aplicar || echo "::warning::há eventos recusados; o site foi publicado com os eventos aplicados"
       - name: Gerar o site do sistema (nenhum dado do Eldorado0)
         env:
           GITHUB_TOKEN: ${{ github.token }}
