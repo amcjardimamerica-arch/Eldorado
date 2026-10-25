@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      - run: pip install -q "httpx==0.28.1"
+      - run: pip install -q -e ".[acesso]"
       - env:
           ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}
           ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
