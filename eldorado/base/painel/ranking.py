@@ -12,6 +12,7 @@ ter o cadastro completo (CNPJ, atividade, site) e ser de Goiás.
 
 from __future__ import annotations
 
+import json
 import math
 import sqlite3
 from collections import defaultdict
@@ -102,9 +103,10 @@ def montar(bib: sqlite3.Connection, molde) -> dict[str, Any]:
     fmt = bib.row_factory
     bib.row_factory = None
     try:
+        tem_ficha = "ficha" in {r[1] for r in bib.execute("PRAGMA table_info(empresa)")}
         empresas = bib.execute(
             "SELECT cnpj, razao_social, nome_fantasia, uf, municipio_ibge, porte, atividade_principal, regime_tributario, site, "
-            "descoberta_por FROM empresa"
+            "descoberta_por, " + ("ficha" if tem_ficha else "NULL") + " FROM empresa"
         ).fetchall()
         inc = defaultdict(list)
         for cnpj, lei, ano, valor, comprovado, fonte in bib.execute("SELECT cnpj, lei, ano, valor, comprovado, fonte FROM incentivo"):
@@ -114,7 +116,7 @@ def montar(bib: sqlite3.Connection, molde) -> dict[str, Any]:
     finally:
         bib.row_factory = fmt
     saida = []
-    for cnpj, razao, fantasia, uf, mun, porte, atividade, regime, site, por in empresas:
+    for cnpj, razao, fantasia, uf, mun, porte, atividade, regime, site, por, ficha in empresas:
         regs = inc.get(cnpj, [])
         rou = [x for x in regs if (x["lei"] or "").lower() == "rouanet"]
         icms = [x for x in regs if (x["lei"] or "").upper() == "ICMS"]
@@ -177,6 +179,33 @@ def montar(bib: sqlite3.Connection, molde) -> dict[str, Any]:
                 "incentivos": [{"lei": x["lei"], "ano": x["ano"], "valor": x["valor"], "fonte": x["fonte"]} for x in regs][:12],
             }
         )
+        # a ficha do Eldorado0 (25/10/2026): o cadastro completo, o potencial, o Salic, a avaliação e os programas validados
+        try:
+            f = json.loads(ficha) if ficha else {}
+        except ValueError:
+            f = {}
+        e0 = f.get("eldorado0") or {}
+        if e0:
+            e = saida[-1]
+            e["cadastro"] = {**(f.get("cadastro") or {}), **{k: v for k, v in e["cadastro"].items() if v}}
+            for k in ("potencial", "salic", "avaliacao", "faixa", "via_de_entrada", "condicao"):
+                if e0.get(k):
+                    e[k] = e0[k]
+            prog = {p["chave"]: p for p in (e0.get("programas") or []) if isinstance(p, dict) and p.get("chave")}
+            for p in e["programas"]:
+                prog.setdefault(p["chave"], p)
+            e["programas"] = list(prog.values())
+            e["apoia"] = ", ".join(prog)
+            if e0.get("origem") in (ORIGEM_TRIB, ORIGEM_DOA):
+                e["origem"] = e0["origem"]
+            if (e0.get("pontos_lista") or 0) > e["pontos_lista"]:  # vale a melhor avaliação (a do Eldorado0 ou a de agora)
+                e["pontos_lista"], e["pontuacao"] = e0["pontos_lista"], e0.get("pontuacao") or e["pontuacao"]
+                if e0.get("nivel"):
+                    e["nivel"], e["nivel_ordem"] = e0["nivel"], e0.get("nivel_ordem") or 5
+            e["valor_rouanet"] = max(e["valor_rouanet"], float((e0.get("salic") or {}).get("total") or 0))
+    for e in saida:                                                # o arquivo enxuto: o que se repete fica de fora
+        e.pop("incentivos", None)
+        e["cadastro"].pop("cnaes_secundarios", None)
     for origem in (ORIGEM_TRIB, ORIGEM_DOA):
         lista = sorted(
             [e for e in saida if e["origem"] == origem], key=lambda e: (-e["pontos_lista"], -e["valor_rouanet"], e["nome"] or "")
@@ -196,13 +225,13 @@ def montar(bib: sqlite3.Connection, molde) -> dict[str, Any]:
             "regra": "o ranking montado da Biblioteca: as empresas e os incentivos registrados (a Rouanet pelo Salic, o ICMS de Goiás)",
             "total": len(saida),
             "nas_duas_listas": 0,
-            "com_cnpj": sum(1 for e in saida if e["cadastro"]["cnpj"]),
-            "com_cnae": sum(1 for e in saida if e["cadastro"]["cnae_principal"]),
+            "com_cnpj": sum(1 for e in saida if e["cadastro"].get("cnpj")),
+            "com_cnae": sum(1 for e in saida if e["cadastro"].get("cnae_principal")),
             "com_site": sum(1 for e in saida if e["site"]),
             "com_programa": sum(1 for e in saida if e["programas"]),
             "com_potencial": sum(1 for e in saida if any(p["chave"] == "goyazes" for p in e["programas"])),
             "da_base_publica": sum(1 for e in saida if e["programas"]),
-            "niveis": {k: sum(1 for e in saida if e["nivel"] == k) for k in NIVEIS},
+            "niveis": dict(sorted({k: sum(1 for e in saida if e["nivel"] == k) for k in {e["nivel"] for e in saida}}.items(), key=lambda kv: -kv[1])),
         }
     )
     for chave, lst, rot in (("destinacao_tributaria", trib, "Destinação tributária"), ("patrocinio_privado", doa, "Doação e patrocínio")):

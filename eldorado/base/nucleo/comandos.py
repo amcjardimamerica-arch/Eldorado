@@ -38,6 +38,19 @@ AGORA = typer.Option(None, help="Data e hora ISO com fuso (padrão: agora)")
 APRENDIZADO = typer.Option(None, help="APRENDIZADO-ELDORADO.json (o aprendizado dos motores)")
 
 
+@app.command("importar-empresas-e0")
+def importar_empresas_e0(arquivo: Path, config: Path = CONFIG):
+    """Importa as empresas do Eldorado0 (o ranking_apoiadores.json dele), unificadas às da Biblioteca pelo CNPJ (25/10/2026)."""
+    import json as _json
+
+    from ..especial.importar_e0 import importar
+    from .eventos import Diario
+    _c, dados, eventos = _cfg(config)
+    bancos = abrir_bancos(dados)
+    conta = importar(bancos["biblioteca"], _json.loads(arquivo.read_text(encoding="utf-8")), Diario(eventos, "importacao-eldorado0"))
+    typer.echo(f"importação: {conta}; aplique com 'eldorado aplicar'")
+
+
 @app.command()
 def iniciar(config: Path = CONFIG):
     """Cria (ou confere) os dois bancos: a Biblioteca (os livros e as empresas) e o Cérebro (o aprendizado)."""
