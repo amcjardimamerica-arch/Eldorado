@@ -378,15 +378,16 @@ def montar(
     emp = q(bib, "SELECT COUNT(*) FROM empresa") if bib.execute("SELECT 1 FROM sqlite_master WHERE name = 'empresa'").fetchone() else 0
     I("em_rankings", "Empresas na Biblioteca", emp, "verde" if emp else "cinza", f"{emp} empresas com incentivos registrados", iso)
     try:
+        from ..cerebro.mapa_arquivos import AGUARDAM_DECISAO
         from ..cerebro.mapa_arquivos import montar as mapa
 
-        parados = [x["id"] for x in mapa()["nos"] if not x["alcancado"]]
+        parados = [x["id"] for x in mapa()["nos"] if not x["alcancado"] and x["id"] in AGUARDAM_DECISAO]   # os por desenho já estão decididos
         I(
             "hi_uso",
             "Arquivos fora do funcionamento",
             len(parados),
             "verde" if not parados else "amarelo",
-            "fora do funcionamento: " + ", ".join(parados) if parados else "todo arquivo é alcançado pela produção",
+            "aguardando a decisão da titular: " + ", ".join(parados) if parados else "nenhum arquivo fora do funcionamento sem decisão",
             iso,
         )
     except Exception as e:  # noqa: BLE001
@@ -445,7 +446,17 @@ def montar(
             ("rn_treino", "Idade do modelo"),
         ):
             I(k, nome, None, "cinza", "a rede ainda não registrou um modelo treinado", None)
-    I("rn_brier", "Erro de calibração da rede", None, "cinza", "o Cérebro ainda não mede a calibração (Brier)", None)
+    try:
+        b_ = cer.execute("SELECT treinado_em, brier FROM modelo WHERE arquivo = 'rede:oportunidade' AND brier IS NOT NULL "
+                         "ORDER BY treinado_em DESC LIMIT 1").fetchone()
+    except sqlite3.Error:
+        b_ = None
+    if b_:
+        I("rn_brier", "Erro de calibração da rede", b_[1], _faixa(b_[1], 0.15, 0.25, False),
+          f"erro de Brier {b_[1]:.3f} (0 = probabilidades perfeitas; até 0,15 bem calibrada)", b_[0], [0, 0.5],
+          {"normal": [None, 0.15], "alarme": [None, 0.25]})
+    else:
+        I("rn_brier", "Erro de calibração da rede", None, "cinza", "aguardando o primeiro treino com a calibração (o nó da rede, a cada passagem)", None)
     # ---- 09 Farol
     I("es_validadas", "Livros na etapa Farol", fases.get("farol", 0), "verde", "os livros finalizados, liberados pela Regência", iso)
     transf = q(bib, "SELECT COUNT(DISTINCT livro_id) FROM transferencia")

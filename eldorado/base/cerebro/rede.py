@@ -37,6 +37,7 @@ class Rede:
         self.precisao = metrics.Precision()
         self.revocacao = metrics.Recall()
         self.amostras = 0
+        self.brier_soma = 0.0                                       # a calibração: a média de (probabilidade − o que aconteceu)²
 
     def nota(self, item: dict[str, Any]) -> float:
         return float(self.modelo.predict_proba_one(caracteristicas(item)).get(True, 0.5))
@@ -47,15 +48,16 @@ class Rede:
         self.discernimento.update(valido, p)
         self.precisao.update(valido, p.get(True, 0.0) >= 0.5)
         self.revocacao.update(valido, p.get(True, 0.0) >= 0.5)
+        self.brier_soma += (p.get(True, 0.5) - (1.0 if valido else 0.0)) ** 2
         self.modelo.learn_one(x, valido)
         self.amostras += 1
         return p.get(True, 0.5)
 
     def metricas(self) -> dict[str, float | None]:
         if not self.amostras:
-            return {"discernimento": None, "precisao": None, "revocacao": None}
+            return {"discernimento": None, "precisao": None, "revocacao": None, "brier": None}
         return {"discernimento": round(float(self.discernimento.get()), 4), "precisao": round(float(self.precisao.get()), 4),
-                "revocacao": round(float(self.revocacao.get()), 4)}
+                "revocacao": round(float(self.revocacao.get()), 4), "brier": round(self.brier_soma / self.amostras, 4)}
 
     def salvar(self, pasta: str | Path, diario: Diario | None = None) -> Path:
         p = Path(pasta)
@@ -116,6 +118,7 @@ class _Pergunta(Rede):
         self.discernimento.update(valido, p)
         self.precisao.update(valido, p.get(True, 0.0) >= 0.5)
         self.revocacao.update(valido, p.get(True, 0.0) >= 0.5)
+        self.brier_soma += (p.get(True, 0.5) - (1.0 if valido else 0.0)) ** 2
         self.modelo.learn_one(x, valido)
         self.amostras += 1
 
@@ -235,5 +238,5 @@ def no_rede(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -
         if x["amostras"]:
             contexto.diario.emitir("modelo.treinado", "rede", {"versao": f"{pergunta}-{x['amostras']:07d}-{agora()[:16]}", "treinado_em": agora(),
                                                                "arquivo": f"rede:{pergunta}", "discernimento": x["discernimento"],
-                                                               "precisao": x["precisao"], "revocacao": x["revocacao"]})
+                                                               "precisao": x["precisao"], "revocacao": x["revocacao"], "brier": x.get("brier")})
     return [{"rede": m}]

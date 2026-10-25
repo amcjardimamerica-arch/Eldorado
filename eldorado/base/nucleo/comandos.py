@@ -645,7 +645,7 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
         while not parar.wait(30):
             try:
                 if g.ler().carga < 0.70:
-                    r = reler(Path(dados), d, limite=10, orcamento_s=120)
+                    r = reler(Path(dados), d, limite=40, orcamento_s=300)   # 25/10/2026: 608 por dia levaria 7 dias
                     if r.get("escolhidos"):
                         typer.echo(f"  trabalho de fundo: releitura {r}")
             except Exception as e:  # noqa: BLE001 — o trabalho de fundo nunca para o sistema
