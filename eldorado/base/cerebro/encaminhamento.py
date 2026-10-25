@@ -85,14 +85,11 @@ class Encaminhamento:
             return "analise externa", None
         return f"interceptador · abordagem {r['abordagem']}", (self._entregar(r["achado"], "interceptador") if r["achado"] else None)
 
-    def andar(self, orcamento_s: float, hoje: str | None = None) -> tuple[list[dict[str, Any]], dict[str, int]]:
+    def andar(self, orcamento_s: float, hoje: str | None = None, livros: list | None = None) -> tuple[list[dict[str, Any]], dict[str, int]]:
         from ...motores.pilotos.interceptador import fila
         inicio, achados, contagem = time.monotonic(), [], {}
-        livros = fila(self.con, hoje or date.today().isoformat())
-        if self.rede is not None:                                   # dentro da mesma urgência, os mais promissores primeiro
-            hj = hoje or date.today().isoformat()
-            livros.sort(key=lambda x: (0 if (x.fim and x.fim >= hj) else 1, x.fim or "9999",
-                                       -round(self.rede.nota_oportunidade({"titulo": x.titulo, "orgao": x.orgao, "link_oficial": x.link_oficial}), 2)))
+        if livros is None:
+            livros = self.ordenar(fila(self.con, hoje or date.today().isoformat()), hoje)
         for lv in livros:
             if time.monotonic() - inicio > orcamento_s:
                 break
@@ -101,6 +98,13 @@ class Encaminhamento:
             if a:
                 achados.append(a)
         return achados, contagem
+
+    def ordenar(self, livros: list, hoje: str | None = None) -> list:
+        if self.rede is not None:                                   # dentro da mesma urgência, os mais promissores primeiro
+            hj = hoje or date.today().isoformat()
+            livros.sort(key=lambda x: (0 if (x.fim and x.fim >= hj) else 1, x.fim or "9999",
+                                       -round(self.rede.nota_oportunidade({"titulo": x.titulo, "orgao": x.orgao, "link_oficial": x.link_oficial}), 2)))
+        return livros
 
 
 def _contexto_pilotos(parametros: dict[str, Any], contexto):
@@ -125,18 +129,37 @@ def no_encaminhar(itens: list[dict[str, Any]], parametros: dict[str, Any], conte
     dados, con, escada, registro = _contexto_pilotos(parametros, contexto)
     try:
         ia = IA()
+        rede = rede_atual(dados)
+        from ...motores.acesso.completa import escada_completa
         from ...motores.descoberta.metabusca import Metabusca
-        mb = Metabusca(buscar=escada.buscar)                     # a metabusca do Interceptador (a abordagem 10 estava morta)
+        from ...motores.pilotos.interceptador import fila
+        from .governador import Governador, medidor_psutil
+        livros = Encaminhamento(con, contexto.diario, registro, None, rede).ordenar(fila(con, date.today().isoformat()))
+        # vários livros ao mesmo tempo (25/10/2026: 2 tentativas em 5 min): quantos o governador permitir, até 6; cada
+        # trabalhador com a sua conexão, a sua escada e o seu Interceptador (nada compartilhado que se atropele)
+        n = max(1, min(int(parametros.get("trabalhadores", 6)), Governador(medidor_psutil(".")).paralelismo() or 1, len(livros) or 1))
+        orcamento = float(parametros.get("orcamento_s", 300))
 
-        def buscar_links(q: str) -> list[str]:
+        def trabalhador(parte: list) -> list:
+            c_w = sqlite3.connect(f"file:{dados / 'biblioteca.db'}?mode=ro", uri=True)
             try:
-                return [p.link for p in mb.consultar(q, limite=10)[0]]
-            except Exception:  # noqa: BLE001
-                return []
-        enc = Encaminhamento(con, contexto.diario, registro, Interceptador(con, contexto.diario, escada, metabusca=buscar_links,
-                                                                          ia=ia if ia.disponivel() else None), rede_atual(dados))
-        achados, contagem = enc.andar(float(parametros.get("orcamento_s", 300)))
-        return achados
+                esc = escada_completa(float(parametros.get("intervalo_s", 1.0)), tentativas=1, tempo_limite=25)
+                mb = Metabusca(buscar=esc.buscar)
+
+                def buscar_links(q: str) -> list[str]:
+                    try:
+                        return [p.link for p in mb.consultar(q, limite=10)[0]]
+                    except Exception:  # noqa: BLE001
+                        return []
+                enc = Encaminhamento(c_w, contexto.diario, registro, Interceptador(c_w, contexto.diario, esc, metabusca=buscar_links,
+                                                                                  ia=ia if ia.disponivel() else None), rede)
+                return enc.andar(orcamento, livros=parte)[0]
+            finally:
+                c_w.close()
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=n) as pool:
+            partes = [livros[i::n] for i in range(n)]
+            return [a for r in pool.map(trabalhador, partes) for a in r]
     finally:
         con.close()
 
