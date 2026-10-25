@@ -34,7 +34,7 @@ def gerar(dados: str | Path, config: str | Path = "config", hoje: date | None = 
         livros = [dict(r) for r in b.execute(
             "SELECT l.id, l.titulo, l.orgao, l.uf, l.estrela, l.selo_livro, l.link_oficial, l.link_divulgacao, d.abrangencia, d.municipio, d.esfera,"
             " d.inscricao_inicio, d.inscricao_fim, d.resultado_em, d.valor_min, d.valor_max, d.modalidade, d.area, d.situacao_prazo, d.validacao"
-            " FROM livro l JOIN livro_dados d ON d.livro_id = l.id WHERE l.situacao <> 'excluido' AND d.validacao <> 'expurgado'"
+            " FROM livro l JOIN livro_dados d ON d.livro_id = l.id WHERE l.situacao NOT IN ('excluido', 'unido') AND d.validacao <> 'expurgado'"
             " AND l.id NOT IN (SELECT livro_unido FROM uniao)")]                        # o livro unido a outro aparece só no que fica
         abertas = sorted((x for x in livros if x["situacao_prazo"] == "aberta"), key=lambda x: (x["inscricao_fim"] or "9999", x["titulo"] or ""))
         por_terr: dict[str, int] = {}
@@ -44,13 +44,13 @@ def gerar(dados: str | Path, config: str | Path = "config", hoje: date | None = 
         # o programa é o livro do próprio mecanismo (entregue pela seção "programa" do motor); as demais publicações
         # ligadas à mesma lei aparecem dentro dele
         sql_prog = ("SELECT DISTINCT l.id, l.titulo, l.estrela, l.link_oficial FROM livro l JOIN achado a ON a.livro_id = l.id "
-                    "WHERE a.id LIKE '%-programa-%' AND l.situacao <> 'excluido'")
+                    "WHERE a.id LIKE '%-programa-%' AND l.situacao NOT IN ('excluido', 'unido')")
         for r in b.execute(sql_prog):
             certs = I.melhor([dict(x) for x in b.execute("SELECT * FROM certidao WHERE livro_id=? AND situacao IN ('comprovado','dispensado')", (r["id"],))])
             leis = [dict(x) for x in b.execute(SQL_LEIS, (r["id"],))]
             relacionados = [dict(x) for x in b.execute(
                 "SELECT DISTINCT l.id, l.titulo, l.link_oficial FROM livro_lei ll JOIN livro l ON l.id = ll.livro_id WHERE ll.lei_id IN "
-                "(SELECT lei_id FROM livro_lei WHERE livro_id=?) AND l.id <> ? AND l.situacao <> 'excluido' ORDER BY l.criado_em DESC LIMIT 20",
+                "(SELECT lei_id FROM livro_lei WHERE livro_id=?) AND l.id <> ? AND l.situacao NOT IN ('excluido', 'unido') ORDER BY l.criado_em DESC LIMIT 20",
                 (r["id"], r["id"]))]
             programas.append({**dict(r), "leis": leis, "relacionados": relacionados,
                               "certidoes": [{"item": k, "valor": v["valor"], "trecho": v.get("trecho"), "pagina": v.get("pagina"),

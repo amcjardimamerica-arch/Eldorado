@@ -64,7 +64,7 @@ def gerar_lote(con: sqlite3.Connection, hoje: date, maximo: int = 40) -> dict[st
     con.row_factory = sqlite3.Row
     livros = []
     for lv in con.execute("SELECT l.*, d.inscricao_fim, d.situacao_prazo FROM livro l JOIN passaporte p ON p.livro_id = l.id "
-                          "LEFT JOIN livro_dados d ON d.livro_id = l.id WHERE p.fase = 'analise externa' AND l.situacao <> 'excluido' "
+                          "LEFT JOIN livro_dados d ON d.livro_id = l.id WHERE p.fase = 'analise externa' AND l.situacao NOT IN ('excluido', 'unido') "
                           "ORDER BY (d.situacao_prazo = 'aberta') DESC, d.inscricao_fim"):
         certs = I.melhor([dict(c) for c in con.execute("SELECT * FROM certidao WHERE livro_id=? AND situacao IN ('comprovado','dispensado')", (lv["id"],))])
         validas = {k: v for k, v in certs.items() if I.resolvido(v)}

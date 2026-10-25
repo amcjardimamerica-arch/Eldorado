@@ -29,10 +29,17 @@ class Indice:
     def __init__(self, biblioteca: sqlite3.Connection | None, missao: Missao, diario: Diario, missao_id: str = "oportunidades"):
         self.missao, self.diario, self.missao_id = missao, diario, missao_id
         self._por_chave: dict[str, str] = {}
+        self._por_titulo_link: dict[tuple[str, str], tuple[str, str | None]] = {}   # o mesmo título e o mesmo link: (livro, UF)
         self._uf: dict[str, str | None] = {}
         self._lsh = MinHashLSH(threshold=LIMIAR, num_perm=128)
         if biblioteca is not None:
-            for r in biblioteca.execute("SELECT id, chave, titulo, uf FROM livro WHERE missao=? AND situacao <> 'excluido'", (missao_id,)):
+            from .identidade import _link, titulo_normal
+            for lid, t, lo, ld, uf in biblioteca.execute("SELECT id, titulo, link_oficial, link_divulgacao, uf FROM livro WHERE missao=? "
+                                                         "AND situacao NOT IN ('excluido', 'unido')", (missao_id,)):
+                for u in (lo, ld):
+                    if u:
+                        self._por_titulo_link.setdefault((titulo_normal(t), _link(u)), (lid, uf))
+            for r in biblioteca.execute("SELECT id, chave, titulo, uf FROM livro WHERE missao=? AND situacao NOT IN ('excluido', 'unido')", (missao_id,)):
                 self._lembrar(r[0], r[1], r[2] or "", r[3])
 
     def _lembrar(self, livro: str, chave: str, titulo: str, uf: str | None) -> None:
@@ -46,6 +53,14 @@ class Indice:
         d = achado.dados or {}
         chave = self.missao.chave(achado)
         livro, como = self._por_chave.get(chave), "mesma chave"
+        if livro is None and achado.titulo:                           # a oportunidade que já tem livro agrega a ele (24/10/2026)
+            from .identidade import _link, titulo_normal
+            t = titulo_normal(achado.titulo)
+            for u in (achado.link_oficial, achado.link_divulgacao):
+                achou = self._por_titulo_link.get((t, _link(u))) if u else None
+                if achou and not (achou[1] and d.get("uf") and achou[1] != d.get("uf")):     # UFs diferentes nunca se unem
+                    livro, como = achou[0], "a mesma oportunidade (o mesmo título e o mesmo link)"
+                    break
         if livro is None and achado.titulo:
             for candidato in self._lsh.query(_minhash(achado.titulo)):
                 if self._uf.get(candidato) and self._uf.get(candidato) == d.get("uf"):
@@ -59,6 +74,10 @@ class Indice:
                 "orgao": d.get("orgao"), "uf": d.get("uf"), "link_divulgacao": achado.link_divulgacao, "link_oficial": achado.link_oficial,
                 "estrela": "sem", "selo_livro": "sem", "informacoes_validadas": 0, "situacao": "em trabalho", "criado_em": agora(), "atualizado_em": agora()})
             self._lembrar(livro, chave, achado.titulo or "", d.get("uf"))
+            from .identidade import _link, titulo_normal
+            for u in (achado.link_oficial, achado.link_divulgacao):
+                if u:
+                    self._por_titulo_link.setdefault((titulo_normal(achado.titulo), _link(u)), (livro, d.get("uf")))
         self.diario.emitir("livro.vinculado", "indice", {"achado_id": achado.id, "livro_id": livro})
         return livro, novo, como
 

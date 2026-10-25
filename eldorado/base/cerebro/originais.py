@@ -19,7 +19,7 @@ def livros_com_origem(con: sqlite3.Connection, limite: int = 200) -> list[dict[s
     con.row_factory = sqlite3.Row
     linhas = con.execute("SELECT l.id, l.titulo, l.orgao, l.link_oficial, p.fase FROM livro l JOIN livro_dados d ON d.livro_id = l.id "
                          "JOIN passaporte p ON p.livro_id = l.id WHERE d.origem = 'confirmado' AND l.link_oficial IS NOT NULL "
-                         "AND l.situacao <> 'excluido' AND l.id NOT IN (SELECT livro_unido FROM uniao)").fetchall()
+                         "AND l.situacao NOT IN ('excluido', 'unido') AND l.id NOT IN (SELECT livro_unido FROM uniao)").fetchall()
     livros = []
     for r in sorted(linhas, key=lambda r: (ORDEM_DAS_FASES.index(r["fase"]) if r["fase"] in ORDEM_DAS_FASES else 9, r["id"]))[:limite]:
         m = NUMERO.search(r["titulo"] or "")

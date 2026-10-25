@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .._sqlite import abrir as _abrir
 
-VERSAO = 9
+VERSAO = 10
 
 DDL_V2 = r"""
 CREATE TABLE livro_dados (livro_id TEXT PRIMARY KEY REFERENCES livro(id),
@@ -31,7 +31,7 @@ CREATE TABLE livro (id TEXT PRIMARY KEY, missao TEXT NOT NULL, chave TEXT NOT NU
   orgao TEXT, uf TEXT, municipio_ibge TEXT, link_divulgacao TEXT, link_oficial TEXT,
   estrela TEXT CHECK (estrela IN ('sem','bronze','prata','ouro')), selo_livro TEXT CHECK (selo_livro IN ('sem','bronze','prata','ouro')),
   informacoes_validadas INTEGER NOT NULL DEFAULT 0,
-  situacao TEXT NOT NULL CHECK (situacao IN ('em trabalho','aguardando','verificacao externa','finalizado','transferido ao farol','excluido')),
+  situacao TEXT NOT NULL CHECK (situacao IN ('em trabalho','aguardando','verificacao externa','finalizado','transferido ao farol','excluido','unido')),
   justificativa_exclusao TEXT, criado_em TEXT NOT NULL, atualizado_em TEXT NOT NULL,
   UNIQUE (missao, chave), CHECK (situacao <> 'excluido' OR justificativa_exclusao IS NOT NULL));
 CREATE TABLE achado (id TEXT PRIMARY KEY, motor TEXT NOT NULL, encontrado_em TEXT NOT NULL, publicado_em TEXT,
@@ -87,7 +87,7 @@ CREATE VIEW calendario AS
   SELECT l.id, l.titulo, l.tema, l.uf, 'aberta' AS tipo, NULL AS data_prevista, l.estrela, l.selo_livro FROM livro l
    WHERE l.situacao IN ('em trabalho','aguardando','verificacao externa','finalizado')
   UNION ALL SELECT l.id, l.titulo, l.tema, l.uf, 'prevista', p.proxima_abertura_prevista, l.estrela, l.selo_livro
-   FROM previsao p JOIN livro l ON l.id = p.livro_id WHERE p.proxima_abertura_prevista IS NOT NULL AND l.situacao <> 'excluido';
+   FROM previsao p JOIN livro l ON l.id = p.livro_id WHERE p.proxima_abertura_prevista IS NOT NULL AND l.situacao NOT IN ('excluido', 'unido');
 CREATE VIEW historia_do_livro AS
   SELECT livro_id, encontrado_em AS em, 'achado' AS tipo, motor || ': ' || COALESCE(titulo,'') AS texto FROM achado WHERE livro_id IS NOT NULL
   UNION ALL SELECT livro_id, em, 'passagem', COALESCE(de,'início') || ' → ' || para || COALESCE(' (' || motivo || ')','') FROM passagem
@@ -97,7 +97,7 @@ CREATE VIEW historia_do_livro AS
   UNION ALL SELECT livro_id, em, 'veredito', origem || ': ' || decisao FROM veredito
   UNION ALL SELECT livro_id, em, 'análise da rede', 'nota ' || COALESCE(nota,'') || ' · ' || COALESCE(explicacao,'') FROM analise_rede
   UNION ALL SELECT livro_id, em, 'transferência', 'ao Farol (formato ' || versao_formato || ')' FROM transferencia;
-CREATE VIEW selos AS SELECT estrela, selo_livro, COUNT(*) AS livros FROM livro WHERE situacao <> 'excluido' GROUP BY estrela, selo_livro;
+CREATE VIEW selos AS SELECT estrela, selo_livro, COUNT(*) AS livros FROM livro WHERE situacao NOT IN ('excluido', 'unido') GROUP BY estrela, selo_livro;
 CREATE VIEW achados_por_motor AS SELECT motor, COUNT(*) AS achados, SUM(decisao='aceito') AS aceitos, SUM(decisao='barrado') AS barrados, MAX(encontrado_em) AS ultimo FROM achado GROUP BY motor;
 """
 
@@ -162,7 +162,28 @@ CREATE VIEW empresas_com_oportunidade_aberta AS
   SELECT e.cnpj, e.razao_social, o.titulo, o.encerramento FROM empresa e JOIN oportunidade_empresa o ON o.cnpj = e.cnpj WHERE o.encerramento IS NULL OR o.encerramento >= date('now');
 """
 
-MIGRACOES = {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7, 8: DDL_V8, 9: DDL_V9}   # 2: a decupagem (livro_dados); 3: o registro do expurgo; 4: a legislação (livro_lei);
+# 10: a situação "unido" (titular, 24/10/2026: oportunidades idênticas em vários livros são reunidas num só; o livro
+# unido não se apaga, só deixa de ser oportunidade, e aponta para o que fica pela tabela uniao) -- reconstrucao
+DDL_V10 = r"""
+-- reconstrucao
+DROP TRIGGER IF EXISTS livro_nao_se_apaga;
+DROP TRIGGER IF EXISTS livro_identidade_fixa;
+CREATE TABLE livro_v10 (id TEXT PRIMARY KEY, missao TEXT NOT NULL, chave TEXT NOT NULL, titulo TEXT, tema TEXT,
+  orgao TEXT, uf TEXT, municipio_ibge TEXT, link_divulgacao TEXT, link_oficial TEXT,
+  estrela TEXT CHECK (estrela IN ('sem','bronze','prata','ouro')), selo_livro TEXT CHECK (selo_livro IN ('sem','bronze','prata','ouro')),
+  informacoes_validadas INTEGER NOT NULL DEFAULT 0,
+  situacao TEXT NOT NULL CHECK (situacao IN ('em trabalho','aguardando','verificacao externa','finalizado','transferido ao farol','excluido','unido')),
+  justificativa_exclusao TEXT, criado_em TEXT NOT NULL, atualizado_em TEXT NOT NULL,
+  UNIQUE (missao, chave), CHECK (situacao <> 'excluido' OR justificativa_exclusao IS NOT NULL));
+INSERT INTO livro_v10 (id, missao, chave, titulo, tema, orgao, uf, municipio_ibge, link_divulgacao, link_oficial, estrela, selo_livro, informacoes_validadas, situacao, justificativa_exclusao, criado_em, atualizado_em) SELECT id, missao, chave, titulo, tema, orgao, uf, municipio_ibge, link_divulgacao, link_oficial, estrela, selo_livro, informacoes_validadas, situacao, justificativa_exclusao, criado_em, atualizado_em FROM livro;
+DROP TABLE livro;
+ALTER TABLE livro_v10 RENAME TO livro;
+CREATE INDEX livro_situacao ON livro(situacao);
+CREATE TRIGGER livro_nao_se_apaga BEFORE DELETE ON livro BEGIN SELECT RAISE(ABORT,'livro não se apaga: use a exclusão lógica'); END;
+CREATE TRIGGER livro_identidade_fixa BEFORE UPDATE OF id, missao, chave, criado_em ON livro BEGIN SELECT RAISE(ABORT,'a identidade do livro não se altera'); END
+"""
+
+MIGRACOES = {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7, 8: DDL_V8, 9: DDL_V9, 10: DDL_V10}   # 2: a decupagem (livro_dados); 3: o registro do expurgo; 4: a legislação (livro_lei);
 # 5: as 5 fases do Cartório no passaporte (titular, 22/10/2026); 6: o arquivo (o livro aguardando nova oportunidade);
 # 7: a origem decidida por livro (confirmado, candidato, ausente) e o motivo (titular, 23/10/2026);
 # 9: as empresas (a antiga base Especial) dentro da Biblioteca;

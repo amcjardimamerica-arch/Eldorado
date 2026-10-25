@@ -25,17 +25,32 @@ def abrir(caminho: str | Path, ddl: str, versao: int, migracoes: dict[int, str] 
         con.execute(f"PRAGMA user_version={versao}")
         con.execute("PRAGMA foreign_keys=ON")
     elif atual < versao and migracoes and all(n in migracoes for n in range(atual + 1, versao + 1)):
+        # a reconstrução de uma tabela (a marca "-- reconstrucao") pede as chaves estrangeiras desligadas, fora da transação;
+        # a integridade é conferida antes de confirmar
+        reconstroi = any("-- reconstrucao" in migracoes[n] for n in range(atual + 1, versao + 1))
+        if reconstroi:
+            con.execute("PRAGMA foreign_keys=OFF")
+            con.execute("PRAGMA legacy_alter_table=ON")
         con.execute("BEGIN IMMEDIATE")
         try:
             for n in range(atual + 1, versao + 1):
                 for comando in (c for c in migracoes[n].split(";\n") if c.strip()):
                     con.execute(comando)
                 con.execute(f"PRAGMA user_version={n}")
+            if reconstroi and con.execute("PRAGMA foreign_key_check").fetchone():
+                raise sqlite3.IntegrityError("a reconstrução quebraria as chaves estrangeiras")
             con.execute("COMMIT")
         except Exception:
             con.execute("ROLLBACK")
             con.close()
             raise
+        finally:
+            if reconstroi:
+                try:
+                    con.execute("PRAGMA legacy_alter_table=OFF")
+                    con.execute("PRAGMA foreign_keys=ON")
+                except sqlite3.ProgrammingError:
+                    pass
     elif atual != versao:
         con.close()
         raise EsquemaIncompativel(f"{p}: esquema na versão {atual}, esperada {versao} (sem caminho de migração)")

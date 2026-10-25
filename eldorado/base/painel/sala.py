@@ -113,7 +113,7 @@ def montar(
     com_erro = [m for m in reg if ult.get(m) and ult[m][1]]
     ultima_leitura = max((v[0] for v in ult.values() if v[0]), default=None)
     agenda = {r[0] for r in cer.execute("SELECT DISTINCT modulo FROM agenda")}
-    AB = "FROM livro l JOIN livro_dados d ON d.livro_id = l.id WHERE d.situacao_prazo = 'aberta' AND l.situacao <> 'excluido'"
+    AB = "FROM livro l JOIN livro_dados d ON d.livro_id = l.id WHERE d.situacao_prazo = 'aberta' AND l.situacao NOT IN ('excluido', 'unido')"
     abertas = q(bib, f"SELECT COUNT(*) {AB}")
     estrelas = Counter(dict(bib.execute(f"SELECT COALESCE(l.estrela, 'sem'), COUNT(*) {AB} GROUP BY 1").fetchall()))
     validadas = estrelas.get("prata", 0) + estrelas.get("ouro", 0)
@@ -358,7 +358,7 @@ def montar(
         iso,
     )
     # ---- 07 Biblioteca
-    livros = q(bib, "SELECT COUNT(*) FROM livro WHERE situacao <> 'excluido'")
+    livros = q(bib, "SELECT COUNT(*) FROM livro WHERE situacao NOT IN ('excluido', 'unido')")
     I(
         "es_livros",
         "Livros na Biblioteca",

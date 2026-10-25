@@ -43,6 +43,11 @@ esperas_s = [2, 5]
 parametros = { dados = "dados", eventos = "eventos" }
 
 [[no]]
+id = "unir_repetidos"
+tipo = "eldorado.base.cartorio.identidade:no_unir_repetidos"
+parametros = { dados = "dados" }
+
+[[no]]
 id = "auditar"
 tipo = "eldorado.base.cartorio.auditoria:no_auditar"
 parametros = { dados = "dados" }
@@ -248,3 +253,13 @@ saida = "ordem"
 [[conexao]]
 de = "originais"
 para = "decidir_rede"
+# a revisão das oportunidades repetidas (24/10/2026): depois do Cartório, antes da auditoria (que recalcula a estrela do
+# livro que ficou, com as certidões do unido)
+[[conexao]]
+de = "aplicar_cartorio"
+para = "unir_repetidos"
+saida = "ordem"
+[[conexao]]
+de = "unir_repetidos"
+para = "auditar"
+saida = "ordem"

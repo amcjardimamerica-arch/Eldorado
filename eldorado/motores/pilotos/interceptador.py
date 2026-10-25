@@ -92,7 +92,7 @@ def fila(con: sqlite3.Connection, hoje: str) -> list[Livro]:
     saida = []
     for r in con.execute("SELECT l.id, l.titulo, l.orgao, l.link_oficial, l.link_divulgacao, l.estrela, d.inscricao_fim, d.municipio, l.uf FROM livro l "
                          "JOIN livro_dados d ON d.livro_id = l.id JOIN passaporte p ON p.livro_id = l.id WHERE p.fase = 'preparacao' "
-                         "AND l.situacao <> 'excluido' AND d.validacao <> 'expurgado' AND l.id NOT IN (SELECT livro_unido FROM uniao)"):
+                         "AND l.situacao NOT IN ('excluido', 'unido') AND d.validacao <> 'expurgado' AND l.id NOT IN (SELECT livro_unido FROM uniao)"):
         lv = Livro(r["id"], r["titulo"] or "", r["orgao"], r["link_oficial"], r["link_divulgacao"], r["estrela"] or "sem", r["inscricao_fim"],
                    I.melhor(certs.get(r["id"], [])), tentadas.get(r["id"], set()), r["municipio"], r["uf"])
         if lv.faltam:

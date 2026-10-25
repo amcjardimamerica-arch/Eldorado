@@ -131,7 +131,7 @@ class Sistema:
                 "SELECT l.*, d.abrangencia, d.esfera, d.inscricao_inicio, d.inscricao_fim, d.resultado_em, d.area AS area_d, d.validacao, "
                 f"d.situacao_prazo, d.municipio, d.origem, {self._escada}, p.fase "
                 "FROM livro l JOIN livro_dados d ON d.livro_id = l.id JOIN passaporte p ON p.livro_id = l.id "
-                "WHERE d.situacao_prazo = 'aberta' AND l.situacao <> 'excluido' ORDER BY d.inscricao_fim"
+                "WHERE d.situacao_prazo = 'aberta' AND l.situacao NOT IN ('excluido', 'unido') ORDER BY d.inscricao_fim"
             )
         )
 
@@ -442,7 +442,7 @@ def _fluxo(sis: Sistema, agora: str) -> dict:
     listas = sis.checklist(ids)
     motor_de = sis.motor_do_livro()
     validados = sis.bib.execute("SELECT COUNT(*) FROM livro_dados").fetchone()[0]
-    total = sis.bib.execute("SELECT COUNT(*) FROM livro WHERE situacao <> 'excluido'").fetchone()[0]
+    total = sis.bib.execute("SELECT COUNT(*) FROM livro WHERE situacao NOT IN ('excluido', 'unido')").fetchone()[0]
     itens, confirmadas, possiveis, por_uf, cal = [], [], [], defaultdict(lambda: {"confirmadas": 0, "possiveis": 0}), []
     origem_ct, tipo_ct, val_ct = Counter(), Counter(), Counter()
     for r in livros:
@@ -517,7 +517,7 @@ def _fluxo(sis: Sistema, agora: str) -> dict:
         }
     )
     por_mes = defaultdict(lambda: {"criados": 0, "com_resultado": 0})
-    for (mes,) in sis.bib.execute("SELECT substr(criado_em, 1, 7) FROM livro WHERE situacao <> 'excluido'"):
+    for (mes,) in sis.bib.execute("SELECT substr(criado_em, 1, 7) FROM livro WHERE situacao NOT IN ('excluido', 'unido')"):
         por_mes[mes]["criados"] += 1
     ligados = sis.bib.execute("SELECT COUNT(DISTINCT livro_id) FROM achado WHERE livro_id IS NOT NULL").fetchone()[0]
     agrupados = defaultdict(list)
@@ -535,7 +535,8 @@ def _fluxo(sis: Sistema, agora: str) -> dict:
             "itens_por_uf": dict(agrupados),
         }
     )
-    com_edicoes = sis.bib.execute("SELECT COUNT(*) FROM livro WHERE situacao <> 'excluido' AND selo_livro IN ('bronze', 'prata', 'ouro')").fetchone()[0]
+    com_edicoes = sis.bib.execute("SELECT COUNT(*) FROM livro WHERE situacao NOT IN ('excluido', 'unido') "
+                                  "AND selo_livro IN ('bronze', 'prata', 'ouro')").fetchone()[0]
     f["livros_do_sistema"].update(
         {"por_mes": dict(por_mes), "catalogo": total, "ligados": ligados, "monitorados_abertos": len(livros), "com_historico_de_edicoes": com_edicoes}
     )
@@ -676,7 +677,7 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     editais, eventos, cal, fontes = _editais(sis)
     bussola, bussola_painel = _bussola(sis, D["bussola"], fontes, status)
     D.update({"gerado_em": agora, "editais": editais, "eventos": eventos, "calendario_decisao": cal, "bussola": bussola, "bussola_painel": bussola_painel})
-    total = sis.bib.execute("SELECT COUNT(*) FROM livro WHERE situacao <> 'excluido'").fetchone()[0]
+    total = sis.bib.execute("SELECT COUNT(*) FROM livro WHERE situacao NOT IN ('excluido', 'unido')").fetchone()[0]
     leis = sis.bib.execute("SELECT COUNT(*) FROM lei").fetchone()[0]
     D["biblioteca"].update(
         {"biblioteca": "Biblioteca do Eldorado (biblioteca.db)", "atualizado_em": agora, "acervos": {"leis": leis, "oportunidades": total, "associacoes": 0}}

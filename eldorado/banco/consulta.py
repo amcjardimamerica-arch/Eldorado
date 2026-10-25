@@ -16,7 +16,8 @@ METADADOS = {
                 "abertas": {
                     "title": "Oportunidades abertas",
                     "sql": "SELECT l.id, l.titulo, l.orgao, l.uf, d.inscricao_fim, l.link_oficial FROM livro l "
-                    "JOIN livro_dados d ON d.livro_id = l.id WHERE d.situacao_prazo = 'aberta' AND l.situacao <> 'excluido' ORDER BY d.inscricao_fim",
+                    "JOIN livro_dados d ON d.livro_id = l.id WHERE d.situacao_prazo = 'aberta' "
+                    "AND l.situacao NOT IN ('excluido', 'unido') ORDER BY d.inscricao_fim",
                 },
                 "farol": {
                     "title": "Livros no Farol",

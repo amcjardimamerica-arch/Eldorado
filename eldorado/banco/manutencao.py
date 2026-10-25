@@ -43,7 +43,7 @@ def buscar(texto: str, dados: Path = Path("dados"), limite: int = 50) -> list[di
         for lid, valor in con.execute("SELECT livro_id, valor FROM certidao WHERE situacao = 'comprovado' AND valor IS NOT NULL"):
             certs.setdefault(lid, []).append(valor)
         saida = []
-        for lid, t, o in con.execute("SELECT id, titulo, orgao FROM livro WHERE situacao <> 'excluido' ORDER BY atualizado_em DESC"):
+        for lid, t, o in con.execute("SELECT id, titulo, orgao FROM livro WHERE situacao NOT IN ('excluido', 'unido') ORDER BY atualizado_em DESC"):
             alvo = _sem_acento(f"{t} {o} {' '.join(certs.get(lid, []))}")
             if all(w in alvo for w in palavras):
                 saida.append({"id": lid, "titulo": t, "orgao": o})

@@ -23,7 +23,7 @@ def _agora() -> str:
 
 def para_transferir(con: sqlite3.Connection) -> list[str]:
     """Os livros liberados ao Farol ainda não transferidos, ou alterados depois da última transferência."""
-    sql = ("SELECT l.id FROM livro l JOIN passaporte p ON p.livro_id = l.id WHERE p.fase = 'farol' AND l.situacao <> 'excluido' "
+    sql = ("SELECT l.id FROM livro l JOIN passaporte p ON p.livro_id = l.id WHERE p.fase = 'farol' AND l.situacao NOT IN ('excluido', 'unido') "
            "AND (NOT EXISTS (SELECT 1 FROM transferencia t WHERE t.livro_id = l.id) "
            "OR l.atualizado_em > (SELECT MAX(t.em) FROM transferencia t WHERE t.livro_id = l.id)) ORDER BY l.id")
     return [r[0] for r in con.execute(sql)]

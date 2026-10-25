@@ -25,7 +25,7 @@ def criar_app(raiz: Path = Path(".")) -> FastAPI:
         s = sis()
         ultima = s.cer.execute("SELECT MAX(inicio) FROM execucao_motor").fetchone()[0]
         return {"esquema": s.bib.execute("PRAGMA user_version").fetchone()[0],
-                "livros": s.bib.execute("SELECT COUNT(*) FROM livro WHERE situacao <> 'excluido'").fetchone()[0],
+                "livros": s.bib.execute("SELECT COUNT(*) FROM livro WHERE situacao NOT IN ('excluido', 'unido')").fetchone()[0],
                 "por_etapa": dict(s.bib.execute("SELECT fase, COUNT(*) FROM passaporte GROUP BY fase").fetchall()), "ultima_execucao": ultima}
 
     @app.get("/motores")
@@ -46,7 +46,7 @@ def criar_app(raiz: Path = Path(".")) -> FastAPI:
     def livros(q: str | None = None, etapa: str | None = None, limite: int = 50) -> list[dict[str, Any]]:
         s = sis()
         sql = ("SELECT l.id, l.titulo, l.orgao, l.uf, l.estrela, l.link_divulgacao, l.link_oficial, p.fase FROM livro l "
-               "JOIN passaporte p ON p.livro_id = l.id WHERE l.situacao <> 'excluido'")
+               "JOIN passaporte p ON p.livro_id = l.id WHERE l.situacao NOT IN ('excluido', 'unido')")
         args: list[Any] = []
         if q:
             sql += " AND (l.titulo LIKE ? OR l.orgao LIKE ?)"

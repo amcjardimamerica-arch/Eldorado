@@ -88,7 +88,7 @@ def calendario(con: sqlite3.Connection, hoje: date | None = None, dias: int = 36
     ate = (hoje + timedelta(days=dias)).isoformat()
     itens = [{"data": f, "tipo": "encerramento", "livro_id": i, "titulo": t} for i, t, f in con.execute(
         "SELECT l.id, l.titulo, d.inscricao_fim FROM livro l JOIN livro_dados d ON d.livro_id = l.id WHERE d.situacao_prazo = 'aberta' "
-        "AND d.inscricao_fim >= ? AND l.situacao <> 'excluido'", (hoje.isoformat(),))]
+        "AND d.inscricao_fim >= ? AND l.situacao NOT IN ('excluido', 'unido')", (hoje.isoformat(),))]
     itens += [{"data": p, "tipo": "abertura prevista", "livro_id": i, "titulo": t, "alerta_em": a, "confianca": c} for i, t, p, a, c in con.execute(
         "SELECT l.id, l.titulo, v.proxima_abertura_prevista, v.alerta_em, v.confianca FROM previsao v JOIN livro l ON l.id = v.livro_id "
         "WHERE v.proxima_abertura_prevista BETWEEN ? AND ?", (hoje.isoformat(), ate))]
