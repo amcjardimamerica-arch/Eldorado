@@ -133,12 +133,30 @@ def voar_espiao(dados: Path, diario, parar: threading.Event, orcamento_s: float 
             parar.wait(60)                                                # um voo que falhou: um minuto antes do próximo
 
 
+def conferir_sempre(dados: Path, diario, parar: threading.Event) -> None:
+    """O Comandante confere, a cada minuto, as mudanças feitas em funcionamento há 20 minutos (a regra da titular)."""
+    import sqlite3
+
+    from ..comandante.parametros import conferir
+    while not parar.wait(60):
+        try:
+            cer = sqlite3.connect(f"file:{dados / 'cerebro.db'}?mode=ro", uri=True)
+            try:
+                if cer.execute("SELECT 1 FROM sqlite_master WHERE name = 'conferencia'").fetchone():
+                    conferir(cer, diario)
+            finally:
+                cer.close()
+        except Exception:  # noqa: BLE001 — a conferência seguinte tenta de novo
+            pass
+
+
 def ligar(dados: Path, eventos: Path, parar: threading.Event) -> list[threading.Thread]:
     """Liga os dois voos permanentes (o funcionamento permanente chama no início do ciclo)."""
     from ..nucleo.eventos import Diario
     ATIVO.set()
     fios = [threading.Thread(target=voar_interceptador, args=(dados, Diario(eventos, "interceptador"), parar), daemon=True, name="interceptador"),
-            threading.Thread(target=voar_espiao, args=(dados, Diario(eventos, "espiao"), parar), daemon=True, name="espiao")]
+            threading.Thread(target=voar_espiao, args=(dados, Diario(eventos, "espiao"), parar), daemon=True, name="espiao"),
+            threading.Thread(target=conferir_sempre, args=(dados, Diario(eventos, "comandante"), parar), daemon=True, name="comandante")]
     for f in fios:
         f.start()
     return fios

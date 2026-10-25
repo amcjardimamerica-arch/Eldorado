@@ -161,6 +161,16 @@ tipo = "eldorado.base.aprendizado.avaliar:no_avaliar"
 parametros = { dados = "dados" }
 
 [[no]]
+id = "curar"
+tipo = "eldorado.base.aprendizado.curador:no_curar"
+parametros = { dados = "dados", skills = "skills" }
+
+[[no]]
+id = "conferir"
+tipo = "eldorado.base.comandante.parametros:no_conferir"
+parametros = { dados = "dados" }
+
+[[no]]
 id = "memorizar"
 tipo = "eldorado.base.aprendizado.memoria:no_memorizar"
 parametros = { dados = "dados" }
@@ -326,5 +336,14 @@ para = "avaliar"
 saida = "ordem"
 [[conexao]]
 de = "avaliar"
+para = "curar"
+saida = "ordem"
+# o curador das skills (A5) e os parâmetros do Comandante (C7; a conferência de 20 min roda também a cada minuto)
+[[conexao]]
+de = "curar"
+para = "conferir"
+saida = "ordem"
+[[conexao]]
+de = "conferir"
 para = "memorizar"
 saida = "ordem"

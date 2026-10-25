@@ -26,6 +26,28 @@ _fim: dict[str, float] = {}
 _politica: dict[str, Any] = {}
 
 
+def _parametros(dados: Path) -> tuple[float, float]:
+    """A carga máxima e o intervalo, do Arquivo do Cérebro (os parâmetros do Comandante); a regra da titular é a reserva."""
+    with _trava:
+        p = _politica.get("parametros")
+        if p and time.monotonic() - p["em"] < 60:
+            return p["v"]
+    v = (CARGA_MAXIMA, INTERVALO_S)
+    try:
+        from .parametros import valor
+
+        cer = sqlite3.connect(f"file:{dados / 'cerebro.db'}?mode=ro", uri=True)
+        try:
+            v = (float(valor(cer, "pilotos", "carga_maxima", CARGA_MAXIMA)), float(valor(cer, "pilotos", "intervalo_s", INTERVALO_S)))
+        finally:
+            cer.close()
+    except (sqlite3.Error, ValueError, TypeError):
+        pass
+    with _trava:
+        _politica["parametros"] = {"v": v, "em": time.monotonic()}
+    return v
+
+
 def carga() -> float:
     """A carga da máquina: o maior entre o processador e a memória (em %)."""
     try:
@@ -69,14 +91,17 @@ def _familia(dados: Path, cer: sqlite3.Connection) -> tuple[str | None, float, i
 def autorizar(piloto: str, dados: Path, diario, parar: threading.Event, alvo: str | None = None, titulo: str = "") -> dict[str, Any] | None:
     """Espera as quatro regras e devolve a autorização (para o Espião, com a família escolhida); None se o sistema parar
     ou se não houver janela de busca."""
+    # a carga máxima e o intervalo vêm do Arquivo do Cérebro (os parâmetros do Comandante); a regra da titular é a reserva
+    maxima, intervalo = _parametros(dados) if (dados / "cerebro.db").exists() else (CARGA_MAXIMA, INTERVALO_S)
+    intervalo = min(intervalo, INTERVALO_S)  # (os testes encurtam o intervalo; na produção os dois são 3 s)
     while not parar.is_set():  # regra 1: o intervalo de 3 segundos
         with _trava:
-            falta = INTERVALO_S - (time.monotonic() - _fim.get(piloto, 0.0))
+            falta = intervalo - (time.monotonic() - _fim.get(piloto, 0.0))
         if falta <= 0:
             break
         parar.wait(falta)
     c = carga()
-    while c > CARGA_MAXIMA and not parar.is_set():  # regra 4: a carga até 85%
+    while c > maxima and not parar.is_set():  # regra 4: a carga até 85%
         parar.wait(10)
         c = carga()
     if parar.is_set():
@@ -90,7 +115,9 @@ def autorizar(piloto: str, dados: Path, diario, parar: threading.Event, alvo: st
             if alvo is None:
                 return None
             ctx, lista, _ = _politica["espiao"]["ultimo_ctx"]
-            motivo = f"missão autorizada: carga {c:.0f}% (até 85%) · nota {prob:.2f} pela política aprendida com {aprendidas} decisões avaliadas"
+            motivo = (
+                f"missão autorizada: carga {c:.0f}% (até {maxima:.0f}%) · nota {prob:.2f} pela política aprendida com {aprendidas} decisões avaliadas"
+            )
             dec = {
                 "etapa": "espiao",
                 "acao": "voar a família",
@@ -101,7 +128,7 @@ def autorizar(piloto: str, dados: Path, diario, parar: threading.Event, alvo: st
         else:
             if not alvo:  # regra 2: há livro na fila
                 return None
-            motivo = f"voo autorizado: carga {c:.0f}% (até 85%) · o livro na frente da fila (a nota da rede): {titulo[:120]}"
+            motivo = f"voo autorizado: carga {c:.0f}% (até {maxima:.0f}%) · o livro na frente da fila (a nota da rede): {titulo[:120]}"
             dec = {"etapa": "interceptador", "acao": "investigar o livro", "alvo": alvo, "nota": None, "contexto": None}
     finally:
         cer.close()
