@@ -726,6 +726,9 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     from .pilotos import montar as pilotos_montar
     arq_pilotos, status_pilotos = pilotos_montar(sis.bib, sis.cer, _molde)
     arquivos.update(arq_pilotos)
+    # o ranking de empresas (titular, 25/10/2026: a aba estava zerada; montado das empresas e incentivos da Biblioteca)
+    from .ranking import montar as ranking_montar
+    arquivos["ranking_apoiadores.json"] = ranking_montar(sis.bib, _molde)
     for m in sc["detalhes"].get("motores") or []:
         if m.get("id") in status_pilotos:
             m.update(status_pilotos[m["id"]])
