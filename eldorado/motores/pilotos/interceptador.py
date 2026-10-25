@@ -75,6 +75,12 @@ class Livro:
         return I.faltando({k: v for k, v in self.certidoes.items() if I.resolvido(v)})
 
     @property
+    def base(self) -> str | None:
+        """A página de partida das abordagens: o link oficial ou, na falta dele, o de divulgação (24/10/2026: 1.975 livros
+        da fila sem link oficial ficavam fora do Interceptador)."""
+        return self.link_oficial or self.link_divulgacao
+
+    @property
     def numero(self) -> str | None:
         m = NUMERO.search(self.titulo or "")
         return f"{int(m.group(1))}/{m.group(2)}" if m else None
@@ -127,11 +133,11 @@ class Interceptador:
 
     # ------------------------------------------------------------------ as 10 abordagens (cada uma devolve os endereços a ler)
     def _a1(self, lv: Livro) -> list[str]:
-        base = [u for u in (lv.link_oficial,) if u]
-        return base + (list(self._documentos_da_pagina(lv.link_oficial, lv.titulo, 2)) if lv.link_oficial else [])
+        base = [u for u in (lv.base,) if u]
+        return base + (list(self._documentos_da_pagina(lv.base, lv.titulo, 2)) if lv.base else [])
 
     def _a2(self, lv: Livro) -> list[str]:
-        m = PNCP.search(lv.link_oficial or "")
+        m = PNCP.search(lv.base or "")
         if m:
             try:
                 url = f"https://pncp.gov.br/pncp-api/v1/orgaos/{m.group(1)}/compras/{m.group(2)}/{m.group(3)}/arquivos"
@@ -139,16 +145,16 @@ class Interceptador:
                 return [a.get("url") or a.get("uri") for a in arquivos if isinstance(a, dict) and (a.get("url") or a.get("uri"))][:8]
             except (Bloqueado, Indisponivel, Pendente, ValueError):
                 return []
-        return list(self._documentos_da_pagina(lv.link_oficial, lv.titulo, 8)) if lv.link_oficial else []
+        return list(self._documentos_da_pagina(lv.base, lv.titulo, 8)) if lv.base else []
 
     def _a3(self, lv: Livro) -> list[str]:
-        if not lv.link_oficial:
+        if not lv.base:
             return []
-        lido = self._ler(lv.link_oficial)
+        lido = self._ler(lv.base)
         if lido is None or lido[1].tipo != "html":
             return []
-        dom = urlsplit(lv.link_oficial).hostname
-        paginas = [u for u in lido[1].links if urlsplit(u).hostname == dom and CHAVE.search(u) and u != lv.link_oficial][:4]
+        dom = urlsplit(lv.base).hostname
+        paginas = [u for u in lido[1].links if urlsplit(u).hostname == dom and CHAVE.search(u) and u != lv.base][:4]
         docs: list[str] = []
         for p in paginas:
             docs += list(self._documentos_da_pagina(p, lv.titulo, 2))
@@ -161,16 +167,16 @@ class Interceptador:
             self._conhecidos = {}
             for o, link in self.con.execute("SELECT orgao, link_oficial FROM livro WHERE link_oficial IS NOT NULL AND orgao IS NOT NULL"):
                 self._conhecidos.setdefault(o.lower(), set()).add(f"{urlsplit(link).scheme}://{urlsplit(link).netloc}")
-        sites = sorted(self._conhecidos.get(lv.orgao.lower(), set()) - {f"{urlsplit(lv.link_oficial or '').scheme}://{urlsplit(lv.link_oficial or '').netloc}"})
+        sites = sorted(self._conhecidos.get(lv.orgao.lower(), set()) - {f"{urlsplit(lv.base or '').scheme}://{urlsplit(lv.base or '').netloc}"})
         out: list[str] = []
         for s in sites[:3]:
             out += list(self._documentos_da_pagina(s, lv.titulo, 3))
         return out[:6]
 
     def _a5(self, lv: Livro) -> list[str]:
-        if not (lv.link_oficial and lv.numero):
+        if not (lv.base and lv.numero):
             return []
-        u = urlsplit(lv.link_oficial)
+        u = urlsplit(lv.base)
         base = f"{u.scheme}://{u.netloc}" + ("/" + u.path.strip("/").split("/")[0] if u.path.strip("/") and "goias.gov.br" in u.netloc else "")
         try:
             itens = json.loads(self.escada.buscar(f"{base}/wp-json/wp/v2/media?search={quote(lv.numero.split('/')[0])}&per_page=10").conteudo)
@@ -179,10 +185,10 @@ class Interceptador:
         return [i["source_url"] for i in itens if isinstance(i, dict) and str(i.get("mime_type") or "").endswith("pdf") and i.get("source_url")][:3]
 
     def _a6(self, lv: Livro) -> list[str]:
-        if not lv.link_oficial:
+        if not lv.base:
             return []
         from ...motores.descoberta import estrutura_site
-        u = urlsplit(lv.link_oficial)
+        u = urlsplit(lv.base)
         try:
             pistas = estrutura_site.mapa_do_site(self.escada.buscar, f"{u.scheme}://{u.netloc}/sitemap.xml", limite=3000)
         except Exception:  # noqa: BLE001 — sem mapa do site, a abordagem não tem material (é pulada)
@@ -191,22 +197,22 @@ class Interceptador:
         return [p.link for p in pistas if CHAVE.search(p.link) and (not num or num in p.link)][:4]
 
     def _a7(self, lv: Livro) -> list[str]:
-        if not lv.link_oficial:
+        if not lv.base:
             return []
         from ..acesso.arquivo_web import DegrauArquivo
         try:
-            r = DegrauArquivo(self.arquivo).buscar(lv.link_oficial, 25)
+            r = DegrauArquivo(self.arquivo).buscar(lv.base, 25)
         except (Bloqueado, Indisponivel, Pendente, Passageiro):           # a falha de rede no Wayback (24/10/2026: derrubava o nó)
             try:                                            # a segunda cópia arquivada: o Common Crawl (cdx_toolkit)
                 import cdx_toolkit
-                obj = next(iter(cdx_toolkit.CDXFetcher(source="cc").iter(lv.link_oficial, limit=1, filter=["status:200"])), None)
+                obj = next(iter(cdx_toolkit.CDXFetcher(source="cc").iter(lv.base, limit=1, filter=["status:200"])), None)
                 if obj is None:
                     return []
                 r = type("Copia", (), {"conteudo": obj.content, "status": 200, "tipo": obj.data.get("mime") or "text/html"})()
             except Exception:  # noqa: BLE001 — sem a biblioteca ou sem cópia
                 return []
-        self._copias = {**getattr(self, "_copias", {}), lv.link_oficial: r}
-        return [lv.link_oficial] if r.status == 200 else []
+        self._copias = {**getattr(self, "_copias", {}), lv.base: r}
+        return [lv.base] if r.status == 200 else []
 
     def _a11(self, lv: Livro) -> list[str]:
         """A secretaria do município (titular, 23/10/2026): o diário divulga; a oportunidade original costuma estar no site
@@ -233,30 +239,42 @@ class Interceptador:
         return []
 
     def _a8(self, lv: Livro) -> list[str]:
-        return [lv.link_oficial] if (self.ponte and lv.link_oficial) else []
+        return [lv.base] if (self.ponte and lv.base) else []
 
     def _a9(self, lv: Livro) -> list[str]:
-        return [u for u in (lv.link_oficial,) if u and re.search(r"(?i)\.(pdf|docx?|xlsx?)($|\?)", u)]
+        return [u for u in (lv.base,) if u and re.search(r"(?i)\.(pdf|docx?|xlsx?)($|\?)", u)]
 
     def _a10(self, lv: Livro) -> list[str]:
-        if not (self.metabusca and lv.link_oficial):
+        if not (self.metabusca and lv.base):
             return []
-        dom = urlsplit(lv.link_oficial).hostname
+        dom = urlsplit(lv.base).hostname
         return [u for u in self.metabusca(f"site:{dom} {lv.numero or ''} {lv.titulo[:80]}") if urlsplit(u).hostname == dom][:4]
 
     # ------------------------------------------------------------------ uma investigação
-    def investigar(self, lv: Livro, ordem: list[int] | None = None) -> dict[str, Any]:
+    def investigar(self, lv: Livro, ordem: list[int] | None = None, ate: float | None = None) -> dict[str, Any]:
         """Uma investigação: a primeira abordagem da ordem do balcão ainda não tentada e com material. Entrega um achado
-        para o livro (o Cartório valida na fase 4); sem nenhuma abordagem restante, avisa que esgotou."""
+        para o livro (o Cartório valida na fase 4); sem nenhuma abordagem restante, avisa que esgotou. Toda abordagem
+        tentada fica registrada, inclusive a sem material (24/10/2026: invisível, o mesmo livro recomeçava a cada passagem);
+        'ate' é o prazo (o orçamento da passagem), conferido entre uma abordagem e outra: o livro interrompido continua
+        na passagem seguinte."""
+        import time as _t
         for n in ordem or ORDEM[lv.balcao]:
             if n in lv.tentadas:
                 continue
+            if ate is not None and _t.monotonic() > ate:
+                return {"livro": lv.id, "abordagem": None, "achado": None, "esgotado": False, "adiado": True}
+            erro = None
             try:
                 urls = getattr(self, f"_a{n}")(lv)
-            except Exception:  # noqa: BLE001 — uma abordagem que falha é pulada: nunca derruba a investigação nem o nó (R18)
-                urls = []
+            except Exception as e:  # noqa: BLE001 — uma abordagem que falha é pulada: nunca derruba a investigação nem o nó (R18)
+                urls, erro = [], f"{type(e).__name__}: {str(e)[:120]}"
             if not urls:
-                continue                                            # sem material: pulada, não gasta tentativa
+                self.diario.emitir("tentativa.registrada", "interceptador", {
+                    "livro_id": lv.id, "fase": "preparacao", "ferramenta": f"abordagem {n}", "numero": 1, "em": agora(),
+                    "resultado": json.dumps({"abordagem": ABORDAGENS[n], "balcao": lv.balcao, "sem material": True, "erro": erro,
+                                             "faltam": lv.faltam}, ensure_ascii=False), "proxima_em": None})
+                lv.tentadas.add(n)
+                continue
             achado = self._achado(lv, n, urls)
             self.diario.emitir("tentativa.registrada", "interceptador", {
                 "livro_id": lv.id, "fase": "preparacao", "ferramenta": f"abordagem {n}", "numero": 1, "em": agora(),

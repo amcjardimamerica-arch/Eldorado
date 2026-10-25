@@ -39,7 +39,7 @@ class Encaminhamento:
         self.diario.emitir("achado.entregue", quem, achado_para_evento(a))
         return _sem_paginas(msgspec.to_builtins(a)) | {"documento": _sem_paginas(doc)}
 
-    def encaminhar(self, lv) -> tuple[str, dict[str, Any] | None]:
+    def encaminhar(self, lv, ate: float | None = None) -> tuple[str, dict[str, Any] | None]:
         """Uma decisão da rede para um livro: quem age agora, e a informação nova (se veio)."""
         from ...motores.pilotos.interceptador import ORDEM
         vivo = {"link_oficial": lv.link_oficial, "estrela": lv.estrela, "faltam": lv.faltam}
@@ -59,7 +59,9 @@ class Encaminhamento:
                                                                     "em": agora(), "resultado": json.dumps({"trouxe": bool(a), "faltam": lv.faltam}),
                                                                     "proxima_em": None})
                 return f"motor {motor}", (self._entregar(a, motor) if a else None)
-        r = self.interceptador.investigar(lv, abordagens if self.rede is not None else None)
+        r = self.interceptador.investigar(lv, abordagens if self.rede is not None else None, ate)
+        if r.get("adiado"):
+            return "interceptador · adiado (o orçamento da passagem)", None
         if r["esgotado"]:
             self.passaporte._tentativas[(lv.id, "preparacao", "rede")] = 0
             self.passaporte.mover(lv.id, "analise externa", "fase 5: a rede esgotou o motor da oportunidade e as abordagens do Interceptador")
@@ -77,7 +79,7 @@ class Encaminhamento:
         for lv in livros:
             if time.monotonic() - inicio > orcamento_s:
                 break
-            quem, a = self.encaminhar(lv)
+            quem, a = self.encaminhar(lv, inicio + orcamento_s)
             contagem[quem.split(" ·")[0].split(" ")[0]] = contagem.get(quem.split(" ·")[0].split(" ")[0], 0) + 1
             if a:
                 achados.append(a)
@@ -106,8 +108,16 @@ def no_encaminhar(itens: list[dict[str, Any]], parametros: dict[str, Any], conte
     dados, con, escada, registro = _contexto_pilotos(parametros, contexto)
     try:
         ia = IA()
-        enc = Encaminhamento(con, contexto.diario, registro, Interceptador(con, contexto.diario, escada, ia=ia if ia.disponivel() else None),
-                             rede_atual(dados))
+        from ...motores.descoberta.metabusca import Metabusca
+        mb = Metabusca(buscar=escada.buscar)                     # a metabusca do Interceptador (a abordagem 10 estava morta)
+
+        def buscar_links(q: str) -> list[str]:
+            try:
+                return [p.link for p in mb.consultar(q, limite=10)[0]]
+            except Exception:  # noqa: BLE001
+                return []
+        enc = Encaminhamento(con, contexto.diario, registro, Interceptador(con, contexto.diario, escada, metabusca=buscar_links,
+                                                                          ia=ia if ia.disponivel() else None), rede_atual(dados))
         achados, contagem = enc.andar(float(parametros.get("orcamento_s", 300)))
         return achados
     finally:

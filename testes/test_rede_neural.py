@@ -46,7 +46,7 @@ class _Interceptador:
     def __init__(self):
         self.ordem = None
 
-    def investigar(self, lv, ordem=None):
+    def investigar(self, lv, ordem=None, ate=None):
         self.ordem = ordem
         return {"livro": lv.id, "abordagem": ordem[0], "achado": None, "esgotado": False}
 
