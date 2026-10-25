@@ -44,3 +44,20 @@ def test_nenhum_no_da_passagem_sem_ligacao():
     d = tomllib.loads(Path("workflows/passagem.toml").read_text(encoding="utf-8"))
     ligados = {x for c in d["conexao"] for x in (c["de"], c["para"])}
     assert not [n["id"] for n in d["no"] if n["id"] not in ligados]
+
+
+def test_a_medicao_das_finalidades_sem_cinza_indevido(tmp_path):
+    """25/10/2026: 63 arquivos sem medição da finalidade (a raiz da herança, os fluxos do GitHub, não era medida) e uma
+    falha antiga contando por dias (a janela de 50 passos). Sem a chave dos fluxos, as configurações e os parados medem."""
+    import shutil
+    from eldorado.base.cerebro.mapa_arquivos import AGUARDAM_DECISAO, POR_DESENHO, medir
+    for n in ("biblioteca", "cerebro"):
+        shutil.copy(f"dados/{n}.db", tmp_path / f"{n}.db")
+    from eldorado.base.fluxo.nos import abrir_bancos
+    for c in {id(x): x for x in abrir_bancos(tmp_path).values()}.values():
+        c.close()
+    A = medir(tmp_path)["arquivos"]
+    assert all(A[p]["c"] == "v" for p in POR_DESENHO if p in A)                         # o que não roda por desenho cumpre
+    assert all(A[p]["c"] == "a" and "parecer" in A[p]["m"] for p in AGUARDAM_DECISAO if p in A)
+    assert all(A[p]["c"] == "v" for p in A if p.startswith("config/") and p not in AGUARDAM_DECISAO)   # as configurações válidas
+    assert set(PARADOS) == set(POR_DESENHO) | set(AGUARDAM_DECISAO)                     # todo parado tem o seu parecer

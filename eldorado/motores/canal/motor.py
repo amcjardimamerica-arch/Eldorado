@@ -185,6 +185,8 @@ class CfgMetrica(_Base):
     ATINGE se ficou sem leitura além do dobro da cadência ou se todos os achados foram barrados."""
     cadencia_h: float = Field(24, gt=0)
     periodo_dias: int = Field(14, ge=1)
+    # a fonte esporádica (25/10/2026): a finalidade é a vigilância sem erro (a fonte que só abre chamadas poucas vezes ao ano)
+    esporadica: bool = False
 
 
 class CfgPrograma(_Base):

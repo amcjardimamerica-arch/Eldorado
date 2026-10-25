@@ -39,7 +39,7 @@ jobs:
       - name: Abrir os bancos (e aplicar as migrações do esquema)
         run: eldorado iniciar
       - name: Reaplicar os eventos pendentes
-        run: eldorado aplicar
+        run: eldorado aplicar || echo "::warning::há eventos recusados (viram alarme na sala; o ciclo segue)"
       - name: IA local — o motor llama.cpp (versão fixada)
         continue-on-error: true
         run: |
@@ -85,7 +85,7 @@ jobs:
         run: eldorado permanente --limite-min 320 --gravar-min 5
       - name: Aplicar os últimos eventos da passagem (o recibo do passo final e o fechamento)
         if: always()
-        run: eldorado aplicar
+        run: eldorado aplicar || echo "::warning::há eventos recusados (viram alarme na sala; o ciclo segue)"
       - name: A manutenção dos bancos e o índice de busca (sqlite-utils)
         if: always()
         run: timeout 600 eldorado manutencao || echo "::warning::a manutenção dos bancos não terminou"

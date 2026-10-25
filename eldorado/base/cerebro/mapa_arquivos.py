@@ -244,15 +244,19 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
     # os nós dos workflows: o resultado de cada passo nas últimas 24 h
     por_no: dict[str, list[tuple[str, str | None]]] = defaultdict(list)
     # os últimos 50 passos de cada nó (responde em minutos; a janela de 24 h deixava uma falha corrigida vermelha por um dia)
-    for no_id, estado, saida in cer.execute("SELECT no, estado, saida FROM (SELECT no, estado, saida, em, ROW_NUMBER() OVER "
+    for no_id, estado, saida, em_ in cer.execute("SELECT no, estado, saida, em FROM (SELECT no, estado, saida, em, ROW_NUMBER() OVER "
                                             "(PARTITION BY no ORDER BY em DESC) AS k FROM execucao_passo WHERE estado IN ('concluido', 'falhou')) "
-                                            "WHERE k <= 50"):
-        por_no[no_id].append((estado, saida))
+                                            "WHERE k <= 10"):   # o comportamento recente (25/10/2026: a janela de 50 contava falhas corrigidas por dias)
+        por_no[no_id].append((estado, saida, em_))
     vermelhos_do_erro: dict[str, str] = {}
+    for no_id in list(por_no):                                    # o comportamento das últimas 24 h (até 10 passos); sem passo
+        recentes = [x for x in por_no[no_id] if (x[2] or "") >= h24]    # recente, o histórico
+        if recentes:
+            por_no[no_id] = recentes
     for no_id, lst in por_no.items():
         f = arquivo_do_no.get(no_id)
-        ok = sum(1 for e, _ in lst if e == "concluido")
-        falhas = [s for e, s in lst if e == "falhou"]
+        ok = sum(1 for e, _s, _em in lst if e == "concluido")
+        falhas = [s for e, s, _em in lst if e == "falhou"]
         total = ok + len(falhas)
         for s in falhas:
             try:
@@ -272,7 +276,7 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
             ponto.setdefault(f, "v")
     for a, m in vermelhos_do_erro.items():
         ponto[a], motivo[a] = "r", m
-    passagem_ok = any(e == "concluido" for lst in por_no.values() for e, _ in lst)
+    passagem_ok = any(e == "concluido" for lst in por_no.values() for e, _s, _em in lst)
     # os motores: a execução (ponto) e a finalidade (círculo)
     ult = {m: (i, e) for m, i, e in cer.execute("SELECT motor, MAX(inicio), erro FROM execucao_motor GROUP BY motor")}
     # a finalidade de cada motor pela métrica da SUA configuração (o período, a cadência e o destino)
@@ -281,7 +285,7 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
         try:
             d_ = tomllib.loads(c.read_text(encoding="utf-8"))
             cfg_motor[c.stem] = {"periodo": int(d_.get("metrica", {}).get("periodo_dias", 14)), "cadencia": float(d_.get("metrica", {}).get("cadencia_h", 24)),
-                                 "destino": d_.get("motor", {}).get("destino", "biblioteca")}
+                                 "destino": d_.get("motor", {}).get("destino", "biblioteca"), "esporadica": bool(d_.get("metrica", {}).get("esporadica"))}
         except (tomllib.TOMLDecodeError, ValueError):
             pass
     ultimo_aceito = dict(bib.execute("SELECT motor, MAX(encontrado_em) FROM achado WHERE decisao = 'aceito' GROUP BY motor").fetchall())
@@ -305,8 +309,10 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
         else:
             ponto[p] = "r" if e and i >= h24 else ("v" if i >= h48 else "c")
             leu = i >= janela_leitura
-            circ[p] = "v" if leu and atingiu else "a" if (leu or atingiu) else "r"
+            circ[p] = "v" if leu and (atingiu or (cm.get("esporadica") and not e)) else "a" if (leu or atingiu) else "r"
             fim = f"{o_que} em {cm['periodo']} dias" if atingiu else f"sem {o_que} em {cm['periodo']} dias (último: {str(entrega or 'nenhum')[:10]})"
+            if leu and not atingiu and cm.get("esporadica") and not e:
+                fim = "fonte esporádica: a vigilância sem erro cumpre a finalidade (a fonte não tem chamada aberta agora)"
             erro_txt = f" com erro: {str(e)[:100]}" if e else ""
             motivo[p] = f"última leitura {i[:16]} ({'dentro' if leu else 'fora'} da cadência de {cm['cadencia']:.0f} h){erro_txt}; {fim}"
     # os bancos: a integridade e a gravação recente
@@ -342,6 +348,38 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
             herd = [circ[u] for u in usado_por.get(p, ()) if u in circ]
             if herd:
                 circ[p] = "v" if "v" in herd else "a" if any(h in ("a", "r") for h in herd) else "c"
+    # os fluxos do GitHub (a raiz da herança): a última execução concluída (sucesso ou falha; as interrompidas pela
+    # implantação não contam)
+    for p, (c_, m_) in _fluxos_github(nos).items():
+        ponto.setdefault(p, "v")
+        circ[p], motivo[p] = c_, m_
+    # as configurações: a finalidade é ser válida (e é lida por quem a usa)
+    for p in nos:
+        if p.startswith(("config/", "workflows/")) and p not in circ and nos[p]["alcancado"]:
+            ok = _valida(RAIZ / p)
+            circ[p], motivo[p] = ("v", "configuração válida, lida pela produção") if ok else ("r", "configuração inválida (não abre)")
+    # os parados por desenho: a finalidade é não rodar; os que aguardam a decisão da titular ficam em atenção, com o parecer
+    for p, m_ in POR_DESENHO.items():
+        if p in nos:
+            ponto[p], circ[p], motivo[p] = "v", "v", m_
+    for p, m_ in AGUARDAM_DECISAO.items():
+        if p in nos:
+            ponto[p], circ[p], motivo[p] = "c", "a", m_
+    for _ in range(6):                                           # a herança de novo, com a raiz dos fluxos
+        for p in nos:
+            if p in circ:
+                continue
+            herd = [circ[u] for u in usado_por.get(p, ()) if u in circ]
+            if herd:
+                circ[p] = "v" if "v" in herd else "a" if any(h in ("a", "r") for h in herd) else "c"
+    for p in sorted(nos, key=lambda x: -x.count("/")):            # os pacotes: pelos seus módulos e subpacotes (de baixo para cima)
+        if p.endswith("__init__.py") and circ.get(p, "c") == "c":
+            pasta = p.rsplit("/", 1)[0] + "/"
+            irmaos = [circ.get(q) for q in nos if q.startswith(pasta) and q != p and ("/" not in q[len(pasta):]
+                                                                                 or q[len(pasta):].count("/") == 1 and q.endswith("/__init__.py"))]
+            if irmaos:
+                circ[p] = "v" if "v" in irmaos else "a" if any(h in ("a", "r") for h in irmaos) else "c"
+                motivo.setdefault(p, "o pacote: pelos seus módulos")
     for p in nos:
         circ.setdefault(p, "c")
     linhas = {f"{a['de']}>{a['para']}": ("r" if "r" in (ponto.get(a["de"]), ponto.get(a["para"])) else
@@ -349,6 +387,56 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
     return {"em": agora.isoformat(timespec="seconds"),
             "arquivos": {p: {"p": ponto[p], "c": circ[p], "m": motivo.get(p, "")} for p in nos},
             "linhas": {k: v for k, v in linhas.items() if v != "v"}}
+
+
+POR_DESENHO = {
+    "eldorado/base/motor_modelo/__init__.py": "o motor modelo não roda por desenho: é o molde de todo motor novo",
+    "eldorado/motores/acesso/rotas_alternativas.py": "o Tor, desligado por desenho no plano (não roda)",
+}
+AGUARDAM_DECISAO = {
+    "workflows/manutencao.toml": "parecer: retirar; superado (a leitura da máquina já está na passagem; a aplicação, no fim de cada passagem)",
+    "eldorado/base/cerebro/regras.py": "parecer: retirar; superado pelo registro das regras da titular (regras_titular.json, as travas e o portão)",
+    "config/regras.toml": "parecer: retirar; superado pelo registro das regras da titular (regras_titular.json, as travas e o portão)",
+    "config/comparacao.toml": "parecer: retirar; a comparação de 14 dias com o Eldorado0 nunca foi construída e o Eldorado0 sai em 23/11 (R01)",
+}
+
+
+def _valida(p: Path) -> bool:
+    try:
+        t = p.read_text(encoding="utf-8")
+        if p.suffix == ".toml":
+            tomllib.loads(t)
+        elif p.suffix == ".json":
+            import json as _j
+            _j.loads(t)
+        return True
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def _fluxos_github(nos: dict) -> dict[str, tuple[str, str]]:
+    """A última execução concluída de cada fluxo do GitHub (pela chave de leitura da produção); sem a chave, nada."""
+    import json as _j
+    import os
+    import urllib.request
+    token, repo = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN"), os.environ.get("GITHUB_REPOSITORY")
+    if not (token and repo):
+        return {}
+    try:
+        req = urllib.request.Request(f"https://api.github.com/repos/{repo}/actions/runs?per_page=100", headers={"Authorization": f"Bearer {token}"})
+        runs = _j.loads(urllib.request.urlopen(req, timeout=20).read())["workflow_runs"]
+    except Exception:  # noqa: BLE001
+        return {}
+    saida: dict[str, tuple[str, str]] = {}
+    for r in runs:
+        p = r.get("path") or ""
+        if p in nos and p not in saida and r.get("status") == "completed" and r.get("conclusion") in ("success", "failure"):
+            ok = r["conclusion"] == "success"
+            saida[p] = ("v" if ok else "r", f"a última execução ({r.get('updated_at', '')[:16]}): {'sucesso' if ok else 'falhou'}")
+    for p in nos:
+        if p.startswith(".github/workflows/") and p not in saida:
+            saida[p] = ("v", "fluxo sob demanda: sem execução concluída recente (nada a corrigir)")
+    return saida
 
 
 def no_medir_arquivos(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
