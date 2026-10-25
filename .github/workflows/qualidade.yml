@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: qualidade-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false   # 25/10/2026: a bateria completa leva mais de 20 min; cancelar a em andamento deixava sem resultado
 
 jobs:
   testes:
