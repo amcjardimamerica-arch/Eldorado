@@ -1357,10 +1357,14 @@ box-sizing:border-box;}
 #v-neural .nucleo{display:flex;gap:18px;align-items:center;padding:16px 20px}
 /* 24/10/2026 (titular): o servidor abaixo do índice; a altura limitada à do painel de alarmes (preenche o que sobra da coluna) */
 #v-neural .topo>.titulo{display:flex;flex-direction:column;min-height:0}
-#v-neural .maquina{flex:1 1 0;min-height:0;overflow:auto;margin-top:16px;padding:14px 16px}
+#v-neural .titulo .esteira{flex:1 1 auto;margin-top:16px;padding:14px 16px;display:flex;flex-direction:column}
+#v-neural .titulo .tubo{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#v-neural .titulo .tubo b{font-size:clamp(13px,1vw,17px)}
+#v-neural .maquina{padding:14px 16px;overflow:visible;display:flex;flex-direction:column}   /* sem rolagem: a altura acompanha o conteúdo */
 #v-neural .maquina h3{margin:0 0 10px;font-size:14px}
-#v-neural .maquina .mq{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-#v-neural .maquina .med{background:rgba(7,12,36,.45);border:1px solid rgba(155,140,255,.18);border-radius:10px;padding:8px 10px;text-align:center}
+#v-neural .maquina .mq{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#v-neural .maquina .med{background:rgba(7,12,36,.45);border:1px solid rgba(155,140,255,.18);border-radius:10px;padding:6px 6px 8px;text-align:center;min-width:0}
+#v-neural .maquina .med .rod{font-size:10.5px;line-height:1.3;margin-top:4px;overflow-wrap:anywhere}
 #v-neural .maquina .med svg{display:block;margin:0 auto}#v-neural .maquina .med small{font-size:12px;color:#C9CFEA;margin-top:2px}
 #v-neural .maquina .med b{font:400 20px "Michroma",sans-serif;color:#EAF2FF}#v-neural .maquina .med small{display:block;color:#8B93B8;font-size:11px;margin-bottom:4px}
 #v-neural .maquina .barra{position:relative;height:6px;border-radius:4px;background:rgba(155,140,255,.18);margin-top:6px;overflow:visible}
@@ -1482,9 +1486,9 @@ box-sizing:border-box;}
       <div class="titulo"><h2>Sala de controle</h2>
         <p>Cada estrela deste céu é um motor do Eldorado; cada constelação, uma etapa da rede neural. Siga o sinal de cima para baixo e clique em qualquer etapa, mostrador ou estrela para abrir o detalhe.</p>
         <div class="vidro nucleo" onclick="nvVisao(this)" title="abrir a composição do índice"><div id="nv-indice" style="width:150px"></div><div class="contagens" id="nv-contagens"></div></div>
-        <div class="vidro maquina" id="nv-maquina" aria-label="O servidor do sistema: processador, memória, disco e GPU"><h3>O servidor do sistema</h3><div class="faint">lendo…</div></div></div>
+        <div class="vidro esteira"><h3>O caminho do dado</h3><div class="tubo" id="nv-tubo"></div><div class="faint" id="nv-leitura" style="font-size:12px;margin-top:10px">lendo…</div></div></div>
       <div class="vidro alarmes"><h3 id="nv-alarmes-tit">Painel de alarmes</h3><div class="janelas" id="nv-janelas"></div></div>
-      <div class="vidro esteira"><h3>O caminho do dado</h3><div class="tubo" id="nv-tubo"></div><div class="faint" id="nv-leitura" style="font-size:13px;margin-top:12px">lendo…</div></div>
+      <div class="vidro maquina" id="nv-maquina" aria-label="O servidor do sistema: processador, memória, disco, GPU e rede"><h3>O servidor do sistema</h3><div class="faint">lendo…</div></div>
     </div>
     <div id="nv-faixas"></div>
     <div class="nervoso">
@@ -1519,7 +1523,7 @@ box-sizing:border-box;}
     return `<svg class="curva" viewBox="0 0 ${W} ${H}" width="100%" height="${H}" preserveAspectRatio="none"><line x1="0" x2="${W}" y1="${y(.85)}" y2="${y(.85)}" stroke="#EAF2FF" stroke-dasharray="3 3" opacity=".5"/><path d="${L("p")}" fill="none" stroke="#5EE6C8" stroke-width="1.6"/><path d="${L("m")}" fill="none" stroke="#b89cf5" stroke-width="1.6"/></svg><div class="rod"><span style="color:#5EE6C8">processador</span> · <span style="color:#b89cf5">memória</span> · tracejado: o alvo de 85% · últimas 3 h</div>`; }
   function desenhar(M){ const el=$("nv-maquina"); if(!el) return;
     if(!M||!M.em){ el.innerHTML='<h3>O servidor do sistema</h3><div class="faint">aguardando a primeira leitura do servidor (a cada 5 minutos)</div>'; return; }
-    const relogio=x=>`<div class="med" title="${x.motivo||""}">${window.nvMostrador?window.nvMostrador(x,104):""}<small>${x.nome}</small><div class="rod">${x.motivo||""}</div></div>`;
+    const relogio=x=>`<div class="med" title="${x.motivo||""}">${window.nvMostrador?window.nvMostrador(x,84):""}<small>${x.nome}</small><div class="rod">${x.id==="sv_rede"&&M.rede?`↓ ${M.rede.entrada_mb_s} · ↑ ${M.rede.saida_mb_s} MB/s`:(x.id==="sv_gpu"?"sem placa de vídeo":(x.motivo||"").split(" · ")[0])}</div></div>`;
     el.innerHTML=`<h3>O servidor do sistema</h3><div class="mq">${(M.instrumentos||[]).map(relogio).join("")}</div>`+
       curva(M.serie)+`<div class="rod">uso médio na última hora: <b>${pc(M.uso_medio_1h)}</b> (alvo: 85%) · paralelismo do governador: <b>${M.paralelismo??"—"}</b><br>leitura de ${new Date(M.em).toLocaleString("pt-BR")} · servidor do GitHub</div>`; }
   function ler(){ fetch("dados/sala_controle.json?"+Date.now()).then(r=>r.json()).then(d=>desenhar(d.maquina)).catch(()=>{}); }

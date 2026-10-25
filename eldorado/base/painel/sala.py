@@ -599,6 +599,20 @@ def montar(
                 "quando": maq.get("em"),
             }
 
+        # a rede do servidor (titular, 25/10/2026): a taxa pela diferença entre as duas últimas leituras (os bytes recebidos e
+        # enviados são acumulados); o relógio mostra o uso em relação a 1 Gbit/s (125 MB/s)
+        rede_frac, rede_motivo = None, "sem duas leituras da rede ainda"
+        try:
+            duas = cer.execute("SELECT em, rede_entrada, rede_saida FROM maquina WHERE rede_entrada IS NOT NULL ORDER BY em DESC LIMIT 2").fetchall()
+            if len(duas) == 2:
+                dt = (datetime.fromisoformat(duas[0][0]) - datetime.fromisoformat(duas[1][0])).total_seconds()
+                if dt > 0 and duas[0][1] >= duas[1][1]:
+                    ent, sai = (duas[0][1] - duas[1][1]) / dt, (duas[0][2] - duas[1][2]) / dt
+                    rede_frac = min(1.0, (ent + sai) / 125e6)
+                    rede_motivo = f"↓ {ent / 1e6:.2f} MB/s · ↑ {sai / 1e6:.2f} MB/s (média dos últimos {dt / 60:.0f} min; capacidade 1 Gbit/s)"
+                    maq["rede"] = {"entrada_mb_s": round(ent / 1e6, 3), "saida_mb_s": round(sai / 1e6, 3)}
+        except (sqlite3.Error, ValueError, TypeError):
+            pass
         maq["instrumentos"] = [
             ins(
                 "sv_processador",
@@ -613,6 +627,7 @@ def montar(
             ),
             ins("sv_disco", "Disco", maq.get("disco"), [None, 85], [None, 95], f"{maq.get('disco_total_gb') or '?'} GB no servidor"),
             ins("sv_gpu", "GPU", None, [None, None], [None, None], maq.get("gpu") or "o servidor do GitHub não tem placa de vídeo"),
+            ins("sv_rede", "Rede", rede_frac, [None, 70], [None, 90], rede_motivo),
         ]
     except sqlite3.Error:
         pass
