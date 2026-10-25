@@ -554,6 +554,10 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
 
     import threading
     trava_gravar = threading.Lock()
+    marca = Path(".inicio_ciclo")                                 # a gravação copia o que o ciclo escreveu desde aqui
+    if gravar and not marca.exists():
+        marca.write_text(datetime.now(timezone.utc).isoformat(), encoding="utf-8")
+        os.utime(marca, (time.time() - 5, time.time() - 5))
 
     def gravar_agora() -> None:
         if gravar and trava_gravar.acquire(blocking=False):            # uma gravação de cada vez

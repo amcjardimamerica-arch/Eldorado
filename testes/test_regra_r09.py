@@ -35,3 +35,10 @@ def test_toda_mudanca_para_implanta_e_religa():
 def test_o_radar_nao_repete_livro_nem_mostra_unido():
     fonte = Path("eldorado/base/painel/dados.py").read_text(encoding="utf-8")
     assert "situacao NOT IN ('excluido', 'unido')" in fonte
+
+
+def test_a_gravacao_nao_muda_o_ciclo_em_andamento():
+    """25/10/2026: o 'git pull' da gravação trazia o código e as configurações novas para o ciclo em andamento (o nó do
+    Espião falhou com a configuração nova lida pelo código antigo). A gravação usa uma árvore de trabalho separada."""
+    g = Path("scripts/gravar.sh").read_text(encoding="utf-8")
+    assert "git worktree add" in g and "git pull -q" not in g and "push -q origin HEAD:main" in g and ".inicio_ciclo" in g

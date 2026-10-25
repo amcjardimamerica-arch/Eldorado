@@ -93,13 +93,14 @@
   {
    "id": "R09",
    "data": "2026-10-25",
-   "regra": "O painel é atualizado por inteiro a cada mudança no sistema (cada envio e cada gravação) e a cada 15 minutos; a sala de controle no menor tempo possível (o sistema grava e aciona o painel a cada 5 minutos). Toda mudança no sistema o PARA por completo, implanta e o RELIGA, atualizando naquele momento todas as mudanças. Um evento recusado não pode deixar o site velho. (Substitui a regra anterior do site acompanhando a Biblioteca.) A parada não corta a passagem no meio: o sistema termina a passagem em andamento, grava e para; depois de 30 minutos, a parada é forçada.",
+   "regra": "O painel é atualizado por inteiro a cada mudança no sistema (cada envio e cada gravação) e a cada 15 minutos; a sala de controle no menor tempo possível (o sistema grava e aciona o painel a cada 5 minutos). Toda mudança no sistema o PARA por completo, implanta e o RELIGA, atualizando naquele momento todas as mudanças. Um evento recusado não pode deixar o site velho. (Substitui a regra anterior do site acompanhando a Biblioteca.) A parada não corta a passagem no meio: o sistema termina a passagem em andamento, grava e para; depois de 30 minutos, a parada é forçada. O ciclo em andamento nunca muda de versão: a gravação usa uma árvore de trabalho separada; a mudança de código entra só pela implantação.",
    "onde": ".github/workflows/painel.yml, implantar.yml, eldorado.yml; scripts/gravar.sh; eldorado/base/painel/",
    "travas": [
     "testes/test_regra_r09.py::test_o_painel_a_cada_mudanca_e_a_cada_15_minutos",
     "testes/test_regra_r09.py::test_toda_mudanca_para_implanta_e_religa",
     "testes/test_regra_r09.py::test_o_radar_nao_repete_livro_nem_mostra_unido",
-    "testes/test_painel_site.py::test_o_item_do_radar_e_o_livro_campo_a_campo"
+    "testes/test_painel_site.py::test_o_item_do_radar_e_o_livro_campo_a_campo",
+    "testes/test_regra_r09.py::test_a_gravacao_nao_muda_o_ciclo_em_andamento"
    ]
   },
   {
