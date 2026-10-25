@@ -37,21 +37,25 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           ativos() { gh run list -R "$GITHUB_REPOSITORY" -w eldorado.yml --json databaseId,status -q '.[] | select(.status=="in_progress" or .status=="queued" or .status=="waiting" or .status=="pending") | .databaseId'; }
-          for id in $(ativos); do echo "parando o ciclo $id"; gh run cancel "$id" -R "$GITHUB_REPOSITORY" || true; done
+          ids=$(ativos | tr '\n' ' '); echo "PARADOS=$ids" >> "$GITHUB_ENV"; date -u +%Y-%m-%dT%H:%M:%SZ > /tmp/parada; echo "PARADA_EM=$(cat /tmp/parada)" >> "$GITHUB_ENV"
+          for id in $ids; do echo "parando o ciclo $id"; gh run cancel "$id" -R "$GITHUB_REPOSITORY" || true; done
       - name: 2. Esperar o ciclo terminar de gravar
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          for i in $(seq 1 60); do
-            n=$(gh run list -R "$GITHUB_REPOSITORY" -w eldorado.yml --json status -q '[.[] | select(.status=="in_progress" or .status=="queued" or .status=="waiting" or .status=="pending")] | length')
-            [ "$n" = "0" ] && { echo "o ciclo parou e gravou"; exit 0; }
+          for i in $(seq 1 60); do                         # só os ciclos que este Implantar parou
+            vivos=0; for id in $PARADOS; do st=$(gh run view "$id" -R "$GITHUB_REPOSITORY" --json status -q .status); [ "$st" != "completed" ] && vivos=1; done
+            [ "$vivos" = "0" ] && { echo "o ciclo parou e gravou"; exit 0; }
             sleep 15
           done
           echo "::warning::o ciclo demorou mais de 15 minutos para parar"
       - name: 3. Religar com o código novo
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run eldorado.yml -R "$GITHUB_REPOSITORY" --ref main -f gravar_banco=false -f acionar_todos=false && echo "religado com ${GITHUB_SHA::7}"
+        run: |
+          novos=$(gh run list -R "$GITHUB_REPOSITORY" -w eldorado.yml --json createdAt,status -q "[.[] | select(.createdAt > \"$PARADA_EM\") | select(.status!=\"completed\")] | length")
+          if [ "$novos" = "0" ]; then gh workflow run eldorado.yml -R "$GITHUB_REPOSITORY" --ref main -f gravar_banco=false -f acionar_todos=false && echo "religado com ${GITHUB_SHA::7}"
+          else echo "o ciclo já foi religado depois da parada ($novos)"; fi
       - name: 4. Republicar o painel
         env:
           GH_TOKEN: ${{ github.token }}
