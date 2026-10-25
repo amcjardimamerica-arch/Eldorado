@@ -28,6 +28,13 @@ def test_toda_mudanca_para_implanta_e_religa():
     assert "eldorado/**" in gatilhos["push"]["paths"] and "config/**" in gatilhos["push"]["paths"]
     texto = Path(".github/workflows/implantar.yml").read_text(encoding="utf-8")
     assert "gh run cancel" in texto and "gh workflow run eldorado.yml" in texto and "implantar/pedido.txt" in texto
+    assert i["concurrency"]["cancel-in-progress"] is False                              # uma implantação nunca cancela a outra
+    assert "gh workflow run painel.yml" in texto                                         # o painel republicado depois de cada implantação
+    passos = [s_.get("name", "") for s_ in i["jobs"]["implantar"]["steps"]]
+    assert passos.index("1. Parar o ciclo na hora") < passos.index("3. Religar com o código novo")   # para NA HORA (sem esperar a passagem)
+    e = yaml.safe_load(Path(".github/workflows/eldorado.yml").read_text(encoding="utf-8"))
+    cont = next(s_ for s_ in e["jobs"][next(iter(e["jobs"]))]["steps"] if s_.get("name", "").startswith("Continuar"))
+    assert "cancelled" in cont["if"]                                                     # interrompido, quem religa é o Implantar
     comandos = Path("eldorado/base/nucleo/comandos.py").read_text(encoding="utf-8")
     assert "implantar/pedido.txt" in comandos and "implantar.is_set()" in comandos     # termina a passagem e para (sem cortar)
 

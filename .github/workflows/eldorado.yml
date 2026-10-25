@@ -116,7 +116,8 @@ jobs:
           ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
         run: bash scripts/gravar.sh "${{ inputs.gravar_banco }}"
       - name: Continuar (o funcionamento é permanente)
-        if: always()
+        # 25/10/2026: só quando o ciclo termina por conta própria; interrompido por uma implantação, quem religa é o Implantar
+        if: ${{ !cancelled() }}
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
