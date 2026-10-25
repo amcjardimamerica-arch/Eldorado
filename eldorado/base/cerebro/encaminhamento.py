@@ -76,14 +76,15 @@ class Encaminhamento:
                                                                     "em": agora(), "resultado": json.dumps({"trouxe": bool(a), "faltam": lv.faltam}),
                                                                     "proxima_em": None})
                 return f"motor {motor}", (self._entregar(a, motor) if a else None)
-        r = self.interceptador.investigar(lv, abordagens if self.rede is not None else None, ate)
+        r = self.interceptador.voar(lv, ate, preferencia=abordagens if self.rede is not None else None)   # o plano de voo
+        entregues = [self._entregar(a, "interceptador") for a in r["achados"]]
         if r.get("adiado"):
-            return "interceptador · adiado (o orçamento da passagem)", None
+            return "interceptador · adiado (o orçamento da passagem)", entregues or None
         if r["esgotado"]:
             self.passaporte._tentativas[(lv.id, "preparacao", "rede")] = 0
             self.passaporte.mover(lv.id, "analise externa", "fase 5: a rede esgotou o motor da oportunidade e as abordagens do Interceptador")
             return "analise externa", None
-        return f"interceptador · abordagem {r['abordagem']}", (self._entregar(r["achado"], "interceptador") if r["achado"] else None)
+        return f"interceptador · plano de voo ({len(r['plano'])} passos, {len(entregues)} achados)", entregues or None
 
     def andar(self, orcamento_s: float, hoje: str | None = None, livros: list | None = None) -> tuple[list[dict[str, Any]], dict[str, int]]:
         from ...motores.pilotos.interceptador import fila
@@ -95,7 +96,9 @@ class Encaminhamento:
                 break
             quem, a = self.encaminhar(lv, inicio + orcamento_s)
             contagem[quem.split(" ·")[0].split(" ")[0]] = contagem.get(quem.split(" ·")[0].split(" ")[0], 0) + 1
-            if a:
+            if isinstance(a, list):
+                achados += a
+            elif a:
                 achados.append(a)
         return achados, contagem
 
@@ -133,11 +136,9 @@ def no_encaminhar(itens: list[dict[str, Any]], parametros: dict[str, Any], conte
         from ...motores.acesso.completa import escada_completa
         from ...motores.descoberta.metabusca import Metabusca
         from ...motores.pilotos.interceptador import fila
-        from .governador import Governador, medidor_psutil
         livros = Encaminhamento(con, contexto.diario, registro, None, rede).ordenar(fila(con, date.today().isoformat()))
-        # vários livros ao mesmo tempo (25/10/2026: 2 tentativas em 5 min): quantos o governador permitir, até 6; cada
-        # trabalhador com a sua conexão, a sua escada e o seu Interceptador (nada compartilhado que se atropele)
-        n = max(1, min(int(parametros.get("trabalhadores", 6)), Governador(medidor_psutil(".")).paralelismo() or 1, len(livros) or 1))
+        # um livro por vez, com o plano de voo (a titular, 25/10/2026): o Interceptador fica com o livro até achar o que falta
+        n = 1                                                     # um livro por vez (a titular, 25/10/2026: a assertividade)
         orcamento = float(parametros.get("orcamento_s", 300))
 
         def trabalhador(parte: list) -> list:

@@ -44,6 +44,16 @@ ABORDAGENS = {1: "documento na mão", 2: "anexos completos", 3: "página oficial
 ORDEM = {"sem estrela": [1, 11, 4, 3, 10, 6, 5, 8, 2, 9, 7], "bronze": [1, 11, 2, 3, 9, 7, 4, 10, 6, 5, 8], "prata": [1, 11, 2, 9, 7, 3, 4, 10, 6, 5, 8]}
 FOCO = {"sem estrela": I.BRONZE, "bronze": ("Valor", "Requisitos"), "prata": tuple(i for i in I.DOZE if i not in I.PRATA)}
 MAXIMO = 10
+# o plano de voo (titular, 25/10/2026): para cada item que falta, as abordagens mais certeiras do canivete, em ordem
+PLANO_POR_ITEM = {
+    "Prazo de inscrição": (1, 9, 3, 6, 7, 10, 11), "Resultado": (1, 9, 3, 6, 10, 7), "Prazo de recurso": (9, 1, 3, 6, 10),
+    "Valor": (9, 1, 2, 5, 3, 10), "Requisitos": (9, 2, 1, 5, 3), "Anexos": (2, 1, 5, 3, 6), "Modalidade": (9, 1, 2, 3),
+    "Objeto": (1, 9, 3, 10, 11, 4), "Órgão / financiador": (1, 3, 4, 11, 10), "Território": (1, 11, 3, 10, 4),
+    "Esfera": (1, 3, 4, 11), "Área de atuação": (1, 3, 10, 9)}
+FERRAMENTAS = {1: "a página oficial e os documentos dela", 2: "os arquivos do edital (PNCP)", 3: "as páginas do mesmo site",
+               4: "os sites conhecidos do órgão", 5: "as mídias do WordPress", 6: "o mapa do site", 7: "a cópia arquivada (Wayback)",
+               8: "a ponte do titular", 9: "a leitura completa dos documentos (PDF, tabelas e OCR das imagens)", 10: "a busca no domínio",
+               11: "a secretaria do município"}
 NUMERO = re.compile(r"n[º°o.]*\s*0*(\d{1,4})\s*[/_-]\s*(20\d\d)", re.I)
 PNCP = re.compile(r"pncp\.gov\.br/app/editais/(\d{14})/(\d{4})/(\d+)")
 CHAVE = re.compile(r"(?i)edital|chamamento|chamada|sele[çc][ãa]o|regulamento|anexo|credenciamento|pr[êe]mio")
@@ -251,7 +261,41 @@ class Interceptador:
         return [u for u in self.metabusca(f"site:{dom} {lv.numero or ''} {lv.titulo[:80]}") if urlsplit(u).hostname == dom][:4]
 
     # ------------------------------------------------------------------ uma investigação
-    def investigar(self, lv: Livro, ordem: list[int] | None = None, ate: float | None = None) -> dict[str, Any]:
+    def plano_de_voo(self, lv: Livro, preferencia: list[int] | None = None) -> list[tuple[int, list[str]]]:
+        """O plano de voo do livro: as abordagens pelos itens que faltam (cada uma com os itens que ela busca), as mais
+        certeiras primeiro; as já tentadas ficam de fora."""
+        pontos: dict[int, float] = {}
+        para: dict[int, list[str]] = {}
+        for item in lv.faltam:
+            for pos, n in enumerate(PLANO_POR_ITEM.get(item, ORDEM[lv.balcao])):
+                if n in lv.tentadas or (n == 8 and not self.ponte):
+                    continue
+                pontos[n] = pontos.get(n, 0) + 1 / (1 + pos)
+                para.setdefault(n, []).append(item)
+        for pos, n in enumerate(preferencia or []):                  # a preferência aprendida pela rede (o Cérebro orienta)
+            if n in pontos:
+                pontos[n] += 0.3 / (1 + pos)
+        return [(n, para[n]) for n in sorted(pontos, key=lambda k: -pontos[k])]
+
+    def voar(self, lv: Livro, ate: float | None = None, tempo_livro_s: float = 180, maximo_achados: int = 4,
+             preferencia: list[int] | None = None) -> dict[str, Any]:
+        """Um livro por vez, pelo plano de voo, até achar o que falta ou esgotar o plano (com tempo máximo por livro):
+        cada passo registrado com os itens que buscou; o material de cada passo vira um achado para o livro."""
+        import time as _t
+        limite = _t.monotonic() + tempo_livro_s if ate is None else min(ate, _t.monotonic() + tempo_livro_s)
+        plano, achados = self.plano_de_voo(lv, preferencia), []
+        for n, itens in plano:
+            if _t.monotonic() > limite:
+                return {"livro": lv.id, "achados": achados, "esgotado": False, "adiado": True, "plano": plano}
+            r = self.investigar(lv, [n], limite, para=itens)
+            if r.get("achado") is not None:
+                achados.append(r["achado"])
+                if len(achados) >= maximo_achados:
+                    break
+        restante = [n for n, _ in self.plano_de_voo(lv)]
+        return {"livro": lv.id, "achados": achados, "esgotado": not restante and not achados, "adiado": False, "plano": plano}
+
+    def investigar(self, lv: Livro, ordem: list[int] | None = None, ate: float | None = None, para: list[str] | None = None) -> dict[str, Any]:
         """Uma investigação: a primeira abordagem da ordem do balcão ainda não tentada e com material. Entrega um achado
         para o livro (o Cartório valida na fase 4); sem nenhuma abordagem restante, avisa que esgotou. Toda abordagem
         tentada fica registrada, inclusive a sem material (24/10/2026: invisível, o mesmo livro recomeçava a cada passagem);
@@ -271,14 +315,15 @@ class Interceptador:
             if not urls:
                 self.diario.emitir("tentativa.registrada", "interceptador", {
                     "livro_id": lv.id, "fase": "preparacao", "ferramenta": f"abordagem {n}", "numero": 1, "em": agora(),
-                    "resultado": json.dumps({"abordagem": ABORDAGENS[n], "balcao": lv.balcao, "sem material": True, "erro": erro,
-                                             "faltam": lv.faltam}, ensure_ascii=False), "proxima_em": None})
+                    "resultado": json.dumps({"abordagem": ABORDAGENS[n], "ferramenta": FERRAMENTAS.get(n), "para": para, "balcao": lv.balcao,
+                                             "sem material": True, "erro": erro, "faltam": lv.faltam}, ensure_ascii=False), "proxima_em": None})
                 lv.tentadas.add(n)
                 continue
             achado = self._achado(lv, n, urls)
             self.diario.emitir("tentativa.registrada", "interceptador", {
                 "livro_id": lv.id, "fase": "preparacao", "ferramenta": f"abordagem {n}", "numero": 1, "em": agora(),
-                "resultado": json.dumps({"abordagem": ABORDAGENS[n], "balcao": lv.balcao, "enderecos": len(urls), "faltam": lv.faltam,
+                "resultado": json.dumps({"abordagem": ABORDAGENS[n], "ferramenta": FERRAMENTAS.get(n), "para": para, "balcao": lv.balcao,
+                                         "enderecos": len(urls), "faltam": lv.faltam,
                                          "documentos": len((achado.documento or {}).get("paginas") or []) if achado else 0,
                                          "ia": (achado.dados or {}).get("ia") if achado else None}, ensure_ascii=False),
                 "proxima_em": None})

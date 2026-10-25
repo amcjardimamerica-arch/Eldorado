@@ -46,6 +46,11 @@ class _Interceptador:
     def __init__(self):
         self.ordem = None
 
+    def voar(self, lv, ate=None, preferencia=None):
+        r = self.investigar(lv, preferencia)
+        return {"livro": lv.id, "achados": [r["achado"]] if r.get("achado") else [], "esgotado": r.get("esgotado", False), "adiado": False,
+                "plano": [(r.get("abordagem"), [])]}
+
     def investigar(self, lv, ordem=None, ate=None):
         self.ordem = ordem
         return {"livro": lv.id, "abordagem": ordem[0], "achado": None, "esgotado": False}
@@ -63,4 +68,4 @@ def test_a_rede_escolhe_a_acao_na_etapa_3(bancos, diario):
     lv = Livro("L", "Edital", "Secult", "https://x.gov.br/e.pdf", None, "bronze", "2099-01-01", {}, set())
     inter = _Interceptador()
     quem, _ = Encaminhamento(bancos["biblioteca"], diario, Registro(), inter, _Rede()).encaminhar(lv)
-    assert quem == "interceptador · abordagem 9" and inter.ordem[0] == 9                                  # fora da ordem do balcão (1, 2, 3, 9…)
+    assert quem.startswith("interceptador · plano de voo") and inter.ordem[0] == 9                                 # fora da ordem do balcão (1, 2, 3, 9…)

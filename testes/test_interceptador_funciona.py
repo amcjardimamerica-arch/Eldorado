@@ -3,10 +3,10 @@ import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
+from eldorado.base.nucleo.eventos import ler
 from eldorado.motores.acesso.api import DegrauAPI
 from eldorado.motores.acesso.escada import Escada
 from eldorado.motores.pilotos.interceptador import Interceptador, Livro
-from eldorado.base.nucleo.eventos import ler
 
 TEXTO = ("Edital de chamamento público nº 7/2026. Objeto: fomento a projetos culturais de organizações da sociedade civil. "
          "Inscrições de 01/11/2026 a 30/11/2026. Valor total de R$ 300.000,00. ") * 4
@@ -83,3 +83,19 @@ def test_o_canivete_de_busca_soma_as_rotas():
     pistas, relato = mb.consultar("edital cultura", limite=10)
     assert [p.link for p in pistas] == ["https://1", "https://2", "https://3"] and chamadas == ["a", "b", "c"]
     assert any(r.startswith("b: falhou") for r in relato) and not mb._livre("b") and mb._livre("c")
+
+
+def test_o_plano_de_voo_segue_os_itens_que_faltam(bancos, diario, tmp_path):
+    """25/10/2026 (a titular): um livro por vez, com um plano de voo para achar todos os dados da oportunidade."""
+    srv, base = _servidor()
+    try:
+        it = Interceptador(bancos["biblioteca"], diario, Escada([DegrauAPI()], intervalo_padrao=0, tentativas=1, tempo_limite=10))
+        lv = Livro("L4", "Edital de chamamento público nº 7/2026", None, None, f"{base}/noticia-edital", "sem", None, {}, set())
+        plano = it.plano_de_voo(lv)
+        assert plano and plano[0][0] == 1 and "Prazo de inscrição" in plano[0][1]        # a página oficial primeiro, para o prazo
+        r = it.voar(lv, tempo_livro_s=30)
+    finally:
+        srv.shutdown()
+    assert r["achados"]                                                                  # ficou com o livro e trouxe material
+    regs = [e for e in ler(tmp_path / "eventos") if e.tipo == "tentativa.registrada" and e.dados["livro_id"] == "L4"]
+    assert regs and all('"para":' in e.dados["resultado"] for e in regs)                # cada passo diz para quais itens foi

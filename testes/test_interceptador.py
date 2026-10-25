@@ -61,10 +61,11 @@ def test_rede_interceptador_e_cartorio_fase_4(orgao, gravador, bancos, diario, t
     assert gravador.aplicar(livro_na_fase_3("L", f"{orgao}/editais/edital-3-2026")).ok
     b = bancos["biblioteca"]
     rede = Encaminhamento(b, diario, Registro(), Interceptador(b, diario, escada()))
-    quem, achado = rede.encaminhar(fila(b, "2026-10-22")[0])
-    assert quem == "interceptador · abordagem 1" and achado and "paginas" not in achado["documento"]          # o texto vai pelo banco
+    quem, achados = rede.encaminhar(fila(b, "2026-10-22")[0])
+    assert quem.startswith("interceptador · plano de voo") and achados                                         # um livro, o plano de voo
+    assert all("paginas" not in a["documento"] for a in achados)                                               # o texto vai pelo banco
     assert gravador.aplicar(list(ler(tmp_path / "eventos"))).ok
-    Cartorio(b, MissaoOportunidades(), diario).processar([achado])                                            # fase 4: validar
+    Cartorio(b, MissaoOportunidades(), diario).processar(achados)                                              # fase 4: validar
     assert gravador.aplicar(list(ler(tmp_path / "eventos"))).ok
     fases = [r[0] for r in b.execute("SELECT para FROM passagem WHERE livro_id='L' ORDER BY id")]
     assert fases[-2:] == ["validacao", "preparacao"]                                                         # faltam itens: volta à fase 3
