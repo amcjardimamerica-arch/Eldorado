@@ -24,10 +24,22 @@ PALAVRAS_VAZIAS = {"de", "da", "do", "das", "dos", "e", "a", "o", "as", "os", "p
 RANK = {"ouro": 3, "prata": 2, "bronze": 1, "sem": 0, None: 0}
 
 
+LUGARES = ("acre", "alagoas", "amapa", "amazonas", "bahia", "ceara", "distrito federal", "espirito santo", "goias", "maranhao",
+           "mato grosso", "mato grosso do sul", "minas gerais", "para", "paraiba", "parana", "pernambuco", "piaui", "rio de janeiro",
+           "rio grande do norte", "rio grande do sul", "rondonia", "roraima", "santa catarina", "sao paulo", "sergipe", "tocantins",
+           "brasil", "nacional", "internacional")
+
+
 def titulo_normal(t: str | None) -> str:
     t = unicodedata.normalize("NFKD", (t or "").lower())
     t = "".join(c for c in t if not unicodedata.combining(c))
-    t = re.sub(r"\s+[—–-]\s+[^—–-]{2,40}$", "", t)                 # o sufixo " — Estado / Cidade" acrescentado pelo sistema
+    # o sufixo de lugar acrescentado pelo sistema (" — Goiás", " — Goiás / Cidade", " — Brasil"), repetido ou não; só o que
+    # É um lugar (25/10/2026: " - Circo", " - Dança" saíam junto e os editais da PNAB ficavam com o mesmo nome)
+    while True:
+        m = re.search(r"\s+[—–-]\s+([^—–-]{2,60})$", t)
+        if not m or not (m.group(1).strip().split(" / ")[0].strip() in LUGARES or " / " in m.group(1)):
+            break
+        t = t[: m.start()]
     return re.sub(r"[^a-z0-9]+", " ", t).strip()
 
 
@@ -41,11 +53,22 @@ def _link(u: str | None) -> str:
     return re.sub(r"^https?://(www\.)?", "", (u or "").strip().lower()).rstrip("/")
 
 
+def indice(lv: dict[str, Any]) -> str | None:
+    """A chave do índice (titular, 25/10/2026): NÍVEL · ÁREA · SITE; o prazo e o objeto confirmam depois, e o nome é a
+    última parte. Sem nível ou sem site, o livro não tem índice (vale o nome e o link)."""
+    nivel, area, _prazo, site = (lv.get("codigo") or "? · ? · ? · ?").split(" · ")
+    return None if "?" in (nivel, site) else f"{nivel} · {area} · {site}"
+
+
 def mesma_oportunidade(a: dict[str, Any], b: dict[str, Any]) -> str | None:
-    """O motivo, se a e b são a mesma oportunidade; None, se não (ou se há conflito)."""
-    ca, cb = a.get("codigo") or "", b.get("codigo") or ""
-    if ca and ca == cb and "?" not in ca and "SEM-PRAZO" not in ca and not nome_muito_diferente(a, b):
-        return f"o mesmo código ({ca}) e o mesmo nome"                # nível, área, prazo e site idênticos
+    """O motivo, se a e b são a mesma oportunidade; None, se não (ou se há conflito). A ordem da titular: o índice
+    identifica (nível, área e site), o prazo e o objeto confirmam ou separam, e o nome é a última parte."""
+    ia, ib = indice(a), indice(b)
+    if ia and ia == ib:
+        if a.get("fim") and b.get("fim") and a["fim"] != b["fim"]:
+            return None                                              # prazos diferentes: edições ou oportunidades diferentes
+        if not nome_muito_diferente(a, b):
+            return f"o mesmo índice ({ia}), o prazo compatível e o mesmo nome"
     if not a["t"] or a["t"] != b["t"]:
         return None
     if a.get("fim") and b.get("fim") and a["fim"] != b["fim"]:
@@ -142,8 +165,8 @@ def grupos(con: sqlite3.Connection) -> list[tuple[str, list[tuple[str, str]]]]:
     por_id = {lv["id"]: lv for lv in livros}
     baldes: dict[str, list[dict]] = defaultdict(list)
     for lv in livros:
-        if "?" not in lv["codigo"] and "SEM-PRAZO" not in lv["codigo"]:
-            baldes["codigo:" + lv["codigo"]].append(lv)
+        if indice(lv):
+            baldes["indice:" + indice(lv)].append(lv)                 # o índice identifica os candidatos
         if lv["t"]:
             baldes["nome:" + lv["t"]].append(lv)
     pai: dict[str, str] = {}
@@ -154,8 +177,13 @@ def grupos(con: sqlite3.Connection) -> list[tuple[str, list[tuple[str, str]]]]:
         return x
     motivos: dict[str, str] = {}
     for lista in baldes.values():
-        if len(lista) < 2 or len(lista) > 400:                         # um balde gigante é um título genérico: só pelo link
+        if len(lista) < 2:
             continue
+        if len(lista) > 400:                                           # um balde gigante: só os de nome igual se comparam
+            sub: dict[str, list] = defaultdict(list)
+            for x in lista:
+                sub[x["t"]].append(x)
+            lista = [x for v in sub.values() if len(v) > 1 for x in v]
         for k, a in enumerate(lista):
             for b in lista[k + 1:]:
                 if raiz(a["id"]) == raiz(b["id"]):

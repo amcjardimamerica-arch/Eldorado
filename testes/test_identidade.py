@@ -62,3 +62,26 @@ def test_o_codigo_une_os_repetidos_e_separa_a_aldir_blanc():
     assert I.mesma_oportunidade(c, d)                                              # o mesmo, com o nome acrescido
     e, f = lv("5", "Edital PNAB nº 01/2026 cultura popular"), lv("6", "Edital PNAB nº 02/2026 cultura popular")
     assert I.mesma_oportunidade(e, f) is None                                      # números de edital diferentes
+
+
+def test_o_indice_identifica_e_o_nome_e_a_ultima_parte():
+    """25/10/2026 (a titular): o índice (nível, área, site) identifica; o prazo e o objeto confirmam; o nome por último."""
+    base = {"esfera": "estadual", "uf": "GO", "abrangencia": "estadual_go", "area": "Cultura", "oficial": "https://goias.gov.br/cultura/x",
+            "estrela": "sem", "certs": 0, "criado_em": "2026-10-01"}
+
+    def lv(i, titulo, fim=None):
+        x = {**base, "id": i, "titulo": titulo, "t": I.titulo_normal(titulo), "fim": fim}
+        x["codigo"] = I.codigo(x)
+        return x
+    a, b = lv("1", "Resultado Mérito Cultural – Edital 08 — Goiás", "2026-11-10"), lv("2", "Resultado Mérito Cultural – Edital 08")
+    assert I.indice(a) == I.indice(b) and I.mesma_oportunidade(a, b)                  # o prazo faltando de um lado não separa
+    c, d = lv("3", "PNAB Goiás - Circo", "2026-10-08"), lv("4", "PNAB Goiás - Dança", "2026-10-08")
+    assert I.mesma_oportunidade(c, d) is None                                       # o nome muito diferente separa
+    e, f = lv("5", "Edital Prêmio Cerrado", "2026-10-08"), lv("6", "Edital Prêmio Cerrado", "2026-12-01")
+    assert I.mesma_oportunidade(e, f) is None                                       # prazos diferentes separam
+
+
+def test_a_pagina_ordena_por_area_e_pela_ordem_alfabetica_natural():
+    from pathlib import Path
+    p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
+    assert "porArea(conf)" in p and 'Intl.Collator("pt",{numeric:true' in p

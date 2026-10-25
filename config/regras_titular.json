@@ -202,7 +202,8 @@
     "testes/test_leitor_universal.py::test_a_reserva_que_falha_vira_sem_leitor",
     "testes/test_encaminhamento_isolado.py::test_o_espiao_falhando_nao_apaga_os_outros",
     "testes/test_fumaca_dados_reais.py::test_os_pilotos_concluem_com_os_dados_reais",
-    "testes/test_capacidade.py::test_o_orcamento_da_coleta_adia_os_que_faltam"
+    "testes/test_capacidade.py::test_o_orcamento_da_coleta_adia_os_que_faltam",
+    "testes/test_revisao_alarmes.py::test_os_alarmes_resolvidos_sao_fechados"
    ]
   },
   {
@@ -239,12 +240,14 @@
   {
    "id": "R22",
    "data": "2026-10-24",
-   "regra": "A mesma oportunidade tem um só livro: o que já tem livro agrega a ele (não cria um novo); as oportunidades idênticas no banco são reunidas num só livro a cada passagem (os achados e as certidões passam ao que fica; o unido não se apaga: ganha a situação 'unido'). Mesma oportunidade = o mesmo título e o mesmo link, ou o mesmo título, prazo e território; nunca com prazos ou municípios diferentes; os títulos genéricos só pelo link. O código da oportunidade (NÍVEL · ÁREA · PRAZO · SITE) é gravado em cada livro; nível, área, prazo e site idênticos = a mesma oportunidade, salvo nome muito diferente (números de edital diferentes, objetos diferentes, ou cada nome com palavras que o outro não tem: a Aldir Blanc/PNAB, com os mesmos dados e objetos diferentes, não se une).",
+   "regra": "A mesma oportunidade tem um só livro: o que já tem livro agrega a ele (não cria um novo); as oportunidades idênticas no banco são reunidas num só livro a cada passagem (os achados e as certidões passam ao que fica; o unido não se apaga: ganha a situação 'unido'). Mesma oportunidade = o mesmo título e o mesmo link, ou o mesmo título, prazo e território; nunca com prazos ou municípios diferentes; os títulos genéricos só pelo link. O código da oportunidade (NÍVEL · ÁREA · PRAZO · SITE) é gravado em cada livro; nível, área, prazo e site idênticos = a mesma oportunidade, salvo nome muito diferente (números de edital diferentes, objetos diferentes, ou cada nome com palavras que o outro não tem: a Aldir Blanc/PNAB, com os mesmos dados e objetos diferentes, não se une). A ordem (titular, 25/10/2026): o índice identifica (nível, área e site), o prazo e o objeto confirmam ou separam, e o nome é a última parte. As oportunidades são apresentadas por área e, dentro de cada área, em ordem alfabética natural (os editais sequenciais um após o outro).",
    "onde": "eldorado/base/cartorio/identidade.py (o nó unir_repetidos), indice.py (a prevenção)",
    "travas": [
     "testes/test_identidade.py::test_a_mesma_oportunidade_vira_um_livro",
     "testes/test_identidade.py::test_o_achado_da_oportunidade_que_ja_tem_livro_agrega",
-    "testes/test_identidade.py::test_o_codigo_une_os_repetidos_e_separa_a_aldir_blanc"
+    "testes/test_identidade.py::test_o_codigo_une_os_repetidos_e_separa_a_aldir_blanc",
+    "testes/test_identidade.py::test_o_indice_identifica_e_o_nome_e_a_ultima_parte",
+    "testes/test_identidade.py::test_a_pagina_ordena_por_area_e_pela_ordem_alfabetica_natural"
    ]
   }
  ]

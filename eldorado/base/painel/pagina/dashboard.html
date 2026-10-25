@@ -2969,11 +2969,21 @@ function desenhaRadar(){
         <small>${x._uf||"nacional"} · ${esc(x.tipo||"")}${x.publicado_em?" · publicado em "+br(x.publicado_em):""}</small></span>
       <span class="rd-p">${x.fim?"até "+br(x.fim):x.confirmada?"fluxo contínuo":"prazo a confirmar"}</span>
       ${u?`<a class="rd-a${oficial&&x.link_oficial?" of":""}" href="${esc(u)}" target=_blank rel="noopener noreferrer">${x.link_oficial&&(x.confirmada||(I&&I.pagina_oficial))?"Abrir oportunidade ↗":"indício ↗"}</a>`:`<span class="rd-a meta">—</span>`}</div>`;};
-  const confOrd=[...conf].sort((a,b)=>String(a.fim||"9999").localeCompare(String(b.fim||"9999")));
-  $("fi-novas").innerHTML=(confOrd.length?confOrd.map(x=>linha(x,true)).join(""):`<div class=meta style="padding:8px 2px">nenhuma confirmada neste recorte</div>`);
-  const possOrd=[...verif].sort((a,b)=>(a._uf==="GO"?0:1)-(b._uf==="GO"?0:1)||String(b.publicado_em||"").localeCompare(String(a.publicado_em||"")));
+  // 25/10/2026 (titular): separadas por área e, dentro de cada área, em ordem alfabética natural (os editais sequenciais
+  // — nº 06/2026, nº 07/2026 — um após o outro)
+  const COL=new Intl.Collator("pt",{numeric:true,sensitivity:"base"});
+  const NOME_AREA=Object.fromEntries(_AREAS_RADAR.map(([k,n])=>[k,n])); NOME_AREA.outras="Outras áreas";
+  const porArea=(lista,lim)=>{ const g={}; lista.forEach(x=>(g[areaRadar(x)]=g[areaRadar(x)]||[]).push(x));
+    const ordem=Object.keys(g).sort((a,b)=>a==="outras"?1:b==="outras"?-1:COL.compare(NOME_AREA[a]||a,NOME_AREA[b]||b)); let n=0, out=[];
+    for(const k of ordem){ const itens=g[k].sort((a,b)=>COL.compare(String(a.titulo||""),String(b.titulo||""))); const mostrar=lim?itens.slice(0,Math.max(0,lim-n)):itens;
+      if(!mostrar.length) break; out.push({area:k,total:itens.length,itens:mostrar}); n+=mostrar.length; if(lim&&n>=lim) break; }
+    return out; };
+  const blocos=(grupos,oficial)=>grupos.map(gr=>`<div class="rd-t" style="margin:10px 0 2px;font-size:12px;letter-spacing:.03em;text-transform:uppercase;color:#8A5A00">${esc(NOME_AREA[gr.area]||gr.area)} <span class=meta>· ${gr.total}</span></div>`+gr.itens.map(x=>linha(x,oficial)).join("")).join("");
+  const confOrd=porArea(conf);
+  $("fi-novas").innerHTML=(confOrd.length?blocos(confOrd,true):`<div class=meta style="padding:8px 2px">nenhuma confirmada neste recorte</div>`);
+  const possOrd=[...verif];
   $("fi-possiveis").innerHTML=v0.p==="abertos"?`<div class="rd-t" style="margin-top:12px">Possíveis — em verificação <span class=meta>· ${possOrd.length} · Goiás primeiro · o Interceptador confirma o prazo e o site oficial</span></div>`
-    +possOrd.slice(0,8).map(x=>linha(x,false)).join("")
+    +blocos(porArea(possOrd,8),false)
     +(possOrd.length>8?`<div class=meta style="padding:6px 2px">mostrando 8 de ${possOrd.length} · <a href="#" onclick="trocaVista('bussola');return false">todas no Mapa de Oportunidades</a></div>`:""):"";
 }
 /* ═══ CALENDÁRIO COMPLETO, DIA A DIA (titular, 28/09) — REGRA MÁXIMA ═════════════════════════════════════════════
@@ -3733,7 +3743,7 @@ function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
   const ordem=Object.keys(grupos).sort((a,b)=>grupos[b].length-grupos[a].length||AREA(a).rotulo.localeCompare(AREA(b).rotulo,"pt"));
   ordem.forEach(area=>{
     const bloco=document.createElement("div");bloco.className="fa-area";
-    const todas=grupos[area].sort((x,y)=>((x.b&&x.b.analise_etapa2&&x.b.analise_etapa2.length)?0:1)-((y.b&&y.b.analise_etapa2&&y.b.analise_etapa2.length)?0:1)||((dias(x.e.fim)??9e9)-(dias(y.e.fim)??9e9)));
+    const todas=grupos[area].sort((x,y)=>new Intl.Collator("pt",{numeric:true,sensitivity:"base"}).compare(String(x.e.titulo||""),String(y.e.titulo||"")))   /* 25/10/2026: a ordem alfabética natural dentro da área */;
     const lim=todas.length; const lista=todas;   // 24/09 (titular): nenhuma oportunidade oculta — todas à vista
     bloco.innerHTML=`<div class="fa-areat"><span class=ponto style="background:${AREA(area).cor};width:12px;height:12px"></span>${esc(AREA(area).rotulo)}
         <span class=meta style="font-weight:500">${todas.length} oportunidade(s)${todas.length>lim?" · mostrando "+lim:""}</span>
