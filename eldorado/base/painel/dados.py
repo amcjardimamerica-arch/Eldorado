@@ -722,6 +722,13 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     detalhes = {**sc["detalhes"], **medido.pop("detalhes")}
     sc.update(medido)
     sc["detalhes"] = detalhes
+    # os pilotos ligados aos dados (titular, 25/10/2026: sem leitura na página inicial e na sala)
+    from .pilotos import montar as pilotos_montar
+    arq_pilotos, status_pilotos = pilotos_montar(sis.bib, sis.cer, _molde)
+    arquivos.update(arq_pilotos)
+    for m in sc["detalhes"].get("motores") or []:
+        if m.get("id") in status_pilotos:
+            m.update(status_pilotos[m["id"]])
     arquivos["sala_controle.json"] = sc
     # o Cartório ligado aos dados (titular, 25/10/2026: a página estava estática): os mostradores, a lista e a ficha de cada livro
     from .cartorio import montar as cartorio_montar
@@ -747,6 +754,11 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     for lid, ficha in fichas_cartorio.items():                          # a ficha de cada livro (aberta ao clicar)
         (saida / "dados" / "cartorio" / f"{re.sub(r'[^A-Za-z0-9_.-]', '_', lid)}.json").write_text(json.dumps(ficha, ensure_ascii=False), encoding="utf-8")
     for nome, v in arquivos.items():
+        if isinstance(v, dict) and nome in ("motores.json", "status_motores.json"):
+            for lista in (x for x in v.values() if isinstance(x, list)):
+                for m in lista:
+                    if isinstance(m, dict) and m.get("id") in status_pilotos:
+                        m.update({k: status_pilotos[m["id"]][k] for k in ("luz", "ultima", "resultado") if k in m or k == "luz"})
         (saida / "dados" / nome).write_text(json.dumps(v, ensure_ascii=False), encoding="utf-8")
     texto = json.dumps(D, ensure_ascii=False)
     (saida / "dashboard-dados.json").write_text(texto, encoding="utf-8")

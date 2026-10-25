@@ -589,6 +589,29 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
                 gravar_agora()
     threading.Thread(target=gravar_em_segundo_plano, daemon=True, name="gravacao").start()
 
+    # o pedido de implantação (a regra R09): o fluxo Implantar grava implantar/pedido.txt no repositório; o sistema o confere a
+    # cada 2 minutos e, ao vê-lo, TERMINA a passagem em andamento, grava e para (o ciclo se religa com o código novo). Assim
+    # a mudança entra sem cortar a passagem no meio (25/10/2026: os pilotos nunca voavam, a passagem era cortada antes deles)
+    implantar = threading.Event()
+
+    def pedido_atual() -> str:
+        try:
+            subprocess.run(["git", "fetch", "-q", "origin", "main"], capture_output=True, timeout=60)
+            r = subprocess.run(["git", "show", "origin/main:implantar/pedido.txt"], capture_output=True, text=True, timeout=30)
+            return r.stdout.strip() if r.returncode == 0 else ""
+        except Exception:  # noqa: BLE001
+            return ""
+    pedido_inicial = pedido_atual() if gravar else ""
+
+    def vigiar_pedido() -> None:
+        while gravar and not parar.wait(120):
+            p_ = pedido_atual()
+            if p_ and p_ != pedido_inicial:
+                typer.echo(f"  pedido de implantação ({p_[:60]}): termina a passagem em andamento e para")
+                implantar.set()
+                return
+    threading.Thread(target=vigiar_pedido, daemon=True, name="implantar").start()
+
     # o trabalho de fundo (titular, 24/10/2026: operar perto de 85% da capacidade): enquanto os motores esperam a rede, o
     # processador fica ocioso (as leituras mostraram 1% a 5%); o governador libera a releitura dos documentos herdados
     # (PDF e OCR, trabalho pesado) sempre que a carga estiver abaixo de 70%, e a retém quando passa (os motores primeiro)
@@ -625,13 +648,17 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
                    f"livros em trabalho {f['livros_em_trabalho']} · próxima ação prevista {f['proxima_acao'][11:16]}")
         if decorrido > limite_min * 60:
             break
+        if implantar.is_set():                                        # a passagem terminou: grava e para para a implantação
+            gravar_agora()
+            typer.echo("  implantação: a passagem terminou; o sistema para e se religa com o código novo")
+            break
         if time.monotonic() - ultimo > gravar_min * 60:                 # (a de segundo plano também grava; esta cobre o fim do ciclo)
             gravar_agora()
             ultimo = time.monotonic()
         if not f["total"]:
             espera = min(f["proxima_s"], espera_max_min * 60, max(0.0, limite_min * 60 - decorrido))
             typer.echo(f"  sem fila: espera {espera / 60:.0f} min (até a próxima ação prevista)")
-            time.sleep(espera)
+            implantar.wait(espera)                                    # o pedido de implantação acorda a espera
     parar.set()
     typer.echo(f"fim desta execução depois de {ciclo} ciclo(s); a continuação segue o trabalho")
 

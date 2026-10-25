@@ -93,7 +93,7 @@
   {
    "id": "R09",
    "data": "2026-10-25",
-   "regra": "O painel é atualizado por inteiro a cada mudança no sistema (cada envio e cada gravação) e a cada 15 minutos; a sala de controle no menor tempo possível (o sistema grava e aciona o painel a cada 5 minutos). Toda mudança no sistema o PARA por completo, implanta e o RELIGA, atualizando naquele momento todas as mudanças. Um evento recusado não pode deixar o site velho. (Substitui a regra anterior do site acompanhando a Biblioteca.)",
+   "regra": "O painel é atualizado por inteiro a cada mudança no sistema (cada envio e cada gravação) e a cada 15 minutos; a sala de controle no menor tempo possível (o sistema grava e aciona o painel a cada 5 minutos). Toda mudança no sistema o PARA por completo, implanta e o RELIGA, atualizando naquele momento todas as mudanças. Um evento recusado não pode deixar o site velho. (Substitui a regra anterior do site acompanhando a Biblioteca.) A parada não corta a passagem no meio: o sistema termina a passagem em andamento, grava e para; depois de 30 minutos, a parada é forçada.",
    "onde": ".github/workflows/painel.yml, implantar.yml, eldorado.yml; scripts/gravar.sh; eldorado/base/painel/",
    "travas": [
     "testes/test_regra_r09.py::test_o_painel_a_cada_mudanca_e_a_cada_15_minutos",
@@ -221,11 +221,12 @@
   {
    "id": "R20",
    "data": "2026-10-24",
-   "regra": "Todo mostrador da sala de controle é ligado ao dado medido pelo sistema; o que o sistema ainda não mede aparece cinza dizendo isso (nunca um zero por falta de ligação). A sala é o parâmetro do funcionamento: medida no início de cada passagem (no máximo a cada 15 min) e gravada no Cérebro; a Regência aciona primeiro os motores que ela mostra fora da cadência, e a releitura dobra quando os documentos sem texto estão em alarme. O Cartório no site também: os livros em cada uma das 5 etapas, os degraus da escada, e a ficha de cada livro (os mesmos dois mostradores, o relatório de cada etapa, o parecer do Cérebro, o repasse e a orientação para obter a oportunidade).",
+   "regra": "Todo mostrador da sala de controle é ligado ao dado medido pelo sistema; o que o sistema ainda não mede aparece cinza dizendo isso (nunca um zero por falta de ligação). A sala é o parâmetro do funcionamento: medida no início de cada passagem (no máximo a cada 15 min) e gravada no Cérebro; a Regência aciona primeiro os motores que ela mostra fora da cadência, e a releitura dobra quando os documentos sem texto estão em alarme. O Cartório no site também: os livros em cada uma das 5 etapas, os degraus da escada, e a ficha de cada livro (os mesmos dois mostradores, o relatório de cada etapa, o parecer do Cérebro, o repasse e a orientação para obter a oportunidade). Os pilotos também: a leitura do Espião (as missões) e do Interceptador (o plano de voo) na página inicial e na sala.",
    "onde": "eldorado/base/painel/sala.py",
    "travas": [
     "testes/test_sala_mostradores.py::test_todo_instrumento_da_sala_e_medido",
-    "testes/test_cartorio_site.py::test_o_cartorio_tem_os_mostradores_e_a_ficha_de_cada_livro"
+    "testes/test_cartorio_site.py::test_o_cartorio_tem_os_mostradores_e_a_ficha_de_cada_livro",
+    "testes/test_pilotos_site.py::test_os_pilotos_tem_leitura"
    ]
   },
   {

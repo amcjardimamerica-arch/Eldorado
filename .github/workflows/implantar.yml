@@ -1,7 +1,9 @@
 name: Implantar (parar, implantar e religar)
-# A regra R09 (titular, 25/10/2026): toda mudança no sistema o PARA por completo, implanta e o RELIGA, atualizando naquele
-# momento todas as mudanças. Cada envio de código ou configuração interrompe o ciclo em andamento e inicia um novo com a
-# mudança; o painel é republicado pelo próprio envio. As gravações do sistema não acionam este fluxo (regra do GitHub).
+# A regra R09 (titular, 25/10/2026): toda mudança no sistema o PARA por completo, implanta e o RELIGA, atualizando todas as
+# mudanças. Sem cortar a passagem no meio (25/10/2026: com envios seguidos, a passagem era cortada antes dos pilotos):
+#   1. o pedido de implantação vai para implantar/pedido.txt; o sistema o confere a cada 2 minutos, TERMINA a passagem em
+#      andamento, grava e para; o próprio ciclo se religa com o código novo (o passo Continuar);
+#   2. se ainda estiver rodando depois de 30 minutos, este fluxo PARA à força e religa (a mudança sempre entra).
 on:
   push:
     branches: [main]
@@ -9,27 +11,34 @@ on:
   workflow_dispatch:
 permissions:
   actions: write
-  contents: read
+  contents: write
 concurrency:
   group: implantar
   cancel-in-progress: true
 jobs:
   implantar:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 45
     steps:
-      - name: Parar o ciclo em andamento
+      - uses: actions/checkout@v5
+      - name: O pedido de implantação (o sistema termina a passagem e para)
+        run: |
+          git config user.name "Eldorado"; git config user.email "eldorado@users.noreply.github.com"
+          mkdir -p implantar; echo "${GITHUB_SHA::7} $(date -u +%Y-%m-%dT%H:%M:%SZ)" > implantar/pedido.txt
+          git add implantar/pedido.txt; git commit -q -m "Pedido de implantação ${GITHUB_SHA::7}"
+          for i in 1 2 3 4 5; do git pull -q --rebase --autostash origin main && git push -q origin main && break; sleep $((i * 5)); done
+      - name: Esperar a passagem terminar (até 30 minutos) e, se preciso, parar à força
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          for id in $(gh run list -R "$GITHUB_REPOSITORY" -w eldorado.yml --json databaseId,status -q '.[] | select(.status=="in_progress" or .status=="queued" or .status=="waiting") | .databaseId'); do
-            echo "parando o ciclo $id"; gh run cancel "$id" -R "$GITHUB_REPOSITORY" || true
-          done
-          for i in $(seq 1 30); do
-            n=$(gh run list -R "$GITHUB_REPOSITORY" -w eldorado.yml --json status -q '[.[] | select(.status=="in_progress")] | length')
-            [ "$n" = "0" ] && break; sleep 10
-          done
-      - name: Religar com a mudança
+          rodando() { gh run list -R "$GITHUB_REPOSITORY" -w eldorado.yml --json databaseId,status,createdAt -q '.[] | select(.status=="in_progress") | .databaseId'; }
+          for i in $(seq 1 60); do [ -z "$(rodando)" ] && { echo "o ciclo parou sozinho, ao fim da passagem"; exit 0; }; sleep 30; done
+          for id in $(rodando); do echo "passou de 30 min: parando o ciclo $id à força"; gh run cancel "$id" -R "$GITHUB_REPOSITORY" || true; done
+          for i in $(seq 1 30); do [ -z "$(rodando)" ] && break; sleep 10; done
+      - name: Religar com a mudança (se o próprio ciclo ainda não se religou)
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run eldorado.yml -R "$GITHUB_REPOSITORY" --ref main && echo "religado com o código ${GITHUB_SHA::7}"
+        run: |
+          sleep 20
+          n=$(gh run list -R "$GITHUB_REPOSITORY" -w eldorado.yml --json status -q '[.[] | select(.status=="in_progress" or .status=="queued" or .status=="waiting" or .status=="pending")] | length')
+          if [ "$n" = "0" ]; then gh workflow run eldorado.yml -R "$GITHUB_REPOSITORY" --ref main && echo "religado"; else echo "o ciclo já se religou ($n)"; fi

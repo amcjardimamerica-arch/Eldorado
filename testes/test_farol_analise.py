@@ -41,15 +41,15 @@ def test_transferencia_ao_farol_de_ponta_a_ponta(copia):
     assert antes > 0
     diario = Diario(pasta / "eventos", "teste")
     r = farol.transferir(con, diario, pasta / "farol", limite=5)
-    assert r["transferidos"] == 5
+    assert r["transferidos"] == min(5, antes)
     arq = json.loads(next((pasta / "farol").glob("*.json")).read_text(encoding="utf-8"))
     if arq.get("formato") is None:
         arq = json.loads(sorted((pasta / "farol").glob("*.json"))[0].read_text(encoding="utf-8"))
     assert {"livro", "links", "itens", "dispensas", "passaporte", "relatorios", "achados"} <= set(arq) or arq.get("livros")
-    assert len(json.loads((pasta / "farol" / "manifesto.json").read_text(encoding="utf-8"))["livros"]) == 5
+    assert len(json.loads((pasta / "farol" / "manifesto.json").read_text(encoding="utf-8"))["livros"]) == min(5, antes)
     assert Gravador(bancos).aplicar(list(ler(pasta / "eventos"))).ok                             # o registro no livro
     assert con.execute("SELECT COUNT(*) FROM transferencia").fetchone()[0] >= 5
-    assert len(farol.para_transferir(con)) == antes - 5                                           # só vai de novo o que mudar
+    assert len(farol.para_transferir(con)) == antes - min(5, antes)                                           # só vai de novo o que mudar
 
 
 def test_calendario_e_historia(copia):

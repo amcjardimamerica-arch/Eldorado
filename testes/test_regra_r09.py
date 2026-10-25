@@ -27,7 +27,9 @@ def test_toda_mudanca_para_implanta_e_religa():
     gatilhos = i.get("on") or i.get(True)
     assert "eldorado/**" in gatilhos["push"]["paths"] and "config/**" in gatilhos["push"]["paths"]
     texto = Path(".github/workflows/implantar.yml").read_text(encoding="utf-8")
-    assert "gh run cancel" in texto and "gh workflow run eldorado.yml" in texto
+    assert "gh run cancel" in texto and "gh workflow run eldorado.yml" in texto and "implantar/pedido.txt" in texto
+    comandos = Path("eldorado/base/nucleo/comandos.py").read_text(encoding="utf-8")
+    assert "implantar/pedido.txt" in comandos and "implantar.is_set()" in comandos     # termina a passagem e para (sem cortar)
 
 
 def test_o_radar_nao_repete_livro_nem_mostra_unido():
