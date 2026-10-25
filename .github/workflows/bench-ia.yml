@@ -1,0 +1,54 @@
+name: Estudo das IAs (uma ou três Qwen3-8B)
+# O estudo da titular (25/10/2026): mede, na máquina da produção, as três tarefas (o Interceptador, o Espião e o
+# Comandante) em três arranjos. Sob demanda; não faz parte do funcionamento.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  medir:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+      - name: O motor llama.cpp (a mesma versão da produção)
+        run: |
+          mkdir -p ia_local/motor ia_local/modelos
+          URL=$(python3 -c "import tomllib;print(tomllib.load(open('config/ia_local.toml','rb'))['motor']['download'])")
+          curl -sL --retry 3 -o /tmp/llama.tgz "$URL" && tar xzf /tmp/llama.tgz -C /tmp && cp -r /tmp/llama-*/* ia_local/motor/
+      - uses: actions/cache@v4
+        with:
+          path: ia_local/modelos
+          key: modelos-gguf-Qwen3-8B-Q4_K_M
+      - name: O modelo
+        run: |
+          ARQ=$(python3 -c "import tomllib;print(tomllib.load(open('config/ia_local.toml','rb'))['modelo']['arquivo'])"); DEST="ia_local/modelos/$ARQ"
+          [ -s "$DEST" ] && { echo "do cache"; exit 0; }
+          for U in $(python3 -c "import tomllib;print(' '.join(tomllib.load(open('config/ia_local.toml','rb'))['modelo']['espelhos']))"); do curl -L --retry 3 --fail -s -o "$DEST" "$U" && break; done
+          echo "MAQUINA: $(nproc) núcleos · $(free -g | awk '/Mem/{print $2}') GB"; echo "::notice title=máquina::$(nproc) núcleos · $(free -m | awk '/Mem/{print $2}') MB de memória · $(lscpu | grep 'Model name' | cut -d: -f2 | xargs)"
+      - name: "Cenário 1 — uma IA, uma vaga: as três tarefas em fila (como hoje)"
+        run: |
+          A=ia_local/modelos/Qwen3-8B-Q4_K_M.gguf; export LD_LIBRARY_PATH=ia_local/motor
+          ia_local/motor/llama-server -m $A -c 8192 -np 1 -t 3 --cache-type-k q8_0 --cache-type-v q8_0 --port 9001 --host 127.0.0.1 > /tmp/s1.log 2>&1 &
+          for i in $(seq 1 90); do curl -sf http://127.0.0.1:9001/health >/dev/null && break; sleep 2; done
+          python3 estudos/bench_ia.py "1 · uma IA, em fila" nao 9001; pkill -f llama-server; sleep 5
+      - name: "Cenário 2 — uma IA, três vagas: as três tarefas juntas (o lote contínuo)"
+        run: |
+          A=ia_local/modelos/Qwen3-8B-Q4_K_M.gguf; export LD_LIBRARY_PATH=ia_local/motor
+          ia_local/motor/llama-server -m $A -c 24576 -np 3 -t 3 --cache-type-k q8_0 --cache-type-v q8_0 --port 9001 --host 127.0.0.1 > /tmp/s2.log 2>&1 &
+          for i in $(seq 1 90); do curl -sf http://127.0.0.1:9001/health >/dev/null && break; sleep 2; done
+          python3 estudos/bench_ia.py "2 · uma IA, três vagas juntas" sim 9001 9001 9001; pkill -f llama-server; sleep 5
+      - name: "Cenário 3 — três IAs separadas: uma para cada função, juntas"
+        run: |
+          A=ia_local/modelos/Qwen3-8B-Q4_K_M.gguf; export LD_LIBRARY_PATH=ia_local/motor
+          for p in 9001 9002 9003; do ia_local/motor/llama-server -m $A -c 8192 -np 1 -t 1 --cache-type-k q8_0 --cache-type-v q8_0 --port $p --host 127.0.0.1 > /tmp/s3_$p.log 2>&1 & done
+          for p in 9001 9002 9003; do for i in $(seq 1 120); do curl -sf http://127.0.0.1:$p/health >/dev/null && break; sleep 2; done; done
+          free -m; python3 estudos/bench_ia.py "3 · três IAs separadas, juntas" sim 9001 9002 9003; pkill -f llama-server; sleep 5
+      - name: "Cenário 4 — três IAs separadas sem compartilhar o arquivo do modelo (--no-mmap: a memória real de três cópias)"
+        continue-on-error: true
+        run: |
+          A=ia_local/modelos/Qwen3-8B-Q4_K_M.gguf; export LD_LIBRARY_PATH=ia_local/motor
+          for p in 9001 9002 9003; do ia_local/motor/llama-server -m $A --no-mmap -c 8192 -np 1 -t 1 --cache-type-k q8_0 --cache-type-v q8_0 --port $p --host 127.0.0.1 > /tmp/s4_$p.log 2>&1 & sleep 40; done
+          free -m; ok=0; for p in 9001 9002 9003; do curl -sf http://127.0.0.1:$p/health >/dev/null && ok=$((ok+1)); done
+          echo "::notice title=4 · três cópias na memória::$ok de 3 subiram · $(free -m | awk '/Mem/{print "usado " $3 " MB de " $2 " MB · swap " $0}' | cut -c1-80)"
+          [ $ok = 3 ] && python3 estudos/bench_ia.py "4 · três cópias na memória, juntas" sim 9001 9002 9003; pkill -f llama-server; true
