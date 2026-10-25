@@ -25,12 +25,29 @@ from .livros_motores import ja_pesquisado, motores_do_livro  # noqa: E402,F401 �
 from .regencia import _sem_paginas, achado_para_evento
 
 
+def _canivete(a):
+    """O canivete de cada achado (o mesmo dos motores: o idioma, a publicação, as datas de prazo com o trecho, os valores
+    em reais e os metadados), aplicado aos achados dos pilotos. Nunca impede a entrega."""
+    try:
+        from ...motores.leitura.enriquecer import enriquecer
+        doc = a.documento or {}
+        texto = "\n".join(doc.get("paginas") or []) or (a.dados or {}).get("resumo") or ""
+        if not texto or (a.dados or {}).get("canivete"):
+            return a
+        r = enriquecer(texto, None, a.link_oficial or a.link_divulgacao)
+        r.pop("texto_principal", None)
+        return msgspec.structs.replace(a, dados={**(a.dados or {}), "canivete": r}) if r else a
+    except Exception:  # noqa: BLE001
+        return a
+
+
 class Encaminhamento:
     def __init__(self, biblioteca: sqlite3.Connection, diario, registro, interceptador, rede=None):
         self.con, self.diario, self.registro, self.interceptador, self.rede = biblioteca, diario, registro, interceptador, rede
         self.passaporte = Passaporte(biblioteca, diario, maximo=10)
 
     def _entregar(self, a, quem: str) -> dict[str, Any]:
+        a = _canivete(a)                                            # o canivete suíço dos motores, também nos pilotos (25/10/2026)
         doc = a.documento or {}
         self.diario.emitir("documento.registrado", quem, {"url": doc["url"], "sha256": doc["sha256"], "tipo": doc.get("tipo"),
              "paginas": len(doc.get("paginas") or []), "obtido_em": agora(), "oficial": int(bool(doc.get("oficial"))), "leitor": doc.get("leitor")})

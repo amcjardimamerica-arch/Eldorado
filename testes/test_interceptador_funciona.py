@@ -53,3 +53,33 @@ def test_toda_abordagem_fica_registrada_e_o_prazo_adia(bancos, diario, tmp_path)
     lv3 = Livro("L3", "Outro edital", None, None, None, "sem", None, {}, set())
     assert it.investigar(lv3, [1, 3], ate=time.monotonic() - 1) == {"livro": "L3", "abordagem": None, "achado": None, "esgotado": False,
                                                                     "adiado": True}   # o prazo: continua na próxima passagem
+
+
+def test_o_canivete_nos_achados_dos_pilotos():
+    """25/10/2026: o canivete suíço dos motores também nos achados do Espião e do Interceptador."""
+    from eldorado.base.cerebro.encaminhamento import _canivete
+    from eldorado.base.nucleo.contratos import Achado
+    a = Achado(id="x", motor="interceptador", titulo="Edital 7/2026", link_divulgacao="https://exemplo.org/edital", encontrado_em="2026-10-25",
+               dados={}, documento={"url": "https://exemplo.org/edital", "sha256": "s", "paginas": [TEXTO]})
+    c = _canivete(a).dados["canivete"]
+    assert c.get("valores") and c.get("datas")                                        # o valor e as datas do edital
+
+
+def test_o_canivete_de_busca_soma_as_rotas():
+    """25/10/2026: a metabusca não depende de uma rota só; os resultados de várias rotas se somam, e a que falha descansa."""
+    from eldorado.motores.descoberta.metabusca import Metabusca
+    from eldorado.motores.descoberta.pistas import Pista
+    mb = Metabusca(buscar=lambda u: None)
+    chamadas = []
+
+    def rota(nome, links, falha=False):
+        def fn(t, lim):
+            chamadas.append(nome)
+            if falha:
+                raise RuntimeError("bloqueado")
+            return [Pista(titulo=x, link=x, origem=nome) for x in links]
+        return (nome, fn)
+    mb.rotas = lambda termos: [rota("a", ["https://1", "https://2"]), rota("b", [], falha=True), rota("c", ["https://2/", "https://3"])]
+    pistas, relato = mb.consultar("edital cultura", limite=10)
+    assert [p.link for p in pistas] == ["https://1", "https://2", "https://3"] and chamadas == ["a", "b", "c"]
+    assert any(r.startswith("b: falhou") for r in relato) and not mb._livre("b") and mb._livre("c")
