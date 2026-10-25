@@ -53,10 +53,7 @@ def decidir(dados: Path, config: Path, diario, plano: dict | None = None, agora:
             return {"decisoes": 0, "motivo": "o Arquivo do Cérebro ainda não está na versão 10"}
         ordem_fixa = {m["modulo"] for m in (plano or {}).get("motores", [])}
         resumo = {}
-        for etapa, opcoes, k, acao in (
-            ("coleta", _estado_motores(bib, _motores(config), agora), ESCOLHAS_MOTORES, "acionar o motor"),
-            ("espiao", _estado_familias(cer), ESCOLHAS_ESPIAO, "voar a família"),
-        ):
+        for etapa, opcoes, k, acao in (("coleta", _estado_motores(bib, _motores(config), agora), ESCOLHAS_MOTORES, "acionar o motor"),):
             if not opcoes:
                 continue
             pol = Politica(etapa, list(opcoes))

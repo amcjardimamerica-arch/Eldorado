@@ -80,14 +80,15 @@ def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_
                 for lv in livros:
                     if parar.is_set():
                         break
-                    while _carga_alta() and not parar.is_set():
-                        parar.wait(30)
+                    from ..comandante.pilotos import autorizar, pousou  # as quatro regras do Comandante (25/10/2026)
+                    if autorizar("interceptador", dados_, diario, parar, alvo=lv.id, titulo=lv.titulo or "") is None:
+                        break
                     SITUACAO["interceptador"] = {"livro": lv.id, "titulo": lv.titulo, "desde": time.time()}
                     sinal(diario, "interceptador", f"em voo: {lv.titulo}")
                     quem, achados = enc.encaminhar(lv, time.monotonic() + tempo_livro_s)
                     for a in (achados if isinstance(achados, list) else [achados] if achados else []):
                         ENTREGAS["interceptador"].put(a)
-                    parar.wait(pausa_s)
+                    pousou("interceptador")
                 if not livros:
                     sinal(diario, "interceptador", "aguardando: a fila de livros está vazia")
                     parar.wait(300)                                   # a fila vazia: espera a próxima passagem trazer livros
@@ -102,28 +103,34 @@ def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_
 
 def voar_espiao(dados: Path, diario, parar: threading.Event, orcamento_s: float = 150, pausa_s: float = 120) -> None:
     """O Espião: missão após missão (as rotas descansam sozinhas quando falham), com uma pausa entre os voos."""
+    from ..comandante.pilotos import autorizar, pousou
     from .encaminhamento import Encaminhamento
     from .pilotos import missoes
     while not parar.is_set():
         try:
-            while _carga_alta() and not parar.is_set():
-                parar.wait(30)
+            aut = autorizar("espiao", dados, diario, parar)                 # as quatro regras do Comandante (25/10/2026)
+            if aut is None:
+                if not parar.is_set():
+                    sinal(diario, "espiao", "aguardando: sem janela de busca (as rotas descansando)")
+                    parar.wait(60)
+                continue
             dados_, con, escada, registro = _contexto(dados, diario)
             try:
                 SITUACAO["espiao"] = {"desde": time.time()}
-                sinal(diario, "espiao", "em voo: missão de busca")
-                achados, _ = missoes(dados_, con, escada, True, orcamento_s, diario=diario)
+                sinal(diario, "espiao", f"em voo: a família {aut['alvo']} (autorizada pelo Comandante)")
+                achados, _ = missoes(dados_, con, escada, True, orcamento_s, diario=diario, familia=aut["alvo"])
                 enc = Encaminhamento(con, diario, registro, None)
                 for a in achados:
                     ENTREGAS["espiao"].put(enc._entregar(a, "espiao"))
                 sinal(diario, "espiao", f"pousou: {len(achados)} achado(s)")
             finally:
                 con.close()
+                pousou("espiao")
         except Exception as e:  # noqa: BLE001
             diario.emitir("alarme.aberto", "piloto:espiao", {"gravidade": "media", "modulo": "piloto:espiao",
                                                              "mensagem": f"o voo permanente do Espião falhou: {type(e).__name__}: {str(e)[:300]}",
                                                              "aberto_em": time.strftime("%Y-%m-%dT%H:%M:%S+00:00", time.gmtime())})
-        parar.wait(pausa_s)
+            parar.wait(60)                                                # um voo que falhou: um minuto antes do próximo
 
 
 def ligar(dados: Path, eventos: Path, parar: threading.Event) -> list[threading.Thread]:

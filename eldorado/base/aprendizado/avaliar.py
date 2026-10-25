@@ -1,6 +1,7 @@
 """O Aprendizado avalia as decisões do Comandante (a etapa A4): quando o resultado aparece, cada decisão recebe a sua
 recompensa, e a política do Comandante reaprende com ela na passagem seguinte.
   coleta: o motor escolhido trouxe achado aceito naquele dia (todo motor lê todo dia, então o resultado sempre aparece);
+  interceptador: o voo autorizado registrou passos do plano de voo com material para o livro;
   espiao: a família escolhida voou depois da decisão e a missão achou algo (a família que não voou em 24 h não é avaliada:
           a recompensa fica vazia, com o motivo)."""
 
@@ -40,6 +41,17 @@ def avaliar(dados: Path, diario, agora: datetime | None = None) -> dict[str, int
                     rec, resultado = (1.0 if (m[1] or 0) > 0 else 0.0), f"{m[0]} missão(ões) depois da decisão, {m[1] or 0} com achado"
                 elif em < (agora - timedelta(hours=24)).isoformat():
                     resultado = "a família não voou em 24 h: sem avaliação"
+                    conta["sem_execucao"] += 1
+            elif etapa == "interceptador":  # o voo autorizado trouxe material para o livro?
+                t = bib.execute(
+                    "SELECT COUNT(*), SUM(CASE WHEN resultado NOT LIKE '%sem material%' THEN 1 ELSE 0 END) FROM tentativa "
+                    "WHERE livro_id = ? AND em >= ? AND ferramenta LIKE 'abordagem%'",
+                    (alvo, em),
+                ).fetchone()
+                if t[0]:
+                    rec, resultado = (1.0 if (t[1] or 0) > 0 else 0.0), f"{t[0]} passo(s) do plano de voo, {t[1] or 0} com material"
+                elif em < (agora - timedelta(hours=24)).isoformat():
+                    resultado = "o voo não registrou passos em 24 h: sem avaliação"
                     conta["sem_execucao"] += 1
             if resultado is None:
                 continue

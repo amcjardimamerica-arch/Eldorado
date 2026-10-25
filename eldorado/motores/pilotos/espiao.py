@@ -235,6 +235,12 @@ class Espiao:
         return bool(rotas) and all((v or "") > agora_ for v in rotas.values()) and len(rotas) >= 3
 
     def escolher(self) -> tuple[str, str]:
+        if getattr(self, "preferida", None) in self.fams:                        # a família escolhida pelo Comandante (25/10/2026)
+            ano, ruins = date.today().year, {q for (q,) in self.con.execute("SELECT texto FROM espiao_consulta WHERE usos >= 3 AND achados = 0")}
+            for _ in range(6):
+                q = self.fams[self.preferida](self.rnd, ano)
+                if q and q not in ruins:
+                    return self.preferida, re.sub(r"\s+", " ", q).strip()
         ruins = {q for (q,) in self.con.execute("SELECT texto FROM espiao_consulta WHERE usos >= 3 AND achados = 0")}
         sorteio = sorted(
             (

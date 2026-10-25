@@ -55,7 +55,7 @@ def _ler(escada, leitura):
 
 
 def missoes(dados: str | Path, biblioteca: sqlite3.Connection, escada, ociosidade: bool, orcamento_s: float = 180,
-            consultar=None, ler=None, diario=None) -> tuple[list, dict[str, Any]]:
+            consultar=None, ler=None, diario=None, familia: str | None = None) -> tuple[list, dict[str, Any]]:
     """Mede a recorrência dos pilotos e, havendo ociosidade e nenhum bloqueio, manda as missões do Espião."""
     import time
 
@@ -83,6 +83,7 @@ def missoes(dados: str | Path, biblioteca: sqlite3.Connection, escada, ociosidad
         for rota, ate in espiao.con.execute("SELECT nome, descansa_ate FROM espiao_rota"):   # o descanso vale entre as execuções
             if ate and ate > agora_.isoformat():
                 mb._descansando[rota] = time.monotonic() + (datetime.fromisoformat(ate) - agora_).total_seconds()
+    espiao.preferida = familia                                         # a família autorizada pelo Comandante (uma missão)
     rec = espiao.recorrencia()
     relatorio["espiao"] = rec
     ultima = espiao.con.execute("SELECT MAX(em) FROM espiao_missao").fetchone()[0]
@@ -95,7 +96,7 @@ def missoes(dados: str | Path, biblioteca: sqlite3.Connection, escada, ociosidad
         return [], relatorio
     # o mínimo garantido (23/10/2026): com 45 motores, a ociosidade quase nunca chega e o Espião ficava parado para sempre;
     # sem missão nas últimas horas, ele recebe uma, mesmo sem ociosidade (o bloqueio continua valendo)
-    n, achados, inicio = (dose(rec) if ociosidade else 1), [], time.monotonic()
+    n, achados, inicio = (1 if familia else dose(rec) if ociosidade else 1), [], time.monotonic()
     feitas = []
     for _ in range(n):
         if time.monotonic() - inicio >= orcamento_s:
