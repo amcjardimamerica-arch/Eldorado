@@ -75,6 +75,13 @@ jobs:
         run: eldorado consolidar-bancos || echo "::warning::a consolidação dos bancos não terminou"
       - name: Otimizar as instruções dos pilotos (DSPy, semanal; sem o modelo, fica para depois)
         run: timeout 900 eldorado otimizar-ia --se-antigo-dias 7 || echo "::warning::a otimização das instruções não terminou"
+      - name: A ponte BR (o IP brasileiro da HostGator, para os sites que recusam a nuvem)
+        env:
+          ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}
+          ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
+        run: |
+          r=$(eldorado ponte-br 2>&1 | tail -2); echo "$r"
+          echo "::notice::$(echo "$r" | head -1)"
       - name: O portão das regras da titular (sem as regras de pé, o ciclo não começa)
         run: eldorado travas
       - name: Funcionamento permanente (uma passagem depois da outra enquanto houver fila)
