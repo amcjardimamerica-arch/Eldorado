@@ -618,9 +618,9 @@ def montar(
                 "sv_processador",
                 "Processador",
                 maq.get("processador"),
-                [60, 90],
-                [10, 97],
-                f"{maq.get('nucleos') or '?'} núcleos · alvo de operação: perto de 85% (verde de 60% a 90%)",
+                [None, 85],                                # a titular (25/10/2026): verde até 85%, laranja de 86% a 90%,
+                [None, 90],                                # vermelho de 91% a 100%
+                f"{maq.get('nucleos') or '?'} núcleos · verde até 85% · laranja de 86% a 90% · vermelho acima de 90%",
             ),
             ins(
                 "sv_memoria", "Memória", maq.get("memoria"), [None, 85], [None, 95], f"{(maq.get('memoria_total_mb') or 0) / 1024:.1f} GB no servidor"
