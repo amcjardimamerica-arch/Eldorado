@@ -176,6 +176,11 @@ tipo = "eldorado.base.aprendizado.memoria:no_memorizar"
 parametros = { dados = "dados" }
 
 [[no]]
+id = "apresentar"
+tipo = "eldorado.base.comandante.apresentar:no_apresentar"
+parametros = { dados = "dados", pasta = "verificacao/relatorios" }
+
+[[no]]
 id = "aplicar_final"
 tipo = "eldorado.base.fluxo.nos:aplicar_eventos"
 parametros = { dados = "dados", eventos = "eventos" }
@@ -319,6 +324,11 @@ para = "memorizar"
 saida = "ordem"
 [[conexao]]
 de = "memorizar"
+para = "apresentar"
+saida = "ordem"
+# a apresentação à titular (o Comandante, C10; no máximo a cada 6 h), por último
+[[conexao]]
+de = "apresentar"
 para = "aplicar_final"
 saida = "ordem"
 # o Comandante decide em paralelo com a ordem fixa, logo depois do planejamento (a fase 2, 25/10/2026)

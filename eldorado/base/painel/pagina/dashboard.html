@@ -1063,6 +1063,25 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <!-- ============ ESQUADRILHA DO PILOTO — posto de comando ============ -->
 
 <!-- ============ ELDORADO · CALENDÁRIO ============ -->
+<section id="v-relatorio-titular" style="margin-top:14px"><div id="rel-titular"></div></section>
+<script>
+/* A apresentação do Comandante à titular (25/10/2026): o que decidir primeiro e por quê, o que fecha em 7 dias e o dia. */
+(function(){
+  const e=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  fetch("dados/relatorio_titular.json?v="+Date.now()).then(r=>r.ok?r.json():null).then(R=>{
+    const el=document.getElementById("rel-titular"); if(!el||!R) return;
+    const P=(R.redacao||{}).prioridades||[], F=R.fecham_em_7_dias||[], N=R.novidades||{}, S=R.sistema||{};
+    el.innerHTML=`<div class="card" style="padding:16px 18px;border-left:5px solid #B8862B">
+      <h3 style="margin:0 0 4px">Para a sua decisão</h3>
+      <div class="meta">${e((R.em||"").slice(0,16).replace("T"," "))} UTC · redigido por ${e(R.redigido_por)}</div>
+      <p style="margin:8px 0">${e((R.redacao||{}).resumo)}</p>
+      <ol style="margin:6px 0 10px 18px">${P.map(p=>`<li><b>${e(p.o_que)}</b> — ${e(p.por_que)}</li>`).join("")}</ol>
+      <details><summary><b>Fecham em até 7 dias (${F.length})</b></summary><ul style="margin:6px 0 0 18px">${F.map(x=>`<li>${e(x.fecha_em)} · ${e(x.selo)} · ${x.link?`<a href="${e(x.link)}" target="_blank" rel="noopener">${e(x.titulo)}</a>`:e(x.titulo)}</li>`).join("")||"<li>nenhuma</li>"}</ul></details>
+      <div class="meta" style="margin-top:8px">${R.abertas} abertas (${R.ouro_abertas} com ouro) · ${N.achados_aceitos} achados aceitos hoje (${N.dos_pilotos} dos pilotos) · ${N.livros_novos} livros novos em 24 h · ${(R.falta||{}).aguardam_o_chrome} à espera do Chrome · ${S.decisoes_do_comandante_24h} decisões do Comandante e ${S.missoes_do_espiao_24h} missões do Espião em 24 h</div>
+    </div>`;
+  }).catch(()=>{});
+})();
+</script>
 <section id="v-calendario" style="margin-top:14px">
 <div class="cartao">
 <div class="calcab">

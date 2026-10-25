@@ -736,6 +736,12 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
         if m.get("id") in status_pilotos:
             m.update(status_pilotos[m["id"]])
     # os arquivos herdados do painel que nunca eram preenchidos (25/10/2026): os dos motores e dos pilotos
+    rel = sorted((raiz / "verificacao" / "relatorios").glob("*.json"))     # a apresentação do Comandante à titular (25/10/2026)
+    if rel:
+        try:
+            arquivos["relatorio_titular.json"] = json.loads(rel[-1].read_text(encoding="utf-8"))
+        except ValueError:
+            pass
     from .legado import montar as legado_montar
     arquivos.update(legado_montar(sis.bib, sis.cer, sc["detalhes"].get("motores") or [], status_pilotos, _molde))
     arquivos["sala_controle.json"] = sc

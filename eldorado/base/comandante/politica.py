@@ -53,10 +53,24 @@ class Politica:
                 self.aprendidas += 1
         return self.aprendidas
 
-    def ordenar(self, ctx: dict[str, Any]) -> list[tuple[str, float]]:
+    def ordenar(self, ctx: dict[str, Any], rnd=None) -> list[tuple[str, float]]:
+        """A ordem das opções SORTEADA pela distribuição da política (a exploração do bandido contextual: sem ela, a mesma
+        escolha se repete e nada se aprende). Cada opção leva a probabilidade com que foi escolhida (o aprendizado a usa)."""
+        import random
+
+        rnd = rnd or random.Random()
         pmf = self.vw.predict(self._exemplo(ctx, self.opcoes))
-        # com as notas empatadas (no começo, sem nada aprendido), decide o rendimento histórico que o Cérebro já conhece
-        return sorted(zip(self.opcoes, pmf, strict=False), key=lambda x: (-round(x[1], 4), -ctx["opcoes"].get(x[0], {}).get("taxa", 0)))
+        restantes, saida = list(zip(self.opcoes, pmf, strict=False)), []
+        while restantes:
+            total = sum(max(p, 1e-9) for _o, p in restantes)
+            alvo, acum = rnd.random() * total, 0.0
+            for i, (o, p) in enumerate(restantes):
+                acum += max(p, 1e-9)
+                if acum >= alvo:
+                    saida.append((o, p))
+                    restantes.pop(i)
+                    break
+        return saida
 
 
 def contexto(agora: datetime, opcoes: dict[str, dict]) -> dict[str, Any]:
