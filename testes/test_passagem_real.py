@@ -19,6 +19,9 @@ def test_achado_aceito_vira_livro_certificado_com_selos(tmp_path):
     (tmp_path / "modulos.toml").write_text('[[modulo]]\nclasse = "modulos_passagem:MotorEdital"\n')
     (tmp_path / "agenda.toml").write_text('[[modulo]]\nid = "do-goias"\nhorarios = ["06:00"]\n')
     wf = Path("workflows/passagem.toml").read_text(encoding="utf-8")
+    # os pilotos em nós próprios (24/10/2026): nos testes, sem sair para a rede (no portão da produção eles buscavam na internet)
+    wf = wf.replace("orcamento_pilotos_s = 180", "orcamento_pilotos_s = 0").replace("orcamento_originais_s = 120", "orcamento_originais_s = 0")
+    wf = wf.replace("limite = 15, orcamento_s = 90", "limite = 0, orcamento_s = 0")         # a releitura também, sem rede
     wf = (wf.replace('"config/agenda.toml"', json.dumps(str(tmp_path / "agenda.toml"))).replace('"config/modulos.toml"', json.dumps(str(tmp_path / "modulos.toml")))
             .replace('dados = "dados"', f"dados = {json.dumps(str(dados))}").replace('eventos = "eventos"', f"eventos = {json.dumps(str(eventos))}")
             .replace('dados = "dados" }', f"dados = {json.dumps(str(dados))} }}"))

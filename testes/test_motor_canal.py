@@ -68,6 +68,8 @@ vetos = ["resultado final"]
                                            f'parametros = {{ configuracao = {json.dumps(str(tmp_path / "motor.toml"))}, dados = {json.dumps(str(dados / "motores"))} }}\n')
     (tmp_path / "agenda.toml").write_text('[[modulo]]\nid = "secult-go-teste"\nhorarios = ["06:00", "12:00"]\n')
     wf = Path("workflows/passagem.toml").read_text(encoding="utf-8")
+    # os pilotos em nós próprios (24/10/2026): nos testes, sem sair para a rede (no portão da produção eles buscavam na internet)
+    wf = wf.replace("orcamento_pilotos_s = 180", "orcamento_pilotos_s = 0").replace("orcamento_originais_s = 120", "orcamento_originais_s = 0")
     wf = (wf.replace('"config/agenda.toml"', json.dumps(str(tmp_path / "agenda.toml"))).replace('"config/modulos.toml"', json.dumps(str(tmp_path / "modulos.toml")))
             .replace('dados = "dados"', f"dados = {json.dumps(str(dados))}").replace('eventos = "eventos"', f"eventos = {json.dumps(str(tmp_path / 'eventos'))}"))
     wf = wf.replace('parametros = { agenda', f'parametros = {{ agora = "2026-10-22T{horario}:00-03:00", carga_fixa = 0.1, agenda', 1)
