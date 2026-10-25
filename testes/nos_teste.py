@@ -44,3 +44,8 @@ def derrubar_uma_vez(itens, parametros, contexto):
 
 def nao_deveria_rodar(itens, parametros, contexto):
     raise AssertionError("um nó com dados fixos não deve ser chamado")
+
+
+def agente_pula_a(itens, parametros, contexto):
+    """O nó de agente do Comandante (a fase 3): escolhe pular a etapa «a»."""
+    return [{"__pular__": ["a"]}]

@@ -53,6 +53,25 @@ def avaliar(dados: Path, diario, agora: datetime | None = None) -> dict[str, int
                 elif em < (agora - timedelta(hours=24)).isoformat():
                     resultado = "o voo não registrou passos em 24 h: sem avaliação"
                     conta["sem_execucao"] += 1
+            elif etapa == "passagem":  # a escolha de pular: a etapa rodou (em sombra) e não rendeu?
+                from ..comandante.escolher import rendeu
+
+                ex = None
+                try:
+                    import json as _j
+
+                    ex = _j.loads(cer.execute("SELECT contexto FROM comandante_decisao WHERE id = ?", (did,)).fetchone()[0] or "{}").get("execucao")
+                except (ValueError, TypeError):
+                    ex = None
+                p_ = cer.execute("SELECT estado, saida FROM execucao_passo WHERE execucao = ? AND no = ?", (ex, alvo)).fetchone() if ex else None
+                if p_ and p_[0] == "concluido":
+                    rec, resultado = (
+                        (0.0, "a etapa rodou e rendeu: pular estaria errado")
+                        if rendeu(p_[1])
+                        else (1.0, "a etapa rodou e não rendeu: pular estava certo")
+                    )
+                elif p_ and p_[0] == "pulado":
+                    rec, resultado = None, "pulada de verdade (a avaliação vem da próxima passagem em que ela rodar)"
             if resultado is None:
                 continue
             diario.emitir(

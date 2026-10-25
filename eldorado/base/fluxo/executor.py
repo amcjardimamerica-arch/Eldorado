@@ -120,6 +120,10 @@ class Executor:
         return itens if ativado else None
 
     def _rodar_no(self, no: No, itens: list[dict[str, Any]], estado: "_Estado", diario: Diario, alarmes: Alarmes) -> None:
+        if no.id in estado.pular:                        # o Comandante escolheu não rodar esta etapa (sem necessidade):
+            estado.registrar_passo(diario, no.id, "pulado", itens, [])          # registrada, e as seguintes continuam
+            estado.saidas[no.id] = []
+            return
         if no.fixo is not None:
             estado.registrar_passo(diario, no.id, "concluido", itens, [dict(x) for x in no.fixo])
             return
@@ -132,6 +136,9 @@ class Executor:
             ok, saida, erro = self._chamar(fn, no, itens, ctx, diario)
             if ok:
                 estado.registrar_passo(diario, no.id, "concluido", itens, self._herdar_linhagem(itens, saida))
+                for x in saida:                          # o nó de agente do Comandante: as etapas a pular nesta passagem
+                    if isinstance(x, dict) and x.get("__pular__"):
+                        estado.pular.update(str(n) for n in x["__pular__"])
                 return
             ultimo_erro = erro
             estado.tentativas_gastas[no.id] = tentativa
@@ -184,6 +191,7 @@ class _Estado:
     saidas: dict[str, list[dict[str, Any]]] = field(default_factory=dict)
     desviados: dict[str, list[dict[str, Any]]] = field(default_factory=dict)
     tentativas_gastas: dict[str, int] = field(default_factory=dict)
+    pular: set[str] = field(default_factory=set)        # o "Escolher" do n8n: as etapas que o Comandante decidiu pular
     ultimo_passo: int = -1
 
     @classmethod

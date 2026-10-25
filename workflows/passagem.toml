@@ -151,6 +151,11 @@ tipo = "eldorado.base.cerebro.mapa_arquivos:no_medir_arquivos"
 parametros = { dados = "dados", intervalo_min = 10 }
 
 [[no]]
+id = "comandante_escolher"
+tipo = "eldorado.base.comandante.escolher:no_comandante_escolher"
+parametros = { dados = "dados" }
+
+[[no]]
 id = "comandante_decidir"
 tipo = "eldorado.base.comandante.decidir:no_comandante_decidir"
 parametros = { dados = "dados", config = "config" }
@@ -356,4 +361,13 @@ saida = "ordem"
 [[conexao]]
 de = "conferir"
 para = "memorizar"
+saida = "ordem"
+# o nó de agente do Comandante (a fase 3; em sombra até o parâmetro comandante.aciona = sim): escolhe as etapas da passagem
+[[conexao]]
+de = "planejar"
+para = "comandante_escolher"
+saida = "ordem"
+[[conexao]]
+de = "comandante_escolher"
+para = "comandante_decidir"
 saida = "ordem"
