@@ -31,7 +31,13 @@ def test_toda_mudanca_para_implanta_e_religa():
     assert i["concurrency"]["cancel-in-progress"] is False                              # uma implantação nunca cancela a outra
     assert "gh workflow run painel.yml" in texto                                         # o painel republicado depois de cada implantação
     passos = [s_.get("name", "") for s_ in i["jobs"]["implantar"]["steps"]]
-    assert passos.index("1. Parar o ciclo na hora") < passos.index("3. Religar com o código novo")   # para NA HORA (sem esperar a passagem)
+    # nunca o meio-termo (25/10/2026): aguarda e grava; passado o limite, para e perde; religa do zero
+    comandos = Path("eldorado/base/nucleo/comandos.py").read_text(encoding="utf-8")
+    assert [p_[:2] for p_ in passos if p_[:1].isdigit()] == ["1.", "2.", "3.", "4.", "5."]
+    assert "Aguardar" in passos[2] and "à força" in passos[3] and "do zero" in passos[4]
+    g = Path("scripts/gravar.sh").read_text(encoding="utf-8")
+    assert '"execucao.concluida"' in g and "em andamento (não gravado)" in g          # a passagem pela metade nunca é gravada
+    assert "f.join(timeout=240)" in comandos and "gravar_agora(esperar=True)" in comandos   # os pilotos concluem; a gravação final
     e = yaml.safe_load(Path(".github/workflows/eldorado.yml").read_text(encoding="utf-8"))
     cont = next(s_ for s_ in e["jobs"][next(iter(e["jobs"]))]["steps"] if s_.get("name", "").startswith("Continuar"))
     assert "cancelled" in cont["if"]                                                     # interrompido, quem religa é o Implantar

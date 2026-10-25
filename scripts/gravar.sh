@@ -20,11 +20,17 @@ for i in 1 2 3 4; do
   git worktree remove -f "$ARVORE" 2>/dev/null; rm -rf "$ARVORE"
   git worktree add -q -f --detach "$ARVORE" origin/main || { sleep $((i * 5)); continue; }
   # os dados do ciclo (só dados: nunca o código nem as configurações)
-  # o que o ciclo escreveu desde que começou (a marca .inicio_ciclo); sem a marca, tudo
+  # o que o ciclo escreveu desde que começou (a marca .inicio_ciclo); sem a marca, tudo.
+  # A regra R09 (titular, 25/10/2026): nunca o meio-termo. O arquivo de uma passagem que começou e não terminou (tem
+  # execucao.iniciada e não tem execucao.concluida) NÃO é gravado: ou ela termina e é gravada inteira, ou se perde inteira
+  # (a parada forçada), e o ciclo religado recomeça do zero, sem dados de um processo pela metade.
+  completo() { ! grep -q '"execucao.iniciada"' "$1" || grep -q '"execucao.concluida"' "$1"; }
   for pasta in eventos verificacao dados/ia; do
     [ -d "$RAIZ/$pasta" ] || continue
     if [ -f "$RAIZ/.inicio_ciclo" ]; then
-      ( cd "$RAIZ" && find "$pasta" -type f -newer .inicio_ciclo -print0 | xargs -0 -r cp --parents -a -t "$ARVORE" )
+      ( cd "$RAIZ" && find "$pasta" -type f -newer .inicio_ciclo | while read -r f; do
+          if [ "$pasta" != "eventos" ] || completo "$f"; then cp --parents -a "$f" "$ARVORE"; else echo "em andamento (não gravado): $f"; fi
+        done )
     else
       mkdir -p "$ARVORE/$pasta" && cp -a "$RAIZ/$pasta/." "$ARVORE/$pasta/"
     fi

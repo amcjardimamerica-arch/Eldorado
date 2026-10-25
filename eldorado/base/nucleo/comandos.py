@@ -582,8 +582,8 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
         marca.write_text(datetime.now(timezone.utc).isoformat(), encoding="utf-8")
         os.utime(marca, (time.time() - 5, time.time() - 5))
 
-    def gravar_agora() -> None:
-        if gravar and trava_gravar.acquire(blocking=False):            # uma gravação de cada vez
+    def gravar_agora(esperar: bool = False) -> None:
+        if gravar and trava_gravar.acquire(blocking=esperar):          # uma gravação de cada vez (a final espera a vez)
             try:
                 r = subprocess.run(["bash", "scripts/gravar.sh", "false"], capture_output=True, text=True, timeout=600)
                 typer.echo(f"  gravação: {(r.stdout or r.stderr).strip()[-200:] or 'ok'}")
@@ -638,9 +638,10 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
                 implantar.set()
                 return
     threading.Thread(target=vigiar_pedido, daemon=True, name="implantar").start()
+    fios_pilotos: list = []
     if gravar:                                                    # os pilotos de forma permanente (25/10/2026)
         from ..cerebro.pilotos_permanentes import ligar
-        ligar(dados, eventos, parar)
+        fios_pilotos = ligar(dados, eventos, parar)
         typer.echo("  os pilotos voam de forma permanente (o Interceptador, um livro por vez; o Espião, missão após missão)")
 
     # o trabalho de fundo (titular, 24/10/2026: operar perto de 85% da capacidade): enquanto os motores esperam a rede, o
@@ -679,9 +680,8 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
                    f"livros em trabalho {f['livros_em_trabalho']} · próxima ação prevista {f['proxima_acao'][11:16]}")
         if decorrido > limite_min * 60:
             break
-        if implantar.is_set():                                        # a passagem terminou: grava e para para a implantação
-            gravar_agora()
-            typer.echo("  implantação: a passagem terminou; o sistema para e se religa com o código novo")
+        if implantar.is_set():                                        # a passagem terminou (a regra R09: aguarda e grava)
+            typer.echo("  implantação: a passagem terminou; os pilotos concluem o livro ou a missão atual, o sistema grava e para")
             break
         if time.monotonic() - ultimo > gravar_min * 60:                 # (a de segundo plano também grava; esta cobre o fim do ciclo)
             gravar_agora()
@@ -691,6 +691,9 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
             typer.echo(f"  sem fila: espera {espera / 60:.0f} min (até a próxima ação prevista)")
             implantar.wait(espera)                                    # o pedido de implantação acorda a espera
     parar.set()
+    for f in fios_pilotos:                                        # os pilotos terminam o livro ou a missão atual (até 4 min)
+        f.join(timeout=240)
+    gravar_agora(esperar=True)                                    # tudo o que terminou é gravado; nada fica pela metade
     typer.echo(f"fim desta execução depois de {ciclo} ciclo(s); a continuação segue o trabalho")
 
 

@@ -1,14 +1,13 @@
 name: Implantar (parar, implantar e religar)
-# A regra R09 da titular: toda mudança no sistema o PARA POR COMPLETO, implanta e o RELIGA, atualizando naquele momento
-# todas as mudanças; o painel mostra a informação atualizada, republicado obrigatoriamente depois de cada implantação.
-#
-# 25/10/2026: a versão anterior só PEDIA a parada ao fim da passagem (até 30 minutos) e cada envio novo cancelava o
-# Implantar anterior: com a passagem levando quase uma hora e envios seguidos, o ciclo seguia com o código antigo. Agora:
-#   1. para o ciclo NA HORA (o GitHub interrompe e roda o passo final de gravação: os eventos já escritos ficam gravados);
-#   2. espera ele terminar de gravar;
-#   3. religa o ciclo com o código novo (o ciclo interrompido não se religa sozinho);
-#   4. republica o painel.
-# Um Implantar nunca cancela o outro: o mais novo espera na fila.
+# A regra R09 da titular (25/10/2026, a segunda forma): nunca o meio-termo. Ou o sistema AGUARDA os processos em andamento
+# terminarem e GRAVA tudo, ou PARA e PERDE tudo o que estava em andamento; ao religar, RECOMEÇA DO ZERO (nada de uma
+# passagem pela metade é gravado nem reaplicado).
+#   1. o pedido de implantação: o ciclo o vê em até 2 minutos, termina a passagem em andamento, os pilotos concluem o
+#      livro ou a missão atual, grava tudo e para;
+#   2. a espera, até 45 minutos;
+#   3. passado o limite, a parada à força: a passagem cortada não é gravada (a gravação só envia passagens concluídas);
+#   4. religa com o código novo (se o próprio ciclo ainda não se religou) e republica o painel.
+# Uma implantação nunca cancela a outra: a mais nova espera na fila.
 on:
   push:
     branches: [main]
@@ -23,40 +22,42 @@ concurrency:
 jobs:
   implantar:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 70
     steps:
       - uses: actions/checkout@v5
-      - name: O registro da implantação
+      - name: 1. O pedido de implantação (o ciclo termina a passagem, grava e para)
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "Eldorado"; git config user.email "eldorado@users.noreply.github.com"
+          echo "PARADOS=$(gh run list -R "$GITHUB_REPOSITORY" -w eldorado.yml --json databaseId,status -q '.[] | select(.status!="completed") | .databaseId' | tr '\n' ' ')" >> "$GITHUB_ENV"
+          echo "PEDIDO_EM=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
           mkdir -p implantar; echo "${GITHUB_SHA::7} $(date -u +%Y-%m-%dT%H:%M:%SZ)" > implantar/pedido.txt
-          git add implantar/pedido.txt; git commit -q -m "Implantação ${GITHUB_SHA::7}"
+          git add implantar/pedido.txt; git commit -q -m "Pedido de implantação ${GITHUB_SHA::7}"
           for i in 1 2 3 4 5; do git pull -q --rebase --autostash origin main && git push -q origin main && break; sleep $((i * 5)); done
-      - name: 1. Parar o ciclo na hora
+      - name: 2. Aguardar os processos terminarem e gravarem (até 45 minutos)
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          ativos() { gh run list -R "$GITHUB_REPOSITORY" -w eldorado.yml --json databaseId,status -q '.[] | select(.status=="in_progress" or .status=="queued" or .status=="waiting" or .status=="pending") | .databaseId'; }
-          ids=$(ativos | tr '\n' ' '); echo "PARADOS=$ids" >> "$GITHUB_ENV"; date -u +%Y-%m-%dT%H:%M:%SZ > /tmp/parada; echo "PARADA_EM=$(cat /tmp/parada)" >> "$GITHUB_ENV"
-          for id in $ids; do echo "parando o ciclo $id"; gh run cancel "$id" -R "$GITHUB_REPOSITORY" || true; done
-      - name: 2. Esperar o ciclo terminar de gravar
+          vivo() { for id in $PARADOS; do [ "$(gh run view "$id" -R "$GITHUB_REPOSITORY" --json status -q .status)" != "completed" ] && return 0; done; return 1; }
+          for i in $(seq 1 90); do vivo || { echo "o ciclo terminou os processos, gravou e parou"; echo "FORCADA=nao" >> "$GITHUB_ENV"; exit 0; }; sleep 30; done
+          echo "FORCADA=sim" >> "$GITHUB_ENV"; echo "::warning::o ciclo não terminou em 45 minutos: parada à força (a passagem em andamento se perde inteira)"
+      - name: 3. A parada à força, se o limite passou (a passagem cortada não é gravada)
+        if: env.FORCADA == 'sim'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          for i in $(seq 1 60); do                         # só os ciclos que este Implantar parou
-            vivos=0; for id in $PARADOS; do st=$(gh run view "$id" -R "$GITHUB_REPOSITORY" --json status -q .status); [ "$st" != "completed" ] && vivos=1; done
-            [ "$vivos" = "0" ] && { echo "o ciclo parou e gravou"; exit 0; }
-            sleep 15
-          done
-          echo "::warning::o ciclo demorou mais de 15 minutos para parar"
-      - name: 3. Religar com o código novo
+          for id in $PARADOS; do gh run cancel "$id" -R "$GITHUB_REPOSITORY" || true; done
+          for i in $(seq 1 40); do n=0; for id in $PARADOS; do [ "$(gh run view "$id" -R "$GITHUB_REPOSITORY" --json status -q .status)" != "completed" ] && n=1; done; [ $n = 0 ] && break; sleep 15; done
+      - name: 4. Religar do zero com o código novo
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          novos=$(gh run list -R "$GITHUB_REPOSITORY" -w eldorado.yml --json createdAt,status -q "[.[] | select(.createdAt > \"$PARADA_EM\") | select(.status!=\"completed\")] | length")
+          sleep 20
+          novos=$(gh run list -R "$GITHUB_REPOSITORY" -w eldorado.yml --json createdAt,status -q "[.[] | select(.createdAt > \"$PEDIDO_EM\") | select(.status!=\"completed\")] | length")
           if [ "$novos" = "0" ]; then gh workflow run eldorado.yml -R "$GITHUB_REPOSITORY" --ref main -f gravar_banco=false -f acionar_todos=false && echo "religado com ${GITHUB_SHA::7}"
-          else echo "o ciclo já foi religado depois da parada ($novos)"; fi
-      - name: 4. Republicar o painel
+          else echo "o ciclo já se religou com o código novo ($novos)"; fi
+      - name: 5. Republicar o painel
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run painel.yml -R "$GITHUB_REPOSITORY" --ref main && echo "painel republicado"
