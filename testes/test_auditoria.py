@@ -31,7 +31,7 @@ def test_migracao_do_esquema_da_versao_1_a_atual_sem_perder_dados(tmp_path):
     con.commit()
     con.close()
     c = bib.abrir(p)
-    assert c.execute("PRAGMA user_version").fetchone()[0] == bib.VERSAO == 10 and c.execute("SELECT COUNT(*) FROM livro").fetchone()[0] == 1
+    assert c.execute("PRAGMA user_version").fetchone()[0] == bib.VERSAO == 11 and c.execute("SELECT COUNT(*) FROM livro").fetchone()[0] == 1
     assert c.execute("SELECT fase FROM passaporte WHERE livro_id='L1'").fetchone()[0] == "preparacao"           # as 5 fases
     assert c.execute("SELECT COUNT(*) FROM sqlite_master WHERE name IN ('livro_dados','expurgo_externo','livro_lei')").fetchone()[0] == 3
 

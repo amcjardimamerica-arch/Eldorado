@@ -104,6 +104,7 @@ class Sistema:
         self.hoje = _agora().astimezone(BR).date().isoformat()
         cols = {r[1] for r in self.bib.execute("PRAGMA table_info(livro_dados)")}
         self._escada = "d.escada" if "escada" in cols else "NULL AS escada"   # um banco ainda não migrado (a produção migra antes)
+        self._codigo = "d.codigo" if "codigo" in cols else "NULL AS codigo"
         esp = d / "biblioteca.db"                                   # as empresas, na Biblioteca
         self.esp = sqlite3.connect(f"file:{esp}?mode=ro", uri=True) if esp.exists() else None
         if self.esp is not None:
@@ -129,7 +130,7 @@ class Sistema:
         return list(
             self.bib.execute(
                 "SELECT l.*, d.abrangencia, d.esfera, d.inscricao_inicio, d.inscricao_fim, d.resultado_em, d.area AS area_d, d.validacao, "
-                f"d.situacao_prazo, d.municipio, d.origem, {self._escada}, p.fase "
+                f"d.situacao_prazo, d.municipio, d.origem, {self._escada}, {self._codigo}, p.fase "
                 "FROM livro l JOIN livro_dados d ON d.livro_id = l.id JOIN passaporte p ON p.livro_id = l.id "
                 "WHERE d.situacao_prazo = 'aberta' AND l.situacao NOT IN ('excluido', 'unido') ORDER BY d.inscricao_fim"
             )
@@ -480,6 +481,7 @@ def _fluxo(sis: Sistema, agora: str) -> dict:
             checklist=listas.get(r["id"]) or _item("fluxo_item")["checklist"],
             etapa=r["fase"] or "",
             escada=r["escada"] or "",
+            codigo=r["codigo"] or "",
         )
         itens.append((uf, item))
         (confirmadas if conf else possiveis).append(item)

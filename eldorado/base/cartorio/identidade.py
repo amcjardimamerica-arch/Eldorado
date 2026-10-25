@@ -43,6 +43,9 @@ def _link(u: str | None) -> str:
 
 def mesma_oportunidade(a: dict[str, Any], b: dict[str, Any]) -> str | None:
     """O motivo, se a e b são a mesma oportunidade; None, se não (ou se há conflito)."""
+    ca, cb = a.get("codigo") or "", b.get("codigo") or ""
+    if ca and ca == cb and "?" not in ca and "SEM-PRAZO" not in ca and not nome_muito_diferente(a, b):
+        return f"o mesmo código ({ca}) e o mesmo nome"                # nível, área, prazo e site idênticos
     if not a["t"] or a["t"] != b["t"]:
         return None
     if a.get("fim") and b.get("fim") and a["fim"] != b["fim"]:
@@ -63,38 +66,124 @@ def mesma_oportunidade(a: dict[str, Any], b: dict[str, Any]) -> str | None:
     return None
 
 
+# ------------------------------------------------------------------ o código da oportunidade (25/10/2026)
+AREAS = (("CUL", r"cultur|arte|patrim|audiovis|music|teatr|danca|literat|aldir|pnab|rouanet"), ("ESP", r"esport|atleta|paradesport|lazer"),
+         ("EDU", r"educa|escol|ensino|bolsa de estudo|capacita"), ("AMB", r"ambient|clima|sustent|florest|agua|biodivers|cerrado"),
+         ("SAU", r"saude|sus\b|hospital|medic"), ("SOC", r"assistencia social|social|crianca|idoso|vulnerab|fome|direitos da"),
+         ("CIE", r"ciencia|tecnolog|inovac|pesquisa|cnpq|fapeg|finep"), ("DIR", r"direitos humanos|igualdade|mulher|lgbt|racial|indigen"))
+NIVEL = {"internacional": "INT", "federal": "FED", "nacional": "FED", "estadual": "EST", "municipal": "MUN", "privada": "PRI"}
+
+
+def _sem_acento(t: str) -> str:
+    t = unicodedata.normalize("NFKD", (t or "").lower())
+    return "".join(c for c in t if not unicodedata.combining(c))
+
+
+def codigo(lv: dict[str, Any]) -> str:
+    """NÍVEL · ÁREA · PRAZO · SITE (o que falta fica marcado com ?)."""
+    esfera, abr = (lv.get("esfera") or "").lower(), (lv.get("abrangencia") or "").lower()
+    nivel = NIVEL.get(esfera) or ("INT" if "internac" in abr else "MUN" if abr.startswith("municipal") else "EST" if abr.startswith("estadual")
+                                  else "FED" if abr == "nacional" else "?")
+    if nivel in ("EST", "MUN") and lv.get("uf"):
+        nivel += "-" + str(lv["uf"]).upper()
+    fonte = _sem_acento(lv.get("area") or "") or _sem_acento(lv.get("titulo") or "")
+    areas = [a for a, rx in AREAS if re.search(rx, fonte)]
+    area = areas[0] if len(areas) == 1 else ("MUL" if areas else "?")
+    prazo = (lv.get("fim") or "").replace("-", "")[:8] or "SEM-PRAZO"
+    site = re.sub(r"^www\.", "", (re.sub(r"^https?://", "", (lv.get("oficial") or "").lower()).split("/")[0])) or "?"
+    return f"{nivel} · {area} · {prazo} · {site}"
+
+
+NUM = re.compile(r"n[ºo°.]*\s*(\d{1,4})\s*/\s*(\d{2,4})")
+
+
+def _tokens(t: str) -> set[str]:
+    return {w for w in t.split() if w not in PALAVRAS_VAZIAS and len(w) > 2 and not w.isdigit()}
+
+
+def nome_muito_diferente(a: dict[str, Any], b: dict[str, Any]) -> bool:
+    """Com o mesmo código, só se separa com o nome muito diferente: números de edital diferentes, objetos certificados
+    diferentes, ou pouco em comum nos nomes (o caso da Aldir Blanc: os mesmos dados e objetos diferentes)."""
+    na, nb = NUM.search(_sem_acento(a.get("titulo") or "")), NUM.search(_sem_acento(b.get("titulo") or ""))
+    if na and nb and (int(na.group(1)), na.group(2)[-2:]) != (int(nb.group(1)), nb.group(2)[-2:]):
+        return True
+    oa, ob = _tokens(titulo_normal(a.get("objeto"))), _tokens(titulo_normal(b.get("objeto")))
+    if oa and ob and len(oa & ob) / len(oa | ob) < 0.4:
+        return True
+    ta, tb = _tokens(a["t"]), _tokens(b["t"])
+    if not ta or not tb or len(ta & tb) / len(ta | tb) < 0.5:
+        return True
+    # cada nome com uma palavra ou um número que o outro não tem: são objetos diferentes (a PNAB Goiás: Circo × Dança;
+    # o Goyazes: até R$ 20 mil × de R$ 20 mil a R$ 250 mil); os repetidos de verdade diferem só por acréscimos de um lado
+    da, db = set(a["t"].split()) - set(b["t"].split()), set(b["t"].split()) - set(a["t"].split())
+    substantivas = lambda x: {w for w in x if (w.isdigit() or (w not in PALAVRAS_VAZIAS and len(w) > 2))}  # noqa: E731
+    return bool(substantivas(da)) and bool(substantivas(db))
+
+
 def _livros(con: sqlite3.Connection) -> list[dict[str, Any]]:
     con.row_factory = sqlite3.Row
     linhas = con.execute(
         "SELECT l.id, l.titulo, l.uf, l.link_oficial AS oficial, l.link_divulgacao AS divulgacao, l.estrela, l.criado_em, "
-        "d.inscricao_fim AS fim, d.municipio, (SELECT COUNT(*) FROM certidao c WHERE c.livro_id = l.id AND c.situacao = 'comprovado') AS certs "
+        "d.inscricao_fim AS fim, d.municipio, d.esfera, d.abrangencia, d.area, "
+        "(SELECT c.valor FROM certidao c WHERE c.livro_id = l.id AND c.item = 'Objeto' AND c.situacao = 'comprovado' ORDER BY c.id DESC LIMIT 1) AS objeto, "
+        "(SELECT COUNT(*) FROM certidao c WHERE c.livro_id = l.id AND c.situacao = 'comprovado') AS certs "
         "FROM livro l LEFT JOIN livro_dados d ON d.livro_id = l.id WHERE l.situacao NOT IN ('excluido', 'unido')").fetchall()
     con.row_factory = None
-    return [{**dict(r), "t": titulo_normal(r["titulo"])} for r in linhas]
+    saida = [{**dict(r), "t": titulo_normal(r["titulo"])} for r in linhas]
+    for lv in saida:
+        lv["codigo"] = codigo(lv)
+    return saida
 
 
 def grupos(con: sqlite3.Connection) -> list[tuple[str, list[tuple[str, str]]]]:
-    """Os livros repetidos: [(o livro que fica, [(o unido, o motivo)])]."""
-    por_titulo: dict[str, list[dict]] = defaultdict(list)
-    for lv in _livros(con):
+    """Os livros repetidos: [(o livro que fica, [(o unido, o motivo)])]. Os candidatos vêm de duas chaves (o código
+    completo e o nome); as uniões se encadeiam (A = B e B = C: os três num só livro)."""
+    livros = _livros(con)
+    por_id = {lv["id"]: lv for lv in livros}
+    baldes: dict[str, list[dict]] = defaultdict(list)
+    for lv in livros:
+        if "?" not in lv["codigo"] and "SEM-PRAZO" not in lv["codigo"]:
+            baldes["codigo:" + lv["codigo"]].append(lv)
         if lv["t"]:
-            por_titulo[lv["t"]].append(lv)
-    saida = []
-    for lista in por_titulo.values():
-        if len(lista) < 2:
+            baldes["nome:" + lv["t"]].append(lv)
+    pai: dict[str, str] = {}
+
+    def raiz(x: str) -> str:
+        while pai.get(x, x) != x:
+            x = pai.get(x, x)
+        return x
+    motivos: dict[str, str] = {}
+    for lista in baldes.values():
+        if len(lista) < 2 or len(lista) > 400:                         # um balde gigante é um título genérico: só pelo link
             continue
-        lista.sort(key=lambda x: (-RANK.get(x["estrela"], 0), -x["certs"], x["criado_em"] or ""))
-        restantes = list(lista)
-        while restantes:
-            fica, unidos = restantes.pop(0), []
-            for outro in list(restantes):
-                motivo = mesma_oportunidade(fica, outro)
-                if motivo:
-                    unidos.append((outro["id"], motivo))
-                    restantes.remove(outro)
-            if unidos:
-                saida.append((fica["id"], unidos))
-    return saida
+        for k, a in enumerate(lista):
+            for b in lista[k + 1:]:
+                if raiz(a["id"]) == raiz(b["id"]):
+                    continue
+                m = mesma_oportunidade(a, b)
+                if m:
+                    ra, rb = raiz(a["id"]), raiz(b["id"])
+                    pai[rb] = ra
+                    motivos[b["id"]] = motivos.get(b["id"]) or m
+                    motivos[a["id"]] = motivos.get(a["id"]) or m
+    comp: dict[str, list[dict]] = defaultdict(list)
+    for x in list(pai):
+        comp[raiz(x)].append(por_id[x])
+    for r in list(comp):
+        comp[r].append(por_id[r])
+    saida = []
+    for membros in comp.values():
+        membros = list({m["id"]: m for m in membros}.values())
+        membros.sort(key=lambda x: (-RANK.get(x["estrela"], 0), -x["certs"], x["criado_em"] or ""))
+        fica = membros[0]
+        saida.append((fica["id"], [(m["id"], motivos.get(m["id"], "a mesma oportunidade")) for m in membros[1:]]))
+    return [g for g in saida if g[1]]
+
+
+def codigos_a_gravar(con: sqlite3.Connection) -> list[tuple[str, str]]:
+    """Os livros cujo código mudou (o índice novo, gravado no livro)."""
+    atuais = dict(con.execute("SELECT livro_id, codigo FROM livro_dados"))
+    return [(lv["id"], lv["codigo"]) for lv in _livros(con) if lv["id"] in atuais and atuais[lv["id"]] != lv["codigo"]]
 
 
 def unir(con: sqlite3.Connection, diario, fica: str, unido: str, motivo: str) -> None:
@@ -128,6 +217,11 @@ def no_unir_repetidos(itens: list[dict[str, Any]], parametros: dict[str, Any], c
         return [{"unidos": 0}]
     con = sqlite3.connect(f"file:{p}?mode=ro", uri=True)
     try:
+        cods = 0
+        if con.execute("SELECT 1 FROM pragma_table_info('livro_dados') WHERE name = 'codigo'").fetchone():
+            for lid, cod in codigos_a_gravar(con):                      # o código de cada livro (o índice novo)
+                contexto.diario.emitir("livro.codigo", "identidade", {"livro_id": lid, "codigo": cod})
+                cods += 1
         n = 0
         for fica, unidos in grupos(con):
             for unido, motivo in unidos:
@@ -135,4 +229,4 @@ def no_unir_repetidos(itens: list[dict[str, Any]], parametros: dict[str, Any], c
                 n += 1
     finally:
         con.close()
-    return [{"unidos": n}]
+    return [{"unidos": n, "codigos": cods}]

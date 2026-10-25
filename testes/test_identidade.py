@@ -23,7 +23,7 @@ def test_a_mesma_oportunidade_vira_um_livro(bancos, gravador, diario, tmp_path):
                              criar("certidao.gravada", "t", {"livro_id": "B", "item": "Valor", "valor": "R$ 10 mil", "pagina": 1, "trecho": "R$ 10 mil",
                                                              "fase": "certificacao", "situacao": "comprovado", "em": AGORA})]).ok
     r = I.no_unir_repetidos([], {"dados": str(tmp_path)}, SimpleNamespace(diario=diario))
-    assert r == [{"unidos": 1}]                                                       # A e B; C e D (genéricos, links diferentes) não
+    assert r[0]["unidos"] == 1                                                              # A e B; C e D (genéricos, links diferentes) não
     assert gravador.aplicar(list(ler(tmp_path / "eventos"))).ok
     b = bancos["biblioteca"]
     assert b.execute("SELECT situacao FROM livro WHERE id = 'B'").fetchone()[0] == "unido"            # não se apaga
@@ -43,3 +43,22 @@ def test_o_achado_da_oportunidade_que_ja_tem_livro_agrega(bancos, gravador, diar
                encontrado_em="2026-10-24", dados={})
     livro, novo, como = ind.resolver(a)
     assert (livro, novo) == ("A", False) and "mesma oportunidade" in como
+
+
+def test_o_codigo_une_os_repetidos_e_separa_a_aldir_blanc():
+    """25/10/2026 (a titular): nível, área, prazo e site idênticos = a mesma oportunidade, salvo nome muito diferente;
+    a Aldir Blanc (PNAB) tem os mesmos dados e objetos diferentes: não se une."""
+    base = {"esfera": "estadual", "uf": "GO", "abrangencia": "estadual_go", "area": "Cultura", "fim": "2026-10-08",
+            "oficial": "https://goias.gov.br/cultura/pnab", "estrela": "sem", "certs": 0, "criado_em": "2026-10-01"}
+
+    def lv(i, titulo, **k):
+        x = {**base, **k, "id": i, "titulo": titulo, "t": I.titulo_normal(titulo)}
+        x["codigo"] = I.codigo(x)
+        return x
+    a, b = lv("1", "PNAB Goiás - Circo — Goiás"), lv("2", "PNAB Goiás - Dança — Goiás")
+    assert a["codigo"] == b["codigo"] == "EST-GO · CUL · 20261008 · goias.gov.br"
+    assert I.mesma_oportunidade(a, b) is None                                      # Circo × Dança: objetos diferentes
+    c, d = lv("3", "BNDES abre inscrições para projetos culturais"), lv("4", "BNDES abre inscrições para projetos culturais — Brasil")
+    assert I.mesma_oportunidade(c, d)                                              # o mesmo, com o nome acrescido
+    e, f = lv("5", "Edital PNAB nº 01/2026 cultura popular"), lv("6", "Edital PNAB nº 02/2026 cultura popular")
+    assert I.mesma_oportunidade(e, f) is None                                      # números de edital diferentes

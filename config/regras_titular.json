@@ -237,11 +237,12 @@
   {
    "id": "R22",
    "data": "2026-10-24",
-   "regra": "A mesma oportunidade tem um só livro: o que já tem livro agrega a ele (não cria um novo); as oportunidades idênticas no banco são reunidas num só livro a cada passagem (os achados e as certidões passam ao que fica; o unido não se apaga: ganha a situação 'unido'). Mesma oportunidade = o mesmo título e o mesmo link, ou o mesmo título, prazo e território; nunca com prazos ou municípios diferentes; os títulos genéricos só pelo link.",
+   "regra": "A mesma oportunidade tem um só livro: o que já tem livro agrega a ele (não cria um novo); as oportunidades idênticas no banco são reunidas num só livro a cada passagem (os achados e as certidões passam ao que fica; o unido não se apaga: ganha a situação 'unido'). Mesma oportunidade = o mesmo título e o mesmo link, ou o mesmo título, prazo e território; nunca com prazos ou municípios diferentes; os títulos genéricos só pelo link. O código da oportunidade (NÍVEL · ÁREA · PRAZO · SITE) é gravado em cada livro; nível, área, prazo e site idênticos = a mesma oportunidade, salvo nome muito diferente (números de edital diferentes, objetos diferentes, ou cada nome com palavras que o outro não tem: a Aldir Blanc/PNAB, com os mesmos dados e objetos diferentes, não se une).",
    "onde": "eldorado/base/cartorio/identidade.py (o nó unir_repetidos), indice.py (a prevenção)",
    "travas": [
     "testes/test_identidade.py::test_a_mesma_oportunidade_vira_um_livro",
-    "testes/test_identidade.py::test_o_achado_da_oportunidade_que_ja_tem_livro_agrega"
+    "testes/test_identidade.py::test_o_achado_da_oportunidade_que_ja_tem_livro_agrega",
+    "testes/test_identidade.py::test_o_codigo_une_os_repetidos_e_separa_a_aldir_blanc"
    ]
   }
  ]
