@@ -14,7 +14,6 @@ from typing import Any
 from .politica import Politica, contexto
 
 ESCOLHAS_MOTORES = 8
-ESCOLHAS_ESPIAO = 3
 
 
 def _motores(config: Path) -> list[str]:

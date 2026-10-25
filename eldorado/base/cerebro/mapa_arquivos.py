@@ -28,6 +28,12 @@ def _parte(p: str) -> tuple[str, str]:
     """A parte (BASE, MOTORES, BANCO) e o componente (a pasta; cada motor é o seu próprio componente)."""
     if p.startswith("dados/"):
         return "BANCO", "bancos"
+    if p.startswith("skills/"):                                   # as skills do Hermes no Eldorado (25/10/2026)
+        return "BASE", "skills (o Hermes)"
+    if p.startswith("estudos/"):                                  # os estudos, só sob demanda
+        return "BASE", "estudos (sob demanda)"
+    if p.startswith("ponte/"):                                    # a ponte da HostGator, chamada pelo acesso dos motores
+        return "MOTORES", "acesso"
     if p.startswith("eldorado/banco/"):
         return "BANCO", p.split("/")[2].removesuffix(".py")
     if p.startswith("eldorado/motores/canal/config/"):
@@ -400,6 +406,9 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
         if p.startswith(("config/", "workflows/")) and p not in circ and nos[p]["alcancado"]:
             ok = _valida(RAIZ / p)
             circ[p], motivo[p] = ("v", "configuração válida, lida pela produção") if ok else ("r", "configuração inválida (não abre)")
+    for p, m_ in SOB_DEMANDA.items():                              # os estudos concluídos e os testes sob demanda
+        if p in nos:
+            ponto[p], circ[p], motivo[p] = "v", "v", m_
     # os parados por desenho: a finalidade é não rodar; os que aguardam a decisão da titular ficam em atenção, com o parecer
     for p, m_ in POR_DESENHO.items():
         if p in nos:
@@ -434,6 +443,13 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
 POR_DESENHO = {
     "eldorado/base/motor_modelo/__init__.py": "o motor modelo não roda por desenho: é o molde de todo motor novo",
     "eldorado/motores/acesso/rotas_alternativas.py": "o Tor, desligado por desenho no plano (não roda)",
+}
+SOB_DEMANDA = {                       # os estudos concluídos: a finalidade é o estudo registrado; rodam só se pedidos
+    ".github/workflows/bench-ia.yml": "estudo concluído (25/10/2026): uma IA para as três funções (o resultado no parecer); só sob demanda",
+    ".github/workflows/bench-ia2.yml": "estudo concluído (25/10/2026): o arranjo das IAs e o contexto (o resultado no parecer); só sob demanda",
+    "estudos/bench_ia.py": "estudo concluído (25/10/2026): uma IA para as três funções; só sob demanda",
+    "estudos/bench_ia2.py": "estudo concluído (25/10/2026): o arranjo das IAs e o contexto; só sob demanda",
+    ".github/workflows/ponte-teste.yml": "o teste da ponte da HostGator, sob demanda (o ciclo testa a ponte no início)",
 }
 AGUARDAM_DECISAO = {
     "config/missao/dispensas_por_regime.json": "fica até a decisão da titular: nenhum código a lê (criada na fase 4, 22/10/2026); as dispensas "

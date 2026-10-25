@@ -35,14 +35,6 @@ def entregas(piloto: str) -> list[dict[str, Any]]:
             return saida
 
 
-def _carga_alta() -> bool:
-    try:
-        import psutil
-        return psutil.virtual_memory().percent >= 90
-    except Exception:  # noqa: BLE001
-        return False
-
-
 def sinal(diario, piloto: str, motivo: str) -> None:
     """O sinal de vida do piloto (25/10/2026): os quadros do site leem o "ligado/agora" por ele, não pelo último resultado."""
     diario.emitir("medicao.registrada", f"piloto:{piloto}", {"marcador": f"piloto:{piloto}", "nivel": "componente",
@@ -55,7 +47,7 @@ def _contexto(dados: Path, diario):
     return _contexto_pilotos({"dados": str(dados), "modulos": "config/modulos.toml", "intervalo_s": 1.0}, SimpleNamespace(diario=diario))
 
 
-def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_s: float = 180, pausa_s: float = 5) -> None:
+def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_s: float = 180) -> None:
     """O Interceptador: um livro por vez, pelo plano de voo, sem parar (a fila é refeita a cada volta)."""
     from ...motores.descoberta.metabusca import Metabusca
     from ...motores.pilotos.interceptador import Interceptador, fila
@@ -101,7 +93,7 @@ def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_
             parar.wait(120)
 
 
-def voar_espiao(dados: Path, diario, parar: threading.Event, orcamento_s: float = 150, pausa_s: float = 120) -> None:
+def voar_espiao(dados: Path, diario, parar: threading.Event, orcamento_s: float = 150) -> None:
     """O Espião: missão após missão (as rotas descansam sozinhas quando falham), com uma pausa entre os voos."""
     from ..comandante.pilotos import autorizar, pousou
     from .encaminhamento import Encaminhamento

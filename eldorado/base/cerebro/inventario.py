@@ -14,25 +14,38 @@ from pathlib import Path
 from typing import Any
 
 # o caminho do funcionamento: (etapa, regra do caminho)
-ETAPAS = [
-    ("01 Operação: o que acorda o sistema", [r"^\.github/workflows/eldorado\.yml$", r"^scripts/", r"nucleo/comandos\.py$"]),
-    ("02 Núcleo: contratos, eventos e gravação", [r"base/nucleo/(?!comandos|inventario)"]),
-    ("03 Bancos", [r"^eldorado/banco/"]),
-    ("04 Execução: workflow, executor, fila e governador", [r"base/fluxo/", r"cerebro/governador\.py$", r"^workflows/"]),
-    ("05 Cérebro decide: fila do sistema e acionamento", [r"cerebro/(decisao|fila|regencia)\.py$", r"^config/(agenda|modulos)\.toml$"]),
-    ("06 Coleta: os motores e o canivete suíço", [r"^eldorado/motores/(canal|acesso|leitura|descoberta)/", r"^config/motores_previstos\.json$"]),
-    ("07 Pertinência e missão", [r"cerebro/pertinencia\.py$", r"base/missao/", r"^config/missao/"]),
-    ("08 Cartório · etapas 1 e 2 (recepção e certificação)", [r"cartorio/(indice|passaporte|origem|certificacao|selos|cartorio)\.py$"]),
-    ("09 Cartório · validação (auditoria e arquivo)", [r"cartorio/auditoria\.py$"]),
-    ("10 Cartório · etapa 3 (a rede neural encaminha)", [r"cerebro/encaminhamento\.py$", r"motores/pilotos/"]),
-    ("11 Cartório · etapa 5 (análise externa)", [r"cartorio/analise_externa\.py$", r"base/verificacao/"]),
+ETAPAS = [   # a organização da titular (25/10/2026): o Comandante executa e coordena; o Aprendizado analisa e melhora
+    ("01 Operação: o que acorda, implanta e confere o sistema", [r"^\.github/workflows/(eldorado|implantar|qualidade|painel|visualizar|diagnostico)\.yml$",
+                                                                 r"^scripts/", r"nucleo/comandos\.py$", r"^config/(eldorado|arquivos)\.(toml|json)$",
+                                                                 r"^eldorado/__init__\.py$", r"^eldorado/base/__init__\.py$"]),
+    ("02 Núcleo: contratos, eventos e gravação", [r"base/nucleo/(?!comandos|inventario|ia\.py)"]),
+    ("03 Bancos", [r"^eldorado/banco/", r"base/especial/"]),
+    ("04 Execução: workflow, executor e fila (a engenharia do n8n)", [r"base/fluxo/", r"^workflows/"]),
+    ("05 Comandante: percebe, decide, organiza as filas, comanda os pilotos, parametriza e apresenta",
+     [r"base/comandante/", r"cerebro/(decisao|fila|regencia|governador|encaminhamento|pilotos|pilotos_permanentes|originais)\.py$",
+      r"^config/(agenda|modulos|cargos|ia_local)\.toml$", r"nucleo/ia\.py$", r"cerebro/livros_motores\.py$", r"^eldorado/base/cerebro/__init__\.py$",
+      r"^\.github/workflows/ia-teste\.yml$"]),
+    ("06 Coleta: os motores, o canivete suíço e a ponte BR", [r"^eldorado/motores/(canal|acesso|leitura|descoberta)/", r"^config/motores_previstos\.json$",
+                                                            r"^eldorado/motores/__init__\.py$", r"base/motor_modelo/", r"^config/searxng/",
+                                                            r"^\.github/workflows/(experimentar-motor|gravar-paginas)\.yml$",
+                                                            r"^ponte/", r"^config/ponte_dominios\.txt$", r"^\.github/workflows/ponte-teste\.yml$"]),
+    ("07 Missão: o perfil do que se procura", [r"base/missao/", r"^config/missao/"]),
+    ("08 Cartório · recepção e certificação", [r"cartorio/(indice|passaporte|origem|certificacao|selos|cartorio|identidade|releitura|__init__)\.py$"]),
+    ("10 Pilotos: o Espião e o Interceptador (comandados pelo Comandante)", [r"motores/pilotos/"]),
+    ("11 Verificação externa (o Claude no Chrome)", [r"cartorio/analise_externa\.py$", r"base/verificacao/"]),
     ("12 Farol e transferência", [r"base/transferencia/"]),
-    ("13 Aprender e medir", [r"cerebro/(aprendizado|completude|medicao|rede|regras|inventario)\.py$"]),
+    ("13 Aprendizado: pertinência, auditoria, completude, avaliação, curador, memória e skills",
+     [r"base/aprendizado/", r"^skills/", r"cartorio/auditoria\.py$", r"^config/regras(_titular)?\.(toml|json)$",
+      r"cerebro/(pertinencia|aprendizado|completude|medicao|rede|regras|inventario|lote|revisao_alarmes|mapa_arquivos)\.py$"]),
     ("14 Análise e painel", [r"base/analise/", r"base/painel/"]),
     ("15 Originais e Drive", [r"banco/(fotografia|originais)"]),
-    ("16 Migração do Eldorado0 (temporária)", [r"base/migracao/"]),
+    ("16 Migração do Eldorado0 (temporária)", [r"base/migracao/", r"^config/comparacao\.toml$"]),
+    ("17 Estudos (sob demanda)", [r"^estudos/", r"^\.github/workflows/bench-ia"]),
 ]
 SUBSTITUIDOS = {   # previstos no projeto; a função já existe em outro arquivo
+    "eldorado/banco/especial/__init__.py": "eldorado/banco/biblioteca (o Especial unido à Biblioteca, regra R08)",
+    "eldorado/banco/especial/empresas.py": "eldorado/banco/biblioteca/esquema.py (as empresas na Biblioteca, regra R08)",
+    "eldorado/banco/especial/esquema.py": "eldorado/banco/biblioteca/esquema.py (as empresas na Biblioteca, regra R08)",
     "eldorado/base/investigacao/investigacao.py": "eldorado/base/cerebro/encaminhamento.py e eldorado/motores/pilotos/interceptador.py",
     "eldorado/base/verificacao/verificacao.py": "eldorado/base/cartorio/analise_externa.py",
     "eldorado/base/verificacao/lote.py": "eldorado/base/cartorio/analise_externa.py",
@@ -55,7 +68,7 @@ def _etapa(caminho: str) -> str:
     for nome, regras in ETAPAS:
         if any(re.search(r, caminho) for r in regras):
             return nome
-    return "17 Outros"
+    return "18 Outros"
 
 
 def _modulo(p: Path) -> str:
@@ -120,7 +133,7 @@ def analisar(raiz: Path) -> dict[str, dict[str, Any]]:
 def _ordenar(itens: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Na ordem das etapas; dentro de cada etapa, cada arquivo depois daqueles de que depende."""
     saida: list[dict[str, Any]] = []
-    for nome, _ in ETAPAS + [("17 Outros", [])]:
+    for nome, _ in ETAPAS + [("18 Outros", [])]:
         grupo = {x["arquivo"]: x for x in itens if x["etapa"] == nome}
         feitos: set[str] = set()
         while grupo:
@@ -144,12 +157,26 @@ def gerar(raiz: str | Path = ".") -> dict[str, Any]:
         itens.append({**v, "etapa": _etapa(k), "parte": a.get("parte") or ("MOTORES" if "/motores/" in k else "BANCO" if "/banco/" in k else "BASE"),
                       "componente": a.get("componente") or _etapa(k)[3:], "ligacoes": v["depende_de"], "critico": bool(a.get("critico")),
                       "metrica": a.get("metrica") or "testes verdes e uso registrado"})
-    for k in (".github/workflows/eldorado.yml", ".github/workflows/painel.yml", "scripts/gravar.sh", "workflows/passagem.toml", "config/agenda.toml",
-              "config/modulos.toml", "config/motores_previstos.json"):
-        if (raiz / k).exists():
-            itens.append({"arquivo": k, "etapa": _etapa(k), "parte": "OPERACAO", "componente": "Operação e configuração", "ligacoes": [], "critico": True,
-                          "metrica": "o sistema roda sem intervenção", "finalidade": "", "depende_de": [], "usado_por": [], "acionado_por": [],
-                          "eventos": [], "testes": [], "linhas": len((raiz / k).read_text(encoding="utf-8").splitlines()), "situacao": "em funcionamento"})
+    # os arquivos que não são código Python (25/10/2026): os fluxos, os scripts, as configurações, as skills, os estudos e a
+    # ponte; a finalidade, as ligações e a situação vêm do mapa da sala de controle (as duas visões contam a mesma história)
+    from .mapa_arquivos import AGUARDAM_DECISAO, POR_DESENHO, SOB_DEMANDA, finalidade, montar
+    mp = montar()
+    de: dict[str, set[str]] = {}
+    para: dict[str, set[str]] = {}
+    for x in mp["arestas"]:
+        de.setdefault(x["para"], set()).add(x["de"])
+        para.setdefault(x["de"], set()).add(x["para"])
+    extras = [n["id"] for n in mp["nos"] if not n["id"].endswith(".py") or n["id"].startswith(("estudos/", "scripts/"))]
+    for k in sorted(set(extras)):
+        if k in info or not (raiz / k).exists() or k.startswith(("dados/", "eldorado/motores/canal/config/")):
+            continue
+        sit = (SOB_DEMANDA.get(k) or (f"aguarda a decisão da titular: {AGUARDAM_DECISAO[k]}" if k in AGUARDAM_DECISAO else None)
+               or (f"desligado por desenho: {POR_DESENHO[k]}" if k in POR_DESENHO else "em funcionamento"))
+        itens.append({"arquivo": k, "etapa": _etapa(k), "parte": "OPERACAO" if k.startswith((".github/", "scripts/", "workflows/")) else "BASE",
+                      "componente": "Operação e configuração", "ligacoes": [], "critico": k in (".github/workflows/eldorado.yml", "workflows/passagem.toml"),
+                      "metrica": "o sistema roda sem intervenção", "finalidade": finalidade(k)[:200], "depende_de": sorted(para.get(k, ()))[:12],
+                      "usado_por": sorted(de.get(k, ()))[:12], "acionado_por": [], "eventos": [], "testes": [],
+                      "linhas": len((raiz / k).read_text(encoding="utf-8", errors="replace").splitlines()), "situacao": sit})
     for k, a in anterior.items():                                   # previstos no projeto e ainda não construídos
         if k not in info and not (raiz / k).exists() and not k.endswith("/") and not any(x["arquivo"] == k for x in itens):
             situacao = f"substituído por {SUBSTITUIDOS[k]}" if k in SUBSTITUIDOS else "a construir"
