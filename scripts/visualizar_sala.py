@@ -81,6 +81,17 @@ try:
         pg.evaluate("document.getElementById('nv-mapa') && document.getElementById('nv-mapa').scrollIntoView()")
         pg.wait_for_timeout(3000)
         pg.screenshot(path=str(SAIDA / "publicado-mapa.png"))
+        try:                                                   # o Cartório (25/10/2026): os mostradores e a ficha de um livro
+            pg.evaluate("()=>document.querySelector(\"button[data-v='cartorio']\").click()")
+            pg.wait_for_timeout(8000)
+            pg.screenshot(path=str(SAIDA / "publicado-cartorio.png"))
+            pg.evaluate("()=>{const d=document.querySelector('#car-lista details.c'); if(d){d.open=true; d.scrollIntoView();}}")
+            pg.wait_for_timeout(4000)
+            pg.screenshot(path=str(SAIDA / "publicado-cartorio-ficha.png"))
+            r["cartorio"] = pg.evaluate("()=>({etapas:(document.getElementById('car-m-etapas')||{}).innerText||'',"
+                                        " livros:document.querySelectorAll('#car-lista details.c').length, ficha:!!document.querySelector('#car-lista .ficha')})")
+        except Exception as e:  # noqa: BLE001
+            r["cartorio"] = {"erro": str(e)[:300]}
         b.close()
 except Exception as e:  # noqa: BLE001
     r["publicado"] = {"erro": str(e)[:300]}

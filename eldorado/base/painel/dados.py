@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import copy
 import json
+import re
 import shutil
 import sqlite3
 import tomllib
@@ -722,20 +723,15 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     sc.update(medido)
     sc["detalhes"] = detalhes
     arquivos["sala_controle.json"] = sc
-    ca = _molde("cartorio.json")
-    pontos = sis.bib.execute("SELECT COUNT(DISTINCT livro_id || '|' || item) FROM certidao WHERE situacao = 'comprovado'").fetchone()[0]
-    confirmados = sis.bib.execute("SELECT COUNT(*) FROM livro_dados WHERE origem = 'confirmado'").fetchone()[0]
-    ca.update({"em": agora, "regra": "as certidões da Biblioteca"})
-    ca["resumo"].update(
-        {
-            "pontos_12_total": total * 12,
-            "pontos_certificados": pontos,
-            "pontos_faltam": max(total * 12 - pontos, 0),
-            "pct_certificado_12": round(100 * pontos / (total * 12), 1) if total else 0,
-            "fila_livros": fases.get("preparacao", 0),
-            "com_link_oficial": confirmados,
-        }
-    )
+    # o Cartório ligado aos dados (titular, 25/10/2026: a página estava estática): os mostradores, a lista e a ficha de cada livro
+    from .cartorio import montar as cartorio_montar
+    rede = None
+    try:
+        from ..cerebro.rede import rede_atual
+        rede = rede_atual(raiz / "dados")
+    except Exception:  # noqa: BLE001 — sem a rede, o parecer sai sem a nota
+        rede = None
+    ca, fichas_cartorio = cartorio_montar(sis.bib, sis.cer, rede, agora)
     arquivos["cartorio.json"] = ca
     arquivos["fluxo_oportunidades.json"] = _fluxo(sis, agora)
     arquivos["mapa_arquivos.json"] = _mapa_arquivos(sis, raiz)
@@ -747,6 +743,9 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
         shutil.rmtree(saida)
     shutil.copytree(PAGINA, saida)
     (saida / "dados").mkdir(exist_ok=True)
+    (saida / "dados" / "cartorio").mkdir(exist_ok=True)
+    for lid, ficha in fichas_cartorio.items():                          # a ficha de cada livro (aberta ao clicar)
+        (saida / "dados" / "cartorio" / f"{re.sub(r'[^A-Za-z0-9_.-]', '_', lid)}.json").write_text(json.dumps(ficha, ensure_ascii=False), encoding="utf-8")
     for nome, v in arquivos.items():
         (saida / "dados" / nome).write_text(json.dumps(v, ensure_ascii=False), encoding="utf-8")
     texto = json.dumps(D, ensure_ascii=False)

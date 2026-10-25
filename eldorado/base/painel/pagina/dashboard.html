@@ -1231,11 +1231,36 @@ box-sizing:border-box;}
 #v-cartorio .vazio{padding:20px;text-align:center;color:var(--suave);background:var(--cartao);border:1px dashed var(--linha);border-radius:10px}
 @media (max-width:640px){#v-cartorio .barra{grid-template-columns:110px 1fr 70px}
 #v-cartorio .pct{font-size:16px}}
+
+/* os mostradores do Cartório (titular, 25/10/2026) */
+#v-cartorio .car-mostradores{display:grid;grid-template-columns:1.25fr 1fr;gap:14px;margin:0 0 18px}
+#v-cartorio .mostrador{background:var(--cartao);border:1px solid var(--linha);border-radius:12px;padding:12px 14px}
+#v-cartorio .mostrador h3{margin:0 0 10px;font:600 15px Georgia,serif;color:var(--marca)}
+#v-cartorio .esteira{display:flex;align-items:stretch;gap:0}
+#v-cartorio .esteira .et{flex:1;text-align:center;padding:8px 4px;border:1px solid var(--linha);background:var(--fundo);position:relative}
+#v-cartorio .esteira .et:not(:last-child)::after{content:"›";position:absolute;right:-7px;top:50%;transform:translateY(-50%);color:var(--suave);font-size:18px;z-index:1}
+#v-cartorio .esteira .et b{display:block;font:600 22px Georgia,serif;color:var(--marca)}
+#v-cartorio .esteira .et small{color:var(--suave);font-size:12px}
+#v-cartorio .esteira .et.passou{background:var(--okf);border-color:#BFDFCB}#v-cartorio .esteira .et.aqui{background:var(--realce);border-color:var(--marca);box-shadow:inset 0 0 0 2px var(--marca)}
+#v-cartorio .saidas{display:flex;gap:8px;margin-top:8px;font-size:13px;color:var(--suave)}#v-cartorio .saidas span{background:var(--fundo);border:1px solid var(--linha);border-radius:999px;padding:2px 10px}
+#v-cartorio .degraus{display:grid;gap:4px}
+#v-cartorio .degrau{display:grid;grid-template-columns:22px 150px 1fr 52px;gap:8px;align-items:center;font-size:13px}
+#v-cartorio .degrau .n{width:22px;height:22px;border-radius:50%;background:var(--fundo);border:1px solid var(--linha);display:grid;place-items:center;font-weight:700;font-size:12px}
+#v-cartorio .degrau.subiu .n{background:#FFF3D6;border-color:#E2B85A}#v-cartorio .degrau.obteve .n{background:var(--ok);color:#fff;border-color:var(--ok)}
+#v-cartorio .degrau .tr{height:8px;border-radius:4px;background:var(--linha);overflow:hidden}#v-cartorio .degrau .tr i{display:block;height:100%;background:var(--marca)}
+#v-cartorio .ficha{display:grid;gap:12px;margin-top:6px}#v-cartorio .ficha .duas{display:grid;grid-template-columns:1.25fr 1fr;gap:12px}
+#v-cartorio .ficha .bloco{background:var(--fundo);border:1px solid var(--linha);border-radius:10px;padding:10px 12px}
+#v-cartorio .ficha .bloco h4{margin:0 0 6px;font:600 14px Georgia,serif;color:var(--marca)}
+#v-cartorio .ficha table td,#v-cartorio .ficha table th{white-space:normal;font-size:13px;padding:5px 8px}
+#v-cartorio .ficha ul{margin:4px 0 0 18px;padding:0}#v-cartorio .ficha li{margin:2px 0}
+@media (max-width:900px){#v-cartorio .car-mostradores,#v-cartorio .ficha .duas{grid-template-columns:1fr}}
 </style>
 <div class="car-main">
 <h1>Cartório de fontes oficiais</h1>
 <p class="sub">Os motores descobrem; o Cartório certifica. Toda oportunidade com algum dos 12 itens indisponível entra na fila: ele localiza o documento oficial, lê por seções e devolve cada item com trecho e página, ou a dispensa quando o edital não tem aquele requisito. <span id="car-em"></span></p>
 
+<div class="car-mostradores"><div class="mostrador"><h3>As 5 etapas do Cartório <span class="meta">(os livros em cada uma)</span></h3><div id="car-m-etapas"></div></div>
+<div class="mostrador"><h3>A escada <span class="meta">(o degrau em que cada livro foi obtido)</span></h3><div id="car-m-escada"></div></div></div>
 <div class="cards" id="car-cards"></div>
 
 <h2>Linha de produção <span class="meta">(sem estrela → bronze → prata → ouro · até 10 abordagens por oportunidade)</span></h2>
@@ -6495,7 +6520,32 @@ window._carRecarregar=carregarCartorio; carregarCartorio();
 setInterval(()=>{ if(typeof vAtual!=="undefined"&&vAtual==="cartorio") carregarCartorio(); },180000);
 /* CARTORIO-12-PONTOS-V1 */
 function cob(c){const I=c.itens||{},D=c.dispensas||{},F=c.faltavam||[];const o=DOZE.filter(k=>I[k]).length,d=DOZE.filter(k=>!I[k]&&D[k]).length,f=DOZE.filter(k=>!I[k]&&!D[k]&&F.includes(k)).length,j=DOZE.length-o-d-f;return{o,d,f,j,cert:(o+d)/DOZE.length,cobre:(o+d+j)/DOZE.length}}
+const ETAPAS_C=[["recepcao","Recepção"],["certificacao","Certificação"],["preparacao","Preparação"],["validacao","Validação"],["analise externa","Análise externa"]];
+const ESCADA_C=[["1","API oficial"],["2","pedido leve"],["3","navegador leve"],["4","navegador (Patchright)"],["5","navegador (Camoufox)"],["6","cópia arquivada"],["7","computador local"]];
+function esteira(cont,aqui,passou){ return `<div class="esteira">${ETAPAS_C.map(([k,n],i)=>`<div class="et${aqui===k?" aqui":(passou&&passou.has(k)?" passou":"")}"><b>${cont?esc((cont[k]??0).toLocaleString("pt-BR")):(i+1)}</b><small>${i+1} · ${esc(n)}</small></div>`).join("")}</div>`; }
+function escadaM(cont,obtido){ const mx=cont?Math.max(1,...Object.values(cont)):1;
+  return `<div class="degraus">${ESCADA_C.map(([k,n])=>`<div class="degrau${obtido&&k===obtido?" obteve":(obtido&&+k<+obtido?" subiu":"")}"><span class="n">${k}</span><span>${esc(n)}</span>${cont?`<span class="tr"><i style="width:${100*(cont[k]||0)/mx}%"></i></span><b>${(cont[k]||0).toLocaleString("pt-BR")}</b>`:`<span></span><span>${obtido&&k===obtido?"obtido":(obtido&&+k<+obtido?"tentado":"")}</span>`}</div>`).join("")}</div>`; }
+function mostradores(){ const M=DADOS.mostradores; if(!M) return; const ce={}; (M.etapas||[]).forEach(e=>ce[e.id]=e.livros); const cd={}; (M.escada||[]).forEach(e=>cd[e.degrau]=e.livros);
+  document.getElementById("car-m-etapas").innerHTML=esteira(ce)+`<div class="saidas">${(M.saidas||[]).map(e=>`<span>saída · ${esc(e.nome)}: <b>${e.livros.toLocaleString("pt-BR")}</b></span>`).join("")}</div>`;
+  document.getElementById("car-m-escada").innerHTML=escadaM(cd)+`<p class="meta" style="margin:6px 0 0">sem registro do degrau: ${(cd["sem registro"]||0).toLocaleString("pt-BR")} livros (achados anteriores a 24/10/2026)</p>`; }
+async function ficha(id,alvo){ if(alvo.dataset.ok) return; alvo.dataset.ok=1; alvo.innerHTML='<p class="meta">abrindo a ficha do livro…</p>';
+  try{ const f=await (await fetch("dados/cartorio/"+encodeURIComponent(id.replace(/[^A-Za-z0-9_.-]/g,"_"))+".json?"+Date.now())).json();
+    const passou=new Set((f.relatorio||[]).flatMap(p=>[p.de,p.para]));
+    const BR=d=>d?new Date(d).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}):"";
+    const P=f.parecer||{};
+    alvo.innerHTML=`<div class="ficha"><div class="duas"><div class="bloco"><h4>A etapa do livro</h4>${esteira(null,f.etapa,passou)}<p class="meta" style="margin:6px 0 0">código: <b>${esc(f.codigo||"—")}</b> · estrela: ${esc(f.estrela||"sem")}${f.prazo?" · prazo "+br(f.prazo):""}</p></div>
+      <div class="bloco"><h4>A escada do livro</h4>${escadaM(null,f.degrau)}<p class="meta" style="margin:6px 0 0">${esc(f.escada||"sem registro da escada")}</p></div></div>
+      <div class="bloco"><h4>O parecer do Cérebro</h4><p style="margin:0">${P.nota_oportunidade!=null?`nota da rede para a oportunidade: <b>${Math.round(P.nota_oportunidade*100)}%</b> · `:""}decisão: <b>${esc(P.decisao||"")}</b></p><ul>${(P.leitura||[]).map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+      <div class="duas"><div class="bloco"><h4>O repasse para a próxima etapa</h4><p style="margin:0">${esc(f.repasse||"—")}</p></div>
+      <div class="bloco"><h4>Orientação para obter a oportunidade</h4><ul>${(f.orientacao||[]).map(x=>`<li>${/^https?:/.test(x.split(": ").pop())?esc(x.split(": ")[0])+": "+link(x.split(": ").pop()):esc(x)}</li>`).join("")}</ul></div></div>
+      <div class="bloco"><h4>O relatório de cada etapa</h4>${(f.relatorio||[]).length?`<table><tr><th>quando</th><th>de</th><th>para</th><th>por</th><th>o resultado</th></tr>${f.relatorio.map(p=>`<tr><td>${esc(BR(p.em))}</td><td>${esc(p.de||"—")}</td><td><b>${esc(p.para)}</b></td><td>${esc(p.por||"")}</td><td>${esc(p.motivo||"")}</td></tr>`).join("")}</table>`:'<p class="meta">sem passagens registradas</p>'}</div>
+      <div class="bloco"><h4>Os 12 itens</h4><table>${DOZE.map(k=>{const v=(f.itens||{})[k]; return `<tr><td style="width:170px">${esc(k)}</td><td>${v?(v.situacao==="dispensado"?`<span style="color:var(--disp)">dispensado</span> · ${esc(v.justificativa||"")}`:`<b style="color:var(--ok)">${esc(v.valor||"")}</b>${v.trecho?`<br><small class="meta">“${esc(v.trecho)}”${v.pagina?" · pág. "+v.pagina:""}</small>`:""}`):`<span style="color:var(--falta)">falta</span>`}</td></tr>`}).join("")}</table></div>
+      ${(f.tentativas||[]).length?`<div class="bloco"><h4>O plano de voo do Interceptador</h4><table><tr><th>quando</th><th>a ferramenta</th><th>para</th><th>resultado</th></tr>${f.tentativas.map(t=>`<tr><td>${esc(BR(t.em))}</td><td>${esc(t.nome||t.ferramenta)}</td><td>${esc((t.para||[]).join(", "))}</td><td>${t.material?"com material":"sem material"}${t.erro?" · "+esc(t.erro):""}</td></tr>`).join("")}</table></div>`:""}
+      <p class="meta">Site oficial: ${link(f.link_oficial)} · divulgação: ${link(f.link_divulgacao)}</p></div>`;
+  }catch(e){ alvo.innerHTML='<p class="meta">a ficha deste livro ainda não foi gerada</p>'; delete alvo.dataset.ok; } }
+document.addEventListener("toggle",ev=>{ const d=ev.target; if(d.matches&&d.matches("#car-lista details.c")&&d.open){ const a=d.querySelector(".corpo"); if(a&&d.dataset.id) ficha(d.dataset.id,a); } },true);
 function montar(){
+  mostradores();
   const R=DADOS.resumo||{};
   const KS=(DADOS.certidoes||[]).map(cob),SOMA=g=>KS.reduce((a,k)=>a+g(k),0),N12=KS.length*DOZE.length;
   { const t=new Date(DADOS.em||0), min=Math.round((Date.now()-t.getTime())/60000);
@@ -6547,8 +6597,8 @@ function lista(){
   el.innerHTML=L.slice(0,300).map(c=>{
     const K=cob(c);const mini=DOZE.map(k=>`<i class="${(c.itens||{})[k]?"o":(c.dispensas||{})[k]?"d":(c.faltavam||[]).includes(k)?"f":"j"}" title="${esc(k)}"></i>`).join("");
     const selo=c.tipo==="estrela"&&c.selo_depois!==c.selo_antes?` · selo ${esc(c.selo_antes||"nenhum")} → <b>${esc(c.selo_depois||"nenhum")}</b>`:"";
-    return `<details class="c"><summary><div><div class="tt">${esc(c.titulo)}</div>
-      <div class="meta"><span class="pill ${c.tipo==="estrela"?"est":"liv"}">${c.tipo==="estrela"?"estrela":"livro"}</span><span class="pill">${esc(BALCAO[c.balcao]||c.balcao)}</span>
+    return `<details class="c" data-id="${esc(c.id||"")}"><summary><div><div class="tt">${esc(c.titulo)}</div>
+      <div class="meta"><span class="pill ${c.tipo==="estrela"?"est":"liv"}">${c.tipo==="estrela"?"estrela "+esc(c.estrela||""):"livro"}</span><span class="pill">etapa: ${esc(c.etapa||"")}</span>${c.codigo?`<span class="pill">${esc(c.codigo)}</span>`:""}<span class="pill">${esc(BALCAO[c.balcao]||c.balcao)}</span>
       ${K.o+K.d} de 12 pontos certificados (${K.o} verdes, ${K.d} dispensados) · ${K.j} já constavam sem certidão · ${K.f} faltam · pedido: ${(c.resolvidos||[]).length} de ${(c.faltavam||[]).length}${c.tentativa>1?" · "+c.tentativa+"ª tentativa":""}${c.estagio?" · balcão "+esc({sem_estrela:"sem estrela",bronze:"bronze",prata:"prata",ouro:"ouro"}[c.estagio]||c.estagio):""}${c.uf?" · "+esc(c.uf):""}${c.prazo?" · prazo "+br(c.prazo):""}${selo}</div><div class="mini">${mini}</div></div>
       <div class="pct">${pct(K.cert)}<br><small style="font-size:11px;font-weight:400;color:var(--suave)">com os já constantes ${pct(K.cobre)}</small></div></summary>
       <div class="corpo"><p class="meta">Site oficial: ${link(c.link_oficial)}${c.degrau!=null?` · degrau ${c.degrau}: ${esc(c.como||"")}`:""}</p>
