@@ -62,7 +62,13 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection, molde, agora: datet
         "WHERE motor IN ('espiao', 'interceptador') ORDER BY encontrado_em"
     ):
         ach[mot].append({"id": aid, "em": em, "titulo": tit or titulos.get(lid) or "", "link": link, "livro": lid, "decisao": dec})
-    ult_m = missoes[-1]["em"] if missoes else None
+    sinais = {}
+    try:  # o sinal de vida de cada piloto (25/10/2026)
+        for marcador, em, motivo in cer.execute("SELECT marcador, MAX(em), motivo FROM medicao WHERE marcador LIKE 'piloto:%' GROUP BY marcador"):
+            sinais[marcador.split(":", 1)[1]] = (em, motivo)
+    except sqlite3.Error:
+        pass
+    ult_m = max([missoes[-1]["em"] if missoes else "", (sinais.get("espiao") or ("", ""))[0]]) or None
     m_hoje = [m for m in missoes if (m["em"] or "") >= hoje]
     e = molde("espiao.json")
     e.update(
@@ -102,16 +108,37 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection, molde, agora: datet
         "estrelas_de_ouro": sum(1 for a in ach["espiao"] if estrela.get(a["livro"]) == "ouro"),
         "indicios_entregues_ao_interceptador": len(ach["espiao"]),
     }
+
+    def missao_quadro(m):  # a missão no formato do quadro do Espião (25/10/2026)
+        return {
+            "em": m["em"],
+            "segundos": None,
+            "modo": m["familia"],
+            "missao": m["familia"],
+            "de": "piloto-aberto",
+            "alvo": m["consulta"],
+            "qualidade": "com resultado" if m["achados"] else ("nada no crivo" if m["resultados"] else "busca sem resposta"),
+            "achados": m["achados"] or 0,
+            "abates": m["achados"] or 0,
+            "inicio": m["em"],
+            "fim": m["em"],
+            "avaliacao": f"{m['achados']} achado(s)" if m["achados"] else ("nada passou no crivo" if m["resultados"] else "a busca não respondeu"),
+            "licao": f"{m['resultados'] or 0} resultado(s), {m['candidatos'] or 0} candidato(s)",
+            "encontrou": [],
+        }
+
+    e["missoes"] = [missao_quadro(m) for m in reversed(missoes[-20:])]
+    e["acumulado"]["tempo_medio_min"] = None
     ev = {
-        "estado": "em_voo" if (_idade_min(ult_m, agora) or 1e9) < 10 else ("pousou" if ult_m else "aguardando"),
+        "estado": "em_voo" if (_idade_min(ult_m, agora) or 1e9) < 25 else ("pousou" if ult_m else "aguardando"),
         "atualizado_em": ult_m or iso,
         "inicio": ult_m,
         "fim": ult_m,
         "voo_do_dia": len(m_hoje),
-        "etapa": "missão de busca",
+        "etapa": (sinais.get("espiao") or ("", "missão de busca"))[1],
         "missao_atual": None,
-        "plano": [f[0] for f in familias][:6],
-        "concluidas": [m["familia"] for m in m_hoje][-6:],
+        "plano": [{"ordem": k, "missao": f[0], "alvo": f"{f[3] or 0} usos, {f[4] or 0} achados"} for k, f in enumerate(familias[:6], 1)],
+        "concluidas": [missao_quadro(m) for m in m_hoje][-6:],
         "anteriores": [
             {
                 "inicio": m["em"],
@@ -148,7 +175,9 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection, molde, agora: datet
     alvo_ids = {t["livro"] for t in tents}
     for c in bib.execute("SELECT livro_id, item, valor, situacao, fase, justificativa, trecho, pagina, id, em FROM certidao"):
         if c[0] in alvo_ids:
-            certs[c[0]].append(dict(zip(("livro_id", "item", "valor", "situacao", "fase", "justificativa", "trecho", "pagina", "id", "em"), c, strict=False)))
+            certs[c[0]].append(
+                dict(zip(("livro_id", "item", "valor", "situacao", "fase", "justificativa", "trecho", "pagina", "id", "em"), c, strict=False))
+            )
 
     def cobertura(lid: str) -> tuple[int, int]:
         m = I.melhor(certs.get(lid, []))
@@ -159,7 +188,7 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection, molde, agora: datet
     for t in tents:
         por_livro[t["livro"]].append(t)
     ordem_livros = sorted(por_livro, key=lambda lid: por_livro[lid][-1]["em"] or "")
-    ult_t = tents[-1]["em"] if tents else None
+    ult_t = max([tents[-1]["em"] if tents else "", (sinais.get("interceptador") or ("", ""))[0]]) or None
     recentes = [lid for lid in ordem_livros if (por_livro[lid][-1]["em"] or "") >= h24]
     cob = {lid: cobertura(lid) for lid in ordem_livros}
     i_ = molde("interceptador.json")
@@ -168,7 +197,7 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection, molde, agora: datet
             "em": iso,
             "papel": "investiga um livro por vez, com o plano de voo pelos itens que faltam (orientado pelo Cérebro)",
             "modelo": "o plano de voo e o canivete (a escada completa, a leitura completa dos PDFs, o OCR das imagens, a busca)",
-            "estado": "em voo" if (_idade_min(ult_t, agora) or 1e9) < 15 else ("no pátio" if ult_t else "aguardando o primeiro voo"),
+            "estado": "em voo" if (_idade_min(ult_t, agora) or 1e9) < 20 else ("no pátio" if ult_t else "aguardando o primeiro voo"),
             "ultimo_voo": ult_t or "",
         }
     )
@@ -210,11 +239,41 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection, molde, agora: datet
         }
         for lid in reversed(ordem_livros[-12:])
     ]
+
+    def missao_livro(lid):
+        ps = por_livro[lid]
+        com = [p for p in ps if p["material"]]
+        try:
+            seg = (datetime.fromisoformat(ps[-1]["em"]) - datetime.fromisoformat(ps[0]["em"])).total_seconds()
+        except (TypeError, ValueError):
+            seg = None
+        comp, disp = cob[lid]
+        return {
+            "em": ps[-1]["em"],
+            "segundos": seg,
+            "modo": "plano de voo",
+            "de": "piloto-interceptador",
+            "alvo": titulos.get(lid, lid),
+            "tipo": "edital",
+            "qualidade": "validada" if comp + disp == 12 else "parcial" if comp + disp else "insuficiente",
+            "comprovados": comp,
+            "dispensados": disp,
+            "total": 12,
+            "avaliacao": f"{len(com)} de {len(ps)} passos com material",
+            "justificativa": "; ".join(sorted({i for p in ps for i in (p["para"] or [])}))[:300],
+            "encontrou": [p["nome"] for p in com if p["nome"]][:6],
+            "nao_resolvidos": [],
+            "rotas": [p["nome"] for p in ps if p["nome"]][:10],
+        }
+
+    i_["missoes"] = [missao_livro(lid) for lid in reversed(ordem_livros[-20:])]
+    duracoes = [m["segundos"] for m in i_["missoes"] if m["segundos"]]
+    i_["acumulado"]["tempo_medio_min"] = round(sum(duracoes) / len(duracoes) / 60, 1) if duracoes else None
     ult_livro = ordem_livros[-1] if ordem_livros else None
     iv = {
-        "estado": "em_voo" if (_idade_min(ult_t, agora) or 1e9) < 10 else ("pousou" if ult_t else "aguardando"),
+        "estado": "em_voo" if (_idade_min(ult_t, agora) or 1e9) < 25 else ("pousou" if ult_t else "aguardando"),
         "atualizado_em": ult_t or iso,
-        "detalhe": "o próximo livro da fila (um por vez)",
+        "detalhe": (sinais.get("interceptador") or ("", "o próximo livro da fila (um por vez)"))[1],
     }
     if ult_livro:
         passos = por_livro[ult_livro]

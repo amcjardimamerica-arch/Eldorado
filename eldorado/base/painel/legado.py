@@ -169,8 +169,8 @@ def _montar(bib, cer, motores, pilotos, molde, agora, iso, hoje) -> dict[str, di
     pv = molde("piloto_ao_vivo.json")
     pv.update(
         {
-            "motor": quem,
-            "motor_frase": ult_p.get("resultado", ""),
+            "motor": "ligado" if idade_min < 20 else "parado",              # o quadro do Espião lê ligado/parado (25/10/2026)
+            "motor_frase": f"{quem}: {ult_p.get('resultado', '')}",
             "em": iso,
             "sinal_em": ult_p.get("ultima") or "",
             "minutos_sem_sinal": int(idade_min) if idade_min < 1e8 else -1,

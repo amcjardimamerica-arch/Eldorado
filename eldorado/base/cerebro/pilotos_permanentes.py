@@ -43,6 +43,13 @@ def _carga_alta() -> bool:
         return False
 
 
+def sinal(diario, piloto: str, motivo: str) -> None:
+    """O sinal de vida do piloto (25/10/2026): os quadros do site leem o "ligado/agora" por ele, não pelo último resultado."""
+    diario.emitir("medicao.registrada", f"piloto:{piloto}", {"marcador": f"piloto:{piloto}", "nivel": "componente",
+                                                              "em": time.strftime("%Y-%m-%dT%H:%M:%S+00:00", time.gmtime()), "ponto": "v",
+                                                              "valor": 1, "motivo": motivo[:300]})
+
+
 def _contexto(dados: Path, diario):
     from .encaminhamento import _contexto_pilotos
     return _contexto_pilotos({"dados": str(dados), "modulos": "config/modulos.toml", "intervalo_s": 1.0}, SimpleNamespace(diario=diario))
@@ -76,11 +83,13 @@ def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_
                     while _carga_alta() and not parar.is_set():
                         parar.wait(30)
                     SITUACAO["interceptador"] = {"livro": lv.id, "titulo": lv.titulo, "desde": time.time()}
+                    sinal(diario, "interceptador", f"em voo: {lv.titulo}")
                     quem, achados = enc.encaminhar(lv, time.monotonic() + tempo_livro_s)
                     for a in (achados if isinstance(achados, list) else [achados] if achados else []):
                         ENTREGAS["interceptador"].put(a)
                     parar.wait(pausa_s)
                 if not livros:
+                    sinal(diario, "interceptador", "aguardando: a fila de livros está vazia")
                     parar.wait(300)                                   # a fila vazia: espera a próxima passagem trazer livros
             finally:
                 con.close()
@@ -102,10 +111,12 @@ def voar_espiao(dados: Path, diario, parar: threading.Event, orcamento_s: float 
             dados_, con, escada, registro = _contexto(dados, diario)
             try:
                 SITUACAO["espiao"] = {"desde": time.time()}
+                sinal(diario, "espiao", "em voo: missão de busca")
                 achados, _ = missoes(dados_, con, escada, True, orcamento_s, diario=diario)
                 enc = Encaminhamento(con, diario, registro, None)
                 for a in achados:
                     ENTREGAS["espiao"].put(enc._entregar(a, "espiao"))
+                sinal(diario, "espiao", f"pousou: {len(achados)} achado(s)")
             finally:
                 con.close()
         except Exception as e:  # noqa: BLE001

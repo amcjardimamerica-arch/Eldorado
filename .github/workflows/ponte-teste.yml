@@ -22,12 +22,17 @@ jobs:
           import importlib.util, sys, httpx, time
           sys.path.insert(0, ".")
           from eldorado.motores.acesso import ponte_br
-          for url in ("https://cese.org.br/wp-json/wp/v2/edital", "https://cese.org.br/", "https://www.tjgo.jus.br/", "https://www.mpgo.mp.br/"):
+          # a lista antiga e a NOVA (25/10/2026: o ponte.php com os domínios de todos os motores)
+          for url in ("https://cese.org.br/wp-json/wp/v2/edital", "https://www.mpgo.mp.br/", "https://www.tjgo.jus.br/",
+                      "https://www.gov.br/cnpq/pt-br", "https://www.bndes.gov.br/", "https://www.gov.br/funarte/pt-br",
+                      "https://www.fordfoundation.org/", "https://www.caixa.gov.br/", "https://prosas.com.br/"):
               t = time.monotonic()
               try:
                   direto = httpx.get(url, timeout=20, follow_redirects=True).status_code
               except Exception as e:
                   direto = type(e).__name__
               r = ponte_br.diagnostico(url)
+              if not r.get("ok") and "fora da lista" in str(r.get("erro", "")):
+                  r["lista"] = "o ponte.php da hospedagem NÃO tem este domínio (a versão antiga ainda está lá?)"
               print(f"::notice title={url}::direto da nuvem: {direto} · pela ponte: {r}")
           P

@@ -71,6 +71,14 @@ try:
         b = p.chromium.launch(headless=True)
         pg = b.new_page(viewport={"width": 1600, "height": 950})
         pg.goto("https://amcjardimamerica-arch.github.io/Eldorado/dashboard.html?v=" + str(__import__("time").time()), wait_until="load", timeout=60000)
+        pg.wait_for_timeout(9000)                               # os quadros dos pilotos (25/10/2026): o texto e a foto
+        r["pilotos_inicio"] = pg.evaluate("""()=>Object.fromEntries([...document.querySelectorAll('[id^=pil-],[id^=int-posto],[id^=esp-]')]
+            .filter(e=>e.id&&e.offsetParent!==null||e.id).map(e=>[e.id,(e.innerText||'').slice(0,700)]))""")
+        alvo = pg.query_selector("#pil-posto") or pg.query_selector("[id^=pil-]")
+        if alvo:
+            alvo.scroll_into_view_if_needed()
+            pg.wait_for_timeout(1500)
+            pg.screenshot(path=str(SAIDA / "publicado-pilotos-inicio.png"))
         pg.wait_for_timeout(5000)                               # a página inicial: as oportunidades repetidas na tela
         pg.screenshot(path=str(SAIDA / "publicado-inicio.png"))
         r["repetidos_inicio"] = pg.evaluate("""()=>{ const t=[...document.querySelectorAll('a,div,li,span')].filter(e=>e.children.length===0)
@@ -86,6 +94,18 @@ try:
         pg.evaluate("document.getElementById('nv-mapa') && document.getElementById('nv-mapa').scrollIntoView()")
         pg.wait_for_timeout(3000)
         pg.screenshot(path=str(SAIDA / "publicado-mapa.png"))
+        try:                                                   # a Bússola: os quadros dos pilotos (25/10/2026)
+            pg.evaluate("()=>{ if(window.trocaVista) trocaVista('bussola'); else { const b=document.querySelector(\"button[data-v='bussola']\"); if(b) b.click(); } }")
+            pg.wait_for_timeout(9000)
+            r["pilotos_bussola"] = pg.evaluate("""()=>Object.fromEntries([...document.querySelectorAll('[id$=-bussola],[id*=posto-bussola]')]
+                .map(e=>[e.id,(e.innerText||'').slice(0,700)]))""")
+            alvo = pg.query_selector("#pil-posto-bussola") or pg.query_selector("[id$=-bussola]")
+            if alvo:
+                alvo.scroll_into_view_if_needed()
+                pg.wait_for_timeout(1500)
+                pg.screenshot(path=str(SAIDA / "publicado-pilotos-bussola.png"))
+        except Exception as e:  # noqa: BLE001
+            r["pilotos_bussola"] = {"erro": str(e)[:300]}
         try:                                                   # o Cartório (25/10/2026): os mostradores e a ficha de um livro
             pg.evaluate("()=>document.querySelector(\"button[data-v='cartorio']\").click()")
             pg.wait_for_timeout(8000)
