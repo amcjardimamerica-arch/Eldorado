@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .._sqlite import abrir as _abrir
 
-VERSAO = 9
+VERSAO = 10
 
 DDL = r"""
 PRAGMA foreign_keys=ON;
@@ -119,8 +119,31 @@ DDL_V9 = r"""
 ALTER TABLE modelo ADD COLUMN brier REAL
 """
 
+# 10: o Comandante e o Aprendizado (titular, 25/10/2026; o desenho A-WORKFLOW-NOVO-ELDORADO-COMANDANTE, fase 1).
+# A execução (o Comandante): cada decisão com o motivo e o resultado; os parâmetros de cada etapa, com a versão e a cópia
+# anterior; a conferência de 20 minutos de cada mudança feita em funcionamento.
+# O Aprendizado: as skills (o formato SKILL.md do Hermes) com o uso e o resultado; o grafo do aprendizado; a memória com
+# busca FTS5 (o índice trigram: 5 de 5 no estudo, 1,3 ms), alimentada a cada passagem, com os 30 dias do temporário.
+DDL_V10 = r"""
+CREATE TABLE IF NOT EXISTS comandante_decisao (id INTEGER PRIMARY KEY, em TEXT NOT NULL, etapa TEXT NOT NULL, acao TEXT NOT NULL, alvo TEXT,
+  motivo TEXT NOT NULL, nota REAL, politica TEXT, contexto TEXT, resultado TEXT, recompensa REAL, avaliada_em TEXT);
+CREATE INDEX IF NOT EXISTS comandante_decisao_em ON comandante_decisao(em);
+CREATE TABLE IF NOT EXISTS parametro (etapa TEXT NOT NULL, chave TEXT NOT NULL, versao INTEGER NOT NULL, valor TEXT NOT NULL, anterior TEXT,
+  origem TEXT NOT NULL, em TEXT NOT NULL, PRIMARY KEY (etapa, chave, versao));
+CREATE TABLE IF NOT EXISTS conferencia (id INTEGER PRIMARY KEY, etapa TEXT NOT NULL, chave TEXT NOT NULL, versao INTEGER NOT NULL,
+  verificar_em TEXT NOT NULL, estado TEXT NOT NULL CHECK (estado IN ('aguardando','intacta','sobrescrita','restaurada')), conferida_em TEXT);
+CREATE TABLE IF NOT EXISTS skill (nome TEXT PRIMARY KEY, dono TEXT NOT NULL CHECK (dono IN ('comandante','aprendizado','espiao','interceptador')),
+  descricao TEXT NOT NULL, caminho TEXT, versao TEXT, estado TEXT NOT NULL DEFAULT 'ativa' CHECK (estado IN ('ativa','parada','arquivada')),
+  usos INTEGER NOT NULL DEFAULT 0, sucessos INTEGER NOT NULL DEFAULT 0, falhas INTEGER NOT NULL DEFAULT 0, ultimo_uso TEXT,
+  criada_em TEXT NOT NULL, atualizada_em TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS grafo_aresta (origem TEXT NOT NULL, destino TEXT NOT NULL, tipo TEXT NOT NULL, peso REAL NOT NULL DEFAULT 1, em TEXT NOT NULL,
+  PRIMARY KEY (origem, destino, tipo));
+CREATE VIRTUAL TABLE IF NOT EXISTS memoria USING fts5(tabela UNINDEXED, ref UNINDEXED, texto, em UNINDEXED, tokenize='trigram');
+CREATE TABLE IF NOT EXISTS memoria_ponteiro (tabela TEXT PRIMARY KEY, ultimo TEXT NOT NULL)
+"""
+
 
 def abrir(caminho: str | Path):
     """Na criação, o esquema inteiro (com a versão 2); um Cérebro na versão 1 é migrado (as tabelas motor_* e espiao_*)."""
-    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V4 + ";\n" + DDL_V5 + ";\n" + DDL_V6 + ";\n" + DDL_V7 + ";\n" + DDL_V8 + ";\n" + DDL_V9, VERSAO,
-                  {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7, 8: DDL_V8, 9: DDL_V9})
+    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V4 + ";\n" + DDL_V5 + ";\n" + DDL_V6 + ";\n" + DDL_V7 + ";\n" + DDL_V8 + ";\n" + DDL_V9 + ";\n" + DDL_V10, VERSAO,
+                  {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7, 8: DDL_V8, 9: DDL_V9, 10: DDL_V10})

@@ -63,11 +63,24 @@ def _json(resposta: str) -> Any:
     return json.loads(m.group(0))
 
 
+def cargo(nome: str | None) -> dict[str, Any]:
+    """O cargo da IA (config/cargos.toml): a vaga fixa, o ocupante, as instruções e os parâmetros; sem o cargo, o padrão."""
+    if not nome:
+        return {}
+    try:
+        import tomllib
+        from pathlib import Path
+        return (tomllib.loads(Path("config/cargos.toml").read_text(encoding="utf-8")).get("cargo") or {}).get(nome, {})
+    except (OSError, ValueError):
+        return {}
+
+
 class IA:
-    def __init__(self, url: str | None = None, tempo_limite: float = 240.0):
+    def __init__(self, url: str | None = None, tempo_limite: float = 240.0, cargo_nome: str | None = None):
         self.url = (url or os.environ.get("ELDORADO_IA_URL") or URL_PADRAO).rstrip("/")
         self.tempo_limite = tempo_limite
         self._ok: bool | None = None
+        self.cargo_nome, self.cargo = cargo_nome, cargo(cargo_nome)   # a vaga fixa do cargo: sem interromper os outros
 
     def disponivel(self) -> bool:
         if self._ok is None:
@@ -82,9 +95,15 @@ class IA:
             raise SemIA(f"o modelo local não está disponível em {self.url}")
         uso, t0 = Uso(tarefa), time.monotonic()
         try:
-            r = httpx.post(f"{self.url}/v1/chat/completions", timeout=self.tempo_limite, json={
-                "messages": [{"role": "system", "content": SISTEMA}, {"role": "user", "content": pedido + "\n/no_think"}],
-                "temperature": 0.1, "max_tokens": maximo_tokens})
+            corpo = {"messages": [{"role": "system", "content": SISTEMA + ("\n" + self.cargo["instrucoes"] if self.cargo.get("instrucoes") else "")},
+                                  {"role": "user", "content": pedido + "\n/no_think"}],
+                     "temperature": float(self.cargo.get("temperatura", 0.1)),
+                     "max_tokens": min(maximo_tokens, int(self.cargo.get("maximo_tokens", maximo_tokens))),
+                     "cache_prompt": True}                         # o contexto da vaga é reaproveitado (o estudo: 189 s → 12 s)
+            if "vaga" in self.cargo:
+                corpo["id_slot"] = int(self.cargo["vaga"])           # a vaga do cargo: o Comandante e os pilotos não se interrompem
+            uso.tarefa = f"{self.cargo_nome}: {tarefa}" if self.cargo_nome else tarefa
+            r = httpx.post(f"{self.url}/v1/chat/completions", timeout=self.tempo_limite, json=corpo)
             r.raise_for_status()
             d = r.json()
         except (httpx.HTTPError, ValueError) as e:

@@ -38,6 +38,18 @@ AGORA = typer.Option(None, help="Data e hora ISO com fuso (padrão: agora)")
 APRENDIZADO = typer.Option(None, help="APRENDIZADO-ELDORADO.json (o aprendizado dos motores)")
 
 
+@app.command("memoria")
+def memoria_buscar(consulta: str, config: Path = CONFIG, limite: int = 10):
+    """Busca na memória do Aprendizado (o FTS5 do Arquivo do Cérebro), por relevância (25/10/2026)."""
+    from ..aprendizado.memoria import buscar
+    _c, dados, _e = _cfg(config)
+    con = sqlite3.connect(f"file:{dados / 'cerebro.db'}?mode=ro", uri=True)
+    linhas, ms = buscar(con, consulta, limite)
+    typer.echo(f"{len(linhas)} registro(s) em {ms} ms")
+    for x in linhas:
+        typer.echo(f"  {x['em'][:16]} · {x['tabela']} {x['ref']} · {x['trecho']}")
+
+
 @app.command("ponte-br")
 def ponte_br_teste(url: str = "https://cese.org.br/wp-json/wp/v2/edital"):
     """Testa a ponte da HostGator (o IP brasileiro) com uma página da lista (25/10/2026)."""

@@ -134,7 +134,7 @@ def no_encaminhar(itens: list[dict[str, Any]], parametros: dict[str, Any], conte
     from .rede import rede_atual
     dados, con, escada, registro = _contexto_pilotos(parametros, contexto)
     try:
-        ia = IA()
+        ia = IA(cargo_nome="interceptador")
         rede = rede_atual(dados)
         from ...motores.acesso.completa import escada_completa
         from ...motores.descoberta.metabusca import Metabusca

@@ -7,7 +7,7 @@ import time
 import tomllib
 
 NUCLEO = ["leitura", "acesso", "descoberta", "metabusca", "navegador", "testes"]   # testes: o portão das regras precisa do pytest
-GRUPOS = ["ocr", "universal", "idioma", "leitura_completa", "base", "banco", "motores"]
+GRUPOS = ["ocr", "universal", "idioma", "leitura_completa", "base", "banco", "motores", "comandante"]
 
 
 def instalar(alvo: list[str], tempo: int) -> bool:

@@ -297,6 +297,17 @@
     "testes/test_ponte_br.py::test_a_ponte_esta_no_canivete_de_todos_os_motores"
    ],
    "tema": "ponte brasileira"
+  },
+  {
+   "id": "R24",
+   "data": "2026-10-25",
+   "tema": "comandante e aprendizado",
+   "regra": "Dois responsáveis coordenam o sistema: o Comandante executa e coordena (perceber, decidir, organizar as filas, acionar, comandar os pilotos, mover os livros, parametrizar, medir, implantar o aprendizado, apresentar à titular); o Aprendizado analisa e melhora (pertinência, auditoria, completude, avaliação das decisões, aprendizado pelo uso, memória, propostas). Uma única IA (Qwen3-8B) serve o Comandante e os dois pilotos, cada cargo na sua vaga fixa, ao mesmo tempo, sem interromper os outros; o cargo é do sistema e o ocupante é trocável (config/cargos.toml). O Arquivo do Cérebro guarda a execução e o aprendizado; a memória FTS5 alimenta-se a cada passagem e expira em 30 dias.",
+   "onde": "config/cargos.toml, eldorado/base/nucleo/ia.py, eldorado/base/aprendizado/, eldorado/banco/cerebro_db/esquema.py (versão 10)",
+   "travas": [
+    "testes/test_comandante_fase1.py::test_a_memoria_alimenta_busca_e_expira",
+    "testes/test_comandante_fase1.py::test_a_ia_unica_por_cargos_sem_interromper"
+   ]
   }
  ]
 }

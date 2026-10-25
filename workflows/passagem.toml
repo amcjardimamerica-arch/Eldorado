@@ -151,6 +151,11 @@ tipo = "eldorado.base.cerebro.mapa_arquivos:no_medir_arquivos"
 parametros = { dados = "dados", intervalo_min = 10 }
 
 [[no]]
+id = "memorizar"
+tipo = "eldorado.base.aprendizado.memoria:no_memorizar"
+parametros = { dados = "dados" }
+
+[[no]]
 id = "aplicar_final"
 tipo = "eldorado.base.fluxo.nos:aplicar_eventos"
 parametros = { dados = "dados", eventos = "eventos" }
@@ -286,4 +291,13 @@ saida = "ordem"
 [[conexao]]
 de = "regras"
 para = "medir_sala"
+saida = "ordem"
+# a memória do Aprendizado (25/10/2026): o que é novo no Cérebro entra na memória FTS5, antes da aplicação final
+[[conexao]]
+de = "medir_arquivos"
+para = "memorizar"
+saida = "ordem"
+[[conexao]]
+de = "memorizar"
+para = "aplicar_final"
 saida = "ordem"

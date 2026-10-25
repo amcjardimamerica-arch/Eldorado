@@ -66,7 +66,7 @@ def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_
         try:
             dados_, con, escada, registro = _contexto(dados, diario)
             try:
-                ia, rede = IA(), rede_atual(dados_)
+                ia, rede = IA(cargo_nome="interceptador"), rede_atual(dados_)
                 mb = Metabusca(buscar=escada.buscar)
 
                 def buscar_links(q: str, mb=mb) -> list[str]:

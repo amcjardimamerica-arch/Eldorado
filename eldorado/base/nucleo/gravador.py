@@ -21,7 +21,7 @@ from ...banco._sqlite import colunas
 from .contratos import Linhagem
 from .eventos import CATALOGO, Alvo, Diario, Evento, agora
 
-APAGAVEIS = {"aprendizado_temporario"}     # a única tabela em que algo se apaga: o temporário vence em 30 dias (regra da titular)
+APAGAVEIS = {"aprendizado_temporario", "memoria"}   # só o temporário do Cérebro se apaga: vence em 30 dias (o aprendizado e a memória)
 
 
 @dataclass
