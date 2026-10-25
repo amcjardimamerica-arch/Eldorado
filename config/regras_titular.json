@@ -302,11 +302,13 @@
    "id": "R24",
    "data": "2026-10-25",
    "tema": "comandante e aprendizado",
-   "regra": "Dois responsáveis coordenam o sistema: o Comandante executa e coordena (perceber, decidir, organizar as filas, acionar, comandar os pilotos, mover os livros, parametrizar, medir, implantar o aprendizado, apresentar à titular); o Aprendizado analisa e melhora (pertinência, auditoria, completude, avaliação das decisões, aprendizado pelo uso, memória, propostas). Uma única IA (Qwen3-8B) serve o Comandante e os dois pilotos, cada cargo na sua vaga fixa, ao mesmo tempo, sem interromper os outros; o cargo é do sistema e o ocupante é trocável (config/cargos.toml). O Arquivo do Cérebro guarda a execução e o aprendizado; a memória FTS5 alimenta-se a cada passagem e expira em 30 dias.",
+   "regra": "Dois responsáveis coordenam o sistema: o Comandante executa e coordena (perceber, decidir, organizar as filas, acionar, comandar os pilotos, mover os livros, parametrizar, medir, implantar o aprendizado, apresentar à titular); o Aprendizado analisa e melhora (pertinência, auditoria, completude, avaliação das decisões, aprendizado pelo uso, memória, propostas). Uma única IA (Qwen3-8B) serve o Comandante e os dois pilotos, cada cargo na sua vaga fixa, ao mesmo tempo, sem interromper os outros; o cargo é do sistema e o ocupante é trocável (config/cargos.toml). O Arquivo do Cérebro guarda a execução e o aprendizado; a memória FTS5 alimenta-se a cada passagem e expira em 30 dias. A IA usa o Arquivo do Cérebro como contexto: antes de cada pedido, recebe da memória o que o Eldorado já viveu sobre o assunto. O Comandante decide com a política aprendida (Vowpal Wabbit), que nasce das decisões avaliadas no Cérebro; cada decisão fica registrada com o motivo, e o Aprendizado a avalia.",
    "onde": "config/cargos.toml, eldorado/base/nucleo/ia.py, eldorado/base/aprendizado/, eldorado/banco/cerebro_db/esquema.py (versão 10)",
    "travas": [
     "testes/test_comandante_fase1.py::test_a_memoria_alimenta_busca_e_expira",
-    "testes/test_comandante_fase1.py::test_a_ia_unica_por_cargos_sem_interromper"
+    "testes/test_comandante_fase1.py::test_a_ia_unica_por_cargos_sem_interromper",
+    "testes/test_comandante_fase2.py::test_o_comandante_decide_registra_e_reaprende_do_cerebro",
+    "testes/test_comandante_fase2.py::test_a_ia_recebe_o_contexto_do_cerebro"
    ]
   }
  ]

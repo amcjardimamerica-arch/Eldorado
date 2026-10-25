@@ -23,7 +23,7 @@ ETAPAS = {
     "externa": ["ve_para_o_chrome", "ve_bloqueadas", "ve_completas", "ve_importado", "al_externa"],
     "repositorio": ["es_abertas", "es_banco_unico"],
     "biblioteca": ["es_livros", "es_vigilancia", "em_rankings", "hi_uso", "hi_frio"],
-    "aprendizado": ["rn_auc", "rn_precisao", "rn_revocacao", "rn_brier", "rn_treino"],
+    "aprendizado": ["rn_auc", "rn_precisao", "rn_revocacao", "rn_brier", "rn_treino", "cm_comparacao", "cm_decisoes"],
     "farol": ["es_validadas", "es_fichas"],
 }
 ORDEM = {"vermelho": 0, "amarelo": 1, "cinza": 2, "verde": 3}
@@ -457,6 +457,25 @@ def montar(
           {"normal": [None, 0.15], "alarme": [None, 0.25]})
     else:
         I("rn_brier", "Erro de calibração da rede", None, "cinza", "aguardando o primeiro treino com a calibração (o nó da rede, a cada passagem)", None)
+    # ---- o Comandante (a fase 2, 25/10/2026): as decisões dele, em paralelo, e o rendimento contra a ordem fixa
+    try:
+        from ..aprendizado.avaliar import comparacao
+        cmp_ = comparacao(bib, cer)
+        n24 = cer.execute("SELECT COUNT(*) FROM comandante_decisao WHERE em >= ?", (h24,)).fetchone()[0]
+    except (sqlite3.Error, ImportError):
+        cmp_, n24 = {"comandante": None, "ordem_fixa": None, "decisoes": 0}, None
+    I("cm_decisoes", "Decisões do Comandante em 24 h", n24, "cinza" if n24 is None else ("verde" if n24 else "amarelo"),
+      "cada decisão com o motivo e a nota, registrada no Arquivo do Cérebro (em paralelo com a ordem fixa)"
+      if n24 is not None else "o Cérebro ainda não está na versão 10",
+      iso, None, {"normal": [1, None], "alarme": [0, None]})
+    if cmp_["comandante"] is not None and cmp_["ordem_fixa"] is not None:
+        dif = round(100 * (cmp_["comandante"] - cmp_["ordem_fixa"]), 1)
+        I("cm_comparacao", "O Comandante contra a ordem fixa", dif, _faixa(dif, 0, -5),
+          f"as escolhas do Comandante renderam {cmp_['comandante']:.0%} (achado aceito no dia), a ordem fixa {cmp_['ordem_fixa']:.0%} "
+          f"({cmp_['decisoes']} decisões avaliadas em 7 dias)", iso, [-50, 50], {"normal": [0, None], "alarme": [-5, None]})
+    else:
+        I("cm_comparacao", "O Comandante contra a ordem fixa", None, "cinza",
+          "aguardando as primeiras decisões avaliadas (o Aprendizado avalia no dia seguinte)", None)
     # ---- 09 Farol
     I("es_validadas", "Livros na etapa Farol", fases.get("farol", 0), "verde", "os livros finalizados, liberados pela Regência", iso)
     transf = q(bib, "SELECT COUNT(DISTINCT livro_id) FROM transferencia")

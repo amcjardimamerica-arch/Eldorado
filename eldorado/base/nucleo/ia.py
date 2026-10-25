@@ -41,6 +41,7 @@ class Uso:
     propostas: int = 0
     aceitas: int = 0
     recusas: list[str] = field(default_factory=list)
+    memoria: int = 0                   # os registros da memória do Cérebro dados à IA como contexto
 
 
 def _norm(t: str) -> str:
@@ -75,6 +76,29 @@ def cargo(nome: str | None) -> dict[str, Any]:
         return {}
 
 
+def memoria_do_cerebro(pedido: str, limite: int = 5) -> list[str]:
+    """O contexto da IA no Arquivo do Cérebro (titular, 25/10/2026: "a IA deve utilizar o banco de dados do Cérebro; foi
+    feito para ela funcionar e ter contexto"): os registros mais relevantes da memória para o pedido."""
+    import sqlite3
+    from pathlib import Path
+    caminho = Path(os.environ.get("ELDORADO_DADOS", "dados")) / "cerebro.db"
+    if not caminho.exists():
+        return []
+    palavras = sorted({w.strip(".,;:()[]{}\"'").lower() for w in pedido.split() if len(w) >= 5}, key=len, reverse=True)[:12]
+    if not palavras:
+        return []
+    try:
+        from ..aprendizado.memoria import buscar
+        con = sqlite3.connect(f"file:{caminho}?mode=ro", uri=True)
+        try:
+            linhas, _ms = buscar(con, " ".join(palavras), limite)
+        finally:
+            con.close()
+    except Exception:  # noqa: BLE001 — sem a memória (o Cérebro antigo), a IA segue sem o contexto
+        return []
+    return [f"[{(x['em'] or '')[:10]} · {x['tabela']}] {x['texto']}" for x in linhas]
+
+
 class IA:
     def __init__(self, url: str | None = None, tempo_limite: float = 240.0, cargo_nome: str | None = None):
         self.url = (url or os.environ.get("ELDORADO_IA_URL") or URL_PADRAO).rstrip("/")
@@ -95,7 +119,12 @@ class IA:
             raise SemIA(f"o modelo local não está disponível em {self.url}")
         uso, t0 = Uso(tarefa), time.monotonic()
         try:
-            corpo = {"messages": [{"role": "system", "content": SISTEMA + ("\n" + self.cargo["instrucoes"] if self.cargo.get("instrucoes") else "")},
+            sistema = SISTEMA + ("\n" + self.cargo["instrucoes"] if self.cargo.get("instrucoes") else "")
+            lembrancas = memoria_do_cerebro(pedido, int(self.cargo.get("memoria_itens", 5))) if self.cargo.get("memoria", False) else []
+            if lembrancas:                                       # o contexto do Arquivo do Cérebro: o que o Eldorado já viveu
+                sistema += "\nO que o Eldorado já viveu sobre isto (a memória do Cérebro; use só se for pertinente):\n" + "\n".join(lembrancas)
+            uso.memoria = len(lembrancas)
+            corpo = {"messages": [{"role": "system", "content": sistema},
                                   {"role": "user", "content": pedido + "\n/no_think"}],
                      "temperature": float(self.cargo.get("temperatura", 0.1)),
                      "max_tokens": min(maximo_tokens, int(self.cargo.get("maximo_tokens", maximo_tokens))),

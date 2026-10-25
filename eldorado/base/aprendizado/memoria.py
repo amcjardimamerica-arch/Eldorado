@@ -13,20 +13,21 @@ from pathlib import Path
 from typing import Any
 
 # (a tabela, a referência, o texto, a data): o que o Cérebro registra em texto
+# (a tabela, a referência, o texto, a data), das mais valiosas para a IA às menos; cada uma com a sua cota por passagem
 FONTES = [
-    ("alarme", "id", "coalesce(modulo,'')||' · '||coalesce(mensagem,'')", "aberto_em"),
-    ("execucao_passo", "execucao||':'||passo", "coalesce(no,'')||' · '||coalesce(estado,'')||' · '||coalesce(saida,'')", "em"),
-    ("decisao_pertinencia", "id", "coalesce(etapa,'')||' · '||coalesce(decisao,'')||' · '||coalesce(motivo,'')||' · '||coalesce(regra,'')", "em"),
-    ("espiao_missao", "id", "coalesce(familia,'')||' · '||coalesce(consulta,'')||' · '||coalesce(motivos,'')", "em"),
-    ("regra", "id", "coalesce(tema,'')||' · '||coalesce(regra,'')", "data"),
-    ("aprendizado_permanente", "id", "coalesce(modulo,'')||' · '||coalesce(o_que,'')", "promovido_em"),
-    ("medicao", "marcador||'@'||em", "coalesce(marcador,'')||' · '||coalesce(motivo,'')", "em"),
     (
         "comandante_decisao",
         "id",
         "coalesce(etapa,'')||' · '||coalesce(acao,'')||' · '||coalesce(alvo,'')||' · '||coalesce(motivo,'')||' · '||coalesce(resultado,'')",
         "em",
     ),
+    ("aprendizado_permanente", "id", "coalesce(modulo,'')||' · '||coalesce(o_que,'')", "promovido_em"),
+    ("regra", "id", "coalesce(tema,'')||' · '||coalesce(regra,'')", "data"),
+    ("espiao_missao", "id", "coalesce(familia,'')||' · '||coalesce(consulta,'')||' · '||coalesce(motivos,'')", "em"),
+    ("decisao_pertinencia", "id", "coalesce(etapa,'')||' · '||coalesce(decisao,'')||' · '||coalesce(motivo,'')||' · '||coalesce(regra,'')", "em"),
+    ("alarme", "id", "coalesce(modulo,'')||' · '||coalesce(mensagem,'')", "aberto_em"),
+    ("medicao", "marcador||'@'||em", "coalesce(marcador,'')||' · '||coalesce(motivo,'')", "em"),
+    ("execucao_passo", "execucao||':'||passo", "coalesce(no,'')||' · '||coalesce(estado,'')||' · '||coalesce(saida,'')", "em"),
 ]
 DIAS = 30
 POR_PASSAGEM = 20000
@@ -46,7 +47,8 @@ def novos(con: sqlite3.Connection, limite: int = POR_PASSAGEM) -> tuple[list[dic
         if len(saida) >= limite or not _existe(con, tabela, em):
             continue
         desde = max(ponteiro.get(tabela, ""), corte)
-        for r, t, e in con.execute(f"SELECT {ref}, {texto}, {em} FROM {tabela} WHERE {em} > ? ORDER BY {em} LIMIT ?", (desde, limite - len(saida))):
+        cota = min(limite - len(saida), max(limite // len(FONTES), 1000))
+        for r, t, e in con.execute(f"SELECT {ref}, {texto}, {em} FROM {tabela} WHERE {em} > ? ORDER BY {em} LIMIT ?", (desde, cota)):
             if t and t.strip(" ·"):
                 saida.append({"tabela": tabela, "ref": str(r), "texto": t[:4000], "em": e})
             novos_ponteiros[tabela] = e
@@ -65,10 +67,11 @@ def buscar(con: sqlite3.Connection, consulta: str, limite: int = 10) -> tuple[li
         return [], 0.0
     t0 = time.perf_counter()
     linhas = con.execute(
-        "SELECT tabela, ref, snippet(memoria, 2, '[', ']', '…', 40), em FROM memoria WHERE memoria MATCH ? ORDER BY bm25(memoria) LIMIT ?",
+        "SELECT tabela, ref, snippet(memoria, 2, '[', ']', '…', 40), em, substr(texto, 1, 400) FROM memoria "
+        "WHERE memoria MATCH ? ORDER BY bm25(memoria) LIMIT ?",
         (" OR ".join(f'"{t}"' for t in termos), limite),
     ).fetchall()
-    return [{"tabela": a, "ref": b, "trecho": c, "em": d} for a, b, c, d in linhas], round((time.perf_counter() - t0) * 1000, 2)
+    return [{"tabela": a, "ref": b, "trecho": c, "em": d, "texto": t} for a, b, c, d, t in linhas], round((time.perf_counter() - t0) * 1000, 2)
 
 
 def no_memorizar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:

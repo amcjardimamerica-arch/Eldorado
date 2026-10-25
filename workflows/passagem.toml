@@ -151,6 +151,16 @@ tipo = "eldorado.base.cerebro.mapa_arquivos:no_medir_arquivos"
 parametros = { dados = "dados", intervalo_min = 10 }
 
 [[no]]
+id = "comandante_decidir"
+tipo = "eldorado.base.comandante.decidir:no_comandante_decidir"
+parametros = { dados = "dados", config = "config" }
+
+[[no]]
+id = "avaliar"
+tipo = "eldorado.base.aprendizado.avaliar:no_avaliar"
+parametros = { dados = "dados" }
+
+[[no]]
 id = "memorizar"
 tipo = "eldorado.base.aprendizado.memoria:no_memorizar"
 parametros = { dados = "dados" }
@@ -300,4 +310,21 @@ saida = "ordem"
 [[conexao]]
 de = "memorizar"
 para = "aplicar_final"
+saida = "ordem"
+# o Comandante decide em paralelo com a ordem fixa, logo depois do planejamento (a fase 2, 25/10/2026)
+[[conexao]]
+de = "planejar"
+para = "comandante_decidir"
+[[conexao]]
+de = "comandante_decidir"
+para = "acionar"
+saida = "ordem"
+# o Aprendizado avalia as decisões maduras do Comandante, antes da memória
+[[conexao]]
+de = "medir_arquivos"
+para = "avaliar"
+saida = "ordem"
+[[conexao]]
+de = "avaliar"
+para = "memorizar"
 saida = "ordem"

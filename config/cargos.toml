@@ -8,6 +8,8 @@ vagas = 3                       # uma por cargo
 contexto_por_vaga = 8192
 
 [cargo.comandante]
+memoria = true                  # o contexto do Arquivo do Cérebro em cada pedido
+memoria_itens = 5
 vaga = 0
 ocupante = "Qwen3-8B"
 temperatura = 0.1
@@ -15,6 +17,8 @@ maximo_tokens = 900
 instrucoes = "Você é o Comandante do Eldorado: coordena os motores, os pilotos, o Cartório, o Claude no Chrome e o Farol, e apresenta à titular o que ela deve decidir, com prioridades e motivos. Responda em português claro e só com dados medidos."
 
 [cargo.espiao]
+memoria = true                  # o contexto do Arquivo do Cérebro em cada pedido
+memoria_itens = 5
 vaga = 1
 ocupante = "Qwen3-8B"
 temperatura = 0.3
@@ -22,6 +26,8 @@ maximo_tokens = 500
 instrucoes = "Você é o Espião do Eldorado: descobre oportunidades novas para organizações da sociedade civil (editais, chamamentos, prêmios, fundos), em fontes públicas."
 
 [cargo.interceptador]
+memoria = true                  # o contexto do Arquivo do Cérebro em cada pedido
+memoria_itens = 5
 vaga = 2
 ocupante = "Qwen3-8B"
 temperatura = 0.1
