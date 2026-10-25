@@ -628,6 +628,10 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
                 implantar.set()
                 return
     threading.Thread(target=vigiar_pedido, daemon=True, name="implantar").start()
+    if gravar:                                                    # os pilotos de forma permanente (25/10/2026)
+        from ..cerebro.pilotos_permanentes import ligar
+        ligar(dados, eventos, parar)
+        typer.echo("  os pilotos voam de forma permanente (o Interceptador, um livro por vez; o Espião, missão após missão)")
 
     # o trabalho de fundo (titular, 24/10/2026: operar perto de 85% da capacidade): enquanto os motores esperam a rede, o
     # processador fica ocioso (as leituras mostraram 1% a 5%); o governador libera a releitura dos documentos herdados

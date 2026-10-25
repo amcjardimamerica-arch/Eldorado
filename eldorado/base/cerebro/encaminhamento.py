@@ -126,6 +126,9 @@ def no_encaminhar(itens: list[dict[str, Any]], parametros: dict[str, Any], conte
     a rede treinada é a mesma do nó da rede (guardada por 15 min), sem treino duplicado."""
     if not (Path(parametros.get("dados", "dados")) / "biblioteca.db").exists():
         return []
+    from .pilotos_permanentes import ATIVO, entregas
+    if ATIVO.is_set():                                            # os voos permanentes: o nó entrega o que eles trouxeram
+        return entregas("interceptador")
     from ...motores.pilotos.interceptador import Interceptador
     from ..nucleo.ia import IA
     from .rede import rede_atual
@@ -169,6 +172,9 @@ def no_espiao(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto)
     """Nó da passagem: o Espião — o Cérebro decide as missões (na ociosidade e o mínimo garantido) e ele age."""
     if not (Path(parametros.get("dados", "dados")) / "biblioteca.db").exists():
         return []
+    from .pilotos_permanentes import ATIVO, entregas
+    if ATIVO.is_set():                                            # os voos permanentes: o nó entrega o que eles trouxeram
+        return entregas("espiao")
     from .fila import fila_do_sistema
     from .pilotos import missoes
     dados, con, escada, registro = _contexto_pilotos(parametros, contexto)
