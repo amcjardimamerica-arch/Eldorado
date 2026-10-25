@@ -30,4 +30,11 @@ jobs:
       - name: Verificador
         run: ruff check eldorado testes
       - name: Bateria
-        run: pytest
+        # cada teste que falhar vira uma anotação (25/10/2026: o registro detalhado não é lido de fora; a anotação é)
+        run: |
+          set -o pipefail
+          pytest -q -p no:cacheprovider -rfE 2>&1 | tee /tmp/bateria.txt && exit 0
+          s=$?
+          grep -E "^(FAILED|ERROR) " /tmp/bateria.txt | head -25 | while read -r l; do echo "::error title=teste::${l:0:900}"; done
+          grep -E "^E  " /tmp/bateria.txt | head -15 | while read -r l; do echo "::warning title=detalhe::${l:0:600}"; done
+          exit $s

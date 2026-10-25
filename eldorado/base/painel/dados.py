@@ -655,16 +655,17 @@ def _mapa_arquivos(sis: "Sistema", raiz: Path) -> dict[str, Any]:
     from ..cerebro.mapa_arquivos import finalidade, medir, montar
     m = montar()
     med = None
-    try:
-        r = sis.cer.execute("SELECT dados FROM medicao_arquivos WHERE chave = 'atual'").fetchone()
-        med = _json.loads(r[0]) if r else None
-    except sqlite3.Error:
+    try:                                                             # mede na hora, com o código atual (25/10/2026: o site mostrava
+        med = medir(raiz / "dados", m)                               # a medição antiga da produção, e a correção só aparecia no ciclo seguinte)
+    except Exception:  # noqa: BLE001
         med = None
-    if med is None:                                                  # sem medição gravada ainda: mede agora, pelos bancos
+    if med is None:                                                  # a reserva: a medição gravada pela produção
         try:
-            med = medir(raiz / "dados", m)
-        except Exception:  # noqa: BLE001
-            med = {"em": None, "arquivos": {}, "linhas": {}}
+            r = sis.cer.execute("SELECT dados FROM medicao_arquivos WHERE chave = 'atual'").fetchone()
+            med = _json.loads(r[0]) if r else None
+        except sqlite3.Error:
+            med = None
+    med = med or {"em": None, "arquivos": {}, "linhas": {}}
     for n in m["nos"]:
         n["f"] = finalidade(n["id"])
         n.update(med["arquivos"].get(n["id"], {"p": "c", "c": "c", "m": "sem medição"}))
@@ -729,9 +730,14 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     # o ranking de empresas (titular, 25/10/2026: a aba estava zerada; montado das empresas e incentivos da Biblioteca)
     from .ranking import montar as ranking_montar
     arquivos["ranking_apoiadores.json"] = ranking_montar(sis.bib, _molde)
+    for st in status_pilotos.values():                            # a hora no mesmo campo dos motores (os quadros leem ultima_leitura)
+        st["ultima_leitura"] = st.get("ultima")
     for m in sc["detalhes"].get("motores") or []:
         if m.get("id") in status_pilotos:
             m.update(status_pilotos[m["id"]])
+    # os arquivos herdados do painel que nunca eram preenchidos (25/10/2026): os dos motores e dos pilotos
+    from .legado import montar as legado_montar
+    arquivos.update(legado_montar(sis.bib, sis.cer, sc["detalhes"].get("motores") or [], status_pilotos, _molde))
     arquivos["sala_controle.json"] = sc
     # o Cartório ligado aos dados (titular, 25/10/2026: a página estava estática): os mostradores, a lista e a ficha de cada livro
     from .cartorio import montar as cartorio_montar

@@ -268,6 +268,11 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
                 d = {}
             for a in (d.get("arquivos_do_erro") or []):
                 vermelhos_do_erro.setdefault(a, f"no rastro de um erro do nó {no_id}: {str(d.get('erro') or '')[:120]}")
+        if lst and lst[0][0] == "concluido":                      # o passo mais recente concluiu: as falhas anteriores estão resolvidas
+            ultima_falha = max((em or "" for e, _s, em in lst if e == "falhou"), default="")
+            lst = [x for x in lst if (x[2] or "") > ultima_falha]
+            ok, falhas = len(lst), []
+            total = ok
         if f and total:
             taxa = ok / total
             c = "v" if taxa >= .95 else "a" if taxa >= .8 else "r"
