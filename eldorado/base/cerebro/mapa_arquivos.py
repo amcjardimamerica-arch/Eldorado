@@ -157,8 +157,14 @@ def montar() -> dict[str, Any]:
             liga(cfg, f, "configura", "a configuração do motor")
     for p in sorted((RAIZ / "eldorado/motores/canal/config").glob("*.toml")):
         no(p.relative_to(RAIZ).as_posix())
-    for c in sorted((RAIZ / "config").glob("*.*")):
+    for c in sorted((RAIZ / "config").rglob("*.*")):                # todas as subpastas (a missão, o buscador)
         no(c.relative_to(RAIZ).as_posix())
+    # as skills do Hermes no Eldorado (25/10/2026): cada SKILL.md lido pelo curador do Aprendizado
+    for sk in sorted((RAIZ / "skills").glob("*/SKILL.md")):
+        liga("eldorado/base/aprendizado/curador.py", sk.relative_to(RAIZ).as_posix(), "le", sk.parent.name)
+    # a ponte da HostGator: o cliente chama o ponte.php instalado na hospedagem (a cópia fica em ponte/)
+    if (RAIZ / "ponte/ponte.php").exists():
+        liga("eldorado/motores/acesso/ponte_br.py", "ponte/ponte.php", "aciona", "a ponte na HostGator (o IP brasileiro)")
     # a produção: os fluxos do GitHub chamando os comandos e os scripts
     cmd = re.compile(r"\beldorado ([a-z][a-z-]+)")
     for y in sorted((RAIZ / ".github/workflows").glob("*.yml")):
@@ -166,10 +172,15 @@ def montar() -> dict[str, Any]:
         no(ry, entrada=True)
         for c in sorted(set(cmd.findall(txt))):
             liga(ry, "eldorado/base/nucleo/comandos.py", "aciona", f"eldorado {c}")
-        for s in sorted(set(re.findall(r"scripts/[a-z_]+\.(?:sh|py)", txt))):
+        for m_ in sorted(set(re.findall(r"from (eldorado(?:\.[a-z_0-9]+)+) import", txt))):   # o código chamado por dentro do Python
+            if (f_ := _modulo_para_arquivo(m_)):
+                liga(ry, f_, "aciona", m_)
+        for s in sorted(set(re.findall(r"(?:scripts|estudos)/[a-z_0-9]+\.(?:sh|py)", txt))):
             liga(ry, s, "aciona", s)
             if s == "scripts/instalar.sh":
                 liga(s, "scripts/instalar_bibliotecas.py", "aciona", "as bibliotecas")
+                if (RAIZ / "config/searxng/settings.yml").exists():
+                    liga(s, "config/searxng/settings.yml", "le", "o buscador SearXNG (o contêiner)")
         for c in sorted(set(re.findall(r"config/[a-z_]+\.(?:toml|json)", txt))):
             if (RAIZ / c).exists():
                 liga(ry, c, "le", "configuração")
@@ -185,17 +196,23 @@ def montar() -> dict[str, Any]:
             if f:
                 liga(p.relative_to(RAIZ).as_posix(), f, "configura", "carregado pelo nome")
     # comandos e arquivos lidos por caminho literal (config/..., workflows/...)
-    lit = re.compile(r"""["'](config/[a-z_]+\.(?:toml|json|txt)|workflows/[a-z_]+\.toml)["']""")
+    lit = re.compile(r"""["'](config/(?:[a-z_]+/)*[a-z_]+\.(?:toml|json|txt|yml)|workflows/[a-z_]+\.toml)["']""")
+    # as configurações das subpastas lidas pelo nome (ex.: "territorio_goias.json" junto à pasta da missão)
+    por_nome = {c.name: c.relative_to(RAIZ).as_posix() for c in (RAIZ / "config").rglob("*.*") if c.parent != RAIZ / "config"}
     for p in codigo:
-        for c in set(lit.findall(p.read_text(encoding="utf-8"))):
+        txt_ = p.read_text(encoding="utf-8")
+        for c in set(lit.findall(txt_)):
             if (RAIZ / c).exists():
+                liga(p.relative_to(RAIZ).as_posix(), c, "le", "configuração")
+        for nome_, c in por_nome.items():
+            if f'"{nome_}"' in txt_:
                 liga(p.relative_to(RAIZ).as_posix(), c, "le", "configuração")
     # alcançável a partir da produção
     adj: dict[str, set[str]] = defaultdict(set)
     for a, b, tipo, _ in arestas:
         if tipo in ("importa", "aciona", "fluxo", "configura", "sequencia"):
             adj[a].add(b)
-        if tipo == "le" and b.startswith(("config/", "workflows/")) or (tipo == "le" and a.startswith(".github/")):
+        if tipo == "le" and b.startswith(("config/", "workflows/", "skills/")) or (tipo == "le" and a.startswith(".github/")):
             adj[a].add(b)
     vistos, fila = set(), deque(p for p, n in nos.items() if n.get("entrada"))
     while fila:
@@ -330,6 +347,23 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
         ponto[f] = "v" if integro else "r"
         circ[f] = "v" if integro and ultimo >= h24 else "a" if integro else "r"
         motivo[f] = f"integridade {'ok' if integro else 'com problema'}; última gravação {ultimo[:16] or 'nenhuma'}"
+    # as skills (o formato do Hermes, 25/10/2026): a finalidade é estar registrada pelo curador e ser usada; o ponto e o
+    # círculo vêm do Arquivo do Cérebro (o estado e o uso contados pela evidência), não do alcance por um fluxo
+    try:
+        reg = {r[0]: r[1:] for r in cer.execute("SELECT nome, estado, usos, sucessos, falhas FROM skill")}
+    except sqlite3.Error:
+        reg = {}
+    for p in nos:
+        if p.startswith("skills/") and p.endswith("/SKILL.md"):
+            nome = p.split("/")[1]
+            if nome in reg:
+                est, usos, suc, fal = reg[nome]
+                ponto[p] = "v"
+                circ[p] = {"ativa": "v" if usos else "a", "parada": "a"}.get(est, "c")
+                motivo[p] = f"registrada pelo curador: {est}, {usos} uso(s) ({suc} com sucesso, {fal} sem)"
+                motivo[p] += "; ainda sem uso" if est == "ativa" and not usos else ""
+            else:
+                ponto[p], circ[p], motivo[p] = "c", "c", "ainda não registrada pelo curador (a próxima passagem registra)"
     cer.close()
     bib.close()
     # os demais: o ponto pelo alcance (rodou indiretamente quando a passagem rodou); o círculo, o pior de quem o usa
@@ -402,6 +436,8 @@ POR_DESENHO = {
     "eldorado/motores/acesso/rotas_alternativas.py": "o Tor, desligado por desenho no plano (não roda)",
 }
 AGUARDAM_DECISAO = {
+    "config/missao/dispensas_por_regime.json": "fica até a decisão da titular: nenhum código a lê (criada na fase 4, 22/10/2026); as dispensas "
+                                               "prováveis por regime de recurso: ligar ao checklist do Cartório ou retirar",
     "config/comparacao.toml": "fica (titular, 25/10/2026): a comprovação de cobertura antes de eliminar o Eldorado0 ainda não foi feita",
 }
 
@@ -486,7 +522,11 @@ def finalidade(p: str) -> str:
             d = _j.loads(txt)
         except ValueError:
             return ""
-        return str(d.get("o_que_e") or d.get("descricao") or {"config/arquivos.json": "O catálogo dos arquivos do sistema (o inventário).",
+        return str(d.get("o_que_e") or d.get("descricao") or d.get("doutrina") or d.get("regra") or {
+            "config/missao/territorio_goias.json": "O território de Goiás: os 246 municípios (IBGE, código UF 52), para a regra de abrangência.",
+            "config/missao/municipios_brasil.json": "Os 5.291 municípios do Brasil (IBGE), para localizar o órgão de cada oportunidade.",
+            "config/missao/dispensas_por_regime.json": "As dispensas prováveis por regime de recurso.",
+            "config/arquivos.json": "O catálogo dos arquivos do sistema (o inventário).",
                    "config/motores_previstos.json": "O estudo da titular: os 47 motores, os alvos e o aprendizado do Eldorado0."}.get(p, ""))[:400]
     if f.suffix == ".py":
         try:
@@ -494,6 +534,12 @@ def finalidade(p: str) -> str:
         except SyntaxError:
             d = ""
         return re.sub(r"\s+", " ", d.split("\n\n")[0])[:400]
+    if f.name == "SKILL.md":                                     # a skill (o formato do Hermes): a descrição do cabeçalho
+        m = re.search(r'^description:\s*"?(.+?)"?\s*$', txt, re.M)
+        return f"A skill {f.parent.name}: {m.group(1) if m else ''}"[:400]
+    if f.suffix == ".php":                                       # o comentário de abertura do PHP
+        m = re.search(r"/\*(.*?)\*/", txt, re.S)
+        return re.sub(r"[\s*]+", " ", m.group(1)).strip()[:400] if m else ""
     if p.startswith("eldorado/motores/canal/config/"):
         try:
             m = tomllib.loads(txt).get("motor", {})

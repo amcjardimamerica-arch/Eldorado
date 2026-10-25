@@ -10,6 +10,7 @@ PARADOS = {
     "config/comparacao.toml": "a comparação de 14 dias com o Eldorado0 não foi construída",
     "eldorado/motores/acesso/rotas_alternativas.py": "o Tor, desligado por desenho no plano",
     "eldorado/base/motor_modelo/__init__.py": "o motor modelo não roda (é só modelo)",
+    "config/missao/dispensas_por_regime.json": "nenhum código a lê (achado em 25/10/2026, ao completar o mapa): aguarda a titular",
 }
 MAPA = montar()
 NOS = {n["id"]: n for n in MAPA["nos"]}
