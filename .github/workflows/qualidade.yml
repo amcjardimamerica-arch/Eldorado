@@ -27,6 +27,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -e ".[testes,leitura,acesso,descoberta]" "ruff==0.16.10"
+          # as mesmas bibliotecas da produção (25/10/2026: a qualidade instalava só uma parte, e os testes do Comandante,
+          # do idioma e das datas falhavam aqui sem falhar na produção)
+          pip install -q uv && python scripts/instalar_bibliotecas.py
       - name: Verificador
         run: ruff check eldorado testes
       - name: Bateria
