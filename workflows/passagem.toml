@@ -4,6 +4,11 @@ id = "passagem"
 descricao = "A passagem completa do Eldorado (fases 1 a 4)"
 
 [[no]]
+id = "regras"
+tipo = "eldorado.base.cerebro.regras:no_regras"
+parametros = { dados = "dados", raiz = "." }
+
+[[no]]
 id = "revisar_alarmes"
 tipo = "eldorado.base.cerebro.revisao_alarmes:no_revisar_alarmes"
 parametros = { dados = "dados" }
@@ -271,5 +276,14 @@ saida = "ordem"
 # o ciclo de vida dos alarmes (25/10/2026): no início da passagem, os alarmes resolvidos são fechados
 [[conexao]]
 de = "revisar_alarmes"
+para = "medir_sala"
+saida = "ordem"
+# a tabela única das regras da titular (25/10/2026): no início, depois do revisor dos alarmes
+[[conexao]]
+de = "revisar_alarmes"
+para = "regras"
+saida = "ordem"
+[[conexao]]
+de = "regras"
 para = "medir_sala"
 saida = "ordem"

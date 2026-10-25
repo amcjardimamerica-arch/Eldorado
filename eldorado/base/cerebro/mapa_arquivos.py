@@ -258,7 +258,10 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
         ok = sum(1 for e, _s, _em in lst if e == "concluido")
         falhas = [s for e, s, _em in lst if e == "falhou"]
         total = ok + len(falhas)
-        for s in falhas:
+        # o rastro de um erro só acende os seus arquivos se o erro for o resultado mais recente do nó: se o nó voltou a
+        # concluir depois, o erro está resolvido (25/10/2026: o motor.py e as 76 ligações vermelhos por um erro já corrigido)
+        ultimo_ok = max((em or "" for e, _s, em in lst if e == "concluido"), default="")
+        for s in (s_ for e, s_, em in lst if e == "falhou" and (em or "") > ultimo_ok):
             try:
                 d = json.loads(s or "{}") or {}
             except ValueError:
@@ -394,8 +397,6 @@ POR_DESENHO = {
     "eldorado/motores/acesso/rotas_alternativas.py": "o Tor, desligado por desenho no plano (não roda)",
 }
 AGUARDAM_DECISAO = {
-    "eldorado/base/cerebro/regras.py": "fica (titular, 25/10/2026): a detecção de contradições entre regras ainda não foi substituída",
-    "config/regras.toml": "fica (titular, 25/10/2026): 15 decisões da titular que ainda não estão no registro das regras",
     "config/comparacao.toml": "fica (titular, 25/10/2026): a comprovação de cobertura antes de eliminar o Eldorado0 ainda não foi feita",
 }
 

@@ -6,8 +6,13 @@
    "data": "2026-10-24",
    "regra": "Cada alteração é enviada ao GitHub (implantada) na hora.",
    "porque": "A titular decidiu: cada alteração é implantada no GitHub na hora.",
-   "travas": [],
-   "situacao": "processo"
+   "travas": [
+    "testes/test_regras_tabela_unica.py::test_a_tabela_unica_nao_tem_contradicao_e_a_mais_recente_vale",
+    "testes/test_regras_tabela_unica.py::test_a_contradicao_vira_alarme_uma_vez_so",
+    "testes/test_regras_tabela_unica.py::test_o_no_registra_a_tabela_sem_duplicar"
+   ],
+   "situacao": "processo",
+   "tema": "implantação"
   },
   {
    "id": "R01",
@@ -19,7 +24,8 @@
     "testes/test_painel_site.py::test_a_pagina_le_so_o_proprio_site"
    ],
    "expira_em": "2026-11-23",
-   "condicao": "vale até a eliminação do Eldorado0 (30 dias a partir de 24/10/2026); na data, a titular decide a remoção"
+   "condicao": "vale até a eliminação do Eldorado0 (30 dias a partir de 24/10/2026); na data, a titular decide a remoção",
+   "tema": "site sem dados do eldorado0"
   },
   {
    "id": "R02",
@@ -28,7 +34,8 @@
    "onde": "eldorado/base/cartorio/origem.py",
    "travas": [
     "testes/test_cartorio.py::test_a_origem_e_decidida_por_livro_com_evidencia"
-   ]
+   ],
+   "tema": "origem dos livros"
   },
   {
    "id": "R03",
@@ -37,7 +44,8 @@
    "onde": "eldorado/motores/acesso/",
    "travas": [
     "testes/test_acesso.py::test_robots_e_so_informacao"
-   ]
+   ],
+   "tema": "acesso a sites"
   },
   {
    "id": "R04",
@@ -49,7 +57,8 @@
     "testes/test_motor_modelo.py::test_o_modelo_contem_toda_ferramenta_da_configuracao",
     "testes/test_motor_modelo.py::test_um_motor_criado_do_modelo_e_aceito",
     "testes/test_motor_modelo.py::test_o_modelo_nao_e_um_motor_do_sistema"
-   ]
+   ],
+   "tema": "motores"
   },
   {
    "id": "R05",
@@ -59,7 +68,8 @@
    "travas": [
     "testes/test_travas_motores.py::test_a_escada_completa_e_o_padrao_e_esta_em_todo_motor",
     "testes/test_encaminhamento_isolado.py::test_a_escada_dos_pilotos_e_a_completa"
-   ]
+   ],
+   "tema": "escada dos motores"
   },
   {
    "id": "R06",
@@ -70,7 +80,8 @@
     "testes/test_arquitetura_bancos.py::test_o_motor_nao_escreve_banco",
     "testes/test_arquitetura_bancos.py::test_o_codigo_so_abre_a_biblioteca_e_o_cerebro",
     "testes/test_arquitetura_bancos.py::test_a_entrega_fantasma_volta_a_ser_entregue"
-   ]
+   ],
+   "tema": "bancos dos motores"
   },
   {
    "id": "R07",
@@ -79,7 +90,8 @@
    "onde": "eldorado/base/nucleo/eventos.py (execucao.passo)",
    "travas": [
     "testes/test_arquitetura_bancos.py::test_o_cerebro_guarda_so_o_resumo_dos_passos"
-   ]
+   ],
+   "tema": "cérebro e livros"
   },
   {
    "id": "R08",
@@ -88,7 +100,8 @@
    "onde": "eldorado/banco/",
    "travas": [
     "testes/test_arquitetura_bancos.py::test_o_codigo_so_abre_a_biblioteca_e_o_cerebro"
-   ]
+   ],
+   "tema": "bancos"
   },
   {
    "id": "R09",
@@ -101,7 +114,8 @@
     "testes/test_regra_r09.py::test_o_radar_nao_repete_livro_nem_mostra_unido",
     "testes/test_painel_site.py::test_o_item_do_radar_e_o_livro_campo_a_campo",
     "testes/test_regra_r09.py::test_a_gravacao_nao_muda_o_ciclo_em_andamento"
-   ]
+   ],
+   "tema": "painel e implantação"
   },
   {
    "id": "R10",
@@ -112,7 +126,8 @@
     "testes/test_missao.py::test_criterio_da_estrela",
     "testes/test_linha_cartorio.py::test_estrela_de_ouro_com_prazo_aberto_vai_ao_farol",
     "testes/test_linha_cartorio.py::test_encerrada_a_estrela_vira_o_selo_do_livro_e_vai_ao_arquivo"
-   ]
+   ],
+   "tema": "estrela"
   },
   {
    "id": "R11",
@@ -122,7 +137,8 @@
    "travas": [
     "testes/test_missao.py::test_criterio_da_estrela",
     "testes/test_migracao.py::test_migracao_confere_mantem_o_texto_integro_e_e_idempotente"
-   ]
+   ],
+   "tema": "dispensa"
   },
   {
    "id": "R12",
@@ -132,7 +148,8 @@
    "travas": [
     "testes/test_travas_motores.py::test_a_escada_vai_para_o_livro",
     "testes/test_painel_site.py::test_o_item_do_radar_e_o_livro_campo_a_campo"
-   ]
+   ],
+   "tema": "medições do livro"
   },
   {
    "id": "R13",
@@ -142,7 +159,8 @@
    "travas": [
     "testes/test_linha_cartorio.py::test_o_arquivo_e_so_para_encerradas",
     "testes/test_linha_cartorio.py::test_a_aberta_com_o_prazo_vencido_e_arquivada"
-   ]
+   ],
+   "tema": "oportunidades encerradas"
   },
   {
    "id": "R14",
@@ -152,7 +170,8 @@
    "travas": [
     "testes/test_motores_legislativo.py::test_lexico_estrito_do_terceiro_setor_nos_atos_municipais_e_estaduais",
     "testes/test_motores_legislativo.py::test_congresso_o_prazo_das_emendas_e_as_materias_para_entidades"
-   ]
+   ],
+   "tema": "legislativo"
   },
   {
    "id": "R15",
@@ -165,7 +184,8 @@
     "testes/test_interceptador.py::test_rede_interceptador_e_cartorio_fase_4",
     "testes/test_interceptador_funciona.py::test_o_canivete_de_busca_soma_as_rotas",
     "testes/test_interceptador_funciona.py::test_o_canivete_nos_achados_dos_pilotos"
-   ]
+   ],
+   "tema": "pilotos e cérebro"
   },
   {
    "id": "R16",
@@ -179,7 +199,8 @@
     "testes/test_interceptador_funciona.py::test_o_plano_de_voo_segue_os_itens_que_faltam",
     "testes/test_pilotos_permanentes.py::test_com_os_voos_ligados_os_nos_entregam_o_que_eles_trouxeram",
     "testes/test_pilotos_permanentes.py::test_o_funcionamento_permanente_liga_os_voos"
-   ]
+   ],
+   "tema": "interceptador"
   },
   {
    "id": "R17",
@@ -189,7 +210,8 @@
    "travas": [
     "testes/test_arquitetura_bancos.py::test_o_motor_nao_escreve_banco",
     "testes/test_eventos.py::test_tipo_fora_do_catalogo_e_recusado"
-   ]
+   ],
+   "tema": "gravador e eventos"
   },
   {
    "id": "R18",
@@ -207,7 +229,8 @@
     "testes/test_fumaca_dados_reais.py::test_os_pilotos_concluem_com_os_dados_reais",
     "testes/test_capacidade.py::test_o_orcamento_da_coleta_adia_os_que_faltam",
     "testes/test_revisao_alarmes.py::test_os_alarmes_resolvidos_sao_fechados"
-   ]
+   ],
+   "tema": "continuidade do sistema"
   },
   {
    "id": "R19",
@@ -220,7 +243,8 @@
     "testes/test_mapa_arquivos.py::test_nenhum_arquivo_fora_do_funcionamento_sem_decisao",
     "testes/test_mapa_arquivos.py::test_nenhum_no_da_passagem_sem_ligacao",
     "testes/test_mapa_arquivos.py::test_a_medicao_das_finalidades_sem_cinza_indevido"
-   ]
+   ],
+   "tema": "mapa dos arquivos"
   },
   {
    "id": "R20",
@@ -233,7 +257,8 @@
     "testes/test_pilotos_site.py::test_os_pilotos_tem_leitura",
     "testes/test_ranking_empresas.py::test_o_ranking_tem_todas_as_empresas_da_biblioteca",
     "testes/test_ranking_empresas.py::test_a_importacao_das_empresas_do_eldorado0_unifica_pelo_cnpj"
-   ]
+   ],
+   "tema": "sala de controle"
   },
   {
    "id": "R21",
@@ -242,7 +267,8 @@
    "onde": "eldorado/base/cerebro/regencia.py (acionar), governador.py; a sala (o servidor); comandos.permanente (a gravação em segundo plano)",
    "travas": [
     "testes/test_capacidade.py::test_os_motores_rodam_em_paralelo_pela_carga"
-   ]
+   ],
+   "tema": "carga da máquina"
   },
   {
    "id": "R22",
@@ -255,7 +281,8 @@
     "testes/test_identidade.py::test_o_codigo_une_os_repetidos_e_separa_a_aldir_blanc",
     "testes/test_identidade.py::test_o_indice_identifica_e_o_nome_e_a_ultima_parte",
     "testes/test_identidade.py::test_a_pagina_ordena_por_area_e_pela_ordem_alfabetica_natural"
-   ]
+   ],
+   "tema": "identidade das oportunidades"
   },
   {
    "id": "R23",
@@ -265,7 +292,8 @@
    "travas": [
     "testes/test_ponte_br.py::test_a_ponte_le_os_dominios_da_lista_com_o_pedido_assinado",
     "testes/test_ponte_br.py::test_sem_os_segredos_a_ponte_fica_de_fora"
-   ]
+   ],
+   "tema": "ponte brasileira"
   }
  ]
 }

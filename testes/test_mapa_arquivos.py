@@ -7,8 +7,6 @@ from eldorado.base.cerebro.mapa_arquivos import montar
 
 # os arquivos fora do funcionamento hoje, cada um com o motivo (a titular decide: ligar ou retirar)
 PARADOS = {
-    "eldorado/base/cerebro/regras.py": "a tabela de regras foi desligada (ninguém a usa)",
-    "config/regras.toml": "a tabela de regras foi desligada (ninguém a usa)",
     "config/comparacao.toml": "a comparação de 14 dias com o Eldorado0 não foi construída",
     "eldorado/motores/acesso/rotas_alternativas.py": "o Tor, desligado por desenho no plano",
     "eldorado/base/motor_modelo/__init__.py": "o motor modelo não roda (é só modelo)",

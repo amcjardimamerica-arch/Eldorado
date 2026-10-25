@@ -112,7 +112,7 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "workflow.versao": (Alvo(C, "workflow", "inserir_ou_atualizar", ("id", "versao")),),
     "alarme.aberto": (Alvo(C, "alarme", "inserir"),),
     "alarme.fechado": (Alvo(C, "alarme", "atualizar", ("id",), _so("id", "fechado_em")),),
-    "regra.registrada": (Alvo(C, "regra", "inserir"),),
+    "regra.registrada": (Alvo(C, "regra", "inserir_se_novo"),),   # idempotente: a regra já registrada não se repete (25/10/2026)
     "regra.substituida": (Alvo(C, "regra", "atualizar", ("id",), _so("id", "vigente", "substituida_por")),),
     "modelo.treinado": (Alvo(C, "modelo", "inserir"),),
     "aprendizado.registrado": (Alvo(C, "aprendizado_temporario", "inserir"),),
