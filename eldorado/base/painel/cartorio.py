@@ -27,6 +27,7 @@ SAIDAS = [("farol", "Farol"), ("arquivo", "Arquivo")]
 DEGRAUS = [
     ("1", "API oficial"),
     ("2", "pedido leve"),
+    ("P", "ponte BR (HostGator)"),
     ("3", "navegador leve"),
     ("4", "navegador (Patchright)"),
     ("5", "navegador (Camoufox)"),
@@ -60,7 +61,7 @@ REPASSE = {
 
 
 def _degrau(escada: str | None) -> str | None:
-    m = re.search(r"degrau (\d)", escada or "")
+    m = re.search(r"degrau (\d|P)", escada or "")
     return m.group(1) if m else None
 
 

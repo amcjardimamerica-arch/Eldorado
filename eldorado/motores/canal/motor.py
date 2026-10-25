@@ -167,6 +167,7 @@ class CfgCanivete(_Base):
     texto_principal: bool = True
     arquivar: bool = True                   # arquivar no Wayback a página da oportunidade com prazo (a prova guardada)
     arquivar_por_execucao: int = Field(3, ge=0, le=20)
+    ponte_br: bool = True                   # a ponte da HostGator (o IP brasileiro): na escada, depois dos degraus da nuvem
 
     def habilidades(self) -> tuple[str, ...]:
         return tuple(h for h in ("idioma", "publicacao", "datas", "valores", "metadados", "texto_principal") if getattr(self, h))
@@ -281,8 +282,14 @@ class MotorCanal(Motor):
                 "patchright": lambda: DegrauNavegador("patchright", self.cfg.acesso.espera_seletor),
                 "camoufox": lambda: DegrauNavegador("camoufox", self.cfg.acesso.espera_seletor),
                 "arquivo": lambda: DegrauArquivo(mirror) if mirror else DegrauArquivo(), "local": lambda: DegrauLocal(ponte)}
+        from ..acesso.ponte_br import DegrauPonteBR
+        mapa["ponte"] = DegrauPonteBR
+        nomes = list(self.cfg.acesso.degraus)
+        if self.cfg.canivete.ponte_br and "ponte" not in nomes:      # a ponte no canivete (25/10/2026): depois da nuvem
+            pesados = [nomes.index(d) for d in ("lightpanda", "patchright", "camoufox", "arquivo", "local") if d in nomes]
+            nomes.insert(min(pesados) if pesados else len(nomes), "ponte")   # antes do primeiro degrau pesado
         degraus = []
-        for d in self.cfg.acesso.degraus:
+        for d in nomes:
             try:
                 degraus.append(mapa[d]())
             except Exception as e:  # noqa: BLE001 — o degrau que não pode ser montado aqui (o navegador ausente) é pulado

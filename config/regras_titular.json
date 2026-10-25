@@ -287,11 +287,12 @@
   {
    "id": "R23",
    "data": "2026-10-25",
-   "regra": "Os sites que recusam a nuvem são lidos pela ponte da HostGator (o IP brasileiro da hospedagem da titular, a mesma do Eldorado0): o pedido assinado (HMAC-SHA256, 5 minutos), só os domínios da lista (config/ponte_dominios.txt), com os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE.",
+   "regra": "Os sites que recusam a nuvem são lidos pela ponte da HostGator (o IP brasileiro da hospedagem da titular, a mesma do Eldorado0): o pedido assinado (HMAC-SHA256, 5 minutos), só os domínios da lista (config/ponte_dominios.txt), com os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE. A ponte é uma ferramenta do canivete de todos os motores (e dos pilotos), ligada por padrão: na escada, antes do primeiro degrau pesado; um site que a nuvem não abre é tentado pela ponte, e a escada aprende o degrau.",
    "onde": "eldorado/motores/acesso/ponte_br.py (nos degraus 1 e 2 da escada); config/ponte_dominios.txt; .github/workflows/eldorado.yml",
    "travas": [
     "testes/test_ponte_br.py::test_a_ponte_le_os_dominios_da_lista_com_o_pedido_assinado",
-    "testes/test_ponte_br.py::test_sem_os_segredos_a_ponte_fica_de_fora"
+    "testes/test_ponte_br.py::test_sem_os_segredos_a_ponte_fica_de_fora",
+    "testes/test_ponte_br.py::test_a_ponte_esta_no_canivete_de_todos_os_motores"
    ],
    "tema": "ponte brasileira"
   }

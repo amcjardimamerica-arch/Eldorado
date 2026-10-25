@@ -32,6 +32,6 @@ def test_o_espiao_falhando_nao_apaga_os_outros(bancos, gravador, diario, tmp_pat
 
 def test_a_escada_dos_pilotos_e_a_completa():
     from eldorado.motores.acesso.completa import ORDEM
-    assert ORDEM == ("api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local")
+    assert ORDEM == ("api", "leve", "ponte", "lightpanda", "patchright", "camoufox", "arquivo", "local")   # a ponte BR (25/10/2026)
     import inspect
     assert "escada_completa" in inspect.getsource(E._contexto_pilotos)

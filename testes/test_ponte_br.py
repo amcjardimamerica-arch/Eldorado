@@ -52,3 +52,16 @@ def test_a_ponte_le_os_dominios_da_lista_com_o_pedido_assinado(monkeypatch):
 def test_sem_os_segredos_a_ponte_fica_de_fora(monkeypatch):
     monkeypatch.delenv("ELDORADO_PONTE_URL", raising=False)
     assert not ponte_br.usar("https://cese.org.br/")
+
+
+def test_a_ponte_esta_no_canivete_de_todos_os_motores(tmp_path):
+    """25/10/2026 (a titular): a ponte como ferramenta do canivete de todo motor, na escada depois dos degraus da nuvem."""
+    from pathlib import Path
+
+    from eldorado.motores.canal.motor import MotorCanal
+    for cfg in sorted(Path("eldorado/motores/canal/config").glob("*.toml")):
+        m = MotorCanal(cfg, tmp_path / "dados")
+        nomes = [d.nome for d in m.escada.degraus]
+        if m.cfg.canivete.ponte_br:
+            i = next(k for k, n in enumerate(nomes) if n.startswith("P ·"))
+            assert all(not n.startswith(("4 ", "5 ", "6 ", "7 ")) for n in nomes[:i]), f"{cfg.stem}: a ponte antes dos degraus pesados"

@@ -13,7 +13,7 @@ def test_o_cartorio_tem_os_mostradores_e_a_ficha_de_cada_livro(tmp_path):
     c, fichas = montar(sqlite3.connect(tmp_path / "b.db"), None)
     m = c["mostradores"]
     assert [e["id"] for e in m["etapas"]] == ["recepcao", "certificacao", "preparacao", "validacao", "analise externa"]
-    assert [e["degrau"] for e in m["escada"]][:7] == [str(i) for i in range(1, 8)]
+    assert [e["degrau"] for e in m["escada"]][:8] == ["1", "2", "P", "3", "4", "5", "6", "7"]   # a ponte BR depois da nuvem
     assert c["certidoes"] and len(fichas) == len(c["certidoes"])                     # uma ficha por livro
     f = next(iter(fichas.values()))
     assert {"relatorio", "parecer", "repasse", "orientacao", "itens", "etapa", "degrau"} <= set(f)

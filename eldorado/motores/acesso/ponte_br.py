@@ -84,3 +84,15 @@ def diagnostico(url: str) -> dict:
     except Exception as e:  # noqa: BLE001
         return {"configurada": True, "ok": False, "erro": f"{type(e).__name__}: {str(e)[:200]}"}
 
+
+
+class DegrauPonteBR:
+    """A ponte como ferramenta do canivete de todo motor (titular, 25/10/2026): na escada, logo depois dos dois degraus da
+    nuvem; um site que a nuvem não abre é tentado pela ponte antes dos navegadores (e a escada aprende o degrau)."""
+    nome = "P · ponte BR (HostGator)"
+    pesado = False                                               # não é navegador: não pede folga ao governador
+
+    def buscar(self, url: str, tempo_limite: float) -> Resposta:
+        if not configurada():
+            raise Indisponivel("a ponte BR não está configurada neste ambiente (os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE)")
+        return buscar(url, tempo_limite)

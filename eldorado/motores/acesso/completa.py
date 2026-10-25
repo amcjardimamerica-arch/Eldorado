@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from .escada import Escada
 
-ORDEM = ("api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local")
+ORDEM = ("api", "leve", "ponte", "lightpanda", "patchright", "camoufox", "arquivo", "local")   # a ponte BR (25/10/2026)
 
 
 def escada_completa(intervalo_s: float = 1.0, tentativas: int = 1, tempo_limite: float = 25, ponte: str = "dados/ponte",
@@ -16,6 +16,8 @@ def escada_completa(intervalo_s: float = 1.0, tentativas: int = 1, tempo_limite:
     from .navegador import DegrauLightpanda, DegrauNavegador
     mapa = {"api": DegrauAPI, "leve": DegrauLeve, "lightpanda": DegrauLightpanda, "patchright": lambda: DegrauNavegador("patchright"),
             "camoufox": lambda: DegrauNavegador("camoufox"), "arquivo": DegrauArquivo, "local": lambda: DegrauLocal(ponte)}
+    from .ponte_br import DegrauPonteBR
+    mapa["ponte"] = DegrauPonteBR
     lista = []
     for d in degraus:
         try:
