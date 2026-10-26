@@ -149,6 +149,7 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection | None, rede=None, a
                 "etapa": lv["fase"],
                 "estrela": lv["estrela"],
                 "selo": lv["selo_livro"],                    # o selo do livro (o histórico): o classificador do Cartório (26/10/2026)
+                "desde": (passagens.get(lv["id"]) or [{}])[-1].get("em"),   # desde quando está na etapa (a esteira, 26/10/2026)
                 "estagio": ESTAGIO.get(lv["estrela"], "sem_estrela"),
                 "tipo": "estrela" if lv["estrela"] not in (None, "sem") else "livro",
                 "balcao": bal,
@@ -179,6 +180,7 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection | None, rede=None, a
             "escada": [{"degrau": k, "nome": n, "livros": escada.get(k, 0)} for k, n in DEGRAUS]
             + [{"degrau": "sem registro", "nome": "sem registro do degrau (achados anteriores a 24/10)", "livros": escada.get("sem registro", 0)}],
         },
+        "fluxos": _fluxos(passagens, agora),
         "resumo": {
             "certidoes": len(lista),
             "nesta_execucao": comprovados_24h,
@@ -215,6 +217,24 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection | None, rede=None, a
         "certidoes": sorted(lista, key=lambda x: (not x["aberta"], x["prazo"] or "9999")),
     }
     return principal, fichas
+
+
+def _fluxos(passagens: dict[str, list[dict]], agora: str | None) -> list[dict[str, Any]]:
+    """As passagens entre as etapas nos últimos 7 dias e nas últimas 24 horas (a esteira do Cartório, 26/10/2026)."""
+    from datetime import datetime, timedelta, timezone
+
+    base = datetime.fromisoformat(agora) if agora else datetime.now(timezone.utc)
+    d7, d1 = (base - timedelta(days=7)).isoformat(), (base - timedelta(hours=24)).isoformat()
+    c7: Counter = Counter()
+    c1: Counter = Counter()
+    for ps in passagens.values():
+        for p in ps:
+            em = p.get("em") or ""
+            if em >= d7:
+                c7[(p.get("de") or "chegada", p.get("para"))] += 1
+                if em >= d1:
+                    c1[(p.get("de") or "chegada", p.get("para"))] += 1
+    return [{"de": de, "para": para, "sete_dias": n, "um_dia": c1.get((de, para), 0)} for (de, para), n in c7.most_common()]
 
 
 def _categorias() -> dict[str, str]:

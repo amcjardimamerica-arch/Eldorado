@@ -1297,143 +1297,294 @@ box-sizing:border-box;}
 <h1>Cartório de fontes oficiais</h1>
 <p class="sub">Os motores descobrem; o Cartório certifica. Toda oportunidade com algum dos 12 itens indisponível entra na fila: ele localiza o documento oficial, lê por seções e devolve cada item com trecho e página, ou a dispensa quando o edital não tem aquele requisito. <span id="car-em"></span></p>
 
-<!-- O CLASSIFICADOR DO CARTÓRIO (titular, 26/10/2026): dois medidores de lado a lado da página — a escada (a coleta, antes
-da recepção) e a linha das 5 etapas, que termina na bifurcação: o livro fica no Eldorado (selo, encerrada) ou vai ao Farol
-(estrela, aberta); ao encerrar, cl-volta à Biblioteca arquivado. Coletivo (quantos livros em cada parte) ou cl-individual (onde
-está um livro). -->
+<!-- A ESTEIRA DO CARTÓRIO (titular, 26/10/2026; refeita do zero): de margem a margem; a escada da coleta (antes da recepção)
+e a esteira das 5 etapas como diagrama de fluxo, terminando na classificação em dois ramos (fica no Eldorado / vai ao Farol)
+e na volta à Biblioteca. O cursor revela os números; o clique abre a gaveta com a lista; a busca desenha a trajetória de
+um livro; a represa é anotada; os pontos correm pelas faixas na proporção do movimento das últimas 24 horas. -->
 <style>
-#cls{--c-tinta:#23272E;--c-suave:#6B7380;--c-papel:#FFFFFF;--c-trilho:#D5DCE4;--c-farol:#1F5B99;--c-farol-f:#EAF1FA;--c-ouro:#B8862B;--c-ouro-f:#F7EFDF;
- --c-prata:#8E99A6;--c-bronze:#A86B3C;--c-ok:#1E7E4B;margin:6px 0 26px;font-variant-numeric:tabular-nums}
-#cls .cls-cab{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:14px}
-#cls .cls-cab h2{margin:0;border:0;padding:0;font-family:Georgia,serif;font-size:20px;color:var(--c-tinta)}
-#cls .cls-cab p{margin:2px 0 0;color:var(--c-suave);font-size:13.5px;max-width:62ch}
-#cls .cls-busca{display:flex;gap:6px;align-items:center;min-width:min(420px,100%)}
-#cls .cls-busca input{flex:1;font:inherit;font-size:14px;padding:9px 12px;border:1px solid var(--c-trilho);border-radius:10px;background:var(--c-papel);color:var(--c-tinta)}
-#cls .cls-busca input:focus{outline:2px solid var(--c-farol);outline-offset:1px}
-#cls .cls-busca button{padding:9px 14px;border-radius:10px;font-size:13.5px}
-#cls .cls-livro{display:none;margin:0 0 14px;padding:10px 14px;border-left:4px solid var(--c-farol);background:var(--c-farol-f);border-radius:0 10px 10px 0;font-size:14px}
-#cls .cls-livro.ativo{display:block}
-#cls .cls-livro b{font-family:Georgia,serif;font-size:15.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-#cls .cls-livro code{font-size:12.5px;background:#fff;padding:1px 6px;border-radius:6px;border:1px solid var(--c-trilho)}
-#cls .cl-med{background:var(--c-papel);border:1px solid #E4E1D8;border-radius:16px;padding:16px 18px 18px;margin-bottom:14px;overflow-x:auto}
-#cls .cl-med h3{margin:0 0 2px;font-family:Georgia,serif;font-size:16.5px;color:var(--c-tinta)}
-#cls .cl-med .cl-med-sub{margin:0 0 14px;color:var(--c-suave);font-size:13px}
-#cls .cl-trilho{position:relative;display:flex;align-items:stretch;min-width:880px}
-#cls .cl-trilho::before{content:"";position:absolute;left:24px;right:24px;top:27px;height:4px;border-radius:2px;background:var(--c-trilho)}
-#cls .cl-est{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 4px;cursor:default}
-#cls .cl-ponto{position:relative;z-index:1;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--c-papel);
- border:3px solid var(--c-trilho);font-family:Georgia,serif;font-weight:700;font-size:15px;color:var(--c-tinta);transition:transform .25s,border-color .25s,opacity .25s}
-#cls .cl-ponto small{display:block;font:600 10px/1 system-ui,sans-serif;color:var(--c-suave);margin-top:1px}
-#cls .cl-est .cl-nome{margin-top:8px;font-size:12.5px;font-weight:650;color:var(--c-tinta);line-height:1.25}
-#cls .cl-est .cl-det{font-size:11.5px;color:var(--c-suave);margin-top:2px;line-height:1.3}
-#cls .cl-est .cl-barra{width:70%;height:6px;border-radius:3px;background:#EEF1F5;margin-top:8px;overflow:hidden}
-#cls .cl-est .cl-barra i{display:block;height:100%;background:var(--c-farol);border-radius:3px}
-#cls .cl-est.cl-cheia .cl-ponto{border-color:var(--c-farol)}
-#cls .cl-est.cl-vazia .cl-ponto{color:#A3AAB4}
-#cls .cl-individual .cl-est{opacity:.28}
-#cls .cl-individual .cl-est.cl-aqui{opacity:1}
-#cls .cl-est.cl-aqui .cl-ponto{border-color:var(--c-farol);background:var(--c-farol);color:#fff;transform:scale(1.12);box-shadow:0 0 0 7px rgba(31,91,153,.14)}
-#cls .cl-est.cl-aqui .cl-ponto small{color:#DCE7F5}
-#cls .cl-est.cl-aqui::after{content:"este livro";position:absolute;top:-20px;font-size:11px;font-weight:700;color:var(--c-farol)}
-#cls .cl-grupo-rot{position:absolute;top:-2px;font-size:11px;color:var(--c-suave)}
-/* a bifurcação: o cl-fim da linha */
-#cls .cl-fim{z-index:1;background:var(--c-papel);flex:2.25;display:grid;grid-template-rows:auto auto auto auto;gap:10px;padding-left:16px;position:relative;min-width:300px}
-#cls .cl-fim-tit{font-size:12.5px;font-weight:700;color:var(--c-tinta);margin:-2px 0 -4px;background:var(--c-papel);position:relative;z-index:2;padding-right:4px}
-#cls .cl-fim-tit span{font-weight:400;color:var(--c-suave)}
-#cls .cl-fim::before{content:"";position:absolute;left:0;top:27px;width:16px;height:4px;background:var(--c-trilho)}
-#cls .cl-ramo{position:relative;display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;border:1px solid}
-#cls .cl-ramo.cl-eld{border-color:#E9D9B5;background:var(--c-ouro-f)}
-#cls .cl-ramo.cl-far{border-color:#C9DAEE;background:var(--c-farol-f);overflow:hidden}
-#cls .cl-ramo.cl-far::after{content:"";position:absolute;right:-30px;top:-40px;width:150px;height:150px;pointer-events:none;
- background:conic-gradient(from 200deg at 100% 50%,transparent 0deg,rgba(31,91,153,.10) 18deg,transparent 40deg);animation:feixe 9s ease-in-out infinite alternate}
-@keyframes feixe{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
-@media (prefers-reduced-motion:reduce){#cls .cl-ramo.cl-far::after{animation:none}}
-#cls .cl-ramo .cl-ponto{width:52px;height:52px;flex:none}
-#cls .cl-ramo.cl-eld .cl-ponto{border-color:var(--c-ouro)}
-#cls .cl-ramo.cl-far .cl-ponto{border-color:var(--c-farol)}
-#cls .cl-ramo .cl-txt{flex:1;min-width:0;text-align:left}
-#cls .cl-ramo .cl-txt b{display:block;font-size:13.5px;color:var(--c-tinta)}
-#cls .cl-ramo .cl-txt span{font-size:12px;color:var(--c-suave)}
-#cls .cl-ramo .cl-selos{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
-#cls .cl-ramo .cl-selos em{font-style:normal;font-size:11.5px;padding:2px 8px;border-radius:999px;background:#fff;border:1px solid #E4E1D8;color:var(--c-tinta)}
-#cls .cl-ramo .cl-selos em i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:0}
-#cls .cl-individual .cl-ramo{opacity:.3}
-#cls .cl-individual .cl-ramo.cl-aqui{opacity:1;box-shadow:0 0 0 3px rgba(31,91,153,.18)}
-#cls .cl-volta{grid-column:1/-1;font-size:12px;color:var(--c-suave);display:flex;align-items:center;gap:6px;padding-left:4px}
-#cls .cl-volta svg{flex:none}
-#cls .cls-vazio{color:var(--c-suave);font-size:13px;padding:8px 0}
+html,body{overflow-x:clip}
+#cl2{--t:#23272E;--s:#5E6672;--p:#FFFFFF;--f:#F6F7F9;--r:#D9DEE5;--az:#1F5B99;--az2:#3B7BC4;--azf:#EAF1FA;--ou:#B8862B;--ouf:#F8F0DF;--pr:#8E99A6;--br:#A86B3C;
+ --al:#C2410C;--alf:#FFF3EC;width:100vw;margin-left:calc(50% - 50vw);padding:22px clamp(16px,3vw,48px) 28px;background:linear-gradient(180deg,#F3F6FA 0,#FBFBFA 220px);
+ border-top:1px solid #E6EAF0;border-bottom:1px solid #E6EAF0;font-variant-numeric:tabular-nums;color:var(--t);position:relative;box-sizing:border-box}
+#cl2 *{box-sizing:border-box}
+#cl2 .c2-topo{display:grid;grid-template-columns:minmax(260px,1.1fr) 2.4fr;gap:clamp(16px,2.4vw,40px);align-items:end;margin-bottom:18px}
+#cl2 h2{margin:0;font-family:Georgia,serif;font-size:clamp(22px,2vw,28px);font-weight:700;letter-spacing:-.01em;border:0;padding:0}
+#cl2 .c2-lead{margin:6px 0 0;color:var(--s);font-size:14px;line-height:1.5;max-width:56ch}
+#cl2 .c2-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+#cl2 .kpi{background:var(--p);border:1px solid #E3E7ED;border-radius:14px;padding:14px 16px 12px;min-width:0}
+#cl2 .kpi b{display:block;font-family:Georgia,serif;font-size:clamp(22px,2vw,30px);line-height:1.05}
+#cl2 .kpi span{display:block;margin-top:6px;font-size:12.5px;color:var(--s);line-height:1.3}
+#cl2 .kpi.al{border-color:#F3C9AE;background:var(--alf)}#cl2 .kpi.al b{color:var(--al)}
+#cl2 .c2-ctl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin:4px 0 12px}
+#cl2 .c2-busca{display:flex;gap:8px;flex:1;max-width:640px}
+#cl2 .c2-busca input{flex:1;font:inherit;font-size:14.5px;padding:11px 14px;border:1px solid #CFD6DF;border-radius:12px;background:var(--p);color:var(--t)}
+#cl2 .c2-busca input:focus{outline:3px solid rgba(31,91,153,.25);border-color:var(--az)}
+#cl2 .c2-btn{font:inherit;font-size:13.5px;padding:10px 14px;border-radius:12px;border:1px solid #CFD6DF;background:var(--p);color:var(--t);cursor:pointer}
+#cl2 .c2-btn:hover{background:#F1F5FA}
+#cl2 .c2-seg{display:inline-flex;border:1px solid #CFD6DF;border-radius:12px;overflow:hidden;background:var(--p)}
+#cl2 .c2-seg button{font:inherit;font-size:13px;padding:9px 14px;border:0;background:transparent;color:var(--s);cursor:pointer}
+#cl2 .c2-seg button.on{background:var(--az);color:#fff}
+#cl2 .c2-dica{font-size:12px;color:var(--s)}#cl2 kbd{font:600 11px/1 system-ui;border:1px solid #CFD6DF;border-bottom-width:2px;border-radius:5px;padding:2px 5px;background:#fff}
+#cl2 .c2-livro{display:none;grid-template-columns:1fr auto;gap:14px;align-items:start;margin:0 0 12px;padding:14px 18px;border-radius:14px;background:var(--p);border:1px solid #CFDDF0;box-shadow:inset 4px 0 0 var(--az)}
+#cl2 .c2-livro.on{display:grid}
+#cl2 .c2-livro h3{margin:0;font-family:Georgia,serif;font-size:16.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#cl2 .c2-livro .m{margin-top:5px;font-size:13px;color:var(--s)}#cl2 .c2-livro code{font-size:12px;background:#F1F4F8;border-radius:6px;padding:1px 6px}
+#cl2 .c2-traj{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+#cl2 .c2-traj span{font-size:12px;padding:4px 9px;border-radius:999px;background:#F1F5FA;border:1px solid #DCE5F0}
+#cl2 .c2-traj span.ag{background:var(--az);color:#fff;border-color:var(--az)}
+#cl2 .med2{background:var(--p);border:1px solid #E3E7ED;border-radius:18px;padding:18px clamp(14px,1.6vw,26px) 10px;margin-bottom:14px;position:relative}
+#cl2 .med2 .mc{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+#cl2 .med2 h3{margin:0;font-family:Georgia,serif;font-size:18px}
+#cl2 .med2 .ms{margin:3px 0 0;font-size:13px;color:var(--s)}
+#cl2 svg{display:block;width:100%;height:auto;overflow:visible}
+#c2-escada,#c2-fluxo{overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch}#c2-escada svg{min-width:1000px}#c2-fluxo svg{min-width:980px}
+#cl2 svg text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+#cl2 .alvo{cursor:pointer;outline:none}
+#cl2 .alvo:focus-visible .foco{stroke:var(--az);stroke-width:3}
+#cl2 .apagado{opacity:.22;transition:opacity .25s}
+#cl2 .c2-tip{position:absolute;z-index:30;pointer-events:none;min-width:240px;max-width:340px;background:#1F2630;color:#F3F5F8;border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.45;
+ box-shadow:0 14px 34px rgba(15,23,35,.28);opacity:0;transform:translateY(4px);transition:opacity .12s,transform .12s}
+#cl2 .c2-tip.on{opacity:1;transform:none}
+#cl2 .c2-tip b.t{display:block;font-family:Georgia,serif;font-size:15px;margin-bottom:4px;color:#fff}
+#cl2 .c2-tip .g{display:grid;grid-template-columns:auto auto;gap:2px 14px;margin-top:6px}
+#cl2 .c2-tip .g span:nth-child(odd){color:#AEB7C4}#cl2 .c2-tip .g span:nth-child(even){text-align:right;font-weight:650}
+#cl2 .c2-tip .x{margin-top:7px;color:#AEB7C4;font-size:11.5px}
+#c2-gaveta{position:fixed;top:0;right:0;bottom:0;width:min(560px,94vw);z-index:9500;background:#fff;box-shadow:-18px 0 50px rgba(15,23,35,.22);transform:translateX(105%);
+ transition:transform .28s cubic-bezier(.2,.7,.2,1);display:flex;flex-direction:column;color:#23272E;padding-top:env(safe-area-inset-top,0px)}
+#c2-gaveta.on{transform:none}
+#c2-gaveta .gh{padding:18px 20px 12px;border-bottom:1px solid #E6EAF0}
+#c2-gaveta .gh h3{margin:0;font-family:Georgia,serif;font-size:20px}#c2-gaveta .gh p{margin:4px 0 0;color:#5E6672;font-size:13px}
+#c2-gaveta .gf{display:flex;gap:8px;margin-top:12px}
+#c2-gaveta .gf input,#c2-gaveta .gf select{font:inherit;font-size:13.5px;padding:9px 11px;border:1px solid #CFD6DF;border-radius:10px;background:#fff;color:#23272E}
+#c2-gaveta .gf input{flex:1}
+#c2-gaveta .gl{flex:1;overflow:auto;padding:6px 10px 20px}
+#c2-gaveta .li{display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:11px 12px;border-radius:12px;cursor:pointer;border:1px solid transparent}
+#c2-gaveta .li:hover{background:#F4F7FB;border-color:#E2E8F0}
+#c2-gaveta .li b{font-size:13.5px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#c2-gaveta .li .d{font-size:12px;color:#5E6672;text-align:right;white-space:nowrap}
+#c2-gaveta .li .cs{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap;font-size:11.5px;color:#5E6672}
+#c2-gaveta .li .cs em{font-style:normal;padding:1px 7px;border-radius:999px;background:#F1F4F8}
+#c2-gaveta .gx{position:absolute;top:14px;right:14px;font:inherit;border:1px solid #CFD6DF;background:#fff;border-radius:10px;padding:6px 12px;cursor:pointer}
+#c2-gaveta .mais{display:block;margin:10px auto;font:inherit;border:1px solid #CFD6DF;background:#fff;border-radius:10px;padding:8px 14px;cursor:pointer}
+@media (max-width:980px){#cl2 .c2-topo{grid-template-columns:1fr}#cl2 .c2-kpis{grid-template-columns:repeat(2,1fr)}}
+@media (prefers-reduced-motion:reduce){#c2-gaveta{transition:none}}
 </style>
-<div id="cls">
-  <div class="cls-cab">
-    <div><h2>Onde está cada livro</h2>
-      <p>A escada mostra como o motor chegou à fonte, antes da recepção. A linha mostra as 5 etapas e a saída: o livro fica no Eldorado com o selo, ou vai ao Farol com a estrela.</p></div>
-    <form class="cls-busca" onsubmit="return false"><input id="cls-q" list="cls-lista" placeholder="Buscar um livro pelo título, código ou identificador" autocomplete="off">
-      <datalist id="cls-lista"></datalist><button type="button" id="cls-limpar">Ver todos</button></form>
+<section id="cl2" aria-label="A esteira do Cartório">
+  <div class="c2-topo">
+    <div><h2>A esteira do Cartório</h2>
+      <p class="c2-lead">Como cada livro chegou à fonte, por quais etapas passou e para onde vai. Passe o cursor para ver os números; clique para abrir a lista; busque um livro para ver a trajetória dele.</p></div>
+    <div class="c2-kpis" id="c2-kpis"></div>
   </div>
-  <div class="cls-livro" id="cls-livro"></div>
-  <div class="cl-med" id="cls-m1"><h3>A escada da coleta</h3><p class="cl-med-sub">O degrau em que o motor conseguiu ler a fonte, do mais leve ao mais pesado.</p><div class="cl-trilho" id="cls-escada"></div></div>
-  <div class="cl-med" id="cls-m2"><h3>As 5 etapas do Cartório e a saída</h3><p class="cl-med-sub">Cada livro percorre as etapas da esquerda para a direita e termina num dos dois ramos.</p><div class="cl-trilho" id="cls-etapas"></div></div>
-</div>
+  <div class="c2-ctl">
+    <form class="c2-busca" onsubmit="return false"><input id="c2-q" list="c2-lista" placeholder="Buscar um livro pelo título, código ou identificador" autocomplete="off"><datalist id="c2-lista"></datalist>
+      <button type="button" class="c2-btn" id="c2-todos">Toda a esteira</button></form>
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><div class="c2-seg" id="c2-per"><button data-p="um_dia">Últimas 24 h</button><button data-p="sete_dias" class="on">Últimos 7 dias</button></div>
+      <span class="c2-dica"><kbd>/</kbd> buscar · <kbd>Esc</kbd> fechar · <kbd>←</kbd><kbd>→</kbd> etapas</span></div>
+  </div>
+  <div class="c2-livro" id="c2-livro"></div>
+  <div class="med2"><div class="mc"><div><h3>A escada da coleta</h3><p class="ms">O degrau em que o motor conseguiu ler a fonte, antes de o livro chegar à recepção. Quanto mais alto, mais pesado o acesso.</p></div></div><div id="c2-escada"></div></div>
+  <div class="med2"><div class="mc"><div><h3>A esteira: as 5 etapas e a classificação</h3><p class="ms">A altura de cada etapa é o número de livros nela; a largura de cada faixa é quantos passaram entre as etapas no período.</p></div></div><div id="c2-fluxo"></div></div>
+  <div class="c2-tip" id="c2-tip" role="status" aria-live="polite"></div>
+</section>
+<aside id="c2-gaveta" aria-label="Os livros desta parte"><button class="gx" type="button" id="c2-gx">Fechar</button>
+  <div class="gh"><h3 id="c2-gt"></h3><p id="c2-gs"></p><div class="gf"><input id="c2-gq" placeholder="Filtrar nesta lista"><select id="c2-go"><option value="tempo">Mais tempo parado</option><option value="prazo">Prazo mais próximo</option><option value="titulo">Título</option></select></div></div>
+  <div class="gl" id="c2-gl"></div></aside>
 <div style="display:none"><div id="car-m-etapas"></div><div id="car-m-escada"></div></div>
 <script>
 (function(){
-  const N=n=>Number(n||0).toLocaleString("pt-BR"), E=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-  const DEGRAUS=[["1","API oficial","o pedido direto à API"],["2","Pedido leve","a página sem navegador"],["P","Ponte BR","o IP brasileiro na HostGator"],["3","Navegador leve","Lightpanda"],
-    ["4","Navegador discreto","Patchright"],["5","Navegador anti-bloqueio","Camoufox"],["6","Cópia arquivada","Wayback e afins"],["7","Computador local","pela ponte da casa"],["?","Sem registro","achados de antes de 24/10"]];
-  const ETAPAS=[["recepcao","Recepção","o achado chega ao Cartório"],["certificacao","Certificação","os 12 itens no documento"],["preparacao","Preparação","o Interceptador completa"],
-    ["validacao","Validação","o essencial confere"],["analise externa","Análise externa","o Claude no Chrome decide"]];
-  const COR={ouro:"#B8862B",prata:"#8E99A6",bronze:"#A86B3C",sem:"#C9CED6"};
-  let L=[], sel=null;
-  const estacao=(cl,id,nome,det,n,max,aqui)=>`<div class="cl-est ${n?"cl-cheia":"cl-vazia"} ${aqui?"cl-aqui":""}" data-id="${E(id)}" title="${E(nome)}: ${N(n)} livro(s)">
-     <div class="cl-ponto">${N(n)}<small>livros</small></div><div class="cl-nome">${E(nome)}</div><div class="cl-det">${E(det)}</div>
-     <div class="cl-barra"><i style="width:${max?Math.max(n?4:0,Math.round(100*n/max)):0}%"></i></div></div>`;
-  function desenhar(){
+  const $=i=>document.getElementById(i), N=n=>Number(n||0).toLocaleString("pt-BR"), E=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const PCT=(a,b)=>b?(100*a/b).toLocaleString("pt-BR",{maximumFractionDigits:a/b<.1?1:0})+"%":"0%";
+  const AGORA=Date.now(), DIAS=iso=>iso?Math.max(0,(AGORA-Date.parse(iso))/864e5):null;
+  const DEG=[["1","API oficial","o pedido direto à API do órgão"],["2","Pedido leve","a página lida sem navegador"],["P","Ponte BR","o IP brasileiro, pela HostGator"],["3","Navegador leve","Lightpanda"],
+    ["4","Navegador discreto","Patchright, que não denuncia o robô"],["5","Anti-bloqueio","Camoufox, para os sites mais fechados"],["6","Cópia arquivada","Wayback e outros arquivos"],["7","Computador local","pela ponte da casa"]];
+  const ETA=[["recepcao","Recepção","o achado chega"],["certificacao","Certificação","os 12 itens no documento"],["preparacao","Preparação","o Interceptador completa"],["validacao","Validação","o essencial confere"],["analise externa","Análise externa","o Claude no Chrome"]];
+  const COR={ouro:"#B8862B",prata:"#8E99A6",bronze:"#A86B3C",sem:"#CDD3DB"};
+  let L=[],F=[],per="sete_dias",sel=null,traj=null,foco=-1,anim=null;
+  const tip=$("c2-tip"), raiz=$("cl2");
+  function dica(ev,html){tip.innerHTML=html;tip.classList.add("on");const r=raiz.getBoundingClientRect();let x=ev.clientX-r.left+16,y=ev.clientY-r.top+16;
+    const w=tip.offsetWidth,h=tip.offsetHeight;if(x+w>r.width-8)x=ev.clientX-r.left-w-16;if(y+h>r.height-8)y=ev.clientY-r.top-h-16;tip.style.left=x+"px";tip.style.top=y+"px"}
+  const semdica=()=>tip.classList.remove("on");
+  const conta=(xs,c)=>{const o={};xs.forEach(x=>{const v=(x[c]&&x[c]!=="sem")?x[c]:"sem";o[v]=(o[v]||0)+1});return o};
+  const mediana=a=>{a=a.filter(x=>x!=null).sort((x,y)=>x-y);return a.length?a[Math.floor(a.length/2)]:null};
+  const dd=x=>x==null?"—":x<1?"menos de 1 dia":Math.round(x)===1?"1 dia":Math.round(x)+" dias";
+  function grade(pares){return `<div class="g">${pares.map(([a,b])=>`<span>${E(a)}</span><span>${b}</span>`).join("")}</div>`}
+  function resumoGrupo(xs){const est=conta(xs,"estrela"),sel_=conta(xs,"selo"),t=xs.map(x=>DIAS(x.desde));
+    return [["livros",N(xs.length)],["com inscrição aberta",N(xs.filter(x=>x.aberta).length)],["com estrela",N(xs.length-(est.sem||0))],["com selo",N(xs.length-(sel_.sem||0))],
+      ["tempo aqui (mediana)",dd(mediana(t))],["o mais antigo aqui",dd(Math.max(0,...t.filter(v=>v!=null)))]]}
+  // ---------- os indicadores do topo
+  function kpis(){const em=L.filter(x=>!["arquivo","farol"].includes(x.etapa));const ent=F.filter(f=>f.de==="chegada").reduce((a,f)=>a+f.um_dia,0);
+    const ord=ETA.map(e=>e[0]);const av=F.filter(f=>f.de!=="chegada"&&(ord.indexOf(f.para)>ord.indexOf(f.de)||["farol","arquivo"].includes(f.para))).reduce((a,f)=>a+f.um_dia,0);
+    const c={};em.forEach(x=>c[x.etapa]=(c[x.etapa]||0)+1);const top=Object.entries(c).sort((a,b)=>b[1]-a[1])[0]||["",0];const nome=(ETA.find(e=>e[0]===top[0])||[,top[0]])[1];
+    const rep=em.length&&top[1]/em.length>.4;
+    $("c2-kpis").innerHTML=[[N(em.length),"livros na linha agora"],[N(ent),"chegaram nas últimas 24 h"],[N(av),"avançaram nas últimas 24 h"],
+      [rep?PCT(top[1],em.length):"—",rep?`represados na ${E(nome)}`:"sem represa",rep],[dd(mediana(em.map(x=>DIAS(x.desde)))),"parados na etapa atual (mediana)"]]
+      .map(([b,s,a])=>`<div class="kpi${a?" al":""}"><b>${b}</b><span>${s}</span></div>`).join("")}
+  // ---------- a escada
+  function escada(){
+    const el=$("c2-escada"),W=Math.max(1000,el.clientWidth),H=270,base=H-14,ped=Math.max(150,W*.13),gap=14,n=DEG.length,sw=(W-ped-gap-(n-1)*6)/n,rise=13,alto=118;
+    const c={};L.forEach(x=>{const d=x.degrau||"?";c[d]=(c[d]||0)+1});const mx=Math.max(1,...DEG.map(d=>c[d[0]]||0));const tot=L.length;
     const alvo=sel?L.find(x=>x.id===sel):null;
-    const esc={}; L.forEach(x=>{const d=x.degrau||"?"; esc[d]=(esc[d]||0)+1});
-    const mxE=Math.max(1,...Object.values(esc));
-    const m1=document.getElementById("cls-escada"); m1.classList.toggle("cl-individual",!!alvo);
-    m1.innerHTML=DEGRAUS.map(([k,n,d])=>estacao("",k,n,d,esc[k]||0,mxE,alvo&&(alvo.degrau||"?")===k)).join("");
-    const fas={}; L.forEach(x=>{fas[x.etapa]=(fas[x.etapa]||0)+1});
-    const mxF=Math.max(1,...ETAPAS.map(([k])=>fas[k]||0));
-    const arq=L.filter(x=>x.etapa==="arquivo"), far=L.filter(x=>x.etapa==="farol");
-    const conta=(xs,campo)=>{const c={};xs.forEach(x=>{const v=(x[campo]&&x[campo]!=="sem")?x[campo]:"sem";c[v]=(c[v]||0)+1});return c};
-    const sArq=conta(arq,"selo"), sFar=conta(far,"estrela");
-    const pilulas=(c,ord)=>ord.filter(k=>c[k]).map(k=>`<em><i style="background:${COR[k]}"></i>${k==="sem"?"sem":k} ${N(c[k])}</em>`).join("");
-    const m2=document.getElementById("cls-etapas"); m2.classList.toggle("cl-individual",!!alvo);
-    m2.innerHTML=ETAPAS.map(([k,n,d],i)=>estacao("",k,`${i+1}. ${n}`,d,fas[k]||0,mxF,alvo&&alvo.etapa===k)).join("")+
-     `<div class="cl-fim">
-        <div class="cl-fim-tit">6. A classificação <span>— depois das 5 etapas, o livro segue por um dos dois ramos</span></div>
-        <div class="cl-ramo cl-eld ${alvo&&alvo.etapa==="arquivo"?"cl-aqui":""}"><div class="cl-ponto">${N(arq.length)}<small>livros</small></div>
-          <div class="cl-txt"><b>Fica no Eldorado</b><span>o livro com o selo do histórico, a oportunidade encerrada (sem estrela)</span><div class="cl-selos">${pilulas(sArq,["ouro","prata","bronze","sem"])}</div></div></div>
-        <div class="cl-ramo cl-far ${alvo&&alvo.etapa==="farol"?"cl-aqui":""}"><div class="cl-ponto">${N(far.length)}<small>livros</small></div>
-          <div class="cl-txt"><b>Vai ao Farol</b><span>a estrela da oportunidade aberta: tudo pronto para o Farol prosseguir</span><div class="cl-selos">${pilulas(sFar,["ouro","prata","bronze","sem"])}</div></div></div>
-        <div class="cl-volta"><svg width="34" height="14" viewBox="0 0 34 14" aria-hidden="true"><path d="M32 3H9a5 5 0 0 0 0 10h3" fill="none" stroke="#8E99A6" stroke-width="1.6"/><path d="M14 10l-3 3 3 3" fill="none" stroke="#8E99A6" stroke-width="1.6" transform="translate(0,-3)"/></svg>
-          Ao encerrar ou ser arquivado, o livro volta à Biblioteca, arquivado, aguardando a nova abertura do edital.</div>
-      </div>`;
-    const box=document.getElementById("cls-livro");
-    if(alvo){
-      const onde=ETAPAS.find(([k])=>k===alvo.etapa); const fim=alvo.etapa==="farol"?"vai ao Farol":alvo.etapa==="arquivo"?"fica no Eldorado (arquivado)":onde?`etapa ${ETAPAS.indexOf(onde)+1}: ${onde[1]}`:alvo.etapa;
-      const deg=(DEGRAUS.find(([k])=>k===(alvo.degrau||"?"))||[])[1]||"sem registro";
-      box.innerHTML=`<b>${E(alvo.titulo)}</b>${alvo.codigo?`<code>${E(alvo.codigo)}</code> `:""}na escada: ${E(deg)} · no Cartório: ${E(fim)} · selo ${E(alvo.selo||"sem")} · estrela ${E(alvo.estrela||"sem")}${alvo.aberta?" · inscrição aberta":""}`;
-      box.classList.add("ativo");
-    } else box.classList.remove("ativo");
-  }
-  function buscar(q){
-    q=(q||"").trim().toLowerCase(); if(!q){sel=null;desenhar();return}
-    const x=L.find(y=>y.id.toLowerCase()===q||(y.codigo||"").toLowerCase()===q)||L.find(y=>(y.titulo||"").toLowerCase()===q)||L.find(y=>(y.titulo||"").toLowerCase().includes(q));
-    sel=x?x.id:null; desenhar();
-  }
-  fetch("dados/cartorio.json?v="+Date.now()).then(r=>r.ok?r.json():null).then(D=>{
-    L=((D&&D.certidoes)||[]).map(x=>({id:x.id,titulo:x.titulo||x.id,codigo:x.codigo,etapa:x.etapa,degrau:x.degrau,selo:x.selo,estrela:x.estrela,aberta:x.aberta}));
-    if(!L.length){document.getElementById("cls-escada").innerHTML='<p class="cls-vazio">Os livros aparecem cl-aqui assim que o Cartório publicar a sua lista.</p>';return}
-    document.getElementById("cls-lista").innerHTML=L.slice(0,4000).map(x=>`<option value="${E(x.titulo)}">${E(x.codigo||"")}</option>`).join("");
-    desenhar();
-  }).catch(()=>{});
-  const q=document.getElementById("cls-q");
-  q.addEventListener("change",()=>buscar(q.value)); q.addEventListener("keydown",e=>{if(e.key==="Enter")buscar(q.value)});
-  document.getElementById("cls-limpar").addEventListener("click",()=>{q.value="";buscar("")});
+    let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="A escada da coleta"><defs><pattern id="c2h" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" fill="#F4F6F9"/><line x1="0" y1="0" x2="0" y2="7" stroke="#E1E6EC" stroke-width="3"/></pattern></defs>`;
+    const sr=c["?"]||0, ap=alvo&&!(alvo.degrau);
+    s+=`<g class="alvo ${alvo&&!ap?"apagado":""}" tabindex="0" data-k="?" data-tipo="escada"><rect class="foco" x="0" y="${base-alto+8}" width="${ped}" height="${alto-8}" rx="12" fill="url(#c2h)" stroke="#D9DEE5"/>
+      <text x="${ped/2}" y="${base-alto+48}" text-anchor="middle" font-family="Georgia,serif" font-size="28" font-weight="700" fill="#5E6672">${N(sr)}</text>
+      <text x="${ped/2}" y="${base-alto+70}" text-anchor="middle" font-size="12.5" font-weight="650" fill="#23272E">Sem registro</text>
+      <text x="${ped/2}" y="${base-alto+87}" text-anchor="middle" font-size="11.5" fill="#5E6672">achados de antes de 24/10</text>
+      <text x="${ped/2}" y="${base-14}" text-anchor="middle" font-size="11.5" fill="#5E6672">${PCT(sr,tot)} dos livros</text></g>`;
+    DEG.forEach(([k,nome,det],i)=>{const x=ped+gap+i*(sw+6),top=base-alto-(i*rise),v=c[k]||0,t=Math.sqrt(v/mx),esc=t>.55;
+      const fill=v?`rgba(31,91,153,${(.10+.80*t).toFixed(3)})`:"#F4F6F9",tc=esc?"#fff":"#23272E",sc=esc?"#DCE7F5":"#5E6672",aqui=alvo&&alvo.degrau===k;
+      s+=`<g class="alvo ${alvo&&!aqui?"apagado":""}" tabindex="0" data-k="${k}" data-tipo="escada">
+        <rect class="foco" x="${x}" y="${top}" width="${sw}" height="${base-top}" rx="12" fill="${fill}" stroke="${aqui?"#1F5B99":v?"rgba(31,91,153,.35)":"#E1E6EC"}" stroke-width="${aqui?3:1}"/>
+        <text x="${x+18}" y="${top+38}" font-family="Georgia,serif" font-size="${sw>120?30:24}" font-weight="700" fill="${tc}">${N(v)}</text>
+        ${duas(nome,sw-34).map((ln,j)=>`<text x="${x+18}" y="${top+60+j*16}" font-size="12.5" font-weight="650" fill="${tc}">${E(ln)}</text>`).join("")}
+        <text x="${x+18}" y="${top+(duas(nome,sw-34).length>1?94:78)}" font-size="11.5" fill="${sc}">${PCT(v,tot)} dos livros</text>
+        <text x="${x+18}" y="${base-14}" font-size="11" font-weight="700" fill="${sc}" letter-spacing=".02em">${k==="P"?"ponte":"degrau "+k}</text>
+        ${aqui?`<text x="${x+18}" y="${top-10}" font-size="12" font-weight="700" fill="#1F5B99">este livro</text>`:""}</g>`});
+    s+=`<text x="${ped+gap}" y="${H-1}" font-size="11" fill="#8B93A0">mais leve</text><text x="${W}" y="${H-1}" text-anchor="end" font-size="11" fill="#8B93A0">mais pesado</text></svg>`;
+    el.innerHTML=s;
+    el.querySelectorAll(".alvo").forEach(g=>{const k=g.dataset.k,xs=L.filter(x=>(x.degrau||"?")===k),d=DEG.find(e=>e[0]===k);
+      const t=`<b class="t">${k==="?"?"Sem registro do degrau":E(d[1])}</b>${k==="?"?"Os achados de antes de 24/10, quando o degrau começou a ser gravado.":E(d[2])}${grade([["parte dos livros",PCT(xs.length,L.length)],...resumoGrupo(xs)])}<div class="x">Clique para ver a lista</div>`;
+      g.addEventListener("mousemove",ev=>dica(ev,t));g.addEventListener("mouseleave",semdica);
+      g.addEventListener("click",()=>gaveta(k==="?"?"Sem registro do degrau":d[1],"na escada da coleta",xs));g.addEventListener("keydown",ev=>{if(ev.key==="Enter")g.dispatchEvent(new Event("click"))})})}
+  // ---------- a esteira (o fluxo)
+  function fluxo(){
+    const el=$("c2-fluxo"),W=Math.max(980,el.clientWidth),H=560,cy=290,mL=70,mR=40,colW=(W-mL-mR)/7,bar=18,HM=250,yN=cy-HM/2-34,yR=cy+HM/2+58;
+    const pos=k=>{if(k==="chegada")return 0;const i=ETA.findIndex(e=>e[0]===k);if(i>=0)return i+1;return k==="farol"||k==="arquivo"?7:null};
+    const cnt={};L.forEach(x=>cnt[x.etapa]=(cnt[x.etapa]||0)+1);const ent=F.filter(f=>f.de==="chegada").reduce((a,f)=>a+f[per],0);
+    const mx=Math.max(1,...ETA.map(e=>cnt[e[0]]||0),cnt.arquivo||0,cnt.farol||0);
+    const hOf=v=>v?Math.max(26,HM*Math.sqrt(v/mx)):10;
+    const nos={chegada:{x:mL,y:cy,h:70,n:ent,nome:"Chegada",det:"achados que viram livro"}};   // um fluxo, não um estoque: altura fixa
+    ETA.forEach(([k,n,d],i)=>nos[k]={x:mL+(i+1)*colW,y:cy,h:hOf(cnt[k]||0),n:cnt[k]||0,nome:`${i+1}. ${n}`,det:d});
+    const xT=mL+7*colW-bar, xJ=mL+6*colW+colW*.35;
+    nos.arquivo={x:xT,y:cy-120,h:hOf(cnt.arquivo||0),n:cnt.arquivo||0,nome:"Fica no Eldorado",det:"o selo; a oportunidade encerrada"};
+    nos.farol={x:xT,y:cy+140,h:hOf(cnt.farol||0),n:cnt.farol||0,nome:"Vai ao Farol",det:"a estrela; a oportunidade aberta"};
+    const alvo=sel?L.find(x=>x.id===sel):null, ord=["chegada",...ETA.map(e=>e[0])];
+    const fl=F.filter(f=>nos[f.de]&&nos[f.para]&&f[per]>0), fmx=Math.max(1,...fl.map(f=>f[per]));
+    let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="A esteira do Cartório"><defs>
+      <linearGradient id="c2fe" x1="0" x2="1"><stop offset="0" stop-color="#3B7BC4" stop-opacity=".30"/><stop offset="1" stop-color="#B8862B" stop-opacity=".55"/></linearGradient>
+      <linearGradient id="c2ff" x1="0" x2="1"><stop offset="0" stop-color="#3B7BC4" stop-opacity=".30"/><stop offset="1" stop-color="#1F5B99" stop-opacity=".65"/></linearGradient>
+      <radialGradient id="c2luz" cx="1" cy=".5" r="1"><stop offset="0" stop-color="#3B7BC4" stop-opacity=".16"/><stop offset="1" stop-color="#3B7BC4" stop-opacity="0"/></radialGradient></defs>`;
+    // a junção da classificação (a etapa 6)
+    s+=`<g><line x1="${xJ}" y1="${yN+10}" x2="${xJ}" y2="${yR-6}" stroke="#E3E7ED" stroke-dasharray="3 5"/><text x="${xJ}" y="${yN-18}" text-anchor="middle" font-size="13" font-weight="700" fill="#23272E">6. A classificação</text>
+      <text x="${xJ}" y="${yN}" text-anchor="middle" font-size="11.5" fill="#5E6672">o livro segue por um ramo</text></g>`;
+    s+=`<circle cx="${W-mR+10}" cy="${cy+140}" r="130" fill="url(#c2luz)"/>`;
+    // as faixas
+    const faixas=[];
+    fl.forEach((f,i)=>{const a=nos[f.de],b=nos[f.para],w=Math.max(1.6,40*f[per]/fmx),pa=pos(f.de),pb=pos(f.para),volta=pb<pa;
+      const x1=a.x+bar,y1=a.y,x2=b.x,y2=b.y;let d,cor;
+      if(volta){const yb=Math.min(yR-34,cy+Math.max(a.h,b.h)/2+22+((i%3)*10));d=`M ${a.x+bar/2} ${a.y+a.h/2} C ${a.x+bar/2} ${yb}, ${b.x+bar/2} ${yb}, ${b.x+bar/2} ${b.y+b.h/2}`;cor="#C2410C"}
+      else{const mx_=(x1+x2)/2;d=`M ${x1} ${y1} C ${mx_} ${y1}, ${mx_} ${y2}, ${x2} ${y2}`;cor=f.para==="arquivo"?"url(#c2fe)":f.para==="farol"?"url(#c2ff)":"rgba(59,123,196,.28)"}
+      faixas.push({f,d,volta});
+      s+=`<path class="alvo c2-f" data-i="${faixas.length-1}" d="${d}" fill="none" stroke="${cor}" stroke-width="${w.toFixed(1)}" stroke-linecap="round" ${volta?`stroke-dasharray="6 6" stroke-opacity=".55"`:""}/>`});
+    // os nós
+    const repres=(()=>{const em=ETA.map(e=>[e[0],cnt[e[0]]||0]),tot=em.reduce((a,b)=>a+b[1],0),top=em.sort((a,b)=>b[1]-a[1])[0];return tot&&top[1]/tot>.4?{k:top[0],p:top[1]/tot}:null})();
+    Object.entries(nos).forEach(([k,o])=>{const aqui=alvo&&alvo.etapa===k,term=k==="arquivo"||k==="farol";
+      let corpo=`<rect class="foco" x="${o.x}" y="${o.y-o.h/2}" width="${bar}" height="${o.h}" rx="6" fill="${k==="arquivo"?"#B8862B":k==="farol"?"#1F5B99":k==="chegada"?"#9AA6B5":"#2E5E94"}" ${aqui?'stroke="#0F2E52" stroke-width="3"':""}/>`;
+      if(term){const xs=L.filter(x=>x.etapa===k),c=conta(xs,k==="arquivo"?"selo":"estrela");let yy=o.y-o.h/2;
+        corpo=["ouro","prata","bronze","sem"].map(z=>{const hh=xs.length?o.h*(c[z]||0)/xs.length:0;const r=`<rect x="${o.x}" y="${yy}" width="${bar}" height="${hh}" fill="${COR[z]}"/>`;yy+=hh;return r}).join("")+
+          `<rect class="foco" x="${o.x}" y="${o.y-o.h/2}" width="${bar}" height="${o.h}" rx="6" fill="none" stroke="${aqui?"#0F2E52":"rgba(0,0,0,.08)"}" stroke-width="${aqui?3:1}"/>`;
+        const lb=["ouro","prata","bronze","sem"].filter(z=>c[z]).map(z=>`${z} ${N(c[z])}`).join(" · ");
+        s+=`<g class="alvo ${alvo&&!aqui?"apagado":""}" tabindex="0" data-k="${k}">${corpo}
+          <text x="${o.x-14}" y="${o.y-8}" text-anchor="end" font-family="Georgia,serif" font-size="26" font-weight="700" fill="${k==="arquivo"?"#8A6415":"#1F5B99"}">${N(o.n)}</text>
+          <text x="${o.x-14}" y="${o.y+12}" text-anchor="end" font-size="13" font-weight="700" fill="#23272E">${E(o.nome)}</text>
+          <text x="${o.x-14}" y="${o.y+29}" text-anchor="end" font-size="11.5" fill="#5E6672">${E(o.det)}</text>
+          <text x="${o.x-14}" y="${o.y+45}" text-anchor="end" font-size="11" fill="#5E6672">${E(lb)}</text>${aqui?`<text x="${o.x-14}" y="${o.y-40}" text-anchor="end" font-size="12" font-weight="700" fill="#1F5B99">este livro</text>`:""}</g>`;
+      }else{
+        s+=`<g class="alvo ${alvo&&!aqui?"apagado":""}" tabindex="0" data-k="${k}">${corpo}
+          <line x1="${o.x+bar/2}" y1="${yN+10}" x2="${o.x+bar/2}" y2="${o.y-o.h/2-6}" stroke="#E3E7ED"/>
+          <text x="${o.x+bar/2}" y="${yN-18}" text-anchor="middle" font-family="Georgia,serif" font-size="${o.n>999?26:28}" font-weight="700" fill="${o.n?"#23272E":"#A3AAB4"}">${N(o.n)}</text>
+          <text x="${o.x+bar/2}" y="${yN}" text-anchor="middle" font-size="11.5" fill="#5E6672">${k==="chegada"?"chegaram no período":"livros"}</text>
+          <line x1="${o.x+bar/2}" y1="${o.y+o.h/2+6}" x2="${o.x+bar/2}" y2="${yR-20}" stroke="#E3E7ED"/>
+          <text x="${o.x+bar/2}" y="${yR}" text-anchor="middle" font-size="13" font-weight="700" fill="#23272E">${E(o.nome)}</text>
+          <text x="${o.x+bar/2}" y="${yR+17}" text-anchor="middle" font-size="11.5" fill="#5E6672">${E(o.det)}</text>${aqui?`<text x="${o.x+bar/2}" y="${yN-46}" text-anchor="middle" font-size="12" font-weight="700" fill="#1F5B99">este livro</text>`:""}</g>`}});
+    // a volta à Biblioteca
+    const A=nos.arquivo,Fa=nos.farol;
+    s+=`<path d="M ${Fa.x+bar} ${Fa.y} C ${W-mR+26} ${Fa.y}, ${W-mR+26} ${A.y}, ${A.x+bar} ${A.y}" fill="none" stroke="#8E99A6" stroke-width="1.6" stroke-dasharray="4 5" marker-end=""/>
+      <text x="${W-mR+30}" y="${(A.y+Fa.y)/2}" font-size="11.5" fill="#5E6672" transform="rotate(90 ${W-mR+30} ${(A.y+Fa.y)/2})" text-anchor="middle">ao encerrar, volta à Biblioteca, arquivado</text>`;
+    // a represa anotada
+    if(repres){const o=nos[repres.k],xs=L.filter(x=>x.etapa===repres.k),idx=ETA.findIndex(e=>e[0]===repres.k),prox=ETA[idx+1]?ETA[idx+1][0]:null;
+      const ida=prox?(F.find(f=>f.de===repres.k&&f.para===prox)||{})[per]||0:0,volta=prox?(F.find(f=>f.de===prox&&f.para===repres.k)||{})[per]||0:0;
+      const bw=Math.min(320,colW*1.7),bx=Math.max(8,o.x+bar/2-bw/2),by=8;
+      s+=`<g pointer-events="none"><circle cx="${o.x+bar/2}" cy="${o.y}" r="${o.h/2+16}" fill="none" stroke="#C2410C" stroke-opacity=".35" stroke-width="2" stroke-dasharray="2 5"/>
+        <line x1="${o.x+bar/2}" y1="${by+(volta?78:58)}" x2="${o.x+bar/2}" y2="${yN-46}" stroke="#F3C9AE" stroke-width="1.5"/>
+        <rect x="${bx}" y="${by}" width="${bw}" height="${volta?78:58}" rx="10" fill="#FFF3EC" stroke="#F3C9AE"/>
+        <text x="${bx+12}" y="${by+21}" font-size="12.5" font-weight="700" fill="#C2410C">Represa: ${PCT(o.n,ETA.reduce((a,e)=>a+(cnt[e[0]]||0),0))} da linha está aqui</text>
+        <text x="${bx+12}" y="${by+39}" font-size="11.5" fill="#7A3A12">parados há ${dd(mediana(xs.map(x=>DIAS(x.desde))))} (mediana)</text>
+        ${volta?`<text x="${bx+12}" y="${by+57}" font-size="11.5" fill="#7A3A12">vai e volta: ${N(ida)} foram à ${E(ETA[idx+1][1])} e ${N(volta)} voltaram</text>`:""}</g>`}
+    // a trajetória do livro buscado
+    if(alvo&&traj&&traj.length){const pts=[];traj.forEach(p=>{const k=p.para,o=nos[k];if(o)pts.push([o.x+bar/2,o.y,p.em,k])});
+      if(pts.length>1)s+=`<polyline points="${pts.map(p=>p[0]+","+p[1]).join(" ")}" fill="none" stroke="#0F2E52" stroke-width="3" stroke-linejoin="round" stroke-dasharray="1 0" opacity=".9"/>`;
+      pts.forEach((p,i)=>{s+=`<circle cx="${p[0]}" cy="${p[1]}" r="${i===pts.length-1?9:6}" fill="${i===pts.length-1?"#1F5B99":"#fff"}" stroke="#0F2E52" stroke-width="2.5"/>`})}
+    s+=`<g id="c2-part"></g></svg>`;
+    el.innerHTML=s;
+    // as dicas e os cliques
+    el.querySelectorAll("g.alvo").forEach(g=>{const k=g.dataset.k,o=nos[k];
+      const xs=k==="chegada"?[]:L.filter(x=>x.etapa===k),saem=F.filter(f=>f.de===k&&f[per]).sort((a,b)=>b[per]-a[per]),entram=F.filter(f=>f.para===k).reduce((a,f)=>a+f[per],0);
+      const nomeDe=q=>q==="arquivo"?"o arquivo (Eldorado)":q==="farol"?"o Farol":((ETA.find(e=>e[0]===q)||[,q])[1]);
+      const t=k==="chegada"?`<b class="t">Chegada</b>Os achados aceitos que viraram livro no período.${grade([["chegaram",N(o.n)]])}`
+        :`<b class="t">${E(o.nome)}</b>${E(o.det)}${grade([["parte da linha",PCT(xs.length,L.length)],...resumoGrupo(xs),["entraram no período",N(entram)],["saíram no período",N(saem.reduce((a,f)=>a+f[per],0))]])}
+          ${saem.length?`<div class="x">Para onde vão: ${saem.slice(0,3).map(f=>`${E(nomeDe(f.para))} ${N(f[per])}`).join(" · ")}</div>`:""}<div class="x">Clique para ver a lista</div>`;
+      g.addEventListener("mousemove",ev=>dica(ev,t));g.addEventListener("mouseleave",semdica);
+      if(k!=="chegada")g.addEventListener("click",()=>gaveta(o.nome,"na esteira",xs));g.addEventListener("keydown",ev=>{if(ev.key==="Enter")g.dispatchEvent(new Event("click"))})});
+    el.querySelectorAll("path.c2-f").forEach(p=>{const {f,volta}=faixas[+p.dataset.i],nm=q=>q==="chegada"?"a chegada":q==="arquivo"?"o Eldorado (arquivo)":q==="farol"?"o Farol":(ETA.find(e=>e[0]===q)||[,q])[1];
+      const t=`<b class="t">${E(nm(f.de))} → ${E(nm(f.para))}</b>${volta?"Uma volta: o livro retornou a uma etapa anterior.":""}${grade([["nos últimos 7 dias",N(f.sete_dias)],["nas últimas 24 h",N(f.um_dia)]])}`;
+      p.addEventListener("mousemove",ev=>{dica(ev,t);p.style.strokeOpacity=1});p.addEventListener("mouseleave",()=>{semdica();p.style.strokeOpacity=""})});
+    particulas(el,faixas)}
+  // ---------- o fluxo vivo: pontos que correm pelas faixas, na proporção do movimento das últimas 24 h
+  function particulas(el,faixas){if(anim)cancelAnimationFrame(anim);if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+    const g=el.querySelector("#c2-part"),ps=[];const paths=el.querySelectorAll("path.c2-f");
+    faixas.forEach((fx,i)=>{const n=Math.min(10,Math.ceil(fx.f.um_dia/30));if(!n||fx.volta)return;const p=paths[i],len=p.getTotalLength();
+      for(let j=0;j<n;j++){const c=document.createElementNS("http://www.w3.org/2000/svg","circle");c.setAttribute("r","2.6");c.setAttribute("fill",fx.f.para==="farol"?"#1F5B99":fx.f.para==="arquivo"?"#B8862B":"#3B7BC4");g.appendChild(c);ps.push({c,p,len,o:j/n})}});
+    let t0=null;const passo=t=>{if(!t0)t0=t;const s=(t-t0)/9000;ps.forEach(q=>{const pt=q.p.getPointAtLength(((s+q.o)%1)*q.len);q.c.setAttribute("cx",pt.x);q.c.setAttribute("cy",pt.y)});anim=requestAnimationFrame(passo)};
+    anim=requestAnimationFrame(passo)}
+  // ---------- a gaveta
+  let G=[],mostrar=150;
+  function gaveta(titulo,onde,xs){semdica();G=xs;mostrar=150;$("c2-gt").textContent=titulo;$("c2-gs").textContent=`${N(xs.length)} livros ${onde} · clique num livro para ver a trajetória dele`;$("c2-gq").value="";listar();$("c2-gaveta").classList.add("on");$("c2-gq").focus()}
+  function listar(){const q=$("c2-gq").value.trim().toLowerCase(),o=$("c2-go").value;
+    let xs=G.filter(x=>!q||(x.titulo||"").toLowerCase().includes(q)||(x.codigo||"").toLowerCase().includes(q));
+    xs.sort(o==="tempo"?(a,b)=>(DIAS(b.desde)||0)-(DIAS(a.desde)||0):o==="prazo"?(a,b)=>(a.prazo||"9999").localeCompare(b.prazo||"9999"):(a,b)=>(a.titulo||"").localeCompare(b.titulo||""));
+    $("c2-gl").innerHTML=xs.slice(0,mostrar).map(x=>`<div class="li" data-id="${E(x.id)}"><b>${E(x.titulo)}</b><span class="d">${dd(DIAS(x.desde))} aqui</span>
+      <div class="cs">${x.codigo?`<em>${E(x.codigo)}</em>`:""}${x.prazo?`<em>prazo ${E(String(x.prazo).slice(0,10))}</em>`:""}${x.aberta?"<em>aberta</em>":""}${x.estrela&&x.estrela!=="sem"?`<em>estrela ${E(x.estrela)}</em>`:""}${x.selo&&x.selo!=="sem"?`<em>selo ${E(x.selo)}</em>`:""}</div></div>`).join("")
+      +(xs.length>mostrar?`<button class="mais" id="c2-mais">Mostrar mais ${N(Math.min(150,xs.length-mostrar))} de ${N(xs.length-mostrar)}</button>`:"")||'<p style="padding:14px;color:#5E6672">Nenhum livro com esse filtro.</p>';
+    $("c2-gl").querySelectorAll(".li").forEach(r=>r.addEventListener("click",()=>{selecionar(r.dataset.id);fechar()}));
+    const m=$("c2-mais");if(m)m.addEventListener("click",()=>{mostrar+=150;listar()})}
+  const fechar=()=>$("c2-gaveta").classList.remove("on");
+  // ---------- o livro individual: a trajetória
+  function selecionar(id){sel=id;traj=null;const x=L.find(y=>y.id===id);desenhar();if(!x)return;
+    fetch("dados/cartorio/"+encodeURIComponent(id)+".json?v="+AGORA).then(r=>r.ok?r.json():null).then(fi=>{traj=(fi&&fi.relatorio)||[];desenhar()}).catch(()=>{});
+    $("cl2").scrollIntoView({behavior:"smooth",block:"start"})}
+  function cartao(){const x=sel?L.find(y=>y.id===sel):null,b=$("c2-livro");if(!x){b.classList.remove("on");return}
+    const nomeE=k=>k==="arquivo"?"Fica no Eldorado":k==="farol"?"Vai ao Farol":(ETA.find(e=>e[0]===k)||[,k])[1];
+    const deg=(DEG.find(d=>d[0]===x.degrau)||[,"sem registro"])[1];
+    const tr=(traj||[]).map((p,i,a)=>`<span class="${i===a.length-1?"ag":""}">${E(nomeE(p.para))} · ${E(String(p.em||"").slice(8,10)+"/"+String(p.em||"").slice(5,7))}</span>`).join("");
+    b.innerHTML=`<div><h3>${E(x.titulo)}</h3><div class="m">${x.codigo?`<code>${E(x.codigo)}</code> · `:""}na escada: ${E(deg)} · agora: ${E(nomeE(x.etapa))}, há ${dd(DIAS(x.desde))}${x.aberta?" · inscrição aberta":""}${x.estrela&&x.estrela!=="sem"?" · estrela "+E(x.estrela):""}${x.selo&&x.selo!=="sem"?" · selo "+E(x.selo):""}</div>
+      ${traj?`<div class="c2-traj">${tr||"<span>sem passagens registradas</span>"}</div>`:'<div class="m">carregando a trajetória…</div>'}</div><button class="c2-btn" type="button" id="c2-sair">Toda a esteira</button>`;
+    b.classList.add("on");$("c2-sair").addEventListener("click",()=>{sel=null;traj=null;$("c2-q").value="";desenhar()})}
+  function duas(t,larg){const c=Math.max(8,Math.floor(larg/7.2));if(t.length<=c)return [t];const p=t.split(" ");let a="";while(p.length&&(a+" "+p[0]).trim().length<=c)a=(a+" "+p.shift()).trim();return [a,p.join(" ")]}
+  function desenhar(){kpis();escada();fluxo();cartao()}
+  // ---------- os controles e o teclado
+  const q=$("c2-q");
+  const buscar=v=>{v=(v||"").trim().toLowerCase();if(!v){sel=null;traj=null;desenhar();return}
+    const x=L.find(y=>y.id.toLowerCase()===v||(y.codigo||"").toLowerCase()===v)||L.find(y=>(y.titulo||"").toLowerCase()===v)||L.find(y=>(y.titulo||"").toLowerCase().includes(v));if(x)selecionar(x.id)};
+  q.addEventListener("change",()=>buscar(q.value));q.addEventListener("keydown",e=>{if(e.key==="Enter")buscar(q.value)});
+  $("c2-todos").addEventListener("click",()=>{q.value="";sel=null;traj=null;desenhar()});
+  $("c2-per").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{per=b.dataset.p;$("c2-per").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));fluxo()}));
+  $("c2-gx").addEventListener("click",fechar);$("c2-gq").addEventListener("input",()=>{mostrar=150;listar()});$("c2-go").addEventListener("change",listar);
+  document.addEventListener("keydown",e=>{const vis=$("cl2").offsetParent!==null;if(!vis)return;
+    if(e.key==="Escape"){if($("c2-gaveta").classList.contains("on"))fechar();else if(sel){sel=null;traj=null;q.value="";desenhar()}}
+    else if(e.key==="/"&&document.activeElement.tagName!=="INPUT"){e.preventDefault();q.focus()}
+    else if((e.key==="ArrowRight"||e.key==="ArrowLeft")&&document.activeElement.tagName!=="INPUT"){const gs=[...document.querySelectorAll("#c2-fluxo g.alvo")];foco=Math.max(0,Math.min(gs.length-1,foco+(e.key==="ArrowRight"?1:-1)));gs[foco]&&gs[foco].focus()}});
+  let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>{if($("cl2").offsetParent!==null)desenhar()},180)});
+  new MutationObserver(()=>{if($("cl2").offsetParent!==null&&L.length&&!$("c2-fluxo").innerHTML)desenhar()}).observe(document.body,{attributes:true,subtree:true,attributeFilter:["class"]});
+  fetch("dados/cartorio.json?v="+AGORA).then(r=>r.ok?r.json():null).then(D=>{
+    L=((D&&D.certidoes)||[]).map(x=>({id:x.id,titulo:x.titulo||x.id,codigo:x.codigo,etapa:x.etapa,degrau:x.degrau,selo:x.selo,estrela:x.estrela,aberta:x.aberta,prazo:x.prazo,desde:x.desde}));
+    F=(D&&D.fluxos)||[];
+    $("c2-lista").innerHTML=L.slice(0,5000).map(x=>`<option value="${E(x.titulo)}">${E(x.codigo||"")}</option>`).join("");
+    if($("cl2").offsetParent!==null)desenhar(); else kpis();
+  }).catch(()=>{$("c2-fluxo").innerHTML='<p style="color:#5E6672">A esteira aparece quando o Cartório publicar os dados.</p>'});
 })();
 </script>
+
 
 <div class="cards" id="car-cards"></div>
 
