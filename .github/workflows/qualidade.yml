@@ -40,8 +40,9 @@ jobs:
           # Qualidade terminava "cancelada"): cada teste tem 4 minutos; o que travar falha com o ponto onde parou
           pytest -q -p no:cacheprovider -rfE --timeout=240 --timeout-method=thread --durations=15 2>&1 | tee /tmp/bateria.txt && exit 0
           s=$?
-          grep -E "^(FAILED|ERROR) " /tmp/bateria.txt | head -25 | while read -r l; do echo "::error title=teste::${l:0:900}"; done
+          grep -E "^(FAILED|ERROR)[ :]" /tmp/bateria.txt | head -25 | while read -r l; do echo "::error title=teste::${l:0:900}"; done
           grep -E "^E  " /tmp/bateria.txt | head -15 | while read -r l; do echo "::warning title=detalhe::${l:0:600}"; done
           grep -E "Timeout|^  File .*testes/" /tmp/bateria.txt | head -20 | while read -r l; do echo "::warning title=parou em::${l:0:600}"; done
           grep -E "^[0-9.]+s (call|setup)" /tmp/bateria.txt | head -15 | while read -r l; do echo "::notice title=lento::${l:0:300}"; done
+          tail -12 /tmp/bateria.txt | while read -r l; do [ -n "$l" ] && echo "::warning title=fim da bateria::${l:0:500}"; done
           exit $s
