@@ -47,50 +47,90 @@ def _contexto(dados: Path, diario):
     return _contexto_pilotos({"dados": str(dados), "modulos": "config/modulos.toml", "intervalo_s": 1.0}, SimpleNamespace(diario=diario))
 
 
-def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_s: float = 180) -> None:
-    """O Interceptador: um livro por vez, pelo plano de voo, sem parar (a fila é refeita a cada volta)."""
+PARALELOS_INTERCEPTADOR = 5   # 5 livros em paralelo (titular, 25/10/2026), cada um autorizado pelo Comandante (a carga até 85%)
+
+
+def _voo_interceptador(dados: Path, eventos: Path, parar: threading.Event, k: int, lv_id: str, base: dict | None, tempo_livro_s: float) -> None:
+    """Um voo do Interceptador: o seu diário, a sua conexão com a Biblioteca e a sua vaga da IA."""
     from ...motores.descoberta.metabusca import Metabusca
-    from ...motores.pilotos.interceptador import Interceptador, fila
+    from ...motores.pilotos.interceptador import Interceptador, carregar
+    from ..comandante.biblioteca import registrar_tentativa
+    from ..comandante.pilotos import autorizar, pousou
+    from ..nucleo.eventos import Diario
     from ..nucleo.ia import IA
     from .encaminhamento import Encaminhamento
     from .rede import rede_atual
+    diario = Diario(eventos, f"interceptador-{k}")
+    dados_, con, escada, registro = _contexto(dados, diario)
+    try:
+        livros = carregar(con, [lv_id])
+        if not livros or autorizar("interceptador", dados_, diario, parar, alvo=lv_id, titulo=livros[0].titulo or "") is None:
+            return
+        ia, rede = IA(cargo_nome="interceptador", vaga=k), rede_atual(dados_)
+        mb = Metabusca(buscar=escada.buscar)
+
+        def buscar_links(q: str, mb=mb) -> list[str]:
+            try:
+                return [p.link for p in mb.consultar(q, limite=10)[0]]
+            except Exception:  # noqa: BLE001
+                return []
+        enc = Encaminhamento(con, diario, registro, Interceptador(con, diario, escada, metabusca=buscar_links, ia=ia if ia.disponivel() else None), rede)
+        SITUACAO[f"interceptador-{k}"] = {"livro": lv_id, "titulo": livros[0].titulo, "desde": time.time()}
+        sinal(diario, "interceptador", f"em voo ({k + 1} de {PARALELOS_INTERCEPTADOR}): {livros[0].titulo}")
+        try:
+            _quem, achados = enc.encaminhar(livros[0], time.monotonic() + tempo_livro_s)
+            for a in (achados if isinstance(achados, list) else [achados] if achados else []):
+                ENTREGAS["interceptador"].put(a)
+        finally:
+            if base:
+                registrar_tentativa(diario, base)       # a tentativa de completar a base (no máximo 2, com 30 minutos entre elas)
+            pousou("interceptador")
+    finally:
+        con.close()
+
+
+def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_s: float = 180) -> None:
+    """O Interceptador: 5 livros em paralelo, pelo plano de voo, sem parar. A fila: primeiro a de completar a base (as
+    abertas incompletas, as recuperáveis, as sem base; 2 tentativas, 30 minutos entre elas); depois a fila de sempre."""
+    from concurrent.futures import ThreadPoolExecutor, wait
+
+    from ...motores.pilotos.interceptador import fila
+    from ..comandante.biblioteca import avaliar
+    from ..comandante.biblioteca import fila as fila_base
+    eventos = Path(getattr(diario, "pasta", "eventos"))
     while not parar.is_set():
         try:
-            dados_, con, escada, registro = _contexto(dados, diario)
+            dados_, con, _escada, _registro = _contexto(dados, diario)
             try:
-                ia, rede = IA(cargo_nome="interceptador"), rede_atual(dados_)
-                mb = Metabusca(buscar=escada.buscar)
-
-                def buscar_links(q: str, mb=mb) -> list[str]:
-                    try:
-                        return [p.link for p in mb.consultar(q, limite=10)[0]]
-                    except Exception:  # noqa: BLE001
-                        return []
-                enc = Encaminhamento(con, diario, registro, Interceptador(con, diario, escada, metabusca=buscar_links,
-                                                                         ia=ia if ia.disponivel() else None), rede)
-                livros = enc.ordenar(fila(con, date.today().isoformat()))[:30]      # uma volta: até 30 livros, depois refaz a fila
-                for lv in livros:
-                    if parar.is_set():
-                        break
-                    from ..comandante.pilotos import autorizar, pousou  # as quatro regras do Comandante (25/10/2026)
-                    if autorizar("interceptador", dados_, diario, parar, alvo=lv.id, titulo=lv.titulo or "") is None:
-                        break
-                    SITUACAO["interceptador"] = {"livro": lv.id, "titulo": lv.titulo, "desde": time.time()}
-                    sinal(diario, "interceptador", f"em voo: {lv.titulo}")
-                    quem, achados = enc.encaminhar(lv, time.monotonic() + tempo_livro_s)
-                    for a in (achados if isinstance(achados, list) else [achados] if achados else []):
-                        ENTREGAS["interceptador"].put(a)
-                    pousou("interceptador")
-                if not livros:
-                    sinal(diario, "interceptador", "aguardando: a fila de livros está vazia")
-                    parar.wait(300)                                   # a fila vazia: espera a próxima passagem trazer livros
+                tem_base = "base_classe" in {r[1] for r in con.execute("PRAGMA table_info(livro_dados)")}
+                base = fila_base(avaliar(con)) if tem_base else []
+                ids_base = {x["id"] for x in base}
+                comuns = [lv.id for lv in fila(con, date.today().isoformat()) if lv.id not in ids_base][:30]
             finally:
                 con.close()
-        except Exception as e:  # noqa: BLE001 — um voo que falha vira registro; o seguinte segue
+            voos = [(x["id"], x) for x in base] + [(i, None) for i in comuns]
+            if not voos:
+                sinal(diario, "interceptador", "aguardando: a fila de livros está vazia")
+                parar.wait(300)
+                continue
+            livres = list(range(PARALELOS_INTERCEPTADOR))
+            with ThreadPoolExecutor(max_workers=PARALELOS_INTERCEPTADOR) as pool:
+                em_voo: dict = {}
+                for lv_id, b in voos:
+                    if parar.is_set():
+                        break
+                    while not livres:
+                        feitos, _ = wait(list(em_voo), return_when="FIRST_COMPLETED")
+                        for f in feitos:
+                            livres.append(em_voo.pop(f))
+                    k = livres.pop(0)
+                    em_voo[pool.submit(_voo_interceptador, dados, eventos, parar, k, lv_id, b, tempo_livro_s)] = k
+                wait(list(em_voo))
+        except Exception as e:  # noqa: BLE001 — uma volta que falha vira registro; a seguinte segue
             diario.emitir("alarme.aberto", "piloto:interceptador", {"gravidade": "media", "modulo": "piloto:interceptador",
-                                                                    "mensagem": f"o voo permanente do Interceptador falhou: {type(e).__name__}: {str(e)[:300]}",
+                                                                    "mensagem": f"a volta do Interceptador falhou: {type(e).__name__}: {str(e)[:200]}",
                                                                     "aberto_em": time.strftime("%Y-%m-%dT%H:%M:%S+00:00", time.gmtime())})
-            parar.wait(120)
+            parar.wait(60)
 
 
 def voar_espiao(dados: Path, diario, parar: threading.Event, orcamento_s: float = 150) -> None:

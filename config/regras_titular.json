@@ -330,6 +330,17 @@
     "testes/test_organizar_livros.py::test_uma_unica_contagem_dos_livros_no_site",
     "testes/test_organizar_livros.py::test_a_modalidade_e_o_objeto_sao_coisas_diferentes"
    ]
+  },
+  {
+   "id": "R26",
+   "data": "2026-10-25",
+   "tema": "base dos livros",
+   "regra": "Todo livro precisa de cinco dados: o site oficial, o site que divulgou, o prazo de inscrição, a esfera e a área de atuação (sem eles não há análise preditiva). O Comandante avalia cada livro a cada passagem e grava a classe e o que buscar. O Interceptador busca o que falta, 5 livros em paralelo (cada um autorizado pelo Comandante, a carga até 85%), no máximo 2 tentativas por livro com pelo menos 30 minutos entre elas; depois da 2ª sem completar, o livro vai ao Claude no Chrome com a lista do que buscar. O que não é oportunidade vai direto ao Chrome. O Chrome valida ou descarta; o não validado é excluído (exclusão lógica). As oportunidades antigas (o arquivo) também são validadas.",
+   "onde": "eldorado/base/comandante/biblioteca.py, eldorado/base/cerebro/pilotos_permanentes.py, eldorado/base/cartorio/analise_externa.py, config/cargos.toml",
+   "travas": [
+    "testes/test_comandante_biblioteca.py::test_a_base_a_fila_as_duas_tentativas_e_o_chrome",
+    "testes/test_comandante_biblioteca.py::test_o_interceptador_voa_5_livros_em_paralelo"
+   ]
   }
  ]
 }

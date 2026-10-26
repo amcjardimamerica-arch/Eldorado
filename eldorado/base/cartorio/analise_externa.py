@@ -28,6 +28,10 @@ INSTRUCOES = (
     "requisito não existe naquele edital (escrita como 'não se aplica a este edital porque…' ou 'não há recurso previsto…'; objeto, "
     "órgão, esfera, território e prazo de inscrição nunca se dispensam). Se o livro não for uma oportunidade válida para a missão, "
     "decida 'descartar' com o motivo. "
+    "A BASE DO LIVRO (titular, 25/10/2026): todo livro precisa de cinco dados: o site oficial, o site que divulgou, o prazo de "
+    "inscrição, a esfera e a área de atuação; a lista 'buscar' de cada livro diz quais faltam. Traga-os com o trecho de prova. "
+    "Se não conseguir validar a oportunidade com esses dados, ou se o livro não for uma oportunidade (um anexo, um resultado, "
+    "uma notícia), decida 'descartar': o livro não validado é excluído. "
     "Registre em 'aprendizado' o que o sistema deveria ter feito para achar sozinho (onde estava a informação, que caminho funcionou).")
 
 
@@ -63,7 +67,9 @@ class Retorno(msgspec.Struct):
 def gerar_lote(con: sqlite3.Connection, hoje: date, maximo: int = 40) -> dict[str, Any]:
     con.row_factory = sqlite3.Row
     livros = []
-    for lv in con.execute("SELECT l.*, d.inscricao_fim, d.situacao_prazo FROM livro l JOIN passaporte p ON p.livro_id = l.id "
+    tem_base = "base_buscar" in {r[1] for r in con.execute("PRAGMA table_info(livro_dados)")}
+    extra = ", d.base_buscar, d.base_classe" if tem_base else ""
+    for lv in con.execute(f"SELECT l.*, d.inscricao_fim, d.situacao_prazo{extra} FROM livro l JOIN passaporte p ON p.livro_id = l.id "
                           "LEFT JOIN livro_dados d ON d.livro_id = l.id WHERE p.fase = 'analise externa' AND l.situacao NOT IN ('excluido', 'unido') "
                           "ORDER BY (d.situacao_prazo = 'aberta') DESC, d.inscricao_fim"):
         certs = I.melhor([dict(c) for c in con.execute("SELECT * FROM certidao WHERE livro_id=? AND situacao IN ('comprovado','dispensado')", (lv["id"],))])
@@ -73,7 +79,9 @@ def gerar_lote(con: sqlite3.Connection, hoje: date, maximo: int = 40) -> dict[st
                        "prazo": lv["situacao_prazo"], "fim_inscricao": lv["inscricao_fim"],
                        "certidoes": [{"item": k, "valor": v["valor"], "trecho": v.get("trecho"), "pagina": v.get("pagina")}
                                      for k, v in sorted(validas.items())],
-                       "faltam": I.faltando(validas)})
+                       "faltam": I.faltando(validas),
+                       # a base do livro (25/10/2026): os dados que o Interceptador não achou em 2 tentativas
+                       "buscar": json.loads(lv["base_buscar"] or "[]") if tem_base else [], "classe": lv["base_classe"] if tem_base else None})
         if len(livros) >= maximo:
             break
     return {"lote": f"lote-{hoje.isoformat()}", "gerado_em": agora(), "instrucoes": INSTRUCOES, "itens_validos": list(I.DOZE),

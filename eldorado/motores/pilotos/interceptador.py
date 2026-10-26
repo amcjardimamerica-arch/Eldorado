@@ -116,6 +116,26 @@ def fila(con: sqlite3.Connection, hoje: str) -> list[Livro]:
     return sorted(saida, key=lambda x: (0 if (x.fim and x.fim >= hoje) else 1, x.fim or "9999", len(x.faltam)))
 
 
+def carregar(con: sqlite3.Connection, ids: list[str]) -> list[Livro]:
+    """Os livros pelo identificador, em qualquer fase (a validação das oportunidades antigas, 25/10/2026)."""
+    if not ids:
+        return []
+    con.row_factory = sqlite3.Row
+    marc = ",".join("?" * len(ids))
+    tentadas: dict[str, set[int]] = {}
+    for r in con.execute(f"SELECT livro_id, ferramenta FROM tentativa WHERE ferramenta LIKE 'abordagem %' AND livro_id IN ({marc})", ids):
+        tentadas.setdefault(r["livro_id"], set()).add(int(r["ferramenta"].split()[1]))
+    certs: dict[str, list[dict]] = {}
+    for c in con.execute(f"SELECT * FROM certidao WHERE situacao IN ('comprovado','dispensado') AND livro_id IN ({marc})", ids):
+        certs.setdefault(c["livro_id"], []).append(dict(c))
+    por_id = {}
+    for r in con.execute(f"SELECT l.id, l.titulo, l.orgao, l.link_oficial, l.link_divulgacao, l.estrela, d.inscricao_fim, d.municipio, l.uf FROM livro l "
+                         f"JOIN livro_dados d ON d.livro_id = l.id WHERE l.id IN ({marc})", ids):
+        por_id[r["id"]] = Livro(r["id"], r["titulo"] or "", r["orgao"], r["link_oficial"], r["link_divulgacao"], r["estrela"] or "sem", r["inscricao_fim"],
+                                I.melhor(certs.get(r["id"], [])), tentadas.get(r["id"], set()), r["municipio"], r["uf"])
+    return [por_id[i] for i in ids if i in por_id]
+
+
 class Interceptador:
     def __init__(self, biblioteca: sqlite3.Connection, diario: Diario, escada: Escada, ponte: Escada | None = None,
                  metabusca: Callable[[str], list[str]] | None = None, arquivo: str = "https://web.archive.org", ia=None):

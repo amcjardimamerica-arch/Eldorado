@@ -4,7 +4,7 @@
 # cargo mudam aqui, sem mexer nos outros (o conceito do "cargo de piloto" do Eldorado0).
 
 [servidor]
-vagas = 3                       # uma por cargo
+vagas = 7                       # o Comandante (1), o Espião (1) e o Interceptador (5 voos em paralelo, 25/10/2026)
 contexto_por_vaga = 8192
 
 [cargo.comandante]
@@ -29,6 +29,7 @@ instrucoes = "Você é o Espião do Eldorado: descobre oportunidades novas para 
 memoria = true                  # o contexto do Arquivo do Cérebro em cada pedido
 memoria_itens = 5
 vaga = 2
+vagas = [2, 3, 4, 5, 6]         # 5 voos em paralelo, cada um na sua vaga
 ocupante = "Qwen3-8B"
 temperatura = 0.1
 maximo_tokens = 700

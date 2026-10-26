@@ -100,11 +100,14 @@ def memoria_do_cerebro(pedido: str, limite: int = 5) -> list[str]:
 
 
 class IA:
-    def __init__(self, url: str | None = None, tempo_limite: float = 240.0, cargo_nome: str | None = None):
+    def __init__(self, url: str | None = None, tempo_limite: float = 240.0, cargo_nome: str | None = None, vaga: int | None = None):
         self.url = (url or os.environ.get("ELDORADO_IA_URL") or URL_PADRAO).rstrip("/")
         self.tempo_limite = tempo_limite
         self._ok: bool | None = None
-        self.cargo_nome, self.cargo = cargo_nome, cargo(cargo_nome)   # a vaga fixa do cargo: sem interromper os outros
+        self.cargo_nome, self.cargo = cargo_nome, dict(cargo(cargo_nome))   # a vaga fixa do cargo: sem interromper os outros
+        vagas = self.cargo.get("vagas") or ([self.cargo["vaga"]] if "vaga" in self.cargo else [])
+        if vagas:                                         # o cargo com várias vagas (o Interceptador, 5 voos em paralelo)
+            self.cargo["vaga"] = vagas[(vaga or 0) % len(vagas)] if vaga is not None or len(vagas) > 1 else vagas[0]
 
     def disponivel(self) -> bool:
         if self._ok is None:

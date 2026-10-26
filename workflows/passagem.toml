@@ -156,6 +156,11 @@ tipo = "eldorado.base.comandante.organizar:no_organizar_livros"
 parametros = { dados = "dados" }
 
 [[no]]
+id = "atualizar_biblioteca"
+tipo = "eldorado.base.comandante.biblioteca:no_atualizar_biblioteca"
+parametros = { dados = "dados" }
+
+[[no]]
 id = "comandante_escolher"
 tipo = "eldorado.base.comandante.escolher:no_comandante_escolher"
 parametros = { dados = "dados" }
@@ -383,5 +388,10 @@ para = "organizar_livros"
 saida = "ordem"
 [[conexao]]
 de = "organizar_livros"
+para = "atualizar_biblioteca"
+saida = "ordem"
+# o Comandante atualiza a Biblioteca (a base de cada livro, a fila de completar, o Chrome para os esgotados)
+[[conexao]]
+de = "atualizar_biblioteca"
 para = "auditar"
 saida = "ordem"

@@ -31,7 +31,7 @@ TRANSICOES = {   # a linha de produção do Cartório (titular, 22/10/2026): uma
     "validacao": {"preparacao", "analise externa", "farol", "arquivo"},         # 4 → 3, → 5, → Farol, → arquivo
     "analise externa": {"validacao", "farol", "arquivo"},                       # 5 → 4 (o Chrome trouxe informação), → Farol, → arquivo
     "farol": {"arquivo"},                                                       # a oportunidade encerrou: a estrela vira o selo do livro
-    "arquivo": {"recepcao"},                                                    # nova oportunidade: volta à linha pela recepção
+    "arquivo": {"recepcao", "analise externa"},   # nova oportunidade: volta pela recepção; a antiga sem base vai ao Chrome (25/10/2026)
 }
 COLUNAS_ACHADO = {"id", "motor", "encontrado_em", "publicado_em", "link_divulgacao", "link_oficial", "titulo", "dados",
                   "veio_de_copia_arquivada", "pista"}

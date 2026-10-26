@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .._sqlite import abrir as _abrir
 
-VERSAO = 12
+VERSAO = 13
 
 DDL_V2 = r"""
 CREATE TABLE livro_dados (livro_id TEXT PRIMARY KEY REFERENCES livro(id),
@@ -194,8 +194,15 @@ CREATE INDEX IF NOT EXISTS livro_dados_codigo ON livro_dados(codigo)
 DDL_V12 = r"""
 ALTER TABLE empresa ADD COLUMN ficha TEXT
 """
+# 13: a base de cada livro (titular, 25/10/2026): a classe, o que buscar, as tentativas do Interceptador e a última
+DDL_V13 = r"""
+ALTER TABLE livro_dados ADD COLUMN base_classe TEXT;
+ALTER TABLE livro_dados ADD COLUMN base_buscar TEXT;
+ALTER TABLE livro_dados ADD COLUMN base_tentativas INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE livro_dados ADD COLUMN base_ultima TEXT
+"""
 
-MIGRACOES = {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7, 8: DDL_V8, 9: DDL_V9, 10: DDL_V10, 11: DDL_V11, 12: DDL_V12}   # 2: a decupagem (livro_dados); 3: o registro do expurgo; 4: a legislação (livro_lei);
+MIGRACOES = {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7, 8: DDL_V8, 9: DDL_V9, 10: DDL_V10, 11: DDL_V11, 12: DDL_V12, 13: DDL_V13}   # 2: a decupagem (livro_dados); 3: o registro do expurgo; 4: a legislação (livro_lei);
 # 5: as 5 fases do Cartório no passaporte (titular, 22/10/2026); 6: o arquivo (o livro aguardando nova oportunidade);
 # 7: a origem decidida por livro (confirmado, candidato, ausente) e o motivo (titular, 23/10/2026);
 # 9: as empresas (a antiga base Especial) dentro da Biblioteca;
@@ -203,4 +210,4 @@ MIGRACOES = {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7, 8
 
 
 def abrir(caminho: str | Path):
-    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V3 + ";\n" + DDL_V4 + ";\n" + DDL_V5 + ";\n" + DDL_V6 + ";\n" + DDL_V7 + ";\n" + DDL_V8 + ";\n" + DDL_V9 + ";\n" + DDL_V11 + ";\n" + DDL_V12, VERSAO, MIGRACOES)
+    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V3 + ";\n" + DDL_V4 + ";\n" + DDL_V5 + ";\n" + DDL_V6 + ";\n" + DDL_V7 + ";\n" + DDL_V8 + ";\n" + DDL_V9 + ";\n" + DDL_V11 + ";\n" + DDL_V12 + ";\n" + DDL_V13, VERSAO, MIGRACOES)
