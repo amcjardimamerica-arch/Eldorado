@@ -1294,8 +1294,8 @@ box-sizing:border-box;}
 @media (max-width:900px){#v-cartorio .car-mostradores,#v-cartorio .ficha .duas{grid-template-columns:1fr}}
 </style>
 <div class="car-main">
-<h1>Cartório de fontes oficiais</h1>
-<p class="sub">Os motores descobrem; o Cartório certifica. Toda oportunidade com algum dos 12 itens indisponível entra na fila: ele localiza o documento oficial, lê por seções e devolve cada item com trecho e página, ou a dispensa quando o edital não tem aquele requisito. <span id="car-em"></span></p>
+<div hidden style="display:none"><h1>Cartório de fontes oficiais</h1>
+<p class="sub">Os motores descobrem; o Cartório certifica. Toda oportunidade com algum dos 12 itens indisponível entra na fila: ele localiza o documento oficial, lê por seções e devolve cada item com trecho e página, ou a dispensa quando o edital não tem aquele requisito. <span id="car-em"></span></p></div>
 
 <!-- A ESTEIRA DO CARTÓRIO (titular, 26/10/2026; refeita do zero): de margem a margem; a escada da coleta (antes da recepção)
 e a esteira das 5 etapas como diagrama de fluxo, terminando na classificação em dois ramos (fica no Eldorado / vai ao Farol)
@@ -1608,7 +1608,7 @@ de margem a margem, com a dica do cursor, a gaveta da esteira e a trajetória do
 #cl3 .pn{background:var(--p);border:1px solid #E3E7ED;border-radius:18px;padding:20px clamp(14px,1.6vw,26px) 16px;margin-bottom:14px;position:relative}
 #cl3 .pn h3{margin:0;font-family:Georgia,serif;font-size:18px}#cl3 .pn .ps{margin:4px 0 14px;font-size:13px;color:var(--s);max-width:110ch}
 #cl3 .aviso{display:flex;gap:10px;align-items:flex-start;margin:0 0 14px;padding:10px 14px;border-radius:12px;background:var(--alf);border:1px solid #F3C9AE;color:#7A3A12;font-size:13px;line-height:1.45}
-#cl3 .aviso b{color:var(--al)}
+#cl3 .aviso b{color:var(--al);flex:none;white-space:nowrap}
 /* os 12 itens: as colunas de enchimento */
 #cl3 .itens{display:grid;grid-template-columns:repeat(12,minmax(78px,1fr));gap:clamp(6px,.9vw,14px);overflow-x:auto;padding-bottom:4px}
 #cl3 .it{cursor:pointer;border-radius:14px;padding:12px 10px 10px;border:1px solid transparent;text-align:center;outline:none;transition:background .15s,border-color .15s}
@@ -1626,8 +1626,17 @@ de margem a margem, com a dica do cursor, a gaveta da esteira e a trajetória do
 #cl3 .linhas{display:grid;gap:4px}
 #cl3 .ln{display:grid;align-items:center;gap:14px;padding:10px 12px;border-radius:12px;cursor:pointer;border:1px solid transparent;outline:none}
 #cl3 .ln:hover,#cl3 .ln:focus-visible{background:#F4F7FB;border-color:#DCE5F0}
-#cl3 .ab .ln{grid-template-columns:minmax(200px,1.2fr) 3fr 110px 110px minmax(160px,1.1fr)}
-#cl3 .ba .ln{grid-template-columns:minmax(220px,1.3fr) 1.4fr 2.6fr 120px}
+#cl3 .duo{display:grid;grid-template-columns:1.25fr 1fr;gap:14px;align-items:stretch;margin-bottom:14px}
+#cl3 .duo .pn{margin:0;display:flex;flex-direction:column}
+#cl3 .duo .linhas{flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:2px}
+#cl3 .ab .ln{grid-template-columns:minmax(150px,1.05fr) 1.6fr 74px 64px;padding:8px 10px}
+#cl3 .ba .ln{grid-template-columns:minmax(150px,1fr) 1.5fr;padding:8px 10px}
+#cl3 .ln .n .rs{display:block;margin-top:2px;font-size:11px;color:#8A6415;font-weight:500}
+#cl3 .dupla{display:grid;gap:5px}
+#cl3 .fio{display:grid;grid-template-columns:1fr 54px;gap:8px;align-items:center;font-size:11.5px}
+#cl3 .fio .barra{height:12px;border-radius:6px}
+#cl3 .fio b{text-align:right;font-weight:700}
+#cl3 .qtd{font-family:Georgia,serif;font-weight:700;font-size:15px;color:#23272E;margin-left:6px}
 #cl3 .ln .n{font-size:13.5px;font-weight:650;line-height:1.3}#cl3 .ln .n small{display:block;font-weight:400;color:var(--s);font-size:11.5px}
 #cl3 .ln .v{font-family:Georgia,serif;font-size:19px;font-weight:700;text-align:right}#cl3 .ln .v small{display:block;font:400 11px system-ui;color:var(--s)}
 #cl3 .barra{position:relative;height:22px;border-radius:7px;background:var(--tr);overflow:hidden}
@@ -1635,8 +1644,8 @@ de margem a margem, com a dica do cursor, a gaveta da esteira e a trajetória do
 #cl3 .barra .tx{position:absolute;left:8px;top:3px;font-size:11.5px;font-weight:650;color:#23272E;white-space:nowrap}
 #cl3 .chips{display:flex;gap:5px;flex-wrap:wrap}#cl3 .chips em{font-style:normal;font-size:11.5px;padding:2px 8px;border-radius:999px;background:#F1F4F8;white-space:nowrap}
 #cl3 .cab{display:grid;gap:14px;padding:0 12px 6px;font-size:11.5px;color:var(--s)}
-#cl3 .ab .cab{grid-template-columns:minmax(200px,1.2fr) 3fr 110px 110px minmax(160px,1.1fr)}
-#cl3 .ba .cab{grid-template-columns:minmax(220px,1.3fr) 1.4fr 2.6fr 120px}
+#cl3 .ab .cab{grid-template-columns:minmax(150px,1.05fr) 1.6fr 74px 64px;padding:0 10px 6px}
+#cl3 .ba .cab{grid-template-columns:minmax(150px,1fr) 1.5fr;padding:0 10px 6px}
 #cl3 .regua{position:relative;height:30px;border-radius:7px;background:linear-gradient(90deg,#FBEAE7 0,#FFF7E8 35%,#EEF6F0 100%)}
 #cl3 .regua .pt{position:absolute;top:6px;width:18px;height:18px;margin-left:-9px;border-radius:50%;border:3px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.25)}
 #cl3 .regua .pt.it{background:var(--ok)}#cl3 .regua .pt.st{background:var(--az)}
@@ -1648,6 +1657,7 @@ de margem a margem, com a dica do cursor, a gaveta da esteira e a trajetória do
 #cl3 .s3-tip .g{display:grid;grid-template-columns:auto auto;gap:2px 14px;margin-top:6px}
 #cl3 .s3-tip .g span:nth-child(odd){color:#AEB7C4}#cl3 .s3-tip .g span:nth-child(even){text-align:right;font-weight:650}
 #cl3 .s3-tip .x{margin-top:7px;color:#AEB7C4;font-size:11.5px}
+@media (max-width:1180px){#cl3 .duo{grid-template-columns:1fr}}
 @media (max-width:980px){#cl3 .s3-topo{grid-template-columns:1fr}#cl3 .s3-kpis{grid-template-columns:repeat(2,1fr)}
  #cl3 .ab .ln,#cl3 .ab .cab,#cl3 .ba .ln,#cl3 .ba .cab{grid-template-columns:1fr;gap:6px}#cl3 .cab{display:none}}
 </style>
@@ -1658,10 +1668,10 @@ de margem a margem, com a dica do cursor, a gaveta da esteira e a trajetória do
   <div class="pn"><h3>Os 12 itens</h3><p class="ps">A coluna é a parte dos livros com o item certificado no documento oficial. O traço vermelho marca a parte das oportunidades abertas que já têm o item.</p>
     <div id="s3-aviso-itens"></div><div class="itens" id="s3-itens"></div>
     <div class="leg"><span><i style="background:#1E7E4B"></i>certificado no documento</span><span><i style="background:#C2410C;height:3px;vertical-align:3px"></i>nas abertas</span><span><i style="background:#E8ECF1"></i>falta</span></div></div>
-  <div class="pn ab"><h3>As abordagens do Interceptador</h3><p class="ps">Na ordem do plano de voo. A barra clara são as tentativas; a azul, as que trouxeram material; o número dourado, os itens que viraram certidão no mesmo livro nas 3 horas seguintes.</p>
-    <div id="s3-aviso-ab"></div><div class="cab"><span>Abordagem</span><span>Tentativas e material</span><span style="text-align:right">Rende material</span><span style="text-align:right">Itens certificados</span><span>O que mais resolve</span></div><div class="linhas" id="s3-ab"></div></div>
-  <div class="pn ba"><h3>Os balcões: de onde vêm os livros</h3><p class="ps">Cada fonte de origem numa linha, da maior para a menor. Na régua, o ponto verde é a parte dos 12 itens certificada; o azul, a parte com o site oficial.</p>
-    <div id="s3-aviso-ba"></div><div class="cab"><span>Balcão</span><span>Livros</span><span>Régua de 0 a 100%</span><span style="text-align:right">Itens certificados</span></div><div class="linhas" id="s3-ba"></div></div>
+  <div class="duo"><div class="pn ab"><h3>As abordagens do Interceptador</h3><p class="ps">Na ordem do plano de voo. A barra clara são as tentativas; a azul, as que trouxeram material; o número dourado, os itens que viraram certidão no mesmo livro nas 3 horas seguintes.</p>
+    <div id="s3-aviso-ab"></div><div class="cab"><span>Abordagem</span><span>Tentativas e material</span><span style="text-align:right">Material</span><span style="text-align:right">Itens</span></div><div class="linhas" id="s3-ab"></div></div>
+  <div class="pn ba"><h3>Os balcões: de onde vêm os livros</h3><p class="ps">Cada fonte de origem, da maior para a menor: quantos livros ela traz, a parte dos 12 itens já certificada (verde) e a parte com o site oficial (azul).</p>
+    <div id="s3-aviso-ba"></div><div class="cab"><span>Balcão e livros</span><span>Itens certificados · site oficial</span></div><div class="linhas" id="s3-ba"></div></div></div>
   <div class="s3-tip" id="s3-tip"></div>
 </section>
 <script>
@@ -1701,10 +1711,10 @@ de margem a margem, com a dica do cursor, a gaveta da esteira e a trajetória do
     // ---- as abordagens
     const mxv=Math.max(1,...abs.map(a=>a.vezes)),enganos=abs.filter(a=>a.vezes>=10&&a.taxa_de_acerto>=.6&&(a.itens||0)/a.vezes<.2);
     $("s3-aviso-ab").innerHTML=enganos.length?`<div class="aviso"><b>Material não é item:</b>&nbsp;${enganos.map(a=>`«${E(a.nome)}» trouxe material em ${P(a.renderam,a.vezes)} das tentativas, mas certificou ${N(a.itens)} item(ns) em ${N(a.vezes)}`).join("; ")}. A abordagem acha a página, mas o documento não tem os itens que faltam.</div>`:"";
-    const lab=$("s3-ab");lab.innerHTML=abs.map((a,i)=>`<div class="ln" data-i="${i}"><div class="n">${E(a.k)}. ${E(a.nome)}<small>${N(a.livros)} livros tentados</small></div>
-      <div class="barra"><i style="width:${(100*a.vezes/mxv).toFixed(1)}%;background:#DCE5F0"></i><i style="width:${(100*a.renderam/mxv).toFixed(1)}%;background:#3B7BC4"></i><span class="tx">${N(a.renderam)} com material · ${N(a.vezes)} tentativas</span></div>
-      <div class="v" style="color:#1F5B99">${P(a.renderam,a.vezes)}<small>rende material</small></div><div class="v" style="color:#8A6415">${N(a.itens)}<small>${a.itens_por_tentativa!=null?a.itens_por_tentativa.toLocaleString("pt-BR")+" por tentativa":""}</small></div>
-      <div class="chips">${Object.entries(a.por_item||{}).slice(0,3).map(([k,n])=>`<em>${E(CURTO[k]||k)} ${N(n)}</em>`).join("")||'<em>nenhum item</em>'}</div></div>`).join("");
+    const lab=$("s3-ab");lab.innerHTML=abs.map((a,i)=>`<div class="ln" data-i="${i}"><div class="n">${E(a.k)}. ${E(a.nome)}<small>${N(a.livros)} livros tentados</small>
+        <span class="rs">${Object.entries(a.por_item||{}).slice(0,2).map(([k,n])=>`${E(CURTO[k]||k)} ${N(n)}`).join(" · ")||"nenhum item certificado"}</span></div>
+      <div class="barra"><i style="width:${(100*a.vezes/mxv).toFixed(1)}%;background:#DCE5F0"></i><i style="width:${(100*a.renderam/mxv).toFixed(1)}%;background:#3B7BC4"></i><span class="tx">${N(a.renderam)} de ${N(a.vezes)}</span></div>
+      <div class="v" style="color:#1F5B99">${P(a.renderam,a.vezes)}</div><div class="v" style="color:#8A6415">${N(a.itens)}<small>${a.itens_por_tentativa!=null?a.itens_por_tentativa.toLocaleString("pt-BR")+"/tent.":""}</small></div></div>`).join("");
     lab.querySelectorAll(".ln").forEach(el=>{const a=abs[+el.dataset.i],ids=new Set(a.livros_ids||[]);
       ligar(el,`<b class="t">${E(a.k)}. ${E(a.nome)}</b>${grade([["tentativas",N(a.vezes)],["livros tentados",N(a.livros)],["com material",`${N(a.renderam)} · ${P(a.renderam,a.vezes)}`],["itens certificados",N(a.itens)],["itens por tentativa",a.itens_por_tentativa!=null?a.itens_por_tentativa.toLocaleString("pt-BR"):"—"]])}
         ${Object.keys(a.por_item||{}).length?`<div class="x">Resolve: ${Object.entries(a.por_item).map(([k,n])=>`${E(k)} ${N(n)}`).join(" · ")}</div>`:""}<div class="x">Clique para ver os livros tentados</div>`,
@@ -1712,10 +1722,9 @@ de margem a margem, com a dica do cursor, a gaveta da esteira e a trajetória do
     // ---- os balcões
     const mxb=Math.max(1,...bals.map(b=>b.certidoes));
     $("s3-aviso-ba").innerHTML=pior?`<div class="aviso"><b>O pior balcão:</b>&nbsp;${E(pior.k)} — ${N(pior.certidoes)} livros, com ${P(pior.ef*pior.certidoes*12,pior.certidoes*12,1)} dos itens certificados e ${P(pior.com_link,pior.certidoes,1)} com o site oficial. É onde está o maior desperdício de leitura.</div>`:"";
-    const lba=$("s3-ba");lba.innerHTML=bals.map((b,i)=>`<div class="ln${b===pior?" pior":""}" data-i="${i}"><div class="n">${E(b.k)}<small>${N(b.resolvidos)} itens certificados · ${N(b.faltavam)} faltam</small></div>
-      <div class="barra"><i style="width:${(100*b.certidoes/mxb).toFixed(1)}%;background:#9FB6D3"></i><span class="tx">${N(b.certidoes)} livros</span></div>
-      <div class="regua">${[25,50,75].map(m=>`<span class="ma" style="left:${m}%"></span>`).join("")}<span class="pt st" style="left:${(100*(b.taxa_link_oficial||0)).toFixed(1)}%"></span><span class="pt it" style="left:${(100*b.ef).toFixed(1)}%"></span></div>
-      <div class="v" style="color:${b.ef<.15?"#C2410C":"#1E7E4B"}">${P(b.ef*b.certidoes*12,b.certidoes*12,1)}<small>dos 12 itens</small></div></div>`).join("");
+    const lba=$("s3-ba");lba.innerHTML=bals.map((b,i)=>`<div class="ln${b===pior?" pior":""}" data-i="${i}"><div class="n">${E(b.k)}<span class="qtd">${N(b.certidoes)}</span><small>livros · ${P(b.certidoes,tot)} da linha</small></div>
+      <div class="dupla"><div class="fio"><div class="barra"><i style="width:${(100*b.ef).toFixed(1)}%;background:${b.ef<.15?"#C2410C":"#1E7E4B"}"></i></div><b style="color:${b.ef<.15?"#C2410C":"#1E7E4B"}">${P(b.ef*b.certidoes*12,b.certidoes*12,1)}</b></div>
+        <div class="fio"><div class="barra"><i style="width:${(100*(b.taxa_link_oficial||0)).toFixed(1)}%;background:#1F5B99"></i></div><b style="color:#1F5B99">${P(b.com_link,b.certidoes,1)}</b></div></div></div>`).join("");
     lba.querySelectorAll(".ln").forEach(el=>{const b=bals[+el.dataset.i];
       ligar(el,`<b class="t">${E(b.k)}</b>${grade([["livros",N(b.certidoes)],["itens certificados",`${N(b.resolvidos)} · ${P(b.ef*b.certidoes*12,b.certidoes*12,1)}`],["itens que faltam",N(b.faltavam)],["com o site oficial",`${N(b.com_link)} · ${P(b.com_link,b.certidoes,1)}`]])}<div class="x">Clique para ver os livros deste balcão</div>`,
         ()=>abrir(b.k,"deste balcão",L.filter(x=>x.balcao===b.k)))});
@@ -1747,14 +1756,156 @@ de margem a margem, com a dica do cursor, a gaveta da esteira e a trajetória do
 <p class="meta">As refeitas são os casos difíceis que voltaram à fila (informação nova, leitor novo ou revisita de 7 dias). Compare safras iguais para medir progresso.</p>
 
 </div>
-<h2>Certidões <span class="meta">(clique para ver os 12 itens)</span></h2>
+<!-- OS LIVROS POR ÁREA (titular, 26/10/2026): as Certidões reorganizadas por área de atuação (pelo código do livro), em duas
+colunas, com o navegador das áreas, os filtros de antes, os 12 quadradinhos de cada livro e o cartão aberto com os 12 itens
+(o valor, o trecho e a página), o parecer, o relatório das etapas, as tentativas, os documentos e a trajetória na esteira. -->
+<style>
+#cl4{--t:#23272E;--s:#5E6672;--p:#FFFFFF;--az:#1F5B99;--ok:#1E7E4B;--di:#1F4F8A;--fa:#C2410C;--ja:#C7CDD5;--tr:#E8ECF1;
+ width:100vw;margin-left:calc(50% - 50vw);padding:26px clamp(16px,3vw,48px) 34px;background:linear-gradient(180deg,#F3F6FA 0,#FBFBFA 260px);color:var(--t);font-variant-numeric:tabular-nums;box-sizing:border-box;position:relative}
+#cl4 *{box-sizing:border-box}
+#cl4 h2{margin:0;font-family:Georgia,serif;font-size:clamp(22px,2vw,28px);border:0;padding:0}
+#cl4 .a4-lead{margin:6px 0 16px;color:var(--s);font-size:14px;max-width:70ch;line-height:1.5}
+#cl4 .a4-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:14px}
+#cl4 .ar{cursor:pointer;background:var(--p);border:1px solid #E3E7ED;border-radius:14px;padding:11px 13px;text-align:left;font:inherit;color:inherit;transition:border-color .15s,box-shadow .15s}
+#cl4 .ar:hover{border-color:#BFD0E6}#cl4 .ar.on{border-color:var(--az);box-shadow:0 0 0 3px rgba(31,91,153,.14)}
+#cl4 .ar b{display:block;font-size:13px;font-weight:700}
+#cl4 .ar .nn{font-family:Georgia,serif;font-size:22px;font-weight:700;line-height:1.1;margin-top:3px}
+#cl4 .ar .mm{font-size:11.5px;color:var(--s);margin-top:2px}
+#cl4 .ar .bb{height:5px;border-radius:3px;background:var(--tr);margin-top:7px;overflow:hidden}#cl4 .ar .bb i{display:block;height:100%;background:var(--ok)}
+#cl4 .a4-ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 16px}
+#cl4 .a4-ctl input,#cl4 .a4-ctl select{font:inherit;font-size:13.5px;padding:10px 12px;border:1px solid #CFD6DF;border-radius:11px;background:#fff;color:var(--t)}
+#cl4 .a4-ctl input[type=search]{flex:1;min-width:240px}
+#cl4 .a4-ctl label{display:flex;gap:6px;align-items:center;font-size:13px;color:var(--s);padding:0 6px}
+#cl4 .a4-conta{font-size:13px;color:var(--s);margin-left:auto}
+#cl4 .grupo{margin:0 0 22px}
+#cl4 .gc{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;padding:0 2px 10px;border-bottom:2px solid #E3E7ED;margin-bottom:12px}
+#cl4 .gc h3{margin:0;font-family:Georgia,serif;font-size:19px}
+#cl4 .gc span{font-size:12.5px;color:var(--s)}#cl4 .gc span b{color:var(--t)}
+#cl4 .col2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#cl4 .lv{background:var(--p);border:1px solid #E3E7ED;border-radius:14px;padding:13px 14px 12px;cursor:pointer;display:grid;grid-template-columns:1fr 58px;gap:6px 12px;transition:border-color .15s,box-shadow .15s;outline:none}
+#cl4 .lv:hover,#cl4 .lv:focus-visible{border-color:#BFD0E6;box-shadow:0 6px 18px rgba(31,91,153,.08)}
+#cl4 .lv h4{margin:0;font-size:14px;line-height:1.35;font-weight:650;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#cl4 .lv .ch{grid-column:1;display:flex;flex-wrap:wrap;gap:5px}
+#cl4 .lv .ch em{font-style:normal;font-size:11px;padding:2px 8px;border-radius:999px;background:#F1F4F8;color:#3B4350;white-space:nowrap}
+#cl4 .lv .ch em.es{background:#FBF2DE;color:#8A6415}#cl4 .lv .ch em.ab{background:#E8F4EC;color:#1E7E4B}#cl4 .lv .ch code{font-size:10.5px;background:#F1F4F8;padding:2px 6px;border-radius:6px}
+#cl4 .lv .dz{grid-column:1;display:grid;grid-template-columns:repeat(12,1fr);gap:3px;margin-top:3px}
+#cl4 .lv .dz i{height:9px;border-radius:2px;background:var(--ja)}#cl4 .lv .dz i.o{background:var(--ok)}#cl4 .lv .dz i.d{background:var(--di)}#cl4 .lv .dz i.f{background:#F1C7B5}
+#cl4 .anel{grid-column:2;grid-row:1/4;align-self:center;width:58px;height:58px}
+#cl4 .lv.aberto{grid-column:1/-1;cursor:default;border-color:var(--az);box-shadow:0 10px 30px rgba(31,91,153,.12)}
+#cl4 .det{grid-column:1/-1;border-top:1px solid #E6EAF0;margin-top:8px;padding-top:12px;display:none}
+#cl4 .lv.aberto .det{display:block}
+#cl4 .det .doze{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+#cl4 .it12{border-radius:11px;padding:9px 11px;font-size:12.5px;line-height:1.4;border:1px solid #E6EAF0;background:#FAFBFC}
+#cl4 .it12 b{display:block;font-size:12px;margin-bottom:2px}
+#cl4 .it12.o{background:#F0F8F3;border-color:#CDE6D6}#cl4 .it12.o b{color:var(--ok)}
+#cl4 .it12.d{background:#EEF3FB;border-color:#CFDDF0}#cl4 .it12.d b{color:var(--di)}
+#cl4 .it12.f b{color:var(--fa)}
+#cl4 .it12 q{display:block;margin-top:4px;color:#5E6672;font-size:11.5px;font-style:italic;quotes:"“" "”"}
+#cl4 .it12 small{display:block;margin-top:3px;color:#8B93A0;font-size:11px}
+#cl4 .det h5{margin:12px 0 6px;font-size:13px}
+#cl4 .det table{width:100%;border-collapse:collapse;font-size:12px}#cl4 .det td,#cl4 .det th{text-align:left;padding:5px 8px;border-bottom:1px solid #EEF1F5;vertical-align:top}
+#cl4 .det .acoes{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+#cl4 .det .acoes button,#cl4 .det .acoes a{font:inherit;font-size:13px;padding:8px 12px;border-radius:10px;border:1px solid #CFD6DF;background:#fff;color:var(--t);cursor:pointer;text-decoration:none}
+#cl4 .det .acoes .pri{background:var(--az);color:#fff;border-color:var(--az)}
+#cl4 .mais{display:block;margin:12px auto 0;font:inherit;font-size:13px;border:1px solid #CFD6DF;background:#fff;border-radius:10px;padding:9px 16px;cursor:pointer}
+#cl4 .a4-tip{position:fixed;z-index:9600;pointer-events:none;background:#1F2630;color:#F3F5F8;border-radius:9px;padding:7px 10px;font-size:12px;opacity:0;transition:opacity .1s;max-width:280px}
+#cl4 .a4-tip.on{opacity:1}
+@media (max-width:900px){#cl4 .col2{grid-template-columns:1fr}#cl4 .det .doze{grid-template-columns:1fr}}
+</style>
+<section id="cl4" aria-label="Os livros por área">
+  <h2>Os livros por área</h2>
+  <p class="a4-lead">Cada livro com os seus 12 itens, agrupado pela área de atuação. Clique numa área para ir até ela; clique num livro para ver os itens com o trecho e a página do documento oficial.</p>
+  <div class="a4-nav" id="a4-nav"></div>
+  <div class="a4-ctl"><input type="search" id="a4-q" placeholder="Buscar por título, órgão, UF ou código">
+    <select id="a4-tipo"><option value="">estrelas e livros</option><option value="estrela">só estrelas</option><option value="livro">só livros</option></select>
+    <select id="a4-balcao"><option value="">todos os balcões</option></select>
+    <select id="a4-sit"><option value="">todas as situações</option><option value="completa">completas</option><option value="interceptador">ao Interceptador</option><option value="chrome">ao Chrome</option></select>
+    <select id="a4-ord"><option value="completo">Mais completos</option><option value="prazo">Prazo mais próximo</option><option value="tempo">Mais tempo parado</option></select>
+    <label><input type="checkbox" id="a4-ab"> só as abertas</label><span class="a4-conta" id="a4-conta"></span></div>
+  <div id="a4-grupos"></div>
+  <div class="a4-tip" id="a4-tip"></div>
+</section>
+<script>
+(function(){
+  const $=i=>document.getElementById(i),N=n=>Number(n||0).toLocaleString("pt-BR"),E=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const DOZE=["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Modalidade","Área de atuação"];
+  const AREA={SAU:"Saúde",ASS:"Assistência social",CUL:"Cultura",ESP:"Esporte",EDU:"Educação",AMB:"Meio ambiente",DHU:"Direitos humanos",CRI:"Criança e adolescente",IDO:"Pessoa idosa",
+    PCD:"Pessoa com deficiência",CTI:"Ciência e tecnologia",ECO:"Trabalho e renda",GER:"Várias áreas"};
+  const ETAPA={recepcao:"Recepção",certificacao:"Certificação",preparacao:"Preparação",validacao:"Validação","analise externa":"Análise externa",farol:"Farol",arquivo:"Arquivo"};
+  let C=[],sel="",mostra={},aberto=null;const tip=$("a4-tip");
+  const area=c=>{const p=String(c.codigo||"").split("·");return AREA[p[1]]?p[1]:"GER"};
+  const sit=(c,k)=>(c.itens||{})[k]?"o":(c.dispensas||{})[k]?"d":(c.faltavam||[]).includes(k)?"f":"j";
+  const nota=c=>DOZE.filter(k=>{const v=sit(c,k);return v==="o"||v==="d"}).length;
+  const anel=n=>{const r=24,cx=29,p=n/12,L=2*Math.PI*r;return `<svg class="anel" viewBox="0 0 58 58"><circle cx="${cx}" cy="${cx}" r="${r}" fill="none" stroke="#E8ECF1" stroke-width="6"/>
+    <circle cx="${cx}" cy="${cx}" r="${r}" fill="none" stroke="${n>=10?"#1E7E4B":n>=6?"#3B7BC4":"#C2410C"}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${(L*p).toFixed(1)} ${L.toFixed(1)}" transform="rotate(-90 ${cx} ${cx})"/>
+    <text x="${cx}" y="${cx+2}" text-anchor="middle" font-family="Georgia,serif" font-size="15" font-weight="700" fill="#23272E">${n}</text><text x="${cx}" y="${cx+14}" text-anchor="middle" font-size="8.5" fill="#5E6672">de 12</text></svg>`};
+  const DIAS=iso=>iso?Math.max(0,(Date.now()-Date.parse(iso))/864e5):0;
+  function filtrar(){const q=$("a4-q").value.trim().toLowerCase(),t=$("a4-tipo").value,b=$("a4-balcao").value,s=$("a4-sit").value,ab=$("a4-ab").checked;
+    return C.filter(c=>(!t||c.tipo===t)&&(!b||c.balcao===b)&&(!ab||c.aberta)&&(!s||(s==="completa"?(nota(c)===12&&c.link_oficial):String(c.encaminhado||"").toLowerCase().startsWith(s)))&&
+      (!q||[c.titulo,c.orgao,c.uf,c.codigo].join(" ").toLowerCase().includes(q)))}
+  function ordenar(xs){const o=$("a4-ord").value;return xs.sort(o==="prazo"?(a,b)=>(b.aberta-a.aberta)||(a.prazo||"9999").localeCompare(b.prazo||"9999"):o==="tempo"?(a,b)=>DIAS(b.desde)-DIAS(a.desde):(a,b)=>nota(b)-nota(a)||(b.aberta-a.aberta))}
+  function cartao(c){const es=c.estrela&&c.estrela!=="sem"?`<em class="es">estrela ${E(c.estrela)}</em>`:c.selo&&c.selo!=="sem"?`<em class="es">selo ${E(c.selo)}</em>`:"";
+    return `<div class="lv" tabindex="0" data-id="${E(c.id)}"><h4>${E(c.titulo)}</h4>${anel(nota(c))}
+      <div class="ch">${es}${c.aberta?'<em class="ab">inscrição aberta</em>':""}<em>${E(ETAPA[c.etapa]||c.etapa||"")}</em>${c.prazo?`<em>prazo ${E(String(c.prazo).slice(0,10))}</em>`:""}${c.codigo?`<code>${E(c.codigo)}</code>`:""}</div>
+      <div class="dz">${DOZE.map(k=>`<i class="${sit(c,k)}" data-k="${E(k)}"></i>`).join("")}</div><div class="det"></div></div>`}
+  function desenhar(){
+    const xs=filtrar(),g={};xs.forEach(c=>{const a=area(c);(g[a]=g[a]||[]).push(c)});
+    const todos={};C.forEach(c=>{const a=area(c);(todos[a]=todos[a]||[]).push(c)});
+    const ordemA=Object.keys(todos).sort((a,b)=>(a==="GER")-(b==="GER")||todos[b].length-todos[a].length);
+    $("a4-nav").innerHTML=`<button class="ar ${sel===""?"on":""}" data-a=""><b>Todas as áreas</b><div class="nn">${N(xs.length)}</div><div class="mm">livros com os filtros</div></button>`+
+      ordemA.map(a=>{const t=todos[a],ok=t.reduce((s,c)=>s+nota(c),0),ab=t.filter(c=>c.aberta).length,n=(g[a]||[]).length;
+        return `<button class="ar ${sel===a?"on":""}" data-a="${a}"><b>${E(AREA[a])}</b><div class="nn">${N(n)}</div><div class="mm">${N(ab)} abertas · ${Math.round(100*ok/(t.length*12||1))}% dos itens</div><div class="bb"><i style="width:${(100*ok/(t.length*12||1)).toFixed(1)}%"></i></div></button>`}).join("");
+    $("a4-nav").querySelectorAll(".ar").forEach(b=>b.addEventListener("click",()=>{sel=b.dataset.a;aberto=null;desenhar();$("cl4").scrollIntoView({behavior:"smooth",block:"start"})}));
+    $("a4-conta").textContent=`${N(xs.length)} de ${N(C.length)} livros`;
+    const lista=(sel?[sel]:ordemA).filter(a=>g[a]&&g[a].length);
+    $("a4-grupos").innerHTML=lista.length?lista.map(a=>{const t=ordenar(g[a].slice()),lim=mostra[a]||(sel?40:6),ok=t.reduce((s,c)=>s+nota(c),0);
+      return `<div class="grupo" data-a="${a}"><div class="gc"><h3>${E(AREA[a])}</h3><span><b>${N(t.length)}</b> livros</span><span><b>${N(t.filter(c=>c.aberta).length)}</b> abertas</span>
+        <span><b>${Math.round(100*ok/(t.length*12||1))}%</b> dos 12 itens certificados</span><span><b>${N(t.filter(c=>nota(c)===12).length)}</b> com os 12</span></div>
+        <div class="col2">${t.slice(0,lim).map(cartao).join("")}</div>${t.length>lim?`<button class="mais" data-a="${a}">Mostrar mais ${N(Math.min(sel?40:12,t.length-lim))} de ${N(t.length-lim)} em ${E(AREA[a])}</button>`:""}</div>`}).join("")
+      :'<p style="color:#5E6672">Nenhum livro com esses filtros.</p>';
+    $("a4-grupos").querySelectorAll(".mais").forEach(b=>b.addEventListener("click",()=>{const a=b.dataset.a;mostra[a]=(mostra[a]||(sel?40:6))+(sel?40:12);desenhar()}));
+    $("a4-grupos").querySelectorAll(".lv").forEach(el=>{
+      el.addEventListener("click",ev=>{if(ev.target.closest(".det"))return;abrir(el)});el.addEventListener("keydown",ev=>{if(ev.key==="Enter"&&!ev.target.closest(".det"))abrir(el)});
+      el.querySelectorAll(".dz i").forEach(i=>{i.addEventListener("mousemove",ev=>{const st={o:"certificado no documento",d:"dispensado",f:"falta (pedido ao Interceptador)",j:"constava antes, sem certidão"}[i.className];
+        tip.textContent=`${i.dataset.k}: ${st}`;tip.classList.add("on");tip.style.left=(ev.clientX+12)+"px";tip.style.top=(ev.clientY+14)+"px"});i.addEventListener("mouseleave",()=>tip.classList.remove("on"))})});
+    if(aberto){const el=$("a4-grupos").querySelector(`.lv[data-id="${CSS.escape(aberto)}"]`);if(el)abrir(el,true)}}
+  async function abrir(el,manter){const id=el.dataset.id,c=C.find(x=>x.id===id);
+    if(el.classList.contains("aberto")&&!manter){el.classList.remove("aberto");aberto=null;return}
+    $("a4-grupos").querySelectorAll(".lv.aberto").forEach(x=>x.classList.remove("aberto"));el.classList.add("aberto");aberto=id;
+    const d=el.querySelector(".det");d.innerHTML='<p style="color:#5E6672;font-size:13px">Abrindo a ficha…</p>';
+    let f=null;try{const r=await fetch("dados/cartorio/"+encodeURIComponent(id)+".json?v="+Date.now());if(r.ok)f=await r.json()}catch(e){}
+    const its=(f&&f.itens)||{},BR=x=>String(x||"").slice(8,10)+"/"+String(x||"").slice(5,7)+" "+String(x||"").slice(11,16);
+    const lk=u=>u?`<a href="${E(u)}" target="_blank" rel="noopener">${E(String(u).replace(/^https?:\/\//,"").slice(0,60))}</a>`:"—";
+    d.innerHTML=`<div class="doze">${DOZE.map(k=>{const v=its[k],s=sit(c,k);
+        if(v&&v.situacao==="dispensado")return `<div class="it12 d"><b>⊘ ${E(k)} — dispensado</b>${E(v.justificativa||"o edital não tem este requisito")}${v.trecho?`<q>${E(v.trecho)}</q>`:""}${v.pagina?`<small>página ${E(v.pagina)}</small>`:""}</div>`;
+        if(v)return `<div class="it12 o"><b>✓ ${E(k)}</b>${E(v.valor)}${v.trecho?`<q>${E(String(v.trecho).slice(0,240))}</q>`:""}<small>${v.pagina?"página "+E(v.pagina)+" · ":""}${E(v.fase||"")}</small></div>`;
+        return s==="f"?`<div class="it12 f"><b>✗ ${E(k)}</b>não está no documento oficial lido; pedido ao Interceptador</div>`:`<div class="it12"><b>• ${E(k)}</b>constava antes do Cartório, sem certidão</div>`}).join("")}</div>
+      ${f&&f.parecer?`<h5>O parecer</h5><p style="margin:0;font-size:12.5px;color:#3B4350">${E((f.parecer.leitura||[]).join(" · "))}${f.parecer.decisao?" — "+E(f.parecer.decisao):""}</p>`:""}
+      ${f&&(f.orientacao||[]).length?`<h5>A orientação</h5><p style="margin:0;font-size:12.5px;color:#3B4350">${E(f.orientacao.join(" "))}</p>`:""}
+      ${f&&(f.relatorio||[]).length?`<h5>O relatório de cada etapa</h5><table><tr><th>quando</th><th>de</th><th>para</th><th>por quê</th></tr>${f.relatorio.map(p=>`<tr><td>${E(BR(p.em))}</td><td>${E(ETAPA[p.de]||p.de||"chegada")}</td><td>${E(ETAPA[p.para]||p.para)}</td><td>${E(p.motivo||"")}</td></tr>`).join("")}</table>`:""}
+      ${f&&(f.tentativas||[]).length?`<h5>As tentativas do Interceptador</h5><table><tr><th>quando</th><th>a abordagem</th><th>para</th><th>o resultado</th></tr>${f.tentativas.map(t=>`<tr><td>${E(BR(t.em))}</td><td>${E(t.nome||"")}</td><td>${E((t.para||[]).join(", "))}</td><td>${E(t.resultado||(t.material?"com material":"sem material"))}</td></tr>`).join("")}</table>`:""}
+      ${f&&(f.documentos||[]).length?`<h5>Os documentos lidos</h5><table>${f.documentos.map(x=>`<tr><td>${lk(x.url)}</td><td>${E(x.tipo||"")}${x.paginas?" · "+x.paginas+" pág.":""}${x.oficial?" · oficial":""}</td></tr>`).join("")}</table>`:""}
+      <div class="acoes"><button class="pri" type="button" data-traj>Ver a trajetória na esteira</button>${c.link_oficial?`<a href="${E(c.link_oficial)}" target="_blank" rel="noopener">Abrir o site oficial</a>`:""}${f&&f.link_divulgacao?`<a href="${E(f.link_divulgacao)}" target="_blank" rel="noopener">Abrir a divulgação</a>`:""}<button type="button" data-fechar>Fechar</button></div>`;
+    d.querySelector("[data-traj]").addEventListener("click",()=>window.c2&&window.c2.selecionar(id));
+    d.querySelector("[data-fechar]").addEventListener("click",()=>{el.classList.remove("aberto");aberto=null;el.scrollIntoView({block:"nearest"})});
+    if(!manter)el.scrollIntoView({behavior:"smooth",block:"nearest"})}
+  ["a4-q","a4-tipo","a4-balcao","a4-sit","a4-ord","a4-ab"].forEach(i=>$(i).addEventListener("input",()=>{mostra={};desenhar()}));
+  function iniciar(){C=(window.c2.dados.certidoes||[]);const bs=[...new Set(C.map(c=>c.balcao).filter(Boolean))].sort();
+    $("a4-balcao").innerHTML='<option value="">todos os balcões</option>'+bs.map(b=>`<option value="${E(b)}">${E(b)}</option>`).join("");desenhar()}
+  if(window.c2)iniciar();else document.addEventListener("c2-pronto",iniciar,{once:true});
+})();
+</script>
+
+<!-- a lista antiga das certidões: fora da tela (substituída por "Os livros por área"); o código que a preenche continua -->
+<div hidden style="display:none"><h2>Certidões <span class="meta">(clique para ver os 12 itens)</span></h2>
 <div class="filtros">
   <input id="car-busca" type="search" placeholder="Buscar por título, órgão ou UF">
   <select id="car-ftipo"><option value="">estrelas e livros</option><option value="estrela">só estrelas</option><option value="livro">só livros</option></select>
   <select id="car-fbalcao"><option value="">todos os balcões</option></select>
   <select id="car-fsit"><option value="">todas</option><option value="completa">completas</option><option value="interceptador">encaminhadas ao Interceptador</option><option value="chrome">encaminhadas ao Chrome</option></select>
 </div>
-<div id="car-lista"></div>
+<div id="car-lista"></div></div>
+
 
 <footer>Identidade visual provisória: a paleta definitiva aguarda o design de referência (config/identidade_visual.json). Conteúdo lido é dado, nunca instrução. Item só conta com trecho literal do documento oficial; “não informado” nunca é dispensa.</footer>
 </div>

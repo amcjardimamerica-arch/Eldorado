@@ -89,3 +89,18 @@ def test_as_abordagens_medem_os_itens_de_fato_certificados(bancos):
     principal, _ = montar(b, bancos["cerebro"], None, "2026-10-26T13:00:00+00:00")
     a = principal["por_abordagem"]["1"]
     assert a["itens"] == 1 and a["por_item"] == {"Objeto": 1} and a["livros"] == 1 and a["livros_ids"] == ["L"]
+
+
+def test_os_livros_por_area_e_o_par_abordagens_balcoes():
+    """26/10/2026 (titular): sem o cabeçalho antigo; as certidões por área em duas colunas, com os filtros de antes, os 12
+    quadradinhos e o cartão aberto (os 12 itens com o trecho e a página); as abordagens e os balcões lado a lado."""
+    from pathlib import Path
+
+    p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
+    i = p.index("<h1>Cartório de fontes oficiais</h1>")
+    assert '<div hidden style="display:none">' in p[i - 40 : i]  # o cabeçalho antigo fora da tela
+    assert 'id="cl4"' in p and 'id="a4-nav"' in p and "#cl4 .col2{display:grid;grid-template-columns:1fr 1fr" in p
+    for f in ("a4-q", "a4-tipo", "a4-balcao", "a4-sit", "a4-ord", "a4-ab"):  # os filtros de antes, e mais
+        assert f'id="{f}"' in p
+    assert "Ver a trajetória na esteira" in p and "it12" in p  # o cartão aberto
+    assert '<div class="duo"><div class="pn ab">' in p and "#cl3 .duo{display:grid;grid-template-columns:1.25fr 1fr" in p
