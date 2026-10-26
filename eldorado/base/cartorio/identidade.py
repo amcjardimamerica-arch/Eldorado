@@ -246,8 +246,8 @@ def no_unir_repetidos(itens: list[dict[str, Any]], parametros: dict[str, Any], c
     con = sqlite3.connect(f"file:{p}?mode=ro", uri=True)
     try:
         cods = 0
-        if con.execute("SELECT 1 FROM pragma_table_info('livro_dados') WHERE name = 'codigo'").fetchone():
-            for lid, cod in codigos_a_gravar(con):                      # o código de cada livro (o índice novo)
+        if False:   # 25/10/2026: o código de cada livro é o do Comandante (LOCAL·ÁREA·NATUREZA·OBJETO), no nó organizar_livros
+            for lid, cod in codigos_a_gravar(con):
                 contexto.diario.emitir("livro.codigo", "identidade", {"livro_id": lid, "codigo": cod})
                 cods += 1
         n = 0

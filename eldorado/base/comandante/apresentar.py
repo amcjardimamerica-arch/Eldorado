@@ -16,6 +16,9 @@ PASTA = Path("verificacao/relatorios")
 A_CADA_H = 6
 PESO = {"ouro": 3, "prata": 2, "bronze": 1}
 
+# a contagem única dos livros no site inteiro (25/10/2026): só os vivos
+VIVOS = "FROM passaporte p JOIN livro l ON l.id = p.livro_id WHERE l.situacao NOT IN ('excluido', 'unido')"
+
 
 def _selo(estrela: str | None, selo: str | None) -> str:
     return max((estrela or "sem", selo or "sem"), key=lambda s: PESO.get(s, 0))
@@ -61,7 +64,11 @@ def reunir(dados: Path, agora: datetime) -> dict[str, Any]:
                 "SELECT COUNT(*) FROM achado WHERE motor IN ('espiao', 'interceptador') AND encontrado_em >= ?", (hoje.isoformat(),)
             ).fetchone()[0],
         }
-        falta = {"aguardam_o_chrome": bib.execute("SELECT COUNT(*) FROM passaporte WHERE fase = 'analise externa'").fetchone()[0]}
+        falta = {
+            "aguardam_o_chrome": bib.execute(
+                "SELECT COUNT(*) " + VIVOS + " AND p.fase = 'analise externa'"
+            ).fetchone()[0]
+        }
 
         def um(sql: str, args: tuple = ()) -> Any:
             try:
@@ -176,7 +183,7 @@ def no_apresentar(itens: list[dict[str, Any]], parametros: dict[str, Any], conte
     if not ((dados / "cerebro.db").exists() and (dados / "biblioteca.db").exists()):
         return []
     pasta = Path(parametros.get("pasta", str(PASTA)))
-    if not pasta.is_absolute():                                    # relativa à raiz dos dados (na produção, a do repositório)
+    if not pasta.is_absolute():  # relativa à raiz dos dados (na produção, a do repositório)
         pasta = dados.resolve().parent / pasta
     r = apresentar(dados, pasta)
     return [{"apresentado": bool(r), "por": (r or {}).get("redigido_por")}]

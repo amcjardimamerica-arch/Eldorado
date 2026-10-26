@@ -15,6 +15,9 @@ from datetime import datetime, timedelta, timezone
 
 from ..missao import itens as I
 
+# a contagem única dos livros no site inteiro (25/10/2026): só os vivos
+VIVOS = "FROM passaporte p JOIN livro l ON l.id = p.livro_id WHERE l.situacao NOT IN ('excluido', 'unido')"
+
 
 def _json(t: str | None) -> dict:
     try:
@@ -207,7 +210,7 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection, molde, agora: datet
         "AND l.situacao NOT IN ('excluido', 'unido')"
     ).fetchone()[0]
     i_["fila"] = {
-        "editais novos dos motores": bib.execute("SELECT COUNT(*) FROM passaporte WHERE fase = 'preparacao'").fetchone()[0],
+        "editais novos dos motores": bib.execute("SELECT COUNT(*) " + VIVOS + " AND p.fase = 'preparacao'").fetchone()[0],
         "indícios do Espião": len(ach["espiao"]),
         "abertos com itens em falta": fila_n,
         "empresas sem ficha": 0,

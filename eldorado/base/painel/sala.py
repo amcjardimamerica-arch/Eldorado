@@ -118,7 +118,9 @@ def montar(
     estrelas = Counter(dict(bib.execute(f"SELECT COALESCE(l.estrela, 'sem'), COUNT(*) {AB} GROUP BY 1").fetchall()))
     validadas = estrelas.get("prata", 0) + estrelas.get("ouro", 0)
     revisar = q(bib, f"SELECT COUNT(*) {AB} AND d.validacao = 'revisar'")
-    fases = Counter(dict(bib.execute("SELECT fase, COUNT(*) FROM passaporte GROUP BY fase").fetchall()))
+    # uma única contagem no site inteiro (25/10/2026): só os livros vivos (a sala contava também os unidos e os excluídos)
+    fases = Counter(dict(bib.execute("SELECT p.fase, COUNT(*) FROM passaporte p JOIN livro l ON l.id = p.livro_id "
+                                     "WHERE l.situacao NOT IN ('excluido', 'unido') GROUP BY p.fase").fetchall()))
     # ---- 01 Regência
     n = len(reg) or 1
     cobertura = round(100 * len(lidos24) / n)

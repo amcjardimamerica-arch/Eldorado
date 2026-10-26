@@ -61,6 +61,9 @@ FASES = {
     "arquivo": "Arquivo",
 }
 
+# a contagem única dos livros no site inteiro (25/10/2026): só os vivos
+VIVOS = "FROM passaporte p JOIN livro l ON l.id = p.livro_id WHERE l.situacao NOT IN ('excluido', 'unido')"
+
 
 def _molde(nome: str) -> Any:
     return json.loads((MOLDE / nome).read_text(encoding="utf-8"))
@@ -404,7 +407,7 @@ def _bussola(sis: Sistema, molde: dict, fontes: list[dict], status: list[dict]) 
     abertos = [e for f in fontes for e in f["editais"]]
     urgentes = [e for e in abertos if e["fim"] and e["fim"] <= (datetime.fromisoformat(sis.hoje) + timedelta(days=7)).date().isoformat()]
     nomes = {f["fonte_id"]: f["fonte_nome"] for f in fontes}
-    farol = sis.bib.execute("SELECT COUNT(*) FROM passaporte WHERE fase = 'farol'").fetchone()[0]
+    farol = sis.bib.execute("SELECT COUNT(*) " + VIVOS + " AND p.fase = 'farol'").fetchone()[0]
     dominios = {
         urlsplit(u).hostname
         for c in sis.configs.values()
@@ -686,7 +689,7 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     D["biblioteca"].update(
         {"biblioteca": "Biblioteca do Eldorado (biblioteca.db)", "atualizado_em": agora, "acervos": {"leis": leis, "oportunidades": total, "associacoes": 0}}
     )
-    fases = dict(sis.bib.execute("SELECT fase, COUNT(*) FROM passaporte GROUP BY fase").fetchall())
+    fases = dict(sis.bib.execute("SELECT p.fase, COUNT(*) " + VIVOS + " GROUP BY p.fase").fetchall())
     D["fila_verificacao"].update({"gerado_em": agora, "total": fases.get("analise externa", 0)})
     D["farol_resumo"]["decisoes"].update({"elegiveis": fases.get("farol", 0)})
     arquivos: dict[str, Any] = {}

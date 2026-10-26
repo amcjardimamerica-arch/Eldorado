@@ -151,6 +151,11 @@ tipo = "eldorado.base.cerebro.mapa_arquivos:no_medir_arquivos"
 parametros = { dados = "dados", intervalo_min = 10 }
 
 [[no]]
+id = "organizar_livros"
+tipo = "eldorado.base.comandante.organizar:no_organizar_livros"
+parametros = { dados = "dados" }
+
+[[no]]
 id = "comandante_escolher"
 tipo = "eldorado.base.comandante.escolher:no_comandante_escolher"
 parametros = { dados = "dados" }
@@ -370,4 +375,13 @@ saida = "ordem"
 [[conexao]]
 de = "comandante_escolher"
 para = "comandante_decidir"
+saida = "ordem"
+# o Comandante organiza os livros do Cartório (C6): o código LOCAL·ÁREA·NATUREZA·OBJETO, as uniões e as eliminações
+[[conexao]]
+de = "unir_repetidos"
+para = "organizar_livros"
+saida = "ordem"
+[[conexao]]
+de = "organizar_livros"
+para = "auditar"
 saida = "ordem"
