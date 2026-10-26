@@ -40,7 +40,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 11312,
+   "linhas": 11328,
    "situacao": "em funcionamento",
    "ordem": 2
   },
@@ -146,6 +146,7 @@
     "test_painel_site.py",
     "test_passagem.py",
     "test_passagem_real.py",
+    "test_pilotos_no_painel.py",
     "test_pilotos_permanentes.py",
     "test_pilotos_site.py",
     "test_ponte_br.py",
@@ -234,6 +235,7 @@
     "test_painel_site.py",
     "test_passagem.py",
     "test_passagem_real.py",
+    "test_pilotos_no_painel.py",
     "test_pilotos_permanentes.py",
     "test_pilotos_site.py",
     "test_ranking_empresas.py",
@@ -453,7 +455,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 43,
+   "linhas": 49,
    "situacao": "em funcionamento",
    "ordem": 11
   },
@@ -1836,6 +1838,7 @@
     "test_painel.py",
     "test_passagem.py",
     "test_passagem_real.py",
+    "test_pilotos_no_painel.py",
     "test_pilotos_permanentes.py",
     "test_rede_neural.py",
     "test_regras_tabela_unica.py",
@@ -1876,7 +1879,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/governador.py",
-   "linhas": 137,
+   "linhas": 180,
    "finalidade": "O governador de carga: mantém a máquina abaixo do limite (85%).",
    "depende_de": [
     "eldorado/base/nucleo/eventos.py"
@@ -1888,6 +1891,7 @@
    "acionado_por": [],
    "usado_por": [
     "eldorado/base/cerebro/regencia.py",
+    "eldorado/base/comandante/pilotos.py",
     "eldorado/base/fluxo/fila.py",
     "eldorado/base/fluxo/nos.py",
     "eldorado/base/nucleo/comandos.py"
@@ -1898,7 +1902,8 @@
     "test_fila.py",
     "test_governador.py",
     "test_motor_gife.py",
-    "test_motores_api.py"
+    "test_motores_api.py",
+    "test_pilotos_no_painel.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "05 Comandante: percebe, decide, organiza as filas, comanda os pilotos, parametriza e apresenta",
@@ -1988,7 +1993,8 @@
     "test_comandante_fase6.py",
     "test_comandante_memoria.py",
     "test_comandante_pilotos.py",
-    "test_organizar_livros.py"
+    "test_organizar_livros.py",
+    "test_pilotos_no_painel.py"
    ],
    "situacao": "pacote",
    "etapa": "05 Comandante: percebe, decide, organiza as filas, comanda os pilotos, parametriza e apresenta",
@@ -2001,13 +2007,14 @@
   },
   {
    "arquivo": "eldorado/base/comandante/organizar.py",
-   "linhas": 361,
+   "linhas": 471,
    "finalidade": "O Comandante organiza os livros do Cartório (a etapa C6; titular, 25/10/2026: \"não existem 5 mil livros e nem devem ter",
    "depende_de": [
     "eldorado/base/cartorio/auditoria.py",
     "eldorado/base/cartorio/identidade.py"
    ],
    "eventos": [
+    "alarme.fechado",
     "livro.codigo",
     "livro.excluido_logicamente"
    ],
@@ -2019,7 +2026,8 @@
     "eldorado/base/missao/portao.py"
    ],
    "testes": [
-    "test_organizar_livros.py"
+    "test_organizar_livros.py",
+    "test_pilotos_no_painel.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "05 Comandante: percebe, decide, organiza as filas, comanda os pilotos, parametriza e apresenta",
@@ -2295,7 +2303,8 @@
    ],
    "testes": [
     "test_comandante_biblioteca.py",
-    "test_comandante_expurgo.py"
+    "test_comandante_expurgo.py",
+    "test_pilotos_no_painel.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "05 Comandante: percebe, decide, organiza as filas, comanda os pilotos, parametriza e apresenta",
@@ -2399,9 +2408,10 @@
   },
   {
    "arquivo": "eldorado/base/comandante/pilotos.py",
-   "linhas": 185,
+   "linhas": 187,
    "finalidade": "O Comandante comanda os pilotos (a etapa C5; a fase 4 do desenho, titular, 25/10/2026). Cada missão do Espião e cada",
    "depende_de": [
+    "eldorado/base/cerebro/governador.py",
     "eldorado/base/comandante/decidir.py",
     "eldorado/base/comandante/parametros.py",
     "eldorado/base/comandante/politica.py"
@@ -2421,6 +2431,7 @@
    "parte": "BASE",
    "componente": "Comandante: percebe, decide, organiza as filas, comanda os pilotos, parametriza e apresenta",
    "ligacoes": [
+    "eldorado/base/cerebro/governador.py",
     "eldorado/base/comandante/decidir.py",
     "eldorado/base/comandante/parametros.py",
     "eldorado/base/comandante/politica.py"
@@ -2499,7 +2510,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/pilotos_permanentes.py",
-   "linhas": 240,
+   "linhas": 257,
    "finalidade": "Os pilotos de forma permanente (titular, 25/10/2026: \"execute eles de forma permanente, da forma que foram desenvolvidos",
    "depende_de": [
     "eldorado/base/cerebro/encaminhamento.py",
@@ -2705,6 +2716,7 @@
     "test_motor_modelo.py",
     "test_motor_prefeituras.py",
     "test_motores_api.py",
+    "test_pilotos_no_painel.py",
     "test_ponte_br.py",
     "test_rede_neural.py",
     "test_seguranca.py",
@@ -4540,6 +4552,7 @@
     "test_ia_validada.py",
     "test_interceptador.py",
     "test_interceptador_funciona.py",
+    "test_pilotos_no_painel.py",
     "test_rede_neural.py"
    ],
    "situacao": "pacote",
@@ -4582,7 +4595,7 @@
   },
   {
    "arquivo": "eldorado/motores/pilotos/interceptador.py",
-   "linhas": 388,
+   "linhas": 399,
    "finalidade": "O PILOTO INTERCEPTADOR (do Eldorado0, titular, 26/09/2026): \"o Espião descobre; o Interceptador comprova\".",
    "depende_de": [
     "eldorado/base/cartorio/origem.py",
@@ -4610,6 +4623,7 @@
     "test_ia.py",
     "test_interceptador.py",
     "test_interceptador_funciona.py",
+    "test_pilotos_no_painel.py",
     "test_rede_neural.py"
    ],
    "situacao": "em funcionamento",
@@ -4863,7 +4877,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 370,
+   "linhas": 371,
    "situacao": "em funcionamento",
    "ordem": 159
   },
@@ -5672,6 +5686,7 @@
     "test_cartorio_site.py",
     "test_painel.py",
     "test_painel_site.py",
+    "test_pilotos_no_painel.py",
     "test_pilotos_site.py",
     "test_ranking_empresas.py",
     "test_sala_mostradores.py",
@@ -5714,7 +5729,7 @@
   },
   {
    "arquivo": "eldorado/base/painel/legado.py",
-   "linhas": 286,
+   "linhas": 305,
    "finalidade": "Os arquivos do painel que o gerador nunca preenchia (titular, 25/10/2026: \"pedi para consertar diversas vezes os motores",
    "depende_de": [],
    "eventos": [],
@@ -5756,7 +5771,7 @@
   },
   {
    "arquivo": "eldorado/base/painel/pilotos.py",
-   "linhas": 372,
+   "linhas": 387,
    "finalidade": "Os pilotos no site, ligados aos dados (titular, 25/10/2026: sem leitura na página inicial e na sala de controle).",
    "depende_de": [
     "eldorado/base/missao/itens.py"
@@ -5767,6 +5782,7 @@
     "eldorado/base/painel/dados.py"
    ],
    "testes": [
+    "test_pilotos_no_painel.py",
     "test_pilotos_site.py"
    ],
    "situacao": "em funcionamento",
@@ -5804,7 +5820,7 @@
   },
   {
    "arquivo": "eldorado/base/painel/sala.py",
-   "linhas": 732,
+   "linhas": 747,
    "finalidade": "A sala de controle (o plano: base/painel/sala.py): cada mostrador ligado ao dado MEDIDO pelo sistema (titular,",
    "depende_de": [
     "eldorado/base/aprendizado/avaliar.py",
@@ -5866,7 +5882,7 @@
   },
   {
    "arquivo": "eldorado/base/painel/dados.py",
-   "linhas": 793,
+   "linhas": 895,
    "finalidade": "Os dados do painel, gerados do sistema novo (titular, 23/10/2026): o site é a imagem atual do sistema.",
    "depende_de": [
     "eldorado/base/cerebro/mapa_arquivos.py",

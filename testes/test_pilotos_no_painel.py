@@ -125,3 +125,25 @@ def test_o_codigo_so_vai_para_o_livro_com_a_ficha_e_os_alertas_fecham(tmp_path):
     assert _fechar_recusas_do_codigo(tmp_path, D()) == 1 and ev[0][0] == "alarme.fechado" and ev[0][1]["id"] == 1
     src = Path("eldorado/base/comandante/organizar.py").read_text(encoding="utf-8")
     assert 'if x["id"] in atuais and atuais[x["id"]] != cod' in src  # só com a ficha do livro
+
+
+def test_no_maximo_dois_voos_usam_a_ia_ao_mesmo_tempo():
+    """26/10/2026: com as 5 vagas pedindo à IA juntas, cada pedido levava os 4 minutos inteiros e os voos ficavam presos."""
+    from eldorado.motores.pilotos import interceptador as I
+
+    assert I.VEZ_DA_IA._initial_value == 2
+    src = Path("eldorado/motores/pilotos/interceptador.py").read_text(encoding="utf-8")
+    assert "VEZ_DA_IA.acquire(timeout=90)" in src and '"adiada"' in src
+
+
+def test_os_testes_nao_acessam_a_internet():
+    """26/10/2026: a barreira de rede da bateria: só o próprio computador; o resto falha na hora (na Qualidade, os degraus
+    da escada escapavam para sites de verdade e os testes davam outros resultados ou ficavam pendurados)."""
+    import socket
+
+    import pytest
+
+    s = socket.socket()
+    with pytest.raises(OSError, match="rede externa bloqueada"):
+        s.connect(("93.184.216.34", 80))
+    s.close()

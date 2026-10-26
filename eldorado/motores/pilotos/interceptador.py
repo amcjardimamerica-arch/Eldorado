@@ -136,6 +136,9 @@ def carregar(con: sqlite3.Connection, ids: list[str]) -> list[Livro]:
     return [por_id[i] for i in ids if i in por_id]
 
 
+VEZ_DA_IA = __import__("threading").BoundedSemaphore(2)   # quantos voos usam a IA ao mesmo tempo (26/10/2026)
+
+
 class Interceptador:
     def __init__(self, biblioteca: sqlite3.Connection, diario: Diario, escada: Escada, ponte: Escada | None = None,
                  metabusca: Callable[[str], list[str]] | None = None, arquivo: str = "https://web.archive.org", ia=None):
@@ -374,11 +377,19 @@ class Interceptador:
         itens_ia, ia_rel = {}, None
         if self.ia is not None and not injecao and lv.faltam:       # a IA propõe; o sistema valida (o trecho tem de existir no texto)
             from ...base.nucleo.ia import SemIA, comprovar
-            try:
-                itens_ia, uso = comprovar(self.ia, lv.faltam, paginas, lv.titulo, I.DOZE)
-                ia_rel = {"segundos": uso.segundos, "propostas": uso.propostas, "aceitas": uso.aceitas, "recusas": uso.recusas[:6]}
-            except SemIA as e:
-                ia_rel = {"indisponivel": str(e)[:200]}
+            # 26/10/2026: no máximo 2 voos usam a IA ao mesmo tempo (com as 5 vagas pedindo juntas, cada pedido levava os 4
+            # minutos inteiros e os voos ficavam presos); sem a vez em 90 s, a abordagem segue sem a IA (o Cartório certifica
+            # pelo próprio documento) e o livro volta à fila
+            if VEZ_DA_IA.acquire(timeout=90):
+                try:
+                    itens_ia, uso = comprovar(self.ia, lv.faltam, paginas, lv.titulo, I.DOZE)
+                    ia_rel = {"segundos": uso.segundos, "propostas": uso.propostas, "aceitas": uso.aceitas, "recusas": uso.recusas[:6]}
+                except SemIA as e:
+                    ia_rel = {"indisponivel": str(e)[:200]}
+                finally:
+                    VEZ_DA_IA.release()
+            else:
+                ia_rel = {"adiada": "a IA ocupada por outros voos; a abordagem seguiu sem a IA"}
         sha = __import__("hashlib").sha256("\n".join(paginas).encode()).hexdigest()
         return Achado(id=f"interceptador-{lv.id}-{n}", motor="interceptador", encontrado_em=agora()[:10],
                       link_divulgacao=lv.link_divulgacao or lv.link_oficial or urls[0], link_oficial=oficial or lv.link_oficial, titulo=lv.titulo,

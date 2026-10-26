@@ -56,3 +56,36 @@ def _sem_servicos_da_producao(monkeypatch, request):
     from eldorado.base.nucleo import ia as _ia
     monkeypatch.setattr(_ia.IA, "disponivel", lambda self: False)
     monkeypatch.delenv("ELDORADO_IA_URL", raising=False)
+
+
+# 26/10/2026: os testes não acessam a internet. Na nuvem (a Qualidade) a internet é livre e alguns degraus da escada (a
+# cópia arquivada, a busca, o servidor do Tika) escapavam para sites de verdade: resultados diferentes (o PNCP com 22 em
+# vez de 8) ou testes pendurados até o limite de 1 h (desde 25/10 nenhuma Qualidade terminou). Só o próprio computador
+# (os servidores de ensaio) pode ser acessado; o resto falha na hora, igual em qualquer ambiente.
+import socket as _socket  # noqa: E402 — a barreira de rede fica junto da sua explicação
+
+_LOCAIS = ("127.", "::1", "0.0.0.0", "localhost")
+_conectar_original = _socket.socket.connect
+_conectar_ex_original = _socket.socket.connect_ex
+
+
+def _so_local(endereco) -> bool:
+    if isinstance(endereco, (tuple, list)) and endereco:
+        return str(endereco[0]).startswith(_LOCAIS)
+    return isinstance(endereco, (str, bytes))                    # os sockets de arquivo (unix) são locais
+
+
+def _conectar(self, endereco):
+    if not _so_local(endereco):
+        raise OSError(f"rede externa bloqueada nos testes: {endereco}")
+    return _conectar_original(self, endereco)
+
+
+def _conectar_ex(self, endereco):
+    if not _so_local(endereco):
+        return 111                                                 # recusada
+    return _conectar_ex_original(self, endereco)
+
+
+_socket.socket.connect = _conectar
+_socket.socket.connect_ex = _conectar_ex
