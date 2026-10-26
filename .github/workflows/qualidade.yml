@@ -38,8 +38,9 @@ jobs:
           set -o pipefail
           # 26/10/2026: um teste que trava não pode mais esconder a bateria inteira atrás do limite de 1 h (desde 25/10 toda
           # Qualidade terminava "cancelada"): cada teste tem 4 minutos; o que travar falha com o ponto onde parou
-          pytest -q -p no:cacheprovider -rfE --timeout=240 --timeout-method=thread --durations=15 2>&1 | tee /tmp/bateria.txt && exit 0
+          pytest -q -p no:cacheprovider -rfE --timeout=240 --timeout-method=signal --durations=15 2>&1 | tee /tmp/bateria.txt && exit 0
           s=$?
+          set +e +o pipefail   # 26/10/2026: o filtro que não acha nada encerrava o passo antes de anotar
           grep -E "^(FAILED|ERROR)[ :]" /tmp/bateria.txt | head -25 | while read -r l; do echo "::error title=teste::${l:0:900}"; done
           grep -E "^E  " /tmp/bateria.txt | head -15 | while read -r l; do echo "::warning title=detalhe::${l:0:600}"; done
           grep -E "Timeout|^  File .*testes/" /tmp/bateria.txt | head -20 | while read -r l; do echo "::warning title=parou em::${l:0:600}"; done
