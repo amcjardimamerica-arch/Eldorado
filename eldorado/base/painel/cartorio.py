@@ -13,7 +13,7 @@ import json
 import re
 import sqlite3
 from collections import Counter, defaultdict
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from typing import Any
 
 ETAPAS = [
@@ -112,11 +112,23 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection | None, rede=None, a
                 r = json.loads(t["resultado"] or "{}")
             except ValueError:
                 r = {}
-            a = abord.setdefault(n, {"nome": r.get("abordagem") or f"abordagem {n}", "vezes": 0, "renderam": 0, "itens": 0, "links_oficiais": 0})
+            a = abord.setdefault(n, {"nome": r.get("abordagem") or f"abordagem {n}", "vezes": 0, "renderam": 0, "itens": 0, "links_oficiais": 0,
+                                     "livros": set(), "por_item": Counter()})
             a["vezes"] += 1
             a["renderam"] += int(not r.get("sem material"))
+            a["livros"].add(_lid)
+            # o que de fato virou certidão (26/10/2026): os itens certificados no mesmo livro nas 3 horas depois da tentativa
+            if not r.get("sem material") and t["em"]:
+                ate = (datetime.fromisoformat(t["em"]) + timedelta(hours=3)).isoformat()
+                novos = {c["item"] for c in certs.get(_lid, []) if c["situacao"] == "comprovado" and t["em"] <= (c["em"] or "") <= ate}
+                a["itens"] += len(novos)
+                a["por_item"].update(novos)
     for a in abord.values():
         a["taxa_de_acerto"] = round(a["renderam"] / a["vezes"], 3) if a["vezes"] else None
+        a["livros_ids"] = sorted(a["livros"])[:500]
+        a["livros"] = len(a["livros"])
+        a["itens_por_tentativa"] = round(a["itens"] / a["vezes"], 2) if a["vezes"] else None
+        a["por_item"] = dict(a["por_item"].most_common())
     lista, fichas = [], {}
     balcoes: dict[str, dict] = defaultdict(lambda: {"certidoes": 0, "com_link": 0, "resolvidos": 0, "faltavam": 0})
     safras: dict[str, dict] = defaultdict(lambda: {"certidoes": 0, "com_link": 0, "resolvidos": 0, "faltavam": 0})

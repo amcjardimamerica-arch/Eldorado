@@ -150,3 +150,15 @@ def test_a_aberta_com_o_prazo_vencido_e_arquivada(gravador, bancos, diario, tmp_
     aplicar(gravador, tmp_path)
     assert etapa(bancos["biblioteca"], "W") == "arquivo"
     assert bancos["biblioteca"].execute("SELECT situacao_prazo FROM livro_dados WHERE livro_id = 'W'").fetchone()[0] == "encerrada"
+
+
+def test_a_informacao_repetida_nao_faz_o_vai_e_volta(gravador, bancos, diario, tmp_path):
+    """26/10/2026 (o vai e volta: 1.288 idas à Validação e 1.264 voltas por semana): o livro na Preparação só vai à Validação
+    com item novo, prazo encerrado ou o livro completo; a informação repetida não o move."""
+    assert gravador.aplicar(livro("R", "preparacao", itens=["Objeto", "Esfera"])).ok
+    b = bancos["biblioteca"]
+    antes = b.execute("SELECT COUNT(*) FROM passagem WHERE livro_id='R'").fetchone()[0]
+    processar(gravador, bancos, diario, "R")                     # um achado sem item novo (o motor que relê a mesma fonte)
+    aplicar(gravador, tmp_path)
+    assert etapa(b, "R") == "preparacao"
+    assert b.execute("SELECT COUNT(*) FROM passagem WHERE livro_id='R'").fetchone()[0] == antes   # nenhuma ida e volta

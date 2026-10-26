@@ -142,11 +142,9 @@ class Cartorio:
                                       {"gerou": f"informação de {a.motor} ligada ao livro ({como})",
                                        "faltou": None if a.link_oficial else "a origem (só a divulgação): a rede aprofunda"})
                 fase = "certificacao"
-            elif fase in ("preparacao", "analise externa"):
-                self.passaporte.mover(livro, "validacao", f"etapa 4: validar a informação adicional ({a.motor})",
-                                      {"gerou": f"pedido atendido por {a.motor}: {como}", "faltou": ", ".join(antes) or None,
-                                       "analise": "externa" if fase == "analise externa" else "interna"})
-                fase = "validacao"
+            validar_depois = fase if fase in ("preparacao", "analise externa") else None
+            # 26/10/2026 (o vai e volta: 1.288 idas e 1.264 voltas por semana): o livro só vai à validação se a informação
+            # trouxer item novo ou o prazo encerrar; a informação repetida (o motor que relê a mesma fonte) não o move
             oficial = self._origem(livro, a)
             for lei in (a.dados or {}).get("leis") or []:                # a legislação que rege o programa
                 if self.con is not None and self.con.execute("SELECT 1 FROM lei WHERE id=?", (lei,)).fetchone() is None:
@@ -170,6 +168,11 @@ class Cartorio:
             relatorio = {"gerou": f"{len(novas)} item(ns) certificado(s) ({', '.join(sorted(novas)) or 'nenhum'}); prazo {situacao}; estrela {estrela}; "
                                   f"selo do livro {selo}", "faltou": ", ".join(faltam) or None,
                          "aprendeu": None if oficial else "a origem ainda não confirmada: a rede aprofunda (Interceptador e Chrome)"}
+            if validar_depois and (novas or situacao == "encerrada" or not faltam):   # novo, encerrou, ou já completo
+                self.passaporte.mover(livro, "validacao", f"etapa 4: validar a informação adicional ({a.motor})",
+                                      {"gerou": f"pedido atendido por {a.motor}: {como}; {len(novas)} item(ns) novo(s)", "faltou": ", ".join(antes) or None,
+                                       "analise": "externa" if validar_depois == "analise externa" else "interna"})
+                fase = "validacao"
             if fase in ("certificacao", "validacao"):
                 if situacao == "encerrada":
                     self.passaporte.mover(livro, "arquivo", "oportunidade arquivada: a estrela virou o selo do livro; aguarda nova oportunidade", relatorio)

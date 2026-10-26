@@ -1387,7 +1387,7 @@ html,body{overflow-x:clip}
   <div class="c2-tip" id="c2-tip" role="status" aria-live="polite"></div>
 </section>
 <aside id="c2-gaveta" aria-label="Os livros desta parte"><button class="gx" type="button" id="c2-gx">Fechar</button>
-  <div class="gh"><h3 id="c2-gt"></h3><p id="c2-gs"></p><div class="gf"><input id="c2-gq" placeholder="Filtrar nesta lista"><select id="c2-go"><option value="tempo">Mais tempo parado</option><option value="prazo">Prazo mais próximo</option><option value="titulo">Título</option></select></div></div>
+  <div class="gh"><h3 id="c2-gt"></h3><p id="c2-gs"></p><div class="gf"><input id="c2-gq" placeholder="Filtrar nesta lista"><select id="c2-go"><option value="tempo">Mais tempo parado</option><option value="abertas">Abertas primeiro</option><option value="prazo">Prazo mais próximo</option><option value="titulo">Título</option></select></div></div>
   <div class="gl" id="c2-gl"></div></aside>
 <div style="display:none"><div id="car-m-etapas"></div><div id="car-m-escada"></div></div>
 <script>
@@ -1539,10 +1539,10 @@ html,body{overflow-x:clip}
     anim=requestAnimationFrame(passo)}
   // ---------- a gaveta
   let G=[],mostrar=150;
-  function gaveta(titulo,onde,xs){semdica();G=xs;mostrar=150;$("c2-gt").textContent=titulo;$("c2-gs").textContent=`${N(xs.length)} livros ${onde} · clique num livro para ver a trajetória dele`;$("c2-gq").value="";listar();$("c2-gaveta").classList.add("on");$("c2-gq").focus()}
+  function gaveta(titulo,onde,xs,ordem){semdica();G=xs;$("c2-go").value=ordem||"tempo";mostrar=150;$("c2-gt").textContent=titulo;$("c2-gs").textContent=`${N(xs.length)} livros ${onde} · clique num livro para ver a trajetória dele`;$("c2-gq").value="";listar();$("c2-gaveta").classList.add("on");$("c2-gq").focus()}
   function listar(){const q=$("c2-gq").value.trim().toLowerCase(),o=$("c2-go").value;
     let xs=G.filter(x=>!q||(x.titulo||"").toLowerCase().includes(q)||(x.codigo||"").toLowerCase().includes(q));
-    xs.sort(o==="tempo"?(a,b)=>(DIAS(b.desde)||0)-(DIAS(a.desde)||0):o==="prazo"?(a,b)=>(a.prazo||"9999").localeCompare(b.prazo||"9999"):(a,b)=>(a.titulo||"").localeCompare(b.titulo||""));
+    xs.sort(o==="abertas"?(a,b)=>(b.aberta-a.aberta)||(a.prazo||"9999").localeCompare(b.prazo||"9999"):o==="tempo"?(a,b)=>(DIAS(b.desde)||0)-(DIAS(a.desde)||0):o==="prazo"?(a,b)=>(a.prazo||"9999").localeCompare(b.prazo||"9999"):(a,b)=>(a.titulo||"").localeCompare(b.titulo||""));
     $("c2-gl").innerHTML=xs.slice(0,mostrar).map(x=>`<div class="li" data-id="${E(x.id)}"><b>${E(x.titulo)}</b><span class="d">${dd(DIAS(x.desde))} aqui</span>
       <div class="cs">${x.codigo?`<em>${E(x.codigo)}</em>`:""}${x.prazo?`<em>prazo ${E(String(x.prazo).slice(0,10))}</em>`:""}${x.aberta?"<em>aberta</em>":""}${x.estrela&&x.estrela!=="sem"?`<em>estrela ${E(x.estrela)}</em>`:""}${x.selo&&x.selo!=="sem"?`<em>selo ${E(x.selo)}</em>`:""}</div></div>`).join("")
       +(xs.length>mostrar?`<button class="mais" id="c2-mais">Mostrar mais ${N(Math.min(150,xs.length-mostrar))} de ${N(xs.length-mostrar)}</button>`:"")||'<p style="padding:14px;color:#5E6672">Nenhum livro com esse filtro.</p>';
@@ -1577,7 +1577,10 @@ html,body{overflow-x:clip}
   let rt;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>{if($("cl2").offsetParent!==null)desenhar()},180)});
   new MutationObserver(()=>{if($("cl2").offsetParent!==null&&L.length&&!$("c2-fluxo").innerHTML)desenhar()}).observe(document.body,{attributes:true,subtree:true,attributeFilter:["class"]});
   fetch("dados/cartorio.json?v="+AGORA).then(r=>r.ok?r.json():null).then(D=>{
-    L=((D&&D.certidoes)||[]).map(x=>({id:x.id,titulo:x.titulo||x.id,codigo:x.codigo,etapa:x.etapa,degrau:x.degrau,selo:x.selo,estrela:x.estrela,aberta:x.aberta,prazo:x.prazo,desde:x.desde}));
+    L=((D&&D.certidoes)||[]).map(x=>({id:x.id,titulo:x.titulo||x.id,codigo:x.codigo,etapa:x.etapa,degrau:x.degrau,selo:x.selo,estrela:x.estrela,aberta:x.aberta,prazo:x.prazo,desde:x.desde,
+      itens:x.itens||{},dispensas:x.dispensas||{},balcao:x.balcao}));
+    window.c2={livros:L,dados:D,gaveta:(t,o,xs,ordem)=>gaveta(t,o,xs,ordem),selecionar:id=>selecionar(id)};   // o painel "O que o Cartório já sabe" usa a gaveta e a trajetória
+    document.dispatchEvent(new Event("c2-pronto"));
     F=(D&&D.fluxos)||[];
     $("c2-lista").innerHTML=L.slice(0,5000).map(x=>`<option value="${E(x.titulo)}">${E(x.codigo||"")}</option>`).join("");
     if($("cl2").offsetParent!==null)desenhar(); else kpis();
@@ -1586,6 +1589,143 @@ html,body{overflow-x:clip}
 </script>
 
 
+<!-- "O QUE O CARTÓRIO JÁ SABE" (titular, 26/10/2026): o painel que reúne a eficiência dos 12 itens, as abordagens do
+Interceptador e os balcões (de onde o livro veio), com o que vem sendo trazido, o resultado, o percentual e os avisos;
+de margem a margem, com a dica do cursor, a gaveta da esteira e a trajetória do livro. Substitui os blocos antigos. -->
+<style>
+#cl3{--t:#23272E;--s:#5E6672;--p:#FFFFFF;--az:#1F5B99;--az2:#3B7BC4;--ou:#B8862B;--ok:#1E7E4B;--okf:#E8F4EC;--al:#C2410C;--alf:#FFF3EC;--tr:#E8ECF1;
+ width:100vw;margin-left:calc(50% - 50vw);padding:26px clamp(16px,3vw,48px) 30px;background:#FBFBFA;border-bottom:1px solid #E6EAF0;font-variant-numeric:tabular-nums;color:var(--t);position:relative;box-sizing:border-box}
+#cl3 *{box-sizing:border-box}
+#cl3 .s3-topo{display:grid;grid-template-columns:minmax(260px,1.1fr) 2.4fr;gap:clamp(16px,2.4vw,40px);align-items:end;margin-bottom:18px}
+#cl3 h2{margin:0;font-family:Georgia,serif;font-size:clamp(22px,2vw,28px);border:0;padding:0}
+#cl3 .s3-lead{margin:6px 0 0;color:var(--s);font-size:14px;line-height:1.5;max-width:58ch}
+#cl3 .s3-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+#cl3 .kpi{background:var(--p);border:1px solid #E3E7ED;border-radius:14px;padding:14px 16px 12px;min-width:0}
+#cl3 .kpi b{display:block;font-family:Georgia,serif;font-size:clamp(22px,2vw,30px);line-height:1.05}
+#cl3 .kpi span{display:block;margin-top:6px;font-size:12.5px;color:var(--s);line-height:1.3}
+#cl3 .kpi.al{border-color:#F3C9AE;background:var(--alf)}#cl3 .kpi.al b{color:var(--al)}
+#cl3 .kpi.ok b{color:var(--ok)}
+#cl3 .pn{background:var(--p);border:1px solid #E3E7ED;border-radius:18px;padding:20px clamp(14px,1.6vw,26px) 16px;margin-bottom:14px;position:relative}
+#cl3 .pn h3{margin:0;font-family:Georgia,serif;font-size:18px}#cl3 .pn .ps{margin:4px 0 14px;font-size:13px;color:var(--s);max-width:110ch}
+#cl3 .aviso{display:flex;gap:10px;align-items:flex-start;margin:0 0 14px;padding:10px 14px;border-radius:12px;background:var(--alf);border:1px solid #F3C9AE;color:#7A3A12;font-size:13px;line-height:1.45}
+#cl3 .aviso b{color:var(--al)}
+/* os 12 itens: as colunas de enchimento */
+#cl3 .itens{display:grid;grid-template-columns:repeat(12,minmax(78px,1fr));gap:clamp(6px,.9vw,14px);overflow-x:auto;padding-bottom:4px}
+#cl3 .it{cursor:pointer;border-radius:14px;padding:12px 10px 10px;border:1px solid transparent;text-align:center;outline:none;transition:background .15s,border-color .15s}
+#cl3 .it:hover,#cl3 .it:focus-visible{background:#F4F7FB;border-color:#DCE5F0}
+#cl3 .it .pc{font-family:Georgia,serif;font-size:clamp(18px,1.6vw,24px);font-weight:700}
+#cl3 .it .tubo{position:relative;height:150px;margin:10px auto 10px;width:clamp(30px,2.6vw,42px);border-radius:10px;background:var(--tr);overflow:hidden}
+#cl3 .it .tubo i{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(180deg,#3FA36B,#1E7E4B);border-radius:0 0 10px 10px}
+#cl3 .it .tubo em{position:absolute;left:0;right:0;height:2px;background:#C2410C}
+#cl3 .it .nm{font-size:12.5px;font-weight:650;line-height:1.25;min-height:2.5em}
+#cl3 .it .sb{font-size:11.5px;color:var(--s);margin-top:3px}
+#cl3 .it.fraco .pc{color:var(--al)}
+#cl3 .leg{display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;font-size:12px;color:var(--s)}
+#cl3 .leg i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:6px}
+/* as abordagens e os balcões: as linhas */
+#cl3 .linhas{display:grid;gap:4px}
+#cl3 .ln{display:grid;align-items:center;gap:14px;padding:10px 12px;border-radius:12px;cursor:pointer;border:1px solid transparent;outline:none}
+#cl3 .ln:hover,#cl3 .ln:focus-visible{background:#F4F7FB;border-color:#DCE5F0}
+#cl3 .ab .ln{grid-template-columns:minmax(200px,1.2fr) 3fr 110px 110px minmax(160px,1.1fr)}
+#cl3 .ba .ln{grid-template-columns:minmax(220px,1.3fr) 1.4fr 2.6fr 120px}
+#cl3 .ln .n{font-size:13.5px;font-weight:650;line-height:1.3}#cl3 .ln .n small{display:block;font-weight:400;color:var(--s);font-size:11.5px}
+#cl3 .ln .v{font-family:Georgia,serif;font-size:19px;font-weight:700;text-align:right}#cl3 .ln .v small{display:block;font:400 11px system-ui;color:var(--s)}
+#cl3 .barra{position:relative;height:22px;border-radius:7px;background:var(--tr);overflow:hidden}
+#cl3 .barra i{position:absolute;top:0;bottom:0;left:0;border-radius:7px}
+#cl3 .barra .tx{position:absolute;left:8px;top:3px;font-size:11.5px;font-weight:650;color:#23272E;white-space:nowrap}
+#cl3 .chips{display:flex;gap:5px;flex-wrap:wrap}#cl3 .chips em{font-style:normal;font-size:11.5px;padding:2px 8px;border-radius:999px;background:#F1F4F8;white-space:nowrap}
+#cl3 .cab{display:grid;gap:14px;padding:0 12px 6px;font-size:11.5px;color:var(--s)}
+#cl3 .ab .cab{grid-template-columns:minmax(200px,1.2fr) 3fr 110px 110px minmax(160px,1.1fr)}
+#cl3 .ba .cab{grid-template-columns:minmax(220px,1.3fr) 1.4fr 2.6fr 120px}
+#cl3 .regua{position:relative;height:30px;border-radius:7px;background:linear-gradient(90deg,#FBEAE7 0,#FFF7E8 35%,#EEF6F0 100%)}
+#cl3 .regua .pt{position:absolute;top:6px;width:18px;height:18px;margin-left:-9px;border-radius:50%;border:3px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+#cl3 .regua .pt.it{background:var(--ok)}#cl3 .regua .pt.st{background:var(--az)}
+#cl3 .regua .ma{position:absolute;top:0;bottom:0;width:1px;background:rgba(0,0,0,.08)}
+#cl3 .ln.pior{background:var(--alf);border-color:#F3C9AE}
+#cl3 .s3-tip{position:absolute;z-index:30;pointer-events:none;min-width:240px;max-width:360px;background:#1F2630;color:#F3F5F8;border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.45;
+ box-shadow:0 14px 34px rgba(15,23,35,.28);opacity:0;transition:opacity .12s}
+#cl3 .s3-tip.on{opacity:1}#cl3 .s3-tip b.t{display:block;font-family:Georgia,serif;font-size:15px;margin-bottom:4px;color:#fff}
+#cl3 .s3-tip .g{display:grid;grid-template-columns:auto auto;gap:2px 14px;margin-top:6px}
+#cl3 .s3-tip .g span:nth-child(odd){color:#AEB7C4}#cl3 .s3-tip .g span:nth-child(even){text-align:right;font-weight:650}
+#cl3 .s3-tip .x{margin-top:7px;color:#AEB7C4;font-size:11.5px}
+@media (max-width:980px){#cl3 .s3-topo{grid-template-columns:1fr}#cl3 .s3-kpis{grid-template-columns:repeat(2,1fr)}
+ #cl3 .ab .ln,#cl3 .ab .cab,#cl3 .ba .ln,#cl3 .ba .cab{grid-template-columns:1fr;gap:6px}#cl3 .cab{display:none}}
+</style>
+<section id="cl3" aria-label="O que o Cartório já sabe">
+  <div class="s3-topo"><div><h2>O que o Cartório já sabe</h2>
+    <p class="s3-lead">Os 12 itens de cada livro, o que cada abordagem do Interceptador de fato certificou e de quais fontes vêm os livros que mais faltam. Passe o cursor para ver os números; clique para abrir a lista dos livros.</p></div>
+    <div class="s3-kpis" id="s3-kpis"></div></div>
+  <div class="pn"><h3>Os 12 itens</h3><p class="ps">A coluna é a parte dos livros com o item certificado no documento oficial. O traço vermelho marca a parte das oportunidades abertas que já têm o item.</p>
+    <div id="s3-aviso-itens"></div><div class="itens" id="s3-itens"></div>
+    <div class="leg"><span><i style="background:#1E7E4B"></i>certificado no documento</span><span><i style="background:#C2410C;height:3px;vertical-align:3px"></i>nas abertas</span><span><i style="background:#E8ECF1"></i>falta</span></div></div>
+  <div class="pn ab"><h3>As abordagens do Interceptador</h3><p class="ps">Na ordem do plano de voo. A barra clara são as tentativas; a azul, as que trouxeram material; o número dourado, os itens que viraram certidão no mesmo livro nas 3 horas seguintes.</p>
+    <div id="s3-aviso-ab"></div><div class="cab"><span>Abordagem</span><span>Tentativas e material</span><span style="text-align:right">Rende material</span><span style="text-align:right">Itens certificados</span><span>O que mais resolve</span></div><div class="linhas" id="s3-ab"></div></div>
+  <div class="pn ba"><h3>Os balcões: de onde vêm os livros</h3><p class="ps">Cada fonte de origem numa linha, da maior para a menor. Na régua, o ponto verde é a parte dos 12 itens certificada; o azul, a parte com o site oficial.</p>
+    <div id="s3-aviso-ba"></div><div class="cab"><span>Balcão</span><span>Livros</span><span>Régua de 0 a 100%</span><span style="text-align:right">Itens certificados</span></div><div class="linhas" id="s3-ba"></div></div>
+  <div class="s3-tip" id="s3-tip"></div>
+</section>
+<script>
+(function(){
+  const $=i=>document.getElementById(i),N=n=>Number(n||0).toLocaleString("pt-BR"),E=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const P=(a,b,c)=>b?((100*a/b).toLocaleString("pt-BR",{maximumFractionDigits:c!=null?c:(a/b<.1?1:0)})+"%"):"—";
+  const DOZE=["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Modalidade","Área de atuação"];
+  const CURTO={"Órgão / financiador":"Órgão","Prazo de inscrição":"Prazo de inscrição","Prazo de recurso":"Prazo de recurso","Área de atuação":"Área"};
+  const tip=$("s3-tip"),raiz=$("cl3");
+  const dica=(ev,h)=>{tip.innerHTML=h;tip.classList.add("on");const r=raiz.getBoundingClientRect();let x=ev.clientX-r.left+16,y=ev.clientY-r.top+16;const w=tip.offsetWidth,hh=tip.offsetHeight;
+    if(x+w>r.width-8)x=ev.clientX-r.left-w-16;if(y+hh>r.height-8)y=ev.clientY-r.top-hh-16;tip.style.left=x+"px";tip.style.top=y+"px"};
+  const sem=()=>tip.classList.remove("on");
+  const grade=ps=>`<div class="g">${ps.map(([a,b])=>`<span>${E(a)}</span><span>${b}</span>`).join("")}</div>`;
+  function ligar(el,html,clique){el.tabIndex=0;el.addEventListener("mousemove",ev=>dica(ev,html));el.addEventListener("mouseleave",sem);
+    el.addEventListener("click",()=>{sem();clique()});el.addEventListener("keydown",ev=>{if(ev.key==="Enter"){sem();clique()}})}
+  const abrir=(t,o,xs,ordem)=>window.c2&&window.c2.gaveta(t,o,xs,ordem);
+  function desenhar(){
+    const L=window.c2.livros,D=window.c2.dados,ab=D.por_abordagem||{},bl=D.por_balcao||{};
+    const tem=(x,k)=>!!(x.itens&&x.itens[k])||!!(x.dispensas&&x.dispensas[k]);
+    const tot=L.length,abertas=L.filter(x=>x.aberta),certs=L.reduce((a,x)=>a+DOZE.filter(k=>tem(x,k)).length,0),doze=L.filter(x=>DOZE.every(k=>tem(x,k))).length;
+    const comSite=(D.resumo||{}).com_link_oficial||0;
+    const abs=Object.entries(ab).map(([k,v])=>({k,...v})),tent=abs.reduce((a,x)=>a+x.vezes,0),itensAb=abs.reduce((a,x)=>a+(x.itens||0),0);
+    const bals=Object.entries(bl).map(([k,v])=>({k,...v,ef:v.resolvidos/((v.certidoes||1)*12)})).sort((a,b)=>b.certidoes-a.certidoes);
+    const pior=bals.filter(b=>b.certidoes>=50).sort((a,b)=>a.ef-b.ef)[0];
+    $("s3-kpis").innerHTML=[[P(certs,tot*12),`dos 12 itens certificados (${N(certs)} de ${N(tot*12)})`],[N(doze),"livros com os 12 itens",0,1],[P(comSite,tot),"com o site oficial"],
+      [N(itensAb),`itens certificados pelas abordagens, em ${N(tent)} tentativas`],[pior?P(pior.ef*pior.certidoes*12,pior.certidoes*12,1):"—",pior?`dos itens no pior balcão: ${E(pior.k)} (${N(pior.certidoes)} livros)`:"",1]]
+      .map(([b,s,al,ok],i)=>`<div class="kpi${i===4?" al":i===1?" ok":""}"><b>${b}</b><span>${s}</span></div>`).join("");
+    // ---- os 12 itens
+    const it=DOZE.map(k=>{const c=L.filter(x=>tem(x,k)).length,ca=abertas.filter(x=>tem(x,k)).length;return {k,c,ca,p:tot?c/tot:0,pa:abertas.length?ca/abertas.length:0}});
+    const fraco=it.slice(0,2).concat(it.slice(4)).sort((a,b)=>a.pa-b.pa)[0];
+    $("s3-aviso-itens").innerHTML=fraco?`<div class="aviso"><b>O item mais fraco nas abertas:</b>&nbsp;${E(fraco.k)} — só ${P(fraco.ca,abertas.length)} das ${N(abertas.length)} oportunidades abertas o têm certificado. É o primeiro a pedir ao Interceptador.</div>`:"";
+    const box=$("s3-itens");box.innerHTML=it.map((o,i)=>`<div class="it${o===fraco?" fraco":""}" data-i="${i}"><div class="pc">${P(o.c,tot)}</div><div class="tubo"><i style="height:${(100*o.p).toFixed(1)}%"></i><em style="bottom:${(100*o.pa).toFixed(1)}%"></em></div>
+      <div class="nm">${E(CURTO[o.k]||o.k)}</div><div class="sb">${N(o.c)} de ${N(tot)}</div></div>`).join("");
+    box.querySelectorAll(".it").forEach(el=>{const o=it[+el.dataset.i],falta=L.filter(x=>!tem(x,o.k));
+      ligar(el,`<b class="t">${E(o.k)}</b>${grade([["certificado",`${N(o.c)} · ${P(o.c,tot)}`],["falta",`${N(tot-o.c)} · ${P(tot-o.c,tot)}`],["nas abertas",`${N(o.ca)} de ${N(abertas.length)} · ${P(o.ca,abertas.length)}`],["abertas sem o item",N(abertas.length-o.ca)]])}<div class="x">Clique para ver os livros sem este item (as abertas primeiro)</div>`,
+        ()=>abrir(`Sem ${o.k}`,"sem este item certificado",falta,"abertas"))});
+    // ---- as abordagens
+    const mxv=Math.max(1,...abs.map(a=>a.vezes)),enganos=abs.filter(a=>a.vezes>=10&&a.taxa_de_acerto>=.6&&(a.itens||0)/a.vezes<.2);
+    $("s3-aviso-ab").innerHTML=enganos.length?`<div class="aviso"><b>Material não é item:</b>&nbsp;${enganos.map(a=>`«${E(a.nome)}» trouxe material em ${P(a.renderam,a.vezes)} das tentativas, mas certificou ${N(a.itens)} item(ns) em ${N(a.vezes)}`).join("; ")}. A abordagem acha a página, mas o documento não tem os itens que faltam.</div>`:"";
+    const lab=$("s3-ab");lab.innerHTML=abs.map((a,i)=>`<div class="ln" data-i="${i}"><div class="n">${E(a.k)}. ${E(a.nome)}<small>${N(a.livros)} livros tentados</small></div>
+      <div class="barra"><i style="width:${(100*a.vezes/mxv).toFixed(1)}%;background:#DCE5F0"></i><i style="width:${(100*a.renderam/mxv).toFixed(1)}%;background:#3B7BC4"></i><span class="tx">${N(a.renderam)} com material · ${N(a.vezes)} tentativas</span></div>
+      <div class="v" style="color:#1F5B99">${P(a.renderam,a.vezes)}<small>rende material</small></div><div class="v" style="color:#8A6415">${N(a.itens)}<small>${a.itens_por_tentativa!=null?a.itens_por_tentativa.toLocaleString("pt-BR")+" por tentativa":""}</small></div>
+      <div class="chips">${Object.entries(a.por_item||{}).slice(0,3).map(([k,n])=>`<em>${E(CURTO[k]||k)} ${N(n)}</em>`).join("")||'<em>nenhum item</em>'}</div></div>`).join("");
+    lab.querySelectorAll(".ln").forEach(el=>{const a=abs[+el.dataset.i],ids=new Set(a.livros_ids||[]);
+      ligar(el,`<b class="t">${E(a.k)}. ${E(a.nome)}</b>${grade([["tentativas",N(a.vezes)],["livros tentados",N(a.livros)],["com material",`${N(a.renderam)} · ${P(a.renderam,a.vezes)}`],["itens certificados",N(a.itens)],["itens por tentativa",a.itens_por_tentativa!=null?a.itens_por_tentativa.toLocaleString("pt-BR"):"—"]])}
+        ${Object.keys(a.por_item||{}).length?`<div class="x">Resolve: ${Object.entries(a.por_item).map(([k,n])=>`${E(k)} ${N(n)}`).join(" · ")}</div>`:""}<div class="x">Clique para ver os livros tentados</div>`,
+        ()=>abrir(`${a.k}. ${a.nome}`,"tentados por esta abordagem",L.filter(x=>ids.has(x.id))))});
+    // ---- os balcões
+    const mxb=Math.max(1,...bals.map(b=>b.certidoes));
+    $("s3-aviso-ba").innerHTML=pior?`<div class="aviso"><b>O pior balcão:</b>&nbsp;${E(pior.k)} — ${N(pior.certidoes)} livros, com ${P(pior.ef*pior.certidoes*12,pior.certidoes*12,1)} dos itens certificados e ${P(pior.com_link,pior.certidoes,1)} com o site oficial. É onde está o maior desperdício de leitura.</div>`:"";
+    const lba=$("s3-ba");lba.innerHTML=bals.map((b,i)=>`<div class="ln${b===pior?" pior":""}" data-i="${i}"><div class="n">${E(b.k)}<small>${N(b.resolvidos)} itens certificados · ${N(b.faltavam)} faltam</small></div>
+      <div class="barra"><i style="width:${(100*b.certidoes/mxb).toFixed(1)}%;background:#9FB6D3"></i><span class="tx">${N(b.certidoes)} livros</span></div>
+      <div class="regua">${[25,50,75].map(m=>`<span class="ma" style="left:${m}%"></span>`).join("")}<span class="pt st" style="left:${(100*(b.taxa_link_oficial||0)).toFixed(1)}%"></span><span class="pt it" style="left:${(100*b.ef).toFixed(1)}%"></span></div>
+      <div class="v" style="color:${b.ef<.15?"#C2410C":"#1E7E4B"}">${P(b.ef*b.certidoes*12,b.certidoes*12,1)}<small>dos 12 itens</small></div></div>`).join("");
+    lba.querySelectorAll(".ln").forEach(el=>{const b=bals[+el.dataset.i];
+      ligar(el,`<b class="t">${E(b.k)}</b>${grade([["livros",N(b.certidoes)],["itens certificados",`${N(b.resolvidos)} · ${P(b.ef*b.certidoes*12,b.certidoes*12,1)}`],["itens que faltam",N(b.faltavam)],["com o site oficial",`${N(b.com_link)} · ${P(b.com_link,b.certidoes,1)}`]])}<div class="x">Clique para ver os livros deste balcão</div>`,
+        ()=>abrir(b.k,"deste balcão",L.filter(x=>x.balcao===b.k)))});
+  }
+  if(window.c2)desenhar();else document.addEventListener("c2-pronto",desenhar,{once:true});
+})();
+</script>
+
+<!-- os blocos antigos (os cartões, a linha de produção, as 10 abordagens, a eficiência por item, os balcões e as safras): fora da tela, substituídos por "O que o Cartório já sabe"; o código que os preenche continua -->
+<div hidden style="display:none">
 <div class="cards" id="car-cards"></div>
 
 <h2>Linha de produção <span class="meta">(sem estrela → bronze → prata → ouro · até 10 abordagens por oportunidade)</span></h2>
@@ -1606,6 +1746,7 @@ html,body{overflow-x:clip}
 <div class="tab"><table id="car-safras"></table></div>
 <p class="meta">As refeitas são os casos difíceis que voltaram à fila (informação nova, leitor novo ou revisita de 7 dias). Compare safras iguais para medir progresso.</p>
 
+</div>
 <h2>Certidões <span class="meta">(clique para ver os 12 itens)</span></h2>
 <div class="filtros">
   <input id="car-busca" type="search" placeholder="Buscar por título, órgão ou UF">

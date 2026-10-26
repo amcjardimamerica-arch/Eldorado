@@ -40,7 +40,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 11301,
+   "linhas": 11312,
    "situacao": "em funcionamento",
    "ordem": 2
   },
@@ -2001,7 +2001,7 @@
   },
   {
    "arquivo": "eldorado/base/comandante/organizar.py",
-   "linhas": 358,
+   "linhas": 361,
    "finalidade": "O Comandante organiza os livros do Cartório (a etapa C6; titular, 25/10/2026: \"não existem 5 mil livros e nem devem ter",
    "depende_de": [
     "eldorado/base/cartorio/auditoria.py",
@@ -2015,7 +2015,8 @@
     "passagem, nó 29 «organizar_livros»"
    ],
    "usado_por": [
-    "eldorado/base/comandante/biblioteca.py"
+    "eldorado/base/comandante/biblioteca.py",
+    "eldorado/base/missao/portao.py"
    ],
    "testes": [
     "test_organizar_livros.py"
@@ -4043,6 +4044,7 @@
    "usado_por": [],
    "testes": [
     "test_cartorio.py",
+    "test_comandante_expurgo.py",
     "test_espiao.py",
     "test_ia.py",
     "test_identidade.py",
@@ -4138,9 +4140,10 @@
   },
   {
    "arquivo": "eldorado/base/missao/portao.py",
-   "linhas": 40,
+   "linhas": 50,
    "finalidade": "O portão da missão das oportunidades (titular, 16/10/2026), com as regras aproveitadas do Eldorado0.",
    "depende_de": [
+    "eldorado/base/comandante/organizar.py",
     "eldorado/base/missao/regras_portao.py"
    ],
    "eventos": [],
@@ -4149,12 +4152,15 @@
     "eldorado/base/cartorio/auditoria.py",
     "eldorado/base/missao/oportunidades.py"
    ],
-   "testes": [],
+   "testes": [
+    "test_comandante_expurgo.py"
+   ],
    "situacao": "em funcionamento",
    "etapa": "07 Missão: o perfil do que se procura",
    "parte": "BASE",
    "componente": "Missão (finalidade trocável)",
    "ligacoes": [
+    "eldorado/base/comandante/organizar.py",
     "eldorado/base/missao/regras_portao.py"
    ],
    "critico": false,
@@ -4463,7 +4469,7 @@
   },
   {
    "arquivo": "eldorado/base/cartorio/cartorio.py",
-   "linhas": 218,
+   "linhas": 221,
    "finalidade": "O Cartório (titular, 22/10/2026): o ORGANIZADOR. Ele não busca nada: é onde o livro recebe informação nova, é",
    "depende_de": [
     "eldorado/base/cartorio/auditoria.py",
@@ -4857,7 +4863,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 359,
+   "linhas": 370,
    "situacao": "em funcionamento",
    "ordem": 159
   },
@@ -5682,7 +5688,7 @@
   },
   {
    "arquivo": "eldorado/base/painel/cartorio.py",
-   "linhas": 332,
+   "linhas": 365,
    "finalidade": "O Cartório no site, ligado aos dados (titular, 25/10/2026: a página estava estática).",
    "depende_de": [
     "eldorado/base/missao/itens.py"

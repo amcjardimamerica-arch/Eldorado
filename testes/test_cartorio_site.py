@@ -53,3 +53,39 @@ def test_os_fluxos_e_o_tempo_na_etapa_no_cartorio():
         "sete_dias": 1,
         "um_dia": 0,
     } in f
+
+
+def test_o_painel_o_que_o_cartorio_ja_sabe():
+    """26/10/2026 (titular): os 12 itens, as abordagens (com os itens de fato certificados) e os balcões num painel só, de
+    margem a margem, com a dica, a gaveta e os avisos; os blocos antigos fora da tela."""
+    from pathlib import Path
+
+    p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
+    assert 'id="cl3"' in p and 'id="s3-itens"' in p and 'id="s3-ab"' in p and 'id="s3-ba"' in p
+    assert "Material não é item" in p and "O pior balcão" in p and "O item mais fraco nas abertas" in p
+    i = p.index('id="car-cards"')
+    assert '<div hidden style="display:none">' in p[i - 200 : i]  # os blocos antigos fora da tela
+    assert 'value="abertas"' in p  # a gaveta: as abertas primeiro
+
+
+def test_as_abordagens_medem_os_itens_de_fato_certificados(bancos):
+    from eldorado.base.painel.cartorio import montar
+
+    b = bancos["biblioteca"]
+    b.execute(
+        "INSERT INTO livro(id, missao, chave, titulo, estrela, selo_livro, informacoes_validadas, situacao, criado_em, atualizado_em) "
+        "VALUES ('L', 'oportunidades', 'k', 'Edital', 'sem', 'sem', 0, 'em trabalho', '2026-10-26T10:00:00+00:00', '2026-10-26T10:00:00+00:00')"
+    )
+    b.execute("INSERT INTO passaporte(livro_id, fase, entrou_em) VALUES ('L', 'preparacao', '2026-10-26T10:00:00+00:00')")
+    b.execute("INSERT INTO livro_dados(livro_id, validacao, validado_em) VALUES ('L', 'aprovado', '2026-10-26T10:00:00+00:00')")
+    b.execute(
+        "INSERT INTO tentativa(livro_id, fase, ferramenta, numero, em, resultado) VALUES ('L', 'preparacao', 'abordagem 1', 1, "
+        "'2026-10-26T11:00:00+00:00', '{\"abordagem\": \"documento na mão\"}')"
+    )
+    b.execute(
+        "INSERT INTO certidao(livro_id, item, valor, situacao, fase, em) VALUES ('L', 'Objeto', 'x', 'comprovado', 'preparacao', '2026-10-26T12:00:00+00:00')"
+    )
+    b.commit()
+    principal, _ = montar(b, bancos["cerebro"], None, "2026-10-26T13:00:00+00:00")
+    a = principal["por_abordagem"]["1"]
+    assert a["itens"] == 1 and a["por_item"] == {"Objeto": 1} and a["livros"] == 1 and a["livros_ids"] == ["L"]
