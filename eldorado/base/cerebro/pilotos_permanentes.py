@@ -50,44 +50,76 @@ def _contexto(dados: Path, diario):
 PARALELOS_INTERCEPTADOR = 5   # 5 livros em paralelo (titular, 25/10/2026), cada um autorizado pelo Comandante (a carga até 85%)
 
 
-def _voo_interceptador(dados: Path, eventos: Path, parar: threading.Event, k: int, lv_id: str, base: dict | None, tempo_livro_s: float) -> None:
-    """Um voo do Interceptador: o seu diário, a sua conexão com a Biblioteca e a sua vaga da IA."""
-    from ...motores.descoberta.metabusca import Metabusca
-    from ...motores.pilotos.interceptador import Interceptador, carregar
+class _Vaga:
+    """Um dos 5 voos do Interceptador, com o SEU contexto reaproveitado de livro em livro (26/10/2026: criar o contexto
+    inteiro a cada livro fazia a memória subir ~12% por hora até 96%, e a regra dos 85% parou o sistema por 3 horas);
+    renovado a cada 20 livros."""
+    RENOVAR = 20
+
+    def __init__(self, dados: Path, eventos: Path, k: int):
+        self.dados, self.eventos, self.k, self.feitos, self.ctx = dados, eventos, k, 0, None
+
+    def contexto(self):
+        if self.ctx is None or self.feitos >= self.RENOVAR:
+            self.fechar()
+            from ...motores.descoberta.metabusca import Metabusca
+            from ...motores.pilotos.interceptador import Interceptador
+            from ..nucleo.eventos import Diario
+            from ..nucleo.ia import IA
+            from .encaminhamento import Encaminhamento
+            from .rede import rede_atual
+            diario = Diario(self.eventos, f"interceptador-{self.k}")
+            dados_, con, escada, registro = _contexto(self.dados, diario)
+            ia = IA(cargo_nome="interceptador", vaga=self.k)
+            mb = Metabusca(buscar=escada.buscar)
+
+            def buscar_links(q: str, mb=mb) -> list[str]:
+                try:
+                    return [p.link for p in mb.consultar(q, limite=10)[0]]
+                except Exception:  # noqa: BLE001
+                    return []
+            enc = Encaminhamento(con, diario, registro, Interceptador(con, diario, escada, metabusca=buscar_links,
+                                                                     ia=ia if ia.disponivel() else None), rede_atual(dados_))
+            self.ctx, self.feitos = {"diario": diario, "dados": dados_, "con": con, "enc": enc}, 0
+        return self.ctx
+
+    def fechar(self) -> None:
+        import gc
+        if self.ctx:
+            try:
+                self.ctx["con"].close()
+            except Exception:  # noqa: BLE001
+                pass
+        self.ctx = None
+        gc.collect()
+
+
+def _voo_interceptador(vaga: _Vaga, parar: threading.Event, lv_id: str, base: dict | None, tempo_livro_s: float) -> None:
+    """Um voo do Interceptador, no contexto da sua vaga."""
+    from ...motores.pilotos.interceptador import carregar
     from ..comandante.biblioteca import registrar_tentativa
     from ..comandante.pilotos import autorizar, pousou
-    from ..nucleo.eventos import Diario
-    from ..nucleo.ia import IA
-    from .encaminhamento import Encaminhamento
-    from .rede import rede_atual
-    diario = Diario(eventos, f"interceptador-{k}")
-    dados_, con, escada, registro = _contexto(dados, diario)
+    c = vaga.contexto()
+    livros = carregar(c["con"], [lv_id])
+    if not livros or autorizar("interceptador", c["dados"], c["diario"], parar, alvo=lv_id, titulo=livros[0].titulo or "") is None:
+        return
+    SITUACAO[f"interceptador-{vaga.k}"] = {"livro": lv_id, "titulo": livros[0].titulo, "desde": time.time()}
+    sinal(c["diario"], "interceptador", f"em voo ({vaga.k + 1} de {PARALELOS_INTERCEPTADOR}): {livros[0].titulo}")
     try:
-        livros = carregar(con, [lv_id])
-        if not livros or autorizar("interceptador", dados_, diario, parar, alvo=lv_id, titulo=livros[0].titulo or "") is None:
-            return
-        ia, rede = IA(cargo_nome="interceptador", vaga=k), rede_atual(dados_)
-        mb = Metabusca(buscar=escada.buscar)
-
-        def buscar_links(q: str, mb=mb) -> list[str]:
-            try:
-                return [p.link for p in mb.consultar(q, limite=10)[0]]
-            except Exception:  # noqa: BLE001
-                return []
-        enc = Encaminhamento(con, diario, registro, Interceptador(con, diario, escada, metabusca=buscar_links, ia=ia if ia.disponivel() else None), rede)
-        SITUACAO[f"interceptador-{k}"] = {"livro": lv_id, "titulo": livros[0].titulo, "desde": time.time()}
-        sinal(diario, "interceptador", f"em voo ({k + 1} de {PARALELOS_INTERCEPTADOR}): {livros[0].titulo}")
-        try:
-            _quem, achados = enc.encaminhar(livros[0], time.monotonic() + tempo_livro_s)
-            for a in (achados if isinstance(achados, list) else [achados] if achados else []):
-                ENTREGAS["interceptador"].put(a)
-        finally:
-            if base:
-                registrar_tentativa(diario, base)       # a tentativa de completar a base (no máximo 2, com 30 minutos entre elas)
-            pousou("interceptador")
+        _quem, achados = c["enc"].encaminhar(livros[0], time.monotonic() + tempo_livro_s)
+        for a in (achados if isinstance(achados, list) else [achados] if achados else []):
+            ENTREGAS["interceptador"].put(a)
     finally:
-        con.close()
+        vaga.feitos += 1
+        if base:
+            registrar_tentativa(c["diario"], base)       # a tentativa de completar a base (no máximo 2, com 30 minutos entre elas)
+        pousou("interceptador")
 
+
+def paralelos_agora() -> int:
+    """Quantos voos o Comandante libera agora: 5; com a memória acima de 85% há mais de 10 minutos, 2 (26/10/2026)."""
+    from ..comandante.pilotos import pressao
+    return 2 if pressao() >= 600 else PARALELOS_INTERCEPTADOR
 
 def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_s: float = 180) -> None:
     """O Interceptador: 5 livros em paralelo, pelo plano de voo, sem parar. A fila: primeiro a de completar a base (as
@@ -98,6 +130,7 @@ def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_
     from ..comandante.biblioteca import avaliar
     from ..comandante.biblioteca import fila as fila_base
     eventos = Path(getattr(diario, "pasta", "eventos"))
+    vagas = [_Vaga(dados, eventos, k) for k in range(PARALELOS_INTERCEPTADOR)]
     while not parar.is_set():
         try:
             dados_, con, _escada, _registro = _contexto(dados, diario)
@@ -119,12 +152,17 @@ def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_
                 for lv_id, b in voos:
                     if parar.is_set():
                         break
-                    while not livres:
-                        feitos, _ = wait(list(em_voo), return_when="FIRST_COMPLETED")
+                    # quantos voos ao mesmo tempo: 5, ou 2 sob pressão de memória (o Comandante decide)
+                    while not livres or len(em_voo) >= paralelos_agora():
+                        feitos, _ = wait(list(em_voo), timeout=60, return_when="FIRST_COMPLETED")
                         for f in feitos:
                             livres.append(em_voo.pop(f))
+                        if parar.is_set():
+                            break
+                    if parar.is_set():
+                        break
                     k = livres.pop(0)
-                    em_voo[pool.submit(_voo_interceptador, dados, eventos, parar, k, lv_id, b, tempo_livro_s)] = k
+                    em_voo[pool.submit(_voo_interceptador, vagas[k], parar, lv_id, b, tempo_livro_s)] = k
                 wait(list(em_voo))
         except Exception as e:  # noqa: BLE001 — uma volta que falha vira registro; a seguinte segue
             diario.emitir("alarme.aberto", "piloto:interceptador", {"gravidade": "media", "modulo": "piloto:interceptador",
@@ -170,7 +208,9 @@ def conferir_sempre(dados: Path, diario, parar: threading.Event) -> None:
     import sqlite3
 
     from ..comandante.parametros import conferir
+    from ..comandante.pilotos import carga
     while not parar.wait(60):
+        carga()                                                   # a pressão de memória medida a cada minuto (26/10/2026)
         try:
             cer = sqlite3.connect(f"file:{dados / 'cerebro.db'}?mode=ro", uri=True)
             try:

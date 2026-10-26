@@ -40,7 +40,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 11229,
+   "linhas": 11273,
    "situacao": "em funcionamento",
    "ordem": 2
   },
@@ -97,6 +97,7 @@
     "test_comandante_fase3.py",
     "test_comandante_fase5.py",
     "test_comandante_fase6.py",
+    "test_comandante_memoria.py",
     "test_comandante_pilotos.py",
     "test_comandos.py",
     "test_config.py",
@@ -192,6 +193,7 @@
     "test_comandante_fase3.py",
     "test_comandante_fase5.py",
     "test_comandante_fase6.py",
+    "test_comandante_memoria.py",
     "test_comandante_pilotos.py",
     "test_comandos.py",
     "test_config.py",
@@ -253,7 +255,7 @@
   },
   {
    "arquivo": "eldorado/base/nucleo/comandos.py",
-   "linhas": 724,
+   "linhas": 728,
    "finalidade": "Os comandos da plataforma: os mesmos no GitHub, no computador da titular e (depois) no painel.",
    "depende_de": [
     "eldorado/banco/analise.py",
@@ -269,6 +271,7 @@
     "eldorado/base/cerebro/inventario.py",
     "eldorado/base/cerebro/pilotos.py",
     "eldorado/base/cerebro/pilotos_permanentes.py",
+    "eldorado/base/comandante/pilotos.py",
     "eldorado/base/especial/importar_e0.py",
     "eldorado/base/fluxo/agenda.py",
     "eldorado/base/fluxo/definicao.py",
@@ -320,6 +323,7 @@
     "eldorado/base/cerebro/inventario.py",
     "eldorado/base/cerebro/pilotos.py",
     "eldorado/base/cerebro/pilotos_permanentes.py",
+    "eldorado/base/comandante/pilotos.py",
     "eldorado/base/especial/importar_e0.py",
     "eldorado/base/fluxo/agenda.py",
     "eldorado/base/fluxo/definicao.py",
@@ -565,6 +569,7 @@
     "test_comandante_fase2.py",
     "test_comandante_fase3.py",
     "test_comandante_fase5.py",
+    "test_comandante_memoria.py",
     "test_comandante_pilotos.py",
     "test_comandos.py",
     "test_config.py",
@@ -1803,6 +1808,7 @@
     "test_capacidade.py",
     "test_cerebro.py",
     "test_comandante_biblioteca.py",
+    "test_comandante_memoria.py",
     "test_decisao.py",
     "test_encaminhamento_isolado.py",
     "test_espiao.py",
@@ -1974,6 +1980,7 @@
     "test_comandante_fase3.py",
     "test_comandante_fase5.py",
     "test_comandante_fase6.py",
+    "test_comandante_memoria.py",
     "test_comandante_pilotos.py",
     "test_organizar_livros.py"
    ],
@@ -2091,6 +2098,7 @@
     "test_comandante_biblioteca.py",
     "test_comandante_fase1.py",
     "test_comandante_fase2.py",
+    "test_comandante_memoria.py",
     "test_ia.py"
    ],
    "situacao": "em funcionamento",
@@ -2371,7 +2379,7 @@
   },
   {
    "arquivo": "eldorado/base/comandante/pilotos.py",
-   "linhas": 145,
+   "linhas": 185,
    "finalidade": "O Comandante comanda os pilotos (a etapa C5; a fase 4 do desenho, titular, 25/10/2026). Cada missão do Espião e cada",
    "depende_de": [
     "eldorado/base/comandante/decidir.py",
@@ -2379,11 +2387,13 @@
     "eldorado/base/comandante/politica.py"
    ],
    "eventos": [
+    "alarme.aberto",
     "comandante.decidiu"
    ],
    "acionado_por": [],
    "usado_por": [
-    "eldorado/base/cerebro/pilotos_permanentes.py"
+    "eldorado/base/cerebro/pilotos_permanentes.py",
+    "eldorado/base/nucleo/comandos.py"
    ],
    "testes": [],
    "situacao": "em funcionamento",
@@ -2435,6 +2445,7 @@
     "eldorado/base/cerebro/pilotos_permanentes.py"
    ],
    "testes": [
+    "test_comandante_memoria.py",
     "test_ia.py",
     "test_interceptador.py",
     "test_interceptador_funciona.py",
@@ -2468,7 +2479,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/pilotos_permanentes.py",
-   "linhas": 194,
+   "linhas": 234,
    "finalidade": "Os pilotos de forma permanente (titular, 25/10/2026: \"execute eles de forma permanente, da forma que foram desenvolvidos",
    "depende_de": [
     "eldorado/base/cerebro/encaminhamento.py",
@@ -2652,6 +2663,7 @@
     "test_canivete.py",
     "test_canivete_descoberta.py",
     "test_cassete.py",
+    "test_comandante_memoria.py",
     "test_descoberta.py",
     "test_encaminhamento_isolado.py",
     "test_espiao.py",
@@ -2860,6 +2872,7 @@
    "usado_por": [],
    "testes": [
     "test_canivete_descoberta.py",
+    "test_comandante_memoria.py",
     "test_descoberta.py",
     "test_espiao.py",
     "test_incentivos.py",
@@ -3299,6 +3312,7 @@
     "eldorado/motores/canal/motor.py"
    ],
    "testes": [
+    "test_comandante_memoria.py",
     "test_descoberta.py",
     "test_interceptador_funciona.py"
    ],
@@ -4492,6 +4506,7 @@
    "acionado_por": [],
    "usado_por": [],
    "testes": [
+    "test_comandante_memoria.py",
     "test_espiao.py",
     "test_ia.py",
     "test_ia_validada.py",
@@ -4563,6 +4578,7 @@
     "eldorado/base/cerebro/pilotos_permanentes.py"
    ],
    "testes": [
+    "test_comandante_memoria.py",
     "test_ia.py",
     "test_interceptador.py",
     "test_interceptador_funciona.py",
@@ -4819,7 +4835,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 346,
+   "linhas": 348,
    "situacao": "em funcionamento",
    "ordem": 159
   },
@@ -5493,6 +5509,7 @@
    ],
    "testes": [
     "test_cerebro.py",
+    "test_comandante_memoria.py",
     "test_fumaca_dados_reais.py",
     "test_lote.py",
     "test_rede_neural.py"

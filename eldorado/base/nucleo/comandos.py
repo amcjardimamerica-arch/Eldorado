@@ -692,6 +692,10 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
                    f"livros em trabalho {f['livros_em_trabalho']} · próxima ação prevista {f['proxima_acao'][11:16]}")
         if decorrido > limite_min * 60:
             break
+        from ..comandante.pilotos import REINICIAR
+        if REINICIAR.is_set():                                        # o Comandante: a memória não cedeu em 15 minutos (26/10/2026)
+            typer.echo("  o Comandante pede o reinício: a memória não cedeu; o sistema grava e se religa (a memória volta)")
+            break
         if implantar.is_set():                                        # a passagem terminou (a regra R09: aguarda e grava)
             typer.echo("  implantação: a passagem terminou; os pilotos concluem o livro ou a missão atual, o sistema grava e para")
             break

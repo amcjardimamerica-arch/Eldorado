@@ -48,14 +48,35 @@ def _parametros(dados: Path) -> tuple[float, float]:
     return v
 
 
+REINICIAR = threading.Event()  # o Comandante pede o reinício do ciclo (a memória não cede): termina, grava e religa
+MEMORIA_REINICIO, REINICIO_S, PRESSAO_S = 92.0, 15 * 60, 10 * 60
+_pressao: dict[str, float | None] = {"carga_desde": None, "memoria_desde": None}
+
+
 def carga() -> float:
-    """A carga da máquina: o maior entre o processador e a memória (em %)."""
+    """A carga da máquina: o maior entre o processador e a memória (em %). Cada leitura alimenta a pressão que o Comandante
+    mede (26/10/2026: a memória presa em 96% parou o sistema por 3 horas, todos esperando a regra dos 85%)."""
     try:
         import psutil
 
-        return max(psutil.cpu_percent(interval=0.5), psutil.virtual_memory().percent)
+        mem = psutil.virtual_memory().percent
+        c = max(psutil.cpu_percent(interval=0.5), mem)
     except Exception:  # noqa: BLE001
         return 0.0
+    agora = time.monotonic()
+    with _trava:
+        _pressao["carga_desde"] = (_pressao["carga_desde"] or agora) if c > CARGA_MAXIMA else None
+        _pressao["memoria_desde"] = (_pressao["memoria_desde"] or agora) if mem >= MEMORIA_REINICIO else None
+        if _pressao["memoria_desde"] and agora - _pressao["memoria_desde"] >= REINICIO_S:
+            REINICIAR.set()
+    return c
+
+
+def pressao() -> float:
+    """Há quantos segundos a carga está acima de 85% sem parar (0 se não está)."""
+    with _trava:
+        d = _pressao["carga_desde"]
+    return time.monotonic() - d if d else 0.0
 
 
 def pousou(piloto: str) -> None:
@@ -101,9 +122,28 @@ def autorizar(piloto: str, dados: Path, diario, parar: threading.Event, alvo: st
             break
         parar.wait(falta)
     c = carga()
+    avisou = False
     while c > maxima and not parar.is_set():  # regra 4: a carga até 85%
         parar.wait(10)
         c = carga()
+        if pressao() >= PRESSAO_S and not avisou:  # 10 minutos sem ceder: a limpeza e o alarme (os voos caem para 2)
+            import gc
+
+            gc.collect()
+            diario.emitir(
+                "alarme.aberto",
+                "comandante",
+                {
+                    "gravidade": "alta",
+                    "modulo": "comandante:carga",
+                    "aberto_em": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                    "mensagem": f"a carga está acima de {maxima:.0f}% há mais de 10 minutos ({c:.0f}%): os voos do Interceptador caem para 2; "
+                    f"com a memória acima de {MEMORIA_REINICIO:.0f}% por 15 minutos, o ciclo é reiniciado (termina, grava e religa)",
+                },
+            )
+            avisou = True
+        if REINICIAR.is_set():
+            return None
     if parar.is_set():
         return None
     cer = sqlite3.connect(f"file:{dados / 'cerebro.db'}?mode=ro", uri=True)
