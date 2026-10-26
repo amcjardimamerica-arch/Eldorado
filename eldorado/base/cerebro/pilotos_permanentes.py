@@ -129,14 +129,45 @@ def paralelos_agora() -> int:
 
 def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_s: float = 180) -> None:
     """O Interceptador: 5 livros em paralelo, pelo plano de voo, sem parar. A fila: primeiro a de completar a base (as
-    abertas incompletas, as recuperáveis, as sem base; 2 tentativas, 30 minutos entre elas); depois a fila de sempre."""
-    from concurrent.futures import ThreadPoolExecutor, wait
+    abertas incompletas, as recuperáveis, as sem base; 2 tentativas, 30 minutos entre elas); depois a fila de sempre.
+    26/10/2026: cada vaga tem o SEU fio, fixo (a conexão da vaga com a Biblioteca só pode ser usada no fio que a criou;
+    num conjunto de fios a vaga mudava de fio e o voo quebrava em silêncio: só a vaga 1 voava); o erro de um voo vira alarme."""
+    import queue
 
     from ...motores.pilotos.interceptador import fila
     from ..comandante.biblioteca import avaliar
     from ..comandante.biblioteca import fila as fila_base
     eventos = Path(getattr(diario, "pasta", "eventos"))
-    vagas = [_Vaga(dados, eventos, k) for k in range(PARALELOS_INTERCEPTADOR)]
+    pedidos: queue.Queue = queue.Queue()
+    avisados: set[str] = set()
+
+    def trabalhador(k: int) -> None:
+        vaga = _Vaga(dados, eventos, k)
+        while not parar.is_set():
+            if k >= paralelos_agora():                       # sob pressão de memória, só as primeiras vagas voam
+                parar.wait(30)
+                continue
+            try:
+                lv_id, b = pedidos.get(timeout=5)
+            except queue.Empty:
+                continue
+            try:
+                _voo_interceptador(vaga, parar, lv_id, b, tempo_livro_s)
+            except Exception as e:  # noqa: BLE001 — o voo que falha vira alarme (uma vez por tipo); a vaga se renova
+                tipo = f"{type(e).__name__}: {str(e)[:120]}"
+                if tipo not in avisados:
+                    avisados.add(tipo)
+                    diario.emitir("alarme.aberto", "piloto:interceptador", {"gravidade": "media", "modulo": "piloto:interceptador",
+                                                                            "mensagem": f"o voo da vaga {k + 1} falhou: {tipo}",
+                                                                            "aberto_em": time.strftime("%Y-%m-%dT%H:%M:%S+00:00", time.gmtime())})
+                vaga.fechar()
+            finally:
+                pedidos.task_done()
+        vaga.fechar()
+
+    fios = [threading.Thread(target=trabalhador, args=(k,), name=f"interceptador-{k + 1}", daemon=True) for k in range(PARALELOS_INTERCEPTADOR)]
+    for f in fios:
+        f.start()
     while not parar.is_set():
         try:
             dados_, con, _escada, _registro = _contexto(dados, diario)
@@ -152,24 +183,10 @@ def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_
                 sinal(diario, "interceptador", "aguardando: a fila de livros está vazia")
                 parar.wait(300)
                 continue
-            livres = list(range(PARALELOS_INTERCEPTADOR))
-            with ThreadPoolExecutor(max_workers=PARALELOS_INTERCEPTADOR) as pool:
-                em_voo: dict = {}
-                for lv_id, b in voos:
-                    if parar.is_set():
-                        break
-                    # quantos voos ao mesmo tempo: 5, ou 2 sob pressão de memória (o Comandante decide)
-                    while not livres or len(em_voo) >= paralelos_agora():
-                        feitos, _ = wait(list(em_voo), timeout=60, return_when="FIRST_COMPLETED")
-                        for f in feitos:
-                            livres.append(em_voo.pop(f))
-                        if parar.is_set():
-                            break
-                    if parar.is_set():
-                        break
-                    k = livres.pop(0)
-                    em_voo[pool.submit(_voo_interceptador, vagas[k], parar, lv_id, b, tempo_livro_s)] = k
-                wait(list(em_voo))
+            for v in voos:
+                pedidos.put(v)
+            while pedidos.unfinished_tasks and not parar.is_set():   # a volta termina quando as 5 vagas esvaziam a fila
+                parar.wait(5)
         except Exception as e:  # noqa: BLE001 — uma volta que falha vira registro; a seguinte segue
             diario.emitir("alarme.aberto", "piloto:interceptador", {"gravidade": "media", "modulo": "piloto:interceptador",
                                                                     "mensagem": f"a volta do Interceptador falhou: {type(e).__name__}: {str(e)[:200]}",

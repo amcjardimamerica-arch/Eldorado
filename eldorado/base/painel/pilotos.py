@@ -139,7 +139,7 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection, molde, agora: datet
         "fim": ult_m,
         "voo_do_dia": len(m_hoje),
         "etapa": (sinais.get("espiao") or ("", "missão de busca"))[1],
-        "missao_atual": None,
+        "missao_atual": _missao_atual(sinais.get("espiao"), agora),
         "plano": [{"ordem": k, "missao": f[0], "alvo": f"{f[3] or 0} usos, {f[4] or 0} achados"} for k, f in enumerate(familias[:6], 1)],
         "concluidas": [missao_quadro(m) for m in m_hoje][-6:],
         "anteriores": [
@@ -325,16 +325,16 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection, molde, agora: datet
         key=lambda x: x["fim"] or "",
         reverse=True,
     )[:16]
+    for x in ultimas:
+        x.setdefault("motor", "piloto-interceptador")                 # as missões recentes com o motor (o painel filtra por ele)
     q = molde("esquadrilha.json")
     q.update(
         {
             "em": iso,
-            "missao_atual": None,
+            "missao_atual": _missao_atual(sinais.get("espiao"), agora),
             "ultimas": ultimas,
-            "abates": {
-                "piloto-aberto": {"total": len(ach["espiao"]), "hoje": sum(1 for a in ach["espiao"] if (a["em"] or "") >= hoje)},
-                "piloto-interceptador": {"total": len(ach["interceptador"]), "hoje": sum(1 for a in ach["interceptador"] if (a["em"] or "") >= hoje)},
-            },
+            # 26/10/2026: as marcas na fuselagem no formato do painel (n, ouro, prata e as últimas): o aceito é o abate
+            "abates": {k: _abates(ach[p], hoje) for k, p in (("piloto-aberto", "espiao"), ("piloto-interceptador", "interceptador"))},
             "total_abates": len(ach["espiao"]) + len(ach["interceptador"]),
         }
     )
@@ -370,3 +370,18 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection, molde, agora: datet
         },
         status,
     )
+
+
+def _abates(achados: list[dict], hoje: str) -> dict:
+    """As marcas na fuselagem de um piloto: o número de oportunidades aceitas (ouro), as de hoje e as últimas."""
+    aceitos = [a for a in achados if a.get("decisao") == "aceito"]
+    return {"n": len(aceitos), "ouro": len(aceitos), "prata": 0, "total": len(achados), "hoje": sum(1 for a in aceitos if (a["em"] or "") >= hoje),
+            "ultimos": [{"em": (a["em"] or "")[:10], "titulo": a.get("titulo"), "link": a.get("link")}
+                        for a in sorted(aceitos, key=lambda a: a["em"] or "")[-10:]]}
+
+
+def _missao_atual(sinal: tuple | None, agora) -> dict | None:
+    """A missão em curso do Espião (o último sinal 'em voo' há menos de 8 minutos): o motor e a família."""
+    if not sinal or not str(sinal[1] or "").startswith("em voo") or (_idade_min(sinal[0], agora) or 1e9) >= 8:
+        return None
+    return {"motor": "piloto-aberto", "titulo": str(sinal[1]).removeprefix("em voo: ").split(" (autorizada")[0], "desde": sinal[0]}

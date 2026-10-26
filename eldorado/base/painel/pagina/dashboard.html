@@ -1765,6 +1765,17 @@ colunas, com o navegador das áreas, os filtros de antes, os 12 quadradinhos de 
 #cl4 *{box-sizing:border-box}
 #cl4 h2{margin:0;font-family:Georgia,serif;font-size:clamp(22px,2vw,28px);border:0;padding:0}
 #cl4 .a4-lead{margin:6px 0 16px;color:var(--s);font-size:14px;max-width:70ch;line-height:1.5}
+#cl4 .a4-topo{display:grid;grid-template-columns:minmax(260px,1.1fr) 2.2fr;gap:clamp(16px,2.4vw,40px);align-items:end;margin-bottom:14px}
+#cl4 .a4-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+#cl4 .a4-kpis div{background:#fff;border:1px solid #E3E7ED;border-radius:14px;padding:13px 15px 11px}
+#cl4 .a4-kpis b{display:block;font-family:Georgia,serif;font-size:clamp(20px,1.9vw,28px);line-height:1.05}#cl4 .a4-kpis span{display:block;margin-top:5px;font-size:12.5px;color:var(--s)}
+#cl4 .a4-acervo{gap:0;margin-bottom:10px}
+#cl4 .a4-acervo button{font:inherit;font-size:13.5px;padding:10px 16px;border:1px solid #CFD6DF;background:#fff;color:var(--t);cursor:pointer;margin-left:-1px}
+#cl4 .a4-acervo button:first-child{border-radius:11px 0 0 11px;margin-left:0}#cl4 .a4-acervo button:last-child{border-radius:0 11px 11px 0}
+#cl4 .a4-acervo button.on{background:var(--az);color:#fff;border-color:var(--az);position:relative;z-index:1}
+#cl4 .a4-acervo button small{opacity:.75;margin-left:6px}
+#cl4 .a4-limpar{font:inherit;font-size:13px;padding:9px 12px;border-radius:11px;border:1px dashed #CFD6DF;background:transparent;color:var(--s);cursor:pointer}
+@media (max-width:980px){#cl4 .a4-topo{grid-template-columns:1fr}#cl4 .a4-kpis{grid-template-columns:repeat(2,1fr)}}
 #cl4 .a4-nav{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:14px}
 #cl4 .ar{cursor:pointer;background:var(--p);border:1px solid #E3E7ED;border-radius:14px;padding:11px 13px;text-align:left;font:inherit;color:inherit;transition:border-color .15s,box-shadow .15s}
 #cl4 .ar:hover{border-color:#BFD0E6}#cl4 .ar.on{border-color:var(--az);box-shadow:0 0 0 3px rgba(31,91,153,.14)}
@@ -1812,16 +1823,25 @@ colunas, com o navegador das áreas, os filtros de antes, os 12 quadradinhos de 
 #cl4 .a4-tip.on{opacity:1}
 @media (max-width:900px){#cl4 .col2{grid-template-columns:1fr}#cl4 .det .doze{grid-template-columns:1fr}}
 </style>
-<section id="cl4" aria-label="Os livros por área">
-  <h2>Os livros por área</h2>
-  <p class="a4-lead">Cada livro com os seus 12 itens, agrupado pela área de atuação. Clique numa área para ir até ela; clique num livro para ver os itens com o trecho e a página do documento oficial.</p>
+<section id="cl4" aria-label="A Biblioteca">
+  <div class="a4-topo"><div><h2>A Biblioteca</h2>
+  <p class="a4-lead">Todos os livros do sistema — os em uso e os arquivados à espera da nova abertura —, agrupados pela área de atuação, cada um com os seus 12 itens. Clique numa área para ir até ela; clique num livro para ver os itens com o trecho e a página do documento oficial.</p></div>
+  <div class="a4-kpis" id="a4-kpis"></div></div>
   <div class="a4-nav" id="a4-nav"></div>
+  <div class="a4-ctl a4-acervo" id="a4-acervo"></div>
   <div class="a4-ctl"><input type="search" id="a4-q" placeholder="Buscar por título, órgão, UF ou código">
     <select id="a4-tipo"><option value="">estrelas e livros</option><option value="estrela">só estrelas</option><option value="livro">só livros</option></select>
     <select id="a4-balcao"><option value="">todos os balcões</option></select>
     <select id="a4-sit"><option value="">todas as situações</option><option value="completa">completas</option><option value="interceptador">ao Interceptador</option><option value="chrome">ao Chrome</option></select>
     <select id="a4-ord"><option value="completo">Mais completos</option><option value="prazo">Prazo mais próximo</option><option value="tempo">Mais tempo parado</option></select>
     <label><input type="checkbox" id="a4-ab"> só as abertas</label><span class="a4-conta" id="a4-conta"></span></div>
+  <div class="a4-ctl"><select id="a4-uf"><option value="">todos os estados</option></select>
+    <select id="a4-esfera"><option value="">todas as esferas</option><option value="M">Município</option><option value="E">Estado</option><option value="B">Brasil</option><option value="I">Internacional</option></select>
+    <select id="a4-fonte"><option value="">pública e privada</option><option value="PUB">fonte pública</option><option value="PRI">fonte privada</option></select>
+    <select id="a4-mod"><option value="">todas as modalidades</option></select>
+    <select id="a4-per"><option value="">qualquer período</option><option value="aberta">inscrição aberta agora</option><option value="encerrada">encerrada</option><option value="sem">sem prazo registrado</option></select>
+    <select id="a4-selo"><option value="">todos os selos</option><option value="ouro">ouro</option><option value="prata">prata</option><option value="bronze">bronze</option><option value="sem">sem selo</option></select>
+    <button type="button" class="a4-limpar" id="a4-limpar">⨯ Limpar</button></div>
   <div id="a4-grupos"></div>
   <div class="a4-tip" id="a4-tip"></div>
 </section>
@@ -1840,8 +1860,16 @@ colunas, com o navegador das áreas, os filtros de antes, os 12 quadradinhos de 
     <circle cx="${cx}" cy="${cx}" r="${r}" fill="none" stroke="${n>=10?"#1E7E4B":n>=6?"#3B7BC4":"#C2410C"}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${(L*p).toFixed(1)} ${L.toFixed(1)}" transform="rotate(-90 ${cx} ${cx})"/>
     <text x="${cx}" y="${cx+2}" text-anchor="middle" font-family="Georgia,serif" font-size="15" font-weight="700" fill="#23272E">${n}</text><text x="${cx}" y="${cx+14}" text-anchor="middle" font-size="8.5" fill="#5E6672">de 12</text></svg>`};
   const DIAS=iso=>iso?Math.max(0,(Date.now()-Date.parse(iso))/864e5):0;
-  function filtrar(){const q=$("a4-q").value.trim().toLowerCase(),t=$("a4-tipo").value,b=$("a4-balcao").value,s=$("a4-sit").value,ab=$("a4-ab").checked;
-    return C.filter(c=>(!t||c.tipo===t)&&(!b||c.balcao===b)&&(!ab||c.aberta)&&(!s||(s==="completa"?(nota(c)===12&&c.link_oficial):String(c.encaminhado||"").toLowerCase().startsWith(s)))&&
+  // o acervo (titular, 26/10/2026): em uso (a linha do Cartório), arquivados (à espera da nova abertura) e no Farol
+  const ACERVO=[["","Todos"],["uso","Em uso"],["arquivo","Arquivados"],["farol","No Farol"]];let acervo="";
+  const noAcervo=c=>!acervo||(acervo==="uso"?!["arquivo","farol"].includes(c.etapa):c.etapa===acervo);
+  const parte=(c,i)=>String(c.codigo||"").split("·")[i]||"";
+  const esfera=c=>{const l=parte(c,0);return l==="INT"?"I":l==="BR"?"B":/-CAP$/.test(l)||/^GO-/.test(l)?"M":l?"E":""};
+  const periodo=c=>c.aberta?"aberta":c.prazo?"encerrada":"sem";
+  function filtrar(semAcervo){const q=$("a4-q").value.trim().toLowerCase(),t=$("a4-tipo").value,b=$("a4-balcao").value,s=$("a4-sit").value,ab=$("a4-ab").checked;
+    const uf=$("a4-uf").value,es=$("a4-esfera").value,fo=$("a4-fonte").value,mo=$("a4-mod").value,pe=$("a4-per").value,se=$("a4-selo").value;
+    return C.filter(c=>(semAcervo||noAcervo(c))&&(!t||c.tipo===t)&&(!b||c.balcao===b)&&(!ab||c.aberta)&&(!s||(s==="completa"?(nota(c)===12&&c.link_oficial):String(c.encaminhado||"").toLowerCase().startsWith(s)))&&
+      (!uf||(uf==="BR"?(!c.uf||c.uf==="BR"):c.uf===uf))&&(!es||esfera(c)===es)&&(!fo||parte(c,2)===fo)&&(!mo||parte(c,3)===mo)&&(!pe||periodo(c)===pe)&&(!se||(c.selo||"sem")===se)&&
       (!q||[c.titulo,c.orgao,c.uf,c.codigo].join(" ").toLowerCase().includes(q)))}
   function ordenar(xs){const o=$("a4-ord").value;return xs.sort(o==="prazo"?(a,b)=>(b.aberta-a.aberta)||(a.prazo||"9999").localeCompare(b.prazo||"9999"):o==="tempo"?(a,b)=>DIAS(b.desde)-DIAS(a.desde):(a,b)=>nota(b)-nota(a)||(b.aberta-a.aberta))}
   function cartao(c){const es=c.estrela&&c.estrela!=="sem"?`<em class="es">estrela ${E(c.estrela)}</em>`:c.selo&&c.selo!=="sem"?`<em class="es">selo ${E(c.selo)}</em>`:"";
@@ -1849,6 +1877,12 @@ colunas, com o navegador das áreas, os filtros de antes, os 12 quadradinhos de 
       <div class="ch">${es}${c.aberta?'<em class="ab">inscrição aberta</em>':""}<em>${E(ETAPA[c.etapa]||c.etapa||"")}</em>${c.prazo?`<em>prazo ${E(String(c.prazo).slice(0,10))}</em>`:""}${c.codigo?`<code>${E(c.codigo)}</code>`:""}</div>
       <div class="dz">${DOZE.map(k=>`<i class="${sit(c,k)}" data-k="${E(k)}"></i>`).join("")}</div><div class="det"></div></div>`}
   function desenhar(){
+    const base=filtrar(true),cont=k=>base.filter(c=>!k||(k==="uso"?!["arquivo","farol"].includes(c.etapa):c.etapa===k)).length;
+    $("a4-acervo").innerHTML=ACERVO.map(([k,n])=>`<button type="button" class="${acervo===k?"on":""}" data-k="${k}">${n}<small>${N(cont(k))}</small></button>`).join("");
+    $("a4-acervo").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{acervo=b.dataset.k;mostra={};desenhar()}));
+    $("a4-kpis").innerHTML=[[N(C.length),"livros na Biblioteca"],[N(C.filter(c=>!["arquivo","farol"].includes(c.etapa)).length),"em uso no Cartório"],
+      [N(C.filter(c=>c.etapa==="arquivo").length),"arquivados, à espera da nova abertura"],[N(C.filter(c=>c.etapa==="farol").length),"no Farol"],[N(C.filter(c=>c.aberta).length),"com inscrição aberta"]]
+      .map(([b,s])=>`<div><b>${b}</b><span>${s}</span></div>`).join("");
     const xs=filtrar(),g={};xs.forEach(c=>{const a=area(c);(g[a]=g[a]||[]).push(c)});
     const todos={};C.forEach(c=>{const a=area(c);(todos[a]=todos[a]||[]).push(c)});
     const ordemA=Object.keys(todos).sort((a,b)=>(a==="GER")-(b==="GER")||todos[b].length-todos[a].length);
@@ -1889,9 +1923,15 @@ colunas, com o navegador das áreas, os filtros de antes, os 12 quadradinhos de 
     d.querySelector("[data-traj]").addEventListener("click",()=>window.c2&&window.c2.selecionar(id));
     d.querySelector("[data-fechar]").addEventListener("click",()=>{el.classList.remove("aberto");aberto=null;el.scrollIntoView({block:"nearest"})});
     if(!manter)el.scrollIntoView({behavior:"smooth",block:"nearest"})}
-  ["a4-q","a4-tipo","a4-balcao","a4-sit","a4-ord","a4-ab"].forEach(i=>$(i).addEventListener("input",()=>{mostra={};desenhar()}));
+  ["a4-q","a4-tipo","a4-balcao","a4-sit","a4-ord","a4-ab","a4-uf","a4-esfera","a4-fonte","a4-mod","a4-per","a4-selo"].forEach(i=>$(i).addEventListener("input",()=>{mostra={};desenhar()}));
+  $("a4-limpar").addEventListener("click",()=>{["a4-q","a4-tipo","a4-balcao","a4-sit","a4-uf","a4-esfera","a4-fonte","a4-mod","a4-per","a4-selo"].forEach(i=>$(i).value="");$("a4-ab").checked=false;acervo="";sel="";mostra={};desenhar()});
   function iniciar(){C=(window.c2.dados.certidoes||[]);const bs=[...new Set(C.map(c=>c.balcao).filter(Boolean))].sort();
-    $("a4-balcao").innerHTML='<option value="">todos os balcões</option>'+bs.map(b=>`<option value="${E(b)}">${E(b)}</option>`).join("");desenhar()}
+    $("a4-balcao").innerHTML='<option value="">todos os balcões</option>'+bs.map(b=>`<option value="${E(b)}">${E(b)}</option>`).join("");
+    const cnt=f=>{const n={};C.forEach(c=>{const v=f(c);if(v)n[v]=(n[v]||0)+1});return Object.entries(n).sort((a,b)=>b[1]-a[1])};
+    $("a4-uf").innerHTML='<option value="">todos os estados</option>'+cnt(c=>(!c.uf||c.uf==="BR")?"BR":c.uf).map(([k,n])=>`<option value="${E(k)}">${k==="BR"?"Nacional":E(k)} (${N(n)})</option>`).join("");
+    const MOD={FOM:"Fomento",PAR:"Parceria",PRE:"Prêmio",BOL:"Bolsa",DOA:"Doação ou patrocínio",INC:"Incentivo fiscal",JUD:"Destinação judicial",EMD:"Emenda parlamentar",CRE:"Credenciamento"};
+    $("a4-mod").innerHTML='<option value="">todas as modalidades</option>'+cnt(c=>parte(c,3)).map(([k,n])=>`<option value="${E(k)}">${E(MOD[k]||k)} (${N(n)})</option>`).join("");
+    desenhar()}
   if(window.c2)iniciar();else document.addEventListener("c2-pronto",iniciar,{once:true});
 })();
 </script>
@@ -2605,7 +2645,8 @@ colunas, com o navegador das áreas, os filtros de antes, os 12 quadradinhos de 
   </div>
 </div>
 
-<!-- MOTORES LIVROS · fontes específicas, ativas só na época ou após menção -->
+<!-- a Biblioteca foi para o Cartório (titular, 26/10/2026: "Os livros por área" virou "A Biblioteca"); o quadro antigo fica oculto -->
+<div hidden style="display:none"><!-- MOTORES LIVROS · fontes específicas, ativas só na época ou após menção -->
 <div class="cartao" style="margin-bottom:16px">
   <div class="painel-tit" style="color:#0E2A55;font-family:Georgia,serif">Biblioteca
     <span class=meta style="font-weight:500" title="Cada edital ou fonte específica mapeada. Fica oculto até ser mencionado nos locais de publicação oficial/plataformas ou até a época prevista pelo histórico — então o motor é ativado automaticamente. Os motores regulares (diários, justiça, legislativo, plataformas) rodam sempre e capturam qualquer oportunidade.">— editais e fontes específicas, ativos só na época ou após menção</span></div>
@@ -2628,7 +2669,7 @@ colunas, com o navegador das áreas, os filtros de antes, os 12 quadradinhos de 
   <div id="mo-lista"></div>
   <!-- QUADRO DE DISJUNTORES · recursos inativos, prontos para ligar -->
   <div id="mo-disjuntores" style="margin-top:14px;padding-top:12px;border-top:1px dashed var(--linha)"></div>
-</div>
+</div></div>
 
 <!-- (Fontes com edital aberto foi UNIFICADA em Eldorado › Oportunidades Abertas › Em andamento) -->
 
@@ -6333,8 +6374,11 @@ function decolarInt(el){
   av.classList.remove("voando"); void av.offsetWidth;
   AVI.ciclos=ciclosPorTravessia(AVI.corr.x1-AVI.corr.x0); av.style.setProperty("--ciclo",(AVI.ciclos*GIF_CICLO_MS)+"ms"); av.classList.add("voando");
   AVI.esq=false; img.style.transform="none"; img.src=GIF_SRC+"#i"+Date.now();
-  if(!AVI.vira){ AVI.vira=true; av.addEventListener("animationiteration",ev=>{ if(ev.animationName!=="pil-vaivem")return;
-      AVI.esq=!AVI.esq; av.firstElementChild.style.transform=AVI.esq?"scaleX(-1)":"none"; }); }
+  if(!AVI.vira){ AVI.vira=true; /* 26/10/2026 (titular: "o avião está andando de costas"): o nariz vira pelo MOVIMENTO REAL, como o do Espião;
+      a contagem dos fins de trecho se perdia quando a aba ficava em segundo plano */ let antes=null; const olhar=()=>{ const el=AVI.el;
+      if(el&&el.isConnected&&el.classList.contains("voando")){ let x=null; try{ x=new DOMMatrixReadOnly(getComputedStyle(el).transform).m41; }catch(e){}
+        if(x!==null&&antes!==null&&Math.abs(x-antes)>0.3){ const esq=x<antes; if(esq!==AVI.esq){ AVI.esq=esq; const im=el.firstElementChild; if(im) im.style.transform=esq?"scaleX(-1)":"none"; } }
+        antes=x; } else antes=null; requestAnimationFrame(olhar); }; requestAnimationFrame(olhar); }
 }
 function voarInt(t){
   AVI.raf=requestAnimationFrame(voarInt);

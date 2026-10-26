@@ -178,14 +178,33 @@ def _montar(bib, cer, motores, pilotos, molde, agora, iso, hoje) -> dict[str, di
             "frase": "os pilotos voam de forma permanente durante o ciclo (o Interceptador um livro por vez; o Espião missão após missão)",
             "proximo_voo": "contínuo",
             "sem_sinal_a_partir_de_min": 60,
-            "missao_atual": None,
+            "missao_atual": None,   # a missão em curso vem na posição (piloto_posicao.json) e na esquadrilha
             "voos_hoje": sum(1 for x in pilotos.values() if (x.get("ultima") or "") >= hoje),
         }
     )
     saida["piloto_ao_vivo.json"] = pv
-    saida["piloto_posicao.json"] = {
-        "em": iso,
-        **{k: {"ultima": x.get("ultima"), "luz": x.get("luz"), "resultado": x.get("resultado")} for k, x in pilotos.items()},
+    # 26/10/2026: a posição e o voo no formato que o painel lê (o avião decola sobre o motor do piloto)
+    def _sinais(marcador: str, n: int = 40) -> list[tuple[str, str]]:
+        try:
+            return list(cer.execute("SELECT em, motivo FROM medicao WHERE marcador = ? ORDER BY em DESC LIMIT ?", (marcador, n)))
+        except sqlite3.Error:
+            return []
+    esp = [(em, m) for em, m in _sinais("piloto:espiao") if str(m).startswith("em voo")]
+    e_idade = (_idade_h(esp[0][0], agora) or 1e9) * 60 if esp else 1e9
+    saida["piloto_posicao.json"] = (
+        {"estado": "em_voo", "atualizado_em": esp[0][0], "validade_s": 480,
+         "missao": {"motor": "piloto-aberto", "tipo": "reconhecimento", "alvo_titulo": str(esp[0][1]).removeprefix("em voo: ").split(" (autorizada")[0],
+                    "ordem": sum(1 for em, _m in esp if em[:10] == esp[0][0][:10]), "de": None}}
+        if e_idade < 8 else {"estado": "patio", "atualizado_em": esp[0][0] if esp else iso, "missao": None})
+    itc = [(em, m) for em, m in _sinais("piloto:interceptador") if str(m).startswith("em voo")]
+    i_idade = (_idade_h(itc[0][0], agora) or 1e9) * 60 if itc else 1e9
+    alvo = str(itc[0][1]).split("): ", 1)[-1] if itc else ""
+    saida["interceptador_ao_vivo.json"] = {
+        "estado": "em_voo" if i_idade < 25 else "patio", "atualizado_em": itc[0][0] if itc else iso, "inicio": itc[0][0] if itc else None,
+        "fim": None if i_idade < 25 else (itc[0][0] if itc else None), "etapa": "o plano de voo (os itens que faltam)",
+        "alvo": {"titulo": alvo} if alvo else None, "passos": None, "detalhe": str(itc[0][1]) if itc else "",
+        "resultado": {}, "parecer": None,
+        "voos_em_24h": sum(1 for em, _m in itc if (_idade_h(em, agora) or 1e9) < 24),
     }
     try:
         missoes = cer.execute("SELECT em, familia, consulta, resultados, achados FROM espiao_missao ORDER BY em DESC LIMIT 80").fetchall()

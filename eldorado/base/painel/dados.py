@@ -204,17 +204,27 @@ def _motores_de_busca(sis: Sistema) -> list[dict]:
     vivos = {r[0]: (r[1], r[2]) for r in sis.bib.execute("SELECT id, estrela, situacao FROM livro")}
     primeira: dict[str, dict[str, tuple]] = defaultdict(dict)        # motor → livro → (o dia da primeira leitura, o título, o link)
     tot: dict[str, Counter] = defaultdict(Counter)
+    nome_piloto = {"espiao": "piloto-aberto", "interceptador": "piloto-interceptador"}   # os pilotos gravam com o nome curto
     for r in sis.bib.execute("SELECT motor, livro_id, encontrado_em, decisao, titulo, link_oficial, link_divulgacao FROM achado ORDER BY encontrado_em"):
+        r = {**dict(r), "motor": nome_piloto.get(r["motor"], r["motor"])}
         t = tot[r["motor"]]
         if (r["encontrado_em"] or "") >= d30:
             t["achados"] += 1
             t["aceitos"] += r["decisao"] == "aceito"
         if r["livro_id"] and r["livro_id"] not in primeira[r["motor"]]:
             primeira[r["motor"]][r["livro_id"]] = (_data_br(r["encontrado_em"]), r["titulo"], r["link_oficial"] or r["link_divulgacao"])
+    voos: dict[str, list] = defaultdict(list)                     # os voos dos pilotos, pelos sinais "em voo"
+    try:
+        for marcador, em, motivo in sis.cer.execute("SELECT marcador, em, motivo FROM medicao WHERE marcador IN ('piloto:espiao', 'piloto:interceptador') "
+                                                    "AND motivo LIKE 'em voo%' ORDER BY em DESC"):
+            quem = "piloto-aberto" if marcador.endswith("espiao") else "piloto-interceptador"
+            voos[quem].append({"inicio": em, "erro": None, "achados": None, "motivo": motivo})
+    except sqlite3.Error:
+        pass
     saida = []
     for i, m in enumerate(sis.estudo, 1):
         mid, cfg = m["id"], sis.configs.get(m["id"], {})
-        execs = ex.get(mid, [])
+        execs = ex.get(mid, []) or voos.get(mid, [])
         por_dia: dict[str, dict] = {}
         for e in execs:
             d = _data_br(e["inicio"])
