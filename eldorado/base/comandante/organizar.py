@@ -32,6 +32,7 @@ import re
 import sqlite3
 import unicodedata
 from collections import Counter, defaultdict
+from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
 
@@ -428,12 +429,13 @@ def no_organizar_livros(itens: list[dict[str, Any]], parametros: dict[str, Any],
         gravados = 0
         for x in dec["restantes"]:
             cod = codigo_do_grupo(x, outros.get(x["id"], []))
-            if atuais.get(x["id"]) != cod:
+            if x["id"] in atuais and atuais[x["id"]] != cod:   # só com a ficha do livro já criada (26/10/2026: as recusas)
                 contexto.diario.emitir("livro.codigo", "comandante", {"livro_id": x["id"], "codigo": cod})
                 gravados += 1
+        fechados = _fechar_recusas_do_codigo(Path(parametros.get("dados", "dados")), contexto.diario)
     finally:
         con.close()
-    return [{"livros": len(livros), "unidos": len(dec["unir"]), "eliminados": len(dec["eliminar"]), "codigos_gravados": gravados,
+    return [{"alertas_fechados": fechados, "livros": len(livros), "unidos": len(dec["unir"]), "eliminados": len(dec["eliminar"]), "codigos_gravados": gravados,
              "depois": len(dec["restantes"])}]
 
 def parecer(livros: list[dict[str, Any]], dec: dict[str, Any]) -> dict[str, Any]:
@@ -447,3 +449,23 @@ def parecer(livros: list[dict[str, Any]], dec: dict[str, Any]) -> dict[str, Any]
             "por_objeto": Counter(x["objeto"] for x in r).most_common(), "por_validacao": Counter(x["validacao"] for x in r).most_common(),
             "codigos_distintos": len({x["codigo"] for x in r}),
             "edicoes_unidas": sum(1 for _f, _u, m in dec["unir"] if m.startswith("edição anterior"))}
+
+
+def _fechar_recusas_do_codigo(dados: Path, diario) -> int:
+    """Fecha os alertas de 'evento recusado (livro.codigo, …)': o código ia para o livro recém-chegado ainda sem a ficha
+    (a linha não existia); o livro recebeu o código na passagem seguinte. A causa foi corrigida (26/10/2026)."""
+    from datetime import datetime, timezone
+    p = dados / "cerebro.db"
+    if not p.exists():
+        return 0
+    c = sqlite3.connect(f"file:{p}?mode=ro", uri=True)
+    try:
+        ids = [r[0] for r in c.execute("SELECT id FROM alarme WHERE fechado_em IS NULL AND modulo = 'gravador' AND mensagem LIKE 'evento recusado (livro.codigo,%'")]
+    except sqlite3.Error:
+        ids = []
+    finally:
+        c.close()
+    agora = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    for i in ids:
+        diario.emitir("alarme.fechado", "comandante", {"id": i, "fechado_em": agora})
+    return len(ids)

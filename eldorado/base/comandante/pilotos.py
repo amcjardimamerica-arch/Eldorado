@@ -59,8 +59,10 @@ def carga() -> float:
     try:
         import psutil
 
+        from ..cerebro.governador import cpu_sem_ia
+
         mem = psutil.virtual_memory().percent
-        c = max(psutil.cpu_percent(interval=0.5), mem)
+        c = max(cpu_sem_ia(0.5) * 100, mem)   # o processador sem a IA (26/10/2026: um voo bloqueava o outro)
     except Exception:  # noqa: BLE001
         return 0.0
     agora = time.monotonic()

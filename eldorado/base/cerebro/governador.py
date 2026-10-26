@@ -38,10 +38,53 @@ class Medidor(Protocol):
     def __call__(self) -> Leitura: ...
 
 
+_IA: dict = {"proc": None, "busca": 0.0}
+
+
+def _processo_ia():
+    """O processo do servidor da IA (o llama-server), guardado entre as leituras; procurado de novo a cada minuto."""
+    import time as _t
+    p = _IA["proc"]
+    try:
+        if p is not None and p.is_running():
+            return p
+    except psutil.Error:
+        pass
+    _IA["proc"] = None
+    if _t.monotonic() - _IA["busca"] < 60:
+        return None
+    _IA["busca"] = _t.monotonic()
+    for q in psutil.process_iter(["name", "cmdline"]):
+        try:
+            nome = f"{q.info.get('name') or ''} {' '.join(q.info.get('cmdline') or [])}"
+        except psutil.Error:
+            continue
+        if "llama-server" in nome or "llama_server" in nome:
+            q.cpu_percent(None)
+            _IA["proc"] = q
+            return q
+    return None
+
+
+def cpu_sem_ia(intervalo: float = 0.2) -> float:
+    """O processador ocupado SEM a IA (fração de 0 a 1). 26/10/2026: a IA ocupa todo o processador enquanto pensa, e os
+    pilotos usam a IA; medindo o processador inteiro, um voo bloqueava o outro (a regra dos 85%) e os motores eram adiados.
+    A IA ocupar o processador é o trabalho acontecendo; o risco real é a memória, que segue medida inteira."""
+    p = _processo_ia()
+    try:
+        if p is not None:
+            p.cpu_percent(None)
+        total = psutil.cpu_percent(interval=intervalo)
+        ia = (p.cpu_percent(None) / (psutil.cpu_count() or 1)) if p is not None else 0.0
+    except psutil.Error:
+        total, ia = psutil.cpu_percent(interval=None), 0.0
+    return max(0.0, total - ia) / 100
+
+
 def medidor_psutil(caminho_disco: str = ".") -> Callable[[], Leitura]:
     psutil.cpu_percent(interval=None)                 # a primeira leitura do psutil é sempre 0; descartada
     def medir() -> Leitura:
-        return Leitura(processador=psutil.cpu_percent(interval=0.2) / 100, memoria=psutil.virtual_memory().percent / 100,
+        return Leitura(processador=cpu_sem_ia(0.2), memoria=psutil.virtual_memory().percent / 100,
                        disco=psutil.disk_usage(caminho_disco).percent / 100)
     return medir
 

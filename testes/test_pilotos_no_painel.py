@@ -84,3 +84,44 @@ def test_a_fonte_do_edital_da_pnab_goias_2026_e_a_biblioteca_no_cartorio():
         assert f'id="{f}"' in html
     i = html.index("<!-- MOTORES LIVROS · fontes específicas")
     assert '<div hidden style="display:none">' in html[i - 60 : i]  # o quadro antigo fora dos motores
+
+
+def test_a_carga_desconta_o_processador_da_ia(monkeypatch):
+    """26/10/2026: a IA ocupa o processador enquanto pensa, e os pilotos usam a IA; medindo o processador inteiro, um voo
+    bloqueava o outro (a regra dos 85%). A carga desconta a IA; a memória segue medida inteira."""
+    import eldorado.base.cerebro.governador as G
+
+    class IA:
+        def is_running(self):
+            return True
+
+        def cpu_percent(self, intervalo=None):
+            return 300.0  # 3 núcleos inteiros
+
+    monkeypatch.setattr(G, "_processo_ia", lambda: IA())
+    monkeypatch.setattr(G.psutil, "cpu_percent", lambda interval=None: 90.0)
+    monkeypatch.setattr(G.psutil, "cpu_count", lambda: 4)
+    assert abs(G.cpu_sem_ia(0) - 0.15) < 1e-9  # 90% − 75% da IA = 15%
+
+
+def test_o_codigo_so_vai_para_o_livro_com_a_ficha_e_os_alertas_fecham(tmp_path):
+    import sqlite3
+
+    from eldorado.base.comandante.organizar import _fechar_recusas_do_codigo
+
+    c = sqlite3.connect(tmp_path / "cerebro.db")
+    c.execute(
+        "CREATE TABLE alarme(id INTEGER PRIMARY KEY, gravidade TEXT, modulo TEXT, mensagem TEXT, rastro TEXT, aberto_em TEXT, fechado_em TEXT, repeticoes INTEGER)"
+    )
+    c.execute("INSERT INTO alarme(modulo, mensagem) VALUES ('gravador', 'evento recusado (livro.codigo, 0179-1): linha não encontrada')")
+    c.execute("INSERT INTO alarme(modulo, mensagem) VALUES ('gravador', 'evento recusado (livro.links, 0179-2): outro')")
+    c.commit()
+    ev = []
+
+    class D:
+        def emitir(self, t, m, d):
+            ev.append((t, d))
+
+    assert _fechar_recusas_do_codigo(tmp_path, D()) == 1 and ev[0][0] == "alarme.fechado" and ev[0][1]["id"] == 1
+    src = Path("eldorado/base/comandante/organizar.py").read_text(encoding="utf-8")
+    assert 'if x["id"] in atuais and atuais[x["id"]] != cod' in src  # só com a ficha do livro
