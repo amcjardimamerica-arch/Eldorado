@@ -156,6 +156,7 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "livro.decupado": (Alvo(B, "livro_dados", "inserir_ou_atualizar", ("livro_id",)),),
     "livro.origem": (Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "origem", "origem_motivo")),),
     "livro.escada": (Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "escada")),),
+    "livro.esfera": (Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "esfera")),),
     "livro.base": (Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "base_classe", "base_buscar", "base_tentativas", "base_ultima")),),
     "livro.codigo": (Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "codigo")),),   # o código da oportunidade
     "livro.prazo": (Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "situacao_prazo")),),   # o prazo pela passagem do tempo

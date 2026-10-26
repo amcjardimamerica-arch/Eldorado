@@ -40,7 +40,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 11290,
+   "linhas": 11301,
    "situacao": "em funcionamento",
    "ordem": 2
   },
@@ -730,7 +730,7 @@
   },
   {
    "arquivo": "eldorado/base/nucleo/eventos.py",
-   "linhas": 276,
+   "linhas": 277,
    "finalidade": "Os eventos: a única forma de escrita do Eldorado.",
    "depende_de": [
     "eldorado/base/nucleo/contratos.py"
@@ -756,6 +756,7 @@
     "eldorado/base/cerebro/rede.py",
     "eldorado/base/cerebro/regencia.py",
     "eldorado/base/cerebro/regras.py",
+    "eldorado/base/comandante/biblioteca.py",
     "eldorado/base/especial/registro.py",
     "eldorado/base/fluxo/executor.py",
     "eldorado/base/fluxo/nos.py",
@@ -2269,16 +2270,21 @@
   },
   {
    "arquivo": "eldorado/base/comandante/biblioteca.py",
-   "linhas": 225,
+   "linhas": 364,
    "finalidade": "O Comandante atualiza a Biblioteca e valida as oportunidades antigas (titular, 25/10/2026).",
    "depende_de": [
     "eldorado/base/cartorio/identidade.py",
     "eldorado/base/cartorio/passaporte.py",
-    "eldorado/base/comandante/organizar.py"
+    "eldorado/base/comandante/organizar.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/motores/descoberta/fonte_oficial.py"
    ],
    "eventos": [
     "livro.base",
-    "livro.excluido_logicamente"
+    "livro.esfera",
+    "livro.excluido_logicamente",
+    "livro.links",
+    "livro.origem"
    ],
    "acionado_por": [
     "passagem, nó 30 «atualizar_biblioteca»"
@@ -2287,6 +2293,7 @@
     "eldorado/base/cerebro/pilotos_permanentes.py"
    ],
    "testes": [
+    "test_comandante_biblioteca.py",
     "test_comandante_expurgo.py"
    ],
    "situacao": "em funcionamento",
@@ -2296,7 +2303,9 @@
    "ligacoes": [
     "eldorado/base/cartorio/identidade.py",
     "eldorado/base/cartorio/passaporte.py",
-    "eldorado/base/comandante/organizar.py"
+    "eldorado/base/comandante/organizar.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/motores/descoberta/fonte_oficial.py"
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
@@ -2489,7 +2498,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/pilotos_permanentes.py",
-   "linhas": 234,
+   "linhas": 240,
    "finalidade": "Os pilotos de forma permanente (titular, 25/10/2026: \"execute eles de forma permanente, da forma que foram desenvolvidos",
    "depende_de": [
     "eldorado/base/cerebro/encaminhamento.py",
@@ -3291,6 +3300,7 @@
    "eventos": [],
    "acionado_por": [],
    "usado_por": [
+    "eldorado/base/comandante/biblioteca.py",
     "eldorado/motores/canal/motor.py",
     "eldorado/motores/pilotos/interceptador.py"
    ],
@@ -3970,6 +3980,7 @@
    "usado_por": [
     "eldorado/base/cartorio/auditoria.py",
     "eldorado/base/cerebro/mapa_arquivos.py",
+    "eldorado/base/comandante/biblioteca.py",
     "eldorado/base/missao/regras_portao.py"
    ],
    "acionado_por": [],
@@ -4846,7 +4857,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 358,
+   "linhas": 359,
    "situacao": "em funcionamento",
    "ordem": 159
   },

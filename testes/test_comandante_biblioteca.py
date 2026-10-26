@@ -78,3 +78,25 @@ def test_o_interceptador_voa_5_livros_em_paralelo():
 
     assert {IA("http://x", cargo_nome="interceptador", vaga=k).cargo["vaga"] for k in range(5)} == {2, 3, 4, 5, 6}  # cada voo na sua vaga
     assert "-np 7" in Path(".github/workflows/eldorado.yml").read_text(encoding="utf-8")
+
+
+def test_o_prevoo_completa_sem_a_ia(tmp_path):
+    from types import SimpleNamespace
+
+    from eldorado.base.comandante.biblioteca import prevoo
+
+    html = b'<html><a href="/arquivos/edital-07-2026.pdf">Edital n 07/2026</a><a href="https://facebook.com/x">rede</a></html>'
+
+    class Inter:
+        def _ler(self, url):
+            return url, None, html
+
+    ev = []
+    diario = SimpleNamespace(emitir=lambda t, m, d: ev.append((t, d)))
+    lv = SimpleNamespace(id="L1", titulo="Edital nº 07/2026 de Cultura", link_divulgacao="https://noticias.com.br/x", orgao="Ministério da Cultura")
+    feito = prevoo(diario, Inter(), lv, {"buscar": ["site oficial", "esfera", "área de atuação"]})
+    assert feito == ["site oficial", "esfera"]
+    links = next(d for t, d in ev if t == "livro.links")
+    assert links["link_oficial"] == "https://noticias.com.br/arquivos/edital-07-2026.pdf"
+    assert next(d for t, d in ev if t == "livro.esfera")["esfera"] == "federal"
+    assert next(d for t, d in ev if t == "livro.origem")["origem"] == "candidato"

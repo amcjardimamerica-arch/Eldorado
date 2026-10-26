@@ -106,6 +106,12 @@ def _voo_interceptador(vaga: _Vaga, parar: threading.Event, lv_id: str, base: di
     SITUACAO[f"interceptador-{vaga.k}"] = {"livro": lv_id, "titulo": livros[0].titulo, "desde": time.time()}
     sinal(c["diario"], "interceptador", f"em voo ({vaga.k + 1} de {PARALELOS_INTERCEPTADOR}): {livros[0].titulo}")
     try:
+        if base:                                          # o pré-voo da base: o site oficial e a esfera, sem a IA (26/10/2026)
+            from ..comandante.biblioteca import prevoo
+
+            completado = prevoo(c["diario"], c["enc"].interceptador, livros[0], base)
+            if completado and set(completado) >= set(base["buscar"]):
+                return                                    # completou sem o plano de voo (a tentativa fica registrada)
         _quem, achados = c["enc"].encaminhar(livros[0], time.monotonic() + tempo_livro_s)
         for a in (achados if isinstance(achados, list) else [achados] if achados else []):
             ENTREGAS["interceptador"].put(a)
