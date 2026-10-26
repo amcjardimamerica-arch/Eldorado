@@ -1063,22 +1063,41 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <!-- ============ ESQUADRILHA DO PILOTO — posto de comando ============ -->
 
 <!-- ============ ELDORADO · CALENDÁRIO ============ -->
-<section id="v-relatorio-titular" style="margin-top:14px"><div id="rel-titular"></div></section>
+<!-- "Para a sua decisão" (titular, 26/10/2026): uma janela que abre só ao entrar pela tela inicial, uma vez por visita, e
+se fecha; nada inserido nas outras páginas. -->
+<style>
+#dec-janela{position:fixed;inset:0;z-index:9000;display:none;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) 16px max(16px,env(safe-area-inset-bottom,0px));background:rgba(28,33,40,.38)}
+#dec-janela.aberta{display:flex}
+#dec-janela .caixa{background:#fff;color:#23272E;width:min(680px,100%);max-height:86vh;overflow:auto;border-radius:18px;padding:22px 24px 20px;box-shadow:0 24px 60px rgba(20,30,45,.25);border-top:5px solid #B8862B}
+#dec-janela h2{margin:0;font-family:Georgia,serif;font-size:22px}
+#dec-janela .quando{color:#6B7380;font-size:12.5px;margin:2px 0 12px}
+#dec-janela ol{margin:8px 0 12px 20px;padding:0}#dec-janela li{margin:6px 0;line-height:1.45}
+#dec-janela details{margin:8px 0}#dec-janela summary{cursor:pointer;font-weight:650}
+#dec-janela .rodape{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:14px;color:#6B7380;font-size:12.5px}
+#dec-janela .fechar{background:#1F5B99;color:#fff;border:0;border-radius:10px;padding:9px 16px;font-size:14px}
+</style>
+<div id="dec-janela" role="dialog" aria-modal="true" aria-labelledby="dec-titulo"><div class="caixa" id="dec-caixa"></div></div>
 <script>
-/* A apresentação do Comandante à titular (25/10/2026): o que decidir primeiro e por quê, o que fecha em 7 dias e o dia. */
 (function(){
-  const e=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const E=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const naInicial=()=>{const h=(location.hash||"").replace("#","");return !h||h==="inicio"};
+  let vista=false; try{vista=sessionStorage.getItem("eldorado-decisao")==="1"}catch(e){}
+  if(vista||!naInicial())return;
   fetch("dados/relatorio_titular.json?v="+Date.now()).then(r=>r.ok?r.json():null).then(R=>{
-    const el=document.getElementById("rel-titular"); if(!el||!R) return;
+    if(!R||!naInicial())return;
     const P=(R.redacao||{}).prioridades||[], F=R.fecham_em_7_dias||[], N=R.novidades||{}, S=R.sistema||{};
-    el.innerHTML=`<div class="card" style="padding:16px 18px;border-left:5px solid #B8862B">
-      <h3 style="margin:0 0 4px">Para a sua decisão</h3>
-      <div class="meta">${e((R.em||"").slice(0,16).replace("T"," "))} UTC · redigido por ${e(R.redigido_por)}</div>
-      <p style="margin:8px 0">${e((R.redacao||{}).resumo)}</p>
-      <ol style="margin:6px 0 10px 18px">${P.map(p=>`<li><b>${e(p.o_que)}</b> — ${e(p.por_que)}</li>`).join("")}</ol>
-      <details><summary><b>Fecham em até 7 dias (${F.length})</b></summary><ul style="margin:6px 0 0 18px">${F.map(x=>`<li>${e(x.fecha_em)} · ${e(x.selo)} · ${x.link?`<a href="${e(x.link)}" target="_blank" rel="noopener">${e(x.titulo)}</a>`:e(x.titulo)}</li>`).join("")||"<li>nenhuma</li>"}</ul></details>
-      <div class="meta" style="margin-top:8px">${R.abertas} abertas (${R.ouro_abertas} com ouro) · ${N.achados_aceitos} achados aceitos hoje (${N.dos_pilotos} dos pilotos) · ${N.livros_novos} livros novos em 24 h · ${(R.falta||{}).aguardam_o_chrome} à espera do Chrome · ${S.decisoes_do_comandante_24h} decisões do Comandante e ${S.missoes_do_espiao_24h} missões do Espião em 24 h</div>
-    </div>`;
+    const j=document.getElementById("dec-janela"), c=document.getElementById("dec-caixa");
+    c.innerHTML=`<h2 id="dec-titulo">Para a sua decisão</h2><div class="quando">${E((R.em||"").slice(0,16).replace("T"," "))} UTC · redigido por ${E(R.redigido_por)}</div>
+      <p style="margin:0 0 6px">${E((R.redacao||{}).resumo)}</p>
+      <ol>${P.map(p=>`<li><b>${E(p.o_que)}</b> — ${E(p.por_que)}</li>`).join("")}</ol>
+      <details><summary>Fecham em até 7 dias (${F.length})</summary><ul style="margin:6px 0 0 18px">${F.map(x=>`<li>${E(x.fecha_em)} · ${E(x.selo)} · ${x.link?`<a href="${E(x.link)}" target="_blank" rel="noopener">${E(x.titulo)}</a>`:E(x.titulo)}</li>`).join("")||"<li>nenhuma</li>"}</ul></details>
+      <div class="rodape"><span>${R.abertas} abertas (${R.ouro_abertas} com ouro) · ${N.achados_aceitos} achados aceitos hoje · ${(R.falta||{}).aguardam_o_chrome} à espera do Chrome</span>
+      <button class="fechar" type="button">Fechar</button></div>`;
+    const fechar=()=>{j.classList.remove("aberta");try{sessionStorage.setItem("eldorado-decisao","1")}catch(e){}};
+    c.querySelector(".fechar").addEventListener("click",fechar);
+    j.addEventListener("click",e=>{if(e.target===j)fechar()});
+    document.addEventListener("keydown",e=>{if(e.key==="Escape")fechar()});
+    j.classList.add("aberta"); c.querySelector(".fechar").focus();
   }).catch(()=>{});
 })();
 </script>
@@ -1278,8 +1297,144 @@ box-sizing:border-box;}
 <h1>Cartório de fontes oficiais</h1>
 <p class="sub">Os motores descobrem; o Cartório certifica. Toda oportunidade com algum dos 12 itens indisponível entra na fila: ele localiza o documento oficial, lê por seções e devolve cada item com trecho e página, ou a dispensa quando o edital não tem aquele requisito. <span id="car-em"></span></p>
 
-<div class="car-mostradores"><div class="mostrador"><h3>As 5 etapas do Cartório <span class="meta">(os livros em cada uma)</span></h3><div id="car-m-etapas"></div></div>
-<div class="mostrador"><h3>A escada <span class="meta">(o degrau em que cada livro foi obtido)</span></h3><div id="car-m-escada"></div></div></div>
+<!-- O CLASSIFICADOR DO CARTÓRIO (titular, 26/10/2026): dois medidores de lado a lado da página — a escada (a coleta, antes
+da recepção) e a linha das 5 etapas, que termina na bifurcação: o livro fica no Eldorado (selo, encerrada) ou vai ao Farol
+(estrela, aberta); ao encerrar, cl-volta à Biblioteca arquivado. Coletivo (quantos livros em cada parte) ou cl-individual (onde
+está um livro). -->
+<style>
+#cls{--c-tinta:#23272E;--c-suave:#6B7380;--c-papel:#FFFFFF;--c-trilho:#D5DCE4;--c-farol:#1F5B99;--c-farol-f:#EAF1FA;--c-ouro:#B8862B;--c-ouro-f:#F7EFDF;
+ --c-prata:#8E99A6;--c-bronze:#A86B3C;--c-ok:#1E7E4B;margin:6px 0 26px;font-variant-numeric:tabular-nums}
+#cls .cls-cab{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:14px}
+#cls .cls-cab h2{margin:0;border:0;padding:0;font-family:Georgia,serif;font-size:20px;color:var(--c-tinta)}
+#cls .cls-cab p{margin:2px 0 0;color:var(--c-suave);font-size:13.5px;max-width:62ch}
+#cls .cls-busca{display:flex;gap:6px;align-items:center;min-width:min(420px,100%)}
+#cls .cls-busca input{flex:1;font:inherit;font-size:14px;padding:9px 12px;border:1px solid var(--c-trilho);border-radius:10px;background:var(--c-papel);color:var(--c-tinta)}
+#cls .cls-busca input:focus{outline:2px solid var(--c-farol);outline-offset:1px}
+#cls .cls-busca button{padding:9px 14px;border-radius:10px;font-size:13.5px}
+#cls .cls-livro{display:none;margin:0 0 14px;padding:10px 14px;border-left:4px solid var(--c-farol);background:var(--c-farol-f);border-radius:0 10px 10px 0;font-size:14px}
+#cls .cls-livro.ativo{display:block}
+#cls .cls-livro b{font-family:Georgia,serif;font-size:15.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#cls .cls-livro code{font-size:12.5px;background:#fff;padding:1px 6px;border-radius:6px;border:1px solid var(--c-trilho)}
+#cls .cl-med{background:var(--c-papel);border:1px solid #E4E1D8;border-radius:16px;padding:16px 18px 18px;margin-bottom:14px;overflow-x:auto}
+#cls .cl-med h3{margin:0 0 2px;font-family:Georgia,serif;font-size:16.5px;color:var(--c-tinta)}
+#cls .cl-med .cl-med-sub{margin:0 0 14px;color:var(--c-suave);font-size:13px}
+#cls .cl-trilho{position:relative;display:flex;align-items:stretch;min-width:880px}
+#cls .cl-trilho::before{content:"";position:absolute;left:24px;right:24px;top:27px;height:4px;border-radius:2px;background:var(--c-trilho)}
+#cls .cl-est{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 4px;cursor:default}
+#cls .cl-ponto{position:relative;z-index:1;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:var(--c-papel);
+ border:3px solid var(--c-trilho);font-family:Georgia,serif;font-weight:700;font-size:15px;color:var(--c-tinta);transition:transform .25s,border-color .25s,opacity .25s}
+#cls .cl-ponto small{display:block;font:600 10px/1 system-ui,sans-serif;color:var(--c-suave);margin-top:1px}
+#cls .cl-est .cl-nome{margin-top:8px;font-size:12.5px;font-weight:650;color:var(--c-tinta);line-height:1.25}
+#cls .cl-est .cl-det{font-size:11.5px;color:var(--c-suave);margin-top:2px;line-height:1.3}
+#cls .cl-est .cl-barra{width:70%;height:6px;border-radius:3px;background:#EEF1F5;margin-top:8px;overflow:hidden}
+#cls .cl-est .cl-barra i{display:block;height:100%;background:var(--c-farol);border-radius:3px}
+#cls .cl-est.cl-cheia .cl-ponto{border-color:var(--c-farol)}
+#cls .cl-est.cl-vazia .cl-ponto{color:#A3AAB4}
+#cls .cl-individual .cl-est{opacity:.28}
+#cls .cl-individual .cl-est.cl-aqui{opacity:1}
+#cls .cl-est.cl-aqui .cl-ponto{border-color:var(--c-farol);background:var(--c-farol);color:#fff;transform:scale(1.12);box-shadow:0 0 0 7px rgba(31,91,153,.14)}
+#cls .cl-est.cl-aqui .cl-ponto small{color:#DCE7F5}
+#cls .cl-est.cl-aqui::after{content:"este livro";position:absolute;top:-20px;font-size:11px;font-weight:700;color:var(--c-farol)}
+#cls .cl-grupo-rot{position:absolute;top:-2px;font-size:11px;color:var(--c-suave)}
+/* a bifurcação: o cl-fim da linha */
+#cls .cl-fim{z-index:1;background:var(--c-papel);flex:2.25;display:grid;grid-template-rows:auto auto auto auto;gap:10px;padding-left:16px;position:relative;min-width:300px}
+#cls .cl-fim-tit{font-size:12.5px;font-weight:700;color:var(--c-tinta);margin:-2px 0 -4px;background:var(--c-papel);position:relative;z-index:2;padding-right:4px}
+#cls .cl-fim-tit span{font-weight:400;color:var(--c-suave)}
+#cls .cl-fim::before{content:"";position:absolute;left:0;top:27px;width:16px;height:4px;background:var(--c-trilho)}
+#cls .cl-ramo{position:relative;display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;border:1px solid}
+#cls .cl-ramo.cl-eld{border-color:#E9D9B5;background:var(--c-ouro-f)}
+#cls .cl-ramo.cl-far{border-color:#C9DAEE;background:var(--c-farol-f);overflow:hidden}
+#cls .cl-ramo.cl-far::after{content:"";position:absolute;right:-30px;top:-40px;width:150px;height:150px;pointer-events:none;
+ background:conic-gradient(from 200deg at 100% 50%,transparent 0deg,rgba(31,91,153,.10) 18deg,transparent 40deg);animation:feixe 9s ease-in-out infinite alternate}
+@keyframes feixe{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
+@media (prefers-reduced-motion:reduce){#cls .cl-ramo.cl-far::after{animation:none}}
+#cls .cl-ramo .cl-ponto{width:52px;height:52px;flex:none}
+#cls .cl-ramo.cl-eld .cl-ponto{border-color:var(--c-ouro)}
+#cls .cl-ramo.cl-far .cl-ponto{border-color:var(--c-farol)}
+#cls .cl-ramo .cl-txt{flex:1;min-width:0;text-align:left}
+#cls .cl-ramo .cl-txt b{display:block;font-size:13.5px;color:var(--c-tinta)}
+#cls .cl-ramo .cl-txt span{font-size:12px;color:var(--c-suave)}
+#cls .cl-ramo .cl-selos{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
+#cls .cl-ramo .cl-selos em{font-style:normal;font-size:11.5px;padding:2px 8px;border-radius:999px;background:#fff;border:1px solid #E4E1D8;color:var(--c-tinta)}
+#cls .cl-ramo .cl-selos em i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:0}
+#cls .cl-individual .cl-ramo{opacity:.3}
+#cls .cl-individual .cl-ramo.cl-aqui{opacity:1;box-shadow:0 0 0 3px rgba(31,91,153,.18)}
+#cls .cl-volta{grid-column:1/-1;font-size:12px;color:var(--c-suave);display:flex;align-items:center;gap:6px;padding-left:4px}
+#cls .cl-volta svg{flex:none}
+#cls .cls-vazio{color:var(--c-suave);font-size:13px;padding:8px 0}
+</style>
+<div id="cls">
+  <div class="cls-cab">
+    <div><h2>Onde está cada livro</h2>
+      <p>A escada mostra como o motor chegou à fonte, antes da recepção. A linha mostra as 5 etapas e a saída: o livro fica no Eldorado com o selo, ou vai ao Farol com a estrela.</p></div>
+    <form class="cls-busca" onsubmit="return false"><input id="cls-q" list="cls-lista" placeholder="Buscar um livro pelo título, código ou identificador" autocomplete="off">
+      <datalist id="cls-lista"></datalist><button type="button" id="cls-limpar">Ver todos</button></form>
+  </div>
+  <div class="cls-livro" id="cls-livro"></div>
+  <div class="cl-med" id="cls-m1"><h3>A escada da coleta</h3><p class="cl-med-sub">O degrau em que o motor conseguiu ler a fonte, do mais leve ao mais pesado.</p><div class="cl-trilho" id="cls-escada"></div></div>
+  <div class="cl-med" id="cls-m2"><h3>As 5 etapas do Cartório e a saída</h3><p class="cl-med-sub">Cada livro percorre as etapas da esquerda para a direita e termina num dos dois ramos.</p><div class="cl-trilho" id="cls-etapas"></div></div>
+</div>
+<div style="display:none"><div id="car-m-etapas"></div><div id="car-m-escada"></div></div>
+<script>
+(function(){
+  const N=n=>Number(n||0).toLocaleString("pt-BR"), E=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const DEGRAUS=[["1","API oficial","o pedido direto à API"],["2","Pedido leve","a página sem navegador"],["P","Ponte BR","o IP brasileiro na HostGator"],["3","Navegador leve","Lightpanda"],
+    ["4","Navegador discreto","Patchright"],["5","Navegador anti-bloqueio","Camoufox"],["6","Cópia arquivada","Wayback e afins"],["7","Computador local","pela ponte da casa"],["?","Sem registro","achados de antes de 24/10"]];
+  const ETAPAS=[["recepcao","Recepção","o achado chega ao Cartório"],["certificacao","Certificação","os 12 itens no documento"],["preparacao","Preparação","o Interceptador completa"],
+    ["validacao","Validação","o essencial confere"],["analise externa","Análise externa","o Claude no Chrome decide"]];
+  const COR={ouro:"#B8862B",prata:"#8E99A6",bronze:"#A86B3C",sem:"#C9CED6"};
+  let L=[], sel=null;
+  const estacao=(cl,id,nome,det,n,max,aqui)=>`<div class="cl-est ${n?"cl-cheia":"cl-vazia"} ${aqui?"cl-aqui":""}" data-id="${E(id)}" title="${E(nome)}: ${N(n)} livro(s)">
+     <div class="cl-ponto">${N(n)}<small>livros</small></div><div class="cl-nome">${E(nome)}</div><div class="cl-det">${E(det)}</div>
+     <div class="cl-barra"><i style="width:${max?Math.max(n?4:0,Math.round(100*n/max)):0}%"></i></div></div>`;
+  function desenhar(){
+    const alvo=sel?L.find(x=>x.id===sel):null;
+    const esc={}; L.forEach(x=>{const d=x.degrau||"?"; esc[d]=(esc[d]||0)+1});
+    const mxE=Math.max(1,...Object.values(esc));
+    const m1=document.getElementById("cls-escada"); m1.classList.toggle("cl-individual",!!alvo);
+    m1.innerHTML=DEGRAUS.map(([k,n,d])=>estacao("",k,n,d,esc[k]||0,mxE,alvo&&(alvo.degrau||"?")===k)).join("");
+    const fas={}; L.forEach(x=>{fas[x.etapa]=(fas[x.etapa]||0)+1});
+    const mxF=Math.max(1,...ETAPAS.map(([k])=>fas[k]||0));
+    const arq=L.filter(x=>x.etapa==="arquivo"), far=L.filter(x=>x.etapa==="farol");
+    const conta=(xs,campo)=>{const c={};xs.forEach(x=>{const v=(x[campo]&&x[campo]!=="sem")?x[campo]:"sem";c[v]=(c[v]||0)+1});return c};
+    const sArq=conta(arq,"selo"), sFar=conta(far,"estrela");
+    const pilulas=(c,ord)=>ord.filter(k=>c[k]).map(k=>`<em><i style="background:${COR[k]}"></i>${k==="sem"?"sem":k} ${N(c[k])}</em>`).join("");
+    const m2=document.getElementById("cls-etapas"); m2.classList.toggle("cl-individual",!!alvo);
+    m2.innerHTML=ETAPAS.map(([k,n,d],i)=>estacao("",k,`${i+1}. ${n}`,d,fas[k]||0,mxF,alvo&&alvo.etapa===k)).join("")+
+     `<div class="cl-fim">
+        <div class="cl-fim-tit">6. A classificação <span>— depois das 5 etapas, o livro segue por um dos dois ramos</span></div>
+        <div class="cl-ramo cl-eld ${alvo&&alvo.etapa==="arquivo"?"cl-aqui":""}"><div class="cl-ponto">${N(arq.length)}<small>livros</small></div>
+          <div class="cl-txt"><b>Fica no Eldorado</b><span>o livro com o selo do histórico, a oportunidade encerrada (sem estrela)</span><div class="cl-selos">${pilulas(sArq,["ouro","prata","bronze","sem"])}</div></div></div>
+        <div class="cl-ramo cl-far ${alvo&&alvo.etapa==="farol"?"cl-aqui":""}"><div class="cl-ponto">${N(far.length)}<small>livros</small></div>
+          <div class="cl-txt"><b>Vai ao Farol</b><span>a estrela da oportunidade aberta: tudo pronto para o Farol prosseguir</span><div class="cl-selos">${pilulas(sFar,["ouro","prata","bronze","sem"])}</div></div></div>
+        <div class="cl-volta"><svg width="34" height="14" viewBox="0 0 34 14" aria-hidden="true"><path d="M32 3H9a5 5 0 0 0 0 10h3" fill="none" stroke="#8E99A6" stroke-width="1.6"/><path d="M14 10l-3 3 3 3" fill="none" stroke="#8E99A6" stroke-width="1.6" transform="translate(0,-3)"/></svg>
+          Ao encerrar ou ser arquivado, o livro volta à Biblioteca, arquivado, aguardando a nova abertura do edital.</div>
+      </div>`;
+    const box=document.getElementById("cls-livro");
+    if(alvo){
+      const onde=ETAPAS.find(([k])=>k===alvo.etapa); const fim=alvo.etapa==="farol"?"vai ao Farol":alvo.etapa==="arquivo"?"fica no Eldorado (arquivado)":onde?`etapa ${ETAPAS.indexOf(onde)+1}: ${onde[1]}`:alvo.etapa;
+      const deg=(DEGRAUS.find(([k])=>k===(alvo.degrau||"?"))||[])[1]||"sem registro";
+      box.innerHTML=`<b>${E(alvo.titulo)}</b>${alvo.codigo?`<code>${E(alvo.codigo)}</code> `:""}na escada: ${E(deg)} · no Cartório: ${E(fim)} · selo ${E(alvo.selo||"sem")} · estrela ${E(alvo.estrela||"sem")}${alvo.aberta?" · inscrição aberta":""}`;
+      box.classList.add("ativo");
+    } else box.classList.remove("ativo");
+  }
+  function buscar(q){
+    q=(q||"").trim().toLowerCase(); if(!q){sel=null;desenhar();return}
+    const x=L.find(y=>y.id.toLowerCase()===q||(y.codigo||"").toLowerCase()===q)||L.find(y=>(y.titulo||"").toLowerCase()===q)||L.find(y=>(y.titulo||"").toLowerCase().includes(q));
+    sel=x?x.id:null; desenhar();
+  }
+  fetch("dados/cartorio.json?v="+Date.now()).then(r=>r.ok?r.json():null).then(D=>{
+    L=((D&&D.certidoes)||[]).map(x=>({id:x.id,titulo:x.titulo||x.id,codigo:x.codigo,etapa:x.etapa,degrau:x.degrau,selo:x.selo,estrela:x.estrela,aberta:x.aberta}));
+    if(!L.length){document.getElementById("cls-escada").innerHTML='<p class="cls-vazio">Os livros aparecem cl-aqui assim que o Cartório publicar a sua lista.</p>';return}
+    document.getElementById("cls-lista").innerHTML=L.slice(0,4000).map(x=>`<option value="${E(x.titulo)}">${E(x.codigo||"")}</option>`).join("");
+    desenhar();
+  }).catch(()=>{});
+  const q=document.getElementById("cls-q");
+  q.addEventListener("change",()=>buscar(q.value)); q.addEventListener("keydown",e=>{if(e.key==="Enter")buscar(q.value)});
+  document.getElementById("cls-limpar").addEventListener("click",()=>{q.value="";buscar("")});
+})();
+</script>
+
 <div class="cards" id="car-cards"></div>
 
 <h2>Linha de produção <span class="meta">(sem estrela → bronze → prata → ouro · até 10 abordagens por oportunidade)</span></h2>

@@ -78,7 +78,7 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection | None, rede=None, a
     formato_anterior = bib.row_factory                       # a conexão é compartilhada com o gerador: o formato volta ao fim
     bib.row_factory = sqlite3.Row
     livros = bib.execute(
-        "SELECT l.id, l.titulo, l.orgao, l.uf, l.estrela, l.link_oficial, l.link_divulgacao, l.criado_em, p.fase, d.inscricao_fim, "
+        "SELECT l.id, l.titulo, l.orgao, l.uf, l.estrela, l.selo_livro, l.link_oficial, l.link_divulgacao, l.criado_em, p.fase, d.inscricao_fim, "
         "d.situacao_prazo, d.escada, d.origem, d.validacao, "
         + ("d.codigo" if "codigo" in {r[1] for r in bib.execute("PRAGMA table_info(livro_dados)")} else "NULL AS codigo")
         + " FROM livro l JOIN passaporte p ON p.livro_id = l.id LEFT JOIN livro_dados d ON d.livro_id = l.id "
@@ -148,6 +148,7 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection | None, rede=None, a
                 "codigo": lv["codigo"],
                 "etapa": lv["fase"],
                 "estrela": lv["estrela"],
+                "selo": lv["selo_livro"],                    # o selo do livro (o histórico): o classificador do Cartório (26/10/2026)
                 "estagio": ESTAGIO.get(lv["estrela"], "sem_estrela"),
                 "tipo": "estrela" if lv["estrela"] not in (None, "sem") else "livro",
                 "balcao": bal,

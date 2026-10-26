@@ -18,3 +18,15 @@ def test_o_cartorio_tem_os_mostradores_e_a_ficha_de_cada_livro(tmp_path):
     f = next(iter(fichas.values()))
     assert {"relatorio", "parecer", "repasse", "orientacao", "itens", "etapa", "degrau"} <= set(f)
     assert Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8").count("car-m-etapas") >= 2
+
+
+def test_o_classificador_do_cartorio_e_a_janela_da_decisao():
+    """26/10/2026 (titular): os dois medidores do Cartório (a escada e as 5 etapas com a classificação em dois ramos, no
+    modo coletivo ou individual) e o 'Para a sua decisão' só numa janela da tela inicial, não inserido nas páginas."""
+    from pathlib import Path
+
+    p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
+    assert 'id="cls-escada"' in p and 'id="cls-etapas"' in p and 'id="cls-q"' in p                  # os dois medidores e a busca
+    assert "Fica no Eldorado" in p and "Vai ao Farol" in p and "6. A classificação" in p            # a etapa 6 com dois ramos
+    assert 'id="v-relatorio-titular"' not in p and 'id="dec-janela"' in p                          # a janela, não uma seção
+    assert 'sessionStorage.getItem("eldorado-decisao")' in p and "naInicial()" in p                  # só na inicial, uma vez por visita
