@@ -26,7 +26,7 @@ jobs:
       - name: Instalar (versões fixadas)
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[testes,leitura,acesso,descoberta]" "ruff==0.16.10"
+          pip install -e ".[testes,leitura,acesso,descoberta]" "ruff==0.16.10" "pytest-timeout==2.4.0"
           # as mesmas bibliotecas da produção (25/10/2026: a qualidade instalava só uma parte, e os testes do Comandante,
           # do idioma e das datas falhavam aqui sem falhar na produção)
           pip install -q uv && python scripts/instalar_bibliotecas.py
@@ -36,8 +36,12 @@ jobs:
         # cada teste que falhar vira uma anotação (25/10/2026: o registro detalhado não é lido de fora; a anotação é)
         run: |
           set -o pipefail
-          pytest -q -p no:cacheprovider -rfE 2>&1 | tee /tmp/bateria.txt && exit 0
+          # 26/10/2026: um teste que trava não pode mais esconder a bateria inteira atrás do limite de 1 h (desde 25/10 toda
+          # Qualidade terminava "cancelada"): cada teste tem 4 minutos; o que travar falha com o ponto onde parou
+          pytest -q -p no:cacheprovider -rfE --timeout=240 --timeout-method=thread --durations=15 2>&1 | tee /tmp/bateria.txt && exit 0
           s=$?
           grep -E "^(FAILED|ERROR) " /tmp/bateria.txt | head -25 | while read -r l; do echo "::error title=teste::${l:0:900}"; done
           grep -E "^E  " /tmp/bateria.txt | head -15 | while read -r l; do echo "::warning title=detalhe::${l:0:600}"; done
+          grep -E "Timeout|^  File .*testes/" /tmp/bateria.txt | head -20 | while read -r l; do echo "::warning title=parou em::${l:0:600}"; done
+          grep -E "^[0-9.]+s (call|setup)" /tmp/bateria.txt | head -15 | while read -r l; do echo "::notice title=lento::${l:0:300}"; done
           exit $s
