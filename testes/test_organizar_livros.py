@@ -36,14 +36,29 @@ def test_a_formula_e_as_unioes(bancos):
     b.commit()
     livros = classificar(b)
     cod = {x["id"]: x["codigo"] for x in livros}
-    assert all(re.fullmatch(r"[A-Z?\-]+·[A-Z]{3}·(PUB|PRI)·[A-Z]{3}", c) for i, c in cod.items() if i != "E1")
+    # LOCAL·ÁREA·NATUREZA·MODALIDADE·OBJETO: a modalidade é a forma do recurso; o objeto, o que ele permite fazer
+    assert all(re.fullmatch(r"[A-Z?\-]+·[A-Z]{3}·(PUB|PRI)·[A-Z]{3}·([A-Z]{3}|\?)", c) for i, c in cod.items() if i != "E1")
     assert cod["A1"].split("·")[1] == "CUL" and cod["A1"].split("·")[3] == "PRE"
+
     assert cod["E1"] is None and cod["E2"].startswith("BA-CAP")  # fora das capitais: eliminado
     d = organizar(livros)
     unioes = {(f, u) for f, u, _m in d["unir"]}
     assert {u for _f, u in unioes} >= {"A2", "A3"} and ("D2", "D1") in unioes
     assert not {u for _f, u in unioes} & {"B1", "B2", "C1", "C2"}
     assert [x["id"] for x in d["eliminar"]] == ["E1"]
+
+
+def test_a_modalidade_e_o_objeto_sao_coisas_diferentes():
+    from eldorado.base.comandante.organizar import modalidade, objeto
+
+    assert modalidade("Termo de Fomento com recursos do FMDCA para ações formativas", None) == "PAR"  # a forma: a parceria
+    assert objeto("", "a seleção de projetos para a realização da Feira de Arte de Goiás")[0] == "EVE"  # o que permite: o evento
+    assert objeto("", "promover o fortalecimento institucional das organizações sociais")[0] == "INS"
+    assert objeto("", "celebrar termo de cessão de uso de motocultivadores")[0] == "EQP"
+    assert objeto("Edital de reforma de sedes", "medir a concentração de renda em uma sociedade") == (
+        "OBR",
+        "título (o objeto certificado não descreve benefício)",
+    )
 
 
 def test_uma_unica_contagem_dos_livros_no_site():

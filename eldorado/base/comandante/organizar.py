@@ -3,7 +3,7 @@
 parâmetros diferentes em locais diferentes do site").
 
 A FÓRMULA. Cada livro recebe um código que diz o que a oportunidade É:
-    LOCAL · ÁREA · NATUREZA · OBJETO          ex.: GO-GOIANIA·IDO·PUB·DOA
+    LOCAL · ÁREA · NATUREZA · MODALIDADE · OBJETO          ex.: GO-GOIANIA·CUL·PUB·FOM·EVE
   LOCAL     pela regra de território validada pela titular (a mesma do portão e da auditoria):
             GO-<MUNICÍPIO> (município de Goiás), GO (o estado de Goiás), <UF>-CAP (a capital de outro estado),
             <UF> (outro estado), BR (nacional), INT (internacional); município de outro estado fora das capitais: eliminado.
@@ -11,11 +11,16 @@ A FÓRMULA. Cada livro recebe um código que diz o que a oportunidade É:
             DHU direitos humanos e cidadania · CRI criança e adolescente · IDO pessoa idosa · PCD pessoa com deficiência ·
             CTI ciência, tecnologia e inovação · ECO trabalho, renda e economia · GER várias áreas ou geral
   NATUREZA  PUB pública · PRI privada
-  OBJETO    FOM fomento a projetos · PAR parceria (termo de colaboração ou fomento, convênio) · PRE prêmio · BOL bolsa ou
-            formação · DOA doação ou patrocínio · INC incentivo fiscal · JUD destinação judicial ou do Ministério Público ·
+  MODALIDADE  a FORMA do recurso: FOM fomento a projetos · PAR parceria (termo de colaboração ou fomento, convênio) · PRE prêmio ·
+            BOL bolsa · DOA doação ou patrocínio · INC incentivo fiscal · JUD destinação judicial ou do Ministério Público ·
             EMD emenda parlamentar · CRE credenciamento ou cadastro
+  OBJETO    o que o recurso PERMITE FAZER (o benefício direto; titular, 25/10/2026): PRJ executar um projeto · INS fortalecimento
+            institucional e custeio da organização · GES gerir e executar um serviço ou programa público · EQP adquirir ou
+            receber bens e equipamentos · OBR obra, reforma ou infraestrutura · EVE realizar um evento · CAP formação e
+            capacitação de pessoas · PES pesquisa, estudo ou inovação · ESP usar um espaço público · SER prestar serviços ao
+            órgão · ATE apoio técnico, mentoria ou aceleração · LIV prêmio de uso livre · ? sem informação
 A fonte de cada característica: o item certificado no documento oficial (o território, a área, a esfera, a modalidade, o
-objeto); na falta dele, as palavras do título e do órgão.
+objeto); na falta dele, as palavras do título e do órgão. A validação diz, para cada parte, de onde ela veio.
 
 O DESEMPATE (só entre livros com o mesmo código e o mesmo nome): o site oficial (sites diferentes, oportunidades
 diferentes); o ano e o número (no mesmo ano, números diferentes são chamadas diferentes; anos diferentes são edições da
@@ -45,14 +50,14 @@ AREAS = {
     "ECO": r"trabalho e renda|empreend|economia (solidaria|criativa)|geracao de renda|agricultura familiar|cooperativ|microcredito|desenvolvimento (economico|local|regional)",
 }
 NATUREZA_PUB = r"prefeitura|secretaria|ministerio|governo|fundo (municipal|estadual|nacional|federal)|tribunal|ministerio publico|\bmp[a-z]{0,2}\b|\bmpt\b|camara|assembleia|senado|congresso|universidade federal|instituto federal|\bifg?o?\b|\bbndes\b|\bcaixa\b|banco do brasil|petrobras|correios|eletrobras|\bfunarte\b|\bancine\b|\bcnpq\b|\bfinep\b|\bfap[a-z]*\b|conselho (municipal|estadual|nacional)|\bunesco\b|\bonu\b|nacoes unidas|uniao europeia|embaixada|\bbid\b|banco mundial|\.gov\b|\.gov\.br|\.leg\.br|\.jus\.br|\.mp\.br"
-OBJETOS = [
+MODALIDADES = [   # a forma do recurso; a parceria (termo de fomento ou colaboração) antes do prêmio, da bolsa e do credenciamento
     ("JUD", r"prestac(ao|oes) pecuniar|\btac\b|termo de ajustamento|penas? (pecuniar|alternativ)|destinac(ao|oes) (de )?(recursos|valores) (judicia|do mp|do ministerio)|reversao|reversoes|transac(ao|oes) penal|\bmpt\b"),
     ("EMD", r"emenda(s)? parlamentar|emendas? (individua|de bancada)"),
     ("INC", r"incentivo fiscal|lei de incentivo|deducao|imposto de renda|renuncia fiscal|destinac(ao|oes) (do |de )?(ir|imposto)|\bfia\b|fundo do idoso|\bpronon\b|\bpronas\b"),
-    ("PRE", r"premio|premiac|concurso|reconhecimento"),
-    ("BOL", r"\bbolsas?\b|residencia|capacitac|formac(ao|oes)|curso|mentoria|acelerac|incubac|intercambio"),
-    ("CRE", r"credenciamento|cadastr|habilitac|chamamento para (o )?cadastro|banco de projetos|chamada para inscricao de entidades"),
     ("PAR", r"termo de (colaborac|fomento|execucao cultural)|acordo de cooperac|convenio|\bmrosc\b|parceria"),
+    ("PRE", r"premio|premiac|concurso|reconhecimento"),
+    ("BOL", r"\bbolsas?\b|residencia (artistica|cientifica|tecnologica)|intercambio"),
+    ("CRE", r"credenciamento|cadastr|habilitac|chamamento para (o )?cadastro|banco de projetos|chamada para inscricao de entidades"),
     ("DOA", r"doac(ao|oes)|patrocin|apoio empresarial|investimento social|responsabilidade social"),
     ("FOM", r"edital|chamada|chamamento|selec(ao|iona)|apoio (a|financeiro)|fomento|financiamento|projetos?"),
 ]
@@ -104,9 +109,54 @@ def natureza(texto: str, esfera: str | None) -> str:
     return "PUB" if re.search(NATUREZA_PUB, sem_acento(texto)) else "PRI"
 
 
-def objeto(texto: str, modalidade: str | None) -> str:
-    t = sem_acento(f"{modalidade or ''} {texto}")
-    return next((o for o, rx in OBJETOS if re.search(rx, t)), "FOM")
+def modalidade(texto: str, certificada: str | None) -> str:
+    t = sem_acento(f"{certificada or ''} {texto}")
+    return next((o for o, rx in MODALIDADES if re.search(rx, t)), "FOM")
+
+
+OBJETOS = [   # o que o recurso permite fazer (a ordem: do mais específico ao mais geral)
+    ("ESP", r"uso (do|de) espaco|cessao de (uso de )?(espaco|sala|imovel|teatro|auditorio)|pauta (do|de) (teatro|espaco)|ocupac(ao|oes) (do|de|artistica)"),
+    ("SER", r"prestac(ao|oes) de servicos|contratac(ao|oes) de (servicos|artistas|pareceristas)|credenciamento de (pareceristas|artistas|oficineiros|pessoas)|parecerista"),
+    ("GES", r"gerenciamento|gestao (compartilhada|do|da|de servic)|operacionaliza|execuc(ao|oes) (do|de) (programa|servico)|servicos? socioassistenciais|acolhimento institucional|cogestao"),
+    ("EQP", r"aquisic(ao|oes) de (bens|equipamentos|veiculos|materiais)|equipamentos?|veiculos?|motocultivador|mobiliario|bens (e valores|moveis|duraveis)|recebimento de bens|kits?\b|cessao de uso de (bens|maquinas|motocultivad)"),
+    ("OBR", r"\bobras?\b|reforma|construc(ao|oes)|ampliac(ao|oes)|infraestrutura|moradia|habitac|saneamento|cisterna"),
+    ("INS", r"fortalecimento institucional|desenvolvimento institucional|custeio|manutenc(ao|oes) (da|das) (entidade|organizac|instituic)|despesas (correntes|administrativas)|apoio institucional|sustentabilidade (financeira|institucional)"),
+    ("EVE", r"\bevento|festival|\bfeira\b|mostra\b|apresentac(ao|oes)|espetacul|circulac(ao|oes)|temporada|programac(ao|oes) (cultural|artistica)|exposic"),
+    ("PES", r"pesquisa|estudos?\b|inovac|desenvolvimento (tecnologico|de solucoes|de produtos)|startup|prova de conceito|laboratorio"),
+    ("CAP", r"formac(ao|oes)|capacitac|curso|oficina|qualificac|treinamento|acoes formativas|ensino|aprendiz"),
+    ("ATE", r"mentoria|acelerac|incubac|assessoria|apoio tecnico|consultoria|orientac(ao|oes) (dos|aos|tecnica)"),
+    ("LIV", r"premio em dinheiro|premiac(ao|oes)|reconhecimento|premiar"),
+    ("PRJ", r"\bprojetos?\b|\bac(ao|oes)\b|\batividades\b|\biniciativas\b|\bpropostas\b"),
+]
+
+
+def objeto(texto: str, certificado: str | None) -> tuple[str, str]:
+    """(o objeto, a base): o item Objeto certificado no documento oficial vence; na falta, o título e o tema. O certificado
+    que não descreve benefício nenhum (um trecho errado do documento) não conta, e a base o diz."""
+    if certificado and not next((o for o, rx in OBJETOS if re.search(rx, sem_acento(certificado))), None):
+        o = next((o for o, rx in OBJETOS if re.search(rx, sem_acento(texto))), None)
+        return (o, "título (o objeto certificado não descreve benefício)") if o else ("?", "o objeto certificado não descreve benefício")
+    for base, t in (("certificado", certificado), ("título", texto)):
+        t = sem_acento(t)
+        if not t.strip():
+            continue
+        o = next((o for o, rx in OBJETOS if re.search(rx, t)), None)
+        if o:
+            return o, base
+    return "?", "sem informação"
+
+
+NAO_OPORTUNIDADE = [   # a validação: o livro pode não ser uma oportunidade (vai a revisar, não é excluído pelo título)
+    ("sem título real", r"^(op|l|achado)-[0-9a-f]{6,}$|^\s*$"),
+    ("parte de um edital (anexo, declaração, formulário)", r"^\s*anexo\b|\banexo [ivx\d]+\b|declarac(ao|oes) (de|pessoa|etnico)|formulario|modelo de|\((docx|pdf|xlsx)\)"),
+    ("andamento de um edital (resultado, retificação, prorrogação, errata, convocação)", r"^\s*(divulgad[oa] )?resultado|retificac|prorrogac|errata|homologac|^\s*convocac"),
+    ("notícia ou evento sem oportunidade", r"mega-?sena|loteria|acumula|apresenta seu trabalho|\bshow\b|palestra|webinar|seminario|inaugura"),
+]
+
+
+def validar(titulo: str | None) -> str:
+    t = sem_acento(titulo)
+    return next((nome for nome, rx in NAO_OPORTUNIDADE if re.search(rx, t)), "oportunidade")
 
 
 def nome_chave(titulo: str | None) -> str:
@@ -169,12 +219,18 @@ def classificar(con: sqlite3.Connection) -> list[dict[str, Any]]:
         loc = local(abr, municipio, lv["uf"])
         ar = area(texto, (cs.get("Área de atuação") or {}).get("valor") or lv["d_area"])
         nat = natureza(f"{lv['orgao'] or ''} {lv['link_oficial'] or ''} {lv['titulo'] or ''}", (cs.get("Esfera") or {}).get("valor") or lv["d_esfera"])
-        obj = objeto(texto, (cs.get("Modalidade") or {}).get("valor") or lv["d_modalidade"])
+        mod_cert = (cs.get("Modalidade") or {}).get("valor")
+        mod = modalidade(texto, mod_cert or lv["d_modalidade"])
+        obj, base_obj = objeto(f"{lv['titulo'] or ''} {lv['tema'] or ''}", (cs.get("Objeto") or {}).get("valor"))
         tit = lv["titulo"] or ""
         num = NUMERO.search(sem_acento(tit))
         anos = [int(a) for a in ANO.findall(f"{tit} {lv['inscricao_fim'] or ''}")]
-        saida.append({"id": lv["id"], "titulo": tit, "abrangencia": abr, "municipio": municipio, "local": loc, "area": ar, "natureza": nat, "objeto": obj,
-                      "codigo": f"{loc}·{ar}·{nat}·{obj}" if loc else None, "nome": nome_chave(tit), "ano": max(anos) if anos else None,
+        saida.append({"id": lv["id"], "titulo": tit, "abrangencia": abr, "municipio": municipio, "local": loc, "area": ar, "natureza": nat,
+                      "modalidade": mod, "objeto": obj, "codigo": f"{loc}·{ar}·{nat}·{mod}·{obj}" if loc else None, "validacao": validar(tit),
+                      "base": {"local": "território certificado" if cs.get("Território") else "título, órgão e site",
+                               "area": "certificada" if cs.get("Área de atuação") or lv["d_area"] else "título",
+                               "natureza": "certificada" if cs.get("Esfera") or lv["d_esfera"] else "órgão e site",
+                               "modalidade": "certificada" if mod_cert or lv["d_modalidade"] else "título", "objeto": base_obj}, "nome": nome_chave(tit), "ano": max(anos) if anos else None,
                       "numero": num.group(1).lstrip("0") if num else None, "site": host(lv["link_oficial"], lv["link_divulgacao"]),
                       "prazo": lv["inscricao_fim"], "fase": lv["fase"], "situacao": lv["situacao"], "selo": lv["selo_livro"], "estrela": lv["estrela"],
                       "itens": len(cs)})
@@ -243,12 +299,13 @@ def organizar(livros: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def codigo_do_grupo(fica: dict[str, Any], outros: list[dict[str, Any]]) -> str:
-    """O código do livro que fica, com a informação de todas as cópias (a área e o objeto mais específicos)."""
+    """O código do livro que fica, com a informação de todas as cópias (a área, a modalidade e o objeto mais específicos)."""
     todos = [fica, *outros]
     area_ = next((x["area"] for x in todos if x["area"] != "GER"), "GER")
-    obj = next((x["objeto"] for x in todos if x["objeto"] != "FOM"), "FOM")
+    mod = next((x["modalidade"] for x in todos if x["modalidade"] != "FOM"), "FOM")
+    obj = next((x["objeto"] for x in todos if x["objeto"] not in ("?", "PRJ")), next((x["objeto"] for x in todos if x["objeto"] != "?"), "?"))
     loc = next((x["local"] for x in todos if x["local"] not in ("BR", "?", "UF?")), fica["local"])
-    return f"{loc}·{area_}·{fica['natureza']}·{obj}"
+    return f"{loc}·{area_}·{fica['natureza']}·{mod}·{obj}"
 
 
 def no_organizar_livros(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
@@ -294,6 +351,7 @@ def parecer(livros: list[dict[str, Any]], dec: dict[str, Any]) -> dict[str, Any]
                 "estadual_outro_estado": "outro estado", "nacional": "nacional", "internacional": "internacional"}.get(x["abrangencia"], "indeterminado")
     return {"antes": len(livros), "eliminados": len(dec["eliminar"]), "unidos": len(dec["unir"]), "depois": len(r),
             "por_nivel": Counter(nivel(x) for x in r).most_common(), "por_area": Counter(x["area"] for x in r).most_common(),
-            "por_natureza": Counter(x["natureza"] for x in r).most_common(), "por_objeto": Counter(x["objeto"] for x in r).most_common(),
+            "por_natureza": Counter(x["natureza"] for x in r).most_common(), "por_modalidade": Counter(x["modalidade"] for x in r).most_common(),
+            "por_objeto": Counter(x["objeto"] for x in r).most_common(), "por_validacao": Counter(x["validacao"] for x in r).most_common(),
             "codigos_distintos": len({x["codigo"] for x in r}),
             "edicoes_unidas": sum(1 for _f, _u, m in dec["unir"] if m.startswith("edição anterior"))}
