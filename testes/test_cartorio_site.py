@@ -104,3 +104,19 @@ def test_os_livros_por_area_e_o_par_abordagens_balcoes():
         assert f'id="{f}"' in p
     assert "Ver a trajetória na esteira" in p and "it12" in p  # o cartão aberto
     assert '<div class="duo"><div class="pn ab">' in p and "#cl3 .duo{display:grid;grid-template-columns:1.25fr 1fr" in p
+
+
+def test_o_quadro_motores_de_busca_tem_os_motores_do_sistema():
+    """26/10/2026 (titular): o quadro 'Motores de Busca' (formato do Eldorado0) mostra todos os motores do sistema, com o
+    calendário do mês, o funcionamento e o rendimento; os números do topo vêm do sistema."""
+    import json
+    from pathlib import Path
+
+    p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
+    assert "os 260 pontos de captação" not in p
+    s = Path("eldorado/base/painel/dados.py").read_text(encoding="utf-8")
+    assert 'mo["oficiais"] = _motores_de_busca(sis)' in s and '"completos":' in s and '"media_camadas":' in s
+    for campo in ('"dias": dias', '"ultima_leitura":', '"situacao": situacao', '"rendimento":', '"descricao":', '"rank": i'):
+        assert campo in s, campo
+    previstos = json.loads(Path("config/motores_previstos.json").read_text(encoding="utf-8"))["motores"]
+    assert len(previstos) >= 45  # todos os motores entram na lista

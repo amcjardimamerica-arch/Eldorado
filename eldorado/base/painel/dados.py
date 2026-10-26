@@ -178,6 +178,87 @@ def _categoria(sis: Sistema, mid: str, tipo: str) -> str:
     return CANAL_CATEGORIA.get(canal or "", "site_oficial")
 
 
+def _diagnostico_motor(ultima, t: Counter) -> dict:
+    if ultima and ultima["erro"]:
+        return {"motivo_zero": f"a última execução falhou: {str(ultima['erro'])[:140]}"}
+    if ultima and not t["aceitos"]:
+        return {"motivo_zero": "leu as fontes e não trouxe oportunidade nova nos últimos 30 dias"}
+    return {}
+
+
+def _motores_de_busca(sis: Sistema) -> list[dict]:
+    """Os motores de busca no formato do Eldorado0 (a lista 'oficiais' do quadro): cada motor com o calendário do mês
+    anterior ao fim do mês corrente (cinza não executou · azul funcionou, sem oportunidade · amarelo achou, faltam itens ·
+    verde achou um livro com os 12 itens · vermelho falhou), cada oportunidade contada só no dia da PRIMEIRA leitura que a
+    achou; a última leitura, os achados, a situação, o diagnóstico e o rendimento dos últimos 30 dias."""
+    import calendar as _cal
+    from datetime import date as _date
+
+    hoje = _date.fromisoformat(sis.hoje)
+    ini = (hoje.replace(day=1) - timedelta(days=1)).replace(day=1)
+    fim = hoje.replace(day=_cal.monthrange(hoje.year, hoje.month)[1])
+    d30 = (hoje - timedelta(days=30)).isoformat()
+    ex = sis.execucoes()
+    completos = {r[0] for r in sis.bib.execute(
+        "SELECT livro_id FROM certidao WHERE situacao IN ('comprovado','dispensado') GROUP BY livro_id HAVING COUNT(DISTINCT item) >= 12")}
+    vivos = {r[0]: (r[1], r[2]) for r in sis.bib.execute("SELECT id, estrela, situacao FROM livro")}
+    primeira: dict[str, dict[str, tuple]] = defaultdict(dict)        # motor → livro → (o dia da primeira leitura, o título, o link)
+    tot: dict[str, Counter] = defaultdict(Counter)
+    for r in sis.bib.execute("SELECT motor, livro_id, encontrado_em, decisao, titulo, link_oficial, link_divulgacao FROM achado ORDER BY encontrado_em"):
+        t = tot[r["motor"]]
+        if (r["encontrado_em"] or "") >= d30:
+            t["achados"] += 1
+            t["aceitos"] += r["decisao"] == "aceito"
+        if r["livro_id"] and r["livro_id"] not in primeira[r["motor"]]:
+            primeira[r["motor"]][r["livro_id"]] = (_data_br(r["encontrado_em"]), r["titulo"], r["link_oficial"] or r["link_divulgacao"])
+    saida = []
+    for i, m in enumerate(sis.estudo, 1):
+        mid, cfg = m["id"], sis.configs.get(m["id"], {})
+        execs = ex.get(mid, [])
+        por_dia: dict[str, dict] = {}
+        for e in execs:
+            d = _data_br(e["inicio"])
+            r = por_dia.setdefault(d, {"execucoes": 0, "falhas": 0})
+            r["execucoes"] += 1
+            r["falhas"] += bool(e["erro"])
+        novos: dict[str, list] = defaultdict(list)
+        for lid, (d, tit, url) in primeira.get(mid, {}).items():
+            novos[d].append((lid, tit, url))
+        dias = []
+        d0 = ini
+        while d0 <= fim:
+            d = d0.isoformat()
+            d0 += timedelta(days=1)
+            r, nv = por_dia.get(d), novos.get(d, [])
+            if nv:
+                cor = "verde" if any(lid in completos for lid, _t, _u in nv) else "amarelo"
+            elif r:
+                cor = "vermelho" if r["falhas"] == r["execucoes"] else "azul"
+            else:
+                cor = "cinza" if d <= sis.hoje else "futuro"
+            dias.append({"d": d, "cor": cor, "n": len(nv), "f": (r or {}).get("falhas", 0), "t": nv[0][1] if nv else None, "u": nv[0][2] if nv else None})
+        e30 = [e for e in execs if _data_br(e["inicio"]) >= d30]
+        t = tot.get(mid, Counter())
+        livros = primeira.get(mid, {})
+        com_estrela = sum(1 for lid in livros if (vivos.get(lid) or ("sem",))[0] not in (None, "sem"))
+        ultima = execs[0] if execs else None
+        rend = (f"Rendimento em 30 dias: {len(e30)} execução(ões), {sum(1 for e in e30 if e['erro'])} com falha · {t['achados']} achado(s), "
+                f"{t['aceitos']} aceito(s) ({round(100 * t['aceitos'] / t['achados']) if t['achados'] else 0}%) · {len(livros)} livro(s) trazido(s), "
+                f"{com_estrela} com estrela")
+        rotas = [f.get("url", "") for f in cfg.get("fonte", []) if f.get("url")] + [(a.get("enderecos") or [""])[0] for a in cfg.get("alvo", [])]
+        situacao = ("sem leitura ainda" if not ultima else "bloqueado" if ultima["erro"] and not any(not e["erro"] for e in execs[:5])
+                    else "ativo — captando" if t["aceitos"] or livros else "ativo, sem achados")
+        finalidade = m.get("finalidade") or (cfg.get("motor") or {}).get("finalidade", "")
+        saida.append({"id": mid, "nome": m["nome"], "tipo": m.get("categoria_nome") or m.get("tipo"), "grupo": m.get("tipo"), "rank": i,
+                      "url": next((u for u in rotas if u), ""), "descricao": f"{finalidade.rstrip('. ')}. {rend}." if finalidade else f"{rend}.",
+                      "agenda_dias": "todos", "dias": dias, "ultima_leitura": ultima["inicio"] if ultima else None, "achados": len(livros),
+                      "diagnostico": _diagnostico_motor(ultima, t),
+                      "rendimento": {"execucoes_30d": len(e30), "falhas_30d": sum(1 for e in e30 if e["erro"]), "achados_30d": t["achados"],
+                                     "aceitos_30d": t["aceitos"], "livros": len(livros), "com_estrela": com_estrela},
+                      "situacao": situacao})
+    return saida
+
+
 def _motores(sis: Sistema) -> tuple[list[dict], dict, dict]:
     """O estado de cada um dos 47 motores, a descrição e os números, pelo que o sistema registra."""
     ex = sis.execucoes()
@@ -583,13 +664,24 @@ def _tabelas(sis: Sistema, status: list[dict], descricao: dict, agora: str) -> d
         linhas_m.append([valores.get(c) for c in itens["campos_motores"]])
     mo = _molde("motores.json")
     mo.update({"campos": itens["campos_motores"], "dic": {}, "linhas": linhas_m})
+    mo["oficiais"] = _motores_de_busca(sis)   # o quadro "Motores de Busca" (26/10/2026): os 47 motores, o calendário e o rendimento
+    _c = dict(sis.bib.execute("SELECT livro_id, COUNT(DISTINCT item) FROM certidao WHERE situacao IN ('comprovado','dispensado') GROUP BY livro_id").fetchall())
+    _v = [r[0] for r in sis.bib.execute("SELECT id FROM livro WHERE situacao NOT IN ('excluido', 'unido')")]
+    _hoje = [e for es in sis.execucoes().values() for e in es if _data_br(e["inicio"]) == sis.hoje]
+    _novos_hoje = sis.bib.execute("SELECT COUNT(*) FROM livro WHERE substr(criado_em, 1, 10) = ?", (sis.hoje,)).fetchone()[0]
     mo["resumo"] = {
         **(mo.get("resumo") or {}),
         "gerado_em": agora,
         "total": len(linhas_m),
         "dia_de_referencia": sis.hoje,
         "por_familia": dict(Counter(m["categoria_nome"] for m in sis.estudo)),
+        "completos": sum(1 for i in _v if _c.get(i, 0) >= 12),                       # os livros com os 12 itens
+        "media_camadas": round(sum(min(12, _c.get(i, 0)) for i in _v) / len(_v), 1) if _v else 0,
     }
+    mo["relatorio_hoje"] = {"data": sis.hoje, "blocos": {}, "consolidado": {
+        "blocos_executados": [f"{len({e['motor'] for e in _hoje})} motor(es) em {len(_hoje)} execução(ões)"] if _hoje else [],
+        "sensores": len({e["motor"] for e in _hoje}),
+        "achados": sum(e["achados"] or 0 for e in _hoje), "novos_na_base": _novos_hoje, "atualizado_em": agora}}
     livros = sis.livros_abertos()
     certs = sis.certidoes([r["id"] for r in livros])
     motor_de = sis.motor_do_livro()
