@@ -40,7 +40,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 11273,
+   "linhas": 11290,
    "situacao": "em funcionamento",
    "ordem": 2
   },
@@ -92,6 +92,7 @@
     "test_cassete.py",
     "test_cerebro.py",
     "test_comandante_biblioteca.py",
+    "test_comandante_expurgo.py",
     "test_comandante_fase1.py",
     "test_comandante_fase2.py",
     "test_comandante_fase3.py",
@@ -188,6 +189,7 @@
     "test_cartorio_site.py",
     "test_cerebro.py",
     "test_comandante_biblioteca.py",
+    "test_comandante_expurgo.py",
     "test_comandante_fase1.py",
     "test_comandante_fase2.py",
     "test_comandante_fase3.py",
@@ -565,6 +567,7 @@
     "test_cartorio.py",
     "test_cerebro.py",
     "test_comandante_biblioteca.py",
+    "test_comandante_expurgo.py",
     "test_comandante_fase1.py",
     "test_comandante_fase2.py",
     "test_comandante_fase3.py",
@@ -773,6 +776,7 @@
     "test_auditoria.py",
     "test_cerebro.py",
     "test_comandante_biblioteca.py",
+    "test_comandante_expurgo.py",
     "test_comandante_fase1.py",
     "test_comandante_fase2.py",
     "test_comandante_fase3.py",
@@ -1976,6 +1980,7 @@
    "usado_por": [],
    "testes": [
     "test_comandante_biblioteca.py",
+    "test_comandante_expurgo.py",
     "test_comandante_fase2.py",
     "test_comandante_fase3.py",
     "test_comandante_fase5.py",
@@ -1995,7 +2000,7 @@
   },
   {
    "arquivo": "eldorado/base/comandante/organizar.py",
-   "linhas": 357,
+   "linhas": 358,
    "finalidade": "O Comandante organiza os livros do Cartório (a etapa C6; titular, 25/10/2026: \"não existem 5 mil livros e nem devem ter",
    "depende_de": [
     "eldorado/base/cartorio/auditoria.py",
@@ -2264,14 +2269,16 @@
   },
   {
    "arquivo": "eldorado/base/comandante/biblioteca.py",
-   "linhas": 159,
+   "linhas": 225,
    "finalidade": "O Comandante atualiza a Biblioteca e valida as oportunidades antigas (titular, 25/10/2026).",
    "depende_de": [
+    "eldorado/base/cartorio/identidade.py",
     "eldorado/base/cartorio/passaporte.py",
     "eldorado/base/comandante/organizar.py"
    ],
    "eventos": [
-    "livro.base"
+    "livro.base",
+    "livro.excluido_logicamente"
    ],
    "acionado_por": [
     "passagem, nó 30 «atualizar_biblioteca»"
@@ -2279,12 +2286,15 @@
    "usado_por": [
     "eldorado/base/cerebro/pilotos_permanentes.py"
    ],
-   "testes": [],
+   "testes": [
+    "test_comandante_expurgo.py"
+   ],
    "situacao": "em funcionamento",
    "etapa": "05 Comandante: percebe, decide, organiza as filas, comanda os pilotos, parametriza e apresenta",
    "parte": "BASE",
    "componente": "Comandante: percebe, decide, organiza as filas, comanda os pilotos, parametriza e apresenta",
    "ligacoes": [
+    "eldorado/base/cartorio/identidade.py",
     "eldorado/base/cartorio/passaporte.py",
     "eldorado/base/comandante/organizar.py"
    ],
@@ -4262,6 +4272,7 @@
    ],
    "usado_por": [
     "eldorado/base/cartorio/indice.py",
+    "eldorado/base/comandante/biblioteca.py",
     "eldorado/base/comandante/organizar.py"
    ],
    "testes": [],
@@ -4835,7 +4846,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 348,
+   "linhas": 358,
    "situacao": "em funcionamento",
    "ordem": 159
   },

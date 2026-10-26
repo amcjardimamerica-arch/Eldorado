@@ -145,6 +145,71 @@ def atualizar(con: sqlite3.Connection, diario, agora: datetime | None = None) ->
     return conta
 
 
+CARENCIA_DIAS = 3  # o livro recém-criado tem 3 dias para a certificação antes da regra do expurgo
+
+
+def expurgar(con: sqlite3.Connection, diario, agora: datetime | None = None) -> dict[str, int]:
+    """A regra da titular (26/10/2026), a cada passagem:
+    - EXCLUIR o livro público sem selo (nenhuma edição conhecida) e sem estrela, com o prazo não aberto;
+    - EXCLUIR o município de outro estado fora das capitais (o público);
+    - UNIR os livros com o mesmo código e o mesmo nome (fica o de melhor selo, estrela e prazo);
+    - as oportunidades de EMPRESAS (privadas) ficam todas; a tabela das empresas nunca é tocada; nunca um livro do Farol.
+    A exclusão é lógica (nada se apaga), com a justificativa."""
+    from ..cartorio.identidade import unir
+    from .organizar import RANK_SELO, classificar, proprio
+
+    agora = agora or datetime.now(timezone.utc)
+    limite = (agora - timedelta(days=CARENCIA_DIAS)).isoformat()
+    livros = classificar(con)
+    con.row_factory = None
+    info = {
+        i: (s, e, p, c)
+        for i, s, e, p, c in con.execute(
+            "SELECT l.id, l.selo_livro, l.estrela, d.situacao_prazo, l.criado_em FROM livro l JOIN livro_dados d ON d.livro_id = l.id"
+        )
+    }
+    conta = {"unidos": 0, "excluidos_sem_dados": 0, "excluidos_municipio": 0}
+    grupos: dict[tuple, list[dict[str, Any]]] = {}
+    for x in livros:
+        if x["codigo"] and proprio(x["nome"]):
+            grupos.setdefault((x["codigo"], x["nome"], x["numero"] or "", x["ano"] if x["numero"] else ""), []).append(x)
+    unidos = set()
+    for g in grupos.values():
+        if len(g) < 2:
+            continue
+
+        def peso(y):
+            s_, e_, p_, _c = info.get(y["id"], ("sem", "sem", None, ""))
+            return (y["fase"] == "farol", p_ == "aberta", RANK_SELO.get(e_, 0), RANK_SELO.get(s_, 0), y["itens"])
+
+        fica = max(g, key=peso)
+        for y in g:
+            if y["id"] != fica["id"] and y["fase"] != "farol":
+                unir(con, diario, fica["id"], y["id"], f"o mesmo código ({y['codigo']}) e o mesmo nome (regra da titular, 26/10/2026)")
+                unidos.add(y["id"])
+                conta["unidos"] += 1
+    iso = agora.isoformat(timespec="seconds")
+    for x in livros:
+        if x["id"] in unidos or x["fase"] == "farol" or x["natureza"] == "PRI":
+            continue  # as oportunidades de empresas ficam todas
+        s_, e_, p_, criado = info.get(x["id"], ("sem", "sem", None, iso))
+        if (criado or iso) > limite:
+            continue  # a carência do livro recém-criado
+        if x["local"] is None:
+            motivo, chave = f"município de outro estado, fora das capitais ({x['municipio'] or '?'})", "excluidos_municipio"
+        elif s_ == "sem" and e_ == "sem" and p_ != "aberta":
+            motivo, chave = "sem dados para o selo (nenhuma edição conhecida), sem estrela e sem prazo aberto", "excluidos_sem_dados"
+        else:
+            continue
+        diario.emitir(
+            "livro.excluido_logicamente",
+            "comandante",
+            {"id": x["id"], "atualizado_em": iso, "justificativa_exclusao": f"{motivo} (regra da titular, 26/10/2026)"},
+        )
+        conta[chave] += 1
+    return conta
+
+
 def no_atualizar_biblioteca(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
     """Nó da passagem (o Comandante, C6): a base de cada livro, a fila de completar e o encaminhamento ao Chrome."""
     p = Path(parametros.get("dados", "dados")) / "biblioteca.db"
@@ -154,6 +219,7 @@ def no_atualizar_biblioteca(itens: list[dict[str, Any]], parametros: dict[str, A
     try:
         if "base_classe" not in {r[1] for r in con.execute("PRAGMA table_info(livro_dados)")}:
             return [{"motivo": "a Biblioteca ainda não está na versão 13"}]
-        return [atualizar(con, contexto.diario)]
+        r = atualizar(con, contexto.diario)
+        return [{**r, **expurgar(con, contexto.diario)}]
     finally:
         con.close()

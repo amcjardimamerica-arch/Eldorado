@@ -35,6 +35,7 @@ from collections import Counter, defaultdict
 from typing import Any
 from urllib.parse import urlsplit
 
+RANK_SELO = {"sem": 0, "bronze": 1, "prata": 2, "ouro": 3}
 AREAS = {
     "IDO": r"\bidos[oa]s?\b|pessoa idosa|terceira idade|envelhec|fundo (municipal |estadual |nacional )?do idoso",
     "CRI": r"crianc|adolescen|infan(cia|til)|\bfia\b|fundo (municipal |estadual )?(dos )?direitos da crianc|primeira infancia|juventude|jovens?\b",

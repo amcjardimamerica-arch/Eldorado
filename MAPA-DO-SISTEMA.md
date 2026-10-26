@@ -33,8 +33,8 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 1 | `.github/workflows/implantar.yml` | name: Implantar (parar, implantar e religar) A regra R09 da titular (25/10/2026, a segunda forma): nunca o mei | em funcionamento | passagem |  | 0 |
 | 2 | `config/arquivos.json` | O catálogo dos arquivos do sistema (o inventário). | em funcionamento |  | inventario, mapa_arquivos, medicao, comandos | 0 |
 | 3 | `config/eldorado.toml` | Configuração do Eldorado. Validada na carga: chave desconhecida ou valor fora do limite impede a passagem. | em funcionamento |  | comandos, config | 0 |
-| 4 | `eldorado/__init__.py` |  | pacote |  |  | 84 |
-| 5 | `eldorado/base/__init__.py` |  | pacote |  |  | 66 |
+| 4 | `eldorado/__init__.py` |  | pacote |  |  | 85 |
+| 5 | `eldorado/base/__init__.py` |  | pacote |  |  | 67 |
 | 6 | `eldorado/base/nucleo/comandos.py` | Os comandos da plataforma: os mesmos no GitHub, no computador da titular e (depois) no painel. | em funcionamento | analise, consolidar, consulta, drive, manutencao, memoria, analise_externa, releitura, fila, governador, inventario, pilotos, pilotos_permanentes, pilotos, importar_e0, agenda, definicao, executor, fila, nos, importar_eldorado0, config, eventos, expurgo_externo, gravador, ia, api, dados, visoes, api, escada, leve, navegador, ponte_br, fabrica, motor, otimizacao | .github/workflows/eldorado.yml (eldorado permanente) | 2 |
 | 7 | `scripts/gravar.sh` | !/usr/bin/env bash Grava o trabalho no repositório: os eventos sempre (texto, pequeno); o banco uma vez por di | em funcionamento |  | eldorado | 0 |
 | 8 | `scripts/instalar_bibliotecas.py` | As bibliotecas do plano, em camadas independentes (scripts/instalar.sh): o núcleo é obrigatório; cada grupo do | em funcionamento |  | qualidade, instalar | 0 |
@@ -50,12 +50,12 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
-| 16 | `eldorado/base/nucleo/__init__.py` |  | pacote |  |  | 46 |
+| 16 | `eldorado/base/nucleo/__init__.py` |  | pacote |  |  | 47 |
 | 17 | `eldorado/base/nucleo/config.py` | A configuração da plataforma, validada na carga. | em funcionamento |  | comandos | 1 |
 | 18 | `eldorado/base/nucleo/contratos.py` | Os contratos do Eldorado. | em funcionamento |  | cartorio, indice, pertinencia, regencia, oportunidades, eventos, gravador, registro, motor, espiao, interceptador | 14 |
 | 19 | `eldorado/base/nucleo/expurgo_externo.py` | O expurgo físico pela análise externa (titular, 22/10/2026): "o sistema não apaga nada, mas o Claude pode apag | em funcionamento |  | comandos | 1 |
 | 20 | `eldorado/base/nucleo/seguranca.py` | A segurança dos textos lidos: os padrões de injeção de instruções (prompt injection). | em funcionamento |  | motor, leitores | 1 |
-| 21 | `eldorado/base/nucleo/eventos.py` | Os eventos: a única forma de escrita do Eldorado. | em funcionamento | contratos | analise_externa, auditoria, cartorio, certificacao, indice, passaporte, selos, aprendizado, completude, encaminhamento,  | 30 |
+| 21 | `eldorado/base/nucleo/eventos.py` | Os eventos: a única forma de escrita do Eldorado. | em funcionamento | contratos | analise_externa, auditoria, cartorio, certificacao, indice, passaporte, selos, aprendizado, completude, encaminhamento,  | 31 |
 | 22 | `eldorado/base/nucleo/alarmes.py` | Nenhum erro é engolido: todo erro vira um evento de alarme, e o erro continua subindo. | em funcionamento | eventos | executor | 1 |
 | 23 | `eldorado/base/nucleo/gravador.py` | O gravador único: o único que escreve nos bancos. | em funcionamento | _sqlite, contratos, eventos | nos, comandos, estado | 3 |
 | 24 | `eldorado/base/nucleo/recibo.py` | A medição de uma chamada: tempo, processador e memória de pico, e se deu certo. | em funcionamento | eventos | regencia, executor | 0 |
@@ -113,7 +113,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 61 | `eldorado/base/cerebro/governador.py` | O governador de carga: mantém a máquina abaixo do limite (85%). | em funcionamento | eventos | regencia, fila, nos, comandos | 6 |
 | 62 | `eldorado/base/cerebro/livros_motores.py` | Os motores de cada livro e as pesquisas já feitas (comum ao encaminhamento e à vigilância dos sites originais; | em funcionamento | motor | encaminhamento, originais | 0 |
 | 63 | `eldorado/base/cerebro/pilotos.py` | O Cérebro dos pilotos (titular, 22/10/2026): mede a recorrência de cada piloto e manda nova missão sempre que | em funcionamento | escada, metabusca, leitores, espiao | encaminhamento, pilotos_permanentes, comandos | 2 |
-| 64 | `eldorado/base/comandante/__init__.py` | O Comandante (titular, 25/10/2026): o responsável por executar e coordenar todo o sistema — perceber o estado, | pacote |  |  | 8 |
+| 64 | `eldorado/base/comandante/__init__.py` | O Comandante (titular, 25/10/2026): o responsável por executar e coordenar todo o sistema — perceber o estado, | pacote |  |  | 9 |
 | 65 | `eldorado/base/comandante/organizar.py` | O Comandante organiza os livros do Cartório (a etapa C6; titular, 25/10/2026: "não existem 5 mil livros e nem  | em funcionamento | auditoria, identidade | passagem, nó 29 «organizar_livros» | 1 |
 | 66 | `eldorado/base/comandante/parametros.py` | Os parâmetros do Comandante (as etapas C7 e C9; titular, 25/10/2026). Cada parâmetro de cada etapa vive no Arq | em funcionamento |  | passagem, nó 35 «conferir» | 0 |
 | 67 | `eldorado/base/comandante/politica.py` | A política de decisão do Comandante: o Vowpal Wabbit (o bandido contextual SquareCB), eleito no estudo (92% a  | em funcionamento |  | decidir, pilotos | 0 |
@@ -122,7 +122,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 70 | `eldorado/base/cerebro/originais.py` | A rede neural vigia os sites ORIGINAIS dos livros (titular, 23/10/2026): com o histórico do livro, ele tem um  | em funcionamento | livros_motores | encaminhamento | 2 |
 | 71 | `eldorado/base/cerebro/regencia.py` | A Regência: planeja a passagem, aciona os motores e autoriza cada passagem de livro. | em funcionamento | decisao, governador, rede, registro, agenda, contratos, eventos, recibo, registro, sala, motor | passagem, nó 4 «planejar»; passagem, nó 5 «acionar» | 12 |
 | 72 | `eldorado/base/comandante/apresentar.py` | O Comandante apresenta à titular (a etapa C10; a fase 6 do desenho, titular, 25/10/2026): o que foi encontrado | em funcionamento | ia | passagem, nó 37 «apresentar» | 1 |
-| 73 | `eldorado/base/comandante/biblioteca.py` | O Comandante atualiza a Biblioteca e valida as oportunidades antigas (titular, 25/10/2026). | em funcionamento | passaporte, organizar | passagem, nó 30 «atualizar_biblioteca» | 0 |
+| 73 | `eldorado/base/comandante/biblioteca.py` | O Comandante atualiza a Biblioteca e valida as oportunidades antigas (titular, 25/10/2026). | em funcionamento | identidade, passaporte, organizar | passagem, nó 30 «atualizar_biblioteca» | 1 |
 | 74 | `eldorado/base/comandante/decidir.py` | O Comandante decide (a etapa C2), em PARALELO com a ordem fixa (a fase 2 do desenho): ordena todos os motores  | em funcionamento | politica | passagem, nó 32 «comandante_decidir» | 1 |
 | 75 | `eldorado/base/comandante/escolher.py` | O nó de agente do Comandante (a fase 3 do desenho; a engenharia do n8n, titular, 25/10/2026): no início de cad | em funcionamento | parametros | passagem, nó 31 «comandante_escolher» | 0 |
 | 76 | `eldorado/base/cerebro/fila.py` | A fila do sistema (titular, 22/10/2026): o Eldorado funciona de forma permanente, sem horário de trabalho e de | em funcionamento | decisao, regencia | encaminhamento, comandos | 0 |
