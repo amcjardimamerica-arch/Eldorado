@@ -79,11 +79,12 @@ def slug(t: str | None, n: int = 12) -> str:
 
 
 def local(abrangencia: str, municipio: str | None, uf: str | None) -> str | None:
-    """O LOCAL pelo território; None para o município de outro estado fora das capitais (eliminado)."""
+    """O LOCAL pelo território; o município de outro estado fora das capitais é <UF>-<CIDADE> (a pública é eliminada; a
+    privada fica: titular, 26/10/2026)."""
     uf = (uf or "").upper()
     return {"municipal_go": f"GO-{slug(municipio)}", "estadual_go": "GO", "capital_outro_estado": f"{uf if len(uf) == 2 else '??'}-CAP",
             "estadual_outro_estado": uf if len(uf) == 2 and uf not in ("BR", "IN") else "UF?", "nacional": "BR", "internacional": "INT",
-            "municipal_fora_go": None}.get(abrangencia, "?")
+            "municipal_fora_go": f"{uf if len(uf) == 2 else '??'}-{slug(municipio)}"}.get(abrangencia, "?")
 
 
 def area(texto: str, cert_area: str | None) -> str:
@@ -256,8 +257,10 @@ def organizar(livros: list[dict[str, Any]]) -> dict[str, Any]:
     desempata (com os republicadores). No mesmo ano, números diferentes são chamadas diferentes; anos diferentes de uma
     oportunidade sem número são edições, e a mais recente fica com as anteriores."""
     rep = _republicadores()
-    eliminar = [x for x in livros if x["local"] is None]
-    vivos = [x for x in livros if x["local"] is not None]
+    # a regra territorial vale só para as PÚBLICAS; as privadas ficam (titular, 26/10/2026)
+    fora = {x["id"] for x in livros if x["abrangencia"] == "municipal_fora_go" and x["natureza"] == "PUB"}
+    eliminar = [x for x in livros if x["id"] in fora]
+    vivos = [x for x in livros if x["id"] not in fora]
     genericos = {"BR", "?", "UF?"}
     grupos: dict[tuple, list[dict[str, Any]]] = defaultdict(list)
     for x in vivos:

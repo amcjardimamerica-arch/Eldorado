@@ -334,7 +334,7 @@ def expurgar(con: sqlite3.Connection, diario, agora: datetime | None = None) -> 
         s_, e_, p_, criado = info.get(x["id"], ("sem", "sem", None, iso))
         if (criado or iso) > limite:
             continue  # a carência do livro recém-criado
-        if x["local"] is None:
+        if x["abrangencia"] == "municipal_fora_go":  # só as públicas (as privadas já ficaram acima)
             motivo, chave = f"município de outro estado, fora das capitais ({x['municipio'] or '?'})", "excluidos_municipio"
         elif s_ == "sem" and e_ == "sem" and p_ != "aberta":
             motivo, chave = "sem dados para o selo (nenhuma edição conhecida), sem estrela e sem prazo aberto", "excluidos_sem_dados"

@@ -37,10 +37,10 @@ def test_a_formula_e_as_unioes(bancos):
     livros = classificar(b)
     cod = {x["id"]: x["codigo"] for x in livros}
     # LOCAL·ÁREA·NATUREZA·MODALIDADE·OBJETO: a modalidade é a forma do recurso; o objeto, o que ele permite fazer
-    assert all(re.fullmatch(r"[A-Z?\-]+·[A-Z]{3}·(PUB|PRI)·[A-Z]{3}·([A-Z]{3}|\?)", c) for i, c in cod.items() if i != "E1")
+    assert all(re.fullmatch(r"[A-Z?\-]+·[A-Z]{3}·(PUB|PRI)·[A-Z]{3}·([A-Z]{3}|\?)", c) for c in cod.values())
     assert cod["A1"].split("·")[1] == "CUL" and cod["A1"].split("·")[3] == "PRE"
 
-    assert cod["E1"] is None and cod["E2"].startswith("BA-CAP")  # fora das capitais: eliminado
+    assert cod["E1"].startswith("SP-CAMPINAS") and cod["E2"].startswith("BA-CAP")  # fora das capitais: o código da cidade (a pública sai)
     d = organizar(livros)
     unioes = {(f, u) for f, u, _m in d["unir"]}
     assert {u for _f, u in unioes} >= {"A2", "A3"} and ("D2", "D1") in unioes

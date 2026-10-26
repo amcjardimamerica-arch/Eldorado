@@ -36,6 +36,7 @@ def test_a_regra_do_expurgo(bancos, gravador, tmp_path):
         uf="SP",
         selo="bronze",
     )
+    _l(b, "MP", "Itajaí em Traços: concurso cultural livre", "Associação Cultural Itajaí", "https://itajaiemtracos.org.br/x", uf="SC", selo="bronze")
     _l(b, "U1", "Chamada Pública CNPq nº 29/2026 Inteligência Artificial", "CNPq", "https://www.gov.br/cnpq/a", selo="bronze")
     _l(b, "U2", "Chamada Pública CNPq nº 29/2026 Inteligência Artificial", "CNPq", "https://www.gov.br/cnpq/b")
     b.commit()
@@ -43,5 +44,25 @@ def test_a_regra_do_expurgo(bancos, gravador, tmp_path):
     assert gravador.aplicar(list(ler(tmp_path / "ev"))).ok
     situ = dict(b.execute("SELECT id, situacao FROM livro").fetchall())
     assert situ["P"] == "excluido" and situ["M"] == "excluido"
-    assert all(situ[i] != "excluido" for i in ("E", "A", "B", "N", "F", "U1"))
+    assert all(situ[i] != "excluido" for i in ("E", "A", "B", "N", "F", "U1", "MP"))  # a privada de outra cidade fica
     assert situ["U2"] == "unido" and r["unidos"] == 1  # fica o de melhor selo (U1)
+
+
+def test_a_regra_territorial_no_portao_vale_so_para_as_publicas():
+    from eldorado.base.missao.portao import motivo
+
+    publica = {
+        "titulo": "Prefeitura Municipal de Campinas/SP — Chamamento de projetos culturais",
+        "orgao": "Prefeitura de Campinas",
+        "url": "https://campinas.sp.gov.br/x",
+        "uf": "SP",
+    }
+    privada = {
+        "titulo": "Concurso cultural da Associação Cultural de Campinas/SP",
+        "orgao": "Associação Cultural de Campinas",
+        "url": "https://acultural.org.br/x",
+        "uf": "SP",
+        "nivel": "municipal",
+    }
+    assert "município de outro estado" in (motivo(publica) or "")
+    assert "município de outro estado" not in (motivo(privada) or "")

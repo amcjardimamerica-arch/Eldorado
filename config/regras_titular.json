@@ -349,10 +349,11 @@
    "id": "R27",
    "data": "2026-10-26",
    "tema": "expurgo dos livros",
-   "regra": "O livro público sem dados para o selo (nenhuma edição conhecida), sem estrela e com o prazo não aberto é excluído; a oportunidade municipal de cidade de outro estado que não é capital também. Os livros com o mesmo código e o mesmo nome se unem (fica o de melhor selo, estrela e prazo). As oportunidades de empresas (privadas) ficam todas, e a tabela das empresas nunca é tocada. O livro recém-criado tem 3 dias de carência; o Farol nunca é tocado. A exclusão é lógica, com a justificativa. O Comandante aplica a regra a cada passagem.",
+   "regra": "O livro público sem dados para o selo (nenhuma edição conhecida), sem estrela e com o prazo não aberto é excluído; a oportunidade municipal PÚBLICA de cidade de outro estado que não é capital também (a regra territorial vale só para as públicas, no portão, na organização e no expurgo; as privadas ficam: titular, 26/10/2026). Os livros com o mesmo código e o mesmo nome se unem (fica o de melhor selo, estrela e prazo). As oportunidades de empresas (privadas) ficam todas, e a tabela das empresas nunca é tocada. O livro recém-criado tem 3 dias de carência; o Farol nunca é tocado. A exclusão é lógica, com a justificativa. O Comandante aplica a regra a cada passagem.",
    "onde": "eldorado/base/comandante/biblioteca.py (expurgar)",
    "travas": [
-    "testes/test_comandante_expurgo.py::test_a_regra_do_expurgo"
+    "testes/test_comandante_expurgo.py::test_a_regra_do_expurgo",
+    "testes/test_comandante_expurgo.py::test_a_regra_territorial_no_portao_vale_so_para_as_publicas"
    ]
   }
  ]
