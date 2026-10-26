@@ -225,7 +225,7 @@ def classificar(con: sqlite3.Connection) -> list[dict[str, Any]]:
         mod = modalidade(texto, mod_cert or lv["d_modalidade"])
         obj, base_obj = objeto(f"{lv['titulo'] or ''} {lv['tema'] or ''}", (cs.get("Objeto") or {}).get("valor"))
         tit = lv["titulo"] or ""
-        num = NUMERO.search(sem_acento(tit))
+        num = NUMERO.search(sem_acento(tit)) or re.search(r"(?<![\d/])\b0*(\d{1,4})\s*/\s*(20[12]\d)\b", sem_acento(tit))   # também "001/2026" (não a data "25/09/2026")
         anos = [int(a) for a in ANO.findall(f"{tit} {lv['inscricao_fim'] or ''}")]
         saida.append({"id": lv["id"], "titulo": tit, "abrangencia": abr, "municipio": municipio, "local": loc, "area": ar, "natureza": nat,
                       "modalidade": mod, "objeto": obj, "codigo": f"{loc}·{ar}·{nat}·{mod}·{obj}" if loc else None, "validacao": validar(tit),
@@ -234,7 +234,7 @@ def classificar(con: sqlite3.Connection) -> list[dict[str, Any]]:
                                "natureza": "certificada" if cs.get("Esfera") or lv["d_esfera"] else "órgão e site",
                                "modalidade": "certificada" if mod_cert or lv["d_modalidade"] else "título", "objeto": base_obj}, "nome": nome_chave(tit), "ano": max(anos) if anos else None,
                       "numero": num.group(1).lstrip("0") if num else None, "site": host(lv["link_oficial"], lv["link_divulgacao"]),
-                      "prazo": lv["inscricao_fim"], "fase": lv["fase"], "situacao": lv["situacao"], "selo": lv["selo_livro"], "estrela": lv["estrela"],
+                      "prazo": lv["inscricao_fim"], "fase": lv["fase"], "link": lv["link_oficial"], "situacao": lv["situacao"], "selo": lv["selo_livro"], "estrela": lv["estrela"],
                       "itens": len(cs)})
     return saida
 
@@ -289,7 +289,7 @@ def organizar(livros: list[dict[str, Any]]) -> dict[str, Any]:
                 continue
             fica = _principal(c)
             for x in c:
-                if x["id"] == fica["id"] or (x["fase"] == "farol" and fica["fase"] == "farol"):
+                if x["id"] == fica["id"]:   # 26/10/2026: o Farol também recebe um livro por oportunidade
                     continue
                 if numero:
                     motivo = f"o mesmo edital (nº {numero}{'/' + str(x['ano']) if x['ano'] else ''})"
@@ -299,7 +299,95 @@ def organizar(livros: list[dict[str, Any]]) -> dict[str, Any]:
                     motivo = "a mesma oportunidade"
                 unir.append((fica["id"], x["id"], f"{motivo} · «{nome[:60]}» · {x['site'] or 'sem site'} → {fica['site'] or 'sem site'}"))
     unidos = {u for _f, u, _m in unir}
+    # o livro REÚNE, não multiplica (titular, 26/10/2026): a mesma oportunidade achada por motores diferentes é um livro só,
+    # mesmo com títulos e sites diferentes
+    resto = [x for x in vivos if x["id"] not in unidos]
+    unir += _mesma_oportunidade(resto)
+    unidos = {u for _f, u, _m in unir}
     return {"eliminar": eliminar, "unir": unir, "restantes": [x for x in vivos if x["id"] not in unidos]}
+
+
+def _doc(link: str | None) -> str:
+    """O documento oficial normalizado (sem o esquema, o www, a consulta e a barra final); a página inicial não conta."""
+    u = urlsplit(link or "")
+    h, caminho = (u.hostname or "").removeprefix("www."), (u.path or "").rstrip("/")
+    return f"{h}{caminho}".lower() if h and caminho.count("/") >= 1 and len(caminho) > 6 else ""
+
+
+def _parecidos(a: str, b: str) -> bool:
+    """Os nomes compartilham ao menos metade das palavras próprias (sem as de forma e os lugares)."""
+    pa = {w for w in re.sub(LUGARES, " ", a).split() if len(w) >= 4}
+    pb = {w for w in re.sub(LUGARES, " ", b).split() if len(w) >= 4}
+    if any(re.fullmatch(r"[a-z]+xi*x", w) for w in pa ^ pb):
+        return False                                              # códigos diferentes no nome (RP8 ≠ RP9)
+    return len(pa & pb) >= 2 and len(pa & pb) / min(len(pa), len(pb)) >= 0.6   # "PNAB Goiás – Teatro" ≠ "– Dança"
+
+
+def _mesma_oportunidade(livros: list[dict[str, Any]]) -> list[tuple[str, str, str]]:
+    """Três reconhecimentos, sem depender do título: (1) o mesmo documento oficial; (2) o mesmo número e ano de edital, no
+    mesmo lugar, com o mesmo prazo; (3) a notícia genérica com o mesmo código e o mesmo prazo de UM único edital com nome."""
+    gen = {"BR", "?", "UF?"}
+    pai: dict[str, str] = {x["id"]: x["id"] for x in livros}
+    por = {x["id"]: x for x in livros}
+    motivo: dict[str, str] = {}
+
+    def raiz(i: str) -> str:
+        while pai[i] != i:
+            pai[i] = pai[pai[i]]
+            i = pai[i]
+        return i
+
+    def juntar(grupo: list[dict[str, Any]], porque: str) -> None:
+        locs = {x["local"] for x in grupo} - gen
+        if len(grupo) < 2 or len(locs) > 1:
+            return                                                # lugares diferentes: oportunidades diferentes
+        r0 = raiz(grupo[0]["id"])
+        for x in grupo[1:]:
+            r = raiz(x["id"])
+            if r != r0:
+                pai[r] = r0
+                motivo.setdefault(x["id"], porque)
+
+    g1: dict[str, list] = defaultdict(list)                       # (1) o mesmo documento oficial
+    for x in livros:
+        if (d := _doc(x.get("link"))):
+            g1[d].append(x)
+    for d, g in g1.items():
+        documento = bool(re.search(r"\.(pdf|docx?|odt)$", d))
+        for x in g[1:]:                                           # a página de listagem não basta: o documento, ou o nome parecido
+            y = g[0]
+            if x["numero"] and y["numero"] and x["numero"] != y["numero"]:
+                continue                                          # números de edital diferentes: oportunidades diferentes
+            if documento or _parecidos(x["nome"], y["nome"]):
+                juntar([y, x], f"o mesmo documento oficial ({d[:70]})")
+    g2: dict[tuple, list] = defaultdict(list)                     # (2) o mesmo número e ano, no mesmo lugar, com o mesmo prazo
+    for x in livros:
+        if x["numero"] and x["ano"] and x["local"] not in gen and x["prazo"]:
+            g2[(x["local"], x["numero"], x["ano"], str(x["prazo"])[:10])].append(x)
+    for (loc, num, ano, pz), g in g2.items():
+        juntar(g, f"o mesmo edital nº {num}/{ano} em {loc}, com o mesmo prazo ({pz})")
+    g3: dict[tuple, list] = defaultdict(list)                     # (3) a notícia genérica junta-se ao único edital com nome
+    for x in livros:
+        if x["local"] not in gen and x["prazo"] and x["codigo"]:
+            g3[(x["codigo"].rsplit("·", 1)[0], str(x["prazo"])[:10])].append(x)
+    for (cod, pz), g in g3.items():
+        nomeados = {raiz(x["id"]) for x in g if proprio(x["nome"]) or x["numero"]}
+        genericos = [x for x in g if not (proprio(x["nome"]) or x["numero"])]
+        if len(nomeados) == 1 and genericos:
+            alvo = por[next(iter(nomeados))]
+            juntar([alvo, *genericos], f"a notícia do mesmo edital ({cod}, prazo {pz})")
+    grupos: dict[str, list] = defaultdict(list)
+    for x in livros:
+        grupos[raiz(x["id"])].append(x)
+    saida = []
+    for g in grupos.values():
+        if len(g) < 2:
+            continue
+        fica = _principal(g)
+        for x in g:
+            if x["id"] != fica["id"]:
+                saida.append((fica["id"], x["id"], f"{motivo.get(x['id']) or 'a mesma oportunidade'} · «{x['titulo'][:50]}» → «{fica['titulo'][:50]}»"))
+    return saida
 
 
 def codigo_do_grupo(fica: dict[str, Any], outros: list[dict[str, Any]]) -> str:

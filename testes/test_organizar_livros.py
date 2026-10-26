@@ -66,3 +66,36 @@ def test_uma_unica_contagem_dos_livros_no_site():
     for p in list(Path("eldorado/base/painel").glob("*.py")) + list(Path("eldorado/base/comandante").glob("*.py")):
         for m in re.finditer(r"COUNT\(\*\)\s*(?:FROM passaporte\b[^\"]*)", p.read_text(encoding="utf-8")):
             assert "JOIN livro" in m.group(0) or "situacao" in m.group(0), f"{p}: {m.group(0)[:80]}"
+
+
+def test_o_livro_reune_a_mesma_oportunidade_de_motores_diferentes(bancos):
+    """26/10/2026 (titular): cada livro pode ter vários motores indicando o mesmo edital; o livro reúne, não multiplica. O
+    mesmo número e ano no mesmo lugar e prazo; a notícia genérica do mesmo edital; o mesmo documento oficial (PDF). Mas
+    não une a página de listagem nem as linguagens diferentes, e a data não é número de edital."""
+    b = bancos["biblioteca"]
+
+    def lv(i, titulo, link, prazo="2026-10-26", uf="GO"):
+        _livro(b, i, titulo, link, uf=uf)
+        b.execute("UPDATE livro_dados SET inscricao_fim = ? WHERE livro_id = ?", (prazo, i))
+
+    lv(
+        "N1",
+        "Edital de Chamamento da Prefeitura de Goiânia (SEGENP) nº 001/2026 — Natal no Parque",
+        "https://goiania.go.gov.br/segenp/edital-001-2026.pdf",
+    )
+    lv("N2", "Chamamento 001/2026 da SEGENP/Prefeitura de Goiânia para OSC executar o Natal no Parque", "https://jornal.com.br/natal")
+    lv(
+        "N3",
+        "Chamamento público da Prefeitura de Goiânia publicado no Diário Oficial em 25/09/2026",
+        "https://diariooficial.goiania.go.gov.br/ed-8870",
+    )
+    lv("P1", "PNAB Goiás - Teatro", "https://goias.gov.br/cultura/pnab", prazo="2026-11-30")
+    lv("P2", "PNAB Goiás - Dança", "https://goias.gov.br/cultura/pnab", prazo="2026-11-30")
+    b.commit()
+    livros = classificar(b)
+    num = {x["id"]: x["numero"] for x in livros}
+    assert num["N2"] == "1" and num["N3"] is None  # "001/2026" é número; "25/09/2026", data
+    d = organizar(livros)
+    unidos = {u for _f, u, _m in d["unir"]}
+    assert len({"N1", "N2", "N3"} & unidos) == 2  # o Natal no Parque num livro só  # o Natal no Parque num livro só
+    assert not {"P1", "P2"} & unidos  # as linguagens da PNAB: separadas

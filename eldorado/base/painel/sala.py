@@ -310,6 +310,21 @@ def montar(
         else set()
     )
     sem_retorno = [p.stem for p in lotes if not any(p.stem.split("lote-")[-1] in x for x in importados)]
+    # 26/10/2026: o lote só fica pendente se tiver livro que ainda espera o Chrome e que não está num lote mais novo
+    # (os lotes se sobrepõem: o de cada dia repete os pendentes do anterior)
+    try:
+        esperam = {r[0] for r in bib.execute("SELECT p.livro_id FROM passaporte p JOIN livro l ON l.id = p.livro_id "
+                                             "WHERE p.fase = 'analise externa' AND l.situacao NOT IN ('excluido', 'unido')")}
+        conteudo = {p.stem: {x.get("livro_id") for x in json.loads(p.read_text(encoding="utf-8")).get("livros", [])} for p in lotes}
+        mais_novos: set = set()
+        pendentes = []
+        for st in reversed([p.stem for p in lotes]):
+            if st in sem_retorno and (conteudo.get(st, set()) & esperam) - mais_novos:
+                pendentes.append(st)
+            mais_novos |= conteudo.get(st, set())
+        sem_retorno = sorted(pendentes)
+    except (ValueError, OSError, sqlite3.Error):
+        pass
     I(
         "ve_bloqueadas",
         "Lotes sem retorno do Chrome",
