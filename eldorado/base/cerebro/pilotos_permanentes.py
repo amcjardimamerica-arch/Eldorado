@@ -271,11 +271,6 @@ def conferir_sempre(dados: Path, diario, parar: threading.Event) -> None:
     from ..comandante.pilotos import carga
     while not parar.wait(60):
         carga()                                                   # a pressão de memória medida a cada minuto (26/10/2026)
-        try:                                                      # 27/10/2026: sem depender do fim da passagem
-            from ..comandante.organizar import _fechar_recusas_do_codigo
-            _fechar_recusas_do_codigo(Path(dados), diario)
-        except Exception:  # noqa: BLE001
-            pass
         try:
             cer = sqlite3.connect(f"file:{dados / 'cerebro.db'}?mode=ro", uri=True)
             try:

@@ -432,7 +432,7 @@ def no_organizar_livros(itens: list[dict[str, Any]], parametros: dict[str, Any],
             if x["id"] in atuais and atuais[x["id"]] != cod:   # só com a ficha do livro já criada (26/10/2026: as recusas)
                 contexto.diario.emitir("livro.codigo", "comandante", {"livro_id": x["id"], "codigo": cod})
                 gravados += 1
-        fechados = _fechar_recusas_do_codigo(Path(parametros.get("dados", "dados")), contexto.diario)
+        fechados = 0   # 27/10/2026: quem fecha os alarmes de recusa é o gravador (pelo número da linha, no mesmo banco)
     finally:
         con.close()
     return [{"alertas_fechados": fechados, "livros": len(livros), "unidos": len(dec["unir"]), "eliminados": len(dec["eliminar"]), "codigos_gravados": gravados,
