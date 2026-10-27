@@ -123,13 +123,14 @@ def test_o_quadro_motores_de_busca_tem_os_motores_do_sistema():
 
 
 def test_a_pagina_inicial_calendario_por_tema_e_os_quadros_em_sequencia():
-    """27/10/2026 (titular): o Calendário de Editais absorve as Novas oportunidades, por área temática e o prazo mais
-    próximo primeiro; o Calendário, o FAROL e a Fila prioritária um embaixo do outro, na largura inteira."""
+    """27/10/2026 (titular): o calendário (até 10 prazos por tema, os que terminam antes primeiro) na metade esquerda; o
+    FAROL e a Fila prioritária à direita; as Novas oportunidades absorvidas pelo calendário."""
     from pathlib import Path
 
     p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
-    assert "gc-tema" in p and "_prox(a).localeCompare(_prox(b))" in p                                  # por tema, o prazo mais próximo primeiro
-    assert ".inicio-grade{display:grid;grid-template-columns:1fr;" in p and "grid-template-columns:1fr;gap:18px;margin-top:18px" in p
+    assert "gc-tema" in p and "const POR_TEMA=10;" in p
+    assert ".faixa-larga>.cartao:first-child{grid-row:span 2}" in p
     i, j, k = p.index("Calendário de Editais</h3>"), p.index('<div class="painel-tit farol">'), p.index("Fila prioritári")
-    assert i < j < k                                                                            # o Calendário, o FAROL e a Fila
-    assert '<div hidden style="display:none"><div class="novas" id="fi-novas">' in p             # as Novas absorvidas
+    assert i < j < k
+    assert '<div hidden style="display:none"><div class="novas" id="fi-novas">' in p
+    assert 'ghDispatch("arquivar.yml"' in p  # o Arquivar grava na Biblioteca

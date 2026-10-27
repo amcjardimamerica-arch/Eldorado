@@ -121,8 +121,15 @@ def atualizar(con: sqlite3.Connection, diario, agora: datetime | None = None) ->
     oportunidade vão ao Chrome."""
     agora = agora or datetime.now(timezone.utc)
     conta = {"avaliados": 0, "gravados": 0, "ao_chrome": 0}
+    try:                                            # 27/10/2026: o livro arquivado pela titular não volta ao fluxo
+        da_titular = {r[0] for r in con.execute("SELECT livro_id FROM passagem p WHERE motivo LIKE 'pela titular:%' AND para = 'arquivo' "
+                                                "AND id = (SELECT MAX(id) FROM passagem q WHERE q.livro_id = p.livro_id)")}
+    except sqlite3.Error:
+        da_titular = set()
     for x in avaliar(con):
         conta["avaliados"] += 1
+        if x["id"] in da_titular:
+            continue
         buscar = json.dumps(x["buscar"], ensure_ascii=False)
         if (x["classe"], buscar) != x["antes"]:
             diario.emitir(

@@ -136,7 +136,7 @@ class Sistema:
                 "SELECT l.*, d.abrangencia, d.esfera, d.inscricao_inicio, d.inscricao_fim, d.resultado_em, d.area AS area_d, d.validacao, "
                 f"d.situacao_prazo, d.municipio, d.origem, {self._escada}, {self._codigo}, p.fase "
                 "FROM livro l JOIN livro_dados d ON d.livro_id = l.id JOIN passaporte p ON p.livro_id = l.id "
-                "WHERE d.situacao_prazo = 'aberta' AND l.situacao NOT IN ('excluido', 'unido') ORDER BY d.inscricao_fim"
+                "WHERE d.situacao_prazo = 'aberta' AND l.situacao NOT IN ('excluido', 'unido') AND p.fase <> 'arquivo' ORDER BY d.inscricao_fim"
             )
         )
 

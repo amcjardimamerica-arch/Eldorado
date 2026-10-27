@@ -822,3 +822,26 @@ def trabalhar(config: Path = CONFIG, trabalhadores: int = typer.Option(0, help="
 
 if __name__ == "__main__":
     app()
+
+
+@app.command("arquivar")
+def arquivar(
+    livro: str = typer.Option(..., "--livro"),
+    motivo: str = typer.Option("arquivada pela titular no painel", "--motivo"),
+    eventos: str = typer.Option("eventos", "--eventos"),
+):
+    """27/10/2026 (titular): arquivar uma oportunidade pelo painel grava na Biblioteca (a única fonte): a passagem do livro
+    para o arquivo, autorizada pela titular. Ele sai das oportunidades abertas, do calendário da página inicial e da
+    página Calendário; o Comandante não o traz de volta."""
+    from .eventos import Diario
+    from .eventos import agora as _agora
+
+    d = Diario(Path(eventos), "titular-arquivar")
+    em = _agora()
+    d.emitir(
+        "livro.passagem",
+        "titular",
+        {"livro_id": livro, "de": None, "para": "arquivo", "em": em, "autorizado_por": "regencia", "motivo": ("pela titular: " + motivo)[:300]},
+    )  # a Regência executa a ordem da titular
+    d.emitir("livro.situacao", "titular", {"id": livro, "situacao": "aguardando", "atualizado_em": em})
+    typer.echo(f"o livro {livro} foi arquivado pela titular")

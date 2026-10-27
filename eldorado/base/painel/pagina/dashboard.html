@@ -71,7 +71,9 @@ box-shadow:0 10px 26px #00000022;min-width:190px;flex-direction:column;gap:3px}
 .inicio-grade{display:grid;grid-template-columns:1fr;gap:18px;margin-top:16px;align-items:start}   /* 27/10/2026: um embaixo do outro */
 .inicio-grade > .cartao{min-width:0}
 /* calendário (esquerda) e fila (direita) chegam às margens da tela */
-.faixa-larga{width:100vw;margin-left:calc(50% - 50vw);padding-inline:clamp(14px,2vw,32px);box-sizing:border-box;display:grid;grid-template-columns:1fr;gap:18px;margin-top:18px;align-items:start}
+.faixa-larga{width:100vw;margin-left:calc(50% - 50vw);padding-inline:clamp(14px,2vw,32px);box-sizing:border-box;display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;align-items:start}
+.faixa-larga>.cartao:first-child{grid-row:span 2}   /* 27/10/2026: o calendário na metade esquerda; o Farol e a Fila à direita */
+@media(max-width:1100px){.faixa-larga{grid-template-columns:1fr}.faixa-larga>.cartao:first-child{grid-row:auto}}
 .faixa-larga table{width:100%}
 .gc-tema{display:flex;align-items:baseline;gap:10px;margin:12px 0 2px;padding:6px 2px 4px;border-bottom:1px solid var(--linha);font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:#C05E00}
 .gc-tema small{font-weight:500;text-transform:none;letter-spacing:0;color:var(--suave)}
@@ -3573,13 +3575,15 @@ function desenhaGantt(){
   const _prox=x=>{const i0=String(x.inicio||""),f0=String(x.fim||"9999");return i0>hojeISO?i0:f0;};
   const _rot=Object.fromEntries(_AREAS_RADAR.map(([k,n])=>[k,n]));const _t={};
   noMes.forEach(x=>{const k=areaRadar(x);(_t[k]=_t[k]||[]).push(x);});
-  Object.values(_t).forEach(xs=>xs.sort((a,b)=>_prox(a).localeCompare(_prox(b))));
+  Object.values(_t).forEach(xs=>xs.sort((a,b)=>String(a.fim||"9999").localeCompare(String(b.fim||"9999"))));   // primeiro os que terminam antes
   const _ord=Object.keys(_t).sort((a,b)=>(a==="outras")-(b==="outras")||_prox(_t[a][0]).localeCompare(_prox(_t[b][0])));
   const linhaDe=x=>`<div class="gc-l">
       <div class="gc-r" title="${esc(x.titulo)}${x.orgao?" — "+esc(x.orgao):""}"><a href="${esc(x.link_oficial)}" target=_blank rel="noopener noreferrer">${esc(String(x.titulo).slice(0,58))}</a>
         <small>${x.uf?esc(x.uf):"nacional"}${x.inspecionada?" · confirmado pelo Interceptador":""}</small></div>
       <div class="gc-t">${barra(x)}${mesAtual?`<span class="gc-hoje" style="left:${(col(HOJE.getDate())+50/nd).toFixed(2)}%"></span>`:""}</div></div>`;
-  const linhas=_ord.map(k=>`<div class="gc-tema">${esc(_rot[k]||"Outras áreas")}<small>${_t[k].length} oportunidade(s) · o prazo mais próximo primeiro</small></div>`+_t[k].map(linhaDe).join("")).join("");
+  const POR_TEMA=10;   // 27/10/2026: até 10 prazos por tema, os que terminam antes primeiro
+  const linhas=_ord.map(k=>`<div class="gc-tema">${esc(_rot[k]||"Outras áreas")}<small>${_t[k].length} oportunidade(s) · os que terminam antes primeiro</small></div>`
+    +_t[k].slice(0,POR_TEMA).map(linhaDe).join("")+(_t[k].length>POR_TEMA?`<div class="meta" style="padding:4px 2px;cursor:pointer" onclick="modulo('eldorado');mostra('editais')">+ ${_t[k].length-POR_TEMA} em ${esc(_rot[k]||"Outras áreas")} — ver nas Oportunidades Abertas ›</div>`:"")).join("");
   $("g-corpo").innerHTML=`<div class="gc"><div class="gc-l gc-cab"><div class="gc-r"></div><div class="gc-t gc-dias">${cab}</div></div>
     ${linhas||`<div class="meta" style="padding:14px 4px">Nenhuma inscrição com data confirmada e site oficial neste mês.</div>`}</div>`;
   const outros=conf.length-noMes.length, poss=((F.mapa||{}).total||{}).possiveis;
@@ -4450,7 +4454,9 @@ function montaOportunidadesPorArea(fx,resumoEl,comFiltroBz,rerender){
       detalhes:{qualificacao:{nota:null,classe:"identificada"},documentos_exigidos:[],pontuacao:[],atendidos:[],pendencias:[],evidencia:ed.objeto||ed.titulo||"",coletado_em:ed.coletado_em,lacuna:null},...ed});
     bloco.querySelectorAll(".bt-ia").forEach(bt=>bt.onclick=ev=>{ev.stopPropagation();const ed=achaEd(bt.dataset.id);if(ed)investigarComIA(completaEd(ed));});
     bloco.querySelectorAll(".bt-arq").forEach(bt=>bt.onclick=ev=>{ev.stopPropagation();const ed=achaEd(bt.dataset.id);
-      if(ed){salvaDecisao(ed.id,"inscrito",{titulo:ed.titulo,acao:"arquivado"});rerender();}});
+      if(ed){ if(!confirm(`Arquivar «${ed.titulo}»?\n\nO livro vai para o arquivo da Biblioteca e sai das Oportunidades Abertas, do calendário da página inicial e da página Calendário.`))return;
+        salvaDecisao(ed.id,"inscrito",{titulo:ed.titulo,acao:"arquivado"});rerender();      // some na hora; a Biblioteca confirma na próxima publicação
+        ghDispatch("arquivar.yml",{livro:ed.id,motivo:"arquivada pela titular no painel"}).then(r=>{ if(!r||!r.ok) alert("O arquivamento não chegou à Biblioteca ("+((r&&r.motivo)||"sem resposta")+"). Confira o token do GitHub (permissão Actions)."); }); }});
     bloco.querySelectorAll(".ficha").forEach(bt=>bt.onclick=ev=>{ev.stopPropagation();const ed=achaEd(bt.dataset.id);if(ed)detalheEdital(completaEd(ed));});
     bloco.querySelectorAll(".ed-item").forEach(el=>{
       const par=lista.find(x=>x.e.id===el.dataset.id); if(!par)return; const {e,b}=par; const f=b?b._fonte:{fonte_nome:e.fonte_nome};
@@ -5781,9 +5787,9 @@ window.carregaFluxo=async function(){
   // 28/09 (titular): versão do mapa gerada SEM a validação individual (voo com código antigo) é RECUSADA — fica o último
   // mapa válido (guardado neste navegador) e o selo avisa. Nunca mais mostrar oportunidade já descartada ou encerrada.
   try{ const r=await fetch("dados/fluxo_oportunidades.json"); if(r.ok){ const f=await r.json();
-      if(f&&f.validacao&&f.validacao.aplicada){ window._FLUXO=f; window._FLUXO_RECUSADO=null; try{ localStorage.setItem("eldorado_fluxo_valido_sistema_novo",JSON.stringify(f)); }catch(e){} }
+      if(f&&f.validacao&&f.validacao.aplicada){ window._FLUXO=f; window._FLUXO_RECUSADO=null; /* 27/10/2026: uma única fonte (a Biblioteca, publicada): sem a cópia no navegador */ }
       else { window._FLUXO_RECUSADO=f&&f.em||"sem data";
-        if(!window._FLUXO){ try{ const g=JSON.parse(localStorage.getItem("eldorado_fluxo_valido_sistema_novo")||"null"); if(g&&g.validacao&&g.validacao.aplicada) window._FLUXO=g; }catch(e){} } } } }catch(e){}
+        if(false){ try{ const g=null; if(g&&g.validacao&&g.validacao.aplicada) window._FLUXO=g; }catch(e){} } } } }catch(e){}
   try{ if(typeof desenhaBzMapa==="function") desenhaBzMapa(); }catch(e){}
   try{ if(typeof desenhaBzLateral==="function"&&bzUFsel) desenhaBzLateral(); }catch(e){}
   try{ desenhaGantt(); }catch(e){}

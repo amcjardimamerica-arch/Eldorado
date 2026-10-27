@@ -1,0 +1,45 @@
+name: Arquivar (pela titular, no painel)
+# 27/10/2026: o botão "Arquivar" das Oportunidades Abertas grava na Biblioteca (a única fonte): a passagem do livro para o
+# arquivo, autorizada pela titular; e republica o painel (sai das abertas, do calendário da página inicial e da página
+# Calendário). Só grava eventos (não reinicia o sistema).
+on:
+  workflow_dispatch:
+    inputs:
+      livro:
+        description: "o identificador do livro"
+        required: true
+      motivo:
+        description: "o motivo (opcional)"
+        required: false
+        default: "arquivada pela titular no painel"
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: arquivar
+  cancel-in-progress: false
+jobs:
+  arquivar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -e .
+      - name: O evento na Biblioteca
+        env:
+          LIVRO: ${{ inputs.livro }}
+          MOTIVO: ${{ inputs.motivo }}
+        run: eldorado arquivar --livro "$LIVRO" --motivo "$MOTIVO"
+      - name: Gravar
+        run: |
+          git config user.name "eldorado-titular"; git config user.email "titular@eldorado.local"
+          git add eventos
+          git commit -m "A titular arquivou o livro ${{ inputs.livro }} (pelo painel)" || exit 0
+          for i in 1 2 3 4 5; do git pull --rebase origin main && git push origin HEAD:main && break; sleep 5; done
+      - name: Republicar o painel
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run painel.yml || true

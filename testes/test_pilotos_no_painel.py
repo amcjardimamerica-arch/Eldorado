@@ -241,3 +241,36 @@ def test_o_interceptador_elastico_pela_ociosidade(monkeypatch):
     assert CP.vagas_por_ociosidade() == 1
     src = Path("eldorado/base/cerebro/regencia.py").read_text(encoding="utf-8")
     assert "pool.shutdown(wait=False, cancel_futures=True)" in src and "orcamento + folga" in src  # a coleta não espera o preso
+
+
+def test_arquivar_pela_titular_grava_na_biblioteca_e_sai_das_abertas(bancos, gravador, tmp_path):
+    """27/10/2026 (titular): uma única fonte (a Biblioteca): arquivar pelo painel é a passagem do livro para o arquivo,
+    autorizada pela titular; ele sai das abertas (o calendário e a aba leem a mesma consulta) e o Comandante não o traz."""
+    from datetime import datetime, timezone
+
+    from typer.testing import CliRunner
+
+    from eldorado.base.nucleo.comandos import app
+    from eldorado.base.nucleo.eventos import ler
+
+    b = bancos["biblioteca"]
+    agora = datetime.now(timezone.utc).isoformat()
+    b.execute(
+        "INSERT INTO livro(id, missao, chave, titulo, estrela, selo_livro, informacoes_validadas, situacao, criado_em, atualizado_em) "
+        "VALUES ('L1', 'oportunidades', 'k', 'Edital aberto', 'ouro', 'sem', 0, 'em trabalho', ?, ?)",
+        (agora, agora),
+    )
+    b.execute("INSERT INTO passaporte(livro_id, fase, entrou_em) VALUES ('L1', 'preparacao', ?)", (agora,))
+    b.execute(
+        "INSERT INTO livro_dados(livro_id, validacao, validado_em, situacao_prazo, inscricao_fim) VALUES ('L1', 'aprovado', ?, 'aberta', '2099-12-31')",
+        (agora,),
+    )
+    b.commit()
+    r = CliRunner().invoke(app, ["arquivar", "--livro", "L1", "--eventos", str(tmp_path / "ev")])
+    assert r.exit_code == 0, r.output
+    assert gravador.aplicar(list(ler(tmp_path / "ev"))).ok
+    assert b.execute("SELECT fase FROM passaporte WHERE livro_id = 'L1'").fetchone()[0] == "arquivo"
+    assert b.execute("SELECT motivo FROM passagem WHERE livro_id = 'L1' ORDER BY id DESC").fetchone()[0].startswith("pela titular:")
+    src = Path("eldorado/base/painel/dados.py").read_text(encoding="utf-8")
+    assert "AND p.fase <> 'arquivo' ORDER BY d.inscricao_fim" in src  # sai das abertas
+    assert Path(".github/workflows/arquivar.yml").exists()
