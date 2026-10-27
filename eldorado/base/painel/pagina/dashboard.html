@@ -5787,7 +5787,7 @@ window.carregaFluxo=async function(){
   // 28/09 (titular): versão do mapa gerada SEM a validação individual (voo com código antigo) é RECUSADA — fica o último
   // mapa válido (guardado neste navegador) e o selo avisa. Nunca mais mostrar oportunidade já descartada ou encerrada.
   try{ const r=await fetch("dados/fluxo_oportunidades.json"); if(r.ok){ const f=await r.json();
-      if(f&&f.validacao&&f.validacao.aplicada){ window._FLUXO=f; window._FLUXO_RECUSADO=null; /* 27/10/2026: uma única fonte (a Biblioteca, publicada): sem a cópia no navegador */ }
+      if(f&&f.validacao&&f.validacao.aplicada){ window._FLUXO=f; window._FLUXO_RECUSADO=null; try{ localStorage.removeItem("eldorado_fluxo_valido_sistema_novo"); }catch(e){}   /* 27/10/2026: uma única fonte (a Biblioteca, publicada): a cópia no navegador é apagada */ }
       else { window._FLUXO_RECUSADO=f&&f.em||"sem data";
         if(false){ try{ const g=null; if(g&&g.validacao&&g.validacao.aplicada) window._FLUXO=g; }catch(e){} } } } }catch(e){}
   try{ if(typeof desenhaBzMapa==="function") desenhaBzMapa(); }catch(e){}
