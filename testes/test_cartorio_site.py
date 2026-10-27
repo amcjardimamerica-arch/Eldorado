@@ -137,12 +137,16 @@ def test_a_pagina_inicial_calendario_por_tema_e_os_quadros_em_sequencia():
 
 
 def test_o_lago_dos_prazos():
-    """27/10/2026 (titular): o calendário do Eldorado (o lago dos prazos): de margem a margem, por área (até 10, as que
-    terminam antes primeiro), cada oportunidade numa linha, a balsa do primeiro ao último dia, o feixe de hoje, os botões
-    incorporados, o livro ao clicar; a fonte é a Biblioteca (o fluxo publicado)."""
+    """27/10/2026 (titular, refeito do zero a partir do artigo 'Eldorado'): Manoa · o calendário do sol — de dia; o sol de
+    raios radiais é o calendário (cada raio um dia, cada anel uma área); Manoa, a cidade de ouro, sob o sol, entre os tepuis,
+    os buritis e a floresta; os terraços (até 10 por área, as que terminam antes primeiro); pássaros em polígonos de quatro
+    espécies; os botões antigos do topo saem (os novos, incorporados); o livro ao clicar; a fonte é a Biblioteca."""
     from pathlib import Path
 
     p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
-    assert 'id="eld"' in p and "width:100vw;margin-left:calc(50% - 50vw)" in p[p.index("#eld{") : p.index("#eld{") + 400]
-    assert "xs.slice(0,10)" in p and "a.fim.localeCompare(b.fim)" in p and 'class="balsa"' in p and 'f.className="feixe"' in p
-    assert 'class="tunjo' in p and 'id="eld-livro"' in p and 'fetch("dados/fluxo_oportunidades.json' in p
+    assert 'id="mn"' in p and 'id="mn-sol"' in p and 'id="mn-manoa"' in p and 'id="mn-ter"' in p and 'id="mn-livro"' in p
+    assert "body.mn-ativo #topo-modulos{display:none!important}" in p  # os botões antigos saem
+    assert "xs.slice(0,10)" in p and "a.fim.localeCompare(b.fim)" in p and 'fetch("dados/fluxo_oportunidades.json' in p
+    for especie in ("canide", "vermelha", "tucano", "beija"):
+        assert especie in p
+    assert 'id="eld"' not in p  # o lago saiu

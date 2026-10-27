@@ -1109,182 +1109,231 @@ se fecha; nada inserido nas outras páginas. -->
 })();
 </script>
 <section id="v-calendario" style="margin-top:0">
-<!-- ELDORADO — O LAGO DOS PRAZOS (titular, 27/10/2026). A filosofia (canvas-design + algorithmic-art + tasteful-ui): o mês é a
-Lagoa de Guatavita; cada oportunidade é uma balsa dourada que atravessa a lagoa do primeiro ao último dia da inscrição, com o
-pó de ouro correndo por ela; cada área tem o seu estandarte; o dia de hoje é um feixe de luz; ondas circulares lentas e o pó
-de ouro no ar (sem paralaxe); o livro de cada oportunidade abre como um códice sóbrio. A fonte é a Biblioteca. -->
+<!-- MANOA · O CALENDÁRIO DO SOL (titular, 27/10/2026; refeito do zero a partir do artigo da Wikipédia "Eldorado"): Manoa, a
+cidade toda de ouro do Planalto das Guianas, na floresta amazônica, onde "há ouro por toda a parte: na cidade, nos templos";
+um povo do sol (incas refugiados). O SOL de raios radiais é o calendário: cada raio é um dia; os anéis são as áreas; a
+oportunidade escolhida acende o seu arco, e um cometa de ouro o percorre do primeiro ao último dia. Ao lado, os TERRAÇOS dos
+templos em degraus: cada área um terraço, até 10 oportunidades, as que terminam antes primeiro. De dia: o céu, os tepuis, os
+buritis, a floresta e a cidade de ouro; pássaros em polígonos (como a logomarca) de quatro espécies. Sem paralaxe. -->
 <style>
-body.eld-ativo .topo{display:none}
-#eld{--noite:#0B1A2A;--lago:#0E2A3D;--lago2:#123A52;--ouro:#E2B54A;--ouro2:#F6D98A;--ouro3:#A97A1E;--perg:#F7F1E3;--tinta:#1E2530;--nevoa:#9FB3C3;
- width:100vw;margin-left:calc(50% - 50vw);position:relative;overflow:hidden;color:#EAF0F5;box-sizing:border-box;padding:0 clamp(14px,2.2vw,40px) 34px;
- background:radial-gradient(1200px 520px at 50% -120px,#2B4C6B 0,transparent 70%),linear-gradient(180deg,var(--noite) 0,var(--lago) 360px,var(--lago2) 100%);border-radius:0;min-height:92vh}
-#eld *{box-sizing:border-box}
-#eld canvas.eld-ceu{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
-#eld .eld-in{position:relative;z-index:1}
-#eld .eld-cab{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(12px,2vw,28px);padding:22px 0 14px}
-#eld .eld-sol{width:84px;height:84px;filter:drop-shadow(0 0 18px rgba(226,181,74,.45))}
-#eld .eld-sol .raios{transform-origin:50px 50px;animation:eld-gira 80s linear infinite}
-@keyframes eld-gira{to{transform:rotate(360deg)}}
-#eld h2{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(26px,2.6vw,38px);letter-spacing:.02em;color:var(--ouro2);border:0;padding:0;font-weight:700}
-#eld .eld-sub{margin:4px 0 0;color:var(--nevoa);font-size:13.5px;max-width:70ch;line-height:1.5}
-#eld .eld-nav{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-#eld .tunjo{font:600 13.5px/1 Georgia,serif;letter-spacing:.03em;color:#2A1E05;padding:11px 16px 10px;border-radius:10px 10px 14px 14px;border:1px solid #F4D27C;cursor:pointer;
- background:linear-gradient(180deg,#F7DB8B 0,#E2B54A 55%,#B8892B 100%);box-shadow:0 2px 0 #7A5514,0 8px 18px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.6);transition:transform .15s,filter .15s}
-#eld .tunjo:hover{transform:translateY(-2px);filter:brightness(1.06)}
-#eld .tunjo.on{outline:2px solid #FFF3C4;outline-offset:2px}
-#eld .eld-mes{display:flex;align-items:center;gap:12px;margin:2px 0 14px}
-#eld .eld-mes b{font-family:Georgia,serif;font-size:22px;color:#FFF;min-width:200px;text-align:center}
-#eld .eld-mes button{background:rgba(255,255,255,.06);border:1px solid rgba(226,181,74,.45);color:var(--ouro2);border-radius:10px;padding:7px 14px;cursor:pointer;font:inherit}
-#eld .eld-mes .meta2{color:var(--nevoa);font-size:12.5px;margin-left:auto}
-#eld .eld-band{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
-#eld .estandarte{display:flex;align-items:center;gap:8px;padding:7px 12px 7px 10px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#EAF0F5;cursor:pointer;font:600 12.5px system-ui}
-#eld .estandarte i{width:10px;height:18px;border-radius:2px 2px 6px 6px;display:inline-block}
-#eld .estandarte em{font-style:normal;color:var(--nevoa);font-weight:500}
-#eld .estandarte.off{opacity:.35}
-#eld .lagoa{position:relative;border-radius:16px;border:1px solid rgba(226,181,74,.28);background:rgba(6,18,30,.42);backdrop-filter:blur(2px);overflow-x:auto}
-#eld .grade{display:grid;grid-template-columns:minmax(260px,24vw) 1fr;min-width:980px}
-#eld .dias{display:grid;grid-template-columns:repeat(var(--nd),1fr);border-left:1px solid rgba(255,255,255,.08)}
-#eld .cab-dias{position:sticky;top:0;z-index:3;background:rgba(9,24,38,.94);border-bottom:1px solid rgba(226,181,74,.35)}
-#eld .cab-dias .dia{text-align:center;padding:8px 0 6px;font:700 12px system-ui;color:#DDE6EE}
-#eld .cab-dias .dia small{display:block;font-weight:500;font-size:10px;color:var(--nevoa);letter-spacing:.06em}
-#eld .cab-dias .dia.fds{color:#9FB3C3}#eld .cab-dias .dia.hoje{color:#2A1E05;background:linear-gradient(180deg,#F7DB8B,#E2B54A);border-radius:8px}
-#eld .rot-cab{padding:10px 14px;font:700 11px system-ui;letter-spacing:.12em;color:var(--ouro2);text-transform:uppercase;border-bottom:1px solid rgba(226,181,74,.35);background:rgba(9,24,38,.94);position:sticky;top:0;z-index:3}
-#eld .area{grid-column:1/-1;display:flex;align-items:center;gap:10px;padding:14px 14px 6px;font:700 12px system-ui;letter-spacing:.12em;text-transform:uppercase}
-#eld .area small{font-weight:500;letter-spacing:0;text-transform:none;color:var(--nevoa)}
-#eld .area .fio{flex:1;height:1px;background:linear-gradient(90deg,currentColor,transparent);opacity:.5}
-#eld .lin{display:contents}
-#eld .nome{padding:7px 14px;font-size:13px;line-height:1.3;color:#EEF3F7;cursor:pointer;border-left:3px solid transparent;display:flex;flex-direction:column;justify-content:center;min-height:44px;transition:background .2s}
-#eld .nome span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-#eld .nome small{color:var(--nevoa);font-size:11px;margin-top:2px}
-#eld .faixa{position:relative;border-left:1px solid rgba(255,255,255,.08);background-image:linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:calc(100%/var(--nd)) 100%;cursor:pointer}
-#eld .balsa{position:absolute;top:9px;bottom:9px;border-radius:999px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.18) inset,0 6px 16px rgba(0,0,0,.35);transition:transform .2s,box-shadow .2s,filter .2s}
-#eld .balsa .po{position:absolute;inset:0;background:linear-gradient(100deg,transparent 0,rgba(255,240,190,0) 35%,rgba(255,240,190,.85) 50%,rgba(255,240,190,0) 65%,transparent 100%);
- background-size:38% 100%;background-repeat:no-repeat;animation:eld-po var(--dur,6s) linear infinite}
-@keyframes eld-po{from{background-position:-40% 0}to{background-position:140% 0}}
-@media (prefers-reduced-motion:reduce){#eld .balsa .po,#eld .eld-sol .raios{animation:none}}
-#eld .balsa b{position:relative;z-index:1;display:block;padding:0 12px;font:700 11.5px/26px system-ui;color:#1B1405;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;height:100%;display:flex;align-items:center}
-#eld .lin:hover .nome{background:rgba(226,181,74,.08)}
-#eld .lin:hover .balsa{transform:translateY(-1px) scaleY(1.06);filter:brightness(1.12);box-shadow:0 0 0 1px rgba(255,255,255,.4) inset,0 0 22px rgba(246,217,138,.55)}
-#eld .grade.focado .lin:not(.sel){opacity:.28}
-#eld .lin.sel .nome{background:rgba(226,181,74,.16);border-left-color:var(--ouro)}
-#eld .lin.sel .balsa{box-shadow:0 0 0 2px #FFF3C4 inset,0 0 30px rgba(246,217,138,.8);animation:eld-pulsa 1.6s ease-in-out infinite}
-@keyframes eld-pulsa{50%{filter:brightness(1.25)}}
-#eld .feixe{position:absolute;top:0;bottom:0;width:2px;background:linear-gradient(180deg,rgba(255,243,196,.95),rgba(226,181,74,.15));box-shadow:0 0 14px rgba(246,217,138,.9);pointer-events:none;z-index:2}
-#eld .mais{grid-column:1/-1;padding:4px 14px 8px 17px;font-size:12px;color:var(--nevoa);cursor:pointer}
-#eld .vazio{padding:30px;color:var(--nevoa)}
-/* o livro: o códice */
-#eld-livro{position:fixed;inset:0;z-index:9700;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(5,12,20,.62)}
-#eld-livro.on{display:flex}
-#eld-livro .codice{width:min(820px,100%);max-height:88vh;overflow:auto;background:var(--perg,#F7F1E3);color:#1E2530;border-radius:14px;padding:26px 30px 22px;position:relative;
- box-shadow:0 30px 80px rgba(0,0,0,.45);border:1px solid #D8C08A;outline:6px solid rgba(226,181,74,.18)}
-#eld-livro .codice::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;border-radius:14px 14px 0 0;background:linear-gradient(90deg,#B8892B,#F7DB8B,#B8892B)}
-#eld-livro h3{margin:4px 0 4px;font-family:Georgia,serif;font-size:22px;line-height:1.3}
-#eld-livro .meta3{color:#5E6672;font-size:13px}
-#eld-livro .quem{margin:14px 0;padding:12px 14px;border-radius:10px;background:#FFF8E6;border:1px solid #EBD39A;font-size:13.5px}
-#eld-livro .quem b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#8A6415;margin-bottom:4px}
-#eld-livro .itens{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;margin-top:10px}
-#eld-livro .it{font-size:13px;line-height:1.4;padding:6px 0;border-bottom:1px solid #EADFC6}
-#eld-livro .it b{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#7A6A45}
-#eld-livro .it q{display:block;color:#6B6458;font-size:11.5px;font-style:italic;margin-top:2px;quotes:"“" "”"}
-#eld-livro .acoes{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
-#eld-livro .acoes a,#eld-livro .acoes button{font:600 13px system-ui;padding:9px 14px;border-radius:10px;border:1px solid #C9A65A;background:#fff;color:#1E2530;cursor:pointer;text-decoration:none}
-#eld-livro .acoes .pri{background:linear-gradient(180deg,#F7DB8B,#E2B54A);border-color:#B8892B}
-#eld-livro .fechar{position:absolute;top:12px;right:14px;border:0;background:transparent;font-size:22px;cursor:pointer;color:#7A6A45}
-@media (max-width:760px){#eld-livro .itens{grid-template-columns:1fr}#eld .eld-cab{grid-template-columns:auto 1fr}#eld .eld-nav{grid-column:1/-1;justify-content:flex-start}}
+body.mn-ativo #topo-modulos{display:none!important}
+#mn{--ceu1:#9FD8FF;--ceu2:#DDF1FF;--ceu3:#FFF4D6;--ouro:#E9B53B;--ouro2:#FFD970;--ouro3:#B07A12;--tinta:#1E2A33;--suave:#56656F;--folha1:#0F5132;--folha2:#1F7A47;--folha3:#3FA45D;
+ width:100vw;margin-left:calc(50% - 50vw);position:relative;overflow:hidden;color:var(--tinta);box-sizing:border-box;padding:0 clamp(14px,2vw,36px) 0;
+ background:linear-gradient(180deg,var(--ceu1) 0,var(--ceu2) 46%,var(--ceu3) 78%,#F6E7B8 100%);min-height:100vh}
+#mn *{box-sizing:border-box}
+#mn .cena{position:absolute;inset:auto 0 0 0;height:260px;pointer-events:none;z-index:0}
+#mn .cena svg{position:absolute;left:0;bottom:0;width:100%;height:100%}
+#mn .folha{transform-origin:50% 100%;animation:mn-vento 7s ease-in-out infinite alternate}
+#mn .folha.b{animation-duration:9s;animation-delay:-3s}
+@keyframes mn-vento{from{transform:rotate(-1.4deg)}to{transform:rotate(1.4deg)}}
+#mn .brilho{animation:mn-brilho 3.6s ease-in-out infinite}
+@keyframes mn-brilho{0%,100%{opacity:.15}50%{opacity:.95}}
+#mn .voo{position:absolute;z-index:1;pointer-events:none;width:64px;animation:mn-voo linear infinite}
+#mn .voo .asa{transform-origin:46% 52%;animation:mn-bate .5s ease-in-out infinite alternate}
+@keyframes mn-bate{from{transform:scaleY(1)}to{transform:scaleY(.35)}}
+@keyframes mn-voo{from{transform:translateX(-120px) translateY(0)}50%{transform:translateX(55vw) translateY(-26px)}to{transform:translateX(110vw) translateY(8px)}}
+@media (prefers-reduced-motion:reduce){#mn .folha,#mn .brilho,#mn .voo,#mn .voo .asa,#mn .raios{animation:none}#mn .voo{display:none}}
+#mn .in{position:relative;z-index:2}
+#mn .cab{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:44px 0 10px}
+#mn h2{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:clamp(26px,2.4vw,36px);color:#5A3B06;border:0;padding:0;letter-spacing:.01em}
+#mn h2 span{background:linear-gradient(180deg,#F2C14E,#C98A12 55%,#7A4B05);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:.6px #6B4205;filter:drop-shadow(0 1px 0 rgba(255,255,255,.8))}
+#mn .sub{margin:4px 0 0;color:var(--suave);font-size:13.5px;line-height:1.5;max-width:86ch}
+#mn .sub q{font-style:italic;quotes:"“" "”"}
+#mn .nav{display:flex;gap:10px}
+#mn .placa{font:700 13px/1 Georgia,serif;color:#3A2603;padding:11px 16px 10px;border-radius:6px;border:1px solid #F7D87A;cursor:pointer;letter-spacing:.02em;
+ background:linear-gradient(180deg,#FFE7A0 0,#E9B53B 60%,#B9831A 100%);box-shadow:0 2px 0 #8A5B0B,0 8px 18px rgba(120,80,10,.25),inset 0 1px 0 rgba(255,255,255,.7);
+ clip-path:polygon(8% 0,92% 0,100% 30%,100% 100%,0 100%,0 30%);transition:transform .15s,filter .15s}
+#mn .placa:hover{transform:translateY(-2px);filter:brightness(1.06)}#mn .placa.on{filter:saturate(1.3) brightness(1.08)}
+#mn .barra{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
+#mn .mes{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.7);border:1px solid #EBD08A;border-radius:12px;padding:4px 6px}
+#mn .mes b{font-family:Georgia,serif;font-size:17px;min-width:170px;text-align:center;color:#5A3B06}
+#mn .mes button{border:0;background:transparent;font-size:18px;cursor:pointer;color:#8A5B0B;padding:2px 8px}
+#mn .est{display:flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.75);border:1px solid rgba(0,0,0,.08);cursor:pointer;font:600 12.5px system-ui;color:var(--tinta)}
+#mn .est i{width:11px;height:11px;border-radius:3px;transform:rotate(45deg);display:inline-block}
+#mn .est em{font-style:normal;color:var(--suave);font-weight:500}#mn .est.off{opacity:.38}
+#mn .corpo{display:grid;grid-template-columns:minmax(420px,40%) 1fr;gap:clamp(14px,1.6vw,26px);align-items:start;padding-bottom:230px}
+#mn .solcol{position:sticky;top:8px}
+#mn .manoa{display:block;width:100%;height:auto;margin-top:-118px;position:relative;z-index:-1}
+#mn .sol{width:100%;height:auto;display:block;filter:drop-shadow(0 18px 30px rgba(176,122,18,.25))}
+#mn .raios{transform-origin:50% 50%;animation:mn-gira 120s linear infinite}
+@keyframes mn-gira{to{transform:rotate(360deg)}}
+#mn .anel{cursor:pointer}#mn .anel:hover{filter:brightness(1.1)}
+#mn .terracos{columns:2 340px;column-gap:14px}
+#mn .terraco{break-inside:avoid;margin:0 0 14px;background:rgba(255,253,246,.9);border:1px solid #EBD08A;border-radius:14px;overflow:hidden;box-shadow:0 8px 20px rgba(120,80,10,.10)}
+#mn .terraco h4{margin:0;display:flex;align-items:center;gap:8px;padding:9px 12px;font:700 12px system-ui;letter-spacing:.08em;text-transform:uppercase;color:#3A2603;
+ background:linear-gradient(180deg,#FFF1C7,#F8DD8C);border-bottom:1px solid #EBD08A;position:relative}
+#mn .terraco h4::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:5px;background:repeating-linear-gradient(90deg,#E9B53B 0 14px,transparent 14px 18px);opacity:.55}
+#mn .terraco h4 i{width:12px;height:12px;border-radius:3px;transform:rotate(45deg)}
+#mn .terraco h4 small{margin-left:auto;font-weight:600;letter-spacing:0;text-transform:none;color:#7A5A16}
+#mn .op{display:grid;grid-template-columns:1fr;gap:3px;padding:8px 12px 7px;border-top:1px solid #F3E6C2;cursor:pointer;transition:background .15s}
+#mn .op:first-of-type{border-top:0;padding-top:12px}
+#mn .op:hover,#mn .op.sel{background:#FFF6DA}
+#mn .op .t{font-size:13px;line-height:1.3;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+#mn .op .p{display:flex;justify-content:space-between;font-size:11px;color:var(--suave)}
+#mn .op .p b{color:#8A5B0B;font-weight:700}
+#mn .trilha{position:relative;height:7px;border-radius:4px;background:repeating-linear-gradient(90deg,#F1E4C2 0,#F1E4C2 calc(100%/var(--nd) - 1px),#FFFDF6 calc(100%/var(--nd) - 1px),#FFFDF6 calc(100%/var(--nd)))}
+#mn .trilha i{position:absolute;top:0;bottom:0;border-radius:4px;overflow:hidden}
+#mn .trilha i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.85),transparent);background-size:40% 100%;background-repeat:no-repeat;animation:mn-ouro 2.8s linear infinite}
+@keyframes mn-ouro{from{background-position:-50% 0}to{background-position:150% 0}}
+#mn .trilha u{position:absolute;top:-3px;bottom:-3px;width:2px;background:#C0392B;border-radius:1px}
+#mn .mais{display:block;padding:6px 12px 10px;font-size:12px;color:#8A5B0B;cursor:pointer}
+#mn .vazio{padding:24px;color:var(--suave)}
+/* o livro: a placa de Manoa */
+#mn-livro{position:fixed;inset:0;z-index:9700;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(40,28,6,.38)}
+#mn-livro.on{display:flex}
+#mn-livro .placa-livro{width:min(860px,100%);max-height:88vh;overflow:auto;background:#FFFDF6;border-radius:16px;box-shadow:0 30px 70px rgba(60,40,5,.4);border:1px solid #EBD08A;position:relative}
+#mn-livro .topo-l{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:16px 20px;background:linear-gradient(180deg,#FFE8A6,#F2C452 70%,#D99A22);border-bottom:2px solid #B9831A}
+#mn-livro .topo-l h3{margin:0;font-family:Georgia,serif;font-size:20px;line-height:1.3;color:#3A2603}
+#mn-livro .topo-l .m{font-size:12.5px;color:#5A3B06}
+#mn-livro .fechar{border:0;background:rgba(255,255,255,.5);border-radius:8px;font-size:20px;width:34px;height:34px;cursor:pointer;color:#5A3B06}
+#mn-livro .corpo-l{padding:16px 22px 18px}
+#mn-livro .quem{padding:12px 14px;border-radius:10px;background:#FFF6DA;border:1px solid #EBD08A;font-size:13.5px;line-height:1.5}
+#mn-livro .quem b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#8A5B0B;margin-bottom:3px}
+#mn-livro .itens{display:grid;grid-template-columns:1fr 1fr;gap:6px 22px;margin-top:12px}
+#mn-livro .it{font-size:13px;line-height:1.4;padding:7px 0;border-bottom:1px solid #F3E6C2}
+#mn-livro .it b{display:block;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#8A6A2A}
+#mn-livro .it q{display:block;color:#6E6555;font-size:11.5px;font-style:italic;margin-top:2px;quotes:"“" "”"}
+#mn-livro .acoes{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+#mn-livro .acoes a,#mn-livro .acoes button{font:600 13px system-ui;padding:9px 14px;border-radius:10px;border:1px solid #D9B45A;background:#fff;color:#3A2603;cursor:pointer;text-decoration:none}
+#mn-livro .acoes .pri{background:linear-gradient(180deg,#FFE7A0,#E9B53B)}
+@media (max-width:1000px){#mn .corpo{grid-template-columns:1fr}#mn .solcol{position:static;max-width:560px;margin:0 auto}#mn-livro .itens{grid-template-columns:1fr}}
 </style>
-<div id="eld">
-  <canvas class="eld-ceu" id="eld-ceu"></canvas>
-  <div class="eld-in">
-    <div class="eld-cab">
-      <svg class="eld-sol" viewBox="0 0 100 100" aria-hidden="true"><g class="raios" fill="#E2B54A"></g>
-        <circle cx="50" cy="50" r="22" fill="url(#eldg)"/><circle cx="50" cy="50" r="22" fill="none" stroke="#7A5514" stroke-width="1.2"/>
-        <path d="M41 46h4M55 46h4M44 57q6 5 12 0" stroke="#7A5514" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <defs><radialGradient id="eldg" cx=".4" cy=".35"><stop offset="0" stop-color="#FFF1BF"/><stop offset=".6" stop-color="#E2B54A"/><stop offset="1" stop-color="#A97A1E"/></radialGradient></defs></svg>
-      <div><h2>Eldorado · o lago dos prazos</h2>
-        <p class="eld-sub">Na lagoa sagrada de Guatavita, o soberano muísca coberto de ouro atravessava as águas numa balsa. Aqui, cada oportunidade é uma balsa dourada que atravessa o mês do primeiro ao último dia da inscrição. Passe o cursor numa balsa; clique para abrir o livro.</p></div>
-      <nav class="eld-nav" aria-label="Navegação"><button class="tunjo" data-ir="0">Início</button><button class="tunjo on" data-ir="1">Eldorado</button><button class="tunjo" data-ir="2">Farol de Alexandria</button></nav>
+<div id="mn">
+  <div class="cena" aria-hidden="true"><svg viewBox="0 0 1600 260" preserveAspectRatio="none" id="mn-cena"></svg></div>
+  <div class="in">
+    <div class="cab">
+      <div><h2><span>Manoa</span> · o calendário do sol</h2>
+        <p class="sub">Na lenda do Eldorado, Manoa era a cidade toda feita de ouro, escondida na floresta do Planalto das Guianas: <q>há ouro por toda a parte: na cidade, nos templos, sob forma de ídolos, de placas</q>. Aqui o sol é o calendário — cada raio é um dia, cada anel uma área. Nos terraços dos templos, as oportunidades do mês; passe o cursor para acender o arco no sol, clique para abrir o livro.</p></div>
+      <nav class="nav" aria-label="Navegação"><button class="placa" type="button" data-ir="inicio">Início</button><button class="placa on" type="button" data-ir="eldorado">Eldorado</button><button class="placa" type="button" data-ir="farol">Farol de Alexandria</button></nav>
     </div>
-    <div class="eld-mes"><button id="eld-ant" type="button">‹</button><b id="eld-mes"></b><button id="eld-seg" type="button">›</button><span class="meta2" id="eld-conta"></span></div>
-    <div class="eld-band" id="eld-band"></div>
-    <div class="lagoa"><div class="grade" id="eld-grade"></div></div>
+    <div class="barra"><div class="mes"><button type="button" id="mn-ant" aria-label="Mês anterior">‹</button><b id="mn-mes"></b><button type="button" id="mn-seg" aria-label="Mês seguinte">›</button></div><div id="mn-est" style="display:contents"></div></div>
+    <div class="corpo"><div class="solcol"><svg class="sol" id="mn-sol" viewBox="0 0 680 680" role="img" aria-label="O calendário do sol"></svg><svg class="manoa" id="mn-manoa" viewBox="0 0 680 210" aria-hidden="true"></svg></div><div class="terracos" id="mn-ter"></div></div>
   </div>
 </div>
-<div id="eld-livro" role="dialog" aria-modal="true"><div class="codice" id="eld-codice"></div></div>
+<div id="mn-livro" role="dialog" aria-modal="true"><div class="placa-livro" id="mn-placa"></div></div>
 <script>
 (function(){
-  const _ta=document.createElement("textarea"),_dec=s=>{_ta.innerHTML=String(s==null?"":s);return _ta.value};   // as entidades do site (&#8211;)
-  const $=i=>document.getElementById(i),E=s=>_dec(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-  const MES=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"],SEM=["D","S","T","Q","Q","S","S"];
-  const AREAS={CUL:["Cultura","#E7A83E"],SAU:["Saúde","#E8736B"],ESP:["Esporte","#5DBB8A"],EDU:["Educação","#6FA8E8"],ASS:["Assistência social","#C88BE0"],
-    AMB:["Meio ambiente","#7CC46A"],DHU:["Direitos humanos","#F08FB0"],CRI:["Criança e adolescente","#F4C95D"],IDO:["Pessoa idosa","#B9A07A"],PCD:["Pessoa com deficiência","#54C6C6"],
-    CTI:["Ciência e tecnologia","#8E9CF0"],ECO:["Trabalho e renda","#D4A373"],GER:["Várias áreas","#A9B7C4"]};
+  const $=i=>document.getElementById(i),NS="http://www.w3.org/2000/svg";
+  const _ta=document.createElement("textarea"),dec=s=>{_ta.innerHTML=String(s==null?"":s);return _ta.value};
+  const E=s=>dec(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const MES=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  const AREAS={CUL:["Cultura","#E07B22"],SAU:["Saúde","#D64545"],ESP:["Esporte","#2E9E5B"],EDU:["Educação","#2F7FD1"],ASS:["Assistência social","#9B59B6"],
+    AMB:["Meio ambiente","#4C9A2A"],DHU:["Direitos humanos","#D9478B"],CRI:["Criança e adolescente","#E6A817"],IDO:["Pessoa idosa","#8D6E3F"],PCD:["Pessoa com deficiência","#1E9E9E"],
+    CTI:["Ciência e tecnologia","#5B5FD6"],ECO:["Trabalho e renda","#B5651D"],GER:["Várias áreas","#6B7C8A"]};
   const area=x=>{const p=String(x.codigo||"").split("·")[1];return AREAS[p]?p:"GER"};
-  let IT=[],ano,mes,oculto=new Set(),sel=null;const hoje=new Date(),HJ=hoje.toISOString().slice(0,10);ano=hoje.getFullYear();mes=hoje.getMonth();
-  // o sol: os raios
-  (function(){const g=document.querySelector("#eld .raios");let s="";for(let i=0;i<16;i++){const a=i*22.5;s+=`<path d="M50 6 L53 22 L47 22 Z" transform="rotate(${a} 50 50)" opacity="${i%2?.55:.95}"/>`}g.innerHTML=s})();
-  // o céu e a lagoa: as ondas circulares e o pó de ouro (sem paralaxe)
-  const cv=$("eld-ceu"),cx=cv.getContext("2d");let P=[],ondas=[],W=0,H=0,raf=null;
-  function medir(){const r=$("eld").getBoundingClientRect();W=cv.width=Math.max(300,r.width);H=cv.height=Math.max(300,r.height);
-    P=Array.from({length:Math.round(W*H/9000)},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.6+.3,v:Math.random()*.25+.05,f:Math.random()*6.28}))}
-  function quadro(t){cx.clearRect(0,0,W,H);
-    if(Math.random()<.012&&ondas.length<5)ondas.push({x:W*(.2+Math.random()*.6),y:H*(.55+Math.random()*.35),r:4,a:.35});
-    ondas=ondas.filter(o=>o.a>0.01);ondas.forEach(o=>{o.r+=.35;o.a*=.994;cx.beginPath();cx.ellipse(o.x,o.y,o.r*2.2,o.r*.55,0,0,6.283);cx.strokeStyle=`rgba(226,181,74,${o.a*.35})`;cx.lineWidth=1;cx.stroke()});
-    P.forEach(p=>{p.y-=p.v;p.x+=Math.sin(t/1800+p.f)*.15;if(p.y<-5){p.y=H+5;p.x=Math.random()*W}
-      const b=.35+.35*Math.sin(t/900+p.f);cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.283);cx.fillStyle=`rgba(246,217,138,${b})`;cx.fill()});
-    raf=requestAnimationFrame(quadro)}
-  const parado=matchMedia("(prefers-reduced-motion: reduce)").matches;
-  // a navegação incorporada (os botões do topo do painel)
-  document.querySelectorAll("#eld .tunjo").forEach(b=>b.addEventListener("click",()=>{const t=document.querySelectorAll(".topo button")[+b.dataset.ir];if(t)t.click()}));
+  const hoje=new Date(),HJ=hoje.toISOString().slice(0,10);let ano=hoje.getFullYear(),mes=hoje.getMonth(),IT=[],oculto=new Set(),sel=null,foco=null;
+  // ---- a cena: os tepuis, os buritis, a floresta e a cidade de ouro (desenhada uma vez; só as folhas e os brilhos se movem)
+  (function cena(){const s=$("mn-cena");let h="";
+    h+=`<defs><linearGradient id="mnOuro" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FFE48A"/><stop offset=".55" stop-color="#E9B53B"/><stop offset="1" stop-color="#9C6A0E"/></linearGradient>
+      <linearGradient id="mnTepui" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#8FA9C4"/><stop offset="1" stop-color="#B9CCE0"/></linearGradient></defs>`;
+    h+=`<path d="M0 150 L120 150 L140 92 L330 86 L352 150 L520 150 L545 104 L700 100 L722 150 L1600 150 L1600 260 L0 260Z" fill="url(#mnTepui)" opacity=".75"/>`;
+    // a cidade de ouro: os templos em degraus e as torres
+    const templo=(x,w,n,hh)=>{let g="";for(let i=0;i<n;i++){const ww=w*(1-i/(n+1)),yy=150-(i+1)*hh;g+=`<rect x="${x+(w-ww)/2}" y="${yy}" width="${ww}" height="${hh+1}" fill="url(#mnOuro)" stroke="#9C6A0E" stroke-width=".6"/>`}
+      return g+`<rect class="brilho" x="${x+w/2-3}" y="${150-n*hh-10}" width="6" height="10" fill="#FFF6C9" style="animation-delay:${(x%7)*.4}s"/>`};
+    h+=templo(980,170,6,12)+templo(1160,110,5,11)+templo(880,90,4,10)+templo(1290,80,4,9)+`<rect x="1110" y="70" width="18" height="80" fill="url(#mnOuro)"/><path d="M1104 72 L1119 48 L1134 72Z" fill="#FFD970"/>`;
+    // os buritis
+    const buriti=(x,hh,c)=>{let g=`<g class="folha${x%2?" b":""}"><rect x="${x}" y="${260-hh}" width="4" height="${hh}" fill="#5B4A2E"/>`;for(let i=0;i<9;i++){const a=-160+i*18;g+=`<path d="M${x+2} ${262-hh} q ${Math.cos(a*Math.PI/180)*24} ${Math.sin(a*Math.PI/180)*24-6} ${Math.cos(a*Math.PI/180)*40} ${Math.sin(a*Math.PI/180)*40+8}" stroke="${c}" stroke-width="3" fill="none"/>`}return g+"</g>"};
+    h+=buriti(80,170,"#2C7A4B")+buriti(430,150,"#35864F")+buriti(760,175,"#2C7A4B")+buriti(1480,160,"#35864F");
+    // a floresta: as copas em camadas
+    const copas=(y,c,seed,cls)=>{let d=`M0 260 L0 ${y}`;for(let x=0;x<=1600;x+=40){const r=18+((x*seed)%23);d+=` Q ${x+20} ${y-r} ${x+40} ${y-((x*7+seed)%9)}`}return `<path class="${cls}" d="${d} L1600 260Z" fill="${c}"/>`};
+    h+=copas(205,"#3FA45D",13,"folha")+copas(228,"#1F7A47",7,"folha b")+copas(246,"#0F5132",11,"folha");
+    s.innerHTML=h})();
+  // ---- Manoa sob o sol: o sol-calendário nasce sobre a cidade de ouro, entre os tepuis e a floresta
+  (function manoa(){const s=$("mn-manoa");let h=`<defs><linearGradient id="mnO2" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#FFE48A"/><stop offset=".5" stop-color="#E9B53B"/><stop offset="1" stop-color="#8E5E0A"/></linearGradient></defs>`;
+    h+=`<path d="M0 120 L60 120 L78 70 L210 64 L228 120 L452 120 L470 78 L600 72 L618 120 L680 120 L680 210 L0 210Z" fill="#9DB4CC" opacity=".8"/>`;
+    const deg=(x,w,n,hh)=>{let g="";for(let i=0;i<n;i++){const ww=w*(1-i/(n+.6)),yy=150-(i+1)*hh;g+=`<rect x="${(x+(w-ww)/2).toFixed(1)}" y="${yy}" width="${ww.toFixed(1)}" height="${hh+1}" fill="url(#mnO2)" stroke="#8E5E0A" stroke-width=".7"/>`}
+      return g+`<rect x="${x+w/2-6}" y="${150-n*hh-16}" width="12" height="16" fill="url(#mnO2)" stroke="#8E5E0A" stroke-width=".7"/><rect class="brilho" x="${x+w/2-2}" y="${150-n*hh-12}" width="4" height="7" fill="#FFF6C9" style="animation-delay:${(x%9)*.35}s"/>`};
+    h+=deg(250,180,7,13)+deg(150,110,5,12)+deg(440,110,5,11)+deg(80,70,4,10)+deg(560,70,4,10);
+    h+=`<rect x="236" y="40" width="10" height="110" fill="url(#mnO2)"/><path d="M231 42 L241 18 L251 42Z" fill="#FFD970"/><rect x="434" y="50" width="10" height="100" fill="url(#mnO2)"/><path d="M429 52 L439 30 L449 52Z" fill="#FFD970"/>`;
+    const buriti=(x,hh)=>{let g=`<g class="folha${x%2?" b":""}"><rect x="${x}" y="${210-hh}" width="4" height="${hh}" fill="#5B4A2E"/>`;for(let i=0;i<9;i++){const a=(-160+i*18)*Math.PI/180;g+=`<path d="M${x+2} ${212-hh} q ${(Math.cos(a)*22).toFixed(1)} ${(Math.sin(a)*22-6).toFixed(1)} ${(Math.cos(a)*36).toFixed(1)} ${(Math.sin(a)*36+8).toFixed(1)}" stroke="#2C7A4B" stroke-width="3" fill="none"/>`}return g+"</g>"};
+    h+=buriti(30,120)+buriti(640,110)+buriti(118,92);
+    const copa=(y,c,k,cl)=>{let d=`M0 210 L0 ${y}`;for(let x=0;x<=680;x+=34){d+=` Q ${x+17} ${y-14-((x*k)%15)} ${x+34} ${y-((x*3+k)%7)}`}return `<path class="${cl}" d="${d} L680 210Z" fill="${c}"/>`};
+    h+=copa(168,"#3FA45D",7,"folha")+copa(186,"#1F7A47",11,"folha b")+copa(200,"#0F5132",5,"folha");
+    s.innerHTML=h})();
+  // ---- os pássaros em polígonos (como a logomarca), quatro espécies
+  const ESPECIES={canide:["#1F5FD1","#3F8BEA","#F2C230","#F59E0B"],vermelha:["#D62828","#F25C3B","#2F80ED","#F2C230"],tucano:["#1D1D1D","#3A3A3A","#FFFFFF","#F28C28"],beija:["#0E8F6E","#22C38E","#7EE0B5","#0B6E54"]};
+  function passaro(cores){const [a,b,c,d]=cores;return `<svg viewBox="0 0 64 44" width="64" height="44"><polygon points="8,22 22,14 30,22 20,28" fill="${b}"/><polygon points="22,14 40,12 30,22" fill="${a}"/>
+    <polygon points="30,22 40,12 46,24" fill="${c}"/><polygon points="20,28 30,22 46,24 34,32" fill="${d}"/><polygon points="40,12 50,10 46,18" fill="${a}"/><polygon points="50,10 60,13 50,15" fill="${d}"/>
+    <g class="asa"><polygon points="24,16 34,2 38,14" fill="${a}"/><polygon points="34,2 44,6 38,14" fill="${b}"/></g><polygon points="2,26 8,22 14,26 6,30" fill="${a}"/></svg>`}
+  const voos=[["canide",4,26],["vermelha",14,34],["tucano",2,41],["beija",20,22]];   // a faixa do céu, acima do título
+  voos.forEach(([e,top,dur],i)=>{const d=document.createElement("div");d.className="voo";d.style.top=top+"px";d.style.animationDuration=dur+"s";d.style.animationDelay=(-i*7)+"s";d.innerHTML=passaro(ESPECIES[e]);$("mn").appendChild(d)});
+  // ---- a navegação incorporada (os botões antigos do topo saem)
+  document.querySelectorAll("#mn .placa").forEach(b=>b.addEventListener("click",()=>{const v=b.dataset.ir;if(v==="inicio"&&window.irInicio)irInicio();else if(window.modulo)modulo(v)}));
+  // ---- o sol: o calendário
+  const C=340,R0=96,RMAX=268;
+  const pol=(r,a)=>[C+r*Math.cos(a),C+r*Math.sin(a)];
+  const ang=(d,nd)=>-Math.PI/2+(d-1)/nd*2*Math.PI;
+  function arco(r,a0,a1){const [x0,y0]=pol(r,a0),[x1,y1]=pol(r,a1);const g=(a1-a0)>Math.PI?1:0;return `M${x0.toFixed(1)} ${y0.toFixed(1)} A${r} ${r} 0 ${g} 1 ${x1.toFixed(1)} ${y1.toFixed(1)}`}
   function desenhar(){
-    const ini=`${ano}-${String(mes+1).padStart(2,"0")}-01`,nd=new Date(ano,mes+1,0).getDate(),fim=`${ano}-${String(mes+1).padStart(2,"0")}-${nd}`;
-    $("eld-mes").textContent=`${MES[mes][0].toUpperCase()+MES[mes].slice(1)} de ${ano}`;
-    const doMes=IT.filter(x=>x.fim&&x.fim>=ini&&(x.inicio||x.fim)<=fim&&!(x.inicio&&x.inicio>x.fim));   // o prazo inconsistente fica fora
+    const nd=new Date(ano,mes+1,0).getDate(),mm=String(mes+1).padStart(2,"0"),ini=`${ano}-${mm}-01`,fim=`${ano}-${mm}-${nd}`;
+    $("mn-mes").textContent=`${MES[mes]} de ${ano}`;
+    const doMes=IT.filter(x=>x.fim&&x.fim>=ini&&(x.inicio||x.fim)<=fim&&!(x.inicio&&x.inicio>x.fim));
     const g={};doMes.forEach(x=>{const a=area(x);(g[a]=g[a]||[]).push(x)});Object.values(g).forEach(xs=>xs.sort((a,b)=>a.fim.localeCompare(b.fim)));
-    const ordem=Object.keys(g).sort((a,b)=>(a==="GER")-(b==="GER")||g[a][0].fim.localeCompare(g[b][0].fim));
-    $("eld-band").innerHTML=ordem.map(a=>`<button class="estandarte ${oculto.has(a)?"off":""}" data-a="${a}"><i style="background:${AREAS[a][1]}"></i>${E(AREAS[a][0])}<em>${g[a].length}</em></button>`).join("");
-    $("eld-band").querySelectorAll(".estandarte").forEach(b=>b.addEventListener("click",()=>{const a=b.dataset.a;oculto.has(a)?oculto.delete(a):oculto.add(a);desenhar()}));
-    $("eld-conta").textContent=`${doMes.length} oportunidade(s) no mês · até 10 por área, as que terminam antes primeiro`;
-    const col=d=>((d-1)/nd*100);
-    let h=`<div class="rot-cab">Oportunidade</div><div class="dias cab-dias" style="--nd:${nd}">`;
-    for(let d=1;d<=nd;d++){const dt=new Date(ano,mes,d),iso=dt.toISOString().slice(0,10);h+=`<div class="dia ${dt.getDay()%6===0?"fds":""} ${iso===HJ?"hoje":""}">${d}<small>${SEM[dt.getDay()]}</small></div>`}
-    h+="</div>";
-    if(!ordem.length)h+=`<div class="vazio" style="grid-column:1/-1">Nenhuma inscrição com data neste mês.</div>`;
-    ordem.filter(a=>!oculto.has(a)).forEach(a=>{const [nome,cor]=AREAS[a],xs=g[a];
-      h+=`<div class="area" style="color:${cor}">${E(nome)} <small>${xs.length} oportunidade(s)</small><span class="fio"></span></div>`;
-      xs.slice(0,10).forEach((x,i)=>{const d1=Math.max(1,(x.inicio&&x.inicio>=ini)?+x.inicio.slice(8,10):1),d2=x.fim<=fim?+x.fim.slice(8,10):nd;
-        const l=col(d1),w=Math.max(100/nd,(d2-d1+1)/nd*100),dur=Math.max(3,(d2-d1+1)*.45);
-        const per=`${x.inicio?x.inicio.slice(8,10)+"/"+x.inicio.slice(5,7)+" → ":"até "}${x.fim.slice(8,10)}/${x.fim.slice(5,7)}`;
-        h+=`<div class="lin ${sel===x.id?"sel":""}" data-id="${E(x.id)}"><div class="nome" style="border-left-color:${sel===x.id?"":cor}55"><span>${E(x.titulo)}</span><small>${E(x.uf&&x.uf!=="BR"?x.uf:"nacional")} · ${per}</small></div>
-          <div class="faixa" style="--nd:${nd}"><div class="balsa" style="left:${l.toFixed(2)}%;width:${w.toFixed(2)}%;background:linear-gradient(90deg,${cor},color-mix(in srgb,${cor} 72%,#FFE7A6));border-top:2px solid rgba(246,217,138,.85);--dur:${dur.toFixed(1)}s" title="${E(x.titulo)} — ${per}"><span class="po"></span><b>${E(per)}</b></div></div></div>`});
-      if(xs.length>10)h+=`<div class="mais" onclick="mostra('editais')">+ ${xs.length-10} em ${E(nome)} — ver nas Oportunidades Abertas ›</div>`;});
-    const gr=$("eld-grade");gr.innerHTML=h;gr.classList.toggle("focado",!!sel);
-    // o feixe do dia de hoje
-    if(HJ>=ini&&HJ<=fim){const f=document.createElement("div");f.className="feixe";const dd=+HJ.slice(8,10);
-      requestAnimationFrame(()=>{const c=gr.querySelector(".cab-dias");if(!c)return;const r=c.getBoundingClientRect(),g0=gr.getBoundingClientRect();f.style.left=(r.left-g0.left+r.width*((dd-.5)/nd))+"px";gr.appendChild(f)});}
-    gr.querySelectorAll(".lin").forEach(el=>el.addEventListener("click",()=>abrir(el.dataset.id)));
+    const ordem=Object.keys(g).sort((a,b)=>(a==="GER")-(b==="GER")||g[b].length-g[a].length);
+    const vis=ordem.filter(a=>!oculto.has(a));
+    $("mn-est").innerHTML=ordem.map(a=>`<button class="est ${oculto.has(a)?"off":""}" type="button" data-a="${a}"><i style="background:${AREAS[a][1]}"></i>${E(AREAS[a][0])}<em>${g[a].length}</em></button>`).join("");
+    $("mn-est").querySelectorAll(".est").forEach(b=>b.onclick=()=>{const a=b.dataset.a;oculto.has(a)?oculto.delete(a):oculto.add(a);desenhar()});
+    const dia=x=>({d1:Math.max(1,(x.inicio&&x.inicio>=ini)?+x.inicio.slice(8,10):1),d2:x.fim<=fim?+x.fim.slice(8,10):nd});
+    ULT={nd,mm,ini,fim,g,vis,dia,doMes};desenharSol();terracos();
   }
+  let ULT=null;
+  function desenharSol(){if(!ULT)return;const {nd,mm,g,vis,dia,doMes}=ULT;
+    // o sol
+    const nA=Math.max(1,vis.length),larg=Math.min(15,(RMAX-R0-14)/nA);let s=`<defs><radialGradient id="mnSol" cx=".42" cy=".38"><stop offset="0" stop-color="#FFF6CF"/><stop offset=".55" stop-color="#FFD24D"/><stop offset="1" stop-color="#E39A12"/></radialGradient>
+      <filter id="mnLuz"><feGaussianBlur stdDeviation="3"/></filter></defs>`;
+    s+=`<g class="raios">`;for(let i=0;i<48;i++){const a=i/48*2*Math.PI,[x1,y1]=pol(RMAX+24,a-.03),[x2,y2]=pol(RMAX+(i%2?56:80),a),[x3,y3]=pol(RMAX+24,a+.03);s+=`<polygon points="${x1},${y1} ${x2},${y2} ${x3},${y3}" fill="#F6C343" opacity="${i%2?.45:.75}"/>`}s+=`</g>`;
+    s+=`<circle cx="${C}" cy="${C}" r="${RMAX+18}" fill="#FFF6D9" stroke="#E9B53B" stroke-width="2"/>`;
+    for(let d=1;d<=nd;d++){const dt=new Date(ano,mes,d),a=ang(d,nd)+Math.PI/nd,fds=dt.getDay()%6===0,ehHoje=`${ano}-${mm}-${String(d).padStart(2,"0")}`===HJ;
+      const [x1,y1]=pol(R0+4,ang(d,nd)),[x2,y2]=pol(RMAX+18,ang(d,nd));s+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#E9D29A" stroke-width=".8"/>`;
+      if(fds)s+=`<path d="${arco(RMAX+9,ang(d,nd),ang(d+1,nd))}" stroke="#F4E3B2" stroke-width="18" fill="none"/>`;
+      const [tx,ty]=pol(RMAX+38,a);s+=`<text x="${tx}" y="${ty+4}" text-anchor="middle" font-family="Georgia,serif" font-size="${ehHoje?15:12}" font-weight="700" fill="${ehHoje?"#B03A2E":fds?"#9C8655":"#5A3B06"}">${d}</text>`;
+      if(ehHoje){const [hx,hy]=pol(R0,a),[hx2,hy2]=pol(RMAX+24,a);s+=`<line x1="${hx}" y1="${hy}" x2="${hx2}" y2="${hy2}" stroke="#E2523F" stroke-width="3" stroke-linecap="round" filter="url(#mnLuz)" opacity=".8"/><line x1="${hx}" y1="${hy}" x2="${hx2}" y2="${hy2}" stroke="#C0392B" stroke-width="1.6"/>`}}
+    vis.forEach((a,k)=>{const r=R0+16+k*larg+larg/2,cor=AREAS[a][1],xs=g[a];
+      s+=`<circle cx="${C}" cy="${C}" r="${r}" fill="none" stroke="${cor}" stroke-opacity=".10" stroke-width="${larg-2}"/>`;
+      for(let d=1;d<=nd;d++){const n=xs.filter(x=>{const q=dia(x);return d>=q.d1&&d<=q.d2}).length;if(!n)continue;
+        s+=`<path class="anel" data-a="${a}" d="${arco(r,ang(d,nd)+.004,ang(d+1,nd)-.004)}" stroke="${cor}" stroke-opacity="${Math.min(1,.28+n*.18).toFixed(2)}" stroke-width="${larg-2}" fill="none"><title>${E(AREAS[a][0])} · dia ${d}: ${n} oportunidade(s)</title></path>`}});
+    // a oportunidade em foco: o arco aceso e o cometa de ouro que o percorre
+    const alvo=IT.find(x=>x.id===(foco||sel));
+    if(alvo&&vis.includes(area(alvo))){const k=vis.indexOf(area(alvo)),r=R0+16+k*larg+larg/2,q=dia(alvo),p=arco(r,ang(q.d1,nd),ang(q.d2+1,nd)-.004);
+      s+=`<path id="mnFoco" d="${p}" stroke="#FFF2B0" stroke-width="${larg+5}" stroke-linecap="round" fill="none" filter="url(#mnLuz)"/><path d="${p}" stroke="${AREAS[area(alvo)][1]}" stroke-width="${larg}" stroke-linecap="round" fill="none"/>
+        <circle r="6" fill="#FFF7CC" stroke="#E9B53B" stroke-width="2"><animateMotion dur="${(2+(q.d2-q.d1+1)*.18).toFixed(1)}s" repeatCount="indefinite"><mpath href="#mnFoco"/></animateMotion></circle>`}
+    s+=`<circle cx="${C}" cy="${C}" r="${R0}" fill="url(#mnSol)" stroke="#C88A12" stroke-width="2"/>`;
+    s+=alvo?`<foreignObject x="${C-84}" y="${C-56}" width="168" height="112"><div xmlns="http://www.w3.org/1999/xhtml" style="font:700 12.5px/1.3 system-ui;color:#4A2F02;text-align:center;display:flex;align-items:center;justify-content:center;height:112px;overflow:hidden">${E(alvo.titulo).slice(0,96)}</div></foreignObject>`
+      :`<text x="${C}" y="${C-8}" text-anchor="middle" font-family="Georgia,serif" font-size="24" font-weight="700" fill="#4A2F02">${MES[mes]}</text><text x="${C}" y="${C+18}" text-anchor="middle" font-size="13" fill="#6B4A0E">${doMes.length} oportunidades</text>`;
+    $("mn-sol").innerHTML=s;
+    $("mn-sol").querySelectorAll(".anel").forEach(p=>p.onclick=()=>{const a=p.dataset.a;const t=$("mn-ter").querySelector(`.terraco[data-a="${a}"]`);if(t)t.scrollIntoView({behavior:"smooth",block:"center"})});
+  }
+  function terracos(){const {nd,ini,fim,g,vis,dia}=ULT;
+    // os terraços
+    $("mn-ter").innerHTML=vis.length?vis.map(a=>{const xs=g[a],cor=AREAS[a][1];
+      return `<div class="terraco" data-a="${a}"><h4><i style="background:${cor}"></i>${E(AREAS[a][0])}<small>${xs.length} no mês</small></h4>`+xs.slice(0,10).map(x=>{const q=dia(x),hj=+HJ.slice(8,10);
+        return `<div class="op ${sel===x.id?"sel":""}" data-id="${E(x.id)}"><div class="t">${E(x.titulo)}</div><div class="p"><span>${E(x.uf&&x.uf!=="BR"?x.uf:"nacional")}</span><b>${x.inicio?E(x.inicio.slice(8,10)+"/"+x.inicio.slice(5,7))+" → ":"até "}${E(x.fim.slice(8,10)+"/"+x.fim.slice(5,7))}</b></div>
+          <div class="trilha" style="--nd:${nd}"><i style="left:${((q.d1-1)/nd*100).toFixed(2)}%;width:${((q.d2-q.d1+1)/nd*100).toFixed(2)}%;background:linear-gradient(90deg,${cor},#E9B53B)"></i>${HJ>=ini&&HJ<=fim?`<u style="left:${((hj-.5)/nd*100).toFixed(2)}%"></u>`:""}</div></div>`}).join("")
+        +(xs.length>10?`<span class="mais" data-ed>+ ${xs.length-10} em ${E(AREAS[a][0])} — ver nas Oportunidades Abertas ›</span>`:"")+`</div>`}).join("")
+      :`<div class="vazio">Nenhuma inscrição com data neste mês.</div>`;
+    $("mn-ter").querySelectorAll(".op").forEach(o=>{o.onmouseenter=()=>{foco=o.dataset.id;solSo()};o.onmouseleave=()=>{foco=null;solSo()};o.onclick=()=>abrir(o.dataset.id)});
+    $("mn-ter").querySelectorAll("[data-ed]").forEach(m=>m.onclick=()=>mostra("editais"));
+  }
+  let _t=null;const solSo=()=>{clearTimeout(_t);_t=setTimeout(desenharSol,30)};   // o cursor redesenha só o sol
   async function abrir(id){sel=id;desenhar();const x=IT.find(y=>y.id===id);if(!x)return;
     const lid=(x.livro_vinculado&&x.livro_vinculado.id)||x.id;let f=null;try{const r=await fetch("dados/cartorio/"+encodeURIComponent(lid)+".json?v="+Date.now());if(r.ok)f=await r.json()}catch(e){}
-    const its=(f&&f.itens)||{},q=its["Requisitos"];
+    const its=(f&&f.itens)||{},q=its["Requisitos"],cor=AREAS[area(x)][1];
     const ORD=["Objeto","Prazo de inscrição","Valor","Órgão / financiador","Esfera","Território","Área de atuação","Modalidade","Resultado","Prazo de recurso","Anexos"];
-    $("eld-codice").innerHTML=`<button class="fechar" type="button" aria-label="Fechar">×</button>
-      <div class="meta3">${E(AREAS[area(x)][0])} · ${x.codigo?E(x.codigo):""}</div><h3>${E(x.titulo)}</h3>
-      <div class="meta3">${E(x.orgao||"")}${x.orgao?" · ":""}inscrição ${x.inicio?"de "+E(x.inicio.split("-").reverse().join("/"))+" ":""}até ${E(x.fim.split("-").reverse().join("/"))}</div>
-      <div class="quem"><b>Quem pode participar</b>${q?E(q.valor):"ainda não lido no edital — o Interceptador está procurando"}${q&&q.pagina?` <span class="meta3">(pág. ${E(q.pagina)})</span>`:""}</div>
-      <div class="itens">${ORD.map(k=>{const v=its[k];return v?`<div class="it"><b>${E(k)}</b>${E(v.valor)}${v.trecho?`<q>${E(String(v.trecho).slice(0,160))}</q>`:""}</div>`:`<div class="it"><b>${E(k)}</b><span class="meta3">não certificado</span></div>`}).join("")}</div>
-      <div class="acoes">${x.link_oficial?`<a class="pri" href="${E(x.link_oficial)}" target="_blank" rel="noopener">Abrir o edital</a>`:""}<button type="button" data-ed>Ver nas Oportunidades Abertas</button><button type="button" data-fc>Fechar</button></div>`;
-    $("eld-livro").classList.add("on");
-    const fechar=()=>{$("eld-livro").classList.remove("on");sel=null;desenhar()};
-    $("eld-codice").querySelector(".fechar").onclick=fechar;$("eld-codice").querySelector("[data-fc]").onclick=fechar;
-    $("eld-codice").querySelector("[data-ed]").onclick=()=>{fechar();mostra("editais")};
-    $("eld-livro").onclick=e=>{if(e.target===$("eld-livro"))fechar()}}
-  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("eld-livro").classList.contains("on")){$("eld-livro").classList.remove("on");sel=null;desenhar()}});
-  $("eld-ant").onclick=()=>{mes--;if(mes<0){mes=11;ano--}desenhar()};$("eld-seg").onclick=()=>{mes++;if(mes>11){mes=0;ano++}desenhar()};
-  // ligar e desligar com a página (o céu só se move com a página à vista)
+    $("mn-placa").innerHTML=`<div class="topo-l">${passaro(ESPECIES[["canide","vermelha","tucano","beija"][Math.abs([...id].reduce((a,c)=>a+c.charCodeAt(0),0))%4]])}
+      <div><div class="m"><b style="color:${cor}">●</b> ${E(AREAS[area(x)][0])}${x.codigo?" · "+E(x.codigo):""}</div><h3>${E(x.titulo)}</h3>
+      <div class="m">${E(x.orgao||"")}${x.orgao?" · ":""}inscrição ${x.inicio?"de "+E(x.inicio.split("-").reverse().join("/"))+" ":""}até ${E(x.fim.split("-").reverse().join("/"))}</div></div>
+      <button class="fechar" type="button" aria-label="Fechar">×</button></div>
+      <div class="corpo-l"><div class="quem"><b>Quem pode participar</b>${q?E(q.valor):"ainda não lido no edital — o Interceptador está procurando"}${q&&q.pagina?` <span style="color:#8A6A2A">(pág. ${E(q.pagina)})</span>`:""}</div>
+      <div class="itens">${ORD.map(k=>{const v=its[k];return `<div class="it"><b>${E(k)}</b>${v?E(v.valor)+(v.trecho?`<q>${E(String(v.trecho).slice(0,170))}</q>`:""):'<span style="color:#9A8F7A">não certificado</span>'}</div>`}).join("")}</div>
+      <div class="acoes">${x.link_oficial?`<a class="pri" href="${E(x.link_oficial)}" target="_blank" rel="noopener">Abrir o edital</a>`:""}<button type="button" data-ed>Ver nas Oportunidades Abertas</button><button type="button" data-fc>Fechar</button></div></div>`;
+    $("mn-livro").classList.add("on");
+    const fechar=()=>{$("mn-livro").classList.remove("on");sel=null;desenhar()};
+    $("mn-placa").querySelector(".fechar").onclick=fechar;$("mn-placa").querySelector("[data-fc]").onclick=fechar;$("mn-placa").querySelector("[data-ed]").onclick=()=>{fechar();mostra("editais")};
+    $("mn-livro").onclick=e=>{if(e.target===$("mn-livro"))fechar()}}
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("mn-livro").classList.contains("on")){$("mn-livro").classList.remove("on");sel=null;desenhar()}});
+  $("mn-ant").onclick=()=>{mes--;if(mes<0){mes=11;ano--}desenhar()};$("mn-seg").onclick=()=>{mes++;if(mes>11){mes=0;ano++}desenhar()};
   const sec=document.getElementById("v-calendario");
-  new MutationObserver(()=>{const vis=sec&&!sec.classList.contains("oculto")&&sec.offsetParent!==null;document.body.classList.toggle("eld-ativo",!!vis);
-    if(vis&&!raf&&!parado){medir();raf=requestAnimationFrame(quadro)} if(!vis&&raf){cancelAnimationFrame(raf);raf=null} if(vis)desenhar()}).observe(document.body,{attributes:true,subtree:true,attributeFilter:["class"]});
-  addEventListener("resize",()=>{if(raf)medir()});
+  new MutationObserver(()=>{const v=sec&&!sec.classList.contains("oculto")&&sec.offsetParent!==null;document.body.classList.toggle("mn-ativo",!!v)}).observe(document.body,{attributes:true,subtree:true,attributeFilter:["class"]});
   fetch("dados/fluxo_oportunidades.json?v="+Date.now()).then(r=>r.ok?r.json():null).then(F=>{IT=Object.values((F&&F.itens_por_uf)||{}).flat().filter(x=>x.fim);desenhar()}).catch(()=>{});
 })();
 </script>
