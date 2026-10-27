@@ -120,3 +120,16 @@ def test_o_quadro_motores_de_busca_tem_os_motores_do_sistema():
         assert campo in s, campo
     previstos = json.loads(Path("config/motores_previstos.json").read_text(encoding="utf-8"))["motores"]
     assert len(previstos) >= 45  # todos os motores entram na lista
+
+
+def test_a_pagina_inicial_calendario_por_tema_e_os_quadros_em_sequencia():
+    """27/10/2026 (titular): o Calendário de Editais absorve as Novas oportunidades, por área temática e o prazo mais
+    próximo primeiro; o Calendário, o FAROL e a Fila prioritária um embaixo do outro, na largura inteira."""
+    from pathlib import Path
+
+    p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
+    assert "const linhas=_ord.map(k=>`<div class=\\"gc-tema\\">" in p and "_prox(a).localeCompare(_prox(b))" in p
+    assert ".inicio-grade{display:grid;grid-template-columns:1fr;" in p and "grid-template-columns:1fr;gap:18px;margin-top:18px" in p
+    i, j, k = p.index("Calendário de Editais</h3>"), p.index('<div class="painel-tit farol">'), p.index("Fila prioritári")
+    assert i < j < k                                                                            # o Calendário, o FAROL e a Fila
+    assert '<div hidden style="display:none"><div class="novas" id="fi-novas">' in p             # as Novas absorvidas

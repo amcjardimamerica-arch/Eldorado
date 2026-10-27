@@ -68,10 +68,13 @@ box-shadow:0 10px 26px #00000022;min-width:190px;flex-direction:column;gap:3px}
 @media(max-width:900px){.hero-arte img{content:url(arte/cabecalho-leve.jpg)}}
 /* ===== demais elementos da página inicial ===== */
 #v-inicio{margin-top:0}
-.inicio-grade{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:16px;align-items:start}
+.inicio-grade{display:grid;grid-template-columns:1fr;gap:18px;margin-top:16px;align-items:start}   /* 27/10/2026: um embaixo do outro */
 .inicio-grade > .cartao{min-width:0}
 /* calendário (esquerda) e fila (direita) chegam às margens da tela */
-.faixa-larga{width:100vw;margin-left:calc(50% - 50vw);display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;align-items:start}
+.faixa-larga{width:100vw;margin-left:calc(50% - 50vw);padding-inline:clamp(14px,2vw,32px);box-sizing:border-box;display:grid;grid-template-columns:1fr;gap:18px;margin-top:18px;align-items:start}
+.faixa-larga table{width:100%}
+.gc-tema{display:flex;align-items:baseline;gap:10px;margin:12px 0 2px;padding:6px 2px 4px;border-bottom:1px solid var(--linha);font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:#C05E00}
+.gc-tema small{font-weight:500;text-transform:none;letter-spacing:0;color:var(--suave)}
 .faixa-larga > .cartao{min-width:0;border-radius:14px}
 .faixa-larga > .cartao:first-child{border-top-left-radius:0;border-bottom-left-radius:0;border-left:0}
 .faixa-larga > .cartao:last-child{border-top-right-radius:0;border-bottom-right-radius:0;border-right:0}
@@ -1009,29 +1012,10 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <option value="encerrados">Inscrições encerradas</option></select></div>
 </div>
 <div class="mets" id="fi-mets"></div>
-<div style="font-weight:700;font-size:13.5px;margin:4px 0 2px;color:#C05E00">Novas oportunidades</div>
-<div class="novas" id="fi-novas"></div>
-<div class="novas" id="fi-possiveis"></div>
+<div hidden style="display:none"><div class="novas" id="fi-novas"></div><div class="novas" id="fi-possiveis"></div></div>
 <span class="verlink" onclick="modulo('eldorado');mostra('editais')">Ver todas oportunidades ›</span>
 </div>
 
-<div class="cartao">
-<div class="painel-tit farol"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#0B4EA2" stroke-width="1.8"><path d="M9.5 21h5l-.9-11h-3.2L9.5 21z"/><path d="M10.4 6.5h3.2l.4 3.5h-4l.4-3.5z"/><path d="M12 2.2v2.2M7 4.4l1.7 1.3M17 4.4l-1.7 1.3"/><path d="M8 21h8"/></svg><span>FAROL <span style="font-weight:500;color:var(--suave)">— Inteligência de decisão</span></span></div>
-<div class="farol-grade" style="margin-top:12px">
-<div class="met"><div class="donut" id="fa-donut" style="--p:0"><b id="fa-aderencia">—</b></div>
-<div class="r" style="margin-top:6px">Aderência média<br><span id="fa-adnota" style="text-transform:none;letter-spacing:0"></span></div></div>
-<div class="met"><div class="v" id="fa-pend" style="color:#0B4EA2">—</div>
-<div class="r">Requisitos pendentes</div>
-<button style="margin-top:8px;font-size:11.5px" onclick="modulo('eldorado');mostra('editais')">Ver requisitos</button></div>
-<div class="met" style="text-align:left">
-<div class="r" style="margin-bottom:6px">Status de decisões</div>
-<div id="fa-status" style="font-size:12.5px"></div>
-<span class="verlink" onclick="modulo('farol')" style="font-size:11.5px">Ver todas ›</span></div>
-</div>
-<div style="font-weight:700;font-size:13.5px;margin:14px 0 2px;color:#0B4EA2">Documentação pronta para protocolo</div>
-<div id="fa-docs"></div>
-<span class="verlink" onclick="modulo('farol')">Ver todos os casos ›</span>
-</div>
 </div>
 
 <div class="faixa-larga">
@@ -1048,6 +1032,23 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <div id="g-possiveis" style="margin-top:10px"></div>
 <div class="meta" id="g-cobertura" style="margin-top:8px;border-left:3px solid var(--linha);padding-left:10px"></div>
 <span class="verlink" onclick="modulo('eldorado');mostra('calendario')">Ver calendário completo ›</span>
+</div>
+<div class="cartao">
+<div class="painel-tit farol"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#0B4EA2" stroke-width="1.8"><path d="M9.5 21h5l-.9-11h-3.2L9.5 21z"/><path d="M10.4 6.5h3.2l.4 3.5h-4l.4-3.5z"/><path d="M12 2.2v2.2M7 4.4l1.7 1.3M17 4.4l-1.7 1.3"/><path d="M8 21h8"/></svg><span>FAROL <span style="font-weight:500;color:var(--suave)">— Inteligência de decisão</span></span></div>
+<div class="farol-grade" style="margin-top:12px">
+<div class="met"><div class="donut" id="fa-donut" style="--p:0"><b id="fa-aderencia">—</b></div>
+<div class="r" style="margin-top:6px">Aderência média<br><span id="fa-adnota" style="text-transform:none;letter-spacing:0"></span></div></div>
+<div class="met"><div class="v" id="fa-pend" style="color:#0B4EA2">—</div>
+<div class="r">Requisitos pendentes</div>
+<button style="margin-top:8px;font-size:11.5px" onclick="modulo('eldorado');mostra('editais')">Ver requisitos</button></div>
+<div class="met" style="text-align:left">
+<div class="r" style="margin-bottom:6px">Status de decisões</div>
+<div id="fa-status" style="font-size:12.5px"></div>
+<span class="verlink" onclick="modulo('farol')" style="font-size:11.5px">Ver todas ›</span></div>
+</div>
+<div style="font-weight:700;font-size:13.5px;margin:14px 0 2px;color:#0B4EA2">Documentação pronta para protocolo</div>
+<div id="fa-docs"></div>
+<span class="verlink" onclick="modulo('farol')">Ver todos os casos ›</span>
 </div>
 <div class="cartao">
 <div class="painel-tit" style="color:var(--tinta)"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#23272E" stroke-width="1.9" stroke-linecap="round"><path d="M4 6.5h16M4 12h11M4 17.5h7"/></svg>Fila prioritária
@@ -3567,10 +3568,18 @@ function desenhaGantt(){
     const antes=!a||a<I, depois=x.fim>Fm, semIni=!x.inicio;
     return `<span class="gc-b${semIni?" sem-ini":""}" style="left:${col(a0).toFixed(2)}%;width:${((b0-a0+1)/nd*100).toFixed(2)}%"
       title="${esc(x.titulo)} — inscrições ${x.inicio?"de "+br(x.inicio)+" ":""}até ${br(x.fim)}${semIni?" (início não informado; desde a publicação)":""}">${antes?"◂ ":""}${x.inicio?ddmmG(x.inicio)+" → ":""}até ${ddmmG(x.fim)}${depois?" ▸":""}</span>`;};
-  const linhas=noMes.map(x=>`<div class="gc-l">
+  /* 27/10/2026 (titular): o calendário absorve as "Novas oportunidades": separado por ÁREA TEMÁTICA (a mesma do Radar)
+     e, em cada tema, primeiro o prazo mais próximo (a abertura, se ainda não abriu; o fim, se já está aberta) */
+  const _prox=x=>{const i0=String(x.inicio||""),f0=String(x.fim||"9999");return i0>hojeISO?i0:f0;};
+  const _rot=Object.fromEntries(_AREAS_RADAR.map(([k,n])=>[k,n]));const _t={};
+  noMes.forEach(x=>{const k=areaRadar(x);(_t[k]=_t[k]||[]).push(x);});
+  Object.values(_t).forEach(xs=>xs.sort((a,b)=>_prox(a).localeCompare(_prox(b))));
+  const _ord=Object.keys(_t).sort((a,b)=>(a==="outras")-(b==="outras")||_prox(_t[a][0]).localeCompare(_prox(_t[b][0])));
+  const linhaDe=x=>`<div class="gc-l">
       <div class="gc-r" title="${esc(x.titulo)}${x.orgao?" — "+esc(x.orgao):""}"><a href="${esc(x.link_oficial)}" target=_blank rel="noopener noreferrer">${esc(String(x.titulo).slice(0,58))}</a>
         <small>${x.uf?esc(x.uf):"nacional"}${x.inspecionada?" · confirmado pelo Interceptador":""}</small></div>
-      <div class="gc-t">${barra(x)}${mesAtual?`<span class="gc-hoje" style="left:${(col(HOJE.getDate())+50/nd).toFixed(2)}%"></span>`:""}</div></div>`).join("");
+      <div class="gc-t">${barra(x)}${mesAtual?`<span class="gc-hoje" style="left:${(col(HOJE.getDate())+50/nd).toFixed(2)}%"></span>`:""}</div></div>`;
+  const linhas=_ord.map(k=>`<div class="gc-tema">${esc(_rot[k]||"Outras áreas")}<small>${_t[k].length} oportunidade(s) · o prazo mais próximo primeiro</small></div>`+_t[k].map(linhaDe).join("")).join("");
   $("g-corpo").innerHTML=`<div class="gc"><div class="gc-l gc-cab"><div class="gc-r"></div><div class="gc-t gc-dias">${cab}</div></div>
     ${linhas||`<div class="meta" style="padding:14px 4px">Nenhuma inscrição com data confirmada e site oficial neste mês.</div>`}</div>`;
   const outros=conf.length-noMes.length, poss=((F.mapa||{}).total||{}).possiveis;
