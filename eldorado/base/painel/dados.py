@@ -234,6 +234,11 @@ def _motores_de_busca(sis: Sistema) -> list[dict]:
         novos: dict[str, list] = defaultdict(list)
         for lid, (d, tit, url) in primeira.get(mid, {}).items():
             novos[d].append((lid, tit, url))
+        if mid == "piloto-interceptador":                 # 27/10/2026: ele não descobre, completa: o dia conta os livros investigados
+            novos = defaultdict(list)
+            for r in sis.bib.execute("SELECT t.livro_id, MIN(t.em) AS em, l.titulo, l.link_oficial FROM tentativa t JOIN livro l ON l.id = t.livro_id "
+                                     "WHERE t.ferramenta LIKE 'abordagem %' GROUP BY t.livro_id, substr(t.em, 1, 10)"):
+                novos[_data_br(r["em"])].append((r["livro_id"], r["titulo"], r["link_oficial"]))
         dias = []
         d0 = ini
         while d0 <= fim:
@@ -367,6 +372,9 @@ def _achados_por_motor(sis: Sistema) -> dict[str, dict]:
             for r in sis.bib.execute("SELECT * FROM achado WHERE motor = ? ORDER BY encontrado_em DESC LIMIT 5", (mid,))
         ]
         out[mid] = {"total_registros": total, "total_unicas": unicas, "ultimas": ult}
+        # 27/10/2026: os pilotos gravam com o nome curto; a linha do quadro procura pelo id do motor
+        if mid in ("espiao", "interceptador"):
+            out["piloto-aberto" if mid == "espiao" else "piloto-interceptador"] = out[mid]
     return out
 
 
