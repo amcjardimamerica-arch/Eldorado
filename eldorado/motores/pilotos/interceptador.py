@@ -136,7 +136,7 @@ def carregar(con: sqlite3.Connection, ids: list[str]) -> list[Livro]:
     return [por_id[i] for i in ids if i in por_id]
 
 
-VEZ_DA_IA = __import__("threading").BoundedSemaphore(2)   # quantos voos usam a IA ao mesmo tempo (26/10/2026)
+VEZ_DA_IA = __import__("threading").BoundedSemaphore(1)   # quantos voos usam a IA ao mesmo tempo (27/10/2026: 1; a passagem também precisa dela)
 
 
 class Interceptador:

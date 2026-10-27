@@ -95,9 +95,10 @@ class LeitorPDF:
             except Exception:  # noqa: BLE001 — sem a biblioteca, segue o aviso de OCR
                 pass
         if r.precisa_ocr and self.ocr is not None:
+            repetidos = _faixas_repetidas(paginas)
             for n in r.precisa_ocr:
                 img = doc[n - 1].get_pixmap(dpi=200).tobytes("png")
-                r.paginas[n - 1] = Pagina(n, self.ocr.texto(img))
+                r.paginas[n - 1] = Pagina(n, _sem_repetidos(self.ocr.texto(img), repetidos))   # o OCR passa pelo mesmo expurgo
             r.alertas.append(f"{len(r.precisa_ocr)} página(s) lida(s) por OCR")
         elif r.precisa_ocr:
             r.alertas.append(f"{len(r.precisa_ocr)} página(s) digitalizada(s) aguardando OCR (extra 'ocr' desligado)")
@@ -116,3 +117,22 @@ class LeitorPDF:
             r.paginas.append(Pagina(i + 1, doc[i].get_textpage().get_text_range()))
         r.leitor = "pdf (pypdfium2, reserva)"
         return r
+
+
+def _norma(linha: str) -> str:
+    return " ".join(re.sub(r"\d+", "#", linha.lower()).split())
+
+
+def _faixas_repetidas(paginas: list) -> set[str]:
+    """As linhas do cabeçalho e do rodapé que se repetem em 2 ou mais páginas (com os números generalizados): o carimbo de
+    impressão, 'Página N de M'. 26/10/2026: o texto da página lida pelo OCR escapava do expurgo, que roda antes dele."""
+    from collections import Counter
+    vistas: Counter = Counter()
+    for h, blocos in paginas:
+        faixa = {_norma(ln) for b in blocos if b.y0 < 0.12 * h or b.y1 > 0.88 * h for ln in b.texto.splitlines() if ln.strip()}
+        vistas.update(faixa)
+    return {ln for ln, n in vistas.items() if n >= 2 and len(ln) >= 4}
+
+
+def _sem_repetidos(texto: str, repetidos: set[str]) -> str:
+    return "\n".join(ln for ln in texto.splitlines() if _norma(ln) not in repetidos) if repetidos else texto

@@ -99,8 +99,13 @@ def test_governador_segura_os_degraus_pesados(site):
         e.buscar(f"{url}/captcha.html")
 
 
-def test_degrau_indisponivel_e_pulado_com_aviso(site):
+def test_degrau_indisponivel_e_pulado_com_aviso(site, monkeypatch):
+    import sys
+
     url, _ = site
+    # 26/10/2026: o teste simula a ausência do Camoufox (na Qualidade ele está instalado e o teste dependia da máquina)
+    monkeypatch.setitem(sys.modules, "camoufox", None)
+    monkeypatch.setitem(sys.modules, "camoufox.sync_api", None)
     e, _ = escada([DegrauNavegador("camoufox"), DegrauLightpanda(binario="/nao/existe"), DegrauAPI()])
     r = e.buscar(f"{url}/ok.html")
     assert r.degrau.startswith("1 ·") and sum("indisponivel" in a for a in r.alertas) == 2

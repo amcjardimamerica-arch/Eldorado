@@ -106,9 +106,30 @@ def _familia(dados: Path, cer: sqlite3.Connection) -> tuple[str | None, float, i
             pol.reaprender(cer)
             _politica["espiao"] = p = {"pol": pol, "em": time.monotonic()}
     ctx = contexto(datetime.now(timezone.utc), opcoes)
-    alvo, prob = p["pol"].ordenar(ctx)[0]
+    # 27/10/2026: SORTEIA pela distribuição (como desenhado); pegar sempre a primeira fez 399 de 421 missões irem a uma
+    # família só, quase todas sem achado. A família cansada (10 missões seguidas sem achado) descansa 30 minutos.
+    import random
+    agora_m = time.monotonic()
+    lista = [(a, pr) for a, pr in p["pol"].ordenar(ctx) if _cansaco.get(a, {}).get("descansa_ate", 0) <= agora_m] or p["pol"].ordenar(ctx)
+    pesos = [max(pr, 0.0) for _a, pr in lista]
+    alvo, prob = random.choices(lista, weights=pesos)[0] if sum(pesos) > 0 else random.choice(lista)
     p["ultimo_ctx"] = (ctx, p["pol"].opcoes, prob)
     return alvo, prob, p["pol"].aprendidas
+
+
+_cansaco: dict[str, dict] = {}
+CANSACO_MISSOES, DESCANSO_S = 10, 30 * 60
+
+
+def registrar_missao(familia: str | None, achados: int) -> None:
+    """O resultado da missão do Espião: 10 seguidas sem achado deixam a família 30 minutos de fora."""
+    if not familia:
+        return
+    with _trava:
+        c = _cansaco.setdefault(familia, {"zeros": 0, "descansa_ate": 0.0})
+        c["zeros"] = 0 if achados else c["zeros"] + 1
+        if c["zeros"] >= CANSACO_MISSOES:
+            c["zeros"], c["descansa_ate"] = 0, time.monotonic() + DESCANSO_S
 
 
 def autorizar(piloto: str, dados: Path, diario, parar: threading.Event, alvo: str | None = None, titulo: str = "") -> dict[str, Any] | None:

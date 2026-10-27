@@ -25,14 +25,49 @@ ENTREGAS: dict[str, queue.Queue] = {"interceptador": queue.Queue(), "espiao": qu
 SITUACAO: dict[str, dict[str, Any]] = {"interceptador": {}, "espiao": {}}
 
 
+PASTA_ENTREGAS = Path("dados/pilotos")   # 27/10/2026: os achados dos pilotos num arquivo; a passagem cortada não os perde
+_TRAVA_ENTREGAS = threading.Lock()
+
+
+def entregar(piloto: str, achado: Any) -> None:
+    """O achado do voo: na fila e no arquivo do piloto (sobrevive à passagem cortada e ao reinício do processo)."""
+    import json as _json
+    ENTREGAS[piloto].put(achado)
+    try:
+        import msgspec
+        linha = _json.dumps(msgspec.to_builtins(achado), ensure_ascii=False)
+    except Exception:  # noqa: BLE001
+        return
+    with _TRAVA_ENTREGAS:
+        PASTA_ENTREGAS.mkdir(parents=True, exist_ok=True)
+        with open(PASTA_ENTREGAS / f"{piloto}.jsonl", "a", encoding="utf-8") as f:
+            f.write(linha + "\n")
+
+
 def entregas(piloto: str) -> list[dict[str, Any]]:
-    """O que os voos trouxeram desde a última passagem (o nó do piloto devolve isto)."""
+    """O que os voos trouxeram desde a última passagem (o nó do piloto devolve isto): a fila e, se a fila se perdeu (a
+    passagem cortada, o processo reiniciado), o arquivo. O arquivo é esvaziado na entrega."""
+    import json as _json
     saida = []
     while True:
         try:
             saida.append(ENTREGAS[piloto].get_nowait())
         except queue.Empty:
-            return saida
+            break
+    arq = PASTA_ENTREGAS / f"{piloto}.jsonl"
+    with _TRAVA_ENTREGAS:
+        if arq.exists():
+            linhas = [ln for ln in arq.read_text(encoding="utf-8").splitlines() if ln.strip()]
+            arq.unlink()
+            if len(linhas) > len(saida):                   # a fila se perdeu: o arquivo tem tudo
+                try:
+                    import msgspec
+
+                    from ..nucleo.contratos import Achado
+                    saida = [msgspec.convert(_json.loads(ln), Achado) for ln in linhas]
+                except Exception:  # noqa: BLE001 — o arquivo ilegível não derruba a passagem
+                    pass
+    return saida
 
 
 def sinal(diario, piloto: str, motivo: str) -> None:
@@ -47,7 +82,7 @@ def _contexto(dados: Path, diario):
     return _contexto_pilotos({"dados": str(dados), "modulos": "config/modulos.toml", "intervalo_s": 1.0}, SimpleNamespace(diario=diario))
 
 
-PARALELOS_INTERCEPTADOR = 5   # 5 livros em paralelo (titular, 25/10/2026), cada um autorizado pelo Comandante (a carga até 85%)
+PARALELOS_INTERCEPTADOR = 2   # 27/10/2026 (o conselho): de 5 para 2 — com 5 vagas a IA e a memória sufocaram a passagem, que parou de terminar
 
 
 class _Vaga:
@@ -114,7 +149,7 @@ def _voo_interceptador(vaga: _Vaga, parar: threading.Event, lv_id: str, base: di
                 return                                    # completou sem o plano de voo (a tentativa fica registrada)
         _quem, achados = c["enc"].encaminhar(livros[0], time.monotonic() + tempo_livro_s)
         for a in (achados if isinstance(achados, list) else [achados] if achados else []):
-            ENTREGAS["interceptador"].put(a)
+            entregar("interceptador", a)
     finally:
         vaga.feitos += 1
         if base:
@@ -125,7 +160,7 @@ def _voo_interceptador(vaga: _Vaga, parar: threading.Event, lv_id: str, base: di
 def paralelos_agora() -> int:
     """Quantos voos o Comandante libera agora: 5; com a memória acima de 85% há mais de 10 minutos, 2 (26/10/2026)."""
     from ..comandante.pilotos import pressao
-    return 2 if pressao() >= 600 else PARALELOS_INTERCEPTADOR
+    return 1 if pressao() >= 600 else PARALELOS_INTERCEPTADOR
 
 def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_s: float = 180) -> None:
     """O Interceptador: 5 livros em paralelo, pelo plano de voo, sem parar. A fila: primeiro a de completar a base (as
@@ -214,8 +249,10 @@ def voar_espiao(dados: Path, diario, parar: threading.Event, orcamento_s: float 
                 achados, _ = missoes(dados_, con, escada, True, orcamento_s, diario=diario, familia=aut["alvo"])
                 enc = Encaminhamento(con, diario, registro, None)
                 for a in achados:
-                    ENTREGAS["espiao"].put(enc._entregar(a, "espiao"))
+                    entregar("espiao", enc._entregar(a, "espiao"))
                 sinal(diario, "espiao", f"pousou: {len(achados)} achado(s)")
+                from ..comandante.pilotos import registrar_missao
+                registrar_missao(aut["alvo"], len(achados))
             finally:
                 con.close()
                 pousou("espiao")
@@ -234,6 +271,11 @@ def conferir_sempre(dados: Path, diario, parar: threading.Event) -> None:
     from ..comandante.pilotos import carga
     while not parar.wait(60):
         carga()                                                   # a pressão de memória medida a cada minuto (26/10/2026)
+        try:                                                      # 27/10/2026: sem depender do fim da passagem
+            from ..comandante.organizar import _fechar_recusas_do_codigo
+            _fechar_recusas_do_codigo(Path(dados), diario)
+        except Exception:  # noqa: BLE001
+            pass
         try:
             cer = sqlite3.connect(f"file:{dados / 'cerebro.db'}?mode=ro", uri=True)
             try:

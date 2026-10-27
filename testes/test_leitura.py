@@ -36,8 +36,11 @@ def pdf_edital(paginas=4, cabecalho_com_valor=False, imagem_na_ultima=True) -> b
     return doc.tobytes()
 
 
-def test_pdf_expurgo_seguro_ocr_e_valores_preservados():
-    r = REG.ler(pdf_edital(), "edital.pdf")
+def test_pdf_expurgo_seguro_ocr_e_valores_preservados(monkeypatch):
+    from eldorado.motores.leitura import ocr as _ocr
+
+    monkeypatch.setattr(_ocr, "disponivel", lambda: None)    # 26/10/2026: o caminho sem OCR, de propósito (não depende da máquina)
+    r = padrao().ler(pdf_edital(), "edital.pdf")
     assert r.tipo == "pdf" and len(r.paginas) == 4
     assert r.precisa_ocr == [4]                                                       # escaneada: só tinha o carimbo de impressão
     texto = r.texto
@@ -45,6 +48,22 @@ def test_pdf_expurgo_seguro_ocr_e_valores_preservados():
     assert texto.count("R$ 50.000,00") == 3 and texto.count("02.167.849/0001-80") == 3
     assert "CPF 123.456.789-09" in texto                                              # íntegro, como publicado na fonte
     assert any("aguardando OCR" in a for a in r.alertas)
+
+
+def test_a_pagina_lida_pelo_ocr_passa_pelo_mesmo_expurgo():
+    """26/10/2026: o texto da página escaneada, lido pelo OCR, voltava com o cabeçalho e o rodapé repetidos."""
+    from eldorado.motores.leitura.leitores import Registro
+    from eldorado.motores.leitura.pdf import LeitorPDF
+
+    class OCRdeEnsaio:
+        def texto(self, img):
+            return "07/10/2026 10:00 SEI/GO - 123456 - Edital\nAnexo assinado digitalmente\nPágina 4 de 4"
+
+    reg = Registro()
+    reg.registrar(LeitorPDF(ocr=OCRdeEnsaio()))
+    r = reg.ler(pdf_edital(), "edital.pdf")
+    p4 = r.paginas[3].texto
+    assert "SEI/GO" not in p4 and "Página 4 de 4" not in p4 and "Anexo assinado digitalmente" in p4
 
 
 def test_bloco_do_cabecalho_com_valor_nunca_sai():

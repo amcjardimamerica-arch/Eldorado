@@ -66,18 +66,18 @@ def test_a_base_a_fila_as_duas_tentativas_e_o_chrome(bancos, gravador, tmp_path)
     assert b.execute("SELECT situacao FROM livro WHERE id = 'N'").fetchone()[0] == "excluido"  # o não validado: excluído
 
 
-def test_o_interceptador_voa_5_livros_em_paralelo():
+def test_o_interceptador_voa_2_livros_em_paralelo():
     from eldorado.base.cerebro import pilotos_permanentes as PP
 
-    assert PP.PARALELOS_INTERCEPTADOR == 5
+    assert PP.PARALELOS_INTERCEPTADOR == 2
     import tomllib
 
     c = tomllib.loads(Path("config/cargos.toml").read_text(encoding="utf-8"))
-    assert c["cargo"]["interceptador"]["vagas"] == [2, 3, 4, 5, 6] and c["servidor"]["vagas"] == 7
+    assert c["cargo"]["interceptador"]["vagas"] == [2, 3] and c["servidor"]["vagas"] == 4
     from eldorado.base.nucleo.ia import IA
 
-    assert {IA("http://x", cargo_nome="interceptador", vaga=k).cargo["vaga"] for k in range(5)} == {2, 3, 4, 5, 6}  # cada voo na sua vaga
-    assert "-np 7" in Path(".github/workflows/eldorado.yml").read_text(encoding="utf-8")
+    assert {IA("http://x", cargo_nome="interceptador", vaga=k).cargo["vaga"] for k in range(2)} == {2, 3}  # cada voo na sua vaga
+    assert "-np 4" in Path(".github/workflows/eldorado.yml").read_text(encoding="utf-8")
 
 
 def test_o_prevoo_completa_sem_a_ia(tmp_path):

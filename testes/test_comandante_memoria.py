@@ -21,12 +21,12 @@ def test_a_pressao_reduz_os_voos_e_pede_o_reinicio(monkeypatch):
     CP.REINICIAR.clear()
     CP._pressao.update(carga_desde=None, memoria_desde=None)
     CP.carga()
-    assert PP.paralelos_agora() == 5  # sem pressão: 5 voos
+    assert PP.paralelos_agora() == 2  # sem pressão: 5 voos
     mem[0] = 90.0
     CP.carga()
     relogio[0] += 11 * 60
     CP.carga()
-    assert PP.paralelos_agora() == 2 and not CP.REINICIAR.is_set()  # 10 minutos acima de 85%: 2 voos
+    assert PP.paralelos_agora() == 1 and not CP.REINICIAR.is_set()  # 10 minutos acima de 85%: 1 voo
     mem[0] = 96.0
     CP.carga()
     relogio[0] += 16 * 60
@@ -34,7 +34,7 @@ def test_a_pressao_reduz_os_voos_e_pede_o_reinicio(monkeypatch):
     assert CP.REINICIAR.is_set()  # 15 minutos acima de 92%: o reinício
     mem[0] = 60.0
     CP.carga()
-    assert PP.paralelos_agora() == 5
+    assert PP.paralelos_agora() == 2
     CP.REINICIAR.clear()
 
 

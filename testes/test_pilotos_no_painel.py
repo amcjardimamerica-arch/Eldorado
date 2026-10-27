@@ -28,7 +28,7 @@ def test_cada_vaga_do_interceptador_voa_no_seu_proprio_fio(monkeypatch, tmp_path
 
     monkeypatch.setattr(PP, "_voo_interceptador", voo)
     monkeypatch.setattr(PP, "_contexto", lambda dados, diario: (dados, Con(), None, None))
-    monkeypatch.setattr(PP, "paralelos_agora", lambda: 5)
+    monkeypatch.setattr(PP, "paralelos_agora", lambda: 2)
     import eldorado.base.comandante.biblioteca as CB
     import eldorado.motores.pilotos.interceptador as I
 
@@ -46,11 +46,11 @@ def test_cada_vaga_do_interceptador_voa_no_seu_proprio_fio(monkeypatch, tmp_path
     t = threading.Thread(target=PP.voar_interceptador, args=(tmp_path, Diario(), parar), daemon=True)
     t.start()
     fim = time.time() + 10
-    while time.time() < fim and sum(len(v) for v in usados.values()) < 5:
+    while time.time() < fim and sum(len(v) for v in usados.values()) < 2:
         time.sleep(0.1)
     time.sleep(0.5)
     parar.set()
-    assert len(usados) == 5  # as 5 vagas voaram
+    assert len(usados) == 2  # as 5 vagas voaram
     assert all(len(fios) == 1 for fios in usados.values())  # cada uma sempre no seu fio
 
 
@@ -131,7 +131,7 @@ def test_no_maximo_dois_voos_usam_a_ia_ao_mesmo_tempo():
     """26/10/2026: com as 5 vagas pedindo à IA juntas, cada pedido levava os 4 minutos inteiros e os voos ficavam presos."""
     from eldorado.motores.pilotos import interceptador as I
 
-    assert I.VEZ_DA_IA._initial_value == 2
+    assert I.VEZ_DA_IA._initial_value == 1
     src = Path("eldorado/motores/pilotos/interceptador.py").read_text(encoding="utf-8")
     assert "VEZ_DA_IA.acquire(timeout=90)" in src and '"adiada"' in src
 
@@ -147,3 +147,31 @@ def test_os_testes_nao_acessam_a_internet():
     with pytest.raises(OSError, match="rede externa bloqueada"):
         s.connect(("93.184.216.34", 80))
     s.close()
+
+
+def test_os_achados_dos_pilotos_sobrevivem_num_arquivo(tmp_path, monkeypatch):
+    """27/10/2026: a fila só na memória perdia os achados a cada passagem cortada."""
+    from eldorado.base.nucleo.contratos import Achado
+
+    monkeypatch.setattr(PP, "PASTA_ENTREGAS", tmp_path)
+    a = Achado(id="x1", motor="espiao", encontrado_em="2026-10-27", link_divulgacao="https://exemplo.org/e", titulo="Edital", dados={})
+    PP.entregar("espiao", a)
+    while not PP.ENTREGAS["espiao"].empty():  # a fila se perdeu (o corte)
+        PP.ENTREGAS["espiao"].get_nowait()
+    voltou = PP.entregas("espiao")
+    assert [x.id for x in voltou] == ["x1"] and not (tmp_path / "espiao.jsonl").exists()
+
+
+def test_a_familia_e_sorteada_e_descansa_quando_cansa():
+    """27/10/2026: pegar sempre a primeira fez 399 de 421 missões irem a uma família só."""
+    import eldorado.base.comandante.pilotos as CP
+
+    CP._cansaco.clear()
+    for _ in range(CP.CANSACO_MISSOES):
+        CP.registrar_missao("internacional_espanhol", 0)
+    assert CP._cansaco["internacional_espanhol"]["descansa_ate"] > 0  # 10 sem achado: descansa
+    CP.registrar_missao("empresa_semente", 2)
+    assert CP._cansaco["empresa_semente"]["zeros"] == 0
+    src = Path("eldorado/base/comandante/pilotos.py").read_text(encoding="utf-8")
+    assert "random.choices(lista, weights=pesos)" in src  # sorteia pela distribuição
+    CP._cansaco.clear()

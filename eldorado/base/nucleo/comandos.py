@@ -2,6 +2,7 @@
 
 Códigos de saída: 0 deu certo · 1 falhou · 75 adiado (sistema pausado ou sem folga na máquina).
 """
+
 from __future__ import annotations
 
 import json
@@ -42,6 +43,7 @@ APRENDIZADO = typer.Option(None, help="APRENDIZADO-ELDORADO.json (o aprendizado 
 def memoria_buscar(consulta: str, config: Path = CONFIG, limite: int = 10):
     """Busca na memória do Aprendizado (o FTS5 do Arquivo do Cérebro), por relevância (25/10/2026)."""
     from ..aprendizado.memoria import buscar
+
     _c, dados, _e = _cfg(config)
     con = sqlite3.connect(f"file:{dados / 'cerebro.db'}?mode=ro", uri=True)
     linhas, ms = buscar(con, consulta, limite)
@@ -54,6 +56,7 @@ def memoria_buscar(consulta: str, config: Path = CONFIG, limite: int = 10):
 def ponte_br_teste(url: str = "https://cese.org.br/wp-json/wp/v2/edital"):
     """Testa a ponte da HostGator (o IP brasileiro) com uma página da lista (25/10/2026)."""
     from ...motores.acesso import ponte_br
+
     r = ponte_br.diagnostico(url)
     typer.echo(f"ponte BR: {r}")
     if r.get("configurada") and not r.get("ok"):
@@ -67,6 +70,7 @@ def importar_empresas_e0(arquivo: Path, config: Path = CONFIG):
 
     from ..especial.importar_e0 import importar
     from .eventos import Diario
+
     _c, dados, eventos = _cfg(config)
     bancos = abrir_bancos(dados)
     conta = importar(bancos["biblioteca"], _json.loads(arquivo.read_text(encoding="utf-8")), Diario(eventos, "importacao-eldorado0"))
@@ -79,7 +83,7 @@ def iniciar(config: Path = CONFIG):
     _, dados, eventos = _cfg(config)
     eventos.mkdir(parents=True, exist_ok=True)
     bancos = abrir_bancos(dados)
-    for nome, con in ((n, c) for n, c in bancos.items() if n != "especial"):   # 'especial' é a própria Biblioteca
+    for nome, con in ((n, c) for n, c in bancos.items() if n != "especial"):  # 'especial' é a própria Biblioteca
         v = con.execute("PRAGMA user_version").fetchone()[0]
         ok = con.execute("PRAGMA integrity_check").fetchone()[0]
         typer.echo(f"{nome}: versão {v}, integridade {ok}")
@@ -120,8 +124,12 @@ def _rodar(workflow: Path, config: Path, entrada: Optional[str], execucao: Optio
 
 
 @app.command()
-def executar(workflow: Path, entrada: Optional[str] = typer.Option(None, help="Itens de entrada, em JSON"), config: Path = CONFIG,
-             peso: str = typer.Option("leve", help="leve ou pesado")):
+def executar(
+    workflow: Path,
+    entrada: Optional[str] = typer.Option(None, help="Itens de entrada, em JSON"),
+    config: Path = CONFIG,
+    peso: str = typer.Option("leve", help="leve ou pesado"),
+):
     """Executa um workflow."""
     _rodar(workflow, config, entrada, None, peso)
 
@@ -138,8 +146,10 @@ def maquina(config: Path = CONFIG):
     c, dados, eventos = _cfg(config)
     g = Governador(medidor_psutil(str(dados if dados.exists() else ".")), limite=c.limites.carga_maxima)
     leitura = g.ler()
-    typer.echo(f"processador {leitura.processador:.0%} · memória {leitura.memoria:.0%} · disco {leitura.disco:.0%} · carga {leitura.carga:.0%} "
-               f"(limite {g.limite:.0%}) · paralelismo permitido {g.paralelismo()}")
+    typer.echo(
+        f"processador {leitura.processador:.0%} · memória {leitura.memoria:.0%} · disco {leitura.disco:.0%} · carga {leitura.carga:.0%} "
+        f"(limite {g.limite:.0%}) · paralelismo permitido {g.paralelismo()}"
+    )
     for parte, p in (("biblioteca", dados / "biblioteca.db"), ("cerebro", dados / "cerebro.db"), ("eventos", eventos)):
         typer.echo(f"  {parte}: {tamanho(p) / 1e6:.2f} MB")
 
@@ -159,6 +169,7 @@ def migrar(origem: Path, config: Path = CONFIG, lote: int = 500, aprendizado: Op
 
     from ..migracao.importar_eldorado0 import Importador, amostra, conferir, lotes
     from ..migracao.importar_eldorado0 import aprendizado as aprendizado_motores
+
     _, dados, _ = _cfg(config)
     bancos = abrir_bancos(dados)
     try:
@@ -184,10 +195,15 @@ def migrar(origem: Path, config: Path = CONFIG, lote: int = 500, aprendizado: Op
 
 
 @app.command()
-def expurgar(motivo: str, config: Path = CONFIG, validacao: bool = typer.Option(False, "--validacao", help="os livros que a validação marcou como expurgados"),
-             livro: Optional[list[str]] = None):
+def expurgar(
+    motivo: str,
+    config: Path = CONFIG,
+    validacao: bool = typer.Option(False, "--validacao", help="os livros que a validação marcou como expurgados"),
+    livro: Optional[list[str]] = None,
+):
     """ANÁLISE EXTERNA: apaga fisicamente livros e tudo o que depende deles, com o registro do expurgo (a automação não apaga)."""
     from .expurgo_externo import expurgar as _expurgar
+
     _, dados, _ = _cfg(config)
     b = abrir_bancos(dados)
     try:
@@ -227,6 +243,7 @@ def sondar(urls: list[str], anotar: bool = typer.Option(False, "--anotar", help=
     from ...motores.acesso.api import DegrauAPI
     from ...motores.acesso.escada import Bloqueado, Escada
     from ...motores.acesso.leve import DegrauLeve
+
     escada = Escada([DegrauAPI(), DegrauLeve()], intervalo_padrao=0.5, tentativas=1, tempo_limite=25)
     for url in urls:
         try:
@@ -246,6 +263,7 @@ def sondar(urls: list[str], anotar: bool = typer.Option(False, "--anotar", help=
 def painel(config: Path = CONFIG, saida: Path = Path("docs")):
     """Gera o painel (a página e os dados das visões) na pasta publicada pelo GitHub Pages."""
     from ..painel.visoes import publicar
+
     _, dados, _ = _cfg(config)
     r = publicar(dados, saida, config.parent)
     typer.echo(f"painel gerado em {saida}: {r['livros']} livros, {r['abertas']} abertas, dados com {r['bytes'] / 1e6:.1f} MB")
@@ -276,6 +294,7 @@ def lote(config: Path = CONFIG, saida: Path = Path("verificacao/lotes")):
     from datetime import date
 
     from ..cartorio.analise_externa import gerar_lote
+
     _, dados, _ = _cfg(config)
     con = sqlite3.connect(f"file:{dados / 'biblioteca.db'}?mode=ro", uri=True)
     lt = gerar_lote(con, date.today())
@@ -292,6 +311,7 @@ def vereditos(arquivo: Path, config: Path = CONFIG):
 
     from ..cartorio.analise_externa import importar
     from .eventos import Diario
+
     c, dados, eventos = _cfg(config)
     diario = Diario(eventos, "analise-externa")
     con = sqlite3.connect(f"file:{dados / 'biblioteca.db'}?mode=ro", uri=True)
@@ -309,6 +329,7 @@ def inventario(raiz: Path = Path(".")):
     import json
 
     from ..cerebro.inventario import gerar, mapa
+
     cat = gerar(raiz)
     (raiz / "config/arquivos.json").write_text(json.dumps(cat, ensure_ascii=False, indent=1), encoding="utf-8")
     (raiz / "MAPA-DO-SISTEMA.md").write_text(mapa(cat), encoding="utf-8")
@@ -326,6 +347,7 @@ def missao(config: Path = CONFIG, quantas: int = 1, anotar: bool = typer.Option(
     from ...motores.acesso.escada import Escada
     from ...motores.acesso.leve import DegrauLeve
     from ..cerebro.pilotos import missoes
+
     _, dados, _ = _cfg(config)
     con = sqlite3.connect(f"file:{dados / 'biblioteca.db'}?mode=ro", uri=True) if (dados / "biblioteca.db").exists() else sqlite3.connect(":memory:")
     escada = Escada([DegrauAPI(), DegrauLeve()], intervalo_padrao=1.0, tentativas=1, tempo_limite=25)
@@ -359,9 +381,11 @@ def gravar(urls: list[str], pasta: Path = PASTA_GRAVAR, navegador: bool = NAVEGA
     from ...motores.acesso.escada import Escada
     from ...motores.acesso.leve import DegrauLeve
     from ...motores.canal.motor import hoje_local, preencher
+
     degraus = [DegrauAPI(), DegrauLeve()]
-    if navegador:                                   # a página renderizada: o navegador que não denuncia robôs (degrau 4)
+    if navegador:  # a página renderizada: o navegador que não denuncia robôs (degrau 4)
         from ...motores.acesso.navegador import DegrauNavegador
+
         degraus = [DegrauNavegador("patchright"), *degraus]
     escada = Escada(degraus, intervalo_padrao=1.0, tentativas=2, tempo_limite=60 if navegador else 40)
     pasta.mkdir(parents=True, exist_ok=True)
@@ -374,8 +398,13 @@ def gravar(urls: list[str], pasta: Path = PASTA_GRAVAR, navegador: bool = NAVEGA
             r = escada.buscar(url)
             ext = "json" if "json" in (r.tipo or "") else "pdf" if "pdf" in (r.tipo or "") else "html"
             (pasta / f"{nome}.{ext}").write_bytes(r.conteudo)
-            indice[url] = {"arquivo": f"{nome}.{ext}", "status": r.status, "tipo": r.tipo, "bytes": len(r.conteudo),
-                           "gravado_em": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+            indice[url] = {
+                "arquivo": f"{nome}.{ext}",
+                "status": r.status,
+                "tipo": r.tipo,
+                "bytes": len(r.conteudo),
+                "gravado_em": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            }
             typer.echo(f"gravado {nome}.{ext} · {len(r.conteudo)} bytes · {url}")
         except Exception as e:  # noqa: BLE001 — a recusa também é registrada (vira aprendizado do motor)
             indice[url] = {"erro": f"{type(e).__name__}: {str(e)[:300]}", "gravado_em": datetime.now(timezone.utc).isoformat(timespec="seconds")}
@@ -394,7 +423,8 @@ def otimizar_ia(se_antigo_dias: int = DIAS_OTIMIZAR):
 
     from ...motores.pilotos import otimizacao as O
     from ..nucleo.ia import IA
-    marca = O.ARQUIVO.with_name("otimizacao_tentada.txt")       # a tentativa registrada: uma vez por semana, termine ou não
+
+    marca = O.ARQUIVO.with_name("otimizacao_tentada.txt")  # a tentativa registrada: uma vez por semana, termine ou não
     for f in (O.ARQUIVO, marca):
         if f.exists() and time.time() - f.stat().st_mtime < se_antigo_dias * 86400:
             typer.echo("a otimização está em dia (feita ou tentada nesta semana)")
@@ -406,6 +436,7 @@ def otimizar_ia(se_antigo_dias: int = DIAS_OTIMIZAR):
         typer.echo(f"o modelo local não está disponível em {ia.url}: a otimização fica para a próxima")
         return
     import dspy
+
     exemplos = O.exemplos_validados(sqlite3.connect("dados/biblioteca.db"))
     escolhidos = O.compilar(exemplos, lm=dspy.LM("openai/local", api_base=f"{ia.url}/v1", api_key="local", temperature=0.1, max_tokens=400))
     typer.echo(f"{len(escolhidos)} exemplo(s) escolhido(s) de {len(exemplos)} certidões validadas")
@@ -419,6 +450,7 @@ DIAS_ANALISE = typer.Option(7, help="os últimos N dias")
 def consultar(porta: int = PORTA_CONSULTA):
     """A consulta da Biblioteca pelo Datasette (só leitura), com consultas prontas."""
     from ...banco.consulta import servir
+
     servir(porta)
 
 
@@ -428,6 +460,7 @@ def analise(dias: int = DIAS_ANALISE):
     import json
 
     from ...banco.analise import relatorio
+
     typer.echo(json.dumps(relatorio(Path("dados"), dias), ensure_ascii=False, indent=1, default=str)[:20000])
 
 
@@ -435,6 +468,7 @@ def analise(dias: int = DIAS_ANALISE):
 def manutencao():
     """A manutenção dos bancos (sqlite-utils: analisar e otimizar)."""
     from ...banco.manutencao import otimizar
+
     typer.echo(f"otimizados: {otimizar()}")
 
 
@@ -442,6 +476,7 @@ def manutencao():
 def consolidar_bancos():
     """Os bancos paralelos para dentro do Cérebro, uma vez (a regra: só o Cérebro tem banco paralelo, o de aprendizado)."""
     from ...banco.consolidar import consolidar
+
     typer.echo(consolidar())
 
 
@@ -449,6 +484,7 @@ def consolidar_bancos():
 def copia_drive():
     """A cópia dos bancos e dos eventos no Drive (aguarda a pasta: os segredos do Drive)."""
     from ...banco.drive import copiar
+
     typer.echo(copiar())
 
 
@@ -459,16 +495,21 @@ def travas():
     import json
     import subprocess
     import sys
+
     reg = json.loads(Path("config/regras_titular.json").read_text(encoding="utf-8"))
     try:
         import pytest  # noqa: F401
-    except ImportError:                               # a ferramenta do portão ausente: alarme, mas o sistema não para (R18)
+    except ImportError:  # a ferramenta do portão ausente: alarme, mas o sistema não para (R18)
         typer.echo("::error::o portão não pôde rodar: o pytest não está instalado (o grupo 'testes'); o ciclo segue, sem a conferência das regras")
         return
     alvos = sorted({t for r in reg["regras"] for t in r.get("travas", [])}) + ["testes/test_regras_titular.py"]
-    try:                                              # o tempo máximo do portão (24/10/2026: uma trava lenta segurou o ciclo)
-        r = subprocess.run([sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider", "-W", "ignore", "--durations=6", *alvos],
-                           capture_output=True, text=True, timeout=480)
+    try:  # o tempo máximo do portão (24/10/2026: uma trava lenta segurou o ciclo)
+        r = subprocess.run(
+            [sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider", "-W", "ignore", "--durations=6", *alvos],
+            capture_output=True,
+            text=True,
+            timeout=480,
+        )
     except subprocess.TimeoutExpired as e:
         saida = (e.stdout or b"").decode() if isinstance(e.stdout, bytes) else (e.stdout or "")
         typer.echo(f"::error::o portão passou de 8 minutos (infraestrutura): o ciclo segue sem a conferência completa · {saida[-600:]}")
@@ -481,7 +522,7 @@ def travas():
         for f in falhas:
             quebrada = [x["id"] + " — " + x["regra"][:90] for x in reg["regras"] if any(t.split("::")[0] in f for t in x.get("travas", []))]
             typer.echo(f"::error::regra da titular quebrada: {f[:300]} {quebrada}")
-        if not falhas:                                   # o erro que não é falha de teste (a coleta, a preparação): a saída inteira
+        if not falhas:  # o erro que não é falha de teste (a coleta, a preparação): a saída inteira
             ult = " | ".join(x for x in (r.stdout + r.stderr).splitlines()[-12:] if x.strip())
             typer.echo(f"::error::o portão não terminou: {ult[:900]}")
         typer.echo(r.stdout[-3000:])
@@ -496,6 +537,7 @@ PORTA_API = typer.Option(8000, help="a porta da API")
 def api(porta: int = PORTA_API):
     """A API do sistema (FastAPI): a saúde, os motores, os livros com as certidões e a história, as abertas."""
     from ..painel.api import servir
+
     servir(porta)
 
 
@@ -506,6 +548,7 @@ PASTA_PAINEL = typer.Option(Path("_site"), help="onde gerar o site do painel")
 def site(saida: Path = PASTA_PAINEL):
     """O site do painel: a página, com os dados gerados do sistema novo (nenhum dado do Eldorado0)."""
     from ..painel.dados import gerar
+
     typer.echo(gerar(saida))
 
 
@@ -517,6 +560,7 @@ app.add_typer(motor_app, name="motor")
 def motor_ficha(id: str):
     """O que o estudo definiu para o motor e o aprendizado do Eldorado0 (só para aprender)."""
     from ...motores.canal.fabrica import ficha
+
     typer.echo(ficha(id))
 
 
@@ -524,6 +568,7 @@ def motor_ficha(id: str):
 def motor_criar(id: str):
     """O esqueleto da configuração, com a identidade, os alvos, o aprendizado e a métrica preenchidos."""
     from ...motores.canal.fabrica import criar
+
     typer.echo(f"criado: {criar(id)} — decida as rotas pela sondagem e valide com: eldorado motor validar {id}")
 
 
@@ -531,6 +576,7 @@ def motor_criar(id: str):
 def motor_validar(id: str):
     """O que a orientação exige: aceito pelo registro, conforme o estudo, duas rotas, os alvos do estudo e métrica."""
     from ...motores.canal.fabrica import validar
+
     r = validar(id)
     for nome, ok, det in r:
         typer.echo(f"  {'✓' if ok else '✗'} {nome}: {det}")
@@ -547,14 +593,19 @@ def motor_experimentar(id: str, saida: Path = SAIDA_EXPERIMENTO):
     import tempfile
 
     from ...motores.canal.motor import MotorCanal
+
     with tempfile.TemporaryDirectory() as tmp:
         m = MotorCanal(Path("eldorado/motores/canal/config") / f"{id}.toml", dados=Path(tmp) / "m", ponte=Path(tmp) / "p")
         achados = list(m.buscar(None))
         nomes = [d.nome for d in m.escada.degraus]
-        r = {"motor": id, "achados": len(achados), "relatorio": m.relatorio,
-             "degraus_que_serviram": {dom: nomes[i] if i < len(nomes) else i for dom, i in m.escada.aprendido.items()},
-             "degraus_montados": nomes,
-             "entregues": [{"titulo": a.titulo, "divulgacao": a.link_divulgacao, "documento": bool(a.documento)} for a in achados[:200]]}
+        r = {
+            "motor": id,
+            "achados": len(achados),
+            "relatorio": m.relatorio,
+            "degraus_que_serviram": {dom: nomes[i] if i < len(nomes) else i for dom, i in m.escada.aprendido.items()},
+            "degraus_montados": nomes,
+            "entregues": [{"titulo": a.titulo, "divulgacao": a.link_divulgacao, "documento": bool(a.documento)} for a in achados[:200]],
+        }
     texto = json.dumps(r, ensure_ascii=False, indent=1)
     if saida:
         saida.parent.mkdir(parents=True, exist_ok=True)
@@ -566,15 +617,19 @@ def motor_experimentar(id: str, saida: Path = SAIDA_EXPERIMENTO):
 def motor_sondar(id: str, anotar: bool = typer.Option(False, "--anotar")):
     """Sonda todas as rotas do motor (fontes, alvos e documentos do programa); precisa de internet."""
     from ...motores.canal.fabrica import enderecos
+
     sondar(enderecos(id), anotar)
 
 
 @app.command()
-def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = CONFIG,
-               limite_min: float = typer.Option(320, help="duração desta execução; perto do limite, grava e passa a vez à continuação"),
-               gravar_min: float = typer.Option(30, help="grava o trabalho no repositório a cada tantos minutos"),
-               espera_max_min: float = typer.Option(15, help="sem fila, olha de novo no máximo a cada tantos minutos"),
-               gravar: bool = typer.Option(True, help="gravar no repositório (desligue fora do GitHub)")):
+def permanente(
+    workflow: Path = Path("workflows/passagem.toml"),
+    config: Path = CONFIG,
+    limite_min: float = typer.Option(320, help="duração desta execução; perto do limite, grava e passa a vez à continuação"),
+    gravar_min: float = typer.Option(30, help="grava o trabalho no repositório a cada tantos minutos"),
+    espera_max_min: float = typer.Option(15, help="sem fila, olha de novo no máximo a cada tantos minutos"),
+    gravar: bool = typer.Option(True, help="gravar no repositório (desligue fora do GitHub)"),
+):
     """FUNCIONAMENTO PERMANENTE (titular, 22/10/2026): sem horário de trabalho e descanso. Uma passagem depois da outra
     enquanto houver fila; sem fila, espera só até a próxima ação prevista pelo Cérebro e volta."""
     import os
@@ -583,19 +638,21 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
     from datetime import datetime, timezone
 
     from ..cerebro.fila import fila_do_sistema
+
     _, dados, eventos = _cfg(config)
     inicio = ultimo = time.monotonic()
     ciclo = 0
 
     import threading
+
     trava_gravar = threading.Lock()
-    marca = Path(".inicio_ciclo")                                 # a gravação copia o que o ciclo escreveu desde aqui
+    marca = Path(".inicio_ciclo")  # a gravação copia o que o ciclo escreveu desde aqui
     if gravar and not marca.exists():
         marca.write_text(datetime.now(timezone.utc).isoformat(), encoding="utf-8")
         os.utime(marca, (time.time() - 5, time.time() - 5))
 
     def gravar_agora(esperar: bool = False) -> None:
-        if gravar and trava_gravar.acquire(blocking=esperar):          # uma gravação de cada vez (a final espera a vez)
+        if gravar and trava_gravar.acquire(blocking=esperar):  # uma gravação de cada vez (a final espera a vez)
             try:
                 r = subprocess.run(["bash", "scripts/gravar.sh", "false"], capture_output=True, text=True, timeout=600)
                 typer.echo(f"  gravação: {(r.stdout or r.stderr).strip()[-200:] or 'ok'}")
@@ -613,6 +670,7 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
         try:
             from ..cerebro.governador import Governador, medidor_psutil
             from ..nucleo.eventos import Diario as _Diario
+
             Governador(medidor_psutil("."), diario=_Diario(eventos, "maquina")).registrar(None, None)
         except Exception as e:  # noqa: BLE001 — a leitura da máquina nunca para o sistema
             typer.echo(f"  leitura da máquina: {type(e).__name__}: {str(e)[:120]}")
@@ -626,6 +684,7 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
             if passos * 5 >= gravar_min:
                 passos = 0
                 gravar_agora()
+
     threading.Thread(target=gravar_em_segundo_plano, daemon=True, name="gravacao").start()
 
     # o pedido de implantação (a regra R09): o fluxo Implantar grava implantar/pedido.txt no repositório; o sistema o confere a
@@ -640,6 +699,7 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
             return r.stdout.strip() if r.returncode == 0 else ""
         except Exception:  # noqa: BLE001
             return ""
+
     pedido_inicial = pedido_atual() if gravar else ""
 
     def vigiar_pedido() -> None:
@@ -649,10 +709,12 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
                 typer.echo(f"  pedido de implantação ({p_[:60]}): termina a passagem em andamento e para")
                 implantar.set()
                 return
+
     threading.Thread(target=vigiar_pedido, daemon=True, name="implantar").start()
     fios_pilotos: list = []
-    if gravar:                                                    # os pilotos de forma permanente (25/10/2026)
+    if gravar:  # os pilotos de forma permanente (25/10/2026)
         from ..cerebro.pilotos_permanentes import ligar
+
         fios_pilotos = ligar(dados, eventos, parar)
         typer.echo("  os pilotos voam de forma permanente (o Interceptador, um livro por vez; o Espião, missão após missão)")
 
@@ -663,53 +725,84 @@ def permanente(workflow: Path = Path("workflows/passagem.toml"), config: Path = 
         from ..cartorio.releitura import reler
         from ..cerebro.governador import Governador, medidor_psutil
         from ..nucleo.eventos import Diario as _Diario
+
         g = Governador(medidor_psutil("."))
         d = _Diario(eventos, "fundo")
         while not parar.wait(30):
             try:
                 if g.ler().carga < 0.70:
-                    r = reler(Path(dados), d, limite=40, orcamento_s=300)   # 25/10/2026: 608 por dia levaria 7 dias
+                    r = reler(Path(dados), d, limite=40, orcamento_s=300)  # 25/10/2026: 608 por dia levaria 7 dias
                     if r.get("escolhidos"):
                         typer.echo(f"  trabalho de fundo: releitura {r}")
             except Exception as e:  # noqa: BLE001 — o trabalho de fundo nunca para o sistema
                 typer.echo(f"  trabalho de fundo: {type(e).__name__}: {str(e)[:150]}")
+
     threading.Thread(target=trabalho_de_fundo, daemon=True, name="fundo").start()
+
+    from .eventos import Diario as _Diario
+
+    _sd = _Diario(Path(_cfg(config)[2]), "passagem-sinal")  # 27/10/2026: o sinal de vida da passagem (gravado a cada 5 min)
+
+    def _sinal_passagem(motivo: str) -> None:
+        try:
+            _sd.emitir(
+                "medicao.registrada",
+                "passagem",
+                {
+                    "marcador": "passagem",
+                    "nivel": "sistema",
+                    "ponto": "v",
+                    "valor": 1,
+                    "em": time.strftime("%Y-%m-%dT%H:%M:%S+00:00", time.gmtime()),
+                    "motivo": motivo[:300],
+                },
+            )
+        except Exception:  # noqa: BLE001
+            pass
 
     while True:
         ciclo += 1
+        _t0 = time.monotonic()
+        _sinal_passagem(f"ciclo {ciclo}: a passagem começou")
         try:
             _rodar(workflow, config, None, None, "leve")
+            _sinal_passagem(f"ciclo {ciclo}: a passagem terminou em {(time.monotonic() - _t0) / 60:.1f} min")
         except typer.Exit as e:
+            _como = "adiada pelo governador" if e.exit_code == ADIADO else "terminou"
+            _sinal_passagem(f"ciclo {ciclo}: código {e.exit_code} ({_como}) em {(time.monotonic() - _t0) / 60:.1f} min")
             if e.exit_code not in (0, None):
                 typer.echo(f"ciclo {ciclo}: a passagem terminou com o código {e.exit_code}; o sistema segue")
         except Exception as e:  # noqa: BLE001 — o funcionamento é permanente: a falha de um ciclo vira registro e pausa curta
             typer.echo(f"ciclo {ciclo}: falha {type(e).__name__}: {str(e)[:300]}")
             time.sleep(60)
-        os.environ.pop("ELDORADO_FORCAR", None)                     # acionar todos vale só para o primeiro ciclo
+        os.environ.pop("ELDORADO_FORCAR", None)  # acionar todos vale só para o primeiro ciclo
         f = fila_do_sistema(dados, config.parent)
         decorrido = time.monotonic() - inicio
-        typer.echo(f"ciclo {ciclo} · {datetime.now(timezone.utc):%H:%M} UTC · motores devidos {len(f['motores_devidos'])} · "
-                   f"livros em trabalho {f['livros_em_trabalho']} · próxima ação prevista {f['proxima_acao'][11:16]}")
+        typer.echo(
+            f"ciclo {ciclo} · {datetime.now(timezone.utc):%H:%M} UTC · motores devidos {len(f['motores_devidos'])} · "
+            f"livros em trabalho {f['livros_em_trabalho']} · próxima ação prevista {f['proxima_acao'][11:16]}"
+        )
         if decorrido > limite_min * 60:
             break
         from ..comandante.pilotos import REINICIAR
-        if REINICIAR.is_set():                                        # o Comandante: a memória não cedeu em 15 minutos (26/10/2026)
+
+        if REINICIAR.is_set():  # o Comandante: a memória não cedeu em 15 minutos (26/10/2026)
             typer.echo("  o Comandante pede o reinício: a memória não cedeu; o sistema grava e se religa (a memória volta)")
             break
-        if implantar.is_set():                                        # a passagem terminou (a regra R09: aguarda e grava)
+        if implantar.is_set():  # a passagem terminou (a regra R09: aguarda e grava)
             typer.echo("  implantação: a passagem terminou; os pilotos concluem o livro ou a missão atual, o sistema grava e para")
             break
-        if time.monotonic() - ultimo > gravar_min * 60:                 # (a de segundo plano também grava; esta cobre o fim do ciclo)
+        if time.monotonic() - ultimo > gravar_min * 60:  # (a de segundo plano também grava; esta cobre o fim do ciclo)
             gravar_agora()
             ultimo = time.monotonic()
         if not f["total"]:
             espera = min(f["proxima_s"], espera_max_min * 60, max(0.0, limite_min * 60 - decorrido))
             typer.echo(f"  sem fila: espera {espera / 60:.0f} min (até a próxima ação prevista)")
-            implantar.wait(espera)                                    # o pedido de implantação acorda a espera
+            implantar.wait(espera)  # o pedido de implantação acorda a espera
     parar.set()
-    for f in fios_pilotos:                                        # os pilotos terminam o livro ou a missão atual (até 4 min)
+    for f in fios_pilotos:  # os pilotos terminam o livro ou a missão atual (até 4 min)
         f.join(timeout=240)
-    gravar_agora(esperar=True)                                    # tudo o que terminou é gravado; nada fica pela metade
+    gravar_agora(esperar=True)  # tudo o que terminou é gravado; nada fica pela metade
     typer.echo(f"fim desta execução depois de {ciclo} ciclo(s); a continuação segue o trabalho")
 
 
@@ -718,7 +811,7 @@ def trabalhar(config: Path = CONFIG, trabalhadores: int = typer.Option(0, help="
     """Roda o consumidor da fila, sob o governador e a pausa."""
     c, dados, eventos = _cfg(config)
     g = Governador(medidor_psutil(str(dados if dados.exists() else ".")), limite=c.limites.carga_maxima)
-    fila = Fila(dados / "cerebro.db", eventos, g, dados / "PAUSADO")   # a fila, dentro do Cérebro
+    fila = Fila(dados / "cerebro.db", eventos, g, dados / "PAUSADO")  # a fila, dentro do Cérebro
     n = trabalhadores or max(1, g.paralelismo())
     typer.echo(f"consumidor da fila com {n} trabalhador(es)")
     fila.huey.create_consumer(workers=n, periodic=True).run()

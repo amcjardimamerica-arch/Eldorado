@@ -59,4 +59,9 @@ class LeitorImagem:
         self.ocr = ocr
 
     def ler(self, conteudo: bytes, nome: str | None, registro: Registro) -> Leitura:
-        return Leitura(tipo="imagem", leitor=self.nome, sha256=sha256(conteudo), paginas=[Pagina(1, self.ocr.texto(conteudo))])
+        try:
+            texto = self.ocr.texto(conteudo)
+        except Exception as e:  # noqa: BLE001 — 26/10/2026: a imagem que não abre (truncada, corrompida) é "sem leitor", não um erro solto
+            from .leitores import SemLeitor
+            raise SemLeitor(f"a imagem não pôde ser lida pelo OCR: {type(e).__name__}: {str(e)[:120]}") from e
+        return Leitura(tipo="imagem", leitor=self.nome, sha256=sha256(conteudo), paginas=[Pagina(1, texto)])
