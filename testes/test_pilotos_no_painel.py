@@ -175,3 +175,20 @@ def test_a_familia_e_sorteada_e_descansa_quando_cansa():
     src = Path("eldorado/base/comandante/pilotos.py").read_text(encoding="utf-8")
     assert "random.choices(lista, weights=pesos)" in src  # sorteia pela distribuição
     CP._cansaco.clear()
+
+
+def test_toda_trava_citada_nas_regras_existe():
+    """27/10/2026: a trava renomeada sem atualizar a regra barrou o portão da produção por mais de 8 horas (o ciclo não
+    começa sem as travas das regras de pé). Toda trava citada nas regras da titular tem de existir."""
+    import json
+    import re
+
+    regras = json.loads(Path("config/regras_titular.json").read_text(encoding="utf-8"))["regras"]
+    faltam = []
+    for r in regras:
+        for t in r.get("travas", []):
+            arq, _, fn = t.partition("::")
+            p = Path(arq)
+            if not p.exists() or not re.search(rf"^def {re.escape(fn)}\(", p.read_text(encoding="utf-8"), re.M):
+                faltam.append((r["id"], t))
+    assert not faltam, faltam
