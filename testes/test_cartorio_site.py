@@ -129,8 +129,20 @@ def test_a_pagina_inicial_calendario_por_tema_e_os_quadros_em_sequencia():
 
     p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
     assert "gc-tema" in p and "const POR_TEMA=10;" in p
-    assert ".faixa-larga>.cartao:first-child{grid-row:span 2}" in p
+    assert ".coluna-direita{display:flex;flex-direction:column;gap:0}" in p  # o FAROL e a Fila, sem espaço
     i, j, k = p.index("Calendário de Editais</h3>"), p.index('<div class="painel-tit farol">'), p.index("Fila prioritári")
     assert i < j < k
     assert '<div hidden style="display:none"><div class="novas" id="fi-novas">' in p
     assert 'ghDispatch("arquivar.yml"' in p  # o Arquivar grava na Biblioteca
+
+
+def test_o_lago_dos_prazos():
+    """27/10/2026 (titular): o calendário do Eldorado (o lago dos prazos): de margem a margem, por área (até 10, as que
+    terminam antes primeiro), cada oportunidade numa linha, a balsa do primeiro ao último dia, o feixe de hoje, os botões
+    incorporados, o livro ao clicar; a fonte é a Biblioteca (o fluxo publicado)."""
+    from pathlib import Path
+
+    p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
+    assert 'id="eld"' in p and "width:100vw;margin-left:calc(50% - 50vw)" in p[p.index("#eld{") : p.index("#eld{") + 400]
+    assert "xs.slice(0,10)" in p and "a.fim.localeCompare(b.fim)" in p and 'class="balsa"' in p and 'f.className="feixe"' in p
+    assert 'class="tunjo' in p and 'id="eld-livro"' in p and 'fetch("dados/fluxo_oportunidades.json' in p
