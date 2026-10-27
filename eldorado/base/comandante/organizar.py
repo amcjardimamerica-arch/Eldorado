@@ -209,8 +209,14 @@ def classificar(con: sqlite3.Connection) -> list[dict[str, Any]]:
     from ..cartorio.auditoria import territorio
     con.row_factory = sqlite3.Row
     certs: dict[str, dict[str, dict]] = defaultdict(dict)
-    for c in con.execute("SELECT livro_id, item, valor FROM certidao WHERE situacao = 'comprovado'"):
-        certs[c["livro_id"]][c["item"]] = {"valor": c["valor"]}
+    from ..missao.itens import TIPOS_EDITAL
+    tipos_doc = dict(con.execute("SELECT id, tipo FROM documento").fetchall())
+    por_item: dict = defaultdict(lambda: defaultdict(list))
+    for c in con.execute("SELECT livro_id, item, valor, documento_id, id FROM certidao WHERE situacao = 'comprovado' ORDER BY id"):
+        por_item[c["livro_id"]][c["item"]].append({"valor": c["valor"], "_edital": tipos_doc.get(c["documento_id"]) in TIPOS_EDITAL})
+    for lid, itens in por_item.items():                       # 27/10/2026: a certidão do edital vence a do anúncio ou do site
+        for item, cs_ in itens.items():
+            certs[lid][item] = next((x for x in reversed(cs_) if x["_edital"]), cs_[-1])
     saida = []
     for lv in con.execute("SELECT l.*, d.inscricao_fim, d.area AS d_area, d.esfera AS d_esfera, d.modalidade AS d_modalidade, p.fase FROM livro l "
                           "LEFT JOIN livro_dados d ON d.livro_id = l.id LEFT JOIN passaporte p ON p.livro_id = l.id "

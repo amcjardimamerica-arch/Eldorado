@@ -6,7 +6,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 
 | Situação | Arquivos |
 |---|---|
-| em funcionamento | 157 |
+| em funcionamento | 158 |
 | pacote | 24 |
 | a construir | 7 |
 | substituído por eldorado/base/cartorio/analise_externa.py | 3 |
@@ -35,7 +35,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 3 | `config/eldorado.toml` | Configuração do Eldorado. Validada na carga: chave desconhecida ou valor fora do limite impede a passagem. | em funcionamento |  | comandos, config | 0 |
 | 4 | `eldorado/__init__.py` |  | pacote |  |  | 86 |
 | 5 | `eldorado/base/__init__.py` |  | pacote |  |  | 68 |
-| 6 | `eldorado/base/nucleo/comandos.py` | Os comandos da plataforma: os mesmos no GitHub, no computador da titular e (depois) no painel. | em funcionamento | analise, consolidar, consulta, drive, manutencao, memoria, analise_externa, releitura, fila, governador, inventario, pilotos, pilotos_permanentes, pilotos, importar_e0, agenda, definicao, executor, fila, nos, importar_eldorado0, config, eventos, expurgo_externo, gravador, ia, api, dados, visoes, api, escada, leve, navegador, ponte_br, fabrica, motor, otimizacao | .github/workflows/eldorado.yml (eldorado permanente) | 2 |
+| 6 | `eldorado/base/nucleo/comandos.py` | Os comandos da plataforma: os mesmos no GitHub, no computador da titular e (depois) no painel. | em funcionamento | analise, consolidar, consulta, drive, manutencao, memoria, analise_externa, releitura, fila, governador, inventario, pilotos, pilotos_permanentes, pilotos, importar_e0, agenda, definicao, executor, fila, nos, importar_eldorado0, config, eventos, expurgo_externo, gravador, ia, api, dados, visoes, api, escada, leve, navegador, ponte_br, fabrica, motor, otimizacao | .github/workflows/eldorado.yml (eldorado permanente) | 3 |
 | 7 | `scripts/gravar.sh` | !/usr/bin/env bash Grava o trabalho no repositório: os eventos sempre (texto, pequeno); o banco uma vez por di | em funcionamento |  | eldorado | 0 |
 | 8 | `scripts/instalar_bibliotecas.py` | As bibliotecas do plano, em camadas independentes (scripts/instalar.sh): o núcleo é obrigatório; cada grupo do | em funcionamento |  | qualidade, instalar | 0 |
 | 9 | `scripts/visualizar_sala.py` | Abre a sala de controle num navegador, fotografa em três alturas de rolagem e mede os quadros ao rolar (o flux | em funcionamento |  | visualizar | 0 |
@@ -50,14 +50,14 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
-| 16 | `eldorado/base/nucleo/__init__.py` |  | pacote |  |  | 47 |
+| 16 | `eldorado/base/nucleo/__init__.py` |  | pacote |  |  | 48 |
 | 17 | `eldorado/base/nucleo/config.py` | A configuração da plataforma, validada na carga. | em funcionamento |  | comandos | 1 |
-| 18 | `eldorado/base/nucleo/contratos.py` | Os contratos do Eldorado. | em funcionamento |  | cartorio, indice, pertinencia, regencia, oportunidades, eventos, gravador, registro, motor, espiao, interceptador | 14 |
+| 18 | `eldorado/base/nucleo/contratos.py` | Os contratos do Eldorado. | em funcionamento |  | cartorio, indice, pertinencia, pilotos_permanentes, regencia, oportunidades, eventos, gravador, registro, motor, espiao, | 15 |
 | 19 | `eldorado/base/nucleo/expurgo_externo.py` | O expurgo físico pela análise externa (titular, 22/10/2026): "o sistema não apaga nada, mas o Claude pode apag | em funcionamento |  | comandos | 1 |
 | 20 | `eldorado/base/nucleo/seguranca.py` | A segurança dos textos lidos: os padrões de injeção de instruções (prompt injection). | em funcionamento |  | motor, leitores | 1 |
-| 21 | `eldorado/base/nucleo/eventos.py` | Os eventos: a única forma de escrita do Eldorado. | em funcionamento | contratos | analise_externa, auditoria, cartorio, certificacao, indice, passaporte, selos, aprendizado, completude, encaminhamento,  | 31 |
+| 21 | `eldorado/base/nucleo/eventos.py` | Os eventos: a única forma de escrita do Eldorado. | em funcionamento | contratos | analise_externa, auditoria, cartorio, certificacao, indice, passaporte, selos, aprendizado, completude, encaminhamento,  | 32 |
 | 22 | `eldorado/base/nucleo/alarmes.py` | Nenhum erro é engolido: todo erro vira um evento de alarme, e o erro continua subindo. | em funcionamento | eventos | executor | 1 |
-| 23 | `eldorado/base/nucleo/gravador.py` | O gravador único: o único que escreve nos bancos. | em funcionamento | _sqlite, contratos, eventos | nos, comandos, estado | 3 |
+| 23 | `eldorado/base/nucleo/gravador.py` | O gravador único: o único que escreve nos bancos. | em funcionamento | _sqlite, contratos, eventos | nos, comandos, estado | 4 |
 | 24 | `eldorado/base/nucleo/recibo.py` | A medição de uma chamada: tempo, processador e memória de pico, e se deu certo. | em funcionamento | eventos | regencia, executor | 0 |
 | 25 | `eldorado/base/nucleo/registro.py` | O registro dos módulos ligados: confere o contrato antes de aceitar, e arquiva em vez de apagar. | em funcionamento | contratos, eventos | cartorio, encaminhamento, pertinencia, regencia | 7 |
 
@@ -114,7 +114,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 62 | `eldorado/base/cerebro/livros_motores.py` | Os motores de cada livro e as pesquisas já feitas (comum ao encaminhamento e à vigilância dos sites originais; | em funcionamento | motor | encaminhamento, originais | 0 |
 | 63 | `eldorado/base/cerebro/pilotos.py` | O Cérebro dos pilotos (titular, 22/10/2026): mede a recorrência de cada piloto e manda nova missão sempre que | em funcionamento | escada, metabusca, leitores, espiao | encaminhamento, pilotos_permanentes, comandos | 2 |
 | 64 | `eldorado/base/comandante/__init__.py` | O Comandante (titular, 25/10/2026): o responsável por executar e coordenar todo o sistema — perceber o estado, | pacote |  |  | 10 |
-| 65 | `eldorado/base/comandante/organizar.py` | O Comandante organiza os livros do Cartório (a etapa C6; titular, 25/10/2026: "não existem 5 mil livros e nem  | em funcionamento | auditoria, identidade | passagem, nó 29 «organizar_livros» | 2 |
+| 65 | `eldorado/base/comandante/organizar.py` | O Comandante organiza os livros do Cartório (a etapa C6; titular, 25/10/2026: "não existem 5 mil livros e nem  | em funcionamento | auditoria, identidade, itens | passagem, nó 29 «organizar_livros» | 2 |
 | 66 | `eldorado/base/comandante/parametros.py` | Os parâmetros do Comandante (as etapas C7 e C9; titular, 25/10/2026). Cada parâmetro de cada etapa vive no Arq | em funcionamento |  | passagem, nó 35 «conferir» | 0 |
 | 67 | `eldorado/base/comandante/politica.py` | A política de decisão do Comandante: o Vowpal Wabbit (o bandido contextual SquareCB), eleito no estudo (92% a  | em funcionamento |  | decidir, pilotos | 0 |
 | 68 | `eldorado/base/nucleo/ia.py` | O serviço único de IA dos pilotos (do Eldorado0, titular, 26/09 e 02/10/2026). | em funcionamento | memoria, otimizacao | encaminhamento, pilotos_permanentes, apresentar, comandos, interceptador, otimizacao | 5 |
@@ -126,9 +126,9 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 74 | `eldorado/base/comandante/decidir.py` | O Comandante decide (a etapa C2), em PARALELO com a ordem fixa (a fase 2 do desenho): ordena todos os motores  | em funcionamento | politica | passagem, nó 32 «comandante_decidir» | 1 |
 | 75 | `eldorado/base/comandante/escolher.py` | O nó de agente do Comandante (a fase 3 do desenho; a engenharia do n8n, titular, 25/10/2026): no início de cad | em funcionamento | parametros | passagem, nó 31 «comandante_escolher» | 0 |
 | 76 | `eldorado/base/cerebro/fila.py` | A fila do sistema (titular, 22/10/2026): o Eldorado funciona de forma permanente, sem horário de trabalho e de | em funcionamento | decisao, regencia | encaminhamento, comandos | 0 |
-| 77 | `eldorado/base/comandante/pilotos.py` | O Comandante comanda os pilotos (a etapa C5; a fase 4 do desenho, titular, 25/10/2026). Cada missão do Espião  | em funcionamento | governador, decidir, parametros, politica | pilotos_permanentes, comandos | 0 |
+| 77 | `eldorado/base/comandante/pilotos.py` | O Comandante comanda os pilotos (a etapa C5; a fase 4 do desenho, titular, 25/10/2026). Cada missão do Espião  | em funcionamento | governador, decidir, parametros, politica | pilotos_permanentes, comandos | 1 |
 | 78 | `eldorado/base/cerebro/encaminhamento.py` | A rede neural na fase 3 do Cartório (titular, 22/10/2026): quem age é a rede, não o Cartório. | em funcionamento | passaporte, fila, livros_motores, originais, pilotos, pilotos_permanentes, rede, regencia, eventos, ia, registro, completa, metabusca, enriquecer, interceptador | passagem, nó 12 «encaminhar»; passagem, nó 13 «espiao»; passagem, nó 14 «originais» | 6 |
-| 79 | `eldorado/base/cerebro/pilotos_permanentes.py` | Os pilotos de forma permanente (titular, 25/10/2026: "execute eles de forma permanente, da forma que foram des | em funcionamento | encaminhamento, pilotos, rede, biblioteca, parametros, pilotos, eventos, ia, metabusca, interceptador | encaminhamento, comandos | 0 |
+| 79 | `eldorado/base/cerebro/pilotos_permanentes.py` | Os pilotos de forma permanente (titular, 25/10/2026: "execute eles de forma permanente, da forma que foram des | em funcionamento | encaminhamento, pilotos, rede, biblioteca, parametros, pilotos, contratos, eventos, ia, metabusca, interceptador | encaminhamento, comandos, interceptador | 0 |
 
 ## 06 Coleta: os motores, o canivete suíço e a ponte BR
 
@@ -140,10 +140,10 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 83 | `config/ponte_dominios.txt` | Os domínios lidos pela ponte da HostGator (o IP brasileiro): a mesma lista que o ponte.php aceita (do Eldorado | em funcionamento |  | ponte_br | 0 |
 | 84 | `config/searxng/settings.yml` | O SearXNG do próprio fluxo (plano C: a metabusca própria, sem custo): só local, sem limitador, com a saída em  | em funcionamento |  | mapa_arquivos, instalar | 0 |
 | 85 | `eldorado/base/motor_modelo/__init__.py` |  | pacote |  |  | 0 |
-| 86 | `eldorado/motores/__init__.py` |  | pacote |  |  | 34 |
+| 86 | `eldorado/motores/__init__.py` |  | pacote |  |  | 35 |
 | 87 | `eldorado/motores/acesso/__init__.py` |  | pacote |  |  | 8 |
 | 88 | `eldorado/motores/acesso/escada.py` | A escada de acesso: do degrau mais leve ao mais forte, aprendendo por domínio qual degrau funciona. | em funcionamento | eventos | releitura, pilotos, comandos, api, arquivo_web, completa, leve, local, navegador, ponte_br, rotas_alternativas, motor, f | 7 |
-| 89 | `eldorado/motores/canal/__init__.py` |  | pacote |  |  | 16 |
+| 89 | `eldorado/motores/canal/__init__.py` |  | pacote |  |  | 18 |
 | 90 | `eldorado/motores/canal/achado.py` | achados completos | a construir |  |  | 0 |
 | 91 | `eldorado/motores/canal/estado.py` | O aprendizado de cada motor, entregue ao Cérebro (titular, 24/10/2026): NENHUM motor tem banco de dados. O mot | em funcionamento | esquema, eventos, gravador | consolidar, dados, visoes, motor | 2 |
 | 92 | `eldorado/motores/descoberta/__init__.py` |  | pacote |  |  | 7 |
@@ -171,7 +171,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 114 | `eldorado/motores/acesso/completa.py` | A escada completa (os 7 degraus) para quem não é motor: os pilotos e a releitura (o parecer do conselho, 24/10 | em funcionamento | api, arquivo_web, escada, leve, local, navegador, ponte_br | encaminhamento | 1 |
 | 115 | `eldorado/motores/acesso/rotas_alternativas.py` | Degraus 7 e 8, reservas desligadas até o teste real na criação: o Tor (IP diferente) e o leitor público de pág | desligado por desenho | escada, leve |  | 1 |
 | 116 | `eldorado/motores/canal/fabrica.py` | A fábrica de motores: executa a orientação de design (eldorado/motores/skills/criar-motor/SKILL.md). | em funcionamento | motor | comandos | 2 |
-| 117 | `eldorado/motores/canal/motor.py` | O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio. | em funcionamento | contratos, seguranca, api, arquivo_web, escada, leve, local, navegador, ponte_br, estado, arquivos_web, cadeia, dados_abertos, estrutura_site, fonte_oficial, mapa_original, metabusca, pistas, vigilancia, enriquecer, leitores, ocr, pdf | config/modulos.toml (alego-pl); config/modulos.toml (camara-goiania-pl); config/modulos.toml (cnpq-extensao); config/mod | 13 |
+| 117 | `eldorado/motores/canal/motor.py` | O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio. | em funcionamento | contratos, seguranca, api, arquivo_web, escada, leve, local, navegador, ponte_br, estado, arquivos_web, cadeia, dados_abertos, estrutura_site, fonte_oficial, mapa_original, metabusca, pistas, vigilancia, enriquecer, leitores, ocr, pdf | config/modulos.toml (alego-pl); config/modulos.toml (camara-goiania-pl); config/modulos.toml (cnpq-extensao); config/mod | 15 |
 | 118 | `eldorado/motores/descoberta/cadeia.py` | A leitura em cadeia (canivete suíço): a lista → cada item → o detalhe → o texto, sem código por fonte. | em funcionamento | atos, leitores | motor | 0 |
 | 119 | `eldorado/motores/leitura/audio.py` | O leitor de áudio e vídeo (plano C: faster-whisper): transcreve em português as transmissões e os vídeos que a | em funcionamento | leitores | leitores | 0 |
 | 120 | `eldorado/motores/leitura/compactado.py` | Arquivos ZIP, 7Z e RAR: abre e entrega cada arquivo interno ao leitor do seu tipo. | em funcionamento | leitores | leitores | 0 |
@@ -193,7 +193,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 131 | `config/missao/territorio_goias.json` | O território de Goiás: os 246 municípios (IBGE, código UF 52), para a regra de abrangência. | em funcionamento |  | auditoria, mapa_arquivos, regras_portao | 0 |
 | 132 | `eldorado/base/missao/__init__.py` |  | pacote |  |  | 11 |
 | 133 | `eldorado/base/missao/chave.py` | A chave do livro nesta missão: o livro é o PROGRAMA, não a edição. | em funcionamento |  | indice, importar_eldorado0, oportunidades | 0 |
-| 134 | `eldorado/base/missao/itens.py` | Os 12 itens do livro e o critério único da estrela (titular, 04/10/2026), aproveitado do Eldorado0. | em funcionamento |  | analise_externa, auditoria, cartorio, certificacao, selos, importar_eldorado0, oportunidades, cartorio, dados, pilotos,  | 0 |
+| 134 | `eldorado/base/missao/itens.py` | Os 12 itens do livro e o critério único da estrela (titular, 04/10/2026), aproveitado do Eldorado0. | em funcionamento |  | analise_externa, auditoria, cartorio, certificacao, selos, organizar, importar_eldorado0, oportunidades, cartorio, dados | 1 |
 | 135 | `eldorado/base/missao/regras_portao.py` | As regras do portão da missão das oportunidades — aproveitadas do Eldorado0, com fidelidade. | em funcionamento |  | auditoria, portao | 0 |
 | 136 | `eldorado/base/missao/portao.py` | O portão da missão das oportunidades (titular, 16/10/2026), com as regras aproveitadas do Eldorado0. | em funcionamento | organizar, regras_portao | auditoria, oportunidades | 1 |
 | 137 | `eldorado/base/missao/oportunidades.py` | A missão das oportunidades, no contrato da plataforma: itens, chave e portão. | em funcionamento | chave, itens, portao, contratos | passagem, nó «cartorio» (parâmetro); passagem, nó «decidir_rede» (parâmetro); passagem, nó «decidir» (parâmetro); passag | 9 |
@@ -202,7 +202,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
-| 138 | `eldorado/base/cartorio/__init__.py` |  | pacote |  |  | 11 |
+| 138 | `eldorado/base/cartorio/__init__.py` |  | pacote |  |  | 12 |
 | 139 | `eldorado/base/cartorio/certificacao.py` | A certificação: cada item no texto oficial, com o valor, o trecho e a página. | em funcionamento | itens, eventos | auditoria, cartorio | 1 |
 | 140 | `eldorado/base/cartorio/identidade.py` | A identidade das oportunidades (titular, 24/10/2026): a mesma oportunidade não pode ter mais de um livro. O qu | em funcionamento |  | passagem, nó 10 «unir_repetidos» | 0 |
 | 141 | `eldorado/base/cartorio/origem.py` | A origem da oportunidade, decidida POR LIVRO, com evidência (titular, 23/10/2026). | em funcionamento |  | auditoria, cartorio, interceptador | 0 |
@@ -218,7 +218,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 |---|---|---|---|---|---|---|
 | 147 | `eldorado/motores/pilotos/__init__.py` |  | pacote |  |  | 8 |
 | 148 | `eldorado/motores/pilotos/espiao.py` | O PILOTO ESPIÃO (do Eldorado0, titular, 09 e 16/10/2026): caça só o que nenhum motor alcança. | em funcionamento | esquema, contratos | consolidar, pilotos | 1 |
-| 149 | `eldorado/motores/pilotos/interceptador.py` | O PILOTO INTERCEPTADOR (do Eldorado0, titular, 26/09/2026): "o Espião descobre; o Interceptador comprova". | em funcionamento | origem, itens, contratos, eventos, ia, arquivo_web, escada, estrutura_site, fonte_oficial, leitores, pdf | encaminhamento, pilotos_permanentes | 6 |
+| 149 | `eldorado/motores/pilotos/interceptador.py` | O PILOTO INTERCEPTADOR (do Eldorado0, titular, 26/09/2026): "o Espião descobre; o Interceptador comprova". | em funcionamento | origem, pilotos_permanentes, itens, contratos, eventos, ia, arquivo_web, escada, estrutura_site, fonte_oficial, leitores, pdf | encaminhamento, pilotos_permanentes | 6 |
 | 150 | `eldorado/motores/pilotos/otimizacao.py` | A otimização das instruções dos pilotos (plano C: DSPy): a partir das certidões já validadas no banco (o item, | em funcionamento | ia | comandos, ia | 0 |
 
 ## 11 Verificação externa (o Claude no Chrome)
@@ -248,7 +248,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 161 | `eldorado/base/aprendizado/avaliar.py` | O Aprendizado avalia as decisões do Comandante (a etapa A4): quando o resultado aparece, cada decisão recebe a | em funcionamento | escolher | passagem, nó 33 «avaliar» | 1 |
 | 162 | `eldorado/base/aprendizado/curador.py` | O curador do Aprendizado (a etapa A5; o conceito do curador do Hermes Agent, titular, 25/10/2026). | em funcionamento |  | passagem, nó 34 «curar» | 1 |
 | 163 | `eldorado/base/aprendizado/memoria.py` | A memória do Aprendizado (a etapa A6): tudo o que o sistema viveu, pesquisável no Arquivo do Cérebro (titular, | em funcionamento |  | passagem, nó 36 «memorizar» | 2 |
-| 164 | `eldorado/base/cartorio/auditoria.py` | A auditoria de cada livro: a validação individual e a decupagem dos dados em colunas (livro_dados). | em funcionamento | certificacao, origem, passaporte, selos, itens, portao, regras_portao, eventos, normalizar | passagem, nó 11 «auditar» | 4 |
+| 164 | `eldorado/base/cartorio/auditoria.py` | A auditoria de cada livro: a validação individual e a decupagem dos dados em colunas (livro_dados). | em funcionamento | certificacao, origem, passaporte, selos, itens, portao, regras_portao, eventos, normalizar | passagem, nó 11 «auditar» | 5 |
 | 165 | `eldorado/base/cerebro/aprendizado.py` | O ciclo de aprendizado: temporário (30 dias) → permanente, se funcionou; arquivado, se falhou; vencido, sai. | em funcionamento | eventos | passagem, nó 23 «aprender» | 2 |
 | 166 | `eldorado/base/cerebro/completude.py` | A completude do dia: o que estava devido foi lido? O que precisa ser reacionado? | em funcionamento | eventos | passagem, nó 24 «completude» | 2 |
 | 167 | `eldorado/base/cerebro/lote.py` | Os modelos em lote do Cérebro (plano C: scikit-learn): para cada pergunta da rede, um modelo treinado com o hi | em funcionamento |  | rede | 0 |
@@ -307,6 +307,12 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 205 | `estudos/bench_ia2.py` | O estudo das IAs, parte 2 (titular, 25/10/2026): uma IA exclusiva do Comandante e uma dos pilotos (os dois pil | estudo concluído (25/10/2026): o arranjo das IAs e o contexto; só sob demanda |  | bench-ia2 | 0 |
 | 206 | `.github/workflows/bench-ia.yml` | name: Estudo das IAs (uma ou três Qwen3-8B) O estudo da titular (25/10/2026): mede, na máquina da produção, as | estudo concluído (25/10/2026): uma IA para as três funções (o resultado no parecer); só sob demanda | ia_local, bench_ia |  | 0 |
 | 207 | `.github/workflows/bench-ia2.yml` | name: Estudo das IAs (parte 2) O arranjo decidido pela titular (uma IA do Comandante e uma dos pilotos, em par | estudo concluído (25/10/2026): o arranjo das IAs e o contexto (o resultado no parecer); só sob demanda | ia_local, bench_ia2 |  | 0 |
+
+## 18 Outros
+
+| Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
+|---|---|---|---|---|---|---|
+| 208 | `.github/workflows/arquivar.yml` | name: Arquivar (pela titular, no painel) 27/10/2026: o botão "Arquivar" das Oportunidades Abertas grava na Bib | em funcionamento | comandos |  | 0 |
 
 ## Os 47 motores (o estudo de reorganização da titular: 45 regulares e 2 pilotos)
 

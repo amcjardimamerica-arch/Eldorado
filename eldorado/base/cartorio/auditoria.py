@@ -108,6 +108,37 @@ UF_DE = {"acre": "AC", "alagoas": "AL", "amapa": "AP", "amazonas": "AM", "bahia"
          "rio grande do sul": "RS", "rondonia": "RO", "roraima": "RR", "santa catarina": "SC", "sao paulo": "SP", "sergipe": "SE", "tocantins": "TO"}
 
 
+ESTADO_RESTRITO = re.compile(r"(?:resid[aei]\w*|reside\w*|domiciliad\w*|sediad\w*|com\s+sede|tenha\s+sede|estabelecid\w*|atua\w*)"
+                             r"[^.;:]{0,60}?\b(?:no|na|em)\s+(?:estado|unidade\s+da\s+federa\w+)\s+d[eoa]s?\s+"
+                             r"([A-ZÀ-Úa-zà-ú][\wÀ-ú ]{3,25}?)(?=[\s.,;:)]|$)", re.I)
+NACIONAL_PARTICIPACAO = re.compile(r"todo\s+o\s+territ[oó]rio\s+nacional|todo\s+o\s+(?:brasil|pa[ií]s)|qualquer\s+(?:estado|unidade\s+da\s+federa\w+|"
+                                   r"regi[aã]o|munic[ií]pio)\s+(?:do|da)\s+(?:brasil|pa[ií]s|federa\w+)|todas\s+as\s+regi[oõ]es\s+do\s+(?:brasil|pa[ií]s)|"
+                                   r"em\s+territ[oó]rio\s+nacional|de\s+todos\s+os\s+estados", re.I)
+
+
+def participacao(certidoes: dict[str, dict]) -> tuple[str, str | None] | None:
+    """27/10/2026 (titular): o território pelas REGRAS DE PARTICIPAÇÃO do edital — (a abrangência, o município) — ou None
+    se a cláusula não traz indicação territorial."""
+    restrita = restricao_de_participacao(certidoes)
+    if restrita:
+        nome, uf_cidade = restrita
+        _municipios()
+        if uf_cidade == "GO":
+            return "municipal_go", nome
+        if _municipios.capitais.get(_norm(nome)) == uf_cidade:
+            return "capital_outro_estado", nome
+        return "municipal_fora_go", nome
+    req = " ".join(str((certidoes.get(i) or {}).get("valor") or "") for i in ("Requisitos", "Objeto", "Território"))
+    e = ESTADO_RESTRITO.search(req)
+    if e:
+        uf = UF_DE.get(_norm(e.group(1).strip()), "")
+        if uf:
+            return ("estadual_go" if uf == "GO" else "estadual_outro_estado"), None
+    if NACIONAL_PARTICIPACAO.search(req):
+        return "nacional", None
+    return None
+
+
 def restricao_de_participacao(certidoes: dict[str, dict]) -> tuple[str, str] | None:
     """O município a que o edital restringe a participação, pelos itens certificados no documento (os requisitos, o objeto e
     o território, com o trecho e a página): (o nome, a UF) conferidos na lista oficial; None se não houver restrição clara."""
@@ -152,7 +183,14 @@ def cidade_e_uf(texto: str) -> tuple[str, str] | None:
 
 
 def territorio(livro: dict[str, Any], certidoes: dict[str, dict]) -> tuple[str, str | None]:
-    """(abrangência, município) pelas regras do portão, já validadas pela titular."""
+    """(abrangência, município). 27/10/2026 (titular): pelas REGRAS DE PARTICIPAÇÃO do edital; com edital e sem indicação
+    territorial na participação, em branco (None, nunca 'nacional' por suposição); só sem edital, pelas regras do portão (o
+    título, o órgão e o site)."""
+    pela_participacao = participacao(certidoes)
+    if pela_participacao:
+        return pela_participacao
+    if any((c or {}).get("_edital") for c in certidoes.values()):
+        return None, None                                              # o edital não restringe o território: em branco
     uf = (livro.get("uf") or "").upper()
     terr = (certidoes.get("Território") or {}).get("valor") or ""
     texto = f"{livro.get('titulo') or ''} {livro.get('orgao') or ''} {terr}"
@@ -164,15 +202,6 @@ def territorio(livro: dict[str, Any], certidoes: dict[str, dict]) -> tuple[str, 
     nomeada = cidade_e_uf(f"{livro.get('titulo') or ''} {livro.get('orgao') or ''}")
     if nomeada:
         nome, uf_cidade = nomeada
-        _municipios()
-        if uf_cidade == "GO":
-            return "municipal_go", nome
-        if _municipios.capitais.get(_norm(nome)) == uf_cidade:
-            return "capital_outro_estado", nome
-        return "municipal_fora_go", nome
-    restrita = restricao_de_participacao(certidoes)               # a cláusula de quem pode participar (27/10/2026)
-    if restrita:
-        nome, uf_cidade = restrita
         _municipios()
         if uf_cidade == "GO":
             return "municipal_go", nome
@@ -264,6 +293,7 @@ def auditar(con: sqlite3.Connection, hoje: date, somente: set[str] | None = None
     con.row_factory = sqlite3.Row
     livros = [dict(r) for r in con.execute("SELECT * FROM livro ORDER BY id") if somente is None or r["id"] in somente]
     todas: dict[str, list[dict]] = {}
+    tipos_doc = dict(con.execute("SELECT id, tipo FROM documento").fetchall())   # o tipo do documento de cada certidão (o edital)
     for c in con.execute("SELECT * FROM certidao WHERE situacao IN ('comprovado','dispensado') ORDER BY id"):
         todas.setdefault(c["livro_id"], []).append(dict(c))
     for lv in livros:
@@ -283,6 +313,7 @@ def auditar(con: sqlite3.Connection, hoje: date, somente: set[str] | None = None
                     c["_contestar"] = m
                     continue
             boas.append(c)
+        I.do_edital(boas, tipos_doc)
         validas = I.melhor(boas)
         conflitos = sorted({c["item"] for c in boas if c["item"] in I.CRITICOS and c.get("fase") in I.FASES_VALIDADAS
                             and _norm(str(c.get("valor"))) != _norm(str((validas.get(c["item"]) or {}).get("valor")))})

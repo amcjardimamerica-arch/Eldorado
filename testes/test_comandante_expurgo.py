@@ -93,3 +93,22 @@ def test_a_clausula_de_quem_pode_participar_decide_o_territorio():
     src = Path("eldorado/base/comandante/biblioteca.py").read_text(encoding="utf-8")
     assert 'x["fase"] == "farol" and x["abrangencia"] != "municipal_fora_go"' in src  # a regra territorial vale no Farol
     assert "QUEM_PODE" in src  # a cláusula é dado obrigatório
+
+
+def test_a_certidao_do_edital_vence_e_o_territorio_em_branco_sem_indicacao():
+    """27/10/2026 (titular): cada oportunidade é certificada no edital (o anúncio ou o site só sem edital); o território pelas
+    regras de participação; com edital e sem indicação territorial, em branco (nunca 'nacional' por suposição)."""
+    from eldorado.base.cartorio.auditoria import territorio
+    from eldorado.base.missao.itens import melhor
+
+    do_site = {"item": "Valor", "valor": "R$ 10.000", "trecho": "x", "pagina": 1, "id": 9, "_edital": False}
+    do_edital = {"item": "Valor", "valor": "R$ 65.000,00", "trecho": "y", "pagina": 2, "id": 1, "_edital": True}
+    assert melhor([do_site, do_edital])["Valor"]["valor"] == "R$ 65.000,00"  # o edital vence o site
+    livro = {"titulo": "Prefeitura de Campinas/SP — Chamamento de projetos culturais", "uf": "SP", "link_oficial": "https://campinas.sp.gov.br/x"}
+    sem_indicacao = {"Requisitos": {"valor": "Podem participar pessoas físicas maiores de 18 anos", "_edital": True}}
+    assert territorio(livro, sem_indicacao) == (None, None)  # com edital, sem indicação: em branco
+    nacional = {"Requisitos": {"valor": "Podem participar organizações de todo o território nacional", "_edital": True}}
+    assert territorio(livro, nacional) == ("nacional", None)
+    estadual = {"Requisitos": {"valor": "Podem participar agentes culturais residentes no Estado de Goiás", "_edital": True}}
+    assert territorio(livro, estadual) == ("estadual_go", None)
+    assert territorio(livro, {})[0] == "municipal_fora_go"  # sem edital: o título e o site

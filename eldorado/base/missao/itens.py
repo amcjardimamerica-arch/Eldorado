@@ -61,11 +61,22 @@ def itens() -> list[dict[str, str]]:
 FASES_VALIDADAS = ("eldorado0", "verificacao externa", "titular")   # validadas por pessoa ou por verificação externa
 
 
+TIPOS_EDITAL = ("pdf", "docx", "doc", "odt", "ato")   # o edital: o documento ou o ato publicado no diário (não a página)
+
+
+def do_edital(certidoes: list[dict], tipos: dict) -> None:
+    """Marca em cada certidão se ela veio do edital (o tipo do documento de onde foi lida)."""
+    for c in certidoes:
+        c["_edital"] = tipos.get(c.get("documento_id")) in TIPOS_EDITAL
+
+
 def melhor(certidoes: list[dict]) -> dict[str, dict]:
     """A certidão que vale para cada item: a validada antes da automática; entre as do mesmo tipo, a que tem prova
     literal (o trecho e a página da fonte); depois, a mais recente. Uma automática nunca supera uma validada (22/10/2026)."""
     out: dict[str, dict] = {}
-    for c in sorted(certidoes, key=lambda c: (c.get("fase") in FASES_VALIDADAS, bool(c.get("trecho")) and c.get("pagina") is not None, c.get("id") or 0)):
+    # 27/10/2026 (titular): cada oportunidade é certificada NO EDITAL; o anúncio ou o site só valem sem edital
+    for c in sorted(certidoes, key=lambda c: (bool(c.get("_edital")), c.get("fase") in FASES_VALIDADAS,
+                                               bool(c.get("trecho")) and c.get("pagina") is not None, c.get("id") or 0)):
         out[c["item"]] = c
     return out
 
