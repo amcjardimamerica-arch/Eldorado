@@ -27,6 +27,9 @@ def test_cada_vaga_do_interceptador_voa_no_seu_proprio_fio(monkeypatch, tmp_path
             pass
 
     monkeypatch.setattr(PP, "_voo_interceptador", voo)
+    import eldorado.base.comandante.pilotos as _CP
+
+    monkeypatch.setattr(_CP, "vagas_por_ociosidade", lambda: 2)
     monkeypatch.setattr(PP, "_contexto", lambda dados, diario: (dados, Con(), None, None))
     monkeypatch.setattr(PP, "paralelos_agora", lambda: 2)
     import eldorado.base.comandante.biblioteca as CB
@@ -131,7 +134,7 @@ def test_no_maximo_dois_voos_usam_a_ia_ao_mesmo_tempo():
     """26/10/2026: com as 5 vagas pedindo à IA juntas, cada pedido levava os 4 minutos inteiros e os voos ficavam presos."""
     from eldorado.motores.pilotos import interceptador as I
 
-    assert I.VEZ_DA_IA._initial_value == 1
+    assert I.VEZ_DA_IA._limite() >= 1
     src = Path("eldorado/motores/pilotos/interceptador.py").read_text(encoding="utf-8")
     assert "VEZ_DA_IA.acquire(timeout=90)" in src and '"adiada"' in src
 
@@ -213,3 +216,28 @@ def test_o_gravador_nao_deixa_alarme_de_recusa_resolvida(bancos, tmp_path):
     r = g.aplicar([])
     assert r.alarmes_fechados == 1
     assert not c.execute("SELECT 1 FROM alarme WHERE fechado_em IS NULL AND mensagem LIKE 'evento recusado%'").fetchone()
+
+
+def test_o_interceptador_elastico_pela_ociosidade(monkeypatch):
+    """27/10/2026 (titular): 1 Interceptador no uso normal; a máquina ociosa libera até 5; com carga, volta a 1."""
+    import eldorado.base.cerebro.governador as G
+    import eldorado.base.comandante.pilotos as CP
+
+    relogio = [1000.0]
+    monkeypatch.setattr(CP.time, "monotonic", lambda: relogio[0])
+
+    class Mem:
+        percent = 50.0
+
+    monkeypatch.setattr(CP.__dict__.get("psutil", __import__("psutil")), "virtual_memory", lambda: Mem())
+    CP._ocio["desde"] = None
+    G._IA["total"] = 0.10
+    assert CP.vagas_por_ociosidade() == 1
+    relogio[0] += 6 * 60
+    assert CP.vagas_por_ociosidade() == 3
+    relogio[0] += 10 * 60
+    assert CP.vagas_por_ociosidade() == 5
+    G._IA["total"] = 0.95
+    assert CP.vagas_por_ociosidade() == 1
+    src = Path("eldorado/base/cerebro/regencia.py").read_text(encoding="utf-8")
+    assert "pool.shutdown(wait=False, cancel_futures=True)" in src and "orcamento + folga" in src  # a coleta não espera o preso

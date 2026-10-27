@@ -76,6 +76,7 @@ def cpu_sem_ia(intervalo: float = 0.2) -> float:
             p.cpu_percent(None)
         total = psutil.cpu_percent(interval=intervalo)
         ia = (p.cpu_percent(None) / (psutil.cpu_count() or 1)) if p is not None else 0.0
+        _IA["total"] = total / 100                        # o processador inteiro (com a IA): a ociosidade da máquina
     except psutil.Error:
         total, ia = psutil.cpu_percent(interval=None), 0.0
     return max(0.0, total - ia) / 100

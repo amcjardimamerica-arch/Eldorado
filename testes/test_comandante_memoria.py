@@ -11,6 +11,7 @@ class _Mem:
 
 
 def test_a_pressao_reduz_os_voos_e_pede_o_reinicio(monkeypatch):
+    monkeypatch.setattr(CP, "vagas_por_ociosidade", lambda: 2)
     import psutil
 
     relogio = [1000.0]

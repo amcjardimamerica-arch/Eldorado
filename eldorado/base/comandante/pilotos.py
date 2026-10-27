@@ -74,6 +74,30 @@ def carga() -> float:
     return c
 
 
+_ocio: dict[str, float | None] = {"desde": None}
+
+
+def vagas_por_ociosidade() -> int:
+    """27/10/2026 (titular): o uso normal é 1 Interceptador; com a máquina ociosa (o processador inteiro, com a IA, abaixo de
+    40% e a memória abaixo de 70%) por 5 minutos, 3; por 15 minutos, 5. Com carga, volta a 1."""
+    try:
+        import psutil
+
+        from ..cerebro.governador import _IA
+
+        total, mem = float(_IA.get("total", 1.0)), psutil.virtual_memory().percent / 100
+    except Exception:  # noqa: BLE001
+        return 1
+    agora_m = time.monotonic()
+    with _trava:
+        if total < 0.40 and mem < 0.70:
+            _ocio["desde"] = _ocio["desde"] or agora_m
+        else:
+            _ocio["desde"] = None
+        ocioso = agora_m - _ocio["desde"] if _ocio["desde"] else 0.0
+    return 5 if ocioso >= 15 * 60 else 3 if ocioso >= 5 * 60 else 1
+
+
 def pressao() -> float:
     """Há quantos segundos a carga está acima de 85% sem parar (0 se não está)."""
     with _trava:

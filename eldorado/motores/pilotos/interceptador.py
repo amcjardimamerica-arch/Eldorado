@@ -136,7 +136,38 @@ def carregar(con: sqlite3.Connection, ids: list[str]) -> list[Livro]:
     return [por_id[i] for i in ids if i in por_id]
 
 
-VEZ_DA_IA = __import__("threading").BoundedSemaphore(1)   # quantos voos usam a IA ao mesmo tempo (27/10/2026: 1; a passagem também precisa dela)
+class _VezDaIA:
+    """Quantos voos usam a IA ao mesmo tempo: 1 no uso normal; com a máquina ociosa, acompanha as vagas liberadas (27/10/2026)."""
+
+    def __init__(self):
+        import threading
+        self._c, self._em_uso = threading.Condition(), 0
+
+    def _limite(self) -> int:
+        try:
+            from ...base.cerebro.pilotos_permanentes import paralelos_agora
+            return max(1, paralelos_agora() - 1) if paralelos_agora() > 1 else 1
+        except Exception:  # noqa: BLE001
+            return 1
+
+    def acquire(self, timeout: float | None = None) -> bool:
+        import time
+        fim = time.monotonic() + (timeout or 0)
+        with self._c:
+            while self._em_uso >= self._limite():
+                resto = fim - time.monotonic()
+                if resto <= 0 or not self._c.wait(min(resto, 5)) and time.monotonic() >= fim:
+                    return False
+            self._em_uso += 1
+            return True
+
+    def release(self) -> None:
+        with self._c:
+            self._em_uso = max(0, self._em_uso - 1)
+            self._c.notify_all()
+
+
+VEZ_DA_IA = _VezDaIA()
 
 
 class Interceptador:

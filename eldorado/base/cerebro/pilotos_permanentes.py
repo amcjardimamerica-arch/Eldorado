@@ -82,7 +82,7 @@ def _contexto(dados: Path, diario):
     return _contexto_pilotos({"dados": str(dados), "modulos": "config/modulos.toml", "intervalo_s": 1.0}, SimpleNamespace(diario=diario))
 
 
-PARALELOS_INTERCEPTADOR = 2   # 27/10/2026 (o conselho): de 5 para 2 — com 5 vagas a IA e a memória sufocaram a passagem, que parou de terminar
+PARALELOS_INTERCEPTADOR = 5   # o máximo; o uso normal é 1, e a ociosidade da máquina libera até 5 (titular, 27/10/2026)
 
 
 class _Vaga:
@@ -159,8 +159,8 @@ def _voo_interceptador(vaga: _Vaga, parar: threading.Event, lv_id: str, base: di
 
 def paralelos_agora() -> int:
     """Quantos voos o Comandante libera agora: 5; com a memória acima de 85% há mais de 10 minutos, 2 (26/10/2026)."""
-    from ..comandante.pilotos import pressao
-    return 1 if pressao() >= 600 else PARALELOS_INTERCEPTADOR
+    from ..comandante.pilotos import pressao, vagas_por_ociosidade
+    return 1 if pressao() >= 600 else min(PARALELOS_INTERCEPTADOR, vagas_por_ociosidade())
 
 def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_s: float = 180) -> None:
     """O Interceptador: 5 livros em paralelo, pelo plano de voo, sem parar. A fila: primeiro a de completar a base (as

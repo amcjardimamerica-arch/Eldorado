@@ -581,9 +581,23 @@ def montar(
         if not g["abertos"]:
             g["nivel"], g["motivo"] = "verde", "resolvido: o nó voltou a concluir depois da falha · " + g["motivo"]
         anunc.append(g)
-    linha = [
-        {"em": r[1], "evento": f"{r[0]}: {r[2]}"} for r in cer.execute("SELECT workflow, inicio, estado FROM execucao ORDER BY inicio DESC LIMIT 30")
-    ]
+    # 27/10/2026: a linha do tempo com o que o sistema de fato fez (a tabela das execuções de workflow quase não é preenchida
+    # pela passagem permanente): as etapas e as passagens, as decisões do Comandante, os voos dos pilotos
+    linha = [{"em": r[1], "evento": f"{r[0]}: {r[2]}"} for r in cer.execute("SELECT workflow, inicio, estado FROM execucao ORDER BY inicio DESC LIMIT 30")]
+    try:
+        for mk, em, mo in cer.execute("SELECT marcador, em, motivo FROM medicao WHERE marcador IN ('passagem', 'piloto:espiao', 'piloto:interceptador') "
+                                      "AND (marcador = 'passagem' OR motivo LIKE 'em voo%' OR motivo LIKE 'pousou%') ORDER BY em DESC LIMIT 80"):
+            quem = {"passagem": "Passagem", "piloto:espiao": "Espião", "piloto:interceptador": "Interceptador"}[mk]
+            linha.append({"em": em, "evento": f"{quem}: {mo}"})
+        tabs = {r[0] for r in cer.execute("SELECT name FROM sqlite_master WHERE type = 'table'")}
+        if "comandante_decisao" in tabs:
+            cols = {r[1] for r in cer.execute("PRAGMA table_info(comandante_decisao)")}
+            alvo = "alvo" if "alvo" in cols else "NULL"
+            for em, etapa, acao, a_ in cer.execute(f"SELECT em, etapa, acao, {alvo} FROM comandante_decisao ORDER BY em DESC LIMIT 40"):
+                linha.append({"em": em, "evento": f"Comandante · {etapa}: {acao}{(' — ' + str(a_)[:60]) if a_ else ''}"})
+    except sqlite3.Error:
+        pass
+    linha = sorted(linha, key=lambda x: str(x["em"] or ""), reverse=True)[:60]
     hist: dict[str, Counter] = defaultdict(Counter)
     for d, e in cer.execute("SELECT substr(inicio, 1, 10), estado FROM execucao WHERE inicio >= ?", ((agora - timedelta(days=14)).isoformat(),)):
         hist[d]["concluidas" if e == "concluida" else "falhas" if e == "falhou" else "outras"] += 1

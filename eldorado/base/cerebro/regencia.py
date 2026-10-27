@@ -99,8 +99,23 @@ class Regencia:
         fila = list(plano["motores"])
         inicio_coleta = _t.monotonic()
         orcamento = float(getattr(self, "orcamento_coleta_s", 1200))
-        with ThreadPoolExecutor(max_workers=max(1, self.governador.paralelismo_maximo)) as pool:
+        pool = ThreadPoolExecutor(max_workers=max(1, self.governador.paralelismo_maximo))
+        folga = float(getattr(self, "folga_coleta_s", 300))
+        try:
             while fila or pendentes:
+                if pendentes and _t.monotonic() - inicio_coleta > orcamento + folga:
+                    # 27/10/2026: um motor preso segurou a etapa 'acionar' (e a passagem inteira) por mais de 5 horas: passado o
+                    # orçamento e a folga, os motores em andamento são abandonados (ficam para a próxima passagem) e a passagem segue
+                    presos = [m_ for m_, _i in pendentes.values()]
+                    adiados.extend(presos)
+                    self.diario.emitir("alarme.aberto", "regencia", {"gravidade": "media", "modulo": "regencia:coleta", "aberto_em": agora(),
+                                                                    "mensagem": "motor(es) preso(s) além do orçamento da coleta, abandonado(s) nesta "
+                                                                                f"passagem: {', '.join(presos)}"})
+                    for f_ in pendentes:
+                        f_.cancel()
+                    pendentes.clear()
+                    fila.clear()
+                    break
                 while fila:
                     if _t.monotonic() - inicio_coleta > orcamento:      # o orçamento da coleta (24/10/2026: uma coleta de mais
                         adiados.extend(x["modulo"] for x in fila)        # de uma hora segurava a passagem inteira): os motores
@@ -150,6 +165,8 @@ class Regencia:
                         ev = achado_para_evento(a)
                         self.diario.emitir("achado.entregue", modulo, ev)
                         achados.append(_sem_paginas(msgspec.to_builtins(a)) | {"documento": _sem_paginas(a.documento) if a.documento else None})
+        finally:
+            pool.shutdown(wait=False, cancel_futures=True)   # nunca espera o motor preso
         return achados, adiados
 
     def _documento(self, modulo: str, doc: dict[str, Any]) -> None:
