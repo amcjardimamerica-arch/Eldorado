@@ -10,6 +10,7 @@ Aplica cada evento aos bancos e tabelas indicados no catálogo:
 """
 from __future__ import annotations
 
+import re
 import sqlite3
 from dataclasses import dataclass, field
 from typing import Any, Iterable
@@ -29,10 +30,20 @@ class Relatorio:
     aplicados: int = 0
     repetidos: int = 0
     recusados: list[tuple[str, str, str]] = field(default_factory=list)   # (evento, tipo, motivo)
+    dispensados: int = 0             # os dados recalculados sem a ficha do livro (27/10/2026)
+    alarmes_fechados: int = 0        # os alarmes de recusa resolvidos, fechados ao fim da aplicação
 
     @property
     def ok(self) -> bool:
         return not self.recusados
+
+
+# os dados recalculados a cada passagem: sem a ficha do livro (a linha), o evento é dispensado, não recusado (27/10/2026)
+DISPENSAVEIS = {"livro.codigo", "livro.base", "livro.esfera"}
+
+
+class LinhaAusente(ValueError):
+    """A atualização não achou a linha."""
 
 
 class Gravador:
@@ -51,7 +62,41 @@ class Gravador:
         r = Relatorio()
         for ev in eventos:
             self._aplicar_evento(ev, r)
+        self._fechar_recusas_resolvidas(r)
         return r
+
+    def _fechar_recusas_resolvidas(self, r: Relatorio) -> None:
+        """27/10/2026: ao fim de cada aplicação (inclusive a da partida do ciclo, que não depende da passagem), fecha os
+        alarmes de 'evento recusado' cujo evento já foi aplicado depois ou é de um tipo dispensável (o dado recalculado).
+        O fechamento é um evento, gravado como os demais."""
+        cer = self.bancos.get("cerebro")
+        if cer is None:
+            return
+        try:
+            abertos = cer.execute("SELECT id, mensagem FROM alarme WHERE fechado_em IS NULL AND modulo = 'gravador' "
+                                  "AND mensagem LIKE 'evento recusado (%'").fetchall()
+        except sqlite3.Error:
+            return
+        for aid, msg in abertos:
+            m = re.match(r"evento recusado \(([a-z_.]+), ([^)]+)\)", msg or "")
+            if not m:
+                continue
+            tipo, eid = m.group(1), m.group(2)
+            resolvido = tipo in DISPENSAVEIS
+            if not resolvido:
+                for nome in {a.banco for a in CATALOGO.get(tipo, ())}:
+                    try:
+                        if self.bancos[nome].execute("SELECT 1 FROM evento_aplicado WHERE id LIKE ?", (f"{eid}#%",)).fetchone():
+                            resolvido = True
+                    except (sqlite3.Error, KeyError):
+                        pass
+            if not resolvido:
+                continue
+            dados = {"id": aid, "fechado_em": agora()}
+            ev = (self.diario.emitir("alarme.fechado", "gravador", dados) if self.diario
+                  else Evento(id=f"alarme-{aid}!fechado", tipo="alarme.fechado", modulo="gravador", em=agora(), dados=dados))
+            self._aplicar_evento(ev, r)
+            r.alarmes_fechados += 1
 
     def _aplicar_evento(self, ev: Evento, r: Relatorio) -> None:
         alvos = CATALOGO.get(ev.tipo)
@@ -78,6 +123,11 @@ class Gravador:
             except (sqlite3.Error, KeyError, ValueError, TypeError) as e:
                 if con.in_transaction:
                     con.execute("ROLLBACK")
+                if isinstance(e, LinhaAusente) and ev.tipo in DISPENSAVEIS:   # 27/10/2026: o dado recalculado sem a ficha
+                    con.execute("INSERT OR IGNORE INTO evento_aplicado(id, tipo, aplicado_em) VALUES (?,?,?)", (chave, ev.tipo, agora()))
+                    con.commit()
+                    r.dispensados += 1
+                    continue
                 if self._mesmo_livro_ja_criado(con, ev, e):        # a mesma criação feita por outra parte do sistema na mesma passagem
                     con.execute("INSERT OR IGNORE INTO evento_aplicado(id, tipo, aplicado_em) VALUES (?,?,?)", (chave, ev.tipo, agora()))
                     con.commit()
@@ -124,7 +174,7 @@ class Gravador:
             cur = con.execute(f"UPDATE {alvo.tabela} SET {', '.join(f'{c}=?' for c in muda)} WHERE {' AND '.join(f'{c}=?' for c in alvo.chave)}",
                               [dados[c] for c in muda] + [dados[c] for c in alvo.chave])
             if cur.rowcount == 0:
-                raise ValueError(f"linha não encontrada em {alvo.tabela} para {dict((c, dados[c]) for c in alvo.chave)}")
+                raise LinhaAusente(f"linha não encontrada em {alvo.tabela} para {dict((c, dados[c]) for c in alvo.chave)}")
         elif alvo.operacao == "inserir_se_novo":                       # o mesmo registro encontrado de novo não é erro
             con.execute(f"INSERT INTO {alvo.tabela} ({', '.join(nomes)}) VALUES ({', '.join('?' * len(nomes))}) ON CONFLICT DO NOTHING", list(dados.values()))
         elif alvo.operacao == "inserir_ou_atualizar":
@@ -169,6 +219,13 @@ class Gravador:
         r.recusados.append((ev.id, ev.tipo, motivo))
         if ev.tipo == "alarme.aberto":
             return                                  # nunca entra em laço de alarmes
+        cer = self.bancos.get("cerebro")
+        try:                                        # 27/10/2026: um evento recusado tem no máximo um alarme aberto (antes: ×4)
+            if cer is not None and cer.execute("SELECT 1 FROM alarme WHERE fechado_em IS NULL AND modulo = 'gravador' AND instr(mensagem, ?) > 0",
+                                               (f", {ev.id})",)).fetchone():
+                return
+        except sqlite3.Error:
+            pass
         dados = {"gravidade": "alta", "modulo": "gravador", "mensagem": f"evento recusado ({ev.tipo}, {ev.id}): {motivo}"[:2000],
                  "aberto_em": agora()}
         alarme = (self.diario.emitir("alarme.aberto", "gravador", dados) if self.diario

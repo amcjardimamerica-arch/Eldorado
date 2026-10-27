@@ -104,7 +104,7 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "sala.medida": (Alvo(C, "sala_medicao", "inserir_ou_atualizar", ("chave",)),),   # a sala como parâmetro do funcionamento
     "arquivos.medidos": (Alvo(C, "medicao_arquivos", "inserir_ou_atualizar", ("chave",)),),   # o monitoramento de cada arquivo
     "medicao.registrada": (Alvo(C, "medicao", "inserir_ou_atualizar", ("marcador", "nivel", "em")),),
-    "maquina.leitura": (Alvo(C, "maquina", "inserir"),),
+    "maquina.leitura": (Alvo(C, "maquina", "inserir_se_novo"),),
     "cobertura.dia": (Alvo(C, "cobertura_dia", "inserir_ou_atualizar", ("dia",)),),
     "agenda.definida": (Alvo(C, "agenda", "inserir_ou_atualizar", ("modulo", "janela_inicio")),),
     "dominio.aprendido": (Alvo(C, "dominio", "inserir_ou_atualizar", ("dominio",)),),

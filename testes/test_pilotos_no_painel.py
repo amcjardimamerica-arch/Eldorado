@@ -192,3 +192,24 @@ def test_toda_trava_citada_nas_regras_existe():
             if not p.exists() or not re.search(rf"^def {re.escape(fn)}\(", p.read_text(encoding="utf-8"), re.M):
                 faltam.append((r["id"], t))
     assert not faltam, faltam
+
+
+def test_o_gravador_nao_deixa_alarme_de_recusa_resolvida(bancos, tmp_path):
+    """27/10/2026 (a quarta cobrança): o código do livro sem a ficha é dispensado (o dado é recalculado), sem recusa; a
+    recusa repetida não abre outro alarme; o alarme de uma recusa resolvida (ou dispensável) fecha ao fim da aplicação."""
+    from eldorado.base.nucleo.eventos import criar
+    from eldorado.base.nucleo.gravador import Gravador
+
+    g = Gravador(bancos)
+    c = bancos["cerebro"]
+    ev = criar("livro.codigo", "comandante", {"livro_id": "L-sem-ficha", "codigo": "GO·CUL·PUB·FOM·PRJ"})
+    r = g.aplicar([ev, ev])
+    assert r.ok and r.dispensados == 1  # dispensado, não recusado
+    c.execute(
+        "INSERT INTO alarme(gravidade, modulo, mensagem, aberto_em, repeticoes) VALUES ('alta', 'gravador', "
+        "'evento recusado (livro.codigo, 0179-antigo): linha não encontrada', '2026-10-26T20:29:14+00:00', 1)"
+    )
+    c.commit()
+    r = g.aplicar([])
+    assert r.alarmes_fechados == 1
+    assert not c.execute("SELECT 1 FROM alarme WHERE fechado_em IS NULL AND mensagem LIKE 'evento recusado%'").fetchone()
