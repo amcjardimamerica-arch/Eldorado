@@ -10,6 +10,7 @@
   o diário e pula o que já foi feito, inclusive as tentativas já gastas. O diário é a verdade; o gravador aplica
   depois os mesmos eventos ao banco do Cérebro.
 """
+
 from __future__ import annotations
 
 import time
@@ -29,6 +30,7 @@ ENTRADA = "_entrada"
 @dataclass
 class Contexto:
     """O que cada nó recebe além dos itens: quem está rodando e onde gravar eventos."""
+
     execucao: str
     no: str
     tentativa: int
@@ -39,7 +41,7 @@ class Contexto:
 @dataclass
 class Resultado:
     execucao: str
-    estado: str                                   # 'concluida', 'falhou', 'reagendada'
+    estado: str  # 'concluida', 'falhou', 'reagendada'
     saidas: dict[str, list[dict[str, Any]]] = field(default_factory=dict)
     reagendar_em_s: float | None = None
     no_reagendado: str | None = None
@@ -52,8 +54,14 @@ class _Reagendar(Exception):
 
 
 class Executor:
-    def __init__(self, definicao: Definicao, pasta_eventos: str | Path, medir_memoria: bool = True,
-                 dormir: Callable[[float], None] = time.sleep, funcoes: dict[str, Callable[..., Any]] | None = None):
+    def __init__(
+        self,
+        definicao: Definicao,
+        pasta_eventos: str | Path,
+        medir_memoria: bool = True,
+        dormir: Callable[[float], None] = time.sleep,
+        funcoes: dict[str, Callable[..., Any]] | None = None,
+    ):
         self.d = definicao
         self.pasta = Path(pasta_eventos)
         self.medir_memoria = medir_memoria
@@ -72,9 +80,14 @@ class Executor:
             diario.emitir("execucao.retomada", "executor", {"id": diario.execucao, "estado": "retomada"})
             entrada = estado.entrada
         else:
-            diario.emitir("workflow.versao", "executor", {"id": self.d.id, "versao": self.d.versao, "definicao": self.d.como_json(), "criado_em": agora()})
-            diario.emitir("execucao.iniciada", "executor", {"id": diario.execucao, "workflow": self.d.id, "versao": self.d.versao,
-                                                            "inicio": agora(), "estado": "rodando"})
+            diario.emitir(
+                "workflow.versao", "executor", {"id": self.d.id, "versao": self.d.versao, "definicao": self.d.como_json(), "criado_em": agora()}
+            )
+            diario.emitir(
+                "execucao.iniciada",
+                "executor",
+                {"id": diario.execucao, "workflow": self.d.id, "versao": self.d.versao, "inicio": agora(), "estado": "rodando"},
+            )
             entrada = list(entrada or [])
             estado.registrar_passo(diario, ENTRADA, "entrada", [], entrada)
         try:
@@ -83,7 +96,7 @@ class Executor:
                     continue
                 itens = self._entradas(no_id, estado, entrada)
                 if itens is None:
-                    continue                                   # nó não ativado nesta execução
+                    continue  # nó não ativado nesta execução
                 self._rodar_no(self.d.no(no_id), itens, estado, diario, alarmes)
         except _Reagendar as r:
             diario.emitir("execucao.concluida", "executor", {"id": diario.execucao, "estado": "aguardando"} | {"fim": None})
@@ -104,7 +117,7 @@ class Executor:
         de_erro = self.d.entradas(no_id, "erro")
         so_ordem = self.d.entradas(no_id, "ordem")
         if not principais and not de_erro:
-            if so_ordem:                                  # só ordem: roda depois dos indicados, sem receber dados
+            if so_ordem:  # só ordem: roda depois dos indicados, sem receber dados
                 return [] if any(p in estado.saidas or p in estado.desviados for p in so_ordem) else None
             return list(entrada)
         itens: list[dict[str, Any]] = []
@@ -120,8 +133,21 @@ class Executor:
         return itens if ativado else None
 
     def _rodar_no(self, no: No, itens: list[dict[str, Any]], estado: "_Estado", diario: Diario, alarmes: Alarmes) -> None:
-        if no.id in estado.pular:                        # o Comandante escolheu não rodar esta etapa (sem necessidade):
-            estado.registrar_passo(diario, no.id, "pulado", itens, [])          # registrada, e as seguintes continuam
+        """27/10/2026: o sinal de cada etapa (o nome, o começo, o fim e a duração) num diário à parte, gravado a cada 5
+        minutos; os passos da passagem só são gravados quando ela termina, e a passagem que não terminava deixava o
+        sistema cego sobre qual etapa demorava."""
+        import time as _t
+
+        t0 = _t.monotonic()
+        sinal_etapa(f"a etapa {no.id} começou")
+        try:
+            self._rodar_no_corpo(no, itens, estado, diario, alarmes)
+        finally:
+            sinal_etapa(f"a etapa {no.id} terminou em {(_t.monotonic() - t0):.0f} s")
+
+    def _rodar_no_corpo(self, no: No, itens: list[dict[str, Any]], estado: "_Estado", diario: Diario, alarmes: Alarmes) -> None:
+        if no.id in estado.pular:  # o Comandante escolheu não rodar esta etapa (sem necessidade):
+            estado.registrar_passo(diario, no.id, "pulado", itens, [])  # registrada, e as seguintes continuam
             estado.saidas[no.id] = []
             return
         if no.fixo is not None:
@@ -136,7 +162,7 @@ class Executor:
             ok, saida, erro = self._chamar(fn, no, itens, ctx, diario)
             if ok:
                 estado.registrar_passo(diario, no.id, "concluido", itens, self._herdar_linhagem(itens, saida))
-                for x in saida:                          # o nó de agente do Comandante: as etapas a pular nesta passagem
+                for x in saida:  # o nó de agente do Comandante: as etapas a pular nesta passagem
                     if isinstance(x, dict) and x.get("__pular__"):
                         estado.pular.update(str(n) for n in x["__pular__"])
                 return
@@ -158,13 +184,16 @@ class Executor:
         alarmes.abrir("alta", f"workflow:{self.d.id}", f"o nó {no.id} falhou depois de {no.tentativas} tentativa(s): {ultimo_erro}")
         raise _Falhou(f"{no.id}: {ultimo_erro}")
 
-    def _chamar(self, fn: Callable[..., Any], no: No, itens: list[dict[str, Any]], ctx: Contexto, diario: Diario) -> tuple[bool, list[dict[str, Any]], str]:
+    def _chamar(
+        self, fn: Callable[..., Any], no: No, itens: list[dict[str, Any]], ctx: Contexto, diario: Diario
+    ) -> tuple[bool, list[dict[str, Any]], str]:
         def chamada():
             r = fn([dict(x) for x in itens], dict(no.parametros), ctx)
             saida = [] if r is None else r
             if not isinstance(saida, list) or not all(isinstance(x, dict) for x in saida):
                 raise TypeError("o nó deve devolver uma lista de dicionários")
             return saida
+
         m = medir(chamada, medir_memoria=self.medir_memoria)
         emitir_recibo(diario, ctx.execucao, no.tipo, no.id, m)
         self._arquivos_do_erro = list(m.arquivos_do_erro)
@@ -185,13 +214,14 @@ class _Falhou(Exception):
 @dataclass
 class _Estado:
     """O estado de uma execução, reconstruído do diário."""
+
     iniciada: bool = False
     concluida: str | None = None
     entrada: list[dict[str, Any]] = field(default_factory=list)
     saidas: dict[str, list[dict[str, Any]]] = field(default_factory=dict)
     desviados: dict[str, list[dict[str, Any]]] = field(default_factory=dict)
     tentativas_gastas: dict[str, int] = field(default_factory=dict)
-    pular: set[str] = field(default_factory=set)        # o "Escolher" do n8n: as etapas que o Comandante decidiu pular
+    pular: set[str] = field(default_factory=set)  # o "Escolher" do n8n: as etapas que o Comandante decidiu pular
     ultimo_passo: int = -1
 
     @classmethod
@@ -217,11 +247,41 @@ class _Estado:
 
     def registrar_passo(self, diario: Diario, no: str, estado: str, entrada: list[dict[str, Any]], saida: list[dict[str, Any]]) -> None:
         self.ultimo_passo += 1
-        diario.emitir("execucao.passo", "executor", {"execucao": diario.execucao, "passo": self.ultimo_passo, "no": no, "estado": estado,
-                                                      "entrada": entrada, "saida": saida, "em": agora()})
+        diario.emitir(
+            "execucao.passo",
+            "executor",
+            {"execucao": diario.execucao, "passo": self.ultimo_passo, "no": no, "estado": estado, "entrada": entrada, "saida": saida, "em": agora()},
+        )
         if no == ENTRADA:
             self.entrada = saida
         elif estado == "concluido":
             self.saidas[no] = saida
         elif estado == "desviado":
             self.desviados[no] = saida
+
+
+_SINAL: dict = {"diario": None}
+
+
+def sinal_etapa(motivo: str) -> None:
+    """O sinal da etapa no diário à parte (ligado pelo funcionamento permanente); sem ele, não faz nada."""
+    d = _SINAL["diario"]
+    if d is None:
+        return
+    import time as _t
+
+    try:
+        d.emitir(
+            "medicao.registrada",
+            "passagem",
+            {
+                "marcador": "passagem:etapa",
+                "nivel": "sistema",
+                "ponto": "v",
+                "valor": 1,
+                "em": _t.strftime("%Y-%m-%dT%H:%M:%S+00:00", _t.gmtime()),
+                "motivo": motivo[:300],
+            },
+        )
+    except Exception:  # noqa: BLE001
+        pass

@@ -742,6 +742,9 @@ def permanente(
     from .eventos import Diario as _Diario
 
     _sd = _Diario(Path(_cfg(config)[2]), "passagem-sinal")  # 27/10/2026: o sinal de vida da passagem (gravado a cada 5 min)
+    from ..fluxo import executor as _ex
+
+    _ex._SINAL["diario"] = _sd  # 27/10/2026: o sinal de cada etapa da passagem, gravado a cada 5 minutos
 
     def _sinal_passagem(motivo: str) -> None:
         try:
