@@ -274,3 +274,17 @@ def test_arquivar_pela_titular_grava_na_biblioteca_e_sai_das_abertas(bancos, gra
     src = Path("eldorado/base/painel/dados.py").read_text(encoding="utf-8")
     assert "AND p.fase <> 'arquivo' ORDER BY d.inscricao_fim" in src  # sai das abertas
     assert Path(".github/workflows/arquivar.yml").exists()
+
+
+def test_o_prazo_e_de_cada_acionamento_e_o_motor_volta_ate_terminar_o_dia():
+    """27/10/2026 (titular): 20 min por acionamento (+5 de folga), sem prazo para a coleta; o motor que não terminou o dia é
+    acionado de novo; o diário lido até a última matéria."""
+    from eldorado.base.cerebro import regencia as RG
+    from eldorado.motores.canal.motor import CfgElo, CfgPaginacao
+
+    src = Path("eldorado/base/cerebro/regencia.py").read_text(encoding="utf-8")
+    assert "sem prazo para a coleta" in src and "PENDENTES_DO_DIA" in src and "orcamento + folga" in src
+    assert CfgElo.model_fields["limite"].default == 5000 and CfgPaginacao.model_fields["maximo"].default == 50
+    RG.PENDENTES_DO_DIA[RG._hoje()] = {"do-goiania"}
+    assert "do-goiania" in RG.PENDENTES_DO_DIA[RG._hoje()]
+    RG.PENDENTES_DO_DIA.clear()

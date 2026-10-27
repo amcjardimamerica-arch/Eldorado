@@ -55,7 +55,7 @@ class CfgMotor(_Base):
 
 class CfgPaginacao(_Base):
     inicio: int = 1
-    maximo: int = Field(5, ge=1, le=100)
+    maximo: int = Field(50, ge=1, le=1000)    # 27/10/2026: até o fim real (o total ou a página vazia), não 5 páginas
     total: str | None = None                  # onde está o total de páginas na resposta (jmespath)
 
 
@@ -66,7 +66,7 @@ class CfgElo(_Base):
     campos: dict[str, str] = Field(default_factory=dict)
     url: str | None = None
     filtro: dict[str, str] = Field(default_factory=dict)
-    limite: int = Field(300, ge=1, le=5000)
+    limite: int = Field(5000, ge=1, le=20000)   # 27/10/2026: o diário lido até a última matéria (antes, 300)
     corpo: dict[str, str] = Field(default_factory=dict)
 
 
@@ -108,7 +108,7 @@ class CfgAcesso(_Base):
     # o tempo máximo de uma leitura do motor (24/10/2026: o motor das prefeituras levava mais de 19 min e segurava a
     # passagem inteira): passado o tempo, ele para entre uma fonte e outra e continua na próxima passagem (as fontes
     # lidas há mais tempo vêm primeiro)
-    tempo_maximo_s: float = Field(900, ge=30)
+    tempo_maximo_s: float = Field(1200, ge=30)   # 27/10/2026: 20 min por acionamento (+5 de folga na Regência)
 
 
 class CfgLeitura(_Base):
@@ -326,9 +326,11 @@ class MotorCanal(Motor):
         inicio_leitura = _t.monotonic()
         # as fontes lidas há mais tempo primeiro: o motor que parou pelo tempo máximo continua de onde parou
         fontes = sorted(self.cfg.fonte, key=lambda f: str(self.estado._fonte(f.nome).get("ultima") or ""))
+        self.incompleto = False                  # 27/10/2026: o trabalho do dia não terminou; o Comandante aciona de novo
         for fonte in fontes:
             if _t.monotonic() - inicio_leitura > self.cfg.acesso.tempo_maximo_s:
-                self.relatorio.append(f"tempo máximo ({self.cfg.acesso.tempo_maximo_s:.0f} s): as fontes restantes ficam para a próxima passagem")
+                self.relatorio.append(f"tempo máximo ({self.cfg.acesso.tempo_maximo_s:.0f} s): as fontes restantes ficam para o próximo acionamento")
+                self.incompleto = True
                 return
             try:
                 pistas = self._descobrir(fonte)
@@ -359,7 +361,13 @@ class MotorCanal(Motor):
                 self.relatorio.append(f"{fonte.nome}: {len(pistas)} registro(s), {entregues} para a base Especial")
                 continue
             proprios = {self.cfg.programa.link_divulgacao.rstrip("/"), self.cfg.programa.link_oficial.rstrip("/")} if self.cfg.programa else set()
+            parou = False
             for pista in pistas:
+                if _t.monotonic() - inicio_leitura > self.cfg.acesso.tempo_maximo_s:
+                    # 27/10/2026: o tempo dentro de uma fonte grande (o diário): a fonte não é dada como lida e volta primeiro
+                    self.relatorio.append(f"{fonte.nome}: tempo máximo no meio da fonte; o restante fica para o próximo acionamento")
+                    self.incompleto, parou = True, True
+                    break
                 if pista.link.rstrip("/") in proprios:
                     continue                                        # o próprio programa já é entregue pela seção programa
                 if not self._passa_lexico(pista.titulo, pista.resumo or "") or self.estado.ja_entregue(pista.link):
@@ -374,6 +382,8 @@ class MotorCanal(Motor):
                 entregues += 1
                 self.estado.marcar_entregue(pista.link, _agora(), achado.id, fonte.nome)
                 yield achado
+            if parou:
+                return                                              # a fonte pela metade não é dada como lida: volta primeiro
             self.estado.leitura(fonte.nome, _agora(), achados=entregues)
             self.relatorio.append(f"{fonte.nome}: {len(pistas)} pista(s), {entregues} achado(s)")
         yield from self._alvos()

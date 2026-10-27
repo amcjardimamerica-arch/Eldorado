@@ -59,6 +59,15 @@ def achado_para_evento(a: Achado) -> dict[str, Any]:
     return ev
 
 
+PENDENTES_DO_DIA: dict[str, set[str]] = {}   # os motores que ainda não terminaram o trabalho do dia (27/10/2026)
+
+
+def _hoje() -> str:
+    from datetime import datetime as _dt
+    from datetime import timezone as _tz
+    return _dt.now(_tz.utc).date().isoformat()
+
+
 class Regencia:
     def __init__(self, agenda: Agenda, governador: Governador, registro: Registro, diario: Diario, notas: dict[str, float] | None = None,
                  especial=None):
@@ -79,6 +88,11 @@ class Regencia:
             devidos = [Devido(m, ini.isoformat(), (ini + timedelta(minutes=30)).isoformat(), "acionado à mão") for m in sorted(self.registro.ids())]
         else:
             devidos = [d for d in self.agenda.devidos(agora_, acionadas, ultima) if d.modulo in self.registro.ids()]
+        # 27/10/2026 (titular): o motor que não terminou o trabalho do dia é acionado de novo, até terminar
+        ja = {d.modulo for d in devidos}
+        ini_ = agora_.replace(second=0, microsecond=0)
+        devidos += [Devido(m, ini_.isoformat(), (ini_ + timedelta(minutes=30)).isoformat(), "continua o trabalho do dia (parou nos 20 min)")
+                    for m in sorted(PENDENTES_DO_DIA.get(_hoje(), set())) if m not in ja and m in self.registro.ids()]
         devidos.sort(key=lambda d: -self.notas.get(d.modulo, 0.5))
         plano = {"passagem": novo_id(), "criado_em": agora(), "paralelismo": self.governador.paralelismo(),
                  "motores": [{"modulo": d.modulo, "janela_inicio": d.janela_inicio, "janela_fim": d.janela_fim, "motivo": d.motivo,
@@ -100,27 +114,26 @@ class Regencia:
         inicio_coleta = _t.monotonic()
         orcamento = float(getattr(self, "orcamento_coleta_s", 1200))
         pool = ThreadPoolExecutor(max_workers=max(1, self.governador.paralelismo_maximo))
+        _inicio_m: dict = {}
         folga = float(getattr(self, "folga_coleta_s", 300))
         try:
             while fila or pendentes:
-                if pendentes and _t.monotonic() - inicio_coleta > orcamento + folga:
+                vencidos = [f_ for f_, (_m, _i) in pendentes.items() if _t.monotonic() - _inicio_m.get(f_, inicio_coleta) > orcamento + folga]
+                if vencidos:
                     # 27/10/2026: um motor preso segurou a etapa 'acionar' (e a passagem inteira) por mais de 5 horas: passado o
                     # orçamento e a folga, os motores em andamento são abandonados (ficam para a próxima passagem) e a passagem segue
-                    presos = [m_ for m_, _i in pendentes.values()]
+                    presos = [pendentes[f_][0] for f_ in vencidos]
                     adiados.extend(presos)
+                    PENDENTES_DO_DIA.setdefault(_hoje(), set()).update(presos)   # o Comandante aciona de novo
                     self.diario.emitir("alarme.aberto", "regencia", {"gravidade": "media", "modulo": "regencia:coleta", "aberto_em": agora(),
                                                                     "mensagem": "motor(es) preso(s) além do orçamento da coleta, abandonado(s) nesta "
                                                                                 f"passagem: {', '.join(presos)}"})
-                    for f_ in pendentes:
+                    for f_ in vencidos:                               # só esses acionamentos: os outros motores seguem
                         f_.cancel()
-                    pendentes.clear()
-                    fila.clear()
-                    break
+                        pendentes.pop(f_, None)
+                    continue
                 while fila:
-                    if _t.monotonic() - inicio_coleta > orcamento:      # o orçamento da coleta (24/10/2026: uma coleta de mais
-                        adiados.extend(x["modulo"] for x in fila)        # de uma hora segurava a passagem inteira): os motores
-                        fila.clear()                                     # que faltam ficam para a próxima passagem
-                        break
+                    # 27/10/2026 (titular): sem prazo para a coleta; o prazo é de cada acionamento (20 + 5 min)
                     m = fila[0]
                     modulo = m["modulo"]
                     cabe = max(1, self.governador.paralelismo(modulo)) if pendentes else 1
@@ -141,6 +154,7 @@ class Regencia:
                         motor.estado.diario = self.diario
                     f = pool.submit(medir, lambda motor=motor, p=p: list(motor.buscar(p)), medir_memoria=False)
                     pendentes[f] = (modulo, agora())
+                    _inicio_m[f] = _t.monotonic()
                 if not pendentes:
                     break
                 prontos, _ = wait(list(pendentes), timeout=5, return_when=FIRST_COMPLETED)
@@ -153,6 +167,11 @@ class Regencia:
                     emitir_recibo(self.diario, execucao, modulo, "regencia", med)
                     self.governador.aprender_custo(modulo, med.cpu_ms, med.duracao_ms, med.memoria_pico_kb)
                     lista = med.resultado or []
+                    mot_ = self.registro.obter(modulo)
+                    if getattr(mot_, "incompleto", False):                # parou pelos 20 min: volta na próxima passagem
+                        PENDENTES_DO_DIA.setdefault(_hoje(), set()).add(modulo)
+                    else:                                              # terminou o trabalho do dia
+                        PENDENTES_DO_DIA.get(_hoje(), set()).discard(modulo)
                     self.diario.emitir("motor.execucao", "regencia", {"motor": modulo, "inicio": inicio, "fim": agora(), "achados": len(lista),
                                                                       "erro": med.erro or None})
                     for a in lista:
