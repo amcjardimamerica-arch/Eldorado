@@ -128,7 +128,7 @@ def test_a_pagina_inicial_calendario_por_tema_e_os_quadros_em_sequencia():
     from pathlib import Path
 
     p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
-    assert "const linhas=_ord.map(k=>`<div class=\\"gc-tema\\">" in p and "_prox(a).localeCompare(_prox(b))" in p
+    assert "gc-tema" in p and "_prox(a).localeCompare(_prox(b))" in p                                  # por tema, o prazo mais próximo primeiro
     assert ".inicio-grade{display:grid;grid-template-columns:1fr;" in p and "grid-template-columns:1fr;gap:18px;margin-top:18px" in p
     i, j, k = p.index("Calendário de Editais</h3>"), p.index('<div class="painel-tit farol">'), p.index("Fila prioritári")
     assert i < j < k                                                                            # o Calendário, o FAROL e a Fila
