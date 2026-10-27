@@ -137,16 +137,15 @@ def test_a_pagina_inicial_calendario_por_tema_e_os_quadros_em_sequencia():
 
 
 def test_o_lago_dos_prazos():
-    """27/10/2026 (titular, refeito do zero a partir do artigo 'Eldorado'): Manoa · o calendário do sol — de dia; o sol de
-    raios radiais é o calendário (cada raio um dia, cada anel uma área); Manoa, a cidade de ouro, sob o sol, entre os tepuis,
-    os buritis e a floresta; os terraços (até 10 por área, as que terminam antes primeiro); pássaros em polígonos de quatro
-    espécies; os botões antigos do topo saem (os novos, incorporados); o livro ao clicar; a fonte é a Biblioteca."""
+    """27/10/2026 (titular, refeito do zero): Manoa, o disco do sol — arte realista (as imagens da associação: o sol nascente
+    e a cidade de ouro), a luz por cima (os raios radiais em modo de luz); o calendário é um disco de ouro gravado, cada dia um
+    raio (o comprimento, as inscrições abertas); paleta única (o ouro); nenhuma barra de navegação das outras páginas;
+    os terraços (até 10 por área, as que terminam antes primeiro); o livro ao clicar; a fonte é a Biblioteca."""
     from pathlib import Path
 
     p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
-    assert 'id="mn"' in p and 'id="mn-sol"' in p and 'id="mn-manoa"' in p and 'id="mn-ter"' in p and 'id="mn-livro"' in p
-    assert "body.mn-ativo #topo-modulos{display:none!important}" in p  # os botões antigos saem
+    assert "body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.oculto)) #nav-eldorado{display:none!important}" in p
+    assert "img/manoa-sol.webp" in p and "img/manoa-cidade.webp" in p and Path("eldorado/base/painel/pagina/img/manoa-cidade.webp").exists()
+    assert 'id="mn-sol"' in p and 'id="mn-ter"' in p and 'id="mn-livro"' in p and "repeating-conic-gradient" in p
     assert "xs.slice(0,10)" in p and "a.fim.localeCompare(b.fim)" in p and 'fetch("dados/fluxo_oportunidades.json' in p
-    for especie in ("canide", "vermelha", "tucano", "beija"):
-        assert especie in p
-    assert 'id="eld"' not in p  # o lago saiu
+    assert 'id="eld"' not in p and "mn-manoa" not in p                                           # o lago e o desenho antigo saíram

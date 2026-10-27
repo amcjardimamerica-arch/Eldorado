@@ -1,14 +1,14 @@
-# Manoa · o calendário do sol (27/10/2026) — refeito do zero
+# Manoa, o disco do sol (27/10/2026) — refeito do zero
 
-A pesquisa (o artigo "Eldorado" da Wikipédia, enviado pela titular): a lenda nasce da cerimônia muísca do Zipa coberto de
-pó de ouro na Lagoa de Guatavita e migra para Manoa, a cidade toda feita de ouro no Planalto das Guianas, na floresta
-"impenetrável", perto dos tepuis do Monte Roraima e dos buritis; "há ouro por toda a parte: na cidade, nos templos, sob
-forma de ídolos, de placas, de armaduras e de escudos"; as placas de ouro "representavam homens, animais, pássaros e
-peixes"; Manoa teria sido de incas refugiados — um povo do sol.
+Skills instaladas do GitHub antes de criar: ui-ux-pro-max (nextlevelbuilder, 141 mil estrelas) e frontend-design (Ilm-Alan).
+A disciplina delas: paleta única e contida, contraste alto no texto (4,5:1), espaço e grade limpos, movimento que para fora
+da tela e para quem pede menos movimento.
 
-O conceito: o SOL de raios radiais é o calendário (cada raio um dia; cada anel uma área, com a intensidade de
-oportunidades em cada dia); o sol nasce sobre MANOA, a cidade de ouro em degraus, entre os tepuis, os buritis e a
-floresta; ao lado, os TERRAÇOS dos templos (cada área um terraço, até 10 oportunidades, as que terminam antes primeiro, com
-a trilha de ouro dos dias); o cursor numa oportunidade acende o seu arco no sol e um cometa de ouro o percorre do primeiro
-ao último dia; o clique abre o livro (a placa de Manoa). De dia; pássaros em polígonos (como a logomarca), quatro
-espécies: a arara-canindé, a arara-vermelha, o tucano e o beija-flor. Sem paralaxe; o movimento para para quem pede menos.
+Arte realista: as imagens da associação (o sol nascente com raios; a cidade de ouro na floresta), com a luz real por cima
+(o sol em camadas de brilho e os raios radiais em modo de luz, girando devagar). O calendário é um disco de ouro gravado,
+com o grão do metal e os dias entalhados: cada dia é um raio de sol, mais longo quanto mais inscrições abertas; o dia de
+hoje em vermelho-terra. Uma só família de cores (o ouro, o âmbar, o marrom). Os terraços são placas de folha de ouro, com
+as áreas por nome e insígnia (não por cores). Os pássaros: silhuetas em polígonos nos tons do amanhecer (a logomarca).
+Nenhuma barra de navegação das outras páginas: só as placas próprias da página.
+
+Limite: as imagens enviadas são pequenas (848×166 e 521×242); para nitidez em tela cheia, enviar as originais em alta.
