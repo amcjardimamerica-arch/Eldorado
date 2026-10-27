@@ -24,6 +24,7 @@ PRIORIDADE = {"aberta incompleta": 0, "recuperável": 1, "sem base": 2}
 URL = re.compile(r"^https?://[^\s/]+\.[a-z]{2,}", re.I)
 CONTINUO = re.compile(r"cont[ií]nu|permanente|aberto o ano|a qualquer tempo", re.I)
 DADOS = ("site oficial", "site de divulgação", "prazo de inscrição", "esfera", "área de atuação")
+QUEM_PODE = "quem pode participar (a cláusula do edital)"
 
 
 def avaliar(con: sqlite3.Connection) -> list[dict[str, Any]]:
@@ -49,6 +50,10 @@ def avaliar(con: sqlite3.Connection) -> list[dict[str, Any]]:
             "área de atuação": bool(r["area"] or cs.get("Área de atuação")),
         }
         buscar = [d for d in DADOS if not tem[d]]
+        # 27/10/2026 (titular, o caso de Mauriti): a aberta e a do Farol precisam da cláusula de QUEM PODE PARTICIPAR, lida
+        # no edital (decide a elegibilidade, inclusive a territorial); sem ela, o Interceptador abre o edital e a procura
+        if (r["situacao_prazo"] == "aberta" or r["fase"] == "farol") and not cs.get("Requisitos"):
+            buscar.append(QUEM_PODE)
         if validar(r["titulo"]) != "oportunidade":
             classe = "não é oportunidade"
         elif not buscar:
@@ -84,7 +89,7 @@ def fila(livros: list[dict[str, Any]], agora: datetime | None = None, maximo: in
         x
         for x in livros
         if x["classe"] in PRIORIDADE
-        and x["fase"] not in ("analise externa", "farol")
+        and (x["fase"] not in ("analise externa", "farol") or (x["fase"] == "farol" and QUEM_PODE in x["buscar"]))
         and x["tentativas"] < TENTATIVAS
         and (not x["ultima"] or x["ultima"] <= limite)
     ]
@@ -336,8 +341,10 @@ def expurgar(con: sqlite3.Connection, diario, agora: datetime | None = None) -> 
                 conta["unidos"] += 1
     iso = agora.isoformat(timespec="seconds")
     for x in livros:
-        if x["id"] in unidos or x["fase"] == "farol" or x["natureza"] == "PRI":
+        if x["id"] in unidos or x["natureza"] == "PRI":
             continue  # as oportunidades de empresas ficam todas
+        if x["fase"] == "farol" and x["abrangencia"] != "municipal_fora_go":
+            continue  # do Farol, só a regra territorial (27/10/2026: o caso de Mauriti)
         s_, e_, p_, criado = info.get(x["id"], ("sem", "sem", None, iso))
         if (criado or iso) > limite:
             continue  # a carência do livro recém-criado

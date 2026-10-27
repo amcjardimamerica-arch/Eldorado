@@ -66,3 +66,30 @@ def test_a_regra_territorial_no_portao_vale_so_para_as_publicas():
     }
     assert "município de outro estado" in (motivo(publica) or "")
     assert "município de outro estado" not in (motivo(privada) or "")
+
+
+def test_a_clausula_de_quem_pode_participar_decide_o_territorio():
+    """27/10/2026 (titular, o caso de Mauriti/CE): a cláusula do edital ('resida no Município de Mauriti/CE') é prova do
+    município, tão forte quanto o título; a descrição solta do território não vale (os editais nacionais que citam cidades)."""
+    from eldorado.base.cartorio.auditoria import restricao_de_participacao as r
+    from eldorado.base.cartorio.auditoria import territorio
+
+    c = {
+        "Requisitos": {
+            "valor": "Pode se inscrever no Edital qualquer agente cultural que resida no Município de Mauriti/CE há pelo menos 02 (dois) anos"
+        }
+    }
+    livro = {
+        "titulo": "EDITAL DE CHAMAMENTO PÚBLICO Nº 03/2026 - MOSTRA CULTURAL MAURITI DE ARTES E CULTURAS",
+        "uf": "BR",
+        "link_oficial": "https://mapacultural.secult.ce.gov.br/files/opportunity/8448/edital-mostra-cultural-mauriti-2.pdf",
+    }
+    assert territorio(livro, c) == ("municipal_fora_go", "Mauriti")
+    assert r({"Objeto": {"valor": "apoiar projetos dos agentes culturais do Município de Mauriti, Estado do Ceará"}}) == ("Mauriti", "CE")
+    assert r({"Requisitos": {"valor": "organizações da sociedade civil com sede no Município de Goiânia há 1 ano"}}) == ("Goiânia", "GO")
+    assert r({"Requisitos": {"valor": "organizações de todo o Brasil, inclusive de Goiânia e Anápolis"}}) is None
+    from pathlib import Path
+
+    src = Path("eldorado/base/comandante/biblioteca.py").read_text(encoding="utf-8")
+    assert 'x["fase"] == "farol" and x["abrangencia"] != "municipal_fora_go"' in src  # a regra territorial vale no Farol
+    assert "QUEM_PODE" in src  # a cláusula é dado obrigatório

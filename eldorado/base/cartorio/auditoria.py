@@ -94,6 +94,40 @@ LOCAL_PUBLICO = re.compile(r"(?i)prefeitura|municipal|c[âa]mara|di[áa]rio|\bpn
                            r"funda[çc][ãa]o cultural")
 
 
+# 27/10/2026 (titular, o caso de Mauriti/CE): a cláusula de QUEM PODE PARTICIPAR é prova do município, tão forte quanto o
+# título: residir, ter sede, ser domiciliado, ser agente cultural ou organização DO município. A descrição solta do território
+# continua não valendo (a regra de 17/10 protege os editais nacionais que citam cidades).
+RESTRICAO = re.compile(
+    r"(?:resid[aei]\w*|reside\w*|domiciliad\w*|sediad\w*|com\s+sede|tenha\s+sede|estabelecid\w*|atua\w*\s+comprovad\w*|"
+    r"agentes?\s+culturais|artistas|organiza\w+|entidades|institui\w+|coletivos)"
+    r"[^.;:]{0,60}?\b(?:no|na|do|da|em)\s+munic[ií]pio\s+de\s+([A-ZÀ-Úa-zà-ú][\wÀ-ú' -]{2,40}?)"
+    r"(?:\s*(?:/|–|-|,\s*estado\s+d[oe]|\(|\s)\s*([A-Z]{2}|[A-ZÀ-Úa-zà-ú][\wÀ-ú ]{3,25}))?(?=[\s.,;:)/]|$)", re.I)
+UF_DE = {"acre": "AC", "alagoas": "AL", "amapa": "AP", "amazonas": "AM", "bahia": "BA", "ceara": "CE", "distrito federal": "DF",
+         "espirito santo": "ES", "goias": "GO", "maranhao": "MA", "mato grosso": "MT", "mato grosso do sul": "MS", "minas gerais": "MG",
+         "para": "PA", "paraiba": "PB", "parana": "PR", "pernambuco": "PE", "piaui": "PI", "rio de janeiro": "RJ", "rio grande do norte": "RN",
+         "rio grande do sul": "RS", "rondonia": "RO", "roraima": "RR", "santa catarina": "SC", "sao paulo": "SP", "sergipe": "SE", "tocantins": "TO"}
+
+
+def restricao_de_participacao(certidoes: dict[str, dict]) -> tuple[str, str] | None:
+    """O município a que o edital restringe a participação, pelos itens certificados no documento (os requisitos, o objeto e
+    o território, com o trecho e a página): (o nome, a UF) conferidos na lista oficial; None se não houver restrição clara."""
+    m = _municipios()
+    for item in ("Requisitos", "Objeto", "Território"):
+        valor = str((certidoes.get(item) or {}).get("valor") or "")
+        for nome, uf_txt in RESTRICAO.findall(valor):
+            nome = nome.strip(" -")
+            uf = (uf_txt or "").strip()
+            uf = uf.upper() if len(uf) == 2 else UF_DE.get(_norm(uf), "") if uf else ""
+            partes = nome.split()
+            for j in range(len(partes), 0, -1):                     # "Mauriti de Artes" → "Mauriti"
+                ufs = m.get(_norm(" ".join(partes[:j])), [])
+                if uf and uf in ufs:
+                    return " ".join(partes[:j]), uf
+                if not uf and len(ufs) == 1:
+                    return " ".join(partes[:j]), ufs[0]
+    return None
+
+
 def cidade_e_uf(texto: str) -> tuple[str, str] | None:
     """O município nomeado no texto e a sua UF, conferidos na lista oficial: "Cidade/UF", "Cidade (UF)", "Cidade – UF", ou um
     órgão municipal nomeado ("Fundação Cultural de X") quando o nome existe numa só UF."""
@@ -130,6 +164,15 @@ def territorio(livro: dict[str, Any], certidoes: dict[str, dict]) -> tuple[str, 
     nomeada = cidade_e_uf(f"{livro.get('titulo') or ''} {livro.get('orgao') or ''}")
     if nomeada:
         nome, uf_cidade = nomeada
+        _municipios()
+        if uf_cidade == "GO":
+            return "municipal_go", nome
+        if _municipios.capitais.get(_norm(nome)) == uf_cidade:
+            return "capital_outro_estado", nome
+        return "municipal_fora_go", nome
+    restrita = restricao_de_participacao(certidoes)               # a cláusula de quem pode participar (27/10/2026)
+    if restrita:
+        nome, uf_cidade = restrita
         _municipios()
         if uf_cidade == "GO":
             return "municipal_go", nome

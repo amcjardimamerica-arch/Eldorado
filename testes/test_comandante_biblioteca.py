@@ -37,9 +37,13 @@ def test_a_base_a_fila_as_duas_tentativas_e_o_chrome(bancos, gravador, tmp_path)
     _livro(b, "R", "Edital Recuperável 2025", "https://gov.br/r", "https://site.org/r", None, "estadual", "Cultura", "encerrada")
     _livro(b, "S", "Edital Sem Base", None, None, None, None, None, None)
     _livro(b, "N", "Anexo 8 – Declaração Pessoa com Deficiência", "https://gov.br/n", "https://site.org/n")
+    b.execute(
+        "INSERT INTO certidao(livro_id, item, valor, situacao, fase, em) VALUES ('C', 'Requisitos', 'organizações de todo o Brasil', "
+        "'comprovado', 'certificacao', '2026-10-27T10:00:00+00:00')"
+    )  # 27/10/2026: a aberta precisa da cláusula de quem pode participar
     b.commit()
     av = {x["id"]: x for x in CB.avaliar(b)}
-    assert av["C"]["classe"] == "base completa" and av["A"]["classe"] == "aberta incompleta" and av["A"]["buscar"] == ["site oficial"]
+    assert av["C"]["classe"] == "base completa" and av["A"]["classe"] == "aberta incompleta" and av["A"]["buscar"] == ["site oficial", CB.QUEM_PODE]
     assert av["R"]["classe"] == "recuperável" and av["R"]["buscar"] == ["prazo de inscrição"] and av["S"]["classe"] == "sem base"
     assert av["N"]["classe"] == "não é oportunidade"
     assert [x["id"] for x in CB.fila(list(av.values()), agora)] == ["A", "R", "S"]  # as abertas primeiro
