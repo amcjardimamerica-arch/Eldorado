@@ -72,6 +72,7 @@ box-shadow:0 10px 26px #00000022;min-width:190px;flex-direction:column;gap:3px}
 .inicio-grade > .cartao{min-width:0}
 /* calendário (esquerda) e fila (direita) chegam às margens da tela */
 .faixa-larga{width:100vw;margin-left:calc(50% - 50vw);padding-inline:clamp(14px,2vw,32px);box-sizing:border-box;display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;align-items:start}
+.coluna-esquerda{display:flex;flex-direction:column;gap:18px;min-width:0}   /* 28/10/2026: o Radar ao lado do FAROL; o calendário abaixo do Radar */
 .coluna-direita{display:flex;flex-direction:column;gap:0}   /* 27/10/2026: o FAROL e, logo abaixo, a fila dos enquadrados, sem espaço */
 .coluna-direita>.cartao:first-child{border-bottom-left-radius:0;border-bottom-right-radius:0}
 .coluna-direita>.cartao+.cartao{border-top:0;border-top-left-radius:0;border-top-right-radius:0}
@@ -1004,7 +1005,9 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 </div>
 </div>
 
-<div class="inicio-grade">
+
+<div class="faixa-larga">
+<div class="coluna-esquerda">
 <div class="cartao">
 <div class="painel-tit eldorado"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#E07B00" stroke-width="1.9"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.4"/><path d="M12 1.5v4M12 18.5v4M1.5 12h4M18.5 12h4"/></svg><span>ELDORADO <span style="font-weight:500;color:var(--suave)">— Radar de recursos</span></span></div>
 <div class="filtros">
@@ -1019,10 +1022,6 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <div hidden style="display:none"><div class="novas" id="fi-novas"></div><div class="novas" id="fi-possiveis"></div></div>
 <span class="verlink" onclick="modulo('eldorado');mostra('editais')">Ver todas oportunidades ›</span>
 </div>
-
-</div>
-
-<div class="faixa-larga">
 <div class="cartao">
 <div class="gcab">
 <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#2F79D0" stroke-width="1.9" stroke-linecap="round"><rect x="3.2" y="4.8" width="17.6" height="16" rx="2.6"/><path d="M3.2 9.6h17.6M8.2 2.8v3.6M15.8 2.8v3.6"/></svg><h3>Calendário de Editais</h3>
@@ -1036,6 +1035,7 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 <div id="g-possiveis" style="margin-top:10px"></div>
 <div class="meta" id="g-cobertura" style="margin-top:8px;border-left:3px solid var(--linha);padding-left:10px"></div>
 <span class="verlink" onclick="modulo('eldorado');mostra('calendario')">Ver calendário completo ›</span>
+</div>
 </div>
 <div class="coluna-direita">
 <div class="cartao">

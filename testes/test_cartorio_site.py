@@ -148,4 +148,25 @@ def test_o_lago_dos_prazos():
     assert "img/manoa-sol.webp" in p and "img/manoa-cidade.webp" in p and Path("eldorado/base/painel/pagina/img/manoa-cidade.webp").exists()
     assert 'id="mn-sol"' in p and 'id="mn-ter"' in p and 'id="mn-livro"' in p and "repeating-conic-gradient" in p
     assert "xs.slice(0,10)" in p and "a.fim.localeCompare(b.fim)" in p and 'fetch("dados/fluxo_oportunidades.json' in p
-    assert 'id="eld"' not in p and "mn-manoa" not in p                                           # o lago e o desenho antigo saíram
+    assert 'id="eld"' not in p and "mn-manoa" not in p  # o lago e o desenho antigo saíram
+
+
+def test_o_radar_ao_lado_do_farol():
+    """28/10/2026 (titular): na página inicial, o ELDORADO — Radar de recursos ocupa a metade esquerda, ao lado do FAROL;
+    o calendário abaixo do Radar e a Fila prioritária abaixo do FAROL."""
+    from pathlib import Path
+
+    p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
+    i = p.index('<div class="faixa-larga">')
+    seg = p[i:]
+    esq, radar, cal, dir_, farol = (
+        seg.index(x)
+        for x in (
+            '<div class="coluna-esquerda">',
+            "painel-tit eldorado",
+            "Calendário de Editais</h3>",
+            '<div class="coluna-direita">',
+            '<div class="painel-tit farol">',
+        )
+    )
+    assert esq < radar < cal < dir_ < farol
