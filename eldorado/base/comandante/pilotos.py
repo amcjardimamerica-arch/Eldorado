@@ -83,14 +83,15 @@ def vagas_por_ociosidade() -> int:
     try:
         import psutil
 
-        from ..cerebro.governador import _IA
-
-        total, mem = float(_IA.get("total", 1.0)), psutil.virtual_memory().percent / 100
+        from ..cerebro.governador import cpu_sem_ia
+        # 28/10/2026: a ociosidade pelo processador SEM a IA (a IA ocupada fazia o sistema nunca ficar ocioso: o dia todo
+        # com 1 voo, o processador livre); a IA segue limitada a 2 pedidos de cada vez (a vez da IA)
+        total, mem = cpu_sem_ia(0.3), psutil.virtual_memory().percent / 100
     except Exception:  # noqa: BLE001
         return 1
     agora_m = time.monotonic()
     with _trava:
-        if total < 0.40 and mem < 0.70:
+        if total < 0.45 and mem < 0.78:
             _ocio["desde"] = _ocio["desde"] or agora_m
         else:
             _ocio["desde"] = None

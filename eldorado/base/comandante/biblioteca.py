@@ -85,12 +85,14 @@ def fila(livros: list[dict[str, Any]], agora: datetime | None = None, maximo: in
     """Os livros a completar agora: menos de 2 tentativas e a última há pelo menos 30 minutos; as abertas primeiro."""
     agora = agora or datetime.now(timezone.utc)
     limite = (agora - timedelta(minutes=INTERVALO_MIN)).isoformat()
+    dia = (agora - timedelta(hours=24)).isoformat()   # 28/10/2026: a inscrição aberta volta à fila a cada 24 h, mesmo esperando o Chrome
     prontos = [
         x
         for x in livros
         if x["classe"] in PRIORIDADE
-        and (x["fase"] not in ("analise externa", "farol") or (x["fase"] == "farol" and QUEM_PODE in x["buscar"]))
-        and x["tentativas"] < TENTATIVAS
+        and (x["fase"] not in ("analise externa", "farol") or (x["fase"] == "farol" and QUEM_PODE in x["buscar"])
+             or (x["fase"] == "analise externa" and x["prazo"] == "aberta" and (not x["ultima"] or x["ultima"] <= dia)))
+        and (x["tentativas"] < TENTATIVAS or (x["prazo"] == "aberta" and (not x["ultima"] or x["ultima"] <= dia)))
         and (not x["ultima"] or x["ultima"] <= limite)
     ]
     return sorted(prontos, key=lambda x: (PRIORIDADE[x["classe"]], x["tentativas"], len(x["buscar"]), x["fim"] or "9999"))[:maximo]
@@ -151,6 +153,8 @@ def atualizar(con: sqlite3.Connection, diario, agora: datetime | None = None) ->
             conta["gravados"] += 1
         if x["fase"] in ("analise externa", "farol"):
             continue
+        if x["prazo"] == "encerrada":
+            continue  # 28/10/2026: o prazo encerrado já está no lugar certo (o vai e volta arquivo ↔ análise externa, 16 livros × 62 vezes)
         if x["classe"] == "não é oportunidade":
             conta["ao_chrome"] += ao_chrome(con, diario, x, "pode não ser uma oportunidade (o título é de anexo, andamento ou notícia)")
         elif x["classe"] in PRIORIDADE and x["tentativas"] >= TENTATIVAS:

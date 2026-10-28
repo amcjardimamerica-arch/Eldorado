@@ -28,13 +28,19 @@ class Metabusca:
     usar_ddgs: bool = True
     descanso_s: int = 3600
     _descansando: dict[str, float] = field(default_factory=dict)
+    _falhas: dict[str, int] = field(default_factory=dict)
     relogio: callable = time.monotonic
 
     def _livre(self, rota: str) -> bool:
         return self.relogio() >= self._descansando.get(rota, 0)
 
     def _descansar(self, rota: str) -> None:
-        self._descansando[rota] = self.relogio() + self.descanso_s
+        # 28/10/2026: o descanso curto e crescente (2, 4, 8… até 60 min); antes, uma falha passageira tirava a rota do ar
+        # por 1 hora e, ao fim do dia, só o SearXNG respondia. O SearXNG (o serviço próprio) descansa no máximo 1 minuto.
+        n = self._falhas.get(rota, 0) + 1
+        self._falhas[rota] = n
+        espera = 60 if rota == "searxng" else min(self.descanso_s, 120 * 2 ** (n - 1))
+        self._descansando[rota] = self.relogio() + espera
 
     # o canivete de busca (titular, 25/10/2026: o Espião e o Interceptador dependiam do DuckDuckGo): rotas independentes,
     # cada uma descansa sozinha quando falha; os resultados de várias rotas se SOMAM (sem repetir links) até o limite
@@ -64,9 +70,13 @@ class Metabusca:
                 relato.append(f"{rota}: {e}")
                 continue
             except Exception as e:  # noqa: BLE001 — falha ou limite: a rota descansa e a próxima assume (registrado)
+                if type(e).__name__ == "Pendente":           # a resposta "tente de novo" não é falha: não descansa
+                    relato.append(f"{rota}: pendente, tenta na próxima")
+                    continue
                 self._descansar(rota)
-                relato.append(f"{rota}: falhou ({type(e).__name__}); descansa {self.descanso_s // 60} min")
+                relato.append(f"{rota}: falhou ({type(e).__name__}); descansa {int(self._descansando[rota] - self.relogio()) // 60} min")
                 continue
+            self._falhas.pop(rota, None)                         # respondeu: o descanso volta ao começo
             novas = 0
             for p in pistas:
                 k = p.link.split("#")[0].rstrip("/")

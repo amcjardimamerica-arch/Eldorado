@@ -231,13 +231,13 @@ def test_o_interceptador_elastico_pela_ociosidade(monkeypatch):
 
     monkeypatch.setattr(CP.__dict__.get("psutil", __import__("psutil")), "virtual_memory", lambda: Mem())
     CP._ocio["desde"] = None
-    G._IA["total"] = 0.10
+    monkeypatch.setattr(G, "cpu_sem_ia", lambda *_: 0.10)  # 28/10/2026: o processador sem a IA
     assert CP.vagas_por_ociosidade() == 1
     relogio[0] += 6 * 60
     assert CP.vagas_por_ociosidade() == 3
     relogio[0] += 10 * 60
     assert CP.vagas_por_ociosidade() == 5
-    G._IA["total"] = 0.95
+    monkeypatch.setattr(G, "cpu_sem_ia", lambda *_: 0.95)
     assert CP.vagas_por_ociosidade() == 1
     src = Path("eldorado/base/cerebro/regencia.py").read_text(encoding="utf-8")
     assert "pool.shutdown(wait=False, cancel_futures=True)" in src and "orcamento + folga" in src  # a coleta não espera o preso
@@ -288,3 +288,20 @@ def test_o_prazo_e_de_cada_acionamento_e_o_motor_volta_ate_terminar_o_dia():
     RG.PENDENTES_DO_DIA[RG._hoje()] = {"do-goiania"}
     assert "do-goiania" in RG.PENDENTES_DO_DIA[RG._hoje()]
     RG.PENDENTES_DO_DIA.clear()
+
+
+def test_a_busca_descansa_pouco_e_o_pendente_nao_tranca():
+    """28/10/2026: uma falha passageira tirava a rota do ar por 1 hora (o dia todo só o SearXNG respondia); o descanso é
+    curto e crescente (2, 4, 8… até 60 min), o SearXNG descansa 1 minuto e "Pendente" não é falha."""
+    from eldorado.motores.descoberta.metabusca import Metabusca
+
+    relogio = [0.0]
+    m = Metabusca(buscar=lambda u: None, relogio=lambda: relogio[0])
+    m._descansar("ddgs-bing")
+    assert m._descansando["ddgs-bing"] == 120
+    m._descansar("ddgs-bing")
+    assert m._descansando["ddgs-bing"] == 240
+    m._descansar("searxng")
+    assert m._descansando["searxng"] == 60
+    src = Path("eldorado/motores/descoberta/metabusca.py").read_text(encoding="utf-8")
+    assert 'type(e).__name__ == "Pendente"' in src

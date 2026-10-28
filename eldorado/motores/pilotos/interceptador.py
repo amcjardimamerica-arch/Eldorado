@@ -146,7 +146,7 @@ class _VezDaIA:
     def _limite(self) -> int:
         try:
             from ...base.cerebro.pilotos_permanentes import paralelos_agora
-            return max(1, paralelos_agora() - 1) if paralelos_agora() > 1 else 1
+            return 2 if paralelos_agora() > 1 else 1      # 28/10/2026: no máximo 2 pedidos à IA de cada vez
         except Exception:  # noqa: BLE001
             return 1
 

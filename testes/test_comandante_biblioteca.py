@@ -59,7 +59,10 @@ def test_a_base_a_fila_as_duas_tentativas_e_o_chrome(bancos, gravador, tmp_path)
     _ap(gravador, ev)
     CB.atualizar(b, Diario(ev, "c"), agora + timedelta(minutes=40))
     _ap(gravador, ev)
-    assert b.execute("SELECT fase FROM passaporte WHERE livro_id = 'R'").fetchone()[0] == "analise externa"  # 2 tentativas: o Chrome
+    # 28/10/2026: o prazo encerrado não vai ao Chrome (ia e voltava ao arquivo a cada passagem: o vai e volta)
+    assert b.execute("SELECT fase FROM passaporte WHERE livro_id = 'R'").fetchone()[0] == "preparacao"
+    CB.ao_chrome(b, Diario(ev, "c"), {**av["R"], "fase": "preparacao"}, "ensaio do lote: enviado à mão")  # o restante testa o lote
+    _ap(gravador, ev)
     from eldorado.base.cartorio.analise_externa import gerar_lote, importar
 
     lote = gerar_lote(b, agora.date())
@@ -104,3 +107,23 @@ def test_o_prevoo_completa_sem_a_ia(tmp_path):
     assert links["link_oficial"] == "https://noticias.com.br/arquivos/edital-07-2026.pdf"
     assert next(d for t, d in ev if t == "livro.esfera")["esfera"] == "federal"
     assert next(d for t, d in ev if t == "livro.origem")["origem"] == "candidato"
+
+
+def test_a_aberta_volta_a_fila_em_24h_e_a_encerrada_nao_vai_ao_chrome():
+    """28/10/2026: a inscrição aberta volta à fila do Interceptador a cada 24 h (mesmo com 2 tentativas ou esperando o
+    Chrome); o livro de prazo encerrado não vai ao Chrome (o vai e volta arquivo ↔ análise externa)."""
+    from datetime import datetime, timedelta, timezone
+
+    agora = datetime(2026, 10, 28, 12, tzinfo=timezone.utc)
+    velho = (agora - timedelta(hours=30)).isoformat()
+    novo = (agora - timedelta(hours=2)).isoformat()
+    base = {"classe": "aberta incompleta", "buscar": ["site oficial"], "fim": "2026-11-30", "titulo": "x", "antes": None}
+    livros = [
+        {**base, "id": "esperando", "fase": "analise externa", "prazo": "aberta", "tentativas": 2, "ultima": velho},
+        {**base, "id": "recente", "fase": "analise externa", "prazo": "aberta", "tentativas": 2, "ultima": novo},
+        {**base, "id": "duas", "fase": "preparacao", "prazo": "aberta", "tentativas": 2, "ultima": velho},
+    ]
+    ids = [x["id"] for x in CB.fila(livros, agora)]
+    assert "esperando" in ids and "duas" in ids and "recente" not in ids
+    src = Path("eldorado/base/comandante/biblioteca.py").read_text(encoding="utf-8")
+    assert 'if x["prazo"] == "encerrada":' in src
