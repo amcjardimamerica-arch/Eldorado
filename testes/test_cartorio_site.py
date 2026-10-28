@@ -137,19 +137,21 @@ def test_a_pagina_inicial_calendario_por_tema_e_os_quadros_em_sequencia():
 
 
 def test_o_lago_dos_prazos():
-    """28/10/2026 (titular): o calendário do Eldorado com o giroscópio Serpentes de Jade no alto, ao centro (embutido, sem
-    depender de servidor externo; recebe os prazos e a seleção por mensagem); os raios centrados no globo; o fundo jade e
-    latão, sem preto; sem o título; os botões centralizados com os menus; as 10 abertas que fecham primeiro."""
+    """28/10/2026 (titular): o calendário do Eldorado com o giroscópio Serpentes de Jade à esquerda, em 2/3 da tela (embutido,
+    sem servidor externo; recebe só a lista de prazos e se move sozinho, sem interferência do site); sem a gaiola da
+    esfera; o giroscópio mais rápido; os raios centrados na esfera; à direita, em 1/3, as 10 que vencem primeiro por área."""
     from pathlib import Path
 
     p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
     g = Path("eldorado/base/painel/pagina/giroscopio/giroscopio.html").read_text(encoding="utf-8")
     assert 'id="sj"' in p and 'src="giroscopio/giroscopio.html"' in p and "Manoa, o calendário do sol" not in p
-    assert "#sj .raios,#sj .raios2,#sj .halo{position:absolute;left:50%;top:50%" in p  # os raios no centro do globo
+    assert "grid-template-columns:minmax(0,2fr) minmax(320px,1fr)" in p  # 2/3 e 1/3
+    assert "#sj .raios,#sj .raios2,#sj .halo{position:absolute;left:50%;top:50%" in p  # no centro da esfera
     bloco = p[p.index('<div id="sj">') : p.index("</nav>", p.index('<div id="sj">'))]
-    assert bloco.count('class="grupo"') == 3 and 'data-ir="farol:f-biblioteca"' in bloco  # os menus dos botões
-    assert 'tipo:"prazos"' in p and 'tipo:"selecionar"' in p and ".slice(0,10)" in p
+    assert bloco.count('class="grupo"') == 3 and 'data-ir="farol:f-biblioteca"' in bloco
+    assert 'tipo:"prazos"' in p and 'tipo:"selecionar"' not in p and "xs.slice(0,10)" in p  # sem interferência; 10 por área
     assert "cdn.jsdelivr.net" not in g and 'src="three.min.js"' in g and "controls.enableZoom = false;" in g
+    assert "TorusGeometry(GR * 1.12" not in g and "a1 += dt * (0.44" in g  # sem a gaiola; mais rápido
     for f in ("three.min.js", "OrbitControls.js", "RoomEnvironment.js"):
         assert Path("eldorado/base/painel/pagina/giroscopio", f).exists()
 

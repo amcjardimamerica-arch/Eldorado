@@ -825,7 +825,7 @@ code{font-size:12.5px}
     let renderer; try { renderer = new T.WebGLRenderer({ antialias: true, alpha: true }); } catch (e) { stage.innerHTML = '<p class="ui-error">Este navegador não ativou o WebGL. Ative a aceleração gráfica para ver o astrolábio.</p>'; return; }
     renderer.setPixelRatio(Math.min(G.devicePixelRatio || 1, 2)); renderer.setClearColor(0x000000, 0); stage.appendChild(renderer.domElement);
     const scene = new T.Scene(), camera = new T.PerspectiveCamera(30, 1, 0.1, 100);
-    camera.position.set(...layout.views.frente); camera.position.multiplyScalar(0.64);   /* embutido: a câmera mais perto, o objeto ocupa o palco */
+    camera.position.set(...layout.views.frente); camera.position.multiplyScalar(0.98);   /* embutido (28/10/2026): a câmera mais afastada, a esfera menor e espaço para as serpentes */
     const controls = new T.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true; controls.enablePan = false; controls.enableZoom = false; controls.minDistance = Math.min(controls.minDistance, camera.position.length() * 0.8); controls.minDistance = layout.minDist || 4; controls.maxDistance = layout.maxDist || 16;
     controls.target.set(...(layout.target || [0, 0, 0])); controls.update();
@@ -2047,12 +2047,7 @@ code{font-size:12.5px}
   function sphereCage(c) {
     const T = c.T, M = c.M, g = new T.Group(); c.root.add(g);
     g.add(new T.Mesh(new T.SphereGeometry(GR * 1.07, 48, 24), M.glass));
-    const cage = new T.Group(); g.add(cage);
-    const r1 = new T.Mesh(new T.TorusGeometry(GR * 1.12, GR * 0.035, 12, 120), M.copper); cage.add(r1);
-    const r2 = r1.clone(); r2.rotation.y = Math.PI / 2; cage.add(r2);
-    const r3 = new T.Mesh(new T.TorusGeometry(GR * 1.12, GR * 0.025, 12, 120), M.copper); r3.rotation.x = Math.PI / 2; cage.add(r3);
-    [1, -1].forEach(s => { const cap = new T.Mesh(new T.SphereGeometry(GR * 0.1, 16, 8), M.copper); cap.position.y = s * GR * 1.12; cage.add(cap); });
-    let a = 0; c.anim((dt, t, u) => { a += dt * (0.12 + u * 0.2); cage.rotation.y = a; });
+    /* 28/10/2026 (titular): sem a gaiola (os 3 anéis de cobre e as tampas em volta da esfera); a esfera de vidro fica */
     return g;
   }
 
@@ -2138,9 +2133,10 @@ code{font-size:12.5px}
         const moon = sunBead(c, 0xbfe8ff, 0.045); ecl.add(moon);
         let a1 = 0, a2 = 0, a3 = 0, am = 0, as = 0;
         c.anim((dt, t, u) => {
-          a1 += dt * (0.18 + u * 0.3); g1.rotation.y = a1;
-          a2 += dt * (0.27 + u * 0.4); g2.rotation.x = a2;
-          a3 += dt * (-0.35 - u * 0.5); g3.rotation.y = a3;
+          /* 28/10/2026 (titular): os 3 anéis do giroscópio girando mais (cerca de 2,4 vezes) */
+          a1 += dt * (0.44 + u * 0.3); g1.rotation.y = a1;
+          a2 += dt * (0.65 + u * 0.4); g2.rotation.x = a2;
+          a3 += dt * (-0.84 - u * 0.5); g3.rotation.y = a3;
           as += dt * 0.7; sun.position.set(0.9 * Math.cos(as), 0.9 * Math.sin(as), 0);
           am += dt * 0.5; moon.position.set(0.8 * Math.cos(am), 0.8 * Math.sin(am), 0); ecl.rotation.z += dt * 0.05;
         });
