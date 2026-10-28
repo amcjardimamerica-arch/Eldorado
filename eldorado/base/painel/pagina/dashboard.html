@@ -1130,9 +1130,9 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
 #sj .menu::before{content:"";position:absolute;left:0;right:0;top:-10px;height:10px}
 #sj .menu button{display:block;width:100%;min-height:42px;padding:0 12px;border:0;border-radius:9px;background:transparent;color:var(--tinta);font:500 14px "Alegreya Sans",sans-serif;text-align:left;cursor:pointer}
 #sj .menu button:hover,#sj .menu button:focus-visible{background:#2A4E3E;color:#FFE7B0;outline:none}
-#sj .duas{display:grid;grid-template-columns:minmax(0,2fr) minmax(320px,1fr);gap:clamp(14px,1.6vw,24px);align-items:start}
+#sj .duas{display:grid;grid-template-columns:minmax(0,3fr) minmax(380px,2fr);gap:clamp(14px,1.6vw,24px);align-items:start}
 #sj .palco{position:relative;height:min(900px,calc(100vh - 100px));min-height:620px}
-#sj .palco iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;z-index:2}
+#sj .palco iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;z-index:2;pointer-events:none}
 @keyframes sj-gira{to{transform:rotate(360deg)}}@keyframes sj-giraR{to{transform:rotate(-360deg)}}
 #sj .raios,#sj .raios2,#sj .halo{position:absolute;left:50%;top:50%;border-radius:50%;pointer-events:none;z-index:1}
 #sj .raios,#sj .raios2{width:3600px;height:3600px;margin:-1800px 0 0 -1800px;
@@ -1144,31 +1144,35 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
 #sj .agenda-topo{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-bottom:1px solid var(--linha);background:var(--cab)}
 #sj .agenda-topo h2{margin:0;font:400 22px Marcellus,Georgia,serif}
 #sj .agenda-topo button{width:44px;height:44px;border-radius:50%;border:1px solid var(--linha);background:var(--cartao);color:var(--tinta);font-size:18px;cursor:pointer}
-#sj .legenda{display:flex;flex-wrap:wrap;gap:12px;padding:8px 14px;font:500 12px "Alegreya Sans",sans-serif;color:var(--suave);border-bottom:1px solid var(--linha)}
-#sj .legenda i{display:inline-block;vertical-align:middle;margin-right:5px}
-#sj .rolagem{overflow-y:auto;padding:4px 0 10px}
-#sj .area{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:8px;padding:10px 14px 8px;background:var(--cartao);border-bottom:1px solid var(--linha);font:700 13.5px "Alegreya Sans",sans-serif}
+#sj .destaque{padding:8px 14px;border-bottom:1px solid var(--linha);background:#284C3C}
+#sj .destaque b{display:block;font:700 13.5px/1.3 "Alegreya Sans",sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sj .destaque span{display:block;margin-top:1px;font:500 12px "Alegreya Sans",sans-serif;color:var(--suave)}
+#sj .rolagem{overflow-y:auto;padding:0 0 8px}
+#sj .cabd{position:sticky;top:0;z-index:3;display:grid;background:var(--cab);border-bottom:1px solid var(--linha)}
+#sj .cabd div{text-align:center;padding:6px 0 5px;font:600 10.5px/1 "Alegreya Sans",sans-serif}
+#sj .cabd small{display:block;margin-top:2px;font-weight:500;font-size:9px;color:var(--suave)}
+#sj .cabd .hoje{color:#FF8A6A}
+#sj .area{position:sticky;top:34px;z-index:2;display:flex;align-items:center;gap:8px;padding:8px 12px 6px;background:var(--cartao);border-bottom:1px solid var(--linha);font:700 13px "Alegreya Sans",sans-serif}
 #sj .area i{width:11px;height:11px;border-radius:3px;flex:none}
 #sj .area small{margin-left:auto;font-weight:500;color:var(--suave)}
-#sj .op{padding:10px 14px 11px;border-bottom:1px solid rgba(53,88,72,.6);transition:background .2s}
-#sj .op:hover{background:#284C3C}
-#sj .op-t{font:600 13.5px/1.3 "Alegreya Sans",sans-serif;color:#F6EBD0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-#sj .op-p{display:flex;justify-content:space-between;gap:8px;margin:3px 0 7px;font:500 12px "Alegreya Sans",sans-serif;color:var(--suave)}
-#sj .op-p b{font-weight:700;color:var(--tinta)}#sj .op-p b.urg{color:#FF8A6A}
-#sj .regua{position:relative;height:16px;border-radius:8px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 calc(100%/var(--nd) - 1px),transparent calc(100%/var(--nd) - 1px) calc(100%/var(--nd)))}
-#sj .regua .per{position:absolute;top:4px;height:8px;border-radius:4px;overflow:hidden}
-#sj .regua .per::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 0,rgba(255,255,255,0) 35%,rgba(255,236,190,.55) 50%,rgba(255,255,255,0) 65%,transparent 100%);background-size:300% 100%;animation:sj-flui 6s ease-in-out infinite}
+#sj .lin{position:relative;height:38px;border-bottom:1px solid rgba(53,88,72,.55);background-image:linear-gradient(90deg,var(--grade) 1px,transparent 1px);cursor:pointer;transition:background-color .2s}
+#sj .lin:hover,#sj .lin.sel{background-color:#284C3C}
+#sj .hojecol{position:absolute;top:0;bottom:0;background:rgba(255,217,138,.07);box-shadow:inset 1px 0 0 rgba(255,110,80,.5),inset -1px 0 0 rgba(255,110,80,.5);pointer-events:none}
+#sj .faixa{position:absolute;top:7px;height:24px;display:flex;align-items:center;padding:0 18px 0 9px;overflow:hidden;font:600 11.5px/1 "Alegreya Sans",sans-serif;color:#F6EBD0;white-space:nowrap;border-radius:999px;transition:box-shadow .25s}
+#sj .faixa span{position:relative;z-index:1;overflow:hidden;text-overflow:ellipsis}
+#sj .faixa::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 0,rgba(255,255,255,0) 35%,rgba(255,226,160,.32) 50%,rgba(255,255,255,0) 65%,transparent 100%);background-size:300% 100%;animation:sj-flui 6s ease-in-out infinite;pointer-events:none}
 @keyframes sj-flui{0%{background-position:120% 0}100%{background-position:-20% 0}}
-#sj .regua .ini{position:absolute;top:0;width:3px;height:16px;margin-left:-1.5px;border-radius:2px;background:#22B8C9;box-shadow:0 0 6px rgba(34,184,201,.7)}
-#sj .regua .hj{position:absolute;top:-2px;width:2px;height:20px;margin-left:-1px;background:#FF8A6A}
-#sj .regua .fim{position:absolute;top:-3px;width:22px;height:22px;margin-left:-11px}
-#sj .regua .fim i{position:absolute;inset:0;border-radius:50%;border:2px solid #E5482D;animation:sj-onda 2s ease-out infinite}
-#sj .regua .fim i+i{animation-delay:1s}
-@keyframes sj-onda{from{transform:scale(.5);opacity:1}to{transform:scale(1.7);opacity:0}}
-#sj .regua .fim b{position:absolute;inset:5px;border-radius:50%;background:#C9341E;box-shadow:0 0 0 2px var(--cartao)}
-#sj .regua .fim.calmo i{border-color:#3BB3A3;animation-duration:3s}#sj .regua .fim.calmo b{background:#2E8B7C}
+#sj .lin:hover .faixa,#sj .lin.sel .faixa{box-shadow:0 0 0 2px var(--latao),0 0 14px rgba(214,168,74,.3)}
+#sj .ini{position:absolute;top:5px;width:3px;height:28px;margin-left:-1.5px;border-radius:2px;background:#22B8C9;box-shadow:0 0 6px rgba(34,184,201,.7);z-index:2}
+#sj .selo{position:absolute;top:6px;width:26px;height:26px;margin-left:-13px;z-index:2}
+#sj .selo i{position:absolute;inset:0;border-radius:50%;border:2px solid #E5482D;animation:sj-onda 2s ease-out infinite}
+#sj .selo i+i{animation-delay:1s}
+@keyframes sj-onda{from{transform:scale(.5);opacity:1}to{transform:scale(1.6);opacity:0}}
+#sj .selo b{position:absolute;inset:3px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#C9341E;color:#fff;font:700 9.5px "Alegreya Sans",sans-serif;box-shadow:0 0 0 2px var(--cartao)}
+#sj .selo.calmo i{border-color:#3BB3A3;animation-duration:3s}#sj .selo.calmo b{background:#2E8B7C}
+#sj .mais{position:absolute;right:4px;top:9px;font:700 16px "Alegreya Sans",sans-serif;color:#3BB3A3}
 #sj .vazio{padding:20px 14px;color:var(--suave)}
-@media (prefers-reduced-motion:reduce){#sj .raios,#sj .raios2,#sj .regua .per::after,#sj .regua .fim i{animation:none}}
+@media (prefers-reduced-motion:reduce){#sj .raios,#sj .raios2,#sj .faixa::after,#sj .selo i{animation:none}}
 @media (max-width:980px){#sj .duas{grid-template-columns:1fr}#sj .palco{height:560px;min-height:0}#sj .agenda{max-height:none;min-height:0}}
 </style>
 <div id="sj">
@@ -1183,12 +1187,12 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
   <div class="duas">
     <div class="palco">
       <div class="raios" aria-hidden="true"></div><div class="raios2" aria-hidden="true"></div><div class="halo" aria-hidden="true"></div>
-      <iframe id="sj-objeto" src="giroscopio/giroscopio.html" title="O giroscópio Serpentes de Jade: o anel dos meses e dos dias, com a seta do início e a do fim do prazo" loading="eager"></iframe>
+      <iframe id="sj-objeto" src="giroscopio/giroscopio.html?v=20261028c" title="O giroscópio Serpentes de Jade: o anel dos meses e dos dias, com a seta do início e a do fim do prazo" loading="eager"></iframe>
     </div>
     <section class="agenda" aria-label="O calendário das oportunidades, por área">
       <div class="agenda-topo"><button type="button" id="sj-ant" aria-label="Mês anterior">‹</button><h2 id="sj-mes"></h2><button type="button" id="sj-seg" aria-label="Mês seguinte">›</button></div>
-      <div class="legenda" aria-hidden="true"><span><i style="width:3px;height:12px;background:#22B8C9"></i>início</span><span><i style="width:2px;height:12px;background:#FF8A6A"></i>hoje</span><span><i style="width:10px;height:10px;border-radius:50%;background:#C9341E"></i>fecha em até 3 dias</span><span><i style="width:10px;height:10px;border-radius:50%;background:#2E8B7C"></i>último dia</span></div>
-      <div class="rolagem" id="sj-lista"><div class="vazio">Carregando as oportunidades…</div></div>
+      <div class="destaque" aria-live="polite"><b id="sj-nome">Carregando as oportunidades…</b><span id="sj-info">Passe o mouse numa oportunidade: a esfera mostra o prazo dela.</span></div>
+      <div class="rolagem" id="sj-lista"></div>
     </section>
   </div>
 </div>
@@ -1199,7 +1203,7 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
   const MES=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
   const AREAS={Cultura:["Cultura","#D6A84A"],"Saúde":["Saúde","#5FB0C8"],"Educação":["Educação","#7FA8D8"],"Meio ambiente":["Meio ambiente","#8FC46A"],
     "Assistência social":["Assistência social","#C47A48"],"Ciência e tecnologia":["Ciência e tecnologia","#3BB3A3"],Esporte:["Esporte","#7CC46A"],GER:["Várias áreas","#A9BDB4"]};
-  // a área: a primeira citada no livro ("Cultura, Educação" → Cultura); sem área → Várias áreas
+  // a área: a primeira citada no livro, juntada nas áreas canônicas ("Cultura: música" → Cultura); sem área → Várias áreas
   const CORES=["#D6A84A","#3BB3A3","#5FB0C8","#C47A48","#8FC46A","#7FA8D8","#D88FA8","#E2C45A","#5FC4C0","#C2A87A","#B49BD8","#E09A6A"];
   const CANON=[["Cultura",/^cultur/i],["Saúde",/^sa[uú]de/i],["Educação",/^educa/i],["Meio ambiente",/meio ambiente|^ambient|clim/i],["Assistência social",/assist[eê]ncia social/i],
     ["Ciência e tecnologia",/ci[eê]ncia|tecnolog|inova/i],["Esporte",/^esport/i],["Criança e adolescente",/crian|adolesc/i],["Trabalho e renda",/empreend|inclus[aã]o produtiva|trabalho|renda/i],
@@ -1212,32 +1216,40 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
   const br=d=>d?d.slice(8,10)+"/"+d.slice(5,7):"";
   document.querySelectorAll("#sj .menu button").forEach(b=>b.addEventListener("click",()=>{const [m,v]=b.dataset.ir.split(":");
     if(m==="inicio"){window.irInicio&&irInicio();return} if(window.modulo)modulo(m); if(v&&window.mostra)mostra(v)}));
-  // o giroscópio: só a lista de prazos, uma vez; depois ele se move sozinho (o site não interfere)
-  const obj=$("sj-objeto");let enviado=false;
-  function prazos(){if(!TODOS.length)return;const itens=TODOS.slice().sort((a,b)=>a.fim.localeCompare(b.fim)).slice(0,40).map(x=>({nome:x.titulo,inicio:x.inicio||undefined,data:x.fim,hora:"23:59"}));
-    try{obj.contentWindow&&obj.contentWindow.postMessage({tipo:"prazos",itens},"*");enviado=true}catch(e){}}
-  obj.addEventListener("load",()=>{[800,2500,6000].forEach(t=>setTimeout(()=>{if(!enviado||t>800)prazos()},t))});
+  // o giroscópio: a lista de prazos (em ordem de vencimento) e, ao passar o mouse, a oportunidade no mostrador da esfera
+  const obj=$("sj-objeto");let LISTA=[];
+  function enviar(m){try{obj.contentWindow&&obj.contentWindow.postMessage(m,"*")}catch(e){}}
+  function prazos(){if(!LISTA.length)return;enviar({tipo:"prazos",itens:LISTA.map(x=>({nome:x.titulo,inicio:x.inicio||undefined,data:x.fim,hora:"23:59"}))})}
+  obj.addEventListener("load",()=>{[800,2500,6000].forEach(t=>setTimeout(prazos,t))});
+  function selecionar(el){const x=LISTA[+el.dataset.k];if(!x)return;document.querySelectorAll("#sj .lin.sel").forEach(l=>l.classList.remove("sel"));el.classList.add("sel");
+    $("sj-nome").textContent=x.titulo;$("sj-info").textContent=AREAS[area(x)][0]+", "+(x.inicio?"de "+br(x.inicio)+" ":"")+"até "+br(x.fim)+", "+falta(x.fim);
+    enviar({tipo:"selecionar",indice:+el.dataset.k})}
   function desenhar(){
-    const nd=new Date(ano,mes+1,0).getDate(),mm=String(mes+1).padStart(2,"0"),ini=`${ano}-${mm}-01`,fim=`${ano}-${mm}-${nd}`;
+    const nd=new Date(ano,mes+1,0).getDate(),mm=String(mes+1).padStart(2,"0"),ini=`${ano}-${mm}-01`,fim=`${ano}-${mm}-${nd}`,SEM="DSTQQSS";
     $("sj-mes").textContent=MES[mes]+" de "+ano;
     const g={};TODOS.filter(x=>x.fim>=ini&&(x.inicio||x.fim)<=fim).forEach(x=>{const a=area(x);(g[a]=g[a]||[]).push(x)});
     Object.values(g).forEach(xs=>xs.sort((a,b)=>a.fim.localeCompare(b.fim)||String(a.titulo).localeCompare(String(b.titulo))));
     const ordem=Object.keys(g).sort((a,b)=>(a==="GER")-(b==="GER")||g[a][0].fim.localeCompare(g[b][0].fim));
     if(!ordem.length){$("sj-lista").innerHTML='<div class="vazio">Nenhuma inscrição aberta com data neste mês.</div>';return}
-    const hj=(HJ>=ini&&HJ<=fim)?+HJ.slice(8,10):0;
-    $("sj-lista").innerHTML=ordem.map(a=>{const [nome,cor]=AREAS[a],xs=g[a];
+    const vis=ordem.flatMap(a=>g[a].slice(0,10));
+    LISTA=vis.slice().sort((a,b)=>a.fim.localeCompare(b.fim)||String(a.titulo).localeCompare(String(b.titulo)));prazos();
+    const hj=(HJ>=ini&&HJ<=fim)?+HJ.slice(8,10):0,col=`repeat(${nd},minmax(0,1fr))`,bs=`background-size:calc(100%/${nd}) 100%`;
+    const hojecol=hj?`<span class="hojecol" style="left:calc(${hj-1}/${nd}*100%);width:calc(100%/${nd})"></span>`:"";
+    let cab="";for(let d=1;d<=nd;d++){const iso=`${ano}-${mm}-${String(d).padStart(2,"0")}`;cab+=`<div class="${iso===HJ?"hoje":""}">${d}<small>${SEM[new Date(ano,mes,d).getDay()]}</small></div>`}
+    $("sj-lista").innerHTML=`<div class="cabd" style="grid-template-columns:${col}">${cab}</div>`+ordem.map(a=>{const [nome,cor]=AREAS[a],xs=g[a];
       return `<div class="area"><i style="background:${cor}"></i>${E(nome)}<small>${Math.min(10,xs.length)} de ${xs.length}</small></div>`+xs.slice(0,10).map(x=>{
         const antes=!x.inicio||x.inicio<ini,s=antes?1:+x.inicio.slice(8,10),fecha=x.fim<=fim,f=fecha?+x.fim.slice(8,10):nd,urg=dias(x.fim)<=3;
-        return `<div class="op" title="${E(x.titulo)}"><div class="op-t">${E(x.titulo)}</div>
-          <div class="op-p"><span>${x.inicio?"de "+br(x.inicio)+" ":""}até ${br(x.fim)}</span><b class="${urg?"urg":""}">${falta(x.fim)}</b></div>
-          <div class="regua" style="--nd:${nd}"><span class="per" style="left:calc(${(s-1)/nd*100}%);width:calc(${(f-s+1)/nd*100}% - ${fecha?6:0}px);background:linear-gradient(90deg,${cor}AA,${cor})"></span>
-          ${antes?"":`<span class="ini" style="left:${((s-1)/nd*100).toFixed(2)}%"></span>`}${hj?`<span class="hj" style="left:${((hj-.5)/nd*100).toFixed(2)}%"></span>`:""}
-          ${fecha?`<span class="fim${urg?"":" calmo"}" style="left:${((f-.5)/nd*100).toFixed(2)}%"><i></i><i></i><b></b></span>`:""}</div></div>`}).join("")}).join("");
+        const esq=(s-1)/nd*100,larg=(f-s+1)/nd*100,cf=(f-.5)/nd*100;
+        return `<div class="lin" data-k="${LISTA.indexOf(x)}" title="${E(x.titulo)}, ${falta(x.fim)}" style="${bs}">${hojecol}
+          ${antes?"":`<span class="ini" style="left:calc(${esq.toFixed(2)}% + 3px)"></span>`}
+          <div class="faixa" style="left:calc(${esq.toFixed(2)}% + 3px);width:calc(${larg.toFixed(2)}% - ${fecha?6:3}px);${antes?"border-top-left-radius:5px;border-bottom-left-radius:5px;":""}background:linear-gradient(90deg,${cor}66,#264837);border:1px solid ${cor}"><span>${antes?"‹ ":""}${E(x.titulo)}</span></div>
+          ${fecha?`<span class="selo${urg?"":" calmo"}" style="left:${cf.toFixed(2)}%"><i></i><i></i><b>${f}</b></span>`:'<span class="mais" aria-hidden="true">›</span>'}</div>`}).join("")}).join("");
+    document.querySelectorAll("#sj .lin").forEach(l=>{l.addEventListener("mouseenter",()=>selecionar(l));l.addEventListener("click",()=>selecionar(l))});
   }
   $("sj-ant").onclick=()=>{mes--;if(mes<0){mes=11;ano--}desenhar()};$("sj-seg").onclick=()=>{mes++;if(mes>11){mes=0;ano++}desenhar()};
   fetch("dados/fluxo_oportunidades.json?v="+Date.now()).then(r=>r.ok?r.json():null).then(F=>{
     const vistos=new Set();TODOS=Object.values((F&&F.itens_por_uf)||{}).flat().filter(x=>x.fim&&x.fim>=HJ&&!(x.inicio&&x.inicio>x.fim)).filter(x=>{const k=x.id||x.titulo;if(vistos.has(k))return false;vistos.add(k);return true});
-    desenhar();prazos()}).catch(()=>{$("sj-lista").innerHTML='<div class="vazio">As oportunidades não puderam ser carregadas.</div>'});
+    desenhar()}).catch(()=>{$("sj-lista").innerHTML='<div class="vazio">As oportunidades não puderam ser carregadas.</div>'});
 })();
 </script>
 

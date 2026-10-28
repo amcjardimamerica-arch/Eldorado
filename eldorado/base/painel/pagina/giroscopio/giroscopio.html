@@ -825,9 +825,9 @@ code{font-size:12.5px}
     let renderer; try { renderer = new T.WebGLRenderer({ antialias: true, alpha: true }); } catch (e) { stage.innerHTML = '<p class="ui-error">Este navegador não ativou o WebGL. Ative a aceleração gráfica para ver o astrolábio.</p>'; return; }
     renderer.setPixelRatio(Math.min(G.devicePixelRatio || 1, 2)); renderer.setClearColor(0x000000, 0); stage.appendChild(renderer.domElement);
     const scene = new T.Scene(), camera = new T.PerspectiveCamera(30, 1, 0.1, 100);
-    camera.position.set(...layout.views.frente); camera.position.multiplyScalar(0.98);   /* embutido (28/10/2026): a câmera mais afastada, a esfera menor e espaço para as serpentes */
+    camera.position.set(...layout.views.frente); camera.position.multiplyScalar(1.1);   /* embutido (28/10/2026): a câmera mais afastada, a esfera menor e espaço para as serpentes */
     const controls = new T.OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true; controls.enablePan = false; controls.enableZoom = false; controls.minDistance = Math.min(controls.minDistance, camera.position.length() * 0.8); controls.minDistance = layout.minDist || 4; controls.maxDistance = layout.maxDist || 16;
+    controls.enableDamping = true; controls.enablePan = false; controls.enableZoom = false; controls.enabled = false;   /* 28/10/2026: o objeto se move sozinho; o mouse não o gira */ controls.minDistance = Math.min(controls.minDistance, camera.position.length() * 0.8); controls.minDistance = layout.minDist || 4; controls.maxDistance = layout.maxDist || 16;
     controls.target.set(...(layout.target || [0, 0, 0])); controls.update();
     controls.addEventListener('start', () => { tween = null; });
     const reduceM = G.matchMedia && G.matchMedia('(prefers-reduced-motion: reduce)').matches; controls.autoRotate = !reduceM; controls.autoRotateSpeed = 0.5;
@@ -2070,7 +2070,7 @@ code{font-size:12.5px}
       if (i % 5 === 2) { const rv = new T.Mesh(new T.SphereGeometry(0.02 * k, 8, 6), M.brass); rv.position.x = 0.1 * k * q; s.add(rv); const rv2 = rv.clone(); rv2.position.x *= -1; s.add(rv2); }
       c.fade(s, 0.13 * k); segs.push(s);
     }
-    const A = lib.agent(head, { max: 0.55 + 0.1 * k, wand: 1.1, turn: 3, rmin: 2.5, rmax: 4.0 });
+    const A = lib.agent(head, { max: 0.55 + 0.1 * k, wand: 1.1, turn: 3, rmin: 2.3, rmax: 2.9 });   /* 28/10/2026: dentro do enquadramento; a mesma velocidade */
     segs.forEach((s, i) => s.position.copy(head.position).add(new T.Vector3(0, 0, -0.12 * k * (i + 1))));
     const ph = rnd(0, 6);
     c.anim((dt, t, u) => {
