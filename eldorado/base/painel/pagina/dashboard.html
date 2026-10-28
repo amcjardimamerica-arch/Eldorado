@@ -1109,212 +1109,147 @@ se fecha; nada inserido nas outras páginas. -->
 })();
 </script>
 <section id="v-calendario" style="margin-top:0">
-<!-- MANOA · O DISCO DO SOL (titular, 27/10/2026, refeito do zero). Skills: ui-ux-pro-max (nextlevelbuilder, 141 mil ★) e
-frontend-design (Ilm-Alan): paleta única (o ouro, o âmbar, o marrom), contraste alto no texto, movimento contido. Arte
-realista: as imagens da associação (o sol nascente e a cidade dourada na floresta) com luz real por cima (o sol em camadas
-de brilho e os raios radiais em modo de luz); o calendário é um disco de ouro gravado, em que cada dia é um raio de sol (o
-comprimento, as inscrições abertas no dia); os terraços são placas de folha de ouro. Sem paralaxe. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Alegreya+Sans:wght@400;500;600;700&display=swap">
+<!-- SERPENTES DE JADE · O CALENDÁRIO (titular, 28/10/2026): o giroscópio 3D no alto, ao centro (giroscopio/giroscopio.html,
+embutido; recebe os prazos e a seleção por postMessage); os raios radiais girando atrás dele, centrados no globo; o fundo
+jade e latão (o teste 2), sem preto; os botões centralizados, com os menus ao passar o cursor; embaixo, as 10 inscrições
+abertas que fecham primeiro, com o nome dentro da faixa e o selo do último dia. A fonte é a Biblioteca (o fluxo publicado). -->
 <style>
 body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.oculto)) #nav-eldorado{display:none!important}
-#mn{--o1:#FFF4D2;--o2:#F7D27A;--o3:#E0A93B;--o4:#B87A1C;--o5:#7A4A0C;--tinta:#2B1D0A;--suave:#6E5636;
- width:100vw;margin-left:calc(50% - 50vw);position:relative;color:var(--tinta);box-sizing:border-box;background:#FBF3E2;overflow:hidden}
-#mn *{box-sizing:border-box}
-/* o céu: a imagem do sol nascente, a luz por cima, a cidade de ouro na base */
-#mn .ceu{position:relative;height:clamp(300px,34vw,430px);overflow:hidden;isolation:isolate}
-#mn .ceu .foto{position:absolute;inset:-12px;background:url(img/manoa-sol.webp) center 60%/cover no-repeat;filter:blur(1.6px) saturate(1.08)}
-#mn .ceu .veu{position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,236,190,.15),rgba(255,226,170,.0) 40%,rgba(251,243,226,.0) 70%,#FBF3E2 100%),
- radial-gradient(70% 90% at 0% 40%,rgba(255,245,222,.92),rgba(255,245,222,.55) 40%,transparent 70%)}
-#mn .astro{position:absolute;left:58%;top:52%;width:0;height:0;mix-blend-mode:screen;z-index:2}
-#mn .astro .raios{position:absolute;left:-560px;top:-560px;width:1120px;height:1120px;border-radius:50%;
- background:repeating-conic-gradient(from 0deg,rgba(255,236,170,.55) 0deg 2.2deg,transparent 2.2deg 7.5deg,rgba(255,220,140,.32) 7.5deg 9deg,transparent 9deg 15deg);
- -webkit-mask:radial-gradient(circle,#000 0,rgba(0,0,0,.85) 14%,rgba(0,0,0,.35) 36%,transparent 62%);mask:radial-gradient(circle,#000 0,rgba(0,0,0,.85) 14%,rgba(0,0,0,.35) 36%,transparent 62%);
- animation:mn-gira 160s linear infinite;filter:blur(1.2px)}
-#mn .astro .halo{position:absolute;left:-240px;top:-240px;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(255,250,230,.95) 0,rgba(255,226,140,.75) 12%,rgba(255,196,80,.35) 32%,transparent 66%);animation:mn-pulso 6s ease-in-out infinite}
-#mn .astro .nucleo{position:absolute;left:-46px;top:-46px;width:92px;height:92px;border-radius:50%;background:radial-gradient(circle at 45% 42%,#FFFFFF 0,#FFF6D8 38%,#FFD978 70%,#F2B33D 100%);box-shadow:0 0 60px 30px rgba(255,214,120,.6),0 0 140px 80px rgba(255,190,80,.28)}
-@keyframes mn-gira{to{transform:rotate(360deg)}}@keyframes mn-pulso{50%{transform:scale(1.06);opacity:.88}}
-#mn .cidade{position:absolute;right:0;bottom:0;width:min(62vw,880px);aspect-ratio:548/166;background:url(img/manoa-cidade.webp) right bottom/contain no-repeat;z-index:3;
- -webkit-mask:linear-gradient(90deg,transparent 0,#000 24%),linear-gradient(180deg,transparent 0,#000 34%);-webkit-mask-composite:source-in;
- mask:linear-gradient(90deg,transparent 0,#000 24%) intersect,linear-gradient(180deg,transparent 0,#000 34%);filter:saturate(1.05) contrast(1.04)}
-#mn .ceu .chao{position:absolute;left:0;right:0;bottom:0;height:70px;background:linear-gradient(180deg,transparent,#FBF3E2);z-index:4}
-#mn .voo{position:absolute;z-index:5;pointer-events:none;animation:mn-voo linear infinite;opacity:.9}
-#mn .voo .asa{transform-origin:50% 60%;animation:mn-bate .55s ease-in-out infinite alternate}
-@keyframes mn-bate{to{transform:scaleY(.3)}}
-@keyframes mn-voo{from{transform:translate(-80px,0)}50%{transform:translate(52vw,-18px)}to{transform:translate(108vw,6px)}}
-#mn .titulo{position:absolute;left:clamp(16px,3vw,48px);top:clamp(26px,4vw,52px);z-index:6;max-width:min(640px,50vw)}
-#mn .titulo small{display:block;font:600 11.5px/1 system-ui;letter-spacing:.32em;text-transform:uppercase;color:var(--o5)}
-#mn .titulo h2{margin:10px 0 8px;border:0;padding:0;white-space:nowrap;font:600 clamp(32px,3.6vw,54px)/1.02 "Cormorant Garamond",Georgia,serif;letter-spacing:.01em;
- background:linear-gradient(180deg,#8A5810 0,#C98A1C 38%,#6B3F06 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 1px 0 rgba(255,255,255,.7))}
-#mn .titulo p{margin:0;font:400 14px/1.6 Georgia,serif;color:#4E3A1E;max-width:52ch}
-#mn .titulo p q{font-style:italic;quotes:"“" "”"}
-#mn .placas{position:absolute;right:clamp(16px,3vw,48px);top:18px;z-index:6;display:flex;gap:10px}
-#mn .placa{font:600 12.5px/1 Georgia,serif;letter-spacing:.06em;color:#3A2603;padding:11px 16px;border-radius:999px;cursor:pointer;border:1px solid rgba(255,255,255,.75);
- background:linear-gradient(180deg,rgba(255,250,236,.92),rgba(247,218,140,.92));box-shadow:0 6px 18px rgba(120,70,10,.22),inset 0 1px 0 #fff;backdrop-filter:blur(4px);transition:transform .15s}
-#mn .placa:hover{transform:translateY(-2px)}#mn .placa:focus-visible{outline:2px solid #7A4A0C;outline-offset:2px}
-/* o corpo: o disco do sol à esquerda; os terraços à direita */
-#mn .corpo{display:grid;grid-template-columns:minmax(380px,36%) 1fr;gap:clamp(16px,2vw,32px);padding:0 clamp(16px,3vw,48px) 36px;margin-top:-34px;position:relative;z-index:7}
-#mn .disco-col{position:sticky;top:10px;align-self:start}
-#mn .barra{display:flex;align-items:center;justify-content:space-between;margin:0 0 10px}
-#mn .mes{display:flex;align-items:center;gap:6px;font:600 20px Georgia,serif;color:#4A2F08}
-#mn .mes button{width:34px;height:34px;border-radius:50%;border:1px solid #E5C77E;background:#FFF9EA;color:#7A4A0C;font-size:18px;cursor:pointer}
-#mn .mes b{min-width:190px;text-align:center;font-weight:600}
-#mn .conta{font:12.5px system-ui;color:var(--suave)}
-#mn .disco{width:100%;height:auto;display:block;filter:drop-shadow(0 22px 34px rgba(110,64,8,.28))}
-#mn .legenda-d{display:flex;gap:16px;justify-content:center;margin-top:6px;font:12px system-ui;color:var(--suave)}
-#mn .legenda-d i{display:inline-block;width:18px;height:4px;border-radius:2px;vertical-align:middle;margin-right:6px}
-#mn .areas{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
-#mn .area-b{font:600 12px system-ui;padding:6px 11px;border-radius:999px;border:1px solid #E8CF94;background:#FFF9EA;color:#5A3B06;cursor:pointer}
-#mn .area-b em{font-style:normal;color:#9A7A45;margin-left:4px}#mn .area-b.off{opacity:.42}#mn .area-b.on{background:#5A3B06;color:#FFF4D2;border-color:#5A3B06}
-#mn .terracos{columns:2 330px;column-gap:16px}
-#mn .terraco{break-inside:avoid;margin:0 0 16px;border-radius:14px;overflow:hidden;position:relative;
- background:linear-gradient(180deg,#FFFDF7,#FFF8E8);border:1px solid #EBD39A;box-shadow:0 1px 0 #fff inset,0 10px 26px rgba(110,64,8,.12)}
-#mn .terraco h4{margin:0;display:flex;align-items:center;gap:10px;padding:11px 14px;font:600 13px Georgia,serif;letter-spacing:.04em;color:#3A2603;position:relative;
- background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .38 0 0 0 0 .1 0 0 0 .35 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"),
- linear-gradient(180deg,#FBE3A0 0,#EFC560 46%,#D9A23C 54%,#F3D48A 100%);border-bottom:1px solid #B98426;box-shadow:inset 0 1px 0 rgba(255,255,255,.75),inset 0 -1px 0 rgba(120,70,10,.25)}
-#mn .terraco h4 .ins{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:700 10px system-ui;color:#FFF3D0;background:radial-gradient(circle at 35% 30%,#C98A1C,#6B3F06);box-shadow:inset 0 1px 1px rgba(255,255,255,.4)}
-#mn .terraco h4 small{margin-left:auto;font:600 11.5px system-ui;color:#5A3B06}
-#mn .op{padding:9px 14px 9px;border-top:1px solid #F1E3BF;cursor:pointer;transition:background .2s}
-#mn .op:first-of-type{border-top:0}
-#mn .op:hover,#mn .op.sel{background:linear-gradient(90deg,rgba(247,210,122,.28),rgba(247,210,122,.08))}
-#mn .op .t{font:600 13px/1.32 system-ui;color:#2B1D0A;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-#mn .op .p{display:flex;justify-content:space-between;margin:3px 0 5px;font:11.5px system-ui;color:var(--suave)}
-#mn .op .p b{color:#7A4A0C}
-#mn .trilha{position:relative;height:6px;border-radius:3px;background:#F2E6C8;overflow:hidden}
-#mn .trilha i{position:absolute;top:0;bottom:0;border-radius:3px;background:linear-gradient(90deg,#C98A1C,#F7D27A 60%,#E0A93B)}
-#mn .trilha i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent);background-size:35% 100%;background-repeat:no-repeat;animation:mn-ouro 3.2s linear infinite}
-@keyframes mn-ouro{from{background-position:-40% 0}to{background-position:140% 0}}
-#mn .trilha u{position:absolute;top:0;bottom:0;width:2px;background:#8C2B1A}
-#mn .mais{display:block;padding:7px 14px 11px;font:12px system-ui;color:#7A4A0C;cursor:pointer}
-#mn .vazio{padding:28px;color:var(--suave)}
-@media (prefers-reduced-motion:reduce){#mn .astro .raios,#mn .astro .halo,#mn .voo,#mn .voo .asa,#mn .trilha i::after{animation:none}#mn .voo{display:none}}
-/* o livro: sóbrio, com o friso de ouro */
-#mn-livro{position:fixed;inset:0;z-index:9700;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(43,29,10,.42);backdrop-filter:blur(3px)}
-#mn-livro.on{display:flex}
-#mn-livro .pl{width:min(860px,100%);max-height:88vh;overflow:auto;background:#FFFDF7;border-radius:16px;box-shadow:0 30px 80px rgba(43,29,10,.45);border:1px solid #EBD39A}
-#mn-livro .pl-topo{position:relative;padding:20px 24px 16px;background:linear-gradient(180deg,#FFF6DD,#FFFDF7);border-bottom:1px solid #EBD39A}
-#mn-livro .pl-topo::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,#B87A1C,#F7D27A,#B87A1C)}
-#mn-livro .m{font:12.5px system-ui;color:#6E5636}
-#mn-livro h3{margin:6px 0 6px;font:600 22px/1.3 Georgia,serif;color:#2B1D0A;padding-right:40px}
-#mn-livro .fechar{position:absolute;right:14px;top:14px;width:34px;height:34px;border-radius:50%;border:1px solid #EBD39A;background:#fff;font-size:18px;cursor:pointer;color:#7A4A0C}
-#mn-livro .pl-corpo{padding:16px 24px 20px}
-#mn-livro .quem{padding:12px 14px;border-radius:12px;background:#FFF7E0;border:1px solid #EBD39A;font:13.5px/1.55 system-ui}
-#mn-livro .quem b{display:block;font:600 11px system-ui;letter-spacing:.12em;text-transform:uppercase;color:#7A4A0C;margin-bottom:4px}
-#mn-livro .itens{display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;margin-top:12px}
-#mn-livro .it{font:13px/1.45 system-ui;padding:8px 0;border-bottom:1px solid #F1E3BF}
-#mn-livro .it b{display:block;font:600 10.5px system-ui;letter-spacing:.1em;text-transform:uppercase;color:#8A6A2A}
-#mn-livro .it q{display:block;color:#6E6555;font-size:11.5px;font-style:italic;margin-top:2px;quotes:"“" "”"}
-#mn-livro .acoes{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
-#mn-livro .acoes a,#mn-livro .acoes button{font:600 13px system-ui;padding:10px 16px;border-radius:999px;border:1px solid #D9B45A;background:#fff;color:#3A2603;cursor:pointer;text-decoration:none}
-#mn-livro .acoes .pri{background:linear-gradient(180deg,#FBE3A0,#E0A93B);border-color:#B87A1C}
-@media (max-width:1000px){#mn .corpo{grid-template-columns:1fr}#mn .disco-col{position:static;max-width:520px;margin:0 auto}#mn-livro .itens{grid-template-columns:1fr}#mn .titulo{max-width:80vw}#mn .placas{top:auto;bottom:16px}}
+#sj{--fundo1:#3A6250;--fundo2:#284A3B;--fundo3:#1E3B2F;--cartao:#203D31;--cab:#264837;--linha:#355848;--grade:#2F5040;--tinta:#F0E7D1;--suave:#AFC0AE;--latao:#D6A84A;
+ width:100vw;margin-left:calc(50% - 50vw);position:relative;overflow:hidden;color:var(--tinta);font-family:"Alegreya Sans",system-ui,sans-serif;
+ background:radial-gradient(ellipse 80% 55% at 50% 30%,var(--fundo1) 0,var(--fundo2) 45%,var(--fundo3) 100%);padding:0 clamp(14px,2.6vw,40px) 44px;box-sizing:border-box;min-height:100vh}
+#sj *{box-sizing:border-box}
+#sj .nav{position:relative;z-index:5;display:flex;justify-content:center;gap:12px;padding:22px 0 0}
+#sj .grupo{position:relative}
+#sj .grupo>button{min-height:44px;padding:0 20px;border-radius:999px;border:1px solid #66887A;background:rgba(40,74,59,.88);color:var(--tinta);font:600 14.5px "Alegreya Sans",sans-serif;cursor:pointer}
+#sj .grupo>button:hover,#sj .grupo:focus-within>button{border-color:var(--latao);color:#FFE7B0}
+#sj .menu{position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%) translateY(-4px);min-width:230px;padding:8px;border-radius:14px;background:#1C372B;border:1px solid #4E7464;
+ box-shadow:0 18px 40px rgba(10,30,20,.45);opacity:0;visibility:hidden;transition:opacity .18s,transform .18s,visibility .18s;z-index:6}
+#sj .grupo:hover .menu,#sj .grupo:focus-within .menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+#sj .menu::before{content:"";position:absolute;left:0;right:0;top:-10px;height:10px}
+#sj .menu button{display:block;width:100%;min-height:42px;padding:0 12px;border:0;border-radius:9px;background:transparent;color:var(--tinta);font:500 14px "Alegreya Sans",sans-serif;text-align:left;cursor:pointer}
+#sj .menu button:hover,#sj .menu button:focus-visible{background:#2A4E3E;color:#FFE7B0;outline:none}
+#sj .palco{position:relative;width:min(1100px,100%);height:min(840px,72vw);margin:-10px auto 0}
+#sj .palco iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;z-index:2}
+@keyframes sj-gira{to{transform:rotate(360deg)}}@keyframes sj-giraR{to{transform:rotate(-360deg)}}
+#sj .raios,#sj .raios2,#sj .halo{position:absolute;left:50%;top:50%;border-radius:50%;pointer-events:none;z-index:1}
+#sj .raios,#sj .raios2{width:3600px;height:3600px;margin:-1800px 0 0 -1800px;
+ -webkit-mask:radial-gradient(circle,#000 0,#000 8%,rgba(0,0,0,.6) 20%,rgba(0,0,0,.22) 38%,transparent 58%);mask:radial-gradient(circle,#000 0,#000 8%,rgba(0,0,0,.6) 20%,rgba(0,0,0,.22) 38%,transparent 58%)}
+#sj .raios{background:repeating-conic-gradient(from 0deg,rgba(226,180,96,.24) 0deg 6deg,transparent 6deg 45deg);animation:sj-gira 120s linear infinite}
+#sj .raios2{background:repeating-conic-gradient(from 22.5deg,rgba(150,226,206,.16) 0deg 4deg,transparent 4deg 45deg);animation:sj-giraR 180s linear infinite}
+#sj .halo{width:820px;height:820px;margin:-410px 0 0 -410px;background:radial-gradient(circle,rgba(255,222,150,.3) 0,rgba(150,226,206,.12) 36%,transparent 66%)}
+#sj .cartao{position:relative;z-index:3;margin-top:-60px;background:var(--cartao);border:1px solid var(--linha);border-radius:16px;overflow:hidden;box-shadow:0 -10px 50px rgba(12,34,24,.45),0 0 0 1px rgba(214,168,74,.2)}
+#sj .topo{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;padding:14px 18px}
+#sj .mes{display:flex;align-items:center;gap:10px}
+#sj .mes button{width:44px;height:44px;border-radius:50%;border:1px solid var(--linha);background:var(--cab);color:var(--tinta);font-size:18px;cursor:pointer}
+#sj .mes h2{margin:0;font:400 24px Marcellus,Georgia,serif;color:var(--tinta)}
+#sj .destaque{min-width:0;flex:1 1 420px;max-width:780px;padding:8px 14px;border-radius:12px;background:#284C3C;border:1px solid #66887A}
+#sj .destaque b{display:block;font:700 14px/1.3 "Alegreya Sans",sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sj .destaque span{display:block;margin-top:2px;font:500 12.5px "Alegreya Sans",sans-serif;color:var(--suave)}
+#sj .grade{display:grid;grid-template-columns:210px minmax(0,1fr)}
+#sj .cab{background:var(--cab);border-top:1px solid var(--linha)}
+#sj .cab .rot{padding:12px 14px;font:700 12.5px "Alegreya Sans",sans-serif;color:var(--suave)}
+#sj .dias{position:relative;display:grid;background-image:linear-gradient(90deg,var(--grade) 1px,transparent 1px)}
+#sj .dia{text-align:center;padding:10px 0 8px;font:600 13px/1 "Alegreya Sans",sans-serif}
+#sj .dia small{display:block;font-weight:500;font-size:10px;color:var(--suave);margin-top:2px}
+#sj .dia.hoje{color:#FF8A6A}
+#sj .hojecol{position:absolute;top:0;bottom:0;background:rgba(255,217,138,.07);box-shadow:inset 1px 0 0 rgba(255,110,80,.5),inset -1px 0 0 rgba(255,110,80,.5);pointer-events:none}
+#sj .lin{border-top:1px solid var(--linha);transition:background .2s}
+#sj .lin.sel{background:#284C3C}
+#sj .tipo{display:flex;align-items:center;gap:10px;padding:10px 14px}
+#sj .tipo i{width:12px;height:12px;border-radius:3px;flex:none}
+#sj .tipo b{display:block;font:700 13px "Alegreya Sans",sans-serif}
+#sj .tipo small{display:block;font:600 11.5px "Alegreya Sans",sans-serif;color:var(--suave)}
+#sj .tipo small.urg{color:#FF8A6A}
+#sj .faixas{position:relative;min-height:64px;background-image:linear-gradient(90deg,var(--grade) 1px,transparent 1px)}
+#sj .faixa{position:absolute;top:17px;height:30px;display:flex;align-items:center;padding:0 26px 0 12px;overflow:hidden;font:600 12.5px/1 "Alegreya Sans",sans-serif;color:#F6EBD0;white-space:nowrap;border-radius:999px;cursor:pointer;transition:box-shadow .25s,transform .25s}
+#sj .faixa span{position:relative;z-index:1;overflow:hidden;text-overflow:ellipsis}
+#sj .faixa::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 0,rgba(255,255,255,0) 35%,rgba(255,226,160,.32) 50%,rgba(255,255,255,0) 65%,transparent 100%);background-size:300% 100%;animation:sj-flui 6s ease-in-out infinite;pointer-events:none}
+@keyframes sj-flui{0%{background-position:120% 0}100%{background-position:-20% 0}}
+#sj .lin:hover .faixa{transform:translateY(-1px);box-shadow:0 0 0 1px rgba(255,217,138,.5),0 0 18px rgba(255,200,110,.22)}
+#sj .lin.sel .faixa{box-shadow:0 0 0 2px var(--latao),0 0 18px rgba(214,168,74,.3)}
+#sj .ini{position:absolute;top:14px;width:4px;height:36px;margin-left:-2px;border-radius:2px;background:#22B8C9;box-shadow:0 0 8px rgba(34,184,201,.7);z-index:2}
+#sj .selo{position:absolute;top:14px;width:36px;height:36px;margin-left:-18px;z-index:2}
+#sj .selo i{position:absolute;inset:0;border-radius:50%;border:2px solid #E5482D;animation:sj-onda 2s ease-out infinite}
+#sj .selo i:nth-child(2){animation-delay:.66s}#sj .selo i:nth-child(3){animation-delay:1.33s}
+@keyframes sj-onda{from{transform:scale(.5);opacity:1}to{transform:scale(1.65);opacity:0}}
+#sj .selo b{position:absolute;inset:5px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#C9341E;color:#fff;font:700 10.5px "Alegreya Sans",sans-serif;box-shadow:0 0 0 3px var(--cartao)}
+#sj .selo.calmo i{border-color:#3BB3A3;animation-duration:3s}#sj .selo.calmo b{background:#2E8B7C}
+#sj .mais{position:absolute;right:6px;top:20px;font:700 18px "Alegreya Sans",sans-serif;color:#3BB3A3}
+#sj .vazio{padding:24px;color:var(--suave)}
+@media (prefers-reduced-motion:reduce){#sj .raios,#sj .raios2,#sj .faixa::after,#sj .selo i{animation:none}}
+@media (max-width:760px){#sj .grade{grid-template-columns:130px minmax(0,1fr)}#sj .nav{flex-wrap:wrap}}
 </style>
-<div id="mn">
-  <div class="ceu" aria-hidden="false">
-    <div class="foto"></div><div class="veu"></div>
-    <div class="astro" aria-hidden="true"><div class="raios"></div><div class="halo"></div><div class="nucleo"></div></div>
-    <div class="cidade" role="img" aria-label="Manoa, a cidade de ouro na floresta"></div><div class="chao"></div>
-    <div class="titulo"><small>Eldorado · a cidade de ouro</small><h2>Manoa, o disco do sol</h2>
-      <p>Diziam que em Manoa <q>há ouro por toda a parte: na cidade, nos templos, sob forma de ídolos, de placas</q>. Aqui, o sol marca os prazos: cada raio do disco é um dia do mês, mais longo quanto mais inscrições abertas. Passe o cursor numa oportunidade para ver o seu caminho no disco; clique para abrir o livro.</p></div>
-    <nav class="placas" aria-label="Navegação"><button class="placa" type="button" data-ir="inicio">Início</button><button class="placa" type="button" data-ir="eldorado">Oportunidades abertas</button><button class="placa" type="button" data-ir="farol">Farol de Alexandria</button></nav>
+<div id="sj">
+  <nav class="nav" aria-label="Navegação">
+    <div class="grupo"><button type="button" aria-haspopup="true">Início</button>
+      <div class="menu" role="menu"><button type="button" role="menuitem" data-ir="inicio">Página inicial</button><button type="button" role="menuitem" data-ir="eldorado:neural">Sala de controle</button></div></div>
+    <div class="grupo"><button type="button" aria-haspopup="true">Eldorado</button>
+      <div class="menu" role="menu"><button type="button" role="menuitem" data-ir="eldorado:calendario">Calendário</button><button type="button" role="menuitem" data-ir="eldorado:editais">Oportunidades Abertas</button><button type="button" role="menuitem" data-ir="eldorado:bussola">Bússola</button><button type="button" role="menuitem" data-ir="eldorado:cartorio">Cartório</button><button type="button" role="menuitem" data-ir="eldorado:neural">Sala de controle</button></div></div>
+    <div class="grupo"><button type="button" aria-haspopup="true">Farol de Alexandria</button>
+      <div class="menu" role="menu"><button type="button" role="menuitem" data-ir="farol:f-editais">Enquadramento</button><button type="button" role="menuitem" data-ir="farol:f-documentos">Documentos</button><button type="button" role="menuitem" data-ir="farol:f-biblioteca">Biblioteca</button></div></div>
+  </nav>
+  <div class="palco">
+    <div class="raios" aria-hidden="true"></div><div class="raios2" aria-hidden="true"></div><div class="halo" aria-hidden="true"></div>
+    <iframe id="sj-objeto" src="giroscopio/giroscopio.html" title="O giroscópio Serpentes de Jade: o anel dos meses e dos dias, com a seta do início e a do fim do prazo" loading="eager"></iframe>
   </div>
-  <div class="corpo">
-    <div class="disco-col">
-      <div class="barra"><div class="mes"><button type="button" id="mn-ant" aria-label="Mês anterior">‹</button><b id="mn-mes"></b><button type="button" id="mn-seg" aria-label="Mês seguinte">›</button></div><span class="conta" id="mn-conta"></span></div>
-      <svg class="disco" id="mn-sol" viewBox="0 0 640 640" role="img" aria-label="O disco do sol: os dias do mês"></svg>
-      <div class="legenda-d"><span><i style="background:linear-gradient(90deg,#C98A1C,#F7D27A)"></i>inscrições abertas no dia</span><span><i style="background:#8C2B1A"></i>hoje</span></div>
-    </div>
-    <div><div class="areas" id="mn-est"></div><div class="terracos" id="mn-ter"></div></div>
-  </div>
+  <section class="cartao" aria-label="As 10 inscrições abertas que fecham primeiro">
+    <div class="topo"><div class="mes"><button type="button" id="sj-ant" aria-label="Mês anterior">‹</button><h2 id="sj-mes"></h2><button type="button" id="sj-seg" aria-label="Mês seguinte">›</button></div>
+      <div class="destaque" aria-live="polite"><b id="sj-nome">Carregando as inscrições…</b><span id="sj-info"></span></div></div>
+    <div class="grade cab"><div class="rot">Tipo da oportunidade</div><div class="dias" id="sj-dias"></div></div>
+    <div id="sj-linhas"></div>
+  </section>
 </div>
-<div id="mn-livro" role="dialog" aria-modal="true" aria-label="O livro da oportunidade"><div class="pl" id="mn-placa"></div></div>
 <script>
 (function(){
   const $=i=>document.getElementById(i);
-  const _ta=document.createElement("textarea"),dec=s=>{_ta.innerHTML=String(s==null?"":s);return _ta.value};
-  const E=s=>dec(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-  const MES=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
-  const AREAS={CUL:"Cultura",SAU:"Saúde",ESP:"Esporte",EDU:"Educação",ASS:"Assistência social",AMB:"Meio ambiente",DHU:"Direitos humanos",CRI:"Criança e adolescente",
-    IDO:"Pessoa idosa",PCD:"Pessoa com deficiência",CTI:"Ciência e tecnologia",ECO:"Trabalho e renda",GER:"Várias áreas"};
+  const E=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const MES=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"],SEM="DSTQQSS";
+  const AREAS={CUL:["Cultura","#5A4720","#D6A84A"],CTI:["Ciência e tecnologia","#245646","#3BB3A3"],SAU:["Saúde","#244858","#5FB0C8"],ECO:["Trabalho e renda","#563D28","#C47A48"],
+    ASS:["Assistência social","#35502A","#8FC46A"],EDU:["Educação","#2A4560","#7FA8D8"],ESP:["Esporte","#2F5030","#7CC46A"],AMB:["Meio ambiente","#2E5034","#8FC46A"],
+    DHU:["Direitos humanos","#4E3440","#D88FA8"],CRI:["Criança e adolescente","#56502A","#E2C45A"],IDO:["Pessoa idosa","#4A4030","#C2A87A"],PCD:["Pessoa com deficiência","#24504E","#5FC4C0"],GER:["Várias áreas","#3A4A44","#A9BDB4"]};
   const area=x=>{const p=String(x.codigo||"").split("·")[1];return AREAS[p]?p:"GER"};
-  const hoje=new Date(),HJ=hoje.toISOString().slice(0,10);let ano=hoje.getFullYear(),mes=hoje.getMonth(),IT=[],soArea=null,sel=null,foco=null,ULT=null;
-  // os pássaros: silhuetas em polígonos, nos tons do amanhecer (a logomarca), três espécies
-  const P={arara:'<svg width="58" height="40" viewBox="0 0 58 40"><polygon points="4,24 18,18 26,22 14,28" fill="#C0561B"/><polygon points="18,18 34,14 26,22" fill="#E07B22"/><polygon points="26,22 34,14 42,24" fill="#F2A33A"/><polygon points="14,28 26,22 42,24 30,30" fill="#B44A14"/><polygon points="34,14 44,12 42,20" fill="#E07B22"/><polygon points="44,12 52,15 44,17" fill="#7A3A0C"/><g class="asa"><polygon points="20,18 30,2 34,15" fill="#D86A1C"/><polygon points="30,2 40,6 34,15" fill="#F2A33A"/></g><polygon points="0,30 4,24 10,28" fill="#B44A14"/></svg>',
-    tucano:'<svg width="56" height="36" viewBox="0 0 56 36"><polygon points="8,20 22,15 30,20 18,25" fill="#4A2A10"/><polygon points="22,15 34,13 30,20" fill="#2E1A08"/><polygon points="30,20 34,13 40,20" fill="#F4E3C0"/><polygon points="34,13 54,15 40,20" fill="#F29A2E"/><g class="asa"><polygon points="20,15 28,3 32,14" fill="#3A220C"/></g><polygon points="2,24 8,20 12,23" fill="#2E1A08"/></svg>',
-    beija:'<svg width="34" height="24" viewBox="0 0 34 24"><polygon points="6,13 14,10 18,13 12,16" fill="#B86A1A"/><polygon points="14,10 22,9 18,13" fill="#E0A93B"/><polygon points="22,9 33,10 22,11" fill="#6B3F06"/><g class="asa"><polygon points="12,10 16,1 19,10" fill="#F2C25A"/></g><polygon points="1,16 6,13 8,16" fill="#9A5A14"/></svg>'};
-  [["arara",14,30,0],["tucano",40,38,-12],["beija",26,24,-6],["arara",58,44,-25]].forEach(([e,top,dur,del])=>{const d=document.createElement("div");d.className="voo";d.style.top=top+"px";d.style.animationDuration=dur+"s";d.style.animationDelay=del+"s";d.innerHTML=P[e];document.querySelector("#mn .ceu").appendChild(d)});
-  document.querySelectorAll("#mn .placa").forEach(b=>b.addEventListener("click",()=>{const v=b.dataset.ir;if(v==="inicio"&&window.irInicio)return irInicio();if(v==="farol"&&window.modulo)return modulo("farol");if(window.modulo){modulo("eldorado");mostra("editais")}}));
-  // o disco do sol: metal gravado; cada dia, um raio (o comprimento, as inscrições abertas no dia)
-  const C=320,RD=150,RM=190,RX=300;const pol=(r,a)=>[C+r*Math.cos(a),C+r*Math.sin(a)];const ang=(d,nd)=>-Math.PI/2+(d-.5)/nd*2*Math.PI;
-  function arco(r,a0,a1){const [x0,y0]=pol(r,a0),[x1,y1]=pol(r,a1);return `M${x0.toFixed(1)} ${y0.toFixed(1)} A${r} ${r} 0 ${(a1-a0)>Math.PI?1:0} 1 ${x1.toFixed(1)} ${y1.toFixed(1)}`}
+  const hoje=new Date(),HJ=hoje.toISOString().slice(0,10);let ano=hoje.getFullYear(),mes=hoje.getMonth(),DEZ=[],sel=0;
+  const falta=d=>{const n=Math.round((new Date(d+"T12:00:00")-new Date(HJ+"T12:00:00"))/864e5);return n<=0?"fecha hoje":n===1?"fecha amanhã":"fecha em "+n+" dias"};
+  const br=d=>d?d.slice(8,10)+"/"+d.slice(5,7):"";
+  // os menus dos botões
+  document.querySelectorAll("#sj .menu button").forEach(b=>b.addEventListener("click",()=>{const [m,v]=b.dataset.ir.split(":");
+    if(m==="inicio"){window.irInicio&&irInicio();return}
+    if(window.modulo)modulo(m); if(v&&window.mostra)mostra(v)}));
+  // o giroscópio: os prazos e a seleção
+  const obj=$("sj-objeto");
+  function enviar(msg){try{obj.contentWindow&&obj.contentWindow.postMessage(msg,"*")}catch(e){}}
+  function prazos(){enviar({tipo:"prazos",itens:DEZ.map(x=>({nome:x.titulo,inicio:x.inicio||undefined,data:x.fim,hora:"23:59"}))});enviar({tipo:"selecionar",indice:sel})}
+  obj.addEventListener("load",()=>{[600,1800,4000,7000].forEach(t=>setTimeout(prazos,t))});
+  function selecionar(i){sel=i;const x=DEZ[i];if(!x)return;
+    $("sj-nome").textContent=x.titulo;$("sj-info").textContent=AREAS[area(x)][0]+", "+(x.inicio?"de "+br(x.inicio)+" ":"")+"até "+br(x.fim)+", "+falta(x.fim);
+    document.querySelectorAll("#sj .lin").forEach((l,k)=>l.classList.toggle("sel",k===i));enviar({tipo:"selecionar",indice:i})}
   function desenhar(){
     const nd=new Date(ano,mes+1,0).getDate(),mm=String(mes+1).padStart(2,"0"),ini=`${ano}-${mm}-01`,fim=`${ano}-${mm}-${nd}`;
-    $("mn-mes").textContent=`${MES[mes]} de ${ano}`;
-    const doMes=IT.filter(x=>x.fim&&x.fim>=ini&&(x.inicio||x.fim)<=fim&&!(x.inicio&&x.inicio>x.fim));
-    const g={};doMes.forEach(x=>{const a=area(x);(g[a]=g[a]||[]).push(x)});Object.values(g).forEach(xs=>xs.sort((a,b)=>a.fim.localeCompare(b.fim)));
-    const ordem=Object.keys(g).sort((a,b)=>(a==="GER")-(b==="GER")||g[b].length-g[a].length);
-    const vis=soArea?ordem.filter(a=>a===soArea):ordem;
-    const dia=x=>({d1:Math.max(1,(x.inicio&&x.inicio>=ini)?+x.inicio.slice(8,10):1),d2:x.fim<=fim?+x.fim.slice(8,10):nd});
-    $("mn-conta").textContent=`${doMes.length} oportunidades no mês`;
-    $("mn-est").innerHTML=`<button class="area-b ${!soArea?"on":""}" data-a="">Todas<em>${doMes.length}</em></button>`+ordem.map(a=>`<button class="area-b ${soArea===a?"on":""}" data-a="${a}">${E(AREAS[a])}<em>${g[a].length}</em></button>`).join("");
-    $("mn-est").querySelectorAll(".area-b").forEach(b=>b.onclick=()=>{soArea=b.dataset.a||null;desenhar()});
-    ULT={nd,mm,ini,fim,g,vis,dia,doMes};desenharSol();terracos();
+    $("sj-mes").textContent=MES[mes]+" de "+ano;
+    const col=`repeat(${nd},minmax(0,1fr))`,bs=`calc(100%/${nd}) 100%`;
+    let cab="";for(let d=1;d<=nd;d++){const dt=new Date(ano,mes,d),iso=`${ano}-${mm}-${String(d).padStart(2,"0")}`;cab+=`<div class="dia${iso===HJ?" hoje":""}">${d}<small>${SEM[dt.getDay()]}</small></div>`}
+    const hojeEm=(HJ>=ini&&HJ<=fim)?+HJ.slice(8,10):0;
+    const hojecol=hojeEm?`<span class="hojecol" style="left:calc(${hojeEm-1}/${nd}*100%);width:calc(100%/${nd})"></span>`:"";
+    $("sj-dias").style.gridTemplateColumns=col;$("sj-dias").style.backgroundSize=bs;$("sj-dias").innerHTML=cab+hojecol;
+    if(!DEZ.length){$("sj-linhas").innerHTML='<div class="vazio">Nenhuma inscrição aberta com data.</div>';return}
+    $("sj-linhas").innerHTML=DEZ.map((x,i)=>{const [nome,claro,borda]=AREAS[area(x)];
+      const s=Math.max(1,(x.inicio&&x.inicio>=ini)?+x.inicio.slice(8,10):1),antes=!x.inicio||x.inicio<ini,f=x.fim<=fim?+x.fim.slice(8,10):nd,fecha=x.fim<=fim&&x.fim>=ini;
+      if(x.fim<ini||(x.inicio||x.fim)>fim)return`<div class="lin grade" data-i="${i}"><div class="tipo"><i style="background:${borda}"></i><div><b>${E(nome)}</b><small>${falta(x.fim)}</small></div></div><div class="faixas" style="background-size:${bs}"></div></div>`;
+      const esq=(s-1)/nd*100,larg=(f-s+1)/nd*100,cf=(f-.5)/nd*100,urg=(new Date(x.fim)-new Date(HJ))/864e5<=3;
+      return`<div class="lin grade" data-i="${i}"><div class="tipo"><i style="background:${borda}"></i><div><b>${E(nome)}</b><small class="${urg?"urg":""}">${falta(x.fim)}</small></div></div>
+        <div class="faixas" style="background-size:${bs}">${antes?"":`<span class="ini" style="left:calc(${esq.toFixed(2)}% + 4px)" aria-hidden="true"></span>`}
+        <div class="faixa" title="${E(x.titulo)}" style="left:calc(${esq.toFixed(2)}% + 4px);width:calc(${larg.toFixed(2)}% - ${fecha?10:6}px);${antes?"border-top-left-radius:6px;border-bottom-left-radius:6px;":""}background:linear-gradient(90deg,${claro},#264837);border:1px solid ${borda}"><span>${antes?"‹ ":""}${E(x.titulo)}</span></div>
+        ${fecha?`<span class="selo${urg?"":" calmo"}" style="left:${cf.toFixed(2)}%" aria-hidden="true"><i></i><i></i><i></i><b>${f}/${mm}</b></span>`:'<span class="mais" aria-hidden="true">›</span>'}</div></div>`}).join("");
+    document.querySelectorAll("#sj .lin").forEach(l=>{l.addEventListener("mouseenter",()=>selecionar(+l.dataset.i));l.addEventListener("focusin",()=>selecionar(+l.dataset.i))});
+    selecionar(Math.min(sel,DEZ.length-1));
   }
-  function desenharSol(){if(!ULT)return;const {nd,mm,vis,g,dia}=ULT;const xs=vis.flatMap(a=>g[a]);
-    const cont=d=>xs.filter(x=>{const q=dia(x);return d>=q.d1&&d<=q.d2}).length;const mx=Math.max(1,...Array.from({length:nd},(_,i)=>cont(i+1)));
-    let s=`<defs>
-      <radialGradient id="dOuro" cx=".38" cy=".32" r=".8"><stop offset="0" stop-color="#FFF6D6"/><stop offset=".35" stop-color="#F6D27C"/><stop offset=".7" stop-color="#D49A32"/><stop offset="1" stop-color="#8E5A12"/></radialGradient>
-      <linearGradient id="dBorda" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFF1C2"/><stop offset=".5" stop-color="#B9822A"/><stop offset="1" stop-color="#6B3F06"/></linearGradient>
-      <linearGradient id="dRaio" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#C98A1C"/><stop offset="1" stop-color="#FFE7A3"/></linearGradient>
-      <filter id="dGrao"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="7"/><feColorMatrix values="0 0 0 0 .45 0 0 0 0 .3 0 0 0 0 .06 0 0 0 .22 0"/><feComposite in2="SourceGraphic" operator="in"/></filter>
-      <filter id="dLuz" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
-      <filter id="dEntalhe"><feGaussianBlur in="SourceAlpha" stdDeviation="1"/><feOffset dx="0" dy="1" result="o"/><feComposite in="SourceGraphic" in2="o" operator="over"/></filter></defs>`;
-    // os raios: um por dia, o comprimento pela quantidade (a luz por baixo, o metal por cima)
-    for(let d=1;d<=nd;d++){const n=cont(d),a=ang(d,nd),w=(Math.PI/nd)*.62,L=RM+12+(n/mx)*(RX-RM-12),ehHoje=`${ano}-${mm}-${String(d).padStart(2,"0")}`===HJ;
-      const [x1,y1]=pol(RM+6,a-w),[x2,y2]=pol(L,a),[x3,y3]=pol(RM+6,a+w);
-      if(n)s+=`<polygon points="${x1},${y1} ${x2},${y2} ${x3},${y3}" fill="${ehHoje?"#FFE9B0":"#FFD77A"}" opacity=".55" filter="url(#dLuz)"/>`;
-      s+=`<polygon points="${x1},${y1} ${x2},${y2} ${x3},${y3}" fill="${ehHoje?"#8C2B1A":n?"url(#dRaio)":"#EAD9B0"}" stroke="${ehHoje?"#5E1A0E":"#A86F16"}" stroke-width=".6" opacity="${n?1:.7}"><title>dia ${d}: ${n} inscrição(ões) aberta(s)</title></polygon>`}
-    // o disco de ouro: a borda, o metal com grão, o anel dos dias entalhado
-    s+=`<circle cx="${C}" cy="${C}" r="${RM+6}" fill="url(#dBorda)"/><circle cx="${C}" cy="${C}" r="${RM}" fill="url(#dOuro)"/><circle cx="${C}" cy="${C}" r="${RM}" fill="#000" filter="url(#dGrao)" opacity=".9"/>`;
-    s+=`<circle cx="${C}" cy="${C}" r="${RM-8}" fill="none" stroke="#7A4A0C" stroke-opacity=".45" stroke-width="1"/><circle cx="${C}" cy="${C}" r="${RD}" fill="none" stroke="#7A4A0C" stroke-opacity=".45" stroke-width="1"/>`;
-    const alvo=IT.find(x=>x.id===(foco||sel));
-    if(alvo){const q=dia(alvo),r=(RM-8+RD)/2,p=arco(r,ang(q.d1,nd)-Math.PI/nd+.01,ang(q.d2,nd)+Math.PI/nd-.01);
-      s+=`<path id="dFoco" d="${p}" stroke="#FFF1C4" stroke-width="34" stroke-linecap="round" fill="none" opacity=".7" filter="url(#dLuz)"/><path d="${p}" stroke="#FFF6D6" stroke-opacity=".95" stroke-width="26" stroke-linecap="round" fill="none"/>
-        <path d="${arco(r-14,ang(q.d1,nd)-Math.PI/nd+.01,ang(q.d2,nd)+Math.PI/nd-.01)}" stroke="#8E5A12" stroke-width="2.2" fill="none"/><path d="${arco(r+14,ang(q.d1,nd)-Math.PI/nd+.01,ang(q.d2,nd)+Math.PI/nd-.01)}" stroke="#8E5A12" stroke-width="2.2" fill="none"/>
-        <circle r="6" fill="#FFFFFF" filter="url(#dLuz)"><animateMotion dur="${(1.8+(q.d2-q.d1+1)*.16).toFixed(1)}s" repeatCount="indefinite"><mpath href="#dFoco"/></animateMotion></circle>`}
-    for(let d=1;d<=nd;d++){const a=ang(d,nd),[tx,ty]=pol((RM-8+RD)/2,a),dt=new Date(ano,mes,d),fds=dt.getDay()%6===0,ehHoje=`${ano}-${mm}-${String(d).padStart(2,"0")}`===HJ;
-      const [l1x,l1y]=pol(RD,a+Math.PI/nd),[l2x,l2y]=pol(RM-8,a+Math.PI/nd);s+=`<line x1="${l1x}" y1="${l1y}" x2="${l2x}" y2="${l2y}" stroke="#7A4A0C" stroke-opacity=".28"/>`;
-      s+=`<text x="${tx}" y="${ty+5}" text-anchor="middle" font-family="Georgia,serif" font-size="${ehHoje?16:13}" font-weight="${ehHoje?700:600}" fill="${ehHoje?"#8C2B1A":fds?"#8E6A2E":"#4A2F08"}" style="paint-order:stroke" stroke="rgba(255,244,210,.55)" stroke-width="2">${d}</text>`}
-    // o centro: o rosto do sol em relevo, com o mês ou a oportunidade
-    s+=`<circle cx="${C}" cy="${C}" r="${RD-6}" fill="url(#dOuro)" stroke="#8E5A12" stroke-width="1.2"/><circle cx="${C}" cy="${C}" r="${RD-6}" fill="#000" filter="url(#dGrao)" opacity=".6"/>`;
-    s+=alvo?`<foreignObject x="${C-110}" y="${C-70}" width="220" height="140"><div xmlns="http://www.w3.org/1999/xhtml" style="height:140px;display:flex;align-items:center;justify-content:center;text-align:center;font:600 14px/1.35 Georgia,serif;color:#3A2603">${E(alvo.titulo).slice(0,110)}</div></foreignObject>`
-      :`<text x="${C}" y="${C-6}" text-anchor="middle" font-family="Georgia,serif" font-size="30" font-weight="600" fill="#3A2603">${MES[mes]}</text><text x="${C}" y="${C+22}" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#5A3B06">${ano}</text>`;
-    $("mn-sol").innerHTML=s}
-  function terracos(){const {nd,ini,fim,g,vis,dia}=ULT;const hj=+HJ.slice(8,10),noMes=HJ>=ini&&HJ<=fim;
-    $("mn-ter").innerHTML=vis.length?vis.map(a=>{const xs=g[a];
-      return `<div class="terraco"><h4><span class="ins">${a}</span>${E(AREAS[a])}<small>${xs.length} no mês</small></h4>`+xs.slice(0,10).map(x=>{const q=dia(x);
-        return `<div class="op ${sel===x.id?"sel":""}" data-id="${E(x.id)}"><div class="t">${E(x.titulo)}</div><div class="p"><span>${E(x.uf&&x.uf!=="BR"?x.uf:"nacional")}</span><b>${x.inicio?E(x.inicio.slice(8,10)+"/"+x.inicio.slice(5,7))+" → ":"até "}${E(x.fim.slice(8,10)+"/"+x.fim.slice(5,7))}</b></div>
-          <div class="trilha"><i style="left:${((q.d1-1)/nd*100).toFixed(2)}%;width:${((q.d2-q.d1+1)/nd*100).toFixed(2)}%"></i>${noMes?`<u style="left:${((hj-.5)/nd*100).toFixed(2)}%"></u>`:""}</div></div>`}).join("")
-        +(xs.length>10?`<span class="mais" data-ed>+ ${xs.length-10} em ${E(AREAS[a])} — ver nas Oportunidades Abertas ›</span>`:"")+`</div>`}).join("")
-      :`<div class="vazio">Nenhuma inscrição com data neste mês.</div>`;
-    $("mn-ter").querySelectorAll(".op").forEach(o=>{o.onmouseenter=()=>{foco=o.dataset.id;solSo()};o.onmouseleave=()=>{foco=null;solSo()};o.onclick=()=>abrir(o.dataset.id)});
-    $("mn-ter").querySelectorAll("[data-ed]").forEach(m=>m.onclick=()=>{modulo("eldorado");mostra("editais")})}
-  let _t=null;const solSo=()=>{clearTimeout(_t);_t=setTimeout(desenharSol,30)};
-  async function abrir(id){sel=id;terracos();desenharSol();const x=IT.find(y=>y.id===id);if(!x)return;
-    const lid=(x.livro_vinculado&&x.livro_vinculado.id)||x.id;let f=null;try{const r=await fetch("dados/cartorio/"+encodeURIComponent(lid)+".json?v="+Date.now());if(r.ok)f=await r.json()}catch(e){}
-    const its=(f&&f.itens)||{},q=its["Requisitos"];
-    const ORD=["Objeto","Prazo de inscrição","Valor","Órgão / financiador","Esfera","Território","Área de atuação","Modalidade","Resultado","Prazo de recurso","Anexos"];
-    $("mn-placa").innerHTML=`<div class="pl-topo"><div class="m">${E(AREAS[area(x)])}${x.codigo?" · "+E(x.codigo):""}</div><h3>${E(x.titulo)}</h3>
-      <div class="m">${E(x.orgao||"")}${x.orgao?" · ":""}inscrição ${x.inicio?"de "+E(x.inicio.split("-").reverse().join("/"))+" ":""}até ${E(x.fim.split("-").reverse().join("/"))}</div>
-      <button class="fechar" type="button" aria-label="Fechar">×</button></div>
-      <div class="pl-corpo"><div class="quem"><b>Quem pode participar</b>${q?E(q.valor):"ainda não lido no edital — o Interceptador está procurando"}${q&&q.pagina?` <span style="color:#8A6A2A">(pág. ${E(q.pagina)})</span>`:""}</div>
-      <div class="itens">${ORD.map(k=>{const v=its[k];return `<div class="it"><b>${E(k)}</b>${v?E(v.valor)+(v.trecho?`<q>${E(String(v.trecho).slice(0,170))}</q>`:""):'<span style="color:#9A8F7A">não certificado</span>'}</div>`}).join("")}</div>
-      <div class="acoes">${x.link_oficial?`<a class="pri" href="${E(x.link_oficial)}" target="_blank" rel="noopener">Abrir o edital</a>`:""}<button type="button" data-ed>Ver nas Oportunidades Abertas</button><button type="button" data-fc>Fechar</button></div></div>`;
-    $("mn-livro").classList.add("on");
-    const fechar=()=>{$("mn-livro").classList.remove("on");sel=null;terracos();desenharSol()};
-    $("mn-placa").querySelector(".fechar").onclick=fechar;$("mn-placa").querySelector("[data-fc]").onclick=fechar;$("mn-placa").querySelector("[data-ed]").onclick=()=>{fechar();modulo("eldorado");mostra("editais")};
-    $("mn-livro").onclick=e=>{if(e.target===$("mn-livro"))fechar()}}
-  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("mn-livro").classList.contains("on")){$("mn-livro").classList.remove("on");sel=null;terracos();desenharSol()}});
-  $("mn-ant").onclick=()=>{mes--;if(mes<0){mes=11;ano--}desenhar()};$("mn-seg").onclick=()=>{mes++;if(mes>11){mes=0;ano++}desenhar()};
-  fetch("dados/fluxo_oportunidades.json?v="+Date.now()).then(r=>r.ok?r.json():null).then(F=>{IT=Object.values((F&&F.itens_por_uf)||{}).flat().filter(x=>x.fim);desenhar()}).catch(()=>{});
+  $("sj-ant").onclick=()=>{mes--;if(mes<0){mes=11;ano--}desenhar()};$("sj-seg").onclick=()=>{mes++;if(mes>11){mes=0;ano++}desenhar()};
+  fetch("dados/fluxo_oportunidades.json?v="+Date.now()).then(r=>r.ok?r.json():null).then(F=>{
+    const todos=Object.values((F&&F.itens_por_uf)||{}).flat().filter(x=>x.fim&&x.fim>=HJ&&!(x.inicio&&x.inicio>x.fim));
+    const vistos=new Set();DEZ=todos.sort((a,b)=>a.fim.localeCompare(b.fim)||String(a.titulo).localeCompare(String(b.titulo))).filter(x=>{const k=x.id||x.titulo;if(vistos.has(k))return false;vistos.add(k);return true}).slice(0,10);
+    desenhar();prazos()}).catch(()=>{$("sj-nome").textContent="As inscrições não puderam ser carregadas."});
 })();
 </script>
 

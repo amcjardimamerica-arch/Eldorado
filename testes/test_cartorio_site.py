@@ -137,18 +137,21 @@ def test_a_pagina_inicial_calendario_por_tema_e_os_quadros_em_sequencia():
 
 
 def test_o_lago_dos_prazos():
-    """27/10/2026 (titular, refeito do zero): Manoa, o disco do sol — arte realista (as imagens da associação: o sol nascente
-    e a cidade de ouro), a luz por cima (os raios radiais em modo de luz); o calendário é um disco de ouro gravado, cada dia um
-    raio (o comprimento, as inscrições abertas); paleta única (o ouro); nenhuma barra de navegação das outras páginas;
-    os terraços (até 10 por área, as que terminam antes primeiro); o livro ao clicar; a fonte é a Biblioteca."""
+    """28/10/2026 (titular): o calendário do Eldorado com o giroscópio Serpentes de Jade no alto, ao centro (embutido, sem
+    depender de servidor externo; recebe os prazos e a seleção por mensagem); os raios centrados no globo; o fundo jade e
+    latão, sem preto; sem o título; os botões centralizados com os menus; as 10 abertas que fecham primeiro."""
     from pathlib import Path
 
     p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
-    assert "body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.oculto)) #nav-eldorado{display:none!important}" in p
-    assert "img/manoa-sol.webp" in p and "img/manoa-cidade.webp" in p and Path("eldorado/base/painel/pagina/img/manoa-cidade.webp").exists()
-    assert 'id="mn-sol"' in p and 'id="mn-ter"' in p and 'id="mn-livro"' in p and "repeating-conic-gradient" in p
-    assert "xs.slice(0,10)" in p and "a.fim.localeCompare(b.fim)" in p and 'fetch("dados/fluxo_oportunidades.json' in p
-    assert 'id="eld"' not in p and "mn-manoa" not in p  # o lago e o desenho antigo saíram
+    g = Path("eldorado/base/painel/pagina/giroscopio/giroscopio.html").read_text(encoding="utf-8")
+    assert 'id="sj"' in p and 'src="giroscopio/giroscopio.html"' in p and "Manoa, o calendário do sol" not in p
+    assert "#sj .raios,#sj .raios2,#sj .halo{position:absolute;left:50%;top:50%" in p  # os raios no centro do globo
+    bloco = p[p.index('<div id="sj">') : p.index("</nav>", p.index('<div id="sj">'))]
+    assert bloco.count('class="grupo"') == 3 and 'data-ir="farol:f-biblioteca"' in bloco  # os menus dos botões
+    assert 'tipo:"prazos"' in p and 'tipo:"selecionar"' in p and ".slice(0,10)" in p
+    assert "cdn.jsdelivr.net" not in g and 'src="three.min.js"' in g and "controls.enableZoom = false;" in g
+    for f in ("three.min.js", "OrbitControls.js", "RoomEnvironment.js"):
+        assert Path("eldorado/base/painel/pagina/giroscopio", f).exists()
 
 
 def test_o_radar_ao_lado_do_farol():

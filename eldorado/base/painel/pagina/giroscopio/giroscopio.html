@@ -1,0 +1,2177 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<!-- O giroscópio Serpentes de Jade, embutido no calendário do Eldorado (28/10/2026): sem o painel lateral, fundo transparente, sem o zoom pela roda; recebe os prazos e a seleção por postMessage. -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Serpentes de Jade: Giroscópio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Alegreya+Sans:wght@400;500;700&display=swap">
+<style>:root{color-scheme:light;--bg:#ece7dc;--stage:radial-gradient(ellipse at 50% 45%,#2c4a3c 0%,#0d120c 75%);--panel:#f6f2e9;--ink:#221c14;--muted:#655a48;--line:#ddd3c0;--line-strong:#b9ab90;--well:#ebe4d5;--accent:#1f7a64;--on-accent:#f3fff9;--radius:3px;--font-display:'Marcellus',Georgia,serif;--font-body:'Alegreya Sans','Segoe UI',sans-serif;--display-weight:400;--h1:38px;--h1-track:0;}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0c0d0a;--stage:radial-gradient(ellipse at 50% 45%,#1f3a30 0%,#0a0b08 72%);--panel:#11130e;--ink:#f0e7d1;--muted:#a9b39a;--line:#2a2f22;--line-strong:#434b36;--well:#181b14;--accent:#ff9f1c;--on-accent:#1a0d02;}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0c0d0a;--stage:radial-gradient(ellipse at 50% 45%,#1f3a30 0%,#0a0b08 72%);--panel:#11130e;--ink:#f0e7d1;--muted:#a9b39a;--line:#2a2f22;--line-strong:#434b36;--well:#181b14;--accent:#ff9f1c;--on-accent:#1a0d02;}
+
+*,*::before,*::after{box-sizing:border-box}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);height:100%}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+.app{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,400px);height:100%}
+#stage{position:relative;min-height:0;background:var(--stage)}
+#stage canvas{width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+.hint{position:absolute;left:18px;bottom:14px;margin:0;font-size:13px;color:var(--muted);pointer-events:none;max-width:60%}
+#part-tip{position:absolute;pointer-events:none;background:var(--panel);color:var(--ink);border:1px solid var(--line-strong);padding:5px 9px;font-size:13px;border-radius:var(--radius);max-width:280px}
+#panel{overflow-y:auto;padding:28px 26px;border-left:1px solid var(--line);background:var(--panel)}
+.ui-head h1{font-family:var(--font-display);font-weight:var(--display-weight);font-size:var(--h1);line-height:1.05;margin:0 0 10px;letter-spacing:var(--h1-track)}
+.ui-sub{margin:0;color:var(--muted);font-size:14px;line-height:1.55;max-width:34em}
+.sel{margin-top:22px;padding:18px;background:var(--well);border:1px solid var(--line);border-radius:var(--radius)}
+.sel-status{margin:0 0 8px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;color:var(--muted)}
+.sel-status::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--c,var(--accent));box-shadow:0 0 8px var(--c,var(--accent))}
+.sel h2{font-family:var(--font-display);font-weight:var(--display-weight);font-size:26px;line-height:1.15;margin:0}
+.sel-date{margin:6px 0 0;color:var(--muted);font-size:14px}
+.sel-count{margin:14px 0 0;font-family:var(--font-display);line-height:1}
+#s-big{font-size:62px;font-variant-numeric:tabular-nums}
+#s-unit{font-size:22px;color:var(--muted)}
+.sel-small{margin:6px 0 14px;font-size:14px}
+.ui-btns{display:flex;flex-wrap:wrap;gap:6px}
+button,select{font:inherit;font-size:14px;color:var(--ink)}
+button{padding:7px 12px;border:1px solid var(--line-strong);background:transparent;border-radius:var(--radius);cursor:pointer}
+button:hover{background:var(--well)}
+button.primary{background:var(--accent);color:var(--on-accent);border-color:transparent}
+.ui-check{display:flex;gap:8px;align-items:center;font-size:14px;margin-top:12px}
+.ui-field{display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--muted);margin-top:12px}
+input[type=range]{accent-color:var(--accent);width:100%}
+input[type=checkbox]{accent-color:var(--accent);width:16px;height:16px}
+.lista{margin-top:24px}
+.lista-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.lista-head h3{margin:0;font-family:var(--font-display);font-weight:var(--display-weight);font-size:22px}
+#l-count{font-size:13px;color:var(--muted)}
+.seg{display:inline-flex;margin:10px 0;border:1px solid var(--line-strong);border-radius:var(--radius);overflow:hidden}
+.seg button{border:0;border-radius:0;padding:6px 12px}
+.seg button[aria-pressed=true]{background:var(--accent);color:var(--on-accent)}
+#l-list{list-style:none;margin:0;padding:0;max-height:min(46vh,430px);overflow-y:auto;border-top:1px solid var(--line)}
+.item{display:grid;grid-template-columns:10px 1fr;column-gap:10px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:9px 6px;background:transparent}
+.item::before{content:"";grid-row:1 / span 2;align-self:center;width:9px;height:9px;border-radius:50%;background:var(--c)}
+.item[aria-current=true]{background:var(--well)}
+.i-nome{font-weight:600;font-size:14.5px}
+.i-meta{font-size:13px;color:var(--muted)}
+.vazio{padding:12px 4px;color:var(--muted);font-size:14px}
+.box{margin-top:14px;border:1px solid var(--line);border-radius:var(--radius)}
+.box summary{cursor:pointer;padding:10px 14px;font-weight:600}
+.box>*:not(summary){margin-left:14px;margin-right:14px}
+.box[open]{padding-bottom:14px}
+.ui-note{color:var(--muted);font-size:13.5px;margin:4px 0 10px}
+textarea{display:block;width:calc(100% - 28px);font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;color:var(--ink);background:var(--panel);border:1px solid var(--line-strong);border-radius:var(--radius);padding:8px;margin-bottom:10px}
+pre{white-space:pre-wrap;font-size:12.5px;background:var(--well);padding:10px;border-radius:var(--radius);overflow-x:auto}
+code{font-size:12.5px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ui-error{margin:0;padding:32px;max-width:32em;color:var(--ink)}
+@media (max-width:760px){
+ body{height:auto;min-height:100%}
+ .app{grid-template-columns:1fr;grid-template-rows:minmax(380px,64svh) auto;height:auto}
+ #panel{border-left:0;border-top:1px solid var(--line);padding:22px 18px}
+}
+.compacto,.compacto body,.compacto #stage{background:transparent}
+.compacto .app{grid-template-columns:1fr;height:100%}
+.compacto #panel,.compacto .hint{display:none}
+
+.sel h2{margin-top:2px}
+.nav{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.nav button{padding:10px 12px;font-weight:600}
+.legend,.views{margin-top:20px}
+.legend h3,.views h3{margin:0 0 8px;font-family:var(--font-display);font-weight:var(--display-weight);font-size:20px}
+.legend ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font-size:13.5px}
+.legend li{display:flex;align-items:center;gap:8px}
+.legend i{flex:none;width:12px;height:12px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c)}
+.legend i.pulse{animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.35)}}
+@media (prefers-reduced-motion:reduce){.legend i.pulse{animation:none}}
+.views .seg{margin:0}
+#l-list{max-height:min(48vh,460px);overflow-y:auto;border-top:1px solid var(--line)}
+#l-list h4{display:flex;justify-content:space-between;align-items:baseline;margin:12px 0 4px;font-size:14px;font-weight:700;text-transform:none}
+#l-list h4 small{font-weight:500;color:var(--muted)}
+#l-list ul{list-style:none;margin:0;padding:0}
+.item{grid-template-columns:30px 1fr;row-gap:1px}
+.item::before{display:none}
+.i-dia{grid-row:1 / span 2;align-self:center;justify-self:center;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;background:var(--c);color:#14100b}
+.app{grid-template-columns:1fr!important}#panel{display:none!important}#stage{background:transparent!important}.hint{display:none!important}html,body{background:transparent!important}</style>
+</head>
+<body>
+<div class="app">
+  <main id="stage" aria-label="Astrolábio-mostrador de prazos: Serpentes de Jade: Giroscópio"><p class="hint">Arraste para girar em qualquer direção. O calendário fica sempre de frente; clique num dia ou num mês para ver os prazos.</p></main>
+  <aside id="panel"></aside>
+</div>
+<script src="three.min.js"></script>
+<script src="OrbitControls.js"></script>
+<script src="RoomEnvironment.js"></script>
+<script>(function (G) {
+  'use strict';
+  const C = G.AstroCore, D2R = Math.PI / 180, St = {};
+  let T;
+  St.init = function (three) { T = three; };
+
+  // ---------- Maya / Andean calendar math ----------
+  St.TZ = ['Imix', 'Ik’', 'Ak’bal', 'K’an', 'Chikchan', 'Kimi', 'Manik’', 'Lamat', 'Muluk', 'Ok', 'Chuwen', 'Eb', 'Ben', 'Ix', 'Men', 'Kib', 'Kaban', 'Etz’nab', 'Kawak', 'Ajaw'];
+  St.HAAB = ['Pop', 'Wo’', 'Sip', 'Sotz’', 'Sek', 'Xul', 'Yaxk’in', 'Mol', 'Ch’en', 'Yax', 'Sak’', 'Keh', 'Mak', 'K’ank’in', 'Muwan', 'Pax', 'K’ayab', 'Kumk’u', 'Wayeb'];
+  St.maya = function (date) {
+    const y = date.getFullYear(), m = date.getMonth() + 1, d = date.getDate();
+    const a = Math.floor((14 - m) / 12), yy = y + 4800 - a, mm = m + 12 * a - 3;
+    const jdn = d + Math.floor((153 * mm + 2) / 5) + 365 * yy + Math.floor(yy / 4) - Math.floor(yy / 100) + Math.floor(yy / 400) - 32045;
+    const n = jdn - 584283, md = (x, k) => ((x % k) + k) % k;
+    const lc = [Math.floor(n / 144000), Math.floor(md(n, 144000) / 7200), Math.floor(md(n, 7200) / 360), Math.floor(md(n, 360) / 20), md(n, 20)];
+    const tzNum = md(n + 3, 13) + 1, tzIdx = md(n + 19, 20), hp = md(n + 348, 365);
+    return { n: n, lc: lc, tzNum: tzNum, tzIdx: tzIdx, tzName: St.TZ[tzIdx], haabPos: hp, haabMonth: Math.floor(hp / 20), haabDay: hp % 20,
+      haabName: St.HAAB[Math.floor(hp / 20)], text: lc.join('.') };
+  };
+
+  // ---------- materials & primitives ----------
+  St.noise = function () {
+    const c = document.createElement('canvas'); c.width = c.height = 256; const x = c.getContext('2d');
+    x.fillStyle = '#9a9a9a'; x.fillRect(0, 0, 256, 256);
+    for (let i = 0; i < 2600; i++) { const v = 110 + Math.random() * 120 | 0; x.fillStyle = 'rgb(' + v + ',' + v + ',' + v + ')'; x.globalAlpha = 0.35; x.fillRect(Math.random() * 256, Math.random() * 256, 1 + Math.random() * 3, 1 + Math.random() * 3); }
+    const t = new T.CanvasTexture(c); t.wrapS = t.wrapT = T.RepeatWrapping; t.repeat.set(3, 3); return t;
+  };
+  St.mats = function (th) {
+    const rough = St.noise();
+    const m = (color, metal, r) => new T.MeshStandardMaterial({ color: color, metalness: metal, roughness: r, roughnessMap: rough });
+    return {
+      brass: m(th.brass || 0xb8893d, 1, 0.36), brassDark: m(th.brassDark || 0x7d5a26, 1, 0.48), copper: m(th.copper || 0xb86b3e, 1, 0.38),
+      iron: m(th.iron || 0x2f2b26, 0.8, 0.6), stone: m(th.stone || 0x7a6a55, 0, 0.92),
+      jade: new T.MeshStandardMaterial({ color: th.jade || 0x2e8b6a, roughness: 0.3, metalness: 0 }),
+      turq: new T.MeshStandardMaterial({ color: th.turq || 0x3bb3a3, roughness: 0.4, metalness: 0 }),
+      obsidian: new T.MeshStandardMaterial({ color: 0x141414, roughness: 0.14, metalness: 0.4 }),
+      glass: new T.MeshPhysicalMaterial({ color: 0xffffff, transparent: true, opacity: 0.14, roughness: 0.04, metalness: 0, clearcoat: 1, depthWrite: false }),
+      lampLeft: new T.MeshStandardMaterial({ color: th.lamp || 0xffb347, emissive: th.lamp || 0xffa53a, emissiveIntensity: 1.5, roughness: 0.3 }),
+      lampToday: new T.MeshStandardMaterial({ color: 0xffffff, emissive: th.today || 0xffe2a0, emissiveIntensity: 2.2, roughness: 0.2 }),
+      lampPast: new T.MeshStandardMaterial({ color: 0x2b2520, roughness: 0.25, metalness: 0.3 })
+    };
+  };
+  St.gear = function (o) {
+    const n = o.teeth, r = o.r, th = o.th || r * 0.12, rr = r - th, sh = new T.Shape();
+    for (let i = 0; i < n; i++) {
+      const a0 = i / n * Math.PI * 2, a = Math.PI * 2 / n;
+      [[rr, 0], [r, 0.2], [r, 0.48], [rr, 0.68]].forEach(([rad, f], j) => { const ang = a0 + a * f, x = rad * Math.cos(ang), y = rad * Math.sin(ang); (i === 0 && j === 0) ? sh.moveTo(x, y) : sh.lineTo(x, y); });
+    }
+    sh.closePath();
+    if (o.hole) { const h = new T.Path(); h.absarc(0, 0, o.hole, 0, Math.PI * 2, true); sh.holes.push(h); }
+    if (o.spokes) {
+      const ri = (o.hole || 0) + rr * 0.2, ro = rr * 0.78;
+      for (let s = 0; s < o.spokes; s++) {
+        const a0 = s / o.spokes * Math.PI * 2 + 0.14, a1 = (s + 1) / o.spokes * Math.PI * 2 - 0.14, p = new T.Path();
+        p.absarc(0, 0, ro, a0, a1, false); p.absarc(0, 0, ri, a1, a0, true); p.closePath(); sh.holes.push(p);
+      }
+    }
+    const depth = o.depth || 0.06;
+    const g = new T.ExtrudeGeometry(sh, { depth: depth, bevelEnabled: true, bevelThickness: 0.006, bevelSize: 0.006, bevelSegments: 2, curveSegments: Math.max(12, Math.round(40 * r)) });
+    g.translate(0, 0, -depth / 2);
+    return new T.Mesh(g, o.mat);
+  };
+  St.bolts = function (r, count, z, mat, size) {
+    const s = size || 0.022, im = new T.InstancedMesh(new T.CylinderGeometry(s, s, s * 0.9, 6), mat, count), m4 = new T.Matrix4(), q = new T.Quaternion().setFromAxisAngle(new T.Vector3(1, 0, 0), Math.PI / 2);
+    for (let i = 0; i < count; i++) { const a = i / count * Math.PI * 2; m4.compose(new T.Vector3(r * Math.sin(a), r * Math.cos(a), z), q, new T.Vector3(1, 1, 1)); im.setMatrixAt(i, m4); }
+    return im;
+  };
+  St.pipe = function (pts, r, mat) { return new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(pts.map(p => new T.Vector3(...p))), 64, r, 12, false), mat); };
+  St.canvasMesh = function (geo, size, draw, matOpts) {
+    const tex = C.canvasTexture(size, draw);
+    const mesh = new T.Mesh(geo, new T.MeshStandardMaterial(Object.assign({ map: tex, metalness: 0.35, roughness: 0.5 }, matOpts || {})));
+    mesh.userData.tex = tex; return mesh;
+  };
+
+  // ---------- central information sphere ----------
+  St.InfoSphere = function (o) {
+    const g = new T.Group(), W = 1024, H = 512;
+    const cv = document.createElement('canvas'); cv.width = W; cv.height = H; const ctx = cv.getContext('2d');
+    const tex = new T.CanvasTexture(cv); tex.anisotropy = 8;
+    const infoMat = new T.MeshStandardMaterial({ map: tex, emissiveMap: tex, emissive: 0xffffff, emissiveIntensity: 0.9, roughness: 0.22, metalness: 0.05 });
+    const mc = document.createElement('canvas'); mc.width = 512; mc.height = 256; const mx = mc.getContext('2d');
+    mx.fillStyle = '#b9b5ad'; mx.fillRect(0, 0, 512, 256);
+    for (let i = 0; i < 160; i++) { const r = 2 + Math.random() * 16; mx.fillStyle = 'rgba(70,66,60,' + (0.12 + Math.random() * 0.25) + ')'; mx.beginPath(); mx.arc(Math.random() * 512, 30 + Math.random() * 196, r, 0, 7); mx.fill(); }
+    const moonMat = new T.ShaderMaterial({
+      uniforms: { map: { value: new T.CanvasTexture(mc) }, Lv: { value: new T.Vector3(0, 0, 1) } },
+      vertexShader: 'varying vec2 vUv; varying vec3 vN; void main(){ vUv = uv; vN = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+      fragmentShader: 'uniform sampler2D map; uniform vec3 Lv; varying vec2 vUv; varying vec3 vN; void main(){ vec3 c = texture2D(map, vUv).rgb; float d = dot(normalize(vN), normalize(Lv)); float k = smoothstep(-0.03, 0.06, d); gl_FragColor = vec4(c * (0.05 + 0.95 * k), 1.0); }'
+    });
+    const core = new T.Mesh(new T.SphereGeometry(o.r, 64, 32), infoMat); g.add(core);
+    g.add(new T.Mesh(new T.SphereGeometry(o.r * 1.07, 48, 24), o.mats.glass));
+    const cage = o.cage || o.mats.brass;
+    const r1 = new T.Mesh(new T.TorusGeometry(o.r * 1.12, o.r * 0.035, 10, 96), cage); g.add(r1);
+    const r2 = r1.clone(); r2.rotation.y = Math.PI / 2; g.add(r2);
+    const r3 = new T.Mesh(new T.TorusGeometry(o.r * 1.12, o.r * 0.025, 10, 96), cage); r3.rotation.x = Math.PI / 2; g.add(r3);
+    [1, -1].forEach(s => { const cap = new T.Mesh(new T.SphereGeometry(o.r * 0.1, 16, 8), cage); cap.position.y = s * o.r * 1.12; g.add(cap); });
+    let mode = 'info', lastKey = '';
+    function fit(text, weight, size, max) { let s = size; do { ctx.font = weight + ' ' + s + 'px ' + o.font; s -= 2; } while (ctx.measureText(text).width > max && s > 12); }
+    function draw(L, single) {
+      const gr = ctx.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, o.colors.bg0); gr.addColorStop(0.5, o.colors.bg1); gr.addColorStop(1, o.colors.bg0);
+      ctx.fillStyle = gr; ctx.fillRect(0, 0, W, H);
+      ctx.strokeStyle = o.colors.grid; ctx.globalAlpha = 0.3; ctx.lineWidth = 2;
+      for (let i = 0; i < 24; i++) { ctx.beginPath(); ctx.moveTo(i * W / 24, 0); ctx.lineTo(i * W / 24, H); ctx.stroke(); }
+      for (let j = 1; j < 8; j++) { ctx.beginPath(); ctx.moveTo(0, j * H / 8); ctx.lineTo(W, j * H / 8); ctx.stroke(); }
+      ctx.globalAlpha = 1; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = o.colors.ink; ctx.shadowColor = o.colors.glow; ctx.shadowBlur = 16;
+      [W * 0.25, W * 0.75].forEach(cx => {
+        if (single) { fit(L[0], '700', 72, 460); ctx.fillText(L[0], cx, H * 0.5); return; }
+        if (L[3]) { fit(L[3], '600', 30, 440); ctx.fillText(L[3], cx, H * 0.33); }
+        fit(L[0], '700', 112, 440); ctx.fillText(L[0], cx, H * 0.45);
+        fit(L[1], '600', 40, 440); ctx.fillText(L[1], cx, H * 0.575);
+        fit(L[2], '600', 34, 440); ctx.fillText(L[2], cx, H * 0.65);
+      });
+      ctx.shadowBlur = 0; tex.needsUpdate = true;
+    }
+    return {
+      group: g, core: core,
+      setMode(m) { mode = m; core.material = m === 'lua' ? moonMat : infoMat; lastKey = ''; },
+      update(lines, phaseDeg, south, msg) {
+        if (mode === 'lua') { const a = phaseDeg * D2R; moonMat.uniforms.Lv.value.set((south ? -1 : 1) * Math.sin(a), 0, -Math.cos(a)); return; }
+        const L = mode === 'mensagem' ? [msg && msg.trim() ? msg.trim() : 'Escreva sua mensagem no painel'] : lines, key = mode + L.join('|');
+        if (key !== lastKey) { lastKey = key; draw(L, mode === 'mensagem'); }
+      }
+    };
+  };
+  St.lines = function (f, s, extra) {
+    const d = f.date, dim = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate(), left = dim - d.getDate();
+    const hh = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+    return [hh, C.fmtShort.format(d), St.leftText(left), extra || ('Sol a ' + C.deg(f.sun.alt, 0) + ', ' + s.phaseName.toLowerCase())];
+  };
+  St.leftText = n => n === 0 ? 'último dia do mês' : n === 1 ? 'falta 1 dia no mês' : 'faltam ' + n + ' dias no mês';
+
+  // ---------- month ring with lamps ----------
+  const MESES_L = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+  St.MonthRing = function (o) {
+    const g = new T.Group(), S = 1024, start = o.start || 15, span = o.span || 330, w = o.rOut - o.rIn;
+    const ang = i => (start + i * span / 30) * D2R, k = (S / 2) / o.rOut;
+    const rN = o.rIn + w * 0.34, rL = o.rIn + w * 0.76;
+    const ring = St.canvasMesh(new T.RingGeometry(o.rIn, o.rOut, 160, 1), S, () => { }, { transparent: true, metalness: 0.3, roughness: 0.55 });
+    g.add(ring);
+    const lamps = [];
+    for (let i = 0; i < 31; i++) {
+      const l = new T.Mesh(new T.SphereGeometry(w * 0.1, 16, 8), o.mats.lampPast);
+      l.position.set(rL * Math.sin(ang(i)), rL * Math.cos(ang(i)), 0.012); g.add(l); lamps.push(l);
+      const sock = new T.Mesh(new T.TorusGeometry(w * 0.115, w * 0.025, 6, 20), o.mats.brass); sock.position.copy(l.position); g.add(sock);
+    }
+    const pw = o.plateW || 0.5, ph = pw * 0.34, pc = document.createElement('canvas'); pc.width = 512; pc.height = Math.round(512 * ph / pw);
+    const px = pc.getContext('2d'), ptex = new T.CanvasTexture(pc);
+    const plate = new T.Group(); plate.position.set(0, (o.rIn + o.rOut) / 2, 0.02); g.add(plate);
+    plate.add(new T.Mesh(new T.BoxGeometry(pw + 0.04, ph + 0.04, 0.025), o.mats.brass));
+    const face = new T.Mesh(new T.PlaneGeometry(pw, ph), new T.MeshStandardMaterial({ map: ptex, emissiveMap: ptex, emissive: 0xffffff, emissiveIntensity: 0.35, roughness: 0.5 }));
+    face.position.z = 0.0135; plate.add(face);
+    let key = '', today = 1, dim = 31;
+    function draw(y, m) {
+      const tex = ring.userData.tex;
+      tex.redraw((x, Sz) => {
+        const c = Sz / 2; x.fillStyle = o.colors.band; x.beginPath(); x.arc(c, c, c, 0, 7); x.arc(c, c, o.rIn * k, 0, 7, true); x.fill('evenodd');
+        x.strokeStyle = o.colors.line; x.lineWidth = 3;
+        [o.rIn * k + 2, o.rOut * k - 3].forEach(r => { x.beginPath(); x.arc(c, c, r, 0, 7); x.stroke(); });
+        x.textAlign = 'center'; x.textBaseline = 'middle';
+        for (let i = 0; i < 31; i++) {
+          const a = ang(i), d = i + 1, cx = c + rN * k * Math.sin(a), cy = c - rN * k * Math.cos(a);
+          x.save(); x.translate(cx, cy); x.rotate(a);
+          x.fillStyle = d > dim ? o.colors.off : d < today ? o.colors.dim : d === today ? o.colors.today : o.colors.ink;
+          x.font = (d === today ? '700 ' : '600 ') + Math.round(w * k * (d === today ? 0.36 : 0.28)) + 'px ' + o.font;
+          x.fillText(d > dim ? '·' : String(d), 0, 0); x.restore();
+        }
+      });
+      px.fillStyle = o.colors.plate; px.fillRect(0, 0, pc.width, pc.height);
+      px.fillStyle = o.colors.plateInk; px.textAlign = 'center'; px.textBaseline = 'middle';
+      px.font = '700 ' + Math.round(pc.height * 0.42) + 'px ' + o.font; px.fillText(MESES_L[m], pc.width / 2, pc.height * 0.38);
+      px.font = '600 ' + Math.round(pc.height * 0.24) + 'px ' + o.font; px.fillText(St.leftText(dim - today), pc.width / 2, pc.height * 0.76);
+      ptex.needsUpdate = true;
+      lamps.forEach((l, i) => { const d = i + 1; l.visible = d <= dim; l.material = d < today ? o.mats.lampPast : d === today ? o.mats.lampToday : o.mats.lampLeft; });
+    }
+    return {
+      group: g, angleOf: day => ang(day - 1),
+      update(date) {
+        const kk = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+        if (kk === key) return; key = kk; today = date.getDate(); dim = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate(); draw(date.getFullYear(), date.getMonth());
+      },
+      tick(t) { const l = lamps[today - 1]; if (l) l.scale.setScalar(1 + 0.25 * Math.sin(t * 4)); }
+    };
+  };
+
+  // ---------- parts system ----------
+  St.Parts = function (ctx) {
+    const list = [], byId = {}, self = { list: list, explode: 0, view: 'vista' };
+    const q = new T.Quaternion();
+    self.add = function (p) {
+      p.axis = p.axis || new T.Vector3(0, 0, 1); p.baseQ = p.obj.quaternion.clone(); p.basePos = p.obj.position.clone();
+      p.angle = 0; p.manual = 0; p.mode = p.mode || 'auto'; p.speed = p.speed === undefined ? 3 : p.speed; p.visible = true;
+      p.obj.userData.partId = p.id; list.push(p); byId[p.id] = p; return p;
+    };
+    self.get = id => byId[id] ? byId[id].angle : 0;
+    self.update = function (f, s, t, dt) {
+      list.forEach(p => {
+        if (p.mode === 'auto') p.angle = p.auto ? p.auto(f, s, t, self.get) : 0;
+        else if (p.mode === 'spin') p.angle += p.speed * dt * Math.PI * 2 / 60;
+        else if (p.mode === 'manual') p.angle = p.manual;
+        q.setFromAxisAngle(p.axis, p.angle); p.obj.quaternion.copy(p.baseQ).multiply(q);
+        p.obj.position.copy(p.basePos); if (p.explode) p.obj.position.addScaledVector(p.explode, self.explode);
+        p.obj.visible = p.visible;
+      });
+    };
+    self.setMode = function (p, m) {
+      if (m === 'manual') p.manual = p.angle;
+      p.mode = m; if (p.ui) { p.ui.mode.value = m; p.ui.tag.textContent = MODE_TXT[m]; p.ui.angle.value = Math.round(norm(p.angle) / D2R); }
+    };
+    const norm = a => { a = a % (Math.PI * 2); if (a > Math.PI) a -= Math.PI * 2; if (a < -Math.PI) a += Math.PI * 2; return a; };
+    if (ctx.renderer && ctx.renderer.domElement) {
+      const el = ctx.renderer.domElement, ray = new T.Raycaster(), ndc = new T.Vector2(); let drag = null;
+      const pick = e => { const r = el.getBoundingClientRect(); ndc.set((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1); ray.setFromCamera(ndc, ctx.camera); };
+      const partOf = o => { while (o) { if (o.userData && byId[o.userData.partId]) return byId[o.userData.partId]; o = o.parent; } return null; };
+      const frame = (p, point) => {
+        const wp = new T.Vector3(), wq = new T.Quaternion(); p.obj.getWorldPosition(wp); p.obj.parent.getWorldQuaternion(wq);
+        const axis = p.axis.clone().applyQuaternion(p.baseQ).applyQuaternion(wq).normalize();
+        const u = Math.abs(axis.x) > 0.9 ? new T.Vector3(0, 1, 0) : new T.Vector3(1, 0, 0);
+        u.sub(axis.clone().multiplyScalar(u.dot(axis))).normalize(); const v = new T.Vector3().crossVectors(axis, u);
+        const d = point ? point.clone().sub(wp) : new T.Vector3();
+        return { a: Math.atan2(d.dot(v), d.dot(u)), axis: axis, wp: wp };
+      };
+      const hits = e => { pick(e); const h = ray.intersectObjects(list.filter(p => p.drag !== false && p.visible).map(p => p.obj), true); for (const x of h) { const p = partOf(x.object); if (p && p.drag !== false) return { p: p, point: x.point }; } return null; };
+      el.addEventListener('pointerdown', e => {
+        if (self.view !== 'pecas') return;
+        const h = hits(e); if (!h) return;
+        const fr = frame(h.p, h.point);
+        drag = { p: h.p, a0: fr.a, ang0: h.p.angle, plane: new T.Plane().setFromNormalAndCoplanarPoint(fr.axis, fr.wp) };
+        e.stopImmediatePropagation(); e.preventDefault(); try { el.setPointerCapture(e.pointerId); } catch (_) { }
+        ctx.controls.enabled = false; self.setMode(h.p, 'manual'); St.tip('Girando: ' + h.p.name, e);
+      }, { capture: true });
+      el.addEventListener('pointermove', e => {
+        if (!drag) { if (self.view === 'pecas') { const h = hits(e); St.tip(h ? h.p.name : '', e); el.style.cursor = h ? 'pointer' : ''; } return; }
+        pick(e); const pt = new T.Vector3(); if (!ray.ray.intersectPlane(drag.plane, pt)) return;
+        const fr = frame(drag.p, pt); drag.p.manual = drag.ang0 + norm(fr.a - drag.a0);
+        if (drag.p.ui) drag.p.ui.angle.value = Math.round(norm(drag.p.manual) / D2R);
+      }, { capture: true });
+      const end = e => { if (!drag) return; drag = null; ctx.controls.enabled = true; St.tip('', e); try { el.releasePointerCapture(e.pointerId); } catch (_) { } };
+      el.addEventListener('pointerup', end, { capture: true }); el.addEventListener('pointercancel', end, { capture: true });
+      el.addEventListener('pointerleave', e => { if (!drag) St.tip('', e); });
+    }
+    return self;
+  };
+  const MODE_TXT = { auto: 'acompanha o tempo', spin: 'giro contínuo', manual: 'posição manual', stop: 'parada' };
+
+  St.tip = function (text, e) {
+    const tip = document.getElementById('part-tip'); if (!tip) return;
+    if (!text) { tip.hidden = true; return; }
+    const r = document.getElementById('stage').getBoundingClientRect();
+    tip.hidden = false; tip.textContent = text; tip.style.left = (e.clientX - r.left + 14) + 'px'; tip.style.top = (e.clientY - r.top + 14) + 'px';
+  };
+
+  St.addRows = function (rows) {
+    const dl = document.querySelector && document.querySelector('.ui-grid'), out = {};
+    if (!dl) return out;
+    rows.forEach(([label, id]) => { const d = document.createElement('div'); d.innerHTML = '<dt>' + label + '</dt><dd id="' + id + '">–</dd>'; dl.appendChild(d); out[id] = d.querySelector('dd'); });
+    return out;
+  };
+  St.setRow = function (rows, id, v) { const e = rows[id]; if (e && e.textContent !== v) e.textContent = v; };
+
+  St.mountParts = function (parts, sphere) {
+    const panel = document.getElementById && document.getElementById('panel'), stage = document.getElementById && document.getElementById('stage');
+    if (!panel || !stage) return { msg: '' };
+    const state = { msg: '' };
+    const tg = document.createElement('div'); tg.className = 'view-toggle'; tg.setAttribute('role', 'group'); tg.setAttribute('aria-label', 'Modo de manipulação');
+    tg.innerHTML = '<button type="button" data-v="vista" aria-pressed="true">Girar o objeto</button><button type="button" data-v="pecas" aria-pressed="false">Mover peças</button>';
+    stage.appendChild(tg);
+    const tip = document.createElement('div'); tip.id = 'part-tip'; tip.hidden = true; stage.appendChild(tip);
+    tg.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+      parts.view = b.dataset.v; tg.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+      const h = stage.querySelector('.hint'); if (h) h.textContent = parts.view === 'pecas' ? 'Arraste uma peça para girá-la. O fundo continua girando o objeto.' : 'Arraste para girar. Use a roda do mouse ou o gesto de pinça para aproximar.';
+    }));
+    const sec = document.createElement('section'); sec.className = 'ui-parts';
+    sec.innerHTML = '<h2>Peças do mecanismo</h2><p class="ui-note">Cada peça pode acompanhar o tempo, girar sozinha, ficar parada ou ser posicionada à mão. Em Mover peças, arraste a peça direto no objeto.</p>' +
+      '<label class="ui-field">Esfera central mostra <select id="p-sphere"><option value="info">Hora, data e dias restantes</option><option value="lua">Lua na fase de hoje</option><option value="mensagem">Mensagem personalizada</option></select></label>' +
+      '<label class="ui-field" id="p-msg-wrap" hidden>Mensagem <input id="p-msg" type="text" maxlength="40" placeholder="Ex.: Bem-vindo à Associação"></label>' +
+      '<label class="ui-field">Separar peças <input id="p-explode" type="range" min="0" max="1" step="0.01" value="0"></label>' +
+      '<div class="ui-btns"><button type="button" id="p-reset">Restaurar movimentos</button><button type="button" id="p-allspin">Girar todas</button></div><div class="part-list"></div>';
+    const time = panel.querySelector('.ui-time'); panel.insertBefore(sec, time);
+    const listEl = sec.querySelector('.part-list');
+    parts.list.forEach(p => {
+      const d = document.createElement('details'); d.className = 'part';
+      d.innerHTML = '<summary><span class="part-name">' + p.name + '</span><span class="part-tag">' + MODE_TXT[p.mode] + '</span></summary>' +
+        '<label class="ui-field">Movimento <select><option value="auto">Acompanha o tempo</option><option value="spin">Giro contínuo</option><option value="manual">Posição manual</option><option value="stop">Parada</option></select></label>' +
+        '<label class="ui-field">Velocidade do giro <span class="rng"><input type="range" min="-30" max="30" step="0.5"><output></output></span></label>' +
+        '<label class="ui-field">Ângulo manual <span class="rng"><input type="range" min="-180" max="180" step="1"><output></output></span></label>' +
+        '<label class="ui-check"><input type="checkbox" checked> Mostrar peça</label>';
+      const [sel] = d.getElementsByTagName('select'), rngs = d.querySelectorAll('input[type=range]'), outs = d.querySelectorAll('output'), chk = d.querySelector('input[type=checkbox]');
+      p.ui = { mode: sel, tag: d.querySelector('.part-tag'), speed: rngs[0], angle: rngs[1] };
+      sel.value = p.mode; rngs[0].value = p.speed; outs[0].textContent = p.speed + ' rpm'; rngs[1].value = 0; outs[1].textContent = '0°';
+      sel.addEventListener('change', () => parts.setMode(p, sel.value));
+      rngs[0].addEventListener('input', () => { p.speed = +rngs[0].value; outs[0].textContent = p.speed + ' rpm'; if (p.mode !== 'spin') parts.setMode(p, 'spin'); });
+      rngs[1].addEventListener('input', () => { if (p.mode !== 'manual') parts.setMode(p, 'manual'); p.manual = +rngs[1].value * D2R; outs[1].textContent = rngs[1].value + '°'; });
+      chk.addEventListener('change', () => { p.visible = chk.checked; });
+      listEl.appendChild(d);
+    });
+    const sp = sec.querySelector('#p-sphere'), mw = sec.querySelector('#p-msg-wrap'), mi = sec.querySelector('#p-msg');
+    sp.addEventListener('change', () => { sphere.setMode(sp.value); mw.hidden = sp.value !== 'mensagem'; });
+    mi.addEventListener('input', () => { state.msg = mi.value; });
+    sec.querySelector('#p-explode').addEventListener('input', e => { parts.explode = +e.target.value; });
+    sec.querySelector('#p-reset').addEventListener('click', () => { parts.list.forEach(p => { parts.setMode(p, p.defMode || 'auto'); }); });
+    sec.querySelector('#p-allspin').addEventListener('click', () => { parts.list.forEach(p => parts.setMode(p, 'spin')); });
+    parts.list.forEach(p => { p.defMode = p.mode; });
+    return state;
+  };
+
+  G.Steam = St;
+})(window);
+</script>
+<script>(function (G) {
+  'use strict';
+  const D2R = Math.PI / 180;
+  function rng(seed) { let s = seed; return () => { s = (s * 16807) % 2147483647; return s / 2147483647; }; }
+  function bands(x, W, H, cols, seed, storms) {
+    const r = rng(seed); x.fillStyle = cols[0]; x.fillRect(0, 0, W, H);
+    let y = -10;
+    while (y < H) {
+      const h = 10 + r() * 46, col = cols[Math.floor(r() * cols.length)], k1 = 1 + Math.floor(r() * 3), k2 = 2 + Math.floor(r() * 3), ph = r() * 6;
+      x.fillStyle = col; x.globalAlpha = 0.5 + r() * 0.5; x.beginPath(); x.moveTo(0, y);
+      for (let xx = 0; xx <= W; xx += 16) x.lineTo(xx, y + Math.sin(xx / W * Math.PI * 2 * k1 + ph) * 5);
+      for (let xx = W; xx >= 0; xx -= 16) x.lineTo(xx, y + h + Math.sin(xx / W * Math.PI * 2 * k2 + ph) * 6);
+      x.closePath(); x.fill(); y += h * 0.75;
+    }
+    x.globalAlpha = 1;
+    (storms || []).forEach(s => { x.fillStyle = s.c; x.globalAlpha = s.a; x.beginPath(); x.ellipse(s.x * W, s.y * H, s.rx * W, s.ry * H, 0, 0, 7); x.fill(); });
+    x.globalAlpha = 1;
+  }
+  function chakana(T, s) {
+    const P = [[-1, 3], [1, 3], [1, 2], [2, 2], [2, 1], [3, 1], [3, -1], [2, -1], [2, -2], [1, -2], [1, -3], [-1, -3], [-1, -2], [-2, -2], [-2, -1], [-3, -1], [-3, 1], [-2, 1], [-2, 2], [-1, 2]];
+    const sh = new T.Shape(); P.forEach(([a, b], i) => i ? sh.lineTo(a * s, b * s) : sh.moveTo(a * s, b * s)); sh.closePath();
+    const h = new T.Path(); h.absarc(0, 0, s * 0.75, 0, Math.PI * 2, true); sh.holes.push(h);
+    const g = new T.ExtrudeGeometry(sh, { depth: s * 0.8, bevelEnabled: true, bevelSize: s * 0.12, bevelThickness: s * 0.12, bevelSegments: 2 }); g.translate(0, 0, -s * 0.4); return g;
+  }
+  function fretStrip(T, bg, fg, dot) {
+    const c = document.createElement('canvas'); c.width = 1024; c.height = 128; const x = c.getContext('2d');
+    x.fillStyle = bg; x.fillRect(0, 0, 1024, 128); x.strokeStyle = fg; x.lineWidth = 9; x.lineCap = 'square';
+    for (let i = 0; i < 16; i++) {
+      const o = i * 64; x.beginPath(); x.moveTo(o + 6, 100); x.lineTo(o + 6, 28); x.lineTo(o + 52, 28); x.lineTo(o + 52, 78); x.lineTo(o + 24, 78); x.lineTo(o + 24, 52); x.lineTo(o + 36, 52); x.stroke();
+    }
+    x.fillStyle = dot; for (let i = 0; i < 32; i++) { x.beginPath(); x.arc(i * 32 + 16, 12, 4, 0, 7); x.fill(); x.beginPath(); x.arc(i * 32 + 16, 116, 4, 0, 7); x.fill(); }
+    const t = new T.CanvasTexture(c); t.wrapS = T.RepeatWrapping; t.repeat.set(2, 1); return t;
+  }
+  const Z = T => new T.Vector3(0, 0, 1), Y = T => new T.Vector3(0, 1, 0), X = T => new T.Vector3(1, 0, 0);
+
+  G.ESTILOS = {
+    latao: {
+      font: '"IM Fell English", Georgia, serif', light: 0xffe2b8, rim: 0x9fd1ff, beam: 0xffcf7a,
+      metal: { brass: 0xb8893d, copper: 0xb86b3e, brassDark: 0x7d5a26 },
+      planet: (x, W, H) => bands(x, W, H, ['#24160a', '#3a2411', '#55351a', '#6e4520', '#2f1d0d', '#86582a'], 7, [{ x: 0.3, y: 0.62, rx: 0.05, ry: 0.06, c: '#a8692e', a: 0.6 }, { x: 0.78, y: 0.36, rx: 0.03, ry: 0.035, c: '#c48a46', a: 0.5 }]),
+      text: { ink: '#ffe6b0', sub: '#f0bf72', glow: '#ff8f1f' },
+      cal: { band: '#1b130b', band2: '#241a10', engr: '#c9954a', ink: '#f3dfb4', dim: '#6d5d43', off: '#3b3226', hi: '#ffcf6b', selInk: '#1b130b', today: '#ffffff', arc: '#e08a45', span: 'rgba(224,138,69,0.28)', monthHi: 'rgba(217,154,60,0.3)', badge: '#c9954a', badgeInk: '#1b130b' },
+      urg: ['#ff5a3c', '#ffa63d', '#e8d36a', '#9fc46a', '#4a4036'],
+      decorate(T, root, M, St) {
+        const parts = [];
+        const g1 = new T.Group(); g1.rotation.x = Math.PI / 2; root.add(g1);
+        g1.add(St.gear({ teeth: 64, r: 1.17, th: 0.07, depth: 0.07, hole: 1.0, mat: M.brass }));
+        [0.04, -0.04].forEach(z => g1.add(St.bolts(1.045, 16, z, M.iron, 0.015)));
+        parts.push({ obj: g1, axis: Z(T), speed: 0.22 });
+        const g2 = new T.Group(); root.add(g2);
+        g2.add(new T.Mesh(new T.TorusGeometry(0.93, 0.032, 12, 128), M.copper));
+        [[0.93, 0], [-0.93, 0], [0, 0.93], [0, -0.93]].forEach(([a, b]) => { const k = new T.Mesh(new T.SphereGeometry(0.05, 16, 8), M.brass); k.position.set(a, b, 0); g2.add(k); });
+        parts.push({ obj: g2, axis: Y(T), speed: 0.16 });
+        const g3 = new T.Group(); g2.add(g3);
+        const t3 = new T.Mesh(new T.TorusGeometry(0.8, 0.026, 10, 112), M.brass); t3.rotation.y = Math.PI / 2; g3.add(t3);
+        parts.push({ obj: g3, axis: X(T), speed: 0.3 });
+        [1, -1].forEach(s => { const sg = new T.Group(); sg.position.set(0, s * 0.93, 0); g2.add(sg); sg.add(St.gear({ teeth: 12, r: 0.13, th: 0.035, depth: 0.04, hole: 0.02, spokes: 3, mat: M.brassDark })); parts.push({ obj: sg, axis: Z(T), speed: s * 1.2 }); });
+        const g4 = new T.Group(); g4.rotation.set(1.25, 0.2, 0); root.add(g4);
+        g4.add(new T.Mesh(new T.RingGeometry(0.66, 0.745, 128), new T.MeshStandardMaterial({ color: 0xc9954a, metalness: 1, roughness: 0.3, side: T.DoubleSide })));
+        g4.add(new T.Mesh(new T.RingGeometry(0.755, 0.77, 128), new T.MeshStandardMaterial({ color: 0x7d5a26, metalness: 1, roughness: 0.4, side: T.DoubleSide })));
+        parts.push({ obj: g4, axis: Z(T), speed: 0.5 });
+        return parts;
+      }
+    },
+    armilar: {
+      font: '"Special Elite", "Courier New", serif', light: 0xffe7c4, rim: 0x7fd6c4, beam: 0xffa04a,
+      metal: { brass: 0xb58a42, copper: 0xbf6f3f, brassDark: 0x6e5428 },
+      extraMats: T => ({ verd: new T.MeshStandardMaterial({ color: 0x3e8f7d, metalness: 0.35, roughness: 0.65 }) }),
+      planet: (x, W, H) => bands(x, W, H, ['#081c1d', '#0d2b2c', '#134140', '#1b5651', '#0b2324', '#24655d'], 23, [{ x: 0.62, y: 0.58, rx: 0.06, ry: 0.05, c: '#2f7a70', a: 0.55 }]),
+      text: { ink: '#ffe9c8', sub: '#8fe0cc', glow: '#ff7a1a' },
+      cal: { band: '#0e1b19', band2: '#132522', engr: '#7fd6c4', ink: '#eaf3ee', dim: '#56706a', off: '#2c3a37', hi: '#ffb066', selInk: '#0e1b19', today: '#ffffff', arc: '#d4844a', span: 'rgba(212,132,74,0.28)', monthHi: 'rgba(127,214,196,0.22)', badge: '#d4844a', badgeInk: '#0e1b19' },
+      urg: ['#ff6a3d', '#ffaa4a', '#ffe08a', '#7fd6c4', '#3a4a47'], orbitMat: 'copper', rimMat: 'copper', pointerMat: 'brass',
+      decorate(T, root, M, St) {
+        const parts = [];
+        const ax = new T.Mesh(new T.CylinderGeometry(0.018, 0.018, 2.5, 10), M.brass); root.add(ax);
+        [1.25, -1.25].forEach(y => { const k = new T.Mesh(new T.SphereGeometry(0.055, 20, 10), M.copper); k.position.y = y; root.add(k); });
+        const eq = new T.Group(); root.add(eq);
+        const e1 = new T.Mesh(new T.TorusGeometry(1.03, 0.04, 12, 140), M.verd); e1.rotation.x = Math.PI / 2; eq.add(e1);
+        for (let i = 0; i < 24; i++) { const a = i / 24 * Math.PI * 2, s = new T.Mesh(new T.SphereGeometry(i % 6 ? 0.018 : 0.03, 10, 6), M.brass); s.position.set(1.03 * Math.sin(a), 0, 1.03 * Math.cos(a)); eq.add(s); }
+        parts.push({ obj: eq, axis: Y(T), speed: 0.1 });
+        const mer = new T.Group(); root.add(mer);
+        const m1 = new T.Mesh(new T.TorusGeometry(1.1, 0.03, 12, 140), M.copper); mer.add(m1);
+        const m2 = m1.clone(); m2.rotation.y = Math.PI / 2; mer.add(m2);
+        parts.push({ obj: mer, axis: Y(T), speed: -0.14 });
+        const ec = new T.Group(); ec.rotation.z = 23.4 * D2R; root.add(ec);
+        const spin = new T.Group(); ec.add(spin);
+        const e2 = new T.Mesh(new T.TorusGeometry(0.94, 0.03, 12, 140), M.copper); e2.rotation.x = Math.PI / 2; spin.add(e2);
+        for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2, t = new T.Mesh(new T.BoxGeometry(0.03, 0.09, 0.03), M.verd); t.position.set(0.94 * Math.sin(a), 0, 0.94 * Math.cos(a)); spin.add(t); }
+        parts.push({ obj: spin, axis: Y(T), speed: 0.35 });
+        const inner = new T.Group(); inner.rotation.set(0.5, 0, -0.7); root.add(inner);
+        inner.add(new T.Mesh(new T.TorusGeometry(0.74, 0.018, 8, 110), M.brass));
+        parts.push({ obj: inner, axis: Z(T), speed: 0.6 });
+        return parts;
+      }
+    },
+    maia: {
+      font: '"Marcellus", "Trajan Pro", Georgia, serif', light: 0xffe0b0, rim: 0x6fe0cf, beam: 0x6fe0c8, selGlow: 0xd9fff3,
+      metal: { brass: 0xa77a3a, brassDark: 0x6e4e24, copper: 0x9c5a32, jade: 0x2e8b6a, turq: 0x3bb3a3 },
+      planet: (x, W, H) => {
+        const r = rng(41); x.fillStyle = '#0d3a2b'; x.fillRect(0, 0, W, H);
+        for (let i = 0; i < 40; i++) { x.strokeStyle = 'rgba(52,150,112,' + (0.15 + r() * 0.3) + ')'; x.lineWidth = 6 + r() * 26; x.beginPath(); const y0 = r() * H; x.moveTo(0, y0); x.bezierCurveTo(W * 0.3, y0 + (r() - 0.5) * 140, W * 0.7, y0 + (r() - 0.5) * 140, W, y0); x.stroke(); }
+        for (let i = 0; i < 14; i++) { x.strokeStyle = 'rgba(217,167,90,' + (0.35 + r() * 0.4) + ')'; x.lineWidth = 1.5 + r() * 2; x.beginPath(); const y0 = r() * H; x.moveTo(0, y0); x.bezierCurveTo(W * 0.25, y0 + (r() - 0.5) * 120, W * 0.75, y0 + (r() - 0.5) * 120, W, y0); x.stroke(); }
+      },
+      planetRough: 0.22,
+      text: { ink: '#fff2cf', sub: '#8ff0da', glow: '#18b98a' },
+      extraLine: p => { const m = G.Steam.maya(p.data); return 'Tzolk’in ' + m.tzNum + ' ' + m.tzName + ', Haab’ ' + m.haabDay + ' ' + m.haabName; },
+      cal: { band: '#11130e', band2: '#14211a', engr: '#d9a75a', ink: '#f1e6cc', dim: '#5f6a5e', off: '#2c332d', hi: '#ffd27a', selInk: '#11130e', today: '#4cc3b2', arc: '#4cc3b2', span: 'rgba(76,195,178,0.25)', monthHi: 'rgba(76,195,178,0.22)', badge: '#d9a75a', badgeInk: '#11130e' },
+      calOrnament(x, S, c, k) {
+        const r0 = 1.556 * k, r1 = 1.6 * k, n = 72; x.strokeStyle = '#d9a75a'; x.lineWidth = 3;
+        for (let i = 0; i < n; i++) {
+          const a0 = i / n * Math.PI * 2, a1 = (i + 1) / n * Math.PI * 2, p = (r, a) => [c + r * Math.sin(a), c - r * Math.cos(a)], m = (r0 + r1) / 2;
+          x.beginPath(); x.moveTo(...p(r0, a0)); x.lineTo(...p(r1, a0)); x.lineTo(...p(r1, a0 + (a1 - a0) * 0.7)); x.lineTo(...p(m, a0 + (a1 - a0) * 0.7)); x.lineTo(...p(m, a0 + (a1 - a0) * 0.35)); x.stroke();
+        }
+      },
+      urg: ['#e8553d', '#e3a13a', '#e6d36a', '#4cc3b2', '#3a3a32'], orbitMat: 'brass', rimMat: 'brass', pointerMat: 'jade',
+      beadGeo: T => new T.OctahedronGeometry(0.062),
+      decorate(T, root, M, St) {
+        const parts = [];
+        const beltA = new T.Group(); root.add(beltA);
+        const bandA = new T.Mesh(new T.CylinderGeometry(1.08, 1.08, 0.15, 128, 1, true), new T.MeshStandardMaterial({ map: fretStrip(T, '#151512', '#d9a75a', '#4cc3b2'), metalness: 0.45, roughness: 0.4, side: T.DoubleSide }));
+        bandA.rotation.x = Math.PI / 2; beltA.add(bandA);
+        const ckg = chakana(T, 0.045), gold = new T.MeshStandardMaterial({ color: 0xd8b04a, metalness: 1, roughness: 0.3 });
+        [[1.12, 0, 0, 0, Math.PI / 2, 0], [-1.12, 0, 0, 0, -Math.PI / 2, 0], [0, 1.12, 0, -Math.PI / 2, 0, 0], [0, -1.12, 0, Math.PI / 2, 0, 0]].forEach(([x, y, z, rx, ry, rz]) => {
+          const c = new T.Mesh(ckg, gold); c.position.set(x, y, z); c.rotation.set(rx, ry, rz); beltA.add(c);
+          const g = new T.Mesh(new T.SphereGeometry(0.028, 12, 8), M.turq); g.position.set(x * 1.035, y * 1.035, z); beltA.add(g);
+        });
+        parts.push({ obj: beltA, axis: Y(T), speed: 0.15 });
+        const beltB = new T.Group(); beltB.rotation.set(0.35, 0, 0.2); root.add(beltB);
+        beltB.add(new T.Mesh(new T.CylinderGeometry(0.88, 0.88, 0.1, 128, 1, true), new T.MeshStandardMaterial({ map: fretStrip(T, '#0f3b2c', '#4cc3b2', '#d9a75a'), metalness: 0.1, roughness: 0.35, side: T.DoubleSide })));
+        parts.push({ obj: beltB, axis: Y(T), speed: -0.25 });
+        const ring = new T.Group(); ring.rotation.set(1.2, -0.3, 0); root.add(ring);
+        ring.add(new T.Mesh(new T.RingGeometry(0.66, 0.75, 6 * 16), new T.MeshStandardMaterial({ color: 0x2e8b6a, roughness: 0.3, side: T.DoubleSide })));
+        parts.push({ obj: ring, axis: Z(T), speed: 0.45 });
+        return parts;
+      }
+    }
+  };
+})(window);
+</script>
+<script>(function (G) {
+  'use strict';
+  const St = G.Steam, DAY = 864e5, MAXN = 60, KEY = 'astrolabio-prazos-v1';
+  const MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+  const MES3 = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  const fmtD = new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' });
+  const fmtDS = new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'short' });
+  const fmtT = new Intl.DateTimeFormat('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  const E = { MESES: MESES, MES3: MES3, DAY: DAY };
+  let T, CFG, L, ctx3 = null, els = {};
+
+  // ---------- data ----------
+  const TIT = ['Bolsa de Iniciação Científica', 'Oficina de Robótica', 'Curso de Libras', 'Torneio de Xadrez', 'Coral Comunitário', 'Feira de Ciências',
+    'Programa Jovem Aprendiz', 'Vestibulinho Técnico', 'Maratona de Programação', 'Festival de Música', 'Curso de Fotografia', 'Prêmio de Redação',
+    'Olimpíada de Matemática', 'Mostra de Teatro', 'Clube de Leitura', 'Escolinha de Futebol', 'Curso de Inglês', 'Ateliê de Cerâmica',
+    'Mutirão de Plantio', 'Hackathon Cidadão', 'Cursinho Popular', 'Oficina de Grafite', 'Programa de Voluntariado', 'Concurso de Fotografia',
+    'Aulas de Natação', 'Curso de Primeiros Socorros', 'Feira de Empreendedorismo', 'Corrida de Rua', 'Oficina de Costura', 'Bolsa de Intercâmbio'];
+  E.exemplos = function () {
+    const n = new Date(), base = new Date(n.getFullYear(), n.getMonth(), n.getDate()); let s = 11;
+    const r = () => { s = (s * 16807) % 2147483647; return s / 2147483647; };
+    return TIT.concat(TIT.map(t => t + ' (2ª turma)')).map((nome, i) => {
+      const off = i < 3 ? -Math.round(3 + r() * 20) : i < 9 ? Math.round(1 + r() * 9) : Math.round(6 + Math.pow(r(), 1.4) * 320);
+      const d = new Date(base.getTime() + off * DAY); d.setHours(23, 59, 0, 0); const ini = new Date(d.getTime() - Math.round(12 + r() * 40) * DAY); ini.setHours(0, 0, 0, 0); return { nome: nome, data: d, inicio: ini };
+    });
+  };
+  E.parseDate = function (s, hora) {
+    if (s instanceof Date) return isNaN(s) ? null : s;
+    s = String(s || '').trim(); let y, m, d, mm;
+    if (/^\d{4}-\d{2}-\d{2}T/.test(s)) { const x = new Date(s); return isNaN(x) ? null : x; }
+    if ((mm = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) { y = +mm[1]; m = +mm[2]; d = +mm[3]; }
+    else if ((mm = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/))) { d = +mm[1]; m = +mm[2]; y = +mm[3]; }
+    else return null;
+    let H = 23, Mi = 59; const hm = String(hora || '').match(/(\d{1,2})\s*[:h]\s*(\d{2})/) || s.match(/[T ](\d{1,2}):(\d{2})/);
+    if (hm) { H = +hm[1]; Mi = +hm[2]; }
+    const r = new Date(y, m - 1, d, H, Mi, 0); return isNaN(r) || r.getDate() !== d ? null : r;
+  };
+  E.normalize = list => (list || []).map(it => {
+    const nome = String(it.nome || it.name || it.titulo || '').trim().slice(0, 90), data = E.parseDate(it.data || it.fim || it.date || it.prazo, it.hora);
+    let ini = it.inicio ? E.parseDate(it.inicio, '00:00') : null; if (ini && data && ini >= data) ini = null;
+    return nome && data ? (ini ? { nome: nome, data: data, inicio: ini } : { nome: nome, data: data }) : null;
+  }).filter(Boolean).slice(0, MAXN).sort((a, b) => a.data - b.data).map((p, i) => { p.id = i; return p; });
+  function load() { try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (Array.isArray(s) && s.length) return E.normalize(s); } catch (e) { } return E.normalize(E.exemplos()); }
+  function save(l) { try { localStorage.setItem(KEY, JSON.stringify(l.map(p => ({ nome: p.nome, data: p.data.toISOString(), inicio: p.inicio ? p.inicio.toISOString() : undefined })))); } catch (e) { } }
+
+  E.cd = function (p, now) {
+    const ms = p.data - now;
+    if (ms < 0) { const d = Math.floor(-ms / DAY); return { closed: true, big: 'Encerrado', unit: '', small: d === 0 ? 'encerrou hoje às ' + fmtT.format(p.data) : 'encerrou há ' + d + (d === 1 ? ' dia' : ' dias'), short: 'encerrado', days: -1 }; }
+    const d = Math.floor(ms / DAY), h = Math.floor(ms % DAY / 36e5), m = Math.floor(ms % 36e5 / 6e4);
+    if (d >= 1) return { big: String(d), unit: d === 1 ? 'dia' : 'dias', small: 'e ' + h + ' h para encerrar', short: 'faltam ' + d + (d === 1 ? ' dia' : ' dias'), days: d };
+    const same = p.data.toDateString() === now.toDateString();
+    return { big: String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0'), unit: 'horas', small: 'encerra ' + (same ? 'hoje' : 'amanhã') + ' às ' + fmtT.format(p.data), short: 'encerra ' + (same ? 'hoje' : 'amanhã'), days: 0 };
+  };
+  E.status = function (p, now) {
+    if (!p) return { key: 'off', txt: '' };
+    const ms = p.data - now; if (ms < 0) return { key: 'closed', txt: 'Inscrições encerradas' };
+    if (p.inicio && now < p.inicio) return { key: 'soon', txt: 'Inscrições abrem em ' + fmtDS.format(p.inicio) };
+    const d = ms / DAY; return d < 1 ? { key: 'deadline', txt: 'Último dia de inscrição' } : d <= 5 ? { key: 'last5', txt: 'Últimos 5 dias de inscrição' } : { key: 'open', txt: 'Inscrições abertas' };
+  };
+  // lamp rule: open days from today to the deadline; the 5 final days (deadline included) in amber; the deadline day pulses
+  E.monthStates = function (p, now) {
+    const ref = p ? p.data : now, y = ref.getFullYear(), m = ref.getMonth(), dim = new Date(y, m + 1, 0).getDate();
+    const nowK = now.getFullYear() * 12 + now.getMonth(), refK = y * 12 + m, today = nowK === refK ? now.getDate() : null;
+    const closed = !!(p && p.data < now), dd = p ? p.data.getDate() : null, st = [null];
+    for (let d = 1; d <= 31; d++) {
+      let s;
+      if (d > dim) s = 'none';
+      else if (!p) s = today && d < today ? 'past' : 'off';
+      else if (closed) s = d === dd ? 'closed' : 'off';
+      else { const start = refK > nowK ? 1 : today; s = d < start ? 'past' : d > dd ? 'off' : d === dd ? 'deadline' : d > dd - 5 ? 'last5' : 'open'; }
+      st.push(s);
+    }
+    return { y: y, m: m, dim: dim, st: st, today: today, dd: dd, closed: closed };
+  };
+  E.monthsWindow = function (list, p, now) {
+    let sy = now.getFullYear(), sm = now.getMonth();
+    if (p && p.data < new Date(sy, sm, 1)) { sy = p.data.getFullYear(); sm = p.data.getMonth(); }
+    const out = [];
+    for (let i = 0; i < 12; i++) {
+      const y = sy + Math.floor((sm + i) / 12), m = (sm + i) % 12, it = list.filter(q => q.data.getFullYear() === y && q.data.getMonth() === m);
+      out.push({ y: y, m: m, label: MES3[m] + (m === 0 || i === 0 ? ' ' + String(y).slice(2) : ''), count: it.length, open: it.filter(q => q.data > now).length, sel: !!(p && p.data.getFullYear() === y && p.data.getMonth() === m) });
+    }
+    return out;
+  };
+
+  // ---------- 3D helpers ----------
+  E.canvas = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
+  function rr(x, a, b, w, h, r) { x.beginPath(); x.moveTo(a + r, b); x.arcTo(a + w, b, a + w, b + h, r); x.arcTo(a + w, b + h, a, b + h, r); x.arcTo(a, b + h, a, b, r); x.arcTo(a, b, a + w, b, r); x.closePath(); }
+  E.label = function (o) {
+    const cv = E.canvas(256, 128), x = cv.getContext('2d'), tex = new T.CanvasTexture(cv);
+    const sp = new T.Sprite(new T.SpriteMaterial({ map: tex, transparent: true, depthWrite: false })); sp.scale.set(o.h * 2, o.h, 1); sp.renderOrder = 4;
+    const api = { sprite: sp, key: '', set(text, color, bg, border) {
+      const k = text + color + bg + border; if (k === api.key) return; api.key = k;
+      x.clearRect(0, 0, 256, 128);
+      if (bg) { x.fillStyle = bg; rr(x, 8, 12, 240, 104, 24); x.fill(); if (border) { x.strokeStyle = border; x.lineWidth = 6; x.stroke(); } }
+      let s = o.px || 80; do { x.font = (o.weight || '700') + ' ' + s + 'px ' + CFG.font; s -= 4; } while (x.measureText(text).width > (bg ? 214 : 240) && s > 18);
+      x.fillStyle = color; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(text, 128, 68); tex.needsUpdate = true;
+    } };
+    api.set(o.text || '', o.color || '#fff', o.bg, o.border); return api;
+  };
+  let glowTex = null;
+  E.glow = function (color, size) {
+    if (!glowTex) { const c = E.canvas(128, 128), x = c.getContext('2d'), g = x.createRadialGradient(64, 64, 2, 64, 64, 64); g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(0.3, 'rgba(255,255,255,0.45)'); g.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = g; x.fillRect(0, 0, 128, 128); glowTex = new T.CanvasTexture(c); }
+    const s = new T.Sprite(new T.SpriteMaterial({ map: glowTex, color: color, blending: T.AdditiveBlending, transparent: true, depthWrite: false })); s.scale.set(size, size, 1); return s;
+  };
+  E.lampMats = function () {
+    const out = {}; const L = CFG.lamp;
+    [['open', L.open, 1.4], ['elapsed', L.elapsed || '#8a6a2e', 0.5], ['last5', L.last5, 2.0], ['deadline', L.deadline, 2.6], ['closed', L.closed, 0.6], ['off', L.off, 0], ['past', L.off, 0], ['none', L.off, 0]].forEach(([k, c, e]) => {
+      out[k] = new T.MeshStandardMaterial({ color: e ? c : 0x2a2622, emissive: e ? c : 0x000000, emissiveIntensity: e, roughness: 0.25, metalness: e ? 0 : 0.3 });
+    });
+    return out;
+  };
+  E.lampColor = k => ({ open: CFG.lamp.open, soon: CFG.lamp.open, elapsed: CFG.lamp.elapsed || '#8a6a2e', last5: CFG.lamp.last5, deadline: CFG.lamp.deadline, closed: CFG.lamp.closed })[k] || null;
+  E.hand = function (len, w, tip, mat, back) {
+    const s = new T.Shape(), b = back || 0.12;
+    s.moveTo(-w * 0.5, -b); s.lineTo(w * 0.5, -b); s.lineTo(w * 0.5, len - (tip === 'none' ? 0 : w * 3));
+    if (tip === 'arrow') { s.lineTo(w * 1.8, len - w * 3); s.lineTo(0, len); s.lineTo(-w * 1.8, len - w * 3); }
+    else if (tip === 'spade') { s.quadraticCurveTo(w * 2.6, len - w * 2.5, 0, len); s.quadraticCurveTo(-w * 2.6, len - w * 2.5, -w * 0.5, len - w * 3); }
+    else if (tip === 'diamond') { s.lineTo(w * 1.5, len - w * 1.6); s.lineTo(0, len); s.lineTo(-w * 1.5, len - w * 1.6); }
+    s.lineTo(-w * 0.5, len - (tip === 'none' ? 0 : w * 3)); s.closePath();
+    const g = new T.ExtrudeGeometry(s, { depth: 0.014, bevelEnabled: true, bevelSize: 0.004, bevelThickness: 0.004, bevelSegments: 1 }); g.translate(0, 0, -0.007);
+    return new T.Mesh(g, mat);
+  };
+  E.ease = (cur, target, dt, k) => { let d = target - cur; d = Math.atan2(Math.sin(d), Math.cos(d)); return cur + d * Math.min(1, dt * (k || 3)); };
+
+  // planet with a smooth face that always looks at the viewer
+  const planets = [];
+  E.planet = function (o) {
+    const g = new T.Group();
+    const pc = E.canvas(1024, 512); o.painter(pc.getContext('2d'), 1024, 512);
+    const planet = new T.Mesh(new T.SphereGeometry(o.r, 96, 48), new T.MeshStandardMaterial({ map: new T.CanvasTexture(pc), roughness: o.rough || 0.28, metalness: 0.05 }));
+    g.add(planet);
+    const cv = E.canvas(2048, 1024), tex = new T.CanvasTexture(cv); tex.anisotropy = 8;
+    const shell = new T.Mesh(new T.SphereGeometry(o.r * 1.01, 96, 48), new T.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false })); g.add(shell);
+    const P = { group: g, planet: planet, shell: shell, cv: cv, tex: tex, colors: o.text, extra: o.extra };
+    planets.push(P); return P;
+  };
+  function wrap(x, text, max) { const w = text.split(/\s+/), out = []; let c = ''; w.forEach(s => { const t = c ? c + ' ' + s : s; if (x.measureText(t).width > max && c) { out.push(c); c = s; } else c = t; }); if (c) out.push(c); return out; }
+  function drawPlanet(P, v) {
+    const x = P.cv.getContext('2d'), W = 2048, H = 1024, cx = W * 0.25, mw = W * 0.38, F = CFG.font, C = P.colors;
+    x.clearRect(0, 0, W, H); x.textAlign = 'center'; x.textBaseline = 'middle'; x.shadowColor = C.glow; x.shadowBlur = 22;
+    if (!v.p) { x.fillStyle = C.ink; x.font = '600 56px ' + F; x.fillText('Nenhum prazo', cx, H * 0.5); P.tex.needsUpdate = true; return; }
+    const c = v.cd; x.fillStyle = C.sub; x.font = '600 36px ' + F; x.fillText(v.status.txt, cx, H * 0.3);
+    let size = 64, lines; do { x.font = '700 ' + size + 'px ' + F; lines = wrap(x, v.p.nome, mw); size -= 4; } while (lines.length > 2 && size > 30);
+    x.fillStyle = C.ink; lines.slice(0, 2).forEach((l, i) => x.fillText(l, cx, H * (lines.length === 1 ? 0.385 : 0.362 + i * 0.058)));
+    x.font = '700 ' + (c.closed ? 100 : 178) + 'px ' + F; x.fillText(c.big, cx, H * 0.53);
+    x.fillStyle = C.sub; x.font = '600 50px ' + F; if (c.unit) x.fillText(c.unit, cx, H * 0.618);
+    x.fillStyle = C.ink; x.font = '500 36px ' + F; x.fillText(c.small, cx, H * 0.672);
+    x.fillStyle = C.sub; x.fillText('até ' + fmtD.format(v.p.data), cx, H * 0.718);
+    const ext = []; if (v.p.inicio) ext.push('período: ' + fmtDS.format(v.p.inicio) + ' a ' + fmtDS.format(v.p.data)); if (P.extra) ext.push(P.extra(v.p));
+    x.font = '500 31px ' + F; ext.forEach((t, i) => x.fillText(t, cx, H * (0.762 + i * 0.042)));
+    P.tex.needsUpdate = true;
+  }
+
+  // ---------- state & view ----------
+  const state = { list: [], sel: null, auto: true, filter: 'abertos', move: true };
+  E.state = state;
+  const now = () => new Date();
+  const sel = () => state.list.find(p => p.id === state.sel) || null;
+  function firstOpen() { const n = now(), p = state.list.find(q => q.data > n); return p ? p.id : (state.list[0] ? state.list[0].id : null); }
+  E.view = function (n) {
+    n = n || now(); const p = sel();
+    return { p: p, now: n, cd: p ? E.cd(p, n) : null, status: E.status(p, n), month: E.monthStates(p, n), months: E.monthsWindow(state.list, p, n),
+      onDay: (y, m, d) => state.list.filter(q => q.data.getFullYear() === y && q.data.getMonth() === m && q.data.getDate() === d) };
+  };
+  function refresh() {
+    const v = E.view(); if (L && ctx3) L.apply(v); planets.forEach(P => drawPlanet(P, v)); renderCard(v); renderList(v.now);
+  }
+  E.refresh = refresh;
+  function select(id, manual) { state.sel = id; if (manual) { state.auto = false; if (els.auto) els.auto.checked = false; } refresh(); }
+  E.select = select;
+  E.selectIn = function (y, m, d) {
+    const n = now(), it = state.list.filter(q => q.data.getFullYear() === y && q.data.getMonth() === m && (d === undefined || q.data.getDate() === d));
+    const p = it.find(q => q.data > n) || it[0]; if (p) select(p.id, true); return !!p;
+  };
+  function setData(list, persist) { state.list = E.normalize(list); if (persist) save(state.list); state.sel = firstOpen(); refresh(); }
+  E.setData = setData;
+  function step(dir) { const n = now(), pool = state.list.filter(p => state.filter === 'todos' || p.data > n); if (!pool.length) return; const i = pool.findIndex(p => p.id === state.sel); select(pool[(i + dir + pool.length) % pool.length].id, false); }
+
+  // ---------- panel ----------
+  function renderCard(v) {
+    if (!els.nome) return;
+    if (!v.p) { els.status.textContent = ''; els.nome.textContent = 'Nenhum prazo cadastrado'; els.big.textContent = ''; els.unit.textContent = ''; els.small.textContent = 'Use Editar prazos para cadastrar até 60 prazos.'; els.date.textContent = ''; return; }
+    els.status.textContent = v.status.txt; els.status.style.setProperty('--c', E.lampColor(v.status.key) || '#888');
+    els.nome.textContent = v.p.nome; els.big.textContent = v.cd.big; els.unit.textContent = v.cd.unit; els.small.textContent = v.cd.small;
+    els.date.textContent = (v.p.inicio ? 'Início: ' + fmtD.format(v.p.inicio) + '. ' : '') + 'Fim: ' + fmtD.format(v.p.data) + ', às ' + fmtT.format(v.p.data);
+  }
+  function renderList(n) {
+    if (!els.list) return;
+    const items = state.list.filter(p => state.filter === 'todos' || p.data > n);
+    els.count.textContent = state.list.filter(p => p.data > n).length + ' abertos de ' + state.list.length;
+    els.list.innerHTML = '';
+    if (!items.length) { const p = document.createElement('p'); p.className = 'vazio'; p.textContent = state.list.length ? 'Nenhum prazo aberto. Escolha Todos para ver os encerrados.' : 'Nenhum prazo cadastrado.'; els.list.appendChild(p); return; }
+    let key = '', ul = null;
+    items.forEach(p => {
+      const k = p.data.getFullYear() + '-' + p.data.getMonth();
+      if (k !== key) {
+        key = k; const cnt = items.filter(q => q.data.getFullYear() === p.data.getFullYear() && q.data.getMonth() === p.data.getMonth()).length;
+        const h = document.createElement('h4'); h.innerHTML = '<span></span><small></small>'; h.firstChild.textContent = MESES[p.data.getMonth()] + ' de ' + p.data.getFullYear(); h.lastChild.textContent = cnt + (cnt === 1 ? ' prazo' : ' prazos');
+        els.list.appendChild(h); ul = document.createElement('ul'); els.list.appendChild(ul);
+      }
+      const st = E.status(p, n), li = document.createElement('li'), b = document.createElement('button');
+      b.type = 'button'; b.className = 'item'; if (p.id === state.sel) b.setAttribute('aria-current', 'true');
+      b.style.setProperty('--c', E.lampColor(st.key) || '#5a5a5a');
+      const a = document.createElement('span'); a.className = 'i-dia'; a.textContent = String(p.data.getDate());
+      const nm = document.createElement('span'); nm.className = 'i-nome'; nm.textContent = p.nome;
+      const mt = document.createElement('span'); mt.className = 'i-meta'; mt.textContent = E.cd(p, n).short;
+      b.append(a, nm, mt); b.addEventListener('click', () => select(p.id, true)); li.appendChild(b); ul.appendChild(li);
+    });
+  }
+  function lines(list) { const z = v => String(v).padStart(2, '0'), ds = d => d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate()); return list.map(p => p.nome + '; ' + (p.inicio ? ds(p.inicio) + '; ' : '') + ds(p.data) + '; ' + z(p.data.getHours()) + ':' + z(p.data.getMinutes())).join('\n'); }
+  function mountPanel(panel) {
+    const lc = CFG.lamp;
+    panel.innerHTML =
+      '<header class="ui-head"><h1>' + CFG.title + '</h1><p class="ui-sub">' + CFG.subtitle + '</p></header>' +
+      '<section class="sel" aria-live="polite"><p class="sel-status" id="s-status"></p><h2 id="s-nome"></h2>' +
+      '<p class="sel-count"><span id="s-big"></span> <span id="s-unit"></span></p><p class="sel-small" id="s-small"></p><p class="sel-date" id="s-date"></p>' +
+      '<div class="nav"><button type="button" id="s-prev">◀ Anterior</button><button type="button" id="s-next">Próximo ▶</button></div>' +
+      '<label class="ui-check"><input type="checkbox" id="s-auto" checked> Apresentar os prazos automaticamente</label></section>' +
+      '<section class="legend" aria-label="Como ler as luzes"><h3>Como ler</h3><ul>' +
+      '<li><i style="--c:' + lc.open + '"></i>Dias com inscrição aberta</li><li><i style="--c:' + lc.last5 + '"></i>Últimos 5 dias do prazo</li>' +
+      '<li><i class="pulse" style="--c:' + lc.deadline + '"></i>Dia final, com seta</li><li><i style="--c:' + (lc.elapsed || '#8a6a2e') + '"></i>Dias do período já passados</li><li><i style="--c:' + (lc.today || '#3ee6ff') + '"></i>Hoje</li><li><i style="--c:#3a3631"></i>Fora do prazo</li></ul>' +
+      '<p class="ui-note">' + CFG.howto + '</p></section>' +
+      '<section class="views"><h3>Vista</h3><div class="seg" role="group" aria-label="Escolher vista"><button type="button" data-v="frente">Frente</button><button type="button" data-v="lado">Lado</button><button type="button" data-v="cima">Cima</button><button type="button" data-v="baixo">Baixo</button></div>' +
+      '<label class="ui-check"><input type="checkbox" id="m-move" checked> Peças em movimento</label><label class="ui-check"><input type="checkbox" id="m-rot" checked> Girar a vista sozinho</label></section>' +
+      '<section class="lista"><div class="lista-head"><h3>Prazos de inscrição</h3><span id="l-count"></span></div>' +
+      '<div class="seg" role="group" aria-label="Filtrar prazos" id="l-filter"><button type="button" data-f="abertos" aria-pressed="true">Abertos</button><button type="button" data-f="todos" aria-pressed="false">Todos</button></div>' +
+      '<div id="l-list"></div></section>' +
+      '<details class="box" id="e-box"><summary>Editar prazos</summary><p class="ui-note">Um prazo por linha: nome; início (opcional); fim; hora (opcional). Datas como 2026-11-15 ou 15/11/2026. Sem hora, encerra às 23:59. Até 60 prazos.</p>' +
+      '<textarea id="e-text" rows="9" spellcheck="false" aria-label="Lista de prazos"></textarea><div class="ui-btns"><button type="button" id="e-apply" class="primary">Aplicar prazos</button><button type="button" id="e-reset">Restaurar exemplos</button></div><p class="ui-note" id="e-msg" role="status"></p></details>' +
+      '<details class="box"><summary>Usar no site</summary><p class="ui-note">Hospede este arquivo no site e incorpore com um iframe. Com #compacto no fim do endereço aparece só o objeto, com fundo transparente. Para enviar os prazos pela página do site:</p>' +
+      '<pre><code>iframe.contentWindow.postMessage({\n  tipo: "prazos",\n  itens: [{ nome: "Curso de Libras", inicio: "2026-10-01",\n           data: "2026-11-15", hora: "18:00" }]\n}, "*");</code></pre></details>';
+    ['s-status', 's-nome', 's-big', 's-unit', 's-small', 's-date', 's-auto', 'l-count', 'l-list', 'e-text', 'e-msg', 'm-move', 'm-rot'].forEach(id => { els[id.split('-')[1]] = document.getElementById(id); });
+    els.auto.addEventListener('change', () => { state.auto = els.auto.checked; autoT = 0; });
+    els.move.addEventListener('change', () => { state.move = els.move.checked; });
+    document.getElementById('s-prev').addEventListener('click', () => { state.auto = false; els.auto.checked = false; step(-1); });
+    document.getElementById('s-next').addEventListener('click', () => { state.auto = false; els.auto.checked = false; step(1); });
+    panel.querySelectorAll('.views .seg button').forEach(b => b.addEventListener('click', () => goView(b.dataset.v)));
+    panel.querySelectorAll('#l-filter button').forEach(b => b.addEventListener('click', () => { state.filter = b.dataset.f; panel.querySelectorAll('#l-filter button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); renderList(now()); }));
+    document.getElementById('e-box').addEventListener('toggle', () => { els.text.value = lines(state.list); });
+    document.getElementById('e-apply').addEventListener('click', () => {
+      const rows = els.text.value.split('\n').map(l => l.trim()).filter(Boolean).map(l => { const f = l.split(';').map(s => (s || '').trim()); return f[2] && E.parseDate(f[2]) && E.parseDate(f[1]) ? { nome: f[0], inicio: f[1], data: f[2], hora: f[3] } : { nome: f[0], data: f[1], hora: f[2] }; });
+      const ok = E.normalize(rows);
+      if (!ok.length) { els.msg.textContent = 'Nenhuma linha válida. Confira o formato: nome; 2026-11-15; 18:00.'; return; }
+      setData(ok, true); const ign = Math.min(rows.length, MAXN) - ok.length;
+      els.msg.textContent = ok.length + ' prazos aplicados.' + (rows.length > MAXN ? ' Só os 60 primeiros foram usados.' : '') + (ign > 0 ? ' ' + ign + ' linha(s) com data inválida foram ignoradas.' : '');
+      els.text.value = lines(state.list);
+    });
+    document.getElementById('e-reset').addEventListener('click', () => { try { localStorage.removeItem(KEY); } catch (e) { } setData(E.exemplos(), false); els.text.value = lines(state.list); els.msg.textContent = 'Exemplos restaurados.'; });
+  }
+
+  // ---------- camera views ----------
+  let tween = null;
+  function goView(name) {
+    if (!ctx3 || !L.views[name]) return;
+    tween = { from: ctx3.camera.position.clone(), to: new T.Vector3(...L.views[name]), t: 0 };
+  }
+  E.goView = goView;
+  E.focusAzimuth = function (az) {
+    if (!ctx3) return; const c = ctx3.camera.position, tg = ctx3.controls.target, d = c.clone().sub(tg), r = Math.hypot(d.x, d.z);
+    tween = { from: c.clone(), to: new T.Vector3(tg.x + r * Math.sin(az), c.y, tg.z + r * Math.cos(az)), t: 0, arc: true };
+  };
+
+  // ---------- start ----------
+  let autoT = 0;
+  E.start = async function (cfg, layout) {
+    CFG = cfg; L = layout; E.font = cfg.font; E.CFG_planet = cfg.planet; E.CFG_text = cfg.text; E.CFG_extra = cfg.extraLine;
+    const stage = document.getElementById('stage'), panel = document.getElementById('panel');
+    if (!G.THREE || !G.THREE.OrbitControls) { stage.innerHTML = '<p class="ui-error">Não foi possível carregar a biblioteca 3D. Verifique a conexão e recarregue a página.</p>'; return; }
+    T = G.THREE; St.init(T);
+    if (location.hash === '#compacto') document.documentElement.classList.add('compacto');
+    state.list = load(); state.sel = firstOpen();
+    mountPanel(panel);
+    try { await Promise.race([Promise.all((cfg.fonts || []).map(f => document.fonts.load(f))), new Promise(r => setTimeout(r, 3000))]); } catch (e) { }
+    let renderer; try { renderer = new T.WebGLRenderer({ antialias: true, alpha: true }); } catch (e) { stage.innerHTML = '<p class="ui-error">Este navegador não ativou o WebGL. Ative a aceleração gráfica para ver o astrolábio.</p>'; return; }
+    renderer.setPixelRatio(Math.min(G.devicePixelRatio || 1, 2)); renderer.setClearColor(0x000000, 0); stage.appendChild(renderer.domElement);
+    const scene = new T.Scene(), camera = new T.PerspectiveCamera(30, 1, 0.1, 100);
+    camera.position.set(...layout.views.frente); camera.position.multiplyScalar(0.64);   /* embutido: a câmera mais perto, o objeto ocupa o palco */
+    const controls = new T.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true; controls.enablePan = false; controls.enableZoom = false; controls.minDistance = Math.min(controls.minDistance, camera.position.length() * 0.8); controls.minDistance = layout.minDist || 4; controls.maxDistance = layout.maxDist || 16;
+    controls.target.set(...(layout.target || [0, 0, 0])); controls.update();
+    controls.addEventListener('start', () => { tween = null; });
+    const reduceM = G.matchMedia && G.matchMedia('(prefers-reduced-motion: reduce)').matches; controls.autoRotate = !reduceM; controls.autoRotateSpeed = 0.5;
+    if (els.rot) { els.rot.checked = !reduceM; els.rot.addEventListener('change', () => { controls.autoRotate = els.rot.checked; }); }
+    let env = null; try { env = new T.PMREMGenerator(renderer).fromScene(new T.RoomEnvironment(), 0.04).texture; } catch (e) { }
+    ctx3 = E.build3D({ THREE: T, scene: scene, env: env, camera: camera, controls: controls });
+    refresh();
+    const tip = document.createElement('div'); tip.id = 'part-tip'; tip.hidden = true; stage.appendChild(tip);
+    const resize = () => { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / Math.max(h, 1); camera.updateProjectionMatrix(); };
+    if (G.ResizeObserver) new ResizeObserver(resize).observe(stage); else G.addEventListener('resize', resize); resize();
+    const ray = new T.Raycaster(), ndc = new T.Vector2(), el = renderer.domElement; let down = null;
+    const pick = e => {
+      const r = el.getBoundingClientRect(); ndc.set((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1); ray.setFromCamera(ndc, camera);
+      for (const h of ray.intersectObjects(ctx3.pickables, true)) { let o = h.object; while (o) { if (o.userData.pick) { const r = typeof o.userData.pick === 'function' ? o.userData.pick(h) : o.userData.pick; if (r) return r; break; } o = o.parent; } }
+      return null;
+    };
+    const describe = pk => {
+      if (pk.type === 'month') { const n = state.list.filter(q => q.data.getFullYear() === pk.y && q.data.getMonth() === pk.m).length; return MESES[pk.m] + ' de ' + pk.y + ': ' + (n ? n + (n === 1 ? ' prazo' : ' prazos') : 'sem prazos'); }
+      const it = state.list.filter(q => q.data.getFullYear() === pk.y && q.data.getMonth() === pk.m && q.data.getDate() === pk.d);
+      return pk.d + ' de ' + MESES[pk.m] + ': ' + (it.length ? it.slice(0, 3).map(q => q.nome).join(', ') + (it.length > 3 ? ' e mais ' + (it.length - 3) : '') : 'sem prazos neste dia');
+    };
+    const showTip = (e, text) => { const r = stage.getBoundingClientRect(); tip.hidden = !text; tip.textContent = text || ''; tip.style.left = (e.clientX - r.left + 14) + 'px'; tip.style.top = (e.clientY - r.top + 14) + 'px'; };
+    el.addEventListener('pointerdown', e => { down = [e.clientX, e.clientY]; });
+    el.addEventListener('pointerup', e => {
+      if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 6) { down = null; return; } down = null;
+      const pk = pick(e); if (!pk) return;
+      const ok = pk.type === 'month' ? E.selectIn(pk.y, pk.m) : E.selectIn(pk.y, pk.m, pk.d);
+      if (!ok) showTip(e, describe(pk));
+    });
+    el.addEventListener('pointermove', e => { if (e.buttons) return; const pk = pick(e); el.style.cursor = pk ? 'pointer' : ''; showTip(e, pk ? describe(pk) : ''); });
+    el.addEventListener('pointerleave', () => { tip.hidden = true; });
+    G.addEventListener('message', e => {
+      const d = e.data; if (!d || typeof d !== 'object') return;
+      if (d.tipo === 'prazos' && Array.isArray(d.itens)) setData(d.itens, false);
+      if (d.tipo === 'selecionar' && typeof d.indice === 'number' && state.list[d.indice]) select(state.list[d.indice].id, false);
+    });
+    G.AstrolabioPrazos = { definir: l => setData(l, false), selecionar: i => { if (state.list[i]) select(state.list[i].id, false); }, lista: () => state.list.slice() };
+    let last = performance.now(), lastSec = -1, lastMin = -1;
+    const loop = t => {
+      const dt = Math.min((t - last) / 1000, 0.1); last = t; const n = now();
+      if (tween) {
+        tween.t = Math.min(1, tween.t + dt / 0.9); const k = tween.t < 0.5 ? 2 * tween.t * tween.t : 1 - Math.pow(-2 * tween.t + 2, 2) / 2;
+        if (tween.arc) {
+          const tg = controls.target, a0 = Math.atan2(tween.from.x - tg.x, tween.from.z - tg.z); let da = Math.atan2(tween.to.x - tg.x, tween.to.z - tg.z) - a0; da = Math.atan2(Math.sin(da), Math.cos(da));
+          const r = Math.hypot(tween.from.x - tg.x, tween.from.z - tg.z), a = a0 + da * k; camera.position.set(tg.x + r * Math.sin(a), tween.from.y, tg.z + r * Math.cos(a));
+        } else camera.position.lerpVectors(tween.from, tween.to, k);
+        if (tween.t >= 1) tween = null;
+      }
+      const sh = new T.Quaternion();
+      planets.forEach(P => { P.group.parent.getWorldQuaternion(sh); P.shell.quaternion.copy(sh.invert().multiply(camera.quaternion)); if (state.move) P.planet.rotation.y += dt * 0.08; });
+      L.update(dt, t / 1000, camera, state.move);
+      if (n.getSeconds() !== lastSec) { lastSec = n.getSeconds(); const v = E.view(n); planets.forEach(P => drawPlanet(P, v)); renderCard(v); if (n.getMinutes() !== lastMin) { lastMin = n.getMinutes(); L.apply(v); renderList(n); } }
+      if (state.auto) { autoT += dt; if (autoT > 8) { autoT = 0; step(1); } }
+      controls.update(); renderer.render(scene, camera); requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+  };
+  E.build3D = function (c) {
+    const sc = c.scene; if (c.env) sc.environment = c.env;
+    sc.add(new T.AmbientLight(0xffffff, 0.3));
+    const k1 = new T.DirectionalLight(CFG.light || 0xffe6c0, 1.2); k1.position.set(3, 5, 5); sc.add(k1);
+    const k2 = new T.DirectionalLight(CFG.rim || 0x9fd1ff, 0.6); k2.position.set(-4, -2, -4); sc.add(k2);
+    const k3 = new T.DirectionalLight(0xffffff, 0.35); k3.position.set(0, -5, 3); sc.add(k3);
+    const M = Object.assign(St.mats(CFG.metal || {}), CFG.extraMats ? CFG.extraMats(T) : {}, { lamp: E.lampMats() });
+    const root = new T.Group(); sc.add(root);
+    const out = { THREE: T, scene: sc, root: root, M: M, camera: c.camera, controls: c.controls, pickables: [] };
+    L.build(out, E, St);
+    return out;
+  };
+  E._test = (cfg, layout, three) => { CFG = cfg; L = layout; T = three; St.init(T); E.font = cfg.font; E.CFG_planet = cfg.planet; E.CFG_text = cfg.text; E.CFG_extra = cfg.extraLine; return { setCtx: c => { ctx3 = c; }, drawPlanet: v => planets.forEach(P => drawPlanet(P, v)) }; };
+  G.Relogio = E;
+})(window);
+</script>
+<script>(function (G) {
+  'use strict';
+  const GR = 0.82, RH = 1.46, RM0 = 1.49, RM1 = 1.71, RD0 = 1.75, RD1 = 2.0, RO = 2.08;
+  const CYAN = '#3ee6ff', RED = '#ff3d1f';
+  const isLeap = y => new Date(y, 1, 29).getDate() === 29;
+  const doyOf = d => Math.round((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(d.getFullYear(), 0, 1)) / 864e5);
+  const A = (i, N) => i / N * Math.PI * 2;
+  const MES3 = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+
+  G.makeMechLayout = function (S) {
+    let T, E, M, St, root, bb, cv, tex, hands = {}, arrows = {}, plaques = {}, info = null, cur = null, urg = 0.3, statusKey = 'open';
+    const fades = [], puffs = [], emitters = [], anim = [];
+
+    function yearInfo(v) {
+      const p = v.p, now = v.now, y = p ? p.data.getFullYear() : now.getFullYear(), N = isLeap(y) ? 366 : 365;
+      const tY = now.getFullYear(), tD = doyOf(now), st = new Array(N).fill('off');
+      for (let i = 0; i < N; i++) if (tY > y || (tY === y && i < tD)) st[i] = 'past';
+      let s0 = null, dd = null;
+      if (p) {
+        dd = doyOf(p.data);
+        s0 = p.inicio ? (p.inicio.getFullYear() < y ? 0 : doyOf(p.inicio)) : (tY === y ? tD : tY < y ? 0 : null);
+        if (p.data < now) { if (s0 !== null) for (let i = s0; i < dd; i++) st[i] = 'elapsed'; st[dd] = 'closed'; }
+        else if (s0 !== null) for (let i = s0; i <= dd; i++) { const passed = tY > y || (tY === y && i < tD); st[i] = i === dd ? 'deadline' : i > dd - 5 ? 'last5' : passed ? 'elapsed' : 'open'; }
+      }
+      const ms = []; for (let m = 0; m < 12; m++) ms.push(doyOf(new Date(y, m, 1)));
+      const marks = E.state.list.filter(q => q.data.getFullYear() === y).map(q => ({ doy: doyOf(q.data), key: E.status(q, now).key, sel: !!(p && q.id === p.id) }));
+      return { y: y, N: N, st: st, today: tY === y ? tD : null, s0: s0, dd: dd, ms: ms, marks: marks, selM: p ? p.data.getMonth() : now.getMonth() };
+    }
+    function drawDisc(I) {
+      const x = cv.getContext('2d'), Z = cv.width, c = Z / 2, k = c / RO, C = S.disc, N = I.N;
+      const P = (r, a) => [c + r * k * Math.sin(a), c - r * k * Math.cos(a)];
+      const sector = (r0, r1, a0, a1) => { x.beginPath(); x.arc(c, c, r1 * k, a0 - Math.PI / 2, a1 - Math.PI / 2); x.arc(c, c, r0 * k, a1 - Math.PI / 2, a0 - Math.PI / 2, true); x.closePath(); };
+      const ann = (r0, r1, col) => { x.fillStyle = col; x.beginPath(); x.arc(c, c, r1 * k, 0, 7); x.arc(c, c, r0 * k, 0, 7, true); x.fill('evenodd'); };
+      const tang = (t, r, a, font, col) => { const up = a > Math.PI / 2 && a < Math.PI * 1.5; x.save(); x.translate(...P(r, a)); x.rotate(up ? a + Math.PI : a); x.font = font; x.fillStyle = col; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(t, 0, 0); x.restore(); };
+      x.clearRect(0, 0, Z, Z);
+      ann(RH, RM0, C.rim); ann(RM0, RM1, C.monthBg); ann(RM1, RD0, C.rim); ann(RD0, RD1, C.dayBg); ann(RD1, RO, C.rim);
+      for (let m = 0; m < 12; m++) {
+        const a0 = A(I.ms[m], N), a1 = A(m < 11 ? I.ms[m + 1] : N, N), am = (a0 + a1) / 2, sel = m === I.selM;
+        if (m % 2) { sector(RM0, RM1, a0, a1); x.fillStyle = C.monthAlt; x.fill(); }
+        if (sel) { sector(RM0, RM1, a0, a1); x.save(); x.shadowColor = C.monthSel; x.shadowBlur = 26; x.fillStyle = C.monthSel; x.fill(); x.restore(); }
+        x.strokeStyle = C.line; x.lineWidth = 4; x.beginPath(); x.moveTo(...P(RM0, a0)); x.lineTo(...P(RD1, a0)); x.stroke();
+        tang(E.MESES[m], (RM0 + RM1) / 2, am, '700 ' + Math.round(Z * 0.021) + 'px ' + E.font, sel ? C.monthSelInk : C.ink);
+      }
+      for (let i = 0; i < N; i++) {
+        const a0 = A(i, N), a1 = A(i + 1, N), s = I.st[i], col = E.lampColor(s);
+        sector(RD0 + 0.02, RD1 - 0.085, a0 + 0.0012, a1 - 0.0012);
+        if (col && s !== 'closed' && s !== 'elapsed') { x.save(); x.shadowColor = col; x.shadowBlur = s === 'deadline' ? 36 : 16; x.fillStyle = col; x.fill(); x.restore(); }
+        else { x.fillStyle = col || (s === 'past' ? C.past : C.cell); x.fill(); }
+      }
+      for (let m = 0; m < 12; m++) {
+        const dim = (m < 11 ? I.ms[m + 1] : N) - I.ms[m];
+        [1, 10, 20, dim].forEach(d => tang(String(d), RD1 - 0.042, A(I.ms[m] + d - 0.5, N), '700 ' + Math.round(Z * 0.0118) + 'px ' + E.font, C.dayInk));
+      }
+      if (I.today !== null) { const a = A(I.today + 0.5, N); x.save(); x.fillStyle = '#ffffff'; x.shadowColor = '#ffffff'; x.shadowBlur = 14; x.beginPath(); x.moveTo(...P(RD0 + 0.02, a)); x.lineTo(...P(RD0 - 0.035, a - 0.016)); x.lineTo(...P(RD0 - 0.035, a + 0.016)); x.closePath(); x.fill(); x.restore(); }
+      if (S.limbTicks) { x.strokeStyle = C.line; for (let d = 0; d < 360; d++) { const a = d * Math.PI / 180, L = d % 15 === 0 ? 0.045 : d % 5 === 0 ? 0.03 : 0.016; x.lineWidth = d % 15 === 0 ? 3 : 1.5; x.globalAlpha = d % 5 === 0 ? 0.95 : 0.6; x.beginPath(); x.moveTo(...P(RO - 0.006, a)); x.lineTo(...P(RO - 0.006 - L, a)); x.stroke(); } x.globalAlpha = 1; }
+      I.marks.forEach(mk => {
+        if (mk.sel) return; const a = A(mk.doy + 0.5, N), col = mk.key === 'closed' ? '#8a8378' : mk.key === 'open' || mk.key === 'soon' ? C.markOpen : E.lampColor(mk.key);
+        x.save(); x.fillStyle = col; x.shadowColor = col; x.shadowBlur = 8; x.beginPath(); x.moveTo(...P(RD1 + 0.004, a)); x.lineTo(...P(RO - 0.006, a - 0.012)); x.lineTo(...P(RO - 0.006, a + 0.012)); x.closePath(); x.fill(); x.restore();
+      });
+      x.strokeStyle = C.line; x.lineWidth = 3; [RH + 0.004, RM0, RM1, RD0, RD1, RO - 0.004].forEach(r => { x.beginPath(); x.arc(c, c, r * k, 0, 7); x.stroke(); });
+      tex.needsUpdate = true;
+    }
+    function plaque(accent) {
+      const c = E.canvas(512, 300), x = c.getContext('2d'), t = new T.CanvasTexture(c);
+      const sp = new T.Sprite(new T.SpriteMaterial({ map: t, transparent: true, depthWrite: false, depthTest: false })); sp.scale.set(0.95, 0.556, 1); sp.renderOrder = 10;
+      return { sprite: sp, set(top, big, bottom, col) {
+        x.clearRect(0, 0, 512, 300); x.fillStyle = 'rgba(10,20,19,0.94)'; x.strokeStyle = S.plateBorder || '#c9954a'; x.lineWidth = 8;
+        x.beginPath(); x.roundRect ? x.roundRect(8, 8, 496, 284, 26) : x.rect(8, 8, 496, 284); x.fill(); x.stroke();
+        x.fillStyle = col; x.fillRect(8, 30, 16, 240);
+        x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillStyle = col; x.font = '700 44px ' + E.font; x.fillText(top, 266, 62);
+        x.fillStyle = '#ffffff'; x.font = '700 118px ' + E.font; x.fillText(big, 266, 158);
+        x.fillStyle = '#d8e4df'; x.font = '600 40px ' + E.font; x.fillText(bottom, 266, 246); t.needsUpdate = true;
+      } };
+    }
+    function arrowMesh(col) {
+      const s = new T.Shape(); s.moveTo(0, 0); s.lineTo(0.15, 0.22); s.lineTo(0.055, 0.22); s.lineTo(0.055, 0.4); s.lineTo(-0.055, 0.4); s.lineTo(-0.055, 0.22); s.lineTo(-0.15, 0.22); s.closePath();
+      const g = new T.ExtrudeGeometry(s, { depth: 0.04, bevelEnabled: true, bevelSize: 0.012, bevelThickness: 0.012 }); g.translate(0, 0, -0.02);
+      const grp = new T.Group(), m = new T.Mesh(g, new T.MeshStandardMaterial({ color: col, emissive: col, emissiveIntensity: 1.7, roughness: 0.3 })); m.position.y = RO + 0.06; grp.add(m);
+      const gl = E.glow(col, 0.8); gl.position.y = RO + 0.16; grp.add(gl); grp.userData = { m: m, gl: gl, ang: null, target: 0 }; return grp;
+    }
+
+    // ---------- free core: fade any part that would hide the globe ----------
+    function fade(group, radius, center) {
+      const mats = [];
+      group.traverse(o => {
+        if (!o.material) return; const arr = Array.isArray(o.material) ? o.material : [o.material];
+        const cl = arr.map(m => { const c = m.clone(); c.transparent = true; c.userData.base = m.opacity === undefined ? 1 : m.opacity; return c; });
+        o.material = Array.isArray(o.material) ? cl : cl[0]; mats.push(...cl);
+      });
+      fades.push({ g: group, r: radius, c: center || new T.Vector3(), mats: mats, k: 1 }); return group;
+    }
+    const tv = [];
+    function updateFades(cam, dt) {
+      if (!tv.length) for (let i = 0; i < 3; i++) tv.push(new T.Vector3());
+      const camD = cam.position.length(), gAng = Math.asin(Math.min(1, (S.globeR || GR) * (S.globeGuard || 1.08) / camD));
+      const vg = tv[0].copy(cam.position).negate().normalize();
+      fades.forEach(f => {
+        const c = f.g.localToWorld(tv[1].copy(f.c)), ve = tv[2].copy(c).sub(cam.position), de = ve.length(); ve.normalize();
+        const ang = Math.acos(Math.max(-1, Math.min(1, vg.dot(ve)))), eAng = Math.asin(Math.min(1, f.r / Math.max(de, f.r)));
+        const block = de < camD - 0.1 && ang < gAng + eAng;
+        f.k += ((block ? 0.1 : 1) - f.k) * Math.min(1, dt * 6);
+        f.mats.forEach(m => { m.opacity = m.userData.base * f.k; m.depthWrite = f.k > 0.9; });
+      });
+    }
+    // ---------- steam ----------
+    let smoke = null;
+    function puff(pos, scale) {
+      if (!smoke) { const c = E.canvas(64, 64), x = c.getContext('2d'), g = x.createRadialGradient(32, 32, 2, 32, 32, 32); g.addColorStop(0, 'rgba(235,240,238,0.9)'); g.addColorStop(1, 'rgba(235,240,238,0)'); x.fillStyle = g; x.fillRect(0, 0, 64, 64); smoke = new T.CanvasTexture(c); }
+      let p = puffs.find(q => !q.alive);
+      if (!p) { if (puffs.length > 60) return; p = { s: new T.Sprite(new T.SpriteMaterial({ map: smoke, transparent: true, depthWrite: false, opacity: 0 })) }; root.add(p.s); puffs.push(p); }
+      p.alive = true; p.t = 0; p.life = 2.2 + Math.random(); p.k = scale || 1; p.s.position.copy(pos); p.v = new T.Vector3((Math.random() - 0.5) * 0.15, 0.45 + Math.random() * 0.2, (Math.random() - 0.5) * 0.15);
+    }
+    function updatePuffs(dt) {
+      puffs.forEach(p => { if (!p.alive) return; p.t += dt; const u = p.t / p.life; if (u >= 1) { p.alive = false; p.s.material.opacity = 0; return; }
+        p.s.position.addScaledVector(p.v, dt); const s = (0.18 + u * 0.8) * p.k; p.s.scale.set(s, s, 1); p.s.material.opacity = 0.45 * (1 - u) * Math.min(1, u * 6); });
+      emitters.forEach(em => { em.acc = (em.acc || 0) + dt * em.rate * (0.4 + urg * 1.6); while (em.acc > 1) { em.acc -= 1; puff(em.obj.localToWorld(em.at.clone()), em.k); } });
+    }
+
+    let camRef = null;
+    const ctx = { cam: () => camRef, fade: fade, emit: (obj, at, rate, k) => emitters.push({ obj: obj, at: at, rate: rate, k: k }), anim: f => anim.push(f), urg: () => urg, status: () => statusKey };
+
+    const layout = {
+      views: S.views || { frente: [0, 0.4, 16], lado: [16, 0.8, 0.6], cima: [0, 16, 0.8], baixo: [0, -16, 0.8] }, target: [0, 0, 0], minDist: 8, maxDist: 28,
+      build(c, e, st) {
+        T = c.THREE; E = e; M = c.M; St = st; root = c.root;
+        Object.assign(ctx, { T: T, M: M, St: St, E: E, root: root });
+        const P = E.planet({ r: S.globeR || GR, painter: E.CFG_planet, text: E.CFG_text, extra: E.CFG_extra }); root.add(P.group); ctx.globe = P;
+        bb = new T.Group(); root.add(bb);
+        cv = E.canvas(2048, 2048); tex = new T.CanvasTexture(cv); tex.anisotropy = 8;
+        const disc = new T.Mesh(new T.RingGeometry(RH, RO, 256, 1), new T.MeshStandardMaterial({ map: tex, emissiveMap: tex, emissive: 0xffffff, emissiveIntensity: 0.55, metalness: 0.3, roughness: 0.45, transparent: true }));
+        bb.add(disc);
+        disc.userData.pick = h => {
+          if (!info) return null; const p = disc.worldToLocal(h.point.clone()), r = Math.hypot(p.x, p.y);
+          let a = Math.atan2(p.x, p.y); if (a < 0) a += Math.PI * 2; const i = Math.min(info.N - 1, Math.floor(a / (Math.PI * 2) * info.N)), d = new Date(info.y, 0, 1 + i);
+          if (r >= RM0 && r <= RM1) return { type: 'month', y: info.y, m: d.getMonth() };
+          if (r >= RD0 && r <= RO) return { type: 'day', y: info.y, m: d.getMonth(), d: d.getDate() };
+          return null;
+        };
+        c.pickables.push(disc);
+        [[RO + 0.025, 0.04], [RH - 0.015, 0.03]].forEach(([r, t]) => bb.add(new T.Mesh(new T.TorusGeometry(r, t, 12, 240), M[S.rimMat || 'copper'])));
+        bb.add(St.bolts(RO + 0.025, 72, 0.035, M.brassDark, 0.014));
+        const hot = col => new T.MeshStandardMaterial({ color: col, emissive: col, emissiveIntensity: 1.6, roughness: 0.3 });
+        [['ini', CYAN, 0.032, 'diamond', RD0 - 0.04], ['fim', 0xff7a1f, 0.05, 'arrow', RD0 + 0.04]].forEach(([k, col, w, tip, end]) => {
+          const g = new T.Group(); g.position.z = k === 'ini' ? 0.04 : 0.07; const h = E.hand(end - GR - 0.08, w, tip, hot(col), 0.01); h.position.y = GR + 0.08; g.add(h); bb.add(g); g.userData = { ang: null, target: 0 }; hands[k] = g;
+        });
+        arrows.ini = arrowMesh(CYAN); arrows.fim = arrowMesh(RED); bb.add(arrows.ini, arrows.fim);
+        plaques.ini = plaque(); plaques.fim = plaque(); bb.add(plaques.ini.sprite, plaques.fim.sprite);
+        plaques.ini.ang = null; plaques.fim.ang = null;
+        S.build(ctx);
+      },
+      apply(v) {
+        cur = v; info = yearInfo(v); drawDisc(info); statusKey = v.status.key;
+        const d = v.cd ? v.cd.days : -1; urg = !v.p || v.cd.closed ? 0.05 : d < 1 ? 1 : d <= 5 ? 0.85 : d <= 10 ? 0.6 : d <= 30 ? 0.4 : 0.2;
+        const N = info.N, hasEnd = info.dd !== null, hasIni = info.s0 !== null && v.p && !(v.cd && v.cd.closed && !v.p.inicio);
+        arrows.fim.visible = plaques.fim.sprite.visible = hasEnd; hands.fim.visible = hasEnd && !S.noHands;
+        arrows.ini.visible = plaques.ini.sprite.visible = hasIni; hands.ini.visible = hasIni && !S.noHands;
+        if (hasEnd) {
+          const ae = A(info.dd + 0.5, N); arrows.fim.userData.target = hands.fim.userData.target = -ae;
+          const closed = v.cd.closed; arrows.fim.userData.m.material.color.set(closed ? 0x8a8378 : RED); arrows.fim.userData.m.material.emissive.set(closed ? 0x000000 : RED); arrows.fim.userData.gl.visible = !closed;
+          plaques.fim.set(closed ? 'encerrado' : 'fim', v.p.data.getDate() + ' ' + MES3[v.p.data.getMonth()], 'às ' + String(v.p.data.getHours()).padStart(2, '0') + ':' + String(v.p.data.getMinutes()).padStart(2, '0') + ', ' + v.p.data.getFullYear(), closed ? '#a8a29a' : '#ff7a4f');
+          plaques.fim.target = ae;
+        }
+        if (hasIni) {
+          const ai = A(info.s0 + 0.5, N), sd = v.p.inicio || v.now; arrows.ini.userData.target = hands.ini.userData.target = -ai;
+          plaques.ini.set(v.p.inicio ? 'início' : 'hoje', sd.getDate() + ' ' + MES3[sd.getMonth()], v.p.inicio ? String(sd.getFullYear()) : 'contando a partir de hoje', CYAN);
+          plaques.ini.target = ai;
+          if (hasEnd) { let dlt = plaques.fim.target - ai; if (dlt < 0.62) { const mid = (ai + plaques.fim.target) / 2; plaques.ini.target = mid - 0.31; plaques.fim.target = mid + 0.31; } }
+        }
+      },
+      update(dt, t, cam, move) {
+        camRef = cam; if (move) anim.forEach(f => f(dt, t, urg)); root.updateMatrixWorld(true);
+        root.getWorldQuaternion(bb.userData.q || (bb.userData.q = new T.Quaternion())); bb.quaternion.copy(bb.userData.q.invert()).multiply(cam.quaternion);
+        ['ini', 'fim'].forEach(k => {
+          const h = hands[k], a = arrows[k], p = plaques[k];
+          h.userData.ang = h.userData.ang === null ? h.userData.target : E.ease(h.userData.ang, h.userData.target, dt, 2.4); h.rotation.z = h.userData.ang;
+          a.userData.ang = a.userData.ang === null ? a.userData.target : E.ease(a.userData.ang, a.userData.target, dt, 2.4); a.rotation.z = a.userData.ang;
+          const bob = 0.05 * Math.sin(t * 4 + (k === 'ini' ? 1.5 : 0)); a.userData.m.position.y = RO + 0.06 + bob; a.userData.gl.position.y = RO + 0.16 + bob;
+          if (p.target !== undefined) { p.ang = p.ang === null ? p.target : E.ease(p.ang, p.target, dt, 2.4); const r = RO + 0.86; p.sprite.position.set(r * Math.sin(p.ang), r * Math.cos(p.ang), 0.15); }
+        });
+        updatePuffs(move ? dt : 0); updateFades(cam, dt);
+      }
+    };
+    return layout;
+  };
+
+  // ======================= three bold mechanisms =======================
+  function tube(T, pts, r, mat, n) { return new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(pts), n || 24, r, 12, false), mat); }
+  function pipeRun(c, pts, r, mat, segs) {
+    const curve = new c.T.CatmullRomCurve3(pts), out = [];
+    for (let i = 0; i < segs; i++) {
+      const a = i / segs, b = (i + 1) / segs, sub = []; for (let j = 0; j <= 8; j++) sub.push(curve.getPoint(a + (b - a) * j / 8));
+      const g = new c.T.Group(); const m = tube(c.T, sub, r, mat, 12); g.add(m);
+      const fl = new c.T.Mesh(new c.T.TorusGeometry(r * 1.35, r * 0.35, 8, 20), c.M.brass); const p0 = curve.getPoint(a), tg = curve.getTangent(a); fl.position.copy(p0); fl.quaternion.setFromUnitVectors(new c.T.Vector3(0, 0, 1), tg); g.add(fl);
+      const mid = curve.getPoint((a + b) / 2); c.root.add(g); c.fade(g, (b - a) * curve.getLength() * 0.55 + r, g.worldToLocal(mid.clone())); out.push(g);
+    }
+    return curve;
+  }
+  function handwheel(c, pos, axis) {
+    const T = c.T, g = new T.Group(); g.position.copy(pos); c.root.add(g);
+    const w = new T.Group(); g.add(w); w.add(new T.Mesh(new T.TorusGeometry(0.2, 0.026, 10, 32), c.M.iron));
+    for (let i = 0; i < 3; i++) { const s = new T.Mesh(new T.BoxGeometry(0.026, 0.4, 0.026), c.M.iron); s.rotation.z = i * Math.PI / 3; w.add(s); }
+    if (axis) g.quaternion.setFromUnitVectors(new T.Vector3(0, 0, 1), axis);
+    c.fade(g, 0.25); c.anim((dt, t, u) => { w.rotation.z += dt * (0.4 + u * 1.6); });
+  }
+  const verdOf = T => new T.MeshStandardMaterial({ color: 0x3e8f7d, metalness: 0.35, roughness: 0.6 });
+
+  G.MECH = {
+    // 1 — Watt governor + boiler
+    regulador: {
+      rimMat: 'copper', plateBorder: '#d39a5a',
+      disc: { rim: '#0d1c1a', monthBg: '#14332e', monthAlt: '#1b4039', monthSel: '#ff9f1c', monthSelInk: '#0d1c1a', ink: '#e9f2ee', dayBg: '#0a1514', cell: '#1f312e', past: '#121d1b', dayInk: '#9fe0cf', line: '#c47a45', markOpen: '#e9f2ee' },
+      build(c) {
+        const { T, M, St, root } = c, verd = verdOf(T);
+        const gov = new T.Group(); gov.position.y = 2.75; root.add(gov);
+        const bevel = St.gear({ teeth: 28, r: 0.55, th: 0.06, depth: 0.07, hole: 0.06, spokes: 6, mat: M.brass }); bevel.rotation.x = Math.PI / 2; gov.add(bevel);
+        const drive = new T.Group(); drive.position.set(0.72, 0.28, 0); gov.add(drive);
+        const dg = St.gear({ teeth: 14, r: 0.27, th: 0.06, depth: 0.07, hole: 0.04, spokes: 4, mat: M.copper }); dg.rotation.y = Math.PI / 2; drive.add(dg);
+        const shaft = new T.Mesh(new T.CylinderGeometry(0.035, 0.035, 0.7, 10), M.iron); shaft.rotation.z = Math.PI / 2; shaft.position.set(1.05, 0.28, 0); gov.add(shaft);
+        const spindle = new T.Mesh(new T.CylinderGeometry(0.04, 0.05, 1.5, 12), M.brass); spindle.position.y = 0.75; gov.add(spindle);
+        const finial = new T.Mesh(new T.SphereGeometry(0.09, 16, 10), M.brass); finial.position.y = 1.55; gov.add(finial);
+        const rotor = new T.Group(); rotor.position.y = 1.35; gov.add(rotor);
+        const collar = new T.Mesh(new T.CylinderGeometry(0.1, 0.1, 0.14, 16), M.copper); gov.add(collar);
+        const arms = [1, -1].map(s => {
+          const piv = new T.Group(); piv.position.x = s * 0.06; rotor.add(piv);
+          const arm = new T.Mesh(new T.CylinderGeometry(0.018, 0.018, 0.75, 8), M.brass); arm.position.y = -0.375; piv.add(arm);
+          const ball = new T.Mesh(new T.SphereGeometry(0.17, 24, 14), M.copper); ball.position.y = -0.78; piv.add(ball);
+          return { piv: piv, s: s };
+        });
+        c.fade(gov, 1.1, new T.Vector3(0, 0.8, 0));
+        let spin = 0;
+        c.anim((dt, t, u) => {
+          spin += dt * (1.5 + u * 7); rotor.rotation.y = spin; bevel.rotation.z = spin; drive.rotation.x = spin * 2;
+          const th = 0.35 + u * 0.75 + 0.03 * Math.sin(t * 6); arms.forEach(a => { a.piv.rotation.z = a.s * th; });
+          collar.position.y = 0.5 + (Math.cos(0.35) - Math.cos(th)) * 0.7;
+        });
+        const boil = new T.Group(); boil.position.y = -3.0; root.add(boil);
+        const tank = new T.Mesh(new T.CylinderGeometry(0.58, 0.58, 2.2, 40), M.copper); tank.rotation.z = Math.PI / 2; boil.add(tank);
+        [-1.1, 1.1].forEach(x => { const cap = new T.Mesh(new T.SphereGeometry(0.58, 32, 16), M.copper); cap.scale.set(0.35, 1, 1); cap.position.x = x; boil.add(cap); });
+        [-0.8, -0.3, 0.2, 0.7].forEach(x => { const b = new T.Mesh(new T.TorusGeometry(0.585, 0.03, 8, 48), M.brass); b.rotation.y = Math.PI / 2; b.position.x = x; boil.add(b); });
+        const chim = new T.Mesh(new T.CylinderGeometry(0.1, 0.14, 0.8, 16), M.iron); chim.position.set(-0.75, 0.85, 0); boil.add(chim);
+        const crown = new T.Mesh(new T.CylinderGeometry(0.17, 0.11, 0.12, 16), M.brass); crown.position.set(-0.75, 1.28, 0); boil.add(crown);
+        c.emit(boil, new T.Vector3(-0.75, 1.4, 0), 2.5, 1.1);
+        const pist = [0, 0.45].map((x, i) => {
+          const cyl = new T.Mesh(new T.CylinderGeometry(0.13, 0.13, 0.5, 20), M.iron); cyl.position.set(x, 0.8, 0); boil.add(cyl);
+          const rod = new T.Mesh(new T.CylinderGeometry(0.03, 0.03, 0.6, 8), M.steel || M.brass); boil.add(rod); return { rod: rod, x: x, ph: i * Math.PI };
+        });
+        const fw = new T.Group(); fw.position.set(1.55, 0.35, 0); boil.add(fw);
+        const wheel = St.gear({ teeth: 36, r: 0.62, th: 0.04, depth: 0.09, hole: 0.05, spokes: 6, mat: M.brassDark }); wheel.rotation.y = Math.PI / 2; fw.add(wheel);
+        c.fade(boil, 1.5, new T.Vector3(0.2, 0.3, 0));
+        let ang = 0;
+        c.anim((dt, t, u) => { ang += dt * (1.2 + u * 5); fw.rotation.x = ang; pist.forEach(p => { p.rod.position.set(p.x, 1.15 + 0.12 * Math.sin(ang + p.ph), 0); }); });
+        pipeRun(c, [new T.Vector3(-1.2, -2.6, 0), new T.Vector3(-2.7, -1.9, 0.35), new T.Vector3(-3.05, 0, 0.45), new T.Vector3(-2.7, 1.9, 0.35), new T.Vector3(-0.5, 2.78, 0)], 0.075, M.copper, 7);
+        pipeRun(c, [new T.Vector3(1.2, -2.6, 0), new T.Vector3(2.7, -1.9, -0.35), new T.Vector3(3.05, 0, -0.45), new T.Vector3(2.7, 1.9, -0.35), new T.Vector3(1.4, 2.9, 0)], 0.075, verd, 7);
+        handwheel(c, new T.Vector3(-3.25, 0, 0.45), new T.Vector3(-1, 0, 0)); handwheel(c, new T.Vector3(3.25, 0, -0.45), new T.Vector3(1, 0, 0));
+        c.emit(root, new T.Vector3(3.05, 0.2, -0.45), 0.6, 0.6);
+      }
+    },
+    // 2 — Tesla generator
+    tesla: {
+      rimMat: 'brass', plateBorder: '#7fd6e8',
+      disc: { rim: '#0b1622', monthBg: '#122a3a', monthAlt: '#173447', monthSel: '#ff9f1c', monthSelInk: '#0b1622', ink: '#e6f3fa', dayBg: '#08121b', cell: '#1a2c3a', past: '#0f1a24', dayInk: '#8fd8ef', line: '#b88a4a', markOpen: '#e6f3fa' },
+      build(c) {
+        const { T, M, St, root } = c;
+        const wc = (() => { const cv = c.E.canvas(64, 256), x = cv.getContext('2d'); for (let i = 0; i < 64; i++) { x.fillStyle = i % 2 ? '#b8693a' : '#7a4424'; x.fillRect(0, i * 4, 64, 4); } const t = new T.CanvasTexture(cv); t.wrapT = T.RepeatWrapping; t.repeat.set(1, 3); return t; })();
+        const arcs = [];
+        [-1, 1].forEach(s => {
+          const g = new T.Group(); g.position.set(s * 3.15, -0.9, 0); root.add(g);
+          const base = new T.Mesh(new T.CylinderGeometry(0.42, 0.5, 0.22, 24), M.iron); g.add(base);
+          const coil = new T.Mesh(new T.CylinderGeometry(0.22, 0.22, 1.7, 32, 1, true), new T.MeshStandardMaterial({ map: wc, metalness: 0.8, roughness: 0.35 })); coil.position.y = 0.95; g.add(coil);
+          const core = new T.Mesh(new T.CylinderGeometry(0.2, 0.2, 1.7, 16), M.iron); core.position.y = 0.95; g.add(core);
+          const tor = new T.Mesh(new T.TorusGeometry(0.42, 0.15, 20, 48), new T.MeshStandardMaterial({ color: 0xc8ccd2, metalness: 1, roughness: 0.18 })); tor.rotation.x = Math.PI / 2; tor.position.y = 1.95; g.add(tor);
+          const ball = new T.Mesh(new T.SphereGeometry(0.1, 16, 10), M.brass); ball.position.y = 2.15; g.add(ball);
+          c.fade(g, 1.2, new T.Vector3(0, 1.0, 0));
+          for (let k = 0; k < 2; k++) {
+            const geo = new T.BufferGeometry().setFromPoints(new Array(16).fill(0).map(() => new T.Vector3()));
+            const ln = new T.Line(geo, new T.LineBasicMaterial({ color: 0x9feaff, transparent: true })); root.add(ln);
+            const gl = c.E.glow(0x9feaff, 0.5); root.add(gl);
+            arcs.push({ ln: ln, gl: gl, from: new T.Vector3(s * (3.15 - 0.55), 1.05, 0), s: s, k: k, t: 0 });
+          }
+        });
+        const crown = new T.Group(); crown.position.y = 2.75; root.add(crown);
+        crown.add(new T.Mesh(new T.CylinderGeometry(0.95, 0.95, 0.07, 48), M.brass));
+        const fil = new T.MeshStandardMaterial({ color: 0xff9a3c, emissive: 0xff7a1f, emissiveIntensity: 2 });
+        for (let i = 0; i < 8; i++) {
+          const a = i / 8 * Math.PI * 2, tg = new T.Group(); tg.position.set(0.75 * Math.sin(a), 0.25, 0.75 * Math.cos(a)); crown.add(tg);
+          tg.add(new T.Mesh(new T.CylinderGeometry(0.075, 0.075, 0.38, 16), c.M.glass));
+          const cap = new T.Mesh(new T.SphereGeometry(0.075, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2), c.M.glass); cap.position.y = 0.19; tg.add(cap);
+          const f = new T.Mesh(new T.CylinderGeometry(0.012, 0.012, 0.24, 6), fil); tg.add(f);
+          const sk = new T.Mesh(new T.CylinderGeometry(0.085, 0.085, 0.06, 16), M.iron); sk.position.y = -0.2; tg.add(sk);
+        }
+        const hubT = new T.Mesh(new T.CylinderGeometry(0.12, 0.2, 0.5, 16), M.copper); hubT.position.y = 0.25; crown.add(hubT);
+        c.fade(crown, 1.1, new T.Vector3(0, 0.25, 0));
+        const dyn = new T.Group(); dyn.position.y = -2.95; root.add(dyn);
+        const mag = new T.Mesh(new T.TorusGeometry(0.62, 0.16, 16, 48, Math.PI), new T.MeshStandardMaterial({ color: 0x9e2a1e, metalness: 0.4, roughness: 0.4 })); mag.rotation.z = Math.PI; dyn.add(mag);
+        const arm = new T.Group(); arm.position.y = -0.05; dyn.add(arm);
+        const armc = new T.Mesh(new T.CylinderGeometry(0.3, 0.3, 0.5, 24), new T.MeshStandardMaterial({ map: wc, metalness: 0.8, roughness: 0.35 })); armc.rotation.x = Math.PI / 2; arm.add(armc);
+        const plat = new T.Group(); plat.position.y = -0.45; dyn.add(plat);
+        plat.add(new T.Mesh(new T.CylinderGeometry(1.15, 1.15, 0.06, 48), M.brassDark));
+        for (let i = 0; i < 5; i++) {
+          const a = i / 5 * Math.PI * 2, j = new T.Group(); j.position.set(0.85 * Math.sin(a), -0.24, 0.85 * Math.cos(a)); plat.add(j);
+          j.add(new T.Mesh(new T.CylinderGeometry(0.14, 0.14, 0.42, 20), c.M.glass));
+          const foil = new T.Mesh(new T.CylinderGeometry(0.145, 0.145, 0.22, 20), M.copper); foil.position.y = -0.1; j.add(foil);
+          const tball = new T.Mesh(new T.SphereGeometry(0.05, 12, 8), M.brass); tball.position.y = 0.32; j.add(tball);
+        }
+        const gA = St.gear({ teeth: 24, r: 0.42, th: 0.05, depth: 0.06, hole: 0.04, spokes: 5, mat: M.brass }), gAg = new T.Group(); gAg.position.set(1.0, 0.05, 0); gAg.add(gA); dyn.add(gAg);
+        c.fade(dyn, 1.4, new T.Vector3(0, -0.2, 0));
+        c.anim((dt, t, u) => {
+          crown.rotation.y += dt * (0.3 + u * 1.2); arm.rotation.z += dt * (3 + u * 10); plat.rotation.y -= dt * 0.3; gAg.rotation.z -= dt * (3 + u * 10) * 0.7;
+          fil.emissiveIntensity = 1.4 + 0.8 * Math.sin(t * (3 + u * 6));
+          const col = c.status() === 'deadline' ? 0xff3d1f : c.status() === 'last5' ? 0xff9f1c : 0x9feaff;
+          arcs.forEach(a => {
+            a.t -= dt; if (a.t > 0) return; a.t = 0.05 + Math.random() * 0.08;
+            const on = Math.random() < 0.25 + u * 0.7; a.ln.visible = a.gl.visible = on; if (!on) return;
+            const to = new T.Vector3(a.s * 2.12, 0.55 + (a.k - 0.5) * 0.9 + (Math.random() - 0.5) * 0.6, (Math.random() - 0.5) * 0.3);
+            const pos = a.ln.geometry.attributes.position;
+            for (let i = 0; i < 16; i++) { const f = i / 15, p = a.from.clone().lerp(to, f); if (i && i < 15) p.add(new T.Vector3(0, (Math.random() - 0.5) * 0.35, (Math.random() - 0.5) * 0.35).multiplyScalar(Math.sin(f * Math.PI))); pos.setXYZ(i, p.x, p.y, p.z); }
+            pos.needsUpdate = true; a.ln.material.color.setHex(col); a.gl.material.color.setHex(col); a.gl.position.copy(to);
+          });
+        });
+        [-1, 1].forEach(s => pipeRun(c, [new T.Vector3(s * 3.15, -1.05, 0), new T.Vector3(s * 2.6, -2.3, 0.2), new T.Vector3(s * 1.2, -2.95, 0)], 0.05, M.copper, 3));
+      }
+    },
+    // 3 — mechanical feathered serpent (Mesoamerican steampunk)
+    serpente: {
+      rimMat: 'brass', plateBorder: '#d9a75a',
+      disc: { rim: '#11130e', monthBg: '#173a2d', monthAlt: '#1f4a39', monthSel: '#ff9f1c', monthSelInk: '#11130e', ink: '#f1e6cc', dayBg: '#0f0f0c', cell: '#2a2e24', past: '#1a1c16', dayInk: '#d9a75a', line: '#d9a75a', markOpen: '#f6e7b8' },
+      build(c) {
+        const { T, M, St, root } = c, gold = new T.MeshStandardMaterial({ color: 0xd8b04a, metalness: 1, roughness: 0.3 });
+        const R = 2.85, tilt = new T.Group(); tilt.rotation.set(0.42, 0, 0.18); root.add(tilt);
+        const path = s => { const a = s * Math.PI * 2; return new T.Vector3(R * Math.sin(a), 0.32 * Math.sin(a * 3), R * Math.cos(a)); };
+        const segs = [];
+        for (let i = 0; i < 46; i++) {
+          const k = 1 - i / 52, g = new T.Group(); tilt.add(g);
+          const body = new T.Mesh(new T.CylinderGeometry(0.13 * k, 0.15 * k, 0.16, 8), i % 3 === 0 ? M.copper : M.jade); body.rotation.x = Math.PI / 2; g.add(body);
+          if (i % 2 === 0) { const sc = new T.Mesh(new T.OctahedronGeometry(0.07 * k), i % 4 ? M.turq : gold); sc.position.y = 0.15 * k; sc.scale.set(1, 0.6, 1.6); g.add(sc); }
+          if (i % 6 === 3) { const rg = new T.Mesh(new T.TorusGeometry(0.155 * k, 0.018, 6, 20), M.brass); g.add(rg); }
+          c.fade(g, 0.2); segs.push(g);
+        }
+        const head = new T.Group(); tilt.add(head);
+        const skull = new T.Mesh(new T.ConeGeometry(0.2, 0.5, 6), M.copper); skull.rotation.x = Math.PI / 2; skull.position.z = 0.18; head.add(skull);
+        const jaw = new T.Group(); jaw.position.set(0, -0.06, 0.02); head.add(jaw);
+        const jm = new T.Mesh(new T.ConeGeometry(0.14, 0.42, 6), M.brassDark); jm.rotation.x = Math.PI / 2; jm.position.z = 0.18; jaw.add(jm);
+        const eyeM = new T.MeshStandardMaterial({ color: 0x3ee6ff, emissive: 0x3ee6ff, emissiveIntensity: 2.2 });
+        [-1, 1].forEach(s => { const e = new T.Mesh(new T.SphereGeometry(0.045, 12, 8), eyeM); e.position.set(s * 0.11, 0.08, 0.1); head.add(e); });
+        for (let i = 0; i < 7; i++) { const f = new T.Mesh(new T.BoxGeometry(0.06, 0.32, 0.015), i % 2 ? M.turq : gold); const a = (i - 3) * 0.32; f.position.set(Math.sin(a) * 0.2, 0.16 + Math.cos(a) * 0.12, -0.08); f.rotation.z = -a; head.add(f); }
+        c.fade(head, 0.45); c.emit(head, new T.Vector3(0, -0.05, 0.5), 1.8, 0.6);
+        const sun = new T.Group(); sun.position.y = 2.9; root.add(sun);
+        const sg = St.gear({ teeth: 16, r: 0.62, th: 0.08, depth: 0.1, hole: 0.12, spokes: 4, mat: gold }); sg.rotation.x = Math.PI / 2; sun.add(sg);
+        for (let i = 0; i < 8; i++) { const a = i / 8 * Math.PI * 2, ray = new T.Group(); ray.rotation.y = a; sun.add(ray); [0, 1, 2].forEach(j => { const b = new T.Mesh(new T.BoxGeometry(0.16 - j * 0.04, 0.08, 0.12), j % 2 ? M.jade : M.copper); b.position.set(0, 0.04 + j * 0.06, 0.72 + j * 0.13); ray.add(b); }); }
+        const jadeC = new T.Mesh(new T.OctahedronGeometry(0.2), M.jade); jadeC.position.y = 0.25; sun.add(jadeC);
+        c.fade(sun, 1.1);
+        const tz = new T.Group(); tz.position.y = -2.95; root.add(tz);
+        const g20 = new T.Group(), g13 = new T.Group(); g20.position.x = -0.45; g13.position.x = 0.56; tz.add(g20, g13);
+        const a20 = St.gear({ teeth: 20, r: 0.6, th: 0.07, depth: 0.1, hole: 0.08, spokes: 5, mat: M.brass }); a20.rotation.x = Math.PI / 2; g20.add(a20);
+        const a13 = St.gear({ teeth: 13, r: 0.42, th: 0.07, depth: 0.1, hole: 0.06, spokes: 3, mat: M.copper }); a13.rotation.x = Math.PI / 2; g13.add(a13);
+        [g20, g13].forEach((g, i) => { const col = new T.Mesh(new T.CylinderGeometry(0.09, 0.09, 0.5, 8), M.obsidian); col.position.y = -0.2; g.add(col); const st = new T.Mesh(new T.OctahedronGeometry(0.09), M.turq); st.position.y = 0.12; g.add(st); });
+        c.fade(tz, 1.2); c.emit(tz, new T.Vector3(-0.45, 0.2, 0), 1.2, 0.8);
+        let s0 = 0;
+        c.anim((dt, t, u) => {
+          s0 += dt * (0.02 + u * 0.06);
+          segs.forEach((g, i) => { const s = s0 - i * 0.0105, p = path(s), q = path(s + 0.004); g.position.copy(p); g.lookAt(tilt.localToWorld(q.clone())); });
+          const hp = path(s0 + 0.012), hq = path(s0 + 0.02); head.position.copy(hp); head.lookAt(tilt.localToWorld(hq.clone()));
+          jaw.rotation.x = 0.15 + 0.2 * (0.5 + 0.5 * Math.sin(t * (2 + u * 5)));
+          const sc = c.status(); eyeM.color.setHex(sc === 'deadline' ? 0xff3d1f : sc === 'last5' ? 0xff9f1c : 0x3ee6ff); eyeM.emissive.copy(eyeM.color);
+          sun.rotation.y += dt * (0.2 + u * 0.8); g20.rotation.y += dt * (0.5 + u); g13.rotation.y -= dt * (0.5 + u) * 20 / 13;
+        });
+      }
+    }
+  };
+})(window);
+</script>
+<script>(function (G) {
+  'use strict';
+  const D2R = Math.PI / 180, EPS = 23.44;
+  const R0 = 0.9, R1 = 1.42, L0 = 2.14, L1 = 2.44;
+  const STARS = [[6.752, -16.7], [6.399, -52.7], [14.66, -60.8], [14.261, 19.2], [18.616, 38.8], [5.278, 46.0], [5.242, -8.2], [7.655, 5.2], [1.629, -57.2], [5.919, 7.4], [19.846, 8.9], [12.443, -63.1], [4.599, 16.5], [16.49, -26.4], [13.42, -11.2], [22.961, -29.6], [10.14, 12.0], [9.46, -8.7], [2.12, 23.5], [21.31, 62.6]];
+  function stereo(lat) { const s = lat >= 0 ? 1 : -1, Ro = Math.tan((90 + EPS) / 2 * D2R); return (ha, dec) => { const r = Math.tan(Math.min(179.8, Math.max(0, 90 - s * dec)) / 2 * D2R) / Ro, a = ha * D2R; return { x: r * Math.sin(a), y: r * Math.cos(a), r: r }; }; }
+  function hadec(alt, az, lat) {
+    const h = alt * D2R, A = az * D2R, p = lat * D2R, sd = Math.sin(h) * Math.sin(p) + Math.cos(h) * Math.cos(p) * Math.cos(A);
+    return { ha: Math.atan2(-Math.sin(A) * Math.cos(h), Math.cos(p) * Math.sin(h) - Math.sin(p) * Math.cos(h) * Math.cos(A)) / D2R, dec: Math.asin(Math.max(-1, Math.min(1, sd))) / D2R };
+  }
+  const ecl = l => { const L = l * D2R, e = EPS * D2R; return { ra: Math.atan2(Math.cos(e) * Math.sin(L), Math.cos(L)) / D2R, dec: Math.asin(Math.sin(e) * Math.sin(L)) / D2R }; };
+  const LAT = -23.5;
+
+  // ---------- textures ----------
+  function annClip(x, c, a, b) { x.beginPath(); x.arc(c, c, b, 0, 7); x.arc(c, c, a, 0, 7, true); x.clip('evenodd'); }
+  function tympanTex(c, o) {
+    const T = c.T, Z = 1024, cc = Z / 2, k = cc / R1, P = stereo(LAT), cv = c.E.canvas(Z, Z), x = cv.getContext('2d');
+    const px = p => [cc + p.x * cc, cc - p.y * cc];
+    const curve = alt => { const a = []; for (let az = 0; az <= 360; az += 2) { const e = hadec(alt, az, LAT); a.push(px(P(e.ha, e.dec))); } return a; };
+    const poly = pts => { x.beginPath(); pts.forEach((p, i) => i ? x.lineTo(...p) : x.moveTo(...p)); };
+    x.save(); annClip(x, cc, R0 * k, R1 * k);
+    if (o.zones) {
+      x.fillStyle = o.zones.night; x.fillRect(0, 0, Z, Z);
+      x.fillStyle = o.zones.dusk; poly(curve(-18)); x.closePath(); x.fill();
+      x.fillStyle = o.zones.dawn; poly(curve(-6)); x.closePath(); x.fill();
+      x.fillStyle = o.zones.day; poly(curve(0)); x.closePath(); x.fill();
+    }
+    x.strokeStyle = o.line; x.lineWidth = 2; x.globalAlpha = 0.55;
+    for (let az = 0; az < 360; az += 30) { const a = []; for (let h = 0; h <= 90; h += 2) { const e = hadec(h, az, LAT); a.push(px(P(e.ha, e.dec))); } poly(a); x.stroke(); }
+    for (let h = 10; h < 90; h += 10) { x.globalAlpha = h % 30 ? 0.5 : 0.95; x.lineWidth = h % 30 ? 2 : 3.5; poly(curve(h)); x.closePath(); x.stroke(); }
+    x.globalAlpha = 1; x.lineWidth = 6; poly(curve(0)); x.closePath(); x.stroke();
+    x.setLineDash([10, 10]); x.lineWidth = 2.5; poly(curve(-18)); x.closePath(); x.stroke(); x.setLineDash([]);
+    [-EPS, 0, EPS].forEach(d => { x.lineWidth = d ? 2 : 3; x.beginPath(); x.arc(cc, cc, P(0, d).r * cc, 0, 7); x.stroke(); });
+    x.restore();
+    const t = new T.CanvasTexture(cv); t.anisotropy = 8; return t;
+  }
+  function pointer(x, kind, tip, base, w) {
+    const dx = tip[0] - base[0], dy = tip[1] - base[1], L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L, nx = -uy, ny = ux, at = f => [base[0] + dx * f, base[1] + dy * f];
+    x.beginPath();
+    if (kind === 'flame') { const m = at(0.45); x.moveTo(...tip); x.quadraticCurveTo(m[0] + nx * w * 1.6, m[1] + ny * w * 1.6, base[0] + nx * w, base[1] + ny * w); x.quadraticCurveTo(base[0] - ux * w, base[1] - uy * w, base[0] - nx * w, base[1] - ny * w); x.quadraticCurveTo(m[0] - nx * w * 0.4, m[1] - ny * w * 0.4, ...tip); }
+    else if (kind === 'feather') { x.moveTo(...tip); for (let i = 1; i <= 4; i++) { const p = at(1 - i * 0.22); x.lineTo(p[0] + nx * w * (0.6 + i * 0.25), p[1] + ny * w * (0.6 + i * 0.25)); x.lineTo(...at(1 - i * 0.22 + 0.06)); } x.lineTo(...base); for (let i = 4; i >= 1; i--) { const p = at(1 - i * 0.22); x.lineTo(...at(1 - i * 0.22 + 0.06)); x.lineTo(p[0] - nx * w * (0.6 + i * 0.25), p[1] - ny * w * (0.6 + i * 0.25)); } }
+    else if (kind === 'compass') { const m = at(0.35); x.moveTo(...tip); x.lineTo(m[0] + nx * w * 1.3, m[1] + ny * w * 1.3); x.lineTo(...base); x.lineTo(m[0] - nx * w * 1.3, m[1] - ny * w * 1.3); }
+    else { const m = at(0.5); x.moveTo(...tip); x.lineTo(m[0] + nx * w, m[1] + ny * w); x.lineTo(base[0] + nx * w * 0.6, base[1] + ny * w * 0.6); x.lineTo(base[0] - nx * w * 0.6, base[1] - ny * w * 0.6); x.lineTo(m[0] - nx * w, m[1] - ny * w); x.closePath(); x.moveTo(m[0] + w * 1.1, m[1]); x.arc(m[0], m[1], w * 1.1, 0, 7); }
+    x.closePath(); x.fill();
+  }
+  function reteTex(c, o) {
+    const T = c.T, Z = 1024, cc = Z / 2, k = cc / R1, P = stereo(LAT), cv = c.E.canvas(Z, Z), x = cv.getContext('2d'), sc = 0.965;
+    const px = p => [cc + p.x * cc * sc, cc - p.y * cc * sc];
+    x.fillStyle = '#fff'; x.strokeStyle = '#fff';
+    x.beginPath(); x.arc(cc, cc, R1 * k, 0, 7); x.arc(cc, cc, (R1 - 0.045) * k, 0, 7, true); x.fill('evenodd');
+    x.beginPath(); x.arc(cc, cc, (R0 + 0.04) * k, 0, 7); x.arc(cc, cc, R0 * k, 0, 7, true); x.fill('evenodd');
+    x.save(); annClip(x, cc, R0 * k, R1 * k);
+    const n = o.struts || 6; x.lineWidth = 10;
+    for (let i = 0; i < n; i++) {
+      const a = i / n * Math.PI * 2 + 0.2, p0 = [cc + R0 * k * Math.sin(a), cc - R0 * k * Math.cos(a)], p1 = [cc + R1 * k * Math.sin(a), cc - R1 * k * Math.cos(a)];
+      x.beginPath(); x.moveTo(...p0);
+      if (o.curly) { const m = [(p0[0] + p1[0]) / 2, (p0[1] + p1[1]) / 2], off = 0.12 * k; x.bezierCurveTo(m[0] + Math.cos(a) * off, m[1] + Math.sin(a) * off, m[0] - Math.cos(a) * off, m[1] - Math.sin(a) * off, ...p1); }
+      else x.lineTo(...p1);
+      x.stroke();
+    }
+    x.lineWidth = 16; x.beginPath(); for (let l = 0; l <= 360; l += 2) { const e = ecl(l), q = px(P(-e.ra, e.dec)); l ? x.lineTo(...q) : x.moveTo(...q); } x.stroke();
+    STARS.forEach(([ra, dec]) => {
+      const p = P(-ra * 15, dec), q = px(p), rr = Math.hypot(q[0] - cc, q[1] - cc) / k; if (rr < R0 + 0.1 || rr > R1 - 0.09) return;
+      const ux = (q[0] - cc) / (rr * k), uy = (q[1] - cc) / (rr * k), base = [q[0] + ux * 0.1 * k, q[1] + uy * 0.1 * k];
+      pointer(x, o.ptr, q, base, 0.022 * k);
+      x.lineWidth = 6; x.beginPath(); x.moveTo(...base); x.lineTo(cc + ux * (R1 - 0.03) * k, cc + uy * (R1 - 0.03) * k); x.stroke();
+      x.beginPath(); x.arc(q[0], q[1], 5, 0, 7); x.fill();
+    });
+    x.restore();
+    const t = new T.CanvasTexture(cv); t.anisotropy = 8; return t;
+  }
+  function limbTex(c, o) {
+    const T = c.T, Z = 1024, cc = Z / 2, k = cc / L1, cv = c.E.canvas(Z, Z), x = cv.getContext('2d');
+    x.fillStyle = o.bg; x.beginPath(); x.arc(cc, cc, L1 * k, 0, 7); x.arc(cc, cc, L0 * k, 0, 7, true); x.fill('evenodd');
+    if (o.hours) for (let h = 0; h < 24; h++) { const a0 = h / 24 * Math.PI * 2 - Math.PI / 2, a1 = (h + 1) / 24 * Math.PI * 2 - Math.PI / 2; x.fillStyle = h % 2 ? o.hours[0] : o.hours[1]; x.beginPath(); x.arc(cc, cc, (L1 - 0.02) * k, a0, a1); x.arc(cc, cc, (L0 + 0.14) * k, a1, a0, true); x.closePath(); x.fill(); }
+    x.strokeStyle = o.ink; x.fillStyle = o.ink;
+    for (let i = 0; i < 360; i++) { const a = i / 360 * Math.PI * 2, L = i % 15 === 0 ? 0.12 : i % 5 === 0 ? 0.08 : 0.045; x.lineWidth = i % 15 === 0 ? 3 : 1.5; x.beginPath(); x.moveTo(cc + (L0 + 0.01) * k * Math.sin(a), cc - (L0 + 0.01) * k * Math.cos(a)); x.lineTo(cc + (L0 + 0.01 + L) * k * Math.sin(a), cc - (L0 + 0.01 + L) * k * Math.cos(a)); x.stroke(); }
+    if (o.band) o.band(x, cc, k);
+    x.lineWidth = 3; [L0 + 0.005, L1 - 0.005].forEach(r => { x.beginPath(); x.arc(cc, cc, r * k, 0, 7); x.stroke(); });
+    const t = new T.CanvasTexture(cv); t.anisotropy = 8; return t;
+  }
+  const bandDots = col => (x, cc, k) => { x.fillStyle = col; for (let i = 0; i < 96; i++) { const a = i / 96 * Math.PI * 2, r = (L1 - 0.07) * k; x.beginPath(); x.arc(cc + r * Math.sin(a), cc - r * Math.cos(a), i % 2 ? 4 : 7, 0, 7); x.fill(); } };
+  const bandFret = col => (x, cc, k) => { x.strokeStyle = col; x.lineWidth = 3; const n = 72, r0 = (L1 - 0.12) * k, r1 = (L1 - 0.02) * k, m = (r0 + r1) / 2, p = (r, a) => [cc + r * Math.sin(a), cc - r * Math.cos(a)];
+    for (let i = 0; i < n; i++) { const a0 = i / n * Math.PI * 2, a1 = (i + 1) / n * Math.PI * 2; x.beginPath(); x.moveTo(...p(r0, a0)); x.lineTo(...p(r1, a0)); x.lineTo(...p(r1, a0 + (a1 - a0) * 0.72)); x.lineTo(...p(m, a0 + (a1 - a0) * 0.72)); x.lineTo(...p(m, a0 + (a1 - a0) * 0.36)); x.stroke(); } };
+  const bandWave = col => (x, cc, k) => { x.strokeStyle = col; x.lineWidth = 3; x.beginPath(); for (let i = 0; i <= 720; i++) { const a = i / 720 * Math.PI * 2, r = ((L1 - 0.07) + 0.025 * Math.sin(a * 48)) * k; const q = [cc + r * Math.sin(a), cc - r * Math.cos(a)]; i ? x.lineTo(...q) : x.moveTo(...q); } x.stroke(); };
+
+  // ---------- kit ----------
+  function plateMesh(c, tex, r0, r1, mat) { const m = new c.T.Mesh(new c.T.RingGeometry(r0, r1, 192, 1), mat); m.material.map = tex; m.material.needsUpdate = true; return m; }
+  function throne(c, kind, mat) {
+    const T = c.T, s = new T.Shape(), w = 0.42, h = 0.62, holes = [];
+    if (kind === 'arabesque') { s.moveTo(-w, 0); s.bezierCurveTo(-w, h * 0.5, -w * 0.4, h * 0.55, -w * 0.35, h * 0.75); s.quadraticCurveTo(-w * 0.2, h * 1.05, 0, h); s.quadraticCurveTo(w * 0.2, h * 1.05, w * 0.35, h * 0.75); s.bezierCurveTo(w * 0.4, h * 0.55, w, h * 0.5, w, 0); s.lineTo(-w, 0); holes.push([-0.17, 0.22, 0.06], [0.17, 0.22, 0.06], [0, 0.4, 0.07]); }
+    else if (kind === 'stepped') { [[-w, 0], [-w, h * 0.3], [-w * 0.7, h * 0.3], [-w * 0.7, h * 0.6], [-w * 0.4, h * 0.6], [-w * 0.4, h * 0.9], [w * 0.4, h * 0.9], [w * 0.4, h * 0.6], [w * 0.7, h * 0.6], [w * 0.7, h * 0.3], [w, h * 0.3], [w, 0]].forEach(([a, b], i) => i ? s.lineTo(a, b) : s.moveTo(a, b)); holes.push([0, 0.42, 0.08]); }
+    else if (kind === 'plain') { s.moveTo(-w * 0.55, 0); s.lineTo(-w * 0.55, h * 0.4); s.absarc(0, h * 0.4, w * 0.55, Math.PI, 0, true); s.lineTo(w * 0.55, 0); holes.push([0, 0.4, 0.1]); }
+    else { s.moveTo(-w, 0); s.lineTo(-w, h * 0.35); s.quadraticCurveTo(-w, h * 0.8, 0, h * 1.1); s.quadraticCurveTo(w, h * 0.8, w, h * 0.35); s.lineTo(w, 0); holes.push([-0.15, 0.25, 0.06], [0.15, 0.25, 0.06], [0, 0.55, 0.07]); }
+    s.closePath(); holes.forEach(([a, b, r]) => { const p = new T.Path(); p.absarc(a, b, r, 0, Math.PI * 2, true); s.holes.push(p); });
+    const g = new T.ExtrudeGeometry(s, { depth: 0.1, bevelEnabled: true, bevelSize: 0.015, bevelThickness: 0.015, bevelSegments: 2 }); g.translate(0, 0, -0.05);
+    const grp = new T.Group(); grp.position.y = L1 - 0.12; grp.add(new T.Mesh(g, mat));
+    const top = kind === 'gothic' ? h * 1.1 : kind === 'stepped' ? h * 0.9 : h;
+    const shackle = new T.Mesh(new T.TorusGeometry(0.11, 0.032, 12, 32), mat); shackle.rotation.y = Math.PI / 2; shackle.position.y = top + 0.06; grp.add(shackle);
+    const ring = new T.Mesh(new T.TorusGeometry(0.24, 0.04, 14, 48), mat); ring.position.y = top + 0.36; grp.add(ring);
+    c.root.add(grp); c.fade(grp, 0.6, new T.Vector3(0, 0.4, 0)); return { g: grp, top: top + 0.6 };
+  }
+  function alidade(c, mat, pinMat) {
+    const T = c.T, g = new T.Group(); g.position.z = -0.17; c.root.add(g);
+    const hub = new T.Mesh(new T.TorusGeometry(R0 + 0.06, 0.03, 10, 96), mat); g.add(hub);
+    [1, -1].forEach(s => {
+      const a = new T.Group(); g.add(a);
+      const bar = new T.Mesh(new T.BoxGeometry(0.08, L1 + 0.22 - (R0 + 0.06), 0.03), mat); bar.position.y = s * ((L1 + 0.22 + R0 + 0.06) / 2); a.add(bar);
+      const pin = new T.Group(); pin.position.y = s * (L1 + 0.1); a.add(pin);
+      const plate = new T.Mesh(new T.BoxGeometry(0.24, 0.03, 0.3), pinMat); plate.position.z = -0.13; pin.add(plate);
+      const hole = new T.Mesh(new T.TorusGeometry(0.045, 0.012, 8, 20), mat); hole.rotation.x = Math.PI / 2; hole.position.z = -0.17; pin.add(hole);
+      c.fade(a, 0.9, new T.Vector3(0, s * 1.8, 0));
+    });
+    return g;
+  }
+  function pinHorse(c, mat, kind) {
+    const T = c.T, g = new T.Group(); c.root.add(g);
+    [1, -1].forEach(s => { const p = new T.Mesh(new T.CylinderGeometry(0.035, 0.035, 0.62, 12), mat); p.position.y = s * 1.12; g.add(p); });
+    const knob = new T.Mesh(new T.SphereGeometry(0.06, 16, 8), mat); knob.position.y = -1.46; g.add(knob);
+    const sh = new T.Shape();
+    if (kind === 'feather') { sh.moveTo(-0.06, 0); sh.lineTo(0.06, 0); sh.lineTo(0.12, 0.22); sh.lineTo(0.03, 0.14); sh.lineTo(0, 0.3); sh.lineTo(-0.03, 0.14); sh.lineTo(-0.12, 0.22); }
+    else { sh.moveTo(-0.05, 0); sh.lineTo(0.06, 0); sh.lineTo(0.08, 0.12); sh.lineTo(0.16, 0.18); sh.lineTo(0.15, 0.24); sh.lineTo(0.06, 0.24); sh.lineTo(0.02, 0.32); sh.lineTo(-0.02, 0.26); sh.lineTo(-0.06, 0.12); }
+    sh.closePath();
+    const horse = new T.Mesh(new T.ExtrudeGeometry(sh, { depth: 0.05, bevelEnabled: true, bevelSize: 0.01, bevelThickness: 0.01 }), mat); horse.geometry.translate(0, 0, -0.025); horse.position.y = 1.42; g.add(horse);
+    c.fade(g, 0.4, new T.Vector3(0, 1.3, 0)); return { g: g, horse: horse };
+  }
+  function core(c, o) {
+    const T = c.T, M = c.M, metal = new T.MeshStandardMaterial({ color: o.metal, metalness: 1, roughness: 0.32 });
+    const tymp = plateMesh(c, tympanTex(c, o.tymp), R0, R1, new T.MeshStandardMaterial({ transparent: true, alphaTest: 0.25, side: T.DoubleSide, metalness: 0.3, roughness: 0.5, emissive: 0xffffff, emissiveIntensity: 0.25 }));
+    tymp.material.emissiveMap = tymp.material.map; c.root.add(tymp);
+    const rete = new T.Group(); rete.position.z = 0.03; c.root.add(rete);
+    rete.add(plateMesh(c, reteTex(c, o.rete), R0, R1, new T.MeshStandardMaterial({ color: o.reteColor || o.metal, metalness: 1, roughness: 0.28, alphaTest: 0.5, side: T.DoubleSide })));
+    const limb = new T.Group(); c.root.add(limb);
+    limb.add(plateMesh(c, limbTex(c, o.limb), L0, L1, new T.MeshStandardMaterial({ metalness: 0.5, roughness: 0.4, side: T.DoubleSide, transparent: true })));
+    [L0 - 0.01, L1 + 0.01].forEach((r, i) => limb.add(new T.Mesh(new T.TorusGeometry(r, i ? 0.05 : 0.03, 14, 220), metal)));
+    [0.045, -0.045].forEach(z => limb.add(c.St.bolts(L1 + 0.01, 48, z, M.brassDark, 0.016)));
+    const th = throne(c, o.throne, metal), al = alidade(c, metal, o.pinMat || metal), ph = pinHorse(c, metal, o.horse);
+    c.anim((dt, t, u) => { rete.rotation.z -= dt * (0.05 + u * 0.12); al.rotation.z += dt * (0.08 + u * 0.1); ph.horse.rotation.y = Math.sin(t * 0.8) * 0.4; });
+    return { metal: metal, rete: rete, limb: limb, throne: th, alidade: al };
+  }
+  function segRing(c, r, tube, mat, n, parent, rotFn) {
+    const T = c.T, out = [];
+    for (let i = 0; i < n; i++) {
+      const g = new T.Group(); parent.add(g);
+      const m = new T.Mesh(new T.TorusGeometry(r, tube, 8, 12, Math.PI * 2 / n + 0.01), mat); m.rotation.z = i / n * Math.PI * 2; g.add(m);
+      const a = (i + 0.5) / n * Math.PI * 2; c.fade(g, Math.PI * r / n + tube, new T.Vector3(r * Math.cos(a), r * Math.sin(a), 0).applyEuler(m.rotation.clone().set(0, 0, 0)));
+      out.push(g);
+    }
+    return out;
+  }
+  function swing(c, ax, amp, f) { c.anim((dt, t) => { c.root.rotation[ax] = amp * Math.sin(t * f); }); }
+
+  const DISC = {
+    jade: { rim: '#11130e', monthBg: '#173a2d', monthAlt: '#1f4a39', monthSel: '#ff9f1c', monthSelInk: '#11130e', ink: '#f1e6cc', dayBg: '#0f0f0c', cell: '#2a2e24', past: '#1a1c16', dayInk: '#d9a75a', line: '#d9a75a', markOpen: '#f6e7b8' },
+    indigo: { rim: '#120f1f', monthBg: '#1e1a3a', monthAlt: '#26214a', monthSel: '#ff9f1c', monthSelInk: '#120f1f', ink: '#f3e8cf', dayBg: '#0c0a16', cell: '#2a2640', past: '#16132a', dayInk: '#e3c06c', line: '#c9a24a', markOpen: '#f3e8cf' },
+    mar: { rim: '#0b1a22', monthBg: '#12303d', monthAlt: '#173a4a', monthSel: '#ff9f1c', monthSelInk: '#0b1a22', ink: '#e8f1f4', dayBg: '#08141a', cell: '#1c2f38', past: '#101d24', dayInk: '#d6a86a', line: '#b9874a', markOpen: '#e8f1f4' },
+    cobre: { rim: '#0d1c1a', monthBg: '#14332e', monthAlt: '#1b4039', monthSel: '#ff9f1c', monthSelInk: '#0d1c1a', ink: '#e9f2ee', dayBg: '#0a1514', cell: '#1f312e', past: '#121d1b', dayInk: '#9fe0cf', line: '#c47a45', markOpen: '#e9f2ee' },
+    orloj: { rim: '#0a0f24', monthBg: '#132357', monthAlt: '#1a2c66', monthSel: '#ff9f1c', monthSelInk: '#0a0f24', ink: '#f6ecd0', dayBg: '#070b1a', cell: '#1b2547', past: '#10162e', dayInk: '#e6c46a', line: '#d4af37', markOpen: '#f6ecd0' }
+  };
+
+  G.ASTRO5 = {
+    serpente: {
+      rimMat: 'brass', plateBorder: '#d9a75a', disc: DISC.jade,
+      build(c) {
+        const { T, M, St } = c, gold = new T.MeshStandardMaterial({ color: 0xd8b04a, metalness: 1, roughness: 0.3 });
+        core(c, { metal: 0xb08a3e, reteColor: 0xd8b04a, throne: 'stepped', horse: 'feather', pinMat: M.obsidian,
+          tymp: { line: '#4cc3b2' }, rete: { ptr: 'feather', struts: 4 }, limb: { bg: '#123528', ink: '#d9a75a', band: bandFret('#4cc3b2') } });
+        [1, -1].forEach(s => { const g = new T.Group(); g.position.set(s * 0.72, L1 + 0.12, 0); c.root.add(g); const gr = St.gear({ teeth: s > 0 ? 20 : 13, r: s > 0 ? 0.26 : 0.2, th: 0.05, depth: 0.06, hole: 0.03, spokes: 4, mat: s > 0 ? M.brass : M.copper }); g.add(gr); c.fade(g, 0.3); c.anim((dt, t, u) => { g.rotation.z += s * dt * (0.4 + u); }); });
+        const segs = [], N = 64, R = L1 + 0.16;
+        for (let i = 0; i < N; i++) {
+          const k = 1 - i / (N + 8), g = new T.Group(); c.root.add(g);
+          const b = new T.Mesh(new T.CylinderGeometry(0.1 * k, 0.11 * k, 0.13, 8), i % 3 === 0 ? M.copper : M.jade); b.rotation.x = Math.PI / 2; g.add(b);
+          if (i % 2 === 0) { const f = new T.Mesh(new T.OctahedronGeometry(0.055 * k), i % 4 ? M.turq : gold); f.position.y = 0.11 * k; f.scale.set(1, 0.6, 1.6); g.add(f); }
+          c.fade(g, 0.14); segs.push(g);
+        }
+        const head = new T.Group(); c.root.add(head);
+        const sk = new T.Mesh(new T.ConeGeometry(0.15, 0.38, 6), M.copper); sk.rotation.x = Math.PI / 2; sk.position.z = 0.14; head.add(sk);
+        const eye = new T.MeshStandardMaterial({ color: 0x3ee6ff, emissive: 0x3ee6ff, emissiveIntensity: 2.2 });
+        [-1, 1].forEach(s => { const e = new T.Mesh(new T.SphereGeometry(0.035, 12, 8), eye); e.position.set(s * 0.08, 0.06, 0.08); head.add(e); });
+        for (let i = 0; i < 7; i++) { const f = new T.Mesh(new T.BoxGeometry(0.05, 0.26, 0.012), i % 2 ? M.turq : gold); const a = (i - 3) * 0.32; f.position.set(Math.sin(a) * 0.16, 0.12 + Math.cos(a) * 0.1, -0.06); f.rotation.z = -a; head.add(f); }
+        c.fade(head, 0.35);
+        const path = s => { const a = s * Math.PI * 2; return new T.Vector3(R * Math.sin(a), R * Math.cos(a), 0.12 * Math.sin(a * 9)); };
+        let s0 = 0.08;
+        c.anim((dt, t, u) => {
+          s0 += dt * (0.008 + u * 0.03);
+          segs.forEach((g, i) => { const s = s0 - i * 0.0128; g.position.copy(path(s)); g.lookAt(path(s + 0.003)); });
+          head.position.copy(path(s0 + 0.014)); head.lookAt(path(s0 + 0.02));
+          const st = c.status(); eye.color.setHex(st === 'deadline' ? 0xff3d1f : st === 'last5' ? 0xff9f1c : 0x3ee6ff); eye.emissive.copy(eye.color);
+        });
+      }
+    },
+    andaluz: {
+      rimMat: 'brass', plateBorder: '#e3c06c', disc: DISC.indigo,
+      build(c) {
+        const { T, M } = c, A = core(c, { metal: 0xc9a24a, throne: 'arabesque', horse: 'horse',
+          tymp: { line: '#e3c06c' }, rete: { ptr: 'flame', struts: 6, curly: true }, limb: { bg: '#1c1838', ink: '#e3c06c', band: bandDots('#e3c06c') } });
+        const cres = new T.Mesh(new T.TorusGeometry(0.16, 0.035, 10, 40, Math.PI * 1.3), A.metal); cres.rotation.z = -0.25 * Math.PI; cres.position.y = A.throne.g.position.y + A.throne.top + 0.15; c.root.add(cres); c.fade(cres, 0.2);
+        const tas = new T.Group(); tas.position.y = -L1 - 0.06; c.root.add(tas);
+        const cord = new T.Mesh(new T.CylinderGeometry(0.012, 0.012, 0.55, 6), new T.MeshStandardMaterial({ color: 0x8c1d2a, roughness: 0.8 })); cord.position.y = -0.27; tas.add(cord);
+        const knot = new T.Mesh(new T.SphereGeometry(0.07, 16, 10), M.brass); knot.position.y = -0.58; tas.add(knot);
+        const fr = new T.Mesh(new T.ConeGeometry(0.13, 0.36, 24, 1, true), new T.MeshStandardMaterial({ color: 0x8c1d2a, roughness: 0.9, side: T.DoubleSide })); fr.position.y = -0.82; tas.add(fr);
+        c.fade(tas, 0.5, new T.Vector3(0, -0.5, 0));
+        c.anim((dt, t, u) => { tas.rotation.z = 0.25 * Math.sin(t * 1.3); tas.rotation.x = 0.12 * Math.sin(t * 0.9); });
+        swing(c, 'z', 0.035, 0.7);
+      }
+    },
+    nautico: {
+      rimMat: 'copper', plateBorder: '#d6a86a', disc: DISC.mar,
+      build(c) {
+        const { T, M } = c, A = core(c, { metal: 0x9c6b3a, throne: 'plain', horse: 'horse',
+          tymp: { line: '#9fd0e0' }, rete: { ptr: 'compass', struts: 8 }, limb: { bg: '#0f2a36', ink: '#d6a86a', band: bandWave('#9fd0e0') } });
+        const heavy = new T.Mesh(new T.TorusGeometry(L1 + 0.02, 0.11, 16, 64, Math.PI * 0.55), A.metal); heavy.rotation.z = Math.PI * 1.225; c.root.add(heavy);
+        for (let i = 0; i < 4; i++) { const a = i * Math.PI / 2, sp = new T.Mesh(new T.BoxGeometry(0.09, L0 - 1.44, 0.07), A.metal); sp.position.set(Math.sin(a) * (L0 + 1.44) / 2, Math.cos(a) * (L0 + 1.44) / 2, -0.09); sp.rotation.z = -a; c.root.add(sp); }
+        const ropeTex = (() => { const cv = c.E.canvas(32, 256), x = cv.getContext('2d'); for (let i = 0; i < 32; i++) { x.fillStyle = i % 2 ? '#c8a874' : '#8c6f44'; x.save(); x.translate(0, i * 8); x.transform(1, 0.5, 0, 1, 0, 0); x.fillRect(-16, 0, 64, 8); x.restore(); } const t = new T.CanvasTexture(cv); t.wrapT = T.RepeatWrapping; t.repeat.set(1, 4); return t; })();
+        const ty = A.throne.g.position.y + A.throne.top;
+        const rope = new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3([new T.Vector3(0, ty, 0), new T.Vector3(0.15, ty + 0.5, 0.05), new T.Vector3(0, ty + 1.0, 0)]), 24, 0.035, 8), new T.MeshStandardMaterial({ map: ropeTex, roughness: 0.9 })); c.root.add(rope); c.fade(rope, 0.4, new T.Vector3(0, ty + 0.5, 0));
+        const gim = new T.Group(); c.root.add(gim);
+        const g1 = new T.Group(); gim.add(g1); g1.rotation.y = Math.PI / 2; segRing(c, 2.9, 0.035, M.brass, 24, g1);
+        const g2 = new T.Group(); g1.add(g2); segRing(c, 2.8, 0.028, M.copper, 24, g2);
+        c.anim((dt, t, u) => { gim.rotation.y += dt * 0.12; g2.rotation.x += dt * (0.2 + u * 0.3); c.root.rotation.z = 0.05 * Math.sin(t * 0.9); c.root.rotation.x = 0.03 * Math.sin(t * 0.7); });
+      }
+    },
+    esferico: {
+      rimMat: 'brass', plateBorder: '#e3c06c', disc: DISC.cobre,
+      build(c) {
+        const { T, M } = c, metal = new T.MeshStandardMaterial({ color: 0xb58a42, metalness: 1, roughness: 0.3 }), gold = new T.MeshStandardMaterial({ color: 0xd8b04a, metalness: 1, roughness: 0.28 });
+        const limb = new T.Group(); limb.rotation.x = Math.PI / 2; c.root.add(limb);
+        limb.add(new T.Mesh(new T.RingGeometry(L0 + 0.06, L1 + 0.1, 192, 1), new T.MeshStandardMaterial({ map: limbTex(c, { bg: '#13302b', ink: '#e3c06c', band: bandDots('#9fe0cf') }), metalness: 0.5, roughness: 0.4, side: T.DoubleSide, transparent: true })));
+        segRing(c, L1 + 0.12, 0.05, metal, 32, limb);
+        const mer = new T.Group(); c.root.add(mer); mer.rotation.y = Math.PI / 2; segRing(c, L1 + 0.12, 0.045, metal, 32, mer);
+        const th = throne(c, 'arabesque', metal); th.g.position.y = L1 + 0.1;
+        const cage = new T.Group(); cage.rotation.x = (LAT - 90) * D2R; c.root.add(cage); const sky = new T.Group(); cage.add(sky);
+        const Rc = 1.08;
+        [0, 45, 90, 135].forEach(a => { const g = new T.Group(); g.rotation.y = a * D2R; sky.add(g); segRing(c, Rc, 0.014, metal, 20, g); });
+        const ec = new T.Group(); ec.rotation.x = Math.PI / 2; const ecT = new T.Group(); ecT.rotation.z = EPS * D2R; ecT.add(ec); sky.add(ecT); segRing(c, Rc + 0.01, 0.026, gold, 24, ec);
+        STARS.forEach(([ra, dec]) => {
+          const g = new T.Group(); sky.add(g); const H = -ra * 15 * D2R, d = dec * D2R, dir = new T.Vector3(-Math.cos(d) * Math.sin(H), Math.sin(d), Math.cos(d) * Math.cos(H));
+          const sp = new T.Mesh(new T.ConeGeometry(0.03, 0.2, 6), gold); sp.position.copy(dir.clone().multiplyScalar(Rc - 0.09)); sp.quaternion.setFromUnitVectors(new T.Vector3(0, -1, 0), dir); g.add(sp); c.fade(g, 0.12, sp.position.clone());
+        });
+        const tymp = new T.Group(); c.root.add(tymp);
+        [[0, 1.0], [0.42, 0.91], [0.74, 0.66]].forEach(([y, r]) => [1, -1].forEach(s => { if (!y && s < 0) return; const g = new T.Group(); g.rotation.x = Math.PI / 2; g.position.y = s * y; tymp.add(g); segRing(c, r, 0.01, M.copper, 16, g); }));
+        const ali = new T.Group(); c.root.add(ali);
+        const arcG = new T.Group(); ali.add(arcG); const arc = new T.Mesh(new T.TorusGeometry(L1 + 0.32, 0.03, 8, 64, Math.PI), metal); arcG.add(arc); c.fade(arcG, 1.5, new T.Vector3(0, 1.6, 0));
+        [0, Math.PI].forEach(a => { const p = new T.Group(); p.position.set((L1 + 0.32) * Math.cos(a), 0, 0); ali.add(p); const pl = new T.Mesh(new T.BoxGeometry(0.03, 0.26, 0.22), metal); p.add(pl); const h = new T.Mesh(new T.TorusGeometry(0.04, 0.012, 8, 20), gold); h.rotation.y = Math.PI / 2; h.position.x = 0.02; p.add(h); c.fade(p, 0.2); });
+        const ph = pinHorse(c, metal, 'horse');
+        c.anim((dt, t, u) => { sky.rotation.y -= dt * (0.06 + u * 0.15); ali.rotation.y += dt * (0.1 + u * 0.1); ph.horse.rotation.y = Math.sin(t * 0.8) * 0.4; });
+      }
+    },
+    orloj: {
+      rimMat: 'brass', plateBorder: '#d4af37', disc: DISC.orloj,
+      build(c) {
+        const { T, M, St } = c, A = core(c, { metal: 0xd4af37, throne: 'gothic', horse: 'horse',
+          tymp: { line: '#f6ecd0', zones: { night: '#0b0b12', dusk: '#3a1a10', dawn: '#a8521e', day: '#2f66b8' } }, rete: { ptr: 'gothic', struts: 4 }, limb: { bg: '#0d1430', ink: '#d4af37', hours: ['#d4af37', '#151a33'] } });
+        const zod = new T.Group(); zod.position.z = 0.06; c.root.add(zod);
+        const zr = new T.Mesh(new T.TorusGeometry(1.05, 0.03, 10, 120), A.metal); zr.position.y = 0.26; zod.add(zr);
+        for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2, s = new T.Mesh(new T.OctahedronGeometry(0.035), new T.MeshStandardMaterial({ color: 0x9fd0ff, metalness: 0.4, roughness: 0.2 })); s.position.set(1.05 * Math.sin(a), 0.26 + 1.05 * Math.cos(a), 0); zod.add(s); }
+        const sun = new T.Group(); zod.add(sun);
+        const sb = new T.Mesh(new T.SphereGeometry(0.09, 24, 12), new T.MeshStandardMaterial({ color: 0xffd36b, emissive: 0xffb340, emissiveIntensity: 1.6 })); sun.add(sb);
+        for (let i = 0; i < 12; i++) { const r = new T.Mesh(new T.ConeGeometry(0.02, 0.09, 4), A.metal); const a = i / 12 * Math.PI * 2; r.position.set(0.13 * Math.sin(a), 0.13 * Math.cos(a), 0); r.rotation.z = -a; sun.add(r); }
+        const moon = new T.Group(); c.root.add(moon); moon.position.z = 0.08;
+        const mh = new T.Mesh(new T.SphereGeometry(0.075, 24, 12, 0, Math.PI), new T.MeshStandardMaterial({ color: 0xdfe4ee, metalness: 0.6, roughness: 0.3 })); moon.add(mh);
+        const md = new T.Mesh(new T.SphereGeometry(0.075, 24, 12, Math.PI, Math.PI), new T.MeshStandardMaterial({ color: 0x111111, roughness: 0.6 })); moon.add(md);
+        const pin1 = new T.Group(), pin2 = new T.Group(); c.root.add(pin1, pin2); pin1.position.z = pin2.position.z = 0.04;
+        [1, 2].forEach(i => { const sp = new T.Mesh(new T.ConeGeometry(0.05, 0.3, 4), A.metal); sp.position.set(i === 1 ? -0.36 : 0.36, A.throne.g.position.y + 0.55, 0); c.root.add(sp); c.fade(sp, 0.2); });
+        const train = new T.Group(); train.position.y = -L1 - 0.55; c.root.add(train);
+        const specs = [[-0.75, 0, 18, 0.32, M.brass], [-0.18, 0.12, 12, 0.22, M.copper], [0.4, -0.02, 24, 0.4, M.brassDark], [1.0, 0.18, 10, 0.18, M.brass]];
+        const gs = specs.map(([x, y, n, r, mat], i) => { const g = new T.Group(); g.position.set(x, y, 0); train.add(g); g.add(St.gear({ teeth: n, r: r, th: 0.05, depth: 0.06, hole: 0.03, spokes: n > 12 ? 5 : 3, mat: mat })); return { g: g, n: n, d: i % 2 ? -1 : 1 }; });
+        const bal = new T.Group(); bal.position.set(0, -0.62, 0.02); train.add(bal);
+        bal.add(new T.Mesh(new T.TorusGeometry(0.24, 0.022, 10, 48), A.metal)); const sp2 = new T.Mesh(new T.BoxGeometry(0.48, 0.02, 0.02), A.metal); bal.add(sp2);
+        c.fade(train, 1.3, new T.Vector3(0.1, -0.1, 0));
+        let tick = 0, tk = 0;
+        c.anim((dt, t, u) => {
+          zod.rotation.z -= dt * (0.04 + u * 0.1); sun.position.set(1.05 * Math.sin(t * 0.21), 0.26 + 1.05 * Math.cos(t * 0.21), 0.02);
+          const ma = t * 0.13; moon.position.set(1.22 * Math.sin(ma), 1.22 * Math.cos(ma), 0.08); moon.rotation.y = t * 0.3;
+          bal.rotation.z = 1.1 * Math.sin(t * (4 + u * 4));
+          tk += dt; if (tk > 0.5 - u * 0.3) { tk = 0; tick += 1; }
+          const step = tick * 0.12 + Math.min(1, tk * 12) * 0.12; gs.forEach(o => { o.g.rotation.z = o.d * step * 18 / o.n; });
+        });
+      }
+    }
+  };
+  // a deep-blue starry planet for the Orloj and spherical models
+  if (G.ESTILOS) G.ESTILOS.noturno = {
+    planet: (x, W, H) => { let s = 9; const r = () => { s = (s * 16807) % 2147483647; return s / 2147483647; }; const g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#0a1230'); g.addColorStop(0.5, '#16246a'); g.addColorStop(1, '#0a1230'); x.fillStyle = g; x.fillRect(0, 0, W, H); for (let i = 0; i < 260; i++) { x.fillStyle = 'rgba(255,230,160,' + (0.3 + r() * 0.7) + ')'; x.beginPath(); x.arc(r() * W, r() * H, r() * 1.8 + 0.4, 0, 7); x.fill(); } },
+    text: { ink: '#fff3d6', sub: '#f0c96a', glow: '#3b6cff' }
+  };
+})(window);
+</script>
+<script>(function (G) {
+  'use strict';
+  let T = null;
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  const tmp = {};
+  function V(x, y, z) { return new T.Vector3(x, y, z); }
+
+  // ---------- autonomous agent ----------
+  function agent(obj, o) {
+    o = o || {};
+    const s = []; for (let i = 0; i < 10; i++) s.push(i % 2 ? rnd(0, 6.28) : rnd(0.15, 0.6) * (o.freq || 1));
+    const r = rnd(o.rmin || 2.5, o.rmax || 3.9), th = rnd(0, 6.28), ph = rnd(-0.9, 0.9);
+    obj.position.set(r * Math.cos(ph) * Math.sin(th), r * Math.sin(ph) * 0.8, -Math.abs(r * Math.cos(ph) * Math.cos(th)) * rnd(0.3, 1));
+    return { obj: obj, pos: obj.position, vel: V(rnd(-1, 1), rnd(-0.5, 0.5), rnd(-1, 1)).multiplyScalar(0.3), max: o.max || 0.6, wand: o.wand || 0.9,
+      rmin: o.rmin || 2.4, rmax: o.rmax || 4.2, ymax: o.ymax || 3.2, s: s, face: o.face !== false, fwd: o.fwd || V(0, 0, 1), turn: o.turn || 4, extra: o.extra, guard: o.guard || 2.65 };
+  }
+  function step(list, dt, t, u, cam) {
+    if (!tmp.a) { tmp.a = V(0, 0, 0); tmp.v = V(0, 0, 0); tmp.r = V(0, 0, 0); tmp.q = new T.Quaternion(); tmp.d = V(0, 0, 0); }
+    const cp = cam.position, cd = cp.length(), fwd = tmp.d.copy(cp).negate().normalize();
+    list.forEach(A => {
+      const s = A.s, acc = tmp.a.set(Math.sin(t * s[0] + s[1]) + 0.6 * Math.sin(t * s[2] + s[3]), 0.7 * Math.sin(t * s[4] + s[5]), Math.sin(t * s[6] + s[7]) + 0.6 * Math.sin(t * s[8] + s[9])).multiplyScalar(A.wand);
+      const r = A.pos.length();
+      if (r > A.rmax) acc.addScaledVector(A.pos, -(r - A.rmax) * 2.5 / r);
+      if (r < A.rmin) acc.addScaledVector(A.pos, (A.rmin - r) * 3.5 / r);
+      if (Math.abs(A.pos.y) > A.ymax) acc.y -= Math.sign(A.pos.y) * (Math.abs(A.pos.y) - A.ymax) * 3;
+      const v = tmp.v.copy(A.pos).sub(cp), along = v.dot(fwd);
+      if (along > 0.5 && along < cd + 0.8) {
+        const rad = tmp.r.copy(v).addScaledVector(fwd, -along), rl = rad.length(), sr = rl * cd / along;
+        if (sr < A.guard) { if (rl < 1e-3) rad.set(1, 0, 0); else rad.multiplyScalar(1 / rl); acc.addScaledVector(rad, (A.guard - sr) * 5).addScaledVector(fwd, 1.2); }
+      }
+      if (A.extra) A.extra(acc, A, dt, t, u);
+      A.vel.addScaledVector(acc, dt);
+      const sp = A.vel.length(), mx = A.max * (0.7 + u * 0.8); if (sp > mx) A.vel.multiplyScalar(mx / sp);
+      A.pos.addScaledVector(A.vel, dt);
+      if (A.face && sp > 1e-3) { tmp.q.setFromUnitVectors(A.fwd, tmp.v.copy(A.vel).normalize()); A.obj.quaternion.slerp(tmp.q, Math.min(1, dt * A.turn)); }
+    });
+  }
+  function chain(head, segs, gap) {
+    let prev = head.position;
+    segs.forEach(g => { const d = g.position.clone().sub(prev), l = d.length() || 1; g.position.copy(prev).addScaledVector(d, gap / l); g.lookAt(prev); prev = g.position; });
+  }
+  const gold = () => new T.MeshStandardMaterial({ color: 0xd8b04a, metalness: 1, roughness: 0.3 });
+  const glowMat = col => new T.MeshStandardMaterial({ color: col, emissive: col, emissiveIntensity: 2 });
+
+  const DISC = {
+    noite: { rim: '#0a0f24', monthBg: '#132357', monthAlt: '#1a2c66', monthSel: '#ff9f1c', monthSelInk: '#0a0f24', ink: '#f6ecd0', dayBg: '#070b1a', cell: '#1b2547', past: '#10162e', dayInk: '#e6c46a', line: '#d4af37', markOpen: '#f6ecd0' },
+    jade: { rim: '#11130e', monthBg: '#173a2d', monthAlt: '#1f4a39', monthSel: '#ff9f1c', monthSelInk: '#11130e', ink: '#f1e6cc', dayBg: '#0f0f0c', cell: '#2a2e24', past: '#1a1c16', dayInk: '#d9a75a', line: '#d9a75a', markOpen: '#f6e7b8' },
+    latao: { rim: '#17110b', monthBg: '#2e2214', monthAlt: '#3a2b18', monthSel: '#ff9f1c', monthSelInk: '#17110b', ink: '#f3e3c0', dayBg: '#120d08', cell: '#2f261b', past: '#1b150f', dayInk: '#e2b768', line: '#c9954a', markOpen: '#f3e3c0' },
+    mar: { rim: '#0b1a22', monthBg: '#12303d', monthAlt: '#173a4a', monthSel: '#ff9f1c', monthSelInk: '#0b1a22', ink: '#e8f1f4', dayBg: '#08141a', cell: '#1c2f38', past: '#101d24', dayInk: '#d6a86a', line: '#b9874a', markOpen: '#e8f1f4' }
+  };
+
+  G.VIDA = {
+    // 1 — the rete's star pointers set free as a flock
+    revoada: {
+      rimMat: 'brass', plateBorder: '#e3c06c', disc: DISC.noite,
+      build(c) {
+        T = c.T; const g = gold(), star = glowMat(0xfff1b0), flames = [];
+        const sh = new T.Shape(); sh.moveTo(0, 0.32); sh.quadraticCurveTo(0.11, 0.08, 0.06, -0.06); sh.quadraticCurveTo(0, -0.12, -0.06, -0.06); sh.quadraticCurveTo(-0.11, 0.08, 0, 0.32);
+        const hole = new T.Path(); hole.absarc(0, 0.0, 0.025, 0, Math.PI * 2, true); sh.holes.push(hole);
+        const geo = new T.ExtrudeGeometry(sh, { depth: 0.025, bevelEnabled: true, bevelSize: 0.01, bevelThickness: 0.01, bevelSegments: 2 }); geo.translate(0, -0.1, -0.012);
+        const make = k => { const o = new T.Group(); const m = new T.Mesh(geo, g); o.add(m); const s = new T.Mesh(new T.OctahedronGeometry(0.035), star); s.position.y = 0.23; o.add(s); o.scale.setScalar(k); c.root.add(o); c.fade(o, 0.22 * k); return o; };
+        for (let i = 0; i < 30; i++) flames.push(agent(make(rnd(0.8, 1.3)), { max: 0.9, wand: 0.7, fwd: V(0, 1, 0), turn: 5 }));
+        const comets = [0, 1].map(() => { const o = make(2.0), A = agent(o, { max: 1.4, wand: 1.4, fwd: V(0, 1, 0), rmin: 2.8, rmax: 4.4 }); A.trail = []; for (let i = 0; i < 14; i++) { const s = c.E.glow(0xffe08a, 0.35 * (1 - i / 16)); c.root.add(s); A.trail.push({ s: s, p: o.position.clone() }); } return A; });
+        flames.forEach(A => { A.extra = acc => {
+          let n = 0; const coh = V(0, 0, 0), ali = V(0, 0, 0), sep = V(0, 0, 0);
+          flames.forEach(B => { if (B === A) return; const d = A.pos.distanceTo(B.pos); if (d < 1.1) { n++; coh.add(B.pos); ali.add(B.vel); if (d < 0.35) sep.addScaledVector(A.pos.clone().sub(B.pos), (0.35 - d) * 12); } });
+          if (n) { coh.multiplyScalar(1 / n).sub(A.pos).multiplyScalar(0.6); ali.multiplyScalar(1 / n).sub(A.vel).multiplyScalar(0.8); acc.add(coh).add(ali); } acc.add(sep);
+        }; });
+        c.anim((dt, t, u) => {
+          const cam = c.cam(); if (!cam) return; step(flames.concat(comets), dt, t, u, cam);
+          flames.forEach(A => { A.obj.children[1].rotation.y += dt * 3; });
+          comets.forEach(A => { A.trail.unshift(A.trail.pop()); A.trail[0].p.copy(A.pos); A.trail.forEach((tr, i) => { tr.s.position.lerp(tr.p, 1); if (i) tr.s.position.copy(A.trail[i].p); }); });
+        });
+      }
+    },
+    // 2 — three free-roaming feathered serpents
+    serpentes: {
+      rimMat: 'brass', plateBorder: '#d9a75a', disc: DISC.jade,
+      build(c) {
+        T = c.T; const M = c.M, g = gold(), list = [];
+        [[38, 1.0, M.jade, M.copper], [28, 0.8, M.copper, M.jade], [22, 0.65, M.turq, g]].forEach(([n, k, m1, m2]) => {
+          const head = new T.Group(); c.root.add(head);
+          const sk = new T.Mesh(new T.ConeGeometry(0.13 * k, 0.36 * k, 6), M.copper); sk.rotation.x = Math.PI / 2; sk.position.z = 0.12 * k; head.add(sk);
+          const eye = glowMat(0x3ee6ff); [-1, 1].forEach(s => { const e = new T.Mesh(new T.SphereGeometry(0.03 * k, 10, 6), eye); e.position.set(s * 0.07 * k, 0.05 * k, 0.07 * k); head.add(e); });
+          for (let i = 0; i < 5; i++) { const f = new T.Mesh(new T.BoxGeometry(0.045 * k, 0.24 * k, 0.012), i % 2 ? M.turq : g); const a = (i - 2) * 0.38; f.position.set(Math.sin(a) * 0.13 * k, (0.1 + Math.cos(a) * 0.09) * k, -0.05 * k); f.rotation.z = -a; head.add(f); }
+          c.fade(head, 0.3 * k);
+          const segs = [];
+          for (let i = 0; i < n; i++) {
+            const q = 1 - i / (n + 6), s = new T.Group(); c.root.add(s);
+            const b = new T.Mesh(new T.CylinderGeometry(0.085 * k * q, 0.095 * k * q, 0.12 * k, 8), i % 3 ? m1 : m2); b.rotation.x = Math.PI / 2; s.add(b);
+            if (i % 2 === 0) { const f = new T.Mesh(new T.OctahedronGeometry(0.045 * k * q), i % 4 ? M.turq : g); f.position.y = 0.09 * k * q; f.scale.set(1, 0.6, 1.7); s.add(f); }
+            c.fade(s, 0.12 * k); segs.push(s);
+          }
+          const A = agent(head, { max: 0.55 + k * 0.2, wand: 1.1, turn: 3 }); A.segs = segs; A.eye = eye; A.k = k;
+          segs.forEach((s, i) => s.position.copy(head.position).add(V(0, 0, -0.11 * k * (i + 1))));
+          list.push(A);
+        });
+        c.anim((dt, t, u) => {
+          const cam = c.cam(); if (!cam) return; step(list, dt, t, u, cam);
+          const st = c.status(), col = st === 'deadline' ? 0xff3d1f : st === 'last5' ? 0xff9f1c : 0x3ee6ff;
+          list.forEach(A => { chain(A.obj, A.segs, 0.105 * A.k); A.eye.color.setHex(col); A.eye.emissive.setHex(col); });
+        });
+      }
+    },
+    // 3 — loose gears, springs and propeller seeds drifting
+    engrenagens: {
+      rimMat: 'brass', plateBorder: '#c9954a', disc: DISC.latao,
+      build(c) {
+        T = c.T; const M = c.M, St = c.St, list = [], mats = [M.brass, M.copper, M.brassDark];
+        for (let i = 0; i < 16; i++) {
+          const o = new T.Group(); c.root.add(o); const r = rnd(0.14, 0.42), n = Math.round(8 + r * 40);
+          const spin = new T.Group(); o.add(spin); spin.add(St.gear({ teeth: n, r: r, th: Math.min(0.06, r * 0.18), depth: 0.05 + r * 0.06, hole: r * 0.15, spokes: n > 14 ? 5 : 0, mat: mats[i % 3] }));
+          const hub = new T.Mesh(new T.CylinderGeometry(r * 0.16, r * 0.16, 0.12 + r * 0.1, 6), M.iron); hub.rotation.x = Math.PI / 2; spin.add(hub);
+          c.fade(o, r + 0.05);
+          const A = agent(o, { max: 0.35, wand: 0.5, face: false }); A.spin = spin; A.w = rnd(0.5, 2.4) * (Math.random() < 0.5 ? -1 : 1); A.axis = V(rnd(-1, 1), rnd(-1, 1), rnd(-1, 1)).normalize(); A.prec = rnd(0.1, 0.4); list.push(A);
+        }
+        for (let i = 0; i < 4; i++) {
+          const o = new T.Group(); c.root.add(o); const pts = []; for (let j = 0; j <= 80; j++) { const a = j / 80 * Math.PI * 2 * 6; pts.push(V(0.1 * Math.cos(a), j / 80 * 0.5 - 0.25, 0.1 * Math.sin(a))); }
+          const sp = new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(pts), 240, 0.012, 6), M.steel || M.brass); o.add(sp);
+          const ball = new T.Mesh(new T.SphereGeometry(0.06, 14, 8), M.copper); ball.position.y = 0.3; o.add(ball);
+          c.fade(o, 0.35); const A = agent(o, { max: 0.3, wand: 0.5, face: false }); A.spring = sp; A.ball = ball; A.ph = rnd(0, 6); list.push(A);
+        }
+        for (let i = 0; i < 5; i++) {
+          const o = new T.Group(); c.root.add(o); const rot = new T.Group(); o.add(rot);
+          rot.add(St.gear({ teeth: 10, r: 0.1, th: 0.03, depth: 0.04, hole: 0.015, mat: M.brass }));
+          for (let k = 0; k < 3; k++) { const b = new T.Mesh(new T.BoxGeometry(0.38, 0.012, 0.08), M.copper); b.position.x = 0.22; b.rotation.x = 0.35; const h = new T.Group(); h.rotation.z = k * Math.PI * 2 / 3; h.add(b); rot.add(h); }
+          rot.rotation.x = Math.PI / 2; c.fade(o, 0.45);
+          const A = agent(o, { max: 0.5, wand: 0.4, face: false }); A.rot = rot; A.seed = true; A.ph = rnd(0, 6);
+          A.extra = (acc, A, dt, t) => { acc.y += Math.sin(t * 0.35 + A.ph) * 0.9; }; list.push(A);
+        }
+        c.anim((dt, t, u) => {
+          const cam = c.cam(); if (!cam) return; step(list, dt, t, u, cam);
+          list.forEach(A => {
+            if (A.spin) { A.spin.rotation.z += dt * A.w * (0.6 + u * 1.5); A.obj.rotateOnAxis(A.axis, dt * A.prec); }
+            if (A.spring) { const k = 1 + 0.35 * Math.sin(t * (3 + u * 4) + A.ph); A.spring.scale.y = k; A.ball.position.y = 0.25 * k + 0.05; A.obj.rotation.z = 0.3 * Math.sin(t * 0.7 + A.ph); }
+            if (A.seed) { A.rot.rotation.z += dt * (6 + u * 10); A.obj.rotation.x = 0.25 * Math.sin(t + A.ph); }
+          });
+        });
+      }
+    },
+    // 4 — clockwork aquarium: fish, jellyfish and seahorses (the astrolabe's "horse")
+    aquario: {
+      rimMat: 'copper', plateBorder: '#d6a86a', disc: DISC.mar,
+      build(c) {
+        T = c.T; const M = c.M, g = gold(), list = [];
+        for (let i = 0; i < 9; i++) {
+          const o = new T.Group(); c.root.add(o); const k = rnd(0.7, 1.25);
+          const body = new T.Mesh(new T.SphereGeometry(0.16, 20, 12), i % 2 ? M.brass : M.copper); body.scale.set(0.62 * k, 0.8 * k, 1.9 * k); o.add(body);
+          for (let j = 0; j < 4; j++) { const sc = new T.Mesh(new T.OctahedronGeometry(0.04 * k), i % 2 ? M.copper : g); sc.position.set(0, 0.08 * k, (0.12 - j * 0.08) * k); sc.scale.set(1.8, 0.5, 1); o.add(sc); }
+          const eye = new T.Mesh(new T.SphereGeometry(0.025 * k, 10, 6), glowMat(0xbff6ff)); eye.position.set(0.07 * k, 0.04 * k, 0.2 * k); o.add(eye); const e2 = eye.clone(); e2.position.x *= -1; o.add(e2);
+          const tail = new T.Group(); tail.position.z = -0.28 * k; o.add(tail);
+          const ts = new T.Shape(); ts.moveTo(0, 0); ts.lineTo(0.16, -0.2); ts.lineTo(0.03, -0.12); ts.lineTo(0, -0.22); ts.lineTo(-0.03, -0.12); ts.lineTo(-0.16, -0.2); ts.closePath();
+          const tm = new T.Mesh(new T.ExtrudeGeometry(ts, { depth: 0.012, bevelEnabled: false }), g); tm.rotation.x = Math.PI / 2; tm.scale.setScalar(k); tail.add(tm);
+          c.fade(o, 0.35 * k);
+          const A = agent(o, { max: 0.6, wand: 1.0, turn: 3 }); A.tail = tail; A.ph = rnd(0, 6); list.push(A);
+          c.emit(o, V(0, 0, 0.3 * k), 0.12, 0.35);
+        }
+        for (let i = 0; i < 2; i++) {
+          const o = new T.Group(); c.root.add(o);
+          const bell = new T.Mesh(new T.SphereGeometry(0.3, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2), new T.MeshStandardMaterial({ color: 0xc47a45, metalness: 0.8, roughness: 0.25, transparent: true, opacity: 0.85, side: T.DoubleSide })); o.add(bell);
+          const lamp = new T.Mesh(new T.SphereGeometry(0.08, 12, 8), glowMat(0x7ff0e0)); lamp.position.y = 0.06; o.add(lamp);
+          c.fade(o, 0.4);
+          const tents = [];
+          for (let k = 0; k < 6; k++) { const a = k / 6 * Math.PI * 2, base = V(0.2 * Math.cos(a), -0.02, 0.2 * Math.sin(a)), segs = []; for (let j = 0; j < 8; j++) { const s = new T.Mesh(new T.SphereGeometry(0.022 - j * 0.002, 8, 6), M.brass); c.root.add(s); segs.push(s); } tents.push({ base: base, segs: segs }); }
+          const A = agent(o, { max: 0.35, wand: 0.5, face: false }); A.bell = bell; A.tents = tents; A.ph = rnd(0, 6);
+          A.extra = (acc, A, dt, t) => { const p = Math.max(0, Math.sin(t * 1.6 + A.ph)); acc.y += p * 2.2 - 0.6; }; list.push(A);
+        }
+        const hs = new T.Shape(); [[0, 0.5], [0.12, 0.46], [0.16, 0.38], [0.1, 0.32], [0.08, 0.2], [0.14, 0.08], [0.12, -0.08], [0.04, -0.2], [0.08, -0.3], [0.02, -0.36], [-0.04, -0.28], [-0.02, -0.18], [-0.06, -0.04], [-0.06, 0.16], [-0.02, 0.3], [-0.12, 0.36], [-0.2, 0.34], [-0.1, 0.44]].forEach(([x, y], i) => i ? hs.lineTo(x, y) : hs.moveTo(x, y)); hs.closePath();
+        const hg = new T.ExtrudeGeometry(hs, { depth: 0.06, bevelEnabled: true, bevelSize: 0.015, bevelThickness: 0.015 }); hg.translate(0, 0, -0.03);
+        for (let i = 0; i < 3; i++) {
+          const o = new T.Group(); c.root.add(o); const m = new T.Mesh(hg, i === 1 ? M.copper : g); o.add(m);
+          const fin = new T.Mesh(new T.BoxGeometry(0.01, 0.12, 0.08), M.turq); fin.position.set(-0.06, 0.1, 0); o.add(fin);
+          c.fade(o, 0.4); const A = agent(o, { max: 0.25, wand: 0.45, face: false }); A.ph = rnd(0, 6); A.fin = fin; A.extra = (acc, A, dt, t) => { acc.y += Math.sin(t * 0.8 + A.ph) * 0.8; }; list.push(A);
+        }
+        c.anim((dt, t, u) => {
+          const cam = c.cam(); if (!cam) return; step(list, dt, t, u, cam);
+          list.forEach(A => {
+            if (A.tail) A.tail.rotation.y = 0.5 * Math.sin(t * (6 + u * 8) + A.ph);
+            if (A.bell) { const p = 1 + 0.12 * Math.sin(t * 1.6 + A.ph); A.bell.scale.set(p, 2 - p, p); A.tents.forEach(tn => { const hp = A.obj.localToWorld(tn.base.clone()); let prev = hp; tn.segs.forEach((s, j) => { const want = prev.clone().add(V(0.02 * Math.sin(t * 2 + j + A.ph), -0.09, 0)); s.position.lerp(want, Math.min(1, dt * 8)); prev = s.position; }); }); }
+            if (A.fin) { A.obj.rotation.y += dt * 0.3; A.obj.rotation.z = 0.12 * Math.sin(t * 1.3 + A.ph); A.fin.rotation.y = 0.8 * Math.sin(t * 14 + A.ph); }
+          });
+        });
+      }
+    },
+    // 5 — jade hummingbirds and alidade dragonflies
+    colibris: {
+      rimMat: 'brass', plateBorder: '#d9a75a', disc: DISC.jade,
+      build(c) {
+        T = c.T; const M = c.M, g = gold(), list = [];
+        const emer = new T.MeshStandardMaterial({ color: 0x1f9e7a, metalness: 0.9, roughness: 0.2 });
+        for (let i = 0; i < 7; i++) {
+          const o = new T.Group(); c.root.add(o); const k = rnd(0.8, 1.15);
+          const body = new T.Mesh(new T.SphereGeometry(0.1, 18, 12), i % 3 ? emer : M.jade); body.scale.set(0.8 * k, 0.8 * k, 1.5 * k); o.add(body);
+          const head = new T.Mesh(new T.SphereGeometry(0.07 * k, 14, 10), emer); head.position.set(0, 0.04 * k, 0.15 * k); o.add(head);
+          const beak = new T.Mesh(new T.ConeGeometry(0.012 * k, 0.24 * k, 6), g); beak.rotation.x = Math.PI / 2; beak.position.set(0, 0.04 * k, 0.32 * k); o.add(beak);
+          const throat = new T.Mesh(new T.SphereGeometry(0.05 * k, 10, 8), new T.MeshStandardMaterial({ color: 0xff3d6a, metalness: 0.8, roughness: 0.25 })); throat.position.set(0, -0.01 * k, 0.17 * k); o.add(throat);
+          for (let j = 0; j < 5; j++) { const f = new T.Mesh(new T.BoxGeometry(0.03 * k, 0.008, 0.16 * k), j % 2 ? g : M.turq); f.position.set((j - 2) * 0.025 * k, 0, -0.2 * k); f.rotation.y = (j - 2) * 0.2; o.add(f); }
+          const wings = [-1, 1].map(s => { const w = new T.Group(); w.position.set(s * 0.06 * k, 0.05 * k, 0.02); o.add(w); const m = new T.Mesh(new T.BoxGeometry(0.26 * k, 0.006, 0.08 * k), new T.MeshStandardMaterial({ color: 0xd8b04a, metalness: 1, roughness: 0.25, transparent: true, opacity: 0.85 })); m.position.x = s * 0.13 * k; w.add(m); return { w: w, s: s }; });
+          c.fade(o, 0.3 * k);
+          const A = agent(o, { max: 1.6, wand: 0.2, turn: 6 }); A.wings = wings; A.target = null; A.timer = 0;
+          A.extra = (acc, A, dt, t, u) => {
+            A.timer -= dt;
+            if (!A.target || A.timer <= 0) { const r = rnd(2.6, 3.9), th = rnd(0, 6.28); A.target = V(r * Math.sin(th), rnd(-2.2, 2.4), r * Math.cos(th) * rnd(-1, 0.3)); A.timer = rnd(1.2, 3.2) / (0.7 + u); }
+            const d = A.target.clone().sub(A.pos), l = d.length();
+            if (l > 0.15) acc.addScaledVector(d.normalize(), Math.min(6, l * 4)); acc.addScaledVector(A.vel, -2.5);
+          };
+          list.push(A);
+        }
+        for (let i = 0; i < 3; i++) {
+          const o = new T.Group(); c.root.add(o);
+          for (let j = 0; j < 6; j++) { const s = new T.Mesh(new T.CylinderGeometry(0.032 - j * 0.004, 0.032 - j * 0.004, 0.1, 8), j % 2 ? M.copper : g); s.rotation.x = Math.PI / 2; s.position.z = 0.1 - j * 0.09; o.add(s); }
+          const eye = new T.Mesh(new T.SphereGeometry(0.04, 10, 8), glowMat(0x3ee6ff)); eye.position.z = 0.17; o.add(eye);
+          const wings = [];
+          [[-1, 0.06], [1, 0.06], [-1, -0.04], [1, -0.04]].forEach(([s, z], j) => {
+            const w = new T.Group(); w.position.set(s * 0.03, 0.02, z); o.add(w);
+            const bar = new T.Mesh(new T.BoxGeometry(0.42, 0.008, 0.05), new T.MeshStandardMaterial({ color: 0xc9e8ff, metalness: 0.6, roughness: 0.1, transparent: true, opacity: 0.55 })); bar.position.x = s * 0.21; w.add(bar);
+            const pin = new T.Mesh(new T.BoxGeometry(0.012, 0.06, 0.05), g); pin.position.x = s * 0.42; w.add(pin);
+            wings.push({ w: w, s: s, ph: j });
+          });
+          c.fade(o, 0.4);
+          const A = agent(o, { max: 0.9, wand: 1.2, turn: 4 }); A.wings = wings; A.dragon = true; list.push(A);
+        }
+        c.anim((dt, t, u) => {
+          const cam = c.cam(); if (!cam) return; step(list, dt, t, u, cam);
+          const st = c.status(), col = st === 'deadline' ? 0xff3d1f : st === 'last5' ? 0xff9f1c : 0x3ee6ff;
+          list.forEach(A => {
+            if (A.dragon) { A.wings.forEach(w => { w.w.rotation.z = w.s * 0.45 * Math.sin(t * 22 + w.ph * 1.5); }); A.obj.children[6].material.color.setHex(col); A.obj.children[6].material.emissive.setHex(col); }
+            else A.wings.forEach(w => { w.w.rotation.z = w.s * 0.9 * Math.sin(t * (45 + u * 20)); });
+          });
+        });
+      }
+    }
+  };
+  G.VIDA._T = three => { T = three; };
+  G.VIDA.lib = { agent: agent, step: step, chain: chain };
+})(window);
+</script>
+<script>(function (G) {
+  'use strict';
+  const RO = 2.08, GR = 0.82;
+  const rnd = (a, b) => a + Math.random() * (b - a);
+
+  // tympan engraved on the globe: altitude grid, horizon and ecliptic over the base planet
+  G.tympanPlanet = function (base, col) {
+    return (x, W, H) => {
+      base(x, W, H); x.save(); x.strokeStyle = col; x.lineWidth = 1.6; x.globalAlpha = 0.4;
+      for (let lat = -60; lat <= 60; lat += 20) { const y = H * (0.5 - lat / 180); x.beginPath(); x.moveTo(0, y); x.lineTo(W, y); x.stroke(); }
+      for (let i = 0; i < 12; i++) { const xx = i * W / 12; x.beginPath(); x.moveTo(xx, 0); x.lineTo(xx, H); x.stroke(); }
+      const sinus = (amp, ph, lw, a) => { x.globalAlpha = a; x.lineWidth = lw; x.beginPath(); for (let i = 0; i <= 200; i++) { const xx = i / 200 * W, y = H * (0.5 - amp / 180 * Math.sin(i / 200 * Math.PI * 2 + ph)); i ? x.lineTo(xx, y) : x.moveTo(xx, y); } x.stroke(); };
+      sinus(23.4, 0, 3, 0.85); sinus(66.5, 1.2, 2.2, 0.6); x.restore();
+    };
+  };
+
+  // ---------- astrolabe parts, each with its own motion ----------
+  function pointerShape(T, kind) {
+    const s = new T.Shape();
+    if (kind === 'feather') { s.moveTo(0, 0.3); [[0.05, 0.22], [0.02, 0.2], [0.07, 0.12], [0.03, 0.1], [0.08, 0.02], [0.02, 0], [0, -0.04], [-0.02, 0], [-0.08, 0.02], [-0.03, 0.1], [-0.07, 0.12], [-0.02, 0.2], [-0.05, 0.22]].forEach(p => s.lineTo(...p)); }
+    else if (kind === 'compass') { s.moveTo(0, 0.3); s.lineTo(0.06, 0.08); s.lineTo(0, -0.04); s.lineTo(-0.06, 0.08); }
+    else { s.moveTo(0, 0.3); s.quadraticCurveTo(0.11, 0.1, 0.05, -0.02); s.quadraticCurveTo(0, -0.07, -0.05, -0.02); s.quadraticCurveTo(-0.11, 0.1, 0, 0.3); }
+    s.closePath(); const g = new T.ExtrudeGeometry(s, { depth: 0.025, bevelEnabled: true, bevelSize: 0.01, bevelThickness: 0.01, bevelSegments: 2 }); g.translate(0, 0, -0.012); return g;
+  }
+  function reteArms(c, n, kind, mat, jewelCol) {
+    const T = c.T, pg = pointerShape(T, kind), jewel = new T.MeshStandardMaterial({ color: jewelCol, emissive: jewelCol, emissiveIntensity: 1.8 });
+    for (let i = 0; i < n; i++) {
+      const g = new T.Group(); g.position.z = -0.05 + i * 0.014; g.rotation.z = i / n * Math.PI * 2 + rnd(-0.2, 0.2); c.root.add(g);
+      const len = rnd(1.1, 1.36), bar = new T.Mesh(new T.BoxGeometry(0.022, len - 0.9, 0.018), mat); bar.position.y = (len + 0.9) / 2 - 0.12; g.add(bar);
+      const knot = new T.Mesh(new T.SphereGeometry(0.03, 10, 8), mat); knot.position.y = 0.9; g.add(knot);
+      const p = new T.Mesh(pg, mat); p.position.y = len - 0.14; g.add(p);
+      const j = new T.Mesh(new T.OctahedronGeometry(0.03), jewel); j.position.y = len + 0.14; g.add(j);
+      c.fade(g, (len - 0.8) / 2 + 0.12, new T.Vector3(0, (len + 0.9) / 2, 0));
+      const w = rnd(0.04, 0.2) * (Math.random() < 0.5 ? -1 : 1), ph = rnd(0, 6), f = rnd(0.3, 0.9);
+      c.anim((dt, t, u) => { g.rotation.z += dt * w * (0.6 + u * 1.4) + 0.0035 * Math.sin(t * f + ph); j.rotation.y += dt * 2; });
+    }
+  }
+  function throne(c, kind, mat, accent) {
+    const T = c.T, s = new T.Shape(), w = 0.46, h = 0.66;
+    if (kind === 'stepped') [[-w, 0], [-w, h * 0.3], [-w * 0.7, h * 0.3], [-w * 0.7, h * 0.6], [-w * 0.4, h * 0.6], [-w * 0.4, h * 0.9], [w * 0.4, h * 0.9], [w * 0.4, h * 0.6], [w * 0.7, h * 0.6], [w * 0.7, h * 0.3], [w, h * 0.3], [w, 0]].forEach(([a, b], i) => i ? s.lineTo(a, b) : s.moveTo(a, b));
+    else if (kind === 'plain') { s.moveTo(-w * 0.6, 0); s.lineTo(-w * 0.6, h * 0.4); s.absarc(0, h * 0.4, w * 0.6, Math.PI, 0, true); s.lineTo(w * 0.6, 0); }
+    else { s.moveTo(-w, 0); s.bezierCurveTo(-w, h * 0.5, -w * 0.4, h * 0.55, -w * 0.35, h * 0.75); s.quadraticCurveTo(-w * 0.2, h * 1.05, 0, h); s.quadraticCurveTo(w * 0.2, h * 1.05, w * 0.35, h * 0.75); s.bezierCurveTo(w * 0.4, h * 0.55, w, h * 0.5, w, 0); s.lineTo(-w, 0); }
+    s.closePath(); const hole = new T.Path(); hole.absarc(0, 0.3, 0.17, 0, Math.PI * 2, true); s.holes.push(hole);
+    const geo = new T.ExtrudeGeometry(s, { depth: 0.1, bevelEnabled: true, bevelSize: 0.015, bevelThickness: 0.015, bevelSegments: 2 }); geo.translate(0, 0, -0.05);
+    const piv = new T.Group(); piv.position.y = RO + 0.02; c.root.add(piv);
+    const body = new T.Group(); piv.add(body); body.add(new T.Mesh(geo, mat));
+    const gear = new T.Group(); gear.position.y = 0.3; body.add(gear); gear.add(c.St.gear({ teeth: 14, r: 0.16, th: 0.04, depth: 0.05, hole: 0.03, spokes: 4, mat: accent }));
+    const bl = c.St.bolts(0.38, 8, 0.065, c.M.iron, 0.014); bl.position.y = 0.12; body.add(bl);
+    const top = kind === 'stepped' ? h * 0.9 : h;
+    const shackle = new T.Mesh(new T.TorusGeometry(0.11, 0.032, 12, 32), mat); shackle.rotation.y = Math.PI / 2; shackle.position.y = top + 0.06; body.add(shackle);
+    const ringP = new T.Group(); ringP.position.y = top + 0.16; body.add(ringP);
+    const ring = new T.Mesh(new T.TorusGeometry(0.24, 0.04, 14, 48), mat); ring.position.y = 0.2; ringP.add(ring);
+    c.fade(piv, 0.7, new T.Vector3(0, 0.45, 0));
+    const ph = rnd(0, 6);
+    c.anim((dt, t, u) => { body.rotation.z = 0.05 * Math.sin(t * 0.8 + ph) + 0.02 * Math.sin(t * 2.1); gear.rotation.z += dt * (0.8 + u * 2.5); ringP.rotation.z = 0.25 * Math.sin(t * 1.3 + ph); ringP.rotation.x = 0.18 * Math.sin(t * 0.9); });
+    return { piv: piv, body: body };
+  }
+  function alidade(c, mat, pinMat) {
+    const T = c.T, root = new T.Group(); root.position.z = -0.34; c.root.add(root);
+    const half = s => {
+      const a = new T.Group(); root.add(a);
+      const bar = new T.Mesh(new T.BoxGeometry(0.09, 2.3 - 0.7, 0.03), mat); bar.position.y = s * (0.7 + 2.3) / 2; a.add(bar);
+      const slot = new T.Mesh(new T.BoxGeometry(0.03, 0.9, 0.035), c.M.iron); slot.position.y = s * 1.6; a.add(slot);
+      const pin = new T.Group(); pin.position.y = s * 2.25; a.add(pin);
+      const pl = new T.Mesh(new T.BoxGeometry(0.26, 0.03, 0.32), pinMat); pl.position.z = 0.15; pin.add(pl);
+      const eye = new T.Mesh(new T.TorusGeometry(0.045, 0.012, 8, 20), mat); eye.rotation.x = Math.PI / 2; eye.position.z = 0.2; pin.add(eye);
+      c.fade(a, 0.95, new T.Vector3(0, s * 1.55, 0));
+    };
+    half(1); half(-1);
+    let th = rnd(0, 6), tgt = th, timer = 0;
+    c.anim((dt, t, u) => { timer -= dt; if (timer <= 0) { tgt = th + rnd(-1.4, 1.4); timer = rnd(2.5, 5) / (0.7 + u); } th += (tgt - th) * Math.min(1, dt * 0.8); root.rotation.z = th + 0.01 * Math.sin(t * 7); });
+  }
+  function pinHorse(c, mat, kind) {
+    const T = c.T;
+    [1, -1].forEach(s => { const p = new T.Mesh(new T.CylinderGeometry(0.036, 0.036, 0.6, 12), mat); p.position.y = s * (GR + 0.28); c.root.add(p); c.fade(p, 0.32); });
+    const knob = new T.Mesh(new T.SphereGeometry(0.06, 16, 8), mat); knob.position.y = -GR - 0.62; c.root.add(knob);
+    const sh = new T.Shape();
+    if (kind === 'feather') { sh.moveTo(-0.06, 0); sh.lineTo(0.06, 0); sh.lineTo(0.13, 0.22); sh.lineTo(0.03, 0.14); sh.lineTo(0, 0.32); sh.lineTo(-0.03, 0.14); sh.lineTo(-0.13, 0.22); }
+    else { sh.moveTo(-0.05, 0); sh.lineTo(0.06, 0); sh.lineTo(0.08, 0.12); sh.lineTo(0.17, 0.18); sh.lineTo(0.16, 0.25); sh.lineTo(0.06, 0.25); sh.lineTo(0.02, 0.33); sh.lineTo(-0.02, 0.27); sh.lineTo(-0.06, 0.12); }
+    sh.closePath();
+    const hg = new T.ExtrudeGeometry(sh, { depth: 0.05, bevelEnabled: true, bevelSize: 0.01, bevelThickness: 0.01 }); hg.translate(0, 0, -0.025);
+    const horse = new T.Mesh(hg, mat); c.root.add(horse); c.fade(horse, 0.25);
+    const ph = rnd(0, 6);
+    c.anim((dt, t, u) => { horse.position.y = GR + 0.58 + 0.03 * Math.abs(Math.sin(t * (1.5 + u * 2) + ph)); horse.rotation.y = 0.6 * Math.sin(t * 0.5 + ph); });
+  }
+  function gearCluster(c, pos, specs, phase) {
+    const T = c.T, g = new T.Group(); g.position.copy(pos); c.root.add(g);
+    let x = 0, y = 0, dir = specs[0].dir || 0.3, prev = null; const gs = [];
+    specs.forEach((sp, i) => {
+      if (prev) { const d = prev.rp + sp.n * 0.0133 - 0.01; x += d * Math.cos(dir); y += d * Math.sin(dir); dir += sp.turn || -0.9; }
+      const rp = sp.n * 0.0133, m = new T.Group(); m.position.set(x, y, 0); g.add(m);
+      m.add(c.St.gear({ teeth: sp.n, r: rp + 0.03, th: 0.05, depth: 0.06, hole: 0.025, spokes: sp.n > 14 ? 5 : 3, mat: sp.mat }));
+      const hub = new T.Mesh(new T.CylinderGeometry(0.04, 0.04, 0.12, 6), c.M.iron); hub.rotation.x = Math.PI / 2; m.add(hub);
+      m.rotation.z = i % 2 ? Math.PI / sp.n : 0; gs.push({ m: m, n: sp.n, s: i % 2 ? -1 : 1 }); prev = { rp: rp };
+    });
+    c.fade(g, 0.75, new T.Vector3(x / 2, y / 2, 0));
+    const ph = phase || rnd(0, 6), bx = pos.x, by = pos.y; let a = 0;
+    c.anim((dt, t, u) => { a += dt * (0.5 + u * 2); gs.forEach(o => { o.m.rotation.z = o.s * a * 18 / o.n + (o.s < 0 ? Math.PI / o.n : 0); }); g.rotation.z = 0.12 * Math.sin(t * 0.4 + ph); g.position.set(bx + 0.06 * Math.sin(t * 0.6 + ph), by + 0.08 * Math.sin(t * 0.5 + ph * 2), pos.z); });
+    return g;
+  }
+  function balance(c, pos, mat) {
+    const T = c.T, g = new T.Group(); g.position.copy(pos); c.root.add(g);
+    const w = c.St.gear({ teeth: 40, r: 0.3, th: 0.02, depth: 0.03, hole: 0.24, spokes: 0, mat: mat }); g.add(w);
+    const bar = new T.Mesh(new T.BoxGeometry(0.52, 0.025, 0.025), mat); g.add(bar);
+    const hub = new T.Mesh(new T.CylinderGeometry(0.05, 0.05, 0.08, 12), c.M.copper); hub.rotation.x = Math.PI / 2; g.add(hub);
+    const pts = []; for (let i = 0; i <= 60; i++) { const a = i / 60 * Math.PI * 6, r = 0.04 + i / 60 * 0.15; pts.push(new T.Vector3(r * Math.cos(a), r * Math.sin(a), 0.05)); }
+    g.add(new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(pts), 120, 0.006, 5), c.M.steel || c.M.brass));
+    c.fade(g, 0.35);
+    c.anim((dt, t, u) => { g.rotation.z = 1.2 * Math.sin(t * (3 + u * 5)); });
+  }
+  function serpent(c, n, k) {
+    const T = c.T, M = c.M, lib = G.VIDA.lib; G.VIDA._T(T);
+    const gold = new T.MeshStandardMaterial({ color: 0xd8b04a, metalness: 1, roughness: 0.3 });
+    const head = new T.Group(); c.root.add(head);
+    const sk = new T.Mesh(new T.ConeGeometry(0.14 * k, 0.4 * k, 6), M.copper); sk.rotation.x = Math.PI / 2; sk.position.z = 0.13 * k; head.add(sk);
+    const jaw = new T.Group(); jaw.position.set(0, -0.05 * k, 0.02); head.add(jaw);
+    const jm = new T.Mesh(new T.ConeGeometry(0.1 * k, 0.32 * k, 6), M.brassDark); jm.rotation.x = Math.PI / 2; jm.position.z = 0.13 * k; jaw.add(jm);
+    const eye = new T.MeshStandardMaterial({ color: 0x3ee6ff, emissive: 0x3ee6ff, emissiveIntensity: 2.2 });
+    [-1, 1].forEach(s => { const e = new T.Mesh(new T.SphereGeometry(0.035 * k, 10, 6), eye); e.position.set(s * 0.08 * k, 0.06 * k, 0.08 * k); head.add(e); });
+    for (let i = 0; i < 7; i++) { const f = new T.Mesh(new T.BoxGeometry(0.05 * k, 0.28 * k, 0.012), i % 2 ? M.turq : gold); const a = (i - 3) * 0.32; f.position.set(Math.sin(a) * 0.15 * k, (0.12 + Math.cos(a) * 0.1) * k, -0.06 * k); f.rotation.z = -a; head.add(f); }
+    c.fade(head, 0.35 * k);
+    const segs = [];
+    for (let i = 0; i < n; i++) {
+      const q = 1 - i / (n + 6), s = new T.Group(); c.root.add(s);
+      const b = new T.Mesh(new T.CylinderGeometry(0.095 * k * q, 0.105 * k * q, 0.13 * k, 8), i % 3 ? M.jade : M.copper); b.rotation.x = Math.PI / 2; s.add(b);
+      if (i % 2 === 0) { const f = new T.Mesh(new T.OctahedronGeometry(0.05 * k * q), i % 4 ? M.turq : gold); f.position.y = 0.1 * k * q; f.scale.set(1, 0.6, 1.7); s.add(f); }
+      if (i % 5 === 2) { const rv = new T.Mesh(new T.SphereGeometry(0.02 * k, 8, 6), c.M.brass); rv.position.x = 0.1 * k * q; s.add(rv); const rv2 = rv.clone(); rv2.position.x *= -1; s.add(rv2); }
+      c.fade(s, 0.13 * k); segs.push(s);
+    }
+    const A = lib.agent(head, { max: 0.6, wand: 1.1, turn: 3, rmin: 2.6, rmax: 4.0 });
+    segs.forEach((s, i) => s.position.copy(head.position).add(new T.Vector3(0, 0, -0.12 * k * (i + 1))));
+    c.anim((dt, t, u) => {
+      const cam = c.cam(); if (!cam) return; lib.step([A], dt, t, u, cam); lib.chain(head, segs, 0.115 * k);
+      jaw.rotation.x = 0.12 + 0.18 * (0.5 + 0.5 * Math.sin(t * (2 + u * 5)));
+      const st = c.status(), col = st === 'deadline' ? 0xff3d1f : st === 'last5' ? 0xff9f1c : 0x3ee6ff; eye.color.setHex(col); eye.emissive.setHex(col);
+    });
+  }
+  function chainPendulum(c, mat, bobMat) {
+    const T = c.T, piv = new T.Group(); piv.position.y = -RO - 0.06; c.root.add(piv);
+    const links = [];
+    for (let i = 0; i < 9; i++) { const l = new T.Mesh(i % 2 ? new T.BoxGeometry(0.03, 0.09, 0.018) : new T.BoxGeometry(0.018, 0.09, 0.03), mat); l.position.y = -0.045 - i * 0.085; piv.add(l); links.push(l); }
+    const pts = [[0, 0], [0.14, -0.05], [0.18, -0.2], [0.12, -0.36], [0, -0.44]].map(([a, b]) => new T.Vector2(a, b));
+    const bob = new T.Mesh(new T.LatheGeometry(pts, 24), bobMat); bob.position.y = -0.82; piv.add(bob);
+    const band = new T.Mesh(new T.CylinderGeometry(0.182, 0.182, 0.04, 24), c.M.brass); band.position.y = -1.0; piv.add(band);
+    c.fade(piv, 0.7, new T.Vector3(0, -0.7, 0));
+    const ph = rnd(0, 6);
+    c.anim((dt, t, u) => { piv.rotation.z = 0.32 * Math.sin(t * 1.25 + ph); piv.rotation.x = 0.12 * Math.sin(t * 0.8 + ph); });
+  }
+
+  const V = (T, x, y, z) => new T.Vector3(x, y, z);
+  G.ASTRO_SP = {
+    relojoeiro: {
+      rimMat: 'brass', plateBorder: '#e2b768', limbTicks: true,
+      disc: { rim: '#17110b', monthBg: '#2e2214', monthAlt: '#3a2b18', monthSel: '#ff9f1c', monthSelInk: '#17110b', ink: '#f3e3c0', dayBg: '#120d08', cell: '#2f261b', past: '#1b150f', dayInk: '#e2b768', line: '#c9954a', markOpen: '#f3e3c0' },
+      build(c) {
+        const { T, M } = c, brass = M.brass;
+        throne(c, 'arabesque', brass, M.copper);
+        reteArms(c, 9, 'flame', new T.MeshStandardMaterial({ color: 0xd9ad55, metalness: 1, roughness: 0.28 }), 0xfff1b0);
+        alidade(c, brass, M.brassDark); pinHorse(c, brass, 'horse');
+        gearCluster(c, V(T, -2.75, -1.55, -0.1), [{ n: 22, mat: M.brass, dir: -0.4 }, { n: 12, mat: M.copper, turn: 1.2 }, { n: 18, mat: M.brassDark }]);
+        gearCluster(c, V(T, 2.35, -1.85, -0.1), [{ n: 16, mat: M.copper, dir: 0.5 }, { n: 26, mat: M.brass, turn: -1.4 }, { n: 10, mat: M.brassDark }]);
+        gearCluster(c, V(T, 2.55, 1.35, -0.12), [{ n: 14, mat: M.brassDark, dir: 1.9 }, { n: 20, mat: M.brass }]);
+        balance(c, V(T, -2.45, 1.55, 0), M.brass);
+        chainPendulum(c, M.iron, M.brass);
+      }
+    },
+    serpente: {
+      rimMat: 'brass', plateBorder: '#d9a75a', limbTicks: true,
+      disc: { rim: '#11130e', monthBg: '#173a2d', monthAlt: '#1f4a39', monthSel: '#ff9f1c', monthSelInk: '#11130e', ink: '#f1e6cc', dayBg: '#0f0f0c', cell: '#2a2e24', past: '#1a1c16', dayInk: '#d9a75a', line: '#d9a75a', markOpen: '#f6e7b8' },
+      build(c) {
+        const { T, M } = c, gold = new T.MeshStandardMaterial({ color: 0xd8b04a, metalness: 1, roughness: 0.3 });
+        throne(c, 'stepped', M.brass, M.jade);
+        reteArms(c, 8, 'feather', gold, 0x7ff0d0);
+        alidade(c, M.obsidian, gold); pinHorse(c, gold, 'feather');
+        gearCluster(c, V(T, -2.7, -1.6, -0.1), [{ n: 20, mat: M.brass, dir: -0.3 }, { n: 13, mat: M.copper }]);
+        gearCluster(c, V(T, 2.4, -1.8, -0.1), [{ n: 13, mat: M.copper, dir: 0.4 }, { n: 20, mat: M.brass }]);
+        serpent(c, 46, 1.0);
+      }
+    },
+    nautico: {
+      rimMat: 'copper', plateBorder: '#d6a86a', limbTicks: true,
+      disc: { rim: '#0b1a22', monthBg: '#12303d', monthAlt: '#173a4a', monthSel: '#ff9f1c', monthSelInk: '#0b1a22', ink: '#e8f1f4', dayBg: '#08141a', cell: '#1c2f38', past: '#101d24', dayInk: '#d6a86a', line: '#b9874a', markOpen: '#e8f1f4' },
+      build(c) {
+        const { T, M } = c, bronze = new T.MeshStandardMaterial({ color: 0x9c6b3a, metalness: 1, roughness: 0.38 });
+        throne(c, 'plain', bronze, M.copper);
+        for (let i = 0; i < 4; i++) {
+          const g = new T.Group(); g.rotation.z = i * Math.PI / 2 + Math.PI / 4; g.position.z = -0.12; c.root.add(g);
+          const sp = new T.Mesh(new T.BoxGeometry(0.1, 0.62, 0.06), bronze); sp.position.y = 1.18; g.add(sp);
+          const bolt = new T.Mesh(new T.CylinderGeometry(0.035, 0.035, 0.1, 6), M.iron); bolt.rotation.x = Math.PI / 2; bolt.position.y = 1.4; g.add(bolt);
+          c.fade(g, 0.4, new T.Vector3(0, 1.18, 0));
+          const ph = i * 1.7; c.anim((dt, t) => { g.rotation.z = i * Math.PI / 2 + Math.PI / 4 + 0.05 * Math.sin(t * 0.5 + ph); });
+        }
+        reteArms(c, 8, 'compass', new T.MeshStandardMaterial({ color: 0xc9d6dc, metalness: 1, roughness: 0.25 }), 0x9fe8ff);
+        alidade(c, bronze, M.copper); pinHorse(c, bronze, 'horse');
+        gearCluster(c, V(T, -2.65, -1.5, -0.1), [{ n: 18, mat: M.copper, dir: -0.5 }, { n: 24, mat: bronze, turn: 1.3 }, { n: 11, mat: M.brass }]);
+        gearCluster(c, V(T, 2.5, 1.45, -0.12), [{ n: 15, mat: bronze, dir: 2.0 }, { n: 22, mat: M.copper }]);
+        balance(c, V(T, 2.45, -1.6, 0), M.copper);
+        chainPendulum(c, M.iron, bronze);
+      }
+    }
+  };
+})(window);
+</script>
+<script>(function (G) {
+  'use strict';
+  const GR = 0.66, EPS = 23.44, D2R = Math.PI / 180, LAT = -23.5;
+  const rnd = (a, b) => a + Math.random() * (b - a);
+
+  // sphere surface from the Armilar a Vapor: dark verdigris glass with a fine grid
+  G.armilarPlanet = function (x, W, H) {
+    const g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#06100e'); g.addColorStop(0.5, '#123a33'); g.addColorStop(1, '#06100e');
+    x.fillStyle = g; x.fillRect(0, 0, W, H); x.strokeStyle = '#7fd6c4'; x.globalAlpha = 0.3; x.lineWidth = 2;
+    for (let i = 0; i < 24; i++) { x.beginPath(); x.moveTo(i * W / 24, 0); x.lineTo(i * W / 24, H); x.stroke(); }
+    for (let j = 1; j < 8; j++) { x.beginPath(); x.moveTo(0, j * H / 8); x.lineTo(W, j * H / 8); x.stroke(); }
+    x.globalAlpha = 1;
+  };
+
+  // ---------- steampunk ring parts (opaque, never faded) ----------
+  function rivetRing(c, r, tube, mat, o) {
+    const T = c.T, g = new T.Group(); o = o || {};
+    g.add(new T.Mesh(new T.TorusGeometry(r, tube, 16, 220), mat));
+    if (o.rivets) {
+      const n = o.rivets, im = new T.InstancedMesh(new T.SphereGeometry(tube * 0.42, 10, 6), o.rivetMat || c.M.brassDark, n * 2), m4 = new T.Matrix4();
+      for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2; [1, -1].forEach((s, k) => { m4.makeTranslation(r * Math.cos(a), r * Math.sin(a), s * tube * 0.82); im.setMatrixAt(i * 2 + k, m4); }); }
+      g.add(im);
+    }
+    if (o.ticks) {
+      const n = o.ticks, im = new T.InstancedMesh(new T.BoxGeometry(tube * 0.45, tube * 1.5, tube * 0.7), o.tickMat || c.M.brass, n), m4 = new T.Matrix4(), q = new T.Quaternion(), sc = new T.Vector3(1, 1, 1);
+      for (let i = 0; i < n; i++) { const a = i / n * Math.PI * 2, big = i % (o.major || 6) === 0; q.setFromAxisAngle(new T.Vector3(0, 0, 1), a - Math.PI / 2); sc.set(1, big ? 1.8 : 1, 1); m4.compose(new T.Vector3((r + tube * (big ? 1.5 : 1.15)) * Math.cos(a), (r + tube * (big ? 1.5 : 1.15)) * Math.sin(a), 0), q, sc); im.setMatrixAt(i, m4); }
+      g.add(im);
+    }
+    if (o.clamps) o.clamps.forEach(a => { const b = new T.Mesh(new T.BoxGeometry(tube * 3, tube * 2.2, tube * 3), o.clampMat || c.M.copper); b.position.set(r * Math.cos(a), r * Math.sin(a), 0); b.rotation.z = a; g.add(b); });
+    return g;
+  }
+  function beadRing(c, r, mat, mat2, n) {
+    const T = c.T, g = new T.Group(), a = new T.InstancedMesh(new T.SphereGeometry(0.026, 10, 8), mat, n), b = new T.InstancedMesh(new T.CylinderGeometry(0.009, 0.009, 1, 6), mat2, n);
+    const m4 = new T.Matrix4(), q = new T.Quaternion(), step = Math.PI * 2 / n;
+    for (let i = 0; i < n; i++) {
+      const t = i * step; m4.makeTranslation(r * Math.cos(t), r * Math.sin(t), 0); a.setMatrixAt(i, m4);
+      const tm = t + step / 2, len = 2 * r * Math.sin(step / 2); q.setFromAxisAngle(new T.Vector3(0, 0, 1), tm); m4.compose(new T.Vector3(r * Math.cos(tm), r * Math.sin(tm), 0), q, new T.Vector3(1, len, 1)); b.setMatrixAt(i, m4);
+    }
+    g.add(a, b); return g;
+  }
+  function pin(c, len, mat) { const T = c.T, g = new T.Group(); const p = new T.Mesh(new T.CylinderGeometry(0.018, 0.018, len, 10), mat); g.add(p); [1, -1].forEach(s => { const cap = new T.Mesh(new T.SphereGeometry(0.032, 12, 8), c.M.brass); cap.position.y = s * len / 2; g.add(cap); }); return g; }
+  function sunBead(c, col, size) { const T = c.T, m = new T.Mesh(new T.SphereGeometry(size || 0.06, 24, 12), new T.MeshStandardMaterial({ color: col, emissive: col, emissiveIntensity: 1.8 })); const gl = c.E.glow(col, (size || 0.06) * 6); m.add(gl); return m; }
+
+  // the sphere's own design from the Armilar a Vapor: glass dome + three-ring brass cage with caps
+  function sphereCage(c) {
+    const T = c.T, M = c.M, g = new T.Group(); c.root.add(g);
+    g.add(new T.Mesh(new T.SphereGeometry(GR * 1.07, 48, 24), M.glass));
+    const cage = new T.Group(); g.add(cage);
+    const r1 = new T.Mesh(new T.TorusGeometry(GR * 1.12, GR * 0.035, 12, 120), M.copper); cage.add(r1);
+    const r2 = r1.clone(); r2.rotation.y = Math.PI / 2; cage.add(r2);
+    const r3 = new T.Mesh(new T.TorusGeometry(GR * 1.12, GR * 0.025, 12, 120), M.copper); r3.rotation.x = Math.PI / 2; cage.add(r3);
+    [1, -1].forEach(s => { const cap = new T.Mesh(new T.SphereGeometry(GR * 0.1, 16, 8), M.copper); cap.position.y = s * GR * 1.12; cage.add(cap); });
+    let a = 0; c.anim((dt, t, u) => { a += dt * (0.12 + u * 0.2); cage.rotation.y = a; });
+    return g;
+  }
+
+  // ---------- two independent serpents ----------
+  function serpent(c, n, k, bodyA, bodyB, crestA, crestB) {
+    const T = c.T, M = c.M, lib = G.VIDA.lib; G.VIDA._T(T);
+    const head = new T.Group(); c.root.add(head);
+    const sk = new T.Mesh(new T.ConeGeometry(0.14 * k, 0.4 * k, 6), M.copper); sk.rotation.x = Math.PI / 2; sk.position.z = 0.13 * k; head.add(sk);
+    const jaw = new T.Group(); jaw.position.set(0, -0.05 * k, 0.02); head.add(jaw);
+    const jm = new T.Mesh(new T.ConeGeometry(0.1 * k, 0.32 * k, 6), M.brassDark); jm.rotation.x = Math.PI / 2; jm.position.z = 0.13 * k; jaw.add(jm);
+    const eye = new T.MeshStandardMaterial({ color: 0x3ee6ff, emissive: 0x3ee6ff, emissiveIntensity: 2.2 });
+    [-1, 1].forEach(s => { const e = new T.Mesh(new T.SphereGeometry(0.035 * k, 10, 6), eye); e.position.set(s * 0.08 * k, 0.06 * k, 0.08 * k); head.add(e); });
+    for (let i = 0; i < 7; i++) { const f = new T.Mesh(new T.BoxGeometry(0.05 * k, 0.28 * k, 0.012), i % 2 ? crestA : crestB); const a = (i - 3) * 0.32; f.position.set(Math.sin(a) * 0.15 * k, (0.12 + Math.cos(a) * 0.1) * k, -0.06 * k); f.rotation.z = -a; head.add(f); }
+    c.fade(head, 0.35 * k);
+    const segs = [];
+    for (let i = 0; i < n; i++) {
+      const q = 1 - i / (n + 6), s = new T.Group(); c.root.add(s);
+      const b = new T.Mesh(new T.CylinderGeometry(0.095 * k * q, 0.105 * k * q, 0.13 * k, 8), i % 3 ? bodyA : bodyB); b.rotation.x = Math.PI / 2; s.add(b);
+      if (i % 2 === 0) { const f = new T.Mesh(new T.OctahedronGeometry(0.05 * k * q), i % 4 ? crestA : crestB); f.position.y = 0.1 * k * q; f.scale.set(1, 0.6, 1.7); s.add(f); }
+      if (i % 5 === 2) { const rv = new T.Mesh(new T.SphereGeometry(0.02 * k, 8, 6), M.brass); rv.position.x = 0.1 * k * q; s.add(rv); const rv2 = rv.clone(); rv2.position.x *= -1; s.add(rv2); }
+      c.fade(s, 0.13 * k); segs.push(s);
+    }
+    const A = lib.agent(head, { max: 0.55 + 0.1 * k, wand: 1.1, turn: 3, rmin: 2.5, rmax: 4.0 });
+    segs.forEach((s, i) => s.position.copy(head.position).add(new T.Vector3(0, 0, -0.12 * k * (i + 1))));
+    const ph = rnd(0, 6);
+    c.anim((dt, t, u) => {
+      const cam = c.cam(); if (!cam) return; lib.step([A], dt, t, u, cam); lib.chain(head, segs, 0.115 * k);
+      jaw.rotation.x = 0.12 + 0.18 * (0.5 + 0.5 * Math.sin(t * (2 + u * 5) + ph));
+      const st = c.status(), col = st === 'deadline' ? 0xff3d1f : st === 'last5' ? 0xff9f1c : 0x3ee6ff; eye.color.setHex(col); eye.emissive.setHex(col);
+    });
+  }
+  function twoSerpents(c) {
+    const T = c.T, M = c.M, gold = new T.MeshStandardMaterial({ color: 0xd8b04a, metalness: 1, roughness: 0.3 });
+    serpent(c, 46, 1.0, M.jade, M.copper, M.turq, gold);
+    serpent(c, 36, 0.78, M.turq, gold, gold, M.jade);
+  }
+
+  // ---------- three orbit-arc designs ----------
+  G.SERP3 = {
+    classico: {
+      rimMat: 'brass', plateBorder: '#d9a75a', limbTicks: true, globeR: GR, noHands: true,
+      disc: { rim: '#11130e', monthBg: '#173a2d', monthAlt: '#1f4a39', monthSel: '#ff9f1c', monthSelInk: '#11130e', ink: '#f1e6cc', dayBg: '#0f0f0c', cell: '#2a2e24', past: '#1a1c16', dayInk: '#d9a75a', line: '#d9a75a', markOpen: '#f6e7b8' },
+      build(c) {
+        const { T, M } = c; sphereCage(c);
+        const hz = new T.Group(); c.root.add(hz);
+        const hr = rivetRing(c, 1.04, 0.03, M.brass, { rivets: 36, ticks: 72, major: 6 }); hr.rotation.x = Math.PI / 2; hz.add(hr);
+        [0, 90, 180, 270].forEach(a => { const tab = new T.Mesh(new T.BoxGeometry(0.12, 0.04, 0.07), M.copper); tab.position.set(1.04 * Math.sin(a * D2R), 0.04, -1.04 * Math.cos(a * D2R)); tab.rotation.y = -a * D2R; hz.add(tab); });
+        const mer = new T.Group(); c.root.add(mer);
+        const mr = rivetRing(c, 1.12, 0.028, M.copper, { rivets: 40, ticks: 36, major: 9 }); mr.rotation.y = Math.PI / 2; mer.add(mr);
+        [1, -1].forEach(s => { const p = pin(c, 0.1, M.iron); p.rotation.z = Math.PI / 2; p.position.set(0, 0, s * 1.08); mer.add(p); });
+        const eq = new T.Group(); eq.rotation.x = (LAT - 90) * D2R; c.root.add(eq);
+        const er = rivetRing(c, 0.9, 0.024, M.brass, { rivets: 24, ticks: 24, major: 6 }); er.rotation.x = Math.PI / 2; eq.add(er);
+        [-EPS, EPS].forEach(d => { const t = rivetRing(c, 0.9 * Math.cos(d * D2R), 0.01, M.brassDark, {}); t.rotation.x = Math.PI / 2; t.position.y = 0.9 * Math.sin(d * D2R); eq.add(t); });
+        const sky = new T.Group(); eq.add(sky); const tilt = new T.Group(); tilt.rotation.z = EPS * D2R; sky.add(tilt);
+        const ecl = rivetRing(c, 0.92, 0.03, M.copper, { rivets: 24, clamps: [0, Math.PI / 2, Math.PI, Math.PI * 1.5], clampMat: M.brass }); ecl.rotation.x = Math.PI / 2; tilt.add(ecl);
+        const sun = sunBead(c, 0xffb347, 0.065); tilt.add(sun);
+        let a1 = 0, a2 = 0, a3 = 0, as = 0;
+        c.anim((dt, t, u) => {
+          a1 += dt * (0.05 + u * 0.08); hz.rotation.y = a1; a2 += dt * (-0.07 - u * 0.1); mer.rotation.y = a2 + 0.2 * Math.sin(t * 0.3);
+          a3 += dt * (0.1 + u * 0.25); sky.rotation.y = a3; as += dt * (0.4 + u * 0.8); sun.position.set(0.92 * Math.sin(as), 0, 0.92 * Math.cos(as));
+        });
+        twoSerpents(c);
+      }
+    },
+    giroscopio: {
+      rimMat: 'brass', plateBorder: '#d9a75a', limbTicks: true, globeR: GR, noHands: true,
+      disc: { rim: '#0d1c1a', monthBg: '#14332e', monthAlt: '#1b4039', monthSel: '#ff9f1c', monthSelInk: '#0d1c1a', ink: '#e9f2ee', dayBg: '#0a1514', cell: '#1f312e', past: '#121d1b', dayInk: '#9fe0cf', line: '#c47a45', markOpen: '#e9f2ee' },
+      build(c) {
+        const { T, M } = c; sphereCage(c);
+        const g1 = new T.Group(); c.root.add(g1);
+        g1.add(rivetRing(c, 1.16, 0.034, M.brass, { rivets: 40, ticks: 60, major: 5 }));
+        const g2 = new T.Group(); g1.add(g2);
+        const r2 = rivetRing(c, 1.03, 0.03, M.copper, { rivets: 32, ticks: 36, major: 6 }); g2.add(r2);
+        [1, -1].forEach(s => { const p = pin(c, 0.13, M.iron); p.rotation.z = Math.PI / 2; p.position.x = s * 1.095; g1.add(p); });
+        g2.rotation.y = Math.PI / 2;
+        const g3 = new T.Group(); g2.add(g3);
+        const r3 = rivetRing(c, 0.9, 0.026, M.brass, { rivets: 24, clamps: [Math.PI / 4, Math.PI * 1.25], clampMat: M.copper }); g3.add(r3);
+        [1, -1].forEach(s => { const p = pin(c, 0.13, M.iron); p.position.y = s * 0.965; g2.add(p); });
+        g3.rotation.x = Math.PI / 2;
+        const sun = sunBead(c, 0xffb347, 0.06); g3.add(sun);
+        const ecl = new T.Group(); ecl.rotation.set(1.1, 0.3, 0); c.root.add(ecl);
+        ecl.add(rivetRing(c, 0.8, 0.018, M.brassDark, { rivets: 18 }));
+        const moon = sunBead(c, 0xbfe8ff, 0.045); ecl.add(moon);
+        let a1 = 0, a2 = 0, a3 = 0, am = 0, as = 0;
+        c.anim((dt, t, u) => {
+          a1 += dt * (0.18 + u * 0.3); g1.rotation.y = a1;
+          a2 += dt * (0.27 + u * 0.4); g2.rotation.x = a2;
+          a3 += dt * (-0.35 - u * 0.5); g3.rotation.y = a3;
+          as += dt * 0.7; sun.position.set(0.9 * Math.cos(as), 0.9 * Math.sin(as), 0);
+          am += dt * 0.5; moon.position.set(0.8 * Math.cos(am), 0.8 * Math.sin(am), 0); ecl.rotation.z += dt * 0.05;
+        });
+        twoSerpents(c);
+      }
+    },
+    orbitas: {
+      rimMat: 'copper', plateBorder: '#d6a86a', limbTicks: true, globeR: GR, noHands: true,
+      disc: { rim: '#12100b', monthBg: '#2b2416', monthAlt: '#342c1b', monthSel: '#ff9f1c', monthSelInk: '#12100b', ink: '#f3e7cc', dayBg: '#0e0c08', cell: '#2a251b', past: '#18150f', dayInk: '#e2b768', line: '#b9874a', markOpen: '#f3e7cc' },
+      build(c) {
+        const { T, M } = c; sphereCage(c);
+        const verd = new T.MeshStandardMaterial({ color: 0x3e8f7d, metalness: 0.35, roughness: 0.6 });
+        const specs = [
+          { r: 1.16, rot: [1.35, 0, 0.1], kind: 'chain', m1: M.brass, m2: M.copper, w: 0.06, body: 0xffb347, size: 0.07, bs: 0.35 },
+          { r: 1.04, rot: [0.4, 0.9, 0.3], kind: 'rivet', m1: M.copper, w: -0.08, body: 0xbfe8ff, size: 0.05, bs: -0.5 },
+          { r: 0.93, rot: [-0.7, 0.2, 1.1], kind: 'chain', m1: verd, m2: M.brass, w: 0.1, body: 0x6fe0b0, size: 0.045, bs: 0.65 },
+          { r: 0.84, rot: [0.2, -1.2, -0.5], kind: 'rivet', m1: M.brass, w: -0.12, body: 0xff7a4f, size: 0.04, bs: -0.8 }
+        ];
+        specs.forEach(sp => {
+          const tilt = new T.Group(); tilt.rotation.set(...sp.rot); c.root.add(tilt); const spin = new T.Group(); tilt.add(spin);
+          spin.add(sp.kind === 'chain' ? beadRing(c, sp.r, sp.m1, sp.m2, Math.round(sp.r * 56)) : rivetRing(c, sp.r, 0.024, sp.m1, { rivets: Math.round(sp.r * 26), ticks: Math.round(sp.r * 30), major: 5 }));
+          const body = sunBead(c, sp.body, sp.size); spin.add(body);
+          let a = rnd(0, 6), ab = rnd(0, 6);
+          c.anim((dt, t, u) => { a += dt * sp.w * (1 + u); spin.rotation.z = a; tilt.rotation.y += dt * sp.w * 0.15; ab += dt * sp.bs * (1 + u * 0.8); body.position.set(sp.r * Math.cos(ab), sp.r * Math.sin(ab), 0); });
+        });
+        twoSerpents(c);
+      }
+    }
+  };
+})(window);
+</script>
+<script>(function(){ var S = window.ESTILOS["maia"]; var cfg = Object.assign({ planet: window.armilarPlanet, text: { ink: "#ffd9a0", sub: "#7fd6c4", glow: "#ff8c2a" }, extraMats: S.extraMats, extraLine: S.extraLine }, {"title": "Serpentes de Jade: Giroscópio", "subtitle": "A esfera do Armilar a Vapor dentro de um giroscópio: três anéis em cardan, presos por pinos de pivô, giram cada um em um eixo, com o Sol e a Lua percorrendo suas órbitas. Duas serpentes de jade vagam livres ao redor.", "howto": "Os meses ficam no anel interno e os dias de cada mês logo à frente dele. A seta ciano e a placa marcam o início do período; a seta vermelha e a placa marcam o fim. No centro, a esfera do Armilar a Vapor com seus anéis de órbita; as duas serpentes vagam livres e desviam para não cobrir as informações.", "fonts": ["400 40px \"Marcellus\""], "lamp": {"open": "#ffd98a", "elapsed": "#8a6a2e", "last5": "#ff9f1c", "deadline": "#ff3d1f", "closed": "#7a2a1a", "off": "#2a2420", "today": "#ffffff"}, "font": "\"Marcellus\", \"Trajan Pro\", Georgia, serif", "metal": {"brass": 10975802, "brassDark": 7228964, "copper": 10246706, "jade": 3050346, "turq": 3912611}, "light": 16770756, "rim": 8378052}); window.Relogio.start(cfg, window.makeMechLayout(window.SERP3["giroscopio"])); })();</script>
+</body>
+</html>
