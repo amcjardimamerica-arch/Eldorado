@@ -21,11 +21,25 @@ def abrir_bancos(dados: str | Path) -> dict:
     return {"biblioteca": b, "especial": b, "cerebro": cerebro.abrir(d / "cerebro.db")}
 
 
+_APLICADO_DESDE: float | None = None
+
+
 def aplicar_eventos(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
     """Aplica todos os eventos da pasta aos bancos (idempotente). Recusas viram alarmes, aplicados pelo próprio gravador."""
+    global _APLICADO_DESDE
+    import time as _t
+
+    # 29/10/2026: só o que é novo. A partida do ciclo aplica o histórico inteiro (eldorado aplicar); dentro da passagem,
+    # cada etapa lê só os arquivos modificados desde a aplicação anterior (a primeira referência: a marca de início do
+    # ciclo). O gravador ignora o que já foi aplicado, então ler um arquivo a mais nunca duplica; a margem de 60 s cobre
+    # as escritas simultâneas.
+    marca = Path(".inicio_ciclo")
+    desde = _APLICADO_DESDE if _APLICADO_DESDE is not None else (marca.stat().st_mtime if marca.exists() else None)
+    inicio = _t.time()
     bancos = abrir_bancos(parametros.get("dados", "dados"))
     try:
-        r = Gravador(bancos).aplicar(ler(parametros.get("eventos", "eventos")))
+        r = Gravador(bancos).aplicar(ler(parametros.get("eventos", "eventos"), desde - 60 if desde is not None else None))
+        _APLICADO_DESDE = inicio
     finally:
         for c in bancos.values():
             c.close()

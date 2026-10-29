@@ -315,3 +315,20 @@ def test_so_grava_o_que_muda_e_a_copia_dos_livros():
     assert "camoufox" not in ORDEM and "patchright" in ORDEM
     assert '"cinza",     # 29/10/2026: informativo' in Path("eldorado/base/painel/sala.py").read_text(encoding="utf-8")
     assert datetime.now(timezone.utc)
+
+
+def test_a_passagem_aplica_so_o_que_e_novo():
+    """29/10/2026: cada etapa de aplicar lia o histórico inteiro (~600 mil eventos): a memória ia de 1,1 GB a 2,9 GB numa
+    etapa (o medidor por etapa mostrou). Agora só os arquivos modificados desde a aplicação anterior."""
+    import os
+    import time
+
+    with tempfile.TemporaryDirectory() as d:
+        velho = EV.Diario(d, "01793999999999999999-000001-aaaaaaaa")
+        velho.emitir("alarme.fechado", "t", {"id": "a", "em": "2026-10-29T00:00:00+00:00", "motivo": "x"})
+        os.utime(velho.arquivo, (time.time() - 3600, time.time() - 3600))
+        novo = EV.Diario(d, "01793999999999999999-000002-bbbbbbbb")
+        novo.emitir("alarme.fechado", "t", {"id": "b", "em": "2026-10-29T00:00:00+00:00", "motivo": "x"})
+        assert len(list(EV.ler(d))) == 2 and len(list(EV.ler(d, time.time() - 60))) == 1
+    s = Path("eldorado/base/fluxo/nos.py").read_text(encoding="utf-8")
+    assert "desde - 60 if desde is not None else None" in s and "_APLICADO_DESDE = inicio" in s

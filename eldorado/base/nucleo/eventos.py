@@ -288,9 +288,11 @@ class Diario:
         return self.gravar(criar(tipo, modulo, dados, linhagem))
 
 
-def ler(pasta: str | Path) -> Iterator[Evento]:
-    """Lê todos os eventos da pasta, na ordem de criação. Linha corrompida levanta EventoInvalido (nunca é ignorada)."""
-    arquivos = sorted(Path(pasta).rglob("*.jsonl"))
+def ler(pasta: str | Path, desde: float | None = None) -> Iterator[Evento]:
+    """Lê os eventos da pasta, na ordem de criação. Linha corrompida levanta EventoInvalido (nunca é ignorada).
+    desde (29/10/2026): só os arquivos modificados a partir desse instante (a aplicação dentro da passagem lia o histórico
+    inteiro — ~600 mil eventos — em cada etapa de aplicar: a memória ia de 1,1 GB a 2,9 GB numa etapa)."""
+    arquivos = sorted(a for a in Path(pasta).rglob("*.jsonl") if desde is None or a.stat().st_mtime >= desde)
     eventos: list[Evento] = []
     for a in arquivos:
         for n, linha in enumerate(a.read_bytes().splitlines(), 1):
