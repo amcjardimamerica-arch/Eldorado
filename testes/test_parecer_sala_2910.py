@@ -339,7 +339,7 @@ def test_o_veredito_vale_para_o_livro_que_mudou_de_etapa():
     preparação e, válido, para o que chegou ao Farol (7 de 40 eram recusados); o descarte de um livro do Farol fica para
     a titular; a gravação tira do repositório o veredito já importado (senão seria importado de novo)."""
     s = Path("eldorado/base/cartorio/analise_externa.py").read_text(encoding="utf-8")
-    assert 'if fase not in ("analise externa", "preparacao", "farol", "validacao"):' in s
+    assert 'if fase not in ("analise externa", "preparacao", "farol", "validacao", "arquivo"):' in s
     assert 'if fase == "farol" and v.decisao == "descartar":' in s
     g = Path("scripts/gravar.sh").read_text(encoding="utf-8")
     assert 'git ls-files "verificacao/vereditos/*.json"' in g and 'grep -v "/importados/"' in g

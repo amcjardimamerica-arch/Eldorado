@@ -105,7 +105,9 @@ def importar(retorno: bytes | str, con: sqlite3.Connection, diario: Diario) -> l
         # preparação (a aberta volta à fila a cada 24 h) e, quando válido, para o que já chegou ao Farol (o trabalho do
         # Chrome se perdia: 7 de 40 recusados no lote de 29/10, com 16 itens comprovados). O descarte de um livro do
         # Farol não é aplicado sozinho: fica para a titular.
-        if fase not in ("analise externa", "preparacao", "farol", "validacao"):
+        # e (29/10/2026, os remanescentes de 23 a 28/10) para o livro já ARQUIVADO: o válido grava os itens e o veredito no
+        # registro da edição encerrada (a revalidação não o tira do arquivo); o descarte o exclui (não era oportunidade)
+        if fase not in ("analise externa", "preparacao", "farol", "validacao", "arquivo"):
             saida.append({"livro": v.livro_id, "recusado": f"o livro está na etapa {fase}: o veredito não se aplica"})
             continue
         if fase == "farol" and v.decisao == "descartar":
