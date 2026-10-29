@@ -322,10 +322,14 @@ def montar(
         esperam = {r[0] for r in bib.execute("SELECT p.livro_id FROM passaporte p JOIN livro l ON l.id = p.livro_id "
                                              "WHERE p.fase = 'analise externa' AND l.situacao NOT IN ('excluido', 'unido')")}
         conteudo = {p.stem: {x.get("livro_id") for x in json.loads(p.read_text(encoding="utf-8")).get("livros", [])} for p in lotes}
+        # 29/10/2026: pelos DADOS, não pelo nome do arquivo: o livro com veredito do Chrome já teve retorno (o arquivo dos
+        # remanescentes de 23 a 28/10 não tem as datas no nome, e os lotes seguiam "sem retorno" depois de importados)
+        vereditados = {r[0] for r in bib.execute("SELECT DISTINCT livro_id FROM veredito WHERE origem LIKE '%chrome%' OR origem LIKE '%externa%'")}
+        esperam -= vereditados
         mais_novos: set = set()
         pendentes = []
         for st in reversed([p.stem for p in lotes]):
-            if st in sem_retorno and (conteudo.get(st, set()) & esperam) - mais_novos:
+            if (conteudo.get(st, set()) & esperam) - mais_novos:
                 pendentes.append(st)
             mais_novos |= conteudo.get(st, set())
         sem_retorno = sorted(pendentes)

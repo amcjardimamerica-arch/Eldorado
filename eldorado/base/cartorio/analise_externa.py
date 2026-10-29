@@ -64,7 +64,7 @@ class Retorno(msgspec.Struct):
     lote: str | None = None
 
 
-def gerar_lote(con: sqlite3.Connection, hoje: date, maximo: int = 40) -> dict[str, Any]:
+def gerar_lote(con: sqlite3.Connection, hoje: date, maximo: int = 100) -> dict[str, Any]:   # 29/10/2026: 100 (eram 40; a fila chegou a 232)
     con.row_factory = sqlite3.Row
     livros = []
     tem_base = "base_buscar" in {r[1] for r in con.execute("PRAGMA table_info(livro_dados)")}
@@ -168,6 +168,11 @@ def no_analise_externa(itens: list[dict[str, Any]], parametros: dict[str, Any], 
             try:
                 resultado["importados"] += len(importar(arq.read_bytes(), con, contexto.diario))
                 arq.rename(pasta / "vereditos" / "importados" / arq.name)
+                # 29/10/2026: o arquivo movido ganha a hora da importação (a gravação só leva o que mudou desde o início do
+                # ciclo; com a data antiga, o registro em importados/ não chegava ao repositório)
+                import os as _os
+
+                _os.utime(pasta / "vereditos" / "importados" / arq.name)
             except msgspec.ValidationError as e:
                 contexto.diario.emitir("alarme.aberto", "analise externa", {"gravidade": "media", "modulo": "analise externa", "aberto_em": agora(),
                                                                             "mensagem": f"veredito {arq.name} fora do formato: {str(e)[:200]}"})

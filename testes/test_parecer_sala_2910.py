@@ -343,3 +343,13 @@ def test_o_veredito_vale_para_o_livro_que_mudou_de_etapa():
     assert 'if fase == "farol" and v.decisao == "descartar":' in s
     g = Path("scripts/gravar.sh").read_text(encoding="utf-8")
     assert 'git ls-files "verificacao/vereditos/*.json"' in g and 'grep -v "/importados/"' in g
+
+
+def test_os_lotes_sem_retorno_pelos_dados_e_o_registro_do_importado():
+    """29/10/2026: 'lote sem retorno' pelos DADOS (o livro com veredito do Chrome teve retorno), não pelo nome do arquivo;
+    o arquivo importado ganha a hora da importação (senão o registro em importados/ não chegava ao repositório); o lote
+    diário com até 100 livros (a fila chegou a 232 com lotes de 40)."""
+    s = Path("eldorado/base/painel/sala.py").read_text(encoding="utf-8")
+    assert "esperam -= vereditados" in s and "if (conteudo.get(st, set()) & esperam) - mais_novos:" in s
+    a = Path("eldorado/base/cartorio/analise_externa.py").read_text(encoding="utf-8")
+    assert '_os.utime(pasta / "vereditos" / "importados" / arq.name)' in a and "maximo: int = 100" in a
