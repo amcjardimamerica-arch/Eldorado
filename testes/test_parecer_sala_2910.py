@@ -78,6 +78,7 @@ def test_a_sala_le_os_campos_certos():
     assert '"comparacao_r01": _comparacao_r01(cer, agora)' in s and "motores = _motores_com_luz(mods, cer, agora)" in s
     assert "const R=D.rede_entregou||{}" in p and "const q=t.quando||t.em, nm=t.nome||t.evento" in p
     assert 'f.situacao==="completed"?f.conclusao:(f.ultima_conclusao||null)' in p
+    assert "motores.acesso.escada" not in s   # a publicação do painel instala só o básico (o tenacity quebrava o site)
 
 
 def test_a_medicao_por_evidencia():

@@ -767,8 +767,9 @@ def _comparacao_r01(cer: sqlite3.Connection, agora: datetime, caminho: str = "co
 def _escada_em_uso(cer: sqlite3.Connection, desde: str) -> dict[str, int]:
     """29/10/2026: os degraus da escada de acesso em uso: quantos sites precisam de cada um (o que a escada aprendeu) e o
     degrau mais alto de cada execução de motor nas últimas 48 h (a resposta a "o Camoufox está sendo usado?")."""
-    from ...motores.acesso.escada import NOMES_CANONICOS
-
+    # os nomes locais (a publicação do painel instala só o básico: importar a escada puxaria o tenacity e quebrava o site)
+    NOMES_CANONICOS = {1: "API", 2: "requisição leve", 10: "ponte BR", 3: "Lightpanda", 4: "Patchright", 5: "Camoufox", 6: "Wayback",
+                       7: "Tor", 8: "leitor público", 9: "computador da titular"}
     out: dict[str, int] = {}
     try:
         for cod, n in cer.execute("SELECT degrau_que_funciona, COUNT(*) FROM dominio GROUP BY 1"):
