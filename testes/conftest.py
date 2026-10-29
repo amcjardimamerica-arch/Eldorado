@@ -99,3 +99,43 @@ def _memoria_de_emissao_limpa():
 
     _ev._JA_EMITIDOS.clear()
     yield
+
+
+# 29/10/2026: a barreira também para as bibliotecas em C e Rust (curl_cffi e primp abrem a conexão por fora do socket do
+# Python): na nuvem, as travas dos motores e do Interceptador buscavam os sites REAIS (a do PNCP achou 18 itens às 06:58 e
+# 19 às 07:59, e as do Interceptador estouravam os 240 s) e aqui não (a rede desta máquina é restrita).
+def _barrar_externo(url) -> None:
+    from urllib.parse import urlsplit
+
+    host = urlsplit(str(url)).hostname or ""
+    if not host.startswith(_LOCAIS):
+        raise ConnectionError(f"rede externa bloqueada nos testes: {host}")
+
+
+try:
+    import curl_cffi.requests as _cc
+
+    _cc_original = _cc.Session.request
+
+    def _cc_request(self, method, url, *a, **k):
+        _barrar_externo(url)
+        return _cc_original(self, method, url, *a, **k)
+
+    _cc.Session.request = _cc_request
+except Exception:  # noqa: BLE001 — sem a biblioteca, nada a barrar
+    pass
+
+try:
+    import primp as _pr
+
+    for _nome in ("get", "post", "head", "request"):
+        if hasattr(_pr.Client, _nome):
+            _orig = getattr(_pr.Client, _nome)
+
+            def _pr_metodo(self, *a, _o=_orig, _n=_nome, **k):
+                _barrar_externo(a[1] if _n == "request" and len(a) > 1 else (a[0] if a else k.get("url", "")))
+                return _o(self, *a, **k)
+
+            setattr(_pr.Client, _nome, _pr_metodo)
+except Exception:  # noqa: BLE001
+    pass
