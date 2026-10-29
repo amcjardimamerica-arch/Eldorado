@@ -26,7 +26,8 @@ FONTES = [
     ("espiao_missao", "id", "coalesce(familia,'')||' · '||coalesce(consulta,'')||' · '||coalesce(motivos,'')", "em"),
     ("decisao_pertinencia", "id", "coalesce(etapa,'')||' · '||coalesce(decisao,'')||' · '||coalesce(motivo,'')||' · '||coalesce(regra,'')", "em"),
     ("alarme", "id", "coalesce(modulo,'')||' · '||coalesce(mensagem,'')", "aberto_em"),
-    ("medicao", "marcador||'@'||em", "coalesce(marcador,'')||' · '||coalesce(motivo,'')", "em"),
+    # 29/10/2026: sem as medições (eram 3/4 do que a memória registrava: 313 de 412 em 20 min; a medição já vive na
+    # tabela de medições e na Sala — como "memória" não ajuda o Cérebro a decidir nada)
     ("execucao_passo", "execucao||':'||passo", "coalesce(no,'')||' · '||coalesce(estado,'')||' · '||coalesce(saida,'')", "em"),
 ]
 DIAS = 30
