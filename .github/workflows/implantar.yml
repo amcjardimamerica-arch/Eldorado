@@ -25,7 +25,23 @@ jobs:
     timeout-minutes: 70
     steps:
       - uses: actions/checkout@v5
+      - name: 0. O ciclo em funcionamento já tem este código? (então não há o que implantar)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # 29/10/2026: a implantação pedia a parada de um ciclo que JÁ tinha o código (religado com a versão mais nova);
+          # o ciclo ignorava o pedido e a implantação esperava os 45 min inteiros, prendendo a fila (os vereditos e a Sala
+          # não entravam). Se todo ciclo em funcionamento contém este código, nada a fazer.
+          vivos=$(gh run list -R "$GITHUB_REPOSITORY" -w eldorado.yml --json headSha,status -q '.[] | select(.status!="completed") | .headSha')
+          ja=sim; [ -z "$vivos" ] && ja=nao
+          for h in $vivos; do
+            s=$(gh api "repos/$GITHUB_REPOSITORY/compare/${GITHUB_SHA}...${h}" -q .status 2>/dev/null || echo erro)
+            case "$s" in ahead|identical) ;; *) ja=nao;; esac
+          done
+          echo "JA_TEM=$ja" >> "$GITHUB_ENV"
+          [ "$ja" = sim ] && echo "::notice::o ciclo em funcionamento já tem ${GITHUB_SHA::7}: nada a implantar (sem pedido, sem espera, sem parada)" || true
       - name: 1. O pedido de implantação (o ciclo termina a passagem, grava e para)
+        if: env.JA_TEM != 'sim'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -36,6 +52,7 @@ jobs:
           git add implantar/pedido.txt; git commit -q -m "Pedido de implantação ${GITHUB_SHA::7}"
           for i in 1 2 3 4 5; do git pull -q --rebase --autostash origin main && git push -q origin main && break; sleep $((i * 5)); done
       - name: 2. Aguardar os processos terminarem e gravarem (até 45 minutos)
+        if: env.JA_TEM != 'sim'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -43,13 +60,14 @@ jobs:
           for i in $(seq 1 90); do vivo || { echo "o ciclo terminou os processos, gravou e parou"; echo "FORCADA=nao" >> "$GITHUB_ENV"; exit 0; }; sleep 30; done
           echo "FORCADA=sim" >> "$GITHUB_ENV"; echo "::warning::o ciclo não terminou em 45 minutos: parada à força (a passagem em andamento se perde inteira)"
       - name: 3. A parada à força, se o limite passou (a passagem cortada não é gravada)
-        if: env.FORCADA == 'sim'
+        if: env.FORCADA == 'sim' && env.JA_TEM != 'sim'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           for id in $PARADOS; do gh run cancel "$id" -R "$GITHUB_REPOSITORY" || true; done
           for i in $(seq 1 40); do n=0; for id in $PARADOS; do [ "$(gh run view "$id" -R "$GITHUB_REPOSITORY" --json status -q .status)" != "completed" ] && n=1; done; [ $n = 0 ] && break; sleep 15; done
       - name: 4. Religar do zero com o código novo
+        if: env.JA_TEM != 'sim'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

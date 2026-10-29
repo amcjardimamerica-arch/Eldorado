@@ -33,8 +33,10 @@ def test_toda_mudanca_para_implanta_e_religa():
     passos = [s_.get("name", "") for s_ in i["jobs"]["implantar"]["steps"]]
     # nunca o meio-termo (25/10/2026): aguarda e grava; passado o limite, para e perde; religa do zero
     comandos = Path("eldorado/base/nucleo/comandos.py").read_text(encoding="utf-8")
-    assert [p_[:2] for p_ in passos if p_[:1].isdigit()] == ["1.", "2.", "3.", "4.", "5."]
-    assert "Aguardar" in passos[2] and "à força" in passos[3] and "do zero" in passos[4]
+    # 29/10/2026: o passo 0 (o ciclo em funcionamento já tem o código? então nada a implantar: sem pedido, espera ou parada)
+    assert [p_[:2] for p_ in passos if p_[:1].isdigit()] == ["0.", "1.", "2.", "3.", "4.", "5."]
+    assert "JA_TEM" in Path(".github/workflows/implantar.yml").read_text(encoding="utf-8")
+    assert "Aguardar" in passos[3] and "à força" in passos[4] and "do zero" in passos[5]   # 29/10/2026: depois do passo 0
     g = Path("scripts/gravar.sh").read_text(encoding="utf-8")
     assert '"execucao.concluida"' in g and "em andamento (não gravado)" in g          # a passagem pela metade nunca é gravada
     assert "f.join(timeout=240)" in comandos and "gravar_agora(esperar=True)" in comandos   # os pilotos concluem; a gravação final

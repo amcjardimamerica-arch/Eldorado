@@ -628,6 +628,19 @@ def motor_sondar(id: str, anotar: bool = typer.Option(False, "--anotar")):
     sondar(enderecos(id), anotar)
 
 
+def _pedido_mais_novo_que_o_codigo(pedido: str) -> bool:
+    """O pedido ('<sha> <AAAA-MM-DDTHH:MM:SSZ>') foi escrito depois do commit que este ciclo roda?"""
+    import subprocess
+    from datetime import datetime as _dt
+
+    try:
+        quando = _dt.fromisoformat(pedido.split()[1].replace("Z", "+00:00")).timestamp()
+        cod = int(subprocess.run(["git", "log", "-1", "--format=%ct", "HEAD"], capture_output=True, text=True, timeout=30).stdout.strip())
+        return quando > cod + 60
+    except (IndexError, ValueError, OSError):
+        return False
+
+
 def _registrar_gravacao(ok: bool, resumo: str) -> None:
     """29/10/2026: o resultado da última gravação (a evidência da finalidade do gravar.sh e do ciclo, na Sala)."""
     import json as _json
@@ -729,6 +742,11 @@ def permanente(
             return ""
 
     pedido_inicial = pedido_atual() if gravar else ""
+    # 29/10/2026: o pedido encontrado na partida só conta como "já atendido" se for mais antigo que o código deste ciclo;
+    # o escrito enquanto o ciclo instalava (mais novo que o código) é atendido no fim da primeira passagem (antes era
+    # ignorado e a implantação esperava os 45 min inteiros, parando o ciclo à força)
+    if pedido_inicial and _pedido_mais_novo_que_o_codigo(pedido_inicial):
+        pedido_inicial = ""
 
     def vigiar_pedido() -> None:
         while gravar and not parar.wait(120):
