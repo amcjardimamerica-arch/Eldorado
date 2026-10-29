@@ -183,6 +183,31 @@ def importar(retorno: bytes | str, con: sqlite3.Connection, diario: Diario) -> l
     return saida
 
 
+def trazer_vereditos_novos(pasta: Path) -> list[str]:
+    """29/10/2026: o ciclo em andamento não via os vereditos enviados ao repositório depois que ele partiu (só os importava
+    ao ser religado, e a implantação agora pula o religamento quando o ciclo já tem o código). A cada passagem, os
+    vereditos novos da pasta de entrada no repositório vêm para a pasta local (os já importados ficam de fora)."""
+    import subprocess
+
+    trazidos: list[str] = []
+    try:
+        if subprocess.run(["git", "fetch", "-q", "origin", "main"], capture_output=True, timeout=60).returncode != 0:
+            return trazidos
+        nomes = subprocess.run(["git", "ls-tree", "--name-only", "origin/main", f"{pasta.as_posix()}/vereditos/"],
+                               capture_output=True, text=True, timeout=30).stdout.split()
+        for n in nomes:
+            nome = Path(n).name
+            if not nome.endswith(".json") or (pasta / "vereditos" / nome).exists() or (pasta / "vereditos" / "importados" / nome).exists():
+                continue
+            corpo = subprocess.run(["git", "show", f"origin/main:{n}"], capture_output=True, timeout=60)
+            if corpo.returncode == 0 and corpo.stdout:
+                (pasta / "vereditos" / nome).write_bytes(corpo.stdout)
+                trazidos.append(nome)
+    except (OSError, subprocess.SubprocessError):
+        pass
+    return trazidos
+
+
 def no_analise_externa(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
     """Nó da passagem: importa os vereditos novos do Chrome e prepara o lote do dia (se houver livros na etapa 5)."""
     p = Path(parametros.get("dados", "dados")) / "biblioteca.db"
@@ -193,6 +218,7 @@ def no_analise_externa(itens: list[dict[str, Any]], parametros: dict[str, Any], 
     resultado = {"importados": 0, "lote": None}
     try:
         (pasta / "vereditos" / "importados").mkdir(parents=True, exist_ok=True)
+        trazer_vereditos_novos(pasta)
         for arq in sorted((pasta / "vereditos").glob("*.json")):
             try:
                 resultado["importados"] += len(importar(arq.read_bytes(), con, contexto.diario))

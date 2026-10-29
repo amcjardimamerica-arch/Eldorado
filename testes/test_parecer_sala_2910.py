@@ -410,3 +410,12 @@ def test_os_lotes_do_dia_cobrem_a_fila_inteira():
             assert AE.gerar_lotes_do_dia(con, p, date(2026, 10, 30)) == []
     finally:
         AE.gerar_lote = orig
+
+
+def test_o_ciclo_traz_os_vereditos_novos_do_repositorio():
+    """29/10/2026: o ciclo em andamento não via o veredito enviado depois que ele partiu (só ao ser religado; a
+    implantação agora pula o religamento quando o ciclo já tem o código). A cada passagem, a análise externa traz os
+    vereditos novos da pasta de entrada do repositório (os já importados ficam de fora)."""
+    s = Path("eldorado/base/cartorio/analise_externa.py").read_text(encoding="utf-8")
+    assert "trazer_vereditos_novos(pasta)" in s and '"git", "show", f"origin/main:{n}"' in s
+    assert '(pasta / "vereditos" / "importados" / nome).exists()' in s
