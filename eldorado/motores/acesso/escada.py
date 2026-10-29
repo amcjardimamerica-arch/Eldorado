@@ -90,6 +90,7 @@ def avaliar(r: Resposta) -> None:
 NOMES_CANONICOS = {1: "API", 2: "requisição leve", 10: "ponte BR", 3: "Lightpanda", 4: "Patchright", 5: "Camoufox", 6: "Wayback",
                    7: "Tor", 8: "leitor público", 9: "computador da titular"}
 ORDEM_CANONICA = [1, 2, 10, 3, 4, 5, 6, 7, 8, 9]
+LOCAIS = {"127.0.0.1", "localhost", "0.0.0.0"}   # os serviços da própria máquina (o SearXNG): só os degraus diretos
 
 
 def codigo(degrau) -> int | None:
@@ -142,7 +143,12 @@ class Escada:
         dom = dominio(url)
         inicio = self.aprendido.get(dom, 0)
         motivos: list[str] = []
-        for i in range(inicio, len(self.degraus)):
+        # 29/10/2026: o serviço da própria máquina (o SearXNG em 127.0.0.1) não sobe a escada: só os degraus diretos (a
+        # escada levava o SearXNG ao computador da titular, que responde "pendente", e o Espião voltava vazio)
+        limite = len(self.degraus)
+        if dom in LOCAIS:
+            inicio, limite = 0, sum(1 for d in self.degraus if codigo(d) in (1, 2)) or 1
+        for i in range(inicio, limite):
             d = self.degraus[i]
             if d.pesado and self.governador is not None and not self.governador.pode_iniciar(f"degrau:{d.nome}", "pesado"):
                 motivos.append(f"{d.nome}: adiado pelo governador")
@@ -172,7 +178,9 @@ class Escada:
                 motivos.append(f"{d.nome}: não faz POST ({str(e)[:60]})")
                 continue
             except Pendente:
-                self._aprender(dom, i, exige_local=True)
+                # 29/10/2026: "pendente" não é sucesso: registra que o domínio exigiu o computador da titular, mas NÃO como o
+                # degrau por onde começar (antes, uma única falha mandava o domínio para sempre ao "pendente")
+                self._registrar_exige_local(dom)
                 raise
             r.degrau = d.nome
             self.ultimo_degrau = d.nome                         # o degrau que serviu a última leitura (vai para o livro)
@@ -188,6 +196,8 @@ class Escada:
         pos = {codigo(d): j for j, d in enumerate(self.degraus)}
         n = 0
         for dom, cod in memoria.items():
+            if cod == 9 or dom in LOCAIS:            # 29/10/2026: o computador da titular nunca é o ponto de partida
+                continue
             if cod in pos and dom not in self.aprendido:
                 self.aprendido[dom] = pos[cod]
                 n += 1
@@ -198,6 +208,11 @@ class Escada:
         usados = [codigo(self.degraus[i]) for i in set(self.aprendido.values()) if 0 <= i < len(self.degraus)]
         usados = [u for u in usados if u is not None]
         return max(usados, key=ORDEM_CANONICA.index) if usados else None
+
+    def _registrar_exige_local(self, dom: str) -> None:
+        if self.diario:
+            self.diario.emitir("dominio.aprendido", "escada", {"dominio": dom, "degrau_que_funciona": None, "bloqueios": self.bloqueios.get(dom, 0),
+                                                                 "exige_local": 1, "ultimo_bloqueio": agora()})
 
     def _aprender(self, dom: str, i: int, exige_local: bool = False) -> None:
         self.aprendido[dom] = i

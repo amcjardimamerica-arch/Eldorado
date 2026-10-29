@@ -480,6 +480,13 @@ def consolidar_bancos():
     typer.echo(consolidar())
 
 
+@app.command("copia-livros")
+def copia_livros(forcar: bool = typer.Option(False, help="faz a cópia agora, mesmo antes dos 3 dias")):
+    """A cópia de segurança dos livros: a cada 3 dias, só dos que mudaram desde a anterior (titular, 29/10/2026)."""
+    from ...banco.copia_livros import copiar
+    typer.echo(copiar(forcar=forcar))
+
+
 @app.command("copia-drive")
 def copia_drive():
     """A cópia dos bancos e dos eventos no Drive (aguarda a pasta: os segredos do Drive)."""

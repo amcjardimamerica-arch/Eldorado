@@ -433,7 +433,7 @@ def montar(
             "rn_auc",
             "Discernimento da rede (oportunidade)",
             auc,
-            "amarelo",   # 29/10/2026: não é a qualidade real sobre livros (ver o motivo)
+            "cinza",     # 29/10/2026: informativo (a rede de livros está fora de uso): não é alarme da etapa
             f"área sob a curva ROC: {auc} — medida sobre o fluxo de treino (dominado pelos achados barrados na entrada); sobre "
             f"livros a rede não discerne (ensaio de 29/10/2026: 0,48, o acaso): a avaliação dos pendentes está desligada",
             t,

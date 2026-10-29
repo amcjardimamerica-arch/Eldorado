@@ -87,8 +87,9 @@ def no_memorizar(itens: list[dict[str, Any]], parametros: dict[str, Any], contex
         velhos = expirados(con)
     finally:
         con.close()
+    from ..nucleo.eventos import emitir_se_mudou  # 29/10/2026: o mesmo documento não é registrado de novo (25.829/dia)
     for d in docs:
-        contexto.diario.emitir("memoria.registrada", "aprendizado", d)
+        emitir_se_mudou(contexto.diario, "memoria.registrada", "aprendizado", f"{d.get('tabela')}:{d.get('ref')}", d, renovar_s=30 * 86400)
     for v in velhos:
         contexto.diario.emitir("memoria.expirada", "aprendizado", v)
     for tabela, ultimo in ponteiros.items():

@@ -58,16 +58,18 @@ class Regras:
     def registrar(self, diario: Diario, abertos: set[str] | None = None) -> None:
         """Grava a tabela no Cérebro: cada regra, e a substituição das que não são mais vigentes."""
         import hashlib
+
+        from ..nucleo.eventos import emitir_se_mudou  # 29/10/2026: só quando muda (eram 2.867 por dia)
         ids: dict[Regra, int] = {}
         for r in self.regras:                                    # a identidade pelo conteúdo: o texto mudou, é uma regra nova
             i = int(hashlib.sha1(f"{r.tema}|{r.regra}|{r.data}".encode()).hexdigest()[:13], 16)
             ids[r] = i
-            diario.emitir("regra.registrada", "regras", {"id": i, "tema": r.tema, "regra": r.regra, "data": r.data,
+            emitir_se_mudou(diario, "regra.registrada", "regras", str(i), {"id": i, "tema": r.tema, "regra": r.regra, "data": r.data,
                                                           "decisao_da_titular": int(r.decisao_da_titular), "precedencia": r.precedencia})
         for t in self.temas():
             lista = self.do_tema(t)
             for antiga in lista[1:]:
-                diario.emitir("regra.substituida", "regras", {"id": ids[antiga], "vigente": 0, "substituida_por": ids[lista[0]]})
+                emitir_se_mudou(diario, "regra.substituida", "regras", str(ids[antiga]), {"id": ids[antiga], "vigente": 0, "substituida_por": ids[lista[0]]})
         for t, topo in self.contradicoes():
             msg = f"contradição no tema '{t}': {len(topo)} regras com o mesmo peso e textos diferentes"
             if msg in (abertos or set()):

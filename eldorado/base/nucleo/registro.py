@@ -55,7 +55,8 @@ class Registro:
         if not self.diario:
             return
         d = m.descrever()
-        self.diario.emitir("modulo.registrado", "registro", {"id": d.id, "tipo": d.tipo, "parte": d.parte, "componente": d.componente,
+        from .eventos import emitir_se_mudou  # 29/10/2026: só quando muda (eram 5.490 recadastros por dia)
+        emitir_se_mudou(self.diario, "modulo.registrado", "registro", d.id, {"id": d.id, "tipo": d.tipo, "parte": d.parte, "componente": d.componente,
                                                               "finalidade": d.finalidade, "metrica": d.metrica, "ligado": ligado,
                                                               "arquivado": arquivado, "versao": d.versao})
 

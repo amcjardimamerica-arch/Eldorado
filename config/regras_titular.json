@@ -63,7 +63,7 @@
   {
    "id": "R05",
    "data": "2026-10-24",
-   "regra": "A escada completa (7 degraus) é o padrão de todo motor; nos sites que só existem com script, o navegador que não denuncia robôs vem primeiro.",
+   "regra": "A escada completa (7 degraus) é o padrão de todo motor; nos sites que só existem com script, o navegador que não denuncia robôs vem primeiro. Nos pilotos (titular, 29/10/2026), a escada usa só os degraus que dão resultado: sem o Camoufox (nenhum site precisou dele; cada navegador pesa na memória).",
    "onde": "eldorado/motores/canal/motor.py (CfgAcesso)",
    "travas": [
     "testes/test_travas_motores.py::test_a_escada_completa_e_o_padrao_e_esta_em_todo_motor",
@@ -406,7 +406,7 @@
    "id": "R33",
    "data": "2026-10-29",
    "tema": "a gravação nunca para às cegas e a Sala mede o real",
-   "regra": "A gravação monta o commit direto no Git, sem cópia do repositório; nenhum arquivo acima de 95 MB vai ao repositório (o diário de eventos se divide em partes de 60 MB; os bancos acima do limite são reconstruídos dos eventos); toda falha vira aviso visível. A Sala lê os campos que o sistema publica (a eficiência por item, o próximo passo calculado, a linha do tempo, a cor dos fluxos pela última execução terminada) e mede pela evidência o que o código da passagem não chama (os fluxos, a gravação, a comparação R01 e a matriz de dispensas). A escada de acesso registra o degrau que funcionou em cada site (pelo código canônico) e o degrau mais alto de cada execução; motores e pilotos começam pelo degrau aprendido; a Sala mostra os degraus em uso.",
+   "regra": "A gravação monta o commit direto no Git, sem cópia do repositório; nenhum arquivo acima de 95 MB vai ao repositório (o diário de eventos se divide em partes de 60 MB; os bancos acima do limite são reconstruídos dos eventos); toda falha vira aviso visível. A Sala lê os campos que o sistema publica (a eficiência por item, o próximo passo calculado, a linha do tempo, a cor dos fluxos pela última execução terminada) e mede pela evidência o que o código da passagem não chama (os fluxos, a gravação, a comparação R01 e a matriz de dispensas). A escada de acesso registra o degrau que funcionou em cada site (pelo código canônico) e o degrau mais alto de cada execução; motores e pilotos começam pelo degrau aprendido; a Sala mostra os degraus em uso. A telemetria (módulos, regras, medições, memória, versão do fluxo) é gravada só quando muda; a cópia de segurança dos livros é a cada 3 dias, só dos que mudaram; o 'pendente' não é o degrau que funciona e os serviços locais não sobem a escada.",
    "onde": "scripts/gravar.sh, eldorado/base/nucleo/eventos.py, eldorado/base/nucleo/comandos.py, eldorado/base/painel/sala.py, eldorado/base/cerebro/medicao.py, eldorado/motores/pilotos/interceptador.py, eldorado/base/painel/pagina/dashboard.html",
    "travas": [
     "testes/test_parecer_sala_2910.py::test_a_gravacao_sem_copia_do_repositorio_e_sem_arquivo_acima_do_limite",
@@ -416,7 +416,9 @@
     "testes/test_parecer_sala_2910.py::test_a_matriz_de_dispensas_no_interceptador",
     "testes/test_parecer_sala_2910.py::test_a_comparacao_r01_le_o_arquivo",
     "testes/test_parecer_sala_2910.py::test_a_escada_aprende_e_lembra_pelo_codigo_canonico",
-    "testes/test_parecer_sala_2910.py::test_o_diario_de_nome_fixo_vai_para_o_dia"
+    "testes/test_parecer_sala_2910.py::test_o_diario_de_nome_fixo_vai_para_o_dia",
+    "testes/test_parecer_sala_2910.py::test_a_escada_nao_prende_no_pendente_e_o_local_nao_sobe",
+    "testes/test_parecer_sala_2910.py::test_so_grava_o_que_muda_e_a_copia_dos_livros"
    ]
   },
   {

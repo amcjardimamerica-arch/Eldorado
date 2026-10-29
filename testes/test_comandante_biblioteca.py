@@ -80,11 +80,11 @@ def test_o_interceptador_voa_2_livros_em_paralelo():
     import tomllib
 
     c = tomllib.loads(Path("config/cargos.toml").read_text(encoding="utf-8"))
-    assert c["cargo"]["interceptador"]["vagas"] == [2, 3, 4, 5, 6] and c["servidor"]["vagas"] == 7
+    assert c["cargo"]["interceptador"]["vagas"] == [2, 3] and c["servidor"]["vagas"] == 4   # 29/10/2026: 2 vagas da IA (a vez da IA); eram 3 sem uso
     from eldorado.base.nucleo.ia import IA
 
-    assert {IA("http://x", cargo_nome="interceptador", vaga=k).cargo["vaga"] for k in range(5)} == {2, 3, 4, 5, 6}  # cada voo na sua vaga
-    assert "-np 7" in Path(".github/workflows/eldorado.yml").read_text(encoding="utf-8")
+    assert {IA("http://x", cargo_nome="interceptador", vaga=k).cargo["vaga"] for k in range(5)} == {2, 3}  # 29/10/2026: os 5 voos revezam as 2 vagas da IA
+    assert "-np 4" in Path(".github/workflows/eldorado.yml").read_text(encoding="utf-8")   # 29/10/2026: 4 vagas da IA (eram 7, 3 sem uso)
 
 
 def test_o_prevoo_completa_sem_a_ia(tmp_path):

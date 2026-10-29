@@ -302,3 +302,29 @@ def ler(pasta: str | Path) -> Iterator[Evento]:
             eventos.append(ev)
     eventos.sort(key=lambda e: e.id)
     return iter(eventos)
+
+
+_JA_EMITIDOS: dict[tuple[str, str], tuple[str, float]] = {}
+_TRAVA_EMITIDOS = threading.Lock()
+
+
+def emitir_se_mudou(diario: "Diario", tipo: str, modulo: str, chave: str, dados: dict[str, Any], renovar_s: float = 6 * 3600,
+                    ignorar: tuple[str, ...] = ("em", "criado_em")) -> bool:
+    """29/10/2026 (titular: o banco não foi feito para regravar): grava o evento só quando o conteúdo mudou (ou a cada 6 h,
+    como confirmação). O histórico crescia 35 MB por dia, ~80% de telemetria repetida a cada passagem (os mesmos 45 módulos
+    recadastrados, as mesmas ~200 medições, as mesmas regras, a mesma memória); o dado dos livros é menos de 2 MB/dia."""
+    import hashlib
+    import time as _t
+
+    conteudo = {k: v for k, v in dados.items() if k not in ignorar}
+    h = hashlib.sha1(_enc.encode(conteudo)).hexdigest()
+    k = (tipo, str(chave))
+    agora_m = _t.monotonic()
+    with _TRAVA_EMITIDOS:
+        antes = _JA_EMITIDOS.get(k)
+        if antes and antes[0] == h and agora_m - antes[1] < renovar_s:
+            return False
+        _JA_EMITIDOS[k] = (h, agora_m)
+    diario.emitir(tipo, modulo, dados)
+    return True
+

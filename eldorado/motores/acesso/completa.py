@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from .escada import Escada
 
-ORDEM = ("api", "leve", "ponte", "lightpanda", "patchright", "camoufox", "arquivo", "local")   # a ponte BR (25/10/2026)
+# 29/10/2026: sem o Camoufox nos pilotos (nenhum site precisou dele; cada navegador pesa na memória)
+ORDEM = ("api", "leve", "ponte", "lightpanda", "patchright", "arquivo", "local")
 
 
 def escada_completa(intervalo_s: float = 1.0, tentativas: int = 1, tempo_limite: float = 25, ponte: str = "dados/ponte",

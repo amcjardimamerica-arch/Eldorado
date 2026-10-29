@@ -89,3 +89,13 @@ def _conectar_ex(self, endereco):
 
 _socket.socket.connect = _conectar
 _socket.socket.connect_ex = _conectar_ex
+
+
+
+@pytest.fixture(autouse=True)
+def _memoria_de_emissao_limpa():
+    """29/10/2026: a gravação só quando muda guarda, no processo, o que já foi gravado; cada trava começa do zero."""
+    from eldorado.base.nucleo import eventos as _ev
+
+    _ev._JA_EMITIDOS.clear()
+    yield

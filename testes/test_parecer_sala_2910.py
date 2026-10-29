@@ -259,3 +259,59 @@ def test_o_prazo_da_ia_vale_no_pedido_validado():
     prazo vai ao pedido e há no máximo uma nova tentativa."""
     s = Path("eldorado/base/nucleo/ia.py").read_text(encoding="utf-8")
     assert "system_prompt=SISTEMA, retries=1)" in s and 'model_settings={"timeout": float(getattr(ia, "tempo_limite", 240.0))}' in s
+
+
+def test_a_escada_nao_prende_no_pendente_e_o_local_nao_sobe():
+    """29/10/2026: o "pendente" (o computador da titular) era anotado como o degrau que funciona e, com a memória
+    persistente, o SearXNG e os buscadores iam para sempre à fila: o Espião voltava vazio desde as 05:00."""
+    from eldorado.motores.acesso.escada import Bloqueado, Escada, Pendente, Resposta
+
+    html = ("<html><body>" + "<p>Resultado de busca com editais e chamamentos públicos para organizações.</p>" * 30 + "</body></html>").encode()
+
+    class D:
+        pesado = False
+
+        def __init__(self, nome, modo):
+            self.nome, self.modo, self.usos = nome, modo, 0
+
+        def buscar(self, url, tempo_limite=30):
+            self.usos += 1
+            if self.modo == "bloq":
+                raise Bloqueado("x")
+            if self.modo == "pend":
+                raise Pendente("fila")
+            return Resposta(url=url, status=200, conteudo=html, tipo="text/html")
+
+    e = Escada([D("1 · API", "bloq"), D("9 · local", "pend")], intervalo_padrao=0, tentativas=1, dormir=lambda s: None)
+    for _ in range(2):
+        try:
+            e.buscar("https://www.bing.com/search?q=x")
+        except Pendente:
+            pass
+    assert e.aprendido == {} and e.semear({"bing.com": 9}) == 0
+    loc = [D("1 · API", "bloq"), D("2 · leve", "ok"), D("9 · local", "pend")]
+    Escada(loc, intervalo_padrao=0, tentativas=1, dormir=lambda s: None).buscar("http://127.0.0.1:8888/search?q=x")
+    assert loc[1].usos == 1 and loc[2].usos == 0
+
+
+def test_so_grava_o_que_muda_e_a_copia_dos_livros():
+    """29/10/2026: o histórico crescia 35 MB/dia, ~80% telemetria repetida; a cópia dos livros a cada 3 dias, só os
+    que mudaram; a IA com 4 vagas (eram 7, 3 sem uso); os pilotos sem o Camoufox; a etapa 8 sem falso alarme."""
+    from datetime import datetime, timedelta, timezone
+
+    from eldorado.banco.copia_livros import INTERVALO
+
+    with tempfile.TemporaryDirectory() as d:
+        di = EV.Diario(d, "01793999999999999999-000001-aaaaaaaa")
+        for i in range(4):
+            EV.emitir_se_mudou(di, "alarme.fechado", "t", "chave-teste", {"id": "a", "em": f"2026-10-29T0{i}:00:00+00:00", "motivo": "igual"})
+        EV.emitir_se_mudou(di, "alarme.fechado", "t", "chave-teste", {"id": "a", "em": "2026-10-29T05:00:00+00:00", "motivo": "mudou"})
+        assert len(list(EV.ler(d))) == 2
+    assert INTERVALO == timedelta(days=3)
+    assert "-c 24576 -np 4" in Path(".github/workflows/eldorado.yml").read_text(encoding="utf-8")
+    assert "eldorado copia-livros" in Path(".github/workflows/eldorado.yml").read_text(encoding="utf-8")
+    from eldorado.motores.acesso.completa import ORDEM
+
+    assert "camoufox" not in ORDEM and "patchright" in ORDEM
+    assert '"cinza",     # 29/10/2026: informativo' in Path("eldorado/base/painel/sala.py").read_text(encoding="utf-8")
+    assert datetime.now(timezone.utc)

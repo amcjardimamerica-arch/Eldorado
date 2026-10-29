@@ -28,7 +28,7 @@ avisar() { echo "::error::gravação: $*"; }
 completo() { local b="${1%.jsonl}"; b="${b%-[0-9]*}"; local partes=("$b.jsonl" "$b"-[0-9]*.jsonl)
   ! cat "${partes[@]}" 2>/dev/null | grep -q '"execucao.iniciada"' || cat "${partes[@]}" 2>/dev/null | grep -q '"execucao.concluida"'; }
 LISTA=$(mktemp)
-for pasta in eventos verificacao dados/ia; do
+for pasta in eventos verificacao dados/ia backups; do   # backups: a cópia dos livros (a cada 3 dias)
   [ -d "$RAIZ/$pasta" ] || continue
   if [ -f "$RAIZ/.inicio_ciclo" ]; then
     find "$pasta" -type f -newer .inicio_ciclo

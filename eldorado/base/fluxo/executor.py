@@ -80,9 +80,9 @@ class Executor:
             diario.emitir("execucao.retomada", "executor", {"id": diario.execucao, "estado": "retomada"})
             entrada = estado.entrada
         else:
-            diario.emitir(
-                "workflow.versao", "executor", {"id": self.d.id, "versao": self.d.versao, "definicao": self.d.como_json(), "criado_em": agora()}
-            )
+            from ..nucleo.eventos import emitir_se_mudou  # 29/10/2026: a mesma versão não é regravada a cada passagem
+            emitir_se_mudou(diario, "workflow.versao", "executor", f"{self.d.id}:{self.d.versao}",
+                            {"id": self.d.id, "versao": self.d.versao, "definicao": self.d.como_json(), "criado_em": agora()})
             diario.emitir(
                 "execucao.iniciada",
                 "executor",
