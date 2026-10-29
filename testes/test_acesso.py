@@ -44,7 +44,7 @@ def test_sobe_de_degrau_e_aprende_o_dominio(site, diario, tmp_path):
     e.buscar(f"{url}/so-navegador.html")
     assert estado.acessos[("/so-navegador.html", "outro")] == antes                    # aprendido: não tentou o degrau 1 de novo
     eventos = [x for x in ler(tmp_path / "eventos") if x.tipo == "dominio.aprendido"]
-    assert eventos and eventos[0].dados["degrau_que_funciona"] == 1
+    assert eventos and eventos[0].dados["degrau_que_funciona"] == 2   # 29/10/2026: o código canônico (2: a requisição leve), não a posição
 
 
 def test_falha_passageira_repete_no_mesmo_degrau(site):

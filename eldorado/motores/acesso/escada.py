@@ -90,7 +90,15 @@ def avaliar(r: Resposta) -> None:
 NOMES_CANONICOS = {1: "API", 2: "requisição leve", 10: "ponte BR", 3: "Lightpanda", 4: "Patchright", 5: "Camoufox", 6: "Wayback",
                    7: "Tor", 8: "leitor público", 9: "computador da titular"}
 ORDEM_CANONICA = [1, 2, 10, 3, 4, 5, 6, 7, 8, 9]
-LOCAIS = {"127.0.0.1", "localhost", "0.0.0.0"}   # os serviços da própria máquina (o SearXNG): só os degraus diretos
+
+
+def servico_local(url: str) -> bool:
+    """O serviço da própria máquina (o SearXNG do fluxo: ELDORADO_SEARXNG, ou o padrão 127.0.0.1:8888): só os degraus
+    diretos. Pelo ENDEREÇO com a porta (um servidor local qualquer, como o dos testes, sobe a escada normalmente)."""
+    import os
+
+    alvo = {urlsplit(os.environ.get("ELDORADO_SEARXNG") or "").netloc, "127.0.0.1:8888", "localhost:8888"} - {""}
+    return urlsplit(url).netloc.lower() in alvo
 
 
 def codigo(degrau) -> int | None:
@@ -146,7 +154,7 @@ class Escada:
         # 29/10/2026: o serviço da própria máquina (o SearXNG em 127.0.0.1) não sobe a escada: só os degraus diretos (a
         # escada levava o SearXNG ao computador da titular, que responde "pendente", e o Espião voltava vazio)
         limite = len(self.degraus)
-        if dom in LOCAIS:
+        if servico_local(url):
             inicio, limite = 0, sum(1 for d in self.degraus if codigo(d) in (1, 2)) or 1
         for i in range(inicio, limite):
             d = self.degraus[i]
@@ -196,7 +204,7 @@ class Escada:
         pos = {codigo(d): j for j, d in enumerate(self.degraus)}
         n = 0
         for dom, cod in memoria.items():
-            if cod == 9 or dom in LOCAIS:            # 29/10/2026: o computador da titular nunca é o ponto de partida
+            if cod == 9:                             # 29/10/2026: o computador da titular nunca é o ponto de partida
                 continue
             if cod in pos and dom not in self.aprendido:
                 self.aprendido[dom] = pos[cod]
