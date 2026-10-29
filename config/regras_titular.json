@@ -391,13 +391,14 @@
    "id": "R32",
    "data": "2026-10-28",
    "tema": "os pilotos usam a capacidade e as buscas não trancam",
-   "regra": "O livro de prazo encerrado não vai ao Chrome (o vai e volta arquivo ↔ análise externa). A inscrição aberta volta à fila do Interceptador a cada 24 h, mesmo com 2 tentativas ou esperando o Chrome. A ociosidade se mede pelo processador sem a IA (até 5 voos), e a IA atende no máximo 2 pedidos do Interceptador de cada vez, com pedidos mais curtos. Uma rota de busca que falha descansa pouco e cada vez mais (2, 4, 8… até 60 min; o SearXNG 1 min), e 'Pendente' não é falha. A ociosidade é a média do último minuto (não uma amostra instantânea), e cada pedido do Interceptador à IA tem 150 s.",
+   "regra": "O livro de prazo encerrado não vai ao Chrome (o vai e volta arquivo ↔ análise externa). A inscrição aberta volta à fila do Interceptador a cada 24 h, mesmo com 2 tentativas ou esperando o Chrome. A ociosidade se mede pelo processador sem a IA (até 5 voos), e a IA atende no máximo 2 pedidos do Interceptador de cada vez, com pedidos mais curtos. Uma rota de busca que falha descansa pouco e cada vez mais (2, 4, 8… até 60 min; o SearXNG 1 min), e 'Pendente' não é falha. A ociosidade é a média do último minuto (não uma amostra instantânea), e cada pedido do Interceptador à IA tem 150 s. Com livros na fila do Interceptador, o Espião dá a vez: 30 s entre as missões.",
    "onde": "eldorado/base/comandante/biblioteca.py, eldorado/base/comandante/pilotos.py, eldorado/motores/descoberta/metabusca.py, eldorado/motores/pilotos/interceptador.py, eldorado/base/nucleo/ia.py, config/cargos.toml",
    "travas": [
     "testes/test_comandante_biblioteca.py::test_a_aberta_volta_a_fila_em_24h_e_a_encerrada_nao_vai_ao_chrome",
     "testes/test_pilotos_no_painel.py::test_a_busca_descansa_pouco_e_o_pendente_nao_tranca",
     "testes/test_pilotos_no_painel.py::test_o_interceptador_elastico_pela_ociosidade",
-    "testes/test_parecer_sala_2910.py::test_as_vagas_pela_media_do_minuto"
+    "testes/test_parecer_sala_2910.py::test_as_vagas_pela_media_do_minuto",
+    "testes/test_parecer_sala_2910.py::test_o_espiao_da_a_vez_ao_interceptador"
    ]
   },
   {

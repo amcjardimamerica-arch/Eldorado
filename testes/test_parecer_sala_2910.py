@@ -242,3 +242,13 @@ def test_os_achados_orfaos_voltam_a_decisao():
     no = next(n for n in w["no"] if n["id"] == "decidir_rede")
     assert no["parametros"].get("recuperar_pendentes") == 150
     assert any(c["de"] == "decidir_rede" and c["para"] == "validar" for c in w["conexao"])
+
+
+def test_o_espiao_da_a_vez_ao_interceptador():
+    """29/10/2026 (titular: a opção 2): com livros na fila do Interceptador, o Espião espaça as missões (30 s entre elas)."""
+    from eldorado.base.cerebro import pilotos_permanentes as PP
+
+    s = Path("eldorado/base/cerebro/pilotos_permanentes.py").read_text(encoding="utf-8")
+    assert PP.ESPACO_ESPIAO_S == 30 and "INTERCEPTADOR_COM_FILA.set()" in s and "INTERCEPTADOR_COM_FILA.clear()" in s
+    i = s.index("def voar_espiao(")
+    assert "if INTERCEPTADOR_COM_FILA.is_set():" in s[i:] and "parar.wait(ESPACO_ESPIAO_S)" in s[i:]

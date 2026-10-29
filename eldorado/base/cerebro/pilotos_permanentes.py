@@ -157,6 +157,13 @@ def _voo_interceptador(vaga: _Vaga, parar: threading.Event, lv_id: str, base: di
         pousou("interceptador")
 
 
+# 29/10/2026 (titular: a opção 2): com livros na fila do Interceptador (as abertas sem ouro são a prioridade da missão), o
+# Espião espaça as missões, liberando o processador para as vagas do Interceptador subirem (o Espião emendava de 25 a 41
+# missões a cada 10 minutos e a média do processador rondava o limite: as vagas levavam 23 minutos para subir)
+INTERCEPTADOR_COM_FILA = threading.Event()
+ESPACO_ESPIAO_S = 30
+
+
 def paralelos_agora() -> int:
     """Quantos voos o Comandante libera agora: 5; com a memória acima de 85% há mais de 10 minutos, 2 (26/10/2026)."""
     from ..comandante.pilotos import pressao, vagas_por_ociosidade
@@ -215,13 +222,16 @@ def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_
                 con.close()
             voos = [(x["id"], x) for x in base] + [(i, None) for i in comuns]
             if not voos:
+                INTERCEPTADOR_COM_FILA.clear()
                 sinal(diario, "interceptador", "aguardando: a fila de livros está vazia")
                 parar.wait(300)
                 continue
             for v in voos:
                 pedidos.put(v)
+            INTERCEPTADOR_COM_FILA.set()                             # a vez do Interceptador: o Espião espaça as missões
             while pedidos.unfinished_tasks and not parar.is_set():   # a volta termina quando as 5 vagas esvaziam a fila
                 parar.wait(5)
+            INTERCEPTADOR_COM_FILA.clear()
         except Exception as e:  # noqa: BLE001 — uma volta que falha vira registro; a seguinte segue
             diario.emitir("alarme.aberto", "piloto:interceptador", {"gravidade": "media", "modulo": "piloto:interceptador",
                                                                     "mensagem": f"a volta do Interceptador falhou: {type(e).__name__}: {str(e)[:200]}",
@@ -256,6 +266,8 @@ def voar_espiao(dados: Path, diario, parar: threading.Event, orcamento_s: float 
             finally:
                 con.close()
                 pousou("espiao")
+            if INTERCEPTADOR_COM_FILA.is_set():                  # a vez do Interceptador (a opção 2 da titular, 29/10/2026)
+                parar.wait(ESPACO_ESPIAO_S)
         except Exception as e:  # noqa: BLE001
             diario.emitir("alarme.aberto", "piloto:espiao", {"gravidade": "media", "modulo": "piloto:espiao",
                                                              "mensagem": f"o voo permanente do Espião falhou: {type(e).__name__}: {str(e)[:300]}",
