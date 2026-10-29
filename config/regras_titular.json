@@ -398,6 +398,21 @@
     "testes/test_pilotos_no_painel.py::test_a_busca_descansa_pouco_e_o_pendente_nao_tranca",
     "testes/test_pilotos_no_painel.py::test_o_interceptador_elastico_pela_ociosidade"
    ]
+  },
+  {
+   "id": "R33",
+   "data": "2026-10-29",
+   "tema": "a gravação nunca para às cegas e a Sala mede o real",
+   "regra": "A gravação monta o commit direto no Git, sem cópia do repositório; nenhum arquivo acima de 95 MB vai ao repositório (o diário de eventos se divide em partes de 60 MB; os bancos acima do limite são reconstruídos dos eventos); toda falha vira aviso visível. A Sala lê os campos que o sistema publica (a eficiência por item, o próximo passo calculado, a linha do tempo, a cor dos fluxos pela última execução terminada) e mede pela evidência o que o código da passagem não chama (os fluxos, a gravação, a comparação R01 e a matriz de dispensas).",
+   "onde": "scripts/gravar.sh, eldorado/base/nucleo/eventos.py, eldorado/base/nucleo/comandos.py, eldorado/base/painel/sala.py, eldorado/base/cerebro/medicao.py, eldorado/motores/pilotos/interceptador.py, eldorado/base/painel/pagina/dashboard.html",
+   "travas": [
+    "testes/test_parecer_sala_2910.py::test_a_gravacao_sem_copia_do_repositorio_e_sem_arquivo_acima_do_limite",
+    "testes/test_parecer_sala_2910.py::test_o_diario_se_divide_em_partes",
+    "testes/test_parecer_sala_2910.py::test_a_sala_le_os_campos_certos",
+    "testes/test_parecer_sala_2910.py::test_a_medicao_por_evidencia",
+    "testes/test_parecer_sala_2910.py::test_a_matriz_de_dispensas_no_interceptador",
+    "testes/test_parecer_sala_2910.py::test_a_comparacao_r01_le_o_arquivo"
+   ]
   }
  ]
 }

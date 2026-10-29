@@ -239,4 +239,47 @@ def no_rede(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -
             contexto.diario.emitir("modelo.treinado", "rede", {"versao": f"{pergunta}-{x['amostras']:07d}-{agora()[:16]}", "treinado_em": agora(),
                                                                "arquivo": f"rede:{pergunta}", "discernimento": x["discernimento"],
                                                                "precisao": x["precisao"], "revocacao": x["revocacao"], "brier": x.get("brier")})
-    return [{"rede": m}]
+    # 29/10/2026: a avaliação dos pendentes fica DESLIGADA até a rede ser retreinada para livros: ela dá ~0,003 a tudo,
+    # inclusive aos 33 livros do Farol (o discernimento de 0,996 é medido sobre achados barrados, que têm características
+    # que um livro não tem). Ligar com o parâmetro avaliar_pendentes = true no nó, depois do retreino.
+    avaliados = 0
+    if parametros.get("avaliar_pendentes"):
+        avaliados = avaliar_pendentes(rede, dados, contexto.diario, f"oportunidade-{m.get('oportunidade', {}).get('amostras', 0):07d}-{agora()[:16]}")
+    return [{"rede": m, "pendentes_avaliados": avaliados}]
+
+
+def avaliar_pendentes(rede: "RedeNeural", dados: Path, diario, versao: str, maximo: int = 1000, mudanca: float = 0.1) -> int:
+    """29/10/2026 (titular, com o conselho): a rede dá a nota de "oportunidade real" a cada livro pendente (recepção,
+    preparação e análise externa) e a registra na análise da rede (antes ela treinava e não entregava nada: a tabela
+    vazia). Só registra a nota nova ou a que mudou mais de 0,1; no máximo 1.000 por passagem. A nota NÃO arquiva nem
+    decide sozinha: informa a Sala e o Comandante (o Cartório e a validação continuam decidindo)."""
+    import sqlite3
+
+    b = sqlite3.connect(f"file:{Path(dados) / 'biblioteca.db'}?mode=ro", uri=True)
+    b.row_factory = sqlite3.Row
+    try:
+        antes = {r[0]: r[1] for r in b.execute(
+            "SELECT livro_id, nota FROM analise_rede WHERE id IN (SELECT MAX(id) FROM analise_rede GROUP BY livro_id)")}
+        livros = [dict(r) for r in b.execute(
+            "SELECT l.id, l.titulo, l.orgao, l.uf, l.link_oficial, l.situacao FROM livro l JOIN passaporte p ON p.livro_id = l.id "
+            "WHERE p.fase IN ('recepcao', 'preparacao', 'analise externa') AND l.situacao NOT IN ('excluido', 'unido') "
+            "AND COALESCE(l.estrela, 'sem') <> 'ouro'")]
+    except sqlite3.Error:
+        return 0
+    finally:
+        b.close()
+    n = 0
+    for lv in livros:
+        if n >= maximo:
+            break
+        nota = round(rede.nota_oportunidade(lv), 4)
+        anterior = antes.get(lv["id"])
+        if anterior is not None and abs(nota - anterior) <= mudanca:
+            continue
+        diario.emitir("analise.rede", "rede", {
+            "livro_id": lv["id"], "em": agora(), "nota": nota, "pertinencia": 1.0 if nota >= 0.5 else 0.0,
+            "explicacao": "provável oportunidade real" if nota >= 0.5 else "provavelmente não é uma oportunidade (o Cartório confere)",
+            "modelo_versao": versao})
+        n += 1
+    return n
+

@@ -223,8 +223,12 @@ _enc = msgspec.json.Encoder(enc_hook=_converter)
 _dec = msgspec.json.Decoder(Evento)
 
 
+PARTE_MAX = 60 * 1024 * 1024   # 29/10/2026: acima disso, o diário abre a parte seguinte (<execução>-2.jsonl…): o GitHub
+                               # recusa arquivo acima de 100 MB, e a gravação inteira caía (o Espião de 25/10 chegou a 99,9 MB)
+
+
 class Diario:
-    """Os eventos de uma execução, num arquivo que só recebe acréscimos."""
+    """Os eventos de uma execução, num arquivo que só recebe acréscimos (dividido em partes de até 60 MB)."""
 
     def __init__(self, pasta: str | Path, execucao: str | None = None):
         """Abre o diário de uma execução. Se a execução já tem diário (retomada), continua no mesmo arquivo."""
@@ -232,22 +236,30 @@ class Diario:
         self.execucao = execucao or novo_id()
         existente = next(self.pasta.rglob(f"{self.execucao}.jsonl"), None) if execucao and self.pasta.exists() else None
         if existente:
-            self.arquivo = existente
+            partes = sorted(existente.parent.glob(f"{self.execucao}-[0-9]*.jsonl"), key=lambda a: int(a.stem.rsplit("-", 1)[1]))
+            self.arquivo = partes[-1] if partes else existente
         else:
             d = datetime.now(timezone.utc)
             self.arquivo = self.pasta / f"{d:%Y}" / f"{d:%m}" / f"{d:%d}" / f"{self.execucao}.jsonl"
         self.arquivo.parent.mkdir(parents=True, exist_ok=True)
         self._trava = threading.Lock()
 
+    def _partes(self) -> list[Path]:
+        base = self.arquivo.parent / f"{self.execucao}.jsonl"
+        extras = sorted(self.arquivo.parent.glob(f"{self.execucao}-[0-9]*.jsonl"), key=lambda a: int(a.stem.rsplit("-", 1)[1]))
+        return [a for a in [base, *extras] if a.exists()]
+
     def eventos(self) -> list[Evento]:
-        """Os eventos já gravados nesta execução, na ordem."""
-        if not self.arquivo.exists():
-            return []
-        evs = [_dec.decode(linha) for linha in self.arquivo.read_bytes().splitlines() if linha.strip()]
+        """Os eventos já gravados nesta execução (todas as partes), na ordem."""
+        evs = [_dec.decode(linha) for a in self._partes() for linha in a.read_bytes().splitlines() if linha.strip()]
         return sorted(evs, key=lambda e: e.id)
 
     def gravar(self, evento: Evento) -> Evento:
         linha = _enc.encode(evento) + b"\n"
+        with self._trava:
+            if self.arquivo.exists() and self.arquivo.stat().st_size + len(linha) > PARTE_MAX:
+                n = len(self._partes()) + 1
+                self.arquivo = self.arquivo.parent / f"{self.execucao}-{n}.jsonl"
         with self._trava, open(self.arquivo, "ab") as f:
             f.write(linha)
             f.flush()

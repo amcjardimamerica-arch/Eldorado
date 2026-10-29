@@ -621,6 +621,21 @@ def motor_sondar(id: str, anotar: bool = typer.Option(False, "--anotar")):
     sondar(enderecos(id), anotar)
 
 
+def _registrar_gravacao(ok: bool, resumo: str) -> None:
+    """29/10/2026: o resultado da última gravação (a evidência da finalidade do gravar.sh e do ciclo, na Sala)."""
+    import json as _json
+    from datetime import datetime as _dt
+    from datetime import timezone as _tz
+
+    try:
+        d = Path("dados")
+        d.mkdir(exist_ok=True)
+        (d / "ultima_gravacao.json").write_text(
+            _json.dumps({"em": _dt.now(_tz.utc).isoformat(timespec="seconds"), "ok": ok, "resumo": resumo}, ensure_ascii=False), encoding="utf-8")
+    except OSError:
+        pass
+
+
 @app.command()
 def permanente(
     workflow: Path = Path("workflows/passagem.toml"),
@@ -655,9 +670,15 @@ def permanente(
         if gravar and trava_gravar.acquire(blocking=esperar):  # uma gravação de cada vez (a final espera a vez)
             try:
                 r = subprocess.run(["bash", "scripts/gravar.sh", "false"], capture_output=True, text=True, timeout=600)
-                typer.echo(f"  gravação: {(r.stdout or r.stderr).strip()[-200:] or 'ok'}")
+                resumo = (r.stdout or r.stderr).strip()
+                for ln in resumo.splitlines():          # 29/10/2026: o motivo de uma falha vira aviso visível na execução
+                    if ln.startswith("::error::"):
+                        typer.echo(ln)
+                typer.echo(f"  gravação: {resumo[-200:] or 'ok'}")
+                _registrar_gravacao(r.returncode == 0, resumo[-300:])
             except subprocess.TimeoutExpired:
-                typer.echo("  gravação: passou de 10 minutos; a próxima tenta de novo")
+                typer.echo("::error::gravação: passou de 10 minutos; a próxima tenta de novo")
+                _registrar_gravacao(False, "passou de 10 minutos")
             finally:
                 trava_gravar.release()
 

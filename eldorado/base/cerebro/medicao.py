@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 from collections import defaultdict
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -52,7 +53,8 @@ class Medicao:
     def do_arquivo(cls, caminho: str | Path = "config/arquivos.json") -> "Medicao":
         return cls(json.loads(Path(caminho).read_text(encoding="utf-8"))["arquivos"])
 
-    def calcular(self, recibos: list[dict[str, Any]], alarmes_criticos: int = 0) -> dict[str, Any]:
+    def calcular(self, recibos: list[dict[str, Any]], alarmes_criticos: int = 0,
+                 evidencias: dict[str, tuple[bool | None, str]] | None = None) -> dict[str, Any]:
         por_arquivo: dict[str, list[dict[str, Any]]] = defaultdict(list)
         por_motor: dict[str, list[dict[str, Any]]] = defaultdict(list)
         for r in recibos:
@@ -72,6 +74,12 @@ class Medicao:
                 linhas = "v" if feitas == len(info["ligacoes"]) else ("a" if feitas else "c")
             arquivos[arq] = {"ponto": _ponto(rs), "circulo": circulo, "linhas": linhas, "valor": valor,
                              "motivo": f"{len(rs)} chamada(s); métrica: {info['metrica']}" if rs else "sem chamada nesta passagem"}
+            ev = (evidencias or {}).get(arq)
+            if not rs and ev:   # 29/10/2026: o que o GitHub executa (fluxos, gravar.sh) e as configurações: medidos pela evidência
+                ok, mot = ev
+                cor = "v" if ok else ("r" if ok is False else "c")
+                arquivos[arq] = {"ponto": cor, "circulo": cor, "linhas": "v" if ok else "c", "valor": 1.0 if ok else (0.0 if ok is False else None),
+                                 "motivo": mot}
         motores = {m: {"ponto": _ponto(rs), "circulo": _circulo(rs)[0], "linhas": "v", "valor": _circulo(rs)[1], "motivo": f"{len(rs)} acionamento(s)"}
                    for m, rs in por_motor.items()}
         componentes: dict[str, dict[str, Any]] = {}
@@ -121,6 +129,46 @@ def no_medir(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) 
     recibos = [e.dados for e in eventos if e.tipo == "chamada.recibo"]
     criticos = sum(1 for e in eventos if e.tipo == "alarme.aberto" and e.dados.get("gravidade") == "critica")
     m = Medicao.do_arquivo(parametros.get("catalogo", "config/arquivos.json"))
-    r = m.calcular(recibos, criticos)
+    r = m.calcular(recibos, criticos, evidencias())
     n = Medicao.registrar(contexto.diario, r)
     return [{"medicoes": n, "sistema": r["sistema"]["ponto"], "arquivos_medidos": sum(1 for a in r["arquivos"].values() if a["ponto"] != "c")}]
+
+
+def evidencias(agora_: datetime | None = None) -> dict[str, tuple[bool | None, str]]:
+    """29/10/2026 (titular): a finalidade do que não é chamado pelo código da passagem, pela evidência real. Antes esses
+    arquivos ficavam sempre "sem chamada nesta passagem" (sem finalidade), mesmo funcionando ou falhando de verdade."""
+    from datetime import timezone as _tz
+
+    agora_ = agora_ or datetime.now(_tz.utc)
+    ev: dict[str, tuple[bool | None, str]] = {}
+    try:
+        g = json.loads(Path("dados/ultima_gravacao.json").read_text(encoding="utf-8"))
+        idade = (agora_ - datetime.fromisoformat(g["em"])).total_seconds() / 60
+        ok = bool(g.get("ok")) and idade <= 45
+        mot = f"última gravação há {idade:.0f} min: {'gravou' if g.get('ok') else 'FALHOU'} ({str(g.get('resumo', ''))[-120:]})"
+        ev["scripts/gravar.sh"] = (ok, mot)
+        ev[".github/workflows/eldorado.yml"] = (ok, "o ciclo em funcionamento; " + mot)
+    except (OSError, ValueError, KeyError):
+        ev["scripts/gravar.sh"] = (None, "ainda sem gravação registrada neste ciclo")
+    try:
+        from ..painel.sala import _github
+        q = next((f for f in _github(agora_) if f["nome"] == "Qualidade"), None)
+        if q:
+            c = q.get("conclusao") if q.get("situacao") == "completed" else q.get("ultima_conclusao")
+            ev[".github/workflows/qualidade.yml"] = ({"success": True, "failure": False}.get(c), f"última Qualidade terminada: {c or 'nenhuma'}")
+    except Exception:  # noqa: BLE001 — sem a API do GitHub, a Qualidade fica sem evidência (cinza)
+        pass
+    # as configurações lidas fora da passagem: a comparação (R01, na Sala) e a matriz de dispensas (no Interceptador)
+    try:
+        import tomllib
+
+        cfg = tomllib.loads(Path("config/comparacao.toml").read_text(encoding="utf-8"))
+        ev["config/comparacao.toml"] = (bool(cfg.get("motores")), f"a comparação R01 de {len(cfg.get('motores') or {})} motores, medida na Sala")
+    except (OSError, ValueError):
+        ev["config/comparacao.toml"] = (False, "o arquivo da comparação não abriu")
+    try:
+        reg = json.loads(Path("config/missao/dispensas_por_regime.json").read_text(encoding="utf-8")).get("regimes", {})
+        ev["config/missao/dispensas_por_regime.json"] = (bool(reg), f"{len(reg)} regimes aplicados ao que o Interceptador busca")
+    except (OSError, ValueError):
+        ev["config/missao/dispensas_por_regime.json"] = (False, "a matriz de dispensas não abriu")
+    return ev

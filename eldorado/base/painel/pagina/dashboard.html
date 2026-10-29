@@ -2431,7 +2431,10 @@ colunas, com o navegador das áreas, os filtros de antes, os 12 quadradinhos de 
   const dm=q=>{const t=new Date(q);return isNaN(t)?"—":t.toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}).replace(",","");};
   const I=id=>(SC.instrumentos||[]).find(x=>x.id===id);
   const PT={success:"concluído",failure:"falhou",in_progress:"em execução",queued:"na fila",pending:"aguardando",cancelled:"cancelado",completed:"concluído",skipped:"pulado",waiting:"aguardando"};
-  const luzFluxo=f=>f.conclusao==="failure"?"vermelho":f.situacao!=="completed"?"amarelo":f.conclusao==="success"?"verde":"cinza";
+  /* 29/10/2026: em execução é verde (o ciclo é permanente, por desenho); a cor é a da última execução TERMINADA:
+     falha vermelho, sucesso verde, cancelada (pela implantação) cinza */
+  const luzFluxo=f=>{const c=f.situacao==="completed"?f.conclusao:(f.ultima_conclusao||null);
+    return c==="failure"?"vermelho":(f.situacao!=="completed"||c==="success")?"verde":"cinza";};
   const pior=L=>["vermelho","amarelo","verde","cinza"].find(k=>L.some(x=>x&&x.estado===k))||"cinza";
   function fontes(){ if($("fonte-nv3"))return; const l=document.createElement("link"); l.id="fonte-nv3"; l.rel="stylesheet";
     l.href="https://fonts.googleapis.com/css2?family=Michroma&family=Saira+Semi+Condensed:wght@400;500;600&display=swap"; document.head.appendChild(l); }
@@ -2469,7 +2472,7 @@ colunas, com o navegador das áreas, os filtros de antes, os 12 quadradinhos de 
       case "regencia":{const c={}; (D.maestro||[]).forEach(m=>c[m.cobertura||"—"]=(c[m.cobertura||"—"]||0)+1); return `<h4>Cobertura dos ${n((D.maestro||[]).length)} motores planejados</h4>`+linhas(c,5);}
       case "coleta":{const f=(D.motores||[]).filter(m=>m.luz==="vermelho"); return `<h4>Motores em falha (${f.length})</h4>`+(f.slice(0,5).map(m=>`<div><span>${e(m.nome)}</span><b style="color:${COR.vermelho}">falha</b></div>`).join("")||"<div><span>nenhum</span></div>");}
       case "repositorio": return `<h4>De onde vêm as abertas</h4>`+linhas(D.por_origem,6);
-      case "aprendizado":{const r=I("rn_treino"); return `<h4>O que a rede entregou</h4><div><span>pendentes prováveis reais</span><b>${n((r&&r.resultado||"").match(/^\d+/)?.[0])}</b></div><div><span>decisões usadas para aprender</span><b>${n(Number((I("rn_auc")||{}).efeito?.match(/\d+/)?.[0]))}</b></div>`+linhas(D.proximo_passo,3);}
+      case "aprendizado":{const R=D.rede_entregou||{}; /* 29/10/2026: os números da rede (antes lia campos que não existem: NaN) */ return `<h4>O que a rede entregou</h4><div><span>pendentes avaliados</span><b>${n(R.pendentes_avaliados)}</b></div><div><span>pendentes prováveis reais</span><b>${n(R.pendentes_provaveis_reais)}</b></div><div><span>decisões usadas para aprender</span><b>${n(R.decisoes_no_treino)}</b></div>${R.aviso?`<div class="faint" style="font-size:12px">${e(R.aviso)}</div>`:""}`+linhas(D.proximo_passo,4);}
       case "biblioteca": return `<h4>Estantes das abertas</h4>`+linhas(D.estantes,4);
       case "certificacao": return `<h4>Eficiência por item</h4>`+Object.entries(D.cartorio_itens||{}).sort((a,b)=>(a[1].eficiencia||0)-(b[1].eficiencia||0)).slice(0,5)
         .map(([k,v])=>`<div style="display:block"><span style="display:flex;justify-content:space-between"><span>${e(k)}</span><b>${Math.round(100*(v.eficiencia||0))}%</b></span><div class="barra"><i style="width:${Math.round(100*(v.eficiencia||0))}%"></i></div></div>`).join("");
@@ -2688,7 +2691,9 @@ colunas, com o navegador das áreas, os filtros de antes, os 12 quadradinhos de 
         <div class="lista cam" style="--d:1">${estrelasMotores(et)}${resumo(et)}</div></div>`; }).join("");
     $("nv-fluxos").innerHTML=(d.fluxos||[]).map((f,i)=>{const k=luzFluxo(f);
       return `<button class="fl" onclick="nvFluxo(${i},this)" title="abrir o detalhe do fluxo"><span class="luz ${k}"></span><span>${e(f.nome)}<br><small class="faint">${idade(f.idade_h)} · ${e(PT[f.conclusao||f.situacao]||f.situacao)}</small></span></button>`;}).join("")||`<div class="fl">a leitura dos fluxos acontece na próxima passagem do maestro</div>`;
-    $("nv-tempo").innerHTML=`<div class="lista"><h4>Linha do tempo · acionamentos</h4></div><div class="rol">`+(d.linha_do_tempo||[]).map(t=>`<button class="ev" onclick="nvHolo('${(ETAPAS.find(x=>x.ids.includes(t.id))||{id:"farol"}).id}',this,'${e(t.id)}')" title="abrir o detalhe"><b>${dm(t.quando)}</b><span><span class="luz ${t.estado}" style="width:9px;height:9px;margin-right:8px"></span>${e(t.nome)} · <span class="faint">${e(t.sub)}</span></span></button>`).join("")+`</div>`;
+    $("nv-tempo").innerHTML=`<div class="lista"><h4>Linha do tempo · acionamentos</h4></div><div class="rol">`+(d.linha_do_tempo||[]).map(t=>{ /* 29/10/2026: o sistema publica {em, evento}; antes a página lia quando/nome/estado e desenhava linhas vazias */
+      const q=t.quando||t.em, nm=t.nome||t.evento||"", es=t.estado||(/falh|erro|recus/i.test(nm)?"vermelho":"verde");
+      return `<button class="ev" onclick="nvHolo('${(ETAPAS.find(x=>x.ids.includes(t.id))||{id:"farol"}).id}',this,'${e(t.id||"")}')" title="abrir o detalhe"><b>${dm(q)}</b><span><span class="luz ${es}" style="width:9px;height:9px;margin-right:8px"></span>${e(nm)}${t.sub?` · <span class="faint">${e(t.sub)}</span>`:""}</span></button>`;}).join("")||`<div class="ev">nenhum acionamento registrado nas últimas horas</div>`+`</div>`;
     requestAnimationFrame(()=>{ montarCeu(); interacoes(); observarVivos($("nv-palco")); });
   }
   window.desenhaNeural=async function(){ fontes();

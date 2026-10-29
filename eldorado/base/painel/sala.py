@@ -61,6 +61,11 @@ def _github(agora: datetime) -> list[dict[str, Any]]:
         runs = json.loads(urllib.request.urlopen(req, timeout=20).read())["workflow_runs"]
     except Exception:  # noqa: BLE001 — sem a API, os fluxos ficam sem leitura (cinza)
         return []
+    # 29/10/2026: com a última execução, o resultado da última TERMINADA (o ciclo está sempre em execução, por desenho)
+    terminada: dict[str, str | None] = {}
+    for r in runs:
+        if r.get("status") == "completed" and r["name"] not in terminada:
+            terminada[r["name"]] = r.get("conclusion")
     vistos, saida = set(), []
     for r in runs:
         if r["name"] in vistos:
@@ -70,6 +75,7 @@ def _github(agora: datetime) -> list[dict[str, Any]]:
             {
                 "nome": r["name"],
                 "conclusao": r.get("conclusion"),
+                "ultima_conclusao": terminada.get(r["name"]),
                 "situacao": r.get("status"),
                 "idade_h": _idade_h(r.get("updated_at"), agora),
                 "quando": r.get("updated_at"),
@@ -609,11 +615,10 @@ def montar(
         "por_etapa": dict(fases),
         "por_origem": dict(bib.execute(f"SELECT COALESCE(d.origem, 'sem'), COUNT(*) {AB} GROUP BY 1").fetchall()),
         "interceptador_fila": {"abertos com itens em falta": fila_i},
-        "cartorio_itens": dict(
-            bib.execute(
-                f"SELECT c.item, COUNT(DISTINCT c.livro_id) FROM certidao c WHERE c.situacao = 'comprovado' AND c.livro_id IN (SELECT l.id {AB}) GROUP BY 1"
-            ).fetchall()
-        ),
+        "cartorio_itens": _eficiencia_itens(bib, AB),
+        "proximo_passo": _proximo_passo(bib, AB),
+        "rede_entregou": _rede_entregou(bib, cer, AB),
+        "comparacao_r01": _comparacao_r01(cer, agora),
     }
     # ---- a máquina (o servidor do GitHub onde o sistema roda): a última leitura e as últimas 3 horas
     maq: dict[str, Any] = {"alvo": 0.85}
@@ -711,6 +716,140 @@ def montar(
     }
 
 
+
+
+def _comparacao_r01(cer: sqlite3.Connection, agora: datetime, caminho: str = "config/comparacao.toml") -> dict[str, Any]:
+    """29/10/2026 (a regra R01, config/comparacao.toml): cada motor novo contra os de origem no Eldorado0, pela média de
+    achados por execução (o novo desde o início da comparação; a origem, o histórico migrado antes dele). Antes nenhum
+    código lia o arquivo: a comparação nunca acontecia."""
+    import tomllib
+
+    try:
+        cfg = tomllib.loads(Path(caminho).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {"erro": "sem o arquivo da comparação"}
+    inicio, dias = str(cfg.get("inicio", "2026-10-23")), int(cfg.get("dias", 14))
+    dia = max(0, (agora.date() - datetime.fromisoformat(inicio).date()).days)
+
+    def media(motores: list[str], depois: bool) -> tuple[float | None, int]:
+        if not motores:
+            return None, 0
+        ph = ",".join("?" * len(motores))
+        cond = "inicio >= ?" if depois else "inicio < ?"
+        n, soma = cer.execute(f"SELECT COUNT(*), COALESCE(SUM(achados), 0) FROM execucao_motor WHERE motor IN ({ph}) AND {cond}",
+                              [*motores, inicio]).fetchone()
+        return (round(soma / n, 2) if n else None), n
+
+    try:   # os nomes antigos (no histórico migrado) de cada motor novo: os apelidos do sistema
+        from ...motores.canal.motor import apelidos
+
+        antigos: dict[str, set[str]] = {}
+        for velho, atual in apelidos().items():
+            antigos.setdefault(atual, set()).add(velho)
+    except Exception:  # noqa: BLE001 — sem os apelidos, só os nomes do arquivo
+        antigos = {}
+    out = {}
+    for novo, origem in (cfg.get("motores") or {}).items():
+        mn, nn = media([novo], True)
+        nomes = set(origem) | {v for o in [novo, *origem] for v in antigos.get(o, set())} if origem else set()
+        mo, no = media(sorted(nomes), False)
+        if mn is None or mo is None:
+            sit = "sem dados" if origem else "sem comparação (a origem não existe)"
+        else:
+            sit = "igual ou melhor" if mn >= mo else "pior"
+        out[novo] = {"novo_por_execucao": mn, "execucoes_novo": nn, "origem_por_execucao": mo, "execucoes_origem": no, "situacao": sit}
+    piores = [k for k, v in out.items() if v["situacao"] == "pior"]
+    return {"dia": min(dia, dias), "dias": dias, "termina": (datetime.fromisoformat(inicio) + timedelta(days=dias)).date().isoformat(),
+            "motores": out, "piores": piores}
+
+def _eficiencia_itens(bib: sqlite3.Connection, AB: str) -> dict[str, dict[str, Any]]:
+    """29/10/2026: a eficiência de cada um dos 12 itens nas abertas (a página lê eficiência, obtidos, dispensados e
+    faltavam; antes ia só a contagem e a Sala mostrava 0%)."""
+    total = bib.execute(f"SELECT COUNT(*) {AB}").fetchone()[0] or 0
+    con = Counter()
+    dis = Counter()
+    for item, sit, n in bib.execute(
+        f"SELECT c.item, c.situacao, COUNT(DISTINCT c.livro_id) FROM certidao c WHERE c.situacao IN ('comprovado', 'dispensado') "
+        f"AND c.livro_id IN (SELECT l.id {AB}) GROUP BY 1, 2"
+    ):
+        (con if sit == "comprovado" else dis)[item] += n
+    out = {}
+    for item in sorted(set(con) | set(dis)):
+        ob, di = con[item], dis[item]
+        out[item] = {"obtidos": ob, "dispensados": di, "faltavam": max(0, total - ob - di), "total": total,
+                     "eficiencia": round((ob + di) / total, 4) if total else 0}
+    return out
+
+
+def _proximo_passo(bib: sqlite3.Connection, AB: str) -> dict[str, int]:
+    """29/10/2026: o próximo passo de cada inscrição aberta, contado pelos dados (antes vinha de um molde, todo em zero)."""
+    de = "FROM livro l JOIN livro_dados d ON d.livro_id = l.id"
+    junta = AB.replace(de, de + " JOIN passaporte p ON p.livro_id = l.id")
+    cols = {r[1] for r in bib.execute("PRAGMA table_info(livro_dados)")}
+    buscar = "d.base_buscar" if "base_buscar" in cols else "''"
+    base = f"SELECT l.id, l.estrela, l.link_oficial, d.validacao, {buscar} AS base_buscar, p.fase {junta}"
+
+    def n(cond: str) -> int:
+        try:
+            return bib.execute(f"SELECT COUNT(*) FROM ({base}) x WHERE {cond}").fetchone()[0]
+        except sqlite3.Error:
+            return 0
+
+    return {
+        "Interceptador: completar os itens": n("x.fase IN ('recepcao', 'preparacao') AND COALESCE(x.estrela, 'sem') <> 'ouro'"),
+        "Interceptador: achar o site oficial": n("COALESCE(x.link_oficial, '') = '' OR x.base_buscar LIKE '%site oficial%'"),
+        "Chrome: análise externa": n("x.fase = 'analise externa'"),
+        "Validação manual pela titular": n("x.validacao = 'revisar'"),
+        "Farol: enquadrar": n("x.fase = 'farol'"),
+        "Acompanhar o prazo (completas)": n("COALESCE(x.estrela, 'sem') = 'ouro' AND x.fase <> 'farol'"),
+    }
+
+
+def _rede_entregou(bib: sqlite3.Connection, cer: sqlite3.Connection, AB: str) -> dict[str, Any]:
+    """29/10/2026: o que a rede de pertinência entregou: as notas dadas aos pendentes (a análise da rede) e as decisões
+    usadas no último treino."""
+    try:
+        m = cer.execute("SELECT versao, treinado_em FROM modelo WHERE arquivo = 'rede:oportunidade' ORDER BY treinado_em DESC LIMIT 1").fetchone()
+    except sqlite3.Error:
+        m = None
+    decisoes = None
+    if m:
+        partes = str(m[0]).split("-")
+        decisoes = int(partes[1]) if len(partes) > 1 and partes[1].isdigit() else None
+    try:
+        notas = bib.execute("SELECT COUNT(DISTINCT livro_id), SUM(nota >= 0.5) FROM (SELECT livro_id, nota FROM analise_rede "
+                            "WHERE id IN (SELECT MAX(id) FROM analise_rede GROUP BY livro_id))").fetchone()
+    except sqlite3.Error:
+        notas = (0, 0)
+    return {"pendentes_avaliados": notas[0] or 0, "pendentes_provaveis_reais": notas[1] or 0, "decisoes_no_treino": decisoes,
+            "treinado_em": m[1] if m else None,
+            "aviso": "a avaliação dos pendentes está desligada: a rede ainda não sabe julgar um livro (retreino pendente)"}
+
+
+def _motores_com_luz(mods: list[dict[str, Any]], cer: sqlite3.Connection, agora: datetime) -> list[dict[str, Any]]:
+    """29/10/2026: as estrelas da Coleta na medição da produção: o nome do motor e a luz pela última leitura registrada
+    (verde: leu nas últimas 26 h sem erro; amarelo: leu com erro ou faz mais de 26 h; vermelho: falhou; cinza: nunca leu).
+    Antes iam com o nome e o estado vazios, e a Regência via todas as estrelas cinzentas."""
+    out = []
+    for m in mods:
+        cfg = (m.get("parametros") or {}).get("configuracao")
+        if not cfg:
+            continue
+        mid = Path(cfg).stem
+        try:
+            r = cer.execute("SELECT ponto, motivo, em FROM medicao WHERE marcador = ? ORDER BY em DESC LIMIT 1", (mid,)).fetchone()
+        except sqlite3.Error:
+            r = None
+        if not r:
+            luz, res = "cinza", "sem leitura registrada"
+        else:
+            idade = _idade_h(r[2], agora)
+            motivo = str(r[1] or "")
+            luz = {"r": "vermelho", "a": "amarelo"}.get(str(r[0]), "amarelo" if (idade or 99) > 26 else "verde")
+            res = motivo[:160]
+        out.append({"id": mid, "nome": m.get("nome") or mid, "luz": luz, "resultado": res})
+    return out
+
 def no_medir_sala(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
     """Nó da passagem (o início): a sala de controle medida (no máximo a cada 15 min) e gravada no aprendizado do Cérebro;
     a Regência e a releitura agem pelo que ela mostra (titular, 24/10/2026: a sala é o parâmetro do funcionamento)."""
@@ -728,11 +867,7 @@ def no_medir_sala(itens: list[dict[str, Any]], parametros: dict[str, Any], conte
         if ultima and datetime.fromisoformat(ultima[0]) > agora - timedelta(minutes=int(parametros.get("intervalo_min", 15))):
             return [{"sala": "em dia"}]
         mods = tomllib.loads(Path(parametros.get("modulos", "config/modulos.toml")).read_text(encoding="utf-8")).get("modulo", [])
-        motores = [
-            {"id": Path((m.get("parametros") or {}).get("configuracao", "")).stem, "nome": "", "luz": ""}
-            for m in mods
-            if (m.get("parametros") or {}).get("configuracao")
-        ]
+        motores = _motores_com_luz(mods, cer, agora)
         r = montar(bib, cer, Path(parametros.get("raiz", ".")), motores, agora)
     finally:
         cer.close()

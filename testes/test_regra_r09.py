@@ -54,4 +54,8 @@ def test_a_gravacao_nao_muda_o_ciclo_em_andamento():
     """25/10/2026: o 'git pull' da gravação trazia o código e as configurações novas para o ciclo em andamento (o nó do
     Espião falhou com a configuração nova lida pelo código antigo). A gravação usa uma árvore de trabalho separada."""
     g = Path("scripts/gravar.sh").read_text(encoding="utf-8")
-    assert "git worktree add" in g and "git pull -q" not in g and "push -q origin HEAD:main" in g and ".inicio_ciclo" in g
+    # 29/10/2026: a gravação monta o commit direto no Git (um índice temporário), sem cópia do repositório e sem tocar na
+    # pasta de trabalho do ciclo: o ciclo em andamento nunca muda de versão (o efeito que esta regra protege)
+    assert ".inicio_ciclo" in g and "git commit-tree" in g and "GIT_INDEX_FILE" in g
+    for proibido in ("git pull", "git checkout", "git merge", "git reset", "git rebase", "git stash"):
+        assert proibido not in g, proibido

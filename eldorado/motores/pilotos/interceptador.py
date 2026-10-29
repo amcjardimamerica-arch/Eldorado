@@ -24,6 +24,7 @@ import json
 import re
 import sqlite3
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Callable, Iterator
 from urllib.parse import quote, urlsplit
 
@@ -62,6 +63,34 @@ SQL_GUARDADOS = ("SELECT p.documento_id, p.numero, p.texto_zstd FROM pagina p JO
                  "WHERE c.livro_id=? GROUP BY p.documento_id, p.numero")
 
 
+_MATRIZ: dict | None = None
+REGIMES = (   # 29/10/2026: o regime pelo título e pela modalidade (a ordem importa: o mais específico primeiro)
+    ("emenda_parlamentar", re.compile(r"emenda", re.I)),
+    ("destinacao_judicial", re.compile(r"presta[cç][aã]o pecuni[aá]ria|destina[cç][aã]o|\bTAC\b|termo de ajustamento|multa", re.I)),
+    ("doacao_de_bens", re.compile(r"doa[cç][aã]o de bens|mercadorias apreendidas|bens apreendidos", re.I)),
+    ("incentivo_fiscal", re.compile(r"rouanet|goyazes|incentivo fiscal|pronon|pronas|fundo (da|dos direitos da) crian|fundo do idoso|lei de incentivo", re.I)),
+    ("fluxo_continuo", re.compile(r"fluxo cont[ií]nuo|credenciamento", re.I)),
+    ("patrocinio_privado", re.compile(r"patroc[ií]nio|grant|instituto|funda[cç][aã]o (?!de amparo)", re.I)),
+)
+
+
+def regime_de(titulo: str | None, modalidade: str | None) -> str:
+    texto = f"{titulo or ''} {modalidade or ''}"
+    return next((k for k, r in REGIMES if r.search(texto)), "chamamento_publico")
+
+
+def _dispensaveis(regime: str | None) -> set[str]:
+    """Os itens que o regime não tem ou costuma não ter (config/missao/dispensas_por_regime.json)."""
+    global _MATRIZ
+    if _MATRIZ is None:
+        try:
+            _MATRIZ = json.loads(Path("config/missao/dispensas_por_regime.json").read_text(encoding="utf-8")).get("regimes", {})
+        except (OSError, ValueError):
+            _MATRIZ = {}
+    itens = (_MATRIZ.get(regime or "") or {}).get("itens", {})
+    return {i for i, x in itens.items() if x.get("situacao") in ("nao_se_aplica", "dispensa_provavel")}
+
+
 @dataclass
 class Livro:
     id: str
@@ -80,9 +109,15 @@ class Livro:
     def balcao(self) -> str:
         return {"ouro": "prata"}.get(self.estrela, self.estrela if self.estrela in ("bronze", "prata") else "sem estrela")
 
+    regime: str | None = None             # 29/10/2026: o regime do recurso (a matriz de dispensas por regime)
+
     @property
     def faltam(self) -> list[str]:
-        return I.faltando({k: v for k, v in self.certidoes.items() if I.resolvido(v)})
+        """Os itens a buscar: os que faltam, sem os que o regime não tem (a matriz de dispensas: o Interceptador não gasta
+        voo procurando prazo de inscrição num fluxo contínuo; o item continua sem certidão até o edital declarar)."""
+        f = I.faltando({k: v for k, v in self.certidoes.items() if I.resolvido(v)})
+        fora = _dispensaveis(self.regime)
+        return [i for i in f if i not in fora]
 
     @property
     def base(self) -> str | None:
@@ -106,11 +141,12 @@ def fila(con: sqlite3.Connection, hoje: str) -> list[Livro]:
     for c in con.execute("SELECT * FROM certidao WHERE situacao IN ('comprovado','dispensado')"):
         certs.setdefault(c["livro_id"], []).append(dict(c))
     saida = []
-    for r in con.execute("SELECT l.id, l.titulo, l.orgao, l.link_oficial, l.link_divulgacao, l.estrela, d.inscricao_fim, d.municipio, l.uf FROM livro l "
+    for r in con.execute("SELECT l.id, l.titulo, l.orgao, l.link_oficial, l.link_divulgacao, l.estrela, d.inscricao_fim, d.municipio, l.uf, "
+                         "d.modalidade FROM livro l "
                          "JOIN livro_dados d ON d.livro_id = l.id JOIN passaporte p ON p.livro_id = l.id WHERE p.fase = 'preparacao' "
                          "AND l.situacao NOT IN ('excluido', 'unido') AND d.validacao <> 'expurgado' AND l.id NOT IN (SELECT livro_unido FROM uniao)"):
         lv = Livro(r["id"], r["titulo"] or "", r["orgao"], r["link_oficial"], r["link_divulgacao"], r["estrela"] or "sem", r["inscricao_fim"],
-                   I.melhor(certs.get(r["id"], [])), tentadas.get(r["id"], set()), r["municipio"], r["uf"])
+                   I.melhor(certs.get(r["id"], [])), tentadas.get(r["id"], set()), r["municipio"], r["uf"], regime_de(r["titulo"], r["modalidade"]))
         if lv.faltam:
             saida.append(lv)
     return sorted(saida, key=lambda x: (0 if (x.fim and x.fim >= hoje) else 1, x.fim or "9999", len(x.faltam)))
