@@ -5,6 +5,7 @@ como retorno (para ele aprender).
 """
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 import msgspec
@@ -49,6 +50,10 @@ def no_decidir(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto
     p = Pertinencia(instanciar(parametros["missao"], parametros.get("missao_parametros")), contexto.diario)
     aceitos = []
     retornos: dict[str, list[Retorno]] = {}
+    if parametros.get("recuperar_pendentes"):                  # 29/10/2026: os achados órfãos voltam à decisão
+        ja = {i.get("id") for i in itens}
+        itens = list(itens) + [x for x in pendentes_sem_decisao(Path(parametros.get("dados", "dados")), int(parametros.get("recuperar_pendentes")))
+                               if x["id"] not in ja]
     for item in itens:
         achado = msgspec.convert({k: v for k, v in item.items() if not k.startswith("_")}, Achado)
         r = p.decidir(achado)
@@ -67,3 +72,36 @@ def no_decidir(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto
                     m.estado.diario = contexto.diario
                 m.aprender(lista)
     return aceitos
+
+
+def pendentes_sem_decisao(dados: Path, limite: int = 150) -> list[dict[str, Any]]:
+    """29/10/2026 (titular: "todos os dados de livros devem ser gravados nos livros"): os achados gravados que ficaram sem
+    decisão. O piloto grava o achado no próprio diário e o entrega à passagem; se a passagem é interrompida antes de
+    terminar (uma implantação, o apagão da gravação), a regra R09 descarta a passagem inteira — a decisão junto — e o
+    achado, já fora da fila de entregas, ficava órfão para sempre ("pendente": 334, desde 24/10), com a informação fora do
+    livro. A cada passagem, até `limite` deles voltam à Pertinência (os mais antigos primeiro)."""
+    import json
+    import sqlite3
+
+    arq = Path(dados) / "biblioteca.db"
+    if not arq.exists():
+        return []
+    con = sqlite3.connect(f"file:{arq}?mode=ro", uri=True)
+    try:
+        linhas = con.execute(
+            "SELECT id, motor, encontrado_em, link_divulgacao, link_oficial, titulo, publicado_em, dados, veio_de_copia_arquivada, pista "
+            "FROM achado WHERE decisao = 'pendente' ORDER BY encontrado_em, rowid LIMIT ?", (limite,)).fetchall()
+    except sqlite3.Error:
+        return []
+    finally:
+        con.close()
+    out = []
+    for i, m, enc, div, ofi, tit, pub, dad, copia, pista in linhas:
+        try:
+            d = json.loads(dad or "{}")
+        except ValueError:
+            d = {}
+        out.append({"id": i, "motor": m, "encontrado_em": enc or "", "link_divulgacao": div or ofi or "", "link_oficial": ofi, "titulo": tit,
+                    "publicado_em": pub, "dados": d if isinstance(d, dict) else {}, "veio_de_copia_arquivada": bool(copia), "pista": bool(pista)})
+    return out
+

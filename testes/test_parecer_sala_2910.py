@@ -198,3 +198,47 @@ def test_o_diario_de_nome_fixo_vai_para_o_dia():
         di.emitir("alarme.fechado", "t", {"id": "a", "em": "2026-10-29T00:00:00+00:00", "motivo": "x"})
         assert di._dia == hoje
         assert not EV.Diario(d, "01793146543196472744-003468-6eaf31ee").por_dia and not EV.Diario(d, "importacao-eldorado0").por_dia
+
+
+def test_os_achados_orfaos_voltam_a_decisao():
+    """29/10/2026 (titular: todos os dados de livros devem ser gravados nos livros): o achado do piloto gravado e sem
+    decisão (a passagem interrompida levou a decisão: 334 pendentes desde 24/10) volta à Pertinência; aceito, segue ao
+    Cartório (o nó validar), que o liga ao livro."""
+    import sqlite3
+    import tomllib
+
+    from eldorado.base.cerebro.pertinencia import pendentes_sem_decisao
+
+    with tempfile.TemporaryDirectory() as d:
+        c = sqlite3.connect(Path(d, "biblioteca.db"))
+        c.execute(
+            "CREATE TABLE achado (id TEXT, motor TEXT, encontrado_em TEXT, link_divulgacao TEXT, link_oficial TEXT, titulo TEXT, "
+            "publicado_em TEXT, dados TEXT, veio_de_copia_arquivada INTEGER, pista INTEGER, decisao TEXT)"
+        )
+        c.executemany(
+            "INSERT INTO achado VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+            [
+                (
+                    "interceptador-L-1-1",
+                    "interceptador",
+                    "2026-10-27",
+                    "https://x.gov.br/a",
+                    None,
+                    "Edital 1",
+                    None,
+                    '{"livro_id": "L-1"}',
+                    0,
+                    0,
+                    "pendente",
+                ),
+                ("espiao-2", "espiao", "2026-10-28", "https://y.org/b", None, "Edital 2", None, "{}", 0, 0, "aceito"),
+            ],
+        )
+        c.commit()
+        c.close()
+        r = pendentes_sem_decisao(Path(d), 10)
+        assert [x["id"] for x in r] == ["interceptador-L-1-1"] and r[0]["dados"]["livro_id"] == "L-1"
+    w = tomllib.loads(Path("workflows/passagem.toml").read_text(encoding="utf-8"))
+    no = next(n for n in w["no"] if n["id"] == "decidir_rede")
+    assert no["parametros"].get("recuperar_pendentes") == 150
+    assert any(c["de"] == "decidir_rede" and c["para"] == "validar" for c in w["conexao"])

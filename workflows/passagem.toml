@@ -80,7 +80,8 @@ parametros = { dados = "dados", modulos = "config/modulos.toml", orcamento_origi
 [[no]]
 id = "decidir_rede"
 tipo = "eldorado.base.cerebro.pertinencia:no_decidir"
-parametros = { missao = "eldorado.base.missao.oportunidades:MissaoOportunidades", modulos = "config/modulos.toml" }
+# 29/10/2026: recuperar_pendentes: os achados órfãos (sem decisão: a passagem interrompida levou a decisão) voltam à decisão
+parametros = { missao = "eldorado.base.missao.oportunidades:MissaoOportunidades", modulos = "config/modulos.toml", recuperar_pendentes = 150, dados = "dados" }
 
 [[no]]
 id = "aplicar_rede"
