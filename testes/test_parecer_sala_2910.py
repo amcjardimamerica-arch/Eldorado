@@ -252,3 +252,10 @@ def test_o_espiao_da_a_vez_ao_interceptador():
     assert PP.ESPACO_ESPIAO_S == 30 and "INTERCEPTADOR_COM_FILA.set()" in s and "INTERCEPTADOR_COM_FILA.clear()" in s
     i = s.index("def voar_espiao(")
     assert "if INTERCEPTADOR_COM_FILA.is_set():" in s[i:] and "parar.wait(ESPACO_ESPIAO_S)" in s[i:]
+
+
+def test_o_prazo_da_ia_vale_no_pedido_validado():
+    """29/10/2026: o caminho validado (pydantic-ai) ignorava o prazo do cargo e repetia o pedido (375 s registrados): o
+    prazo vai ao pedido e há no máximo uma nova tentativa."""
+    s = Path("eldorado/base/nucleo/ia.py").read_text(encoding="utf-8")
+    assert "system_prompt=SISTEMA, retries=1)" in s and 'model_settings={"timeout": float(getattr(ia, "tempo_limite", 240.0))}' in s

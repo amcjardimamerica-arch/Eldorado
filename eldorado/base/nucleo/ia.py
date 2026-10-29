@@ -189,9 +189,11 @@ def _validado(ia: IA, pedido: str) -> tuple[list[dict], Uso] | None:
     class Proposta(BaseModel):
         itens: list[ItemProposto] = []
     modelo = getattr(ia, "_modelo_validado", None) or OpenAIChatModel("local", provider=OpenAIProvider(base_url=f"{ia.url}/v1", api_key="local"))
-    agente = Agent(modelo, output_type=Proposta, system_prompt=SISTEMA)
+    # 29/10/2026: o prazo da IA vale também aqui (o cliente da biblioteca ignorava os 150 s do Interceptador) e no máximo
+    # uma nova tentativa quando a resposta não vem no formato (um "pedido" virava 2 ou 3: 375 s registrados)
+    agente = Agent(modelo, output_type=Proposta, system_prompt=SISTEMA, retries=1)
     uso, t0 = Uso("comprovar"), time.monotonic()
-    r = agente.run_sync(pedido + "\n/no_think")
+    r = agente.run_sync(pedido + "\n/no_think", model_settings={"timeout": float(getattr(ia, "tempo_limite", 240.0))})
     uso.segundos = round(time.monotonic() - t0, 1)
     u = r.usage() if callable(r.usage) else r.usage                 # atributo nas versões novas, função nas antigas
     uso.tokens_entrada, uso.tokens_saida = getattr(u, "input_tokens", 0) or 0, getattr(u, "output_tokens", 0) or 0
