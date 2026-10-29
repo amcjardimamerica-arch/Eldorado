@@ -140,13 +140,14 @@ def test_o_lago_dos_prazos():
     """28/10/2026 (titular): o calendário do Eldorado com o giroscópio Serpentes de Jade à esquerda, em 3/5 da tela (embutido,
     sem servidor externo, sempre na versão nova; o mouse não o move; ao passar o mouse numa oportunidade, o mostrador da
     esfera mostra o prazo dela); sem a gaiola; o giroscópio mais rápido; as serpentes no enquadramento; os raios centrados
-    na esfera; à direita, em 2/5, o quadro (os dias em colunas, o nome dentro da faixa): as 10 que vencem primeiro por área."""
+    na esfera; à direita, em 40%, o quadro claro e sem rolagem própria (o objeto acompanha a página) (os dias em colunas, o nome dentro da faixa): as 10 que vencem primeiro por área."""
     from pathlib import Path
 
     p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
     g = Path("eldorado/base/painel/pagina/giroscopio/giroscopio.html").read_text(encoding="utf-8")
     assert '<div id="sj">' in p and 'src="giroscopio/giroscopio.html?v=20261028c"' in p
-    assert "grid-template-columns:minmax(0,3fr) minmax(380px,2fr)" in p  # 3/5 e 2/5
+    assert "grid-template-columns:minmax(0,6fr) minmax(0,4fr)" in p and "#sj .palco{position:sticky;top:8px;height:calc(100vh - 16px)" in p
+    assert "--c-fundo:#F7F4EC" in p and 'class="rolagem"' not in p and "overflow:clip" in p  # o quadro claro, sem rolagem própria  # 3/5 e 2/5
     assert "#sj .raios,#sj .raios2,#sj .halo{position:absolute;left:50%;top:50%" in p  # no centro da esfera
     bloco = p[p.index('<div id="sj">') : p.index("</nav>", p.index('<div id="sj">'))]
     assert bloco.count('class="grupo"') == 3 and 'data-ir="farol:f-biblioteca"' in bloco
