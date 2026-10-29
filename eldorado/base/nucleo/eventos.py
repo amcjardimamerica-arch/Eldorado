@@ -103,7 +103,10 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "espiao.rota": (Alvo(C, "espiao_rota", "inserir_ou_atualizar", ("nome",)),),
     "sala.medida": (Alvo(C, "sala_medicao", "inserir_ou_atualizar", ("chave",)),),   # a sala como parâmetro do funcionamento
     "arquivos.medidos": (Alvo(C, "medicao_arquivos", "inserir_ou_atualizar", ("chave",)),),   # o monitoramento de cada arquivo
-    "medicao.registrada": (Alvo(C, "medicao", "inserir_ou_atualizar", ("marcador", "nivel", "em")),),
+    # 29/10/2026: o nível "etapa" (o medidor de memória por etapa, implantado às 08:57) vira "componente": o banco só aceita
+    # arquivo, componente, parte, sistema e motor; sem isso os eventos já gravados seriam recusados para sempre
+    "medicao.registrada": (Alvo(C, "medicao", "inserir_ou_atualizar", ("marcador", "nivel", "em"),
+                                lambda d: {**d, "nivel": "componente"} if d.get("nivel") == "etapa" else d),),
     "maquina.leitura": (Alvo(C, "maquina", "inserir_se_novo"),),
     "cobertura.dia": (Alvo(C, "cobertura_dia", "inserir_ou_atualizar", ("dia",)),),
     "agenda.definida": (Alvo(C, "agenda", "inserir_ou_atualizar", ("modulo", "janela_inicio")),),

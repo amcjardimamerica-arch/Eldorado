@@ -299,7 +299,7 @@ def _medir_memoria(diario: Diario, no: str) -> None:
 
         mb = psutil.Process().memory_info().rss / 1048576
         emitir_se_mudou(diario, "medicao.registrada", "executor", f"memoria:{no}",
-                        {"marcador": f"memoria:{no}", "nivel": "etapa", "em": agora(), "ponto": "v", "circulo": "v", "linhas": "v",
+                        {"marcador": f"memoria:{no}", "nivel": "componente", "em": agora(), "ponto": "v", "circulo": "v", "linhas": "v",
                          "valor": round(mb / 50) * 50, "motivo": f"{mb:.0f} MB de memória do processo depois da etapa {no}"})
     except Exception:  # noqa: BLE001 — a medição nunca para a passagem
         pass
