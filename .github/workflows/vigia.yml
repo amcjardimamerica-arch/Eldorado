@@ -1,0 +1,59 @@
+# O VIGIA (titular, 29/10/2026): um olho de fora do ciclo, a cada 30 minutos.
+# Hoje o sistema ficou 12 h sem gravar e a fila de implantação ficou presa 45 min sem que ninguém fosse avisado: o
+# ciclo não vê a própria falha. O vigia confere, de fora:
+#   1. a idade da última gravação ("Eldorado: trabalho até…"): acima de 45 min, ERRO e um aviso aberto no repositório;
+#   2. se há ciclo rodando: nenhum ciclo nem implantação em andamento → religa (o ciclo que caiu e não se religou);
+#   3. a implantação em andamento há mais de 55 min (a fila presa): AVISO.
+# O aviso é um "issue" com o rótulo vigia (um só, atualizado; fechado quando tudo volta ao normal).
+name: Vigia
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+  issues: write
+
+concurrency:
+  group: vigia
+  cancel-in-progress: true
+
+jobs:
+  vigiar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Conferir a gravação, o ciclo e a fila
+        env:
+          GH_TOKEN: ${{ github.token }}
+          R: ${{ github.repository }}
+        run: |
+          agora=$(date -u +%s)
+          ult=$(gh api "repos/$R/commits?per_page=60" -q '[.[] | select(.commit.message | startswith("Eldorado: trabalho até"))][0].commit.committer.date')
+          idade=$(( (agora - $(date -u -d "${ult:-1970-01-01T00:00:00Z}" +%s)) / 60 ))
+          ciclos=$(gh run list -R "$R" -w eldorado.yml --json status -q '[.[] | select(.status!="completed")] | length')
+          impl=$(gh run list -R "$R" -w implantar.yml --json status,createdAt -q '[.[] | select(.status=="in_progress")][0].createdAt // ""')
+          problemas=""
+          [ "$idade" -gt 45 ] && problemas="$problemas\n- a última gravação foi há ${idade} min (limite: 45)"
+          if [ "${ciclos:-0}" = "0" ] && [ -z "$impl" ]; then
+            gh workflow run eldorado.yml -R "$R" --ref main -f gravar_banco=false -f acionar_todos=false && \
+              problemas="$problemas\n- nenhum ciclo rodando: o vigia religou o ciclo"
+          fi
+          if [ -n "$impl" ]; then
+            ia=$(( (agora - $(date -u -d "$impl" +%s)) / 60 ))
+            [ "$ia" -gt 55 ] && problemas="$problemas\n- a implantação está em andamento há ${ia} min (a fila pode estar presa)"
+          fi
+          echo "gravação há ${idade} min · ciclos em andamento: ${ciclos} · implantação: ${impl:-nenhuma}"
+          aberto=$(gh issue list -R "$R" --label vigia --state open --json number -q '.[0].number' 2>/dev/null || true)
+          if [ -n "$problemas" ]; then
+            corpo=$(printf "O vigia (a cada 30 min) encontrou, em $(date -u +%d/%m\ %H:%M) UTC:\n$problemas\n\nDetalhes na execução: $GITHUB_SERVER_URL/$R/actions/runs/$GITHUB_RUN_ID")
+            echo "::error::$(printf "$problemas" | tr '\n' ' ')"
+            gh label create vigia -R "$R" --color B60205 --description "o vigia do ciclo" 2>/dev/null || true
+            if [ -n "$aberto" ]; then gh issue comment "$aberto" -R "$R" --body "$corpo"
+            else gh issue create -R "$R" --title "Vigia: o sistema precisa de atenção" --label vigia --body "$corpo"; fi
+            exit 1
+          fi
+          [ -n "$aberto" ] && gh issue close "$aberto" -R "$R" --comment "Tudo normal de novo: gravação há ${idade} min." || true

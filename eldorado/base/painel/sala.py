@@ -16,13 +16,13 @@ from pathlib import Path
 from typing import Any
 
 ETAPAS = {
-    "regencia": ["rg_regencia", "ma_cobertura", "ma_esgotados", "dg_finalidade"],
+    "regencia": ["rg_regencia", "ma_cobertura", "ma_esgotados", "dg_finalidade", "ma_memoria_etapa"],
     "coleta": ["mo_saude", "mo_cadencia", "mo_retentativa", "mo_fora_da_fila", "es_coleta"],
     "certificacao": ["ca_12", "fl_fila", "es_curadoria", "es_parcial"],
     "investigacao": ["pi_interceptador", "pi_espiao", "pi_piloto", "de_decisoes"],
     "externa": ["ve_para_o_chrome", "ve_bloqueadas", "ve_completas", "ve_importado", "al_externa"],
-    "repositorio": ["es_abertas", "es_banco_unico"],
-    "biblioteca": ["es_livros", "es_vigilancia", "em_rankings", "hi_uso", "hi_frio"],
+    "repositorio": ["es_abertas", "es_banco_unico", "hi_crescimento"],
+    "biblioteca": ["es_livros", "es_vigilancia", "em_rankings", "hi_uso", "hi_frio", "es_orfaos"],
     "aprendizado": ["rn_auc", "rn_precisao", "rn_revocacao", "rn_brier", "rn_treino", "cm_comparacao", "cm_decisoes"],
     "farol": ["es_validadas", "es_fichas"],
 }
@@ -125,8 +125,14 @@ def montar(
     validadas = estrelas.get("prata", 0) + estrelas.get("ouro", 0)
     revisar = q(bib, f"SELECT COUNT(*) {AB} AND d.validacao = 'revisar'")
     # uma única contagem no site inteiro (25/10/2026): só os livros vivos (a sala contava também os unidos e os excluídos)
-    fases = Counter(dict(bib.execute("SELECT p.fase, COUNT(*) FROM passaporte p JOIN livro l ON l.id = p.livro_id "
-                                     "WHERE l.situacao NOT IN ('excluido', 'unido') GROUP BY p.fase").fetchall()))
+    fases = Counter(
+        dict(
+            bib.execute(
+                "SELECT p.fase, COUNT(*) FROM passaporte p JOIN livro l ON l.id = p.livro_id "
+                "WHERE l.situacao NOT IN ('excluido', 'unido') GROUP BY p.fase"
+            ).fetchall()
+        )
+    )
     # ---- 01 Regência
     n = len(reg) or 1
     cobertura = round(100 * len(lidos24) / n)
@@ -319,8 +325,13 @@ def montar(
     # 26/10/2026: o lote só fica pendente se tiver livro que ainda espera o Chrome e que não está num lote mais novo
     # (os lotes se sobrepõem: o de cada dia repete os pendentes do anterior)
     try:
-        esperam = {r[0] for r in bib.execute("SELECT p.livro_id FROM passaporte p JOIN livro l ON l.id = p.livro_id "
-                                             "WHERE p.fase = 'analise externa' AND l.situacao NOT IN ('excluido', 'unido')")}
+        esperam = {
+            r[0]
+            for r in bib.execute(
+                "SELECT p.livro_id FROM passaporte p JOIN livro l ON l.id = p.livro_id "
+                "WHERE p.fase = 'analise externa' AND l.situacao NOT IN ('excluido', 'unido')"
+            )
+        }
         conteudo = {p.stem: {x.get("livro_id") for x in json.loads(p.read_text(encoding="utf-8")).get("livros", [])} for p in lotes}
         # 29/10/2026: pelos DADOS, não pelo nome do arquivo: o livro com veredito do Chrome já teve retorno (o arquivo dos
         # remanescentes de 23 a 28/10 não tem as datas no nome, e os lotes seguiam "sem retorno" depois de importados)
@@ -354,6 +365,51 @@ def montar(
         _faixa(idade_v, 72, 168, False) if idade_v is not None else "cinza",
         "nenhum veredito importado ainda" if idade_v is None else f"último veredito há {idade_v:.0f} h",
         ult_v,
+    )
+    # ---- 29/10/2026: os ALARMES DE TENDÊNCIA (a degradação lenta aparece antes de virar problema)
+    orfaos = q(bib, "SELECT COUNT(*) FROM achado WHERE decisao = 'pendente' AND encontrado_em < ?", hoje)
+    I(
+        "es_orfaos",
+        "Achados sem decisão de dias anteriores",
+        orfaos,
+        _faixa(orfaos, 0, 49, False),
+        "nenhum achado órfão" if not orfaos else f"{orfaos} achado(s) sem decisão desde antes de hoje (a informação ainda não chegou ao livro)",
+        iso,
+    )
+    ontem = (agora - timedelta(days=1)).date()
+    pasta_ontem = raiz / "eventos" / f"{ontem:%Y}" / f"{ontem:%m}" / f"{ontem:%d}"
+    mb_ontem = mb_paginas = None
+    if pasta_ontem.exists():
+        total = paginas = 0
+        for f in pasta_ontem.glob("*.jsonl"):
+            with open(f, "rb") as h:
+                for linha in h:
+                    total += len(linha)
+                    if b'"tipo":"pagina.gravada"' in linha[:200]:
+                        paginas += len(linha)
+        mb_ontem, mb_paginas = round((total - paginas) / 1048576, 1), round(paginas / 1048576, 1)
+    I(
+        "hi_crescimento",
+        "Crescimento da operação no histórico (MB no dia anterior, sem o texto das páginas)",
+        mb_ontem,
+        _faixa(mb_ontem, 15, 30, False),
+        "sem a pasta do dia anterior"
+        if mb_ontem is None
+        else f"{mb_ontem} MB de operação em {ontem:%d/%m} (mais {mb_paginas} MB de texto das páginas dos livros, o dado que deve crescer)",
+        iso,
+    )
+    try:
+        mem_e = cer.execute("SELECT marcador, MAX(valor) FROM medicao WHERE marcador LIKE 'memoria:%' AND em >= ?", (h24,)).fetchone()
+    except sqlite3.Error:
+        mem_e = None
+    mem_v = mem_e[1] if mem_e and mem_e[1] is not None else None
+    I(
+        "ma_memoria_etapa",
+        "Memória do processo por etapa (pico em 24 h, MB)",
+        mem_v,
+        _faixa(mem_v, 3000, 4500, False),
+        "o medidor por etapa ainda não registrou" if mem_v is None else f"pico de {mem_v:.0f} MB depois da etapa {str(mem_e[0])[8:]}",
+        iso,
     )
     ult_lote = lotes[-1].stem if lotes else None
     idade_l = _idade_h(datetime.fromtimestamp(lotes[-1].stat().st_mtime, timezone.utc).isoformat(), agora) if lotes else None
@@ -408,13 +464,15 @@ def montar(
         from ..cerebro.mapa_arquivos import AGUARDAM_DECISAO
         from ..cerebro.mapa_arquivos import montar as mapa
 
-        parados = [x["id"] for x in mapa()["nos"] if not x["alcancado"] and x["id"] in AGUARDAM_DECISAO]   # os por desenho já estão decididos
+        parados = [x["id"] for x in mapa()["nos"] if not x["alcancado"] and x["id"] in AGUARDAM_DECISAO]  # os por desenho já estão decididos
         I(
             "hi_uso",
             "Arquivos fora do funcionamento",
             len(parados),
             "verde" if not parados else "amarelo",
-            "ficam por decisão da titular, com a função aguardando a migração: " + ", ".join(parados) if parados else "nenhum arquivo fora do funcionamento",
+            "ficam por decisão da titular, com a função aguardando a migração: " + ", ".join(parados)
+            if parados
+            else "nenhum arquivo fora do funcionamento",
             iso,
         )
     except Exception as e:  # noqa: BLE001
@@ -437,7 +495,7 @@ def montar(
             "rn_auc",
             "Discernimento da rede (oportunidade)",
             auc,
-            "cinza",     # 29/10/2026: informativo (a rede de livros está fora de uso): não é alarme da etapa
+            "cinza",  # 29/10/2026: informativo (a rede de livros está fora de uso): não é alarme da etapa
             f"área sob a curva ROC: {auc} — medida sobre o fluxo de treino (dominado pelos achados barrados na entrada); sobre "
             f"livros a rede não discerne (ensaio de 29/10/2026: 0,48, o acaso): a avaliação dos pendentes está desligada",
             t,
@@ -475,35 +533,73 @@ def montar(
         ):
             I(k, nome, None, "cinza", "a rede ainda não registrou um modelo treinado", None)
     try:
-        b_ = cer.execute("SELECT treinado_em, brier FROM modelo WHERE arquivo = 'rede:oportunidade' AND brier IS NOT NULL "
-                         "ORDER BY treinado_em DESC LIMIT 1").fetchone()
+        b_ = cer.execute(
+            "SELECT treinado_em, brier FROM modelo WHERE arquivo = 'rede:oportunidade' AND brier IS NOT NULL ORDER BY treinado_em DESC LIMIT 1"
+        ).fetchone()
     except sqlite3.Error:
         b_ = None
     if b_:
-        I("rn_brier", "Erro de calibração da rede", b_[1], _faixa(b_[1], 0.15, 0.25, False),
-          f"erro de Brier {b_[1]:.3f} (0 = probabilidades perfeitas; até 0,15 bem calibrada)", b_[0], [0, 0.5],
-          {"normal": [None, 0.15], "alarme": [None, 0.25]})
+        I(
+            "rn_brier",
+            "Erro de calibração da rede",
+            b_[1],
+            _faixa(b_[1], 0.15, 0.25, False),
+            f"erro de Brier {b_[1]:.3f} (0 = probabilidades perfeitas; até 0,15 bem calibrada)",
+            b_[0],
+            [0, 0.5],
+            {"normal": [None, 0.15], "alarme": [None, 0.25]},
+        )
     else:
-        I("rn_brier", "Erro de calibração da rede", None, "cinza", "aguardando o primeiro treino com a calibração (o nó da rede, a cada passagem)", None)
+        I(
+            "rn_brier",
+            "Erro de calibração da rede",
+            None,
+            "cinza",
+            "aguardando o primeiro treino com a calibração (o nó da rede, a cada passagem)",
+            None,
+        )
     # ---- o Comandante (a fase 2, 25/10/2026): as decisões dele, em paralelo, e o rendimento contra a ordem fixa
     try:
         from ..aprendizado.avaliar import comparacao
+
         cmp_ = comparacao(bib, cer)
         n24 = cer.execute("SELECT COUNT(*) FROM comandante_decisao WHERE em >= ?", (h24,)).fetchone()[0]
     except (sqlite3.Error, ImportError):
         cmp_, n24 = {"comandante": None, "ordem_fixa": None, "decisoes": 0}, None
-    I("cm_decisoes", "Decisões do Comandante em 24 h", n24, "cinza" if n24 is None else ("verde" if n24 else "amarelo"),
-      "cada decisão com o motivo e a nota, registrada no Arquivo do Cérebro (em paralelo com a ordem fixa)"
-      if n24 is not None else "o Cérebro ainda não está na versão 10",
-      iso, None, {"normal": [1, None], "alarme": [0, None]})
+    I(
+        "cm_decisoes",
+        "Decisões do Comandante em 24 h",
+        n24,
+        "cinza" if n24 is None else ("verde" if n24 else "amarelo"),
+        "cada decisão com o motivo e a nota, registrada no Arquivo do Cérebro (em paralelo com a ordem fixa)"
+        if n24 is not None
+        else "o Cérebro ainda não está na versão 10",
+        iso,
+        None,
+        {"normal": [1, None], "alarme": [0, None]},
+    )
     if cmp_["comandante"] is not None and cmp_["ordem_fixa"] is not None:
         dif = round(100 * (cmp_["comandante"] - cmp_["ordem_fixa"]), 1)
-        I("cm_comparacao", "O Comandante contra a ordem fixa", dif, _faixa(dif, 0, -5),
-          f"as escolhas do Comandante renderam {cmp_['comandante']:.0%} (achado aceito no dia), a ordem fixa {cmp_['ordem_fixa']:.0%} "
-          f"({cmp_['decisoes']} decisões avaliadas em 7 dias)", iso, [-50, 50], {"normal": [0, None], "alarme": [-5, None]})
+        I(
+            "cm_comparacao",
+            "O Comandante contra a ordem fixa",
+            dif,
+            _faixa(dif, 0, -5),
+            f"as escolhas do Comandante renderam {cmp_['comandante']:.0%} (achado aceito no dia), a ordem fixa {cmp_['ordem_fixa']:.0%} "
+            f"({cmp_['decisoes']} decisões avaliadas em 7 dias)",
+            iso,
+            [-50, 50],
+            {"normal": [0, None], "alarme": [-5, None]},
+        )
     else:
-        I("cm_comparacao", "O Comandante contra a ordem fixa", None, "cinza",
-          "aguardando as primeiras decisões avaliadas (o Aprendizado avalia no dia seguinte)", None)
+        I(
+            "cm_comparacao",
+            "O Comandante contra a ordem fixa",
+            None,
+            "cinza",
+            "aguardando as primeiras decisões avaliadas (o Aprendizado avalia no dia seguinte)",
+            None,
+        )
     # ---- 09 Farol
     I("es_validadas", "Livros na etapa Farol", fases.get("farol", 0), "verde", "os livros finalizados, liberados pela Regência", iso)
     transf = q(bib, "SELECT COUNT(DISTINCT livro_id) FROM transferencia")
@@ -594,10 +690,14 @@ def montar(
         anunc.append(g)
     # 27/10/2026: a linha do tempo com o que o sistema de fato fez (a tabela das execuções de workflow quase não é preenchida
     # pela passagem permanente): as etapas e as passagens, as decisões do Comandante, os voos dos pilotos
-    linha = [{"em": r[1], "evento": f"{r[0]}: {r[2]}"} for r in cer.execute("SELECT workflow, inicio, estado FROM execucao ORDER BY inicio DESC LIMIT 30")]
+    linha = [
+        {"em": r[1], "evento": f"{r[0]}: {r[2]}"} for r in cer.execute("SELECT workflow, inicio, estado FROM execucao ORDER BY inicio DESC LIMIT 30")
+    ]
     try:
-        for mk, em, mo in cer.execute("SELECT marcador, em, motivo FROM medicao WHERE marcador IN ('passagem', 'piloto:espiao', 'piloto:interceptador') "
-                                      "AND (marcador = 'passagem' OR motivo LIKE 'em voo%' OR motivo LIKE 'pousou%') ORDER BY em DESC LIMIT 80"):
+        for mk, em, mo in cer.execute(
+            "SELECT marcador, em, motivo FROM medicao WHERE marcador IN ('passagem', 'piloto:espiao', 'piloto:interceptador') "
+            "AND (marcador = 'passagem' OR motivo LIKE 'em voo%' OR motivo LIKE 'pousou%') ORDER BY em DESC LIMIT 80"
+        ):
             quem = {"passagem": "Passagem", "piloto:espiao": "Espião", "piloto:interceptador": "Interceptador"}[mk]
             linha.append({"em": em, "evento": f"{quem}: {mo}"})
         tabs = {r[0] for r in cer.execute("SELECT name FROM sqlite_master WHERE type = 'table'")}
@@ -690,8 +790,8 @@ def montar(
                 "sv_processador",
                 "Processador",
                 maq.get("processador"),
-                [None, 85],                                # a titular (25/10/2026): verde até 85%, laranja de 86% a 90%,
-                [None, 90],                                # vermelho de 91% a 100%
+                [None, 85],  # a titular (25/10/2026): verde até 85%, laranja de 86% a 90%,
+                [None, 90],  # vermelho de 91% a 100%
                 f"{maq.get('nucleos') or '?'} núcleos · verde até 85% · laranja de 86% a 90% · vermelho acima de 90%",
             ),
             ins(
@@ -722,8 +822,6 @@ def montar(
     }
 
 
-
-
 def _comparacao_r01(cer: sqlite3.Connection, agora: datetime, caminho: str = "config/comparacao.toml") -> dict[str, Any]:
     """29/10/2026 (a regra R01, config/comparacao.toml): cada motor novo contra os de origem no Eldorado0, pela média de
     achados por execução (o novo desde o início da comparação; a origem, o histórico migrado antes dele). Antes nenhum
@@ -742,11 +840,12 @@ def _comparacao_r01(cer: sqlite3.Connection, agora: datetime, caminho: str = "co
             return None, 0
         ph = ",".join("?" * len(motores))
         cond = "inicio >= ?" if depois else "inicio < ?"
-        n, soma = cer.execute(f"SELECT COUNT(*), COALESCE(SUM(achados), 0) FROM execucao_motor WHERE motor IN ({ph}) AND {cond}",
-                              [*motores, inicio]).fetchone()
+        n, soma = cer.execute(
+            f"SELECT COUNT(*), COALESCE(SUM(achados), 0) FROM execucao_motor WHERE motor IN ({ph}) AND {cond}", [*motores, inicio]
+        ).fetchone()
         return (round(soma / n, 2) if n else None), n
 
-    try:   # os nomes antigos (no histórico migrado) de cada motor novo: os apelidos do sistema
+    try:  # os nomes antigos (no histórico migrado) de cada motor novo: os apelidos do sistema
         from ...motores.canal.motor import apelidos
 
         antigos: dict[str, set[str]] = {}
@@ -765,21 +864,38 @@ def _comparacao_r01(cer: sqlite3.Connection, agora: datetime, caminho: str = "co
             sit = "igual ou melhor" if mn >= mo else "pior"
         out[novo] = {"novo_por_execucao": mn, "execucoes_novo": nn, "origem_por_execucao": mo, "execucoes_origem": no, "situacao": sit}
     piores = [k for k, v in out.items() if v["situacao"] == "pior"]
-    return {"dia": min(dia, dias), "dias": dias, "termina": (datetime.fromisoformat(inicio) + timedelta(days=dias)).date().isoformat(),
-            "motores": out, "piores": piores}
+    return {
+        "dia": min(dia, dias),
+        "dias": dias,
+        "termina": (datetime.fromisoformat(inicio) + timedelta(days=dias)).date().isoformat(),
+        "motores": out,
+        "piores": piores,
+    }
 
 
 def _escada_em_uso(cer: sqlite3.Connection, desde: str) -> dict[str, int]:
     """29/10/2026: os degraus da escada de acesso em uso: quantos sites precisam de cada um (o que a escada aprendeu) e o
     degrau mais alto de cada execução de motor nas últimas 48 h (a resposta a "o Camoufox está sendo usado?")."""
     # os nomes locais (a publicação do painel instala só o básico: importar a escada puxaria o tenacity e quebrava o site)
-    NOMES_CANONICOS = {1: "API", 2: "requisição leve", 10: "ponte BR", 3: "Lightpanda", 4: "Patchright", 5: "Camoufox", 6: "Wayback",
-                       7: "Tor", 8: "leitor público", 9: "computador da titular"}
+    NOMES_CANONICOS = {
+        1: "API",
+        2: "requisição leve",
+        10: "ponte BR",
+        3: "Lightpanda",
+        4: "Patchright",
+        5: "Camoufox",
+        6: "Wayback",
+        7: "Tor",
+        8: "leitor público",
+        9: "computador da titular",
+    }
     out: dict[str, int] = {}
     try:
         for cod, n in cer.execute("SELECT degrau_que_funciona, COUNT(*) FROM dominio GROUP BY 1"):
             out["sites que exigem o computador da titular" if cod is None else f"sites que abrem no {NOMES_CANONICOS.get(cod, cod)}"] = n
-        for cod, n in cer.execute("SELECT degrau_maximo, COUNT(*) FROM execucao_motor WHERE inicio >= ? AND degrau_maximo IS NOT NULL GROUP BY 1", (desde,)):
+        for cod, n in cer.execute(
+            "SELECT degrau_maximo, COUNT(*) FROM execucao_motor WHERE inicio >= ? AND degrau_maximo IS NOT NULL GROUP BY 1", (desde,)
+        ):
             out[f"execuções que subiram até o {NOMES_CANONICOS.get(cod, cod)}"] = n
         sem = cer.execute("SELECT COUNT(*) FROM execucao_motor WHERE inicio >= ? AND degrau_maximo IS NULL", (desde,)).fetchone()[0]
         if sem:
@@ -787,6 +903,7 @@ def _escada_em_uso(cer: sqlite3.Connection, desde: str) -> dict[str, int]:
     except sqlite3.Error:
         pass
     return out
+
 
 def _eficiencia_itens(bib: sqlite3.Connection, AB: str) -> dict[str, dict[str, Any]]:
     """29/10/2026: a eficiência de cada um dos 12 itens nas abertas (a página lê eficiência, obtidos, dispensados e
@@ -802,8 +919,13 @@ def _eficiencia_itens(bib: sqlite3.Connection, AB: str) -> dict[str, dict[str, A
     out = {}
     for item in sorted(set(con) | set(dis)):
         ob, di = con[item], dis[item]
-        out[item] = {"obtidos": ob, "dispensados": di, "faltavam": max(0, total - ob - di), "total": total,
-                     "eficiencia": round((ob + di) / total, 4) if total else 0}
+        out[item] = {
+            "obtidos": ob,
+            "dispensados": di,
+            "faltavam": max(0, total - ob - di),
+            "total": total,
+            "eficiencia": round((ob + di) / total, 4) if total else 0,
+        }
     return out
 
 
@@ -843,13 +965,19 @@ def _rede_entregou(bib: sqlite3.Connection, cer: sqlite3.Connection, AB: str) ->
         partes = str(m[0]).split("-")
         decisoes = int(partes[1]) if len(partes) > 1 and partes[1].isdigit() else None
     try:
-        notas = bib.execute("SELECT COUNT(DISTINCT livro_id), SUM(nota >= 0.5) FROM (SELECT livro_id, nota FROM analise_rede "
-                            "WHERE id IN (SELECT MAX(id) FROM analise_rede GROUP BY livro_id))").fetchone()
+        notas = bib.execute(
+            "SELECT COUNT(DISTINCT livro_id), SUM(nota >= 0.5) FROM (SELECT livro_id, nota FROM analise_rede "
+            "WHERE id IN (SELECT MAX(id) FROM analise_rede GROUP BY livro_id))"
+        ).fetchone()
     except sqlite3.Error:
         notas = (0, 0)
-    return {"pendentes_avaliados": notas[0] or 0, "pendentes_provaveis_reais": notas[1] or 0, "decisoes_no_treino": decisoes,
-            "treinado_em": m[1] if m else None,
-            "aviso": "a avaliação dos pendentes está desligada: a rede ainda não sabe julgar um livro (retreino pendente)"}
+    return {
+        "pendentes_avaliados": notas[0] or 0,
+        "pendentes_provaveis_reais": notas[1] or 0,
+        "decisoes_no_treino": decisoes,
+        "treinado_em": m[1] if m else None,
+        "aviso": "a avaliação dos pendentes está desligada: a rede ainda não sabe julgar um livro (retreino pendente)",
+    }
 
 
 def _motores_com_luz(mods: list[dict[str, Any]], cer: sqlite3.Connection, agora: datetime) -> list[dict[str, Any]]:
@@ -875,6 +1003,7 @@ def _motores_com_luz(mods: list[dict[str, Any]], cer: sqlite3.Connection, agora:
             res = motivo[:160]
         out.append({"id": mid, "nome": m.get("nome") or mid, "luz": luz, "resultado": res})
     return out
+
 
 def no_medir_sala(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
     """Nó da passagem (o início): a sala de controle medida (no máximo a cada 15 min) e gravada no aprendizado do Cérebro;

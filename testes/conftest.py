@@ -99,3 +99,28 @@ def _memoria_de_emissao_limpa():
 
     _ev._JA_EMITIDOS.clear()
     yield
+
+
+# 29/10/2026: a QUARENTENA da Qualidade. Estas 6 travas buscam os sites reais na nuvem (a barreira de rede não alcança
+# curl_cffi e primp; a tentativa de barrá-los prendeu a bateria) e falham lá, deixando a Qualidade SEMPRE vermelha: uma
+# falha nova passava despercebida no meio delas. Só na Qualidade (ELDORADO_QUARENTENA_REDE=1) elas são puladas, com o
+# motivo; aqui e no portão continuam rodando. Sair da quarentena = resolver a rede das travas (pendência registrada).
+QUARENTENA_REDE = {
+    "testes/test_motores_api.py::test_transferegov",
+    "testes/test_motores_api.py::test_wordpress_de_goias",
+    "testes/test_motores_api.py::test_pncp_pagina_e_traz_os_dados_de_cada_item",
+    "testes/test_motor_diarios_municipais.py::test_entrega_com_o_municipio_e_veta_o_ruido",
+    "testes/test_interceptador_funciona.py::test_o_plano_de_voo_segue_os_itens_que_faltam",
+    "testes/test_interceptador.py::test_rede_interceptador_e_cartorio_fase_4",
+}
+
+
+def pytest_collection_modifyitems(config, items):
+    import os
+
+    if os.environ.get("ELDORADO_QUARENTENA_REDE") != "1":
+        return
+    pular = pytest.mark.skip(reason="quarentena da rede: busca os sites reais na nuvem (29/10/2026)")
+    for item in items:
+        if item.nodeid in QUARENTENA_REDE:
+            item.add_marker(pular)

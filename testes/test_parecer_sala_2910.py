@@ -313,7 +313,9 @@ def test_so_grava_o_que_muda_e_a_copia_dos_livros():
     from eldorado.motores.acesso.completa import ORDEM
 
     assert "camoufox" not in ORDEM and "patchright" in ORDEM
-    assert '"cinza",     # 29/10/2026: informativo' in Path("eldorado/base/painel/sala.py").read_text(encoding="utf-8")
+    import re as _re
+
+    assert _re.search(r'"cinza",\s+# 29/10/2026: informativo', Path("eldorado/base/painel/sala.py").read_text(encoding="utf-8"))
     assert datetime.now(timezone.utc)
 
 
@@ -353,3 +355,22 @@ def test_os_lotes_sem_retorno_pelos_dados_e_o_registro_do_importado():
     assert "esperam -= vereditados" in s and "if (conteudo.get(st, set()) & esperam) - mais_novos:" in s
     a = Path("eldorado/base/cartorio/analise_externa.py").read_text(encoding="utf-8")
     assert '_os.utime(pasta / "vereditos" / "importados" / arq.name)' in a and "maximo: int = 100" in a
+
+
+def test_a_prevencao_vigia_quarentena_e_tendencias():
+    """29/10/2026 (titular: evitar que ocorra de novo): o vigia de fora do ciclo (a gravação parada, o ciclo caído, a fila
+    presa), a Qualidade de volta a ser sinal (a quarentena das travas da rede, só na Qualidade) e os alarmes de tendência
+    (achados órfãos, o crescimento da operação no histórico, a memória por etapa)."""
+    import yaml
+
+    v = yaml.safe_load(Path(".github/workflows/vigia.yml").read_text(encoding="utf-8"))
+    assert v[True]["schedule"][0]["cron"] == "*/30 * * * *"
+    corpo = Path(".github/workflows/vigia.yml").read_text(encoding="utf-8")
+    assert '"$idade" -gt 45' in corpo and "gh workflow run eldorado.yml" in corpo and '"$ia" -gt 55' in corpo
+    assert "ELDORADO_QUARENTENA_REDE=1 pytest" in Path(".github/workflows/qualidade.yml").read_text(encoding="utf-8")
+    import conftest
+
+    assert len(conftest.QUARENTENA_REDE) == 6
+    s = Path("eldorado/base/painel/sala.py").read_text(encoding="utf-8")
+    for i in ('"es_orfaos"', '"hi_crescimento"', '"ma_memoria_etapa"'):
+        assert i in s and i in Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
