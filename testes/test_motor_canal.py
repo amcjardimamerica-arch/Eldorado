@@ -75,6 +75,7 @@ vetos = ["resultado final"]
     wf = wf.replace('parametros = { agenda', f'parametros = {{ agora = "2026-10-22T{horario}:00-03:00", carga_fixa = 0.1, agenda', 1)
     wf = wf.replace('tipo = "eldorado.base.cerebro.regencia:no_acionar"\nparametros = { ', 'tipo = "eldorado.base.cerebro.regencia:no_acionar"\nparametros = { carga_fixa = 0.1, ', 1)
     wf = wf.replace("orcamento_s = 300", "orcamento_s = 0")             # este teste mede o motor; a linha do Cartório tem teste próprio
+    wf = wf.replace('pasta = "verificacao"', f"pasta = {json.dumps(str(tmp_path / 'verificacao'))}")   # 29/10/2026: nunca a pasta real
     # isolado da rede (24/10/2026: com internet, o Espião e a vigilância dos sites originais registravam um documento real
     # neste teste; o portão da produção acusou): os pilotos e a vigilância têm testes próprios
     wf = wf.replace("orcamento_s = 0, intervalo_s", "orcamento_s = 0, orcamento_pilotos_s = 0, orcamento_originais_s = 0, intervalo_s", 1)

@@ -25,6 +25,9 @@ def test_achado_aceito_vira_livro_certificado_com_selos(tmp_path):
     wf = (wf.replace('"config/agenda.toml"', json.dumps(str(tmp_path / "agenda.toml"))).replace('"config/modulos.toml"', json.dumps(str(tmp_path / "modulos.toml")))
             .replace('dados = "dados"', f"dados = {json.dumps(str(dados))}").replace('eventos = "eventos"', f"eventos = {json.dumps(str(eventos))}")
             .replace('dados = "dados" }', f"dados = {json.dumps(str(dados))} }}"))
+    # 29/10/2026: a pasta da análise externa também temporária (a trava rodava o nó sobre a verificacao/ REAL; com o lote
+    # regerado a cada passagem, a etapa vazia do banco de teste apagava os lotes de verdade)
+    wf = wf.replace('pasta = "verificacao"', f"pasta = {json.dumps(str(tmp_path / 'verificacao'))}")
     wf = wf.replace('parametros = { agenda', 'parametros = { agora = "2026-10-22T06:10:00-03:00", carga_fixa = 0.1, agenda', 1)
     wf = wf.replace('tipo = "eldorado.base.cerebro.regencia:no_acionar"\nparametros = { ', 'tipo = "eldorado.base.cerebro.regencia:no_acionar"\nparametros = { carga_fixa = 0.1, ', 1)
     (tmp_path / "passagem.toml").write_text(wf)
