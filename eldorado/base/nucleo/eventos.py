@@ -309,14 +309,14 @@ _TRAVA_EMITIDOS = threading.Lock()
 
 
 def emitir_se_mudou(diario: "Diario", tipo: str, modulo: str, chave: str, dados: dict[str, Any], renovar_s: float = 6 * 3600,
-                    ignorar: tuple[str, ...] = ("em", "criado_em")) -> bool:
+                    ignorar: tuple[str, ...] = ("em", "criado_em"), chave_extra: str = "") -> bool:
     """29/10/2026 (titular: o banco não foi feito para regravar): grava o evento só quando o conteúdo mudou (ou a cada 6 h,
     como confirmação). O histórico crescia 35 MB por dia, ~80% de telemetria repetida a cada passagem (os mesmos 45 módulos
     recadastrados, as mesmas ~200 medições, as mesmas regras, a mesma memória); o dado dos livros é menos de 2 MB/dia."""
     import hashlib
     import time as _t
 
-    conteudo = {k: v for k, v in dados.items() if k not in ignorar}
+    conteudo = {k: v for k, v in dados.items() if k not in ignorar} | {"_faixa": chave_extra}
     h = hashlib.sha1(_enc.encode(conteudo)).hexdigest()
     k = (tipo, str(chave))
     agora_m = _t.monotonic()

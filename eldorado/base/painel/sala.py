@@ -774,7 +774,7 @@ def _escada_em_uso(cer: sqlite3.Connection, desde: str) -> dict[str, int]:
     out: dict[str, int] = {}
     try:
         for cod, n in cer.execute("SELECT degrau_que_funciona, COUNT(*) FROM dominio GROUP BY 1"):
-            out[f"sites que abrem no {NOMES_CANONICOS.get(cod, cod)}"] = n
+            out["sites que exigem o computador da titular" if cod is None else f"sites que abrem no {NOMES_CANONICOS.get(cod, cod)}"] = n
         for cod, n in cer.execute("SELECT degrau_maximo, COUNT(*) FROM execucao_motor WHERE inicio >= ? AND degrau_maximo IS NOT NULL GROUP BY 1", (desde,)):
             out[f"execuções que subiram até o {NOMES_CANONICOS.get(cod, cod)}"] = n
         sem = cer.execute("SELECT COUNT(*) FROM execucao_motor WHERE inicio >= ? AND degrau_maximo IS NULL", (desde,)).fetchone()[0]

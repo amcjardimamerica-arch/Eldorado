@@ -161,6 +161,8 @@ class Medicao:
                         "valor": m["valor"],
                         "motivo": m["motivo"],
                     },
+                    ignorar=("em", "motivo", "valor"),
+                    chave_extra=_faixa_valor(m["valor"]),
                 )
                 n += 1
         s = resultado["sistema"]
@@ -272,3 +274,13 @@ def evidencias(agora_: datetime | None = None) -> dict[str, tuple[bool | None, s
     except (OSError, ValueError):
         ev["config/missao/dispensas_por_regime.json"] = (False, "a matriz de dispensas não abriu")
     return ev
+
+
+def _faixa_valor(v) -> str:
+    """29/10/2026: a faixa do valor (5%): a medição é regravada quando o estado muda ou o valor varia mais de 5% — o motivo
+    traz contagens que mudavam a cada passagem e as medições quase não caíam (859/h contra 908/h)."""
+    if not isinstance(v, (int, float)):
+        return str(v)
+    import math
+
+    return "0" if v == 0 else f"{math.copysign(1, v):.0f}:{round(math.log(abs(v)) / math.log(1.05))}"
