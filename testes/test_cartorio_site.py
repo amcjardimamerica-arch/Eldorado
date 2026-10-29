@@ -178,3 +178,14 @@ def test_o_radar_ao_lado_do_farol():
         )
     )
     assert esq < radar < cal < dir_ < farol
+
+
+
+def test_o_calendario_dias_na_esfera_objeto_enquadrado_e_inicio_sem_menu():
+    """29/10/2026 (titular): a esfera central mostra só os dias que faltam; o objeto 3D preenche o palco, com o limite no
+    objeto e no espaço das serpentes (sem enquadrar com o palco oculto); o Início do calendário é só o botão principal."""
+    g = Path("eldorado/base/painel/pagina/giroscopio/giroscopio.html").read_text(encoding="utf-8")
+    assert "a esfera central mostra APENAS quantos dias faltam" in g and "x.fillText(v.status.txt" not in g
+    assert "RMAX_SERPENTES = 2.9" in g and "RAIO_LIMITE / Math.sin(meia)" in g and "o palco oculto (largura zero)" in g
+    p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
+    assert '<button type="button" id="sj-inicio">Início</button>' in p and 'data-ir="eldorado:neural">Sala de controle</button></div></div>\n    <div class="grupo"><button type="button" aria-haspopup="true">Eldorado' not in p

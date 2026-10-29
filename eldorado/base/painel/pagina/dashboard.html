@@ -1186,8 +1186,7 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
 </style>
 <div id="sj">
   <nav class="nav" aria-label="Navegação">
-    <div class="grupo"><button type="button" aria-haspopup="true">Início</button>
-      <div class="menu" role="menu"><button type="button" role="menuitem" data-ir="inicio">Página inicial</button><button type="button" role="menuitem" data-ir="eldorado:neural">Sala de controle</button></div></div>
+    <div class="grupo"><button type="button" id="sj-inicio">Início</button></div>   <!-- 29/10/2026 (titular): só o botão principal, sem menu -->
     <div class="grupo"><button type="button" aria-haspopup="true">Eldorado</button>
       <div class="menu" role="menu"><button type="button" role="menuitem" data-ir="eldorado:calendario">Calendário</button><button type="button" role="menuitem" data-ir="eldorado:editais">Oportunidades Abertas</button><button type="button" role="menuitem" data-ir="eldorado:bussola">Bússola</button><button type="button" role="menuitem" data-ir="eldorado:cartorio">Cartório</button><button type="button" role="menuitem" data-ir="eldorado:neural">Sala de controle</button></div></div>
     <div class="grupo"><button type="button" aria-haspopup="true">Farol de Alexandria</button>
@@ -1223,6 +1222,7 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
   const dias=d=>Math.round((new Date(d+"T12:00:00")-new Date(HJ+"T12:00:00"))/864e5);
   const falta=d=>{const n=dias(d);return n<=0?"fecha hoje":n===1?"fecha amanhã":"fecha em "+n+" dias"};
   const br=d=>d?d.slice(8,10)+"/"+d.slice(5,7):"";
+  $("sj-inicio").addEventListener("click",()=>{window.irInicio&&irInicio()});   // 29/10/2026: o início vai direto à página inicial
   document.querySelectorAll("#sj .menu button").forEach(b=>b.addEventListener("click",()=>{const [m,v]=b.dataset.ir.split(":");
     if(m==="inicio"){window.irInicio&&irInicio();return} if(window.modulo)modulo(m); if(v&&window.mostra)mostra(v)}));
   // o giroscópio: a lista de prazos (em ordem de vencimento) e, ao passar o mouse, a oportunidade no mostrador da esfera
