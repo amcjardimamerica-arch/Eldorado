@@ -64,7 +64,22 @@ class Retorno(msgspec.Struct):
     lote: str | None = None
 
 
-def gerar_lote(con: sqlite3.Connection, hoje: date, maximo: int = 100) -> dict[str, Any]:   # 29/10/2026: 100 (eram 40; a fila chegou a 232)
+CONFIG = Path("config/cartorio.toml")
+
+
+def config_analise_externa(caminho: Path = CONFIG) -> dict[str, Any]:
+    """A configuração da etapa 5 (config/cartorio.toml, [analise_externa]): maximo_lote (0 ou ausente = todos) e
+    tamanho_parte (a divisão do lote para o Chrome)."""
+    import tomllib
+
+    try:
+        c = tomllib.loads(caminho.read_text(encoding="utf-8")).get("analise_externa", {})
+    except (OSError, ValueError):
+        c = {}
+    return {"maximo_lote": int(c.get("maximo_lote") or 0) or None, "tamanho_parte": int(c.get("tamanho_parte") or 0) or None}
+
+
+def gerar_lote(con: sqlite3.Connection, hoje: date, maximo: int | None = None) -> dict[str, Any]:   # None = todos (titular, 29/10/2026)
     con.row_factory = sqlite3.Row
     livros = []
     tem_base = "base_buscar" in {r[1] for r in con.execute("PRAGMA table_info(livro_dados)")}
@@ -82,7 +97,7 @@ def gerar_lote(con: sqlite3.Connection, hoje: date, maximo: int = 100) -> dict[s
                        "faltam": I.faltando(validas),
                        # a base do livro (25/10/2026): os dados que o Interceptador não achou em 2 tentativas
                        "buscar": json.loads(lv["base_buscar"] or "[]") if tem_base else [], "classe": lv["base_classe"] if tem_base else None})
-        if len(livros) >= maximo:
+        if maximo and len(livros) >= maximo:
             break
     return {"lote": f"lote-{hoje.isoformat()}", "gerado_em": agora(), "instrucoes": INSTRUCOES, "itens_validos": list(I.DOZE),
             "formato_do_veredito": {"vereditos": [{"livro_id": "…", "decisao": "valido | descartar", "motivo": "…", "como_encontrou": "…",
@@ -91,33 +106,51 @@ def gerar_lote(con: sqlite3.Connection, hoje: date, maximo: int = 100) -> dict[s
             "livros": livros}
 
 
-def gerar_lotes_do_dia(con: sqlite3.Connection, pasta_lotes: Path, hoje: date, por_parte: int = 100, reenviar_dias: int = 3) -> list[str]:
-    """29/10/2026 (titular: 186 livros na análise externa e o Chrome dizia que tinha terminado): o lote diário era UM, com
-    40 livros, os de prazo aberto primeiro; os 'sem prazo' ficavam sempre no fim e 180 livros NUNCA foram ao Chrome. Agora
-    o dia cobre a fila inteira, em partes de até 100 (lote-AAAA-MM-DD-1, -2…): todo livro esperando que nunca foi a um lote
-    e não tem veredito, e o enviado há mais de 3 dias que não voltou."""
-    if list(pasta_lotes.glob(f"lote-{hoje.isoformat()}*.json")):
-        return []
-    todos = gerar_lote(con, hoje, maximo=100000)
-    enviados: dict[str, date] = {}
-    for f in pasta_lotes.glob("lote-*.json"):
-        try:
-            d = date.fromisoformat(f.stem[5:15])
-            for x in json.loads(f.read_text(encoding="utf-8")).get("livros", []):
-                enviados[x["livro_id"]] = max(enviados.get(x["livro_id"], d), d)
-        except (ValueError, OSError):
-            continue
+def atualizar_lote_do_dia(con: sqlite3.Connection, pasta_lotes: Path, hoje: date, saiu: set[str] | None = None,
+                          cfg: dict[str, Any] | None = None) -> dict[str, Any]:
+    """29/10/2026 (titular): o lote do dia leva TODA a fila da etapa 5 (o limite em config/cartorio.toml; 0 = todos) e é
+    REGERADO sempre que a lista muda (antes: um arquivo por dia, gravado uma vez, com 40 livros: 186 na fila e 40 no Chrome).
+    As abertas primeiro, depois por prazo; o livro que já tem veredito e continua na etapa (faltam itens) vai ao fim, com
+    "retorno": true e "faltam" atualizado. Acima de tamanho_parte (50), grava também lote-AAAA-MM-DD-parte-N.json, na mesma
+    ordem, mantendo o arquivo completo. Etapa vazia: apaga o arquivo do dia e as partes. `saiu`: os livros que a importação
+    desta passagem tirou da etapa (o banco só os mostra fora na aplicação seguinte)."""
+    cfg = cfg or config_analise_externa()
+    lote = gerar_lote(con, hoje, cfg["maximo_lote"])
+    saiu = saiu or set()
     vered = {r[0] for r in con.execute("SELECT DISTINCT livro_id FROM veredito WHERE origem LIKE '%chrome%' OR origem LIKE '%externa%'")}
-    fila = [x for x in todos["livros"] if x["livro_id"] not in vered
-            and (x["livro_id"] not in enviados or (hoje - enviados[x["livro_id"]]).days > reenviar_dias)]
-    nomes = []
+    fila = [x for x in lote["livros"] if x["livro_id"] not in saiu]
+    novos = [x for x in fila if x["livro_id"] not in vered]
+    retornos = [{**x, "retorno": True} for x in fila if x["livro_id"] in vered]
+    livros = novos + retornos
+    nome = f"lote-{hoje.isoformat()}"
+    completo = pasta_lotes / f"{nome}.json"
+    partes_velhas = sorted(pasta_lotes.glob(f"{nome}-parte-*.json"))
+    if not livros:
+        for f in [completo, *partes_velhas]:
+            f.unlink(missing_ok=True)
+        return {"lote": None, "livros": 0, "partes": [], "mudou": bool(partes_velhas) or completo.exists()}
+    antes = None
+    if completo.exists():
+        try:
+            antes = [x["livro_id"] for x in json.loads(completo.read_text(encoding="utf-8")).get("livros", [])]
+        except (ValueError, OSError):
+            antes = None
+    ids = [x["livro_id"] for x in livros]
+    tam = cfg["tamanho_parte"] or 0
+    n_partes = -(-len(livros) // tam) if tam and len(livros) > tam else 0
+    nomes_partes = [f"{nome}-parte-{k}" for k in range(1, n_partes + 1)]
+    if antes == ids and [f.stem for f in partes_velhas] == nomes_partes:
+        return {"lote": nome, "livros": len(livros), "partes": nomes_partes, "mudou": False}
     pasta_lotes.mkdir(parents=True, exist_ok=True)
-    for n, i in enumerate(range(0, len(fila), por_parte), 1):
-        nome = f"lote-{hoje.isoformat()}-{n}"
-        (pasta_lotes / f"{nome}.json").write_text(json.dumps({**{k: v for k, v in todos.items() if k != "livros"}, "lote": nome,
-                                                              "livros": fila[i:i + por_parte]}, ensure_ascii=False, indent=1), encoding="utf-8")
-        nomes.append(nome)
-    return nomes
+    base = {k: v for k, v in lote.items() if k != "livros"}
+    completo.write_text(json.dumps({**base, "lote": nome, "livros": livros}, ensure_ascii=False, indent=1), encoding="utf-8")
+    for f in partes_velhas:
+        if f.stem not in nomes_partes:
+            f.unlink(missing_ok=True)
+    for k, np_ in enumerate(nomes_partes):
+        (pasta_lotes / f"{np_}.json").write_text(json.dumps({**base, "lote": np_, "parte": k + 1, "de": n_partes,
+                                                              "livros": livros[k * tam:(k + 1) * tam]}, ensure_ascii=False, indent=1), encoding="utf-8")
+    return {"lote": nome, "livros": len(livros), "partes": nomes_partes, "mudou": True}
 
 
 def importar(retorno: bytes | str, con: sqlite3.Connection, diario: Diario) -> list[dict[str, Any]]:
@@ -216,12 +249,15 @@ def no_analise_externa(itens: list[dict[str, Any]], parametros: dict[str, Any], 
         return []
     con = sqlite3.connect(f"file:{p}?mode=ro", uri=True)
     resultado = {"importados": 0, "lote": None}
+    saiu: set[str] = set()   # os livros que a importação desta passagem tirou da etapa 5
     try:
         (pasta / "vereditos" / "importados").mkdir(parents=True, exist_ok=True)
         trazer_vereditos_novos(pasta)
         for arq in sorted((pasta / "vereditos").glob("*.json")):
             try:
-                resultado["importados"] += len(importar(arq.read_bytes(), con, contexto.diario))
+                res = importar(arq.read_bytes(), con, contexto.diario)
+                resultado["importados"] += len(res)
+                saiu |= {x["livro"] for x in res if x.get("descartado") or (x.get("etapa") and x.get("etapa") != "analise externa")}
                 arq.rename(pasta / "vereditos" / "importados" / arq.name)
                 # 29/10/2026: o arquivo movido ganha a hora da importação (a gravação só leva o que mudou desde o início do
                 # ciclo; com a data antiga, o registro em importados/ não chegava ao repositório)
@@ -232,7 +268,8 @@ def no_analise_externa(itens: list[dict[str, Any]], parametros: dict[str, Any], 
                 contexto.diario.emitir("alarme.aberto", "analise externa", {"gravidade": "media", "modulo": "analise externa", "aberto_em": agora(),
                                                                             "mensagem": f"veredito {arq.name} fora do formato: {str(e)[:200]}"})
         hoje = date.today()
-        resultado["lote"] = gerar_lotes_do_dia(con, pasta / "lotes", hoje) or None
+        r_lote = atualizar_lote_do_dia(con, pasta / "lotes", hoje, saiu)   # 29/10/2026: depois da importação, sempre atualizado
+        resultado.update(lote=r_lote["lote"], livros_no_lote=r_lote["livros"], partes=r_lote["partes"])
     finally:
         con.close()
     return [resultado]

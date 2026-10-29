@@ -314,7 +314,20 @@ def montar(
     ext = fases.get("analise externa", 0)
     I("de_decisoes", "Livros aguardando o Claude no Chrome", ext, _faixa(ext, 40, 100, False), f"{ext} livros na análise externa", iso)
     # ---- 05 Verificação externa
-    I("ve_para_o_chrome", "Livros no lote do Chrome", ext, "verde" if ext <= 40 else "amarelo", f"{ext} livros esperando o Claude no Chrome", iso)
+    # 29/10/2026 (titular): o total na fila e as partes do lote do dia; verde até 50, amarelo até 200, vermelho acima
+    _hoje_lote = agora.date().isoformat()
+    _pasta_lotes = raiz / "verificacao" / "lotes"
+    partes_dia = len(list(_pasta_lotes.glob(f"lote-{_hoje_lote}-parte-*.json"))) if _pasta_lotes.exists() else 0
+    tem_dia = (_pasta_lotes / f"lote-{_hoje_lote}.json").exists() if _pasta_lotes.exists() else False
+    I(
+        "ve_para_o_chrome",
+        "Livros na fila do Chrome (e as partes do lote do dia)",
+        ext,
+        _faixa(ext, 50, 200, False),
+        f"{ext} livros na fila do Claude no Chrome · lote do dia: "
+        + (f"{partes_dia} parte(s) de até 50" if partes_dia else ("1 arquivo" if tem_dia else "ainda não gerado")),
+        iso,
+    )
     lotes = sorted((raiz / "verificacao" / "lotes").glob("*.json")) if (raiz / "verificacao" / "lotes").exists() else []
     importados = (
         {p.stem for p in (raiz / "verificacao" / "vereditos" / "importados").glob("*.json")}

@@ -297,7 +297,9 @@ def lote(config: Path = CONFIG, saida: Path = Path("verificacao/lotes")):
 
     _, dados, _ = _cfg(config)
     con = sqlite3.connect(f"file:{dados / 'biblioteca.db'}?mode=ro", uri=True)
-    lt = gerar_lote(con, date.today())
+    from ..cartorio.analise_externa import config_analise_externa
+
+    lt = gerar_lote(con, date.today(), config_analise_externa()["maximo_lote"])   # 29/10/2026: o limite da configuração
     con.close()
     saida.mkdir(parents=True, exist_ok=True)
     (saida / f"{lt['lote']}.json").write_text(json.dumps(lt, ensure_ascii=False, indent=1), encoding="utf-8")

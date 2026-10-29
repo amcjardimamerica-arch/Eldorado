@@ -355,7 +355,7 @@ def test_os_lotes_sem_retorno_pelos_dados_e_o_registro_do_importado():
     s = Path("eldorado/base/painel/sala.py").read_text(encoding="utf-8")
     assert "esperam -= vereditados" in s and "if (conteudo.get(st, set()) & esperam) - mais_novos:" in s
     a = Path("eldorado/base/cartorio/analise_externa.py").read_text(encoding="utf-8")
-    assert '_os.utime(pasta / "vereditos" / "importados" / arq.name)' in a and "maximo: int = 100" in a
+    assert '_os.utime(pasta / "vereditos" / "importados" / arq.name)' in a and "maximo: int | None = None" in a
 
 
 def test_a_prevencao_vigia_quarentena_e_tendencias():
@@ -378,39 +378,10 @@ def test_a_prevencao_vigia_quarentena_e_tendencias():
 
 
 def test_os_lotes_do_dia_cobrem_a_fila_inteira():
-    """29/10/2026 (titular: 186 na análise externa e o Chrome dizia ter terminado): o dia cobre a fila inteira em partes de
-    até 100 (os 'sem prazo' entravam por último num lote único de 40: 180 nunca foram ao Chrome); não repete o já enviado
-    nem o que tem veredito; reenvia o que não voltou em 3 dias; não duplica no mesmo dia."""
-    import sqlite3
-    from datetime import date
-
-    from eldorado.base.cartorio import analise_externa as AE
-
-    def falso(con, hoje, maximo=100):
-        return {
-            "lote": "x",
-            "instrucoes": "i",
-            "itens_validos": [],
-            "formato_do_veredito": {},
-            "livros": [{"livro_id": f"L{i}", "prazo": None} for i in range(230)],
-        }
-
-    con = sqlite3.connect(":memory:")
-    con.execute("CREATE TABLE veredito (livro_id TEXT, origem TEXT)")
-    con.execute("INSERT INTO veredito VALUES ('L0', 'chrome')")
-    orig = AE.gerar_lote
-    AE.gerar_lote = falso
-    try:
-        with tempfile.TemporaryDirectory() as d:
-            p = Path(d)
-            (p / "lote-2026-10-20.json").write_text(json.dumps({"livros": [{"livro_id": "L1"}]}))
-            (p / "lote-2026-10-29.json").write_text(json.dumps({"livros": [{"livro_id": "L2"}]}))
-            nomes = AE.gerar_lotes_do_dia(con, p, date(2026, 10, 30))
-            tam = [len(json.loads((p / f"{n}.json").read_text())["livros"]) for n in nomes]
-            assert nomes == ["lote-2026-10-30-1", "lote-2026-10-30-2", "lote-2026-10-30-3"] and tam == [100, 100, 28]  # 230 - L0 - L2
-            assert AE.gerar_lotes_do_dia(con, p, date(2026, 10, 30)) == []
-    finally:
-        AE.gerar_lote = orig
+    """29/10/2026: a fila inteira vai ao Chrome (substituída pela especificação da titular: o lote do dia regerado quando a
+    fila muda, o limite em config/cartorio.toml e as partes de 50; as travas em testes/test_lote.py)."""
+    s = Path("eldorado/base/cartorio/analise_externa.py").read_text(encoding="utf-8")
+    assert "def atualizar_lote_do_dia(" in s and "def gerar_lotes_do_dia(" not in s
 
 
 def test_o_ciclo_traz_os_vereditos_novos_do_repositorio():
