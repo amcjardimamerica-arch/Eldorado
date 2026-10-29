@@ -252,6 +252,8 @@ class _Estado:
             "executor",
             {"execucao": diario.execucao, "passo": self.ultimo_passo, "no": no, "estado": estado, "entrada": entrada, "saida": saida, "em": agora()},
         )
+        if estado == "concluido" and no != ENTRADA:
+            _medir_memoria(diario, no)
         if no == ENTRADA:
             self.entrada = saida
         elif estado == "concluido":
@@ -285,3 +287,20 @@ def sinal_etapa(motivo: str) -> None:
         )
     except Exception:  # noqa: BLE001
         pass
+
+
+def _medir_memoria(diario: Diario, no: str) -> None:
+    """29/10/2026: a memória do processo depois de cada etapa da passagem (a memória ficava estável em 60% e subia para
+    69% em 15 min, sem dizer em qual etapa). Grava só quando muda mais de 50 MB (a gravação só quando muda)."""
+    try:
+        import psutil
+
+        from ..nucleo.eventos import emitir_se_mudou
+
+        mb = psutil.Process().memory_info().rss / 1048576
+        emitir_se_mudou(diario, "medicao.registrada", "executor", f"memoria:{no}",
+                        {"marcador": f"memoria:{no}", "nivel": "etapa", "em": agora(), "ponto": "v", "circulo": "v", "linhas": "v",
+                         "valor": round(mb / 50) * 50, "motivo": f"{mb:.0f} MB de memória do processo depois da etapa {no}"})
+    except Exception:  # noqa: BLE001 — a medição nunca para a passagem
+        pass
+
