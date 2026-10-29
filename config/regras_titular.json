@@ -430,12 +430,13 @@
    "id": "R34",
    "data": "2026-10-29",
    "tema": "todos os dados de livros são gravados nos livros",
-   "regra": "Nenhum achado fica órfão: o achado gravado e sem decisão (a passagem interrompida levou a decisão) volta à Pertinência a cada passagem (até 150, os mais antigos primeiro) e, aceito, segue ao Cartório, que o liga ao livro (o pedido para um livro vai direto a ele). O veredito do Chrome vale para o livro que voltou à preparação e, válido, para o que chegou ao Farol; o descarte de um livro do Farol fica para a titular.",
+   "regra": "Nenhum achado fica órfão: o achado gravado e sem decisão (a passagem interrompida levou a decisão) volta à Pertinência a cada passagem (até 150, os mais antigos primeiro) e, aceito, segue ao Cartório, que o liga ao livro (o pedido para um livro vai direto a ele). O veredito do Chrome vale para o livro que voltou à preparação e, válido, para o que chegou ao Farol; o descarte de um livro do Farol fica para a titular. Os lotes do dia ao Chrome cobrem a fila inteira da análise externa, em partes de até 100 (nenhum livro fica sem ir ao Chrome); o que não voltou em 3 dias é reenviado.",
    "onde": "eldorado/base/cerebro/pertinencia.py, workflows/passagem.toml",
    "travas": [
     "testes/test_parecer_sala_2910.py::test_os_achados_orfaos_voltam_a_decisao",
     "testes/test_parecer_sala_2910.py::test_o_veredito_vale_para_o_livro_que_mudou_de_etapa",
-    "testes/test_parecer_sala_2910.py::test_os_lotes_sem_retorno_pelos_dados_e_o_registro_do_importado"
+    "testes/test_parecer_sala_2910.py::test_os_lotes_sem_retorno_pelos_dados_e_o_registro_do_importado",
+    "testes/test_parecer_sala_2910.py::test_os_lotes_do_dia_cobrem_a_fila_inteira"
    ]
   }
  ]

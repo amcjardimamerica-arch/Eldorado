@@ -91,6 +91,35 @@ def gerar_lote(con: sqlite3.Connection, hoje: date, maximo: int = 100) -> dict[s
             "livros": livros}
 
 
+def gerar_lotes_do_dia(con: sqlite3.Connection, pasta_lotes: Path, hoje: date, por_parte: int = 100, reenviar_dias: int = 3) -> list[str]:
+    """29/10/2026 (titular: 186 livros na análise externa e o Chrome dizia que tinha terminado): o lote diário era UM, com
+    40 livros, os de prazo aberto primeiro; os 'sem prazo' ficavam sempre no fim e 180 livros NUNCA foram ao Chrome. Agora
+    o dia cobre a fila inteira, em partes de até 100 (lote-AAAA-MM-DD-1, -2…): todo livro esperando que nunca foi a um lote
+    e não tem veredito, e o enviado há mais de 3 dias que não voltou."""
+    if list(pasta_lotes.glob(f"lote-{hoje.isoformat()}*.json")):
+        return []
+    todos = gerar_lote(con, hoje, maximo=100000)
+    enviados: dict[str, date] = {}
+    for f in pasta_lotes.glob("lote-*.json"):
+        try:
+            d = date.fromisoformat(f.stem[5:15])
+            for x in json.loads(f.read_text(encoding="utf-8")).get("livros", []):
+                enviados[x["livro_id"]] = max(enviados.get(x["livro_id"], d), d)
+        except (ValueError, OSError):
+            continue
+    vered = {r[0] for r in con.execute("SELECT DISTINCT livro_id FROM veredito WHERE origem LIKE '%chrome%' OR origem LIKE '%externa%'")}
+    fila = [x for x in todos["livros"] if x["livro_id"] not in vered
+            and (x["livro_id"] not in enviados or (hoje - enviados[x["livro_id"]]).days > reenviar_dias)]
+    nomes = []
+    pasta_lotes.mkdir(parents=True, exist_ok=True)
+    for n, i in enumerate(range(0, len(fila), por_parte), 1):
+        nome = f"lote-{hoje.isoformat()}-{n}"
+        (pasta_lotes / f"{nome}.json").write_text(json.dumps({**{k: v for k, v in todos.items() if k != "livros"}, "lote": nome,
+                                                              "livros": fila[i:i + por_parte]}, ensure_ascii=False, indent=1), encoding="utf-8")
+        nomes.append(nome)
+    return nomes
+
+
 def importar(retorno: bytes | str, con: sqlite3.Connection, diario: Diario) -> list[dict[str, Any]]:
     """Valida e armazena o veredito do Chrome; o livro segue na linha. Item fora dos 12, sem trecho ou de livro fora da
     etapa 5 é recusado com o motivo (nada entra sem prova)."""
@@ -177,13 +206,7 @@ def no_analise_externa(itens: list[dict[str, Any]], parametros: dict[str, Any], 
                 contexto.diario.emitir("alarme.aberto", "analise externa", {"gravidade": "media", "modulo": "analise externa", "aberto_em": agora(),
                                                                             "mensagem": f"veredito {arq.name} fora do formato: {str(e)[:200]}"})
         hoje = date.today()
-        destino = pasta / "lotes" / f"lote-{hoje.isoformat()}.json"
-        if not destino.exists():
-            lote = gerar_lote(con, hoje)
-            if lote["livros"]:
-                destino.parent.mkdir(parents=True, exist_ok=True)
-                destino.write_text(json.dumps(lote, ensure_ascii=False, indent=1), encoding="utf-8")
-                resultado["lote"] = destino.name
+        resultado["lote"] = gerar_lotes_do_dia(con, pasta / "lotes", hoje) or None
     finally:
         con.close()
     return [resultado]
