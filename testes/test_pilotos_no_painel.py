@@ -231,6 +231,7 @@ def test_o_interceptador_elastico_pela_ociosidade(monkeypatch):
 
     monkeypatch.setattr(CP.__dict__.get("psutil", __import__("psutil")), "virtual_memory", lambda: Mem())
     CP._ocio["desde"] = None
+    CP._amostras.clear()                                   # 29/10/2026: a média do último minuto começa vazia
     monkeypatch.setattr(G, "cpu_sem_ia", lambda *_: 0.10)  # 28/10/2026: o processador sem a IA
     assert CP.vagas_por_ociosidade() == 1
     relogio[0] += 6 * 60

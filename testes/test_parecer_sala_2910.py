@@ -78,7 +78,7 @@ def test_a_sala_le_os_campos_certos():
     assert '"comparacao_r01": _comparacao_r01(cer, agora)' in s and "motores = _motores_com_luz(mods, cer, agora)" in s
     assert "const R=D.rede_entregou||{}" in p and "const q=t.quando||t.em, nm=t.nome||t.evento" in p
     assert 'f.situacao==="completed"?f.conclusao:(f.ultima_conclusao||null)' in p
-    assert "motores.acesso.escada" not in s   # a publicação do painel instala só o básico (o tenacity quebrava o site)
+    assert "motores.acesso.escada" not in s  # a publicação do painel instala só o básico (o tenacity quebrava o site)
 
 
 def test_a_medicao_por_evidencia():
@@ -153,3 +153,30 @@ def test_a_escada_aprende_e_lembra_pelo_codigo_canonico():
     r = Path("eldorado/base/cerebro/regencia.py").read_text(encoding="utf-8")
     assert "motor.escada.semear(ler_aprendido(" in r and '"degrau_maximo": esc_.degrau_maximo()' in r
     assert "diario=contexto.diario, dados=dados" in Path("eldorado/base/cerebro/encaminhamento.py").read_text(encoding="utf-8")
+
+
+def test_as_vagas_pela_media_do_minuto(monkeypatch):
+    """29/10/2026: a ociosidade pela média do último minuto (a amostra de 0,3 s pegava os picos do Espião e zerava a
+    contagem: o Interceptador ficava com 1 vaga, com o processador entre 0% e 26%); a IA do Interceptador com 150 s."""
+    from eldorado.base.cerebro import governador as G
+    from eldorado.base.comandante import pilotos as P
+
+    def simular(padrao, passos=110):
+        P._amostras.clear()
+        P._ocio["desde"] = None
+        seq = iter(padrao * 100)
+        monkeypatch.setattr(G, "cpu_sem_ia", lambda *a: next(seq))
+        t = [5000.0]
+        monkeypatch.setattr(P.time, "monotonic", lambda: t[0])
+        out = []
+        for _ in range(passos):
+            out.append(P.vagas_por_ociosidade())
+            t[0] += 10
+        return out
+
+    r = simular([0.1, 0.23, 0.02, 0.26, 0.0, 0.9])  # a produção: um pico do Espião por minuto
+    assert 3 in r and r[-1] == 5
+    assert set(simular([0.7, 0.8, 0.6, 0.9, 0.75, 0.65])) == {1}
+    P._amostras.clear()                                    # não deixa amostras do relógio simulado para os outros testes
+    P._ocio["desde"] = None
+    assert "tempo_limite=150.0" in Path("eldorado/base/cerebro/pilotos_permanentes.py").read_text(encoding="utf-8")

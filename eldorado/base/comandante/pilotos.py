@@ -13,6 +13,7 @@ import json
 import sqlite3
 import threading
 import time
+from collections import deque
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -77,6 +78,9 @@ def carga() -> float:
 _ocio: dict[str, float | None] = {"desde": None}
 
 
+_amostras: "deque[tuple[float, float]]" = deque()
+
+
 def vagas_por_ociosidade() -> int:
     """27/10/2026 (titular): o uso normal é 1 Interceptador; com a máquina ociosa (o processador inteiro, com a IA, abaixo de
     40% e a memória abaixo de 70%) por 5 minutos, 3; por 15 minutos, 5. Com carga, volta a 1."""
@@ -91,6 +95,12 @@ def vagas_por_ociosidade() -> int:
         return 1
     agora_m = time.monotonic()
     with _trava:
+        # 29/10/2026: a média do último minuto (a amostra de 0,3 s pegava os picos do Espião e zerava a contagem dos 5 min:
+        # o Interceptador ficava sempre com 1 vaga, com o processador entre 0% e 26%)
+        _amostras.append((agora_m, total))
+        while _amostras and agora_m - _amostras[0][0] > 60:
+            _amostras.popleft()
+        total = sum(v for _, v in _amostras) / len(_amostras)
         if total < 0.45 and mem < 0.78:
             _ocio["desde"] = _ocio["desde"] or agora_m
         else:

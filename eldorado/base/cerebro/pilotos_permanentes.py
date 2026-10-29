@@ -105,7 +105,7 @@ class _Vaga:
             from .rede import rede_atual
             diario = Diario(self.eventos, f"interceptador-{self.k}")
             dados_, con, escada, registro = _contexto(self.dados, diario)
-            ia = IA(cargo_nome="interceptador", vaga=self.k)
+            ia = IA(cargo_nome="interceptador", vaga=self.k, tempo_limite=150.0)   # 29/10/2026: 150 s (eram 240: um voo passava de 20 min)
             mb = Metabusca(buscar=escada.buscar)
 
             def buscar_links(q: str, mb=mb) -> list[str]:
