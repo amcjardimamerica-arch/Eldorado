@@ -1,0 +1,1002 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Prefeitura Municipal</title>
+<meta name="description" content="Portal oficial da Prefeitura Municipal com acesso a serviços, notícias e informações públicas.">
+<link rel="canonical" href="https://www.ipora.pr.gov.br/">
+<meta property="og:site_name" content="Prefeitura Municipal">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Prefeitura Municipal">
+<meta property="og:description" content="Portal oficial da Prefeitura Municipal com acesso a serviços, notícias e informações públicas.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.ipora.pr.gov.br/">
+<meta property="og:image" content="https://www.ipora.pr.gov.br/assets/img/logo.png">
+<meta property="og:image:secure_url" content="https://www.ipora.pr.gov.br/assets/img/logo.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Prefeitura Municipal">
+<meta property="fb:app_id" content="1159974507429536">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Prefeitura Municipal">
+<meta name="twitter:description" content="Portal oficial da Prefeitura Municipal com acesso a serviços, notícias e informações públicas.">
+<meta name="twitter:image" content="https://www.ipora.pr.gov.br/assets/img/logo.png">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/fonts/line-awesome.min.css">
+    <link rel="stylesheet" href="assets/fonts/simple-line-icons.min.css">
+    <link rel="stylesheet" href="assets/fonts/typicons.min.css">
+    <link rel="stylesheet" href="assets/css/Navbar-Dropdown-List-Item.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link href="assets/plugins/owlcarousel/owl.theme.default.min.css" rel="stylesheet"/>
+    <link href="assets/plugins/magnific-popup/magnific-popup.css" rel="stylesheet"/>
+    <link href="assets/plugins/owlcarousel/owl.carousel.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="assets/plugins/parsleyjs/src/parsley.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu de Acessibilidade</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="acessibilidade/css/contrast.css">
+  <link rel="stylesheet" href="acessibilidade/css/acessibilidade.css">
+</head>
+<body>
+  <button id="accessibilityToggle" class="accessibility-float-btn" aria-label="Menu de Acessibilidade">
+    <i class="bi bi-universal-access fs-3"></i>
+  </button>
+<div id="accessibilityPanel" class="accessibility-panel">
+  <div class="accessibility-header">
+    <span>Acessibilidade</span>
+    <button id="closeAccessibility" aria-label="Fechar Menu"><i class="bi bi-x-lg"></i></button>
+  </div>
+  <div class="accessibility-body">
+    <div class="accessibility-option-block">
+      <div class="option-info">
+        <i class="bi bi-circle-half"></i>
+        <div>
+          <strong>Alto Contraste</strong>
+          <p>Ativa o contraste alto para melhor visualização.</p>
+        </div>
+      </div>
+      <button class="accessibility-switch" id="contrastToggle" onclick="toggleContrastSwitch()"></button>
+    </div>
+    <div class="accessibility-option-block">
+      <div class="option-info">
+        <i class="bi bi-fonts"></i>
+        <div>
+          <strong>Fonte para Dislexia</strong>
+          <p>Ativa uma fonte especial para facilitar a leitura.</p>
+        </div>
+      </div>
+      <button class="accessibility-switch" id="dyslexiaToggle" onclick="toggleDyslexiaSwitch()"></button>
+    </div>
+    <div class="accessibility-option-block">
+      <div class="option-info">
+        <i class="bi bi-plus"></i>
+        <div>
+          <strong>Aumentar Fonte</strong>
+          <p>Aumenta o tamanho da fonte dos textos.</p>
+        </div>
+      </div>
+      <button onclick="increaseFont()" class="btn btn-outline-secondary">
+        <i class="bi bi-dash-circle"></i>
+      </button>
+    </div>
+    <div class="accessibility-option-block">
+      <div class="option-info">
+        <i class="bi bi-dash"></i>
+        <div>
+          <strong>Diminuir Fonte</strong>
+          <p>Reduz o tamanho da fonte dos textos.</p>
+        </div>
+      </div>
+      <button onclick="decreaseFont()" class="btn btn-outline-secondary">
+        <i class="bi bi-plus-circle"></i>
+      </button>
+    </div>
+    <hr>
+    <div class="accessibility-option-block">
+      <div class="option-info">
+        <i class="bi bi-box-arrow-in-right"></i>
+        <div>
+          <strong>Atalhos Rápidos</strong>
+          <p>Navegue rapidamente com o teclado ou clique.</p>
+        </div>
+      </div>
+    </div>
+    <div class="accessibility-shortcut-grid">
+      <a href="#conteudoPrincipal" accesskey="1" class="shortcut-card">
+        <i class="bi bi-display"></i>
+        <span>Ir para o conteúdo<br><small>[Alt + 1]</small></span>
+      </a>
+      <a href="#conteudoMenu" accesskey="1" class="shortcut-card">
+        <i class="bi bi-list"></i>
+        <span>Ir para o menu<br><small>[Alt + 2]</small></span>
+      </a>
+      <a href="#searchCollapse" class="shortcut-card">
+        <i class="bi bi-search"></i>
+        <span>Ir para a busca</span>
+      </a>
+      <a href="#conteudoRodape" class="shortcut-card">
+        <i class="bi bi-arrow-down-circle"></i>
+        <span>Ir para o rodapé</span>
+      </a>
+    </div>
+    <hr>
+  </div>
+</div>
+</body>
+</html>
+    <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Cookies</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="cookies/css/cookies-style.css">
+</head>
+<body>
+  <button onclick="openCookiesModal()" class="cookies-float-btn" aria-label="Preferências de Cookies">
+    <i class="bi bi-cookie"></i>
+  </button>
+  <div class="cookies-modal-overlay" id="cookiesModal">
+    <div class="cookies-modal-box">
+      <div class="cookies-modal-header">
+        <h5>Preferências de Cookies</h5>
+        <button class="cookies-close" onclick="closeCookiesModal()">×</button>
+      </div>
+      <div class="cookies-modal-body">
+        <p style="text-align: justify;">Cookies são pequenos arquivos de dados armazenados no seu computador ou dispositivo móvel quando você acessa nossos serviços. Eles são utilizados para melhorar sua experiência de navegação, permitindo, por exemplo, a personalização de conteúdo, a memorização de preferências e a otimização do desempenho do site. Além disso, os cookies contribuem para o funcionamento adequado de funcionalidades essenciais e facilitam a navegação entre as páginas.</p>
+        <h6 class="cookies-section-title">GERENCIAR PREFERÊNCIAS DE CONSENTIMENTO</h6>
+        <hr>
+        <div class="cookies-group">
+          <button class="cookies-toggle" onclick="toggleAccordion(this)">
+            <span class="icon">+</span> Cookies não obrigatórios
+          </button>
+          <div class="cookies-details" style="display: none;">
+            <div class="cookie-block">
+              <strong>"avisosPortal"</strong> – Avisos dos portais
+              <p>Utilizado para definir os avisos que foram lidos pelo usuário.</p>
+              <label class="cookie-switch">
+                <input type="checkbox" data-function="avisosPortal">
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="cookie-block">
+              <strong>"_ga*"</strong> – Google Analytics
+              <p>Cookies utilizados para coleta de dados estatísticos.</p>
+              <label class="cookie-switch">
+                <input type="checkbox" data-function="analytics">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="cookies-group">
+          <button class="cookies-toggle" onclick="toggleAccordion(this)">
+            <span class="icon">+</span> 
+            Cookies não obrigatórios, mas importantes
+          </button>
+          <div class="cookies-details" style="display: none;">
+            <div class="cookie-block">
+              <strong>"CookiePreferencia"</strong> – Preferências de cookies
+              <p>Utilizado para definir os avisos que foram lidos pelo usuário, possibilitando a validação para que o mesmo não volte a ser exibido.</p>
+              <label class="cookie-switch">
+                <input type="checkbox" data-function="avisosPortal" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="cookie-block">
+              <strong>"_grecaptcha"</strong> – ReCaptcha Google
+              <p>Utilizado pelo serviço Google que valida se o usuário da sessão não é um robô, de modo a fornecer análise de risco.</p>
+              <label class="cookie-switch">
+              <input type="checkbox" data-function="analytics">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="cookies-modal-footer">
+          <button class="btn btn-outline-secondary cookies-save allow-all-cookies">Permitir todos</button>
+          <button class="btn btn-primary cookies-save">Confirmar escolhas</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+    <header style="background: #0b2b78;">
+        <div class="header-top-bar py-2">
+            <div class="header-top-bar__container container">
+                <div class="d-flex flex-wrap justify-content-center justify-content-xl-between align-items-center w-100">
+                    <div class="header-top-bar__info mr-lg-auto pr-lg-3">
+                        <div class="acesso-rapido-topo">
+                            <ul class="list-inline">
+                                <li class="list-inline-item">
+                                    <a href="https://webapp1-ipora.cidade360.cloud/pronimtb/index.asp">
+                                        <i class="bi bi-bar-chart-line"></i> Portal da Transparência
+                                    </a>
+                                </li>
+                                <li class="list-inline-item"><div class="divisor-topo"></div></li>
+                                <li class="list-inline-item">
+                                    <a href="https://radardatransparencia.atricon.org.br/" target="_blank">
+                                        <i class="bi bi-radar"></i> Radar da Transparência
+                                    </a>
+                                </li>
+                                <li class="list-inline-item"><div class="divisor-topo"></div></li>
+                                <li class="list-inline-item">
+                                    <a href="https://ipora.pr.gov.br/webmail/" target="_blank">
+                                        <i class="bi bi-envelope-at"></i> Webmail
+                                    </a>
+                                </li>
+                                <li class="list-inline-item"><div class="divisor-topo"></div></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="d-flex align-items-center justify-content-between col-12 col-md-4 logo-site gap-2 mt-2 mt-lg-3">
+                        <a class="me-2" href="index.php" target="_parent">
+                            <img class="img-fluid" src="assets/img/logo.png" alt="">
+                        </a>
+                        <button class="navbar-toggler d-lg-none p-2 border-0 bg-transparent" type="button"
+                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
+                            aria-label="Abrir menu">
+                            <div style="width: 24px;">
+                                <div style="height: 3px; background: white; margin: 4px 0;"></div>
+                                <div style="height: 3px; background: white; margin: 4px 0;"></div>
+                                <div style="height: 3px; background: white; margin: 4px 0;"></div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="col-sm-12 col-md-8 d-flex justify-content-end">
+                        <div class="text-1">
+                            <div class="header-top-bar__container">
+                                <div class="d-flex flex-wrap justify-content-center justify-content-xl-between align-items-center w-100 ">
+                                    <div class="d-lg-flex">
+                                        <div class="d-flex flex-nowrap gap-1 align-items-center">
+                                            <a href="https://www.facebook.com/PrefeituraIporaPr/" class="btn btn-outline-primary btn-sm rounded-0">
+                                                <i class="fab fa-facebook"></i>
+                                            </a>
+                                            <a href="?meio=1800868" target="_parent" title="Social Gov" class="btn btn-outline-primary btn-sm rounded-0">
+                                                <i class="bi bi-globe"></i> Social Gov
+                                            </a>
+                                            <a href="#" class="btn btn-sm d-flex align-items-center justify-content-center rounded-0 text-white"
+                                            style="background-color: #00B0F0; font-size: 0.72rem; font-weight: 600; padding: 0.25rem 0.5rem; height: 32px;">
+                                                <div class="me-1 d-flex align-items-center justify-content-center"
+                                                    style="background-color: #fff; width: 16px; height: 16px; border-radius: 50%;">
+                                                    <i class="fas fa-info text-primary" style="font-size: 10px;"></i>
+                                                </div>
+                                                <div style="line-height: 1; display: flex; flex-direction: column; justify-content: center;">
+                                                    <span>Acesso à</span>
+                                                    <span>Informação</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-12 pb-3">
+                    <nav class="navbar navbar-expand-lg custom-navbar d-none d-lg-flex desktop-menu">
+                        <div class="container-fluid">
+                            <ul class="navbar-nav custom-menu d-flex justify-content-end w-100">
+                                <li class='nav-item '><a href='?meio=1800203' class='nav-link'>Legislação</a></li><li class='nav-item '><a href='?meio=1800466' class='nav-link'>Acesso á informação</a></li><li class='nav-item dropdown'><a href='#' class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false'>Município</a><ul class='dropdown-menu custom-dropdown'><li><a class='dropdown-item' href='?meio=1800183'>História</a></li><li><a class='dropdown-item' href='?meio=1800184'>Galeria de Fotos</a></li></ul></li><li class='nav-item dropdown'><a href='#' class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false'>Governo</a><ul class='dropdown-menu custom-dropdown'><li><a class='dropdown-item' href='?meio=1800185'>Prefeito</a></li><li><a class='dropdown-item' href='?meio=1800186'>Vice-Prefeito</a></li><li><a class='dropdown-item' href='?meio=1800187'>Secretarias</a></li><li><a class='dropdown-item' href='?meio=1800188'>Estrutura Organizacional</a></li><li><a class='dropdown-item' href='?meio=1834326'>Conselhos</a></li><li><a class='dropdown-item' href='https://ipora.pr.gov.br/index.php?mod=944&idSec=21'>Controle Interno</a></li></ul></li><li class='nav-item dropdown'><a href='#' class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false'>Comunicação</a><ul class='dropdown-menu custom-dropdown'><li><a class='dropdown-item' href='?meio=1800189'>Notícias</a></li><li><a class='dropdown-item' href='?meio=1800190'>Galeria de Vídeos</a></li><li><a class='dropdown-item' href='?meio=1800191'>Fale Conosco</a></li><li><a class='dropdown-item' href='?meio=1800192'>Telefones úteis</a></li><li><a class='dropdown-item' href='?meio=1800193'>Emails Institucionais</a></li><li><a class='dropdown-item' href='https://ipora.1doc.com.br/b.php?pg=wp/wp&itd=6'>Ouvidoria</a></li><li><a class='dropdown-item' href='?meio=1800332'>Perguntas Frequentes</a></li><li><a class='dropdown-item' href='?meio=1800342'>Mapa do Site</a></li><li><a class='dropdown-item' href='https://www.diariomunicipal.com.br/amp/pesquisar'>Diário Oficial</a></li><li><a class='dropdown-item' href='https://www.youtube.com/@governomunicipaldeipora'>Canal Youtube</a></li><li><a class='dropdown-item' href='?meio=1800868'>Redes Sociais</a></li><li><a class='dropdown-item' href='?meio=1800869'>Transmissões Ao Vivo</a></li></ul></li><li class='nav-item dropdown'><a href='#' class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false'>Serviços</a><ul class='dropdown-menu custom-dropdown'><li><a class='dropdown-item' href='https://ipora.1doc.com.br/b.php?pg=o/wp'>Protocolo</a></li><li><a class='dropdown-item' href='https://webapp1-ipora.cidade360.cloud/NFSe.Portal/'>Nota Fiscal e Declaração</a></li><li><a class='dropdown-item' href='https://webapp1-ipora.cidade360.cloud:8443/cidadao/servlet/br.com.cetil.ar.jvlle.hatendimento'>Portal do Cidadão</a></li><li><a class='dropdown-item' href='https://ipora.1doc.com.br/b.php?pg=o%2Fbusca_servicos&search=HOR%C3%81RIO'>Ginásio de Esportes</a></li><li><a class='dropdown-item' href='https://webapp1-ipora.cidade360.cloud/iptu/index.php'>DÉBITOS</a></li><li><a class='dropdown-item' href='?meio=1800233'>Escala Funcionários da Saúde</a></li><li><a class='dropdown-item' href='?meio=1800234'>Estoque Fármacia</a></li><li><a class='dropdown-item' href='?meio=1800235'>Cardápio de Alimentação</a></li><li><a class='dropdown-item' href='?meio=1800236'>Listas de Espera de Vagas Escolares</a></li><li><a class='dropdown-item' href='?meio=1800452'>Iluminação</a></li><li><a class='dropdown-item' href='?meio=1800470'>Atendimento Saúde</a></li><li><a class='dropdown-item' href='?meio=1800475'>Lista de Espera Saúde</a></li><li><a class='dropdown-item' href='?meio=1800498'>Bolsa Família</a></li><li><a class='dropdown-item' href='?meio=1800721'>Lei Aldir Blanc</a></li><li><a class='dropdown-item' href='?meio=1800726'>Sugestão - PPA</a></li><li><a class='dropdown-item' href='https://webapp1-ipora.cidade360.cloud/NFSe.Portal/'>Nota Fiscal </a></li></ul></li><li class='nav-item dropdown'><a href='#' class='nav-link dropdown-toggle' data-bs-toggle='dropdown' role='button' aria-expanded='false'>Governo digital </a><ul class='dropdown-menu custom-dropdown'><li><a class='dropdown-item' href='?meio=1800348'>LGPD e Governo Digital</a></li><li><a class='dropdown-item' href='?meio=1800349'>Serviços</a></li><li><a class='dropdown-item' href='?meio=1800350'>Pesquisa de Satisfação</a></li><li><a class='dropdown-item' href='?meio=1800459'>Dados Abertos</a></li><li><a class='dropdown-item' href='https://ipora.pr.gov.br/carta-servicos/'>Carta de Serviços</a></li></ul></li>                                <li class="nav-item d-none d-xs-none d-lg-block">
+                                    <a href="javascript:void(0);" class="nav-link bi bi-search" id="toggleIcon" role="button" aria-expanded="false" aria-controls="searchCollapse"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <nav class="navbar navbar-expand-lg navbar-dark d-lg-none">
+                        <div class="container-fluid">
+                            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                                <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                    <ul class="navbar-nav justify-content-end flex-grow-1">
+                                                                                    <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Legislação                                                </a>
+                                                <ul class="dropdown-menu">
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800203">
+                                                            Atos Normativos                                                        </a></li>
+                                                                                                    </ul>
+                                            </li>
+                                                                                    <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Acesso á informação                                                </a>
+                                                <ul class="dropdown-menu">
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800466">
+                                                            ESIC                                                        </a></li>
+                                                                                                    </ul>
+                                            </li>
+                                                                                    <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Município                                                </a>
+                                                <ul class="dropdown-menu">
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800183">
+                                                            História                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800184">
+                                                            Galeria de Fotos                                                        </a></li>
+                                                                                                    </ul>
+                                            </li>
+                                                                                    <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Governo                                                </a>
+                                                <ul class="dropdown-menu">
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800185">
+                                                            Prefeito                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800186">
+                                                            Vice-Prefeito                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800187">
+                                                            Secretarias                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800188">
+                                                            Estrutura Organizacional                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1834326">
+                                                            Conselhos                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="https://ipora.pr.gov.br/index.php?mod=944&amp;idSec=21">
+                                                            Controle Interno                                                        </a></li>
+                                                                                                    </ul>
+                                            </li>
+                                                                                    <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Comunicação                                                </a>
+                                                <ul class="dropdown-menu">
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800189">
+                                                            Notícias                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800190">
+                                                            Galeria de Vídeos                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800191">
+                                                            Fale Conosco                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800192">
+                                                            Telefones úteis                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800193">
+                                                            Emails Institucionais                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="https://ipora.1doc.com.br/b.php?pg=wp/wp&amp;itd=6">
+                                                            Ouvidoria                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800332">
+                                                            Perguntas Frequentes                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800342">
+                                                            Mapa do Site                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="https://www.diariomunicipal.com.br/amp/pesquisar">
+                                                            Diário Oficial                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="https://www.youtube.com/@governomunicipaldeipora">
+                                                            Canal Youtube                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800868">
+                                                            Redes Sociais                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800869">
+                                                            Transmissões Ao Vivo                                                        </a></li>
+                                                                                                    </ul>
+                                            </li>
+                                                                                    <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Serviços                                                </a>
+                                                <ul class="dropdown-menu">
+                                                                                                            <li><a class="dropdown-item" href="https://ipora.1doc.com.br/b.php?pg=o/wp">
+                                                            Protocolo                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="https://webapp1-ipora.cidade360.cloud/NFSe.Portal/">
+                                                            Nota Fiscal e Declaração                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="https://webapp1-ipora.cidade360.cloud:8443/cidadao/servlet/br.com.cetil.ar.jvlle.hatendimento">
+                                                            Portal do Cidadão                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="https://ipora.1doc.com.br/b.php?pg=o%2Fbusca_servicos&amp;search=HOR%C3%81RIO">
+                                                            Ginásio de Esportes                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="https://webapp1-ipora.cidade360.cloud/iptu/index.php">
+                                                            DÉBITOS                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800233">
+                                                            Escala Funcionários da Saúde                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800234">
+                                                            Estoque Fármacia                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800235">
+                                                            Cardápio de Alimentação                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800236">
+                                                            Listas de Espera de Vagas Escolares                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800452">
+                                                            Iluminação                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800470">
+                                                            Atendimento Saúde                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800475">
+                                                            Lista de Espera Saúde                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800498">
+                                                            Bolsa Família                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800721">
+                                                            Lei Aldir Blanc                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800726">
+                                                            Sugestão - PPA                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="https://webapp1-ipora.cidade360.cloud/NFSe.Portal/">
+                                                            Nota Fiscal                                                         </a></li>
+                                                                                                    </ul>
+                                            </li>
+                                                                                    <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Governo Digital                                                 </a>
+                                                <ul class="dropdown-menu">
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800348">
+                                                            LGPD e Governo Digital                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800349">
+                                                            Serviços                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800350">
+                                                            Pesquisa de Satisfação                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="?meio=1800459">
+                                                            Dados Abertos                                                        </a></li>
+                                                                                                            <li><a class="dropdown-item" href="https://ipora.pr.gov.br/carta-servicos/">
+                                                            Carta de Serviços                                                        </a></li>
+                                                                                                    </ul>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+            </header>
+    <div class="container">
+      <div class="collapse mt-4 mb-4" id="searchCollapse">
+        <div class="card">
+          <form id="form_pesquisa" enctype="multipart/form-data" action="index.php?mod=busca" method="post">
+            <div class="input-group">
+                <input title="termos de pesquisa" type="text" class="form-control" id="pesquisa" name="pesquisa" placeholder="O que você está procurando? Busque aqui!">
+                <button type="submit" class="btn btn-primary contr_bg_black" id="pesquisa_submit" style="background-color: #061732; font-size: 14px;"> Buscar </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <br>
+<section class="section-slide w-100" style="padding: 0; margin: 0; padding-bottom: 40px; margin-top: -25px !important;">
+    <div class="w-100">
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                            <div class="carousel-item active">
+                            <a href="" target="_blank">
+                                <img src="documentos/slides/1ZsbSwE8RhyUv6kZhdlbLWiYjotRokH4kOAHnjCW.jpg"
+                                    class="d-block w-100"
+                                    alt="Slide 13"
+                                    style="width: 100%; height: auto; border-radius: 0;">
+                            </a>
+                        </div>
+                                            <div class="carousel-item ">
+                            <a href="" target="_blank">
+                                <img src="documentos/slides/T2JOW1HQWohQajaDLY0JwdSn2thhLL0BKTdIAO9N.jpg"
+                                    class="d-block w-100"
+                                    alt="Slide 12"
+                                    style="width: 100%; height: auto; border-radius: 0;">
+                            </a>
+                        </div>
+                                            <div class="carousel-item ">
+                            <a href="https://www.ipora.pr.gov.br" target="_blank">
+                                <img src="documentos/slides/6a31455b4abee.jpg"
+                                    class="d-block w-100"
+                                    alt="Slide 7"
+                                    style="width: 100%; height: auto; border-radius: 0;">
+                            </a>
+                        </div>
+                                    </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Próximo</span>
+                </button>
+                    </div>
+    </div>
+</section>
+<div class="container">
+    <section id="bloco-governo-digital" class="por-categoria">
+        <div class="container header-bloco-governo-digital">
+            <ul class="nav nav-pills justify-content-center flex-wrap" id="govTab">
+                <li class='nav-item'><button class='btn btn-default me-2' data-target='#tab-content-44'><i class='bi bi-house-door-fill me-2'></i>Geral</button></li><li class='nav-item'><button class='btn btn-default me-2' data-target='#tab-content-45'><i class='bi bi-people-fill me-2'></i>Pessoal</button></li><li class='nav-item'><button class='btn btn-default me-2' data-target='#tab-content-46'><i class='bi bi-cash-stack me-2'></i>Administração</button></li><li class='nav-item'><button class='btn btn-default me-2' data-target='#tab-content-47'><i class='bi bi-cash-stack me-2'></i>Orçamento</button></li>            </ul>
+            <div class="tab-content mt-3">
+                <div class='tab-pane fade' id='tab-content-44'><div class='box-servicos'><ul class='lista-categorias'><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/index.asp'>Portal da Transparência</a></li><li><a class='btn btn-default' href='https://pit.tce.pr.gov.br/Entidade/?f=eyJpZE11bmljaXBpbyI6IjI3ODQiLCJpZFBlc3NvYSI6IjEyMzI2IiwibnJBbm8iOiIyMDI1In0='>Portal Obras</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/index.asp?acao=21&item=1&visao=paginaprincipalcovid'>Covid 19</a></li><li><a class='btn btn-default' href='?meio=1800339'>Audiências Públicas</a></li><li><a class='btn btn-default' href='https://www.diariomunicipal.com.br/amp/pesquisar'>Diário Oficial</a></li><li><a class='btn btn-default' href='?meio=1800374'>REFIZ 2025</a></li></ul></div></div><div class='tab-pane fade' id='tab-content-45'><div class='box-servicos'><ul class='lista-categorias'><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/PortalServidor#/'>Portal do Servidor</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud//PortalServidor_FAPE#/'>Portal Servidor Fapesp</a></li><li><a class='btn btn-default' href='https://www.novo.ipora.pr.gov.br/documentos/arquivos/262902organograma.pdf'>Organograma</a></li><li><a class='btn btn-default' href='?meio=1800209'>Concursos Públicos</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/index.asp?acao=4&item=5'>Remuneração de Agentes Públicos</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/index.asp?acao=4&item=2'>Quadro Funcional</a></li><li><a class='btn btn-default' href='?meio=1800212'>Estagiários</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/index.asp?acao=4&item=7'>Salários Servidores</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/index.asp?acao=3&item=15'>Diárias</a></li><li><a class='btn btn-default' href='?meio=1800237'>Recomendações do Ministério Público</a></li><li><a class='btn btn-default' href='?meio=1800346'>Quadro de Diárias</a></li><li><a class='btn btn-default' href='?meio=1800468'>Tercerizados</a></li><li><a class='btn btn-default' href='?meio=1834219'>contratos</a></li></ul></div></div><div class='tab-pane fade' id='tab-content-46'><div class='box-servicos'><ul class='lista-categorias'><li><a class='btn btn-default' href='?meio=1800215'>Convênios</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/index.asp?acao=3&item=13'>Despesas</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/index.asp?acao=3&item=13'>Empenhos</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/index.asp?acao=3&item=12'>Receitas</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/index.asp?acao=1&item=7'>Frota de Veículos</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/index.asp?acao=1&item=1'>Contratação Direta</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/anexos.html'>LOA</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/anexos.html'>LDO</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/anexos.html'>PPA</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/index.asp?acao=1&item=1'>Contratos e Aditivos</a></li><li><a class='btn btn-default' href='?meio=1800333'>Plano Anual de Contratações</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/index.asp?acao=1&item=7'>Frota</a></li><li><a class='btn btn-default' href='?meio=1800347'>Painel de Obras</a></li><li><a class='btn btn-default' href='?meio=1800410'>Fiscais de Contrato</a></li><li><a class='btn btn-default' href='?meio=1800464'>Processos Licitatórios</a></li><li><a class='btn btn-default' href='?meio=1800467'>Licitantes Sancionados</a></li><li><a class='btn btn-default' href='?meio=1800469'>Termos de Cooperação técnica</a></li><li><a class='btn btn-default' href='?meio=1834323'>Plano estratégico institucional</a></li><li><a class='btn btn-default' href='?meio=1834334'>Incentivo à Cultura e ao Esporte</a></li></ul></div></div><div class='tab-pane fade' id='tab-content-47'><div class='box-servicos'><ul class='lista-categorias'><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/anexos.html'>Execução Orçamentária em Tempo Real</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/anexos.html'>Plano de Contas</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/anexos.html'>Relatório de Gestão Fiscal</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/anexos.html'>Relatório Resumido de Execução Orçamentária</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/index.asp?acao=3&item=2'>Movimentação dos Fundos</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/index.asp?acao=3&item=2'>Operações Financeiras</a></li><li><a class='btn btn-default' href='https://webapp1-ipora.cidade360.cloud/pronimtb/index.asp?acao=3&item=13'>Nota Fiscal Eletrônica</a></li><li><a class='btn btn-default' href='?meio=1800334'>Apreciação Contas TCE</a></li><li><a class='btn btn-default' href='?meio=1800372'>RGF</a></li><li><a class='btn btn-default' href='?meio=1800373'>RREO</a></li><li><a class='btn btn-default' href='https://ipora.pr.gov.br/?meio=1800464&ano=2025&modalidade=&status=&search=PNAB'>Incentivos Culturais</a></li><li><a class='btn btn-default' href='?meio=1800473'>Emendas</a></li><li><a class='btn btn-default' href='?meio=1800479'>Benefícios Fiscais Concedidos</a></li><li><a class='btn btn-default' href='?meio=1800481'>Renúncia  Previstas e Realizadas</a></li><li><a class='btn btn-default' href='?meio=1800482'>Balanço Orçamentário</a></li></ul></div></div>            </div>
+        </div>
+    </section>
+</div>
+<section class="noticias-section">
+    <div class="container mt-4">
+        <div class="menu-container">
+            <a href="https://www.diariomunicipal.com.br/amp/pesquisar" target="_blank">
+                <div class="menu-item">
+                    <i class="bi bi-journal-text"></i>
+                    <p class="tit">Diário Oficial</p>
+                    <p class="sub">Publicações de Atos Administrativos.</p>
+                </div>
+            </a>
+            <a href="https://ipora.1doc.com.br/b.php?pg=o/wp" target="_blank">
+                <div class="menu-item">
+                    <i class="bi bi-map"></i>
+                    <p class="tit">Protocolo</p>
+                    <p class="sub">Acesse.</p>
+                </div>
+            </a>
+            <a href="https://ipora.1doc.com.br/b.php?pg=wp/wp&itd=6">
+                <div class="menu-item">
+                    <i class="bi bi-chat-dots"></i>
+                    <p class="tit">Ouvidoria</p>
+                    <p class="sub">Canal direto para ouvir e resolver suas demandas.</p>
+                </div>
+            </a>
+            <a href="https://ipora.pr.gov.br/?meio=1800464">
+                <div class="menu-item">
+                    <i class="bi bi-clipboard-check"></i>
+                    <p class="tit">Licitações</p>
+                    <p class="sub">Processos públicos para contratar serviços e produtos com transparência e eficiência.</p>
+                </div>
+            </a>
+            <a href="https://webapp1-ipora.cidade360.cloud/pronimtb/index.asp" target="_blank">
+                <div class="menu-item">
+                    <i class="bi bi-search"></i>
+                    <p class="tit">Portal da Transparência</p>
+                    <p class="sub">Essencial para a confiança e a integridade pública.</p>
+                </div>
+            </a>
+            <a href="?meio=1800339" target="_blank">
+                <div class="menu-item">
+                    <i class="bi bi-briefcase"></i>
+                    <p class="tit">Audiências Públicas</p>
+                    <p class="sub">Acesse.</p>
+                </div>
+            </a>
+            <a href="https://webapp1-ipora.cidade360.cloud/PortalServidor">
+                <div class="menu-item">
+                    <i class="bi bi-person-badge"></i>
+                    <p class="tit">Servidores</p>
+                    <p class="sub">Acesso completo a informações e serviços de recursos humanos.</p>
+                </div>
+            </a>
+            <a href="https://webapp1-ipora.cidade360.cloud/certidao/index.php">
+                <div class="menu-item">
+                    <i class="bi bi-file-earmark-text"></i>
+                    <p class="tit">Certidão Negativa de Débitos</p>
+                    <p class="sub">Acesse.</p>
+                </div>
+            </a>
+            <a href="https://webapp1-ipora.cidade360.cloud/iptu/index.php">
+                <div class="menu-item">
+                    <i class="bi bi-receipt"></i>
+                    <p class="tit">Débitos</p>
+                    <p class="sub">Consulta de débitos, guias de pagamento.</p>
+                </div>
+            </a>
+            <a href="https://webapp1-ipora.cidade360.cloud/NFSe.Portal/">
+                <div class="menu-item">
+                    <i class="bi bi-file-earmark-plus"></i>
+                    <p class="tit">Nota Fiscal</p>
+                    <p class="sub">Acesse.</p>
+                </div>
+            </a>
+            <a href="https://ipora.pr.gov.br/index.php?mod=944&idSec=21">
+                <div class="menu-item">
+                    <i class="bi-shield-check"></i>
+                    <p class="tit">Controle Interno</p>
+                    <p class="sub">Acesse.</p>
+                </div>
+            </a>
+            <a href="#">
+                <div class="menu-item">
+                    <i class="bi-piggy-bank"></i>
+                    <p class="tit">RPPS</p>
+                    <p class="sub">Acesse.</p>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row" style="padding-top: 25px;">
+            <div class="col-md-12 col-lg-7 col-xl-9">
+                <div id="carouselNoticias" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                                                    <button type="button" data-bs-target="#carouselNoticias" data-bs-slide-to="0"
+                                class="active"
+                                aria-current="true"
+                                aria-label="Slide 1"></button>
+                                                    <button type="button" data-bs-target="#carouselNoticias" data-bs-slide-to="1"
+                                class=""
+                                aria-current="false"
+                                aria-label="Slide 2"></button>
+                                                    <button type="button" data-bs-target="#carouselNoticias" data-bs-slide-to="2"
+                                class=""
+                                aria-current="false"
+                                aria-label="Slide 3"></button>
+                                            </div>
+                    <div class="carousel-inner">
+                                                    <a href="index.php?mod=988&idNot=1461235"
+                                aria-label="Imagem da notícia"
+                                target="_self"
+                                style="text-decoration: none;">
+                                <div class="carousel-item active" style="border-radius: 8px;">
+                                    <img src="documentos/imgnoticia/6aac93865034c.jpg"
+                                        class="img-fluid"
+                                        alt="Imagem da notícia"
+                                        style="width: 100%; height: 480px; object-fit: cover; background-size: cover; background-position: 50%; border-radius: 8px;">
+                                    <div class="titulo-noticia-principal">
+                                        <p style="background-color: #0d6efc; padding: 5px 10px; font-weight: 300; display: inline-block; font-size: 13px; margin-bottom: 5px; border-radius: 4px; color: #ffffff;">
+                                            17/09/2026                                        </p>
+                                        <h2 class="titulo" style="font-size: 20px; line-height: 24px; font-weight: 800; color: #333333; text-align: justify;">
+                                            PREFEITURA REFORÇA ORIENTAÇÃO SOBRE LIMPEZA E DESOBSTRUÇÃO DE CALÇADAS                                        </h2>
+                                    </div>
+                                </div>
+                            </a>
+                                            </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselNoticias" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselNoticias" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Próximo</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-3 col-xl-3">
+                <div class="row">
+                    <div class="sidebar-section">
+                        <div class="sidebar-card">
+                            <h4><i class="bi bi-lightbulb"></i> Cadastro Iluminação Pública</h4>
+                            <p>Informações sobre pontos de iluminação pública, manutenção e solicitação de serviços.</p>
+                            <a href="https://ipora.pr.gov.br/?meio=1800452" target="_blank">Acessar →</a>
+                        </div>
+                        <div class="sidebar-card">
+                            <h4><i class="bi bi-receipt"></i> DÉBITOS</h4>
+                            <p>Consulta de débitos, guias de pagamento, informações sobre o Imposto Predial e Territorial Urbano.</p>
+                            <a href="https://webapp1-ipora.cidade360.cloud/iptu/index.php" target="_blank">Acessar →</a>
+                        </div>
+                        <div class="sidebar-card">
+                            <h4><i class="bi bi-briefcase-fill"></i> PSS e Concurso</h4>
+                            <p>Acompanhar Editais.</p>
+                            <a href="https://ipora.pr.gov.br/index.php?mod=46" target="_blank">Acessar →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-3 col-xl-12">
+                <div class="row" style="padding-top: 25px;">
+                            <div class="col-sm-4 col-lg-4">
+                                <a href="index.php?mod=988&idNot=1461234" 
+                                style="text-decoration: none; color: inherit;">
+                                    <div class="noticia-lateral-inicial">
+                                        <img class="img-noticia-lateral-inicial" 
+                                            src="documentos/imgnoticia/6a90bf8aab0b9.jpeg" 
+                                            width="100%" 
+                                            height="100%" 
+                                            alt="Oficina de grafite une arte, educação e identidade de Iporã.">
+                                        <div class="titulo-not-lateral-inicial">
+                                            <p>Oficina de grafite une arte, educação e identidade de Iporã....</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-sm-4 col-lg-4">
+                                <a href="index.php?mod=988&idNot=1461233" 
+                                style="text-decoration: none; color: inherit;">
+                                    <div class="noticia-lateral-inicial">
+                                        <img class="img-noticia-lateral-inicial" 
+                                            src="documentos/imgnoticia/6a8b92723424a.jpeg" 
+                                            width="100%" 
+                                            height="100%" 
+                                            alt="IPORÃ DÁ EXEMPLO DE SUSTENTABILIDADE E RECEBE PLANO DE EDUCAÇÃO AMBIENTAL">
+                                        <div class="titulo-not-lateral-inicial">
+                                            <p>IPORÃ DÁ EXEMPLO DE SUSTENTABILIDADE E RECEBE PLANO DE EDUCAÇÃO AMBIENTAL...</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-sm-4 col-lg-4">
+                                <a href="index.php?mod=988&idNot=1461232" 
+                                style="text-decoration: none; color: inherit;">
+                                    <div class="noticia-lateral-inicial">
+                                        <img class="img-noticia-lateral-inicial" 
+                                            src="documentos/imgnoticia/6a86dfde6ca8f.jpg" 
+                                            width="100%" 
+                                            height="100%" 
+                                            alt="Semana Pela Paz em Casa reforça combate à violência contra a mulher em Iporã">
+                                        <div class="titulo-not-lateral-inicial">
+                                            <p>Semana Pela Paz em Casa reforça combate à violência contra a mulher em Iporã...</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section-destaque">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h2>Publicações Oficiais</h2>
+            <p class="text-muted">Últimos documentos publicados.</p>
+        </div>
+        <div class="d-flex justify-content-center align-items-center mb-5 flex-wrap option-block">
+                            <div class="option-card" data-target="tipo-3">
+                    <span class="option-number"></span>
+                    <span class="option-text">Decreto</span>
+                </div>
+                <div class="divider-menu"></div>
+                            <div class="option-card" data-target="tipo-4">
+                    <span class="option-number">1</span>
+                    <span class="option-text">Portaria</span>
+                </div>
+                <div class="divider-menu"></div>
+                            <div class="option-card" data-target="tipo-7">
+                    <span class="option-number">2</span>
+                    <span class="option-text">Lei Complementar</span>
+                </div>
+                <div class="divider-menu"></div>
+                    </div>
+        <div class="tab-content mt-4">
+                            <div class="row document-group" id="tipo-3" style="display: none;">
+                                                <div class="col-md-4" style="padding-bottom: 10px;">
+                                <div class="info-card">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge-number">232/2026</span>
+                                            <span class="badge-type">Decreto</span>
+                                        </div>
+                                        <button class="btn-share">
+                                            <i class="bi bi-share"></i>
+                                        </button>
+                                    </div>
+                                    <div class="description">
+                                        HOMOLOGA E ADJUDICA O JULGAMENTO PROFERIDO PELO PREGOEIRO E EQUIPE DE APOIO SOBRE PROPOSTAS APRESENTADAS A INEXIGIBILIDADE Nº 040/2026.                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="details">
+                                            <div class="date">
+                                                <i class="bi bi-calendar"></i> 22/10/2026                                            </div>
+                                        </div>
+                                        <a href="documentos/legislacao/542309-decreto-232-2026-dg6ifl.pdf" class="btn-learn-more" target="_blank">
+                                            Baixar Arquivo
+                                            <i class="bi bi-arrow-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                                        </div>
+                            <div class="row document-group" id="tipo-4" style="display: none;">
+                                                <div class="col-md-4" style="padding-bottom: 10px;">
+                                <div class="info-card">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge-number">1661/2026</span>
+                                            <span class="badge-type">Portaria</span>
+                                        </div>
+                                        <button class="btn-share">
+                                            <i class="bi bi-share"></i>
+                                        </button>
+                                    </div>
+                                    <div class="description">
+                                        CONCEDE FÉRIAS AO SERVIDOR JOZIAS GARCIA ALVES, E DÁ OUTRAS PROVIDÊNCIAS.                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="details">
+                                            <div class="date">
+                                                <i class="bi bi-calendar"></i> 21/10/2026                                            </div>
+                                        </div>
+                                        <a href="documentos/legislacao/402602-portaria-1661-2026-4otsmt.pdf" class="btn-learn-more" target="_blank">
+                                            Baixar Arquivo
+                                            <i class="bi bi-arrow-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <div class="col-md-4" style="padding-bottom: 10px;">
+                                <div class="info-card">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge-number">1660/2026</span>
+                                            <span class="badge-type">Portaria</span>
+                                        </div>
+                                        <button class="btn-share">
+                                            <i class="bi bi-share"></i>
+                                        </button>
+                                    </div>
+                                    <div class="description">
+                                        EXONERA A PEDIDO A SERVIDORA BEATRIZ DE FREITAS SOLANA, E DÁ OUTRAS PROVIDÊNCIAS.                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="details">
+                                            <div class="date">
+                                                <i class="bi bi-calendar"></i> 21/10/2026                                            </div>
+                                        </div>
+                                        <a href="documentos/legislacao/582602-portaria-1660-2026-as9vgi.pdf" class="btn-learn-more" target="_blank">
+                                            Baixar Arquivo
+                                            <i class="bi bi-arrow-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <div class="col-md-4" style="padding-bottom: 10px;">
+                                <div class="info-card">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="badge-number">1659/2026</span>
+                                            <span class="badge-type">Portaria</span>
+                                        </div>
+                                        <button class="btn-share">
+                                            <i class="bi bi-share"></i>
+                                        </button>
+                                    </div>
+                                    <div class="description">
+                                        CONCEDE FÉRIAS A SERVIDORA SANDRA MARA WATANABE DO NASCIMENTO, E DÁ OUTRAS PROVIDÊNCIAS.                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="details">
+                                            <div class="date">
+                                                <i class="bi bi-calendar"></i> 21/10/2026                                            </div>
+                                        </div>
+                                        <a href="documentos/legislacao/302602-portaria-1659-2026-czjoiz.pdf" class="btn-learn-more" target="_blank">
+                                            Baixar Arquivo
+                                            <i class="bi bi-arrow-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                                        </div>
+                            <div class="row document-group" id="tipo-7" style="display: none;">
+                                            <p class="text-muted">Nenhuma legislação disponível para este tipo.</p>
+                                    </div>
+                    </div>
+    </div>
+</section>
+<section class="section-slide py-5">
+    <div class="container">
+        <div id="carouselExampleIndicators" class="carousel slide col-12" data-bs-ride="carousel">
+            <p class='text-center'>Nenhum slide disponível.</p>        </div>
+    </div>
+</section>
+<section class="section-destaque">
+    <div class="container">
+        <div class="container py-5">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-8">
+                    <div class="row g-3">
+                            <div class="col-4">
+                                <div class="ratio ratio-4x3 rounded overflow-hidden">
+                                <img src="/documentos/municipio/1.jpg" class="img-fluid object-fit-cover" alt="Foto do Município">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="ratio ratio-4x3 rounded overflow-hidden">
+                                <img src="/documentos/municipio/2.jpg" class="img-fluid object-fit-cover" alt="Foto do Município">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="ratio ratio-4x3 rounded overflow-hidden">
+                                <img src="/documentos/municipio/3.jpg" class="img-fluid object-fit-cover" alt="Foto do Município">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="ratio ratio-4x3 rounded overflow-hidden">
+                                <img src="/documentos/municipio/4.jpg" class="img-fluid object-fit-cover" alt="Foto do Município">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="ratio ratio-4x3 rounded overflow-hidden">
+                                <img src="/documentos/municipio/5.jpg" class="img-fluid object-fit-cover" alt="Foto do Município">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="ratio ratio-4x3 rounded overflow-hidden">
+                                <img src="/documentos/municipio/6.jpg" class="img-fluid object-fit-cover" alt="Foto do Município">
+                                </div>
+                            </div>                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="bg-warning text-white rounded-4 p-4 h-100 d-flex flex-column justify-content-center text-center">
+                        <small class="mt-5 fw-bold text-uppercase">CONHEÇA NOSSA CIDADE</small>
+                        <h1 class="fw-bold mt-5">Conheça nossa cidade e se encante com suas belezas</h1>
+                        <a href="?meio=654" class="btn btn-outline-light mt-3 align-self-center px-4 py-2 fw-bold">
+                            Saiba Mais <i class="bi bi-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body><footer style="background-color: #002f6c;" class="py-5">
+    <div class="container">
+        <div class="row justify-content-between align-items-start mb-4">
+            <div class="col-12 col-md-4 text-md-start mb-3 mb-md-0">
+                <img class="img-fluid" src="assets/img/logo.png" alt="Logo do Município">
+            </div>
+            <div class="col-12 col-md-8">
+                <div class="row">
+                    <div class='col-6 col-md-3'><h6 style='color: #38b6ff;'><strong>Legislação</strong></h6><ul class='list-unstyled'><li><a href='?meio=1800203'>Atos Normativos</a></li></ul></div><div class='col-6 col-md-3'><h6 style='color: #38b6ff;'><strong>Acesso á informação</strong></h6><ul class='list-unstyled'><li><a href='?meio=1800466'>ESIC</a></li></ul></div><div class='col-6 col-md-3'><h6 style='color: #38b6ff;'><strong>Município</strong></h6><ul class='list-unstyled'><li><a href='?meio=1800183'>História</a></li><li><a href='?meio=1800184'>Galeria de Fotos</a></li></ul></div><div class='col-6 col-md-3'><h6 style='color: #38b6ff;'><strong>Governo</strong></h6><ul class='list-unstyled'><li><a href='?meio=1800185'>Prefeito</a></li><li><a href='?meio=1800186'>Vice-Prefeito</a></li><li><a href='?meio=1800187'>Secretarias</a></li><li><a href='?meio=1800188'>Estrutura Organizacional</a></li><li><a href='?meio=1834326'>Conselhos</a></li><li><a href='https://ipora.pr.gov.br/index.php?mod=944&idSec=21'>Controle Interno</a></li></ul></div><div class='col-6 col-md-3'><h6 style='color: #38b6ff;'><strong>Comunicação</strong></h6><ul class='list-unstyled'><li><a href='?meio=1800189'>Notícias</a></li><li><a href='?meio=1800190'>Galeria de Vídeos</a></li><li><a href='?meio=1800191'>Fale Conosco</a></li><li><a href='?meio=1800192'>Telefones úteis</a></li><li><a href='?meio=1800193'>Emails Institucionais</a></li><li><a href='https://ipora.1doc.com.br/b.php?pg=wp/wp&itd=6'>Ouvidoria</a></li><li><a href='?meio=1800332'>Perguntas Frequentes</a></li><li><a href='?meio=1800342'>Mapa do Site</a></li><li><a href='https://www.diariomunicipal.com.br/amp/pesquisar'>Diário Oficial</a></li><li><a href='https://www.youtube.com/@governomunicipaldeipora'>Canal Youtube</a></li><li><a href='?meio=1800868'>Redes Sociais</a></li><li><a href='?meio=1800869'>Transmissões Ao Vivo</a></li></ul></div><div class='col-6 col-md-3'><h6 style='color: #38b6ff;'><strong>Serviços</strong></h6><ul class='list-unstyled'><li><a href='https://ipora.1doc.com.br/b.php?pg=o/wp'>Protocolo</a></li><li><a href='https://webapp1-ipora.cidade360.cloud/NFSe.Portal/'>Nota Fiscal e Declaração</a></li><li><a href='https://webapp1-ipora.cidade360.cloud:8443/cidadao/servlet/br.com.cetil.ar.jvlle.hatendimento'>Portal do Cidadão</a></li><li><a href='https://ipora.1doc.com.br/b.php?pg=o%2Fbusca_servicos&search=HOR%C3%81RIO'>Ginásio de Esportes</a></li><li><a href='https://webapp1-ipora.cidade360.cloud/iptu/index.php'>DÉBITOS</a></li><li><a href='?meio=1800233'>Escala Funcionários da Saúde</a></li><li><a href='?meio=1800234'>Estoque Fármacia</a></li><li><a href='?meio=1800235'>Cardápio de Alimentação</a></li><li><a href='?meio=1800236'>Listas de Espera de Vagas Escolares</a></li><li><a href='?meio=1800452'>Iluminação</a></li><li><a href='?meio=1800470'>Atendimento Saúde</a></li><li><a href='?meio=1800475'>Lista de Espera Saúde</a></li><li><a href='?meio=1800498'>Bolsa Família</a></li><li><a href='?meio=1800721'>Lei Aldir Blanc</a></li><li><a href='?meio=1800726'>Sugestão - PPA</a></li><li><a href='https://webapp1-ipora.cidade360.cloud/NFSe.Portal/'>Nota Fiscal </a></li></ul></div><div class='col-6 col-md-3'><h6 style='color: #38b6ff;'><strong>Governo digital </strong></h6><ul class='list-unstyled'><li><a href='?meio=1800348'>LGPD e Governo Digital</a></li><li><a href='?meio=1800349'>Serviços</a></li><li><a href='?meio=1800350'>Pesquisa de Satisfação</a></li><li><a href='?meio=1800459'>Dados Abertos</a></li><li><a href='https://ipora.pr.gov.br/carta-servicos/'>Carta de Serviços</a></li></ul></div>                </div>
+            </div>
+        </div>
+        <div class="footer-divider mb-4"></div>
+        <div class="row align-items-center">
+            <div class="col-12 col-md-4 mb-3 mb-md-0">
+                <h6 style="color:rgb(255, 255, 255);"><strong>Acompanhe nas redes sociais</strong></h6>
+                <div>
+                    <a href="https://www.instagram.com/municipiodeipora/" class="btn btn-outline-primary btn-sm"><i class="fab fa-instagram"></i></a>
+                    <a href="" class="btn btn-outline-primary btn-sm"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.facebook.com/PrefeituraIporaPr/" class="btn btn-outline-primary btn-sm"><i class="fab fa-facebook"></i></a>
+                    <a href="?meio=1800342" class="btn btn-outline-primary btn-sm"><i class="bi bi-map-fill"></i> Mapa do Site</a>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <h6 style="color:rgb(255, 255, 255);"><strong>Sede Administrativa</strong></h6>
+                <p class="mb-0">Rua Pedro Alvares Cabral, 2677 - Centro -<br>
+                <strong><i class="fas fa-phone-alt"></i> (44) 3652-8100</strong></p>
+            </div>
+            <div class="col-12 col-md-4">
+                <h6 style="color:rgb(255, 255, 255);"><strong>Fale Conosco</strong></h6>
+                <p class="mb-0">Horário de atendimento: das 08:00 às 11:30hs e das 13:00 às 17:00hs<br>
+                <strong><i class="bi bi-envelope-check-fill"></i> contato@ipora.pr.gov.br </strong></p>
+            </div>
+        </div>
+        <div class="footer-divider mb-4"></div>
+        <div class="row c-copy__rights">
+            <div class="col-12 col-md-6">
+                <p class="mb-0">© 2026 Prefeitura Municipal de Iporã.  Todos os direitos reservados. <br><br>
+            </div>
+            <div class="col-12 col-md-6 text-md-end">
+                <p class="mb-0"> Desenvolvido por Vale - Soluções para seu Municipio <br>
+            </div>
+        </div>
+    </div>
+</footer>
+<div id="faq-widget" aria-live="polite">
+  <div id="faq-card" role="dialog" aria-labelledby="faq-title">
+    <div id="faq-header">
+      <div id="faq-title"><strong>Sua dúvida pode virar resposta pra todo mundo!</strong></div>
+      <button id="faq-close" type="button" aria-label="Fechar" title="Fechar">
+      </button>
+    </div>
+    <div id="faq-body">
+      <p>Quer entender melhor o que a Prefeitura Municipal de Iporã faz ou onde achar informações no site e no Portal da Transparência?</p>
+      <p><em>Este é o espaço pra você perguntar!</em></p>
+      <p>É rápido, anônimo e ajuda a gente a melhorar as informações e facilitar o acesso pra todo mundo. Deixe aqui sua dúvida.</p>
+      <form id="faq-form" method="post" action="/faq_submit.php" autocomplete="off" novalidate>
+        <input type="hidden" name="csrf_token" id="faq-csrf-token" value="">
+        <div style="position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden;">
+          <label>Se você é humano, deixe este campo em branco</label>
+          <input type="text" name="website" tabindex="-1" autocomplete="off">
+        </div>
+        <textarea id="faq-textarea" name="pergunta" maxlength="255" placeholder="Escreva sua dúvida (máx. 255 caracteres)" required></textarea>
+        <div id="faq-aux">
+          <small id="faq-count">0/255</small>
+        </div>
+        <button id="faq-submit" type="submit" disabled>Envie sua Dúvida</button>
+        <div id="faq-note">
+          Obrigado por participar! Sua dúvida vai ajudar a Prefeitura Municipal de Iporã a deixar o site e o Portal da Transparência mais claros.
+          Em breve, as respostas estarão na página de <strong>Perguntas e Respostas</strong>.
+        </div>
+        <div id="faq-error"></div>
+      </form>
+    </div>
+    <div id="faq-success">Recebemos sua dúvida. Obrigado!</div>
+  </div>
+  <button id="faq-toggle" type="button" aria-expanded="true" aria-controls="faq-card">
+    <span>Sua dúvida pode virar resposta <br> pra todo mundo!</span>
+  </button>
+</div>
+		<link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

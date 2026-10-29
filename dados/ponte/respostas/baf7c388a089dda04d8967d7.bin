@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+ <html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://ogp.me/ns/fb#" xml:lang="pt-BR" lang="pt-BR" class="no-js"> 
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="description" content="Portal do Ministério Público do Estado de Goiás">
+  <meta property="og:title" content="Portal MPGO" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.mpgo.mp.br/portal/" />
+  <meta property="og:image" content="https://www.mpgo.mp.br/portal/mpgo.jpg" />
+  <meta property="og:description" content="Portal do Ministério Público do Estado de Goiás" />
+  <meta property="og:site_name" content="Portal MPGO" />
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@MPdeGoias">
+  <meta name="twitter:title" content="Portal MPGO">
+  <meta name="twitter:description" content="Portal do Ministério Público do Estado de Goiás">
+  <meta name="twitter:creator" content="@MPdeGoias">
+  <meta name="twitter:image" content="https://www.mpgo.mp.br/portal/mpgo.jpg">
+  <meta http-equiv="cache-control" content="no-cache"/>
+      <meta name="author" content="Layout: Daniely Lima, Desenv: Thiago Imolesi, Thiago Damasceno. (SINFO - MPGO)"/>
+  <meta content="authenticity_token" name="csrf-param" />
+<meta content="0+9hLMvsLP0I1UFSTzt02XCJSp0age1divvufJTspgk=" name="csrf-token" />  
+  <title>Portal do Ministério Público do Estado de Goiás</title>
+  <link rel="canonical" content="/" />  <link rel="shortcut icon" href="/portal/favicon.ico" type="image/x-icon"/>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800' rel='stylesheet' type='text/css'/>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,200;0,300;0,400;0,600;0,800;0,900;1,100;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link href="/portal/assets/application-2de21ab356dbb5ce8d7523bb1bea49cf.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/portal/assets/fancybox-c4661024ae8333de03234d9079701107.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="/portal/assets/print-e39633bf3fdad2801342871c365cbd39.css" media="print" rel="stylesheet" type="text/css" />
+  <link href="/portal/assets/home-875f0d42a52ff5536404da8fda8d423b.css" media="screen" rel="stylesheet" type="text/css" />
+</head>
+  <body id="theme" class="theme-portal" style="width: 100vw; overflow-x: clip;">
+    <input type="checkbox" id="menu" class="hidden">
+    <label class="menu-label" for="menu"></label>
+    <header id="top" class="header" role="banner">
+      <div class="header-primary max-m">
+    <div class="content-center row pt-10 pb-10 small">
+        <ul class="nav max-l" style="margin-left:0px;">
+            <li class="nav-item">
+                <a id="ancoraConteudo" accesskey="1" href="#conteudo" class="nav-link">Ir para conteúdo</a>
+            </li>
+            <li class="nav-item">
+                <a id="ancoraMenu" accesskey="2" href="#menu_principal" class="nav-link">Ir para menu</a>
+            </li>
+            <li class="nav-item">
+                <a id="ancoraBusca" accesskey="3" href="#search_es" class="nav-link">Ir para busca</a>
+            </li>
+            <li class="nav-item">
+                <a id="ancoraMapa" accesskey="4" href="#mapa" class="nav-link">Ir para rodapé</a>
+            </li>
+        </ul>
+        <ul class="nav">
+            <li class="reseta tooltip-bottom" data-tooltip="Redefinir fonte">
+                <a href="#" class="nav-link" id="reseta">A</a>
+            </li>
+            <li class="aumentar tooltip-bottom" data-tooltip="Aumentar fonte">
+                <a href="#" class="nav-link" id="aumentar">A+</a>
+            </li>
+            <li class="diminuir tooltip-bottom" data-tooltip="Diminuir fonte">
+                <a href="#" class="nav-link" id="diminuir">A-</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="createTour()">Tour guiado</a>
+            </li>
+            <li class="nav_mapa tooltip-bottom" data-tooltip="Acessibilidade">
+                <a id="acessibilidade" class="nav-link pb-0 pl-0 pr-0" href="/portal/conteudo/acessibilidade">
+                </a>
+            </li>
+            <li class="nav_mapa tooltip-bottom" data-tooltip="Mapa do site">
+                <a id="link-mapa-site" class="nav-link pb-0 pl-0 pr-0" href="/portal/mapa_do_site">
+                </a>
+            </li>
+            <li class="nav_contraste tooltip-bottom" data-tooltip="Contraste">
+                <a class="nav-link pb-0 pl-0 pr-0" onclick="changeTheme()">
+                </a>
+            </li>
+        </ul>
+        <ul class="nav" style="margin: 0 auto;">
+            <li class="tooltip-bottom" data-tooltip="Youtube"  ><a class="nav-link"  target="_blank" href="https://www.youtube.com/@mpgo_oficial"><b class="ico-youtube fs-16" style="margin-right: -15px;"></b></a></li>
+            <li class="tooltip-bottom" data-tooltip="Tiktok"  >
+                <a class="nav-link"  target="_blank" href="https://www.tiktok.com/@mpgo_oficial">
+                </a>
+            </li>
+            <li class="tooltip-bottom" data-tooltip="X (Twitter)"  >
+                <a class="nav-link"  target="_blank" href="https://www.x.com/@mpgo_oficial">
+                </a>
+            </li>
+            <li class="tooltip-bottom" data-tooltip="Instagram"><a class="nav-link"  target="_blank" href="https://www.instagram.com/mpgo_oficial/"><b class="ico-instagram fs-16" style="margin-right: -15px;"></b></a></li>
+            <li class="tooltip-bottom" data-tooltip="Facebook" ><a class="nav-link"  target="_blank" href="https://www.facebook.com/mpgo.oficial"><b class="ico-facebook fs-16" style="margin-right: -15px;"></b></a></li>
+        </ul>
+        <ul class="nav">
+            <li><a class="nav-link" target="_blank" href="https://intranet.mpgo.mp.br/portal/"><b class="ico-lock fs-16"></b> Intranet</b></a></li>
+        </ul>
+    </div>
+</div>
+<div class="header-mobile min-m">
+  <div class="bg-primary row-center box">
+      <figure class="figure w-12 mr-10"><a href="/portal"><img src="/portal/assets/topo/logo-55cec37a4da3c0db1fcae7a59dd31dd2.png" alt="Logo MP"></a></figure>
+      <div class="row-full row">
+        <a class="nav-icolink inline ml-auto" id="busca_mobile_toogle" for="menu"><b class="ico-search"></b></a>
+        <div class="dropdown">
+            <a id='m-acessibilidade' class="nav-icolink" href="#">
+            </a>
+            <ul class="dropdown-content dropdown-menu drop-cotaniner" style="right: 0;">
+                <li><a class="nav-sublink block" id="ancoraConteudo" accesskey="1" href="#conteudo">Ir para conteúdo</a></li>
+                <li><a class="nav-sublink block" id="ancoraMenu" accesskey="2" href="#">Ir para menu</a></li>
+                <li><a class="nav-sublink block" id="ancoraMapa" accesskey="4"  href="#mapa">Ir para rodapé</a></li>
+                <li><a class="nav-sublink block" href="#" id="res-font">A</a></li>
+                <li><a class="nav-sublink block" href="#" id="dec-font">A-</a></li>
+                <li><a class="nav-sublink block" href="#" id="inc-font">A+</a></li>
+                <li><a class="nav-sublink block" href="/portal/conteudo/acessibilidade">Acessibilidade</a></li>
+                <li><a class="nav-sublink block" href="#"onclick="changeTheme()">Alto Contraste</a></li>
+                <li><a class="nav-sublink block" href="/portal/mapa_do_site">Mapa do site</a></li>
+                <li><a class="nav-sublink block" href="#" onclick="createTour()">Tour Guiado</a></li>
+                <li><a class="nav-sublink block" href="#" onclick="triggerLibras()">Libras</a></li>
+            </ul>
+        </div>
+        <a class="nav-icolink inline" href="https://intranet.mpgo.mp.br/portal/"><b class="ico-lock"></b></a>
+        <label class="nav-icolink inline" for="menu"><b id="menu-pai-mobile" class="ico-menu"></b></label>
+  </div>
+        <form accept-charset="UTF-8" action="/portal/noticias/ministerio-publico" method="get"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+        <div class="search box busca_mobile" style="display: none;">
+            <input type="text" class="form-input" name="search" id="search_esm" placeholder="O que você procura?" value="">
+            <button type="submit" type="button" class="bt bt-ico input-group-right" style="border: none;" name="filter" value="Filtrar">
+                <b class="ico-search"></b>
+            </button>
+      </div>
+</form></div>
+    </header>
+    <div class="sombraInferiorMenu"></div>
+    <div class="menu-nav print-hidden min-m">
+            <a class="menu-nav-link navmobile-input" data-menu="1" id="conheca-o-mpgo">CONHEÇA O MPGO<b class="ico-chevron-down"></b></a>
+                    <div class="navmobile-content menu-filho" data-subx="1">
+                            <a class="menu-nav-link" href="/portal/conteudo/sobre-a-instituicao">Sobre a Instituição</a>
+                            <a class="menu-nav-link" href="/portal/pagina/procuradoria-geral-de-justica">Procuradoria-Geral</a>
+                            <a class="menu-nav-link" href="/portal/pagina/colegio-de-procuradores-e-procuradoras-de-justica">Colégio de Procuradores</a>
+                            <a class="menu-nav-link" href="/portal/pagina/conselho-superior-do-ministerio-publico">Conselho Superior</a>
+                            <a class="menu-nav-link" href="/portal/pagina/corregedoria-geral">Corregedoria-Geral</a>
+                            <a class="menu-nav-link" href="/portal/pagina/ouvidoria">Ouvidoria</a>
+                            <a class="menu-nav-link" href="/portal/pagina/subprocuradoria-geral-de-justica-para-assuntos-institucionais">Subprocuradoria-Geral Institucional</a>
+                            <a class="menu-nav-link" href="/portal/pagina/subprocuradoria-geral-de-justica-para-assuntos-administrativos">Subprocuradoria-Geral Administrativa</a>
+                            <a class="menu-nav-link" href="/portal/pagina/subprocuradoria-geral-de-justica-para-assuntos-juridicos">Subprocuradoria-Geral Jurídica</a>
+                            <a class="menu-nav-link" href="/portal/pagina/subprocuradoria-geral-de-justica-para-assuntos-de-planejamento-estrategia-e-inovacao">Subprocuradoria-Geral de Planejamento, Estratégia e Inovação</a>
+                            <a class="menu-nav-link" href="https://www.mpgo.mp.br/portal/pagina/memorial-do-ministerio-publico-do-estado-de-goias">Memorial do MPGO</a>
+                            <a class="menu-nav-link" href="/portal/pagina/escritorio-de-representacao-do-mpgo-em-brasilia">Escritório de Representação em Brasília</a>
+                            <a class="menu-nav-link" href="/portal/pagina/escola-superior-do-ministerio-publico">Escola Superior</a>
+                            <a class="menu-nav-link" href="/portal/pagina/centro-de-apoio">Centro de Apoio Operacional</a>
+                            <a class="menu-nav-link" href="/portal/pagina/grupos-de-atuacao-especial">Grupos de Atuação Especial</a>
+                            <a class="menu-nav-link" href="/portal/pagina/centro-de-autocomposicao-de-conflitos-e-seguranca-juridica">COMPOR</a>
+                            <a class="menu-nav-link" href="/portal/pagina/procuradorias-de-justica">Procuradorias de Justiça</a>
+                            <a class="menu-nav-link" href="/portal/pagina/promotorias-de-justica">Promotorias de Justiça</a>
+                            <a class="menu-nav-link" href="/portal/pagina/areas-administrativas">Áreas Administrativas</a>
+                            <a class="menu-nav-link" href="/portal/pagina/comissoes">Comissões</a>
+                    </div>
+            <a class="menu-nav-link navmobile-input" data-menu="2" id="areas-de-atuacao">ÁREAS DE ATUAÇÃO<b class="ico-chevron-down"></b></a>
+                    <div class="navmobile-content menu-filho" data-subx="2">
+                            <a class="menu-nav-link" href="/portal/pagina/areas-de-atuacao--2#consumidor">Consumidor</a>
+                            <a class="menu-nav-link" href="/portal/pagina/areas-de-atuacao--2#criminal">Criminal</a>
+                            <a class="menu-nav-link" href="/portal/pagina/areas-de-atuacao--2#direitoshumanos">Direitos Humanos</a>
+                            <a class="menu-nav-link" href="/portal/pagina/areas-de-atuacao--2#educacao">Educação</a>
+                            <a class="menu-nav-link" href="/portal/pagina/areas-de-atuacao--2#eleitoral">Eleitoral</a>
+                            <a class="menu-nav-link" href="/portal/pagina/areas-de-atuacao--2#familia">Família</a>
+                            <a class="menu-nav-link" href="/portal/pagina/areas-de-atuacao--2#infancia">Infância e Juventude</a>
+                            <a class="menu-nav-link" href="/portal/pagina/areas-de-atuacao--2#meioambiente">Meio Ambiente e Urbanismo</a>
+                            <a class="menu-nav-link" href="/portal/pagina/areas-de-atuacao--2#patrimonio">Patrimônio Público</a>
+                            <a class="menu-nav-link" href="/portal/pagina/areas-de-atuacao--2#registros">Registros Públicos</a>
+                            <a class="menu-nav-link" href="/portal/pagina/areas-de-atuacao--2#saude">Saúde</a>
+                            <a class="menu-nav-link" href="/portal/pagina/areas-de-atuacao--2#terceirosetor">Terceiro Setor</a>
+                    </div>
+              <a class="menu-nav-link navmobile-input" href="/portal/atos_normas" id="atos-e-normas">ATOS E NORMAS</a>
+            <a class="menu-nav-link navmobile-input" data-menu="4" id="comunicacao">COMUNICAÇÃO<b class="ico-chevron-down"></b></a>
+                    <div class="navmobile-content menu-filho" data-subx="4">
+                            <a class="menu-nav-link" href="/portal/card_pages/26">Campanhas Institucionais</a>
+                            <a class="menu-nav-link" href="/portal/noticias">Notícias</a>
+                            <a class="menu-nav-link" href="/portal/conteudo/podcast-mpgo-no-ar--3">Podcast MPGO no ar</a>
+                            <a class="menu-nav-link" href="/portal/conteudo/termos-de-uso-das-redes-sociais-do-ministerio-publico-de-goias">Termos de Uso das Redes Sociais</a>
+                    </div>
+            <a class="menu-nav-link navmobile-input" data-menu="5" id="servicos">SERVIÇOS<b class="ico-chevron-down"></b></a>
+                    <div class="navmobile-content menu-filho" data-subx="5">
+                            <a class="menu-nav-link" href="/portal/conteudo/acessibilidade">Acessibilidade</a>
+                            <a class="menu-nav-link" href="https://www.mpgo.mp.br/transparencia/servico_informacao_cidadao/carta_servicos_publicos_cidadao">Carta de serviços</a>
+                            <a class="menu-nav-link" href="https://www.mpgo.mp.br/certidao">Certidão online</a>
+                            <a class="menu-nav-link" href="https://www.mpgo.mp.br/coliseu">Concursos e seleções</a>
+                            <a class="menu-nav-link" href="https://www.mpgo.mp.br/atena_cidadao/">Consulta a processos</a>
+                            <a class="menu-nav-link" href="/portal/cursos_eventos">Cursos e eventos</a>
+                            <a class="menu-nav-link" href="/portal/domp">Diário Oficial - DOMP</a>
+                            <a class="menu-nav-link" href="https://www.mpgo.mp.br/sessao_virtual">E-Conselho Sessão Virtual</a>
+                            <a class="menu-nav-link" href="/portal/pagina/emolumentos-dos-servicos-notoriais-e-de-registro-do-estado-de-goias">Emolumentos de serviços notariais</a>
+                            <a class="menu-nav-link" href="/portal/arquivos/2024/09/25/14_38_13_51_Lista_das_Promotorias_de_Justi_a_Minist_rio_P_blico_de_Goi_s.html_25_9_2024.html">Encontre uma promotoria</a>
+                            <a class="menu-nav-link" href="/portal/pagina/fornecedores">Fornecedores</a>
+                            <a class="menu-nav-link" href="https://emolumentos.mpgo.mp.br/interbancos/login.aspx">FUNEMP Cartórios</a>
+                            <a class="menu-nav-link" href="/portal/pagina/governo-digital">Governo Digital</a>
+                            <a class="menu-nav-link" href="/portal/pagina/licitacoes">Licitações</a>
+                            <a class="menu-nav-link" href="/portal/mapa_do_site">Mapa do site</a>
+                            <a class="menu-nav-link" href="https://www.mpgo.mp.br/portal/pagina/medi-materializador-de-evidencias-digitais-e-informaticas">MEDI</a>
+                            <a class="menu-nav-link" href="/portal/mp_cidadao">MP Cidadão</a>
+                            <a class="menu-nav-link" href="/portal/mp_em_numeros">MP em números</a>
+                            <a class="menu-nav-link" href="/portal/conteudo/mp-tv">MP-TV</a>
+                            <a class="menu-nav-link" href="/portal/conteudo/duvidas-frequentes">Perguntas frequentes</a>
+                            <a class="menu-nav-link" href="/portal/pagina/plantao">Plantão</a>
+                            <a class="menu-nav-link" href="/portal/conteudo/politica-de-cookies">Política de Cookies</a>
+                            <a class="menu-nav-link" href="https://www.mpgo.mp.br/transparencia/">Portal da Transparência</a>
+                            <a class="menu-nav-link" href="/portal/pagina/portal-lgpd">Portal LGPD</a>
+                            <a class="menu-nav-link" href="/protocolo">Protocolo Eletrônico</a>
+                            <a class="menu-nav-link" href="/portal/pagina/recursos-humanos">Recursos humanos</a>
+                            <a class="menu-nav-link" href="https://www.mpgo.mp.br/revista/">Revista eletrônica do MP</a>
+                            <a class="menu-nav-link" href="/portal/pagina/servico-de-informacao-ao-cidadao-sic">Serviço de Informação ao Cidadão – SIC</a>
+                            <a class="menu-nav-link" href="/portal/conteudo/turma-recursal--3">Turma recursal</a>
+                    </div>
+    </div>
+    <section class="container">
+      <section class="home-slide bg-gray">
+  <div class="content-center relative max-m">
+    <div class="navmain" role="menubar" id="menu-servico-cidadao">
+      <div class="brand pl-20 pr-20" role="banner">
+        <a href="/portal">
+          <img src="/portal/assets/topo/logo-55cec37a4da3c0db1fcae7a59dd31dd2.png" alt="Logo MP" style="filter: none">
+        </a>
+      </div>
+      <ul class="list-clear mt-20 w-20 max-l">
+              <li>
+                <a class="navmain-link " href="https://www.mpgo.mp.br/certidao">
+                  <div class="svg fs-38">
+                  <?xml version="1.0" encoding="utf-8"?>
+                  </div>
+                  <span class="ml-10 w-11">Certidão Online</span>
+                </a>
+              </li>
+              <li>
+                <a class="navmain-link " href="/coliseu">
+                  <div class="svg fs-38">
+                  <?xml version="1.0" encoding="utf-8"?>
+                  </div>
+                  <span class="ml-10 w-11">Concursos e seleções</span>
+                </a>
+              </li>
+              <li>
+                <a class="navmain-link " href="https://www.mpgo.mp.br/atena_cidadao/">
+                  <div class="svg fs-38">
+                  <?xml version="1.0" encoding="utf-8"?>
+                  </div>
+                  <span class="ml-10 w-11">Consulta a processos</span>
+                </a>
+              </li>
+              <li>
+                <a class="navmain-link " href="/portal/cursos_eventos">
+                  <div class="svg fs-38">
+                  <?xml version="1.0" encoding="utf-8"?>
+                  </div>
+                  <span class="ml-10 w-11">Cursos e eventos</span>
+                </a>
+              </li>
+              <li>
+                <a class="navmain-link " href="/portal/domp">
+                  <div class="svg fs-38">
+                  <?xml version="1.0" encoding="utf-8"?>
+                  </div>
+                  <span class="ml-10 w-11">Diário Oficial</span>
+                </a>
+              </li>
+              <li>
+                <a class="navmain-link " href="https://www.mpgo.mp.br/portal/arquivos/2024/09/25/14_38_13_51_Lista_das_Promotorias_de_Justi_a_Minist_rio_P_blico_de_Goi_s.html_25_9_2024.html">
+                  <div class="svg fs-38">
+                  <?xml version="1.0" encoding="utf-8"?>
+                  </div>
+                  <span class="ml-10 w-11">Encontre uma promotoria</span>
+                </a>
+              </li>
+              <li>
+                <a class="navmain-link " href="/portal/pagina/ouvidoria">
+                  <div class="svg fs-38">
+                  <?xml version="1.0" encoding="utf-8"?>
+                  </div>
+                  <span class="ml-10 w-11">Ouvidoria</span>
+                </a>
+              </li>
+              <li>
+                <a class="navmain-link " href="/portal/pagina/plantao">
+                  <div class="svg fs-38">
+                  <?xml version="1.0" encoding="utf-8"?>
+                  </div>
+                  <span class="ml-10 w-11">Plantão</span>
+                </a>
+              </li>
+              <li>
+                <a class="navmain-link " href="/protocolo">
+                  <div class="svg fs-38">
+                  <?xml version="1.0" encoding="utf-8"?>
+                  </div>
+                  <span class="ml-10 w-11">Protocolo Eletrônico</span>
+                </a>
+              </li>
+              <li>
+                <a class="navmain-link icone_destaque" href="https://www.mpgo.mp.br/denuncia/">
+                  <div class="svg fs-38">
+                  <?xml version="1.0" encoding="utf-8"?>
+                  </div>
+                  <span class="ml-10 w-11">MP Cidadão</span>
+                </a>
+              </li>
+      </ul>
+    </div>
+    <section id="busca" class="row-full">
+      <div class="nav-primary col-10 col-m-8 pr-20">
+        <div  id="menu-pai" class="list-clear nav-superior row-center nav-right">
+          <li><a class="nav-link" id="menu_principal" href="/portal">INÍCIO</a></li>
+              <li class="dropdown">
+                <a class="nav-link" href="#" id="conheca-o-mpgo">CONHEÇA O MPGO<b class="ico-chevron-down"></b></a>
+                  <div class="dropdown-content bg-base-2 mt-30 w-25">
+                  <div class="drop-mega-item">
+                  <h5 class="uppercase">CONHEÇA O MPGO</h5>
+                <ul class="list-clear small">
+                  <li><a class="link" href="/portal/conteudo/sobre-a-instituicao">Sobre a Instituição</a></li>
+                  <li><a class="link" href="/portal/pagina/procuradoria-geral-de-justica">Procuradoria-Geral</a></li>
+                  <li><a class="link" href="/portal/pagina/colegio-de-procuradores-e-procuradoras-de-justica">Colégio de Procuradores</a></li>
+                  <li><a class="link" href="/portal/pagina/conselho-superior-do-ministerio-publico">Conselho Superior</a></li>
+                  <li><a class="link" href="/portal/pagina/corregedoria-geral">Corregedoria-Geral</a></li>
+                  <li><a class="link" href="/portal/pagina/ouvidoria">Ouvidoria</a></li>
+                  <li><a class="link" href="/portal/pagina/subprocuradoria-geral-de-justica-para-assuntos-institucionais">Subprocuradoria-Geral Institucional</a></li>
+                  <li><a class="link" href="/portal/pagina/subprocuradoria-geral-de-justica-para-assuntos-administrativos">Subprocuradoria-Geral Administrativa</a></li>
+                  <li><a class="link" href="/portal/pagina/subprocuradoria-geral-de-justica-para-assuntos-juridicos">Subprocuradoria-Geral Jurídica</a></li>
+                  <li><a class="link" href="/portal/pagina/subprocuradoria-geral-de-justica-para-assuntos-de-planejamento-estrategia-e-inovacao">Subprocuradoria-Geral de Planejamento, Estratégia e Inovação</a></li>
+                  <li><a class="link" href="https://www.mpgo.mp.br/portal/pagina/memorial-do-ministerio-publico-do-estado-de-goias">Memorial do MPGO</a></li>
+                  <li><a class="link" href="/portal/pagina/escritorio-de-representacao-do-mpgo-em-brasilia">Escritório de Representação em Brasília</a></li>
+                  <li><a class="link" href="/portal/pagina/escola-superior-do-ministerio-publico">Escola Superior</a></li>
+                  <li><a class="link" href="/portal/pagina/centro-de-apoio">Centro de Apoio Operacional</a></li>
+                  <li><a class="link" href="/portal/pagina/grupos-de-atuacao-especial">Grupos de Atuação Especial</a></li>
+                  <li><a class="link" href="/portal/pagina/centro-de-autocomposicao-de-conflitos-e-seguranca-juridica">COMPOR</a></li>
+                  <li><a class="link" href="/portal/pagina/procuradorias-de-justica">Procuradorias de Justiça</a></li>
+                  <li><a class="link" href="/portal/pagina/promotorias-de-justica">Promotorias de Justiça</a></li>
+                  <li><a class="link" href="/portal/pagina/areas-administrativas">Áreas Administrativas</a></li>
+                  <li><a class="link" href="/portal/pagina/comissoes">Comissões</a></li>
+              </ul>
+              </div>
+              </div>
+              </li>
+              <li class="dropdown">
+                <a class="nav-link" href="#" id="areas-de-atuacao">ÁREAS DE ATUAÇÃO<b class="ico-chevron-down"></b></a>
+                  <div class="dropdown-content bg-base-2 mt-30 w-25">
+                  <div class="drop-mega-item">
+                  <h5 class="uppercase">ÁREAS DE ATUAÇÃO</h5>
+                <ul class="list-clear small">
+                  <li><a class="link" href="/portal/pagina/areas-de-atuacao--2#consumidor">Consumidor</a></li>
+                  <li><a class="link" href="/portal/pagina/areas-de-atuacao--2#criminal">Criminal</a></li>
+                  <li><a class="link" href="/portal/pagina/areas-de-atuacao--2#direitoshumanos">Direitos Humanos</a></li>
+                  <li><a class="link" href="/portal/pagina/areas-de-atuacao--2#educacao">Educação</a></li>
+                  <li><a class="link" href="/portal/pagina/areas-de-atuacao--2#eleitoral">Eleitoral</a></li>
+                  <li><a class="link" href="/portal/pagina/areas-de-atuacao--2#familia">Família</a></li>
+                  <li><a class="link" href="/portal/pagina/areas-de-atuacao--2#infancia">Infância e Juventude</a></li>
+                  <li><a class="link" href="/portal/pagina/areas-de-atuacao--2#meioambiente">Meio Ambiente e Urbanismo</a></li>
+                  <li><a class="link" href="/portal/pagina/areas-de-atuacao--2#patrimonio">Patrimônio Público</a></li>
+                  <li><a class="link" href="/portal/pagina/areas-de-atuacao--2#registros">Registros Públicos</a></li>
+                  <li><a class="link" href="/portal/pagina/areas-de-atuacao--2#saude">Saúde</a></li>
+                  <li><a class="link" href="/portal/pagina/areas-de-atuacao--2#terceirosetor">Terceiro Setor</a></li>
+              </ul>
+              </div>
+              </div>
+              </li>
+              <li>
+                <a class="nav-link" href="/portal/atos_normas" id="atos-e-normas">ATOS E NORMAS</a>
+              </li>
+              <li class="dropdown">
+                <a class="nav-link" href="#" id="comunicacao">COMUNICAÇÃO<b class="ico-chevron-down"></b></a>
+                  <div class="dropdown-content bg-base-2 mt-30 w-25">
+                  <div class="drop-mega-item">
+                  <h5 class="uppercase">COMUNICAÇÃO</h5>
+                <ul class="list-clear small">
+                  <li><a class="link" href="/portal/card_pages/26">Campanhas Institucionais</a></li>
+                  <li><a class="link" href="/portal/noticias">Notícias</a></li>
+                  <li><a class="link" href="/portal/conteudo/podcast-mpgo-no-ar--3">Podcast MPGO no ar</a></li>
+                  <li><a class="link" href="/portal/conteudo/termos-de-uso-das-redes-sociais-do-ministerio-publico-de-goias">Termos de Uso das Redes Sociais</a></li>
+              </ul>
+              </div>
+              </div>
+              </li>
+              <li class="dropdown">
+                <a class="nav-link" href="#" id="servicos">SERVIÇOS<b class="ico-chevron-down"></b></a>
+                  <div class="dropdown-content bg-base-2 mt-30 w-25">
+                  <div class="drop-mega-item">
+                  <h5 class="uppercase">SERVIÇOS</h5>
+                <ul class="list-clear small">
+                  <li><a class="link" href="/portal/conteudo/acessibilidade">Acessibilidade</a></li>
+                  <li><a class="link" href="https://www.mpgo.mp.br/transparencia/servico_informacao_cidadao/carta_servicos_publicos_cidadao">Carta de serviços</a></li>
+                  <li><a class="link" href="https://www.mpgo.mp.br/certidao">Certidão online</a></li>
+                  <li><a class="link" href="https://www.mpgo.mp.br/coliseu">Concursos e seleções</a></li>
+                  <li><a class="link" href="https://www.mpgo.mp.br/atena_cidadao/">Consulta a processos</a></li>
+                  <li><a class="link" href="/portal/cursos_eventos">Cursos e eventos</a></li>
+                  <li><a class="link" href="/portal/domp">Diário Oficial - DOMP</a></li>
+                  <li><a class="link" href="https://www.mpgo.mp.br/sessao_virtual">E-Conselho Sessão Virtual</a></li>
+                  <li><a class="link" href="/portal/pagina/emolumentos-dos-servicos-notoriais-e-de-registro-do-estado-de-goias">Emolumentos de serviços notariais</a></li>
+                  <li><a class="link" href="/portal/arquivos/2024/09/25/14_38_13_51_Lista_das_Promotorias_de_Justi_a_Minist_rio_P_blico_de_Goi_s.html_25_9_2024.html">Encontre uma promotoria</a></li>
+                  <li><a class="link" href="/portal/pagina/fornecedores">Fornecedores</a></li>
+                  <li><a class="link" href="https://emolumentos.mpgo.mp.br/interbancos/login.aspx">FUNEMP Cartórios</a></li>
+                  <li><a class="link" href="/portal/pagina/governo-digital">Governo Digital</a></li>
+                  <li><a class="link" href="/portal/pagina/licitacoes">Licitações</a></li>
+                  <li><a class="link" href="/portal/mapa_do_site">Mapa do site</a></li>
+                  <li><a class="link" href="https://www.mpgo.mp.br/portal/pagina/medi-materializador-de-evidencias-digitais-e-informaticas">MEDI</a></li>
+                  <li><a class="link" href="/portal/mp_cidadao">MP Cidadão</a></li>
+                  <li><a class="link" href="/portal/mp_em_numeros">MP em números</a></li>
+                  <li><a class="link" href="/portal/conteudo/mp-tv">MP-TV</a></li>
+                  <li><a class="link" href="/portal/conteudo/duvidas-frequentes">Perguntas frequentes</a></li>
+                  <li><a class="link" href="/portal/pagina/plantao">Plantão</a></li>
+                  <li><a class="link" href="/portal/conteudo/politica-de-cookies">Política de Cookies</a></li>
+                  <li><a class="link" href="https://www.mpgo.mp.br/transparencia/">Portal da Transparência</a></li>
+                  <li><a class="link" href="/portal/pagina/portal-lgpd">Portal LGPD</a></li>
+                  <li><a class="link" href="/protocolo">Protocolo Eletrônico</a></li>
+                  <li><a class="link" href="/portal/pagina/recursos-humanos">Recursos humanos</a></li>
+                  <li><a class="link" href="https://www.mpgo.mp.br/revista/">Revista eletrônica do MP</a></li>
+                  <li><a class="link" href="/portal/pagina/servico-de-informacao-ao-cidadao-sic">Serviço de Informação ao Cidadão – SIC</a></li>
+                  <li><a class="link" href="/portal/conteudo/turma-recursal--3">Turma recursal</a></li>
+              </ul>
+              </div>
+              </div>
+              </li>
+          </li>
+          <li>
+            <form accept-charset="UTF-8" action="/portal/advanced_search/" method="get"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+  <div class="search row small">
+      <input type="text" class="form-input row-full" name="search" id="search_es"
+      placeholder="O que você procura?" value="">
+      <button type="submit" type="button" class="bt bt-ico input-group-right" name="filter" value="Filtrar">
+          <b class="ico-search"></b>
+      </button>
+  </div>
+</form>
+          </li>
+          </ul>
+        </div>
+    </section>
+  </div>
+  <div id="div-noticia-principal" class="slide bg-black home-slide">
+        <input type="radio" name="slide-1" id="slide-1" class="hidden slide-input-1" checked>
+        <input type="radio" name="slide-1" id="slide-2" class="hidden slide-input-2" >
+        <input type="radio" name="slide-1" id="slide-3" class="hidden slide-input-3" >
+    <div class="slide-nav">
+          <label class="slide-label slide-1" for="slide-1"></label>
+          <label class="slide-label slide-2" for="slide-2"></label>
+          <label class="slide-label slide-3" for="slide-3"></label>
+    </div>
+    <div class="slide-arrows">
+          <label class="slide-arrow arrow-1" for="slide-1"><b class="ico-chevron-left"></b></label>
+          <label class="slide-arrow arrow-2" for="slide-2"><b class="ico-chevron-left"></b></label>
+          <label class="slide-arrow arrow-3" for="slide-3"><b class="ico-chevron-left"></b></label>
+    </div>
+    <div class="slide-container">
+            <div class="slide-item card slide-1">
+              <figure class="figure">
+                <img alt="Imagem ilustrativa" src="/portal/imagens/2025/10/07/17_37_40_861_Capaascom_viol_ncia_sexual_ass_dio_mulher_feminic_dio.jpg" />
+              </figure>
+              <a class="slide-caption content-center" href="/portal/noticia/forca-tarefa-do-mpgo-deflagra-operacao-para-investigar-suspeitas-de-violencia-sexual-contra-mulheres-por-ex-dirigente-de-centro-espirita-em-goiania">
+                <h2 class="slide-title">Força-tarefa do MPGO deflagra operação para investigar suspeitas de violência sexual contra mulheres por ex-dirigente de centro espírita em Goiânia</h2><br>
+                <p class="text max-m"><strong><b class="ico-arrow-right"></b> Acessar a notícia completa</strong></p>
+              </a>
+            </div>
+            <div class="slide-item card slide-2">
+              <figure class="figure">
+                <img alt="Membras e membros do CPJ e demais autoridades presentes à posse" src="/portal/imagens/2026/10/26/21_44_20_845_capaascom_posse_procuradora_ana_maria_e_procurador_lu_s_fernando.jpeg" />
+              </figure>
+              <a class="slide-caption content-center" href="/portal/noticia/atuacao-do-mpgo-no-segundo-grau-e-reforcada-com-a-posse-de-ana-maria-rodrigues-da-cunha-e-luis-fernando-ferreira-de-abreu-nos-cargos-de-procurador-de-justica-e-instalacao-de-mais-tres-procuradorias">
+                <h2 class="slide-title">Atuação do MPGO no segundo grau é reforçada com a posse de Ana Maria Rodrigues da Cunha e Luís Fernando Ferreira de Abreu nos cargos de procurador de Justiça e instalação de mais três procuradorias</h2><br>
+                <p class="text max-m"><strong><b class="ico-arrow-right"></b> Acessar a notícia completa</strong></p>
+              </a>
+            </div>
+            <div class="slide-item card slide-3">
+              <figure class="figure">
+                <img alt="Autoridades em inauguração do escritório dos MPs do Centro-Oeste em BSB" src="/portal/imagens/2026/10/21/09_19_06_967_mosaicoBSB_2_.png" />
+              </figure>
+              <a class="slide-caption content-center" href="/portal/noticia/mpgo-inaugura-com-mpmt-e-mpms-escritorio-conjunto-de-representacao-em-brasilia">
+                <h2 class="slide-title">MPGO inaugura, com MPMT e MPMS, escritório conjunto de representação em Brasília</h2><br>
+                <p class="text max-m"><strong><b class="ico-arrow-right"></b> Acessar a notícia completa</strong></p>
+              </a>
+            </div>
+    </div>
+  </div>
+</section>
+<section class="section-md b-bottom">
+    <div class="col-12 row-col" style="margin-top: 20px;">
+      <h3 style="height: auto; margin: 0 auto;">OUTRAS NOTÍCIAS</h3>
+        <hr style="border: 2px solid; color: #021350; min-width:60px;" width=5%>
+    </div>
+  <a href="#" id="conteudo" class="oculto">Início do Conteúdo</a>
+<div id="div-noticias-destaque" style="margin-top: -10px;" class="content-center">
+    <div class="row-fluid">
+            <div class="col-3 col-m-6 row-col" data-index="hl0">
+                <a class="block text-gray-dark hover-shadow row-full card-noticia" href="/portal/noticia/promotoras-e-promotores-de-justica-com-atuacao-civel-em-goiania-participam-do-encerramento-dos-dialogos-com-o-pgj-deste-ano">
+                    <figure class="figure_noticia_home bg-base-2 figure max-s">
+                        <img alt="Encontro foi realizado na sede da instituição" src="/portal/system/images/W1siZiIsIjIwMjYvMTAvMjgvMTRfNDFfNTZfNjU5X0RpYWxvZ29zX1BHSl9DSVZFTDAwMDAxLmpwZyJdLFsicCIsInRodW1iIiwiNDgweDMyMCEiXV0/Dialogos%20PGJ%20CIVEL00001.jpg" />
+                    </figure>
+                    <div class="box-two">
+                        <h4 class="mb-15"><b class="ico-calendar"></b> 28/10/2026 <span class="ml-20"><b class="ico-clock"></b> 18h50</span></h4>
+                        <p class="text">Promotoras e promotores de Justiça com atuação cível em Goiânia participam do encerramento dos Diálogos com o PGJ deste ano</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-3 col-m-6 row-col" data-index="hl1">
+                <a class="block text-gray-dark hover-shadow row-full card-noticia" href="/portal/noticia/atuacao-do-mpgo-no-juri-consegue-a-condenacao-de-homem-a-40-anos-de-prisao-pelo-feminicidio-de-companheira-em-caldas-novas">
+                    <figure class="figure_noticia_home bg-base-2 figure max-s">
+                        <img alt="Prisão do acusado foi mantida na sentença" src="/portal/system/images/W1siZiIsIjIwMjEvMDgvMzEvMTRfNTVfMzFfNDIyX2FsZ2VtYXNfanVzdGljX2FfY3JpbWVfdmVyc2FvMy5qcGVnIl0sWyJwIiwidGh1bWIiLCI0ODB4MzIwISJdXQ/algemas%20justic%CC%A7a%20crime%20-%20versao3.jpeg" />
+                    </figure>
+                    <div class="box-two">
+                        <h4 class="mb-15"><b class="ico-calendar"></b> 28/10/2026 <span class="ml-20"><b class="ico-clock"></b> 18h34</span></h4>
+                        <p class="text">Atuação do MPGO no júri consegue a condenação de homem a 40 anos de prisão pelo feminicídio de companheira em Caldas Novas</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-3 col-m-6 row-col" data-index="hl2">
+                <a class="block text-gray-dark hover-shadow row-full card-noticia" href="/portal/noticia/acordo-firmado-pelo-mpgo-com-o-municipio-de-catalao-preve-desconto-na-tarifa-de-esgoto-e-ampliacao-do-controle-ambiental">
+                    <figure class="figure_noticia_home bg-base-2 figure max-s">
+                        <img alt="Acordo foi celebrado nesta quarta-feira (28/10)" src="/portal/system/images/W1siZiIsIjIwMjQvMDkvMTcvMTNfMzdfMjVfNzI3X0VzZ290b19kZXNwZWpvX2NvbnRhbWluYV9vX2d1YV9zdWphX3R1YnVsYV9vX2VuY2FtZW50by5qcGciXSxbInAiLCJ0aHVtYiIsIjQ4MHgzMjAhIl1d/Esgoto%2C%20despejo%2C%20contamina%C3%A7%C3%A3o%2C%20%C3%A1gua%20suja%2C%20tubula%C3%A7%C3%A3o%2C%20encamento.jpg" />
+                    </figure>
+                    <div class="box-two">
+                        <h4 class="mb-15"><b class="ico-calendar"></b> 28/10/2026 <span class="ml-20"><b class="ico-clock"></b> 18h33</span></h4>
+                        <p class="text">Acordo firmado pelo MPGO com o município de Catalão prevê desconto na tarifa de esgoto e ampliação do controle ambiental</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-3 col-m-6 row-col" data-index="hl3">
+                <a class="block text-gray-dark hover-shadow row-full card-noticia" href="/portal/noticia/mpgo-ajuiza-acao-para-combater-poluicao-atmosferica-em-santo-antonio-do-descoberto">
+                    <figure class="figure_noticia_home bg-base-2 figure max-s">
+                        <img alt="Imagem ilustrativa" src="/portal/system/images/W1siZiIsIjIwMjYvMTAvMjgvMTRfMDJfNTRfODY4X3BvbHVpY19hX29fYXJfZmFfYnJpY2FfaW5kdXN0cmlhLmpwZyJdLFsicCIsInRodW1iIiwiNDgweDMyMCEiXV0/poluic%CC%A7a%CC%83o%20ar%20fa%CC%81brica%20industria.jpg" />
+                    </figure>
+                    <div class="box-two">
+                        <h4 class="mb-15"><b class="ico-calendar"></b> 28/10/2026 <span class="ml-20"><b class="ico-clock"></b> 14h09</span></h4>
+                        <p class="text">MPGO ajuíza ação para combater poluição atmosférica em Santo Antônio do Descoberto</p>
+                    </div>
+                </a>
+            </div>
+    </div>
+    <div class="mt-30 text-center">
+        <a class="link-secondary" href="/portal/noticias"><strong><b class="ico-arrow-right"></b> Acesse todas as notícias</strong></a>
+    </div>
+</div>
+</section>
+<section id="atalhos" class="section-md b-bottom">
+  <div class="content-center">
+    <div class="col-12 row-col" style="margin-top: 20px;">
+      <h3 style="height: auto; margin: 0 auto;">SERVIÇOS AO CIDADÃO</h3>
+        <hr style="border: 2px solid; color: #021350; min-width: 60px" width=6%>
+    </div>
+    <div class="row-fluid">
+            <div class="col-s-6 col-m-4 col-2 row-col" aria-labelledby="Apolo">
+              <a href="https://fornecedores.mpgo.mp.br/apolo/" target="_self" class="row-full box-two text-center block hover-shadow link-clear">
+                <div class="svg fs-65 text-primary" style="height: auto; margin: 0 auto;">
+                  <?xml version="1.0" encoding="UTF-8"?>
+                </div>
+                <span class="mb-20 uppercase fs-14 mp-button" style="background: var(--base-1); color: var(--base-4);">Apolo</span>
+              </a>
+            </div>
+            <div class="col-s-6 col-m-4 col-2 row-col" aria-labelledby="Certidão Online">
+              <a href="https://www.mpgo.mp.br/certidao" target="_self" class="row-full box-two text-center block hover-shadow link-clear">
+                <div class="svg fs-65 text-primary" style="height: auto; margin: 0 auto;">
+                  <?xml version="1.0" encoding="utf-8"?>
+                </div>
+                <span class="mb-20 uppercase fs-14 mp-button" style="background: var(--base-1); color: var(--base-4);">Certidão Online</span>
+              </a>
+            </div>
+            <div class="col-s-6 col-m-4 col-2 row-col" aria-labelledby="Concursos e Seleções">
+              <a href="https://www.mpgo.mp.br/coliseu" target="_self" class="row-full box-two text-center block hover-shadow link-clear">
+                <div class="svg fs-65 text-primary" style="height: auto; margin: 0 auto;">
+                  <?xml version="1.0" encoding="utf-8"?>
+                </div>
+                <span class="mb-20 uppercase fs-14 mp-button" style="background: var(--base-1); color: var(--base-4);">Concursos e Seleções</span>
+              </a>
+            </div>
+            <div class="col-s-6 col-m-4 col-2 row-col" aria-labelledby="Consulta a Processos">
+              <a href="https://www.mpgo.mp.br/atena_cidadao" target="_self" class="row-full box-two text-center block hover-shadow link-clear">
+                <div class="svg fs-65 text-primary" style="height: auto; margin: 0 auto;">
+                  <?xml version="1.0" encoding="utf-8"?>
+                </div>
+                <span class="mb-20 uppercase fs-14 mp-button" style="background: var(--base-1); color: var(--base-4);">Consulta a Processos</span>
+              </a>
+            </div>
+            <div class="col-s-6 col-m-4 col-2 row-col" aria-labelledby="Cursos e Eventos">
+              <a href="/portal/cursos_eventos" target="_self" class="row-full box-two text-center block hover-shadow link-clear">
+                <div class="svg fs-65 text-primary" style="height: auto; margin: 0 auto;">
+                  <?xml version="1.0" encoding="utf-8"?>
+                </div>
+                <span class="mb-20 uppercase fs-14 mp-button" style="background: var(--base-1); color: var(--base-4);">Cursos e Eventos</span>
+              </a>
+            </div>
+            <div class="col-s-6 col-m-4 col-2 row-col" aria-labelledby="Diário Oficial">
+              <a href="/portal/domp" target="_self" class="row-full box-two text-center block hover-shadow link-clear">
+                <div class="svg fs-65 text-primary" style="height: auto; margin: 0 auto;">
+                  <?xml version="1.0" encoding="utf-8"?>
+                </div>
+                <span class="mb-20 uppercase fs-14 mp-button" style="background: var(--base-1); color: var(--base-4);">Diário Oficial</span>
+              </a>
+            </div>
+            <div class="col-s-6 col-m-4 col-2 row-col" aria-labelledby="E-Conselho Sessão Virtual">
+              <a href="https://www.mpgo.mp.br/sessao_virtual" target="_self" class="row-full box-two text-center block hover-shadow link-clear">
+                <div class="svg fs-65 text-primary" style="height: auto; margin: 0 auto;">
+                  <?xml version="1.0" encoding="utf-8"?>
+                </div>
+                <span class="mb-20 uppercase fs-14 mp-button" style="background: var(--base-1); color: var(--base-4);">E-Conselho Sessão Virtual</span>
+              </a>
+            </div>
+            <div class="col-s-6 col-m-4 col-2 row-col" aria-labelledby="Encontre uma Promotoria">
+              <a href="/portal/arquivos/2024/09/25/14_38_13_51_Lista_das_Promotorias_de_Justi_a_Minist_rio_P_blico_de_Goi_s.html_25_9_2024.html" target="_self" class="row-full box-two text-center block hover-shadow link-clear">
+                <div class="svg fs-65 text-primary" style="height: auto; margin: 0 auto;">
+                  <?xml version="1.0" encoding="utf-8"?>
+                </div>
+                <span class="mb-20 uppercase fs-14 mp-button" style="background: var(--base-1); color: var(--base-4);">Encontre uma Promotoria</span>
+              </a>
+            </div>
+            <div class="col-s-6 col-m-4 col-2 row-col" aria-labelledby="Escola Superior">
+              <a href="/portal/pagina/escola-superior-do-ministerio-publico" target="_self" class="row-full box-two text-center block hover-shadow link-clear">
+                <div class="svg fs-65 text-primary" style="height: auto; margin: 0 auto;">
+                  <?xml version="1.0" encoding="utf-8"?>
+                </div>
+                <span class="mb-20 uppercase fs-14 mp-button" style="background: var(--base-1); color: var(--base-4);">Escola Superior</span>
+              </a>
+            </div>
+            <div class="col-s-6 col-m-4 col-2 row-col" aria-labelledby="FUNEMP Cartórios">
+              <a href="https://emolumentos.mpgo.mp.br/interbancos/login.aspx" target="_self" class="row-full box-two text-center block hover-shadow link-clear">
+                <div class="svg fs-65 text-primary" style="height: auto; margin: 0 auto;">
+                  <?xml version="1.0" encoding="utf-8"?>
+                </div>
+                <span class="mb-20 uppercase fs-14 mp-button" style="background: var(--base-1); color: var(--base-4);">FUNEMP Cartórios</span>
+              </a>
+            </div>
+            <div class="col-s-6 col-m-4 col-2 row-col" aria-labelledby="Licitações">
+              <a href="/portal/pagina/licitacoes" target="_self" class="row-full box-two text-center block hover-shadow link-clear">
+                <div class="svg fs-65 text-primary" style="height: auto; margin: 0 auto;">
+                  <?xml version="1.0" encoding="utf-8"?>
+                </div>
+                <span class="mb-20 uppercase fs-14 mp-button" style="background: var(--base-1); color: var(--base-4);">Licitações</span>
+              </a>
+            </div>
+            <div class="col-s-6 col-m-4 col-2 row-col" aria-labelledby="MP Cidadão">
+              <a href="https://www.mpgo.mp.br/denuncia" target="_self" class="row-full box-two text-center block hover-shadow link-clear">
+                <div class="svg fs-65 text-primary" style="height: auto; margin: 0 auto;">
+                  <?xml version="1.0" encoding="utf-8"?>
+                </div>
+                <span class="mb-20 uppercase fs-14 mp-button" style="background: var(--base-1); color: var(--base-4);">MP Cidadão</span>
+              </a>
+            </div>
+            <div class="col-s-6 col-m-4 col-2 row-col" aria-labelledby="MP em números">
+              <a href="/portal/mp_em_numeros" target="_self" class="row-full box-two text-center block hover-shadow link-clear">
+                <div class="svg fs-65 text-primary" style="height: auto; margin: 0 auto;">
+                  <?xml version="1.0" encoding="utf-8"?>
+                </div>
+                <span class="mb-20 uppercase fs-14 mp-button" style="background: var(--base-1); color: var(--base-4);">MP em números</span>
+              </a>
+            </div>
+            <div class="col-s-6 col-m-4 col-2 row-col" aria-labelledby="Perguntas Frequentes">
+              <a href="/portal/conteudo/duvidas-frequentes" target="_self" class="row-full box-two text-center block hover-shadow link-clear">
+                <div class="svg fs-65 text-primary" style="height: auto; margin: 0 auto;">
+                  <?xml version="1.0" encoding="utf-8"?>
+                </div>
+                <span class="mb-20 uppercase fs-14 mp-button" style="background: var(--base-1); color: var(--base-4);">Perguntas Frequentes</span>
+              </a>
+            </div>
+            <div class="col-s-6 col-m-4 col-2 row-col" aria-labelledby="Plantão">
+              <a href="/portal/pagina/plantao" target="_self" class="row-full box-two text-center block hover-shadow link-clear">
+                <div class="svg fs-65 text-primary" style="height: auto; margin: 0 auto;">
+                  <?xml version="1.0" encoding="utf-8"?>
+                </div>
+                <span class="mb-20 uppercase fs-14 mp-button" style="background: var(--base-1); color: var(--base-4);">Plantão</span>
+              </a>
+            </div>
+            <div class="col-s-6 col-m-4 col-2 row-col" aria-labelledby="Podcast MPGO no ar">
+              <a href="/portal/conteudo/podcast-mpgo-no-ar--3" target="_self" class="row-full box-two text-center block hover-shadow link-clear">
+                <div class="svg fs-65 text-primary" style="height: auto; margin: 0 auto;">
+                  <?xml version="1.0" encoding="utf-8"?>
+                </div>
+                <span class="mb-20 uppercase fs-14 mp-button" style="background: var(--base-1); color: var(--base-4);">Podcast MPGO no ar</span>
+              </a>
+            </div>
+            <div class="col-s-6 col-m-4 col-2 row-col" aria-labelledby="Protocolo Eletrônico">
+              <a href="/protocolo" target="_self" class="row-full box-two text-center block hover-shadow link-clear">
+                <div class="svg fs-65 text-primary" style="height: auto; margin: 0 auto;">
+                  <?xml version="1.0" encoding="utf-8"?>
+                </div>
+                <span class="mb-20 uppercase fs-14 mp-button" style="background: var(--base-1); color: var(--base-4);">Protocolo Eletrônico</span>
+              </a>
+            </div>
+            <div class="col-s-6 col-m-4 col-2 row-col" aria-labelledby="Recursos Humanos">
+              <a href="/portal/pagina/recursos-humanos" target="_self" class="row-full box-two text-center block hover-shadow link-clear">
+                <div class="svg fs-65 text-primary" style="height: auto; margin: 0 auto;">
+                  <?xml version="1.0" encoding="utf-8"?>
+                </div>
+                <span class="mb-20 uppercase fs-14 mp-button" style="background: var(--base-1); color: var(--base-4);">Recursos Humanos</span>
+              </a>
+            </div>
+    </div>
+  </div>
+    <div class="content-center">
+      <div class="row-fluid">
+        <div class="col-4 col-m-6" >
+          <a href="https://www.mpgo.mp.br/transparencia">
+            <img alt="Transparenciamp-normal" class="banner-normal" src="/portal/assets/banners/transparenciamp-normal-03fd759638b86b41617f38a12b286c2b.svg" style="background-color: #ebebeb; padding: 10px 50px 10px 50px;" width="100%;" />
+            <div class="banner-contraste" style="padding: 10px 50px 10px 50px; display: none;">
+            </div>
+          </a>
+        </div>
+        <div class="col-4 col-m-6">
+          <a href="/portal/pagina/servico-de-informacao-ao-cidadao-sic">
+            <img alt="Sic-normal" class="banner-normal" src="/portal/assets/banners/sic-normal-9ae13b1873fc5058eb76afb91676d5d8.svg" style="background-color: #ebebeb; padding: 10px 50px 10px 50px;" width="100%;" />
+            <div class="banner-contraste" style="padding: 10px 50px 10px 50px; display: none;">
+            </div>
+          </a>
+        </div>
+        <div class="col-4 col-m-6">
+          <a href="/portal/pagina/ouvidoria">
+            <img alt="Ouvidoria-normal" class="banner-normal" src="/portal/assets/banners/ouvidoria-normal-7c217fbafc9f74309461322ca078977c.svg" style="background-color: #ebebeb; padding: 10px 50px 10px 50px;" width="100%;" />
+            <div class="banner-contraste" style="padding: 10px 50px 10px 50px; display: none;">
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+</section>
+<section id="programas_projetos" class="section-md bg-base-2">
+  <div class="content-center">
+    <div class="col-12 row-col">
+        <h3 style="height: auto; margin: 0 auto; text-align: center;">CAMPANHAS E INFORMATIVOS</h3>
+        <hr style="border: 2px solid; color: #021350; min-width: 60px;" width=6%>
+      </div>
+    <div class="slide carrocel-projetos-informativos mb-50 mt-15 max-xm">
+          <input type="radio" name="carrocel-projetos-informativos-1" id="carrocel-projetos-informativos-1" class="hidden slide-input-1" checked=&quot;&quot; %>
+          <input type="radio" name="carrocel-projetos-informativos-1" id="carrocel-projetos-informativos-2" class="hidden slide-input-2"  %>
+          <input type="radio" name="carrocel-projetos-informativos-1" id="carrocel-projetos-informativos-3" class="hidden slide-input-3"  %>
+      <div class="slide-nav" style="bottom: -50px;">
+          <label class="slide-label slide-1" for="carrocel-projetos-informativos-1"></label>
+          <label class="slide-label slide-2" for="carrocel-projetos-informativos-2"></label>
+          <label class="slide-label slide-3" for="carrocel-projetos-informativos-3"></label>
+      </div>
+      <div class="slide-arrows">
+          <label class="slide-arrow arrow-1 classeFake" for="carrocel-projetos-informativos-1"><b class="ico-chevron-left" role="button" aria-label=Anterior ></b></label>
+          <label class="slide-arrow arrow-2 classeFake" for="carrocel-projetos-informativos-2"><b class="ico-chevron-left" role="button" aria-label=Próximo ></b></label>
+          <label class="slide-arrow arrow-3 classeFake" for="carrocel-projetos-informativos-3"><b class="ico-chevron-left" role="button" aria-label=Próximo ></b></label>
+      </div>
+      <div class="slide-container pr-50 pl-50">
+          <div class="slide-item slide-1">
+            <div class="row-fluid">
+                <div class="col-3 col-m-6 col-s-6">
+                  <a href="https://www.mpgo.mp.br/premiodejornalismo/" target="_blank" class="block hover-gallery">
+                    <figure class="figure"><img src="/portal/imagens/2026/08/03/11_52_02_687_banner_premio.jpg" alt="5º Prêmio MPGO de Jornalismo"></figure>
+                  </a>
+                </div>
+                <div class="col-3 col-m-6 col-s-6">
+                  <a href="https://www.mpgo.mp.br/conhecaompgo/" target="_blank" class="block hover-gallery">
+                    <figure class="figure"><img src="/portal/imagens/2024/10/02/17_43_33_530_programas_projetos_Prancheta_1.jpg" alt="Conheça o MPGO"></figure>
+                  </a>
+                </div>
+                <div class="col-3 col-m-6 col-s-6">
+                  <a href="https://www.mpgo.mp.br/portal/noticia/mpgo-abre-credenciamento-publico-para-cadastro-de-bachareis-em-psicologia-servico-social-e-pedagogia-para-atuarem-em-vistorias-de-entidades-de-acolhimento-em-anapolis-ceres-goianesia-itapaci-e-jaragua" target="_blank" class="block hover-gallery">
+                    <figure class="figure"><img src="/portal/imagens/2026/01/23/12_49_43_16_banner_chamamento_catep.jpeg" alt="Credenciamento de profissionais"></figure>
+                  </a>
+                </div>
+                <div class="col-3 col-m-6 col-s-6">
+                  <a href="https://www.mpgo.mp.br/portal/pagina/memorial-do-ministerio-publico-do-estado-de-goias" target="_blank" class="block hover-gallery">
+                    <figure class="figure"><img src="/portal/imagens/2026/07/15/15_39_38_636_memorial.jpg" alt="Memorial do Ministério Público do MPGO"></figure>
+                  </a>
+                </div>
+            </div>
+          </div>
+          <div class="slide-item slide-2">
+            <div class="row-fluid">
+                <div class="col-3 col-m-6 col-s-6">
+                  <a href="https://radardatransparencia.atricon.org.br/" target="_blank" class="block hover-gallery">
+                    <figure class="figure"><img src="/portal/imagens/2024/12/17/15_23_26_826_radar.jpg" alt="Radar"></figure>
+                  </a>
+                </div>
+                <div class="col-3 col-m-6 col-s-6">
+                  <a href="https://www.mpgo.mp.br/portal/conteudo/destina-destinacao-articulada-de-acordos-edital-n-02-2024" target="_blank" class="block hover-gallery">
+                    <figure class="figure"><img src="/portal/imagens/2025/07/10/15_29_26_299_destina.png" alt="DAAMP - Edital nº 2/2024"></figure>
+                  </a>
+                </div>
+                <div class="col-3 col-m-6 col-s-6">
+                  <a href="https://www.mpgo.mp.br/portal/arquivos/2024/02/08/14_33_22_339_Guia_Pr_tico_Autismo_vers_o_2.pdf" target="_blank" class="block hover-gallery">
+                    <figure class="figure"><img src="/portal/imagens/2024/02/05/15_26_44_776_Banner_Autismo_v2.jpeg" alt=" Guia prático para mãe, pai ou responsável pela criança com Transtorno do Espectro Autista (TEA)"></figure>
+                  </a>
+                </div>
+                <div class="col-3 col-m-6 col-s-6">
+                  <a href="http://www.mpgo.mp.br/portal/conteudo/mp-recebe-marca-de-participante-do-programa-nacional-de-prevencao-a-corrupcao-pnpc" target="_blank" class="block hover-gallery">
+                    <figure class="figure"><img src="/portal/imagens/2021/12/06/19_07_15_148_Marca_Participante_PNPC.jpg" alt="MP integra Programa Nacional de Prevenção à Corrupção"></figure>
+                  </a>
+                </div>
+            </div>
+          </div>
+          <div class="slide-item slide-3">
+            <div class="row-fluid">
+                <div class="col-3 col-m-6 col-s-6">
+                  <a href="/portal/card_pages/26" target="_blank" class="block hover-gallery">
+                    <figure class="figure"><img src="/portal/imagens/2022/08/23/17_30_39_480_Campanhas.jpg" alt="Campanhas"></figure>
+                  </a>
+                </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="slide min-xm mb-50">
+          <input type="radio" name="slide-mb" id="slide-mb-1" class="hidden slide-input-1" checked=&quot;&quot; %>
+          <input type="radio" name="slide-mb" id="slide-mb-2" class="hidden slide-input-2"  %>
+          <input type="radio" name="slide-mb" id="slide-mb-3" class="hidden slide-input-3"  %>
+          <input type="radio" name="slide-mb" id="slide-mb-4" class="hidden slide-input-4"  %>
+          <input type="radio" name="slide-mb" id="slide-mb-5" class="hidden slide-input-5"  %>
+          <input type="radio" name="slide-mb" id="slide-mb-6" class="hidden slide-input-6"  %>
+          <input type="radio" name="slide-mb" id="slide-mb-7" class="hidden slide-input-7"  %>
+          <input type="radio" name="slide-mb" id="slide-mb-8" class="hidden slide-input-8"  %>
+          <input type="radio" name="slide-mb" id="slide-mb-9" class="hidden slide-input-9"  %>
+      <div class="slide-nav" style="bottom: -50px;">
+          <label class="slide-label slide-1" for="slide-mb-1"></label>
+          <label class="slide-label slide-2" for="slide-mb-2"></label>
+          <label class="slide-label slide-3" for="slide-mb-3"></label>
+          <label class="slide-label slide-4" for="slide-mb-4"></label>
+          <label class="slide-label slide-5" for="slide-mb-5"></label>
+          <label class="slide-label slide-6" for="slide-mb-6"></label>
+          <label class="slide-label slide-7" for="slide-mb-7"></label>
+          <label class="slide-label slide-8" for="slide-mb-8"></label>
+          <label class="slide-label slide-9" for="slide-mb-9"></label>
+      </div>
+      <div class="slide-arrows">
+          <label class="slide-arrow arrow-1 classeFake" for="slide-mb-1"><b class="ico-chevron-left"></b></label>
+          <label class="slide-arrow arrow-2 classeFake" for="slide-mb-2"><b class="ico-chevron-left"></b></label>
+          <label class="slide-arrow arrow-3 classeFake" for="slide-mb-3"><b class="ico-chevron-left"></b></label>
+          <label class="slide-arrow arrow-4 classeFake" for="slide-mb-4"><b class="ico-chevron-left"></b></label>
+          <label class="slide-arrow arrow-5 classeFake" for="slide-mb-5"><b class="ico-chevron-left"></b></label>
+          <label class="slide-arrow arrow-6 classeFake" for="slide-mb-6"><b class="ico-chevron-left"></b></label>
+          <label class="slide-arrow arrow-7 classeFake" for="slide-mb-7"><b class="ico-chevron-left"></b></label>
+          <label class="slide-arrow arrow-8 classeFake" for="slide-mb-8"><b class="ico-chevron-left"></b></label>
+          <label class="slide-arrow arrow-9 classeFake" for="slide-mb-9"><b class="ico-chevron-left"></b></label>
+      </div>
+      <div class="slide-container pl-50 pr-50">
+          <div class="slide-item card slide-1">
+            <a href="https://www.mpgo.mp.br/premiodejornalismo/" target="_blank" class="block hover-gallery figure">
+                <img src="/portal/imagens/2026/08/03/11_52_02_687_banner_premio.jpg" alt="5º Prêmio MPGO de Jornalismo">
+            </a>
+          </div>
+          <div class="slide-item card slide-2">
+            <a href="https://www.mpgo.mp.br/conhecaompgo/" target="_blank" class="block hover-gallery figure">
+                <img src="/portal/imagens/2024/10/02/17_43_33_530_programas_projetos_Prancheta_1.jpg" alt="Conheça o MPGO">
+            </a>
+          </div>
+          <div class="slide-item card slide-3">
+            <a href="https://www.mpgo.mp.br/portal/noticia/mpgo-abre-credenciamento-publico-para-cadastro-de-bachareis-em-psicologia-servico-social-e-pedagogia-para-atuarem-em-vistorias-de-entidades-de-acolhimento-em-anapolis-ceres-goianesia-itapaci-e-jaragua" target="_blank" class="block hover-gallery figure">
+                <img src="/portal/imagens/2026/01/23/12_49_43_16_banner_chamamento_catep.jpeg" alt="Credenciamento de profissionais">
+            </a>
+          </div>
+          <div class="slide-item card slide-4">
+            <a href="https://www.mpgo.mp.br/portal/pagina/memorial-do-ministerio-publico-do-estado-de-goias" target="_blank" class="block hover-gallery figure">
+                <img src="/portal/imagens/2026/07/15/15_39_38_636_memorial.jpg" alt="Memorial do Ministério Público do MPGO">
+            </a>
+          </div>
+          <div class="slide-item card slide-5">
+            <a href="https://radardatransparencia.atricon.org.br/" target="_blank" class="block hover-gallery figure">
+                <img src="/portal/imagens/2024/12/17/15_23_26_826_radar.jpg" alt="Radar">
+            </a>
+          </div>
+          <div class="slide-item card slide-6">
+            <a href="https://www.mpgo.mp.br/portal/conteudo/destina-destinacao-articulada-de-acordos-edital-n-02-2024" target="_blank" class="block hover-gallery figure">
+                <img src="/portal/imagens/2025/07/10/15_29_26_299_destina.png" alt="DAAMP - Edital nº 2/2024">
+            </a>
+          </div>
+          <div class="slide-item card slide-7">
+            <a href="https://www.mpgo.mp.br/portal/arquivos/2024/02/08/14_33_22_339_Guia_Pr_tico_Autismo_vers_o_2.pdf" target="_blank" class="block hover-gallery figure">
+                <img src="/portal/imagens/2024/02/05/15_26_44_776_Banner_Autismo_v2.jpeg" alt=" Guia prático para mãe, pai ou responsável pela criança com Transtorno do Espectro Autista (TEA)">
+            </a>
+          </div>
+          <div class="slide-item card slide-8">
+            <a href="http://www.mpgo.mp.br/portal/conteudo/mp-recebe-marca-de-participante-do-programa-nacional-de-prevencao-a-corrupcao-pnpc" target="_blank" class="block hover-gallery figure">
+                <img src="/portal/imagens/2021/12/06/19_07_15_148_Marca_Participante_PNPC.jpg" alt="MP integra Programa Nacional de Prevenção à Corrupção">
+            </a>
+          </div>
+          <div class="slide-item card slide-9">
+            <a href="/portal/card_pages/26" target="_blank" class="block hover-gallery figure">
+                <img src="/portal/imagens/2022/08/23/17_30_39_480_Campanhas.jpg" alt="Campanhas">
+            </a>
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="iniciativas_institucionais" class="section-md">
+  <div class="content-center">
+    <div class="col-12 row-col">
+        <h3 style="height: auto; margin: 0 auto; text-align: center;">INICIATIVAS INSTITUCIONAIS</h3>
+        <hr style="border: 2px solid; color: #021350; min-width: 60px;" width=6%>
+    </div>
+    <div class="row-fluid mt-30">
+        <div class="col-4 col-m-12 mb-20">
+          <a href="/portal/card_pages/20">
+            <img alt="Programas" class="banner-normal" src="/portal/assets/banners/programas-normal-9a0f8426d6411141fad95e9905f2456c.svg" style="padding: 10px 10px;" width="100%;" />
+            <div class="banner-contraste" style="padding: 10px 10px; display: none;">
+              <?xml version="1.0" encoding="UTF-8"?>
+            </div>
+          </a>
+        </div>
+        <div class="col-4 col-m-12 mb-20">
+          <a href="/portal/card_pages/12">
+            <img alt="Projetos" class="banner-normal" src="/portal/assets/banners/projetos-normal-fc90f3b4abb878413e863ad23d55fc06.svg" style="padding: 10px 10px;" width="100%;" />
+            <div class="banner-contraste" style="padding: 10px 10px; display: none;">
+              <?xml version="1.0" encoding="UTF-8"?>
+            </div>
+          </a>
+        </div>
+        <div class="col-4 col-m-12 mb-20">
+          <a href="/portal/card_pages/14">
+            <img alt="Serviços" class="banner-normal" src="/portal/assets/banners/servicos-normal-ce74dabd4b346e90bc1f23129873e318.svg" style="padding: 10px 10px;" width="100%;" />
+            <div class="banner-contraste" style="padding: 10px 10px; display: none;">
+              <?xml version="1.0" encoding="UTF-8"?>
+            </div>
+          </a>
+        </div>
+    </div>
+  </div>
+</section>
+<section class="section-md">
+  <div class="content-center">
+    <div class="row-fluid">
+      <div class="col-6 col-m-12">
+        <div id="videos-institucionais" class="cursos-eventos pb-77">
+          <h3 class="text-center" style="padding-top: 30px;">VÍDEOS INSTITUCIONAIS</h3>
+          <hr style="border: 2px solid; color: #021350;" width=12%>
+          <div class="videos mt-25">
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/bfM92OEAEj8?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+        <br/>
+        <div class="text-center">
+         <a class="link-secondary" href="https://www.youtube.com/user/MPdeGoias" target="_blank"><strong><b class="ico-arrow-right"></b> Acesse todos os vídeos institucionais</strong></a>
+        </div>
+      </div>
+      <div class="col-6 col-m-12 row-col">
+        <div id="cursos-eventos" class="cursos-eventos row-full">
+          <h3 class="text-center" style="padding-top: 30px;">CURSOS E EVENTOS</h3>
+          <hr style="border: 2px solid; color: #021350;" width=12%>
+          <div class="text-center" style="padding: 25px 0px 65px 0px;">
+            <div class="slide carrocel-cursos-eventos">
+                <input type="radio" name="carrocel-cursos-eventos-1" id="carrocel-cursos-eventos-1" class="hidden slide-input-1" checked=&quot;&quot; %>
+                <input type="radio" name="carrocel-cursos-eventos-1" id="carrocel-cursos-eventos-2" class="hidden slide-input-2"  %>
+                <input type="radio" name="carrocel-cursos-eventos-1" id="carrocel-cursos-eventos-3" class="hidden slide-input-3"  %>
+                <input type="radio" name="carrocel-cursos-eventos-1" id="carrocel-cursos-eventos-4" class="hidden slide-input-4"  %>
+              <div class="slide-nav" style="bottom: -50px;">
+                  <label class="slide-label slide-1" for="carrocel-cursos-eventos-1"></label>
+                  <label class="slide-label slide-2" for="carrocel-cursos-eventos-2"></label>
+                  <label class="slide-label slide-3" for="carrocel-cursos-eventos-3"></label>
+                  <label class="slide-label slide-4" for="carrocel-cursos-eventos-4"></label>
+              </div>
+              <div class="slide-arrows">
+                  <label class="slide-arrow arrow-1" for="carrocel-cursos-eventos-1"><b class="ico-chevron-left" role="button" aria-label=Anterior></b></label>
+                  <label class="slide-arrow arrow-2" for="carrocel-cursos-eventos-2"><b class="ico-chevron-left" role="button" aria-label=Próximo></b></label>
+                  <label class="slide-arrow arrow-3" for="carrocel-cursos-eventos-3"><b class="ico-chevron-left" role="button" aria-label=Próximo></b></label>
+                  <label class="slide-arrow arrow-4" for="carrocel-cursos-eventos-4"><b class="ico-chevron-left" role="button" aria-label=Próximo></b></label>
+              </div>
+              <div class="slide-container pr-50 pl-50">
+                    <div class="slide-item slide-1">
+                      <a href="/portal/noticia/inscricoes-abertas-para-o-curso-presencial-design-de-facilitacao--2" target="_blank" class="figure">
+                        <img src="/portal/imagens/2026/10/27/17_39_24_300_Bannereletronico.jpg">
+                      </a>
+                    </div>
+                    <div class="slide-item slide-2">
+                      <a href="/portal/noticia/dialogos-institucionais-sobre-assistencia-a-saude-mental-no-sus-e-adiado-para-19-de-novembro-inscricoes-foram-prorrogadas--2" target="_blank" class="figure">
+                        <img src="/portal/imagens/2026/10/23/17_14_29_924_bannereletronico.jpg">
+                      </a>
+                    </div>
+                    <div class="slide-item slide-3">
+                      <a href="/portal/noticia/oitava-aula-do-curso-de-crimes-ciberneticos-10-11-abordara-tecnicas-avancadas-de-investigacao-digital--2" target="_blank" class="figure">
+                        <img src="/portal/imagens/2026/10/21/18_46_02_706_Bannereletronico.jpg">
+                      </a>
+                    </div>
+                    <div class="slide-item slide-4">
+                      <a href="/portal/noticia/xi-encontro-nacional-do-servico-social-no-ministerio-publico-sera-realizado-no-mpgo-inscricoes-abertas--2" target="_blank" class="figure">
+                        <img src="/portal/imagens/2026/09/09/18_26_53_669_Bannereletronico.jpg">
+                      </a>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br/>
+        <div class="text-center">
+          <a class="link-secondary" href="/portal/cursos_eventos"><strong><b class="ico-arrow-right"></b> Acesse todos os cursos e eventos</strong></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+    </section>
+    <div vw class="enabled" style="top: 45%;">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+      </div>
+    </div>
+<a href="#" id="mapa" class="oculto">Início do Rodapé</a>
+<section id="mapa-rodape" class="section-md bg-base-2 max-m">
+    <div class="content-center">
+          <div id="nav">
+            <div class="row-fluid">
+              <div class="col-3 col-m-6 col-s-6">
+                <div  class="list-clear small mb-30">
+                            <li>
+                                  <p></p>
+                                  <h4><span>CONHEÇA O MPGO</span></h4>
+                            </li>
+                            <li>
+                                  <a href="/portal/conteudo/sobre-a-instituicao" class="link" target="_self">Sobre a Instituição</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/procuradoria-geral-de-justica" class="link" target="_self">Procuradoria-Geral</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/colegio-de-procuradores-e-procuradoras-de-justica" class="link" target="_self">Colégio de Procuradores</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/conselho-superior-do-ministerio-publico" class="link" target="_self">Conselho Superior</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/corregedoria-geral" class="link" target="_self">Corregedoria-Geral</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/ouvidoria" class="link" target="_self">Ouvidoria</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/subprocuradoria-geral-de-justica-para-assuntos-institucionais" class="link" target="_self">Subprocuradoria-Geral Institucional</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/subprocuradoria-geral-de-justica-para-assuntos-administrativos" class="link" target="_self">Subprocuradoria-Geral Administrativa</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/subprocuradoria-geral-de-justica-para-assuntos-juridicos" class="link" target="_self">Subprocuradoria-Geral Jurídica</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/subprocuradoria-geral-de-justica-para-assuntos-de-planejamento-estrategia-e-inovacao" class="link" target="_self">Subprocuradoria-Geral de Planejamento, Estratégia e Inovação</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="https://www.mpgo.mp.br/portal/pagina/memorial-do-ministerio-publico-do-estado-de-goias" class="link" target="_self">Memorial do MPGO</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/escritorio-de-representacao-do-mpgo-em-brasilia" class="link" target="_self">Escritório de Representação em Brasília</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/escola-superior-do-ministerio-publico" class="link" target="_self">Escola Superior</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/centro-de-apoio" class="link" target="_self">Centro de Apoio Operacional</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/grupos-de-atuacao-especial" class="link" target="_self">Grupos de Atuação Especial</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/centro-de-autocomposicao-de-conflitos-e-seguranca-juridica" class="link" target="_self">COMPOR</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/procuradorias-de-justica" class="link" target="_self">Procuradorias de Justiça</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/promotorias-de-justica" class="link" target="_self">Promotorias de Justiça</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/areas-administrativas" class="link" target="_self">Áreas Administrativas</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/comissoes" class="link" target="_self">Comissões</a>
+                                <br/>
+                            </li>
+                                </div>
+                                </div>
+                                <div class="col-3 col-m-6 col-s-6">
+                                <div  class="list-clear small mb-30">
+                            <li>
+                                  <p></p>
+                                  <h4><span>ÁREAS DE ATUAÇÃO</span></h4>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/areas-de-atuacao--2#consumidor" class="link" target="_self">Consumidor</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/areas-de-atuacao--2#criminal" class="link" target="_self">Criminal</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/areas-de-atuacao--2#direitoshumanos" class="link" target="_self">Direitos Humanos</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/areas-de-atuacao--2#educacao" class="link" target="_self">Educação</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/areas-de-atuacao--2#eleitoral" class="link" target="_self">Eleitoral</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/areas-de-atuacao--2#familia" class="link" target="_self">Família</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/areas-de-atuacao--2#infancia" class="link" target="_self">Infância e Juventude</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/areas-de-atuacao--2#meioambiente" class="link" target="_self">Meio Ambiente e Urbanismo</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/areas-de-atuacao--2#patrimonio" class="link" target="_self">Patrimônio Público</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/areas-de-atuacao--2#registros" class="link" target="_self">Registros Públicos</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/areas-de-atuacao--2#saude" class="link" target="_self">Saúde</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/areas-de-atuacao--2#terceirosetor" class="link" target="_self">Terceiro Setor</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <h4 class="mt-10"><a href="/portal/atos_normas" style="color: var(--primary)" target="_self">ATOS E NORMAS</a></h4>
+                            </li>
+                            <li>
+                                  <p></p>
+                                  <h4><span>COMUNICAÇÃO</span></h4>
+                            </li>
+                            <li>
+                                  <a href="/portal/card_pages/26" class="link" target="_self">Campanhas Institucionais</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/noticias" class="link" target="_self">Notícias</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/conteudo/podcast-mpgo-no-ar--3" class="link" target="_self">Podcast MPGO no ar</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/conteudo/termos-de-uso-das-redes-sociais-do-ministerio-publico-de-goias" class="link" target="_self">Termos de Uso das Redes Sociais</a>
+                                <br/>
+                            </li>
+                                </div>
+                                </div>
+                                <div class="col-3 col-m-6 col-s-6">
+                                <div  class="list-clear small mb-30">
+                            <li>
+                                  <p></p>
+                                  <h4><span>SERVIÇOS</span></h4>
+                            </li>
+                            <li>
+                                  <a href="/portal/conteudo/acessibilidade" class="link" target="_self">Acessibilidade</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="https://www.mpgo.mp.br/transparencia/servico_informacao_cidadao/carta_servicos_publicos_cidadao" class="link" target="_blank">Carta de serviços</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="https://www.mpgo.mp.br/certidao" class="link" target="_blank">Certidão online</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="https://www.mpgo.mp.br/coliseu" class="link" target="_blank">Concursos e seleções</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="https://www.mpgo.mp.br/atena_cidadao/" class="link" target="_blank">Consulta a processos</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/cursos_eventos" class="link" target="_self">Cursos e eventos</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/domp" class="link" target="_self">Diário Oficial - DOMP</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="https://www.mpgo.mp.br/sessao_virtual" class="link" target="_blank">E-Conselho Sessão Virtual</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/emolumentos-dos-servicos-notoriais-e-de-registro-do-estado-de-goias" class="link" target="_self">Emolumentos de serviços notariais</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/arquivos/2024/09/25/14_38_13_51_Lista_das_Promotorias_de_Justi_a_Minist_rio_P_blico_de_Goi_s.html_25_9_2024.html" class="link" target="_blank">Encontre uma promotoria</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/fornecedores" class="link" target="_self">Fornecedores</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="https://emolumentos.mpgo.mp.br/interbancos/login.aspx" class="link" target="_blank">FUNEMP Cartórios</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/governo-digital" class="link" target="_self">Governo Digital</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/licitacoes" class="link" target="_self">Licitações</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/mapa_do_site" class="link" target="_self">Mapa do site</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="https://www.mpgo.mp.br/portal/pagina/medi-materializador-de-evidencias-digitais-e-informaticas" class="link" target="_self">MEDI</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/mp_cidadao" class="link" target="_self">MP Cidadão</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/mp_em_numeros" class="link" target="_self">MP em números</a>
+                                <br/>
+                            </li>
+                                </div>
+                                </div>
+                                <div class="col-3 col-m-6 col-s-6">
+                                <div  class="list-clear small mb-30">
+                            <li>
+                                  <a href="/portal/conteudo/mp-tv" class="link" target="_self">MP-TV</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/conteudo/duvidas-frequentes" class="link" target="_self">Perguntas frequentes</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/plantao" class="link" target="_self">Plantão</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/conteudo/politica-de-cookies" class="link" target="_self">Política de Cookies</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="https://www.mpgo.mp.br/transparencia/" class="link" target="_blank">Portal da Transparência</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/portal-lgpd" class="link" target="_self">Portal LGPD</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/protocolo" class="link" target="_blank">Protocolo Eletrônico</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/recursos-humanos" class="link" target="_self">Recursos humanos</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="https://www.mpgo.mp.br/revista/" class="link" target="_blank">Revista eletrônica do MP</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/pagina/servico-de-informacao-ao-cidadao-sic" class="link" target="_self">Serviço de Informação ao Cidadão – SIC</a>
+                                <br/>
+                            </li>
+                            <li>
+                                  <a href="/portal/conteudo/turma-recursal--3" class="link" target="_self">Turma recursal</a>
+                                <br/>
+                            </li>
+                </div>
+              </div>
+            </div>
+          </ul>
+    </div>
+  </div>
+</section>
+    <footer role="contentinfo" id="footer" class="section-sm bg-primary text-white">
+      <div class="content-center print-hidden">
+  <div class="row-center mb-center">
+      <div class="col-2">
+          <figure class="figure mb-10" style="margin: 0 auto; max-width: 132px;"><a href="/portal"><img src="/portal/assets/topo/logo-55cec37a4da3c0db1fcae7a59dd31dd2.png" alt="Logo MP" style="filter: none" width="95px;" height="51;"></a> </figure>
+      </div>
+      <div class="col-6 pl-15">
+          <h5 class="uppercase text-white mt-10 mb-10">Ministério Público do Estado de Goiás</h5>
+          <small class="block mb-10">Rua 23, esq. com a Av. Fued José Sebba, Qd. A 06, Lts. 15/24, Jardim Goiás, Goiânia - Goiás - CEP: 74.805-100 Fone: (0xx62) 3243-8000 e 127</small>
+          <small class="block mb-10">Horário de atendimento ao público: segunda-feira a sexta-feira, das 12h às 18h.</small>
+      </div>
+      <div class="col-4">
+          <ul class="nav nav-center">
+              <li class="tooltip-top" data-tooltip="Youtube"><a class="bt-secondary-clear bt-ico" target="_blank" href="https://www.youtube.com/@mpgo_oficial"><b class="ico-youtube"></b></a></li>
+              <li class="tooltip-top" data-tooltip="Tiktok">
+                <a class="bt-secondary-clear bt-ico"  target="_blank" href="https://www.tiktok.com/@mpgo_oficial">
+                </a>
+              </li>
+                <li class="tooltip-top" data-tooltip="X (Twitter)">
+                    <a class="bt-secondary-clear bt-ico" target="_blank" href="https://www.x.com/@mpgo_oficial">
+                    </a>
+                </li>
+              <li class="tooltip-top" data-tooltip="Instagram"><a class="bt-secondary-clear bt-ico" target="_blank" href="https://www.instagram.com/mpgo_oficial/"><b class="ico-instagram"></b></a></li>
+              <li class="tooltip-top" data-tooltip="Facebook"><a class="bt-secondary-clear bt-ico" target="_blank" href="https://www.facebook.com/mpgo.oficial"><b class="ico-facebook"></b></a></li>
+          </ul>
+      </div>
+  </div>
+</div>
+    </footer>
+        <div class="js-cookies-eu bg-base-2 card mb-0 small" style="position: fixed; bottom: 0; width: 100%; z-index: 9;">
+      <div class="content-center row-center">
+        <div class="col-10 col-m-9">
+          <p>Nós usamos cookies para melhorar sua experiência de navegação no portal. Ao utilizar o <a class="link-primary underline" href="/portal" class="link">www.mpgo.mp.br</a>,
+          você concorda com a política de monitoramento de cookies. Para ter mais informações sobre como isso é feito, 
+          acesse nossa <a class="link-primary underline" href="/portal/conteudo/politica-de-cookies" class="link">Política de cookies</a>. Se você concorda, clique em ACEITO.</p>
+        </div>
+        <div class="col-2 col-m-3 pl-15 pr-15">
+          <ion-button class="bt-primary block js-cookies-eu-ok">Prosseguir</ion-button>
+        </div>
+      </div>
+    </div>
+<link href="/portal/assets/wow_book-ec0993db813dabe90736b4c9898b05f8.css" media="screen" rel="stylesheet" type="text/css" />
+  </body>
+</html>
