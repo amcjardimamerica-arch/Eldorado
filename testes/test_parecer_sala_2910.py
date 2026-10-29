@@ -177,6 +177,24 @@ def test_as_vagas_pela_media_do_minuto(monkeypatch):
     r = simular([0.1, 0.23, 0.02, 0.26, 0.0, 0.9])  # a produção: um pico do Espião por minuto
     assert 3 in r and r[-1] == 5
     assert set(simular([0.7, 0.8, 0.6, 0.9, 0.75, 0.65])) == {1}
-    P._amostras.clear()                                    # não deixa amostras do relógio simulado para os outros testes
+    P._amostras.clear()  # não deixa amostras do relógio simulado para os outros testes
     P._ocio["desde"] = None
     assert "tempo_limite=150.0" in Path("eldorado/base/cerebro/pilotos_permanentes.py").read_text(encoding="utf-8")
+
+
+def test_o_diario_de_nome_fixo_vai_para_o_dia():
+    """29/10/2026: o diário de nome fixo (só escreve) vai para o arquivo do dia e troca na virada; o de execução e a
+    importação (que relêem) seguem num arquivo só."""
+    import datetime as dt
+
+    with tempfile.TemporaryDirectory() as d:
+        velho = Path(d, "2026", "10", "25")
+        velho.mkdir(parents=True)
+        (velho / "espiao.jsonl").write_text("")
+        di = EV.Diario(d, "espiao")
+        hoje = dt.datetime.now(dt.timezone.utc).date()
+        assert di.arquivo == Path(d, f"{hoje:%Y}", f"{hoje:%m}", f"{hoje:%d}", "espiao.jsonl")
+        di._dia = hoje - dt.timedelta(days=1)
+        di.emitir("alarme.fechado", "t", {"id": "a", "em": "2026-10-29T00:00:00+00:00", "motivo": "x"})
+        assert di._dia == hoje
+        assert not EV.Diario(d, "01793146543196472744-003468-6eaf31ee").por_dia and not EV.Diario(d, "importacao-eldorado0").por_dia

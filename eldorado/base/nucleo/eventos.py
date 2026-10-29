@@ -223,6 +223,7 @@ _enc = msgspec.json.Encoder(enc_hook=_converter)
 _dec = msgspec.json.Decoder(Evento)
 
 
+RELEEM = {"importacao-eldorado0"}   # os diários de nome fixo que relêem o próprio histórico (ficam num arquivo só)
 PARTE_MAX = 60 * 1024 * 1024   # 29/10/2026: acima disso, o diário abre a parte seguinte (<execução>-2.jsonl…): o GitHub
                                # recusa arquivo acima de 100 MB, e a gravação inteira caía (o Espião de 25/10 chegou a 99,9 MB)
 
@@ -234,7 +235,17 @@ class Diario:
         """Abre o diário de uma execução. Se a execução já tem diário (retomada), continua no mesmo arquivo."""
         self.pasta = Path(pasta)
         self.execucao = execucao or novo_id()
-        existente = next(self.pasta.rglob(f"{self.execucao}.jsonl"), None) if execucao and self.pasta.exists() else None
+        # 29/10/2026: o diário de NOME FIXO (o Espião, o Interceptador, o Comandante, a máquina…) só escreve: vai para o
+        # arquivo do dia (antes ficava no do primeiro dia em que foi criado: o do Espião de 25/10 chegou a 99,9 MB) e troca
+        # de arquivo na virada do dia. O de execução (a passagem, que relê para retomar) e a importação seguem como antes.
+        self.por_dia = bool(execucao) and not execucao[:1].isdigit() and execucao not in RELEEM
+        self._dia = datetime.now(timezone.utc).date()
+        existente = None
+        if self.por_dia:
+            hoje = self.pasta / f"{self._dia:%Y}" / f"{self._dia:%m}" / f"{self._dia:%d}" / f"{self.execucao}.jsonl"
+            existente = hoje if hoje.exists() else None
+        elif execucao and self.pasta.exists():
+            existente = next(self.pasta.rglob(f"{self.execucao}.jsonl"), None)
         if existente:
             partes = sorted(existente.parent.glob(f"{self.execucao}-[0-9]*.jsonl"), key=lambda a: int(a.stem.rsplit("-", 1)[1]))
             self.arquivo = partes[-1] if partes else existente
@@ -257,6 +268,10 @@ class Diario:
     def gravar(self, evento: Evento) -> Evento:
         linha = _enc.encode(evento) + b"\n"
         with self._trava:
+            if self.por_dia and datetime.now(timezone.utc).date() != self._dia:   # a virada do dia: o arquivo do novo dia
+                self._dia = datetime.now(timezone.utc).date()
+                self.arquivo = self.pasta / f"{self._dia:%Y}" / f"{self._dia:%m}" / f"{self._dia:%d}" / f"{self.execucao}.jsonl"
+                self.arquivo.parent.mkdir(parents=True, exist_ok=True)
             if self.arquivo.exists() and self.arquivo.stat().st_size + len(linha) > PARTE_MAX:
                 n = len(self._partes()) + 1
                 self.arquivo = self.arquivo.parent / f"{self.execucao}-{n}.jsonl"

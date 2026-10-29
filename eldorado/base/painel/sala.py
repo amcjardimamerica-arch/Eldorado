@@ -433,8 +433,9 @@ def montar(
             "rn_auc",
             "Discernimento da rede (oportunidade)",
             auc,
-            _faixa(auc, 0.85, 0.7),
-            f"área sob a curva ROC: {auc}",
+            "amarelo",   # 29/10/2026: não é a qualidade real sobre livros (ver o motivo)
+            f"área sob a curva ROC: {auc} — medida sobre o fluxo de treino (dominado pelos achados barrados na entrada); sobre "
+            f"livros a rede não discerne (ensaio de 29/10/2026: 0,48, o acaso): a avaliação dos pendentes está desligada",
             t,
             [0, 1],
             {"normal": [0.85, None], "alarme": [0.7, None]},
