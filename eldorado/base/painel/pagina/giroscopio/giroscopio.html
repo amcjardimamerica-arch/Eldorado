@@ -836,11 +836,16 @@ code{font-size:12.5px}
     // 29/10/2026 (titular): o objeto preenche o palco (da borda esquerda da tela à tabela do calendário). O limite é a
     // esfera que contém o objeto E o espaço das serpentes (o raio de movimento delas, 2,9, mais o corpo): a câmera fica na
     // distância em que essa esfera encosta nas laterais (ou no alto e embaixo, se o palco for mais largo que alto).
+    const DESLOCAMENTO = 0.06;   /* a fração da largura do palco; o painel desloca os raios na mesma fração (left: calc(50% + 6%)) */
     const RMAX_SERPENTES = 2.9, CORPO_SERPENTE = 0.3;   /* o raio de movimento das serpentes (o agente: rmax 2.9) e o corpo */
     const RAIO_LIMITE = (() => { let objeto = 0; try { (ctx3.root.children || []).forEach(o => { const b = new T.Box3().setFromObject(o), sf = new T.Sphere(); b.getBoundingSphere(sf); if (sf.center.length() < 0.5 && sf.radius < RMAX_SERPENTES) objeto = Math.max(objeto, sf.radius); }); } catch (e) { } return Math.max(objeto || 2.0, RMAX_SERPENTES + CORPO_SERPENTE); })();
     const enquadrar = () => {
       if (!(camera.aspect > 0.05) || !(stage.clientWidth > 10)) return;   /* o palco oculto (largura zero): espera aparecer */
-      const meia_v = camera.fov * Math.PI / 360, meia_h = Math.atan(Math.tan(meia_v) * camera.aspect), meia = Math.min(meia_v, meia_h);
+      // 29/10/2026 (titular): o objeto um pouco à direita (DESLOCAMENTO da largura do palco), para o mostrador do início
+      // do prazo não ficar cortado na borda esquerda; o enquadramento desconta o deslocamento (não encosta na tabela)
+      const w_ = stage.clientWidth, h_ = stage.clientHeight;
+      camera.setViewOffset(w_, h_, -DESLOCAMENTO * w_, 0, w_, h_);
+      const meia_v = camera.fov * Math.PI / 360, meia_h = Math.atan(Math.tan(meia_v) * camera.aspect * (1 - 2 * DESLOCAMENTO)), meia = Math.min(meia_v, meia_h);
       const dist = RAIO_LIMITE / Math.sin(meia), tg = controls.target;
       let dir = camera.position.clone().sub(tg).normalize();
       if (!isFinite(dist) || !isFinite(dir.x + dir.y + dir.z) || dir.lengthSq() < 0.5) dir = new T.Vector3(...layout.views.frente).normalize();   /* nunca uma direção inválida */

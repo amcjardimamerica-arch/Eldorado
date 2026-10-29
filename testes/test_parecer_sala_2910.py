@@ -391,3 +391,20 @@ def test_o_ciclo_traz_os_vereditos_novos_do_repositorio():
     s = Path("eldorado/base/cartorio/analise_externa.py").read_text(encoding="utf-8")
     assert "trazer_vereditos_novos(pasta)" in s and '"git", "show", f"origin/main:{n}"' in s
     assert '(pasta / "vereditos" / "importados" / nome).exists()' in s
+
+
+def test_o_mostrador_desobstruido_e_a_memoria_para_o_interceptador():
+    """29/10/2026 (titular): o objeto 3D deslocado à direita (o mostrador do início do prazo inteiro à vista) com os raios
+    alinhados à esfera; a memória liberada para o Interceptador (a vaga parada devolve o contexto; as vagas não retreinam
+    a rede; a memória volta ao sistema depois da passagem); o reabastecimento contínuo da fila da Preparação."""
+    g = Path("eldorado/base/painel/pagina/giroscopio/giroscopio.html").read_text(encoding="utf-8")
+    p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
+    assert "const DESLOCAMENTO = 0.06;" in g and "camera.setViewOffset(w_, h_, -DESLOCAMENTO * w_, 0, w_, h_)" in g
+    assert "left:calc(50% + 6%)" in p
+    s = Path("eldorado/base/cerebro/pilotos_permanentes.py").read_text(encoding="utf-8")
+    assert "time.monotonic() - vaga.parada_desde > 120" in s and "rede_atual(dados_, max_idade_s=86400)" in s
+    assert "livres = paralelos_agora() - pedidos.unfinished_tasks" in s
+    from eldorado.base.cerebro.governador import liberar_memoria
+
+    assert liberar_memoria() >= 0
+    assert "liberar_memoria()" in Path("eldorado/base/nucleo/comandos.py").read_text(encoding="utf-8")

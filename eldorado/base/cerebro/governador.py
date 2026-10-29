@@ -82,6 +82,24 @@ def cpu_sem_ia(intervalo: float = 0.2) -> float:
     return max(0.0, total - ia) / 100
 
 
+def liberar_memoria() -> float:
+    """29/10/2026 (titular: liberar a memória que não está em uso, para o Interceptador): o coletor do Python e a devolução
+    ao sistema da memória que o processo liberou mas mantinha reservada (malloc_trim). Devolve os MB liberados."""
+    import ctypes
+    import gc
+
+    try:
+        antes = psutil.Process().memory_info().rss
+        gc.collect()
+        try:
+            ctypes.CDLL("libc.so.6").malloc_trim(0)
+        except (OSError, AttributeError):
+            pass
+        return max(0.0, (antes - psutil.Process().memory_info().rss) / 1048576)
+    except Exception:  # noqa: BLE001
+        return 0.0
+
+
 def cpu_total(intervalo: float = 0.2) -> float:
     """29/10/2026: o processador TOTAL, com a IA (fração de 0 a 1): a medida da regra dos 85% da titular."""
     cpu_sem_ia(intervalo)

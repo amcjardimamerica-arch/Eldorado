@@ -148,7 +148,7 @@ def test_o_lago_dos_prazos():
     assert '<div id="sj">' in p and 'src="giroscopio/giroscopio.html?v=20261028c"' in p
     assert "grid-template-columns:minmax(0,6fr) minmax(0,4fr)" in p and "#sj .palco{position:sticky;top:8px;height:calc(100vh - 16px)" in p
     assert "--c-fundo:#F7F4EC" in p and 'class="rolagem"' not in p and "overflow:clip" in p  # o quadro claro, sem rolagem própria  # 3/5 e 2/5
-    assert "#sj .raios,#sj .raios2,#sj .halo{position:absolute;left:50%;top:50%" in p  # no centro da esfera
+    assert "#sj .raios,#sj .raios2,#sj .halo{position:absolute;left:calc(50% + 6%);top:50%" in p  # no centro da esfera (deslocada 6%, 29/10/2026)
     bloco = p[p.index('<div id="sj">') : p.index("</nav>", p.index('<div id="sj">'))]
     assert bloco.count('class="grupo"') == 3 and 'data-ir="farol:f-biblioteca"' in bloco
     assert 'tipo:"prazos"' in p and 'tipo:"selecionar"' in p and "g[a].slice(0,10)" in p and "const CANON=" in p

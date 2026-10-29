@@ -62,7 +62,7 @@ def test_cada_vaga_reaproveita_o_contexto(monkeypatch, tmp_path):
 
     monkeypatch.setattr(E, "Encaminhamento", lambda *a, **k: object())
     monkeypatch.setattr(I, "Interceptador", lambda *a, **k: object())
-    monkeypatch.setattr(R, "rede_atual", lambda d: None)
+    monkeypatch.setattr(R, "rede_atual", lambda d, **k: None)   # 29/10/2026: aceita max_idade_s (a vaga reaproveita a rede guardada)
     monkeypatch.setattr(M, "Metabusca", lambda **k: None)
     import eldorado.base.nucleo.ia as IAm
 

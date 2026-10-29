@@ -115,7 +115,8 @@ class _Vaga:
                 except Exception:  # noqa: BLE001
                     return []
             enc = Encaminhamento(con, diario, registro, Interceptador(con, diario, escada, metabusca=buscar_links,
-                                                                     ia=ia if ia.disponivel() else None), rede_atual(dados_))
+                                                                     ia=ia if ia.disponivel() else None),
+                                rede_atual(dados_, max_idade_s=86400))   # 29/10/2026: a rede guardada (o nó da rede a retreina; a vaga não)
             self.ctx, self.feitos = {"diario": diario, "dados": dados_, "con": con, "enc": enc}, 0
         return self.ctx
 
@@ -128,6 +129,9 @@ class _Vaga:
                 pass
         self.ctx = None
         gc.collect()
+        from .governador import liberar_memoria  # 29/10/2026: a memória liberada volta ao sistema
+
+        liberar_memoria()
 
 
 def _voo_interceptador(vaga: _Vaga, parar: threading.Event, lv_id: str, base: dict | None, tempo_livro_s: float) -> None:
@@ -246,8 +250,13 @@ def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_
         vaga = _Vaga(dados, eventos, k)
         while not parar.is_set():
             if k >= paralelos_agora():                       # sob pressão de memória, só as primeiras vagas voam
+                # 29/10/2026: a vaga parada há mais de 2 min devolve o contexto (a conexão, a escada, o registro) e a memória
+                vaga.parada_desde = getattr(vaga, "parada_desde", None) or time.monotonic()
+                if vaga.ctx is not None and time.monotonic() - vaga.parada_desde > 120:
+                    vaga.fechar()
                 parar.wait(30)
                 continue
+            vaga.parada_desde = None
             try:
                 lv_id, b = pedidos.get(timeout=5)
             except queue.Empty:
@@ -287,10 +296,30 @@ def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_
                 continue
             for v in voos:
                 pedidos.put(v)
+            na_rodada = {v[0] for v in voos}
             INTERCEPTADOR_COM_FILA.set()                             # a vez do Interceptador: o Espião espaça as missões
+            ultimo_reab = 0.0
             while pedidos.unfinished_tasks and not parar.is_set():   # a volta termina quando as vagas esvaziam a fila
                 _quadro_das_vagas(diario)
+                # 29/10/2026 (titular: o Interceptador resolve o gargalo da Preparação): o REABASTECIMENTO contínuo. Antes, a
+                # rodada esperava o voo mais lento e as vagas que já tinham terminado ficavam paradas; agora, com vaga sem
+                # trabalho, vêm os próximos livros da fila (as abertas primeiro), sem repetir os da rodada
+                livres = paralelos_agora() - pedidos.unfinished_tasks
+                if livres > 0 and time.monotonic() - ultimo_reab > 30:
+                    ultimo_reab = time.monotonic()
+                    import sqlite3 as _sq
+
+                    c2 = _sq.connect(f"file:{Path(dados) / 'biblioteca.db'}?mode=ro", uri=True)   # só a leitura da fila
+                    try:
+                        mais = [lv.id for lv in fila(c2, date.today().isoformat()) if lv.id not in na_rodada][:livres]
+                    finally:
+                        c2.close()
+                    for i in mais:
+                        pedidos.put((i, None))
+                        na_rodada.add(i)
                 parar.wait(5)
+            from .governador import liberar_memoria
+            liberar_memoria()
             INTERCEPTADOR_COM_FILA.clear()
         except Exception as e:  # noqa: BLE001 — uma volta que falha vira registro; a seguinte segue
             diario.emitir("alarme.aberto", "piloto:interceptador", {"gravidade": "media", "modulo": "piloto:interceptador",

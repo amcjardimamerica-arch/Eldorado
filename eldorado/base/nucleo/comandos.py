@@ -818,6 +818,14 @@ def permanente(
         try:
             _rodar(workflow, config, None, None, "leve")
             _sinal_passagem(f"ciclo {ciclo}: a passagem terminou em {(time.monotonic() - _t0) / 60:.1f} min")
+            try:   # 29/10/2026: a memória que a passagem liberou volta ao sistema (para o Interceptador)
+                from ..cerebro.governador import liberar_memoria
+
+                _mb = liberar_memoria()
+                if _mb >= 50:
+                    typer.echo(f"  memória devolvida ao sistema depois da passagem: {_mb:.0f} MB")
+            except Exception:  # noqa: BLE001
+                pass
         except typer.Exit as e:
             _como = "adiada pelo governador" if e.exit_code == ADIADO else "terminou"
             _sinal_passagem(f"ciclo {ciclo}: código {e.exit_code} ({_como}) em {(time.monotonic() - _t0) / 60:.1f} min")
