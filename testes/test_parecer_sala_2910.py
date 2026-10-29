@@ -156,30 +156,31 @@ def test_a_escada_aprende_e_lembra_pelo_codigo_canonico():
 
 
 def test_as_vagas_pela_media_do_minuto(monkeypatch):
-    """29/10/2026: a ociosidade pela média do último minuto (a amostra de 0,3 s pegava os picos do Espião e zerava a
-    contagem: o Interceptador ficava com 1 vaga, com o processador entre 0% e 26%); a IA do Interceptador com 150 s."""
+    """29/10/2026: a média do último minuto do processador TOTAL (com a IA) governa as vagas (a regra dos 85%); a IA do
+    Interceptador com 150 s; a métrica de cada missão (os itens do checklist obtidos) e o quadro das vagas."""
     from eldorado.base.cerebro import governador as G
+    from eldorado.base.cerebro.pilotos_permanentes import _itens_do_achado
     from eldorado.base.comandante import pilotos as P
 
-    def simular(padrao, passos=110):
-        P._amostras.clear()
-        P._ocio["desde"] = None
-        seq = iter(padrao * 100)
-        monkeypatch.setattr(G, "cpu_sem_ia", lambda *a: next(seq))
-        t = [5000.0]
-        monkeypatch.setattr(P.time, "monotonic", lambda: t[0])
-        out = []
-        for _ in range(passos):
-            out.append(P.vagas_por_ociosidade())
-            t[0] += 10
-        return out
-
-    r = simular([0.1, 0.23, 0.02, 0.26, 0.0, 0.9])  # a produção: um pico do Espião por minuto
-    assert 3 in r and r[-1] == 5
-    assert set(simular([0.7, 0.8, 0.6, 0.9, 0.75, 0.65])) == {1}
-    P._amostras.clear()  # não deixa amostras do relógio simulado para os outros testes
-    P._ocio["desde"] = None
+    P._amostras.clear()
+    P._ctrl.update(vagas=1, ultimo_ajuste=0.0)
+    seq = iter([0.1, 0.9, 0.1, 0.1, 0.9, 0.1] * 50)  # picos de 90% no meio: a média do minuto (~37%) segue abaixo de 78%
+    monkeypatch.setattr(G, "cpu_total", lambda *a: next(seq))
+    t = [5000.0]
+    monkeypatch.setattr(P.time, "monotonic", lambda: t[0])
+    out = []
+    for _ in range(60):
+        out.append(P.vagas_por_ociosidade())
+        t[0] += 20
+    assert out[-1] == 8
+    P._amostras.clear()
+    P._ctrl.update(vagas=1, ultimo_ajuste=0.0)
     assert "tempo_limite=150.0" in Path("eldorado/base/cerebro/pilotos_permanentes.py").read_text(encoding="utf-8")
+    assert _itens_do_achado({"dados": {"itens": "{'Objeto': {'valor': 'x'}, 'Valor': {'valor': 'y'}}"}}) == {"Objeto", "Valor"}
+    s = Path("eldorado/base/cerebro/pilotos_permanentes.py").read_text(encoding="utf-8")
+    assert '"marcador": "missao:interceptador"' in s and '"marcador": "pilotos:vagas"' in s and "PARALELOS_INTERCEPTADOR = 8" in s
+    sala = Path("eldorado/base/painel/sala.py").read_text(encoding="utf-8")
+    assert '"pi_missoes"' in sala and '"pi_vagas"' in sala
 
 
 def test_o_diario_de_nome_fixo_vai_para_o_dia():

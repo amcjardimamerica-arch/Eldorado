@@ -82,7 +82,8 @@ def _contexto(dados: Path, diario):
     return _contexto_pilotos({"dados": str(dados), "modulos": "config/modulos.toml", "intervalo_s": 1.0}, SimpleNamespace(diario=diario))
 
 
-PARALELOS_INTERCEPTADOR = 5   # o máximo; o uso normal é 1, e a ociosidade da máquina libera até 5 (titular, 27/10/2026)
+PARALELOS_INTERCEPTADOR = 8   # 29/10/2026: o teto (eram 5); quem decide quantos voam é o controlador dos 85% do processador
+EM_VOO = {"n": 0}             # quantos voos do Interceptador estão em andamento agora
 
 
 class _Vaga:
@@ -139,6 +140,9 @@ def _voo_interceptador(vaga: _Vaga, parar: threading.Event, lv_id: str, base: di
     if not livros or autorizar("interceptador", c["dados"], c["diario"], parar, alvo=lv_id, titulo=livros[0].titulo or "") is None:
         return
     SITUACAO[f"interceptador-{vaga.k}"] = {"livro": lv_id, "titulo": livros[0].titulo, "desde": time.time()}
+    faltavam = list(livros[0].faltam)
+    obtidos: set[str] = set()
+    EM_VOO["n"] += 1
     sinal(c["diario"], "interceptador", f"em voo ({vaga.k + 1} de {PARALELOS_INTERCEPTADOR}): {livros[0].titulo}")
     try:
         if base:                                          # o pré-voo da base: o site oficial e a esfera, sem a IA (26/10/2026)
@@ -150,11 +154,63 @@ def _voo_interceptador(vaga: _Vaga, parar: threading.Event, lv_id: str, base: di
         _quem, achados = c["enc"].encaminhar(livros[0], time.monotonic() + tempo_livro_s)
         for a in (achados if isinstance(achados, list) else [achados] if achados else []):
             entregar("interceptador", a)
+            obtidos |= _itens_do_achado(a)
     finally:
+        EM_VOO["n"] = max(0, EM_VOO["n"] - 1)
+        _registrar_missao(c["diario"], lv_id, livros[0].titulo, faltavam, obtidos)
         vaga.feitos += 1
         if base:
             registrar_tentativa(c["diario"], base)       # a tentativa de completar a base (no máximo 2, com 30 minutos entre elas)
         pousou("interceptador")
+
+
+def _quadro_das_vagas(diario) -> None:
+    """29/10/2026: quantos Interceptadores voam agora e quantas vagas o controlador liberou (gravado quando muda)."""
+    try:
+        from ..comandante.pilotos import estado_vagas
+        from ..nucleo.eventos import agora as _agora
+        from ..nucleo.eventos import emitir_se_mudou
+
+        e = estado_vagas()
+        cpu, mem = e.get("cpu") or 0.0, e.get("mem") or 0.0
+        emitir_se_mudou(diario, "medicao.registrada", "pilotos", "vagas", {
+            "marcador": "pilotos:vagas", "nivel": "componente", "em": _agora(), "ponto": "v", "circulo": "v", "linhas": "v",
+            "valor": float(EM_VOO["n"]),
+            "motivo": f"{EM_VOO['n']} Interceptador(es) em voo · {e.get('vagas', 1)} vaga(s) liberada(s) de {PARALELOS_INTERCEPTADOR} · "
+                      f"processador total {cpu:.0%} (alvo 85%) · memória {mem:.0%}"},
+            renovar_s=900, ignorar=("em", "motivo"), chave_extra=f"{EM_VOO['n']}/{e.get('vagas', 1)}")
+    except Exception:  # noqa: BLE001
+        pass
+
+
+def _itens_do_achado(a) -> set[str]:
+    """Os itens do checklist que o achado traz (o dicionário 'itens': cada item com o valor e o trecho de prova)."""
+    import ast
+
+    d = a.get("dados") if isinstance(a, dict) else getattr(a, "dados", None)
+    itens = (d or {}).get("itens") if isinstance(d, dict) else None
+    if isinstance(itens, str):
+        try:
+            itens = ast.literal_eval(itens)
+        except (ValueError, SyntaxError):
+            itens = None
+    return set(itens) if isinstance(itens, dict) else set()
+
+
+def _registrar_missao(diario, lv_id: str, titulo: str, faltavam: list[str], obtidos: set[str]) -> None:
+    """29/10/2026 (titular): a métrica de cada missão do Interceptador: quantos itens do checklist ela obteve, de quantos
+    faltavam (a Sala soma as missões das últimas 24 h)."""
+    try:
+        from ..nucleo.eventos import agora as _agora
+
+        n, m = len(obtidos), len(faltavam)
+        diario.emitir("medicao.registrada", "pilotos", {
+            "marcador": "missao:interceptador", "nivel": "componente", "em": _agora(), "ponto": "v" if n else "a", "circulo": "v" if n else "a",
+            "linhas": "v", "valor": float(n),
+            "motivo": f"{n} de {m} itens do checklist obtidos ({', '.join(sorted(obtidos)) or 'nenhum'}) · {lv_id} · {(titulo or '')[:80]}"})
+        sinal(diario, "interceptador", f"pousou: {n} de {m} itens do checklist obtidos · {(titulo or '')[:60]}")
+    except Exception:  # noqa: BLE001 — a métrica nunca derruba o voo
+        pass
 
 
 # 29/10/2026 (titular: a opção 2): com livros na fila do Interceptador (as abertas sem ouro são a prioridade da missão), o
@@ -166,7 +222,10 @@ ESPACO_ESPIAO_S = 30
 
 def paralelos_agora() -> int:
     """Quantos voos o Comandante libera agora: 5; com a memória acima de 85% há mais de 10 minutos, 2 (26/10/2026)."""
+    # 29/10/2026: o controlador dos 85% do processador decide; a pressão (a MEMÓRIA acima de 85% por 10 min) segue como a
+    # proteção que derruba para 1 voo
     from ..comandante.pilotos import pressao, vagas_por_ociosidade
+
     return 1 if pressao() >= 600 else min(PARALELOS_INTERCEPTADOR, vagas_por_ociosidade())
 
 def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_s: float = 180) -> None:
@@ -229,7 +288,8 @@ def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_
             for v in voos:
                 pedidos.put(v)
             INTERCEPTADOR_COM_FILA.set()                             # a vez do Interceptador: o Espião espaça as missões
-            while pedidos.unfinished_tasks and not parar.is_set():   # a volta termina quando as 5 vagas esvaziam a fila
+            while pedidos.unfinished_tasks and not parar.is_set():   # a volta termina quando as vagas esvaziam a fila
+                _quadro_das_vagas(diario)
                 parar.wait(5)
             INTERCEPTADOR_COM_FILA.clear()
         except Exception as e:  # noqa: BLE001 — uma volta que falha vira registro; a seguinte segue

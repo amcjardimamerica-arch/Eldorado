@@ -76,7 +76,7 @@ def test_a_base_a_fila_as_duas_tentativas_e_o_chrome(bancos, gravador, tmp_path)
 def test_o_interceptador_voa_2_livros_em_paralelo():
     from eldorado.base.cerebro import pilotos_permanentes as PP
 
-    assert PP.PARALELOS_INTERCEPTADOR == 5
+    assert PP.PARALELOS_INTERCEPTADOR == 8
     import tomllib
 
     c = tomllib.loads(Path("config/cargos.toml").read_text(encoding="utf-8"))

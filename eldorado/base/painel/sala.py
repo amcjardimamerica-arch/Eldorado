@@ -19,7 +19,7 @@ ETAPAS = {
     "regencia": ["rg_regencia", "ma_cobertura", "ma_esgotados", "dg_finalidade", "ma_memoria_etapa"],
     "coleta": ["mo_saude", "mo_cadencia", "mo_retentativa", "mo_fora_da_fila", "es_coleta"],
     "certificacao": ["ca_12", "fl_fila", "es_curadoria", "es_parcial"],
-    "investigacao": ["pi_interceptador", "pi_espiao", "pi_piloto", "de_decisoes"],
+    "investigacao": ["pi_interceptador", "pi_espiao", "pi_piloto", "de_decisoes", "pi_missoes", "pi_vagas"],
     "externa": ["ve_para_o_chrome", "ve_bloqueadas", "ve_completas", "ve_importado", "al_externa"],
     "repositorio": ["es_abertas", "es_banco_unico", "hi_crescimento"],
     "biblioteca": ["es_livros", "es_vigilancia", "em_rankings", "hi_uso", "hi_frio", "es_orfaos"],
@@ -365,6 +365,35 @@ def montar(
         _faixa(idade_v, 72, 168, False) if idade_v is not None else "cinza",
         "nenhum veredito importado ainda" if idade_v is None else f"último veredito há {idade_v:.0f} h",
         ult_v,
+    )
+    # ---- 29/10/2026 (titular): as missões do Interceptador e as vagas (a regra dos 85% do processador total)
+    try:
+        ms = cer.execute("SELECT valor FROM medicao WHERE marcador = 'missao:interceptador' AND em >= ?", (h24,)).fetchall()
+    except sqlite3.Error:
+        ms = []
+    nm, it = len(ms), int(sum((r[0] or 0) for r in ms))
+    vazias = sum(1 for r in ms if not r[0])
+    I(
+        "pi_missoes",
+        "Missões do Interceptador (24 h): itens do checklist obtidos",
+        it if nm else None,
+        "cinza" if not nm else _faixa(it / nm, 1.5, 0.5),
+        "ainda sem missão registrada"
+        if not nm
+        else f"{nm} missões, {it} itens do checklist obtidos (média {it / nm:.1f} por missão); {vazias} voltaram sem item",
+        iso,
+    )
+    try:
+        vq = cer.execute("SELECT valor, motivo, em FROM medicao WHERE marcador = 'pilotos:vagas' ORDER BY em DESC LIMIT 1").fetchone()
+    except sqlite3.Error:
+        vq = None
+    I(
+        "pi_vagas",
+        "Interceptadores agora (em voo / vagas liberadas)",
+        vq[0] if vq else None,
+        "cinza" if not vq else "verde",
+        "ainda sem o quadro das vagas" if not vq else str(vq[1]),
+        vq[2] if vq else iso,
     )
     # ---- 29/10/2026: os ALARMES DE TENDÊNCIA (a degradação lenta aparece antes de virar problema)
     orfaos = q(bib, "SELECT COUNT(*) FROM achado WHERE decisao = 'pendente' AND encontrado_em < ?", hoje)

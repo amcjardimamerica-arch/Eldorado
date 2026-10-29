@@ -81,32 +81,49 @@ _ocio: dict[str, float | None] = {"desde": None}
 _amostras: "deque[tuple[float, float]]" = deque()
 
 
+ALVO_BAIXO, ALVO_ALTO = 0.78, 0.92        # a faixa em torno de 85% do processador TOTAL (com a IA)
+MEM_SEGURA, MEM_EMERGENCIA = 0.86, 0.90   # a memória: acima de 86%, fecha uma vaga; acima de 90%, volta a 1
+VAGAS_MAX = 8
+_ctrl = {"vagas": 1, "ultimo_ajuste": 0.0, "cpu": None, "mem": None}
+
+
 def vagas_por_ociosidade() -> int:
-    """27/10/2026 (titular): o uso normal é 1 Interceptador; com a máquina ociosa (o processador inteiro, com a IA, abaixo de
-    40% e a memória abaixo de 70%) por 5 minutos, 3; por 15 minutos, 5. Com carga, volta a 1."""
+    """29/10/2026 (titular, a regra do sistema: coordenar as missões com a disponibilidade, mantendo o processador perto de
+    85%). Um controlador: a cada minuto, pela média do último minuto do processador TOTAL (com a IA) e pela memória,
+    abre uma vaga se o processador está abaixo de 78%, fecha uma acima de 92%, mantém entre os dois; a memória acima de 86%
+    fecha uma vaga e acima de 90% volta a 1. Antes: o processador SEM a IA abaixo de 45% e a memória abaixo de 78% —
+    o processador ficava entre 0% e 29% e, com a memória em 80%, o Interceptador ficava com 1 vaga por horas."""
     try:
         import psutil
 
-        from ..cerebro.governador import cpu_sem_ia
-        # 28/10/2026: a ociosidade pelo processador SEM a IA (a IA ocupada fazia o sistema nunca ficar ocioso: o dia todo
-        # com 1 voo, o processador livre); a IA segue limitada a 2 pedidos de cada vez (a vez da IA)
-        total, mem = cpu_sem_ia(0.3), psutil.virtual_memory().percent / 100
+        from ..cerebro.governador import cpu_total
+        total, mem = cpu_total(0.3), psutil.virtual_memory().percent / 100
     except Exception:  # noqa: BLE001
-        return 1
+        return _ctrl["vagas"]
     agora_m = time.monotonic()
     with _trava:
-        # 29/10/2026: a média do último minuto (a amostra de 0,3 s pegava os picos do Espião e zerava a contagem dos 5 min:
-        # o Interceptador ficava sempre com 1 vaga, com o processador entre 0% e 26%)
         _amostras.append((agora_m, total))
         while _amostras and agora_m - _amostras[0][0] > 60:
             _amostras.popleft()
-        total = sum(v for _, v in _amostras) / len(_amostras)
-        if total < 0.45 and mem < 0.78:
-            _ocio["desde"] = _ocio["desde"] or agora_m
-        else:
-            _ocio["desde"] = None
-        ocioso = agora_m - _ocio["desde"] if _ocio["desde"] else 0.0
-    return 5 if ocioso >= 15 * 60 else 3 if ocioso >= 5 * 60 else 1
+        media = sum(v for _, v in _amostras) / len(_amostras)
+        _ctrl["cpu"], _ctrl["mem"] = media, mem
+        v = _ctrl["vagas"]
+        if mem >= MEM_EMERGENCIA:
+            v = 1
+        elif agora_m - _ctrl["ultimo_ajuste"] >= 60 and len(_amostras) >= 3:
+            if media > ALVO_ALTO or mem > MEM_SEGURA:
+                v = max(1, v - 1)
+            elif media < ALVO_BAIXO:
+                v = min(VAGAS_MAX, v + 1)
+            _ctrl["ultimo_ajuste"] = agora_m
+        _ctrl["vagas"] = v
+    return v
+
+
+def estado_vagas() -> dict:
+    """As vagas liberadas agora, o processador total (média do minuto) e a memória: para o quadro e a Sala."""
+    with _trava:
+        return dict(_ctrl)
 
 
 def pressao() -> float:

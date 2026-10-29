@@ -219,7 +219,8 @@ def test_o_gravador_nao_deixa_alarme_de_recusa_resolvida(bancos, tmp_path):
 
 
 def test_o_interceptador_elastico_pela_ociosidade(monkeypatch):
-    """27/10/2026 (titular): 1 Interceptador no uso normal; a máquina ociosa libera até 5; com carga, volta a 1."""
+    """29/10/2026 (titular, a regra do sistema: perto de 85% do processador TOTAL): o controlador abre uma vaga por minuto
+    abaixo de 78%, mantém na faixa, fecha uma acima de 92%; a memória acima de 90% volta a 1."""
     import eldorado.base.cerebro.governador as G
     import eldorado.base.comandante.pilotos as CP
 
@@ -230,16 +231,27 @@ def test_o_interceptador_elastico_pela_ociosidade(monkeypatch):
         percent = 50.0
 
     monkeypatch.setattr(CP.__dict__.get("psutil", __import__("psutil")), "virtual_memory", lambda: Mem())
-    CP._ocio["desde"] = None
-    CP._amostras.clear()                                   # 29/10/2026: a média do último minuto começa vazia
-    monkeypatch.setattr(G, "cpu_sem_ia", lambda *_: 0.10)  # 28/10/2026: o processador sem a IA
-    assert CP.vagas_por_ociosidade() == 1
-    relogio[0] += 6 * 60
-    assert CP.vagas_por_ociosidade() == 3
-    relogio[0] += 10 * 60
-    assert CP.vagas_por_ociosidade() == 5
-    monkeypatch.setattr(G, "cpu_sem_ia", lambda *_: 0.95)
-    assert CP.vagas_por_ociosidade() == 1
+    CP._amostras.clear()
+    CP._ctrl.update(vagas=1, ultimo_ajuste=0.0)
+    monkeypatch.setattr(G, "cpu_total", lambda *_: 0.10)
+    vs = []
+    for _ in range(40):
+        vs.append(CP.vagas_por_ociosidade())
+        relogio[0] += 20
+    assert vs[0] == 1 and vs[-1] == CP.VAGAS_MAX == 8 and vs == sorted(vs)  # ociosa: sobe de uma em uma até 8
+    monkeypatch.setattr(G, "cpu_total", lambda *_: 0.85)
+    for _ in range(12):
+        CP.vagas_por_ociosidade()
+        relogio[0] += 20
+    assert CP.vagas_por_ociosidade() == 8  # no alvo: mantém
+    monkeypatch.setattr(G, "cpu_total", lambda *_: 0.97)
+    for _ in range(12):
+        CP.vagas_por_ociosidade()
+        relogio[0] += 20
+    assert CP.vagas_por_ociosidade() < 8  # sobrecarregada: fecha
+    Mem.percent = 91.0
+    assert CP.vagas_por_ociosidade() == 1  # a memória em emergência: volta a 1
+    CP._ctrl.update(vagas=1, ultimo_ajuste=0.0)
     src = Path("eldorado/base/cerebro/regencia.py").read_text(encoding="utf-8")
     assert "pool.shutdown(wait=False, cancel_futures=True)" in src and "orcamento + folga" in src  # a coleta não espera o preso
 

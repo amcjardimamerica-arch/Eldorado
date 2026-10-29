@@ -82,6 +82,12 @@ def cpu_sem_ia(intervalo: float = 0.2) -> float:
     return max(0.0, total - ia) / 100
 
 
+def cpu_total(intervalo: float = 0.2) -> float:
+    """29/10/2026: o processador TOTAL, com a IA (fração de 0 a 1): a medida da regra dos 85% da titular."""
+    cpu_sem_ia(intervalo)
+    return float(_IA.get("total") or 0.0)
+
+
 def medidor_psutil(caminho_disco: str = ".") -> Callable[[], Leitura]:
     psutil.cpu_percent(interval=None)                 # a primeira leitura do psutil é sempre 0; descartada
     def medir() -> Leitura:
