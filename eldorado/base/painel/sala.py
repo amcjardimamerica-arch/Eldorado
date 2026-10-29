@@ -619,6 +619,7 @@ def montar(
         "proximo_passo": _proximo_passo(bib, AB),
         "rede_entregou": _rede_entregou(bib, cer, AB),
         "comparacao_r01": _comparacao_r01(cer, agora),
+        "escada": _escada_em_uso(cer, h48),
     }
     # ---- a máquina (o servidor do GitHub onde o sistema roda): a última leitura e as últimas 3 horas
     maq: dict[str, Any] = {"alvo": 0.85}
@@ -761,6 +762,25 @@ def _comparacao_r01(cer: sqlite3.Connection, agora: datetime, caminho: str = "co
     piores = [k for k, v in out.items() if v["situacao"] == "pior"]
     return {"dia": min(dia, dias), "dias": dias, "termina": (datetime.fromisoformat(inicio) + timedelta(days=dias)).date().isoformat(),
             "motores": out, "piores": piores}
+
+
+def _escada_em_uso(cer: sqlite3.Connection, desde: str) -> dict[str, int]:
+    """29/10/2026: os degraus da escada de acesso em uso: quantos sites precisam de cada um (o que a escada aprendeu) e o
+    degrau mais alto de cada execução de motor nas últimas 48 h (a resposta a "o Camoufox está sendo usado?")."""
+    from ...motores.acesso.escada import NOMES_CANONICOS
+
+    out: dict[str, int] = {}
+    try:
+        for cod, n in cer.execute("SELECT degrau_que_funciona, COUNT(*) FROM dominio GROUP BY 1"):
+            out[f"sites que abrem no {NOMES_CANONICOS.get(cod, cod)}"] = n
+        for cod, n in cer.execute("SELECT degrau_maximo, COUNT(*) FROM execucao_motor WHERE inicio >= ? AND degrau_maximo IS NOT NULL GROUP BY 1", (desde,)):
+            out[f"execuções que subiram até o {NOMES_CANONICOS.get(cod, cod)}"] = n
+        sem = cer.execute("SELECT COUNT(*) FROM execucao_motor WHERE inicio >= ? AND degrau_maximo IS NULL", (desde,)).fetchone()[0]
+        if sem:
+            out["execuções sem o registro do degrau"] = sem
+    except sqlite3.Error:
+        pass
+    return out
 
 def _eficiencia_itens(bib: sqlite3.Connection, AB: str) -> dict[str, dict[str, Any]]:
     """29/10/2026: a eficiência de cada um dos 12 itens nas abertas (a página lê eficiência, obtidos, dispensados e

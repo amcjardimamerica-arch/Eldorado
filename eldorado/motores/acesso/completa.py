@@ -8,7 +8,7 @@ ORDEM = ("api", "leve", "ponte", "lightpanda", "patchright", "camoufox", "arquiv
 
 
 def escada_completa(intervalo_s: float = 1.0, tentativas: int = 1, tempo_limite: float = 25, ponte: str = "dados/ponte",
-                    degraus: tuple[str, ...] = ORDEM) -> Escada:
+                    degraus: tuple[str, ...] = ORDEM, diario=None, dados=None) -> Escada:
     from .api import DegrauAPI
     from .arquivo_web import DegrauArquivo
     from .leve import DegrauLeve
@@ -24,4 +24,9 @@ def escada_completa(intervalo_s: float = 1.0, tentativas: int = 1, tempo_limite:
             lista.append(mapa[d]())
         except Exception:  # noqa: BLE001 — o degrau que não pode ser montado aqui é pulado (o mesmo critério do motor)
             pass
-    return Escada(lista, intervalo_padrao=intervalo_s, tentativas=tentativas, tempo_limite=tempo_limite)
+    e = Escada(lista, diario=diario, intervalo_padrao=intervalo_s, tentativas=tentativas, tempo_limite=tempo_limite)
+    if dados is not None:                       # 29/10/2026: com a memória do que já foi aprendido (e o diário, para aprender)
+        from .escada import ler_aprendido
+
+        e.semear(ler_aprendido(dados))
+    return e

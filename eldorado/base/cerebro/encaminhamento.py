@@ -115,7 +115,7 @@ def _contexto_pilotos(parametros: dict[str, Any], contexto):
     from ...motores.acesso.completa import escada_completa
     dados = Path(parametros.get("dados", "dados"))
     con = sqlite3.connect(f"file:{dados / 'biblioteca.db'}?mode=ro", uri=True)
-    escada = escada_completa(float(parametros.get("intervalo_s", 1.0)), tentativas=1, tempo_limite=25)
+    escada = escada_completa(float(parametros.get("intervalo_s", 1.0)), tentativas=1, tempo_limite=25, diario=contexto.diario, dados=dados)
     registro = carregar_registro(parametros.get("modulos", "config/modulos.toml"), contexto.diario)
     return dados, con, escada, registro
 
@@ -147,7 +147,7 @@ def no_encaminhar(itens: list[dict[str, Any]], parametros: dict[str, Any], conte
         def trabalhador(parte: list) -> list:
             c_w = sqlite3.connect(f"file:{dados / 'biblioteca.db'}?mode=ro", uri=True)
             try:
-                esc = escada_completa(float(parametros.get("intervalo_s", 1.0)), tentativas=1, tempo_limite=25)
+                esc = escada_completa(float(parametros.get("intervalo_s", 1.0)), tentativas=1, tempo_limite=25, diario=contexto.diario, dados=dados)
                 mb = Metabusca(buscar=esc.buscar)
 
                 def buscar_links(q: str) -> list[str]:

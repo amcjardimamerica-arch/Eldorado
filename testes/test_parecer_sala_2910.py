@@ -111,3 +111,44 @@ def test_a_comparacao_r01_le_o_arquivo():
     r = _comparacao_r01(c, datetime(2026, 10, 29, tzinfo=timezone.utc))
     assert r["dias"] == 14 and r["motores"]["pncp-api"]["situacao"] == "pior"
     assert json.dumps(r)
+
+
+def test_a_escada_aprende_e_lembra_pelo_codigo_canonico():
+    """29/10/2026: a escada não registrava o degrau (a tabela dominio vazia, o degrau máximo em branco em 357 execuções):
+    grava o código canônico do degrau que funcionou e outra escada (outra lista) começa por ele."""
+    from eldorado.motores.acesso.escada import Bloqueado, Escada, Resposta
+
+    html = ("<html><body>" + "<p>Edital de chamamento público com inscrições abertas para organizações.</p>" * 30 + "</body></html>").encode()
+
+    class D:
+        pesado = False
+
+        def __init__(self, nome, abre):
+            self.nome, self.abre, self.usos = nome, abre, 0
+
+        def buscar(self, url, tempo_limite=30):
+            self.usos += 1
+            if not self.abre:
+                raise Bloqueado("bloqueado")
+            return Resposta(url=url, status=200, conteudo=html, tipo="text/html")
+
+    with tempfile.TemporaryDirectory() as d:
+        di = EV.Diario(d, "t")
+        e1 = Escada(
+            [D("1 · API", False), D("4 · Patchright", False), D("5 · Camoufox", True)],
+            diario=di,
+            intervalo_padrao=0,
+            tentativas=1,
+            dormir=lambda s: None,
+        )
+        e1.buscar("https://site.gov.br/a")
+        ev = [x for x in EV.ler(d) if x.tipo == "dominio.aprendido"]
+        assert ev and ev[0].dados["degrau_que_funciona"] == 5 and e1.degrau_maximo() == 5
+        outra = [D("2 · leve", False), D("5 · Camoufox", True)]
+        e2 = Escada(outra, intervalo_padrao=0, tentativas=1, dormir=lambda s: None)
+        assert e2.semear({"site.gov.br": 5}) == 1
+        e2.buscar("https://site.gov.br/b")
+        assert outra[0].usos == 0 and outra[1].usos == 1
+    r = Path("eldorado/base/cerebro/regencia.py").read_text(encoding="utf-8")
+    assert "motor.escada.semear(ler_aprendido(" in r and '"degrau_maximo": esc_.degrau_maximo()' in r
+    assert "diario=contexto.diario, dados=dados" in Path("eldorado/base/cerebro/encaminhamento.py").read_text(encoding="utf-8")

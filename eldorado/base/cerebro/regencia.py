@@ -152,6 +152,12 @@ class Regencia:
                     p = Plano(passagem=plano["passagem"], janela_inicio=m["janela_inicio"], janela_fim=m["janela_fim"])
                     if hasattr(motor, "estado"):                   # o motor entrega o que aprende ao Cérebro, pelo diário da execução
                         motor.estado.diario = self.diario
+                    if getattr(motor, "escada", None) is not None:  # 29/10/2026: a escada aprende e lembra (o degrau por site)
+                        import os as _os
+
+                        from ...motores.acesso.escada import ler_aprendido
+                        motor.escada.diario = self.diario
+                        motor.escada.semear(ler_aprendido(_os.environ.get("ELDORADO_DADOS", "dados")))
                     f = pool.submit(medir, lambda motor=motor, p=p: list(motor.buscar(p)), medir_memoria=False)
                     pendentes[f] = (modulo, agora())
                     _inicio_m[f] = _t.monotonic()
@@ -172,8 +178,10 @@ class Regencia:
                         PENDENTES_DO_DIA.setdefault(_hoje(), set()).add(modulo)
                     else:                                              # terminou o trabalho do dia
                         PENDENTES_DO_DIA.get(_hoje(), set()).discard(modulo)
+                    esc_ = getattr(mot_, "escada", None)
                     self.diario.emitir("motor.execucao", "regencia", {"motor": modulo, "inicio": inicio, "fim": agora(), "achados": len(lista),
-                                                                      "erro": med.erro or None})
+                                                                      "erro": med.erro or None,
+                                                                      "degrau_maximo": esc_.degrau_maximo() if esc_ is not None else None})
                     for a in lista:
                         if (a.dados or {}).get("especial"):              # empresa e incentivo: à base Especial, não à Pertinência
                             from ..especial.registro import Registro as RegistroEspecial

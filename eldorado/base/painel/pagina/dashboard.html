@@ -2476,7 +2476,7 @@ colunas, com o navegador das áreas, os filtros de antes, os 12 quadradinhos de 
       case "biblioteca": return `<h4>Estantes das abertas</h4>`+linhas(D.estantes,4);
       case "certificacao": return `<h4>Eficiência por item</h4>`+Object.entries(D.cartorio_itens||{}).sort((a,b)=>(a[1].eficiencia||0)-(b[1].eficiencia||0)).slice(0,5)
         .map(([k,v])=>`<div style="display:block"><span style="display:flex;justify-content:space-between"><span>${e(k)}</span><b>${Math.round(100*(v.eficiencia||0))}%</b></span><div class="barra"><i style="width:${Math.round(100*(v.eficiencia||0))}%"></i></div></div>`).join("");
-      case "investigacao": return `<h4>Fila do Interceptador</h4>`+linhas(D.interceptador_fila,4);
+      case "investigacao": return `<h4>Fila do Interceptador</h4>`+linhas(D.interceptador_fila,4)+`<h4 style="margin-top:10px">A escada de acesso em uso</h4>`+(Object.keys(D.escada||{}).length?linhas(D.escada,8):`<div class="faint" style="font-size:12px">ainda sem registro: a escada passou a registrar o degrau em 29/10/2026</div>`);
       case "externa": return `<h4>Fila de reprocessamento</h4>`+linhas(Object.fromEntries(Object.entries(D.reprocessar||{}).map(([k,v])=>[k.split(":")[0].split("→")[0].trim(),v])),4);
       case "farol": return `<h4>Chegada</h4><div><span>prontas para o Farol</span><b style="color:${COR.verde}">${n(M[7]?.valor)}</b></div><div><span>empresas que financiam</span><b>${n((I("em_rankings")||{}).valor)}</b></div><div><span>arquivo frio</span><b>${n((I("hi_frio")||{}).valor)} pacotes</b></div>`;
     } return ""; }

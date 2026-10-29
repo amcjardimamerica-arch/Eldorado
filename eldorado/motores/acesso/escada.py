@@ -85,6 +85,36 @@ def avaliar(r: Resposta) -> None:
         raise Bloqueado("página HTML quase vazia (provável bloqueio ou conteúdo só com JavaScript)")
 
 
+# 29/10/2026: a identidade canônica dos degraus (o código no início do nome): 1 API, 2 leve, P ponte BR (10), 3 Lightpanda,
+# 4 Patchright, 5 Camoufox, 6 Wayback, 7 Tor, 8 leitor público, 9 computador da titular; a ordem é a da escada completa
+NOMES_CANONICOS = {1: "API", 2: "requisição leve", 10: "ponte BR", 3: "Lightpanda", 4: "Patchright", 5: "Camoufox", 6: "Wayback",
+                   7: "Tor", 8: "leitor público", 9: "computador da titular"}
+ORDEM_CANONICA = [1, 2, 10, 3, 4, 5, 6, 7, 8, 9]
+
+
+def codigo(degrau) -> int | None:
+    prefixo = str(getattr(degrau, "nome", "")).split("·")[0].strip()
+    return 10 if prefixo == "P" else (int(prefixo) if prefixo.isdigit() else None)
+
+
+def ler_aprendido(dados) -> dict[str, int]:
+    """O que a escada já aprendeu (o Cérebro: a tabela dominio), domínio → código canônico do degrau."""
+    import sqlite3
+    from pathlib import Path
+
+    arq = Path(dados) / "cerebro.db"
+    if not arq.exists():
+        return {}
+    try:
+        c = sqlite3.connect(f"file:{arq}?mode=ro", uri=True)
+        try:
+            return {d: int(g) for d, g in c.execute("SELECT dominio, degrau_que_funciona FROM dominio WHERE degrau_que_funciona IS NOT NULL")}
+        finally:
+            c.close()
+    except sqlite3.Error:
+        return {}
+
+
 class Escada:
     def __init__(self, degraus: list[Degrau], diario: Diario | None = None, governador=None, intervalo_padrao: float = 1.0,
                  tentativas: int = 2, aprendido: dict[str, int] | None = None, tempo_limite: float = 30.0, dormir=time.sleep):
@@ -152,10 +182,29 @@ class Escada:
             return r
         raise Bloqueado(f"{dom}: nenhum degrau conseguiu ({'; '.join(motivos)})")
 
+    def semear(self, memoria: dict[str, int]) -> int:
+        """29/10/2026: a memória do que já foi aprendido (domínio → código canônico do degrau), convertida para a posição
+        nesta escada; o próximo pedido ao domínio começa pelo degrau que funcionou (antes recomeçava do primeiro)."""
+        pos = {codigo(d): j for j, d in enumerate(self.degraus)}
+        n = 0
+        for dom, cod in memoria.items():
+            if cod in pos and dom not in self.aprendido:
+                self.aprendido[dom] = pos[cod]
+                n += 1
+        return n
+
+    def degrau_maximo(self) -> int | None:
+        """O código canônico do degrau mais alto que esta escada precisou usar (para a Sala: o Camoufox está em uso?)."""
+        usados = [codigo(self.degraus[i]) for i in set(self.aprendido.values()) if 0 <= i < len(self.degraus)]
+        usados = [u for u in usados if u is not None]
+        return max(usados, key=ORDEM_CANONICA.index) if usados else None
+
     def _aprender(self, dom: str, i: int, exige_local: bool = False) -> None:
         self.aprendido[dom] = i
         if self.diario:
-            dados = {"dominio": dom, "degrau_que_funciona": i, "bloqueios": self.bloqueios.get(dom, 0), "exige_local": int(exige_local),
+            # 29/10/2026: grava o CÓDIGO canônico do degrau (cada escada tem a sua lista; a posição não serve a outra)
+            dados = {"dominio": dom, "degrau_que_funciona": codigo(self.degraus[i]) if 0 <= i < len(self.degraus) else i,
+                     "bloqueios": self.bloqueios.get(dom, 0), "exige_local": int(exige_local),
                      "ultimo_bloqueio": agora() if self.bloqueios.get(dom) else None}
             self.diario.emitir("dominio.aprendido", "escada", dados)
 
