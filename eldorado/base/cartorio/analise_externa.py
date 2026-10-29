@@ -101,8 +101,16 @@ def importar(retorno: bytes | str, con: sqlite3.Connection, diario: Diario) -> l
     saida = []
     for v in r.vereditos:
         fase = Passaporte(con, diario).fase(v.livro_id)
-        if fase != "analise externa":
-            saida.append({"livro": v.livro_id, "recusado": f"o livro está na etapa {fase}, não na análise externa"})
+        # 29/10/2026 (titular: todo dado de livro é gravado no livro): o veredito vale também para o livro que voltou à
+        # preparação (a aberta volta à fila a cada 24 h) e, quando válido, para o que já chegou ao Farol (o trabalho do
+        # Chrome se perdia: 7 de 40 recusados no lote de 29/10, com 16 itens comprovados). O descarte de um livro do
+        # Farol não é aplicado sozinho: fica para a titular.
+        if fase not in ("analise externa", "preparacao", "farol", "validacao"):
+            saida.append({"livro": v.livro_id, "recusado": f"o livro está na etapa {fase}: o veredito não se aplica"})
+            continue
+        if fase == "farol" and v.decisao == "descartar":
+            saida.append({"livro": v.livro_id, "recusado": "o livro está no Farol: o descarte pelo Chrome precisa da decisão da titular",
+                          "para_a_titular": v.motivo})
             continue
         diario.emitir("veredito.gravado", "chrome", {"livro_id": v.livro_id, "origem": "chrome", "decisao": v.decisao, "motivo": v.motivo,
                                                      "como_encontrou": v.como_encontrou, "em": agora()})

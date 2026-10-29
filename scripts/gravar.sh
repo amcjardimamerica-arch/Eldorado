@@ -63,6 +63,10 @@ for i in 1 2 3 4; do
   done < "$LISTA"
   # a consolidação dos bancos (R08): os bancos paralelos que não existem mais saem do repositório
   git ls-files dados/motores dados/especial.db 2>/dev/null | while read -r f; do [ -e "$RAIZ/$f" ] || git update-index --force-remove "$f"; done
+  # 29/10/2026: o veredito que o ciclo importou e moveu para importados/ sai da pasta de entrada no repositório (senão o
+  # ciclo seguinte o importaria de novo, duplicando as certidões)
+  git ls-files "verificacao/vereditos/*.json" 2>/dev/null | grep -v "/importados/" | while read -r f; do
+    [ -e "$RAIZ/$f" ] || git update-index --force-remove "$f"; done
   arvore=$(git write-tree)
   if [ "$arvore" = "$(git rev-parse "$base^{tree}")" ]; then
     echo "nada a gravar"; unset GIT_INDEX_FILE; rm -f "$INDICE" "$LISTA"; exit 0

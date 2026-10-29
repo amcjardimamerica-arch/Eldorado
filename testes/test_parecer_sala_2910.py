@@ -332,3 +332,14 @@ def test_a_passagem_aplica_so_o_que_e_novo():
         assert len(list(EV.ler(d))) == 2 and len(list(EV.ler(d, time.time() - 60))) == 1
     s = Path("eldorado/base/fluxo/nos.py").read_text(encoding="utf-8")
     assert "desde - 60 if desde is not None else None" in s and "_APLICADO_DESDE = inicio" in s
+
+
+def test_o_veredito_vale_para_o_livro_que_mudou_de_etapa():
+    """29/10/2026 (titular: todo dado de livro é gravado no livro): o veredito do Chrome vale para o livro que voltou à
+    preparação e, válido, para o que chegou ao Farol (7 de 40 eram recusados); o descarte de um livro do Farol fica para
+    a titular; a gravação tira do repositório o veredito já importado (senão seria importado de novo)."""
+    s = Path("eldorado/base/cartorio/analise_externa.py").read_text(encoding="utf-8")
+    assert 'if fase not in ("analise externa", "preparacao", "farol", "validacao"):' in s
+    assert 'if fase == "farol" and v.decisao == "descartar":' in s
+    g = Path("scripts/gravar.sh").read_text(encoding="utf-8")
+    assert 'git ls-files "verificacao/vereditos/*.json"' in g and 'grep -v "/importados/"' in g
