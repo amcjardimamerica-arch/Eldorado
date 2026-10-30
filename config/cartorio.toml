@@ -5,3 +5,7 @@ maximo_lote = 0
 # Acima deste tamanho, o lote do dia também é gravado em partes (lote-AAAA-MM-DD-parte-1.json, -parte-2…), para o
 # Chrome não travar; o arquivo completo do dia é mantido.
 tamanho_parte = 50
+# A triagem aprendida (30/10/2026): o tipo de livro que o Chrome descarta com segurança é descartado sem ir ao Chrome.
+# Só entra o tipo com pelo menos `triagem_precisao_minima` de descartes em pelo menos `triagem_minimo_vereditos` vereditos.
+triagem_precisao_minima = 0.95
+triagem_minimo_vereditos = 20

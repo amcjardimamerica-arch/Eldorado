@@ -135,3 +135,55 @@ def test_e_importar_aceita_o_veredito_de_uma_parte(gravador, bancos, diario):
         diario,
     )
     assert r == [{"livro": "A001", "descartado": True}]
+
+
+# ---- 30/10/2026 (titular: a verificação definitiva): a triagem aprendida do Chrome e os lotes que acompanham a fila
+def _vazios(gravador, n, prefixo):
+    from test_linha_cartorio import livro
+
+    ev = []
+    for i in range(n):
+        lid = f"{prefixo}{i:03d}"
+        e = livro(lid, "analise externa")
+        for x in e:
+            if x.tipo == "livro.criado":
+                x.dados.update(titulo=lid, link_oficial=None, link_divulgacao=None)
+        ev += e
+    assert gravador.aplicar(ev).ok
+
+
+def test_f_g_h_a_triagem_aprendida(gravador, bancos, diario, tmp_path):
+    import json
+
+    from test_linha_cartorio import aplicar
+
+    from eldorado.base.cartorio.analise_externa import PREFIXO_TRIAGEM, aplicar_triagem, importar, triagem_aprendida
+
+    b, cfg = bancos["biblioteca"], {"triagem_precisao_minima": 0.95, "triagem_minimo_vereditos": 20}
+    _vazios(gravador, 20, "V")
+    importar(
+        json.dumps({"lote": "x", "vereditos": [{"livro_id": f"V{i:03d}", "decisao": "descartar", "motivo": "vazio"} for i in range(20)]}), b, diario
+    )
+    aplicar(gravador, tmp_path)
+    tri = triagem_aprendida(b, cfg)
+    assert tri["vazio (só o identificador, sem link)"]["ativo"] and tri["vazio (só o identificador, sem link)"]["vereditos"] == 20
+    _vazios(gravador, 3, "N")  # (f) os novos não vão ao Chrome
+    assert sorted(aplicar_triagem(b, diario, cfg)) == ["N000", "N001", "N002"]
+    aplicar(gravador, tmp_path)
+    assert all(r[0].startswith(PREFIXO_TRIAGEM) for r in b.execute("SELECT motivo FROM veredito WHERE livro_id LIKE 'N%'"))
+    assert triagem_aprendida(b, cfg)["vazio (só o identificador, sem link)"]["vereditos"] == 20  # (g) não se reforça
+    assert not triagem_aprendida(b, {**cfg, "triagem_precisao_minima": 1.01})["vazio (só o identificador, sem link)"]["ativo"]  # (h)
+
+
+def test_i_os_lotes_de_dias_anteriores_saem(gravador, bancos, tmp_path):
+    from datetime import date
+
+    from eldorado.base.cartorio.analise_externa import atualizar_lote_do_dia
+
+    _fila(gravador, 3)
+    pasta = tmp_path / "lotes"
+    pasta.mkdir()
+    for n in ("lote-2026-10-28.json", "lote-2026-10-29-parte-1.json", "lote-2026-10-29-complemento-1.json"):
+        (pasta / n).write_text('{"livros": []}')
+    atualizar_lote_do_dia(bancos["biblioteca"], pasta, date(2026, 10, 30), cfg={"maximo_lote": None, "tamanho_parte": 50})
+    assert sorted(f.name for f in pasta.glob("*.json")) == ["lote-2026-10-30.json"]

@@ -1120,7 +1120,7 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
  width:100vw;margin-left:calc(50% - 50vw);position:relative;overflow:clip;color:var(--tinta);font-family:"Alegreya Sans",system-ui,sans-serif;
  /* 29/10/2026 (titular): o fundo noturno, escuro e acolhedor, com as estrelas pequenas que cintilam (#sj-estrelas) */
  background:radial-gradient(ellipse 60% 60% at 38% 48%,#1E2742 0,#121A31 42%,#0A0F1F 78%,#070A15 100%);padding:0 clamp(14px,2vw,32px) 32px;box-sizing:border-box;min-height:100vh}
-#sj .estrelas{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#sj .estrelas{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}   /* 30/10/2026: só a janela visível (leve) */
 #sj>nav,#sj .duas{position:relative;z-index:1}
 #sj *{box-sizing:border-box}
 #sj .nav{position:relative;z-index:5;display:flex;justify-content:center;gap:12px;padding:20px 0 12px}
@@ -1138,7 +1138,7 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
 #sj .palco iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;z-index:2;pointer-events:none}
 @keyframes sj-gira{to{transform:rotate(360deg)}}@keyframes sj-giraR{to{transform:rotate(-360deg)}}
 #sj .raios,#sj .raios2{display:none}   /* 29/10/2026: os raios deram lugar ao céu estrelado */
-#sj .raios,#sj .raios2,#sj .halo{position:absolute;left:calc(50% + 6%);top:50%;border-radius:50%;pointer-events:none;z-index:1}   /* 29/10/2026: alinhados à esfera, que se desloca 6% à direita (giroscopio.html: DESLOCAMENTO) */
+#sj .raios,#sj .raios2,#sj .halo{position:absolute;left:calc(50% + 12%);top:50%;border-radius:50%;pointer-events:none;z-index:1}   /* 29/10/2026: alinhados à esfera, que se desloca 6% à direita (giroscopio.html: DESLOCAMENTO) */
 #sj .raios,#sj .raios2{width:3600px;height:3600px;margin:-1800px 0 0 -1800px;
  -webkit-mask:radial-gradient(circle,#000 0,#000 8%,rgba(0,0,0,.6) 20%,rgba(0,0,0,.22) 38%,transparent 58%);mask:radial-gradient(circle,#000 0,#000 8%,rgba(0,0,0,.6) 20%,rgba(0,0,0,.22) 38%,transparent 58%)}
 #sj .raios{background:repeating-conic-gradient(from 0deg,rgba(226,180,96,.24) 0deg 6deg,transparent 6deg 45deg);animation:sj-gira 120s linear infinite}
@@ -1199,7 +1199,7 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
   <div class="duas">
     <div class="palco">
       <div class="raios" aria-hidden="true"></div><div class="raios2" aria-hidden="true"></div><div class="halo" aria-hidden="true"></div>
-      <iframe id="sj-objeto" src="giroscopio/giroscopio.html?v=20261030a" title="O giroscópio Serpentes de Jade: o anel dos meses e dos dias, com a seta do início e a do fim do prazo" loading="eager"></iframe>
+      <iframe id="sj-objeto" src="giroscopio/giroscopio.html?v=20261030b" title="O giroscópio Serpentes de Jade: o anel dos meses e dos dias, com a seta do início e a do fim do prazo" loading="eager"></iframe>
     </div>
     <section class="agenda" aria-label="O calendário das oportunidades, por área">
       <div class="agenda-topo"><button type="button" id="sj-ant" aria-label="Mês anterior">‹</button><h2 id="sj-mes"></h2><button type="button" id="sj-seg" aria-label="Mês seguinte">›</button></div>
@@ -1235,28 +1235,42 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
     const CORES=["255,246,229","245,217,160","207,224,255","255,236,210"];
     let E=[], w=0, h=0, dpr=1;
     function montar(){
-      dpr=Math.min(2,window.devicePixelRatio||1); w=raiz.clientWidth; h=raiz.clientHeight;
+      dpr=Math.min(2,window.devicePixelRatio||1); w=window.innerWidth; h=window.innerHeight; CACHE.clear();
       cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr); x.setTransform(dpr,0,0,dpr,0,0);
-      /* 30/10/2026 (titular): mais estrelas, com o cintilar à vista (do quase apagado ao brilho pleno); ~1/5 cintila mais rápido */
-      const n=Math.min(4200,Math.round(w*h/450)); E=[];
-      for(let i=0;i<n;i++){const grande=Math.random()<.07, viva=Math.random()<.25;
-        E.push({x:Math.random()*w,y:Math.random()*h,r:grande?1.4+Math.random()*1:.6+Math.random()*.75,
-                b:.12+Math.random()*.2,a:.65+Math.random()*.3,v:viva?1.1+Math.random()*1.4:.35+Math.random()*.7,f:Math.random()*6.283,
-                p:viva?3:1.6,c:CORES[Math.random()<.55?0:Math.random()<.6?1:Math.random()<.5?2:3],g:grande});}
+      /* 30/10/2026 (titular: "cintilantes, não pontos; brilho intermitente como estrelas de verdade"): as maiores com o
+         brilho em cruz (hastes finas que esmaecem); o brilho oscila de forma IRREGULAR, como a cintilação da atmosfera — uma
+         ondulação lenta somada a um tremor rápido, diferente para cada estrela */
+      const n=Math.min(1800,Math.round(w*h/800)); E=[];
+      for(let i=0;i<n;i++){const k=Math.random(), cruz=k<.16, media=k<.4;
+        E.push({x:Math.random()*w,y:Math.random()*h,r:cruz?1.1+Math.random()*.9:media?.8+Math.random()*.5:.5+Math.random()*.45,
+                h:cruz?5+Math.random()*9:0,b:.25+Math.random()*.35,v1:.4+Math.random()*1.1,v2:3+Math.random()*5,v3:1.3+Math.random()*2.2,
+                f1:Math.random()*6.283,f2:Math.random()*6.283,f3:Math.random()*6.283,c:CORES[Math.random()<.5?0:Math.random()<.5?2:Math.random()<.5?1:3]});}
     }
+    // a estrela cintilante desenhada UMA vez (o brilho em cruz e o halo) e guardada; a cada quadro só muda a transparência
+    const CACHE=new Map();
+    function imagem(s){ const k=s.c+"|"+Math.round(s.h)+"|"+Math.round(s.r*10); let c=CACHE.get(k); if(c) return c;
+      const L=Math.ceil(s.h)+2, D=L*2; c=document.createElement("canvas"); c.width=D*dpr; c.height=D*dpr; const g=c.getContext("2d"); g.scale(dpr,dpr);
+      for(const [dx,dy] of [[1,0],[0,1]]){const gr=g.createLinearGradient(L-dx*s.h,L-dy*s.h,L+dx*s.h,L+dy*s.h);
+        gr.addColorStop(0,`rgba(${s.c},0)`);gr.addColorStop(.5,`rgba(${s.c},.9)`);gr.addColorStop(1,`rgba(${s.c},0)`);
+        g.strokeStyle=gr;g.lineWidth=.9;g.beginPath();g.moveTo(L-dx*s.h,L-dy*s.h);g.lineTo(L+dx*s.h,L+dy*s.h);g.stroke();}
+      const gl=g.createRadialGradient(L,L,0,L,L,s.r*3.2);gl.addColorStop(0,`rgba(${s.c},.6)`);gl.addColorStop(1,`rgba(${s.c},0)`);
+      g.fillStyle=gl;g.beginPath();g.arc(L,L,s.r*3.2,0,6.283);g.fill();
+      c._L=L; CACHE.set(k,c); return c; }
     function pintar(t){
       x.clearRect(0,0,w,h);
-      for(const s of E){const onda=parado?.5:Math.pow((Math.sin(t*s.v+s.f)+1)/2,s.p); const al=Math.max(.04,Math.min(1,s.b+s.a*onda));
-        if(s.g){const gr=x.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*4);gr.addColorStop(0,`rgba(${s.c},${al*.5})`);gr.addColorStop(1,`rgba(${s.c},0)`);
-          x.fillStyle=gr;x.beginPath();x.arc(s.x,s.y,s.r*4,0,6.283);x.fill();}
-        x.fillStyle=`rgba(${s.c},${al})`;x.beginPath();x.arc(s.x,s.y,s.r,0,6.283);x.fill();}
+      for(const s of E){
+        const lento=(Math.sin(t*s.v1+s.f1)+1)/2, tremor=Math.sin(t*s.v2+s.f2)*Math.sin(t*s.v3+s.f3);
+        const al=parado?s.b+.3:Math.max(.03,Math.min(1,s.b*.35+.85*Math.pow(lento,2.2)+.18*tremor));
+        if(s.h){ const im=imagem(s); x.globalAlpha=al; x.drawImage(im,s.x-im._L,s.y-im._L,im._L*2,im._L*2); x.globalAlpha=1; }
+        x.fillStyle=`rgba(${s.c},${al})`; x.fillRect(s.x-s.r,s.y-s.r,s.r*2,s.r*2);
+      }
     }
     let ult=0;
     function quadro(ms){ requestAnimationFrame(quadro);
       if(document.hidden||!raiz.offsetParent||ms-ult<33) return; ult=ms; pintar(ms/1000); }
     montar(); pintar(0);
     if(!parado) requestAnimationFrame(quadro);
-    try{ new ResizeObserver(()=>{montar();pintar(performance.now()/1000);}).observe(raiz); }catch(e){ addEventListener("resize",()=>{montar();pintar(0);}); }
+    addEventListener("resize",()=>{montar();pintar(performance.now()/1000);});
   })();   // 29/10/2026: o início vai direto à página inicial
   document.querySelectorAll("#sj .menu button").forEach(b=>b.addEventListener("click",()=>{const [m,v]=b.dataset.ir.split(":");
     if(m==="inicio"){window.irInicio&&irInicio();return} if(window.modulo)modulo(m); if(v&&window.mostra)mostra(v)}));

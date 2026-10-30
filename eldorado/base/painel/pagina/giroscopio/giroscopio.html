@@ -686,29 +686,44 @@ code{font-size:12.5px}
     // com os dias que faltam por cima (fácil de identificar); as duas esferas ficam ocultas
     const scv = E.canvas(1024, 1024), stex = new T.CanvasTexture(scv); stex.anisotropy = 8;
     const estrela = new T.Sprite(new T.SpriteMaterial({ map: stex, transparent: true, depthWrite: false, depthTest: false, toneMapped: false }));
-    estrela.scale.set(o.r * 2.4, o.r * 2.4, 1); estrela.renderOrder = 999; g.add(estrela);   /* por cima dos anéis: o prazo sempre à vista */
+    estrela.scale.set(o.r * 2.1, o.r * 2.1, 1); estrela.renderOrder = 999; g.add(estrela);   /* por cima dos anéis: o prazo sempre à vista */
     // 30/10/2026 (titular): a forma ESFÉRICA mantida — uma esfera-estrela de tons quentes (âmbar, com granulação suave), com
     // um brilho discreto rente à superfície que a envolve (só na borda, como uma atmosfera); sem os raios de brilho
     shell.visible = false;
+    // 30/10/2026 (titular: "uma estrela, sem sombra de dúvida; branca ou azulada"): a superfície EMITE luz (não recebe a da
+    // cena: por isso parecia planeta, com lado claro e escuro); branco-azulada, com granulação fina e o escurecimento de
+    // borda das estrelas reais (dado pelo sombreador: o centro mais claro, a borda azulada); uma coroa azulada rente à borda
+    // e um halo amplo e tênue — tudo FORA do disco, sem cobrir o mostrador
     const gc = E.canvas(1024, 512), gx = gc.getContext('2d');
-    const fundo = gx.createLinearGradient(0, 0, 0, 512); fundo.addColorStop(0, '#3a220a'); fundo.addColorStop(0.5, '#4f300e'); fundo.addColorStop(1, '#3a220a');
-    gx.fillStyle = fundo; gx.fillRect(0, 0, 1024, 512);
-    for (let i = 0; i < 1400; i++) {   /* a granulação: manchas pequenas e suaves, mais claras e mais escuras */
-      const x0 = Math.random() * 1024, y0 = Math.random() * 512, r0 = 4 + Math.random() * 16, claro = Math.random() < 0.5;
+    gx.fillStyle = '#eef4ff'; gx.fillRect(0, 0, 1024, 512);
+    for (let i = 0; i < 2200; i++) {
+      const x0 = Math.random() * 1024, y0 = Math.random() * 512, r0 = 2 + Math.random() * 7;
       const gg = gx.createRadialGradient(x0, y0, 0, x0, y0, r0);
-      gg.addColorStop(0, claro ? 'rgba(255,190,100,0.16)' : 'rgba(40,20,4,0.16)'); gg.addColorStop(1, 'rgba(0,0,0,0)');
+      gg.addColorStop(0, Math.random() < 0.5 ? 'rgba(255,255,255,0.35)' : 'rgba(150,185,255,0.22)'); gg.addColorStop(1, 'rgba(0,0,0,0)');
       gx.fillStyle = gg; gx.beginPath(); gx.arc(x0, y0, r0, 0, Math.PI * 2); gx.fill();
     }
     const gtex = new T.CanvasTexture(gc); gtex.colorSpace = T.SRGBColorSpace || gtex.colorSpace;
-    planet.material = new T.MeshStandardMaterial({ map: gtex, emissive: 0xffa040, emissiveMap: gtex, emissiveIntensity: 0.32, roughness: 0.75, metalness: 0 });
+    planet.material = new T.ShaderMaterial({
+      uniforms: { mapa: { value: gtex }, centro: { value: new T.Color(1.0, 1.0, 1.0) }, borda: { value: new T.Color(0.68, 0.8, 1.0) } },
+      vertexShader: 'varying vec2 vUv; varying vec3 vN; varying vec3 vV; void main(){ vUv = uv; vec4 mv = modelViewMatrix * vec4(position,1.0); vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }',
+      fragmentShader: 'uniform sampler2D mapa; uniform vec3 centro; uniform vec3 borda; varying vec2 vUv; varying vec3 vN; varying vec3 vV; void main(){ float mu = clamp(dot(vN, vV), 0.0, 1.0); float limbo = 0.7 + 0.3 * pow(mu, 0.6); vec3 cor = mix(borda, centro, pow(mu, 0.8)) * limbo; vec3 t = texture2D(mapa, vUv).rgb; gl_FragColor = vec4(cor * (0.95 + 0.05 * t), 1.0); }'
+    });
+    planet.material.toneMapped = false;
     planet.visible = true;
-    const brilho = new T.Mesh(new T.SphereGeometry(o.r * 1.1, 64, 32), new T.ShaderMaterial({
-      transparent: true, depthWrite: false, blending: T.AdditiveBlending,
-      uniforms: { cor: { value: new T.Color(1.0, 0.74, 0.42) }, forca: { value: 0.7 } },
-      vertexShader: 'varying vec3 vN; varying vec3 vV; void main(){ vec4 mv = modelViewMatrix * vec4(position,1.0); vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }',
-      fragmentShader: 'uniform vec3 cor; uniform float forca; varying vec3 vN; varying vec3 vV; void main(){ float f = pow(1.0 - abs(dot(vN, vV)), 2.6); gl_FragColor = vec4(cor * f * forca, f * forca); }'
-    }));
-    g.add(brilho);
+    // a COROA, de frente para a câmera: uma luz azulada que nasce na borda da esfera e esmaece para fora, com 4 raios finos
+    // que começam na borda (do lado de fora do disco: não atravessam o mostrador)
+    const ccv = E.canvas(1024, 1024), cx_ = ccv.getContext('2d'), C2 = 512, BORDA = 0.58;
+    const cg = cx_.createRadialGradient(C2, C2, 0, C2, C2, C2);
+    cg.addColorStop(0, 'rgba(200,225,255,0)'); cg.addColorStop(BORDA - 0.04, 'rgba(205,228,255,0.85)'); cg.addColorStop(BORDA + 0.06, 'rgba(160,200,255,0.42)');
+    cg.addColorStop(0.8, 'rgba(130,175,255,0.12)'); cg.addColorStop(1, 'rgba(120,165,255,0)');
+    cx_.fillStyle = cg; cx_.fillRect(0, 0, 1024, 1024);
+    for (let k = 0; k < 4; k++) {
+      cx_.save(); cx_.translate(C2, C2); cx_.rotate(k * Math.PI / 2 + Math.PI / 4);
+      const rg = cx_.createLinearGradient(C2 * BORDA, 0, C2 * 0.99, 0); rg.addColorStop(0, 'rgba(225,238,255,0.55)'); rg.addColorStop(1, 'rgba(225,238,255,0)');
+      cx_.fillStyle = rg; cx_.beginPath(); cx_.moveTo(C2 * BORDA, -5); cx_.lineTo(C2 * 0.99, 0); cx_.lineTo(C2 * BORDA, 5); cx_.closePath(); cx_.fill(); cx_.restore();
+    }
+    const coroa = new T.Sprite(new T.SpriteMaterial({ map: new T.CanvasTexture(ccv), transparent: true, depthWrite: false, blending: T.AdditiveBlending, toneMapped: false }));
+    coroa.scale.set(o.r * 2 / BORDA, o.r * 2 / BORDA, 1); g.add(coroa);
     const P = { group: g, planet: planet, shell: shell, cv: cv, tex: tex, colors: o.text, extra: o.extra, estrela: estrela, scv: scv, stex: stex };
     planets.push(P); return P;
   };
@@ -724,10 +739,10 @@ code{font-size:12.5px}
       const dias = Math.round((fim0 - hoje0) / DAY);
       big = v.p.data < v.now ? 'encerrada' : dias <= 0 ? 'hoje' : String(dias); unit = big === String(dias) ? (dias === 1 ? 'dia' : 'dias') : '';
     }
-    x.shadowColor = 'rgba(20,8,0,1)'; x.shadowBlur = 34;   /* o contorno escuro destaca o creme sobre o âmbar */
+    x.shadowColor = 'rgba(255,255,255,1)'; x.shadowBlur = 22;   /* 30/10/2026: azul-marinho com um halo claro e fino: legível sobre a estrela branca */
     for (let k = 0; k < 2; k++) {   /* duas passadas de sombra: o contorno escuro separa o número da estrela */
-      x.fillStyle = '#FFFBF0'; x.font = '700 ' + (unit ? 290 : (v.p ? 140 : 84)) + 'px ' + F; x.fillText(big, c, unit ? c - 44 : c);
-      if (unit) { x.fillStyle = '#F6DFAE'; x.font = '600 84px ' + F; x.fillText(unit, c, c + 132); }
+      x.fillStyle = '#0b1a3a'; x.font = '700 ' + (unit ? 290 : (v.p ? 140 : 84)) + 'px ' + F; x.fillText(big, c, unit ? c - 44 : c);
+      if (unit) { x.fillStyle = '#1d3566'; x.font = '600 84px ' + F; x.fillText(unit, c, c + 132); }
     }
     x.shadowBlur = 0; P.stex.needsUpdate = true;
   }
@@ -869,9 +884,9 @@ code{font-size:12.5px}
     // 29/10/2026 (titular): o objeto preenche o palco (da borda esquerda da tela à tabela do calendário). O limite é a
     // esfera que contém o objeto E o espaço das serpentes (o raio de movimento delas, 2,9, mais o corpo): a câmera fica na
     // distância em que essa esfera encosta nas laterais (ou no alto e embaixo, se o palco for mais largo que alto).
-    const DESLOCAMENTO = 0.06;   /* a fração da largura do palco; o painel desloca os raios na mesma fração (left: calc(50% + 6%)) */
-    const RMAX_SERPENTES = 2.9, CORPO_SERPENTE = 0.3;   /* o raio de movimento das serpentes (o agente: rmax 2.9) e o corpo */
-    const RAIO_LIMITE = (() => { let objeto = 0; try { (ctx3.root.children || []).forEach(o => { const b = new T.Box3().setFromObject(o), sf = new T.Sphere(); b.getBoundingSphere(sf); if (sf.center.length() < 0.5 && sf.radius < RMAX_SERPENTES) objeto = Math.max(objeto, sf.radius); }); } catch (e) { } return Math.max(objeto || 2.0, RMAX_SERPENTES + CORPO_SERPENTE); })();
+    const DESLOCAMENTO = 0.12;   /* a fração da largura do palco; o painel desloca os raios na mesma fração (left: calc(50% + 6%)) */
+    const RMAX_SERPENTES = 2.9, CORPO_SERPENTE = 0.3, MARGEM_MOSTRADORES = 1.36;   /* 1,125: o disco à direita e o disco mais os mostradores à esquerda */   /* o raio de movimento das serpentes (o agente: rmax 2.9) e o corpo */
+    const RAIO_LIMITE = (() => { let objeto = 0; try { (ctx3.root.children || []).forEach(o => { const b = new T.Box3().setFromObject(o), sf = new T.Sphere(); b.getBoundingSphere(sf); if (sf.center.length() < 0.5 && sf.radius < RMAX_SERPENTES) objeto = Math.max(objeto, sf.radius); }); } catch (e) { } return (objeto || 2.0) * MARGEM_MOSTRADORES; })();   /* 30/10/2026: o disco com os mostradores de início e fim (o objeto ~40% maior, encostando na borda e no quadro) */
     const enquadrar = () => {
       if (!(camera.aspect > 0.05) || !(stage.clientWidth > 10)) return;   /* o palco oculto (largura zero): espera aparecer */
       // 29/10/2026 (titular): o objeto um pouco à direita (DESLOCAMENTO da largura do palco), para o mostrador do início

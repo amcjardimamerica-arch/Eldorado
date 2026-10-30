@@ -347,6 +347,7 @@ def test_o_veredito_vale_para_o_livro_que_mudou_de_etapa():
     g = Path("scripts/gravar.sh").read_text(encoding="utf-8")
     assert 'git ls-files "verificacao/vereditos/*.json"' in g and 'grep -v "/importados/"' in g
     assert '[ ! -e "$RAIZ/verificacao/vereditos/importados/$(basename "$f")" ]' in g   # 30/10/2026: só o já importado sai
+    assert 'git ls-files "verificacao/lotes/*.json"' in g                                         # o lote apagado sai do repositório
 
 
 def test_os_lotes_sem_retorno_pelos_dados_e_o_registro_do_importado():
@@ -400,8 +401,8 @@ def test_o_mostrador_desobstruido_e_a_memoria_para_o_interceptador():
     a rede; a memória volta ao sistema depois da passagem); o reabastecimento contínuo da fila da Preparação."""
     g = Path("eldorado/base/painel/pagina/giroscopio/giroscopio.html").read_text(encoding="utf-8")
     p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
-    assert "const DESLOCAMENTO = 0.06;" in g and "camera.setViewOffset(w_, h_, -DESLOCAMENTO * w_, 0, w_, h_)" in g
-    assert "left:calc(50% + 6%)" in p
+    assert "const DESLOCAMENTO = 0.12;" in g and "camera.setViewOffset(w_, h_, -DESLOCAMENTO * w_, 0, w_, h_)" in g   # 30/10/2026: 12% (o objeto maior com o mostrador inteiro)
+    assert "left:calc(50% + 12%)" in p
     s = Path("eldorado/base/cerebro/pilotos_permanentes.py").read_text(encoding="utf-8")
     assert "time.monotonic() - vaga.parada_desde > 120" in s and "rede_atual(dados_, max_idade_s=86400)" in s
     assert "livres = paralelos_agora() - pedidos.unfinished_tasks" in s

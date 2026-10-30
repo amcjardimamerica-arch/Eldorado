@@ -76,7 +76,77 @@ def config_analise_externa(caminho: Path = CONFIG) -> dict[str, Any]:
         c = tomllib.loads(caminho.read_text(encoding="utf-8")).get("analise_externa", {})
     except (OSError, ValueError):
         c = {}
-    return {"maximo_lote": int(c.get("maximo_lote") or 0) or None, "tamanho_parte": int(c.get("tamanho_parte") or 0) or None}
+    return {"maximo_lote": int(c.get("maximo_lote") or 0) or None, "tamanho_parte": int(c.get("tamanho_parte") or 0) or None,
+            "triagem_precisao_minima": float(c.get("triagem_precisao_minima") or 0.95),
+            "triagem_minimo_vereditos": int(c.get("triagem_minimo_vereditos") or 20)}
+
+
+# 30/10/2026 (titular: a verificação definitiva): os TIPOS de livro, pelo título e pelos links. Medido sobre 1.522 vereditos
+# do Chrome: só o vazio (o título é o identificador, sem link) teve 100% de descarte (75 de 75); anexo 94%, resultado 62%,
+# extrato 25% — o título sozinho engana, então só entra na triagem o tipo que os vereditos comprovarem.
+TIPOS = {
+    "vazio (só o identificador, sem link)": None,
+    "anexo, modelo ou formulário": r"(?i)\b(anexo|modelo de|formul[aá]rio|declara[cç][aã]o)\b",
+    "resultado ou homologação": r"(?i)\b(resultado|homologa|classifica[cç][aã]o (final|preliminar)|aprovad[oa]s|selecionad[oa]s)\b",
+    "retificação ou errata": r"(?i)\b(retifica|errata|prorroga|aditiv|altera[cç][aã]o do edital)\b",
+    "extrato, ata ou contrato": r"(?i)\b(extrato|ata de|contrato|termo de (fomento|colabora[cç][aã]o))\b",
+    "licitação ou pregão": r"(?i)\b(preg[aã]o|licita[cç][aã]o|tomada de pre[cç]os|dispensa de licita)\b",
+}
+PREFIXO_TRIAGEM = "[triagem aprendida do Chrome]"
+
+
+def tipo_do_livro(livro_id: str, titulo: str | None, link_oficial: str | None, link_divulgacao: str | None) -> str | None:
+    import re
+
+    for nome, padrao in TIPOS.items():
+        if padrao is None:
+            if (titulo or "") == livro_id and not link_oficial and not link_divulgacao:
+                return nome
+        elif re.search(padrao, titulo or ""):
+            return nome
+    return None
+
+
+def triagem_aprendida(con: sqlite3.Connection, cfg: dict[str, Any] | None = None) -> dict[str, dict[str, Any]]:
+    """A precisão do descarte do Chrome por tipo de livro (os descartes da própria triagem ficam de fora, para o sistema não
+    se reforçar); ativo = precisão >= triagem_precisao_minima em >= triagem_minimo_vereditos vereditos."""
+    cfg = cfg or config_analise_externa()
+    est: dict[str, list[int]] = {}
+    try:
+        linhas = con.execute(
+            "SELECT v.livro_id, v.decisao, l.titulo, l.link_oficial, l.link_divulgacao FROM veredito v JOIN livro l ON l.id = v.livro_id "
+            "WHERE v.origem LIKE '%chrome%' AND COALESCE(v.motivo, '') NOT LIKE ? "
+            "AND v.id IN (SELECT MAX(id) FROM veredito WHERE origem LIKE '%chrome%' GROUP BY livro_id)", (PREFIXO_TRIAGEM + "%",)).fetchall()
+    except sqlite3.Error:
+        return {}
+    for i, dec, t, lo, ld in linhas:
+        tp = tipo_do_livro(i, t, lo, ld)
+        if tp:
+            e = est.setdefault(tp, [0, 0])
+            e[0] += 1
+            e[1] += dec == "descartar"
+    return {tp: {"vereditos": n, "precisao": d / n, "ativo": n >= cfg["triagem_minimo_vereditos"] and d / n >= cfg["triagem_precisao_minima"]}
+            for tp, (n, d) in est.items()}
+
+
+def aplicar_triagem(con: sqlite3.Connection, diario, cfg: dict[str, Any] | None = None) -> list[str]:
+    """Descarta, sem ir ao Chrome, os livros da etapa 5 de um tipo que a triagem aprendida comprovou (com o motivo)."""
+    tri = triagem_aprendida(con, cfg)
+    ativos = {k: v for k, v in tri.items() if v["ativo"]}
+    if not ativos:
+        return []
+    vered = {r[0] for r in con.execute("SELECT DISTINCT livro_id FROM veredito WHERE origem LIKE '%chrome%'")}
+    alvo = []
+    for i, t, lo, ld in con.execute("SELECT l.id, l.titulo, l.link_oficial, l.link_divulgacao FROM livro l JOIN passaporte p ON p.livro_id = l.id "
+                                    "WHERE p.fase = 'analise externa' AND l.situacao NOT IN ('excluido', 'unido')"):
+        tp = tipo_do_livro(i, t, lo, ld)
+        if tp in ativos and i not in vered:
+            a = ativos[tp]
+            alvo.append({"livro_id": i, "decisao": "descartar",
+                         "motivo": f"{PREFIXO_TRIAGEM} tipo '{tp}': o Chrome descartou {a['precisao']:.0%} de {a['vereditos']} vereditos deste tipo"})
+    if alvo:
+        importar(json.dumps({"lote": "triagem-aprendida", "vereditos": alvo}, ensure_ascii=False), con, diario)
+    return [x["livro_id"] for x in alvo]
 
 
 def gerar_lote(con: sqlite3.Connection, hoje: date, maximo: int | None = None) -> dict[str, Any]:   # None = todos (titular, 29/10/2026)
@@ -146,6 +216,10 @@ def atualizar_lote_do_dia(con: sqlite3.Connection, pasta_lotes: Path, hoje: date
     completo.write_text(json.dumps({**base, "lote": nome, "livros": livros}, ensure_ascii=False, indent=1), encoding="utf-8")
     for f in partes_velhas:
         if f.stem not in nomes_partes:
+            f.unlink(missing_ok=True)
+    # 30/10/2026: o lote do dia tem a fila inteira; os lotes de dias anteriores saem (a gravação os tira do repositório)
+    for f in pasta_lotes.glob("lote-*.json"):
+        if f.stem[5:15] < hoje.isoformat():
             f.unlink(missing_ok=True)
     for k, np_ in enumerate(nomes_partes):
         (pasta_lotes / f"{np_}.json").write_text(json.dumps({**base, "lote": np_, "parte": k + 1, "de": n_partes,
@@ -268,6 +342,9 @@ def no_analise_externa(itens: list[dict[str, Any]], parametros: dict[str, Any], 
                 contexto.diario.emitir("alarme.aberto", "analise externa", {"gravidade": "media", "modulo": "analise externa", "aberto_em": agora(),
                                                                             "mensagem": f"veredito {arq.name} fora do formato: {str(e)[:200]}"})
         hoje = date.today()
+        triados = aplicar_triagem(con, contexto.diario)            # 30/10/2026: o que o Chrome sempre descarta não vai a ele
+        saiu |= set(triados)
+        resultado["triados"] = len(triados)
         r_lote = atualizar_lote_do_dia(con, pasta / "lotes", hoje, saiu)   # 29/10/2026: depois da importação, sempre atualizado
         resultado.update(lote=r_lote["lote"], livros_no_lote=r_lote["livros"], partes=r_lote["partes"])
     finally:

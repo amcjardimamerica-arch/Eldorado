@@ -432,7 +432,7 @@
    "id": "R34",
    "data": "2026-10-29",
    "tema": "todos os dados de livros são gravados nos livros",
-   "regra": "Nenhum achado fica órfão: o achado gravado e sem decisão (a passagem interrompida levou a decisão) volta à Pertinência a cada passagem (até 150, os mais antigos primeiro) e, aceito, segue ao Cartório, que o liga ao livro (o pedido para um livro vai direto a ele). O veredito do Chrome vale para o livro que voltou à preparação e, válido, para o que chegou ao Farol; o descarte de um livro do Farol fica para a titular. Os lotes do dia ao Chrome cobrem a fila inteira da análise externa, em partes de até 100 (nenhum livro fica sem ir ao Chrome); o que não voltou em 3 dias é reenviado.",
+   "regra": "Nenhum achado fica órfão: o achado gravado e sem decisão (a passagem interrompida levou a decisão) volta à Pertinência a cada passagem (até 150, os mais antigos primeiro) e, aceito, segue ao Cartório, que o liga ao livro (o pedido para um livro vai direto a ele). O veredito do Chrome vale para o livro que voltou à preparação e, válido, para o que chegou ao Farol; o descarte de um livro do Farol fica para a titular. Os lotes do dia ao Chrome cobrem a fila inteira da análise externa, em partes de até 100 (nenhum livro fica sem ir ao Chrome); o que não voltou em 3 dias é reenviado. A triagem aprendida (30/10/2026): o tipo de livro que o Chrome descarta em 95% ou mais de 20 ou mais vereditos é descartado sem ir ao Chrome, com o motivo; os descartes da triagem não contam na precisão. Os lotes de dias anteriores saem quando o lote do dia é gravado.",
    "onde": "eldorado/base/cerebro/pertinencia.py, workflows/passagem.toml",
    "travas": [
     "testes/test_parecer_sala_2910.py::test_os_achados_orfaos_voltam_a_decisao",
@@ -444,7 +444,9 @@
     "testes/test_lote.py::test_b_o_limite_vem_da_configuracao",
     "testes/test_lote.py::test_c_o_lote_e_regerado_quando_a_fila_muda",
     "testes/test_lote.py::test_d_as_partes_somam_o_total_sem_repetir",
-    "testes/test_lote.py::test_e_importar_aceita_o_veredito_de_uma_parte"
+    "testes/test_lote.py::test_e_importar_aceita_o_veredito_de_uma_parte",
+    "testes/test_lote.py::test_f_g_h_a_triagem_aprendida",
+    "testes/test_lote.py::test_i_os_lotes_de_dias_anteriores_saem"
    ]
   }
  ]

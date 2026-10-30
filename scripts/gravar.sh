@@ -65,6 +65,9 @@ for i in 1 2 3 4; do
   git ls-files dados/motores dados/especial.db 2>/dev/null | while read -r f; do [ -e "$RAIZ/$f" ] || git update-index --force-remove "$f"; done
   # 29/10/2026: o veredito que o ciclo importou e moveu para importados/ sai da pasta de entrada no repositório (senão o
   # ciclo seguinte o importaria de novo, duplicando as certidões)
+  # 30/10/2026: o lote que o sistema apagou (as partes que sobraram, os dias anteriores) sai do repositório; só o sistema
+  # gera os lotes, então o arquivo ausente no ciclo é um lote apagado
+  git ls-files "verificacao/lotes/*.json" 2>/dev/null | while read -r f; do [ -e "$RAIZ/$f" ] || git update-index --force-remove "$f"; done
   git ls-files "verificacao/vereditos/*.json" 2>/dev/null | grep -v "/importados/" | while read -r f; do
     # 30/10/2026: só sai quando JÁ FOI IMPORTADO (a cópia em importados/ no ciclo); o veredito recém-enviado ainda não está na
     # pasta local (o ciclo o traz na passagem seguinte) e era apagado sem ser importado
