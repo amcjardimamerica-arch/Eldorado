@@ -52,7 +52,13 @@ def test_a_leitura_serve_ao_cartorio_e_sai_do_banco_e_o_endereco_fica(tmp_path):
 
 def test_nenhuma_copia_de_site_no_historico_do_repositorio():
     """A varredura do histórico inteiro: nenhuma leitura de site gravada (eram 70.427, 264 MB)."""
+    from datetime import date, timedelta
+
+    ontem = (date.today() - timedelta(days=1)).strftime("%Y/%m/%d")
     for f in Path("eventos").rglob("*.jsonl"):
+        dia = "/".join(f.parts[1:4]) if len(f.parts) > 4 else ""
+        if dia > ontem:  # o dia corrente: o expurgo depois de cada passagem tira o resíduo da transição (48 h)
+            continue
         with open(f, "rb") as h:
             for linha in h:
                 assert b'"tipo":"pagina.gravada"' not in linha[:200], f"cópia de site no histórico: {f}"

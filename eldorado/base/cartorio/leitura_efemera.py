@@ -6,6 +6,7 @@ do livro e as certidões, com o trecho literal do edital) e os endereços (o doc
 Depois de cada passagem, a leitura com mais de 2 h é expurgada do banco (o evento leitura.expurgada) e o diário efêmero com
 mais de 6 h é apagado.
 """
+
 from __future__ import annotations
 
 import sqlite3
@@ -24,8 +25,12 @@ def expurgar(banco: str | Path, eventos: str | Path, horas: float = HORAS_NO_BAN
     corte = (datetime.now(timezone.utc) - timedelta(hours=horas)).isoformat()
     con = sqlite3.connect(f"file:{Path(banco)}?mode=ro", uri=True)
     try:
-        docs = [r[0] for r in con.execute(
-            "SELECT DISTINCT p.documento_id FROM pagina p JOIN documento d ON d.id = p.documento_id WHERE COALESCE(d.obtido_em, '') < ?", (corte,))]
+        docs = [
+            r[0]
+            for r in con.execute(
+                "SELECT DISTINCT p.documento_id FROM pagina p JOIN documento d ON d.id = p.documento_id WHERE COALESCE(d.obtido_em, '') < ?", (corte,)
+            )
+        ]
     finally:
         con.close()
     if docs:
@@ -40,4 +45,15 @@ def expurgar(banco: str | Path, eventos: str | Path, horas: float = HORAS_NO_BAN
             if a.stat().st_mtime < limite:
                 a.unlink(missing_ok=True)
                 apagados += 1
-    return {"documentos": len(docs), "diarios_apagados": apagados}
+    # o resíduo da transição: a leitura de site que um código antigo gravou no histórico nas últimas 48 h sai dele
+    limpos = 0
+    corte_h = time.time() - 48 * 3600
+    for a in Path(eventos).rglob("*.jsonl"):
+        if a.stat().st_mtime < corte_h:
+            continue
+        linhas = a.read_bytes().splitlines(keepends=True)
+        fica = [x for x in linhas if b'"tipo":"pagina.gravada"' not in x[:200]]
+        if len(fica) != len(linhas):
+            a.write_bytes(b"".join(fica))
+            limpos += len(linhas) - len(fica)
+    return {"documentos": len(docs), "diarios_apagados": apagados, "leituras_tiradas_do_historico": limpos}
