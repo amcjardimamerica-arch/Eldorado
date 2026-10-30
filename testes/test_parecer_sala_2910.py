@@ -402,9 +402,9 @@ def test_o_mostrador_desobstruido_e_a_memoria_para_o_interceptador():
     g = Path("eldorado/base/painel/pagina/giroscopio/giroscopio.html").read_text(encoding="utf-8")
     p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
     assert (
-        "const DESLOCAMENTO = 0.12;" in g and "camera.setViewOffset(w_, h_, -DESLOCAMENTO * w_, 0, w_, h_)" in g
+        "const DESLOCAMENTO = 0;" in g and "camera.setViewOffset(w_, h_, -DESLOCAMENTO * w_, 0, w_, h_)" in g
     )  # 30/10/2026: 12% (o objeto maior com o mostrador inteiro)
-    assert "left:calc(50% + 12%)" in p
+    assert "#sj .raios,#sj .raios2,#sj .halo{position:absolute;left:50%;top:50%" in p
     s = Path("eldorado/base/cerebro/pilotos_permanentes.py").read_text(encoding="utf-8")
     assert "time.monotonic() - vaga.parada_desde > 120" in s and "rede_atual(dados_, max_idade_s=86400)" in s
     assert "livres = paralelos_agora() - pedidos.unfinished_tasks" in s

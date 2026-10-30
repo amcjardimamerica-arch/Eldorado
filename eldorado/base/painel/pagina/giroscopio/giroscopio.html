@@ -886,9 +886,12 @@ code{font-size:12.5px}
     // 29/10/2026 (titular): o objeto preenche o palco (da borda esquerda da tela à tabela do calendário). O limite é a
     // esfera que contém o objeto E o espaço das serpentes (o raio de movimento delas, 2,9, mais o corpo): a câmera fica na
     // distância em que essa esfera encosta nas laterais (ou no alto e embaixo, se o palco for mais largo que alto).
-    const DESLOCAMENTO = 0.12;   /* a fração da largura do palco; o painel desloca os raios na mesma fração (left: calc(50% + 6%)) */
+    const DESLOCAMENTO = 0;   /* 30/10/2026: centralizado (os mostradores podem estar de qualquer lado) */   /* a fração da largura do palco; o painel desloca os raios na mesma fração (left: calc(50% + 6%)) */
     const RMAX_SERPENTES = 2.9, CORPO_SERPENTE = 0.3, MARGEM_MOSTRADORES = 1.5;   /* 30/10/2026: o enquadramento 10% mais afastado (as serpentes saíam pelas laterais) */   /* 1,125: o disco à direita e o disco mais os mostradores à esquerda */   /* o raio de movimento das serpentes (o agente: rmax 2.9) e o corpo */
-    const RAIO_LIMITE = (() => { let objeto = 0; try { (ctx3.root.children || []).forEach(o => { const b = new T.Box3().setFromObject(o), sf = new T.Sphere(); b.getBoundingSphere(sf); if (sf.center.length() < 0.5 && sf.radius < RMAX_SERPENTES) objeto = Math.max(objeto, sf.radius); }); } catch (e) { } return (objeto || 2.0) * MARGEM_MOSTRADORES; })();   /* 30/10/2026: o disco com os mostradores de início e fim (o objeto ~40% maior, encostando na borda e no quadro) */
+    // 30/10/2026 (titular: "os mostradores de data podem estar em qualquer posição em volta do anel"): o limite é o círculo
+    // que contém o mostrador em QUALQUER ângulo — o centro dele a RO + 0,86 = 2,94, mais metade da largura (0,95 / 2) e uma
+    // folga = 3,5 — encostando nas bordas do palco, com o objeto CENTRALIZADO; ele também contém as serpentes (até 3,2)
+    const RAIO_LIMITE = 2.08 + 0.86 + 0.95 / 2 + 0.085;
     const enquadrar = () => {
       if (!(camera.aspect > 0.05) || !(stage.clientWidth > 10)) return;   /* o palco oculto (largura zero): espera aparecer */
       // 29/10/2026 (titular): o objeto um pouco à direita (DESLOCAMENTO da largura do palco), para o mostrador do início
