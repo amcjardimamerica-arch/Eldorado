@@ -149,6 +149,9 @@ class Gravador:
         if alvo.operacao == "pagina":
             self._pagina(con, dados)
             return
+        if alvo.operacao == "expurgar_leitura":
+            self._expurgar_leitura(con, dados)
+            return
         cols = self._cols(alvo.banco, alvo.tabela)
         if "documento_sha256" in dados and "documento_id" in cols:      # ligação ao documento pela assinatura
             sha = dados.pop("documento_sha256")
@@ -205,6 +208,14 @@ class Gravador:
                     (doc, d["numero"], self._zstd.compress(texto.encode("utf-8")), len(texto), int(d.get("expurgado", 0))))
         rowid = con.execute("INSERT INTO busca_mapa(documento_id, numero) VALUES (?,?)", (doc, d["numero"])).lastrowid
         con.execute("INSERT INTO busca(rowid, texto) VALUES (?,?)", (rowid, texto))
+
+    def _expurgar_leitura(self, con: sqlite3.Connection, d: dict[str, Any]) -> None:
+        """R35: a leitura do site sai do banco (as páginas e o índice de busca); o documento (o endereço) e as certidões ficam."""
+        doc = d["documento_id"]
+        for (rowid,) in con.execute("SELECT rowid FROM busca_mapa WHERE documento_id=?", (doc,)).fetchall():
+            con.execute("DELETE FROM busca WHERE rowid=?", (rowid,))
+        con.execute("DELETE FROM busca_mapa WHERE documento_id=?", (doc,))
+        con.execute("DELETE FROM pagina WHERE documento_id=?", (doc,))
 
     def _expandir(self, ev: Evento, r: Relatorio) -> None:
         """Um lote (migração): cada evento interno recebe um identificador derivado e estável, para a reaplicação."""

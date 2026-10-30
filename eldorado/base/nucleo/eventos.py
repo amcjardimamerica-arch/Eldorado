@@ -153,6 +153,7 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "achado.entregue": (Alvo(B, "achado", "inserir_se_novo"),),
     "documento.registrado": (Alvo(B, "documento", "inserir_ou_atualizar", ("sha256",)),),
     "pagina.gravada": (Alvo(B, "pagina", "pagina"),),
+    "leitura.expurgada": (Alvo(B, "pagina", "expurgar_leitura"),),   # R35: a leitura sai do banco; o endereço do documento fica
     "livro.criado": (Alvo(B, "livro", "inserir"),),
     "livro.vinculado": (Alvo(B, "achado", "atualizar", ("id",), lambda d: {"id": d["achado_id"], "livro_id": d["livro_id"]}),),
     "livro.unido": (Alvo(B, "uniao", "inserir_se_novo"),),  # idempotente: o mesmo par unido de novo não é erro (25/10/2026)
@@ -293,6 +294,8 @@ class Diario:
 
     def gravar(self, evento: Evento) -> Evento:
         linha = _enc.encode(evento) + b"\n"
+        if evento.tipo in TIPOS_EFEMEROS:   # R35: a leitura do site nunca entra no histórico (o diário efêmero, apagado depois)
+            return self._gravar_efemero(evento, linha)
         with self._trava:
             if self.por_dia and datetime.now(timezone.utc).date() != self._dia:  # a virada do dia: o arquivo do novo dia
                 self._dia = datetime.now(timezone.utc).date()
@@ -307,8 +310,31 @@ class Diario:
             os.fsync(f.fileno())
         return evento
 
+    def _gravar_efemero(self, evento: Evento, linha: bytes) -> Evento:
+        d = datetime.now(timezone.utc).date()
+        arq = pasta_efemera(self.pasta) / f"{d:%Y}" / f"{d:%m}" / f"{d:%d}" / f"{self.execucao}.jsonl"
+        arq.parent.mkdir(parents=True, exist_ok=True)
+        with self._trava, open(arq, "ab") as f:
+            f.write(linha)
+            f.flush()
+            os.fsync(f.fileno())
+        return evento
+
     def emitir(self, tipo: str, modulo: str, dados: dict[str, Any], linhagem: Linhagem | None = None) -> Evento:
         return self.gravar(criar(tipo, modulo, dados, linhagem))
+
+
+# R35 (titular, 30/10/2026 — a trava absoluta dos dados): o sistema não é repositório de sites nem de arquivos. O texto lido
+# de um site (a página) é EFÊMERO: vai para dados/leitura_efemera/ (nunca para o histórico, nunca para o repositório), serve
+# ao Cartório para certificar e é expurgado do banco em seguida. Ficam o texto da oportunidade (os dados do livro e as
+# certidões, com o trecho literal do edital) e os endereços (o site oficial e o de divulgação).
+TIPOS_EFEMEROS = frozenset({"pagina.gravada"})
+EFEMERO = "leitura_efemera"
+
+
+def pasta_efemera(pasta_eventos: str | Path) -> Path:
+    """O diário efêmero das leituras: dentro da pasta de dados, ao lado do histórico (fora do repositório)."""
+    return Path(pasta_eventos).parent / "dados" / EFEMERO
 
 
 def ler(pasta: str | Path, desde: float | None = None) -> Iterator[Evento]:
@@ -316,6 +342,9 @@ def ler(pasta: str | Path, desde: float | None = None) -> Iterator[Evento]:
     desde (29/10/2026): só os arquivos modificados a partir desse instante (a aplicação dentro da passagem lia o histórico
     inteiro — ~600 mil eventos — em cada etapa de aplicar: a memória ia de 1,1 GB a 2,9 GB numa etapa)."""
     arquivos = sorted(a for a in Path(pasta).rglob("*.jsonl") if desde is None or a.stat().st_mtime >= desde)
+    ef = pasta_efemera(pasta)   # R35: as leituras efêmeras DEPOIS do histórico (o documento é registrado antes da leitura)
+    if ef.exists() and ef != Path(pasta):
+        arquivos += sorted(a for a in ef.rglob("*.jsonl") if desde is None or a.stat().st_mtime >= desde)
     eventos: list[Evento] = []
     for a in arquivos:
         for n, linha in enumerate(a.read_bytes().splitlines(), 1):

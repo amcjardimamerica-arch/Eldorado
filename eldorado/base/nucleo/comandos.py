@@ -818,6 +818,14 @@ def permanente(
         try:
             _rodar(workflow, config, None, None, "leve")
             _sinal_passagem(f"ciclo {ciclo}: a passagem terminou em {(time.monotonic() - _t0) / 60:.1f} min")
+            try:   # R35 (30/10/2026): a leitura dos sites sai do banco depois de servir ao Cartório
+                from ..cartorio.leitura_efemera import expurgar as _expurgar_leituras
+
+                _ex = _expurgar_leituras(Path(_cfg(config)[1]) / "biblioteca.db", Path(_cfg(config)[2]))
+                if _ex["documentos"]:
+                    typer.echo(f"  R35: a leitura de {_ex['documentos']} documento(s) saiu do banco (ficam o texto da oportunidade e os endereços)")
+            except Exception as _e:  # noqa: BLE001
+                typer.echo(f"  R35: o expurgo das leituras falhou: {type(_e).__name__}: {str(_e)[:120]}")
             try:   # 29/10/2026: a memória que a passagem liberou volta ao sistema (para o Interceptador)
                 from ..cerebro.governador import liberar_memoria
 

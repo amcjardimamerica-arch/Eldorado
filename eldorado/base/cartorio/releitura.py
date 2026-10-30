@@ -18,6 +18,12 @@ _NESTE_PROCESSO: set[tuple[str, int]] = set()
 
 
 def escolher(bib: sqlite3.Connection, cer: sqlite3.Connection, limite: int, banco: str = "") -> list[tuple[int, str, str]]:
+    """R35 (titular, 30/10/2026): DESLIGADA. Ela relia os documentos herdados do Eldorado0 só para guardar o texto dos
+    sites (4.926 documentos sem livro, 72 milhões de caracteres): o sistema não é repositório de sites."""
+    return []
+
+
+def _escolher_antigo(bib: sqlite3.Connection, cer: sqlite3.Connection, limite: int, banco: str = "") -> list[tuple[int, str, str]]:
     ontem = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
     tentados = {r[0] for r in cer.execute("SELECT documento_id FROM releitura WHERE tentativas >= 3 OR ultima >= ?", (ontem,))}
     sql = (
