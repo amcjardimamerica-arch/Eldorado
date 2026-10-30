@@ -136,7 +136,7 @@ def test_no_maximo_dois_voos_usam_a_ia_ao_mesmo_tempo():
 
     assert I.VEZ_DA_IA._limite() >= 1
     src = Path("eldorado/motores/pilotos/interceptador.py").read_text(encoding="utf-8")
-    assert "VEZ_DA_IA.acquire(timeout=90)" in src and '"adiada"' in src
+    assert "VEZ_DA_IA.acquire(timeout=300)" in src and '"adiada"' in src
 
 
 def test_os_testes_nao_acessam_a_internet():
@@ -238,17 +238,17 @@ def test_o_interceptador_elastico_pela_ociosidade(monkeypatch):
     for _ in range(40):
         vs.append(CP.vagas_por_ociosidade())
         relogio[0] += 20
-    assert vs[0] == 1 and vs[-1] == CP.VAGAS_MAX == 8 and vs == sorted(vs)  # ociosa: sobe de uma em uma até 8
+    assert vs[0] == 1 and vs[-1] == CP.VAGAS_MAX == 4 and vs == sorted(vs)  # ociosa: sobe de uma em uma até 4 (30/10/2026: o dobro das vagas da IA)
     monkeypatch.setattr(G, "cpu_total", lambda *_: 0.85)
     for _ in range(12):
         CP.vagas_por_ociosidade()
         relogio[0] += 20
-    assert CP.vagas_por_ociosidade() == 8  # no alvo: mantém
+    assert CP.vagas_por_ociosidade() == 4  # no alvo: mantém
     monkeypatch.setattr(G, "cpu_total", lambda *_: 0.97)
     for _ in range(12):
         CP.vagas_por_ociosidade()
         relogio[0] += 20
-    assert CP.vagas_por_ociosidade() < 8  # sobrecarregada: fecha
+    assert CP.vagas_por_ociosidade() < 4  # sobrecarregada: fecha
     Mem.percent = 91.0
     assert CP.vagas_por_ociosidade() == 1  # a memória em emergência: volta a 1
     CP._ctrl.update(vagas=1, ultimo_ajuste=0.0)

@@ -43,10 +43,17 @@ class Aprendizado:
                     "medicao_que_provou": f"{usos} usos, resultado {resultado:.2f}", "arquivado": int(arquivado)})
                 self.diario.emitir("aprendizado.expirado", "aprendizado", {"id": t["id"]})
                 saida["arquivados" if arquivado else "promovidos"].append(t["id"])
-            elif datetime.fromisoformat(t["expira_em"]) <= q:
+            elif _data(t["expira_em"]) <= q:
                 self.diario.emitir("aprendizado.expirado", "aprendizado", {"id": t["id"]})
                 saida["vencidos"].append(t["id"])
         return saida
+
+
+def _data(texto: str) -> datetime:
+    """30/10/2026: a data sem fuso horário é lida como UTC (um aprendizado gravado sem fuso fazia o nó 'aprender' falhar —
+    'can't compare offset-naive and offset-aware datetimes' — e a passagem inteira terminava em erro, a cada 2 minutos)."""
+    d = datetime.fromisoformat(str(texto))
+    return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
 
 
 def no_aprendizado(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:

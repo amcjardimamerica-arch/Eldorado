@@ -83,7 +83,7 @@ _amostras: "deque[tuple[float, float]]" = deque()
 
 ALVO_BAIXO, ALVO_ALTO = 0.78, 0.92        # a faixa em torno de 85% do processador TOTAL (com a IA)
 MEM_SEGURA, MEM_EMERGENCIA = 0.86, 0.90   # a memória: acima de 86%, fecha uma vaga; acima de 90%, volta a 1
-VAGAS_MAX = 8
+VAGAS_MAX = 4   # 30/10/2026: o dobro das 2 vagas da IA (com 8, os voos achavam o material e ficavam sem a vez da IA: 110 de 131 vazios)
 _ctrl = {"vagas": 1, "ultimo_ajuste": 0.0, "cpu": None, "mem": None}
 
 
@@ -118,6 +118,14 @@ def vagas_por_ociosidade() -> int:
             _ctrl["ultimo_ajuste"] = agora_m
         _ctrl["vagas"] = v
     return v
+
+
+def ceder_para_a_passagem() -> None:
+    """30/10/2026: a passagem tem prioridade: adiada pelo governador, os voos do Interceptador voltam a 1 vaga (o
+    controlador volta a abrir as vagas, uma por minuto, quando o processador tiver folga)."""
+    with _trava:
+        _ctrl["vagas"] = 1
+        _ctrl["ultimo_ajuste"] = time.monotonic()
 
 
 def estado_vagas() -> dict:

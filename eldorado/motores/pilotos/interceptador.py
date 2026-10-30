@@ -447,7 +447,9 @@ class Interceptador:
             # 26/10/2026: no máximo 2 voos usam a IA ao mesmo tempo (com as 5 vagas pedindo juntas, cada pedido levava os 4
             # minutos inteiros e os voos ficavam presos); sem a vez em 90 s, a abordagem segue sem a IA (o Cartório certifica
             # pelo próprio documento) e o livro volta à fila
-            if VEZ_DA_IA.acquire(timeout=90):
+            # 30/10/2026: espera a vez por até 5 min (um pedido leva ~130 s; com 90 s, 68 de 149 abordagens com material
+            # ficavam sem a IA e voltavam vazias); com no máximo 4 voos para 2 vagas, a vez chega
+            if VEZ_DA_IA.acquire(timeout=300):
                 try:
                     itens_ia, uso = comprovar(self.ia, lv.faltam, paginas, lv.titulo, I.DOZE)
                     ia_rel = {"segundos": uso.segundos, "propostas": uso.propostas, "aceitas": uso.aceitas, "recusas": uso.recusas[:6]}

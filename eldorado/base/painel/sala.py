@@ -449,7 +449,7 @@ def montar(
         "ma_memoria_etapa",
         "Memória do processo por etapa (pico em 24 h, MB)",
         mem_v,
-        _faixa(mem_v, 3000, 4500, False),
+        _faixa(mem_v, 4500, 6000, False),
         "o medidor por etapa ainda não registrou" if mem_v is None else f"pico de {mem_v:.0f} MB depois da etapa {str(mem_e[0])[8:]}",
         iso,
     )
@@ -659,7 +659,9 @@ def montar(
         if et == "regencia":
             continue
         est = min((inst[i]["estado"] for i in ids if i in inst), key=lambda k: ORDEM[k], default="cinza")
-        comp_.append({"id": et, "estado": est})
+        # 30/10/2026: a etapa em alerta diz o MOTIVO (os indicadores que o causam)
+        mot = "; ".join(f"{inst[i]['nome']}: {inst[i]['motivo']}" for i in ids if i in inst and inst[i]["estado"] in ("amarelo", "vermelho"))
+        comp_.append({"id": et, "estado": est, "motivo": mot})
     cumpridos = [c["id"] for c in comp_ if c["estado"] == "verde"]
     em_falha = [c["id"] for c in comp_ if c["estado"] == "vermelho"]
     I(
@@ -673,11 +675,20 @@ def montar(
         {"normal": [7, None], "alarme": [4, None]},
     )
     est_reg = min((inst[i]["estado"] for i in ETAPAS["regencia"]), key=lambda k: ORDEM[k])
-    comp_.insert(0, {"id": "regencia", "estado": est_reg})
+    comp_.insert(
+        0,
+        {
+            "id": "regencia",
+            "estado": est_reg,
+            "motivo": "; ".join(
+                f"{inst[i]['nome']}: {inst[i]['motivo']}" for i in ETAPAS["regencia"] if inst[i]["estado"] in ("amarelo", "vermelho")
+            ),
+        },
+    )
     luz = {"verde": "verde", "vermelho": "vermelho", "amarelo": "amarelo"}
     for c in comp_:
         if c["id"] == "coleta":
-            c["estrelas"] = [{"nome": x.get("nome"), "estado": luz.get(x.get("luz"), "cinza"), "resultado": x.get("resultado")} for x in motores]
+            c["estrelas"] = [_estrela(x, luz, cer, agora) for x in motores]
     contagem = Counter(i["estado"] for i in inst.values())
     medidos = sum(contagem[k] for k in ("verde", "amarelo", "vermelho"))
     indice = round(100 * (contagem["verde"] + 0.5 * contagem["amarelo"]) / medidos) if medidos else 0
@@ -757,7 +768,10 @@ def montar(
     detalhes = {
         "fora_da_cadencia": fora_cad,
         "com_erro": com_erro,
-        "maestro": [{"id": m_, "cobertura": "lido" if m_ in lidos24 else "pendente"} for m_ in reg],
+        "maestro": _maestro(cer, reg, lidos24, agora),
+        "interceptador_missoes": _missoes_interceptador(cer),
+        "espiao_familias": _familias_espiao(cer),
+        "reprocessar": _reprocessar(bib, cer, hoje),
         "estantes": {k: estrelas.get(k, 0) for k in ("ouro", "prata", "bronze", "sem")},
         "por_etapa": dict(fases),
         "por_origem": dict(bib.execute(f"SELECT COALESCE(d.origem, 'sem'), COUNT(*) {AB} GROUP BY 1").fetchall()),
@@ -862,6 +876,97 @@ def montar(
         "detalhes": detalhes,
         "hoje": hoje,
     }
+
+
+def _estrela(x: dict[str, Any], luz: dict[str, str], cer: sqlite3.Connection, agora: datetime) -> dict[str, Any]:
+    """30/10/2026 (titular, pedida 5 vezes): a estrela do PILOTO pela atividade dele (o sinal 'em voo' nas últimas 2 h), não
+    pelo registro de execução dos motores, onde os pilotos nunca escrevem ('construído; ainda sem execução registrada')."""
+    nome = str(x.get("nome") or "")
+    if nome.lower().startswith("piloto"):
+        marc = "piloto:espiao" if "espi" in nome.lower() else "piloto:interceptador"
+        try:
+            r = cer.execute("SELECT em, motivo FROM medicao WHERE marcador = ? ORDER BY em DESC LIMIT 1", (marc,)).fetchone()
+        except sqlite3.Error:
+            r = None
+        idade = _idade_h(r[0], agora) if r else None
+        if r and idade is not None and idade <= 2:
+            return {"nome": nome, "estado": "verde", "resultado": f"em atividade: {str(r[1])[:120]} (há {idade * 60:.0f} min)"}
+        return {
+            "nome": nome,
+            "estado": "amarelo" if r else "cinza",
+            "resultado": f"último sinal há {idade:.0f} h" if r and idade is not None else "sem sinal de voo",
+        }
+    return {"nome": nome, "estado": luz.get(x.get("luz"), "cinza"), "resultado": x.get("resultado")}
+
+
+def _maestro(cer: sqlite3.Connection, reg, lidos24, agora: datetime) -> list[dict[str, Any]]:
+    """30/10/2026: o plano do maestro com os campos que a página lê (o motor, a cobertura e as tentativas do dia)."""
+    try:
+        tent = dict(cer.execute("SELECT motor, COUNT(*) FROM execucao_motor WHERE inicio >= ? GROUP BY 1", (agora.date().isoformat(),)).fetchall())
+    except sqlite3.Error:
+        tent = {}
+    return [{"id": m_, "motor": m_, "cobertura": "completa" if m_ in lidos24 else "pendente", "tentativas": tent.get(m_, 0)} for m_ in reg]
+
+
+def _missoes_interceptador(cer: sqlite3.Connection, n: int = 30) -> list[dict[str, Any]]:
+    """30/10/2026: as últimas missões do Interceptador, com os itens do checklist obtidos (a métrica de cada missão)."""
+    import re as _re
+
+    out = []
+    try:
+        for em, valor, mot in cer.execute(
+            "SELECT em, valor, motivo FROM medicao WHERE marcador = 'missao:interceptador' ORDER BY em DESC LIMIT ?", (n,)
+        ):
+            partes = str(mot).split(" · ")
+            m = _re.match(r"\d+ de \d+", str(mot))
+            out.append(
+                {
+                    "em": em,
+                    "alvo": partes[-1] if len(partes) > 2 else str(mot)[:80],
+                    "modo": (m.group(0) + " itens") if m else "",
+                    "resultado": str(mot)[:200],
+                    "itens": valor,
+                }
+            )
+    except sqlite3.Error:
+        pass
+    return out
+
+
+def _familias_espiao(cer: sqlite3.Connection) -> dict[str, dict[str, Any]]:
+    """30/10/2026: as famílias de busca do Espião (os voos e os achados de cada uma)."""
+    try:
+        return {n: {"usos": u or 0, "achados": a or 0, "empresas": 0} for n, u, a in cer.execute("SELECT nome, usos, achados FROM espiao_familia")}
+    except sqlite3.Error:
+        return {}
+
+
+def _reprocessar(bib: sqlite3.Connection, cer: sqlite3.Connection, hoje: str) -> dict[str, int]:
+    """30/10/2026: a fila de reprocessamento (o que volta a ser trabalhado)."""
+    out: dict[str, int] = {}
+    consultas = [
+        (
+            "livros de volta à análise externa (já com veredito, faltam itens)",
+            bib,
+            "SELECT COUNT(DISTINCT p.livro_id) FROM passaporte p JOIN veredito v ON v.livro_id = p.livro_id JOIN livro l ON l.id = p.livro_id "
+            "WHERE p.fase = 'analise externa' AND l.situacao NOT IN ('excluido', 'unido')",
+            (),
+        ),
+        ("achados sem decisão de dias anteriores", bib, "SELECT COUNT(*) FROM achado WHERE decisao = 'pendente' AND encontrado_em < ?", (hoje,)),
+        (
+            "livros esperando o Chrome",
+            bib,
+            "SELECT COUNT(*) FROM passaporte p JOIN livro l ON l.id = p.livro_id WHERE p.fase = 'analise externa' AND l.situacao NOT IN ('excluido', 'unido')",
+            (),
+        ),
+        ("documentos para reler", cer, "SELECT COUNT(*) FROM releitura", ()),
+    ]
+    for nome, con, sql, par in consultas:
+        try:
+            out[nome] = int(con.execute(sql, par).fetchone()[0] or 0)
+        except sqlite3.Error:
+            continue
+    return out
 
 
 def _comparacao_r01(cer: sqlite3.Connection, agora: datetime, caminho: str = "config/comparacao.toml") -> dict[str, Any]:

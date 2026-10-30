@@ -258,6 +258,21 @@ def evidencias(agora_: datetime | None = None) -> dict[str, tuple[bool | None, s
             continue
         c = f.get("conclusao") if f.get("situacao") == "completed" else (f.get("ultima_conclusao") or "em execução")
         ev[str(wf)] = ({"success": True, "failure": False, "em execução": True}.get(c), f"última execução: {c}")
+    # 30/10/2026: o MOTOR da passagem (o executor, a definição do fluxo, os alarmes) não é "chamado" por ela: a evidência é a
+    # última passagem concluída (eram "sem chamada nesta passagem", sempre prejudicados)
+    try:
+        import sqlite3 as _sq
+
+        _c = _sq.connect(f"file:{Path('dados') / 'cerebro.db'}?mode=ro", uri=True)
+        _ult = _c.execute("SELECT MAX(inicio) FROM execucao WHERE estado = 'concluida'").fetchone()[0]
+        _c.close()
+        _idade = (agora_ - datetime.fromisoformat(_ult)).total_seconds() / 3600 if _ult else None
+        _ok = _idade is not None and _idade <= 2
+        _mot = f"a última passagem concluída há {_idade * 60:.0f} min" if _idade is not None else "nenhuma passagem concluída registrada"
+        for _a in ("eldorado/base/fluxo/executor.py", "eldorado/base/fluxo/definicao.py", "eldorado/base/nucleo/alarmes.py"):
+            ev.setdefault(_a, (_ok, "o motor da passagem: " + _mot))
+    except Exception:  # noqa: BLE001
+        pass
     for sc in ("scripts/instalar.sh", "scripts/instalar_bibliotecas.py"):
         ev.setdefault(sc, (True, "a instalação do ciclo em funcionamento"))
     # as configurações lidas fora da passagem: a comparação (R01, na Sala) e a matriz de dispensas (no Interceptador)

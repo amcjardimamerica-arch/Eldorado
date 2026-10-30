@@ -829,6 +829,15 @@ def permanente(
         except typer.Exit as e:
             _como = "adiada pelo governador" if e.exit_code == ADIADO else "terminou"
             _sinal_passagem(f"ciclo {ciclo}: código {e.exit_code} ({_como}) em {(time.monotonic() - _t0) / 60:.1f} min")
+            if e.exit_code == 75:   # 30/10/2026: adiada pelo governador (a máquina carregada): os voos cedem a vez e a
+                # passagem espera 60 s (antes recomeçava NA HORA: 13.746 vezes numa hora, 100 mil sinais por dia)
+                try:
+                    from ..comandante.pilotos import ceder_para_a_passagem
+
+                    ceder_para_a_passagem()
+                except Exception:  # noqa: BLE001
+                    pass
+                time.sleep(60)
             if e.exit_code not in (0, None):
                 typer.echo(f"ciclo {ciclo}: a passagem terminou com o código {e.exit_code}; o sistema segue")
         except Exception as e:  # noqa: BLE001 — o funcionamento é permanente: a falha de um ciclo vira registro e pausa curta

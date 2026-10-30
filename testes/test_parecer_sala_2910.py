@@ -172,7 +172,7 @@ def test_as_vagas_pela_media_do_minuto(monkeypatch):
     for _ in range(60):
         out.append(P.vagas_por_ociosidade())
         t[0] += 20
-    assert out[-1] == 8
+    assert out[-1] == 4  # 30/10/2026: o teto é o dobro das vagas da IA
     P._amostras.clear()
     P._ctrl.update(vagas=1, ultimo_ajuste=0.0)
     assert "tempo_limite=150.0" in Path("eldorado/base/cerebro/pilotos_permanentes.py").read_text(encoding="utf-8")
@@ -346,8 +346,8 @@ def test_o_veredito_vale_para_o_livro_que_mudou_de_etapa():
     assert 'if fase == "farol" and v.decisao == "descartar":' in s
     g = Path("scripts/gravar.sh").read_text(encoding="utf-8")
     assert 'git ls-files "verificacao/vereditos/*.json"' in g and 'grep -v "/importados/"' in g
-    assert '[ ! -e "$RAIZ/verificacao/vereditos/importados/$(basename "$f")" ]' in g   # 30/10/2026: só o já importado sai
-    assert 'git ls-files "verificacao/lotes/*.json"' in g                                         # o lote apagado sai do repositório
+    assert '[ ! -e "$RAIZ/verificacao/vereditos/importados/$(basename "$f")" ]' in g  # 30/10/2026: só o já importado sai
+    assert 'git ls-files "verificacao/lotes/*.json"' in g  # o lote apagado sai do repositório
 
 
 def test_os_lotes_sem_retorno_pelos_dados_e_o_registro_do_importado():
@@ -401,7 +401,9 @@ def test_o_mostrador_desobstruido_e_a_memoria_para_o_interceptador():
     a rede; a memória volta ao sistema depois da passagem); o reabastecimento contínuo da fila da Preparação."""
     g = Path("eldorado/base/painel/pagina/giroscopio/giroscopio.html").read_text(encoding="utf-8")
     p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
-    assert "const DESLOCAMENTO = 0.12;" in g and "camera.setViewOffset(w_, h_, -DESLOCAMENTO * w_, 0, w_, h_)" in g   # 30/10/2026: 12% (o objeto maior com o mostrador inteiro)
+    assert (
+        "const DESLOCAMENTO = 0.12;" in g and "camera.setViewOffset(w_, h_, -DESLOCAMENTO * w_, 0, w_, h_)" in g
+    )  # 30/10/2026: 12% (o objeto maior com o mostrador inteiro)
     assert "left:calc(50% + 12%)" in p
     s = Path("eldorado/base/cerebro/pilotos_permanentes.py").read_text(encoding="utf-8")
     assert "time.monotonic() - vaga.parada_desde > 120" in s and "rede_atual(dados_, max_idade_s=86400)" in s
@@ -410,3 +412,29 @@ def test_o_mostrador_desobstruido_e_a_memoria_para_o_interceptador():
 
     assert liberar_memoria() >= 0
     assert "liberar_memoria()" in Path("eldorado/base/nucleo/comandos.py").read_text(encoding="utf-8")
+
+
+def test_a_sala_completa_e_o_interceptador_pela_ia():
+    """30/10/2026 (titular): as janelas da Sala com os dados que a página lê (o plano do maestro, as missões do
+    Interceptador, as famílias do Espião, a fila de reprocessamento); as estrelas dos pilotos pela atividade deles; a etapa
+    em alerta com o motivo; o Interceptador até o dobro das vagas da IA e esperando a vez dela; a passagem adiada espera e
+    os voos cedem a vez; o aprendizado com a data sem fuso; o motor da passagem medido pela última passagem concluída."""
+    s = Path("eldorado/base/painel/sala.py").read_text(encoding="utf-8")
+    for f in (
+        '"maestro": _maestro(',
+        '"interceptador_missoes": _missoes_interceptador(',
+        '"espiao_familias": _familias_espiao(',
+        '"reprocessar": _reprocessar(',
+        "def _estrela(",
+        '"motivo": mot',
+    ):
+        assert f in s, f
+    from eldorado.base.cerebro.aprendizado import _data
+    from eldorado.base.comandante import pilotos as P
+
+    assert P.VAGAS_MAX == 4 and _data("2026-10-30T10:00:00").tzinfo is not None
+    assert "VEZ_DA_IA.acquire(timeout=300)" in Path("eldorado/motores/pilotos/interceptador.py").read_text(encoding="utf-8")
+    c = Path("eldorado/base/nucleo/comandos.py").read_text(encoding="utf-8")
+    assert "if e.exit_code == 75:" in c and "ceder_para_a_passagem()" in c and "time.sleep(60)" in c
+    m = Path("eldorado/base/cerebro/medicao.py").read_text(encoding="utf-8")
+    assert '"eldorado/base/fluxo/executor.py", "eldorado/base/fluxo/definicao.py", "eldorado/base/nucleo/alarmes.py"' in m

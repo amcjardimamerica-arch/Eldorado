@@ -145,7 +145,7 @@ def test_o_lago_dos_prazos():
 
     p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
     g = Path("eldorado/base/painel/pagina/giroscopio/giroscopio.html").read_text(encoding="utf-8")
-    assert '<div id="sj"><canvas class="estrelas" id="sj-estrelas"' in p and 'src="giroscopio/giroscopio.html?v=20261030b"' in p   # 29/10/2026: o céu estrelado
+    assert '<div id="sj"><canvas class="estrelas" id="sj-estrelas"' in p and 'src="giroscopio/giroscopio.html?v=20261030c"' in p   # 29/10/2026: o céu estrelado
     assert "grid-template-columns:minmax(0,6fr) minmax(0,4fr)" in p and "#sj .palco{position:sticky;top:8px;height:calc(100vh - 16px)" in p
     assert "--c-fundo:#F7F4EC" in p and 'class="rolagem"' not in p and "overflow:clip" in p  # o quadro claro, sem rolagem própria  # 3/5 e 2/5
     assert "#sj .raios,#sj .raios2,#sj .halo{position:absolute;left:calc(50% + 12%);top:50%" in p  # no centro da esfera (deslocada 6%, 29/10/2026)
@@ -191,8 +191,11 @@ def test_o_calendario_dias_na_esfera_objeto_enquadrado_e_inicio_sem_menu():
     # o número por cima; o objeto no tamanho anterior (sem o desconto do deslocamento); o céu denso e cintilante
     # 30/10/2026 (titular): uma ESTRELA sem dúvida — branco-azulada, emitindo luz (sem sombra), o escurecimento de borda, a
     # coroa de frente para a câmera com os raios só do lado de fora; o objeto no maior tamanho com o mostrador inteiro
-    assert "planet.visible = true;" in g and "shell.visible = false;" in g and "float limbo = " in g and "const coroa = new T.Sprite(" in g
-    assert "MARGEM_MOSTRADORES = 1.36" in g and "const DESLOCAMENTO = 0.12;" in g
+    assert "planet.visible = true;" in g and "float limbo = " in g and "const coroa = new T.Sprite(" in g
+    assert "MARGEM_MOSTRADORES = 1.5;" in g and "const DESLOCAMENTO = 0.12;" in g      # 30/10/2026: o enquadramento 10% mais afastado
+    # 30/10/2026 (titular): o número NA superfície (a película virada para a câmera, a 1/4 da largura: a frente da esfera),
+    # respeitando a profundidade — os anéis e as serpentes passam na frente dele
+    assert "shell.visible = true;" in g and "estrela.visible = false;" in g and "FRENTE = W * 0.25" in g and "P.tex.needsUpdate = true;" in g
     assert "depthTest: false, toneMapped: false" in g and "drawEstrela(x, S)" not in g and "* (1 - 2 * DESLOCAMENTO)" not in g
     assert "g.add(new T.Mesh(new T.SphereGeometry(GR * 1.07, 48, 24), M.glass));" not in g
     p_ = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")

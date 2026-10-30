@@ -681,15 +681,15 @@ code{font-size:12.5px}
     const planet = new T.Mesh(new T.SphereGeometry(o.r, 96, 48), new T.MeshStandardMaterial({ map: new T.CanvasTexture(pc), roughness: o.rough || 0.28, metalness: 0.05 }));
     g.add(planet);
     const cv = E.canvas(2048, 1024), tex = new T.CanvasTexture(cv); tex.anisotropy = 8;
-    const shell = new T.Mesh(new T.SphereGeometry(o.r * 1.01, 96, 48), new T.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false })); g.add(shell);
+    const shell = new T.Mesh(new T.SphereGeometry(o.r * 1.01, 96, 48), new T.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, toneMapped: false })); g.add(shell);
     // 29/10/2026 (titular): no lugar da esfera, o desenho de uma ESTRELA de pouco brilho, sempre de frente para a câmera,
     // com os dias que faltam por cima (fácil de identificar); as duas esferas ficam ocultas
     const scv = E.canvas(1024, 1024), stex = new T.CanvasTexture(scv); stex.anisotropy = 8;
     const estrela = new T.Sprite(new T.SpriteMaterial({ map: stex, transparent: true, depthWrite: false, depthTest: false, toneMapped: false }));
-    estrela.scale.set(o.r * 2.1, o.r * 2.1, 1); estrela.renderOrder = 999; g.add(estrela);   /* por cima dos anéis: o prazo sempre à vista */
+    estrela.scale.set(o.r * 2.1, o.r * 2.1, 1); estrela.visible = false; g.add(estrela);   /* 30/10/2026: o número volta à película da esfera */
     // 30/10/2026 (titular): a forma ESFÉRICA mantida — uma esfera-estrela de tons quentes (âmbar, com granulação suave), com
     // um brilho discreto rente à superfície que a envolve (só na borda, como uma atmosfera); sem os raios de brilho
-    shell.visible = false;
+    shell.visible = true;   /* 30/10/2026 (titular): o número NA superfície — os anéis e as serpentes passam na frente dele */
     // 30/10/2026 (titular: "uma estrela, sem sombra de dúvida; branca ou azulada"): a superfície EMITE luz (não recebe a da
     // cena: por isso parecia planeta, com lado claro e escuro); branco-azulada, com granulação fina e o escurecimento de
     // borda das estrelas reais (dado pelo sombreador: o centro mais claro, a borda azulada); uma coroa azulada rente à borda
@@ -731,8 +731,10 @@ code{font-size:12.5px}
   function drawPlanet(P, v) {
     // 29/10/2026 (titular): a estrela de pouco brilho com os dias que faltam por cima (o contorno escuro e difuso separa o
     // número da estrela, para o prazo continuar fácil de ler)
-    const x = P.scv.getContext('2d'), S = 1024, c = S / 2, F = CFG.font;
-    x.clearRect(0, 0, S, S); x.textAlign = 'center'; x.textBaseline = 'middle';   /* 30/10/2026: só o número (a esfera é a estrela) */
+    // 30/10/2026 (titular): o número impresso na PELÍCULA rente à superfície (virada para a câmera): ele acompanha a curvatura
+    // e respeita a profundidade — o que passa na frente da esfera (os anéis, as serpentes) passa na frente dele
+    const x = P.cv.getContext('2d'), W = 2048, H = 1024, F = CFG.font, FRENTE = W * 0.25;   /* na esfera, a frente (virada para a câmera) fica a 1/4 da largura do desenho */
+    x.clearRect(0, 0, W, H); x.textAlign = 'center'; x.textBaseline = 'middle';
     let big = 'Nenhum prazo', unit = '';
     if (v.p) {
       const hoje0 = new Date(v.now.getFullYear(), v.now.getMonth(), v.now.getDate()), fim0 = new Date(v.p.data.getFullYear(), v.p.data.getMonth(), v.p.data.getDate());
@@ -741,10 +743,10 @@ code{font-size:12.5px}
     }
     x.shadowColor = 'rgba(255,255,255,1)'; x.shadowBlur = 22;   /* 30/10/2026: azul-marinho com um halo claro e fino: legível sobre a estrela branca */
     for (let k = 0; k < 2; k++) {   /* duas passadas de sombra: o contorno escuro separa o número da estrela */
-      x.fillStyle = '#0b1a3a'; x.font = '700 ' + (unit ? 290 : (v.p ? 140 : 84)) + 'px ' + F; x.fillText(big, c, unit ? c - 44 : c);
-      if (unit) { x.fillStyle = '#1d3566'; x.font = '600 84px ' + F; x.fillText(unit, c, c + 132); }
+      x.fillStyle = '#0b1a3a'; x.font = '700 ' + (unit ? 300 : (v.p ? 170 : 90)) + 'px ' + F; x.fillText(big, FRENTE, H * (unit ? 0.46 : 0.5));
+      if (unit) { x.fillStyle = '#1d3566'; x.font = '600 84px ' + F; x.fillText(unit, FRENTE, H * 0.62); }
     }
-    x.shadowBlur = 0; P.stex.needsUpdate = true;
+    x.shadowBlur = 0; P.tex.needsUpdate = true;
   }
 
   // ---------- state & view ----------
@@ -885,7 +887,7 @@ code{font-size:12.5px}
     // esfera que contém o objeto E o espaço das serpentes (o raio de movimento delas, 2,9, mais o corpo): a câmera fica na
     // distância em que essa esfera encosta nas laterais (ou no alto e embaixo, se o palco for mais largo que alto).
     const DESLOCAMENTO = 0.12;   /* a fração da largura do palco; o painel desloca os raios na mesma fração (left: calc(50% + 6%)) */
-    const RMAX_SERPENTES = 2.9, CORPO_SERPENTE = 0.3, MARGEM_MOSTRADORES = 1.36;   /* 1,125: o disco à direita e o disco mais os mostradores à esquerda */   /* o raio de movimento das serpentes (o agente: rmax 2.9) e o corpo */
+    const RMAX_SERPENTES = 2.9, CORPO_SERPENTE = 0.3, MARGEM_MOSTRADORES = 1.5;   /* 30/10/2026: o enquadramento 10% mais afastado (as serpentes saíam pelas laterais) */   /* 1,125: o disco à direita e o disco mais os mostradores à esquerda */   /* o raio de movimento das serpentes (o agente: rmax 2.9) e o corpo */
     const RAIO_LIMITE = (() => { let objeto = 0; try { (ctx3.root.children || []).forEach(o => { const b = new T.Box3().setFromObject(o), sf = new T.Sphere(); b.getBoundingSphere(sf); if (sf.center.length() < 0.5 && sf.radius < RMAX_SERPENTES) objeto = Math.max(objeto, sf.radius); }); } catch (e) { } return (objeto || 2.0) * MARGEM_MOSTRADORES; })();   /* 30/10/2026: o disco com os mostradores de início e fim (o objeto ~40% maior, encostando na borda e no quadro) */
     const enquadrar = () => {
       if (!(camera.aspect > 0.05) || !(stage.clientWidth > 10)) return;   /* o palco oculto (largura zero): espera aparecer */
