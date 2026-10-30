@@ -146,7 +146,7 @@ class IA:
         return _json(d["choices"][0]["message"]["content"]), uso
 
 
-def trechos_relevantes(paginas: list[str], itens: list[str], limite: int = 6000) -> list[tuple[int, str]]:
+def trechos_relevantes(paginas: list[str], itens: list[str], limite: int = 4000) -> list[tuple[int, str]]:   # 30/10/2026: 4.000 (eram 6.000)
     """As partes do documento mais ligadas aos itens que faltam (o modelo local tem contexto e tempo limitados)."""
     chaves = {"Prazo de inscrição": r"inscri|prazo|per[íi]odo|cronograma", "Valor": r"R\$|valor|montante|recurso",
               "Requisitos": r"requisit|poder[ãa]o|propon|habilita", "Resultado": r"resultado|homolog|divulga",

@@ -172,7 +172,7 @@ def test_as_vagas_pela_media_do_minuto(monkeypatch):
     for _ in range(60):
         out.append(P.vagas_por_ociosidade())
         t[0] += 20
-    assert out[-1] == 4  # 30/10/2026: o teto é o dobro das vagas da IA
+    assert out[-1] == 3  # 30/10/2026: 1 voo com a IA e 2 preparando
     P._amostras.clear()
     P._ctrl.update(vagas=1, ultimo_ajuste=0.0)
     assert "tempo_limite=150.0" in Path("eldorado/base/cerebro/pilotos_permanentes.py").read_text(encoding="utf-8")
@@ -432,7 +432,7 @@ def test_a_sala_completa_e_o_interceptador_pela_ia():
     from eldorado.base.cerebro.aprendizado import _data
     from eldorado.base.comandante import pilotos as P
 
-    assert P.VAGAS_MAX == 4 and _data("2026-10-30T10:00:00").tzinfo is not None
+    assert P.VAGAS_MAX == 3 and _data("2026-10-30T10:00:00").tzinfo is not None
     assert "VEZ_DA_IA.acquire(timeout=300)" in Path("eldorado/motores/pilotos/interceptador.py").read_text(encoding="utf-8")
     c = Path("eldorado/base/nucleo/comandos.py").read_text(encoding="utf-8")
     assert "if e.exit_code == 75:" in c and "ceder_para_a_passagem()" in c and "time.sleep(60)" in c
@@ -450,3 +450,15 @@ def test_os_passos_sem_a_entrada_duplicada_e_a_releitura_real():
     assert _passo({"entrada": {"itens": 3}, "saida": [{"id": "a"}]})["entrada"] == {"itens": 3}
     assert _passo({"entrada": [{"id": "a"}, {"id": "b"}], "saida": []})["entrada"]["itens"] == 2  # os eventos antigos
     assert "NOT LIKE 'relido%' AND tentativas < 3" in Path("eldorado/base/painel/sala.py").read_text(encoding="utf-8")
+
+
+def test_a_ia_do_interceptador_um_pedido_de_cada_vez():
+    """30/10/2026: a IA roda no processador; pedidos simultâneos dividem a capacidade e estouram o prazo ('ReadTimeout'):
+    o Interceptador faz um pedido de cada vez, com até 4.000 caracteres de trechos, e até 3 voos (1 com a IA, 2 preparando)."""
+    import inspect
+
+    from eldorado.base.nucleo import ia
+    from eldorado.motores.pilotos.interceptador import VEZ_DA_IA
+
+    assert VEZ_DA_IA._limite() == 1
+    assert inspect.signature(ia.trechos_relevantes).parameters["limite"].default == 4000

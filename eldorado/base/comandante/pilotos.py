@@ -83,7 +83,9 @@ _amostras: "deque[tuple[float, float]]" = deque()
 
 ALVO_BAIXO, ALVO_ALTO = 0.78, 0.92        # a faixa em torno de 85% do processador TOTAL (com a IA)
 MEM_SEGURA, MEM_EMERGENCIA = 0.86, 0.90   # a memória: acima de 86%, fecha uma vaga; acima de 90%, volta a 1
-VAGAS_MAX = 4   # 30/10/2026: o dobro das 2 vagas da IA (com 8, os voos achavam o material e ficavam sem a vez da IA: 110 de 131 vazios)
+# 30/10/2026: 1 voo com a IA (um pedido de cada vez) e 2 preparando o material do próximo (antes 4, o dobro das 2 vagas
+# da IA; e antes 8, quando os voos achavam o material e ficavam sem a vez da IA)
+VAGAS_MAX = 3
 _ctrl = {"vagas": 1, "ultimo_ajuste": 0.0, "cpu": None, "mem": None}
 
 

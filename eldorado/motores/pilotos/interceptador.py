@@ -182,7 +182,10 @@ class _VezDaIA:
     def _limite(self) -> int:
         try:
             from ...base.cerebro.pilotos_permanentes import paralelos_agora
-            return 2 if paralelos_agora() > 1 else 1      # 28/10/2026: no máximo 2 pedidos à IA de cada vez
+            # 30/10/2026: UM pedido à IA de cada vez. A IA roda no processador (3 núcleos, 4 pedidos simultâneos no servidor):
+            # pedidos simultâneos dividem a mesma capacidade, cada um leva o múltiplo do tempo e estoura o prazo de 150 s
+            # ('ReadTimeout') — com 2 de cada vez, a IA atendia o Interceptador no máximo 5 vezes por hora
+            return 1 if paralelos_agora() >= 1 else 1
         except Exception:  # noqa: BLE001
             return 1
 

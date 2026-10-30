@@ -238,17 +238,17 @@ def test_o_interceptador_elastico_pela_ociosidade(monkeypatch):
     for _ in range(40):
         vs.append(CP.vagas_por_ociosidade())
         relogio[0] += 20
-    assert vs[0] == 1 and vs[-1] == CP.VAGAS_MAX == 4 and vs == sorted(vs)  # ociosa: sobe de uma em uma até 4 (30/10/2026: o dobro das vagas da IA)
+    assert vs[0] == 1 and vs[-1] == CP.VAGAS_MAX == 3 and vs == sorted(vs)  # ociosa: sobe de uma em uma até 4 (30/10/2026: o dobro das vagas da IA)
     monkeypatch.setattr(G, "cpu_total", lambda *_: 0.85)
     for _ in range(12):
         CP.vagas_por_ociosidade()
         relogio[0] += 20
-    assert CP.vagas_por_ociosidade() == 4  # no alvo: mantém
+    assert CP.vagas_por_ociosidade() == 3  # no alvo: mantém
     monkeypatch.setattr(G, "cpu_total", lambda *_: 0.97)
     for _ in range(12):
         CP.vagas_por_ociosidade()
         relogio[0] += 20
-    assert CP.vagas_por_ociosidade() < 4  # sobrecarregada: fecha
+    assert CP.vagas_por_ociosidade() < 3  # sobrecarregada: fecha
     Mem.percent = 91.0
     assert CP.vagas_por_ociosidade() == 1  # a memória em emergência: volta a 1
     CP._ctrl.update(vagas=1, ultimo_ajuste=0.0)
