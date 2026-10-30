@@ -959,7 +959,7 @@ def _reprocessar(bib: sqlite3.Connection, cer: sqlite3.Connection, hoje: str) ->
             "SELECT COUNT(*) FROM passaporte p JOIN livro l ON l.id = p.livro_id WHERE p.fase = 'analise externa' AND l.situacao NOT IN ('excluido', 'unido')",
             (),
         ),
-        ("documentos para reler", cer, "SELECT COUNT(*) FROM releitura", ()),
+        ("documentos herdados ainda para reler", cer, "SELECT COUNT(*) FROM releitura WHERE COALESCE(resultado, '') NOT LIKE 'relido%' AND tentativas < 3", ()),
     ]
     for nome, con, sql, par in consultas:
         try:

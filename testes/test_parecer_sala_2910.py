@@ -438,3 +438,15 @@ def test_a_sala_completa_e_o_interceptador_pela_ia():
     assert "if e.exit_code == 75:" in c and "ceder_para_a_passagem()" in c and "time.sleep(60)" in c
     m = Path("eldorado/base/cerebro/medicao.py").read_text(encoding="utf-8")
     assert '"eldorado/base/fluxo/executor.py", "eldorado/base/fluxo/definicao.py", "eldorado/base/nucleo/alarmes.py"' in m
+
+
+def test_os_passos_sem_a_entrada_duplicada_e_a_releitura_real():
+    """30/10/2026: o evento de passo guarda da entrada só o tamanho (ela é a saída do passo anterior; a retomada usa só as
+    saídas; era 54% de cada evento); a fila de reprocessamento conta só os documentos herdados que ainda esperam releitura
+    (a tabela é o registro das tentativas: 4.873 linhas, quase todas já relidas)."""
+    from eldorado.base.nucleo.eventos import _passo
+
+    assert '"entrada": {"itens": len(entrada or [])}' in Path("eldorado/base/fluxo/executor.py").read_text(encoding="utf-8")
+    assert _passo({"entrada": {"itens": 3}, "saida": [{"id": "a"}]})["entrada"] == {"itens": 3}
+    assert _passo({"entrada": [{"id": "a"}, {"id": "b"}], "saida": []})["entrada"]["itens"] == 2  # os eventos antigos
+    assert "NOT LIKE 'relido%' AND tentativas < 3" in Path("eldorado/base/painel/sala.py").read_text(encoding="utf-8")

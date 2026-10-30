@@ -81,8 +81,14 @@ class Executor:
             entrada = estado.entrada
         else:
             from ..nucleo.eventos import emitir_se_mudou  # 29/10/2026: a mesma versão não é regravada a cada passagem
-            emitir_se_mudou(diario, "workflow.versao", "executor", f"{self.d.id}:{self.d.versao}",
-                            {"id": self.d.id, "versao": self.d.versao, "definicao": self.d.como_json(), "criado_em": agora()})
+
+            emitir_se_mudou(
+                diario,
+                "workflow.versao",
+                "executor",
+                f"{self.d.id}:{self.d.versao}",
+                {"id": self.d.id, "versao": self.d.versao, "definicao": self.d.como_json(), "criado_em": agora()},
+            )
             diario.emitir(
                 "execucao.iniciada",
                 "executor",
@@ -250,7 +256,17 @@ class _Estado:
         diario.emitir(
             "execucao.passo",
             "executor",
-            {"execucao": diario.execucao, "passo": self.ultimo_passo, "no": no, "estado": estado, "entrada": entrada, "saida": saida, "em": agora()},
+            # 30/10/2026: da entrada, só o tamanho — ela é a saída do passo anterior (já gravada), a retomada usa só as saídas, e
+            # o Cérebro guarda dela só um resumo; ela era 54% de cada evento de passo (~7,7 MB por dia de dado duplicado)
+            {
+                "execucao": diario.execucao,
+                "passo": self.ultimo_passo,
+                "no": no,
+                "estado": estado,
+                "entrada": {"itens": len(entrada or [])},
+                "saida": saida,
+                "em": agora(),
+            },
         )
         if estado == "concluido" and no != ENTRADA:
             _medir_memoria(diario, no)
@@ -298,9 +314,21 @@ def _medir_memoria(diario: Diario, no: str) -> None:
         from ..nucleo.eventos import emitir_se_mudou
 
         mb = psutil.Process().memory_info().rss / 1048576
-        emitir_se_mudou(diario, "medicao.registrada", "executor", f"memoria:{no}",
-                        {"marcador": f"memoria:{no}", "nivel": "componente", "em": agora(), "ponto": "v", "circulo": "v", "linhas": "v",
-                         "valor": round(mb / 50) * 50, "motivo": f"{mb:.0f} MB de memória do processo depois da etapa {no}"})
+        emitir_se_mudou(
+            diario,
+            "medicao.registrada",
+            "executor",
+            f"memoria:{no}",
+            {
+                "marcador": f"memoria:{no}",
+                "nivel": "componente",
+                "em": agora(),
+                "ponto": "v",
+                "circulo": "v",
+                "linhas": "v",
+                "valor": round(mb / 50) * 50,
+                "motivo": f"{mb:.0f} MB de memória do processo depois da etapa {no}",
+            },
+        )
     except Exception:  # noqa: BLE001 — a medição nunca para a passagem
         pass
-
