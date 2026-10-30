@@ -346,6 +346,7 @@ def test_o_veredito_vale_para_o_livro_que_mudou_de_etapa():
     assert 'if fase == "farol" and v.decisao == "descartar":' in s
     g = Path("scripts/gravar.sh").read_text(encoding="utf-8")
     assert 'git ls-files "verificacao/vereditos/*.json"' in g and 'grep -v "/importados/"' in g
+    assert '[ ! -e "$RAIZ/verificacao/vereditos/importados/$(basename "$f")" ]' in g   # 30/10/2026: só o já importado sai
 
 
 def test_os_lotes_sem_retorno_pelos_dados_e_o_registro_do_importado():

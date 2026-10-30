@@ -66,7 +66,9 @@ for i in 1 2 3 4; do
   # 29/10/2026: o veredito que o ciclo importou e moveu para importados/ sai da pasta de entrada no repositório (senão o
   # ciclo seguinte o importaria de novo, duplicando as certidões)
   git ls-files "verificacao/vereditos/*.json" 2>/dev/null | grep -v "/importados/" | while read -r f; do
-    [ -e "$RAIZ/$f" ] || git update-index --force-remove "$f"; done
+    # 30/10/2026: só sai quando JÁ FOI IMPORTADO (a cópia em importados/ no ciclo); o veredito recém-enviado ainda não está na
+    # pasta local (o ciclo o traz na passagem seguinte) e era apagado sem ser importado
+    [ -e "$RAIZ/$f" ] || [ ! -e "$RAIZ/verificacao/vereditos/importados/$(basename "$f")" ] || git update-index --force-remove "$f"; done
   arvore=$(git write-tree)
   if [ "$arvore" = "$(git rev-parse "$base^{tree}")" ]; then
     echo "nada a gravar"; unset GIT_INDEX_FILE; rm -f "$INDICE" "$LISTA"; exit 0
