@@ -682,21 +682,49 @@ code{font-size:12.5px}
     g.add(planet);
     const cv = E.canvas(2048, 1024), tex = new T.CanvasTexture(cv); tex.anisotropy = 8;
     const shell = new T.Mesh(new T.SphereGeometry(o.r * 1.01, 96, 48), new T.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false })); g.add(shell);
-    const P = { group: g, planet: planet, shell: shell, cv: cv, tex: tex, colors: o.text, extra: o.extra };
+    // 29/10/2026 (titular): no lugar da esfera, o desenho de uma ESTRELA de pouco brilho, sempre de frente para a câmera,
+    // com os dias que faltam por cima (fácil de identificar); as duas esferas ficam ocultas
+    const scv = E.canvas(1024, 1024), stex = new T.CanvasTexture(scv); stex.anisotropy = 8;
+    const estrela = new T.Sprite(new T.SpriteMaterial({ map: stex, transparent: true, depthWrite: false, depthTest: false, toneMapped: false }));
+    estrela.scale.set(o.r * 2.9, o.r * 2.9, 1); estrela.renderOrder = 999; g.add(estrela);   /* por cima dos anéis: o prazo sempre à vista */
+    planet.visible = false; shell.visible = false;
+    const P = { group: g, planet: planet, shell: shell, cv: cv, tex: tex, colors: o.text, extra: o.extra, estrela: estrela, scv: scv, stex: stex };
     planets.push(P); return P;
   };
   function wrap(x, text, max) { const w = text.split(/\s+/), out = []; let c = ''; w.forEach(s => { const t = c ? c + ' ' + s : s; if (x.measureText(t).width > max && c) { out.push(c); c = s; } else c = t; }); if (c) out.push(c); return out; }
+  function drawEstrela(x, S) {
+    // a estrela: um núcleo de luz quente e suave, 4 raios longos e finos e 4 curtos nas diagonais, todos discretos
+    const c = S / 2;
+    // o núcleo pequeno e concentrado (um ponto de luz; grande, ele virava um disco cinza sobre o céu escuro)
+    const nucleo = x.createRadialGradient(c, c, 0, c, c, S * 0.075);
+    nucleo.addColorStop(0, 'rgba(255,240,205,0.55)'); nucleo.addColorStop(0.5, 'rgba(255,214,150,0.16)'); nucleo.addColorStop(1, 'rgba(255,214,150,0)');
+    x.fillStyle = nucleo; x.beginPath(); x.arc(c, c, S * 0.075, 0, Math.PI * 2); x.fill();
+    const raio = (ang, comp, larg, alfa) => {
+      x.save(); x.translate(c, c); x.rotate(ang);
+      const gr = x.createLinearGradient(0, 0, comp, 0);
+      gr.addColorStop(0, `rgba(255,236,196,${alfa})`); gr.addColorStop(1, 'rgba(255,236,196,0)');
+      x.fillStyle = gr; x.beginPath(); x.moveTo(0, -larg); x.lineTo(comp, 0); x.lineTo(0, larg); x.closePath(); x.fill(); x.restore();
+    };
+    for (let k = 0; k < 4; k++) raio(k * Math.PI / 2, S * 0.49, S * 0.018, 0.5);
+    for (let k = 0; k < 4; k++) raio(Math.PI / 4 + k * Math.PI / 2, S * 0.26, S * 0.012, 0.3);
+  }
   function drawPlanet(P, v) {
-    const x = P.cv.getContext('2d'), W = 2048, H = 1024, cx = W * 0.25, mw = W * 0.38, F = CFG.font, C = P.colors;
-    x.clearRect(0, 0, W, H); x.textAlign = 'center'; x.textBaseline = 'middle'; x.shadowColor = C.glow; x.shadowBlur = 22;
-    if (!v.p) { x.fillStyle = C.ink; x.font = '600 56px ' + F; x.fillText('Nenhum prazo', cx, H * 0.5); P.tex.needsUpdate = true; return; }
-    // 29/10/2026 (titular): a esfera central mostra APENAS quantos dias faltam (os dias de calendário até o prazo)
-    const hoje0 = new Date(v.now.getFullYear(), v.now.getMonth(), v.now.getDate()), fim0 = new Date(v.p.data.getFullYear(), v.p.data.getMonth(), v.p.data.getDate());
-    const dias = Math.round((fim0 - hoje0) / DAY);
-    const big = v.p.data < v.now ? 'encerrada' : dias <= 0 ? 'hoje' : String(dias), unit = big === String(dias) ? (dias === 1 ? 'dia' : 'dias') : '';
-    x.fillStyle = C.ink; x.font = '700 ' + (unit ? 300 : 170) + 'px ' + F; x.fillText(big, cx, H * (unit ? 0.46 : 0.5));
-    if (unit) { x.fillStyle = C.sub; x.font = '600 84px ' + F; x.fillText(unit, cx, H * 0.62); }
-    P.tex.needsUpdate = true;
+    // 29/10/2026 (titular): a estrela de pouco brilho com os dias que faltam por cima (o contorno escuro e difuso separa o
+    // número da estrela, para o prazo continuar fácil de ler)
+    const x = P.scv.getContext('2d'), S = 1024, c = S / 2, F = CFG.font;
+    x.clearRect(0, 0, S, S); drawEstrela(x, S); x.textAlign = 'center'; x.textBaseline = 'middle';
+    let big = 'Nenhum prazo', unit = '';
+    if (v.p) {
+      const hoje0 = new Date(v.now.getFullYear(), v.now.getMonth(), v.now.getDate()), fim0 = new Date(v.p.data.getFullYear(), v.p.data.getMonth(), v.p.data.getDate());
+      const dias = Math.round((fim0 - hoje0) / DAY);
+      big = v.p.data < v.now ? 'encerrada' : dias <= 0 ? 'hoje' : String(dias); unit = big === String(dias) ? (dias === 1 ? 'dia' : 'dias') : '';
+    }
+    x.shadowColor = 'rgba(4,7,18,1)'; x.shadowBlur = 30;
+    for (let k = 0; k < 2; k++) {   /* duas passadas de sombra: o contorno escuro separa o número da estrela */
+      x.fillStyle = '#FFFBF0'; x.font = '700 ' + (unit ? 290 : (v.p ? 140 : 84)) + 'px ' + F; x.fillText(big, c, unit ? c - 44 : c);
+      if (unit) { x.fillStyle = '#F6DFAE'; x.font = '600 84px ' + F; x.fillText(unit, c, c + 132); }
+    }
+    x.shadowBlur = 0; P.stex.needsUpdate = true;
   }
 
   // ---------- state & view ----------
@@ -2062,8 +2090,9 @@ code{font-size:12.5px}
   // the sphere's own design from the Armilar a Vapor: glass dome + three-ring brass cage with caps
   function sphereCage(c) {
     const T = c.T, M = c.M, g = new T.Group(); c.root.add(g);
-    g.add(new T.Mesh(new T.SphereGeometry(GR * 1.07, 48, 24), M.glass));
-    /* 28/10/2026 (titular): sem a gaiola (os 3 anéis de cobre e as tampas em volta da esfera); a esfera de vidro fica */
+    /* 28/10/2026 (titular): sem a gaiola (os 3 anéis de cobre e as tampas em volta da esfera).
+       29/10/2026 (titular): sem a cúpula de vidro também — no lugar da esfera há uma estrela, e o vidro, sobre o céu escuro,
+       virava um disco cinza atrás dela */
     return g;
   }
 
