@@ -47,7 +47,8 @@ def test_a_leitura_serve_ao_cartorio_e_sai_do_banco_e_o_endereco_fica(tmp_path):
     assert not g.aplicar(list(ler(ev))).recusados
     assert bib.execute("SELECT COUNT(*) FROM pagina").fetchone()[0] == 0
     assert bib.execute("SELECT COUNT(*) FROM busca WHERE busca MATCH 'edital'").fetchone()[0] == 0
-    assert bib.execute("SELECT url FROM documento").fetchone()[0] == "https://site.gov.br/edital.pdf"
+    # o documento do ensaio não pertence a nenhum livro: sai inteiro (a leitura e o endereço); o de livro fica com o endereço
+    assert bib.execute("SELECT COUNT(*) FROM documento").fetchone()[0] == 0
 
 
 def test_nenhuma_copia_de_site_no_historico_do_repositorio():
@@ -72,3 +73,57 @@ def test_o_expurgo_depois_de_cada_passagem_e_a_releitura_desligada():
     assert releitura.escolher(None, None, 50) == []
     assert "dados/leitura_efemera/" in Path(".gitignore").read_text(encoding="utf-8")
     assert "leitura_efemera" not in Path("scripts/gravar.sh").read_text(encoding="utf-8")
+
+
+def test_o_que_nao_virou_livro_sai_e_o_livro_fica(gravador, bancos, diario, tmp_path):
+    """R35 (titular: "não exclua nenhum livro, apenas os dados que não são livros; o Cérebro mantém o seu aprendizado"): o
+    achado sem livro sai da Biblioteca e o registro dele (sem conteúdo) fica no Cérebro; o achado de livro não se apaga."""
+    import pytest
+
+    b, c = bancos["biblioteca"], bancos["cerebro"]
+    b.execute(
+        "INSERT INTO achado(id, motor, encontrado_em, titulo, link_divulgacao, dados, decisao) VALUES ('A1', 'dou', '2026-10-01', 'aviso de licitação', 'https://x', '{}', 'barrado')"
+    )
+    assert gravador.aplicar(
+        [
+            __import__("eldorado.base.nucleo.eventos", fromlist=["criar"]).criar(
+                "achado.descartado",
+                "r35",
+                {
+                    "id": "A1",
+                    "motor": "dou",
+                    "encontrado_em": "2026-10-01",
+                    "decisao": "barrado",
+                    "motivo": "licitação",
+                    "link": "https://x",
+                    "descartado_em": "2026-10-30T12:00:00+00:00",
+                },
+            )
+        ]
+    ).ok
+    assert b.execute("SELECT COUNT(*) FROM achado WHERE id = 'A1'").fetchone()[0] == 0
+    assert c.execute("SELECT motivo FROM achado_descartado WHERE id = 'A1'").fetchone()[0] == "licitação"
+    b.execute(
+        "INSERT INTO livro(id, missao, chave, titulo, situacao, criado_em, atualizado_em) VALUES ('L1', 'oportunidades', 'k', 't', 'em trabalho', '2026-10-01', '2026-10-01')"
+    )
+    b.execute(
+        "INSERT INTO achado(id, motor, encontrado_em, titulo, link_divulgacao, dados, decisao, livro_id) VALUES ('A2', 'dou', '2026-10-01', 't', 'https://y', '{}', 'aceito', 'L1')"
+    )
+    with pytest.raises(sqlite3.IntegrityError):
+        b.execute("DELETE FROM achado WHERE id = 'A2'")  # o achado de livro fica
+    s = Path("eldorado/motores/canal/estado.py").read_text(encoding="utf-8")
+    assert "SELECT 1 FROM achado_descartado WHERE id = ?" in s  # o canal não entrega de novo
+    assert "achado_descartado GROUP BY motor" in Path("eldorado/base/comandante/decidir.py").read_text(encoding="utf-8")
+
+
+def test_as_excecoes_empresas_e_propostas_legislativas_ficam():
+    """R35 — as exceções da titular (30/10/2026): as empresas e as propostas legislativas ficam na Biblioteca. Os achados
+    dos motores legislativos ficam mesmo sem livro; o descarte nunca alcança empresa, incentivo, lei nem livro_lei."""
+    from eldorado.base.cartorio.leitura_efemera import MOTORES_LEGISLATIVOS
+
+    assert set(MOTORES_LEGISLATIVOS) == {"alego-pl", "camara-goiania-pl", "congresso-nacional"}
+    s = Path("eldorado/base/cartorio/leitura_efemera.py").read_text(encoding="utf-8")
+    assert "motor NOT IN" in s and "OR motor IN" in s
+    g = Path("eldorado/base/nucleo/gravador.py").read_text(encoding="utf-8")
+    for t in ("empresa", "incentivo", "lei", "livro_lei"):
+        assert f"DELETE FROM {t} " not in g and f"DELETE FROM {t}\\n" not in g

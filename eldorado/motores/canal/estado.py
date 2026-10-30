@@ -111,6 +111,13 @@ class EstadoMotor:
         if self._bib is not None and r[0]:
             try:
                 if self._bib.execute("SELECT 1 FROM achado WHERE id = ?", (r[0],)).fetchone() is None:
+                    # R35: o achado descartado (não virou livro) saiu da Biblioteca, mas foi entregue e decidido: o registro
+                    # dele no Cérebro conta como entregue (sem isso, o motor o traria de novo a cada coleta)
+                    try:
+                        if self.con.execute("SELECT 1 FROM achado_descartado WHERE id = ?", (r[0],)).fetchone():
+                            return True
+                    except sqlite3.Error:
+                        pass
                     return False                                   # a entrega fantasma: o achado não está na Biblioteca
             except sqlite3.Error:
                 pass

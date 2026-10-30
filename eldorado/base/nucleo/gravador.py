@@ -152,6 +152,15 @@ class Gravador:
         if alvo.operacao == "expurgar_leitura":
             self._expurgar_leitura(con, dados)
             return
+        if alvo.operacao == "descartar_achado":   # R35: só o achado sem livro (o gatilho protege o achado de livro)
+            con.execute("DELETE FROM achado WHERE id=? AND livro_id IS NULL", (dados["id"],))
+            return
+        if alvo.operacao == "descartar_documento":   # R35: só o documento que nenhum livro usa
+            doc = dados["documento_id"]
+            if not con.execute("SELECT 1 FROM certidao WHERE documento_id=? UNION SELECT 1 FROM achado WHERE documento_id=?", (doc, doc)).fetchone():
+                self._expurgar_leitura(con, {"documento_id": doc})
+                con.execute("DELETE FROM documento WHERE id=?", (doc,))
+            return
         cols = self._cols(alvo.banco, alvo.tabela)
         if "documento_sha256" in dados and "documento_id" in cols:      # ligação ao documento pela assinatura
             sha = dados.pop("documento_sha256")

@@ -153,7 +153,10 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "achado.entregue": (Alvo(B, "achado", "inserir_se_novo"),),
     "documento.registrado": (Alvo(B, "documento", "inserir_ou_atualizar", ("sha256",)),),
     "pagina.gravada": (Alvo(B, "pagina", "pagina"),),
-    "leitura.expurgada": (Alvo(B, "pagina", "expurgar_leitura"),),   # R35: a leitura sai do banco; o endereço do documento fica
+    "leitura.expurgada": (Alvo(B, "pagina", "expurgar_leitura"),),
+    # R35: o que não virou livro sai da Biblioteca; o registro do descarte (sem conteúdo) fica no Cérebro
+    "achado.descartado": (Alvo(C, "achado_descartado", "inserir_ou_atualizar", ("id",)), Alvo(B, "achado", "descartar_achado")),
+    "documento.descartado": (Alvo(B, "documento", "descartar_documento"),),   # R35: a leitura sai do banco; o endereço do documento fica
     "livro.criado": (Alvo(B, "livro", "inserir"),),
     "livro.vinculado": (Alvo(B, "achado", "atualizar", ("id",), lambda d: {"id": d["achado_id"], "livro_id": d["livro_id"]}),),
     "livro.unido": (Alvo(B, "uniao", "inserir_se_novo"),),  # idempotente: o mesmo par unido de novo não é erro (25/10/2026)

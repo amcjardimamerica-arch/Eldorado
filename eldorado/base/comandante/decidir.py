@@ -24,6 +24,16 @@ def _motores(config: Path) -> list[str]:
 def _estado_motores(bib: sqlite3.Connection, motores: list[str], agora: datetime) -> dict[str, dict]:
     ult = dict(bib.execute("SELECT motor, MAX(encontrado_em) FROM achado WHERE decisao = 'aceito' GROUP BY motor").fetchall())
     tot = dict(bib.execute("SELECT motor, COUNT(*) FROM achado GROUP BY motor").fetchall())
+    try:   # R35: os descartados (sem livro) saíram da Biblioteca; o registro deles no Cérebro entra no total de cada motor
+        arq = bib.execute("PRAGMA database_list").fetchone()[2]
+        cer = Path(arq).with_name("cerebro.db") if arq else None
+        if cer and cer.exists():
+            c = sqlite3.connect(f"file:{cer}?mode=ro", uri=True)
+            for m_, n_ in c.execute("SELECT motor, COUNT(*) FROM achado_descartado GROUP BY motor"):
+                tot[m_] = tot.get(m_, 0) + n_
+            c.close()
+    except sqlite3.Error:
+        pass
     ace = dict(bib.execute("SELECT motor, COUNT(*) FROM achado WHERE decisao = 'aceito' GROUP BY motor").fetchall())
     saida = {}
     for m in motores:

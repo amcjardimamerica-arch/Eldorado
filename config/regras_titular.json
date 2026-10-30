@@ -454,12 +454,14 @@
   },
   {
    "id": "R35",
-   "regra": "A TRAVA ABSOLUTA DOS DADOS (titular, 30/10/2026; jamais muda): não existe cópia de nenhum site nem arquivo. O sistema não é repositório de sites: o que fica é o texto da oportunidade — os dados do livro e as certidões, com o trecho literal do edital publicado — e onde foi localizada (o site oficial e o de divulgação). A leitura de um site é efêmera (dados/leitura_efemera, fora do histórico e do repositório): serve ao Cartório para certificar e sai do banco depois de cada passagem. Nenhum dado fica fora do Cérebro ou da Biblioteca, cada um com a sua finalidade.",
+   "regra": "A TRAVA ABSOLUTA DOS DADOS (titular, 30/10/2026; jamais muda): não existe cópia de nenhum site nem arquivo. O sistema não é repositório de sites: o que fica é o texto da oportunidade — os dados do livro e as certidões, com o trecho literal do edital publicado — e onde foi localizada (o site oficial e o de divulgação). A leitura de um site é efêmera (dados/leitura_efemera, fora do histórico e do repositório): serve ao Cartório para certificar e sai do banco depois de cada passagem. Nenhum dado fica fora do Cérebro ou da Biblioteca, cada um com a sua finalidade. Nenhum livro se exclui: saem só os dados que não são livros — o achado que não virou livro e o documento que nenhum livro usa —, e o registro do descarte (sem conteúdo) fica no Cérebro, para o aprendizado e o funcionamento. As exceções que ficam na Biblioteca: as empresas (e os incentivos) e as propostas legislativas (os achados dos motores legislativos, as leis e a ligação dos livros às leis).",
    "travas": [
     "testes/test_r35_dados.py::test_a_leitura_do_site_nunca_entra_no_historico",
     "testes/test_r35_dados.py::test_a_leitura_serve_ao_cartorio_e_sai_do_banco_e_o_endereco_fica",
     "testes/test_r35_dados.py::test_nenhuma_copia_de_site_no_historico_do_repositorio",
-    "testes/test_r35_dados.py::test_o_expurgo_depois_de_cada_passagem_e_a_releitura_desligada"
+    "testes/test_r35_dados.py::test_o_expurgo_depois_de_cada_passagem_e_a_releitura_desligada",
+    "testes/test_r35_dados.py::test_o_que_nao_virou_livro_sai_e_o_livro_fica",
+    "testes/test_r35_dados.py::test_as_excecoes_empresas_e_propostas_legislativas_ficam"
    ],
    "data": "2026-10-30",
    "tema": "a trava absoluta dos dados: nenhuma cópia de site ou arquivo; só o texto da oportunidade e os endereços",
