@@ -1199,7 +1199,7 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
   <div class="duas">
     <div class="palco">
       <div class="raios" aria-hidden="true"></div><div class="raios2" aria-hidden="true"></div><div class="halo" aria-hidden="true"></div>
-      <iframe id="sj-objeto" src="giroscopio/giroscopio.html?v=20261029e" title="O giroscópio Serpentes de Jade: o anel dos meses e dos dias, com a seta do início e a do fim do prazo" loading="eager"></iframe>
+      <iframe id="sj-objeto" src="giroscopio/giroscopio.html?v=20261030a" title="O giroscópio Serpentes de Jade: o anel dos meses e dos dias, com a seta do início e a do fim do prazo" loading="eager"></iframe>
     </div>
     <section class="agenda" aria-label="O calendário das oportunidades, por área">
       <div class="agenda-topo"><button type="button" id="sj-ant" aria-label="Mês anterior">‹</button><h2 id="sj-mes"></h2><button type="button" id="sj-seg" aria-label="Mês seguinte">›</button></div>
@@ -1237,15 +1237,16 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
     function montar(){
       dpr=Math.min(2,window.devicePixelRatio||1); w=raiz.clientWidth; h=raiz.clientHeight;
       cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr); x.setTransform(dpr,0,0,dpr,0,0);
-      const n=Math.min(420,Math.round(w*h/5200)); E=[];
-      for(let i=0;i<n;i++){const grande=Math.random()<.06;
-        E.push({x:Math.random()*w,y:Math.random()*h,r:grande?1.1+Math.random()*.5:.35+Math.random()*.75,
-                b:.22+Math.random()*.45,a:.12+Math.random()*.3,v:.25+Math.random()*.6,f:Math.random()*6.283,
-                c:CORES[Math.random()<.55?0:Math.random()<.6?1:Math.random()<.5?2:3],g:grande});}
+      /* 30/10/2026 (titular): mais estrelas, com o cintilar à vista (do quase apagado ao brilho pleno); ~1/5 cintila mais rápido */
+      const n=Math.min(4200,Math.round(w*h/450)); E=[];
+      for(let i=0;i<n;i++){const grande=Math.random()<.07, viva=Math.random()<.25;
+        E.push({x:Math.random()*w,y:Math.random()*h,r:grande?1.4+Math.random()*1:.6+Math.random()*.75,
+                b:.12+Math.random()*.2,a:.65+Math.random()*.3,v:viva?1.1+Math.random()*1.4:.35+Math.random()*.7,f:Math.random()*6.283,
+                p:viva?3:1.6,c:CORES[Math.random()<.55?0:Math.random()<.6?1:Math.random()<.5?2:3],g:grande});}
     }
     function pintar(t){
       x.clearRect(0,0,w,h);
-      for(const s of E){const al=Math.max(.05,Math.min(1,s.b+(parado?0:s.a*Math.sin(t*s.v+s.f))));
+      for(const s of E){const onda=parado?.5:Math.pow((Math.sin(t*s.v+s.f)+1)/2,s.p); const al=Math.max(.04,Math.min(1,s.b+s.a*onda));
         if(s.g){const gr=x.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r*4);gr.addColorStop(0,`rgba(${s.c},${al*.5})`);gr.addColorStop(1,`rgba(${s.c},0)`);
           x.fillStyle=gr;x.beginPath();x.arc(s.x,s.y,s.r*4,0,6.283);x.fill();}
         x.fillStyle=`rgba(${s.c},${al})`;x.beginPath();x.arc(s.x,s.y,s.r,0,6.283);x.fill();}

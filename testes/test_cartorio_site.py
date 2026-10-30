@@ -145,7 +145,7 @@ def test_o_lago_dos_prazos():
 
     p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
     g = Path("eldorado/base/painel/pagina/giroscopio/giroscopio.html").read_text(encoding="utf-8")
-    assert '<div id="sj"><canvas class="estrelas" id="sj-estrelas"' in p and 'src="giroscopio/giroscopio.html?v=20261029e"' in p   # 29/10/2026: o céu estrelado
+    assert '<div id="sj"><canvas class="estrelas" id="sj-estrelas"' in p and 'src="giroscopio/giroscopio.html?v=20261030a"' in p   # 29/10/2026: o céu estrelado
     assert "grid-template-columns:minmax(0,6fr) minmax(0,4fr)" in p and "#sj .palco{position:sticky;top:8px;height:calc(100vh - 16px)" in p
     assert "--c-fundo:#F7F4EC" in p and 'class="rolagem"' not in p and "overflow:clip" in p  # o quadro claro, sem rolagem própria  # 3/5 e 2/5
     assert "#sj .raios,#sj .raios2,#sj .halo{position:absolute;left:calc(50% + 6%);top:50%" in p  # no centro da esfera (deslocada 6%, 29/10/2026)
@@ -187,7 +187,10 @@ def test_o_calendario_dias_na_esfera_objeto_enquadrado_e_inicio_sem_menu():
     g = Path("eldorado/base/painel/pagina/giroscopio/giroscopio.html").read_text(encoding="utf-8")
     assert "a estrela de pouco brilho com os dias que faltam por cima" in g and "x.fillText(v.status.txt" not in g
     # 29/10/2026 (titular): no lugar da esfera, a estrela (sem a cúpula de vidro), sempre por cima dos anéis; o céu noturno
-    assert "planet.visible = false; shell.visible = false;" in g and "depthTest: false, toneMapped: false" in g
+    # 30/10/2026 (titular): a forma ESFÉRICA mantida (a esfera-estrela âmbar, com o brilho discreto rente à superfície);
+    # o número por cima; o objeto no tamanho anterior (sem o desconto do deslocamento); o céu denso e cintilante
+    assert "planet.visible = true;" in g and "shell.visible = false;" in g and "pow(1.0 - abs(dot(vN, vV)), 2.6)" in g
+    assert "depthTest: false, toneMapped: false" in g and "drawEstrela(x, S)" not in g and "* (1 - 2 * DESLOCAMENTO)" not in g
     assert "g.add(new T.Mesh(new T.SphereGeometry(GR * 1.07, 48, 24), M.glass));" not in g
     p_ = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
     assert 'id="sj-estrelas"' in p_ and "(function ceu(){" in p_ and "prefers-reduced-motion: reduce" in p_ and "#sj .raios,#sj .raios2{display:none}" in p_
