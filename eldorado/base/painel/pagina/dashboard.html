@@ -452,8 +452,8 @@ box-shadow:0 1px 3px #0002}
 #mt-lista .mt-ach>small.mt-ach-op{color:#1E7E4B}#mt-lista .mt-ach>small a{white-space:nowrap}
 /* 01/11/2026 (titular): a seção das Oportunidades abertas sob o céu estrelado, com o cabeçalho da associação */
 body:has(#v-editais:not(.oculto)){color:#f0e2c0;background:radial-gradient(ellipse 60% 60% at 38% 48%,#1E2742 0,#121A31 42%,#0A0F1F 78%,#070A15 100%) fixed}   /* 01/11/2026: o mesmo céu do calendário */
-#v-editais .estrelas{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
-#v-editais>*:not(.estrelas){position:relative;z-index:1}
+#v-editais .oa-ceu{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none;display:block}   /* um nome só dela: .estrelas é o das estrelinhas de avaliação */
+#v-editais>*:not(.oa-ceu){position:relative;z-index:1}
 #v-editais{color:#f0e2c0}body:has(#v-editais:not(.oculto)) .meta{color:#c9bfa8}
 body:has(#v-editais:not(.oculto)) #ed-abas button{background:rgba(14,19,30,.78)!important;color:#efe2c4!important;border:1px solid rgba(233,207,143,.3)!important;box-shadow:0 4px 10px rgba(0,0,0,.45)}
 body:has(#v-editais:not(.oculto)) #ed-abas button.on{background:linear-gradient(180deg,#fbe3a2,#d9a84c 25%,#9a6a24 55%,#dcb86c 85%,#6a4512)!important;color:#2a1a05!important;border-color:#6a4512!important}
@@ -1350,7 +1350,11 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
     if(!parado) requestAnimationFrame(quadro);
     addEventListener("resize",()=>{montar();pintar(performance.now()/1000);});
   }
-  ceuEm("sj-estrelas","sj"); ceuEm("oa-estrelas","v-editais");   // 29/10/2026: o início vai direto à página inicial
+  ceuEm("sj-estrelas","sj");
+  // 01/11/2026: a seção das Oportunidades abertas vem DEPOIS deste bloco no documento: o céu dela espera a página carregar
+  // (chamado aqui, durante a leitura da página, a tela de estrelas ainda não existia e a rotina saía em silêncio)
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",()=>ceuEm("oa-estrelas","v-editais"));
+  else ceuEm("oa-estrelas","v-editais");   // 29/10/2026: o início vai direto à página inicial
   document.querySelectorAll("#sj .menu button").forEach(b=>b.addEventListener("click",()=>{const [m,v]=b.dataset.ir.split(":");
     if(m==="inicio"){window.irInicio&&irInicio();return} if(window.modulo)modulo(m); if(v&&window.mostra)mostra(v)}));
   // o giroscópio: a lista de prazos (em ordem de vencimento) e, ao passar o mouse, a oportunidade no mostrador da esfera
@@ -1409,7 +1413,7 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
 <section id="v-interceptador-posto" style="margin-top:14px"><div id="int-posto"></div></section>
 
 <!-- ============ ELDORADO · EDITAIS ============ -->
-<section id="v-editais" class="oculto" style="margin-top:14px"><canvas class="estrelas" id="oa-estrelas" aria-hidden="true"></canvas>
+<section id="v-editais" class="oculto" style="margin-top:14px"><canvas class="oa-ceu" id="oa-estrelas" aria-hidden="true"></canvas>
 <!-- 01/11/2026 (titular): o cabeçalho das Oportunidades abertas com o logo da A.M.C. Jardim América e o filete com as
      sete cores da associação (#001D7E #4C75B4 #85C1EA #F6EA07 #E3AB00 #D17600 #211915), só nas decorações -->
 <header class="oa-topo"><div class="oa-logo"><img src="logo-amc.png" alt="A.M.C. Jardim América"></div>

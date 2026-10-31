@@ -518,6 +518,9 @@ def test_o_ceu_do_calendario_e_o_ranking_em_uma_linha():
     uma linha por empresa (o selo da qualificação primeiro, o nome e o CNPJ; a nota só com o número; sem «critérios
     levantados»); sem as linhas de dados do topo do ranking."""
     p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
-    assert 'ceuEm("sj-estrelas","sj"); ceuEm("oa-estrelas","v-editais");' in p and 'id="oa-estrelas"' in p
+    # a chamada das Oportunidades abertas espera a página carregar (a seção vem depois no documento) e a tela do céu tem
+    # um nome só dela (.estrelas é o das estrelinhas de avaliação, que a regra do céu esticava sobre a tela inteira)
+    assert 'ceuEm("sj-estrelas","sj");' in p and 'document.addEventListener("DOMContentLoaded",()=>ceuEm("oa-estrelas","v-editais"))' in p
+    assert '<canvas class="oa-ceu" id="oa-estrelas"' in p and "#v-editais .estrelas{" not in p
     assert "#emp-ranking-caixa .ep-nome .ep-nivel{order:-1" in p and "#emp-ranking-caixa .ep-esg small{display:none!important}" in p
     assert "critérios levantados" not in p and "ep-quando" in p and "_ve.dataset.aba=aba" in p
