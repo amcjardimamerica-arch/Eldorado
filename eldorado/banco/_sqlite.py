@@ -17,7 +17,8 @@ def abrir(caminho: str | Path, ddl: str, versao: int, migracoes: dict[int, str] 
         Path(p).parent.mkdir(parents=True, exist_ok=True)
     con = sqlite3.connect(p, isolation_level=None, check_same_thread=False)
     con.row_factory = sqlite3.Row
-    for pragma in ("journal_mode=WAL", "synchronous=NORMAL", "foreign_keys=ON", "mmap_size=268435456", "temp_store=MEMORY"):
+    # 31/10/2026: o mapeamento de memória com teto de 64 MB por conexão (eram 256 MB: 6 conexões somavam 810 MB no processo)
+    for pragma in ("journal_mode=WAL", "synchronous=NORMAL", "foreign_keys=ON", "mmap_size=67108864", "temp_store=MEMORY"):
         con.execute(f"PRAGMA {pragma}")
     atual = con.execute("PRAGMA user_version").fetchone()[0]
     if atual == 0:

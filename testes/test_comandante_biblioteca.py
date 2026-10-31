@@ -84,7 +84,7 @@ def test_o_interceptador_voa_2_livros_em_paralelo():
     from eldorado.base.nucleo.ia import IA
 
     assert {IA("http://x", cargo_nome="interceptador", vaga=k).cargo["vaga"] for k in range(5)} == {2, 3}  # 29/10/2026: os 5 voos revezam as 2 vagas da IA
-    assert "-np 4" in Path(".github/workflows/eldorado.yml").read_text(encoding="utf-8")   # 29/10/2026: 4 vagas da IA (eram 7, 3 sem uso)
+    assert "-np 3" in Path(".github/workflows/eldorado.yml").read_text(encoding="utf-8")   # 31/10/2026: 3 vagas (um por cargo); 29/10: 4 vagas da IA (eram 7, 3 sem uso)
 
 
 def test_o_prevoo_completa_sem_a_ia(tmp_path):

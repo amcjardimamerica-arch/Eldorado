@@ -625,6 +625,12 @@ def _fluxo(sis: Sistema, agora: str) -> dict:
     for (mes,) in sis.bib.execute("SELECT substr(criado_em, 1, 7) FROM livro WHERE situacao NOT IN ('excluido', 'unido')"):
         por_mes[mes]["criados"] += 1
     ligados = sis.bib.execute("SELECT COUNT(DISTINCT livro_id) FROM achado WHERE livro_id IS NOT NULL").fetchone()[0]
+    # 31/10/2026 (titular: "por que 3.355 fontes monitoradas de 3.983?"): o número contava os livros com algum achado (quase
+    # todos, por definição), não o monitoramento. Agora: o ATIVO (prazo aberto), o PREDITIVO (encerrada, à espera da próxima
+    # edição) e os SEM PRAZO (ainda em trabalho)
+    mon = dict(sis.bib.execute(
+        "SELECT CASE WHEN d.situacao_prazo = 'aberta' THEN 'ativo' WHEN d.situacao_prazo = 'encerrada' THEN 'preditivo' ELSE 'sem_prazo' END, "
+        "COUNT(*) FROM livro l LEFT JOIN livro_dados d ON d.livro_id = l.id WHERE l.situacao NOT IN ('excluido', 'unido') GROUP BY 1").fetchall())
     agrupados = defaultdict(list)
     for uf, it in itens:
         agrupados[uf].append(it)
@@ -643,7 +649,8 @@ def _fluxo(sis: Sistema, agora: str) -> dict:
     com_edicoes = sis.bib.execute("SELECT COUNT(*) FROM livro WHERE situacao NOT IN ('excluido', 'unido') "
                                   "AND selo_livro IN ('bronze', 'prata', 'ouro')").fetchone()[0]
     f["livros_do_sistema"].update(
-        {"por_mes": dict(por_mes), "catalogo": total, "ligados": ligados, "monitorados_abertos": len(livros), "com_historico_de_edicoes": com_edicoes}
+        {"por_mes": dict(por_mes), "catalogo": total, "ligados": ligados, "monitorados_abertos": len(livros), "com_historico_de_edicoes": com_edicoes,
+         "monitorado_ativo": mon.get("ativo", 0), "monitorado_preditivo": mon.get("preditivo", 0), "sem_prazo": mon.get("sem_prazo", 0)}
     )
     return f
 

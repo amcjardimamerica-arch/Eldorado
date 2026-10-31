@@ -309,7 +309,7 @@ def test_so_grava_o_que_muda_e_a_copia_dos_livros():
         EV.emitir_se_mudou(di, "alarme.fechado", "t", "chave-teste", {"id": "a", "em": "2026-10-29T05:00:00+00:00", "motivo": "mudou"})
         assert len(list(EV.ler(d))) == 2
     assert INTERVALO == timedelta(days=3)
-    assert "-c 24576 -np 4" in Path(".github/workflows/eldorado.yml").read_text(encoding="utf-8")
+    assert "-c 18432 -np 3" in Path(".github/workflows/eldorado.yml").read_text(encoding="utf-8")  # 31/10/2026: um por cargo
     assert "eldorado copia-livros" in Path(".github/workflows/eldorado.yml").read_text(encoding="utf-8")
     from eldorado.motores.acesso.completa import ORDEM
 
@@ -462,3 +462,14 @@ def test_a_ia_do_interceptador_um_pedido_de_cada_vez():
 
     assert VEZ_DA_IA._limite() == 1
     assert inspect.signature(ia.trechos_relevantes).parameters["limite"].default == 4000
+
+
+def test_a_memoria_e_o_monitoramento_real():
+    """31/10/2026: o mapeamento de memória com teto de 64 MB por conexão (eram 256 MB: 6 conexões somavam 810 MB, agora
+    187 MB); a IA com 3 pedidos simultâneos (um por cargo); 'Fontes monitoradas' com o monitoramento real (o ativo, o
+    preditivo e os sem prazo), não os livros com algum achado."""
+    assert '"mmap_size=67108864"' in Path("eldorado/banco/_sqlite.py").read_text(encoding="utf-8")
+    assert "-c 18432 -np 3 -t 3" in Path(".github/workflows/eldorado.yml").read_text(encoding="utf-8")
+    d = Path("eldorado/base/painel/dados.py").read_text(encoding="utf-8")
+    assert '"monitorado_ativo": mon.get("ativo", 0)' in d and '"monitorado_preditivo"' in d and '"sem_prazo"' in d
+    assert "OP.monitorado_ativo" in Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
