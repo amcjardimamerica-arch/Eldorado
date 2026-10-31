@@ -500,3 +500,14 @@ def test_as_oportunidades_abertas_no_design_novo():
     assert 'li.className="arq-mf"' in p and '"Encerradas em "+br(k)' in p and 'data-acao="recuperar"' in p
     assert "#emp-ranking-caixa .ep-sub,#emp-ranking-caixa .ep-resumo,#emp-ranking-caixa .ep-crit{display:none}" in p
     assert 'class="leg-tubos"' in p and '/municipal|vereador/i.test(c)?["#4C75B4"' in p and '/assembleia|alego|estadual/i.test(c)?["#E3AB00"' in p
+
+
+def test_em_andamento_no_azul_e_o_ranking_na_vitrine():
+    """01/11/2026 (titular): Em andamento no azul da associação (a borda na cor do selo, cinco por linha, sem o painel de
+    contadores, os títulos centralizados); o checklist reconhece «comprovado» (antes: 0/12 em todos) e o livro mostra o
+    identificador (antes: [object Object]); o Ranking na vitrine apresentada (as leis em chips, a paginação compacta
+    abaixo da lista)."""
+    p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
+    assert 'data-selo="${seloEsteira(x)||""}"' in p and '#v-editais .oa-c[data-selo="ouro"]' in p and "#v-editais .oa-resumo{display:none}" in p
+    assert "comprovado|confirmado|conhecido" in p and "(x.livro_vinculado&&x.livro_vinculado.id)" in p
+    assert "a paginação compacta, abaixo da lista" in p and "#emp-ranking-caixa .ep-lei.fez" in p
