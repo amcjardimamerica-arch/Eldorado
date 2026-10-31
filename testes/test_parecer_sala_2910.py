@@ -487,3 +487,16 @@ def test_as_telas_das_oportunidades_abertas():
     from eldorado.base.painel.dados import LEGISLATIVO
 
     assert set(LEGISLATIVO) == {"camara-goiania-pl", "alego-pl", "congresso-nacional"}
+
+
+def test_as_oportunidades_abertas_no_design_novo():
+    """01/11/2026 (titular): o cabeçalho com o logo da A.M.C. Jardim América e o filete das cores da associação; o céu
+    estrelado na página enquanto as Oportunidades abertas estão abertas; os Arquivados em microfilme (uma por linha, por
+    lote de encerramento); o Ranking em vitrine de vidro (no alto, só os dois botões; o «pode direcionar» mantido); o
+    Legislativo em tubos de vidro, uma coluna por casa (municipal azul, estadual amarelo, federal laranja)."""
+    p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
+    assert Path("eldorado/base/painel/pagina/logo-amc.png").exists() and '<img src="logo-amc.png" alt="A.M.C. Jardim América">' in p
+    assert "body:has(#v-editais:not(.oculto))" in p and "#4C75B4,#85C1EA,#F6EA07,#E3AB00,#D17600" in p
+    assert 'li.className="arq-mf"' in p and '"Encerradas em "+br(k)' in p and 'data-acao="recuperar"' in p
+    assert "#emp-ranking-caixa .ep-sub,#emp-ranking-caixa .ep-resumo,#emp-ranking-caixa .ep-crit{display:none}" in p
+    assert 'class="leg-tubos"' in p and '/municipal|vereador/i.test(c)?["#4C75B4"' in p and '/assembleia|alego|estadual/i.test(c)?["#E3AB00"' in p
