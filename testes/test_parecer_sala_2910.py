@@ -511,3 +511,13 @@ def test_em_andamento_no_azul_e_o_ranking_na_vitrine():
     assert 'data-selo="${seloEsteira(x)||""}"' in p and '#v-editais .oa-c[data-selo="ouro"]' in p and "#v-editais .oa-resumo{display:none}" in p
     assert "comprovado|confirmado|conhecido" in p and "(x.livro_vinculado&&x.livro_vinculado.id)" in p
     assert "a paginação compacta, abaixo da lista" in p and "#emp-ranking-caixa .ep-lei.fez" in p
+
+
+def test_o_ceu_do_calendario_e_o_ranking_em_uma_linha():
+    """01/11/2026 (titular): as Oportunidades abertas com o mesmo céu do calendário (a rotina reutilizável); o ranking em
+    uma linha por empresa (o selo da qualificação primeiro, o nome e o CNPJ; a nota só com o número; sem «critérios
+    levantados»); sem as linhas de dados do topo do ranking."""
+    p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
+    assert 'ceuEm("sj-estrelas","sj"); ceuEm("oa-estrelas","v-editais");' in p and 'id="oa-estrelas"' in p
+    assert "#emp-ranking-caixa .ep-nome .ep-nivel{order:-1" in p and "#emp-ranking-caixa .ep-esg small{display:none!important}" in p
+    assert "critérios levantados" not in p and "ep-quando" in p and "_ve.dataset.aba=aba" in p

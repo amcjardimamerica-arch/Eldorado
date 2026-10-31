@@ -200,7 +200,7 @@ def test_o_calendario_dias_na_esfera_objeto_enquadrado_e_inicio_sem_menu():
     assert "depthTest: false, toneMapped: false" in g and "drawEstrela(x, S)" not in g and "* (1 - 2 * DESLOCAMENTO)" not in g
     assert "g.add(new T.Mesh(new T.SphereGeometry(GR * 1.07, 48, 24), M.glass));" not in g
     p_ = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
-    assert 'id="sj-estrelas"' in p_ and "(function ceu(){" in p_ and "prefers-reduced-motion: reduce" in p_ and "#sj .raios,#sj .raios2{display:none}" in p_
+    assert 'id="sj-estrelas"' in p_ and "function ceuEm(cvId,raizId){" in p_ and "prefers-reduced-motion: reduce" in p_ and "#sj .raios,#sj .raios2{display:none}" in p_
     assert "RMAX_SERPENTES = 2.9" in g and "RAIO_LIMITE / Math.sin(meia)" in g and "o palco oculto (largura zero)" in g
     p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
     assert '<button type="button" id="sj-inicio">Início</button>' in p and 'data-ir="eldorado:neural">Sala de controle</button></div></div>\n    <div class="grupo"><button type="button" aria-haspopup="true">Eldorado' not in p

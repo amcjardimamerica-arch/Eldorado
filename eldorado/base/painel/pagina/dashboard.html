@@ -451,9 +451,9 @@ box-shadow:0 1px 3px #0002}
 #mt-lista .mt-ach>small{grid-column:2;display:block;text-align:left;white-space:normal;overflow-wrap:anywhere;word-break:break-word;color:var(--suave);font-size:10.5px;line-height:1.35;min-width:0}
 #mt-lista .mt-ach>small.mt-ach-op{color:#1E7E4B}#mt-lista .mt-ach>small a{white-space:nowrap}
 /* 01/11/2026 (titular): a seção das Oportunidades abertas sob o céu estrelado, com o cabeçalho da associação */
-body:has(#v-editais:not(.oculto)){color:#f0e2c0;
- background:radial-gradient(1px 1px at 12% 18%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 37% 62%,#ffeccd 50%,transparent 51%),radial-gradient(1.4px 1.4px at 71% 24%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 84% 77%,#d7e4ff 50%,transparent 51%),radial-gradient(1.2px 1.2px at 23% 88%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 55% 9%,#fff6e6 50%,transparent 51%),radial-gradient(1px 1px at 93% 45%,#fff 50%,transparent 51%),radial-gradient(1.6px 1.6px at 5% 52%,#ffe2b8 50%,transparent 51%),
- radial-gradient(ellipse 60% 40% at 25% 10%,rgba(64,88,140,.35),transparent 70%),linear-gradient(180deg,#0a1124,#0c1630 50%,#070d1d);background-size:420px 420px,420px 420px,420px 420px,420px 420px,420px 420px,420px 420px,420px 420px,420px 420px,100% 100%,100% 100%}
+body:has(#v-editais:not(.oculto)){color:#f0e2c0;background:radial-gradient(ellipse 60% 60% at 38% 48%,#1E2742 0,#121A31 42%,#0A0F1F 78%,#070A15 100%) fixed}   /* 01/11/2026: o mesmo céu do calendário */
+#v-editais .estrelas{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
+#v-editais>*:not(.estrelas){position:relative;z-index:1}
 #v-editais{color:#f0e2c0}body:has(#v-editais:not(.oculto)) .meta{color:#c9bfa8}
 body:has(#v-editais:not(.oculto)) #ed-abas button{background:rgba(14,19,30,.78)!important;color:#efe2c4!important;border:1px solid rgba(233,207,143,.3)!important;box-shadow:0 4px 10px rgba(0,0,0,.45)}
 body:has(#v-editais:not(.oculto)) #ed-abas button.on{background:linear-gradient(180deg,#fbe3a2,#d9a84c 25%,#9a6a24 55%,#dcb86c 85%,#6a4512)!important;color:#2a1a05!important;border-color:#6a4512!important}
@@ -479,7 +479,14 @@ body:has(#emp-caixa:not(.oculto)) #ed-legenda{display:none}
 #emp-ranking-caixa .ep-cab{color:#e9cf8f;font-size:11.5px;letter-spacing:.04em;padding:4px 12px;border:0}
 #emp-ranking-caixa .ep-cab,#emp-ranking-caixa .ep-l{grid-template-columns:44px minmax(0,1.45fr) minmax(0,1.7fr) 112px 190px 120px}
 #emp-ranking-caixa,#emp-ranking-caixa .ep,#emp-ranking-caixa .ep-lista{background:transparent!important}
-#emp-ranking-caixa .ep-l{padding:8px 12px!important}
+#emp-ranking-caixa .ep-l{padding:5px 12px!important}
+#emp-ranking-caixa .ep-nome{display:flex;align-items:center;gap:7px;white-space:nowrap;overflow:hidden;min-width:0}
+#emp-ranking-caixa .ep-nome .ep-nivel{order:-1;margin-left:0!important;flex:none}
+#emp-ranking-caixa .ep-nome b{display:inline!important;overflow:hidden;text-overflow:ellipsis;min-width:0}#emp-ranking-caixa .ep-nome small{flex:none;display:inline!important}
+#emp-ranking-caixa .ep-prog{display:flex;flex-wrap:nowrap;gap:3px;overflow:hidden}#emp-ranking-caixa .ep-lei{margin:0!important;padding:1px 7px!important;font-size:10.5px!important;flex:none}
+#emp-ranking-caixa .ep-esg small{display:none!important}
+#emp-ranking-caixa .ep-valor,#emp-ranking-caixa .ep-ct{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#emp-ranking-caixa .ep-valor b,#emp-ranking-caixa .ep-valor em{display:inline!important}#emp-ranking-caixa .ep-valor small{display:inline!important;margin-left:5px}
+.ep-quando,#v-editais[data-aba="ranking_empresas"] #ed-legenda,#v-editais[data-aba="ranking_empresas"] .selo-vivo,#emp-ranking-caixa>div.meta:first-child{display:none!important}
 #emp-ranking-caixa .ep-pos{font-family:"IM Fell English SC",Georgia,serif;font-size:19px;color:#cfe0ff}
 #emp-ranking-caixa .ep-l b{color:#f3f6ff!important}#emp-ranking-caixa .ep-nome small{color:#b9c6dc!important}
 #emp-ranking-caixa .ep-nivel{font-style:normal;font-size:10.5px;padding:1px 7px;border-radius:9px;color:#fff!important;background:#d4a24a;margin-left:6px;display:inline-block}
@@ -1300,8 +1307,8 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
   $("sj-inicio").addEventListener("click",()=>{window.irInicio&&irInicio()});
   /* 29/10/2026 (titular): o céu do calendário — estrelas pequenas que alternam o brilho devagar, cada uma no seu ritmo
      (como respiração); pausa com o calendário fora da vista e fica parado para quem pede menos movimento */
-  (function ceu(){
-    const cv=$("sj-estrelas"), raiz=$("sj"); if(!cv||!raiz) return;
+  function ceuEm(cvId,raizId){   /* 01/11/2026: o céu do calendário, reutilizável (também nas Oportunidades abertas) */
+    const cv=$(cvId), raiz=$(raizId); if(!cv||!raiz) return;
     const x=cv.getContext("2d"), parado=matchMedia("(prefers-reduced-motion: reduce)").matches;
     const CORES=["255,246,229","245,217,160","207,224,255","255,236,210"];
     let E=[], w=0, h=0, dpr=1;
@@ -1342,7 +1349,8 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
     montar(); pintar(0);
     if(!parado) requestAnimationFrame(quadro);
     addEventListener("resize",()=>{montar();pintar(performance.now()/1000);});
-  })();   // 29/10/2026: o início vai direto à página inicial
+  }
+  ceuEm("sj-estrelas","sj"); ceuEm("oa-estrelas","v-editais");   // 29/10/2026: o início vai direto à página inicial
   document.querySelectorAll("#sj .menu button").forEach(b=>b.addEventListener("click",()=>{const [m,v]=b.dataset.ir.split(":");
     if(m==="inicio"){window.irInicio&&irInicio();return} if(window.modulo)modulo(m); if(v&&window.mostra)mostra(v)}));
   // o giroscópio: a lista de prazos (em ordem de vencimento) e, ao passar o mouse, a oportunidade no mostrador da esfera
@@ -1401,7 +1409,7 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
 <section id="v-interceptador-posto" style="margin-top:14px"><div id="int-posto"></div></section>
 
 <!-- ============ ELDORADO · EDITAIS ============ -->
-<section id="v-editais" class="oculto" style="margin-top:14px">
+<section id="v-editais" class="oculto" style="margin-top:14px"><canvas class="estrelas" id="oa-estrelas" aria-hidden="true"></canvas>
 <!-- 01/11/2026 (titular): o cabeçalho das Oportunidades abertas com o logo da A.M.C. Jardim América e o filete com as
      sete cores da associação (#001D7E #4C75B4 #85C1EA #F6EA07 #E3AB00 #D17600 #211915), só nas decorações -->
 <header class="oa-topo"><div class="oa-logo"><img src="logo-amc.png" alt="A.M.C. Jardim América"></div>
@@ -4301,6 +4309,7 @@ async function desenhaLegislativo(){
 window.legLimpar=function(){ ["leg-casa","leg-tipo"].forEach(i=>{const e=$(i);if(e)e.value="";}); const b=$("leg-busca"); if(b)b.value=""; desenhaLegislativo(); };
 function desenhaEditais(){
   const aba=window._abaEd||"em_andamento";
+  { const _ve=$("v-editais"); if(_ve) _ve.dataset.aba=aba; }   // 01/11/2026: o estilo de cada aba (no ranking, sem as linhas de dados do topo)
   const g=$("ed-grade");g.innerHTML="";g.className=aba==="encerrado"?"ed-linhas faixa-total":"grade-ed";
   $("ed-filtros").classList.toggle("oculto",aba!=="encerrado");
   const cx=$("ed-abertos-caixa"); if(cx)cx.classList.toggle("oculto",aba!=="em_andamento");
@@ -5530,7 +5539,7 @@ window.desenhaApoiadores=function(){
   const comValor=fatia.filter(e=>(e.potencial||{}).apurou).length;
 
    const _quando=R.gerado_em?new Date(R.gerado_em).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit",timeZone:"America/Sao_Paulo"}):"—";
-  el.innerHTML=`<div class="meta" style="margin:0 0 8px">Dados atualizados em <b>${_quando}</b> (Brasília) — o ranking é refeito todos os dias com o catálogo de incentivos (Rouanet, Goyazes, Lei de Incentivo ao Esporte, PRONON, PRONAS…).</div>
+  el.innerHTML=`<div class="meta ep-quando" style="margin:0 0 8px">Dados atualizados em <b>${_quando}</b> (Brasília) — o ranking é refeito todos os dias com o catálogo de incentivos (Rouanet, Goyazes, Lei de Incentivo ao Esporte, PRONON, PRONAS…).</div>
   <section class="ep" style="--c:${L.cor};--f:${L.fundo}">
     <div class="ep-abas" role="tablist">
       ${Object.entries(LISTAS).map(([k,v])=>{const n=(R.empresas||[]).filter(e=>e.origem===v.origem).length;
@@ -5597,7 +5606,7 @@ window.desenhaApoiadores=function(){
         <span class="ep-valor">${F.lista==="tributaria"
           ? (pt.apurou?`<b>${_fx(ir.direcionavel_min,ir.direcionavel_max)}</b><small>${ir.teto_pct}% do IRPJ</small>`
                       :`<em>${esc((pt.motivo||"sem estimativa").split("—")[0].trim().slice(0,34))}</em>`)
-          : `<b class="ep-conf">${(e.avaliacao||{}).apurados||0}/${(e.avaliacao||{}).total_criterios||0}</b><small>critérios levantados</small>`}</span>
+          : `<b class="ep-conf">${(e.avaliacao||{}).apurados||0}/${(e.avaliacao||{}).total_criterios||0}</b>`}</span>
         <span class="ep-ct">${contato
           ? `<a href="${esc(contato.h)}"${contato.e?' target="_blank" rel="noopener noreferrer"':""} onclick="event.stopPropagation()">${esc(contato.t)}</a>`
           : `<em>a levantar</em>`}</span>
