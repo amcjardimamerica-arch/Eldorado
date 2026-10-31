@@ -473,3 +473,17 @@ def test_a_memoria_e_o_monitoramento_real():
     d = Path("eldorado/base/painel/dados.py").read_text(encoding="utf-8")
     assert '"monitorado_ativo": mon.get("ativo", 0)' in d and '"monitorado_preditivo"' in d and '"sem_prazo"' in d
     assert "OP.monitorado_ativo" in Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
+
+
+def test_as_telas_das_oportunidades_abertas():
+    """31/10/2026 (titular): Em andamento mostra todas as abertas (a área em texto livre vira a chave de uma seção; o que
+    não se encaixa vai para 'Outras' — 149 de 155 sumiam); Arquivados mostra as encerradas e arquivadas da Biblioteca (a
+    lista do sistema anterior vinha vazia); o Legislativo vem dos atos dos motores legislativos (era um molde vazio)."""
+    p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
+    assert "const areaCal=x=>{const a=_areaCalGlobal(x); return NOME_AREA[a]?a:_areaChave(a);};" in p and "const _areaChave=a=>" in p
+    assert "(window._FLUXO||{}).arquivados" in p
+    d = Path("eldorado/base/painel/dados.py").read_text(encoding="utf-8")
+    assert "def livros_arquivados(self)" in d and 'arquivos["legislativo.json"] = _legislativo(sis, agora)' in d
+    from eldorado.base.painel.dados import LEGISLATIVO
+
+    assert set(LEGISLATIVO) == {"camara-goiania-pl", "alego-pl", "congresso-nacional"}

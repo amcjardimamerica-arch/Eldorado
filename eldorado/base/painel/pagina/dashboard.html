@@ -3881,7 +3881,20 @@ function desenhaRadar(){
    OFICIAL. Fluxo contínuo fica numa faixa própria acima da grade. Emendas parlamentares (01/10–30/11) incluídas. */
 const COR_AREA={diario:"#5B6B82",cultura:"#D63A6B",esporte:"#7CB518",saude:"#2F79D0",crianca:"#E0A100",idoso:"#8C6D3F",assistencia:"#12A5B5",ambiente:"#7B4FE0",educacao:"#2E9D5B",emendas:"#B8860B",outras:"#7C8899"};
 const NOME_AREA={cultura:"Cultura",esporte:"Esporte e lazer",saude:"Saúde",crianca:"Criança e adolescente",idoso:"Pessoa idosa",assistencia:"Assistência social",ambiente:"Meio ambiente e clima",educacao:"Educação",emendas:"Emendas parlamentares",diario:"Chamamentos em diário oficial — tema a identificar",outras:"Outras"};
-const areaCal=x=>x.area||((/emenda parlamentar/i.test(x.titulo||"")||/emendas/.test(x.origem||""))?"emendas":areaRadar(x));   // 28/09: tema do servidor primeiro
+const areaCal=x=>x.area||((/emenda parlamentar/i.test(x.titulo||"")||/emendas/.test(x.origem||""))?"emendas":areaRadar(x));
+const _areaCalGlobal=x=>areaCal(x);
+/* 31/10/2026: o texto livre da área vira a chave de uma seção (o que não se encaixa vai para "Outras") */
+const _areaChave=a=>{const t=String(a||"").toLowerCase(); if(!t) return "outras";
+  if(/emenda/.test(t)) return "emendas";
+  if(/cultur|arte|patrim[oô]n|museu|m[uú]sic|dan[cç]a|teatr|cinema|audiovis|livro|leitura|cultura viva/.test(t)) return "cultura";
+  if(/esport|lazer/.test(t)) return "esporte";
+  if(/crian[cç]a|adolesc|juvent|jovem/.test(t)) return "crianca";
+  if(/idos/.test(t)) return "idoso";
+  if(/ambient|clima|sustent|biodivers|floresta|[aá]gua|sociobio|recicl|res[ií]duo/.test(t)) return "ambiente";
+  if(/sa[uú]de|hospital|c[aâ]ncer|defici[eê]ncia|\bsus\b/.test(t)) return "saude";
+  if(/assist[eê]ncia|social|vulner|moradia|habita|fome|alimentar|justi[cç]a|direitos|custodiad/.test(t)) return "assistencia";
+  if(/educa|ensino|escola|ci[eê]ncia|pesquis|tecnolog|inova/.test(t)) return "educacao";
+  return "outras";};   // 28/09: tema do servidor primeiro
 function desenhaCal(){
   if(calAno==null){calAno=HOJE.getFullYear();calMes=HOJE.getMonth();}
   const MES_=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
@@ -4240,11 +4253,13 @@ function desenhaEditais(){
   const hojeISO=HOJE.toISOString().slice(0,10);
   const cid=t=>{const m=/Di[áa]rio Oficial de ([^—(]+?)\s*\(([A-Z]{2})\)/.exec(t||"");return m?m[1].trim():null;};
   // 12/10 (titular): as INSCRITAS também ficam em Arquivados (a aba Inscritos não existe mais; antes elas sumiam de todas as listas)
-  const arq=(D.editais||[]).filter(e=>["descartado","inscrito"].includes(estadoDe(e.id))||e.estado_export==="encerrado"||(e.fim&&e.fim<hojeISO)).concat(_edsDecididosDoFluxo("descartado"),_edsDecididosDoFluxo("inscrito"))
+  // 31/10/2026: as encerradas e arquivadas da Biblioteca (a lista do sistema anterior vinha vazia)
+  const _arqBib=((window._FLUXO||{}).arquivados||[]).map(e=>({...e,area:_areaChave(e.area)}));
+  const arq=(D.editais||[]).filter(e=>["descartado","inscrito"].includes(estadoDe(e.id))||e.estado_export==="encerrado"||(e.fim&&e.fim<hojeISO)).concat(_edsDecididosDoFluxo("descartado"),_edsDecididosDoFluxo("inscrito"),_arqBib)
     .filter(e=>(!uf||e.uf===uf)&&(!ar||e.area===ar))
     .sort((a,b)=>String(b.fim||"").localeCompare(String(a.fim||"")));
   const enche=(id,vals,rot)=>{const s=$(id);const v0=s.value;s.length=1;vals.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=rot(v);s.appendChild(o);});s.value=v0;};
-  const todosArq=(D.editais||[]).filter(e=>["descartado","inscrito"].includes(estadoDe(e.id))||e.estado_export==="encerrado"||(e.fim&&e.fim<hojeISO)).concat(_edsDecididosDoFluxo("descartado"),_edsDecididosDoFluxo("inscrito"));
+  const todosArq=(D.editais||[]).filter(e=>["descartado","inscrito"].includes(estadoDe(e.id))||e.estado_export==="encerrado"||(e.fim&&e.fim<hojeISO)).concat(_edsDecididosDoFluxo("descartado"),_edsDecididosDoFluxo("inscrito"),_arqBib);
   enche("ed-area",[...new Set(todosArq.map(e=>e.area).filter(Boolean))].sort((a,b)=>AREA(a).rotulo.localeCompare(AREA(b).rotulo,"pt")),a=>AREA(a).rotulo);
   enche("ed-uf",[...new Set(todosArq.map(e=>e.uf).filter(Boolean))].sort(),u=>u);
   $("ed-legenda").innerHTML=`<span class=meta>${arq.length} oportunidade(s) arquivada(s) — inscritas, encerradas ou descartadas. Aqui é só abrir o detalhe ou recuperar para «Em andamento».</span>`;
@@ -6293,6 +6308,10 @@ function _desenhaAbertasFluxo(){
   const todos=Object.entries(F.itens_por_uf||{}).flatMap(([uf,v])=>v.map(x=>({...x,_uf:uf==="__nac__"?"":uf})))
     .filter(x=>{const d=(decisoes()[_edDoFluxo(x).id]||{}).estado; return !d||d==="em_andamento";});   // 12/10: inscrita/descartada sai daqui
   const f=window._oaF, nUF={}; todos.forEach(x=>{const k=x._uf||"__nac__"; nUF[k]=(nUF[k]||0)+1;});
+  // 31/10/2026 (titular: "Em andamento não mostra todas as oportunidades abertas"): a área vinha em texto livre ("Meio
+  // ambiente", "ciência"…) e só as chaves conhecidas viravam seção: 149 de 155 sumiam. Agora a área vira a chave da seção
+  // e o que não se encaixa vai para "Outras" — nenhuma oportunidade some
+  const areaCal=x=>{const a=_areaCalGlobal(x); return NOME_AREA[a]?a:_areaChave(a);};
   let L=todos.filter(x=>(!f.uf||(f.uf==="__nac__"?!x._uf:x._uf===f.uf))&&(!f.a||areaCal(x)===f.a)&&(!f.s||seloEsteira(x)===f.s));
   L.sort((a,b)=>((SELO_ORD[seloEsteira(b)]??-1)-(SELO_ORD[seloEsteira(a)]??-1))||(b.confirmada-a.confirmada)||(a.confirmada?String(a.fim||"9999").localeCompare(String(b.fim||"9999")):((a._uf==="GO"?0:1)-(b._uf==="GO"?0:1))||String(b.publicado_em||"").localeCompare(String(a.publicado_em||""))));
   const conf=L.filter(x=>x.confirmada).length, insp=L.filter(x=>x.inspecao).length, opr=L.filter(x=>x.livro_vinculado||x.opressor).length;

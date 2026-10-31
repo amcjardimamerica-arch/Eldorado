@@ -140,6 +140,18 @@ class Sistema:
             )
         )
 
+    def livros_arquivados(self) -> list[sqlite3.Row]:
+        """31/10/2026 (titular: "Arquivados / encerrados deveria mostrar todas as oportunidades arquivadas e encerradas"):
+        os livros com o prazo encerrado ou no arquivo (a tela lia a lista do sistema anterior, vazia)."""
+        return list(
+            self.bib.execute(
+                "SELECT l.id, l.titulo, l.orgao, l.uf, l.link_oficial, l.link_divulgacao, l.estrela, d.inscricao_inicio, d.inscricao_fim, "
+                "d.area AS area_d, l.tema, d.situacao_prazo, p.fase FROM livro l JOIN livro_dados d ON d.livro_id = l.id "
+                "JOIN passaporte p ON p.livro_id = l.id WHERE (d.situacao_prazo = 'encerrada' OR p.fase = 'arquivo') "
+                "AND l.situacao NOT IN ('excluido', 'unido') ORDER BY d.inscricao_fim DESC"
+            )
+        )
+
     def certidoes(self, ids: list[str]) -> dict[str, dict[str, str]]:
         from ..missao import itens as I
 
@@ -536,6 +548,38 @@ def _bussola(sis: Sistema, molde: dict, fontes: list[dict], status: list[dict]) 
     return b, painel
 
 
+LEGISLATIVO = {"camara-goiania-pl": "Câmara Municipal de Goiânia", "alego-pl": "Assembleia Legislativa de Goiás (ALEGO)",
+               "congresso-nacional": "Congresso Nacional"}
+
+
+def _legislativo(sis, agora: str) -> dict[str, Any]:
+    """31/10/2026 (titular: "a tela Legislativo não tem nenhuma informação"): o arquivo vinha de um molde vazio; agora, os
+    atos dos motores legislativos (a exceção da R35: ficam na Biblioteca mesmo sem livro), por casa e por tipo."""
+    import json as _json
+
+    ph = ",".join("?" * len(LEGISLATIVO))
+    itens = []
+    for r in sis.bib.execute(f"SELECT id, motor, titulo, link_oficial, link_divulgacao, encontrado_em, dados, livro_id FROM achado "
+                             f"WHERE motor IN ({ph}) ORDER BY encontrado_em DESC", tuple(LEGISLATIVO)):
+        try:
+            d = _json.loads(r["dados"] or "{}")
+        except ValueError:
+            d = {}
+        t = str(r["titulo"] or "")
+        tipo = ("Utilidade pública" if re.search(r"(?i)utilidade p[uú]blica", t + " " + str(d.get("fonte") or "")) else
+                "Orçamento (LOA / emendas)" if re.search(r"(?i)emenda|or[cç]amento|\bloa\b", t) else
+                "Projeto de lei" if re.search(r"(?i)projeto de lei|\bpl\b|\bplc\b|\bpls\b", t) else "Outro ato legislativo")
+        num = re.search(r"(?i)n[ºo°.]?\s*(\d[\d.]*/\d{4})", t)
+        data = str(d.get("data") or r["encontrado_em"] or "")
+        itens.append({"id": r["id"], "casa": r["motor"], "casa_nome": LEGISLATIVO[r["motor"]], "tipo": tipo, "titulo": t,
+                      "entidade": str(d.get("orgao") or ""), "autor": "", "numero": num.group(1) if num else "", "apresentado_em": data,
+                      "url": r["link_oficial"] or r["link_divulgacao"] or "", "livro": r["livro_id"] or "",
+                      "movimentacoes": [{"data": data, "descricao": str(d.get("fonte") or "registrado pelo motor")}]})
+    por_casa, por_tipo = Counter(x["casa_nome"] for x in itens), Counter(x["tipo"] for x in itens)
+    return {"atualizado_em": agora, "regra": "os atos dos motores legislativos (Câmara Municipal de Goiânia, ALEGO e Congresso Nacional)",
+            "total": len(itens), "por_casa": dict(por_casa), "por_tipo": dict(por_tipo), "itens": itens}
+
+
 def _fluxo(sis: Sistema, agora: str) -> dict:
     """O mapa das oportunidades (fluxo_oportunidades.json), do banco: abertas são os livros com prazo aberto; confirmadas, as
     abertas com a origem confirmada e com o objeto e o prazo certificados; a validação aplicada é a do Cartório."""
@@ -876,6 +920,11 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     ca, fichas_cartorio = cartorio_montar(sis.bib, sis.cer, rede, agora)
     arquivos["cartorio.json"] = ca
     arquivos["fluxo_oportunidades.json"] = _fluxo(sis, agora)
+    arquivos["fluxo_oportunidades.json"]["arquivados"] = [
+        {"id": r["id"], "titulo": r["titulo"], "orgao": r["orgao"] or "", "uf": r["uf"] or "", "inicio": r["inscricao_inicio"], "fim": r["inscricao_fim"],
+         "area": r["area_d"] or r["tema"] or "", "url": r["link_oficial"] or r["link_divulgacao"] or "", "selo": r["estrela"] or "",
+         "estado_export": "encerrado", "etapa": r["fase"] or ""} for r in sis.livros_arquivados()]
+    arquivos["legislativo.json"] = _legislativo(sis, agora)
     arquivos["mapa_arquivos.json"] = _mapa_arquivos(sis, raiz)
     arquivos.update(_tabelas(sis, status, descricao, agora))
     for p in MOLDE.glob("*.json"):  # os demais arquivos: a estrutura, vazia (sem dado do Eldorado0)
