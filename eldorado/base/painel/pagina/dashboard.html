@@ -515,6 +515,18 @@ body:has(#emp-caixa:not(.oculto)) #ed-legenda{display:none}
 #v-editais .oa-sec-t{justify-content:center;flex-direction:column;gap:2px;background:none;border:0;font:500 20px Outfit,system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#f2f6ff;text-shadow:0 0 12px rgba(133,193,234,.6)}
 #v-editais .oa-sec-t i{display:none}#v-editais .oa-sec-t span{font:400 12.5px Outfit,system-ui,sans-serif;letter-spacing:0;text-transform:none;color:#85C1EA;text-shadow:none}
 #v-editais .oa-sec-t::after{content:"";display:block;height:2px;width:240px;margin-top:4px;background:linear-gradient(90deg,transparent,#4C75B4,#85C1EA,#4C75B4,transparent)}
+/* 01/11/2026 (titular): o vidro fosco — um único painel translúcido e desfocado (o céu aparece suave por trás), nos
+   Arquivados (as listas por dia) e no Legislativo (as três colunas) */
+.vidro-fosco{display:block;border-radius:20px;padding:16px 18px;background:linear-gradient(160deg,rgba(255,255,255,.13),rgba(255,255,255,.04) 45%,rgba(255,255,255,.07));
+ -webkit-backdrop-filter:blur(16px) saturate(1.25);backdrop-filter:blur(16px) saturate(1.25);box-shadow:inset 0 0 0 1px rgba(220,235,255,.22),inset 0 1px 0 rgba(255,255,255,.28),0 18px 44px rgba(0,0,0,.45)}
+.vidro-fosco .arq-mf{background:rgba(8,14,30,.42);border-image:repeating-linear-gradient(180deg,rgba(7,13,29,.75) 0 6px,rgba(255,255,255,.12) 6px 12px) 12}
+.vidro-fosco .arq-mf:hover{background:rgba(20,32,60,.6)}
+#ed-grade .arq-mf .ico{overflow:visible;gap:5px;background:none!important;border:0!important;box-shadow:none!important;padding:0!important}
+#ed-grade .arq-mf .ico button{flex:0 0 30px!important;display:inline-flex!important;align-items:center;justify-content:center;width:30px!important;height:30px!important;min-height:30px!important;padding:0!important;border:0!important;border-radius:7px!important;background:rgba(255,255,255,.12)!important;color:#efe2c4!important;box-shadow:inset 0 0 0 1px rgba(220,235,255,.25)!important}
+#ed-grade .arq-mf .ico button+button{background:rgba(255,190,90,.24)!important}#ed-grade .arq-mf .ico button svg{stroke:#efe2c4;fill:none!important}#ed-grade .arq-mf .ico button svg *{fill:none!important}.vidro-fosco .arq-cab{background:rgba(8,14,30,.55)}
+.leg-tubos.vidro-fosco{display:grid}
+.vidro-fosco .leg-vidro{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);background:linear-gradient(90deg,rgba(255,255,255,.16),rgba(255,255,255,.04) 30%,rgba(255,255,255,.02) 60%,rgba(255,255,255,.1)),color-mix(in srgb,var(--tc) 12%,rgba(14,24,48,.38))}
+.vidro-fosco .leg-ato{background:rgba(8,14,30,.48)}
 /* os Arquivados — o microfilme: uma por linha, por lote de encerramento */
 .arq-sep{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0 4px}.arq-sep b{font:500 14px/1.2 Outfit,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#f3ead6}.arq-sep span{font:400 12.5px Outfit,system-ui,sans-serif;color:#85C1EA}.arq-sep i{flex:1;max-width:300px;height:1px;background:linear-gradient(90deg,transparent,#85C1EA 30%,#E3AB00 70%,transparent)}.arq-sep i:last-child{transform:scaleX(-1)}
 .arq-mf{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,210px) 40px minmax(0,130px) 84px minmax(0,96px) 74px;gap:10px;align-items:center;padding:5px 10px;margin-bottom:2px;font-size:12.5px;background:#141720;color:#efe2c4;border-left:12px solid transparent;border-image:repeating-linear-gradient(180deg,#070d1d 0 6px,#2a2e36 6px 12px) 12;cursor:pointer}
@@ -1307,7 +1319,7 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
   $("sj-inicio").addEventListener("click",()=>{window.irInicio&&irInicio()});
   /* 29/10/2026 (titular): o céu do calendário — estrelas pequenas que alternam o brilho devagar, cada uma no seu ritmo
      (como respiração); pausa com o calendário fora da vista e fica parado para quem pede menos movimento */
-  function ceuEm(cvId,raizId){   /* 01/11/2026: o céu do calendário, reutilizável (também nas Oportunidades abertas) */
+  function ceuEm(cvId,raizId,fator=1){   /* 01/11/2026: o céu do calendário, reutilizável (também nas Oportunidades abertas) */
     const cv=$(cvId), raiz=$(raizId); if(!cv||!raiz) return;
     const x=cv.getContext("2d"), parado=matchMedia("(prefers-reduced-motion: reduce)").matches;
     const CORES=["255,246,229","245,217,160","207,224,255","255,236,210"];
@@ -1318,7 +1330,7 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
       /* 30/10/2026 (titular: "cintilantes, não pontos; brilho intermitente como estrelas de verdade"): as maiores com o
          brilho em cruz (hastes finas que esmaecem); o brilho oscila de forma IRREGULAR, como a cintilação da atmosfera — uma
          ondulação lenta somada a um tremor rápido, diferente para cada estrela */
-      const n=Math.min(1800,Math.round(w*h/800)); E=[];
+      const n=Math.round(Math.min(1800,w*h/800)*fator); E=[];   /* 01/11/2026: o fator de densidade (as Oportunidades abertas: 70%) */
       for(let i=0;i<n;i++){const k=Math.random(), cruz=k<.16, media=k<.4;
         E.push({x:Math.random()*w,y:Math.random()*h,r:cruz?1.1+Math.random()*.9:media?.8+Math.random()*.5:.5+Math.random()*.45,
                 h:cruz?5+Math.random()*9:0,b:.25+Math.random()*.35,v1:.4+Math.random()*1.1,v2:3+Math.random()*5,v3:1.3+Math.random()*2.2,
@@ -1353,8 +1365,8 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
   ceuEm("sj-estrelas","sj");
   // 01/11/2026: a seção das Oportunidades abertas vem DEPOIS deste bloco no documento: o céu dela espera a página carregar
   // (chamado aqui, durante a leitura da página, a tela de estrelas ainda não existia e a rotina saía em silêncio)
-  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",()=>ceuEm("oa-estrelas","v-editais"));
-  else ceuEm("oa-estrelas","v-editais");   // 29/10/2026: o início vai direto à página inicial
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",()=>ceuEm("oa-estrelas","v-editais",0.7));
+  else ceuEm("oa-estrelas","v-editais",0.7);   // 29/10/2026: o início vai direto à página inicial
   document.querySelectorAll("#sj .menu button").forEach(b=>b.addEventListener("click",()=>{const [m,v]=b.dataset.ir.split(":");
     if(m==="inicio"){window.irInicio&&irInicio();return} if(window.modulo)modulo(m); if(v&&window.mostra)mostra(v)}));
   // o giroscópio: a lista de prazos (em ordem de vencimento) e, ao passar o mouse, a oportunidade no mostrador da esfera
@@ -4299,7 +4311,7 @@ async function desenhaLegislativo(){
     :/assembleia|alego|estadual/i.test(c)?["#E3AB00","#F6EA07","linear-gradient(180deg,#fff7b0,#F6EA07 30%,#E3AB00 60%,#f8e78a)"]
     :["#D17600","#f2a65a","linear-gradient(180deg,#ffd3a6,#f2a65a 30%,#D17600 60%,#f5b47a)"];
   const casas=[...new Set(vis.map(x=>x.casa_nome))].sort((a,b)=>{const o=c=>/municipal/i.test(c)?0:/assembleia|alego/i.test(c)?1:2;return o(a)-o(b);});
-  cx.innerHTML=`<div class="leg-tubos">${casas.map(c=>{const [cb,cc,tg]=esfera(c), da=vis.filter(x=>x.casa_nome===c);
+  cx.innerHTML=`<div class="leg-tubos vidro-fosco">${casas.map(c=>{const [cb,cc,tg]=esfera(c), da=vis.filter(x=>x.casa_nome===c);
     const tp=Object.entries(da.reduce((m,x)=>(m[x.tipo]=(m[x.tipo]||0)+1,m),{})).map(([t,k])=>`${esc(t.split(" (")[0])}: ${k}`).join(" · ");
     return `<section class="leg-tubo" style="--tc:${cc};--tg:${tg}" aria-label="${esc(c)}"><div class="leg-tampa"></div><div class="leg-vidro">
       <h3>${esc(c)}</h3><div class="leg-n">${da.length} ato(s) · ${tp}</div>
@@ -4314,7 +4326,7 @@ window.legLimpar=function(){ ["leg-casa","leg-tipo"].forEach(i=>{const e=$(i);if
 function desenhaEditais(){
   const aba=window._abaEd||"em_andamento";
   { const _ve=$("v-editais"); if(_ve) _ve.dataset.aba=aba; }   // 01/11/2026: o estilo de cada aba (no ranking, sem as linhas de dados do topo)
-  const g=$("ed-grade");g.innerHTML="";g.className=aba==="encerrado"?"ed-linhas faixa-total":"grade-ed";
+  const g=$("ed-grade");g.innerHTML="";g.className=aba==="encerrado"?"ed-linhas vidro-fosco":"grade-ed";   // 01/11/2026: um único painel de vidro fosco
   $("ed-filtros").classList.toggle("oculto",aba!=="encerrado");
   const cx=$("ed-abertos-caixa"); if(cx)cx.classList.toggle("oculto",aba!=="em_andamento");
   const ce=$("emp-caixa"); if(ce){ce.classList.toggle("oculto",aba!=="em_andamento"); if(aba==="em_andamento")desenhaEmpresas();}

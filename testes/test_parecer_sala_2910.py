@@ -499,7 +499,7 @@ def test_as_oportunidades_abertas_no_design_novo():
     assert "body:has(#v-editais:not(.oculto))" in p and "#4C75B4,#85C1EA,#F6EA07,#E3AB00,#D17600" in p
     assert 'li.className="arq-mf"' in p and '"Encerradas em "+br(k)' in p and 'data-acao="recuperar"' in p
     assert "#emp-ranking-caixa .ep-sub,#emp-ranking-caixa .ep-resumo,#emp-ranking-caixa .ep-crit{display:none}" in p
-    assert 'class="leg-tubos"' in p and '/municipal|vereador/i.test(c)?["#4C75B4"' in p and '/assembleia|alego|estadual/i.test(c)?["#E3AB00"' in p
+    assert 'class="leg-tubos vidro-fosco"' in p and '/municipal|vereador/i.test(c)?["#4C75B4"' in p and '/assembleia|alego|estadual/i.test(c)?["#E3AB00"' in p
 
 
 def test_em_andamento_no_azul_e_o_ranking_na_vitrine():
@@ -520,7 +520,17 @@ def test_o_ceu_do_calendario_e_o_ranking_em_uma_linha():
     p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
     # a chamada das Oportunidades abertas espera a página carregar (a seção vem depois no documento) e a tela do céu tem
     # um nome só dela (.estrelas é o das estrelinhas de avaliação, que a regra do céu esticava sobre a tela inteira)
-    assert 'ceuEm("sj-estrelas","sj");' in p and 'document.addEventListener("DOMContentLoaded",()=>ceuEm("oa-estrelas","v-editais"))' in p
+    assert 'ceuEm("sj-estrelas","sj");' in p and 'document.addEventListener("DOMContentLoaded",()=>ceuEm("oa-estrelas","v-editais",0.7))' in p
     assert '<canvas class="oa-ceu" id="oa-estrelas"' in p and "#v-editais .estrelas{" not in p
     assert "#emp-ranking-caixa .ep-nome .ep-nivel{order:-1" in p and "#emp-ranking-caixa .ep-esg small{display:none!important}" in p
     assert "critérios levantados" not in p and "ep-quando" in p and "_ve.dataset.aba=aba" in p
+
+
+def test_menos_estrelas_e_o_vidro_fosco():
+    """01/11/2026 (titular): 30% menos estrelas nas Oportunidades abertas (o calendário igual); os Arquivados num único
+    painel de vidro fosco, com os botões legíveis (o fundo branco genérico de .ico removido); o Legislativo na mesma
+    estética."""
+    p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
+    assert 'ceuEm("oa-estrelas","v-editais",0.7)' in p and 'ceuEm("sj-estrelas","sj");' in p and "Math.min(1800,w*h/800)*fator" in p
+    assert '"ed-linhas vidro-fosco"' in p and 'class="leg-tubos vidro-fosco"' in p and "backdrop-filter:blur(16px)" in p
+    assert "#ed-grade .arq-mf .ico{overflow:visible;gap:5px;background:none!important" in p
