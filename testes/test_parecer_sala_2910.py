@@ -572,3 +572,16 @@ def test_o_botao_passaro_guia_e_o_topo_novo():
     assert "#v-inicio .hero-arte{display:none!important}" in css and "'Início'" in js
     # a imagem refeita sem a logomarca, por trás do botão na página inicial
     assert "url(arte/cabecalho-sem-logo.png)" in css and Path("eldorado/base/painel/pagina/arte/cabecalho-sem-logo.png").exists()
+    # o botão fixo no topo: Eldorado à esquerda e Farol à direita da logomarca, as opções embaixo de cada um; encolhe ao rolar
+    assert (
+        "#amc-topo{position:fixed;top:0" in css
+        and ".row:nth-child(1){right:calc(100% + 22px)}" in css
+        and ".row:nth-child(2){left:calc(100% + 22px)}" in css
+    )
+    assert "body.amc-compacto #amc-topo .pg{transform:scale(.58)}" in css and "amc-compacto" in js
+    assert "if (!mouse(e)) return; if (!st.open) { st.open = true; }" in js and "m.tabIndex = 0;" in js
+    # a linha divisória totalmente transparente
+    assert (
+        ".faixa-total,#cl2{border-top-color:transparent!important}" in css
+        and "#app > header{background:transparent!important;padding:150px 0 0!important" in css
+    )

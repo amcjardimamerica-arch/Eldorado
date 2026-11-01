@@ -44,7 +44,7 @@ window.AMC_BIRD={"vb":[1000,752.2],"f":[{"c":"#001D7E","p":[[216.1,0.3],[306.1,2
     function sync() {
       root.classList.toggle('is-open', st.open); root.classList.toggle('exp-0', st.exp === 0); root.classList.toggle('exp-1', st.exp === 1);
       logo.setAttribute('aria-expanded', String(st.open)); logo.setAttribute('aria-label', (st.open ? 'Fechar' : 'Abrir') + ' o menu da A.M.C. Jardim América');
-      mains.forEach((m, i) => { m.tabIndex = st.open ? 0 : -1; m.setAttribute('aria-hidden', String(!st.open)); m.setAttribute('aria-expanded', String(st.exp === i)); });
+      mains.forEach((m, i) => { m.tabIndex = 0; m.setAttribute('aria-hidden', 'false'); m.setAttribute('aria-expanded', String(st.exp === i)); });
       opts.forEach((list, g) => list.forEach(b => { const on = st.open && st.exp === g; b.tabIndex = on ? 0 : -1; b.setAttribute('aria-hidden', String(!on)); }));
       if (hooks.render) hooks.render(st);
     }
@@ -59,7 +59,7 @@ window.AMC_BIRD={"vb":[1000,752.2],"f":[{"c":"#001D7E","p":[[216.1,0.3],[306.1,2
       const keep = () => { clearTimeout(tC); closing = false; }, later = ms => { if (closing) return; closing = true; tC = setTimeout(() => { closing = false; if (st.open) AMC.toggle(false); }, ms); };
       logo.addEventListener('pointerenter', e => { if (!mouse(e)) return; keep(); tO = setTimeout(() => { if (!st.open) { hovOpen = Date.now(); AMC.toggle(true); } }, 80); });
       logo.addEventListener('pointerleave', () => clearTimeout(tO));
-      mains.forEach((m, i) => { m.addEventListener('pointerenter', e => { if (!mouse(e) || !st.open) return; keep(); tE = setTimeout(() => { if (st.exp !== i) { hovExp = Date.now(); AMC.expand(i); } }, 60); }); m.addEventListener('pointerleave', () => clearTimeout(tE)); });
+      mains.forEach((m, i) => { m.addEventListener('pointerenter', e => { if (!mouse(e)) return; if (!st.open) { st.open = true; } keep(); tE = setTimeout(() => { if (st.exp !== i) { hovExp = Date.now(); AMC.expand(i); } }, 60); }); m.addEventListener('pointerleave', () => clearTimeout(tE)); });
       root.addEventListener('pointermove', e => { if (!mouse(e) || !st.open) return; if (e.target.closest && e.target.closest('[data-amc],.amc-keep')) keep(); else later(700); });
       root.addEventListener('pointerover', e => { if (e.target.closest && e.target.closest('[data-amc],.amc-keep')) keep(); });
       root.addEventListener('pointerleave', e => { if (mouse(e) && st.open) { keep(); later(450); } });
@@ -408,6 +408,9 @@ window.AMC_BIRD={"vb":[1000,752.2],"f":[{"c":"#001D7E","p":[[216.1,0.3],[306.1,2
     var palco=document.getElementById('palco'); if(palco) new MutationObserver(titulo).observe(palco,{subtree:true,attributes:true,attributeFilter:['class']});
     new MutationObserver(titulo).observe(document.body,{attributes:true,attributeFilter:['class']});
     titulo(); contagens();
+    /* 01/11/2026 (titular): o botão fixo no topo encolhe ao rolar a página; ao passar o mouse, volta ao tamanho cheio */
+    var compacto=function(){ document.body.classList.toggle('amc-compacto', (window.scrollY||document.documentElement.scrollTop)>60); };
+    window.addEventListener('scroll',compacto,{passive:true}); compacto();
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',montar); else montar();
 })();

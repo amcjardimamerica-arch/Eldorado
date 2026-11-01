@@ -89,19 +89,33 @@ button:focus-visible,.b3d:focus-visible{outline:3px solid var(--focus);outline-o
    largura toda da tela; a logomarca nova pousa no espaço vazio do centro; o nome "Início" logo abaixo da imagem */
 body.inicial #app > header::before{content:"";position:absolute;top:-18px;left:50%;width:100vw;transform:translateX(-50%);height:calc(100vw * 343 / 1536);
   background:url(arte/cabecalho-sem-logo.png) center top / 100% auto no-repeat;z-index:-1;pointer-events:none}
-body.inicial #amc-topo{height:max(300px,calc(100vw * 343 / 1536 - 12px))}
+body.inicial #app > header{padding-top:calc(100vw * 343 / 1536 - 18px)!important}
 /* as páginas escuras (o Calendário e a Sala de controle) assumem o céu também atrás do topo transparente */
 body:has(#v-calendario:not(.oculto)),body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 38% 48%,#1E2742 0,#121A31 42%,#0A0F1F 78%,#070A15 100%) fixed!important}
-#app > header{background:transparent!important;padding:0!important;text-align:center;position:relative;z-index:40}
-#amc-topo{position:relative;height:300px;display:flex;justify-content:center;z-index:50}
+#app > header{background:transparent!important;padding:150px 0 0!important;text-align:center;position:relative;z-index:40;border:0!important;box-shadow:none!important;outline:0!important}
+/* O BOTÃO FIXO NO TOPO (titular, 01/11/2026): a logomarca no centro; o Eldorado à esquerda e o Farol de Alexandria à
+   direita, na mesma linha, cada um com as opções abrindo embaixo dele; acima, o espaço para o pássaro voar */
+#amc-topo{position:fixed;top:0;left:0;right:0;height:150px;display:flex;justify-content:center;z-index:900;pointer-events:none;background:transparent!important;border:0!important}
 #amc-topo .stage,#amc-topo #w,#amc-topo .pg{background:transparent!important;box-shadow:none!important;border:0!important;min-height:0!important}
-#amc-topo .stage{position:relative;height:auto!important;display:block!important;overflow:visible!important;width:100%;max-width:1100px;margin:0 auto;padding:0!important}
-#amc-topo .pg{position:relative;height:auto!important;padding:10px 20px 0!important;gap:0!important;justify-content:flex-start!important;align-items:center!important;overflow:visible!important}
+#amc-topo .stage{position:relative;height:auto!important;display:block!important;overflow:visible!important;width:auto;margin:0 auto;padding:0!important}
+#amc-topo .pg{position:relative;height:auto!important;padding:38px 0 0!important;gap:0!important;justify-content:flex-start!important;align-items:center!important;overflow:visible!important;
+  pointer-events:auto;transform-origin:50% 0;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
 #amc-topo .vnote{display:none!important}
-#amc-topo .pg .rows{position:absolute;top:100%;left:50%;transform:translateX(-50%);width:min(1100px,96vw);z-index:60;padding-top:10px}
-/* os botões principais só com o nome (sem o desenho e sem o número de páginas); o Eldorado em amarelo-ouro */
+#amc-topo .pg .rows{position:absolute!important;left:0;right:0;top:38px;height:0;display:block!important;padding:0!important;transform:none!important;width:auto!important}
+#amc-topo .pg .row{position:absolute!important;top:22px;display:flex!important;flex-direction:column!important;align-items:center!important;gap:8px!important;flex-wrap:nowrap!important;
+  opacity:1!important;transform:none!important;pointer-events:auto!important;transition:opacity .25s}
+#amc-topo .pg .row:nth-child(1){right:calc(100% + 22px)}
+#amc-topo .pg .row:nth-child(2){left:calc(100% + 22px)}
+#amc-topo .pg .row .amc-sub{display:flex!important;flex-direction:column!important;align-items:center!important;gap:7px!important;margin:0!important;padding:0!important}
+#amc-topo .pg.exp-0 #amc-sub-0,#amc-topo .pg.exp-1 #amc-sub-1{max-height:420px!important;max-width:none!important}
+/* ao rolar a página: só a logomarca, menor; ao passar o mouse, o tamanho cheio e os botões */
+body.amc-compacto #amc-topo .pg{transform:scale(.58)}
+body.amc-compacto #amc-topo .pg .row{opacity:0!important;pointer-events:none!important}
+body.amc-compacto #amc-topo .pg:hover,body.amc-compacto #amc-topo .pg:focus-within{transform:none}
+body.amc-compacto #amc-topo .pg:hover .row,body.amc-compacto #amc-topo .pg:focus-within .row{opacity:1!important;pointer-events:auto!important}
+/* os botões principais só com o nome; o Eldorado em amarelo-ouro */
 #amc-topo .amc-main .ic,#amc-topo .amc-main small{display:none!important}
-#amc-topo .amc-main{min-width:0!important;padding:14px 26px!important;justify-content:center}
+#amc-topo .amc-main{min-width:0!important;padding:14px 26px!important;justify-content:center;white-space:nowrap}
 #amc-topo .amc-main[data-i="0"]{background:linear-gradient(180deg,#F6EA07 0%,#E3AB00 100%)!important;color:#211915!important}
 #amc-topo .amc-main[data-i="0"] b{color:#211915!important}
 #amc-topo .amc-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
@@ -124,3 +138,8 @@ body #v-editais #ed-abas .pv-ic svg{width:34px;height:34px}
 body #v-editais #ed-abas .pv-tx{display:grid;gap:1px;text-align:left}
 body #v-editais #ed-abas .pv-tx b{font:600 15px Outfit,system-ui,sans-serif;letter-spacing:.02em}
 body #v-editais #ed-abas .pv-tx small{font-size:12px;opacity:.75}
+
+/* A LINHA DIVISÓRIA entre a parte de cima e o resto da página (titular, 01/11/2026: "a opacidade deve ser 0% e totalmente
+   transparente"): era a borda dos quadros de largura total logo abaixo do topo */
+#v-editais #ed-abertos-caixa,#v-editais #emp-caixa,#v-editais #leg-caixa,#v-editais #ed-grade{border-color:transparent!important}
+.faixa-total,#cl2{border-top-color:transparent!important}
