@@ -499,7 +499,7 @@ def test_as_oportunidades_abertas_no_design_novo():
     assert "body:has(#v-editais:not(.oculto))" in p and "#4C75B4,#85C1EA,#F6EA07,#E3AB00,#D17600" in p
     assert 'li.className="arq-mf"' in p and '"Encerradas em "+br(k)' in p and 'data-acao="recuperar"' in p
     assert "#emp-ranking-caixa .ep-sub,#emp-ranking-caixa .ep-resumo,#emp-ranking-caixa .ep-crit{display:none}" in p
-    assert 'class="leg-tubos vidro-fosco"' in p and '/municipal|vereador/i.test(c)?["#4C75B4"' in p and '/assembleia|alego|estadual/i.test(c)?["#E3AB00"' in p
+    assert 'class="leg-tubos"' in p and '/municipal|vereador/i.test(c)?["#4C75B4"' in p and '/assembleia|alego|estadual/i.test(c)?["#E3AB00"' in p
 
 
 def test_em_andamento_no_azul_e_o_ranking_na_vitrine():
@@ -532,5 +532,19 @@ def test_menos_estrelas_e_o_vidro_fosco():
     estética."""
     p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
     assert 'ceuEm("oa-estrelas","v-editais",0.7)' in p and 'ceuEm("sj-estrelas","sj");' in p and "Math.min(1800,w*h/800)*fator" in p
-    assert '"ed-linhas vidro-fosco"' in p and 'class="leg-tubos vidro-fosco"' in p and "backdrop-filter:blur(22px)" in p and 'content:"Oportunidades encerradas"' in p
+    # 01/11/2026 (titular): sem vidro leitoso; o Legislativo como era e os Arquivados no vidro dos tubos do Legislativo
+    assert "vidro-fosco" not in p and '"ed-linhas arq-painel"' in p and 'class="leg-tubos"' in p and ".arq-painel::before" in p
     assert "#ed-grade .arq-mf .ico{display:flex!important;overflow:visible;gap:5px;background:none!important" in p
+
+
+def test_o_livro_em_3d_em_todas_as_portas():
+    """01/11/2026 (titular): todos os livros e oportunidades abrem no livro em 3D (o componente anexo), com os dados reais;
+    sem a biblioteca 3D, abre a ficha de hoje. O componente só é carregado quando um livro é aberto."""
+    pag = Path("eldorado/base/painel/pagina")
+    p = (pag / "dashboard.html").read_text(encoding="utf-8")
+    js = (pag / "livro3d.js").read_text(encoding="utf-8")
+    assert "G.LivroPopup = LP" in js and "G.LIVRO_DESIGNS = D7" in js and "window.LOGO_DATA" in js
+    assert (pag / "livro3d.css").exists() and "window.abrirLivro3D=async function(o,tipo)" in p
+    assert 'if(!x.__classico&&window.abrirLivro3D&&await window.abrirLivro3D(x,"oportunidade")) return;' in p  # a ficha da oportunidade
+    assert 'if(!e.__classico&&window.abrirLivro3D){ window.abrirLivro3D(e,"edital")' in p  # o detalhe do edital
+    assert p.count("window.abrirLivro3D(") >= 4 and 'b.textContent="Ficha completa"' in p  # o Cartório e a ficha completa

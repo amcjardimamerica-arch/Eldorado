@@ -515,27 +515,17 @@ body:has(#emp-caixa:not(.oculto)) #ed-legenda{display:none}
 #v-editais .oa-sec-t{justify-content:center;flex-direction:column;gap:2px;background:none;border:0;font:500 20px Outfit,system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#f2f6ff;text-shadow:0 0 12px rgba(133,193,234,.6)}
 #v-editais .oa-sec-t i{display:none}#v-editais .oa-sec-t span{font:400 12.5px Outfit,system-ui,sans-serif;letter-spacing:0;text-transform:none;color:#85C1EA;text-shadow:none}
 #v-editais .oa-sec-t::after{content:"";display:block;height:2px;width:240px;margin-top:4px;background:linear-gradient(90deg,transparent,#4C75B4,#85C1EA,#4C75B4,transparent)}
-/* 01/11/2026 (titular): o vidro fosco — um único painel translúcido e desfocado (o céu aparece suave por trás), nos
-   Arquivados (as listas por dia) e no Legislativo (as três colunas) */
-.vidro-fosco{display:block;border-radius:22px;padding:18px 20px;background:linear-gradient(160deg,rgba(255,255,255,.22),rgba(255,255,255,.10) 45%,rgba(255,255,255,.16));
- -webkit-backdrop-filter:blur(22px) saturate(1.3);backdrop-filter:blur(22px) saturate(1.3);border:1px solid rgba(255,255,255,.32);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 20px 50px rgba(0,0,0,.45)}
-/* 01/11/2026 (titular): os Arquivados num único painel de VIDRO FOSCO LEITOSO — as linhas também em vidro (sem as faixas
-   escuras do microfilme, que deixavam o painel quase igual ao anterior); os separadores de data em cápsulas de vidro */
-#ed-grade.vidro-fosco::before{content:"Oportunidades encerradas";display:block;text-align:center;margin:0 0 10px;font:500 18px Outfit,system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#fff}
-.vidro-fosco .arq-mf{background:rgba(255,255,255,.08);border-left:4px solid rgba(255,255,255,.35)!important;border-image:none!important;border-radius:9px;margin-bottom:4px;color:#f4f7ff;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
-.vidro-fosco .arq-mf:hover{background:rgba(255,255,255,.16)}
-.vidro-fosco .arq-cab{background:rgba(255,255,255,.14);color:#fff;border-radius:9px;padding-left:14px}
-.vidro-fosco .arq-sep{margin:14px 0 6px}.vidro-fosco .arq-sep i{display:none}
-.vidro-fosco .arq-sep b,.vidro-fosco .arq-sep span{padding:4px 14px;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);color:#fff}
-.vidro-fosco .arq-sep span{background:rgba(133,193,234,.22);color:#e8f4ff}
-/* os botões de ação (detalhe e recuperar): legíveis sobre o vidro — o contêiner .ico tinha fundo branco genérico */
+/* 01/11/2026 (titular): os Arquivados num único painel no MESMO vidro dos tubos do Legislativo (escuro e opaco, tampas
+   douradas, reflexos nas bordas; sem desfoque e sem véu branco), com as listas por dia dentro */
+.arq-painel{position:relative;display:block;margin:30px 0 22px;border-radius:26px;padding:14px 16px;
+ background:linear-gradient(90deg,rgba(255,255,255,.2),rgba(255,255,255,.03) 25%,rgba(255,255,255,0) 60%,rgba(255,255,255,.1)),color-mix(in srgb,#85C1EA 14%,rgba(14,24,48,.62));
+ box-shadow:inset 0 0 0 1px color-mix(in srgb,#85C1EA 55%,transparent),0 10px 22px rgba(0,0,0,.5)}
+.arq-painel::before,.arq-painel::after{content:"";position:absolute;left:22px;right:22px;background:linear-gradient(180deg,#fbe3a2,#d9a84c 30%,#8f6020 60%,#d8b062);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 2px 6px rgba(0,0,0,.5)}
+.arq-painel::before{top:-24px;height:24px;border-radius:12px 12px 4px 4px}.arq-painel::after{bottom:-14px;height:14px;border-radius:4px 4px 12px 12px}
 #ed-grade .arq-mf .ico{display:flex!important;overflow:visible;gap:5px;background:none!important;border:0!important;box-shadow:none!important;padding:0!important;width:auto!important}
 #ed-grade .arq-mf .ico button{flex:0 0 30px!important;display:inline-flex!important;align-items:center;justify-content:center;width:30px!important;height:30px!important;min-height:30px!important;padding:0!important;border:0!important;border-radius:7px!important;background:rgba(255,255,255,.16)!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)!important}
 #ed-grade .arq-mf .ico button+button{background:rgba(255,190,90,.3)!important}
 #ed-grade .arq-mf .ico button svg{stroke:#fff;fill:none!important}#ed-grade .arq-mf .ico button svg *{fill:none!important}
-.leg-tubos.vidro-fosco{display:grid}
-.vidro-fosco .leg-vidro{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);background:linear-gradient(90deg,rgba(255,255,255,.16),rgba(255,255,255,.04) 30%,rgba(255,255,255,.02) 60%,rgba(255,255,255,.1)),color-mix(in srgb,var(--tc) 12%,rgba(14,24,48,.38))}
-.vidro-fosco .leg-ato{background:rgba(8,14,30,.48)}
 /* os Arquivados — o microfilme: uma por linha, por lote de encerramento */
 .arq-sep{display:flex;align-items:center;justify-content:center;gap:14px;margin:12px 0 4px}.arq-sep b{font:500 14px/1.2 Outfit,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#f3ead6}.arq-sep span{font:400 12.5px Outfit,system-ui,sans-serif;color:#85C1EA}.arq-sep i{flex:1;max-width:300px;height:1px;background:linear-gradient(90deg,transparent,#85C1EA 30%,#E3AB00 70%,transparent)}.arq-sep i:last-child{transform:scaleX(-1)}
 .arq-mf{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,210px) 40px minmax(0,130px) 84px minmax(0,96px) 74px;gap:10px;align-items:center;padding:5px 10px;margin-bottom:2px;font-size:12.5px;background:#141720;color:#efe2c4;border-left:12px solid transparent;border-image:repeating-linear-gradient(180deg,#070d1d 0 6px,#2a2e36 6px 12px) 12;cursor:pointer}
@@ -2228,6 +2218,7 @@ colunas, com o navegador das áreas, os filtros de antes, os 12 quadradinhos de 
     $("a4-grupos").querySelectorAll(".lv.aberto").forEach(x=>x.classList.remove("aberto"));el.classList.add("aberto");aberto=id;
     const d=el.querySelector(".det");d.innerHTML='<p style="color:#5E6672;font-size:13px">Abrindo a ficha…</p>';
     let f=null;try{const r=await fetch("dados/cartorio/"+encodeURIComponent(id)+".json?v="+Date.now());if(r.ok)f=await r.json()}catch(e){}
+    if(f&&window.abrirLivro3D) window.abrirLivro3D({...(c||{}),...f},"livro");   // 01/11/2026: o livro em 3D (o detalhe continua na lista)
     const its=(f&&f.itens)||{},BR=x=>String(x||"").slice(8,10)+"/"+String(x||"").slice(5,7)+" "+String(x||"").slice(11,16);
     const lk=u=>u?`<a href="${E(u)}" target="_blank" rel="noopener">${E(String(u).replace(/^https?:\/\//,"").slice(0,60))}</a>`:"—";
     d.innerHTML=`<div class="doze">${DOZE.map(k=>{const v=its[k],s=sit(c,k);
@@ -3432,6 +3423,7 @@ window.investigarEdital=function(e){
 
 /* ================= DETALHE DE EDITAL ================= */
 function detalheEdital(e){
+  if(!e.__classico&&window.abrirLivro3D){ window.abrirLivro3D(e,"edital").then(ok=>{ if(!ok) detalheEdital({...e,__classico:true}); }); return; }   // 01/11/2026: o livro em 3D
   if(e.sem_edital&&!(e.parlamentares&&e.parlamentares.length)&&e.parlamentares_total){
     garanteParlamentares(e).then(ok=>{if(ok)detalheEdital(e);});}
   const d=e.detalhes||{},s=dias(e.fim);
@@ -4320,7 +4312,7 @@ async function desenhaLegislativo(){
     :/assembleia|alego|estadual/i.test(c)?["#E3AB00","#F6EA07","linear-gradient(180deg,#fff7b0,#F6EA07 30%,#E3AB00 60%,#f8e78a)"]
     :["#D17600","#f2a65a","linear-gradient(180deg,#ffd3a6,#f2a65a 30%,#D17600 60%,#f5b47a)"];
   const casas=[...new Set(vis.map(x=>x.casa_nome))].sort((a,b)=>{const o=c=>/municipal/i.test(c)?0:/assembleia|alego/i.test(c)?1:2;return o(a)-o(b);});
-  cx.innerHTML=`<div class="leg-tubos vidro-fosco">${casas.map(c=>{const [cb,cc,tg]=esfera(c), da=vis.filter(x=>x.casa_nome===c);
+  cx.innerHTML=`<div class="leg-tubos">${casas.map(c=>{const [cb,cc,tg]=esfera(c), da=vis.filter(x=>x.casa_nome===c);
     const tp=Object.entries(da.reduce((m,x)=>(m[x.tipo]=(m[x.tipo]||0)+1,m),{})).map(([t,k])=>`${esc(t.split(" (")[0])}: ${k}`).join(" · ");
     return `<section class="leg-tubo" style="--tc:${cc};--tg:${tg}" aria-label="${esc(c)}"><div class="leg-tampa"></div><div class="leg-vidro">
       <h3>${esc(c)}</h3><div class="leg-n">${da.length} ato(s) · ${tp}</div>
@@ -4335,7 +4327,7 @@ window.legLimpar=function(){ ["leg-casa","leg-tipo"].forEach(i=>{const e=$(i);if
 function desenhaEditais(){
   const aba=window._abaEd||"em_andamento";
   { const _ve=$("v-editais"); if(_ve) _ve.dataset.aba=aba; }   // 01/11/2026: o estilo de cada aba (no ranking, sem as linhas de dados do topo)
-  const g=$("ed-grade");g.innerHTML="";g.className=aba==="encerrado"?"ed-linhas vidro-fosco":"grade-ed";   // 01/11/2026: um único painel de vidro fosco
+  const g=$("ed-grade");g.innerHTML="";g.className=aba==="encerrado"?"ed-linhas arq-painel":"grade-ed";   // 01/11/2026: um único painel, no vidro dos tubos do Legislativo
   $("ed-filtros").classList.toggle("oculto",aba!=="encerrado");
   const cx=$("ed-abertos-caixa"); if(cx)cx.classList.toggle("oculto",aba!=="em_andamento");
   const ce=$("emp-caixa"); if(ce){ce.classList.toggle("oculto",aba!=="em_andamento"); if(aba==="em_andamento")desenhaEmpresas();}
@@ -6344,6 +6336,7 @@ const _fv=v=>v==null||v===""?"—":typeof v==="object"?esc(JSON.stringify(v).sli
 function _fsec(t,html){ return html?`<section style="margin:14px 0 0"><h4 style="margin:0 0 6px;font-size:14px;color:#0E2A55;border-bottom:1px solid #E3E8F0;padding-bottom:4px">${t}</h4>${html}</section>`:""; }
 function _flin(r,v){ return v==null||v===""||(Array.isArray(v)&&!v.length)?"":`<div class=lin><b>${r}</b><span>${v}</span></div>`; }
 window.fichaOportunidade=async function(x){
+  if(!x.__classico&&window.abrirLivro3D&&await window.abrirLivro3D(x,"oportunidade")) return;   // 01/11/2026: o livro em 3D
   const e=_edDoFluxo(x);
   abreModal(`<div class=meta>${esc(x.orgao||"")} · ${esc(x._uf||"nacional")}</div><h3 style="margin:4px 0 0">${esc(x.titulo)}</h3>`,`<p class=meta>carregando a ficha da oportunidade…</p>`);
   const FD=await _carregaFichas(); const id=FD.fichas[x.id]?x.id:((FD.alias||{})[x.id]||x.id); const f=FD.fichas[id]||{};
@@ -7568,6 +7561,7 @@ function mostradores(){ const M=DADOS.mostradores; if(!M) return; const ce={}; (
   document.getElementById("car-m-escada").innerHTML=escadaM(cd)+`<p class="meta" style="margin:6px 0 0">sem registro do degrau: ${(cd["sem registro"]||0).toLocaleString("pt-BR")} livros (achados anteriores a 24/10/2026)</p>`; }
 async function ficha(id,alvo){ if(alvo.dataset.ok) return; alvo.dataset.ok=1; alvo.innerHTML='<p class="meta">abrindo a ficha do livro…</p>';
   try{ const f=await (await fetch("dados/cartorio/"+encodeURIComponent(id.replace(/[^A-Za-z0-9_.-]/g,"_"))+".json?"+Date.now())).json();
+    if(f&&window.abrirLivro3D) window.abrirLivro3D(f,"livro");   // 01/11/2026: o livro em 3D (o detalhe continua na lista)
     const passou=new Set((f.relatorio||[]).flatMap(p=>[p.de,p.para]));
     const BR=d=>d?new Date(d).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}):"";
     const P=f.parecer||{};
@@ -7648,5 +7642,80 @@ function lista(){
 }
 
 };
+</script>
+<script>
+/* 01/11/2026 (titular): "em cada livro coloque para abrir com os elementos 3D anexos. Todos os livros e oportunidades
+   devem abrir desta forma, em qualquer parte do sistema". O componente (livro3d.js, three.js) só é carregado quando um
+   livro é aberto; a capa e as quatro páginas são montadas com os dados reais; sem a biblioteca 3D, abre a ficha de hoje. */
+(function(){
+  const MES=["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+  const iso=d=>{const m=String(d||"").match(/(\d{4})-(\d{2})-(\d{2})/);return m?m:null;};
+  const dmy=d=>{const m=iso(d);return m?`${m[3]}/${m[2]}/${m[1]}`:"";};
+  const longa=d=>{const m=iso(d);return m?`${+m[3]} de ${MES[+m[2]-1]} de ${m[1]}`:"";};
+  const corta=(t,n)=>{t=String(t||"").replace(/\s+/g," ").trim();return t.length>n?t.slice(0,n).replace(/\s+\S*$/,"")+"…":t;};
+  const ITENS=["Objeto","Prazo de inscrição","Resultado","Prazo de recurso","Valor","Órgão / financiador","Território","Esfera","Requisitos","Anexos","Modalidade","Área de atuação"];
+  function checklist(o){
+    const K={};
+    if(o.checklist&&typeof o.checklist==="object"&&!Array.isArray(o.checklist)) Object.entries(o.checklist).forEach(([k,v])=>{K[k]={s:(v||{}).s,v:(v||{}).v};});
+    (Array.isArray(o.itens)?o.itens:[]).forEach(it=>{const k=it.item||it.nome; if(k&&!K[k]) K[k]={s:it.situacao||"comprovado",v:it.valor};});
+    (Array.isArray(o.faltam)?o.faltam:[]).forEach(k=>{const n=typeof k==="string"?k:(k.item||k.nome); if(n&&!K[n]) K[n]={s:"pend"};});
+    return K;
+  }
+  const estado=s=>/^(ok|val|dt|comprovado|confirmado|validado|conhecido)$/.test(String(s||""))?"✓ conhecido":/^dispens|^disp$/.test(String(s||""))?"⊘ dispensado":"✕ a buscar";
+  function conteudo(o){
+    const K=checklist(o), v=k=>((K[k]||{}).v||"")+"";
+    const titulo=String(o.titulo||"Oportunidade").replace(/\s+/g," ").trim();
+    const org=o.orgao||o.fonte_nome||v("Órgão / financiador")||"";
+    const ini=o.inicio||o.inscricao_inicio||"", fim=o.fim||o.inscricao_fim||(iso(o.prazo)?o.prazo:"");
+    const num=(titulo.match(/n[º°o.]?\s*([\d.]+\/\d{4})/i)||titulo.match(/\b(\d{1,4}\/20\d{2})\b/)||[])[1];
+    const numero=num?`Edital nº ${num}`:(o.id?`Livro ${o.id}`:"Oportunidade");
+    const objeto=o.objeto||v("Objeto")||o.resumo||"";
+    const url=o.link_oficial||o.url||((o.inspecao||{}).pagina_oficial)||o.link_divulgacao||"";
+    const lugar=[o.municipio,o._uf||o.uf].filter(Boolean).join(" / ")||v("Território")||"nacional";
+    const frases=String(objeto).split(/(?<=[.;])\s+/).filter(Boolean).slice(0,3);
+    const ed=numero;
+    const cron=[["Publicação",o.publicado_em],["Abertura das inscrições",ini],["Encerramento das inscrições",fim]].filter(r=>r[1]).map(r=>[r[0],dmy(r[1])]);
+    if(v("Resultado")) cron.push(["Resultado",corta(v("Resultado"),40)]);
+    if(v("Prazo de recurso")) cron.push(["Prazo de recurso",corta(v("Prazo de recurso"),40)]);
+    const p=[
+      {secoes:[{n:"1",h:"Do objeto",b:(frases.length?frases:["O objeto ainda está sendo confirmado pelo Interceptador."]).map((t,i)=>({n:"1."+(i+1),p:corta(t,320)}))},
+        {n:"2",h:"Do órgão e do território",b:[{li:[`Órgão: ${corta(org||"a confirmar",90)};`,`Território: ${corta(lugar,70)};`,`Esfera: ${corta(v("Esfera")||o.esfera||"a confirmar",40)};`,`Área: ${corta(o.area||v("Área de atuação")||"a confirmar",60)};`,`Modalidade: ${corta(v("Modalidade")||"a confirmar",60)}.`],tipo:"a"}]}]},
+      {secoes:[{n:"3",h:"Do cronograma",b:[cron.length?{tab:{cols:["Etapa","Data"],w:[0.62,0.38],rows:cron}}:{n:"3.1",p:"As datas ainda estão sendo confirmadas."},{nota:"As datas vêm da fonte oficial; confirme sempre no edital antes de se inscrever."}]},
+        {n:"4",h:"Das inscrições",b:[{n:"4.1",p:corta(v("Prazo de inscrição")?("Prazo: "+v("Prazo de inscrição")):(fim?("Inscrições até "+longa(fim)+"."):"O prazo ainda está sendo confirmado."),300)},{n:"4.2",p:url?corta("Site oficial: "+url,240):"O site oficial ainda está em busca."}]}]},
+      {secoes:[{n:"5",h:"Dos requisitos",b:[{n:"5.1",p:corta(v("Requisitos")||"Os requisitos ainda estão sendo confirmados.",420)}]},
+        {n:"6",h:"Dos recursos e dos anexos",b:[{n:"6.1",p:corta("Valor: "+(v("Valor")||"a confirmar"),260)},{n:"6.2",p:corta("Anexos: "+(v("Anexos")||"a confirmar"),260)}]}]},
+      {secoes:[{n:"7",h:"Do checklist",b:[{tab:{cols:["Item","Situação"],w:[0.6,0.4],rows:ITENS.map(k=>[k,estado((K[k]||{}).s)])}}]},
+        {n:"8",h:"Do livro",b:[{n:"8.1",p:corta(`Livro ${o.id||((o.livro_vinculado||{}).id)||o.livro_vinculado||"—"} · estrela ${o.selo||o.estrela||"sem"} · selo do livro ${o.selo_livro||"sem"}${o.etapa?" · etapa "+o.etapa:""}.`,240)},{ass:{local:"Eldorado, "+longa(new Date().toISOString())+".",nome:"A.M.C. Jardim América"}}]}]}];
+    p.forEach(x=>{x.ed=ed;});
+    return {titulo:ed+" — "+titulo,capa:{numero:ed,titulo:corta(titulo,120),periodo:ini&&fim?`Inscrições de ${dmy(ini)} a ${dmy(fim)}`:(fim?`Inscrições até ${dmy(fim)}`:"Prazo a confirmar"),
+      prazo:fim?"Prazo final: "+longa(fim):"",resumo:corta(objeto||org,220),selo:corta(org||"A.M.C. Jardim América",60),data:fim?new Date(fim+"T12:00:00").toISOString():new Date().toISOString()},paginas:p};
+  }
+  let carga=null, ultimo=null;
+  const script=u=>new Promise((ok,erro)=>{const s=document.createElement("script");s.src=u;s.onload=ok;s.onerror=()=>erro(new Error(u));document.head.appendChild(s);});
+  function carregar(){
+    if(carga) return carga;
+    carga=(async()=>{
+      [["livro3d.css"],["https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,500;0,6..12,700;0,6..12,800;1,6..12,400&display=swap"]].forEach(([h])=>{const l=document.createElement("link");l.rel="stylesheet";l.href=h;document.head.appendChild(l);});
+      if(!window.THREE) await script("https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js");
+      if(!window.THREE.RoomEnvironment) await script("https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/environments/RoomEnvironment.js");
+      if(!window.LivroPopup) await script("livro3d.js");
+      window.LivroPopup.start(window.LIVRO_DESIGNS.marinho);
+      const bar=document.querySelector(".lp-overlay .lp-bar");
+      if(bar){ const b=document.createElement("button"); b.type="button"; b.className="lp-btn lp-ficha"; b.textContent="Ficha completa";
+        b.onclick=()=>{ const u=ultimo; window.LivroPopup.fechar(); setTimeout(()=>{ if(!u) return; if(u.tipo==="oportunidade"&&window.fichaOportunidade) window.fichaOportunidade({...u.o,__classico:true});
+          else if(u.tipo==="edital"&&typeof detalheEdital==="function") detalheEdital({...u.o,__classico:true}); },520); };
+        bar.appendChild(b); }
+      return true;
+    })().catch(e=>{carga=null;console.warn("livro 3D indisponível:",e&&e.message);return false;});
+    return carga;
+  }
+  window.abrirLivro3D=async function(o,tipo){
+    try{ if(!(await carregar())||!window.LivroPopup) return false;
+      ultimo={o,tipo}; const f=document.querySelector(".lp-overlay .lp-ficha"); if(f) f.hidden=(tipo==="livro");
+      window.LivroPopup.abrir(conteudo(o||{})); return true;
+    }catch(e){ console.warn("livro 3D:",e&&e.message); return false; }
+  };
+  window._livro3dConteudo=conteudo;
+})();
 </script>
 </body></html>
