@@ -40,3 +40,18 @@ def test_a_sala_mostra_o_ultimo_expurgo_e_os_indicados():
     assert '"es_expurgo"' in fonte and "o sistema não apaga; o Claude avalia e expurga" in fonte
     assert Path("expurgos/2026-10-30T115556.json").exists()
     assert sum(len(json.loads(Path(f"verificacao/migrados/parte-{i}.json").read_text(encoding="utf-8"))["itens"]) for i in (1, 2, 3)) == 716
+
+
+def test_os_vereditos_do_chrome_sobre_os_migrados_foram_aplicados():
+    """01/11/2026: os 716 migrados avaliados pelo Chrome (417 excluídos com justificativa, 266 arquivados como histórico, 18
+    abertos ativos, 15 para a titular); o evento estreito das datas (livro.datas) e o registro do expurgo."""
+    from eldorado.base.nucleo.eventos import CATALOGO
+
+    assert "livro.datas" in CATALOGO
+    ev = Path("eventos/2026/11/01/claude-migrados-chrome-01-11.jsonl").read_text(encoding="utf-8").splitlines()
+    tipos = [json.loads(linha)["tipo"] for linha in ev]
+    assert tipos.count("livro.excluido_logicamente") == 417 and tipos.count("livro.passagem") <= 266
+    assert Path("expurgos/2026-11-01T141300.json").exists()
+    assert all(
+        it["veredito"] for i in (1, 2, 3) for it in json.loads(Path(f"verificacao/migrados/parte-{i}.json").read_text(encoding="utf-8"))["itens"]
+    )

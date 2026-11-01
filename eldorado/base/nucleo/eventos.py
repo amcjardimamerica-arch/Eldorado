@@ -193,7 +193,9 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
         Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "base_classe", "base_buscar", "base_tentativas", "base_ultima")),
     ),
     "livro.codigo": (Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "codigo")),),  # o código da oportunidade
-    "livro.prazo": (Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "situacao_prazo")),),  # o prazo pela passagem do tempo
+    "livro.prazo": (Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "situacao_prazo")),),
+    # 01/11/2026: as datas de inscrição validadas fora do Cartório (os migrados do Eldorado0 avaliados pelo Chrome)
+    "livro.datas": (Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "inscricao_inicio", "inscricao_fim", "situacao_prazo")),),  # o prazo pela passagem do tempo
     "selo.calculado": (Alvo(B, "livro", "atualizar", ("id",), _so("id", "estrela", "selo_livro", "informacoes_validadas", "atualizado_em")),),
     "relatorio.etapa": (Alvo(B, "relatorio_etapa", "inserir"),),
     "analise.rede": (Alvo(B, "analise_rede", "inserir"),),
