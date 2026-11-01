@@ -560,10 +560,10 @@ def test_o_botao_passaro_guia_e_o_topo_novo():
     js = (pag / "amc-menu.js").read_text(encoding="utf-8")
     css = (pag / "amc-menu.css").read_text(encoding="utf-8")
     assert '<script src="amc-menu.js"></script>' in p and '<link rel="stylesheet" href="amc-menu.css">' in p and 'id="amc-stage"' in p
-    assert "G.AMCMenu = AMC" in js and '"rotulo": "Eldorado", "resumo": ""' in js and "window.irInicio" in js
+    assert "G.AMCMenu = AMC" in js and '"rotulo": "Eldorado", "resumo": "", "cor": "#F6EA07"' in js and "window.irInicio" in js
     assert "#topo-modulos,#nav-eldorado,#nav-farol,.subnav,#v-editais .oa-topo,.bz-topo,#sj .nav{display:none!important}" in css
     assert (
-        'amc-main[data-i="0"]{background:linear-gradient(180deg,#F6EA07 0%,#E3AB00 100%)' in css
+        'amc-main[data-i="0"]{background:linear-gradient(180deg,color-mix(in srgb,#F6EA07 72%,#fff) 0%,#F6EA07 42%' in css
         and ".amc-main .ic,#amc-topo .amc-main small{display:none" in css
     )
     assert '<header class="oa-topo">' not in p and p.count('class="pv-aba') == 4 and 'data-pv-n="legislativo"' in p

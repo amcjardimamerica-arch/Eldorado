@@ -106,8 +106,23 @@ body:has(#v-calendario:not(.oculto)),body:has(#v-neural:not(.oculto)){background
   opacity:1!important;transform:none!important;pointer-events:auto!important;transition:opacity .25s}
 #amc-topo .pg .row:nth-child(1){right:calc(100% + 22px)}
 #amc-topo .pg .row:nth-child(2){left:calc(100% + 22px)}
-#amc-topo .pg .row .amc-sub{display:flex!important;flex-direction:column!important;align-items:center!important;gap:7px!important;margin:0!important;padding:0!important}
-#amc-topo .pg.exp-0 #amc-sub-0,#amc-topo .pg.exp-1 #amc-sub-1{max-height:420px!important;max-width:none!important}
+/* as opções na horizontal, uma ao lado da outra, centralizadas embaixo do botão delas (titular, 01/11/2026) */
+#amc-topo .pg .row .amc-sub{position:absolute!important;top:calc(100% + 12px);left:50%;transform:translateX(-50%);display:flex!important;flex-direction:row!important;
+  flex-wrap:nowrap!important;justify-content:center!important;align-items:center!important;gap:8px!important;width:max-content;margin:0!important;padding:4px!important;
+  max-width:none!important;max-height:0;overflow:hidden}
+#amc-topo .pg.exp-0 #amc-sub-0,#amc-topo .pg.exp-1 #amc-sub-1{max-height:140px!important;overflow:visible!important}
+#amc-topo .pg .amc-sub li{transform:translateY(-8px) scale(.94)}
+#amc-topo .pg.exp-0 #amc-sub-0 li,#amc-topo .pg.exp-1 #amc-sub-1 li{transform:none}
+/* as opções em vidro (o cristal identifica estes ícones): translúcidas, com o brilho e o desfoque do vidro, tingidas
+   com a cor de cada uma (as quentes no Eldorado, as frias no Farol) */
+#amc-topo .amc-sub .amc-opt.b3d{background:linear-gradient(160deg,rgba(255,255,255,.42) 0%,rgba(255,255,255,.10) 46%,rgba(255,255,255,.02) 60%,rgba(255,255,255,.16) 100%),
+  color-mix(in srgb,var(--c) 74%,transparent)!important;
+  color:var(--fg)!important;text-shadow:0 1px 0 color-mix(in srgb,var(--c) 40%,#fff 60%);font-weight:700!important;white-space:nowrap;
+  border:1px solid color-mix(in srgb,var(--c) 75%,#fff 25%)!important;border-radius:14px!important;
+  -webkit-backdrop-filter:blur(10px) saturate(1.5);backdrop-filter:blur(10px) saturate(1.5);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(0,0,0,.18),0 6px 18px -6px color-mix(in srgb,var(--c) 70%,transparent),0 2px 6px rgba(0,0,0,.25)!important}
+#amc-topo .amc-sub .amc-opt.b3d:hover{background:linear-gradient(160deg,rgba(255,255,255,.52) 0%,rgba(255,255,255,.14) 46%,rgba(255,255,255,.04) 60%,rgba(255,255,255,.2) 100%),
+  color-mix(in srgb,var(--c) 88%,transparent)!important;transform:translateY(-2px)}
 /* ao rolar a página: só a logomarca, menor; ao passar o mouse, o tamanho cheio e os botões */
 body.amc-compacto #amc-topo .pg{transform:scale(.58)}
 body.amc-compacto #amc-topo .pg .row{opacity:0!important;pointer-events:none!important}
@@ -116,7 +131,8 @@ body.amc-compacto #amc-topo .pg:hover .row,body.amc-compacto #amc-topo .pg:focus
 /* os botões principais só com o nome; o Eldorado em amarelo-ouro */
 #amc-topo .amc-main .ic,#amc-topo .amc-main small{display:none!important}
 #amc-topo .amc-main{min-width:0!important;padding:14px 26px!important;justify-content:center;white-space:nowrap}
-#amc-topo .amc-main[data-i="0"]{background:linear-gradient(180deg,#F6EA07 0%,#E3AB00 100%)!important;color:#211915!important}
+/* o Eldorado no amarelo mais claro da logomarca (#F6EA07), sem o pé alaranjado */
+#amc-topo .amc-main[data-i="0"]{background:linear-gradient(180deg,color-mix(in srgb,#F6EA07 72%,#fff) 0%,#F6EA07 42%,#F6EA07 100%)!important;color:#211915!important}
 #amc-topo .amc-main[data-i="0"] b{color:#211915!important}
 #amc-topo .amc-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 #pv-titulo{display:flex;flex-direction:column;align-items:center;gap:8px;margin:2px 0 14px}
