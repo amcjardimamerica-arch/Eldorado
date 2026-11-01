@@ -1,0 +1,29 @@
+/* O popup "Pergaminho" (as empresas) */
+
+.pg-overlay{position:fixed;inset:0;z-index:50}
+
+.pg-backdrop{position:absolute;inset:0;background:var(--scrim);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);opacity:0;transition:opacity .35s ease}
+
+.pg-in .pg-backdrop{opacity:1}
+
+.pg-out .pg-backdrop{opacity:0;transition:opacity .42s ease}
+
+.pg-dialog{position:absolute;inset:0;display:flex;flex-direction:column;pointer-events:none}
+
+.pg-stage{flex:1;min-height:0}
+
+.pg-stage canvas{width:100%;height:100%;display:block}
+
+.pg-bar{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;padding:12px 16px 20px;pointer-events:auto;opacity:0;transform:translateY(10px);transition:opacity .3s ease .55s,transform .3s ease .55s}
+
+.pg-in .pg-bar{opacity:1;transform:none}
+
+.pg-out .pg-bar{opacity:0;transform:none;transition:opacity .12s}
+
+.pg-bar button{font:inherit;font-weight:600;font-size:15px;padding:11px 18px;border-radius:var(--radius);cursor:pointer;border:1px solid var(--bar-line);background:var(--bar-bg);color:var(--bar-ink)}
+
+.pg-bar .pg-next{background:var(--accent);color:var(--on-accent);border-color:transparent}
+
+.pg-bar button:disabled{opacity:.45;cursor:default}
+
+.pg-live{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}

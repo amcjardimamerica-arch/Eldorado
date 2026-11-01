@@ -973,7 +973,7 @@ code{font-size:12.5px}
 <script>(function (G) {
   'use strict';
   const GR = 0.82, RH = 1.46, RM0 = 1.49, RM1 = 1.71, RD0 = 1.75, RD1 = 2.0, RO = 2.08;
-  const CYAN = '#3ee6ff', RED = '#ff3d1f';
+  const CYAN = '#85C1EA', RED = '#D17600';   /* 01/11/2026 (titular): o início no azul mais claro, o fim no laranja mais escuro */
   const isLeap = y => new Date(y, 1, 29).getDate() === 29;
   const doyOf = d => Math.round((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(d.getFullYear(), 0, 1)) / 864e5);
   const A = (i, N) => i / N * Math.PI * 2;
@@ -1036,19 +1036,23 @@ code{font-size:12.5px}
       const c = E.canvas(512, 300), x = c.getContext('2d'), t = new T.CanvasTexture(c);
       const sp = new T.Sprite(new T.SpriteMaterial({ map: t, transparent: true, depthWrite: false, depthTest: false })); sp.scale.set(0.95, 0.556, 1); sp.renderOrder = 10;
       return { sprite: sp, set(top, big, bottom, col) {
-        x.clearRect(0, 0, 512, 300); x.fillStyle = 'rgba(10,20,19,0.94)'; x.strokeStyle = S.plateBorder || '#c9954a'; x.lineWidth = 8;
-        x.beginPath(); x.roundRect ? x.roundRect(8, 8, 496, 284, 26) : x.rect(8, 8, 496, 284); x.fill(); x.stroke();
-        x.fillStyle = col; x.fillRect(8, 30, 16, 240);
-        x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillStyle = col; x.font = '700 44px ' + E.font; x.fillText(top, 266, 62);
-        x.fillStyle = '#ffffff'; x.font = '700 118px ' + E.font; x.fillText(big, 266, 158);
-        x.fillStyle = '#d8e4df'; x.font = '600 40px ' + E.font; x.fillText(bottom, 266, 246); t.needsUpdate = true;
+        /* 01/11/2026 (titular): a placa inteira na cor do marcador (o início no azul mais claro, o fim no laranja mais
+           escuro), com as letras e os números em branco */
+        x.clearRect(0, 0, 512, 300); x.fillStyle = col; x.strokeStyle = S.plateBorder || '#c9954a'; x.lineWidth = 8;
+        x.beginPath(); x.roundRect ? x.roundRect(8, 8, 496, 284, 26) : x.rect(8, 8, 496, 284); x.fill();
+        const gr = x.createLinearGradient(0, 8, 0, 292); gr.addColorStop(0, 'rgba(255,255,255,0.16)'); gr.addColorStop(0.55, 'rgba(255,255,255,0)'); gr.addColorStop(1, 'rgba(0,0,0,0.14)');
+        x.fillStyle = gr; x.fill(); x.stroke();
+        x.textAlign = 'center'; x.textBaseline = 'middle'; x.shadowColor = 'rgba(0,0,0,0.38)'; x.shadowBlur = 6; x.shadowOffsetY = 2;
+        x.fillStyle = '#ffffff'; x.font = '700 44px ' + E.font; x.fillText(top, 256, 62);
+        x.font = '700 118px ' + E.font; x.fillText(big, 256, 158);
+        x.font = '600 40px ' + E.font; x.fillText(bottom, 256, 246); x.shadowColor = 'transparent'; t.needsUpdate = true;
       } };
     }
     function arrowMesh(col) {
       const s = new T.Shape(); s.moveTo(0, 0); s.lineTo(0.15, 0.22); s.lineTo(0.055, 0.22); s.lineTo(0.055, 0.4); s.lineTo(-0.055, 0.4); s.lineTo(-0.055, 0.22); s.lineTo(-0.15, 0.22); s.closePath();
       const g = new T.ExtrudeGeometry(s, { depth: 0.04, bevelEnabled: true, bevelSize: 0.012, bevelThickness: 0.012 }); g.translate(0, 0, -0.02);
-      const grp = new T.Group(), m = new T.Mesh(g, new T.MeshStandardMaterial({ color: col, emissive: col, emissiveIntensity: 1.7, roughness: 0.3 })); m.position.y = RO + 0.06; grp.add(m);
-      const gl = E.glow(col, 0.8); gl.position.y = RO + 0.16; grp.add(gl); grp.userData = { m: m, gl: gl, ang: null, target: 0 }; return grp;
+      const grp = new T.Group(), m = new T.Mesh(g, new T.MeshBasicMaterial({ color: col })   /* 01/11/2026 (titular): a cor exata, sem a iluminação clarear (o fim no laranja mais escuro) */); m.position.y = RO + 0.06; grp.add(m);
+      const gl = E.glow(col, 0.8); gl.position.y = RO + 0.16; if (gl.material) gl.material.opacity = 0.3; grp.add(gl); grp.userData = { m: m, gl: gl, ang: null, target: 0 }; return grp;
     }
 
     // ---------- free core: fade any part that would hide the globe ----------
@@ -1128,8 +1132,8 @@ code{font-size:12.5px}
         arrows.ini.visible = plaques.ini.sprite.visible = hasIni; hands.ini.visible = hasIni && !S.noHands;
         if (hasEnd) {
           const ae = A(info.dd + 0.5, N); arrows.fim.userData.target = hands.fim.userData.target = -ae;
-          const closed = v.cd.closed; arrows.fim.userData.m.material.color.set(closed ? 0x8a8378 : RED); arrows.fim.userData.m.material.emissive.set(closed ? 0x000000 : RED); arrows.fim.userData.gl.visible = !closed;
-          plaques.fim.set(closed ? 'encerrado' : 'fim', v.p.data.getDate() + ' ' + MES3[v.p.data.getMonth()], 'às ' + String(v.p.data.getHours()).padStart(2, '0') + ':' + String(v.p.data.getMinutes()).padStart(2, '0') + ', ' + v.p.data.getFullYear(), closed ? '#a8a29a' : '#ff7a4f');
+          const closed = v.cd.closed; arrows.fim.userData.m.material.color.set(closed ? 0x8a8378 : RED); if (arrows.fim.userData.m.material.emissive) arrows.fim.userData.m.material.emissive.set(closed ? 0x000000 : RED); arrows.fim.userData.gl.visible = !closed;
+          plaques.fim.set(closed ? 'encerrado' : 'fim', v.p.data.getDate() + ' ' + MES3[v.p.data.getMonth()], 'às ' + String(v.p.data.getHours()).padStart(2, '0') + ':' + String(v.p.data.getMinutes()).padStart(2, '0') + ', ' + v.p.data.getFullYear(), closed ? '#a8a29a' : RED);
           plaques.fim.target = ae;
         }
         if (hasIni) {
@@ -2126,26 +2130,32 @@ code{font-size:12.5px}
     const T = c.T, M = c.M, lib = G.VIDA.lib; G.VIDA._T(T);
     /* 01/11/2026 (titular): com as três cores (quentes ou frias), o corpo e as escamas alternam as três juntas; as peças de
        metal ficam (o cobre a cada quatro segmentos, o ouro nas cristas alternadas, o crânio, a mandíbula, os rebites) */
-    let P3 = null, rebite = M.brass, mandibula = M.brassDark;
-    if (Array.isArray(bodyA)) { const cm = h => new T.MeshStandardMaterial({ color: h, roughness: 0.36, metalness: 0.12 }); P3 = bodyA.map(cm);
-      /* 01/11/2026 (titular): na serpente azul, o dourado em titânio, com o mesmo brilho e o mesmo acabamento */
-      const tit = !!(bodyB && bodyB.titanio);
-      crestB = new T.MeshStandardMaterial({ color: tit ? 0xb9bec4 : 0xd8b04a, metalness: 1, roughness: 0.3 });
-      if (tit) { rebite = new T.MeshStandardMaterial({ color: 0xa9aeb5, metalness: 1, roughness: 0.32 }); mandibula = new T.MeshStandardMaterial({ color: 0x6c7279, metalness: 1, roughness: 0.42 }); }
-      bodyA = P3[0]; bodyB = M.copper; crestA = P3[2]; }
+    let P3 = null, rebite = M.brass, mandibula = M.brassDark, cranio = M.copper, cobre = M.copper, cor = i => P3[i % 3];
+    if (Array.isArray(bodyA)) { const op = (bodyB && typeof bodyB === 'object' && !bodyB.isMaterial) ? bodyB : {};
+      /* fosco: o reflexo não lava a cor (os três azuis da logomarca reconhecíveis na tela) */
+      const cm = h => new T.MeshStandardMaterial({ color: h, roughness: op.fosco ? 0.92 : 0.36, metalness: op.fosco ? 0 : 0.12, envMapIntensity: op.fosco ? 0.35 : 1 }); P3 = bodyA.map(cm);
+      /* 01/11/2026 (titular): as cores na proporção pedida (ex.: 45% azul-escuro, 30% médio, 25% claro), num padrão de 20
+         posições bem intercalado; e, na serpente azul, TODO o metal dourado e de cobre em titânio, com o mesmo brilho */
+      if (op.pesos) { const W = op.pesos, tot = W.reduce((a, b) => a + b, 0), cont = W.map(() => 0), seq = [];
+        for (let n = 0; n < 20; n++) { let m = 0, best = -1e9; W.forEach((w, q) => { const d = w / tot * (n + 1) - cont[q]; if (d > best) { best = d; m = q; } }); cont[m]++; seq.push(m); }
+        cor = i => P3[seq[i % 20]]; }
+      crestB = new T.MeshStandardMaterial({ color: 0xd8b04a, metalness: 1, roughness: 0.3 });
+      if (op.titanio) { const tit = h => new T.MeshStandardMaterial({ color: h, metalness: 1, roughness: 0.3 });
+        crestB = tit(0xb9bec4); rebite = tit(0xa9aeb5); mandibula = tit(0x6c7279); cranio = tit(0x8d939a); cobre = tit(0x9aa0a7); }
+      bodyA = P3[0]; bodyB = cobre; crestA = P3[2]; }
     const head = new T.Group(); c.root.add(head);
-    const sk = new T.Mesh(new T.ConeGeometry(0.14 * k, 0.4 * k, 6), M.copper); sk.rotation.x = Math.PI / 2; sk.position.z = 0.13 * k; head.add(sk);
+    const sk = new T.Mesh(new T.ConeGeometry(0.14 * k, 0.4 * k, 6), cranio); sk.rotation.x = Math.PI / 2; sk.position.z = 0.13 * k; head.add(sk);
     const jaw = new T.Group(); jaw.position.set(0, -0.05 * k, 0.02); head.add(jaw);
     const jm = new T.Mesh(new T.ConeGeometry(0.1 * k, 0.32 * k, 6), mandibula); jm.rotation.x = Math.PI / 2; jm.position.z = 0.13 * k; jaw.add(jm);
     const eye = new T.MeshStandardMaterial({ color: 0x85C1EA, emissive: 0x85C1EA, emissiveIntensity: 2.2 });
     [-1, 1].forEach(s => { const e = new T.Mesh(new T.SphereGeometry(0.035 * k, 10, 6), eye); e.position.set(s * 0.08 * k, 0.06 * k, 0.08 * k); head.add(e); });
-    for (let i = 0; i < 7; i++) { const f = new T.Mesh(new T.BoxGeometry(0.05 * k, 0.28 * k, 0.012), P3 ? (i % 2 ? P3[(i >> 1) % 3] : crestB) : (i % 2 ? crestA : crestB)); const a = (i - 3) * 0.32; f.position.set(Math.sin(a) * 0.15 * k, (0.12 + Math.cos(a) * 0.1) * k, -0.06 * k); f.rotation.z = -a; head.add(f); }
+    for (let i = 0; i < 7; i++) { const f = new T.Mesh(new T.BoxGeometry(0.05 * k, 0.28 * k, 0.012), P3 ? (i % 2 ? cor(i * 3) : crestB) : (i % 2 ? crestA : crestB)); const a = (i - 3) * 0.32; f.position.set(Math.sin(a) * 0.15 * k, (0.12 + Math.cos(a) * 0.1) * k, -0.06 * k); f.rotation.z = -a; head.add(f); }
     c.fade(head, 0.35 * k);
     const segs = [];
     for (let i = 0; i < n; i++) {
       const q = 1 - i / (n + 6), s = new T.Group(); c.root.add(s);
-      const b = new T.Mesh(new T.CylinderGeometry(0.095 * k * q, 0.105 * k * q, 0.13 * k, 8), P3 ? (i % 4 === 0 ? M.copper : P3[i % 3]) : (i % 3 ? bodyA : bodyB)); b.rotation.x = Math.PI / 2; s.add(b);
-      if (i % 2 === 0) { const f = new T.Mesh(new T.OctahedronGeometry(0.05 * k * q), P3 ? (i % 4 ? P3[(i >> 1) % 3] : crestB) : (i % 4 ? crestA : crestB)); f.position.y = 0.1 * k * q; f.scale.set(1, 0.6, 1.7); s.add(f); }
+      const b = new T.Mesh(new T.CylinderGeometry(0.095 * k * q, 0.105 * k * q, 0.13 * k, 8), P3 ? (i % 4 === 0 ? cobre : cor(i)) : (i % 3 ? bodyA : bodyB)); b.rotation.x = Math.PI / 2; s.add(b);
+      if (i % 2 === 0) { const f = new T.Mesh(new T.OctahedronGeometry(0.05 * k * q), P3 ? (i % 4 ? cor(i + 7) : crestB) : (i % 4 ? crestA : crestB)); f.position.y = 0.1 * k * q; f.scale.set(1, 0.6, 1.7); s.add(f); }
       if (i % 5 === 2) { const rv = new T.Mesh(new T.SphereGeometry(0.02 * k, 8, 6), rebite); rv.position.x = 0.1 * k * q; s.add(rv); const rv2 = rv.clone(); rv2.position.x *= -1; s.add(rv2); }
       c.fade(s, 0.13 * k); segs.push(s);
     }
@@ -2160,8 +2170,10 @@ code{font-size:12.5px}
   }
   function twoSerpents(c) {
     const T = c.T, M = c.M, gold = new T.MeshStandardMaterial({ color: 0xd8b04a, metalness: 1, roughness: 0.3 });
-    serpent(c, 46, 1.0, [0xE3AB00, 0xD17600, 0xF6EA07]);   // a serpente quente (as cores quentes da associação)
-    serpent(c, 36, 0.78, [0x4C75B4, 0x85C1EA, 0x002397], { titanio: true });  // a serpente fria: a mais escura 20% mais clara (#001D7E → #002397) e trocada com a mais clara; o dourado em titânio
+    // 01/11/2026 (titular): a maior azul, a menor amarela. A azul nos três azuis da logomarca (45% #001D7E, 30% #4C75B4,
+    // 25% #85C1EA) e todo o metal em titânio; a amarela nas cores quentes, com o metal dourado e de cobre
+    serpent(c, 46, 1.0, [0x001D7E, 0x4C75B4, 0x85C1EA], { pesos: [45, 30, 25], titanio: true, fosco: true });
+    serpent(c, 36, 0.78, [0xE3AB00, 0xD17600, 0xF6EA07]);
   }
 
   // ---------- three orbit-arc designs ----------
@@ -2247,6 +2259,6 @@ code{font-size:12.5px}
   };
 })(window);
 </script>
-<script>(function(){ var S = window.ESTILOS["maia"]; var cfg = Object.assign({ planet: window.armilarPlanet, text: { ink: "#FFD9A8", sub: "#85C1EA", glow: "#D17600" }, extraMats: S.extraMats, extraLine: S.extraLine }, {"title": "Serpentes de Jade: Giroscópio", "subtitle": "A esfera do Armilar a Vapor dentro de um giroscópio: três anéis em cardan, presos por pinos de pivô, giram cada um em um eixo, com o Sol e a Lua percorrendo suas órbitas. Duas serpentes de jade vagam livres ao redor.", "howto": "Os meses ficam no anel interno e os dias de cada mês logo à frente dele. A seta ciano e a placa marcam o início do período; a seta vermelha e a placa marcam o fim. No centro, a esfera do Armilar a Vapor com seus anéis de órbita; as duas serpentes vagam livres e desviam para não cobrir as informações.", "fonts": ["400 40px \"Marcellus\""], "lamp": {"open": "#D17600", "elapsed": "#5A3300", "last5": "#D17600", "deadline": "#D17600", "closed": "#4A2600", "off": "#0A1238", "today": "#ffffff"}, "font": "\"Marcellus\", \"Trajan Pro\", Georgia, serif", "metal": {"brass": 10975802, "brassDark": 7228964, "copper": 10246706, "jade": 5010868, "turq": 8765930}, "light": 16770756, "rim": 5010868}); window.Relogio.start(cfg, window.makeMechLayout(window.SERP3["giroscopio"])); })();</script>
+<script>(function(){ var S = window.ESTILOS["maia"]; var cfg = Object.assign({ planet: window.armilarPlanet, text: { ink: "#FFD9A8", sub: "#85C1EA", glow: "#D17600" }, extraMats: S.extraMats, extraLine: S.extraLine }, {"title": "Serpentes de Jade: Giroscópio", "subtitle": "A esfera do Armilar a Vapor dentro de um giroscópio: três anéis em cardan, presos por pinos de pivô, giram cada um em um eixo, com o Sol e a Lua percorrendo suas órbitas. Duas serpentes de jade vagam livres ao redor.", "howto": "Os meses ficam no anel interno e os dias de cada mês logo à frente dele. A seta ciano e a placa marcam o início do período; a seta vermelha e a placa marcam o fim. No centro, a esfera do Armilar a Vapor com seus anéis de órbita; as duas serpentes vagam livres e desviam para não cobrir as informações.", "fonts": ["400 40px \"Marcellus\""], "lamp": {"open": "#F6EA07", "elapsed": "#5A3300", "last5": "#F6EA07", "deadline": "#D17600", "closed": "#4A2600", "off": "#0A1238", "today": "#ffffff"}, "font": "\"Marcellus\", \"Trajan Pro\", Georgia, serif", "metal": {"brass": 10975802, "brassDark": 7228964, "copper": 10246706, "jade": 5010868, "turq": 8765930}, "light": 16770756, "rim": 5010868}); window.Relogio.start(cfg, window.makeMechLayout(window.SERP3["giroscopio"])); })();</script>
 </body>
 </html>

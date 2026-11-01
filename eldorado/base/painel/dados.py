@@ -841,7 +841,7 @@ def _mapa_arquivos(sis: "Sistema", raiz: Path) -> dict[str, Any]:
 # código novo, mas a página carregava amc-menu.css e amc-menu.js SEM marcador de versão, e o navegador (e o GitHub Pages,
 # que guarda por 10 minutos) seguia servindo a cópia antiga. Agora cada arquivo leva a impressão digital do conteúdo:
 # mudou o arquivo, mudou o endereço, e o navegador busca a versão nova.
-VERSIONADOS = ("amc-menu.css", "amc-menu.js", "livro3d.css", "livro3d.js", "giroscopio/giroscopio.html")
+VERSIONADOS = ("amc-menu.css", "amc-menu.js", "livro3d.css", "livro3d.js", "pergaminho.css", "pergaminho.js", "giroscopio/giroscopio.html")
 
 
 def _versionar(saida: Path) -> dict[str, str]:

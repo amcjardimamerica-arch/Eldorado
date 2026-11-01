@@ -5648,8 +5648,10 @@ window.desenhaApoiadores=function(){
   const so=$("ep-so"); if(so)so.onchange=()=>empFiltro("so",so.value);
 };
 
-window.fichaEmpresa=async function(uid){
+window.fichaEmpresa=async function(uid,opc){
   const R=window.EMP||{}, e=(R.empresas||[]).find(x=>x.uid===uid); if(!e)return;
+  // 01/11/2026 (titular): a empresa no popup "Pergaminho"; sem 3D (ou no botão "Ficha completa"), a ficha de hoje
+  if(!(opc&&opc.classico)&&window.abrirPergaminhoEmpresa){ try{ if(await window.abrirPergaminhoEmpresa(e)) return; }catch(x){} }
   const _hist=e.salic?await historicoRouanet((e.cadastro||{}).cnpj):null;
   const c=e.cadastro||{}, pt=e.potencial||{}, ir=pt.irpj||{};
   const L=Object.values(LISTAS).find(v=>v.origem===e.origem)||LISTAS.doadoras;
@@ -7719,6 +7721,81 @@ function lista(){
     }catch(e){ console.warn("livro 3D:",e&&e.message); return false; }
   };
   window._livro3dConteudo=conteudo;
+})();
+</script>
+<script>
+/* ===== A EMPRESA NO PERGAMINHO (titular, 01/11/2026): o popup "Pergaminho" (pergaminho.js/css, carregados só ao abrir) ===== */
+(function(){
+  // as cópias da formatação da ficha (o bloco do ranking é isolado): o valor em mil, mi, bi; o catálogo de leis dos dados
+  const din=v=>{ v=Number(v||0); if(v>=1e9)return "R$ "+(v/1e9).toFixed(1).replace(".",",")+" bi"; if(v>=1e6)return "R$ "+(v/1e6).toFixed(1).replace(".",",")+" mi";
+    if(v>=1e3)return "R$ "+Math.round(v/1e3)+" mil"; return "R$ "+Math.round(v); };
+  const fx=(a,b)=>b?din(a)+" a "+din(b):"";
+  const leisDe=R=>((R&&R.catalogo_de_leis)||[]);
+  const corta=(t,n)=>{t=String(t==null?"":t).replace(/\s+/g," ").trim();return t.length>n?t.slice(0,n-1)+"…":t;};
+  async function dossie(c){
+    if(!window._DOSS){ try{ const r=await fetch("dados/dossies_empresas.json"); window._DOSS=r.ok?await r.json():{itens:[]}; }catch(x){ window._DOSS={itens:[]}; } }
+    const c8=String((c||{}).cnpj||"").replace(/\D/g,"").slice(0,8);
+    return ((window._DOSS||{}).itens||[]).find(d=>c8&&String(d.cnpj||"").slice(0,8)===c8)||null;
+  }
+  function conteudo(e,DZ){
+    const R=window.EMP||{}, c=e.cadastro||{}, pt=e.potencial||{}, ir=pt.irpj||{};
+    const faixa=pt.apurou?fx(ir.direcionavel_min,ir.direcionavel_max):"";
+    const meus={}; (e.programas||[]).forEach(p=>meus[p.chave]=p);
+    const leisTxt=leisDe(R).map(L=>{const m=meus[L.chave];
+      return corta(`${L.nome}: ${!m?"sem registro de destinação":m.verificado?"destinou (verificado em fonte oficial)":m.historico?"já destinou":"citado, a confirmar"}`,90);});
+    // as leis com o mesmo valor numa linha só (o pé da página não comporta uma linha por lei)
+    const grupos={}; Object.values(ir.por_lei||{}).forEach(l=>{const v=l.faixa||fx(l.min,l.max); if(!v)return; (grupos[v]=grupos[v]||[]).push(l.nome||l.lei||"");});
+    const curto=n=>String(n).replace("Fundo da Criança e do Adolescente","Fundo da Criança").replace(" (cultura)","");
+    const porLei=Object.entries(grupos).slice(0,2).map(([v,ns])=>corta(ns.length>1?`${ns.slice(0,-1).map(curto).join(", ")} e ${curto(ns[ns.length-1])}: ${v} cada`:`${curto(ns[0])}: ${v}`,120));
+    const cont=[e.site&&("Site: "+e.site), c.email&&("E-mail: "+c.email), c.telefone&&("Telefone: "+c.telefone)];
+    if(DZ&&DZ.contatos){ (DZ.contatos.telefones||[]).slice(0,2).forEach(x=>cont.push("Telefone: "+x)); if(DZ.contatos.email) cont.push("E-mail: "+DZ.contatos.email); }
+    if(DZ&&DZ.socios) cont.push(corta("Sócios e administradores: "+String(DZ.socios).replace(/<[^>]+>/g,""),110));
+    const contatos=[...new Set(cont.filter(Boolean).map(x=>corta(x,90)))].slice(0,6);
+    return {titulo:e.nome,
+      capa:{titulo:corta(e.nome,70), linha1:corta(`${e.n_na_lista||e.posicao}ª da lista${e.nivel?" · "+e.nivel:""}${c.uf?" · "+c.uf:""}`,70),
+        linha2:faixa?corta("Pode direcionar "+faixa+" por ano",70):corta(c.cnpj?"CNPJ "+c.cnpj:"CNPJ não divulgado",70), selo:"A.M.C. Jardim América", data:new Date().toISOString()},
+      paginas:[
+        {kicker:"Apresentação", titulo:corta(e.nome_fantasia||e.nome,60), texto:[
+          corta(`CNPJ ${c.cnpj||"não divulgado"} · ${[c.municipio,c.uf].filter(Boolean).join("/")||"local não informado"}`,110),
+          corta(`${c.cnae||"Atividade não informada"} · porte ${c.porte||"não informado"}`,140),
+          corta(`Nota ${e.pontos_lista??"—"} de 100 na lista${e.nivel?" · nível "+e.nivel:""}.`,100)]},
+        {kicker:"Potencial", titulo:"Quanto pode direcionar",
+          destaque:{grande:faixa?"até "+din(ir.direcionavel_max):"Sem estimativa", legenda:faixa?"por ano · a partir de "+din(ir.direcionavel_min):corta(pt.motivo||"dados do cadastro insuficientes",60)},
+          texto:porLei.length?porLei:[faixa?"Estimativa pelo imposto devido e pelos tetos de cada lei.":"O valor aparece quando o cadastro da empresa tiver os dados necessários."]},
+        {kicker:"Leis de incentivo", titulo:"Onde já destinou", itens:leisTxt.slice(0,7)},
+        {kicker:"Contato", titulo:"Como chegar à empresa", itens:contatos.length?contatos:["Nenhum contato público localizado ainda.","O dossiê do Interceptador completa os contatos."],
+          rodape:"Fonte: lista oficial, cadastro da Receita Federal e o dossiê do Interceptador."}]};
+  }
+  let carga=null, ultimo=null;
+  const script=u=>new Promise((ok,erro)=>{const s=document.createElement("script");s.src=u;s.onload=ok;s.onerror=()=>erro(new Error(u));document.head.appendChild(s);});
+  function carregar(){
+    if(carga) return carga;
+    carga=(async()=>{
+      ["pergaminho.css","https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap"].forEach(h=>{const l=document.createElement("link");l.rel="stylesheet";l.href=h;document.head.appendChild(l);});
+      if(!window.THREE) await script("https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js");
+      if(!window.THREE.RoomEnvironment) await script("https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/environments/RoomEnvironment.js");
+      if(!window.PergaminhoPopup) await script("pergaminho.js");
+      window.PergaminhoPopup.start(window.PERGAMINHO_DESIGNS.pergaminho);
+      const bar=document.querySelector(".pg-overlay .pg-bar");
+      if(bar){ const b=document.createElement("button"); b.type="button"; b.className="pg-btn pg-ficha"; b.textContent="Ficha completa";
+        b.onclick=()=>{ const u=ultimo; window.PergaminhoPopup.fechar(); setTimeout(()=>{ if(u&&window.fichaEmpresa) window.fichaEmpresa(u,{classico:true}); },520); };
+        bar.appendChild(b); }
+      return true;
+    })().catch(e=>{carga=null;console.warn("pergaminho indisponível:",e&&e.message);return false;});
+    return carga;
+  }
+  window.abrirPergaminhoEmpresa=async function(e){
+    try{ if(!(await carregar())||!window.PergaminhoPopup) return false;
+      ultimo=e.uid; const DZ=await dossie(e.cadastro);
+      window.PergaminhoPopup.abrir(conteudo(e,DZ));
+      // a proteção: se o rolo não começar a animar em 8 s (máquina sem aceleração 3D), fecha e abre a ficha de hoje
+      setTimeout(()=>{ const S=window.PergaminhoPopup._state||{}; if(S.phase==="appear"&&!(S.a>0)){
+        const ov=document.querySelector(".pg-overlay"); if(ov){ ov.hidden=true; ov.classList.remove("pg-in"); } S.phase="hidden";
+        if(window.fichaEmpresa) window.fichaEmpresa(e.uid,{classico:true}); } },8000);
+      return true;
+    }catch(x){ console.warn("pergaminho:",x&&x.message); return false; }
+  };
+  window._pergaminhoConteudo=conteudo;
 })();
 </script>
 <script src="amc-menu.js"></script>

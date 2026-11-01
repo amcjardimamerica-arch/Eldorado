@@ -620,6 +620,35 @@ def test_o_calendario_3d_na_opcao_1_marinho_classico():
 
     g = Path("eldorado/base/painel/pagina/giroscopio/giroscopio.html").read_text(encoding="utf-8")
     assert "monthBg: '#001250', monthAlt: '#001A6A', monthSel: '#D17600', monthSelInk: '#000000'" in g
-    assert "serpent(c, 46, 1.0, [0xE3AB00, 0xD17600, 0xF6EA07])" in g and "serpent(c, 36, 0.78, [0x4C75B4, 0x85C1EA, 0x002397], { titanio: true })" in g and "tit ? 0xb9bec4 : 0xd8b04a" in g
+    assert (
+        "serpent(c, 46, 1.0, [0x001D7E, 0x4C75B4, 0x85C1EA], { pesos: [45, 30, 25], titanio: true, fosco: true })" in g
+        and "serpent(c, 36, 0.78, [0xE3AB00, 0xD17600, 0xF6EA07])" in g
+    )
     assert not re.search(r"\\barc\\([^()]*?,\\s*0,\\s*7(\\s*,\\s*true)?\\)", g)  # nenhum arco de 0 a 7 radianos
     assert '"giroscopio/giroscopio.html"' in Path("eldorado/base/painel/dados.py").read_text(encoding="utf-8")
+
+
+def test_o_calendario_marcadores_e_a_serpente_azul():
+    """01/11/2026 (titular): os dias que faltam em amarelo-ouro; o início (seta e placa) no azul mais claro e o fim no laranja
+    mais escuro, com o texto em branco e a cor exata (sem a luz clarear); a serpente maior azul (45/30/25, todo o metal em
+    titânio) e a menor amarela."""
+    g = Path("eldorado/base/painel/pagina/giroscopio/giroscopio.html").read_text(encoding="utf-8")
+    assert '"open": "#F6EA07", "elapsed": "#5A3300", "last5": "#F6EA07", "deadline": "#D17600"' in g
+    assert (
+        "const CYAN = '#85C1EA', RED = '#D17600';" in g and "new T.MeshBasicMaterial({ color: col })" in g and "x.fillStyle = col; x.strokeStyle" in g
+    )
+    assert "crestB = tit(0xb9bec4); rebite = tit(0xa9aeb5); mandibula = tit(0x6c7279); cranio = tit(0x8d939a); cobre = tit(0x9aa0a7);" in g
+
+
+def test_a_empresa_no_pergaminho():
+    """01/11/2026 (titular): a ficha da empresa no popup "Pergaminho", isolado do livro 3D (nomes e classes próprios), com a
+    ficha de hoje no botão "Ficha completa" e quando o 3D não anima."""
+    pag = Path("eldorado/base/painel/pagina")
+    js = (pag / "pergaminho.js").read_text(encoding="utf-8")
+    css = (pag / "pergaminho.css").read_text(encoding="utf-8")
+    p = (pag / "dashboard.html").read_text(encoding="utf-8")
+    assert "PergaminhoPopup" in js and "LivroPopup" not in js and "window.LOGO_DATA" not in js and ".pg-overlay" in css and ".lp-" not in css
+    assert "window.abrirPergaminhoEmpresa=async function(e)" in p and "window.fichaEmpresa=async function(uid,opc)" in p
+    assert "window.fichaEmpresa(e.uid,{classico:true})" in p and '"pergaminho.js"' in Path("eldorado/base/painel/dados.py").read_text(
+        encoding="utf-8"
+    )
