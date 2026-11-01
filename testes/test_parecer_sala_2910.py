@@ -495,7 +495,8 @@ def test_as_oportunidades_abertas_no_design_novo():
     lote de encerramento); o Ranking em vitrine de vidro (no alto, só os dois botões; o «pode direcionar» mantido); o
     Legislativo em tubos de vidro, uma coluna por casa (municipal azul, estadual amarelo, federal laranja)."""
     p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
-    assert Path("eldorado/base/painel/pagina/logo-amc.png").exists() and '<img src="logo-amc.png" alt="A.M.C. Jardim América">' in p
+    # 01/11/2026 (titular): a placa do logo saiu; a logomarca agora é o botão de navegação (amc-menu.js), no topo de todas as páginas
+    assert Path("eldorado/base/painel/pagina/logo-amc.png").exists() and '<script src="amc-menu.js"></script>' in p
     assert "body:has(#v-editais:not(.oculto))" in p and "#4C75B4,#85C1EA,#F6EA07,#E3AB00,#D17600" in p
     assert 'li.className="arq-mf"' in p and '"Encerradas em "+br(k)' in p and 'data-acao="recuperar"' in p
     assert "#emp-ranking-caixa .ep-sub,#emp-ranking-caixa .ep-resumo,#emp-ranking-caixa .ep-crit{display:none}" in p
@@ -548,3 +549,22 @@ def test_o_livro_em_3d_em_todas_as_portas():
     assert 'if(!x.__classico&&window.abrirLivro3D&&await window.abrirLivro3D(x,"oportunidade")) return;' in p  # a ficha da oportunidade
     assert 'if(!e.__classico&&window.abrirLivro3D){ window.abrirLivro3D(e,"edital")' in p  # o detalhe do edital
     assert p.count("window.abrirLivro3D(") >= 4 and 'b.textContent="Ficha completa"' in p  # o Cartório e a ficha completa
+
+
+def test_o_botao_passaro_guia_e_o_topo_novo():
+    """01/11/2026 (titular): o botão "Pássaro Guia" no topo de todas as páginas de navegação (o clique na logomarca leva à
+    página principal; passar o mouse abre Eldorado e Farol de Alexandria, só com o nome; o Eldorado em amarelo-ouro);
+    os topos antigos escondidos; o nome da página com o traço da associação; as abas de vidro das Oportunidades abertas."""
+    pag = Path("eldorado/base/painel/pagina")
+    p = (pag / "dashboard.html").read_text(encoding="utf-8")
+    js = (pag / "amc-menu.js").read_text(encoding="utf-8")
+    css = (pag / "amc-menu.css").read_text(encoding="utf-8")
+    assert '<script src="amc-menu.js"></script>' in p and '<link rel="stylesheet" href="amc-menu.css">' in p and 'id="amc-stage"' in p
+    assert "G.AMCMenu = AMC" in js and '"rotulo": "Eldorado", "resumo": ""' in js and "window.irInicio" in js
+    assert "#topo-modulos,#nav-eldorado,#nav-farol,.subnav,#v-editais .oa-topo,.bz-topo,#sj .nav{display:none!important}" in css
+    assert (
+        'amc-main[data-i="0"]{background:linear-gradient(180deg,#F6EA07 0%,#E3AB00 100%)' in css
+        and ".amc-main .ic,#amc-topo .amc-main small{display:none" in css
+    )
+    assert '<header class="oa-topo">' not in p and p.count('class="pv-aba') == 4 and 'data-pv-n="legislativo"' in p
+    assert 'arquivos["abas.json"]' in Path("eldorado/base/painel/dados.py").read_text(encoding="utf-8")

@@ -1015,6 +1015,8 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 .mt-obs ul{margin:4px 0 0 16px;padding:0}.mt-obs li{margin:2px 0}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="amc-menu.css">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&family=Nunito+Sans:wght@400;700;800&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -1050,6 +1052,8 @@ footer{color:var(--suave);font-size:12px;text-align:center;padding-top:26px}
 </svg>
 <main id="app" class="oculto">
 <header style="text-align:center;padding-top:4px">
+<div id="amc-topo"><div class="stage" id="amc-stage"></div><p class="amc-sr" id="status" aria-live="polite"></p></div>
+<div id="pv-titulo" hidden><h2 id="pv-titulo-txt"></h2><span class="pv-fio" aria-hidden="true"></span></div>
 <div class="topo oculto" id="topo-modulos">
 <button id="bt-inicio" onclick="irInicio()">Início</button>
 <button id="bt-eldorado" onclick="modulo('eldorado')">Eldorado</button>
@@ -1427,13 +1431,12 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
 <section id="v-editais" class="oculto" style="margin-top:14px"><canvas class="oa-ceu" id="oa-estrelas" aria-hidden="true"></canvas>
 <!-- 01/11/2026 (titular): o cabeçalho das Oportunidades abertas com o logo da A.M.C. Jardim América e o filete com as
      sete cores da associação (#001D7E #4C75B4 #85C1EA #F6EA07 #E3AB00 #D17600 #211915), só nas decorações -->
-<header class="oa-topo"><div class="oa-logo"><img src="logo-amc.png" alt="A.M.C. Jardim América"></div>
- <div class="oa-tit"><h2>Oportunidades abertas</h2><span class="oa-fio" aria-hidden="true"></span></div></header>
-<div class="abas abas-ed" id="ed-abas" style="justify-content:center">
-  <button data-aba="em_andamento" class="on"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.5v4.8l3 1.8"/></svg><span>Em andamento</span></button>
-  <button data-aba="encerrado"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5h17v11a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-11z"/><path d="M5 4.5h14l1.5 3h-17z"/><path d="M10 12h4"/></svg><span>Arquivados — Inscritos / Encerrados / Descartados</span></button>
-  <button data-aba="ranking_empresas"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Ranking de empresas</span></button>
-  <button data-aba="legislativo" title="Projetos de lei, utilidades públicas e orçamento em tramitação — acompanhamento, sem livro"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V10M9.5 21V10M14.5 21V10M19 21V10M2.5 10 12 4l9.5 6z"/></svg><span>Legislativo</span></button>
+
+<div class="abas abas-ed" id="ed-abas" style="justify-content:center" role="tablist">
+  <button data-aba="em_andamento" type="button" class="pv-aba on"><span class="pv-ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 6h20M14 42h20M16 6c0 10 16 12 16 18S16 32 16 42M32 6c0 10-16 12-16 18s16 6 16 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M19 37c3-3 7-3 10 0l1 3H18z" fill="#E3AB00"/><circle cx="24" cy="26" r="1.6" fill="#F6EA07"/><circle cx="24" cy="30.5" r="1.3" fill="#F6EA07"/><path d="M38 12l2-2M40 18h3M8 18H5M10 12l-2-2" stroke="#85C1EA" stroke-width="2" stroke-linecap="round"/></svg></span><span class="pv-tx"><b>Em andamento</b><small data-pv-n="em_andamento"></small></span></button>
+  <button data-aba="encerrado" type="button" class="pv-aba"><span class="pv-ic"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="9" width="34" height="9" rx="2.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M10 18v19a3 3 0 0 0 3 3h22a3 3 0 0 0 3-3V18" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M19 25h10" stroke="#E3AB00" stroke-width="3" stroke-linecap="round"/><path d="M15 31h18M15 35h12" stroke="#85C1EA" stroke-width="2" stroke-linecap="round" opacity=".8"/></svg></span><span class="pv-tx"><b>Arquivados</b><small data-pv-n="encerrado"></small></span></button>
+  <button data-aba="ranking_empresas" type="button" class="pv-aba"><span class="pv-ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 41h36" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><rect x="9" y="27" width="9" height="14" rx="1.5" fill="none" stroke="currentColor" stroke-width="2.2"/><rect x="19.5" y="19" width="9" height="22" rx="1.5" fill="#E3AB00" fill-opacity=".85" stroke="currentColor" stroke-width="2.2"/><rect x="30" y="31" width="9" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M24 6l2.1 4.3 4.7.7-3.4 3.3.8 4.7-4.2-2.2-4.2 2.2.8-4.7-3.4-3.3 4.7-.7z" fill="#F6EA07"/></svg></span><span class="pv-tx"><b>Ranking de empresas</b><small data-pv-n="ranking_empresas"></small></span></button>
+  <button data-aba="legislativo" type="button" class="pv-aba"><span class="pv-ic"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 17L24 7l16 10z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M12 20v15M20 20v15M28 20v15M36 20v15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M7 39h34M9 35h30" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="24" cy="13" r="2" fill="#E3AB00"/><path d="M12 20h24" stroke="#85C1EA" stroke-width="2" stroke-linecap="round"/></svg></span><span class="pv-tx"><b>Legislativo</b><small data-pv-n="legislativo"></small></span></button>
 </div>
 <div class="cartao oculto" id="ed-fila-caixa" style="margin-bottom:12px"></div>
 <div class="legenda" style="margin-bottom:12px" id="ed-legenda"></div>
@@ -7718,4 +7721,5 @@ function lista(){
   window._livro3dConteudo=conteudo;
 })();
 </script>
+<script src="amc-menu.js"></script>
 </body></html>

@@ -1,0 +1,120 @@
+/* O botão de navegação e o topo novo (titular, 01/11/2026) */
+#amc-topo{--bg:#F3F5F9;--panel:#FFFFFF;--panel2:#F7F9FC;--ink:#211915;--muted:#55504c;--line:#DCE1EC;--accent:#001D7E;--focus:#001D7E;--code:#EEF1F7;--shadow:17,24,58;color-scheme:light}
+
+@media (prefers-color-scheme:dark){#amc-topo:not([data-theme="light"]){--bg:#070B18;--panel:#10162A;--panel2:#141B33;--ink:#F2F4F9;--muted:#A9AEBD;--line:#242C45;--accent:#85C1EA;--focus:#F6EA07;--code:#18203A;--shadow:0,0,0;color-scheme:dark}}
+
+#amc-topo[data-theme="dark"]{--bg:#070B18;--panel:#10162A;--panel2:#141B33;--ink:#F2F4F9;--muted:#A9AEBD;--line:#242C45;--accent:#85C1EA;--focus:#F6EA07;--code:#18203A;--shadow:0,0,0;color-scheme:dark}
+
+#amc-topo{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+
+.stage{position:relative;width:100%;height:clamp(500px,72vh,640px);border-radius:28px;background:radial-gradient(120% 90% at 50% 0%,var(--panel) 0%,var(--panel2) 100%);border:1px solid var(--line);overflow:hidden;isolation:isolate}
+
+
+/* ---------- 3D finish ---------- */
+.b3d{--c:#001D7E;--fg:#fff;--hi:color-mix(in srgb,var(--c) 74%,#fff);--lo:color-mix(in srgb,var(--c) 80%,#000);position:relative;border:0;cursor:pointer;color:var(--fg);font:800 15px/1.15 'Nunito Sans','Segoe UI',sans-serif;letter-spacing:.01em;
+  background:radial-gradient(140% 90% at var(--gx,50%) var(--gy,0%),color-mix(in srgb,#fff 26%,transparent) 0%,transparent 55%),linear-gradient(180deg,var(--hi) 0%,var(--c) 48%,var(--lo) 100%);
+  box-shadow:inset 0 1.5px 0 rgba(255,255,255,.55),inset 0 -3px 0 rgba(0,0,0,.16),inset 0 0 0 1px color-mix(in srgb,var(--lo) 60%,transparent),0 1px 2px rgba(var(--shadow),.18),0 10px 22px -8px rgba(var(--shadow),.38),0 22px 34px -22px var(--c);
+  transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s,opacity .3s,filter .2s;-webkit-tap-highlight-color:transparent}
+
+.b3d:hover{transform:translateY(-2px);filter:saturate(1.06)}
+
+.b3d:active{transform:translateY(1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),inset 0 -1px 0 rgba(0,0,0,.18),inset 0 0 0 1px color-mix(in srgb,var(--lo) 60%,transparent),0 3px 8px -3px rgba(var(--shadow),.4)}
+
+.b3d[aria-current="true"]{outline:3px solid color-mix(in srgb,var(--c) 45%,transparent);outline-offset:3px}
+
+button:focus-visible,.b3d:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+
+.amc-main{display:flex;align-items:center;gap:12px;padding:14px 20px 14px 16px;border-radius:20px;min-width:170px;text-align:left}
+
+.amc-main .ic{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,.16);box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
+
+.amc-main .ic svg{width:22px;height:22px}
+
+.amc-main .tx{display:grid;gap:1px}
+.amc-main b{font-size:17px}
+.amc-main small{font-weight:700;font-size:12px;opacity:.85}
+
+.amc-opt{padding:11px 16px;border-radius:14px;min-width:92px;text-align:center}
+
+@media (max-width:640px){.amc-main{min-width:0;gap:9px;padding:10px 14px 10px 10px;border-radius:16px}.amc-main .ic{width:30px;height:30px;border-radius:10px}.amc-main .ic svg{width:18px;height:18px}.amc-main b{font-size:15px}.amc-main small{font-size:11px}.amc-opt{min-width:0;padding:10px 13px;font-size:14px}}
+
+.amc-sub{list-style:none;margin:0;padding:0}
+
+
+/* ---------- logo medallion ---------- */
+.medal{--rx:0deg;--ry:0deg;position:relative;border:0;padding:0;cursor:pointer;border-radius:50%;background:transparent;transform:perspective(700px) rotateX(var(--rx)) rotateY(var(--ry));transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+
+.medal .disc{position:absolute;inset:0;border-radius:50%;background:radial-gradient(90% 90% at 35% 25%,#fff 0%,#F6F8FC 55%,#E6EBF4 100%);
+  box-shadow:inset 0 0 0 7px #001D7E,inset 0 0 0 9px #E3AB00,inset 0 0 0 10px rgba(255,255,255,.7),inset 0 -10px 18px rgba(0,29,126,.10),0 2px 3px rgba(var(--shadow),.2),0 18px 30px -12px rgba(var(--shadow),.45)}
+
+.medal .disc::after{content:"";position:absolute;inset:8%;border-radius:50%;background:radial-gradient(60% 40% at var(--gx,50%) var(--gy,22%),rgba(255,255,255,.75),transparent 70%);pointer-events:none}
+
+.medal .amc-bird{position:absolute;left:15%;top:22%;width:70%;height:auto;filter:drop-shadow(0 3px 2px rgba(0,29,126,.18))}
+
+.medal:active{transform:perspective(700px) scale(.97)}
+
+
+/* ---------- bird joints ---------- */
+.amc-bird{display:block;overflow:visible}
+
+.amc-bird .amc-wing{transform-box:view-box;transform-origin:558px 355px}
+
+.amc-bird .amc-beak{transform-box:view-box;transform-origin:940px 330px}
+
+.amc-bird.flap .amc-wing{animation:amc-flap .26s ease-in-out infinite alternate}
+
+.amc-bird.ruffle .amc-wing{animation:amc-ruffle .9s ease-in-out 1}
+
+.amc-bird.chirp .amc-beak{animation:amc-chirp .5s ease-in-out 1}
+
+@keyframes amc-flap{0%{transform:rotate(-16deg) scale(1,.92)}100%{transform:rotate(7deg) scale(1,1.01)}}
+
+@keyframes amc-ruffle{0%,100%{transform:none}30%{transform:rotate(-9deg)}55%{transform:rotate(4deg)}75%{transform:rotate(-3deg)}}
+
+@keyframes amc-chirp{0%,100%{transform:none}25%,60%{transform:rotate(16deg)}42%{transform:rotate(4deg)}}
+
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}}
+
+
+.stage>#w{position:absolute;inset:0}
+
+/* O TOPO NOVO DE TODAS AS PÁGINAS (titular, 01/11/2026): transparente, só o espaço para a logomarca e os dois botões
+   (no arranjo original: Eldorado e, abaixo, Farol de Alexandria; as páginas de cada um abrem ao lado). Abaixo, o nome
+   da página com o traço nas cores da associação. A navegação antiga fica escondida (o sistema a usa por dentro). */
+#topo-modulos,#nav-eldorado,#nav-farol,.subnav,#v-editais .oa-topo,.bz-topo,#sj .nav{display:none!important}
+/* a página principal é a arte aprovada (a logomarca e os dois botões já estão nela): ali o topo novo não se repete */
+body.inicial #amc-topo,body.inicial #pv-titulo{display:none!important}
+/* as páginas escuras (o Calendário e a Sala de controle) assumem o céu também atrás do topo transparente */
+body:has(#v-calendario:not(.oculto)),body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 38% 48%,#1E2742 0,#121A31 42%,#0A0F1F 78%,#070A15 100%) fixed!important}
+#app > header{background:transparent!important;padding:0!important;text-align:center;position:relative;z-index:40}
+#amc-topo{position:relative;height:300px;display:flex;justify-content:center;z-index:50}
+#amc-topo .stage,#amc-topo #w,#amc-topo .pg{background:transparent!important;box-shadow:none!important;border:0!important;min-height:0!important}
+#amc-topo .stage{position:relative;height:auto!important;display:block!important;overflow:visible!important;width:100%;max-width:1100px;margin:0 auto;padding:0!important}
+#amc-topo .pg{position:relative;height:auto!important;padding:10px 20px 0!important;gap:0!important;justify-content:flex-start!important;align-items:center!important;overflow:visible!important}
+#amc-topo .vnote{display:none!important}
+#amc-topo .pg .rows{position:absolute;top:100%;left:50%;transform:translateX(-50%);width:min(1100px,96vw);z-index:60;padding-top:10px}
+/* os botões principais só com o nome (sem o desenho e sem o número de páginas); o Eldorado em amarelo-ouro */
+#amc-topo .amc-main .ic,#amc-topo .amc-main small{display:none!important}
+#amc-topo .amc-main{min-width:0!important;padding:14px 26px!important;justify-content:center}
+#amc-topo .amc-main[data-i="0"]{background:linear-gradient(180deg,#F6EA07 0%,#E3AB00 100%)!important;color:#211915!important}
+#amc-topo .amc-main[data-i="0"] b{color:#211915!important}
+#amc-topo .amc-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+#pv-titulo{display:flex;flex-direction:column;align-items:center;gap:8px;margin:2px 0 14px}
+#pv-titulo[hidden]{display:none}
+#pv-titulo h2{margin:0;font-family:"IM Fell English SC",Georgia,serif;font-weight:400;font-size:34px;color:#211915;letter-spacing:.01em}
+body.pv-escura #pv-titulo h2{color:#f6e3ae;text-shadow:0 0 16px rgba(255,200,120,.35)}
+.pv-fio{display:block;height:2px;width:min(460px,80%);background:linear-gradient(90deg,transparent,#4C75B4,#85C1EA,#F6EA07,#E3AB00,#D17600,transparent)}
+/* AS ABAS DAS OPORTUNIDADES ABERTAS: vidro discreto, transparente; o marcador mais claro na selecionada */
+body #v-editais #ed-abas{display:flex!important;gap:12px;justify-content:center;flex-wrap:wrap;background:none!important;border:0!important;box-shadow:none!important;padding:0!important;margin:0 0 14px!important}
+body #v-editais #ed-abas button.pv-aba.pv-aba{all:unset;box-sizing:border-box;cursor:pointer;position:relative;display:flex!important;align-items:center;gap:12px;min-width:220px;padding:10px 18px 12px 12px!important;border-radius:16px!important;
+  background:rgba(255,255,255,.045)!important;border:1px solid rgba(255,255,255,.12)!important;color:#d9e1ef!important;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08)!important;transition:background .2s,border-color .2s,transform .2s;font-family:"Nunito Sans",system-ui,sans-serif!important}
+body #v-editais #ed-abas button.pv-aba.pv-aba:hover{background:rgba(255,255,255,.085)!important;transform:translateY(-1px)}
+body #v-editais #ed-abas button.pv-aba.pv-aba.on{background:rgba(255,255,255,.15)!important;border-color:rgba(255,255,255,.34)!important;color:#fff!important}
+body #v-editais #ed-abas button.pv-aba.pv-aba.on::after{content:"";position:absolute;left:18px;right:18px;bottom:-1px;height:3px;border-radius:3px;background:linear-gradient(90deg,#85C1EA,#F6EA07);box-shadow:0 0 10px rgba(246,234,7,.45)}
+body #v-editais #ed-abas button.pv-aba.pv-aba:focus-visible{outline:2px solid #85C1EA;outline-offset:3px}
+body #v-editais #ed-abas .pv-ic{display:grid;place-items:center;width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,.06);flex:none}
+body #v-editais #ed-abas .pv-ic svg{width:34px;height:34px}
+body #v-editais #ed-abas .pv-tx{display:grid;gap:1px;text-align:left}
+body #v-editais #ed-abas .pv-tx b{font:600 15px Outfit,system-ui,sans-serif;letter-spacing:.02em}
+body #v-editais #ed-abas .pv-tx small{font-size:12px;opacity:.75}

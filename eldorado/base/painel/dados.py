@@ -925,6 +925,11 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
          "area": r["area_d"] or r["tema"] or "", "url": r["link_oficial"] or r["link_divulgacao"] or "", "selo": r["estrela"] or "",
          "estado_export": "encerrado", "etapa": r["fase"] or ""} for r in sis.livros_arquivados()]
     arquivos["legislativo.json"] = _legislativo(sis, agora)
+    # 01/11/2026: os números das quatro abas das Oportunidades abertas (a página não baixa o ranking inteiro para contar)
+    _f, _r = arquivos["fluxo_oportunidades.json"], arquivos.get("ranking_apoiadores.json") or {}
+    arquivos["abas.json"] = {"em_andamento": sum(len(v) for v in (_f.get("itens_por_uf") or {}).values()), "encerrado": len(_f.get("arquivados") or []),
+                             "ranking_empresas": sum((v or {}).get("total", 0) for v in (_r.get("listas") or {}).values()),
+                             "legislativo": arquivos["legislativo.json"].get("total", 0)}
     arquivos["mapa_arquivos.json"] = _mapa_arquivos(sis, raiz)
     arquivos.update(_tabelas(sis, status, descricao, agora))
     for p in MOLDE.glob("*.json"):  # os demais arquivos: a estrutura, vazia (sem dado do Eldorado0)
