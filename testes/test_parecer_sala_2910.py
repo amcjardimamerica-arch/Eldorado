@@ -611,3 +611,15 @@ def test_a_nota_do_piado_aparece():
     css = Path("eldorado/base/painel/pagina/amc-menu.css").read_text(encoding="utf-8")
     assert ".vnote{display:none" not in css and "body.pv-escura #amc-topo .vnote{color:#85C1EA}" in css
     assert "n.className = 'vnote'" in Path("eldorado/base/painel/pagina/amc-menu.js").read_text(encoding="utf-8")
+
+
+def test_o_calendario_3d_na_opcao_1_marinho_classico():
+    """01/11/2026 (titular): o calendário 3D na opção 1 (marinho clássico): os mostradores em marinho, o prazo em laranja, o
+    mês aceso em preto; a serpente quente e a fria; os arcos fechando uma volta (as falhas de abril e maio)."""
+    import re
+
+    g = Path("eldorado/base/painel/pagina/giroscopio/giroscopio.html").read_text(encoding="utf-8")
+    assert "monthBg: '#001250', monthAlt: '#001A6A', monthSel: '#D17600', monthSelInk: '#000000'" in g
+    assert "serpent(c, 46, 1.0, [0xE3AB00, 0xD17600, 0xF6EA07])" in g and "serpent(c, 36, 0.78, [0x4C75B4, 0x001D7E, 0x85C1EA])" in g
+    assert not re.search(r"\\barc\\([^()]*?,\\s*0,\\s*7(\\s*,\\s*true)?\\)", g)  # nenhum arco de 0 a 7 radianos
+    assert '"giroscopio/giroscopio.html"' in Path("eldorado/base/painel/dados.py").read_text(encoding="utf-8")

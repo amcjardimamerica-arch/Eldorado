@@ -257,9 +257,9 @@ code{font-size:12.5px}
     function draw(y, m) {
       const tex = ring.userData.tex;
       tex.redraw((x, Sz) => {
-        const c = Sz / 2; x.fillStyle = o.colors.band; x.beginPath(); x.arc(c, c, c, 0, 7); x.arc(c, c, o.rIn * k, 0, 7, true); x.fill('evenodd');
+        const c = Sz / 2; x.fillStyle = o.colors.band; x.beginPath(); x.arc(c, c, c, 0, Math.PI * 2); x.arc(c, c, o.rIn * k, 0, Math.PI * 2, true); x.fill('evenodd');
         x.strokeStyle = o.colors.line; x.lineWidth = 3;
-        [o.rIn * k + 2, o.rOut * k - 3].forEach(r => { x.beginPath(); x.arc(c, c, r, 0, 7); x.stroke(); });
+        [o.rIn * k + 2, o.rOut * k - 3].forEach(r => { x.beginPath(); x.arc(c, c, r, 0, Math.PI * 2); x.stroke(); });
         x.textAlign = 'center'; x.textBaseline = 'middle';
         for (let i = 0; i < 31; i++) {
           const a = ang(i), d = i + 1, cx = c + rN * k * Math.sin(a), cy = c - rN * k * Math.cos(a);
@@ -440,7 +440,7 @@ code{font-size:12.5px}
     for (let i = 0; i < 16; i++) {
       const o = i * 64; x.beginPath(); x.moveTo(o + 6, 100); x.lineTo(o + 6, 28); x.lineTo(o + 52, 28); x.lineTo(o + 52, 78); x.lineTo(o + 24, 78); x.lineTo(o + 24, 52); x.lineTo(o + 36, 52); x.stroke();
     }
-    x.fillStyle = dot; for (let i = 0; i < 32; i++) { x.beginPath(); x.arc(i * 32 + 16, 12, 4, 0, 7); x.fill(); x.beginPath(); x.arc(i * 32 + 16, 116, 4, 0, 7); x.fill(); }
+    x.fillStyle = dot; for (let i = 0; i < 32; i++) { x.beginPath(); x.arc(i * 32 + 16, 12, 4, 0, Math.PI * 2); x.fill(); x.beginPath(); x.arc(i * 32 + 16, 116, 4, 0, Math.PI * 2); x.fill(); }
     const t = new T.CanvasTexture(c); t.wrapS = T.RepeatWrapping; t.repeat.set(2, 1); return t;
   }
   const Z = T => new T.Vector3(0, 0, 1), Y = T => new T.Vector3(0, 1, 0), X = T => new T.Vector3(1, 0, 0);
@@ -506,7 +506,7 @@ code{font-size:12.5px}
       }
     },
     maia: {
-      font: '"Marcellus", "Trajan Pro", Georgia, serif', light: 0xffe0b0, rim: 0x6fe0cf, beam: 0x6fe0c8, selGlow: 0xd9fff3,
+      font: '"Marcellus", "Trajan Pro", Georgia, serif', light: 0xffe0b0, rim: 0x4C75B4, beam: 0x4C75B4, selGlow: 0xFFD9A8,
       metal: { brass: 0xa77a3a, brassDark: 0x6e4e24, copper: 0x9c5a32, jade: 0x2e8b6a, turq: 0x3bb3a3 },
       planet: (x, W, H) => {
         const r = rng(41); x.fillStyle = '#0d3a2b'; x.fillRect(0, 0, W, H);
@@ -516,7 +516,7 @@ code{font-size:12.5px}
       planetRough: 0.22,
       text: { ink: '#fff2cf', sub: '#8ff0da', glow: '#18b98a' },
       extraLine: p => { const m = G.Steam.maya(p.data); return 'Tzolk’in ' + m.tzNum + ' ' + m.tzName + ', Haab’ ' + m.haabDay + ' ' + m.haabName; },
-      cal: { band: '#11130e', band2: '#14211a', engr: '#d9a75a', ink: '#f1e6cc', dim: '#5f6a5e', off: '#2c332d', hi: '#ffd27a', selInk: '#11130e', today: '#4cc3b2', arc: '#4cc3b2', span: 'rgba(76,195,178,0.25)', monthHi: 'rgba(76,195,178,0.22)', badge: '#d9a75a', badgeInk: '#11130e' },
+      cal: { band: '#11130e', band2: '#14211a', engr: '#d9a75a', ink: '#f1e6cc', dim: '#5f6a5e', off: '#2c332d', hi: '#ffd27a', selInk: '#11130e', today: '#4cc3b2', arc: '#4cc3b2', span: 'rgba(76,117,180,0.25)', monthHi: 'rgba(76,117,180,0.22)', badge: '#d9a75a', badgeInk: '#11130e' },
       calOrnament(x, S, c, k) {
         const r0 = 1.556 * k, r1 = 1.6 * k, n = 72; x.strokeStyle = '#d9a75a'; x.lineWidth = 3;
         for (let i = 0; i < n; i++) {
@@ -1002,7 +1002,7 @@ code{font-size:12.5px}
       const x = cv.getContext('2d'), Z = cv.width, c = Z / 2, k = c / RO, C = S.disc, N = I.N;
       const P = (r, a) => [c + r * k * Math.sin(a), c - r * k * Math.cos(a)];
       const sector = (r0, r1, a0, a1) => { x.beginPath(); x.arc(c, c, r1 * k, a0 - Math.PI / 2, a1 - Math.PI / 2); x.arc(c, c, r0 * k, a1 - Math.PI / 2, a0 - Math.PI / 2, true); x.closePath(); };
-      const ann = (r0, r1, col) => { x.fillStyle = col; x.beginPath(); x.arc(c, c, r1 * k, 0, 7); x.arc(c, c, r0 * k, 0, 7, true); x.fill('evenodd'); };
+      const ann = (r0, r1, col) => { x.fillStyle = col; x.beginPath(); x.arc(c, c, r1 * k, 0, Math.PI * 2); x.arc(c, c, r0 * k, 0, Math.PI * 2, true); x.fill('evenodd'); };
       const tang = (t, r, a, font, col) => { const up = a > Math.PI / 2 && a < Math.PI * 1.5; x.save(); x.translate(...P(r, a)); x.rotate(up ? a + Math.PI : a); x.font = font; x.fillStyle = col; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(t, 0, 0); x.restore(); };
       x.clearRect(0, 0, Z, Z);
       ann(RH, RM0, C.rim); ann(RM0, RM1, C.monthBg); ann(RM1, RD0, C.rim); ann(RD0, RD1, C.dayBg); ann(RD1, RO, C.rim);
@@ -1029,7 +1029,7 @@ code{font-size:12.5px}
         if (mk.sel) return; const a = A(mk.doy + 0.5, N), col = mk.key === 'closed' ? '#8a8378' : mk.key === 'open' || mk.key === 'soon' ? C.markOpen : E.lampColor(mk.key);
         x.save(); x.fillStyle = col; x.shadowColor = col; x.shadowBlur = 8; x.beginPath(); x.moveTo(...P(RD1 + 0.004, a)); x.lineTo(...P(RO - 0.006, a - 0.012)); x.lineTo(...P(RO - 0.006, a + 0.012)); x.closePath(); x.fill(); x.restore();
       });
-      x.strokeStyle = C.line; x.lineWidth = 3; [RH + 0.004, RM0, RM1, RD0, RD1, RO - 0.004].forEach(r => { x.beginPath(); x.arc(c, c, r * k, 0, 7); x.stroke(); });
+      x.strokeStyle = C.line; x.lineWidth = 3; [RH + 0.004, RM0, RM1, RD0, RD1, RO - 0.004].forEach(r => { x.beginPath(); x.arc(c, c, r * k, 0, Math.PI * 2); x.stroke(); });
       tex.needsUpdate = true;
     }
     function plaque(accent) {
@@ -1245,8 +1245,8 @@ code{font-size:12.5px}
           c.fade(g, 1.2, new T.Vector3(0, 1.0, 0));
           for (let k = 0; k < 2; k++) {
             const geo = new T.BufferGeometry().setFromPoints(new Array(16).fill(0).map(() => new T.Vector3()));
-            const ln = new T.Line(geo, new T.LineBasicMaterial({ color: 0x9feaff, transparent: true })); root.add(ln);
-            const gl = c.E.glow(0x9feaff, 0.5); root.add(gl);
+            const ln = new T.Line(geo, new T.LineBasicMaterial({ color: 0x85C1EA, transparent: true })); root.add(ln);
+            const gl = c.E.glow(0x85C1EA, 0.5); root.add(gl);
             arcs.push({ ln: ln, gl: gl, from: new T.Vector3(s * (3.15 - 0.55), 1.05, 0), s: s, k: k, t: 0 });
           }
         });
@@ -1279,7 +1279,7 @@ code{font-size:12.5px}
         c.anim((dt, t, u) => {
           crown.rotation.y += dt * (0.3 + u * 1.2); arm.rotation.z += dt * (3 + u * 10); plat.rotation.y -= dt * 0.3; gAg.rotation.z -= dt * (3 + u * 10) * 0.7;
           fil.emissiveIntensity = 1.4 + 0.8 * Math.sin(t * (3 + u * 6));
-          const col = c.status() === 'deadline' ? 0xff3d1f : c.status() === 'last5' ? 0xff9f1c : 0x9feaff;
+          const col = c.status() === 'deadline' ? 0xD17600 : c.status() === 'last5' ? 0xD17600 : 0x85C1EA;
           arcs.forEach(a => {
             a.t -= dt; if (a.t > 0) return; a.t = 0.05 + Math.random() * 0.08;
             const on = Math.random() < 0.25 + u * 0.7; a.ln.visible = a.gl.visible = on; if (!on) return;
@@ -1312,7 +1312,7 @@ code{font-size:12.5px}
         const skull = new T.Mesh(new T.ConeGeometry(0.2, 0.5, 6), M.copper); skull.rotation.x = Math.PI / 2; skull.position.z = 0.18; head.add(skull);
         const jaw = new T.Group(); jaw.position.set(0, -0.06, 0.02); head.add(jaw);
         const jm = new T.Mesh(new T.ConeGeometry(0.14, 0.42, 6), M.brassDark); jm.rotation.x = Math.PI / 2; jm.position.z = 0.18; jaw.add(jm);
-        const eyeM = new T.MeshStandardMaterial({ color: 0x3ee6ff, emissive: 0x3ee6ff, emissiveIntensity: 2.2 });
+        const eyeM = new T.MeshStandardMaterial({ color: 0x85C1EA, emissive: 0x85C1EA, emissiveIntensity: 2.2 });
         [-1, 1].forEach(s => { const e = new T.Mesh(new T.SphereGeometry(0.045, 12, 8), eyeM); e.position.set(s * 0.11, 0.08, 0.1); head.add(e); });
         for (let i = 0; i < 7; i++) { const f = new T.Mesh(new T.BoxGeometry(0.06, 0.32, 0.015), i % 2 ? M.turq : gold); const a = (i - 3) * 0.32; f.position.set(Math.sin(a) * 0.2, 0.16 + Math.cos(a) * 0.12, -0.08); f.rotation.z = -a; head.add(f); }
         c.fade(head, 0.45); c.emit(head, new T.Vector3(0, -0.05, 0.5), 1.8, 0.6);
@@ -1333,7 +1333,7 @@ code{font-size:12.5px}
           segs.forEach((g, i) => { const s = s0 - i * 0.0105, p = path(s), q = path(s + 0.004); g.position.copy(p); g.lookAt(tilt.localToWorld(q.clone())); });
           const hp = path(s0 + 0.012), hq = path(s0 + 0.02); head.position.copy(hp); head.lookAt(tilt.localToWorld(hq.clone()));
           jaw.rotation.x = 0.15 + 0.2 * (0.5 + 0.5 * Math.sin(t * (2 + u * 5)));
-          const sc = c.status(); eyeM.color.setHex(sc === 'deadline' ? 0xff3d1f : sc === 'last5' ? 0xff9f1c : 0x3ee6ff); eyeM.emissive.copy(eyeM.color);
+          const sc = c.status(); eyeM.color.setHex(sc === 'deadline' ? 0xD17600 : sc === 'last5' ? 0xD17600 : 0x85C1EA); eyeM.emissive.copy(eyeM.color);
           sun.rotation.y += dt * (0.2 + u * 0.8); g20.rotation.y += dt * (0.5 + u); g13.rotation.y -= dt * (0.5 + u) * 20 / 13;
         });
       }
@@ -1355,7 +1355,7 @@ code{font-size:12.5px}
   const LAT = -23.5;
 
   // ---------- textures ----------
-  function annClip(x, c, a, b) { x.beginPath(); x.arc(c, c, b, 0, 7); x.arc(c, c, a, 0, 7, true); x.clip('evenodd'); }
+  function annClip(x, c, a, b) { x.beginPath(); x.arc(c, c, b, 0, Math.PI * 2); x.arc(c, c, a, 0, Math.PI * 2, true); x.clip('evenodd'); }
   function tympanTex(c, o) {
     const T = c.T, Z = 1024, cc = Z / 2, k = cc / R1, P = stereo(LAT), cv = c.E.canvas(Z, Z), x = cv.getContext('2d');
     const px = p => [cc + p.x * cc, cc - p.y * cc];
@@ -1383,15 +1383,15 @@ code{font-size:12.5px}
     if (kind === 'flame') { const m = at(0.45); x.moveTo(...tip); x.quadraticCurveTo(m[0] + nx * w * 1.6, m[1] + ny * w * 1.6, base[0] + nx * w, base[1] + ny * w); x.quadraticCurveTo(base[0] - ux * w, base[1] - uy * w, base[0] - nx * w, base[1] - ny * w); x.quadraticCurveTo(m[0] - nx * w * 0.4, m[1] - ny * w * 0.4, ...tip); }
     else if (kind === 'feather') { x.moveTo(...tip); for (let i = 1; i <= 4; i++) { const p = at(1 - i * 0.22); x.lineTo(p[0] + nx * w * (0.6 + i * 0.25), p[1] + ny * w * (0.6 + i * 0.25)); x.lineTo(...at(1 - i * 0.22 + 0.06)); } x.lineTo(...base); for (let i = 4; i >= 1; i--) { const p = at(1 - i * 0.22); x.lineTo(...at(1 - i * 0.22 + 0.06)); x.lineTo(p[0] - nx * w * (0.6 + i * 0.25), p[1] - ny * w * (0.6 + i * 0.25)); } }
     else if (kind === 'compass') { const m = at(0.35); x.moveTo(...tip); x.lineTo(m[0] + nx * w * 1.3, m[1] + ny * w * 1.3); x.lineTo(...base); x.lineTo(m[0] - nx * w * 1.3, m[1] - ny * w * 1.3); }
-    else { const m = at(0.5); x.moveTo(...tip); x.lineTo(m[0] + nx * w, m[1] + ny * w); x.lineTo(base[0] + nx * w * 0.6, base[1] + ny * w * 0.6); x.lineTo(base[0] - nx * w * 0.6, base[1] - ny * w * 0.6); x.lineTo(m[0] - nx * w, m[1] - ny * w); x.closePath(); x.moveTo(m[0] + w * 1.1, m[1]); x.arc(m[0], m[1], w * 1.1, 0, 7); }
+    else { const m = at(0.5); x.moveTo(...tip); x.lineTo(m[0] + nx * w, m[1] + ny * w); x.lineTo(base[0] + nx * w * 0.6, base[1] + ny * w * 0.6); x.lineTo(base[0] - nx * w * 0.6, base[1] - ny * w * 0.6); x.lineTo(m[0] - nx * w, m[1] - ny * w); x.closePath(); x.moveTo(m[0] + w * 1.1, m[1]); x.arc(m[0], m[1], w * 1.1, 0, Math.PI * 2); }
     x.closePath(); x.fill();
   }
   function reteTex(c, o) {
     const T = c.T, Z = 1024, cc = Z / 2, k = cc / R1, P = stereo(LAT), cv = c.E.canvas(Z, Z), x = cv.getContext('2d'), sc = 0.965;
     const px = p => [cc + p.x * cc * sc, cc - p.y * cc * sc];
     x.fillStyle = '#fff'; x.strokeStyle = '#fff';
-    x.beginPath(); x.arc(cc, cc, R1 * k, 0, 7); x.arc(cc, cc, (R1 - 0.045) * k, 0, 7, true); x.fill('evenodd');
-    x.beginPath(); x.arc(cc, cc, (R0 + 0.04) * k, 0, 7); x.arc(cc, cc, R0 * k, 0, 7, true); x.fill('evenodd');
+    x.beginPath(); x.arc(cc, cc, R1 * k, 0, Math.PI * 2); x.arc(cc, cc, (R1 - 0.045) * k, 0, 7, true); x.fill('evenodd');
+    x.beginPath(); x.arc(cc, cc, (R0 + 0.04) * k, 0, 7); x.arc(cc, cc, R0 * k, 0, Math.PI * 2, true); x.fill('evenodd');
     x.save(); annClip(x, cc, R0 * k, R1 * k);
     const n = o.struts || 6; x.lineWidth = 10;
     for (let i = 0; i < n; i++) {
@@ -1407,19 +1407,19 @@ code{font-size:12.5px}
       const ux = (q[0] - cc) / (rr * k), uy = (q[1] - cc) / (rr * k), base = [q[0] + ux * 0.1 * k, q[1] + uy * 0.1 * k];
       pointer(x, o.ptr, q, base, 0.022 * k);
       x.lineWidth = 6; x.beginPath(); x.moveTo(...base); x.lineTo(cc + ux * (R1 - 0.03) * k, cc + uy * (R1 - 0.03) * k); x.stroke();
-      x.beginPath(); x.arc(q[0], q[1], 5, 0, 7); x.fill();
+      x.beginPath(); x.arc(q[0], q[1], 5, 0, Math.PI * 2); x.fill();
     });
     x.restore();
     const t = new T.CanvasTexture(cv); t.anisotropy = 8; return t;
   }
   function limbTex(c, o) {
     const T = c.T, Z = 1024, cc = Z / 2, k = cc / L1, cv = c.E.canvas(Z, Z), x = cv.getContext('2d');
-    x.fillStyle = o.bg; x.beginPath(); x.arc(cc, cc, L1 * k, 0, 7); x.arc(cc, cc, L0 * k, 0, 7, true); x.fill('evenodd');
+    x.fillStyle = o.bg; x.beginPath(); x.arc(cc, cc, L1 * k, 0, Math.PI * 2); x.arc(cc, cc, L0 * k, 0, Math.PI * 2, true); x.fill('evenodd');
     if (o.hours) for (let h = 0; h < 24; h++) { const a0 = h / 24 * Math.PI * 2 - Math.PI / 2, a1 = (h + 1) / 24 * Math.PI * 2 - Math.PI / 2; x.fillStyle = h % 2 ? o.hours[0] : o.hours[1]; x.beginPath(); x.arc(cc, cc, (L1 - 0.02) * k, a0, a1); x.arc(cc, cc, (L0 + 0.14) * k, a1, a0, true); x.closePath(); x.fill(); }
     x.strokeStyle = o.ink; x.fillStyle = o.ink;
     for (let i = 0; i < 360; i++) { const a = i / 360 * Math.PI * 2, L = i % 15 === 0 ? 0.12 : i % 5 === 0 ? 0.08 : 0.045; x.lineWidth = i % 15 === 0 ? 3 : 1.5; x.beginPath(); x.moveTo(cc + (L0 + 0.01) * k * Math.sin(a), cc - (L0 + 0.01) * k * Math.cos(a)); x.lineTo(cc + (L0 + 0.01 + L) * k * Math.sin(a), cc - (L0 + 0.01 + L) * k * Math.cos(a)); x.stroke(); }
     if (o.band) o.band(x, cc, k);
-    x.lineWidth = 3; [L0 + 0.005, L1 - 0.005].forEach(r => { x.beginPath(); x.arc(cc, cc, r * k, 0, 7); x.stroke(); });
+    x.lineWidth = 3; [L0 + 0.005, L1 - 0.005].forEach(r => { x.beginPath(); x.arc(cc, cc, r * k, 0, Math.PI * 2); x.stroke(); });
     const t = new T.CanvasTexture(cv); t.anisotropy = 8; return t;
   }
   const bandDots = col => (x, cc, k) => { x.fillStyle = col; for (let i = 0; i < 96; i++) { const a = i / 96 * Math.PI * 2, r = (L1 - 0.07) * k; x.beginPath(); x.arc(cc + r * Math.sin(a), cc - r * Math.cos(a), i % 2 ? 4 : 7, 0, 7); x.fill(); } };
@@ -1518,7 +1518,7 @@ code{font-size:12.5px}
         }
         const head = new T.Group(); c.root.add(head);
         const sk = new T.Mesh(new T.ConeGeometry(0.15, 0.38, 6), M.copper); sk.rotation.x = Math.PI / 2; sk.position.z = 0.14; head.add(sk);
-        const eye = new T.MeshStandardMaterial({ color: 0x3ee6ff, emissive: 0x3ee6ff, emissiveIntensity: 2.2 });
+        const eye = new T.MeshStandardMaterial({ color: 0x85C1EA, emissive: 0x85C1EA, emissiveIntensity: 2.2 });
         [-1, 1].forEach(s => { const e = new T.Mesh(new T.SphereGeometry(0.035, 12, 8), eye); e.position.set(s * 0.08, 0.06, 0.08); head.add(e); });
         for (let i = 0; i < 7; i++) { const f = new T.Mesh(new T.BoxGeometry(0.05, 0.26, 0.012), i % 2 ? M.turq : gold); const a = (i - 3) * 0.32; f.position.set(Math.sin(a) * 0.16, 0.12 + Math.cos(a) * 0.1, -0.06); f.rotation.z = -a; head.add(f); }
         c.fade(head, 0.35);
@@ -1528,7 +1528,7 @@ code{font-size:12.5px}
           s0 += dt * (0.008 + u * 0.03);
           segs.forEach((g, i) => { const s = s0 - i * 0.0128; g.position.copy(path(s)); g.lookAt(path(s + 0.003)); });
           head.position.copy(path(s0 + 0.014)); head.lookAt(path(s0 + 0.02));
-          const st = c.status(); eye.color.setHex(st === 'deadline' ? 0xff3d1f : st === 'last5' ? 0xff9f1c : 0x3ee6ff); eye.emissive.copy(eye.color);
+          const st = c.status(); eye.color.setHex(st === 'deadline' ? 0xD17600 : st === 'last5' ? 0xD17600 : 0x85C1EA); eye.emissive.copy(eye.color);
         });
       }
     },
@@ -1712,7 +1712,7 @@ code{font-size:12.5px}
         [[38, 1.0, M.jade, M.copper], [28, 0.8, M.copper, M.jade], [22, 0.65, M.turq, g]].forEach(([n, k, m1, m2]) => {
           const head = new T.Group(); c.root.add(head);
           const sk = new T.Mesh(new T.ConeGeometry(0.13 * k, 0.36 * k, 6), M.copper); sk.rotation.x = Math.PI / 2; sk.position.z = 0.12 * k; head.add(sk);
-          const eye = glowMat(0x3ee6ff); [-1, 1].forEach(s => { const e = new T.Mesh(new T.SphereGeometry(0.03 * k, 10, 6), eye); e.position.set(s * 0.07 * k, 0.05 * k, 0.07 * k); head.add(e); });
+          const eye = glowMat(0x85C1EA); [-1, 1].forEach(s => { const e = new T.Mesh(new T.SphereGeometry(0.03 * k, 10, 6), eye); e.position.set(s * 0.07 * k, 0.05 * k, 0.07 * k); head.add(e); });
           for (let i = 0; i < 5; i++) { const f = new T.Mesh(new T.BoxGeometry(0.045 * k, 0.24 * k, 0.012), i % 2 ? M.turq : g); const a = (i - 2) * 0.38; f.position.set(Math.sin(a) * 0.13 * k, (0.1 + Math.cos(a) * 0.09) * k, -0.05 * k); f.rotation.z = -a; head.add(f); }
           c.fade(head, 0.3 * k);
           const segs = [];
@@ -1728,7 +1728,7 @@ code{font-size:12.5px}
         });
         c.anim((dt, t, u) => {
           const cam = c.cam(); if (!cam) return; step(list, dt, t, u, cam);
-          const st = c.status(), col = st === 'deadline' ? 0xff3d1f : st === 'last5' ? 0xff9f1c : 0x3ee6ff;
+          const st = c.status(), col = st === 'deadline' ? 0xD17600 : st === 'last5' ? 0xD17600 : 0x85C1EA;
           list.forEach(A => { chain(A.obj, A.segs, 0.105 * A.k); A.eye.color.setHex(col); A.eye.emissive.setHex(col); });
         });
       }
@@ -1840,7 +1840,7 @@ code{font-size:12.5px}
         for (let i = 0; i < 3; i++) {
           const o = new T.Group(); c.root.add(o);
           for (let j = 0; j < 6; j++) { const s = new T.Mesh(new T.CylinderGeometry(0.032 - j * 0.004, 0.032 - j * 0.004, 0.1, 8), j % 2 ? M.copper : g); s.rotation.x = Math.PI / 2; s.position.z = 0.1 - j * 0.09; o.add(s); }
-          const eye = new T.Mesh(new T.SphereGeometry(0.04, 10, 8), glowMat(0x3ee6ff)); eye.position.z = 0.17; o.add(eye);
+          const eye = new T.Mesh(new T.SphereGeometry(0.04, 10, 8), glowMat(0x85C1EA)); eye.position.z = 0.17; o.add(eye);
           const wings = [];
           [[-1, 0.06], [1, 0.06], [-1, -0.04], [1, -0.04]].forEach(([s, z], j) => {
             const w = new T.Group(); w.position.set(s * 0.03, 0.02, z); o.add(w);
@@ -1853,7 +1853,7 @@ code{font-size:12.5px}
         }
         c.anim((dt, t, u) => {
           const cam = c.cam(); if (!cam) return; step(list, dt, t, u, cam);
-          const st = c.status(), col = st === 'deadline' ? 0xff3d1f : st === 'last5' ? 0xff9f1c : 0x3ee6ff;
+          const st = c.status(), col = st === 'deadline' ? 0xD17600 : st === 'last5' ? 0xD17600 : 0x85C1EA;
           list.forEach(A => {
             if (A.dragon) { A.wings.forEach(w => { w.w.rotation.z = w.s * 0.45 * Math.sin(t * 22 + w.ph * 1.5); }); A.obj.children[6].material.color.setHex(col); A.obj.children[6].material.emissive.setHex(col); }
             else A.wings.forEach(w => { w.w.rotation.z = w.s * 0.9 * Math.sin(t * (45 + u * 20)); });
@@ -1983,7 +1983,7 @@ code{font-size:12.5px}
     const sk = new T.Mesh(new T.ConeGeometry(0.14 * k, 0.4 * k, 6), M.copper); sk.rotation.x = Math.PI / 2; sk.position.z = 0.13 * k; head.add(sk);
     const jaw = new T.Group(); jaw.position.set(0, -0.05 * k, 0.02); head.add(jaw);
     const jm = new T.Mesh(new T.ConeGeometry(0.1 * k, 0.32 * k, 6), M.brassDark); jm.rotation.x = Math.PI / 2; jm.position.z = 0.13 * k; jaw.add(jm);
-    const eye = new T.MeshStandardMaterial({ color: 0x3ee6ff, emissive: 0x3ee6ff, emissiveIntensity: 2.2 });
+    const eye = new T.MeshStandardMaterial({ color: 0x85C1EA, emissive: 0x85C1EA, emissiveIntensity: 2.2 });
     [-1, 1].forEach(s => { const e = new T.Mesh(new T.SphereGeometry(0.035 * k, 10, 6), eye); e.position.set(s * 0.08 * k, 0.06 * k, 0.08 * k); head.add(e); });
     for (let i = 0; i < 7; i++) { const f = new T.Mesh(new T.BoxGeometry(0.05 * k, 0.28 * k, 0.012), i % 2 ? M.turq : gold); const a = (i - 3) * 0.32; f.position.set(Math.sin(a) * 0.15 * k, (0.12 + Math.cos(a) * 0.1) * k, -0.06 * k); f.rotation.z = -a; head.add(f); }
     c.fade(head, 0.35 * k);
@@ -2000,7 +2000,7 @@ code{font-size:12.5px}
     c.anim((dt, t, u) => {
       const cam = c.cam(); if (!cam) return; lib.step([A], dt, t, u, cam); lib.chain(head, segs, 0.115 * k);
       jaw.rotation.x = 0.12 + 0.18 * (0.5 + 0.5 * Math.sin(t * (2 + u * 5)));
-      const st = c.status(), col = st === 'deadline' ? 0xff3d1f : st === 'last5' ? 0xff9f1c : 0x3ee6ff; eye.color.setHex(col); eye.emissive.setHex(col);
+      const st = c.status(), col = st === 'deadline' ? 0xD17600 : st === 'last5' ? 0xD17600 : 0x85C1EA; eye.color.setHex(col); eye.emissive.setHex(col);
     });
   }
   function chainPendulum(c, mat, bobMat) {
@@ -2124,19 +2124,24 @@ code{font-size:12.5px}
   // ---------- two independent serpents ----------
   function serpent(c, n, k, bodyA, bodyB, crestA, crestB) {
     const T = c.T, M = c.M, lib = G.VIDA.lib; G.VIDA._T(T);
+    /* 01/11/2026 (titular): com as três cores (quentes ou frias), o corpo e as escamas alternam as três juntas; as peças de
+       metal ficam (o cobre a cada quatro segmentos, o ouro nas cristas alternadas, o crânio, a mandíbula, os rebites) */
+    let P3 = null;
+    if (Array.isArray(bodyA)) { const cm = h => new T.MeshStandardMaterial({ color: h, roughness: 0.36, metalness: 0.12 }); P3 = bodyA.map(cm);
+      crestB = new T.MeshStandardMaterial({ color: 0xd8b04a, metalness: 1, roughness: 0.3 }); bodyA = P3[0]; bodyB = M.copper; crestA = P3[2]; }
     const head = new T.Group(); c.root.add(head);
     const sk = new T.Mesh(new T.ConeGeometry(0.14 * k, 0.4 * k, 6), M.copper); sk.rotation.x = Math.PI / 2; sk.position.z = 0.13 * k; head.add(sk);
     const jaw = new T.Group(); jaw.position.set(0, -0.05 * k, 0.02); head.add(jaw);
     const jm = new T.Mesh(new T.ConeGeometry(0.1 * k, 0.32 * k, 6), M.brassDark); jm.rotation.x = Math.PI / 2; jm.position.z = 0.13 * k; jaw.add(jm);
-    const eye = new T.MeshStandardMaterial({ color: 0x3ee6ff, emissive: 0x3ee6ff, emissiveIntensity: 2.2 });
+    const eye = new T.MeshStandardMaterial({ color: 0x85C1EA, emissive: 0x85C1EA, emissiveIntensity: 2.2 });
     [-1, 1].forEach(s => { const e = new T.Mesh(new T.SphereGeometry(0.035 * k, 10, 6), eye); e.position.set(s * 0.08 * k, 0.06 * k, 0.08 * k); head.add(e); });
-    for (let i = 0; i < 7; i++) { const f = new T.Mesh(new T.BoxGeometry(0.05 * k, 0.28 * k, 0.012), i % 2 ? crestA : crestB); const a = (i - 3) * 0.32; f.position.set(Math.sin(a) * 0.15 * k, (0.12 + Math.cos(a) * 0.1) * k, -0.06 * k); f.rotation.z = -a; head.add(f); }
+    for (let i = 0; i < 7; i++) { const f = new T.Mesh(new T.BoxGeometry(0.05 * k, 0.28 * k, 0.012), P3 ? (i % 2 ? P3[(i >> 1) % 3] : crestB) : (i % 2 ? crestA : crestB)); const a = (i - 3) * 0.32; f.position.set(Math.sin(a) * 0.15 * k, (0.12 + Math.cos(a) * 0.1) * k, -0.06 * k); f.rotation.z = -a; head.add(f); }
     c.fade(head, 0.35 * k);
     const segs = [];
     for (let i = 0; i < n; i++) {
       const q = 1 - i / (n + 6), s = new T.Group(); c.root.add(s);
-      const b = new T.Mesh(new T.CylinderGeometry(0.095 * k * q, 0.105 * k * q, 0.13 * k, 8), i % 3 ? bodyA : bodyB); b.rotation.x = Math.PI / 2; s.add(b);
-      if (i % 2 === 0) { const f = new T.Mesh(new T.OctahedronGeometry(0.05 * k * q), i % 4 ? crestA : crestB); f.position.y = 0.1 * k * q; f.scale.set(1, 0.6, 1.7); s.add(f); }
+      const b = new T.Mesh(new T.CylinderGeometry(0.095 * k * q, 0.105 * k * q, 0.13 * k, 8), P3 ? (i % 4 === 0 ? M.copper : P3[i % 3]) : (i % 3 ? bodyA : bodyB)); b.rotation.x = Math.PI / 2; s.add(b);
+      if (i % 2 === 0) { const f = new T.Mesh(new T.OctahedronGeometry(0.05 * k * q), P3 ? (i % 4 ? P3[(i >> 1) % 3] : crestB) : (i % 4 ? crestA : crestB)); f.position.y = 0.1 * k * q; f.scale.set(1, 0.6, 1.7); s.add(f); }
       if (i % 5 === 2) { const rv = new T.Mesh(new T.SphereGeometry(0.02 * k, 8, 6), M.brass); rv.position.x = 0.1 * k * q; s.add(rv); const rv2 = rv.clone(); rv2.position.x *= -1; s.add(rv2); }
       c.fade(s, 0.13 * k); segs.push(s);
     }
@@ -2146,13 +2151,13 @@ code{font-size:12.5px}
     c.anim((dt, t, u) => {
       const cam = c.cam(); if (!cam) return; lib.step([A], dt, t, u, cam); lib.chain(head, segs, 0.115 * k);
       jaw.rotation.x = 0.12 + 0.18 * (0.5 + 0.5 * Math.sin(t * (2 + u * 5) + ph));
-      const st = c.status(), col = st === 'deadline' ? 0xff3d1f : st === 'last5' ? 0xff9f1c : 0x3ee6ff; eye.color.setHex(col); eye.emissive.setHex(col);
+      const st = c.status(), col = st === 'deadline' ? 0xD17600 : st === 'last5' ? 0xD17600 : 0x85C1EA; eye.color.setHex(col); eye.emissive.setHex(col);
     });
   }
   function twoSerpents(c) {
     const T = c.T, M = c.M, gold = new T.MeshStandardMaterial({ color: 0xd8b04a, metalness: 1, roughness: 0.3 });
-    serpent(c, 46, 1.0, M.jade, M.copper, M.turq, gold);
-    serpent(c, 36, 0.78, M.turq, gold, gold, M.jade);
+    serpent(c, 46, 1.0, [0xE3AB00, 0xD17600, 0xF6EA07]);   // a serpente quente (as cores quentes da associação)
+    serpent(c, 36, 0.78, [0x4C75B4, 0x001D7E, 0x85C1EA]);  // a serpente fria (as cores frias)
   }
 
   // ---------- three orbit-arc designs ----------
@@ -2184,7 +2189,7 @@ code{font-size:12.5px}
     },
     giroscopio: {
       rimMat: 'brass', plateBorder: '#d9a75a', limbTicks: true, globeR: GR, noHands: true,
-      disc: { rim: '#0d1c1a', monthBg: '#14332e', monthAlt: '#1b4039', monthSel: '#ff9f1c', monthSelInk: '#0d1c1a', ink: '#e9f2ee', dayBg: '#0a1514', cell: '#1f312e', past: '#121d1b', dayInk: '#9fe0cf', line: '#c47a45', markOpen: '#e9f2ee' },
+      disc: { rim: '#000B33', monthBg: '#001250', monthAlt: '#001A6A', monthSel: '#D17600', monthSelInk: '#000000', ink: '#FFFFFF', dayBg: '#000824', cell: '#001256', past: '#000A36', dayInk: '#85C1EA', line: '#c47a45', markOpen: '#D17600' },
       build(c) {
         const { T, M } = c; sphereCage(c);
         const g1 = new T.Group(); c.root.add(g1);
@@ -2238,6 +2243,6 @@ code{font-size:12.5px}
   };
 })(window);
 </script>
-<script>(function(){ var S = window.ESTILOS["maia"]; var cfg = Object.assign({ planet: window.armilarPlanet, text: { ink: "#ffd9a0", sub: "#7fd6c4", glow: "#ff8c2a" }, extraMats: S.extraMats, extraLine: S.extraLine }, {"title": "Serpentes de Jade: Giroscópio", "subtitle": "A esfera do Armilar a Vapor dentro de um giroscópio: três anéis em cardan, presos por pinos de pivô, giram cada um em um eixo, com o Sol e a Lua percorrendo suas órbitas. Duas serpentes de jade vagam livres ao redor.", "howto": "Os meses ficam no anel interno e os dias de cada mês logo à frente dele. A seta ciano e a placa marcam o início do período; a seta vermelha e a placa marcam o fim. No centro, a esfera do Armilar a Vapor com seus anéis de órbita; as duas serpentes vagam livres e desviam para não cobrir as informações.", "fonts": ["400 40px \"Marcellus\""], "lamp": {"open": "#ffd98a", "elapsed": "#8a6a2e", "last5": "#ff9f1c", "deadline": "#ff3d1f", "closed": "#7a2a1a", "off": "#2a2420", "today": "#ffffff"}, "font": "\"Marcellus\", \"Trajan Pro\", Georgia, serif", "metal": {"brass": 10975802, "brassDark": 7228964, "copper": 10246706, "jade": 3050346, "turq": 3912611}, "light": 16770756, "rim": 8378052}); window.Relogio.start(cfg, window.makeMechLayout(window.SERP3["giroscopio"])); })();</script>
+<script>(function(){ var S = window.ESTILOS["maia"]; var cfg = Object.assign({ planet: window.armilarPlanet, text: { ink: "#FFD9A8", sub: "#85C1EA", glow: "#D17600" }, extraMats: S.extraMats, extraLine: S.extraLine }, {"title": "Serpentes de Jade: Giroscópio", "subtitle": "A esfera do Armilar a Vapor dentro de um giroscópio: três anéis em cardan, presos por pinos de pivô, giram cada um em um eixo, com o Sol e a Lua percorrendo suas órbitas. Duas serpentes de jade vagam livres ao redor.", "howto": "Os meses ficam no anel interno e os dias de cada mês logo à frente dele. A seta ciano e a placa marcam o início do período; a seta vermelha e a placa marcam o fim. No centro, a esfera do Armilar a Vapor com seus anéis de órbita; as duas serpentes vagam livres e desviam para não cobrir as informações.", "fonts": ["400 40px \"Marcellus\""], "lamp": {"open": "#D17600", "elapsed": "#5A3300", "last5": "#D17600", "deadline": "#D17600", "closed": "#4A2600", "off": "#0A1238", "today": "#ffffff"}, "font": "\"Marcellus\", \"Trajan Pro\", Georgia, serif", "metal": {"brass": 10975802, "brassDark": 7228964, "copper": 10246706, "jade": 5010868, "turq": 8765930}, "light": 16770756, "rim": 5010868}); window.Relogio.start(cfg, window.makeMechLayout(window.SERP3["giroscopio"])); })();</script>
 </body>
 </html>
