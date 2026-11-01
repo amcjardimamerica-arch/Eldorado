@@ -2126,13 +2126,17 @@ code{font-size:12.5px}
     const T = c.T, M = c.M, lib = G.VIDA.lib; G.VIDA._T(T);
     /* 01/11/2026 (titular): com as três cores (quentes ou frias), o corpo e as escamas alternam as três juntas; as peças de
        metal ficam (o cobre a cada quatro segmentos, o ouro nas cristas alternadas, o crânio, a mandíbula, os rebites) */
-    let P3 = null;
+    let P3 = null, rebite = M.brass, mandibula = M.brassDark;
     if (Array.isArray(bodyA)) { const cm = h => new T.MeshStandardMaterial({ color: h, roughness: 0.36, metalness: 0.12 }); P3 = bodyA.map(cm);
-      crestB = new T.MeshStandardMaterial({ color: 0xd8b04a, metalness: 1, roughness: 0.3 }); bodyA = P3[0]; bodyB = M.copper; crestA = P3[2]; }
+      /* 01/11/2026 (titular): na serpente azul, o dourado em titânio, com o mesmo brilho e o mesmo acabamento */
+      const tit = !!(bodyB && bodyB.titanio);
+      crestB = new T.MeshStandardMaterial({ color: tit ? 0xb9bec4 : 0xd8b04a, metalness: 1, roughness: 0.3 });
+      if (tit) { rebite = new T.MeshStandardMaterial({ color: 0xa9aeb5, metalness: 1, roughness: 0.32 }); mandibula = new T.MeshStandardMaterial({ color: 0x6c7279, metalness: 1, roughness: 0.42 }); }
+      bodyA = P3[0]; bodyB = M.copper; crestA = P3[2]; }
     const head = new T.Group(); c.root.add(head);
     const sk = new T.Mesh(new T.ConeGeometry(0.14 * k, 0.4 * k, 6), M.copper); sk.rotation.x = Math.PI / 2; sk.position.z = 0.13 * k; head.add(sk);
     const jaw = new T.Group(); jaw.position.set(0, -0.05 * k, 0.02); head.add(jaw);
-    const jm = new T.Mesh(new T.ConeGeometry(0.1 * k, 0.32 * k, 6), M.brassDark); jm.rotation.x = Math.PI / 2; jm.position.z = 0.13 * k; jaw.add(jm);
+    const jm = new T.Mesh(new T.ConeGeometry(0.1 * k, 0.32 * k, 6), mandibula); jm.rotation.x = Math.PI / 2; jm.position.z = 0.13 * k; jaw.add(jm);
     const eye = new T.MeshStandardMaterial({ color: 0x85C1EA, emissive: 0x85C1EA, emissiveIntensity: 2.2 });
     [-1, 1].forEach(s => { const e = new T.Mesh(new T.SphereGeometry(0.035 * k, 10, 6), eye); e.position.set(s * 0.08 * k, 0.06 * k, 0.08 * k); head.add(e); });
     for (let i = 0; i < 7; i++) { const f = new T.Mesh(new T.BoxGeometry(0.05 * k, 0.28 * k, 0.012), P3 ? (i % 2 ? P3[(i >> 1) % 3] : crestB) : (i % 2 ? crestA : crestB)); const a = (i - 3) * 0.32; f.position.set(Math.sin(a) * 0.15 * k, (0.12 + Math.cos(a) * 0.1) * k, -0.06 * k); f.rotation.z = -a; head.add(f); }
@@ -2142,7 +2146,7 @@ code{font-size:12.5px}
       const q = 1 - i / (n + 6), s = new T.Group(); c.root.add(s);
       const b = new T.Mesh(new T.CylinderGeometry(0.095 * k * q, 0.105 * k * q, 0.13 * k, 8), P3 ? (i % 4 === 0 ? M.copper : P3[i % 3]) : (i % 3 ? bodyA : bodyB)); b.rotation.x = Math.PI / 2; s.add(b);
       if (i % 2 === 0) { const f = new T.Mesh(new T.OctahedronGeometry(0.05 * k * q), P3 ? (i % 4 ? P3[(i >> 1) % 3] : crestB) : (i % 4 ? crestA : crestB)); f.position.y = 0.1 * k * q; f.scale.set(1, 0.6, 1.7); s.add(f); }
-      if (i % 5 === 2) { const rv = new T.Mesh(new T.SphereGeometry(0.02 * k, 8, 6), M.brass); rv.position.x = 0.1 * k * q; s.add(rv); const rv2 = rv.clone(); rv2.position.x *= -1; s.add(rv2); }
+      if (i % 5 === 2) { const rv = new T.Mesh(new T.SphereGeometry(0.02 * k, 8, 6), rebite); rv.position.x = 0.1 * k * q; s.add(rv); const rv2 = rv.clone(); rv2.position.x *= -1; s.add(rv2); }
       c.fade(s, 0.13 * k); segs.push(s);
     }
     const A = lib.agent(head, { max: 0.55 + 0.1 * k, wand: 1.1, turn: 3, rmin: 2.3, rmax: 2.9 });   /* 28/10/2026: dentro do enquadramento; a mesma velocidade */
@@ -2157,7 +2161,7 @@ code{font-size:12.5px}
   function twoSerpents(c) {
     const T = c.T, M = c.M, gold = new T.MeshStandardMaterial({ color: 0xd8b04a, metalness: 1, roughness: 0.3 });
     serpent(c, 46, 1.0, [0xE3AB00, 0xD17600, 0xF6EA07]);   // a serpente quente (as cores quentes da associação)
-    serpent(c, 36, 0.78, [0x4C75B4, 0x001D7E, 0x85C1EA]);  // a serpente fria (as cores frias)
+    serpent(c, 36, 0.78, [0x4C75B4, 0x85C1EA, 0x002397], { titanio: true });  // a serpente fria: a mais escura 20% mais clara (#001D7E → #002397) e trocada com a mais clara; o dourado em titânio
   }
 
   // ---------- three orbit-arc designs ----------
