@@ -811,6 +811,35 @@ def permanente(
         except Exception:  # noqa: BLE001
             pass
 
+    def _depois_da_passagem() -> None:
+        """01/11/2026: o que vem depois de cada passagem (o expurgo da R35 e o descarte, a retenção de 30 dias, a memória
+        devolvida). Ficava no caminho do retorno normal de _rodar, que NUNCA retorna (termina sempre com typer.Exit):
+        desde 29-30/10 nada disto rodava na produção. Agora roda em todo término real (sucesso ou falha), não na adiada."""
+        try:   # R35 (30/10/2026): a leitura dos sites sai do banco depois de servir ao Cartório
+            from ..cartorio.leitura_efemera import expurgar as _expurgar_leituras
+
+            _ex = _expurgar_leituras(Path(_cfg(config)[1]) / "biblioteca.db", Path(_cfg(config)[2]))
+            if _ex["documentos"]:
+                typer.echo(f"  R35: a leitura de {_ex['documentos']} documento(s) saiu do banco (ficam o texto da oportunidade e os endereços)")
+        except Exception as _e:  # noqa: BLE001
+            typer.echo(f"  R35: o expurgo das leituras falhou: {type(_e).__name__}: {str(_e)[:120]}")
+        try:   # 01/11/2026: a telemetria fica 30 dias no Cérebro (o Comandante aprende com ela); o que passa disso sai
+            from ..cerebro.retencao import reter as _reter
+
+            _rt = _reter(Path(_cfg(config)[1]) / "cerebro.db", Path(_cfg(config)[2]))
+            if sum(v for k, v in _rt.items()):
+                typer.echo(f"  retenção de 30 dias no Cérebro: {_rt}")
+        except Exception as _e:  # noqa: BLE001
+            typer.echo(f"  a retenção do Cérebro falhou: {type(_e).__name__}: {str(_e)[:120]}")
+        try:   # 29/10/2026: a memória que a passagem liberou volta ao sistema (para o Interceptador)
+            from ..cerebro.governador import liberar_memoria
+
+            _mb = liberar_memoria()
+            if _mb >= 50:
+                typer.echo(f"  memória devolvida ao sistema depois da passagem: {_mb:.0f} MB")
+        except Exception:  # noqa: BLE001
+            pass
+
     while True:
         ciclo += 1
         _t0 = time.monotonic()
@@ -818,33 +847,12 @@ def permanente(
         try:
             _rodar(workflow, config, None, None, "leve")
             _sinal_passagem(f"ciclo {ciclo}: a passagem terminou em {(time.monotonic() - _t0) / 60:.1f} min")
-            try:   # R35 (30/10/2026): a leitura dos sites sai do banco depois de servir ao Cartório
-                from ..cartorio.leitura_efemera import expurgar as _expurgar_leituras
-
-                _ex = _expurgar_leituras(Path(_cfg(config)[1]) / "biblioteca.db", Path(_cfg(config)[2]))
-                if _ex["documentos"]:
-                    typer.echo(f"  R35: a leitura de {_ex['documentos']} documento(s) saiu do banco (ficam o texto da oportunidade e os endereços)")
-            except Exception as _e:  # noqa: BLE001
-                typer.echo(f"  R35: o expurgo das leituras falhou: {type(_e).__name__}: {str(_e)[:120]}")
-            try:   # 01/11/2026: a telemetria fica 30 dias no Cérebro (o Comandante aprende com ela); o que passa disso sai
-                from ..cerebro.retencao import reter as _reter
-
-                _rt = _reter(Path(_cfg(config)[1]) / "cerebro.db", Path(_cfg(config)[2]))
-                if sum(v for k, v in _rt.items()):
-                    typer.echo(f"  retenção de 30 dias no Cérebro: {_rt}")
-            except Exception as _e:  # noqa: BLE001
-                typer.echo(f"  a retenção do Cérebro falhou: {type(_e).__name__}: {str(_e)[:120]}")
-            try:   # 29/10/2026: a memória que a passagem liberou volta ao sistema (para o Interceptador)
-                from ..cerebro.governador import liberar_memoria
-
-                _mb = liberar_memoria()
-                if _mb >= 50:
-                    typer.echo(f"  memória devolvida ao sistema depois da passagem: {_mb:.0f} MB")
-            except Exception:  # noqa: BLE001
-                pass
+            _depois_da_passagem()
         except typer.Exit as e:
             _como = "adiada pelo governador" if e.exit_code == ADIADO else "terminou"
             _sinal_passagem(f"ciclo {ciclo}: código {e.exit_code} ({_como}) em {(time.monotonic() - _t0) / 60:.1f} min")
+            if e.exit_code != ADIADO:   # 01/11/2026: a passagem terminou de verdade (com sucesso ou falha): a manutenção roda
+                _depois_da_passagem()
             if e.exit_code == 75:   # 30/10/2026: adiada pelo governador (a máquina carregada): os voos cedem a vez e a
                 # passagem espera 60 s (antes recomeçava NA HORA: 13.746 vezes numa hora, 100 mil sinais por dia)
                 try:

@@ -244,39 +244,35 @@ def montar(
         f"{conf} livros com a origem confirmada (o link original)",
         iso,
     )
-    # os documentos sem texto (24/10/2026): a leitura ATUAL (os do sistema novo) e a lacuna da migração (os herdados,
-    # relidos pela releitura) medidas em separado; vermelho só com falha da leitura atual ou a releitura travada
-    sem = "NOT EXISTS (SELECT 1 FROM pagina p WHERE p.documento_id = d.id)"
-    herd = "d.obtido_em LIKE '2026-10-22T18:58%'"
-    parciais = q(bib, f"SELECT COUNT(*) FROM documento d WHERE {sem}")
-    herd_sem = q(bib, f"SELECT COUNT(*) FROM documento d WHERE {herd} AND {sem}")
-    novos = q(bib, f"SELECT COUNT(*) FROM documento d WHERE NOT ({herd}) OR d.obtido_em IS NULL")
-    novos_sem = parciais - herd_sem
-    try:
-        relidos = q(cer, "SELECT COUNT(*) FROM releitura WHERE resultado LIKE 'relido%'")
-        relidos_24h = q(cer, "SELECT COUNT(*) FROM releitura WHERE resultado LIKE 'relido%' AND ultima >= ?", h24)
-        tentados_24h = q(cer, "SELECT COUNT(*) FROM releitura WHERE ultima >= ?", h24)
-        indisponiveis = q(cer, "SELECT COUNT(*) FROM releitura WHERE tentativas >= 3 AND resultado NOT LIKE 'relido%'")
-        ult_rel = q(cer, "SELECT MAX(ultima) FROM releitura")
-    except sqlite3.Error:
-        relidos = relidos_24h = tentados_24h = indisponiveis = 0
-        ult_rel = None
+    # os documentos sem texto lido (01/11/2026, titular: o alerta "8.704 documentos sem texto lido"). Antes contava os
+    # documentos SEM PÁGINA no banco; desde a R35 a leitura sai do banco de propósito depois de certificada, e todo documento
+    # lido passava a contar (o alerta media a regra funcionando). Agora conta a LEITURA que não extraiu texto (zero páginas,
+    # o registro que fica no documento): a leitura atual (o sistema novo) e os herdados do sistema anterior, separados
+    lidos = "d.leitor IS NOT NULL AND d.leitor <> ''"
+    herd = "d.leitor LIKE 'Eldorado0%'"
+    zero = "COALESCE(d.paginas, 0) = 0"
+    novos = q(bib, f"SELECT COUNT(*) FROM documento d WHERE {lidos} AND NOT ({herd})")
+    novos_sem = q(bib, f"SELECT COUNT(*) FROM documento d WHERE {lidos} AND NOT ({herd}) AND {zero}")
+    herd_sem = q(bib, f"SELECT COUNT(*) FROM documento d WHERE {herd} AND {zero}")
+    herd_livro = q(bib, f"SELECT COUNT(DISTINCT d.id) FROM documento d JOIN certidao c ON c.documento_id = d.id JOIN livro l ON l.id = c.livro_id "
+                        f"WHERE {herd} AND {zero} AND l.situacao NOT IN ('excluido', 'unido')")
+    nunca = q(bib, f"SELECT COUNT(*) FROM documento d WHERE NOT ({lidos})")
+    expurgados = q(bib, f"SELECT COUNT(*) FROM documento d WHERE {lidos} AND NOT {zero} AND NOT EXISTS (SELECT 1 FROM pagina p WHERE p.documento_id = d.id)")
     if novos and novos_sem / novos > 0.05:
-        est_p = "vermelho"
-    elif herd_sem - indisponiveis > 0 and tentados_24h and not relidos_24h:
-        est_p = "vermelho"  # a releitura tentou e não conseguiu nada em 24 h
-    elif herd_sem - indisponiveis > 0:
-        est_p = "amarelo"  # em correção: a fila dos herdados
+        est_p = "vermelho"   # a leitura atual falhando
+    elif novos_sem or nunca:
+        est_p = "amarelo"
     else:
         est_p = "verde"
     I(
         "es_parcial",
         "Documentos sem texto lido",
-        parciais,
+        novos_sem + nunca,
         est_p,
-        f"a leitura atual: {novos_sem} de {novos} documentos novos sem texto; a migração: {herd_sem} herdados sem texto em correção "
-        f"(relidos: {relidos}, {relidos_24h} nas últimas 24 h; indisponíveis de vez: {indisponiveis})",
-        ult_rel or iso,
+        f"a leitura atual: {novos_sem} de {novos} documentos lidos sem texto extraído; {nunca} ainda sem leitura · "
+        f"{expurgados} lidos e certificados, com a leitura já fora do banco (R35, o esperado) · os herdados do sistema anterior "
+        f"vieram sem o texto: {herd_sem} (usados por {herd_livro} livro(s) ativo(s), com a certidão herdada)",
+        iso,
     )
     # ---- 04 Investigação
     fila_i = q(bib, f"SELECT COUNT(*) {AB} AND l.estrela <> 'ouro' AND l.id IN (SELECT livro_id FROM passaporte WHERE fase = 'preparacao')")
