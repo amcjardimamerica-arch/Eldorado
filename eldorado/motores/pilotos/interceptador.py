@@ -131,6 +131,10 @@ class Livro:
         return f"{int(m.group(1))}/{m.group(2)}" if m else None
 
 
+
+from eldorado.base.cartorio.migrados import sql_migrado  # noqa: E402
+
+
 def fila(con: sqlite3.Connection, hoje: str) -> list[Livro]:
     """Os livros na fase 3 (preparação), na ordem do Cartório: as abertas que fecham antes; depois os mais perto do ouro."""
     con.row_factory = sqlite3.Row
@@ -144,7 +148,9 @@ def fila(con: sqlite3.Connection, hoje: str) -> list[Livro]:
     for r in con.execute("SELECT l.id, l.titulo, l.orgao, l.link_oficial, l.link_divulgacao, l.estrela, d.inscricao_fim, d.municipio, l.uf, "
                          "d.modalidade FROM livro l "
                          "JOIN livro_dados d ON d.livro_id = l.id JOIN passaporte p ON p.livro_id = l.id WHERE p.fase = 'preparacao' "
-                         "AND l.situacao NOT IN ('excluido', 'unido') AND d.validacao <> 'expurgado' AND l.id NOT IN (SELECT livro_unido FROM uniao)"):
+                         "AND l.situacao NOT IN ('excluido', 'unido') AND d.validacao <> 'expurgado' AND l.id NOT IN (SELECT livro_unido FROM uniao) "
+                         # 01/11/2026 (titular): os migrados do Eldorado0 são histórico, sem nova avaliação (salvo os abertos)
+                         f"AND NOT ({sql_migrado()} AND COALESCE(d.inscricao_fim, '') < ?)", (hoje,)):
         lv = Livro(r["id"], r["titulo"] or "", r["orgao"], r["link_oficial"], r["link_divulgacao"], r["estrela"] or "sem", r["inscricao_fim"],
                    I.melhor(certs.get(r["id"], [])), tentadas.get(r["id"], set()), r["municipio"], r["uf"], regime_de(r["titulo"], r["modalidade"]))
         if lv.faltam:

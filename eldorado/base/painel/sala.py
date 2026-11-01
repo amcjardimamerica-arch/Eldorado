@@ -18,7 +18,7 @@ from typing import Any
 ETAPAS = {
     "regencia": ["rg_regencia", "ma_cobertura", "ma_esgotados", "dg_finalidade", "ma_memoria_etapa"],
     "coleta": ["mo_saude", "mo_cadencia", "mo_retentativa", "mo_fora_da_fila", "es_coleta"],
-    "certificacao": ["ca_12", "fl_fila", "es_curadoria", "es_parcial"],
+    "certificacao": ["ca_12", "fl_fila", "es_curadoria", "es_parcial", "es_expurgo"],
     "investigacao": ["pi_interceptador", "pi_espiao", "pi_piloto", "de_decisoes", "pi_missoes", "pi_vagas"],
     "externa": ["ve_para_o_chrome", "ve_bloqueadas", "ve_completas", "ve_importado", "al_externa"],
     "repositorio": ["es_abertas", "es_banco_unico", "hi_crescimento"],
@@ -274,6 +274,25 @@ def montar(
         f"vieram sem o texto: {herd_sem} (usados por {herd_livro} livro(s) ativo(s), com a certidão herdada)",
         iso,
     )
+    # o último expurgo (01/11/2026, titular): o expurgo é do Claude, nunca do sistema; a Sala mostra o último e o que está
+    # indicado para avaliação (os documentos sem uso, os achados sem livro e os migrados aguardando o Chrome). Nunca vermelho
+    try:
+        from ..cartorio.expurgo_claude import candidatos as _cand
+        from ..cartorio.expurgo_claude import ultimo as _ult
+
+        cd, ul = _cand(bib), _ult()
+        I(
+            "es_expurgo",
+            "Último expurgo (feito pelo Claude)",
+            cd["total"],
+            "amarelo" if cd["total"] else "verde",
+            (f"o último: {ul['em'][:10]} ({ul.get('motivo', '')[:80]}) · " if ul else "nenhum expurgo registrado · ")
+            + f"indicados para avaliação: {cd['documentos_sem_uso']} documentos sem uso, {cd['achados_sem_livro']} achados sem livro, "
+            f"{cd['migrados_no_chrome']} migrados aguardando o Chrome — o sistema não apaga; o Claude avalia e expurga",
+            (ul or {}).get("em") or iso,
+        )
+    except Exception:  # noqa: BLE001
+        pass
     # ---- 04 Investigação
     fila_i = q(bib, f"SELECT COUNT(*) {AB} AND l.estrela <> 'ouro' AND l.id IN (SELECT livro_id FROM passaporte WHERE fase = 'preparacao')")
     I(
