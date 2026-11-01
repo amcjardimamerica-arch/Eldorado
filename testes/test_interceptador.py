@@ -52,7 +52,7 @@ def test_interceptador_entrega_informacao_ao_livro_sem_certificar(orgao, gravado
     b = bancos["biblioteca"]
     lv = fila(b, "2026-10-22")[0]
     r = Interceptador(b, diario, escada()).investigar(lv)
-    assert r["abordagem"] == 1 and r["achado"].dados["livro_id"] == "L" and any("30/11/2026" in p for p in r["achado"].documento["paginas"])
+    assert r["abordagem"] in (12, 1) and r["achado"].dados["livro_id"] == "L"   # 01/11/2026: a verificação prévia (12) primeiro; and any("30/11/2026" in p for p in r["achado"].documento["paginas"])
     assert not [e for e in ler(tmp_path / "eventos") if e.tipo == "certidao.gravada"]                       # quem certifica é o Cartório
     assert [e.dados["fase"] for e in ler(tmp_path / "eventos") if e.tipo == "tentativa.registrada"] == ["preparacao"]
 

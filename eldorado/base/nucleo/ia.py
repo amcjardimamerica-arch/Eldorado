@@ -132,6 +132,8 @@ class IA:
                      "temperature": float(self.cargo.get("temperatura", 0.1)),
                      "max_tokens": min(maximo_tokens, int(self.cargo.get("maximo_tokens", maximo_tokens))),
                      "cache_prompt": True}                         # o contexto da vaga é reaproveitado (o estudo: 189 s → 12 s)
+            if tarefa == "comprovar":                          # 01/11/2026: a saída em formato fixo (o modelo é obrigado ao JSON)
+                corpo["response_format"] = {"type": "json_object"}
             if "vaga" in self.cargo:
                 corpo["id_slot"] = int(self.cargo["vaga"])           # a vaga do cargo: o Comandante e os pilotos não se interrompem
             uso.tarefa = f"{self.cargo_nome}: {tarefa}" if self.cargo_nome else tarefa
@@ -146,7 +148,7 @@ class IA:
         return _json(d["choices"][0]["message"]["content"]), uso
 
 
-def trechos_relevantes(paginas: list[str], itens: list[str], limite: int = 4000) -> list[tuple[int, str]]:   # 30/10/2026: 4.000 (eram 6.000)
+def trechos_relevantes(paginas: list[str], itens: list[str], limite: int = 2500) -> list[tuple[int, str]]:   # 01/11/2026: 2.500 (eram 4.000)
     """As partes do documento mais ligadas aos itens que faltam (o modelo local tem contexto e tempo limitados)."""
     chaves = {"Prazo de inscrição": r"inscri|prazo|per[íi]odo|cronograma", "Valor": r"R\$|valor|montante|recurso",
               "Requisitos": r"requisit|poder[ãa]o|propon|habilita", "Resultado": r"resultado|homolog|divulga",

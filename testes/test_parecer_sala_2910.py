@@ -461,7 +461,7 @@ def test_a_ia_do_interceptador_um_pedido_de_cada_vez():
     from eldorado.motores.pilotos.interceptador import VEZ_DA_IA
 
     assert VEZ_DA_IA._limite() == 1
-    assert inspect.signature(ia.trechos_relevantes).parameters["limite"].default == 4000
+    assert inspect.signature(ia.trechos_relevantes).parameters["limite"].default == 2500  # 01/11/2026: a melhoria 3 (a IA mais rápida)
 
 
 def test_a_memoria_e_o_monitoramento_real():

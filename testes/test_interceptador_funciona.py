@@ -92,7 +92,7 @@ def test_o_plano_de_voo_segue_os_itens_que_faltam(bancos, diario, tmp_path):
         it = Interceptador(bancos["biblioteca"], diario, Escada([DegrauAPI()], intervalo_padrao=0, tentativas=1, tempo_limite=10))
         lv = Livro("L4", "Edital de chamamento público nº 7/2026", None, None, f"{base}/noticia-edital", "sem", None, {}, set())
         plano = it.plano_de_voo(lv)
-        assert plano and plano[0][0] == 1 and "Prazo de inscrição" in plano[0][1]        # a página oficial primeiro, para o prazo
+        assert plano and plano[0][0] == 12 and plano[1][0] == 1 and "Prazo de inscrição" in plano[0][1]   # 01/11/2026: a verificação prévia, depois a página oficial
         r = it.voar(lv, tempo_livro_s=30)
     finally:
         srv.shutdown()

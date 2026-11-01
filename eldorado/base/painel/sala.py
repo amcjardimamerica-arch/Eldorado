@@ -401,6 +401,27 @@ def montar(
         ms = []
     nm, it = len(ms), int(sum((r[0] or 0) for r in ms))
     vazias = sum(1 for r in ms if not r[0])
+    # 01/11/2026 (titular): a causa, não só a média — o que aconteceu com cada tentativa das últimas 24 h
+    causa = {"sem material": 0, "sem a vez da IA": 0, "IA com tempo estourado": 0, "IA rodou": 0, "itens pelos extratores": 0}
+    try:
+        for (res,) in bib.execute("SELECT resultado FROM tentativa WHERE ferramenta LIKE 'abordagem %' AND em >= ?", (h24,)):
+            try:
+                r = json.loads(res or "{}")
+            except ValueError:
+                continue
+            ia_ = r.get("ia") or {}
+            if r.get("sem material"):
+                causa["sem material"] += 1
+            elif "adiada" in ia_:
+                causa["sem a vez da IA"] += 1
+            elif "indisponivel" in ia_:
+                causa["IA com tempo estourado"] += 1
+            elif "propostas" in ia_:
+                causa["IA rodou"] += 1
+            causa["itens pelos extratores"] += len(ia_.get("extratores") or [])
+    except sqlite3.Error:
+        pass
+    causas_txt = "; as tentativas: " + ", ".join(f"{k} {v}" for k, v in causa.items())
     I(
         "pi_missoes",
         "Missões do Interceptador (24 h): itens do checklist obtidos",
@@ -408,7 +429,7 @@ def montar(
         "cinza" if not nm else _faixa(it / nm, 1.5, 0.5),
         "ainda sem missão registrada"
         if not nm
-        else f"{nm} missões, {it} itens do checklist obtidos (média {it / nm:.1f} por missão); {vazias} voltaram sem item",
+        else f"{nm} missões, {it} itens do checklist obtidos (média {it / nm:.1f} por missão); {vazias} voltaram sem item{causas_txt}",
         iso,
     )
     try:

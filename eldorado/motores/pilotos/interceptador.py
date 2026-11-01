@@ -41,8 +41,13 @@ from ..leitura.pdf import LeitorPDF
 
 ABORDAGENS = {1: "documento na mão", 2: "anexos completos", 3: "página oficial e citados", 4: "biblioteca de sites",
               5: "mídia do WordPress", 6: "mapa do site", 7: "cópia arquivada", 8: "ponte do titular", 9: "leitura profunda", 10: "busca no domínio",
-              11: "secretaria do município"}
-ORDEM = {"sem estrela": [1, 11, 4, 3, 10, 6, 5, 8, 2, 9, 7], "bronze": [1, 11, 2, 3, 9, 7, 4, 10, 6, 5, 8], "prata": [1, 11, 2, 9, 7, 3, 4, 10, 6, 5, 8]}
+              11: "secretaria do município", 12: "verificação prévia"}
+# 01/11/2026 (titular): a verificação prévia (12) é sempre a primeira: o site original, o edital oficial e os anexos, lidos
+# de uma vez pelos extratores; as abordagens que nunca renderam ficam aposentadas (em 3 dias: biblioteca de sites 0 de 12,
+# mídia do WordPress 0 de 21, secretaria do município 0 de 12)
+APOSENTADAS = {4, 5, 11}
+ORDEM = {"sem estrela": [12, 1, 11, 4, 3, 10, 6, 5, 8, 2, 9, 7], "bronze": [12, 1, 11, 2, 3, 9, 7, 4, 10, 6, 5, 8],
+         "prata": [12, 1, 11, 2, 9, 7, 3, 4, 10, 6, 5, 8]}
 FOCO = {"sem estrela": I.BRONZE, "bronze": ("Valor", "Requisitos"), "prata": tuple(i for i in I.DOZE if i not in I.PRATA)}
 MAXIMO = 10
 # o plano de voo (titular, 25/10/2026): para cada item que falta, as abordagens mais certeiras do canivete, em ordem
@@ -51,10 +56,15 @@ PLANO_POR_ITEM = {
     "Valor": (9, 1, 2, 5, 3, 10), "Requisitos": (9, 2, 1, 5, 3), "Anexos": (2, 1, 5, 3, 6), "Modalidade": (9, 1, 2, 3),
     "Objeto": (1, 9, 3, 10, 11, 4), "Órgão / financiador": (1, 3, 4, 11, 10), "Território": (1, 11, 3, 10, 4),
     "Esfera": (1, 3, 4, 11), "Área de atuação": (1, 3, 10, 9)}
+PLANO_POR_ITEM = {k: (12, *v) for k, v in PLANO_POR_ITEM.items()}
+# os itens que só existem depois da seleção: o edital de abertura não os traz, o Interceptador não os persegue
+POSTERIORES = frozenset({"Resultado", "Prazo de recurso"})
+# os dados que bastam para julgar a oportunidade: comprovados, o livro sai da fila (não se insiste no resto)
+ESSENCIAIS = ("Prazo de inscrição", "Objeto", "Órgão / financiador")
 FERRAMENTAS = {1: "a página oficial e os documentos dela", 2: "os arquivos do edital (PNCP)", 3: "as páginas do mesmo site",
                4: "os sites conhecidos do órgão", 5: "as mídias do WordPress", 6: "o mapa do site", 7: "a cópia arquivada (Wayback)",
                8: "a ponte do titular", 9: "a leitura completa dos documentos (PDF, tabelas e OCR das imagens)", 10: "a busca no domínio",
-               11: "a secretaria do município"}
+               11: "a secretaria do município", 12: "o site original, o edital oficial e os anexos (verificação prévia)"}
 NUMERO = re.compile(r"n[º°o.]*\s*0*(\d{1,4})\s*[/_-]\s*(20\d\d)", re.I)
 PNCP = re.compile(r"pncp\.gov\.br/app/editais/(\d{14})/(\d{4})/(\d+)")
 CHAVE = re.compile(r"(?i)edital|chamamento|chamada|sele[çc][ãa]o|regulamento|anexo|credenciamento|pr[êe]mio")
@@ -116,8 +126,15 @@ class Livro:
         """Os itens a buscar: os que faltam, sem os que o regime não tem (a matriz de dispensas: o Interceptador não gasta
         voo procurando prazo de inscrição num fluxo contínuo; o item continua sem certidão até o edital declarar)."""
         f = I.faltando({k: v for k, v in self.certidoes.items() if I.resolvido(v)})
-        fora = _dispensaveis(self.regime)
+        fora = _dispensaveis(self.regime) | POSTERIORES
         return [i for i in f if i not in fora]
+
+    @property
+    def suficiente(self) -> bool:
+        """01/11/2026 (titular: "se os dados coletados são suficientes para julgamento, não faz sentido insistir"): o prazo,
+        o objeto, o órgão e o local (o território ou a esfera) comprovados bastam para julgar a oportunidade."""
+        ok = {k for k, v in self.certidoes.items() if I.resolvido(v)}
+        return all(e in ok for e in ESSENCIAIS) and bool(ok & {"Território", "Esfera"})
 
     @property
     def base(self) -> str | None:
@@ -153,8 +170,9 @@ def fila(con: sqlite3.Connection, hoje: str) -> list[Livro]:
                          f"AND NOT ({sql_migrado()} AND COALESCE(d.inscricao_fim, '') < ?)", (hoje,)):
         lv = Livro(r["id"], r["titulo"] or "", r["orgao"], r["link_oficial"], r["link_divulgacao"], r["estrela"] or "sem", r["inscricao_fim"],
                    I.melhor(certs.get(r["id"], [])), tentadas.get(r["id"], set()), r["municipio"], r["uf"], regime_de(r["titulo"], r["modalidade"]))
-        if lv.faltam:
+        if lv.faltam and not lv.suficiente:
             saida.append(lv)
+    # a prioridade: as abertas que fecham antes; depois as de prazo desconhecido com mais dados (mais perto do julgamento)
     return sorted(saida, key=lambda x: (0 if (x.fim and x.fim >= hoje) else 1, x.fim or "9999", len(x.faltam)))
 
 
@@ -347,6 +365,32 @@ class Interceptador:
                 return links[:3]
         return []
 
+    AGREGADORES = re.compile(r"capitaai|gife\.org|captadores|prosas|queridodiario|liderafest|editaisoportunidades|apoia\.se|benfeitoria", re.I)
+
+    def _a12(self, lv: Livro) -> list[str]:
+        """A VERIFICAÇÃO PRÉVIA (titular, 01/11/2026): da página do livro ao site original da oportunidade e ao edital oficial.
+        Numa página de agregador (divulgação), segue o link de saída para o site de origem; junta os documentos do edital
+        (PDF e anexos) da página original; os extratores leem tudo de uma vez (prazo, objeto, local, valor, órgão, anexos)."""
+        if not lv.base:
+            return []
+        lido = self._ler(lv.base)
+        if lido is None:
+            return []
+        if lido[1].tipo != "html":
+            return [lv.base]
+        enderecos = [lv.base]
+        dom = urlsplit(lv.base).hostname or ""
+        originais: list[str] = []
+        if self.AGREGADORES.search(dom):                   # o agregador divulga: o site original é o link de saída
+            originais = [u for u in lido[1].links if (urlsplit(u).hostname or "") not in ("", dom) and not self.AGREGADORES.search(u)
+                         and (CHAVE.search(u) or re.search(r"(?i)\.gov\.br|\.org\.br|\.pdf($|\?)", u))][:2]
+        if not originais and lv.link_oficial and lv.link_oficial != lv.base:
+            originais = [lv.link_oficial]
+        enderecos += originais
+        for pag in [lv.base, *originais][:3]:
+            enderecos += list(self._documentos_da_pagina(pag, lv.titulo, 3))
+        return list(dict.fromkeys(enderecos))[:7]
+
     def _a8(self, lv: Livro) -> list[str]:
         return [lv.base] if (self.ponte and lv.base) else []
 
@@ -367,7 +411,7 @@ class Interceptador:
         para: dict[int, list[str]] = {}
         for item in lv.faltam:
             for pos, n in enumerate(PLANO_POR_ITEM.get(item, ORDEM[lv.balcao])):
-                if n in lv.tentadas or (n == 8 and not self.ponte):
+                if n in lv.tentadas or n in APOSENTADAS or (n == 8 and not self.ponte):
                     continue
                 pontos[n] = pontos.get(n, 0) + 1 / (1 + pos)
                 para.setdefault(n, []).append(item)
@@ -402,7 +446,7 @@ class Interceptador:
         na passagem seguinte."""
         import time as _t
         for n in ordem or ORDEM[lv.balcao]:
-            if n in lv.tentadas:
+            if n in lv.tentadas or n in APOSENTADAS:
                 continue
             if ate is not None and _t.monotonic() > ate:
                 return {"livro": lv.id, "abordagem": None, "achado": None, "esgotado": False, "adiado": True}
@@ -451,7 +495,12 @@ class Interceptador:
         if not paginas:
             return None
         itens_ia, ia_rel = {}, None
-        if self.ia is not None and not injecao and lv.faltam:       # a IA propõe; o sistema valida (o trecho tem de existir no texto)
+        # 01/11/2026 (titular): os extratores primeiro (datas, valor, anexos, órgão, local, esfera: forma fixa, sem IA); a IA
+        # só recebe o que eles não acharam (e nem é chamada quando acharam tudo)
+        from .extratores import extrair
+        det = {} if injecao else extrair(paginas, lv.faltam, lv.orgao, lv.municipio, lv.uf)
+        restantes = [i for i in lv.faltam if i not in det]
+        if self.ia is not None and not injecao and restantes:       # a IA propõe; o sistema valida (o trecho tem de existir no texto)
             from ...base.nucleo.ia import SemIA, comprovar
             # 26/10/2026: no máximo 2 voos usam a IA ao mesmo tempo (com as 5 vagas pedindo juntas, cada pedido levava os 4
             # minutos inteiros e os voos ficavam presos); sem a vez em 90 s, a abordagem segue sem a IA (o Cartório certifica
@@ -460,7 +509,7 @@ class Interceptador:
             # ficavam sem a IA e voltavam vazias); com no máximo 4 voos para 2 vagas, a vez chega
             if VEZ_DA_IA.acquire(timeout=300):
                 try:
-                    itens_ia, uso = comprovar(self.ia, lv.faltam, paginas, lv.titulo, I.DOZE)
+                    itens_ia, uso = comprovar(self.ia, restantes, paginas, lv.titulo, I.DOZE)
                     ia_rel = {"segundos": uso.segundos, "propostas": uso.propostas, "aceitas": uso.aceitas, "recusas": uso.recusas[:6]}
                 except SemIA as e:
                     ia_rel = {"indisponivel": str(e)[:200]}
@@ -468,6 +517,9 @@ class Interceptador:
                     VEZ_DA_IA.release()
             else:
                 ia_rel = {"adiada": "a IA ocupada por outros voos; a abordagem seguiu sem a IA"}
+        if det:
+            itens_ia = {**det, **itens_ia}
+            ia_rel = {**(ia_rel or {}), "extratores": sorted(det)}
         sha = __import__("hashlib").sha256("\n".join(paginas).encode()).hexdigest()
         return Achado(id=f"interceptador-{lv.id}-{n}", motor="interceptador", encontrado_em=agora()[:10],
                       link_divulgacao=lv.link_divulgacao or lv.link_oficial or urls[0], link_oficial=oficial or lv.link_oficial, titulo=lv.titulo,
