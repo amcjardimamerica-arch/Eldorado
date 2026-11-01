@@ -837,6 +837,26 @@ def _mapa_arquivos(sis: "Sistema", raiz: Path) -> dict[str, Any]:
             "linhas": med.get("linhas", {})}
 
 
+# 01/11/2026 (titular: "os botões do pedido anterior não foram implantados; continuam iguais"): o site foi publicado com o
+# código novo, mas a página carregava amc-menu.css e amc-menu.js SEM marcador de versão, e o navegador (e o GitHub Pages,
+# que guarda por 10 minutos) seguia servindo a cópia antiga. Agora cada arquivo leva a impressão digital do conteúdo:
+# mudou o arquivo, mudou o endereço, e o navegador busca a versão nova.
+VERSIONADOS = ("amc-menu.css", "amc-menu.js", "livro3d.css", "livro3d.js")
+
+
+def _versionar(saida: Path) -> dict[str, str]:
+    import hashlib
+
+    impressoes = {n: hashlib.sha1((saida / n).read_bytes()).hexdigest()[:10] for n in VERSIONADOS if (saida / n).exists()}
+    pag = saida / "dashboard.html"
+    if pag.exists() and impressoes:
+        s = pag.read_text(encoding="utf-8")
+        for n, h in impressoes.items():
+            s = re.sub(r'(["(])' + re.escape(n) + r'(\?v=[0-9a-f]+)?(["\)])', lambda m, n=n, h=h: f"{m.group(1)}{n}?v={h}{m.group(3)}", s)
+        pag.write_text(s, encoding="utf-8")
+    return impressoes
+
+
 def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     sis = Sistema(raiz)
     agora = _agora().isoformat(timespec="seconds")
@@ -949,6 +969,7 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
                     if isinstance(m, dict) and m.get("id") in status_pilotos:
                         m.update({k: status_pilotos[m["id"]][k] for k in ("luz", "ultima", "resultado") if k in m or k == "luz"})
         (saida / "dados" / nome).write_text(json.dumps(v, ensure_ascii=False), encoding="utf-8")
+    _versionar(saida)
     texto = json.dumps(D, ensure_ascii=False)
     (saida / "dashboard-dados.json").write_text(texto, encoding="utf-8")
     (saida / "dashboard-dados.js").write_text(f"window.DADOS={texto};", encoding="utf-8")

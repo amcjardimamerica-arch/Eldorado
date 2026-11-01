@@ -585,3 +585,21 @@ def test_o_botao_passaro_guia_e_o_topo_novo():
         ".faixa-total,#cl2{border-top-color:transparent!important}" in css
         and "#app > header{background:transparent!important;padding:150px 0 0!important" in css
     )
+
+
+def test_os_arquivos_do_site_levam_a_impressao_digital(tmp_path):
+    """01/11/2026 (titular: "os botões não foram implantados; continuam iguais"): o navegador servia a cópia antiga de
+    amc-menu.css/js (sem marcador de versão). O gerador acrescenta a impressão digital do conteúdo a cada arquivo."""
+    from eldorado.base.painel.dados import _versionar
+
+    (tmp_path / "amc-menu.css").write_text("a{}", encoding="utf-8")
+    (tmp_path / "amc-menu.js").write_text("1", encoding="utf-8")
+    (tmp_path / "dashboard.html").write_text('<link href="amc-menu.css"><script src="amc-menu.js"></script>', encoding="utf-8")
+    imp = _versionar(tmp_path)
+    s = (tmp_path / "dashboard.html").read_text(encoding="utf-8")
+    assert f'href="amc-menu.css?v={imp["amc-menu.css"]}"' in s and f'src="amc-menu.js?v={imp["amc-menu.js"]}"' in s
+    (tmp_path / "amc-menu.css").write_text("b{}", encoding="utf-8")
+    imp2 = _versionar(tmp_path)
+    assert imp2["amc-menu.css"] != imp["amc-menu.css"] and f'amc-menu.css?v={imp2["amc-menu.css"]}"' in (tmp_path / "dashboard.html").read_text(
+        encoding="utf-8"
+    )
