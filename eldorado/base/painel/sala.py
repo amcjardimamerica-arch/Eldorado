@@ -434,7 +434,7 @@ def montar(
         "hi_crescimento",
         "Crescimento da operação no histórico (MB no dia anterior, sem o texto das páginas)",
         mb_ontem,
-        _faixa(mb_ontem, 15, 30, False),
+        _faixa(mb_ontem, 40, 80, False),   # 01/11/2026 (titular): o limite maior; a telemetria foi para o Cérebro
         "sem a pasta do dia anterior"
         if mb_ontem is None
         else f"{mb_ontem} MB de operação em {ontem:%d/%m} (mais {mb_paginas} MB de texto das páginas dos livros, o dado que deve crescer)",

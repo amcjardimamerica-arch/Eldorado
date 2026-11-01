@@ -338,6 +338,20 @@ def no_unir_repetidos(itens: list[dict[str, Any]], parametros: dict[str, Any], c
             for lid, cod in codigos_a_gravar(con):
                 contexto.diario.emitir("livro.codigo", "identidade", {"livro_id": lid, "codigo": cod})
                 cods += 1
+        # 01/11/2026 (titular): a localização conferida pelas provas antes da busca (a UF, o município e a esfera errados
+        # da importação separavam duplicados e escondiam outros); o que muda é aplicado e a próxima passagem já compara certo
+        from .localizacao import correcoes
+
+        loc = 0
+        for c in correcoes(con):
+            if "uf" in c or "municipio" in c:
+                atual = con.execute("SELECT l.uf, d.municipio FROM livro l JOIN livro_dados d ON d.livro_id = l.id WHERE l.id = ?",
+                                    (c["livro_id"],)).fetchone() or (None, None)
+                contexto.diario.emitir("livro.localizado", "identidade", {"livro_id": c["livro_id"], "uf": c.get("uf", atual[0]),
+                                                                           "municipio": c.get("municipio", atual[1]), "motivo": c["motivo"]})
+            if "esfera" in c:
+                contexto.diario.emitir("livro.esfera", "identidade", {"livro_id": c["livro_id"], "esfera": c["esfera"]})
+            loc += 1
         n = 0
         for fica, unidos in grupos(con):
             for unido, motivo in unidos:
@@ -345,4 +359,4 @@ def no_unir_repetidos(itens: list[dict[str, Any]], parametros: dict[str, Any], c
                 n += 1
     finally:
         con.close()
-    return [{"unidos": n, "codigos": cods}]
+    return [{"unidos": n, "codigos": cods, "localizados": loc}]

@@ -185,6 +185,9 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "livro.origem": (Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "origem", "origem_motivo")),),
     "livro.escada": (Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "escada")),),
     "livro.esfera": (Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "esfera")),),
+    # 01/11/2026: a UF e o município corrigidos pelas provas do livro (a certidão de Território, o site, o órgão)
+    "livro.localizado": (Alvo(B, "livro", "atualizar", ("id",), lambda d: {"id": d["livro_id"], "uf": d.get("uf")}),
+                         Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "uf", "municipio"))),
     "livro.base": (
         Alvo(B, "livro_dados", "atualizar", ("livro_id",), _so("livro_id", "base_classe", "base_buscar", "base_tentativas", "base_ultima")),
     ),
@@ -292,13 +295,19 @@ class Diario:
 
     def eventos(self) -> list[Evento]:
         """Os eventos já gravados nesta execução (todas as partes), na ordem."""
-        evs = [_dec.decode(linha) for a in self._partes() for linha in a.read_bytes().splitlines() if linha.strip()]
+        partes = self._partes()
+        op = pasta_operacao(self.pasta)   # 01/11/2026: os passos e os recibos desta execução (a retomada e a medição os leem)
+        if op.exists():
+            partes += sorted(op.rglob(f"{self.execucao}.jsonl"))
+        evs = [_dec.decode(linha) for a in partes for linha in a.read_bytes().splitlines() if linha.strip()]
         return sorted(evs, key=lambda e: e.id)
 
     def gravar(self, evento: Evento) -> Evento:
         linha = _enc.encode(evento) + b"\n"
         if evento.tipo in TIPOS_EFEMEROS:   # R35: a leitura do site nunca entra no histórico (o diário efêmero, apagado depois)
             return self._gravar_efemero(evento, linha)
+        if evento.tipo in TIPOS_OPERACAO:   # 01/11/2026: a telemetria vai ao Cérebro (completa), fora do histórico permanente
+            return self._gravar_efemero(evento, linha, pasta_operacao(self.pasta))
         with self._trava:
             if self.por_dia and datetime.now(timezone.utc).date() != self._dia:  # a virada do dia: o arquivo do novo dia
                 self._dia = datetime.now(timezone.utc).date()
@@ -313,9 +322,9 @@ class Diario:
             os.fsync(f.fileno())
         return evento
 
-    def _gravar_efemero(self, evento: Evento, linha: bytes) -> Evento:
+    def _gravar_efemero(self, evento: Evento, linha: bytes, pasta: Path | None = None) -> Evento:
         d = datetime.now(timezone.utc).date()
-        arq = pasta_efemera(self.pasta) / f"{d:%Y}" / f"{d:%m}" / f"{d:%d}" / f"{self.execucao}.jsonl"
+        arq = (pasta or pasta_efemera(self.pasta)) / f"{d:%Y}" / f"{d:%m}" / f"{d:%d}" / f"{self.execucao}.jsonl"
         arq.parent.mkdir(parents=True, exist_ok=True)
         with self._trava, open(arq, "ab") as f:
             f.write(linha)
@@ -333,6 +342,18 @@ class Diario:
 # certidões, com o trecho literal do edital) e os endereços (o site oficial e o de divulgação).
 TIPOS_EFEMEROS = frozenset({"pagina.gravada"})
 EFEMERO = "leitura_efemera"
+# 01/11/2026 (titular): "o Comandante precisa ter dados para implementar as melhorias; armazenar no Cérebro com a regra
+# de 30 dias". A telemetria da operação (as medições, as decisões do Comandante, os passos, as fotografias da Sala e dos
+# arquivos, a memória e os recibos) é aplicada ao Cérebro POR INTEIRO e fica lá 30 dias; o arquivo do evento não entra no
+# histórico permanente (era ~45 dos ~56 MB por dia que acendiam o alerta da Sala) e é apagado depois de aplicado.
+TIPOS_OPERACAO = frozenset({"medicao.registrada", "comandante.decidiu", "execucao.passo", "arquivos.medidos", "sala.medida",
+                            "memoria.registrada", "chamada.recibo"})
+OPERACAO = "operacao_efemera"
+
+
+def pasta_operacao(pasta_eventos: str | Path) -> Path:
+    """O diário da telemetria: dentro da pasta de dados, fora do repositório (vai ao Cérebro e é apagado depois)."""
+    return Path(pasta_eventos).parent / "dados" / OPERACAO
 
 
 def pasta_efemera(pasta_eventos: str | Path) -> Path:
@@ -348,6 +369,9 @@ def ler(pasta: str | Path, desde: float | None = None) -> Iterator[Evento]:
     ef = pasta_efemera(pasta)   # R35: as leituras efêmeras DEPOIS do histórico (o documento é registrado antes da leitura)
     if ef.exists() and ef != Path(pasta):
         arquivos += sorted(a for a in ef.rglob("*.jsonl") if desde is None or a.stat().st_mtime >= desde)
+    op = pasta_operacao(pasta)   # 01/11/2026: a telemetria (aplicada ao Cérebro, fora do histórico)
+    if op.exists() and op != Path(pasta):
+        arquivos += sorted(a for a in op.rglob("*.jsonl") if desde is None or a.stat().st_mtime >= desde)
     eventos: list[Evento] = []
     for a in arquivos:
         for n, linha in enumerate(a.read_bytes().splitlines(), 1):

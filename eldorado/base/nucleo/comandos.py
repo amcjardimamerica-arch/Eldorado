@@ -826,6 +826,14 @@ def permanente(
                     typer.echo(f"  R35: a leitura de {_ex['documentos']} documento(s) saiu do banco (ficam o texto da oportunidade e os endereços)")
             except Exception as _e:  # noqa: BLE001
                 typer.echo(f"  R35: o expurgo das leituras falhou: {type(_e).__name__}: {str(_e)[:120]}")
+            try:   # 01/11/2026: a telemetria fica 30 dias no Cérebro (o Comandante aprende com ela); o que passa disso sai
+                from ..cerebro.retencao import reter as _reter
+
+                _rt = _reter(Path(_cfg(config)[1]) / "cerebro.db", Path(_cfg(config)[2]))
+                if sum(v for k, v in _rt.items() if k != "arquivos_apagados"):
+                    typer.echo(f"  retenção de 30 dias no Cérebro: {_rt}")
+            except Exception as _e:  # noqa: BLE001
+                typer.echo(f"  a retenção do Cérebro falhou: {type(_e).__name__}: {str(_e)[:120]}")
             try:   # 29/10/2026: a memória que a passagem liberou volta ao sistema (para o Interceptador)
                 from ..cerebro.governador import liberar_memoria
 
