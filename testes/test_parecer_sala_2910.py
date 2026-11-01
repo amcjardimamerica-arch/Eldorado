@@ -532,5 +532,5 @@ def test_menos_estrelas_e_o_vidro_fosco():
     estética."""
     p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
     assert 'ceuEm("oa-estrelas","v-editais",0.7)' in p and 'ceuEm("sj-estrelas","sj");' in p and "Math.min(1800,w*h/800)*fator" in p
-    assert '"ed-linhas vidro-fosco"' in p and 'class="leg-tubos vidro-fosco"' in p and "backdrop-filter:blur(16px)" in p
-    assert "#ed-grade .arq-mf .ico{overflow:visible;gap:5px;background:none!important" in p
+    assert '"ed-linhas vidro-fosco"' in p and 'class="leg-tubos vidro-fosco"' in p and "backdrop-filter:blur(22px)" in p and 'content:"Oportunidades encerradas"' in p
+    assert "#ed-grade .arq-mf .ico{display:flex!important;overflow:visible;gap:5px;background:none!important" in p

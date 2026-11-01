@@ -517,13 +517,22 @@ body:has(#emp-caixa:not(.oculto)) #ed-legenda{display:none}
 #v-editais .oa-sec-t::after{content:"";display:block;height:2px;width:240px;margin-top:4px;background:linear-gradient(90deg,transparent,#4C75B4,#85C1EA,#4C75B4,transparent)}
 /* 01/11/2026 (titular): o vidro fosco — um único painel translúcido e desfocado (o céu aparece suave por trás), nos
    Arquivados (as listas por dia) e no Legislativo (as três colunas) */
-.vidro-fosco{display:block;border-radius:20px;padding:16px 18px;background:linear-gradient(160deg,rgba(255,255,255,.13),rgba(255,255,255,.04) 45%,rgba(255,255,255,.07));
- -webkit-backdrop-filter:blur(16px) saturate(1.25);backdrop-filter:blur(16px) saturate(1.25);box-shadow:inset 0 0 0 1px rgba(220,235,255,.22),inset 0 1px 0 rgba(255,255,255,.28),0 18px 44px rgba(0,0,0,.45)}
-.vidro-fosco .arq-mf{background:rgba(8,14,30,.42);border-image:repeating-linear-gradient(180deg,rgba(7,13,29,.75) 0 6px,rgba(255,255,255,.12) 6px 12px) 12}
-.vidro-fosco .arq-mf:hover{background:rgba(20,32,60,.6)}
-#ed-grade .arq-mf .ico{overflow:visible;gap:5px;background:none!important;border:0!important;box-shadow:none!important;padding:0!important}
-#ed-grade .arq-mf .ico button{flex:0 0 30px!important;display:inline-flex!important;align-items:center;justify-content:center;width:30px!important;height:30px!important;min-height:30px!important;padding:0!important;border:0!important;border-radius:7px!important;background:rgba(255,255,255,.12)!important;color:#efe2c4!important;box-shadow:inset 0 0 0 1px rgba(220,235,255,.25)!important}
-#ed-grade .arq-mf .ico button+button{background:rgba(255,190,90,.24)!important}#ed-grade .arq-mf .ico button svg{stroke:#efe2c4;fill:none!important}#ed-grade .arq-mf .ico button svg *{fill:none!important}.vidro-fosco .arq-cab{background:rgba(8,14,30,.55)}
+.vidro-fosco{display:block;border-radius:22px;padding:18px 20px;background:linear-gradient(160deg,rgba(255,255,255,.22),rgba(255,255,255,.10) 45%,rgba(255,255,255,.16));
+ -webkit-backdrop-filter:blur(22px) saturate(1.3);backdrop-filter:blur(22px) saturate(1.3);border:1px solid rgba(255,255,255,.32);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 20px 50px rgba(0,0,0,.45)}
+/* 01/11/2026 (titular): os Arquivados num único painel de VIDRO FOSCO LEITOSO — as linhas também em vidro (sem as faixas
+   escuras do microfilme, que deixavam o painel quase igual ao anterior); os separadores de data em cápsulas de vidro */
+#ed-grade.vidro-fosco::before{content:"Oportunidades encerradas";display:block;text-align:center;margin:0 0 10px;font:500 18px Outfit,system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#fff}
+.vidro-fosco .arq-mf{background:rgba(255,255,255,.08);border-left:4px solid rgba(255,255,255,.35)!important;border-image:none!important;border-radius:9px;margin-bottom:4px;color:#f4f7ff;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.vidro-fosco .arq-mf:hover{background:rgba(255,255,255,.16)}
+.vidro-fosco .arq-cab{background:rgba(255,255,255,.14);color:#fff;border-radius:9px;padding-left:14px}
+.vidro-fosco .arq-sep{margin:14px 0 6px}.vidro-fosco .arq-sep i{display:none}
+.vidro-fosco .arq-sep b,.vidro-fosco .arq-sep span{padding:4px 14px;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.32);color:#fff}
+.vidro-fosco .arq-sep span{background:rgba(133,193,234,.22);color:#e8f4ff}
+/* os botões de ação (detalhe e recuperar): legíveis sobre o vidro — o contêiner .ico tinha fundo branco genérico */
+#ed-grade .arq-mf .ico{display:flex!important;overflow:visible;gap:5px;background:none!important;border:0!important;box-shadow:none!important;padding:0!important;width:auto!important}
+#ed-grade .arq-mf .ico button{flex:0 0 30px!important;display:inline-flex!important;align-items:center;justify-content:center;width:30px!important;height:30px!important;min-height:30px!important;padding:0!important;border:0!important;border-radius:7px!important;background:rgba(255,255,255,.16)!important;color:#fff!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)!important}
+#ed-grade .arq-mf .ico button+button{background:rgba(255,190,90,.3)!important}
+#ed-grade .arq-mf .ico button svg{stroke:#fff;fill:none!important}#ed-grade .arq-mf .ico button svg *{fill:none!important}
 .leg-tubos.vidro-fosco{display:grid}
 .vidro-fosco .leg-vidro{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);background:linear-gradient(90deg,rgba(255,255,255,.16),rgba(255,255,255,.04) 30%,rgba(255,255,255,.02) 60%,rgba(255,255,255,.1)),color-mix(in srgb,var(--tc) 12%,rgba(14,24,48,.38))}
 .vidro-fosco .leg-ato{background:rgba(8,14,30,.48)}
