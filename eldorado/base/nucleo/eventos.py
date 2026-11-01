@@ -8,6 +8,7 @@ O diário guarda os eventos de cada execução num arquivo que só recebe acrés
 
 from __future__ import annotations
 
+import gzip
 import os
 import threading
 import time
@@ -344,16 +345,19 @@ TIPOS_EFEMEROS = frozenset({"pagina.gravada"})
 EFEMERO = "leitura_efemera"
 # 01/11/2026 (titular): "o Comandante precisa ter dados para implementar as melhorias; armazenar no Cérebro com a regra
 # de 30 dias". A telemetria da operação (as medições, as decisões do Comandante, os passos, as fotografias da Sala e dos
-# arquivos, a memória e os recibos) é aplicada ao Cérebro POR INTEIRO e fica lá 30 dias; o arquivo do evento não entra no
-# histórico permanente (era ~45 dos ~56 MB por dia que acendiam o alerta da Sala) e é apagado depois de aplicado.
+# arquivos, a memória e os recibos) fica na pasta operacao/, GUARDADA no repositório e separada do histórico (o alerta da
+# Sala mede só o histórico): o Cérebro é remontado com ela a cada execução. Os dias passados são compactados (.jsonl.gz)
+# e os de mais de 30 dias saem. (Na primeira versão a pasta ficava fora do repositório e as decisões se perdiam a cada
+# execução: as avaliações delas, que ficaram no histórico, eram recusadas — os alertas "evento recusado
+# (comandante.avaliada…)" da Sala.)
 TIPOS_OPERACAO = frozenset({"medicao.registrada", "comandante.decidiu", "execucao.passo", "arquivos.medidos", "sala.medida",
                             "memoria.registrada", "chamada.recibo"})
-OPERACAO = "operacao_efemera"
+OPERACAO = "operacao"
 
 
 def pasta_operacao(pasta_eventos: str | Path) -> Path:
-    """O diário da telemetria: dentro da pasta de dados, fora do repositório (vai ao Cérebro e é apagado depois)."""
-    return Path(pasta_eventos).parent / "dados" / OPERACAO
+    """A telemetria: ao lado do histórico (eventos/), guardada no repositório, 30 dias."""
+    return Path(pasta_eventos).parent / OPERACAO
 
 
 def pasta_efemera(pasta_eventos: str | Path) -> Path:
@@ -369,12 +373,13 @@ def ler(pasta: str | Path, desde: float | None = None) -> Iterator[Evento]:
     ef = pasta_efemera(pasta)   # R35: as leituras efêmeras DEPOIS do histórico (o documento é registrado antes da leitura)
     if ef.exists() and ef != Path(pasta):
         arquivos += sorted(a for a in ef.rglob("*.jsonl") if desde is None or a.stat().st_mtime >= desde)
-    op = pasta_operacao(pasta)   # 01/11/2026: a telemetria (aplicada ao Cérebro, fora do histórico)
+    op = pasta_operacao(pasta)   # 01/11/2026: a telemetria (aplicada ao Cérebro, fora do histórico; os dias passados em .gz)
     if op.exists() and op != Path(pasta):
-        arquivos += sorted(a for a in op.rglob("*.jsonl") if desde is None or a.stat().st_mtime >= desde)
+        arquivos += sorted(a for a in op.rglob("*.jsonl*") if a.name.endswith((".jsonl", ".jsonl.gz")) and (desde is None or a.stat().st_mtime >= desde))
     eventos: list[Evento] = []
     for a in arquivos:
-        for n, linha in enumerate(a.read_bytes().splitlines(), 1):
+        bruto = gzip.decompress(a.read_bytes()) if a.name.endswith(".gz") else a.read_bytes()
+        for n, linha in enumerate(bruto.splitlines(), 1):
             if not linha.strip():
                 continue
             try:

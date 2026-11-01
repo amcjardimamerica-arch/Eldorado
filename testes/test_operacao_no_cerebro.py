@@ -42,3 +42,39 @@ def test_a_localizacao_pelas_provas_do_livro():
     assert provas({"oficial": "https://goias.gov.br/secult"})["uf"] == "GO"
     assert "esfera" not in provas({"oficial": "https://secult.go.gov.br/x"})  # o domínio prova a UF, não a esfera municipal
     assert "livro.localizado" in CATALOGO
+
+
+def test_a_telemetria_e_guardada_no_repositorio_e_compactada(tmp_path):
+    """01/11/2026: a pasta operacao/ fica ao lado do histórico e vai ao repositório (o Cérebro é remontado com ela a cada
+    execução: as decisões do Comandante sobrevivem); os dias passados viram .jsonl.gz, lidos de volta; e saem com 30 dias."""
+    import gzip
+    import os
+    import time
+    from pathlib import Path
+
+    pasta = tmp_path / "eventos"
+    assert pasta_operacao(pasta) == tmp_path / "operacao"
+    assert "dados/operacao" not in Path(".gitignore").read_text(encoding="utf-8")
+    assert "for pasta in eventos operacao " in Path("scripts/gravar.sh").read_text(encoding="utf-8")
+    d = Diario(pasta, "exec-2")
+    ev = d.emitir("comandante.decidiu", "teste", {"id": 1, "em": "2026-10-20T00:00:00+00:00", "etapa": "x", "acao": "y"})
+    arq = next(pasta_operacao(pasta).rglob("exec-2.jsonl"))
+    velho = pasta_operacao(pasta) / "2026" / "10" / "20"
+    velho.mkdir(parents=True)
+    (velho / "exec-2.jsonl").write_bytes(arq.read_bytes())
+    os.utime(velho / "exec-2.jsonl", (time.time() - 5 * 3600, time.time() - 5 * 3600))
+    antigo = pasta_operacao(pasta) / "2026" / "09" / "01"
+    antigo.mkdir(parents=True)
+    (antigo / "exec-0.jsonl").write_bytes(arq.read_bytes())
+    db = tmp_path / "cerebro.db"
+    sqlite3.connect(db).close()
+    r = reter(db, pasta)
+    assert r["arquivos_compactados"] >= 1 and r["arquivos_apagados"] == 1
+    assert (velho / "exec-2.jsonl.gz").exists() and gzip.decompress((velho / "exec-2.jsonl.gz").read_bytes())
+    assert sum(1 for e in ler(pasta) if e.id == ev.id) >= 1  # o compactado é lido de volta
+
+
+def test_a_avaliacao_de_decisao_que_saiu_nao_vira_alerta():
+    from eldorado.base.nucleo.gravador import DISPENSAVEIS
+
+    assert {"comandante.avaliada", "livro.localizado"} <= DISPENSAVEIS

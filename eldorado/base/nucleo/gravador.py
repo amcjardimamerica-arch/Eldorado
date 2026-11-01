@@ -39,7 +39,8 @@ class Relatorio:
 
 
 # os dados recalculados a cada passagem: sem a ficha do livro (a linha), o evento é dispensado, não recusado (27/10/2026)
-DISPENSAVEIS = {"livro.codigo", "livro.base", "livro.esfera", "alarme.fechado"}   # fechar o alarme que não existe não é erro
+DISPENSAVEIS = {"livro.codigo", "livro.base", "livro.esfera", "livro.localizado", "alarme.fechado",
+                "comandante.avaliada"}   # avaliar a decisão que saiu pela regra dos 30 dias não é erro (01/11/2026)
 
 
 class LinhaAusente(ValueError):

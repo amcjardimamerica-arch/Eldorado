@@ -830,7 +830,7 @@ def permanente(
                 from ..cerebro.retencao import reter as _reter
 
                 _rt = _reter(Path(_cfg(config)[1]) / "cerebro.db", Path(_cfg(config)[2]))
-                if sum(v for k, v in _rt.items() if k != "arquivos_apagados"):
+                if sum(v for k, v in _rt.items()):
                     typer.echo(f"  retenção de 30 dias no Cérebro: {_rt}")
             except Exception as _e:  # noqa: BLE001
                 typer.echo(f"  a retenção do Cérebro falhou: {type(_e).__name__}: {str(_e)[:120]}")

@@ -28,7 +28,7 @@ avisar() { echo "::error::gravação: $*"; }
 completo() { local b="${1%.jsonl}"; b="${b%-[0-9]*}"; local partes=("$b.jsonl" "$b"-[0-9]*.jsonl)
   ! cat "${partes[@]}" 2>/dev/null | grep -q '"execucao.iniciada"' || cat "${partes[@]}" 2>/dev/null | grep -q '"execucao.concluida"'; }
 LISTA=$(mktemp)
-for pasta in eventos verificacao dados/ia backups; do   # backups: a cópia dos livros (a cada 3 dias)
+for pasta in eventos operacao verificacao dados/ia backups; do   # backups: a cópia dos livros; operacao: a telemetria (30 dias)
   [ -d "$RAIZ/$pasta" ] || continue
   if [ -f "$RAIZ/.inicio_ciclo" ]; then
     find "$pasta" -type f -newer .inicio_ciclo
@@ -36,7 +36,7 @@ for pasta in eventos verificacao dados/ia backups; do   # backups: a cópia dos 
     find "$pasta" -type f
   fi
 done | while read -r f; do
-  if [ "${f#eventos/}" != "$f" ] && ! completo "$f"; then echo "em andamento (não gravado): $f" >&2; continue; fi
+  if { [ "${f#eventos/}" != "$f" ] || [ "${f#operacao/}" != "$f" ]; } && [ "${f%.gz}" = "$f" ] && ! completo "$f"; then echo "em andamento (não gravado): $f" >&2; continue; fi
   echo "$f"
 done > "$LISTA"
 if [ "$banco" = "true" ]; then
