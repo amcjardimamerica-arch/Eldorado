@@ -635,7 +635,7 @@ def test_o_calendario_marcadores_e_a_serpente_azul():
     g = Path("eldorado/base/painel/pagina/giroscopio/giroscopio.html").read_text(encoding="utf-8")
     assert '"open": "#F6EA07", "elapsed": "#5A3300", "last5": "#F6EA07", "deadline": "#D17600"' in g
     assert (
-        "const CYAN = '#85C1EA', RED = '#D17600';" in g and "new T.MeshBasicMaterial({ color: col })" in g and "x.fillStyle = col; x.strokeStyle" in g
+        "const CYAN = '#5271AD', RED = '#D17600';" in g and "new T.MeshBasicMaterial({ color: col })" in g and "x.fillStyle = col; x.strokeStyle" in g
     )
     assert "crestB = tit(0xb9bec4); rebite = tit(0xa9aeb5); mandibula = tit(0x6c7279); cranio = tit(0x8d939a); cobre = tit(0x9aa0a7);" in g
 
@@ -661,3 +661,12 @@ def test_o_prazo_do_calendario_abre_o_livro():
     assert "const abrir=l=>{selecionar(l);const x=LISTA[+l.dataset.k];if(x&&window.fichaOportunidade)window.fichaOportunidade(x)};" in p
     assert 'l.addEventListener("click",()=>abrir(l))' in p and 'role="button" tabindex="0"' in p
     assert 'linha2:faixa?"Até "+din(ir.direcionavel_max)+" por ano"' in p and "grande:faixa?din(ir.direcionavel_max)" in p
+
+
+def test_o_fim_prevalece_sobre_o_inicio():
+    """01/11/2026 (titular): a placa de início em #5271AD; sem conflito entre as setas e as placas, e o fim sempre prevalece
+    (fica na data final; só o início recua; a seta do fim por cima)."""
+    g = Path("eldorado/base/painel/pagina/giroscopio/giroscopio.html").read_text(encoding="utf-8")
+    assert "if (dlt < 0.24) arrows.ini.userData.target = hands.ini.userData.target = -(af - 0.24);" in g
+    assert "if (dlt < 0.62) plaques.ini.target = af - 0.62;" in g and "plaques.fim.target = mid + 0.31" not in g
+    assert "arrows.fim.userData.m.renderOrder = 6" in g

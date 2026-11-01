@@ -973,7 +973,7 @@ code{font-size:12.5px}
 <script>(function (G) {
   'use strict';
   const GR = 0.82, RH = 1.46, RM0 = 1.49, RM1 = 1.71, RD0 = 1.75, RD1 = 2.0, RO = 2.08;
-  const CYAN = '#85C1EA', RED = '#D17600';   /* 01/11/2026 (titular): o início no azul mais claro, o fim no laranja mais escuro */
+  const CYAN = '#5271AD', RED = '#D17600';   /* 01/11/2026 (titular): o início no azul mais claro, o fim no laranja mais escuro */
   const isLeap = y => new Date(y, 1, 29).getDate() === 29;
   const doyOf = d => Math.round((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(d.getFullYear(), 0, 1)) / 864e5);
   const A = (i, N) => i / N * Math.PI * 2;
@@ -1120,7 +1120,9 @@ code{font-size:12.5px}
           const g = new T.Group(); g.position.z = k === 'ini' ? 0.04 : 0.07; const h = E.hand(end - GR - 0.08, w, tip, hot(col), 0.01); h.position.y = GR + 0.08; g.add(h); bb.add(g); g.userData = { ang: null, target: 0 }; hands[k] = g;
         });
         arrows.ini = arrowMesh(CYAN); arrows.fim = arrowMesh(RED); bb.add(arrows.ini, arrows.fim);
-        plaques.ini = plaque(); plaques.fim = plaque(); bb.add(plaques.ini.sprite, plaques.fim.sprite);
+        /* o fim por cima do início, se ainda se tocarem */
+        arrows.ini.userData.m.renderOrder = 4; arrows.fim.userData.m.renderOrder = 6; arrows.fim.userData.m.position.z += 0.012;
+        plaques.ini = plaque(); plaques.fim = plaque(); bb.add(plaques.ini.sprite, plaques.fim.sprite); plaques.fim.sprite.renderOrder = 11;
         plaques.ini.ang = null; plaques.fim.ang = null;
         S.build(ctx);
       },
@@ -1140,7 +1142,11 @@ code{font-size:12.5px}
           const ai = A(info.s0 + 0.5, N), sd = v.p.inicio || v.now; arrows.ini.userData.target = hands.ini.userData.target = -ai;
           plaques.ini.set(v.p.inicio ? 'início' : 'hoje', sd.getDate() + ' ' + MES3[sd.getMonth()], v.p.inicio ? String(sd.getFullYear()) : 'contando a partir de hoje', CYAN);
           plaques.ini.target = ai;
-          if (hasEnd) { let dlt = plaques.fim.target - ai; if (dlt < 0.62) { const mid = (ai + plaques.fim.target) / 2; plaques.ini.target = mid - 0.31; plaques.fim.target = mid + 0.31; } }
+          /* 01/11/2026 (titular): sem conflito entre o início e o fim, e o fim sempre prevalece: a seta e a placa do fim
+             ficam na data final; quando se aproximam, só o início recua (a seta, uma largura de seta; a placa, a largura dela) */
+          if (hasEnd) { const af = A(info.dd + 0.5, N), dlt = af - ai;
+            if (dlt < 0.24) arrows.ini.userData.target = hands.ini.userData.target = -(af - 0.24);
+            if (dlt < 0.62) plaques.ini.target = af - 0.62; }
         }
       },
       update(dt, t, cam, move) {
