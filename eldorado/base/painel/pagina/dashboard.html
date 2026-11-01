@@ -1216,6 +1216,7 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
 #sj .estrelas{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}   /* 30/10/2026: só a janela visível (leve) */
 #sj>nav,#sj .duas{position:relative;z-index:1}
 #sj *{box-sizing:border-box}
+#sj .lin{cursor:pointer}
 #sj .nav{position:relative;z-index:5;display:flex;justify-content:center;gap:12px;padding:20px 0 12px}
 #sj .grupo{position:relative}
 #sj .grupo>button{min-height:44px;padding:0 20px;border-radius:999px;border:1px solid #66887A;background:rgba(40,74,59,.88);color:var(--tinta);font:600 14.5px "Alegreya Sans",sans-serif;cursor:pointer}
@@ -1396,13 +1397,17 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
       return `<div class="area"><i style="background:${cor}"></i>${E(nome)}<small>${Math.min(10,xs.length)} de ${xs.length}, as que vencem primeiro</small></div>`+xs.slice(0,10).map(x=>{
         const antes=!x.inicio||x.inicio<ini,s=antes?1:+x.inicio.slice(8,10),fecha=x.fim<=fim,f=fecha?+x.fim.slice(8,10):nd,urg=dias(x.fim)<=3;
         const esq=(s-1)/nd*100,larg=(f-s+1)/nd*100,cf=(f-.5)/nd*100;
-        return `<div class="lin grade2" data-k="${LISTA.indexOf(x)}" title="${E(x.titulo)}, ${falta(x.fim)}">
+        return `<div class="lin grade2" data-k="${LISTA.indexOf(x)}" role="button" tabindex="0" title="${E(x.titulo)}, ${falta(x.fim)} — clique para abrir o livro">
           <div class="tipo"><b>${x.inicio?br(x.inicio)+" a ":"até "}${br(x.fim)}</b><small class="${urg?"urg":""}">${falta(x.fim)}</small></div>
           <div class="faixas" style="${bs}">${hojecol}
           ${antes?"":`<span class="ini" style="left:calc(${esq.toFixed(2)}% + 3px)"></span>`}
           <div class="faixa" style="left:calc(${esq.toFixed(2)}% + 3px);width:calc(${larg.toFixed(2)}% - ${fecha?6:3}px);${antes?"border-top-left-radius:5px;border-bottom-left-radius:5px;":""}background:linear-gradient(90deg,${cor}40,#FFFFFF);border:1px solid ${cor}"><span>${antes?"‹ ":""}${E(x.titulo)}</span></div>
           ${fecha?`<span class="selo${urg?"":" calmo"}" style="left:${cf.toFixed(2)}%"><i></i><i></i><b>${f}</b></span>`:'<span class="mais" aria-hidden="true">›</span>'}</div></div>`}).join("")}).join("");
-    document.querySelectorAll("#sj .lin").forEach(l=>{l.addEventListener("mouseenter",()=>selecionar(l));l.addEventListener("click",()=>selecionar(l))});
+    // 01/11/2026 (titular): clicar no prazo abre o livro da oportunidade (a mesma porta das Oportunidades abertas:
+    // o livro em 3D, ou a ficha quando o 3D não está disponível); passar o mouse só destaca e mostra no giroscópio
+    const abrir=l=>{selecionar(l);const x=LISTA[+l.dataset.k];if(x&&window.fichaOportunidade)window.fichaOportunidade(x)};
+    document.querySelectorAll("#sj .lin").forEach(l=>{l.addEventListener("mouseenter",()=>selecionar(l));l.addEventListener("click",()=>abrir(l));
+      l.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();abrir(l)}})});
   }
   $("sj-ant").onclick=()=>{mes--;if(mes<0){mes=11;ano--}desenhar()};$("sj-seg").onclick=()=>{mes++;if(mes>11){mes=0;ano++}desenhar()};
   fetch("dados/fluxo_oportunidades.json?v="+Date.now()).then(r=>r.ok?r.json():null).then(F=>{
@@ -7741,26 +7746,28 @@ function lista(){
     const R=window.EMP||{}, c=e.cadastro||{}, pt=e.potencial||{}, ir=pt.irpj||{};
     const faixa=pt.apurou?fx(ir.direcionavel_min,ir.direcionavel_max):"";
     const meus={}; (e.programas||[]).forEach(p=>meus[p.chave]=p);
-    const leisTxt=leisDe(R).map(L=>{const m=meus[L.chave];
-      return corta(`${L.nome}: ${!m?"sem registro de destinação":m.verificado?"destinou (verificado em fonte oficial)":m.historico?"já destinou":"citado, a confirmar"}`,90);});
+    // 01/11/2026: a página do pergaminho comporta poucas linhas: duas, com os nomes curtos das leis
+    const lista=a=>a.length>1?a.slice(0,-1).join(", ")+" e "+a[a.length-1]:(a[0]||"");
+    const fez=[],nao=[],conf=[]; leisDe(R).forEach(L=>{const m=meus[L.chave],n=L.curto||L.nome; if(!m) nao.push(n); else if(m.verificado||m.historico) fez.push(n); else conf.push(n);});
+    const leisTxt=[fez.length?"Já destinou: "+lista(fez):"Nenhuma destinação registrada", nao.length?"Sem registro: "+lista(nao):"", conf.length?"A confirmar: "+lista(conf):""].filter(Boolean).map(x=>corta(x,70));
     // as leis com o mesmo valor numa linha só (o pé da página não comporta uma linha por lei)
-    const grupos={}; Object.values(ir.por_lei||{}).forEach(l=>{const v=l.faixa||fx(l.min,l.max); if(!v)return; (grupos[v]=grupos[v]||[]).push(l.nome||l.lei||"");});
-    const curto=n=>String(n).replace("Fundo da Criança e do Adolescente","Fundo da Criança").replace(" (cultura)","");
-    const porLei=Object.entries(grupos).slice(0,2).map(([v,ns])=>corta(ns.length>1?`${ns.slice(0,-1).map(curto).join(", ")} e ${curto(ns[ns.length-1])}: ${v} cada`:`${curto(ns[0])}: ${v}`,120));
+    const grupos={}; Object.values(ir.por_lei||{}).forEach(l=>{const mx=Number(l.max||0); if(!mx)return; (grupos[mx]=grupos[mx]||[]).push(l.curto||l.nome||l.lei||"");});
+    const ord=Object.keys(grupos).map(Number).sort((a,b)=>b-a), um=ord.filter(v=>grupos[v].length===1);
+    const porLei=ord.length?[corta(ord.map(v=>grupos[v].length===1?`${String(grupos[v][0]).replace("Lei ","")} até ${din(v)}`:`${um.length?"outras leis":"cada lei"} até ${din(v)}${grupos[v].length>1?" cada":""}`).join("; ")+".",75)]:[];
     const cont=[e.site&&("Site: "+e.site), c.email&&("E-mail: "+c.email), c.telefone&&("Telefone: "+c.telefone)];
     if(DZ&&DZ.contatos){ (DZ.contatos.telefones||[]).slice(0,2).forEach(x=>cont.push("Telefone: "+x)); if(DZ.contatos.email) cont.push("E-mail: "+DZ.contatos.email); }
     if(DZ&&DZ.socios) cont.push(corta("Sócios e administradores: "+String(DZ.socios).replace(/<[^>]+>/g,""),110));
     const contatos=[...new Set(cont.filter(Boolean).map(x=>corta(x,90)))].slice(0,6);
     return {titulo:e.nome,
       capa:{titulo:corta(e.nome,70), linha1:corta(`${e.n_na_lista||e.posicao}ª da lista${e.nivel?" · "+e.nivel:""}${c.uf?" · "+c.uf:""}`,70),
-        linha2:faixa?corta("Pode direcionar "+faixa+" por ano",70):corta(c.cnpj?"CNPJ "+c.cnpj:"CNPJ não divulgado",70), selo:"A.M.C. Jardim América", data:new Date().toISOString()},
+        linha2:faixa?"Até "+din(ir.direcionavel_max)+" por ano":corta(c.cnpj?"CNPJ "+c.cnpj:"CNPJ não divulgado",28), selo:"A.M.C. Jardim América", data:new Date().toISOString()},
       paginas:[
         {kicker:"Apresentação", titulo:corta(e.nome_fantasia||e.nome,60), texto:[
           corta(`CNPJ ${c.cnpj||"não divulgado"} · ${[c.municipio,c.uf].filter(Boolean).join("/")||"local não informado"}`,110),
           corta(`${c.cnae||"Atividade não informada"} · porte ${c.porte||"não informado"}`,140),
           corta(`Nota ${e.pontos_lista??"—"} de 100 na lista${e.nivel?" · nível "+e.nivel:""}.`,100)]},
         {kicker:"Potencial", titulo:"Quanto pode direcionar",
-          destaque:{grande:faixa?"até "+din(ir.direcionavel_max):"Sem estimativa", legenda:faixa?"por ano · a partir de "+din(ir.direcionavel_min):corta(pt.motivo||"dados do cadastro insuficientes",60)},
+          destaque:{grande:faixa?din(ir.direcionavel_max):"—", legenda:faixa?"por ano · desde "+din(ir.direcionavel_min):corta(pt.motivo||"sem estimativa de valor",50)},
           texto:porLei.length?porLei:[faixa?"Estimativa pelo imposto devido e pelos tetos de cada lei.":"O valor aparece quando o cadastro da empresa tiver os dados necessários."]},
         {kicker:"Leis de incentivo", titulo:"Onde já destinou", itens:leisTxt.slice(0,7)},
         {kicker:"Contato", titulo:"Como chegar à empresa", itens:contatos.length?contatos:["Nenhum contato público localizado ainda.","O dossiê do Interceptador completa os contatos."],

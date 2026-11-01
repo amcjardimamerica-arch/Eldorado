@@ -652,3 +652,12 @@ def test_a_empresa_no_pergaminho():
     assert "window.fichaEmpresa(e.uid,{classico:true})" in p and '"pergaminho.js"' in Path("eldorado/base/painel/dados.py").read_text(
         encoding="utf-8"
     )
+
+
+def test_o_prazo_do_calendario_abre_o_livro():
+    """01/11/2026 (titular): clicar no prazo do calendário abre o livro da oportunidade (a mesma porta das Oportunidades
+    abertas: o livro em 3D, ou a ficha sem 3D); o pergaminho da empresa com o conteúdo que cabe no papel."""
+    p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
+    assert "const abrir=l=>{selecionar(l);const x=LISTA[+l.dataset.k];if(x&&window.fichaOportunidade)window.fichaOportunidade(x)};" in p
+    assert 'l.addEventListener("click",()=>abrir(l))' in p and 'role="button" tabindex="0"' in p
+    assert 'linha2:faixa?"Até "+din(ir.direcionavel_max)+" por ano"' in p and "grande:faixa?din(ir.direcionavel_max)" in p
