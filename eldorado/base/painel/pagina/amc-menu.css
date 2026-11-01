@@ -82,8 +82,9 @@ button:focus-visible,.b3d:focus-visible{outline:3px solid var(--focus);outline-o
    (no arranjo original: Eldorado e, abaixo, Farol de Alexandria; as páginas de cada um abrem ao lado). Abaixo, o nome
    da página com o traço nas cores da associação. A navegação antiga fica escondida (o sistema a usa por dentro). */
 #topo-modulos,#nav-eldorado,#nav-farol,.subnav,#v-editais .oa-topo,.bz-topo,#sj .nav{display:none!important}
-/* a página principal é a arte aprovada (a logomarca e os dois botões já estão nela): ali o topo novo não se repete */
-body.inicial #amc-topo,body.inicial #pv-titulo{display:none!important}
+/* a página inicial também (titular, 01/11/2026: "a página inicial não faz parte de todas as páginas?"): o topo novo; a
+   imagem do cabeçalho sai (a logomarca e os botões estavam desenhados nela) */
+#v-inicio .hero-arte{display:none!important}
 /* as páginas escuras (o Calendário e a Sala de controle) assumem o céu também atrás do topo transparente */
 body:has(#v-calendario:not(.oculto)),body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 38% 48%,#1E2742 0,#121A31 42%,#0A0F1F 78%,#070A15 100%) fixed!important}
 #app > header{background:transparent!important;padding:0!important;text-align:center;position:relative;z-index:40}

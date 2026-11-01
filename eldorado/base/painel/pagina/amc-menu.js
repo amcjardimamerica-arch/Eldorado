@@ -382,11 +382,11 @@ window.AMC_BIRD={"vb":[1000,752.2],"f":[{"c":"#001D7E","p":[[216.1,0.3],[306.1,2
    página principal; passar o mouse abre Eldorado (amarelo-ouro) e Farol de Alexandria (azul) com as páginas de cada um. */
 (function(){
   window.AMCMenu.dados=[{"rotulo": "Eldorado", "resumo": "", "cor": "#E3AB00", "opcoes": ["Calendário", "Oportunidades Abertas", "Bússola", "Cartório", "Sala de controle"], "cores": ["#F6EA07", "#E3AB00", "#D17600", "#F6EA07", "#E3AB00"]}, {"rotulo": "Farol de Alexandria", "resumo": "", "cor": "#001D7E", "opcoes": ["Enquadramento", "Documentos", "Biblioteca"], "cores": ["#001D7E", "#4C75B4", "#85C1EA"]}];
-  var MAPA={"Calendário": ["eldorado", "calendario"], "Oportunidades Abertas": ["eldorado", "editais"], "Bússola": ["eldorado", "bussola"], "Cartório": ["eldorado", "cartorio"], "Sala de controle": ["eldorado", "neural"], "Enquadramento": ["farol", "f-editais"], "Documentos": ["farol", "f-documentos"], "Biblioteca": ["farol", "f-biblioteca"]}, TITULO={"v-calendario": "Calendário", "v-editais": "Oportunidades abertas", "v-bussola": "Bússola", "v-cartorio": "Cartório", "v-neural": "Sala de controle", "v-f-editais": "Enquadramento", "v-f-documentos": "Documentos", "v-f-biblioteca": "Biblioteca"}, ESCURAS=["v-calendario","v-editais","v-neural"];
+  var MAPA={"Calendário": ["eldorado", "calendario"], "Oportunidades Abertas": ["eldorado", "editais"], "Bússola": ["eldorado", "bussola"], "Cartório": ["eldorado", "cartorio"], "Sala de controle": ["eldorado", "neural"], "Enquadramento": ["farol", "f-editais"], "Documentos": ["farol", "f-documentos"], "Biblioteca": ["farol", "f-biblioteca"]}, TITULO={"v-inicio": "Início", "v-calendario": "Calendário", "v-editais": "Oportunidades abertas", "v-bussola": "Bússola", "v-cartorio": "Cartório", "v-neural": "Sala de controle", "v-f-editais": "Enquadramento", "v-f-documentos": "Documentos", "v-f-biblioteca": "Biblioteca"}, ESCURAS=["v-calendario","v-editais","v-neural"];
   function titulo(){
     var vis=[].slice.call(document.querySelectorAll('#palco > section[id^="v-"]')).filter(function(s){return !s.classList.contains('oculto')})[0];
     var t=document.getElementById('pv-titulo-txt'), caixa=document.getElementById('pv-titulo'); if(!t||!caixa) return;
-    var nome=vis&&TITULO[vis.id]; caixa.hidden=!nome||document.body.classList.contains('inicial'); if(nome) t.textContent=nome;
+    var nome=document.body.classList.contains('inicial')?'Início':(vis&&TITULO[vis.id]); caixa.hidden=!nome; if(nome) t.textContent=nome;
     document.body.classList.toggle('pv-escura', !!(vis&&ESCURAS.indexOf(vis.id)>=0));
   }
   function contagens(){

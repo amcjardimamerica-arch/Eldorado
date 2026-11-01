@@ -568,3 +568,5 @@ def test_o_botao_passaro_guia_e_o_topo_novo():
     )
     assert '<header class="oa-topo">' not in p and p.count('class="pv-aba') == 4 and 'data-pv-n="legislativo"' in p
     assert 'arquivos["abas.json"]' in Path("eldorado/base/painel/dados.py").read_text(encoding="utf-8")
+    # a página inicial também: o topo novo; a imagem do cabeçalho (a logomarca e os botões desenhados) sai
+    assert "#v-inicio .hero-arte{display:none!important}" in css and "body.inicial #amc-topo" not in css and "'Início'" in js
