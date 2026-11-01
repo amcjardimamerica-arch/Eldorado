@@ -69,7 +69,8 @@ def test_o_expurgo_depois_de_cada_passagem_e_a_releitura_desligada():
     from eldorado.base.cartorio import releitura
 
     c = Path("eldorado/base/nucleo/comandos.py").read_text(encoding="utf-8")
-    assert "_expurgar_leituras(" in c
+    # 01/11/2026 (titular): "somente o Claude apaga livros e faz expurgos, o sistema não faz": o laço não expurga
+    assert "_expurgar_leituras(" not in c and "o sistema NÃO expurga nem" in c
     assert releitura.escolher(None, None, 50) == []
     assert "dados/leitura_efemera/" in Path(".gitignore").read_text(encoding="utf-8")
     assert "leitura_efemera" not in Path("scripts/gravar.sh").read_text(encoding="utf-8")

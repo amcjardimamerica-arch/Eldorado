@@ -815,14 +815,10 @@ def permanente(
         """01/11/2026: o que vem depois de cada passagem (o expurgo da R35 e o descarte, a retenção de 30 dias, a memória
         devolvida). Ficava no caminho do retorno normal de _rodar, que NUNCA retorna (termina sempre com typer.Exit):
         desde 29-30/10 nada disto rodava na produção. Agora roda em todo término real (sucesso ou falha), não na adiada."""
-        try:   # R35 (30/10/2026): a leitura dos sites sai do banco depois de servir ao Cartório
-            from ..cartorio.leitura_efemera import expurgar as _expurgar_leituras
-
-            _ex = _expurgar_leituras(Path(_cfg(config)[1]) / "biblioteca.db", Path(_cfg(config)[2]))
-            if _ex["documentos"]:
-                typer.echo(f"  R35: a leitura de {_ex['documentos']} documento(s) saiu do banco (ficam o texto da oportunidade e os endereços)")
-        except Exception as _e:  # noqa: BLE001
-            typer.echo(f"  R35: o expurgo das leituras falhou: {type(_e).__name__}: {str(_e)[:120]}")
+        # 01/11/2026 (titular): "somente o Claude apaga livros e faz expurgos, o sistema não faz". O sistema NÃO expurga nem
+        # descarta: ele só indica os candidatos (a Sala, "o último expurgo"); o expurgo é feito pelo Claude, depois da avaliação
+        # (eldorado.base.cartorio.expurgo_claude). A leitura dos sites não fica guardada mesmo assim: é efêmera (fora do
+        # histórico) e o banco é remontado a cada execução.
         try:   # 01/11/2026: a telemetria fica 30 dias no Cérebro (o Comandante aprende com ela); o que passa disso sai
             from ..cerebro.retencao import reter as _reter
 

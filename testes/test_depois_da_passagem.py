@@ -16,8 +16,9 @@ def test_a_manutencao_roda_em_todo_termino_real_da_passagem():
     ramo_exit = corpo[corpo.index("except typer.Exit as e:") : corpo.index("except Exception as e:  # noqa: BLE001 — o funcionamento é permanente")]
     assert "if e.exit_code != ADIADO:" in ramo_exit and "_depois_da_passagem()" in ramo_exit
     rotina = corpo[corpo.index("def _depois_da_passagem") : corpo.index("    while True:")]
-    for parte in ("_expurgar_leituras(", "_reter(", "liberar_memoria()"):
+    for parte in ("_reter(", "liberar_memoria()"):
         assert parte in rotina
+    assert "_expurgar_leituras(" not in rotina          # 01/11/2026: o sistema não expurga (só o Claude)
     # o caminho do retorno normal não guarda mais nada sozinho (o que existir ali também está na rotina)
     assert re.search(r"_rodar\(workflow, config, None, None, \"leve\"\)\n.*\n\s+_depois_da_passagem\(\)", corpo)
 
