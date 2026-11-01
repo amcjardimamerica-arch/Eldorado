@@ -603,3 +603,11 @@ def test_os_arquivos_do_site_levam_a_impressao_digital(tmp_path):
     assert imp2["amc-menu.css"] != imp["amc-menu.css"] and f'amc-menu.css?v={imp2["amc-menu.css"]}"' in (tmp_path / "dashboard.html").read_text(
         encoding="utf-8"
     )
+
+
+def test_a_nota_do_piado_aparece():
+    """01/11/2026 (titular): "o piado do pássaro sumiu; antes fazia um símbolo de som". A notinha (vnote) estava escondida
+    por engano (confundida com uma nota da página de demonstração)."""
+    css = Path("eldorado/base/painel/pagina/amc-menu.css").read_text(encoding="utf-8")
+    assert ".vnote{display:none" not in css and "body.pv-escura #amc-topo .vnote{color:#85C1EA}" in css
+    assert "n.className = 'vnote'" in Path("eldorado/base/painel/pagina/amc-menu.js").read_text(encoding="utf-8")
