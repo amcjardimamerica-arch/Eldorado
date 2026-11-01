@@ -14,8 +14,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+# 01/11/2026 (titular): a união de repetidos é integridade dos dados, não uma etapa que "rende": nunca é pulada (custa
+# 0,2 s no banco inteiro). Pulada quando "nada rendia", os livros duplicados ficavam vivos por passagens seguidas.
 CANDIDATAS = [
-    "unir_repetidos",
     "encaminhar",
     "espiao",
     "originais",

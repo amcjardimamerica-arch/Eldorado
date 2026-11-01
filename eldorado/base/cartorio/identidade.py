@@ -89,6 +89,87 @@ def mesma_oportunidade(a: dict[str, Any], b: dict[str, Any]) -> str | None:
     return None
 
 
+# ------------------------------------------------------------------ a mesma oportunidade por características (01/11/2026)
+# Titular, 01/11/2026: "é inadmissível abrir uma oportunidade e não ligar a um livro que já exista dela ou criar 2 livros
+# da mesma oportunidade". A regra acima só reconhecia o índice igual ou o TÍTULO idêntico: a mesma oportunidade divulgada
+# com outro título, em outro canal (o site da prefeitura e o Diário Oficial, o portal e a notícia), nunca era unida
+# (ex.: op-690f9928042c e op-6e1743f5d723, Colinas do Sul). Agora as características também identificam, com provas de
+# diferença que separam o que só se parece (as categorias da PNAB Goiás, os editais 09 e 10 de Goiânia, SEJUS-PI 02 e 03).
+VAZIAS_CAR = PALAVRAS_VAZIAS | {"premio", "premios", "premiacao", "cultural", "cultura", "projeto", "projetos", "goias", "brasil", "go",
+                                "nacional", "pdf", "aberto", "publicado", "diario", "oficial"}
+HOSTS_GERAIS = ("pncp.gov.br", "prosas", "instagram", "facebook", "mapas", "youtube", "linkedin", "in.gov.br", "queridodiario",
+                "editais.org", "x.com", "twitter", "google", "bit.ly", "wordpress.com", "wixsite", "blogspot")
+
+
+def _palavras(t: str | None) -> set[str]:
+    return {w for w in titulo_normal(t).split() if w not in VAZIAS_CAR and len(w) > 2 and not w.isdigit()}
+
+
+def _numeros(t: str | None) -> set[str]:
+    """Os números do edital no título ("nº 09/2026", "Edital 10", "02/2026", "Chamamento 001/2026")."""
+    bruto = (t or "").lower()
+    achados = {m.lstrip("0") or "0" for m in re.findall(r"\b(\d{1,4})\s*/\s*20\d{2}\b", bruto)}
+    rx = r"(?:\bn[º°o.]?\s*|\bnumero\s+|\bedital\s+|\bchamada\s+|\bchamamento\s+)(\d{1,4})\b"
+    achados |= {m.lstrip("0") or "0" for m in re.findall(rx, _sem_acento(bruto))}
+    return achados
+
+
+def _host(u: str | None) -> str:
+    m = re.match(r"https?://(www\.)?([^/]+)", (u or "").strip().lower())
+    return m.group(2) if m else ""
+
+
+def conflito(a: dict[str, Any], b: dict[str, Any]) -> bool:
+    """Prova de que são oportunidades DIFERENTES (nunca se unem, nem em cadeia)."""
+    if a.get("fim") and b.get("fim") and a["fim"] != b["fim"]:
+        return True
+    if a.get("ini") and b.get("ini") and a["ini"] != b["ini"]:
+        return True
+    if a.get("municipio") and b.get("municipio") and titulo_normal(a["municipio"]) != titulo_normal(b["municipio"]):
+        return True
+    na, nb = _numeros(a.get("titulo")), _numeros(b.get("titulo"))
+    if na and nb and not (na & nb):
+        return True                                                  # números de edital diferentes
+    pa, pb = _palavras(a.get("titulo")), _palavras(b.get("titulo"))
+    jt = len(pa & pb) / max(1, len(pa | pb))
+    return .3 <= jt < .85 and bool(pa - pb) and bool(pb - pa) and _irmaos(a.get("titulo"), b.get("titulo"))
+
+
+def _irmaos(ta: str | None, tb: str | None) -> bool:
+    """Títulos da mesma família com a parte própria diferente ("PNAB Goiás - Teatro" × "PNAB Goiás - Circo")."""
+    a, b = titulo_normal(ta).split(), titulo_normal(tb).split()
+    comum = 0
+    for x, y in zip(a, b, strict=False):
+        if x != y:
+            break
+        comum += 1
+    return comum >= 2
+
+
+def mesma_por_caracteristicas(a: dict[str, Any], b: dict[str, Any]) -> str | None:
+    """O motivo, se a e b são a mesma oportunidade pelas características (o título pode ser diferente)."""
+    if not (a.get("fim") and a.get("fim") == b.get("fim") and a.get("ini") and a.get("ini") == b.get("ini")):
+        return None                                                  # o mesmo período de inscrição é obrigatório
+    if conflito(a, b):
+        return None
+    ha = {_host(a.get("oficial")), _host(a.get("divulgacao"))} - {""}
+    hb = {_host(b.get("oficial")), _host(b.get("divulgacao"))} - {""}
+    sites = sorted(h for h in ha & hb if not any(g in h for g in HOSTS_GERAIS) and h != "gov.br")
+    pa, pb = _palavras(a.get("titulo")), _palavras(b.get("titulo"))
+    jt = len(pa & pb) / max(1, len(pa | pb))
+    oa, ob = _palavras(a.get("objeto")), _palavras(b.get("objeto"))
+    jo = len(oa & ob) / max(1, len(oa | ob)) if oa and ob else 0.0
+    va, vb = titulo_normal(a.get("valor")), titulo_normal(b.get("valor"))
+    mesmo_valor = bool(va and va == vb and re.search(r"\d", va))
+    if sites and jo >= .5:
+        return f"o mesmo site ({sites[0]}), o mesmo período de inscrição ({a['ini']} a {a['fim']}) e o mesmo objeto"
+    if sites and mesmo_valor and jt >= .2:
+        return f"o mesmo site ({sites[0]}), o mesmo período de inscrição ({a['ini']} a {a['fim']}) e o mesmo valor"
+    if jt >= .85 and (sites or jo >= .5):
+        return f"o mesmo nome e o mesmo período de inscrição ({a['ini']} a {a['fim']})"
+    return None
+
+
 # ------------------------------------------------------------------ o código da oportunidade (25/10/2026)
 AREAS = (("CUL", r"cultur|arte|patrim|audiovis|music|teatr|danca|literat|aldir|pnab|rouanet"), ("ESP", r"esport|atleta|paradesport|lazer"),
          ("EDU", r"educa|escol|ensino|bolsa de estudo|capacita"), ("AMB", r"ambient|clima|sustent|florest|agua|biodivers|cerrado"),
@@ -147,7 +228,8 @@ def _livros(con: sqlite3.Connection) -> list[dict[str, Any]]:
     con.row_factory = sqlite3.Row
     linhas = con.execute(
         "SELECT l.id, l.titulo, l.uf, l.link_oficial AS oficial, l.link_divulgacao AS divulgacao, l.estrela, l.criado_em, "
-        "d.inscricao_fim AS fim, d.municipio, d.esfera, d.abrangencia, d.area, "
+        "d.inscricao_fim AS fim, d.inscricao_inicio AS ini, d.municipio, d.esfera, d.abrangencia, d.area, "
+        "(SELECT c.valor FROM certidao c WHERE c.livro_id = l.id AND c.item = 'Valor' AND c.situacao = 'comprovado' ORDER BY c.id DESC LIMIT 1) AS valor, "
         "(SELECT c.valor FROM certidao c WHERE c.livro_id = l.id AND c.item = 'Objeto' AND c.situacao = 'comprovado' ORDER BY c.id DESC LIMIT 1) AS objeto, "
         "(SELECT COUNT(*) FROM certidao c WHERE c.livro_id = l.id AND c.situacao = 'comprovado') AS certs "
         "FROM livro l LEFT JOIN livro_dados d ON d.livro_id = l.id WHERE l.situacao NOT IN ('excluido', 'unido')").fetchall()
@@ -169,7 +251,10 @@ def grupos(con: sqlite3.Connection) -> list[tuple[str, list[tuple[str, str]]]]:
             baldes["indice:" + indice(lv)].append(lv)                 # o índice identifica os candidatos
         if lv["t"]:
             baldes["nome:" + lv["t"]].append(lv)
+        if lv.get("ini") and lv.get("fim"):                            # 01/11/2026: o período identifica os de título diferente
+            baldes[f"periodo:{lv['ini']}|{lv['fim']}"].append(lv)
     pai: dict[str, str] = {}
+    membros_de: dict[str, list[dict]] = {lv["id"]: [lv] for lv in livros}
 
     def raiz(x: str) -> str:
         while pai.get(x, x) != x:
@@ -188,10 +273,13 @@ def grupos(con: sqlite3.Connection) -> list[tuple[str, list[tuple[str, str]]]]:
             for b in lista[k + 1:]:
                 if raiz(a["id"]) == raiz(b["id"]):
                     continue
-                m = mesma_oportunidade(a, b)
+                m = mesma_oportunidade(a, b) or mesma_por_caracteristicas(a, b)
                 if m:
                     ra, rb = raiz(a["id"]), raiz(b["id"])
+                    if any(conflito(x, y) for x in membros_de[ra] for y in membros_de[rb]):
+                        continue                                     # 01/11/2026: nunca em cadeia sobre um conflito
                     pai[rb] = ra
+                    membros_de[ra] = membros_de[ra] + membros_de.pop(rb)
                     motivos[b["id"]] = motivos.get(b["id"]) or m
                     motivos[a["id"]] = motivos.get(a["id"]) or m
     comp: dict[str, list[dict]] = defaultdict(list)
