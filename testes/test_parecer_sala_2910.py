@@ -670,3 +670,11 @@ def test_o_fim_prevalece_sobre_o_inicio():
     assert "if (dlt < 0.24) arrows.ini.userData.target = hands.ini.userData.target = -(af - 0.24);" in g
     assert "if (dlt < 0.62) plaques.ini.target = af - 0.62;" in g and "plaques.fim.target = mid + 0.31" not in g
     assert "arrows.fim.userData.m.renderOrder = 6" in g
+
+
+def test_o_cartao_em_andamento_sem_os_textos_retirados():
+    """01/11/2026 (titular): o cartão das oportunidades em andamento sem "na fila do Interceptador (Goiás tem prioridade) —
+    ele busca os itens com ✕ (até 3 vezes por oportunidade)" e sem "· próxima janela prevista"."""
+    p = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
+    assert "ele busca os itens com ✕ (até 3 vezes por oportunidade)" not in p and "próxima janela prevista" not in p
+    assert "estudada pelo Interceptador em" in p and "edição(ões) guardada(s)" in p
