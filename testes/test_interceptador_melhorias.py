@@ -61,3 +61,18 @@ def test_o_achado_sem_ia_pelos_extratores(tmp_path):
     it._ler = lambda u, profunda=False, escada=None: (u, leitura, b"")
     a = it._achado(_livro(), 12, ["https://x.go.gov.br/edital.pdf"])
     assert {"Prazo de inscrição", "Valor", "Objeto", "Anexos"} <= set(a.dados["itens"]) and a.dados["ia"]["extratores"]
+
+
+def test_os_resultados_do_chrome_da_fila_foram_aplicados():
+    """01/11/2026 (titular): as partes 1 a 3 do Chrome sobre a fila do Interceptador: 475 certidões, 12 dispensas (as 4 de
+    'não verificável' ficam para o Interceptador), 323 exclusões (não é oportunidade, inacessível, encerrada sem data),
+    220 encerradas com as datas arquivadas, 70 abertas na fila."""
+    import json
+    from pathlib import Path
+
+    ev = [json.loads(linha) for linha in Path("eventos/2026/11/02/claude-interceptador-chrome-01-11.jsonl").read_text(encoding="utf-8").splitlines()]
+    tipos = [e["tipo"] for e in ev]
+    assert tipos.count("livro.excluido_logicamente") == 323 and tipos.count("livro.passagem") <= 220
+    disp = [e for e in ev if e["tipo"] == "certidao.gravada" and e["dados"]["situacao"] == "dispensado"]
+    assert len(disp) == 12 and all(e["dados"]["item"] not in ("Objeto", "Prazo de inscrição", "Território") for e in disp)
+    assert Path("expurgos/2026-11-02T002405.json").exists()
