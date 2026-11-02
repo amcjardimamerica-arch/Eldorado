@@ -1375,7 +1375,10 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
   else ceuEm("oa-estrelas","v-editais",0.7);
   // 02/11/2026 (titular): a Sala de controle sob o mesmo céu do calendário (o fundo e as estrelas cintilantes)
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",()=>ceuEm("nv-estrelas","v-neural"));
-  else ceuEm("nv-estrelas","v-neural");   // 29/10/2026: o início vai direto à página inicial
+  else ceuEm("nv-estrelas","v-neural");
+  // 02/11/2026 (titular): o Cartório sob o mesmo céu
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",()=>ceuEm("ca-estrelas","v-cartorio"));
+  else ceuEm("ca-estrelas","v-cartorio");   // 29/10/2026: o início vai direto à página inicial
   document.querySelectorAll("#sj .menu button").forEach(b=>b.addEventListener("click",()=>{const [m,v]=b.dataset.ir.split(":");
     if(m==="inicio"){window.irInicio&&irInicio();return} if(window.modulo)modulo(m); if(v&&window.mostra)mostra(v)}));
   // o giroscópio: a lista de prazos (em ordem de vencimento) e, ao passar o mouse, a oportunidade no mostrador da esfera
@@ -1523,16 +1526,26 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
 </div>
 <div class="grade-ed" id="ed-grade"></div>
 </section>
-<section id="v-cartorio" class="oculto" style="margin-top:14px">
+<section id="v-cartorio" class="oculto" style="margin-top:14px"><canvas class="ca-ceu" id="ca-estrelas" aria-hidden="true"></canvas>
 <style>
 /* CARTÓRIO DENTRO DO PAINEL (titular, 10/10): seção do Eldorado, sem endereço próprio; estilo restrito a esta seção */
 #v-cartorio /* Paleta PROVISÓRIA do painel (config/identidade_visual.json aguarda o design de referência). Só tons claros. */
 :root{--fundo:#FBFBFA;--cartao:#FFFFFF;--tinta:#23272E;--suave:#68707C;--linha:#E4E1D8;--marca:#1F5B99;--realce:#EEF3F9;
 --ok:#1E7E4B;--okf:#E8F4EC;--disp:#1F4F8A;--dispf:#E8F0FB;--falta:#B23A2E;--faltaf:#FBEAE7;--ja:#8A919C;
 box-sizing:border-box;}
+/* 02/11/2026 (titular): o Cartório sob o mesmo céu estrelado das outras etapas (só o fundo; os painéis como estão) */
+body:has(#v-cartorio:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 38% 48%,#1E2742 0,#121A31 42%,#0A0F1F 78%,#070A15 100%) fixed}
+#v-cartorio .ca-ceu{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none;display:block}
+#v-cartorio>*:not(.ca-ceu){position:relative;z-index:1}
+/* as faixas de largura inteira deixam o céu aparecer; os painéis, cartões e tabelas ficam como estão; o texto solto sobre o céu fica claro */
+#cl2,#cl3,#cl4{background:transparent!important;border-bottom-color:transparent!important}
+:is(#cl2,#cl3,#cl4,#v-cartorio .car-main) :is(h1,h2,h3,h4,p,.sub,.meta,small,label):not(:is(.pn,.kpi,.med2,.c2-livro,.card,.ficha,table,details,.bloco,.c2-gaveta,.c2-tip,.aviso,.it,.lv,.det,.barra,.linha,dialog) *){color:#E8E2D0!important}
+:is(#cl2,#cl3,#cl4) kbd{color:#23272E}
+#v-cartorio .grupo>.gc span,#v-cartorio .grupo>.gc b,#v-cartorio .c2-dica{color:#E8E2D0!important}
+#v-cartorio .grupo>.gc{border-bottom-color:rgba(232,226,208,.35)!important}
 #v-cartorio *{box-sizing:inherit}
 
-#v-cartorio{margin:0;background:var(--fundo);color:var(--tinta);font:15px/1.5 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+#v-cartorio{margin:0;background:transparent;color:var(--tinta);font:15px/1.5 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
 #v-cartorio .car-main{max-width:1180px;margin:0 auto;padding:4px 0 32px}
 #v-cartorio h1{font-family:Georgia,serif;font-size:26px;margin:0 0 4px;color:var(--marca)}
 #v-cartorio h2{font-family:Georgia,serif;font-size:18px;margin:28px 0 10px;border-bottom:2px solid var(--linha);padding-bottom:4px}
