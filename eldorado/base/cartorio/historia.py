@@ -48,6 +48,8 @@ def _linhas(con: sqlite3.Connection, tabela: str, colunas: str, ordem: str, ids:
 
 
 def historia_completa(con: sqlite3.Connection, livro: str) -> dict[str, Any]:
+    antes = con.row_factory                 # a conexão é compartilhada (o site): o formato das linhas volta como estava
+    con.row_factory = None
     ids = familia(con, livro)
     con.row_factory = sqlite3.Row
     try:
@@ -57,6 +59,13 @@ def historia_completa(con: sqlite3.Connection, livro: str) -> dict[str, Any]:
         un = [dict(r) for r in con.execute(f"SELECT * FROM uniao WHERE livro_que_fica IN ({','.join('?' * len(ids))}) ORDER BY em", ids)]
     finally:
         con.row_factory = None
+    try:
+        return _montar(con, livro, ids, lv, dd, pp, un)
+    finally:
+        con.row_factory = antes
+
+
+def _montar(con, livro, ids, lv, dd, pp, un) -> dict[str, Any]:
     h: dict[str, Any] = {"livro": dict(lv) if lv else None, "dados": dict(dd) if dd else None, "passaporte": dict(pp) if pp else None,
                          "familia": ids, "unioes": un}
     for chave, (tab, cols, ordem) in TABELAS.items():

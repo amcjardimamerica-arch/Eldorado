@@ -29,3 +29,10 @@ def test_a_historia_traz_o_que_ficou_nos_unidos_sem_repetir():
     h = historia_completa(_banco(), "A")
     assert [v["decisao"] for v in h["vereditos"]] == ["verificado_prata"] and h["vereditos"][0]["de_livro"] == "C"
     assert sorted(c["item"] for c in h["certidoes"]) == ["Objeto", "Valor"]
+
+
+def test_a_conexao_volta_ao_formato_de_antes():
+    b = _banco()
+    b.row_factory = sqlite3.Row
+    historia_completa(b, "A")
+    assert b.row_factory is sqlite3.Row
