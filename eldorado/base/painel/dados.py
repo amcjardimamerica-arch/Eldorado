@@ -938,6 +938,13 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     except Exception:  # noqa: BLE001 — sem a rede, o parecer sai sem a nota
         rede = None
     ca, fichas_cartorio = cartorio_montar(sis.bib, sis.cer, rede, agora)
+    # 02/11/2026 (titular): cada livro com a história completa, sem separação (ele e os livros unidos a ele, todas as tabelas)
+    from ..cartorio.historia import historia_completa
+    for _lid, _ficha in fichas_cartorio.items():
+        try:
+            _ficha["historia"] = historia_completa(sis.bib, _lid)
+        except sqlite3.Error:
+            pass
     arquivos["cartorio.json"] = ca
     arquivos["fluxo_oportunidades.json"] = _fluxo(sis, agora)
     arquivos["fluxo_oportunidades.json"]["arquivados"] = [
