@@ -27,6 +27,10 @@ def test_rede_aprende_as_tres_perguntas(gravador, bancos):
     for i in range(30):
         evs.append(ev("achado.entregue", id=f"b{i}", motor="m", encontrado_em="2026-10-01", link_divulgacao="https://x", titulo=f"Pregão para aquisição de gêneros alimentícios {i}",
                       dados={}, decisao="barrado", motivo="compra do órgão"))
+        # 02/11/2026 (titular): a pergunta «oportunidade» aprende só com LIVROS (o barrado no portão é outra população);
+        # os exemplos negativos são os livros que o Chrome descartou
+        evs.append(livro(f"N{i}", f"Pregão para aquisição de gêneros alimentícios {i}"))
+        evs.append(ev("veredito.gravado", livro_id=f"N{i}", origem="chrome", decisao="descartar", em=AGORA))
     assert gravador.aplicar(evs).ok
     for i in range(20):
         bancos["cerebro"].execute("INSERT INTO execucao_motor (motor, inicio, fim, achados) VALUES (?, ?, ?, ?)",

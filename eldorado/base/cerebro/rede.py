@@ -30,6 +30,45 @@ def caracteristicas(item: dict[str, Any]) -> dict[str, float]:
     return f
 
 
+def caracteristicas_livro(lv: dict[str, Any]) -> dict[str, float]:
+    """02/11/2026 (titular): o que um LIVRO tem (não um achado): o território, a esfera, a modalidade, a área, o tipo do
+    link oficial, o órgão, o motor que o trouxe e as palavras do título. Ensaio prequencial com cada livro uma vez:
+    AUC 0,93 (0,95 nos mais recentes), contra 0,48 da rede treinada com os achados barrados."""
+    f: dict[str, float] = {"vies": 1.0}
+    for k in ("uf", "abrangencia", "esfera", "area", "link_oficial_tipo"):
+        if lv.get(k):
+            f[f"{k}={str(lv[k]).lower()[:30]}"] = 1.0
+    if lv.get("modalidade"):
+        f["mod=" + re.sub(r"\s+", " ", str(lv["modalidade"]).lower())[:25]] = 1.0
+    if lv.get("orgao"):
+        f["orgao=" + str(lv["orgao"]).lower()[:30]] = 1.0
+    if lv.get("motor"):
+        f["motor=" + str(lv["motor"])] = 1.0
+    f["tem_link_oficial"] = 1.0 if lv.get("link_oficial") else 0.0
+    for p in sorted(set(PALAVRA.findall(str(lv.get("titulo") or "").lower())))[:25]:
+        f[f"p={p}"] = 1.0
+    return f
+
+
+SQL_LIVROS = ("SELECT l.id, l.titulo, l.orgao, l.uf, l.link_oficial, l.situacao, d.abrangencia, d.esfera, d.modalidade, d.area, "
+              "d.link_oficial_tipo FROM livro l LEFT JOIN livro_dados d ON d.livro_id = l.id")
+
+
+def livros_para_a_rede(biblioteca, onde: str = "", args: tuple = ()) -> dict[str, dict[str, Any]]:
+    """Os livros com as características da rede (e o motor que trouxe cada um: o do primeiro achado)."""
+    import sqlite3
+    antes = biblioteca.row_factory
+    biblioteca.row_factory = sqlite3.Row
+    try:
+        lv = {r["id"]: dict(r) for r in biblioteca.execute(SQL_LIVROS + (" " + onde if onde else ""), args)}
+        for i, m in biblioteca.execute("SELECT livro_id, motor FROM achado WHERE livro_id IS NOT NULL ORDER BY encontrado_em DESC"):
+            if i in lv:
+                lv[i]["motor"] = m                                  # em ordem decrescente: fica o do primeiro achado
+    finally:
+        biblioteca.row_factory = antes
+    return lv
+
+
 class Rede:
     def __init__(self):
         self.modelo = linear_model.LogisticRegression(optimizer=optim.SGD(0.1))
@@ -132,7 +171,7 @@ class RedeNeural:
         self.p = {k: _Pergunta(None) for k in self.PERGUNTAS}
 
     def nota_oportunidade(self, livro: dict[str, Any]) -> float:
-        return self.p["oportunidade"].nota_de(caracteristicas(livro))
+        return self.p["oportunidade"].nota_de(caracteristicas_livro(livro))
 
     def nota_acao(self, acao: str, livro: dict[str, Any]) -> float:
         return self.p["acao"].nota_de(car_acao(acao, livro))
@@ -153,24 +192,22 @@ class RedeNeural:
         from zoneinfo import ZoneInfo
         rede, casos = cls(), []
         biblioteca.row_factory = sqlite3.Row
-        # oportunidade: os vereditos, os livros que chegaram ao Farol (válidos) e os excluídos (inválidos)
-        livros = {r["id"]: dict(r) for r in biblioteca.execute("SELECT id, titulo, orgao, uf, link_oficial, situacao FROM livro")}
-        for r in biblioteca.execute("SELECT livro_id, origem, decisao, em FROM veredito"):
+        # oportunidade (02/11/2026, titular): só LIVROS, cada um uma vez — o veredito final do Chrome ou da titular (o
+        # «pendente» não é resposta), ou a chegada ao Farol; os achados barrados no portão são outra população e
+        # ensinavam a rede a reconhecer barrados, não livros (o ensaio de 29/10 dava 0,48 sobre livros)
+        livros = livros_para_a_rede(biblioteca)
+        biblioteca.row_factory = sqlite3.Row
+        rotulo: dict[str, bool] = {}
+        primeiro: dict[str, str] = {}
+        for r in biblioteca.execute("SELECT livro_id, decisao, em FROM veredito WHERE decisao <> 'pendente' ORDER BY em"):
             if r["livro_id"] in livros:
-                casos.append((r["em"], "oportunidade", caracteristicas(livros[r["livro_id"]]), r["decisao"] not in ("descartar", "invalido", "excluir")))
-        for r in biblioteca.execute("SELECT livro_id, para, em FROM passagem WHERE para = 'farol'"):
-            if r["livro_id"] in livros:
-                casos.append((r["em"], "oportunidade", caracteristicas(livros[r["livro_id"]]), True))
-        for lv in livros.values():
-            if lv["situacao"] == "excluido":
-                casos.append(("9999", "oportunidade", caracteristicas(lv), False))
-        for r in biblioteca.execute("SELECT motor, titulo, link_oficial, dados, encontrado_em FROM achado WHERE decisao = 'barrado'"):
-            try:                                                    # os barrados pela Pertinência: os exemplos negativos
-                d = json.loads(r["dados"] or "{}")
-            except ValueError:
-                d = {}
-            x = caracteristicas({"motor": r["motor"], "titulo": r["titulo"], "link_oficial": r["link_oficial"], "uf": d.get("uf"), "orgao": d.get("orgao")})
-            casos.append((r["encontrado_em"] or "", "oportunidade", x, False))
+                rotulo[r["livro_id"]] = r["decisao"] not in ("descartar", "invalido", "excluir")
+                primeiro.setdefault(r["livro_id"], r["em"])
+        for r in biblioteca.execute("SELECT livro_id, MIN(em) AS em FROM passagem WHERE para = 'farol' GROUP BY livro_id"):
+            if r["livro_id"] in livros and r["livro_id"] not in rotulo:
+                rotulo[r["livro_id"]], primeiro[r["livro_id"]] = True, r["em"]
+        for lid, y in rotulo.items():
+            casos.append((primeiro[lid] or "", "oportunidade", caracteristicas_livro(livros[lid]), y))
         # ação: cada tentativa na etapa 3, e se o Cartório certificou algo novo para o livro depois dela
         certs: dict[str, list[str]] = {}
         for r in biblioteca.execute("SELECT livro_id, em FROM certidao WHERE situacao IN ('comprovado','dispensado') ORDER BY em"):
@@ -239,9 +276,8 @@ def no_rede(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -
             contexto.diario.emitir("modelo.treinado", "rede", {"versao": f"{pergunta}-{x['amostras']:07d}-{agora()[:16]}", "treinado_em": agora(),
                                                                "arquivo": f"rede:{pergunta}", "discernimento": x["discernimento"],
                                                                "precisao": x["precisao"], "revocacao": x["revocacao"], "brier": x.get("brier")})
-    # 29/10/2026: a avaliação dos pendentes fica DESLIGADA até a rede ser retreinada para livros: ela dá ~0,003 a tudo,
-    # inclusive aos 33 livros do Farol (o discernimento de 0,996 é medido sobre achados barrados, que têm características
-    # que um livro não tem). Ligar com o parâmetro avaliar_pendentes = true no nó, depois do retreino.
+    # 02/11/2026 (titular): a rede retreinada só com livros (AUC prequencial 0,93); a avaliação dos pendentes religada
+    # (parâmetro avaliar_pendentes = true no nó). A nota informa a Sala e o Comandante; não arquiva nem decide sozinha.
     avaliados = 0
     if parametros.get("avaliar_pendentes"):
         avaliados = avaliar_pendentes(rede, dados, contexto.diario, f"oportunidade-{m.get('oportunidade', {}).get('amostras', 0):07d}-{agora()[:16]}")
@@ -260,10 +296,9 @@ def avaliar_pendentes(rede: "RedeNeural", dados: Path, diario, versao: str, maxi
     try:
         antes = {r[0]: r[1] for r in b.execute(
             "SELECT livro_id, nota FROM analise_rede WHERE id IN (SELECT MAX(id) FROM analise_rede GROUP BY livro_id)")}
-        livros = [dict(r) for r in b.execute(
-            "SELECT l.id, l.titulo, l.orgao, l.uf, l.link_oficial, l.situacao FROM livro l JOIN passaporte p ON p.livro_id = l.id "
-            "WHERE p.fase IN ('recepcao', 'preparacao', 'analise externa') AND l.situacao NOT IN ('excluido', 'unido') "
-            "AND COALESCE(l.estrela, 'sem') <> 'ouro'")]
+        livros = list(livros_para_a_rede(
+            b, "JOIN passaporte p ON p.livro_id = l.id WHERE p.fase IN ('recepcao', 'preparacao', 'analise externa') "
+               "AND l.situacao NOT IN ('excluido', 'unido') AND COALESCE(l.estrela, 'sem') <> 'ouro'").values())
     except sqlite3.Error:
         return 0
     finally:

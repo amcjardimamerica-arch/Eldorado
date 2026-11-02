@@ -314,9 +314,10 @@ def test_so_grava_o_que_muda_e_a_copia_dos_livros():
     from eldorado.motores.acesso.completa import ORDEM
 
     assert "camoufox" not in ORDEM and "patchright" in ORDEM
-    import re as _re
 
-    assert _re.search(r'"cinza",\s+# 29/10/2026: informativo', Path("eldorado/base/painel/sala.py").read_text(encoding="utf-8"))
+    # 02/11/2026 (titular): a rede retreinada só com livros volta a ser medida (deixa de ser o cinza «fora de uso»)
+    _sala = Path("eldorado/base/painel/sala.py").read_text(encoding="utf-8")
+    assert '_faixa(auc, 0.85, 0.7) if auc is not None else "cinza"' in _sala and "prequencial sobre LIVROS" in _sala
     assert datetime.now(timezone.utc)
 
 

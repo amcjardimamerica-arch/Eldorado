@@ -573,9 +573,9 @@ def montar(
             "rn_auc",
             "Discernimento da rede (oportunidade)",
             auc,
-            "cinza",  # 29/10/2026: informativo (a rede de livros está fora de uso): não é alarme da etapa
-            f"área sob a curva ROC: {auc} — medida sobre o fluxo de treino (dominado pelos achados barrados na entrada); sobre "
-            f"livros a rede não discerne (ensaio de 29/10/2026: 0,48, o acaso): a avaliação dos pendentes está desligada",
+            _faixa(auc, 0.85, 0.7) if auc is not None else "cinza",   # 02/11/2026: a rede de livros em uso; volta a ser medida
+            f"área sob a curva ROC: {auc} — prequencial sobre LIVROS (cada livro uma vez, o veredito final do Chrome ou da titular, "
+            f"ou a chegada ao Farol); a nota de cada livro pendente informa a Sala e o Comandante",
             t,
             [0, 1],
             {"normal": [0.85, None], "alarme": [0.7, None]},
@@ -1159,7 +1159,7 @@ def _rede_entregou(bib: sqlite3.Connection, cer: sqlite3.Connection, AB: str) ->
         "pendentes_provaveis_reais": notas[1] or 0,
         "decisoes_no_treino": decisoes,
         "treinado_em": m[1] if m else None,
-        "aviso": "a avaliação dos pendentes está desligada: a rede ainda não sabe julgar um livro (retreino pendente)",
+        "aviso": "a rede julga os livros pendentes (retreinada só com livros em 02/11/2026); a nota informa, não decide",
     }
 
 

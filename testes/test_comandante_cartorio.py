@@ -55,3 +55,11 @@ def test_a_lei_e_o_chamamento():
 def test_o_interceptador_grava_o_degrau_da_escada():
     t = Path("eldorado/motores/pilotos/interceptador.py").read_text(encoding="utf-8")
     assert '"escada": {"motor": "interceptador", "fonte": ABORDAGENS[n],' in t
+
+
+def test_a_rede_aprende_com_livros_e_julga_os_pendentes():
+    """02/11/2026 (titular): a pergunta «oportunidade» só com livros (cada um uma vez; sem o «pendente»; sem os achados
+    barrados no portão, que davam 0,48 sobre livros), e a avaliação dos pendentes religada."""
+    r = Path("eldorado/base/cerebro/rede.py").read_text(encoding="utf-8")
+    assert "def caracteristicas_livro" in r and "decisao <> 'pendente'" in r and "WHERE decisao = 'barrado'\")" not in r
+    assert "avaliar_pendentes = true" in Path("workflows/passagem.toml").read_text(encoding="utf-8")
