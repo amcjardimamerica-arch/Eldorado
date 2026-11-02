@@ -34,6 +34,9 @@
   }
   const est = c => !c ? ["nr", "○", "não encontrado"] : c.situacao === "comprovado" ? ["ok", "✓", c.valor] : c.situacao === "dispensado" ? ["di", "⊘", "dispensado"] : ["ab", "!", "em aberto"];
 
+  // o título da capa cabe sempre acima do valor e da data (o tamanho cai com o comprimento; acima de 120 letras, corta)
+  const cortaTit = t => { t = String(t || "").trim(); return t.length > 120 ? t.slice(0, 117).replace(/\s+\S*$/, "") + "…" : t; };
+  const tamTit = t => { const n = cortaTit(t).length; return n <= 45 ? 46 : n <= 70 ? 40 : n <= 95 ? 34 : 30; };
   // ---- a capa (modelo E): as faixas na cor da estrela; sem estrela, só o ornamento
   function capa(H) {
     const L = H.livro || {}, D = H.dados || {}, s = L.estrela;
@@ -41,7 +44,7 @@
     const valor = reais(D.valor_max || D.valor_min) || "—", fim = dmy(D.inscricao_fim) || "—";
     return `<div class="lp2-capa"><div class="lp2-moldura${metal ? "" : " so"}">
       <div class="lp2-placa"><img src="${LOGO}" alt="A.M.C. Jardim América"></div>
-      <h1 class="lp2-tit">${E(L.titulo)}</h1>
+      <h1 class="lp2-tit" style="font-size:${tamTit(L.titulo)}px">${E(cortaTit(L.titulo))}</h1>
       ${metal ? `<div class="lp2-faixas"><div class="lp2-faixa ${metal}"><div class="lab">Valor</div><div class="num">${E(valor)}</div></div>
         <div class="lp2-faixa ${metal}"><div class="lab">Inscrição até</div><div class="num">${E(fim)}</div></div></div>`
         : `<div class="lp2-orn"><i></i><b></b><i></i></div>`}
@@ -61,14 +64,14 @@
     const cel = (cap, val, x) => `<div class="cel"><div class="cap">${cap}</div><div class="v ${x || ""}">${E(val || "—")}</div></div>`;
     return `<div class="lp2-pg${opc && opc.passada ? " passada" : ""}">
       <div class="lp2-band"><div class="lin"><span class="cap ac">${opc && opc.passada ? "4 · Oportunidade anterior" : "1 · Dados do livro"}</span><span class="cap cl">${E(L.id)}</span></div>
-        <h2>${E(L.titulo || "—")}</h2>
+        <h2>${E(cortaTit(L.titulo) || "—")}</h2>
         <div class="chips"><span class="chip cheio">Estrela ${E(L.estrela || "sem")}</span><span class="chip">Livro ${L.selo_livro && L.selo_livro !== "sem" ? E(L.selo_livro) : "sem selo"}</span></div></div>
       <div class="lp2-corpo">
         <div class="grade">${cel("Área", D.area || L.tema)}${cel("Estado", estado)}${cel("Limite", dmy(D.inscricao_fim), "fort")}
           ${cel("Órgão", L.orgao || v("Órgão / financiador"))}${cel("Esfera", D.esfera || v("Esfera"))}${cel("Abrangência", abr(D.abrangencia))}
           ${cel("Motores", motores.length ? motores.length + (H.motor_que_gerou ? " · " + H.motor_que_gerou.replace(/^site-/, "") + " gerou" : "") : "—")}${cel("Edital", edital)}${cel("Drive", drive, drive === "no Drive" ? "" : "ab")}</div>
         <div class="v cz">${motores.length ? "Motores: " + E(motores.join(", ")) : "Motores: —"}</div>
-        <div class="v"><span class="cap">Divulgação </span>${E(curto(L.link_divulgacao) || "—")}</div>
+        <div class="v"><span class="cap">Divulgação </span>${E(curto(L.link_divulgacao).slice(0, 90) || "—")}</div>
         <div class="v"><span class="cap">Oficial </span>${E(curto(L.link_oficial) || "—")}</div>
         <div class="lin"><span class="cap fort">Checklist dos 12 itens</span><span class="cap fort">${resol} de 12</span></div>
         <div class="mosaico">${tiles}</div>
@@ -102,11 +105,11 @@
     (H.achados || []).forEach(a => { const c = a.escada && cod(a.escada.degrau); if (c) (obt[c] = obt[c] || []).push(dm(a.encontrado_em) + " · " + (a.escada.motor || a.motor) + (a.escada.fonte ? " · " + a.escada.fonte : "") + " → " + (a.decisao === "aceito" ? "achado aceito" : a.decisao || "achado")); });
     const cl = cod(D.escada); if (cl) (obt[cl] = obt[cl] || []).push("último acesso do livro · " + String(D.escada).split("·")[0].trim());
     const maior = Math.max(-1, ...Object.keys(obt).map(k => DEGRAUS.findIndex(x => x[0] === k)));
-    const esc = DEGRAUS.map(([c, n], i) => { const ok = obt[c]; return `<div class="deg ${ok ? "ok" : "nao"}" style="margin-left:${i * 13}px"><span class="v ${ok ? "tl fort" : "cz"}">${c} · ${n}</span><span class="v ${ok ? "" : "cz"}">${ok ? E(ok.join(" · ")) : i > maior ? "não precisou" : "sem registro neste livro"}</span></div>`; }).join("");
+    const esc = DEGRAUS.map(([c, n], i) => { const ok = obt[c]; return `<div class="deg ${ok ? "ok" : "nao"}" style="margin-left:${i * 13}px"><span class="v ${ok ? "tl fort" : "cz"}">${c} · ${n}</span><span class="v ${ok ? "" : "cz"}">${ok ? E(ok.join(" · ").slice(0, 150)) : i > maior ? "não precisou" : "sem registro neste livro"}</span></div>`; }).join("");
     const linhas = FASES.filter(([k]) => k !== "arquivo" || t[k] != null).map(([k, n]) => { const h = t[k], atual = k === P.fase, w = h == null ? 0 : Math.max(1, Math.min(100, h / 120 * 100));
       const cor = atual ? "#E8952B" : h != null && h > META_H ? "#7B6CE0" : "#14A88C";
       return `<div class="esteira"><span class="v ${atual ? "am fort" : ""}">${n}${atual ? " ● agora" : h != null ? " ✓" : ""}</span><div class="trilho"><div style="width:${w}%;background:${cor}"></div><i class="meta"></i></div><span class="m ${atual ? "am" : h != null && h > META_H ? "vi" : "tl"}">${h == null ? "—" : horas(h)}</span></div>`; }).join("");
-    const tl = tentativas(H).map(x => `<div class="v">${dm(x.em)} ${hm(x.em)}</div><div class="v ${x.cls} fort">${E(x.quem)}</div><div class="v">${E(x.txt)}</div>`).join("");
+    const tl = tentativas(H).slice(-8).map(x => `<div class="v">${dm(x.em)} ${hm(x.em)}</div><div class="v ${x.cls} fort">${E(x.quem)}</div><div class="v">${E(x.txt)}</div>`).join("");
     return `<div class="lp2-pg branco"><div class="lp2-corpo">
       <div class="lin"><span class="cap">2 · Etapas cumpridas na coleta</span><span class="cap am">${E(fase)}${agora != null ? " · " + horas(agora) : ""}</span></div>
       <div class="placar"><div class="card"><div class="cap">Etapa atual</div><div class="m am g">${E(fase)}</div></div><div class="card"><div class="cap">Nesta etapa</div><div class="m g">${horas(agora)}</div></div>

@@ -25,3 +25,15 @@ def test_as_regras_das_paginas():
     assert "Legislação aplicável" in j and "Próxima previsão" in j and "Parecer sobre a oportunidade anterior" in j
     c = (P / "livro-paginas.css").read_text(encoding="utf-8")
     assert "--band:#D17600" in c                                                        # a versão passada no laranja da logomarca
+
+
+def test_so_o_livro_de_frente_e_com_luz_natural():
+    """02/11/2026 (titular): sem «Ficha completa» no livro; aberto, o livro fica de frente para a tela (sem inclinação nem
+    balanço) e a luz não estoura o papel; as páginas na proporção da página do 3D e o título da capa limitado"""
+    h = (P / "dashboard.html").read_text(encoding="utf-8")
+    assert "lp-ficha" not in h
+    t = (P / "livro3d.js").read_text(encoding="utf-8")
+    assert "I.group.rotation.x -= 0.07 * cp" not in t and "0.012 * Math.sin(t * 0.6)" not in t and "bookUpdate(I, s, { curl: 0 })" in t
+    assert "new T.AmbientLight(0xffffff, 0.52)" in t
+    assert "height:868px" in (P / "livro-paginas.css").read_text(encoding="utf-8")
+    assert "cortaTit" in (P / "livro-paginas.js").read_text(encoding="utf-8")

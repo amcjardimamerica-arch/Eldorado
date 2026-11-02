@@ -128,7 +128,7 @@ window.LOGO_DATA={"full": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAvgAAAD
     renderer.outputEncoding = T.sRGBEncoding; renderer.toneMapping = T.NoToneMapping;
     scene = new T.Scene(); camera = new T.PerspectiveCamera(32, 1, 0.05, 50);
     try { LP.env = new T.PMREMGenerator(renderer).fromScene(new T.RoomEnvironment(), 0.04).texture; } catch (e) { }
-    scene.add(new T.AmbientLight(0xffffff, 0.6)); const k = new T.DirectionalLight(0xffffff, 0.4); k.position.set(-0.8, 1.6, 5); scene.add(k);
+    scene.add(new T.AmbientLight(0xffffff, 0.52)); const k = new T.DirectionalLight(0xffffff, 0.3);   /* 02/11/2026: luz natural (o papel não estoura) */ k.position.set(-0.8, 1.6, 5); scene.add(k);
     inst = D.build({ THREE: T, St: G.Steam, LP: LP }); scene.add(inst.group); pRoot = new T.Group(); scene.add(pRoot);
     holder.addEventListener('click', () => { if (S.phase === 'cover') openNow(); });
     if (G.ResizeObserver) new ResizeObserver(fit).observe(holder); else G.addEventListener('resize', fit);
@@ -248,11 +248,11 @@ window.LOGO_DATA={"full": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAvgAAAD
     opt = opt || {}; const o = s.o, cp = io(sat(o / 0.45)), ease = opt.ease || io;
     I.pivot.rotation.y = -PI * cp; I.sg.rotation.y = -PI / 2 * cp; if (I.spineFlat) I.spine.visible = cp < 0.3;
     I.leaves.forEach((l, i) => { const p = i < I.nR ? ease(sat((o - 0.32 - i * 0.1) / 0.32)) : io(s.f); const z = l.zR + (l.zL - l.zR) * sat(p) + Math.sin(PI * sat(p)) * (opt.lift || 0.06); l.lf.set(PI * 0.995 * p, l.curl * (opt.curl || 1), z); });
-    I.book.position.x = -I.A / 2 * (1 - cp); I.group.rotation.x -= 0.07 * cp; return cp;
+    I.book.position.x = -I.A / 2 * (1 - cp); return cp;
   }
   function common(I, s, t) {
     I.group.visible = s.a > 0.003; I.group.scale.setScalar(Math.max(0.001, s.a));
-    I.group.position.y = -0.3 * (1 - Math.min(1, s.a)); I.group.rotation.x = 0.35 * (1 - s.a) + 0.012 * Math.sin(t * 0.6); I.group.rotation.y = -0.5 * (1 - s.a) + 0.02 * Math.sin(t * 0.45);
+    I.group.position.y = -0.3 * (1 - Math.min(1, s.a)); I.group.rotation.x = 0.35 * (1 - s.a); I.group.rotation.y = -0.5 * (1 - s.a);   /* 02/11/2026 (titular): aberto, o livro fica de frente para a tela, sem inclinação nem balanço */
   }
   const W2 = (I, x, y, z) => (I.book || I.group).localToWorld(V(x, y, z));
   function decoTex(fn, w, h, n) { const out = []; for (let k = 0; k < n; k++) out.push(LP.tex(cv(w, h, (x, W, H) => fn(x, W, H, k)))); return out; }
@@ -460,7 +460,7 @@ window.LOGO_DATA={"full": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAvgAAAD
       },
       setContent(I, pages, cont) { if (cont.capaImagem) { const g = this._cv.getContext('2d'); g.clearRect(0, 0, 1024, 1434); g.drawImage(cont.capaImagem, 0, 0, 1024, 1434); } else paintCover(this._cv.getContext('2d'), 1024, 1434, cont.capa, P); I.cover.material[0].map.needsUpdate = true; setLeafTex(I, pages, this._deco); },
       fx(I, ev, LP) { LP.burst(P.fx, W2(I, 0.05, 0.1, I.Tp + 0.05), ev === 'turn' || ev === 'back' ? 5 : 11, V(0, 0.5, 1)); },
-      update(I, s, dt, t) { common(I, s, t); bookUpdate(I, s, { curl: 0.55 }); I.rib.rotation.x = 0.16 * Math.sin(t * 1.2); }
+      update(I, s, dt, t) { common(I, s, t); bookUpdate(I, s, { curl: 0 }); I.rib.rotation.x = 0.16 * Math.sin(t * 1.2); }
     };
   }
   const D7 = {}; Object.keys(SCHEMES).forEach(k => { D7[k] = designFor(k, SCHEMES[k]); });

@@ -7717,18 +7717,14 @@ function lista(){
       if(!window.THREE.RoomEnvironment) await script("https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/environments/RoomEnvironment.js");
       if(!window.LivroPopup) await script("livro3d.js");
       window.LivroPopup.start(window.LIVRO_DESIGNS.marinho);
-      const bar=document.querySelector(".lp-overlay .lp-bar");
-      if(bar){ const b=document.createElement("button"); b.type="button"; b.className="lp-btn lp-ficha"; b.textContent="Ficha completa";
-        b.onclick=()=>{ const u=ultimo; window.LivroPopup.fechar(); setTimeout(()=>{ if(!u) return; if(u.tipo==="oportunidade"&&window.fichaOportunidade) window.fichaOportunidade({...u.o,__classico:true});
-          else if(u.tipo==="edital"&&typeof detalheEdital==="function") detalheEdital({...u.o,__classico:true}); },520); };
-        bar.appendChild(b); }
+      /* 02/11/2026 (titular): o livro sem o botão "Ficha completa" (só o livro) */
       return true;
     })().catch(e=>{carga=null;console.warn("livro 3D indisponível:",e&&e.message);return false;});
     return carga;
   }
   window.abrirLivro3D=async function(o,tipo){
     try{ if(!(await carregar())||!window.LivroPopup) return false;
-      ultimo={o,tipo}; const f=document.querySelector(".lp-overlay .lp-ficha"); if(f) f.hidden=(tipo==="livro");
+      ultimo={o,tipo};
       let c=null; try{ if(window.LivroPaginas) c=await window.LivroPaginas.conteudo3D(o); }catch(e){ console.warn("livro:",e&&e.message); }   /* 02/11/2026 (titular): o livro 3D com a capa e as 4 páginas aprovadas */
       window.LivroPopup.abrir(c||conteudo(o||{})); return true;
     }catch(e){ console.warn("livro 3D:",e&&e.message); return false; }
