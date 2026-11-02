@@ -84,6 +84,41 @@ def _montar(con, livro, ids, lv, dd, pp, un) -> dict[str, Any]:
     if docs:
         cur = con.execute(f"SELECT id, url, tipo, paginas, oficial, drive_id, leitor, obtido_em FROM documento WHERE id IN ({','.join('?' * len(docs))})", list(docs))
         h["documentos"] = [dict(zip([d[0] for d in cur.description], r)) for r in cur.fetchall()]
+    # a escada de cada achado (o degrau que conseguiu, o motor e a fonte), para a página das etapas do livro
+    if h["achados"]:
+        ids_a = [a["id"] for a in h["achados"]]
+        esc = {}
+        for i, d in con.execute(f"SELECT id, dados FROM achado WHERE id IN ({','.join('?' * len(ids_a))})", ids_a):
+            try:
+                e = (json.loads(d or "{}") or {}).get("escada")
+            except ValueError:
+                e = None
+            if isinstance(e, str):
+                try:
+                    e = json.loads(e.replace("'", '"'))
+                except ValueError:
+                    e = {"degrau": e}
+            if e:
+                esc[i] = e
+        for a in h["achados"]:
+            if a["id"] in esc:
+                a["escada"] = esc[a["id"]]
+    # a oportunidade anterior: os livros unidos a este (o mais recente primeiro), com os dados e as certidões de cada um
+    h["anteriores"] = []
+    for outro in reversed(ids[1:]):
+        try:
+            cur = con.execute("SELECT * FROM livro WHERE id = ?", (outro,))
+            lv2 = cur.fetchone()
+            if not lv2:
+                continue
+            lv2 = dict(zip([c[0] for c in cur.description], lv2))
+            cur = con.execute("SELECT * FROM livro_dados WHERE livro_id = ?", (outro,))
+            dd2 = cur.fetchone()
+            dd2 = dict(zip([c[0] for c in cur.description], dd2)) if dd2 else None
+        except sqlite3.Error:
+            continue
+        h["anteriores"].append({"livro": lv2, "dados": dd2, "certidoes": [c for c in h["certidoes"] if c.get("de_livro") == outro],
+                                "uniao": next((u for u in h["unioes"] if u.get("livro_unido") == outro), None)})
     primeiro = h["achados"][0] if h["achados"] else None
     h["motor_que_gerou"] = primeiro["motor"] if primeiro else None
     h["motores"] = sorted({a["motor"] for a in h["achados"]})
