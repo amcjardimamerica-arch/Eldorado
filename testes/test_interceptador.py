@@ -74,12 +74,11 @@ def test_rede_interceptador_e_cartorio_fase_4(orgao, gravador, bancos, diario, t
 
 
 def test_rede_esgotada_vai_a_analise_externa(gravador, bancos, diario, tmp_path):
-    assert gravador.aplicar(livro_na_fase_3("S", None)).ok                                                    # sem link: nenhuma abordagem tem material
+    """R38 (titular, 02/11/2026): a escada não busca o livro SEM link oficial — ele nem entra na fila do Interceptador; quem
+    o leva ao Claude no Chrome é o Comandante (eldorado/base/comandante/cartorio.py, «ao_chrome_sem_link»)."""
+    assert gravador.aplicar(livro_na_fase_3("S", None)).ok
     b = bancos["biblioteca"]
-    quem, achado = Encaminhamento(b, diario, Registro(), Interceptador(b, diario, escada())).encaminhar(fila(b, "2026-10-22")[0])
-    assert quem == "analise externa" and achado is None
-    assert gravador.aplicar(list(ler(tmp_path / "eventos"))).ok
-    assert b.execute("SELECT fase FROM passaporte WHERE livro_id='S'").fetchone()[0] == "analise externa"
+    assert all(lv.id != "S" for lv in fila(b, "2026-10-22"))
 
 
 def test_livro_novo_percorre_fases_1_2_3(gravador, bancos, diario, tmp_path):

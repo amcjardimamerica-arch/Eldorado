@@ -520,12 +520,24 @@
   {
    "id": "R37",
    "data": "2026-11-02",
-   "tema": "a esteira do Cartório (as 5 etapas)",
-   "regra": "Nenhum livro fica parado na preparação sem motivo. A cada passagem o Comandante organiza a esteira: o livro com o prazo encerrado vai ao arquivo; o livro completo (os 12 itens comprovados ou dispensados) e o que não tem mais nada que o Interceptador possa buscar vão à validação, e a validação de sempre decide — ouro/completo com prazo aberto → Farol; encerrada → arquivo; ainda faltando → análise externa (o Claude no Chrome). A estrela e a contagem de itens são recalculadas na validação. Nenhum livro é apagado; cada movimento grava o relatório da etapa.",
-   "onde": "eldorado/base/cartorio/esteira.py (no_organizar_esteira, na passagem: workflows/passagem.toml)",
+   "tema": "o Comandante comanda o Cartório (as 5 etapas)",
+   "regra": "Nenhuma parte do Eldorado é linha de produção. O Cartório está sob o comando do Comandante, que analisa cada uma das 5 etapas, faz o Cartório certificar os itens e coordena cada livro entre elas, entregando ao Farol ou ao arquivo tudo o que os motores (inclusive o Espião) geram. Só as escadas dos motores são automáticas: dentro de cada etapa, buscam a oportunidade de cada livro até os 12 itens. A cada passagem o Comandante decide o destino de cada livro parado na preparação: prazo encerrado → arquivo; completo ou sem mais nada a buscar → validação (que decide Farol, arquivo ou Chrome); prazo aberto sem link oficial → Claude no Chrome; sem prazo e sem link oficial → aguarda os motores. Nenhum livro é apagado; cada decisão grava o relatório da etapa.",
+   "onde": "eldorado/base/comandante/cartorio.py (no_comandar_cartorio, na passagem: workflows/passagem.toml)",
    "travas": [
-    "testes/test_esteira_cartorio.py::test_o_completo_sai_da_preparacao",
-    "testes/test_esteira_cartorio.py::test_a_esteira_esta_na_passagem"
+    "testes/test_comandante_cartorio.py::test_o_comandante_decide_o_destino",
+    "testes/test_comandante_cartorio.py::test_o_comandante_esta_na_passagem"
+   ]
+  },
+  {
+   "id": "R38",
+   "data": "2026-11-02",
+   "tema": "o trabalho ordenado pelo Comandante",
+   "regra": "O Interceptador e o Claude no Chrome trabalham o que o Comandante ordena, otimizando a carga: não se busca a oportunidade sem link oficial nem a que já está completa. A ordem das buscas é Goiás → Brasil (nacional) → internacional → outras capitais e estados (e, dentro de cada um, as abertas que fecham antes); as buscas do Espião seguem a mesma ordem. O sistema persegue o edital oficial com todas as regras da oportunidade; no incentivo fiscal por lei (Rouanet, Goyazes e semelhantes) não há edital comum: a lei e o chamamento são o documento oficial.",
+   "onde": "eldorado/base/comandante/cartorio.py (territorio, chave_de_busca, pode_buscar, documento_oficial, peso_espiao); interceptador.fila; analise_externa.gerar_lote; espiao.escolher",
+   "travas": [
+    "testes/test_comandante_cartorio.py::test_a_ordem_de_territorio",
+    "testes/test_comandante_cartorio.py::test_a_escada_nao_busca_sem_link_nem_completo",
+    "testes/test_comandante_cartorio.py::test_a_lei_e_o_chamamento"
    ]
   }
  ]

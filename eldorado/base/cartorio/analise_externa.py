@@ -21,6 +21,8 @@ import msgspec
 from ..missao import itens as I
 from ..nucleo.eventos import Diario, agora
 
+INSTRUCOES_LEI = ("Persiga o edital oficial, com todas as regras da oportunidade. No incentivo fiscal por lei (Rouanet, Goyazes, fundos da criança e do idoso) não há edital comum: "
+                  "a lei e o chamamento são o documento oficial — comprove os itens neles. ")
 INSTRUCOES = (
     "Para cada livro: abra o link oficial (e, se preciso, a divulgação). Confira cada certidão na fonte. Para cada item que falta, "
     "traga o valor com o TRECHO LITERAL do documento da oportunidade original, a página e o endereço; informe em 'link_original' o "
@@ -154,7 +156,7 @@ def gerar_lote(con: sqlite3.Connection, hoje: date, maximo: int | None = None) -
     livros = []
     tem_base = "base_buscar" in {r[1] for r in con.execute("PRAGMA table_info(livro_dados)")}
     extra = ", d.base_buscar, d.base_classe" if tem_base else ""
-    for lv in con.execute(f"SELECT l.*, d.inscricao_fim, d.situacao_prazo{extra} FROM livro l JOIN passaporte p ON p.livro_id = l.id "
+    for lv in con.execute(f"SELECT l.*, d.inscricao_fim, d.situacao_prazo, d.abrangencia{extra} FROM livro l JOIN passaporte p ON p.livro_id = l.id "
                           "LEFT JOIN livro_dados d ON d.livro_id = l.id WHERE p.fase = 'analise externa' AND l.situacao NOT IN ('excluido', 'unido') "
                           "ORDER BY (d.situacao_prazo = 'aberta') DESC, d.inscricao_fim"):
         certs = I.melhor([dict(c) for c in con.execute("SELECT * FROM certidao WHERE livro_id=? AND situacao IN ('comprovado','dispensado')", (lv["id"],))])
@@ -166,10 +168,14 @@ def gerar_lote(con: sqlite3.Connection, hoje: date, maximo: int | None = None) -
                                      for k, v in sorted(validas.items())],
                        "faltam": I.faltando(validas),
                        # a base do livro (25/10/2026): os dados que o Interceptador não achou em 2 tentativas
-                       "buscar": json.loads(lv["base_buscar"] or "[]") if tem_base else [], "classe": lv["base_classe"] if tem_base else None})
+                       "buscar": json.loads(lv["base_buscar"] or "[]") if tem_base else [], "classe": lv["base_classe"] if tem_base else None,
+                       "_abr": lv["abrangencia"]})
         if maximo and len(livros) >= maximo:
             break
-    return {"lote": f"lote-{hoje.isoformat()}", "gerado_em": agora(), "instrucoes": INSTRUCOES, "itens_validos": list(I.DOZE),
+    # 02/11/2026 (titular, R38): a ordem do Comandante — Goiás → Brasil → internacional → outras capitais e estados
+    from ..comandante.cartorio import chave_de_busca
+    livros.sort(key=lambda x: chave_de_busca(x.pop("_abr", None), x.get("uf"), x.get("fim_inscricao"), hoje.isoformat(), len(x.get("faltam") or [])))
+    return {"lote": f"lote-{hoje.isoformat()}", "gerado_em": agora(), "instrucoes": INSTRUCOES_LEI + INSTRUCOES, "itens_validos": list(I.DOZE),
             "formato_do_veredito": {"vereditos": [{"livro_id": "…", "decisao": "valido | descartar", "motivo": "…", "como_encontrou": "…",
                                                    "itens": [{"item": "…", "valor": "…", "trecho": "…", "pagina": 1, "url": "…"}],
                                                    "dispensas": [{"item": "…", "justificativa": "…"}], "aprendizado": "…"}]},

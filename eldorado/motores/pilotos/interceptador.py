@@ -67,7 +67,7 @@ FERRAMENTAS = {1: "a página oficial e os documentos dela", 2: "os arquivos do e
                11: "a secretaria do município", 12: "o site original, o edital oficial e os anexos (verificação prévia)"}
 NUMERO = re.compile(r"n[º°o.]*\s*0*(\d{1,4})\s*[/_-]\s*(20\d\d)", re.I)
 PNCP = re.compile(r"pncp\.gov\.br/app/editais/(\d{14})/(\d{4})/(\d+)")
-CHAVE = re.compile(r"(?i)edital|chamamento|chamada|sele[çc][ãa]o|regulamento|anexo|credenciamento|pr[êe]mio")
+CHAVE = re.compile(r"(?i)edital|chamamento|chamada|sele[çc][ãa]o|regulamento|anexo|credenciamento|pr[êe]mio|\blei\b|portaria|instru[çc][ãa]o normativa")   # 02/11/2026: no incentivo fiscal, a lei e o chamamento são o documento oficial
 _dz = zstandard.ZstdDecompressor()
 SQL_GUARDADOS = ("SELECT p.documento_id, p.numero, p.texto_zstd FROM pagina p JOIN certidao c ON c.documento_id = p.documento_id "
                  "WHERE c.livro_id=? GROUP BY p.documento_id, p.numero")
@@ -178,7 +178,7 @@ def fila(con: sqlite3.Connection, hoje: str) -> list[Livro]:
         certs.setdefault(c["livro_id"], []).append(dict(c))
     saida = []
     for r in con.execute("SELECT l.id, l.titulo, l.orgao, l.link_oficial, l.link_divulgacao, l.estrela, d.inscricao_fim, d.municipio, l.uf, "
-                         "d.modalidade FROM livro l "
+                         "d.modalidade, d.abrangencia FROM livro l "
                          "JOIN livro_dados d ON d.livro_id = l.id JOIN passaporte p ON p.livro_id = l.id WHERE p.fase = 'preparacao' "
                          "AND l.situacao NOT IN ('excluido', 'unido') AND d.validacao <> 'expurgado' AND l.id NOT IN (SELECT livro_unido FROM uniao) "
                          # 01/11/2026 (titular): os migrados do Eldorado0 são histórico, sem nova avaliação (salvo os abertos)
@@ -187,10 +187,14 @@ def fila(con: sqlite3.Connection, hoje: str) -> list[Livro]:
                    I.melhor(certs.get(r["id"], [])), tentadas.get(r["id"], set()), r["municipio"], r["uf"], regime_de(r["titulo"], r["modalidade"]))
         rodadas = vp.get(r["id"], [])
         lv.vp_rodadas, lv.vp_ultima = len(rodadas), (max(rodadas) if rodadas else None)
-        if lv.faltam:
+        # 02/11/2026 (titular, R38): o Comandante ordena — sem link oficial ou completo, a escada não busca
+        if lv.faltam and lv.link_oficial:
+            lv.abrangencia = r["abrangencia"]
             saida.append(lv)
-    # a prioridade: as abertas que fecham antes; depois as que ainda não passaram pela verificação prévia; depois as demais
-    return sorted(saida, key=lambda x: (0 if (x.fim and x.fim >= hoje) else 1, x.fim or "9999", x.vp_rodadas, len(x.faltam)))
+    # a ordem do Comandante: Goiás → Brasil → internacional → outras capitais e estados; dentro de cada um, as abertas que
+    # fecham antes; depois as que ainda não passaram pela verificação prévia
+    from ...base.comandante.cartorio import chave_de_busca
+    return sorted(saida, key=lambda x: (*chave_de_busca(x.abrangencia, x.uf, x.fim, hoje, len(x.faltam))[:3], x.vp_rodadas, len(x.faltam)))
 
 
 def carregar(con: sqlite3.Connection, ids: list[str]) -> list[Livro]:

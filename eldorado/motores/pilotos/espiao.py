@@ -188,6 +188,9 @@ def familias(empresas: list[str]) -> dict[str, Callable[[random.Random, int], st
     return f
 
 
+from ...base.comandante.cartorio import peso_espiao  # noqa: E402
+
+
 class Espiao:
     def __init__(
         self,
@@ -244,7 +247,7 @@ class Espiao:
         ruins = {q for (q,) in self.con.execute("SELECT texto FROM espiao_consulta WHERE usos >= 3 AND achados = 0")}
         sorteio = sorted(
             (
-                (self.rnd.betavariate(max(0.1, a), max(0.1, b)), f)
+                (self.rnd.betavariate(max(0.1, a), max(0.1, b)) * peso_espiao(f), f)   # 02/11/2026: a ordem de território do Comandante
                 for f, a, b in self.con.execute("SELECT nome, a, b FROM espiao_familia")
                 if f in self.fams
             ),
