@@ -569,6 +569,9 @@ class Interceptador:
         return Achado(id=f"interceptador-{lv.id}-{n}", motor="interceptador", encontrado_em=agora()[:10],
                       link_divulgacao=lv.link_divulgacao or lv.link_oficial or urls[0], link_oficial=oficial or lv.link_oficial, titulo=lv.titulo,
                       dados={"livro_id": lv.id, "orgao": lv.orgao, "abordagem": ABORDAGENS[n], **({"itens": itens_ia} if itens_ia else {}),
+                             # 02/11/2026 (titular): o degrau da escada que serviu a leitura vai ao achado (a página 2 do livro)
+                             "escada": {"motor": "interceptador", "fonte": ABORDAGENS[n],
+                                        "degrau": ("7 · cópia arquivada" if n == 7 else getattr(getattr(self, "ponte", None) if n == 8 and getattr(self, "ponte", None) is not None else getattr(self, "escada", None), "ultimo_degrau", None)) or "não registrado"},
                              **({"ia": ia_rel} if ia_rel else {})},
                       documento={"url": oficial or urls[0], "sha256": sha, "tipo": "investigacao", "leitor": f"interceptador · {ABORDAGENS[n]}",
                                  "oficial": bool(oficial), "paginas": paginas, "alertas": alertas[:10], "injecao": injecao})

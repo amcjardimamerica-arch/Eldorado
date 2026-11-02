@@ -28,3 +28,8 @@ def test_o_completo_sai_da_preparacao(monkeypatch):
     monkeypatch.setattr("eldorado.motores.pilotos.interceptador.fila", lambda con, hoje: [F()])
     c = esteira.candidatos(b, "2026-11-02")
     assert c == {"encerrados": ["L-velho"], "completos": ["L-completo"], "sem_o_que_buscar": []}
+
+
+def test_o_interceptador_grava_o_degrau_da_escada():
+    t = Path("eldorado/motores/pilotos/interceptador.py").read_text(encoding="utf-8")
+    assert '"escada": {"motor": "interceptador", "fonte": ABORDAGENS[n],' in t
