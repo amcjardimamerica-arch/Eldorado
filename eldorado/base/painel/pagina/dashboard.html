@@ -1370,7 +1370,10 @@ body:has(#v-calendario:not(.oculto)) #topo-modulos,body:has(#v-calendario:not(.o
   // 01/11/2026: a seção das Oportunidades abertas vem DEPOIS deste bloco no documento: o céu dela espera a página carregar
   // (chamado aqui, durante a leitura da página, a tela de estrelas ainda não existia e a rotina saía em silêncio)
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",()=>ceuEm("oa-estrelas","v-editais",0.7));
-  else ceuEm("oa-estrelas","v-editais",0.7);   // 29/10/2026: o início vai direto à página inicial
+  else ceuEm("oa-estrelas","v-editais",0.7);
+  // 02/11/2026 (titular): a Sala de controle sob o mesmo céu do calendário (o fundo e as estrelas cintilantes)
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",()=>ceuEm("nv-estrelas","v-neural"));
+  else ceuEm("nv-estrelas","v-neural");   // 29/10/2026: o início vai direto à página inicial
   document.querySelectorAll("#sj .menu button").forEach(b=>b.addEventListener("click",()=>{const [m,v]=b.dataset.ir.split(":");
     if(m==="inicio"){window.irInicio&&irInicio();return} if(window.modulo)modulo(m); if(v&&window.mostra)mostra(v)}));
   // o giroscópio: a lista de prazos (em ordem de vencimento) e, ao passar o mouse, a oportunidade no mostrador da esfera
@@ -2278,8 +2281,10 @@ colunas, com o navegador das áreas, os filtros de antes, os 12 quadradinhos de 
    morph só nas informações e na janela de detalhe. Estilo restrito a esta seção. */
 #v-neural,#nv-portal{--ceu0:#070C24;--ceu1:#151B45;--estrela:#EAF2FF;--aurora:#5EE6C8;--violeta:#9B8CFF;--ambar:#FFB347;--coral:#FF6B6B;--nevoa:#8B93B8;--vidro:rgba(16,22,58,.70);
   font-family:"Saira Semi Condensed","Saira","Arial Narrow",sans-serif;color:var(--estrela)}
-#v-neural .obs{position:relative;width:calc(100vw - var(--sbw,0px));margin-left:calc(50% - 50vw + var(--sbw,0px) / 2);background:radial-gradient(1400px 900px at 78% 8%,#2A2470 0,transparent 60%),
-  radial-gradient(1200px 1000px at 8% 52%,#0F3A4A 0,transparent 58%),radial-gradient(1000px 800px at 70% 96%,#3A1E5E 0,transparent 60%),linear-gradient(180deg,var(--ceu0),var(--ceu1) 55%,var(--ceu0))}
+#v-neural .obs{position:relative;width:calc(100vw - var(--sbw,0px));margin-left:calc(50% - 50vw + var(--sbw,0px) / 2);background:transparent}
+/* 02/11/2026 (titular): a Sala sob o MESMO céu do calendário e das Oportunidades abertas (o fundo e as estrelas cintilantes) */
+body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 38% 48%,#1E2742 0,#121A31 42%,#0A0F1F 78%,#070A15 100%) fixed}
+#v-neural canvas.ceu-sj{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none;display:block}
 #v-neural canvas.ceu{position:fixed;top:0;left:0;display:block;width:100vw;height:100vh;z-index:0;pointer-events:none}
 /* 24/10/2026 (titular): o fundo fixo ao rolar (sem paralaxe); a rede (as linhas entre as etapas, as constelações e as
    estrelas dos motores) presa ao conteúdo, numa camada vetorial remedida quando o conteúdo muda: sempre no lugar */
@@ -2455,7 +2460,7 @@ colunas, com o navegador das áreas, os filtros de antes, os 12 quadradinhos de 
 #nv-portal .holo dd{margin:0;color:#DDE2F6;overflow-wrap:anywhere}
 </style>
 <div class="obs" id="nv-obs">
-  <canvas class="ceu" id="nv-ceu" aria-hidden="true"></canvas>
+  <canvas class="ceu-sj" id="nv-estrelas" aria-hidden="true"></canvas><canvas class="ceu" id="nv-ceu" aria-hidden="true"></canvas>
   <div class="palco" id="nv-palco">
   <svg class="rede" id="nv-rede" aria-hidden="true"></svg>
     <div class="topo">
@@ -2796,7 +2801,7 @@ colunas, com o navegador das áreas, os filtros de antes, os 12 quadradinhos de 
       const dpr=Math.min(1.5,devicePixelRatio||1), W=cv.clientWidth, Hh=cv.clientHeight;
       if(cv.width!==Math.round(W*dpr)||cv.height!==Math.round(Hh*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(Hh*dpr);}
       const g=cv.getContext("2d"); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,Hh); g.fillStyle="#EAF2FF";
-      for(const s of FUNDO){ g.globalAlpha=s.a*(quieto?1:(.75+.25*Math.sin(t/900+s.tw))); g.fillRect(s.x*W,s.y*Hh,s.r,s.r); } g.globalAlpha=1; }
+      /* 02/11/2026: os pontos fixos deram lugar ao céu do calendário (#nv-estrelas) */ g.globalAlpha=1; }
     requestAnimationFrame(desenharCeu); }
   function interacoes(){ const P=$("nv-palco"), dica=$("nv-dica");
     document.querySelectorAll("#v-neural .faixa").forEach(f=>{ const no=()=>NOS.find(x=>x.id===f.dataset.et);
