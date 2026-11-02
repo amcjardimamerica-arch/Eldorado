@@ -1,7 +1,11 @@
 /* O livro da oportunidade (titular, 02/11/2026): capa e 4 páginas, como aprovado no canvas */
-/* as páginas são desenhadas fora da tela e viram as texturas do livro 3D */
-.lp2-tex{position:fixed;left:-20000px;top:0;pointer-events:none}
-.lp2-tex .lp2-capa,.lp2-tex .lp2-pg{border-radius:0;box-shadow:none;height:868px}   /* a proporção da página do livro 3D (1400 × 1960) */
+/* os textos reais por cima do livro 3D: cada caixa tem o tamanho da página (620 × 868, a proporção da página do 3D) e é
+   encaixada na posição da capa ou da página na tela; o texto é selecionável */
+.lp2-camada{position:fixed;inset:0;pointer-events:none;z-index:2}
+.lp2-sobre{position:absolute;left:0;top:0;width:620px;height:868px;transform-origin:0 0;pointer-events:auto;user-select:text;-webkit-user-select:text;cursor:text;visibility:hidden}
+.lp2-sobre.lp2-sc{cursor:pointer}
+.lp2-sobre .lp2-capa,.lp2-sobre .lp2-pg{border-radius:0;box-shadow:none;height:868px;width:620px}
+.lp2-sobre .lp2-capa{border-radius:6px 14px 14px 6px}
 
 /* a capa */
 .lp2-capa{width:620px;height:880px;box-sizing:border-box;background:#0F1E3D;border-radius:6px 14px 14px 6px;padding:26px;box-shadow:0 18px 40px rgba(0,0,0,.45);flex:none}

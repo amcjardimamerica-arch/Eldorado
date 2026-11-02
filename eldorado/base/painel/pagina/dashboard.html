@@ -6522,7 +6522,7 @@ function _desenhaAbertasFluxo(){
             if(k==="Anexos"){const n=v.match(/^(\d+)\s*anexo/i); if(n) return `${n[1]} anexo${+n[1]>1?"s":""}`;
               const lista=v.match(/anexo\s+[ivxl]+\b/gi); if(lista&&lista.length>1) return `${lista.length} anexos`; return frase(v);}
             return frase(v);};
-          return `<div class="oa-kt"><b>Checklist ${feitos}/12</b> <span class=meta>${n("conhecido")} conhecido(s) · ${n("disp")} dispensado(s) · ${n("buscar")} a buscar</span>${x.regime&&x.regime!=="chamamento_publico"?` <span class=meta title="tipo de recurso que define quais itens podem ser dispensados">· tipo: ${esc((x.dispensa_analise||{}).nome||x.regime)}</span>`:""}</div>
+          return `<div class="oa-kt"><b>Checklist ${feitos}/12</b> ${x.regime&&x.regime!=="chamamento_publico"?` <span class=meta title="tipo de recurso que define quais itens podem ser dispensados">· tipo: ${esc((x.dispensa_analise||{}).nome||x.regime)}</span>`:""}</div>
             <div class="oa-kl">${ord.map(k=>{const it=K[k]||{s:"pend"}, g=grupo(it.s), rot=g==="conhecido"&&it.v?padroniza(k,it.v):k;
               return `<span class="oa-ki ${g}" title="${esc(k)} — ${NOTA[it.s]||NOTA.pend}${it.v?": "+esc(it.v):""}${it.t?" · “"+esc(it.t)+"”":""}"><i>${SIM[g]}</i>${esc(rot)}</span>`;}).join("")}</div>`;})()}
         ${I?`<div class=meta style="margin-top:3px">estudada pelo Interceptador em ${esc(I.em.slice(8,10)+"/"+I.em.slice(5,7))}: ${esc(I.qualidade||"—")} ${I.comprovados??""}/12</div>`:""}</div>

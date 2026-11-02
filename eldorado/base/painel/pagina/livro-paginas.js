@@ -154,45 +154,56 @@
     return ficha({ livro: A.livro, dados: A.dados || {}, certidoes: A.certidoes, documentos: [], motores: [] }, { passada: true, parecer: par });
   }
 
-  // ---- o livro 3D: as páginas desenhadas aqui viram as texturas do livro 3D (a capa e as 4 páginas)
-  // o desenho acontece num quadro isolado e leve (só o estilo do livro, as fontes e o html2canvas): o html2canvas copia o
-  // documento inteiro a cada desenho, e o painel tem mais de 850 KB de página
-  let quadro = null;
-  const FONTES = "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,800&family=Saira+Semi+Condensed:wght@400;600;700&display=swap";
-  function moldura() {
-    if (quadro) return quadro;
-    quadro = new Promise((ok, erro) => { const f = document.createElement("iframe"); f.setAttribute("aria-hidden", "true"); f.tabIndex = -1;
-      f.style.cssText = "position:fixed;left:-20000px;top:0;width:1500px;height:1000px;border:0;visibility:hidden";
-      f.srcdoc = '<!doctype html><html><head><meta charset="utf-8"><base href="' + E(location.href) + '"><link rel="stylesheet" href="livro-paginas.css"><link rel="stylesheet" href="' + FONTES + '">' +
-        '<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script></head><body style="margin:0"></body></html>';
-      f.onload = async () => { if (!f.contentWindow.html2canvas) { quadro = null; f.remove(); return erro(new Error("html2canvas")); } try { await f.contentDocument.fonts.ready; } catch (e) {} ok(f); };
-      document.body.appendChild(f); });
-    return quadro;
-  }
-  async function desenhar(html) {
-    const f = await moldura(), d = f.contentDocument, caixa = d.createElement("div");
-    caixa.className = "lp2-tex"; caixa.style.cssText = "position:absolute;left:0;top:0"; caixa.innerHTML = html; d.body.appendChild(caixa);
-    try { await Promise.all([...caixa.querySelectorAll("img")].map(im => im.complete ? 0 : new Promise(r => { im.onload = im.onerror = r; })));
-      try { await d.fonts.ready; } catch (e) {}
-      return await f.contentWindow.html2canvas(caixa.firstElementChild, { scale: 2.3, backgroundColor: null, logging: false }); }
-    finally { caixa.remove(); }
-  }
+  // ---- o livro 3D com os textos reais por cima (titular, 02/11/2026): nada é desenhado nas texturas; a capa e as páginas
+  // são elementos da página, nítidos, selecionáveis e atualizados, encaixados na capa e nas duas páginas do livro 3D
   async function ficheiro(o) {
     const ids = [o && o.id, o && o.livro_vinculado && (o.livro_vinculado.id || o.livro_vinculado), o && o.livro_id].filter(x => typeof x === "string" && x);
-    for (const id of ids) { try { const r = await fetch("dados/cartorio/" + encodeURIComponent(id.replace(/[^A-Za-z0-9_.-]/g, "_")) + ".json?v=" + Date.now()); if (r.ok) { const f = await r.json(); if (f && f.historia) return f; } } catch (e) {} }
+    for (const id of ids) { try { const r = await fetch("dados/cartorio/" + encodeURIComponent(id.replace(/[^A-Za-z0-9_.-]/g, "_")) + ".json?v=" + Date.now(), { cache: "no-store" }); if (r.ok) { const f = await r.json(); if (f && f.historia) return f; } } catch (e) {} }
     return o && o.historia ? o : null;
   }
-  const texto = el => (el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 900);
+  let atual = null, telas = [], camada = null, laco = 0, renova = 0, chave = "";
+  const PW = 620, PH = 868;
+  function montar(H) { telas = [capa(H), ficha(H), etapas(H, {}), diario(H), anterior(H)]; if (camada) pintar(true); }
+  function criarCamada() {
+    const dlg = document.querySelector(".lp-overlay .lp-dialog"); if (!dlg) return null;
+    if (camada && camada.isConnected) return camada;
+    camada = document.createElement("div"); camada.className = "lp2-camada";
+    camada.innerHTML = '<div class="lp2-sobre lp2-sc"></div><div class="lp2-sobre lp2-se"></div><div class="lp2-sobre lp2-sd"></div>';
+    dlg.appendChild(camada);
+    camada.querySelector(".lp2-sc").addEventListener("click", () => { const st = window.LivroPopup._state; if (st.phase === "cover" || st.phase === "appear") window.LivroPopup.proxima(); });
+    return camada;
+  }
+  let par = -1;
+  function pintar(forca) {
+    if (!camada) return; const st = window.LivroPopup._state, p = st.f < 0.5 ? 0 : 1;
+    if (forca || p !== par) { par = p; camada.querySelector(".lp2-sc").innerHTML = telas[0];
+      camada.querySelector(".lp2-se").innerHTML = telas[1 + p * 2]; camada.querySelector(".lp2-sd").innerHTML = telas[2 + p * 2]; }
+  }
+  function encaixa(el, q, mostra) {
+    if (!q || !mostra) { el.style.visibility = "hidden"; return; }
+    const s = Math.min(q.w / PW, q.h / PH);
+    el.style.visibility = "visible"; el.style.transform = `translate(${q.x + (q.w - PW * s) / 2}px, ${q.y + (q.h - PH * s) / 2}px) scale(${s})`;
+  }
+  function quadro() {
+    const LP = window.LivroPopup; if (!LP || !camada) return;
+    const a = LP.areas(), st = LP._state;
+    if (!a || st.phase === "hidden") { camada.style.display = "none"; laco = 0; clearInterval(renova); return; }
+    camada.style.display = ""; pintar(false);
+    const capaVis = st.phase === "cover" || (st.phase === "appear" && st.a > 0.97);
+    encaixa(camada.querySelector(".lp2-sc"), a.capa, capaVis);
+    encaixa(camada.querySelector(".lp2-se"), a.esq, st.phase === "open"); encaixa(camada.querySelector(".lp2-sd"), a.dir, st.phase === "open");
+    laco = requestAnimationFrame(quadro);
+  }
   async function conteudo3D(o) {
     const f = await ficheiro(o); if (!f) return null;
-    const H = f.historia, L = H.livro || {}, D = H.dados || {};
-    await logoDados();
-    const htmls = [capa(H), ficha(H), etapas(H, f), diario(H), anterior(H)], img = [];
-    for (const h of htmls) img.push(await desenhar(h));
-    const ler = h => { const d = document.createElement("div"); d.innerHTML = h; return texto(d); };
-    return { titulo: L.titulo, capaImagem: img[0],
+    atual = o; montar(f.historia); chave = JSON.stringify(f.historia).length + ":" + (f.historia.passaporte || {}).entrou_em;
+    const L = f.historia.livro || {}, D = f.historia.dados || {};
+    setTimeout(() => { if (criarCamada()) { par = -1; pintar(true); cancelAnimationFrame(laco); laco = requestAnimationFrame(quadro); } }, 0);
+    clearInterval(renova);   // os dados do livro se atualizam sozinhos enquanto ele está aberto
+    renova = setInterval(async () => { const g = await ficheiro(atual); if (!g) return; const k = JSON.stringify(g.historia).length + ":" + (g.historia.passaporte || {}).entrou_em; if (k !== chave) { chave = k; montar(g.historia); } }, 60000);
+    return { titulo: L.titulo, capaCor: "#0F1E3D",
       capa: { numero: L.id || "", titulo: L.titulo || "", periodo: D.inscricao_fim ? "Inscrições até " + dmy(D.inscricao_fim) : "", prazo: "", resumo: "", selo: "A.M.C. Jardim América", data: new Date().toISOString() },
-      paginas: img.slice(1).map((c, i) => ({ imagem: c, texto: ler(htmls[i + 1]) })) };
+      paginas: [{ cor: "#FBF7EE", texto: "" }, { cor: "#FFFFFF", texto: "" }, { cor: "#FBF7EE", texto: "" }, { cor: "#FBF1E6", texto: "" }] };
   }
   window.LivroPaginas = { conteudo3D, _paginas: H => [capa(H), ficha(H), etapas(H, {}), diario(H), anterior(H)] };
 })();

@@ -142,7 +142,7 @@ window.LOGO_DATA={"full": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAvgAAAD
     if (S.phase !== 'hidden') return; S.phase = 'appear'; lastFocus = document.activeElement;
     try { await Promise.race([Promise.all((D.fonts || []).map(f => document.fonts.load(f))), new Promise(r => setTimeout(r, 2500))]); } catch (e) { }
     await LP.loadLogos(); if (!renderer) await init();
-    const pages = conteudo.paginas.slice(0, 4).map((pg, i) => { const c = LP.canvas(D.page.w, D.page.h); if (pg.imagem) c.getContext('2d').drawImage(pg.imagem, 0, 0, D.page.w, D.page.h); else (D.theme.paint || LP.paintPage)(c.getContext('2d'), D.page.w, D.page.h, pg, D.theme, i); return LP.tex(c); });   /* 02/11/2026 (titular): a página já desenhada (o livro da oportunidade) entra como imagem */
+    const pages = conteudo.paginas.slice(0, 4).map((pg, i) => { const c = LP.canvas(D.page.w, D.page.h); if (pg.cor) { const g = c.getContext('2d'); g.fillStyle = pg.cor; g.fillRect(0, 0, D.page.w, D.page.h); } else if (pg.imagem) c.getContext('2d').drawImage(pg.imagem, 0, 0, D.page.w, D.page.h); else (D.theme.paint || LP.paintPage)(c.getContext('2d'), D.page.w, D.page.h, pg, D.theme, i); return LP.tex(c); });   /* 02/11/2026 (titular): a página já desenhada (o livro da oportunidade) entra como imagem */
     D.setContent(inst, pages, conteudo); pagesFor = conteudo; live.textContent = Object.keys(conteudo.capa).filter(k => k !== 'data').map(k => conteudo.capa[k]).join('. ');
     overlay.hidden = false; overlay.classList.remove('lp-out'); requestAnimationFrame(() => overlay.classList.add('lp-in'));
     btnNext.disabled = false; btnNext.textContent = 'Abrir o livro'; Object.assign(S, { a: 0, o: 0, f: 0 }); fit();
@@ -173,10 +173,27 @@ window.LOGO_DATA={"full": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAvgAAAD
       '<div class="lp-bar"><button type="button" class="lp-next">Abrir o livro</button><button type="button" class="lp-close" aria-label="Fechar">Fechar ✕</button></div><p class="lp-live" aria-live="polite"></p></div>';
     document.body.appendChild(overlay);
     holder = overlay.querySelector('.lp-stage'); live = overlay.querySelector('.lp-live'); btnNext = overlay.querySelector('.lp-next'); btnClose = overlay.querySelector('.lp-close');
-    btnNext.addEventListener('click', LP.proxima); btnClose.addEventListener('click', LP.fechar); overlay.querySelector('.lp-backdrop').addEventListener('click', LP.fechar);
+    btnNext.addEventListener('click', LP.proxima); btnClose.addEventListener('click', LP.fechar);
+    /* 02/11/2026 (titular): fecha só com o clique FORA do livro (o clique no livro não fecha) */
+    overlay.addEventListener('click', ev => { if (ev.target.closest('.lp-bar') || ev.target.closest('.lp2-sobre')) return; if (LP.dentro(ev)) { if (S.phase === 'cover') openNow(); return; } LP.fechar(); });
     document.addEventListener('keydown', e => { if (S.phase === 'hidden') return; if (e.key === 'Escape') LP.fechar(); if (e.key === 'ArrowRight') LP.proxima(); if (e.key === 'ArrowLeft' && S.f > 0.5) LP.proxima(); });
     document.querySelectorAll('[data-livro]').forEach(b => b.addEventListener('click', () => LP.abrir(G.LIVRO_CONTEUDOS[+b.dataset.livro])));
   };
+  /* 02/11/2026 (titular): onde estão a capa e as duas páginas na tela (para os textos reais por cima do livro 3D) */
+  LP.areas = function () {
+    if (!inst || !camera || !holder) return null;
+    const T3 = G.THREE, box = new T3.Box3(), r = holder.getBoundingClientRect();
+    const tela = v => { v.project(camera); return [r.left + (v.x + 1) / 2 * r.width, r.top + (1 - v.y) / 2 * r.height]; };
+    const proj = o => { box.setFromObject(o); const xs = [], ys = [];
+      [box.min.x, box.max.x].forEach(x => [box.min.y, box.max.y].forEach(y => [box.min.z, box.max.z].forEach(z => { const p = tela(new T3.Vector3(x, y, z)); xs.push(p[0]); ys.push(p[1]); })));
+      return { x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys) }; };
+    const dir = inst.p4 ? proj(inst.p4) : null, capa = inst.cover ? proj(inst.cover) : null;
+    let esq = null;
+    if (dir) { const lomb = tela(inst.book.localToWorld(new T3.Vector3(0.022, 0, inst.h)))[0]; esq = { x: 2 * lomb - dir.x - dir.w, y: dir.y, w: dir.w, h: dir.h }; }
+    return { capa, esq, dir, fase: S.phase, f: S.f };
+  };
+  LP.dentro = function (ev) { const a = LP.areas(); if (!a) return false; const em = q => q && ev.clientX >= q.x && ev.clientX <= q.x + q.w && ev.clientY >= q.y && ev.clientY <= q.y + q.h;
+    return S.phase === 'cover' || S.phase === 'appear' ? em(a.capa) : em(a.esq) || em(a.dir) || em(a.capa); };
   LP._state = S; LP._T = t => { T = t; }; LP._parts = () => { pRoot = new G.THREE.Group(); return pRoot; };
   G.LivroPopup = LP;
 })(window);
@@ -458,7 +475,7 @@ window.LOGO_DATA={"full": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAvgAAAD
         I.rib = ribbon(I, P.ribbon, 0.38, 0.3);
         this._deco = decoTex(P.endp, 700, 980, 4); return I;
       },
-      setContent(I, pages, cont) { if (cont.capaImagem) { const g = this._cv.getContext('2d'); g.clearRect(0, 0, 1024, 1434); g.drawImage(cont.capaImagem, 0, 0, 1024, 1434); } else paintCover(this._cv.getContext('2d'), 1024, 1434, cont.capa, P); I.cover.material[0].map.needsUpdate = true; setLeafTex(I, pages, this._deco); },
+      setContent(I, pages, cont) { if (cont.capaCor) { const g = this._cv.getContext('2d'); g.fillStyle = cont.capaCor; g.fillRect(0, 0, 1024, 1434); } else if (cont.capaImagem) { const g = this._cv.getContext('2d'); g.clearRect(0, 0, 1024, 1434); g.drawImage(cont.capaImagem, 0, 0, 1024, 1434); } else paintCover(this._cv.getContext('2d'), 1024, 1434, cont.capa, P); I.cover.material[0].map.needsUpdate = true; setLeafTex(I, pages, this._deco); },
       fx(I, ev, LP) { LP.burst(P.fx, W2(I, 0.05, 0.1, I.Tp + 0.05), ev === 'turn' || ev === 'back' ? 5 : 11, V(0, 0.5, 1)); },
       update(I, s, dt, t) { common(I, s, t); bookUpdate(I, s, { curl: 0 }); I.rib.rotation.x = 0.16 * Math.sin(t * 1.2); }
     };

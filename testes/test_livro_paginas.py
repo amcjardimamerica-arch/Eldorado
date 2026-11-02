@@ -37,3 +37,19 @@ def test_so_o_livro_de_frente_e_com_luz_natural():
     assert "new T.AmbientLight(0xffffff, 0.52)" in t
     assert "height:868px" in (P / "livro-paginas.css").read_text(encoding="utf-8")
     assert "cortaTit" in (P / "livro-paginas.js").read_text(encoding="utf-8")
+
+
+def test_textos_reais_sobre_o_livro_e_fechar_so_fora():
+    """02/11/2026 (titular): nada desenhado nas texturas — a capa e as páginas são elementos reais (nítidos, selecionáveis,
+    atualizados) encaixados na capa e nas páginas do livro 3D; o clique no livro não o fecha, só o clique fora"""
+    j = (P / "livro-paginas.js").read_text(encoding="utf-8")
+    assert "lp2-camada" in j and "LP.areas()" in j and 'capaCor: "#0F1E3D"' in j and "setInterval" in j and "html2canvas(" not in j
+    c = (P / "livro-paginas.css").read_text(encoding="utf-8")
+    assert "user-select:text" in c and "width:620px;height:868px" in c
+    t = (P / "livro3d.js").read_text(encoding="utf-8")
+    assert "LP.areas = function" in t and "LP.dentro(ev)" in t and "overlay.querySelector('.lp-backdrop').addEventListener('click', LP.fechar)" not in t
+
+
+def test_oportunidades_sem_o_texto_do_checklist():
+    h = (P / "dashboard.html").read_text(encoding="utf-8")
+    assert 'conhecido(s) · ${n("disp")} dispensado(s) · ${n("buscar")} a buscar' not in h
