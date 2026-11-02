@@ -21,7 +21,14 @@ def candidatos(bib: sqlite3.Connection, horas: float = 2) -> dict[str, Any]:
     corte = (datetime.now(timezone.utc) - timedelta(hours=horas)).isoformat()
     usados = ("SELECT documento_id FROM certidao WHERE documento_id IS NOT NULL UNION SELECT documento_id FROM achado "
               "WHERE documento_id IS NOT NULL")
-    docs = bib.execute(f"SELECT COUNT(*) FROM documento WHERE COALESCE(obtido_em, '') < ? AND id NOT IN ({usados})", (corte,)).fetchone()[0]
+    # o documento que é o ENDEREÇO de um livro ativo (o site oficial ou o de divulgação) não é "sem uso": R35 manda guardar os
+    # endereços (avaliação do Claude, 02/11/2026); antes ele ficava indicado para sempre e a Sala nunca saía do amarelo
+    enderecos = ("SELECT link_oficial FROM livro WHERE situacao NOT IN ('excluido', 'unido') AND link_oficial IS NOT NULL UNION "
+                 "SELECT link_divulgacao FROM livro WHERE situacao NOT IN ('excluido', 'unido') AND link_divulgacao IS NOT NULL")
+    tem_livro = bib.execute("SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'livro'").fetchone() is not None
+    filtro = f"AND url NOT IN ({enderecos})" if tem_livro else ""
+    docs = bib.execute(f"SELECT COUNT(*) FROM documento WHERE COALESCE(obtido_em, '') < ? AND id NOT IN ({usados}) {filtro}",
+                       (corte,)).fetchone()[0]
     leg = ",".join("?" * len(MOTORES_LEGISLATIVOS))
     ach = bib.execute(f"SELECT COUNT(*) FROM achado WHERE livro_id IS NULL AND decisao <> 'pendente' AND COALESCE(encontrado_em, '') < ? "
                       f"AND motor NOT IN ({leg})", (corte[:10], *MOTORES_LEGISLATIVOS)).fetchone()[0]
