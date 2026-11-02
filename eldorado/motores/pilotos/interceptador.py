@@ -42,12 +42,14 @@ from ..leitura.pdf import LeitorPDF
 ABORDAGENS = {1: "documento na mão", 2: "anexos completos", 3: "página oficial e citados", 4: "biblioteca de sites",
               5: "mídia do WordPress", 6: "mapa do site", 7: "cópia arquivada", 8: "ponte do titular", 9: "leitura profunda", 10: "busca no domínio",
               11: "secretaria do município", 12: "verificação prévia"}
-# 01/11/2026 (titular): a verificação prévia (12) é sempre a primeira: o site original, o edital oficial e os anexos, lidos
-# de uma vez pelos extratores; as abordagens que nunca renderam ficam aposentadas (em 3 dias: biblioteca de sites 0 de 12,
-# mídia do WordPress 0 de 21, secretaria do município 0 de 12)
-APOSENTADAS = {4, 5, 11}
-ORDEM = {"sem estrela": [12, 1, 11, 4, 3, 10, 6, 5, 8, 2, 9, 7], "bronze": [12, 1, 11, 2, 3, 9, 7, 4, 10, 6, 5, 8],
-         "prata": [12, 1, 11, 2, 9, 7, 3, 4, 10, 6, 5, 8]}
+# 01/11/2026 (titular): o MOTOR DE VERIFICAÇÃO PRÉVIA (12) vem sempre antes: especializado em achar o site oficial e o
+# edital (a busca na internet pelos navegadores da escada, o mapa do site), DUAS rodadas por livro, com 30 minutos ou mais
+# entre elas. Nenhuma abordagem fica aposentada (a secretaria do município, do estado e o ministério são onde os editais
+# públicos aparecem): as que renderam pouco só vão para o fim da ordem.
+APOSENTADAS: frozenset[int] = frozenset()
+VERIFICACAO_PREVIA, RODADAS_VP, INTERVALO_VP_MIN = 12, 2, 30
+ORDEM = {"sem estrela": [12, 1, 11, 3, 10, 6, 8, 2, 9, 7, 4, 5], "bronze": [12, 1, 11, 2, 3, 9, 7, 10, 6, 8, 4, 5],
+         "prata": [12, 1, 11, 2, 9, 7, 3, 10, 6, 8, 4, 5]}
 FOCO = {"sem estrela": I.BRONZE, "bronze": ("Valor", "Requisitos"), "prata": tuple(i for i in I.DOZE if i not in I.PRATA)}
 MAXIMO = 10
 # o plano de voo (titular, 25/10/2026): para cada item que falta, as abordagens mais certeiras do canivete, em ordem
@@ -57,10 +59,8 @@ PLANO_POR_ITEM = {
     "Objeto": (1, 9, 3, 10, 11, 4), "Órgão / financiador": (1, 3, 4, 11, 10), "Território": (1, 11, 3, 10, 4),
     "Esfera": (1, 3, 4, 11), "Área de atuação": (1, 3, 10, 9)}
 PLANO_POR_ITEM = {k: (12, *v) for k, v in PLANO_POR_ITEM.items()}
-# os itens que só existem depois da seleção: o edital de abertura não os traz, o Interceptador não os persegue
-POSTERIORES = frozenset({"Resultado", "Prazo de recurso"})
-# os dados que bastam para julgar a oportunidade: comprovados, o livro sai da fila (não se insiste no resto)
-ESSENCIAIS = ("Prazo de inscrição", "Objeto", "Órgão / financiador")
+# 01/11/2026 (titular): a fila é perseguida até os 12 itens serem encontrados ou dispensados (a dispensa é do Chrome); o
+# edital (o cronograma e as regras completas) é o que valida tudo — inclusive o resultado e o prazo de recurso
 FERRAMENTAS = {1: "a página oficial e os documentos dela", 2: "os arquivos do edital (PNCP)", 3: "as páginas do mesmo site",
                4: "os sites conhecidos do órgão", 5: "as mídias do WordPress", 6: "o mapa do site", 7: "a cópia arquivada (Wayback)",
                8: "a ponte do titular", 9: "a leitura completa dos documentos (PDF, tabelas e OCR das imagens)", 10: "a busca no domínio",
@@ -126,15 +126,25 @@ class Livro:
         """Os itens a buscar: os que faltam, sem os que o regime não tem (a matriz de dispensas: o Interceptador não gasta
         voo procurando prazo de inscrição num fluxo contínuo; o item continua sem certidão até o edital declarar)."""
         f = I.faltando({k: v for k, v in self.certidoes.items() if I.resolvido(v)})
-        fora = _dispensaveis(self.regime) | POSTERIORES
+        fora = _dispensaveis(self.regime)
         return [i for i in f if i not in fora]
 
+    vp_rodadas: int = 0                   # 01/11/2026: as rodadas da verificação prévia já feitas (no máximo 2)
+    vp_ultima: str | None = None          # e quando foi a última (a próxima, 30 minutos depois ou mais)
+
     @property
-    def suficiente(self) -> bool:
-        """01/11/2026 (titular: "se os dados coletados são suficientes para julgamento, não faz sentido insistir"): o prazo,
-        o objeto, o órgão e o local (o território ou a esfera) comprovados bastam para julgar a oportunidade."""
-        ok = {k for k, v in self.certidoes.items() if I.resolvido(v)}
-        return all(e in ok for e in ESSENCIAIS) and bool(ok & {"Território", "Esfera"})
+    def vp_devida(self) -> bool:
+        """A verificação prévia cabe agora: menos de 2 rodadas, e a última há 30 minutos ou mais."""
+        if self.vp_rodadas >= RODADAS_VP:
+            return False
+        if not self.vp_ultima:
+            return True
+        from datetime import datetime, timedelta, timezone
+        try:
+            ult = datetime.fromisoformat(self.vp_ultima.replace("Z", "+00:00"))
+        except ValueError:
+            return True
+        return datetime.now(timezone.utc) - ult >= timedelta(minutes=INTERVALO_VP_MIN)
 
     @property
     def base(self) -> str | None:
@@ -156,8 +166,13 @@ def fila(con: sqlite3.Connection, hoje: str) -> list[Livro]:
     """Os livros na fase 3 (preparação), na ordem do Cartório: as abertas que fecham antes; depois os mais perto do ouro."""
     con.row_factory = sqlite3.Row
     tentadas: dict[str, set[int]] = {}
-    for r in con.execute("SELECT livro_id, ferramenta FROM tentativa WHERE fase='preparacao' AND ferramenta LIKE 'abordagem %'"):
-        tentadas.setdefault(r["livro_id"], set()).add(int(r["ferramenta"].split()[1]))
+    vp: dict[str, list[str]] = {}
+    for r in con.execute("SELECT livro_id, ferramenta, em FROM tentativa WHERE fase='preparacao' AND ferramenta LIKE 'abordagem %'"):
+        n = int(r["ferramenta"].split()[1])
+        if n == VERIFICACAO_PREVIA:                      # a verificação prévia repete (2 rodadas): conta as rodadas e a última
+            vp.setdefault(r["livro_id"], []).append(r["em"] or "")
+        else:
+            tentadas.setdefault(r["livro_id"], set()).add(n)
     certs: dict[str, list[dict]] = {}
     for c in con.execute("SELECT * FROM certidao WHERE situacao IN ('comprovado','dispensado')"):
         certs.setdefault(c["livro_id"], []).append(dict(c))
@@ -170,10 +185,12 @@ def fila(con: sqlite3.Connection, hoje: str) -> list[Livro]:
                          f"AND NOT ({sql_migrado()} AND COALESCE(d.inscricao_fim, '') < ?)", (hoje,)):
         lv = Livro(r["id"], r["titulo"] or "", r["orgao"], r["link_oficial"], r["link_divulgacao"], r["estrela"] or "sem", r["inscricao_fim"],
                    I.melhor(certs.get(r["id"], [])), tentadas.get(r["id"], set()), r["municipio"], r["uf"], regime_de(r["titulo"], r["modalidade"]))
-        if lv.faltam and not lv.suficiente:
+        rodadas = vp.get(r["id"], [])
+        lv.vp_rodadas, lv.vp_ultima = len(rodadas), (max(rodadas) if rodadas else None)
+        if lv.faltam:
             saida.append(lv)
-    # a prioridade: as abertas que fecham antes; depois as de prazo desconhecido com mais dados (mais perto do julgamento)
-    return sorted(saida, key=lambda x: (0 if (x.fim and x.fim >= hoje) else 1, x.fim or "9999", len(x.faltam)))
+    # a prioridade: as abertas que fecham antes; depois as que ainda não passaram pela verificação prévia; depois as demais
+    return sorted(saida, key=lambda x: (0 if (x.fim and x.fim >= hoje) else 1, x.fim or "9999", x.vp_rodadas, len(x.faltam)))
 
 
 def carregar(con: sqlite3.Connection, ids: list[str]) -> list[Livro]:
@@ -368,28 +385,54 @@ class Interceptador:
     AGREGADORES = re.compile(r"capitaai|gife\.org|captadores|prosas|queridodiario|liderafest|editaisoportunidades|apoia\.se|benfeitoria", re.I)
 
     def _a12(self, lv: Livro) -> list[str]:
-        """A VERIFICAÇÃO PRÉVIA (titular, 01/11/2026): da página do livro ao site original da oportunidade e ao edital oficial.
-        Numa página de agregador (divulgação), segue o link de saída para o site de origem; junta os documentos do edital
-        (PDF e anexos) da página original; os extratores leem tudo de uma vez (prazo, objeto, local, valor, órgão, anexos)."""
-        if not lv.base:
-            return []
-        lido = self._ler(lv.base)
-        if lido is None:
-            return []
-        if lido[1].tipo != "html":
-            return [lv.base]
-        enderecos = [lv.base]
-        dom = urlsplit(lv.base).hostname or ""
-        originais: list[str] = []
-        if self.AGREGADORES.search(dom):                   # o agregador divulga: o site original é o link de saída
-            originais = [u for u in lido[1].links if (urlsplit(u).hostname or "") not in ("", dom) and not self.AGREGADORES.search(u)
-                         and (CHAVE.search(u) or re.search(r"(?i)\.gov\.br|\.org\.br|\.pdf($|\?)", u))][:2]
-        if not originais and lv.link_oficial and lv.link_oficial != lv.base:
-            originais = [lv.link_oficial]
-        enderecos += originais
-        for pag in [lv.base, *originais][:3]:
+        """O MOTOR DE VERIFICAÇÃO PRÉVIA (titular, 01/11/2026): especializado em achar o site oficial e o edital da
+        oportunidade, para o Interceptador atuar com o edital já aberto. Em quatro passos:
+          1. o site de divulgação (a página do livro; no agregador, o link de saída para o site de origem);
+          2. a busca na internet (os navegadores da escada) pelo título, o número e o órgão, preferindo o site oficial;
+          3. o mapa do site oficial: as páginas atualizadas do edital (pelo número ou pelas palavras do título);
+          4. o edital e os anexos (PDF) dessas páginas.
+        Os extratores leem tudo de uma vez; o achado leva o link de divulgação e o oficial. Duas rodadas por livro."""
+        enderecos: list[str] = []
+        oficiais: list[str] = []
+        if lv.base:
+            lido = self._ler(lv.base)
+            if lido is not None:
+                enderecos.append(lv.base)
+                dom = urlsplit(lv.base).hostname or ""
+                if lido[1].tipo == "html" and self.AGREGADORES.search(dom):
+                    oficiais += [u for u in lido[1].links if (urlsplit(u).hostname or "") not in ("", dom) and not self.AGREGADORES.search(u)
+                                 and (CHAVE.search(u) or re.search(r"(?i)\.gov\.br|\.org\.br|\.pdf($|\?)", u))][:2]
+                elif lido[1].tipo != "html":
+                    return enderecos
+        if lv.link_oficial and lv.link_oficial not in enderecos:
+            oficiais.insert(0, lv.link_oficial)
+        if self.metabusca:                                   # 2. a busca na internet, pelos navegadores da escada
+            termos = [f"{lv.titulo[:90]} edital", f"{lv.orgao or ''} {lv.numero or ''} edital".strip()]
+            for termo in dict.fromkeys(x for x in termos if len(x) > 12):
+                try:
+                    achados = self.metabusca(termo) or []
+                except Exception:  # noqa: BLE001 — a busca que falha não derruba o motor
+                    achados = []
+                bons = [u for u in achados if not self.AGREGADORES.search(u)]
+                bons.sort(key=lambda u: 0 if re.search(r"(?i)\.gov\.br|\.leg\.br|\.jus\.br", u) else 1 if re.search(r"(?i)\.org\.br", u) else 2)
+                oficiais += bons[:3]
+        oficiais = list(dict.fromkeys(oficiais))[:4]
+        enderecos += oficiais
+        if oficiais:                                         # 3. o mapa do site oficial (as URLs atualizadas)
+            from ...motores.descoberta import estrutura_site
+            u = urlsplit(oficiais[0])
+            num = (lv.numero or "").split("/")[0]
+            palavras = [w.lower() for w in re.findall(r"[A-Za-zÀ-ú]{6,}", lv.titulo)[:3]]
+            try:
+                pistas = estrutura_site.mapa_do_site(self.escada.buscar, f"{u.scheme}://{u.netloc}/sitemap.xml", limite=3000)
+                casa = [p.link for p in pistas if CHAVE.search(p.link)
+                        and ((num and num in p.link) or sum(w in p.link.lower() for w in palavras) >= 2)]
+                enderecos += casa[:3]
+            except Exception:  # noqa: BLE001 — sem mapa do site, segue sem ele
+                pass
+        for pag in [x for x in enderecos if not re.search(r"(?i)\.pdf($|\?)", x)][:4]:      # 4. o edital e os anexos
             enderecos += list(self._documentos_da_pagina(pag, lv.titulo, 3))
-        return list(dict.fromkeys(enderecos))[:7]
+        return list(dict.fromkeys(enderecos))[:10]
 
     def _a8(self, lv: Livro) -> list[str]:
         return [lv.base] if (self.ponte and lv.base) else []
@@ -411,7 +454,8 @@ class Interceptador:
         para: dict[int, list[str]] = {}
         for item in lv.faltam:
             for pos, n in enumerate(PLANO_POR_ITEM.get(item, ORDEM[lv.balcao])):
-                if n in lv.tentadas or n in APOSENTADAS or (n == 8 and not self.ponte):
+                vp_fora = n == VERIFICACAO_PREVIA and (not lv.vp_devida or n in lv.tentadas)
+                if vp_fora or (n != VERIFICACAO_PREVIA and n in lv.tentadas) or n in APOSENTADAS or (n == 8 and not self.ponte):
                     continue
                 pontos[n] = pontos.get(n, 0) + 1 / (1 + pos)
                 para.setdefault(n, []).append(item)
@@ -446,7 +490,8 @@ class Interceptador:
         na passagem seguinte."""
         import time as _t
         for n in ordem or ORDEM[lv.balcao]:
-            if n in lv.tentadas or n in APOSENTADAS:
+            vp_fora = n == VERIFICACAO_PREVIA and (not lv.vp_devida or n in lv.tentadas)
+            if vp_fora or (n != VERIFICACAO_PREVIA and n in lv.tentadas) or n in APOSENTADAS:
                 continue
             if ate is not None and _t.monotonic() > ate:
                 return {"livro": lv.id, "abordagem": None, "achado": None, "esgotado": False, "adiado": True}

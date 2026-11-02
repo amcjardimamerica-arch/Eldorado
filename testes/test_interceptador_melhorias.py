@@ -34,20 +34,23 @@ def _livro(certs=None, fim=None):
     return M.Livro("L-1", "Edital 01/2026", "Secretaria", "https://x.go.gov.br/edital", None, "sem", fim, certs or {}, set(), "Colinas do Sul", "GO")
 
 
-def test_posteriores_fora_e_suficiente_sai_da_fila():
+def test_os_12_itens_ate_o_fim_e_a_verificacao_previa_em_duas_rodadas():
+    """01/11/2026 (titular): a fila é perseguida até os 12 itens (ou a dispensa); a verificação prévia vem antes, em duas
+    rodadas por livro, com 30 minutos ou mais entre elas; nenhuma abordagem aposentada."""
+    from datetime import datetime, timedelta, timezone
+
     lv = _livro()
-    assert "Resultado" not in lv.faltam and "Prazo de recurso" not in lv.faltam
-    ok = {"situacao": "comprovado", "valor": "Secretaria Municipal de Cultura, 07/10/2026", "trecho": "trecho literal do edital", "item": "x"}
-    lv2 = _livro({"Prazo de inscrição": ok, "Objeto": ok, "Órgão / financiador": ok, "Território": ok})
-    assert lv2.suficiente and not _livro({"Prazo de inscrição": ok, "Objeto": ok}).suficiente
-
-
-def test_a_verificacao_previa_primeiro_e_as_aposentadas_fora():
+    assert "Resultado" in lv.faltam and "Prazo de recurso" in lv.faltam and not hasattr(M, "POSTERIORES")
+    assert not hasattr(M.Livro, "suficiente") and not M.APOSENTADAS
     it = M.Interceptador.__new__(M.Interceptador)
     it.ponte = None
-    plano = [n for n, _ in it.plano_de_voo(_livro())]
-    assert plano[0] == 12 and not (set(plano) & M.APOSENTADAS)
-    assert all(v[0] == 12 for v in M.PLANO_POR_ITEM.values()) and M.ORDEM["sem estrela"][0] == 12
+    assert [n for n, _ in it.plano_de_voo(lv)][0] == 12 and M.ORDEM["sem estrela"][0] == 12
+    lv.vp_rodadas, lv.vp_ultima = 1, (datetime.now(timezone.utc) - timedelta(minutes=10)).isoformat()
+    assert not lv.vp_devida and 12 not in [n for n, _ in it.plano_de_voo(lv)]  # a segunda rodada só depois de 30 min
+    lv.vp_ultima = (datetime.now(timezone.utc) - timedelta(minutes=31)).isoformat()
+    assert lv.vp_devida and [n for n, _ in it.plano_de_voo(lv)][0] == 12
+    lv.vp_rodadas = 2
+    assert not lv.vp_devida  # no máximo duas rodadas
 
 
 def test_o_achado_sem_ia_pelos_extratores(tmp_path):
