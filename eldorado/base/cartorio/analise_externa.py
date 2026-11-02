@@ -21,7 +21,8 @@ import msgspec
 from ..missao import itens as I
 from ..nucleo.eventos import Diario, agora
 
-INSTRUCOES_LEI = ("Persiga o edital oficial, com todas as regras da oportunidade. No incentivo fiscal por lei (Rouanet, Goyazes, fundos da criança e do idoso) não há edital comum: "
+INSTRUCOES_LEI = ("Persiga o edital oficial, com todas as regras da oportunidade. "
+                  "No incentivo fiscal por lei (Rouanet, Goyazes, fundos da criança e do idoso) não há edital comum: "
                   "a lei e o chamamento são o documento oficial — comprove os itens neles. ")
 INSTRUCOES = (
     "Para cada livro: abra o link oficial (e, se preciso, a divulgação). Confira cada certidão na fonte. Para cada item que falta, "

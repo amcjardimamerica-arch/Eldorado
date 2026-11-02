@@ -269,6 +269,7 @@ def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_
                     avisados.add(tipo)
                     diario.emitir("alarme.aberto", "piloto:interceptador", {"gravidade": "media", "modulo": "piloto:interceptador",
                                                                             "mensagem": f"o voo da vaga {k + 1} falhou: {tipo}",
+                                                                            "rastro": __import__("traceback").format_exc()[-2000:],
                                                                             "aberto_em": time.strftime("%Y-%m-%dT%H:%M:%S+00:00", time.gmtime())})
                 vaga.fechar()
             finally:

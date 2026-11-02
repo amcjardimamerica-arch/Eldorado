@@ -24,7 +24,6 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
-from ..cartorio.migrados import sql_migrado
 from ..missao import itens as I
 from ..nucleo.registro import instanciar
 
@@ -102,7 +101,8 @@ def comandar(con: sqlite3.Connection, diario, missao, hoje: str | None = None) -
     destino: dict[str, int] = {}
     conta = lambda k, ok: destino.__setitem__(k, destino.get(k, 0) + int(ok))  # noqa: E731
     for lid in c["encerrados"]:
-        ok, _ = cart.passaporte.mover(lid, "arquivo", "o Comandante arquivou: o prazo encerrou na preparação", {"gerou": "prazo encerrado", "analise": "interna"})
+        ok, _ = cart.passaporte.mover(lid, "arquivo", "o Comandante arquivou: o prazo encerrou na preparação",
+                                      {"gerou": "prazo encerrado", "analise": "interna"})
         conta("arquivo", ok)
     for lid in c["ao_chrome_sem_link"]:
         ok, _ = cart.passaporte.mover(lid, "analise externa", "o Comandante enviou ao Claude no Chrome: prazo aberto sem link oficial (achar o edital oficial)",

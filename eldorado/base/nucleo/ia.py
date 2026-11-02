@@ -61,7 +61,10 @@ def _json(resposta: str) -> Any:
     m = re.search(r"[\[{].*[\]}]", r, re.S)
     if not m:
         raise SemIA(f"a IA não devolveu JSON: {r[:120]}")
-    return json.loads(m.group(0))
+    try:
+        return json.loads(m.group(0))
+    except ValueError as e:      # 02/11/2026: o JSON malformado da IA não derruba o voo: segue sem a IA
+        raise SemIA(f"a IA devolveu JSON inválido ({e}): {r[:120]}") from e
 
 
 def cargo(nome: str | None) -> dict[str, Any]:

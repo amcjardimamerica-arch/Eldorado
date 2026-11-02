@@ -47,7 +47,7 @@ def test_a_escada_nao_busca_sem_link_nem_completo():
 
 def test_a_lei_e_o_chamamento():
     assert C.documento_oficial("incentivo_fiscal") == "a lei e o chamamento"
-    from eldorado.motores.pilotos.interceptador import regime_de, CHAVE
+    from eldorado.motores.pilotos.interceptador import CHAVE, regime_de
     assert regime_de("Projeto pela Lei Goyazes", None) == "incentivo_fiscal" and CHAVE.search("Lei nº 8.313") and CHAVE.search("Portaria 01")
     assert "a lei e o chamamento são o documento oficial" in Path("eldorado/base/cartorio/analise_externa.py").read_text(encoding="utf-8")
 

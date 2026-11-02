@@ -67,7 +67,8 @@ FERRAMENTAS = {1: "a página oficial e os documentos dela", 2: "os arquivos do e
                11: "a secretaria do município", 12: "o site original, o edital oficial e os anexos (verificação prévia)"}
 NUMERO = re.compile(r"n[º°o.]*\s*0*(\d{1,4})\s*[/_-]\s*(20\d\d)", re.I)
 PNCP = re.compile(r"pncp\.gov\.br/app/editais/(\d{14})/(\d{4})/(\d+)")
-CHAVE = re.compile(r"(?i)edital|chamamento|chamada|sele[çc][ãa]o|regulamento|anexo|credenciamento|pr[êe]mio|\blei\b|portaria|instru[çc][ãa]o normativa")   # 02/11/2026: no incentivo fiscal, a lei e o chamamento são o documento oficial
+# 02/11/2026: no incentivo fiscal, a lei e o chamamento são o documento oficial
+CHAVE = re.compile(r"(?i)edital|chamamento|chamada|sele[çc][ãa]o|regulamento|anexo|credenciamento|pr[êe]mio|\blei\b|portaria|instru[çc][ãa]o normativa")
 _dz = zstandard.ZstdDecompressor()
 SQL_GUARDADOS = ("SELECT p.documento_id, p.numero, p.texto_zstd FROM pagina p JOIN certidao c ON c.documento_id = p.documento_id "
                  "WHERE c.livro_id=? GROUP BY p.documento_id, p.numero")
@@ -268,8 +269,11 @@ class Interceptador:
     def _ler(self, url: str, profunda: bool = False, escada: Escada | None = None) -> tuple[str, leitores.Leitura, bytes] | None:
         try:
             r = (escada or self.escada).buscar(url)
+        except (Bloqueado, Indisponivel, Pendente):
+            return None
+        try:
             return url, (self.profunda if profunda else self.leitura).ler(r.conteudo, url), r.conteudo
-        except (Bloqueado, Indisponivel, Pendente, leitores.SemLeitor):
+        except Exception:  # noqa: BLE001 — 02/11/2026: o arquivo que nenhum leitor entende (ex.: «planilha» que não é) é pulado
             return None
 
     def _documentos_da_pagina(self, url: str, titulo: str, limite: int) -> Iterator[str]:
@@ -523,6 +527,14 @@ class Interceptador:
             return {"livro": lv.id, "abordagem": n, "achado": achado, "esgotado": False}
         return {"livro": lv.id, "abordagem": None, "achado": None, "esgotado": True}
 
+    def _degrau_usado(self, n: int) -> str:
+        """O degrau da escada que serviu a leitura desta abordagem (a página 2 do livro)."""
+        if n == 7:
+            return "7 · cópia arquivada"
+        ponte = getattr(self, "ponte", None)
+        escada = ponte if n == 8 and ponte is not None else getattr(self, "escada", None)
+        return getattr(escada, "ultimo_degrau", None) or "não registrado"
+
     def _achado(self, lv: Livro, n: int, urls: list[str]) -> Achado | None:
         paginas, oficial, alertas, injecao = [], None, [], None
         for u in urls:
@@ -530,7 +542,7 @@ class Interceptador:
                 r = self._copias[u]
                 try:
                     leitura = self.leitura.ler(r.conteudo, u)
-                except leitores.SemLeitor:
+                except Exception:  # noqa: BLE001 — o arquivo que nenhum leitor entende é pulado
                     continue
             else:
                 lido = self._ler(u, profunda=(n == 9), escada=self.ponte if n == 8 else None)
@@ -575,7 +587,7 @@ class Interceptador:
                       dados={"livro_id": lv.id, "orgao": lv.orgao, "abordagem": ABORDAGENS[n], **({"itens": itens_ia} if itens_ia else {}),
                              # 02/11/2026 (titular): o degrau da escada que serviu a leitura vai ao achado (a página 2 do livro)
                              "escada": {"motor": "interceptador", "fonte": ABORDAGENS[n],
-                                        "degrau": ("7 · cópia arquivada" if n == 7 else getattr(getattr(self, "ponte", None) if n == 8 and getattr(self, "ponte", None) is not None else getattr(self, "escada", None), "ultimo_degrau", None)) or "não registrado"},
+                                        "degrau": self._degrau_usado(n)},
                              **({"ia": ia_rel} if ia_rel else {})},
                       documento={"url": oficial or urls[0], "sha256": sha, "tipo": "investigacao", "leitor": f"interceptador · {ABORDAGENS[n]}",
                                  "oficial": bool(oficial), "paginas": paginas, "alertas": alertas[:10], "injecao": injecao})

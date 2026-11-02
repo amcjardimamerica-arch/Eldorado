@@ -11,7 +11,8 @@ from typing import Any
 
 TABELAS = {   # tabela: (colunas, ordem) — tudo o que a Biblioteca guarda de um livro
     "certidoes": ("certidao", "item, valor, situacao, fase, trecho, pagina, documento_id, justificativa, em", "item, em"),
-    "achados": ("achado", "id, motor, encontrado_em, publicado_em, link_divulgacao, link_oficial, titulo, decisao, motivo, documento_id, pista, veio_de_copia_arquivada", "encontrado_em"),
+    "achados": ("achado", "id, motor, encontrado_em, publicado_em, link_divulgacao, link_oficial, titulo, decisao, motivo, documento_id, pista, "
+                          "veio_de_copia_arquivada", "encontrado_em"),
     "vereditos": ("veredito", "origem, decisao, motivo, como_encontrou, em", "em"),
     "tentativas": ("tentativa", "fase, ferramenta, numero, resultado, em, proxima_em", "em"),
     "relatorios": ("relatorio_etapa", "fase, gerou, aprendeu, faltou, analise, em", "em"),
@@ -39,7 +40,7 @@ def _linhas(con: sqlite3.Connection, tabela: str, colunas: str, ordem: str, ids:
     nomes = [d[0] for d in cur.description]
     out = []
     for r in cur.fetchall():
-        x = dict(zip(nomes, r))
+        x = dict(zip(nomes, r, strict=False))
         de = x.pop("livro_id")
         if de != ids[0]:
             x["de_livro"] = de          # a linha veio de um livro unido a este
@@ -82,8 +83,9 @@ def _montar(con, livro, ids, lv, dd, pp, un) -> dict[str, Any]:
     docs = {c["documento_id"] for c in cert if c.get("documento_id")} | {a["documento_id"] for a in h["achados"] if a.get("documento_id")}
     h["documentos"] = []
     if docs:
-        cur = con.execute(f"SELECT id, url, tipo, paginas, oficial, drive_id, leitor, obtido_em FROM documento WHERE id IN ({','.join('?' * len(docs))})", list(docs))
-        h["documentos"] = [dict(zip([d[0] for d in cur.description], r)) for r in cur.fetchall()]
+        marcas = ",".join("?" * len(docs))
+        cur = con.execute(f"SELECT id, url, tipo, paginas, oficial, drive_id, leitor, obtido_em FROM documento WHERE id IN ({marcas})", list(docs))
+        h["documentos"] = [dict(zip([d[0] for d in cur.description], r, strict=False)) for r in cur.fetchall()]
     # a escada de cada achado (o degrau que conseguiu, o motor e a fonte), para a página das etapas do livro
     if h["achados"]:
         ids_a = [a["id"] for a in h["achados"]]
@@ -111,10 +113,10 @@ def _montar(con, livro, ids, lv, dd, pp, un) -> dict[str, Any]:
             lv2 = cur.fetchone()
             if not lv2:
                 continue
-            lv2 = dict(zip([c[0] for c in cur.description], lv2))
+            lv2 = dict(zip([c[0] for c in cur.description], lv2, strict=False))
             cur = con.execute("SELECT * FROM livro_dados WHERE livro_id = ?", (outro,))
             dd2 = cur.fetchone()
-            dd2 = dict(zip([c[0] for c in cur.description], dd2)) if dd2 else None
+            dd2 = dict(zip([c[0] for c in cur.description], dd2, strict=False)) if dd2 else None
         except sqlite3.Error:
             continue
         h["anteriores"].append({"livro": lv2, "dados": dd2, "certidoes": [c for c in h["certidoes"] if c.get("de_livro") == outro],

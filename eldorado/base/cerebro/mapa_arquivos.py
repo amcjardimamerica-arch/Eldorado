@@ -452,8 +452,6 @@ SOB_DEMANDA = {                       # os estudos concluídos: a finalidade é 
     ".github/workflows/ponte-teste.yml": "o teste da ponte da HostGator, sob demanda (o ciclo testa a ponte no início)",
 }
 AGUARDAM_DECISAO = {
-    "config/missao/dispensas_por_regime.json": "fica até a decisão da titular: nenhum código a lê (criada na fase 4, 22/10/2026); as dispensas "
-                                               "prováveis por regime de recurso: ligar ao checklist do Cartório ou retirar",
     "config/comparacao.toml": "fica (titular, 25/10/2026): a comprovação de cobertura antes de eliminar o Eldorado0 ainda não foi feita",
 }
 

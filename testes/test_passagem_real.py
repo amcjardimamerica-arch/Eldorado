@@ -46,7 +46,10 @@ def test_achado_aceito_vira_livro_certificado_com_selos(tmp_path):
         assert bib.execute("SELECT estrela, link_oficial FROM livro WHERE id=?", (lid,)).fetchone()[0] == livro["estrela"]
         historia = [x[0] for x in bib.execute("SELECT tipo FROM historia_do_livro WHERE livro_id=? ORDER BY em", (lid,))]
         assert {"achado", "passagem", "certidão", "relatório interna"} <= set(historia)
-        assert [tuple(x) for x in bib.execute("SELECT decisao, COUNT(*) FROM achado GROUP BY 1")] == [("aceito", 1), ("barrado", 1)]
+        # R36 (titular, 02/11/2026): o achado barrado sem livro de dia anterior (o teste é de 22/10) é liberado na mesma passagem
+        # pela manutenção do expurgo; o registro do descarte fica no Cérebro
+        assert [tuple(x) for x in bib.execute("SELECT decisao, COUNT(*) FROM achado GROUP BY 1")] == [("aceito", 1)]
+        assert b["cerebro"].execute("SELECT COUNT(*) FROM achado_descartado WHERE decisao = 'barrado'").fetchone()[0] == 1
         med = {m: p for m, p in b["cerebro"].execute("SELECT marcador, ponto FROM medicao WHERE nivel='arquivo'")}
         for arq in ("eldorado/base/cartorio/cartorio.py", "eldorado/base/cerebro/pertinencia.py"):
             assert med[arq] == "v", arq

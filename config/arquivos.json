@@ -17,7 +17,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 63,
+   "linhas": 81,
    "situacao": "em funcionamento",
    "ordem": 1
   },
@@ -40,7 +40,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 11334,
+   "linhas": 11385,
    "situacao": "em funcionamento",
    "ordem": 2
   },
@@ -88,10 +88,12 @@
     "test_canivete_descoberta.py",
     "test_capacidade.py",
     "test_cartorio.py",
+    "test_cartorio_ceu.py",
     "test_cartorio_site.py",
     "test_cassete.py",
     "test_cerebro.py",
     "test_comandante_biblioteca.py",
+    "test_comandante_cartorio.py",
     "test_comandante_expurgo.py",
     "test_comandante_fase1.py",
     "test_comandante_fase2.py",
@@ -105,28 +107,36 @@
     "test_contratos.py",
     "test_decisao.py",
     "test_definicao.py",
+    "test_depois_da_passagem.py",
     "test_descoberta.py",
     "test_encaminhamento_isolado.py",
     "test_espiao.py",
     "test_eventos.py",
     "test_executor.py",
+    "test_expurgo_do_claude.py",
+    "test_expurgo_enderecos.py",
     "test_expurgo_externo.py",
     "test_farol_analise.py",
     "test_fila.py",
     "test_fumaca_dados_reais.py",
     "test_governador.py",
     "test_gravador.py",
+    "test_historia_completa.py",
     "test_ia.py",
     "test_ia_validada.py",
     "test_identidade.py",
+    "test_identidade_caracteristicas.py",
     "test_incentivos.py",
     "test_interceptador.py",
     "test_interceptador_funciona.py",
+    "test_interceptador_melhorias.py",
     "test_inventario.py",
     "test_leitor_universal.py",
     "test_leitura.py",
     "test_linha_cartorio.py",
+    "test_livro_paginas.py",
     "test_lote.py",
+    "test_manutencao_expurgo.py",
     "test_mapa_arquivos.py",
     "test_mapa_completo.py",
     "test_mapa_original.py",
@@ -141,21 +151,27 @@
     "test_motor_modelo.py",
     "test_motor_prefeituras.py",
     "test_motores_api.py",
+    "test_operacao_no_cerebro.py",
     "test_organizar_livros.py",
     "test_painel.py",
     "test_painel_site.py",
+    "test_parecer_sala_2910.py",
     "test_passagem.py",
     "test_passagem_real.py",
+    "test_passos_seguem_a_execucao.py",
     "test_pilotos_no_painel.py",
     "test_pilotos_permanentes.py",
     "test_pilotos_site.py",
     "test_ponte_br.py",
+    "test_r35_dados.py",
     "test_ranking_empresas.py",
     "test_rede_neural.py",
     "test_regra_r09.py",
     "test_regras_tabela_unica.py",
     "test_releitura.py",
     "test_revisao_alarmes.py",
+    "test_sala_ceu_estrelado.py",
+    "test_sala_externa_sinal.py",
     "test_sala_mostradores.py",
     "test_seguranca.py",
     "test_site_sem_vazio.py",
@@ -190,6 +206,7 @@
     "test_cartorio_site.py",
     "test_cerebro.py",
     "test_comandante_biblioteca.py",
+    "test_comandante_cartorio.py",
     "test_comandante_expurgo.py",
     "test_comandante_fase1.py",
     "test_comandante_fase2.py",
@@ -203,25 +220,31 @@
     "test_contratos.py",
     "test_decisao.py",
     "test_definicao.py",
+    "test_depois_da_passagem.py",
     "test_encaminhamento_isolado.py",
     "test_espiao.py",
     "test_eventos.py",
     "test_executor.py",
+    "test_expurgo_do_claude.py",
+    "test_expurgo_enderecos.py",
     "test_expurgo_externo.py",
     "test_farol_analise.py",
     "test_fila.py",
     "test_fumaca_dados_reais.py",
     "test_governador.py",
     "test_gravador.py",
+    "test_historia_completa.py",
     "test_ia.py",
     "test_ia_validada.py",
     "test_identidade.py",
+    "test_identidade_caracteristicas.py",
     "test_incentivos.py",
     "test_interceptador.py",
     "test_interceptador_funciona.py",
     "test_inventario.py",
     "test_linha_cartorio.py",
     "test_lote.py",
+    "test_manutencao_expurgo.py",
     "test_mapa_arquivos.py",
     "test_mapa_completo.py",
     "test_mapa_original.py",
@@ -230,14 +253,18 @@
     "test_motor_canal.py",
     "test_motor_gife.py",
     "test_motores_api.py",
+    "test_operacao_no_cerebro.py",
     "test_organizar_livros.py",
     "test_painel.py",
     "test_painel_site.py",
+    "test_parecer_sala_2910.py",
     "test_passagem.py",
     "test_passagem_real.py",
+    "test_passos_seguem_a_execucao.py",
     "test_pilotos_no_painel.py",
     "test_pilotos_permanentes.py",
     "test_pilotos_site.py",
+    "test_r35_dados.py",
     "test_ranking_empresas.py",
     "test_rede_neural.py",
     "test_regras_tabela_unica.py",
@@ -259,12 +286,13 @@
   },
   {
    "arquivo": "eldorado/base/nucleo/comandos.py",
-   "linhas": 847,
+   "linhas": 932,
    "finalidade": "Os comandos da plataforma: os mesmos no GitHub, no computador da titular e (depois) no painel.",
    "depende_de": [
     "eldorado/banco/analise.py",
     "eldorado/banco/consolidar.py",
     "eldorado/banco/consulta.py",
+    "eldorado/banco/copia_livros.py",
     "eldorado/banco/drive.py",
     "eldorado/banco/manutencao.py",
     "eldorado/base/aprendizado/memoria.py",
@@ -275,6 +303,7 @@
     "eldorado/base/cerebro/inventario.py",
     "eldorado/base/cerebro/pilotos.py",
     "eldorado/base/cerebro/pilotos_permanentes.py",
+    "eldorado/base/cerebro/retencao.py",
     "eldorado/base/comandante/pilotos.py",
     "eldorado/base/especial/importar_e0.py",
     "eldorado/base/fluxo/agenda.py",
@@ -322,6 +351,7 @@
     "eldorado/banco/analise.py",
     "eldorado/banco/consolidar.py",
     "eldorado/banco/consulta.py",
+    "eldorado/banco/copia_livros.py",
     "eldorado/banco/drive.py",
     "eldorado/banco/manutencao.py",
     "eldorado/base/aprendizado/memoria.py",
@@ -332,6 +362,7 @@
     "eldorado/base/cerebro/inventario.py",
     "eldorado/base/cerebro/pilotos.py",
     "eldorado/base/cerebro/pilotos_permanentes.py",
+    "eldorado/base/cerebro/retencao.py",
     "eldorado/base/comandante/pilotos.py",
     "eldorado/base/especial/importar_e0.py",
     "eldorado/base/fluxo/agenda.py",
@@ -369,7 +400,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "o sistema roda sem intervenção",
-   "finalidade": "!/usr/bin/env bash Grava o trabalho no repositório: os eventos sempre (texto, pequeno); o banco uma vez por dia, ou quando pedido. Uso: scripts/gravar.sh [forcar_banco: true|false] 25/10/2026: a grava",
+   "finalidade": "!/usr/bin/env bash Grava o trabalho no repositório: os eventos sempre (texto, pequeno); o banco uma vez por dia, ou quando pedido. Uso: scripts/gravar.sh [forcar_banco: true|false] 29/10/2026 (titular",
    "depende_de": [],
    "usado_por": [
     ".github/workflows/eldorado.yml"
@@ -377,7 +408,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 61,
+   "linhas": 106,
    "situacao": "em funcionamento",
    "ordem": 7
   },
@@ -553,7 +584,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 127,
+   "linhas": 132,
    "situacao": "em funcionamento",
    "ordem": 15
   },
@@ -584,9 +615,11 @@
     "test_comandos.py",
     "test_config.py",
     "test_contratos.py",
+    "test_depois_da_passagem.py",
     "test_espiao.py",
     "test_eventos.py",
     "test_executor.py",
+    "test_expurgo_do_claude.py",
     "test_expurgo_externo.py",
     "test_farol_analise.py",
     "test_fumaca_dados_reais.py",
@@ -604,14 +637,17 @@
     "test_motor_canal.py",
     "test_motor_gife.py",
     "test_motores_api.py",
+    "test_operacao_no_cerebro.py",
     "test_painel.py",
+    "test_parecer_sala_2910.py",
     "test_passagem_real.py",
+    "test_passos_seguem_a_execucao.py",
     "test_pilotos_no_painel.py",
     "test_pilotos_site.py",
+    "test_r35_dados.py",
     "test_ranking_empresas.py",
     "test_rede_neural.py",
     "test_regras_tabela_unica.py",
-    "test_releitura.py",
     "test_revisao_alarmes.py",
     "test_seguranca.py"
    ],
@@ -740,7 +776,7 @@
   },
   {
    "arquivo": "eldorado/base/nucleo/eventos.py",
-   "linhas": 277,
+   "linhas": 432,
    "finalidade": "Os eventos: a única forma de escrita do Eldorado.",
    "depende_de": [
     "eldorado/base/nucleo/contratos.py"
@@ -748,11 +784,13 @@
    "eventos": [],
    "acionado_por": [],
    "usado_por": [
+    "eldorado/base/aprendizado/memoria.py",
     "eldorado/base/cartorio/analise_externa.py",
     "eldorado/base/cartorio/auditoria.py",
     "eldorado/base/cartorio/cartorio.py",
     "eldorado/base/cartorio/certificacao.py",
     "eldorado/base/cartorio/indice.py",
+    "eldorado/base/cartorio/leitura_efemera.py",
     "eldorado/base/cartorio/passaporte.py",
     "eldorado/base/cartorio/selos.py",
     "eldorado/base/cerebro/aprendizado.py",
@@ -766,6 +804,7 @@
     "eldorado/base/cerebro/rede.py",
     "eldorado/base/cerebro/regencia.py",
     "eldorado/base/cerebro/regras.py",
+    "eldorado/base/cerebro/retencao.py",
     "eldorado/base/comandante/biblioteca.py",
     "eldorado/base/especial/registro.py",
     "eldorado/base/fluxo/executor.py",
@@ -796,6 +835,7 @@
     "test_espiao.py",
     "test_eventos.py",
     "test_executor.py",
+    "test_expurgo_do_claude.py",
     "test_farol_analise.py",
     "test_fumaca_dados_reais.py",
     "test_governador.py",
@@ -807,11 +847,14 @@
     "test_interceptador_funciona.py",
     "test_linha_cartorio.py",
     "test_motor_gife.py",
+    "test_operacao_no_cerebro.py",
+    "test_parecer_sala_2910.py",
+    "test_passos_seguem_a_execucao.py",
     "test_pilotos_no_painel.py",
     "test_pilotos_site.py",
+    "test_r35_dados.py",
     "test_ranking_empresas.py",
     "test_regras_tabela_unica.py",
-    "test_releitura.py",
     "test_revisao_alarmes.py"
    ],
    "situacao": "em funcionamento",
@@ -856,7 +899,7 @@
   },
   {
    "arquivo": "eldorado/base/nucleo/gravador.py",
-   "linhas": 241,
+   "linhas": 264,
    "finalidade": "O gravador único: o único que escreve nos bancos.",
    "depende_de": [
     "eldorado/banco/_sqlite.py",
@@ -876,8 +919,10 @@
    "testes": [
     "test_farol_analise.py",
     "test_migracao.py",
+    "test_operacao_no_cerebro.py",
     "test_passagem_real.py",
-    "test_pilotos_no_painel.py"
+    "test_pilotos_no_painel.py",
+    "test_r35_dados.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "02 Núcleo: contratos, eventos e gravação",
@@ -921,21 +966,20 @@
   },
   {
    "arquivo": "eldorado/base/nucleo/registro.py",
-   "linhas": 81,
+   "linhas": 82,
    "finalidade": "O registro dos módulos ligados: confere o contrato antes de aceitar, e arquiva em vez de apagar.",
    "depende_de": [
     "eldorado/base/nucleo/contratos.py",
     "eldorado/base/nucleo/eventos.py"
    ],
-   "eventos": [
-    "modulo.registrado"
-   ],
+   "eventos": [],
    "acionado_por": [],
    "usado_por": [
     "eldorado/base/cartorio/cartorio.py",
     "eldorado/base/cerebro/encaminhamento.py",
     "eldorado/base/cerebro/pertinencia.py",
-    "eldorado/base/cerebro/regencia.py"
+    "eldorado/base/cerebro/regencia.py",
+    "eldorado/base/comandante/cartorio.py"
    ],
    "testes": [
     "test_capacidade.py",
@@ -972,6 +1016,7 @@
     "test_banco_camada4.py",
     "test_bancos.py",
     "test_cartorio_site.py",
+    "test_parecer_sala_2910.py",
     "test_sala_mostradores.py"
    ],
    "situacao": "pacote",
@@ -985,7 +1030,7 @@
   },
   {
    "arquivo": "eldorado/banco/_sqlite.py",
-   "linhas": 65,
+   "linhas": 66,
    "finalidade": "Abertura padronizada dos bancos SQLite: configurações medidas, criação do esquema, versão e integridade.",
    "depende_de": [],
    "eventos": [],
@@ -1154,6 +1199,28 @@
    "ordem": 34
   },
   {
+   "arquivo": "eldorado/banco/copia_livros.py",
+   "linhas": 52,
+   "finalidade": "A cópia de segurança dos livros (titular, 29/10/2026): a cada 3 dias, e SÓ dos livros que mudaram desde a cópia",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/nucleo/comandos.py"
+   ],
+   "testes": [
+    "test_parecer_sala_2910.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "03 Bancos",
+   "parte": "BANCO",
+   "componente": "Bancos",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 35
+  },
+  {
    "arquivo": "eldorado/banco/drive.py",
    "linhas": 44,
    "finalidade": "A cópia dos bancos e dos eventos no Drive (plano C: a API do Google; o rclone de alternativa).",
@@ -1171,7 +1238,7 @@
    "ligacoes": [],
    "critico": true,
    "metrica": "integridade; violações barradas",
-   "ordem": 35
+   "ordem": 36
   },
   {
    "arquivo": "eldorado/banco/especial/__init__.py",
@@ -1189,7 +1256,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 36
+   "ordem": 37
   },
   {
    "arquivo": "eldorado/banco/especial/empresas.py",
@@ -1209,7 +1276,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "empresas atualizadas",
-   "ordem": 37
+   "ordem": 38
   },
   {
    "arquivo": "eldorado/banco/especial/esquema.py",
@@ -1229,7 +1296,7 @@
    ],
    "critico": true,
    "metrica": "integridade",
-   "ordem": 38
+   "ordem": 39
   },
   {
    "arquivo": "eldorado/banco/fotografia.py",
@@ -1251,7 +1318,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "última fotografia; reconstrução testada",
-   "ordem": 39
+   "ordem": 40
   },
   {
    "arquivo": "eldorado/banco/manutencao.py",
@@ -1272,7 +1339,7 @@
    "ligacoes": [],
    "critico": true,
    "metrica": "integridade; violações barradas",
-   "ordem": 40
+   "ordem": 41
   },
   {
    "arquivo": "eldorado/banco/originais/drive.py",
@@ -1290,7 +1357,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "originais no Drive × documentos citados",
-   "ordem": 41
+   "ordem": 42
   },
   {
    "arquivo": "eldorado/base/especial/__init__.py",
@@ -1311,7 +1378,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 42
+   "ordem": 43
   },
   {
    "arquivo": "eldorado/base/especial/importar_e0.py",
@@ -1336,7 +1403,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 43
+   "ordem": 44
   },
   {
    "arquivo": "eldorado/base/especial/registro.py",
@@ -1365,11 +1432,11 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 44
+   "ordem": 45
   },
   {
    "arquivo": "eldorado/banco/biblioteca/esquema.py",
-   "linhas": 213,
+   "linhas": 220,
    "finalidade": "O esquema da Biblioteca (biblioteca.db): os livros e tudo o que se sabe de cada oportunidade.",
    "depende_de": [
     "eldorado/banco/_sqlite.py"
@@ -1394,11 +1461,11 @@
    ],
    "critico": true,
    "metrica": "integridade; violações barradas",
-   "ordem": 45
+   "ordem": 46
   },
   {
    "arquivo": "eldorado/banco/cerebro_db/esquema.py",
-   "linhas": 149,
+   "linhas": 158,
    "finalidade": "O esquema do banco do Cérebro (cerebro.db): a operação e o aprendizado do sistema, sem nenhuma oportunidade.",
    "depende_de": [
     "eldorado/banco/_sqlite.py"
@@ -1422,7 +1489,7 @@
    ],
    "critico": true,
    "metrica": "retenção cumprida",
-   "ordem": 46
+   "ordem": 47
   },
   {
    "arquivo": "eldorado/banco/consolidar.py",
@@ -1450,7 +1517,7 @@
    ],
    "critico": true,
    "metrica": "o sistema roda sem intervenção",
-   "ordem": 47
+   "ordem": 48
   },
   {
    "arquivo": "eldorado/base/fluxo/__init__.py",
@@ -1479,6 +1546,7 @@
     "test_passagem.py",
     "test_passagem_real.py",
     "test_pilotos_site.py",
+    "test_r35_dados.py",
     "test_sala_mostradores.py"
    ],
    "situacao": "pacote",
@@ -1488,7 +1556,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 48
+   "ordem": 49
   },
   {
    "arquivo": "eldorado/base/fluxo/agenda.py",
@@ -1514,7 +1582,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "motores devidos e acionados no horário",
-   "ordem": 49
+   "ordem": 50
   },
   {
    "arquivo": "eldorado/base/fluxo/definicao.py",
@@ -1543,11 +1611,11 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "workflows válidos e versionados",
-   "ordem": 50
+   "ordem": 51
   },
   {
    "arquivo": "eldorado/base/fluxo/nos.py",
-   "linhas": 42,
+   "linhas": 56,
    "finalidade": "Os nós próprios da plataforma, usados nos workflows de operação (manutenção, aplicação de eventos).",
    "depende_de": [
     "eldorado/banco/biblioteca/esquema.py",
@@ -1560,8 +1628,8 @@
    "acionado_por": [
     "passagem, nó 16 «aplicar_rede»",
     "passagem, nó 18 «aplicar_validacao»",
-    "passagem, nó 26 «maquina»",
-    "passagem, nó 38 «aplicar_final»",
+    "passagem, nó 28 «maquina»",
+    "passagem, nó 40 «aplicar_final»",
     "passagem, nó 7 «aplicar_coleta»",
     "passagem, nó 9 «aplicar_cartorio»"
    ],
@@ -1581,6 +1649,7 @@
     "test_passagem.py",
     "test_passagem_real.py",
     "test_pilotos_site.py",
+    "test_r35_dados.py",
     "test_sala_mostradores.py"
    ],
    "situacao": "em funcionamento",
@@ -1596,7 +1665,7 @@
    ],
    "critico": false,
    "metrica": "nós executados sem erro",
-   "ordem": 51
+   "ordem": 52
   },
   {
    "arquivo": "workflows/passagem.toml",
@@ -1616,10 +1685,10 @@
     "eldorado/base/cartorio/auditoria.py",
     "eldorado/base/cartorio/cartorio.py",
     "eldorado/base/cartorio/identidade.py",
+    "eldorado/base/cartorio/manutencao_expurgo.py",
     "eldorado/base/cartorio/releitura.py",
     "eldorado/base/cerebro/aprendizado.py",
-    "eldorado/base/cerebro/completude.py",
-    "eldorado/base/cerebro/encaminhamento.py"
+    "eldorado/base/cerebro/completude.py"
    ],
    "usado_por": [
     ".github/workflows/eldorado.yml",
@@ -1633,13 +1702,13 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 397,
+   "linhas": 414,
    "situacao": "em funcionamento",
-   "ordem": 52
+   "ordem": 53
   },
   {
    "arquivo": "eldorado/base/fluxo/executor.py",
-   "linhas": 287,
+   "linhas": 334,
    "finalidade": "O executor durável dos workflows.",
    "depende_de": [
     "eldorado/base/fluxo/definicao.py",
@@ -1652,8 +1721,7 @@
     "execucao.iniciada",
     "execucao.passo",
     "execucao.retomada",
-    "medicao.registrada",
-    "workflow.versao"
+    "medicao.registrada"
    ],
    "acionado_por": [],
    "usado_por": [
@@ -1679,7 +1747,7 @@
    ],
    "critico": true,
    "metrica": "execuções retomadas sem perda; passos com falha",
-   "ordem": 53
+   "ordem": 54
   },
   {
    "arquivo": "eldorado/base/fluxo/fila.py",
@@ -1709,7 +1777,7 @@
    ],
    "critico": false,
    "metrica": "tarefas atrasadas; tarefas com erro",
-   "ordem": 54
+   "ordem": 55
   },
   {
    "arquivo": "config/agenda.toml",
@@ -1731,7 +1799,7 @@
    "testes": [],
    "linhas": 277,
    "situacao": "em funcionamento",
-   "ordem": 55
+   "ordem": 56
   },
   {
    "arquivo": "config/cargos.toml",
@@ -1751,7 +1819,7 @@
    "testes": [],
    "linhas": 36,
    "situacao": "em funcionamento",
-   "ordem": 56
+   "ordem": 57
   },
   {
    "arquivo": "config/ia_local.toml",
@@ -1774,7 +1842,7 @@
    "testes": [],
    "linhas": 26,
    "situacao": "em funcionamento",
-   "ordem": 57
+   "ordem": 58
   },
   {
    "arquivo": "config/modulos.toml",
@@ -1813,7 +1881,7 @@
    "testes": [],
    "linhas": 183,
    "situacao": "em funcionamento",
-   "ordem": 58
+   "ordem": 59
   },
   {
    "arquivo": "eldorado/base/cerebro/__init__.py",
@@ -1847,7 +1915,9 @@
     "test_motor_canal.py",
     "test_motor_gife.py",
     "test_motores_api.py",
+    "test_operacao_no_cerebro.py",
     "test_painel.py",
+    "test_parecer_sala_2910.py",
     "test_passagem.py",
     "test_passagem_real.py",
     "test_pilotos_no_painel.py",
@@ -1864,7 +1934,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 59
+   "ordem": 60
   },
   {
    "arquivo": "eldorado/base/cerebro/decisao.py",
@@ -1887,11 +1957,11 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 60
+   "ordem": 61
   },
   {
    "arquivo": "eldorado/base/cerebro/governador.py",
-   "linhas": 181,
+   "linhas": 205,
    "finalidade": "O governador de carga: mantém a máquina abaixo do limite (85%).",
    "depende_de": [
     "eldorado/base/nucleo/eventos.py"
@@ -1902,6 +1972,7 @@
    ],
    "acionado_por": [],
    "usado_por": [
+    "eldorado/base/cerebro/pilotos_permanentes.py",
     "eldorado/base/cerebro/regencia.py",
     "eldorado/base/comandante/pilotos.py",
     "eldorado/base/fluxo/fila.py",
@@ -1915,6 +1986,7 @@
     "test_governador.py",
     "test_motor_gife.py",
     "test_motores_api.py",
+    "test_parecer_sala_2910.py",
     "test_pilotos_no_painel.py"
    ],
    "situacao": "em funcionamento",
@@ -1926,7 +1998,7 @@
    ],
    "critico": true,
    "metrica": "tempo acima de 85% (meta zero)",
-   "ordem": 61
+   "ordem": 62
   },
   {
    "arquivo": "eldorado/base/cerebro/livros_motores.py",
@@ -1951,7 +2023,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 62
+   "ordem": 63
   },
   {
    "arquivo": "eldorado/base/cerebro/pilotos.py",
@@ -1972,7 +2044,8 @@
    ],
    "testes": [
     "test_encaminhamento_isolado.py",
-    "test_espiao.py"
+    "test_espiao.py",
+    "test_parecer_sala_2910.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "05 Comandante: percebe, decide, organiza as filas, comanda os pilotos, parametriza e apresenta",
@@ -1986,7 +2059,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 63
+   "ordem": 64
   },
   {
    "arquivo": "eldorado/base/comandante/__init__.py",
@@ -1998,6 +2071,7 @@
    "usado_por": [],
    "testes": [
     "test_comandante_biblioteca.py",
+    "test_comandante_cartorio.py",
     "test_comandante_expurgo.py",
     "test_comandante_fase2.py",
     "test_comandante_fase3.py",
@@ -2005,7 +2079,9 @@
     "test_comandante_fase6.py",
     "test_comandante_memoria.py",
     "test_comandante_pilotos.py",
+    "test_identidade_caracteristicas.py",
     "test_organizar_livros.py",
+    "test_parecer_sala_2910.py",
     "test_pilotos_no_painel.py"
    ],
    "situacao": "pacote",
@@ -2015,7 +2091,45 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 64
+   "ordem": 65
+  },
+  {
+   "arquivo": "eldorado/base/comandante/cartorio.py",
+   "linhas": 133,
+   "finalidade": "O COMANDANTE DO CARTÓRIO (titular, 02/11/2026 — R37 e R38).",
+   "depende_de": [
+    "eldorado/base/cartorio/cartorio.py",
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/nucleo/registro.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "eventos": [
+    "medicao.registrada"
+   ],
+   "acionado_por": [
+    "passagem, nó 20 «comandante_cartorio»"
+   ],
+   "usado_por": [
+    "eldorado/base/cartorio/analise_externa.py",
+    "eldorado/motores/pilotos/espiao.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "testes": [
+    "test_comandante_cartorio.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "05 Comandante: percebe, decide, organiza as filas, comanda os pilotos, parametriza e apresenta",
+   "parte": "BASE",
+   "componente": "Comandante: percebe, decide, organiza as filas, comanda os pilotos, parametriza e apresenta",
+   "ligacoes": [
+    "eldorado/base/cartorio/cartorio.py",
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/nucleo/registro.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 66
   },
   {
    "arquivo": "eldorado/base/comandante/organizar.py",
@@ -2032,7 +2146,7 @@
     "livro.excluido_logicamente"
    ],
    "acionado_por": [
-    "passagem, nó 29 «organizar_livros»"
+    "passagem, nó 31 «organizar_livros»"
    ],
    "usado_por": [
     "eldorado/base/comandante/biblioteca.py",
@@ -2053,7 +2167,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 65
+   "ordem": 67
   },
   {
    "arquivo": "eldorado/base/comandante/parametros.py",
@@ -2067,7 +2181,7 @@
     "parametro.definido"
    ],
    "acionado_por": [
-    "passagem, nó 35 «conferir»"
+    "passagem, nó 37 «conferir»"
    ],
    "usado_por": [
     "eldorado/base/cerebro/pilotos_permanentes.py",
@@ -2082,7 +2196,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 66
+   "ordem": 68
   },
   {
    "arquivo": "eldorado/base/comandante/politica.py",
@@ -2103,11 +2217,11 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 67
+   "ordem": 69
   },
   {
    "arquivo": "eldorado/base/nucleo/ia.py",
-   "linhas": 239,
+   "linhas": 246,
    "finalidade": "O serviço único de IA dos pilotos (do Eldorado0, titular, 26/09 e 02/10/2026).",
    "depende_de": [
     "eldorado/base/aprendizado/memoria.py",
@@ -2140,7 +2254,7 @@
    ],
    "critico": false,
    "metrica": "respostas válidas (meta 90%); custo e tempo por tarefa",
-   "ordem": 68
+   "ordem": 70
   },
   {
    "arquivo": ".github/workflows/ia-teste.yml",
@@ -2165,7 +2279,7 @@
    "testes": [],
    "linhas": 75,
    "situacao": "em funcionamento",
-   "ordem": 69
+   "ordem": 71
   },
   {
    "arquivo": "eldorado/base/cerebro/originais.py",
@@ -2192,11 +2306,11 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 70
+   "ordem": 72
   },
   {
    "arquivo": "eldorado/base/cerebro/regencia.py",
-   "linhas": 300,
+   "linhas": 308,
    "finalidade": "A Regência: planeja a passagem, aciona os motores e autoriza cada passagem de livro.",
    "depende_de": [
     "eldorado/base/cerebro/decisao.py",
@@ -2209,6 +2323,7 @@
     "eldorado/base/nucleo/recibo.py",
     "eldorado/base/nucleo/registro.py",
     "eldorado/base/painel/sala.py",
+    "eldorado/motores/acesso/escada.py",
     "eldorado/motores/canal/motor.py"
    ],
    "eventos": [
@@ -2259,11 +2374,12 @@
     "eldorado/base/nucleo/recibo.py",
     "eldorado/base/nucleo/registro.py",
     "eldorado/base/painel/sala.py",
+    "eldorado/motores/acesso/escada.py",
     "eldorado/motores/canal/motor.py"
    ],
    "critico": true,
    "metrica": "acionamentos no horário; passagens autorizadas",
-   "ordem": 71
+   "ordem": 73
   },
   {
    "arquivo": "eldorado/base/comandante/apresentar.py",
@@ -2274,7 +2390,7 @@
    ],
    "eventos": [],
    "acionado_por": [
-    "passagem, nó 37 «apresentar»"
+    "passagem, nó 39 «apresentar»"
    ],
    "usado_por": [],
    "testes": [
@@ -2289,11 +2405,11 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 72
+   "ordem": 74
   },
   {
    "arquivo": "eldorado/base/comandante/biblioteca.py",
-   "linhas": 378,
+   "linhas": 382,
    "finalidade": "O Comandante atualiza a Biblioteca e valida as oportunidades antigas (titular, 25/10/2026).",
    "depende_de": [
     "eldorado/base/cartorio/identidade.py",
@@ -2310,7 +2426,7 @@
     "livro.origem"
    ],
    "acionado_por": [
-    "passagem, nó 30 «atualizar_biblioteca»"
+    "passagem, nó 32 «atualizar_biblioteca»"
    ],
    "usado_por": [
     "eldorado/base/cerebro/pilotos_permanentes.py"
@@ -2333,11 +2449,11 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 73
+   "ordem": 75
   },
   {
    "arquivo": "eldorado/base/comandante/decidir.py",
-   "linhas": 99,
+   "linhas": 109,
    "finalidade": "O Comandante decide (a etapa C2), em PARALELO com a ordem fixa (a fase 2 do desenho): ordena todos os motores e as",
    "depende_de": [
     "eldorado/base/comandante/politica.py"
@@ -2346,7 +2462,7 @@
     "comandante.decidiu"
    ],
    "acionado_por": [
-    "passagem, nó 32 «comandante_decidir»"
+    "passagem, nó 34 «comandante_decidir»"
    ],
    "usado_por": [
     "eldorado/base/comandante/pilotos.py"
@@ -2363,11 +2479,11 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 74
+   "ordem": 76
   },
   {
    "arquivo": "eldorado/base/comandante/escolher.py",
-   "linhas": 114,
+   "linhas": 115,
    "finalidade": "O nó de agente do Comandante (a fase 3 do desenho; a engenharia do n8n, titular, 25/10/2026): no início de cada",
    "depende_de": [
     "eldorado/base/comandante/parametros.py"
@@ -2376,12 +2492,14 @@
     "comandante.decidiu"
    ],
    "acionado_por": [
-    "passagem, nó 31 «comandante_escolher»"
+    "passagem, nó 33 «comandante_escolher»"
    ],
    "usado_por": [
     "eldorado/base/aprendizado/avaliar.py"
    ],
-   "testes": [],
+   "testes": [
+    "test_identidade_caracteristicas.py"
+   ],
    "situacao": "em funcionamento",
    "etapa": "05 Comandante: percebe, decide, organiza as filas, comanda os pilotos, parametriza e apresenta",
    "parte": "BASE",
@@ -2391,7 +2509,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 75
+   "ordem": 77
   },
   {
    "arquivo": "eldorado/base/cerebro/fila.py",
@@ -2418,11 +2536,11 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 76
+   "ordem": 78
   },
   {
    "arquivo": "eldorado/base/comandante/pilotos.py",
-   "linhas": 232,
+   "linhas": 270,
    "finalidade": "O Comandante comanda os pilotos (a etapa C5; a fase 4 do desenho, titular, 25/10/2026). Cada missão do Espião e cada",
    "depende_de": [
     "eldorado/base/cerebro/governador.py",
@@ -2454,7 +2572,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 77
+   "ordem": 79
   },
   {
    "arquivo": "eldorado/base/cerebro/encaminhamento.py",
@@ -2522,14 +2640,15 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 78
+   "ordem": 80
   },
   {
    "arquivo": "eldorado/base/cerebro/pilotos_permanentes.py",
-   "linhas": 294,
+   "linhas": 396,
    "finalidade": "Os pilotos de forma permanente (titular, 25/10/2026: \"execute eles de forma permanente, da forma que foram desenvolvidos",
    "depende_de": [
     "eldorado/base/cerebro/encaminhamento.py",
+    "eldorado/base/cerebro/governador.py",
     "eldorado/base/cerebro/pilotos.py",
     "eldorado/base/cerebro/rede.py",
     "eldorado/base/comandante/biblioteca.py",
@@ -2551,13 +2670,16 @@
     "eldorado/base/nucleo/comandos.py",
     "eldorado/motores/pilotos/interceptador.py"
    ],
-   "testes": [],
+   "testes": [
+    "test_parecer_sala_2910.py"
+   ],
    "situacao": "em funcionamento",
    "etapa": "05 Comandante: percebe, decide, organiza as filas, comanda os pilotos, parametriza e apresenta",
    "parte": "BASE",
    "componente": "Comandante: percebe, decide, organiza as filas, comanda os pilotos, parametriza e apresenta",
    "ligacoes": [
     "eldorado/base/cerebro/encaminhamento.py",
+    "eldorado/base/cerebro/governador.py",
     "eldorado/base/cerebro/pilotos.py",
     "eldorado/base/cerebro/rede.py",
     "eldorado/base/comandante/biblioteca.py",
@@ -2571,7 +2693,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 79
+   "ordem": 81
   },
   {
    "arquivo": ".github/workflows/experimentar-motor.yml",
@@ -2592,7 +2714,7 @@
    "testes": [],
    "linhas": 44,
    "situacao": "em funcionamento",
-   "ordem": 80
+   "ordem": 82
   },
   {
    "arquivo": ".github/workflows/gravar-paginas.yml",
@@ -2613,7 +2735,7 @@
    "testes": [],
    "linhas": 46,
    "situacao": "em funcionamento",
-   "ordem": 81
+   "ordem": 83
   },
   {
    "arquivo": "config/motores_previstos.json",
@@ -2636,7 +2758,7 @@
    "testes": [],
    "linhas": 5249,
    "situacao": "em funcionamento",
-   "ordem": 82
+   "ordem": 84
   },
   {
    "arquivo": "config/ponte_dominios.txt",
@@ -2656,7 +2778,7 @@
    "testes": [],
    "linhas": 66,
    "situacao": "em funcionamento",
-   "ordem": 83
+   "ordem": 85
   },
   {
    "arquivo": "config/searxng/settings.yml",
@@ -2677,7 +2799,7 @@
    "testes": [],
    "linhas": 11,
    "situacao": "em funcionamento",
-   "ordem": 84
+   "ordem": 86
   },
   {
    "arquivo": "eldorado/base/motor_modelo/__init__.py",
@@ -2695,7 +2817,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 85
+   "ordem": 87
   },
   {
    "arquivo": "eldorado/motores/__init__.py",
@@ -2714,6 +2836,7 @@
     "test_canivete_descoberta.py",
     "test_capacidade.py",
     "test_cassete.py",
+    "test_comandante_cartorio.py",
     "test_comandante_memoria.py",
     "test_descoberta.py",
     "test_encaminhamento_isolado.py",
@@ -2724,6 +2847,7 @@
     "test_incentivos.py",
     "test_interceptador.py",
     "test_interceptador_funciona.py",
+    "test_interceptador_melhorias.py",
     "test_leitor_universal.py",
     "test_leitura.py",
     "test_mapa_original.py",
@@ -2736,6 +2860,7 @@
     "test_motor_modelo.py",
     "test_motor_prefeituras.py",
     "test_motores_api.py",
+    "test_parecer_sala_2910.py",
     "test_pilotos_no_painel.py",
     "test_ponte_br.py",
     "test_rede_neural.py",
@@ -2749,7 +2874,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 86
+   "ordem": 88
   },
   {
    "arquivo": "eldorado/motores/acesso/__init__.py",
@@ -2767,6 +2892,7 @@
     "test_fumaca_dados_reais.py",
     "test_interceptador.py",
     "test_interceptador_funciona.py",
+    "test_parecer_sala_2910.py",
     "test_ponte_br.py"
    ],
    "situacao": "pacote",
@@ -2776,11 +2902,11 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 87
+   "ordem": 89
   },
   {
    "arquivo": "eldorado/motores/acesso/escada.py",
-   "linhas": 175,
+   "linhas": 247,
    "finalidade": "A escada de acesso: do degrau mais leve ao mais forte, aprendendo por domínio qual degrau funciona.",
    "depende_de": [
     "eldorado/base/nucleo/eventos.py"
@@ -2792,6 +2918,7 @@
    "usado_por": [
     "eldorado/base/cartorio/releitura.py",
     "eldorado/base/cerebro/pilotos.py",
+    "eldorado/base/cerebro/regencia.py",
     "eldorado/base/nucleo/comandos.py",
     "eldorado/motores/acesso/api.py",
     "eldorado/motores/acesso/arquivo_web.py",
@@ -2812,6 +2939,7 @@
     "test_fumaca_dados_reais.py",
     "test_interceptador.py",
     "test_interceptador_funciona.py",
+    "test_parecer_sala_2910.py",
     "test_ponte_br.py"
    ],
    "situacao": "em funcionamento",
@@ -2823,7 +2951,7 @@
    ],
    "critico": false,
    "metrica": "leituras com sucesso por domínio; degrau usado",
-   "ordem": 88
+   "ordem": 90
   },
   {
    "arquivo": "eldorado/motores/canal/__init__.py",
@@ -2860,7 +2988,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 89
+   "ordem": 91
   },
   {
    "arquivo": "eldorado/motores/canal/achado.py",
@@ -2880,11 +3008,11 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "achados completos",
-   "ordem": 90
+   "ordem": 92
   },
   {
    "arquivo": "eldorado/motores/canal/estado.py",
-   "linhas": 162,
+   "linhas": 169,
    "finalidade": "O aprendizado de cada motor, entregue ao Cérebro (titular, 24/10/2026): NENHUM motor tem banco de dados. O motor só",
    "depende_de": [
     "eldorado/banco/cerebro_db/esquema.py",
@@ -2914,7 +3042,7 @@
    ],
    "critico": false,
    "metrica": "idade do último aprendizado",
-   "ordem": 91
+   "ordem": 93
   },
   {
    "arquivo": "eldorado/motores/descoberta/__init__.py",
@@ -2931,7 +3059,8 @@
     "test_espiao.py",
     "test_incentivos.py",
     "test_interceptador_funciona.py",
-    "test_mapa_original.py"
+    "test_mapa_original.py",
+    "test_pilotos_no_painel.py"
    ],
    "situacao": "pacote",
    "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
@@ -2940,7 +3069,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 92
+   "ordem": 94
   },
   {
    "arquivo": "eldorado/motores/descoberta/pistas.py",
@@ -2969,7 +3098,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "pistas no formato comum",
-   "ordem": 93
+   "ordem": 95
   },
   {
    "arquivo": "eldorado/motores/descoberta/vigilancia.py",
@@ -2989,7 +3118,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "mudanças detectadas que viraram achado",
-   "ordem": 94
+   "ordem": 96
   },
   {
    "arquivo": "eldorado/motores/leitura/__init__.py",
@@ -3012,7 +3141,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 95
+   "ordem": 97
   },
   {
    "arquivo": "eldorado/motores/leitura/atos.py",
@@ -3032,7 +3161,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 96
+   "ordem": 98
   },
   {
    "arquivo": "eldorado/motores/leitura/enriquecer.py",
@@ -3055,7 +3184,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 97
+   "ordem": 99
   },
   {
    "arquivo": "eldorado/motores/leitura/expurgo.py",
@@ -3075,7 +3204,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "palavras-chave e valores preservados (teste obrigatório)",
-   "ordem": 98
+   "ordem": 100
   },
   {
    "arquivo": "eldorado/motores/leitura/normalizar.py",
@@ -3095,7 +3224,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "campos normalizados por achado",
-   "ordem": 99
+   "ordem": 101
   },
   {
    "arquivo": "ponte/ponte.php",
@@ -3115,7 +3244,7 @@
    "testes": [],
    "linhas": 270,
    "situacao": "em funcionamento",
-   "ordem": 100
+   "ordem": 102
   },
   {
    "arquivo": ".github/workflows/ponte-teste.yml",
@@ -3135,7 +3264,7 @@
    "testes": [],
    "linhas": 38,
    "situacao": "o teste da ponte da HostGator, sob demanda (o ciclo testa a ponte no início)",
-   "ordem": 101
+   "ordem": 103
   },
   {
    "arquivo": "eldorado/motores/acesso/arquivo_web.py",
@@ -3163,7 +3292,7 @@
    ],
    "critico": false,
    "metrica": "cópias encontradas",
-   "ordem": 102
+   "ordem": 104
   },
   {
    "arquivo": "eldorado/motores/acesso/local.py",
@@ -3190,7 +3319,7 @@
    ],
    "critico": false,
    "metrica": "pedidos resolvidos localmente",
-   "ordem": 103
+   "ordem": 105
   },
   {
    "arquivo": "eldorado/motores/acesso/navegador.py",
@@ -3218,7 +3347,7 @@
    ],
    "critico": false,
    "metrica": "sucesso por degrau",
-   "ordem": 104
+   "ordem": 106
   },
   {
    "arquivo": "eldorado/motores/acesso/ponte_br.py",
@@ -3246,7 +3375,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 105
+   "ordem": 107
   },
   {
    "arquivo": "eldorado/motores/descoberta/arquivos_web.py",
@@ -3270,7 +3399,7 @@
    ],
    "critico": false,
    "metrica": "endereços históricos encontrados",
-   "ordem": 106
+   "ordem": 108
   },
   {
    "arquivo": "eldorado/motores/descoberta/dados_abertos.py",
@@ -3294,7 +3423,7 @@
    ],
    "critico": false,
    "metrica": "registros novos por fonte",
-   "ordem": 107
+   "ordem": 109
   },
   {
    "arquivo": "eldorado/motores/descoberta/estrutura_site.py",
@@ -3323,7 +3452,7 @@
    ],
    "critico": false,
    "metrica": "endereços novos por domínio",
-   "ordem": 108
+   "ordem": 110
   },
   {
    "arquivo": "eldorado/motores/descoberta/fonte_oficial.py",
@@ -3349,11 +3478,11 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 109
+   "ordem": 111
   },
   {
    "arquivo": "eldorado/motores/descoberta/metabusca.py",
-   "linhas": 121,
+   "linhas": 131,
    "finalidade": "Forma 1: a metabusca, o canivete de busca: SearXNG (serviço próprio), o DDGS por seis motores (Bing, Brave, Mojeek,",
    "depende_de": [
     "eldorado/motores/descoberta/pistas.py"
@@ -3369,7 +3498,8 @@
    "testes": [
     "test_comandante_memoria.py",
     "test_descoberta.py",
-    "test_interceptador_funciona.py"
+    "test_interceptador_funciona.py",
+    "test_pilotos_no_painel.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
@@ -3380,7 +3510,7 @@
    ],
    "critico": false,
    "metrica": "consultas respondidas por rota",
-   "ordem": 110
+   "ordem": 112
   },
   {
    "arquivo": "eldorado/motores/acesso/api.py",
@@ -3414,7 +3544,7 @@
    ],
    "critico": false,
    "metrica": "respostas válidas",
-   "ordem": 111
+   "ordem": 113
   },
   {
    "arquivo": "eldorado/motores/acesso/leve.py",
@@ -3446,7 +3576,7 @@
    ],
    "critico": false,
    "metrica": "sucesso por domínio",
-   "ordem": 112
+   "ordem": 114
   },
   {
    "arquivo": "eldorado/motores/descoberta/mapa_original.py",
@@ -3472,11 +3602,11 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 113
+   "ordem": 115
   },
   {
    "arquivo": "eldorado/motores/acesso/completa.py",
-   "linhas": 27,
+   "linhas": 33,
    "finalidade": "A escada completa (os 7 degraus) para quem não é motor: os pilotos e a releitura (o parecer do conselho, 24/10/2026: os",
    "depende_de": [
     "eldorado/motores/acesso/api.py",
@@ -3493,7 +3623,8 @@
     "eldorado/base/cerebro/encaminhamento.py"
    ],
    "testes": [
-    "test_encaminhamento_isolado.py"
+    "test_encaminhamento_isolado.py",
+    "test_parecer_sala_2910.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "06 Coleta: os motores, o canivete suíço e a ponte BR",
@@ -3510,7 +3641,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 114
+   "ordem": 116
   },
   {
    "arquivo": "eldorado/motores/acesso/rotas_alternativas.py",
@@ -3537,7 +3668,7 @@
    ],
    "critico": false,
    "metrica": "sucesso das reservas",
-   "ordem": 115
+   "ordem": 117
   },
   {
    "arquivo": "eldorado/motores/canal/fabrica.py",
@@ -3564,7 +3695,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 116
+   "ordem": 118
   },
   {
    "arquivo": "eldorado/motores/canal/motor.py",
@@ -3648,6 +3779,7 @@
     "eldorado/base/cerebro/rede.py",
     "eldorado/base/cerebro/regencia.py",
     "eldorado/base/nucleo/comandos.py",
+    "eldorado/base/painel/sala.py",
     "eldorado/motores/canal/fabrica.py"
    ],
    "testes": [
@@ -3698,7 +3830,7 @@
    ],
    "critico": false,
    "metrica": "as 6 metas de qualidade do dossiê dos motores",
-   "ordem": 117
+   "ordem": 119
   },
   {
    "arquivo": "eldorado/motores/descoberta/cadeia.py",
@@ -3724,7 +3856,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 118
+   "ordem": 120
   },
   {
    "arquivo": "eldorado/motores/leitura/audio.py",
@@ -3748,7 +3880,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 119
+   "ordem": 121
   },
   {
    "arquivo": "eldorado/motores/leitura/compactado.py",
@@ -3772,7 +3904,7 @@
    ],
    "critico": false,
    "metrica": "arquivos abertos",
-   "ordem": 120
+   "ordem": 122
   },
   {
    "arquivo": "eldorado/motores/leitura/documento.py",
@@ -3796,7 +3928,7 @@
    ],
    "critico": false,
    "metrica": "documentos lidos",
-   "ordem": 121
+   "ordem": 123
   },
   {
    "arquivo": "eldorado/motores/leitura/leitores.py",
@@ -3852,7 +3984,7 @@
    ],
    "critico": false,
    "metrica": "conteúdos lidos por tipo; tipos sem leitor",
-   "ordem": 122
+   "ordem": 124
   },
   {
    "arquivo": "eldorado/motores/leitura/ocr.py",
@@ -3879,7 +4011,7 @@
    ],
    "critico": false,
    "metrica": "páginas com OCR; confiança média",
-   "ordem": 123
+   "ordem": 125
   },
   {
    "arquivo": "eldorado/motores/leitura/pagina.py",
@@ -3903,7 +4035,7 @@
    ],
    "critico": false,
    "metrica": "páginas lidas; links por página",
-   "ordem": 124
+   "ordem": 126
   },
   {
    "arquivo": "eldorado/motores/leitura/pdf.py",
@@ -3933,7 +4065,7 @@
    ],
    "critico": false,
    "metrica": "páginas por segundo; páginas sem texto",
-   "ordem": 125
+   "ordem": 127
   },
   {
    "arquivo": "eldorado/motores/leitura/planilha.py",
@@ -3957,7 +4089,7 @@
    ],
    "critico": false,
    "metrica": "planilhas lidas",
-   "ordem": 126
+   "ordem": 128
   },
   {
    "arquivo": "eldorado/motores/leitura/universal.py",
@@ -3982,7 +4114,7 @@
    ],
    "critico": false,
    "metrica": "usos da reserva (deve ser raro)",
-   "ordem": 127
+   "ordem": 129
   },
   {
    "arquivo": "config/missao/dispensas_por_regime.json",
@@ -3995,14 +4127,16 @@
    "finalidade": "Nem todo recurso tem os 12 parâmetros de um edital. Esta matriz diz, para cada TIPO de recurso (regime), quais itens costumam NÃO existir e por quê. Ela só produz DISPENSA PROVÁVEL (estado 'prov' no c",
    "depende_de": [],
    "usado_por": [
-    "eldorado/base/cerebro/mapa_arquivos.py"
+    "eldorado/base/cerebro/mapa_arquivos.py",
+    "eldorado/base/cerebro/medicao.py",
+    "eldorado/motores/pilotos/interceptador.py"
    ],
    "acionado_por": [],
    "eventos": [],
    "testes": [],
    "linhas": 157,
-   "situacao": "aguarda a decisão da titular: fica até a decisão da titular: nenhum código a lê (criada na fase 4, 22/10/2026); as dispensas prováveis por regime de recurso: ligar ao checklist do Cartório ou retirar",
-   "ordem": 128
+   "situacao": "em funcionamento",
+   "ordem": 130
   },
   {
    "arquivo": "config/missao/municipios_brasil.json",
@@ -4025,7 +4159,7 @@
    "testes": [],
    "linhas": 1,
    "situacao": "em funcionamento",
-   "ordem": 129
+   "ordem": 131
   },
   {
    "arquivo": "config/missao/republicadores.json",
@@ -4046,7 +4180,7 @@
    "testes": [],
    "linhas": 162,
    "situacao": "em funcionamento",
-   "ordem": 130
+   "ordem": 132
   },
   {
    "arquivo": "config/missao/territorio_goias.json",
@@ -4068,7 +4202,7 @@
    "testes": [],
    "linhas": 359,
    "situacao": "em funcionamento",
-   "ordem": 131
+   "ordem": 133
   },
   {
    "arquivo": "eldorado/base/missao/__init__.py",
@@ -4080,6 +4214,7 @@
    "usado_por": [],
    "testes": [
     "test_cartorio.py",
+    "test_comandante_cartorio.py",
     "test_comandante_expurgo.py",
     "test_espiao.py",
     "test_ia.py",
@@ -4098,7 +4233,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 132
+   "ordem": 134
   },
   {
    "arquivo": "eldorado/base/missao/chave.py",
@@ -4120,7 +4255,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "chaves que geraram duplicado",
-   "ordem": 133
+   "ordem": 135
   },
   {
    "arquivo": "eldorado/base/missao/itens.py",
@@ -4135,6 +4270,7 @@
     "eldorado/base/cartorio/cartorio.py",
     "eldorado/base/cartorio/certificacao.py",
     "eldorado/base/cartorio/selos.py",
+    "eldorado/base/comandante/cartorio.py",
     "eldorado/base/comandante/organizar.py",
     "eldorado/base/migracao/importar_eldorado0.py",
     "eldorado/base/missao/oportunidades.py",
@@ -4154,7 +4290,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "itens definidos",
-   "ordem": 134
+   "ordem": 136
   },
   {
    "arquivo": "eldorado/base/missao/regras_portao.py",
@@ -4175,7 +4311,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "casos de ouro do portão (100%)",
-   "ordem": 135
+   "ordem": 137
   },
   {
    "arquivo": "eldorado/base/missao/portao.py",
@@ -4204,7 +4340,7 @@
    ],
    "critico": false,
    "metrica": "decisões contrariadas por veredito (zero)",
-   "ordem": 136
+   "ordem": 138
   },
   {
    "arquivo": "eldorado/base/missao/oportunidades.py",
@@ -4219,6 +4355,7 @@
    "eventos": [],
    "acionado_por": [
     "passagem, nó «cartorio» (parâmetro)",
+    "passagem, nó «comandante_cartorio» (parâmetro)",
     "passagem, nó «decidir_rede» (parâmetro)",
     "passagem, nó «decidir» (parâmetro)",
     "passagem, nó «validar» (parâmetro)"
@@ -4247,7 +4384,7 @@
    ],
    "critico": false,
    "metrica": "missão com os dados presentes",
-   "ordem": 137
+   "ordem": 139
   },
   {
    "arquivo": "eldorado/base/cartorio/__init__.py",
@@ -4256,18 +4393,28 @@
    "depende_de": [],
    "eventos": [],
    "acionado_por": [],
-   "usado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/manutencao_expurgo.py"
+   ],
    "testes": [
     "test_auditoria.py",
     "test_cartorio.py",
     "test_comandante_biblioteca.py",
     "test_comandante_expurgo.py",
     "test_espiao.py",
+    "test_expurgo_do_claude.py",
+    "test_expurgo_enderecos.py",
+    "test_historia_completa.py",
     "test_ia.py",
     "test_identidade.py",
+    "test_identidade_caracteristicas.py",
     "test_incentivos.py",
     "test_interceptador.py",
     "test_linha_cartorio.py",
+    "test_lote.py",
+    "test_manutencao_expurgo.py",
+    "test_operacao_no_cerebro.py",
+    "test_r35_dados.py",
     "test_releitura.py",
     "test_travas_motores.py"
    ],
@@ -4278,7 +4425,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 138
+   "ordem": 140
   },
   {
    "arquivo": "eldorado/base/cartorio/certificacao.py",
@@ -4309,17 +4456,21 @@
    ],
    "critico": false,
    "metrica": "certidões reais: reconhece 64%, valor certo 84%, ponta a ponta 54% (linha de base 22/10)",
-   "ordem": 139
+   "ordem": 141
   },
   {
    "arquivo": "eldorado/base/cartorio/identidade.py",
-   "linhas": 260,
+   "linhas": 362,
    "finalidade": "A identidade das oportunidades (titular, 24/10/2026): a mesma oportunidade não pode ter mais de um livro. O que já tem",
-   "depende_de": [],
+   "depende_de": [
+    "eldorado/base/cartorio/localizacao.py"
+   ],
    "eventos": [
     "certidao.gravada",
     "livro.codigo",
+    "livro.esfera",
     "livro.links",
+    "livro.localizado",
     "livro.situacao",
     "livro.unido",
     "livro.vinculado"
@@ -4332,15 +4483,19 @@
     "eldorado/base/comandante/biblioteca.py",
     "eldorado/base/comandante/organizar.py"
    ],
-   "testes": [],
+   "testes": [
+    "test_identidade_caracteristicas.py"
+   ],
    "situacao": "em funcionamento",
    "etapa": "08 Cartório · recepção e certificação",
    "parte": "BASE",
    "componente": "Cartório · recepção e certificação",
-   "ligacoes": [],
+   "ligacoes": [
+    "eldorado/base/cartorio/localizacao.py"
+   ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 140
+   "ordem": 142
   },
   {
    "arquivo": "eldorado/base/cartorio/origem.py",
@@ -4362,7 +4517,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 141
+   "ordem": 143
   },
   {
    "arquivo": "eldorado/base/cartorio/passaporte.py",
@@ -4399,11 +4554,11 @@
    ],
    "critico": false,
    "metrica": "livros sem passaporte (zero)",
-   "ordem": 142
+   "ordem": 144
   },
   {
    "arquivo": "eldorado/base/cartorio/releitura.py",
-   "linhas": 104,
+   "linhas": 110,
    "finalidade": "A releitura dos documentos herdados sem texto (24/10/2026): a migração do Eldorado0 registrou 4.873 documentos com o",
    "depende_de": [
     "eldorado/base/painel/sala.py",
@@ -4418,14 +4573,12 @@
     "pagina.gravada"
    ],
    "acionado_por": [
-    "passagem, nó 27 «reler_documentos»"
+    "passagem, nó 29 «reler_documentos»"
    ],
    "usado_por": [
     "eldorado/base/nucleo/comandos.py"
    ],
-   "testes": [
-    "test_releitura.py"
-   ],
+   "testes": [],
    "situacao": "em funcionamento",
    "etapa": "08 Cartório · recepção e certificação",
    "parte": "BASE",
@@ -4439,7 +4592,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 143
+   "ordem": 145
   },
   {
    "arquivo": "eldorado/base/cartorio/selos.py",
@@ -4468,7 +4621,7 @@
    ],
    "critico": false,
    "metrica": "livros sem selo (zero; hoje 70%)",
-   "ordem": 144
+   "ordem": 146
   },
   {
    "arquivo": "eldorado/base/cartorio/indice.py",
@@ -4505,7 +4658,7 @@
    ],
    "critico": false,
    "metrica": "duplicados unidos; livros criados e vinculados",
-   "ordem": 145
+   "ordem": 147
   },
   {
    "arquivo": "eldorado/base/cartorio/cartorio.py",
@@ -4536,7 +4689,8 @@
     "passagem, nó 8 «cartorio»"
    ],
    "usado_por": [
-    "eldorado/base/cartorio/analise_externa.py"
+    "eldorado/base/cartorio/analise_externa.py",
+    "eldorado/base/comandante/cartorio.py"
    ],
    "testes": [
     "test_espiao.py",
@@ -4563,7 +4717,7 @@
    ],
    "critico": true,
    "metrica": "livros movidos por passagem; livros parados além do previsto",
-   "ordem": 146
+   "ordem": 148
   },
   {
    "arquivo": "eldorado/motores/pilotos/__init__.py",
@@ -4574,12 +4728,15 @@
    "acionado_por": [],
    "usado_por": [],
    "testes": [
+    "test_comandante_cartorio.py",
     "test_comandante_memoria.py",
     "test_espiao.py",
     "test_ia.py",
     "test_ia_validada.py",
     "test_interceptador.py",
     "test_interceptador_funciona.py",
+    "test_interceptador_melhorias.py",
+    "test_parecer_sala_2910.py",
     "test_pilotos_no_painel.py",
     "test_rede_neural.py"
    ],
@@ -4590,14 +4747,15 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 147
+   "ordem": 149
   },
   {
    "arquivo": "eldorado/motores/pilotos/espiao.py",
-   "linhas": 362,
+   "linhas": 365,
    "finalidade": "O PILOTO ESPIÃO (do Eldorado0, titular, 09 e 16/10/2026): caça só o que nenhum motor alcança.",
    "depende_de": [
     "eldorado/banco/cerebro_db/esquema.py",
+    "eldorado/base/comandante/cartorio.py",
     "eldorado/base/nucleo/contratos.py"
    ],
    "eventos": [],
@@ -4615,67 +4773,34 @@
    "componente": "Pilotos: motores livres com IA",
    "ligacoes": [
     "eldorado/banco/cerebro_db/esquema.py",
+    "eldorado/base/comandante/cartorio.py",
     "eldorado/base/nucleo/contratos.py"
    ],
    "critico": false,
    "metrica": "achados por voo; fontes novas propostas",
-   "ordem": 148
+   "ordem": 150
   },
   {
-   "arquivo": "eldorado/motores/pilotos/interceptador.py",
-   "linhas": 430,
-   "finalidade": "O PILOTO INTERCEPTADOR (do Eldorado0, titular, 26/09/2026): \"o Espião descobre; o Interceptador comprova\".",
-   "depende_de": [
-    "eldorado/base/cartorio/origem.py",
-    "eldorado/base/cerebro/pilotos_permanentes.py",
-    "eldorado/base/missao/itens.py",
-    "eldorado/base/nucleo/contratos.py",
-    "eldorado/base/nucleo/eventos.py",
-    "eldorado/base/nucleo/ia.py",
-    "eldorado/motores/acesso/arquivo_web.py",
-    "eldorado/motores/acesso/escada.py",
-    "eldorado/motores/descoberta/estrutura_site.py",
-    "eldorado/motores/descoberta/fonte_oficial.py",
-    "eldorado/motores/leitura/leitores.py",
-    "eldorado/motores/leitura/pdf.py"
-   ],
-   "eventos": [
-    "tentativa.registrada"
-   ],
+   "arquivo": "eldorado/motores/pilotos/extratores.py",
+   "linhas": 140,
+   "finalidade": "Os extratores determinísticos do Interceptador (titular, 01/11/2026: a melhoria 1 do diagnóstico).",
+   "depende_de": [],
+   "eventos": [],
    "acionado_por": [],
    "usado_por": [
-    "eldorado/base/cerebro/encaminhamento.py",
-    "eldorado/base/cerebro/pilotos_permanentes.py"
+    "eldorado/motores/pilotos/interceptador.py"
    ],
    "testes": [
-    "test_comandante_memoria.py",
-    "test_ia.py",
-    "test_interceptador.py",
-    "test_interceptador_funciona.py",
-    "test_pilotos_no_painel.py",
-    "test_rede_neural.py"
+    "test_interceptador_melhorias.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "10 Pilotos: o Espião e o Interceptador (comandados pelo Comandante)",
    "parte": "MOTORES",
-   "componente": "Pilotos: motores livres com IA",
-   "ligacoes": [
-    "eldorado/base/cartorio/origem.py",
-    "eldorado/base/cerebro/pilotos_permanentes.py",
-    "eldorado/base/missao/itens.py",
-    "eldorado/base/nucleo/contratos.py",
-    "eldorado/base/nucleo/eventos.py",
-    "eldorado/base/nucleo/ia.py",
-    "eldorado/motores/acesso/arquivo_web.py",
-    "eldorado/motores/acesso/escada.py",
-    "eldorado/motores/descoberta/estrutura_site.py",
-    "eldorado/motores/descoberta/fonte_oficial.py",
-    "eldorado/motores/leitura/leitores.py",
-    "eldorado/motores/leitura/pdf.py"
-   ],
+   "componente": "Pilotos: o Espião e o Interceptador (comandados pelo Comandante)",
+   "ligacoes": [],
    "critico": false,
-   "metrica": "livros resolvidos por voo; respostas válidas",
-   "ordem": 149
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 151
   },
   {
    "arquivo": "eldorado/motores/pilotos/otimizacao.py",
@@ -4700,15 +4825,81 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 150
+   "ordem": 152
+  },
+  {
+   "arquivo": "eldorado/motores/pilotos/interceptador.py",
+   "linhas": 593,
+   "finalidade": "O PILOTO INTERCEPTADOR (do Eldorado0, titular, 26/09/2026): \"o Espião descobre; o Interceptador comprova\".",
+   "depende_de": [
+    "eldorado/base/cartorio/migrados.py",
+    "eldorado/base/cartorio/origem.py",
+    "eldorado/base/cerebro/pilotos_permanentes.py",
+    "eldorado/base/comandante/cartorio.py",
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/ia.py",
+    "eldorado/motores/acesso/arquivo_web.py",
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/descoberta/estrutura_site.py",
+    "eldorado/motores/descoberta/fonte_oficial.py",
+    "eldorado/motores/leitura/leitores.py",
+    "eldorado/motores/leitura/pdf.py",
+    "eldorado/motores/pilotos/extratores.py"
+   ],
+   "eventos": [
+    "tentativa.registrada"
+   ],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cerebro/encaminhamento.py",
+    "eldorado/base/cerebro/pilotos_permanentes.py",
+    "eldorado/base/comandante/cartorio.py"
+   ],
+   "testes": [
+    "test_comandante_cartorio.py",
+    "test_comandante_memoria.py",
+    "test_ia.py",
+    "test_interceptador.py",
+    "test_interceptador_funciona.py",
+    "test_parecer_sala_2910.py",
+    "test_pilotos_no_painel.py",
+    "test_rede_neural.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "10 Pilotos: o Espião e o Interceptador (comandados pelo Comandante)",
+   "parte": "MOTORES",
+   "componente": "Pilotos: motores livres com IA",
+   "ligacoes": [
+    "eldorado/base/cartorio/migrados.py",
+    "eldorado/base/cartorio/origem.py",
+    "eldorado/base/cerebro/pilotos_permanentes.py",
+    "eldorado/base/comandante/cartorio.py",
+    "eldorado/base/missao/itens.py",
+    "eldorado/base/nucleo/contratos.py",
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/nucleo/ia.py",
+    "eldorado/motores/acesso/arquivo_web.py",
+    "eldorado/motores/acesso/escada.py",
+    "eldorado/motores/descoberta/estrutura_site.py",
+    "eldorado/motores/descoberta/fonte_oficial.py",
+    "eldorado/motores/leitura/leitores.py",
+    "eldorado/motores/leitura/pdf.py",
+    "eldorado/motores/pilotos/extratores.py"
+   ],
+   "critico": false,
+   "metrica": "livros resolvidos por voo; respostas válidas",
+   "ordem": 153
   },
   {
    "arquivo": "eldorado/base/cartorio/analise_externa.py",
-   "linhas": 174,
+   "linhas": 359,
    "finalidade": "A etapa 5 do Cartório: a ANÁLISE EXTERNA pelo Claude no Chrome (titular, 22/10/2026).",
    "depende_de": [
     "eldorado/base/cartorio/cartorio.py",
     "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/comandante/cartorio.py",
     "eldorado/base/missao/itens.py",
     "eldorado/base/nucleo/eventos.py"
    ],
@@ -4729,7 +4920,8 @@
    ],
    "testes": [
     "test_comandante_biblioteca.py",
-    "test_linha_cartorio.py"
+    "test_linha_cartorio.py",
+    "test_lote.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "11 Verificação externa (o Claude no Chrome)",
@@ -4738,12 +4930,13 @@
    "ligacoes": [
     "eldorado/base/cartorio/cartorio.py",
     "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/comandante/cartorio.py",
     "eldorado/base/missao/itens.py",
     "eldorado/base/nucleo/eventos.py"
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 151
+   "ordem": 154
   },
   {
    "arquivo": "eldorado/base/verificacao/importacao.py",
@@ -4763,7 +4956,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "respostas importadas e recusadas",
-   "ordem": 152
+   "ordem": 155
   },
   {
    "arquivo": "eldorado/base/verificacao/lote.py",
@@ -4783,7 +4976,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "lotes gerados",
-   "ordem": 153
+   "ordem": 156
   },
   {
    "arquivo": "eldorado/base/verificacao/relatorio_faltas.py",
@@ -4803,7 +4996,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "livros com relatório final",
-   "ordem": 154
+   "ordem": 157
   },
   {
    "arquivo": "eldorado/base/verificacao/verificacao.py",
@@ -4825,7 +5018,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "livros em verificação; decisões recebidas",
-   "ordem": 155
+   "ordem": 158
   },
   {
    "arquivo": "eldorado/base/transferencia/__init__.py",
@@ -4845,7 +5038,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 156
+   "ordem": 159
   },
   {
    "arquivo": "eldorado/base/transferencia/farol.py",
@@ -4857,7 +5050,7 @@
     "transferencia.feita"
    ],
    "acionado_por": [
-    "passagem, nó 20 «farol»"
+    "passagem, nó 22 «farol»"
    ],
    "usado_por": [],
    "testes": [],
@@ -4868,7 +5061,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "livros transferidos; recusados pelo contrato",
-   "ordem": 157
+   "ordem": 160
   },
   {
    "arquivo": "config/regras.toml",
@@ -4888,7 +5081,7 @@
    "testes": [],
    "linhas": 99,
    "situacao": "em funcionamento",
-   "ordem": 158
+   "ordem": 161
   },
   {
    "arquivo": "config/regras_titular.json",
@@ -4907,9 +5100,9 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 391,
+   "linhas": 544,
    "situacao": "em funcionamento",
-   "ordem": 159
+   "ordem": 162
   },
   {
    "arquivo": "eldorado/base/aprendizado/__init__.py",
@@ -4931,7 +5124,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 160
+   "ordem": 163
   },
   {
    "arquivo": "eldorado/base/aprendizado/avaliar.py",
@@ -4944,7 +5137,7 @@
     "comandante.avaliada"
    ],
    "acionado_por": [
-    "passagem, nó 33 «avaliar»"
+    "passagem, nó 35 «avaliar»"
    ],
    "usado_por": [
     "eldorado/base/painel/sala.py"
@@ -4961,7 +5154,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 161
+   "ordem": 164
   },
   {
    "arquivo": "eldorado/base/aprendizado/curador.py",
@@ -4977,7 +5170,7 @@
     "skill.usada"
    ],
    "acionado_por": [
-    "passagem, nó 34 «curar»"
+    "passagem, nó 36 «curar»"
    ],
    "usado_por": [],
    "testes": [
@@ -4990,20 +5183,21 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 162
+   "ordem": 165
   },
   {
    "arquivo": "eldorado/base/aprendizado/memoria.py",
-   "linhas": 96,
+   "linhas": 98,
    "finalidade": "A memória do Aprendizado (a etapa A6): tudo o que o sistema viveu, pesquisável no Arquivo do Cérebro (titular, 25/10/2026).",
-   "depende_de": [],
+   "depende_de": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
    "eventos": [
     "memoria.expirada",
-    "memoria.ponteiro",
-    "memoria.registrada"
+    "memoria.ponteiro"
    ],
    "acionado_por": [
-    "passagem, nó 36 «memorizar»"
+    "passagem, nó 38 «memorizar»"
    ],
    "usado_por": [
     "eldorado/base/nucleo/comandos.py",
@@ -5017,10 +5211,12 @@
    "etapa": "13 Aprendizado: pertinência, auditoria, completude, avaliação, curador, memória e skills",
    "parte": "BASE",
    "componente": "Aprendizado: pertinência, auditoria, completude, avaliação, curador, memória e skills",
-   "ligacoes": [],
+   "ligacoes": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 163
+   "ordem": 166
   },
   {
    "arquivo": "eldorado/base/cartorio/auditoria.py",
@@ -5076,11 +5272,11 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 164
+   "ordem": 167
   },
   {
    "arquivo": "eldorado/base/cerebro/aprendizado.py",
-   "linhas": 63,
+   "linhas": 70,
    "finalidade": "O ciclo de aprendizado: temporário (30 dias) → permanente, se funcionou; arquivado, se falhou; vencido, sai.",
    "depende_de": [
     "eldorado/base/nucleo/eventos.py"
@@ -5092,11 +5288,12 @@
     "aprendizado.usado"
    ],
    "acionado_por": [
-    "passagem, nó 23 «aprender»"
+    "passagem, nó 25 «aprender»"
    ],
    "usado_por": [],
    "testes": [
     "test_cerebro.py",
+    "test_parecer_sala_2910.py",
     "test_passagem.py"
    ],
    "situacao": "em funcionamento",
@@ -5108,7 +5305,7 @@
    ],
    "critico": false,
    "metrica": "aprendizados promovidos e arquivados",
-   "ordem": 165
+   "ordem": 168
   },
   {
    "arquivo": "eldorado/base/cerebro/completude.py",
@@ -5121,7 +5318,7 @@
     "cobertura.dia"
    ],
    "acionado_por": [
-    "passagem, nó 24 «completude»"
+    "passagem, nó 26 «completude»"
    ],
    "usado_por": [],
    "testes": [
@@ -5137,7 +5334,7 @@
    ],
    "critico": false,
    "metrica": "cobertura do dia (meta 100%)",
-   "ordem": 166
+   "ordem": 169
   },
   {
    "arquivo": "eldorado/base/cerebro/lote.py",
@@ -5157,11 +5354,11 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 167
+   "ordem": 170
   },
   {
    "arquivo": "eldorado/base/cerebro/mapa_arquivos.py",
-   "linhas": 566,
+   "linhas": 564,
    "finalidade": "O mapa REAL dos arquivos do sistema (titular, 24/10/2026: nada decorativo nem exemplificativo).",
    "depende_de": [
     "eldorado/base/nucleo/eventos.py"
@@ -5170,7 +5367,7 @@
     "arquivos.medidos"
    ],
    "acionado_por": [
-    "passagem, nó 28 «medir_arquivos»"
+    "passagem, nó 30 «medir_arquivos»"
    ],
    "usado_por": [
     "eldorado/base/cerebro/inventario.py",
@@ -5190,24 +5387,26 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 168
+   "ordem": 171
   },
   {
    "arquivo": "eldorado/base/cerebro/medicao.py",
-   "linhas": 126,
+   "linhas": 301,
    "finalidade": "O motor de indicadores: ponto, círculo e linhas de cada arquivo, e a agregação por componente, parte e sistema.",
    "depende_de": [
-    "eldorado/base/nucleo/eventos.py"
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/painel/sala.py"
    ],
    "eventos": [
     "medicao.registrada"
    ],
    "acionado_por": [
-    "passagem, nó 25 «medir»"
+    "passagem, nó 27 «medir»"
    ],
    "usado_por": [],
    "testes": [
     "test_cerebro.py",
+    "test_parecer_sala_2910.py",
     "test_passagem.py"
    ],
    "situacao": "em funcionamento",
@@ -5215,15 +5414,16 @@
    "parte": "BASE",
    "componente": "Cérebro: Regência e Pertinência e aprendizado",
    "ligacoes": [
-    "eldorado/base/nucleo/eventos.py"
+    "eldorado/base/nucleo/eventos.py",
+    "eldorado/base/painel/sala.py"
    ],
    "critico": true,
    "metrica": "arquivos com as três medições na passagem (meta 100%)",
-   "ordem": 169
+   "ordem": 172
   },
   {
    "arquivo": "eldorado/base/cerebro/pertinencia.py",
-   "linhas": 69,
+   "linhas": 107,
    "finalidade": "A Pertinência: decide se cada achado é oportunidade (pelo portão da missão) e mede a saída de cada etapa.",
    "depende_de": [
     "eldorado/base/nucleo/contratos.py",
@@ -5242,6 +5442,7 @@
    "usado_por": [],
    "testes": [
     "test_cerebro.py",
+    "test_parecer_sala_2910.py",
     "test_passagem.py",
     "test_seguranca.py"
    ],
@@ -5256,19 +5457,17 @@
    ],
    "critico": true,
    "metrica": "achados aceitos e barrados com motivo; decisões contrariadas por veredito",
-   "ordem": 170
+   "ordem": 173
   },
   {
    "arquivo": "eldorado/base/cerebro/regras.py",
-   "linhas": 116,
+   "linhas": 118,
    "finalidade": "A tabela única de regras e decisões da titular (reativada em 25/10/2026: estava inativa, sem nó que a chamasse).",
    "depende_de": [
     "eldorado/base/nucleo/eventos.py"
    ],
    "eventos": [
-    "alarme.aberto",
-    "regra.registrada",
-    "regra.substituida"
+    "alarme.aberto"
    ],
    "acionado_por": [
     "passagem, nó 1 «regras»"
@@ -5287,7 +5486,7 @@
    ],
    "critico": false,
    "metrica": "decisões aplicadas; contradições abertas (devem ser zero)",
-   "ordem": 171
+   "ordem": 174
   },
   {
    "arquivo": "eldorado/base/cerebro/revisao_alarmes.py",
@@ -5311,7 +5510,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 172
+   "ordem": 175
   },
   {
    "arquivo": "skills/aprendizado-avaliar-decisoes/SKILL.md",
@@ -5331,7 +5530,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 173
+   "ordem": 176
   },
   {
    "arquivo": "skills/aprendizado-curador/SKILL.md",
@@ -5351,7 +5550,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 174
+   "ordem": 177
   },
   {
    "arquivo": "skills/aprendizado-memoria/SKILL.md",
@@ -5371,7 +5570,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 175
+   "ordem": 178
   },
   {
    "arquivo": "skills/aprendizado-pertinencia/SKILL.md",
@@ -5391,7 +5590,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 176
+   "ordem": 179
   },
   {
    "arquivo": "skills/comandante-autorizar-espiao/SKILL.md",
@@ -5411,7 +5610,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 177
+   "ordem": 180
   },
   {
    "arquivo": "skills/comandante-autorizar-interceptador/SKILL.md",
@@ -5431,7 +5630,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 178
+   "ordem": 181
   },
   {
    "arquivo": "skills/comandante-conferir-20-minutos/SKILL.md",
@@ -5451,7 +5650,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 179
+   "ordem": 182
   },
   {
    "arquivo": "skills/comandante-decidir-coleta/SKILL.md",
@@ -5471,7 +5670,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 180
+   "ordem": 183
   },
   {
    "arquivo": "skills/comandante-parametrizar/SKILL.md",
@@ -5491,7 +5690,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 181
+   "ordem": 184
   },
   {
    "arquivo": "skills/espiao-missao/SKILL.md",
@@ -5511,7 +5710,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 182
+   "ordem": 185
   },
   {
    "arquivo": "skills/interceptador-plano-de-voo/SKILL.md",
@@ -5531,7 +5730,7 @@
    "testes": [],
    "linhas": 21,
    "situacao": "em funcionamento",
-   "ordem": 183
+   "ordem": 186
   },
   {
    "arquivo": "eldorado/base/cerebro/inventario.py",
@@ -5557,11 +5756,11 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 184
+   "ordem": 187
   },
   {
    "arquivo": "eldorado/base/cerebro/rede.py",
-   "linhas": 242,
+   "linhas": 285,
    "finalidade": "A rede neural única, de aprendizado contínuo (River): aprende a cada veredito e dá as notas.",
    "depende_de": [
     "eldorado/base/cerebro/lote.py",
@@ -5569,10 +5768,11 @@
     "eldorado/motores/canal/motor.py"
    ],
    "eventos": [
+    "analise.rede",
     "modelo.treinado"
    ],
    "acionado_por": [
-    "passagem, nó 22 «rede»"
+    "passagem, nó 24 «rede»"
    ],
    "usado_por": [
     "eldorado/base/cerebro/encaminhamento.py",
@@ -5598,7 +5798,7 @@
    ],
    "critico": false,
    "metrica": "discernimento, precisão, revocação; idade do modelo",
-   "ordem": 185
+   "ordem": 188
   },
   {
    "arquivo": "eldorado/base/analise/__init__.py",
@@ -5618,7 +5818,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 186
+   "ordem": 189
   },
   {
    "arquivo": "eldorado/base/analise/calendario.py",
@@ -5638,7 +5838,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "calendário atualizado na passagem",
-   "ordem": 187
+   "ordem": 190
   },
   {
    "arquivo": "eldorado/base/analise/historia.py",
@@ -5658,7 +5858,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "livros com história completa",
-   "ordem": 188
+   "ordem": 191
   },
   {
    "arquivo": "eldorado/base/analise/preditivo.py",
@@ -5678,7 +5878,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "alertas emitidos antes da abertura",
-   "ordem": 189
+   "ordem": 192
   },
   {
    "arquivo": "eldorado/base/analise/previsao.py",
@@ -5689,7 +5889,7 @@
     "previsao.calculada"
    ],
    "acionado_por": [
-    "passagem, nó 21 «analise»"
+    "passagem, nó 23 «analise»"
    ],
    "usado_por": [
     "eldorado/base/painel/api.py"
@@ -5702,7 +5902,7 @@
    "ligacoes": [],
    "critico": true,
    "metrica": "o sistema roda sem intervenção",
-   "ordem": 190
+   "ordem": 193
   },
   {
    "arquivo": "eldorado/base/painel/__init__.py",
@@ -5715,8 +5915,10 @@
    "testes": [
     "test_api.py",
     "test_cartorio_site.py",
+    "test_depois_da_passagem.py",
     "test_painel.py",
     "test_painel_site.py",
+    "test_parecer_sala_2910.py",
     "test_pilotos_no_painel.py",
     "test_pilotos_site.py",
     "test_ranking_empresas.py",
@@ -5730,7 +5932,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 191
+   "ordem": 194
   },
   {
    "arquivo": "eldorado/base/painel/cartorio.py",
@@ -5756,7 +5958,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 192
+   "ordem": 195
   },
   {
    "arquivo": "eldorado/base/painel/legado.py",
@@ -5778,7 +5980,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 193
+   "ordem": 196
   },
   {
    "arquivo": "eldorado/base/painel/maquina.py",
@@ -5798,7 +6000,7 @@
    "testes": [],
    "linhas": 0,
    "finalidade": "mostrador atualizado em tempo real",
-   "ordem": 194
+   "ordem": 197
   },
   {
    "arquivo": "eldorado/base/painel/pilotos.py",
@@ -5825,7 +6027,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 195
+   "ordem": 198
   },
   {
    "arquivo": "eldorado/base/painel/ranking.py",
@@ -5847,15 +6049,17 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 196
+   "ordem": 199
   },
   {
    "arquivo": "eldorado/base/painel/sala.py",
-   "linhas": 761,
+   "linhas": 1234,
    "finalidade": "A sala de controle (o plano: base/painel/sala.py): cada mostrador ligado ao dado MEDIDO pelo sistema (titular,",
    "depende_de": [
     "eldorado/base/aprendizado/avaliar.py",
-    "eldorado/base/cerebro/mapa_arquivos.py"
+    "eldorado/base/cartorio/expurgo_claude.py",
+    "eldorado/base/cerebro/mapa_arquivos.py",
+    "eldorado/motores/canal/motor.py"
    ],
    "eventos": [
     "sala.medida"
@@ -5865,10 +6069,12 @@
    ],
    "usado_por": [
     "eldorado/base/cartorio/releitura.py",
+    "eldorado/base/cerebro/medicao.py",
     "eldorado/base/cerebro/regencia.py",
     "eldorado/base/painel/dados.py"
    ],
    "testes": [
+    "test_parecer_sala_2910.py",
     "test_sala_mostradores.py"
    ],
    "situacao": "em funcionamento",
@@ -5877,11 +6083,13 @@
    "componente": "Painel, API e Sala de controle",
    "ligacoes": [
     "eldorado/base/aprendizado/avaliar.py",
-    "eldorado/base/cerebro/mapa_arquivos.py"
+    "eldorado/base/cartorio/expurgo_claude.py",
+    "eldorado/base/cerebro/mapa_arquivos.py",
+    "eldorado/motores/canal/motor.py"
    ],
    "critico": false,
    "metrica": "sala publicada no prazo",
-   "ordem": 197
+   "ordem": 200
   },
   {
    "arquivo": "eldorado/base/painel/visoes.py",
@@ -5909,13 +6117,14 @@
    ],
    "critico": false,
    "metrica": "visões iguais à consulta ao banco",
-   "ordem": 198
+   "ordem": 201
   },
   {
    "arquivo": "eldorado/base/painel/dados.py",
-   "linhas": 903,
+   "linhas": 992,
    "finalidade": "Os dados do painel, gerados do sistema novo (titular, 23/10/2026): o site é a imagem atual do sistema.",
    "depende_de": [
+    "eldorado/base/cartorio/historia.py",
     "eldorado/base/cerebro/mapa_arquivos.py",
     "eldorado/base/cerebro/rede.py",
     "eldorado/base/missao/itens.py",
@@ -5934,6 +6143,7 @@
    ],
    "testes": [
     "test_painel_site.py",
+    "test_parecer_sala_2910.py",
     "test_pilotos_site.py",
     "test_ranking_empresas.py",
     "test_site_sem_vazio.py"
@@ -5943,6 +6153,7 @@
    "parte": "BASE",
    "componente": "Análise e painel",
    "ligacoes": [
+    "eldorado/base/cartorio/historia.py",
     "eldorado/base/cerebro/mapa_arquivos.py",
     "eldorado/base/cerebro/rede.py",
     "eldorado/base/missao/itens.py",
@@ -5955,7 +6166,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 199
+   "ordem": 202
   },
   {
    "arquivo": "eldorado/base/painel/api.py",
@@ -5987,7 +6198,7 @@
    ],
    "critico": false,
    "metrica": "respostas no prazo; erros",
-   "ordem": 200
+   "ordem": 203
   },
   {
    "arquivo": "config/comparacao.toml",
@@ -6000,14 +6211,16 @@
    "finalidade": "Os 14 dias de comparação (critério da Fase 7 e da Fase 10): cada motor novo roda em paralelo com o de origem no Eldorado0 e só o substitui com resultado igual ou melhor. A contagem começa no primeiro ",
    "depende_de": [],
    "usado_por": [
-    "eldorado/base/cerebro/mapa_arquivos.py"
+    "eldorado/base/cerebro/mapa_arquivos.py",
+    "eldorado/base/cerebro/medicao.py",
+    "eldorado/base/painel/sala.py"
    ],
    "acionado_por": [],
    "eventos": [],
    "testes": [],
    "linhas": 19,
    "situacao": "aguarda a decisão da titular: fica (titular, 25/10/2026): a comprovação de cobertura antes de eliminar o Eldorado0 ainda não foi feita",
-   "ordem": 201
+   "ordem": 204
   },
   {
    "arquivo": "eldorado/base/migracao/__init__.py",
@@ -6027,7 +6240,7 @@
    "ligacoes": [],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 202
+   "ordem": 205
   },
   {
    "arquivo": "eldorado/base/migracao/importar_eldorado0.py",
@@ -6057,7 +6270,7 @@
    ],
    "critico": false,
    "metrica": "contagens importadas iguais às de origem",
-   "ordem": 203
+   "ordem": 206
   },
   {
    "arquivo": "estudos/bench_ia.py",
@@ -6077,7 +6290,7 @@
    "testes": [],
    "linhas": 54,
    "situacao": "estudo concluído (25/10/2026): uma IA para as três funções; só sob demanda",
-   "ordem": 204
+   "ordem": 207
   },
   {
    "arquivo": "estudos/bench_ia2.py",
@@ -6097,7 +6310,7 @@
    "testes": [],
    "linhas": 40,
    "situacao": "estudo concluído (25/10/2026): o arranjo das IAs e o contexto; só sob demanda",
-   "ordem": 205
+   "ordem": 208
   },
   {
    "arquivo": ".github/workflows/bench-ia.yml",
@@ -6118,7 +6331,7 @@
    "testes": [],
    "linhas": 54,
    "situacao": "estudo concluído (25/10/2026): uma IA para as três funções (o resultado no parecer); só sob demanda",
-   "ordem": 206
+   "ordem": 209
   },
   {
    "arquivo": ".github/workflows/bench-ia2.yml",
@@ -6139,7 +6352,7 @@
    "testes": [],
    "linhas": 44,
    "situacao": "estudo concluído (25/10/2026): o arranjo das IAs e o contexto (o resultado no parecer); só sob demanda",
-   "ordem": 207
+   "ordem": 210
   },
   {
    "arquivo": ".github/workflows/arquivar.yml",
@@ -6159,7 +6372,232 @@
    "testes": [],
    "linhas": 45,
    "situacao": "em funcionamento",
-   "ordem": 208
+   "ordem": 211
+  },
+  {
+   "arquivo": ".github/workflows/vigia.yml",
+   "etapa": "18 Outros",
+   "parte": "OPERACAO",
+   "componente": "Operação e configuração",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "o sistema roda sem intervenção",
+   "finalidade": "O VIGIA (titular, 29/10/2026): um olho de fora do ciclo, a cada 30 minutos. Hoje o sistema ficou 12 h sem gravar e a fila de implantação ficou presa 45 min sem que ninguém fosse avisado: o ciclo não v",
+   "depende_de": [],
+   "usado_por": [],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 59,
+   "situacao": "em funcionamento",
+   "ordem": 212
+  },
+  {
+   "arquivo": "config/cartorio.toml",
+   "etapa": "18 Outros",
+   "parte": "BASE",
+   "componente": "Operação e configuração",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "o sistema roda sem intervenção",
+   "finalidade": "O Cartório (titular, 29/10/2026). Quantos livros da fila da análise externa vão no lote do dia ao Claude no Chrome. 0 (ou ausente) = TODOS. Acima deste tamanho, o lote do dia também é gravado em parte",
+   "depende_de": [],
+   "usado_por": [
+    "eldorado/base/cartorio/analise_externa.py"
+   ],
+   "acionado_por": [],
+   "eventos": [],
+   "testes": [],
+   "linhas": 11,
+   "situacao": "em funcionamento",
+   "ordem": 213
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/historia.py",
+   "linhas": 127,
+   "finalidade": "A HISTÓRIA COMPLETA DE CADA LIVRO (titular, 02/11/2026): cada livro com todas as suas informações ligadas, sem",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/painel/dados.py"
+   ],
+   "testes": [
+    "test_historia_completa.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "18 Outros",
+   "parte": "BASE",
+   "componente": "Outros",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 214
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/leitura_efemera.py",
+   "linhas": 100,
+   "finalidade": "R35 — a leitura efêmera (titular, 30/10/2026: \"não deve existir cópia de nenhum site; o sistema não é repositório de sites",
+   "depende_de": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [
+    "achado.descartado",
+    "documento.descartado",
+    "leitura.expurgada"
+   ],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/expurgo_claude.py",
+    "eldorado/base/cartorio/manutencao_expurgo.py"
+   ],
+   "testes": [
+    "test_r35_dados.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "18 Outros",
+   "parte": "BASE",
+   "componente": "Outros",
+   "ligacoes": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 215
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/localizacao.py",
+   "linhas": 116,
+   "finalidade": "A localização de cada livro pelas provas que ele próprio tem (titular, 01/11/2026): a UF, o município e a esfera.",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/identidade.py"
+   ],
+   "testes": [
+    "test_operacao_no_cerebro.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "18 Outros",
+   "parte": "BASE",
+   "componente": "Outros",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 216
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/migrados.py",
+   "linhas": 14,
+   "finalidade": "Os livros migrados do Eldorado0 (titular, 01/11/2026): dado histórico, sem nova releitura nem avaliação — exceto os que",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/expurgo_claude.py",
+    "eldorado/motores/pilotos/interceptador.py"
+   ],
+   "testes": [
+    "test_expurgo_do_claude.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "18 Outros",
+   "parte": "BASE",
+   "componente": "Outros",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 217
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/retencao.py",
+   "linhas": 57,
+   "finalidade": "A retenção da telemetria no Cérebro (titular, 01/11/2026): os dados da operação ficam 30 dias, completos, para o",
+   "depende_de": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/nucleo/comandos.py"
+   ],
+   "testes": [
+    "test_operacao_no_cerebro.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "18 Outros",
+   "parte": "BASE",
+   "componente": "Outros",
+   "ligacoes": [
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 218
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/expurgo_claude.py",
+   "linhas": 72,
+   "finalidade": "O expurgo é do Claude, nunca do sistema (titular, 01/11/2026: \"somente o Claude apaga livros e faz expurgos, o",
+   "depende_de": [
+    "eldorado/base/cartorio/leitura_efemera.py",
+    "eldorado/base/cartorio/migrados.py"
+   ],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cartorio/manutencao_expurgo.py",
+    "eldorado/base/painel/sala.py"
+   ],
+   "testes": [
+    "test_expurgo_enderecos.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "18 Outros",
+   "parte": "BASE",
+   "componente": "Outros",
+   "ligacoes": [
+    "eldorado/base/cartorio/leitura_efemera.py",
+    "eldorado/base/cartorio/migrados.py"
+   ],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 219
+  },
+  {
+   "arquivo": "eldorado/base/cartorio/manutencao_expurgo.py",
+   "linhas": 267,
+   "finalidade": "A MANUTENÇÃO DO EXPURGO a cada passagem (titular, 02/11/2026 — R36): a informação coletada que NÃO virou livro e foi",
+   "depende_de": [
+    "eldorado/base/cartorio/__init__.py",
+    "eldorado/base/cartorio/expurgo_claude.py",
+    "eldorado/base/cartorio/leitura_efemera.py"
+   ],
+   "eventos": [
+    "achado.descartado",
+    "achado.entregue",
+    "documento.descartado"
+   ],
+   "acionado_por": [
+    "passagem, nó 21 «manutencao_expurgo»"
+   ],
+   "usado_por": [],
+   "testes": [
+    "test_manutencao_expurgo.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "18 Outros",
+   "parte": "BASE",
+   "componente": "Outros",
+   "ligacoes": [
+    "eldorado/base/cartorio/__init__.py",
+    "eldorado/base/cartorio/expurgo_claude.py",
+    "eldorado/base/cartorio/leitura_efemera.py"
+   ],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 220
   }
  ],
  "motores": [
