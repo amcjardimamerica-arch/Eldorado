@@ -108,6 +108,11 @@ tipo = "eldorado.base.cartorio.analise_externa:no_analise_externa"
 parametros = { dados = "dados", pasta = "verificacao" }
 
 [[no]]
+id = "esteira_cartorio"   # R37 (titular, 02/11/2026): o Comandante organiza a esteira — nenhum livro parado na preparação sem motivo
+tipo = "eldorado.base.cartorio.esteira:no_organizar_esteira"
+parametros = { dados = "dados", missao = "eldorado.base.missao.oportunidades:MissaoOportunidades" }
+
+[[no]]
 id = "manutencao_expurgo"   # R36 (titular, 02/11/2026): o sistema libera a leitura sem livro invalidada; o sinal vai ao Chrome
 tipo = "eldorado.base.cartorio.manutencao_expurgo:no_manutencao_expurgo"
 parametros = { dados = "dados", pasta = "verificacao/expurgo" }

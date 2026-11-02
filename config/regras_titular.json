@@ -516,6 +516,17 @@
     "testes/test_manutencao_expurgo.py::test_a_manutencao_esta_na_passagem",
     "testes/test_manutencao_expurgo.py::test_nenhum_livro_e_tocado"
    ]
+  },
+  {
+   "id": "R37",
+   "data": "2026-11-02",
+   "tema": "a esteira do Cartório (as 5 etapas)",
+   "regra": "Nenhum livro fica parado na preparação sem motivo. A cada passagem o Comandante organiza a esteira: o livro com o prazo encerrado vai ao arquivo; o livro completo (os 12 itens comprovados ou dispensados) e o que não tem mais nada que o Interceptador possa buscar vão à validação, e a validação de sempre decide — ouro/completo com prazo aberto → Farol; encerrada → arquivo; ainda faltando → análise externa (o Claude no Chrome). A estrela e a contagem de itens são recalculadas na validação. Nenhum livro é apagado; cada movimento grava o relatório da etapa.",
+   "onde": "eldorado/base/cartorio/esteira.py (no_organizar_esteira, na passagem: workflows/passagem.toml)",
+   "travas": [
+    "testes/test_esteira_cartorio.py::test_o_completo_sai_da_preparacao",
+    "testes/test_esteira_cartorio.py::test_a_esteira_esta_na_passagem"
+   ]
   }
  ]
 }
