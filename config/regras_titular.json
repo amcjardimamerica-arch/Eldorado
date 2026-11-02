@@ -504,6 +504,18 @@
    "data": "2026-10-30",
    "tema": "a trava absoluta dos dados: nenhuma cópia de site ou arquivo; só o texto da oportunidade e os endereços",
    "onde": "eldorado/base/nucleo/eventos.py, eldorado/base/nucleo/gravador.py, eldorado/base/cartorio/leitura_efemera.py, eldorado/base/cartorio/releitura.py, eldorado/base/nucleo/comandos.py, .gitignore"
+  },
+  {
+   "id": "R36",
+   "data": "2026-11-02",
+   "tema": "manutenção do expurgo (a leitura sem livro)",
+   "regra": "Toda informação coletada não precisa virar livro: ela integra um livro existente, cria um livro novo ou, não sendo oportunidade, é leitura sem resultado e é liberada. A trava dos livros continua (nenhum livro é apagado); o que o sistema libera é só a leitura SEM livro já investigada sem êxito: o achado sem livro barrado pelo portão (de dias anteriores; o registro do descarte fica no Cérebro; os motores legislativos ficam) e o documento sem uso há mais de 2 h sem nenhum sinal de oportunidade (ou lixo comprovado). Ao menor sinal de oportunidade o documento vai ao Claude no Chrome e só sai com o veredito; o documento da mesma oportunidade de um livro ativo é ligado ao livro. A cada passagem, com o registro em expurgos/ (por: sistema). Revoga, para a leitura sem livro, a regra de 01/11/2026 de que só o Claude expurga.",
+   "onde": "eldorado/base/cartorio/manutencao_expurgo.py (no_manutencao_expurgo, na passagem: workflows/passagem.toml)",
+   "travas": [
+    "testes/test_manutencao_expurgo.py::test_o_sinal_vai_ao_chrome_e_o_invalidado_sai",
+    "testes/test_manutencao_expurgo.py::test_a_manutencao_esta_na_passagem",
+    "testes/test_manutencao_expurgo.py::test_nenhum_livro_e_tocado"
+   ]
   }
  ]
 }

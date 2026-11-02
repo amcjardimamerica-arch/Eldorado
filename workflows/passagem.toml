@@ -108,6 +108,11 @@ tipo = "eldorado.base.cartorio.analise_externa:no_analise_externa"
 parametros = { dados = "dados", pasta = "verificacao" }
 
 [[no]]
+id = "manutencao_expurgo"   # R36 (titular, 02/11/2026): o sistema libera a leitura sem livro invalidada; o sinal vai ao Chrome
+tipo = "eldorado.base.cartorio.manutencao_expurgo:no_manutencao_expurgo"
+parametros = { dados = "dados", pasta = "verificacao/expurgo" }
+
+[[no]]
 id = "farol"
 tipo = "eldorado.base.transferencia.farol:no_farol"
 parametros = { dados = "dados", destino = "transferencia/farol" }
