@@ -2844,7 +2844,7 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
     $("nv-tubo").innerHTML=M.map(m=>`<button onclick="nvHolo('${TUBO[m.etapa]||"farol"}',this)" title="abrir a etapa"><b>${n(m.valor)}</b><small>${e(m.etapa)}</small></button>`).join("");
     $("nv-leitura").textContent=`leitura de ${dm(d.em)} · atualiza a cada passagem do maestro`;
     $("nv-faixas").innerHTML=ETAPAS.map((et,k)=>{ const L=et.ids.map(I).filter(Boolean); const p=et.id==="farol"&&(d.fluxos||[]).some(f=>f.conclusao==="failure")?pior([...L,{estado:"amarelo"}])
-        :et.id==="externa"?((M[6]?.valor||0)>0?"amarelo":"verde"):pior(L.length?L:[{estado:"cinza"}]);
+        :pior(L.length?L:[{estado:"cinza"}]);   /* 02/11/2026 (titular): a Verificação externa pelo estado dos seus instrumentos, como as demais (antes: amarela com qualquer livro na fila do Chrome, sem nenhum instrumento que mostrasse o motivo) */
       return `<div class="faixa vidro" data-et="${et.id}" tabindex="0" role="button" aria-label="Etapa ${k+1}: ${e(et.nome)}, ${EST[p]}" onclick="nvHolo('${et.id}',this)" onkeydown="if(event.key==='Enter')nvHolo('${et.id}',this)">
         <div class="etq cam" style="--d:.6"><span class="num">${String(k+1).padStart(2,"0")}</span><div><h3>${e(et.nome)}</h3><p>${e(et.faz)}</p>
           <span class="est" style="background:${COR[p]}22;color:${COR[p]}">${EST[p]}</span></div></div>
