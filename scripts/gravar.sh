@@ -25,7 +25,18 @@ avisar() { echo "::error::gravação: $*"; }
 
 # a lista dos arquivos a gravar (os caminhos relativos à raiz)
 # a passagem dividida em partes (o diário abre <execução>-2.jsonl a partir de 60 MB) é vista inteira: todas as partes juntas
-completo() { local b="${1%.jsonl}"; b="${b%-[0-9]*}"; local partes=("$b.jsonl" "$b"-[0-9]*.jsonl)
+# 02/11/2026 (titular: "evento recusado (execucao.passo…)" voltando): a telemetria de uma passagem (operacao/<dia>/<execução>)
+# não tem o execucao.iniciada (ele fica no histórico), e o arquivo dela subia antes da execução: o Painel, que remonta o
+# Cérebro a partir do repositório, recebia os passos de uma execução que ainda não existia (FOREIGN KEY) e cada um virava
+# alarme. Agora o arquivo da telemetria segue o da execução: só sobe quando a execução dele (em qualquer dia) terminou.
+completo() { local f="$1"
+  if [ "${f#operacao/}" != "$f" ]; then
+    local nome; nome=$(basename "${f%.jsonl}"); nome="${nome%-[0-9]*}"
+    local evs=(eventos/*/*/*/"$nome".jsonl eventos/*/*/*/"$nome"-[0-9]*.jsonl)
+    ! cat "${evs[@]}" 2>/dev/null | grep -q '"execucao.iniciada"' || cat "${evs[@]}" 2>/dev/null | grep -q '"execucao.concluida"'
+    return
+  fi
+  local b="${f%.jsonl}"; b="${b%-[0-9]*}"; local partes=("$b.jsonl" "$b"-[0-9]*.jsonl)
   ! cat "${partes[@]}" 2>/dev/null | grep -q '"execucao.iniciada"' || cat "${partes[@]}" 2>/dev/null | grep -q '"execucao.concluida"'; }
 LISTA=$(mktemp)
 for pasta in eventos operacao verificacao dados/ia backups; do   # backups: a cópia dos livros; operacao: a telemetria (30 dias)

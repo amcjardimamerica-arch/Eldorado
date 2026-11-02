@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import gzip
 import os
+import re
 import threading
 import time
 import uuid
@@ -301,9 +302,11 @@ class Diario:
         """Os eventos já gravados nesta execução (todas as partes), na ordem."""
         partes = self._partes()
         op = pasta_operacao(self.pasta)   # 01/11/2026: os passos e os recibos desta execução (a retomada e a medição os leem)
-        if op.exists():
-            partes += sorted(op.rglob(f"{self.execucao}.jsonl"))
-        evs = [_dec.decode(linha) for a in partes for linha in a.read_bytes().splitlines() if linha.strip()]
+        if op.exists():   # 02/11/2026: também as partes e os dias anteriores já compactados (.jsonl.gz) pela retenção
+            partes += sorted(a for a in op.rglob(f"{self.execucao}*.jsonl*")
+                             if re.fullmatch(re.escape(self.execucao) + r"(-\d+)?\.jsonl(\.gz)?", a.name))
+        ler_ = lambda a: gzip.decompress(a.read_bytes()) if a.name.endswith(".gz") else a.read_bytes()  # noqa: E731
+        evs = [_dec.decode(linha) for a in partes for linha in ler_(a).splitlines() if linha.strip()]
         return sorted(evs, key=lambda e: e.id)
 
     def gravar(self, evento: Evento) -> Evento:

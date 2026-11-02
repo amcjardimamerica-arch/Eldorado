@@ -240,6 +240,8 @@ class Gravador:
         r.recusados.append((ev.id, ev.tipo, motivo))
         if ev.tipo == "alarme.aberto":
             return                                  # nunca entra em laço de alarmes
+        if ev.tipo == "execucao.passo" and "FOREIGN KEY" in motivo:
+            return   # 02/11/2026: o passo de uma execução que ainda não chegou (em andamento): a cópia seguinte o aplica, sem alarme
         cer = self.bancos.get("cerebro")
         try:                                        # 27/10/2026: um evento recusado tem no máximo um alarme aberto (antes: ×4)
             if cer is not None and cer.execute("SELECT 1 FROM alarme WHERE fechado_em IS NULL AND modulo = 'gravador' AND instr(mensagem, ?) > 0",
