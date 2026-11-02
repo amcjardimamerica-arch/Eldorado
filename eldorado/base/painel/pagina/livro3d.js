@@ -142,7 +142,7 @@ window.LOGO_DATA={"full": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAvgAAAD
     if (S.phase !== 'hidden') return; S.phase = 'appear'; lastFocus = document.activeElement;
     try { await Promise.race([Promise.all((D.fonts || []).map(f => document.fonts.load(f))), new Promise(r => setTimeout(r, 2500))]); } catch (e) { }
     await LP.loadLogos(); if (!renderer) await init();
-    const pages = conteudo.paginas.slice(0, 4).map((pg, i) => { const c = LP.canvas(D.page.w, D.page.h); (D.theme.paint || LP.paintPage)(c.getContext('2d'), D.page.w, D.page.h, pg, D.theme, i); return LP.tex(c); });
+    const pages = conteudo.paginas.slice(0, 4).map((pg, i) => { const c = LP.canvas(D.page.w, D.page.h); if (pg.imagem) c.getContext('2d').drawImage(pg.imagem, 0, 0, D.page.w, D.page.h); else (D.theme.paint || LP.paintPage)(c.getContext('2d'), D.page.w, D.page.h, pg, D.theme, i); return LP.tex(c); });   /* 02/11/2026 (titular): a página já desenhada (o livro da oportunidade) entra como imagem */
     D.setContent(inst, pages, conteudo); pagesFor = conteudo; live.textContent = Object.keys(conteudo.capa).filter(k => k !== 'data').map(k => conteudo.capa[k]).join('. ');
     overlay.hidden = false; overlay.classList.remove('lp-out'); requestAnimationFrame(() => overlay.classList.add('lp-in'));
     btnNext.disabled = false; btnNext.textContent = 'Abrir o livro'; Object.assign(S, { a: 0, o: 0, f: 0 }); fit();
@@ -164,7 +164,7 @@ window.LOGO_DATA={"full": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAvgAAAD
   };
   function liveText(sp) {
     if (!pagesFor) return; const p = pagesFor.paginas.slice(sp * 2, sp * 2 + 2);
-    live.textContent = p.map(pg => (pg.secoes || []).map(s => s.n + '. ' + s.h + ': ' + s.b.map(b => b.p || (b.li ? b.li.join(' ') : '') || b.nota || (b.tab ? b.tab.rows.map(r => r.join(' ')).join('; ') : '') || (b.ass ? b.ass.local + ' ' + b.ass.nome : '')).join(' ')).join(' ')).join(' | ');
+    live.textContent = p.map(pg => pg.texto ? pg.texto : (pg.secoes || []).map(s => s.n + '. ' + s.h + ': ' + s.b.map(b => b.p || (b.li ? b.li.join(' ') : '') || b.nota || (b.tab ? b.tab.rows.map(r => r.join(' ')).join('; ') : '') || (b.ass ? b.ass.local + ' ' + b.ass.nome : '')).join(' ')).join(' ')).join(' | ');
   }
   LP.start = function (design) {
     D = design;
@@ -458,7 +458,7 @@ window.LOGO_DATA={"full": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAvgAAAD
         I.rib = ribbon(I, P.ribbon, 0.38, 0.3);
         this._deco = decoTex(P.endp, 700, 980, 4); return I;
       },
-      setContent(I, pages, cont) { paintCover(this._cv.getContext('2d'), 1024, 1434, cont.capa, P); I.cover.material[0].map.needsUpdate = true; setLeafTex(I, pages, this._deco); },
+      setContent(I, pages, cont) { if (cont.capaImagem) { const g = this._cv.getContext('2d'); g.clearRect(0, 0, 1024, 1434); g.drawImage(cont.capaImagem, 0, 0, 1024, 1434); } else paintCover(this._cv.getContext('2d'), 1024, 1434, cont.capa, P); I.cover.material[0].map.needsUpdate = true; setLeafTex(I, pages, this._deco); },
       fx(I, ev, LP) { LP.burst(P.fx, W2(I, 0.05, 0.1, I.Tp + 0.05), ev === 'turn' || ev === 'back' ? 5 : 11, V(0, 0.5, 1)); },
       update(I, s, dt, t) { common(I, s, t); bookUpdate(I, s, { curl: 0.55 }); I.rib.rotation.x = 0.16 * Math.sin(t * 1.2); }
     };

@@ -1,6 +1,6 @@
 /* O LIVRO DA OPORTUNIDADE (titular, 02/11/2026): a capa e as 4 páginas aprovadas no canvas, montadas com a história
-   completa do livro (dados/cartorio/<id>.json → historia). Abre com a capa; depois passa de duas em duas páginas
-   (1 | 2, 3 | 4). Sem botões que levem a outras páginas: o livro traz a informação completa. */
+   completa do livro (dados/cartorio/<id>.json → historia). As páginas viram as texturas do livro 3D da titular (a capa e, ao virar,
+   1 | 2 e 3 | 4). Sem botões que levem a outras páginas: o livro traz a informação completa. */
 (function () {
   "use strict";
   const E = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -10,7 +10,9 @@
   const FASES = [["recepcao", "Recepção"], ["certificacao", "Certificação"], ["preparacao", "Preparação"], ["validacao", "Validação"], ["analise externa", "Análise ext."], ["farol", "Farol"], ["arquivo", "Arquivo"]];
   const DEGRAUS = [["1", "API oficial"], ["2", "pedido leve"], ["P", "ponte BR"], ["3", "nav. leve"], ["4", "Patchright"], ["5", "Camoufox"], ["6", "arquivo"], ["7", "local"]];
   const META_H = 72;   // a meta de horas por etapa (o traço da esteira); a definir pela titular
-  const LOGO = "logo-amc.png";
+  let LOGO = "logo-amc.png";   // vira imagem de dados antes do desenho (o html2canvas não espera a imagem externa)
+  const logoDados = async () => { if (LOGO.startsWith("data:")) return; try { const b = await (await fetch("logo-amc.png")).blob();
+    LOGO = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.onerror = () => r("logo-amc.png"); fr.readAsDataURL(b); }); } catch (e) {} };
 
   const d = v => v ? new Date(String(v).length <= 10 ? v + "T12:00:00" : v) : null;
   const dm = v => { const x = d(v); return x ? String(x.getDate()).padStart(2, "0") + "/" + String(x.getMonth() + 1).padStart(2, "0") : ""; };
@@ -149,42 +151,45 @@
     return ficha({ livro: A.livro, dados: A.dados || {}, certidoes: A.certidoes, documentos: [], motores: [] }, { passada: true, parecer: par });
   }
 
-  // ---- o visor: a capa sozinha, depois 1 | 2 e 3 | 4
-  let raiz = null, pos = 0, telas = [];
-  function montarVisor() {
-    if (raiz) return;
-    raiz = document.createElement("div"); raiz.className = "lp2-visor"; raiz.setAttribute("role", "dialog"); raiz.setAttribute("aria-label", "Livro da oportunidade");
-    raiz.innerHTML = `<button class="lp2-x" type="button" aria-label="Fechar o livro">×</button><button class="lp2-ant" type="button" aria-label="Página anterior">‹</button>
-      <div class="lp2-palco"><div class="lp2-livro"></div></div><button class="lp2-prox" type="button" aria-label="Próxima página">›</button><div class="lp2-pos"></div>`;
-    document.body.appendChild(raiz);
-    raiz.querySelector(".lp2-x").onclick = fechar; raiz.querySelector(".lp2-ant").onclick = () => ir(pos - 1); raiz.querySelector(".lp2-prox").onclick = () => ir(pos + 1);
-    raiz.addEventListener("click", ev => { if (ev.target === raiz) fechar(); });
-    document.addEventListener("keydown", ev => { if (!raiz.classList.contains("on")) return; if (ev.key === "Escape") fechar(); if (ev.key === "ArrowRight") ir(pos + 1); if (ev.key === "ArrowLeft") ir(pos - 1); });
-    addEventListener("resize", escala);
+  // ---- o livro 3D: as páginas desenhadas aqui viram as texturas do livro 3D (a capa e as 4 páginas)
+  // o desenho acontece num quadro isolado e leve (só o estilo do livro, as fontes e o html2canvas): o html2canvas copia o
+  // documento inteiro a cada desenho, e o painel tem mais de 850 KB de página
+  let quadro = null;
+  const FONTES = "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,800&family=Saira+Semi+Condensed:wght@400;600;700&display=swap";
+  function moldura() {
+    if (quadro) return quadro;
+    quadro = new Promise((ok, erro) => { const f = document.createElement("iframe"); f.setAttribute("aria-hidden", "true"); f.tabIndex = -1;
+      f.style.cssText = "position:fixed;left:-20000px;top:0;width:1500px;height:1000px;border:0;visibility:hidden";
+      f.srcdoc = '<!doctype html><html><head><meta charset="utf-8"><base href="' + E(location.href) + '"><link rel="stylesheet" href="livro-paginas.css"><link rel="stylesheet" href="' + FONTES + '">' +
+        '<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script></head><body style="margin:0"></body></html>';
+      f.onload = async () => { if (!f.contentWindow.html2canvas) { quadro = null; f.remove(); return erro(new Error("html2canvas")); } try { await f.contentDocument.fonts.ready; } catch (e) {} ok(f); };
+      document.body.appendChild(f); });
+    return quadro;
   }
-  function escala() { if (!raiz) return; const l = raiz.querySelector(".lp2-livro"), larg = pos === 0 ? 620 : 1260;
-    const s = Math.min((innerWidth - 140) / larg, (innerHeight - 90) / 880, 1.2); l.style.transform = `scale(${s})`; l.style.width = larg + "px"; }
-  function ir(n) { n = Math.max(0, Math.min(telas.length - 1, n)); const l = raiz.querySelector(".lp2-livro"), dir = n > pos ? 1 : -1, mudou = n !== pos; pos = n;
-    const pinta = () => { l.innerHTML = telas[pos]; l.classList.toggle("aberto", pos > 0); escala();
-      raiz.querySelector(".lp2-pos").textContent = pos === 0 ? "Capa" : `Páginas ${pos * 2 - 1} e ${pos * 2}`;
-      raiz.querySelector(".lp2-ant").disabled = pos === 0; raiz.querySelector(".lp2-prox").disabled = pos === telas.length - 1; };
-    if (!mudou) return pinta();
-    l.classList.add(dir > 0 ? "vira" : "volta"); setTimeout(() => { pinta(); l.classList.remove("vira", "volta"); l.classList.add("chega"); setTimeout(() => l.classList.remove("chega"), 260); }, 230); }
-  function fechar() { if (raiz) raiz.classList.remove("on"); document.documentElement.classList.remove("lp2-trava"); }
-
+  async function desenhar(html) {
+    const f = await moldura(), d = f.contentDocument, caixa = d.createElement("div");
+    caixa.className = "lp2-tex"; caixa.style.cssText = "position:absolute;left:0;top:0"; caixa.innerHTML = html; d.body.appendChild(caixa);
+    try { await Promise.all([...caixa.querySelectorAll("img")].map(im => im.complete ? 0 : new Promise(r => { im.onload = im.onerror = r; })));
+      try { await d.fonts.ready; } catch (e) {}
+      return await f.contentWindow.html2canvas(caixa.firstElementChild, { scale: 2.3, backgroundColor: null, logging: false }); }
+    finally { caixa.remove(); }
+  }
   async function ficheiro(o) {
     const ids = [o && o.id, o && o.livro_vinculado && (o.livro_vinculado.id || o.livro_vinculado), o && o.livro_id].filter(x => typeof x === "string" && x);
     for (const id of ids) { try { const r = await fetch("dados/cartorio/" + encodeURIComponent(id.replace(/[^A-Za-z0-9_.-]/g, "_")) + ".json?v=" + Date.now()); if (r.ok) { const f = await r.json(); if (f && f.historia) return f; } } catch (e) {} }
     return o && o.historia ? o : null;
   }
-  async function abrir(o) {
-    const f = await ficheiro(o); if (!f) return false;
-    const H = f.historia;
-    telas = [capa(H), ficha(H) + etapas(H, f), diario(H) + anterior(H)];
-    montarVisor(); pos = 0; raiz.classList.add("on"); document.documentElement.classList.add("lp2-trava"); ir(0); return true;
+  const texto = el => (el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 900);
+  async function conteudo3D(o) {
+    const f = await ficheiro(o); if (!f) return null;
+    const H = f.historia, L = H.livro || {}, D = H.dados || {};
+    await logoDados();
+    const htmls = [capa(H), ficha(H), etapas(H, f), diario(H), anterior(H)], img = [];
+    for (const h of htmls) img.push(await desenhar(h));
+    const ler = h => { const d = document.createElement("div"); d.innerHTML = h; return texto(d); };
+    return { titulo: L.titulo, capaImagem: img[0],
+      capa: { numero: L.id || "", titulo: L.titulo || "", periodo: D.inscricao_fim ? "Inscrições até " + dmy(D.inscricao_fim) : "", prazo: "", resumo: "", selo: "A.M.C. Jardim América", data: new Date().toISOString() },
+      paginas: img.slice(1).map((c, i) => ({ imagem: c, texto: ler(htmls[i + 1]) })) };
   }
-  window.LivroPaginas = { abrir, _paginas: H => [capa(H), ficha(H), etapas(H, {}), diario(H), anterior(H)] };
-  // o livro novo no lugar do livro 3D; sem a ficha do livro, o 3D antigo continua
-  const antigo = window.abrirLivro3D;
-  window.abrirLivro3D = async function (o, tipo) { try { if (await abrir(o)) return true; } catch (e) { console.warn("livro:", e && e.message); } return antigo ? antigo(o, tipo) : false; };
+  window.LivroPaginas = { conteudo3D, _paginas: H => [capa(H), ficha(H), etapas(H, {}), diario(H), anterior(H)] };
 })();

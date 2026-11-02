@@ -1,16 +1,7 @@
 /* O livro da oportunidade (titular, 02/11/2026): capa e 4 páginas, como aprovado no canvas */
-html.lp2-trava{overflow:hidden}
-.lp2-visor{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:rgba(7,10,21,.88);font-family:"Nunito Sans",system-ui,sans-serif}
-.lp2-visor.on{display:flex}
-.lp2-palco{perspective:2200px;display:flex;align-items:center;justify-content:center}
-.lp2-livro{display:flex;gap:20px;transform-origin:center center;transition:transform .2s}
-.lp2-livro.vira{animation:lp2-vira .23s ease-in forwards}.lp2-livro.volta{animation:lp2-volta .23s ease-in forwards}.lp2-livro.chega{animation:lp2-chega .26s ease-out}
-@keyframes lp2-vira{to{opacity:0;filter:brightness(.8);rotate:y -14deg}}@keyframes lp2-volta{to{opacity:0;filter:brightness(.8);rotate:y 14deg}}@keyframes lp2-chega{from{opacity:0}to{opacity:1}}
-@media (prefers-reduced-motion: reduce){.lp2-livro.vira,.lp2-livro.volta,.lp2-livro.chega{animation:none}}
-.lp2-x,.lp2-ant,.lp2-prox{position:absolute;min-width:48px;min-height:48px;border:0;border-radius:999px;background:rgba(246,236,210,.14);color:#F6ECD2;font-size:28px;cursor:pointer}
-.lp2-x{top:18px;right:22px}.lp2-ant{left:22px;top:50%;transform:translateY(-50%)}.lp2-prox{right:22px;top:50%;transform:translateY(-50%)}
-.lp2-ant:disabled,.lp2-prox:disabled{opacity:.25;cursor:default}
-.lp2-pos{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);color:#C9C2AE;font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+/* as páginas são desenhadas fora da tela e viram as texturas do livro 3D */
+.lp2-tex{position:fixed;left:-20000px;top:0;pointer-events:none}
+.lp2-tex .lp2-capa,.lp2-tex .lp2-pg{border-radius:0;box-shadow:none}
 
 /* a capa */
 .lp2-capa{width:620px;height:880px;box-sizing:border-box;background:#0F1E3D;border-radius:6px 14px 14px 6px;padding:26px;box-shadow:0 18px 40px rgba(0,0,0,.45);flex:none}

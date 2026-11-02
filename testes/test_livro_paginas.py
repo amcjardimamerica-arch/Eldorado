@@ -6,11 +6,15 @@ from pathlib import Path
 P = Path("eldorado/base/painel/pagina")
 
 
-def test_o_livro_esta_no_site_e_substitui_o_3d():
+def test_o_design_esta_dentro_do_livro_3d():
+    """o objeto continua sendo o livro 3D da titular: as páginas aprovadas viram as texturas dele (nada o substitui)"""
     h = (P / "dashboard.html").read_text(encoding="utf-8")
     assert '<script src="livro-paginas.js"></script>' in h and 'href="livro-paginas.css"' in h
+    assert "window.LivroPaginas.conteudo3D(o)" in h and "window.LivroPopup.abrir(c||conteudo(o||{}))" in h
     j = (P / "livro-paginas.js").read_text(encoding="utf-8")
-    assert "window.abrirLivro3D = async function" in j and "dados/cartorio/" in j and "historia" in j
+    assert "window.abrirLivro3D =" not in j and "lp2-visor" not in j and "conteudo3D" in j and "dados/cartorio/" in j
+    t = (P / "livro3d.js").read_text(encoding="utf-8")
+    assert "if (pg.imagem) c.getContext('2d').drawImage(pg.imagem" in t and "if (cont.capaImagem)" in t
 
 
 def test_as_regras_das_paginas():

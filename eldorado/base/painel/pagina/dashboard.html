@@ -7729,7 +7729,8 @@ function lista(){
   window.abrirLivro3D=async function(o,tipo){
     try{ if(!(await carregar())||!window.LivroPopup) return false;
       ultimo={o,tipo}; const f=document.querySelector(".lp-overlay .lp-ficha"); if(f) f.hidden=(tipo==="livro");
-      window.LivroPopup.abrir(conteudo(o||{})); return true;
+      let c=null; try{ if(window.LivroPaginas) c=await window.LivroPaginas.conteudo3D(o); }catch(e){ console.warn("livro:",e&&e.message); }   /* 02/11/2026 (titular): o livro 3D com a capa e as 4 páginas aprovadas */
+      window.LivroPopup.abrir(c||conteudo(o||{})); return true;
     }catch(e){ console.warn("livro 3D:",e&&e.message); return false; }
   };
   window._livro3dConteudo=conteudo;
