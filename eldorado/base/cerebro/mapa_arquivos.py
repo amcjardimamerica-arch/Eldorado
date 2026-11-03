@@ -240,6 +240,9 @@ def montar() -> dict[str, Any]:
         n["alcancado"] = p in vistos or p.startswith("dados/")
         n["testado"] = p in testados
         n["existe"] = (RAIZ / p).exists()
+    for p in SOB_DEMANDA:                                            # 02/11/2026: o estudo concluído sem fluxo próprio também é nó
+        if p.startswith("estudos/") and p not in nos and (RAIZ / p).exists():
+            no(p, alcancado=True, testado=False, existe=True)
     return {"nos": sorted(nos.values(), key=lambda n: (n["parte"], n["componente"], n["id"])),
             "arestas": [{"de": a, "para": b, "tipo": t, "rotulo": r} for a, b, t, r in sorted(arestas)]}
 

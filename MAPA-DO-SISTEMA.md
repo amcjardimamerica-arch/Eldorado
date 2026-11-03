@@ -21,6 +21,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | aguarda a decisão da titular: fica (titular, 25/10/2026): a comparação R01 roda (Sala, por dia); a comprovação de cobertura antes de eliminar o Eldorado0 aguarda uma base: o histórico migrado é um retrato de um dia (22/10) | 1 |
 | estudo concluído (25/10/2026): uma IA para as três funções; só sob demanda | 1 |
 | estudo concluído (25/10/2026): o arranjo das IAs e o contexto; só sob demanda | 1 |
+| estudo concluído (02/11/2026): os parâmetros da rede (taxa, L2, limiar por pergunta); só sob demanda | 1 |
 | estudo concluído (25/10/2026): uma IA para as três funções (o resultado no parecer); só sob demanda | 1 |
 | estudo concluído (25/10/2026): o arranjo das IAs e o contexto (o resultado no parecer); só sob demanda | 1 |
 
@@ -307,23 +308,24 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 |---|---|---|---|---|---|---|
 | 207 | `estudos/bench_ia.py` | O estudo das IAs (titular, 25/10/2026): uma Qwen3-8B para as três funções (o Interceptador, o Espião e o Coman | estudo concluído (25/10/2026): uma IA para as três funções; só sob demanda |  | bench-ia | 0 |
 | 208 | `estudos/bench_ia2.py` | O estudo das IAs, parte 2 (titular, 25/10/2026): uma IA exclusiva do Comandante e uma dos pilotos (os dois pil | estudo concluído (25/10/2026): o arranjo das IAs e o contexto; só sob demanda |  | bench-ia2 | 0 |
-| 209 | `.github/workflows/bench-ia.yml` | name: Estudo das IAs (uma ou três Qwen3-8B) O estudo da titular (25/10/2026): mede, na máquina da produção, as | estudo concluído (25/10/2026): uma IA para as três funções (o resultado no parecer); só sob demanda | ia_local, bench_ia |  | 0 |
-| 210 | `.github/workflows/bench-ia2.yml` | name: Estudo das IAs (parte 2) O arranjo decidido pela titular (uma IA do Comandante e uma dos pilotos, em par | estudo concluído (25/10/2026): o arranjo das IAs e o contexto (o resultado no parecer); só sob demanda | ia_local, bench_ia2 |  | 0 |
+| 209 | `estudos/bench_rede_2026_11_02.py` | Benchmark da rede neural do Cérebro (titular, 02/11/2026): para cada pergunta (oportunidade, ação, motor), com | estudo concluído (02/11/2026): os parâmetros da rede (taxa, L2, limiar por pergunta); só sob demanda |  |  | 0 |
+| 210 | `.github/workflows/bench-ia.yml` | name: Estudo das IAs (uma ou três Qwen3-8B) O estudo da titular (25/10/2026): mede, na máquina da produção, as | estudo concluído (25/10/2026): uma IA para as três funções (o resultado no parecer); só sob demanda | ia_local, bench_ia |  | 0 |
+| 211 | `.github/workflows/bench-ia2.yml` | name: Estudo das IAs (parte 2) O arranjo decidido pela titular (uma IA do Comandante e uma dos pilotos, em par | estudo concluído (25/10/2026): o arranjo das IAs e o contexto (o resultado no parecer); só sob demanda | ia_local, bench_ia2 |  | 0 |
 
 ## 18 Outros
 
 | Ordem | Arquivo | Finalidade | Situação | Depende de | Acionado por / usado por | Testes |
 |---|---|---|---|---|---|---|
-| 211 | `.github/workflows/arquivar.yml` | name: Arquivar (pela titular, no painel) 27/10/2026: o botão "Arquivar" das Oportunidades Abertas grava na Bib | em funcionamento | comandos |  | 0 |
-| 212 | `.github/workflows/vigia.yml` | O VIGIA (titular, 29/10/2026): um olho de fora do ciclo, a cada 30 minutos. Hoje o sistema ficou 12 h sem grav | em funcionamento |  |  | 0 |
-| 213 | `config/cartorio.toml` | O Cartório (titular, 29/10/2026). Quantos livros da fila da análise externa vão no lote do dia ao Claude no Ch | em funcionamento |  | analise_externa | 0 |
-| 214 | `eldorado/base/cartorio/historia.py` | A HISTÓRIA COMPLETA DE CADA LIVRO (titular, 02/11/2026): cada livro com todas as suas informações ligadas, sem | em funcionamento |  | dados | 1 |
-| 215 | `eldorado/base/cartorio/leitura_efemera.py` | R35 — a leitura efêmera (titular, 30/10/2026: "não deve existir cópia de nenhum site; o sistema não é repositó | em funcionamento | eventos | expurgo_claude, manutencao_expurgo | 1 |
-| 216 | `eldorado/base/cartorio/localizacao.py` | A localização de cada livro pelas provas que ele próprio tem (titular, 01/11/2026): a UF, o município e a esfe | em funcionamento |  | identidade | 1 |
-| 217 | `eldorado/base/cartorio/migrados.py` | Os livros migrados do Eldorado0 (titular, 01/11/2026): dado histórico, sem nova releitura nem avaliação — exce | em funcionamento |  | expurgo_claude, interceptador | 1 |
-| 218 | `eldorado/base/cerebro/retencao.py` | A retenção da telemetria no Cérebro (titular, 01/11/2026): os dados da operação ficam 30 dias, completos, para | em funcionamento | eventos | comandos | 1 |
-| 219 | `eldorado/base/cartorio/expurgo_claude.py` | O expurgo é do Claude, nunca do sistema (titular, 01/11/2026: "somente o Claude apaga livros e faz expurgos, o | em funcionamento | leitura_efemera, migrados | manutencao_expurgo, sala | 2 |
-| 220 | `eldorado/base/cartorio/manutencao_expurgo.py` | A MANUTENÇÃO DO EXPURGO a cada passagem (titular, 02/11/2026 — R36): a informação coletada que NÃO virou livro | em funcionamento | __init__, expurgo_claude, leitura_efemera | passagem, nó 21 «manutencao_expurgo» | 1 |
+| 212 | `.github/workflows/arquivar.yml` | name: Arquivar (pela titular, no painel) 27/10/2026: o botão "Arquivar" das Oportunidades Abertas grava na Bib | em funcionamento | comandos |  | 0 |
+| 213 | `.github/workflows/vigia.yml` | O VIGIA (titular, 29/10/2026): um olho de fora do ciclo, a cada 30 minutos. Hoje o sistema ficou 12 h sem grav | em funcionamento |  |  | 0 |
+| 214 | `config/cartorio.toml` | O Cartório (titular, 29/10/2026). Quantos livros da fila da análise externa vão no lote do dia ao Claude no Ch | em funcionamento |  | analise_externa | 0 |
+| 215 | `eldorado/base/cartorio/historia.py` | A HISTÓRIA COMPLETA DE CADA LIVRO (titular, 02/11/2026): cada livro com todas as suas informações ligadas, sem | em funcionamento |  | dados | 1 |
+| 216 | `eldorado/base/cartorio/leitura_efemera.py` | R35 — a leitura efêmera (titular, 30/10/2026: "não deve existir cópia de nenhum site; o sistema não é repositó | em funcionamento | eventos | expurgo_claude, manutencao_expurgo | 1 |
+| 217 | `eldorado/base/cartorio/localizacao.py` | A localização de cada livro pelas provas que ele próprio tem (titular, 01/11/2026): a UF, o município e a esfe | em funcionamento |  | identidade | 1 |
+| 218 | `eldorado/base/cartorio/migrados.py` | Os livros migrados do Eldorado0 (titular, 01/11/2026): dado histórico, sem nova releitura nem avaliação — exce | em funcionamento |  | expurgo_claude, interceptador | 1 |
+| 219 | `eldorado/base/cerebro/retencao.py` | A retenção da telemetria no Cérebro (titular, 01/11/2026): os dados da operação ficam 30 dias, completos, para | em funcionamento | eventos | comandos | 1 |
+| 220 | `eldorado/base/cartorio/expurgo_claude.py` | O expurgo é do Claude, nunca do sistema (titular, 01/11/2026: "somente o Claude apaga livros e faz expurgos, o | em funcionamento | leitura_efemera, migrados | manutencao_expurgo, sala | 2 |
+| 221 | `eldorado/base/cartorio/manutencao_expurgo.py` | A MANUTENÇÃO DO EXPURGO a cada passagem (titular, 02/11/2026 — R36): a informação coletada que NÃO virou livro | em funcionamento | __init__, expurgo_claude, leitura_efemera | passagem, nó 21 «manutencao_expurgo» | 1 |
 
 ## Os 47 motores (o estudo de reorganização da titular: 45 regulares e 2 pilotos)
 
