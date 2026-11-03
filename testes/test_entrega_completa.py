@@ -49,3 +49,13 @@ def test_o_completo_considera_so_os_devidos(tmp_path, monkeypatch):
 def test_a_instrucao_vai_no_topo_do_lote():
     assert ae.ENTREGA_COMPLETA.startswith("ENTREGA COMPLETA E TOTAL (R41)") and "não entregue nada" in ae.ENTREGA_COMPLETA
     assert INSTR_DOC.startswith("ENTREGA COMPLETA E TOTAL (R41)")
+
+
+def test_o_expurgo_vai_junto_da_verificacao_externa():
+    """R42 (titular, 03/11/2026): o lote leva os lotes de documentos do expurgo e a instrução do livro sem dados."""
+    from pathlib import Path
+    assert "EXPURGO JUNTO (R42)" in ae.INSTRUCOES and "SEM DADOS" in ae.INSTRUCOES
+    t = Path("eldorado/base/cartorio/analise_externa.py").read_text(encoding="utf-8")
+    assert '"expurgo_junto": junto' in t and "timedelta(days=7)" in t
+    c = Path("eldorado/base/comandante/cartorio.py").read_text(encoding="utf-8")
+    assert 'for lid in c["sem_dados"]:' in c and "validar o expurgo (R42)" in c

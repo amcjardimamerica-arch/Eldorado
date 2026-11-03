@@ -521,7 +521,7 @@
    "id": "R37",
    "data": "2026-11-02",
    "tema": "o Comandante comanda o Cartório (as 5 etapas)",
-   "regra": "Nenhuma parte do Eldorado é linha de produção. O Cartório está sob o comando do Comandante, que analisa cada uma das 5 etapas, faz o Cartório certificar os itens e coordena cada livro entre elas, entregando ao Farol ou ao arquivo tudo o que os motores (inclusive o Espião) geram. Só as escadas dos motores são automáticas: dentro de cada etapa, buscam a oportunidade de cada livro até os 12 itens. A cada passagem o Comandante decide o destino de cada livro parado na preparação: prazo encerrado → arquivo; completo ou sem mais nada a buscar → validação (que decide Farol, arquivo ou Chrome); prazo aberto sem link oficial → Claude no Chrome; sem prazo e sem link oficial → aguarda os motores. Nenhum livro é apagado; cada decisão grava o relatório da etapa.",
+   "regra": "Nenhuma parte do Eldorado é linha de produção. O Cartório está sob o comando do Comandante, que analisa cada uma das 5 etapas, faz o Cartório certificar os itens e coordena cada livro entre elas, entregando ao Farol ou ao arquivo tudo o que os motores (inclusive o Espião) geram. Só as escadas dos motores são automáticas: dentro de cada etapa, buscam a oportunidade de cada livro até os 12 itens. A cada passagem o Comandante decide o destino de cada livro parado na preparação: prazo encerrado → arquivo; completo ou sem mais nada a buscar → validação (que decide Farol, arquivo ou Chrome); prazo aberto sem link oficial → Claude no Chrome; sem prazo e sem link oficial (sem dados) → verificação externa (R42). Nenhum livro é apagado; cada decisão grava o relatório da etapa.",
    "onde": "eldorado/base/comandante/cartorio.py (no_comandar_cartorio, na passagem: workflows/passagem.toml)",
    "travas": [
     "testes/test_comandante_cartorio.py::test_o_comandante_decide_o_destino",
@@ -576,6 +576,18 @@
     "testes/test_entrega_completa.py::test_o_veredito_parcial_e_recusado_por_inteiro",
     "testes/test_entrega_completa.py::test_o_completo_considera_so_os_devidos",
     "testes/test_entrega_completa.py::test_a_instrucao_vai_no_topo_do_lote"
+   ]
+  },
+  {
+   "id": "R42",
+   "data": "2026-11-03",
+   "tema": "o expurgo junto da verificação externa",
+   "regra": "A verificação externa leva o expurgo junto. O livro criado no sistema sem dados (sem site oficial e sem prazo) não fica parado na preparação: o Comandante o envia à verificação externa, marcado para expurgo, e o Claude no Chrome acha a oportunidade oficial com os itens ou decide o descarte. O lote do Chrome lista também os lotes de documentos do expurgo pendentes ('expurgo_junto'), feitos no mesmo trabalho, cada um completo (R41). Os lotes ficam 7 dias, para o veredito que chega depois.",
+   "porque": "titular, 03/11/2026: ao ser indicado para a verificação externa, validar também os expurgos dos livros criados no sistema sem dados.",
+   "onde": "eldorado/base/comandante/cartorio.py (sem_dados); eldorado/base/cartorio/analise_externa.py (expurgo_junto, INSTRUCOES, lotes por 7 dias)",
+   "travas": [
+    "testes/test_comandante_cartorio.py::test_o_comandante_decide_o_destino",
+    "testes/test_entrega_completa.py::test_o_expurgo_vai_junto_da_verificacao_externa"
    ]
   }
  ]

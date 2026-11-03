@@ -191,7 +191,8 @@ def test_i_os_lotes_de_dias_anteriores_saem(gravador, bancos, tmp_path):
     _fila(gravador, 3)
     pasta = tmp_path / "lotes"
     pasta.mkdir()
-    for n in ("lote-2026-10-28.json", "lote-2026-10-29-parte-1.json", "lote-2026-10-29-complemento-1.json"):
+    # 03/11/2026 (R42, para a R41): os lotes ficam 7 dias — o veredito que o Chrome devolve depois precisa do lote que recebeu
+    for n in ("lote-2026-10-20.json", "lote-2026-10-22-parte-1.json", "lote-2026-10-28.json", "lote-2026-10-29-parte-1.json"):
         (pasta / n).write_text('{"livros": []}')
     atualizar_lote_do_dia(bancos["biblioteca"], pasta, date(2026, 10, 30), cfg={"maximo_lote": None, "tamanho_parte": 50})
-    assert sorted(f.name for f in pasta.glob("*.json")) == ["lote-2026-10-30.json"]
+    assert sorted(f.name for f in pasta.glob("*.json")) == ["lote-2026-10-28.json", "lote-2026-10-29-parte-1.json", "lote-2026-10-30.json"]

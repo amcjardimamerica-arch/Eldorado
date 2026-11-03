@@ -29,7 +29,7 @@ def test_o_comandante_decide_o_destino(monkeypatch):
         id = "L-falta"
     monkeypatch.setattr("eldorado.motores.pilotos.interceptador.fila", lambda con, hoje: [F()])
     assert C.candidatos(b, "2026-11-02") == {"encerrados": ["L-velho"], "completos": ["L-completo"], "sem_o_que_buscar": ["L-parado"],
-                                             "ao_chrome_sem_link": ["L-semlink"], "aguardam_motores": ["L-nada"]}
+                                             "ao_chrome_sem_link": ["L-semlink"], "sem_dados": ["L-nada"]}   # R42: o sem dados vai à verificação externa
 
 
 def test_a_ordem_de_territorio():

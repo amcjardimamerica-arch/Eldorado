@@ -8,7 +8,8 @@ oportunidade de cada livro até os 12 itens.
 O que o Comandante decide, a cada passagem:
   - O DESTINO de cada livro na preparação: prazo encerrado → arquivo; completo (12 itens comprovados ou dispensados) ou
     sem mais nada a buscar → validação (que decide Farol, arquivo ou Chrome); prazo aberto SEM link oficial → Claude no
-    Chrome (que acha o edital oficial); sem prazo e sem link oficial → aguarda os motores, sem gastar busca.
+    Chrome (que acha o edital oficial); sem prazo e sem link oficial (SEM DADOS) → verificação externa: o Chrome acha a
+    oportunidade oficial ou valida o expurgo (R42, 03/11/2026).
   - O TRABALHO do Interceptador e do Chrome: só os livros com o link oficial e com item faltando (nada de buscar o que não
     tem link oficial nem o que já está completo).
   - A ORDEM: Goiás → Brasil (nacional) → internacional → outras capitais e estados; dentro de cada um, as abertas que
@@ -76,7 +77,7 @@ def candidatos(con: sqlite3.Connection, hoje: str) -> dict[str, list[str]]:
     certs: dict[str, set[str]] = {}
     for lid, it in con.execute("SELECT livro_id, item FROM certidao WHERE situacao IN ('comprovado', 'dispensado')"):
         certs.setdefault(lid, set()).add(it)
-    out: dict[str, list[str]] = {"encerrados": [], "completos": [], "sem_o_que_buscar": [], "ao_chrome_sem_link": [], "aguardam_motores": []}
+    out: dict[str, list[str]] = {"encerrados": [], "completos": [], "sem_o_que_buscar": [], "ao_chrome_sem_link": [], "sem_dados": []}
     for lid, fim, oficial in con.execute(
             "SELECT l.id, d.inscricao_fim, l.link_oficial FROM passaporte p JOIN livro l ON l.id = p.livro_id "
             "JOIN livro_dados d ON d.livro_id = l.id WHERE p.fase = 'preparacao' AND l.situacao NOT IN ('excluido', 'unido') "
@@ -86,7 +87,7 @@ def candidatos(con: sqlite3.Connection, hoje: str) -> dict[str, list[str]]:
         elif set(I.DOZE) <= certs.get(lid, set()):
             out["completos"].append(lid)
         elif not oficial:
-            out["ao_chrome_sem_link" if fim else "aguardam_motores"].append(lid)
+            out["ao_chrome_sem_link" if fim else "sem_dados"].append(lid)
         elif lid not in na_fila:
             out["sem_o_que_buscar"].append(lid)
     return out
@@ -121,6 +122,13 @@ def comandar(con: sqlite3.Connection, diario, missao, hoje: str | None = None) -
         ok, _ = cart.passaporte.mover(lid, "analise externa", "o Comandante enviou ao Claude no Chrome: prazo aberto sem link oficial (achar o edital oficial)",
                                       {"gerou": "sem link oficial: a escada não tem o que perseguir", "analise": "interna"})
         conta("analise externa", ok)
+    # R42 (titular, 03/11/2026): o livro criado no sistema SEM DADOS (sem site oficial e sem prazo) não fica parado na
+    # preparação: vai à verificação externa, onde o Claude no Chrome acha a oportunidade oficial ou valida o expurgo
+    for lid in c["sem_dados"]:
+        ok, _ = cart.passaporte.mover(lid, "analise externa", "o Comandante enviou ao Claude no Chrome: sem dados (sem site oficial e sem "
+                                      "prazo) — achar a oportunidade oficial ou validar o expurgo (R42)",
+                                      {"gerou": "sem dados: a escada não tem o que perseguir", "analise": "interna"})
+        conta("analise externa (sem dados)", ok)
     for chave, motivo in (("completos", "completo: os 12 itens resolvidos"), ("sem_o_que_buscar", "nada mais a buscar pela escada")):
         for lid in c[chave]:
             ok, _ = cart.passaporte.mover(lid, "validacao", f"o Comandante levou à validação: {motivo}", {"gerou": motivo, "analise": "interna"})
@@ -137,7 +145,7 @@ def comandar(con: sqlite3.Connection, diario, missao, hoje: str | None = None) -
     destino["leituras órfãs descartadas"] = len(orfas)
     res = {k: len(v) for k, v in c.items()} | {"destino": destino}
     diario.emitir("medicao.registrada", "comandante", {"marcador": "comandante:cartorio", "nivel": "componente", "em": datetime.now().astimezone().isoformat(),
-                                                       "valor": float(sum(len(v) for k, v in c.items() if k != "aguardam_motores")), "motivo": str(res)[:500]})
+                                                       "valor": float(sum(len(v) for v in c.values())), "motivo": str(res)[:500]})
     return res
 
 

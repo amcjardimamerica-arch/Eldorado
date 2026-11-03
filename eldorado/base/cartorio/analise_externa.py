@@ -32,6 +32,10 @@ INSTRUCOES_LEI = ("Persiga o edital oficial, com todas as regras da oportunidade
                   "No incentivo fiscal por lei (Rouanet, Goyazes, fundos da criança e do idoso) não há edital comum: "
                   "a lei e o chamamento são o documento oficial — comprove os itens neles. ")
 INSTRUCOES = (
+    "EXPURGO JUNTO (R42): esta verificação externa leva o expurgo junto — faça também os lotes de documentos listados em "
+    "'expurgo_junto' (pasta verificacao/expurgo), cada um completo, num veredito próprio por arquivo. Os livros SEM DADOS (sem site "
+    "oficial e sem prazo, marcados com 'verificacao_para_expurgo') vieram do sistema sem nenhuma informação: ache a oportunidade "
+    "oficial com os itens ou decida 'descartar' — é o expurgo deles. "
     "EXPURGO (R39): o livro com 'verificacao_para_expurgo': true não tem nenhuma estrela depois das 5 etapas do Cartório; confirme a "
     "oportunidade na fonte oficial (decida 'valido' com os itens) ou, se não for oportunidade ou não existir, decida 'descartar' "
     "com o motivo — só esse veredito libera o expurgo. "
@@ -189,7 +193,11 @@ def gerar_lote(con: sqlite3.Connection, hoje: date, maximo: int | None = None) -
     # 02/11/2026 (titular, R38): a ordem do Comandante — Goiás → Brasil → internacional → outras capitais e estados
     from ..comandante.cartorio import chave_de_busca
     livros.sort(key=lambda x: chave_de_busca(x.pop("_abr", None), x.get("uf"), x.get("fim_inscricao"), hoje.isoformat(), len(x.get("faltam") or [])))
+    junto = sorted(f.name for f in Path("verificacao/expurgo").glob("lote-chrome-documentos-*.json"))
     return {"lote": f"lote-{hoje.isoformat()}", "gerado_em": agora(), "total_livros": len(livros),
+            # R42 (titular, 03/11/2026): a verificação externa leva o expurgo junto — os lotes de documentos do expurgo
+            # pendentes, cada um entregue completo (R41), num veredito próprio em verificacao/expurgo/vereditos/
+            "expurgo_junto": junto,
             "instrucoes": ENTREGA_COMPLETA + INSTRUCOES_LEI + INSTRUCOES, "itens_validos": list(I.DOZE),
             "formato_do_veredito": {"vereditos": [{"livro_id": "…", "decisao": "valido | descartar", "motivo": "…", "como_encontrou": "…",
                                                    "itens": [{"item": "…", "valor": "…", "trecho": "…", "pagina": 1, "url": "…"}],
@@ -239,12 +247,14 @@ def atualizar_lote_do_dia(con: sqlite3.Connection, pasta_lotes: Path, hoje: date
         if f.stem not in nomes_partes:
             f.unlink(missing_ok=True)
     # 30/10/2026: o lote do dia tem a fila inteira; os lotes de dias anteriores saem (a gravação os tira do repositório)
+    # 03/11/2026 (R41): mantidos por 7 dias — o veredito do Chrome que chega depois precisa do lote que ele recebeu
     for f in pasta_lotes.glob("lote-*.json"):
-        if f.stem[5:15] < hoje.isoformat():
+        if f.stem[5:15] < (hoje - timedelta(days=7)).isoformat():
             f.unlink(missing_ok=True)
     for k, np_ in enumerate(nomes_partes):
-        (pasta_lotes / f"{np_}.json").write_text(json.dumps({**base, "lote": np_, "parte": k + 1, "de": n_partes,
-                                                              "livros": livros[k * tam:(k + 1) * tam]}, ensure_ascii=False, indent=1), encoding="utf-8")
+        parte = livros[k * tam:(k + 1) * tam]
+        (pasta_lotes / f"{np_}.json").write_text(json.dumps({**base, "lote": np_, "parte": k + 1, "de": n_partes, "total_livros": len(parte),
+                                                              "livros": parte}, ensure_ascii=False, indent=1), encoding="utf-8")
     return {"lote": nome, "livros": len(livros), "partes": nomes_partes, "mudou": True}
 
 
