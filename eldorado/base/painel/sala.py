@@ -41,6 +41,17 @@ def _idade_h(quando: str | None, agora: datetime) -> float | None:
     return round((agora - q).total_seconds() / 3600, 1)
 
 
+# 02/11/2026 (titular): o expurgo e a pesquisa pelo Claude no Chrome só alertam acima de 50 itens ou quando o pendente
+# mais antigo passa de 168 horas (1 semana)
+LIMITE_CLAUDE_ITENS, LIMITE_CLAUDE_HORAS = 50, 168
+
+
+def _alerta_claude(itens: int | None, idade_h: float | None) -> str:
+    if itens is None:
+        return "cinza"
+    return "amarelo" if itens > LIMITE_CLAUDE_ITENS or (itens and idade_h is not None and idade_h > LIMITE_CLAUDE_HORAS) else "verde"
+
+
 def _faixa(v: float | None, verde, amarelo, maior_melhor: bool = True) -> str:
     if v is None:
         return "cinza"
@@ -285,10 +296,12 @@ def montar(
             "es_expurgo",
             "Último expurgo (feito pelo Claude)",
             cd["total"],
-            "amarelo" if cd["total"] else "verde",
+            _alerta_claude(cd["total"], _idade_h((ul or {}).get("em"), agora) if ul else None),
             (f"o último: {ul['em'][:10]} ({ul.get('motivo', '')[:80]}) · " if ul else "nenhum expurgo registrado · ")
             + f"indicados para avaliação: {cd['documentos_sem_uso']} documentos sem uso, {cd['achados_sem_livro']} achados sem livro, "
-            f"{cd['migrados_no_chrome']} migrados aguardando o Chrome — o sistema não apaga; o Claude avalia e expurga",
+            f"{cd['migrados_no_chrome']} migrados aguardando o Chrome — o sistema não apaga; o Claude avalia e expurga (a leitura sem "
+            f"livro invalidada o sistema libera, R36) · alerta acima de {LIMITE_CLAUDE_ITENS} itens ou com o último expurgo há mais de "
+            f"{LIMITE_CLAUDE_HORAS} h",
             (ul or {}).get("em") or iso,
         )
     except Exception:  # noqa: BLE001
@@ -327,7 +340,11 @@ def montar(
         q(bib, "SELECT MAX(em) FROM tentativa"),
     )
     ext = fases.get("analise externa", 0)
-    I("de_decisoes", "Livros aguardando o Claude no Chrome", ext, _faixa(ext, 40, 100, False), f"{ext} livros na análise externa", iso)
+    _mais_antigo = q(bib, "SELECT MIN(entrou_em) FROM passaporte WHERE fase = 'analise externa'")
+    _idade_ext = _idade_h(_mais_antigo, agora) if _mais_antigo else None
+    I("de_decisoes", "Livros aguardando o Claude no Chrome", ext, _alerta_claude(ext, _idade_ext),
+      f"{ext} livros na análise externa" + (f"; o mais antigo há {round(_idade_ext)} h" if _idade_ext is not None else "")
+      + f" — alerta acima de {LIMITE_CLAUDE_ITENS} livros ou com algum há mais de {LIMITE_CLAUDE_HORAS} h", iso)
     # ---- 05 Verificação externa
     # 29/10/2026 (titular): o total na fila e as partes do lote do dia; verde até 50, amarelo até 200, vermelho acima
     _hoje_lote = agora.date().isoformat()

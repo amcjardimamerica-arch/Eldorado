@@ -2441,7 +2441,9 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
 /* janela-holograma */
 #v-neural .veu,#nv-portal .veu{position:fixed;inset:0;z-index:90;background:radial-gradient(circle at 50% 45%,rgba(21,27,69,.55),rgba(3,6,20,.86));backdrop-filter:blur(6px);opacity:0;transition:opacity .35s;pointer-events:none}
 #v-neural .veu.on,#nv-portal .veu.on{opacity:1;pointer-events:auto}
-#v-neural .holo,#nv-portal .holo{position:fixed;z-index:91;left:50%;top:50%;width:min(1180px,88vw);max-height:86vh;box-sizing:border-box;overflow:auto;transform-origin:top left;padding:30px 34px 34px;
+#v-neural .holo .nv-ciente{min-height:44px;padding:0 18px;border:0;border-radius:10px;background:#5EE6C8;color:#0E1430;font-weight:800;font-size:14px;cursor:pointer}
+.holo .nv-ciente:focus-visible{outline:2px solid #EAF2FF;outline-offset:3px}
+.holo,#nv-portal .holo{position:fixed;z-index:91;left:50%;top:50%;width:min(1180px,88vw);max-height:86vh;box-sizing:border-box;overflow:auto;transform-origin:top left;padding:30px 34px 34px;
   background:linear-gradient(160deg,rgba(32,38,92,.94),rgba(12,17,46,.96));border:1px solid rgba(94,230,200,.35);border-radius:26px;
   box-shadow:0 0 0 1px rgba(155,140,255,.12),0 40px 120px -30px rgba(94,230,200,.35),inset 0 1px 0 rgba(255,255,255,.08);display:none}
 #v-neural .holo::before,#nv-portal .holo::before{content:"";position:absolute;inset:0;border-radius:26px;pointer-events:none;background:repeating-linear-gradient(180deg,rgba(255,255,255,.025) 0 1px,transparent 1px 4px)}
@@ -2600,6 +2602,22 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
     return `<div class="faint" style="font-size:12px;margin:2px 0 6px">${L.length} motores · ${L.filter(m=>m.estado==="vermelho").length} em erro · ${L.filter(m=>m.estado==="amarelo").length} em atenção</div><div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px">`+
       L.map(m=>`<span title="${e(m.nome)} — ${e(m.resultado)}" style="color:${COR[m.estado]||COR.cinza};font-size:15px;line-height:1">★</span>`).join("")+`</div>`; };
   let SC=null, foco=null, ESTRELAS=[], NOS=[], ativa=false, quieto=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* 02/11/2026 (titular): o alarme de SOBRECARGA tem a marca de ciência — ao abrir, «Ciente — retirar o alerta» o tira do
+     painel neste navegador; se a sobrecarga voltar a acontecer (outra ocorrência), ele reaparece */
+  const CIENTE_K="sala-cientes";
+  const cientes=()=>{ try{ return JSON.parse(localStorage.getItem(CIENTE_K)||"{}")||{}; }catch(err){ return {}; } };
+  const ehSobrecarga=a=>/comandante:carga/.test(a.modulo||"")||/carga está acima/i.test((a.motivo||"")+" "+(a.nome||""));
+  const marcaCiente=a=>String(a.quando||"")+"|"+String(a.repeticoes||"");
+  function filtraCientes(d){ if(!d) return d; const c=cientes(); d.anunciadores=(d.anunciadores||[]).filter(a=>!(ehSobrecarga(a)&&c[a.id]===marcaCiente(a))); return d; }
+  window.nvCiente=function(id){ const a=((SC&&SC.anunciadores)||[]).find(x=>x.id===id); if(!a) return; const c=cientes(); c[id]=marcaCiente(a);
+    try{ localStorage.setItem(CIENTE_K,JSON.stringify(c)); }catch(err){} filtraCientes(SC); nvFecha(); desenha(); };
+  window.nvAlerta=function(id,origem){ const a=((SC&&SC.anunciadores)||[]).find(x=>x.id===id); if(!a) return; const H=$("nv-holo"), V=$("nv-veu"); foco=null;
+    H.innerHTML=`<div class="conteudo"><button class="fechar" onclick="nvFecha()">Fechar</button><div class="faint" style="font-size:13px">alarme do sistema${a.modulo?" · "+e(a.modulo):""}</div>
+      <h3>${e(a.nome||"Alarme")}</h3><p style="color:#C9CFEA;margin:6px 0;max-width:80ch">${e(a.motivo||"")}</p>
+      <div class="faint">aberto em ${dm(a.quando)}${a.repeticoes?` · ${a.repeticoes} ocorrência(s)`:""}</div>
+      ${ehSobrecarga(a)?`<div style="margin-top:18px"><button class="nv-ciente" type="button" onclick="nvCiente('${e(a.id)}')">Ciente — retirar o alerta</button>
+      <div class="faint" style="font-size:12.5px;margin-top:8px;max-width:70ch">A sobrecarga é a proteção do governador funcionando: os voos do Interceptador caem para 2 e, com a memória acima de 92% por 15 minutos, o ciclo é reiniciado. Ao marcar ciente, o alerta sai do painel neste navegador; se a sobrecarga voltar a acontecer, ele reaparece.</div></div>`:""}</div>`;
+    abrirJanela(H,V,origem); };
   const $=id=>document.getElementById(id);
   const e=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
   const n=v=>v==null?"—":typeof v==="number"?v.toLocaleString("pt-BR",{maximumFractionDigits:Math.abs(v)<1&&v!==0?3:1}):e(v);
@@ -2851,10 +2869,10 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
     $("nv-indice").innerHTML=mostrador({nome:"Índice de saúde",valor:d.indice_saude,escala:[0,100],faixa:{normal:[80,null],alarme:[50,null]},estado:d.indice_saude>=80?"verde":d.indice_saude>=50?"amarelo":"vermelho"},150);
     $("nv-contagens").innerHTML=`<div class="faint" style="font-size:13px">índice de saúde do sistema</div>`+["verde","amarelo","vermelho","cinza"].map(k=>`<span style="color:${COR[k]}"><span class="luz ${k}"></span><b style="color:#EAF2FF">${c[k]||0}</b>&nbsp;${EST[k]}</span>`).join("");
     const etDe=id=>(ETAPAS.find(t=>t.ids.includes(id))||{}).id||"farol";
-    const jan=(d.instrumentos||[]).map(x=>({id:x.id,nome:x.nome,nivel:x.estado,motivo:x.motivo,et:etDe(x.id)})).concat((d.anunciadores||[]).filter(a=>!(d.instrumentos||[]).some(x=>x.id===a.id)).map(a=>({id:a.id,nome:a.nome,nivel:a.nivel,motivo:a.motivo,et:a.sub==="Fluxos"?"farol":a.sub==="Esteira"?"biblioteca":"farol"})));
+    const jan=(d.instrumentos||[]).map(x=>({id:x.id,nome:x.nome,nivel:x.estado,motivo:x.motivo,et:etDe(x.id)})).concat((d.anunciadores||[]).filter(a=>!(d.instrumentos||[]).some(x=>x.id===a.id)).map(a=>({id:a.id,nome:a.nome,nivel:a.nivel,motivo:a.motivo,anun:true,et:a.sub==="Fluxos"?"farol":a.sub==="Esteira"?"biblioteca":"farol"})));
     const ord={vermelho:0,amarelo:1,cinza:2,verde:3}; jan.sort((a,b)=>ord[a.nivel]-ord[b.nivel]);
     $("nv-alarmes-tit").textContent=`Painel de alarmes · ${jan.filter(j=>j.nivel!=="verde").length} acesos de ${jan.length}`;
-    $("nv-janelas").innerHTML=jan.map(j=>`<button class="jan ${j.nivel}" title="${e(j.motivo)}" onclick="nvHolo('${j.et}',this,'${e(j.id)}')"><span class="luz ${j.nivel==="verde"?"verde":j.nivel}"></span>${e(j.nome)}</button>`).join("");
+    $("nv-janelas").innerHTML=jan.map(j=>`<button class="jan ${j.nivel}" title="${e(j.motivo)}" onclick="${j.anun?`nvAlerta('${e(j.id)}',this)`:`nvHolo('${j.et}',this,'${e(j.id)}')`}"><span class="luz ${j.nivel==="verde"?"verde":j.nivel}"></span>${e(j.nome)}</button>`).join("");
     const TUBO={"Coleta":"coleta","Distintas":"repositorio","Abertas":"repositorio","Com livro":"biblioteca","Cartório":"certificacao","Interceptador":"investigacao","Verificação externa":"externa","Prontas para o Farol":"farol"};
     $("nv-tubo").innerHTML=M.map(m=>`<button onclick="nvHolo('${TUBO[m.etapa]||"farol"}',this)" title="abrir a etapa"><b>${n(m.valor)}</b><small>${e(m.etapa)}</small></button>`).join("");
     $("nv-leitura").textContent=`leitura de ${dm(d.em)} · atualiza a cada passagem do maestro`;
@@ -2875,7 +2893,7 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
   window.desenhaNeural=async function(){ fontes();
     if(SC){ ativa=true; requestAnimationFrame(desenharCeu); return; }
     for(const u of ["dados/sala_controle.json?t="+Date.now(),"dados/sala_controle.json?v="+Date.now()]){
-      try{ const r=await fetch(u,{cache:"no-store"}); if(r.ok){ SC=await r.json(); break; } }catch(err){} }
+      try{ const r=await fetch(u,{cache:"no-store"}); if(r.ok){ SC=filtraCientes(await r.json()); break; } }catch(err){} }
     if(!SC){ $("nv-leitura").textContent="A sala de controle aparece depois da próxima passagem do maestro."; return; }
     desenha(); };
   // 14/10 (titular): dados em tempo real — a cada 1 minuto busca a leitura; se mudou, redesenha sem mexer na rolagem
@@ -2884,7 +2902,7 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
     if(document.hidden||!SC||$("v-neural").classList.contains("oculto")||(document.getElementById("nv-holo")||{style:{}}).style.display==="block") return;   // janela aberta: espera fechar
     try{ const r=await fetch("dados/sala_controle.json?t="+Date.now(),{cache:"no-store"});
       if(!r.ok) return; const novo=await r.json(); if(!novo||novo.em===SC.em) return;
-      const y=window.scrollY; SC=novo; desenha(); requestAnimationFrame(()=>window.scrollTo(0,y)); }catch(err){}
+      const y=window.scrollY; SC=filtraCientes(novo); desenha(); requestAnimationFrame(()=>window.scrollTo(0,y)); }catch(err){}
   },60000);
   // portal: a janela, o véu e a dica ficam no corpo da página — nenhum container do painel a recorta
   (function(){ const P=document.createElement("div"); P.id="nv-portal"; document.body.appendChild(P); ["nv-veu","nv-holo","nv-dica"].forEach(k=>{const el=$(k); if(el) P.appendChild(el);}); })();
