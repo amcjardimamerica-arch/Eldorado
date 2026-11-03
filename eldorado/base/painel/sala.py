@@ -298,10 +298,10 @@ def montar(
             cd["total"],
             _alerta_claude(cd["total"], _idade_h((ul or {}).get("em"), agora) if ul else None),
             (f"o último: {ul['em'][:10]} ({ul.get('motivo', '')[:80]}) · " if ul else "nenhum expurgo registrado · ")
-            + f"indicados para avaliação: {cd['documentos_sem_uso']} documentos sem uso, {cd['achados_sem_livro']} achados sem livro, "
-            f"{cd['migrados_no_chrome']} migrados aguardando o Chrome — o sistema não apaga; o Claude avalia e expurga (a leitura sem "
-            f"livro invalidada o sistema libera, R36) · alerta acima de {LIMITE_CLAUDE_ITENS} itens ou com o último expurgo há mais de "
-            f"{LIMITE_CLAUDE_HORAS} h",
+            + f"para o Claude no Chrome validar o expurgo (R39): {cd['livros_para_expurgo']} livro(s) sem estrela na verificação externa"
+            f" e {cd['migrados_no_chrome']} migrados · sem alerta: {cd.get('na_preparacao', 0)} na preparação (coordenação do Comandante), "
+            f"{cd['documentos_sem_uso']} documentos e {cd['achados_sem_livro']} achados sem livro (manutenção do sistema, R36) · "
+            f"alerta acima de {LIMITE_CLAUDE_ITENS} itens ou com o último expurgo há mais de {LIMITE_CLAUDE_HORAS} h",
             (ul or {}).get("em") or iso,
         )
     except Exception:  # noqa: BLE001
@@ -340,7 +340,8 @@ def montar(
         q(bib, "SELECT MAX(em) FROM tentativa"),
     )
     ext = fases.get("analise externa", 0)
-    _mais_antigo = q(bib, "SELECT MIN(entrou_em) FROM passaporte WHERE fase = 'analise externa'")
+    _mais_antigo = q(bib, "SELECT MIN(p.entrou_em) FROM passaporte p JOIN livro l ON l.id = p.livro_id "
+                          "WHERE p.fase = 'analise externa' AND l.situacao NOT IN ('excluido', 'unido')")
     _idade_ext = _idade_h(_mais_antigo, agora) if _mais_antigo else None
     I("de_decisoes", "Livros aguardando o Claude no Chrome", ext, _alerta_claude(ext, _idade_ext),
       f"{ext} livros na análise externa" + (f"; o mais antigo há {round(_idade_ext)} h" if _idade_ext is not None else "")

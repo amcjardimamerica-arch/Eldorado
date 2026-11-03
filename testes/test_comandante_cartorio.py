@@ -63,3 +63,16 @@ def test_a_rede_aprende_com_livros_e_julga_os_pendentes():
     r = Path("eldorado/base/cerebro/rede.py").read_text(encoding="utf-8")
     assert "def caracteristicas_livro" in r and "decisao <> 'pendente'" in r and "WHERE decisao = 'barrado'\")" not in r
     assert "avaliar_pendentes = true" in Path("workflows/passagem.toml").read_text(encoding="utf-8")
+
+
+def test_a_leitura_orfa_do_livro_arquivado_e_descartada():
+    b = sqlite3.connect(":memory:")
+    b.executescript("""
+    CREATE TABLE livro(id TEXT, situacao TEXT); CREATE TABLE passaporte(livro_id TEXT, fase TEXT);
+    CREATE TABLE achado(id TEXT, motor TEXT, encontrado_em TEXT, link_oficial TEXT, link_divulgacao TEXT, livro_id TEXT, decisao TEXT, dados TEXT);
+    INSERT INTO livro VALUES ('A','aguardando'),('B','em trabalho');
+    INSERT INTO passaporte VALUES ('A','arquivo'),('B','preparacao');
+    INSERT INTO achado VALUES ('x','interceptador','2026-11-01',NULL,'https://a',NULL,'pendente','{"livro_id":"A"}'),
+                              ('y','interceptador','2026-11-01',NULL,'https://b',NULL,'pendente','{"livro_id":"B"}');
+    """)
+    assert [r[0] for r in C.leituras_orfas(b, "2026-11-02")] == ["x"]

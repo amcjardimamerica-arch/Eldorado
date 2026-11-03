@@ -38,7 +38,30 @@ def candidatos(bib: sqlite3.Connection, horas: float = 2) -> dict[str, Any]:
             pend += sum(1 for x in json.loads(f.read_text(encoding="utf-8")).get("itens", []) if not x.get("veredito"))
         except (OSError, ValueError):
             pass
-    return {"documentos_sem_uso": docs, "achados_sem_livro": ach, "migrados_no_chrome": pend, "total": docs + ach + pend}
+    # R39 (titular, 02/11/2026): o ALERTA do expurgo é só do livro SEM NENHUMA ESTRELA que já passou pelas 5 etapas do Cartório
+    # sem achar a oportunidade e foi à verificação externa (o Claude no Chrome) com o marcador de expurgo; só ali o Chrome
+    # valida o expurgo. Os livros parados na preparação são coordenação do Comandante (R37) e a leitura sem livro é a
+    # manutenção do próprio sistema (R36): aparecem na Sala como informação, nunca no alerta
+    livros = len(livros_para_expurgo(bib))
+    prep = 0
+    if tem_livro and bib.execute("SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = 'passaporte'").fetchone():
+        prep = bib.execute("SELECT COUNT(*) FROM passaporte p JOIN livro l ON l.id = p.livro_id WHERE p.fase = 'preparacao' "
+                           "AND l.situacao NOT IN ('excluido', 'unido')").fetchone()[0]
+    return {"livros_para_expurgo": livros, "migrados_no_chrome": pend, "total": livros + pend,
+            "na_preparacao": prep, "documentos_sem_uso": docs, "achados_sem_livro": ach}
+
+
+SEM_ESTRELA = "COALESCE(l.estrela, 'sem') IN ('sem', '')"
+
+
+def livros_para_expurgo(bib: sqlite3.Connection) -> list[str]:
+    """R39: os livros sem nenhuma estrela na verificação externa — os únicos que o Claude no Chrome valida para expurgo."""
+    t = {r[0] for r in bib.execute("SELECT name FROM sqlite_master WHERE type = 'table'")}
+    if not {"livro", "passaporte"} <= t:
+        return []
+    return [r[0] for r in bib.execute(
+        "SELECT l.id FROM livro l JOIN passaporte p ON p.livro_id = l.id WHERE p.fase = 'analise externa' "
+        f"AND l.situacao NOT IN ('excluido', 'unido') AND {SEM_ESTRELA} ORDER BY l.id")]
 
 
 def ultimo() -> dict[str, Any] | None:

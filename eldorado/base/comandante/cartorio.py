@@ -92,6 +92,19 @@ def candidatos(con: sqlite3.Connection, hoje: str) -> dict[str, list[str]]:
     return out
 
 
+def leituras_orfas(con: sqlite3.Connection, hoje: str) -> list[tuple]:
+    """Os achados pendentes de dia anterior cujo livro pedido (dados.livro_id) já saiu da esteira: arquivo, excluído ou unido."""
+    try:
+        return con.execute(
+            "SELECT a.id, a.motor, a.encontrado_em, COALESCE(a.link_oficial, a.link_divulgacao), l.id, "
+            "CASE WHEN l.situacao IN ('excluido', 'unido') THEN l.situacao ELSE p.fase END "
+            "FROM achado a JOIN livro l ON l.id = json_extract(a.dados, '$.livro_id') LEFT JOIN passaporte p ON p.livro_id = l.id "
+            "WHERE a.livro_id IS NULL AND COALESCE(a.decisao, 'pendente') = 'pendente' AND COALESCE(a.encontrado_em, '') < ? "
+            "AND (p.fase = 'arquivo' OR l.situacao IN ('excluido', 'unido'))", (hoje,)).fetchall()
+    except sqlite3.Error:
+        return []
+
+
 def comandar(con: sqlite3.Connection, diario, missao, hoje: str | None = None) -> dict[str, Any]:
     """Uma passagem do Comandante sobre o Cartório: o destino de cada livro parado na preparação."""
     from ..cartorio.cartorio import Cartorio
@@ -114,6 +127,14 @@ def comandar(con: sqlite3.Connection, diario, missao, hoje: str | None = None) -
             if ok:
                 r = cart.revalidar(lid, {}, f"{motivo}: validado por ordem do Comandante", analise="interna")
                 conta(r["etapa"] or "?", True)
+    # 02/11/2026: a leitura que chegou depois de o livro sair da esteira (o voo terminou com o livro já arquivado, excluído
+    # ou unido) ficava pendente para sempre — o Comandante a registra como descartada, com o motivo (o registro fica no Cérebro)
+    orfas = leituras_orfas(con, hoje)
+    for i, motor, enc, link, lid, sit in orfas:
+        diario.emitir("achado.descartado", "comandante", {"id": i, "motor": motor, "encontrado_em": enc, "decisao": "pendente", "link": link,
+                                                          "motivo": f"a leitura chegou com o livro {lid} já em {sit}: sem livro na esteira",
+                                                          "descartado_em": datetime.now().astimezone().isoformat()})
+    destino["leituras órfãs descartadas"] = len(orfas)
     res = {k: len(v) for k, v in c.items()} | {"destino": destino}
     diario.emitir("medicao.registrada", "comandante", {"marcador": "comandante:cartorio", "nivel": "componente", "em": datetime.now().astimezone().isoformat(),
                                                        "valor": float(sum(len(v) for k, v in c.items() if k != "aguardam_motores")), "motivo": str(res)[:500]})

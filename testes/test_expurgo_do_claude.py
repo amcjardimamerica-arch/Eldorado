@@ -28,7 +28,10 @@ def test_a_ferramenta_so_indica_e_registra(tmp_path, monkeypatch):
         json.dumps({"itens": [{"id": "op-1", "veredito": None}, {"id": "op-2", "veredito": "manter"}]})
     )
     c = expurgo_claude.candidatos(con)
-    assert c == {"documentos_sem_uso": 1, "achados_sem_livro": 1, "migrados_no_chrome": 1, "total": 3}
+    # R39 (titular, 02/11/2026): o alerta (total) é só dos livros sem estrela na verificação externa e dos migrados no Chrome;
+    # o documento e o achado sem livro seguem indicados, como a manutenção do sistema (R36), fora do alerta
+    assert c["documentos_sem_uso"] == 1 and c["achados_sem_livro"] == 1 and c["migrados_no_chrome"] == 1
+    assert c["total"] == c["livros_para_expurgo"] + c["migrados_no_chrome"] == 1
     assert con.execute("SELECT COUNT(*) FROM documento").fetchone()[0] == 2  # nada saiu
     assert expurgo_claude.ultimo() is None
     expurgo_claude.registrar({"documentos": 1}, "teste", quando="2026-11-02T10:00:00+00:00")
@@ -37,7 +40,7 @@ def test_a_ferramenta_so_indica_e_registra(tmp_path, monkeypatch):
 
 def test_a_sala_mostra_o_ultimo_expurgo_e_os_indicados():
     fonte = Path("eldorado/base/painel/sala.py").read_text(encoding="utf-8")
-    assert '"es_expurgo"' in fonte and "o sistema não apaga; o Claude avalia e expurga" in fonte
+    assert '"es_expurgo"' in fonte and "para o Claude no Chrome validar o expurgo (R39)" in fonte
     assert Path("expurgos/2026-10-30T115556.json").exists()
     assert sum(len(json.loads(Path(f"verificacao/migrados/parte-{i}.json").read_text(encoding="utf-8"))["itens"]) for i in (1, 2, 3)) == 716
 

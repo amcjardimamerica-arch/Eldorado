@@ -25,6 +25,9 @@ INSTRUCOES_LEI = ("Persiga o edital oficial, com todas as regras da oportunidade
                   "No incentivo fiscal por lei (Rouanet, Goyazes, fundos da criança e do idoso) não há edital comum: "
                   "a lei e o chamamento são o documento oficial — comprove os itens neles. ")
 INSTRUCOES = (
+    "EXPURGO (R39): o livro com 'verificacao_para_expurgo': true não tem nenhuma estrela depois das 5 etapas do Cartório; confirme a "
+    "oportunidade na fonte oficial (decida 'valido' com os itens) ou, se não for oportunidade ou não existir, decida 'descartar' "
+    "com o motivo — só esse veredito libera o expurgo. "
     "Para cada livro: abra o link oficial (e, se preciso, a divulgação). Confira cada certidão na fonte. Para cada item que falta, "
     "traga o valor com o TRECHO LITERAL do documento da oportunidade original, a página e o endereço; informe em 'link_original' o "
     "endereço da oportunidade original (o site do órgão ou do financiador; o livro pode ter só a divulgação); ou a DISPENSA, com a justificativa de que o "
@@ -165,6 +168,8 @@ def gerar_lote(con: sqlite3.Connection, hoje: date, maximo: int | None = None) -
         livros.append({"livro_id": lv["id"], "titulo": lv["titulo"], "orgao": lv["orgao"], "uf": lv["uf"], "link_oficial": lv["link_oficial"],
                        "link_divulgacao": lv["link_divulgacao"], "estrela": lv["estrela"], "selo_livro": lv["selo_livro"],
                        "prazo": lv["situacao_prazo"], "fim_inscricao": lv["inscricao_fim"],
+                       # R39: sem nenhuma estrela depois das 5 etapas do Cartório → o Chrome valida a oportunidade ou o expurgo
+                       "verificacao_para_expurgo": (lv["estrela"] or "sem") in ("sem", ""),
                        "certidoes": [{"item": k, "valor": v["valor"], "trecho": v.get("trecho"), "pagina": v.get("pagina")}
                                      for k, v in sorted(validas.items())],
                        "faltam": I.faltando(validas),

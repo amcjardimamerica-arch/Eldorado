@@ -539,6 +539,19 @@
     "testes/test_comandante_cartorio.py::test_a_escada_nao_busca_sem_link_nem_completo",
     "testes/test_comandante_cartorio.py::test_a_lei_e_o_chamamento"
    ]
+  },
+  {
+   "id": "R39",
+   "data": "2026-11-02",
+   "tema": "o alerta do expurgo é só da verificação externa",
+   "regra": "O expurgo é feito apenas para o livro SEM NENHUMA ESTRELA que já passou pelas 5 etapas do Cartório sem encontrar a oportunidade: ele vai à verificação externa com o marcador de expurgo e só o Claude no Chrome valida (oportunidade com itens, ou descarte com o motivo). Só esses casos geram o alerta de expurgo na Sala. Os livros parados na preparação são etapa do sistema sob a coordenação do Comandante (R37) e não geram alerta de expurgo; a leitura sem livro segue a manutenção do sistema (R36), apenas informada. O motivo de cada livro expurgado é aprendizado para os motores e o Comandante.",
+   "porque": "titular, 02/11/2026: os 1.835 presos na preparação serão verificados gradualmente pelo Comandante e não devem gerar alerta para o expurgo do Claude; a etapa final da oportunidade que não encontra dados é a verificação no Claude Chrome, e só ali se valida o expurgo.",
+   "onde": "eldorado/base/cartorio/expurgo_claude.py (candidatos, livros_para_expurgo); eldorado/base/painel/sala.py (es_expurgo); eldorado/base/cartorio/analise_externa.py (gerar_lote: verificacao_para_expurgo)",
+   "travas": [
+    "testes/test_expurgo_r39.py::test_so_o_livro_sem_estrela_na_verificacao_externa_alerta",
+    "testes/test_expurgo_r39.py::test_preparacao_e_leitura_sem_livro_nao_alertam",
+    "testes/test_expurgo_r39.py::test_o_lote_marca_o_livro_para_expurgo"
+   ]
   }
  ]
 }
