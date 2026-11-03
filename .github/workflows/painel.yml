@@ -8,7 +8,9 @@ name: Painel
 on:
   push:                       # cada alteração do código, das configurações ou da página republica o site na hora
     branches: [main]
-    paths: ["eldorado/**", "config/**", "workflows/**", ".github/workflows/painel.yml"]
+    # R40 (titular, 03/11/2026): toda gravação de DADOS também republica (os eventos, os vereditos e os expurgos): o site
+    # mostra a Biblioteca de agora, não a da última mudança de código
+    paths: ["eldorado/**", "config/**", "workflows/**", ".github/workflows/painel.yml", "eventos/**", "verificacao/**", "expurgos/**"]
   workflow_run:
     workflows: ["Eldorado"]
     types: [completed]
@@ -37,6 +39,13 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -e .
+      - name: Os vereditos que chegaram e ainda não foram importados (R40)
+        # o veredito do Chrome enviado agora entra no banco desta publicação; o ciclo da máquina de casa o importa de vez
+        run: |
+          for f in verificacao/vereditos/*.json; do
+            [ -e "$f" ] || continue
+            eldorado vereditos "$f" || echo "::warning::o veredito $f não foi importado"
+          done
       - name: Os eventos mais recentes no banco (o estado de agora)
         # um evento recusado não pode deixar o site velho (25/10/2026: a republicação ficou parada pelas uniões repetidas):
         # avisa e segue, publicando com o que foi aplicado

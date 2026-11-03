@@ -552,6 +552,18 @@
     "testes/test_expurgo_r39.py::test_preparacao_e_leitura_sem_livro_nao_alertam",
     "testes/test_expurgo_r39.py::test_o_lote_marca_o_livro_para_expurgo"
    ]
+  },
+  {
+   "id": "R40",
+   "data": "2026-11-03",
+   "tema": "nenhum dado desatualizado nem decorativo",
+   "regra": "O Cartório e todas as páginas mostram a Biblioteca de agora, pelo banco relacional: a etapa de cada livro é a do passaporte, a estrela é a do livro e cada número é contado no banco. Toda gravação de dados (eventos, vereditos, expurgos) republica o painel, que importa os vereditos pendentes e aplica os eventos antes de gerar. Nenhum número fixo, vazio de propósito ou com rótulo que não corresponda ao que conta.",
+   "porque": "titular, 03/11/2026: o Cartório mostrava 41 livros aguardando o Claude depois de um envio; os dados não podem ficar desatualizados em nenhum ponto do sistema.",
+   "onde": ".github/workflows/painel.yml (gatilhos e vereditos pendentes); eldorado/base/painel/cartorio.py (resumo, contestadas); eldorado/base/painel/pagina/dashboard.html (cartões do Cartório)",
+   "travas": [
+    "testes/test_cartorio_tempo_real.py::test_toda_gravacao_de_dados_republica_e_importa_os_vereditos",
+    "testes/test_cartorio_tempo_real.py::test_o_cartorio_conta_no_banco_sem_decoracao"
+   ]
   }
  ]
 }

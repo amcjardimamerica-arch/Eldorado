@@ -60,6 +60,11 @@ REPASSE = {
 }
 
 
+def _horas_atras(agora: str, horas: int) -> str:
+    from datetime import timedelta
+    return (datetime.fromisoformat(agora) - timedelta(hours=horas)).astimezone().isoformat(timespec="seconds")
+
+
 def _degrau(escada: str | None) -> str | None:
     m = re.search(r"degrau (\d|P)", escada or "")
     return m.group(1) if m else None
@@ -194,7 +199,12 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection | None, rede=None, a
         },
         "fluxos": _fluxos(passagens, agora),
         "resumo": {
-            "certidoes": len(lista),
+            # 03/11/2026 (titular, a validação do Cartório): «certidões» era o número de LIVROS; agora as certidões de verdade
+            # (comprovadas ou dispensadas) dos livros ativos, as das últimas 24 h e os livros, cada um com o seu nome
+            "livros": len(lista),
+            "certidoes": sum(1 for lv in livros for c in certs.get(lv["id"], []) if c["situacao"] in ("comprovado", "dispensado")),
+            "certidoes_24h": sum(1 for lv in livros for c in certs.get(lv["id"], [])
+                                 if c["situacao"] in ("comprovado", "dispensado") and str(c.get("em") or "") >= _horas_atras(agora, 24)),
             "nesta_execucao": comprovados_24h,
             "com_link_oficial": sum(1 for x in lista if x["link_oficial"]),
             "taxa_link_oficial": round(sum(1 for x in lista if x["link_oficial"]) / len(lista), 3) if lista else None,
@@ -216,15 +226,13 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection | None, rede=None, a
         "por_item": por_item,
         "por_balcao": dict(balcoes),
         "por_safra": dict(sorted(safras.items(), reverse=True)[:8]),
-        "por_versao": {},
-        "cinza_conferidos": {
-            "certificados": sum(1 for cs in certs.values() for c in cs if c["situacao"] == "pendente"),
-            "conferidos": 0,
-            "certidoes": 0,
-        },
+        # 03/11/2026: «por versão» (sempre vazio) e «cinza conferidos» (dois números fixos em zero) eram decorativos: saíram;
+        # no lugar, as certidões CONTESTADAS dos livros ativos (o valor achado contradiz o edital), medidas no banco
+        "contestadas": {"certidoes": sum(1 for lv in livros for c in certs.get(lv["id"], []) if c["situacao"] == "contestado"),
+                        "livros": sum(1 for lv in livros if any(c["situacao"] == "contestado" for c in certs.get(lv["id"], [])))},
         "gabarito": {
             "orgaos_com_gabarito": len({lv["orgao"] for lv in livros if lv["orgao"] and lv["origem"] == "confirmado"}),
-            "itens_achados_pelo_gabarito": {},
+
         },
         "certidoes": sorted(lista, key=lambda x: (not x["aberta"], x["prazo"] or "9999")),
     }
