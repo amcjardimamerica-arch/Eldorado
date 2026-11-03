@@ -564,6 +564,19 @@
     "testes/test_cartorio_tempo_real.py::test_toda_gravacao_de_dados_republica_e_importa_os_vereditos",
     "testes/test_cartorio_tempo_real.py::test_o_cartorio_conta_no_banco_sem_decoracao"
    ]
+  },
+  {
+   "id": "R41",
+   "data": "2026-11-03",
+   "tema": "nada parcial: a verificação do Chrome é completa e total",
+   "regra": "Quando se verifica, não se faz nada parcial. O lote do Claude no Chrome traz no topo da instrução a ENTREGA COMPLETA E TOTAL: o total de livros, um veredito decisivo para cada um, num único arquivo, com o lote e a versão copiados; reduzir o escopo ou entregar parcial é proibido — se não for verificar tudo, não entrega nada. O sistema confere: o veredito que não cobre todos os livros devidos do lote (os que seguem na análise externa e já estavam no lote quando o Chrome o recebeu) é recusado por inteiro, nada é importado, e a recusa vira alarme na Sala com o que faltou. O mesmo vale para o lote de documentos do expurgo (todos os grupos).",
+   "porque": "titular, 03/11/2026: o lote de 42 livros voltou com 4 verificados (menos de 10%) e o restante foi deixado de lado; a entrega parcial gera retrabalho.",
+   "onde": "eldorado/base/cartorio/analise_externa.py (ENTREGA_COMPLETA, conferir_completo, importar); eldorado/base/cartorio/manutencao_expurgo.py (INSTRUCOES, importar_veredito)",
+   "travas": [
+    "testes/test_entrega_completa.py::test_o_veredito_parcial_e_recusado_por_inteiro",
+    "testes/test_entrega_completa.py::test_o_completo_considera_so_os_devidos",
+    "testes/test_entrega_completa.py::test_a_instrucao_vai_no_topo_do_lote"
+   ]
   }
  ]
 }

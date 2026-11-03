@@ -2,17 +2,21 @@
 livro; as etapas na ordem; o relatório de cada etapa; a etapa 5 (o veredito do Chrome)."""
 import json
 from datetime import date
+from functools import partial
 
 import msgspec
 from conftest import AGORA, ev
 
-from eldorado.base.cartorio.analise_externa import gerar_lote, importar
+from eldorado.base.cartorio.analise_externa import gerar_lote
+from eldorado.base.cartorio.analise_externa import importar as _imp
 from eldorado.base.cartorio.auditoria import arquivar_encerrados
 from eldorado.base.cartorio.cartorio import Cartorio
 from eldorado.base.missao import itens as I
 from eldorado.base.missao.oportunidades import MissaoOportunidades
 from eldorado.base.nucleo.contratos import Achado
 from eldorado.base.nucleo.eventos import ler
+
+importar = partial(_imp, exigir_completo=False)  # R41: a conferência do lote completo tem trava própria (test_entrega_completa)
 
 VALORES = {"Objeto": "seleção de projetos culturais", "Órgão / financiador": "Secretaria de Cultura", "Esfera": "estadual",
            "Território": "Estado de Goiás", "Área de atuação": "cultura", "Modalidade": "fomento", "Valor": "R$ 500.000,00",

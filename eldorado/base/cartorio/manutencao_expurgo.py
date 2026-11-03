@@ -151,6 +151,7 @@ def _lote_chrome(pasta: Path, docs: list[dict]) -> Path | None:
     arq = pasta / f"lote-chrome-documentos-{dia}-auto.json"
     atual = json.loads(arq.read_text(encoding="utf-8")) if arq.exists() else {"lote": arq.stem, "instrucoes": INSTRUCOES,
                                                                               "formato_do_veredito": FORMATO, "grupos": []}
+    atual["instrucoes"], atual["lote"], atual["formato_do_veredito"] = INSTRUCOES, arq.stem, FORMATO   # R41: a instrução de agora
     grupos = {g["grupo"]: g for g in atual["grupos"]}
     for d in docs:
         gid = "G-" + hashlib.sha1(d["grupo"].encode()).hexdigest()[:12]
@@ -165,17 +166,33 @@ def _lote_chrome(pasta: Path, docs: list[dict]) -> Path | None:
 
 
 INSTRUCOES = (
+    "ENTREGA COMPLETA E TOTAL (R41): entregue um veredito decisivo para CADA grupo deste lote, num único arquivo, com o 'lote' "
+    "copiado deste arquivo; não entregue parcial — o sistema recusa por inteiro o veredito que não cobre todos os grupos. "
     "Para cada GRUPO (uma oportunidade e os seus documentos), abra os endereços e decida pela FONTE OFICIAL: "
     "'oportunidade' só se for edital/chamada/prêmio/bolsa/fomento REAL, com inscrição aberta ou prevista (não encerrada); "
     "informe titulo, orgao, link_oficial, prazo_inscricao (AAAA-MM-DD) e o trecho literal que comprova o prazo. "
     "'vincular' se a oportunidade já for um livro do Eldorado (informe livro_id). 'descartar' em todo o resto, com o motivo. "
     "Nunca invente: sem comprovação na fonte, 'descartar'.")
-FORMATO = {"vereditos": [{"grupo": "G-…", "decisao": "oportunidade | vincular | descartar", "motivo": "…", "titulo": "…",
+FORMATO = {"lote": "<o nome deste arquivo>", "vereditos": [{"grupo": "G-…", "decisao": "oportunidade | vincular | descartar", "motivo": "…", "titulo": "…",
                           "orgao": "…", "link_oficial": "…", "prazo_inscricao": "AAAA-MM-DD", "trecho": "…", "livro_id": "…"}]}
 
 
 def importar_veredito(ret: dict, bib: sqlite3.Connection, pasta: Path, diario) -> dict[str, int]:
     """O veredito do Chrome sobre os grupos de documentos: oportunidade → achado novo; vincular → achado do livro; descartar → sai."""
+    # R41 (titular, 03/11/2026): o veredito cobre TODOS os grupos do lote que diz ser, ou nada entra
+    nome = str(ret.get("lote") or "")
+    arq_lote = pasta / f"{Path(nome).stem}.json" if nome else None
+    if not arq_lote or not arq_lote.exists():
+        diario.emitir("alarme.aberto", "expurgo-sistema", {"gravidade": "media", "modulo": "expurgo", "aberto_em": datetime.now(timezone.utc).isoformat(),
+                                                          "mensagem": "veredito de documentos recusado (R41): sem o 'lote' do arquivo de origem"})
+        return {"recusado (R41)": 1}
+    do_lote = {g["grupo"] for g in json.loads(arq_lote.read_text(encoding="utf-8")).get("grupos", [])}
+    feitos = {v.get("grupo") for v in ret.get("vereditos", []) if str(v.get("decisao") or "").lower() in ("oportunidade", "vincular", "descartar")}
+    if do_lote - feitos:
+        diario.emitir("alarme.aberto", "expurgo-sistema", {"gravidade": "media", "modulo": "expurgo", "aberto_em": datetime.now(timezone.utc).isoformat(),
+                                                          "mensagem": f"veredito de documentos recusado (R41, nada parcial): {len(feitos & do_lote)} de "
+                                                                      f"{len(do_lote)} grupos do {nome}"})
+        return {"recusado (R41): grupos sem veredito": len(do_lote - feitos)}
     grupos: dict[str, dict] = {}
     for p in pasta.glob("lote-chrome-documentos-*.json"):
         try:

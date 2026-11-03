@@ -63,7 +63,11 @@ def test_a_base_a_fila_as_duas_tentativas_e_o_chrome(bancos, gravador, tmp_path)
     assert b.execute("SELECT fase FROM passaporte WHERE livro_id = 'R'").fetchone()[0] == "preparacao"
     CB.ao_chrome(b, Diario(ev, "c"), {**av["R"], "fase": "preparacao"}, "ensaio do lote: enviado à mão")  # o restante testa o lote
     _ap(gravador, ev)
-    from eldorado.base.cartorio.analise_externa import gerar_lote, importar
+    from functools import partial
+
+    from eldorado.base.cartorio.analise_externa import gerar_lote
+    from eldorado.base.cartorio.analise_externa import importar as _imp
+    importar = partial(_imp, exigir_completo=False)  # R41: a conferência do lote completo tem trava própria (test_entrega_completa)
 
     lote = gerar_lote(b, agora.date())
     r_ = next(x for x in lote["livros"] if x["livro_id"] == "R")

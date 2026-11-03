@@ -75,10 +75,13 @@ def test_b_o_limite_vem_da_configuracao(gravador, bancos, tmp_path):
 def test_c_o_lote_e_regerado_quando_a_fila_muda(gravador, bancos, diario, tmp_path):
     import json
     from datetime import date
+    from functools import partial
 
     from test_linha_cartorio import aplicar
 
-    from eldorado.base.cartorio.analise_externa import atualizar_lote_do_dia, importar
+    from eldorado.base.cartorio.analise_externa import atualizar_lote_do_dia
+    from eldorado.base.cartorio.analise_externa import importar as _imp
+    importar = partial(_imp, exigir_completo=False)  # R41: a conferência do lote completo tem trava própria (test_entrega_completa)
 
     _fila(gravador, 5)
     b, pasta, dia, cfg = bancos["biblioteca"], tmp_path / "lotes", date(2026, 10, 29), {"maximo_lote": None, "tamanho_parte": 50}
@@ -125,8 +128,10 @@ def test_d_as_partes_somam_o_total_sem_repetir(gravador, bancos, tmp_path):
 
 def test_e_importar_aceita_o_veredito_de_uma_parte(gravador, bancos, diario):
     import json
+    from functools import partial
 
-    from eldorado.base.cartorio.analise_externa import importar
+    from eldorado.base.cartorio.analise_externa import importar as _imp
+    importar = partial(_imp, exigir_completo=False)  # R41: a conferência do lote completo tem trava própria (test_entrega_completa)
 
     _fila(gravador, 2)
     r = importar(
@@ -154,10 +159,13 @@ def _vazios(gravador, n, prefixo):
 
 def test_f_g_h_a_triagem_aprendida(gravador, bancos, diario, tmp_path):
     import json
+    from functools import partial
 
     from test_linha_cartorio import aplicar
 
-    from eldorado.base.cartorio.analise_externa import PREFIXO_TRIAGEM, aplicar_triagem, importar, triagem_aprendida
+    from eldorado.base.cartorio.analise_externa import PREFIXO_TRIAGEM, aplicar_triagem, triagem_aprendida
+    from eldorado.base.cartorio.analise_externa import importar as _imp
+    importar = partial(_imp, exigir_completo=False)  # R41: a conferência do lote completo tem trava própria (test_entrega_completa)
 
     b, cfg = bancos["biblioteca"], {"triagem_precisao_minima": 0.95, "triagem_minimo_vereditos": 20}
     _vazios(gravador, 20, "V")

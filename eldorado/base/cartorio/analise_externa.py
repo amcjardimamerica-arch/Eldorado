@@ -21,6 +21,13 @@ import msgspec
 from ..missao import itens as I
 from ..nucleo.eventos import Diario, agora
 
+# R41 (titular, 03/11/2026): nada parcial — a verificação é completa e total, ou não é entregue
+ENTREGA_COMPLETA = ("ENTREGA COMPLETA E TOTAL (R41): conte os livros deste lote antes de começar (o total está em 'total_livros'). "
+                    "Entregue UM veredito decisivo para CADA livro do lote, num único arquivo, copiando deste arquivo o 'lote' e o "
+                    "'gerado_em' (em 'lote_gerado_em'). É proibido reduzir o escopo, escolher uma parte ou entregar parcial. Se não "
+                    "conseguir verificar todos, não entregue nada: o sistema recusa por inteiro o veredito que não cobre todos os "
+                    "livros, e o trabalho parcial vira retrabalho. ")
+DECISIVAS_NAO = ("", "pendente", "nao verificado", "não verificado", "parcial")
 INSTRUCOES_LEI = ("Persiga o edital oficial, com todas as regras da oportunidade. "
                   "No incentivo fiscal por lei (Rouanet, Goyazes, fundos da criança e do idoso) não há edital comum: "
                   "a lei e o chamamento são o documento oficial — comprove os itens neles. ")
@@ -68,6 +75,7 @@ class Veredito(msgspec.Struct):
 class Retorno(msgspec.Struct):
     vereditos: list[Veredito]
     lote: str | None = None
+    lote_gerado_em: str | None = None                                # R41: a versão do lote que o Chrome recebeu
 
 
 CONFIG = Path("config/cartorio.toml")
@@ -181,7 +189,8 @@ def gerar_lote(con: sqlite3.Connection, hoje: date, maximo: int | None = None) -
     # 02/11/2026 (titular, R38): a ordem do Comandante — Goiás → Brasil → internacional → outras capitais e estados
     from ..comandante.cartorio import chave_de_busca
     livros.sort(key=lambda x: chave_de_busca(x.pop("_abr", None), x.get("uf"), x.get("fim_inscricao"), hoje.isoformat(), len(x.get("faltam") or [])))
-    return {"lote": f"lote-{hoje.isoformat()}", "gerado_em": agora(), "instrucoes": INSTRUCOES_LEI + INSTRUCOES, "itens_validos": list(I.DOZE),
+    return {"lote": f"lote-{hoje.isoformat()}", "gerado_em": agora(), "total_livros": len(livros),
+            "instrucoes": ENTREGA_COMPLETA + INSTRUCOES_LEI + INSTRUCOES, "itens_validos": list(I.DOZE),
             "formato_do_veredito": {"vereditos": [{"livro_id": "…", "decisao": "valido | descartar", "motivo": "…", "como_encontrou": "…",
                                                    "itens": [{"item": "…", "valor": "…", "trecho": "…", "pagina": 1, "url": "…"}],
                                                    "dispensas": [{"item": "…", "justificativa": "…"}], "aprendizado": "…"}]},
@@ -239,12 +248,39 @@ def atualizar_lote_do_dia(con: sqlite3.Connection, pasta_lotes: Path, hoje: date
     return {"lote": nome, "livros": len(livros), "partes": nomes_partes, "mudou": True}
 
 
-def importar(retorno: bytes | str, con: sqlite3.Connection, diario: Diario) -> list[dict[str, Any]]:
+def conferir_completo(r: "Retorno", con: sqlite3.Connection, pasta_lotes: Path = Path("verificacao/lotes")) -> list[str] | str:
+    """R41: os livros do lote que ficaram sem veredito decisivo ([] = completo), ou o motivo da recusa. Não contam como falta
+    o livro que entrou no lote depois de o Chrome o receber nem o que já saiu da análise externa."""
+    if not r.lote:
+        return "o veredito não diz de qual lote é (o campo 'lote', copiado do arquivo do lote)"
+    arq = pasta_lotes / f"{Path(r.lote).stem}.json"
+    if not arq.exists():
+        return f"o lote {r.lote} não está em {pasta_lotes}"
+    lote = json.loads(arq.read_text(encoding="utf-8"))
+    esperados = [lv.get("livro_id") for lv in lote.get("livros", []) if lv.get("livro_id")]
+    fase = dict(con.execute("SELECT livro_id, fase FROM passaporte").fetchall())
+    entrou = dict(con.execute("SELECT livro_id, entrou_em FROM passaporte").fetchall())
+    corte = r.lote_gerado_em or lote.get("gerado_em")
+    devidos = [i for i in esperados if fase.get(i) == "analise externa" and not (corte and str(entrou.get(i) or "") > corte)]
+    entregues = {v.livro_id for v in r.vereditos if str(v.decisao or "").strip().lower() not in DECISIVAS_NAO}
+    return [i for i in devidos if i not in entregues]
+
+
+def importar(retorno: bytes | str, con: sqlite3.Connection, diario: Diario, exigir_completo: bool = True) -> list[dict[str, Any]]:
     """Valida e armazena o veredito do Chrome; o livro segue na linha. Item fora dos 12, sem trecho ou de livro fora da
     etapa 5 é recusado com o motivo (nada entra sem prova)."""
     from .cartorio import Cartorio
     from .passaporte import Passaporte
     r = msgspec.json.decode(retorno, type=Retorno)
+    if exigir_completo:                                         # R41: nada parcial — ou o lote inteiro, ou nada entra
+        falta = conferir_completo(r, con)
+        if falta:
+            motivo = falta if isinstance(falta, str) else (
+                f"entrega parcial do {r.lote}: {len(r.vereditos)} veredito(s), faltam {len(falta)} livro(s): {', '.join(falta[:12])}"
+                + ("…" if len(falta) > 12 else ""))
+            diario.emitir("alarme.aberto", "analise-externa", {"gravidade": "media", "modulo": "analise-externa", "aberto_em": agora(),
+                                                               "mensagem": f"veredito recusado (R41, nada parcial): {motivo}"[:500]})
+            return [{"recusado": f"R41 — veredito recusado por inteiro, nada importado: {motivo}"}]
     cartorio = Cartorio(con, None, diario)
     saida = []
     for v in r.vereditos:
