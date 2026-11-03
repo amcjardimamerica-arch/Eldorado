@@ -70,8 +70,9 @@ def livros_para_a_rede(biblioteca, onde: str = "", args: tuple = ()) -> dict[str
 
 
 class Rede:
-    def __init__(self):
-        self.modelo = linear_model.LogisticRegression(optimizer=optim.SGD(0.1))
+    def __init__(self, lr: float = 0.1, limiar: float = 0.5):
+        self.modelo = linear_model.LogisticRegression(optimizer=optim.SGD(lr))
+        self.limiar = limiar                                        # 02/11/2026: o limiar de decisão de cada pergunta (benchmark)
         self.discernimento = metrics.ROCAUC()
         self.precisao = metrics.Precision()
         self.revocacao = metrics.Recall()
@@ -85,8 +86,8 @@ class Rede:
         x = caracteristicas(item)
         p = self.modelo.predict_proba_one(x)
         self.discernimento.update(valido, p)
-        self.precisao.update(valido, p.get(True, 0.0) >= 0.5)
-        self.revocacao.update(valido, p.get(True, 0.0) >= 0.5)
+        self.precisao.update(valido, p.get(True, 0.0) >= getattr(self, "limiar", 0.5))
+        self.revocacao.update(valido, p.get(True, 0.0) >= getattr(self, "limiar", 0.5))
         self.brier_soma += (p.get(True, 0.5) - (1.0 if valido else 0.0)) ** 2
         self.modelo.learn_one(x, valido)
         self.amostras += 1
@@ -125,24 +126,54 @@ def _host(u: str | None) -> str:
 
 
 def car_acao(acao: str, livro: dict[str, Any]) -> dict[str, float]:
-    """Esta ação vai trazer informação nova para este livro?"""
+    """Esta ação vai trazer informação nova para este livro?
+
+    02/11/2026 (benchmark): mais o contexto da tentativa — quantas o livro já teve, o regime da oportunidade, o território,
+    o prazo e quantos itens faltam (AUC prequencial 0,797 → 0,844; Brier 0,166 → 0,143)."""
     f = {"vies": 1.0, f"acao={acao}": 1.0, f"dominio={_host(livro.get('link_oficial'))}": 1.0, f"estrela={livro.get('estrela') or 'sem'}": 1.0,
          f"acao_estrela={acao}|{livro.get('estrela') or 'sem'}": 1.0}
-    for item in livro.get("faltam") or []:
+    faltam = livro.get("faltam") or []
+    for item in faltam:
         f[f"falta={item}"] = 1.0
         f[f"acao_falta={acao}|{item}"] = 1.0
+    if livro.get("tentativas_n") is not None:
+        k = min(int(livro["tentativas_n"]), 6)
+        f[f"tentativa_n={k}"] = 1.0
+        f[f"acao_n={acao}|{k}"] = 1.0
+    if livro.get("titulo") is not None or livro.get("modalidade") is not None:
+        from ...motores.pilotos.interceptador import regime_de
+        rg = regime_de(livro.get("titulo") or "", livro.get("modalidade"))
+        f[f"regime={rg}"] = 1.0
+        f[f"acao_regime={acao}|{rg}"] = 1.0
+    if livro.get("abrangencia"):
+        f[f"abr={livro['abrangencia']}"] = 1.0
+    if "fim" in livro:
+        ref = str(livro.get("em") or agora())[:10]
+        f["prazo=" + ("aberto" if livro["fim"] and livro["fim"] >= ref else "encerrado" if livro["fim"] else "sem")] = 1.0
+    f[f"nfaltam={min(len(faltam), 8)}"] = 1.0
     return f
 
 
-def car_motor(motor: str, hora: int, dia: int) -> dict[str, float]:
-    """Este motor vai encontrar algo agora?"""
-    return {"vies": 1.0, f"motor={motor}": 1.0, f"hora={hora}": 1.0, f"dia={dia}": 1.0, f"motor_hora={motor}|{hora}": 1.0,
-            f"motor_dia={motor}|{dia}": 1.0}
+def car_motor(motor: str, hora: int, dia: int, recentes: list[bool] | None = None) -> dict[str, float]:
+    """Este motor vai encontrar algo agora?
+
+    02/11/2026 (benchmark): mais o resultado das últimas execuções do próprio motor (AUC 0,829 → 0,852; Brier 0,126 → 0,110)."""
+    f = {"vies": 1.0, f"motor={motor}": 1.0, f"hora={hora}": 1.0, f"dia={dia}": 1.0, f"motor_hora={motor}|{hora}": 1.0,
+         f"motor_dia={motor}|{dia}": 1.0}
+    if recentes is not None:
+        if recentes:
+            u = int(recentes[-1])
+            f[f"ultimo={u}"] = 1.0
+            f[f"motor_ultimo={motor}|{u}"] = 1.0
+            f[f"taxa5={round(sum(recentes) / len(recentes), 1)}"] = 1.0
+        else:
+            f["sem_historico"] = 1.0
+    return f
 
 
 class _Pergunta(Rede):
-    def __init__(self, car):
-        super().__init__()
+    def __init__(self, car, lr: float = 0.1, limiar: float = 0.5):
+        super().__init__(lr, limiar)
         self._car = car
 
     lote = None                                                    # o modelo em lote, quando discerne melhor (cerebro/lote.py)
@@ -155,8 +186,8 @@ class _Pergunta(Rede):
     def aprender_de(self, x: dict[str, float], valido: bool) -> None:
         p = self.modelo.predict_proba_one(x)                       # primeiro prevê (avaliação honesta), depois aprende
         self.discernimento.update(valido, p)
-        self.precisao.update(valido, p.get(True, 0.0) >= 0.5)
-        self.revocacao.update(valido, p.get(True, 0.0) >= 0.5)
+        self.precisao.update(valido, p.get(True, 0.0) >= getattr(self, "limiar", 0.5))
+        self.revocacao.update(valido, p.get(True, 0.0) >= getattr(self, "limiar", 0.5))
         self.brier_soma += (p.get(True, 0.5) - (1.0 if valido else 0.0)) ** 2
         self.modelo.learn_one(x, valido)
         self.amostras += 1
@@ -167,8 +198,12 @@ class RedeNeural:
     perde entre as execuções), e responde às três perguntas que as decisões fazem."""
     PERGUNTAS = ("oportunidade", "acao", "motor")
 
+    # 02/11/2026 (benchmark prequencial, estudos/bench_rede_2026_11_02.py): a taxa e o limiar de cada pergunta
+    CONFIG = {"oportunidade": (0.2, 0.5), "acao": (0.1, 0.45), "motor": (0.1, 0.35)}
+
     def __init__(self):
-        self.p = {k: _Pergunta(None) for k in self.PERGUNTAS}
+        self.p = {k: _Pergunta(None, *self.CONFIG[k]) for k in self.PERGUNTAS}
+        self.motor_recentes: dict[str, list[bool]] = {}
 
     def nota_oportunidade(self, livro: dict[str, Any]) -> float:
         return self.p["oportunidade"].nota_de(caracteristicas_livro(livro))
@@ -177,7 +212,7 @@ class RedeNeural:
         return self.p["acao"].nota_de(car_acao(acao, livro))
 
     def nota_motor(self, motor: str, hora: int, dia: int) -> float:
-        return self.p["motor"].nota_de(car_motor(motor, hora, dia))
+        return self.p["motor"].nota_de(car_motor(motor, hora, dia, (getattr(self, "motor_recentes", {}) or {}).get(motor, [])))
 
     lote: dict[str, Any] = {}
 
@@ -213,6 +248,8 @@ class RedeNeural:
         for r in biblioteca.execute("SELECT livro_id, em FROM certidao WHERE situacao IN ('comprovado','dispensado') ORDER BY em"):
             certs.setdefault(r["livro_id"], []).append(r["em"])
         estrela = {r["id"]: r["estrela"] for r in biblioteca.execute("SELECT id, estrela FROM livro")}
+        fim = {r["livro_id"]: r["inscricao_fim"] for r in biblioteca.execute("SELECT livro_id, inscricao_fim FROM livro_dados")}
+        n_tent: dict[str, int] = {}
         for r in biblioteca.execute("SELECT livro_id, ferramenta, em, resultado FROM tentativa WHERE fase = 'preparacao' ORDER BY em"):
             lv = livros.get(r["livro_id"])
             if not lv:
@@ -223,14 +260,21 @@ class RedeNeural:
                 res = {}
             trouxe = any(em > r["em"] for em in certs.get(r["livro_id"], [])) and (res.get("trouxe", True) or res.get("documentos", 1))
             acao = r["ferramenta"].split(" ")[0] if r["ferramenta"].startswith("motor") else r["ferramenta"]
-            casos.append((r["em"], "acao", car_acao(acao, {**lv, "estrela": estrela.get(r["livro_id"]), "faltam": res.get("faltam") or []}), bool(trouxe)))
+            casos.append((r["em"], "acao", car_acao(acao, {**lv, "estrela": estrela.get(r["livro_id"]), "faltam": res.get("faltam") or [],
+                                                           "tentativas_n": n_tent.get(r["livro_id"], 0), "fim": fim.get(r["livro_id"]),
+                                                           "em": r["em"]}), bool(trouxe)))
+            n_tent[r["livro_id"]] = n_tent.get(r["livro_id"], 0) + 1
         # motor: cada execução (achou ou não)
         fuso = ZoneInfo("America/Sao_Paulo")
         from ...motores.canal.motor import apelidos
         ap = apelidos()
-        for m, ini, ach in cerebro.execute("SELECT motor, inicio, achados FROM execucao_motor"):
+        recentes: dict[str, list[bool]] = {}
+        for m, ini, ach in sorted(cerebro.execute("SELECT motor, inicio, achados FROM execucao_motor").fetchall(), key=lambda r: str(r[1])):
             t = datetime.fromisoformat(ini).astimezone(fuso)
-            casos.append((ini, "motor", car_motor(ap.get(m, m), t.hour, t.weekday()), (ach or 0) > 0))
+            mm = ap.get(m, m)
+            casos.append((ini, "motor", car_motor(mm, t.hour, t.weekday(), list(recentes.get(mm, []))), (ach or 0) > 0))
+            recentes[mm] = (recentes.get(mm, []) + [(ach or 0) > 0])[-5:]
+        rede.motor_recentes = recentes
         casos = sorted(casos, key=lambda c: str(c[0]))
         for _, pergunta, x, valido in casos:
             rede.p[pergunta].aprender_de(x, valido)

@@ -449,10 +449,12 @@ SOB_DEMANDA = {                       # os estudos concluídos: a finalidade é 
     ".github/workflows/bench-ia2.yml": "estudo concluído (25/10/2026): o arranjo das IAs e o contexto (o resultado no parecer); só sob demanda",
     "estudos/bench_ia.py": "estudo concluído (25/10/2026): uma IA para as três funções; só sob demanda",
     "estudos/bench_ia2.py": "estudo concluído (25/10/2026): o arranjo das IAs e o contexto; só sob demanda",
+    "estudos/bench_rede_2026_11_02.py": "estudo concluído (02/11/2026): os parâmetros da rede (taxa, L2, limiar por pergunta); só sob demanda",
     ".github/workflows/ponte-teste.yml": "o teste da ponte da HostGator, sob demanda (o ciclo testa a ponte no início)",
 }
 AGUARDAM_DECISAO = {
-    "config/comparacao.toml": "fica (titular, 25/10/2026): a comprovação de cobertura antes de eliminar o Eldorado0 ainda não foi feita",
+    "config/comparacao.toml": "fica (titular, 25/10/2026): a comparação R01 roda (Sala, por dia); a comprovação de cobertura antes de "
+                              "eliminar o Eldorado0 aguarda uma base: o histórico migrado é um retrato de um dia (22/10)",
 }
 
 

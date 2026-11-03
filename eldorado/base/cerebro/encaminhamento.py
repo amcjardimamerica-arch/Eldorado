@@ -59,7 +59,9 @@ class Encaminhamento:
     def encaminhar(self, lv, ate: float | None = None) -> tuple[str, dict[str, Any] | None]:
         """Uma decisão da rede para um livro: quem age agora, e a informação nova (se veio)."""
         from ...motores.pilotos.interceptador import ORDEM
-        vivo = {"link_oficial": lv.link_oficial, "estrela": lv.estrela, "faltam": lv.faltam}
+        vivo = {"link_oficial": lv.link_oficial, "estrela": lv.estrela, "faltam": lv.faltam, "tentativas_n": len(lv.tentadas),
+                "titulo": getattr(lv, "titulo", None), "modalidade": getattr(lv, "modalidade", None), "fim": getattr(lv, "fim", None),
+                "abrangencia": getattr(lv, "abrangencia", None)}
         motores = [m for m in motores_do_livro(self.con, lv.id) if m in self.registro.ids() and not ja_pesquisado(self.con, lv.id, m)]
         abordagens = [n for n in ORDEM[lv.balcao] if n not in lv.tentadas]
         if self.rede is not None:                                   # a rede escolhe a ação de maior nota; a ordem do balcão desempata

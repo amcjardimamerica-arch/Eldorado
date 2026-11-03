@@ -40,7 +40,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 11385,
+   "linhas": 11823,
    "situacao": "em funcionamento",
    "ordem": 2
   },
@@ -116,6 +116,7 @@
     "test_expurgo_do_claude.py",
     "test_expurgo_enderecos.py",
     "test_expurgo_externo.py",
+    "test_expurgo_r39.py",
     "test_farol_analise.py",
     "test_fila.py",
     "test_fumaca_dados_reais.py",
@@ -166,10 +167,12 @@
     "test_r35_dados.py",
     "test_ranking_empresas.py",
     "test_rede_neural.py",
+    "test_rede_parametros.py",
     "test_regra_r09.py",
     "test_regras_tabela_unica.py",
     "test_releitura.py",
     "test_revisao_alarmes.py",
+    "test_sala_alertas_claude.py",
     "test_sala_ceu_estrelado.py",
     "test_sala_externa_sinal.py",
     "test_sala_mostradores.py",
@@ -228,6 +231,7 @@
     "test_expurgo_do_claude.py",
     "test_expurgo_enderecos.py",
     "test_expurgo_externo.py",
+    "test_expurgo_r39.py",
     "test_farol_analise.py",
     "test_fila.py",
     "test_fumaca_dados_reais.py",
@@ -267,9 +271,11 @@
     "test_r35_dados.py",
     "test_ranking_empresas.py",
     "test_rede_neural.py",
+    "test_rede_parametros.py",
     "test_regras_tabela_unica.py",
     "test_releitura.py",
     "test_revisao_alarmes.py",
+    "test_sala_alertas_claude.py",
     "test_sala_mostradores.py",
     "test_seguranca.py",
     "test_site_sem_vazio.py",
@@ -1923,6 +1929,7 @@
     "test_pilotos_no_painel.py",
     "test_pilotos_permanentes.py",
     "test_rede_neural.py",
+    "test_rede_parametros.py",
     "test_regras_tabela_unica.py",
     "test_revisao_alarmes.py",
     "test_seguranca.py"
@@ -2095,7 +2102,7 @@
   },
   {
    "arquivo": "eldorado/base/comandante/cartorio.py",
-   "linhas": 133,
+   "linhas": 154,
    "finalidade": "O COMANDANTE DO CARTÓRIO (titular, 02/11/2026 — R37 e R38).",
    "depende_de": [
     "eldorado/base/cartorio/cartorio.py",
@@ -2104,6 +2111,7 @@
     "eldorado/motores/pilotos/interceptador.py"
    ],
    "eventos": [
+    "achado.descartado",
     "medicao.registrada"
    ],
    "acionado_por": [
@@ -2576,7 +2584,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/encaminhamento.py",
-   "linhas": 201,
+   "linhas": 203,
    "finalidade": "A rede neural na fase 3 do Cartório (titular, 22/10/2026): quem age é a rede, não o Cartório.",
    "depende_de": [
     "eldorado/base/cartorio/passaporte.py",
@@ -4404,6 +4412,7 @@
     "test_espiao.py",
     "test_expurgo_do_claude.py",
     "test_expurgo_enderecos.py",
+    "test_expurgo_r39.py",
     "test_historia_completa.py",
     "test_ia.py",
     "test_identidade.py",
@@ -4855,6 +4864,7 @@
    "usado_por": [
     "eldorado/base/cerebro/encaminhamento.py",
     "eldorado/base/cerebro/pilotos_permanentes.py",
+    "eldorado/base/cerebro/rede.py",
     "eldorado/base/comandante/cartorio.py"
    ],
    "testes": [
@@ -4894,7 +4904,7 @@
   },
   {
    "arquivo": "eldorado/base/cartorio/analise_externa.py",
-   "linhas": 359,
+   "linhas": 364,
    "finalidade": "A etapa 5 do Cartório: a ANÁLISE EXTERNA pelo Claude no Chrome (titular, 22/10/2026).",
    "depende_de": [
     "eldorado/base/cartorio/cartorio.py",
@@ -5100,7 +5110,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 544,
+   "linhas": 557,
    "situacao": "em funcionamento",
    "ordem": 162
   },
@@ -5358,7 +5368,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/mapa_arquivos.py",
-   "linhas": 564,
+   "linhas": 566,
    "finalidade": "O mapa REAL dos arquivos do sistema (titular, 24/10/2026: nada decorativo nem exemplificativo).",
    "depende_de": [
     "eldorado/base/nucleo/eventos.py"
@@ -5760,12 +5770,13 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/rede.py",
-   "linhas": 285,
+   "linhas": 364,
    "finalidade": "A rede neural única, de aprendizado contínuo (River): aprende a cada veredito e dá as notas.",
    "depende_de": [
     "eldorado/base/cerebro/lote.py",
     "eldorado/base/nucleo/eventos.py",
-    "eldorado/motores/canal/motor.py"
+    "eldorado/motores/canal/motor.py",
+    "eldorado/motores/pilotos/interceptador.py"
    ],
    "eventos": [
     "analise.rede",
@@ -5785,7 +5796,8 @@
     "test_comandante_memoria.py",
     "test_fumaca_dados_reais.py",
     "test_lote.py",
-    "test_rede_neural.py"
+    "test_rede_neural.py",
+    "test_rede_parametros.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "13 Aprendizado: pertinência, auditoria, completude, avaliação, curador, memória e skills",
@@ -5794,7 +5806,8 @@
    "ligacoes": [
     "eldorado/base/cerebro/lote.py",
     "eldorado/base/nucleo/eventos.py",
-    "eldorado/motores/canal/motor.py"
+    "eldorado/motores/canal/motor.py",
+    "eldorado/motores/pilotos/interceptador.py"
    ],
    "critico": false,
    "metrica": "discernimento, precisão, revocação; idade do modelo",
@@ -5922,6 +5935,8 @@
     "test_pilotos_no_painel.py",
     "test_pilotos_site.py",
     "test_ranking_empresas.py",
+    "test_rede_parametros.py",
+    "test_sala_alertas_claude.py",
     "test_sala_mostradores.py",
     "test_site_sem_vazio.py"
    ],
@@ -6053,7 +6068,7 @@
   },
   {
    "arquivo": "eldorado/base/painel/sala.py",
-   "linhas": 1234,
+   "linhas": 1256,
    "finalidade": "A sala de controle (o plano: base/painel/sala.py): cada mostrador ligado ao dado MEDIDO pelo sistema (titular,",
    "depende_de": [
     "eldorado/base/aprendizado/avaliar.py",
@@ -6075,6 +6090,8 @@
    ],
    "testes": [
     "test_parecer_sala_2910.py",
+    "test_rede_parametros.py",
+    "test_sala_alertas_claude.py",
     "test_sala_mostradores.py"
    ],
    "situacao": "em funcionamento",
@@ -6218,8 +6235,8 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 19,
-   "situacao": "aguarda a decisão da titular: fica (titular, 25/10/2026): a comprovação de cobertura antes de eliminar o Eldorado0 ainda não foi feita",
+   "linhas": 23,
+   "situacao": "aguarda a decisão da titular: fica (titular, 25/10/2026): a comparação R01 roda (Sala, por dia); a comprovação de cobertura antes de eliminar o Eldorado0 aguarda uma base: o histórico migrado é um retrato de um dia (22/10)",
    "ordem": 204
   },
   {
@@ -6538,7 +6555,7 @@
   },
   {
    "arquivo": "eldorado/base/cartorio/expurgo_claude.py",
-   "linhas": 72,
+   "linhas": 95,
    "finalidade": "O expurgo é do Claude, nunca do sistema (titular, 01/11/2026: \"somente o Claude apaga livros e faz expurgos, o",
    "depende_de": [
     "eldorado/base/cartorio/leitura_efemera.py",
@@ -6551,7 +6568,8 @@
     "eldorado/base/painel/sala.py"
    ],
    "testes": [
-    "test_expurgo_enderecos.py"
+    "test_expurgo_enderecos.py",
+    "test_expurgo_r39.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "18 Outros",

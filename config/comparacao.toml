@@ -3,6 +3,10 @@
 # funcionando.
 inicio = "2026-10-23"
 dias = 14
+# 02/11/2026: a média é de achados por DIA com execução (o motor novo roda várias vezes por dia; o Eldorado0, uma) e a
+# origem só vale como base com pelo menos 3 dias de execução — o histórico migrado do Eldorado0 é um retrato de UM dia
+# (22/10, o acumulado), e comparar 11 dias com ele marcava 5 motores como "pior" sem medir nada
+minimo_dias_origem = 3
 
 # motor novo = os motores de origem no Eldorado0 (do aprendizado migrado)
 [motores]
@@ -11,7 +15,7 @@ pncp-api = ["pncp-api"]
 plataforma-mapas-culturais = ["plataforma-mapas-culturais", "site-mapas-culturais"]
 estaduais-go-gov = ["plataforma-wordpress", "estaduais-go-gov"]
 gife = ["gife"]
-novo-diarios-municipais-go = []          # a API está fora do ar desde 22/10 (sondagem); sem comparação até voltar
+novo-diarios-municipais-go = ["querido-diario"]   # 02/11/2026: a origem no Eldorado0 é o querido-diario (7 execuções em 22/10)
 site-transferegov = ["site-transferegov"]
 salic = ["plat-salic"]
 

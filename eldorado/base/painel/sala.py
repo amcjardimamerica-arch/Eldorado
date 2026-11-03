@@ -1034,17 +1034,19 @@ def _comparacao_r01(cer: sqlite3.Connection, agora: datetime, caminho: str = "co
     except (OSError, ValueError):
         return {"erro": "sem o arquivo da comparação"}
     inicio, dias = str(cfg.get("inicio", "2026-10-23")), int(cfg.get("dias", 14))
+    minimo = int(cfg.get("minimo_dias_origem", 3))
     dia = max(0, (agora.date() - datetime.fromisoformat(inicio).date()).days)
 
     def media(motores: list[str], depois: bool) -> tuple[float | None, int]:
+        """02/11/2026: achados por DIA com execução (o novo roda várias vezes ao dia; o Eldorado0 rodava uma) e os dias."""
         if not motores:
             return None, 0
         ph = ",".join("?" * len(motores))
         cond = "inicio >= ?" if depois else "inicio < ?"
-        n, soma = cer.execute(
-            f"SELECT COUNT(*), COALESCE(SUM(achados), 0) FROM execucao_motor WHERE motor IN ({ph}) AND {cond}", [*motores, inicio]
-        ).fetchone()
-        return (round(soma / n, 2) if n else None), n
+        rows = cer.execute(
+            f"SELECT substr(inicio, 1, 10), COALESCE(SUM(achados), 0) FROM execucao_motor WHERE motor IN ({ph}) AND {cond} "
+            "GROUP BY substr(inicio, 1, 10)", [*motores, inicio]).fetchall()
+        return (round(sum(r[1] for r in rows) / len(rows), 2) if rows else None), len(rows)
 
     try:  # os nomes antigos (no histórico migrado) de cada motor novo: os apelidos do sistema
         from ...motores.canal.motor import apelidos
@@ -1061,9 +1063,11 @@ def _comparacao_r01(cer: sqlite3.Connection, agora: datetime, caminho: str = "co
         mo, no = media(sorted(nomes), False)
         if mn is None or mo is None:
             sit = "sem dados" if origem else "sem comparação (a origem não existe)"
+        elif no < minimo:
+            sit = f"sem base de comparação (a origem migrada tem {no} dia(s); mínimo {minimo})"
         else:
             sit = "igual ou melhor" if mn >= mo else "pior"
-        out[novo] = {"novo_por_execucao": mn, "execucoes_novo": nn, "origem_por_execucao": mo, "execucoes_origem": no, "situacao": sit}
+        out[novo] = {"novo_por_dia": mn, "dias_novo": nn, "origem_por_dia": mo, "dias_origem": no, "situacao": sit}
     piores = [k for k, v in out.items() if v["situacao"] == "pior"]
     return {
         "dia": min(dia, dias),

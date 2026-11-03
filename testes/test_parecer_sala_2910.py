@@ -107,7 +107,9 @@ def test_a_comparacao_r01_le_o_arquivo():
     c = sqlite3.connect(":memory:")
     c.execute("CREATE TABLE execucao_motor (motor TEXT, inicio TEXT, achados INTEGER)")
     c.executemany(
-        "INSERT INTO execucao_motor VALUES (?,?,?)", [("pncp", "2026-10-22T21:00:00+00:00", 30), ("pncp-api", "2026-10-25T10:00:00+00:00", 10)]
+        # 02/11/2026: a origem precisa de 3 dias (o retrato migrado de um dia não é base de comparação)
+        "INSERT INTO execucao_motor VALUES (?,?,?)", [("pncp", "2026-10-20T21:00:00+00:00", 30), ("pncp", "2026-10-21T21:00:00+00:00", 30),
+                                                      ("pncp", "2026-10-22T21:00:00+00:00", 30), ("pncp-api", "2026-10-25T10:00:00+00:00", 10)]
     )
     r = _comparacao_r01(c, datetime(2026, 10, 29, tzinfo=timezone.utc))
     assert r["dias"] == 14 and r["motores"]["pncp-api"]["situacao"] == "pior"
