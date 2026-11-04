@@ -345,8 +345,8 @@ def expurgar(con: sqlite3.Connection, diario, agora: datetime | None = None) -> 
                 conta["unidos"] += 1
     iso = agora.isoformat(timespec="seconds")
     for x in livros:
-        if x["id"] in unidos or x["natureza"] == "PRI":
-            continue  # as oportunidades de empresas ficam todas
+        if x["id"] in unidos or x["natureza"] == "PRI" or str(x["id"]).startswith("captacao-"):
+            continue  # as oportunidades de empresas ficam todas; R44: o catálogo das oportunidades conhecidas também
         if x["fase"] == "farol" and x["abrangencia"] != "municipal_fora_go":
             continue  # do Farol, só a regra territorial (27/10/2026: o caso de Mauriti)
         s_, e_, p_, criado = info.get(x["id"], ("sem", "sem", None, iso))

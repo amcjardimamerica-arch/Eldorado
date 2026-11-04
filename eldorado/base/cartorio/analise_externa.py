@@ -74,6 +74,8 @@ class Veredito(msgspec.Struct):
     dispensas: list[Dispensa] = []
     aprendizado: str | None = None
     link_original: str | None = None          # a oportunidade original, confirmada pelo Chrome (a divulgação fica como estava)
+    # 05/11/2026 (titular): as datas de abertura das edições anteriores (AAAA-MM-DD), para a análise preditiva da próxima
+    edicoes_anteriores: list[str] = []
 
 
 class Retorno(msgspec.Struct):
@@ -283,7 +285,7 @@ def gravar_lote_completo(con: sqlite3.Connection, pasta_lotes: Path, hoje: date,
     """04/11/2026 (titular): o lote único do Claude no Chrome com TODOS os livros sem decisão (as 5 etapas pendentes),
     em partes de 50, com a versão guardada (R41) — depois dele, nenhuma pendência no sistema."""
     lote = gerar_lote(con, hoje, None, PENDENTES)
-    nome = f"lote-{hoje.isoformat()}-completo"
+    nome = f"lote-{hoje.isoformat()}-externa-completo"   # «-externa-»: a gravação o preserva (as partes do Chrome)
     lote |= {"lote": nome, "total_livros": len(lote["livros"])}
     pasta_lotes.mkdir(parents=True, exist_ok=True)
     (pasta_lotes / f"{nome}.json").write_text(json.dumps(lote, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -296,6 +298,22 @@ def gravar_lote_completo(con: sqlite3.Connection, pasta_lotes: Path, hoje: date,
         guardar_versao(pasta_lotes, parte["lote"], parte)
         partes.append(parte["lote"])
     return {"lote": nome, "livros": len(lote["livros"]), "partes": partes, "gerado_em": lote["gerado_em"]}
+
+
+def _prever_pelas_edicoes(v: "Veredito", diario: Diario) -> None:
+    from ..analise.previsao import prever
+    datas = []
+    for t in v.edicoes_anteriores or []:
+        try:
+            datas.append(date.fromisoformat(str(t)[:10]))
+        except ValueError:
+            continue
+    p = prever(sorted(set(datas))) if datas else None
+    if p:
+        diario.emitir("previsao.calculada", "chrome", {"livro_id": v.livro_id, "motores_que_encontraram": "claude no chrome (edições anteriores)",
+                                                       "datas_encontrado": ", ".join(sorted({d.isoformat() for d in datas})),
+                                                       "proxima_abertura_prevista": p["proxima_abertura_prevista"], "alerta_em": p["alerta_em"],
+                                                       "confianca": p["confianca"], "calculada_em": agora()})
 
 
 def conferir_completo(r: "Retorno", con: sqlite3.Connection, pasta_lotes: Path = Path("verificacao/lotes")) -> list[str] | str:
@@ -337,6 +355,8 @@ def importar(retorno: bytes | str, con: sqlite3.Connection, diario: Diario, exig
                                                                "mensagem": f"veredito recusado (R41, nada parcial): {motivo}"[:500]})
             return [{"recusado": f"R41 — veredito recusado por inteiro, nada importado: {motivo}"}]
     cartorio = Cartorio(con, None, diario)
+    for v in r.vereditos:   # 05/11/2026: a análise preditiva pelas edições anteriores que o Chrome achou nos documentos oficiais
+        _prever_pelas_edicoes(v, diario)
     saida = []
     for v in r.vereditos:
         fase = Passaporte(con, diario).fase(v.livro_id)
@@ -359,6 +379,9 @@ def importar(retorno: bytes | str, con: sqlite3.Connection, diario: Diario, exig
             diario.emitir("aprendizado.registrado", "chrome", {"modulo": "analise externa", "o_que": v.aprendizado[:2000],
                                                                "evidencia": f"veredito do Chrome para {v.livro_id} ({r.lote or 'sem lote'})",
                                                                "criado_em": agora(), "expira_em": (date.today() + timedelta(days=29)).isoformat()})
+        # R44 (titular, 05/11/2026): o catálogo das oportunidades conhecidas (captacao-*) nunca sai do sistema: o descarte vira arquivo
+        if v.decisao == "descartar" and str(v.livro_id).startswith("captacao-"):
+            v = msgspec.structs.replace(v, decisao="arquivar")
         # 04/11/2026 (titular): a oportunidade do terceiro setor (encerrada ou fora do perfil) fica no banco, no arquivo
         if v.decisao in ("encerrada", "arquivar"):
             if fase != "arquivo":

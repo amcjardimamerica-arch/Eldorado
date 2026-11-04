@@ -602,6 +602,17 @@
     "testes/test_governador_recursos.py::test_a_memoria_residente_nao_trava_com_o_processador_livre",
     "testes/test_governador_recursos.py::test_sem_missao_do_comandante_nenhum_voo"
    ]
+  },
+  {
+   "id": "R44",
+   "data": "2026-11-05",
+   "tema": "o catálogo das oportunidades conhecidas",
+   "regra": "Os livros do catálogo das oportunidades conhecidas (captacao-001 a captacao-260, a lista «Projetos de Captação — Detalhado» da titular: PNAB, Rouanet, Goyazes, leis de incentivo, fundos da criança e do idoso, fundações e institutos, fontes internacionais) nunca saem do sistema: a regra automática de «sem dados para o selo» não os exclui, e o descarte pelo Claude no Chrome vira arquivo, com o motivo. Os que tinham sido expurgados voltam à verificação externa, para o Chrome os validar com o edital ou a lei de agora.",
+   "porque": "titular, 05/11/2026: são as oportunidades mais famosas e conhecidas; 205 dos 256 livros do catálogo tinham sido expurgados, quase todos pela regra automática «sem dados para o selo, sem estrela e sem prazo» — programas permanentes e por lei, que não têm edital com prazo.",
+   "onde": "eldorado/base/comandante/biblioteca.py (a regra de exclusão); eldorado/base/cartorio/analise_externa.py (importar)",
+   "travas": [
+    "testes/test_catalogo_captacao.py::test_o_catalogo_nao_e_expurgado"
+   ]
   }
  ]
 }
