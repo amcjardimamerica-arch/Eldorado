@@ -456,8 +456,6 @@ SOB_DEMANDA = {                       # os estudos concluídos: a finalidade é 
     ".github/workflows/ponte-teste.yml": "o teste da ponte da HostGator, sob demanda (o ciclo testa a ponte no início)",
 }
 AGUARDAM_DECISAO = {
-    "config/comparacao.toml": "fica (titular, 25/10/2026): a comparação R01 roda (Sala, por dia); a comprovação de cobertura antes de "
-                              "eliminar o Eldorado0 aguarda uma base: o histórico migrado é um retrato de um dia (22/10)",
 }
 
 

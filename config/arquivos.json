@@ -77,6 +77,7 @@
     "test_acesso.py",
     "test_agenda.py",
     "test_alarmes.py",
+    "test_alarmes_sala_0411.py",
     "test_alvos.py",
     "test_api.py",
     "test_arquitetura_bancos.py",
@@ -90,6 +91,7 @@
     "test_cartorio.py",
     "test_cartorio_ceu.py",
     "test_cartorio_site.py",
+    "test_cartorio_tempo_real.py",
     "test_cassete.py",
     "test_cerebro.py",
     "test_comandante_biblioteca.py",
@@ -110,6 +112,7 @@
     "test_depois_da_passagem.py",
     "test_descoberta.py",
     "test_encaminhamento_isolado.py",
+    "test_entrega_completa.py",
     "test_espiao.py",
     "test_eventos.py",
     "test_executor.py",
@@ -121,6 +124,7 @@
     "test_fila.py",
     "test_fumaca_dados_reais.py",
     "test_governador.py",
+    "test_governador_recursos.py",
     "test_gravador.py",
     "test_historia_completa.py",
     "test_ia.py",
@@ -201,12 +205,14 @@
     "test_acesso.py",
     "test_agenda.py",
     "test_alarmes.py",
+    "test_alarmes_sala_0411.py",
     "test_api.py",
     "test_arquitetura_bancos.py",
     "test_auditoria.py",
     "test_capacidade.py",
     "test_cartorio.py",
     "test_cartorio_site.py",
+    "test_cartorio_tempo_real.py",
     "test_cerebro.py",
     "test_comandante_biblioteca.py",
     "test_comandante_cartorio.py",
@@ -225,6 +231,7 @@
     "test_definicao.py",
     "test_depois_da_passagem.py",
     "test_encaminhamento_isolado.py",
+    "test_entrega_completa.py",
     "test_espiao.py",
     "test_eventos.py",
     "test_executor.py",
@@ -236,6 +243,7 @@
     "test_fila.py",
     "test_fumaca_dados_reais.py",
     "test_governador.py",
+    "test_governador_recursos.py",
     "test_gravador.py",
     "test_historia_completa.py",
     "test_ia.py",
@@ -476,7 +484,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 56,
+   "linhas": 65,
    "situacao": "em funcionamento",
    "ordem": 10
   },
@@ -1471,7 +1479,7 @@
   },
   {
    "arquivo": "eldorado/banco/cerebro_db/esquema.py",
-   "linhas": 158,
+   "linhas": 163,
    "finalidade": "O esquema do banco do Cérebro (cerebro.db): a operação e o aprendizado do sistema, sem nenhuma oportunidade.",
    "depende_de": [
     "eldorado/banco/_sqlite.py"
@@ -1898,6 +1906,7 @@
    "acionado_por": [],
    "usado_por": [],
    "testes": [
+    "test_alarmes_sala_0411.py",
     "test_capacidade.py",
     "test_cerebro.py",
     "test_comandante_biblioteca.py",
@@ -1908,6 +1917,7 @@
     "test_fila.py",
     "test_fumaca_dados_reais.py",
     "test_governador.py",
+    "test_governador_recursos.py",
     "test_ia.py",
     "test_incentivos.py",
     "test_interceptador.py",
@@ -1968,7 +1978,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/governador.py",
-   "linhas": 205,
+   "linhas": 247,
    "finalidade": "O governador de carga: mantém a máquina abaixo do limite (85%).",
    "depende_de": [
     "eldorado/base/nucleo/eventos.py"
@@ -1991,6 +2001,7 @@
     "test_cerebro.py",
     "test_fila.py",
     "test_governador.py",
+    "test_governador_recursos.py",
     "test_motor_gife.py",
     "test_motores_api.py",
     "test_parecer_sala_2910.py",
@@ -2052,6 +2063,7 @@
    "testes": [
     "test_encaminhamento_isolado.py",
     "test_espiao.py",
+    "test_governador_recursos.py",
     "test_parecer_sala_2910.py"
    ],
    "situacao": "em funcionamento",
@@ -2086,6 +2098,7 @@
     "test_comandante_fase6.py",
     "test_comandante_memoria.py",
     "test_comandante_pilotos.py",
+    "test_governador_recursos.py",
     "test_identidade_caracteristicas.py",
     "test_organizar_livros.py",
     "test_parecer_sala_2910.py",
@@ -2102,7 +2115,7 @@
   },
   {
    "arquivo": "eldorado/base/comandante/cartorio.py",
-   "linhas": 154,
+   "linhas": 162,
    "finalidade": "O COMANDANTE DO CARTÓRIO (titular, 02/11/2026 — R37 e R38).",
    "depende_de": [
     "eldorado/base/cartorio/cartorio.py",
@@ -2318,7 +2331,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/regencia.py",
-   "linhas": 308,
+   "linhas": 329,
    "finalidade": "A Regência: planeja a passagem, aciona os motores e autoriza cada passagem de livro.",
    "depende_de": [
     "eldorado/base/cerebro/decisao.py",
@@ -2339,6 +2352,7 @@
     "acionamento.feito",
     "agenda.definida",
     "alarme.aberto",
+    "alarme.fechado",
     "documento.registrado",
     "motor.execucao",
     "pagina.gravada",
@@ -2354,6 +2368,7 @@
     "eldorado/base/cerebro/fila.py"
    ],
    "testes": [
+    "test_alarmes_sala_0411.py",
     "test_capacidade.py",
     "test_cerebro.py",
     "test_espiao.py",
@@ -2442,6 +2457,7 @@
    "testes": [
     "test_comandante_biblioteca.py",
     "test_comandante_expurgo.py",
+    "test_governador_recursos.py",
     "test_pilotos_no_painel.py"
    ],
    "situacao": "em funcionamento",
@@ -2652,7 +2668,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/pilotos_permanentes.py",
-   "linhas": 396,
+   "linhas": 401,
    "finalidade": "Os pilotos de forma permanente (titular, 25/10/2026: \"execute eles de forma permanente, da forma que foram desenvolvidos",
    "depende_de": [
     "eldorado/base/cerebro/encaminhamento.py",
@@ -2679,6 +2695,7 @@
     "eldorado/motores/pilotos/interceptador.py"
    ],
    "testes": [
+    "test_governador_recursos.py",
     "test_parecer_sala_2910.py"
    ],
    "situacao": "em funcionamento",
@@ -2850,6 +2867,7 @@
     "test_encaminhamento_isolado.py",
     "test_espiao.py",
     "test_fumaca_dados_reais.py",
+    "test_governador_recursos.py",
     "test_ia.py",
     "test_ia_validada.py",
     "test_incentivos.py",
@@ -4222,6 +4240,7 @@
    "usado_por": [],
    "testes": [
     "test_cartorio.py",
+    "test_cartorio_tempo_real.py",
     "test_comandante_cartorio.py",
     "test_comandante_expurgo.py",
     "test_espiao.py",
@@ -4409,6 +4428,7 @@
     "test_cartorio.py",
     "test_comandante_biblioteca.py",
     "test_comandante_expurgo.py",
+    "test_entrega_completa.py",
     "test_espiao.py",
     "test_expurgo_do_claude.py",
     "test_expurgo_enderecos.py",
@@ -4740,6 +4760,7 @@
     "test_comandante_cartorio.py",
     "test_comandante_memoria.py",
     "test_espiao.py",
+    "test_governador_recursos.py",
     "test_ia.py",
     "test_ia_validada.py",
     "test_interceptador.py",
@@ -4870,6 +4891,7 @@
    "testes": [
     "test_comandante_cartorio.py",
     "test_comandante_memoria.py",
+    "test_governador_recursos.py",
     "test_ia.py",
     "test_interceptador.py",
     "test_interceptador_funciona.py",
@@ -4904,7 +4926,7 @@
   },
   {
    "arquivo": "eldorado/base/cartorio/analise_externa.py",
-   "linhas": 364,
+   "linhas": 410,
    "finalidade": "A etapa 5 do Cartório: a ANÁLISE EXTERNA pelo Claude no Chrome (titular, 22/10/2026).",
    "depende_de": [
     "eldorado/base/cartorio/cartorio.py",
@@ -5110,7 +5132,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 557,
+   "linhas": 607,
    "situacao": "em funcionamento",
    "ordem": 162
   },
@@ -5368,7 +5390,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/mapa_arquivos.py",
-   "linhas": 569,
+   "linhas": 567,
    "finalidade": "O mapa REAL dos arquivos do sistema (titular, 24/10/2026: nada decorativo nem exemplificativo).",
    "depende_de": [
     "eldorado/base/nucleo/eventos.py"
@@ -5928,6 +5950,7 @@
    "testes": [
     "test_api.py",
     "test_cartorio_site.py",
+    "test_cartorio_tempo_real.py",
     "test_depois_da_passagem.py",
     "test_painel.py",
     "test_painel_site.py",
@@ -5951,7 +5974,7 @@
   },
   {
    "arquivo": "eldorado/base/painel/cartorio.py",
-   "linhas": 365,
+   "linhas": 373,
    "finalidade": "O Cartório no site, ligado aos dados (titular, 25/10/2026: a página estava estática).",
    "depende_de": [
     "eldorado/base/missao/itens.py"
@@ -5962,7 +5985,8 @@
     "eldorado/base/painel/dados.py"
    ],
    "testes": [
-    "test_cartorio_site.py"
+    "test_cartorio_site.py",
+    "test_cartorio_tempo_real.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "14 Análise e painel",
@@ -6068,7 +6092,7 @@
   },
   {
    "arquivo": "eldorado/base/painel/sala.py",
-   "linhas": 1256,
+   "linhas": 1261,
    "finalidade": "A sala de controle (o plano: base/painel/sala.py): cada mostrador ligado ao dado MEDIDO pelo sistema (titular,",
    "depende_de": [
     "eldorado/base/aprendizado/avaliar.py",
@@ -6228,7 +6252,6 @@
    "finalidade": "Os 14 dias de comparação (critério da Fase 7 e da Fase 10): cada motor novo roda em paralelo com o de origem no Eldorado0 e só o substitui com resultado igual ou melhor. A contagem começa no primeiro ",
    "depende_de": [],
    "usado_por": [
-    "eldorado/base/cerebro/mapa_arquivos.py",
     "eldorado/base/cerebro/medicao.py",
     "eldorado/base/painel/sala.py"
    ],
@@ -6236,7 +6259,7 @@
    "eventos": [],
    "testes": [],
    "linhas": 23,
-   "situacao": "aguarda a decisão da titular: fica (titular, 25/10/2026): a comparação R01 roda (Sala, por dia); a comprovação de cobertura antes de eliminar o Eldorado0 aguarda uma base: o histórico migrado é um retrato de um dia (22/10)",
+   "situacao": "em funcionamento",
    "ordem": 204
   },
   {
@@ -6603,7 +6626,7 @@
   },
   {
    "arquivo": "eldorado/base/cartorio/manutencao_expurgo.py",
-   "linhas": 267,
+   "linhas": 284,
    "finalidade": "A MANUTENÇÃO DO EXPURGO a cada passagem (titular, 02/11/2026 — R36): a informação coletada que NÃO virou livro e foi",
    "depende_de": [
     "eldorado/base/cartorio/__init__.py",
@@ -6613,6 +6636,7 @@
    "eventos": [
     "achado.descartado",
     "achado.entregue",
+    "alarme.aberto",
     "documento.descartado"
    ],
    "acionado_por": [
@@ -6620,6 +6644,7 @@
    ],
    "usado_por": [],
    "testes": [
+    "test_entrega_completa.py",
     "test_manutencao_expurgo.py"
    ],
    "situacao": "em funcionamento",

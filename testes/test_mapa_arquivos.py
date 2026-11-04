@@ -7,7 +7,6 @@ from eldorado.base.cerebro.mapa_arquivos import montar
 
 # os arquivos fora do funcionamento hoje, cada um com o motivo (a titular decide: ligar ou retirar)
 PARADOS = {
-    "config/comparacao.toml": "a comparação R01 roda; a eliminação do Eldorado0 aguarda uma base de 3 dias de origem (titular)",
     "eldorado/motores/acesso/rotas_alternativas.py": "o Tor, desligado por desenho no plano",
     "eldorado/base/motor_modelo/__init__.py": "o motor modelo não roda (é só modelo)",
 }

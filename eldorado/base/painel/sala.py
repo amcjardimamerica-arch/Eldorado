@@ -356,7 +356,7 @@ def montar(
         "ve_para_o_chrome",
         "Livros na fila do Chrome (e as partes do lote do dia)",
         ext,
-        _faixa(ext, 50, 200, False),
+        _alerta_claude(ext, _idade_ext),   # 04/11/2026: a regra da titular (50 itens ou 168 h), como «aguardando o Chrome»
         f"{ext} livros na fila do Claude no Chrome · lote do dia: "
         + (f"{partes_dia} parte(s) de até 50" if partes_dia else ("1 arquivo" if tem_dia else "ainda não gerado")),
         iso,

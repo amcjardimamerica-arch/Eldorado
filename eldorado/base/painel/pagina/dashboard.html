@@ -2520,6 +2520,9 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
    grava a cada passagem): o processador, a memória, o disco e a GPU, com a marca do alvo de 85%, e as últimas 3 horas. */
 (function(){
   const $=id=>document.getElementById(id), pc=v=>v==null?"—":Math.round(v*100)+"%";
+  /* 04/11/2026: o escape deste bloco (a lista dos processos usava um que não existe aqui; o erro caía no catch e o mostrador
+     inteiro ficava em «lendo…») */
+  const e=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const cor=v=>v==null?"#8B93B8":v>=.95?"#FF6B6B":v>=.85?"#FFB347":v>=.6?"#5EE6C8":"#7fb0de";
   function med(nome,v,extra){ return `<div class="med"><small>${nome}</small><b style="color:${cor(v)}">${pc(v)}</b><div class="barra"><i style="width:${Math.min(100,Math.round((v||0)*100))}%;background:${cor(v)}"></i><span class="alvo" title="alvo: 85%"></span></div>${extra?`<div class="rod">${extra}</div>`:""}</div>`; }
   function curva(S){ if(!S||S.length<2) return ""; const W=260,H=54, t0=new Date(S[0].em).getTime(), t1=new Date(S[S.length-1].em).getTime()||t0+1;

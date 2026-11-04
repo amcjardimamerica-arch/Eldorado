@@ -290,6 +290,23 @@ def _decidir(quando: datetime, motores: list[str], parametros: dict[str, Any]) -
     return decidir(quando, list(motores), historico, ponto, nota=nota)
 
 
+def _fechar_adiamentos(dados: Path, motores: set[str], diario) -> None:
+    if not motores or not (dados / "cerebro.db").exists():
+        return
+    try:
+        cer = sqlite3.connect(f"file:{dados / 'cerebro.db'}?mode=ro", uri=True)
+        try:
+            marcas = ",".join("?" * len(motores))
+            ids = [r[0] for r in cer.execute(f"SELECT id FROM alarme WHERE fechado_em IS NULL AND modulo IN ({marcas}) "
+                                             "AND mensagem LIKE 'motor adiado pelo governador%'", sorted(motores))]
+        finally:
+            cer.close()
+    except sqlite3.Error:
+        return
+    for i in ids:
+        diario.emitir("alarme.fechado", "regencia", {"id": i, "fechado_em": agora()})
+
+
 def no_acionar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -> list[dict[str, Any]]:
     registro = carregar_registro(parametros.get("modulos", "config/modulos.toml"))
     esp_p = Path(parametros.get("dados", "dados")) / "biblioteca.db"   # as empresas, na Biblioteca
@@ -303,6 +320,10 @@ def no_acionar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto
         for m in adiados:
             contexto.diario.emitir("alarme.aberto", "regencia", {"gravidade": "baixa", "modulo": m, "aberto_em": agora(),
                                                                  "mensagem": f"motor adiado pelo governador: {r.governador.motivo()}"})
+        # 04/11/2026: o motor que voltou a rodar fecha os seus alarmes de adiamento (eles nunca fechavam: 279 abertos)
+        plano_m = item["plano"].get("motores") or [] if isinstance(item.get("plano"), dict) else []
+        rodaram = {str(m.get("modulo") if isinstance(m, dict) else m) for m in plano_m} - set(adiados)
+        _fechar_adiamentos(Path(parametros.get("dados", "dados")), rodaram, contexto.diario)
     if especial is not None:
         especial.close()
     return achados
