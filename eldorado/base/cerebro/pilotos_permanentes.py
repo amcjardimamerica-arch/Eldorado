@@ -284,9 +284,14 @@ def voar_interceptador(dados: Path, diario, parar: threading.Event, tempo_livro_
             dados_, con, _escada, _registro = _contexto(dados, diario)
             try:
                 tem_base = "base_classe" in {r[1] for r in con.execute("PRAGMA table_info(livro_dados)")}
-                base = fila_base(avaliar(con)) if tem_base else []
+                # 04/11/2026 (titular): o Interceptador só voa na missão que o Comandante direciona — a fila do Comandante
+                # (R38: com link oficial e item faltando, na ordem Goiás → Brasil → internacional → outras); a fila de
+                # completar a base só vale para os livros que estão nela
+                ordem = [lv.id for lv in fila(con, date.today().isoformat())]
+                do_comandante = set(ordem)
+                base = [x for x in fila_base(avaliar(con)) if x["id"] in do_comandante] if tem_base else []
                 ids_base = {x["id"] for x in base}
-                comuns = [lv.id for lv in fila(con, date.today().isoformat()) if lv.id not in ids_base][:30]
+                comuns = [i for i in ordem if i not in ids_base][:30]
             finally:
                 con.close()
             voos = [(x["id"], x) for x in base] + [(i, None) for i in comuns]

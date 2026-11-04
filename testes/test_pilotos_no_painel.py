@@ -37,7 +37,9 @@ def test_cada_vaga_do_interceptador_voa_no_seu_proprio_fio(monkeypatch, tmp_path
 
     monkeypatch.setattr(CB, "avaliar", lambda con: [])
     monkeypatch.setattr(CB, "fila", lambda av: [{"id": f"L{i}"} for i in range(40)])
-    monkeypatch.setattr(I, "fila", lambda con, hoje: [])
+    # R43 (titular, 04/11/2026): o voo só sai na missão do Comandante — os 40 livros estão na fila dele
+    from types import SimpleNamespace
+    monkeypatch.setattr(I, "fila", lambda con, hoje: [SimpleNamespace(id=f"L{i}") for i in range(40)])
 
     class Diario:
         pasta = tmp_path

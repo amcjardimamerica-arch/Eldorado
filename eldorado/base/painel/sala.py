@@ -849,6 +849,11 @@ def montar(
                     if c in ("em", "processador", "memoria", "disco", "paralelismo", "nucleos", "memoria_total_mb", "disco_total_gb", "gpu")
                 }
             )
+            try:   # 04/11/2026: os processos que mais ocupam a memória (a última leitura que os trouxe)
+                pr = cer.execute("SELECT processos FROM maquina WHERE processos IS NOT NULL ORDER BY em DESC LIMIT 1").fetchone()
+                maq["processos"] = json.loads(pr[0]) if pr and pr[0] else []
+            except (sqlite3.Error, ValueError):
+                maq["processos"] = []
             maq["idade_h"] = _idade_h(maq.get("em"), agora)
             maq["serie"] = [
                 {"em": e, "p": p_, "m": m_}

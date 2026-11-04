@@ -8,7 +8,7 @@ from pathlib import Path
 
 from .._sqlite import abrir as _abrir
 
-VERSAO = 11
+VERSAO = 12
 
 DDL = r"""
 PRAGMA foreign_keys=ON;
@@ -152,7 +152,12 @@ CREATE TABLE IF NOT EXISTS achado_descartado (id TEXT PRIMARY KEY, motor TEXT NO
 CREATE INDEX IF NOT EXISTS achado_descartado_motor ON achado_descartado(motor)
 """
 
+# 12: os processos que mais usam a memória em cada leitura da máquina (titular, 04/11/2026: o mostrador do servidor)
+DDL_V12 = r"""
+ALTER TABLE maquina ADD COLUMN processos TEXT
+"""
+
 def abrir(caminho: str | Path):
     """Na criação, o esquema inteiro (com a versão 2); um Cérebro na versão 1 é migrado (as tabelas motor_* e espiao_*)."""
-    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V4 + ";\n" + DDL_V5 + ";\n" + DDL_V6 + ";\n" + DDL_V7 + ";\n" + DDL_V8 + ";\n" + DDL_V9 + ";\n" + DDL_V10 + ";\n" + DDL_V11, VERSAO,
-                  {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7, 8: DDL_V8, 9: DDL_V9, 10: DDL_V10, 11: DDL_V11})
+    return _abrir(caminho, DDL + ";\n" + DDL_V2 + ";\n" + DDL_V4 + ";\n" + DDL_V5 + ";\n" + DDL_V6 + ";\n" + DDL_V7 + ";\n" + DDL_V8 + ";\n" + DDL_V9 + ";\n" + DDL_V10 + ";\n" + DDL_V11 + ";\n" + DDL_V12, VERSAO,
+                  {2: DDL_V2, 3: DDL_V3, 4: DDL_V4, 5: DDL_V5, 6: DDL_V6, 7: DDL_V7, 8: DDL_V8, 9: DDL_V9, 10: DDL_V10, 11: DDL_V11, 12: DDL_V12})

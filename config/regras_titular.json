@@ -589,6 +589,19 @@
     "testes/test_comandante_cartorio.py::test_o_comandante_decide_o_destino",
     "testes/test_entrega_completa.py::test_o_expurgo_vai_junto_da_verificacao_externa"
    ]
+  },
+  {
+   "id": "R43",
+   "data": "2026-11-04",
+   "tema": "os pilotos só voam na missão do Comandante; o governador por recurso",
+   "regra": "O Interceptador só voa nos livros que o Comandante direciona (a fila dele, R38: com link oficial e item faltando, na ordem de território); a fila de completar a base vale só para os livros que estão nela — sem missão do Comandante, nenhum voo. O governador julga o processador e a memória cada um com o seu custo (a memória residente dos programas carregados não trava a tarefa quando o processador está livre). A Sala mostra os processos que mais ocupam a memória do sistema.",
+   "porque": "titular, 04/11/2026: o sistema não enviava pilotos para as missões e o processador estava parado (0–2%) com a memória em 74–80%: cada tarefa era adiada pelo maior dos dois mais um custo único, e cada adiamento derrubava os voos para 1 vaga.",
+   "onde": "eldorado/base/cerebro/pilotos_permanentes.py (voar_interceptador); eldorado/base/cerebro/governador.py (pode_iniciar, processos_da_memoria); eldorado/base/painel/sala.py e pagina/dashboard.html (os processos)",
+   "travas": [
+    "testes/test_pilotos_no_painel.py::test_cada_vaga_do_interceptador_voa_no_seu_proprio_fio",
+    "testes/test_governador_recursos.py::test_a_memoria_residente_nao_trava_com_o_processador_livre",
+    "testes/test_governador_recursos.py::test_sem_missao_do_comandante_nenhum_voo"
+   ]
   }
  ]
 }

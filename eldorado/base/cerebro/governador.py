@@ -9,6 +9,7 @@ A medição é feita por um medidor trocável (psutil na máquina real; simulado
 """
 from __future__ import annotations
 
+import json
 import math
 import os
 from dataclasses import dataclass, field
@@ -20,6 +21,10 @@ import psutil
 from ..nucleo.eventos import Diario, agora
 
 CUSTO_PADRAO = {"leve": 0.05, "pesado": 0.25}      # fração da máquina, até o módulo ter recibos próprios
+# 04/11/2026 (titular: o processador parado): o processador e a memória são julgados cada um com o seu custo. Antes, a
+# carga era o MAIOR dos dois mais um custo único: com a memória residente em 74–80% (programas carregados, não trabalho)
+# e o custo de 25% de uma tarefa pesada, tudo era adiado com o processador em 0%, e cada adiamento derrubava os voos.
+CUSTO_MEM_PADRAO = {"leve": 0.02, "pesado": 0.08}  # a memória que uma tarefa ocupa (≈ 0,3 e 1,3 GB em 16 GB)
 
 
 @dataclass(frozen=True)
@@ -100,6 +105,33 @@ def liberar_memoria() -> float:
         return 0.0
 
 
+def processos_da_memoria(n: int = 8) -> list[dict]:
+    """04/11/2026 (titular): os processos que mais ocupam a memória (o nome, o MB residente e a fração da memória total)."""
+    total = psutil.virtual_memory().total or 1
+    lista = []
+    for p in psutil.process_iter(["name", "cmdline", "memory_info"]):
+        try:
+            mi = p.info.get("memory_info")
+            if not mi:
+                continue
+            if mi.rss < 20 * 1048576:                         # os do sistema operacional, que não ocupam memória
+                continue
+            argv = p.info.get("cmdline") or []
+            nome = p.info.get("name") or "?"
+            if "llama" in (nome + " ".join(argv[:2])):
+                nome = "IA local (llama-server)"
+            elif any(a.endswith("eldorado") for a in argv):
+                k = next(i for i, a in enumerate(argv) if a.endswith("eldorado"))
+                nome = "eldorado " + (argv[k + 1] if k + 1 < len(argv) else "")
+            elif nome.startswith("python") and any("eldorado" in a for a in argv):
+                nome = "eldorado (python)"
+            lista.append({"nome": nome[:40], "mb": round(mi.rss / 1048576), "pct": round(mi.rss / total, 4)})
+        except psutil.Error:
+            continue
+    lista.sort(key=lambda x: -x["mb"])
+    return lista[:n]
+
+
 def cpu_total(intervalo: float = 0.2) -> float:
     """29/10/2026: o processador TOTAL, com a IA (fração de 0 a 1): a medida da regra dos 85% da titular."""
     cpu_sem_ia(intervalo)
@@ -123,6 +155,8 @@ class Governador:
     paralelismo_maximo: int = max(4, 4 * (os.cpu_count() or 1))
     diario: Diario | None = None
     custos: dict[str, float] = field(default_factory=dict)      # módulo → fração da máquina, aprendida dos recibos
+    custos_cpu: dict[str, float] = field(default_factory=dict)  # 04/11/2026: o processador e a memória de cada módulo,
+    custos_mem: dict[str, float] = field(default_factory=dict)  # aprendidos separados
     ultima: Leitura | None = None
 
     def custo(self, modulo: str | None, peso: str = "leve") -> float:
@@ -134,6 +168,9 @@ class Governador:
         frac_cpu = (cpu_ms / max(duracao_ms, 1)) / nucleos
         frac_mem = ((memoria_pico_kb or 0) * 1024) / psutil.virtual_memory().total
         novo = min(1.0, max(frac_cpu, frac_mem, 0.01))
+        for d, v in ((self.custos_cpu, frac_cpu), (self.custos_mem, frac_mem)):
+            v = min(1.0, max(v, 0.005))
+            d[modulo] = v if modulo not in d else round(0.7 * d[modulo] + 0.3 * v, 4)
         antigo = self.custos.get(modulo)
         self.custos[modulo] = novo if antigo is None else round(0.7 * antigo + 0.3 * novo, 4)     # média que esquece devagar
         return self.custos[modulo]
@@ -146,7 +183,9 @@ class Governador:
         leitura = self.ler()
         if leitura.disco >= self.disco_critico:
             return False
-        return leitura.carga + self.custo(modulo, peso) <= self.limite
+        cpu = self.custos_cpu.get(modulo or "", CUSTO_PADRAO[peso])
+        mem = self.custos_mem.get(modulo or "", CUSTO_MEM_PADRAO[peso])
+        return leitura.processador + cpu <= self.limite and leitura.memoria + mem <= self.limite
 
     def motivo(self) -> str:
         leitura = self.ultima
@@ -154,7 +193,9 @@ class Governador:
             return "sem leitura"
         if leitura.disco >= self.disco_critico:
             return f"disco {leitura.disco:.0%} ocupado: sem espaço seguro para gravar"
-        return f"carga {leitura.carga:.0%} (processador {leitura.processador:.0%}, memória {leitura.memoria:.0%}) sem folga até {self.limite:.0%}"
+        qual = "o processador" if leitura.processador >= leitura.memoria else "a memória"
+        return (f"carga {leitura.carga:.0%} (processador {leitura.processador:.0%}, memória {leitura.memoria:.0%}): {qual} sem folga "
+                f"até {self.limite:.0%}")
 
     def alertas(self) -> list[str]:
         leitura = self.ultima or self.ler()
@@ -188,7 +229,8 @@ class Governador:
         dados = {"em": agora(), "processador": leitura.processador, "memoria": leitura.memoria, "disco": leitura.disco,
                  "rede_entrada": float(rede.bytes_recv), "rede_saida": float(rede.bytes_sent), "paralelismo": paralelismo,
                  "nucleos": psutil.cpu_count() or 1, "memoria_total_mb": psutil.virtual_memory().total // 2**20,
-                 "disco_total_gb": round(psutil.disk_usage(".").total / 2**30, 1), "gpu": gpu}
+                 "disco_total_gb": round(psutil.disk_usage(".").total / 2**30, 1), "gpu": gpu,
+                 "processos": json.dumps(processos_da_memoria(), ensure_ascii=False)}
         for parte, tamanho in (tamanhos or {}).items():
             dados[f"tamanho_{parte}"] = tamanho
         if self.diario:
