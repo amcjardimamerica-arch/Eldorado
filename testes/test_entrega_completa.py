@@ -76,5 +76,15 @@ def test_a_versao_recebida_pelo_chrome_e_a_que_conta(tmp_path, monkeypatch):
 def test_a_decisao_encerrada_arquiva_e_nao_exclui():
     from pathlib import Path
     t = Path("eldorado/base/cartorio/analise_externa.py").read_text(encoding="utf-8")
-    i = t.index('if v.decisao == "encerrada":')
+    i = t.index('if v.decisao in ("encerrada", "arquivar"):')
     assert '"arquivo"' in t[i:i + 500] and "livro.excluido_logicamente" not in t[i:i + 500]
+
+
+def test_a_gravacao_nao_apaga_as_versoes_nem_os_lotes_das_partes():
+    """04/11/2026: o gravar.sh tirava do repositório tudo de verificacao/lotes ausente na pasta do ciclo (as versões e os
+    lotes das partes do Chrome sumiam a cada gravação); o ciclo passa a trazê-los para a conferência da R41."""
+    from pathlib import Path
+    s = Path("scripts/gravar.sh").read_text(encoding="utf-8")
+    assert 'grep -v "/versoes/" | grep -v -- "-externa-"' in s
+    t = Path("eldorado/base/cartorio/analise_externa.py").read_text(encoding="utf-8")
+    assert 'for sub in ("lotes/versoes/", "lotes/"):' in t and '"arquivar"' in t

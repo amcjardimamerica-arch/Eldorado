@@ -333,7 +333,8 @@ def importar(retorno: bytes | str, con: sqlite3.Connection, diario: Diario, exig
             diario.emitir("aprendizado.registrado", "chrome", {"modulo": "analise externa", "o_que": v.aprendizado[:2000],
                                                                "evidencia": f"veredito do Chrome para {v.livro_id} ({r.lote or 'sem lote'})",
                                                                "criado_em": agora(), "expira_em": (date.today() + timedelta(days=29)).isoformat()})
-        if v.decisao == "encerrada":   # 04/11/2026 (titular): oportunidade do terceiro setor que encerrou: fica no banco, no arquivo
+        # 04/11/2026 (titular): a oportunidade do terceiro setor (encerrada ou fora do perfil) fica no banco, no arquivo
+        if v.decisao in ("encerrada", "arquivar"):
             if fase != "arquivo":
                 cartorio.passaporte.mover(v.livro_id, "arquivo", f"a análise externa confirmou: oportunidade encerrada ({(v.motivo or '')[:200]})",
                                           {"gerou": "oportunidade encerrada (Chrome)", "analise": "externa"})
@@ -393,6 +394,17 @@ def trazer_vereditos_novos(pasta: Path) -> list[str]:
             if corpo.returncode == 0 and corpo.stdout:
                 (pasta / "vereditos" / nome).write_bytes(corpo.stdout)
                 trazidos.append(nome)
+        # 04/11/2026 (R41): as versões do lote e os lotes das partes do Chrome, para a conferência da entrega completa
+        for sub in ("lotes/versoes/", "lotes/"):
+            for n in subprocess.run(["git", "ls-tree", "--name-only", "origin/main", f"{pasta.as_posix()}/{sub}"],
+                                    capture_output=True, text=True, timeout=30).stdout.split():
+                destino = pasta / sub / Path(n).name
+                if not n.endswith(".json") or destino.exists() or (sub == "lotes/" and "-externa-" not in n):
+                    continue
+                corpo = subprocess.run(["git", "show", f"origin/main:{n}"], capture_output=True, timeout=60)
+                if corpo.returncode == 0 and corpo.stdout:
+                    destino.parent.mkdir(parents=True, exist_ok=True)
+                    destino.write_bytes(corpo.stdout)
     except (OSError, subprocess.SubprocessError):
         pass
     return trazidos
