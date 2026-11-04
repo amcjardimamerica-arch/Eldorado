@@ -18,9 +18,10 @@ from typing import Any
 ETAPAS = {
     "regencia": ["rg_regencia", "ma_cobertura", "ma_esgotados", "dg_finalidade", "ma_memoria_etapa"],
     "coleta": ["mo_saude", "mo_cadencia", "mo_retentativa", "mo_fora_da_fila", "es_coleta"],
-    "certificacao": ["ca_12", "fl_fila", "es_curadoria", "es_parcial", "es_expurgo"],
-    "investigacao": ["pi_interceptador", "pi_espiao", "pi_piloto", "de_decisoes", "pi_missoes", "pi_vagas"],
-    "externa": ["ve_para_o_chrome", "ve_bloqueadas", "ve_completas", "ve_importado", "al_externa"],
+    "certificacao": ["ca_12", "fl_fila", "es_curadoria", "es_parcial"],
+    "investigacao": ["pi_interceptador", "pi_espiao", "pi_piloto", "pi_missoes", "pi_vagas"],
+    # 04/11/2026 (titular): a verificação externa e o expurgo são da etapa 5 (antes acendiam também as etapas 3 e 4)
+    "externa": ["ve_para_o_chrome", "de_decisoes", "es_expurgo", "ve_bloqueadas", "ve_completas", "ve_importado", "al_externa"],
     "repositorio": ["es_abertas", "es_banco_unico", "hi_crescimento"],
     "biblioteca": ["es_livros", "es_vigilancia", "em_rankings", "hi_uso", "hi_frio", "es_orfaos"],
     "aprendizado": ["rn_auc", "rn_precisao", "rn_revocacao", "rn_brier", "rn_treino", "cm_comparacao", "cm_decisoes"],

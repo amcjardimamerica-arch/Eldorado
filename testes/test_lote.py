@@ -99,8 +99,9 @@ def test_c_o_lote_e_regerado_quando_a_fila_muda(gravador, bancos, diario, tmp_pa
     aplicar(gravador, tmp_path)
     atualizar_lote_do_dia(b, pasta, dia, cfg=cfg)
     livros = json.loads((pasta / "lote-2026-10-29.json").read_text())["livros"]
-    assert livros[-1]["livro_id"] == "R000" and livros[-1]["retorno"] is True and set(livros[-1]["faltam"]) == {"Anexos", "Prazo de recurso"}
-    assert not any(x.get("retorno") for x in livros[:-1])
+    # 04/11/2026 (titular: depois da verificação não fica pendência): o livro validado pelo Chrome com itens faltando não
+    # volta ao lote como retorno — sai da fila (ao Farol com prazo aberto; ao arquivo sem prazo)
+    assert "R000" not in {x["livro_id"] for x in livros} and not any(x.get("retorno") for x in livros)
     todos = {x["livro_id"] for x in json.loads((pasta / "lote-2026-10-29.json").read_text())["livros"]}
     r = atualizar_lote_do_dia(b, pasta, dia, saiu=todos, cfg=cfg)  # a etapa vazia
     assert r["lote"] is None and not (pasta / "lote-2026-10-29.json").exists()

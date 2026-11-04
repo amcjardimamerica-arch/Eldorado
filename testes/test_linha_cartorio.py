@@ -127,8 +127,9 @@ def test_etapa_5_veredito_do_chrome(gravador, bancos, diario, tmp_path):
     assert any(x.startswith("dispensa de Objeto: recusada") for x in r[0]["recusas"])            # o núcleo nunca se dispensa
     assert b.execute("SELECT justificativa FROM certidao WHERE livro_id='V' AND situacao='dispensado'").fetchone()[0].startswith("não há recurso previsto")
     assert b.execute("SELECT situacao FROM livro WHERE id='D'").fetchone()[0] == "excluido"
-    # 29/10/2026 (titular: todo dado de livro é gravado no livro): o livro que voltou à preparação recebe o veredito e segue nela
-    assert "recusado" not in r[2] and etapa(b, "X") == "preparacao"
+    # 29/10/2026 (titular: todo dado de livro é gravado no livro): o livro que voltou à preparação recebe o veredito;
+    # 04/11/2026 (titular: depois da verificação não fica pendência): e sai da fila (sem prazo aberto: ao arquivo)
+    assert "recusado" not in r[2] and etapa(b, "X") in ("arquivo", "farol")
     assert bancos["cerebro"].execute("SELECT COUNT(*) FROM aprendizado_temporario WHERE modulo='analise externa'").fetchone()[0] == 1
     assert I.DOZE
 

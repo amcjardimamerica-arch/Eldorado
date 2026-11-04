@@ -19,7 +19,7 @@ def _banco():
     b = sqlite3.connect(":memory:")
     b.executescript("CREATE TABLE passaporte(livro_id TEXT, fase TEXT, entrou_em TEXT);"
                     "INSERT INTO passaporte VALUES ('A','analise externa','2026-11-01'),('B','analise externa','2026-11-01'),"
-                    "('C','analise externa','2026-11-03T10:00:00'),('D','preparacao','2026-11-01');")
+                    "('C','analise externa','2026-11-03T10:00:00'),('D','farol','2026-11-01');")
     return b
 
 
@@ -40,7 +40,7 @@ def test_o_completo_considera_so_os_devidos(tmp_path, monkeypatch):
     (tmp_path / "verificacao/lotes/lote-x.json").write_text(json.dumps(
         {"lote": "lote-x", "gerado_em": "2026-11-02T00:00:00", "livros": [{"livro_id": i} for i in "ABCD"]}))
     r = ae.Retorno(lote="lote-x", vereditos=[ae.Veredito(livro_id="A", decisao="valido"), ae.Veredito(livro_id="B", decisao="descartar")])
-    assert ae.conferir_completo(r, _banco()) == []     # C entrou depois do lote; D já saiu da análise externa
+    assert ae.conferir_completo(r, _banco()) == []     # C entrou depois do lote; D já saiu das etapas pendentes (no Farol)
     r2 = ae.Retorno(lote="lote-x", vereditos=[ae.Veredito(livro_id="A", decisao="valido"), ae.Veredito(livro_id="B", decisao="pendente")])
     assert ae.conferir_completo(r2, _banco()) == ["B"]
     assert isinstance(ae.conferir_completo(ae.Retorno(vereditos=[]), _banco()), str)   # sem o lote: recusado
@@ -88,3 +88,13 @@ def test_a_gravacao_nao_apaga_as_versoes_nem_os_lotes_das_partes():
     assert 'grep -v "/versoes/" | grep -v -- "-externa-"' in s
     t = Path("eldorado/base/cartorio/analise_externa.py").read_text(encoding="utf-8")
     assert 'for sub in ("lotes/versoes/", "lotes/"):' in t and '"arquivar"' in t
+
+
+def test_o_lote_completo_leva_todas_as_etapas_pendentes():
+    """04/11/2026 (titular): o lote único do Chrome com todos os livros sem decisão; depois do veredito, nenhuma pendência."""
+    from pathlib import Path
+    t = Path("eldorado/base/cartorio/analise_externa.py").read_text(encoding="utf-8")
+    assert "def gravar_lote_completo" in t and "gerar_lote(con, hoje, None, PENDENTES)" in t
+    assert 'destino = "farol" if aberta else "arquivo"' in t
+    s = Path("eldorado/base/painel/sala.py").read_text(encoding="utf-8")
+    assert '"externa": ["ve_para_o_chrome", "de_decisoes", "es_expurgo"' in s and '"es_parcial"],' in s

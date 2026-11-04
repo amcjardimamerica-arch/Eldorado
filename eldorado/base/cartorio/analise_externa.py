@@ -167,17 +167,24 @@ def aplicar_triagem(con: sqlite3.Connection, diario, cfg: dict[str, Any] | None 
     return [x["livro_id"] for x in alvo]
 
 
-def gerar_lote(con: sqlite3.Connection, hoje: date, maximo: int | None = None) -> dict[str, Any]:   # None = todos (titular, 29/10/2026)
+PENDENTES = ("analise externa", "recepcao", "certificacao", "preparacao", "validacao")   # 04/11/2026: as etapas sem decisão
+
+
+def gerar_lote(con: sqlite3.Connection, hoje: date, maximo: int | None = None,
+               fases: tuple[str, ...] = ("analise externa",)) -> dict[str, Any]:   # None = todos (titular, 29/10/2026)
     con.row_factory = sqlite3.Row
     livros = []
     tem_base = "base_buscar" in {r[1] for r in con.execute("PRAGMA table_info(livro_dados)")}
     extra = ", d.base_buscar, d.base_classe" if tem_base else ""
-    for lv in con.execute(f"SELECT l.*, d.inscricao_fim, d.situacao_prazo, d.abrangencia{extra} FROM livro l JOIN passaporte p ON p.livro_id = l.id "
-                          "LEFT JOIN livro_dados d ON d.livro_id = l.id WHERE p.fase = 'analise externa' AND l.situacao NOT IN ('excluido', 'unido') "
-                          "ORDER BY (d.situacao_prazo = 'aberta') DESC, d.inscricao_fim"):
+    marcas = ",".join("?" * len(fases))
+    for lv in con.execute(f"SELECT l.*, p.fase AS etapa, d.inscricao_fim, d.situacao_prazo, d.abrangencia{extra} FROM livro l "
+                          "JOIN passaporte p ON p.livro_id = l.id LEFT JOIN livro_dados d ON d.livro_id = l.id "
+                          f"WHERE p.fase IN ({marcas}) AND l.situacao NOT IN ('excluido', 'unido') "
+                          "ORDER BY (d.situacao_prazo = 'aberta') DESC, d.inscricao_fim", fases):
         certs = I.melhor([dict(c) for c in con.execute("SELECT * FROM certidao WHERE livro_id=? AND situacao IN ('comprovado','dispensado')", (lv["id"],))])
         validas = {k: v for k, v in certs.items() if I.resolvido(v)}
-        livros.append({"livro_id": lv["id"], "titulo": lv["titulo"], "orgao": lv["orgao"], "uf": lv["uf"], "link_oficial": lv["link_oficial"],
+        livros.append({"livro_id": lv["id"], "etapa": lv["etapa"], "titulo": lv["titulo"], "orgao": lv["orgao"], "uf": lv["uf"],
+                       "link_oficial": lv["link_oficial"],
                        "link_divulgacao": lv["link_divulgacao"], "estrela": lv["estrela"], "selo_livro": lv["selo_livro"],
                        "prazo": lv["situacao_prazo"], "fim_inscricao": lv["inscricao_fim"],
                        # R39: sem nenhuma estrela depois das 5 etapas do Cartório → o Chrome valida a oportunidade ou o expurgo
@@ -272,6 +279,25 @@ def guardar_versao(pasta_lotes: Path, nome: str, conteudo: dict) -> None:
     (pv / f"{nome}@{_marca(conteudo['gerado_em'])}.json").write_text(json.dumps(conteudo, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
+def gravar_lote_completo(con: sqlite3.Connection, pasta_lotes: Path, hoje: date, tam: int = 50) -> dict[str, Any]:
+    """04/11/2026 (titular): o lote único do Claude no Chrome com TODOS os livros sem decisão (as 5 etapas pendentes),
+    em partes de 50, com a versão guardada (R41) — depois dele, nenhuma pendência no sistema."""
+    lote = gerar_lote(con, hoje, None, PENDENTES)
+    nome = f"lote-{hoje.isoformat()}-completo"
+    lote |= {"lote": nome, "total_livros": len(lote["livros"])}
+    pasta_lotes.mkdir(parents=True, exist_ok=True)
+    (pasta_lotes / f"{nome}.json").write_text(json.dumps(lote, ensure_ascii=False, indent=1), encoding="utf-8")
+    guardar_versao(pasta_lotes, nome, lote)
+    partes = []
+    for k in range(0, len(lote["livros"]), tam):
+        parte = lote | {"lote": f"{nome}-parte-{k // tam + 1}", "parte": k // tam + 1, "de": -(-len(lote["livros"]) // tam),
+                        "livros": lote["livros"][k:k + tam], "total_livros": len(lote["livros"][k:k + tam])}
+        (pasta_lotes / f"{parte['lote']}.json").write_text(json.dumps(parte, ensure_ascii=False, indent=1), encoding="utf-8")
+        guardar_versao(pasta_lotes, parte["lote"], parte)
+        partes.append(parte["lote"])
+    return {"lote": nome, "livros": len(lote["livros"]), "partes": partes, "gerado_em": lote["gerado_em"]}
+
+
 def conferir_completo(r: "Retorno", con: sqlite3.Connection, pasta_lotes: Path = Path("verificacao/lotes")) -> list[str] | str:
     """R41: os livros do lote que ficaram sem veredito decisivo ([] = completo), ou o motivo da recusa. Não contam como falta
     o livro que entrou no lote depois de o Chrome o receber nem o que já saiu da análise externa."""
@@ -290,7 +316,7 @@ def conferir_completo(r: "Retorno", con: sqlite3.Connection, pasta_lotes: Path =
     fase = dict(con.execute("SELECT livro_id, fase FROM passaporte").fetchall())
     entrou = dict(con.execute("SELECT livro_id, entrou_em FROM passaporte").fetchall())
     corte = r.lote_gerado_em or lote.get("gerado_em")
-    devidos = [i for i in esperados if fase.get(i) == "analise externa" and not (corte and str(entrou.get(i) or "") > corte)]
+    devidos = [i for i in esperados if fase.get(i) in PENDENTES and not (corte and str(entrou.get(i) or "") > corte)]
     entregues = {v.livro_id for v in r.vereditos if str(v.decisao or "").strip().lower() not in DECISIVAS_NAO}
     return [i for i in devidos if i not in entregues]
 
@@ -320,7 +346,7 @@ def importar(retorno: bytes | str, con: sqlite3.Connection, diario: Diario, exig
         # Farol não é aplicado sozinho: fica para a titular.
         # e (29/10/2026, os remanescentes de 23 a 28/10) para o livro já ARQUIVADO: o válido grava os itens e o veredito no
         # registro da edição encerrada (a revalidação não o tira do arquivo); o descarte o exclui (não era oportunidade)
-        if fase not in ("analise externa", "preparacao", "farol", "validacao", "arquivo"):
+        if fase not in (*PENDENTES, "farol", "arquivo"):
             saida.append({"livro": v.livro_id, "recusado": f"o livro está na etapa {fase}: o veredito não se aplica"})
             continue
         if fase == "farol" and v.decisao == "descartar":
@@ -370,7 +396,20 @@ def importar(retorno: bytes | str, con: sqlite3.Connection, diario: Diario, exig
             diario.emitir("certidao.gravada", "chrome", c)
             extras[d.item] = c
         gerou = f"veredito do Chrome: {len(extras)} item(ns) ou dispensa(s)" + (f"; recusados: {'; '.join(recusas)}" if recusas else "")
-        saida.append(cartorio.revalidar(v.livro_id, extras, gerou) | {"recusas": recusas})
+        res = cartorio.revalidar(v.livro_id, extras, gerou) | {"recusas": recusas}
+        # 04/11/2026 (titular): depois da verificação não fica pendência — o livro validado pelo Chrome que ainda tem item
+        # faltando não volta à fila: prazo aberto → Farol (a titular decide com o que se sabe); encerrado ou sem prazo → arquivo
+        if res.get("etapa") in PENDENTES:
+            fim = con.execute("SELECT inscricao_fim FROM livro_dados WHERE livro_id = ?", (v.livro_id,)).fetchone()
+            aberta = bool(fim and fim[0] and fim[0] >= date.today().isoformat())
+            destino = "farol" if aberta else "arquivo"
+            motivo = "validado pelo Claude no Chrome com itens ainda faltando: " + (
+                "ao Farol com o prazo aberto" if aberta else "ao arquivo (prazo encerrado ou sem prazo)")
+            ok, _ = cartorio.passaporte.mover(v.livro_id, destino, motivo,
+                                              {"gerou": "validado pela análise externa, sem pendência", "analise": "externa"})
+            if ok:
+                res["etapa"] = destino
+        saida.append(res)
     return saida
 
 
@@ -399,7 +438,7 @@ def trazer_vereditos_novos(pasta: Path) -> list[str]:
             for n in subprocess.run(["git", "ls-tree", "--name-only", "origin/main", f"{pasta.as_posix()}/{sub}"],
                                     capture_output=True, text=True, timeout=30).stdout.split():
                 destino = pasta / sub / Path(n).name
-                if not n.endswith(".json") or destino.exists() or (sub == "lotes/" and "-externa-" not in n):
+                if not n.endswith(".json") or destino.exists() or (sub == "lotes/" and "-externa-" not in n and "-completo" not in n):
                     continue
                 corpo = subprocess.run(["git", "show", f"origin/main:{n}"], capture_output=True, timeout=60)
                 if corpo.returncode == 0 and corpo.stdout:
