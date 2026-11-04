@@ -243,12 +243,13 @@ def atualizar_lote_do_dia(con: sqlite3.Connection, pasta_lotes: Path, hoje: date
     pasta_lotes.mkdir(parents=True, exist_ok=True)
     base = {k: v for k, v in lote.items() if k != "livros"}
     completo.write_text(json.dumps({**base, "lote": nome, "livros": livros}, ensure_ascii=False, indent=1), encoding="utf-8")
+    guardar_versao(pasta_lotes, nome, {**base, "lote": nome, "livros": livros})
     for f in partes_velhas:
         if f.stem not in nomes_partes:
             f.unlink(missing_ok=True)
     # 30/10/2026: o lote do dia tem a fila inteira; os lotes de dias anteriores saem (a gravação os tira do repositório)
     # 03/11/2026 (R41): mantidos por 7 dias — o veredito do Chrome que chega depois precisa do lote que ele recebeu
-    for f in pasta_lotes.glob("lote-*.json"):
+    for f in [*pasta_lotes.glob("lote-*.json"), *(pasta_lotes / "versoes").glob("lote-*.json")]:
         if f.stem[5:15] < (hoje - timedelta(days=7)).isoformat():
             f.unlink(missing_ok=True)
     for k, np_ in enumerate(nomes_partes):
@@ -258,12 +259,30 @@ def atualizar_lote_do_dia(con: sqlite3.Connection, pasta_lotes: Path, hoje: date
     return {"lote": nome, "livros": len(livros), "partes": nomes_partes, "mudou": True}
 
 
+def _marca(gerado_em: str) -> str:
+    return str(gerado_em).replace(":", "").replace("+0000", "Z")[:20]
+
+
+def guardar_versao(pasta_lotes: Path, nome: str, conteudo: dict) -> None:
+    """A cópia de cada versão do lote (7 dias), para a conferência da entrega completa (R41) usar a que o Chrome recebeu."""
+    if not conteudo.get("gerado_em"):
+        return
+    pv = pasta_lotes / "versoes"
+    pv.mkdir(parents=True, exist_ok=True)
+    (pv / f"{nome}@{_marca(conteudo['gerado_em'])}.json").write_text(json.dumps(conteudo, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
 def conferir_completo(r: "Retorno", con: sqlite3.Connection, pasta_lotes: Path = Path("verificacao/lotes")) -> list[str] | str:
     """R41: os livros do lote que ficaram sem veredito decisivo ([] = completo), ou o motivo da recusa. Não contam como falta
     o livro que entrou no lote depois de o Chrome o receber nem o que já saiu da análise externa."""
     if not r.lote:
         return "o veredito não diz de qual lote é (o campo 'lote', copiado do arquivo do lote)"
     arq = pasta_lotes / f"{Path(r.lote).stem}.json"
+    # 04/11/2026: a VERSÃO do lote que o Chrome recebeu (o lote do dia é regravado; a versão guardada tem a mesma hora)
+    if r.lote_gerado_em:
+        v = pasta_lotes / "versoes" / f"{Path(r.lote).stem}@{_marca(r.lote_gerado_em)}.json"
+        if v.exists():
+            arq = v
     if not arq.exists():
         return f"o lote {r.lote} não está em {pasta_lotes}"
     lote = json.loads(arq.read_text(encoding="utf-8"))
@@ -314,6 +333,12 @@ def importar(retorno: bytes | str, con: sqlite3.Connection, diario: Diario, exig
             diario.emitir("aprendizado.registrado", "chrome", {"modulo": "analise externa", "o_que": v.aprendizado[:2000],
                                                                "evidencia": f"veredito do Chrome para {v.livro_id} ({r.lote or 'sem lote'})",
                                                                "criado_em": agora(), "expira_em": (date.today() + timedelta(days=29)).isoformat()})
+        if v.decisao == "encerrada":   # 04/11/2026 (titular): oportunidade do terceiro setor que encerrou: fica no banco, no arquivo
+            if fase != "arquivo":
+                cartorio.passaporte.mover(v.livro_id, "arquivo", f"a análise externa confirmou: oportunidade encerrada ({(v.motivo or '')[:200]})",
+                                          {"gerou": "oportunidade encerrada (Chrome)", "analise": "externa"})
+            saida.append({"livro": v.livro_id, "arquivado": True})
+            continue
         if v.decisao == "descartar":
             diario.emitir("livro.excluido_logicamente", "chrome", {"id": v.livro_id, "atualizado_em": agora(),
                                                                    "justificativa_exclusao": f"descartado na análise externa: {v.motivo or 'sem motivo'}"})

@@ -59,3 +59,22 @@ def test_o_expurgo_vai_junto_da_verificacao_externa():
     assert '"expurgo_junto": junto' in t and "timedelta(days=7)" in t
     c = Path("eldorado/base/comandante/cartorio.py").read_text(encoding="utf-8")
     assert 'for lid in c["sem_dados"]:' in c and "validar o expurgo (R42)" in c
+
+
+def test_a_versao_recebida_pelo_chrome_e_a_que_conta(tmp_path, monkeypatch):
+    """04/11/2026: o lote do dia é regravado; a conferência usa a versão com a hora que o veredito declara."""
+    monkeypatch.chdir(tmp_path)
+    p = tmp_path / "verificacao/lotes"
+    p.mkdir(parents=True)
+    (p / "lote-x.json").write_text(json.dumps({"lote": "lote-x", "gerado_em": "2026-11-03T20:00:00+00:00",
+                                               "livros": [{"livro_id": i} for i in "ABCD"]}))      # a versão de agora: 4
+    ae.guardar_versao(p, "lote-x", {"lote": "lote-x", "gerado_em": "2026-11-03T15:22:07+00:00", "livros": [{"livro_id": "A"}]})
+    r = ae.Retorno(lote="lote-x", lote_gerado_em="2026-11-03T15:22:07+00:00", vereditos=[ae.Veredito(livro_id="A", decisao="valido")])
+    assert ae.conferir_completo(r, _banco()) == []                      # a versão das 15:22 tinha só o A
+
+
+def test_a_decisao_encerrada_arquiva_e_nao_exclui():
+    from pathlib import Path
+    t = Path("eldorado/base/cartorio/analise_externa.py").read_text(encoding="utf-8")
+    i = t.index('if v.decisao == "encerrada":')
+    assert '"arquivo"' in t[i:i + 500] and "livro.excluido_logicamente" not in t[i:i + 500]
