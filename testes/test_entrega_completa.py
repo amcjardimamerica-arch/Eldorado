@@ -77,7 +77,8 @@ def test_a_decisao_encerrada_arquiva_e_nao_exclui():
     from pathlib import Path
     t = Path("eldorado/base/cartorio/analise_externa.py").read_text(encoding="utf-8")
     i = t.index('if v.decisao in ("encerrada", "arquivar"):')
-    assert '"arquivo"' in t[i:i + 500] and "livro.excluido_logicamente" not in t[i:i + 500]
+    bloco = t[i:t.index("continue", i)]                      # só o bloco da decisão, até o «continue»
+    assert '"arquivo"' in bloco and "livro.excluido_logicamente" not in bloco
 
 
 def test_a_gravacao_nao_apaga_as_versoes_nem_os_lotes_das_partes():
@@ -112,3 +113,27 @@ def test_o_importador_normaliza_o_formato_do_chrome():
     assert i["Objeto"].pagina == 3 and i["Objeto"].url == "https://e"
     assert i["Valor"].valor == "1000" and i["Valor"].pagina == 7 and i["Valor"].url is None and "[DOU Seção 3]" in i["Valor"].trecho
     assert r.vereditos[0].dispensas[0].item == "Prazo de recurso"
+
+
+def test_o_livro_segue_o_caminho_autorizado():
+    """05/11/2026 (grupo 1): da recepção só se vai à certificação; da preparação ao Farol, pela validação."""
+    passos = []
+
+    class Pas:
+        def __init__(self, f):
+            self.f = f
+
+        def fase(self, livro):
+            return self.f
+
+        def mover(self, livro, para, motivo, extra):
+            passos.append(para)
+            self.f = para
+            return True, ""
+
+    class Cart:
+        passaporte = Pas("recepcao")
+    assert ae.levar(Cart(), "L", "arquivo", "m", "g") and passos == ["certificacao", "arquivo"]
+    passos.clear()
+    Cart.passaporte = Pas("preparacao")
+    assert ae.levar(Cart(), "L", "farol", "m", "g") and passos == ["validacao", "farol"]

@@ -317,6 +317,24 @@ def _prever_pelas_edicoes(v: "Veredito", diario: Diario) -> None:
                                                        "confianca": p["confianca"], "calculada_em": agora()})
 
 
+# 05/11/2026 (grupo 1): a Regência só autoriza certas passagens — da recepção, só à certificação; da preparação ao Farol,
+# só pela validação. O livro decidido pelo Chrome segue o caminho autorizado até o destino.
+_CAMINHO = {("recepcao", "arquivo"): ["certificacao", "arquivo"], ("recepcao", "farol"): ["certificacao", "farol"],
+            ("preparacao", "farol"): ["validacao", "farol"], ("validacao", "arquivo"): ["arquivo"]}
+
+
+def levar(cartorio, livro: str, destino: str, motivo: str, gerou: str) -> bool:
+    fase = cartorio.passaporte.fase(livro)
+    if fase == destino:
+        return True
+    for passo in _CAMINHO.get((fase, destino), [destino]):
+        ok, _ = cartorio.passaporte.mover(livro, passo, motivo if passo == destino else f"{motivo} (caminho autorizado)",
+                                          {"gerou": gerou, "analise": "externa"})
+        if not ok:
+            return False
+    return True
+
+
 def normalizar_retorno(retorno: bytes | str) -> bytes:
     """05/11/2026 (as entregas dos grupos 2 e 3): o veredito do Chrome volta com pequenas variações de formato — os itens e
     as dispensas como dicionário, a página como texto («p. 3», «DOU Seção 3»), o número da página no lugar do endereço,
@@ -427,8 +445,8 @@ def importar(retorno: bytes | str, con: sqlite3.Connection, diario: Diario, exig
         # 04/11/2026 (titular): a oportunidade do terceiro setor (encerrada ou fora do perfil) fica no banco, no arquivo
         if v.decisao in ("encerrada", "arquivar"):
             if fase != "arquivo":
-                cartorio.passaporte.mover(v.livro_id, "arquivo", f"a análise externa confirmou: oportunidade encerrada ({(v.motivo or '')[:200]})",
-                                          {"gerou": "oportunidade encerrada (Chrome)", "analise": "externa"})
+                levar(cartorio, v.livro_id, "arquivo", f"a análise externa confirmou: oportunidade encerrada ({(v.motivo or '')[:200]})",
+                      "oportunidade encerrada (Chrome)")
             saida.append({"livro": v.livro_id, "arquivado": True})
             continue
         if v.decisao == "descartar":
@@ -470,8 +488,7 @@ def importar(retorno: bytes | str, con: sqlite3.Connection, diario: Diario, exig
             destino = "farol" if aberta else "arquivo"
             motivo = "validado pelo Claude no Chrome com itens ainda faltando: " + (
                 "ao Farol com o prazo aberto" if aberta else "ao arquivo (prazo encerrado ou sem prazo)")
-            ok, _ = cartorio.passaporte.mover(v.livro_id, destino, motivo,
-                                              {"gerou": "validado pela análise externa, sem pendência", "analise": "externa"})
+            ok = levar(cartorio, v.livro_id, destino, motivo, "validado pela análise externa, sem pendência")
             if ok:
                 res["etapa"] = destino
         saida.append(res)
