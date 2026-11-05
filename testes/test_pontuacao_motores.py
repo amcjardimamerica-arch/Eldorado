@@ -33,4 +33,6 @@ def test_acertos_contra_erros_e_as_indicacoes(tmp_path):
 def test_os_pesos_somam_100_e_o_indicador_substitui_os_botoes():
     assert sum(parametros()["pesos"].values()) == 100
     h = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
-    assert "${iconesAcao(o.id,o.nome)}${pmIndicador(o.id)}" in h and "mt-ico upload" not in h and "mt-ico link" not in h
+    # 05/11/2026 (titular): ao lado dos dados de cima, acima do calendário, encostado ao fósforo; azul e laranja
+    assert '</div>${pmIndicador(o.id)}</div>' in h and '<div class="mt-lado-dir">${iconesAcao(o.id,o.nome)}</div>' in h
+    assert "mt-ico upload" not in h and "mt-ico link" not in h and 'stroke="#0B4EA2"' in h and 'stroke="#E07B00"' in h

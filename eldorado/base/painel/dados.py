@@ -600,7 +600,10 @@ def _fluxo(sis: Sistema, agora: str) -> dict:
     origem_ct, tipo_ct, val_ct = Counter(), Counter(), Counter()
     for r in livros:
         c = certs.get(r["id"], {})
-        conf = (r["estrela"] or "sem") in ("prata", "ouro")            # a régua da titular: o prazo e o link original
+        # R46 (titular, 05/11/2026: "220 abertas, 46 em verificação e 130/220 — dados contraditórios"): UMA régua, do banco —
+        # VALIDADA é a aberta no Farol (passou pela verificação); EM VERIFICAÇÃO é a aberta numa etapa da esteira do Cartório.
+        # Antes: a tela inicial usava a estrela (prata/ouro), a Bússola o campo «validacao» e o parâmetro a análise externa
+        conf = r["fase"] == "farol"
         mid = motor_de.get(r["id"], "")
         origem = "Piloto - Espião" if mid == "espiao" else "Piloto - Interceptador" if mid == "interceptador" else "motor"
         tipo = "empresa/instituto" if (r["esfera"] or "").lower().startswith("priv") else "ente público"
@@ -626,7 +629,7 @@ def _fluxo(sis: Sistema, agora: str) -> dict:
             area=r["area_d"] or r["tema"] or "",
             livro_vinculado={"id": r["id"], "ligado": True},
             validacao=r["validacao"] or "",
-            estado="aberta",
+            estado="validada" if conf else "em verificação",
             selo_livro=r["selo_livro"] or "",
             selo=r["estrela"] or "",
             site_oficial_conhecido=r["origem"] == "confirmado",
@@ -644,10 +647,11 @@ def _fluxo(sis: Sistema, agora: str) -> dict:
     )
     f["parametro"].update(
         {
-            "regra": "oportunidade aberta = livro com prazo de inscrição aberto, validado pelo Cartório",
+            "regra": "R46: aberta = livro com prazo de inscrição aberto (ou fluxo contínuo) fora do arquivo; validada = a aberta no Farol; "
+                     "em verificação = a aberta numa etapa da esteira do Cartório (validadas + em verificação = abertas)",
             "abertas": len(livros),
-            "validadas": val_ct.get("aprovado", 0),
-            "em_verificacao": sum(1 for r in livros if r["fase"] == "analise externa"),
+            "validadas": sum(1 for r in livros if r["fase"] == "farol"),                     # R46: a mesma régua da marca «confirmada»
+            "em_verificacao": sum(1 for r in livros if r["fase"] != "farol"),
             "em": agora[:10],
             "estantes": {"ouro": estrela.get("ouro", 0), "prata": estrela.get("prata", 0), "bronze": estrela.get("bronze", 0), "sem_livro": 0},
             "fonte": "biblioteca.db",

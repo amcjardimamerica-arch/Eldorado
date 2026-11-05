@@ -258,10 +258,14 @@ box-shadow:0 1px 3px #0002}
 .dj .mt-ico{transform:scale(.8)}.dj .mt-ico svg{width:32px;height:22px}
 .dj-mini{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex:none}
 .dj-nome{display:flex;flex-direction:column;min-width:0;flex:1;cursor:pointer}.dj-nome b{font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tinta)}.dj-nome small{font-size:10px;color:var(--suave)}
-.pm-ind{margin-top:6px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:6px 4px;border-radius:10px;background:linear-gradient(180deg,#FFFDF8,#F7F2E7);border:1px solid #EDE3CF;min-width:96px}
-.pm-ind:hover{box-shadow:0 2px 10px rgba(160,122,16,.18)}
-.pm-taxa{font-size:10.5px;text-align:center;line-height:1.25;color:#3B3F46}.pm-taxa span{color:#6B7280;font-size:9.5px}
-.pm-melh{font-size:9.5px;color:#8A5A12;font-weight:600}
+/* 05/11/2026 (titular): o indicador integrado ao cartão — ao lado dos dados de cima, acima do calendário, encostado ao
+   fósforo, sem quadro próprio; a borda esquerda no limite do calendário; azul (acerto) e laranja (erro), as cores da associação */
+.mt-topo{display:flex;gap:14px;align-items:flex-start}.mt-topo-dados{flex:1 1 auto;min-width:0}
+.pm-ind{flex:0 0 auto;display:grid;grid-template-columns:auto auto;grid-template-rows:auto auto;column-gap:8px;row-gap:1px;align-items:center;cursor:pointer;padding:0;margin:2px 0 0;background:none;border:0;max-width:210px}
+.pm-ind>svg:first-child{grid-row:1/3}
+.pm-ind:hover .pm-taxa b{text-decoration:underline}
+.pm-taxa{font-size:11px;line-height:1.3;color:#1F2A44}.pm-taxa span{color:#5B6475;font-size:10px}
+.pm-melh{font-size:10px;color:#E07B00;font-weight:600;grid-column:2}
 .pm-comp{display:grid;grid-template-columns:110px 1fr 64px;gap:8px;align-items:center;font-size:12.5px;margin:4px 0}
 .pm-comp small{grid-column:1/-1;color:#6B7280;font-size:10.5px;margin-top:-4px}
 .pm-trilho{height:8px;background:#EEE7D8;border-radius:5px;overflow:hidden}.pm-trilho i{display:block;height:8px;border-radius:5px}
@@ -5079,24 +5083,24 @@ function iconesAcao(id,nome){
    voltou ao mar) e a taxa de acerto. Os números: dados/pontuacao_motores.json (os parâmetros em config/pontuacao_motores.toml). */
 window._PONT=null;
 carregaFragmento("pontuacao_motores").then(d=>{ window._PONT=d; document.querySelectorAll(".pm-ind[data-motor]").forEach(el=>{ el.outerHTML=pmIndicador(el.dataset.motor); }); });
-const PM_COR={excelente:"#1E7E4B",bom:"#A07A10",atencao:"#C27A1A",critico:"#B23A2B",formacao:"#7A8494"};
+const PM_COR={excelente:"#0B4EA2",bom:"#0B4EA2",atencao:"#E07B00",critico:"#C0392B",formacao:"#7A8494"};
 const PM_ROT={excelente:"excelente",bom:"bom",atencao:"atenção",critico:"crítico",formacao:"em formação"};
 function pmIndicador(id){
   const P=window._PONT; if(!P) return `<div class="pm-ind" data-motor="${esc(id)}"></div>`;
   const x=(P.motores||{})[id]; if(!x) return "";
   const dec=x.acertos+x.erros, r=26, C=2*Math.PI*r, fa=dec?x.acertos/dec:0, cor=PM_COR[x.faixa]||"#7A8494";
-  const arcoA=`<circle cx="34" cy="34" r="${r}" fill="none" stroke="#B8860B" stroke-width="7" stroke-dasharray="${(C*fa).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 34 34)" stroke-linecap="butt"/>`;
-  const arcoE=dec?`<circle cx="34" cy="34" r="${r}" fill="none" stroke="#C9553D" stroke-width="7" stroke-dasharray="${(C*(1-fa)).toFixed(1)} ${C.toFixed(1)}" stroke-dashoffset="${(-C*fa).toFixed(1)}" transform="rotate(-90 34 34)"/>`:"";
+  const arcoA=`<circle cx="34" cy="34" r="${r}" fill="none" stroke="#0B4EA2" stroke-width="7" stroke-dasharray="${(C*fa).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 34 34)" stroke-linecap="butt"/>`;
+  const arcoE=dec?`<circle cx="34" cy="34" r="${r}" fill="none" stroke="#E07B00" stroke-width="7" stroke-dasharray="${(C*(1-fa)).toFixed(1)} ${C.toFixed(1)}" stroke-dashoffset="${(-C*fa).toFixed(1)}" transform="rotate(-90 34 34)"/>`:"";
   const S=x.serie||[], mx=Math.max(1,...S.map(s=>Math.max(s.acertos,s.erros))), w=11, h=16;
   const barras=S.map((s,i)=>{const ha=Math.max(s.acertos?2:0,Math.round(h*Math.sqrt(s.acertos/mx))), he=Math.max(s.erros?2:0,Math.round(h*Math.sqrt(s.erros/mx)));
-    return `<g><title>semana de ${s.semana.slice(8,10)}/${s.semana.slice(5,7)}: ${s.acertos} acerto(s), ${s.erros} erro(s)</title><rect x="${i*w+1}" y="${h-ha}" width="${w-3}" height="${ha}" rx="1.5" fill="#B8860B"/><rect x="${i*w+1}" y="${h+2}" width="${w-3}" height="${he}" rx="1.5" fill="#C9553D" opacity=".85"/></g>`;}).join("");
+    return `<g><title>semana de ${s.semana.slice(8,10)}/${s.semana.slice(5,7)}: ${s.acertos} acerto(s), ${s.erros} erro(s)</title><rect x="${i*w+1}" y="${h-ha}" width="${w-3}" height="${ha}" rx="1.5" fill="#0B4EA2"/><rect x="${i*w+1}" y="${h+2}" width="${w-3}" height="${he}" rx="1.5" fill="#E07B00" opacity=".9"/></g>`;}).join("");
   const agua=`<path d="M0 ${h+1} q ${w*S.length/8} -2 ${w*S.length/4} 0 t ${w*S.length/4} 0 t ${w*S.length/4} 0 t ${w*S.length/4} 0" fill="none" stroke="#5B8DB8" stroke-width="1" opacity=".7"/>`;
   return `<div class="pm-ind" onclick="pmDetalhe('${esc(id)}')" title="a pontuação do motor: clique para os componentes e as indicações de melhoria">
-    <svg viewBox="0 0 68 68" width="68" height="68" aria-label="nota ${x.nota} de 100"><circle cx="34" cy="34" r="${r}" fill="none" stroke="#ECE6D8" stroke-width="7"/>${arcoA}${arcoE}
+    <svg viewBox="0 0 68 68" width="58" height="58" aria-label="nota ${x.nota} de 100"><circle cx="34" cy="34" r="${r}" fill="none" stroke="#E6EAF2" stroke-width="7"/>${arcoA}${arcoE}
       <text x="34" y="35" text-anchor="middle" font-family="Georgia,serif" font-size="17" font-weight="700" fill="${cor}">${Math.round(x.nota)}</text>
       <text x="34" y="46" text-anchor="middle" font-size="7" fill="#6B7280">${esc(PM_ROT[x.faixa]||"")}</text></svg>
-    <svg viewBox="0 0 ${w*S.length} ${2*h+3}" width="${w*S.length}" height="${2*h+3}" aria-label="acertos e erros por semana">${agua}${barras}</svg>
     <div class="pm-taxa"><b style="color:${cor}">${dec?Math.round(100*x.precisao)+"%":"—"}</b> de acerto<br><span>${x.acertos} ✓ · ${x.erros} ✗${x.andamento?" · "+x.andamento+" em curso":""}</span></div>
+    <svg viewBox="0 0 ${w*S.length} ${2*h+3}" width="${w*S.length}" height="${2*h+3}" aria-label="acertos e erros por semana" style="grid-column:2">${agua}${barras}</svg>
     ${(x.melhorias||[]).length?`<div class="pm-melh">${x.melhorias.length} melhoria(s) ›</div>`:""}</div>`;
 }
 window.pmDetalhe=function(id){
@@ -6967,16 +6971,16 @@ function desenhaMotores(){
     ${ofRows.map(o=>{const S=statusMotor(o);const st=[S.luz];const ativo=mtAtivo(o.id);const E=window._ESQ||{};const ab=(E.abates||{})[o.id];const voa=E.missao_atual&&E.missao_atual.motor===o.id;
       return `<div class="mt-item oficial sem-${st[0]}" data-id="${esc(o.id)}">${ab&&ab.n?estrelasDeAbate(ab.n,(ab.ultimos||[]).filter(x=>x.em===new Date().toISOString().slice(0,10)).length,ab):""}
       <div class="mt-lado-esq">${iconeMotor(o.id,ativo)}</div>
-      <div class="mt-corpo"><div>${o.rank?`<span class="mt-rank" title="posição por relevância entre os motores regulares">${String(o.rank).padStart(2,"0")}</span> `:""}<b>${esc(o.nome)}</b> <span class=tag>${esc(ROT_TIPO[o.tipo]||GRUPO_MOTOR[o.grupo]||o.tipo||"oficial")}</span>${MT._horaDe&&MT._horaDe(o.tipo)?` <span class=tag title="hora de saída deste motor (Brasília)">sai às ${esc(MT._horaDe(o.tipo))}</span>`:""}</div>
+      <div class="mt-corpo"><div class="mt-topo"><div class="mt-topo-dados"><div>${o.rank?`<span class="mt-rank" title="posição por relevância entre os motores regulares">${String(o.rank).padStart(2,"0")}</span> `:""}<b>${esc(o.nome)}</b> <span class=tag>${esc(ROT_TIPO[o.tipo]||GRUPO_MOTOR[o.grupo]||o.tipo||"oficial")}</span>${MT._horaDe&&MT._horaDe(o.tipo)?` <span class=tag title="hora de saída deste motor (Brasília)">sai às ${esc(MT._horaDe(o.tipo))}</span>`:""}</div>
         ${o.descricao?`<div class=meta>${esc(o.descricao)}</div>`:""}
         ${(o.agregados||[]).length?`<div class=meta title="03/10 (titular): sites que eram motores próprios e foram reunidos a este motor; continuam lidos pelo fluxo 16">Agrega: ${o.agregados.map(a=>esc(a.nome||a.site)+(a.rota?` (${esc(a.rota)})`:"")).join(" · ")}${o.indicios_agregados?` — ${o.indicios_agregados} indício(s)`:""}</div>`:""}
         ${S.luz!=="verde"&&o.diagnostico&&o.diagnostico.motivo_zero?`<div class="mt-diag ${o.diagnostico.exige_brasil?"br":""}" title="diagnóstico individual da última leitura">${o.diagnostico.exige_brasil?"🇧🇷":"⚠"} ${esc(o.diagnostico.motivo_zero)}${o.diagnostico.descobertas&&o.diagnostico.descobertas.length?` · seguiu: ${o.diagnostico.descobertas.map(d=>esc(d.rotulo||"")).filter(Boolean).slice(0,3).join(", ")}`:""}${o.diagnostico.dou_json_materias!=null?` · matérias do DOU lidas: ${o.diagnostico.dou_json_materias}`:""}</div>`:""}
         <div class="mt-st mt-st-${S.luz}"><b title="${esc(S.resultado||"")}">${S.luz==="verde"?"Funcionando":S.luz==="vermelho"?"Falha":"Inativo"}</b> · última leitura ${S.ultima?br(S.ultima.slice(0,10))+" "+S.ultima.slice(11,16):"—"} · ${esc(S.resultado.replace(/^(coletou hoje|falha na coleta de hoje|não rodou hoje) — ?/,""))}</div>
         ${(S.obs||[]).length?`<div class="mt-obs"><b>Observações</b><ul>${S.obs.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`:""}
-        <div class=meta><a href="${esc(o.url)}" target=_blank rel="noopener noreferrer">página ↗</a>${o.ultima_leitura?" · lida em "+br(o.ultima_leitura.slice(0,10)):""}${o.achados?" · "+o.achados+(o.produto==="empresas"?" empresa(s) mapeada(s)":" edital(is)"):""}</div>
-        ${trintaDias(o)}
+        <div class=meta><a href="${esc(o.url)}" target=_blank rel="noopener noreferrer">página ↗</a>${o.ultima_leitura?" · lida em "+br(o.ultima_leitura.slice(0,10)):""}${o.achados?" · "+o.achados+(o.produto==="empresas"?" empresa(s) mapeada(s)":" edital(is)"):""}</div></div>${pmIndicador(o.id)}</div>
+         ${trintaDias(o)}
         ${achadosDoMotor(o)}${o.id==="plat-estaduais-go-gov"?orgaosEstaduaisHtml():""}</div>
-      <div class="mt-lado-dir">${iconesAcao(o.id,o.nome)}${pmIndicador(o.id)}</div></div>`;}).join("")}</div>`:"";
+      <div class="mt-lado-dir">${iconesAcao(o.id,o.nome)}</div></div>`;}).join("")}</div>`:"";
   // agregação por família → segmento
   /* categorias APENAS por área de atuação (rótulos da página inicial) */
   const rotArea=rotArea0;

@@ -447,8 +447,19 @@ def devolver_abertas_do_arquivo(con: sqlite3.Connection, diario: Diario) -> int:
     aberto volta à linha do Cartório, pela recepção (a passagem permitida do arquivo), a cada passagem."""
     from .passaporte import Passaporte
     passaporte, n = Passaporte(con, diario, maximo=10), 0
-    for (lid,) in con.execute("SELECT p.livro_id FROM passaporte p JOIN livro_dados d ON d.livro_id = p.livro_id "
-                              "WHERE p.fase = 'arquivo' AND d.situacao_prazo = 'aberta'").fetchall():
+    # 05/11/2026 (titular: "essas 46 não deveriam estar para confirmar; já corrigi este erro pelo menos 4 vezes"): só volta
+    # o livro arquivado AUTOMATICAMENTE (o prazo encerrou) cujo prazo reabriu com data vigente. O arquivado por DECISÃO (o
+    # veredito do Claude no Chrome, a titular) fica no arquivo — antes, todo livro com «situacao_prazo = aberta» voltava,
+    # inclusive o «encerrada» e o «arquivar» do Chrome e os sem data, e a esteira enchia de livros já verificados
+    for (lid,) in con.execute(
+            "SELECT p.livro_id FROM passaporte p JOIN livro_dados d ON d.livro_id = p.livro_id "
+            "WHERE p.fase = 'arquivo' AND d.situacao_prazo = 'aberta' AND d.inscricao_fim >= date('now') "
+            "AND COALESCE((SELECT x.motivo FROM passagem x WHERE x.livro_id = p.livro_id AND x.para = 'arquivo' "
+            "ORDER BY x.em DESC LIMIT 1), '') NOT LIKE '%análise externa%' "
+            "AND COALESCE((SELECT x.motivo FROM passagem x WHERE x.livro_id = p.livro_id AND x.para = 'arquivo' "
+            "ORDER BY x.em DESC LIMIT 1), '') NOT LIKE '%Chrome%' "
+            "AND COALESCE((SELECT x.autorizado_por FROM passagem x WHERE x.livro_id = p.livro_id AND x.para = 'arquivo' "
+            "ORDER BY x.em DESC LIMIT 1), '') NOT IN ('titular', 'analise-externa')").fetchall():
         ok, _ = passaporte.mover(lid, "recepcao", "o prazo está aberto: o arquivo é só para encerradas (regra da titular)",
                                  {"gerou": "o livro com o prazo aberto saiu do arquivo e voltou à linha do Cartório"})
         n += int(bool(ok))

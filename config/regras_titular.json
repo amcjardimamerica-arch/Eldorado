@@ -623,6 +623,17 @@
     "testes/test_mapa_sem_falso_verde.py::test_o_motor_com_sinal_nao_e_verde_no_mapa",
     "testes/test_mapa_sem_falso_verde.py::test_a_heranca_e_as_ligacoes_sem_falso_verde"
    ]
+  },
+  {
+   "id": "R46",
+   "data": "2026-11-05",
+   "tema": "uma régua só para abertas, validadas e em verificação",
+   "regra": "Os números das oportunidades vêm só do banco e com uma régua única em todo o painel: ABERTA é o livro com prazo de inscrição aberto (ou fluxo contínuo) fora do arquivo; VALIDADA é a aberta no Farol (passou pela verificação); EM VERIFICAÇÃO é a aberta numa etapa da esteira do Cartório. Validadas + em verificação = abertas, na tela inicial, na Bússola e no mapa.",
+   "porque": "titular, 05/11/2026: a tela inicial mostrava 220 abertas e 46 em verificação e a Bússola 130/220, contraditórios — a tela inicial usava a estrela (prata/ouro), a Bússola o campo «validacao» e o parâmetro a análise externa; já corrigido 4 vezes.",
+   "onde": "eldorado/base/painel/dados.py (_fluxo: a marca «confirmada», o estado e o parâmetro)",
+   "travas": [
+    "testes/test_regua_unica.py::test_uma_regua_para_abertas_validadas_e_em_verificacao"
+   ]
   }
  ]
 }

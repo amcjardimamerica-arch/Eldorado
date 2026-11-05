@@ -76,7 +76,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 11859,
+   "linhas": 11861,
    "situacao": "em funcionamento",
    "ordem": 4
   },
@@ -150,6 +150,7 @@
     "test_encaminhamento_isolado.py",
     "test_entrega_completa.py",
     "test_enxugamento_0511.py",
+    "test_escada_ponte_0511.py",
     "test_espiao.py",
     "test_eventos.py",
     "test_executor.py",
@@ -212,6 +213,7 @@
     "test_rede_parametros.py",
     "test_regra_r09.py",
     "test_regras_tabela_unica.py",
+    "test_regua_unica.py",
     "test_releitura.py",
     "test_revisao_alarmes.py",
     "test_sala_alertas_claude.py",
@@ -321,6 +323,7 @@
     "test_rede_neural.py",
     "test_rede_parametros.py",
     "test_regras_tabela_unica.py",
+    "test_regua_unica.py",
     "test_releitura.py",
     "test_revisao_alarmes.py",
     "test_sala_alertas_claude.py",
@@ -2805,6 +2808,7 @@
     "test_comandante_memoria.py",
     "test_descoberta.py",
     "test_encaminhamento_isolado.py",
+    "test_escada_ponte_0511.py",
     "test_espiao.py",
     "test_fumaca_dados_reais.py",
     "test_governador_recursos.py",
@@ -2855,6 +2859,7 @@
     "test_cassete.py",
     "test_descoberta.py",
     "test_encaminhamento_isolado.py",
+    "test_escada_ponte_0511.py",
     "test_fumaca_dados_reais.py",
     "test_interceptador.py",
     "test_interceptador_funciona.py",
@@ -2872,7 +2877,7 @@
   },
   {
    "arquivo": "eldorado/motores/acesso/escada.py",
-   "linhas": 247,
+   "linhas": 254,
    "finalidade": "A escada de acesso: do degrau mais leve ao mais forte, aprendendo por domínio qual degrau funciona.",
    "depende_de": [
     "eldorado/base/nucleo/eventos.py"
@@ -2901,6 +2906,7 @@
     "test_acesso.py",
     "test_cassete.py",
     "test_descoberta.py",
+    "test_escada_ponte_0511.py",
     "test_fumaca_dados_reais.py",
     "test_interceptador.py",
     "test_interceptador_funciona.py",
@@ -4377,6 +4383,7 @@
     "test_manutencao_expurgo.py",
     "test_operacao_no_cerebro.py",
     "test_r35_dados.py",
+    "test_regua_unica.py",
     "test_releitura.py",
     "test_travas_motores.py"
    ],
@@ -4504,7 +4511,8 @@
     "eldorado/base/comandante/biblioteca.py"
    ],
    "testes": [
-    "test_cartorio.py"
+    "test_cartorio.py",
+    "test_regua_unica.py"
    ],
    "situacao": "em funcionamento",
    "etapa": "08 Cartório · recepção e certificação",
@@ -4859,7 +4867,7 @@
   },
   {
    "arquivo": "eldorado/base/cartorio/analise_externa.py",
-   "linhas": 568,
+   "linhas": 570,
    "finalidade": "A etapa 5 do Cartório: a ANÁLISE EXTERNA pelo Claude no Chrome (titular, 22/10/2026).",
    "depende_de": [
     "eldorado/base/analise/previsao.py",
@@ -5069,7 +5077,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 628,
+   "linhas": 639,
    "situacao": "em funcionamento",
    "ordem": 162
   },
@@ -5189,7 +5197,7 @@
   },
   {
    "arquivo": "eldorado/base/cartorio/auditoria.py",
-   "linhas": 474,
+   "linhas": 485,
    "finalidade": "A auditoria de cada livro: a validação individual e a decupagem dos dados em colunas (livro_dados).",
    "depende_de": [
     "eldorado/base/cartorio/certificacao.py",
@@ -5222,6 +5230,7 @@
     "test_comandante_expurgo.py",
     "test_incentivos.py",
     "test_linha_cartorio.py",
+    "test_regua_unica.py",
     "test_travas_motores.py"
    ],
    "situacao": "em funcionamento",
@@ -6117,7 +6126,7 @@
   },
   {
    "arquivo": "eldorado/base/painel/dados.py",
-   "linhas": 1010,
+   "linhas": 1014,
    "finalidade": "Os dados do painel, gerados do sistema novo (titular, 23/10/2026): o site é a imagem atual do sistema.",
    "depende_de": [
     "eldorado/base/cartorio/historia.py",

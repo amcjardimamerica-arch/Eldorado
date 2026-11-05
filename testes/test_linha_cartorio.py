@@ -138,7 +138,9 @@ def test_o_arquivo_e_so_para_encerradas(gravador, bancos, diario, tmp_path):
     """Regra da titular (24/10/2026): o livro no arquivo com o prazo aberto volta à linha, pela recepção."""
     from eldorado.base.cartorio.auditoria import devolver_abertas_do_arquivo
     assert gravador.aplicar(livro("V", "arquivo")).ok
-    assert gravador.aplicar([ev("livro.decupado", livro_id="V", validacao="aprovado", validado_em=AGORA, situacao_prazo="aberta")]).ok
+    # 05/11/2026 (titular): só volta o prazo aberto COM DATA vigente (o «aberto» sem data trazia de volta livros já verificados)
+    assert gravador.aplicar([ev("livro.decupado", livro_id="V", validacao="aprovado", validado_em=AGORA, situacao_prazo="aberta",
+                                inscricao_fim="2099-12-31")]).ok
     assert devolver_abertas_do_arquivo(bancos["biblioteca"], diario) == 1
     aplicar(gravador, tmp_path)
     assert etapa(bancos["biblioteca"], "V") == "recepcao"

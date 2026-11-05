@@ -483,8 +483,10 @@ def importar(retorno: bytes | str, con: sqlite3.Connection, diario: Diario, exig
         # 04/11/2026 (titular): depois da verificação não fica pendência — o livro validado pelo Chrome que ainda tem item
         # faltando não volta à fila: prazo aberto → Farol (a titular decide com o que se sabe); encerrado ou sem prazo → arquivo
         if res.get("etapa") in PENDENTES:
-            fim = con.execute("SELECT inscricao_fim FROM livro_dados WHERE livro_id = ?", (v.livro_id,)).fetchone()
-            aberta = bool(fim and fim[0] and fim[0] >= date.today().isoformat())
+            fim = con.execute("SELECT inscricao_fim, situacao_prazo FROM livro_dados WHERE livro_id = ?", (v.livro_id,)).fetchone()
+            # 05/11/2026: o fluxo contínuo (prazo aberto sem data) também vai ao Farol (antes ia ao arquivo e a devolução
+            # automática o trazia de volta à recepção)
+            aberta = bool(fim and ((fim[0] and fim[0] >= date.today().isoformat()) or (not fim[0] and fim[1] == "aberta")))
             destino = "farol" if aberta else "arquivo"
             motivo = "validado pelo Claude no Chrome com itens ainda faltando: " + (
                 "ao Farol com o prazo aberto" if aberta else "ao arquivo (prazo encerrado ou sem prazo)")
