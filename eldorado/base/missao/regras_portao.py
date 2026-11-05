@@ -162,9 +162,14 @@ PESQUISADOR = re.compile(r"(?i)\bbolsas? (?:de|para)\b|\bbolsistas?\b|\bpesquisa
 def nao_e_oportunidade(r: dict) -> str | None:
     t = f"{r.get('titulo') or ''} {r.get('objeto') or ''} {re.sub(r'[-_/.]', ' ', str(r.get('url') or ''))}"
     _u = str(r.get("url") or "")
-    if INSTITUCIONAL_GOV.search(_u) and not TITULO_DE_EDITAL.search(f"{r.get('titulo') or ''} {_u}"):
+    # o serviço ao cidadão («Requerer…», «Solicitar…») tem o seu próprio motivo, no portão: as duas regras cedem a ele
+    _servico = re.match(r"(?i)^\s*(?:obter|solicitar|emitir|consultar|agendar|renovar|requerer|acessar|pagar|cadastrar|atualizar|imprimir|"
+                        r"verificar|declarar)\b", str(r.get("titulo") or ""))
+    if _servico:
+        pass
+    elif INSTITUCIONAL_GOV.search(_u) and not TITULO_DE_EDITAL.search(f"{r.get('titulo') or ''} {_u}"):
         return "página institucional do governo (menu, tema, notícia ou transparência) — não é edital"
-    if PESQUISADOR.search(t) and not re.search(r"(?i)sociedade civil|\boscs?\b|associa[çc][õo]es|entidades? sem fins|terceiro setor", t):
+    if not _servico and PESQUISADOR.search(t) and not re.search(r"(?i)sociedade civil|\boscs?\b|associa[çc][õo]es|entidades? sem fins|terceiro setor", t):
         return "chamada para pesquisador, bolsista ou ICT — não é para associação"
     if LEGISLATIVO_ABERTAS.search(t) and not re.search(r"(?i)emenda parlamentar.{0,60}capta[çc][ãa]o", t):   # 16/10: emenda em captação é oportunidade
         return "ato legislativo — vai ao acompanhamento legislativo (Oportunidades Abertas › Legislativo)"
