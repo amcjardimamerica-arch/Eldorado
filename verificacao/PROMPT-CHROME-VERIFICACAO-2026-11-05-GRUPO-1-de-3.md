@@ -13,8 +13,8 @@ externa, 387 na preparação, 18 na recepção — os chegados) foram divididos 
 | Do catálogo das oportunidades conhecidas (R44) | 162 | marca «catálogo» na tabela e o campo `catalogo` no lote |
 | Sem nenhuma estrela, para validar ou expurgar | 166 | marca «expurgo?» e o campo `"verificacao_para_expurgo": true` |
 
-Versão do lote: `gerado_em` = `2026-11-05T11:07:33+00:00`. A lista em Excel `LISTA-LIVROS-VERIFICACAO-2026-11-05.xlsx` tem os 1.169
-livros, com o grupo e a parte de cada um, para o controle.
+Versão do lote: `gerado_em` = `2026-11-05T11:07:33+00:00`. A planilha deste grupo, `LISTA-LIVROS-VERIFICACAO-2026-11-05-GRUPO-1-de-3.xlsx`, tem os livros
+deste prompt, parte por parte, com as colunas do resultado para o controle.
 
 ## ENTREGA COMPLETA E TOTAL (R41) — obrigatória
 
