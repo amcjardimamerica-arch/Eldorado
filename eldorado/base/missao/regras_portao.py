@@ -149,8 +149,23 @@ def _municipio_goiano(texto: str) -> bool:
 
 
 # — repositorio_unico.py · nao_e_oportunidade
+# 05/11/2026 (verificação externa, grupos 2 e 3: ~250 livros eram páginas institucionais do gov.br, menus do PNCP e do
+# BNDES; dezenas eram chamadas para pesquisador): barrados na entrada, salvo quando o título traz o edital
+INSTITUCIONAL_GOV = re.compile(r"(?i)https?://[^/]*(?:\.gov\.br|bndes\.gov\.br|pncp\.gov\.br)/(?:[^?#]*/)?(?:navegue-por-temas|assuntos|"
+                               r"acoes-e-programas|composicao|acesso-a-informacao|noticias?|orgaos(?:-do-governo)?|comunicacao|servicos|"
+                               r"temas|canais_atendimento|por-dentro-do-govbr|transparencia|pncp/pt-br|app)(?:/|$|\?)")
+TITULO_DE_EDITAL = re.compile(r"(?i)\bedital\b|chamamento|chamada p[úu]blica|sele[çc][ãa]o p[úu]blica|\bpr[êe]mio\b|\.pdf\b")
+PESQUISADOR = re.compile(r"(?i)\bbolsas? (?:de|para)\b|\bbolsistas?\b|\bpesquisador(?:a|es)?\b|\bdoutorad|p[óo]s-?doutorad|\bICTs?\b|"
+                         r"inicia[çc][ãa]o cient[íi]fica|\bmestrad")
+
+
 def nao_e_oportunidade(r: dict) -> str | None:
     t = f"{r.get('titulo') or ''} {r.get('objeto') or ''} {re.sub(r'[-_/.]', ' ', str(r.get('url') or ''))}"
+    _u = str(r.get("url") or "")
+    if INSTITUCIONAL_GOV.search(_u) and not TITULO_DE_EDITAL.search(f"{r.get('titulo') or ''} {_u}"):
+        return "página institucional do governo (menu, tema, notícia ou transparência) — não é edital"
+    if PESQUISADOR.search(t) and not re.search(r"(?i)sociedade civil|\boscs?\b|associa[çc][õo]es|entidades? sem fins|terceiro setor", t):
+        return "chamada para pesquisador, bolsista ou ICT — não é para associação"
     if LEGISLATIVO_ABERTAS.search(t) and not re.search(r"(?i)emenda parlamentar.{0,60}capta[çc][ãa]o", t):   # 16/10: emenda em captação é oportunidade
         return "ato legislativo — vai ao acompanhamento legislativo (Oportunidades Abertas › Legislativo)"
     tit = str(r.get("titulo") or "")

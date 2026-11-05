@@ -98,3 +98,17 @@ def test_o_lote_completo_leva_todas_as_etapas_pendentes():
     assert 'destino = "farol" if aberta else "arquivo"' in t
     s = Path("eldorado/base/painel/sala.py").read_text(encoding="utf-8")
     assert '"externa": ["ve_para_o_chrome", "de_decisoes", "es_expurgo"' in s and '"es_parcial"],' in s
+
+
+def test_o_importador_normaliza_o_formato_do_chrome():
+    """05/11/2026: itens em dicionário, página em texto, número no endereço — normalizados, sem perder a informação."""
+    import msgspec
+    bruto = json.dumps({"lote": "x", "vereditos": [{"livro_id": "A", "decisao": "valido",
+        "itens": {"Objeto": {"valor": "fomento", "trecho": "t", "pagina": "p. 3", "endereco": "https://e"},
+                  "Valor": {"valor": 1000, "trecho": "u", "pagina": "DOU Seção 3", "url": 7}},
+        "dispensas": {"Prazo de recurso": "não há recurso previsto no regulamento do prêmio"}}]})
+    r = msgspec.json.decode(ae.normalizar_retorno(bruto), type=ae.Retorno)
+    i = {x.item: x for x in r.vereditos[0].itens}
+    assert i["Objeto"].pagina == 3 and i["Objeto"].url == "https://e"
+    assert i["Valor"].valor == "1000" and i["Valor"].pagina == 7 and i["Valor"].url is None and "[DOU Seção 3]" in i["Valor"].trecho
+    assert r.vereditos[0].dispensas[0].item == "Prazo de recurso"

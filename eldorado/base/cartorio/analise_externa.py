@@ -11,6 +11,7 @@ Pastas: verificacao/lotes/ (o que vai ao Chrome) e verificacao/vereditos/ (o que
 from __future__ import annotations
 
 import json
+import re
 import sqlite3
 from datetime import date, timedelta
 from pathlib import Path
@@ -316,6 +317,47 @@ def _prever_pelas_edicoes(v: "Veredito", diario: Diario) -> None:
                                                        "confianca": p["confianca"], "calculada_em": agora()})
 
 
+def normalizar_retorno(retorno: bytes | str) -> bytes:
+    """05/11/2026 (as entregas dos grupos 2 e 3): o veredito do Chrome volta com pequenas variações de formato — os itens e
+    as dispensas como dicionário, a página como texto («p. 3», «DOU Seção 3»), o número da página no lugar do endereço,
+    número em campo de texto. Normalizado antes da conferência, sem perder informação (a página descrita vai ao trecho)."""
+    d = json.loads(retorno)
+    s = lambda x: None if x is None else str(x)   # noqa: E731
+    for v in d.get("vereditos") or []:
+        for k in ("decisao", "motivo", "como_encontrou", "aprendizado", "link_original"):
+            if v.get(k) is not None and not isinstance(v[k], str):
+                v[k] = str(v[k])
+        if isinstance(v.get("itens"), dict):
+            v["itens"] = [{"item": k, **(x if isinstance(x, dict) else {"valor": x})} for k, x in v["itens"].items()]
+        if isinstance(v.get("dispensas"), dict):
+            v["dispensas"] = [{"item": k, "justificativa": j} for k, j in v["dispensas"].items()]
+        for it in v.get("itens") or []:
+            if "endereco" in it and not it.get("url"):
+                it["url"] = it.pop("endereco")
+            pg = it.get("pagina")
+            if pg is not None and not isinstance(pg, int):
+                m = re.match(r"\s*(?:p(?:ág|ag)?\.?\s*)?(\d+)\s*$", str(pg), re.I)
+                if m:
+                    it["pagina"] = int(m.group(1))
+                else:
+                    it["trecho"], it["pagina"] = f"{it.get('trecho') or ''} [{pg}]".strip(), None
+            if isinstance(it.get("url"), int):
+                it["pagina"] = it.get("pagina") if it.get("pagina") is not None else it["url"]
+                it["url"] = None
+            for k in ("item", "valor", "trecho", "url"):
+                if it.get(k) is not None and not isinstance(it[k], str):
+                    it[k] = s(it[k])
+            for k in [k for k in it if k not in ("item", "valor", "trecho", "pagina", "url")]:
+                it.pop(k)
+        for di in v.get("dispensas") or []:
+            for k in ("item", "justificativa"):
+                if di.get(k) is not None and not isinstance(di[k], str):
+                    di[k] = s(di[k])
+        if v.get("edicoes_anteriores") is not None and not isinstance(v["edicoes_anteriores"], list):
+            v["edicoes_anteriores"] = [str(v["edicoes_anteriores"])]
+    return json.dumps(d, ensure_ascii=False).encode("utf-8")
+
+
 def conferir_completo(r: "Retorno", con: sqlite3.Connection, pasta_lotes: Path = Path("verificacao/lotes")) -> list[str] | str:
     """R41: os livros do lote que ficaram sem veredito decisivo ([] = completo), ou o motivo da recusa. Não contam como falta
     o livro que entrou no lote depois de o Chrome o receber nem o que já saiu da análise externa."""
@@ -344,7 +386,7 @@ def importar(retorno: bytes | str, con: sqlite3.Connection, diario: Diario, exig
     etapa 5 é recusado com o motivo (nada entra sem prova)."""
     from .cartorio import Cartorio
     from .passaporte import Passaporte
-    r = msgspec.json.decode(retorno, type=Retorno)
+    r = msgspec.json.decode(normalizar_retorno(retorno), type=Retorno)
     if exigir_completo:                                         # R41: nada parcial — ou o lote inteiro, ou nada entra
         falta = conferir_completo(r, con)
         if falta:

@@ -1,0 +1,3512 @@
+{
+ "lote": "lote-2026-11-05-externa-completo-parte-9",
+ "lote_gerado_em": "2026-11-05T11:07:33+00:00",
+ "total_livros": 50,
+ "vereditos": [
+  {
+   "livro_id": "L-b90dfaa181a9b934",
+   "decisao": "descartar",
+   "motivo": "Programa Transferegov 5100020260007 (Futebol RP 2) é convênio só para administração pública estadual/municipal; não é oportunidade para OSC.",
+   "link_original": "https://discricionarias.transferegov.sistema.gov.br/voluntarias/programa/51000",
+   "como_encontrou": "Link /programa/51000 abre só tela SAML de login (51000 é o código do órgão, não do programa). Baixei siconv_programa.zip (dados abertos) e achei: '55979;5100020260007;Promoção e Apoio ao Desenvolvimento do Futebol Masculino e Feminino - Convênio (RP 2) - SNFDT;DISPONIBILIZADO;20/05/2026;...;21/05/2026;31/12/2026;CONVENIO;Administração Pública Estadual ou do Distrito Federal' e '...Administração Pública Municipal' — sem natureza OSC.",
+   "itens": [],
+   "dispensas": [],
+   "edicoes_anteriores": [],
+   "aprendizado": "Filtrar programas Transferegov pela coluna NATUREZA_JURIDICA_PROGRAMA = 'Organização da Sociedade Civil' antes de criar livro.",
+   "relatorio_motor": {
+    "origem_do_livro": "motor Transferegov (siconv_programa.zip) — programa 51000",
+    "erro_do_motor": "usou o código do órgão (51000) como id de programa e não filtrou natureza jurídica",
+    "regra_sugerida": "só gerar livro se NATUREZA_JURIDICA_PROGRAMA contém 'Organização da Sociedade Civil'; link = /voluntarias/programa/<ID_PROGRAMA>",
+    "fonte_que_funcionou": "api-publica.transferegov.gestao.gov.br/downloads/dadosgov/siconv_programa.zip"
+   }
+  },
+  {
+   "livro_id": "L-609630b61e19251e",
+   "decisao": "encerrada",
+   "motivo": "Termo de fomento do MDA para OSC, recebimento de propostas 21/09–29/10/2026, já encerrado.",
+   "link_original": "https://api-publica.transferegov.gestao.gov.br/downloads/dadosgov/siconv_programa.zip",
+   "como_encontrou": "Link /programa/49000 abre só tela de login SAML (49000 = código do MDA). No siconv_programa.zip: '56823;4900020260025;Rede de Acesso e Desenvolvimento Rural;DISPONIBILIZADO;18/09/2026;2026;21/09/2026;29/10/2026;...;TERMO DE FOMENTO;Organização da Sociedade Civil'. Recebimento de propostas encerrou em 29/10/2026.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Programa 4900020260025 Rede de Acesso e Desenvolvimento Rural (MDA)",
+     "trecho": "Rede de Acesso e Desenvolvimento Rural",
+     "pagina": null,
+     "url": "https://api-publica.transferegov.gestao.gov.br/downloads/dadosgov/siconv_programa.zip"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "21/09/2026 a 29/10/2026 (encerrado)",
+     "trecho": "21/09/2026;29/10/2026",
+     "pagina": null,
+     "url": "https://api-publica.transferegov.gestao.gov.br/downloads/dadosgov/siconv_programa.zip"
+    },
+    {
+     "item": "Território",
+     "valor": "Nacional (disponibilizado para todas as UFs, inclusive GO)",
+     "trecho": "Organização da Sociedade Civil;GO",
+     "pagina": null,
+     "url": "https://api-publica.transferegov.gestao.gov.br/downloads/dadosgov/siconv_programa.zip"
+    },
+    {
+     "item": "Esfera",
+     "valor": "Federal",
+     "trecho": "MINISTÉRIO DO DESENVOLVIMENTO AGRÁRIO E AGRICULTURA FAMILIAR",
+     "pagina": null,
+     "url": "https://api-publica.transferegov.gestao.gov.br/downloads/dadosgov/siconv_programa.zip"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "Termo de fomento",
+     "trecho": "TERMO DE FOMENTO",
+     "pagina": null,
+     "url": "https://api-publica.transferegov.gestao.gov.br/downloads/dadosgov/siconv_programa.zip"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "MDA",
+     "trecho": "MINISTÉRIO DO DESENVOLVIMENTO AGRÁRIO E AGRICULTURA FAMILIAR",
+     "pagina": null,
+     "url": "https://api-publica.transferegov.gestao.gov.br/downloads/dadosgov/siconv_programa.zip"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "Organização da Sociedade Civil",
+     "trecho": "Organização da Sociedade Civil",
+     "pagina": null,
+     "url": "https://api-publica.transferegov.gestao.gov.br/downloads/dadosgov/siconv_programa.zip"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "não consta nos documentos oficiais lidos (registro de dados abertos do programa no Transferegov)"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não consta nos documentos oficiais lidos (registro de dados abertos do programa no Transferegov)"
+    },
+    {
+     "item": "Valor",
+     "justificativa": "não consta nos documentos oficiais lidos (registro de dados abertos do programa no Transferegov)"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos (registro de dados abertos do programa no Transferegov)"
+    },
+    {
+     "item": "Área de atuação",
+     "justificativa": "não consta nos documentos oficiais lidos (registro de dados abertos do programa no Transferegov)"
+    }
+   ],
+   "edicoes_anteriores": [
+    "2026-09-21"
+   ],
+   "aprendizado": "Usar o CSV siconv_programa e a coluna DT_PROG_FIM_RECEB_PROP para decidir aberto/encerrado; o link do sistema exige login.",
+   "relatorio_motor": {
+    "origem_do_livro": "motor Transferegov — programa 49000",
+    "erro_do_motor": "código do órgão usado como id; livro criado sem data de fim de recebimento",
+    "regra_sugerida": "ler DT_PROG_INI/FIM_RECEB_PROP do CSV e gerar livro só se fim >= hoje",
+    "fonte_que_funcionou": "api-publica.transferegov.gestao.gov.br/downloads/dadosgov/siconv_programa.zip"
+   }
+  },
+  {
+   "livro_id": "L-a362cd1eacea7d40",
+   "decisao": "descartar",
+   "motivo": "Página de transparência das emendas coletivas da LOA 2027 ('Nenhum documento disponível no momento'); não é edital.",
+   "link_original": "https://www.congressonacional.leg.br/web/orcamento/acompanhe/orcamento-anual/-/loa/2027/informacoes/emendas-coletivas",
+   "como_encontrou": "Abri a página: título 'LOA 2027 - Transparência das emendas coletivas' e texto 'Nenhum documento disponível no momento.'",
+   "itens": [],
+   "dispensas": [],
+   "edicoes_anteriores": [],
+   "aprendizado": "Excluir páginas de orçamento/emendas do Congresso (congressonacional.leg.br/web/orcamento).",
+   "relatorio_motor": {
+    "origem_do_livro": "motor de busca BR em congressonacional.leg.br",
+    "erro_do_motor": "capturou página de transparência orçamentária",
+    "regra_sugerida": "bloquear caminho /web/orcamento/ e /web/cmo/comunicados",
+    "fonte_que_funcionou": "—"
+   }
+  },
+  {
+   "livro_id": "L-7c8a15dfd068950c",
+   "decisao": "descartar",
+   "motivo": "Fellowship do GEF SGP/PNUD para pessoas físicas (líderes indígenas), edição de 2016 encerrada; não é chamada para OSC.",
+   "link_original": "https://sgp.undp.org/our-approach-153/indigenous-peoples-fellowship-initiative.html",
+   "como_encontrou": "Abri a página: 'The application process was open from May 23 to July 31, 2016' e seleção de quatro 'global fellows' (pessoas).",
+   "itens": [],
+   "dispensas": [],
+   "edicoes_anteriores": [],
+   "aprendizado": "Fellowships individuais não são oportunidades de OSC; descartar.",
+   "relatorio_motor": {
+    "origem_do_livro": "motor internacional (sgp.undp.org)",
+    "erro_do_motor": "capturou página de bolsa individual antiga",
+    "regra_sugerida": "excluir títulos com 'Fellowship' quando o público é pessoa física; exigir data >= ano corrente",
+    "fonte_que_funcionou": "—"
+   }
+  },
+  {
+   "livro_id": "L-7de78bcbb23d33ca",
+   "decisao": "descartar",
+   "motivo": "Página institucional de grants da Rockefeller Foundation, que declara não aceitar propostas não solicitadas.",
+   "link_original": "https://www.rockefellerfoundation.org/our-grants/",
+   "como_encontrou": "Abri a página: FAQ diz 'The Rockefeller Foundation does not accept unsolicited grants proposals.'",
+   "itens": [],
+   "dispensas": [],
+   "edicoes_anteriores": [],
+   "aprendizado": "Fundações que não aceitam propostas espontâneas devem ir para lista de bloqueio.",
+   "relatorio_motor": {
+    "origem_do_livro": "motor internacional de fundações",
+    "erro_do_motor": "capturou página institucional de grants",
+    "regra_sugerida": "bloquear rockefellerfoundation.org/our-grants e páginas com 'does not accept unsolicited'",
+    "fonte_que_funcionou": "—"
+   }
+  },
+  {
+   "livro_id": "L-7d2bebb6073526b2",
+   "decisao": "descartar",
+   "motivo": "Notícia de replicador (Rede Filantropia) sobre edição antiga da Virada Sustentável (SP), inscrições 'até dia 1º de abril'; notícia sem edital vigente e evento municipal de SP.",
+   "link_original": "https://filantropia.ong/informacao/virada-sustentavel-que-acontece-de-6-a-9-de-junho-abre-edital-para-selecionar-artistas-e-grupos-culturais/",
+   "como_encontrou": "Abri a notícia: 'estão abertas até dia 1º de abril ... para sua terceira edição' — edição antiga, sem link de edital vigente.",
+   "itens": [],
+   "dispensas": [],
+   "edicoes_anteriores": [],
+   "aprendizado": "Notícias de filantropia.ong não são fonte; buscar o edital no site do organizador ou descartar.",
+   "relatorio_motor": {
+    "origem_do_livro": "motor de notícias (filantropia.ong)",
+    "erro_do_motor": "tratou notícia antiga de replicador como edital",
+    "regra_sugerida": "excluir domínio filantropia.ong/informacao como fonte de livro",
+    "fonte_que_funcionou": "—"
+   }
+  },
+  {
+   "livro_id": "L-52299c9194d034f9",
+   "decisao": "descartar",
+   "motivo": "Comunicado da CMO sobre o cronograma de tramitação do PLOA 2027; não é oportunidade.",
+   "link_original": "https://www.congressonacional.leg.br/web/cmo/comunicados/-/blogs/loa-2027-cronograma-de-tramitacao",
+   "como_encontrou": "Abri: 'LOA 2027 - Cronograma de tramitação 04/11/26 ... Calendário de tramitação de projeto de Lei Orçamentária Anual (pLOA) - PLN 24/2026'.",
+   "itens": [],
+   "dispensas": [],
+   "edicoes_anteriores": [],
+   "aprendizado": "Comunicados da CMO não geram livro.",
+   "relatorio_motor": {
+    "origem_do_livro": "motor BR em congressonacional.leg.br",
+    "erro_do_motor": "capturou comunicado legislativo",
+    "regra_sugerida": "bloquear /web/cmo/comunicados",
+    "fonte_que_funcionou": "—"
+   }
+  },
+  {
+   "livro_id": "L-826a1780fc967255",
+   "decisao": "arquivar",
+   "motivo": "Chamada GFF x CIVIC VOICES (PATH) para OSCs, mas restrita a 22 países da África Subsaariana e encerrada em 07/10/2026; fora do perfil territorial.",
+   "link_original": "https://www.path.org/documents/7406/VOICES_FAQ_EN_Updated_25Sept.pdf",
+   "como_encontrou": "Abri a página da PATH ('Applications closed on Wednesday, October 7th, 2026') e o FAQ em PDF (lista de países elegíveis só na África Subsaariana; teto USD 150.000/175.000).",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Subgrants a parcerias de OSC/organizações juvenis para advocacy em financiamento de saúde (RMNCAH+N)",
+     "trecho": "strengthen civil society engagement and youth leadership to advance domestic resource mobilization",
+     "pagina": 1,
+     "url": "https://www.path.org/documents/7406/VOICES_FAQ_EN_Updated_25Sept.pdf"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "Encerrado em 07/10/2026",
+     "trecho": "Applications closed on Wednesday, October 7th, 2026 at 23:59 East Africa Time",
+     "pagina": null,
+     "url": "https://www.path.org/who-we-are/programs/advocacy-and-policy/gff-x-civic-voices-call-for-proposals/"
+    },
+    {
+     "item": "Território",
+     "valor": "22 países parceiros do GFF na África Subsaariana",
+     "trecho": "GFF x CIVIC VOICES has prioritized 22 GFF partner countries on Sub-Saharan Africa",
+     "pagina": null,
+     "url": "https://www.path.org/documents/7406/VOICES_FAQ_EN_Updated_25Sept.pdf"
+    },
+    {
+     "item": "Valor",
+     "valor": "Até USD 150.000 (USD 175.000 Quênia/Nigéria)",
+     "trecho": "maximum budget is USD$150,000.",
+     "pagina": null,
+     "url": "https://www.path.org/documents/7406/VOICES_FAQ_EN_Updated_25Sept.pdf"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "não aplicável: chamada fora do território atendido (África Subsaariana), não detalhada"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não aplicável: chamada fora do território atendido (África Subsaariana), não detalhada"
+    },
+    {
+     "item": "Órgão / financiador",
+     "justificativa": "não aplicável: chamada fora do território atendido (África Subsaariana), não detalhada"
+    },
+    {
+     "item": "Esfera",
+     "justificativa": "não aplicável: chamada fora do território atendido (África Subsaariana), não detalhada"
+    },
+    {
+     "item": "Requisitos",
+     "justificativa": "não aplicável: chamada fora do território atendido (África Subsaariana), não detalhada"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não aplicável: chamada fora do território atendido (África Subsaariana), não detalhada"
+    },
+    {
+     "item": "Modalidade",
+     "justificativa": "não aplicável: chamada fora do território atendido (África Subsaariana), não detalhada"
+    },
+    {
+     "item": "Área de atuação",
+     "justificativa": "não aplicável: chamada fora do território atendido (África Subsaariana), não detalhada"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Chamadas internacionais devem ter a lista de países elegíveis checada; sem Brasil = arquivar.",
+   "relatorio_motor": {
+    "origem_do_livro": "motor internacional (path.org)",
+    "erro_do_motor": "não checou países elegíveis; marcou UF BR",
+    "regra_sugerida": "ler seção 'eligible countries' e exigir 'Brazil' ou 'Latin America'",
+    "fonte_que_funcionou": "www.path.org/documents (FAQ PDF)"
+   }
+  },
+  {
+   "livro_id": "L-854e288012205358",
+   "decisao": "descartar",
+   "motivo": "Áudio/notícia da Agência Senado sobre audiência pública; não é oportunidade.",
+   "link_original": "https://www12.senado.leg.br/noticias/audios/2026/11/debate-aponta-precarizacao-do-emprego-em-contratos-na-saude-entre-governo-e-organizacoes-sociais",
+   "como_encontrou": "Abri: notícia de 04/11/2026 sobre audiência da CTFC acerca de contratos com organizações sociais na saúde.",
+   "itens": [],
+   "dispensas": [],
+   "edicoes_anteriores": [],
+   "aprendizado": "Excluir /noticias/audios do Senado.",
+   "relatorio_motor": {
+    "origem_do_livro": "motor BR em senado.leg.br",
+    "erro_do_motor": "capturou áudio jornalístico por conter 'organizações sociais'",
+    "regra_sugerida": "bloquear www12.senado.leg.br/noticias",
+    "fonte_que_funcionou": "—"
+   }
+  },
+  {
+   "livro_id": "captacao-056",
+   "decisao": "valido",
+   "motivo": "Lei de Incentivo ao Esporte, permanente pela LC 222/2025; cadastro de projetos esportivos no SLI em fluxo contínuo por OSC esportiva.",
+   "link_original": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html",
+   "como_encontrou": "Link do catálogo vazio/PNCP (replicador). Busquei a Lei de Incentivo ao Esporte: a Lei 11.438/2006 (camara.leg.br, norma atualizada) consta 'Revogada pela Lei Complementar nº 222, de 26/11/2025'; abri a LC 222/2025 (publicação original, legin Câmara) e a carta de serviço gov.br 'Obter financiamento de projeto esportivo através da Lei de Incentivo ao Esporte' (cadastro no SLI).",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Incentivo fiscal (IR) a patrocínio/doação para projetos esportivos e paraesportivos — aplicável a campeonatos comunitários com inclusão social",
+     "trecho": "Serão objeto dos incentivos fiscais de que trata esta Lei Complementar os valores despendidos a título de patrocínio ou de doação no apoio direto a projetos esportivos e paraesportivos previamente aprovados",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "Fluxo contínuo: cadastro do proponente e do projeto no SLI",
+     "trecho": "As entidades proponentes que pretendam apresentar projetos desportivos ou paradesportivos, devem se cadastrar por meio do link - SLI - Sistema de Leis de Incentivo",
+     "pagina": null,
+     "url": "https://www.gov.br/pt-br/servicos/obter-financiamento-de-projeto-esportivo-atraves-da-lei-de-incentivo-ao-esporte"
+    },
+    {
+     "item": "Território",
+     "valor": "Nacional (incentivo federal de imposto de renda)",
+     "trecho": "em âmbito federal, imposto de renda",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    },
+    {
+     "item": "Esfera",
+     "valor": "Federal",
+     "trecho": "Poderão ser concedidos, ampliados ou prorrogados incentivos fiscais ao esporte relativamente aos seguintes tributos: I - em âmbito federal, imposto de renda",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    },
+    {
+     "item": "Valor",
+     "valor": "Valor autorizado para captação definido por projeto no ato de aprovação",
+     "trecho": "o valor autorizado para captação e o prazo de validade da autorização",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Ministério do Esporte — DPPIE; patrocinadores/doadores contribuintes de IR",
+     "trecho": "Diretoria de Programas e Políticas de Incentivo do Esporte - DPPIE enviará à entidade proponente via e-mail, o login",
+     "pagina": null,
+     "url": "https://www.gov.br/pt-br/servicos/obter-financiamento-de-projeto-esportivo-atraves-da-lei-de-incentivo-ao-esporte"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "Pessoa jurídica sem fins lucrativos com finalidade esportiva, 1 ano de funcionamento, adimplente",
+     "trecho": "Pessoas Jurídicas de direito público ou privado, sem fins lucrativos, bem como sociedade Anônimas do Futebol - SAF, com finalidade esportiva expressa em seus atos constitutivos , com mínimo de 1 ( um ) ano em funcionamento",
+     "pagina": null,
+     "url": "https://www.gov.br/pt-br/servicos/obter-financiamento-de-projeto-esportivo-atraves-da-lei-de-incentivo-ao-esporte"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "Patrocínio ou doação incentivada (dedução de IR)",
+     "trecho": "a título de patrocínio ou de doação no apoio direto a projetos esportivos e paraesportivos",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "Esporte e paraesporte",
+     "trecho": "projetos esportivos e paraesportivos previamente aprovados",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    },
+    {
+     "item": "Resultado",
+     "valor": "Aprovação publicada em ato oficial",
+     "trecho": "somente terá eficácia após a publicação de ato oficial que contenha o título do projeto aprovado",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não consta nos documentos oficiais lidos (LC 222/2025 e carta de serviço) prazo de recurso específico"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não se aplica: fluxo contínuo pelo SLI, sem edital com anexos; formulários são preenchidos no sistema"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Para temas esportivos do catálogo, apontar direto para a LC 222/2025 (que revogou a Lei 11.438/2006) e para a carta de serviço gov.br da LIE; não usar pncp.gov.br nem a home do órgão.",
+   "relatorio_motor": {
+    "origem_do_livro": "catálogo R44 (captacao-*) com link vazio ou pncp.gov.br",
+    "erro_do_motor": "link genérico de portal/replicador sem documento; lei antiga 11.438 já revogada",
+    "regra_sugerida": "para captacao-* esportivos, rota fixa: legin Câmara LC 222/2025 + gov.br/pt-br/servicos/obter-financiamento-de-projeto-esportivo...",
+    "fonte_que_funcionou": "www2.camara.leg.br/legin e www.gov.br/pt-br/servicos"
+   }
+  },
+  {
+   "livro_id": "captacao-058",
+   "decisao": "valido",
+   "motivo": "Lei de Incentivo ao Esporte, permanente pela LC 222/2025; cadastro de projetos esportivos no SLI em fluxo contínuo por OSC esportiva.",
+   "link_original": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html",
+   "como_encontrou": "Link do catálogo vazio/PNCP (replicador). Busquei a Lei de Incentivo ao Esporte: a Lei 11.438/2006 (camara.leg.br, norma atualizada) consta 'Revogada pela Lei Complementar nº 222, de 26/11/2025'; abri a LC 222/2025 (publicação original, legin Câmara) e a carta de serviço gov.br 'Obter financiamento de projeto esportivo através da Lei de Incentivo ao Esporte' (cadastro no SLI).",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Incentivo fiscal (IR) a patrocínio/doação para projetos esportivos e paraesportivos — aplicável a núcleos de futebol de base comunitários",
+     "trecho": "Serão objeto dos incentivos fiscais de que trata esta Lei Complementar os valores despendidos a título de patrocínio ou de doação no apoio direto a projetos esportivos e paraesportivos previamente aprovados",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "Fluxo contínuo: cadastro do proponente e do projeto no SLI",
+     "trecho": "As entidades proponentes que pretendam apresentar projetos desportivos ou paradesportivos, devem se cadastrar por meio do link - SLI - Sistema de Leis de Incentivo",
+     "pagina": null,
+     "url": "https://www.gov.br/pt-br/servicos/obter-financiamento-de-projeto-esportivo-atraves-da-lei-de-incentivo-ao-esporte"
+    },
+    {
+     "item": "Território",
+     "valor": "Nacional (incentivo federal de imposto de renda)",
+     "trecho": "em âmbito federal, imposto de renda",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    },
+    {
+     "item": "Esfera",
+     "valor": "Federal",
+     "trecho": "Poderão ser concedidos, ampliados ou prorrogados incentivos fiscais ao esporte relativamente aos seguintes tributos: I - em âmbito federal, imposto de renda",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    },
+    {
+     "item": "Valor",
+     "valor": "Valor autorizado para captação definido por projeto no ato de aprovação",
+     "trecho": "o valor autorizado para captação e o prazo de validade da autorização",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Ministério do Esporte — DPPIE; patrocinadores/doadores contribuintes de IR",
+     "trecho": "Diretoria de Programas e Políticas de Incentivo do Esporte - DPPIE enviará à entidade proponente via e-mail, o login",
+     "pagina": null,
+     "url": "https://www.gov.br/pt-br/servicos/obter-financiamento-de-projeto-esportivo-atraves-da-lei-de-incentivo-ao-esporte"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "Pessoa jurídica sem fins lucrativos com finalidade esportiva, 1 ano de funcionamento, adimplente",
+     "trecho": "Pessoas Jurídicas de direito público ou privado, sem fins lucrativos, bem como sociedade Anônimas do Futebol - SAF, com finalidade esportiva expressa em seus atos constitutivos , com mínimo de 1 ( um ) ano em funcionamento",
+     "pagina": null,
+     "url": "https://www.gov.br/pt-br/servicos/obter-financiamento-de-projeto-esportivo-atraves-da-lei-de-incentivo-ao-esporte"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "Patrocínio ou doação incentivada (dedução de IR)",
+     "trecho": "a título de patrocínio ou de doação no apoio direto a projetos esportivos e paraesportivos",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "Esporte e paraesporte",
+     "trecho": "projetos esportivos e paraesportivos previamente aprovados",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    },
+    {
+     "item": "Resultado",
+     "valor": "Aprovação publicada em ato oficial",
+     "trecho": "somente terá eficácia após a publicação de ato oficial que contenha o título do projeto aprovado",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não consta nos documentos oficiais lidos (LC 222/2025 e carta de serviço) prazo de recurso específico"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não se aplica: fluxo contínuo pelo SLI, sem edital com anexos; formulários são preenchidos no sistema"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Para temas esportivos do catálogo, apontar direto para a LC 222/2025 (que revogou a Lei 11.438/2006) e para a carta de serviço gov.br da LIE; não usar pncp.gov.br nem a home do órgão.",
+   "relatorio_motor": {
+    "origem_do_livro": "catálogo R44 (captacao-*) com link vazio ou pncp.gov.br",
+    "erro_do_motor": "link genérico de portal/replicador sem documento; lei antiga 11.438 já revogada",
+    "regra_sugerida": "para captacao-* esportivos, rota fixa: legin Câmara LC 222/2025 + gov.br/pt-br/servicos/obter-financiamento-de-projeto-esportivo...",
+    "fonte_que_funcionou": "www2.camara.leg.br/legin e www.gov.br/pt-br/servicos"
+   }
+  },
+  {
+   "livro_id": "captacao-059",
+   "decisao": "valido",
+   "motivo": "Lei de Incentivo ao Esporte, permanente pela LC 222/2025; cadastro de projetos esportivos no SLI em fluxo contínuo por OSC esportiva.",
+   "link_original": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html",
+   "como_encontrou": "Link do catálogo vazio/PNCP (replicador). Busquei a Lei de Incentivo ao Esporte: a Lei 11.438/2006 (camara.leg.br, norma atualizada) consta 'Revogada pela Lei Complementar nº 222, de 26/11/2025'; abri a LC 222/2025 (publicação original, legin Câmara) e a carta de serviço gov.br 'Obter financiamento de projeto esportivo através da Lei de Incentivo ao Esporte' (cadastro no SLI).",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Incentivo fiscal (IR) a patrocínio/doação para projetos esportivos e paraesportivos — aplicável a núcleos de corrida/caminhada comunitária",
+     "trecho": "Serão objeto dos incentivos fiscais de que trata esta Lei Complementar os valores despendidos a título de patrocínio ou de doação no apoio direto a projetos esportivos e paraesportivos previamente aprovados",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "Fluxo contínuo: cadastro do proponente e do projeto no SLI",
+     "trecho": "As entidades proponentes que pretendam apresentar projetos desportivos ou paradesportivos, devem se cadastrar por meio do link - SLI - Sistema de Leis de Incentivo",
+     "pagina": null,
+     "url": "https://www.gov.br/pt-br/servicos/obter-financiamento-de-projeto-esportivo-atraves-da-lei-de-incentivo-ao-esporte"
+    },
+    {
+     "item": "Território",
+     "valor": "Nacional (incentivo federal de imposto de renda)",
+     "trecho": "em âmbito federal, imposto de renda",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    },
+    {
+     "item": "Esfera",
+     "valor": "Federal",
+     "trecho": "Poderão ser concedidos, ampliados ou prorrogados incentivos fiscais ao esporte relativamente aos seguintes tributos: I - em âmbito federal, imposto de renda",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    },
+    {
+     "item": "Valor",
+     "valor": "Valor autorizado para captação definido por projeto no ato de aprovação",
+     "trecho": "o valor autorizado para captação e o prazo de validade da autorização",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Ministério do Esporte — DPPIE; patrocinadores/doadores contribuintes de IR",
+     "trecho": "Diretoria de Programas e Políticas de Incentivo do Esporte - DPPIE enviará à entidade proponente via e-mail, o login",
+     "pagina": null,
+     "url": "https://www.gov.br/pt-br/servicos/obter-financiamento-de-projeto-esportivo-atraves-da-lei-de-incentivo-ao-esporte"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "Pessoa jurídica sem fins lucrativos com finalidade esportiva, 1 ano de funcionamento, adimplente",
+     "trecho": "Pessoas Jurídicas de direito público ou privado, sem fins lucrativos, bem como sociedade Anônimas do Futebol - SAF, com finalidade esportiva expressa em seus atos constitutivos , com mínimo de 1 ( um ) ano em funcionamento",
+     "pagina": null,
+     "url": "https://www.gov.br/pt-br/servicos/obter-financiamento-de-projeto-esportivo-atraves-da-lei-de-incentivo-ao-esporte"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "Patrocínio ou doação incentivada (dedução de IR)",
+     "trecho": "a título de patrocínio ou de doação no apoio direto a projetos esportivos e paraesportivos",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "Esporte e paraesporte",
+     "trecho": "projetos esportivos e paraesportivos previamente aprovados",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    },
+    {
+     "item": "Resultado",
+     "valor": "Aprovação publicada em ato oficial",
+     "trecho": "somente terá eficácia após a publicação de ato oficial que contenha o título do projeto aprovado",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/leicom/2025/leicomplementar-222-26-novembro-2025-798353-publicacaooriginal-177116-pl.html"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não consta nos documentos oficiais lidos (LC 222/2025 e carta de serviço) prazo de recurso específico"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não se aplica: fluxo contínuo pelo SLI, sem edital com anexos; formulários são preenchidos no sistema"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Para temas esportivos do catálogo, apontar direto para a LC 222/2025 (que revogou a Lei 11.438/2006) e para a carta de serviço gov.br da LIE; não usar pncp.gov.br nem a home do órgão.",
+   "relatorio_motor": {
+    "origem_do_livro": "catálogo R44 (captacao-*) com link vazio ou pncp.gov.br",
+    "erro_do_motor": "link genérico de portal/replicador sem documento; lei antiga 11.438 já revogada",
+    "regra_sugerida": "para captacao-* esportivos, rota fixa: legin Câmara LC 222/2025 + gov.br/pt-br/servicos/obter-financiamento-de-projeto-esportivo...",
+    "fonte_que_funcionou": "www2.camara.leg.br/legin e www.gov.br/pt-br/servicos"
+   }
+  },
+  {
+   "livro_id": "captacao-073",
+   "decisao": "valido",
+   "motivo": "Projetos com adolescentes captam pelo FIA/FNCA (ECA art. 260), fundo permanente por lei com doações dedutíveis.",
+   "link_original": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html",
+   "como_encontrou": "Abri o link do catálogo (página do Conanda no gov.br/mdh, institucional) e fui à lei: ECA (Lei 8.069/1990) no legin da Câmara, art. 260 (dedução de doações aos fundos dos direitos da criança e do adolescente controlados pelos conselhos municipais, estaduais e nacional). Planalto não respondeu no sandbox.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Captação via Fundos dos Direitos da Criança e do Adolescente (FIA/FNCA) para projetos de alfabetização comunitária de jovens (adolescentes)",
+     "trecho": "Os contribuintes do imposto de renda poderão abater da renda bruta 100% (cem por cento) do valor das doações feitas aos fundos controlados pelos Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "Fluxo contínuo (doações a qualquer tempo; projetos conforme planos de aplicação dos conselhos)",
+     "trecho": "Os Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente fixarão critérios de utilização, através de planos de aplicação das doações subsidiadas",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Território",
+     "valor": "Nacional, estadual e municipal (fundos de cada esfera; em Goiás, FIA estadual e municipais)",
+     "trecho": "fundos controlados pelos Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Esfera",
+     "valor": "Federal/Estadual/Municipal",
+     "trecho": "manutenção de fundos nacional, estaduais e municipais vinculados aos respectivos conselhos dos direitos da criança e do adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Valor",
+     "valor": "Limite de dedução do doador (texto original de 1990)",
+     "trecho": "I - limite de 10% (dez por cento) da renda bruta para pessoa física; II - limite de 5% (cinco por cento) da renda bruta para pessoa jurídica",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Conselhos dos Direitos da Criança e do Adolescente (Conanda no nível nacional) e doadores",
+     "trecho": "Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "Doação incentivada a fundo público, repassada a projetos de OSC",
+     "trecho": "100% (cem por cento) do valor das doações feitas aos fundos",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "Direitos da criança e do adolescente",
+     "trecho": "A política de atendimento dos direitos da criança e do adolescente far-se-á através de um conjunto articulado de ações governamentais e não-governamentais",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "Critérios fixados pelos conselhos nos planos de aplicação",
+     "trecho": "fixarão critérios de utilização, através de planos de aplicação das doações subsidiadas",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "regime de fluxo contínuo por lei: não há resultado de seleção único; cada conselho delibera seus editais"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não consta nos documentos oficiais lidos (ECA art. 260) prazo de recurso"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não se aplica: programa permanente por lei, sem edital com anexos no nível da lei"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Para temas de criança/adolescente do catálogo, ir à Lei 8.069 art. 260 (legin Câmara, pois planalto.gov.br falha) e depois ao edital do FIA estadual de Goiás/municípios; a página do Conanda é só institucional.",
+   "relatorio_motor": {
+    "origem_do_livro": "catálogo R44 com link da página institucional do Conanda (gov.br/mdh)",
+    "erro_do_motor": "usou página institucional como link oficial",
+    "regra_sugerida": "para captacao-* de criança/adolescente: rota lei ECA art. 260 + edital FIA GO/Goiânia",
+    "fonte_que_funcionou": "www2.camara.leg.br/legin"
+   }
+  },
+  {
+   "livro_id": "captacao-076",
+   "decisao": "valido",
+   "motivo": "Programa permanente por lei: FIA/FNCA (ECA art. 260) financia projetos de OSC com crianças e adolescentes; MCTI não tem chamada permanente localizada.",
+   "link_original": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html",
+   "como_encontrou": "Abri o link do catálogo (página do Conanda no gov.br/mdh, institucional) e fui à lei: ECA (Lei 8.069/1990) no legin da Câmara, art. 260 (dedução de doações aos fundos dos direitos da criança e do adolescente controlados pelos conselhos municipais, estaduais e nacional). Planalto não respondeu no sandbox.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Captação via Fundos dos Direitos da Criança e do Adolescente (FIA/FNCA) para projetos de laboratório maker social com crianças e adolescentes",
+     "trecho": "Os contribuintes do imposto de renda poderão abater da renda bruta 100% (cem por cento) do valor das doações feitas aos fundos controlados pelos Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "Fluxo contínuo (doações a qualquer tempo; projetos conforme planos de aplicação dos conselhos)",
+     "trecho": "Os Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente fixarão critérios de utilização, através de planos de aplicação das doações subsidiadas",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Território",
+     "valor": "Nacional, estadual e municipal (fundos de cada esfera; em Goiás, FIA estadual e municipais)",
+     "trecho": "fundos controlados pelos Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Esfera",
+     "valor": "Federal/Estadual/Municipal",
+     "trecho": "manutenção de fundos nacional, estaduais e municipais vinculados aos respectivos conselhos dos direitos da criança e do adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Valor",
+     "valor": "Limite de dedução do doador (texto original de 1990)",
+     "trecho": "I - limite de 10% (dez por cento) da renda bruta para pessoa física; II - limite de 5% (cinco por cento) da renda bruta para pessoa jurídica",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Conselhos dos Direitos da Criança e do Adolescente (Conanda no nível nacional) e doadores",
+     "trecho": "Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "Doação incentivada a fundo público, repassada a projetos de OSC",
+     "trecho": "100% (cem por cento) do valor das doações feitas aos fundos",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "Direitos da criança e do adolescente",
+     "trecho": "A política de atendimento dos direitos da criança e do adolescente far-se-á através de um conjunto articulado de ações governamentais e não-governamentais",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "Critérios fixados pelos conselhos nos planos de aplicação",
+     "trecho": "fixarão critérios de utilização, através de planos de aplicação das doações subsidiadas",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "regime de fluxo contínuo por lei: não há resultado de seleção único; cada conselho delibera seus editais"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não consta nos documentos oficiais lidos (ECA art. 260) prazo de recurso"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não se aplica: programa permanente por lei, sem edital com anexos no nível da lei"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Para temas de criança/adolescente do catálogo, ir à Lei 8.069 art. 260 (legin Câmara, pois planalto.gov.br falha) e depois ao edital do FIA estadual de Goiás/municípios; a página do Conanda é só institucional.",
+   "relatorio_motor": {
+    "origem_do_livro": "catálogo R44 com link da página institucional do Conanda (gov.br/mdh)",
+    "erro_do_motor": "usou página institucional como link oficial",
+    "regra_sugerida": "para captacao-* de criança/adolescente: rota lei ECA art. 260 + edital FIA GO/Goiânia",
+    "fonte_que_funcionou": "www2.camara.leg.br/legin"
+   }
+  },
+  {
+   "livro_id": "captacao-083",
+   "decisao": "valido",
+   "motivo": "Programa permanente por lei: FIA/FNCA (ECA art. 260) para projetos educacionais de OSC com crianças e adolescentes.",
+   "link_original": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html",
+   "como_encontrou": "Abri o link do catálogo (página do Conanda no gov.br/mdh, institucional) e fui à lei: ECA (Lei 8.069/1990) no legin da Câmara, art. 260 (dedução de doações aos fundos dos direitos da criança e do adolescente controlados pelos conselhos municipais, estaduais e nacional). Planalto não respondeu no sandbox.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Captação via Fundos dos Direitos da Criança e do Adolescente (FIA/FNCA) para projetos de robótica educacional comunitária com crianças e adolescentes",
+     "trecho": "Os contribuintes do imposto de renda poderão abater da renda bruta 100% (cem por cento) do valor das doações feitas aos fundos controlados pelos Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "Fluxo contínuo (doações a qualquer tempo; projetos conforme planos de aplicação dos conselhos)",
+     "trecho": "Os Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente fixarão critérios de utilização, através de planos de aplicação das doações subsidiadas",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Território",
+     "valor": "Nacional, estadual e municipal (fundos de cada esfera; em Goiás, FIA estadual e municipais)",
+     "trecho": "fundos controlados pelos Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Esfera",
+     "valor": "Federal/Estadual/Municipal",
+     "trecho": "manutenção de fundos nacional, estaduais e municipais vinculados aos respectivos conselhos dos direitos da criança e do adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Valor",
+     "valor": "Limite de dedução do doador (texto original de 1990)",
+     "trecho": "I - limite de 10% (dez por cento) da renda bruta para pessoa física; II - limite de 5% (cinco por cento) da renda bruta para pessoa jurídica",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Conselhos dos Direitos da Criança e do Adolescente (Conanda no nível nacional) e doadores",
+     "trecho": "Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "Doação incentivada a fundo público, repassada a projetos de OSC",
+     "trecho": "100% (cem por cento) do valor das doações feitas aos fundos",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "Direitos da criança e do adolescente",
+     "trecho": "A política de atendimento dos direitos da criança e do adolescente far-se-á através de um conjunto articulado de ações governamentais e não-governamentais",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "Critérios fixados pelos conselhos nos planos de aplicação",
+     "trecho": "fixarão critérios de utilização, através de planos de aplicação das doações subsidiadas",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "regime de fluxo contínuo por lei: não há resultado de seleção único; cada conselho delibera seus editais"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não consta nos documentos oficiais lidos (ECA art. 260) prazo de recurso"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não se aplica: programa permanente por lei, sem edital com anexos no nível da lei"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Para temas de criança/adolescente do catálogo, ir à Lei 8.069 art. 260 (legin Câmara, pois planalto.gov.br falha) e depois ao edital do FIA estadual de Goiás/municípios; a página do Conanda é só institucional.",
+   "relatorio_motor": {
+    "origem_do_livro": "catálogo R44 com link da página institucional do Conanda (gov.br/mdh)",
+    "erro_do_motor": "usou página institucional como link oficial",
+    "regra_sugerida": "para captacao-* de criança/adolescente: rota lei ECA art. 260 + edital FIA GO/Goiânia",
+    "fonte_que_funcionou": "www2.camara.leg.br/legin"
+   }
+  },
+  {
+   "livro_id": "captacao-085",
+   "decisao": "valido",
+   "motivo": "Rota permanente por lei verificada: FIA/FNCA (ECA art. 260); FDD não teve chamada vigente localizada em fonte oficial.",
+   "link_original": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html",
+   "como_encontrou": "Abri o link do catálogo (página do Conanda no gov.br/mdh, institucional) e fui à lei: ECA (Lei 8.069/1990) no legin da Câmara, art. 260 (dedução de doações aos fundos dos direitos da criança e do adolescente controlados pelos conselhos municipais, estaduais e nacional). Planalto não respondeu no sandbox.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Captação via Fundos dos Direitos da Criança e do Adolescente (FIA/FNCA) para projetos de educação financeira de crianças e adolescentes",
+     "trecho": "Os contribuintes do imposto de renda poderão abater da renda bruta 100% (cem por cento) do valor das doações feitas aos fundos controlados pelos Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "Fluxo contínuo (doações a qualquer tempo; projetos conforme planos de aplicação dos conselhos)",
+     "trecho": "Os Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente fixarão critérios de utilização, através de planos de aplicação das doações subsidiadas",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Território",
+     "valor": "Nacional, estadual e municipal (fundos de cada esfera; em Goiás, FIA estadual e municipais)",
+     "trecho": "fundos controlados pelos Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Esfera",
+     "valor": "Federal/Estadual/Municipal",
+     "trecho": "manutenção de fundos nacional, estaduais e municipais vinculados aos respectivos conselhos dos direitos da criança e do adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Valor",
+     "valor": "Limite de dedução do doador (texto original de 1990)",
+     "trecho": "I - limite de 10% (dez por cento) da renda bruta para pessoa física; II - limite de 5% (cinco por cento) da renda bruta para pessoa jurídica",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Conselhos dos Direitos da Criança e do Adolescente (Conanda no nível nacional) e doadores",
+     "trecho": "Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "Doação incentivada a fundo público, repassada a projetos de OSC",
+     "trecho": "100% (cem por cento) do valor das doações feitas aos fundos",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "Direitos da criança e do adolescente",
+     "trecho": "A política de atendimento dos direitos da criança e do adolescente far-se-á através de um conjunto articulado de ações governamentais e não-governamentais",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "Critérios fixados pelos conselhos nos planos de aplicação",
+     "trecho": "fixarão critérios de utilização, através de planos de aplicação das doações subsidiadas",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "regime de fluxo contínuo por lei: não há resultado de seleção único; cada conselho delibera seus editais"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não consta nos documentos oficiais lidos (ECA art. 260) prazo de recurso"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não se aplica: programa permanente por lei, sem edital com anexos no nível da lei"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Para temas de criança/adolescente do catálogo, ir à Lei 8.069 art. 260 (legin Câmara, pois planalto.gov.br falha) e depois ao edital do FIA estadual de Goiás/municípios; a página do Conanda é só institucional.",
+   "relatorio_motor": {
+    "origem_do_livro": "catálogo R44 com link da página institucional do Conanda (gov.br/mdh)",
+    "erro_do_motor": "usou página institucional como link oficial",
+    "regra_sugerida": "para captacao-* de criança/adolescente: rota lei ECA art. 260 + edital FIA GO/Goiânia",
+    "fonte_que_funcionou": "www2.camara.leg.br/legin"
+   }
+  },
+  {
+   "livro_id": "captacao-117",
+   "decisao": "valido",
+   "motivo": "Fundo Nacional da Criança e do Adolescente, permanente por lei (ECA art. 260), doações dedutíveis de IR.",
+   "link_original": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html",
+   "como_encontrou": "Abri o link do catálogo (página do Conanda no gov.br/mdh, institucional) e fui à lei: ECA (Lei 8.069/1990) no legin da Câmara, art. 260 (dedução de doações aos fundos dos direitos da criança e do adolescente controlados pelos conselhos municipais, estaduais e nacional). Planalto não respondeu no sandbox.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Captação via Fundos dos Direitos da Criança e do Adolescente (FIA/FNCA) para projetos de proteção e garantia de direitos de crianças e adolescentes",
+     "trecho": "Os contribuintes do imposto de renda poderão abater da renda bruta 100% (cem por cento) do valor das doações feitas aos fundos controlados pelos Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "Fluxo contínuo (doações a qualquer tempo; projetos conforme planos de aplicação dos conselhos)",
+     "trecho": "Os Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente fixarão critérios de utilização, através de planos de aplicação das doações subsidiadas",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Território",
+     "valor": "Nacional, estadual e municipal (fundos de cada esfera; em Goiás, FIA estadual e municipais)",
+     "trecho": "fundos controlados pelos Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Esfera",
+     "valor": "Federal/Estadual/Municipal",
+     "trecho": "manutenção de fundos nacional, estaduais e municipais vinculados aos respectivos conselhos dos direitos da criança e do adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Valor",
+     "valor": "Limite de dedução do doador (texto original de 1990)",
+     "trecho": "I - limite de 10% (dez por cento) da renda bruta para pessoa física; II - limite de 5% (cinco por cento) da renda bruta para pessoa jurídica",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Conselhos dos Direitos da Criança e do Adolescente (Conanda no nível nacional) e doadores",
+     "trecho": "Conselhos Municipais, Estaduais e Nacional dos Direitos da Criança e do Adolescente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "Doação incentivada a fundo público, repassada a projetos de OSC",
+     "trecho": "100% (cem por cento) do valor das doações feitas aos fundos",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "Direitos da criança e do adolescente",
+     "trecho": "A política de atendimento dos direitos da criança e do adolescente far-se-á através de um conjunto articulado de ações governamentais e não-governamentais",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "Critérios fixados pelos conselhos nos planos de aplicação",
+     "trecho": "fixarão critérios de utilização, através de planos de aplicação das doações subsidiadas",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-publicacaooriginal-1-pl.html"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "regime de fluxo contínuo por lei: não há resultado de seleção único; cada conselho delibera seus editais"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não consta nos documentos oficiais lidos (ECA art. 260) prazo de recurso"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não se aplica: programa permanente por lei, sem edital com anexos no nível da lei"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Para temas de criança/adolescente do catálogo, ir à Lei 8.069 art. 260 (legin Câmara, pois planalto.gov.br falha) e depois ao edital do FIA estadual de Goiás/municípios; a página do Conanda é só institucional.",
+   "relatorio_motor": {
+    "origem_do_livro": "catálogo R44 com link da página institucional do Conanda (gov.br/mdh)",
+    "erro_do_motor": "usou página institucional como link oficial",
+    "regra_sugerida": "para captacao-* de criança/adolescente: rota lei ECA art. 260 + edital FIA GO/Goiânia",
+    "fonte_que_funcionou": "www2.camara.leg.br/legin"
+   }
+  },
+  {
+   "livro_id": "captacao-131",
+   "decisao": "valido",
+   "motivo": "Fundo do Idoso é permanente por lei (Lei 12.213/2010), doações dedutíveis para projetos da pessoa idosa.",
+   "link_original": "https://www2.camara.leg.br/legin/fed/lei/2010/lei-12213-20-janeiro-2010-600950-normaatualizada-pl.pdf",
+   "como_encontrou": "Link do catálogo era a página do Conanda (não se aplica ao idoso). Abri a Lei 12.213/2010 (Fundo Nacional do Idoso), norma atualizada no legin da Câmara.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Fundo Nacional do Idoso e fundos estaduais/municipais — financia programas para a pessoa idosa (ex.: inclusão digital)",
+     "trecho": "Fica instituído o Fundo Nacional do Idoso, destinado a financiar os programas e as ações relativas ao idoso",
+     "pagina": 1,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/2010/lei-12213-20-janeiro-2010-600950-normaatualizada-pl.pdf"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "Fluxo contínuo (doações dedutíveis a qualquer período de apuração)",
+     "trecho": "A pessoa jurídica poderá deduzir do imposto de renda devido, em cada período de apuração, o total das doações feitas aos Fundos Nacional, Estaduais ou Municipais do Idoso",
+     "pagina": 2,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/2010/lei-12213-20-janeiro-2010-600950-normaatualizada-pl.pdf"
+    },
+    {
+     "item": "Território",
+     "valor": "Nacional, estadual e municipal",
+     "trecho": "Fundos Nacional, Estaduais ou Municipais do Idoso",
+     "pagina": 2,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/2010/lei-12213-20-janeiro-2010-600950-normaatualizada-pl.pdf"
+    },
+    {
+     "item": "Esfera",
+     "valor": "Federal/Estadual/Municipal",
+     "trecho": "aos Fundos Municipais, Estaduais e Nacional do Idoso",
+     "pagina": 1,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/2010/lei-12213-20-janeiro-2010-600950-normaatualizada-pl.pdf"
+    },
+    {
+     "item": "Valor",
+     "valor": "PJ até 1% do IR devido; PF até 3% na declaração",
+     "trecho": "A dedução a que se refere o caput deste artigo não poderá ultrapassar 1% (um por cento) do imposto devido",
+     "pagina": 2,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/2010/lei-12213-20-janeiro-2010-600950-normaatualizada-pl.pdf"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Conselhos Municipais, Estaduais e Nacional do Idoso",
+     "trecho": "fundos controlados pelos Conselhos Municipais, Estaduais e Nacional do Idoso",
+     "pagina": 2,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/2010/lei-12213-20-janeiro-2010-600950-normaatualizada-pl.pdf"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "Doação incentivada",
+     "trecho": "deduzir do imposto de renda devido pelas pessoas físicas e jurídicas as doações efetuadas",
+     "pagina": 1,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/2010/lei-12213-20-janeiro-2010-600950-normaatualizada-pl.pdf"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "Pessoa idosa",
+     "trecho": "assegurar os seus direitos sociais e criar condições para promover sua autonomia, integração e participação efetiva na sociedade",
+     "pagina": 1,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/2010/lei-12213-20-janeiro-2010-600950-normaatualizada-pl.pdf"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "regime de fluxo contínuo por lei: não há resultado único; cada conselho publica seus editais"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não consta nos documentos oficiais lidos (Lei 12.213/2010)"
+    },
+    {
+     "item": "Requisitos",
+     "justificativa": "não consta nos documentos oficiais lidos: requisitos definidos nos editais de cada conselho do idoso"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não se aplica: programa permanente por lei sem edital com anexos"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Temas de pessoa idosa: rota Lei 12.213/2010 + editais do Fundo Estadual do Idoso de Goiás; não usar a página do Conanda.",
+   "relatorio_motor": {
+    "origem_do_livro": "catálogo R44 com link do Conanda",
+    "erro_do_motor": "link de conselho da criança para tema do idoso",
+    "regra_sugerida": "mapear área 'idoso' para Lei 12.213/2010 e CNDPI/fundos do idoso",
+    "fonte_que_funcionou": "www2.camara.leg.br/legin"
+   }
+  },
+  {
+   "livro_id": "captacao-135",
+   "decisao": "encerrada",
+   "motivo": "Pronas/PCD (Lei 12.715/2012, até 2031) abre por chamamento anual; o Edital 7/2026 recebeu propostas de 05/10 a 26/10/2026, já encerrado.",
+   "link_original": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital",
+   "como_encontrou": "Link do catálogo era a home do Ministério da Saúde. Abri a página 'Apresentação de projetos' do Pronon/Pronas (portarias anuais de 2023 e 2024 listadas) e a lista de chamamentos 2026: Chamamento Público nº 7/2026 (Pronas/PCD), PDF lido. Envio de propostas 05/10/2026 a 26/10/2026 — já encerrado em 05/11/2026. Lei 12.715/2012 atualizada (Lei 15.513/2026) estende o incentivo até 2031.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Projetos Pronas/PCD (assistência, formação de RH ou pesquisa) — aplicável a projetos de acessibilidade/atenção à pessoa com deficiência",
+     "trecho": "seleção de propostas para a celebração de parcerias com pessoas jurídicas de direito privado, associativas ou fundacionais, sem ﬁns lucrativos, para projetos de prestação de serviços médico-assistenciais; ou de formação, qualiﬁcação e aperfeiçoamento de recursos humanos",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "05/10/2026 a 26/10/2026 (encerrado)",
+     "trecho": "Envio das propostas de projeto",
+     "pagina": null,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Resultado",
+     "valor": "Preliminar 03/12/2026; definitivo 21/12/2026",
+     "trecho": "Divulgação do resultado preliminar",
+     "pagina": null,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Prazo de recurso",
+     "valor": "04/12/2026 a 14/12/2026",
+     "trecho": "Interposição de recursos contra o",
+     "pagina": null,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Valor",
+     "valor": "R$ 250.000,00 a R$ 4.000.000,00 por projeto",
+     "trecho": "O valor da proposta de projeto deverá ser de, no mínimo, R$ 250.000,00",
+     "pagina": 2,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Ministério da Saúde — DECOOP/SE/MS (incentivo fiscal)",
+     "trecho": "O Ministério da Saúde, por intermédio do Departamento de Cooperação Técnica, Inovação e Desenvolvimento em Saúde (DECOOP/SE/MS)",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Território",
+     "valor": "Nacional",
+     "trecho": "O Ministério da Saúde, por intermédio do Departamento de Cooperação Técnica, Inovação e Desenvolvimento em Saúde (DECOOP/SE/MS), torna público o presente Edital de Chamamento Público",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Esfera",
+     "valor": "Federal",
+     "trecho": "Ministério da Saúde",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "Entidade sem fins lucrativos qualificada (item 3.1)",
+     "trecho": "destinado à seleção de entidades qualiﬁcadas na forma do item 3.1 deste Edital",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "Termo de compromisso com captação por incentivo fiscal",
+     "trecho": "mediante a formalização de termo de compromisso",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "Saúde da pessoa com deficiência",
+     "trecho": "promoção da saúde, prevenção, diagnóstico, tratamento e reabilitação da pessoa com deficiência em todas as fases da vida",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos a lista de anexos no trecho extraído do edital 7/2026; formulários seguem no Transferegov"
+    }
+   ],
+   "edicoes_anteriores": [
+    "2023-07-14",
+    "2024-09-02",
+    "2026-10-05"
+   ],
+   "aprendizado": "Pronas/PCD abre por chamamento anual (Portaria 143/2023, Portaria 575/2024, Edital 7/2026 em 05/10/2026). Monitorar gov.br/saude .../chamamentos-publicos/<ano>/ a partir de julho; próxima edição prevista ~set-out/2027.",
+   "relatorio_motor": {
+    "origem_do_livro": "catálogo R44 com link da home gov.br/saude",
+    "erro_do_motor": "home do ministério em vez do chamamento",
+    "regra_sugerida": "rota: gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/<ano> filtrando 'PRONAS'",
+    "fonte_que_funcionou": "www.gov.br/saude chamamentos-publicos"
+   }
+  },
+  {
+   "livro_id": "captacao-144",
+   "decisao": "encerrada",
+   "motivo": "Pronas/PCD (Lei 12.715/2012, até 2031) abre por chamamento anual; o Edital 7/2026 recebeu propostas de 05/10 a 26/10/2026, já encerrado.",
+   "link_original": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital",
+   "como_encontrou": "Link do catálogo era a home do Ministério da Saúde. Abri a página 'Apresentação de projetos' do Pronon/Pronas (portarias anuais de 2023 e 2024 listadas) e a lista de chamamentos 2026: Chamamento Público nº 7/2026 (Pronas/PCD), PDF lido. Envio de propostas 05/10/2026 a 26/10/2026 — já encerrado em 05/11/2026. Lei 12.715/2012 atualizada (Lei 15.513/2026) estende o incentivo até 2031.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Projetos Pronas/PCD (assistência, formação de RH ou pesquisa) — aplicável a formação de profissionais",
+     "trecho": "seleção de propostas para a celebração de parcerias com pessoas jurídicas de direito privado, associativas ou fundacionais, sem ﬁns lucrativos, para projetos de prestação de serviços médico-assistenciais; ou de formação, qualiﬁcação e aperfeiçoamento de recursos humanos",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "05/10/2026 a 26/10/2026 (encerrado)",
+     "trecho": "Envio das propostas de projeto",
+     "pagina": null,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Resultado",
+     "valor": "Preliminar 03/12/2026; definitivo 21/12/2026",
+     "trecho": "Divulgação do resultado preliminar",
+     "pagina": null,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Prazo de recurso",
+     "valor": "04/12/2026 a 14/12/2026",
+     "trecho": "Interposição de recursos contra o",
+     "pagina": null,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Valor",
+     "valor": "R$ 250.000,00 a R$ 4.000.000,00 por projeto",
+     "trecho": "O valor da proposta de projeto deverá ser de, no mínimo, R$ 250.000,00",
+     "pagina": 2,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Ministério da Saúde — DECOOP/SE/MS (incentivo fiscal)",
+     "trecho": "O Ministério da Saúde, por intermédio do Departamento de Cooperação Técnica, Inovação e Desenvolvimento em Saúde (DECOOP/SE/MS)",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Território",
+     "valor": "Nacional",
+     "trecho": "O Ministério da Saúde, por intermédio do Departamento de Cooperação Técnica, Inovação e Desenvolvimento em Saúde (DECOOP/SE/MS), torna público o presente Edital de Chamamento Público",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Esfera",
+     "valor": "Federal",
+     "trecho": "Ministério da Saúde",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "Entidade sem fins lucrativos qualificada (item 3.1)",
+     "trecho": "destinado à seleção de entidades qualiﬁcadas na forma do item 3.1 deste Edital",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "Termo de compromisso com captação por incentivo fiscal",
+     "trecho": "mediante a formalização de termo de compromisso",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "Saúde da pessoa com deficiência",
+     "trecho": "promoção da saúde, prevenção, diagnóstico, tratamento e reabilitação da pessoa com deficiência em todas as fases da vida",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos a lista de anexos no trecho extraído do edital 7/2026; formulários seguem no Transferegov"
+    }
+   ],
+   "edicoes_anteriores": [
+    "2023-07-14",
+    "2024-09-02",
+    "2026-10-05"
+   ],
+   "aprendizado": "Pronas/PCD abre por chamamento anual (Portaria 143/2023, Portaria 575/2024, Edital 7/2026 em 05/10/2026). Monitorar gov.br/saude .../chamamentos-publicos/<ano>/ a partir de julho; próxima edição prevista ~set-out/2027.",
+   "relatorio_motor": {
+    "origem_do_livro": "catálogo R44 com link da home gov.br/saude",
+    "erro_do_motor": "home do ministério em vez do chamamento",
+    "regra_sugerida": "rota: gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/<ano> filtrando 'PRONAS'",
+    "fonte_que_funcionou": "www.gov.br/saude chamamentos-publicos"
+   }
+  },
+  {
+   "livro_id": "captacao-145",
+   "decisao": "encerrada",
+   "motivo": "Pronas/PCD (Lei 12.715/2012, até 2031) abre por chamamento anual; o Edital 7/2026 recebeu propostas de 05/10 a 26/10/2026, já encerrado.",
+   "link_original": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital",
+   "como_encontrou": "Link do catálogo era a home do Ministério da Saúde. Abri a página 'Apresentação de projetos' do Pronon/Pronas (portarias anuais de 2023 e 2024 listadas) e a lista de chamamentos 2026: Chamamento Público nº 7/2026 (Pronas/PCD), PDF lido. Envio de propostas 05/10/2026 a 26/10/2026 — já encerrado em 05/11/2026. Lei 12.715/2012 atualizada (Lei 15.513/2026) estende o incentivo até 2031.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Projetos Pronas/PCD (assistência, formação de RH ou pesquisa) — aplicável a pesquisa sobre deficiência",
+     "trecho": "seleção de propostas para a celebração de parcerias com pessoas jurídicas de direito privado, associativas ou fundacionais, sem ﬁns lucrativos, para projetos de prestação de serviços médico-assistenciais; ou de formação, qualiﬁcação e aperfeiçoamento de recursos humanos",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "05/10/2026 a 26/10/2026 (encerrado)",
+     "trecho": "Envio das propostas de projeto",
+     "pagina": null,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Resultado",
+     "valor": "Preliminar 03/12/2026; definitivo 21/12/2026",
+     "trecho": "Divulgação do resultado preliminar",
+     "pagina": null,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Prazo de recurso",
+     "valor": "04/12/2026 a 14/12/2026",
+     "trecho": "Interposição de recursos contra o",
+     "pagina": null,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Valor",
+     "valor": "R$ 250.000,00 a R$ 4.000.000,00 por projeto",
+     "trecho": "O valor da proposta de projeto deverá ser de, no mínimo, R$ 250.000,00",
+     "pagina": 2,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Ministério da Saúde — DECOOP/SE/MS (incentivo fiscal)",
+     "trecho": "O Ministério da Saúde, por intermédio do Departamento de Cooperação Técnica, Inovação e Desenvolvimento em Saúde (DECOOP/SE/MS)",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Território",
+     "valor": "Nacional",
+     "trecho": "O Ministério da Saúde, por intermédio do Departamento de Cooperação Técnica, Inovação e Desenvolvimento em Saúde (DECOOP/SE/MS), torna público o presente Edital de Chamamento Público",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Esfera",
+     "valor": "Federal",
+     "trecho": "Ministério da Saúde",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "Entidade sem fins lucrativos qualificada (item 3.1)",
+     "trecho": "destinado à seleção de entidades qualiﬁcadas na forma do item 3.1 deste Edital",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "Termo de compromisso com captação por incentivo fiscal",
+     "trecho": "mediante a formalização de termo de compromisso",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "Saúde da pessoa com deficiência",
+     "trecho": "promoção da saúde, prevenção, diagnóstico, tratamento e reabilitação da pessoa com deficiência em todas as fases da vida",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos a lista de anexos no trecho extraído do edital 7/2026; formulários seguem no Transferegov"
+    }
+   ],
+   "edicoes_anteriores": [
+    "2023-07-14",
+    "2024-09-02",
+    "2026-10-05"
+   ],
+   "aprendizado": "Pronas/PCD abre por chamamento anual (Portaria 143/2023, Portaria 575/2024, Edital 7/2026 em 05/10/2026). Monitorar gov.br/saude .../chamamentos-publicos/<ano>/ a partir de julho; próxima edição prevista ~set-out/2027.",
+   "relatorio_motor": {
+    "origem_do_livro": "catálogo R44 com link da home gov.br/saude",
+    "erro_do_motor": "home do ministério em vez do chamamento",
+    "regra_sugerida": "rota: gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/<ano> filtrando 'PRONAS'",
+    "fonte_que_funcionou": "www.gov.br/saude chamamentos-publicos"
+   }
+  },
+  {
+   "livro_id": "captacao-157",
+   "decisao": "encerrada",
+   "motivo": "Pronas/PCD (Lei 12.715/2012, até 2031) abre por chamamento anual; o Edital 7/2026 recebeu propostas de 05/10 a 26/10/2026, já encerrado.",
+   "link_original": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital",
+   "como_encontrou": "Link do catálogo era a home do Ministério da Saúde. Abri a página 'Apresentação de projetos' do Pronon/Pronas (portarias anuais de 2023 e 2024 listadas) e a lista de chamamentos 2026: Chamamento Público nº 7/2026 (Pronas/PCD), PDF lido. Envio de propostas 05/10/2026 a 26/10/2026 — já encerrado em 05/11/2026. Lei 12.715/2012 atualizada (Lei 15.513/2026) estende o incentivo até 2031.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Projetos Pronas/PCD (assistência, formação de RH ou pesquisa) — aplicável a apoio a familiares de PCD no cuidado/reabilitação",
+     "trecho": "seleção de propostas para a celebração de parcerias com pessoas jurídicas de direito privado, associativas ou fundacionais, sem ﬁns lucrativos, para projetos de prestação de serviços médico-assistenciais; ou de formação, qualiﬁcação e aperfeiçoamento de recursos humanos",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "05/10/2026 a 26/10/2026 (encerrado)",
+     "trecho": "Envio das propostas de projeto",
+     "pagina": null,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Resultado",
+     "valor": "Preliminar 03/12/2026; definitivo 21/12/2026",
+     "trecho": "Divulgação do resultado preliminar",
+     "pagina": null,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Prazo de recurso",
+     "valor": "04/12/2026 a 14/12/2026",
+     "trecho": "Interposição de recursos contra o",
+     "pagina": null,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Valor",
+     "valor": "R$ 250.000,00 a R$ 4.000.000,00 por projeto",
+     "trecho": "O valor da proposta de projeto deverá ser de, no mínimo, R$ 250.000,00",
+     "pagina": 2,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Ministério da Saúde — DECOOP/SE/MS (incentivo fiscal)",
+     "trecho": "O Ministério da Saúde, por intermédio do Departamento de Cooperação Técnica, Inovação e Desenvolvimento em Saúde (DECOOP/SE/MS)",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Território",
+     "valor": "Nacional",
+     "trecho": "O Ministério da Saúde, por intermédio do Departamento de Cooperação Técnica, Inovação e Desenvolvimento em Saúde (DECOOP/SE/MS), torna público o presente Edital de Chamamento Público",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Esfera",
+     "valor": "Federal",
+     "trecho": "Ministério da Saúde",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "Entidade sem fins lucrativos qualificada (item 3.1)",
+     "trecho": "destinado à seleção de entidades qualiﬁcadas na forma do item 3.1 deste Edital",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "Termo de compromisso com captação por incentivo fiscal",
+     "trecho": "mediante a formalização de termo de compromisso",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "Saúde da pessoa com deficiência",
+     "trecho": "promoção da saúde, prevenção, diagnóstico, tratamento e reabilitação da pessoa com deficiência em todas as fases da vida",
+     "pagina": 1,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos a lista de anexos no trecho extraído do edital 7/2026; formulários seguem no Transferegov"
+    }
+   ],
+   "edicoes_anteriores": [
+    "2023-07-14",
+    "2024-09-02",
+    "2026-10-05"
+   ],
+   "aprendizado": "Pronas/PCD abre por chamamento anual (Portaria 143/2023, Portaria 575/2024, Edital 7/2026 em 05/10/2026). Monitorar gov.br/saude .../chamamentos-publicos/<ano>/ a partir de julho; próxima edição prevista ~set-out/2027.",
+   "relatorio_motor": {
+    "origem_do_livro": "catálogo R44 com link da home gov.br/saude",
+    "erro_do_motor": "home do ministério em vez do chamamento",
+    "regra_sugerida": "rota: gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/<ano> filtrando 'PRONAS'",
+    "fonte_que_funcionou": "www.gov.br/saude chamamentos-publicos"
+   }
+  },
+  {
+   "livro_id": "captacao-161",
+   "decisao": "arquivar",
+   "motivo": "Livro do catálogo (não sai do sistema). Não há chamamento federal específico para OSC em vacinação/campanhas educativas; o programa permanente por lei mais aderente é o PRONAS/PCD (Lei 12.715/2012), cujo Edital 7/2026 encerrou inscrições em 26/10/2026 e é restrito à saúde da pessoa com deficiência; arquivado como referência.",
+   "link_original": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital",
+   "como_encontrou": "pncp.gov.br (replicador) descartado; na lista de Chamamentos Públicos 2026 do Ministério da Saúde abri o Chamamento 07/2026 PRONAS/PCD (curl) e baixei o edital em .../edital (PDF 57 p., pdftotext em scr/fix2): Lei 12.715/2012, OSC sem fins lucrativos, prazo 05-26/10/2026, valor R$ 250 mil-4 mi. Planalto e camara.leg.br não responderam/404 para o texto da lei; usei a citação da lei no edital.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Projetos de OSC no PRONAS/PCD: promoção da saúde, prevenção, diagnóstico, tratamento e reabilitação da pessoa com deficiência",
+     "trecho": "canalizar recursos, mediante incentivo fiscal, para o desenvolvimento de projetos de promoção da saúde, prevenção, diagnóstico, tratamento e reabilitação da pessoa com deficiência em todas as fases da vida",
+     "pagina": 2,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "05/10/2026 a 26/10/2026 (edição 2026 encerrada; programa permanente por lei)",
+     "trecho": "Período para disponível para envio das propostas: 05/10/2026 a 26/10/2026",
+     "pagina": null,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas"
+    },
+    {
+     "item": "Território",
+     "valor": "Nacional, com pontuação maior para Centro-Oeste (inclui Goiás), Norte e Nordeste",
+     "trecho": "(A) Projetos Regiões Centro-Oeste, Norte e Nordeste",
+     "pagina": 15,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Resultado",
+     "valor": "Resultado preliminar 03/12/2026; definitivo 21/12/2026",
+     "trecho": "Divulgação do resultado preliminar 03/12/2026",
+     "pagina": 11,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Prazo de recurso",
+     "valor": "04/12/2026 a 14/12/2026",
+     "trecho": "Interposição de recursos contra o resultado preliminar",
+     "pagina": 11,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Valor",
+     "valor": "R$ 250 mil a R$ 4 milhões por projeto",
+     "trecho": "O valor mínimo da proposta de projeto será de R$ 250.000,00 (duzentos e cinquenta mil reais) e o valor máximo de R$ 4.000.000,00 (quatro milhões de reais)",
+     "pagina": null,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Ministério da Saúde – DECOOP/SE/MS, recursos de incentivo fiscal (Lei 12.715/2012)",
+     "trecho": "O processo seletivo fundamenta-se na Lei n.º 12.715, de 17 de setembro de 2012",
+     "pagina": 2,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "PJ privada sem fins lucrativos: CEBAS, OS, OSCIP ou prestador de atendimento a PcD com CNES",
+     "trecho": "Poderão participar deste Edital as pessoas jurídicas de direito privado, associativas ou fundacionais, sem fins lucrativos",
+     "pagina": 4,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Anexos",
+     "valor": "Anexos I a V (declarações, formulário de projeto, orçamento)",
+     "trecho": "Anexo I – Declaração de ciência e concordância",
+     "pagina": 27,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "Incentivo fiscal com termo de compromisso",
+     "trecho": "mediante incentivo fiscal",
+     "pagina": null,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "Saúde – promoção da saúde e prevenção",
+     "trecho": "promoção da saúde, prevenção, diagnóstico, tratamento e reabilitação da pessoa com deficiência",
+     "pagina": 2,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Esfera",
+     "justificativa": "Esfera: não consta nos documentos oficiais lidos de forma literal; programa federal (Ministério da Saúde)."
+    }
+   ],
+   "edicoes_anteriores": [
+    "2026-10-05"
+   ],
+   "aprendizado": "Tema 'vacinação/campanhas educativas' sem fundo próprio para OSC: mapear para PRONAS/PCD e PRONON (Lei 12.715/2012) na página de chamamentos do Ministério da Saúde (edição anual ~out) e para editais da SES-GO/SMS Goiânia; nunca usar pncp.gov.br.",
+   "relatorio_motor": {
+    "origem_do_livro": "catálogo R44 (link_oficial https://pncp.gov.br/)",
+    "erro_do_motor": "apontou a home do PNCP, replicador de contratações, sem programa definido",
+    "regra_sugerida": "para captacao-* de saúde, rotear para gov.br/saude/.../chamamentos-publicos/<ano> filtrando 'pronas'|'pronon' e baixar /edital",
+    "fonte_que_funcionou": "www.gov.br/saude/.../chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+   }
+  },
+  {
+   "livro_id": "captacao-164",
+   "decisao": "arquivar",
+   "motivo": "Livro do catálogo (não sai do sistema). Não há chamamento federal específico para OSC em saúde para população em vulnerabilidade; o programa permanente por lei mais aderente é o PRONAS/PCD (Lei 12.715/2012), cujo Edital 7/2026 encerrou inscrições em 26/10/2026 e é restrito à saúde da pessoa com deficiência; arquivado como referência.",
+   "link_original": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital",
+   "como_encontrou": "pncp.gov.br (replicador) descartado; na lista de Chamamentos Públicos 2026 do Ministério da Saúde abri o Chamamento 07/2026 PRONAS/PCD (curl) e baixei o edital em .../edital (PDF 57 p., pdftotext em scr/fix2): Lei 12.715/2012, OSC sem fins lucrativos, prazo 05-26/10/2026, valor R$ 250 mil-4 mi. Planalto e camara.leg.br não responderam/404 para o texto da lei; usei a citação da lei no edital.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Projetos de OSC no PRONAS/PCD: promoção da saúde, prevenção, diagnóstico, tratamento e reabilitação da pessoa com deficiência",
+     "trecho": "canalizar recursos, mediante incentivo fiscal, para o desenvolvimento de projetos de promoção da saúde, prevenção, diagnóstico, tratamento e reabilitação da pessoa com deficiência em todas as fases da vida",
+     "pagina": 2,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "05/10/2026 a 26/10/2026 (edição 2026 encerrada; programa permanente por lei)",
+     "trecho": "Período para disponível para envio das propostas: 05/10/2026 a 26/10/2026",
+     "pagina": null,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas"
+    },
+    {
+     "item": "Território",
+     "valor": "Nacional, com pontuação maior para Centro-Oeste (inclui Goiás), Norte e Nordeste",
+     "trecho": "(A) Projetos Regiões Centro-Oeste, Norte e Nordeste",
+     "pagina": 15,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Resultado",
+     "valor": "Resultado preliminar 03/12/2026; definitivo 21/12/2026",
+     "trecho": "Divulgação do resultado preliminar 03/12/2026",
+     "pagina": 11,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Prazo de recurso",
+     "valor": "04/12/2026 a 14/12/2026",
+     "trecho": "Interposição de recursos contra o resultado preliminar",
+     "pagina": 11,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Valor",
+     "valor": "R$ 250 mil a R$ 4 milhões por projeto",
+     "trecho": "O valor mínimo da proposta de projeto será de R$ 250.000,00 (duzentos e cinquenta mil reais) e o valor máximo de R$ 4.000.000,00 (quatro milhões de reais)",
+     "pagina": null,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Ministério da Saúde – DECOOP/SE/MS, recursos de incentivo fiscal (Lei 12.715/2012)",
+     "trecho": "O processo seletivo fundamenta-se na Lei n.º 12.715, de 17 de setembro de 2012",
+     "pagina": 2,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "PJ privada sem fins lucrativos: CEBAS, OS, OSCIP ou prestador de atendimento a PcD com CNES",
+     "trecho": "Poderão participar deste Edital as pessoas jurídicas de direito privado, associativas ou fundacionais, sem fins lucrativos",
+     "pagina": 4,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Anexos",
+     "valor": "Anexos I a V (declarações, formulário de projeto, orçamento)",
+     "trecho": "Anexo I – Declaração de ciência e concordância",
+     "pagina": 27,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "Incentivo fiscal com termo de compromisso",
+     "trecho": "mediante incentivo fiscal",
+     "pagina": null,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "Saúde – atenção à saúde da pessoa com deficiência",
+     "trecho": "promoção da saúde, prevenção, diagnóstico, tratamento e reabilitação da pessoa com deficiência",
+     "pagina": 2,
+     "url": "https://www.gov.br/saude/pt-br/acesso-a-informacao/participacao-social/chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Esfera",
+     "justificativa": "Esfera: não consta nos documentos oficiais lidos de forma literal; programa federal (Ministério da Saúde)."
+    }
+   ],
+   "edicoes_anteriores": [
+    "2026-10-05"
+   ],
+   "aprendizado": "Tema 'saúde para população em vulnerabilidade' sem fundo próprio para OSC: mapear para PRONAS/PCD e PRONON (Lei 12.715/2012) na página de chamamentos do Ministério da Saúde (edição anual ~out) e para editais da SES-GO/SMS Goiânia; nunca usar pncp.gov.br.",
+   "relatorio_motor": {
+    "origem_do_livro": "catálogo R44 (link_oficial https://pncp.gov.br/)",
+    "erro_do_motor": "apontou a home do PNCP, replicador de contratações, sem programa definido",
+    "regra_sugerida": "para captacao-* de saúde, rotear para gov.br/saude/.../chamamentos-publicos/<ano> filtrando 'pronas'|'pronon' e baixar /edital",
+    "fonte_que_funcionou": "www.gov.br/saude/.../chamamentos-publicos/2026/chamamento-publico-no-07-2026-se-pronas/edital"
+   }
+  },
+  {
+   "livro_id": "captacao-181",
+   "decisao": "encerrada",
+   "motivo": "Edital MDA 01/2026 de agricultura urbana (hortas) para OSC teve envio de propostas até 21/09/2026; encerrado.",
+   "link_original": "https://www.gov.br/mda/pt-br/acesso-a-informacao/participacao-social/Editais-de-chamamento-publico/2026/edital-de-chamamento-publico-no-01-2026-2013-alimento-no-prato-2013-territorios-urbanos-cultivando-alimentos-e-vida-saudavel/edital-retificado-4a-retificacao.pdf",
+   "como_encontrou": "Link do catálogo era a home do MMA. Busquei agricultura urbana/hortas: Edital de Chamamento Público nº 01/2026 MDA 'Alimento no Prato: Territórios Urbanos' — abri a página do edital e o PDF retificado (4ª retificação). Envio de propostas 13/08 a 21/09/2026 — encerrado.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Termo de fomento para iniciativas coletivas de agricultura urbana e periurbana (inclui hortas comunitárias)",
+     "trecho": "O termo de fomento terá por objeto a concessão de apoio da Administração Pública para a execução de projetos voltados a fortalecer e",
+     "pagina": null,
+     "url": "https://www.gov.br/mda/pt-br/acesso-a-informacao/participacao-social/Editais-de-chamamento-publico/2026/edital-de-chamamento-publico-no-01-2026-2013-alimento-no-prato-2013-territorios-urbanos-cultivando-alimentos-e-vida-saudavel/edital-retificado-4a-retificacao.pdf"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "13/08/2026 a 21/09/2026 (encerrado)",
+     "trecho": "para análise no período de 13/08/2026 a 21/09/2026, até às 23h59 do último dia",
+     "pagina": null,
+     "url": "https://www.gov.br/mda/pt-br/acesso-a-informacao/participacao-social/Editais-de-chamamento-publico/2026/edital-de-chamamento-publico-no-01-2026-2013-alimento-no-prato-2013-territorios-urbanos-cultivando-alimentos-e-vida-saudavel/edital-retificado-4a-retificacao.pdf"
+    },
+    {
+     "item": "Resultado",
+     "valor": "Preliminar 05/11/2026; final estimado 19/11/2026",
+     "trecho": "Divulgação do resultado preliminar.",
+     "pagina": null,
+     "url": "https://www.gov.br/mda/pt-br/acesso-a-informacao/participacao-social/Editais-de-chamamento-publico/2026/edital-de-chamamento-publico-no-01-2026-2013-alimento-no-prato-2013-territorios-urbanos-cultivando-alimentos-e-vida-saudavel/edital-retificado-4a-retificacao.pdf"
+    },
+    {
+     "item": "Prazo de recurso",
+     "valor": "06/11/2026 a 10/11/2026",
+     "trecho": "Interposição de recursos contra o resultado preliminar.",
+     "pagina": null,
+     "url": "https://www.gov.br/mda/pt-br/acesso-a-informacao/participacao-social/Editais-de-chamamento-publico/2026/edital-de-chamamento-publico-no-01-2026-2013-alimento-no-prato-2013-territorios-urbanos-cultivando-alimentos-e-vida-saudavel/edital-retificado-4a-retificacao.pdf"
+    },
+    {
+     "item": "Território",
+     "valor": "Nacional (áreas urbanas e periurbanas)",
+     "trecho": "Implantação de hortas em bairros urbanos ou áreas periurbanas.",
+     "pagina": null,
+     "url": "https://www.gov.br/mda/pt-br/acesso-a-informacao/participacao-social/Editais-de-chamamento-publico/2026/edital-de-chamamento-publico-no-01-2026-2013-alimento-no-prato-2013-territorios-urbanos-cultivando-alimentos-e-vida-saudavel/GuiaeditalAgriculturaUrbanaePeriurbana.pdf"
+    },
+    {
+     "item": "Valor",
+     "valor": "R$ 100.000,00 a R$ 800.000,00 por projeto",
+     "trecho": "O valor total do projeto deve ficar entre R$",
+     "pagina": null,
+     "url": "https://www.gov.br/mda/pt-br/acesso-a-informacao/participacao-social/Editais-de-chamamento-publico/2026/edital-de-chamamento-publico-no-01-2026-2013-alimento-no-prato-2013-territorios-urbanos-cultivando-alimentos-e-vida-saudavel/GuiaeditalAgriculturaUrbanaePeriurbana.pdf"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Ministério do Desenvolvimento Agrário (MDA)",
+     "trecho": "O Ministério do Desenvolvimento Agrário (MDA) busca propostas com forte impacto social",
+     "pagina": null,
+     "url": "https://www.gov.br/mda/pt-br/acesso-a-informacao/participacao-social/Editais-de-chamamento-publico/2026/edital-de-chamamento-publico-no-01-2026-2013-alimento-no-prato-2013-territorios-urbanos-cultivando-alimentos-e-vida-saudavel/GuiaeditalAgriculturaUrbanaePeriurbana.pdf"
+    },
+    {
+     "item": "Esfera",
+     "valor": "Federal",
+     "trecho": "Ministério do Desenvolvimento Agrário",
+     "pagina": null,
+     "url": "https://www.gov.br/mda/pt-br/acesso-a-informacao/participacao-social/Editais-de-chamamento-publico/2026/edital-de-chamamento-publico-no-01-2026-2013-alimento-no-prato-2013-territorios-urbanos-cultivando-alimentos-e-vida-saudavel/edital-retificado-4a-retificacao.pdf"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "OSC com experiência prévia mínima de 1 ano",
+     "trecho": "possuir experiência prévia na realização, com efetividade, do objeto da parceria ou de natureza semelhante, pelo prazo mínimo de 1",
+     "pagina": null,
+     "url": "https://www.gov.br/mda/pt-br/acesso-a-informacao/participacao-social/Editais-de-chamamento-publico/2026/edital-de-chamamento-publico-no-01-2026-2013-alimento-no-prato-2013-territorios-urbanos-cultivando-alimentos-e-vida-saudavel/edital-retificado-4a-retificacao.pdf"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "Termo de fomento",
+     "trecho": "O termo de fomento terá por objeto",
+     "pagina": null,
+     "url": "https://www.gov.br/mda/pt-br/acesso-a-informacao/participacao-social/Editais-de-chamamento-publico/2026/edital-de-chamamento-publico-no-01-2026-2013-alimento-no-prato-2013-territorios-urbanos-cultivando-alimentos-e-vida-saudavel/edital-retificado-4a-retificacao.pdf"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "Agricultura urbana, segurança alimentar",
+     "trecho": "a segurança alimentar e nutricional, a soberania alimentar, a inclusão produtiva",
+     "pagina": null,
+     "url": "https://www.gov.br/mda/pt-br/acesso-a-informacao/participacao-social/Editais-de-chamamento-publico/2026/edital-de-chamamento-publico-no-01-2026-2013-alimento-no-prato-2013-territorios-urbanos-cultivando-alimentos-e-vida-saudavel/edital-retificado-4a-retificacao.pdf"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos a lista de anexos no trecho extraído; anexos publicados na página do edital"
+    }
+   ],
+   "edicoes_anteriores": [
+    "2026-07-13"
+   ],
+   "aprendizado": "Hortas comunitárias: monitorar editais de agricultura urbana do MDA (Lei 14.935/2024) e MDS; a home do MMA não tem edital.",
+   "relatorio_motor": {
+    "origem_do_livro": "catálogo R44 com link home gov.br/mma",
+    "erro_do_motor": "home de ministério sem edital",
+    "regra_sugerida": "rota: gov.br/mda/.../Editais-de-chamamento-publico/<ano> com termo 'agricultura urbana'",
+    "fonte_que_funcionou": "www.gov.br/mda Editais-de-chamamento-publico"
+   }
+  },
+  {
+   "livro_id": "captacao-183",
+   "decisao": "arquivar",
+   "motivo": "Livro de catálogo sem link; área (arborização/educação ambiental) não tem edital vigente localizado; único fundo federal achado (FDD) atende só órgãos públicos.",
+   "link_original": "https://www.gov.br/conarq/pt-br/assuntos/noticias/aberta-chamada-para-projetos-do-fundo-de-defesa-de-direitos-difusos",
+   "como_encontrou": "Busca web por FDD/chamamento 2026: única chamada encontrada (gov.br/conarq, 2020) é restrita a órgãos públicos; sem edital vigente para OSC.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "FNMA: projetos de uso sustentável de recursos naturais e qualidade ambiental",
+     "trecho": "Fica instituído o Fundo Nacional de Meio Ambiente, com o objetivo de desenvolver os projetos que visem ao uso racional e sustentável de recursos naturais",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1989/lei-7797-10-julho-1989-367682-normaatualizada-pl.html"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "fundo permanente por lei; seleção por editais próprios do FNMA, sem chamada vigente localizada",
+     "trecho": "Fica instituído o Fundo Nacional de Meio Ambiente",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1989/lei-7797-10-julho-1989-367682-normaatualizada-pl.html"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Fundo Nacional do Meio Ambiente (MMA)",
+     "trecho": "O Fundo Nacional do Meio Ambiente é administrado pela Secretaria do Meio Ambiente da Presidência da República",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1989/lei-7797-10-julho-1989-367682-normaatualizada-pl.html"
+    },
+    {
+     "item": "Território",
+     "valor": "nacional (órgãos federais, estaduais, municipais ou entidades privadas sem fins lucrativos)",
+     "trecho": "deverão ser aplicados através de órgãos públicos dos níveis federal, estadual e municipal ou de entidades privadas",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1989/lei-7797-10-julho-1989-367682-normaatualizada-pl.html"
+    },
+    {
+     "item": "Esfera",
+     "valor": "Federal",
+     "trecho": "dotações orçamentárias da União",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1989/lei-7797-10-julho-1989-367682-normaatualizada-pl.html"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "entidade privada sem fins lucrativos com objetivos consonantes",
+     "trecho": "desde que não possuam, as referidas entidades, fins lucrativos",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1989/lei-7797-10-julho-1989-367682-normaatualizada-pl.html"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "Educação Ambiental; Manejo e Extensão Florestal",
+     "trecho": "III - Educação Ambiental; IV - Manejo e Extensão Florestal",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1989/lei-7797-10-julho-1989-367682-normaatualizada-pl.html"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "fluxo contínuo de fundo permanente: a lei não fixa data de resultado; não consta nos documentos oficiais lidos"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não há prazo de recurso previsto na Lei 7.797/1989; não consta nos documentos oficiais lidos"
+    },
+    {
+     "item": "Valor",
+     "justificativa": "não consta nos documentos oficiais lidos: a lei não fixa valor por projeto"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos: a lei não exige anexos específicos"
+    },
+    {
+     "item": "Modalidade",
+     "justificativa": "não consta nos documentos oficiais lidos: a modalidade é definida em cada edital do FNMA"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; exigir link oficial do programa no catálogo antes de abrir livro",
+   "relatorio_motor": {
+    "origem_do_livro": "catálogo sem link",
+    "erro_do_motor": "livro sem link; catálogo genérico",
+    "regra_sugerida": "exigir link oficial do programa no catálogo antes de abrir livro",
+    "fonte_que_funcionou": "gov.br/mj direitos-difusos"
+   }
+  },
+  {
+   "livro_id": "captacao-185",
+   "decisao": "arquivar",
+   "motivo": "Link é página institucional do Conanda (só menu gov.br); nenhum chamamento do FNCA sobre resíduos eletrônicos localizado; tema fora do escopo do fundo.",
+   "link_original": "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-crianca-e-do-adolescente-conanda",
+   "como_encontrou": "curl na página do Conanda: só menu do gov.br, sem edital/chamamento.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "FDD: reparação de danos a interesses difusos e coletivos (meio ambiente, consumidor etc.)",
+     "trecho": "tem por finalidade a reparação dos danos causados ao meio ambiente, ao consumidor",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1995/lei-9008-21-marco-1995-348621-normaatualizada-pl.html"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "fundo permanente por lei; seleção por chamamentos do CFDD, sem chamada vigente localizada",
+     "trecho": "Fica criado, no âmbito da estrutura organizacional do Ministério da Justiça, o Conselho Federal Gestor do Fundo de Defesa de Direitos Difusos (CFDD)",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1995/lei-9008-21-marco-1995-348621-normaatualizada-pl.html"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "CFDD / Ministério da Justiça",
+     "trecho": "Conselho Federal Gestor do Fundo de Defesa de Direitos Difusos (CFDD)",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1995/lei-9008-21-marco-1995-348621-normaatualizada-pl.html"
+    },
+    {
+     "item": "Território",
+     "valor": "nacional (fundo federal); CFDD sediado em Brasília",
+     "trecho": "O CFDD, com sede em Brasília",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1995/lei-9008-21-marco-1995-348621-normaatualizada-pl.html"
+    },
+    {
+     "item": "Esfera",
+     "valor": "Federal",
+     "trecho": "no âmbito da estrutura organizacional do Ministério da Justiça",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1995/lei-9008-21-marco-1995-348621-normaatualizada-pl.html"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "entidades civis podem promover eventos educativos por meio do CFDD",
+     "trecho": "por meio de órgãos da administração pública e de entidades civis interessadas, eventos educativos ou científicos",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1995/lei-9008-21-marco-1995-348621-normaatualizada-pl.html"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "meio ambiente, consumidor e outros interesses difusos",
+     "trecho": "promover atividades e eventos que contribuam para a difusão da cultura, da proteção ao meio ambiente, do consumidor",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/1995/lei-9008-21-marco-1995-348621-normaatualizada-pl.html"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "fluxo contínuo de fundo permanente: a lei não fixa data de resultado; não consta nos documentos oficiais lidos"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não há prazo de recurso previsto na Lei 9.008/1995; não consta nos documentos oficiais lidos"
+    },
+    {
+     "item": "Valor",
+     "justificativa": "não consta nos documentos oficiais lidos: a lei não fixa valor por projeto"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos: a lei não exige anexos específicos"
+    },
+    {
+     "item": "Modalidade",
+     "justificativa": "não consta nos documentos oficiais lidos: a modalidade é definida em cada chamamento do CFDD"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; apontar para chamamentos do FNCA/FDD em gov.br/mdh/.../editais",
+   "relatorio_motor": {
+    "origem_do_livro": "https://www.gov.br/mdh/pt-br/acesso-a-informacao/participacao-social/conselho-nacional-dos-direitos-da-crianca-e-do-adolescente-conanda",
+    "erro_do_motor": "capturou página institucional do Conanda",
+    "regra_sugerida": "apontar para chamamentos do FNCA/FDD em gov.br/mdh/.../editais",
+    "fonte_que_funcionou": "gov.br/mdh"
+   }
+  },
+  {
+   "livro_id": "captacao-188",
+   "decisao": "arquivar",
+   "motivo": "ALEGO: portal institucional; emendas parlamentares não são seleção pública com inscrição; sem chamamento vigente.",
+   "link_original": "https://portal.al.go.leg.br/",
+   "como_encontrou": "curl no portal.al.go.leg.br: página inicial institucional, sem edital de emendas.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "termos de fomento/colaboração com recursos de emendas parlamentares",
+     "trecho": "Os termos de colaboração ou de fomento que envolvam recursos decorrentes de emendas parlamentares às leis orçamentárias anuais",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/2014/lei-13019-31-julho-2014-779123-normaatualizada-pl.html"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "sem inscrição: emendas são celebradas sem chamamento público",
+     "trecho": "serão celebrados sem chamamento público",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/2014/lei-13019-31-julho-2014-779123-normaatualizada-pl.html"
+    },
+    {
+     "item": "Território",
+     "valor": "aplica-se a União, Estados (inclusive Goiás) e Municípios",
+     "trecho": "Esta Lei institui normas gerais para as parcerias entre a administração pública e organizações da sociedade civil",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/2014/lei-13019-31-julho-2014-779123-normaatualizada-pl.html"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "organização da sociedade civil conforme a lei",
+     "trecho": "organizações da sociedade civil",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/2014/lei-13019-31-julho-2014-779123-normaatualizada-pl.html"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "termo de colaboração ou de fomento",
+     "trecho": "Os termos de colaboração ou de fomento",
+     "pagina": null,
+     "url": "https://www2.camara.leg.br/legin/fed/lei/2014/lei-13019-31-julho-2014-779123-normaatualizada-pl.html"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "sem seleção competitiva: emenda parlamentar dispensa chamamento, não há resultado publicado"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não há recurso: sem seleção competitiva (art. 29 da Lei 13.019/2014)"
+    },
+    {
+     "item": "Valor",
+     "justificativa": "não consta nos documentos oficiais lidos: valor definido em cada emenda parlamentar"
+    },
+    {
+     "item": "Órgão / financiador",
+     "justificativa": "não consta nos documentos oficiais lidos: depende do parlamentar e da secretaria executora (ALEGO/Estado de Goiás)"
+    },
+    {
+     "item": "Esfera",
+     "justificativa": "não consta nos documentos oficiais lidos: a lei vale para todas as esferas; a esfera depende da emenda"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos: anexos definidos pelo órgão concedente"
+    },
+    {
+     "item": "Área de atuação",
+     "justificativa": "não consta nos documentos oficiais lidos: a área depende do objeto da emenda (prevenção a desastres)"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; emendas: buscar editais de chamamento das secretarias executoras (SEMAD/Defesa Civil GO)",
+   "relatorio_motor": {
+    "origem_do_livro": "https://portal.al.go.leg.br/",
+    "erro_do_motor": "capturou portal institucional da ALEGO",
+    "regra_sugerida": "emendas: buscar editais de chamamento das secretarias executoras (SEMAD/Defesa Civil GO)",
+    "fonte_que_funcionou": "goias.gov.br"
+   }
+  },
+  {
+   "livro_id": "captacao-220",
+   "decisao": "arquivar",
+   "motivo": "Página do BNDES Fundo Social não retornou conteúdo (portal WPS em JS); a única chamada socioambiental aberta achada (BNDES Garagem, até 30/11/2026) é para startups, não OSC; sem chamada vigente para OSC.",
+   "link_original": "https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/desenvolvimento-social-e-urbano/bndes-fundo-social",
+   "como_encontrou": "curl bndes.gov.br retornou casca vazia; WebSearch achou só BNDES Garagem (startups).",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "apoio a projetos estruturantes no território atingido pela Barragem de Fundão",
+     "trecho": "tornam pública a chamada para apoio a projetos estruturantes no território atingido pelo rompimento da Barragem de Fundão",
+     "pagina": null,
+     "url": "https://www.bndes.gov.br/wps/portal/site/home/transparencia/fundos-governamentais/fundo-rio-doce/chamada-rio-doce-participativo"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "chamada permanente (fluxo contínuo)",
+     "trecho": "Acesse aqui o documento com instruções detalhadas sobre a chamada permanente",
+     "pagina": null,
+     "url": "https://www.bndes.gov.br/wps/portal/site/home/transparencia/fundos-governamentais/fundo-rio-doce/chamada-rio-doce-participativo"
+    },
+    {
+     "item": "Valor",
+     "valor": "Eixo I: R$ 5 a 10 milhões; ambos os eixos até R$ 23 milhões",
+     "trecho": "valor mínimo de R$ 10 milhões e valor máximo de R$ 23 milhões",
+     "pagina": null,
+     "url": "https://www.bndes.gov.br/wps/portal/site/home/transparencia/fundos-governamentais/fundo-rio-doce/chamada-rio-doce-participativo"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "BNDES e Secretaria-Geral da Presidência",
+     "trecho": "O BNDES e a Secretaria-Geral da Presidência da República tornam pública a chamada",
+     "pagina": null,
+     "url": "https://www.bndes.gov.br/wps/portal/site/home/transparencia/fundos-governamentais/fundo-rio-doce/chamada-rio-doce-participativo"
+    },
+    {
+     "item": "Território",
+     "valor": "restrita a entidades de MG e ES",
+     "trecho": "Estar localizada em Minas Gerais e Espírito Santo.",
+     "pagina": null,
+     "url": "https://www.bndes.gov.br/wps/portal/site/home/transparencia/fundos-governamentais/fundo-rio-doce/chamada-rio-doce-participativo"
+    },
+    {
+     "item": "Esfera",
+     "valor": "Federal (Fundo de Participação Social da Bacia do Rio Doce)",
+     "trecho": "com recursos do Fundo de Participação Social da Bacia do Rio Doce.",
+     "pagina": null,
+     "url": "https://www.bndes.gov.br/wps/portal/site/home/transparencia/fundos-governamentais/fundo-rio-doce/chamada-rio-doce-participativo"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "entidades privadas sem fins lucrativos e IES via fundações de apoio",
+     "trecho": "Entidades privadas sem fins lucrativos e instituições de ensino superior, por meio de suas fundações de apoio, que atendam aos seguintes critérios:",
+     "pagina": null,
+     "url": "https://www.bndes.gov.br/wps/portal/site/home/transparencia/fundos-governamentais/fundo-rio-doce/chamada-rio-doce-participativo"
+    },
+    {
+     "item": "Anexos",
+     "valor": "modelos de ata de anuência e declaração",
+     "trecho": "Modelo de Ata de Anuência das Comunidades Atingidas",
+     "pagina": null,
+     "url": "https://www.bndes.gov.br/wps/portal/site/home/transparencia/fundos-governamentais/fundo-rio-doce/chamada-rio-doce-participativo"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "entidade executora (apoio não reembolsável a projetos)",
+     "trecho": "Serão recebidas propostas de entidades executoras para atuarem em dois eixos:",
+     "pagina": null,
+     "url": "https://www.bndes.gov.br/wps/portal/site/home/transparencia/fundos-governamentais/fundo-rio-doce/chamada-rio-doce-participativo"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "fortalecimento institucional e empreendimentos produtivos",
+     "trecho": "Eixo II – Estruturação de empreendimentos produtivos e de serviços, rurais ou urbanos",
+     "pagina": null,
+     "url": "https://www.bndes.gov.br/wps/portal/site/home/transparencia/fundos-governamentais/fundo-rio-doce/chamada-rio-doce-participativo"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "fluxo contínuo: chamada permanente sem data única de resultado; não consta nos documentos oficiais lidos"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não consta nos documentos oficiais lidos: a página da chamada permanente não prevê prazo de recurso"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; usar bndes.gov.br/.../chamadas-publicas e filtrar 'organizações da sociedade civil'",
+   "relatorio_motor": {
+    "origem_do_livro": "https://www.bndes.gov.br/wps/portal/site/home/onde-atuamos/desenvolvimento-social-e-urbano/bndes-fundo-social",
+    "erro_do_motor": "link de portal JS sem conteúdo; órgão errado (DOU)",
+    "regra_sugerida": "usar bndes.gov.br/.../chamadas-publicas e filtrar 'organizações da sociedade civil'",
+    "fonte_que_funcionou": "bndes.gov.br"
+   }
+  },
+  {
+   "livro_id": "captacao-228",
+   "decisao": "arquivar",
+   "motivo": "Site do Instituto Localiza inacessível (502) e nenhuma chamada pública 2026 localizada na busca; investimento privado sem edital aberto.",
+   "link_original": "https://institutolocaliza.com.br/",
+   "como_encontrou": "curl institutolocaliza.com.br: erro 502; WebSearch sem edital do instituto.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "edital Juventude em Movimento: inclusão produtiva de jovens",
+     "trecho": "A chamada foi direcionada a organizações da sociedade civil com",
+     "pagina": 10,
+     "url": "https://api.mziq.com/mzfilemanager/v2/d/08f327aa-e610-4d9d-b683-8ff0f7caae07/abfca70f-b126-0ba5-6d28-0df64fe9b0de?origin=2"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "só a edição de 2021 documentada (encerrada); sem chamada vigente localizada",
+     "trecho": "2021 marcou o lançamento do Instituto Localiza e de seu primeiro 1º edital Juventude",
+     "pagina": 10,
+     "url": "https://api.mziq.com/mzfilemanager/v2/d/08f327aa-e610-4d9d-b683-8ff0f7caae07/abfca70f-b126-0ba5-6d28-0df64fe9b0de?origin=2"
+    },
+    {
+     "item": "Valor",
+     "valor": "categorias de R$ 400 mil a R$ 50 mil, total R$ 2,5 milhões",
+     "trecho": "mil, R$ 200 mil, R$ 100 mil e R$ 50 mil) em um total de R$ 2,5 milhões.",
+     "pagina": 10,
+     "url": "https://api.mziq.com/mzfilemanager/v2/d/08f327aa-e610-4d9d-b683-8ff0f7caae07/abfca70f-b126-0ba5-6d28-0df64fe9b0de?origin=2"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Instituto Localiza",
+     "trecho": "2021 marcou o lançamento do Instituto Localiza",
+     "pagina": 10,
+     "url": "https://api.mziq.com/mzfilemanager/v2/d/08f327aa-e610-4d9d-b683-8ff0f7caae07/abfca70f-b126-0ba5-6d28-0df64fe9b0de?origin=2"
+    },
+    {
+     "item": "Território",
+     "valor": "nacional (inscrições de 25 estados)",
+     "trecho": "inscrições de organizações de 25 estados.",
+     "pagina": 10,
+     "url": "https://api.mziq.com/mzfilemanager/v2/d/08f327aa-e610-4d9d-b683-8ff0f7caae07/abfca70f-b126-0ba5-6d28-0df64fe9b0de?origin=2"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "organizações da sociedade civil",
+     "trecho": "A chamada foi direcionada a organizações da sociedade civil com",
+     "pagina": 10,
+     "url": "https://api.mziq.com/mzfilemanager/v2/d/08f327aa-e610-4d9d-b683-8ff0f7caae07/abfca70f-b126-0ba5-6d28-0df64fe9b0de?origin=2"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "inclusão produtiva de jovens",
+     "trecho": "iniciativas de real potencial de impacto de inclusão produtiva de jovens em situação",
+     "pagina": 10,
+     "url": "https://api.mziq.com/mzfilemanager/v2/d/08f327aa-e610-4d9d-b683-8ff0f7caae07/abfca70f-b126-0ba5-6d28-0df64fe9b0de?origin=2"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "não consta nos documentos oficiais lidos: o relatório 2021 não traz data de resultado"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não consta nos documentos oficiais lidos: não há prazo de recurso no relatório 2021"
+    },
+    {
+     "item": "Esfera",
+     "justificativa": "não se aplica esfera pública: investimento social privado do Instituto Localiza"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos: o relatório não lista anexos do edital"
+    },
+    {
+     "item": "Modalidade",
+     "justificativa": "não consta nos documentos oficiais lidos: o relatório não define modalidade de apoio além das categorias de valor"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; rastrear página /editais ou notícias do instituto",
+   "relatorio_motor": {
+    "origem_do_livro": "https://institutolocaliza.com.br/",
+    "erro_do_motor": "site raiz sem edital",
+    "regra_sugerida": "rastrear página /editais ou notícias do instituto",
+    "fonte_que_funcionou": "institutolocaliza.com.br"
+   }
+  },
+  {
+   "livro_id": "captacao-230",
+   "decisao": "arquivar",
+   "motivo": "Edital ArcelorMittal Investe 2027 (inscrições até 16/08/2026) restrito a São Gonçalo do Amarante, Caucaia, Fortaleza e Paracuru (CE): privado restrito a outra região.",
+   "link_original": "https://fundacaoarcelormittal.org.br/",
+   "como_encontrou": "Site da fundação 502; WebSearch -> O Povo 06/08/2026 descreve o edital e municípios elegíveis.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "patrocínio a projetos via leis de incentivo (cultura, esporte, saúde, economia circular)",
+     "trecho": "a Fundação ArcelorMittal recebe propostas exclusivamente por esse sistema.",
+     "pagina": null,
+     "url": "https://lp.simbi.social/arcelormittal"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "portal de recebimento de propostas, sem data fixa",
+     "trecho": "As propostas de patrocínio e de doações incentivadas devem ser realizadas exclusivamente",
+     "pagina": 10,
+     "url": "https://d335luupugsy2.cloudfront.net/cms%2Ffiles%2F226807%2F1784295831Poltica_de_Investimento_Incentivado_em_Cultura.pdf"
+    },
+    {
+     "item": "Resultado",
+     "valor": "informado após análise e Comitê",
+     "trecho": "a Fundação ArcelorMittal informa aos",
+     "pagina": 10,
+     "url": "https://d335luupugsy2.cloudfront.net/cms%2Ffiles%2F226807%2F1784295831Poltica_de_Investimento_Incentivado_em_Cultura.pdf"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Fundação ArcelorMittal",
+     "trecho": "A Fundação ArcelorMittal é o núcleo de investimento e transformação social do Grupo ArcelorMittal.",
+     "pagina": null,
+     "url": "https://lp.simbi.social/arcelormittal"
+    },
+    {
+     "item": "Território",
+     "valor": "prioridade às cidades de influência do Grupo (MG, ES, RJ, SC, CE, BA, SP e MS); GO fora",
+     "trecho": "A destinação de recursos será prioritariamente para projetos direcionados às cidades e áreas de influência do",
+     "pagina": 9,
+     "url": "https://d335luupugsy2.cloudfront.net/cms%2Ffiles%2F226807%2F1784295831Poltica_de_Investimento_Incentivado_em_Cultura.pdf"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "projeto aprovado em lei de incentivo; >50% de aderência aos critérios",
+     "trecho": "alcançarem mais de 50% de aderência aos critérios elencados nessa política.",
+     "pagina": 9,
+     "url": "https://d335luupugsy2.cloudfront.net/cms%2Ffiles%2F226807%2F1784295831Poltica_de_Investimento_Incentivado_em_Cultura.pdf"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "patrocínio e doação incentivada",
+     "trecho": "As propostas de patrocínio e de doações incentivadas devem ser realizadas exclusivamente",
+     "pagina": 10,
+     "url": "https://d335luupugsy2.cloudfront.net/cms%2Ffiles%2F226807%2F1784295831Poltica_de_Investimento_Incentivado_em_Cultura.pdf"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "cultura (política de investimento cultural)",
+     "trecho": "Os investimentos serão designados prioritariamente para as áreas de atuação da Fundação ArcelorMittal",
+     "pagina": 8,
+     "url": "https://d335luupugsy2.cloudfront.net/cms%2Ffiles%2F226807%2F1784295831Poltica_de_Investimento_Incentivado_em_Cultura.pdf"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não há recurso previsto na Política de Investimento: decisão do Comitê; não consta nos documentos oficiais lidos"
+    },
+    {
+     "item": "Valor",
+     "justificativa": "não consta nos documentos oficiais lidos: a política não fixa valor; limitado à renúncia fiscal do Grupo"
+    },
+    {
+     "item": "Esfera",
+     "justificativa": "não se aplica esfera pública: investimento social privado (Fundação ArcelorMittal)"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos: a política não lista anexos obrigatórios para a proposta"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; buscar 'ArcelorMittal Investe' + município da unidade; filtrar unidades fora de GO",
+   "relatorio_motor": {
+    "origem_do_livro": "https://fundacaoarcelormittal.org.br/",
+    "erro_do_motor": "site raiz sem edital",
+    "regra_sugerida": "buscar 'ArcelorMittal Investe' + município da unidade; filtrar unidades fora de GO",
+    "fonte_que_funcionou": "brasil.arcelormittal.com/sala-imprensa"
+   }
+  },
+  {
+   "livro_id": "L-f059e617f62fb339",
+   "decisao": "encerrada",
+   "motivo": "Edital Litigância Estratégica (Fundo Brasil/Ford) com propostas até 23/01/2017; encerrado.",
+   "link_original": "https://www.fundobrasil.org.br/noticia/fundo-brasil-recebe-propostas-preliminares-para-edital-litigancia-estrategica-ate-o-dia-23-de-janeiro/",
+   "como_encontrou": "Notícia de 19/12/2016 no fundobrasil.org.br.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "litigância estratégica, advocacy e comunicação em direitos humanos",
+     "trecho": "vai apoiar projetos promovidos por organizações da sociedade civil",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/fundo-brasil-recebe-propostas-preliminares-para-edital-litigancia-estrategica-ate-o-dia-23-de-janeiro/"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "propostas preliminares até 23/01/2017",
+     "trecho": "O Fundo Brasil recebe até o dia 23 de janeiro de 2017 as propostas preliminares",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/fundo-brasil-recebe-propostas-preliminares-para-edital-litigancia-estrategica-ate-o-dia-23-de-janeiro/"
+    },
+    {
+     "item": "Resultado",
+     "valor": "resultado até 26/05/2017",
+     "trecho": "O resultado final será divulgado até o dia 26 de maio.",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/fundo-brasil-recebe-propostas-preliminares-para-edital-litigancia-estrategica-ate-o-dia-23-de-janeiro/"
+    },
+    {
+     "item": "Valor",
+     "valor": "até R$ 80 mil por projeto; total R$ 880 mil",
+     "trecho": "Cada projeto pode receber até R$ 80 mil.",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/fundo-brasil-recebe-propostas-preliminares-para-edital-litigancia-estrategica-ate-o-dia-23-de-janeiro/"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Fundo Brasil de Direitos Humanos",
+     "trecho": "O Fundo Brasil é uma fundação independente, sem fins lucrativos",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/fundo-brasil-recebe-propostas-preliminares-para-edital-litigancia-estrategica-ate-o-dia-23-de-janeiro/"
+    },
+    {
+     "item": "Território",
+     "valor": "nacional (todas as regiões do país)",
+     "trecho": "destinar recursos a defensores e defensoras de direitos humanos em todas as regiões do pais",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/fundo-brasil-recebe-propostas-preliminares-para-edital-litigancia-estrategica-ate-o-dia-23-de-janeiro/"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "OSC e organismos universitários em parceria",
+     "trecho": "organizações da sociedade civil, bem como organismos universitários que trabalhem em parceria com organizações",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/fundo-brasil-recebe-propostas-preliminares-para-edital-litigancia-estrategica-ate-o-dia-23-de-janeiro/"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "direitos humanos (cidade, terra, mulheres, LGBTI, crianças, racismo)",
+     "trecho": "promoção do direito à cidade; direito à terra",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/fundo-brasil-recebe-propostas-preliminares-para-edital-litigancia-estrategica-ate-o-dia-23-de-janeiro/"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não há prazo de recurso: não consta nos documentos oficiais lidos (notícia da chamada)"
+    },
+    {
+     "item": "Esfera",
+     "justificativa": "não se aplica esfera pública: edital privado de fundação independente"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia remete ao edital completo, sem lista de anexos"
+    },
+    {
+     "item": "Modalidade",
+     "justificativa": "não consta nos documentos oficiais lidos: modalidade não descrita além de doação a projetos"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; descartar notícias com prazo passado (data da publicação < 1 ano)",
+   "relatorio_motor": {
+    "origem_do_livro": "https://www.fundobrasil.org.br/noticia/fundo-brasil-recebe-propostas-preliminares-para-edital-litigancia-estrategica-ate-o-dia-23-de-janeiro/",
+    "erro_do_motor": "notícia antiga do Fundo Brasil",
+    "regra_sugerida": "descartar notícias com prazo passado (data da publicação < 1 ano)",
+    "fonte_que_funcionou": "fundobrasil.org.br/editais"
+   }
+  },
+  {
+   "livro_id": "L-bd2e97ab93257c89",
+   "decisao": "encerrada",
+   "motivo": "Fundo de Apoio Emergencial Covid-19 encerrou pedidos em 15/04/2020.",
+   "link_original": "https://www.fundobrasil.org.br/noticia/encerrado-o-envio-de-pedidos-para-o-fundo-de-apoio-emergencial-covid-19/",
+   "como_encontrou": "Notícia de 16/04/2020: 'foi encerrado às 23h59 de 15 de abril'.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "apoio emergencial a iniciativas de enfrentamento à Covid-19",
+     "trecho": "para apoiar, em caráter emergencial, iniciativas de grupos, coletivos, organizações, defensoras e defensores de direitos humanos",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/encerrado-o-envio-de-pedidos-para-o-fundo-de-apoio-emergencial-covid-19/"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "encerrado em 15/04/2020",
+     "trecho": "foi encerrado às 23h59 de 15 de abril, quarta-feira, o prazo para envio de pedidos",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/encerrado-o-envio-de-pedidos-para-o-fundo-de-apoio-emergencial-covid-19/"
+    },
+    {
+     "item": "Resultado",
+     "valor": "lista a partir de 24/04/2020",
+     "trecho": "a lista de pedidos selecionados para apoio seja divulgada a partir do dia 24 de abril",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/encerrado-o-envio-de-pedidos-para-o-fundo-de-apoio-emergencial-covid-19/"
+    },
+    {
+     "item": "Valor",
+     "valor": "aporte inicial R$ 535 mil",
+     "trecho": "O aporte inicial do Fundo Brasil para o Fundo de Apoio Emergencial: Covid-19 é de R$ 535 mil.",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/encerrado-o-envio-de-pedidos-para-o-fundo-de-apoio-emergencial-covid-19/"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Fundo Brasil de Direitos Humanos",
+     "trecho": "Esta linha especial foi lançada pelo Fundo Brasil no dia 8 de abril",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/encerrado-o-envio-de-pedidos-para-o-fundo-de-apoio-emergencial-covid-19/"
+    },
+    {
+     "item": "Território",
+     "valor": "nacional",
+     "trecho": "apoiar mais iniciativas de enfrentamento à Covid-19 por todo o país",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/encerrado-o-envio-de-pedidos-para-o-fundo-de-apoio-emergencial-covid-19/"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não há prazo de recurso: não consta nos documentos oficiais lidos (notícia da chamada)"
+    },
+    {
+     "item": "Esfera",
+     "justificativa": "não se aplica esfera pública: edital privado de fundação independente"
+    },
+    {
+     "item": "Requisitos",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia não detalha requisitos formais"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia remete ao edital completo, sem lista de anexos"
+    },
+    {
+     "item": "Modalidade",
+     "justificativa": "não consta nos documentos oficiais lidos: modalidade não descrita além de doação a projetos"
+    },
+    {
+     "item": "Área de atuação",
+     "justificativa": "não consta nos documentos oficiais lidos: área não especificada além do objeto"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; título com 'encerrado' = encerrada/descartar automático",
+   "relatorio_motor": {
+    "origem_do_livro": "https://www.fundobrasil.org.br/noticia/encerrado-o-envio-de-pedidos-para-o-fundo-de-apoio-emergencial-covid-19/",
+    "erro_do_motor": "notícia de encerramento",
+    "regra_sugerida": "título com 'encerrado' = encerrada/descartar automático",
+    "fonte_que_funcionou": "fundobrasil.org.br/editais"
+   }
+  },
+  {
+   "livro_id": "L-fe9b6ac885b4090d",
+   "decisao": "descartar",
+   "motivo": "Notícia sobre prêmio recebido por Sueli Carneiro (2017); não é oportunidade.",
+   "link_original": "https://www.fundobrasil.org.br/noticia/sueli-carneiro-recebe-o-premio-itau-cultural-30-anos/",
+   "como_encontrou": "Notícia de 14/06/2017 no fundobrasil.org.br.",
+   "itens": [],
+   "dispensas": [],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; exigir palavras 'inscrições'/'edital' no título",
+   "relatorio_motor": {
+    "origem_do_livro": "https://www.fundobrasil.org.br/noticia/sueli-carneiro-recebe-o-premio-itau-cultural-30-anos/",
+    "erro_do_motor": "capturou notícia institucional",
+    "regra_sugerida": "exigir palavras 'inscrições'/'edital' no título",
+    "fonte_que_funcionou": "fundobrasil.org.br/editais"
+   }
+  },
+  {
+   "livro_id": "L-e05d07f104abf825",
+   "decisao": "encerrada",
+   "motivo": "Edital Direitos Humanos e Justiça Criminal do Fundo Brasil, notícia de 13/08/2020; edição antiga encerrada.",
+   "link_original": "https://www.fundobrasil.org.br/noticia/edital-direitos-humanos-e-justica-criminal-inscricoes-estao-abertas/",
+   "como_encontrou": "Notícia de 13/08/2020 no fundobrasil.org.br.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "combate ao encarceramento em massa (prisões provisórias e egressos)",
+     "trecho": "o Fundo Brasil apoiará dois tipos de iniciativas: o Eixo 01 é focado em combater o uso excessivo de prisões provisórias no país",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/edital-direitos-humanos-e-justica-criminal-inscricoes-estao-abertas/"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "até 23/09/2020, 18h",
+     "trecho": "O período de inscrição de propostas vai até 23 de setembro, às 18 horas (horário de Brasília).",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/edital-direitos-humanos-e-justica-criminal-inscricoes-estao-abertas/"
+    },
+    {
+     "item": "Valor",
+     "valor": "Eixo 1 até R$ 150 mil; Eixo 2 até R$ 100 mil",
+     "trecho": "No Eixo 2, de promoção de direitos de pessoas egressas do sistema prisional, os apoios são de até R$ 100 mil, para até 4 projetos.",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/edital-direitos-humanos-e-justica-criminal-inscricoes-estao-abertas/"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Fundo Brasil de Direitos Humanos",
+     "trecho": "Edital Direitos Humanos e Justiça Criminal",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/edital-direitos-humanos-e-justica-criminal-inscricoes-estao-abertas/"
+    },
+    {
+     "item": "Território",
+     "valor": "nacional",
+     "trecho": "combater o uso excessivo de prisões provisórias no país",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/edital-direitos-humanos-e-justica-criminal-inscricoes-estao-abertas/"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "organizações, grupos e coletivos, inclusive não formalizados",
+     "trecho": "São aceitas também inscrições de organizações, grupos e coletivos ainda não formalizados.",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/edital-direitos-humanos-e-justica-criminal-inscricoes-estao-abertas/"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "inscrição online",
+     "trecho": "As inscrições, realizadas exclusivamente online",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/edital-direitos-humanos-e-justica-criminal-inscricoes-estao-abertas/"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "justiça criminal e direitos humanos",
+     "trecho": "promoção dos direitos das pessoas egressas do sistema prisional",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/edital-direitos-humanos-e-justica-criminal-inscricoes-estao-abertas/"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia não informa data de resultado"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não há prazo de recurso: não consta nos documentos oficiais lidos (notícia da chamada)"
+    },
+    {
+     "item": "Esfera",
+     "justificativa": "não se aplica esfera pública: edital privado de fundação independente"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia remete ao edital completo, sem lista de anexos"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; filtrar por data de publicação",
+   "relatorio_motor": {
+    "origem_do_livro": "https://www.fundobrasil.org.br/noticia/edital-direitos-humanos-e-justica-criminal-inscricoes-estao-abertas/",
+    "erro_do_motor": "notícia antiga",
+    "regra_sugerida": "filtrar por data de publicação",
+    "fonte_que_funcionou": "fundobrasil.org.br/editais"
+   }
+  },
+  {
+   "livro_id": "L-e52e914f973fd1cc",
+   "decisao": "encerrada",
+   "motivo": "Edital Labora 'Transição Justa e Trabalho Digno' com inscrições até 30/08/2024; encerrado.",
+   "link_original": "https://www.fundobrasil.org.br/noticia/labora-vai-doar-r1-milhao-em-edital-para-trabalhadores-enfrentarem-mudancas-climaticas/",
+   "como_encontrou": "Notícia de 04/07/2024: 'O período de inscrições vai até 30 de agosto de 2024'.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Transição Justa e Trabalho Digno: bem viver para trabalhadores dos campos, águas e florestas",
+     "trecho": "o edital Transição Justa e Trabalho Digno: bem viver para trabalhadores dos campos, das águas e das florestas",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/labora-vai-doar-r1-milhao-em-edital-para-trabalhadores-enfrentarem-mudancas-climaticas/"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "até 30/08/2024",
+     "trecho": "O período de inscrições vai até 30 de agosto de 2024.",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/labora-vai-doar-r1-milhao-em-edital-para-trabalhadores-enfrentarem-mudancas-climaticas/"
+    },
+    {
+     "item": "Valor",
+     "valor": "Eixo 1 até R$ 50 mil; Eixo 2 até R$ 100 mil",
+     "trecho": "Serão apoiadas 5 propostas de até R$100 mil cada.",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/labora-vai-doar-r1-milhao-em-edital-para-trabalhadores-enfrentarem-mudancas-climaticas/"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Fundo Brasil de Direitos Humanos",
+     "trecho": "O Labora – Fundo de Apoio ao Trabalho Digno é uma iniciativa do Fundo Brasil de Direitos Humanos",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/labora-vai-doar-r1-milhao-em-edital-para-trabalhadores-enfrentarem-mudancas-climaticas/"
+    },
+    {
+     "item": "Território",
+     "valor": "nacional (trabalhadores em contextos não-urbanos)",
+     "trecho": "tendo como foco prioritário o fortalecimento da luta de trabalhadores(as) informais e/ou precarizados(as) em contextos não-urbanos",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/labora-vai-doar-r1-milhao-em-edital-para-trabalhadores-enfrentarem-mudancas-climaticas/"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "OSC, sindicatos, coletivos, grupos e movimentos",
+     "trecho": "Estão convidados a se inscrever organizações da sociedade civil, sindicatos, coletivos, grupos e movimentos sociais",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/labora-vai-doar-r1-milhao-em-edital-para-trabalhadores-enfrentarem-mudancas-climaticas/"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "direitos trabalhistas e proteção social",
+     "trecho": "avanços no campo dos direitos trabalhistas e da proteção social",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/labora-vai-doar-r1-milhao-em-edital-para-trabalhadores-enfrentarem-mudancas-climaticas/"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia não informa data de resultado"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não há prazo de recurso: não consta nos documentos oficiais lidos (notícia da chamada)"
+    },
+    {
+     "item": "Esfera",
+     "justificativa": "não se aplica esfera pública: edital privado de fundação independente"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia remete ao edital completo, sem lista de anexos"
+    },
+    {
+     "item": "Modalidade",
+     "justificativa": "não consta nos documentos oficiais lidos: modalidade não descrita além de doação a projetos"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; comparar prazo do texto com a data de hoje",
+   "relatorio_motor": {
+    "origem_do_livro": "https://www.fundobrasil.org.br/noticia/labora-vai-doar-r1-milhao-em-edital-para-trabalhadores-enfrentarem-mudancas-climaticas/",
+    "erro_do_motor": "notícia de edital passado",
+    "regra_sugerida": "comparar prazo do texto com a data de hoje",
+    "fonte_que_funcionou": "fundobrasil.org.br/editais"
+   }
+  },
+  {
+   "livro_id": "L-c69d3b59c4fcab7c",
+   "decisao": "encerrada",
+   "motivo": "Edital Raízes (Amazônia e Cerrado, até R$60 mil, OSC/comunidades) com inscrições de 15/07 a 21/08/2026; encerrado, resultado a partir de 22/10/2026.",
+   "link_original": "https://www.fundobrasil.org.br/noticia/justica-climatica-na-amazonia-e-no-cerrado-novo-edital-do-raizes-recebe-inscricoes/",
+   "como_encontrou": "Notícia de 15/07/2026: 'as inscrições podem ser feitas de 15 de julho a 21 de agosto'.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "Edital Raízes: direitos territoriais e justiça climática de povos e comunidades tradicionais",
+     "trecho": "lança a sexta chamada de projetos para apoiar comunidades tradicionais, quilombolas e povos indígenas",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/justica-climatica-na-amazonia-e-no-cerrado-novo-edital-do-raizes-recebe-inscricoes/"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "15/07 a 21/08/2026",
+     "trecho": "as inscrições podem ser feitas de 15 de julho a 21 de agosto, encerrando às 18h (horário de Brasília).",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/justica-climatica-na-amazonia-e-no-cerrado-novo-edital-do-raizes-recebe-inscricoes/"
+    },
+    {
+     "item": "Resultado",
+     "valor": "a partir de 22/10/2026",
+     "trecho": "Os resultados da seleção deste edital serão divulgados a partir de 22 de outubro de 2026.",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/justica-climatica-na-amazonia-e-no-cerrado-novo-edital-do-raizes-recebe-inscricoes/"
+    },
+    {
+     "item": "Valor",
+     "valor": "até R$ 60 mil por proposta; total R$ 2,58 milhões",
+     "trecho": "apoio financeiro de até R$ 60.000,00",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/justica-climatica-na-amazonia-e-no-cerrado-novo-edital-do-raizes-recebe-inscricoes/"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Fundo Brasil de Direitos Humanos",
+     "trecho": "O Fundo Brasil de Direitos Humanos, por meio da linha Raízes",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/justica-climatica-na-amazonia-e-no-cerrado-novo-edital-do-raizes-recebe-inscricoes/"
+    },
+    {
+     "item": "Território",
+     "valor": "Amazônia Legal e Cerrado (inclui GO)",
+     "trecho": "o bioma Cerrado está presente total ou parcialmente nos Estados de Goiás",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/justica-climatica-na-amazonia-e-no-cerrado-novo-edital-do-raizes-recebe-inscricoes/"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "povos indígenas, quilombolas e comunidades tradicionais",
+     "trecho": "apoiar comunidades tradicionais, quilombolas e povos indígenas",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/justica-climatica-na-amazonia-e-no-cerrado-novo-edital-do-raizes-recebe-inscricoes/"
+    },
+    {
+     "item": "Modalidade",
+     "valor": "inscrição via Portal de Projetos",
+     "trecho": "Fazer o quanto antes o cadastro ou recuperação de senha no Portal de Projetos do Fundo Brasil",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/justica-climatica-na-amazonia-e-no-cerrado-novo-edital-do-raizes-recebe-inscricoes/"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "defesa territorial e sociobioeconomia",
+     "trecho": "A segunda frente apoia projetos de sociobioeconomia",
+     "pagina": null,
+     "url": "https://www.fundobrasil.org.br/noticia/justica-climatica-na-amazonia-e-no-cerrado-novo-edital-do-raizes-recebe-inscricoes/"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não há prazo de recurso: não consta nos documentos oficiais lidos (notícia da chamada)"
+    },
+    {
+     "item": "Esfera",
+     "justificativa": "não se aplica esfera pública: edital privado de fundação independente"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia remete ao edital completo, sem lista de anexos"
+    }
+   ],
+   "edicoes_anteriores": [
+    "2026-07-15"
+   ],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; priorizar captura em tempo real do fundobrasil.org.br/editais",
+   "relatorio_motor": {
+    "origem_do_livro": "https://www.fundobrasil.org.br/noticia/justica-climatica-na-amazonia-e-no-cerrado-novo-edital-do-raizes-recebe-inscricoes/",
+    "erro_do_motor": "edital real, mas capturado após prazo",
+    "regra_sugerida": "priorizar captura em tempo real do fundobrasil.org.br/editais",
+    "fonte_que_funcionou": "fundobrasil.org.br"
+   }
+  },
+  {
+   "livro_id": "L-65823116651d81b7",
+   "decisao": "descartar",
+   "motivo": "Prêmio RBS de Educação 2015 para educadores e jovens (pessoa física) de RS/SC; não é para OSC e é antigo.",
+   "link_original": "https://gife.org.br/fundacao-mauricio-sirotsky-sobrinho-oferece-curso-online-e-premiacao-para-projetos-de-incentivo-a-leitura/",
+   "como_encontrou": "Notícia GIFE de 27/08/2015.",
+   "itens": [],
+   "dispensas": [],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; descartar gife.org.br com data < ano corrente",
+   "relatorio_motor": {
+    "origem_do_livro": "https://gife.org.br/fundacao-mauricio-sirotsky-sobrinho-oferece-curso-online-e-premiacao-para-projetos-de-incentivo-a-leitura/",
+    "erro_do_motor": "notícia GIFE antiga",
+    "regra_sugerida": "descartar gife.org.br com data < ano corrente",
+    "fonte_que_funcionou": "gife.org.br/editais"
+   }
+  },
+  {
+   "livro_id": "L-fdf6206e525557f7",
+   "decisao": "encerrada",
+   "motivo": "Prêmio Nestlé de Criação de Valor Compartilhado 2015 (ONGs elegíveis) com inscrições até 28/02/2015; encerrado.",
+   "link_original": "https://gife.org.br/inscricoes-abertas-para-o-premio-de-criacao-de-valor-compartilhado-da-nestle/",
+   "como_encontrou": "Notícia GIFE de 02/02/2015.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "prêmio a projetos de Nutrição, Água e Desenvolvimento Rural",
+     "trecho": "destaca projetos com foco Nutrição, Água e Desenvolvimento Rural",
+     "pagina": null,
+     "url": "https://gife.org.br/inscricoes-abertas-para-o-premio-de-criacao-de-valor-compartilhado-da-nestle/"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "até 28/02/2015",
+     "trecho": "As inscrições devem ser feitas em inglês, até o dia 28 de fevereiro, no site da Nestlé.",
+     "pagina": null,
+     "url": "https://gife.org.br/inscricoes-abertas-para-o-premio-de-criacao-de-valor-compartilhado-da-nestle/"
+    },
+    {
+     "item": "Valor",
+     "valor": "CHF 500 mil",
+     "trecho": "No total, será concedido um prêmio no valor de CHF 500 mil (Francos Suíços)",
+     "pagina": null,
+     "url": "https://gife.org.br/inscricoes-abertas-para-o-premio-de-criacao-de-valor-compartilhado-da-nestle/"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Nestlé",
+     "trecho": "A Nestlé abriu inscrições para a quarta edição do Prêmio de Criação de Valor Compartilhado.",
+     "pagina": null,
+     "url": "https://gife.org.br/inscricoes-abertas-para-o-premio-de-criacao-de-valor-compartilhado-da-nestle/"
+    },
+    {
+     "item": "Território",
+     "valor": "global",
+     "trecho": "O prêmio tem abrangência global",
+     "pagina": null,
+     "url": "https://gife.org.br/inscricoes-abertas-para-o-premio-de-criacao-de-valor-compartilhado-da-nestle/"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "empresas sociais, privadas e ONGs",
+     "trecho": "Empresas sociais e privadas, e organizações não governamentais (ONGs) podem se inscrever.",
+     "pagina": null,
+     "url": "https://gife.org.br/inscricoes-abertas-para-o-premio-de-criacao-de-valor-compartilhado-da-nestle/"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "nutrição, água e desenvolvimento rural",
+     "trecho": "Nutrição, Água e Desenvolvimento Rural",
+     "pagina": null,
+     "url": "https://gife.org.br/inscricoes-abertas-para-o-premio-de-criacao-de-valor-compartilhado-da-nestle/"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia do GIFE não informa data de resultado"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não há prazo de recurso: não consta nos documentos oficiais lidos (notícia de divulgação)"
+    },
+    {
+     "item": "Esfera",
+     "justificativa": "não se aplica esfera pública brasileira: chamada privada/internacional"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia não lista anexos"
+    },
+    {
+     "item": "Modalidade",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia não define modalidade além do apoio/prêmio"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; filtrar por data",
+   "relatorio_motor": {
+    "origem_do_livro": "https://gife.org.br/inscricoes-abertas-para-o-premio-de-criacao-de-valor-compartilhado-da-nestle/",
+    "erro_do_motor": "notícia GIFE antiga",
+    "regra_sugerida": "filtrar por data",
+    "fonte_que_funcionou": "gife.org.br"
+   }
+  },
+  {
+   "livro_id": "L-47be716328ac7216",
+   "decisao": "encerrada",
+   "motivo": "Edital do Fundo para Igualdade de Gênero da ONU (OSC dirigidas por mulheres), notícia de 2015; encerrado.",
+   "link_original": "https://gife.org.br/onu-seleciona-iniciativas-para-empoderamento-feminino/",
+   "como_encontrou": "Notícia GIFE datada 2015.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "subvenções a programas de empoderamento econômico ou político das mulheres",
+     "trecho": "para conceder subvenções a programas que promovam o empoderamento econômico ou político das mulheres",
+     "pagina": null,
+     "url": "https://gife.org.br/onu-seleciona-iniciativas-para-empoderamento-feminino/"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "até 05 de abril (2015)",
+     "trecho": "As inscrições podem ser feitas até o dia 05 de abril pelo sistema on-line",
+     "pagina": null,
+     "url": "https://gife.org.br/onu-seleciona-iniciativas-para-empoderamento-feminino/"
+    },
+    {
+     "item": "Valor",
+     "valor": "US$ 200 mil a 500 mil",
+     "trecho": "solicitar a subvenção de US$ 200.000 a 500.000 dólares para programas de dois ou três anos",
+     "pagina": null,
+     "url": "https://gife.org.br/onu-seleciona-iniciativas-para-empoderamento-feminino/"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Fundo para a Igualdade de Gênero da ONU",
+     "trecho": "O Fundo para a Igualdade de Gênero da ONU lança novo edital",
+     "pagina": null,
+     "url": "https://gife.org.br/onu-seleciona-iniciativas-para-empoderamento-feminino/"
+    },
+    {
+     "item": "Território",
+     "valor": "internacional",
+     "trecho": "Desde 2009, o Fundo já desembolsou cerca de US$ 56 milhões dólares para financiar 96 programas em 72 países.",
+     "pagina": null,
+     "url": "https://gife.org.br/onu-seleciona-iniciativas-para-empoderamento-feminino/"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "OSC dirigidas por mulheres",
+     "trecho": "receberá propostas de organizações da sociedade civil dirigidas por mulheres",
+     "pagina": null,
+     "url": "https://gife.org.br/onu-seleciona-iniciativas-para-empoderamento-feminino/"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "igualdade de gênero",
+     "trecho": "promoção dos diretos das mulheres e da igualdade de gênero",
+     "pagina": null,
+     "url": "https://gife.org.br/onu-seleciona-iniciativas-para-empoderamento-feminino/"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia do GIFE não informa data de resultado"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não há prazo de recurso: não consta nos documentos oficiais lidos (notícia de divulgação)"
+    },
+    {
+     "item": "Esfera",
+     "justificativa": "não se aplica esfera pública brasileira: chamada privada/internacional"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia não lista anexos"
+    },
+    {
+     "item": "Modalidade",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia não define modalidade além do apoio/prêmio"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; filtrar por data",
+   "relatorio_motor": {
+    "origem_do_livro": "https://gife.org.br/onu-seleciona-iniciativas-para-empoderamento-feminino/",
+    "erro_do_motor": "notícia GIFE antiga",
+    "regra_sugerida": "filtrar por data",
+    "fonte_que_funcionou": "gife.org.br"
+   }
+  },
+  {
+   "livro_id": "L-aa14b47e800d7492",
+   "decisao": "descartar",
+   "motivo": "Edital FTD Pequenos Leitores (inscrições até 15/01/2015) para escolas/secretarias municipais da Grande SP; não é para OSC.",
+   "link_original": "https://gife.org.br/editora-ftd-abre-edital-na-area-da-educacao/",
+   "como_encontrou": "Notícia GIFE de 15/12/2014.",
+   "itens": [],
+   "dispensas": [],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; filtrar público-alvo 'escolas/secretarias'",
+   "relatorio_motor": {
+    "origem_do_livro": "https://gife.org.br/editora-ftd-abre-edital-na-area-da-educacao/",
+    "erro_do_motor": "notícia GIFE antiga",
+    "regra_sugerida": "filtrar público-alvo 'escolas/secretarias'",
+    "fonte_que_funcionou": "gife.org.br"
+   }
+  },
+  {
+   "livro_id": "L-f2848ea576a93c8d",
+   "decisao": "descartar",
+   "motivo": "Chamada para votação popular do Prêmio RBS (2014/2015); não é oportunidade.",
+   "link_original": "https://gife.org.br/ultima-chamada-para-a-votacao-do-premio-rbs-de-educacao/",
+   "como_encontrou": "Notícia GIFE sobre júri popular.",
+   "itens": [],
+   "dispensas": [],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; ignorar títulos com 'votação'",
+   "relatorio_motor": {
+    "origem_do_livro": "https://gife.org.br/ultima-chamada-para-a-votacao-do-premio-rbs-de-educacao/",
+    "erro_do_motor": "capturou notícia de votação",
+    "regra_sugerida": "ignorar títulos com 'votação'",
+    "fonte_que_funcionou": "gife.org.br"
+   }
+  },
+  {
+   "livro_id": "L-bf5cde5fc01e2efb",
+   "decisao": "descartar",
+   "motivo": "Desafio Natura Campus: chamada para pesquisadores/universitários (P&D cosmético); não é para OSC.",
+   "link_original": "https://gife.org.br/inscricoes-abertas-para-desafio-natura-campus/",
+   "como_encontrou": "Notícia GIFE (2015).",
+   "itens": [],
+   "dispensas": [],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; excluir chamadas para pesquisadores/startups",
+   "relatorio_motor": {
+    "origem_do_livro": "https://gife.org.br/inscricoes-abertas-para-desafio-natura-campus/",
+    "erro_do_motor": "capturou chamada de P&D empresarial",
+    "regra_sugerida": "excluir chamadas para pesquisadores/startups",
+    "fonte_que_funcionou": "gife.org.br"
+   }
+  },
+  {
+   "livro_id": "L-5732b0cfe526326d",
+   "decisao": "encerrada",
+   "motivo": "Humanitarian Innovation Fund (organizações elegíveis), prazo 14 de maio de 2015; encerrado.",
+   "link_original": "https://gife.org.br/fundo-de-inovacao-humanitaria-seleciona-iniciativas-inovadoras-ao-redor-do-mundo/",
+   "como_encontrou": "Notícia GIFE de 11/05/2015.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "soluções inovadoras para assistência humanitária",
+     "trecho": "identificar, estimular e compartilhar soluções inovadoras e escaláveis",
+     "pagina": null,
+     "url": "https://gife.org.br/fundo-de-inovacao-humanitaria-seleciona-iniciativas-inovadoras-ao-redor-do-mundo/"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "14 de maio (2015)",
+     "trecho": "O prazo para envio de propostas é dia 14 de maio.",
+     "pagina": null,
+     "url": "https://gife.org.br/fundo-de-inovacao-humanitaria-seleciona-iniciativas-inovadoras-ao-redor-do-mundo/"
+    },
+    {
+     "item": "Valor",
+     "valor": "até £20 mil ou £75–150 mil conforme fase",
+     "trecho": "partindo de uma subvenção de até 20 mil libras",
+     "pagina": null,
+     "url": "https://gife.org.br/fundo-de-inovacao-humanitaria-seleciona-iniciativas-inovadoras-ao-redor-do-mundo/"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Humanitarian Innovation Fund (Inglaterra)",
+     "trecho": "O Fundo de Inovação Humanitária (Humanitarian Innovation Fund), com sede na Inglaterra",
+     "pagina": null,
+     "url": "https://gife.org.br/fundo-de-inovacao-humanitaria-seleciona-iniciativas-inovadoras-ao-redor-do-mundo/"
+    },
+    {
+     "item": "Território",
+     "valor": "internacional",
+     "trecho": "já foram apoiadas 60 iniciativas em todo o mundo",
+     "pagina": null,
+     "url": "https://gife.org.br/fundo-de-inovacao-humanitaria-seleciona-iniciativas-inovadoras-ao-redor-do-mundo/"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "organizações, indivíduos e empresas",
+     "trecho": "Podem se inscrever organizações, indivíduos e empresas privadas",
+     "pagina": null,
+     "url": "https://gife.org.br/fundo-de-inovacao-humanitaria-seleciona-iniciativas-inovadoras-ao-redor-do-mundo/"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "assistência humanitária",
+     "trecho": "ajudar as pessoas em caso de emergência ou desastre",
+     "pagina": null,
+     "url": "https://gife.org.br/fundo-de-inovacao-humanitaria-seleciona-iniciativas-inovadoras-ao-redor-do-mundo/"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia do GIFE não informa data de resultado"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não há prazo de recurso: não consta nos documentos oficiais lidos (notícia de divulgação)"
+    },
+    {
+     "item": "Esfera",
+     "justificativa": "não se aplica esfera pública brasileira: chamada privada/internacional"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia não lista anexos"
+    },
+    {
+     "item": "Modalidade",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia não define modalidade além do apoio/prêmio"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; filtrar por data",
+   "relatorio_motor": {
+    "origem_do_livro": "https://gife.org.br/fundo-de-inovacao-humanitaria-seleciona-iniciativas-inovadoras-ao-redor-do-mundo/",
+    "erro_do_motor": "notícia GIFE antiga",
+    "regra_sugerida": "filtrar por data",
+    "fonte_que_funcionou": "gife.org.br"
+   }
+  },
+  {
+   "livro_id": "L-deca98502881d596",
+   "decisao": "descartar",
+   "motivo": "Prêmio Gazeta Mercantil/CPFL de 2001 voltado a empresas do interior de SP; não é para OSC.",
+   "link_original": "https://gife.org.br/premio-visa-a-incentivar-avancos-em-gestao-ambiental/",
+   "como_encontrou": "Notícia GIFE de 01/10/2001.",
+   "itens": [],
+   "dispensas": [],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; filtrar por data",
+   "relatorio_motor": {
+    "origem_do_livro": "https://gife.org.br/premio-visa-a-incentivar-avancos-em-gestao-ambiental/",
+    "erro_do_motor": "notícia de 2001",
+    "regra_sugerida": "filtrar por data",
+    "fonte_que_funcionou": "gife.org.br"
+   }
+  },
+  {
+   "livro_id": "L-f039bab366fdf254",
+   "decisao": "descartar",
+   "motivo": "Notícia (2001) sobre premiação recebida pela Fundação Pescar; não é oportunidade.",
+   "link_original": "https://gife.org.br/pescar-recebe-premio-de-tecnologia-social/",
+   "como_encontrou": "Notícia GIFE de 12/11/2001.",
+   "itens": [],
+   "dispensas": [],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; exigir 'inscrições' no título",
+   "relatorio_motor": {
+    "origem_do_livro": "https://gife.org.br/pescar-recebe-premio-de-tecnologia-social/",
+    "erro_do_motor": "capturou notícia",
+    "regra_sugerida": "exigir 'inscrições' no título",
+    "fonte_que_funcionou": "gife.org.br"
+   }
+  },
+  {
+   "livro_id": "L-cb957f1ec8061397",
+   "decisao": "encerrada",
+   "motivo": "Prêmio Empreendedor Social Ashoka/McKinsey (OSC), notícia de 06/05/2002; edição encerrada.",
+   "link_original": "https://gife.org.br/premio-empreendedor-social-recebe-inscricoes/",
+   "como_encontrou": "Notícia GIFE de 06/05/2002.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "planos de negócios para projetos sociais (OSC + universitários)",
+     "trecho": "desenvolvam conjuntamente planos de negócios para projetos sociais",
+     "pagina": null,
+     "url": "https://gife.org.br/premio-empreendedor-social-recebe-inscricoes/"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "até 10 de maio (2002)",
+     "trecho": "Estão abertas até o dia 10 de maio as inscrições para a terceira edição do Prêmio Empreendedor Social",
+     "pagina": null,
+     "url": "https://gife.org.br/premio-empreendedor-social-recebe-inscricoes/"
+    },
+    {
+     "item": "Valor",
+     "valor": "total R$ 95 mil",
+     "trecho": "receberão prêmios num total de R$ 95 mil",
+     "pagina": null,
+     "url": "https://gife.org.br/premio-empreendedor-social-recebe-inscricoes/"
+    },
+    {
+     "item": "Órgão / financiador",
+     "valor": "Ashoka e McKinsey",
+     "trecho": "promovido pela ONG Ashoka e pela consultoria McKinsey",
+     "pagina": null,
+     "url": "https://gife.org.br/premio-empreendedor-social-recebe-inscricoes/"
+    },
+    {
+     "item": "Território",
+     "valor": "nacional (Brasil)",
+     "trecho": "Estão abertas até o dia 10 de maio as inscrições para a terceira edição do Prêmio Empreendedor Social",
+     "pagina": null,
+     "url": "https://gife.org.br/premio-empreendedor-social-recebe-inscricoes/"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "OSC e estudantes universitários",
+     "trecho": "organizações da Sociedade Civil e estudantes universitários",
+     "pagina": null,
+     "url": "https://gife.org.br/premio-empreendedor-social-recebe-inscricoes/"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "mobilização de recursos / empreendedorismo social",
+     "trecho": "conceitos inovadores em mobilização de recursos",
+     "pagina": null,
+     "url": "https://gife.org.br/premio-empreendedor-social-recebe-inscricoes/"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia do GIFE não informa data de resultado"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não há prazo de recurso: não consta nos documentos oficiais lidos (notícia de divulgação)"
+    },
+    {
+     "item": "Esfera",
+     "justificativa": "não se aplica esfera pública brasileira: chamada privada/internacional"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia não lista anexos"
+    },
+    {
+     "item": "Modalidade",
+     "justificativa": "não consta nos documentos oficiais lidos: a notícia não define modalidade além do apoio/prêmio"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; filtrar por data",
+   "relatorio_motor": {
+    "origem_do_livro": "https://gife.org.br/premio-empreendedor-social-recebe-inscricoes/",
+    "erro_do_motor": "notícia de 2002",
+    "regra_sugerida": "filtrar por data",
+    "fonte_que_funcionou": "gife.org.br"
+   }
+  },
+  {
+   "livro_id": "L-c9c60b4aa16372b0",
+   "decisao": "descartar",
+   "motivo": "Prêmio de fotografia do Fundo Casa (2022) para fotógrafos pessoas físicas, prêmios em equipamentos; não é para OSC e está encerrado.",
+   "link_original": "https://casa.org.br/premio-de-fotografia-povos-conectados-com-a-terra/",
+   "como_encontrou": "curl bloqueado (Mod_Security); WebFetch: notícia 17/10/2022, inscrições até 18/11/2022, item 2.1 só fotógrafos.",
+   "itens": [],
+   "dispensas": [],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; excluir 'prêmio de fotografia'",
+   "relatorio_motor": {
+    "origem_do_livro": "https://casa.org.br/premio-de-fotografia-povos-conectados-com-a-terra/",
+    "erro_do_motor": "chamada para pessoa física",
+    "regra_sugerida": "excluir 'prêmio de fotografia'",
+    "fonte_que_funcionou": "casa.org.br"
+   }
+  },
+  {
+   "livro_id": "L-9f29dd1d133b6d06",
+   "decisao": "encerrada",
+   "motivo": "Chamada Fundo Casa para comunidades da Amazônia Legal (até R$35 mil) com inscrições até 07/07/2023; encerrada.",
+   "link_original": "https://casa.org.br/funda-casa-abre-chamada-de-projetos-para-apoiar-a-autonomia-e-resiliencia-de-comunidades-amazonicas/",
+   "como_encontrou": "curl bloqueado (Mod_Security); WebFetch: 'As inscrições vão até 07 de julho de 2023'.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "fortalecer povos tradicionais e originários da Amazônia",
+     "trecho": "Com objetivo de fortalecer os povos tradicionais e originários da Amazônia brasileira",
+     "pagina": null,
+     "url": "https://casa.org.br/funda-casa-abre-chamada-de-projetos-para-apoiar-a-autonomia-e-resiliencia-de-comunidades-amazonicas/"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "até 07/07/2023",
+     "trecho": "As inscrições vão até 07 de julho de 2023",
+     "pagina": null,
+     "url": "https://casa.org.br/funda-casa-abre-chamada-de-projetos-para-apoiar-a-autonomia-e-resiliencia-de-comunidades-amazonicas/"
+    },
+    {
+     "item": "Valor",
+     "valor": "até R$ 35 mil",
+     "trecho": "Serão apoiados até 33 projetos de até R$35.000,00, totalizando R$1.155.000.",
+     "pagina": null,
+     "url": "https://casa.org.br/funda-casa-abre-chamada-de-projetos-para-apoiar-a-autonomia-e-resiliencia-de-comunidades-amazonicas/"
+    },
+    {
+     "item": "Território",
+     "valor": "Amazônia Legal (fora de GO)",
+     "trecho": "em regiões de floresta na Amazônia Legal",
+     "pagina": null,
+     "url": "https://casa.org.br/funda-casa-abre-chamada-de-projetos-para-apoiar-a-autonomia-e-resiliencia-de-comunidades-amazonicas/"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "organizações de comunidades tradicionais",
+     "trecho": "A chamada apoiará projetos de organizações de comunidades tradicionais",
+     "pagina": null,
+     "url": "https://casa.org.br/funda-casa-abre-chamada-de-projetos-para-apoiar-a-autonomia-e-resiliencia-de-comunidades-amazonicas/"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "fortalecimento institucional, governança territorial e desenvolvimento econômico",
+     "trecho": "fortalecimento institucional, governança territorial e desenvolvimento econômico",
+     "pagina": null,
+     "url": "https://casa.org.br/funda-casa-abre-chamada-de-projetos-para-apoiar-a-autonomia-e-resiliencia-de-comunidades-amazonicas/"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "não consta nos documentos oficiais lidos: a página não informa data de resultado"
+    },
+    {
+     "item": "Modalidade",
+     "justificativa": "não consta nos documentos oficiais lidos: a página não descreve a forma de inscrição"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos: a página não lista anexos"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não há prazo de recurso: não consta nos documentos oficiais lidos (página da chamada)"
+    },
+    {
+     "item": "Esfera",
+     "justificativa": "não se aplica esfera pública: chamada privada do Fundo Casa Socioambiental"
+    },
+    {
+     "item": "Órgão / financiador",
+     "justificativa": "não consta nos documentos oficiais lidos: a página trazida não nomeia o financiador além do Fundo Casa"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; filtrar por data",
+   "relatorio_motor": {
+    "origem_do_livro": "https://casa.org.br/funda-casa-abre-chamada-de-projetos-para-apoiar-a-autonomia-e-resiliencia-de-comunidades-amazonicas/",
+    "erro_do_motor": "notícia antiga",
+    "regra_sugerida": "filtrar por data",
+    "fonte_que_funcionou": "casa.org.br/editais"
+   }
+  },
+  {
+   "livro_id": "L-dd706e2f0b842710",
+   "decisao": "encerrada",
+   "motivo": "Chamada Fundo Casa Povos das Florestas (até R$50 mil) de 20/03 a 03/05/2024; encerrada.",
+   "link_original": "https://casa.org.br/fundo-casa-abre-chamada-com-foco-em-projetos-para-fortalecer-a-autonomia-e-resiliencia-dos-povos-das-florestas/",
+   "como_encontrou": "curl bloqueado; WebFetch: 'de 20 de março a 03 de maio de 2024'.",
+   "itens": [
+    {
+     "item": "Objeto",
+     "valor": "apoiar organizações indígenas, quilombolas e extrativistas",
+     "trecho": "apoiar projetos de organizações locais de comunidades indígenas, territórios quilombolas e populações extrativistas",
+     "pagina": null,
+     "url": "https://casa.org.br/fundo-casa-abre-chamada-com-foco-em-projetos-para-fortalecer-a-autonomia-e-resiliencia-dos-povos-das-florestas/"
+    },
+    {
+     "item": "Prazo de inscrição",
+     "valor": "20/03 a 03/05/2024",
+     "trecho": "O período de recebimento das propostas será de 20 de março a 03 de maio de 2024.",
+     "pagina": null,
+     "url": "https://casa.org.br/fundo-casa-abre-chamada-com-foco-em-projetos-para-fortalecer-a-autonomia-e-resiliencia-dos-povos-das-florestas/"
+    },
+    {
+     "item": "Valor",
+     "valor": "até R$ 50 mil",
+     "trecho": "Serão apoiados até 52 projetos de até R$50.000,00 cada, totalizando R$2.6 milhões em doações diretas às organizações.",
+     "pagina": null,
+     "url": "https://casa.org.br/fundo-casa-abre-chamada-com-foco-em-projetos-para-fortalecer-a-autonomia-e-resiliencia-dos-povos-das-florestas/"
+    },
+    {
+     "item": "Território",
+     "valor": "Amazônia (territórios prioritários, fora de GO)",
+     "trecho": "São territórios prioritários para esta chamada as seguintes regiões: Reserva Extrativista Chico Mendes e entorno,",
+     "pagina": null,
+     "url": "https://casa.org.br/fundo-casa-abre-chamada-com-foco-em-projetos-para-fortalecer-a-autonomia-e-resiliencia-dos-povos-das-florestas/"
+    },
+    {
+     "item": "Requisitos",
+     "valor": "organizações indígenas, quilombolas e extrativistas",
+     "trecho": "apoiará organizações indígenas, quilombolas e extrativistas na Amazônia brasileira",
+     "pagina": null,
+     "url": "https://casa.org.br/fundo-casa-abre-chamada-com-foco-em-projetos-para-fortalecer-a-autonomia-e-resiliencia-dos-povos-das-florestas/"
+    },
+    {
+     "item": "Área de atuação",
+     "valor": "economia da sociobiodiversidade",
+     "trecho": "Desenvolvimento da Economia da Sociobiodiversidade",
+     "pagina": null,
+     "url": "https://casa.org.br/fundo-casa-abre-chamada-com-foco-em-projetos-para-fortalecer-a-autonomia-e-resiliencia-dos-povos-das-florestas/"
+    }
+   ],
+   "dispensas": [
+    {
+     "item": "Resultado",
+     "justificativa": "não consta nos documentos oficiais lidos: a página não informa data de resultado"
+    },
+    {
+     "item": "Modalidade",
+     "justificativa": "não consta nos documentos oficiais lidos: a página não descreve a forma de inscrição"
+    },
+    {
+     "item": "Anexos",
+     "justificativa": "não consta nos documentos oficiais lidos: a página não lista anexos"
+    },
+    {
+     "item": "Prazo de recurso",
+     "justificativa": "não há prazo de recurso: não consta nos documentos oficiais lidos (página da chamada)"
+    },
+    {
+     "item": "Esfera",
+     "justificativa": "não se aplica esfera pública: chamada privada do Fundo Casa Socioambiental"
+    },
+    {
+     "item": "Órgão / financiador",
+     "justificativa": "não consta nos documentos oficiais lidos: a página trazida não nomeia o financiador além do Fundo Casa"
+    }
+   ],
+   "edicoes_anteriores": [],
+   "aprendizado": "Abrir a página e checar data e público-alvo antes de criar livro; filtrar por data",
+   "relatorio_motor": {
+    "origem_do_livro": "https://casa.org.br/fundo-casa-abre-chamada-com-foco-em-projetos-para-fortalecer-a-autonomia-e-resiliencia-dos-povos-das-florestas/",
+    "erro_do_motor": "notícia antiga",
+    "regra_sugerida": "filtrar por data",
+    "fonte_que_funcionou": "casa.org.br/editais"
+   }
+  }
+ ]
+}
