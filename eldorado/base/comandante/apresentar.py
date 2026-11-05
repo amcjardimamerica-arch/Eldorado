@@ -160,7 +160,14 @@ def texto(r: dict[str, Any], red: dict[str, Any], autor: str) -> str:
 def apresentar(dados: Path, pasta: Path = PASTA, agora: datetime | None = None, forcar: bool = False) -> dict[str, Any] | None:
     agora = agora or datetime.now(timezone.utc)
     pasta.mkdir(parents=True, exist_ok=True)
-    ultimos = sorted(pasta.glob("*.json"))
+    # 05/11/2026: só os relatórios do ciclo (AAAA-MM-DD-HHMM.json). Os relatórios de aprendizado da verificação externa,
+    # na mesma pasta, ficavam por último na ordem e não têm «em»: o teste falhava e um relatório novo era gravado a cada
+    # chamada (mais de 200 por dia desde 03/11). E só os dos últimos 3 dias ficam (o Comandante lê o mais recente).
+    ultimos = sorted(pasta.glob("20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9].json"))
+    limite = (agora - timedelta(days=3)).strftime("%Y-%m-%d")
+    for velho in [*pasta.glob("20*.json"), *pasta.glob("20*.md")]:
+        if velho.name[:10] < limite:
+            velho.unlink(missing_ok=True)
     if ultimos and not forcar:
         try:
             ult = datetime.fromisoformat(json.loads(ultimos[-1].read_text(encoding="utf-8"))["em"])

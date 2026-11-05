@@ -381,7 +381,9 @@ def ler(pasta: str | Path, desde: float | None = None) -> Iterator[Evento]:
         arquivos += sorted(a for a in ef.rglob("*.jsonl") if desde is None or a.stat().st_mtime >= desde)
     op = pasta_operacao(pasta)   # 01/11/2026: a telemetria (aplicada ao Cérebro, fora do histórico; os dias passados em .gz)
     if op.exists() and op != Path(pasta):
-        arquivos += sorted(a for a in op.rglob("*.jsonl*") if a.name.endswith((".jsonl", ".jsonl.gz")) and (desde is None or a.stat().st_mtime >= desde))
+        # 05/11/2026: o .jsonl que já tem a cópia .gz ao lado não é lido de novo (o mesmo conteúdo; só repetia eventos)
+        arquivos += sorted(a for a in op.rglob("*.jsonl*") if a.name.endswith((".jsonl", ".jsonl.gz"))
+                           and not (a.name.endswith(".jsonl") and a.with_name(a.name + ".gz").exists()) and (desde is None or a.stat().st_mtime >= desde))
     eventos: list[Evento] = []
     for a in arquivos:
         bruto = gzip.decompress(a.read_bytes()) if a.name.endswith(".gz") else a.read_bytes()

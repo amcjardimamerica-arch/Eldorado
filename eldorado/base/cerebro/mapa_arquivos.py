@@ -465,13 +465,8 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
 
 POR_DESENHO = {
     "eldorado/base/motor_modelo/__init__.py": "o motor modelo não roda por desenho: é o molde de todo motor novo",
-    "eldorado/motores/acesso/rotas_alternativas.py": "o Tor, desligado por desenho no plano (não roda)",
 }
 SOB_DEMANDA = {                       # os estudos concluídos: a finalidade é o estudo registrado; rodam só se pedidos
-    ".github/workflows/bench-ia.yml": "estudo concluído (25/10/2026): uma IA para as três funções (o resultado no parecer); só sob demanda",
-    ".github/workflows/bench-ia2.yml": "estudo concluído (25/10/2026): o arranjo das IAs e o contexto (o resultado no parecer); só sob demanda",
-    "estudos/bench_ia.py": "estudo concluído (25/10/2026): uma IA para as três funções; só sob demanda",
-    "estudos/bench_ia2.py": "estudo concluído (25/10/2026): o arranjo das IAs e o contexto; só sob demanda",
     "estudos/bench_rede_2026_11_02.py": "estudo concluído (02/11/2026): os parâmetros da rede (taxa, L2, limiar por pergunta); só sob demanda",
     ".github/workflows/ponte-teste.yml": "o teste da ponte da HostGator, sob demanda (o ciclo testa a ponte no início)",
 }

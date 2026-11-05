@@ -63,20 +63,6 @@ def ponte_br_teste(url: str = "https://cese.org.br/wp-json/wp/v2/edital"):
         typer.echo(f"::warning::a ponte BR não abriu {url}: {r.get('erro')}")
 
 
-@app.command("importar-empresas-e0")
-def importar_empresas_e0(arquivo: Path, config: Path = CONFIG):
-    """Importa as empresas do Eldorado0 (o ranking_apoiadores.json dele), unificadas às da Biblioteca pelo CNPJ (25/10/2026)."""
-    import json as _json
-
-    from ..especial.importar_e0 import importar
-    from .eventos import Diario
-
-    _c, dados, eventos = _cfg(config)
-    bancos = abrir_bancos(dados)
-    conta = importar(bancos["biblioteca"], _json.loads(arquivo.read_text(encoding="utf-8")), Diario(eventos, "importacao-eldorado0"))
-    typer.echo(f"importação: {conta}; aplique com 'eldorado aplicar'")
-
-
 @app.command()
 def iniciar(config: Path = CONFIG):
     """Cria (ou confere) os dois bancos: a Biblioteca (os livros e as empresas) e o Cérebro (o aprendizado)."""
@@ -163,63 +149,6 @@ def devidos(agora: Optional[str] = AGORA, arquivo: Path = AGENDA):
 
 
 @app.command()
-def migrar(origem: Path, config: Path = CONFIG, lote: int = 500, aprendizado: Optional[Path] = APRENDIZADO):
-    """Importa o Eldorado0 (cópia local do repositório) e confere as contagens. Sai com erro se algo divergir."""
-    from itertools import chain
-
-    from ..migracao.importar_eldorado0 import Importador, amostra, conferir, lotes
-    from ..migracao.importar_eldorado0 import aprendizado as aprendizado_motores
-
-    _, dados, _ = _cfg(config)
-    bancos = abrir_bancos(dados)
-    try:
-        imp = Importador(origem)
-        g = Gravador(bancos)
-        aplicados = recusados = 0
-        fluxo = chain(imp.eventos(), aprendizado_motores(imp, aprendizado) if aprendizado else [])
-        for grupo in lotes(fluxo, lote):
-            r = g.aplicar(grupo)
-            aplicados, recusados = aplicados + r.aplicados, recusados + len(r.recusados)
-        typer.echo(f"eventos aplicados: {aplicados} · recusados: {recusados}")
-        tabela = conferir(imp, bancos)
-        for q, a, c, ok in tabela:
-            typer.echo(f"  {'ok ' if ok else 'DIVERGE'} {q}: origem {a} · banco {c}")
-        am = amostra(origem, bancos)
-        typer.echo(f"  amostra campo a campo: {sum(ok for _, _, ok in am)} de {len(am)} livros iguais")
-        for tipo, n in imp.r.lacunas.items():
-            typer.echo(f"  lacuna: {tipo}: {n} (ex.: {', '.join(imp.r.exemplos_lacuna.get(tipo, [])[:3])})")
-    finally:
-        for c in bancos.values():
-            c.close()
-    raise typer.Exit(0 if recusados == 0 and all(ok for *_, ok in tabela) and all(ok for *_, ok in am) else 1)
-
-
-@app.command()
-def expurgar(
-    motivo: str,
-    config: Path = CONFIG,
-    validacao: bool = typer.Option(False, "--validacao", help="os livros que a validação marcou como expurgados"),
-    livro: Optional[list[str]] = None,
-):
-    """ANÁLISE EXTERNA: apaga fisicamente livros e tudo o que depende deles, com o registro do expurgo (a automação não apaga)."""
-    from .expurgo_externo import expurgar as _expurgar
-
-    _, dados, _ = _cfg(config)
-    b = abrir_bancos(dados)
-    try:
-        ids = list(livro or [])
-        if validacao:
-            ids += [r[0] for r in b["biblioteca"].execute("SELECT livro_id FROM livro_dados WHERE validacao='expurgado'")]
-        r = _expurgar(b["biblioteca"], b["cerebro"], sorted(set(ids)), motivo)
-        typer.echo(f"expurgados {r['livros']} livro(s) · {r['linhas']} linha(s): {json.dumps(r['por_tabela'], ensure_ascii=False)}")
-        for c in b.values():
-            c.execute("VACUUM")
-    finally:
-        for c in b.values():
-            c.close()
-
-
-@app.command()
 def fechar(config: Path = CONFIG):
     """Consolida os bancos (o arquivo auxiliar de escrita volta para o banco) antes de gravar no Git."""
     _, dados, _ = _cfg(config)
@@ -257,16 +186,6 @@ def sondar(urls: list[str], anotar: bool = typer.Option(False, "--anotar", help=
         typer.echo(f"{url}\n   {linha}")
         if anotar:
             typer.echo(f"::notice title={url[:120]}::{linha.replace(chr(37), ' por cento')[:900]}")
-
-
-@app.command()
-def painel(config: Path = CONFIG, saida: Path = Path("docs")):
-    """Gera o painel (a página e os dados das visões) na pasta publicada pelo GitHub Pages."""
-    from ..painel.visoes import publicar
-
-    _, dados, _ = _cfg(config)
-    r = publicar(dados, saida, config.parent)
-    typer.echo(f"painel gerado em {saida}: {r['livros']} livros, {r['abertas']} abertas, dados com {r['bytes'] / 1e6:.1f} MB")
 
 
 @app.command()
@@ -449,24 +368,6 @@ DIAS_ANALISE = typer.Option(7, help="os últimos N dias")
 
 
 @app.command()
-def consultar(porta: int = PORTA_CONSULTA):
-    """A consulta da Biblioteca pelo Datasette (só leitura), com consultas prontas."""
-    from ...banco.consulta import servir
-
-    servir(porta)
-
-
-@app.command()
-def analise(dias: int = DIAS_ANALISE):
-    """As análises pelo DuckDB: o rendimento de cada motor, o funil do Cartório, os achados por dia, a origem dos livros."""
-    import json
-
-    from ...banco.analise import relatorio
-
-    typer.echo(json.dumps(relatorio(Path("dados"), dias), ensure_ascii=False, indent=1, default=str)[:20000])
-
-
-@app.command()
 def manutencao():
     """A manutenção dos bancos (sqlite-utils: analisar e otimizar)."""
     from ...banco.manutencao import otimizar
@@ -540,14 +441,6 @@ def travas():
 
 
 PORTA_API = typer.Option(8000, help="a porta da API")
-
-
-@app.command()
-def api(porta: int = PORTA_API):
-    """A API do sistema (FastAPI): a saúde, os motores, os livros com as certidões e a história, as abertas."""
-    from ..painel.api import servir
-
-    servir(porta)
 
 
 PASTA_PAINEL = typer.Option(Path("_site"), help="onde gerar o site do painel")

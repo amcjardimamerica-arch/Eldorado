@@ -80,6 +80,9 @@ for i in 1 2 3 4; do
   # gera os lotes, então o arquivo ausente no ciclo é um lote apagado
   # 04/11/2026: só os lotes que o ciclo gera (o do dia e as partes); as versões (R41) e os lotes das partes do Chrome ficam
   git ls-files "verificacao/lotes/*.json" 2>/dev/null | grep -v "/versoes/" | grep -v -- "-externa-" | grep -v -- "-completo" | while read -r f; do [ -e "$RAIZ/$f" ] || git update-index --force-remove "$f"; done
+  # 05/11/2026: a telemetria que o ciclo compactou (o .gz existe e o .jsonl não) sai do repositório como .jsonl — antes
+  # ficava ao lado do .gz (667 arquivos, 156 MB) e era lida duas vezes
+  git ls-files "operacao/*.jsonl" 2>/dev/null | while read -r f; do [ -e "$RAIZ/$f" ] || [ ! -e "$RAIZ/$f.gz" ] || git update-index --force-remove "$f"; done
   git ls-files "verificacao/vereditos/*.json" 2>/dev/null | grep -v "/importados/" | while read -r f; do
     # 30/10/2026: só sai quando JÁ FOI IMPORTADO (a cópia em importados/ no ciclo); o veredito recém-enviado ainda não está na
     # pasta local (o ciclo o traz na passagem seguinte) e era apagado sem ser importado

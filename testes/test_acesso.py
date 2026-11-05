@@ -12,8 +12,7 @@ from eldorado.motores.acesso.arquivo_web import DegrauArquivo
 from eldorado.motores.acesso.escada import Bloqueado, Escada, Indisponivel, Pendente, Resposta, avaliar, ler_robots
 from eldorado.motores.acesso.leve import DegrauLeve
 from eldorado.motores.acesso.local import DegrauLocal
-from eldorado.motores.acesso.navegador import DegrauLightpanda, DegrauNavegador
-from eldorado.motores.acesso.rotas_alternativas import DegrauTor
+from eldorado.motores.acesso.navegador import DegrauLightpanda
 
 
 @pytest.fixture(scope="module")
@@ -99,20 +98,6 @@ def test_governador_segura_os_degraus_pesados(site):
         e.buscar(f"{url}/captcha.html")
 
 
-def test_degrau_indisponivel_e_pulado_com_aviso(site, monkeypatch):
-    import sys
-
-    url, _ = site
-    # 26/10/2026: o teste simula a ausência do Camoufox (na Qualidade ele está instalado e o teste dependia da máquina)
-    monkeypatch.setitem(sys.modules, "camoufox", None)
-    monkeypatch.setitem(sys.modules, "camoufox.sync_api", None)
-    e, _ = escada([DegrauNavegador("camoufox"), DegrauLightpanda(binario="/nao/existe"), DegrauAPI()])
-    r = e.buscar(f"{url}/ok.html")
-    assert r.degrau.startswith("1 ·") and sum("indisponivel" in a for a in r.alertas) == 2
-    with pytest.raises(Indisponivel):
-        DegrauTor(porta=1)
-
-
 LIGHTPANDA = os.environ.get("ELDORADO_LIGHTPANDA") or ("/home/claude/fase6/lightpanda" if Path("/home/claude/fase6/lightpanda").exists() else None)
 
 
@@ -144,7 +129,7 @@ def test_cabecalhos_so_em_ascii():
 
 def test_pagina_inexistente_nao_bloqueia_o_dominio():
     """404 diz que a página não existe: a escada para ali, sem subir degraus e sem aprender nada sobre o domínio."""
-    from eldorado.motores.acesso.escada import Escada, Indisponivel, Resposta
+    from eldorado.motores.acesso.escada import Escada, Resposta
 
     class D:
         def __init__(self, nome, status):

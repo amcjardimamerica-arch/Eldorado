@@ -60,8 +60,7 @@ SUBSTITUIDOS = {   # previstos no projeto; a função já existe em outro arquiv
     "eldorado/base/analise/calendario.py": "eldorado/base/analise/previsao.py (o calendário das abertas e das previstas)",
     "eldorado/base/cartorio/site_oficial.py": "eldorado/base/cartorio/origem.py (a origem decidida por livro, 23/10/2026)",
 }
-DESLIGADOS_POR_DESENHO = {"eldorado/motores/leitura/universal.py": "reserva para tipos sem leitor (liga-se na configuração)",
-                          "eldorado/motores/acesso/rotas_alternativas.py": "degraus de reserva (Tor e leitor público), até o teste real"}
+DESLIGADOS_POR_DESENHO = {"eldorado/motores/leitura/universal.py": "reserva para tipos sem leitor (liga-se na configuração)"}
 
 
 def _etapa(caminho: str) -> str:
