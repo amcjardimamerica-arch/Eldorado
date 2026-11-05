@@ -28,6 +28,8 @@ jobs:
       - name: Experimentar
         env:
           MOTORES: ${{ inputs.motor }}
+          ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}        # 05/11/2026: o experimento com a ponte BR, como na produção
+          ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
         run: |
           for m in $MOTORES; do
             echo "::group::$m"

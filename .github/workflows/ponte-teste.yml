@@ -2,12 +2,17 @@ name: Ponte BR (teste)
 # Testa a ponte da HostGator (o IP brasileiro) com os sites que recusam a nuvem (25/10/2026). Sob demanda.
 on:
   workflow_dispatch:
+    inputs:
+      urls:
+        description: "Os endereços a testar (separados por espaço); vazio: a lista padrão"
+        required: false
+        default: ""
 permissions:
   contents: read
 jobs:
   testar:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -15,6 +20,7 @@ jobs:
           python-version: "3.12"
       - run: pip install -q -e ".[acesso]"
       - env:
+          URLS: ${{ inputs.urls }}
           ELDORADO_PONTE_URL: ${{ secrets.ELDORADO_PONTE_URL }}
           ELDORADO_PONTE_CHAVE: ${{ secrets.ELDORADO_PONTE_CHAVE }}
         run: |
@@ -23,7 +29,9 @@ jobs:
           sys.path.insert(0, ".")
           from eldorado.motores.acesso import ponte_br
           # a lista antiga e a NOVA (25/10/2026: o ponte.php com os domínios de todos os motores)
-          for url in ("https://cese.org.br/wp-json/wp/v2/edital", "https://www.mpgo.mp.br/", "https://www.tjgo.jus.br/",
+          import os
+          pedidas = os.environ.get("URLS", "").split()
+          for url in pedidas or ("https://cese.org.br/wp-json/wp/v2/edital", "https://www.mpgo.mp.br/", "https://www.tjgo.jus.br/",
                       "https://www.gov.br/cnpq/pt-br", "https://www.bndes.gov.br/", "https://www.gov.br/funarte/pt-br",
                       "https://www.fordfoundation.org/", "https://www.caixa.gov.br/", "https://prosas.com.br/"):
               t = time.monotonic()
