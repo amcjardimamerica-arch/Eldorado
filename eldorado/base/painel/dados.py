@@ -903,6 +903,15 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
         }
     )
     arquivos["status_motores.json"] = sm
+    # 05/11/2026 (titular): a pontuação de cada motor — os acertos parametrizados com os erros, e as indicações de melhoria
+    try:
+        from ..cerebro.pontuacao_motores import calcular as _pontuar
+        from ..cerebro.pontuacao_motores import parametros as _prm_pont
+        _prm = _prm_pont()
+        arquivos["pontuacao_motores.json"] = {"gerado_em": agora, "pesos": _prm["pesos"], "faixas": _prm["faixas"],
+                                              "motores": _pontuar(sis.bib, sis.cer)}
+    except Exception as e:  # noqa: BLE001 — a pontuação não derruba o painel; o motivo aparece no arquivo
+        arquivos["pontuacao_motores.json"] = {"gerado_em": agora, "erro": f"{type(e).__name__}: {str(e)[:200]}", "motores": {}}
     dm = _molde("descricao_motores.json")
     dm.update({"em": agora, "regra": "a descrição de cada motor, das configurações do sistema novo", "motores": descricao})
     arquivos["descricao_motores.json"] = dm

@@ -177,7 +177,7 @@ FORMATO = {"lote": "<o nome deste arquivo>", "vereditos": [{"grupo": "G-…", "d
                           "orgao": "…", "link_oficial": "…", "prazo_inscricao": "AAAA-MM-DD", "trecho": "…", "livro_id": "…"}]}
 
 
-def importar_veredito(ret: dict, bib: sqlite3.Connection, pasta: Path, diario) -> dict[str, int]:
+def importar_veredito(ret: dict, bib: sqlite3.Connection, pasta: Path, diario, exigir_completo: bool = True) -> dict[str, int]:
     """O veredito do Chrome sobre os grupos de documentos: oportunidade → achado novo; vincular → achado do livro; descartar → sai."""
     # R41 (titular, 03/11/2026): o veredito cobre TODOS os grupos do lote que diz ser, ou nada entra
     nome = str(ret.get("lote") or "")
@@ -188,7 +188,7 @@ def importar_veredito(ret: dict, bib: sqlite3.Connection, pasta: Path, diario) -
         return {"recusado (R41)": 1}
     do_lote = {g["grupo"] for g in json.loads(arq_lote.read_text(encoding="utf-8")).get("grupos", [])}
     feitos = {v.get("grupo") for v in ret.get("vereditos", []) if str(v.get("decisao") or "").lower() in ("oportunidade", "vincular", "descartar")}
-    if do_lote - feitos:
+    if exigir_completo and do_lote - feitos:
         diario.emitir("alarme.aberto", "expurgo-sistema", {"gravidade": "media", "modulo": "expurgo", "aberto_em": datetime.now(timezone.utc).isoformat(),
                                                           "mensagem": f"veredito de documentos recusado (R41, nada parcial): {len(feitos & do_lote)} de "
                                                                       f"{len(do_lote)} grupos do {nome}"})
@@ -202,6 +202,17 @@ def importar_veredito(ret: dict, bib: sqlite3.Connection, pasta: Path, diario) -
             continue
     sha = {r[0]: r[1] for r in bib.execute("SELECT id, sha256 FROM documento")}
     livros = {r[0] for r in bib.execute(f"SELECT id FROM livro WHERE {ATIVOS}")}
+    # 05/11/2026: o livro que o Chrome indicou pode ter sido unido ou expurgado entre a leitura e a importação — o vínculo
+    # segue a união até o livro que ficou; o documento de um livro expurgado sai junto (antes: 583 vereditos recusados)
+    uniao = {u: f for f, u in bib.execute("SELECT livro_que_fica, livro_unido FROM uniao")}
+    expurgados = {r[0] for r in bib.execute("SELECT id FROM livro WHERE situacao = 'excluido'")}
+
+    def _destino(lid):
+        vistos = set()
+        while lid in uniao and lid not in vistos:
+            vistos.add(lid)
+            lid = uniao[lid]
+        return lid
     conta: dict[str, int] = defaultdict(int)
     hoje = datetime.now(timezone.utc).date().isoformat()
     for v in ret.get("vereditos", []):
@@ -215,10 +226,14 @@ def importar_veredito(ret: dict, bib: sqlite3.Connection, pasta: Path, diario) -
             for d in docs:
                 diario.emitir("documento.descartado", "expurgo-sistema", {"documento_id": d["id"]})
             conta["descartar"] += 1
-        elif dec == "vincular" and v.get("livro_id") in livros:
+        elif dec == "vincular" and _destino(v.get("livro_id")) in livros:
             for d in docs:
-                _vinculo(diario, d, v["livro_id"], f"Chrome: {v.get('motivo') or 'documento do livro'}")
+                _vinculo(diario, d, _destino(v["livro_id"]), f"Chrome: {v.get('motivo') or 'documento do livro'}")
             conta["vincular"] += 1
+        elif dec == "vincular" and _destino(v.get("livro_id")) in expurgados:
+            for d in docs:
+                diario.emitir("documento.descartado", "expurgo-sistema", {"documento_id": d["id"]})
+            conta["descartar (o livro foi expurgado)"] += 1
         elif dec == "oportunidade":
             d0 = docs[0] if docs else None
             diario.emitir("achado.entregue", MOTOR, {

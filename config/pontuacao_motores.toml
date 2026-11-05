@@ -1,0 +1,150 @@
+# A pontuação de cada motor (titular, 05/11/2026): os acertos parametrizados com os erros, para a melhoria do motor.
+#
+# ACERTO: o livro que o motor originou e que é oportunidade real — o Claude no Chrome decidiu «valido», «encerrada» ou
+#         «arquivar», ou o livro chegou ao Farol.
+# ERRO:   o livro que o motor originou e que não era oportunidade — o Chrome decidiu «descartar», ou o sistema o expurgou.
+# A nota (0 a 100) = precisão × peso + rendimento × peso + local × peso + saúde × peso (os pesos somam 100).
+#   precisão   = acertos ÷ (acertos + erros)
+#   rendimento = log10(1 + acertos) ÷ log10(1 + o maior número de acertos entre os motores)
+#   local      = o lugar onde o motor pesca (abaixo): 1 o financiador ou órgão oficial · 0,8 o diário oficial ·
+#                0,4 o replicador · 0 o lugar errado
+#   saúde      = os sinais da Bússola: verde 1 · amarelo 0,5 · vermelho 0
+
+[pesos]
+precisao = 50
+rendimento = 20
+local = 15
+saude = 15
+
+[faixas]                       # a cor do indicador pela nota
+excelente = 60
+bom = 40
+atencao = 20                   # abaixo disto: crítico (rever a configuração ou desligar o motor)
+
+[minimos]
+decididos = 5                  # com menos livros decididos (acertos + erros), a precisão é «em formação»
+semanas = 8                    # a série do gráfico: as últimas N semanas
+
+# ---- as indicações de melhoria: cada tipo de erro (pelo motivo do veredito do Chrome ou do expurgo) vira uma indicação
+# de busca e de configuração quando passa da parcela mínima dos erros do motor
+[melhoria]
+parcela_minima = 0.15          # o tipo de erro só vira indicação acima de 15% dos erros do motor
+
+[[melhoria.regra]]
+tipo = "pagina_institucional"
+padrao = "institucional|menu|gov\\.br/.*/(assuntos|acesso-a-informacao|composicao|noticias)|página do órgão|não é edital"
+indicacao = "A pesca traz páginas institucionais e de menu: limitar as fontes às páginas de chamada/edital e pôr o caminho do menu na lista de exclusão da entrada."
+
+[[melhoria.regra]]
+tipo = "noticia"
+padrao = "notícia|noticia|matéria|reportagem|sem edital"
+indicacao = "A pesca traz notícias sem edital: seguir a notícia até o edital oficial e só criar o livro com o edital achado."
+
+[[melhoria.regra]]
+tipo = "encerrada"
+padrao = "encerrad|edição anterior|edição antiga|resultado final|prazo (venc|expir)|inscrições (encerr|finaliz)"
+indicacao = "A pesca traz edições encerradas: filtrar pela data de publicação (12 meses) e pelo período de inscrição antes de criar o livro."
+
+[[melhoria.regra]]
+tipo = "fora_da_abrangencia"
+padrao = "fora da abrang|outro estado|municipal de outro|não é capital|restrit[ao] a"
+indicacao = "A pesca traz oportunidades fora da abrangência: restringir a busca a Goiás, às capitais e às nacionais (e retirar os alvos de outros estados)."
+
+[[melhoria.regra]]
+tipo = "nao_e_para_osc"
+padrao = "pessoa física|pesquisador|bolsa|empresa|ICT|servidor"
+indicacao = "A pesca traz chamadas que não são para associações: filtrar pelo proponente (OSC, associação, terceiro setor) na entrada."
+
+[[melhoria.regra]]
+tipo = "compra_ou_contrato"
+padrao = "licita|pregão|contrato|credenciamento|termo de (colaboração|fomento)|extrato|compra"
+indicacao = "A pesca traz compras, contratos e credenciamentos: restringir aos chamamentos de OSC (Lei 13.019) e aos editais de fomento."
+
+[[melhoria.regra]]
+tipo = "anexo_ou_lista"
+padrao = "anexo|errata|lista de|classificad|suplente|áudio|formulário"
+indicacao = "A pesca traz anexos, erratas e listas: o livro é o edital-mãe — vincular o documento a ele em vez de criar um livro."
+
+[[melhoria.regra]]
+tipo = "replicador"
+padrao = "replicador|capitaai|agregador|blog|guia de captação"
+indicacao = "A pesca vem de replicador: usá-lo só como indício e seguir até o financiador, de onde vêm o prazo e o valor."
+
+[[melhoria.regra]]
+tipo = "ato_legislativo"
+padrao = "projeto de lei|\\bPL\\b|emenda|ato legislativo|requerimento|indicação"
+indicacao = "A pesca traz atos legislativos: levá-los ao acompanhamento legislativo (R35), sem criar livro de oportunidade."
+
+[[melhoria.regra]]
+tipo = "link_quebrado"
+padrao = "404|link quebrado|não abre|indisponível|sem edital-mãe"
+indicacao = "A pesca traz links quebrados: conferir o endereço na fonte e reler pela ponte BR antes de criar o livro."
+
+# ---- o lugar onde cada motor pesca (o parecer de 05/11/2026): 1 oficial · 0,8 diário · 0,4 replicador · 0 errado
+[local]
+alego-pl = 0.8
+camara-goiania-pl = 0.8
+cnpq-extensao = 0.6
+congresso-nacional = 0.8
+dj-trf1-go = 1.0
+do-goiania = 0.8
+do-goias = 0.8
+dou = 0.8
+empresas-editais-incentivados = 1.0
+estaduais-go-gov = 1.0
+gife = 0.4
+judiciario-cnj = 1.0
+judiciario-tjgo = 1.0
+motor-gife = 1.0
+mpgo-destinacao = 1.0
+mptgo-destinacao = 1.0
+mpu-destinacao = 1.0
+novo-bancos-publicos = 1.0
+novo-diarios-municipais-go = 0.5
+novo-fundacoes-institutos = 1.0
+novo-internacional = 0.8
+outros-agregadores = 0.4
+plataforma-mapas-culturais = 0.8
+pncp-api = 0.0
+prefeituras-50-go = 1.0
+salic = 1.0
+site-abcr = 0.4
+site-brazilfoundation = 1.0
+site-capitaai = 0.4
+site-cese = 1.0
+site-editais-culturais = 0.4
+site-farol-cultural = 0.4
+site-funarte = 1.0
+site-fundo-baoba = 1.0
+site-fundo-brasil = 1.0
+site-fundo-casa = 1.0
+site-idis = 0.4
+site-mapa-osc = 0.4
+site-mapas-culturais = 0.0
+site-observatorio-terceiro-setor = 0.4
+site-prosas = 0.4
+site-rede-comua = 1.0
+site-rede-filantropia = 0.4
+site-transferegov = 0.0
+site-undef = 1.0
+
+# ---- a indicação de configuração que o parecer de 05/11/2026 deu a cada motor (vai junto das indicações pelos erros)
+[parecer]
+alego-pl = "Não criar livro de oportunidade: os atos vão ao acompanhamento legislativo (R35); a ALEGO Digital pela ponte."
+camara-goiania-pl = "Só acompanhamento legislativo, sem livro; o SUAP pela ponte, com a verificação de certificado ajustada."
+cnpq-extensao = "Só a busca por extensão com OSC; ler pela ponte; baixa prioridade."
+congresso-nacional = "Não criar livro de oportunidade (R35): só o acompanhamento legislativo e as emendas."
+do-goiania = "Extrair só o ato de chamamento com período de inscrição."
+do-goias = "Filtrar por chamamento/edital com período de inscrição; não criar livro da edição inteira."
+dou = "Filtro de entrada para Edital/Chamamento com inscrição; a leitura do DOU pela API ou pela ponte."
+estaduais-go-gov = "Ler a API do WordPress das secretarias pela ponte; só publicações com edital/chamamento."
+gife = "Usar só para achar o financiador; filtrar por data (12 meses)."
+novo-diarios-municipais-go = "Extrair só o ato de chamamento; retirar o alvo de Arapongas-PR."
+novo-internacional = "Filtrar o território (Brasil e América Latina); marcar os financiadores só por convite."
+pncp-api = "Restringir aos chamamentos de OSC (Lei 13.019) de Goiás e nacionais; retirar os 17 alvos de outros estados."
+prefeituras-50-go = "Ler pela ponte; só publicações com chamamento/edital."
+site-brazilfoundation = "Corrigir a extração: a página é lida e os editais não são reconhecidos."
+site-capitaai = "Não criar livro a partir do guia: usá-lo só para achar o edital oficial."
+site-mapas-culturais = "Pesca no Mapa Cultural do Ceará: trocar pelo de Goiás ou desligar."
+site-prosas = "Ler o JSON embutido da página (montada por JavaScript)."
+site-transferegov = "Restringir aos programas com proponente OSC aberto, ou desligar: é o maior ruído do sistema."
