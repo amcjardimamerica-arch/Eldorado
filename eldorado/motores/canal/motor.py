@@ -336,7 +336,7 @@ class MotorCanal(Motor):
                 pistas = self._descobrir(fonte)
             except Pendente as e:
                 self.relatorio.append(f"{fonte.nome}: entregue ao computador local ({e})")
-                self.estado.leitura(fonte.nome, _agora(), erro="pendente no computador local")
+                self.estado.leitura(fonte.nome, _agora(), erro=f"pendente no computador local: {str(e)[:260]}")
                 continue
             except (Bloqueado, Indisponivel, ValueError) as e:
                 self.relatorio.append(f"{fonte.nome}: não lida ({e})")

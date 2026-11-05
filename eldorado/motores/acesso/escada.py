@@ -156,7 +156,13 @@ class Escada:
         limite = len(self.degraus)
         if servico_local(url):
             inicio, limite = 0, sum(1 for d in self.degraus if codigo(d) in (1, 2)) or 1
-        for i in range(inicio, limite):
+        ordem = list(range(inicio, limite))
+        # 05/11/2026 (titular: a ponte BR no canivete de todo motor): o domínio que aprendeu um degrau depois da ponte (os
+        # navegadores, a cópia arquivada) começava por ele e nunca tentava a ponte — ela é tentada antes
+        ponte = next((j for j, d in enumerate(self.degraus[:limite]) if str(getattr(d, "nome", "")).startswith("P ·")), None)
+        if ponte is not None and ponte < inicio:
+            ordem.insert(0, ponte)
+        for i in ordem:
             d = self.degraus[i]
             if d.pesado and self.governador is not None and not self.governador.pode_iniciar(f"degrau:{d.nome}", "pesado"):
                 motivos.append(f"{d.nome}: adiado pelo governador")
@@ -185,11 +191,12 @@ class Escada:
                     raise
                 motivos.append(f"{d.nome}: não faz POST ({str(e)[:60]})")
                 continue
-            except Pendente:
+            except Pendente as e:
                 # 29/10/2026: "pendente" não é sucesso: registra que o domínio exigiu o computador da titular, mas NÃO como o
                 # degrau por onde começar (antes, uma única falha mandava o domínio para sempre ao "pendente")
                 self._registrar_exige_local(dom)
-                raise
+                # 05/11/2026 (R45): a pendência leva o motivo de cada degrau que falhou antes (antes só «pendente»)
+                raise Pendente(f"{e} — antes: {'; '.join(motivos)[:400]}" if motivos else str(e)) from e
             r.degrau = d.nome
             self.ultimo_degrau = d.nome                         # o degrau que serviu a última leitura (vai para o livro)
             r.alertas = motivos + r.alertas
