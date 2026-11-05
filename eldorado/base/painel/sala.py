@@ -17,7 +17,7 @@ from typing import Any
 
 ETAPAS = {
     "regencia": ["rg_regencia", "ma_cobertura", "ma_esgotados", "dg_finalidade", "ma_memoria_etapa"],
-    "coleta": ["mo_saude", "mo_cadencia", "mo_retentativa", "mo_fora_da_fila", "es_coleta"],
+    "coleta": ["mo_saude", "mo_sinais", "mo_cadencia", "mo_retentativa", "mo_fora_da_fila", "es_coleta"],
     "certificacao": ["ca_12", "fl_fila", "es_curadoria", "es_parcial"],
     "investigacao": ["pi_interceptador", "pi_espiao", "pi_piloto", "pi_missoes", "pi_vagas"],
     # 04/11/2026 (titular): a verificação externa e o expurgo são da etapa 5 (antes acendiam também as etapas 3 e 4)
@@ -193,6 +193,17 @@ def montar(
         {"normal": [round(0.9 * n), None], "alarme": [round(0.6 * n), None]},
         cadencia_h=24,
     )
+    # 05/11/2026 (titular): os SINAIS de perda de cada motor, além de «leu sem erro»
+    from ..cerebro.sinais_motores import sinais as _sinais
+    _com_sinal = []
+    for _m in reg:
+        _s = _sinais(cer, _m)
+        if _s["luz"] in ("amarelo", "vermelho"):
+            _com_sinal.append(f"{_m}: {'; '.join(_s['sinais'])[:140]}")
+    I("mo_sinais", "Motores com sinal de perda (fonte pendente ou abandonada, sem novidade há 7 dias, nunca entregou)", len(_com_sinal),
+      "verde" if not _com_sinal else ("vermelho" if len(_com_sinal) > n // 2 else "amarelo"),
+      (f"{len(_com_sinal)} de {len(reg)} motores: " + " | ".join(_com_sinal))[:900] if _com_sinal else "nenhum motor com sinal de perda",
+      ultima_leitura, [0, len(reg)], {"normal": [None, 0], "alarme": [None, n // 2]})
     fora_cad = [m for m in reg if m not in lidos24]
     I(
         "mo_cadencia",

@@ -307,10 +307,14 @@ def _motores(sis: Sistema) -> tuple[list[dict], dict, dict]:
             luz, res = "vermelho", f"a última execução falhou: {str(ultima['erro'])[:160]}"
         elif hoje:
             n = sum(e["achados"] or 0 for e in hoje)
-            luz, res = (
-                ("vermelho" if fontes and falhas == len(fontes) else "verde"),
-                f"leu hoje ({len(hoje)}x): {n} achado(s)" + (f"; {falhas} de {len(fontes)} fonte(s) com erro" if falhas else ""),
-            )
+            # 05/11/2026 (titular): os SINAIS, além do resultado — fonte pendente no computador local, abandonada, falhando,
+            # dias sem novidade, nunca entregou (antes: verde só por ter rodado sem erro)
+            from ..cerebro.sinais_motores import sinais as _sinais
+            sg = _sinais(sis.cer, mid)
+            nov = sg["ultima_novidade"]
+            luz = sg["luz"] or ("vermelho" if fontes and falhas == len(fontes) else "verde")
+            res = (f"leu hoje ({len(hoje)}x): {n} achado(s) · {sg['lidas']} fonte(s) lida(s), {sg['sem_mudanca']} sem mudança"
+                   + (f" · última novidade em {nov[8:10]}/{nov[5:7]}" if nov else "") + "".join(f" · ⚠ {x}" for x in sg["sinais"]))
         else:
             luz, res = "cinza", f"não leu hoje (última leitura em {_data_br(ultima['inicio'])})"
         ag = sis.agenda.get(mid, {})
@@ -880,13 +884,17 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     sm.update(
         {
             "gerado_em": agora,
-            "regra": "os 47 motores do estudo, com o que o sistema registra: verde leu hoje sem erro; vermelho falhou; cinza não leu hoje ou a construir",
+            "regra": "os 47 motores do estudo, com o que o sistema registra: verde leu hoje sem sinal de perda; amarelo leu, mas com "
+                     "sinal (fonte pendente no computador local ou abandonada, sem novidade há 7 dias); vermelho falhou ou nunca "
+                     "entregou; cinza não leu hoje ou a construir",
             "contagem": {
                 "verde": cont.get("verde", 0),
+                "amarelo": cont.get("amarelo", 0),
                 "vermelho": cont.get("vermelho", 0),
                 "cinza": cont.get("cinza", 0),
                 "legenda": {
-                    "verde": "leu hoje, sem erro",
+                    "verde": "leu hoje, sem sinal de perda",
+                    "amarelo": "leu hoje, mas com sinal: fonte pendente ou abandonada, ou sem oportunidade nova há 7 dias",
                     "vermelho": "a última execução falhou (ou todas as fontes com erro)",
                     "cinza": "não leu hoje, ou a construir",
                 },

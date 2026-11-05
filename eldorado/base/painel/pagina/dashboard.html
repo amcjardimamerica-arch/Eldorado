@@ -2598,7 +2598,7 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
   const COR={verde:"#5EE6C8",amarelo:"#FFB347",vermelho:"#FF6B6B",cinza:"#8B93B8"}, EST={verde:"normal",amarelo:"atenção",vermelho:"alarme",cinza:"sem leitura"};
   const ETAPAS=[   /* 18/10/2026 (titular): os 9 compartimentos da sala, na ordem do workflow; a Regência avalia cada um */
     {id:"regencia",nome:"Regência",faz:"A rede neural organiza todas as informações do sistema, avalia se cada compartimento está sendo cumprido e aciona as ferramentas para chegar aos livros completos.",ids:["rg_regencia","ma_cobertura","ma_esgotados","dg_finalidade","ma_memoria_etapa"]},
-    {id:"coleta",nome:"Coleta",faz:"Os motores encontram as oportunidades; cada motor é uma estrela e precisa ler dentro da sua cadência.",ids:["mo_saude","mo_cadencia","mo_retentativa","mo_fora_da_fila","es_coleta"]},
+    {id:"coleta",nome:"Coleta",faz:"Os motores encontram as oportunidades; cada motor é uma estrela e precisa ler dentro da sua cadência.",ids:["mo_saude","mo_sinais","mo_cadencia","mo_retentativa","mo_fora_da_fila","es_coleta"]},
     {id:"certificacao",nome:"Certificação",faz:"O Cartório, hub dos livros: cada livro é verificado um a um, com todas as ferramentas e até 3 tentativas por ferramenta.",ids:["ca_12","fl_fila","es_curadoria","es_parcial","es_expurgo"]},
     {id:"investigacao",nome:"Investigação",faz:"O Interceptador e os Pilotos pesquisam o que o Cartório não alcança.",ids:["pi_interceptador","pi_espiao","pi_piloto","de_decisoes","pi_missoes","pi_vagas"]},
     {id:"externa",nome:"Verificação externa",faz:"A exceção: o que esgotou as tentativas vai ao Claude no Chrome, que resolve de forma definitiva.",ids:["ve_para_o_chrome","ve_bloqueadas","ve_completas","ve_importado","al_externa"]},
@@ -2677,7 +2677,10 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
   function resumo(et){ const D=SC.detalhes||{}, M=SC.mimico||[];
     switch(et.id){
       case "regencia":{const c={}; (D.maestro||[]).forEach(m=>c[m.cobertura||"—"]=(c[m.cobertura||"—"]||0)+1); return `<h4>Cobertura dos ${n((D.maestro||[]).length)} motores planejados</h4>`+linhas(c,5);}
-      case "coleta":{const f=(D.motores||[]).filter(m=>m.luz==="vermelho"); return `<h4>Motores em falha (${f.length})</h4>`+(f.slice(0,5).map(m=>`<div><span>${e(m.nome)}</span><b style="color:${COR.vermelho}">falha</b></div>`).join("")||"<div><span>nenhum</span></div>");}
+      case "coleta":{const f=(D.motores||[]).filter(m=>m.luz==="vermelho"), a=(D.motores||[]).filter(m=>m.luz==="amarelo");
+        /* 05/11/2026 (titular): além das falhas, os motores com SINAL de perda (fonte pendente ou abandonada, sem novidade) */
+        return `<h4>Motores em falha (${f.length})</h4>`+(f.slice(0,5).map(m=>`<div title="${e(m.resultado||"")}"><span>${e(m.nome)}</span><b style="color:${COR.vermelho}">falha</b></div>`).join("")||"<div><span>nenhum</span></div>")
+          +`<h4>Motores com sinal de perda (${a.length})</h4>`+(a.slice(0,8).map(m=>`<div title="${e(m.resultado||"")}"><span>${e(m.nome)}</span><b style="color:${COR.amarelo}">${e(((m.resultado||"").split("⚠")[1]||"sinal").trim().slice(0,46))}</b></div>`).join("")||"<div><span>nenhum</span></div>");}
       case "repositorio": return `<h4>De onde vêm as abertas</h4>`+linhas(D.por_origem,6);
       case "aprendizado":{const R=D.rede_entregou||{}; /* 29/10/2026: os números da rede (antes lia campos que não existem: NaN) */ return `<h4>O que a rede entregou</h4><div><span>pendentes avaliados</span><b>${n(R.pendentes_avaliados)}</b></div><div><span>pendentes prováveis reais</span><b>${n(R.pendentes_provaveis_reais)}</b></div><div><span>decisões usadas para aprender</span><b>${n(R.decisoes_no_treino)}</b></div>${R.aviso?`<div class="faint" style="font-size:12px">${e(R.aviso)}</div>`:""}`+linhas(D.proximo_passo,4);}
       case "biblioteca": return `<h4>Estantes das abertas</h4>`+linhas(D.estantes,4);
@@ -2722,7 +2725,7 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
       espiao:"descoberta pelo Piloto Espião",querido_diario:"publicação no Querido Diário",pncp:"Portal Nacional de Contratações Públicas",revisao:"incluída pela revisão humana",diario_oficial:"diário oficial"}};
   function detalheItem(tipo,chave){ const D=SC.detalhes||{};
     if(tipo==="motor"||tipo==="maestro"){ const mo=(D.motores||[]).find(m=>m.id===chave||m.nome===chave), pl=(D.maestro||[]).find(m=>m.motor===chave||(mo&&m.motor===mo.id));
-      return `<b>${e(mo?.nome||chave)}</b> <span class="faint">(${e(chave)})</span><br>${mo?`estado: <span class="luz ${mo.luz==="vermelho"?"vermelho":mo.luz==="verde"?"verde":"cinza"}" style="width:9px;height:9px"></span> ${mo.luz==="vermelho"?"em falha":mo.luz==="verde"?"funcionando":"inativo"} · última leitura ${dm(mo.ultima_leitura)}<br>resultado do dia: ${e(mo.resultado||"—")}<br>`:""}
+      return `<b>${e(mo?.nome||chave)}</b> <span class="faint">(${e(chave)})</span><br>${mo?`estado: <span class="luz ${mo.luz==="vermelho"?"vermelho":mo.luz==="verde"?"verde":mo.luz==="amarelo"?"amarelo":"cinza"}" style="width:9px;height:9px"></span> ${mo.luz==="vermelho"?"em falha":mo.luz==="verde"?"funcionando":"inativo"} · última leitura ${dm(mo.ultima_leitura)}<br>resultado do dia: ${e(mo.resultado||"—")}<br>`:""}
         ${pl?`plano do maestro hoje: cobertura <b>${e(pl.cobertura)}</b> · prioridade ${n(pl.prioridade)} · diagnóstico ${e(pl.diagnostico||"—")} · tentativas hoje ${n(pl.tentativas)} · coleta ${e(pl.coleta||"—")}${pl.abertura_proxima?` · ${n(pl.abertura_proxima)} livros com abertura próxima no índice`:""}`:"sem plano do maestro para hoje"}`; }
     if(tipo==="hist"){ const L=(SC.historico||[]).map(q=>({em:q.em,v:(q.v||{})[chave]})).filter(q=>typeof q.v==="number").slice(-12).reverse(), x=I(chave);
       return `<b>Histórico das leituras · ${e(x?.nome||chave)}</b><br>${L.length?L.map(q=>`${dm(q.em)} — <b>${n(q.v)}</b> ${e(x?.unidade||"")}`).join("<br>"):"<span class='faint'>as leituras se acumulam a cada passagem do maestro</span>"}`; }
@@ -2826,7 +2829,7 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
       no.cons.forEach(p=>{ const r=(p.m===1?3.4:p.m===2?2.5:1.8); o+=`<circle cx="${f(p.x)}" cy="${f(p.y)}" r="${(r*1.6).toFixed(1)}" fill="url(#nvbr)" style="fill:url(#nvbr)"/>`; }); o+=`</g>`; }
     for(const s of ESTRELAS){ if(s.erro&&s.erro.nivel==="amarelo") o+=`<circle class="ambar" cx="${f(s.x)}" cy="${f(s.y)}" r="11" fill="url(#nvam)"/>`;
       else if((s.erro&&s.erro.nivel==="vermelho")||(s.dado&&s.dado.luz==="vermelho")) o+=`<g class="vermelha"><circle cx="${f(s.x)}" cy="${f(s.y)}" r="18" fill="url(#nvvm)"/><path d="M${f(s.x-16)},${f(s.y)}H${f(s.x+16)}M${f(s.x)},${f(s.y-16)}V${f(s.y+16)}" stroke="rgba(255,120,130,.8)" stroke-width="1"/></g>`;
-      else if(s.dado) o+=`<circle cx="${f(s.x)}" cy="${f(s.y)}" r="8" fill="${s.dado.luz==="verde"?COR.verde:COR.cinza}" opacity=".55"/><circle cx="${f(s.x)}" cy="${f(s.y)}" r="2.6" fill="#EAF2FF"/>`; }
+      else if(s.dado) o+=`<circle cx="${f(s.x)}" cy="${f(s.y)}" r="8" fill="${s.dado.luz==="verde"?COR.verde:s.dado.luz==="amarelo"?COR.amarelo:COR.cinza}" opacity="${s.dado.luz==="amarelo"?".9":".55"}"/><circle cx="${f(s.x)}" cy="${f(s.y)}" r="2.6" fill="#EAF2FF"/>`; }
     sv.innerHTML=o; }
   function acenderConstelacao(id,sim){ const g=document.querySelector(`#nv-rede g.cons[data-et="${id}"]`); if(g) g.classList.toggle("acesa",!!sim); }
   // ponteiros vivos: cada luz oscila em torno do valor (ruído suave de duas frequências), só nos mostradores visíveis

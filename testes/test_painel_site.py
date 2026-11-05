@@ -30,7 +30,7 @@ def test_o_site_gerado_bate_com_o_banco(tmp_path):
     abertas = b.execute("SELECT COUNT(*) FROM livro l JOIN livro_dados d ON d.livro_id = l.id WHERE d.situacao_prazo = 'aberta' AND l.situacao NOT IN ('excluido', 'unido')").fetchone()[0]
     assert r["oportunidades_abertas"] == abertas and r["motores"] == len(json.loads(Path("config/motores_previstos.json").read_text())["motores"])
     st = json.loads((tmp_path / "site/dados/status_motores.json").read_text(encoding="utf-8"))
-    assert len(st["motores"]) == r["motores"] and st["contagem"]["verde"] + st["contagem"]["vermelho"] + st["contagem"]["cinza"] == r["motores"]
+    assert len(st["motores"]) == r["motores"] and st["contagem"]["verde"] + st["contagem"].get("amarelo", 0) + st["contagem"]["vermelho"] + st["contagem"]["cinza"] == r["motores"]
     assert "window.DADOS=" in (tmp_path / "site/dashboard-dados.js").read_text(encoding="utf-8")[:20]
     fl = json.loads((tmp_path / "site/dados/fluxo_oportunidades.json").read_text(encoding="utf-8"))
     assert fl["validacao"]["aplicada"] and fl["mapa"]["total"]["confirmadas"] + fl["mapa"]["total"]["possiveis"] == abertas

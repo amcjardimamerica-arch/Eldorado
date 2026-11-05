@@ -40,7 +40,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 11859,
+   "linhas": 11884,
    "situacao": "em funcionamento",
    "ordem": 2
   },
@@ -93,6 +93,7 @@
     "test_cartorio_site.py",
     "test_cartorio_tempo_real.py",
     "test_cassete.py",
+    "test_catalogo_captacao.py",
     "test_cerebro.py",
     "test_comandante_biblioteca.py",
     "test_comandante_cartorio.py",
@@ -144,6 +145,7 @@
     "test_manutencao_expurgo.py",
     "test_mapa_arquivos.py",
     "test_mapa_completo.py",
+    "test_mapa_oportunidades.py",
     "test_mapa_original.py",
     "test_migracao.py",
     "test_missao.py",
@@ -181,6 +183,7 @@
     "test_sala_externa_sinal.py",
     "test_sala_mostradores.py",
     "test_seguranca.py",
+    "test_sinais_motores.py",
     "test_site_sem_vazio.py",
     "test_travas_motores.py"
    ],
@@ -213,6 +216,7 @@
     "test_cartorio.py",
     "test_cartorio_site.py",
     "test_cartorio_tempo_real.py",
+    "test_catalogo_captacao.py",
     "test_cerebro.py",
     "test_comandante_biblioteca.py",
     "test_comandante_cartorio.py",
@@ -259,6 +263,7 @@
     "test_manutencao_expurgo.py",
     "test_mapa_arquivos.py",
     "test_mapa_completo.py",
+    "test_mapa_oportunidades.py",
     "test_mapa_original.py",
     "test_migracao.py",
     "test_missao.py",
@@ -286,6 +291,7 @@
     "test_sala_alertas_claude.py",
     "test_sala_mostradores.py",
     "test_seguranca.py",
+    "test_sinais_motores.py",
     "test_site_sem_vazio.py",
     "test_travas_motores.py"
    ],
@@ -422,7 +428,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 106,
+   "linhas": 107,
    "situacao": "em funcionamento",
    "ordem": 7
   },
@@ -1927,6 +1933,7 @@
     "test_lote.py",
     "test_mapa_arquivos.py",
     "test_mapa_completo.py",
+    "test_mapa_oportunidades.py",
     "test_mapa_original.py",
     "test_motor_canal.py",
     "test_motor_gife.py",
@@ -1942,7 +1949,8 @@
     "test_rede_parametros.py",
     "test_regras_tabela_unica.py",
     "test_revisao_alarmes.py",
-    "test_seguranca.py"
+    "test_seguranca.py",
+    "test_sinais_motores.py"
    ],
    "situacao": "pacote",
    "etapa": "05 Comandante: percebe, decide, organiza as filas, comanda os pilotos, parametriza e apresenta",
@@ -2331,7 +2339,7 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/regencia.py",
-   "linhas": 329,
+   "linhas": 347,
    "finalidade": "A Regência: planeja a passagem, aciona os motores e autoriza cada passagem de livro.",
    "depende_de": [
     "eldorado/base/cerebro/decisao.py",
@@ -2375,6 +2383,7 @@
     "test_incentivos.py",
     "test_interceptador.py",
     "test_linha_cartorio.py",
+    "test_mapa_oportunidades.py",
     "test_motor_canal.py",
     "test_motor_gife.py",
     "test_motores_api.py",
@@ -4426,6 +4435,7 @@
    "testes": [
     "test_auditoria.py",
     "test_cartorio.py",
+    "test_catalogo_captacao.py",
     "test_comandante_biblioteca.py",
     "test_comandante_expurgo.py",
     "test_entrega_completa.py",
@@ -4926,9 +4936,10 @@
   },
   {
    "arquivo": "eldorado/base/cartorio/analise_externa.py",
-   "linhas": 410,
+   "linhas": 509,
    "finalidade": "A etapa 5 do Cartório: a ANÁLISE EXTERNA pelo Claude no Chrome (titular, 22/10/2026).",
    "depende_de": [
+    "eldorado/base/analise/previsao.py",
     "eldorado/base/cartorio/cartorio.py",
     "eldorado/base/cartorio/passaporte.py",
     "eldorado/base/comandante/cartorio.py",
@@ -4942,6 +4953,7 @@
     "livro.excluido_logicamente",
     "livro.links",
     "livro.origem",
+    "previsao.calculada",
     "veredito.gravado"
    ],
    "acionado_por": [
@@ -4951,6 +4963,7 @@
     "eldorado/base/nucleo/comandos.py"
    ],
    "testes": [
+    "test_catalogo_captacao.py",
     "test_comandante_biblioteca.py",
     "test_linha_cartorio.py",
     "test_lote.py"
@@ -4960,6 +4973,7 @@
    "parte": "BASE",
    "componente": "Cartório · etapa 5 (análise externa)",
    "ligacoes": [
+    "eldorado/base/analise/previsao.py",
     "eldorado/base/cartorio/cartorio.py",
     "eldorado/base/cartorio/passaporte.py",
     "eldorado/base/comandante/cartorio.py",
@@ -5132,7 +5146,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 607,
+   "linhas": 618,
    "situacao": "em funcionamento",
    "ordem": 162
   },
@@ -5927,6 +5941,7 @@
     "passagem, nó 23 «analise»"
    ],
    "usado_por": [
+    "eldorado/base/cartorio/analise_externa.py",
     "eldorado/base/painel/api.py"
    ],
    "testes": [],
@@ -6001,7 +6016,7 @@
   },
   {
    "arquivo": "eldorado/base/painel/legado.py",
-   "linhas": 305,
+   "linhas": 318,
    "finalidade": "Os arquivos do painel que o gerador nunca preenchia (titular, 25/10/2026: \"pedi para consertar diversas vezes os motores",
    "depende_de": [],
    "eventos": [],
@@ -6092,12 +6107,13 @@
   },
   {
    "arquivo": "eldorado/base/painel/sala.py",
-   "linhas": 1261,
+   "linhas": 1273,
    "finalidade": "A sala de controle (o plano: base/painel/sala.py): cada mostrador ligado ao dado MEDIDO pelo sistema (titular,",
    "depende_de": [
     "eldorado/base/aprendizado/avaliar.py",
     "eldorado/base/cartorio/expurgo_claude.py",
     "eldorado/base/cerebro/mapa_arquivos.py",
+    "eldorado/base/cerebro/sinais_motores.py",
     "eldorado/motores/canal/motor.py"
    ],
    "eventos": [
@@ -6126,6 +6142,7 @@
     "eldorado/base/aprendizado/avaliar.py",
     "eldorado/base/cartorio/expurgo_claude.py",
     "eldorado/base/cerebro/mapa_arquivos.py",
+    "eldorado/base/cerebro/sinais_motores.py",
     "eldorado/motores/canal/motor.py"
    ],
    "critico": false,
@@ -6162,12 +6179,13 @@
   },
   {
    "arquivo": "eldorado/base/painel/dados.py",
-   "linhas": 992,
+   "linhas": 1001,
    "finalidade": "Os dados do painel, gerados do sistema novo (titular, 23/10/2026): o site é a imagem atual do sistema.",
    "depende_de": [
     "eldorado/base/cartorio/historia.py",
     "eldorado/base/cerebro/mapa_arquivos.py",
     "eldorado/base/cerebro/rede.py",
+    "eldorado/base/cerebro/sinais_motores.py",
     "eldorado/base/missao/itens.py",
     "eldorado/base/painel/cartorio.py",
     "eldorado/base/painel/legado.py",
@@ -6197,6 +6215,7 @@
     "eldorado/base/cartorio/historia.py",
     "eldorado/base/cerebro/mapa_arquivos.py",
     "eldorado/base/cerebro/rede.py",
+    "eldorado/base/cerebro/sinais_motores.py",
     "eldorado/base/missao/itens.py",
     "eldorado/base/painel/cartorio.py",
     "eldorado/base/painel/legado.py",
@@ -6595,6 +6614,29 @@
    "ordem": 219
   },
   {
+   "arquivo": "eldorado/base/cerebro/sinais_motores.py",
+   "linhas": 98,
+   "finalidade": "Os SINAIS de cada motor (titular, 05/11/2026: «o sistema deve mostrar o que está ocorrendo além do resultado; sem os",
+   "depende_de": [],
+   "eventos": [],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/painel/dados.py",
+    "eldorado/base/painel/sala.py"
+   ],
+   "testes": [
+    "test_sinais_motores.py"
+   ],
+   "situacao": "em funcionamento",
+   "etapa": "18 Outros",
+   "parte": "BASE",
+   "componente": "Outros",
+   "ligacoes": [],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 220
+  },
+  {
    "arquivo": "eldorado/base/cartorio/expurgo_claude.py",
    "linhas": 95,
    "finalidade": "O expurgo é do Claude, nunca do sistema (titular, 01/11/2026: \"somente o Claude apaga livros e faz expurgos, o",
@@ -6622,7 +6664,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 220
+   "ordem": 221
   },
   {
    "arquivo": "eldorado/base/cartorio/manutencao_expurgo.py",
@@ -6658,7 +6700,7 @@
    ],
    "critico": false,
    "metrica": "testes verdes e uso registrado",
-   "ordem": 221
+   "ordem": 222
   }
  ],
  "motores": [
