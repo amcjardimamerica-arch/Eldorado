@@ -349,6 +349,13 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
                 fim = "fonte esporádica: a vigilância sem erro cumpre a finalidade (a fonte não tem chamada aberta agora)"
             erro_txt = f" com erro: {str(e)[:100]}" if e else ""
             motivo[p] = f"última leitura {i[:16]} ({'dentro' if leu else 'fora'} da cadência de {cm['cadencia']:.0f} h){erro_txt}; {fim}"
+            # R45 (titular, 05/11/2026): os SINAIS do motor (os mesmos da Bússola) — fonte pendente no computador local,
+            # abandonada, falhando, sem novidade há 7 dias, nunca entregou — não deixam o círculo verde
+            from .sinais_motores import sinais as _sinais
+            sg = _sinais(cer, mid)
+            if sg["luz"] in ("amarelo", "vermelho"):
+                circ[p] = "r" if sg["luz"] == "vermelho" else ("a" if circ[p] == "v" else circ[p])
+                motivo[p] += "; ⚠ " + "; ".join(sg["sinais"])[:300]
     # os bancos: a integridade e a gravação recente
     for f, con in (("dados/biblioteca.db", bib), ("dados/cerebro.db", cer)):
         integro = con.execute("PRAGMA quick_check").fetchone()[0] == "ok"
@@ -386,8 +393,12 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
         if not n["alcancado"]:
             ponto[p], motivo[p] = "c", "fora do funcionamento: nenhum fluxo da produção o alcança"
         else:
-            ponto[p] = "v" if passagem_ok else "c"
-            motivo.setdefault(p, "rodou com a passagem (alcançado pela produção)" if passagem_ok else "nenhuma passagem concluída em 24 h")
+            # R45: o ponto verde de um arquivo sem leitura própria vem de quem o usa ter rodado (a herança abaixo); a passagem
+            # ter concluído não prova que este arquivo rodou — sem usuário verde, fica cinza
+            usuarios_ok = [u for u in usado_por.get(p, ()) if ponto.get(u) == "v"]
+            ponto[p] = "v" if (passagem_ok and usuarios_ok) else "c"
+            motivo.setdefault(p, f"rodou com a passagem (usado por {len(usuarios_ok)} arquivo(s) que rodaram)" if ponto[p] == "v"
+                              else "sem leitura própria e sem usuário que tenha rodado em 24 h")
     # o círculo das bibliotecas: vermelho só pelo próprio erro (no rastro); verde se algum usuário cumpre a finalidade;
     # âmbar se todos os que o usam estão em falha (antes: o pior de quem usa, o que espalhava a falha de um nó por tudo)
     for p in vermelhos_do_erro:
@@ -397,8 +408,11 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
             if p in circ:
                 continue
             herd = [circ[u] for u in usado_por.get(p, ()) if u in circ]
-            if herd:
-                circ[p] = "v" if "v" in herd else "a" if any(h in ("a", "r") for h in herd) else "c"
+            if herd:   # R45: verde só se todos os usuários cumprem a finalidade (antes bastava um, e um verde escondia os outros)
+                circ[p] = "v" if all(h == "v" for h in herd) else "a" if any(h in ("a", "r") for h in herd) else "c"
+                if circ[p] == "a":
+                    _m = f"⚠ {sum(1 for h in herd if h != 'v')} de {len(herd)} usuário(s) sem cumprir a finalidade"
+                    motivo[p] = f"{motivo[p]}; {_m}" if motivo.get(p) and _m not in motivo[p] else motivo.get(p) or _m
     # os fluxos do GitHub (a raiz da herança): a última execução concluída (sucesso ou falha; as interrompidas pela
     # implantação não contam)
     for p, (c_, m_) in _fluxos_github(nos).items():
@@ -424,8 +438,11 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
             if p in circ:
                 continue
             herd = [circ[u] for u in usado_por.get(p, ()) if u in circ]
-            if herd:
-                circ[p] = "v" if "v" in herd else "a" if any(h in ("a", "r") for h in herd) else "c"
+            if herd:   # R45: verde só se todos os usuários cumprem a finalidade (antes bastava um, e um verde escondia os outros)
+                circ[p] = "v" if all(h == "v" for h in herd) else "a" if any(h in ("a", "r") for h in herd) else "c"
+                if circ[p] == "a":
+                    _m = f"⚠ {sum(1 for h in herd if h != 'v')} de {len(herd)} usuário(s) sem cumprir a finalidade"
+                    motivo[p] = f"{motivo[p]}; {_m}" if motivo.get(p) and _m not in motivo[p] else motivo.get(p) or _m
     for p in sorted(nos, key=lambda x: -x.count("/")):            # os pacotes: pelos seus módulos e subpacotes (de baixo para cima)
         if p.endswith("__init__.py") and circ.get(p, "c") == "c":
             pasta = p.rsplit("/", 1)[0] + "/"
@@ -436,8 +453,11 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
                 motivo.setdefault(p, "o pacote: pelos seus módulos")
     for p in nos:
         circ.setdefault(p, "c")
-    linhas = {f"{a['de']}>{a['para']}": ("r" if "r" in (ponto.get(a["de"]), ponto.get(a["para"])) else
-                                         "v" if ponto.get(a["de"]) == ponto.get(a["para"]) == "v" else "c") for a in mapa["arestas"]}
+    # R45: a ligação tem a pior cor das duas pontas — pelo ponto (rodou) e pelo círculo (cumpre a finalidade)
+    def _lig(x: str, y: str) -> str:
+        cores = (ponto.get(x), ponto.get(y), circ.get(x), circ.get(y))
+        return "r" if "r" in cores else "a" if "a" in cores else "v" if all(c == "v" for c in cores) else "c"
+    linhas = {f"{a['de']}>{a['para']}": _lig(a["de"], a["para"]) for a in mapa["arestas"]}
     return {"em": agora.isoformat(timespec="seconds"),
             "arquivos": {p: {"p": ponto[p], "c": circ[p], "m": motivo.get(p, "")} for p in nos},
             "linhas": {k: v for k, v in linhas.items() if v != "v"}}

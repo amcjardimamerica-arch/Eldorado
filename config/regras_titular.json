@@ -613,6 +613,18 @@
    "travas": [
     "testes/test_catalogo_captacao.py::test_o_catalogo_nao_e_expurgado"
    ]
+  },
+  {
+   "id": "R45",
+   "data": "2026-11-05",
+   "tema": "nenhum indicador positivo sem a leitura real",
+   "regra": "Todo painel e todo mostrador mostra exatamente os dados e o funcionamento do sistema e do banco. Nenhum indicador é positivo pela ausência de leitura nem sem validar a situação real: o verde exige a leitura que prova a finalidade cumprida. Sem leitura, cinza (sem leitura); com sinal de perda, atenção ou falha, com o motivo escrito. No Mapa dos arquivos: o motor tem a cor dos seus sinais (os mesmos da Bússola); o arquivo usado por outros só é verde se todos os usuários cumprem a finalidade; o ponto de quem não rodou não é verde; a ligação tem a pior cor das duas pontas.",
+   "porque": "titular, 05/11/2026: o Mapa dos arquivos mostrava os 45 motores e as 1.123 ligações verdes enquanto a Bússola indicava falhas e perda de finalidade — o que o design e a arquitetura originais proibiam expressamente.",
+   "onde": "eldorado/base/cerebro/mapa_arquivos.py (medir); eldorado/base/cerebro/sinais_motores.py; eldorado/base/painel/dados.py e sala.py (os sinais dos motores)",
+   "travas": [
+    "testes/test_mapa_sem_falso_verde.py::test_o_motor_com_sinal_nao_e_verde_no_mapa",
+    "testes/test_mapa_sem_falso_verde.py::test_a_heranca_e_as_ligacoes_sem_falso_verde"
+   ]
   }
  ]
 }
