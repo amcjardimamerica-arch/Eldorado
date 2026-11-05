@@ -7152,7 +7152,9 @@ function mpDadosUF(){
     // 24/09 (titular): o 1º número do mapa são as que têm PRAZO e LINK DO SITE OFICIAL conhecidos
     if(item&&item.fim&&linkOficial(item)) p.confirmadas=(p.confirmadas||0)+1;if(st==="aberta"||st==="possivel"){p.areas[area]=(p.areas[area]||0)+1;if(item&&p.itens.length<400)p.itens.push(item);
       if(cidade){const c=p.cidades[cidade]||(p.cidades[cidade]={n:0,areas:{},itens:[]});c.n++;c.areas[area]=(c.areas[area]||0)+1;if(item&&c.itens.length<60)c.itens.push(item);}}};
-  const nac=e=>(!e.uf||e.nivel==="federal"||e.abrangencia==="nacional")?null:e.uf;
+  /* 05/11/2026: a UF que não é um estado brasileiro (BR, IN, US…) vai ao nível nacional — 34 das 198 abertas sumiam do mapa */
+  const UF_BR=new Set("AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO".split(" "));
+  const nac=e=>(!e.uf||!UF_BR.has(e.uf)||e.nivel==="federal"||e.abrangencia==="nacional")?null:e.uf;
   (D.editais||[]).forEach(e=>{add2(nac(e),e.area||"outros",e.municipio||cid(e.titulo),situacaoDe(e),e);});
   const vistos=new Set((D.editais||[]).map(e=>e.id));
   (FA_ABERTAS||[]).forEach(o=>{if(vistos.has(o.id))return;add2(nac(o),o.area||"outros",cid(o.titulo),situacaoDe(o),o);});

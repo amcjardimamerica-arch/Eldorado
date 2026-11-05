@@ -179,8 +179,9 @@ class Regencia:
                     else:                                              # terminou o trabalho do dia
                         PENDENTES_DO_DIA.get(_hoje(), set()).discard(modulo)
                     esc_ = getattr(mot_, "escada", None)
+                    rel = list(getattr(mot_, "relatorio", []) or [])
                     self.diario.emitir("motor.execucao", "regencia", {"motor": modulo, "inicio": inicio, "fim": agora(), "achados": len(lista),
-                                                                      "erro": med.erro or None,
+                                                                      "erro": med.erro or None, **_telemetria(rel),
                                                                       "degrau_maximo": esc_.degrau_maximo() if esc_ is not None else None})
                     for a in lista:
                         if (a.dados or {}).get("especial"):              # empresa e incentivo: à base Especial, não à Pertinência
@@ -288,6 +289,23 @@ def _decidir(quando: datetime, motores: list[str], parametros: dict[str, Any]) -
         rede = rede_atual(dados)                                     # a rede guardada (até 15 min): a nota de cada motor
         nota = rede.nota_motor if rede is not None else None
     return decidir(quando, list(motores), historico, ponto, nota=nota)
+
+
+def _telemetria(relatorio: list[str]) -> dict[str, int]:
+    """05/11/2026 (titular: «os motores estão obtendo as buscas que deveriam?»): as fontes lidas, as que mudaram e as
+    bloqueadas, pelo relatório do motor (antes a execução só dizia os achados: «leu e não havia nada» e «não conseguiu
+    ler» davam o mesmo zero)."""
+    lidas = mudou = bloq = 0
+    for r in relatorio:
+        t = r.lower()
+        if "não lida" in t or "erro inesperado" in t or "falhou" in t or "indisponível" in t:
+            bloq += 1
+        elif "sem mudança" in t:
+            lidas += 1
+        elif "pista(s)" in t or "registro(s)" in t or "mudou" in t:
+            lidas += 1
+            mudou += 1
+    return {"fontes_lidas": lidas, "mudancas": mudou, "bloqueios": bloq}
 
 
 def _fechar_adiamentos(dados: Path, motores: set[str], diario) -> None:

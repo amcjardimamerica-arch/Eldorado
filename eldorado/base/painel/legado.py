@@ -281,13 +281,26 @@ def _montar(bib, cer, motores, pilotos, molde, agora, iso, hoje) -> dict[str, di
             dias[d].append({"titulo": x["titulo"], "motor": mot, "link": x["link"], "livro": x["livro"]})
             if x["livro"]:
                 vistos[x["livro"]] += 1
-                primeira.setdefault(x["livro"], d)
+                primeira[x["livro"]] = min(primeira.get(x["livro"], d), d)   # a data mais antiga (não a do primeiro motor lido)
     ad = molde("achados_dia.json")
+
+    def _dia_do_mapa(d: str, lst: list, primeira: dict) -> dict:
+        motores: dict[str, list] = {}
+        novos, reap = set(), 0
+        for x in lst:
+            motores.setdefault(x["motor"], []).append(x)
+            if x["livro"] and primeira.get(x["livro"]) == d:
+                novos.add(x["livro"])
+            elif x["livro"]:
+                reap += 1
+        return {"total": len(novos), "reapresentados": reap, "achados": len(lst), "motores": motores}
     ad.update(
         {
             "em": iso,
             "regra": "os achados aceitos de cada dia (os últimos 31 dias), por motor",
-            "dias": dict(sorted(dias.items(), reverse=True)),
+            # 05/11/2026: o formato que o Mapa de oportunidades lê (antes, uma lista: o mapa via «Sem oport.» em todo dia):
+            # as NOVAS (o livro visto pela primeira vez no dia), as reapresentadas e os achados por motor
+            "dias": {d: _dia_do_mapa(d, lst, primeira) for d, lst in sorted(dias.items(), reverse=True)},
             "primeira_data": primeira,
             "reapresentados": {k: v for k, v in vistos.items() if v > 1},
             "total_unicos": len(vistos),

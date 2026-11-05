@@ -509,7 +509,8 @@ def _bussola(sis: Sistema, molde: dict, fontes: list[dict], status: list[dict]) 
         {
             "dias": dias,
             "categorias": {k: {"rotulo": r, "cor": c} for k, (r, c) in CATEGORIAS.items()},
-            "frentes_cobertura": {k: cobertura.get(k, 0) for k in CATEGORIAS},
+            # 05/11/2026: os DIAS com captação em cada frente (a legenda diz «dias com captação»; antes, o número de motores)
+            "frentes_cobertura": {k: sum(1 for v in por_dia.values() if k in v["cats"] and v["novas"]) for k in CATEGORIAS},
             "frentes_sem_cobertura": [k for k in CATEGORIAS if not cobertura.get(k)],
             "fontes_com_editais": fontes,
             "regra": "cada dia mostra as execuções dos motores registradas no Cérebro; as fontes com editais são os livros com prazo aberto",
