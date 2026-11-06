@@ -38,10 +38,24 @@ def test_nenhum_instrumento_verde_sem_regua_e_a_regua_unica():
     assert all(x.get("cadencia_h") is not None and x.get("faz") for x in d["instrumentos"])
     from eldorado.base.cartorio.regua import regua
     r = regua(b)
-    v = {x["id"]: x["valor"] for x in d["instrumentos"]}
-    assert v["es_abertas"] == r["abertas"] and r["validadas"] + r["em_verificacao"] == r["abertas"]
+    m = {x["etapa"]: x["valor"] for x in d["mimico"]}
+    assert m["Abertas (agora)"] == r["abertas"] and m["Validadas no Farol (agora)"] == r["validadas"]
+    assert r["validadas"] + r["em_verificacao"] == r["abertas"]
 
 
 def test_nenhum_contador_negativo_no_fluxo():
     f = dados._fluxo(dados.Sistema(Path(".")), "2026-11-06T12:00:00+00:00")
     assert f["validacao"]["sem_decisao"] >= 0
+
+
+def test_a_sala_so_tem_mostradores_vivos():
+    """06/11/2026 (titular: "nenhum quadro decorativo; mostradores vivos, com medição real e alerta"): todo instrumento tem a
+    régua (faixa ou regra de alarme) e os decorativos (contagens de estoque verdes por padrão) não voltam."""
+    b = sqlite3.connect("file:dados/biblioteca.db?mode=ro", uri=True)
+    c = sqlite3.connect("file:dados/cerebro.db?mode=ro", uri=True)
+    d = sala.montar(b, c, Path("."), [])
+    ids = {x["id"] for x in d["instrumentos"]}
+    assert all(x.get("faixa") for x in d["instrumentos"])
+    assert not ids & {"fl_fila", "es_livros", "hi_frio", "es_validadas", "es_curadoria", "es_vigilancia", "ve_completas", "em_rankings",
+                      "es_abertas", "es_fichas"}
+    assert {"pa_passagem", "pa_falhas", "al_abertos", "mo_pendentes_local", "es_esteira_parada", "ab_link_oficial", "fa_fecham_7d"} <= ids

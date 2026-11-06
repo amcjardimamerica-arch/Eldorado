@@ -365,6 +365,16 @@ def auditar(con: sqlite3.Connection, hoje: date, somente: set[str] | None = None
                  "origem": cls_origem, "origem_motivo": motivo_origem[:300], "escada": escada_do_livro(con, lv["id"]),
                  "validacao": validacao, "motivos": json.dumps(motivos + [f"certidão contestada — {x}" for x in contestadas], ensure_ascii=False),
                  "validado_em": agora()}
+        # 06/11/2026 (rastreio dos indicadores): o livro ARQUIVADO POR DECISÃO (o veredito do Claude no Chrome, a titular) tem
+        # o prazo encerrado — a auditoria o reabria pela data antiga, e 21 livros arquivados contavam como abertos na Sala
+        _dec = con.execute(
+            "SELECT 1 FROM passaporte p WHERE p.livro_id = ? AND p.fase = 'arquivo' AND EXISTS (SELECT 1 FROM passagem x "
+            "WHERE x.livro_id = p.livro_id AND x.para = 'arquivo' AND (x.motivo LIKE '%análise externa%' OR x.motivo LIKE '%Chrome%' "
+            "OR x.autorizado_por IN ('titular', 'analise-externa')) AND x.em = (SELECT MAX(y.em) FROM passagem y "
+            "WHERE y.livro_id = p.livro_id AND y.para = 'arquivo'))", (lv["id"],)).fetchone()
+        if _dec:
+            dados["situacao_prazo"] = "encerrada"
+            motivos.append("arquivado por decisão (o veredito externo ou a titular): o prazo fica encerrado")
         resolvidas = {k: v for k, v in validas.items() if I.resolvido(v)}
         estrela_regua = I.nivel(resolvidas, cls_origem == origem.CONFIRMADO) if dados["situacao_prazo"] != "encerrada" else "sem"
         r = Resultado(lv["id"], lv["titulo"], validacao, abr, motivos, contestadas, lv["estrela"], estrela_regua, dados)
@@ -395,7 +405,7 @@ def aplicar(resultados: list[Resultado], diario: Diario) -> None:
                                                        "aprendeu": None, "faltou": "; ".join(r.motivos) or None})
 
 
-LINHA = ("certificacao", "preparacao", "validacao", "analise externa", "farol")
+LINHA = ("recepcao", "certificacao", "preparacao", "validacao", "analise externa", "farol")   # 06/11/2026: com a recepção
 
 
 def arquivar_encerrados(con: sqlite3.Connection, diario: Diario, hoje: date) -> int:
@@ -418,6 +428,8 @@ def arquivar_encerrados(con: sqlite3.Connection, diario: Diario, hoje: date) -> 
         if prazo(validas, dict(lv), hoje) != "encerrada" and not vencido:
             continue
         selo = max((lv["selo_livro"] or "sem", lv["estrela"] or "sem"), key=RANK.get)
+        if lv["fase"] == "recepcao":   # da recepção só se passa à certificação (o caminho autorizado)
+            passaporte.mover(lv["id"], "certificacao", "o prazo encerrou: a caminho do arquivo (caminho autorizado)", {"gerou": "a caminho do arquivo"})
         ok, _ = passaporte.mover(lv["id"], "arquivo", "o prazo encerrou: a oportunidade foi arquivada",
                                  {"gerou": f"oportunidade arquivada; a estrela {lv['estrela']} virou o selo do livro ({selo}); aguarda nova oportunidade",
                                   "faltou": ", ".join(I.faltando(validas)) or None})
@@ -426,6 +438,21 @@ def arquivar_encerrados(con: sqlite3.Connection, diario: Diario, hoje: date) -> 
             diario.emitir("selo.calculado", "auditoria", {"id": lv["id"], "estrela": "sem", "selo_livro": selo, "informacoes_validadas": len(validas),
                                                           "atualizado_em": agora()})
             n += 1
+    return n
+
+
+def farol_so_com_prazo_aberto(con: sqlite3.Connection, diario: Diario) -> int:
+    """06/11/2026 (rastreio dos indicadores): o Farol é para as oportunidades abertas — o livro no Farol sem o prazo aberto
+    («sem prazo» ou encerrado) vai ao arquivo (12 do catálogo, sem prazo e sem estrela, estavam no Farol: a validação tratou
+    «sem prazo» como «aberto»). O catálogo segue no banco (R44), no arquivo, à espera da edição."""
+    from .passaporte import Passaporte
+    passaporte, n = Passaporte(con, diario, maximo=10), 0
+    for (lid,) in con.execute("SELECT p.livro_id FROM passaporte p JOIN livro l ON l.id = p.livro_id LEFT JOIN livro_dados d ON d.livro_id = p.livro_id "
+                              "WHERE p.fase = 'farol' AND l.situacao NOT IN ('excluido', 'unido') "
+                              "AND COALESCE(d.situacao_prazo, 'sem prazo') <> 'aberta'").fetchall():
+        ok, _ = passaporte.mover(lid, "arquivo", "sem o prazo aberto: o Farol é para as oportunidades abertas",
+                                 {"gerou": "o livro sem prazo aberto saiu do Farol para o arquivo (à espera da edição)"})
+        n += int(bool(ok))
     return n
 
 
@@ -478,6 +505,7 @@ def no_auditar(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto
         res = list(auditar(con, date.today(), alvo)) if alvo else []
         arquivados = arquivar_encerrados(con, contexto.diario, date.today())
         devolvidos = devolver_abertas_do_arquivo(con, contexto.diario)
+        arquivados += farol_so_com_prazo_aberto(con, contexto.diario)
     finally:
         con.close()
     aplicar(res, contexto.diario)

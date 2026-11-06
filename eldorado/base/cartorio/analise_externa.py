@@ -444,6 +444,8 @@ def importar(retorno: bytes | str, con: sqlite3.Connection, diario: Diario, exig
             v = msgspec.structs.replace(v, decisao="arquivar")
         # 04/11/2026 (titular): a oportunidade do terceiro setor (encerrada ou fora do perfil) fica no banco, no arquivo
         if v.decisao in ("encerrada", "arquivar"):
+            # 06/11/2026 (rastreio): o veredito fecha o prazo junto (antes só mudava a etapa e o livro seguia «aberto»)
+            diario.emitir("livro.prazo", "analise-externa", {"livro_id": v.livro_id, "situacao_prazo": "encerrada"})
             if fase != "arquivo":
                 levar(cartorio, v.livro_id, "arquivo", f"a análise externa confirmou: oportunidade encerrada ({(v.motivo or '')[:200]})",
                       "oportunidade encerrada (Chrome)")

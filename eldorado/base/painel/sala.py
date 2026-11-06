@@ -16,16 +16,16 @@ from pathlib import Path
 from typing import Any
 
 ETAPAS = {
-    "regencia": ["rg_regencia", "ma_cobertura", "ma_esgotados", "dg_finalidade", "ma_memoria_etapa"],
-    "coleta": ["mo_saude", "mo_sinais", "mo_cadencia", "mo_retentativa", "mo_fora_da_fila", "es_coleta"],
-    "certificacao": ["ca_12", "fl_fila", "es_curadoria", "es_parcial"],
+    "regencia": ["rg_regencia", "pa_passagem", "pa_falhas", "al_abertos", "ma_cobertura", "ma_esgotados", "dg_finalidade", "ma_memoria_etapa"],
+    "coleta": ["mo_saude", "mo_sinais", "mo_pendentes_local", "mo_cadencia", "mo_retentativa", "mo_fora_da_fila", "es_coleta"],
+    "certificacao": ["ca_12", "es_esteira_parada", "es_parcial"],
     "investigacao": ["pi_interceptador", "pi_espiao", "pi_piloto", "pi_missoes", "pi_vagas"],
     # 04/11/2026 (titular): a verificação externa e o expurgo são da etapa 5 (antes acendiam também as etapas 3 e 4)
-    "externa": ["ve_para_o_chrome", "de_decisoes", "es_expurgo", "ve_bloqueadas", "ve_completas", "ve_importado", "al_externa"],
-    "repositorio": ["es_abertas", "es_banco_unico", "hi_crescimento"],
-    "biblioteca": ["es_livros", "es_vigilancia", "em_rankings", "hi_uso", "hi_frio", "es_orfaos"],
+    "externa": ["ve_para_o_chrome", "de_decisoes", "es_expurgo", "ve_bloqueadas", "ve_importado", "al_externa"],
+    "repositorio": ["ab_link_oficial", "es_banco_unico", "hi_crescimento"],
+    "biblioteca": ["hi_uso", "es_orfaos"],
     "aprendizado": ["rn_auc", "rn_precisao", "rn_revocacao", "rn_brier", "rn_treino", "cm_comparacao", "cm_decisoes"],
-    "farol": ["es_validadas", "es_fichas"],
+    "farol": ["fa_fecham_7d"],
 }
 ORDEM = {"vermelho": 0, "amarelo": 1, "cinza": 2, "verde": 3}
 
@@ -281,18 +281,6 @@ def montar(
         [0, 100],
         {"normal": [70, None], "alarme": [40, None]},
     )
-    I("fl_fila", "Livros na preparação", fases.get("preparacao", 0), "verde", "os livros que o Cartório está completando", ultima_cert)
-    conf = q(bib, "SELECT COUNT(*) FROM livro_dados WHERE origem = 'confirmado'")
-    I(
-        "es_curadoria",
-        "Links originais confirmados",
-        conf,
-        "verde" if conf else "amarelo",
-        f"{conf} livros com a origem confirmada (o link original)",
-        iso,
-      faixa={"regra": "verde quando há valor; atenção quando zero"},
-
-    )
     # os documentos sem texto lido (01/11/2026, titular: o alerta "8.704 documentos sem texto lido"). Antes contava os
     # documentos SEM PÁGINA no banco; desde a R35 a leitura sai do banco de propósito depois de certificada, e todo documento
     # lido passava a contar (o alerta media a regra funcionando). Agora conta a LEITURA que não extraiu texto (zero páginas,
@@ -353,9 +341,10 @@ def montar(
         "pi_interceptador",
         "Na fila do Interceptador (abertas sem ouro na preparação)",
         fila_i,
-        "verde",
+        _faixa(fila_i, 50, 200, False),
         "o que falta nas abertas, para o Interceptador buscar",
         iso,
+        faixa={"normal": [None, 50], "alarme": [None, 200]},
     )
     try:
         miss = q(cer, "SELECT COUNT(*) FROM espiao_missao WHERE em >= ?", h24)
@@ -450,10 +439,7 @@ def montar(
       faixa={"normal": [None, 1], "alarme": [None, 3]},
 
     )
-    chrome = q(bib, "SELECT COUNT(*) FROM veredito WHERE origem LIKE '%chrome%' OR origem LIKE '%externa%'")
     ult_v = q(bib, "SELECT MAX(em) FROM veredito WHERE origem LIKE '%chrome%' OR origem LIKE '%externa%'")
-    I("ve_completas", "Vereditos do Chrome", chrome, "verde" if chrome else "cinza", f"{chrome} vereditos importados da análise externa", ult_v,
-      faixa={"regra": "verde quando há valor; sem leitura (cinza) quando zero"})
     idade_v = _idade_h(ult_v, agora)
     I(
         "ve_importado",
@@ -513,10 +499,10 @@ def montar(
         "pi_vagas",
         "Interceptadores agora (em voo / vagas liberadas)",
         vq[0] if vq else None,
-        "cinza" if not vq else "verde",
+        "cinza" if not vq else ("amarelo" if (vq[0] or 0) == 0 and fila_i else "verde"),
         "ainda sem o quadro das vagas" if not vq else str(vq[1]),
         vq[2] if vq else iso,
-      faixa={"regra": "verde quando há registro; cinza sem medida"},
+      faixa={"regra": "atenção quando há fila para o Interceptador e nenhum em voo; cinza sem medida"},
 
     )
     # ---- 29/10/2026: os ALARMES DE TENDÊNCIA (a degradação lenta aparece antes de virar problema)
@@ -583,17 +569,6 @@ def montar(
 
     )
     # ---- 06 Repositório
-    I(
-        "es_abertas",
-        "Oportunidades abertas",
-        abertas,
-        "verde" if abertas else "amarelo",
-        f"{abertas} oportunidades com o prazo aberto",
-        iso,
-        efeito=f"{validadas} validadas (no Farol) · {RG['em_verificacao']} em verificação (na esteira) · {RG['com_data']} com data-limite",
-      faixa={"regra": "verde quando há valor; atenção quando zero"},
-
-    )
     paralelos = sorted(p.relative_to(raiz).as_posix() for p in (raiz / "dados").rglob("*.db") if p.name not in ("biblioteca.db", "cerebro.db"))
     I(
         "es_banco_unico",
@@ -607,27 +582,6 @@ def montar(
     )
     # ---- 07 Biblioteca
     livros = q(bib, "SELECT COUNT(*) FROM livro WHERE situacao NOT IN ('excluido', 'unido')")
-    I(
-        "es_livros",
-        "Livros na Biblioteca",
-        livros,
-        "verde",
-        f"{livros} livros (cada oportunidade com o seu)",
-        q(bib, "SELECT MAX(atualizado_em) FROM livro"),
-    )
-    I(
-        "es_vigilancia",
-        "Livros vigiados pelo site original",
-        conf,
-        "verde" if conf else "amarelo",
-        "os livros com a origem confirmada, vigiados pelo mapa do site original",
-        iso,
-      faixa={"regra": "verde quando há valor; atenção quando zero"},
-
-    )
-    emp = q(bib, "SELECT COUNT(*) FROM empresa") if bib.execute("SELECT 1 FROM sqlite_master WHERE name = 'empresa'").fetchone() else 0
-    I("em_rankings", "Empresas na Biblioteca", emp, "verde" if emp else "cinza", f"{emp} empresas com incentivos registrados", iso,
-      faixa={"regra": "verde quando há valor; sem leitura (cinza) quando zero"})
     try:
         from ..cerebro.mapa_arquivos import AGUARDAM_DECISAO
         from ..cerebro.mapa_arquivos import montar as mapa
@@ -647,14 +601,6 @@ def montar(
         )
     except Exception as e:  # noqa: BLE001
         I("hi_uso", "Arquivos fora do funcionamento", None, "cinza", f"o mapa dos arquivos não foi lido: {type(e).__name__}", None)
-    I(
-        "hi_frio",
-        "Livros no arquivo (encerradas, preservadas)",
-        fases.get("arquivo", 0),
-        "verde",
-        "as oportunidades encerradas, arquivadas mantendo os livros",
-        iso,
-    )
     # ---- 08 Pertinência e aprendizado
     m = cer.execute(
         "SELECT treinado_em, discernimento, precisao, revocacao FROM modelo WHERE arquivo = 'rede:oportunidade' ORDER BY treinado_em DESC LIMIT 1"
@@ -772,19 +718,40 @@ def montar(
             None,
         )
     # ---- 09 Farol
-    I("es_validadas", "Validadas (abertas no Farol)", validadas, "verde",
-      f"{validadas} abertas no Farol (R46); {RG['farol_total']} livros no Farol ao todo, com os de prazo vencido", iso)
-    transf = q(bib, "SELECT COUNT(DISTINCT livro_id) FROM transferencia")
-    I(
-        "es_fichas",
-        "Livros transferidos ao Farol",
-        transf,
-        "verde" if transf else "amarelo",
-        f"{transf} livros no formato estável (eldorado.livro/1)",
-        q(bib, "SELECT MAX(em) FROM transferencia"),
-      faixa={"regra": "verde quando há valor; atenção quando zero"},
+    # ---- 06/11/2026 (titular: "remova os mostradores verdes por padrão; quero mostradores vivos, com medição real e alerta")
+    _ult = q(cer, "SELECT MAX(fim) FROM execucao WHERE estado = 'concluida'")
+    _min = round(_idade_h(_ult, agora) * 60) if _ult and _idade_h(_ult, agora) is not None else None
+    I("pa_passagem", "Última passagem concluída (minutos)", _min, _faixa(_min, 90, 240, False),
+      f"a última passagem concluiu há {_min} min" if _min is not None else "nenhuma passagem concluída registrada", _ult,
+      faixa={"normal": [None, 90], "alarme": [None, 240]}, cadencia_h=0.25)
+    _tot24 = q(cer, "SELECT COUNT(*) FROM execucao WHERE inicio >= ? AND estado IN ('concluida', 'falhou')", h24)
+    _fal24 = q(cer, "SELECT COUNT(*) FROM execucao WHERE inicio >= ? AND estado = 'falhou'", h24)
+    _pf = round(100 * _fal24 / _tot24) if _tot24 else None
+    I("pa_falhas", "Passagens que falharam em 24 h (%)", _pf, _faixa(_pf, 10, 30, False),
+      f"{_fal24} de {_tot24} passagens falharam nas últimas 24 h" if _tot24 else "nenhuma passagem nas últimas 24 h", iso,
+      faixa={"normal": [None, 10], "alarme": [None, 30]}, cadencia_h=0.25)
+    _al = q(cer, "SELECT COUNT(*) FROM alarme WHERE fechado_em IS NULL")
+    I("al_abertos", "Alarmes abertos sem solução", _al, _faixa(_al, 0, 10, False), f"{_al} alarme(s) registrado(s) e ainda não resolvido(s)", iso,
+      faixa={"normal": [None, 0], "alarme": [None, 10]}, cadencia_h=0.25)
+    from ..cerebro.sinais_motores import sinais as _sn
+    _pend = sum(len(_sn(cer, m)["pendentes_local"]) for m in reg)
+    I("mo_pendentes_local", "Fontes paradas no computador local", _pend, _faixa(_pend, 0, 20, False),
+      f"{_pend} fonte(s) dos motores pendente(s) no computador local (sem leitura pela nuvem nem pela ponte)", ultima_leitura,
+      faixa={"normal": [None, 0], "alarme": [None, 20]}, cadencia_h=0.25)
+    _parada = q(bib, "SELECT COUNT(*) FROM passaporte p JOIN livro l ON l.id = p.livro_id WHERE l.situacao NOT IN ('excluido', 'unido') "
+                     "AND p.fase IN ('recepcao', 'certificacao', 'preparacao', 'validacao', 'analise externa') AND p.entrou_em < ?",
+                (agora - timedelta(hours=72)).isoformat())
+    I("es_esteira_parada", "Livros parados na esteira há mais de 72 h", _parada, _faixa(_parada, 10, 50, False),
+      f"{_parada} livro(s) na mesma etapa da esteira há mais de 72 h", iso, faixa={"normal": [None, 10], "alarme": [None, 50]}, cadencia_h=0.25)
+    _conf = q(bib, f"SELECT COUNT(*) {AB} AND d.origem = 'confirmado'")
+    _pl = round(100 * _conf / abertas) if abertas else None
+    I("ab_link_oficial", "Abertas com o link oficial confirmado (%)", _pl, _faixa(_pl, 80, 50),
+      f"{_conf} de {abertas} abertas com a origem confirmada no site oficial", iso, faixa={"normal": [80, None], "alarme": [50, None]}, cadencia_h=0.25)
+    _7d = q(bib, f"SELECT COUNT(*) {AB} AND p_ab.fase = 'farol' AND d.inscricao_fim BETWEEN date('now') AND date('now', '+7 days')")
+    I("fa_fecham_7d", "Validadas no Farol que fecham em até 7 dias", _7d, "amarelo" if _7d else "verde",
+      f"{_7d} oportunidade(s) validada(s) com a inscrição terminando em até 7 dias: decidir", iso,
+      faixa={"regra": "atenção com alguma validada fechando em até 7 dias (a decisão da titular); verde sem nenhuma"}, cadencia_h=0.25)
 
-    )
     # ---- os compartimentos e a Regência
     comp_ = []
     for et, ids in ETAPAS.items():

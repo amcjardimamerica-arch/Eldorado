@@ -2610,15 +2610,15 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
 (function(){
   const COR={verde:"#5EE6C8",amarelo:"#FFB347",vermelho:"#FF6B6B",cinza:"#8B93B8"}, EST={verde:"normal",amarelo:"atenção",vermelho:"alarme",cinza:"sem leitura"};
   const ETAPAS=[   /* 18/10/2026 (titular): os 9 compartimentos da sala, na ordem do workflow; a Regência avalia cada um */
-    {id:"regencia",nome:"Regência",faz:"A rede neural organiza todas as informações do sistema, avalia se cada compartimento está sendo cumprido e aciona as ferramentas para chegar aos livros completos.",ids:["rg_regencia","ma_cobertura","ma_esgotados","dg_finalidade","ma_memoria_etapa"]},
-    {id:"coleta",nome:"Coleta",faz:"Os motores encontram as oportunidades; cada motor é uma estrela e precisa ler dentro da sua cadência.",ids:["mo_saude","mo_sinais","mo_cadencia","mo_retentativa","mo_fora_da_fila","es_coleta"]},
-    {id:"certificacao",nome:"Certificação",faz:"O Cartório, hub dos livros: cada livro é verificado um a um, com todas as ferramentas e até 3 tentativas por ferramenta.",ids:["ca_12","fl_fila","es_curadoria","es_parcial","es_expurgo"]},
-    {id:"investigacao",nome:"Investigação",faz:"O Interceptador e os Pilotos pesquisam o que o Cartório não alcança.",ids:["pi_interceptador","pi_espiao","pi_piloto","de_decisoes","pi_missoes","pi_vagas"]},
-    {id:"externa",nome:"Verificação externa",faz:"A exceção: o que esgotou as tentativas vai ao Claude no Chrome, que resolve de forma definitiva.",ids:["ve_para_o_chrome","ve_bloqueadas","ve_completas","ve_importado","al_externa"]},
-    {id:"repositorio",nome:"Repositório",faz:"Um banco só: um registro por oportunidade, nenhum dado fora dos livros.",ids:["es_abertas","es_banco_unico","hi_crescimento"]},
-    {id:"biblioteca",nome:"Biblioteca",faz:"Cada oportunidade tem o seu livro, com histórico e motor que vigia a próxima edição.",ids:["es_livros","es_vigilancia","em_rankings","hi_uso","hi_frio","es_orfaos"]},
+    {id:"regencia",nome:"Regência",faz:"A rede neural organiza todas as informações do sistema, avalia se cada compartimento está sendo cumprido e aciona as ferramentas para chegar aos livros completos.",ids:["rg_regencia","pa_passagem","pa_falhas","al_abertos","ma_cobertura","ma_esgotados","dg_finalidade","ma_memoria_etapa"]},
+    {id:"coleta",nome:"Coleta",faz:"Os motores encontram as oportunidades; cada motor é uma estrela e precisa ler dentro da sua cadência.",ids:["mo_saude","mo_sinais","mo_pendentes_local","mo_cadencia","mo_retentativa","mo_fora_da_fila","es_coleta"]},
+    {id:"certificacao",nome:"Certificação",faz:"O Cartório, hub dos livros: cada livro é verificado um a um, com todas as ferramentas e até 3 tentativas por ferramenta.",ids:["ca_12","es_esteira_parada","es_parcial"]},
+    {id:"investigacao",nome:"Investigação",faz:"O Interceptador e os Pilotos pesquisam o que o Cartório não alcança.",ids:["pi_interceptador","pi_espiao","pi_piloto","pi_missoes","pi_vagas"]},
+    {id:"externa",nome:"Verificação externa",faz:"A exceção: o que esgotou as tentativas vai ao Claude no Chrome, que resolve de forma definitiva.",ids:["ve_para_o_chrome","de_decisoes","es_expurgo","ve_bloqueadas","ve_importado","al_externa"]},
+    {id:"repositorio",nome:"Repositório",faz:"Um banco só: um registro por oportunidade, nenhum dado fora dos livros.",ids:["ab_link_oficial","es_banco_unico","hi_crescimento"]},
+    {id:"biblioteca",nome:"Biblioteca",faz:"Cada oportunidade tem o seu livro, com histórico e motor que vigia a próxima edição.",ids:["hi_uso","es_orfaos"]},
     {id:"aprendizado",nome:"Comandante e Aprendizado",faz:"O Comandante decide (em paralelo com a ordem fixa, por enquanto) e o Aprendizado mede: a rede, as decisões avaliadas e o rendimento contra a ordem fixa.",ids:["rn_auc","rn_precisao","rn_revocacao","rn_brier","rn_treino","cm_comparacao","cm_decisoes"]},
-    {id:"farol",nome:"Farol de Alexandria",faz:"O que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol.",ids:["es_validadas","es_fichas"]}];
+    {id:"farol",nome:"Farol de Alexandria",faz:"O que está completo — 12 de 12, com livro e prazo vigente — chega ao Farol.",ids:["fa_fecham_7d"]}];
   const CURTO={rg_regencia:"compartimentos cumpridos",fl_fila:"livros prontos na fila",mo_retentativa:"aguardando nova tentativa",mo_fora_da_fila:"fora da fila",es_curadoria:"links aprovados",es_parcial:"em leitura parcial",es_expurgo:"indicados para o expurgo",es_banco_unico:"bancos fora dos livros",ma_cobertura:"cobertura do dia",ma_esgotados:"sem leitura completa",mo_saude:"funcionando",mo_cadencia:"fora da cadência",es_coleta:"coletados",rn_auc:"discernimento",
     rn_precisao:"precisão",rn_revocacao:"revocação",rn_brier:"erro de calibração",cm_comparacao:"Comandante × ordem fixa",cm_decisoes:"decisões do Comandante",rn_treino:"idade do modelo",es_abertas:"abertas",es_livros:"com livro",es_vigilancia:"livros vigiados",
     ca_12:"itens certificados",pi_interceptador:"na fila do Interceptador",pi_espiao:"empresas do Espião",pi_piloto:"voos do Piloto",em_rankings:"empresas nos rankings",es_validadas:"validadas",es_fichas:"fichas",de_decisoes:"livros aguardando o Claude",al_externa:"alimentação externa",dg_finalidade:"finalidade do sistema",hi_uso:"arquivos sem uso",hi_frio:"pacotes no arquivo frio"};
@@ -2701,12 +2701,12 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
         .map(([k,v])=>`<div style="display:block"><span style="display:flex;justify-content:space-between"><span>${e(k)}</span><b>${Math.round(100*(v.eficiencia||0))}%</b></span><div class="barra"><i style="width:${Math.round(100*(v.eficiencia||0))}%"></i></div></div>`).join("");
       case "investigacao": return `<h4>Fila do Interceptador</h4>`+linhas(D.interceptador_fila,4)+`<h4 style="margin-top:10px">A escada de acesso em uso</h4>`+(Object.keys(D.escada||{}).length?linhas(D.escada,8):`<div class="faint" style="font-size:12px">ainda sem registro: a escada passou a registrar o degrau em 29/10/2026</div>`);
       case "externa": return `<h4>Fila de reprocessamento</h4>`+linhas(Object.fromEntries(Object.entries(D.reprocessar||{}).map(([k,v])=>[k.split(":")[0].split("→")[0].trim(),v])),4);
-      case "farol": return `<h4>Chegada</h4><div><span>prontas para o Farol</span><b style="color:${COR.verde}">${n(M[7]?.valor)}</b></div><div><span>empresas que financiam</span><b>${n((I("em_rankings")||{}).valor)}</b></div><div><span>arquivo frio</span><b>${n((I("hi_frio")||{}).valor)} pacotes</b></div>`;
+      case "farol": return `<h4>Chegada</h4><div><span>validadas no Farol (agora)</span><b style="color:${COR.verde}">${n(M[7]?.valor)}</b></div><div><span>fecham em até 7 dias</span><b>${n((I("fa_fecham_7d")||{}).valor)}</b></div>`;
     } return ""; }
   function contadores(et){ const R=SC.instrumentos||[], M=SC.mimico||[]; const c=(v,t)=>`<div class="cnt"><b>${n(v)}</b><small>${e(t)}</small></div>`;
     switch(et.id){
       case "regencia": return c((SC.detalhes?.maestro||[]).length,"motores planejados hoje");
-      case "repositorio":{const a=I("es_abertas"); const m=(a?.efeito||"").match(/\d+/g)||[]; return c(m[0],"validadas")+c(m[1],"em verificação")+c(m[2],"validação manual");}
+      case "repositorio": return c(M[2]?.valor,"abertas (agora)")+c(M[7]?.valor,"validadas no Farol")+c((M[2]?.valor||0)-(M[7]?.valor||0),"em verificação (na esteira)");
       case "externa": return c(M[6]?.valor,"na verificação externa")+c(Object.values(SC.detalhes?.reprocessar||{}).reduce((s,x)=>s+(x||0),0),"a reprocessar");
       case "farol": return c(M[7]?.valor,"prontas para o Farol");
     } return ""; }

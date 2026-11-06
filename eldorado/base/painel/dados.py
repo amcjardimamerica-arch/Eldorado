@@ -97,6 +97,27 @@ def _de_replicador(url: str | None, rep: set[str]) -> bool:
     return bool(h) and any(h == r or h.endswith("." + r) for r in rep)
 
 
+TEMAS_LEI = (   # 06/11/2026 (rastreio): a categoria de cada norma, pela ementa (a primeira que casa)
+    ("crianca_adolescente", r"crian[çc]a|adolescente|\bECA\b|FIA\b|8\.?069"),
+    ("pessoa_idosa", r"idos[ao]|pessoa idosa|10\.?741"),
+    ("assistencia_social", r"assist[êe]ncia social|\bLOAS\b|CEBAS|\bSUAS\b|8\.?742|187/2021"),
+    ("cultura", r"cultur|Rouanet|8\.?313|Aldir Blanc|\bPNAB\b|Goyazes|Paulo Gustavo"),
+    ("esporte", r"esport|desport|11\.?438"),
+    ("parcerias_e_fomento", r"13\.?019|parceria|\bMROSC\b|fomento|colabora[çc][ãa]o|organiza[çc][õo]es da sociedade civil|\bOSC"),
+    ("gestao_e_controle", r"transpar[êe]ncia|acesso [àa] informa|12\.?527|licita|14\.?133|LGPD|13\.?709|controle|presta[çc][ãa]o de contas"),
+)
+
+
+def _leis(bib) -> list[dict[str, Any]]:
+    import re as _re
+    saida = []
+    for r in bib.execute("SELECT id, esfera, numero, ementa, situacao, link_oficial FROM lei ORDER BY ementa"):
+        tema = next((t for t, rx in TEMAS_LEI if _re.search(rx, r[3] or "", _re.I)), "constituicao_e_direitos")
+        saida.append({"id": r[0], "tema": tema, "tipo": (r[1] or "").capitalize(), "titulo": r[3] or r[0], "nome": r[3] or r[0],
+                      "esfera": r[1] or "", "numero": r[2] or "", "situacao": r[4] or "", "link": r[5] or ""})
+    return saida
+
+
 def _molde(nome: str) -> Any:
     return json.loads((MOLDE / nome).read_text(encoding="utf-8"))
 
@@ -916,6 +937,14 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     D["biblioteca"].update(
         {"biblioteca": "Biblioteca do Eldorado (biblioteca.db)", "atualizado_em": agora, "acervos": {"leis": leis, "oportunidades": total, "associacoes": 0}}
     )
+    # 06/11/2026 (rastreio): as normas por categoria, do banco (o molde trazia as 8 categorias vazias: «27 normas» no
+    # cabeçalho e «0 norma(s)» em cada categoria)
+    _L = _leis(sis.bib)
+    _pt: dict[str, list] = {t: [] for t, _ in TEMAS_LEI} | {"constituicao_e_direitos": []}
+    for x in _L:
+        _pt[x["tema"]].append(x)
+    D["biblioteca"].setdefault("detalhe", {})["leis"] = {"atualizado_em": agora, "total": len(_L),
+                                                         "temas": {t: len(v) for t, v in _pt.items()}, "por_tema": _pt}
     fases = dict(sis.bib.execute("SELECT p.fase, COUNT(*) " + VIVOS + " GROUP BY p.fase").fetchall())
     D["fila_verificacao"].update({"gerado_em": agora, "total": fases.get("analise externa", 0)})
     from ..cartorio.regua import regua as _regua  # R46: as elegíveis são as validadas (abertas no Farol), a régua única
@@ -945,6 +974,7 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
         }
     )
     arquivos["status_motores.json"] = sm
+    arquivos["livros_leis.json"] = {"gerado_em": agora, "total": len(_L), "livros": _L}   # 06/11/2026: era o molde vazio
     # 05/11/2026 (titular): a pontuação de cada motor — os acertos parametrizados com os erros, e as indicações de melhoria
     try:
         from ..cerebro.pontuacao_motores import calcular as _pontuar
