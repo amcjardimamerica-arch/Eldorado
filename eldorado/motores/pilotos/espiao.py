@@ -191,6 +191,15 @@ def familias(empresas: list[str]) -> dict[str, Callable[[random.Random, int], st
 from ...base.comandante.cartorio import peso_espiao  # noqa: E402
 
 
+def _fator_real(con, familia: str) -> float:
+    """06/11/2026: o fator real da família pelo último ciclo dos pilotos (1 sem ciclo)."""
+    try:
+        from ...base.cerebro.ciclo_pilotos import fator_familia
+        return fator_familia(con, familia)
+    except Exception:  # noqa: BLE001 — sem o Cérebro do ciclo, o sorteio segue como antes
+        return 1.0
+
+
 class Espiao:
     def __init__(
         self,
@@ -247,7 +256,7 @@ class Espiao:
         ruins = {q for (q,) in self.con.execute("SELECT texto FROM espiao_consulta WHERE usos >= 3 AND achados = 0")}
         sorteio = sorted(
             (
-                (self.rnd.betavariate(max(0.1, a), max(0.1, b)) * peso_espiao(f), f)   # 02/11/2026: a ordem de território do Comandante
+                (self.rnd.betavariate(max(0.1, a), max(0.1, b)) * peso_espiao(f) * _fator_real(self.con, f), f)   # 06/11: o fator real
                 for f, a, b in self.con.execute("SELECT nome, a, b FROM espiao_familia")
                 if f in self.fams
             ),

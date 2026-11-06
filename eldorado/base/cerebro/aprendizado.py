@@ -67,4 +67,18 @@ def no_aprendizado(itens: list[dict[str, Any]], parametros: dict[str, Any], cont
         finally:
             con.close()
     r = Aprendizado(contexto.diario).avaliar(temporarios)
-    return [{k: len(v) for k, v in r.items()} | {"avaliados": len(temporarios), "em": agora()}]
+    # 06/11/2026 (titular): o ciclo dos pilotos a cada 100 (missões do Espião; erros do Interceptador), pelo resultado real
+    ciclo_feito: dict[str, Any] = {}
+    b = Path(parametros.get("dados", "dados")) / "biblioteca.db"
+    if p.exists() and b.exists():
+        from .ciclo_pilotos import ciclo
+        bib = sqlite3.connect(f"file:{b}?mode=ro", uri=True)
+        cer = sqlite3.connect(f"file:{p}?mode=ro", uri=True)
+        try:
+            ciclo_feito = ciclo(bib, cer, contexto.diario)
+        except sqlite3.Error as e:
+            ciclo_feito = {"erro": f"{type(e).__name__}: {str(e)[:120]}"}
+        finally:
+            bib.close()
+            cer.close()
+    return [{k: len(v) for k, v in r.items()} | {"avaliados": len(temporarios), "em": agora(), "ciclo_pilotos": list(ciclo_feito)}]

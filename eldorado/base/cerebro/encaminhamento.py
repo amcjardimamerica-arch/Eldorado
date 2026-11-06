@@ -41,6 +41,28 @@ def _canivete(a):
         return a
 
 
+
+def _preferencia_do_ciclo(abordagens: list[int]) -> list[int] | None:
+    """06/11/2026: a ordem das abordagens pelo rendimento real do último ciclo do Interceptador (a cada 100 erros)."""
+    import sqlite3 as _sq
+    from pathlib import Path as _P
+    p = _P("dados") / "cerebro.db"
+    if not p.exists():
+        return None
+    try:
+        con = _sq.connect(f"file:{p}?mode=ro", uri=True)
+        try:
+            from .ciclo_pilotos import preferencia_interceptador
+            ordem = preferencia_interceptador(con)
+        finally:
+            con.close()
+    except _sq.Error:
+        return None
+    if not ordem:
+        return None
+    pos = {n: i for i, n in enumerate(ordem)}
+    return sorted(abordagens, key=lambda n: pos.get(n, len(pos)))
+
 class Encaminhamento:
     def __init__(self, biblioteca: sqlite3.Connection, diario, registro, interceptador, rede=None):
         self.con, self.diario, self.registro, self.interceptador, self.rede = biblioteca, diario, registro, interceptador, rede
@@ -78,7 +100,8 @@ class Encaminhamento:
                                                                     "em": agora(), "resultado": json.dumps({"trouxe": bool(a), "faltam": lv.faltam}),
                                                                     "proxima_em": None})
                 return f"motor {motor}", (self._entregar(a, motor) if a else None)
-        r = self.interceptador.voar(lv, ate, preferencia=abordagens if self.rede is not None else None)   # o plano de voo
+        pref = abordagens if self.rede is not None else _preferencia_do_ciclo(abordagens)   # 06/11: sem a rede, a ordem do ciclo dos 100
+        r = self.interceptador.voar(lv, ate, preferencia=pref)   # o plano de voo
         entregues = [self._entregar(a, "interceptador") for a in r["achados"]]
         if r.get("adiado"):
             return "interceptador · adiado (o orçamento da passagem)", entregues or None

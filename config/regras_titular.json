@@ -634,6 +634,18 @@
    "travas": [
     "testes/test_regua_unica.py::test_uma_regua_para_abertas_validadas_e_em_verificacao"
    ]
+  },
+  {
+   "id": "R47",
+   "data": "2026-11-06",
+   "tema": "o ciclo dos pilotos a cada 100, pelo resultado real",
+   "regra": "A cada 100 missões do Espião e a cada 100 erros do Interceptador (a tentativa sem item aceito), o Cérebro mede o resultado REAL do que cada piloto trouxe — o livro confirmado pelo Claude no Chrome (válido, encerrada, arquivar) ou chegado ao Farol é acerto; o descartado ou expurgado é erro — e orienta o Comandante: o fator real de cada família do Espião (multiplicado na escolha do Comandante e no sorteio do Espião), as consultas que só trouxeram erro saem do rodízio, e a ordem das abordagens do Interceptador pelo rendimento real (quando a rede não der a dela). Cada ciclo fica no Cérebro (medicao «ciclo:espiao» / «ciclo:interceptador») e vira uma lição do Aprendizado.",
+   "porque": "titular, 06/11/2026: o aprendizado a cada 100 do Eldorado0 (29/09 e 08/10: «a cada 100 erros, parâmetros de busca melhores»; «estratégia nova a cada 100 pesquisas») não existia no sistema novo; o Espião e a política do Comandante aprendiam pelos candidatos da missão, não pelo resultado real (a família «internacional_espanhol» com 2.499 candidatos dominava; a precisão real do Espião era de 15%).",
+   "onde": "eldorado/base/cerebro/ciclo_pilotos.py; eldorado/base/cerebro/aprendizado.py (no_aprendizado); eldorado/base/comandante/pilotos.py (_familia); eldorado/motores/pilotos/espiao.py (escolher); eldorado/base/cerebro/encaminhamento.py",
+   "travas": [
+    "testes/test_ciclo_pilotos.py::test_o_fator_real_inverte_a_familia_dos_candidatos",
+    "testes/test_ciclo_pilotos.py::test_o_ciclo_roda_a_cada_100_e_o_comandante_usa"
+   ]
   }
  ]
 }

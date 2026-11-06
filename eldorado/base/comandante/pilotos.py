@@ -173,7 +173,10 @@ def _familia(dados: Path, cer: sqlite3.Connection) -> tuple[str | None, float, i
     import random
     agora_m = time.monotonic()
     lista = [(a, pr) for a, pr in p["pol"].ordenar(ctx) if _cansaco.get(a, {}).get("descansa_ate", 0) <= agora_m] or p["pol"].ordenar(ctx)
-    pesos = [max(pr, 0.0) for _a, pr in lista]
+    # 06/11/2026 (ciclo dos pilotos): o peso multiplicado pelo FATOR REAL da família (a taxa de acerto real dela, pelos
+    # vereditos do Chrome e pelo Farol, contra a média) — a política aprendia só com os candidatos da missão
+    from ..cerebro.ciclo_pilotos import fator_familia
+    pesos = [max(pr, 0.0) * fator_familia(cer, a) for a, pr in lista]
     alvo, prob = random.choices(lista, weights=pesos)[0] if sum(pesos) > 0 else random.choice(lista)
     p["ultimo_ctx"] = (ctx, p["pol"].opcoes, prob)
     return alvo, prob, p["pol"].aprendidas

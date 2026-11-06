@@ -76,7 +76,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 11902,
+   "linhas": 11903,
    "situacao": "em funcionamento",
    "ordem": 4
   },
@@ -130,6 +130,7 @@
     "test_cassete.py",
     "test_catalogo_captacao.py",
     "test_cerebro.py",
+    "test_ciclo_pilotos.py",
     "test_comandante_biblioteca.py",
     "test_comandante_cartorio.py",
     "test_comandante_expurgo.py",
@@ -256,6 +257,7 @@
     "test_cartorio_tempo_real.py",
     "test_catalogo_captacao.py",
     "test_cerebro.py",
+    "test_ciclo_pilotos.py",
     "test_comandante_biblioteca.py",
     "test_comandante_cartorio.py",
     "test_comandante_expurgo.py",
@@ -784,6 +786,7 @@
     "eldorado/base/cartorio/passaporte.py",
     "eldorado/base/cartorio/selos.py",
     "eldorado/base/cerebro/aprendizado.py",
+    "eldorado/base/cerebro/ciclo_pilotos.py",
     "eldorado/base/cerebro/completude.py",
     "eldorado/base/cerebro/encaminhamento.py",
     "eldorado/base/cerebro/governador.py",
@@ -1879,6 +1882,7 @@
     "test_alarmes_sala_0411.py",
     "test_capacidade.py",
     "test_cerebro.py",
+    "test_ciclo_pilotos.py",
     "test_comandante_biblioteca.py",
     "test_comandante_memoria.py",
     "test_decisao.py",
@@ -2512,9 +2516,10 @@
   },
   {
    "arquivo": "eldorado/base/comandante/pilotos.py",
-   "linhas": 270,
+   "linhas": 273,
    "finalidade": "O Comandante comanda os pilotos (a etapa C5; a fase 4 do desenho, titular, 25/10/2026). Cada missão do Espião e cada",
    "depende_de": [
+    "eldorado/base/cerebro/ciclo_pilotos.py",
     "eldorado/base/cerebro/governador.py",
     "eldorado/base/comandante/decidir.py",
     "eldorado/base/comandante/parametros.py",
@@ -2537,6 +2542,7 @@
    "parte": "BASE",
    "componente": "Comandante: percebe, decide, organiza as filas, comanda os pilotos, parametriza e apresenta",
    "ligacoes": [
+    "eldorado/base/cerebro/ciclo_pilotos.py",
     "eldorado/base/cerebro/governador.py",
     "eldorado/base/comandante/decidir.py",
     "eldorado/base/comandante/parametros.py",
@@ -2548,10 +2554,11 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/encaminhamento.py",
-   "linhas": 203,
+   "linhas": 226,
    "finalidade": "A rede neural na fase 3 do Cartório (titular, 22/10/2026): quem age é a rede, não o Cartório.",
    "depende_de": [
     "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/cerebro/ciclo_pilotos.py",
     "eldorado/base/cerebro/fila.py",
     "eldorado/base/cerebro/livros_motores.py",
     "eldorado/base/cerebro/originais.py",
@@ -2595,6 +2602,7 @@
    "componente": "Cartório · etapa 3 (a rede neural encaminha)",
    "ligacoes": [
     "eldorado/base/cartorio/passaporte.py",
+    "eldorado/base/cerebro/ciclo_pilotos.py",
     "eldorado/base/cerebro/fila.py",
     "eldorado/base/cerebro/livros_motores.py",
     "eldorado/base/cerebro/originais.py",
@@ -4726,10 +4734,11 @@
   },
   {
    "arquivo": "eldorado/motores/pilotos/espiao.py",
-   "linhas": 365,
+   "linhas": 374,
    "finalidade": "O PILOTO ESPIÃO (do Eldorado0, titular, 09 e 16/10/2026): caça só o que nenhum motor alcança.",
    "depende_de": [
     "eldorado/banco/cerebro_db/esquema.py",
+    "eldorado/base/cerebro/ciclo_pilotos.py",
     "eldorado/base/comandante/cartorio.py",
     "eldorado/base/nucleo/contratos.py"
    ],
@@ -4748,6 +4757,7 @@
    "componente": "Pilotos: motores livres com IA",
    "ligacoes": [
     "eldorado/banco/cerebro_db/esquema.py",
+    "eldorado/base/cerebro/ciclo_pilotos.py",
     "eldorado/base/comandante/cartorio.py",
     "eldorado/base/nucleo/contratos.py"
    ],
@@ -5082,7 +5092,7 @@
    "acionado_por": [],
    "eventos": [],
    "testes": [],
-   "linhas": 639,
+   "linhas": 651,
    "situacao": "em funcionamento",
    "ordem": 162
   },
@@ -5259,9 +5269,10 @@
   },
   {
    "arquivo": "eldorado/base/cerebro/aprendizado.py",
-   "linhas": 70,
+   "linhas": 84,
    "finalidade": "O ciclo de aprendizado: temporário (30 dias) → permanente, se funcionou; arquivado, se falhou; vencido, sai.",
    "depende_de": [
+    "eldorado/base/cerebro/ciclo_pilotos.py",
     "eldorado/base/nucleo/eventos.py"
    ],
    "eventos": [
@@ -5273,7 +5284,9 @@
    "acionado_por": [
     "passagem, nó 25 «aprender»"
    ],
-   "usado_por": [],
+   "usado_por": [
+    "eldorado/base/cerebro/ciclo_pilotos.py"
+   ],
    "testes": [
     "test_cerebro.py",
     "test_parecer_sala_2910.py",
@@ -5284,6 +5297,7 @@
    "parte": "BASE",
    "componente": "Cérebro: Regência e Pertinência e aprendizado",
    "ligacoes": [
+    "eldorado/base/cerebro/ciclo_pilotos.py",
     "eldorado/base/nucleo/eventos.py"
    ],
    "critico": false,
@@ -6067,7 +6081,7 @@
   },
   {
    "arquivo": "eldorado/base/painel/sala.py",
-   "linhas": 1308,
+   "linhas": 1318,
    "finalidade": "A sala de controle (o plano: base/painel/sala.py): cada mostrador ligado ao dado MEDIDO pelo sistema (titular,",
    "depende_de": [
     "eldorado/base/aprendizado/avaliar.py",
@@ -6627,6 +6641,7 @@
    "eventos": [],
    "acionado_por": [],
    "usado_por": [
+    "eldorado/base/cerebro/ciclo_pilotos.py",
     "eldorado/base/painel/dados.py"
    ],
    "testes": [
@@ -6678,6 +6693,40 @@
    "critico": false,
    "metrica": "testes verdes e uso registrado",
    "ordem": 225
+  },
+  {
+   "arquivo": "eldorado/base/cerebro/ciclo_pilotos.py",
+   "linhas": 160,
+   "finalidade": "O ciclo de aprendizado dos pilotos a cada 100 (titular, 29/09/2026, no Eldorado0: «a cada 100 erros, parâmetros de",
+   "depende_de": [
+    "eldorado/base/cerebro/aprendizado.py",
+    "eldorado/base/cerebro/pontuacao_motores.py",
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "eventos": [
+    "espiao.consulta",
+    "medicao.registrada"
+   ],
+   "acionado_por": [],
+   "usado_por": [
+    "eldorado/base/cerebro/aprendizado.py",
+    "eldorado/base/cerebro/encaminhamento.py",
+    "eldorado/base/comandante/pilotos.py",
+    "eldorado/motores/pilotos/espiao.py"
+   ],
+   "testes": [],
+   "situacao": "em funcionamento",
+   "etapa": "18 Outros",
+   "parte": "BASE",
+   "componente": "Outros",
+   "ligacoes": [
+    "eldorado/base/cerebro/aprendizado.py",
+    "eldorado/base/cerebro/pontuacao_motores.py",
+    "eldorado/base/nucleo/eventos.py"
+   ],
+   "critico": false,
+   "metrica": "testes verdes e uso registrado",
+   "ordem": 226
   }
  ],
  "motores": [
