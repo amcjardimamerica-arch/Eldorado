@@ -109,18 +109,27 @@ def montar(
     inst: dict[str, dict[str, Any]] = {}
 
     def I(id_, nome, valor, estado, motivo, quando=None, escala=None, faixa=None, efeito=None, cadencia_h=None):  # noqa: E743
+        # 06/11/2026 (parecer de teste do site, R45): sem régua (faixa), o instrumento não é verde — fica cinza, «sem régua»
+        # (33 de 45 saíam verdes por padrão e nunca acenderiam); a cadência é a da publicação do painel (15 min) quando o
+        # instrumento não tem a sua; «o que faz», «resultado» e «efeito» sempre preenchidos; as contagens como inteiros
+        if faixa is None and estado == "verde":
+            estado, motivo = "cinza", f"{motivo} · sem régua: falta a faixa do normal e do alarme"
+        if isinstance(valor, float) and valor.is_integer():
+            valor = int(valor)
         inst[id_] = {
             "id": id_,
             "nome": nome,
             "valor": valor,
             "estado": estado,
             "motivo": motivo,
+            "faz": f"mede: {nome}",
+            "resultado": motivo,
             "quando": quando,
             "idade_h": _idade_h(quando, agora),
-            "cadencia_h": cadencia_h,
+            "cadencia_h": cadencia_h if cadencia_h is not None else 0.25,
             **({"escala": escala} if escala else {}),
             **({"faixa": faixa} if faixa else {}),
-            **({"efeito": efeito} if efeito else {}),
+            "efeito": efeito or motivo,
         }
 
     # ---- os dados comuns
@@ -131,11 +140,16 @@ def montar(
     com_erro = [m for m in reg if ult.get(m) and ult[m][1]]
     ultima_leitura = max((v[0] for v in ult.values() if v[0]), default=None)
     agenda = {r[0] for r in cer.execute("SELECT DISTINCT modulo FROM agenda")}
-    AB = "FROM livro l JOIN livro_dados d ON d.livro_id = l.id WHERE d.situacao_prazo = 'aberta' AND l.situacao NOT IN ('excluido', 'unido')"
-    abertas = q(bib, f"SELECT COUNT(*) {AB}")
-    estrelas = Counter(dict(bib.execute(f"SELECT COALESCE(l.estrela, 'sem'), COUNT(*) {AB} GROUP BY 1").fetchall()))
-    validadas = estrelas.get("prata", 0) + estrelas.get("ouro", 0)
-    revisar = q(bib, f"SELECT COUNT(*) {AB} AND d.validacao = 'revisar'")
+    # R46 (06/11/2026, parecer de teste do site): a régua única — a Sala contava as abertas também no arquivo (230 contra
+    # 209 do Início) e as validadas pela estrela; agora tudo vem de eldorado/base/cartorio/regua.py
+    from ..cartorio.regua import regua as _regua
+    RG = _regua(bib)
+    AB = ("FROM livro l JOIN livro_dados d ON d.livro_id = l.id JOIN passaporte p_ab ON p_ab.livro_id = l.id "
+          "WHERE d.situacao_prazo = 'aberta' AND l.situacao NOT IN ('excluido', 'unido') AND p_ab.fase <> 'arquivo'")
+    abertas = RG["abertas"]
+    estrelas = Counter(RG["estrelas"])
+    validadas = RG["validadas"]
+    com_estrela = estrelas.get("prata", 0) + estrelas.get("ouro", 0)        # a Finalidade: as abertas com prazo e link original
     # uma única contagem no site inteiro (25/10/2026): só os livros vivos (a sala contava também os unidos e os excluídos)
     fases = Counter(
         dict(
@@ -150,7 +164,7 @@ def montar(
     cobertura = round(100 * len(lidos24) / n)
     I(
         "ma_cobertura",
-        "Cobertura do dia (motores lidos em 24 h)",
+        "Cobertura do dia (motores que leram em 24 h — a perda está em «Motores com sinal de perda»)",
         cobertura,
         _faixa(cobertura, 90, 60),
         f"{len(lidos24)} de {len(reg)} motores leram nas últimas 24 h",
@@ -169,14 +183,16 @@ def montar(
         if esgot
         else "todos os motores com leitura completa em 48 h",
         ultima_leitura,
+      faixa={"normal": [None, 0], "alarme": [None, 5]},
+
     )
-    fin = round(100 * validadas / abertas) if abertas else None
+    fin = round(100 * com_estrela / abertas) if abertas else None
     I(
         "dg_finalidade",
         "Finalidade do sistema (abertas com prazo e link original)",
         fin,
         _faixa(fin, 60, 30),
-        f"{validadas} de {abertas} oportunidades abertas com o prazo e o link original (estrela prata ou ouro)",
+        f"{com_estrela} de {abertas} oportunidades abertas com o prazo e o link original (estrela prata ou ouro)",
         iso,
         [0, 100],
         {"normal": [60, None], "alarme": [30, None]},
@@ -212,6 +228,8 @@ def montar(
         _faixa(len(fora_cad), 0, 5, False),
         ("fora da cadência: " + ", ".join(fora_cad[:8])) if fora_cad else "todos leram dentro da cadência",
         ultima_leitura,
+      faixa={"normal": [None, 0], "alarme": [None, 5]},
+
     )
     I(
         "mo_retentativa",
@@ -220,6 +238,8 @@ def montar(
         _faixa(len(com_erro), 0, 3, False),
         ("com erro na última leitura: " + ", ".join(com_erro[:8])) if com_erro else "nenhum motor com erro na última leitura",
         ultima_leitura,
+      faixa={"normal": [None, 0], "alarme": [None, 3]},
+
     )
     fora_fila = [m for m in reg if m not in agenda]
     I(
@@ -229,6 +249,8 @@ def montar(
         _faixa(len(fora_fila), 0, 3, False),
         ("fora da agenda: " + ", ".join(fora_fila[:8])) if fora_fila else "todo motor registrado está na agenda",
         iso,
+      faixa={"normal": [None, 0], "alarme": [None, 3]},
+
     )
     col = q(bib, "SELECT COUNT(*) FROM achado WHERE encontrado_em >= ?", (agora - timedelta(days=1)).date().isoformat())
     ultimo_achado = q(bib, "SELECT MAX(encontrado_em) FROM achado")
@@ -239,6 +261,8 @@ def montar(
         "verde" if col else "amarelo",
         f"{col} achados entregues pelos motores desde ontem",
         ultimo_achado,
+      faixa={"regra": "verde quando há valor; atenção quando zero"},
+
     )
     # ---- 03 Certificação
     comp = q(
@@ -266,6 +290,8 @@ def montar(
         "verde" if conf else "amarelo",
         f"{conf} livros com a origem confirmada (o link original)",
         iso,
+      faixa={"regra": "verde quando há valor; atenção quando zero"},
+
     )
     # os documentos sem texto lido (01/11/2026, titular: o alerta "8.704 documentos sem texto lido"). Antes contava os
     # documentos SEM PÁGINA no banco; desde a R35 a leitura sai do banco de propósito depois de certificada, e todo documento
@@ -296,6 +322,7 @@ def montar(
         f"{expurgados} lidos e certificados, com a leitura já fora do banco (R35, o esperado) · os herdados do sistema anterior "
         f"vieram sem o texto: {herd_sem} (usados por {herd_livro} livro(s) ativo(s), com a certidão herdada)",
         iso,
+        faixa={"regra": "falha acima de 5% dos documentos novos sem texto; atenção com algum sem texto; verde sem nenhum"},
     )
     # o último expurgo (01/11/2026, titular): o expurgo é do Claude, nunca do sistema; a Sala mostra o último e o que está
     # indicado para avaliação (os documentos sem uso, os achados sem livro e os migrados aguardando o Chrome). Nunca vermelho
@@ -315,6 +342,8 @@ def montar(
             f"{cd['documentos_sem_uso']} documentos e {cd['achados_sem_livro']} achados sem livro (manutenção do sistema, R36) · "
             f"alerta acima de {LIMITE_CLAUDE_ITENS} itens ou com o último expurgo há mais de {LIMITE_CLAUDE_HORAS} h",
             (ul or {}).get("em") or iso,
+      faixa={"regra": "atenção acima de 50 itens ou com o mais antigo há mais de 168 h"},
+
         )
     except Exception:  # noqa: BLE001
         pass
@@ -339,6 +368,8 @@ def montar(
             f"{miss} missões nas últimas 24 h (mínimo garantido: uma a cada 6 h)" if miss else "nenhuma missão em 24 h",
             ult_m,
             cadencia_h=6,
+      faixa={"regra": "verde quando há valor; falha quando zero"},
+
         )
     except sqlite3.Error:
         I("pi_espiao", "Missões do Espião em 24 h", None, "cinza", "o aprendizado do Espião ainda não está no Cérebro", None)
@@ -350,6 +381,8 @@ def montar(
         "verde" if voos else "amarelo",
         f"{voos} abordagens do Interceptador nas últimas 24 h",
         q(bib, "SELECT MAX(em) FROM tentativa"),
+      faixa={"regra": "verde quando há valor; atenção quando zero"},
+
     )
     ext = fases.get("analise externa", 0)
     _mais_antigo = q(bib, "SELECT MIN(p.entrou_em) FROM passaporte p JOIN livro l ON l.id = p.livro_id "
@@ -357,7 +390,8 @@ def montar(
     _idade_ext = _idade_h(_mais_antigo, agora) if _mais_antigo else None
     I("de_decisoes", "Livros aguardando o Claude no Chrome", ext, _alerta_claude(ext, _idade_ext),
       f"{ext} livros na análise externa" + (f"; o mais antigo há {round(_idade_ext)} h" if _idade_ext is not None else "")
-      + f" — alerta acima de {LIMITE_CLAUDE_ITENS} livros ou com algum há mais de {LIMITE_CLAUDE_HORAS} h", iso)
+      + f" — alerta acima de {LIMITE_CLAUDE_ITENS} livros ou com algum há mais de {LIMITE_CLAUDE_HORAS} h", iso,
+      faixa={"regra": "atenção acima de 50 itens ou com o mais antigo há mais de 168 h"})
     # ---- 05 Verificação externa
     # 29/10/2026 (titular): o total na fila e as partes do lote do dia; verde até 50, amarelo até 200, vermelho acima
     _hoje_lote = agora.date().isoformat()
@@ -372,6 +406,8 @@ def montar(
         f"{ext} livros na fila do Claude no Chrome · lote do dia: "
         + (f"{partes_dia} parte(s) de até 50" if partes_dia else ("1 arquivo" if tem_dia else "ainda não gerado")),
         iso,
+      faixa={"regra": "atenção acima de 50 itens ou com o mais antigo há mais de 168 h"},
+
     )
     lotes = sorted((raiz / "verificacao" / "lotes").glob("*.json")) if (raiz / "verificacao" / "lotes").exists() else []
     importados = (
@@ -411,10 +447,13 @@ def montar(
         _faixa(len(sem_retorno), 1, 3, False),
         ("sem retorno: " + ", ".join(sem_retorno[-5:])) if sem_retorno else "todo lote teve retorno",
         iso,
+      faixa={"normal": [None, 1], "alarme": [None, 3]},
+
     )
     chrome = q(bib, "SELECT COUNT(*) FROM veredito WHERE origem LIKE '%chrome%' OR origem LIKE '%externa%'")
     ult_v = q(bib, "SELECT MAX(em) FROM veredito WHERE origem LIKE '%chrome%' OR origem LIKE '%externa%'")
-    I("ve_completas", "Vereditos do Chrome", chrome, "verde" if chrome else "cinza", f"{chrome} vereditos importados da análise externa", ult_v)
+    I("ve_completas", "Vereditos do Chrome", chrome, "verde" if chrome else "cinza", f"{chrome} vereditos importados da análise externa", ult_v,
+      faixa={"regra": "verde quando há valor; sem leitura (cinza) quando zero"})
     idade_v = _idade_h(ult_v, agora)
     I(
         "ve_importado",
@@ -423,6 +462,8 @@ def montar(
         _faixa(idade_v, 72, 168, False) if idade_v is not None else "cinza",
         "nenhum veredito importado ainda" if idade_v is None else f"último veredito há {idade_v:.0f} h",
         ult_v,
+      faixa={"normal": [None, 72], "alarme": [None, 168]},
+
     )
     # ---- 29/10/2026 (titular): as missões do Interceptador e as vagas (a regra dos 85% do processador total)
     try:
@@ -461,6 +502,8 @@ def montar(
         if not nm
         else f"{nm} missões, {it} itens do checklist obtidos (média {it / nm:.1f} por missão); {vazias} voltaram sem item{causas_txt}",
         iso,
+      faixa={"normal": [1.5, None], "alarme": [0.5, None]},
+
     )
     try:
         vq = cer.execute("SELECT valor, motivo, em FROM medicao WHERE marcador = 'pilotos:vagas' ORDER BY em DESC LIMIT 1").fetchone()
@@ -473,6 +516,8 @@ def montar(
         "cinza" if not vq else "verde",
         "ainda sem o quadro das vagas" if not vq else str(vq[1]),
         vq[2] if vq else iso,
+      faixa={"regra": "verde quando há registro; cinza sem medida"},
+
     )
     # ---- 29/10/2026: os ALARMES DE TENDÊNCIA (a degradação lenta aparece antes de virar problema)
     orfaos = q(bib, "SELECT COUNT(*) FROM achado WHERE decisao = 'pendente' AND encontrado_em < ?", hoje)
@@ -483,6 +528,8 @@ def montar(
         _faixa(orfaos, 0, 49, False),
         "nenhum achado órfão" if not orfaos else f"{orfaos} achado(s) sem decisão desde antes de hoje (a informação ainda não chegou ao livro)",
         iso,
+      faixa={"normal": [None, 0], "alarme": [None, 49]},
+
     )
     ontem = (agora - timedelta(days=1)).date()
     pasta_ontem = raiz / "eventos" / f"{ontem:%Y}" / f"{ontem:%m}" / f"{ontem:%d}"
@@ -505,6 +552,8 @@ def montar(
         if mb_ontem is None
         else f"{mb_ontem} MB de operação em {ontem:%d/%m} (mais {mb_paginas} MB de texto das páginas dos livros, o dado que deve crescer)",
         iso,
+      faixa={"normal": [None, 40], "alarme": [None, 80]},
+
     )
     try:
         mem_e = cer.execute("SELECT marcador, MAX(valor) FROM medicao WHERE marcador LIKE 'memoria:%' AND em >= ?", (h24,)).fetchone()
@@ -518,6 +567,8 @@ def montar(
         _faixa(mem_v, 4500, 6000, False),
         "o medidor por etapa ainda não registrou" if mem_v is None else f"pico de {mem_v:.0f} MB depois da etapa {str(mem_e[0])[8:]}",
         iso,
+      faixa={"normal": [None, 4500], "alarme": [None, 6000]},
+
     )
     ult_lote = lotes[-1].stem if lotes else None
     idade_l = _idade_h(datetime.fromtimestamp(lotes[-1].stat().st_mtime, timezone.utc).isoformat(), agora) if lotes else None
@@ -528,6 +579,8 @@ def montar(
         _faixa(idade_l, 48, 120, False) if idade_l is not None else "cinza",
         f"último lote: {ult_lote}" if ult_lote else "nenhum lote gerado",
         None if not lotes else datetime.fromtimestamp(lotes[-1].stat().st_mtime, timezone.utc).isoformat(),
+      faixa={"normal": [None, 48], "alarme": [None, 120]},
+
     )
     # ---- 06 Repositório
     I(
@@ -537,7 +590,9 @@ def montar(
         "verde" if abertas else "amarelo",
         f"{abertas} oportunidades com o prazo aberto",
         iso,
-        efeito=f"{validadas} validadas · {estrelas.get('bronze', 0) + estrelas.get('sem', 0)} em verificação · {revisar} validação manual",
+        efeito=f"{validadas} validadas (no Farol) · {RG['em_verificacao']} em verificação (na esteira) · {RG['com_data']} com data-limite",
+      faixa={"regra": "verde quando há valor; atenção quando zero"},
+
     )
     paralelos = sorted(p.relative_to(raiz).as_posix() for p in (raiz / "dados").rglob("*.db") if p.name not in ("biblioteca.db", "cerebro.db"))
     I(
@@ -547,6 +602,8 @@ def montar(
         "verde" if not paralelos else "vermelho",
         ("bancos paralelos: " + ", ".join(paralelos[:6]) + ("…" if len(paralelos) > 6 else "")) if paralelos else "só a Biblioteca e o Cérebro",
         iso,
+      faixa={"regra": "verde quando não há nenhum; falha quando há algum"},
+
     )
     # ---- 07 Biblioteca
     livros = q(bib, "SELECT COUNT(*) FROM livro WHERE situacao NOT IN ('excluido', 'unido')")
@@ -565,9 +622,12 @@ def montar(
         "verde" if conf else "amarelo",
         "os livros com a origem confirmada, vigiados pelo mapa do site original",
         iso,
+      faixa={"regra": "verde quando há valor; atenção quando zero"},
+
     )
     emp = q(bib, "SELECT COUNT(*) FROM empresa") if bib.execute("SELECT 1 FROM sqlite_master WHERE name = 'empresa'").fetchone() else 0
-    I("em_rankings", "Empresas na Biblioteca", emp, "verde" if emp else "cinza", f"{emp} empresas com incentivos registrados", iso)
+    I("em_rankings", "Empresas na Biblioteca", emp, "verde" if emp else "cinza", f"{emp} empresas com incentivos registrados", iso,
+      faixa={"regra": "verde quando há valor; sem leitura (cinza) quando zero"})
     try:
         from ..cerebro.mapa_arquivos import AGUARDAM_DECISAO
         from ..cerebro.mapa_arquivos import montar as mapa
@@ -582,6 +642,8 @@ def montar(
             if parados
             else "nenhum arquivo fora do funcionamento",
             iso,
+      faixa={"regra": "verde quando não há nenhum; atenção quando há algum"},
+
         )
     except Exception as e:  # noqa: BLE001
         I("hi_uso", "Arquivos fora do funcionamento", None, "cinza", f"o mapa dos arquivos não foi lido: {type(e).__name__}", None)
@@ -631,7 +693,8 @@ def montar(
             {"normal": [0.85, None], "alarme": [0.7, None]},
         )
         idade_t = _idade_h(t, agora)
-        I("rn_treino", "Idade do modelo (horas)", idade_t, _faixa(idade_t, 24, 72, False), f"treinado há {idade_t:.0f} h", t)
+        I("rn_treino", "Idade do modelo (horas)", idade_t, _faixa(idade_t, 24, 72, False), f"treinado há {idade_t:.0f} h", t,
+      faixa={"normal": [None, 24], "alarme": [None, 72]})
     else:
         for k, nome in (
             ("rn_auc", "Discernimento da rede"),
@@ -709,7 +772,8 @@ def montar(
             None,
         )
     # ---- 09 Farol
-    I("es_validadas", "Livros na etapa Farol", fases.get("farol", 0), "verde", "os livros finalizados, liberados pela Regência", iso)
+    I("es_validadas", "Validadas (abertas no Farol)", validadas, "verde",
+      f"{validadas} abertas no Farol (R46); {RG['farol_total']} livros no Farol ao todo, com os de prazo vencido", iso)
     transf = q(bib, "SELECT COUNT(DISTINCT livro_id) FROM transferencia")
     I(
         "es_fichas",
@@ -718,6 +782,8 @@ def montar(
         "verde" if transf else "amarelo",
         f"{transf} livros no formato estável (eldorado.livro/1)",
         q(bib, "SELECT MAX(em) FROM transferencia"),
+      faixa={"regra": "verde quando há valor; atenção quando zero"},
+
     )
     # ---- os compartimentos e a Regência
     comp_ = []
@@ -760,15 +826,17 @@ def montar(
     indice = round(100 * (contagem["verde"] + 0.5 * contagem["amarelo"]) / medidos) if medidos else 0
     # ---- o caminho do dado
     criados = q(bib, "SELECT COUNT(*) FROM livro WHERE criado_em >= ?", h24)
+    # 06/11/2026 (parecer): cada caixa diz a sua janela — a coleta e os livros novos são das últimas 24 h; o resto é o
+    # estoque de agora, pela régua única (antes «Distintas» de 24 h ficava ao lado do estoque, e «Cartório» era só a preparação)
     mimico = [
-        {"etapa": "Coleta", "valor": col},
-        {"etapa": "Distintas", "valor": criados},
-        {"etapa": "Abertas", "valor": abertas},
-        {"etapa": "Com livro", "valor": livros},
-        {"etapa": "Cartório", "valor": fases.get("preparacao", 0)},
-        {"etapa": "Interceptador", "valor": fila_i},
-        {"etapa": "Verificação externa", "valor": ext},
-        {"etapa": "Prontas para o Farol", "valor": fases.get("farol", 0)},
+        {"etapa": "Coleta (24 h)", "valor": col, "janela": "24 h"},
+        {"etapa": "Livros novos (24 h)", "valor": criados, "janela": "24 h"},
+        {"etapa": "Abertas (agora)", "valor": abertas, "janela": "agora"},
+        {"etapa": "Livros vivos (agora)", "valor": livros, "janela": "agora"},
+        {"etapa": "Esteira do Cartório (agora)", "valor": RG["esteira"], "janela": "agora"},
+        {"etapa": "Fila do Interceptador (agora)", "valor": fila_i, "janela": "agora"},
+        {"etapa": "Verificação externa (agora)", "valor": ext, "janela": "agora"},
+        {"etapa": "Validadas no Farol (agora)", "valor": validadas, "janela": "agora"},
     ]
     # ---- os alarmes abertos, a linha do tempo e o histórico
     niv = {"alta": "vermelho", "critica": "vermelho", "crítica": "vermelho", "media": "amarelo", "média": "amarelo"}

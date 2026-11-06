@@ -89,10 +89,24 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection, molde, agora: datet
         "abates": sum(m["achados"] or 0 for m in m_hoje),
         "propostas": sum(m["candidatos"] or 0 for m in m_hoje),
     }
+    # 06/11/2026 (parecer de teste do site): tudo da MESMA tabela, a das missões — antes as buscas iam como texto (a página
+    # lê objetos: 8 linhas «undefined») e o rendimento vinha do contador acumulado do Cérebro (uma família com mais
+    # achados que o total)
+    por_consulta: dict[str, dict] = {}
+    por_familia: dict[str, dict] = {}
+    for m in missoes:
+        for chave, alvo in ((m["consulta"] or "", por_consulta), (m["familia"] or "outros", por_familia)):
+            x = alvo.setdefault(chave, {"consulta": chave, "tentativas": 0, "com_resultado": 0, "achados": 0})
+            x["tentativas"] += 1
+            x["com_resultado"] += int(bool(m["achados"]))
+            x["achados"] += int(m["achados"] or 0)
+    cs = [x for k, x in por_consulta.items() if k]
     e["aprendizado"] = {
-        "buscas_que_funcionam": [c[0] for c in sorted(consultas, key=lambda c: -(c[3] or 0)) if (c[3] or 0) > 0][:10],
-        "buscas_que_falham": [c[0] for c in consultas if (c[2] or 0) >= 2 and not c[3]][:10],
-        "rendimento_por_tipo": {f[0]: {"usos": f[3], "achados": f[4], "taxa": round((f[4] or 0) / f[3], 3) if f[3] else None} for f in familias},
+        "buscas_que_funcionam": sorted([x for x in cs if x["achados"] > 0], key=lambda x: -x["achados"])[:10],
+        "buscas_que_falham": sorted([x for x in cs if x["tentativas"] >= 2 and not x["achados"]], key=lambda x: -x["tentativas"])[:10],
+        "rendimento_por_tipo": {k: {"usos": x["tentativas"], "achados": x["achados"],
+                                    "taxa": round(x["achados"] / x["tentativas"], 3) if x["tentativas"] else None}
+                                for k, x in por_familia.items()},
         "em": ult_m,
     }
     e["fila"] = {
@@ -102,15 +116,20 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection, molde, agora: datet
     }
     e["acumulado"] = {
         **e.get("acumulado", {}),
+        # 06/11/2026: as classes são uma PARTIÇÃO das missões (antes «com resultado» contava a busca que respondeu e se
+        # sobrepunha a «nada no crivo»: a soma passava do total). Com resultado = a missão com achado
         "missoes": len(missoes),
-        "com_resultado": sum(1 for m in missoes if (m["resultados"] or 0) > 0),
+        "com_resultado": sum(1 for m in missoes if m["achados"]),
         "nada_no_crivo": sum(1 for m in missoes if (m["resultados"] or 0) > 0 and not m["achados"]),
-        "busca_sem_resposta": sum(1 for m in missoes if not m["resultados"]),
+        "fora_do_objeto": 0,
+        "busca_sem_resposta": sum(1 for m in missoes if not m["resultados"] and not m["achados"]),
+        "achados_das_missoes": sum(int(m["achados"] or 0) for m in missoes),
         "achados": len(ach["espiao"]),
         "abates": sum(1 for a in ach["espiao"] if a["decisao"] == "aceito"),
         "estrelas_de_ouro": sum(1 for a in ach["espiao"] if estrela.get(a["livro"]) == "ouro"),
         "indicios_entregues_ao_interceptador": len(ach["espiao"]),
     }
+    e["acumulado"]["composicao"] = {k: e["acumulado"][k] for k in ("com_resultado", "nada_no_crivo", "fora_do_objeto", "busca_sem_resposta")}
 
     def missao_quadro(m):  # a missão no formato do quadro do Espião (25/10/2026)
         return {

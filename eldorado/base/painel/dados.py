@@ -28,6 +28,7 @@ from zoneinfo import ZoneInfo
 
 AQUI = Path(__file__).parent
 MOLDE = AQUI / "molde"
+RAIZ_CONFIG = AQUI.parents[2] / "config"
 PAGINA = AQUI / "pagina"
 BR = ZoneInfo("America/Sao_Paulo")
 ITENS_DO_CARTORIO = (
@@ -63,6 +64,37 @@ FASES = {
 
 # a contagem única dos livros no site inteiro (25/10/2026): só os vivos
 VIVOS = "FROM passaporte p JOIN livro l ON l.id = p.livro_id WHERE l.situacao NOT IN ('excluido', 'unido')"
+
+
+UFS_BR = frozenset("AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO".split())
+
+
+def _uf_publicada(uf: str | None, abrangencia: str | None) -> str:
+    """06/11/2026 (parecer de teste do site): a MESMA regra de UF no mapa e no abertas.json — só os 27 estados são UF; o
+    resto (BR, IN, US, vazio) e as oportunidades nacionais/internacionais vão ao grupo nacional ("__nac__")."""
+    u = str(uf or "").strip().upper()
+    return u if u in UFS_BR and (abrangencia or "") not in ("nacional", "internacional") else "__nac__"
+
+
+def _area_publicada(area: str | None) -> str:
+    """A área normalizada («cultura» e «Cultura», «Meio ambiente» e «Meio Ambiente» eram áreas diferentes)."""
+    a = " ".join(str(area or "").split())
+    return a[:1].upper() + a[1:].lower() if a else ""
+
+
+def _replicadores() -> set[str]:
+    try:
+        d = json.loads((RAIZ_CONFIG / "missao" / "republicadores.json").read_text(encoding="utf-8"))
+        return {x.lower() for k in ("agregador", "noticia", "rede_social") for x in d.get(k, [])}
+    except (OSError, ValueError):
+        return set()
+
+
+def _de_replicador(url: str | None, rep: set[str]) -> bool:
+    """O link de agregador (Prosas, Bússola Social, CapitaAI…) não é o site oficial."""
+    from urllib.parse import urlsplit
+    h = (urlsplit(str(url or "")).hostname or "").lower().removeprefix("www.")
+    return bool(h) and any(h == r or h.endswith("." + r) for r in rep)
 
 
 def _molde(nome: str) -> Any:
@@ -594,9 +626,13 @@ def _fluxo(sis: Sistema, agora: str) -> dict:
     certs = sis.certidoes(ids)
     listas = sis.checklist(ids)
     motor_de = sis.motor_do_livro()
-    validados = sis.bib.execute("SELECT COUNT(*) FROM livro_dados").fetchone()[0]
+    # 06/11/2026 (parecer): o mesmo universo do total — os livros vivos (antes contava os dados de todos os livros, inclusive
+    # os excluídos, e «sem_decisao» saía −5.433)
+    validados = sis.bib.execute("SELECT COUNT(*) FROM livro_dados d JOIN livro l ON l.id = d.livro_id "
+                                "WHERE l.situacao NOT IN ('excluido', 'unido')").fetchone()[0]
     total = sis.bib.execute("SELECT COUNT(*) FROM livro WHERE situacao NOT IN ('excluido', 'unido')").fetchone()[0]
     itens, confirmadas, possiveis, por_uf, cal = [], [], [], defaultdict(lambda: {"confirmadas": 0, "possiveis": 0}), []
+    REP = _replicadores()
     origem_ct, tipo_ct, val_ct = Counter(), Counter(), Counter()
     for r in livros:
         c = certs.get(r["id"], {})
@@ -610,7 +646,8 @@ def _fluxo(sis: Sistema, agora: str) -> dict:
         origem_ct[origem] += 1
         tipo_ct[tipo] += 1
         val_ct[r["validacao"] or "pendente"] += 1
-        uf = r["uf"] if r["uf"] and r["uf"] != "BR" and (r["abrangencia"] or "") not in ("nacional", "internacional") else "__nac__"
+        uf = _uf_publicada(r["uf"], r["abrangencia"])
+        lo_rep = _de_replicador(r["link_oficial"], REP)
         por_uf[uf]["confirmadas" if conf else "possiveis"] += 1
         item = _item(
             "fluxo_item",
@@ -620,19 +657,19 @@ def _fluxo(sis: Sistema, agora: str) -> dict:
             uf=r["uf"],
             inicio=r["inscricao_inicio"],
             fim=r["inscricao_fim"],
-            link_oficial=r["link_oficial"] or "",
+            link_oficial="" if lo_rep else (r["link_oficial"] or ""),
             origem=(f"motor {mid}" if mid else "livro migrado (sem motor registrado)") if origem == "motor" else origem,
             tipo=tipo,
             objeto=c.get("Objeto"),
             confirmada=conf,
             url=r["link_oficial"] or r["link_divulgacao"] or "",
-            area=r["area_d"] or r["tema"] or "",
+            area=_area_publicada(r["area_d"] or r["tema"]),
             livro_vinculado={"id": r["id"], "ligado": True},
             validacao=r["validacao"] or "",
             estado="validada" if conf else "em verificação",
             selo_livro=r["selo_livro"] or "",
             selo=r["estrela"] or "",
-            site_oficial_conhecido=r["origem"] == "confirmado",
+            site_oficial_conhecido=r["origem"] == "confirmado" and not lo_rep,
             checklist=listas.get(r["id"]) or _item("fluxo_item")["checklist"],
             etapa=r["fase"] or "",
             escada=r["escada"] or "",
@@ -774,9 +811,9 @@ def _tabelas(sis: Sistema, status: list[dict], descricao: dict, agora: str) -> d
             "url": r["link_oficial"] or r["link_divulgacao"],
             "fonte_nome": nomes.get(motor_de.get(r["id"], ""), motor_de.get(r["id"])),
             "orgao": r["orgao"],
-            "uf": r["uf"],
+            "uf": "" if _uf_publicada(r["uf"], r["abrangencia"]) == "__nac__" else r["uf"],
             "nivel": r["esfera"],
-            "area": r["area_d"] or r["tema"],
+            "area": _area_publicada(r["area_d"] or r["tema"]),
             "fim": fim,
             "prazo_texto": f"até {fim[8:10]}/{fim[5:7]}/{fim[:4]}" if fim else None,
             "valor_texto": c.get("Valor"),
@@ -881,7 +918,8 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
     )
     fases = dict(sis.bib.execute("SELECT p.fase, COUNT(*) " + VIVOS + " GROUP BY p.fase").fetchall())
     D["fila_verificacao"].update({"gerado_em": agora, "total": fases.get("analise externa", 0)})
-    D["farol_resumo"]["decisoes"].update({"elegiveis": fases.get("farol", 0)})
+    from ..cartorio.regua import regua as _regua  # R46: as elegíveis são as validadas (abertas no Farol), a régua única
+    D["farol_resumo"]["decisoes"].update({"elegiveis": _regua(sis.bib)["validadas"]})
     arquivos: dict[str, Any] = {}
     sm = _molde("status_motores.json")
     cont = Counter(s["luz"] for s in status)
@@ -942,12 +980,20 @@ def gerar(saida: Path, raiz: Path = Path(".")) -> dict[str, int]:
         if m.get("id") in status_pilotos:
             m.update(status_pilotos[m["id"]])
     # os arquivos herdados do painel que nunca eram preenchidos (25/10/2026): os dos motores e dos pilotos
-    rel = sorted((raiz / "verificacao" / "relatorios").glob("*.json"))     # a apresentação do Comandante à titular (25/10/2026)
-    if rel:
+    # a apresentação do Comandante à titular (25/10/2026). 06/11/2026 (parecer de teste do site): só os relatórios do ciclo
+    # (AAAA-MM-DD-HHMM.json) e o mais recente pelo «em» do conteúdo — antes, o último em ordem alfabética, e o relatório
+    # do lote do Chrome (na mesma pasta) era publicado no lugar: a janela «Para a sua decisão» mostrava «undefined»
+    _OBRIG = ("em", "redigido_por", "redacao", "abertas", "ouro_abertas", "novidades", "falta")
+    _rels = []
+    for _f in (raiz / "verificacao" / "relatorios").glob("20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9].json"):
         try:
-            arquivos["relatorio_titular.json"] = json.loads(rel[-1].read_text(encoding="utf-8"))
-        except ValueError:
-            pass
+            _d = json.loads(_f.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        if isinstance(_d, dict) and all(k in _d for k in _OBRIG):
+            _rels.append((str(_d["em"]), _d))
+    if _rels:
+        arquivos["relatorio_titular.json"] = max(_rels, key=lambda t: t[0])[1]
     from .legado import montar as legado_montar
     arquivos.update(legado_montar(sis.bib, sis.cer, sc["detalhes"].get("motores") or [], status_pilotos, _molde))
     arquivos["sala_controle.json"] = sc

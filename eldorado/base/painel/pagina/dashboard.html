@@ -1198,6 +1198,8 @@ se fecha; nada inserido nas outras páginas. -->
   if(vista||!naInicial())return;
   fetch("dados/relatorio_titular.json?v="+Date.now()).then(r=>r.ok?r.json():null).then(R=>{
     if(!R||!naInicial())return;
+    /* 06/11/2026: sem os campos do relatório do Comandante, a janela não abre (nunca «undefined») */
+    if(!["em","redigido_por","redacao","abertas","ouro_abertas","novidades","falta"].every(k=>R[k]!==undefined&&R[k]!==null)) return;
     const P=(R.redacao||{}).prioridades||[], F=R.fecham_em_7_dias||[], N=R.novidades||{}, S=R.sistema||{};
     const j=document.getElementById("dec-janela"), c=document.getElementById("dec-caixa");
     c.innerHTML=`<h2 id="dec-titulo">Para a sua decisão</h2><div class="quando">${E((R.em||"").slice(0,16).replace("T"," "))} UTC · redigido por ${E(R.redigido_por)}</div>
@@ -2679,7 +2681,7 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
   function trilha(id,w=180){ const v=(SC.historico||[]).map(p=>(p.v||{})[id]).filter(q=>typeof q==="number"); if(v.length<2) return `<span class="faint">a tendência aparece depois de duas passagens</span>`;
     const mn=Math.min(...v),mx=Math.max(...v),h=30,dx=w/(v.length-1);
     return `<svg width="${w}" height="${h}"><polyline points="${v.map((y,i)=>`${(i*dx).toFixed(1)},${(h-3-(mx===mn?h/2:(y-mn)/(mx-mn)*(h-6))).toFixed(1)}`).join(" ")}" fill="none" stroke="#5EE6C8" stroke-width="1.8"/></svg>`; }
-  function faixaTxt(f,u){ if(!f) return "—"; const N=f.normal||[null,null],A=f.alarme||[null,null],p=[],s=u?" "+u:"";
+  function faixaTxt(f,u){ if(!f) return "sem régua (o instrumento fica cinza)"; if(f.regra) return f.regra; const N=f.normal||[null,null],A=f.alarme||[null,null],p=[],s=u?" "+u:"";
     if(N[0]!=null||N[1]!=null) p.push("normal "+(N[0]!=null&&N[1]!=null?`de ${n(N[0])} a ${n(N[1])}`:N[0]!=null?`a partir de ${n(N[0])}`:`até ${n(N[1])}`)+s);
     if(A[0]!=null) p.push(`alarme abaixo de ${n(A[0])}${s}`); if(A[1]!=null) p.push(`alarme acima de ${n(A[1])}${s}`); return p.join("; "); }
   const linhas=(obj,lim=6,fmt,tipo)=>Object.entries(obj||{}).sort((a,b)=>(typeof b[1]==="number"?b[1]:0)-(typeof a[1]==="number"?a[1]:0)).slice(0,lim)
@@ -2898,7 +2900,9 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
     const etDe=id=>(ETAPAS.find(t=>t.ids.includes(id))||{}).id||"farol";
     const jan=(d.instrumentos||[]).map(x=>({id:x.id,nome:x.nome,nivel:x.estado,motivo:x.motivo,et:etDe(x.id)})).concat((d.anunciadores||[]).filter(a=>!(d.instrumentos||[]).some(x=>x.id===a.id)).map(a=>({id:a.id,nome:a.nome,nivel:a.nivel,motivo:a.motivo,anun:true,et:a.sub==="Fluxos"?"farol":a.sub==="Esteira"?"biblioteca":"farol"})));
     const ord={vermelho:0,amarelo:1,cinza:2,verde:3}; jan.sort((a,b)=>ord[a.nivel]-ord[b.nivel]);
-    $("nv-alarmes-tit").textContent=`Painel de alarmes · ${jan.filter(j=>j.nivel!=="verde").length} acesos de ${jan.length}`;
+    /* 06/11/2026 (parecer): o mesmo universo da legenda do índice — os instrumentos; os anunciadores, à parte */
+    { const ji=jan.filter(j=>!j.anun), ja=jan.filter(j=>j.anun);
+      $("nv-alarmes-tit").textContent=`Painel de alarmes · ${ji.filter(j=>j.nivel!=="verde").length} de ${ji.length} instrumentos fora do verde`+(ja.length?` · ${ja.length} anunciador(es) aceso(s)`:""); }
     $("nv-janelas").innerHTML=jan.map(j=>`<button class="jan ${j.nivel}" title="${e(j.motivo)}" onclick="${j.anun?`nvAlerta('${e(j.id)}',this)`:`nvHolo('${j.et}',this,'${e(j.id)}')`}"><span class="luz ${j.nivel==="verde"?"verde":j.nivel}"></span>${e(j.nome)}</button>`).join("");
     const TUBO={"Coleta":"coleta","Distintas":"repositorio","Abertas":"repositorio","Com livro":"biblioteca","Cartório":"certificacao","Interceptador":"investigacao","Verificação externa":"externa","Prontas para o Farol":"farol"};
     $("nv-tubo").innerHTML=M.map(m=>`<button onclick="nvHolo('${TUBO[m.etapa]||"farol"}',this)" title="abrir a etapa"><b>${n(m.valor)}</b><small>${e(m.etapa)}</small></button>`).join("");
@@ -3135,7 +3139,6 @@ body:has(#v-neural:not(.oculto)){background:radial-gradient(ellipse 60% 60% at 3
 
 <script src="mapa-brasil.js?v=20260927213410"></script>
 <script src="mapa-arte.js?v=20260927213410"></script>
-<script src="dashboard-dados.enc.js?v=20260927213410"></script>
 <script src="dashboard-dados.js?v=20260927213410"></script>
 <script>
 (function(){
@@ -3632,7 +3635,7 @@ function desenhaRadar_antigo_ate_28_09(){
        "etapas 3 e 4 cumpridas — conselho deliberou e a entidade foi escolhida, com a pasta do edital criada"],
       [ICO.relogio,prox.length,"Prazos próximos",
        "etapa 5 cumprida — documentos preenchidos e nota técnica emitida, prontos para envio"]]
-      .map(x=>`<div class="met linha" title="${esc(x[3])}">${x[0]}<div><div class=v>${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
+      .map(x=>`<div class="met linha" title="${esc(x[3])}">${x[0]}<div><div class=v>${x[1]}</div><div class=r style="text-align:left">${x[2]}</div>${x[4]?`<div class=meta style="font-size:10.5px;text-align:left">${esc(x[4])}</div>`:""}</div></div>`).join("");
     /* EDITAIS POSSÍVEIS — livros em leitura na Biblioteca (época prevista ou
        menção) que casam com o filtro: o mesmo banco alimenta a tela inicial */
     const casaUFf=f=>!uf?true:uf==="__nac__"?(!f.uf&&f.abrangencia==="nacional"):(f.uf===uf||(!f.uf&&f.abrangencia==="nacional"));
@@ -4003,8 +4006,8 @@ function desenhaRadar(){
   const nUF={}; todos.forEach(x=>{nUF[x._uf||"__nac__"]=(nUF[x._uf||"__nac__"]||0)+1;});
   sUF.innerHTML=`<option value="">Brasil (${todos.length})</option><option value="__nac__">Nacional (${nUF.__nac__||0})</option>`+Object.keys(nUF).filter(k=>k!=="__nac__").sort((a,b)=>a==="GO"?-1:b==="GO"?1:a.localeCompare(b)).map(k=>`<option value="${k}">${k} (${nUF[k]})</option>`).join("");
   sA.innerHTML=`<option value="">Todas</option>`+_AREAS_RADAR.map(([k,r])=>`<option value="${k}">${r}</option>`).join("")+`<option value="outras">Outras</option>`;
-  sN.innerHTML=`<option value="">Todos</option><option value="ente público">Entes públicos</option><option value="empresa/instituto">Empresas e institutos</option><option value="menção em diário oficial">Menções em diário oficial</option>`;
-  sP.innerHTML=`<option value="abertos">Inscrições abertas</option><option value="confirmadas">Com prazo e site confirmados</option><option value="15dias">Prazo em até 15 dias</option>`;
+  sN.innerHTML=`<option value="">Todos</option><option value="ente público">Entes públicos</option><option value="empresa/instituto">Empresas e institutos</option>`;
+  sP.innerHTML=`<option value="abertos">Inscrições abertas</option><option value="confirmadas">Validadas (no Farol)</option><option value="15dias">Prazo em até 15 dias</option>`;
   sUF.value=v0.uf; sA.value=v0.a; sN.value=v0.n; sP.value=v0.p;
   [sUF,sA,sN,sP].forEach(s=>s.onchange=()=>desenhaRadar());
   if(!F){ $("fi-mets").innerHTML=`<div class=meta style="padding:10px">lendo o fluxo das oportunidades…</div>`; $("fi-novas").innerHTML=""; $("fi-possiveis").innerHTML=""; return; }
@@ -4020,8 +4023,10 @@ function desenhaRadar(){
     relogio:`<svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="#E07B00" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.7"/><path d="M12 7v5.2l3.2 2"/></svg>`};
   $("fi-mets").innerHTML=[
     [ICO.barras,L.length,"Oportunidades abertas","possíveis abertas no recorte: prazo não vencido ou publicadas nos últimos 60 dias, já com a validação"],
-    [ICO.lupa,verif.length,"Em verificação","ainda sem prazo e site oficial confirmados: na fila do Interceptador (Goiás primeiro)"],
-    [ICO.escudo,conf.length,"Prazo e site oficial","objeto, data-limite de inscrição aberta e link do site oficial — prontas para a decisão"],
+    [ICO.lupa,verif.length,"Em verificação","abertas numa etapa da esteira do Cartório (recepção, preparação ou verificação externa) — R46"],
+    /* 06/11/2026 (parecer, R40): o cartão conta as VALIDADAS (abertas no Farol) — antes o rótulo prometia «data-limite de
+       inscrição», e ~100 delas são fluxo contínuo ou permanentes por lei, sem data */
+    [ICO.escudo,conf.length,"Validadas","abertas no Farol (passaram pela verificação) — R46",`com data-limite: ${conf.filter(x=>x.fim).length} · fluxo contínuo ou permanente: ${conf.filter(x=>!x.fim).length}`],
     [ICO.relogio,prox.length,"Prazos em 15 dias","confirmadas com inscrição terminando até "+br(em15)]]
     .map(x=>`<div class="met linha" title="${esc(x[3])}">${x[0]}<div><div class=v>${x[1]}</div><div class=r style="text-align:left">${x[2]}</div></div></div>`).join("");
   const linha=(x,oficial)=>{const I=x.inspecao; const u=(I&&I.pagina_oficial)||x.link_oficial||x.url;
@@ -6228,8 +6233,8 @@ window._ACHADOS=null;
 /* FLUXO DAS OPORTUNIDADES (27/09): números do mapa e prazos do calendário vindos do servidor. Lido direto do ramo
    main (atualiza assim que o monitoramento ou um voo do Interceptador grava), com a cópia do site como reserva. */
 window._FLUXO=null;
-window.fxUF=(uf,p)=>{ const F=((window._FLUXO||{}).mapa||{}).por_uf||null; if(F){ const x=F[uf]||{}; return {c:x.confirmadas||0,t:x.possiveis||0}; } return {c:(p&&p.confirmadas)||0,t:(p&&p.total)||0}; };
-window.fxTot=(n)=>{ const T=((window._FLUXO||{}).mapa||{}).total; return T?{c:T.confirmadas||0,t:T.possiveis||0}:{c:(n&&n.confirmadas)||0,t:(n&&n.total)||0}; };
+window.fxUF=(uf,p)=>{ const F=((window._FLUXO||{}).mapa||{}).por_uf||null; if(F){ const x=F[uf]||{}; return {c:x.confirmadas||0,t:(x.confirmadas||0)+(x.possiveis||0)}; } return {c:(p&&p.confirmadas)||0,t:(p&&p.total)||0}; };   /* 06/11/2026: t é o TOTAL (validadas + em verificação); antes eram só as possíveis — GO, com 49 validadas e 0 possíveis, saía sem cor */
+window.fxTot=(n)=>{ const T=((window._FLUXO||{}).mapa||{}).total; return T?{c:T.confirmadas||0,t:(T.confirmadas||0)+(T.possiveis||0)}:{c:(n&&n.confirmadas)||0,t:(n&&n.total)||0}; };
 window.carregaFluxo=async function(){
   // 28/09 (titular): versão do mapa gerada SEM a validação individual (voo com código antigo) é RECUSADA — fica o último
   // mapa válido (guardado neste navegador) e o selo avisa. Nunca mais mostrar oportunidade já descartada ou encerrada.
@@ -6253,7 +6258,7 @@ window.htmlPainelUF=function(rot,itens){
   const conf=itens.filter(x=>x.confirmada).length, insp=itens.filter(x=>x.inspecao).length, ok=itens.filter(x=>x.inspecao&&x.inspecao.ok).length;
   const nome=x=>String(x.titulo||"").replace(/^Di\u00e1rio Oficial de [^\u2014]+\u2014\s*/,"Diário oficial · ").replace(/"/g,"").slice(0,110);
   return `<div style="display:flex;justify-content:space-between;align-items:center">
-      <strong style="font-family:Georgia,serif;color:#0E2A55;font-size:15px">${esc(rot)} · ${itens.length} possível(is) oportunidade(s)</strong>
+      <strong style="font-family:Georgia,serif;color:#0E2A55;font-size:15px">${esc(rot)} · ${itens.length} oportunidade(s) aberta(s) — ${itens.filter(x=>x.confirmada).length} validada(s) · ${itens.filter(x=>!x.confirmada).length} em verificação</strong>
       <button class="fdoc-bt" onclick="bzFecharUF()">fechar</button></div>
     <div class="uf-fx">${itens.map(x=>{const I=x.inspecao; const cor=!I?"cinza":I.ok?"verde":"verm";
       const u=(I&&I.pagina_oficial)||x.link_oficial||x.url;
@@ -6723,7 +6728,7 @@ window.htmlEspiaoQuadro=function(D,V,alvo){
     <div class=meta style="margin:-2px 0 6px">missões = com resultado + nada no crivo + fora do objeto + busca sem resposta · itens achados é a soma do que as missões com resultado trouxeram</div>
     <div class="pd" data-dias-piloto="espiao">${htmlDiasPiloto("espiao")}</div>
     ${(()=>{const Z=D.aprendizado||{}; if(!(Z.buscas_que_funcionam||[]).length&&!(Z.buscas_que_falham||[]).length) return "";
-      const lin=(c,ok)=>`<li><b>${esc(String(c.consulta).slice(0,80))}</b> <span class=meta>· ${ok?`${c.com_resultado}/${c.tentativas} com resultado · ${c.achados} achado(s)`:`${c.tentativas} tentativa(s) sem resultado`}</span></li>`;
+      const lin=(c,ok)=>{ if(typeof c!=="object"||!c) c={consulta:String(c||""),com_resultado:0,tentativas:0,achados:0}; return `<li><b>${esc(String(c.consulta).slice(0,80))}</b> <span class=meta>· ${ok?`${c.com_resultado}/${c.tentativas} com resultado · ${c.achados} achado(s)`:`${c.tentativas} tentativa(s) sem resultado`}</span></li>`;};
       return `<div class="esp-apr"><div><h5>Buscas que funcionam</h5><ul>${(Z.buscas_que_funcionam||[]).slice(0,4).map(c=>lin(c,true)).join("")}</ul></div>
         <div><h5>Buscas que falham — evitadas</h5><ul>${(Z.buscas_que_falham||[]).slice(0,4).map(c=>lin(c,false)).join("")}</ul></div></div>`;})()}
     <div class="int-fila">Na fila: ${Object.entries(F).map(([k,v])=>`<b>${v}</b> ${esc(k)}`).join(" · ")||"—"}</div>
@@ -7155,9 +7160,9 @@ function desenhaBzCards(){
   const fr=(a,b)=>`${a}<span class="bz-tot">/${b}</span>`;
   const cards=[
     [IC("#C77E12").rosa,"Oportunidades abertas",`${PR.abertas}`,"","vermelho",`${PR.validadas} validadas · ${PR.em_verificacao} em verificação · ${PR.validacao_manual} em validação manual (vermelho) — fechadas por veredito e prazos vencidos ficam fora`],
-    [IC("#0B4EA2").banco,"Fontes monitoradas",fr((OP.monitorado_ativo??0)+(OP.monitorado_preditivo??0),OP.catalogo??0),"","azul",`31/10/2026: o monitoramento real — ativo (prazo aberto): ${OP.monitorado_ativo??0} · preditivo (encerrada, à espera da próxima edição): ${OP.monitorado_preditivo??0} · sem prazo ainda (em trabalho): ${OP.sem_prazo??0} / total de livros na Biblioteca`],   // 12/10 (titular): só os números; 11/10: com a divisão
+    [IC("#0B4EA2").banco,"Livros vigiados",fr((OP.monitorado_ativo??0)+(OP.monitorado_preditivo??0),OP.catalogo??0),"","azul",`31/10/2026: o monitoramento real — ativo (prazo aberto): ${OP.monitorado_ativo??0} · preditivo (encerrada, à espera da próxima edição): ${OP.monitorado_preditivo??0} · sem prazo ainda (em trabalho): ${OP.sem_prazo??0} / total de livros na Biblioteca`],   // 12/10 (titular): só os números; 11/10: com a divisão
     [IC("#0B4EA2").escudo,"Validadas",fr(PR.validadas,PR.abertas),"","azul","validadas (objeto, prazo vigente e site oficial comprovados, ou ouro) / oportunidades abertas"],
-    [IC("#C0392B").relogio,"Prazos urgentes",fr(urg.length,conf.length),"","vermelho","inscrições validadas terminando em até 7 dias / validadas"],
+    [IC("#C0392B").relogio,"Prazos urgentes (7 dias)",fr(urg.length,conf.length),"","vermelho","inscrições validadas terminando em até 7 dias / validadas"],
     [IC("#0B4EA2").farol,"Repositório",fr(OP.com_historico_de_edicoes??0,OP.catalogo??0),"","azul","livros com duas ou mais edições guardadas / livros de oportunidades na Biblioteca"],
     [IC("#0B4EA2").livro,"Base legal",((D.biblioteca||{}).acervos||{}).leis??0,"","azul","normas na Biblioteca"]];
   $("bz-cards").innerHTML=cards.map(c=>`<div class="bz-card" title="${esc(c[5])}">${c[0]}<div class=r>${c[1]}</div><div class=v>${c[2]}</div>${c[3]?`<div class=s>${esc(c[3])}</div>`:""}</div>`).join("");
@@ -7274,7 +7279,7 @@ function desenhaBzMapa(){ window._mpTriagem={};
   try{ posicionarRotulosMapa(); }catch(e){ console.warn("rótulos do mapa:",e); }
   // a rosa dos ventos carrega o nível nacional no mesmo formato: confirmadas/possíveis
   const _nac=por["__nac__"]||{}; const _rot=$("bz-rosa-svg")&&$("bz-rosa-svg").parentElement&&$("bz-rosa-svg").parentElement.querySelector(".bz-rosa-rot");
-  if(_rot) _rot.innerHTML=`Brasil · nível nacional<br><b class="bz-rosa-n" title="${fxTot(_nac).c} com objeto, data-limite aberta e link oficial / ${fxTot(_nac).t} possíveis abertas no país">${fxTot(_nac).c}/${fxTot(_nac).t}</b>`;
+  if(_rot) _rot.innerHTML=`Brasil · nível nacional<br><b class="bz-rosa-n" title="abertas de nível nacional (R46): validadas = no Farol; em verificação = na esteira do Cartório">${fxTot(_nac).c} validadas · ${fxTot(_nac).t-fxTot(_nac).c} em verificação</b>`;
   const _leg=$("bz-mapa-legenda"); if(_leg) _leg.innerHTML="";   // 27/09 (titular): sem descritivo abaixo do mapa
   $("bz-mapa").querySelectorAll("path[data-uf]").forEach(el=>{
     const uf=el.dataset.uf,p=por[uf];
