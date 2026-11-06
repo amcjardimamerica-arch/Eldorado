@@ -53,6 +53,9 @@ def _alerta_claude(itens: int | None, idade_h: float | None) -> str:
     return "amarelo" if itens > LIMITE_CLAUDE_ITENS or (itens and idade_h is not None and idade_h > LIMITE_CLAUDE_HORAS) else "verde"
 
 
+SEM_MEDIDA = {"regra": "sem medida: o instrumento fica cinza até haver a leitura"}
+
+
 def _faixa(v: float | None, verde, amarelo, maior_melhor: bool = True) -> str:
     if v is None:
         return "cinza"
@@ -361,7 +364,8 @@ def montar(
 
         )
     except sqlite3.Error:
-        I("pi_espiao", "Missões do Espião em 24 h", None, "cinza", "o aprendizado do Espião ainda não está no Cérebro", None)
+        I("pi_espiao", "Missões do Espião em 24 h", None, "cinza", "o aprendizado do Espião ainda não está no Cérebro", None,
+      faixa=SEM_MEDIDA)
     voos = q(bib, "SELECT COUNT(*) FROM tentativa WHERE em >= ? AND ferramenta LIKE 'abordagem%'", h24)
     I(
         "pi_piloto",
@@ -600,7 +604,8 @@ def montar(
 
         )
     except Exception as e:  # noqa: BLE001
-        I("hi_uso", "Arquivos fora do funcionamento", None, "cinza", f"o mapa dos arquivos não foi lido: {type(e).__name__}", None)
+        I("hi_uso", "Arquivos fora do funcionamento", None, "cinza", f"o mapa dos arquivos não foi lido: {type(e).__name__}", None,
+      faixa=SEM_MEDIDA)
     # ---- 08 Pertinência e aprendizado
     m = cer.execute(
         "SELECT treinado_em, discernimento, precisao, revocacao FROM modelo WHERE arquivo = 'rede:oportunidade' ORDER BY treinado_em DESC LIMIT 1"
@@ -648,7 +653,8 @@ def montar(
             ("rn_revocacao", "Revocação da rede"),
             ("rn_treino", "Idade do modelo"),
         ):
-            I(k, nome, None, "cinza", "a rede ainda não registrou um modelo treinado", None)
+            I(k, nome, None, "cinza", "a rede ainda não registrou um modelo treinado", None,
+      faixa=SEM_MEDIDA)
     try:
         b_ = cer.execute(
             "SELECT treinado_em, brier FROM modelo WHERE arquivo = 'rede:oportunidade' AND brier IS NOT NULL ORDER BY treinado_em DESC LIMIT 1"
@@ -674,6 +680,8 @@ def montar(
             "cinza",
             "aguardando o primeiro treino com a calibração (o nó da rede, a cada passagem)",
             None,
+      faixa=SEM_MEDIDA,
+
         )
     # ---- o Comandante (a fase 2, 25/10/2026): as decisões dele, em paralelo, e o rendimento contra a ordem fixa
     try:
@@ -716,6 +724,8 @@ def montar(
             "cinza",
             "aguardando as primeiras decisões avaliadas (o Aprendizado avalia no dia seguinte)",
             None,
+      faixa=SEM_MEDIDA,
+
         )
     # ---- 09 Farol
     # ---- 06/11/2026 (titular: "remova os mostradores verdes por padrão; quero mostradores vivos, com medição real e alerta")
