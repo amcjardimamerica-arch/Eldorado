@@ -36,6 +36,10 @@ class Evento(msgspec.Struct, kw_only=True, omit_defaults=True):
     versao: int = VERSAO_CATALOGO
 
 
+# os níveis que o banco aceita em cerebro.medicao — o mesmo CHECK do esquema (a trava test_contrato_eventos confere os dois)
+NIVEIS_MEDICAO = frozenset({"arquivo", "componente", "parte", "sistema", "motor"})
+
+
 @dataclass(frozen=True)
 class Alvo:
     banco: str  # 'biblioteca', 'especial', 'cerebro'
@@ -109,14 +113,17 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "sala.medida": (Alvo(C, "sala_medicao", "inserir_ou_atualizar", ("chave",)),),  # a sala como parâmetro do funcionamento
     "arquivos.medidos": (Alvo(C, "medicao_arquivos", "inserir_ou_atualizar", ("chave",)),),  # o monitoramento de cada arquivo
     # 29/10/2026: o nível "etapa" (o medidor de memória por etapa, implantado às 08:57) vira "componente": o banco só aceita
-    # arquivo, componente, parte, sistema e motor; sem isso os eventos já gravados seriam recusados para sempre
+    # arquivo, componente, parte, sistema e motor; sem isso os eventos já gravados seriam recusados para sempre.
+    # 07/11/2026: o mesmo erro voltou com "aprendizado" (o ciclo dos pilotos, 390 eventos recusados desde 06/11 23:00).
+    # Os eventos JÁ GRAVADOS com um nível fora da lista entram como "componente" (o Cérebro é remontado com a telemetria e
+    # os alarmes se fecham sozinhos); os NOVOS são barrados onde nascem pelo contrato dos eventos (contrato_eventos.py).
     "medicao.registrada": (
         Alvo(
             C,
             "medicao",
             "inserir_ou_atualizar",
             ("marcador", "nivel", "em"),
-            lambda d: {**d, "nivel": "componente"} if d.get("nivel") == "etapa" else d,
+            lambda d: d if d.get("nivel") in NIVEIS_MEDICAO else {**d, "nivel": "componente"},
         ),
     ),
     "maquina.leitura": (Alvo(C, "maquina", "inserir_se_novo"),),
@@ -340,6 +347,10 @@ class Diario:
         return evento
 
     def emitir(self, tipo: str, modulo: str, dados: dict[str, Any], linhagem: Linhagem | None = None) -> Evento:
+        # 07/11/2026: o contrato dos eventos — o valor que o banco recusaria é barrado onde nasce (estrito nos testes)
+        from .contrato_eventos import conferir
+
+        conferir(tipo, modulo, dados)
         return self.gravar(criar(tipo, modulo, dados, linhagem))
 
 

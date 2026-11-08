@@ -133,7 +133,7 @@ def ciclo(bib: sqlite3.Connection, cer: sqlite3.Connection, diario, raiz: Path =
             diario.emitir("espiao.consulta", "ciclo-pilotos", {"texto": q, "usos": 99, "achados": 0, "ultima": agora()})
         orient = {"fatores": {f: x["fator_real"] for f, x in av["familias"].items()}, "preferir": av["preferir"], "evitar": av["evitar"],
                   "aposentadas": len(av["aposentar"]), "media_real": av["media_real"]}
-        diario.emitir("medicao.registrada", "ciclo-pilotos", {"marcador": "ciclo:espiao", "nivel": "aprendizado", "em": agora(),
+        diario.emitir("medicao.registrada", "ciclo-pilotos", {"marcador": "ciclo:espiao", "nivel": "componente", "em": agora(),
                                                               "valor": missoes, "motivo": json.dumps(orient, ensure_ascii=False)})
         Aprendizado(diario).registrar("comandante", f"Espião (ciclo de {a_cada} missões, {missoes} no total): preferir {', '.join(av['preferir']) or '—'}; "
                                       f"evitar {', '.join(av['evitar']) or '—'}; {len(av['aposentar'])} consulta(s) aposentada(s) por só trazer erro real",
@@ -144,7 +144,7 @@ def ciclo(bib: sqlite3.Connection, cer: sqlite3.Connection, diario, raiz: Path =
     if ai["erros"] - ult_e >= a_cada:
         orient = {"preferencia": ai["preferencia"], "ordem": ai["ordem"],
                   "rendimento": {k: x["rendimento"] for k, x in ai["abordagens"].items()}}
-        diario.emitir("medicao.registrada", "ciclo-pilotos", {"marcador": "ciclo:interceptador", "nivel": "aprendizado", "em": agora(),
+        diario.emitir("medicao.registrada", "ciclo-pilotos", {"marcador": "ciclo:interceptador", "nivel": "componente", "em": agora(),
                                                               "valor": ai["erros"], "motivo": json.dumps(orient, ensure_ascii=False)})
         Aprendizado(diario).registrar("comandante", f"Interceptador (ciclo de {a_cada} erros, {ai['erros']} no total): a ordem das abordagens "
                                       f"pelo rendimento real — {', '.join(ai['ordem'][:6])}", json.dumps(ai["abordagens"], ensure_ascii=False)[:4000])
