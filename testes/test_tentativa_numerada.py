@@ -12,7 +12,7 @@ def test_nenhum_emissor_numera_a_tentativa_como_1_fixo():
         for n in ast.walk(t):
             if (isinstance(n, ast.Call) and getattr(n.func, "attr", "") == "emitir" and n.args and isinstance(n.args[0], ast.Constant)
                     and n.args[0].value == "tentativa.registrada" and len(n.args) > 2 and isinstance(n.args[2], ast.Dict)):
-                for k, v in zip(n.args[2].keys, n.args[2].values):
+                for k, v in zip(n.args[2].keys, n.args[2].values, strict=True):
                     if isinstance(k, ast.Constant) and k.value == "numero" and isinstance(v, ast.Constant):
                         fixos.append(f"{f}:{n.lineno}")
     assert not fixos, fixos
