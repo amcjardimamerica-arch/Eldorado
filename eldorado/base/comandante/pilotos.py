@@ -155,8 +155,13 @@ def _janela_espiao(cer: sqlite3.Connection) -> bool:
 
 
 def _familia(dados: Path, cer: sqlite3.Connection) -> tuple[str | None, float, int]:
+    """R48 (titular, 08/11/2026): a família pela amostragem de Thompson sobre o RESULTADO REAL (as missões que trouxeram
+    achado aceito na Biblioteca), multiplicada pelo fator real do ciclo dos pilotos (R47). Antes: o Vowpal Wabbit premiado
+    por «a missão achou algo» — 77% das escolhas na internacional_espanhol (3 oportunidades reais em 11.904 missões),
+    enquanto a empresa_semente deu 5 em 238. A probabilidade registrada é a da escolha (a fração dos sorteios)."""
+    from ..cerebro.ciclo_pilotos import fator_familia
     from .decidir import _estado_familias
-    from .politica import Politica, contexto
+    from .politica import Thompson, contagens_espiao, contexto
 
     opcoes = _estado_familias(cer)
     if not opcoes:
@@ -164,22 +169,50 @@ def _familia(dados: Path, cer: sqlite3.Connection) -> tuple[str | None, float, i
     with _trava:
         p = _politica.get("espiao")
         if p is None or time.monotonic() - p["em"] > POLITICA_VALE_S or set(p["pol"].opcoes) != set(opcoes):
-            pol = Politica("espiao", list(opcoes))
-            pol.reaprender(cer)
+            bib_p = dados / "biblioteca.db"
+            bib = sqlite3.connect(f"file:{bib_p}?mode=ro", uri=True) if bib_p.exists() else sqlite3.connect(":memory:")
+            try:
+                cont = contagens_espiao(bib, cer, list(opcoes))
+            except sqlite3.Error:
+                cont = {f: (0, 0) for f in opcoes}
+            finally:
+                bib.close()
+            pol = Thompson("espiao", cont, {a: fator_familia(cer, a) for a in opcoes})   # R47: o fator real
             _politica["espiao"] = p = {"pol": pol, "em": time.monotonic()}
     ctx = contexto(datetime.now(timezone.utc), opcoes)
-    # 27/10/2026: SORTEIA pela distribuição (como desenhado); pegar sempre a primeira fez 399 de 421 missões irem a uma
-    # família só, quase todas sem achado. A família cansada (10 missões seguidas sem achado) descansa 30 minutos.
-    import random
+    # a família cansada (10 missões seguidas sem achado) descansa 30 minutos (27/10/2026)
     agora_m = time.monotonic()
-    lista = [(a, pr) for a, pr in p["pol"].ordenar(ctx) if _cansaco.get(a, {}).get("descansa_ate", 0) <= agora_m] or p["pol"].ordenar(ctx)
-    # 06/11/2026 (ciclo dos pilotos): o peso multiplicado pelo FATOR REAL da família (a taxa de acerto real dela, pelos
-    # vereditos do Chrome e pelo Farol, contra a média) — a política aprendia só com os candidatos da missão
-    from ..cerebro.ciclo_pilotos import fator_familia
-    pesos = [max(pr, 0.0) * fator_familia(cer, a) for a, pr in lista]
-    alvo, prob = random.choices(lista, weights=pesos)[0] if sum(pesos) > 0 else random.choice(lista)
+    livres = [f for f in p["pol"].opcoes if _cansaco.get(f, {}).get("descansa_ate", 0) <= agora_m] or p["pol"].opcoes
+    # 08/11/2026 (correção dos motores, unificada à R48): nenhuma família passa de 20% das últimas 100 missões — a que passou
+    # fica de fora do sorteio até cair abaixo do teto (com menos de 50 missões, o teto não vale; sobra sempre alguma)
+    acima = _acima_do_teto(cer)
+    livres = [f for f in livres if f not in acima] or livres
+    sub = Thompson("espiao", {f: p["pol"].contagens[f] for f in livres}, p["pol"].fator)
+    (alvo, prob), = sub.escolher(1)
     p["ultimo_ctx"] = (ctx, p["pol"].opcoes, prob)
     return alvo, prob, p["pol"].aprendidas
+
+
+TETO_FAMILIA, JANELA_TETO, MINIMO_TETO = 0.20, 100, 50
+
+
+def _teto_por_familia(cer: sqlite3.Connection, lista: list, pesos: list[float]) -> list[float]:
+    """A família acima do teto fica com 5% do peso (a interface da correção dos motores; a escolha usa _acima_do_teto)."""
+    acima = _acima_do_teto(cer)
+    novos = [w * (0.05 if a in acima else 1.0) for (a, _pr), w in zip(lista, pesos, strict=True)]
+    return novos if sum(novos) > 0 else pesos
+
+
+def _acima_do_teto(cer: sqlite3.Connection) -> set[str]:
+    """As famílias acima de 20% das últimas 100 missões do Espião (vazio com menos de 50 missões)."""
+    try:
+        ultimas = [r[0] for r in cer.execute("SELECT familia FROM espiao_missao ORDER BY em DESC LIMIT ?", (JANELA_TETO,))]
+    except sqlite3.Error:
+        return set()
+    if len(ultimas) < MINIMO_TETO:
+        return set()
+    from collections import Counter
+    return {f for f, n in Counter(ultimas).items() if n / len(ultimas) > TETO_FAMILIA}
 
 
 _cansaco: dict[str, dict] = {}
@@ -244,7 +277,8 @@ def autorizar(piloto: str, dados: Path, diario, parar: threading.Event, alvo: st
                 return None
             ctx, lista, _ = _politica["espiao"]["ultimo_ctx"]
             motivo = (
-                f"missão autorizada: carga {c:.0f}% (até {maxima:.0f}%) · nota {prob:.2f} pela política aprendida com {aprendidas} decisões avaliadas"
+                f"missão autorizada: carga {c:.0f}% (até {maxima:.0f}%) · Thompson sobre o resultado real ({aprendidas} missões); "
+                f"probabilidade da escolha {prob:.2f}"
             )
             dec = {
                 "etapa": "espiao",
@@ -266,7 +300,7 @@ def autorizar(piloto: str, dados: Path, diario, parar: threading.Event, alvo: st
         {
             "em": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "motivo": motivo,
-            "politica": "vw-squarecb" if piloto == "espiao" else "fila da rede",
+            "politica": "thompson" if piloto == "espiao" else "fila da rede",
             **dec,
         },
     )

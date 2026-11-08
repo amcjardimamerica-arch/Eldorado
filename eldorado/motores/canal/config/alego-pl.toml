@@ -16,12 +16,33 @@ nomes_anteriores = []
 # ---- rotas (23/10/2026): o portal da ALEGO responde à nuvem (o Eldorado0 o tinha como bloqueado); o sistema de consulta
 # (alegodigital) derruba a conexão da nuvem: computador local. As emendas impositivas estaduais têm janela em outubro e novembro.
 
+# 08/11/2026 (parecer): a rota principal passa a ser a legislação estadual da Casa Civil (API pública, responde da nuvem):
+# as leis e decretos mais recentes com a ementa — as declarações de utilidade pública, as leis de fomento, as organizações
+# sociais. O Diário do Estado só traz "Lei 24.601 - Sanção ao Autógrafo de Lei nº 497" (sem o assunto), por isso nunca
+# passou no léxico; a ALEGO Digital não responde da nuvem (exige o Brasil).
+[[fonte]]
+nome = "Casa Civil de Goiás — a legislação estadual mais recente (leis e decretos, com a ementa)"
+url = "https://legisla.casacivil.go.gov.br/api/v2/pesquisa/legislacoes?qtd_por_pagina=50"
+tipo = "cadeia"
+papel = "principal"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "resultados"
+campos = { id = "id", numero = "numero", tipo = "tipo_legislacao.nome", ementa = "ementa", data = "data_legislacao", diario = "diarios[0].numero" }
+limite = 50
+
+[fonte.pista]
+titulo = "{tipo} nº {numero}, de {data} — {ementa}"
+link = "https://legisla.casacivil.go.gov.br/api/v2/pesquisa/legislacoes/{id}/pdf"
+resumo = "Legislação do Estado de Goiás (Casa Civil) · Diário Oficial nº {diario}"
+
 [[fonte]]
 nome = "ALEGO — portal (notícias)"
 url = "https://portal.al.go.leg.br/"
 tipo = "pagina"
 seletor = "main"
-papel = "principal"
+papel = "alternativa"
 
 [[fonte]]
 nome = "ALEGO — consulta cronológica das proposições (alegodigital)"
@@ -74,12 +95,12 @@ paginas_dos_achados = true
 seguir_oficial = true
 
 [lexico]
-termos = ["re:terceiro setor|sociedade civil|(^| )oscs?( |$|,)|organiza[çc][õo]es? (da sociedade civil|sociais|n[ãa]o governamentais)|sem fins lucrativos|filantr[óo]p|cebas|13.019|mrosc|utilidade p[úu]blica|subven[çc]|termo de (fomento|colabora)|associa[çc][õo]es|entidades? (sociais|assistenciais|sem fins|beneficentes|filantr|culturais|esportivas)|voluntari|emendas? (parlamentar|impositiv|individua)|doa[çc][ãa]o (de|a) (bens|materiais|im[óo]veis|recursos)|chamamento p[úu]blico|cooperativas? (sociais|solid)|economia solid"]   # o léxico estrito do terceiro setor (os atos municipais e estaduais; 23/10/2026)
-vetos = ["re:desapropria|imiss[ãa]o na posse|denomina|t[íi]tulo de cidad[ãa]o|honra ao m[ée]rito|medalha|comenda|sess[ãa]o solene|homenage|campanhas? de utilidade p|informa[çc][õo]es de utilidade p|emissoras de (r[áa]dio|televis)|decreto or[çc]ament|cr[ée]dito (suplementar|especial)|abre (ao|cr[ée]dito)|servid[ãa]o administrativa|nomea|exonera|f[ée]rias|aposentadoria|pens[ãa]o|licen[çc]a|dia (estadual|municipal) d"]
+termos = ["re:terceiro setor|sociedade civil|(^| )oscs?( |$|,)|organiza[çc][õo]es? (da sociedade civil|sociais|n[ãa]o governamentais)|sem fins lucrativos|filantr[óo]p|cebas|13.019|mrosc|utilidade p[úu]blica|subven[çc]|termo de (fomento|colabora)|associa[çc][õo]es|entidades? (sociais|assistenciais|sem fins|beneficentes|filantr|culturais|esportivas)|voluntari|emendas? (parlamentar|impositiv|individua)|doa[çc][ãa]o (de|a) (bens|materiais|im[óo]veis|recursos)|chamamento p[úu]blico|cooperativas? (sociais|solid)|economia solid|organiza[çc][ãa]o social"]   # o léxico estrito do terceiro setor (os atos municipais e estaduais; 23/10/2026)
+vetos = ["re:desapropria|imiss[ãa]o na posse|denomina|t[íi]tulo de cidad[ãa]o|honra ao m[ée]rito|medalha|comenda|sess[ãa]o solene|homenage|campanhas? de utilidade p|informa[çc][õo]es de utilidade p|emissoras de (r[áa]dio|televis)|decreto or[çc]ament|cr[ée]dito (suplementar|especial)|abre (ao|cr[ée]dito)|servid[ãa]o administrativa|nomea|exonera|f[ée]rias|aposentadoria|pens[ãa]o|licen[çc]a|dia (estadual|municipal) d", "re:novembro negro|banda marcial|apresenta[çc][ãa]o (de|da|do) banda|outubro rosa|novembro azul|calend[áa]rio c[íi]vico"]
 termos_em = "tudo"
 
 [aprendizado]
-licoes = ["As emendas impositivas estaduais têm janela em outubro e novembro; os achados são proposições e emendas, não editais.", "Rota de acesso única para os domínios com bloqueio (goias.gov.br, portal.al.go.leg.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 22 rota(s) que funcionaram: entram como rotas do motor.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+licoes = ["08/11/2026 (parecer): a ALEGO Digital nunca deu pista (não responde da nuvem; a consulta cronológica é formulário ASP.NET) e o Diário do Estado traz as leis sem o assunto; a rota principal passou a ser a API da legislação da Casa Civil (legisla.casacivil.go.gov.br/api/v2), com a ementa: as declarações de utilidade pública, as organizações sociais e as leis do terceiro setor. Notícias de eventos (Novembro Negro, banda marcial) vetadas.", "As emendas impositivas estaduais têm janela em outubro e novembro; os achados são proposições e emendas, não editais.", "Rota de acesso única para os domínios com bloqueio (goias.gov.br, portal.al.go.leg.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 22 rota(s) que funcionaram: entram como rotas do motor.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
 bloqueios_conhecidos = ["portal.al.go.leg.br"]
 alternativas_para_bloqueio = []
 rotas_que_falharam = ["https://alegodigital.al.go.leg.br pela nuvem (conexão derrubada, 23/10/2026)"]

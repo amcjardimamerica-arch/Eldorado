@@ -22,7 +22,7 @@ papel = "principal"
 
 [[fonte]]
 nome = "Fundo Baobá — publicações com edital (WordPress)"
-url = "https://baoba.org.br/wp-json/wp/v2/posts"
+url = "https://baoba.org.br/wp-json/wp/v2/posts?orderby=date"    # 08/11/2026: os mais novos primeiro
 tipo = "wordpress"
 papel = "alternativa"
 termos = "edital"
@@ -36,11 +36,13 @@ seguir_oficial = true
 
 [lexico]
 termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"]
-vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"]
+vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio", "re:\\bbolsas?\\b|exterior|mestrado|doutorado|estudantes?\\b|interc[âa]mbio|encerrad"]
 termos_em = "titulo"
+# 08/11/2026: o edital de bolsas de 2024 entrava pelos posts; a publicação com mais de seis meses sai na entrada
+idade_maxima_dias = 180
 
 [aprendizado]
-licoes = ["robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+licoes = ["08/11/2026 (parecer): 0 acertos em 13 — os posts traziam bolsas de estudo no exterior (pessoa física, 2024) e notícias de editais encerrados: vetos de bolsa, exterior, mestrado, estudante, intercâmbio e encerrado; idade máxima de 180 dias. A página de editais abertos continua a rota principal.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
 bloqueios_conhecidos = []
 alternativas_para_bloqueio = []
 rotas_que_falharam = []

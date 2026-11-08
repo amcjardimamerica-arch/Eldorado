@@ -19,6 +19,10 @@ nome = "CapitaAI — captação (os editais abertos)"
 url = "https://capitaai.com.br/captacao"
 tipo = "pagina"
 papel = "principal"
+# 08/11/2026 (parecer): o CapitaAI lista também as compras públicas (credenciamento de médicos, laboratórios, combustível,
+# leiloeiros, lavagem de veículos, TI): o endereço de cada página diz o objeto; só segue o que não é compra/contratação
+# (o credenciamento de entidades, OSC, cultura e artistas fica)
+filtro = { link = '^(?!.*(credenciamento-(?!.*(entidade|osc|organizac|cultur|artist|projeto))|leiloeir|prestacao-servicos|servicos-(medic|laborator|limpeza|vigilan|hospital)|medicos|combustiv|laboratori|residencia-medica|registro-precos|aquisicao|contratacao|locacao|teleconsulta|pregao|lavagem|logistica)).*' }
 
 [[fonte]]
 nome = "CapitaAI — mapa do site de captação"
@@ -35,11 +39,15 @@ seguir_oficial = true
 
 [lexico]
 termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"]
-vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"]
+vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio", "re:leiloeir|combust[íi]ve|lavagem de ve[íi]culos|laborat[óo]ri|\\bm[ée]dicos\\b|exames|resid[êe]ncia m[ée]dica|log[íi]stica|teleconsulta|ortopedist|param[ée]dic|credenciamento de ti\\b", "re:encerrad[oa]\\s*$|^widget|^como captar"]
 termos_em = "titulo"
+# 08/11/2026: o edital de 2023 da página de captação e o prazo vencido declarado no título ("até 22 de out. de 2026") saem na entrada
+idade_maxima_dias = 365
+# 08/11/2026: 91 livros fora da abrangência em 30 d — a municipal de outro estado sai na entrada (R27)
+territorio = "goias"
 
 [aprendizado]
-licoes = ["O CapitaAI divulga; a lista pública do Prosas aparece aqui (a origem é decidida por livro).", "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10).", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+licoes = ["08/11/2026 (parecer): o maior produtor de estrelas (59 em 30 d), com 478 erros: 126 não é para OSC (compras públicas), 91 fora da abrangência, 76 encerradas. Agora: o filtro da fonte pelo endereço (o objeto da compra está no endereço), vetos de compras no título, o prazo vencido declarado no título, a marca \"encerrado\" que a página põe no fim do título (336 de 715 no experimento), a idade de um ano e a regra territorial na entrada.", "O CapitaAI divulga; a lista pública do Prosas aparece aqui (a origem é decidida por livro).", "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10).", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
 bloqueios_conhecidos = []
 alternativas_para_bloqueio = []
 rotas_que_falharam = []

@@ -10,8 +10,11 @@ nomes_anteriores = ["mapas-culturais"]
 
 [[fonte]]
 nome = "Mapa da Cultura — API de oportunidades"
-url = "https://mapa.cultura.gov.br/api/opportunity/find?@select=id,name,shortDescription,registrationFrom,registrationTo&registrationTo=GTE({hoje:%Y-%m-%d})&@order=registrationTo%20ASC&@limit=200"
+url = "https://mapa.cultura.gov.br/api/opportunity/find?@select=id,name,shortDescription,registrationFrom,registrationTo,owner.name,ownerEntity.name&registrationTo=GTE({hoje:%Y-%m-%d})&@order=registrationTo%20ASC&@limit=200"
 tipo = "api"
+# 08/11/2026 (parecer): a maior parte das oportunidades abertas do Mapa da Cultura é de pessoas (oficinas, consultorias, shows,
+# "teste edital"): só seguem as de dono institucional (órgão, prefeitura, fundação, instituto, universidade, conselho, rede)
+filtro = { orgao = '(?i)secretari|minist[ée]ri|prefeitur|munic[íi]pio|governo|funda[çc][ãa]o|instituto|universidade|conselho|funarte|iphan|ancine|secult|cultura viva|rede |associa[çc][ãa]o|f[óo]rum|fundo |programa ' }
 
 [fonte.caminhos]
 itens = "[*]"
@@ -20,6 +23,7 @@ link = "join('', ['https://mapa.cultura.gov.br/oportunidade/', to_string(id)])"
 data = "registrationFrom.date || registrationFrom"
 fim = "registrationTo.date || registrationTo"
 resumo = "shortDescription"
+orgao = "join(' · ', [owner.name || '', ownerEntity.name || ''])"
 
 
 [[fonte]]
@@ -38,9 +42,11 @@ documentos = false
 [lexico]
 # O Mapa da Cultura mistura editais com chamadas para artistas, vagas, cursos e oficinas: só passa o que é seleção
 # de projetos, prêmio, fomento ou edital.
-termos = ["re:edital|chamamento|chamada publica|premio|premiacao|fomento|selecao de (projetos|propostas|iniciativas)|subsidio|bolsa|pnab|aldir blanc|paulo gustavo|cultura viva|pontos? de cultura|termo de execucao cultural"]
+termos = ["re:edital|chamamento|chamada publica|premio|premiacao|fomento|selecao de (projetos|propostas|iniciativas)|subsidio|bolsa|pnab|aldir blanc|paulo gustavo|cultura viva|pontos? de cultura|pontos e pontoes|termo de execucao cultural"]
 vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|\\bvagas?\\b|\\bcurso\\b|\\boficinas?\\b|arte-?educador|contratacao|processo seletivo para|resultado|homologa|\\bteste\\b|ficha de avaliacao|prestacao de informac|\\bguia\\b|mapeamento|formulario|escuta"]
 termos_em = "titulo"
+# 08/11/2026: a oportunidade municipal de outro estado (Macarani-BA, Morro do Chapéu-BA) sai na entrada (R27)
+territorio = "goias"
 
 [aprendizado]
-licoes = ["23/10/2026: o Mapa da Cultura não tem WordPress nem mapa do site (404); a única rota conhecida é a API; a segunda rota fica pendente."]
+licoes = ["08/11/2026 (parecer): 130 execuções para dois livros da Bahia; das 62 oportunidades abertas na API, a maioria é de pessoas (oficina, consultoria, show, \"TESTE EDITAL\"). Agora só seguem as de dono institucional (o filtro da fonte sobre owner.name e ownerEntity.name) e a municipal de outro estado sai na entrada.", "23/10/2026: o Mapa da Cultura não tem WordPress nem mapa do site (404); a única rota conhecida é a API; a segunda rota fica pendente."]

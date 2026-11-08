@@ -34,8 +34,11 @@ def caracteristicas_livro(lv: dict[str, Any]) -> dict[str, float]:
     """02/11/2026 (titular): o que um LIVRO tem (não um achado): o território, a esfera, a modalidade, a área, o tipo do
     link oficial, o órgão, o motor que o trouxe e as palavras do título. Ensaio prequencial com cada livro uma vez:
     AUC 0,93 (0,95 nos mais recentes), contra 0,48 da rede treinada com os achados barrados."""
+    # R48 (titular, 08/11/2026): sem o LINK OFICIAL e o tipo dele — chegam com o veredito do Chrome (71% dos positivos, 17%
+    # dos negativos, 15% dos pendentes): a rede aprendia a resposta, não a pergunta, e a nota dos pendentes saía para baixo.
+    # Sem eles, o discernimento honesto da reconstrução é 0,854 (era 0,905 com o vazamento).
     f: dict[str, float] = {"vies": 1.0}
-    for k in ("uf", "abrangencia", "esfera", "area", "link_oficial_tipo"):
+    for k in ("uf", "abrangencia", "esfera", "area"):
         if lv.get(k):
             f[f"{k}={str(lv[k]).lower()[:30]}"] = 1.0
     if lv.get("modalidade"):
@@ -44,7 +47,6 @@ def caracteristicas_livro(lv: dict[str, Any]) -> dict[str, float]:
         f["orgao=" + str(lv["orgao"]).lower()[:30]] = 1.0
     if lv.get("motor"):
         f["motor=" + str(lv["motor"])] = 1.0
-    f["tem_link_oficial"] = 1.0 if lv.get("link_oficial") else 0.0
     for p in sorted(set(PALAVRA.findall(str(lv.get("titulo") or "").lower())))[:25]:
         f[f"p={p}"] = 1.0
     return f
@@ -183,8 +185,10 @@ class _Pergunta(Rede):
             return self.lote.nota(x)
         return float(self.modelo.predict_proba_one(x).get(True, 0.5))
 
-    def aprender_de(self, x: dict[str, float], valido: bool) -> None:
+    def aprender_de(self, x: dict[str, float], valido: bool, quando: str | None = None) -> None:
         p = self.modelo.predict_proba_one(x)                       # primeiro prevê (avaliação honesta), depois aprende
+        if quando:                                                 # R48: a janela de 7 dias (o desempenho de agora)
+            self.__dict__.setdefault("historico", []).append((str(quando), bool(valido), float(p.get(True, 0.5))))
         self.discernimento.update(valido, p)
         self.precisao.update(valido, p.get(True, 0.0) >= getattr(self, "limiar", 0.5))
         self.revocacao.update(valido, p.get(True, 0.0) >= getattr(self, "limiar", 0.5))
@@ -193,13 +197,37 @@ class _Pergunta(Rede):
         self.amostras += 1
 
 
+def metricas_janela(hist: list[tuple[str, bool, float]], limiar: float, dias: int = 7) -> dict[str, float | None]:
+    """R48 (titular, 08/11/2026): as métricas dos casos dos últimos `dias` dias (contados do caso mais recente), na mesma
+    avaliação prequencial; a acumulada desde o primeiro caso escondia se a rede está melhorando agora (Gama et al., 2013)."""
+    from datetime import datetime, timedelta
+    if not hist:
+        return {"amostras": 0, "discernimento": None, "precisao": None, "revocacao": None, "brier": None}
+    try:
+        ult = max(datetime.fromisoformat(h[0][:19]) for h in hist if h[0])
+    except ValueError:
+        return {"amostras": 0, "discernimento": None, "precisao": None, "revocacao": None, "brier": None}
+    corte = (ult - timedelta(days=dias)).isoformat()[:19]
+    j = [h for h in hist if h[0][:19] >= corte]
+    auc, pre, rev = metrics.ROCAUC(), metrics.Precision(), metrics.Recall()
+    for _, y, p in j:
+        auc.update(y, {True: p, False: 1 - p})
+        pre.update(y, p >= limiar)
+        rev.update(y, p >= limiar)
+    return {"amostras": len(j), "discernimento": round(float(auc.get()), 4), "precisao": round(float(pre.get()), 4),
+            "revocacao": round(float(rev.get()), 4), "brier": round(sum((p - y) ** 2 for _, y, p in j) / len(j), 4)}
+
+
 class RedeNeural:
     """A rede do Cérebro: reaprende a cada ciclo com o histórico inteiro dos bancos, em ordem cronológica (nada se
     perde entre as execuções), e responde às três perguntas que as decisões fazem."""
-    PERGUNTAS = ("oportunidade", "acao", "motor")
+    # R48 (titular, 08/11/2026): a pergunta «aberta» separada da «oportunidade» — a «encerrada» é oportunidade (existiu),
+    # mas não está aberta; 450 dos 668 positivos da «oportunidade» eram encerradas. A fila usa a «aberta».
+    PERGUNTAS = ("oportunidade", "aberta", "acao", "motor")
 
     # 02/11/2026 (benchmark prequencial, estudos/bench_rede_2026_11_02.py): a taxa e o limiar de cada pergunta
-    CONFIG = {"oportunidade": (0.2, 0.5), "acao": (0.1, 0.45), "motor": (0.1, 0.35)}
+    CONFIG = {"oportunidade": (0.2, 0.5), "aberta": (0.2, 0.5), "acao": (0.1, 0.45), "motor": (0.1, 0.35)}
+    ABERTA_SIM = ("valido", "aberta", "fluxo_continuo", "itens_do_edital", "futura")
 
     def __init__(self):
         self.p = {k: _Pergunta(None, *self.CONFIG[k]) for k in self.PERGUNTAS}
@@ -207,6 +235,9 @@ class RedeNeural:
 
     def nota_oportunidade(self, livro: dict[str, Any]) -> float:
         return self.p["oportunidade"].nota_de(caracteristicas_livro(livro))
+
+    def nota_aberta(self, livro: dict[str, Any]) -> float:
+        return self.p["aberta"].nota_de(caracteristicas_livro(livro))
 
     def nota_acao(self, acao: str, livro: dict[str, Any]) -> float:
         return self.p["acao"].nota_de(car_acao(acao, livro))
@@ -217,7 +248,8 @@ class RedeNeural:
     lote: dict[str, Any] = {}
 
     def metricas(self) -> dict[str, dict]:
-        return {k: {"amostras": r.amostras, **r.metricas(), **({"lote": self.lote[k]} if k in self.lote else {})} for k, r in self.p.items()}
+        return {k: {"amostras": r.amostras, **r.metricas(), **({"lote": self.lote[k]} if k in self.lote else {}),
+                    "janela_7d": metricas_janela(getattr(r, "historico", []), getattr(r, "limiar", 0.5))} for k, r in self.p.items()}
 
     @classmethod
     def treinar(cls, biblioteca, cerebro) -> "RedeNeural":
@@ -233,16 +265,20 @@ class RedeNeural:
         livros = livros_para_a_rede(biblioteca)
         biblioteca.row_factory = sqlite3.Row
         rotulo: dict[str, bool] = {}
+        aberta: dict[str, bool] = {}
         primeiro: dict[str, str] = {}
         for r in biblioteca.execute("SELECT livro_id, decisao, em FROM veredito WHERE decisao <> 'pendente' ORDER BY em"):
             if r["livro_id"] in livros:
                 rotulo[r["livro_id"]] = r["decisao"] not in ("descartar", "invalido", "excluir")
+                aberta[r["livro_id"]] = r["decisao"] in cls.ABERTA_SIM
                 primeiro.setdefault(r["livro_id"], r["em"])
         for r in biblioteca.execute("SELECT livro_id, MIN(em) AS em FROM passagem WHERE para = 'farol' GROUP BY livro_id"):
             if r["livro_id"] in livros and r["livro_id"] not in rotulo:
-                rotulo[r["livro_id"]], primeiro[r["livro_id"]] = True, r["em"]
+                rotulo[r["livro_id"]], aberta[r["livro_id"]], primeiro[r["livro_id"]] = True, True, r["em"]
         for lid, y in rotulo.items():
-            casos.append((primeiro[lid] or "", "oportunidade", caracteristicas_livro(livros[lid]), y))
+            x_ = caracteristicas_livro(livros[lid])
+            casos.append((primeiro[lid] or "", "oportunidade", x_, y))
+            casos.append((primeiro[lid] or "", "aberta", x_, aberta[lid]))
         # ação: cada tentativa na etapa 3, e se o Cartório certificou algo novo para o livro depois dela
         certs: dict[str, list[str]] = {}
         for r in biblioteca.execute("SELECT livro_id, em FROM certidao WHERE situacao IN ('comprovado','dispensado') ORDER BY em"):
@@ -276,8 +312,8 @@ class RedeNeural:
             recentes[mm] = (recentes.get(mm, []) + [(ach or 0) > 0])[-5:]
         rede.motor_recentes = recentes
         casos = sorted(casos, key=lambda c: str(c[0]))
-        for _, pergunta, x, valido in casos:
-            rede.p[pergunta].aprender_de(x, valido)
+        for quando, pergunta, x, valido in casos:
+            rede.p[pergunta].aprender_de(x, valido, quando)
         from .lote import comparar_e_ligar  # o lote (scikit-learn): usado onde discerne melhor
         rede.lote = comparar_e_ligar(rede, casos)
         return rede
@@ -320,6 +356,12 @@ def no_rede(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -
             contexto.diario.emitir("modelo.treinado", "rede", {"versao": f"{pergunta}-{x['amostras']:07d}-{agora()[:16]}", "treinado_em": agora(),
                                                                "arquivo": f"rede:{pergunta}", "discernimento": x["discernimento"],
                                                                "precisao": x["precisao"], "revocacao": x["revocacao"], "brier": x.get("brier")})
+            j = x.get("janela_7d") or {}
+            if j.get("amostras"):                                   # R48: a janela de 7 dias, que a Sala mostra
+                contexto.diario.emitir("modelo.treinado", "rede", {"versao": f"{pergunta}-7d-{j['amostras']:07d}-{agora()[:16]}",
+                                                                   "treinado_em": agora(), "arquivo": f"rede:{pergunta}:7d",
+                                                                   "discernimento": j["discernimento"], "precisao": j["precisao"],
+                                                                   "revocacao": j["revocacao"], "brier": j.get("brier")})
     # 02/11/2026 (titular): a rede retreinada só com livros (AUC prequencial 0,93); a avaliação dos pendentes religada
     # (parâmetro avaliar_pendentes = true no nó). A nota informa a Sala e o Comandante; não arquiva nem decide sozinha.
     avaliados = 0

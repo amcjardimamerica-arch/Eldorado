@@ -4,6 +4,7 @@ estaduais), pelo endpoint padrão package_search. A terceira rota (Brasil.io) fi
 from __future__ import annotations
 
 import json
+import re
 from typing import Any
 from urllib.parse import quote
 
@@ -53,9 +54,13 @@ def pistas_da_api(doc: Any, caminhos: dict[str, str], origem: str) -> list[Pista
         proprios = ("itens", "titulo", "link", "data", "resumo", "total_paginas")
         extra = {k: jmespath.search(v, i) for k, v in caminhos.items() if k not in proprios}
         resumo = jmespath.search(caminhos["resumo"], i) if "resumo" in caminhos else None
-        saida.append(Pista(titulo=str(jmespath.search(caminhos["titulo"], i) or "").strip(), link=str(link), origem=origem,
+        # 08/11/2026: as APIs de busca devolvem o termo marcado em HTML (<span class='highlight'>, <mark>): o título e o resumo
+        # da pista são texto, sem as marcas
+        titulo = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", str(jmespath.search(caminhos["titulo"], i) or ""))).strip()
+        resumo = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", str(resumo))).strip() if resumo else None
+        saida.append(Pista(titulo=titulo, link=str(link), origem=origem,
                            data=jmespath.search(caminhos["data"], i) if "data" in caminhos else None,
-                           resumo=str(resumo)[:1000] if resumo else None, extra={k: v for k, v in extra.items() if v not in (None, "")}))
+                           resumo=resumo[:1000] if resumo else None, extra={k: v for k, v in extra.items() if v not in (None, "")}))
     return saida
 
 

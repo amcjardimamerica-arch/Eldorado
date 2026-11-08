@@ -178,7 +178,7 @@ def test_a_familia_e_sorteada_e_descansa_quando_cansa():
     CP.registrar_missao("empresa_semente", 2)
     assert CP._cansaco["empresa_semente"]["zeros"] == 0
     src = Path("eldorado/base/comandante/pilotos.py").read_text(encoding="utf-8")
-    assert "random.choices(lista, weights=pesos)" in src  # sorteia pela distribuição
+    assert "sub.escolher(1)" in src  # R48: sorteia pela crença (Thompson) sobre o resultado real
     CP._cansaco.clear()
 
 

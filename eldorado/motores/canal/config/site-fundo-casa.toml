@@ -12,7 +12,7 @@ nomes_anteriores = []
 
 [[fonte]]
 nome = "Fundo Casa Socioambiental — chamadas"
-url = "https://casa.org.br/wp-json/wp/v2/chamadas"
+url = "https://casa.org.br/wp-json/wp/v2/chamadas?orderby=date"    # 08/11/2026: os mais novos primeiro
 tipo = "wordpress"
 
 
@@ -35,3 +35,8 @@ max_documentos = 20
 termos = ["re:edital|chamada|chamamento|abre (selecao|inscric)|inscricoes abertas|premio|premiacao|selecao de (projetos|propostas|organizac|iniciativas)|seleciona (projetos|propostas|iniciativas)|fomento|fundo de apoio|apoio a (projetos|iniciativas|organizac)"]
 termos_em = "titulo"            # site de notícias: o título de um edital diz que é edital
 vetos = ["re:resultado|selecionad[ao]s|contemplad|^confira|editais (com inscricoes )?abert|oportunidades (do|da|de) (mes|semana)|finalistas|vencedor"]
+# 08/11/2026: chamadas de 2025 (Mata Atlântica Viva, Amazônia Resiliente) entravam: a publicação com mais de seis meses, a do mapa do site e o prazo vencido do título saem na entrada
+idade_maxima_dias = 180
+
+[aprendizado]
+licoes = ["08/11/2026 (parecer): 48,6% de precisão; os erros eram chamadas encerradas de 2025 (o tipo chamadas lista todas). Agora: o tipo chamadas pelos mais novos, idade máxima de 180 dias e o prazo vencido do título na entrada; o mapa do site só rende o que é novo."]

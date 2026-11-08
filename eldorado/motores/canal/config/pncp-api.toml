@@ -15,7 +15,7 @@ nomes_anteriores = ["pncp", "plat-pncp"]
 nome = "API do PNCP — propostas abertas"
 url = "https://pncp.gov.br/api/consulta/v1/contratacoes/proposta?dataFinal={hoje+500:%Y%m%d}&codigoModalidadeContratacao={mod}&uf={uf}&pagina={pagina}&tamanhoPagina=50"
 tipo = "api"
-valores = { mod = [12, 3, 10, 11], uf = ["GO"] }
+valores = { mod = [12, 3, 10, 11], uf = ["GO", "DF"] }   # 08/11/2026: + DF (os órgãos federais e a capital)
 paginacao = { inicio = 1, maximo = 5, total = "totalPaginas" }
 
 [fonte.caminhos]
@@ -144,4 +144,11 @@ documentos = false                  # o edital do órgão (/arquivos) é lido pe
 # Do motor do PNCP do Eldorado0 (pncp_osc.py): só passa o que tem sinal de OSC; compra é vetada (no título).
 termos = ["re:13\\.019|termo de (fomento|colaboracao)|organizac(ao|oes) da sociedade civil|\\boscs?\\b|mrosc|associac(ao|oes) (de )?estudant|gremios? estudant|centros? academic|\\bilpis?\\b|longa permanencia|cooperativas? (e|ou|/)? ?associac(ao|oes) de catadores|associac(ao|oes) de catadores|acordo de cooperacao(?! tecnica)|entidades? (socioassistencia|de assistencia social)|\\bcmas\\b|\\bcmdca\\b|pnab|aldir blanc|paulo gustavo|agentes? cultura|pontos? de cultura|(entidades|instituicoes) (de assistencia social|privadas sem fins|filantropicas|sem fins)|termo de execucao cultural"]
 vetos = ["re:\\bpregao\\b|\\bconcorrencia\\b|\\bleilao\\b|registro de precos?|\\baquisicao de\\b|\\bfornecimento de\\b|contratacao de empresa|empresas? especializadas?|menor preco|\\bme/epp\\b|microempresas?|eventuais e futuras contratacoes|contratac(ao|oes) de servicos?|generos alimenticios|alimentacao escolar|\\bpnae\\b"]
+# 08/11/2026 (parecer: 18 decididos, 0 acertos — 16 "fora da abrangência"): a API já pede uf=GO (e agora DF); o ruído vinha
+# dos 17 alvos "espalhados" de prefeituras de outros estados. Com o território de Goiás, esses alvos não são lidos (R27) e
+# as pistas de município de outro estado não entram. Os alvos ficam na configuração porque são do estudo da titular.
+territorio = "goias"
 salvos = ["re:13\\.019|termo de (fomento|colaboracao)|mrosc|termo de execucao cultural"]
+
+[aprendizado]
+licoes = ["08/11/2026 (parecer): 0 acertos em 18 — 16 eram de prefeituras de outros estados vigiadas pelos alvos espalhados do PNCP; com o território de Goiás esses alvos não são lidos.", "08/11/2026: a API de propostas falhou em 19 de 128 leituras com XML malformado (resposta de erro do PNCP); a próxima passagem relê.", "08/11/2026: a consulta passou a incluir o DF (os órgãos federais e a capital)."]

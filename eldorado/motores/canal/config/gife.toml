@@ -12,9 +12,38 @@ nomes_anteriores = ["wordpress-financiadores", "plat-gife"]
 
 [[fonte]]
 nome = "GIFE"
-url = "https://gife.org.br/wp-json/wp/v2/posts"
+url = "https://gife.org.br/wp-json/wp/v2/posts?orderby=date"    # 08/11/2026: os mais novos primeiro (a busca ordenava por relevância)
 tipo = "wordpress"
 termos = "edital"
+
+# 08/11/2026 (parecer): a seleção mensal "Confira editais com inscrições abertas" (vetada como notícia) é a lista curada do
+# GIFE: cada parágrafo é um edital, com o prazo e o link do financiador ou do PDF. A cadeia lê o post mais recente e entrega
+# cada edital com o próprio link (antes, a notícia virava livro e só um candidato era seguido).
+[[fonte]]
+nome = "GIFE — a seleção mensal de editais com inscrições abertas (cada edital com o link do financiador)"
+url = "https://gife.org.br/wp-json/wp/v2/posts?search=confira%20editais&orderby=date&per_page=2&_fields=link,date,title"
+tipo = "cadeia"
+papel = "principal"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "@"
+campos = { post = "link", data = "date", lista = "title.rendered" }
+filtro = { lista = '(?i)editais.*inscri' }
+limite = 2
+
+[[fonte.cadeia]]
+formato = "html"
+url = "{post}"
+itens = "p"
+campos = { titulo = 're:^<p[^>]*>\s*(.{10,240}?),?\s+(?:est[áa]o?|seleciona|selecionar[áa]|recebe|receber[áa]|abre|abrir[áa]|tem|ter[áa]|vai|lan[çc]a|oferece|apoia)\b', prazo = 're:((?:com inscri[çc][õo]es abertas |inscri[çc][õo]es abertas |seleciona |recebe (?:inscri[çc][õo]es|propostas|projetos) )?at[ée] (?:o dia )?\d{1,2}º? de [a-zç]+)', link = 're:<a [^>]*href="(https?://[^"]+)"', resumo = "texto" }
+filtro = { link = "http", titulo = "." }
+limite = 200
+
+[fonte.pista]
+titulo = "{titulo} — {prazo}"
+link = "{link}"
+resumo = "Seleção GIFE ({post}) · {resumo}"
 
 
 # a rota alternativa (sondagem de 23/10/2026): o mapa do site, outro tipo de rota no mesmo órgão (o léxico filtra pelos endereços)
@@ -33,6 +62,11 @@ seguir_oficial = true               # a busca cega: do post de divulgação a um
 max_documentos = 20
 
 [lexico]
-termos = ["re:edital|chamada|chamamento|abre (selecao|inscric)|inscricoes abertas|premio|premiacao|selecao de (projetos|propostas|organizac|iniciativas)|seleciona (projetos|propostas|iniciativas)|fomento|fundo de apoio|apoio a (projetos|iniciativas|organizac)"]
+termos = ["re:edital|chamada|chamamento|abre (selecao|inscric)|inscricoes abertas|premio|premiacao|selecao de (projetos|propostas|organizac|iniciativas)|seleciona (projetos|propostas|iniciativas)|fomento|fundo de apoio|apoio a (projetos|iniciativas|organizac)|inscricoes abertas ate|seleciona ate|recebe (inscric|propostas|projetos)"]
 termos_em = "titulo"            # site de notícias: o título de um edital diz que é edital
 vetos = ["re:resultado|selecionad[ao]s|contemplad|^confira|editais (com inscricoes )?abert|oportunidades (do|da|de) (mes|semana)|finalistas|vencedor"]
+# 08/11/2026: o mapa do site trazia o acervo inteiro (181 de 184 achados); a data do mapa e a lida na página barram o antigo
+idade_maxima_dias = 120
+
+[aprendizado]
+licoes = ["08/11/2026 (parecer): 83 livros de notícia, 181 de 184 achados do mapa do site (o acervo inteiro). Agora: idade máxima de 120 dias (pela data do mapa e pela lida na página), a API do WordPress pelos mais novos, e a seleção mensal \"Confira editais com inscrições abertas\" lida edital por edital, cada um com o link do financiador ou do PDF."]

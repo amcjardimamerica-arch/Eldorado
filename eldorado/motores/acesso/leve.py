@@ -32,7 +32,12 @@ class DegrauLeve:
     def buscar(self, url: str, tempo_limite: float) -> Resposta:
         from . import ponte_br
         if ponte_br.usar(url):                                     # o site recusa a nuvem: pela ponte BR (25/10/2026)
-            return ponte_br.buscar(url, tempo_limite)
+            try:
+                return ponte_br.buscar(url, tempo_limite)
+            except Passageiro:
+                # 08/11/2026: a ponte com falha passageira (rede, 502/504) não encerra o degrau: tenta-se o pedido direto
+                # uma vez (o site pode ter voltado a aceitar a nuvem); o bloqueio e a recusa da ponte seguem como antes
+                pass
         try:
             r = self.sessao.get(url, timeout=tempo_limite, allow_redirects=True)
             resp = Resposta(str(r.url), r.status_code, r.content, r.headers.get("content-type", ""))

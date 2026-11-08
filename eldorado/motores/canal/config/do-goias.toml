@@ -67,7 +67,7 @@ orgao = "Secretaria de Estado da Cultura de Goiás (Secult-GO)"
 [[alvo]]
 id = "f260-captacao-206"
 nome = "Convênio com órgão público estadual"
-enderecos = ["https://pncp.gov.br/", "https://diariooficial.abc.go.gov.br/"]
+enderecos = ["https://diariooficial.abc.go.gov.br/"]   # 08/11/2026: a página inicial do PNCP não tem conteúdo de oportunidade (entregava a própria home)
 orgao = "PNCP / Diário Oficial de Goiás"
 
 [acesso]
@@ -79,13 +79,17 @@ seguir_oficial = false
 max_documentos = 40
 
 [lexico]
-# o léxico próprio do Diário de Goiás (camada de direcionamento, nos títulos das matérias), das páginas reais de 22/10:
-termos = ["re:chamamento|chamada p[uú]blica|credenciamento|termo de (fomento|colabora)|acordo de coopera|sele[çc][ãa]o (p[uú]blica|de (projetos|propostas|organiza|entidades))|pr[êe]mio|premia[çc][ãa]o|patroc[ií]nio|aldir blanc|pnab|fundo (estadual|de arte)|apoio a projetos|^edital$|edital (de|n[ºo°])"]
-vetos = ["re:cita[çc][ãa]o|intima[çc][ãa]o|notifica[çc][ãa]o|penalidade|convoca[çc][ãa]o de (candidatos|aprovados)|aprovados no processo seletivo|processo seletivo simplificado|concurso|resultado|homologa|preg[ãa]o|tomada de pre[çc]os|concorr[êe]ncia|extrato|aditivo|apostilamento|portaria|exonera|nomea|aposenta|leil[ãa]o|aliena[çc][ãa]o|inexigibilidade|dispensa de licita"]
+# o léxico próprio do Diário de Goiás (camada de direcionamento, nos títulos das matérias), das páginas reais de 22/10.
+# 08/11/2026 (parecer: 28 decididos, 4 acertos; erros: compra/contrato 5, não é para OSC 4): o "credenciamento" solto trazia
+# credenciamento de prestadores dos municípios; o "edital de comunicação/publicação" é aviso de licença ambiental de empresa;
+# o "edital de convocação" é assembleia. O credenciamento fica só o de entidades, organizações e agentes culturais.
+termos = ["re:chamamento|chamada p[uú]blica|credenciamento (de |para )?(entidades|organiza|osc|institui|agentes culturais|artistas|projetos|espa[çc]os culturais)|termo de (fomento|colabora)|acordo de coopera|sele[çc][ãa]o (p[uú]blica|de (projetos|propostas|organiza|entidades))|pr[êe]mio|premia[çc][ãa]o|patroc[ií]nio|aldir blanc|pnab|paulo gustavo|fundo (estadual|de arte)|apoio a projetos|^edital$|edital (de|n[ºo°])"]
+vetos = ["re:cita[çc][ãa]o|intima[çc][ãa]o|notifica[çc][ãa]o|penalidade|convoca[çc][ãa]o de (candidatos|aprovados)|aprovados no processo seletivo|processo seletivo simplificado|concurso|resultado|homologa|preg[ãa]o|tomada de pre[çc]os|concorr[êe]ncia|extrato|aditivo|apostilamento|portaria|exonera|nomea|aposenta|leil[ãa]o|aliena[çc][ãa]o|inexigibilidade|dispensa de licita",
+         "re:edital de (comunica[çc][ãa]o|publica[çc][ãa]o|convoca[çc][ãa]o|cita[çc][ãa]o|notifica)|convoca[çc][ãa]o (de |da |para )?(age|ago|assembl)|assembl[ée]ia|licen[çc]a (ambiental|pr[ée]via|de instala|de opera)|\\bdispensa\\b"]   # a retificação de um chamamento aberto fica (pode mudar o prazo)
 termos_em = "titulo"
 
 [aprendizado]
-licoes = ["Rota de acesso única para os domínios com bloqueio (diariooficial.abc.go.gov.br, goias.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 1 rota(s) que funcionaram: entram como rotas do motor.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: ['https://goias.gov.br/social/cedca/']"]
+licoes = ["08/11/2026 (parecer): a edição 'de hoje' rende mais (30 pistas acumuladas) que a 'de ontem' (8); a de ontem fica para os suplementos.", "08/11/2026: o 'edital de comunicação/publicação' é aviso de licença ambiental de empresa e o 'edital de convocação' é assembleia: vetados pelo título; o credenciamento só o de entidades e agentes culturais.", "Rota de acesso única para os domínios com bloqueio (diariooficial.abc.go.gov.br, goias.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 1 rota(s) que funcionaram: entram como rotas do motor.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: ['https://goias.gov.br/social/cedca/']"]
 bloqueios_conhecidos = ["diariooficial.abc.go.gov.br", "goias.gov.br"]
 alternativas_para_bloqueio = []
 rotas_que_falharam = ["https://diariooficial.abc.go.gov.br/apifront/portal/visualizacoes/view_html_diario/{edicao} (404, 23/10/2026)",

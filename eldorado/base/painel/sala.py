@@ -612,36 +612,47 @@ def montar(
     ).fetchone()
     if m:
         t, auc, pre, rev = m
+        # R48 (titular, 08/11/2026): os mostradores medem a JANELA DE 7 DIAS (o desempenho de agora; a acumulada desde o
+        # primeiro caso fica no texto) e a régua é a de uma rede sem vazamento, com base de ~24% de positivos: exigir
+        # precisão E revocação ≥ 0,85 ao mesmo tempo era inalcançável sem maquiar o limiar
+        try:
+            j7 = cer.execute("SELECT discernimento, precisao, revocacao FROM modelo WHERE arquivo = 'rede:oportunidade:7d' "
+                             "ORDER BY treinado_em DESC LIMIT 1").fetchone()
+        except sqlite3.Error:
+            j7 = None
+        acum = f" (acumulada desde o início: AUC {auc}, precisão {pre}, revocação {rev})"
+        if j7 and j7[0] is not None:
+            auc, pre, rev = j7
         I(
             "rn_auc",
-            "Discernimento da rede (oportunidade)",
+            "Discernimento da rede (oportunidade, 7 dias)",
             auc,
-            _faixa(auc, 0.85, 0.7) if auc is not None else "cinza",   # 02/11/2026: a rede de livros em uso; volta a ser medida
-            f"área sob a curva ROC: {auc} — prequencial sobre LIVROS (cada livro uma vez, o veredito final do Chrome ou da titular, "
-            f"ou a chegada ao Farol); a nota de cada livro pendente informa a Sala e o Comandante",
+            _faixa(auc, 0.8, 0.7) if auc is not None else "cinza",
+            f"área sob a curva ROC nos últimos 7 dias: {auc} — prequencial sobre LIVROS, com os atributos que existem antes do "
+            f"veredito (sem o link oficial){acum}",
             t,
             [0, 1],
-            {"normal": [0.85, None], "alarme": [0.7, None]},
+            {"normal": [0.8, None], "alarme": [0.7, None]},
         )
         I(
             "rn_precisao",
-            "Precisão da rede",
+            "Precisão da rede (7 dias)",
             pre,
-            _faixa(pre, 0.85, 0.7),
-            f"precisão: {pre}",
+            _faixa(pre, 0.65, 0.5),
+            f"precisão nos últimos 7 dias: {pre}{acum}",
             t,
             [0, 1],
-            {"normal": [0.85, None], "alarme": [0.7, None]},
+            {"normal": [0.65, None], "alarme": [0.5, None]},
         )
         I(
             "rn_revocacao",
-            "Revocação da rede",
+            "Revocação da rede (7 dias)",
             rev,
-            _faixa(rev, 0.85, 0.7),
-            f"revocação: {rev}",
+            _faixa(rev, 0.5, 0.35),
+            f"revocação nos últimos 7 dias: {rev}{acum}",
             t,
             [0, 1],
-            {"normal": [0.85, None], "alarme": [0.7, None]},
+            {"normal": [0.5, None], "alarme": [0.35, None]},
         )
         idade_t = _idade_h(t, agora)
         I("rn_treino", "Idade do modelo (horas)", idade_t, _faixa(idade_t, 24, 72, False), f"treinado há {idade_t:.0f} h", t,
@@ -710,8 +721,9 @@ def montar(
             "O Comandante contra a ordem fixa",
             dif,
             _faixa(dif, 0, -5),
-            f"as escolhas do Comandante renderam {cmp_['comandante']:.0%} (achado aceito no dia), a ordem fixa {cmp_['ordem_fixa']:.0%} "
-            f"({cmp_['decisoes']} decisões avaliadas em 7 dias)",
+            f"por motor-dia: as escolhas do Comandante renderam {cmp_['comandante']:.0%} (achado aceito no dia), a ordem fixa "
+            f"{cmp_['ordem_fixa']:.0%}, um sorteio {(cmp_.get('sorteio') or 0):.0%} e a regra simples (os 8 de maior taxa) "
+            f"{(cmp_.get('regra_simples') or 0):.0%} ({cmp_['decisoes']} motor-dias escolhidos em 7 dias)",
             iso,
             [-50, 50],
             {"normal": [0, None], "alarme": [-5, None]},
@@ -823,9 +835,10 @@ def montar(
 
     volta = dict(cer.execute("SELECT no, MAX(em) FROM execucao_passo WHERE estado = 'concluido' GROUP BY no").fetchall())
     grupos: dict[str, dict[str, Any]] = {}
+    # R48 (titular, 08/11/2026): TODOS os alarmes abertos, de qualquer idade (antes só os das últimas 24 h: o mostrador
+    # contava 35 e o painel mostrava 1 — os demais ficavam acesos sem que se visse o motivo); cada grupo leva a idade
     for id_, grav, mod, msg, quando, _rep in cer.execute(
-        "SELECT id, gravidade, modulo, mensagem, aberto_em, repeticoes FROM alarme WHERE fechado_em IS NULL AND aberto_em >= ? ORDER BY aberto_em",
-        (h24,),
+        "SELECT id, gravidade, modulo, mensagem, aberto_em, repeticoes FROM alarme WHERE fechado_em IS NULL ORDER BY aberto_em",
     ):
         m_no = _re.search(r"o nó ([a-z_]+) falhou", msg or "")
         resolvido = bool(m_no and volta.get(m_no.group(1), "") > (quando or ""))
@@ -844,8 +857,12 @@ def montar(
         )
         g["repeticoes"] += 1
         g["abertos"] += int(not resolvido)
+        g.setdefault("desde", quando)
         g["quando"] = quando
     anunc = []
+    for g in grupos.values():                                     # R48: a idade do grupo (o alarme mais antigo dele)
+        if g.get("desde") and g["desde"] < h24:
+            g["motivo"] = f"aberto desde {str(g['desde'])[:16].replace('T', ' ')} · " + g["motivo"]
     for g in grupos.values():
         if g["repeticoes"] > 1:
             g["nome"] = f"{g['nome']} (×{g['repeticoes']})"

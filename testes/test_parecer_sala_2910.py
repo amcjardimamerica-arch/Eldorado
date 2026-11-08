@@ -319,7 +319,8 @@ def test_so_grava_o_que_muda_e_a_copia_dos_livros():
 
     # 02/11/2026 (titular): a rede retreinada só com livros volta a ser medida (deixa de ser o cinza «fora de uso»)
     _sala = Path("eldorado/base/painel/sala.py").read_text(encoding="utf-8")
-    assert '_faixa(auc, 0.85, 0.7) if auc is not None else "cinza"' in _sala and "prequencial sobre LIVROS" in _sala
+    # R48 (titular, 08/11/2026, registrada): a régua do discernimento passa a 0,80/0,70 na janela de 7 dias, sem o vazamento
+    assert '_faixa(auc, 0.8, 0.7) if auc is not None else "cinza"' in _sala and "prequencial sobre LIVROS" in _sala
     assert datetime.now(timezone.utc)
 
 

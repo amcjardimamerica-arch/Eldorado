@@ -16,11 +16,21 @@ nomes_anteriores = ["plat-rede-filantropia"]
 
 # a página é montada por script: pelo navegador, a página inicial traz 146 links, e os editais estão nas notícias
 # (/informacao/...; a página /informacao/ não existe: 404): Plan International, Instituto Porto, CNBB, Fundação Abrinq, Prêmio Nestlé (gravação de 23/10/2026)
+# 08/11/2026 (parecer): a API do WordPress do filantropia.ong responde da nuvem (a página recusava IP estrangeiro): a busca
+# "edital" pelos mais novos vira a rota principal, com o título inteiro (o buscador truncava: "Edital Juventude em
+# Movimento, do Instituto Localiza, vai ..."). O portal mistura concursos públicos e vagas: vetados pelo título.
+[[fonte]]
+nome = "Rede Filantropia — publicações com edital (API do WordPress, as mais novas)"
+url = "https://www.filantropia.ong/wp-json/wp/v2/posts?orderby=date"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
 [[fonte]]
 nome = "Rede Filantropia — página inicial (os editais divulgados nas notícias)"
 url = "https://www.filantropia.ong/"
 tipo = "pagina"
-papel = "principal"
+papel = "alternativa"
 
 [[fonte]]
 nome = "busca aberta: site:filantropia.ong edital inscrições"
@@ -38,11 +48,12 @@ seguir_oficial = true
 
 [lexico]
 termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"]
-vetos = ["re:^área dos inscritos$|dicas para|^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"]
+vetos = ["re:^área dos inscritos$|dicas para|^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio", "re:\\bvagas?\\b|sal[áa]rio|concurso|remunera|resid[êe]ncia|medicina|\\benem\\b|provas|\\bpm\\b|\\bpc\\b|pmerj|cesgranrio|\\bibge\\b|encerra"]
 termos_em = "titulo"
+idade_maxima_dias = 120
 
 [aprendizado]
-licoes = ["O domínio novo (filantropia.ong) responde à nuvem (23/10/2026); o registro antigo de recusa a IP estrangeiro era do domínio velho.", "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10).", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+licoes = ["08/11/2026 (parecer): o motor dependia da metabusca (título truncado; se o buscador falha, zera). A API do WordPress do filantropia.ong responde da nuvem: a busca \"edital\" pelos mais novos é a rota principal; concursos públicos, vagas e salários vetados pelo título; idade máxima de 120 dias.", "O domínio novo (filantropia.ong) responde à nuvem (23/10/2026); o registro antigo de recusa a IP estrangeiro era do domínio velho.", "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10).", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
 bloqueios_conhecidos = []
 alternativas_para_bloqueio = []
 rotas_que_falharam = ["www.redefilantropia.org.br (o domínio antigo não existe mais; o novo é filantropia.ong)"]

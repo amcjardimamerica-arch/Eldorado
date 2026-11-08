@@ -46,3 +46,13 @@ degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "lo
 
 [leitura]
 documentos = false
+
+# 08/11/2026 (parecer: 895 decididos, 5 acertos — o maior ruído do sistema). Duas causas, as duas corrigidas no motor genérico:
+# (1) os 4 alvos não têm léxico e entregavam TODOS os links dos portais dos ministérios (2.316 de 2.324 achados em 30 dias:
+#     "Carômetro", "Saiba mais sobre..."): sem léxico, o alvo agora entrega só a própria página quando ela muda;
+# (2) a rota boa (o arquivo de programas, 11 MB) passa pela ponte BR, que cortava em 6 MB ("Callback aborted" em 108 de 118
+#     leituras): a ponte agora pede até 15 MB e, se falhar, tenta o pedido direto.
+# O leitor do arquivo (descoberta/dados_abertos.py) já filtra o recebimento de propostas aberto e a natureza privada/OSC.
+[aprendizado]
+licoes = ["08/11/2026 (parecer): 2.316 dos 2.324 achados de 30 dias eram links dos menus dos ministérios colhidos pelos alvos sem léxico; o alvo sem léxico agora entrega só a própria página.", "08/11/2026: o arquivo siconv_programa.zip (11 MB) era cortado pela ponte em 6 MB (108 de 118 leituras em erro); a ponte agora pede até 15 MB e cai no pedido direto se falhar."]
+rotas_que_falharam = ["a leitura dos links dos portais www.gov.br/mds, /esporte, /mma e bndes.gov.br como oportunidades (menus)"]

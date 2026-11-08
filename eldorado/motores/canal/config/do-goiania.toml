@@ -24,7 +24,7 @@ papel = "principal"
 formato = "html"
 itens = 'a[href$=".pdf"]'
 campos = { pdf = "attr:href", edicao = "texto" }
-limite = 2
+limite = 3                          # 08/11/2026: as três edições mais recentes (a extra e o fim de semana não se perdem)
 
 [[fonte.cadeia]]
 formato = "atos"
@@ -63,13 +63,13 @@ texto = "{texto}"
 [[alvo]]
 id = "f260-captacao-001"
 nome = "PNAB Goiânia - Audiovisual"
-enderecos = ["https://www.goiania.go.gov.br/cultura/", "https://diariooficial.goiania.go.gov.br/"]
+enderecos = ["https://www.goiania.go.gov.br/secult/", "https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-cultura/"]
 orgao = "Secretaria Municipal de Cultura de Goiânia"
 
 [[alvo]]
 id = "f260-captacao-039"
 nome = "Editais de ocupação cultural municipal"
-enderecos = ["https://www.goiania.go.gov.br/cultura/", "https://diariooficial.goiania.go.gov.br/"]
+enderecos = ["https://www.goiania.go.gov.br/secretaria/secretaria-municipal-de-cultura/", "https://www.goiania.go.gov.br/secult/"]
 orgao = "Secretaria Municipal de Cultura de Goiânia"
 
 [acesso]
@@ -81,16 +81,20 @@ seguir_oficial = false
 
 [lexico]
 # o léxico próprio do Diário de Goiânia (no título E no começo do ato: um "EDITAL Nº" de licença ambiental tem o mesmo título
-# de um edital de verdade), das edições reais 8740 e 8889:
-termos = ["re:chamamento|chamada p[uú]blica|credenciamento|termo de (fomento|colabora)|acordo de coopera|sele[çc][ãa]o (p[uú]blica|de (projetos|propostas|organiza|entidades))|pr[êe]mio|premia[çc][ãa]o|patroc[ií]nio|aldir blanc|pnab|organiza[çc][ãa]o social|organiza[çc][õo]es da sociedade civil|fundo municipal"]
-vetos = ["re:licen[çc]as? ambienta|requereu|extrato|contrato n|aditivo|apostila|portaria|decreta|nomea|exonera|f[ée]rias|aposentadoria|pens[ãa]o|homologa|resultado|preg[ãa]o|tomada de pre[çc]os|concorr[êe]ncia|leil[ãa]o|inexigibilidade|dispensa de (licita|chamamento)|ado[çc][ãa]o de logradouro|programa adote|cita[çc][ãa]o|intima[çc][ãa]o|designa gestor|comiss[ãa]o de monitoramento"]
+# de um edital de verdade), das edições reais 8740 e 8889.
+# 08/11/2026 (parecer): 16 livros, 1 acerto — os DESPACHOS e RESOLUÇÕES que citam um termo de colaboração JÁ FIRMADO entravam
+# pelo corpo do ato. O ato de oportunidade tem título de edital/aviso/chamada; os atos de expediente (despacho, resolução,
+# decreto, lei, termo, errata) saem pelo título.
+termos = ["re:chamamento|chamada p[uú]blica|credenciamento de (entidades|organiza|institui|osc)|termo de (fomento|colabora)|acordo de coopera|sele[çc][ãa]o (p[uú]blica|de (projetos|propostas|organiza|entidades))|pr[êe]mio|premia[çc][ãa]o|patroc[ií]nio|aldir blanc|pnab|organiza[çc][ãa]o social|organiza[çc][õo]es da sociedade civil|fundo municipal"]
+vetos = ["re:licen[çc]as? ambienta|requereu|extrato|contrato n|aditivo|apostila|portaria|decreta|nomea|exonera|f[ée]rias|aposentadoria|pens[ãa]o|homologa|resultado|preg[ãa]o|tomada de pre[çc]os|concorr[êe]ncia|leil[ãa]o|inexigibilidade|dispensa de (licita|chamamento)|ado[çc][ãa]o de logradouro|programa adote|cita[çc][ãa]o|intima[çc][ãa]o|designa gestor|comiss[ãa]o de monitoramento",
+         "re:^\\s*(despacho|resolu[çc][ãa]o|decreto|lei\\b|lei complementar|ata\\b|of[íi]cio|instru[çc][ãa]o normativa|termo de|ordem de servi[çc]o|errata|retifica)"]
 termos_em = "tudo"
 
 [aprendizado]
-licoes = ["Rota de acesso única para os domínios com bloqueio (diariooficial.goiania.go.gov.br, www.goiania.go.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 11 rota(s) que funcionaram: entram como rotas do motor.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: ['https://www.goiania.go.gov.br/cultura/']"]
+licoes = ["08/11/2026 (parecer): os despachos e resoluções que citam termo de colaboração já firmado entravam pelo corpo do ato (16 livros, 1 acerto); o título do ato de expediente agora veta, salvo quando anuncia o chamamento.", "08/11/2026: o Querido Diário é a rota que mais rende (128 de 187 achados em 30 d) e repete os atos da lista oficial; o Cartório une o mesmo título (R22).", "Rota de acesso única para os domínios com bloqueio (diariooficial.goiania.go.gov.br, www.goiania.go.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 11 rota(s) que funcionaram: entram como rotas do motor.", "Os 2 alvos são vigiados só na janela prevista da próxima edição.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: ['https://www.goiania.go.gov.br/cultura/']"]
 bloqueios_conhecidos = ["www.goiania.go.gov.br"]
 alternativas_para_bloqueio = []
-rotas_que_falharam = ["a Carta de Serviços (endereço errado do motor antigo)", "https://www.goiania.go.gov.br/cultura/ (quebrada)",
+rotas_que_falharam = ["a Carta de Serviços (endereço errado do motor antigo)", "https://www.goiania.go.gov.br/cultura/ (quebrada: 404 em 70 de 140 leituras de cada alvo até 08/11/2026; trocada por /secult/)",
                       "'goiânia' no título do Querido Diário (misturava Aparecida de Goiânia: use territory_ids=5208707)",
                       "o operador OR no Querido Diário (não existe: | é OU, + é E)"]
 

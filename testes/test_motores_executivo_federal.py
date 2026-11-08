@@ -30,7 +30,14 @@ def test_funarte_os_editais_abertos(tmp_path):
         assert esperado in t, esperado
 
 
-def test_bancos_publicos_os_editais_sociais(tmp_path):
+def test_bancos_publicos_os_editais_sociais(tmp_path, monkeypatch):
+    # 08/11/2026: o motor passou a ter idade máxima (365 dias; o parecer achou um edital de 2018 aceito): as páginas foram
+    # gravadas em 23/10/2026 e a chamada do BNB é de 21/08/2025 — o "hoje" do ensaio é o da gravação menos um ano, para a
+    # leitura das páginas continuar conferida; a idade tem as travas próprias em test_motor_entrada.py
+    from datetime import date
+
+    import eldorado.motores.canal.motor as mm
+    monkeypatch.setattr(mm, "hoje_local", lambda: date(2025, 10, 23))
     t = titulos("novo-bancos-publicos", tmp_path)
     assert any(x.startswith("21/08/2025 - Chamada Pública para Apoio a Projetos Sociais com Amparo em Incentivos Fiscais") for x in t)
     assert any("6º ciclo do BNDES Periferias" in x for x in t)

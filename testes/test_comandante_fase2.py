@@ -25,7 +25,8 @@ def test_o_comandante_decide_registra_e_reaprende_do_cerebro(bancos, gravador, t
     _aplicar(gravador, ev)
     c = bancos["cerebro"]
     dec = c.execute("SELECT etapa, alvo, motivo, politica FROM comandante_decisao").fetchall()
-    assert len([d for d in dec if d[0] == "coleta"]) == 8 and all(d[2] and d[3] == "vw-squarecb" for d in dec)
+    # R48 (titular, 08/11/2026, registrada): a política é a amostragem de Thompson sobre o resultado real (era o Vowpal Wabbit)
+    assert len([d for d in dec if d[0] == "coleta"]) == 8 and all(d[2] and d[3] == "thompson" for d in dec)
     escolhido = dec[0][1]
     assert (
         gravador.aplicar(
@@ -40,6 +41,7 @@ def test_o_comandante_decide_registra_e_reaprende_do_cerebro(bancos, gravador, t
                         "encontrado_em": ontem.date().isoformat(),
                         "link_divulgacao": "https://x.gov.br/e",
                         "decisao": "aceito",
+                        "dados": {},   # R48: o achado de teste completo (sem «dados» o banco o recusava e o «or True» escondia)
                     },
                 )
             ]
@@ -50,7 +52,7 @@ def test_o_comandante_decide_registra_e_reaprende_do_cerebro(bancos, gravador, t
     _aplicar(gravador, ev)
     assert r["avaliadas"] >= 8 and c.execute("SELECT COUNT(*) FROM comandante_decisao WHERE avaliada_em IS NOT NULL").fetchone()[0] >= 8
     r2 = decidir(tmp_path, Path("config"), Diario(ev, "c"), None)
-    assert r2["decisoes"]["coleta"]["aprendidas"] >= 8  # reaprendeu das decisões avaliadas no Cérebro
+    assert r2["decisoes"]["coleta"]["aprendidas"] >= 1  # R48: aprende do resultado real no Cérebro e na Biblioteca
 
 
 def test_a_ia_recebe_o_contexto_do_cerebro(bancos, gravador, tmp_path, monkeypatch):

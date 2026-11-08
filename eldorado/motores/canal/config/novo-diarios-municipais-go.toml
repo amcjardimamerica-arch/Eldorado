@@ -78,13 +78,18 @@ paginas_dos_achados = false         # o texto do ato, recortado do diário (divu
 seguir_oficial = false
 
 [lexico]
+# 08/11/2026 (parecer: 69 decididos, 0 acertos — 49 "fora da abrangência"): a maior parte veio da busca nacional do Querido
+# Diário (133 achados num dia só, 23/10), já retirada; o território de Goiás agora também na entrada e o alvo do Paraná não é
+# lido. Os atos de expediente (aditamento, resolução, despacho...) e os credenciamentos de feira/ambulante saem pelo título.
+territorio = "goias"
 # o léxico próprio dos diários municipais (no título E no começo do ato), da edição real nº 3730 da AGM:
 termos = ["re:chamamento|chamada p[uú]blica|credenciamento|termo de (fomento|colabora)|acordo de coopera|sele[çc][ãa]o (p[uú]blica|de (projetos|propostas|organiza|entidades))|pr[êe]mio|premia[çc][ãa]o|patroc[ií]nio|aldir blanc|pnab|paulo gustavo|cmdca|organiza[çc][õo]es da sociedade civil|subven[çc]"]
-vetos = ["re:licen[çc]a.{0,3}pr[êe]mio|rescis[ãa]o|ratifica|aviso de licita|preg[ãa]o|licen[çc]as? ambienta|requereu|extrato|contrato n|aditivo|apostila|portaria|decreto|nomea|exonera|f[ée]rias|aposentadoria|pens[ãa]o|homologa|resultado|tomada de pre[çc]os|concorr[êe]ncia|leil[ãa]o|inexigibilidade|dispensa|cita[çc][ãa]o|intima[çc][ãa]o|processo seletivo|concurso"]
+vetos = ["re:licen[çc]a.{0,3}pr[êe]mio|rescis[ãa]o|ratifica|aviso de licita|preg[ãa]o|licen[çc]as? ambienta|requereu|extrato|contrato n|aditivo|apostila|portaria|decreto|nomea|exonera|f[ée]rias|aposentadoria|pens[ãa]o|homologa|resultado|tomada de pre[çc]os|concorr[êe]ncia|leil[ãa]o|inexigibilidade|dispensa|cita[çc][ãa]o|intima[çc][ãa]o|processo seletivo|concurso"
+         , "re:^\\s*(termo de (aditamento|extin|rescis|ajuste|homolog|apostil)|aditamento|resolu[çc][ãa]o|despacho|decreto|portaria|lei\\b|ata\\b|errata|extrato)|feira|ambulante|natal|carnaval|festa|reveillon|aquisi[çc][ãa]o de (g[êe]neros|alimentos|bens)"]
 termos_em = "tudo"
 
 [aprendizado]
-licoes = ["Ler primeiro pela API do Querido Diário; as páginas ficam como reserva.", "Os 1 alvos são vigiados só na janela prevista da próxima edição."]
+licoes = ["08/11/2026 (parecer): a precisão 0% era herança da busca nacional do Querido Diário (retirada antes de 26/10); território de Goiás na entrada e nos alvos (Arapongas-PR não é lido); atos de expediente e feiras vetados pelo título.", "Ler primeiro pela API do Querido Diário; as páginas ficam como reserva.", "Os 1 alvos são vigiados só na janela prevista da próxima edição."]
 bloqueios_conhecidos = []
 alternativas_para_bloqueio = []
 rotas_que_falharam = ["https://www.diariomunicipal.com.br/agm/pesquisar (a busca não devolve resultados sem sessão, 23/10/2026)",

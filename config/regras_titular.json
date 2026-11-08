@@ -646,6 +646,26 @@
     "testes/test_ciclo_pilotos.py::test_o_fator_real_inverte_a_familia_dos_candidatos",
     "testes/test_ciclo_pilotos.py::test_o_ciclo_roda_a_cada_100_e_o_comandante_usa"
    ]
+  },
+  {
+   "id": "R48",
+   "data": "2026-11-08",
+   "tema": "o Comandante pelo resultado real e a medição honesta (parecer da etapa 8)",
+   "regra": "Decisões da titular sobre o parecer da etapa 8: (1) a comparação do Comandante com a ordem fixa é por MOTOR-DIA distinto, com o sorteio e a regra simples (os 8 de maior taxa histórica) como referências; o Comandante só passa a acionar a coleta quando superar a regra simples por 7 dias seguidos; (2) a coleta e o Espião escolhem pela amostragem de Thompson sobre o RESULTADO REAL (o motor-dia com achado aceito; a missão que trouxe achado aceito na Biblioteca, com o fator real da R47), uma decisão de coleta por motor por dia, registrando a probabilidade de inclusão; (3) a recompensa da decisão do Espião é o achado aceito da família nas 24 h seguintes, e a crença da família no Espião é simétrica (+1 / +1); (4) o Comandante pula de verdade a etapa «originais» (as demais seguem em sombra; o parâmetro comandante.aciona_etapas amplia a lista); (5) a rede de oportunidade não usa o link oficial nem o tipo dele (chegam com o veredito), ganha a pergunta «aberta» (a encerrada não está aberta), usada pela fila do Interceptador, e os mostradores medem a janela de 7 dias com a régua de uma rede sem vazamento (discernimento 0,80/0,70; precisão 0,65/0,50; revocação 0,50/0,35) — revisa a régua 0,85/0,70 do discernimento citada na trava da R33; (6) a Sala lista TODOS os alarmes abertos, com a idade; (7) o Judiciário e os MPs (dj-trf1-go, judiciario-cnj, judiciario-tjgo, mpgo/mptgo/mpu-destinacao) são fontes esporádicas: sem novidade não acende, e «nunca entregou» de fonte esporádica é atenção, não vermelho.",
+   "porque": "titular, 08/11/2026: «faça todas as sugestões propostas que dependiam de mim». A reconstrução do histórico (2,2 milhões de eventos) mostrou: o Comandante rendia 0,331 por motor-dia, o mesmo que um sorteio (0,320), e a Sala mostrava +25,5 pela contagem por decisão; a regra simples rendia 0,767; o Espião gastava 77% das escolhas na internacional_espanhol (3 oportunidades reais em 11.904 missões) contra 5 em 238 da empresa_semente; a rede ganhava 5 pontos de AUC com o link oficial que só existe depois do veredito; o «originais» rendia em 0,5% das passagens e custava 45 s cada uma.",
+   "onde": "eldorado/base/aprendizado/avaliar.py, eldorado/base/comandante/politica.py, decidir.py, pilotos.py, escolher.py, eldorado/motores/pilotos/espiao.py, eldorado/base/cerebro/rede.py, encaminhamento.py, sinais_motores.py, eldorado/base/painel/sala.py, eldorado/motores/canal/config (metrica.esporadica)",
+   "travas": [
+    "testes/test_r48_comandante.py::test_thompson_pela_taxa_real_e_a_probabilidade_de_inclusao",
+    "testes/test_r48_comandante.py::test_contagens_da_coleta_ate_a_vespera",
+    "testes/test_r48_comandante.py::test_a_coleta_decide_uma_vez_por_motor_por_dia_e_sem_o_vw",
+    "testes/test_r48_comandante.py::test_a_recompensa_do_espiao_e_o_achado_aceito_em_24h",
+    "testes/test_r48_comandante.py::test_o_comandante_pula_o_originais_de_verdade",
+    "testes/test_r48_comandante.py::test_a_rede_sem_o_link_oficial_com_a_pergunta_aberta_e_a_janela",
+    "testes/test_r48_comandante.py::test_a_sala_mostra_todos_os_alarmes_e_a_janela_da_rede",
+    "testes/test_r48_comandante.py::test_a_fonte_esporadica_nao_acende_sem_novidade",
+    "testes/test_comparacao_motor_dia.py::test_decisoes_repetidas_nao_inflam_o_comandante"
+   ],
+   "revoga": "na R24, «o Comandante decide com a política aprendida (Vowpal Wabbit)»: passa a ser a amostragem de Thompson sobre o resultado real (a trava testes/test_comandante_fase2.py::test_o_comandante_decide_registra_e_reaprende_do_cerebro confere «thompson»); e a régua 0,85/0,70 do discernimento afirmada em testes/test_parecer_sala_2910.py::test_so_grava_o_que_muda_e_a_copia_dos_livros (R33), agora 0,80/0,70 na janela de 7 dias"
   }
  ]
 }

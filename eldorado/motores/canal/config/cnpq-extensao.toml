@@ -36,12 +36,15 @@ paginas_dos_achados = true
 seguir_oficial = true
 
 [lexico]
-termos = ["re:(chamada|edital|chamamento).{0,200}(extens|tecnolog\\w* socia|sociedade civil|comunidad|inclus|popular|solid[aá]ri|cooperat|divulga[çc][ãa]o cient|olimp|feira|museu|ci[êe]ncia (e|na|para)|educa[çc][ãa]o|territ)"]
-vetos = ["re:compartilhe|copiar|^faq|^anexo|plano de trabalho|declara[çc]|carta de|resultado|bolsa|mestrado|doutorado|p[óo]s-?doutor|produtividade|^busca"]
+# 08/11/2026 (parecer: 2 achados em 36 execuções, os 2 errados — um encerrado, um de cooperação científica sem OSC): só a
+# chamada que cita a sociedade civil, a extensão ou a tecnologia social; "comunidade", "inclusão", "educação" e "território"
+# soltos traziam chamadas de pesquisa (a OSC raramente é proponente no CNPq).
+termos = ["re:(chamada|edital|chamamento).{0,200}(extens[ãa]o|tecnolog\\w* socia|sociedade civil|organiza[çc][õo]es (sociais|da sociedade)|\\boscs?\\b|popular|solid[aá]ri|cooperativ|divulga[çc][ãa]o cient|feiras? de ci[êe]ncia|museus?)"]
+vetos = ["re:compartilhe|copiar|^faq|^anexo|plano de trabalho|declara[çc]|carta de|resultado|bolsa|mestrado|doutorado|p[óo]s-?doutor|produtividade|^busca|encerrad|coopera[çc][ãa]o (internacional|bilateral|afro)"]
 termos_em = "titulo"
 
 [aprendizado]
-licoes = ["O gov.br do CNPq respondeu da nuvem em 23/10/2026 (o Eldorado0 registrava bloqueio).", "Rota de acesso única para os domínios com bloqueio (www.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 10 rota(s) que funcionaram: entram como rotas do motor."]
+licoes = ["08/11/2026 (parecer): 2 achados em 36 execuções, ambos errados. Léxico estreitado para sociedade civil, extensão e tecnologia social; a decisão de fundir este motor num motor federal único ou desligá-lo é da titular (R19).", "O gov.br do CNPq respondeu da nuvem em 23/10/2026 (o Eldorado0 registrava bloqueio).", "Rota de acesso única para os domínios com bloqueio (www.gov.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 10 rota(s) que funcionaram: entram como rotas do motor."]
 bloqueios_conhecidos = ["www.gov.br"]
 alternativas_para_bloqueio = []
 rotas_que_falharam = ["http://memoria2.cnpq.br/web/guest/chamadas-publicas (403)", "http://resultado.cnpq.br/chamadas (404)", "https://www.finep.gov.br/chamadas-publicas (responde, mas a lista não está numa região reconhecível: provável JavaScript; 23/10/2026)"]

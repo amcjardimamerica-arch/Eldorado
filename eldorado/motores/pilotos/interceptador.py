@@ -195,7 +195,26 @@ def fila(con: sqlite3.Connection, hoje: str) -> list[Livro]:
     # a ordem do Comandante: Goiás → Brasil → internacional → outras capitais e estados; dentro de cada um, as abertas que
     # fecham antes; depois as que ainda não passaram pela verificação prévia
     from ...base.comandante.cartorio import chave_de_busca
-    return sorted(saida, key=lambda x: (*chave_de_busca(x.abrangencia, x.uf, x.fim, hoje, len(x.faltam))[:3], x.vp_rodadas, len(x.faltam)))
+    # 08/11/2026 (parecer dos motores): o livro que não é oportunidade pelo próprio título (resultado, estudo, pesquisa,
+    # relatório) ou que só cita anos vencidos ("edital selecao publica 2023012…") vai para o FIM da fila — continua nela (a
+    # fila é do Comandante, R43), mas não toma o voo das abertas; o Interceptador voava neles todos os dias
+    return sorted(saida, key=lambda x: (_fim_da_fila(x.titulo, x.fim, hoje),
+                                        *chave_de_busca(x.abrangencia, x.uf, x.fim, hoje, len(x.faltam))[:3], x.vp_rodadas, len(x.faltam)))
+
+
+NAO_OPORTUNIDADE = re.compile(r"(?i)\bresultados? (?:definitivo|final|preliminar|parcial)|homologa[çc][ãa]o d[oa] resultado|"
+                              r"^\W*(?:estudo|pesquisa|relat[óo]rio|balan[çc]o|ranking|anu[áa]rio)\b|\bbisc\b")
+
+
+def _fim_da_fila(titulo: str | None, fim: str | None, hoje: str) -> bool:
+    """O livro vai para o fim da fila: não é oportunidade pelo título, ou não tem prazo e só cita anos já passados."""
+    t = titulo or ""
+    if NAO_OPORTUNIDADE.search(t):
+        return True
+    if not fim:
+        anos = {int(a) for a in re.findall(r"(?<!\d)(20[12]\d)", t)}
+        return bool(anos) and max(anos) < int(hoje[:4]) - 1
+    return False
 
 
 def carregar(con: sqlite3.Connection, ids: list[str]) -> list[Livro]:

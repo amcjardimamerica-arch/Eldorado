@@ -18,7 +18,12 @@ class DegrauAPI:
     def buscar(self, url: str, tempo_limite: float, corpo: dict[str, str] | None = None) -> Resposta:
         from . import ponte_br
         if corpo is None and ponte_br.usar(url):                   # o site recusa a nuvem: pela ponte BR (25/10/2026)
-            return ponte_br.buscar(url, tempo_limite)
+            try:
+                return ponte_br.buscar(url, tempo_limite)
+            except Passageiro:
+                # 08/11/2026: a ponte com falha passageira (rede, 502/504) não encerra o degrau: tenta-se o pedido direto
+                # uma vez (o site pode ter voltado a aceitar a nuvem); o bloqueio e a recusa da ponte seguem como antes
+                pass
         try:                                                     # com corpo: POST de formulário, na mesma sessão (o cookie se mantém)
             r = self.cliente.post(url, data=corpo, timeout=tempo_limite) if corpo is not None else self.cliente.get(url, timeout=tempo_limite)
         except httpx.TransportError as e:

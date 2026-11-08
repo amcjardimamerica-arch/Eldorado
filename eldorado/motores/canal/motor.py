@@ -30,7 +30,17 @@ from ..leitura import leitores
 from ..leitura.pdf import LeitorPDF
 from .estado import EstadoMotor
 
-DOCUMENTO = re.compile(r"(?i)\.(pdf|docx?|xlsx?|ods|odt|pptx|zip|7z|rar)(?:$|\?)")
+DOCUMENTO = re.compile(r"(?i)(?:\.(pdf|docx?|xlsx?|ods|odt|pptx|zip|7z|rar)|/pdf/?)(?:$|\?)")   # 08/11: ".../123/pdf" (APIs de legislação)
+VISTA_PLONE = re.compile(r"(?i)(\.(?:pdf|docx?|xlsx?|ods|odt|pptx))/view/?$")   # 08/11/2026: "arquivo.pdf/view" → "arquivo.pdf"
+# 08/11/2026 (parecer dos motores): o texto de link que não diz o que é ("Clique aqui e leia o edital", "Saiba mais sobre
+# ...", "Doacao de bens.PDF") não é título de oportunidade. Na página, o link genérico é menu ou chamada de notícia e sai na
+# entrada; no documento (PDF), o título vem da primeira linha do próprio documento que diz o que ele é.
+TITULO_GENERICO = re.compile(r"(?i)^\s*(clique|clicando|leia|saiba|veja|confira|acesse|acessar|baixe|baixar|download|"
+                             r"mais informa|ver mais|ler mais|aqui\b|link\b|anexo\s*[ivx\d]*\s*$|"
+                             r"[\w ._-]{1,160}\.(pdf|docx?|odt|xlsx?)\s*$)")
+NOME_DE_ARQUIVO = re.compile(r"(?i)^\s*[\w ._-]{1,160}\.(pdf|docx?|odt|xlsx?)\s*$")   # o título é o nome do arquivo: o link se lê
+LINHA_DE_TITULO = re.compile(r"(?i)\b(edital|chamamento|chamada p[úu]blica|sele[çc][ãa]o|aviso|pr[êe]mio|doa[çc][ãa]o|credenciamento|"
+                             r"cadastr|destina[çc][ãa]o)\b")
 
 
 class _Base(BaseModel):
@@ -95,6 +105,9 @@ class CfgFonte(_Base):
     cadeia: list[CfgElo] = Field(default_factory=list)          # tipo "cadeia": os elos, do primeiro (o endereço da fonte) ao último
     especial: dict[str, Any] = Field(default_factory=dict)      # destino especial: o mapa desta fonte (vale sobre o do motor)
     pista: CfgPistaCadeia | None = None
+    # 08/11/2026: o filtro da fonte (campo → expressão): só seguem as pistas cujos campos casam — titulo, resumo, link ou
+    # qualquer dado do item (orgao, uf, municipio, dono...). Ex.: o dono institucional de uma oportunidade do Mapa da Cultura.
+    filtro: dict[str, str] = Field(default_factory=dict)
 
 
 class CfgAcesso(_Base):
@@ -126,6 +139,13 @@ class CfgLexico(_Base):
     vetos: list[str] = Field(default_factory=list)
     salvos: list[str] = Field(default_factory=list)
     termos_em: Literal["tudo", "titulo"] = "tudo"   # "titulo": em sites de notícias, o título de um edital diz que é edital
+    # 08/11/2026 (parecer dos motores): os filtros de ENTRADA, antes de qualquer leitura ou entrega.
+    # idade_maxima_dias: a pista com data conhecida (a publicação do WordPress, o lastmod do mapa do site, o feed, a data da
+    # API) mais velha que isto não entra (o mapa do site reabria o acervo de anos; sem data, a pista entra).
+    idade_maxima_dias: int | None = Field(None, ge=1, le=3650)
+    # territorio: "goias" aplica na entrada a mesma regra territorial do portão (R27: a municipal PÚBLICA de cidade de outro
+    # estado que não é capital não entra); "livre" não filtra (as privadas e as nacionais ficam sempre).
+    territorio: Literal["livre", "goias"] = "livre"
 
 
 class CfgNormas(_Base):
@@ -257,6 +277,141 @@ def _agora() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
 
 
+def _para_data(data: Any) -> date | None:
+    """A data de uma pista (ISO, aaaa/mm/dd, dd/mm/aaaa, aaaammdd ou a do e-mail/RSS); desconhecida: None."""
+    if not data:
+        return None
+    s = str(data).strip()
+    try:
+        if re.match(r"\d{4}[-/]\d{2}[-/]\d{2}", s):
+            return date(int(s[:4]), int(s[5:7]), int(s[8:10]))
+        if re.match(r"\d{2}/\d{2}/\d{4}", s):
+            return date(int(s[6:10]), int(s[3:5]), int(s[:2]))
+        if re.fullmatch(r"\d{8}(\d{6})?", s):
+            return date(int(s[:4]), int(s[4:6]), int(s[6:8]))
+        from email.utils import parsedate_to_datetime
+        return parsedate_to_datetime(s).date()
+    except (ValueError, TypeError, IndexError):
+        return None
+
+
+def _idade_dias(data: Any) -> int | None:
+    """A idade, em dias, de uma data de pista; desconhecida: None."""
+    d = _para_data(data)
+    return (hoje_local() - d).days if d else None
+
+
+def _data_iso(data: Any) -> str | None:
+    """08/11/2026: a data de publicação do achado sempre em ISO (aaaa-mm-dd). Antes ia o começo do texto da fonte
+    ("Mon, 03 No", "05/11/2026", "2026/08/27"), e o Cartório perdia a edição (o ano é lido dos 4 primeiros caracteres)."""
+    d = _para_data(data)
+    return d.isoformat() if d else None
+
+
+_MESES = {m: i for i, m in enumerate(("janeiro", "fevereiro", "marco", "abril", "maio", "junho", "julho", "agosto", "setembro",
+                                        "outubro", "novembro", "dezembro"), 1)}
+
+
+def _data_da_pagina(html: bytes | str | None, url: str) -> str | None:
+    """08/11/2026: a data de publicação da página de divulgação (htmldate, a mesma do canivete), para a pista que veio sem
+    data (as listas de links e as buscas HTML não trazem a data da notícia)."""
+    if not html:
+        return None
+    try:
+        from ..leitura.enriquecer import publicacao
+        return publicacao(html.decode("utf-8", errors="replace") if isinstance(html, bytes) else html, url)
+    except Exception:  # noqa: BLE001 — sem a data, a pista segue como antes
+        return None
+
+
+_MES_CURTO = {"jan": 1, "fev": 2, "mar": 3, "abr": 4, "mai": 5, "jun": 6, "jul": 7, "ago": 8, "set": 9, "out": 10, "nov": 11, "dez": 12}
+
+
+def _prazo_no_titulo(titulo: str) -> date | None:
+    """O prazo que o próprio título declara ("até 22 de out. de 2026", "até o dia 5 de novembro de 2026", "até 30/11/2026");
+    sem prazo no título: None."""
+    s = _sem_acento(titulo)
+    m = re.search(r"ate (?:o dia )?(\d{1,2})o? de ([a-z]{3})[a-z]*\.? de (\d{4})\b", s) or \
+        re.search(r"ate (?:o dia )?(\d{1,2})/(\d{1,2})/(\d{4})\b", s)
+    if not m:
+        return None
+    try:
+        mes = int(m.group(2)) if m.group(2).isdigit() else _MES_CURTO.get(m.group(2))
+        return date(int(m.group(3)), mes, int(m.group(1))) if mes else None
+    except ValueError:
+        return None
+
+
+def _variantes_do_endereco(link: str) -> list[str]:
+    """O endereço e as formas equivalentes: com e sem www., com e sem a barra final, http e https (o próprio primeiro)."""
+    m = re.match(r"(?i)^(https?)://(www\.)?([^/?#]+)(.*)$", link or "")
+    if not m:
+        return [link]
+    resto = m.group(4)
+    sem_barra = resto.rstrip("/") if resto not in ("", "/") else resto
+    com_barra = (resto + "/") if resto and not resto.endswith("/") and "?" not in resto and "#" not in resto else resto
+    restos = {resto, sem_barra, com_barra}
+    saida = [link]
+    for esquema in ("https", "http"):
+        for www in ("www.", ""):
+            for r in restos:
+                v = f"{esquema}://{www}{m.group(3)}{r}"
+                if v not in saida:
+                    saida.append(v)
+    return saida
+
+
+def _datar_pela_pagina(pista: Pista, html: bytes | str | None) -> None:
+    """Dá à pista sem data a data de publicação lida na página. Não vale para o alvo vigiado: a data do portal não é a data
+    de uma edição (viraria edição falsa no selo e na previsão do Cartório)."""
+    if pista.data or str(pista.origem or "").startswith("alvo "):
+        return
+    data = _data_da_pagina(html, pista.link)
+    if data:
+        pista.data, pista.extra = data, {**(pista.extra or {}), "data_lida_na_pagina": True}
+
+
+def _cita_data_recente(texto: str, limite_dias: int) -> bool:
+    """O texto cita uma data dentro da janela (ou futura: o prazo de inscrição)? A trava contra a data errada da página:
+    a notícia antiga só cita datas antigas; a página nova (ou republicada) cita o prazo de agora."""
+    hoje = hoje_local()
+    s = _sem_acento(texto or "")[:200000]
+    for m in re.finditer(r"\b(\d{1,2})/(\d{1,2})/(\d{4})\b|\b(\d{1,2})o? de (" + "|".join(_MESES) + r") de (\d{4})\b", s, re.I):
+        try:
+            d = date(int(m.group(3)), int(m.group(2)), int(m.group(1))) if m.group(1) else \
+                date(int(m.group(6)), _MESES[m.group(5).lower()], int(m.group(4)))
+        except ValueError:
+            continue
+        if -3 * 366 <= (hoje - d).days <= limite_dias:
+            return True
+    return False
+
+
+def _prefeitura_de_outro_estado(url: str) -> bool:
+    """O endereço de prefeitura/câmara de outro estado que não é capital (cidade.uf.gov.br / cidade.uf.leg.br)."""
+    m = re.match(r"https?://(?:www\.)?([\w-]+)\.([a-z]{2})\.(?:gov|leg)\.br", url or "", re.I)
+    if not m or m.group(2).lower() in ("go", "df"):
+        return False
+    from ...base.missao.regras_portao import _CAPITAIS_SEM_ESPACO, uf_por_municipio
+    cidade = m.group(1).lower()
+    if re.sub(r"[^a-z]", "", cidade) in _CAPITAIS_SEM_ESPACO:
+        return False
+    # só quando o nome do subdomínio é de fato um município daquela UF (detran.rj.gov.br é órgão estadual: fica)
+    return (uf_por_municipio(f"município de {cidade.replace('-', ' ')}") or "").upper() == m.group(2).upper()
+
+
+def _titulo_do_documento(documento: dict | None) -> str | None:
+    """A primeira linha do documento que diz o que ele é (edital, chamamento, aviso...), para o achado de título genérico."""
+    if not documento:
+        return None
+    for pagina in documento.get("paginas") or []:
+        for linha in str(pagina).splitlines()[:80]:
+            linha = re.sub(r"\s+", " ", linha).strip(" -–:•")
+            if 12 <= len(linha) <= 220 and LINHA_DE_TITULO.search(linha):
+                return linha
+    return None
+
+
 def _sem_acento(t: str) -> str:
     import unicodedata
     return "".join(c for c in unicodedata.normalize("NFKD", t.lower()) if not unicodedata.combining(c))
@@ -327,6 +482,7 @@ class MotorCanal(Motor):
         # as fontes lidas há mais tempo primeiro: o motor que parou pelo tempo máximo continua de onde parou
         fontes = sorted(self.cfg.fonte, key=lambda f: str(self.estado._fonte(f.nome).get("ultima") or ""))
         self.incompleto = False                  # 27/10/2026: o trabalho do dia não terminou; o Comandante aciona de novo
+        self._barradas_na_entrada: dict[str, int] = {}
         for fonte in fontes:
             if _t.monotonic() - inicio_leitura > self.cfg.acesso.tempo_maximo_s:
                 self.relatorio.append(f"tempo máximo ({self.cfg.acesso.tempo_maximo_s:.0f} s): as fontes restantes ficam para o próximo acionamento")
@@ -370,7 +526,7 @@ class MotorCanal(Motor):
                     break
                 if pista.link.rstrip("/") in proprios:
                     continue                                        # o próprio programa já é entregue pela seção programa
-                if not self._passa_lexico(pista.titulo, pista.resumo or "") or self.estado.ja_entregue(pista.link):
+                if not self._passa_entrada(pista) or self._ja_entregue(pista.link):
                     continue
                 try:
                     achado = self._achado(fonte, pista, entregues)
@@ -387,6 +543,8 @@ class MotorCanal(Motor):
             self.estado.leitura(fonte.nome, _agora(), achados=entregues)
             self.relatorio.append(f"{fonte.nome}: {len(pistas)} pista(s), {entregues} achado(s)")
         yield from self._alvos()
+        if self._barradas_na_entrada:
+            self.relatorio.append("barradas na entrada: " + "; ".join(f"{k} ({v})" for k, v in sorted(self._barradas_na_entrada.items(), key=lambda x: -x[1])))
 
     def _registro_especial(self, fonte: CfgFonte, pista: Pista) -> Achado | None:
         """Destino especial: a empresa e o incentivo, pelo mapa [especial] (modelos com os campos do item)."""
@@ -416,6 +574,14 @@ class MotorCanal(Motor):
         aprende) e entrega os links que passam no léxico, ou a própria página do alvo."""
         mes = int(_agora()[5:7])
         for alvo in self.cfg.alvo:
+            # 08/11/2026: com o território de Goiás (R27), o alvo que é município de outro estado (não capital) não é lido —
+            # os alvos "espalhados" do PNCP vigiavam prefeituras do RS, MT, CE, SE... (16 erros "fora da abrangência")
+            if self.cfg.lexico.territorio == "goias":
+                from ...base.missao.regras_portao import municipal_fora_de_goias
+                if municipal_fora_de_goias({"titulo": alvo.nome, "orgao": alvo.orgao or "", "url": alvo.enderecos[0], "uf": None}) \
+                        or _prefeitura_de_outro_estado(alvo.enderecos[0]):
+                    self.relatorio.append(f"alvo {alvo.nome}: fora do território (município de outro estado, R27) — não lido")
+                    continue
             if not self._na_janela(alvo, mes):
                 self.relatorio.append(f"alvo {alvo.nome}: fora da janela prevista")
                 continue
@@ -436,8 +602,12 @@ class MotorCanal(Motor):
                     break
                 self.estado.mudanca_do_alvo(alvo.id, _agora())
                 entregues = 0
+                # 08/11/2026: sem léxico próprio (termos), o alvo entrega só a própria página quando ela muda: colher todos os
+                # links de um portal sem léxico entregava os menus inteiros (o Transferegov: 524 páginas institucionais)
+                if not self.cfg.lexico.termos:
+                    pistas = []
                 for pista in pistas:
-                    if self._passa_lexico(pista.titulo, pista.resumo or "") and not self.estado.ja_entregue(pista.link):
+                    if self._passa_entrada(pista) and not self._ja_entregue(pista.link):
                         a = self._achado(fonte, pista, entregues)
                         if a is not None:
                             entregues += 1
@@ -499,6 +669,18 @@ class MotorCanal(Motor):
                                  "paginas": textos, "alertas": alertas, "injecao": next((x for x in injecoes if x), None)})
 
     def _descobrir(self, f: CfgFonte) -> list[Pista] | None:
+        pistas = self._descobrir_bruto(f)
+        if pistas is None or not f.filtro:
+            return pistas
+        def campo(p: Pista, nome: str) -> str:
+            return str({"titulo": p.titulo, "resumo": p.resumo, "link": p.link, "data": p.data}.get(nome) or (p.extra or {}).get(nome) or "")
+        ficam = [p for p in pistas if all(re.search(rx, campo(p, nome), re.I) for nome, rx in f.filtro.items())]
+        if len(ficam) < len(pistas):
+            barradas = self.__dict__.setdefault("_barradas_na_entrada", {})
+            barradas["filtro da fonte"] = barradas.get("filtro da fonte", 0) + len(pistas) - len(ficam)
+        return ficam
+
+    def _descobrir_bruto(self, f: CfgFonte) -> list[Pista] | None:
         buscar = self.escada.buscar
         if f.tipo in ("pagina", "feed", "mapa", "wordpress", "ckan") and "{hoje" in f.url:     # os modelos de data no endereço
             f = f.model_copy(update={"url": preencher(f.url, hoje_local())})
@@ -542,9 +724,11 @@ class MotorCanal(Motor):
         itens = percorrer(self.escada.buscar, preencher(f.url, hoje_local()), [Elo(**e.model_dump()) for e in f.cadeia], relato)
         self.relatorio.extend(f"{f.nome}: {x}" for x in relato[:10])
         pistas = [Pista(titulo=formatar(f.pista.titulo, i), link=formatar(f.pista.link, i), origem=f.nome,
+                        data=str(i["data"]) if i.get("data") else None,   # 08/11/2026: a idade e a publicação também na cadeia
                         resumo=formatar(f.pista.resumo, i) if f.pista.resumo else None,
                         extra={**({"documento_texto": formatar(f.pista.texto, i)} if f.pista.texto else {}),
-                               **{k: i[k] for k in ("orgao", "edicao", "data", "protocolo", "caminho", "localidade") if i.get(k)},
+                               **{k: i[k] for k in ("orgao", "edicao", "data", "protocolo", "caminho", "localidade",   # 08/11: e o prazo,
+                                                    "uf", "municipio", "cidade", "inicio", "fim", "valor") if i.get(k)},   # o lugar e o valor
                                **({"_item": {k: v for k, v in i.items() if k != "texto"}} if self.cfg.motor.destino == "especial" else {})})
                   for i in itens]
         pistas = [p for p in pistas if p.titulo.strip() and p.link.startswith("http")]
@@ -685,6 +869,7 @@ class MotorCanal(Motor):
         from ..descoberta import fonte_oficial
         try:
             pagina = self.escada.buscar(pista.link)
+            _datar_pela_pagina(pista, pagina.conteudo)                # 08/11/2026: a data lida na própria divulgação
             cands = fonte_oficial.candidatos(pagina.conteudo, pista.link, pista.titulo)
         except (Bloqueado, Indisponivel, Pendente) as e:
             self.relatorio.append(f"seguir até o oficial: divulgação não lida ({pista.link}: {str(e)[:120]})")
@@ -702,6 +887,66 @@ class MotorCanal(Motor):
             return c["url"], pista.link, doc
         return None
 
+    def _ja_entregue(self, link: str) -> bool:
+        """08/11/2026 (parecer): o mesmo edital pelo RSS (www.) e pela página (sem www., com ou sem a barra final) entrava duas
+        vezes. Confere o endereço e as variantes dele no registro de entregues (o registro não muda: compatível com o que já
+        foi entregue)."""
+        return any(self.estado.ja_entregue(v) for v in _variantes_do_endereco(link))
+
+    def _velha_pela_pagina(self, pista: Pista, documento: dict | None) -> bool:
+        """08/11/2026 (parecer): a idade também depois da leitura, quando a pista veio sem data e a data foi lida na página
+        (a notícia de 2019 achada pela busca HTML). Não vale para o alvo vigiado (o portal muda e a data dele é a do
+        portal) nem quando o texto cita uma data dentro da janela (o prazo de agora): a data da página pode estar errada."""
+        lx = self.cfg.lexico
+        extra = pista.extra or {}
+        if not (lx.idade_maxima_dias and extra.get("data_lida_na_pagina") and pista.data) or str(pista.origem or "").startswith("alvo "):
+            return False
+        idade = _idade_dias(pista.data)
+        if idade is None or idade <= lx.idade_maxima_dias:
+            return False
+        if documento and _cita_data_recente("\n".join(documento.get("paginas") or []), lx.idade_maxima_dias):
+            return False
+        motivo = f"publicada há mais de {lx.idade_maxima_dias} dias (data lida na página)"
+        if not hasattr(self, "_barradas_na_entrada"):
+            self._barradas_na_entrada = {}
+        self._barradas_na_entrada[motivo] = self._barradas_na_entrada.get(motivo, 0) + 1
+        return True
+
+    def _passa_entrada(self, pista: Pista) -> bool:
+        """O filtro de entrada (08/11/2026): o léxico, o título genérico de link, a idade e o território. A pista que não passa
+        não é lida nem entregue (o motivo vai ao relatório, contado por fonte)."""
+        motivo = self._motivo_entrada(pista)
+        if motivo:
+            if not hasattr(self, "_barradas_na_entrada"):
+                self._barradas_na_entrada = {}
+            self._barradas_na_entrada[motivo] = self._barradas_na_entrada.get(motivo, 0) + 1
+            return False
+        return True
+
+    def _motivo_entrada(self, pista: Pista) -> str | None:
+        if not self._passa_lexico(pista.titulo, pista.resumo or ""):
+            return "léxico"
+        if TITULO_GENERICO.search(pista.titulo or "") and not NOME_DE_ARQUIVO.search(pista.titulo or "") and not DOCUMENTO.search(pista.link or ""):
+            return "título genérico de link (menu ou chamada de notícia)"
+        lx = self.cfg.lexico
+        if lx.idade_maxima_dias:
+            # sem a data da fonte, a data no começo do título ("05/12/2023 | EDITAL ...", comum nas tabelas das prefeituras)
+            inicio = re.match(r"\s*(\d{2}/\d{2}/\d{4})", pista.titulo or "")
+            idade = _idade_dias(pista.data or (inicio.group(1) if inicio else None))
+            if idade is not None and idade > lx.idade_maxima_dias:
+                return f"publicada há mais de {lx.idade_maxima_dias} dias"
+            fim = _prazo_no_titulo(pista.titulo or "")             # 08/11/2026: "… até 22 de out. de 2026" (os agregadores)
+            if fim is not None and fim < hoje_local():
+                return "prazo de inscrição vencido (no título)"
+        if lx.territorio == "goias":
+            from ...base.missao.regras_portao import municipal_fora_de_goias
+            orgao = str((pista.extra or {}).get("orgao") or "")
+            uf = str((pista.extra or {}).get("uf") or "").upper() or None     # 08/11: a UF do item, quando a fonte traz
+            r = {"titulo": f"{pista.titulo} {(pista.resumo or '')[:300]}", "orgao": orgao, "url": pista.link, "uf": uf}
+            if municipal_fora_de_goias(r):
+                return "município de outro estado (não capital)"
+        return None
+
     def _passa_lexico(self, titulo: str, resumo: str = "") -> bool:
         lx = self.cfg.lexico
         t, tudo = _sem_acento(titulo), _sem_acento(f"{titulo} {resumo}")
@@ -715,7 +960,9 @@ class MotorCanal(Motor):
         documento = None
         # o link encontrado é a DIVULGAÇÃO; a origem é só o candidato da busca cega (seguir_oficial), decidida por livro depois
         oficial, divulgacao = None, pista.link
-        ler = (self.cfg.leitura.documentos and DOCUMENTO.search(pista.link)) or (self.cfg.leitura.paginas_dos_achados and not DOCUMENTO.search(pista.link))
+        # 08/11/2026: o "arquivo.pdf/view" do Plone (gov.br, MPT) é a página de exibição; o arquivo é o endereço sem o /view
+        doc_link = VISTA_PLONE.sub(r"\1", pista.link)
+        ler = (self.cfg.leitura.documentos and DOCUMENTO.search(doc_link)) or (self.cfg.leitura.paginas_dos_achados and not DOCUMENTO.search(doc_link))
         texto_do_ato = (pista.extra or {}).get("documento_texto")
         html_bruto = None
         if texto_do_ato:                                            # o ato já recortado do documento oficial: é o próprio documento
@@ -723,30 +970,36 @@ class MotorCanal(Motor):
             documento = {"url": pista.link, "sha256": hashlib.sha256(texto_do_ato.encode()).hexdigest(), "tipo": "ato", "leitor": "atos",
                          "oficial": False, "paginas": [texto_do_ato], "alertas": [], "injecao": injecao(texto_do_ato)}   # o ato como publicado
             ler = False
-        if self.cfg.leitura.seguir_oficial and not texto_do_ato and not DOCUMENTO.search(pista.link) and n < self.cfg.leitura.max_documentos:
+        if self.cfg.leitura.seguir_oficial and not texto_do_ato and not DOCUMENTO.search(doc_link) and n < self.cfg.leitura.max_documentos:
             achado_oficial = self._seguir_oficial(pista)
             if achado_oficial:
                 oficial, divulgacao, documento = achado_oficial
                 ler = False
         if ler and n < self.cfg.leitura.max_documentos:
             try:
-                r = self.escada.buscar(pista.link)
-                lido = self.leitura.ler(r.conteudo, pista.link)
+                r = self.escada.buscar(doc_link)
+                lido = self.leitura.ler(r.conteudo, doc_link)
             except (Bloqueado, Indisponivel, Pendente, leitores.SemLeitor) as e:
                 # o achado não se perde por causa do documento: ele segue sem o documento, que é lido depois (Fase 8)
                 self.relatorio.append(f"{fonte.nome}: documento não lido, achado entregue sem ele ({pista.link}: {str(e)[:200]})")
                 r = lido = None
             if lido is not None:
-                documento = {"url": pista.link, "sha256": lido.sha256, "tipo": lido.tipo, "leitor": lido.leitor, "oficial": False,
+                documento = {"url": doc_link, "sha256": lido.sha256, "tipo": lido.tipo, "leitor": lido.leitor, "oficial": False,
                              "paginas": [p.texto for p in lido.paginas], "alertas": lido.alertas, "injecao": lido.dados.get("injecao")}
                 if lido.tipo in ("html", "pagina") and r is not None:
                     html_bruto = r.conteudo.decode("utf-8", errors="replace")
+                    _datar_pela_pagina(pista, html_bruto)             # 08/11/2026: a data lida na própria página
+        if self._velha_pela_pagina(pista, documento):
+            return None
         canivete = self._canivete(documento, texto_do_ato, html_bruto, pista.link)
         escada = {"motor": self.cfg.motor.id, "fonte": fonte.nome, "degrau": (r.degrau if ler and r is not None else None) or degrau_lista}
         m = self.cfg.motor
         chave = hashlib.sha256(pista.link.encode()).hexdigest()[:16]
+        titulo = pista.titulo
+        if TITULO_GENERICO.search(titulo or ""):                   # 08/11/2026: o título vem do próprio documento
+            titulo = _titulo_do_documento(documento) or titulo
         return Achado(id=f"{m.id}-{chave}", motor=m.id, encontrado_em=_agora()[:10], link_divulgacao=divulgacao, link_oficial=oficial,
-                      titulo=pista.titulo[:300], publicado_em=(pista.data or None) and str(pista.data)[:10],
+                      titulo=titulo[:300], publicado_em=_data_iso(pista.data),
                       dados={"uf": m.uf, "orgao": m.orgao, **{k: v for k, v in pista.extra.items() if k != "documento_texto"}, "fonte": fonte.nome,
                              "origem": pista.origem,
                              **(self._extrair(documento["paginas"]) if documento and self.cfg.extracao.itens else {}),

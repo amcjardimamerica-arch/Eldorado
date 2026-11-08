@@ -16,7 +16,7 @@ nomes_anteriores = []
 
 [[fonte]]
 nome = "Rede Comuá — editais (o tipo próprio do WordPress)"
-url = "https://redecomua.org.br/wp-json/wp/v2/_editais"
+url = "https://redecomua.org.br/wp-json/wp/v2/_editais?orderby=date"    # 08/11/2026: os mais novos primeiro
 tipo = "wordpress"
 papel = "principal"
 
@@ -38,9 +38,11 @@ seguir_oficial = true
 termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"]
 vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"]
 termos_em = "titulo"
+# 08/11/2026: o tipo _editais lista abertos e fechados (Fundo Ecos 2025, Edital Geral 2025): a publicação com mais de seis meses e o prazo vencido do título saem na entrada
+idade_maxima_dias = 180
 
 [aprendizado]
-licoes = ["robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+licoes = ["08/11/2026 (parecer): a 3ª melhor precisão (56,2%), mas com editais de 2025 entre os achados: idade máxima de 180 dias e o prazo vencido declarado no título barram na entrada.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
 bloqueios_conhecidos = []
 alternativas_para_bloqueio = []
 rotas_que_falharam = []

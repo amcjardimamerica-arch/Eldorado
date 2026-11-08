@@ -29,6 +29,7 @@ CANDIDATAS = [
     "reler_documentos",
 ]
 JANELA = 6
+ACIONADAS = ("originais",)   # R48: as etapas que o Comandante pula de verdade (as outras, em sombra)
 SEGUIDAS_MAX = 3
 
 
@@ -89,12 +90,17 @@ def no_comandante_escolher(itens: list[dict[str, Any]], parametros: dict[str, An
             return []
         from .parametros import valor
 
-        aciona = str(valor(cer, "comandante", "aciona", "nao")).lower() == "sim"
+        # R48 (titular, 08/11/2026): o Comandante PULA DE VERDADE as etapas acionadas (começa pelo «originais»: 2.449 de 2.462
+        # decisões em sombra certas, 99,5%; o nó mais caro da passagem, 45 s); as demais continuam em sombra. O parâmetro
+        # comandante.aciona = "sim" liga todas; comandante.aciona_etapas troca a lista.
+        tudo = str(valor(cer, "comandante", "aciona", "nao")).lower() == "sim"
+        acionadas = {x.strip() for x in str(valor(cer, "comandante", "aciona_etapas", ",".join(ACIONADAS))).split(",") if x.strip()}
         pular = escolher(cer)
     finally:
         cer.close()
     agora = datetime.now(timezone.utc).isoformat(timespec="seconds")
     for x in pular:
+        aciona = tudo or x["no"] in acionadas
         contexto.diario.emitir(
             "comandante.decidiu",
             "comandante",
@@ -109,7 +115,8 @@ def no_comandante_escolher(itens: list[dict[str, Any]], parametros: dict[str, An
                 "contexto": json.dumps({"execucao": contexto.execucao, "aciona": aciona}),
             },
         )
-    r = {"pular": [x["no"] for x in pular], "aciona": aciona}
-    if aciona and pular:
-        r["__pular__"] = [x["no"] for x in pular]
+    de_verdade = [x["no"] for x in pular if tudo or x["no"] in acionadas]
+    r = {"pular": [x["no"] for x in pular], "aciona": de_verdade}
+    if de_verdade:
+        r["__pular__"] = de_verdade
     return [r]

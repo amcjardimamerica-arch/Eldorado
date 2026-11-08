@@ -12,7 +12,7 @@ nomes_anteriores = []
 
 [[fonte]]
 nome = "Fundo Brasil — editais"
-url = "https://www.fundobrasil.org.br/wp-json/wp/v2/edital"
+url = "https://www.fundobrasil.org.br/wp-json/wp/v2/edital?orderby=date"    # 08/11/2026: os mais novos primeiro
 tipo = "wordpress"
 
 
@@ -35,3 +35,8 @@ max_documentos = 20
 termos = ["re:edital|chamada|chamamento|abre (selecao|inscric)|inscricoes abertas|premio|premiacao|selecao de (projetos|propostas|organizac|iniciativas)|seleciona (projetos|propostas|iniciativas)|fomento|fundo de apoio|apoio a (projetos|iniciativas|organizac)"]
 termos_em = "titulo"            # site de notícias: o título de um edital diz que é edital
 vetos = ["re:resultado|selecionad[ao]s|contemplad|^confira|editais (com inscricoes )?abert|oportunidades (do|da|de) (mes|semana)|finalistas|vencedor"]
+# 08/11/2026: 191 de 219 pistas vinham do mapa do site e 30 eram de ano anterior ("Povos Indígenas Lutando por Justiça Climática", 2024, entregue quatro vezes)
+idade_maxima_dias = 180
+
+[aprendizado]
+licoes = ["08/11/2026 (parecer): o mapa do site (o acervo) era a origem de quase todo o ruído; um edital de 2024 entrou quatro vezes. Agora: o tipo edital pelos mais novos, idade máxima de 180 dias (pela data do mapa e pela lida na página) e o prazo vencido do título na entrada."]

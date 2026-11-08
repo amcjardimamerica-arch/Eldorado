@@ -14,11 +14,21 @@ nomes_anteriores = []
 
 # ---- rotas confirmadas nas sondagens de 23/10/2026 (testes/paginas/sondagem-a, -b, -c, -farol)
 
+# 08/11/2026 (parecer): 43 execuções e nenhum achado — a página /edital/ só descreve o processo de seleção (nenhum link de
+# edital; conferido) e o mapa do site não existe (404). A API do WordPress responde: a busca "edital" pelos mais novos
+# traz os anúncios dos editais quando abrem (ex.: "BrazilFoundation lança editais dos Fundos de Educação…", 2023).
+[[fonte]]
+nome = "BrazilFoundation — publicações com edital (API do WordPress, as mais novas)"
+url = "https://brazilfoundation.org/wp-json/wp/v2/posts?orderby=date"
+tipo = "wordpress"
+termos = "edital"
+papel = "principal"
+
 [[fonte]]
 nome = "BrazilFoundation — editais"
 url = "https://brazilfoundation.org/edital/"
 tipo = "pagina"
-papel = "principal"
+papel = "alternativa"
 
 [[fonte]]
 nome = "BrazilFoundation — página inicial"
@@ -37,14 +47,15 @@ seguir_oficial = true
 termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"]
 vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"]
 termos_em = "titulo"
+idade_maxima_dias = 365
 
 [aprendizado]
-licoes = ["robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+licoes = ["08/11/2026 (parecer): motor fantasma (0 achados em 43 execuções): a página /edital/ só descreve o processo de seleção e o mapa do site não existe. Rota principal nova: a API do WordPress, busca \"edital\" pelos mais novos; fonte esporádica (os editais abrem uma vez por ano); idade máxima de 365 dias.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
 bloqueios_conhecidos = []
 alternativas_para_bloqueio = []
 rotas_que_falharam = []
 
 [metrica]
-esporadica = true                # fonte esporádica: a finalidade é a vigilância sem erro (a BrazilFoundation abre editais poucas vezes por ano; titular, 25/10/2026)
+esporadica = true
 cadencia_h = 24
-periodo_dias = 14
+periodo_dias = 60

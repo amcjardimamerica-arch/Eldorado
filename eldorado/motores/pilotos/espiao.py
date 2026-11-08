@@ -340,7 +340,9 @@ class Espiao:
                      "bloqueada) VALUES (?,?,?,?,?,?,?,?,?)", tuple(linha_m.values()))
         if not bloqueada:  # aprende: reforça a família que rendeu (os valores completos: nenhum incremento se perde)
             f0 = self.con.execute("SELECT a, b, usos, achados FROM espiao_familia WHERE nome = ?", (fam,)).fetchone() or (1.0, 1.0, 0, 0)
-            fam_nova = {"nome": fam, "a": f0[0] + (1.0 if achados else 0.0), "b": f0[1] + (0.0 if achados else 0.3), "usos": f0[2] + 1,
+            # R48 (titular, 08/11/2026): a crença da família é simétrica (+1 no acerto, +1 no erro); com +0,3 no erro, a
+            # família de muito volume e pouco valor subia sempre
+            fam_nova = {"nome": fam, "a": f0[0] + (1.0 if achados else 0.0), "b": f0[1] + (0.0 if achados else 1.0), "usos": f0[2] + 1,
                         "achados": f0[3] + len(achados)}
             self._gravar("espiao.familia", fam_nova, "UPDATE espiao_familia SET a = ?, b = ?, usos = ?, achados = ? WHERE nome = ?",
                          (fam_nova["a"], fam_nova["b"], fam_nova["usos"], fam_nova["achados"], fam))

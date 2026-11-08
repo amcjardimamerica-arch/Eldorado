@@ -14,22 +14,41 @@ nomes_anteriores = []
 
 # ---- rotas confirmadas nas sondagens de 23/10/2026 (testes/paginas/sondagem-a, -b, -c, -farol)
 
+# 08/11/2026 (parecer): de cada cinco pistas, três eram de município de outro estado. A API filtra pela UF (estado=GO): os
+# editais de Goiás vêm todos numa rota própria; as páginas nacionais seguem com a regra territorial na entrada (R27).
 [[fonte]]
-nome = "Farol Cultural — editais abertos, página 1 (API pública)"
-url = "https://farolcultural.art/api/v1/editais?status=Aberto&order=desc&per_page=50&page=1"
+nome = "Farol Cultural — editais abertos de Goiás (API pública, estado=GO)"
+url = "https://farolcultural.art/api/v1/editais?status=Aberto&estado=GO&order=desc&per_page=50&page=1"
 tipo = "cadeia"
 papel = "principal"
 
 [[fonte.cadeia]]
 formato = "json"
 itens = "data"
-campos = { titulo = "titulo", instituicao = "instituicao_nome", fim = "data_fim_inscricao", origem = "url_original", uf = "estado" }
+campos = { titulo = "titulo", orgao = "instituicao_nome", cidade = "cidade", fim = "data_fim_inscricao", inicio = "data_inicio_inscricao", data = "data_publicacao", origem = "url_original", uf = "estado", valor = "valor_total" }
 limite = 50
 
 [fonte.pista]
 titulo = "{titulo}"
 link = "{origem}"
-resumo = "{instituicao} · {uf} · inscrições até {fim}"
+resumo = "{orgao} · {cidade}/{uf} · inscrições até {fim}"
+
+[[fonte]]
+nome = "Farol Cultural — editais abertos, página 1 (API pública)"
+url = "https://farolcultural.art/api/v1/editais?status=Aberto&order=desc&per_page=50&page=1"
+tipo = "cadeia"
+papel = "alternativa"
+
+[[fonte.cadeia]]
+formato = "json"
+itens = "data"
+campos = { titulo = "titulo", orgao = "instituicao_nome", cidade = "cidade", fim = "data_fim_inscricao", inicio = "data_inicio_inscricao", data = "data_publicacao", origem = "url_original", uf = "estado", valor = "valor_total" }
+limite = 50
+
+[fonte.pista]
+titulo = "{titulo}"
+link = "{origem}"
+resumo = "{orgao} · {cidade}/{uf} · inscrições até {fim}"
 
 [[fonte]]
 nome = "Farol Cultural — editais abertos, página 2 (API pública)"
@@ -40,13 +59,13 @@ papel = "alternativa"
 [[fonte.cadeia]]
 formato = "json"
 itens = "data"
-campos = { titulo = "titulo", instituicao = "instituicao_nome", fim = "data_fim_inscricao", origem = "url_original", uf = "estado" }
+campos = { titulo = "titulo", orgao = "instituicao_nome", cidade = "cidade", fim = "data_fim_inscricao", inicio = "data_inicio_inscricao", data = "data_publicacao", origem = "url_original", uf = "estado", valor = "valor_total" }
 limite = 50
 
 [fonte.pista]
 titulo = "{titulo}"
 link = "{origem}"
-resumo = "{instituicao} · {uf} · inscrições até {fim}"
+resumo = "{orgao} · {cidade}/{uf} · inscrições até {fim}"
 
 [acesso]
 degraus = ["api", "leve", "lightpanda", "patchright", "camoufox", "arquivo", "local"]   # a escada completa (o motor padrão)
@@ -57,11 +76,13 @@ seguir_oficial = true
 
 [lexico]
 termos = ["re:edital|editais|chamad|chamamento|sele[çc][ãa]o|pr[êe]mio|inscri[çc]|fomento|apoio a projetos|financiamento|programa de (apoio|acelera)|doa[çc][ãa]o|grant|call for|proposals?|funding|fellowship|how to apply|oportunidades"]
-vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio"]
+vetos = ["re:^(editais|oportunidades|editais abertos|editais em curso|editais e projetos|nossos editais|central de editais|veja os editais abertos|grants and fellowships|grants|fellowship|financiamento e entrega|apply for funding|processo de sele[çc][ãa]o|projetos e editais|chamadas|chamadas p[úu]blicas|editais do ano|portal de chamadas|our grants|grant-making)$|presta[çc][ãa]o de contas?|resultado|selecionad|homologa|vagas|emprego|trabalhe conosco|licita[çc]|preg[ãa]o|awarded|past grants|newsletter|privacidade|cookies|^entrar$|^login|imprensa|podcast|concurso p[úu]blico|est[áa]gio", "re:contrata[çc][ãa]o|presta[çc][ãa]o de servi[çc]os|prestadores de servi|microempreendedor|\\bmei\\b|pessoas? jur[íi]dicas? especializad|ocupa[çc][ãa]o de estandes|^of[íi]cio|pol[íi]tica de cotas"]
 termos_em = "titulo"
+# 08/11/2026: a municipal de outro estado sai na entrada, pela UF do item (R27)
+territorio = "goias"
 
 [aprendizado]
-licoes = ["A API traz o link original de cada edital (a origem) e o prazo; status=Aberto filtra os abertos (502 em 23/10/2026).", "Ler primeiro pela API pública do portal; as páginas ficam como reserva.", "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10).", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+licoes = ["08/11/2026 (parecer): três de cada cinco pistas eram de município de outro estado e o credenciamento de artistas para contratação passava como oportunidade. Agora: rota própria de Goiás (estado=GO), a regra territorial na entrada pela UF do item, e vetos de contratação, prestação de serviços, MEI e ocupação de estandes. A cadeia passou a levar o órgão, a cidade, a UF, o período de inscrição e o valor aos dados do achado.", "A API traz o link original de cada edital (a origem) e o prazo; status=Aberto filtra os abertos (502 em 23/10/2026).", "Ler primeiro pela API pública do portal; as páginas ficam como reserva.", "O que este portal mostra é pista: a fonte oficial é confirmada na Certificação (regra da titular, 18/10).", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
 bloqueios_conhecidos = []
 alternativas_para_bloqueio = []
 rotas_que_falharam = ["a página pública por edital (farolcultural.art/editais/<slug>: 404); o link de cada edital é o original da API"]

@@ -51,7 +51,12 @@ def assinar(chave: str, ts: int, url: str) -> str:
     return hmac.new(chave.encode("utf-8"), f"{ts}\n{url}".encode(), hashlib.sha256).hexdigest()
 
 
-def buscar(url: str, tempo_limite: float = 40, max_bytes: int = 6_000_000) -> Resposta:
+# 08/11/2026 (parecer dos motores): o arquivo de programas do Transferegov tem 11 MB e a ponte cortava em 6 MB ("Callback
+# aborted": 108 de 118 leituras do motor em erro, caindo no computador local). O ponte.php aceita até 16 MB (MAX_BYTES).
+MAX_BYTES = 15_000_000
+
+
+def buscar(url: str, tempo_limite: float = 40, max_bytes: int = MAX_BYTES) -> Resposta:
     ponte, chave = os.environ["ELDORADO_PONTE_URL"], os.environ["ELDORADO_PONTE_CHAVE"]
     ts = int(time.time())
     corpo = {"url": url, "ts": ts, "assinatura": assinar(chave, ts, url), "max_bytes": int(max_bytes),

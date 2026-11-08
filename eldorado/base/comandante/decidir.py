@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from .politica import Politica, contexto
+from .politica import Thompson, contagens_coleta, contexto
 
 ESCOLHAS_MOTORES = 8
 
@@ -62,34 +62,38 @@ def decidir(dados: Path, config: Path, diario, plano: dict | None = None, agora:
             return {"decisoes": 0, "motivo": "o Arquivo do Cérebro ainda não está na versão 10"}
         ordem_fixa = {m["modulo"] for m in (plano or {}).get("motores", [])}
         resumo = {}
-        for etapa, opcoes, k, acao in (("coleta", _estado_motores(bib, _motores(config), agora), ESCOLHAS_MOTORES, "acionar o motor"),):
-            if not opcoes:
-                continue
-            pol = Politica(etapa, list(opcoes))
-            aprendidas = pol.reaprender(cer)
+        hoje = agora.date().isoformat()
+        # R48 (titular, 08/11/2026): UMA decisão por motor por dia (antes, 8 a cada passagem: 31,6 por motor-dia, até 484 do
+        # mesmo motor num dia) e a amostragem de Thompson sobre o resultado real de todos os motores-dia até a véspera
+        if cer.execute("SELECT 1 FROM comandante_decisao WHERE etapa = 'coleta' AND substr(em, 1, 10) = ? LIMIT 1", (hoje,)).fetchone():
+            return {"decisoes": {"coleta": {"motivo": "as escolhas de hoje já foram feitas (uma por motor por dia)"}}}
+        motores = _motores(config)
+        opcoes = _estado_motores(bib, motores, agora)
+        if opcoes:
+            pol = Thompson("coleta", contagens_coleta(bib, cer, list(opcoes), hoje))
             ctx = contexto(agora, opcoes)
-            for alvo, prob in pol.ordenar(ctx)[:k]:
+            for alvo, prob in pol.escolher(ESCOLHAS_MOTORES):
                 c = opcoes.get(alvo, {})
-                motivo = f"nota {prob:.2f} (política aprendida com {aprendidas} decisões avaliadas) · rendimento histórico {c.get('taxa', 0):.0%}" + (
-                    f" · {c['dias_sem']} dia(s) sem achado aceito" if c.get("dias_sem") is not None else ""
-                )
-                if etapa == "coleta":
-                    motivo += " · também na ordem fixa" if alvo in ordem_fixa else " · fora da ordem fixa desta passagem"
+                a_, e_ = pol.contagens.get(alvo, (0, 0))
+                motivo = (f"Thompson: taxa esperada {pol.media(alvo):.0%} ({a_} dia(s) com achado aceito em {a_ + e_} lido(s)); "
+                          f"probabilidade de inclusão {prob:.2f}") + (f" · {c['dias_sem']} dia(s) sem achado aceito" if c.get("dias_sem") is not None else "")
+                motivo += " · também na ordem fixa" if alvo in ordem_fixa else " · fora da ordem fixa desta passagem"
                 diario.emitir(
                     "comandante.decidiu",
                     "comandante",
                     {
                         "em": agora.isoformat(timespec="seconds"),
-                        "etapa": etapa,
-                        "acao": acao,
+                        "etapa": "coleta",
+                        "acao": "acionar o motor",
                         "alvo": alvo,
                         "motivo": motivo,
                         "nota": round(prob, 4),
-                        "politica": "vw-squarecb",
-                        "contexto": json.dumps({**ctx, "lista": pol.opcoes, "prob": prob, "na_ordem_fixa": alvo in ordem_fixa}, ensure_ascii=False),
+                        "politica": "thompson",
+                        "contexto": json.dumps({**ctx, "lista": pol.opcoes, "prob": prob, "na_ordem_fixa": alvo in ordem_fixa,
+                                                "contagem": [a_, e_]}, ensure_ascii=False),
                     },
                 )
-            resumo[etapa] = {"opcoes": len(opcoes), "escolhas": k, "aprendidas": aprendidas}
+            resumo["coleta"] = {"opcoes": len(opcoes), "escolhas": ESCOLHAS_MOTORES, "aprendidas": pol.aprendidas}
         return {"decisoes": resumo}
     finally:
         bib.close()

@@ -4,7 +4,7 @@ from eldorado.base.cerebro.rede import RedeNeural, car_acao, car_motor
 
 
 def test_a_taxa_e_o_limiar_de_cada_pergunta():
-    assert RedeNeural.CONFIG == {"oportunidade": (0.2, 0.5), "acao": (0.1, 0.45), "motor": (0.1, 0.35)}
+    assert RedeNeural.CONFIG == {"oportunidade": (0.2, 0.5), "aberta": (0.2, 0.5), "acao": (0.1, 0.45), "motor": (0.1, 0.35)}  # R48
     r = RedeNeural()
     assert r.p["motor"].limiar == 0.35 and r.p["acao"].limiar == 0.45 and r.motor_recentes == {}
 

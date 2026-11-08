@@ -30,6 +30,23 @@ tipo = "feed"
 papel = "alternativa"
 exige_brasil = true                 # 403 da nuvem (23/10/2026)
 
+# 08/11/2026 (parecer: 1 achado em 59 execuções): os editais de destinação de prestação pecuniária são das varas e comarcas
+# e saem no Diário da Justiça e nas notícias das comarcas — o Banco de Projetos mostra projetos cadastrados, não editais.
+# A busca aberta restrita ao domínio do TJ-GO (o canivete de busca: SearXNG, DDGS, Marginalia) acha os editais das comarcas.
+[[fonte]]
+nome = "busca aberta: editais de prestação pecuniária das comarcas do TJ-GO"
+url = ""
+tipo = "metabusca"
+papel = "alternativa"
+termos = "site:tjgo.jus.br edital prestação pecuniária entidades"
+
+[[fonte]]
+nome = "busca aberta: cadastramento de entidades para penas pecuniárias em Goiás"
+url = ""
+tipo = "metabusca"
+papel = "alternativa"
+termos = "comarca Goiás edital cadastramento entidades prestação pecuniária"
+
 [[alvo]]
 id = "f260-captacao-190"
 nome = "TJGO - penas pecuniárias 1ª Vara de Execução Penal de Goiânia"
@@ -48,12 +65,16 @@ termos = ["re:pecuni|destina|edital|sele[çc][ãa]o de projetos|projetos? socia|
 vetos = ["re:concurso|est[áa]gio|licita|preg[ãa]o|nomea|exonera|plant[ãa]o|resultado final"]
 termos_em = "titulo"
 
+idade_maxima_dias = 365                # 08/11/2026: a busca aberta traz o acervo; o edital de mais de um ano não entra
+territorio = "goias"                   # a busca aberta pode trazer comarcas de outros estados
+
 [aprendizado]
-licoes = ["PENDÊNCIA DA TITULAR: cadastrar a associação no Banco de Projetos Sociais da Corregedoria do TJ-GO (corregedoria.tjgo.jus.br/basesocial; regras no Provimento: tjdocs.tjgo.jus.br/documentos/504488).", "O zero do Eldorado0 (235 leituras) era bloqueio da nuvem, não fonte errada (diagnóstico de 23/10/2026).", "Rota de acesso única para os domínios com bloqueio (pncp.gov.br, www.cnj.jus.br, www.tjgo.jus.br, www.trt18.jus.br): ponte pelo Brasil, navegador do titular ou espelho.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 1 alvos são vigiados só na janela prevista da próxima edição.", "Corrigir o domínio dos alvos cadastrados com o site do TRT-18.", "Nenhum resultado em 235 leituras: diagnosticar se é bloqueio ou fonte errada antes de reconstruir.", "Leitura do TJGO pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.", "Leitura do TJGO pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None"]
+licoes = ["08/11/2026 (parecer): 1 achado em 59 execuções — o Banco de Projetos lista projetos, não editais; entrou a busca aberta restrita ao TJ-GO e às comarcas de Goiás. A pendência da titular continua: cadastrar a associação no Banco de Projetos Sociais da CGJ-GO.", "PENDÊNCIA DA TITULAR: cadastrar a associação no Banco de Projetos Sociais da Corregedoria do TJ-GO (corregedoria.tjgo.jus.br/basesocial; regras no Provimento: tjdocs.tjgo.jus.br/documentos/504488).", "O zero do Eldorado0 (235 leituras) era bloqueio da nuvem, não fonte errada (diagnóstico de 23/10/2026).", "Rota de acesso única para os domínios com bloqueio (pncp.gov.br, www.cnj.jus.br, www.tjgo.jus.br, www.trt18.jus.br): ponte pelo Brasil, navegador do titular ou espelho.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 1 alvos são vigiados só na janela prevista da próxima edição.", "Corrigir o domínio dos alvos cadastrados com o site do TRT-18.", "Nenhum resultado em 235 leituras: diagnosticar se é bloqueio ou fonte errada antes de reconstruir.", "Leitura do TJGO pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.", "Leitura do TJGO pela ponte da Hostgator (IP brasileiro) quando os segredos ELDORADO_PONTE_URL e ELDORADO_PONTE_CHAVE estiverem gravados; até lá, só no computador do titular.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None"]
 bloqueios_conhecidos = ["pncp.gov.br", "www.cnj.jus.br", "www.tjgo.jus.br"]
 alternativas_para_bloqueio = []
 rotas_que_falharam = ["https://www.tjgo.jus.br pela nuvem (403, 23/10/2026)", "https://comunicaapi.pje.jus.br (a API do Diário de Justiça Eletrônico Nacional; 403 da nuvem: candidata para o computador local)"]
 
 [metrica]
+esporadica = true   # R48 (titular, 08/11/2026): o Judiciário e os MPs publicam raramente; a vigilância sem erro cumpre a finalidade
 cadencia_h = 24
 periodo_dias = 14

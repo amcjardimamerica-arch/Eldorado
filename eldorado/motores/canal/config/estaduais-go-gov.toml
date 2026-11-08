@@ -55,7 +55,7 @@ termos = "goyazes"
 nome = "FAPEG — Fundação de Amparo à Pesquisa do Estado de Goiás"
 url = "https://goias.gov.br/fapeg/wp-json/wp/v2/posts"
 tipo = "wordpress"
-termos = "chamada"
+termos = "associações"               # 08/11/2026: a FAPEG é de pesquisa; só as chamadas que citam associações (indicações geográficas, extensão, Acelera Campo)
 
 [[fonte]]
 nome = "PNAB Goiás — Política Nacional Aldir Blanc no estado (alvo do estudo)"
@@ -178,7 +178,10 @@ max_documentos = 20
 [lexico]
 termos = ["re:inscric|instrucao normativa|cartas? de intencao|reabert|prorroga|edital|chamamento|chamada publica|abre (selecao|inscric|chamada)|inscricoes abertas|premio|premiacao|selecao de (projetos|propostas|organizac)|seleciona (projetos|propostas)|fomento|credenciamento de (osc|organizac|entidades)"]
 termos_em = "titulo"            # site de notícias: o título de um edital diz que é edital
-vetos = ["re:resultado|homologa|pregao|licitac|tomada de precos|concorrencia|contemplad|selecionad|aprovad|habilitad|edital pe\\b|\\bvagas?\\b|cadastro de reserva|pareceristas?|oficinas?|eleic|plano de acao final|lista final"]
+vetos = ["re:resultado|homologa|pregao|licitac|tomada de precos|concorrencia|contemplad|selecionad|aprovad|habilitad|edital pe\\b|\\bvagas?\\b|cadastro de reserva|pareceristas?|oficinas?|eleic|plano de acao final|lista final|^\\s*anexo|\\banexo [ivx\\d]+\\b|errata|retifica[çc][ãa]o|lista (de|preliminar|final|dos)|formul[áa]rio|modelo d[eo]|declara[çc][ãa]o|planilha|cronograma|manual|perguntas frequentes|\\bfaq\\b|tutorial|termo de compromisso|extrato de publica"]
+# 08/11/2026 (parecer: 32 livros de edições encerradas): a busca do WordPress ordena por relevância e trazia posts de anos;
+# a pista com mais de 180 dias não entra. Anexos, erratas, listas e formulários do edital-mãe não viram livro (27 erros).
+idade_maxima_dias = 180
 
 [programa.extracao]
 # A análise própria do motor de incentivo, para o texto das NORMAS (resoluções, instruções normativas, portarias).
@@ -201,3 +204,6 @@ nao_certificar = ["Resultado", "Prazo de recurso", "Anexos", "Esfera", "Modalida
   '((?:poder[ãa]o (?:apresentar|propor|inscrever)|s[ãa]o (?:proponentes|eleg[íi]veis)|o proponente (?:dever[áa]|deve))[^.;]{15,300})',
 ]
 "Objeto" = ['(Programa Estadual de Incentivo [àa] Cultura\s*[–-]\s*GOYAZES)', '((?:incentivo|apoio) (?:fiscal )?(?:a|à|aos) projetos culturais[^.;]{10,200})']
+
+[aprendizado]
+licoes = ["08/11/2026 (parecer): a página do Edital PNAB 2026 rende muito (63 aceitas pelo motor em 30 d), mas cada anexo, errata, lista e formulário virava livro (27 erros anexo/lista): agora vetados pelo título.", "08/11/2026: a busca do WordPress ordena por relevância e trazia posts de anos (32 erros de edição encerrada): a pista com mais de 180 dias não entra.", "08/11/2026: a FAPEG é de pesquisa (19 de 43 achados num experimento eram chamadas para pesquisadores); a busca dela passou a ser por associações."]

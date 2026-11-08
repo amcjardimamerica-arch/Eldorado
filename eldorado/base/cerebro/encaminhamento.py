@@ -138,8 +138,14 @@ class Encaminhamento:
         if self.rede is not None:                                   # dentro da mesma urgência, os mais promissores primeiro
             hj = hoje or date.today().isoformat()
             livros.sort(key=lambda x: (0 if (x.fim and x.fim >= hj) else 1, x.fim or "9999",
-                                       -round(self.rede.nota_oportunidade({"titulo": x.titulo, "orgao": x.orgao, "link_oficial": x.link_oficial}), 2)))
+                                       -round(_nota_fila(self.rede, {"titulo": x.titulo, "orgao": x.orgao}), 2)))
         return livros
+
+
+def _nota_fila(rede, livro: dict) -> float:
+    """R48 (titular, 08/11/2026): a fila usa a pergunta «está aberta?» (a «oportunidade» conta a encerrada como acerto)."""
+    f = getattr(rede, "nota_aberta", None)
+    return f(livro) if f is not None and "aberta" in getattr(rede, "p", {}) else rede.nota_oportunidade(livro)
 
 
 def _contexto_pilotos(parametros: dict[str, Any], contexto):

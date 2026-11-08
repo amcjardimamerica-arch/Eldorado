@@ -47,8 +47,19 @@ def da_config(motor: str) -> tuple[list[str], bool]:
     return [n for n in nomes if n], (cfg.get("motor") or {}).get("destino") == "especial"
 
 
+def esporadica(motor: str) -> bool:
+    """R48 (titular, 08/11/2026): a fonte que publica raramente (metrica.esporadica na configuração do motor)."""
+    import tomllib
+    from pathlib import Path
+    p = Path(__file__).resolve().parents[2] / "motores" / "canal" / "config" / f"{motor}.toml"
+    try:
+        return bool(tomllib.loads(p.read_text(encoding="utf-8")).get("metrica", {}).get("esporadica"))
+    except (OSError, ValueError):
+        return False
+
+
 def sinais(cer: sqlite3.Connection, motor: str, fontes_config: list[str] | None = None, especial: bool | None = None,
-           agora: datetime | None = None) -> dict[str, Any]:
+           agora: datetime | None = None, rara: bool | None = None) -> dict[str, Any]:
     agora = agora or datetime.now(timezone.utc)
     if fontes_config is None or especial is None:
         cfg_nomes, cfg_esp = da_config(motor)
@@ -89,13 +100,17 @@ def sinais(cer: sqlite3.Connection, motor: str, fontes_config: list[str] | None 
         s.append(f"{len(aband)} fonte(s) sem leitura há mais de {DIAS} dias: {', '.join(aband)[:160]}")
     if falha:
         s.append(f"{len(falha)} fonte(s) falhando: {', '.join(falha)[:160]}")
+    # R48 (titular, 08/11/2026): a fonte ESPORÁDICA (o Judiciário, os MPs, a BrazilFoundation, o CNPq-extensão) passa dias
+    # sem novidade por natureza: «sem oportunidade nova há 7 dias» não acende; «nunca entregou» acende em atenção, não em
+    # vermelho (a vigilância sem erro cumpre a finalidade — a mesma régua do mapa dos arquivos)
+    rara = esporadica(motor) if rara is None else rara
     nunca = not especial and not ultima_nov and bool(linhas)
     if nunca:
-        s.append("nunca entregou nenhuma oportunidade")
-    elif not especial and ultima_nov and _dt(ultima_nov) < limite:
+        s.append("nunca entregou nenhuma oportunidade" + (" (fonte esporádica)" if rara else ""))
+    elif not especial and not rara and ultima_nov and _dt(ultima_nov) < limite:
         s.append(f"sem oportunidade nova há {(agora - _dt(ultima_nov)).days} dias (a última em {str(ultima_nov)[8:10]}/{str(ultima_nov)[5:7]})")
     todas_falham = bool(nomes) and len(falha) + len(aband) + len(pend) == len(nomes)
-    luz = "vermelho" if (todas_falham or nunca) else ("amarelo" if s else "verde")
+    luz = "vermelho" if (todas_falham or (nunca and not rara)) else ("amarelo" if s else "verde")
     return {"luz": luz, "sinais": s, "lidas": lidas, "sem_mudanca": sem_m, "ultima_novidade": ultima_nov,
             "pendentes_local": pend, "abandonadas": aband, "falhando": falha, "nunca_entregou": nunca,
             "primeira_leitura": primeira_leitura.isoformat() if primeira_leitura else None}

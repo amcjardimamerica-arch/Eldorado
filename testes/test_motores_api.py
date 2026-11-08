@@ -56,8 +56,13 @@ ROTAS = {
     "/web/dou/-/edital-de-chamamento-3-2026": (200, ("<html><body><div class='texto-dou'>" + "O Ministério da Cultura torna público o chamamento. " * 6
                                                      + "</div></body></html>").encode(), "text/html"),
     "/api/consulta/v1/contratacoes/proposta": (200, None, "application/json"),
-    "/api/opportunity/find": (200, json.dumps([{"id": 999, "name": "Vaga para arte-educador(a) em oficinas", "registrationTo": {"date": f"{FUTURO} 23:59:00.000000"}},
+    # 08/11/2026: a API devolve o dono (owner.name); só seguem as de dono institucional (o filtro da fonte do motor)
+    "/api/opportunity/find": (200, json.dumps([{"id": 999, "name": "Vaga para arte-educador(a) em oficinas", "registrationTo": {"date": f"{FUTURO} 23:59:00.000000"},
+                                                "owner": {"name": "Fulano de Tal"}},
+                                               {"id": 998, "name": "Edital de oficinas de teatro", "registrationTo": {"date": f"{FUTURO} 23:59:00.000000"},
+                                                "owner": {"name": "Beltrano Produções"}},
                                                {"id": 4321, "name": "Edital de Fomento à Cultura Viva 2026", "shortDescription": "pontos de cultura",
+                                                "owner": {"name": "Secretaria de Cidadania e Diversidade Cultural"},
                                                 "registrationFrom": {"date": "2026-10-01 00:00:00.000000"}, "registrationTo": {"date": f"{FUTURO} 23:59:00.000000"}}]).encode(),
                               "application/json"),
     "/cultura/wp-json/wp/v2/posts": (200, json.dumps([{"title": {"rendered": "Secult abre edital de chamamento para festivais &#8211; 2026"}, "link": "{base}/cultura/edital-festivais",
@@ -94,8 +99,10 @@ def api():
 
 
 def motor(nome, base, tmp_path):
+    # 08/11/2026: o www.gov.br também vai ao servidor de ensaio (o alvo do MDHC no DOU; os degraus curl_cffi e primp não
+    # passam pela barreira de rede dos testes e liam a página real)
     texto = (CONFIG / f"{nome}.toml").read_text(encoding="utf-8")
-    texto = re.sub(r"https://(?:www\.in\.gov\.br|pncp\.gov\.br|mapa\.cultura\.gov\.br|goias\.gov\.br|queridodiario\.ok\.org\.br|api-publica\.transferegov\.gestao\.gov\.br)",
+    texto = re.sub(r"https://(?:www\.in\.gov\.br|www\.gov\.br|pncp\.gov\.br|mapa\.cultura\.gov\.br|goias\.gov\.br|queridodiario\.ok\.org\.br|api-publica\.transferegov\.gestao\.gov\.br)",
                    base, texto)
     texto = texto.replace('intervalo_s = 1.0', 'intervalo_s = 0')
     (tmp_path / f"{nome}.toml").write_text(texto + ("\n" if "[acesso]" in texto else ""), encoding="utf-8")
@@ -118,8 +125,9 @@ def test_pncp_pagina_e_traz_os_dados_de_cada_item(api, tmp_path):
     base, paginas, _ = api
     paginas["n"] = 0
     achados = list(motor("pncp-api", base, tmp_path).buscar(None))
-    assert paginas["n"] == 8                                                                     # 4 modalidades × 2 páginas
-    assert len(achados) == 8 and not any("TRANSPORTE ESCOLAR" in a.titulo for a in achados)      # sem sinal de OSC: barrado
+    assert paginas["n"] == 16                                                                    # 4 modalidades × 2 UFs (GO e DF, 08/11/2026) × 2 páginas
+    da_api = [a for a in achados if "/app/editais/" in a.link_divulgacao]                       # (os alvos do estudo ficam de fora da conta)
+    assert len(da_api) == 16 and not any("TRANSPORTE ESCOLAR" in a.titulo for a in achados)      # sem sinal de OSC: barrado
     a = achados[0]
     assert "/app/editais/01409580000138/2026/" in a.link_divulgacao
     assert (a.dados["uf"], a.dados["municipio"], a.dados["fim"][:10], a.dados["orgao"]) == ("GO", "Goiânia", FUTURO, "SECRETARIA DE ESTADO DA CULTURA")
@@ -128,7 +136,7 @@ def test_pncp_pagina_e_traz_os_dados_de_cada_item(api, tmp_path):
 def test_mapa_da_cultura(api, tmp_path):
     base, _, _ = api
     achados = list(motor("plataforma-mapas-culturais", base, tmp_path).buscar(None))
-    assert len(achados) == 1                                                                     # a vaga de arte-educador foi vetada
+    assert len(achados) == 1                          # a vaga de arte-educador foi vetada; o edital de pessoa física, filtrado pelo dono
     a = achados[0]
     assert a.link_divulgacao.endswith("/oportunidade/4321") and a.dados["fim"].startswith(FUTURO) and a.dados["resumo"] == "pontos de cultura"
 
@@ -143,7 +151,10 @@ def test_wordpress_de_goias(api, tmp_path):
 def test_transferegov(api, tmp_path):
     base, _, _ = api
     achados = list(motor("site-transferegov", base, tmp_path).buscar(None))
-    assert [a.titulo for a in achados] == ["Fortalecimento de OSC (programa 111)"]                     # público e encerrado ficaram de fora
+    # 08/11/2026: os alvos sem léxico entregam só a própria página (quando muda), nunca os links do portal
+    assert [a.titulo for a in achados if "/programa/" in a.link_divulgacao] == ["Fortalecimento de OSC (programa 111)"]   # público e encerrado ficaram de fora
+    assert all("/programa/" in a.link_divulgacao or a.titulo in {"Escolinha de natação/paradesporto adaptado", "MDS - Cozinhas Solidárias 2026",
+               "Projeto de coleta seletiva inclusiva", "MDHC / CONANDA — Chamamentos publicos de fomento a OSC"} for a in achados)
     assert (achados[0].dados["fim"], achados[0].dados["orgao"], achados[0].dados["uf"]) == (FUTURO, "Ministério das Mulheres", "GO")
 
 

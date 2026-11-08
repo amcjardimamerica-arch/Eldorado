@@ -22,12 +22,15 @@ tipo = "pagina"
 seletor = "main"
 papel = "principal"
 
+# 08/11/2026 (parecer): a busca da API do WordPress do CNJ devolve [] para qualquer termo (a busca foi desligada na API; a
+# lista sem busca responde): a rota alternativa passa a ser a busca HTML com outra frase, que traz os editais das varas
+# ("Edital seleciona entidades sociais de Goiás para receber recursos de penas pecuniárias").
 [[fonte]]
-nome = "CNJ — publicações sobre pecuniária (API do WordPress)"
-url = "https://www.cnj.jus.br/wp-json/wp/v2/posts"
-tipo = "wordpress"
+nome = "CNJ — busca por penas pecuniárias e edital"
+url = "https://www.cnj.jus.br/?s=penas+pecuni%C3%A1rias+edital"
+tipo = "pagina"
+seletor = "main"
 papel = "alternativa"
-termos = "pecuniária"
 
 [[alvo]]
 id = "f260-captacao-193"
@@ -45,15 +48,18 @@ seguir_oficial = true
 
 [lexico]
 termos = ["re:edital|sele[çc]|projetos|destina|cadastr|entidade|recursos de presta"]
-vetos = ["re:encontro de apenados|^continue lendo|resultados da pesquisa|(^| )curso( |$)|semin[áa]rio|webin|pr[êe]mio cnj"]
+vetos = ["re:encontro de apenados|^continue lendo|resultados da pesquisa|(^| )curso( |$)|semin[áa]rio|webin|pr[êe]mio cnj", "re:repass(a|ou|aram)\\b|repasse de R\\$|destin(a|ou|am) R\\$|entreg(a|ou|am) (R\\$|recursos)|balan[çc]o|relat[óo]rio|auditori|a[çc][õo]es coordenadas|gest[ãa]o e destina[çc][ãa]o de valores|(juizado|vara|comarca|tribunal|justi[çc]a) .{0,40}\\bfinancia(m|ram|ou)?\\b"]
 termos_em = "titulo"
+# 08/11/2026: a notícia de edital de vara com mais de um ano sai na entrada (a data é lida na página da notícia)
+idade_maxima_dias = 365
 
 [aprendizado]
-licoes = ["O CNJ divulga os editais das comarcas; a origem do livro é a comarca do tribunal (decidida por livro, regra da titular).", "Rota de acesso única para os domínios com bloqueio (pncp.gov.br, www.cnj.jus.br, www.tjgo.jus.br, www.trt18.jus.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 10 rota(s) que funcionaram: entram como rotas do motor.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 1 alvos são vigiados só na janela prevista da próxima edição.", "Corrigir o domínio dos alvos cadastrados com o site do TRT-18.", "Nenhum resultado em 113 leituras: diagnosticar se é bloqueio ou fonte errada antes de reconstruir.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
+licoes = ["08/11/2026 (parecer): 40% de precisão; os erros eram notícias de repasse já feito em outros estados (\"tribunal fluminense repassa R$ 4,4 mi a 51 entidades\"): vetadas pelo título.", "O CNJ divulga os editais das comarcas; a origem do livro é a comarca do tribunal (decidida por livro, regra da titular).", "Rota de acesso única para os domínios com bloqueio (pncp.gov.br, www.cnj.jus.br, www.tjgo.jus.br, www.trt18.jus.br): ponte pelo Brasil, navegador do titular ou espelho.", "O afinador já achou 10 rota(s) que funcionaram: entram como rotas do motor.", "1 fonte(s) abrem a página e não acham nada: verificar contra as publicações conhecidas; candidatas ao teste do copiloto de IA.", "Os 1 alvos são vigiados só na janela prevista da próxima edição.", "Corrigir o domínio dos alvos cadastrados com o site do TRT-18.", "Nenhum resultado em 113 leituras: diagnosticar se é bloqueio ou fonte errada antes de reconstruir.", "robots_proibe: None", "ponte_brasil_aprendida: None", "alternativas_conhecidas: None", "rotas_quebradas: []"]
 bloqueios_conhecidos = ["pncp.gov.br", "www.cnj.jus.br", "www.tjgo.jus.br"]
 alternativas_para_bloqueio = []
-rotas_que_falharam = ["a frase inteira «prestação pecuniária» na API do WordPress (0 resultados; a palavra sozinha é a busca)"]
+rotas_que_falharam = ["a frase inteira «prestação pecuniária» na API do WordPress (0 resultados; a palavra sozinha é a busca)", "a busca da API do WordPress do CNJ (search= devolve [] para qualquer termo em 08/11/2026; trocada pela busca HTML)"]
 
 [metrica]
+esporadica = true   # R48 (titular, 08/11/2026): o Judiciário e os MPs publicam raramente; a vigilância sem erro cumpre a finalidade
 cadencia_h = 24
 periodo_dias = 14
