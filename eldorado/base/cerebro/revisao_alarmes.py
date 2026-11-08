@@ -3,6 +3,7 @@ sistema abria alarmes e nada os fechava). A cada passagem, cada alarme aberto é
   a falha de um nó          → o nó voltou a concluir depois do alarme
   a recusa de um evento     → "UNIQUE constraint failed": aquilo já estava no banco (a união, o livro, o achado): duplicata
   a carga acima de 85%      → as leituras do servidor depois do alarme estão abaixo de 85%
+  o veredito recusado (R41) → o veredito daquele lote foi importado (08/11/2026: o de 05/11 ficava aceso para sempre)
 O que não se resolveu continua aberto (e aceso na sala)."""
 from __future__ import annotations
 
@@ -13,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 
-def revisar(cer: sqlite3.Connection) -> list[tuple[int, str]]:
+def revisar(cer: sqlite3.Connection, expurgo: Path | None = None) -> list[tuple[int, str]]:
     """Os alarmes resolvidos: [(o id, o motivo do fechamento)]."""
     volta = dict(cer.execute("SELECT no, MAX(em) FROM execucao_passo WHERE estado = 'concluido' GROUP BY no").fetchall())
     leituras = cer.execute("SELECT em, MAX(processador, memoria) FROM maquina ORDER BY em").fetchall() if \
@@ -26,6 +27,9 @@ def revisar(cer: sqlite3.Connection) -> list[tuple[int, str]]:
             fechar.append((aid, f"o nó {m.group(1)} voltou a concluir"))
         elif modulo == "gravador" and "UNIQUE constraint failed" in msg:
             fechar.append((aid, "duplicata: aquilo já estava no banco"))
+        elif expurgo is not None and (lt := re.search(r"recusado \(R41[^)]*\).*?do (lote-chrome-documentos-[\w-]+)", msg)) and \
+                (expurgo / "vereditos" / "importados" / f"veredito-{lt.group(1)}.json").exists():
+            fechar.append((aid, f"o veredito do {lt.group(1)} foi importado"))
         elif modulo == "governador" and "acima de 85%" in msg:
             depois = [c for em, c in leituras if (em or "") > aberto]
             if depois and all((c or 0) < 0.85 for c in depois[-3:]):
@@ -40,7 +44,7 @@ def no_revisar_alarmes(itens: list[dict[str, Any]], parametros: dict[str, Any], 
         return [{"fechados": 0}]
     cer = sqlite3.connect(f"file:{p}?mode=ro", uri=True)
     try:
-        fechar = revisar(cer)
+        fechar = revisar(cer, Path(parametros.get("expurgo", "verificacao/expurgo")))
     finally:
         cer.close()
     agora = datetime.now(timezone.utc).isoformat(timespec="seconds")

@@ -387,18 +387,43 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
     for a in mapa["arestas"]:
         if a["tipo"] in ("importa", "configura", "fluxo", "aciona"):
             usado_por[a["para"]].add(a["de"])
-    for p, n in nos.items():
-        if p in ponto:
-            continue
-        if not n["alcancado"]:
+    # 08/11/2026: os fluxos do GitHub ANTES da herança — são a raiz dela. Antes eram lidos no fim, com setdefault: o
+    # painel.yml e o vigia.yml, com sucesso, ficavam com o ponto cinza herdado, e o comandos.py (o que roda tudo) e os
+    # 46 arquivos abaixo dele também
+    fluxos = _fluxos_github(nos)
+    for p, (c_, m_) in fluxos.items():
+        ponto[p] = "r" if c_ == "r" else ("c" if m_.startswith("fluxo sob demanda") else "v")
+        circ[p], motivo[p] = c_, m_
+    # R45: o ponto verde de um arquivo sem leitura própria vem de quem o usa ter rodado; a passagem ter concluído não prova
+    # que este arquivo rodou — sem usuário verde, fica cinza. 08/11/2026: a herança corre até estabilizar (antes era UMA
+    # passada em ordem alfabética: o estado.py vinha antes do motor.py e ficava cinza com o motor rodando — 11 arquivos)
+    pendentes = [p for p, n in nos.items() if p not in ponto]
+    for p in pendentes:
+        if not nos[p]["alcancado"]:
             ponto[p], motivo[p] = "c", "fora do funcionamento: nenhum fluxo da produção o alcança"
-        else:
-            # R45: o ponto verde de um arquivo sem leitura própria vem de quem o usa ter rodado (a herança abaixo); a passagem
-            # ter concluído não prova que este arquivo rodou — sem usuário verde, fica cinza
+    alcancados = [p for p in pendentes if nos[p]["alcancado"]]
+    mudou = True
+    while mudou:                                                  # só sobe de cinza para verde: termina
+        mudou = False
+        for p in alcancados:
+            antes = ponto.get(p)
             usuarios_ok = [u for u in usado_por.get(p, ()) if ponto.get(u) == "v"]
             ponto[p] = "v" if (passagem_ok and usuarios_ok) else "c"
-            motivo.setdefault(p, f"rodou com a passagem (usado por {len(usuarios_ok)} arquivo(s) que rodaram)" if ponto[p] == "v"
-                              else "sem leitura própria e sem usuário que tenha rodado em 24 h")
+            mudou = mudou or ponto[p] != antes
+    for p in alcancados:
+        if ponto.get(p) == "v":
+            motivo.setdefault(p, f"rodou com a passagem (usado por {sum(1 for u in usado_por.get(p, ()) if ponto.get(u) == 'v')} arquivo(s) que rodaram)")
+    for p in sorted(alcancados, key=lambda x: -x.count("/")):     # o pacote (__init__): pelos seus módulos
+        if ponto.get(p) == "v":
+            continue
+        if p.endswith("__init__.py"):
+            pasta = p.rsplit("/", 1)[0] + "/"
+            if any(ponto.get(q) == "v" for q in nos if q.startswith(pasta) and q != p):
+                ponto[p] = "v"
+                motivo.setdefault(p, "o pacote: os seus módulos rodaram")
+                continue
+        ponto[p] = "c"
+        motivo.setdefault(p, "sem leitura própria e sem usuário que tenha rodado em 24 h")
     # o círculo das bibliotecas: vermelho só pelo próprio erro (no rastro); verde se algum usuário cumpre a finalidade;
     # âmbar se todos os que o usam estão em falha (antes: o pior de quem usa, o que espalhava a falha de um nó por tudo)
     for p in vermelhos_do_erro:
@@ -415,14 +440,22 @@ def medir(dados: Path = Path("dados"), mapa: dict[str, Any] | None = None) -> di
                     motivo[p] = f"{motivo[p]}; {_m}" if motivo.get(p) and _m not in motivo[p] else motivo.get(p) or _m
     # os fluxos do GitHub (a raiz da herança): a última execução concluída (sucesso ou falha; as interrompidas pela
     # implantação não contam)
-    for p, (c_, m_) in _fluxos_github(nos).items():
-        ponto.setdefault(p, "v")
+    for p, (c_, m_) in fluxos.items():                           # (já medidos antes da herança)
         circ[p], motivo[p] = c_, m_
     # as configurações: a finalidade é ser válida (e é lida por quem a usa)
     for p in nos:
         if p.startswith(("config/", "workflows/")) and p not in circ and nos[p]["alcancado"]:
             ok = _valida(RAIZ / p)
             circ[p], motivo[p] = ("v", "configuração válida, lida pela produção") if ok else ("r", "configuração inválida (não abre)")
+            # 08/11/2026: o ponto da configuração é o de quem a lê (antes ficava sempre cinza: 19 configurações e as ligações
+            # delas cinzas no mapa); inválida, vermelha
+            leitores_ok = any(ponto.get(a["de"]) == "v" for a in mapa["arestas"] if a["para"] == p) or \
+                any(ponto.get(a["para"]) == "v" for a in mapa["arestas"] if a["de"] == p and a["tipo"] in ("configura", "fluxo"))
+            if not ok:
+                ponto[p] = "r"
+            elif leitores_ok and ponto.get(p) != "r":
+                ponto[p] = "v"
+                motivo[p] = "configuração válida, lida pela produção (quem a lê rodou)"
     for p, m_ in SOB_DEMANDA.items():                              # os estudos concluídos e os testes sob demanda
         if p in nos:
             ponto[p], circ[p], motivo[p] = "v", "v", m_
@@ -488,26 +521,45 @@ def _valida(p: Path) -> bool:
 
 
 def _fluxos_github(nos: dict) -> dict[str, tuple[str, str]]:
-    """A última execução concluída de cada fluxo do GitHub (pela chave de leitura da produção); sem a chave, nada."""
+    """A situação de cada fluxo do GitHub (pela chave de leitura da produção); sem a chave, nada.
+
+    08/11/2026: consulta FLUXO POR FLUXO. Antes lia as 100 últimas execuções de TODOS os fluxos juntos: o Painel roda a
+    cada mudança e a cada 15 minutos e ocupava as 100 (metade canceladas), e o Eldorado (o ciclo, de até 12 h, quase
+    sempre em andamento), a Qualidade e o Implantar apareciam como «sob demanda: sem execução recente», com o ponto cinza.
+    O ciclo em andamento, iniciado dentro do tempo máximo dele, conta como funcionando."""
     import json as _j
     import os
     import urllib.request
+    from datetime import datetime, timedelta, timezone
     token, repo = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN"), os.environ.get("GITHUB_REPOSITORY")
     if not (token and repo):
         return {}
-    try:
-        req = urllib.request.Request(f"https://api.github.com/repos/{repo}/actions/runs?per_page=100", headers={"Authorization": f"Bearer {token}"})
-        runs = _j.loads(urllib.request.urlopen(req, timeout=20).read())["workflow_runs"]
-    except Exception:  # noqa: BLE001
-        return {}
+    agora = datetime.now(timezone.utc)
     saida: dict[str, tuple[str, str]] = {}
-    for r in runs:
-        p = r.get("path") or ""
-        if p in nos and p not in saida and r.get("status") == "completed" and r.get("conclusion") in ("success", "failure"):
+    for p in nos:
+        if not p.startswith(".github/workflows/"):
+            continue
+        try:
+            req = urllib.request.Request(f"https://api.github.com/repos/{repo}/actions/workflows/{p.rsplit('/', 1)[1]}/runs?per_page=20",
+                                         headers={"Authorization": f"Bearer {token}"})
+            runs = _j.loads(urllib.request.urlopen(req, timeout=20).read()).get("workflow_runs", [])
+        except Exception:  # noqa: BLE001
+            continue
+        concluidas = [r for r in runs if r.get("status") == "completed" and r.get("conclusion") in ("success", "failure")]
+        andamento = next((r for r in runs if r.get("status") == "in_progress"), None)
+        if andamento and (r_ini := andamento.get("run_started_at") or andamento.get("created_at")):
+            try:
+                ini = datetime.fromisoformat(r_ini.replace("Z", "+00:00"))
+            except ValueError:
+                ini = None
+            if ini and agora - ini < timedelta(hours=13) and (not concluidas or concluidas[0].get("conclusion") == "success"):
+                saida[p] = ("v", f"em execução desde {r_ini[:16]} (a anterior: {'sucesso' if concluidas else 'nenhuma'})")
+                continue
+        if concluidas:
+            r = concluidas[0]
             ok = r["conclusion"] == "success"
             saida[p] = ("v" if ok else "r", f"a última execução ({r.get('updated_at', '')[:16]}): {'sucesso' if ok else 'falhou'}")
-    for p in nos:
-        if p.startswith(".github/workflows/") and p not in saida:
+        else:
             saida[p] = ("v", "fluxo sob demanda: sem execução concluída recente (nada a corrigir)")
     return saida
 

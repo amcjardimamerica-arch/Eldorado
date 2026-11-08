@@ -17,3 +17,19 @@ def test_os_alarmes_resolvidos_sao_fechados(bancos, gravador):
     fechados = {msg for (i, msg) in [(i, c.execute("SELECT mensagem FROM alarme WHERE id = ?", (i,)).fetchone()[0]) for i, _ in revisar(c)]}
     assert any("encaminhar" in m for m in fechados) and any("UNIQUE" in m for m in fechados)          # resolvidos
     assert not any("farol" in m for m in fechados) and not any("CHECK" in m for m in fechados)       # não resolvidos: abertos
+
+
+def test_o_veredito_recusado_fecha_quando_o_lote_e_importado(tmp_path):
+    """08/11/2026: o alarme «veredito de documentos recusado (R41)» do lote de 05/11 ficava aceso para sempre."""
+    import sqlite3
+
+    from eldorado.base.cerebro.revisao_alarmes import revisar
+    c = sqlite3.connect(":memory:")
+    c.executescript("CREATE TABLE execucao_passo(no TEXT, estado TEXT, em TEXT); CREATE TABLE alarme(id INTEGER, modulo TEXT, mensagem TEXT, "
+                    "aberto_em TEXT, fechado_em TEXT);")
+    c.execute("INSERT INTO alarme VALUES (1, 'expurgo', 'veredito de documentos recusado (R41, nada parcial): 158 de 172 grupos do "
+              "lote-chrome-documentos-2026-11-05-auto', '2026-11-07T17:51:40+00:00', NULL)")
+    assert revisar(c, tmp_path) == []
+    (tmp_path / "vereditos" / "importados").mkdir(parents=True)
+    (tmp_path / "vereditos" / "importados" / "veredito-lote-chrome-documentos-2026-11-05-auto.json").write_text("{}")
+    assert [a for a, _ in revisar(c, tmp_path)] == [1]

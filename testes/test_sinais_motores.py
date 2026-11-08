@@ -25,7 +25,7 @@ def test_pendente_abandonada_e_sem_novidade_acendem():
     c = _cer()
     c.executemany("INSERT INTO motor_fonte VALUES (?,?,?,?,?,?,?,?,?)", [
         ("m", "A", 40, 38, 2, 0, None, "2026-11-05T10:00:00+00:00", "sem mudança"),
-        ("m", "B", 40, 0, 0, 2, "pendente no computador local", "2026-11-05T10:00:00+00:00", "lida"),
+        ("m", "B", 40, 0, 0, 2, "pendente no computador local", "2026-11-05T10:00:00+00:00", "erro"),
         ("m", "C", 7, 0, 0, 7, "bloqueado", "2026-10-22T10:00:00+00:00", None)])
     c.execute("INSERT INTO motor_entregue VALUES ('m','k','2026-10-24T10:00:00+00:00','a','A')")
     s = sinais(c, "m", ["A", "B", "C"], False, AGORA)
@@ -38,3 +38,15 @@ def test_nunca_entregou_e_vermelho_e_o_especial_nao():
     c.execute("INSERT INTO motor_fonte VALUES ('m','A',31,28,0,0,NULL,'2026-11-05T10:00:00+00:00','sem mudança')")
     assert sinais(c, "m", ["A"], False, AGORA)["luz"] == "vermelho"
     assert sinais(c, "m", ["A"], True, AGORA)["luz"] == "verde"
+
+
+def test_o_erro_antigo_do_computador_local_nao_prende_a_fonte_lida():
+    """08/11/2026: o «último erro» é histórico; a fonte que voltou a ser lida não está pendente (57 de 59 fontes ficavam
+    «pendentes» para sempre e acendiam 35 motores)."""
+    c = _cer()
+    c.executemany("INSERT INTO motor_fonte VALUES (?,?,?,?,?,?,?,?,?)", [
+        ("m", "A", 187, 0, 0, 2, "pendente no computador local", "2026-11-05T10:00:00+00:00", "lida"),
+        ("m", "B", 180, 170, 0, 1, "https://x.gov.br/: pedido entregue ao computador local (abc)", "2026-11-05T10:00:00+00:00", "sem mudança")])
+    c.execute("INSERT INTO motor_entregue VALUES ('m','k','2026-11-04T10:00:00+00:00','a','A')")
+    s = sinais(c, "m", ["A", "B"], False, AGORA)
+    assert s["pendentes_local"] == [] and s["luz"] == "verde" and s["lidas"] == 2

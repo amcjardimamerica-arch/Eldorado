@@ -148,9 +148,15 @@ def _lote_chrome(pasta: Path, docs: list[dict]) -> Path | None:
         return None
     from ..cartorio import manutencao_expurgo as _m  # noqa: F401 (o mesmo módulo; as instruções ficam junto do lote)
     dia = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    arq = pasta / f"lote-chrome-documentos-{dia}-auto.json"
-    atual = json.loads(arq.read_text(encoding="utf-8")) if arq.exists() else {"lote": arq.stem, "instrucoes": INSTRUCOES,
-                                                                              "formato_do_veredito": FORMATO, "grupos": []}
+    # 08/11/2026: o lote é IMUTÁVEL depois de criado — o documento novo vai para a parte seguinte do dia (-2, -3…). Antes, o
+    # lote do dia recebia grupos novos depois de o Chrome já o ter lido: o veredito de 05/11 cobriu os 158 grupos que leu,
+    # o lote passou a ter 172, e a R41 (nada parcial) o recusou para sempre (o alarme ×5; as 158 decisões perdidas)
+    arq, n = pasta / f"lote-chrome-documentos-{dia}-auto.json", 1
+    while arq.exists():
+        n += 1
+        arq = pasta / f"lote-chrome-documentos-{dia}-auto-{n}.json"
+    atual = {"lote": arq.stem, "instrucoes": INSTRUCOES, "formato_do_veredito": FORMATO, "grupos": [],
+             "criado_em": datetime.now(timezone.utc).isoformat()}
     atual["instrucoes"], atual["lote"], atual["formato_do_veredito"] = INSTRUCOES, arq.stem, FORMATO   # R41: a instrução de agora
     grupos = {g["grupo"]: g for g in atual["grupos"]}
     for d in docs:
@@ -193,11 +199,13 @@ def importar_veredito(ret: dict, bib: sqlite3.Connection, pasta: Path, diario, e
                                                           "mensagem": f"veredito de documentos recusado (R41, nada parcial): {len(feitos & do_lote)} de "
                                                                       f"{len(do_lote)} grupos do {nome}"})
         return {"recusado (R41): grupos sem veredito": len(do_lote - feitos)}
+    # 08/11/2026: os grupos do PRÓPRIO lote do veredito (o mesmo grupo pode voltar numa parte seguinte, com outro documento;
+    # ler todos os lotes deixava a parte mais nova sobrescrever os documentos da parte que o Chrome decidiu)
     grupos: dict[str, dict] = {}
-    for p in pasta.glob("lote-chrome-documentos-*.json"):
+    for p in [arq_lote] + [x for x in sorted(pasta.glob("lote-chrome-documentos-*.json")) if x != arq_lote]:
         try:
             for g in json.loads(p.read_text(encoding="utf-8")).get("grupos", []):
-                grupos[g["grupo"]] = g
+                grupos.setdefault(g["grupo"], g)
         except (OSError, ValueError, KeyError):
             continue
     sha = {r[0]: r[1] for r in bib.execute("SELECT id, sha256 FROM documento")}

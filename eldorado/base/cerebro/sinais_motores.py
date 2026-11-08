@@ -70,7 +70,10 @@ def sinais(cer: sqlite3.Connection, motor: str, fontes_config: list[str] | None 
             aband.append(n)
             continue
         erro = str(r[4] or "")
-        if "computador local" in erro:
+        # 08/11/2026: o «último erro» da fonte é histórico (fica gravado mesmo depois de a fonte voltar a ser lida); só a
+        # SITUAÇÃO da leitura mais recente diz se ela está parada. Antes, 57 de 59 fontes lidas sem erro apareciam como
+        # «pendentes no computador local», acendiam 35 motores e deixavam 5 vermelhos (cnpq, salic, cese, funarte)
+        if r[6] == "erro" and "computador local" in erro:
             pend.append(n)
         elif r[6] == "erro":
             falha.append(n)

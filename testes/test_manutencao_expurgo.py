@@ -52,3 +52,16 @@ def test_nenhum_livro_e_tocado(tmp_path, monkeypatch):
     saiu_doc = [x["documento_id"] for t, x in d.ev if t == "documento.descartado"]
     assert saiu_achado == ["a1"] and saiu_doc == [2] and r["documentos_ao_chrome"] == 1
     assert not any(t.startswith("livro.") for t, _ in d.ev)
+
+
+def test_o_lote_de_documentos_nao_muda_depois_de_criado(tmp_path):
+    """08/11/2026: o veredito de 05/11 cobriu os 158 grupos que o Chrome leu; o mesmo arquivo recebeu mais 14 grupos depois
+    e a R41 o recusou para sempre. O lote é imutável: o documento novo vai para a parte seguinte do dia."""
+    import json as _json
+
+    from eldorado.base.cartorio.manutencao_expurgo import _lote_chrome
+    a = _lote_chrome(tmp_path, [{"id": 1, "url": "https://a.gov.br/edital.pdf", "grupo": "a.gov.br/edital"}])
+    antes = a.read_text(encoding="utf-8")
+    b = _lote_chrome(tmp_path, [{"id": 2, "url": "https://b.gov.br/edital.pdf", "grupo": "b.gov.br/edital"}])
+    assert a != b and a.read_text(encoding="utf-8") == antes
+    assert b.stem.endswith("-auto-2") and [g["chave"] for g in _json.loads(b.read_text(encoding="utf-8"))["grupos"]] == ["b.gov.br/edital"]
