@@ -240,14 +240,19 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection, molde, agora: datet
         "com_prazo_confirmado": sum(1 for x in recentes if I.resolvido(I.melhor(certs.get(x, [])).get("Prazo de inscrição"))),
         "completos": sum(1 for x in recentes if sum(cob[x]) == 12),
     }
+    _abertos = {r[0] for r in bib.execute("SELECT livro_id FROM livro_dados WHERE situacao_prazo = 'aberta'")}
     i_["acumulado"] = {
         **i_.get("acumulado", {}),
         "interceptados": len(ordem_livros),
-        "missoes": len(tents),
-        "validadas": sum(1 for t in tents if t["material"]),
+        # 07/11/2026 (rastreio): UMA unidade, o livro abordado — antes «missões» e «validados» contavam passos e
+        # «parciais»/«insuficientes» contavam livros (as três não fechavam); as classes são uma partição dos livros
+        "missoes": len(ordem_livros),
+        "passos": len(tents),
+        "passos_com_material": sum(1 for t in tents if t["material"]),
+        "validadas": sum(1 for lid in ordem_livros if sum(cob[lid]) >= 12),
         "parciais": sum(1 for lid in ordem_livros if 0 < sum(cob[lid]) < 12),
         "insuficientes": sum(1 for lid in ordem_livros if sum(cob[lid]) == 0),
-        "estrelas_de_ouro": sum(1 for lid in ordem_livros if estrela.get(lid) == "ouro"),
+        "estrelas_de_ouro": sum(1 for lid in ordem_livros if estrela.get(lid) == "ouro" and lid in _abertos),
         "achados": len(ach["interceptador"]),
     }
     i_["editais"] = [
@@ -290,7 +295,10 @@ def montar(bib: sqlite3.Connection, cer: sqlite3.Connection, molde, agora: datet
 
     i_["missoes"] = [missao_livro(lid) for lid in reversed(ordem_livros[-20:])]
     duracoes = [m["segundos"] for m in i_["missoes"] if m["segundos"]]
-    i_["acumulado"]["tempo_medio_min"] = round(sum(duracoes) / len(duracoes) / 60, 1) if duracoes else None
+    # 07/11/2026 (rastreio): as tentativas não registram a duração; o intervalo entre visitas ao mesmo livro (até 161 h)
+    # não é o tempo da missão — sem medida, nada publicado (a página mostra «–»)
+    i_["acumulado"]["tempo_medio_min"] = None
+    del duracoes
     ult_livro = ordem_livros[-1] if ordem_livros else None
     iv = {
         "estado": "em_voo" if (_idade_min(ult_t, agora) or 1e9) < 25 else ("pousou" if ult_t else "aguardando"),

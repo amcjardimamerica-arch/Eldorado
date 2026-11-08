@@ -3684,8 +3684,10 @@ function desenhaFarolResumo(){
   else{$("fa-aderencia").textContent="—";$("fa-adnota").textContent=f.aderencia_nota||"";}
   $("fa-pend").textContent=f.requisitos_pendentes??"—";
   const dc=f.decisoes||{};
-  $("fa-status").innerHTML=[["eleg","Elegíveis",dc.elegiveis],["ok","Verificadas",dc.verificadas],
-    ["acao","Ação necessária",dc.acao_necessaria],["cap","Capturadas",dc.capturadas],["acao","Descartadas",dc.descartadas]]
+  /* 07/11/2026 (rastreio): sem associação cadastrada o Farol não rodou — os zeros não são medida: «sem leitura» */
+  const _semFarol=!((D.biblioteca||{}).acervos||{}).associacoes, _sl=v=>_semFarol?"sem leitura":v;
+  $("fa-status").innerHTML=[["eleg","Elegíveis",dc.elegiveis],["ok","Verificadas",_sl(dc.verificadas)],
+    ["acao","Ação necessária",_sl(dc.acao_necessaria)],["cap","Capturadas",_sl(dc.capturadas)],["acao","Descartadas",_sl(dc.descartadas)]]
     .map(x=>`<div style="display:flex;justify-content:space-between;padding:2px 0"><span><span class="st ${x[0]}" style="margin-right:5px">●</span>${x[1]}</span><strong>${x[2]??0}</strong></div>`).join("");
   const docs=f.documentacao_pronta||[];
   $("fa-docs").innerHTML=docs.length?docs.map(d0=>{
@@ -3978,7 +3980,7 @@ function desenhaGantt(){
     ${linhas||`<div class="meta" style="padding:14px 4px">Nenhuma inscrição com data confirmada e site oficial neste mês.</div>`}</div>`;
   const outros=conf.length-noMes.length, poss=((F.mapa||{}).total||{}).possiveis;
   $("g-legenda").innerHTML=`<span class="gc-b-leg"></span> inscrição com data confirmada e site oficial · <span class="gc-b-leg sem-ini"></span> início não informado (desde a publicação) · o título abre o site oficial`;
-  $("g-abertas").innerHTML=`<b>${noMes.length}</b> inscrição(ões) confirmada(s) neste mês${outros?` · ${outros} em outros meses`:""}${poss!=null?` · as possíveis ainda sem prazo confirmado ficam no <a href="#" onclick="trocaVista('bussola');return false">Mapa de Oportunidades</a>, na fila do Interceptador — entram aqui assim que ele confirma a data`:""}`;
+  $("g-abertas").innerHTML=`<b>${noMes.length}</b> inscrição(ões) com data neste mês (validadas e em verificação)${outros?` · ${outros} em outros meses`:""}${poss!=null?` · as possíveis ainda sem prazo confirmado ficam no <a href="#" onclick="trocaVista('bussola');return false">Mapa de Oportunidades</a>, na fila do Interceptador — entram aqui assim que ele confirma a data`:""}`;
   if($("g-possiveis")) $("g-possiveis").innerHTML=""; if($("g-cobertura")) $("g-cobertura").innerHTML="";
 }
 function ddmmG(iso){ return `${iso.slice(8,10)}/${iso.slice(5,7)}`; }
@@ -6163,8 +6165,8 @@ window.desenhaPostoInterceptador=async function(alvo){
     ${(()=>{const u=(D.missoes||[])[0]; if(!u) return (D.alvo?`<div class="pil-vivo-u"><b>Último voo:</b> ${esc(String(D.alvo).slice(0,100))} — ${esc(D.qualidade||"")} ${D.comprovados??""}/${D.total??""}</div>`:""); const ini=u.em&&u.segundos?new Date(new Date(u.em)-u.segundos*1000).toISOString():null;
       return `<div class="pil-vivo-u"><b>Última missão:</b> ${esc(String(u.alvo||u.resultado||"").slice(0,100))}<br><span class=meta>começou ${ini?esc(horaMin(ini)):"—"} · terminou ${esc(horaMin(u.em))}${u.segundos?` · ${duracaoTxt(ini,u.em)}`:""}</span></div>`;})()}
     <div class="int-mets">
-      <div class="int-met"><b>${A.missoes||0}</b><span>missões</span></div>
-      <div class="int-met"><b style="color:#1E7E4B">${A.validadas||0}</b><span>editais validados</span></div>
+      <div class="int-met"><b>${A.missoes||0}</b><span>livros abordados (${A.passos||0} passos)</span></div>
+      <div class="int-met"><b style="color:#1E7E4B">${A.validadas||0}</b><span>com os 12 itens</span></div>
       <div class="int-met"><b>${A.parciais||0}</b><span>parciais</span></div>
       <div class="int-met"><b style="color:#9AA5B1">${A.insuficientes||0}</b><span>insuficientes</span></div>
       <div class="int-met"><b>${(A.fontes_confirmadas||0)}/${(A.fontes_possiveis||0)}</b><span>empresas: fonte confirmada/possível</span></div>
@@ -7163,7 +7165,7 @@ function desenhaBzCards(){
     [IC("#0B4EA2").banco,"Livros vigiados",fr((OP.monitorado_ativo??0)+(OP.monitorado_preditivo??0),OP.catalogo??0),"","azul",`31/10/2026: o monitoramento real — ativo (prazo aberto): ${OP.monitorado_ativo??0} · preditivo (encerrada, à espera da próxima edição): ${OP.monitorado_preditivo??0} · sem prazo ainda (em trabalho): ${OP.sem_prazo??0} / total de livros na Biblioteca`],   // 12/10 (titular): só os números; 11/10: com a divisão
     [IC("#0B4EA2").escudo,"Validadas",fr(PR.validadas,PR.abertas),"","azul","validadas (objeto, prazo vigente e site oficial comprovados, ou ouro) / oportunidades abertas"],
     [IC("#C0392B").relogio,"Prazos urgentes (7 dias)",fr(urg.length,conf.length),"","vermelho","inscrições validadas terminando em até 7 dias / validadas"],
-    [IC("#0B4EA2").farol,"Repositório",fr(OP.com_historico_de_edicoes??0,OP.catalogo??0),"","azul","livros com duas ou mais edições guardadas / livros de oportunidades na Biblioteca"],
+    [IC("#0B4EA2").farol,"Livros com edições guardadas",fr(OP.com_historico_de_edicoes??0,OP.catalogo??0),"","azul","livros com duas ou mais edições guardadas / livros de oportunidades na Biblioteca"],
     [IC("#0B4EA2").livro,"Base legal",((D.biblioteca||{}).acervos||{}).leis??0,"","azul","normas na Biblioteca"]];
   $("bz-cards").innerHTML=cards.map(c=>`<div class="bz-card" title="${esc(c[5])}">${c[0]}<div class=r>${c[1]}</div><div class=v>${c[2]}</div>${c[3]?`<div class=s>${esc(c[3])}</div>`:""}</div>`).join("");
   const na=$("bz-cards").children[0];

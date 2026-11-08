@@ -42,6 +42,12 @@ def _canivete(a):
 
 
 
+
+def _numero_tentativa(con, livro: str, ferramenta: str) -> int:
+    """07/11/2026: a tentativa numerada pelas anteriores do mesmo livro e ferramenta (antes sempre 1)."""
+    return 1 + (con.execute("SELECT COUNT(*) FROM tentativa WHERE livro_id = ? AND fase = 'preparacao' AND ferramenta = ?",
+                            (livro, ferramenta)).fetchone()[0] or 0)
+
 def _preferencia_do_ciclo(abordagens: list[int]) -> list[int] | None:
     """06/11/2026: a ordem das abordagens pelo rendimento real do último ciclo do Interceptador (a cada 100 erros)."""
     import sqlite3 as _sq
@@ -96,7 +102,8 @@ class Encaminhamento:
                 m = self.registro.obter(motor)
                 a = m.pesquisar({"id": lv.id, "titulo": lv.titulo, "link_oficial": lv.link_oficial, "link_divulgacao": lv.link_divulgacao}) \
                     if hasattr(m, "pesquisar") else None
-                self.diario.emitir("tentativa.registrada", "rede", {"livro_id": lv.id, "fase": "preparacao", "ferramenta": f"motor {motor}", "numero": 1,
+                self.diario.emitir("tentativa.registrada", "rede", {"livro_id": lv.id, "fase": "preparacao", "ferramenta": f"motor {motor}",
+                                                                    "numero": _numero_tentativa(self.con, lv.id, f"motor {motor}"),
                                                                     "em": agora(), "resultado": json.dumps({"trouxe": bool(a), "faltam": lv.faltam}),
                                                                     "proxima_em": None})
                 return f"motor {motor}", (self._entregar(a, motor) if a else None)

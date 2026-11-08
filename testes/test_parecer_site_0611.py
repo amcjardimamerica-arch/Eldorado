@@ -59,3 +59,17 @@ def test_a_sala_so_tem_mostradores_vivos():
     assert not ids & {"fl_fila", "es_livros", "hi_frio", "es_validadas", "es_curadoria", "es_vigilancia", "ve_completas", "em_rankings",
                       "es_abertas", "es_fichas"}
     assert {"pa_passagem", "pa_falhas", "al_abertos", "mo_pendentes_local", "es_esteira_parada", "ab_link_oficial", "fa_fecham_7d"} <= ids
+
+
+def test_o_interceptador_numa_unidade_e_os_rotulos_honestos():
+    """07/11/2026 (rastreio): o quadro do Interceptador conta livros (as classes somam os livros abordados); o título segue a
+    vista; o Farol sem associação mostra «sem leitura»; sem o link para a página de transparência que não existe."""
+    b = sqlite3.connect("file:dados/biblioteca.db?mode=ro", uri=True)
+    c = sqlite3.connect("file:dados/cerebro.db?mode=ro", uri=True)
+    a = pilotos.montar(b, c, dados._molde)[0]["interceptador.json"]["acumulado"]
+    assert a["validadas"] + a["parciais"] + a["insuficientes"] == a["missoes"] and a["tempo_medio_min"] is None
+    m = Path("eldorado/base/painel/pagina/amc-menu.js").read_text(encoding="utf-8")
+    assert "var nome=(vis&&TITULO[vis.id])||" in m
+    h = Path("eldorado/base/painel/pagina/dashboard.html").read_text(encoding="utf-8")
+    assert '_sl=v=>_semFarol?"sem leitura":v' in h and "inscrição(ões) confirmada(s)" not in h
+    assert "transparencia.html" not in Path("eldorado/base/painel/pagina/index.html").read_text(encoding="utf-8")

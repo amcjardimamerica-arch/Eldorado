@@ -386,7 +386,8 @@ window.AMC_BIRD={"vb":[1000,752.2],"f":[{"c":"#001D7E","p":[[216.1,0.3],[306.1,2
   function titulo(){
     var vis=[].slice.call(document.querySelectorAll('#palco > section[id^="v-"]')).filter(function(s){return !s.classList.contains('oculto')})[0];
     var t=document.getElementById('pv-titulo-txt'), caixa=document.getElementById('pv-titulo'); if(!t||!caixa) return;
-    var nome=document.body.classList.contains('inicial')?'Início':(vis&&TITULO[vis.id]); caixa.hidden=!nome; if(nome) t.textContent=nome;
+    /* 07/11/2026 (parecer): primeiro a vista aberta; «Início» só sem vista (a classe «inicial» ficava e o título era sempre «Início») */
+    var nome=(vis&&TITULO[vis.id])||(document.body.classList.contains('inicial')?'Início':null); caixa.hidden=!nome; if(nome) t.textContent=nome;
     document.body.classList.toggle('pv-escura', !!(vis&&ESCURAS.indexOf(vis.id)>=0));
   }
   function contagens(){

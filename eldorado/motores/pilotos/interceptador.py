@@ -455,6 +455,15 @@ class Interceptador:
         return [u for u in self.metabusca(f"site:{dom} {lv.numero or ''} {lv.titulo[:80]}") if urlsplit(u).hostname == dom][:4]
 
     # ------------------------------------------------------------------ uma investigação
+    def _numero(self, livro: str, ferramenta: str) -> int:
+        """07/11/2026: a tentativa numerada pelas anteriores do mesmo livro e ferramenta (antes sempre 1: a segunda rodada da
+        mesma abordagem repetia a chave e o banco recusava o evento — 17 alarmes)."""
+        try:
+            return 1 + (self.con.execute("SELECT COUNT(*) FROM tentativa WHERE livro_id = ? AND fase = 'preparacao' AND ferramenta = ?",
+                                         (livro, ferramenta)).fetchone()[0] or 0)
+        except Exception:  # noqa: BLE001
+            return 1
+
     def plano_de_voo(self, lv: Livro, preferencia: list[int] | None = None) -> list[tuple[int, list[str]]]:
         """O plano de voo do livro: as abordagens pelos itens que faltam (cada uma com os itens que ela busca), as mais
         certeiras primeiro; as já tentadas ficam de fora."""
@@ -510,14 +519,14 @@ class Interceptador:
                 urls, erro = [], f"{type(e).__name__}: {str(e)[:120]}"
             if not urls:
                 self.diario.emitir("tentativa.registrada", "interceptador", {
-                    "livro_id": lv.id, "fase": "preparacao", "ferramenta": f"abordagem {n}", "numero": 1, "em": agora(),
+                    "livro_id": lv.id, "fase": "preparacao", "ferramenta": f"abordagem {n}", "numero": self._numero(lv.id, f"abordagem {n}"), "em": agora(),
                     "resultado": json.dumps({"abordagem": ABORDAGENS[n], "ferramenta": FERRAMENTAS.get(n), "para": para, "balcao": lv.balcao,
                                              "sem material": True, "erro": erro, "faltam": lv.faltam}, ensure_ascii=False), "proxima_em": None})
                 lv.tentadas.add(n)
                 continue
             achado = self._achado(lv, n, urls)
             self.diario.emitir("tentativa.registrada", "interceptador", {
-                "livro_id": lv.id, "fase": "preparacao", "ferramenta": f"abordagem {n}", "numero": 1, "em": agora(),
+                "livro_id": lv.id, "fase": "preparacao", "ferramenta": f"abordagem {n}", "numero": self._numero(lv.id, f"abordagem {n}"), "em": agora(),
                 "resultado": json.dumps({"abordagem": ABORDAGENS[n], "ferramenta": FERRAMENTAS.get(n), "para": para, "balcao": lv.balcao,
                                          "enderecos": len(urls), "faltam": lv.faltam,
                                          "documentos": len((achado.documento or {}).get("paginas") or []) if achado else 0,

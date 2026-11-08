@@ -186,7 +186,9 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
             },
         ),
     ),
-    "tentativa.registrada": (Alvo(B, "tentativa", "inserir"),),
+    # 07/11/2026: a tentativa com a mesma chave (livro, etapa, ferramenta, número) já registrada não é recusada — é a mesma
+    # tentativa (os 17 eventos antigos numerados sempre como 1 abriam alarme); os emissores numeram pelas anteriores
+    "tentativa.registrada": (Alvo(B, "tentativa", "inserir_se_novo"),),
     "certidao.gravada": (Alvo(B, "certidao", "inserir"),),
     "certidao.contestada": (Alvo(B, "certidao", "atualizar", ("id",), _so("id", "situacao")),),
     "livro.legislacao": (Alvo(B, "livro_lei", "inserir_ou_atualizar", ("livro_id", "lei_id")),),
