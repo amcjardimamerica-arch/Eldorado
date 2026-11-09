@@ -109,7 +109,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 62 | `eldorado/base/cerebro/__init__.py` |  | pacote |  |  | 43 |
 | 63 | `eldorado/base/cerebro/decisao.py` | A decisão do Cérebro: a cada batimento, quais motores acionar, conforme a necessidade (titular, 22/10/2026). | em funcionamento |  | fila, regencia | 1 |
 | 64 | `eldorado/base/cerebro/governador.py` | O governador de carga: mantém a máquina abaixo do limite (85%). | em funcionamento | eventos | pilotos_permanentes, regencia, pilotos, fila, nos, comandos | 9 |
-| 65 | `eldorado/base/cerebro/livros_motores.py` | Os motores de cada livro e as pesquisas já feitas (comum ao encaminhamento e à vigilância dos sites originais; | em funcionamento | motor | encaminhamento, originais | 0 |
+| 65 | `eldorado/base/cerebro/livros_motores.py` | Os motores de cada livro e as pesquisas já feitas (comum ao encaminhamento e à vigilância dos sites originais; | em funcionamento | pontuacao_motores | encaminhamento, originais | 0 |
 | 66 | `eldorado/base/cerebro/pilotos.py` | O Cérebro dos pilotos (titular, 22/10/2026): mede a recorrência de cada piloto e manda nova missão sempre que | em funcionamento | escada, metabusca, leitores, espiao | encaminhamento, pilotos_permanentes, comandos | 4 |
 | 67 | `eldorado/base/comandante/__init__.py` | O Comandante (titular, 25/10/2026): o responsável por executar e coordenar todo o sistema — perceber o estado, | pacote |  |  | 17 |
 | 68 | `eldorado/base/comandante/cartorio.py` | O COMANDANTE DO CARTÓRIO (titular, 02/11/2026 — R37 e R38). | em funcionamento | cartorio, itens, registro, interceptador | passagem, nó 20 «comandante_cartorio» | 1 |
@@ -286,9 +286,9 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 199 | `eldorado/base/painel/maquina.py` | mostrador atualizado em tempo real | a construir |  |  | 0 |
 | 200 | `eldorado/base/painel/pilotos.py` | Os pilotos no site, ligados aos dados (titular, 25/10/2026: sem leitura na página inicial e na sala de control | em funcionamento | itens | dados | 2 |
 | 201 | `eldorado/base/painel/ranking.py` | O ranking de empresas (titular, 25/10/2026: a aba "Ranking de empresas" estava zerada: o arquivo ranking_apoia | em funcionamento |  | dados | 1 |
-| 202 | `eldorado/base/painel/sala.py` | A sala de controle (o plano: base/painel/sala.py): cada mostrador ligado ao dado MEDIDO pelo sistema (titular, | em funcionamento | avaliar, expurgo_claude, regua, ciclo_pilotos, mapa_arquivos, sinais_motores, motor | passagem, nó 3 «medir_sala» | 4 |
+| 202 | `eldorado/base/painel/sala.py` | A sala de controle (o plano: base/painel/sala.py): cada mostrador ligado ao dado MEDIDO pelo sistema (titular, | em funcionamento | avaliar, expurgo_claude, regua, ciclo_pilotos, mapa_arquivos, pontuacao_motores, sinais_motores | passagem, nó 3 «medir_sala» | 4 |
 | 203 | `eldorado/base/painel/visoes.py` | As visões do painel: o que cada tela mostra, lido dos bancos (só leitura), num único arquivo de dados. | a construir |  |  | 0 |
-| 204 | `eldorado/base/painel/dados.py` | Os dados do painel, gerados do sistema novo (titular, 23/10/2026): o site é a imagem atual do sistema. | em funcionamento | historia, regua, mapa_arquivos, pontuacao_motores, rede, sinais_motores, itens, cartorio, legado, pilotos, ranking, sala, estado, motor | comandos, legado | 6 |
+| 204 | `eldorado/base/painel/dados.py` | Os dados do painel, gerados do sistema novo (titular, 23/10/2026): o site é a imagem atual do sistema. | em funcionamento | historia, regua, mapa_arquivos, pontuacao_motores, rede, sinais_motores, itens, cartorio, legado, pilotos, ranking, sala, estado | comandos, legado | 6 |
 | 205 | `eldorado/base/painel/legado.py` | Os arquivos do painel que o gerador nunca preenchia (titular, 25/10/2026: "pedi para consertar diversas vezes  | em funcionamento | dados | dados | 1 |
 
 ## 16 Migração do Eldorado0 (temporária)
@@ -326,7 +326,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 224 | `eldorado/base/cerebro/retencao.py` | A retenção da telemetria no Cérebro (titular, 01/11/2026): os dados da operação ficam 30 dias, completos, para | em funcionamento | eventos | comandos | 1 |
 | 225 | `eldorado/base/cerebro/sinais_motores.py` | Os SINAIS de cada motor (titular, 05/11/2026: «o sistema deve mostrar o que está ocorrendo além do resultado;  | em funcionamento |  | mapa_arquivos, pontuacao_motores, dados, sala | 2 |
 | 226 | `eldorado/base/cartorio/expurgo_claude.py` | O expurgo é do Claude, nunca do sistema (titular, 01/11/2026: "somente o Claude apaga livros e faz expurgos, o | em funcionamento | leitura_efemera, migrados | manutencao_expurgo, sala | 2 |
-| 227 | `eldorado/base/cerebro/pontuacao_motores.py` | A pontuação de cada motor (titular, 05/11/2026): os acertos parametrizados com os erros, para a melhoria do mo | em funcionamento | sinais_motores, motor | ciclo_pilotos, dados | 2 |
+| 227 | `eldorado/base/cerebro/pontuacao_motores.py` | A pontuação de cada motor (titular, 05/11/2026): os acertos parametrizados com os erros, para a melhoria do mo | em funcionamento | sinais_motores | ciclo_pilotos, livros_motores, dados, sala | 2 |
 | 228 | `eldorado/base/cartorio/manutencao_expurgo.py` | A MANUTENÇÃO DO EXPURGO a cada passagem (titular, 02/11/2026 — R36): a informação coletada que NÃO virou livro | em funcionamento | __init__, expurgo_claude, leitura_efemera | passagem, nó 21 «manutencao_expurgo» | 2 |
 | 229 | `eldorado/base/cerebro/ciclo_pilotos.py` | O ciclo de aprendizado dos pilotos a cada 100 (titular, 29/09/2026, no Eldorado0: «a cada 100 erros, parâmetro | em funcionamento | aprendizado, pontuacao_motores, eventos | aprendizado, encaminhamento, pilotos, sala, espiao | 0 |
 
@@ -334,46 +334,46 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 
 | # | Categoria | Motor | Nome | Agrega | Alvos | Motor no sistema | Situação | Observação |
 |---|---|---|---|---|---|---|---|---|
-| 1 | EXE | do-goiania | Diário Oficial do Município de Goiânia | 0 | 0 | do-goiania | conforme | criado pela orientação: a lista oficial → o PDF → os atos; o Querido Diário pelo código do município como alternativa |
-| 2 | EXE | novo-diarios-municipais-go | Diários oficiais dos municípios de Goiás | 0 | 1 | novo-diarios-municipais-go | conforme | refeito pela orientação: a edição diária da AGM (atos de dezenas de municípios, com o município de cada ato) e o Querido Diário de Aparecida; o QD só tem texto completo de Goiânia e Aparecida em Goiás |
-| 3 | EXE | do-goias | Diário Oficial do Estado de Goiás | 0 | 2 | do-goias | conforme | criado pela orientação: a cadeia edições → sumário → matéria; páginas gravadas em 23/10 |
+| 1 | EXE | do-goiania | Diário Oficial de Goiânia | 0 | 0 | do-goiania | conforme | criado pela orientação: a lista oficial → o PDF → os atos; o Querido Diário pelo código do município como alternativa |
+| 2 | EXE | novo-diarios-municipais-go | Diários Municipais de Goiás | 0 | 1 | novo-diarios-municipais-go | conforme | refeito pela orientação: a edição diária da AGM (atos de dezenas de municípios, com o município de cada ato) e o Querido Diário de Aparecida; o QD só tem texto completo de Goiânia e Aparecida em Goiás |
+| 3 | EXE | do-goias | Diário Oficial de Goiás | 0 | 2 | do-goias | conforme | criado pela orientação: a cadeia edições → sumário → matéria; páginas gravadas em 23/10 |
 | 4 | EXE | dou | Diário Oficial da União | 0 | 1 | dou | conforme |  |
-| 5 | LEG | camara-goiania-pl | Câmara Municipal de Goiânia — projetos de lei, utilidade pública e emendas | 0 | 4 | camara-goiania-pl | conforme | todo ato do terceiro setor: o Querido Diário recortado em atos com o léxico estrito; experimento: edital de chamamento, termo de fomento, utilidade pública, PL 288/2026 |
-| 6 | LEG | alego-pl | Assembleia Legislativa de Goiás — proposições, leis e emendas estaduais | 0 | 2 | alego-pl | conforme | todo ato do terceiro setor: o portal, o Diário do Estado filtrado e o sistema de consulta pelo computador local; experimento: destinação de emendas, Frente do Terceiro Setor |
-| 7 | LEG | congresso-nacional | Congresso Nacional — proposições, orçamento e emendas parlamentares | 0 | 1 | congresso-nacional | conforme | todo ato do terceiro setor: 11 rotas (CMO, orçamento, RSS e 8 de projetos de lei por termo nas duas casas); experimento: 17 projetos de lei, 4 alterando a Lei 13.019 |
-| 8 | JUD | judiciario-tjgo | TJ-GO — editais das comarcas e Banco de Projetos Sociais | 2 | 1 | judiciario-tjgo | conforme | criado pelo diagnóstico: o Banco de Projetos Sociais da CGJ-GO (na nuvem) e o portal do TJ-GO pelo computador local (o zero do Eldorado0 era bloqueio); alvo corrigido |
-| 9 | JUD | judiciario-cnj | CNJ — destinação de prestações pecuniárias | 1 | 1 | judiciario-cnj | conforme | criado pelo diagnóstico: a busca do CNJ (divulga os editais das comarcas, como Itaberaí-GO) e a API do WordPress; alvo da Resolução 558 |
-| 10 | JUD | dj-trf1-go | Justiça Federal em Goiás — editais e avisos | 0 | 0 | dj-trf1-go | conforme | criado pelo diagnóstico: notícias e editais da SJGO; experimento real: 2 editais de cadastramento de entidades para projetos sociais (Goiás e Jataí) |
-| 11 | JUD | mpgo-destinacao | MP-GO — Programa Destina | 0 | 1 | mpgo-destinacao | conforme | criado pela orientação: o portal pelo computador local (a nuvem recebe tempo esgotado); o Diário do Estado filtrado pelo MP, destinação e TAC; o alvo corrigido |
-| 12 | JUD | mptgo-destinacao | MPT-GO — editais de destinação (PRT 18ª Região) | 0 | 0 | mptgo-destinacao | conforme | criado pela orientação: a tabela dos editais da PRT 18 por POST na sessão da página; experimento real em 23/10: 30 editais com documento e 6 do RSS do MPT |
-| 13 | JUD | mpu-destinacao | MPF e MPU — destinação de bens e valores | 1 | 1 | mpu-destinacao | conforme | os editais de doação de bens do MPF em Goiás, as seleções do FDD e o alvo da Receita pela busca do site |
-| 14 | LEG | tcm-go | TCM-GO — Tribunal de Contas dos Municípios de Goiás | 0 | 0 | tcm-go | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
-| 15 | LEG | tce-go | TCE-GO — Tribunal de Contas do Estado de Goiás | 0 | 0 | tce-go | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
-| 16 | LEG | tcu | TCU — Tribunal de Contas da União | 0 | 0 | tcu | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
-| 17 | EXE | prefeitura-goiania | Prefeitura de Goiânia — secretarias, órgãos, conselhos e programas | 0 | 3 | prefeitura-goiania | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
-| 18 | EXE | prefeituras-rm-goiania | Prefeituras da Região Metropolitana de Goiânia — Aparecida, Senador Canedo, Trindade e Inhumas | 0 | 1 | prefeituras-rm-goiania | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
-| 19 | EXE | prefeituras-50-go | Prefeituras das 50 maiores cidades de Goiás (as demais 45) | 1 | 1 | prefeituras-50-go | conforme | criado pela orientação: 55 rotas das 25 cidades (WordPress e páginas); 23 respondem da nuvem; Luziânia e Mineiros exigem o Brasil |
-| 20 | EXE | estaduais-go-gov | Governo de Goiás — secretarias e órgãos estaduais | 7 | 10 | estaduais-go-gov | conforme | Secult, SEDS, FAPEG, PNAB Goiás, FICA e o Goyazes; faltam OVG, SEMAD, Goiás Social, fundos estaduais e Anater (endereços a localizar; a API da Anater recusa) e 5 alvos |
-| 21 | EXE | governo-federal | Governo Federal — ministérios e órgãos (editais diretos e Lei Rouanet) | 7 | 4 | governo-federal | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
-| 22 | EXE | site-transferegov | Transferegov — programas abertos a OSC | 0 | 4 | site-transferegov | conforme | faltam os 4 alvos |
-| 23 | EXE | pncp-api | PNCP — contratações e chamamentos recebendo proposta | 0 | 17 | pncp-api | conforme | faltam os 17 alvos |
-| 24 | EXE | sistema-s | Sistema S — Sebrae, Sesc, Senac, Sesi, Senai, Senar, Sest Senat e Sescoop em Goiás | 0 | 1 | sistema-s | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
-| 25 | EXE | novo-bancos-publicos | Bancos públicos — BNDES, Banco do Nordeste, Caixa, Banco do Brasil e GoiásFomento | 1 | 4 | novo-bancos-publicos | conforme | criado pela orientação: os editais sociais do Banco do Nordeste, o BNDES Periferias, o Sebrae Goiás pelo Brasil; os 5 alvos |
-| 26 | EXE | empresas-editais-incentivados | Leis e fundos de incentivo — empresas participantes (FIA, Idoso, Esporte, Pronas, Pronon e Goyazes) | 2 | 5 | empresas-editais-incentivados | conforme | criado pela orientação: os chamamentos do Pronas/PCD e do Pronon, a apresentação de projetos e o credenciamento; a Lei de Incentivo ao Esporte pelo Brasil; os 5 alvos |
-| 27 | POR | novo-fundacoes-institutos | Institutos e fundações empresariais — e as empresas incentivadoras de Goiás | 4 | 18 | — | conforme |  |
-| 28 | POR | fundacoes-nacionais | Fundações, fundos e institutos nacionais | 6 | 7 | fundacoes-nacionais | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
-| 29 | POR | novo-internacional | Fundações, fundos e institutos internacionais | 4 | 21 | — | conforme |  |
-| 30 | POR | gife | GIFE — editais divulgados | 1 | 0 | gife | conforme |  |
-| 31 | POR | site-abcr | ABCR — editais divulgados | 1 | 0 | site-abcr | conforme |  |
-| 32 | POR | site-observatorio-terceiro-setor | Observatório do Terceiro Setor — editais | 1 | 0 | site-observatorio-terceiro-setor | conforme | RSS e página de editais; experimento: 19 (Pague Menos, Smart Fit, Brasilcap, Pretas Potências) |
-| 33 | POR | site-rede-filantropia | Rede Filantropia — editais divulgados | 1 | 0 | site-rede-filantropia | incompleto | o domínio novo (filantropia.ong) responde, mas a página inicial vem com 8 links e nenhuma oportunidade; falta a página de editais |
-| 34 | POR | site-idis | IDIS — chamadas e editais de investimento social | 0 | 0 | site-idis | conforme | RSS e página inicial; experimento: 11 (o edital da Zurich via leis de incentivo, Territórios em Rede) |
-| 35 | POR | site-capitaai | CapitaAI — editais abertos | 0 | 0 | site-capitaai | conforme | a captação e o mapa do site; experimento: 666 na primeira leitura (o histórico; o Cartório arquiva pelo prazo) |
-| 36 | POR | site-prosas | Prosas — editais e prêmios (só o site do Prosas) | 5 | 1 | site-prosas | conforme | os editais carregam por script: precisa do degrau de navegador (extra navegador) no funcionamento; a lista pública chega pelo CapitaAI e pelo Observatório |
-| 37 | POR | editais-do-brasil | Editais do Brasil — oportunidades | 11 | 0 | editais-do-brasil | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
-| 38 | POR | bussola-social | Bússola Social — Bússola Editais | 0 | 1 | bussola-social | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
-| 39 | POR | plataforma-mapas-culturais | Mapas Culturais — Mapa da Cultura, Mapa Goiano, CultBR e Editais Goiás | 1 | 0 | plataforma-mapas-culturais | conforme | a API do Mapa da Cultura e os editais do Ministério da Cultura; experimento: Cultura Viva, PNAB |
-| 40 | POR | site-farol-cultural | Farol Cultural — editais de cultura | 0 | 0 | site-farol-cultural | conforme | a API dos abertos com o link original; experimento: 15 (chamamentos e credenciamentos de cultura) |
-| 41 | POR | site-editais-culturais | Editais Culturais — editais de cultura reunidos no portal | 0 | 0 | — | conforme |  |
+| 5 | LEG | camara-goiania-pl | Câmara de Goiânia | 0 | 4 | camara-goiania-pl | conforme | todo ato do terceiro setor: o Querido Diário recortado em atos com o léxico estrito; experimento: edital de chamamento, termo de fomento, utilidade pública, PL 288/2026 |
+| 6 | LEG | alego-pl | Assembleia Legislativa de Goiás | 0 | 2 | alego-pl | conforme | todo ato do terceiro setor: o portal, o Diário do Estado filtrado e o sistema de consulta pelo computador local; experimento: destinação de emendas, Frente do Terceiro Setor |
+| 7 | LEG | congresso-nacional | Congresso Nacional | 0 | 1 | congresso-nacional | conforme | todo ato do terceiro setor: 11 rotas (CMO, orçamento, RSS e 8 de projetos de lei por termo nas duas casas); experimento: 17 projetos de lei, 4 alterando a Lei 13.019 |
+| 8 | JUD | judiciario-tjgo | Tribunal de Justiça de Goiás | 2 | 1 | judiciario-tjgo | conforme | criado pelo diagnóstico: o Banco de Projetos Sociais da CGJ-GO (na nuvem) e o portal do TJ-GO pelo computador local (o zero do Eldorado0 era bloqueio); alvo corrigido |
+| 9 | JUD | judiciario-cnj | CNJ | 1 | 1 | judiciario-cnj | conforme | criado pelo diagnóstico: a busca do CNJ (divulga os editais das comarcas, como Itaberaí-GO) e a API do WordPress; alvo da Resolução 558 |
+| 10 | JUD | dj-trf1-go | Justiça Federal em Goiás | 0 | 0 | dj-trf1-go | conforme | criado pelo diagnóstico: notícias e editais da SJGO; experimento real: 2 editais de cadastramento de entidades para projetos sociais (Goiás e Jataí) |
+| 11 | JUD | mpgo-destinacao | MP-GO | 0 | 1 | mpgo-destinacao | conforme | criado pela orientação: o portal pelo computador local (a nuvem recebe tempo esgotado); o Diário do Estado filtrado pelo MP, destinação e TAC; o alvo corrigido |
+| 12 | JUD | mptgo-destinacao | MPT-GO | 0 | 0 | mptgo-destinacao | conforme | criado pela orientação: a tabela dos editais da PRT 18 por POST na sessão da página; experimento real em 23/10: 30 editais com documento e 6 do RSS do MPT |
+| 13 | JUD | mpu-destinacao | MPF e MPU | 1 | 1 | mpu-destinacao | conforme | os editais de doação de bens do MPF em Goiás, as seleções do FDD e o alvo da Receita pela busca do site |
+| 14 | LEG | tcm-go | TCM-GO | 0 | 0 | tcm-go | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
+| 15 | LEG | tce-go | TCE-GO | 0 | 0 | tce-go | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
+| 16 | LEG | tcu | TCU | 0 | 0 | tcu | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
+| 17 | EXE | prefeitura-goiania | Prefeitura de Goiânia | 0 | 3 | prefeitura-goiania | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
+| 18 | EXE | prefeituras-rm-goiania | Região Metropolitana de Goiânia | 0 | 1 | prefeituras-rm-goiania | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
+| 19 | EXE | prefeituras-50-go | Prefeituras de Goiás | 1 | 1 | prefeituras-50-go | conforme | criado pela orientação: 55 rotas das 25 cidades (WordPress e páginas); 23 respondem da nuvem; Luziânia e Mineiros exigem o Brasil |
+| 20 | EXE | estaduais-go-gov | Governo de Goiás | 7 | 10 | estaduais-go-gov | conforme | Secult, SEDS, FAPEG, PNAB Goiás, FICA e o Goyazes; faltam OVG, SEMAD, Goiás Social, fundos estaduais e Anater (endereços a localizar; a API da Anater recusa) e 5 alvos |
+| 21 | EXE | governo-federal | Governo Federal | 7 | 4 | governo-federal | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
+| 22 | EXE | site-transferegov | Transferegov | 0 | 4 | site-transferegov | conforme | faltam os 4 alvos |
+| 23 | EXE | pncp-api | PNCP | 0 | 17 | pncp-api | conforme | faltam os 17 alvos |
+| 24 | EXE | sistema-s | Sistema S | 0 | 1 | sistema-s | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
+| 25 | EXE | novo-bancos-publicos | Bancos Públicos | 1 | 4 | novo-bancos-publicos | conforme | criado pela orientação: os editais sociais do Banco do Nordeste, o BNDES Periferias, o Sebrae Goiás pelo Brasil; os 5 alvos |
+| 26 | EXE | empresas-editais-incentivados | Leis de Incentivo | 2 | 5 | empresas-editais-incentivados | conforme | criado pela orientação: os chamamentos do Pronas/PCD e do Pronon, a apresentação de projetos e o credenciamento; a Lei de Incentivo ao Esporte pelo Brasil; os 5 alvos |
+| 27 | POR | novo-fundacoes-institutos | Institutos Empresariais | 4 | 18 | — | conforme |  |
+| 28 | POR | fundacoes-nacionais | Fundações Nacionais | 6 | 7 | fundacoes-nacionais | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
+| 29 | POR | novo-internacional | Fundações Internacionais | 4 | 21 | — | conforme |  |
+| 30 | POR | gife | GIFE | 1 | 0 | gife | conforme |  |
+| 31 | POR | site-abcr | ABCR | 1 | 0 | site-abcr | conforme |  |
+| 32 | POR | site-observatorio-terceiro-setor | Observatório do Terceiro Setor | 1 | 0 | site-observatorio-terceiro-setor | conforme | RSS e página de editais; experimento: 19 (Pague Menos, Smart Fit, Brasilcap, Pretas Potências) |
+| 33 | POR | site-rede-filantropia | Rede Filantropia | 1 | 0 | site-rede-filantropia | incompleto | o domínio novo (filantropia.ong) responde, mas a página inicial vem com 8 links e nenhuma oportunidade; falta a página de editais |
+| 34 | POR | site-idis | IDIS | 0 | 0 | site-idis | conforme | RSS e página inicial; experimento: 11 (o edital da Zurich via leis de incentivo, Territórios em Rede) |
+| 35 | POR | site-capitaai | CapitaAI | 0 | 0 | site-capitaai | conforme | a captação e o mapa do site; experimento: 666 na primeira leitura (o histórico; o Cartório arquiva pelo prazo) |
+| 36 | POR | site-prosas | Prosas | 5 | 1 | site-prosas | conforme | os editais carregam por script: precisa do degrau de navegador (extra navegador) no funcionamento; a lista pública chega pelo CapitaAI e pelo Observatório |
+| 37 | POR | editais-do-brasil | Editais do Brasil | 11 | 0 | editais-do-brasil | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
+| 38 | POR | bussola-social | Bússola Social | 0 | 1 | bussola-social | criado em 09/11/2026 | organização dos 43 motores (titular, 09/11/2026) |
+| 39 | POR | plataforma-mapas-culturais | Mapas Culturais | 1 | 0 | plataforma-mapas-culturais | conforme | a API do Mapa da Cultura e os editais do Ministério da Cultura; experimento: Cultura Viva, PNAB |
+| 40 | POR | site-farol-cultural | Farol Cultural | 0 | 0 | site-farol-cultural | conforme | a API dos abertos com o link original; experimento: 15 (chamamentos e credenciamentos de cultura) |
+| 41 | POR | site-editais-culturais | Editais Culturais | 0 | 0 | — | conforme |  |
 | 42 | IA | piloto-aberto | Piloto - Espião — busca aberta no terceiro setor | 1 | 0 | espiao | conforme | corrigido em 23/10/2026: o Espião nunca recebia missão (a ociosidade não chegava com 45 motores); agora há o mínimo garantido (uma missão a cada 6 h) |
 | 43 | IA | piloto-interceptador | Piloto - Interceptador — comprova na fonte oficial | 0 | 0 | interceptador | conforme |  |
