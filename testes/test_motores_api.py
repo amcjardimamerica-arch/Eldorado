@@ -7,10 +7,10 @@ from datetime import date, timedelta
 from pathlib import Path
 
 import pytest
+from recorte_motor import recorte  # 09/11/2026 (R50): o motor como era, dentro da organização dos 43 motores
 from servidor_local import criar_servidor
 
 from eldorado.motores.canal.motor import MotorCanal
-from recorte_motor import recorte   # 09/11/2026 (R50): o motor como era, dentro da organização dos 43 motores
 
 CONFIG = Path("eldorado/motores/canal/config")
 HOJE = date.today()

@@ -48,7 +48,8 @@ def _montar(bib, cer, motores, pilotos, molde, agora, iso, hoje) -> dict[str, di
         "WHERE decisao = 'aceito' AND encontrado_em >= ? ORDER BY encontrado_em",
         ((agora - timedelta(days=31)).date().isoformat(),),
     ):
-        aceitos[mot].append({"em": em, "titulo": tit, "link": link, "livro": lid})
+        from .dados import APELIDO  # 09/11/2026 (R50): o motor extinto conta no que o reúne
+        aceitos[APELIDO(mot)].append({"em": em, "titulo": tit, "link": link, "livro": lid})
     try:
         execucoes = defaultdict(list)
         for mot, ini, erro in cer.execute(

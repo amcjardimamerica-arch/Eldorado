@@ -60,7 +60,8 @@ def rotulo_dias(agora: datetime) -> str:
     return f"{a0.day}–{a1.day} {MESES[a1.month - 1]}" if a0.month == a1.month else f"{a0.day} {MESES[a0.month - 1]}–{a1.day} {MESES[a1.month - 1]}"
 
 
-def atividade(bib: sqlite3.Connection, cer: sqlite3.Connection | None, agora: datetime) -> dict[str, dict[str, Any]]:
+def atividade(bib: sqlite3.Connection, cer: sqlite3.Connection | None, agora: datetime,
+              ap: dict[str, str] | None = None) -> dict[str, dict[str, Any]]:
     """09/11/2026 (o mostrador 3D Radar + Funil): a atividade real de cada motor — em 30 dias (execuções, falhas, achados,
     aceitos, livros trazidos e com estrela), hoje (leituras e achados) e os últimos 8 dias, classificados como no calendário
     do motor: verde (livro com os 12 itens), amarelo (achado aceito, parcial), azul (leu e não havia oportunidade),
@@ -84,8 +85,9 @@ def atividade(bib: sqlite3.Connection, cer: sqlite3.Connection | None, agora: da
                                                           "WHERE em >= ? GROUP BY 1", (d30,))]
     _execs += [("interceptador", d, n, f) for d, n, f in _q(bib, "SELECT substr(em, 1, 10), COUNT(*), SUM(resultado LIKE '%\"aceitas\": 0%' "
                                                                  "OR resultado LIKE '%\"trouxe\": false%') FROM tentativa WHERE em >= ? GROUP BY 1", (d30,))]
+    ap = ap or {}
     for m, dia, n, f in _execs:
-        x = A[m]
+        x = A[ap.get(m, m)]
         x["rodou"].add(dia)
         n, f = n or 0, f or 0
         x["exec"] += n
@@ -96,21 +98,21 @@ def atividade(bib: sqlite3.Connection, cer: sqlite3.Connection | None, agora: da
             x["hl"] = n
     for m, dia, n, a in _q(bib, "SELECT motor, substr(encontrado_em, 1, 10), COUNT(*), SUM(decisao = 'aceito') FROM achado "
                                 "WHERE encontrado_em >= ? GROUP BY 1, 2", (d30,)):
-        x = A[m]
+        x = A[ap.get(m, m)]
         x["ach"] += n
         x["acc"] += a or 0
         x["por_dia"][dia][2] += a or 0
 
     # 09/11/2026: os pontinhos do radar — os achados das últimas 24 h (os do dia de calendário eram zero pela manhã)
     for m, n in _q(bib, "SELECT motor, COUNT(*) FROM achado WHERE encontrado_em >= ? GROUP BY 1", ((agora - timedelta(hours=24)).isoformat(),)):
-        A[m]["ha"] = n
+        A[ap.get(m, m)]["ha"] += n
     _ha_espiao = _q(cer, "SELECT COUNT(*) FROM espiao_missao WHERE em >= ? AND achados > 0", ((agora - timedelta(hours=24)).isoformat(),))
     if _ha_espiao and _ha_espiao[0][0]:
         A["espiao"]["ha"] = max(A["espiao"]["ha"], _ha_espiao[0][0])
     for m, dia, est in _q(
             bib, "SELECT a.motor, substr(l.criado_em, 1, 10), COALESCE(l.estrela, 'sem') FROM livro l JOIN (SELECT livro_id, motor, MIN(encontrado_em) "
             "FROM achado WHERE livro_id IS NOT NULL GROUP BY livro_id) a ON a.livro_id = l.id WHERE l.criado_em >= ?", (d30,)):
-        x = A[m]
+        x = A[ap.get(m, m)]
         x["livros"] += 1
         x["estrelas"] += int(est != "sem")
         if est == "ouro":
@@ -134,7 +136,12 @@ def calcular(bib: sqlite3.Connection, cer: sqlite3.Connection | None = None, rai
     pesos, faixas, minimos = prm["pesos"], prm["faixas"], prm["minimos"]
     regras = [(r["tipo"], re.compile(r["padrao"], re.I), r["indicacao"]) for r in prm["melhoria"]["regra"]]
     ver = _vereditos(raiz)
-    origem = {lid: m for lid, m, _ in bib.execute(
+    try:   # 09/11/2026 (R50): o motor extinto conta no motor que o reúne (os nomes anteriores)
+        from ...motores.canal.motor import apelidos as _ap
+        AP = _ap()
+    except Exception:  # noqa: BLE001
+        AP = {}
+    origem = {lid: AP.get(m, m) for lid, m, _ in bib.execute(
         "SELECT livro_id, motor, MIN(encontrado_em) FROM achado WHERE livro_id IS NOT NULL GROUP BY livro_id")}
     estado = {r[0]: r[1:] for r in bib.execute(
         "SELECT l.id, l.situacao, p.fase, l.criado_em, COALESCE(l.justificativa_exclusao, '') FROM livro l "
@@ -174,7 +181,7 @@ def calcular(bib: sqlite3.Connection, cer: sqlite3.Connection | None = None, rai
                 sinais_de[m] = sinais(cer, m)
             except sqlite3.Error:
                 pass
-    atv = atividade(bib, cer, agora)
+    atv = atividade(bib, cer, agora, AP)
     saida: dict[str, dict[str, Any]] = {}
     medidos = set(prm.get("local", {})) | {"interceptador", "espiao"}   # os motores configurados e os dois pilotos
     for m in sorted(medidos):

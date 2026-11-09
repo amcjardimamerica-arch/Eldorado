@@ -118,6 +118,21 @@ def _leis(bib) -> list[dict[str, Any]]:
     return saida
 
 
+def APELIDO(motor: str) -> str:   # noqa: N802
+    """09/11/2026 (R50): o motor extinto → o motor que o reúne (os nomes anteriores); os demais, iguais."""
+    global _AP
+    if _AP is None:
+        try:
+            from ...motores.canal.motor import apelidos
+            _AP = apelidos()
+        except Exception:  # noqa: BLE001
+            _AP = {}
+    return _AP.get(motor, motor)
+
+
+_AP: dict[str, str] | None = None
+
+
 def _molde(nome: str) -> Any:
     return json.loads((MOLDE / nome).read_text(encoding="utf-8"))
 
@@ -232,7 +247,7 @@ class Sistema:
     def motor_do_livro(self) -> dict[str, str]:
         m = {}
         for r in self.bib.execute("SELECT livro_id, motor FROM achado WHERE livro_id IS NOT NULL ORDER BY encontrado_em"):
-            m.setdefault(r["livro_id"], r["motor"])
+            m.setdefault(r["livro_id"], APELIDO(r["motor"]))
         return m
 
 
@@ -271,7 +286,7 @@ def _motores_de_busca(sis: Sistema) -> list[dict]:
     tot: dict[str, Counter] = defaultdict(Counter)
     nome_piloto = {"espiao": "piloto-aberto", "interceptador": "piloto-interceptador"}   # os pilotos gravam com o nome curto
     for r in sis.bib.execute("SELECT motor, livro_id, encontrado_em, decisao, titulo, link_oficial, link_divulgacao FROM achado ORDER BY encontrado_em"):
-        r = {**dict(r), "motor": nome_piloto.get(r["motor"], r["motor"])}
+        r = {**dict(r), "motor": nome_piloto.get(r["motor"], APELIDO(r["motor"]))}
         t = tot[r["motor"]]
         if (r["encontrado_em"] or "") >= d30:
             t["achados"] += 1
@@ -423,7 +438,16 @@ def _motores(sis: Sistema) -> tuple[list[dict], dict, dict]:
 def _achados_por_motor(sis: Sistema) -> dict[str, dict]:
     prazo = {r[0]: r[1] for r in sis.bib.execute("SELECT livro_id, inscricao_fim FROM livro_dados")}
     out: dict[str, dict] = {}
-    for mid, total, unicas in sis.bib.execute("SELECT motor, COUNT(*), COUNT(DISTINCT livro_id) FROM achado GROUP BY motor"):
+    # 09/11/2026 (R50): o histórico dos motores extintos conta no motor que os reúne (os nomes anteriores)
+    _grupo: dict[str, list[str]] = defaultdict(list)
+    for (mot,) in sis.bib.execute("SELECT DISTINCT motor FROM achado"):
+        _grupo[APELIDO(mot)].append(mot)
+    _cont = []
+    for mid, nomes in _grupo.items():
+        marcas = ",".join("?" * len(nomes))
+        t, u = sis.bib.execute(f"SELECT COUNT(*), COUNT(DISTINCT livro_id) FROM achado WHERE motor IN ({marcas})", nomes).fetchone()
+        _cont.append((mid, t, u, nomes))
+    for mid, total, unicas, nomes in _cont:
         ult = [
             _item(
                 "achado_ultimo",
@@ -438,7 +462,7 @@ def _achados_por_motor(sis: Sistema) -> dict[str, dict]:
                 prazo=prazo.get(r["livro_id"]),
                 uf=(json.loads(r["dados"] or "{}") or {}).get("uf"),
             )
-            for r in sis.bib.execute("SELECT * FROM achado WHERE motor = ? ORDER BY encontrado_em DESC LIMIT 5", (mid,))
+            for r in sis.bib.execute(f"SELECT * FROM achado WHERE motor IN ({','.join('?' * len(nomes))}) ORDER BY encontrado_em DESC LIMIT 5", nomes)
         ]
         out[mid] = {"total_registros": total, "total_unicas": unicas, "ultimas": ult}
         # 27/10/2026: os pilotos gravam com o nome curto; a linha do quadro procura pelo id do motor

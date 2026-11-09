@@ -6,9 +6,9 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 import pytest
+from recorte_motor import recorte  # 09/11/2026 (R50): o motor como era, dentro da organização dos 43 motores
 
 from eldorado.motores.canal.motor import MotorCanal
-from recorte_motor import recorte   # 09/11/2026 (R50): o motor como era, dentro da organização dos 43 motores
 
 PASTA = Path("testes/paginas/prefeituras-50-go")
 INDICE = json.loads((PASTA / "indice.json").read_text(encoding="utf-8"))

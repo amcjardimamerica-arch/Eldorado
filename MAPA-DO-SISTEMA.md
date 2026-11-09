@@ -30,8 +30,8 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 3 | `.github/workflows/visualizar.yml` | name: Visualizar a sala de controle | a construir |  |  | 0 |
 | 4 | `config/arquivos.json` | O catálogo dos arquivos do sistema (o inventário). | em funcionamento |  | inventario, mapa_arquivos, medicao, comandos | 0 |
 | 5 | `config/eldorado.toml` | Configuração do Eldorado. Validada na carga: chave desconhecida ou valor fora do limite impede a passagem. | em funcionamento |  | comandos, config | 0 |
-| 6 | `eldorado/__init__.py` |  | pacote |  |  | 128 |
-| 7 | `eldorado/base/__init__.py` |  | pacote |  |  | 97 |
+| 6 | `eldorado/__init__.py` |  | pacote |  |  | 129 |
+| 7 | `eldorado/base/__init__.py` |  | pacote |  |  | 98 |
 | 8 | `eldorado/base/nucleo/comandos.py` | Os comandos da plataforma: os mesmos no GitHub, no computador da titular e (depois) no painel. | em funcionamento | consolidar, copia_livros, drive, manutencao, memoria, analise_externa, releitura, fila, governador, inventario, pilotos, pilotos_permanentes, retencao, pilotos, agenda, definicao, executor, fila, nos, config, eventos, gravador, ia, dados, api, escada, leve, navegador, ponte_br, fabrica, motor, otimizacao | .github/workflows/eldorado.yml (eldorado permanente) | 2 |
 | 9 | `scripts/gravar.sh` | !/usr/bin/env bash Grava o trabalho no repositório: os eventos sempre (texto, pequeno); o banco uma vez por di | em funcionamento |  | eldorado | 0 |
 | 10 | `scripts/instalar_bibliotecas.py` | As bibliotecas do plano, em camadas independentes (scripts/instalar.sh): o núcleo é obrigatório; cada grupo do | em funcionamento |  | qualidade, instalar | 0 |
@@ -106,7 +106,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 59 | `config/cargos.toml` | Os cargos da IA (titular, 25/10/2026): uma única Qwen3-8B para o Comandante e os dois pilotos, cada um na SUA  | em funcionamento |  | ia | 0 |
 | 60 | `config/ia_local.toml` | A IA local dos pilotos (do Eldorado0, titular, 26/09/2026): um único modelo no sistema, o Qwen3-8B, servido pe | em funcionamento |  | eldorado | 0 |
 | 61 | `config/modulos.toml` | Os módulos ligados. Cada motor é um arquivo de configuração do motor genérico (eldorado/motores/canal/config/) | em funcionamento | registro, alego-pl, bussola-social, camara-goiania-pl, congresso-nacional, dj-trf1-go, do-goiania, do-goias, dou, editais-do-brasil, empresas-editais-incentivados, estaduais-go-gov | encaminhamento, inventario, mapa_arquivos, pilotos_permanentes, regencia, dados, sala | 0 |
-| 62 | `eldorado/base/cerebro/__init__.py` |  | pacote |  |  | 42 |
+| 62 | `eldorado/base/cerebro/__init__.py` |  | pacote |  |  | 43 |
 | 63 | `eldorado/base/cerebro/decisao.py` | A decisão do Cérebro: a cada batimento, quais motores acionar, conforme a necessidade (titular, 22/10/2026). | em funcionamento |  | fila, regencia | 1 |
 | 64 | `eldorado/base/cerebro/governador.py` | O governador de carga: mantém a máquina abaixo do limite (85%). | em funcionamento | eventos | pilotos_permanentes, regencia, pilotos, fila, nos, comandos | 9 |
 | 65 | `eldorado/base/cerebro/livros_motores.py` | Os motores de cada livro e as pesquisas já feitas (comum ao encaminhamento e à vigilância dos sites originais; | em funcionamento | motor | encaminhamento, originais | 0 |
@@ -138,11 +138,11 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 86 | `config/ponte_dominios.txt` | Os domínios lidos pela ponte da HostGator (o IP brasileiro): a mesma lista que o ponte.php aceita (do Eldorado | em funcionamento |  | ponte_br | 0 |
 | 87 | `config/searxng/settings.yml` | O SearXNG do próprio fluxo (plano C: a metabusca própria, sem custo): só local, sem limitador, com a saída em  | em funcionamento |  | mapa_arquivos, instalar | 0 |
 | 88 | `eldorado/base/motor_modelo/__init__.py` |  | pacote |  |  | 0 |
-| 89 | `eldorado/motores/__init__.py` |  | pacote |  |  | 47 |
+| 89 | `eldorado/motores/__init__.py` |  | pacote |  |  | 48 |
 | 90 | `eldorado/motores/acesso/__init__.py` |  | pacote |  |  | 11 |
 | 91 | `eldorado/motores/acesso/escada.py` | A escada de acesso: do degrau mais leve ao mais forte, aprendendo por domínio qual degrau funciona. | em funcionamento | eventos | releitura, pilotos, regencia, comandos, api, arquivo_web, completa, leve, local, navegador, ponte_br, motor, fonte_ofici | 10 |
 | 92 | `eldorado/motores/acesso/rotas_alternativas.py` | Degraus 7 e 8, reservas desligadas até o teste real na criação: o Tor (IP diferente) e o leitor público de pág | a construir |  |  | 0 |
-| 93 | `eldorado/motores/canal/__init__.py` |  | pacote |  |  | 23 |
+| 93 | `eldorado/motores/canal/__init__.py` |  | pacote |  |  | 24 |
 | 94 | `eldorado/motores/canal/achado.py` | achados completos | a construir |  |  | 0 |
 | 95 | `eldorado/motores/canal/estado.py` | O aprendizado de cada motor, entregue ao Cérebro (titular, 24/10/2026): NENHUM motor tem banco de dados. O mot | em funcionamento | esquema, eventos, gravador | consolidar, dados, motor | 2 |
 | 96 | `eldorado/motores/descoberta/__init__.py` |  | pacote |  |  | 10 |
@@ -170,7 +170,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 118 | `eldorado/motores/descoberta/mapa_original.py` | O mapa do site ORIGINAL (titular, 23/10/2026): com o histórico do livro, ele tem um site de divulgação e um si | em funcionamento | estrutura_site, pistas | motor | 0 |
 | 119 | `eldorado/motores/acesso/completa.py` | A escada completa (os 7 degraus) para quem não é motor: os pilotos e a releitura (o parecer do conselho, 24/10 | em funcionamento | api, arquivo_web, escada, leve, local, navegador, ponte_br | encaminhamento | 2 |
 | 120 | `eldorado/motores/canal/fabrica.py` | A fábrica de motores: executa a orientação de design (eldorado/motores/skills/criar-motor/SKILL.md). | em funcionamento | motor | comandos | 2 |
-| 121 | `eldorado/motores/canal/motor.py` | O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio. | em funcionamento | regras_portao, contratos, seguranca, api, arquivo_web, escada, leve, local, navegador, ponte_br, estado, arquivos_web, cadeia, dados_abertos, estrutura_site, fonte_oficial, mapa_original, metabusca, pistas, subpaginas, vigilancia, enriquecer, leitores, ocr, pdf | config/modulos.toml (alego-pl); config/modulos.toml (bussola-social); config/modulos.toml (camara-goiania-pl); config/mo | 20 |
+| 121 | `eldorado/motores/canal/motor.py` | O motor genérico de canal: um motor é uma CONFIGURAÇÃO (um arquivo TOML), sem código próprio. | em funcionamento | regras_portao, contratos, seguranca, api, arquivo_web, escada, leve, local, navegador, ponte_br, estado, arquivos_web, cadeia, dados_abertos, estrutura_site, fonte_oficial, mapa_original, metabusca, pistas, subpaginas, vigilancia, enriquecer, leitores, ocr, pdf | config/modulos.toml (alego-pl); config/modulos.toml (bussola-social); config/modulos.toml (camara-goiania-pl); config/mo | 21 |
 | 122 | `eldorado/motores/descoberta/cadeia.py` | A leitura em cadeia (canivete suíço): a lista → cada item → o detalhe → o texto, sem código por fonte. | em funcionamento | estrutura_site, atos, leitores | motor | 0 |
 | 123 | `eldorado/motores/leitura/audio.py` | O leitor de áudio e vídeo (plano C: faster-whisper): transcreve em português as transmissões e os vídeos que a | em funcionamento | leitores | leitores | 0 |
 | 124 | `eldorado/motores/leitura/compactado.py` | Arquivos ZIP, 7Z e RAR: abre e entrega cada arquivo interno ao leitor do seu tipo. | em funcionamento | leitores | leitores | 0 |
@@ -280,16 +280,16 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 193 | `eldorado/base/analise/historia.py` | livros com história completa | substituído por eldorado/base/analise/previsao.py (a história do livro) |  |  | 0 |
 | 194 | `eldorado/base/analise/preditivo.py` | alertas emitidos antes da abertura | substituído por eldorado/base/analise/previsao.py (a previsão da próxima abertura e o alerta) |  |  | 0 |
 | 195 | `eldorado/base/analise/previsao.py` | A análise (fase F9 do plano): a previsão da próxima abertura, o calendário e a história de cada livro. | em funcionamento |  | passagem, nó 23 «analise» | 0 |
-| 196 | `eldorado/base/painel/__init__.py` |  | pacote |  |  | 14 |
+| 196 | `eldorado/base/painel/__init__.py` |  | pacote |  |  | 15 |
 | 197 | `eldorado/base/painel/api.py` | A API do sistema (plano C: FastAPI, com respostas em orjson): a leitura do sistema para o painel novo e para q | a construir |  |  | 0 |
 | 198 | `eldorado/base/painel/cartorio.py` | O Cartório no site, ligado aos dados (titular, 25/10/2026: a página estava estática). | em funcionamento | itens | dados | 2 |
-| 199 | `eldorado/base/painel/legado.py` | Os arquivos do painel que o gerador nunca preenchia (titular, 25/10/2026: "pedi para consertar diversas vezes  | em funcionamento |  | dados | 1 |
-| 200 | `eldorado/base/painel/maquina.py` | mostrador atualizado em tempo real | a construir |  |  | 0 |
-| 201 | `eldorado/base/painel/pilotos.py` | Os pilotos no site, ligados aos dados (titular, 25/10/2026: sem leitura na página inicial e na sala de control | em funcionamento | itens | dados | 2 |
-| 202 | `eldorado/base/painel/ranking.py` | O ranking de empresas (titular, 25/10/2026: a aba "Ranking de empresas" estava zerada: o arquivo ranking_apoia | em funcionamento |  | dados | 1 |
-| 203 | `eldorado/base/painel/sala.py` | A sala de controle (o plano: base/painel/sala.py): cada mostrador ligado ao dado MEDIDO pelo sistema (titular, | em funcionamento | avaliar, expurgo_claude, regua, ciclo_pilotos, mapa_arquivos, sinais_motores, motor | passagem, nó 3 «medir_sala» | 4 |
-| 204 | `eldorado/base/painel/visoes.py` | As visões do painel: o que cada tela mostra, lido dos bancos (só leitura), num único arquivo de dados. | a construir |  |  | 0 |
-| 205 | `eldorado/base/painel/dados.py` | Os dados do painel, gerados do sistema novo (titular, 23/10/2026): o site é a imagem atual do sistema. | em funcionamento | historia, regua, mapa_arquivos, pontuacao_motores, rede, sinais_motores, itens, cartorio, legado, pilotos, ranking, sala, estado | comandos | 5 |
+| 199 | `eldorado/base/painel/maquina.py` | mostrador atualizado em tempo real | a construir |  |  | 0 |
+| 200 | `eldorado/base/painel/pilotos.py` | Os pilotos no site, ligados aos dados (titular, 25/10/2026: sem leitura na página inicial e na sala de control | em funcionamento | itens | dados | 2 |
+| 201 | `eldorado/base/painel/ranking.py` | O ranking de empresas (titular, 25/10/2026: a aba "Ranking de empresas" estava zerada: o arquivo ranking_apoia | em funcionamento |  | dados | 1 |
+| 202 | `eldorado/base/painel/sala.py` | A sala de controle (o plano: base/painel/sala.py): cada mostrador ligado ao dado MEDIDO pelo sistema (titular, | em funcionamento | avaliar, expurgo_claude, regua, ciclo_pilotos, mapa_arquivos, sinais_motores, motor | passagem, nó 3 «medir_sala» | 4 |
+| 203 | `eldorado/base/painel/visoes.py` | As visões do painel: o que cada tela mostra, lido dos bancos (só leitura), num único arquivo de dados. | a construir |  |  | 0 |
+| 204 | `eldorado/base/painel/dados.py` | Os dados do painel, gerados do sistema novo (titular, 23/10/2026): o site é a imagem atual do sistema. | em funcionamento | historia, regua, mapa_arquivos, pontuacao_motores, rede, sinais_motores, itens, cartorio, legado, pilotos, ranking, sala, estado, motor | comandos, legado | 6 |
+| 205 | `eldorado/base/painel/legado.py` | Os arquivos do painel que o gerador nunca preenchia (titular, 25/10/2026: "pedi para consertar diversas vezes  | em funcionamento | dados | dados | 1 |
 
 ## 16 Migração do Eldorado0 (temporária)
 
@@ -326,7 +326,7 @@ Gerado pelo comando `eldorado inventario` a partir do código, da passagem e da 
 | 224 | `eldorado/base/cerebro/retencao.py` | A retenção da telemetria no Cérebro (titular, 01/11/2026): os dados da operação ficam 30 dias, completos, para | em funcionamento | eventos | comandos | 1 |
 | 225 | `eldorado/base/cerebro/sinais_motores.py` | Os SINAIS de cada motor (titular, 05/11/2026: «o sistema deve mostrar o que está ocorrendo além do resultado;  | em funcionamento |  | mapa_arquivos, pontuacao_motores, dados, sala | 2 |
 | 226 | `eldorado/base/cartorio/expurgo_claude.py` | O expurgo é do Claude, nunca do sistema (titular, 01/11/2026: "somente o Claude apaga livros e faz expurgos, o | em funcionamento | leitura_efemera, migrados | manutencao_expurgo, sala | 2 |
-| 227 | `eldorado/base/cerebro/pontuacao_motores.py` | A pontuação de cada motor (titular, 05/11/2026): os acertos parametrizados com os erros, para a melhoria do mo | em funcionamento | sinais_motores | ciclo_pilotos, dados | 1 |
+| 227 | `eldorado/base/cerebro/pontuacao_motores.py` | A pontuação de cada motor (titular, 05/11/2026): os acertos parametrizados com os erros, para a melhoria do mo | em funcionamento | sinais_motores, motor | ciclo_pilotos, dados | 2 |
 | 228 | `eldorado/base/cartorio/manutencao_expurgo.py` | A MANUTENÇÃO DO EXPURGO a cada passagem (titular, 02/11/2026 — R36): a informação coletada que NÃO virou livro | em funcionamento | __init__, expurgo_claude, leitura_efemera | passagem, nó 21 «manutencao_expurgo» | 2 |
 | 229 | `eldorado/base/cerebro/ciclo_pilotos.py` | O ciclo de aprendizado dos pilotos a cada 100 (titular, 29/09/2026, no Eldorado0: «a cada 100 erros, parâmetro | em funcionamento | aprendizado, pontuacao_motores, eventos | aprendizado, encaminhamento, pilotos, sala, espiao | 0 |
 

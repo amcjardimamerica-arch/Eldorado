@@ -34,8 +34,9 @@ def servir(motor: str, dominios: list[str]):
 
 
 def motor(motor: str, base: str, dominios: list[str], tmp_path):
+    from recorte_motor import recorte  # 09/11/2026 (R50): o motor reunido, recortado do que o reúne
+
     from eldorado.motores.canal.motor import MotorCanal
-    from recorte_motor import recorte                            # 09/11/2026 (R50): o motor reunido, recortado do que o reúne
     texto = recorte(motor)
     for d in dominios:
         texto = texto.replace(d, base)
