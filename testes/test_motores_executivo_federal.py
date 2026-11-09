@@ -40,7 +40,7 @@ def test_bancos_publicos_os_editais_sociais(tmp_path, monkeypatch):
     monkeypatch.setattr(mm, "hoje_local", lambda: date(2025, 10, 23))
     t = titulos("novo-bancos-publicos", tmp_path)
     assert any(x.startswith("21/08/2025 - Chamada Pública para Apoio a Projetos Sociais com Amparo em Incentivos Fiscais") for x in t)
-    assert any("6º ciclo do BNDES Periferias" in x for x in t)
+    # R51 (titular, 09/11/2026): as duas fontes do BNDES Periferias saíram do motor (redirecionam; sem edital)
     assert not [x for x in t if x.lower().startswith(("ler mais", "bolsa família")) or "Resultado" in x]
 
 
