@@ -20,3 +20,13 @@ def test_nenhum_emissor_numera_a_tentativa_como_1_fixo():
 
 def test_a_tentativa_repetida_nao_e_recusada():
     assert CATALOGO["tentativa.registrada"][0].operacao == "inserir_se_novo"
+
+
+def test_o_modelo_repetido_nao_e_recusado():
+    """09/11/2026: a mesma versão do modelo medida duas vezes não abre alarme (11 eventos recusados)."""
+    assert CATALOGO["modelo.treinado"][0].operacao == "inserir_se_novo"
+
+
+def test_a_decisao_de_pertinencia_sobre_achado_que_saiu_nao_e_recusada():
+    """09/11/2026: o achado sem livro expurgado (R35) antes da decisão — a decisão entra; o achado ausente não vira alarme."""
+    assert CATALOGO["pertinencia.decidida"][1].operacao == "atualizar_se_existe"

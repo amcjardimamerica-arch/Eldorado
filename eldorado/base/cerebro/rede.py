@@ -353,12 +353,12 @@ def no_rede(itens: list[dict[str, Any]], parametros: dict[str, Any], contexto) -
     m = rede.metricas()
     for pergunta, x in m.items():
         if x["amostras"]:
-            contexto.diario.emitir("modelo.treinado", "rede", {"versao": f"{pergunta}-{x['amostras']:07d}-{agora()[:16]}", "treinado_em": agora(),
+            contexto.diario.emitir("modelo.treinado", "rede", {"versao": f"{pergunta}-{x['amostras']:07d}-{agora()[:19]}", "treinado_em": agora(),
                                                                "arquivo": f"rede:{pergunta}", "discernimento": x["discernimento"],
                                                                "precisao": x["precisao"], "revocacao": x["revocacao"], "brier": x.get("brier")})
             j = x.get("janela_7d") or {}
             if j.get("amostras"):                                   # R48: a janela de 7 dias, que a Sala mostra
-                contexto.diario.emitir("modelo.treinado", "rede", {"versao": f"{pergunta}-7d-{j['amostras']:07d}-{agora()[:16]}",
+                contexto.diario.emitir("modelo.treinado", "rede", {"versao": f"{pergunta}-7d-{j['amostras']:07d}-{agora()[:19]}",
                                                                    "treinado_em": agora(), "arquivo": f"rede:{pergunta}:7d",
                                                                    "discernimento": j["discernimento"], "precisao": j["precisao"],
                                                                    "revocacao": j["revocacao"], "brier": j.get("brier")})

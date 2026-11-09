@@ -177,7 +177,7 @@ class Gravador:
         nomes = list(dados)
         if alvo.operacao == "inserir":
             con.execute(f"INSERT INTO {alvo.tabela} ({', '.join(nomes)}) VALUES ({', '.join('?' * len(nomes))})", list(dados.values()))
-        elif alvo.operacao == "atualizar":
+        elif alvo.operacao in ("atualizar", "atualizar_se_existe"):
             falta = [c for c in alvo.chave if c not in dados]
             if falta:
                 raise ValueError(f"chave ausente: {', '.join(falta)}")
@@ -186,7 +186,7 @@ class Gravador:
                 raise ValueError("nada a atualizar")
             cur = con.execute(f"UPDATE {alvo.tabela} SET {', '.join(f'{c}=?' for c in muda)} WHERE {' AND '.join(f'{c}=?' for c in alvo.chave)}",
                               [dados[c] for c in muda] + [dados[c] for c in alvo.chave])
-            if cur.rowcount == 0:
+            if cur.rowcount == 0 and alvo.operacao == "atualizar":   # 09/11: «atualizar_se_existe» aceita a linha que já saiu
                 raise LinhaAusente(f"linha não encontrada em {alvo.tabela} para {dict((c, dados[c]) for c in alvo.chave)}")
         elif alvo.operacao == "inserir_se_novo":                       # o mesmo registro encontrado de novo não é erro
             con.execute(f"INSERT INTO {alvo.tabela} ({', '.join(nomes)}) VALUES ({', '.join('?' * len(nomes))}) ON CONFLICT DO NOTHING", list(dados.values()))

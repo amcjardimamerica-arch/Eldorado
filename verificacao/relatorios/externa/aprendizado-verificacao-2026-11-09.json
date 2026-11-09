@@ -1,0 +1,2625 @@
+{
+ "lote": "lote-2026-11-09",
+ "gerado_em": "2026-11-09T08:58:51+00:00",
+ "livros": {
+  "total": 161,
+  "decisoes": {
+   "valido": 12,
+   "descartar": 106,
+   "encerrada": 36,
+   "arquivar": 7
+  }
+ },
+ "documentos": {
+  "total": 104,
+  "decisoes": {
+   "vincular": 11,
+   "descartar": 90,
+   "oportunidade": 3
+  }
+ },
+ "aprendizados_que_se_repetiram": [
+  "Notícias, páginas institucionais e de dados do gov.br, posts de redes sociais e agregadores entram como oportunidade: exigir edital/chamamento/inscrições no corpo e o documento do emissor.",
+  "Extratos do DOU e do DOM (termos de fomento, doações, convênios já celebrados) coletados como oportunidade: lista de exclusão por tipo de ato.",
+  "Prazo e ano não lidos no documento: edições antigas (2017–2025) e encerradas tratadas como abertas.",
+  "Certidões de atos vizinhos na mesma página do diário (ex.: DGPP com prazo de um pregão): ancorar pelo número do ato.",
+  "Abrangência não filtrada: municípios não capitais de outros estados e chamadas regionais fora de GO.",
+  "Normalização de URL apaga a querystring do Diário AGM (voxtecnologia) e funde publicações distintas: manter o parâmetro do ato.",
+  "Duplicatas: livros com a mesma URL (Mapa da Cultura 11685; Pollination; 9 livros na Portaria FAPEG 01/2024, que não é edital) — revisar e unir/expurgar.",
+  "DOU in.gov.br bloqueia leitura automatizada: o motor deve guardar órgão e objeto do aviso ao coletar, para permitir a verificação."
+ ],
+ "relatorio_por_livro": [
+  {
+   "livro_id": "L-5996b8e3b057b0bf",
+   "decisao": "valido",
+   "categoria_do_motivo": "oportunidade válida",
+   "certidoes_corrigidas": [
+    "Prazo de inscrição: 17/11/2026 era do Pregão Eletrônico 38/2026 da Polícia Civil (ato vizinho); correto 04/12/2026",
+    "Esfera/Modalidade: trecho de 'emenda parlamentar/aquisição de veículos' é de outro ato",
+    "Território 'GOIÂNIA' era o cabeçalho do DOE"
+   ],
+   "onde_estava_a_informacao": "DOE-GO 03/11/2026 p.21-22",
+   "caminho_que_funcionou": "PDF do DOE no site da DGPP",
+   "falha_do_motor": "Misturou atos vizinhos da mesma página do DOE (layout em colunas)",
+   "melhoria_para_o_motor": "Segmentar o DOE pelos marcadores <#ABC#protocolo#> e extrair certidões só dentro do mesmo protocolo",
+   "aprendizado": "Ler o aviso inteiro: no mesmo DOE há pregões vizinhos."
+  },
+  {
+   "livro_id": "L-9b786b8d1937c5d6",
+   "decisao": "valido",
+   "categoria_do_motivo": "oportunidade válida",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "PDF do edital no site da Prefeitura",
+   "caminho_que_funcionou": "link_divulgacao direto",
+   "falha_do_motor": "Sem link_oficial apesar de o PDF ser oficial",
+   "melhoria_para_o_motor": "Promover link_divulgacao a link_oficial quando o domínio é .go.gov.br e o PDF é o edital",
+   "aprendizado": "Título 'Termo de Fomento nº' engana: é o número do edital."
+  },
+  {
+   "livro_id": "L-88d3be9d8e48325f",
+   "decisao": "descartar",
+   "categoria_do_motivo": "fora da abrangência",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://alteditais.com.br/oportunidades/edital-no-2-2026-cadastramento-de-entidades-e-selecao-de-projetos-para-recursos-de-prestacoes-pe--dd602bd3-4744-4c90-8d00-1b9fd3dba99f",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Trouxe replicador de outro estado",
+   "melhoria_para_o_motor": "Filtrar judiciário de comarca de outro estado não capital",
+   "aprendizado": "Filtrar judiciário de comarca de outro estado não capital"
+  },
+  {
+   "livro_id": "L-d784118af486ffe4",
+   "decisao": "descartar",
+   "categoria_do_motivo": "pessoa física/empresa",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/publicacoes_ver_conteudo/756401",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Confundiu 'chamada pública' com fomento",
+   "melhoria_para_o_motor": "Excluir objetos com 'famílias'/'benefício' a pessoa física",
+   "aprendizado": "Excluir objetos com 'famílias'/'benefício' a pessoa física"
+  },
+  {
+   "livro_id": "L-422c05acb0606887",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "não acessível",
+   "caminho_que_funcionou": "nenhum (WAF)",
+   "falha_do_motor": "Trouxe notícia de edição 2025",
+   "melhoria_para_o_motor": "Descartar notícias com ano do edital anterior ao corrente sem nova edição",
+   "aprendizado": "Buscar edital vigente no site do CAU/GO"
+  },
+  {
+   "livro_id": "L-64ee8aff8493656a",
+   "decisao": "descartar",
+   "categoria_do_motivo": "licitação/contrato",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://senadorcanedo.go.gov.br/wp-content/uploads/2026/09/EDITAL_CREDENCIAMENTO_014_2026_ODONTOLOGIA_1_.pdf",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Palavra 'edital' sem filtro de credenciamento",
+   "melhoria_para_o_motor": "Excluir 'credenciamento de pessoas jurídicas ... prestação de serviços'",
+   "aprendizado": "Excluir 'credenciamento de pessoas jurídicas ... prestação de serviços'"
+  },
+  {
+   "livro_id": "L-9d2f691669355a9a",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "PDF Secult",
+   "caminho_que_funcionou": "direto",
+   "falha_do_motor": "Trouxe edital vencido",
+   "melhoria_para_o_motor": "Checar data final do item 1.1 antes de enviar",
+   "aprendizado": "Edição encerrada"
+  },
+  {
+   "livro_id": "L-5a1a45e958520665",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "PDF do edital com errata",
+   "caminho_que_funcionou": "direto",
+   "falha_do_motor": "Prazo não extraído (cronograma em anexo)",
+   "melhoria_para_o_motor": "Baixar o anexo de cronograma do mesmo edital",
+   "aprendizado": "Ler Anexo 1 (cronograma) do edital"
+  },
+  {
+   "livro_id": "L-5c41f35acef59a1d",
+   "decisao": "valido",
+   "categoria_do_motivo": "oportunidade válida",
+   "certidoes_corrigidas": [
+    "Não é 'credenciamento de prestador': é de OSCs (MROSC)"
+   ],
+   "onde_estava_a_informacao": "PDF SEI no site da SEDS",
+   "caminho_que_funcionou": "direto",
+   "falha_do_motor": "Marcado para expurgo por engano",
+   "melhoria_para_o_motor": "Não expurgar credenciamento de OSC pelo art. 30 VI",
+   "aprendizado": "Não expurgar credenciamento de OSC pelo art. 30 VI"
+  },
+  {
+   "livro_id": "L-3a2b60225864f4c2",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "PDF Secult",
+   "caminho_que_funcionou": "direto",
+   "falha_do_motor": "Trouxe edital de 2024",
+   "melhoria_para_o_motor": "Rejeitar editais com prazo de ano anterior",
+   "aprendizado": "Edição 2024 encerrada"
+  },
+  {
+   "livro_id": "L-13730286ce29b4db",
+   "decisao": "descartar",
+   "categoria_do_motivo": "pessoa física/empresa",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://www.hubgoias.org/wp-content/uploads/2026/02/Edital-02_2026_NIIS-3.docx.pdf",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Confundiu impacto socioambiental com OSC",
+   "melhoria_para_o_motor": "Excluir editais com pré-requisito 'Empreendedores maiores de 18 anos'",
+   "aprendizado": "Excluir editais com pré-requisito 'Empreendedores maiores de 18 anos'"
+  },
+  {
+   "livro_id": "L-cd3fcf9c70b304be",
+   "decisao": "descartar",
+   "categoria_do_motivo": "pessoa física/empresa",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://data.queridodiario.ok.org.br/5201405/2026-11-06/650a512b5f30e1611231cd987238ff97c3a7d495.pdf#ato-50",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Extraiu ato de diário sem filtro",
+   "melhoria_para_o_motor": "Excluir 'feiras livres'",
+   "aprendizado": "Excluir 'feiras livres'"
+  },
+  {
+   "livro_id": "L-529762f743c33e03",
+   "decisao": "descartar",
+   "categoria_do_motivo": "licitação/contrato",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://goias.gov.br/cultura/wp-content/uploads/sites/25/2026/06/SEI_90351764_Termo_de_Fomento_1.pdf",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Trouxe instrumento celebrado",
+   "melhoria_para_o_motor": "Excluir 'QUE ENTRE SI CELEBRAM'",
+   "aprendizado": "Excluir 'QUE ENTRE SI CELEBRAM'"
+  },
+  {
+   "livro_id": "L-7f00a013d89bb77c",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "não acessível",
+   "caminho_que_funcionou": "nenhum",
+   "falha_do_motor": "Trouxe edital de 2022",
+   "melhoria_para_o_motor": "Rejeitar URLs com ano antigo sem reedição",
+   "aprendizado": "Buscar edital vigente no portal MPGO"
+  },
+  {
+   "livro_id": "L-211bcf77d12042a2",
+   "decisao": "descartar",
+   "categoria_do_motivo": "fora do perfil",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://novogama.go.gov.br/wp-content/uploads/2026/11/Edital-02.2026-SMENG.pdf",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Confundiu eleição de conselho com chamamento",
+   "melhoria_para_o_motor": "Excluir 'conselho ... FUNDEB'",
+   "aprendizado": "Excluir 'conselho ... FUNDEB'"
+  },
+  {
+   "livro_id": "L-8cd621fa7f0ec36e",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "PDF TJGO",
+   "caminho_que_funcionou": "direto",
+   "falha_do_motor": "Título trazido errado/antigo",
+   "melhoria_para_o_motor": "Checar ano do período",
+   "aprendizado": "Checar ano do período"
+  },
+  {
+   "livro_id": "L-9d349d04a908e59f",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [
+    "Título 'EDITAL Nº 002/2026 - TJGO' não corresponde ao PDF"
+   ],
+   "onde_estava_a_informacao": "PDF TJGO",
+   "caminho_que_funcionou": "direto",
+   "falha_do_motor": "Título não corresponde ao documento",
+   "melhoria_para_o_motor": "Gerar título a partir do PDF",
+   "aprendizado": "Gerar título a partir do PDF"
+  },
+  {
+   "livro_id": "L-d0db9024a60f8b46",
+   "decisao": "valido",
+   "categoria_do_motivo": "oportunidade válida",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "PDF TJGO",
+   "caminho_que_funcionou": "direto",
+   "falha_do_motor": "Marcado para expurgo sem estrela",
+   "melhoria_para_o_motor": "Prestação pecuniária vigente = válido",
+   "aprendizado": "Prestação pecuniária vigente = válido"
+  },
+  {
+   "livro_id": "L-a5f8cd7cb22aa8fe",
+   "decisao": "descartar",
+   "categoria_do_motivo": "licitação/contrato",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://pirenopolis.go.gov.br/wp-content/uploads/2025/03/Edital-de-Credenciamento-no-006-2025.pdf",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Sem filtro de credenciamento",
+   "melhoria_para_o_motor": "Excluir credenciamento de profissionais",
+   "aprendizado": "Excluir credenciamento de profissionais"
+  },
+  {
+   "livro_id": "L-19223a506606e26b",
+   "decisao": "descartar",
+   "categoria_do_motivo": "licitação/contrato",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://data.queridodiario.ok.org.br/5201405/2026-11-06/650a512b5f30e1611231cd987238ff97c3a7d495.pdf#ato-51",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Ato de diário",
+   "melhoria_para_o_motor": "Excluir 'TERMO ADITIVO'",
+   "aprendizado": "Excluir 'TERMO ADITIVO'"
+  },
+  {
+   "livro_id": "L-62b131aafc82334e",
+   "decisao": "descartar",
+   "categoria_do_motivo": "licitação/contrato",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://goias.gov.br/retomada/wp-content/uploads/sites/22/2026/07/DOCUMENTOS-TERMO-DE-FOMENTO-27-AFIPE.pdf",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Termo celebrado",
+   "melhoria_para_o_motor": "Excluir 'QUE ENTRE SI CELEBRAM'",
+   "aprendizado": "Excluir 'QUE ENTRE SI CELEBRAM'"
+  },
+  {
+   "livro_id": "L-73be81b376881241",
+   "decisao": "descartar",
+   "categoria_do_motivo": "licitação/contrato",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://data.queridodiario.ok.org.br/5208707/2026-11-06/12d87517581ec8a9d63cd7005621c75e977c343f.pdf#ato-44",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Ato de diário",
+   "melhoria_para_o_motor": "Excluir despachos de aditivo",
+   "aprendizado": "Excluir despachos de aditivo"
+  },
+  {
+   "livro_id": "L-2b77e4df46453a9e",
+   "decisao": "descartar",
+   "categoria_do_motivo": "licitação/contrato",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://www-storage.voxtecnologia.com.br/?m=sigpub.publicacao&f=3392&i=publicado_114663_2026-11-05_4e88ef389dbcecb59f594a52f90147bc.pdf#ato-215",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "PNAE",
+   "melhoria_para_o_motor": "Excluir 'ALIMENTAÇÃO ESCOLAR – PNAE'",
+   "aprendizado": "Excluir 'ALIMENTAÇÃO ESCOLAR – PNAE'"
+  },
+  {
+   "livro_id": "L-e7ebb0c6dcfb9213",
+   "decisao": "descartar",
+   "categoria_do_motivo": "anexo isolado",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://www.campestre.go.gov.br/wp-content/uploads/2025/03/02-ANEXOS-I-E-II.pdf",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Anexo como livro",
+   "melhoria_para_o_motor": "Excluir PDFs 'ANEXO' isolados",
+   "aprendizado": "Excluir PDFs 'ANEXO' isolados"
+  },
+  {
+   "livro_id": "L-d1b63a490612407e",
+   "decisao": "descartar",
+   "categoria_do_motivo": "licitação/contrato",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/publicacoes_ver_conteudo/756411",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Credenciamento",
+   "melhoria_para_o_motor": "Excluir credenciamento de profissionais",
+   "aprendizado": "Excluir credenciamento de profissionais"
+  },
+  {
+   "livro_id": "L-52659a9888d58dc3",
+   "decisao": "descartar",
+   "categoria_do_motivo": "licitação/contrato",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/publicacoes_ver_conteudo/756202",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Credenciamento",
+   "melhoria_para_o_motor": "Excluir credenciamento de PJ",
+   "aprendizado": "Excluir credenciamento de PJ"
+  },
+  {
+   "livro_id": "L-12949ee65bdd7d03",
+   "decisao": "descartar",
+   "categoria_do_motivo": "pessoa física/empresa",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/publicacoes_ver_conteudo/755773",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "'torna público' captado",
+   "melhoria_para_o_motor": "Excluir 'Licença Ambiental'",
+   "aprendizado": "Excluir 'Licença Ambiental'"
+  },
+  {
+   "livro_id": "L-95198f1a5809465d",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://legisla.casacivil.go.gov.br/api/v2/pesquisa/legislacoes/118358/pdf",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Decreto",
+   "melhoria_para_o_motor": "Excluir decretos de qualificação/desqualificação",
+   "aprendizado": "Excluir decretos de qualificação/desqualificação"
+  },
+  {
+   "livro_id": "L-03c0077f0bda07a7",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://www.policiapenal.go.gov.br/publicacoes/chamamentos-publicos",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Página-índice como livro",
+   "melhoria_para_o_motor": "Não criar livro de página de listagem",
+   "aprendizado": "Não criar livro de página de listagem"
+  },
+  {
+   "livro_id": "L-880d55d2cf8d53f2",
+   "decisao": "descartar",
+   "categoria_do_motivo": "licitação/contrato",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://www-storage.voxtecnologia.com.br/?m=sigpub.publicacao&f=3392&i=publicado_114664_2026-11-06_a39c2658aac347ddcf5aabbe8d918b9f.pdf#ato-12",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Contratação direta",
+   "melhoria_para_o_motor": "Excluir 'CONTRATAÇÃO DIRETA'",
+   "aprendizado": "Excluir 'CONTRATAÇÃO DIRETA'"
+  },
+  {
+   "livro_id": "L-f3a7e76d7cd05009",
+   "decisao": "descartar",
+   "categoria_do_motivo": "pessoa física/empresa",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://diariooficial.abc.go.gov.br/apifront/portal/edicoes/publicacoes_ver_conteudo/756119",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Licença",
+   "melhoria_para_o_motor": "Excluir 'Licença Ambiental'",
+   "aprendizado": "Excluir 'Licença Ambiental'"
+  },
+  {
+   "livro_id": "L-a3709b8c565bc887",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://transparencia-adm.tjgo.jus.br/gestao-orcamentaria/arrecadacao-penas-pecuniarias",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Transparência",
+   "melhoria_para_o_motor": "Excluir domínios transparencia-*",
+   "aprendizado": "Excluir domínios transparencia-*"
+  },
+  {
+   "livro_id": "L-ae64e72608eb7b7c",
+   "decisao": "valido",
+   "categoria_do_motivo": "oportunidade válida",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "PNCP",
+   "caminho_que_funcionou": "API consulta",
+   "falha_do_motor": "Marcado para expurgo",
+   "melhoria_para_o_motor": "Concurso cultural municipal de GO não é licitação",
+   "aprendizado": "Usar API PNCP de consulta"
+  },
+  {
+   "livro_id": "L-0e029db12bf36695",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://www.jusbrasil.com.br/documentos/comarca-de-caldas-novas-edital-seleciona-projetos-para-destinacao-de-recursos-provenientes-de-prestacao-pecuniaria/2914050285",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Replicador",
+   "melhoria_para_o_motor": "Excluir jusbrasil",
+   "aprendizado": "Excluir jusbrasil"
+  },
+  {
+   "livro_id": "L-e9395f7773c70791",
+   "decisao": "descartar",
+   "categoria_do_motivo": "licitação/contrato",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://pncp.gov.br/app/editais/01105626000125/2026/41",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Credenciamento",
+   "melhoria_para_o_motor": "Excluir 'futura e eventual contratação'",
+   "aprendizado": "Excluir 'futura e eventual contratação'"
+  },
+  {
+   "livro_id": "L-1eac2c6f437f3796",
+   "decisao": "descartar",
+   "categoria_do_motivo": "licitação/contrato",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://pncp.gov.br/app/editais/01067925000112/2026/23",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Credenciamento",
+   "melhoria_para_o_motor": "Excluir 'futura contratação'",
+   "aprendizado": "Excluir 'futura contratação'"
+  },
+  {
+   "livro_id": "L-182acf0795dea2cb",
+   "decisao": "descartar",
+   "categoria_do_motivo": "pessoa física/empresa",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://pncp.gov.br/app/editais/02164804000151/2026/27",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Prêmio individual",
+   "melhoria_para_o_motor": "Excluir premiação de trajetória individual",
+   "aprendizado": "Excluir premiação de trajetória individual"
+  },
+  {
+   "livro_id": "L-51668d0ad9831e51",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.goiania.go.gov.br/secult/pnab-2024/",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Página-índice",
+   "melhoria_para_o_motor": "Não criar livro de página de programa",
+   "aprendizado": "Não criar livro de página de programa"
+  },
+  {
+   "livro_id": "L-dd88ef8650ca17e3",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs/20-destaque/21833-vepema-lanca-edital-para-beneficiar-entidades-com-recursos-de-penas-pecuniarias",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Notícia como livro",
+   "melhoria_para_o_motor": "Buscar o PDF do edital da comarca em vez da notícia",
+   "aprendizado": "Buscar o PDF do edital da comarca em vez da notícia"
+  },
+  {
+   "livro_id": "L-0843fcb2fcf206ca",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs/17-tribunal/35442-divulgado-edital-para-selecao-e-financiamento-de-projetos-sociais-para-jaragua-jesupolis-e-sao-francisco-de-goias-com-recursos-de-prestacao-pecuniaria",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Notícia como livro",
+   "melhoria_para_o_motor": "Buscar o PDF do edital da comarca em vez da notícia",
+   "aprendizado": "Buscar o PDF do edital da comarca em vez da notícia"
+  },
+  {
+   "livro_id": "L-41ededdbf89d2dd5",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs/17-tribunal/37978-foro-de-itapuranga-abre-selecao-de-projetos-para-destinacao-de-recursos-de-prestacoes-pecuniarias",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Notícia como livro",
+   "melhoria_para_o_motor": "Buscar o PDF do edital da comarca em vez da notícia",
+   "aprendizado": "Buscar o PDF do edital da comarca em vez da notícia"
+  },
+  {
+   "livro_id": "L-7b4460905444ff8a",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.tjgo.jus.br/index.php/agencia-de-noticias/noticias-ccs/17-tribunal/35133-vara-de-execucao-penal-de-goiania-abre-edital-para-destinacao-de-recursos-a-projetos-sociais",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Notícia como livro",
+   "melhoria_para_o_motor": "Buscar o PDF do edital da comarca em vez da notícia",
+   "aprendizado": "Buscar o PDF do edital da comarca em vez da notícia"
+  },
+  {
+   "livro_id": "L-67ee5c67e152da6e",
+   "decisao": "arquivar",
+   "categoria_do_motivo": "fora do perfil",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "gov.br/secretariageral",
+   "caminho_que_funcionou": "direto",
+   "falha_do_motor": "Conselho ≠ fomento",
+   "melhoria_para_o_motor": "Classificar eleições de conselho como arquivo",
+   "aprendizado": "Classificar eleições de conselho como arquivo"
+  },
+  {
+   "livro_id": "L-cbc24e42e9d9711e",
+   "decisao": "valido",
+   "categoria_do_motivo": "oportunidade válida",
+   "certidoes_corrigidas": [
+    "Prazo vem da notícia filantropia.ong; a página Prosas renderiza datas por JS"
+   ],
+   "onde_estava_a_informacao": "Prosas",
+   "caminho_que_funcionou": "link na notícia",
+   "falha_do_motor": "Trouxe notícia",
+   "melhoria_para_o_motor": "Seguir link prosas.com.br",
+   "aprendizado": "Ir à página Prosas citada na notícia"
+  },
+  {
+   "livro_id": "L-9ecb58835de7ae8c",
+   "decisao": "arquivar",
+   "categoria_do_motivo": "fora da abrangência",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "notícia",
+   "caminho_que_funcionou": "notícia",
+   "falha_do_motor": "Notícia regional",
+   "melhoria_para_o_motor": "Federal restrito a outra UF = arquivar",
+   "aprendizado": "Federal restrito a outra UF = arquivar"
+  },
+  {
+   "livro_id": "L-1cff6d91827b5063",
+   "decisao": "valido",
+   "categoria_do_motivo": "oportunidade válida",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "Edital no Google Drive",
+   "caminho_que_funcionou": "página ebanx -> Drive",
+   "falha_do_motor": "",
+   "melhoria_para_o_motor": "Seguir \"Confira aqui o Edital\"",
+   "aprendizado": "Seguir o link Drive do edital na página"
+  },
+  {
+   "livro_id": "L-f7883c927379ba39",
+   "decisao": "valido",
+   "categoria_do_motivo": "oportunidade válida",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "notícia",
+   "caminho_que_funcionou": "notícia",
+   "falha_do_motor": "Não trouxe o PDF oficial",
+   "melhoria_para_o_motor": "Procurar uploads do órgão",
+   "aprendizado": "Buscar o PDF em assistenciasocial.se.gov.br/wp-content/uploads/2026/11"
+  },
+  {
+   "livro_id": "L-6490ed69ff435551",
+   "decisao": "arquivar",
+   "categoria_do_motivo": "fora do perfil",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "DOU",
+   "caminho_que_funcionou": "direto",
+   "falha_do_motor": "Extrato",
+   "melhoria_para_o_motor": "Ligar extrato ao edital-mãe",
+   "aprendizado": "Ligar extrato ao edital-mãe"
+  },
+  {
+   "livro_id": "L-34246b6f338fb71e",
+   "decisao": "descartar",
+   "categoria_do_motivo": "fora da abrangência",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://capitaai.com.br/captacao/waitt-foundation-waitt-foundation-ssqjg0",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Replicador inventou prazo/valor",
+   "melhoria_para_o_motor": "Verificar elegibilidade geográfica no site do financiador",
+   "aprendizado": "Verificar elegibilidade geográfica no site do financiador"
+  },
+  {
+   "livro_id": "L-71642a3352f89584",
+   "decisao": "descartar",
+   "categoria_do_motivo": "licitação/contrato",
+   "certidoes_corrigidas": [
+    "certidões descartadas com o livro"
+   ],
+   "onde_estava_a_informacao": "https://www.in.gov.br/web/dou/-/aviso-de-chamamento-publico-n-1/2026-sr/pf/rj-742390863",
+   "caminho_que_funcionou": "abertura direta do link",
+   "falha_do_motor": "Chamamento imobiliário",
+   "melhoria_para_o_motor": "Excluir 'Prospecção do mercado imobiliário'",
+   "aprendizado": "Excluir 'Prospecção do mercado imobiliário'"
+  },
+  {
+   "livro_id": "L-69bf9af2fdbc68c4",
+   "decisao": "arquivar",
+   "categoria_do_motivo": "fora do perfil",
+   "certidoes_corrigidas": [
+    "Valor certificado como R$ 5.000.000,00 é o mínimo por entidade executora, não por OSC apoiada (até R$ 1 milhão)."
+   ],
+   "onde_estava_a_informacao": "Anexo III da chamada, p.1, 5 e 10",
+   "caminho_que_funcionou": "PDF BNDES direto (curl)",
+   "falha_do_motor": "Tratou anexo III como edital e não aplicou filtro territorial de chamada federal regionalizada.",
+   "melhoria_para_o_motor": "Chamada federal com território definido (bacia/estado específico fora de GO) => arquivar; preferir a página-mãe da chamada ao anexo.",
+   "aprendizado": "Chamada federal com território definido (bacia/estado específico fora de GO) => arquivar; preferir a página-mãe da chamada ao anexo."
+  },
+  {
+   "livro_id": "L-e3b25f49b8baf245",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [
+    "Título do livro (Chamamento 06/2026, processo 23713/2026) não corresponde ao PDF (Chamada Pública 002/2026, processo 2026.014.532)."
+   ],
+   "onde_estava_a_informacao": "PDF webio.aparecida.go.gov.br p.1",
+   "caminho_que_funcionou": "curl do link de divulgação",
+   "falha_do_motor": "Gravou título de ato vizinho e não leu a data da sessão.",
+   "melhoria_para_o_motor": "Ler data da sessão pública/entrega de envelopes e comparar com hoje antes de marcar aberta.",
+   "aprendizado": "Ler data da sessão pública/entrega de envelopes e comparar com hoje antes de marcar aberta."
+  },
+  {
+   "livro_id": "L-292f856276cbab28",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "PDF crars.org.br p.1",
+   "caminho_que_funcionou": "curl",
+   "falha_do_motor": "Não comparou o período de envio com a data atual.",
+   "melhoria_para_o_motor": "Extrair \"Período:\" e descartar como aberta quando a data final < hoje.",
+   "aprendizado": "Extrair \"Período:\" e descartar como aberta quando a data final < hoje."
+  },
+  {
+   "livro_id": "L-e79ec9c618af879a",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "PDF institutorme.org.br",
+   "caminho_que_funcionou": "curl",
+   "falha_do_motor": "Trouxe edital de março como sem prazo.",
+   "melhoria_para_o_motor": "Ler o cronograma do edital (tabela Etapa/Data).",
+   "aprendizado": "Ler o cronograma do edital (tabela Etapa/Data)."
+  },
+  {
+   "livro_id": "L-afb8c2a351474d29",
+   "decisao": "descartar",
+   "categoria_do_motivo": "licitação/contrato",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou termo celebrado/credenciamento como chamada.",
+   "melhoria_para_o_motor": "Descartar títulos \"TERMO DE FOMENTO Nº\"/\"CREDENCIAMENTO\" e arquivos PNCP de compras.",
+   "aprendizado": "Descartar títulos \"TERMO DE FOMENTO Nº\"/\"CREDENCIAMENTO\" e arquivos PNCP de compras."
+  },
+  {
+   "livro_id": "L-3659a7e52c291381",
+   "decisao": "descartar",
+   "categoria_do_motivo": "licitação/contrato",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou termo celebrado/credenciamento como chamada.",
+   "melhoria_para_o_motor": "Descartar títulos \"TERMO DE FOMENTO Nº\"/\"CREDENCIAMENTO\" e arquivos PNCP de compras.",
+   "aprendizado": "Descartar títulos \"TERMO DE FOMENTO Nº\"/\"CREDENCIAMENTO\" e arquivos PNCP de compras."
+  },
+  {
+   "livro_id": "L-7f0b7da4ed40e4da",
+   "decisao": "valido",
+   "categoria_do_motivo": "oportunidade válida",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "Matéria infonet; site Seasic",
+   "caminho_que_funcionou": "WebFetch",
+   "falha_do_motor": "Link de jornal sem o PDF oficial.",
+   "melhoria_para_o_motor": "Buscar o PDF em assistenciasocial.se.gov.br/wp-content/uploads/AAAA/MM e gravar o oficial; edição 01/2025 (nov/2025) indica recorrência anual.",
+   "aprendizado": "Buscar o PDF em assistenciasocial.se.gov.br/wp-content/uploads/AAAA/MM e gravar o oficial; edição 01/2025 (nov/2025) indica recorrência anual."
+  },
+  {
+   "livro_id": "L-f9648ca35b6608b7",
+   "decisao": "descartar",
+   "categoria_do_motivo": "pessoa física/empresa",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou chamada para pesquisador via replicador.",
+   "melhoria_para_o_motor": "Descartar quando proponente for só pesquisador/pessoa física.",
+   "aprendizado": "Descartar quando proponente for só pesquisador/pessoa física."
+  },
+  {
+   "livro_id": "L-a41dd6741e637f12",
+   "decisao": "descartar",
+   "categoria_do_motivo": "licitação/contrato",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou termo celebrado/credenciamento como chamada.",
+   "melhoria_para_o_motor": "Descartar títulos \"TERMO DE FOMENTO Nº\"/\"CREDENCIAMENTO\" e arquivos PNCP de compras.",
+   "aprendizado": "Descartar títulos \"TERMO DE FOMENTO Nº\"/\"CREDENCIAMENTO\" e arquivos PNCP de compras."
+  },
+  {
+   "livro_id": "L-656f076007da2aa0",
+   "decisao": "valido",
+   "categoria_do_motivo": "oportunidade válida",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "Página Apply do Pollination Project",
+   "caminho_que_funcionou": "WebFetch da página oficial",
+   "falha_do_motor": "Usou CapitaAI como fonte e duplicou o programa em dois livros.",
+   "melhoria_para_o_motor": "Deduplicar por financiador+programa; buscar a página /apply do emissor.",
+   "aprendizado": "Deduplicar por financiador+programa; buscar a página /apply do emissor."
+  },
+  {
+   "livro_id": "L-1fd798f9c1edd332",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "Escola Aberta 3º Setor",
+   "caminho_que_funcionou": "curl",
+   "falha_do_motor": "Trouxe divulgação sem prazo.",
+   "melhoria_para_o_motor": "Extrair \"até <dia> de <mês>\" da notícia.",
+   "aprendizado": "Extrair \"até <dia> de <mês>\" da notícia."
+  },
+  {
+   "livro_id": "L-230ba754b0d5c44a",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "Notícia da fundação + imprensa",
+   "caminho_que_funcionou": "WebFetch (curl 406)",
+   "falha_do_motor": "Sem prazo final no livro.",
+   "melhoria_para_o_motor": "Procurar a data de encerramento em imprensa quando o site oficial bloquear.",
+   "aprendizado": "Procurar a data de encerramento em imprensa quando o site oficial bloquear."
+  },
+  {
+   "livro_id": "L-fe3ca23ab3ad3119",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "Notícia oficial caixanoticias.caixa.gov.br",
+   "caminho_que_funcionou": "curl",
+   "falha_do_motor": "Não leu a data de inscrição na notícia oficial.",
+   "melhoria_para_o_motor": "Notícia oficial com prazo vencido => encerrada.",
+   "aprendizado": "Notícia oficial com prazo vencido => encerrada."
+  },
+  {
+   "livro_id": "L-05bdeea005c359cf",
+   "decisao": "valido",
+   "categoria_do_motivo": "oportunidade válida",
+   "certidoes_corrigidas": [
+    "Prazo/valor do CapitaAI (02/12/2026, R$ 51 mil) não constam na fonte oficial."
+   ],
+   "onde_estava_a_informacao": "Página Apply do Pollination Project",
+   "caminho_que_funcionou": "WebFetch da página oficial",
+   "falha_do_motor": "Usou CapitaAI como fonte e duplicou o programa em dois livros.",
+   "melhoria_para_o_motor": "Deduplicar por financiador+programa; buscar a página /apply do emissor.",
+   "aprendizado": "Deduplicar por financiador+programa; buscar a página /apply do emissor."
+  },
+  {
+   "livro_id": "L-168e26201bdd93c9",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "PDF campanhauniaosolidaria.com.br p.4 e 6",
+   "caminho_que_funcionou": "curl",
+   "falha_do_motor": "Não leu cidades participantes nem período.",
+   "melhoria_para_o_motor": "Edital privado com lista de cidades: conferir se há município de GO.",
+   "aprendizado": "Edital privado com lista de cidades: conferir se há município de GO."
+  },
+  {
+   "livro_id": "L-eaea25294c05745d",
+   "decisao": "valido",
+   "categoria_do_motivo": "oportunidade válida",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "Página BNDES Periferias, bloco \"Chamada de Projetos para o 6º ciclo\"",
+   "caminho_que_funcionou": "captadores.org.br -> bndes.gov.br/periferias (curl)",
+   "falha_do_motor": "Gravou link do replicador ABCR em vez da página do BNDES.",
+   "melhoria_para_o_motor": "Para notícias de replicador, seguir o link citado no texto (bndes.gov.br/periferias) e gravar o oficial.",
+   "aprendizado": "Para notícias de replicador, seguir o link citado no texto (bndes.gov.br/periferias) e gravar o oficial."
+  },
+  {
+   "livro_id": "L-619056e91ef0b648",
+   "decisao": "descartar",
+   "categoria_do_motivo": "licitação/contrato",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou termo celebrado/credenciamento como chamada.",
+   "melhoria_para_o_motor": "Descartar títulos \"TERMO DE FOMENTO Nº\"/\"CREDENCIAMENTO\" e arquivos PNCP de compras.",
+   "aprendizado": "Descartar títulos \"TERMO DE FOMENTO Nº\"/\"CREDENCIAMENTO\" e arquivos PNCP de compras."
+  },
+  {
+   "livro_id": "L-d7b6913cabd21794",
+   "decisao": "descartar",
+   "categoria_do_motivo": "fora da abrangência",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Não filtrou município de outro estado não capital.",
+   "melhoria_para_o_motor": "Aplicar regra UF+município: fora de GO só capital ou estadual.",
+   "aprendizado": "Aplicar regra UF+município: fora de GO só capital ou estadual."
+  },
+  {
+   "livro_id": "L-32b3ea4b8f6f5e9c",
+   "decisao": "descartar",
+   "categoria_do_motivo": "fora da abrangência",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Não filtrou município de outro estado não capital.",
+   "melhoria_para_o_motor": "Aplicar regra UF+município: fora de GO só capital ou estadual.",
+   "aprendizado": "Aplicar regra UF+município: fora de GO só capital ou estadual."
+  },
+  {
+   "livro_id": "L-84d39762a1ef0afe",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "Escola Aberta 3º Setor",
+   "caminho_que_funcionou": "curl; site oficial 404",
+   "falha_do_motor": "Edição antiga tratada como atual.",
+   "melhoria_para_o_motor": "Exigir ano da edição = ano corrente na página do emissor.",
+   "aprendizado": "Exigir ano da edição = ano corrente na página do emissor."
+  },
+  {
+   "livro_id": "L-f21f3486bb86d4fe",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "Notícias; página oficial sem regulamento",
+   "caminho_que_funcionou": "ABCR -> bb.com.br -> busca",
+   "falha_do_motor": "Usou replicador sem prazo.",
+   "melhoria_para_o_motor": "Buscar \"até <data>\" na imprensa quando a página oficial não trouxer regulamento e registrar como evidência secundária.",
+   "aprendizado": "Buscar \"até <data>\" na imprensa quando a página oficial não trouxer regulamento e registrar como evidência secundária."
+  },
+  {
+   "livro_id": "L-0107e39a59cc26fd",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou notícia/portal gov.br sem filtro de edital.",
+   "melhoria_para_o_motor": "Exigir no texto termos de edital (inscrições, prazo, proponente OSC) e descartar /noticias sem link a edital.",
+   "aprendizado": "Exigir no texto termos de edital (inscrições, prazo, proponente OSC) e descartar /noticias sem link a edital."
+  },
+  {
+   "livro_id": "L-bb3163225048bddb",
+   "decisao": "arquivar",
+   "categoria_do_motivo": "fora do perfil",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "Notícia MPF-BA",
+   "caminho_que_funcionou": "curl",
+   "falha_do_motor": "Não aplicou filtro de unidade regional federal.",
+   "melhoria_para_o_motor": "Unidade federal estadual fora de GO => arquivar.",
+   "aprendizado": "Unidade federal estadual fora de GO => arquivar."
+  },
+  {
+   "livro_id": "L-7c09caa058b00bc4",
+   "decisao": "descartar",
+   "categoria_do_motivo": "fora da abrangência",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Não filtrou município de outro estado não capital.",
+   "melhoria_para_o_motor": "Aplicar regra UF+município: fora de GO só capital ou estadual.",
+   "aprendizado": "Aplicar regra UF+município: fora de GO só capital ou estadual."
+  },
+  {
+   "livro_id": "L-588dd9a267aa7cb9",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou página institucional/menu como oportunidade.",
+   "melhoria_para_o_motor": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais.",
+   "aprendizado": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais."
+  },
+  {
+   "livro_id": "L-ac5070a801dd3be1",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "Página do edital",
+   "caminho_que_funcionou": "curl",
+   "falha_do_motor": "Não viu que o edital está em fase de avaliação.",
+   "melhoria_para_o_motor": "Fase \"avaliação/resultado\" => encerrada.",
+   "aprendizado": "Fase \"avaliação/resultado\" => encerrada."
+  },
+  {
+   "livro_id": "L-8e10daa755ffa10c",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou página institucional/menu como oportunidade.",
+   "melhoria_para_o_motor": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais.",
+   "aprendizado": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais."
+  },
+  {
+   "livro_id": "L-d5d08aed867bdda7",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou página institucional/menu como oportunidade.",
+   "melhoria_para_o_motor": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais.",
+   "aprendizado": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais."
+  },
+  {
+   "livro_id": "L-fc71a27e533720fe",
+   "decisao": "descartar",
+   "categoria_do_motivo": "link quebrado",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Gravou link inacessível sem edital-mãe.",
+   "melhoria_para_o_motor": "Validar HTTP 200 e conteúdo antes de gravar; Instagram/Cloudflare sem espelho oficial = descartar.",
+   "aprendizado": "Validar HTTP 200 e conteúdo antes de gravar; Instagram/Cloudflare sem espelho oficial = descartar."
+  },
+  {
+   "livro_id": "L-f51777b9c1fa46cf",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou página institucional/menu como oportunidade.",
+   "melhoria_para_o_motor": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais.",
+   "aprendizado": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais."
+  },
+  {
+   "livro_id": "L-d01354669e61de6e",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou notícia/portal gov.br sem filtro de edital.",
+   "melhoria_para_o_motor": "Exigir no texto termos de edital (inscrições, prazo, proponente OSC) e descartar /noticias sem link a edital.",
+   "aprendizado": "Exigir no texto termos de edital (inscrições, prazo, proponente OSC) e descartar /noticias sem link a edital."
+  },
+  {
+   "livro_id": "L-c7b7c1dd93bac262",
+   "decisao": "descartar",
+   "categoria_do_motivo": "link quebrado",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Gravou link inacessível sem edital-mãe.",
+   "melhoria_para_o_motor": "Validar HTTP 200 e conteúdo antes de gravar; Instagram/Cloudflare sem espelho oficial = descartar.",
+   "aprendizado": "Validar HTTP 200 e conteúdo antes de gravar; Instagram/Cloudflare sem espelho oficial = descartar."
+  },
+  {
+   "livro_id": "L-2bdf73a1d4079d19",
+   "decisao": "descartar",
+   "categoria_do_motivo": "fora da abrangência",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Não filtrou município de outro estado não capital.",
+   "melhoria_para_o_motor": "Aplicar regra UF+município: fora de GO só capital ou estadual.",
+   "aprendizado": "Aplicar regra UF+município: fora de GO só capital ou estadual."
+  },
+  {
+   "livro_id": "L-934b8c5d178ea20b",
+   "decisao": "descartar",
+   "categoria_do_motivo": "fora da abrangência",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Não filtrou município de outro estado não capital.",
+   "melhoria_para_o_motor": "Aplicar regra UF+município: fora de GO só capital ou estadual.",
+   "aprendizado": "Aplicar regra UF+município: fora de GO só capital ou estadual."
+  },
+  {
+   "livro_id": "L-b5f953cee29af08d",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou página institucional/menu como oportunidade.",
+   "melhoria_para_o_motor": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais.",
+   "aprendizado": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais."
+  },
+  {
+   "livro_id": "L-95d98b3b640c4f8c",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou notícia/portal gov.br sem filtro de edital.",
+   "melhoria_para_o_motor": "Exigir no texto termos de edital (inscrições, prazo, proponente OSC) e descartar /noticias sem link a edital.",
+   "aprendizado": "Exigir no texto termos de edital (inscrições, prazo, proponente OSC) e descartar /noticias sem link a edital."
+  },
+  {
+   "livro_id": "L-4b89179ef06f6d9e",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou notícia/portal gov.br sem filtro de edital.",
+   "melhoria_para_o_motor": "Exigir no texto termos de edital (inscrições, prazo, proponente OSC) e descartar /noticias sem link a edital.",
+   "aprendizado": "Exigir no texto termos de edital (inscrições, prazo, proponente OSC) e descartar /noticias sem link a edital."
+  },
+  {
+   "livro_id": "L-6427027e5902bcbd",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou notícia/portal gov.br sem filtro de edital.",
+   "melhoria_para_o_motor": "Exigir no texto termos de edital (inscrições, prazo, proponente OSC) e descartar /noticias sem link a edital.",
+   "aprendizado": "Exigir no texto termos de edital (inscrições, prazo, proponente OSC) e descartar /noticias sem link a edital."
+  },
+  {
+   "livro_id": "L-ba9926b89c071cb0",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou notícia/portal gov.br sem filtro de edital.",
+   "melhoria_para_o_motor": "Exigir no texto termos de edital (inscrições, prazo, proponente OSC) e descartar /noticias sem link a edital.",
+   "aprendizado": "Exigir no texto termos de edital (inscrições, prazo, proponente OSC) e descartar /noticias sem link a edital."
+  },
+  {
+   "livro_id": "L-7a98c52661bd31c6",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou notícia/portal gov.br sem filtro de edital.",
+   "melhoria_para_o_motor": "Exigir no texto termos de edital (inscrições, prazo, proponente OSC) e descartar /noticias sem link a edital.",
+   "aprendizado": "Exigir no texto termos de edital (inscrições, prazo, proponente OSC) e descartar /noticias sem link a edital."
+  },
+  {
+   "livro_id": "L-1afe7fdc99975e16",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou página institucional/menu como oportunidade.",
+   "melhoria_para_o_motor": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais.",
+   "aprendizado": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais."
+  },
+  {
+   "livro_id": "L-96a45fc549df13f6",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou página institucional/menu como oportunidade.",
+   "melhoria_para_o_motor": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais.",
+   "aprendizado": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais."
+  },
+  {
+   "livro_id": "L-d37e42e8ec747944",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou página institucional/menu como oportunidade.",
+   "melhoria_para_o_motor": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais.",
+   "aprendizado": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais."
+  },
+  {
+   "livro_id": "L-03fbbf09b0841e2b",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou página institucional/menu como oportunidade.",
+   "melhoria_para_o_motor": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais.",
+   "aprendizado": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais."
+  },
+  {
+   "livro_id": "L-eabb441ab4a7e4a0",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou página institucional/menu como oportunidade.",
+   "melhoria_para_o_motor": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais.",
+   "aprendizado": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais."
+  },
+  {
+   "livro_id": "L-286e790fc248f639",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou página institucional/menu como oportunidade.",
+   "melhoria_para_o_motor": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais.",
+   "aprendizado": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais."
+  },
+  {
+   "livro_id": "L-dfceb9d5bee948e9",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou página institucional/menu como oportunidade.",
+   "melhoria_para_o_motor": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais.",
+   "aprendizado": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais."
+  },
+  {
+   "livro_id": "L-bd73eb5eefa7c91b",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou página institucional/menu como oportunidade.",
+   "melhoria_para_o_motor": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais.",
+   "aprendizado": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais."
+  },
+  {
+   "livro_id": "L-0ece207d6b2b6d32",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou página institucional/menu como oportunidade.",
+   "melhoria_para_o_motor": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais.",
+   "aprendizado": "Bloquear URLs de assuntos/acesso-a-informacao/banners/dados e homes institucionais."
+  },
+  {
+   "livro_id": "L-08d2bf5808e26caa",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "o próprio link",
+   "caminho_que_funcionou": "curl/WebFetch do link",
+   "falha_do_motor": "Coletou notícia/portal gov.br sem filtro de edital.",
+   "melhoria_para_o_motor": "Exigir no texto termos de edital (inscrições, prazo, proponente OSC) e descartar /noticias sem link a edital.",
+   "aprendizado": "Exigir no texto termos de edital (inscrições, prazo, proponente OSC) e descartar /noticias sem link a edital."
+  },
+  {
+   "livro_id": "L-ac2b2c1c3d38e642",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://mapacultural.secult.ce.gov.br/oportunidade/8478/",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Aceitou registro de teste do Mapa Cultural.",
+   "melhoria_para_o_motor": "Descartar oportunidades do Mapas Culturais cujo título contenha 'TESTE'.",
+   "aprendizado": "Descartar oportunidades do Mapas Culturais cujo título contenha 'TESTE'."
+  },
+  {
+   "livro_id": "L-887b73a7d5203af7",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://agenciasebrae.com.br/economia-e-politica/lancada-chamada-publica-voltada-a-entidades-sem-fins-lucrativos-para-projetos-voltados-as-pessoas-do-cadastro-unico/",
+   "caminho_que_funcionou": "Post Facebook (lido via curl) -> WebSearch -> matéria da Agência Sebrae (WebFetch).",
+   "falha_do_motor": "Livro baseado em vídeo do Facebook, não no edital do Portal de Compras Públicas (processo 498171).",
+   "melhoria_para_o_motor": "Ao ver post de rede social, buscar a matéria da Agência Sebrae e o edital no Portal de Compras Públicas; prazo igual ao dia da análise => encerrada.",
+   "aprendizado": "Ao ver post de rede social, buscar a matéria da Agência Sebrae e o edital no Portal de Compras Públicas; prazo igual ao dia da análise => encerrada."
+  },
+  {
+   "livro_id": "L-c7bbca47bb25fbd4",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.gov.br/mds/pt-br/noticias-e-conteudos/Noticias/2026/mds-lanca-plataforma-para-o-cadastro-de-equipamentos-de-seguranca-alimentar-e-nutricional-eqsan",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Capturou notícia institucional do gov.br só por palavras como 'segurança alimentar'/'COP31'.",
+   "melhoria_para_o_motor": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo.",
+   "aprendizado": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo."
+  },
+  {
+   "livro_id": "L-86b3a0f0711a9b68",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.gov.br/mds/pt-br/noticias-e-conteudos/Noticias/2026/comitiva-internacional-visita-cozinha-solidaria-sol-nascente-no-distrito-federal",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Capturou notícia institucional do gov.br só por palavras como 'segurança alimentar'/'COP31'.",
+   "melhoria_para_o_motor": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo.",
+   "aprendizado": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo."
+  },
+  {
+   "livro_id": "L-c5d1635191fc0fac",
+   "decisao": "descartar",
+   "categoria_do_motivo": "link quebrado",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.instagram.com/p/DVZe8pwkePI/",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Trouxe post de Instagram (página exige login, conteúdo não legível) como livro, sem edital-mãe.",
+   "melhoria_para_o_motor": "Post de rede social só entra como pista: buscar o edital no site do emissor; sem edital localizado => descartar.",
+   "aprendizado": "Post de rede social só entra como pista: buscar o edital no site do emissor; sem edital localizado => descartar."
+  },
+  {
+   "livro_id": "L-00a5714660b16b0a",
+   "decisao": "arquivar",
+   "categoria_do_motivo": "fora do perfil",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.undp.org/georgia/news/call-for-ideas-confidence-building",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Trouxe chamada de escritório-país do PNUD restrita a outro país.",
+   "melhoria_para_o_motor": "Filtrar undp.org/<país>/ fora do Brasil => arquivar sem enviar para verificação.",
+   "aprendizado": "Filtrar undp.org/<país>/ fora do Brasil => arquivar sem enviar para verificação."
+  },
+  {
+   "livro_id": "L-596a2dd21c538e95",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.filantropia.ong/institucional/informacao/informacao/informacao/informacao/edital-juventude-em-movimento-do-instituto-localiza-vai-distribuir-r-2-5-milhoes",
+   "caminho_que_funcionou": "Filantropia (404) -> WebSearch -> diariodocomercio.com.br (matéria de 21/12/2021)",
+   "falha_do_motor": "Link 404 de replicador e edição de 2021 tratada como atual.",
+   "melhoria_para_o_motor": "Conferir o ano da edição; link 404 => buscar no emissor antes de manter.",
+   "aprendizado": "Conferir o ano da edição; link 404 => buscar no emissor antes de manter."
+  },
+  {
+   "livro_id": "L-0d0971a609c23868",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.gov.br/mds/pt-br/noticias-e-conteudos/Noticias/2026/gas-do-povo-novos-vales-serao-liberados-dia-10-de-novembro",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Capturou notícia institucional do gov.br só por palavras como 'segurança alimentar'/'COP31'.",
+   "melhoria_para_o_motor": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo.",
+   "aprendizado": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo."
+  },
+  {
+   "livro_id": "L-229e3efe92ab683e",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.gov.br/mds/pt-br/noticias-e-conteudos/Noticias/2026/mds-apresenta-na-cop31-experiencias-brasileiras-de-seguranca-alimentar-e-protecao-social-no-debate-climatico",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Capturou notícia institucional do gov.br só por palavras como 'segurança alimentar'/'COP31'.",
+   "melhoria_para_o_motor": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo.",
+   "aprendizado": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo."
+  },
+  {
+   "livro_id": "L-2b15f710e8d064ab",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.gov.br/mma/pt-br/noticias/governo-lula-estabelece-diretrizes-para-reduzir-gradualmente-dependencia-de-combustiveis-fosseis-no-brasil",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Capturou notícia institucional do gov.br só por palavras como 'segurança alimentar'/'COP31'.",
+   "melhoria_para_o_motor": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo.",
+   "aprendizado": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo."
+  },
+  {
+   "livro_id": "L-4b9a8b613abede13",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.gov.br/mma/pt-br/noticias/governo-federal-aprova-mapa-do-caminho-brasileiro-para-interromper-e-reverter-o-desmatamento-e-a-degradacao-florestal-ate-2030",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Capturou notícia institucional do gov.br só por palavras como 'segurança alimentar'/'COP31'.",
+   "melhoria_para_o_motor": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo.",
+   "aprendizado": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo."
+  },
+  {
+   "livro_id": "L-e5b0d6df61aceeeb",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.gov.br/mma/pt-br/noticias/brasil-participa-de-negociacoes-estrategicas-sobre-biodiversidade-bioeconomia-e-areas-protegidas-na-cop17",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Capturou notícia institucional do gov.br só por palavras como 'segurança alimentar'/'COP31'.",
+   "melhoria_para_o_motor": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo.",
+   "aprendizado": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo."
+  },
+  {
+   "livro_id": "L-e6884ce7bde02a52",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.gov.br/mds/pt-br/acesso-a-informacao/emendas-parlamentares/cartilhas-de-emendas-parlamentares",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Classificou página de acesso à informação como oportunidade.",
+   "melhoria_para_o_motor": "Excluir caminhos /acesso-a-informacao/ sem 'edital/chamamento'.",
+   "aprendizado": "Excluir caminhos /acesso-a-informacao/ sem 'edital/chamamento'."
+  },
+  {
+   "livro_id": "L-5b6ef954a2e96c61",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.gov.br/mds/pt-br/noticias-e-conteudos/Noticias/2026/experiencias-brasileiras-ajudam-a-construir-respostas-mundiais-contra-a-fome-e-a-pobreza",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Capturou notícia institucional do gov.br só por palavras como 'segurança alimentar'/'COP31'.",
+   "melhoria_para_o_motor": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo.",
+   "aprendizado": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo."
+  },
+  {
+   "livro_id": "L-dba09214878fcc76",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.gov.br/mma/pt-br/noticias/comite-interministerial-sobre-mudanca-do-clima-aprova-documentos-que-integram-agenda-da-cop31",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Capturou notícia institucional do gov.br só por palavras como 'segurança alimentar'/'COP31'.",
+   "melhoria_para_o_motor": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo.",
+   "aprendizado": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo."
+  },
+  {
+   "livro_id": "L-6b9ccc1b02b9e049",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.gov.br/mma/pt-br/noticias/mma-e-mme-retomam-avaliacao-ambiental-de-bacias-de-petroleo-e-iniciam-estudo-da-bacia-de-pelotas",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Capturou notícia institucional do gov.br só por palavras como 'segurança alimentar'/'COP31'.",
+   "melhoria_para_o_motor": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo.",
+   "aprendizado": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo."
+  },
+  {
+   "livro_id": "L-d690fa4deea67f41",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.gov.br/mma/pt-br/noticias/governo-federal-atua-na-prevencao-e-combate-a-incendios-na-regiao-norte-e-aprova-r-90-3-milhoes-para-assistencia-humanitaria",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Capturou notícia institucional do gov.br só por palavras como 'segurança alimentar'/'COP31'.",
+   "melhoria_para_o_motor": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo.",
+   "aprendizado": "Descartar URLs gov.br/*/noticias* sem os termos 'edital', 'chamamento' ou 'inscrições' no corpo."
+  },
+  {
+   "livro_id": "L-5f433f89887031e8",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.gov.br/esporte/pt-br/composicao/carometro",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Capturou página de composição do órgão.",
+   "melhoria_para_o_motor": "Excluir /composicao/ e 'carometro'.",
+   "aprendizado": "Excluir /composicao/ e 'carometro'."
+  },
+  {
+   "livro_id": "L-f5b059a1a1e78536",
+   "decisao": "descartar",
+   "categoria_do_motivo": "link quebrado",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.instagram.com/p/De2RPV9pKm3/",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Trouxe post de Instagram (página exige login, conteúdo não legível) como livro, sem edital-mãe.",
+   "melhoria_para_o_motor": "Post de rede social só entra como pista: buscar o edital no site do emissor; sem edital localizado => descartar.",
+   "aprendizado": "Post de rede social só entra como pista: buscar o edital no site do emissor; sem edital localizado => descartar."
+  },
+  {
+   "livro_id": "L-088618d8a658e0a0",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://rededepesquisa.fgv.br/oportunidade-de-financiamento",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Tratou agregador como edital.",
+   "melhoria_para_o_motor": "Agregadores de terceiros: seguir até o edital-mãe; nunca registrar o agregador como livro.",
+   "aprendizado": "Agregadores de terceiros: seguir até o edital-mãe; nunca registrar o agregador como livro."
+  },
+  {
+   "livro_id": "L-3112ec1cf6adca24",
+   "decisao": "descartar",
+   "categoria_do_motivo": "link quebrado",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://discricionarias.transferegov.sistema.gov.br/voluntarias/programa/24000",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Trouxe link de sistema autenticado do Transferegov.",
+   "melhoria_para_o_motor": "Links de discricionarias.transferegov exigem login: buscar o chamamento publicado no gov.br do ministério; sem chamamento => descartar.",
+   "aprendizado": "Links de discricionarias.transferegov exigem login: buscar o chamamento publicado no gov.br do ministério; sem chamamento => descartar."
+  },
+  {
+   "livro_id": "L-b6ac0a240d4402d6",
+   "decisao": "descartar",
+   "categoria_do_motivo": "link quebrado",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.instagram.com/p/DaqPoLCMrSK/",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Trouxe post de Instagram (página exige login, conteúdo não legível) como livro, sem edital-mãe.",
+   "melhoria_para_o_motor": "Post de rede social só entra como pista: buscar o edital no site do emissor; sem edital localizado => descartar.",
+   "aprendizado": "Post de rede social só entra como pista: buscar o edital no site do emissor; sem edital localizado => descartar."
+  },
+  {
+   "livro_id": "L-f8278758bab02139",
+   "decisao": "descartar",
+   "categoria_do_motivo": "licitação/contrato",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://institutoesportivosocial.org.br/termo-de-fomento",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Confundiu página de transparência de OSC com chamamento.",
+   "melhoria_para_o_motor": "URL de site de OSC com 'termo-de-fomento' = transparência de parceria celebrada => descartar.",
+   "aprendizado": "URL de site de OSC com 'termo-de-fomento' = transparência de parceria celebrada => descartar."
+  },
+  {
+   "livro_id": "L-5ca676c4b77d4b6b",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://go.equatorialenergia.com.br/2025/07/23/reta-final-inscricoes-abertas-ate-25-de-julho-para-o-edital-cultural-e-esportivo-do-grupo-equatorial-em-goias/",
+   "caminho_que_funcionou": "curl 403 Incapsula; decisão pela URL do emissor + WebSearch",
+   "falha_do_motor": "Notícia de 2025 trazida como oportunidade em 2026.",
+   "melhoria_para_o_motor": "Extrair a data da URL (/AAAA/MM/DD/); com data mais de 3 meses antes => encerrada.",
+   "aprendizado": "Extrair a data da URL (/AAAA/MM/DD/); com data mais de 3 meses antes => encerrada."
+  },
+  {
+   "livro_id": "L-1c8021eedc454bf6",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://pa.equatorialenergia.com.br/siteantigo/2025/01/foi-prorrogada-instituto-equatorial-recebe-inscricoes-para-o-edital-jornada-ate-dia-31-de-janeiro/",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Notícia de jan/2025 do 'site antigo' trazida como atual.",
+   "melhoria_para_o_motor": "Descartar URLs com '/siteantigo/'; conferir o ano.",
+   "aprendizado": "Descartar URLs com '/siteantigo/'; conferir o ano."
+  },
+  {
+   "livro_id": "L-1a1b5cbf0e59e74c",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://mapa.cultura.gov.br/oportunidade/5386",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Trouxe cadastro geral de rede como edital.",
+   "melhoria_para_o_motor": "Cadastro Cultura Viva: vincular ao edital de certificação vigente, sem criar livro novo para a página do cadastro.",
+   "aprendizado": "Cadastro Cultura Viva: vincular ao edital de certificação vigente, sem criar livro novo para a página do cadastro."
+  },
+  {
+   "livro_id": "L-dfead16027321359",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://pt.scribd.com/document/957514865/EDITAL-DIALOGOS-EQUATORIAL",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Usou o Scribd como link.",
+   "melhoria_para_o_motor": "Rejeitar scribd.com como fonte; buscar no emissor.",
+   "aprendizado": "Rejeitar scribd.com como fonte; buscar no emissor."
+  },
+  {
+   "livro_id": "L-df3b4860cc7dbe18",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://pa.equatorialenergia.com.br/instituto-equatorial-lanca-segunda-edicao-do-edital-dialogos-com-investimento-de-r-4-milhoes-para-iniciativas-sociais/",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Notícia de edição passada.",
+   "melhoria_para_o_motor": "Conferir o ano da edição.",
+   "aprendizado": "Conferir o ano da edição."
+  },
+  {
+   "livro_id": "L-69467b0833ad13b3",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://objectstorage.sa-saopaulo-1.oraclecloud.com/p/6J6bjKv8RiVLo4FGrkK41YK5dkAoJi1loBveWvOT7fY89fFkwVcE60QeivIJKkkF/n/gr1ojmmb7tst/b/prosas-prod/o/arquivos/arquivos/005/065/779/original/EDITAL_DE_PARTICIPACAO_2027.pdf",
+   "caminho_que_funcionou": "Prosas 404 -> WebSearch -> acessa.com (out/2026)",
+   "falha_do_motor": "Link de bucket Prosas expirado.",
+   "melhoria_para_o_motor": "Se o link do Prosas der 404, buscar a página do programa; conferir o território.",
+   "aprendizado": "Se o link do Prosas der 404, buscar a página do programa; conferir o território."
+  },
+  {
+   "livro_id": "L-b7046c2742d81daf",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://fas-amazonia.org/wp-content/uploads/2026/08/Edital-05.2026-Solucoes-que-Vem-do-Territorio.pdf",
+   "caminho_que_funcionou": "Capta 404 -> WebSearch -> PDF da FAS (curl + pdftotext)",
+   "falha_do_motor": "Link do Capta (404) usado em vez do PDF da FAS.",
+   "melhoria_para_o_motor": "Trocar links capta.org.br pelo edital do emissor.",
+   "aprendizado": "Trocar links capta.org.br pelo edital do emissor."
+  },
+  {
+   "livro_id": "L-1b9cf2943d9c8ef9",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://capta.org.br/oportunidades/edital-rede-memoria-viva/",
+   "caminho_que_funcionou": "Capta 404 -> WebSearch -> folhape.com.br (03/08/2026)",
+   "falha_do_motor": "Link Capta 404.",
+   "melhoria_para_o_motor": "Trocar capta.org.br pelo emissor.",
+   "aprendizado": "Trocar capta.org.br pelo emissor."
+  },
+  {
+   "livro_id": "L-8c0c9e282d8d3638",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://go.equatorialenergia.com.br/2025/06/13/equatorial-goias-abre-inscricoes-para-o-programa-e-cultura-2025/",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Notícia de 2025.",
+   "melhoria_para_o_motor": "Data na URL antiga => encerrada; registrar a edição para previsão.",
+   "aprendizado": "Data na URL antiga => encerrada; registrar a edição para previsão."
+  },
+  {
+   "livro_id": "L-f8f582813c5224da",
+   "decisao": "arquivar",
+   "categoria_do_motivo": "fora do perfil",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://cymi.com.br/wp-content/uploads/2026/09/CYMI_BR_EDITAL_SOMAR_2026_exercicio_2027_.pdf",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Link bloqueado por Cloudflare.",
+   "melhoria_para_o_motor": "Edital privado de concessionária: conferir os municípios de atuação; se não abrir, buscar no Prosas ou no LinkedIn da empresa.",
+   "aprendizado": "Edital privado de concessionária: conferir os municípios de atuação; se não abrir, buscar no Prosas ou no LinkedIn da empresa."
+  },
+  {
+   "livro_id": "L-2feb64025deca601",
+   "decisao": "descartar",
+   "categoria_do_motivo": "link quebrado",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.instagram.com/reel/DbyPnWLtu-1/",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Trouxe post de Instagram (página exige login, conteúdo não legível) como livro, sem edital-mãe.",
+   "melhoria_para_o_motor": "Post de rede social só entra como pista: buscar o edital no site do emissor; sem edital localizado => descartar.",
+   "aprendizado": "Post de rede social só entra como pista: buscar o edital no site do emissor; sem edital localizado => descartar."
+  },
+  {
+   "livro_id": "L-2f69f155e59cfb17",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://pa.equatorialenergia.com.br/instituto-equatorial-lanca-2a-edicao-do-edital-jornada-equatorial/",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Notícia de edição passada.",
+   "melhoria_para_o_motor": "Conferir o resultado publicado.",
+   "aprendizado": "Conferir o resultado publicado."
+  },
+  {
+   "livro_id": "L-bb9965e39b602d86",
+   "decisao": "descartar",
+   "categoria_do_motivo": "link quebrado",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.instagram.com/p/DZFkR92uLK_/",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Trouxe post de Instagram (página exige login, conteúdo não legível) como livro, sem edital-mãe.",
+   "melhoria_para_o_motor": "Post de rede social só entra como pista: buscar o edital no site do emissor; sem edital localizado => descartar.",
+   "aprendizado": "Post de rede social só entra como pista: buscar o edital no site do emissor; sem edital localizado => descartar."
+  },
+  {
+   "livro_id": "L-0146530edb64deb6",
+   "decisao": "descartar",
+   "categoria_do_motivo": "fora do perfil",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.undp.org/rwanda/blog/extended-call-applications-civil-society-organizations-nominate-representatives-rwanda-gef-small-grants-program-national-steering",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Trouxe nomeação de colegiado estrangeiro.",
+   "melhoria_para_o_motor": "Excluir 'nominate representatives'/'steering committee'.",
+   "aprendizado": "Excluir 'nominate representatives'/'steering committee'."
+  },
+  {
+   "livro_id": "L-519062b1182703ad",
+   "decisao": "descartar",
+   "categoria_do_motivo": "pessoa física/empresa",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.mpf.mp.br/o-mpf/unidades/pr-ac/estagio/2026-1-1deg-processo-seletivo-publico-de-estagio-2026-pos-graduacao-em-direito/edital27-2convocacao1pse2026-pos-graduacaoemdireito.pdf",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Confundiu edital de estágio com oportunidade.",
+   "melhoria_para_o_motor": "Excluir URLs com '/estagio/'.",
+   "aprendizado": "Excluir URLs com '/estagio/'."
+  },
+  {
+   "livro_id": "L-1f8bad6c3be352aa",
+   "decisao": "descartar",
+   "categoria_do_motivo": "anexo isolado",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.mpf.mp.br/o-mpf/unidades/pr-pi/destinacao-de-bens-e-valores/cadastro-de-entidades-para-a-destinacao-de-bens-e-valores/formulario-de-inscricao-e-termo-de-adesao-ao-edital.docx",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Capturou o anexo .docx.",
+   "melhoria_para_o_motor": "Para .docx/formulário, subir à página-mãe ('cadastro-de-entidades-...') e usar o edital.",
+   "aprendizado": "Para .docx/formulário, subir à página-mãe ('cadastro-de-entidades-...') e usar o edital."
+  },
+  {
+   "livro_id": "L-fc55a98fb8fbf2c0",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://brasil.un.org/pt-br/76106-fundo-internacional-para-diversidade-cultural-está-com-inscrições-abertas",
+   "caminho_que_funcionou": "curl da página brasil.un.org",
+   "falha_do_motor": "Notícia de 2017 trazida como atual.",
+   "melhoria_para_o_motor": "Ler a data da página; mais de 1 ano => encerrada e buscar a edição vigente do IFCD na UNESCO.",
+   "aprendizado": "Ler a data da página; mais de 1 ano => encerrada e buscar a edição vigente do IFCD na UNESCO."
+  },
+  {
+   "livro_id": "L-b78d162e68d738dd",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [
+    "Certidões existentes (6) não se sustentam: o livro foi descartado."
+   ],
+   "onde_estava_a_informacao": "https://globalfundforchildren.org/community-based-organizations/",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Tratou página de diretório como edital.",
+   "melhoria_para_o_motor": "Quando a página disser 'not an application for funding' ou 'by invitation', descartar.",
+   "aprendizado": "Quando a página disser 'not an application for funding' ou 'by invitation', descartar."
+  },
+  {
+   "livro_id": "L-9c9a3bc1fab2d518",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [
+    "Certidões existentes (6) não se sustentam: o livro foi descartado."
+   ],
+   "onde_estava_a_informacao": "https://grantedai.com/grants/oak-foundation-grant-program-oak-foundation-cfdd2906",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Trouxe páginas de agregadores de grants em vez do financiador.",
+   "melhoria_para_o_motor": "Bloquear domínios replicadores (grantedai, livingtricky, developmentaid, raiselens); buscar só em oakfnd.org.",
+   "aprendizado": "Bloquear domínios replicadores (grantedai, livingtricky, developmentaid, raiselens); buscar só em oakfnd.org."
+  },
+  {
+   "livro_id": "L-c110ea9198b1bc3d",
+   "decisao": "descartar",
+   "categoria_do_motivo": "pessoa física/empresa",
+   "certidoes_corrigidas": [
+    "Certidões existentes (4) não se sustentam: o livro foi descartado."
+   ],
+   "onde_estava_a_informacao": "https://opportunitiesfeed.com/2026/08/27/global-fund-for-children/",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Confundiu 'consultancy' com grant.",
+   "melhoria_para_o_motor": "Excluir 'consultancy', 'terms of reference', 'vacancy'.",
+   "aprendizado": "Excluir 'consultancy', 'terms of reference', 'vacancy'."
+  },
+  {
+   "livro_id": "L-015c59b2b2639853",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [
+    "Requisitos 'graduação em enfermagem/Coren' veio de outro ato (processo seletivo), não do edital.",
+    "Valor 'R$ 190 mil' e Território p.3 vieram de notícia de outra edição, não deste PDF de 1 página."
+   ],
+   "onde_estava_a_informacao": "https://www.manaus.am.gov.br/fms/wp-content/uploads/sites/16/2026/10/AVISO-DE-ALTERACAO-DE-CRONOGRAMA-2-DO-EDITAL-DE-CHAMAMENTO-PUBLICO-No-001-2026.pdf",
+   "caminho_que_funcionou": "curl do PDF do aviso no site da Prefeitura de Manaus",
+   "falha_do_motor": "Usou aviso de cronograma como livro; certidões de Requisitos (Coren) e Valor (R$ 190 mil) vieram de matérias vizinhas.",
+   "melhoria_para_o_motor": "Aviso/errata: subir ao edital-mãe na página /fms/; não misturar textos de outras notícias.",
+   "aprendizado": "Aviso/errata: subir ao edital-mãe na página /fms/; não misturar textos de outras notícias."
+  },
+  {
+   "livro_id": "L-719fb552b133a9d8",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://parceirosvoluntarios.org.br/wp-content/uploads/2026/01/Edital-Programa-Impulsionar-2026.pdf",
+   "caminho_que_funcionou": "curl do PDF",
+   "falha_do_motor": "Não aplicou o filtro de data nem o de território.",
+   "melhoria_para_o_motor": "Edital privado regional fora de GO: com prazo vencido => encerrada; aberto => arquivar.",
+   "aprendizado": "Edital privado regional fora de GO: com prazo vencido => encerrada; aberto => arquivar."
+  },
+  {
+   "livro_id": "L-869ef4829221c772",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.gov.br/mdh/pt-br/navegue-por-temas/crianca-e-adolescente/publicacoes/editais/SEI_MDHC5765902Edital.pdf",
+   "caminho_que_funcionou": "curl do PDF gov.br/mdh",
+   "falha_do_motor": "Sem prazo extraído da Tabela 1.",
+   "melhoria_para_o_motor": "Ler a tabela 'DA FASE DE SELEÇÃO' dos editais MROSC federais.",
+   "aprendizado": "Ler a tabela 'DA FASE DE SELEÇÃO' dos editais MROSC federais."
+  },
+  {
+   "livro_id": "L-8abecb5f8d42aa2b",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.sead.ms.gov.br/wp-content/uploads/2026/01/Chamamento-Publico-Sead-N.-01-2026-OSC.pdf",
+   "caminho_que_funcionou": "curl do PDF (DOE-MS 26/01/2026)",
+   "falha_do_motor": "Prazo não extraído.",
+   "melhoria_para_o_motor": "Ler 'Tabela 1 - Cronograma'.",
+   "aprendizado": "Ler 'Tabela 1 - Cronograma'."
+  },
+  {
+   "livro_id": "L-7cba8207d714f804",
+   "decisao": "descartar",
+   "categoria_do_motivo": "fora da abrangência",
+   "certidoes_corrigidas": [
+    "Certidões existentes (9) não se sustentam: o livro foi descartado."
+   ],
+   "onde_estava_a_informacao": "https://semae.rs.gov.br/wp-content/uploads/2026/03/EDITAL.pdf",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Link que não abre, sem edital-mãe identificável.",
+   "melhoria_para_o_motor": "Domínio de autarquia municipal de fora de GO que não é capital => descartar sem abrir.",
+   "aprendizado": "Domínio de autarquia municipal de fora de GO que não é capital => descartar sem abrir."
+  },
+  {
+   "livro_id": "L-b3299c4ddecfffbe",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [
+    "Certidões existentes (9) não se sustentam: o livro foi descartado."
+   ],
+   "onde_estava_a_informacao": "https://camilalimentos.com.br/sustentabilidade",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Trouxe página corporativa.",
+   "melhoria_para_o_motor": "Excluir páginas '/sustentabilidade' de empresas sem 'edital'.",
+   "aprendizado": "Excluir páginas '/sustentabilidade' de empresas sem 'edital'."
+  },
+  {
+   "livro_id": "L-d7ae2af4c2667bd6",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.sescamapa.com.br/uploads/pseletivo-anexos/2025/12/edital-de-credenciamento-mesa-brasil-2026.pdf",
+   "caminho_que_funcionou": "curl recusado; WebFetch do PDF",
+   "falha_do_motor": "Prazo não extraído.",
+   "melhoria_para_o_motor": "Ler o item 5.1 do edital.",
+   "aprendizado": "Ler o item 5.1 do edital."
+  },
+  {
+   "livro_id": "L-6341bbb1ef5d0fc1",
+   "decisao": "descartar",
+   "categoria_do_motivo": "notícia sem edital",
+   "certidoes_corrigidas": [
+    "Certidões existentes (7) não se sustentam: o livro foi descartado."
+   ],
+   "onde_estava_a_informacao": "https://blogdoalbertoalves.com/2026/governo-de-pernambuco-divulga-resultado-definitivo-de-edital-que-destina-r-6-milhoes-a-projetos-voltados-as-pessoas-com-deficiencia/",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Trouxe blog de resultado.",
+   "melhoria_para_o_motor": "Notícia de 'resultado definitivo' => descartar; o edital-mãe, se novo, entra como encerrada.",
+   "aprendizado": "Notícia de 'resultado definitivo' => descartar; o edital-mãe, se novo, entra como encerrada."
+  },
+  {
+   "livro_id": "L-41317be3020ebf5b",
+   "decisao": "descartar",
+   "categoria_do_motivo": "anexo isolado",
+   "certidoes_corrigidas": [
+    "Certidões existentes (6) não se sustentam: o livro foi descartado."
+   ],
+   "onde_estava_a_informacao": "https://www.ba.gov.br/trabalho/sites/site-setre/files/2026-10/EDITAL%20DE%20CHAMAMENTO%20P%C3%9ABLICO%20N.%C2%BA%20012_2026.pdf",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Capturou o ato de resultado.",
+   "melhoria_para_o_motor": "PDF com 'DIVULGAÇÃO DO RESULTADO'/'CONVOCAÇÃO' => descartar e subir ao edital-mãe.",
+   "aprendizado": "PDF com 'DIVULGAÇÃO DO RESULTADO'/'CONVOCAÇÃO' => descartar e subir ao edital-mãe."
+  },
+  {
+   "livro_id": "L-d916f52f0e79daf8",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [
+    "Certidões existentes (4) não se sustentam: o livro foi descartado."
+   ],
+   "onde_estava_a_informacao": "https://livingtricky.com/oak-foundation-grants-funding/",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Trouxe páginas de agregadores de grants em vez do financiador.",
+   "melhoria_para_o_motor": "Bloquear domínios replicadores (grantedai, livingtricky, developmentaid, raiselens); buscar só em oakfnd.org.",
+   "aprendizado": "Bloquear domínios replicadores (grantedai, livingtricky, developmentaid, raiselens); buscar só em oakfnd.org."
+  },
+  {
+   "livro_id": "L-bfc2f1312e6c4d8b",
+   "decisao": "descartar",
+   "categoria_do_motivo": "fora do perfil",
+   "certidoes_corrigidas": [
+    "Certidões existentes (4) não se sustentam: o livro foi descartado."
+   ],
+   "onde_estava_a_informacao": "https://forum.zcashcommunity.com/t/grant-application-pretty-good-policy-for-zcash/57134",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Trouxe fórum.",
+   "melhoria_para_o_motor": "Excluir fóruns (forum.*, /t/).",
+   "aprendizado": "Excluir fóruns (forum.*, /t/)."
+  },
+  {
+   "livro_id": "L-9596cfd1a17735a7",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [
+    "Certidões existentes (3) não se sustentam: o livro foi descartado."
+   ],
+   "onde_estava_a_informacao": "https://www.developmentaid.org/grants/view/1619078/oak-foundation-grants-convocatoria-anual",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Trouxe páginas de agregadores de grants em vez do financiador.",
+   "melhoria_para_o_motor": "Bloquear domínios replicadores (grantedai, livingtricky, developmentaid, raiselens); buscar só em oakfnd.org.",
+   "aprendizado": "Bloquear domínios replicadores (grantedai, livingtricky, developmentaid, raiselens); buscar só em oakfnd.org."
+  },
+  {
+   "livro_id": "L-2c3619cba1f1f7c7",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [
+    "Certidões existentes (1) não se sustentam: o livro foi descartado."
+   ],
+   "onde_estava_a_informacao": "https://raiselens.com/funders/oak-foundation",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Trouxe páginas de agregadores de grants em vez do financiador.",
+   "melhoria_para_o_motor": "Bloquear domínios replicadores (grantedai, livingtricky, developmentaid, raiselens); buscar só em oakfnd.org.",
+   "aprendizado": "Bloquear domínios replicadores (grantedai, livingtricky, developmentaid, raiselens); buscar só em oakfnd.org."
+  },
+  {
+   "livro_id": "L-824cdc204d5f1023",
+   "decisao": "descartar",
+   "categoria_do_motivo": "página institucional",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://www.buffettgrant.com/buffett-grant-for-ngos-and-organizations-in-brazil/",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Trouxe site de grant genérico, potencial golpe.",
+   "melhoria_para_o_motor": "Bloquear buffettgrant.com e similares.",
+   "aprendizado": "Bloquear buffettgrant.com e similares."
+  },
+  {
+   "livro_id": "L-2aa8c929c7a4124e",
+   "decisao": "descartar",
+   "categoria_do_motivo": "licitação/contrato",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://pncp.gov.br/app/editais/01567525000176/2026/3",
+   "caminho_que_funcionou": "API pública pncp.gov.br/api/consulta/v1/orgaos/01567525000176/compras/2026/3",
+   "falha_do_motor": "Confundiu credenciamento de prestador com fomento.",
+   "melhoria_para_o_motor": "Itens PNCP com modalidade 'Credenciamento' ou amparo Lei 14.133 => descartar.",
+   "aprendizado": "Itens PNCP com modalidade 'Credenciamento' ou amparo Lei 14.133 => descartar."
+  },
+  {
+   "livro_id": "L-30b0c9d6efacdd7f",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://observatorio3setor.org.br/instituto-gol-abre-edital-para-doar-passagens-aereas-a-organizacoes-sociais-de-todo-o-brasil/",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Matéria de nov/2025.",
+   "melhoria_para_o_motor": "Conferir o ano da matéria.",
+   "aprendizado": "Conferir o ano da matéria."
+  },
+  {
+   "livro_id": "L-ef3608dc03b6cef5",
+   "decisao": "encerrada",
+   "categoria_do_motivo": "encerrada",
+   "certidoes_corrigidas": [],
+   "onde_estava_a_informacao": "https://filantropia.ong/informacao/abertas-inscricoes-para-o-6-ciclo-de-aceleracao-de-oscs-da-glocal/",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Data sem ano enganou o motor.",
+   "melhoria_para_o_motor": "Ler a data de publicação para completar o ano.",
+   "aprendizado": "Ler a data de publicação para completar o ano."
+  },
+  {
+   "livro_id": "captacao-226",
+   "decisao": "descartar",
+   "categoria_do_motivo": "fora do perfil",
+   "certidoes_corrigidas": [
+    "Certidões existentes (7) não se sustentam: o livro foi descartado."
+   ],
+   "onde_estava_a_informacao": "https://www.institutonatura.org/",
+   "caminho_que_funcionou": "curl direto do link",
+   "falha_do_motor": "Link de notícia de TV no lugar de edital.",
+   "melhoria_para_o_motor": "Para o catálogo, buscar 'edital' no domínio do instituto; sem chamada => registrar como sem edital.",
+   "aprendizado": "Para o catálogo, buscar 'edital' no domínio do instituto; sem chamada => registrar como sem edital."
+  }
+ ],
+ "relatorio_por_grupo_de_documentos": [
+  {
+   "grupo": "G-af988ffce2c8",
+   "decisao": "vincular",
+   "categoria": "anexo de livro existente",
+   "falha_do_motor": null,
+   "melhoria_para_o_motor": null
+  },
+  {
+   "grupo": "G-687c7755a8e1",
+   "decisao": "descartar",
+   "categoria": "agregador",
+   "falha_do_motor": "coleta homepages",
+   "melhoria_para_o_motor": "exigir caminho de edital"
+  },
+  {
+   "grupo": "G-656f8191ed1a",
+   "decisao": "descartar",
+   "categoria": "link quebrado",
+   "falha_do_motor": "sem fallback de fonte",
+   "melhoria_para_o_motor": "buscar PDF do edital no domínio"
+  },
+  {
+   "grupo": "G-d86d391b1615",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "confunde extrato de termo de fomento com chamamento",
+   "melhoria_para_o_motor": "excluir \"inexigibilidade\"/\"extrato\""
+  },
+  {
+   "grupo": "G-2a2dcb833623",
+   "decisao": "descartar",
+   "categoria": "encerrada",
+   "falha_do_motor": "coleta página de listagem",
+   "melhoria_para_o_motor": "checar status \"encerradas\""
+  },
+  {
+   "grupo": "G-e80ec988b205",
+   "decisao": "oportunidade",
+   "categoria": "oportunidade nova",
+   "falha_do_motor": "normalização remove querystring e funde publicações distintas do mesmo host",
+   "melhoria_para_o_motor": "manter querystring \"i=\" para voxtecnologia"
+  },
+  {
+   "grupo": "G-a9378a5d9f4a",
+   "decisao": "oportunidade",
+   "categoria": "oportunidade nova",
+   "falha_do_motor": null,
+   "melhoria_para_o_motor": null
+  },
+  {
+   "grupo": "G-bb7ae47baff8",
+   "decisao": "descartar",
+   "categoria": "link quebrado",
+   "falha_do_motor": "DOU inacessível, sem órgão/objeto no lote",
+   "melhoria_para_o_motor": "incluir no lote órgão e objeto ou o PDF do DOU"
+  },
+  {
+   "grupo": "G-0021dfd5ea77",
+   "decisao": "descartar",
+   "categoria": "link quebrado",
+   "falha_do_motor": "DOU inacessível, sem órgão/objeto no lote",
+   "melhoria_para_o_motor": "incluir no lote órgão e objeto ou o PDF do DOU"
+  },
+  {
+   "grupo": "G-cc9398d33398",
+   "decisao": "descartar",
+   "categoria": "link quebrado",
+   "falha_do_motor": "DOU inacessível, sem órgão/objeto no lote",
+   "melhoria_para_o_motor": "incluir no lote órgão e objeto ou o PDF do DOU"
+  },
+  {
+   "grupo": "G-5b31e13a81f7",
+   "decisao": "descartar",
+   "categoria": "link quebrado",
+   "falha_do_motor": "DOU inacessível, sem órgão/objeto no lote",
+   "melhoria_para_o_motor": "incluir no lote órgão e objeto ou o PDF do DOU"
+  },
+  {
+   "grupo": "G-d1d318b511da",
+   "decisao": "descartar",
+   "categoria": "link quebrado",
+   "falha_do_motor": "DOU inacessível, sem órgão/objeto no lote",
+   "melhoria_para_o_motor": "incluir no lote órgão e objeto ou o PDF do DOU"
+  },
+  {
+   "grupo": "G-7af0777a4c58",
+   "decisao": "descartar",
+   "categoria": "link quebrado",
+   "falha_do_motor": "DOU inacessível, sem órgão/objeto no lote",
+   "melhoria_para_o_motor": "incluir no lote órgão e objeto ou o PDF do DOU"
+  },
+  {
+   "grupo": "G-d3e84207d0bd",
+   "decisao": "descartar",
+   "categoria": "link quebrado",
+   "falha_do_motor": "DOU inacessível, sem órgão/objeto no lote",
+   "melhoria_para_o_motor": "incluir no lote órgão e objeto ou o PDF do DOU"
+  },
+  {
+   "grupo": "G-20abf38f26e6",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-d682a359a9bb",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-9359fb0f8924",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-992623dfedf1",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-3c0cd8c37198",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-3fd0df6f08ce",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-1dc7c81a9a6d",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-fc75582e7ce1",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-2fee94915f0e",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-1980ee997dbb",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-c674b138eb0c",
+   "decisao": "descartar",
+   "categoria": "encerrada",
+   "falha_do_motor": "coleta páginas de encerradas",
+   "melhoria_para_o_motor": "excluir \"cerradas\""
+  },
+  {
+   "grupo": "G-ebd657808c05",
+   "decisao": "descartar",
+   "categoria": "link quebrado",
+   "falha_do_motor": "DOU inacessível, sem órgão/objeto no lote",
+   "melhoria_para_o_motor": "incluir no lote órgão e objeto ou o PDF do DOU"
+  },
+  {
+   "grupo": "G-659a7f6e2c35",
+   "decisao": "descartar",
+   "categoria": "link quebrado",
+   "falha_do_motor": "DOU inacessível, sem órgão/objeto no lote",
+   "melhoria_para_o_motor": "incluir no lote órgão e objeto ou o PDF do DOU"
+  },
+  {
+   "grupo": "G-0904025998a0",
+   "decisao": "descartar",
+   "categoria": "link quebrado",
+   "falha_do_motor": "DOU inacessível, sem órgão/objeto no lote",
+   "melhoria_para_o_motor": "incluir no lote órgão e objeto ou o PDF do DOU"
+  },
+  {
+   "grupo": "G-f8f7ecdcb43d",
+   "decisao": "descartar",
+   "categoria": "link quebrado",
+   "falha_do_motor": "DOU inacessível, sem órgão/objeto no lote",
+   "melhoria_para_o_motor": "incluir no lote órgão e objeto ou o PDF do DOU"
+  },
+  {
+   "grupo": "G-e18ff4be060a",
+   "decisao": "descartar",
+   "categoria": "link quebrado",
+   "falha_do_motor": "DOU inacessível, sem órgão/objeto no lote",
+   "melhoria_para_o_motor": "incluir no lote órgão e objeto ou o PDF do DOU"
+  },
+  {
+   "grupo": "G-299b443ee365",
+   "decisao": "descartar",
+   "categoria": "link quebrado",
+   "falha_do_motor": "DOU inacessível, sem órgão/objeto no lote",
+   "melhoria_para_o_motor": "incluir no lote órgão e objeto ou o PDF do DOU"
+  },
+  {
+   "grupo": "G-5f1f88362061",
+   "decisao": "descartar",
+   "categoria": "link quebrado",
+   "falha_do_motor": "DOU inacessível, sem órgão/objeto no lote",
+   "melhoria_para_o_motor": "incluir no lote órgão e objeto ou o PDF do DOU"
+  },
+  {
+   "grupo": "G-bb73535249fa",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-c504d2bf23ac",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-11102c553ad7",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-3c6b57d2a4a6",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-88871958c59e",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-172d7e383d13",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-e7d35593752a",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-179536005134",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-7aa88e21e01b",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-4c1f901533c2",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-c866c31bc686",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-b9343af2924c",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-742bd6bf27b8",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-76e43ac8a7f7",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-4647b229cf56",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-3102fffafea6",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-15bda47cec35",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-67362087a05a",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-15b3ff136f68",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-39fb853bd3c2",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-dbc770628e7c",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-d22ae443941d",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-f19d3d266485",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-dc458a917c6c",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-13cf68b2e046",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-b94e236d72a1",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta extratos do DOU",
+   "melhoria_para_o_motor": "excluir slugs \"extrato-\""
+  },
+  {
+   "grupo": "G-e4d14a586c28",
+   "decisao": "vincular",
+   "categoria": "anexo de livro existente",
+   "falha_do_motor": "livros duplicados para mesma URL",
+   "melhoria_para_o_motor": "deduplicar livros por link_oficial"
+  },
+  {
+   "grupo": "G-a6f1f481657f",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "confunde extrato com chamamento",
+   "melhoria_para_o_motor": "excluir \"inexigibilidade\""
+  },
+  {
+   "grupo": "G-d2dce6f04325",
+   "decisao": "descartar",
+   "categoria": "notícia",
+   "falha_do_motor": "palavra \"prêmio\" confunde",
+   "melhoria_para_o_motor": "excluir notícias"
+  },
+  {
+   "grupo": "G-e80ec988b205",
+   "decisao": "oportunidade",
+   "categoria": "oportunidade nova",
+   "falha_do_motor": "normalização remove querystring e funde publicações distintas do mesmo host",
+   "melhoria_para_o_motor": "manter querystring \"i=\" para voxtecnologia"
+  },
+  {
+   "grupo": "G-d3b97467b1bd",
+   "decisao": "descartar",
+   "categoria": "institucional",
+   "falha_do_motor": "coleta PDFs de propostas",
+   "melhoria_para_o_motor": "exigir órgão concedente"
+  },
+  {
+   "grupo": "G-7dfc9447004a",
+   "decisao": "descartar",
+   "categoria": "fora da abrangência",
+   "falha_do_motor": "aceita agregador e pesquisa acadêmica",
+   "melhoria_para_o_motor": "filtrar capitaai"
+  },
+  {
+   "grupo": "G-a6f1f481657f",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "confunde extrato com chamamento",
+   "melhoria_para_o_motor": "excluir \"inexigibilidade\""
+  },
+  {
+   "grupo": "G-1b7f865a92a1",
+   "decisao": "vincular",
+   "categoria": "anexo de livro existente",
+   "falha_do_motor": null,
+   "melhoria_para_o_motor": null
+  },
+  {
+   "grupo": "G-1d7dc8eb6832",
+   "decisao": "vincular",
+   "categoria": "anexo de livro existente",
+   "falha_do_motor": null,
+   "melhoria_para_o_motor": null
+  },
+  {
+   "grupo": "G-3ac7806b2a90",
+   "decisao": "vincular",
+   "categoria": "anexo de livro existente",
+   "falha_do_motor": null,
+   "melhoria_para_o_motor": null
+  },
+  {
+   "grupo": "G-2f2efab16f03",
+   "decisao": "descartar",
+   "categoria": "agregador",
+   "falha_do_motor": "coleta guias/blogs",
+   "melhoria_para_o_motor": "excluir /blog/"
+  },
+  {
+   "grupo": "G-9bdc266b6440",
+   "decisao": "descartar",
+   "categoria": "link quebrado",
+   "falha_do_motor": "coleta homepages",
+   "melhoria_para_o_motor": "exigir caminho de edital"
+  },
+  {
+   "grupo": "G-92df0fcc195a",
+   "decisao": "vincular",
+   "categoria": "anexo de livro existente",
+   "falha_do_motor": "versões do mesmo PDF em pastas diferentes",
+   "melhoria_para_o_motor": "casar por título do edital"
+  },
+  {
+   "grupo": "G-12d87517581e",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "duplicata do diário por outro host",
+   "melhoria_para_o_motor": "deduplicar pelo hash do PDF"
+  },
+  {
+   "grupo": "G-5be7a80561d6",
+   "decisao": "descartar",
+   "categoria": "institucional",
+   "falha_do_motor": "coleta atos normativos",
+   "melhoria_para_o_motor": "excluir /atos-normativos/"
+  },
+  {
+   "grupo": "G-0ecf0ec6d173",
+   "decisao": "vincular",
+   "categoria": "anexo/página de livro existente",
+   "falha_do_motor": "URL diz 003 mas página é 004/2026",
+   "melhoria_para_o_motor": "usar título da página, não slug"
+  },
+  {
+   "grupo": "G-d1a938ec6318",
+   "decisao": "descartar",
+   "categoria": "institucional",
+   "falha_do_motor": "palavra \"chamada\" confunde",
+   "melhoria_para_o_motor": "exigir termos de fomento/edital"
+  },
+  {
+   "grupo": "G-d0ce41dbdaa3",
+   "decisao": "descartar",
+   "categoria": "licitação",
+   "falha_do_motor": "coleta credenciamentos",
+   "melhoria_para_o_motor": "excluir \"credenciad\""
+  },
+  {
+   "grupo": "G-81c41d6a2687",
+   "decisao": "descartar",
+   "categoria": "institucional",
+   "falha_do_motor": "palavra \"fomento\" no domínio",
+   "melhoria_para_o_motor": "excluir /acesso-a-informacao/"
+  },
+  {
+   "grupo": "G-076b1cf1a8f0",
+   "decisao": "descartar",
+   "categoria": "licitação",
+   "falha_do_motor": "normalização remove querystring e funde publicações distintas do mesmo host",
+   "melhoria_para_o_motor": "manter querystring \"i=\""
+  },
+  {
+   "grupo": "G-1f82dc6e0c9c",
+   "decisao": "descartar",
+   "categoria": "vaga/concurso",
+   "falha_do_motor": "palavra \"fomento\" no domínio",
+   "melhoria_para_o_motor": "excluir concursos"
+  },
+  {
+   "grupo": "G-bc0bf6a96443",
+   "decisao": "descartar",
+   "categoria": "institucional",
+   "falha_do_motor": "coleta páginas de listagem",
+   "melhoria_para_o_motor": "descartar listagens"
+  },
+  {
+   "grupo": "G-c4628114b85b",
+   "decisao": "descartar",
+   "categoria": "institucional",
+   "falha_do_motor": "termo de fomento ≠ chamamento",
+   "melhoria_para_o_motor": "excluir listagens de termos"
+  },
+  {
+   "grupo": "G-70709e5df98a",
+   "decisao": "descartar",
+   "categoria": "encerrada",
+   "falha_do_motor": "não lê cronograma",
+   "melhoria_para_o_motor": "checar datas do cronograma"
+  },
+  {
+   "grupo": "G-70709c357dcc",
+   "decisao": "vincular",
+   "categoria": "anexo de livro existente",
+   "falha_do_motor": "nome de arquivo variante (-1-1)",
+   "melhoria_para_o_motor": "casar por título"
+  },
+  {
+   "grupo": "G-2aa974dc4e45",
+   "decisao": "descartar",
+   "categoria": "notícia",
+   "falha_do_motor": "coleta notícias de eventos pagos",
+   "melhoria_para_o_motor": "filtrar \"virada de lote\"/ingressos"
+  },
+  {
+   "grupo": "G-76318a924ce6",
+   "decisao": "descartar",
+   "categoria": "notícia",
+   "falha_do_motor": "coleta páginas de imprensa legislativa",
+   "melhoria_para_o_motor": "excluir /sala-de-imprensa/"
+  },
+  {
+   "grupo": "G-760b7ab89578",
+   "decisao": "descartar",
+   "categoria": "fora da abrangência",
+   "falha_do_motor": "aceita diários municipais de outros estados",
+   "melhoria_para_o_motor": "filtrar código IBGE: fora de GO só capitais"
+  },
+  {
+   "grupo": "G-4280ea581b58",
+   "decisao": "descartar",
+   "categoria": "institucional",
+   "falha_do_motor": "trata diário inteiro como oportunidade",
+   "melhoria_para_o_motor": "segmentar atos e exigir \"chamamento\"+prazo"
+  },
+  {
+   "grupo": "G-6ab5e2d8b33a",
+   "decisao": "vincular",
+   "categoria": "anexo de livro existente",
+   "falha_do_motor": "PDF sem texto extraível (imagem)",
+   "melhoria_para_o_motor": "usar OCR em PDFs vazios"
+  },
+  {
+   "grupo": "G-4302abe67f2e",
+   "decisao": "descartar",
+   "categoria": "agregador",
+   "falha_do_motor": "aceita agregadores sem fonte oficial",
+   "melhoria_para_o_motor": "preferir fonte oficial; filtrar grantedai"
+  },
+  {
+   "grupo": "G-1db817bacb02",
+   "decisao": "descartar",
+   "categoria": "agregador",
+   "falha_do_motor": "aceita agregadores sem fonte oficial",
+   "melhoria_para_o_motor": "filtrar grantedai"
+  },
+  {
+   "grupo": "G-08253e5d96ae",
+   "decisao": "descartar",
+   "categoria": "agregador",
+   "falha_do_motor": "coleta listagens",
+   "melhoria_para_o_motor": "descartar páginas de listagem"
+  },
+  {
+   "grupo": "G-380e09ee252c",
+   "decisao": "vincular",
+   "categoria": "anexo de livro existente",
+   "falha_do_motor": "notícia de portal não oficial",
+   "melhoria_para_o_motor": "buscar no domínio anapolis.go.gov.br"
+  },
+  {
+   "grupo": "G-eaf494f35bcc",
+   "decisao": "descartar",
+   "categoria": "fora da abrangência",
+   "falha_do_motor": "não filtra municípios fora de GO",
+   "melhoria_para_o_motor": "filtrar UF/município"
+  },
+  {
+   "grupo": "G-c6ca7e797d6f",
+   "decisao": "descartar",
+   "categoria": "encerrada",
+   "falha_do_motor": "coleta páginas de projetos concluídos",
+   "melhoria_para_o_motor": "checar período do projeto"
+  },
+  {
+   "grupo": "G-4ee0c0c75810",
+   "decisao": "descartar",
+   "categoria": "notícia",
+   "falha_do_motor": "palavra \"awards\" confunde",
+   "melhoria_para_o_motor": "excluir notícias de premiação recebida"
+  },
+  {
+   "grupo": "G-0414169f6df6",
+   "decisao": "descartar",
+   "categoria": "notícia",
+   "falha_do_motor": "palavra \"awards\" confunde",
+   "melhoria_para_o_motor": "idem"
+  },
+  {
+   "grupo": "G-06452f09f1d6",
+   "decisao": "descartar",
+   "categoria": "notícia",
+   "falha_do_motor": "palavra \"awards\" confunde",
+   "melhoria_para_o_motor": "idem"
+  },
+  {
+   "grupo": "G-d30e02bfa227",
+   "decisao": "descartar",
+   "categoria": "encerrada",
+   "falha_do_motor": "coleta editais antigos",
+   "melhoria_para_o_motor": "filtrar ano no nome do arquivo"
+  },
+  {
+   "grupo": "G-19d88cce8b49",
+   "decisao": "descartar",
+   "categoria": "vaga/concurso",
+   "falha_do_motor": "\"edital\" confunde",
+   "melhoria_para_o_motor": "excluir \"convocação\"/\"aptidão\""
+  },
+  {
+   "grupo": "G-7476aa2514fa",
+   "decisao": "descartar",
+   "categoria": "notícia",
+   "falha_do_motor": "coleta notícias",
+   "melhoria_para_o_motor": "excluir notícias"
+  },
+  {
+   "grupo": "G-0ee7e6f0adb2",
+   "decisao": "descartar",
+   "categoria": "link quebrado",
+   "falha_do_motor": "link morto",
+   "melhoria_para_o_motor": "verificar status HTTP"
+  },
+  {
+   "grupo": "G-46061c03506c",
+   "decisao": "descartar",
+   "categoria": "fora da abrangência",
+   "falha_do_motor": "não filtra UF",
+   "melhoria_para_o_motor": "filtrar unidades estaduais fora de GO"
+  },
+  {
+   "grupo": "G-07bf5e652551",
+   "decisao": "descartar",
+   "categoria": "resultado",
+   "falha_do_motor": "coleta notícias de resultado",
+   "melhoria_para_o_motor": "excluir \"reconhece destaques\""
+  },
+  {
+   "grupo": "G-5576a7eb2965",
+   "decisao": "vincular",
+   "categoria": "anexo de livro existente",
+   "falha_do_motor": "9 livros apontam para portaria genérica",
+   "melhoria_para_o_motor": "revisar livros com link para portaria"
+  }
+ ]
+}

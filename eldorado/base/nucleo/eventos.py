@@ -150,14 +150,17 @@ CATALOGO: dict[str, tuple[Alvo, ...]] = {
     "memoria.ponteiro": (Alvo(C, "memoria_ponteiro", "inserir_ou_atualizar", ("tabela",)),),
     "regra.registrada": (Alvo(C, "regra", "inserir_se_novo"),),  # idempotente: a regra já registrada não se repete (25/10/2026)
     "regra.substituida": (Alvo(C, "regra", "atualizar", ("id",), _so("id", "vigente", "substituida_por")),),
-    "modelo.treinado": (Alvo(C, "modelo", "inserir"),),
+    # 09/11/2026: a mesma versão é o mesmo modelo (medido duas vezes no mesmo minuto) — entra sem recusa nem alarme
+    "modelo.treinado": (Alvo(C, "modelo", "inserir_se_novo"),),
     "aprendizado.registrado": (Alvo(C, "aprendizado_temporario", "inserir"),),
     "aprendizado.promovido": (Alvo(C, "aprendizado_permanente", "inserir"),),
     "aprendizado.arquivado": (Alvo(C, "aprendizado_permanente", "atualizar", ("id",), _so("id", "arquivado")),),
     "aprendizado.usado": (Alvo(C, "aprendizado_temporario", "atualizar", ("id",), _so("id", "usos", "resultado")),),
     "aprendizado.expirado": (Alvo(C, "aprendizado_temporario", "apagar", ("id",)),),
     # Pertinência: a decisão fica no Cérebro e no próprio achado
-    "pertinencia.decidida": (Alvo(C, "decisao_pertinencia", "inserir"), Alvo(B, "achado", "atualizar", ("id",), _decisao_no_achado)),
+    # 09/11/2026: o achado sem livro pode já ter saído no expurgo (R35) quando a decisão chega — a decisão fica registrada e
+    # a atualização do achado ausente não vira alarme (eram recusas repetidas a cada aplicação)
+    "pertinencia.decidida": (Alvo(C, "decisao_pertinencia", "inserir"), Alvo(B, "achado", "atualizar_se_existe", ("id",), _decisao_no_achado)),
     # Coleta e Cartório (biblioteca.db)
     "achado.entregue": (Alvo(B, "achado", "inserir_se_novo"),),
     "documento.registrado": (Alvo(B, "documento", "inserir_ou_atualizar", ("sha256",)),),
